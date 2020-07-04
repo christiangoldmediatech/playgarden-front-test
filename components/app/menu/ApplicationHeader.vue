@@ -17,7 +17,7 @@
       >
         <div class="logo">
           <img
-            src="@/assets/logo.svg"
+            src="@/assets/svg/logo.svg"
             alt="Playgarden Prep's Logo"
           >
         </div>
