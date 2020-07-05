@@ -21,7 +21,7 @@ export default {
 
 <style lang="scss" scoped>
 .underlined-title {
-  font-size: 65px;
+  font-size: 50px;
   font-weight: bold;
   position: relative;
   z-index: 1;
@@ -32,7 +32,7 @@ export default {
     left: 0;
     content: "";
     z-index: -1;
-    border-bottom: 30px solid $pg-main;
+    border-bottom: 20px solid $pg-main;
     border-radius: 5px;
   }
 }
