@@ -40,7 +40,7 @@
       <underlined-subtitle
         text="Forgot Password"
         class="clickable mt-2"
-        @click="$router.push('/forgot-password')"
+        @click="goTo('/reset-password')"
       />
     </p>
     <p class="signup">
@@ -89,6 +89,9 @@ export default {
     }
   },
   methods: {
+    goTo (route) {
+      this.$router.push(route)
+    },
     handleClick () {
       if (this.$refs.loginForm) {
         this.$refs.loginForm.validate()
