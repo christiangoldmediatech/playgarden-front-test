@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import { required, isValidEmail, isValidPassword } from '@/utils/validations/forms.js'
+import { required, isValidEmail } from '@/utils/validations/forms.js'
 import { jsonCopy } from '@/utils/objectTools.js'
 
 export default {
@@ -66,7 +66,6 @@ export default {
     return {
       required,
       isValidEmail,
-      isValidPassword,
       isValidForm: true,
       email: ''
     }
@@ -85,9 +84,8 @@ export default {
         this.$refs.resetPasswordForm.validate()
         if (this.isValidForm) {
           this.$emit('click:submit', jsonCopy({
-            ...this.user
+            email: this.email
           }))
-          this.user.password = ''
           this.$refs.resetPasswordForm.resetValidation()
         }
       }

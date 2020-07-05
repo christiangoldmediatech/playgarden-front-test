@@ -20,7 +20,13 @@
             </v-icon>
             {{ errorMessage }}
           </p>
-          <reset-password-form :loading="isLoadingForm" @click:submit="handleLogin" />
+          <p v-show="successMessage" class="success-message">
+            <v-icon color="success">
+              mdi-checkbox-marked-circle-outline
+            </v-icon>
+            {{ successMessage }}
+          </p>
+          <reset-password-form :loading="isLoadingForm" @click:submit="handleResetPassword" />
         </div>
       </v-col>
     </v-row>
@@ -40,17 +46,17 @@ export default {
   data () {
     return {
       isLoadingForm: false,
-      errorMessage: ''
+      errorMessage: '',
+      successMessage: ''
     }
   },
   methods: {
-    async handleLogin (user) {
+    async handleResetPassword (email) {
       try {
         this.isLoadingForm = true
-        const { data } = await this.$axios.post(`${process.env.apiBaseUrl}/auth/login`, user)
-        // set auth token
-        this.$store.dispatch('auth/setToken', data.accessToken)
+        const { data } = await this.$axios.post(`${process.env.apiBaseUrl}/auth/password/forget`, email)
         this.errorMessage = ''
+        this.successMessage = 'Email Sent!'
       } catch (error) {
         this.handleLoginError(error)
       } finally {
@@ -58,7 +64,8 @@ export default {
       }
     },
     handleLoginError (error) {
-      this.errorMessage = 'Sorry! Wrong email or password'
+      this.successMessage = ''
+      this.errorMessage = 'Sorry! There was an error sending the email'
       // eslint-disable-next-line
       console.error(error)
     }
