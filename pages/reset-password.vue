@@ -55,8 +55,12 @@ export default {
       try {
         this.isLoadingForm = true
         const { data } = await this.$axios.post(`${process.env.apiBaseUrl}/auth/password/forget`, email)
-        this.errorMessage = ''
-        this.successMessage = 'Email Sent!'
+        if (data.sent) {
+          this.errorMessage = ''
+          this.successMessage = 'Email Sent!'
+        } else {
+          throw new Error('error sending email')
+        }
       } catch (error) {
         this.handleLoginError(error)
       } finally {
