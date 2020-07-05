@@ -29,6 +29,7 @@ import UnderlinedTitle from '@/components/global/UnderlinedTitle.vue'
 import LoginForm from '@/components/forms/login/LoginForm.vue'
 
 export default {
+  middleware: ['redirectToAuthPage'],
   components: {
     UnderlinedTitle,
     LoginForm
@@ -45,6 +46,7 @@ export default {
         this.isLoadingForm = true
         const { data } = await this.$axios.post(`${process.env.apiBaseUrl}/auth/login`, user)
         // set auth token
+        this.$store.dispatch('auth/setToken', data.accessToken)
         this.errorMessage = ''
       } catch (error) {
         this.handleLoginError(error)

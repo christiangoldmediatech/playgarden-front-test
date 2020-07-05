@@ -76,6 +76,7 @@
 import ApplicationHeader from '@/components/app/menu/ApplicationHeader.vue'
 
 export default {
+  middleware: ['checkJWT'],
   components: {
     ApplicationHeader
   },
