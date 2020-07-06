@@ -26,7 +26,7 @@
             </v-icon>
             {{ successMessage }}
           </p>
-          <reset-password-form :loading="isLoadingForm" @click:submit="handleResetPassword" />
+          <forgot-password-form :loading="isLoadingForm" @click:submit="handleResetPassword" />
         </div>
       </v-col>
     </v-row>
@@ -35,13 +35,13 @@
 
 <script>
 import UnderlinedTitle from '@/components/global/UnderlinedTitle.vue'
-import ResetPasswordForm from '@/components/forms/password/ResetPasswordForm.vue'
+import ForgotPasswordForm from '@/components/forms/password/ForgotPasswordForm.vue'
 
 export default {
   middleware: ['redirectToAuthPage'],
   components: {
     UnderlinedTitle,
-    ResetPasswordForm
+    ForgotPasswordForm
   },
   data () {
     return {
