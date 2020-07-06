@@ -40,7 +40,7 @@
       <underlined-subtitle
         text="Forgot Password"
         class="clickable mt-2"
-        @click="goTo('/reset-password')"
+        @click="goTo('/forgot-password')"
       />
     </p>
     <p class="signup">
