@@ -48,6 +48,7 @@ export default {
         // set auth token
         this.$store.dispatch('auth/setToken', data.accessToken)
         this.errorMessage = ''
+        this.$router.push('/auth')
       } catch (error) {
         this.handleLoginError(error)
       } finally {
