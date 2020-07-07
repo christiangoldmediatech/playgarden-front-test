@@ -23,21 +23,45 @@
         dense
         nav
       >
-        <v-list-item-group v-model="selected">
+        <v-list-item-group
+          v-model="selected"
+          color="primary"
+          mandatory
+        >
           <v-list-item
             v-for="(item, i) in menuItems"
-            :key="i"
+            :key="`app-menu-item-${i}`"
             link
-            @click="item.action()"
+            :to="item.route"
+            nuxt
+            exact
           >
             <v-list-item-icon>
-              <v-icon>
+              <v-icon
+                color="primary darken-2"
+              >
                 {{ item.icon }}
               </v-icon>
             </v-list-item-icon>
 
             <v-list-item-content>
               <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item
+            link
+            @click="logout()"
+          >
+            <v-list-item-icon>
+              <v-icon
+                color="primary darken-2"
+              >
+                mdi-logout
+              </v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>Logout</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list-item-group>
@@ -58,14 +82,6 @@
 
       <v-spacer />
 
-      <!--
-      <v-btn icon @click.stop="$router.push('/admin')">
-        <v-icon>
-          mdi-cog
-        </v-icon>
-      </v-btn>
-      -->
-
       <v-btn icon @click.stop="logout()">
         <v-icon>
           mdi-logout
@@ -75,7 +91,7 @@
 
     <nuxt />
 
-    <v-footer>
+    <v-footer app>
       &copy; 2020 <span v-if="new Date().getFullYear() > 2020"> - {{ new Date().getFullYear() }}</span>
     </v-footer>
   </v-app>
@@ -91,37 +107,32 @@ export default {
         {
           icon: 'mdi-home',
           title: 'Home',
-          action: () => this.$router.push('/admin')
+          route: '/admin'
         },
         {
           icon: 'mdi-order-alphabetical-ascending',
           title: 'Curriculum',
-          action: () => this.$router.push('/admin')
+          route: '/admin/curriculum'
         },
         {
           icon: 'mdi-calendar',
           title: 'Activities',
-          action: () => this.$router.push('/admin')
+          route: '/admin/activities'
         },
         {
           icon: 'mdi-human-greeting',
           title: 'Parents Corner',
-          action: () => this.$router.push('/admin')
+          route: '/admin/parents-corner'
         },
         {
           icon: 'mdi-account-multiple',
           title: 'Users',
-          action: () => this.$router.push('/admin')
+          route: '/admin/users'
         },
         {
           icon: 'mdi-cog',
           title: 'Settings',
-          action: () => this.$router.push('/admin')
-        },
-        {
-          icon: 'mdi-logout',
-          title: 'Logout',
-          action: () => this.logout()
+          route: '/admin/settings'
         }
       ]
     }
