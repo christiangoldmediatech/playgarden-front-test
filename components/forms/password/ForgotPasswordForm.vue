@@ -15,6 +15,7 @@
       clearable
       type="email"
     />
+
     <v-btn
       color="primary"
       type="submit"
@@ -24,28 +25,33 @@
     >
       RESET PASSWORD
     </v-btn>
+
     <v-row no-gutters class="my-3">
       <v-col class="hr-line">
         <v-divider />
       </v-col>
+
       <v-col class="text-center">
         or
       </v-col>
+
       <v-col class="hr-line">
         <v-divider />
       </v-col>
     </v-row>
-    <p class="login my-4 clickable" @click="goTo('/')">
-      return to login
+
+    <p class="login mt-4">
+      <nuxt-link :to="{ name: 'index' }" class="primary--text">
+        <span>return to login</span>
+      </nuxt-link>
     </p>
+
     <p class="signup mt-4">
       Don't have an account?
-      <span
-        class="clickable"
-        @click="$router.push('/signup')"
-      >
-        SIGNUP
-      </span>
+
+      <nuxt-link :to="{ name: 'auth-signup' }">
+        <span>SIGNUP</span>
+      </nuxt-link>
     </p>
   </v-form>
 </template>
@@ -76,9 +82,6 @@ export default {
     }
   },
   methods: {
-    goTo (route) {
-      this.$router.push(route)
-    },
     handleClick () {
       if (this.$refs.forgotPasswordForm) {
         this.$refs.forgotPasswordForm.validate()

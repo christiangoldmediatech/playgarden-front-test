@@ -36,6 +36,8 @@ export default {
   ** https://nuxtjs.org/guide/plugins
   */
   plugins: [
+    '@/components/global',
+    '@/plugins/validate'
   ],
   /*
   ** Auto import components
@@ -79,8 +81,9 @@ export default {
   ** See https://nuxtjs.org/api/configuration-build/
   */
   build: {
+    transpile: ['vee-validate/dist/rules']
   },
   env: {
-    apiBaseUrl: process.env.API_BASE_URL || 'https://j2ld7v9jji.execute-api.us-east-1.amazonaws.com/staging',
+    apiBaseUrl: process.env.API_BASE_URL || 'https://j2ld7v9jji.execute-api.us-east-1.amazonaws.com/staging'
   }
 }

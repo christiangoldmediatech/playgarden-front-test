@@ -26,30 +26,26 @@ export default {
       items: [
         {
           title: 'Home',
-          to: '/'
+          to: { name: 'index' }
         },
         {
           title: 'What we offer',
-          to: '/'
+          to: { name: 'index' }
         },
         {
           title: 'Our Curriculum',
-          to: '/'
+          to: { name: 'index' }
         },
         {
           title: 'Get to know us',
-          to: '/'
+          to: { name: 'index' }
         },
         {
           title: 'Playgarden',
-          to: '/'
+          to: { name: 'index' }
         }
       ]
     }
   }
 }
 </script>
-
-<style>
-
-</style>

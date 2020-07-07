@@ -15,6 +15,7 @@
       clearable
       type="password"
     />
+
     <v-btn
       color="primary"
       type="submit"
@@ -24,8 +25,11 @@
     >
       RESET PASSWORD
     </v-btn>
-    <p class="login my-4 clickable" @click="goTo('/')">
-      return to login
+
+    <p class="login mt-4">
+      <nuxt-link :to="{ name: 'index' }" class="primary--text">
+        <span>return to login</span>
+      </nuxt-link>
     </p>
   </v-form>
 </template>
@@ -56,9 +60,6 @@ export default {
     }
   },
   methods: {
-    goTo (route) {
-      this.$router.push(route)
-    },
     handleClick () {
       if (this.$refs.resetPasswordForm) {
         this.$refs.resetPasswordForm.validate()
