@@ -89,7 +89,9 @@
       </v-btn>
     </v-app-bar>
 
-    <nuxt />
+    <v-main>
+      <nuxt />
+    </v-main>
 
     <v-footer app>
       &copy; 2020 <span v-if="new Date().getFullYear() > 2020"> - {{ new Date().getFullYear() }}</span>
