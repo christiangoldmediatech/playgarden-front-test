@@ -11,6 +11,9 @@
 <script>
 export default {
   layout: 'admin',
+
+  name: 'Curriculum',
+
   data () {
     return {
       placeholder: false

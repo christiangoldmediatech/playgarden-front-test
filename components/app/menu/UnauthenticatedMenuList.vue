@@ -1,8 +1,8 @@
 <template>
   <item-list
-    :items="items"
-    :horizontal="horizontal"
     v-bind="$attrs"
+    :horizontal="horizontal"
+    :items="items"
     v-on="$listeners"
   />
 </template>
@@ -11,9 +11,12 @@
 import ItemList from '@/components/app/menu/ItemList.vue'
 
 export default {
+  name: 'UnauthenticatedMenuList',
+
   components: {
     ItemList
   },
+
   props: {
     horizontal: {
       type: Boolean,
@@ -21,6 +24,7 @@ export default {
       default: false
     }
   },
+
   data () {
     return {
       items: [

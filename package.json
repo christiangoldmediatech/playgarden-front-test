@@ -22,7 +22,9 @@
     "jwt-decode": "^2.2.0",
     "material-design-icons-iconfont": "^5.0.1",
     "nuxt": "^2.13.3",
-    "vee-validate": "^3.3.7"
+    "vee-validate": "^3.3.7",
+    "vue": "^2.6.11",
+    "vuex": "^3.5.1"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^3.0.0",

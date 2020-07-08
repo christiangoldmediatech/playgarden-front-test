@@ -7,21 +7,21 @@
     <!-- Password -->
     <v-text-field
       v-model="password"
+      clearable
       :disabled="loading"
-      :rules="[required, ...isValidPassword]"
+      label="Password"
       :loading="loading"
       outlined
-      label="Password"
-      clearable
+      :rules="[required, ...isValidPassword]"
       type="password"
     />
 
     <v-btn
-      color="primary"
-      type="submit"
       block
-      :loading="loading"
+      color="primary"
       :disabled="isButtonDisabled"
+      :loading="loading"
+      type="submit"
     >
       RESET PASSWORD
     </v-btn>
@@ -39,6 +39,8 @@ import { required, isValidPassword } from '@/utils/validations/forms.js'
 import { jsonCopy } from '@/utils/objectTools.js'
 
 export default {
+  name: 'ResetPasswordForm',
+
   props: {
     loading: {
       type: Boolean,
@@ -46,6 +48,7 @@ export default {
       default: false
     }
   },
+
   data () {
     return {
       required,
@@ -54,11 +57,13 @@ export default {
       password: ''
     }
   },
+
   computed: {
     isButtonDisabled () {
       return this.loading || !this.isValidForm
     }
   },
+
   methods: {
     handleClick () {
       if (this.$refs.resetPasswordForm) {

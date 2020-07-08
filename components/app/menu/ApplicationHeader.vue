@@ -1,34 +1,34 @@
 <template>
   <v-container
-    fluid
     class="header-container"
     :class="{'mobile': $vuetify.breakpoint.smAndDown}"
+    fluid
   >
     <v-row
-      no-gutters
+      align-content="center"
       class="header-row"
       justify="center"
-      align-content="center"
+      no-gutters
     >
       <v-col
-        cols="auto"
         class="header-menu"
         :class="{'mobile': $vuetify.breakpoint.smAndDown}"
+        cols="auto"
       >
         <nuxt-link
           :to="{name: 'index'}"
         >
           <div class="logo">
             <img
-              src="@/assets/svg/logo.svg"
               alt="Playgarden Prep's Logo"
+              src="@/assets/svg/logo.svg"
             >
           </div>
         </nuxt-link>
 
         <div
           v-if="!$vuetify.breakpoint.smAndDown"
-          class="pt-1 menu"
+          class="menu pt-1"
         >
           <unauthenticated-menu-list horizontal />
         </div>
@@ -36,12 +36,12 @@
     </v-row>
 
     <v-btn
-      color="primary"
       class="header-action-btn"
+      :class="{mobile: $vuetify.breakpoint.smAndDown}"
+      color="primary"
       :icon="$vuetify.breakpoint.smAndDown"
       nuxt
       :ripple="!$vuetify.breakpoint.smAndDown"
-      :class="{mobile: $vuetify.breakpoint.smAndDown}"
       :to="{name: 'index'}"
     >
       <v-icon class="hidden-md-and-up">
@@ -57,6 +57,8 @@
 import UnauthenticatedMenuList from '@/components/app/menu/UnauthenticatedMenuList'
 
 export default {
+  name: 'ApplicationHeader',
+
   components: {
     UnauthenticatedMenuList
   }

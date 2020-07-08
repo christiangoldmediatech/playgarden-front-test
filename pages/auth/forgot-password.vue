@@ -3,7 +3,7 @@
     <v-row no-gutters>
       <v-col class="hidden-sm-and-down" cols="6">
         <div class="image">
-          <img src="@/assets/svg/girl-smiling.svg" alt="Smiling Girl Picture">
+          <img alt="Smiling Girl Picture" src="@/assets/svg/girl-smiling.svg">
         </div>
       </v-col>
 
@@ -44,10 +44,14 @@
 import ForgotPasswordForm from '@/components/forms/password/ForgotPasswordForm'
 
 export default {
+  name: 'ForgotPassword',
+
   middleware: ['redirectToAuthPage'],
+
   components: {
     ForgotPasswordForm
   },
+
   data () {
     return {
       isLoadingForm: false,
@@ -55,10 +59,12 @@ export default {
       successMessage: ''
     }
   },
+
   methods: {
     async handleResetPassword (email) {
       try {
         this.isLoadingForm = true
+        // TODO: move to store and use mapActions
         const { data } = await this.$axios.post(`${process.env.apiBaseUrl}/auth/password/forget`, email)
         if (data.sent) {
           this.errorMessage = ''

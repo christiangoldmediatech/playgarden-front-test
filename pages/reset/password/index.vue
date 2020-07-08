@@ -3,7 +3,7 @@
     <v-row no-gutters>
       <v-col v-if="$vuetify.breakpoint.mdAndUp" cols="6">
         <div class="image">
-          <img src="@/assets/svg/girl-smiling.svg" alt="Smiling Girl Picture">
+          <img alt="Smiling Girl Picture" src="@/assets/svg/girl-smiling.svg">
         </div>
       </v-col>
       <v-col cols="12" md="6">
@@ -28,10 +28,14 @@
 import ResetPasswordForm from '@/components/forms/password/ResetPasswordForm.vue'
 
 export default {
+  name: 'Index',
+
   middleware: ['redirectToAuthPage'],
+
   components: {
     ResetPasswordForm
   },
+
   data () {
     return {
       token: '',
@@ -39,6 +43,7 @@ export default {
       errorMessage: ''
     }
   },
+
   async beforeMount () {
     try {
       if (!this.$route.query || !this.$route.query.token) {
@@ -56,10 +61,12 @@ export default {
       this.$router.push('/')
     }
   },
+
   methods: {
     async resetPassword (password) {
       try {
         this.isLoadingForm = true
+        // TODO: move to store and use mapActions
         const { data } = await this.$axios.patch(`${process.env.apiBaseUrl}/auth/password/reset/${this.token}`, password)
         if (!data.changed) {
           throw new Error('password could not be changed')
