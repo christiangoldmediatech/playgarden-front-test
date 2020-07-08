@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <section>
     <v-row no-gutters>
       <v-col class="hidden-sm-and-down" cols="6">
         <div class="image">
@@ -37,7 +37,7 @@
         </div>
       </v-col>
     </v-row>
-  </v-container>
+  </section>
 </template>
 
 <script>
@@ -73,6 +73,7 @@ export default {
       }
     },
     handleLoginError (error) {
+      // TODO: Remove this alert to a global component
       this.successMessage = ''
       this.errorMessage = 'Sorry! There was an error sending the email'
       // eslint-disable-next-line

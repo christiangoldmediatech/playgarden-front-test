@@ -1,6 +1,13 @@
 <template>
-  <v-container fluid>
+  <section>
     <v-row no-gutters>
+      <p v-show="errorMessage" class="error-message">
+        <v-icon color="error">
+          mdi-close-circle
+        </v-icon>
+        {{ errorMessage }}
+      </p>
+
       <v-col cols="12" md="8" class="px-12">
         <signup-form :loading="isLoadingForm" @click:submit="handleSignup" />
       </v-col>
@@ -31,7 +38,7 @@
         </p>
       </v-col>
     </v-row>
-  </v-container>
+  </section>
 </template>
 
 <script>
@@ -56,7 +63,7 @@ export default {
         // set auth token
         this.$store.dispatch('auth/setToken', data.accessToken)
         this.errorMessage = ''
-        this.$router.push({ name: 'children' })
+        this.$router.push({ name: 'app-children' })
       } catch (error) {
         this.handleSignupError(error)
       } finally {
@@ -64,7 +71,8 @@ export default {
       }
     },
     handleSignupError (error) {
-      this.errorMessage = 'Oops! Error'
+      // TODO: Remove this alert to a global component
+      this.errorMessage = 'Sorry! There was an error while signing you up.'
       // eslint-disable-next-line
       console.error(error)
     }
@@ -73,17 +81,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.image {
-  height: 100%;
-  max-height: 500px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  img {
-    height: 100%;
-  }
-}
 .error-message {
   color: $pg-error;
 }

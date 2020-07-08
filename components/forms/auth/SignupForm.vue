@@ -136,17 +136,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-  .forgot-password {
-    text-align: right;
-  }
-  .signup {
-    font-size: 20px;
-    span {
-      color: $pg-main;
-      text-transform: uppercase;
-      font-weight: bold;
-    }
-  }
-</style>

@@ -27,7 +27,7 @@
     </v-btn>
 
     <p class="login mt-4">
-      <nuxt-link :to="{ name: 'index' }" class="primary--text">
+      <nuxt-link :to="{ name: 'index' }">
         <span>return to login</span>
       </nuxt-link>
     </p>

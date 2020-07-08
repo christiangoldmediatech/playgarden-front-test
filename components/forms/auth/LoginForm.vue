@@ -40,7 +40,7 @@
     </v-btn>
 
     <p class="forgot-password">
-      <nuxt-link :to="{ name: 'auth-forgot-password' }">
+      <nuxt-link :to="{ name: 'auth-forgot-password' }" class="black--text">
         <underlined-subtitle
           text="Forgot Password"
           class="clickable mt-2"
