@@ -24,6 +24,9 @@ export default {
   },
   logout ({ commit, getters }, redirect) {
     commit('LOGOUT')
+    if (hasSessionStorage()) {
+      window.sessionStorage.removeItem('authToken')
+    }
     if (redirect) {
       redirect('/')
     }

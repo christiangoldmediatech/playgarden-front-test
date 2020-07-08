@@ -6,6 +6,6 @@ export default async function ({ app, store, redirect, route }) {
   const isLoggedIn = await store.dispatch('auth/checkAuth')
   // If the user is not authenticated redirect to /
   if (!isLoggedIn) {
-    store.commit('auth/logout', redirect)
+    await store.dispatch('auth/logout', redirect)
   }
 }
