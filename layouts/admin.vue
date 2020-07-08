@@ -5,6 +5,7 @@
     <v-navigation-drawer
       v-model="appDrawer"
       app
+      :permanent="$vuetify.breakpoint.mdAndUp"
     >
       <v-list-item>
         <v-list-item-content>
@@ -25,7 +26,7 @@
       >
         <v-list-item-group
           v-model="selected"
-          color="primary"
+          color="primary darken-2"
           mandatory
         >
           <v-list-item
@@ -76,7 +77,7 @@
     >
       <v-app-bar-nav-icon @click.stop="appDrawer = !appDrawer" />
 
-      <v-toolbar-title v-if="$vuetify.breakpoint.mdAndDown">
+      <v-toolbar-title v-if="$vuetify.breakpoint.smAndDown">
         PlayGardenPrep Admin
       </v-toolbar-title>
 
@@ -90,6 +91,7 @@
     </v-app-bar>
 
     <v-main>
+      <admin-prompt-dialog />
       <nuxt />
     </v-main>
 
@@ -100,7 +102,15 @@
 </template>
 
 <script>
+import AdminPromptDialog from '@/components/admin/AdminPromptDialog.vue'
+
 export default {
+  middleware: ['checkJWT'],
+
+  components: {
+    AdminPromptDialog
+  },
+
   data () {
     return {
       appDrawer: false,
@@ -137,6 +147,13 @@ export default {
           route: '/admin/settings'
         }
       ]
+    }
+  },
+
+  methods: {
+    logout () {
+      this.$store.dispatch('auth/logout')
+      this.$router.push('/')
     }
   }
 }

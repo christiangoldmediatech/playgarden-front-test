@@ -15,6 +15,7 @@
 <script>
 export default {
   layout: 'admin',
+  middleware: ['authRedirect'],
   data () {
     return {
       placeholder: false
