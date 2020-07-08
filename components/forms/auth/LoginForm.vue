@@ -15,6 +15,7 @@
       clearable
       type="email"
     />
+
     <!-- Password -->
     <v-text-field
       v-model="user.password"
@@ -27,6 +28,7 @@
       clearable
       type="password"
     />
+
     <v-btn
       color="primary"
       type="submit"
@@ -36,34 +38,31 @@
     >
       LOGIN
     </v-btn>
+
     <p class="forgot-password">
-      <underlined-subtitle
-        text="Forgot Password"
-        class="clickable mt-2"
-        @click="goTo('/forgot-password')"
-      />
+      <nuxt-link :to="{ name: 'auth-forgot-password' }" class="black--text">
+        <underlined-subtitle
+          text="Forgot Password"
+          class="clickable mt-2"
+        />
+      </nuxt-link>
     </p>
+
     <p class="signup">
       Don't have an account?
-      <span
-        class="clickable"
-        @click="$router.push('/signup')"
-      >
-        SIGNUP
-      </span>
+
+      <nuxt-link :to="{ name: 'auth-signup' }">
+        <span>SIGNUP</span>
+      </nuxt-link>
     </p>
   </v-form>
 </template>
 
 <script>
-import { required, isValidEmail, isValidPassword } from '@/utils/validations/forms.js'
-import { jsonCopy } from '@/utils/objectTools.js'
-import UnderlinedSubtitle from '@/components/global/UnderlinedSubtitle.vue'
+import { required, isValidEmail, isValidPassword } from '@/utils/validations/forms'
+import { jsonCopy } from '@/utils/objectTools'
 
 export default {
-  components: {
-    UnderlinedSubtitle
-  },
   props: {
     loading: {
       type: Boolean,
@@ -89,9 +88,6 @@ export default {
     }
   },
   methods: {
-    goTo (route) {
-      this.$router.push(route)
-    },
     handleClick () {
       if (this.$refs.loginForm) {
         this.$refs.loginForm.validate()
@@ -114,6 +110,7 @@ export default {
 }
 .signup {
   font-size: 20px;
+
   span {
     color: $pg-main;
     text-transform: uppercase;

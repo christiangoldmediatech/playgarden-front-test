@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <section>
     <v-row no-gutters>
       <v-col v-if="$vuetify.breakpoint.mdAndUp" cols="6">
         <div class="image">
@@ -21,17 +21,15 @@
         </div>
       </v-col>
     </v-row>
-  </v-container>
+  </section>
 </template>
 
 <script>
-import UnderlinedTitle from '@/components/global/UnderlinedTitle.vue'
 import ResetPasswordForm from '@/components/forms/password/ResetPasswordForm.vue'
 
 export default {
   middleware: ['redirectToAuthPage'],
   components: {
-    UnderlinedTitle,
     ResetPasswordForm
   },
   data () {
@@ -77,6 +75,7 @@ export default {
       }
     },
     handleLoginError (error) {
+      // TODO: Remove this alert to a global component
       this.errorMessage = 'Sorry! An error ocurred while reseting your password'
       // eslint-disable-next-line
       console.error(error)

@@ -1,37 +1,38 @@
 <template>
-  <v-container fluid>
+  <section>
     <v-row no-gutters>
-      <v-col v-if="$vuetify.breakpoint.mdAndUp" cols="6">
+      <v-col class="hidden-sm-and-down" cols="6">
         <div class="image">
           <img src="@/assets/svg/girl-smiling.svg" alt="Smiling Girl Picture">
         </div>
       </v-col>
+
       <v-col cols="12" md="6">
         <div class="form mx-auto px-4">
           <div>
             <underlined-title text="Welcome Back" />
           </div>
+
           <p v-show="errorMessage" class="error-message">
             <v-icon color="error">
               mdi-close-circle
             </v-icon>
             {{ errorMessage }}
           </p>
+
           <login-form :loading="isLoadingForm" @click:submit="handleLogin" />
         </div>
       </v-col>
     </v-row>
-  </v-container>
+  </section>
 </template>
 
 <script>
-import UnderlinedTitle from '@/components/global/UnderlinedTitle.vue'
-import LoginForm from '@/components/forms/login/LoginForm.vue'
+import LoginForm from '@/components/forms/auth/LoginForm'
 
 export default {
   middleware: ['redirectToAuthPage'],
   components: {
-    UnderlinedTitle,
     LoginForm
   },
   data () {
@@ -48,7 +49,7 @@ export default {
         // set auth token
         this.$store.dispatch('auth/setToken', data.accessToken)
         this.errorMessage = ''
-        this.$router.push('/auth')
+        this.$router.push({ name: 'app-children' })
       } catch (error) {
         this.handleLoginError(error)
       } finally {
@@ -56,6 +57,7 @@ export default {
       }
     },
     handleLoginError (error) {
+      // TODO: Remove this alert to a global component
       this.errorMessage = 'Sorry! Wrong email or password'
       // eslint-disable-next-line
       console.error(error)

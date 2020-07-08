@@ -1,1 +1,1 @@
-export default ['/', '/forgot-password', '/reset/password/']
+export default ['/', '/auth/forgot-password', '/auth/signup', '/reset/password/']

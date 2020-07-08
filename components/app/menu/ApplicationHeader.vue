@@ -15,12 +15,17 @@
         class="header-menu"
         :class="{'mobile': $vuetify.breakpoint.smAndDown}"
       >
-        <div class="logo">
-          <img
-            src="@/assets/svg/logo.svg"
-            alt="Playgarden Prep's Logo"
-          >
-        </div>
+        <nuxt-link
+          :to="{name: 'index'}"
+        >
+          <div class="logo">
+            <img
+              src="@/assets/svg/logo.svg"
+              alt="Playgarden Prep's Logo"
+            >
+          </div>
+        </nuxt-link>
+
         <div
           v-if="!$vuetify.breakpoint.smAndDown"
           class="pt-1 menu"
@@ -29,25 +34,27 @@
         </div>
       </v-col>
     </v-row>
+
     <v-btn
       color="primary"
       class="header-action-btn"
       :icon="$vuetify.breakpoint.smAndDown"
+      nuxt
       :ripple="!$vuetify.breakpoint.smAndDown"
-      :class="{'mobile': $vuetify.breakpoint.smAndDown}"
+      :class="{mobile: $vuetify.breakpoint.smAndDown}"
+      :to="{name: 'index'}"
     >
-      <template v-if="$vuetify.breakpoint.smAndDown">
-        Login <v-icon>mdi-login-variant</v-icon>
-      </template>
-      <template v-else>
-        Login
-      </template>
+      <v-icon class="hidden-md-and-up">
+        mdi-login-variant
+      </v-icon>
+
+      <span class="hidden-sm-and-down">Login</span>
     </v-btn>
   </v-container>
 </template>
 
 <script>
-import UnauthenticatedMenuList from '@/components/app/menu/UnauthenticatedMenuList.vue'
+import UnauthenticatedMenuList from '@/components/app/menu/UnauthenticatedMenuList'
 
 export default {
   components: {
