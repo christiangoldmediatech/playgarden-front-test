@@ -1,9 +1,12 @@
 import unauthenticatedRoutes from '~/utils/consts/unauthenticatedRoutes.json'
 
-export default function ({ redirect, route, store }) {
+export default function ({ app, redirect, route, store }) {
+  const token = store.getters['auth/getAccessToken']
+  app.$axios.setToken(token, 'Bearer')
+
   if (
     process.client &&
-    store.getters['auth/getAccessToken'] &&
+    token &&
     unauthenticatedRoutes[route.name] &&
     route.name !== 'jwt-recovery'
   ) {
