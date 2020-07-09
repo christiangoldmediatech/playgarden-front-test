@@ -32,17 +32,20 @@ export default {
     if (hasSessionStorage()) {
       await this.restoreAuth()
     }
+
     if (this.$route.query.redirect) {
       this.$router.push(decodeURIComponent(this.$route.query.redirect))
     } else {
-      this.$router.push('/')
+      this.$router.push({ name: 'index' })
     }
   },
+
   methods: {
     ...mapActions({
       restoreAuth: 'auth/restoreAuthFromSessionStorage'
     })
   },
+
   head () {
     return {
       title: 'Recover token'

@@ -47,8 +47,6 @@ import SignupForm from '@/components/forms/auth/SignupForm'
 export default {
   name: 'Signup',
 
-  middleware: ['redirectToAuthPage'],
-
   components: {
     SignupForm
   },
