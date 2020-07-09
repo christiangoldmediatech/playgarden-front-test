@@ -5,7 +5,7 @@ export default function ({ $axios, redirect, store }) {
     let body = 'Something went wrong.'
 
     if (error.response.status === 401) {
-      body = 'Please login before use this section.'
+      body = 'Please login before using this section.'
 
       redirect({ name: 'index' })
     }
