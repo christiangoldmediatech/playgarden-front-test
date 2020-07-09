@@ -38,6 +38,7 @@ export default {
   plugins: [
     '@/plugins/axios',
     '@/plugins/globalPartials',
+    '@/plugins/snotify',
     '@/plugins/validate'
   ],
   /*
