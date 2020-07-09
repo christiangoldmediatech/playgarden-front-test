@@ -1,15 +1,8 @@
 <template>
   <section>
     <v-row no-gutters>
-      <p v-show="errorMessage" class="error-message">
-        <v-icon color="error">
-          mdi-close-circle
-        </v-icon>
-        {{ errorMessage }}
-      </p>
-
       <v-col class="px-12" cols="12" md="8">
-        <signup-form :loading="isLoadingForm" @click:submit="handleSignup" />
+        <signup-form :loading="loading" @click:submit="onSubmit" />
       </v-col>
 
       <v-col class="px-12" cols="12" md="4">
@@ -42,6 +35,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import SignupForm from '@/components/forms/auth/SignupForm'
 
 export default {
@@ -51,34 +45,19 @@ export default {
     SignupForm
   },
 
-  data () {
-    return {
-      isLoadingForm: false,
-      errorMessage: ''
-    }
-  },
+  data: () => ({
+    loading: false
+  }),
 
   methods: {
-    async handleSignup (user) {
-      try {
-        this.isLoadingForm = true
-        // TODO: move to store and use mapActions
-        const { data } = await this.$axios.post(`${process.env.apiBaseUrl}/auth/signup`, user)
-        // set auth token
-        this.$store.dispatch('auth/setToken', data.accessToken)
-        this.errorMessage = ''
-        this.$router.push({ name: 'app-children' })
-      } catch (error) {
-        this.handleSignupError(error)
-      } finally {
-        this.isLoadingForm = false
-      }
-    },
-    handleSignupError (error) {
-      // TODO: Remove this alert to a global component
-      this.errorMessage = 'Sorry! There was an error while signing you up.'
-      // eslint-disable-next-line
-      console.error(error)
+    ...mapActions('auth/signup', { signup: 'store' }),
+
+    onSubmit (user) {
+      this.loading = true
+
+      this.signup(user)
+        .then(() => this.$router.push({ name: 'app-children' }))
+        .finally(() => (this.loading = false))
     }
   }
 }
