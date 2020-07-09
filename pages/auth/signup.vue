@@ -8,13 +8,13 @@
         {{ errorMessage }}
       </p>
 
-      <v-col cols="12" md="8" class="px-12">
+      <v-col class="px-12" cols="12" md="8">
         <signup-form :loading="isLoadingForm" @click:submit="handleSignup" />
       </v-col>
 
-      <v-col cols="12" md="4" class="px-12">
+      <v-col class="px-12" cols="12" md="4">
         <p>
-          <span class="text-h5 font-weight-bold">
+          <span class="font-weight-bold text-h5">
             MEMBERSHIP
           </span>
 
@@ -45,20 +45,24 @@
 import SignupForm from '@/components/forms/auth/SignupForm'
 
 export default {
-  middleware: ['redirectToAuthPage'],
+  name: 'Signup',
+
   components: {
     SignupForm
   },
+
   data () {
     return {
       isLoadingForm: false,
       errorMessage: ''
     }
   },
+
   methods: {
     async handleSignup (user) {
       try {
         this.isLoadingForm = true
+        // TODO: move to store and use mapActions
         const { data } = await this.$axios.post(`${process.env.apiBaseUrl}/auth/signup`, user)
         // set auth token
         this.$store.dispatch('auth/setToken', data.accessToken)

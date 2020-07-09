@@ -10,30 +10,17 @@
       <v-col cols="12" md="6">
         <div class="form mx-auto px-4">
           <div>
-            <underlined-title text="Reset Password" />
+            <underlined-title text="Welcome Back" />
           </div>
-
-          <p>
-            Enter your email to reset your password. You will receive an email with instructions on how to reset your password.
-          </p>
 
           <p v-show="errorMessage" class="error-message">
             <v-icon color="error">
               mdi-close-circle
             </v-icon>
-
             {{ errorMessage }}
           </p>
 
-          <p v-show="successMessage" class="success-message">
-            <v-icon color="success">
-              mdi-checkbox-marked-circle-outline
-            </v-icon>
-
-            {{ successMessage }}
-          </p>
-
-          <forgot-password-form :loading="isLoadingForm" @click:submit="handleResetPassword" />
+          <login-form :loading="isLoadingForm" @click:submit="handleLogin" />
         </div>
       </v-col>
     </v-row>
@@ -41,35 +28,32 @@
 </template>
 
 <script>
-import ForgotPasswordForm from '@/components/forms/password/ForgotPasswordForm'
+import LoginForm from '@/components/forms/auth/LoginForm'
 
 export default {
-  name: 'ForgotPassword',
+  name: 'Login',
 
   components: {
-    ForgotPasswordForm
+    LoginForm
   },
 
   data () {
     return {
       isLoadingForm: false,
-      errorMessage: '',
-      successMessage: ''
+      errorMessage: ''
     }
   },
 
   methods: {
-    async handleResetPassword (email) {
+    async handleLogin (user) {
       try {
         this.isLoadingForm = true
         // TODO: move to store and use mapActions
-        const { data } = await this.$axios.post(`${process.env.apiBaseUrl}/auth/password/forget`, email)
-        if (data.sent) {
-          this.errorMessage = ''
-          this.successMessage = 'Email Sent!'
-        } else {
-          throw new Error('error sending email')
-        }
+        const { data } = await this.$axios.post('/auth/login', user)
+        // set auth token
+        this.$store.dispatch('auth/setToken', data.accessToken)
+        this.errorMessage = ''
+        this.$router.push({ name: 'app-children' })
       } catch (error) {
         this.handleLoginError(error)
       } finally {
@@ -78,8 +62,7 @@ export default {
     },
     handleLoginError (error) {
       // TODO: Remove this alert to a global component
-      this.successMessage = ''
-      this.errorMessage = 'Sorry! There was an error sending the email'
+      this.errorMessage = 'Sorry! Wrong email or password'
       // eslint-disable-next-line
       console.error(error)
     }

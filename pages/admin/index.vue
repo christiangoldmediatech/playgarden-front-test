@@ -14,8 +14,12 @@
 
 <script>
 export default {
+  name: 'Index',
+
   layout: 'admin',
+
   middleware: ['authRedirect'],
+
   data () {
     return {
       placeholder: false

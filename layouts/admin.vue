@@ -32,10 +32,10 @@
           <v-list-item
             v-for="(item, i) in menuItems"
             :key="`app-menu-item-${i}`"
-            link
-            :to="item.route"
-            nuxt
             exact
+            link
+            nuxt
+            :to="item.route"
           >
             <v-list-item-icon>
               <v-icon
@@ -51,7 +51,7 @@
           </v-list-item>
           <v-list-item
             link
-            @click="logout()"
+            @click="logout"
           >
             <v-list-item-icon>
               <v-icon
@@ -71,8 +71,8 @@
 
     <v-app-bar
       app
-      color="primary"
       clipped-left
+      color="primary"
       dark
     >
       <v-app-bar-nav-icon @click.stop="appDrawer = !appDrawer" />
@@ -83,7 +83,7 @@
 
       <v-spacer />
 
-      <v-btn icon @click.stop="logout()">
+      <v-btn icon @click.stop="logout">
         <v-icon>
           mdi-logout
         </v-icon>
@@ -98,6 +98,8 @@
     <v-footer app>
       &copy; 2020 <span v-if="new Date().getFullYear() > 2020"> - {{ new Date().getFullYear() }}</span>
     </v-footer>
+
+    <notify-event />
   </v-app>
 </template>
 
@@ -105,12 +107,14 @@
 import AdminPromptDialog from '@/components/admin/AdminPromptDialog.vue'
 
 export default {
+  name: 'Admin',
+
   middleware: ['checkJWT'],
 
   components: {
     AdminPromptDialog
   },
-
+ 
   data () {
     return {
       appDrawer: false,

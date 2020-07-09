@@ -36,7 +36,9 @@ export default {
   ** https://nuxtjs.org/guide/plugins
   */
   plugins: [
+    '@/plugins/axios',
     '@/plugins/globalPartials',
+    '@/plugins/snotify',
     '@/plugins/validate'
   ],
   /*
@@ -85,5 +87,8 @@ export default {
   },
   env: {
     apiBaseUrl: process.env.API_BASE_URL || 'https://j2ld7v9jji.execute-api.us-east-1.amazonaws.com/staging'
+  },
+  router: {
+    middleware: ['auth', 'redirectIfAuthenticated']
   }
 }

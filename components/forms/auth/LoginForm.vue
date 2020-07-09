@@ -7,43 +7,43 @@
     <!-- Email -->
     <v-text-field
       v-model="user.email"
+      clearable
       :disabled="loading"
-      :rules="[required, isValidEmail]"
+      label="Email"
       :loading="loading"
       outlined
-      label="Email"
-      clearable
+      :rules="[required, isValidEmail]"
       type="email"
     />
 
     <!-- Password -->
     <v-text-field
       v-model="user.password"
-      :disabled="loading"
-      :rules="[required, ...isValidPassword]"
-      :loading="loading"
       append-icon="mdi-lock"
-      outlined
-      label="Password"
       clearable
+      :disabled="loading"
+      label="Password"
+      :loading="loading"
+      outlined
+      :rules="[required, ...isValidPassword]"
       type="password"
     />
 
     <v-btn
-      color="primary"
-      type="submit"
       block
-      :loading="loading"
+      color="primary"
       :disabled="isButtonDisabled"
+      :loading="loading"
+      type="submit"
     >
       LOGIN
     </v-btn>
 
     <p class="forgot-password">
-      <nuxt-link :to="{ name: 'auth-forgot-password' }" class="black--text">
+      <nuxt-link class="black--text" :to="{ name: 'auth-forgot-password' }">
         <underlined-subtitle
-          text="Forgot Password"
           class="clickable mt-2"
+          text="Forgot Password"
         />
       </nuxt-link>
     </p>
@@ -63,6 +63,8 @@ import { required, isValidEmail, isValidPassword } from '@/utils/validations/for
 import { jsonCopy } from '@/utils/objectTools'
 
 export default {
+  name: 'LoginForm',
+
   props: {
     loading: {
       type: Boolean,
@@ -70,6 +72,7 @@ export default {
       default: false
     }
   },
+
   data () {
     return {
       required,
@@ -82,11 +85,13 @@ export default {
       }
     }
   },
+
   computed: {
     isButtonDisabled () {
       return this.loading || !this.isValidForm
     }
   },
+
   methods: {
     handleClick () {
       if (this.$refs.loginForm) {

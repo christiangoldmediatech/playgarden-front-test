@@ -7,26 +7,26 @@
     <!-- Email -->
     <v-text-field
       v-model="email"
+      clearable
       :disabled="loading"
-      :rules="[required, isValidEmail]"
+      label="Email"
       :loading="loading"
       outlined
-      label="Email"
-      clearable
+      :rules="[required, isValidEmail]"
       type="email"
     />
 
     <v-btn
-      color="primary"
-      type="submit"
       block
-      :loading="loading"
+      color="primary"
       :disabled="isButtonDisabled"
+      :loading="loading"
+      type="submit"
     >
       RESET PASSWORD
     </v-btn>
 
-    <v-row no-gutters class="my-3">
+    <v-row class="my-3" no-gutters>
       <v-col class="hr-line">
         <v-divider />
       </v-col>
@@ -41,12 +41,12 @@
     </v-row>
 
     <p class="login mt-4">
-      <nuxt-link :to="{ name: 'index' }" class="primary--text">
+      <nuxt-link class="primary--text" :to="{ name: 'index' }">
         <span>return to login</span>
       </nuxt-link>
     </p>
 
-    <p class="signup mt-4">
+    <p class="mt-4 signup">
       Don't have an account?
 
       <nuxt-link :to="{ name: 'auth-signup' }">
@@ -61,6 +61,8 @@ import { required, isValidEmail } from '@/utils/validations/forms.js'
 import { jsonCopy } from '@/utils/objectTools.js'
 
 export default {
+  name: 'ForgotPasswordForm',
+
   props: {
     loading: {
       type: Boolean,
@@ -68,6 +70,7 @@ export default {
       default: false
     }
   },
+
   data () {
     return {
       required,
@@ -76,11 +79,13 @@ export default {
       email: ''
     }
   },
+
   computed: {
     isButtonDisabled () {
       return this.loading || !this.isValidForm
     }
   },
+
   methods: {
     handleClick () {
       if (this.$refs.forgotPasswordForm) {

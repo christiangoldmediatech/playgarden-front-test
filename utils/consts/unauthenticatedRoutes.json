@@ -1,0 +1,8 @@
+{
+  "auth-forgot-password": 1,
+  "auth-login": 1,
+  "auth-signup": 1,
+  "index": 1,
+  "jwt-recovery": 1,
+  "reset-password": 1
+}
