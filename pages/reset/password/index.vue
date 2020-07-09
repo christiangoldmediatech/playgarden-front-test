@@ -30,8 +30,6 @@ import ResetPasswordForm from '@/components/forms/password/ResetPasswordForm.vue
 export default {
   name: 'Index',
 
-  middleware: ['redirectToAuthPage'],
-
   components: {
     ResetPasswordForm
   },

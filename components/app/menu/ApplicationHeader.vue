@@ -42,7 +42,7 @@
       :icon="$vuetify.breakpoint.smAndDown"
       nuxt
       :ripple="!$vuetify.breakpoint.smAndDown"
-      :to="{name: 'index'}"
+      :to="{name: 'auth-login'}"
     >
       <v-icon class="hidden-md-and-up">
         mdi-login-variant
