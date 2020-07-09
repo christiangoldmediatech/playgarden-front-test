@@ -1,106 +1,106 @@
 <template>
-  <ValidationObserver v-slot="{ invalid, validated, passes }">
+  <validation-observer v-slot="{ invalid, validated, passes }">
     <v-form
       @submit.prevent="passes(handleClick)"
     >
       <!-- First name -->
-      <ValidationProvider v-slot="{ errors }" name="First name" rules="required">
+      <validation-provider v-slot="{ errors }" name="First name" rules="required">
         <v-text-field
           v-model="user.firstName"
+          clearable
           :disabled="loading"
           :error-messages="errors"
-          :loading="loading"
           label="First name"
+          :loading="loading"
           outlined
-          clearable
         />
-      </ValidationProvider>
+      </validation-provider>
 
       <!-- Last name -->
-      <ValidationProvider v-slot="{ errors }" name="Last name" rules="required">
+      <validation-provider v-slot="{ errors }" name="Last name" rules="required">
         <v-text-field
           v-model="user.lastName"
+          clearable
           :disabled="loading"
           :error-messages="errors"
-          :loading="loading"
           label="Last name"
+          :loading="loading"
           outlined
-          clearable
         />
-      </ValidationProvider>
+      </validation-provider>
 
       <!-- Phone number -->
-      <ValidationProvider v-slot="{ errors }" name="Phone number" rules="required|min:7|max:20|phone">
+      <validation-provider v-slot="{ errors }" name="Phone number" rules="required|min:7|max:20|phone">
         <v-text-field
           v-model="user.phoneNumber"
+          clearable
           :disabled="loading"
           :error-messages="errors"
-          :loading="loading"
           label="Phone number"
-          outlined
-          clearable
+          :loading="loading"
           maxlength="20"
+          outlined
         />
-      </ValidationProvider>
+      </validation-provider>
 
       <!-- Email -->
-      <ValidationProvider v-slot="{ errors }" name="Email" rules="required|email">
+      <validation-provider v-slot="{ errors }" name="Email" rules="required|email">
         <v-text-field
           v-model="user.email"
+          clearable
           :disabled="loading"
           :error-messages="errors"
-          :loading="loading"
           label="Email"
+          :loading="loading"
           outlined
-          clearable
           type="email"
         />
-      </ValidationProvider>
+      </validation-provider>
 
       <!-- Password -->
-      <ValidationProvider v-slot="{ errors }" name="Password" rules="required|min:8|max:20|w_number|w_special|w_upper|confirmed:passwordConfirmation">
+      <validation-provider v-slot="{ errors }" name="Password" rules="required|min:8|max:20|w_number|w_special|w_upper|confirmed:passwordConfirmation">
         <v-text-field
           v-model="user.password"
+          append-icon="mdi-lock"
+          clearable
           :disabled="loading"
           :error-messages="errors"
-          :loading="loading"
-          append-icon="mdi-lock"
-          outlined
           label="Password"
-          clearable
-          type="password"
+          :loading="loading"
           maxlength="20"
+          outlined
+          type="password"
         />
-      </ValidationProvider>
+      </validation-provider>
 
       <!-- Password -->
-      <ValidationProvider v-slot="{ errors }" name="Password confirmation" vid="passwordConfirmation">
+      <validation-provider v-slot="{ errors }" name="Password confirmation" rules="required" vid="passwordConfirmation">
         <v-text-field
           v-model="user.passwordConfirmation"
+          append-icon="mdi-lock"
+          clearable
           :disabled="loading"
           :error-messages="errors"
-          :loading="loading"
-          append-icon="mdi-lock"
-          outlined
           label="Password confirmation"
-          clearable
-          type="password"
+          :loading="loading"
           maxlength="20"
+          outlined
+          type="password"
         />
-      </ValidationProvider>
+      </validation-provider>
 
       <v-btn
+        block
         class="mb-6"
         color="primary"
-        type="submit"
-        block
-        :loading="loading"
         :disabled="invalid"
+        :loading="loading"
+        type="submit"
       >
         SIGNUP
       </v-btn>
     </v-form>
-  </ValidationObserver>
+  </validation-observer>
 </template>
 
 <script>

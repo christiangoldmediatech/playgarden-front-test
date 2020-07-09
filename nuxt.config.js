@@ -36,7 +36,9 @@ export default {
   ** https://nuxtjs.org/guide/plugins
   */
   plugins: [
+    '@/plugins/axios',
     '@/plugins/globalPartials',
+    '@/plugins/snotify',
     '@/plugins/validate'
   ],
   /*

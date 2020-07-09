@@ -1,8 +1,8 @@
 <template>
   <v-row
-    no-gutters
     v-bind="$attrs"
     :class="{'horizontal': horizontal}"
+    no-gutters
     v-on="$listeners"
   >
     <v-col
@@ -11,11 +11,11 @@
       :cols="horizontal ? 'auto' : 12"
     >
       <v-btn
+        class="list-item"
+        exact
         nuxt
         text
-        exact
         :to="item.to"
-        class="list-item"
         @click="handleClick(item)"
       >
         {{ item.title }}
@@ -26,6 +26,8 @@
 
 <script>
 export default {
+  name: 'ItemList',
+
   props: {
     items: {
       type: Array,
@@ -37,6 +39,7 @@ export default {
       default: false
     }
   },
+
   methods: {
     handleClick (item) {
       if (item.handleClick) {
