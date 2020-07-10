@@ -64,7 +64,7 @@ export default {
 
       this.signup(user)
         .then(() => {
-          this.$snotify.success('Welcome to Playgarden system!')
+          this.$snotify.success('Welcome to Playgarden Prep!')
           this.$router.push({
             name: 'app-children-register',
             query: { process: 'signup', step: '2' }
