@@ -1,8 +1,8 @@
 <template>
   <v-dialog
     v-model="dialog"
-    max-width="500px"
     :fullscreen="$vuetify.breakpoint.xs"
+    max-width="500px"
     persistent
     scrollable
   >
@@ -21,9 +21,9 @@
         <v-spacer />
 
         <v-btn
-          icon
           :disabled="loading"
-          @click.stop="close()"
+          icon
+          @click.stop="close"
         >
           <v-icon>
             mdi-close
@@ -31,48 +31,59 @@
         </v-btn>
       </v-toolbar>
 
-      <v-card-text>
-        <v-container>
-          <v-row>
-            <v-text-field
-              v-model="item.name"
-              label="Name"
-              outlined
-            />
-          </v-row>
-          <v-row>
-            <v-textarea
-              v-model="item.description"
-              label="Description"
-              outlined
-            />
-          </v-row>
-        </v-container>
-      </v-card-text>
+      <validation-observer v-slot="{ invalid, passes }">
+        <v-card-text>
+          <v-container>
+            <v-form
+              ref="curriculumTypeForm"
+              @submit.prevent="passes(save)"
+            >
+              <validation-provider v-slot="{ errors }" name="Curriculum Type Name" rules="required">
+                <v-text-field
+                  v-model="item.name"
+                  :error-messages="errors"
+                  label="Name"
+                  outlined
+                />
+              </validation-provider>
 
-      <v-divider />
+              <validation-provider v-slot="{ errors }" name="Curriculum Type Description" rules="required">
+                <v-textarea
+                  v-model="item.description"
+                  :error-messages="errors"
+                  label="Description"
+                  outlined
+                />
+              </validation-provider>
+            </v-form>
+          </v-container>
+        </v-card-text>
 
-      <v-card-actions>
-        <v-spacer />
-        <v-btn
-          :text="$vuetify.breakpoint.smAndUp"
-          :dark="$vuetify.breakpoint.xs"
-          color="green"
-          :loading="loading"
-          @click.stop="save()"
-        >
-          Save
-        </v-btn>
-        <v-btn
-          :text="$vuetify.breakpoint.smAndUp"
-          :dark="$vuetify.breakpoint.xs"
-          color="red"
-          :disabled="loading"
-          @click.stop="close()"
-        >
-          Cancel
-        </v-btn>
-      </v-card-actions>
+        <v-divider />
+
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            color="green"
+            :dark="$vuetify.breakpoint.xs"
+            :disabled="invalid"
+            :loading="loading"
+            :text="$vuetify.breakpoint.smAndUp"
+            @click.stop="passes(save)"
+          >
+            Save
+          </v-btn>
+          <v-btn
+            color="red"
+            :dark="$vuetify.breakpoint.xs"
+            :disabled="loading"
+            :text="$vuetify.breakpoint.smAndUp"
+            @click.stop="close"
+          >
+            Cancel
+          </v-btn>
+        </v-card-actions>
+      </validation-observer>
     </v-card>
   </v-dialog>
 </template>
@@ -85,6 +96,7 @@ export default {
     return {
       dialog: false,
       loading: false,
+      valid: true,
       id: null,
       item: {
         name: '',
@@ -109,13 +121,19 @@ export default {
 
     async save () {
       this.loading = true
-      if (this.id === null) {
-        await this.$store.dispatch('admin/curriculum/create', this.item)
-      } else {
-        await this.$store.dispatch('admin/curriculum/update', { id: this.id, data: this.item })
+      try {
+        if (this.id === null) {
+          await this.$store.dispatch('admin/curriculum/createType', this.item)
+        } else {
+          await this.$store.dispatch('admin/curriculum/updateType', { id: this.id, data: this.item })
+        }
+        await this.$store.dispatch('admin/curriculum/getTypes')
+      } catch (err) {
+        this.loading = false
+        return
+      } finally {
+        this.close()
       }
-      await this.$store.dispatch('admin/curriculum/get')
-      this.close()
     },
 
     open ({ id = null, name = '', description = '' } = {}) {

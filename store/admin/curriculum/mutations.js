@@ -1,11 +1,11 @@
 import { getDefaultState } from './state'
 import { set } from '@/utils/vuex'
 
-const resetState = (state) => {
+const RESET_STATE = (state) => {
   Object.assign(state, getDefaultState())
 }
 
 export default {
-  setRows: set('rows'),
-  resetState
+  SET_TYPES: set('types'),
+  RESET_STATE
 }

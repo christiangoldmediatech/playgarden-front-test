@@ -1,13 +1,7 @@
-const createTemplate = () => ({
-  id: null,
-  name: '',
-  description: ''
-})
 
 export const getDefaultState = () => ({
   loading: false,
-  rows: [],
-  template: createTemplate()
+  types: []
 })
 
 export default () => getDefaultState()

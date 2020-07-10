@@ -1,8 +1,8 @@
 <template>
   <v-dialog
     v-model="dialog"
-    max-width="500px"
     :fullscreen="$vuetify.breakpoint.xs"
+    max-width="500px"
     persistent
     scrollable
   >
@@ -21,9 +21,9 @@
         <v-spacer />
 
         <v-btn
-          icon
           :disabled="loading"
-          @click.stop="close()"
+          icon
+          @click.stop="close"
         >
           <v-icon>
             mdi-close
@@ -42,20 +42,20 @@
       <v-card-actions>
         <v-spacer />
         <v-btn
-          :text="$vuetify.breakpoint.smAndUp"
-          :dark="$vuetify.breakpoint.xs"
           color="green"
+          :dark="$vuetify.breakpoint.xs"
           :loading="loading"
-          @click="doAction()"
+          :text="$vuetify.breakpoint.smAndUp"
+          @click="doAction"
         >
           Yes
         </v-btn>
         <v-btn
-          :text="$vuetify.breakpoint.smAndUp"
-          :dark="$vuetify.breakpoint.xs"
           color="red"
+          :dark="$vuetify.breakpoint.xs"
           :disabled="loading"
-          @click="close()"
+          :text="$vuetify.breakpoint.smAndUp"
+          @click="close"
         >
           No
         </v-btn>
@@ -113,8 +113,14 @@ export default {
 
     async doAction () {
       this.loading = true
-      await this.action()
-      this.close()
+      try {
+        await this.action()
+      } catch (err) {
+        this.loading = false
+        return
+      } finally {
+        this.close()
+      }
     }
   }
 }

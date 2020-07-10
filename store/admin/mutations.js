@@ -1,5 +1,5 @@
-const resetState = (state) => {}
+const RESET_STATE = (state) => {}
 
 export default {
-  resetState
+  RESET_STATE
 }

@@ -1,9 +1,15 @@
 <template>
   <v-container>
     <v-card>
-      <v-card-title>
-        Curriculum Types
-      </v-card-title>
+      <v-toolbar
+        color="accent darken-1"
+        dark
+        flat
+      >
+        <v-toolbar-title>
+          Curriculum Types
+        </v-toolbar-title>
+      </v-toolbar>
 
       <v-card-text>
         <p>Add, create, update, or delete a curriculum type.</p>
@@ -18,9 +24,9 @@
 import CurriculumDataTable from '@/components/admin/curriculum/CurriculumDataTable.vue'
 
 export default {
-  layout: 'admin',
+  name: 'CurriculumTypes',
 
-  middleware: ['authRedirect'],
+  layout: 'admin',
 
   components: {
     CurriculumDataTable

@@ -1,6 +1,6 @@
 import { get } from '@/utils/vuex'
 
 export default {
-  loading: get('loading'),
-  rows: get('rows')
+  isLoading: get('loading'),
+  types: get('types')
 }

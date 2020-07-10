@@ -7,30 +7,61 @@
       app
       :permanent="$vuetify.breakpoint.mdAndUp"
     >
-      <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title class="title">
-            PlayGardenPrep Admin
-          </v-list-item-title>
-          <v-list-item-subtitle>
-            Manage all things from here
-          </v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
+      <v-container>
+        <v-row>
+          <v-img
+            alt="Playgarden Prep's Logo"
+            class="px-2"
+            contain
+            :src="require('@/assets/svg/logo.svg')"
+          />
+        </v-row>
+      </v-container>
 
       <v-divider />
 
       <v-list
         dense
+        mandatory
         nav
       >
-        <v-list-item-group
-          v-model="selected"
-          color="primary darken-2"
-          mandatory
-        >
+        <template v-for="(item, i) in menuItems">
+          <v-list-group
+            v-if="item.children"
+            :key="`app-menu-item-${i}`"
+            color="primary darken-2"
+            :group="item.rootPath"
+            no-action
+          >
+            <template v-slot:prependIcon>
+              <v-icon
+                color="primary darken-2"
+                v-text="item.icon"
+              />
+            </template>
+
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title v-text="item.title" />
+              </v-list-item-content>
+            </template>
+
+            <v-list-item
+              v-for="(subItem, j) in item.children"
+              :key="`app-menu-item-${i}-sub-item-${j}`"
+              exact
+              link
+              nuxt
+              :to="`${item.rootPath}/${subItem.route}`"
+            >
+              <v-list-item-content>
+                <v-list-item-title v-text="subItem.title" />
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-group>
+
           <v-list-item
-            v-for="(item, i) in menuItems"
+            v-else
             :key="`app-menu-item-${i}`"
             exact
             link
@@ -46,26 +77,27 @@
             </v-list-item-icon>
 
             <v-list-item-content>
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
+              <v-list-item-title v-text="item.title" />
             </v-list-item-content>
           </v-list-item>
-          <v-list-item
-            link
-            @click="logout"
-          >
-            <v-list-item-icon>
-              <v-icon
-                color="primary darken-2"
-              >
-                mdi-logout
-              </v-icon>
-            </v-list-item-icon>
+        </template>
 
-            <v-list-item-content>
-              <v-list-item-title>Logout</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-item-group>
+        <v-list-item
+          link
+          @click="logout"
+        >
+          <v-list-item-icon>
+            <v-icon
+              color="primary darken-2"
+            >
+              mdi-logout
+            </v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>Logout</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
@@ -77,8 +109,8 @@
     >
       <v-app-bar-nav-icon @click.stop="appDrawer = !appDrawer" />
 
-      <v-toolbar-title v-if="$vuetify.breakpoint.smAndDown">
-        PlayGardenPrep Admin
+      <v-toolbar-title class="hidden-md-and-up">
+        PlayGarden Prep Online Admin
       </v-toolbar-title>
 
       <v-spacer />
@@ -114,11 +146,10 @@ export default {
   components: {
     AdminPromptDialog
   },
- 
+
   data () {
     return {
       appDrawer: false,
-      selected: null,
       menuItems: [
         {
           icon: 'mdi-home',
@@ -148,7 +179,21 @@ export default {
         {
           icon: 'mdi-cog',
           title: 'Settings',
-          route: '/admin/settings'
+          rootPath: '/admin/settings',
+          children: [
+            {
+              title: 'Curriculum Types',
+              route: 'curriculum-types'
+            },
+            {
+              title: 'Activity Types',
+              route: 'activity-types'
+            },
+            {
+              title: 'User Roles',
+              route: 'user-roles'
+            }
+          ]
         }
       ]
     }
@@ -157,7 +202,7 @@ export default {
   methods: {
     logout () {
       this.$store.dispatch('auth/logout')
-      this.$router.push('/')
+      // this.$router.push('/')
     }
   }
 }

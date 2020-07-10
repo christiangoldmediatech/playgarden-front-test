@@ -1,12 +1,12 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="rows"
+    :items="types"
     :loading="loading"
   >
     <template v-slot:top>
       <curriculum-editor-dialog ref="editor" />
-      <v-toolbar flat color="white">
+      <v-toolbar color="white" flat>
         <template v-if="$vuetify.breakpoint.mdAndUp">
           <v-toolbar-title>
             Rows
@@ -18,31 +18,31 @@
           />
         </template>
         <v-btn
+          class="mr-2"
           color="primary darken-1"
           dark
-          class="mr-2"
-          small
           :icon="$vuetify.breakpoint.xs"
-          @click.stop="$refs.editor.open()"
+          small
+          @click.stop="$refs.editor.open"
         >
-          <v-icon v-if="$vuetify.breakpoint.xs">
+          <v-icon class="hidden-sm-and-up">
             mdi-plus-circle
           </v-icon>
-          <v-icon v-else>
+          <v-icon class="hidden-xs-only">
             mdi-plus
           </v-icon>
-          <span v-if="$vuetify.breakpoint.smAndUp">Create</span>
+          <span class="hidden-xs-only">Create</span>
         </v-btn>
         <v-spacer />
         <v-text-field
           v-model="search"
-          class="shrink"
           append-icon="mdi-magnify"
+          class="shrink"
+          clearable
+          hide-details
           label="Search"
           single-line
-          hide-details
-          clearable
-          @keydown.enter="refresh()"
+          @keydown.enter="refresh"
         />
       </v-toolbar>
     </template>
@@ -75,8 +75,8 @@
 
     <template v-slot:loading>
       <v-skeleton-loader
-        type="table-row-divider@3"
         class="mx-auto"
+        type="table-row-divider@3"
       />
     </template>
   </v-data-table>
@@ -114,8 +114,8 @@ export default {
   },
 
   computed: {
-    rows () {
-      return this.$store.getters['admin/curriculum/rows']
+    types () {
+      return this.$store.getters['admin/curriculum/types']
     }
   },
 
@@ -125,7 +125,7 @@ export default {
       if (clear) {
         this.search = ''
       }
-      await this.$store.dispatch('admin/curriculum/get', this.search)
+      await this.$store.dispatch('admin/curriculum/getTypes', this.search)
       this.loading = false
     },
 
@@ -134,7 +134,7 @@ export default {
         title: 'Delete curicculum type?',
         message: `Are you sure you wish to delete '${name}' curriculum type?`,
         action: async () => {
-          await this.$store.dispatch('admin/curriculum/delete', id)
+          await this.$store.dispatch('admin/curriculum/deleteType', id)
           this.refresh()
         }
       })
