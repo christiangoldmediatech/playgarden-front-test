@@ -1,181 +1,189 @@
 <template>
   <validation-observer v-slot="{ invalid, passes }">
     <v-form :readonly="loading" @submit.prevent="passes(onSubmit)">
-      <div v-for="(item, indexD) in draft" :key="indexD" class="mb-6">
-        <v-row class="mb-6">
-          <v-spacer />
+      <v-row v-for="(item, indexD) in draft" :key="indexD" class="mb-6">
+        <v-col>
+          <v-row class="mb-6">
+            <v-spacer />
 
-          <v-btn v-if="removable" icon @click="$delete(draft, indexD)">
-            <v-icon>mdi-close</v-icon>
+            <v-btn v-if="removable" icon @click="$delete(draft, indexD)">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </v-row>
+
+          <!-- First name -->
+          <validation-provider
+            v-slot="{ errors }"
+            :name="(removable ? `Child #${indexD + 1} - ` : '') + 'First name'"
+            rules="required"
+          >
+            <v-text-field
+              v-model="item.firstName"
+              clearable
+              :disabled="loading"
+              :error-messages="errors"
+              label="First name"
+              outlined
+            />
+          </validation-provider>
+
+          <!-- Last name -->
+          <validation-provider
+            v-slot="{ errors }"
+            :name="(removable ? `Child #${indexD + 1} - ` : '') + 'Last name'"
+            rules="required"
+          >
+            <v-text-field
+              v-model="item.lastName"
+              clearable
+              :disabled="loading"
+              :error-messages="errors"
+              label="Last name"
+              outlined
+            />
+          </validation-provider>
+
+          <!-- Birthday date -->
+          <v-menu
+            v-model="item._menu"
+            :close-on-content-click="false"
+            min-width="290px"
+            outlined
+            transition="scale-transition"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <validation-provider
+                v-slot="{ errors }"
+                :name="
+                  (removable ? `Child #${indexD + 1} - ` : '') + 'Birthday date'
+                "
+                rules="required"
+              >
+                <v-text-field
+                  v-bind="attrs"
+                  :disabled="loading"
+                  :error-messages="errors"
+                  label="Birthday date"
+                  outlined
+                  readonly
+                  suffix="MM/DD/YYYY"
+                  validate-on-blur
+                  :value="item._birthdayFormatted"
+                  v-on="on"
+                />
+              </validation-provider>
+            </template>
+
+            <v-date-picker
+              v-model="item._birthdayPicker"
+              :max="new Date().toISOString().substr(0, 10)"
+              min="1990-01-01"
+              @input="onInputBirthday(item)"
+            />
+          </v-menu>
+
+          <!-- Gender -->
+          <validation-provider
+            :name="(removable ? `Child #${indexD + 1} - ` : '') + 'Gender'"
+            rules="required"
+          >
+            <v-row class="mb-6">
+              <v-col v-for="(gender, indexG) in genders" :key="indexG" cols="6">
+                <v-btn
+                  block
+                  :color="item.gender === gender ? 'primary' : 'grey lighten-5'"
+                  :disabled="loading"
+                  @click="item.gender = gender"
+                >
+                  {{ gender === "FEMALE" ? "Girl" : "Boy" }}
+                </v-btn>
+              </v-col>
+            </v-row>
+
+            <input v-model="item.gender" type="hidden">
+          </validation-provider>
+
+          <!-- Level -->
+          <validation-provider
+            :name="(removable ? `Child #${indexD + 1} - ` : '') + 'Level'"
+            rules="required"
+          >
+            <v-row class="mb-6">
+              <v-col
+                v-for="(level, indexL) in levels"
+                :key="indexL"
+                cols="12"
+                sm="4"
+              >
+                <v-btn
+                  block
+                  :color="item.level === level ? 'primary' : 'grey lighten-5'"
+                  :disabled="loading"
+                  @click="item.level = level"
+                >
+                  {{ level }}
+                </v-btn>
+              </v-col>
+            </v-row>
+
+            <input v-model="item.level" type="hidden">
+          </validation-provider>
+
+          <!-- Backpack -->
+          <validation-provider
+            :name="(removable ? `Child #${indexD + 1} - ` : '') + 'Backpack'"
+            rules="required"
+          >
+            <v-row class="mb-6">
+              <v-col
+                v-for="(backpack, indexB) in backpacks"
+                :key="indexB"
+                class="image"
+                cols="4"
+                sm="2"
+              >
+                <img
+                  :alt="backpack.name"
+                  class="clickable"
+                  :class="{ active: item.backpackId === backpack.id }"
+                  :src="backpack.image"
+                  @click="item.backpackId = backpack.id"
+                >
+              </v-col>
+            </v-row>
+
+            <input v-model="item.backpackId" type="hidden">
+          </validation-provider>
+
+          <v-divider v-if="removable" class="mt-6" />
+        </v-col>
+      </v-row>
+
+      <v-row>
+        <v-col>
+          <v-btn
+            block
+            class="mb-12 mt-6"
+            color="primary"
+            :disabled="loading"
+            text
+            @click="addRow"
+          >
+            ADD ANOTHER CHILD
           </v-btn>
-        </v-row>
 
-        <!-- First name -->
-        <validation-provider
-          v-slot="{ errors }"
-          :name="(removable ? `Child #${indexD + 1} - ` : '') + 'First name'"
-          rules="required"
-        >
-          <v-text-field
-            v-model="item.firstName"
-            clearable
-            :disabled="loading"
-            :error-messages="errors"
-            label="First name"
-            outlined
-          />
-        </validation-provider>
-
-        <!-- Last name -->
-        <validation-provider
-          v-slot="{ errors }"
-          :name="(removable ? `Child #${indexD + 1} - ` : '') + 'Last name'"
-          rules="required"
-        >
-          <v-text-field
-            v-model="item.lastName"
-            clearable
-            :disabled="loading"
-            :error-messages="errors"
-            label="Last name"
-            outlined
-          />
-        </validation-provider>
-
-        <!-- Birthday date -->
-        <v-menu
-          v-model="item._menu"
-          :close-on-content-click="false"
-          min-width="290px"
-          outlined
-          transition="scale-transition"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <validation-provider
-              v-slot="{ errors }"
-              :name="(removable ? `Child #${indexD + 1} - ` : '') + 'Birthday date'"
-              rules="required"
-            >
-              <v-text-field
-                v-bind="attrs"
-                :disabled="loading"
-                :error-messages="errors"
-                label="Birthday date"
-                outlined
-                readonly
-                suffix="MM/DD/YYYY"
-                validate-on-blur
-                :value="item._birthdayFormatted"
-                v-on="on"
-              />
-            </validation-provider>
-          </template>
-
-          <v-date-picker
-            v-model="item._birthdayPicker"
-            :max="new Date().toISOString().substr(0, 10)"
-            min="1990-01-01"
-            @input="onInputBirthday(item)"
-          />
-        </v-menu>
-
-        <!-- Gender -->
-        <validation-provider
-          :name="(removable ? `Child #${indexD + 1} - ` : '') + 'Gender'"
-          rules="required"
-        >
-          <v-row class="mb-6">
-            <v-col v-for="(gender, indexG) in genders" :key="indexG" cols="6">
-              <v-btn
-                block
-                :color="item.gender === gender ? 'primary' : 'grey lighten-5'"
-                :disabled="loading"
-                @click="item.gender = gender"
-              >
-                {{ gender === "FEMALE" ? "Girl" : "Boy" }}
-              </v-btn>
-            </v-col>
-          </v-row>
-
-          <input v-model="item.gender" type="hidden">
-        </validation-provider>
-
-        <!-- Level -->
-        <validation-provider
-          :name="(removable ? `Child #${indexD + 1} - ` : '') + 'Level'"
-          rules="required"
-        >
-          <v-row class="mb-6">
-            <v-col
-              v-for="(level, indexL) in levels"
-              :key="indexL"
-              cols="12"
-              sm="4"
-            >
-              <v-btn
-                block
-                :color="item.level === level ? 'primary' : 'grey lighten-5'"
-                :disabled="loading"
-                @click="item.level = level"
-              >
-                {{ level }}
-              </v-btn>
-            </v-col>
-          </v-row>
-
-          <input v-model="item.level" type="hidden">
-        </validation-provider>
-
-        <!-- Backpack -->
-        <validation-provider
-          :name="(removable ? `Child #${indexD + 1} - ` : '') + 'Backpack'"
-          rules="required"
-        >
-          <v-row class="mb-6">
-            <v-col
-              v-for="(backpack, indexB) in backpacks"
-              :key="indexB"
-              class="image"
-              cols="4"
-              sm="2"
-            >
-              <img
-                :alt="backpack.name"
-                class="clickable"
-                :class="{ active: item.backpackId === backpack.id }"
-                :src="backpack.image"
-                @click="item.backpackId = backpack.id"
-              >
-            </v-col>
-          </v-row>
-
-          <input v-model="item.backpackId" type="hidden">
-        </validation-provider>
-
-        <v-divider v-if="removable" />
-      </div>
-
-      <v-btn
-        block
-        class="mb-12 mt-6"
-        color="primary"
-        :disabled="loading"
-        text
-        @click="addRow"
-      >
-        ADD ANOTHER CHILD
-      </v-btn>
-
-      <v-btn
-        block
-        class="mb-6"
-        color="primary"
-        :disabled="invalid"
-        :loading="loading"
-        type="submit"
-      >
-        REGISTER
-      </v-btn>
+          <v-btn
+            block
+            class="mb-6"
+            color="primary"
+            :disabled="invalid"
+            :loading="loading"
+            type="submit"
+          >
+            REGISTER
+          </v-btn>
+        </v-col>
+      </v-row>
     </v-form>
   </validation-observer>
 </template>
@@ -253,13 +261,14 @@ export default {
   height: 145px;
 
   img {
-    width: 100%;
+    max-height: 145px;
     padding: 10px;
+    width: 100%;
 
     &.active {
-      padding: 5px;
       background-color: $pg-secondary;
       border-radius: 25px;
+      padding: 5px;
     }
   }
 }
