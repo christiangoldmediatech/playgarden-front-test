@@ -1,5 +1,6 @@
 export default () => ({
   accessToken: null,
+  expiresAt: null,
   issuedAt: null,
-  expiresAt: null
+  userInfo: {}
 })

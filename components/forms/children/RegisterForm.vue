@@ -174,7 +174,7 @@
         :loading="loading"
         type="submit"
       >
-        SIGNUP
+        REGISTER
       </v-btn>
     </v-form>
   </validation-observer>

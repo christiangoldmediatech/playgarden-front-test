@@ -1,7 +1,8 @@
 import { get } from '@/utils/vuex'
 
 export default {
-  getIssuedAt: get('issuedAt'),
   getAccessToken: get('accessToken'),
-  getExpiresAt: get('expiresAt')
+  getExpiresAt: get('expiresAt'),
+  getIssuedAt: get('issuedAt'),
+  getUserInfo: get('userInfo')
 }
