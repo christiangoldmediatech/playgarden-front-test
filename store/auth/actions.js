@@ -1,4 +1,5 @@
 import jwtDecode from 'jwt-decode'
+import { snotifyError } from '@/utils/vuex'
 import { hasSessionStorage } from '@/utils/window'
 
 export default {
@@ -44,6 +45,22 @@ export default {
       if (token) {
         dispatch('setToken', JSON.parse(token))
       }
+    }
+  },
+
+  async fetchUserInfo ({ commit }) {
+    try {
+      const { data } = await this.$axios.get('/auth/me')
+
+      commit('SET_USER_INFO', data)
+
+      return data
+    } catch (error) {
+      snotifyError(commit, {
+        body: 'Sorry! There was an error while fetching user info!'
+      })
+
+      throw new Error(error)
     }
   }
 }

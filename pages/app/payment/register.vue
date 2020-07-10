@@ -90,14 +90,7 @@ export default {
 
         this.$snotify.success('Payment has been processed successfully!')
 
-        if (this.inSignUpProcess) {
-          await this.$router.push({
-            name: 'auth-validate-email',
-            query: { process: 'signup', step: '4' }
-          })
-        } else {
-          await this.$router.push({ name: 'app-children' })
-        }
+        await this.$router.push({ name: this.inSignUpProcess ? 'auth-verify-email' : 'app-children' })
       } catch (e) {
       } finally {
         this.loading = false
@@ -106,5 +99,3 @@ export default {
   }
 }
 </script>
-
-<style scoped></style>
