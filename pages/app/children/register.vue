@@ -2,7 +2,7 @@
   <section>
     <v-row no-gutters>
       <v-col class="px-12" cols="12" md="8">
-        <register-children :loading="loading" @click:submit="onSubmit" />
+        <register-form :loading="loading" @click:submit="onSubmit" />
       </v-col>
 
       <v-col class="px-12" cols="12" md="4">
@@ -43,13 +43,13 @@
 <script>
 import { mapActions } from 'vuex'
 
-import RegisterChildren from '@/components/forms/children/RegisterForm'
+import RegisterForm from '@/components/forms/children/RegisterForm'
 
 export default {
   name: 'Register',
 
   components: {
-    RegisterChildren
+    RegisterForm
   },
 
   data: () => ({
