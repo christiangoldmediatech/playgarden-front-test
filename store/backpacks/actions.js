@@ -1,7 +1,7 @@
 import { snotifyError } from '@/utils/vuex'
 
 export default {
-  index ({ commit, dispatch, getters }, data) {
+  index ({ commit }, data) {
     return new Promise((resolve, reject) =>
       this.$axios
         .get('/backpacks', data)

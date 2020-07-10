@@ -98,7 +98,7 @@ export default {
       search: '',
       headers: [
         {
-          text: 'Letter',
+          text: 'Activity',
           align: 'start',
           sortable: true,
           value: 'name'

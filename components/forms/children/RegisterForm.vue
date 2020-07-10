@@ -42,20 +42,20 @@
           />
         </validation-provider>
 
-        <!-- birthday -->
-        <validation-provider
-          v-slot="{ errors }"
-          :name="(removable ? `Child #${indexD + 1} - ` : '') + 'Birthday date'"
-          rules="required"
+        <!-- Birthday date -->
+        <v-menu
+          v-model="item._menu"
+          :close-on-content-click="false"
+          min-width="290px"
+          outlined
+          transition="scale-transition"
         >
-          <v-menu
-            v-model="item._menu"
-            :close-on-content-click="false"
-            min-width="290px"
-            outlined
-            transition="scale-transition"
-          >
-            <template v-slot:activator="{ on, attrs }">
+          <template v-slot:activator="{ on, attrs }">
+            <validation-provider
+              v-slot="{ errors }"
+              :name="(removable ? `Child #${indexD + 1} - ` : '') + 'Birthday date'"
+              rules="required"
+            >
               <v-text-field
                 v-bind="attrs"
                 :disabled="loading"
@@ -64,19 +64,20 @@
                 outlined
                 readonly
                 suffix="MM/DD/YYYY"
+                validate-on-blur
                 :value="item._birthdayFormatted"
                 v-on="on"
               />
-            </template>
+            </validation-provider>
+          </template>
 
-            <v-date-picker
-              v-model="item._birthdayPicker"
-              :max="new Date().toISOString().substr(0, 10)"
-              min="1990-01-01"
-              @input="onInputBirthday(item)"
-            />
-          </v-menu>
-        </validation-provider>
+          <v-date-picker
+            v-model="item._birthdayPicker"
+            :max="new Date().toISOString().substr(0, 10)"
+            min="1990-01-01"
+            @input="onInputBirthday(item)"
+          />
+        </v-menu>
 
         <!-- Gender -->
         <validation-provider

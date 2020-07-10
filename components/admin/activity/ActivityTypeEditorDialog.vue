@@ -31,7 +31,7 @@
         </v-btn>
       </v-toolbar>
 
-      <validation-observer v-slot="{ invalid, passes }">
+      <validation-observer ref="obs" v-slot="{ invalid, passes }">
         <v-card-text>
           <v-container>
             <v-form
@@ -116,6 +116,7 @@ export default {
       this.$nextTick(() => {
         this.dialog = false
         this.loading = false
+        this.$refs.obs.reset()
       })
     },
 

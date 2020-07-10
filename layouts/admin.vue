@@ -190,8 +190,8 @@ export default {
               route: 'activity-types'
             },
             {
-              title: 'User Roles',
-              route: 'user-roles'
+              title: 'Role Management',
+              route: 'role-management'
             }
           ]
         }
