@@ -12,7 +12,7 @@
       </v-toolbar>
 
       <v-card-text>
-        <p>Add, create, update, or delete an activity type.</p>
+        <p>View, create, update, or delete an activity types.</p>
 
         <activity-type-data-table ref="ActivityTypeDataTable" />
       </v-card-text>

@@ -150,7 +150,7 @@ export default {
   data () {
     return {
       appDrawer: false,
-      menuItems: [
+      menuItemsData: [
         {
           icon: 'mdi-home',
           title: 'Home',
@@ -186,16 +186,36 @@ export default {
               route: 'curriculum-types'
             },
             {
-              title: 'Activity Types',
-              route: 'activity-types'
+              title: 'Report Card Types',
+              route: 'report-card-types'
             },
             {
               title: 'Role Management',
               route: 'role-management'
+            },
+            {
+              title: 'Activity Types',
+              route: 'activity-types'
             }
           ]
         }
       ]
+    }
+  },
+
+  computed: {
+    menuItems () {
+      return this.menuItemsData.map((item) => {
+        if (item.children) {
+          item.children.sort((a, b) => {
+            if (a.title < b.title) { return -1 }
+            if (a.title > b.title) { return 1 }
+            return 0
+          })
+        }
+
+        return item
+      })
     }
   },
 
