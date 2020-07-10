@@ -29,7 +29,7 @@
       </label>
     </v-row>
 
-    <v-dialog v-model="paymentModal" max-width="700px" persistent>
+    <v-dialog v-model="paymentModal" max-width="800px" persistent>
       <v-card>
         <v-card-title>
           <v-row>
@@ -56,10 +56,54 @@
                   .... .... ....
                   {{ selectedMembershipPayment.last4 }}
                 </label>
-                <img alt="Delete" class="ml-10 selected-payment-delete" src="@/assets/svg/x-mark.svg">
+                <img alt="Delete" class="ml-10 selected-payment-delete" src="@/assets/svg/x-mark.svg" @click="deletePaymentMethod">
               </v-row>
               <v-row v-if="paymentModalAction === 'create'" no-gutters>
-                <img alt="Delete" class="ml-10 selected-payment-delete" src="@/assets/svg/x-mark.svg">
+                <v-row no-gutters>
+                  <v-col cols="10">
+                    <v-text-field
+                      v-model="newPaymentData.number"
+                      :loading="loading"
+                      prefix="Number:"
+                      solo
+                      type="text"
+                    />
+                  </v-col>
+                </v-row>
+                <v-row no-gutters>
+                  <v-col cols="5">
+                    <v-text-field
+                      v-model="newPaymentData.exp_month"
+                      :loading="loading"
+                      prefix="Exp. Month:"
+                      solo
+                      type="text"
+                    />
+                  </v-col>
+                  <v-col cols="5">
+                    <v-text-field
+                      v-model="newPaymentData.exp_year"
+                      :loading="loading"
+                      prefix="Exp. Year:"
+                      solo
+                      type="text"
+                    />
+                  </v-col>
+                </v-row>
+                <v-row no-gutters>
+                  <v-col cols="5">
+                    <v-text-field
+                      v-model="newPaymentData.cvc"
+                      :loading="loading"
+                      prefix="CVC:"
+                      solo
+                      type="text"
+                    />
+                  </v-col>
+                  <v-col cols="5">
+                    <!--  -->
+                  </v-col>
+                </v-row>
               </v-row>
             </v-col>
             <v-col cols="6">
@@ -71,9 +115,9 @@
         </v-card-text>
         <v-card-actions>
           <v-row class="justify-center" no-gutters>
-            <!-- <v-btn large class="pl-12 pr-12 payment-modal-accept">
+            <v-btn class="payment-modal-accept pl-12 pr-12" :disabled="paymentModalAction === 'read' ? true : false" large @click="newPaymentMethod">
               CHANGE PAYMENT
-            </v-btn> -->
+            </v-btn>
             <label class="payment-modal-cancel pb-5 pt-4" @click="() => { paymentModal = false; selectedMembershipPayment = {} }">
               CANCEL
             </label>
@@ -103,7 +147,13 @@ export default {
       membershipUserPayments: null,
       selectedMembershipPayment: {},
       paymentModal: false,
-      paymentModalAction: 'read'
+      paymentModalAction: 'read',
+      newPaymentData: {
+        number: null,
+        exp_month: null,
+        exp_year: null,
+        cvc: null
+      }
     }
   },
   computed: {
@@ -159,13 +209,61 @@ export default {
         this.membershipUserPayments = data.data
 
         // eslint-disable-next-line no-console
-        console.log(this.membershipUserPayments)
+        // console.log(this.membershipUserPayments)
       } catch (error) {
         // eslint-disable-next-line no-console
         console.log(error)
       } finally {
         this.$emit('set-loading-state', false)
       }
+    },
+    async newPaymentMethod () {
+      try {
+        this.$emit('set-loading-state', true)
+        const token = this.$store.getters['auth/getAccessToken']
+        this.$axios.setToken(token, 'Bearer')
+
+        const { data } = await this.$axios.post(`${process.env.apiBaseUrl}/billing/card`, { card: this.newPaymentData })
+
+        this.newPaymentData = {
+          number: null,
+          exp_month: null,
+          exp_year: null,
+          cvc: null
+        }
+
+        this.paymentModal = false
+        this.getUserMembershipData()
+
+        // eslint-disable-next-line no-console
+        console.log(data)
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.log(error)
+      } finally {
+        this.$emit('set-loading-state', false)
+      }
+    },
+    deletePaymentMethod () {
+      // eslint-disable-next-line no-console
+      // console.log('Test: ' + this.selectedMembershipPayment.brand)
+
+      this.paymentModalAction = 'create'
+      // try {
+      //   this.$emit('set-loading-state', true)
+      //   const token = this.$store.getters['auth/getAccessToken']
+      //   this.$axios.setToken(token, 'Bearer')
+
+      //   const { data } = await this.$axios.get(`${process.env.apiBaseUrl}/billing/card/4`)
+
+      //   // eslint-disable-next-line no-console
+      //   console.log(data)
+      // } catch (error) {
+      //   // eslint-disable-next-line no-console
+      //   console.log(error)
+      // } finally {
+      //   this.$emit('set-loading-state', false)
+      // }
     }
   }
 }
