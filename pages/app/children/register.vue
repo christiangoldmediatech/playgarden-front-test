@@ -74,34 +74,17 @@ export default {
         .then(() => {
           this.$snotify.success('Children have been stored successfully!')
 
-          this.$router.push({
-            name: this.inSignUpProcess
-              ? 'app-payment-register'
-              : 'app-children'
-          })
+          if (this.inSignUpProcess) {
+            this.$router.push({
+              name: 'app-payment-register',
+              query: { process: 'signup', step: '3' }
+            })
+          } else {
+            this.$router.push({ name: 'app-children' })
+          }
         })
         .finally(() => (this.loading = false))
-    },
-
-    handleRegisterChildrenError (error) {
-      this.errorMessage = 'Oops! Error'
-      // eslint-disable-next-line
-      console.error(error);
     }
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.image {
-  height: 100%;
-  max-height: 500px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  img {
-    height: 100%;
-  }
-}
-</style>
