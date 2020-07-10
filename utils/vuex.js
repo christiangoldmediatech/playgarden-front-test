@@ -1,2 +1,17 @@
-export const set = property => (state, payload) => (state[property] = payload)
+export const set = property => (state, payload) =>
+  (state[property] = payload)
 export const get = property => state => state[property]
+
+export const snotifyError = (
+  commit,
+  { body = 'Something went wrong.', config = {} } = {}
+) =>
+  commit(
+    'SET_NOTIFICATION_MESSAGE',
+    {
+      body,
+      type: 'error',
+      config
+    },
+    { root: true }
+  )

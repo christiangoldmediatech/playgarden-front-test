@@ -2,13 +2,13 @@
   <section>
     <v-row no-gutters>
       <v-col class="px-12" cols="12" md="8">
-        <signup-form :loading="loading" @click:submit="onSubmit" />
+        <register-children :loading="loading" @click:submit="onSubmit" />
       </v-col>
 
       <v-col class="px-12" cols="12" md="4">
         <p>
           <span class="font-weight-bold text-h5">
-            MEMBERSHIP
+            CHILD'S INFORMATION
           </span>
 
           <br>
@@ -43,41 +43,48 @@
 <script>
 import { mapActions } from 'vuex'
 
-import SignupForm from '@/components/forms/auth/SignupForm'
+import RegisterChildren from '@/components/forms/children/RegisterForm'
 
 export default {
-  name: 'Signup',
+  name: 'Register',
 
   components: {
-    SignupForm
+    RegisterChildren
   },
 
   data: () => ({
     loading: false
   }),
 
-  methods: {
-    ...mapActions('auth/signup', { signup: 'store' }),
+  computed: {
+    inSignUpProcess () {
+      const { query } = this.$route
 
-    onSubmit (user) {
+      return query.process === 'signup' && query.step === '2'
+    }
+  },
+
+  methods: {
+    ...mapActions('children', { storeChildren: 'store' }),
+
+    onSubmit (children) {
       this.loading = true
 
-      this.signup(user)
+      Promise.all(children.map(child => this.storeChildren(child)))
         .then(() => {
-          this.$snotify.success('Welcome to Playgarden Prep!')
-          this.$router.push({
-            name: 'app-children-register',
-            query: { process: 'signup', step: '2' }
-          })
+          this.$snotify.success('Children have been stored successfully!')
+
+          if (this.inSignUpProcess) {
+            this.$router.push({
+              name: 'app-payment-register',
+              query: { process: 'signup', step: '3' }
+            })
+          } else {
+            this.$router.push({ name: 'app-children' })
+          }
         })
         .finally(() => (this.loading = false))
     }
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.error-message {
-  color: $pg-error;
-}
-</style>

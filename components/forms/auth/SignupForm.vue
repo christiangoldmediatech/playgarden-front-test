@@ -1,10 +1,12 @@
 <template>
   <validation-observer v-slot="{ invalid, validated, passes }">
-    <v-form
-      @submit.prevent="passes(handleClick)"
-    >
+    <v-form @submit.prevent="passes(onSubmit)">
       <!-- First name -->
-      <validation-provider v-slot="{ errors }" name="First name" rules="required">
+      <validation-provider
+        v-slot="{ errors }"
+        name="First name"
+        rules="required"
+      >
         <v-text-field
           v-model="user.firstName"
           clearable
@@ -17,7 +19,11 @@
       </validation-provider>
 
       <!-- Last name -->
-      <validation-provider v-slot="{ errors }" name="Last name" rules="required">
+      <validation-provider
+        v-slot="{ errors }"
+        name="Last name"
+        rules="required"
+      >
         <v-text-field
           v-model="user.lastName"
           clearable
@@ -30,7 +36,11 @@
       </validation-provider>
 
       <!-- Phone number -->
-      <validation-provider v-slot="{ errors }" name="Phone number" rules="required|min:7|max:20|phone">
+      <validation-provider
+        v-slot="{ errors }"
+        name="Phone number"
+        rules="required|min:7|max:20|phone"
+      >
         <v-text-field
           v-model="user.phoneNumber"
           clearable
@@ -44,7 +54,11 @@
       </validation-provider>
 
       <!-- Email -->
-      <validation-provider v-slot="{ errors }" name="Email" rules="required|email">
+      <validation-provider
+        v-slot="{ errors }"
+        name="Email"
+        rules="required|email"
+      >
         <v-text-field
           v-model="user.email"
           clearable
@@ -58,7 +72,11 @@
       </validation-provider>
 
       <!-- Password -->
-      <validation-provider v-slot="{ errors }" name="Password" rules="required|min:8|max:20|w_number|w_special|w_upper|confirmed:passwordConfirmation">
+      <validation-provider
+        v-slot="{ errors }"
+        name="Password"
+        rules="required|min:8|max:20|w_number|w_special|w_upper|confirmed:passwordConfirmation"
+      >
         <v-text-field
           v-model="user.password"
           append-icon="mdi-lock"
@@ -74,7 +92,12 @@
       </validation-provider>
 
       <!-- Password -->
-      <validation-provider v-slot="{ errors }" name="Password confirmation" rules="required" vid="passwordConfirmation">
+      <validation-provider
+        v-slot="{ errors }"
+        name="Password confirmation"
+        rules="required"
+        vid="passwordConfirmation"
+      >
         <v-text-field
           v-model="user.passwordConfirmation"
           append-icon="mdi-lock"
@@ -104,17 +127,13 @@
 </template>
 
 <script>
-import { jsonCopy } from '~/utils/objectTools.js'
+import { jsonCopy } from '@/utils/objectTools'
 
 export default {
   name: 'SignupForm',
 
   props: {
-    loading: {
-      type: Boolean,
-      required: false,
-      default: false
-    }
+    loading: Boolean
   },
   data: () => ({
     user: {
@@ -128,10 +147,13 @@ export default {
   }),
 
   methods: {
-    handleClick () {
-      this.$emit('click:submit', jsonCopy({
-        ...this.user
-      }))
+    onSubmit () {
+      this.$emit(
+        'click:submit',
+        jsonCopy({
+          ...this.user
+        })
+      )
     }
   }
 }
