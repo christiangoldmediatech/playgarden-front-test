@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@mdi/font": "^5.3.45",
-    "@nuxtjs/axios": "^5.11.0",
+    "@nuxtjs/axios": "^5.12.0",
     "dayjs": "^1.8.29",
     "jwt-decode": "^2.2.0",
     "material-design-icons-iconfont": "^5.0.1",
