@@ -14,15 +14,23 @@
           </div>
 
           <p>
-            <small>We are happy to have you! Check your email to confirm your account and start enjoying our learning experience.</small>
+            <small>We are happy to have you! Check your email to confirm your
+              account and start enjoying our learning experience.</small>
           </p>
 
           <p>
             Didn't receive an email?
           </p>
 
-          <v-btn block color="primary" :disabled="loading" :loading="loading" @click="onResent">
-            RESENT EMAIL
+          <v-btn
+            v-if="(userInfo || {}).id"
+            block
+            color="primary"
+            :disabled="loading"
+            :loading="loading"
+            @click="onResend"
+          >
+            RESEND EMAIL
           </v-btn>
 
           <v-btn block class="mt-6" color="primary" :loading="loading" text>
@@ -35,7 +43,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'VerifyEmail',
@@ -45,6 +53,10 @@ export default {
     token: vm.$route.query.token
   }),
 
+  computed: {
+    ...mapGetters('auth', { userInfo: 'getUserInfo' })
+  },
+
   created () {
     if (this.token) {
       this.onToken()
@@ -52,13 +64,13 @@ export default {
   },
 
   methods: {
-    ...mapActions('auth/verify', ['resentEmail', 'validateRegister']),
+    ...mapActions('auth/verify', ['resendEmail', 'validateRegister']),
 
-    async  onResent () {
+    async onResend () {
       this.loading = true
 
       try {
-        await this.resentEmail()
+        await this.resendEmail()
 
         await this.$snotify.success('Email has been sent successfully!')
       } catch (e) {
@@ -67,7 +79,7 @@ export default {
       }
     },
 
-    async  onToken () {
+    async onToken () {
       this.loading = true
 
       try {

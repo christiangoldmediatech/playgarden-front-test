@@ -1,7 +1,7 @@
 import { snotifyError } from '@/utils/vuex'
 
 export default {
-  async resentEmail ({ commit }) {
+  async resendEmail ({ commit }) {
     try {
       const response = await this.$axios.get('/auth/resend/verification')
 
