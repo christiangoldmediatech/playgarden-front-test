@@ -11,35 +11,35 @@
     <v-text-field
       ref="fullName"
       v-model="user.fullName"
-      type="text"
-      prefix="Parent’s Name:"
-      solo
       :loading="loading"
-      :readonly="modeForm == 'read' ? true : false"
+      prefix="Parent’s Name:"
+      :readonly="modeForm === 'read' ? true : false"
+      solo
+      type="text"
     />
 
     <!-- Email -->
     <v-text-field
       v-model="user.email"
-      type="email"
-      prefix="Email:"
-      solo
       :loading="loading"
+      prefix="Email:"
       readonly
+      solo
+      type="email"
     />
 
     <!-- Phone number -->
     <v-text-field
       v-model="user.phoneNumber"
-      type="text"
-      prefix="Phone number:"
-      solo
       :loading="loading"
-      :readonly="modeForm == 'read' ? true : false"
+      prefix="Phone number:"
+      :readonly="modeForm === 'read' ? true : false"
+      solo
+      type="text"
     />
 
     <v-row justify="end">
-      <label class="edit-text mr-4" @click="toggleModeForm">{{ modeForm == 'read' ? 'EDIT' : 'SAVE' }}</label>
+      <label class="edit-text mr-4" @click="toggleModeForm">{{ modeForm === 'read' ? 'EDIT' : 'SAVE' }}</label>
       <label class="change-password-text">CHANGE PASSWORD</label>
     </v-row>
   </v-form>
@@ -47,6 +47,7 @@
 
 <script>
 export default {
+  name: 'UserProfileForm',
   props: {
     user: {
       type: Object,

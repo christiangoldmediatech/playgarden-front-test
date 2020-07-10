@@ -2,14 +2,14 @@
   <v-row no-gutters>
     <v-col class="hidden-sm-and-down" cols="6">
       <div class="image">
-        <img src="@/assets/svg/montessori-nutrition-lesson.svg" alt="Montessori Nutrition Lesson">
+        <img alt="Montessori Nutrition Lesson" src="@/assets/svg/montessori-nutrition-lesson.svg">
       </div>
     </v-col>
     <v-col class="hidden-sm-and-down" cols="1" />
     <v-col class="hidden-sm-and-down" cols="4">
       <user-profile-form :loading="isLoadingForm" :user="loggedUserData" @set-loading-state="setLoadingState" />
 
-      <membership-billing-information />
+      <membership-billing-form />
     </v-col>
     <v-col class="hidden-sm-and-down" cols="1" />
   </v-row>
@@ -17,13 +17,15 @@
 
 <script>
 import UserProfileForm from '@/components/forms/account/UserProfileForm'
-import MembershipBillingInformation from '@/components/forms/account/MembershipBillingInformation'
+import MembershipBillingForm from '@/components/forms/account/MembershipBillingForm'
 
 export default {
   // middleware: ['redirectToAuthPage'],
+  name: 'Index',
+
   components: {
     UserProfileForm,
-    MembershipBillingInformation
+    MembershipBillingForm
   },
   data () {
     return {

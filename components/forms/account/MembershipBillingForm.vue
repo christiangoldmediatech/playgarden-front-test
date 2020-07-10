@@ -12,7 +12,7 @@
     </v-row>
 
     <v-row justify="start">
-      <label class="monthly-membership-fee-text ml-10">
+      <label class="ml-10 monthly-membership-fee-text">
         Your monthly membership fee is
         <b>${{ membershipUserData.monthlyMembershipFee }}</b>
       </label>
@@ -29,7 +29,7 @@
       </label>
     </v-row>
 
-    <v-dialog v-model="paymentModal" persistent max-width="700px">
+    <v-dialog v-model="paymentModal" max-width="700px" persistent>
       <v-card>
         <v-card-title>
           <v-row>
@@ -37,8 +37,8 @@
               CHANGE PAYMENT
             </label>
             <v-btn
-              icon
               class="payment-modal-close-button"
+              icon
               @click="() => { paymentModal = false; selectedMembershipPayment = {} }"
             >
               <v-icon size="32">
@@ -50,28 +50,31 @@
         <v-card-text>
           <v-row no-gutters>
             <v-col cols="6">
-              <v-row no-gutters>
+              <v-row v-if="paymentModalAction === 'read'" no-gutters>
                 <label class="selected-payment">
                   {{ selectedMembershipPayment.brand }}
                   .... .... ....
                   {{ selectedMembershipPayment.last4 }}
                 </label>
-                <img class="selected-payment-delete ml-10" src="@/assets/svg/x-mark.svg" alt="Delete">
+                <img alt="Delete" class="ml-10 selected-payment-delete" src="@/assets/svg/x-mark.svg">
+              </v-row>
+              <v-row v-if="paymentModalAction === 'create'" no-gutters>
+                <img alt="Delete" class="ml-10 selected-payment-delete" src="@/assets/svg/x-mark.svg">
               </v-row>
             </v-col>
             <v-col cols="6">
               <div class="payment-modal-image">
-                <img src="@/assets/svg/art-activity-photo.svg" alt="Art activity photo">
+                <img alt="Art activity photo" src="@/assets/svg/art-activity-photo.svg">
               </div>
             </v-col>
           </v-row>
         </v-card-text>
         <v-card-actions>
-          <v-row no-gutters class="justify-center">
+          <v-row class="justify-center" no-gutters>
             <!-- <v-btn large class="pl-12 pr-12 payment-modal-accept">
               CHANGE PAYMENT
             </v-btn> -->
-            <label class="payment-modal-cancel pt-4 pb-5" @click="() => { paymentModal = false; selectedMembershipPayment = {} }">
+            <label class="payment-modal-cancel pb-5 pt-4" @click="() => { paymentModal = false; selectedMembershipPayment = {} }">
               CANCEL
             </label>
           </v-row>
@@ -83,6 +86,7 @@
 
 <script>
 export default {
+  name: 'MembershipBillingForm',
   props: {
     loading: {
       type: Boolean,
@@ -98,7 +102,8 @@ export default {
       },
       membershipUserPayments: null,
       selectedMembershipPayment: {},
-      paymentModal: false
+      paymentModal: false,
+      paymentModalAction: 'read'
     }
   },
   computed: {
