@@ -102,15 +102,6 @@ export default {
       } finally {
         this.loading = false
       }
-
-      if (this.inSignUpProcess) {
-        await this.$router.push({
-          name: 'auth-validate-email',
-          query: { process: 'signup', step: '4' }
-        })
-      } else {
-        await this.$router.push({ name: 'app-children' })
-      }
     }
   }
 }
