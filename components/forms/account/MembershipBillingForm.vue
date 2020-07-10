@@ -5,20 +5,20 @@
     </v-row>
 
     <v-row justify="start">
-      <label class="membership-billing-date-text ml-10">
+      <label class="mb-1 membership-billing-date-text ml-10 mt-1">
         Your next billing date is
         <b>{{ membershipUserData.nextBillingDate }}</b>
       </label>
     </v-row>
 
     <v-row justify="start">
-      <label class="ml-10 monthly-membership-fee-text">
+      <label class="mb-1 ml-10 monthly-membership-fee-text mt-1">
         Your monthly membership fee is
         <b>${{ membershipUserData.monthlyMembershipFee }}</b>
       </label>
     </v-row>
 
-    <v-row v-for="card in membershipUserPayments" :key="card.id" class="justify-space-between">
+    <v-row v-for="card in membershipUserPayments" :key="card.id" class="justify-space-between mb-1 mt-1">
       <label class="membership-user-payment ml-10">
         {{ card.brand }}
         .... .... ....
@@ -29,6 +29,14 @@
       </label>
     </v-row>
 
+    <!-- Cancel suscription -->
+    <v-row justify="end">
+      <label class="cancel-suscription-text mb-4 mt-4" @click="cancelSuscription">
+        CANCEL MEMBERSHIP
+      </label>
+    </v-row>
+
+    <!-- Change payment modal -->
     <v-dialog v-model="paymentModal" max-width="800px" persistent>
       <v-card>
         <v-card-title>
@@ -264,6 +272,23 @@ export default {
       // } finally {
       //   this.$emit('set-loading-state', false)
       // }
+    },
+    async cancelSuscription () {
+      try {
+        this.$emit('set-loading-state', true)
+        const token = this.$store.getters['auth/getAccessToken']
+        this.$axios.setToken(token, 'Bearer')
+
+        const { data } = await this.$axios.post(`${process.env.apiBaseUrl}/billing/subscription/cancel`)
+
+        // eslint-disable-next-line no-console
+        console.log(data)
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.log(error)
+      } finally {
+        this.$emit('set-loading-state', false)
+      }
     }
   }
 }
@@ -323,6 +348,17 @@ export default {
     text-align: right;
     color: #c2daa5;
     cursor: pointer;
+  }
+  .cancel-suscription-text {
+    font-family: Poppins;
+    font-size: 18px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.48;
+    letter-spacing: normal;
+    text-align: left;
+    color: $pg-accent;
   }
   .payment-modal-title {
     width: 100%;
