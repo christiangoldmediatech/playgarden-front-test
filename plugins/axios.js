@@ -10,6 +10,10 @@ export default function ({ $axios, redirect, store }) {
       redirect({ name: 'index' })
     }
 
+    if (error.response.status === 409) {
+      body = error.response.data.message
+    }
+
     store.commit('SET_NOTIFICATION_MESSAGE', { body, type: 'error' })
   })
 }

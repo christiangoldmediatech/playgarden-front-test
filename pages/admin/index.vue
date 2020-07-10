@@ -14,9 +14,9 @@
 
 <script>
 export default {
-  layout: 'admin',
-
   name: 'Index',
+
+  layout: 'admin',
 
   data () {
     return {
