@@ -5,7 +5,7 @@
     :loading="loading"
   >
     <template v-slot:top>
-      <curriculum-editor-dialog ref="editor" />
+      <activity-type-editor-dialog ref="editor" />
       <v-toolbar color="white" flat>
         <template v-if="$vuetify.breakpoint.mdAndUp">
           <v-toolbar-title>
@@ -83,13 +83,13 @@
 </template>
 
 <script>
-import CurriculumEditorDialog from '@/components/admin/curriculum/CurriculumEditorDialog'
+import ActivityTypeEditorDialog from './ActivityTypeEditorDialog'
 
 export default {
-  name: 'CurriculumDataTable',
+  name: 'ActivityTypeDataTable',
 
   components: {
-    CurriculumEditorDialog
+    ActivityTypeEditorDialog
   },
 
   data () {
@@ -115,7 +115,7 @@ export default {
 
   computed: {
     types () {
-      return this.$store.getters['admin/curriculum/types']
+      return this.$store.getters['admin/activity/types']
     }
   },
 
@@ -125,16 +125,16 @@ export default {
       if (clear) {
         this.search = ''
       }
-      await this.$store.dispatch('admin/curriculum/getTypes', this.search)
+      await this.$store.dispatch('admin/activity/getTypes', this.search)
       this.loading = false
     },
 
     remove ({ id, name }) {
       this.$nuxt.$emit('open-admin-prompt', {
-        title: 'Delete curicculum type?',
-        message: `Are you sure you wish to delete '${name}' curriculum type?`,
+        title: 'Delete activity type?',
+        message: `Are you sure you wish to delete '${name}' activity type?`,
         action: async () => {
-          await this.$store.dispatch('admin/curriculum/deleteType', id)
+          await this.$store.dispatch('admin/activity/deleteType', id)
           this.refresh()
         }
       })
