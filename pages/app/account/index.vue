@@ -9,7 +9,8 @@
     <v-col class="hidden-sm-and-down" cols="4">
       <user-profile-form :loading="isLoadingForm" :user="loggedUserData" @set-loading-state="setLoadingState" />
 
-      <membership-billing-form />
+      <membership-form :loading="isLoadingForm" />
+      <caregivers-form :loading="isLoadingForm" />
     </v-col>
     <v-col class="hidden-sm-and-down" cols="1" />
   </v-row>
@@ -17,7 +18,8 @@
 
 <script>
 import UserProfileForm from '@/components/forms/account/UserProfileForm'
-import MembershipBillingForm from '@/components/forms/account/MembershipBillingForm'
+import MembershipForm from '@/components/forms/account/MembershipForm'
+import CaregiversForm from '@/components/forms/account/CaregiversForm'
 
 export default {
   // middleware: ['redirectToAuthPage'],
@@ -25,7 +27,8 @@ export default {
 
   components: {
     UserProfileForm,
-    MembershipBillingForm
+    MembershipForm,
+    CaregiversForm
   },
   data () {
     return {

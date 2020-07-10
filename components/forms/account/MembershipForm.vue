@@ -138,7 +138,7 @@
 
 <script>
 export default {
-  name: 'MembershipBillingForm',
+  name: 'MembershipForm',
   props: {
     loading: {
       type: Boolean,
