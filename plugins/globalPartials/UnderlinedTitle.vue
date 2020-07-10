@@ -10,6 +10,8 @@
 
 <script>
 export default {
+  name: 'UnderlinedTitle',
+
   props: {
     text: {
       type: String,

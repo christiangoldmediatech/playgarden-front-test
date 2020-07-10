@@ -34,9 +34,9 @@
     <!-- CONTENT -->
     <v-main>
       <v-container
+        class="pg-app-container"
         fluid
         pa-0
-        class="pg-app-container"
       >
         <nuxt />
       </v-container>
@@ -69,6 +69,8 @@
         {{ snack.actionText }}
       </v-btn>
     </v-snackbar> -->
+
+    <notify-event />
   </v-app>
 </template>
 
@@ -76,10 +78,14 @@
 import ApplicationHeader from '@/components/app/menu/ApplicationHeader.vue'
 
 export default {
+  name: 'Default',
+
   middleware: ['checkJWT'],
+
   components: {
     ApplicationHeader
   },
+
   data () {
     return {
       appDrawer: false,

@@ -14,7 +14,10 @@
 
 <script>
 export default {
+  name: 'Index',
+
   layout: 'admin',
+
   data () {
     return {
       placeholder: false

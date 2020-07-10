@@ -2,19 +2,23 @@
   <v-app>
     <!-- CONTENT -->
     <v-main>
-      <v-container fluid fill-height>
+      <v-container fill-height fluid>
         <nuxt />
       </v-container>
     </v-main>
+
     <!-- FOOTER -->
     <v-footer app>
       <span>&copy; {{ new Date().getFullYear() }} </span>
     </v-footer>
+
+    <notify-event />
   </v-app>
 </template>
 
 <script>
 export default {
+  name: 'Loading'
 }
 </script>
 

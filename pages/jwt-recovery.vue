@@ -1,6 +1,6 @@
 <template>
-  <v-container ma-0 pa-0 fluid fill-height>
-    <v-row ma-0 pa-0 justify="center" align="center" fill-height>
+  <v-container fill-height fluid ma-0 pa-0>
+    <v-row align="center" fill-height justify="center" ma-0 pa-0>
       <v-col
         class="text-center"
         cols="4"
@@ -8,10 +8,11 @@
         <div>
           <img class="logo-img" src="@/assets/svg/logo.svg">
         </div>
+
         <v-progress-linear
-          :size="20"
           color="primary"
           indeterminate
+          :size="20"
         />
       </v-col>
     </v-row>
@@ -24,21 +25,27 @@ import { hasSessionStorage } from '@/utils/window'
 
 export default {
   layout: 'loading',
+
+  name: 'JwtRecovery',
+
   async mounted () {
     if (hasSessionStorage()) {
       await this.restoreAuth()
     }
+
     if (this.$route.query.redirect) {
       this.$router.push(decodeURIComponent(this.$route.query.redirect))
     } else {
-      this.$router.push('/')
+      this.$router.push({ name: 'index' })
     }
   },
+
   methods: {
     ...mapActions({
       restoreAuth: 'auth/restoreAuthFromSessionStorage'
     })
   },
+
   head () {
     return {
       title: 'Recover token'
