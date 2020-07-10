@@ -1,8 +1,12 @@
 <template>
   <v-data-table
+    dense
     :headers="headers"
     :items="types"
     :loading="loading"
+    :server-items-length="total"
+    @update:items-per-page="setLimit"
+    @update:page="page = $event"
   >
     <template v-slot:top>
       <v-toolbar color="white" flat>
@@ -33,33 +37,85 @@
           <span class="hidden-xs-only">Create</span>
         </v-btn>
         <v-spacer />
-        <v-text-field
-          v-model="search"
-          append-icon="mdi-magnify"
-          class="shrink"
-          clearable
-          hide-details
-          label="Search"
-          single-line
-          @keydown.enter="refresh(false)"
-        />
+        <v-row class="shrink">
+          <v-text-field
+            v-model="search"
+            clearable
+            hide-details
+            label="Search"
+            single-line
+            @keydown.enter="refresh(false)"
+          >
+            <template v-slot:append>
+              <v-menu>
+                <template v-slot:activator="{ on: menu, attrs }">
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on: tooltip }">
+                      <v-btn
+                        v-bind="attrs"
+                        color="primary"
+                        icon
+                        small
+                        v-on="{ ...tooltip, ...menu }"
+                      >
+                        <v-icon>
+                          mdi-filter
+                        </v-icon>
+                      </v-btn>
+                    </template>
+                    <span>Select filters</span>
+                  </v-tooltip>
+                </template>
+                <v-list>
+                  <v-list-item-group
+                    v-model="activeFilters"
+                    multiple
+                  >
+                    <v-list-item
+                      v-for="(item, i) in filterList"
+                      :key="`filter-item-${i}`"
+                      :value="item.value"
+                    >
+                      <template v-slot:default="{ active, toggle }">
+                        <v-list-item-action>
+                          <v-checkbox
+                            color="primary darken-2"
+                            :input-value="active"
+                            :true-value="item.value"
+                            @click="toggle"
+                          />
+                        </v-list-item-action>
+
+                        <v-list-item-content>
+                          <v-list-item-title>{{ item.text }}</v-list-item-title>
+                        </v-list-item-content>
+                      </template>
+                    </v-list-item>
+                  </v-list-item-group>
+                </v-list>
+              </v-menu>
+            </template>
+          </v-text-field>
+        </v-row>
       </v-toolbar>
     </template>
 
     <template v-slot:item.actions="{ item }">
-      <v-icon
-        class="mr-2"
-        color="yellow darken-2"
-        @click.stop="$router.push({ name: 'admin-users-editor', query: { id: item.id } })"
-      >
-        mdi-pencil-circle
-      </v-icon>
-      <v-icon
-        color="red"
-        @click="remove(item)"
-      >
-        mdi-delete-circle
-      </v-icon>
+      <v-row>
+        <v-icon
+          class="mr-2"
+          color="yellow darken-2"
+          @click.stop="$router.push({ name: 'admin-users-editor', query: { id: item.id } })"
+        >
+          mdi-pencil-circle
+        </v-icon>
+        <v-icon
+          color="red"
+          @click="remove(item)"
+        >
+          mdi-delete-circle
+        </v-icon>
+      </v-row>
     </template>
 
     <template v-slot:no-data>
@@ -89,34 +145,55 @@ export default {
     return {
       loading: false,
       search: '',
+      limit: 10,
+      page: 1,
+      activeFilters: [],
+      filterList: [
+        {
+          text: 'First Name',
+          value: 'firstName'
+        },
+        {
+          text: 'Last Name',
+          value: 'lastName'
+        },
+        {
+          text: 'E-mail',
+          value: 'email'
+        },
+        {
+          text: 'Phone Number',
+          value: 'phoneNumber'
+        }
+      ],
       headers: [
         {
           text: 'Name',
           align: 'start',
-          sortable: true,
+          sortable: false,
           value: 'fullName'
         },
         {
           text: 'E-mail',
           align: 'start',
-          sortable: true,
+          sortable: false,
           value: 'email'
         },
         {
           text: 'Phone',
           align: 'start',
-          sortable: true,
+          sortable: false,
           value: 'phoneNumber'
         },
         {
           text: 'Role',
           align: 'start',
-          sortable: true,
+          sortable: false,
           value: 'role.name'
         },
         {
           text: 'Actions',
-          align: 'right',
+          align: 'end',
           sortable: false,
           value: 'actions'
         }
@@ -127,16 +204,45 @@ export default {
   computed: {
     types () {
       return this.$store.getters['admin/users/rows']
+    },
+
+    total () {
+      return this.$store.getters['admin/users/total']
+    }
+  },
+
+  watch: {
+    page () {
+      this.refresh()
+    },
+
+    limit () {
+      this.refresh()
     }
   },
 
   methods: {
+    setLimit (limit) {
+      if (limit > 0) {
+        this.limit = limit
+      } else {
+        this.limit = 0
+      }
+    },
+
     async refresh (clear = false) {
       this.loading = true
+      const params = { limit: this.limit, page: this.page }
+
       if (clear) {
         this.search = ''
+      } else {
+        this.activeFilters.forEach((filter) => {
+          params[filter] = this.search
+        })
       }
-      await this.$store.dispatch('admin/users/get', this.search)
+
+      await this.$store.dispatch('admin/users/get', params)
       this.loading = false
     },
 
