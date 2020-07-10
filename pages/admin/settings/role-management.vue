@@ -12,7 +12,7 @@
       </v-toolbar>
 
       <v-card-text>
-        <p>Add, create, update, or delete roles.</p>
+        <p>View, create, update, or delete roles.</p>
 
         <roles-data-table ref="RolesDataTable" />
       </v-card-text>

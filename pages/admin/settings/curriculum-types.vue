@@ -12,7 +12,7 @@
       </v-toolbar>
 
       <v-card-text>
-        <p>Add, create, update, or delete a curriculum type.</p>
+        <p>View, create, update, or delete a curriculum types.</p>
 
         <curriculum-data-table ref="CurriculumDataTable" />
       </v-card-text>

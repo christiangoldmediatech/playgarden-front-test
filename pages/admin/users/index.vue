@@ -7,29 +7,29 @@
         flat
       >
         <v-toolbar-title>
-          Activity Types
+          Users
         </v-toolbar-title>
       </v-toolbar>
 
       <v-card-text>
-        <p>View, create, update, or delete an activity types.</p>
+        <p>View, create, update, or delete users.</p>
 
-        <activity-type-data-table ref="ActivityTypeDataTable" />
+        <users-data-table ref="UsersDataTable" />
       </v-card-text>
     </v-card>
   </v-container>
 </template>
 
 <script>
-import ActivityTypeDataTable from '@/components/admin/activity/ActivityTypeDataTable.vue'
+import UsersDataTable from '@/components/admin/users/UsersDataTable.vue'
 
 export default {
-  name: 'ActivityTypes',
+  name: 'Index',
 
   layout: 'admin',
 
   components: {
-    ActivityTypeDataTable
+    UsersDataTable
   },
 
   data () {
@@ -37,7 +37,7 @@ export default {
   },
 
   mounted () {
-    this.$refs.ActivityTypeDataTable.refresh()
+    this.$refs.UsersDataTable.refresh()
   }
 }
 </script>
