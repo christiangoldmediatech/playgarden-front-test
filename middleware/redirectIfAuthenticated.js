@@ -8,6 +8,7 @@ export default function ({ app, redirect, route, store }) {
     if (
       token &&
       unauthenticatedRoutes[route.name] &&
+      route.name !== 'auth-verify-email' &&
       route.name !== 'jwt-recovery'
     ) {
       redirect({ name: 'app-dashboard' })
