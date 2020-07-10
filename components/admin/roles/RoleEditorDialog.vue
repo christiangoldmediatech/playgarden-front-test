@@ -35,10 +35,10 @@
         <v-card-text>
           <v-container>
             <v-form
-              ref="activityTypeForm"
+              ref="roleForm"
               @submit.prevent="passes(save)"
             >
-              <validation-provider v-slot="{ errors }" name="Activity Type Name" rules="required">
+              <validation-provider v-slot="{ errors }" name="Role Name" rules="required">
                 <v-text-field
                   v-model="item.name"
                   :error-messages="errors"
@@ -47,11 +47,20 @@
                 />
               </validation-provider>
 
-              <validation-provider v-slot="{ errors }" name="Activity Type Description" rules="required">
+              <validation-provider v-slot="{ errors }" name="Role Description" rules="required">
                 <v-textarea
                   v-model="item.description"
                   :error-messages="errors"
                   label="Description"
+                  outlined
+                />
+              </validation-provider>
+
+              <validation-provider v-slot="{ errors }" name="Role Section" rules="required">
+                <v-text-field
+                  v-model="item.section"
+                  :error-messages="errors"
+                  label="Section"
                   outlined
                 />
               </validation-provider>
@@ -90,7 +99,7 @@
 
 <script>
 export default {
-  name: 'ActivityTypeEditorDialog',
+  name: 'RoleEditorDialog',
 
   data () {
     return {
@@ -100,14 +109,15 @@ export default {
       id: null,
       item: {
         name: '',
-        description: ''
+        description: '',
+        section: ''
       }
     }
   },
 
   computed: {
     title () {
-      return this.id === null ? 'New Activity Type' : 'Edit Activity Type'
+      return this.id === null ? 'New Role' : 'Edit Role'
     }
   },
 
@@ -124,11 +134,11 @@ export default {
       this.loading = true
       try {
         if (this.id === null) {
-          await this.$store.dispatch('admin/activity/createType', this.item)
+          await this.$store.dispatch('admin/roles/create', this.item)
         } else {
-          await this.$store.dispatch('admin/activity/updateType', { id: this.id, data: this.item })
+          await this.$store.dispatch('admin/roles/update', { id: this.id, data: this.item })
         }
-        await this.$store.dispatch('admin/activity/getTypes')
+        await this.$store.dispatch('admin/roles/get')
       } catch (err) {
         this.loading = false
         return
@@ -137,10 +147,11 @@ export default {
       }
     },
 
-    open ({ id = null, name = '', description = '' } = {}) {
+    open ({ id = null, name = '', description = '', section = '' } = {}) {
       this.id = id
       this.item.name = name
       this.item.description = description
+      this.item.section = section
 
       this.$nextTick(() => {
         this.dialog = true

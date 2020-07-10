@@ -5,7 +5,7 @@
     :loading="loading"
   >
     <template v-slot:top>
-      <activity-type-editor-dialog ref="editor" />
+      <role-editor-dialog ref="editor" />
       <v-toolbar color="white" flat>
         <template v-if="$vuetify.breakpoint.mdAndUp">
           <v-toolbar-title>
@@ -83,13 +83,13 @@
 </template>
 
 <script>
-import ActivityTypeEditorDialog from './ActivityTypeEditorDialog'
+import RoleEditorDialog from './RoleEditorDialog'
 
 export default {
-  name: 'ActivityTypeDataTable',
+  name: 'RolesDataTable',
 
   components: {
-    ActivityTypeEditorDialog
+    RoleEditorDialog
   },
 
   data () {
@@ -98,10 +98,16 @@ export default {
       search: '',
       headers: [
         {
-          text: 'Activity',
+          text: 'Role',
           align: 'start',
           sortable: true,
           value: 'name'
+        },
+        {
+          text: 'Section',
+          align: 'start',
+          sortable: true,
+          value: 'section'
         },
         {
           text: 'Actions',
@@ -115,7 +121,7 @@ export default {
 
   computed: {
     types () {
-      return this.$store.getters['admin/activity/types']
+      return this.$store.getters['admin/roles/rows']
     }
   },
 
@@ -125,16 +131,16 @@ export default {
       if (clear) {
         this.search = ''
       }
-      await this.$store.dispatch('admin/activity/getTypes', this.search)
+      await this.$store.dispatch('admin/roles/get', this.search)
       this.loading = false
     },
 
     remove ({ id, name }) {
       this.$nuxt.$emit('open-admin-prompt', {
-        title: 'Delete activity type?',
-        message: `Are you sure you wish to delete '${name}' activity type?`,
+        title: 'Delete role?',
+        message: `Are you sure you wish to delete the '${name}' role?`,
         action: async () => {
-          await this.$store.dispatch('admin/activity/deleteType', id)
+          await this.$store.dispatch('admin/roles/delete', id)
           this.refresh()
         }
       })
