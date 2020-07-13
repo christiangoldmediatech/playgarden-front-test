@@ -3,6 +3,9 @@
     <v-form :readonly="loading" @submit.prevent="passes(onSubmit)">
       <v-row v-for="(item, indexD) in draft" :key="indexD" class="mb-6">
         <v-col>
+          <span class="font-weight-bold text-h5">
+            CHILD’S INFORMATION
+          </span>
           <v-row class="mb-6">
             <v-spacer />
 
@@ -139,8 +142,9 @@
                 v-for="(backpack, indexB) in backpacks"
                 :key="indexB"
                 class="image"
-                cols="4"
-                sm="2"
+                cols="6"
+                md="2"
+                sm="4"
               >
                 <img
                   :alt="backpack.name"

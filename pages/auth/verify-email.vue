@@ -1,7 +1,7 @@
 <template>
   <section>
     <v-row no-gutters>
-      <v-col class="hidden-sm-and-down" cols="6">
+      <v-col cols="12" md="6">
         <div class="image">
           <img alt="Smiling Girl Picture" src="@/assets/svg/girl-smiling.svg">
         </div>
@@ -13,15 +13,10 @@
             <underlined-title text="Welcome to Playgarden Prep" />
           </div>
 
-          <p>
+          <p class="text-center text-md-left">
             <small>We are happy to have you! Check your email to confirm your
               account and start enjoying our learning experience.</small>
           </p>
-
-          <p>
-            Didn't receive an email?
-          </p>
-
           <v-btn
             v-if="(userInfo || {}).id"
             block
@@ -33,9 +28,12 @@
             RESEND EMAIL
           </v-btn>
 
-          <v-btn block class="mt-6" color="primary" :loading="loading" text>
-            CONTACT US
-          </v-btn>
+          <p class="mt-6 signup">
+            Didn’t receive an email?
+            <nuxt-link to="#">
+              <span>CONTACT US</span>
+            </nuxt-link>
+          </p>
         </div>
       </v-col>
     </v-row>

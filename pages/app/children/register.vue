@@ -1,6 +1,6 @@
 <template>
   <section>
-    <v-row no-gutters>
+    <v-row class="flex-column-reverse flex-md-row" no-gutters>
       <v-col class="px-12" cols="12" md="8">
         <register-form :loading="loading" @click:submit="onSubmit" />
       </v-col>
@@ -8,7 +8,7 @@
       <v-col class="px-12" cols="12" md="4">
         <p>
           <span class="font-weight-bold text-h5">
-            CHILD'S INFORMATION
+            MEMBERSHIP
           </span>
 
           <br>
@@ -67,23 +67,25 @@ export default {
   methods: {
     ...mapActions('children', { storeChildren: 'store' }),
 
-    onSubmit (children) {
+    async onSubmit (children) {
       this.loading = true
 
-      Promise.all(children.map(child => this.storeChildren(child)))
-        .then(() => {
-          this.$snotify.success('Children have been stored successfully!')
+      try {
+        await Promise.all(children.map(child => this.storeChildren(child)))
+      } catch (e) {}
 
-          if (this.inSignUpProcess) {
-            this.$router.push({
-              name: 'app-payment-register',
-              query: { process: 'signup', step: '3' }
-            })
-          } else {
-            this.$router.push({ name: 'app-children' })
-          }
+      this.$snotify.success('Children have been stored successfully!')
+
+      if (this.inSignUpProcess) {
+        await this.$router.push({
+          name: 'app-payment-register',
+          query: { process: 'signup', step: '3' }
         })
-        .finally(() => (this.loading = false))
+      } else {
+        await this.$router.push({ name: 'app-children' })
+      }
+
+      this.loading = false
     }
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <section>
     <v-row no-gutters>
-      <v-col class="hidden-sm-and-down" cols="6">
+      <v-col cols="12" md="6">
         <div class="image">
           <img alt="Smiling Girl Picture" src="@/assets/svg/girl-smiling.svg">
         </div>
@@ -14,7 +14,8 @@
           </div>
 
           <p>
-            Enter your email to reset your password. You will receive an email with instructions on how to reset your password.
+            Enter your email to reset your password. You will receive an email
+            with instructions on how to reset your password.
           </p>
 
           <p v-show="errorMessage" class="error-message">
@@ -33,7 +34,10 @@
             {{ successMessage }}
           </p>
 
-          <forgot-password-form :loading="isLoadingForm" @click:submit="handleResetPassword" />
+          <forgot-password-form
+            :loading="isLoadingForm"
+            @click:submit="handleResetPassword"
+          />
         </div>
       </v-col>
     </v-row>
@@ -63,7 +67,10 @@ export default {
       try {
         this.isLoadingForm = true
         // TODO: move to store and use mapActions
-        const { data } = await this.$axios.post(`${process.env.apiBaseUrl}/auth/password/forget`, email)
+        const { data } = await this.$axios.post(
+          `${process.env.apiBaseUrl}/auth/password/forget`,
+          email
+        )
         if (data.sent) {
           this.errorMessage = ''
           this.successMessage = 'Email Sent!'
@@ -81,7 +88,7 @@ export default {
       this.successMessage = ''
       this.errorMessage = 'Sorry! There was an error sending the email'
       // eslint-disable-next-line
-      console.error(error)
+      console.error(error);
     }
   }
 }
@@ -97,6 +104,7 @@ export default {
   align-content: center;
   img {
     height: 100%;
+    max-width: 90%;
   }
 }
 .form {

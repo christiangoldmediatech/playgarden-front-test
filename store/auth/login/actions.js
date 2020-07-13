@@ -1,14 +1,14 @@
 import { snotifyError } from '@/utils/vuex'
 
 export default {
-  async signup ({ commit, dispatch, getters }, data) {
+  async login ({ commit, dispatch, getters }, data) {
     try {
-      const response = await this.$axios.post('/auth/signup', data)
+      const response = await this.$axios.post('/auth/login', data)
 
       dispatch('auth/setToken', response.data.accessToken, { root: true })
     } catch (error) {
       snotifyError(commit, {
-        body: 'Sorry! There was an error while signing you up.'
+        body: 'Sorry! Wrong email or password.'
       })
 
       throw new Error(error)

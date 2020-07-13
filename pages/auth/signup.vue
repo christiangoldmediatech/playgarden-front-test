@@ -1,6 +1,6 @@
 <template>
   <section>
-    <v-row no-gutters>
+    <v-row class="flex-column-reverse flex-md-row" no-gutters>
       <v-col class="px-12" cols="12" md="8">
         <signup-form :loading="loading" @click:submit="onSubmit" />
       </v-col>
@@ -57,20 +57,22 @@ export default {
   }),
 
   methods: {
-    ...mapActions('auth/signup', { signup: 'store' }),
+    ...mapActions('auth/signup', ['signup']),
 
-    onSubmit (user) {
+    async onSubmit (data) {
       this.loading = true
 
-      this.signup(user)
-        .then(() => {
-          this.$snotify.success('Welcome to Playgarden Prep!')
-          this.$router.push({
-            name: 'app-children-register',
-            query: { process: 'signup', step: '2' }
-          })
+      try {
+        await this.signup(data)
+
+        this.$snotify.success('Welcome to Playgarden Prep!')
+
+        await this.$router.push({
+          name: 'app-children-register',
+          query: { process: 'signup', step: '2' }
         })
-        .finally(() => (this.loading = false))
+      } catch (e) {}
+      this.loading = false
     }
   }
 }

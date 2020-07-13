@@ -1,7 +1,7 @@
 <template>
   <section>
     <v-row no-gutters>
-      <v-col class="hidden-sm-and-down" cols="6">
+      <v-col cols="12" md="6">
         <div class="image">
           <img alt="Smiling Girl Picture" src="@/assets/svg/girl-smiling.svg">
         </div>
@@ -20,7 +20,7 @@
             {{ errorMessage }}
           </p>
 
-          <login-form :loading="isLoadingForm" @click:submit="handleLogin" />
+          <login-form :loading="loading" @click:submit="onSubmit" />
         </div>
       </v-col>
     </v-row>
@@ -28,6 +28,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 import LoginForm from '@/components/forms/auth/LoginForm'
 
 export default {
@@ -39,32 +41,27 @@ export default {
 
   data () {
     return {
-      isLoadingForm: false,
+      loading: false,
       errorMessage: ''
     }
   },
 
   methods: {
-    async handleLogin (user) {
+    ...mapActions('auth/login', ['login']),
+
+    async onSubmit (data) {
       try {
-        this.isLoadingForm = true
-        // TODO: move to store and use mapActions
-        const { data } = await this.$axios.post('/auth/login', user)
-        // set auth token
-        this.$store.dispatch('auth/setToken', data.accessToken)
+        this.loading = true
         this.errorMessage = ''
-        this.$router.push({ name: 'app-children' })
+
+        await this.login(data)
+
+        await this.$router.push({ name: 'app-children' })
       } catch (error) {
-        this.handleLoginError(error)
-      } finally {
-        this.isLoadingForm = false
+        this.errorMessage = 'Sorry! Wrong email or password'
       }
-    },
-    handleLoginError (error) {
-      // TODO: Remove this alert to a global component
-      this.errorMessage = 'Sorry! Wrong email or password'
-      // eslint-disable-next-line
-      console.error(error)
+
+      this.loading = false
     }
   }
 }
@@ -80,6 +77,7 @@ export default {
   align-content: center;
   img {
     height: 100%;
+    max-width: 90%;
   }
 }
 .form {
