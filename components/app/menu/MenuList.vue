@@ -20,15 +20,21 @@ export default {
   },
 
   props: {
-    append: Boolean,
-    horizontal: Boolean
+    inAppendDrawer: {
+      type: Boolean,
+      default: false
+    },
+    horizontal: {
+      type: Boolean,
+      default: false
+    }
   },
 
   computed: {
     ...mapGetters('auth', { userInfo: 'getUserInfo' }),
 
     items () {
-      if (this.append) {
+      if (this.inAppendDrawer) {
         return [
           { title: 'Help', to: { name: 'app-dashboard' } },
           { title: 'Privacy Policy', to: { name: 'app-dashboard' } },

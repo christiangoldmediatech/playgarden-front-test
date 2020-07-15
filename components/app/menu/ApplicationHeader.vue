@@ -31,7 +31,11 @@
             </v-col>
           </v-row>
 
-          <menu-list append class="mb-3" @item-clicked="drawer = false" />
+          <menu-list
+            class="mb-3"
+            in-append-drawer
+            @item-clicked="drawer = false"
+          />
         </v-col>
       </template>
     </v-navigation-drawer>
