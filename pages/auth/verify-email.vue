@@ -69,6 +69,8 @@ export default {
   },
 
   methods: {
+    ...mapActions('auth', ['fetchUserInfo']),
+
     ...mapActions('auth/verify', ['resendEmail', 'validateRegister']),
 
     async onResend () {
@@ -89,10 +91,11 @@ export default {
 
       try {
         await this.validateRegister(this.token)
+        await this.fetchUserInfo()
 
         await this.$snotify.success('Email has been verified successfully!')
 
-        await this.$router.push({ name: 'app-children' })
+        await this.$router.push({ name: 'index' })
       } catch (e) {
       } finally {
         this.loading = false

@@ -68,6 +68,8 @@ export default {
   },
 
   methods: {
+    ...mapActions('auth', ['fetchUserInfo']),
+
     ...mapActions('payment', [
       'fetchSubscriptionCost',
       'paySubscription',
@@ -88,11 +90,15 @@ export default {
 
         await this.paySubscription(token)
 
-        this.$snotify.success('Payment has been processed successfully!')
-
-        await this.$router.push({
-          name: this.inSignUpProcess ? 'auth-verify-email' : 'app-children'
-        })
+        if (this.inSignUpProcess) {
+          await this.fetchUserInfo()
+          this.$snotify.success('Payment has been processed successfully!')
+          await this.$router.push({ name: 'auth-verify-email' })
+        } else {
+          this.$snotify.success('Payment has been processed successfully!')
+          await this.$router.push({ name: 'app-children' })
+        }
+      } catch (e) {
       } finally {
         this.loading = false
       }

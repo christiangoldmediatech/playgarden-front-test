@@ -90,8 +90,10 @@ export default {
   router: {
     middleware: [
       'auth',
-      'redirectIfAuthenticated',
       'fetchUserInfo',
+      'redirectProperAuthenticatedSection',
+      'recoverRegistrationProcess',
+      'redirectIfAuthenticated',
       'emailVerified'
     ]
   }
