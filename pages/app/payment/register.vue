@@ -1,6 +1,6 @@
 <template>
   <section>
-    <v-row no-gutters>
+    <v-row class="flex-column-reverse flex-md-row" no-gutters>
       <v-col class="px-12" cols="12" md="8">
         <stripe-form :loading="loading" @click:submit="onSubmit" />
       </v-col>
