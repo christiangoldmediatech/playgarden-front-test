@@ -4,5 +4,5 @@ export default {
   getAccessToken: get('accessToken'),
   getExpiresAt: get('expiresAt'),
   getIssuedAt: get('issuedAt'),
-  getUserInfo: get('userInfo')
+  getUserInfo: state => state.userInfo || {}
 }

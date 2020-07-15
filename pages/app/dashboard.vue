@@ -1,6 +1,6 @@
 <template>
   <v-row no-gutters>
-    <v-col class="hidden-sm-and-down" cols="12" md="6">
+    <v-col cols="12" md="6">
       <div class="image">
         <img alt="Smiling Girl Picture" src="@/assets/svg/girl-smiling.svg">
       </div>
@@ -24,14 +24,13 @@ export default {
 
 <style lang="scss" scoped>
 .image {
-  height: 100%;
   max-height: 500px;
   width: 100%;
   display: flex;
   justify-content: center;
   align-content: center;
   img {
-    height: 100%;
+    max-width: 90%;
   }
 }
 </style>
