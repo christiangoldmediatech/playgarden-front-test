@@ -87,7 +87,7 @@ export default {
 
         await this.$snotify.success('Email has been verified successfully!')
 
-        await this.$router.push({ name: 'app-children' })
+        await this.$router.push({ name: 'index' })
       } catch (e) {
       } finally {
         this.loading = false
