@@ -1,9 +1,5 @@
 <template>
-  <v-form
-    ref="loginForm"
-    v-model="isValidForm"
-    @submit.prevent="handleClick"
-  >
+  <v-form ref="loginForm" v-model="isValidForm" @submit.prevent="handleClick">
     <!-- Email -->
     <v-text-field
       v-model="user.email"
@@ -41,10 +37,7 @@
 
     <p class="forgot-password">
       <nuxt-link class="black--text" :to="{ name: 'auth-forgot-password' }">
-        <underlined-subtitle
-          class="clickable mt-2"
-          text="Forgot Password"
-        />
+        <underlined-subtitle class="clickable mt-2" text="Forgot Password" />
       </nuxt-link>
     </p>
 
@@ -59,7 +52,11 @@
 </template>
 
 <script>
-import { required, isValidEmail, isValidPassword } from '@/utils/validations/forms'
+import {
+  required,
+  isValidEmail,
+  isValidPassword
+} from '@/utils/validations/forms'
 import { jsonCopy } from '@/utils/objectTools'
 
 export default {
@@ -97,9 +94,12 @@ export default {
       if (this.$refs.loginForm) {
         this.$refs.loginForm.validate()
         if (this.isValidForm) {
-          this.$emit('click:submit', jsonCopy({
-            ...this.user
-          }))
+          this.$emit(
+            'click:submit',
+            jsonCopy({
+              ...this.user
+            })
+          )
           this.user.password = ''
           this.$refs.loginForm.resetValidation()
         }
