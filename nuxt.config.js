@@ -91,6 +91,7 @@ export default {
     middleware: [
       'auth',
       'fetchUserInfo',
+      'redirectProperAuthenticatedSection',
       'recoverRegistrationProcess',
       'redirectIfAuthenticated',
       'emailVerified'
