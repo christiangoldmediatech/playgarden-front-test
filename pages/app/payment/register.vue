@@ -93,9 +93,9 @@ export default {
         await this.$router.push({
           name: this.inSignUpProcess ? 'auth-verify-email' : 'app-children'
         })
-      } catch (e) {}
-
-      this.loading = false
+      } finally {
+        this.loading = false
+      }
     }
   }
 }

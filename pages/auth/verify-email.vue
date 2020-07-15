@@ -17,6 +17,7 @@
             <small>We are happy to have you! Check your email to confirm your
               account and start enjoying our learning experience.</small>
           </p>
+
           <v-btn
             v-if="(userInfo || {}).id"
             block
@@ -27,6 +28,12 @@
           >
             RESEND EMAIL
           </v-btn>
+
+          <nuxt-link v-else :to="{ name: 'auth-login' }">
+            <v-btn block color="primary">
+              RETURN TO LOG IN
+            </v-btn>
+          </nuxt-link>
 
           <p class="mt-6 signup">
             Didn’t receive an email?
@@ -97,14 +104,13 @@ export default {
 
 <style lang="scss" scoped>
 .image {
-  height: 100%;
   max-height: 500px;
   width: 100%;
   display: flex;
   justify-content: center;
   align-content: center;
   img {
-    height: 100%;
+    max-width: 90%;
   }
 }
 .form {

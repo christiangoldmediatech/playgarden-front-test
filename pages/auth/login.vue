@@ -59,9 +59,9 @@ export default {
         await this.$router.push({ name: 'app-children' })
       } catch (error) {
         this.errorMessage = 'Sorry! Wrong email or password'
+      } finally {
+        this.loading = false
       }
-
-      this.loading = false
     }
   }
 }
@@ -69,14 +69,12 @@ export default {
 
 <style lang="scss" scoped>
 .image {
-  height: 100%;
   max-height: 500px;
   width: 100%;
   display: flex;
   justify-content: center;
   align-content: center;
   img {
-    height: 100%;
     max-width: 90%;
   }
 }

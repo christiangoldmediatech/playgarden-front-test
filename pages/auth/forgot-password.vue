@@ -96,14 +96,12 @@ export default {
 
 <style lang="scss" scoped>
 .image {
-  height: 100%;
   max-height: 500px;
   width: 100%;
   display: flex;
   justify-content: center;
   align-content: center;
   img {
-    height: 100%;
     max-width: 90%;
   }
 }

@@ -11,7 +11,7 @@ export default {
         body: 'Sorry! There was an error while storing.'
       })
 
-      throw new Error(error)
+      throw error
     }
   }
 }

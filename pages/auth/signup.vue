@@ -71,8 +71,9 @@ export default {
           name: 'app-children-register',
           query: { process: 'signup', step: '2' }
         })
-      } catch (e) {}
-      this.loading = false
+      } finally {
+        this.loading = false
+      }
     }
   }
 }

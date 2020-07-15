@@ -72,20 +72,20 @@ export default {
 
       try {
         await Promise.all(children.map(child => this.storeChildren(child)))
-      } catch (e) {}
 
-      this.$snotify.success('Children have been stored successfully!')
+        this.$snotify.success('Children have been stored successfully!')
 
-      if (this.inSignUpProcess) {
-        await this.$router.push({
-          name: 'app-payment-register',
-          query: { process: 'signup', step: '3' }
-        })
-      } else {
-        await this.$router.push({ name: 'app-children' })
+        if (this.inSignUpProcess) {
+          await this.$router.push({
+            name: 'app-payment-register',
+            query: { process: 'signup', step: '3' }
+          })
+        } else {
+          await this.$router.push({ name: 'app-children' })
+        }
+      } finally {
+        this.loading = false
       }
-
-      this.loading = false
     }
   }
 }

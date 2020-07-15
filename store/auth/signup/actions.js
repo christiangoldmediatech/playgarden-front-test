@@ -11,7 +11,7 @@ export default {
         body: 'Sorry! There was an error while signing you up.'
       })
 
-      throw new Error(error)
+      throw error
     }
   }
 }

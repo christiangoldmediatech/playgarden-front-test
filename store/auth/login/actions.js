@@ -11,7 +11,7 @@ export default {
         body: 'Sorry! Wrong email or password.'
       })
 
-      throw new Error(error)
+      throw error
     }
   }
 }
