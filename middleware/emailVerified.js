@@ -1,4 +1,4 @@
-export default function ({ store, redirect, route }) {
+export default function ({ redirect, route, store }) {
   if (process.client) {
     const user = store.getters['auth/getUserInfo'] || {}
 
