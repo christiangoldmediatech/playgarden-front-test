@@ -1,7 +1,5 @@
 <template>
-  <v-app
-    class="pg-app"
-  >
+  <v-app class="pg-app">
     <!-- APP BAR -->
     <application-header />
     <!-- NAV DRAWER -->
@@ -33,22 +31,13 @@
 
     <!-- CONTENT -->
     <v-main>
-      <v-container
-        class="pg-app-container"
-        fluid
-        pa-0
-      >
+      <v-container class="pg-app-container" fluid mt-6 mt-md-0 pa-0>
         <nuxt />
       </v-container>
     </v-main>
     <!-- FOOTER -->
-    <v-footer
-      app
-      class="pg-app-footer"
-    >
-      <v-col
-        cols="12"
-      >
+    <v-footer app class="pg-app-footer">
+      <v-col cols="12">
         <span>&copy; {{ new Date().getFullYear() }} </span>
       </v-col>
     </v-footer>

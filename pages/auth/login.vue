@@ -56,7 +56,7 @@ export default {
 
         await this.login(data)
 
-        await this.$router.push({ name: 'app-children' })
+        await this.$router.push({ name: 'app-dashboard' })
       } catch (error) {
         this.errorMessage = 'Sorry! Wrong email or password'
       } finally {

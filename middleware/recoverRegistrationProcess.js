@@ -1,6 +1,6 @@
 export default function ({ redirect, route, store }) {
   if (process.client) {
-    const user = store.getters['auth/getUserInfo'] || {}
+    const user = store.getters['auth/getUserInfo']
     const registerStep = Number(user.registerStep)
 
     // REGISTER_PARENT=1 <- sign up

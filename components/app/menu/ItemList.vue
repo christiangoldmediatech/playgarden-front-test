@@ -1,10 +1,5 @@
 <template>
-  <v-row
-    v-bind="$attrs"
-    :class="{'horizontal': horizontal}"
-    no-gutters
-    v-on="$listeners"
-  >
+  <v-row v-bind="$attrs" :class="{ horizontal }" no-gutters v-on="$listeners">
     <v-col
       v-for="(item, index) in items"
       :key="`${_uid}-${index}`"
@@ -14,9 +9,10 @@
         class="list-item"
         exact
         nuxt
+        :ripple="horizontal"
         text
         :to="item.to"
-        @click="handleClick(item)"
+        @click="onClick(item)"
       >
         {{ item.title }}
       </v-btn>
@@ -41,9 +37,9 @@ export default {
   },
 
   methods: {
-    handleClick (item) {
-      if (item.handleClick) {
-        item.handleClick()
+    onClick (item) {
+      if (item.onClick) {
+        item.onClick()
       } else {
         this.$emit('item-clicked', item)
       }
@@ -59,7 +55,7 @@ export default {
 }
 .list-item {
   color: $pg-black !important;
-  &::before{
+  &::before {
     opacity: 0;
   }
 }
