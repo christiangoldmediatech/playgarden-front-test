@@ -36,28 +36,7 @@
       </v-container>
     </v-main>
     <!-- FOOTER -->
-    <v-footer app class="pg-app-footer">
-      <v-col cols="12">
-        <span>&copy; {{ new Date().getFullYear() }} </span>
-      </v-col>
-    </v-footer>
-    <!--
-      Reusable snackbar component
-      Usage: $store.commit('app/SET_GLOBAL_SNACKBAR', { ...options }) See options in store/app/mutations
-    -->
-    <!-- <v-snackbar
-      :value="snack.show"
-      bottom
-      :color="snack.color"
-      :multi-line="snack.multiline"
-      :timeout="snack.timeout"
-      @input="toggleSnack"
-    >
-      <span class="subtitle-1">{{ snack.text }}</span>
-      <v-btn text @click.stop="snack.action">
-        {{ snack.actionText }}
-      </v-btn>
-    </v-snackbar> -->
+    <default-footer />
 
     <notify-event />
   </v-app>
@@ -65,6 +44,7 @@
 
 <script>
 import ApplicationHeader from '@/components/app/menu/ApplicationHeader.vue'
+import DefaultFooter from '@/components/app/DefaultFooter.vue'
 
 export default {
   name: 'Default',
@@ -72,7 +52,8 @@ export default {
   middleware: ['checkJWT'],
 
   components: {
-    ApplicationHeader
+    ApplicationHeader,
+    DefaultFooter
   },
 
   data () {
