@@ -103,4 +103,9 @@ export default {
     height: 100%;
   }
 }
+.v-application {
+  ::v-deep .text-h1, .text-h2, .text-h3, .text-h4, .text-h5, .text-h6 {
+    font-family: 'Poppins', sans-serif !important;
+  }
+}
 </style>
