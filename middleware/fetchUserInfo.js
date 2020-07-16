@@ -1,11 +1,11 @@
 export default function ({ app, store }) {
   if (process.client) {
     const token = store.getters['auth/getAccessToken']
-    const user = store.getters['auth/getUserInfo']
+    const logged = store.getters['auth/isUserLoggedIn']
 
     app.$axios.setToken(token, 'Bearer')
 
-    if (token && !user.id) {
+    if (token && !logged) {
       return store.dispatch('auth/fetchUserInfo')
     }
   }

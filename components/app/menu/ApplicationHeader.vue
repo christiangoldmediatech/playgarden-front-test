@@ -15,13 +15,32 @@
 
       <template v-slot:append>
         <v-col cols="12">
-          <v-row v-if="!userInfo.id">
-            <v-col cols="12">
+          <v-row>
+            <template v-if="isUserLoggedIn">
+              <v-col cols="12">
+                <v-btn block color="primary" nuxt :to="{ name: 'app-account' }">
+                  ACCOUNT SETTINGS
+                </v-btn>
+              </v-col>
+
+              <v-col cols="12">
+                <v-btn
+                  block
+                  class="mb-3"
+                  color="accent"
+                  text
+                  :to="{ name: 'auth-logout' }"
+                >
+                  LOG OUT
+                </v-btn>
+              </v-col>
+            </template>
+
+            <v-col v-else cols="12">
               <v-btn
                 block
                 class="mb-3"
                 color="primary"
-                :disabled="loading"
                 nuxt
                 text
                 :to="{ name: 'auth-login' }"
@@ -67,9 +86,17 @@
           class="app-bar-action-btn hidden-sm-and-down"
           color="primary"
           nuxt
-          :to="{ name: 'auth-login' }"
+          :to="{ name: isUserLoggedIn ? 'app-account' : 'auth-login' }"
         >
-          <span>Login</span>
+          <template v-if="isUserLoggedIn">
+            ACCOUNT
+
+            <v-icon right>mdi-cog-outline</v-icon>
+          </template>
+
+          <template v-else>
+            LOGIN
+          </template>
         </v-btn>
       </v-row>
 
@@ -100,7 +127,7 @@ export default {
     drawer: false
   }),
 
-  computed: mapGetters('auth', { userInfo: 'getUserInfo' }),
+  computed: mapGetters('auth', ['isUserLoggedIn']),
 
   watch: {
     '$vuetify.breakpoint.smAndDown' (v) {
