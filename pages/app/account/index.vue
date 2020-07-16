@@ -1,86 +1,89 @@
 <template>
-  <v-row no-gutters>
-    <v-col class="hidden-sm-and-down" cols="6">
-      <div class="image">
-        <img alt="Montessori Nutrition Lesson" src="@/assets/svg/montessori-nutrition-lesson.svg">
-      </div>
-    </v-col>
-    <v-col class="hidden-sm-and-down" cols="1" />
-    <v-col class="hidden-sm-and-down" cols="4">
-      <user-profile-form :loading="isLoadingForm" :user="loggedUserData" @set-loading-state="setLoadingState" />
+  <section>
+    <v-row no-gutters>
+      <v-col cols="12" md="6">
+        <v-row>
+          <v-col cols="12">
+            <div class="image">
+              <img
+                alt="Montessori Nutrition Lesson"
+                src="@/assets/svg/montessori-nutrition-lesson.svg"
+              >
+            </div>
+          </v-col>
 
-      <membership-form :loading="isLoadingForm" />
-      <caregivers-form :loading="isLoadingForm" />
-    </v-col>
-    <v-col class="hidden-sm-and-down" cols="1" />
-  </v-row>
+          <v-col class="mb-12 mt-3" cols="12">
+            <underlined-title text="Account Settings" />
+
+            <p>
+              Welcome back (Parent’s Name)! Here you can manage everything
+              related to your account.
+            </p>
+          </v-col>
+
+          <v-col class="hidden-sm-and-down" cols="12">
+            <v-btn block color="accent" text :to="{ name: 'auth-logout' }">
+              LOG OUT
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-col>
+
+      <v-col cols="12" md="6" px-9>
+        <user-profile-form
+          :loading="loading"
+          :user="userInfo"
+          @set-loading-state="setLoadingState"
+        />
+
+        <membership-form :loading="loading" />
+
+        <caregivers-form :loading="loading" />
+      </v-col>
+    </v-row>
+  </section>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
+import CaregiversForm from '@/components/forms/account/CaregiversForm'
 import UserProfileForm from '@/components/forms/account/UserProfileForm'
 import MembershipForm from '@/components/forms/account/MembershipForm'
-import CaregiversForm from '@/components/forms/account/CaregiversForm'
 
 export default {
-  // middleware: ['redirectToAuthPage'],
   name: 'Index',
 
   components: {
-    UserProfileForm,
+    CaregiversForm,
     MembershipForm,
-    CaregiversForm
+    UserProfileForm
   },
-  data () {
-    return {
-      isLoadingForm: false,
-      loggedUserData: {},
-      errorMessage: ''
-    }
-  },
-  mounted () {
-    this.getLoggedUserData()
-  },
+
+  data: () => ({
+    loading: false
+  }),
+
+  computed: mapGetters('auth', { userInfo: 'getUserInfo' }),
+
   methods: {
     setLoadingState (state) {
-      this.isLoadingForm = state
-      // eslint-disable-next-line no-console
-      console.log(this.isLoadingForm)
-    },
-    async getLoggedUserData () {
-      try {
-        this.isLoadingForm = true
-        const token = this.$store.getters['auth/getAccessToken']
-        this.$axios.setToken(token, 'Bearer')
-
-        const { data } = await this.$axios.get(`${process.env.apiBaseUrl}/auth/me`)
-
-        this.loggedUserData = data
-      } catch (error) {
-        this.handleLoginError(error)
-      } finally {
-        this.isLoadingForm = false
-      }
-    },
-    handleLoginError (error) {
-      // TODO: Remove this alert to a global component
-      this.errorMessage = 'Sorry! Error trying to get user data'
-      // eslint-disable-next-line
-      console.error(error)
+      this.loading = state
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  .image {
+.image {
+  height: 100%;
+  max-height: 360px;
+  width: 100%;
+  display: flex;
+  justify-content: left;
+  align-content: left;
+  img {
     height: 100%;
-    max-height: 360px;
-    width: 100%;
-    display: flex;
-    justify-content: left;
-    align-content: left;
-    img {
-      height: 100%;
-    }
   }
+}
 </style>

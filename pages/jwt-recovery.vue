@@ -1,32 +1,16 @@
 <template>
-  <v-container fill-height fluid ma-0 pa-0>
-    <v-row align="center" fill-height justify="center" ma-0 pa-0>
-      <v-col
-        class="text-center"
-        cols="4"
-      >
-        <div>
-          <img class="logo-img" src="@/assets/svg/logo.svg">
-        </div>
-
-        <v-progress-linear
-          color="primary"
-          indeterminate
-          :size="20"
-        />
-      </v-col>
-    </v-row>
-  </v-container>
+  <span />
 </template>
 
 <script>
 import { mapActions } from 'vuex'
+
 import { hasSessionStorage } from '@/utils/window'
 
 export default {
-  layout: 'loading',
-
   name: 'JwtRecovery',
+
+  layout: 'loading',
 
   async mounted () {
     if (hasSessionStorage()) {
@@ -46,11 +30,9 @@ export default {
     })
   },
 
-  head () {
-    return {
-      title: 'Recover token'
-    }
-  }
+  head: () => ({
+    title: 'Preparing session'
+  })
 }
 </script>
 
