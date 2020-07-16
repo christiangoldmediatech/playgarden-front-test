@@ -11,7 +11,8 @@ export default function ({ app }) {
           success: '#C5DCA6',
           black: '#606060'
         }
-      }
+      },
+      customProperties: true
     }
   }
 }

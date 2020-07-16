@@ -23,24 +23,24 @@
               >
                 <v-img
                   alt="Playgarden Prep's Logo"
-                  class="mt-0 mb-1"
+                  class="mb-1 mt-0"
                   contain
                   :src="require('@/assets/svg/logo.svg')"
                 />
               </v-col>
             </v-row>
-            <div class="d-flex align-center justify-center justify-md-start">
+            <div class="align-center d-flex justify-center justify-md-start">
               <img
                 alt="Facebook"
-                class="mr-1 clickable"
+                class="clickable mr-1"
                 src="@/assets/svg/social-media/facebook.svg"
               >
               <img
                 alt="Instagram"
-                class="mx-1 clickable"
+                class="clickable mx-1"
                 src="@/assets/svg/social-media/instagram.svg"
               >
-              <div class="social-media-circle d-flex justify-center mx-1  clickable">
+              <div class="clickable d-flex justify-center mx-1 social-media-circle">
                 <img
                   alt="Email"
                   src="@/assets/svg/social-media/email.svg"
@@ -48,7 +48,7 @@
               </div>
               <img
                 alt="Twitter"
-                class="mx-1 clickable"
+                class="clickable mx-1"
                 src="@/assets/svg/social-media/twitter.svg"
               >
             </div>
@@ -65,25 +65,25 @@
         >
           <v-container>
             <nuxt-link
-              class="link-text d-block"
+              class="d-block link-text"
               to="/"
               v-text="'Playgarden Prep'"
             />
 
             <nuxt-link
-              class="link-text d-block"
+              class="d-block link-text"
               to="/"
               v-text="'Terms & Conditions'"
             />
 
             <nuxt-link
-              class="link-text d-block"
+              class="d-block link-text"
               to="/"
               v-text="'Privacy Policy'"
             />
 
             <nuxt-link
-              class="link-text d-block"
+              class="d-block link-text"
               to="/"
               v-text="'Help'"
             />
@@ -98,7 +98,7 @@
           sm="6"
           xl="3"
         >
-          <p class="font-weight-bold primary--text text-h5 mb-1 mt-0">
+          <p class="font-weight-bold mb-1 mt-0 primary--text text-h5">
             Upper East Side
           </p>
 
@@ -121,7 +121,7 @@
           sm="6"
           xl="3"
         >
-          <p class="font-weight-bold primary--text text-h5 mb-1 mt-0">
+          <p class="font-weight-bold mb-1 mt-0 primary--text text-h5">
             Tribeca
           </p>
 
@@ -137,7 +137,7 @@
         </v-col>
       </v-row>
 
-      <v-divider class="mx-sm-8 mx-md-16" />
+      <v-divider class="mx-md-16 mx-sm-8" />
 
       <v-row>
         <v-col class="text-center">
