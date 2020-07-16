@@ -1,6 +1,9 @@
 export default function ({ app }) {
   return {
     theme: {
+      options: {
+        customProperties: true
+      },
       dark: false,
       themes: {
         light: {
@@ -11,8 +14,7 @@ export default function ({ app }) {
           success: '#C5DCA6',
           black: '#606060'
         }
-      },
-      customProperties: true
+      }
     }
   }
 }
