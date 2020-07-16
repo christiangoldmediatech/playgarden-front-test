@@ -66,25 +66,25 @@
           <v-container>
             <nuxt-link
               class="d-block link-text"
-              to="/"
+              :to="{ name: 'index' }"
               v-text="'Playgarden Prep'"
             />
 
             <nuxt-link
               class="d-block link-text"
-              to="/"
+              :to="{ name: 'index' }"
               v-text="'Terms & Conditions'"
             />
 
             <nuxt-link
               class="d-block link-text"
-              to="/"
+              :to="{ name: 'index' }"
               v-text="'Privacy Policy'"
             />
 
             <nuxt-link
               class="d-block link-text"
-              to="/"
+              :to="{ name: 'index' }"
               v-text="'Help'"
             />
           </v-container>
@@ -150,23 +150,6 @@
       </v-row>
     </v-container>
   </v-footer>
-  <!--
-    Reusable snackbar component
-    Usage: $store.commit('app/SET_GLOBAL_SNACKBAR', { ...options }) See options in store/app/mutations
-  -->
-  <!-- <v-snackbar
-    :value="snack.show"
-    bottom
-    :color="snack.color"
-    :multi-line="snack.multiline"
-    :timeout="snack.timeout"
-    @input="toggleSnack"
-  >
-    <span class="subtitle-1">{{ snack.text }}</span>
-    <v-btn text @click.stop="snack.action">
-      {{ snack.actionText }}
-    </v-btn>
-  </v-snackbar> -->
 </template>
 
 <script>
