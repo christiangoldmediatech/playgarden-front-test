@@ -26,7 +26,7 @@
               :disabled="loading"
               :error-messages="errors"
               label="First name"
-              outlined
+              solo
             />
           </validation-provider>
 
@@ -42,7 +42,7 @@
               :disabled="loading"
               :error-messages="errors"
               label="Last name"
-              outlined
+              solo
             />
           </validation-provider>
 
@@ -51,7 +51,7 @@
             v-model="item._menu"
             :close-on-content-click="false"
             min-width="290px"
-            outlined
+            solo
             transition="scale-transition"
           >
             <template v-slot:activator="{ on, attrs }">
@@ -67,8 +67,8 @@
                   :disabled="loading"
                   :error-messages="errors"
                   label="Birthday date"
-                  outlined
                   readonly
+                  solo
                   suffix="MM/DD/YYYY"
                   validate-on-blur
                   :value="item._birthdayFormatted"
@@ -137,7 +137,7 @@
             :name="(removable ? `Child #${indexD + 1} - ` : '') + 'Backpack'"
             rules="required"
           >
-            <v-row class="mb-6">
+            <v-row class="">
               <v-col
                 v-for="(backpack, indexB) in backpacks"
                 :key="indexB"
@@ -171,6 +171,7 @@
             color="primary"
             :disabled="loading"
             text
+            x-large
             @click="addRow"
           >
             ADD ANOTHER CHILD
@@ -183,6 +184,7 @@
             :disabled="invalid"
             :loading="loading"
             type="submit"
+            x-large
           >
             REGISTER
           </v-btn>

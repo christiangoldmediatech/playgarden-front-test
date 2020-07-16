@@ -21,8 +21,8 @@
           label="Card number"
           :loading="loading"
           maxlength="19"
-          outlined
           placeholder="1234-4567-8901-2345"
+          solo
         />
       </validation-provider>
 
@@ -42,8 +42,8 @@
               label="Expiration date"
               :loading="loading"
               maxlength="5"
-              outlined
               placeholder="MM/YY"
+              solo
             />
           </validation-provider>
         </v-col>
@@ -63,8 +63,8 @@
               label="CVV"
               :loading="loading"
               maxlength="3"
-              outlined
               placeholder="123"
+              solo
             />
           </validation-provider>
         </v-col>
@@ -77,6 +77,7 @@
         :disabled="invalid"
         :loading="loading"
         type="submit"
+        x-large
       >
         BUY
       </v-btn>
