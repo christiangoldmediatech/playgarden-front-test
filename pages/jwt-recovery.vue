@@ -31,7 +31,7 @@ export default {
   },
 
   head: () => ({
-    title: 'Preparing session'
+    title: 'Recovering session'
   })
 }
 </script>

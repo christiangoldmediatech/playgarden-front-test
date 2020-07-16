@@ -31,7 +31,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters('auth', ['isUserLogged']),
+    ...mapGetters('auth', ['isUserLoggedIn']),
 
     items () {
       if (this.inAppendDrawer) {
@@ -42,7 +42,7 @@ export default {
         ]
       }
 
-      if (this.isUserLogged) {
+      if (this.isUserLoggedIn) {
         return [
           { title: 'Dashboard', to: { name: 'app-dashboard' } },
           { title: 'Library', to: { name: 'auth-login' } },

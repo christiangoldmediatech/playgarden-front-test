@@ -5,5 +5,5 @@ export default {
   getExpiresAt: get('expiresAt'),
   getIssuedAt: get('issuedAt'),
   getUserInfo: state => state.userInfo || {},
-  isUserLogged: (_, getters) => Boolean(getters.getUserInfo.id)
+  isUserLoggedIn: (_, getters) => Boolean(getters.getUserInfo.id)
 }

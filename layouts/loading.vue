@@ -10,6 +10,8 @@
             </div>
 
             <v-progress-linear color="primary" indeterminate :size="20" />
+
+            <nuxt />
           </v-col>
         </v-row>
       </v-container>
@@ -19,8 +21,6 @@
     <v-footer app>
       <span>&copy; {{ new Date().getFullYear() }} </span>
     </v-footer>
-
-    <nuxt />
 
     <notify-event />
   </v-app>

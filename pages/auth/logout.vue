@@ -19,7 +19,7 @@ export default {
   methods: mapActions('auth', ['logout']),
 
   head: () => ({
-    title: 'Closing session'
+    title: 'Logging Out'
   })
 }
 </script>

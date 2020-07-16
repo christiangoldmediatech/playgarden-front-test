@@ -16,7 +16,7 @@
       <template v-slot:append>
         <v-col cols="12">
           <v-row>
-            <template v-if="isUserLogged">
+            <template v-if="isUserLoggedIn">
               <v-col cols="12">
                 <v-btn block color="primary" nuxt :to="{ name: 'app-account' }">
                   ACCOUNT SETTINGS
@@ -86,9 +86,9 @@
           class="app-bar-action-btn hidden-sm-and-down"
           color="primary"
           nuxt
-          :to="{ name: isUserLogged ? 'app-account' : 'auth-login' }"
+          :to="{ name: isUserLoggedIn ? 'app-account' : 'auth-login' }"
         >
-          <template v-if="isUserLogged">
+          <template v-if="isUserLoggedIn">
             ACCOUNT
 
             <v-icon right>mdi-cog-outline</v-icon>
@@ -127,7 +127,7 @@ export default {
     drawer: false
   }),
 
-  computed: mapGetters('auth', ['isUserLogged']),
+  computed: mapGetters('auth', ['isUserLoggedIn']),
 
   watch: {
     '$vuetify.breakpoint.smAndDown' (v) {
