@@ -1,6 +1,9 @@
 export default function ({ app }) {
   return {
     theme: {
+      options: {
+        customProperties: true
+      },
       dark: false,
       themes: {
         light: {
