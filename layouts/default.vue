@@ -72,6 +72,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .pg-app {
   height: 100%;
   margin: 0 auto;
@@ -82,6 +83,28 @@ export default {
   &-container {
     position: relative;
     height: 100%;
+  }
+}
+.v-application ::v-deep {
+  .display-1,
+  .display-2,
+  .display-3,
+  .display-4,
+  .headline,
+  .title,
+  .subtitle-1,
+  .subtitle-2,
+  .body-1,
+  .body-2,
+  .caption,
+  .overline,
+  .text-h1,
+  .text-h2,
+  .text-h3,
+  .text-h4,
+  .text-h5,
+  .text-h6 {
+    font-family: 'Poppins', sans-serif !important;
   }
 }
 </style>

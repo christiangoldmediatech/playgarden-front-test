@@ -11,8 +11,8 @@
       :disabled="loading"
       label="Email"
       :loading="loading"
-      outlined
       :rules="[required, isValidEmail]"
+      solo
       type="email"
     />
 
@@ -22,6 +22,7 @@
       :disabled="isButtonDisabled"
       :loading="loading"
       type="submit"
+      x-large
     >
       RESET PASSWORD
     </v-btn>
@@ -46,7 +47,7 @@
       </nuxt-link>
     </p>
 
-    <p class="mt-4 signup">
+    <p class="mt-4 signup text-center text-md-left">
       Don't have an account?
 
       <nuxt-link :to="{ name: 'auth-signup' }">

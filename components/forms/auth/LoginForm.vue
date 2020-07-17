@@ -7,8 +7,8 @@
       :disabled="loading"
       label="Email"
       :loading="loading"
-      outlined
       :rules="[required, isValidEmail]"
+      solo
       type="email"
     />
 
@@ -20,8 +20,8 @@
       :disabled="loading"
       label="Password"
       :loading="loading"
-      outlined
       :rules="[required, ...isValidPassword]"
+      solo
       type="password"
     />
 
@@ -31,17 +31,18 @@
       :disabled="isButtonDisabled"
       :loading="loading"
       type="submit"
+      x-large
     >
       LOGIN
     </v-btn>
 
-    <p class="forgot-password">
+    <p class="forgot-password text-center text-md-right">
       <nuxt-link class="black--text" :to="{ name: 'auth-forgot-password' }">
         <underlined-subtitle class="clickable mt-2" text="Forgot Password" />
       </nuxt-link>
     </p>
 
-    <p class="signup">
+    <p class="signup text-center text-md-left">
       Don't have an account?
 
       <nuxt-link :to="{ name: 'auth-signup' }">
