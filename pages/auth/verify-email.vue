@@ -1,55 +1,44 @@
 <template>
-  <section>
-    <v-row align="center" justify="center" no-gutters>
-      <v-col cols="11" lg="4" md="6" sm="7" xl="3">
-        <div class="image">
-          <img alt="Smiling Girl Picture" src="@/assets/svg/girl-smiling.svg">
+  <v-row align="center" justify="center" no-gutters>
+    <v-col cols="11" lg="4" md="6" sm="7" xl="3">
+      <div class="image">
+        <img alt="Smiling Girl Picture" src="@/assets/svg/girl-smiling.svg">
+      </div>
+    </v-col>
+
+    <v-col cols="12" lg="5" md="6" xl="4">
+      <div class="form mx-auto px-4">
+        <div class="my-5 my-md-0 text-center text-md-left">
+          <underlined-title text="Welcome to Playgarden Prep" />
         </div>
-      </v-col>
 
-      <v-col cols="12" lg="5" md="6" xl="4">
-        <div class="form mx-auto px-4">
-          <div class="my-5 my-md-0 text-center text-md-left">
-            <underlined-title
-              :class="[{'text-h5 font-weight-bold text-uppercase': $vuetify.breakpoint.smAndDown }, {'text-none': $vuetify.breakpoint.mdAndUp}]"
-              text="Welcome to Playgarden Prep"
-              :underline="$vuetify.breakpoint.mdAndUp"
-            />
-          </div>
+        <v-btn
+          v-if="isUserLoggedIn"
+          block
+          color="primary"
+          :disabled="loading"
+          :loading="loading"
+          @click="onResend"
+        >
+          RESEND EMAIL
+        </v-btn>
 
-          <p class="text-center text-md-left">
-            <small>We are happy to have you! Check your email to confirm your
-              account and start enjoying our learning experience.</small>
-          </p>
-
-          <v-btn
-            v-if="(userInfo || {}).id"
-            block
-            color="primary"
-            :disabled="loading"
-            :loading="loading"
-            x-large
-            @click="onResend"
-          >
-            RESEND EMAIL
+        <nuxt-link v-else :to="{ name: 'auth-login' }">
+          <v-btn block color="primary">
+            RETURN TO LOG IN
           </v-btn>
+        </nuxt-link>
 
-          <nuxt-link v-else :to="{ name: 'auth-login' }">
-            <v-btn block color="primary">
-              RETURN TO LOG IN
-            </v-btn>
+        <p class="mt-6 text-center text-md-left">
+          Didn’t receive an email?
+
+          <nuxt-link to="#">
+            <span>CONTACT US</span>
           </nuxt-link>
-
-          <p class="mt-6 signup text-center text-md-left">
-            Didn’t receive an email?
-            <nuxt-link to="#">
-              <span>CONTACT US</span>
-            </nuxt-link>
-          </p>
-        </div>
-      </v-col>
-    </v-row>
-  </section>
+        </p>
+      </div>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -64,7 +53,7 @@ export default {
   }),
 
   computed: {
-    ...mapGetters('auth', { userInfo: 'getUserInfo' })
+    ...mapGetters('auth', ['isUserLoggedIn'])
   },
 
   created () {

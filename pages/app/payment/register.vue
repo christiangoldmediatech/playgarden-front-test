@@ -1,41 +1,39 @@
 <template>
-  <section>
-    <v-row class="flex-column-reverse flex-md-row" justify="center">
-      <v-col class="px-12" cols="12" lg="7" md="8" xl="5">
-        <stripe-form :loading="loading" @click:submit="onSubmit" />
-      </v-col>
+  <v-row class="flex-column-reverse flex-md-row" justify="center" no-gutters>
+    <v-col class="px-12" cols="12" lg="7" md="8" xl="5">
+      <stripe-form :loading="loading" @click:submit="onSubmit" />
+    </v-col>
 
-      <v-col class="px-12" cols="12" lg="3" md="4" xl="3">
-        <p class="text-center text-md-left">
-          <span class="font-weight-bold text-h5">
-            MEMBERSHIP REVIEW
-          </span>
-        </p>
+    <v-col class="px-12" cols="12" lg="3" md="4" xl="3">
+      <p class="text-center text-md-left">
+        <span class="font-weight-bold text-h5">
+          MEMBERSHIP REVIEW
+        </span>
+      </p>
 
-        <v-row
-          v-for="(item, indexCI) in cost.items"
-          :key="indexCI"
-          class="px-12 py-2"
-        >
-          MEMBERSHIP {{ indexCI + 1 }}
+      <v-row
+        v-for="(item, indexCI) in cost.items"
+        :key="indexCI"
+        class="px-12 py-2"
+      >
+        MEMBERSHIP {{ indexCI + 1 }}
 
-          <v-spacer />
+        <v-spacer />
 
-          <b>${{ item.price }}</b>
-        </v-row>
+        <b>${{ item.price }}</b>
+      </v-row>
 
-        <v-divider />
+      <v-divider />
 
-        <v-row class="px-12">
-          TOTAL
+      <v-row class="px-12">
+        TOTAL
 
-          <v-spacer />
+        <v-spacer />
 
-          <b>${{ cost.total || 0 }}</b>
-        </v-row>
-      </v-col>
-    </v-row>
-  </section>
+        <b>${{ cost.total || 0 }}</b>
+      </v-row>
+    </v-col>
+  </v-row>
 </template>
 
 <script>

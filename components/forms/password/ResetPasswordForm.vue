@@ -70,9 +70,12 @@ export default {
       if (this.$refs.resetPasswordForm) {
         this.$refs.resetPasswordForm.validate()
         if (this.isValidForm) {
-          this.$emit('click:submit', jsonCopy({
-            password: this.password
-          }))
+          this.$emit(
+            'click:submit',
+            jsonCopy({
+              password: this.password
+            })
+          )
           this.$refs.resetPasswordForm.resetValidation()
         }
       }

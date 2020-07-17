@@ -137,7 +137,7 @@
             :name="(removable ? `Child #${indexD + 1} - ` : '') + 'Backpack'"
             rules="required"
           >
-            <v-row class="">
+            <v-row>
               <v-col
                 v-for="(backpack, indexB) in backpacks"
                 :key="indexB"
