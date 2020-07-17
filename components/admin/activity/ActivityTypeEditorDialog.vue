@@ -91,6 +91,21 @@
                   :show-swatches="false"
                 />
               </v-row>
+
+              <p class="mb-5 subtitle-2">
+                Icon:
+              </p>
+
+              <v-row v-if="item.icon" justify="center">
+                <img
+                  :src="item.icon"
+                  width="50%"
+                >
+              </v-row>
+
+              <v-row>
+                <file-uploader ref="fileUploader" path="activity-type-icon" />
+              </v-row>
             </v-form>
           </v-container>
         </v-card-text>
@@ -126,6 +141,7 @@
 
 <script>
 import { mapActions } from 'vuex'
+import FileUploader from '@/components/admin/FileUploader.vue'
 
 function generateItemTemplate () {
   return {
@@ -142,13 +158,16 @@ function generateItemTemplate () {
 export default {
   name: 'ActivityTypeEditorDialog',
 
+  components: {
+    FileUploader
+  },
+
   data () {
     return {
       dialog: false,
       loading: false,
       valid: true,
       id: null,
-      originalIcon: null,
       item: generateItemTemplate()
     }
   },
@@ -177,6 +196,8 @@ export default {
     async save () {
       this.loading = true
       try {
+        const icon = await this.$refs.fileUploader.handleFileUpload()
+        this.item.icon = icon
         if (this.id === null) {
           await this.createType(this.item)
         } else {
@@ -193,13 +214,11 @@ export default {
 
     resetItem () {
       this.id = null
-      this.originalIcon = null
       this.item = generateItemTemplate()
     },
 
     loadItem (item) {
       this.id = item.id
-      this.originalIcon = item.icon
 
       // Handle keys
       Object.keys(item).forEach((key) => {
@@ -225,6 +244,9 @@ export default {
 
       this.$nextTick(() => {
         this.dialog = true
+        this.$nextTick(() => {
+          this.$refs.fileUploader.reset()
+        })
       })
     }
   }
