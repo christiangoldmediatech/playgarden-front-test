@@ -1,27 +1,31 @@
 <template>
-  <section>
-    <v-row no-gutters>
-      <v-col v-if="$vuetify.breakpoint.mdAndUp" cols="6">
-        <div class="image">
-          <img alt="Smiling Girl Picture" src="@/assets/svg/girl-smiling.svg">
+  <v-row no-gutters>
+    <v-col cols="6">
+      <div class="image">
+        <img alt="Smiling Girl Picture" src="@/assets/svg/girl-smiling.svg">
+      </div>
+    </v-col>
+
+    <v-col cols="12" md="6">
+      <div class="form mx-auto px-4">
+        <div>
+          <underlined-title text="Reset Password" />
         </div>
-      </v-col>
-      <v-col cols="12" md="6">
-        <div class="form mx-auto px-4">
-          <div>
-            <underlined-title text="Reset Password" />
-          </div>
-          <p v-show="errorMessage" class="error-message">
-            <v-icon color="error">
-              mdi-close-circle
-            </v-icon>
-            {{ errorMessage }}
-          </p>
-          <reset-password-form :loading="isLoadingForm" @click:submit="resetPassword" />
-        </div>
-      </v-col>
-    </v-row>
-  </section>
+
+        <p v-show="errorMessage" class="error-message">
+          <v-icon color="error">
+            mdi-close-circle
+          </v-icon>
+          {{ errorMessage }}
+        </p>
+
+        <reset-password-form
+          :loading="isLoadingForm"
+          @click:submit="resetPassword"
+        />
+      </div>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -48,7 +52,9 @@ export default {
         this.$router.push('/')
       } else {
         this.token = this.$route.query.token
-        const { data } = await this.$axios.get(`${process.env.apiBaseUrl}/auth/password/validate/${this.token}`)
+        const { data } = await this.$axios.get(
+          `${process.env.apiBaseUrl}/auth/password/validate/${this.token}`
+        )
         if (!data.valid) {
           // TODO: Call global toast and tell user token expired
           this.$router.push('/')
@@ -65,7 +71,10 @@ export default {
       try {
         this.isLoadingForm = true
         // TODO: move to store and use mapActions
-        const { data } = await this.$axios.patch(`${process.env.apiBaseUrl}/auth/password/reset/${this.token}`, password)
+        const { data } = await this.$axios.patch(
+          `${process.env.apiBaseUrl}/auth/password/reset/${this.token}`,
+          password
+        )
         if (!data.changed) {
           throw new Error('password could not be changed')
         } else {
@@ -81,9 +90,10 @@ export default {
     },
     handleLoginError (error) {
       // TODO: Remove this alert to a global component
-      this.errorMessage = 'Sorry! An error ocurred while reseting your password'
+      this.errorMessage =
+        'Sorry! An error ocurred while reseting your password'
       // eslint-disable-next-line
-      console.error(error)
+      console.error(error);
     }
   }
 }

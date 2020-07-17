@@ -1,50 +1,48 @@
 <template>
-  <section>
-    <v-row no-gutters>
-      <v-col cols="12" md="6">
-        <div class="image">
-          <img alt="Smiling Girl Picture" src="@/assets/svg/girl-smiling.svg">
+  <v-row no-gutters>
+    <v-col cols="12" md="6">
+      <div class="image">
+        <img alt="Smiling Girl Picture" src="@/assets/svg/girl-smiling.svg">
+      </div>
+    </v-col>
+
+    <v-col cols="12" md="6">
+      <div class="form mx-auto px-4">
+        <div>
+          <underlined-title text="Welcome to Playgarden Prep" />
         </div>
-      </v-col>
 
-      <v-col cols="12" md="6">
-        <div class="form mx-auto px-4">
-          <div>
-            <underlined-title text="Welcome to Playgarden Prep" />
-          </div>
+        <p class="text-center text-md-left">
+          <small>We are happy to have you! Check your email to confirm your account
+            and start enjoying our learning experience.</small>
+        </p>
 
-          <p class="text-center text-md-left">
-            <small>We are happy to have you! Check your email to confirm your
-              account and start enjoying our learning experience.</small>
-          </p>
+        <v-btn
+          v-if="(userInfo || {}).id"
+          block
+          color="primary"
+          :disabled="loading"
+          :loading="loading"
+          @click="onResend"
+        >
+          RESEND EMAIL
+        </v-btn>
 
-          <v-btn
-            v-if="(userInfo || {}).id"
-            block
-            color="primary"
-            :disabled="loading"
-            :loading="loading"
-            @click="onResend"
-          >
-            RESEND EMAIL
+        <nuxt-link v-else :to="{ name: 'auth-login' }">
+          <v-btn block color="primary">
+            RETURN TO LOG IN
           </v-btn>
+        </nuxt-link>
 
-          <nuxt-link v-else :to="{ name: 'auth-login' }">
-            <v-btn block color="primary">
-              RETURN TO LOG IN
-            </v-btn>
+        <p class="mt-6 signup">
+          Didn’t receive an email?
+          <nuxt-link to="#">
+            <span>CONTACT US</span>
           </nuxt-link>
-
-          <p class="mt-6 signup">
-            Didn’t receive an email?
-            <nuxt-link to="#">
-              <span>CONTACT US</span>
-            </nuxt-link>
-          </p>
-        </div>
-      </v-col>
-    </v-row>
-  </section>
+        </p>
+      </div>
+    </v-col>
+  </v-row>
 </template>
 
 <script>

@@ -1,30 +1,28 @@
 <template>
-  <section>
-    <v-row no-gutters>
-      <v-col cols="12" md="6">
-        <div class="image">
-          <img alt="Smiling Girl Picture" src="@/assets/svg/girl-smiling.svg">
+  <v-row no-gutters>
+    <v-col cols="12" md="6">
+      <div class="image">
+        <img alt="Smiling Girl Picture" src="@/assets/svg/girl-smiling.svg">
+      </div>
+    </v-col>
+
+    <v-col cols="12" md="6">
+      <div class="form mx-auto px-4">
+        <div>
+          <underlined-title text="Welcome Back" />
         </div>
-      </v-col>
 
-      <v-col cols="12" md="6">
-        <div class="form mx-auto px-4">
-          <div>
-            <underlined-title text="Welcome Back" />
-          </div>
+        <p v-show="errorMessage" class="error-message">
+          <v-icon color="error">
+            mdi-close-circle
+          </v-icon>
+          {{ errorMessage }}
+        </p>
 
-          <p v-show="errorMessage" class="error-message">
-            <v-icon color="error">
-              mdi-close-circle
-            </v-icon>
-            {{ errorMessage }}
-          </p>
-
-          <login-form :loading="loading" @click:submit="onSubmit" />
-        </div>
-      </v-col>
-    </v-row>
-  </section>
+        <login-form :loading="loading" @click:submit="onSubmit" />
+      </div>
+    </v-col>
+  </v-row>
 </template>
 
 <script>

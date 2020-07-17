@@ -1,47 +1,45 @@
 <template>
-  <section>
-    <v-row no-gutters>
-      <v-col cols="12" md="6">
-        <div class="image">
-          <img alt="Smiling Girl Picture" src="@/assets/svg/girl-smiling.svg">
+  <v-row no-gutters>
+    <v-col cols="12" md="6">
+      <div class="image">
+        <img alt="Smiling Girl Picture" src="@/assets/svg/girl-smiling.svg">
+      </div>
+    </v-col>
+
+    <v-col cols="12" md="6">
+      <div class="form mx-auto px-4">
+        <div>
+          <underlined-title text="Reset Password" />
         </div>
-      </v-col>
 
-      <v-col cols="12" md="6">
-        <div class="form mx-auto px-4">
-          <div>
-            <underlined-title text="Reset Password" />
-          </div>
+        <p>
+          Enter your email to reset your password. You will receive an email
+          with instructions on how to reset your password.
+        </p>
 
-          <p>
-            Enter your email to reset your password. You will receive an email
-            with instructions on how to reset your password.
-          </p>
+        <p v-show="errorMessage" class="error-message">
+          <v-icon color="error">
+            mdi-close-circle
+          </v-icon>
 
-          <p v-show="errorMessage" class="error-message">
-            <v-icon color="error">
-              mdi-close-circle
-            </v-icon>
+          {{ errorMessage }}
+        </p>
 
-            {{ errorMessage }}
-          </p>
+        <p v-show="successMessage" class="success-message">
+          <v-icon color="success">
+            mdi-checkbox-marked-circle-outline
+          </v-icon>
 
-          <p v-show="successMessage" class="success-message">
-            <v-icon color="success">
-              mdi-checkbox-marked-circle-outline
-            </v-icon>
+          {{ successMessage }}
+        </p>
 
-            {{ successMessage }}
-          </p>
-
-          <forgot-password-form
-            :loading="isLoadingForm"
-            @click:submit="handleResetPassword"
-          />
-        </div>
-      </v-col>
-    </v-row>
-  </section>
+        <forgot-password-form
+          :loading="isLoadingForm"
+          @click:submit="handleResetPassword"
+        />
+      </div>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
