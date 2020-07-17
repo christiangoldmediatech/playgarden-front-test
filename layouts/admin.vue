@@ -84,6 +84,7 @@
 
         <v-list-item
           link
+          nuxt
           :to="{ name: 'auth-logout' }"
         >
           <v-list-item-icon>
@@ -115,7 +116,7 @@
 
       <v-spacer />
 
-      <v-btn icon @click.stop="logout">
+      <v-btn icon nuxt :to="{ name: 'auth-logout' }">
         <v-icon>
           mdi-logout
         </v-icon>
