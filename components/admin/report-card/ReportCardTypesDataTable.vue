@@ -83,6 +83,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 import ReportCardTypeEditorDialog from './ReportCardTypeEditorDialog'
 
 export default {
@@ -114,18 +115,18 @@ export default {
   },
 
   computed: {
-    types () {
-      return this.$store.getters['admin/report-card/types']
-    }
+    ...mapGetters('admin/report-card', ['types'])
   },
 
   methods: {
+    ...mapActions('admin/report-card', ['getTypes', 'deleteType']),
+
     async refresh (clear = false) {
       this.loading = true
       if (clear) {
         this.search = ''
       }
-      await this.$store.dispatch('admin/report-card/getTypes', this.search)
+      await this.getTypes(this.search)
       this.loading = false
     },
 
@@ -134,7 +135,7 @@ export default {
         title: 'Delete report card type?',
         message: `Are you sure you wish to delete '${name}' recport card type?`,
         action: async () => {
-          await this.$store.dispatch('admin/report-card/deleteType', id)
+          await this.deleteType(id)
           this.refresh()
         }
       })

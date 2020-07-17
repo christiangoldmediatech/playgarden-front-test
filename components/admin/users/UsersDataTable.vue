@@ -138,6 +138,8 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
+
 export default {
   name: 'UsersDataTable',
 
@@ -202,16 +204,18 @@ export default {
   },
 
   computed: {
-    types () {
-      return this.$store.getters['admin/users/rows']
-    },
-
-    total () {
-      return this.$store.getters['admin/users/total']
-    }
+    ...mapGetters('admin/users', {
+      types: 'rows',
+      total: 'total'
+    })
   },
 
   watch: {
+    ...mapActions('admin/users', {
+      getUsers: 'get',
+      deleteUser: 'delete'
+    }),
+
     page () {
       this.refresh()
     },
@@ -242,7 +246,7 @@ export default {
         })
       }
 
-      await this.$store.dispatch('admin/users/get', params)
+      await this.getUsers(params)
       this.loading = false
     },
 
@@ -251,7 +255,7 @@ export default {
         title: 'Delete user?',
         message: `Are you sure you wish to delete user '${firstName} ${lastName}' (${email})?`,
         action: async () => {
-          await this.$store.dispatch('admin/users/delete', id)
+          await this.deleteUser(id)
           this.refresh()
         }
       })

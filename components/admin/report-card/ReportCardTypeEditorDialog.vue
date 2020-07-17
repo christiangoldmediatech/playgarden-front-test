@@ -89,6 +89,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   name: 'ReportCardTypeEditorDialog',
 
@@ -112,6 +114,8 @@ export default {
   },
 
   methods: {
+    ...mapActions('admin/report-card', ['createType', 'updateType', 'getTypes']),
+
     close () {
       this.$nextTick(() => {
         this.dialog = false
@@ -124,11 +128,11 @@ export default {
       this.loading = true
       try {
         if (this.id === null) {
-          await this.$store.dispatch('admin/report-card/createType', this.item)
+          await this.createType(this.item)
         } else {
-          await this.$store.dispatch('admin/report-card/updateType', { id: this.id, data: this.item })
+          await this.updateType({ id: this.id, data: this.item })
         }
-        await this.$store.dispatch('admin/report-card/getTypes')
+        await this.getTypes()
       } catch (err) {
         this.loading = false
         return

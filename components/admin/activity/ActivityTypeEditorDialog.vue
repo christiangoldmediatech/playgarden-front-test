@@ -104,7 +104,17 @@
               </v-row>
 
               <v-row>
-                <file-uploader ref="fileUploader" path="activity-type-icon" />
+                <file-uploader
+                  ref="fileUploader"
+                  gif
+                  label="Upload Icon"
+                  mode="image"
+                  path="activity-type"
+                  placeholder="Select an icon for this activity type"
+                  png
+                  prepend-icon="mdi-camera"
+                  svg
+                />
               </v-row>
             </v-form>
           </v-container>
@@ -141,7 +151,6 @@
 
 <script>
 import { mapActions } from 'vuex'
-import FileUploader from '@/components/admin/FileUploader.vue'
 
 function generateItemTemplate () {
   return {
@@ -157,10 +166,6 @@ function generateItemTemplate () {
 
 export default {
   name: 'ActivityTypeEditorDialog',
-
-  components: {
-    FileUploader
-  },
 
   data () {
     return {

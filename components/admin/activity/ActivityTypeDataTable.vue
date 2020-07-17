@@ -83,6 +83,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 import ActivityTypeEditorDialog from './ActivityTypeEditorDialog'
 
 export default {
@@ -114,18 +115,18 @@ export default {
   },
 
   computed: {
-    types () {
-      return this.$store.getters['admin/activity/types']
-    }
+    ...mapGetters('admin/activity', ['types'])
   },
 
   methods: {
+    ...mapActions('admin/activity', ['getTypes', 'deleteType']),
+
     async refresh (clear = false) {
       this.loading = true
       if (clear) {
         this.search = ''
       }
-      await this.$store.dispatch('admin/activity/getTypes', this.search)
+      await this.getTypes(this.search)
       this.loading = false
     },
 
@@ -134,7 +135,7 @@ export default {
         title: 'Delete activity type?',
         message: `Are you sure you wish to delete '${name}' activity type?`,
         action: async () => {
-          await this.$store.dispatch('admin/activity/deleteType', id)
+          await this.deleteType(id)
           this.refresh()
         }
       })

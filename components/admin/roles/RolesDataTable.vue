@@ -83,6 +83,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 import RoleEditorDialog from './RoleEditorDialog'
 
 export default {
@@ -120,18 +121,23 @@ export default {
   },
 
   computed: {
-    types () {
-      return this.$store.getters['admin/roles/rows']
-    }
+    ...mapGetters('admin/roles', {
+      types: 'rows'
+    })
   },
 
   methods: {
+    ...mapActions('admin/roles', {
+      getRoles: 'get',
+      deleteRole: 'delete'
+    }),
+
     async refresh (clear = false) {
       this.loading = true
       if (clear) {
         this.search = ''
       }
-      await this.$store.dispatch('admin/roles/get', this.search)
+      await this.getRoles(this.search)
       this.loading = false
     },
 
@@ -140,7 +146,7 @@ export default {
         title: 'Delete role?',
         message: `Are you sure you wish to delete the '${name}' role?`,
         action: async () => {
-          await this.$store.dispatch('admin/roles/delete', id)
+          await this.deleteRole(id)
           this.refresh()
         }
       })

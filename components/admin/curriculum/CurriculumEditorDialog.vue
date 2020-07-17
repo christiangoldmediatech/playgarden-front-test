@@ -89,6 +89,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   name: 'CurriculumEditorDialog',
 
@@ -112,6 +114,8 @@ export default {
   },
 
   methods: {
+    ...mapActions('admin/curriculum', ['createType', 'updateType', 'getTypes']),
+
     close () {
       this.$nextTick(() => {
         this.dialog = false
@@ -124,11 +128,11 @@ export default {
       this.loading = true
       try {
         if (this.id === null) {
-          await this.$store.dispatch('admin/curriculum/createType', this.item)
+          await this.createType(this.item)
         } else {
-          await this.$store.dispatch('admin/curriculum/updateType', { id: this.id, data: this.item })
+          await this.updateType({ id: this.id, data: this.item })
         }
-        await this.$store.dispatch('admin/curriculum/getTypes')
+        await this.getTypes()
       } catch (err) {
         this.loading = false
         return
