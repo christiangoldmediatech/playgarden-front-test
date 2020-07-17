@@ -4,7 +4,6 @@
     :fullscreen="$vuetify.breakpoint.xs"
     max-width="500px"
     persistent
-    scrollable
   >
     <v-card>
       <v-toolbar
@@ -58,41 +57,41 @@
 
               <span class="subtitle-2">Type:</span>
 
-              <v-checkbox
-                v-model="item.extra"
-                class="mt-1"
-                dense
-                label="Extra"
-              />
+              <v-row justify="space-around">
+                <v-checkbox
+                  v-model="item.extra"
+                  class="mt-1"
+                  dense
+                  label="Extra"
+                />
 
-              <v-checkbox
-                v-model="item.lesson"
-                class="mt-1"
-                dense
-                label="Lesson"
-              />
+                <v-checkbox
+                  v-model="item.lesson"
+                  class="mt-1"
+                  dense
+                  label="Lesson"
+                />
 
-              <v-checkbox
-                v-model="item.activity"
-                class="mt-1"
-                dense
-                label="Activity"
-              />
+                <v-checkbox
+                  v-model="item.activity"
+                  class="mt-1"
+                  dense
+                  label="Activity"
+                />
+              </v-row>
+
+              <span class="subtitle-2">Color:</span>
+
+              <v-row justify="center">
+                <v-color-picker
+                  v-model="item.color"
+                  hide-mode-switch
+                  hide_inputs
+                  mode="hexa"
+                  :show-swatches="false"
+                />
+              </v-row>
             </v-form>
-
-            <span class="subtitle-2">Color:</span>
-
-            <v-color-picker
-              v-model="item.color"
-              class="ma-2"
-              flat
-              hide-canvas
-              hide-mode-switch
-              hide_inputs
-              light
-              mode="hexa"
-              :show-swatches="false"
-            />
           </v-container>
         </v-card-text>
 
@@ -101,8 +100,8 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
+            class="white--text"
             color="green"
-            :dark="$vuetify.breakpoint.xs"
             :disabled="invalid"
             :loading="loading"
             :text="$vuetify.breakpoint.smAndUp"
@@ -111,8 +110,8 @@
             Save
           </v-btn>
           <v-btn
+            class="white--text"
             color="red"
-            :dark="$vuetify.breakpoint.xs"
             :disabled="loading"
             :text="$vuetify.breakpoint.smAndUp"
             @click.stop="close"
@@ -202,9 +201,17 @@ export default {
       this.id = item.id
       this.originalIcon = item.icon
 
+      // Handle keys
       Object.keys(item).forEach((key) => {
         if (Object.prototype.hasOwnProperty.call(this.item, key)) {
           this.item[key] = item[key]
+        }
+      })
+
+      // Handle types
+      Object.keys(item.type).forEach((key) => {
+        if (Object.prototype.hasOwnProperty.call(this.item, key)) {
+          this.item[key] = item.type[key]
         }
       })
     },
