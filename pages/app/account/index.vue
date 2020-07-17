@@ -1,63 +1,61 @@
 <template>
-  <section>
-    <v-row no-gutters>
-      <v-col cols="12" md="6">
-        <v-row>
-          <v-col cols="12">
-            <div class="image">
-              <img
-                alt="Montessori Nutrition Lesson"
-                src="@/assets/svg/montessori-nutrition-lesson.svg"
-              >
-            </div>
-          </v-col>
+  <v-row class="mt-md-0 mt-n9" no-gutters>
+    <v-col cols="12" md="6">
+      <div class="image">
+        <img
+          alt="Montessori Nutrition Lesson"
+          src="@/assets/svg/montessori-nutrition-lesson.svg"
+        >
+      </div>
 
-          <v-col class="mb-12 mt-3" cols="12">
-            <underlined-title text="Account Settings" />
+      <v-col class="mb-12 mt-3 px-12" cols="12">
+        <underlined-title text="Account Settings" />
 
-            <p>
-              Welcome back (Parent’s Name)! Here you can manage everything
-              related to your account.
-            </p>
-          </v-col>
+        <p>
+          Welcome back {{ userInfo.fullName }}! Here you can manage everything
+          related to your account.
+        </p>
 
-          <v-col class="hidden-sm-and-down" cols="12">
-            <v-btn block color="accent" text :to="{ name: 'auth-logout' }">
-              LOG OUT
-            </v-btn>
-          </v-col>
-        </v-row>
+        <v-btn
+          block
+          class="hidden-sm-and-down"
+          color="accent"
+          text
+          :to="{ name: 'auth-logout' }"
+        >
+          LOG OUT
+        </v-btn>
       </v-col>
+    </v-col>
 
-      <v-col cols="12" md="6" px-9>
-        <user-profile-form
-          :loading="loading"
-          :user="userInfo"
-          @set-loading-state="setLoadingState"
-        />
+    <v-col class="px-12" cols="12" md="6">
+      <!--        <user-profile-form-->
+      <!--          :loading="loading"-->
+      <!--          :user="userInfo"-->
+      <!--          @set-loading-state="setLoadingState"-->
+      <!--        />-->
 
-        <membership-form :loading="loading" />
+      <!--        <membership-form :loading="loading" />-->
 
-        <caregivers-form :loading="loading" />
-      </v-col>
-    </v-row>
-  </section>
+      <!--        <caregivers-form :loading="loading" />-->
+    </v-col>
+  </v-row>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 
-import CaregiversForm from '@/components/forms/account/CaregiversForm'
-import UserProfileForm from '@/components/forms/account/UserProfileForm'
-import MembershipForm from '@/components/forms/account/MembershipForm'
+// import CaregiversForm from '@/components/forms/account/CaregiversForm'
+// import UserProfileForm from '@/components/forms/account/UserProfileForm'
+// import MembershipForm from '@/components/forms/account/MembershipForm'
 
 export default {
   name: 'Index',
 
   components: {
-    CaregiversForm,
-    MembershipForm,
-    UserProfileForm
+    // CaregiversForm,
+    // MembershipForm,
+    // UserProfileForm
   },
 
   data: () => ({
@@ -76,14 +74,13 @@ export default {
 
 <style lang="scss" scoped>
 .image {
-  height: 100%;
-  max-height: 360px;
+  max-height: 500px;
   width: 100%;
   display: flex;
-  justify-content: left;
-  align-content: left;
+  justify-content: center;
+  align-content: center;
   img {
-    height: 100%;
+    max-width: 100%;
   }
 }
 </style>

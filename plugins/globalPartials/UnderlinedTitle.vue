@@ -1,7 +1,11 @@
 <template>
   <span
     v-bind="$attrs"
-    :class="[{'underlined-title': underline}]"
+    :class="{
+      'text-h5 font-weight-bold text-uppercase': $vuetify.breakpoint.smAndDown,
+      'text-none': $vuetify.breakpoint.mdAndUp,
+      'underlined-title': $vuetify.breakpoint.mdAndUp
+    }"
     v-on="$listeners"
   >
     {{ text }}
@@ -16,11 +20,6 @@ export default {
     text: {
       type: String,
       required: true
-    },
-    underline: {
-      type: Boolean,
-      required: false,
-      default: true
     }
   }
 }

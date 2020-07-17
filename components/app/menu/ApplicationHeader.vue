@@ -64,8 +64,8 @@
       class="app-bar"
       :class="{ mobile: $vuetify.breakpoint.smAndDown }"
       color="white"
-      elevate-on-scroll
       :extension-height="$vuetify.breakpoint.mdAndUp ? 100 : 0"
+      flat
       :height="$vuetify.breakpoint.mdAndUp ? 120 : undefined"
     >
       <v-app-bar-nav-icon

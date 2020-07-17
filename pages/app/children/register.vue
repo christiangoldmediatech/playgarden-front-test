@@ -1,43 +1,41 @@
 <template>
-  <section>
-    <v-row class="flex-column-reverse flex-md-row" justify="center" no-gutters>
-      <v-col class="px-12" cols="12" lg="7" md="8" xl="5">
-        <register-form :loading="loading" @click:submit="onSubmit" />
-      </v-col>
+  <v-row class="flex-column-reverse flex-md-row" justify="center" no-gutters>
+    <v-col class="px-12" cols="12" lg="7" md="8" xl="5">
+      <register-form :loading="loading" @click:submit="onSubmit" />
+    </v-col>
 
-      <v-col class="px-12" cols="12" lg="3" md="4" xl="2">
-        <p>
-          <span class="font-weight-bold text-h5">
-            MEMBERSHIP
-          </span>
+    <v-col class="px-12" cols="12" lg="3" md="4" xl="2">
+      <p>
+        <span class="font-weight-bold text-h5">
+          MEMBERSHIP
+        </span>
 
-          <br>
+        <br>
 
-          <small>
-            Complete your registration and membership subscription to start
-            enjoying our learning experience!
-          </small>
-        </p>
+        <small>
+          Complete your registration and membership subscription to start
+          enjoying our learning experience!
+        </small>
+      </p>
 
-        <p>
-          Pricing:
+      <p>
+        Pricing:
 
-          <br>
+        <br>
 
-          <span class="font-weight-bold">
-            Pay $0.99 USD a day for first child and $0.20 USD a day per
-            additional*
-          </span>
-        </p>
+        <span class="font-weight-bold">
+          Pay $0.99 USD a day for first child and $0.20 USD a day per
+          additional*
+        </span>
+      </p>
 
-        <p>*Get a FREE trial for the first week!</p>
+      <p>*Get a FREE trial for the first week!</p>
 
-        <p>
-          <small>You can cancel at any time from your account settings</small>
-        </p>
-      </v-col>
-    </v-row>
-  </section>
+      <p>
+        <small>You can cancel at any time from your account settings</small>
+      </p>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
