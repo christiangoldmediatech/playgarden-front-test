@@ -55,7 +55,44 @@
                   outlined
                 />
               </validation-provider>
+
+              <span class="subtitle-2">Type:</span>
+
+              <v-checkbox
+                v-model="item.extra"
+                class="mt-1"
+                dense
+                label="Extra"
+              />
+
+              <v-checkbox
+                v-model="item.lesson"
+                class="mt-1"
+                dense
+                label="Lesson"
+              />
+
+              <v-checkbox
+                v-model="item.activity"
+                class="mt-1"
+                dense
+                label="Activity"
+              />
             </v-form>
+
+            <span class="subtitle-2">Color:</span>
+
+            <v-color-picker
+              v-model="item.color"
+              class="ma-2"
+              flat
+              hide-canvas
+              hide-mode-switch
+              hide_inputs
+              light
+              mode="hexa"
+              :show-swatches="false"
+            />
           </v-container>
         </v-card-text>
 
@@ -89,6 +126,20 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
+function generateItemTemplate () {
+  return {
+    name: '',
+    description: '',
+    lesson: false,
+    extra: false,
+    activity: false,
+    color: '#FF0000',
+    icon: null
+  }
+}
+
 export default {
   name: 'ActivityTypeEditorDialog',
 
@@ -98,10 +149,8 @@ export default {
       loading: false,
       valid: true,
       id: null,
-      item: {
-        name: '',
-        description: ''
-      }
+      originalIcon: null,
+      item: generateItemTemplate()
     }
   },
 
@@ -112,6 +161,12 @@ export default {
   },
 
   methods: {
+    ...mapActions('admin/activity', [
+      'createType',
+      'updateType',
+      'getTypes'
+    ]),
+
     close () {
       this.$nextTick(() => {
         this.dialog = false
@@ -124,11 +179,11 @@ export default {
       this.loading = true
       try {
         if (this.id === null) {
-          await this.$store.dispatch('admin/activity/createType', this.item)
+          await this.createType(this.item)
         } else {
-          await this.$store.dispatch('admin/activity/updateType', { id: this.id, data: this.item })
+          await this.updateType({ id: this.id, data: this.item })
         }
-        await this.$store.dispatch('admin/activity/getTypes')
+        await this.getTypes()
       } catch (err) {
         this.loading = false
         return
@@ -137,10 +192,29 @@ export default {
       }
     },
 
-    open ({ id = null, name = '', description = '' } = {}) {
-      this.id = id
-      this.item.name = name
-      this.item.description = description
+    resetItem () {
+      this.id = null
+      this.originalIcon = null
+      this.item = generateItemTemplate()
+    },
+
+    loadItem (item) {
+      this.id = item.id
+      this.originalIcon = item.icon
+
+      Object.keys(item).forEach((key) => {
+        if (Object.prototype.hasOwnProperty.call(this.item, key)) {
+          this.item[key] = item[key]
+        }
+      })
+    },
+
+    open (item) {
+      this.resetItem()
+
+      if (item) {
+        this.loadItem(item)
+      }
 
       this.$nextTick(() => {
         this.dialog = true
