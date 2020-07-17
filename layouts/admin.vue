@@ -84,7 +84,7 @@
 
         <v-list-item
           link
-          @click="logout"
+          :to="{ name: 'auth-logout' }"
         >
           <v-list-item-icon>
             <v-icon
@@ -216,13 +216,6 @@ export default {
 
         return item
       })
-    }
-  },
-
-  methods: {
-    logout () {
-      this.$store.dispatch('auth/logout')
-      // this.$router.push('/')
     }
   }
 }
