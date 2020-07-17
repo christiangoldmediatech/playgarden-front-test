@@ -47,17 +47,6 @@
                 />
               </validation-provider>
 
-              <!--
-              <validation-provider v-slot="{ errors }" name="Role Description" rules="required">
-                <v-textarea
-                  v-model="item.description"
-                  :error-messages="errors"
-                  label="Description"
-                  outlined
-                />
-              </validation-provider>
-              -->
-
               <validation-provider v-slot="{ errors }" name="Role Section" rules="required">
                 <v-radio-group
                   v-model="item.section"
@@ -121,7 +110,6 @@ export default {
       id: null,
       item: {
         name: '',
-        description: '',
         section: ''
       }
     }
@@ -165,10 +153,9 @@ export default {
       }
     },
 
-    open ({ id = null, name = '', description = '', section = '' } = {}) {
+    open ({ id = null, name = '', section = '' } = {}) {
       this.id = id
       this.item.name = name
-      this.item.description = description
       this.item.section = section
 
       this.$nextTick(() => {
