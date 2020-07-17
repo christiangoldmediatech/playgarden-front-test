@@ -14,7 +14,7 @@
           :error-messages="errors"
           label="First name"
           :loading="loading"
-          outlined
+          solo
         />
       </validation-provider>
 
@@ -31,7 +31,7 @@
           :error-messages="errors"
           label="Last name"
           :loading="loading"
-          outlined
+          solo
         />
       </validation-provider>
 
@@ -49,7 +49,7 @@
           label="Phone number"
           :loading="loading"
           maxlength="20"
-          outlined
+          solo
         />
       </validation-provider>
 
@@ -66,7 +66,7 @@
           :error-messages="errors"
           label="Email"
           :loading="loading"
-          outlined
+          solo
           type="email"
         />
       </validation-provider>
@@ -86,7 +86,7 @@
           label="Password"
           :loading="loading"
           maxlength="20"
-          outlined
+          solo
           type="password"
         />
       </validation-provider>
@@ -107,7 +107,7 @@
           label="Password confirmation"
           :loading="loading"
           maxlength="20"
-          outlined
+          solo
           type="password"
         />
       </validation-provider>
@@ -119,6 +119,7 @@
         :disabled="invalid"
         :loading="loading"
         type="submit"
+        x-large
       >
         SIGNUP
       </v-btn>

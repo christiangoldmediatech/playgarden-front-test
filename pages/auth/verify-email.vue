@@ -1,16 +1,20 @@
 <template>
   <section>
-    <v-row no-gutters>
-      <v-col cols="12" md="6">
+    <v-row align="center" justify="center" no-gutters>
+      <v-col cols="11" lg="4" md="6" sm="7" xl="3">
         <div class="image">
           <img alt="Smiling Girl Picture" src="@/assets/svg/girl-smiling.svg">
         </div>
       </v-col>
 
-      <v-col cols="12" md="6">
+      <v-col cols="12" lg="5" md="6" xl="4">
         <div class="form mx-auto px-4">
-          <div>
-            <underlined-title text="Welcome to Playgarden Prep" />
+          <div class="my-5 my-md-0 text-center text-md-left">
+            <underlined-title
+              :class="[{'text-h5 font-weight-bold text-uppercase': $vuetify.breakpoint.smAndDown }, {'text-none': $vuetify.breakpoint.mdAndUp}]"
+              text="Welcome to Playgarden Prep"
+              :underline="$vuetify.breakpoint.mdAndUp"
+            />
           </div>
 
           <p class="text-center text-md-left">
@@ -24,6 +28,7 @@
             color="primary"
             :disabled="loading"
             :loading="loading"
+            x-large
             @click="onResend"
           >
             RESEND EMAIL
@@ -35,7 +40,7 @@
             </v-btn>
           </nuxt-link>
 
-          <p class="mt-6 signup">
+          <p class="mt-6 signup text-center text-md-left">
             Didn’t receive an email?
             <nuxt-link to="#">
               <span>CONTACT US</span>
