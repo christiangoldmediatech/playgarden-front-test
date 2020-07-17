@@ -1,18 +1,18 @@
 <template>
-  <v-row no-gutters>
-    <v-col cols="12" md="6">
+  <v-row align="center" justify="center" no-gutters>
+    <v-col cols="11" lg="4" md="6" sm="7" xl="3">
       <div class="image">
         <img alt="Smiling Girl Picture" src="@/assets/svg/girl-smiling.svg">
       </div>
     </v-col>
 
-    <v-col cols="12" md="6">
+    <v-col cols="12" lg="5" md="6" xl="4">
       <div class="form mx-auto px-4">
-        <div>
+        <div class="my-5 my-md-0 text-center text-md-left">
           <underlined-title text="Reset Password" />
         </div>
 
-        <p>
+        <p class="text-center text-md-justify">
           Enter your email to reset your password. You will receive an email
           with instructions on how to reset your password.
         </p>

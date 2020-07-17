@@ -1,7 +1,11 @@
 <template>
   <span
     v-bind="$attrs"
-    class="underlined-title"
+    :class="{
+      'text-h5 font-weight-bold text-uppercase': $vuetify.breakpoint.smAndDown,
+      'text-none': $vuetify.breakpoint.mdAndUp,
+      'underlined-title': $vuetify.breakpoint.mdAndUp
+    }"
     v-on="$listeners"
   >
     {{ text }}
@@ -28,14 +32,14 @@ export default {
   position: relative;
   z-index: 1;
   &::after {
-    width: 100%;
+    width: 102%;
     position: absolute;
-    bottom: 5px;
-    left: 0;
+    bottom: 15%;
+    left: -1%;
     content: "";
     z-index: -1;
     border-bottom: 20px solid $pg-main;
-    border-radius: 5px;
+    border-radius: 7px;
   }
 }
 </style>

@@ -11,8 +11,8 @@
       :disabled="loading"
       label="Email"
       :loading="loading"
-      outlined
       :rules="[required, isValidEmail]"
+      solo
       type="email"
     />
 
@@ -22,6 +22,7 @@
       :disabled="isButtonDisabled"
       :loading="loading"
       type="submit"
+      x-large
     >
       RESET PASSWORD
     </v-btn>
@@ -46,7 +47,7 @@
       </nuxt-link>
     </p>
 
-    <p class="mt-4 signup">
+    <p class="mt-4 signup text-center text-md-left">
       Don't have an account?
 
       <nuxt-link :to="{ name: 'auth-signup' }">
@@ -91,9 +92,12 @@ export default {
       if (this.$refs.forgotPasswordForm) {
         this.$refs.forgotPasswordForm.validate()
         if (this.isValidForm) {
-          this.$emit('click:submit', jsonCopy({
-            email: this.email
-          }))
+          this.$emit(
+            'click:submit',
+            jsonCopy({
+              email: this.email
+            })
+          )
           this.$refs.forgotPasswordForm.resetValidation()
         }
       }

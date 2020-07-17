@@ -11,8 +11,8 @@
       :disabled="loading"
       label="Password"
       :loading="loading"
-      outlined
       :rules="[required, ...isValidPassword]"
+      solo
       type="password"
     />
 
@@ -22,11 +22,12 @@
       :disabled="isButtonDisabled"
       :loading="loading"
       type="submit"
+      x-large
     >
       RESET PASSWORD
     </v-btn>
 
-    <p class="login mt-4">
+    <p class="login mt-4 text-center text-md-left">
       <nuxt-link :to="{ name: 'index' }">
         <span>return to login</span>
       </nuxt-link>
@@ -69,9 +70,12 @@ export default {
       if (this.$refs.resetPasswordForm) {
         this.$refs.resetPasswordForm.validate()
         if (this.isValidForm) {
-          this.$emit('click:submit', jsonCopy({
-            password: this.password
-          }))
+          this.$emit(
+            'click:submit',
+            jsonCopy({
+              password: this.password
+            })
+          )
           this.$refs.resetPasswordForm.resetValidation()
         }
       }

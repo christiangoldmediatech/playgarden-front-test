@@ -57,12 +57,20 @@
               </validation-provider>
 
               <validation-provider v-slot="{ errors }" name="Role Section" rules="required">
-                <v-text-field
+                <v-radio-group
                   v-model="item.section"
                   :error-messages="errors"
                   label="Section"
-                  outlined
-                />
+                >
+                  <v-radio
+                    label="Admin"
+                    value="ADMIN"
+                  />
+                  <v-radio
+                    label="Users"
+                    value="USERS"
+                  />
+                </v-radio-group>
               </validation-provider>
             </v-form>
           </v-container>
