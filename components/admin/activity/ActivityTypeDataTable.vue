@@ -47,11 +47,29 @@
       </v-toolbar>
     </template>
 
+    <template v-slot:item.color="{ item }">
+      <v-avatar
+        color="black"
+        size="32"
+      >
+        <v-avatar
+          :color="item.color"
+          size="28"
+        />
+      </v-avatar>
+    </template>
+
+    <template v-slot:item.type="{ item }">
+      <span class="text-capitalize">
+        {{ itemTypeString(item.type) }}
+      </span>
+    </template>
+
     <template v-slot:item.actions="{ item }">
       <v-icon
         class="mr-2"
         color="yellow darken-2"
-        @click="$refs.editor.open(item)"
+        @click="$refs.editor.open(null, item)"
       >
         mdi-pencil-circle
       </v-icon>
@@ -99,13 +117,33 @@ export default {
       search: '',
       headers: [
         {
-          text: 'Activity',
+          text: 'Color',
+          align: 'start',
+          sortable: true,
+          value: 'color'
+        },
+        /*
+        {
+          text: 'Icon',
+          align: 'start',
+          sortable: true,
+          value: 'icon'
+        },
+        */
+        {
+          text: 'Activity Type Name',
           align: 'start',
           sortable: true,
           value: 'name'
         },
         {
-          text: 'Actions',
+          text: 'Type',
+          align: 'start',
+          sortable: true,
+          value: 'type'
+        },
+        {
+          text: '',
           align: 'right',
           sortable: false,
           value: 'actions'
@@ -120,6 +158,17 @@ export default {
 
   methods: {
     ...mapActions('admin/activity', ['getTypes', 'deleteType']),
+
+    itemTypeString (types) {
+      const list = []
+      Object.keys(types).forEach((key) => {
+        if (types[key]) {
+          list.push(key)
+        }
+      })
+
+      return (list.length) ? list.join(' | ') : 'N/A'
+    },
 
     async refresh (clear = false) {
       this.loading = true

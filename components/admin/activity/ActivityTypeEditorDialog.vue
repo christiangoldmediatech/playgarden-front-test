@@ -243,7 +243,7 @@ export default {
       })
     },
 
-    open (item) {
+    open (evt, item = null) {
       this.resetItem()
 
       if (item) {
