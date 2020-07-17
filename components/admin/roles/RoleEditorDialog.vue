@@ -47,6 +47,7 @@
                 />
               </validation-provider>
 
+              <!--
               <validation-provider v-slot="{ errors }" name="Role Description" rules="required">
                 <v-textarea
                   v-model="item.description"
@@ -55,6 +56,7 @@
                   outlined
                 />
               </validation-provider>
+              -->
 
               <validation-provider v-slot="{ errors }" name="Role Section" rules="required">
                 <v-radio-group

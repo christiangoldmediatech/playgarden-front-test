@@ -106,6 +106,7 @@
               <v-row>
                 <file-uploader
                   ref="fileUploader"
+                  :file.sync="file"
                   gif
                   label="Upload Icon"
                   mode="image"
@@ -169,6 +170,7 @@ export default {
 
   data () {
     return {
+      file: null,
       dialog: false,
       loading: false,
       valid: true,
@@ -220,6 +222,7 @@ export default {
     resetItem () {
       this.id = null
       this.item = generateItemTemplate()
+      this.file = null
     },
 
     loadItem (item) {
@@ -249,9 +252,6 @@ export default {
 
       this.$nextTick(() => {
         this.dialog = true
-        this.$nextTick(() => {
-          this.$refs.fileUploader.reset()
-        })
       })
     }
   }

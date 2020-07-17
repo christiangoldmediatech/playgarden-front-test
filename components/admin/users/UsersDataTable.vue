@@ -211,11 +211,6 @@ export default {
   },
 
   watch: {
-    ...mapActions('admin/users', {
-      getUsers: 'get',
-      deleteUser: 'delete'
-    }),
-
     page () {
       this.refresh()
     },
@@ -226,6 +221,11 @@ export default {
   },
 
   methods: {
+    ...mapActions('admin/users', {
+      getUsers: 'get',
+      deleteUser: 'delete'
+    }),
+
     setLimit (limit) {
       if (limit > 0) {
         this.limit = limit

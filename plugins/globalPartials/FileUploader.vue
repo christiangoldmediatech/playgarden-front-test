@@ -1,10 +1,11 @@
 <template>
   <v-file-input
-    v-model="file"
     v-bind="$props"
     :accepts="accepts"
     class="clickable"
     outlined
+    :value="file"
+    @change="$emit('update:file', $event)"
   />
 </template>
 
@@ -19,6 +20,11 @@ export default {
       type: Array,
       required: false,
       default: () => []
+    },
+    file: {
+      required: true,
+      type: null,
+      default: null
     },
     mode: {
       type: String,
@@ -130,9 +136,7 @@ export default {
   },
 
   data () {
-    return {
-      file: null
-    }
+    return {}
   },
 
   computed: {
@@ -183,10 +187,6 @@ export default {
         return filePath
       }
       return false
-    },
-
-    reset () {
-      this.file = null
     }
   }
 }

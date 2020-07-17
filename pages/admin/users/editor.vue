@@ -166,7 +166,9 @@ export default {
   },
 
   computed: {
-    ...mapGetters('admin/users', ['rows']),
+    ...mapGetters('admin/roles', {
+      roleRows: 'rows'
+    }),
 
     id () {
       return (this.$route.query.id) ? parseInt(this.$route.query.id) : null
@@ -177,7 +179,7 @@ export default {
     },
 
     roles () {
-      return this.rows.map(role => ({
+      return this.roleRows.map(role => ({
         text: role.name,
         value: role.id
       }))
@@ -188,7 +190,7 @@ export default {
     this.loading = true
     const promises = []
 
-    promises.push(this.getUsers())
+    promises.push(this.getRoles())
 
     if (this.id) {
       promises.push(this.getUserById(this.id))
@@ -214,6 +216,10 @@ export default {
       getUserById: 'getById',
       createUser: 'create',
       updateUser: 'update'
+    }),
+
+    ...mapActions('admin/roles', {
+      getRoles: 'get'
     }),
 
     async save () {
