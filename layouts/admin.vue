@@ -84,7 +84,8 @@
 
         <v-list-item
           link
-          @click="logout"
+          nuxt
+          :to="{ name: 'auth-logout' }"
         >
           <v-list-item-icon>
             <v-icon
@@ -115,7 +116,7 @@
 
       <v-spacer />
 
-      <v-btn icon @click.stop="logout">
+      <v-btn icon nuxt :to="{ name: 'auth-logout' }">
         <v-icon>
           mdi-logout
         </v-icon>
@@ -216,13 +217,6 @@ export default {
 
         return item
       })
-    }
-  },
-
-  methods: {
-    logout () {
-      this.$store.dispatch('auth/logout')
-      // this.$router.push('/')
     }
   }
 }
