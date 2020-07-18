@@ -42,6 +42,7 @@
           hide-details
           label="Search"
           single-line
+          solo
           @keydown.enter="refresh(false)"
         />
       </v-toolbar>
@@ -61,7 +62,7 @@
 
     <template v-slot:item.icon="{ item }">
       <img
-        v-if="item.icon"
+        v-if="item.icon && item.icon !== '0'"
         :src="item.icon"
         width="32px"
       >
@@ -76,19 +77,26 @@
       </span>
     </template>
 
+    <template v-slot:item.createdAt="{ item }">
+      {{ item.createdAt | formatDate }}
+    </template>
+
+    <template v-slot:item.updatedAt="{ item }">
+      {{ item.updatedAt | formatDate }}
+    </template>
+
     <template v-slot:item.actions="{ item }">
       <v-icon
-        class="mr-2"
-        color="yellow darken-2"
+        color="blue darken-2"
         @click="$refs.editor.open(null, item)"
       >
-        mdi-pencil-circle
+        mdi-pencil-outline
       </v-icon>
       <v-icon
         color="red"
         @click="remove(item)"
       >
-        mdi-delete-circle
+        mdi-delete-outline
       </v-icon>
     </template>
 
@@ -131,20 +139,17 @@ export default {
           text: 'Color',
           align: 'start',
           sortable: true,
-          width: '10%',
           value: 'color'
         },
         {
           text: 'Icon',
           align: 'start',
           sortable: true,
-          width: '10%',
           value: 'icon'
         },
         {
           text: 'Activity Type Name',
           align: 'start',
-          width: '30%',
           sortable: true,
           value: 'name'
         },
@@ -152,8 +157,19 @@ export default {
           text: 'Type',
           align: 'start',
           sortable: true,
-          width: '30%',
           value: 'type'
+        },
+        {
+          text: 'Created',
+          align: 'start',
+          sortable: false,
+          value: 'createdAt'
+        },
+        {
+          text: 'Last Updated',
+          align: 'start',
+          sortable: false,
+          value: 'updatedAt'
         },
         {
           text: '',

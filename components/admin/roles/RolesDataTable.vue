@@ -42,6 +42,7 @@
           hide-details
           label="Search"
           single-line
+          solo
           @keydown.enter="refresh(false)"
         />
       </v-toolbar>

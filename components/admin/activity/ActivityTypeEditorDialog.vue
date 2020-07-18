@@ -42,7 +42,7 @@
                   v-model="item.name"
                   :error-messages="errors"
                   label="Name"
-                  outlined
+                  solo
                 />
               </validation-provider>
 
@@ -51,7 +51,7 @@
                   v-model="item.description"
                   :error-messages="errors"
                   label="Description"
-                  outlined
+                  solo
                 />
               </validation-provider>
 

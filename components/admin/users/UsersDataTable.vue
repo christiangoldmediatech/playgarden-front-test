@@ -44,6 +44,7 @@
             hide-details
             label="Search"
             single-line
+            solo
             @keydown.enter="refresh(false)"
           >
             <template v-slot:append>

@@ -38,7 +38,8 @@ export default {
     '@/plugins/axios',
     '@/plugins/globalPartials',
     '@/plugins/snotify',
-    '@/plugins/validate'
+    '@/plugins/validate',
+    '@/plugins/filters'
   ],
   /*
    ** Auto import components
