@@ -47,11 +47,40 @@
       </v-toolbar>
     </template>
 
+    <template v-slot:item.color="{ item }">
+      <v-avatar
+        color="black"
+        size="32"
+      >
+        <v-avatar
+          :color="item.color"
+          size="28"
+        />
+      </v-avatar>
+    </template>
+
+    <template v-slot:item.icon="{ item }">
+      <img
+        v-if="item.icon"
+        :src="item.icon"
+        width="32px"
+      >
+      <span v-else>
+        N/A
+      </span>
+    </template>
+
+    <template v-slot:item.type="{ item }">
+      <span class="text-capitalize">
+        {{ itemTypeString(item.type) }}
+      </span>
+    </template>
+
     <template v-slot:item.actions="{ item }">
       <v-icon
         class="mr-2"
         color="yellow darken-2"
-        @click="$refs.editor.open(item)"
+        @click="$refs.editor.open(null, item)"
       >
         mdi-pencil-circle
       </v-icon>
@@ -83,6 +112,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 import ActivityTypeEditorDialog from './ActivityTypeEditorDialog'
 
 export default {
@@ -98,13 +128,35 @@ export default {
       search: '',
       headers: [
         {
-          text: 'Activity',
+          text: 'Color',
           align: 'start',
+          sortable: true,
+          width: '10%',
+          value: 'color'
+        },
+        {
+          text: 'Icon',
+          align: 'start',
+          sortable: true,
+          width: '10%',
+          value: 'icon'
+        },
+        {
+          text: 'Activity Type Name',
+          align: 'start',
+          width: '30%',
           sortable: true,
           value: 'name'
         },
         {
-          text: 'Actions',
+          text: 'Type',
+          align: 'start',
+          sortable: true,
+          width: '30%',
+          value: 'type'
+        },
+        {
+          text: '',
           align: 'right',
           sortable: false,
           value: 'actions'
@@ -114,18 +166,29 @@ export default {
   },
 
   computed: {
-    types () {
-      return this.$store.getters['admin/activity/types']
-    }
+    ...mapGetters('admin/activity', ['types'])
   },
 
   methods: {
+    ...mapActions('admin/activity', ['getTypes', 'deleteType']),
+
+    itemTypeString (types) {
+      const list = []
+      Object.keys(types).forEach((key) => {
+        if (types[key]) {
+          list.push(key)
+        }
+      })
+
+      return (list.length) ? list.join(' | ') : 'N/A'
+    },
+
     async refresh (clear = false) {
       this.loading = true
       if (clear) {
         this.search = ''
       }
-      await this.$store.dispatch('admin/activity/getTypes', this.search)
+      await this.getTypes(this.search)
       this.loading = false
     },
 
@@ -134,7 +197,7 @@ export default {
         title: 'Delete activity type?',
         message: `Are you sure you wish to delete '${name}' activity type?`,
         action: async () => {
-          await this.$store.dispatch('admin/activity/deleteType', id)
+          await this.deleteType(id)
           this.refresh()
         }
       })

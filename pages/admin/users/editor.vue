@@ -143,6 +143,8 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
+
 export default {
   name: 'Editor',
 
@@ -164,6 +166,10 @@ export default {
   },
 
   computed: {
+    ...mapGetters('admin/roles', {
+      roleRows: 'rows'
+    }),
+
     id () {
       return (this.$route.query.id) ? parseInt(this.$route.query.id) : null
     },
@@ -173,7 +179,7 @@ export default {
     },
 
     roles () {
-      return this.$store.getters['admin/roles/rows'].map(role => ({
+      return this.roleRows.map(role => ({
         text: role.name,
         value: role.id
       }))
@@ -184,10 +190,10 @@ export default {
     this.loading = true
     const promises = []
 
-    promises.push(this.$store.dispatch('admin/roles/get'))
+    promises.push(this.getRoles())
 
     if (this.id) {
-      promises.push(this.$store.dispatch('admin/users/getById', this.id))
+      promises.push(this.getUserById(this.id))
     }
 
     const results = await Promise.all(promises)
@@ -205,14 +211,25 @@ export default {
   },
 
   methods: {
+    ...mapActions('admin/users', {
+      getUsers: 'get',
+      getUserById: 'getById',
+      createUser: 'create',
+      updateUser: 'update'
+    }),
+
+    ...mapActions('admin/roles', {
+      getRoles: 'get'
+    }),
+
     async save () {
       this.loading = true
       try {
         if (this.id === null) {
-          await this.$store.dispatch('admin/users/create', this.user)
+          await this.createUser(this.user)
         } else {
           this.user.password = undefined
-          await this.$store.dispatch('admin/users/update', { id: this.id, data: this.user })
+          await this.updateUser({ id: this.id, data: this.user })
         }
       } catch (err) {
         this.loading = false

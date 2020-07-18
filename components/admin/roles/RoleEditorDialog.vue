@@ -47,15 +47,6 @@
                 />
               </validation-provider>
 
-              <validation-provider v-slot="{ errors }" name="Role Description" rules="required">
-                <v-textarea
-                  v-model="item.description"
-                  :error-messages="errors"
-                  label="Description"
-                  outlined
-                />
-              </validation-provider>
-
               <validation-provider v-slot="{ errors }" name="Role Section" rules="required">
                 <v-radio-group
                   v-model="item.section"
@@ -106,6 +97,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   name: 'RoleEditorDialog',
 
@@ -117,7 +110,6 @@ export default {
       id: null,
       item: {
         name: '',
-        description: '',
         section: ''
       }
     }
@@ -130,6 +122,12 @@ export default {
   },
 
   methods: {
+    ...mapActions('admin/roles', {
+      createRole: 'create',
+      updateRole: 'update',
+      getRoles: 'get'
+    }),
+
     close () {
       this.$nextTick(() => {
         this.dialog = false
@@ -142,11 +140,11 @@ export default {
       this.loading = true
       try {
         if (this.id === null) {
-          await this.$store.dispatch('admin/roles/create', this.item)
+          await this.createRole(this.item)
         } else {
-          await this.$store.dispatch('admin/roles/update', { id: this.id, data: this.item })
+          await this.updateRole({ id: this.id, data: this.item })
         }
-        await this.$store.dispatch('admin/roles/get')
+        await this.getRoles()
       } catch (err) {
         this.loading = false
         return
@@ -155,10 +153,9 @@ export default {
       }
     },
 
-    open ({ id = null, name = '', description = '', section = '' } = {}) {
+    open ({ id = null, name = '', section = '' } = {}) {
       this.id = id
       this.item.name = name
-      this.item.description = description
       this.item.section = section
 
       this.$nextTick(() => {

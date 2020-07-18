@@ -83,6 +83,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 import CurriculumEditorDialog from '@/components/admin/curriculum/CurriculumEditorDialog'
 
 export default {
@@ -114,18 +115,18 @@ export default {
   },
 
   computed: {
-    types () {
-      return this.$store.getters['admin/curriculum/types']
-    }
+    ...mapGetters('admin/curriculum', ['types'])
   },
 
   methods: {
+    ...mapActions('admin/curriculum', ['getTypes', 'deleteType']),
+
     async refresh (clear = false) {
       this.loading = true
       if (clear) {
         this.search = ''
       }
-      await this.$store.dispatch('admin/curriculum/getTypes', this.search)
+      await this.getTypes(this.search)
       this.loading = false
     },
 
@@ -134,7 +135,7 @@ export default {
         title: 'Delete curicculum type?',
         message: `Are you sure you wish to delete '${name}' curriculum type?`,
         action: async () => {
-          await this.$store.dispatch('admin/curriculum/deleteType', id)
+          await this.deleteType(id)
           this.refresh()
         }
       })

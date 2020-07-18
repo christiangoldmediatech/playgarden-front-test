@@ -4,7 +4,6 @@
     :fullscreen="$vuetify.breakpoint.xs"
     max-width="500px"
     persistent
-    scrollable
   >
     <v-card>
       <v-toolbar
@@ -55,6 +54,71 @@
                   outlined
                 />
               </validation-provider>
+
+              <span class="subtitle-2">Type:</span>
+
+              <v-row justify="space-around">
+                <v-checkbox
+                  v-model="item.extra"
+                  class="mt-1"
+                  dense
+                  label="Extra"
+                />
+
+                <v-checkbox
+                  v-model="item.lesson"
+                  class="mt-1"
+                  dense
+                  label="Lesson"
+                />
+
+                <v-checkbox
+                  v-model="item.activity"
+                  class="mt-1"
+                  dense
+                  label="Activity"
+                />
+              </v-row>
+
+              <span class="subtitle-2">Color:</span>
+
+              <v-row justify="center">
+                <v-color-picker
+                  v-model="item.color"
+                  hide-mode-switch
+                  hide_inputs
+                  mode="hexa"
+                  :show-swatches="false"
+                />
+              </v-row>
+
+              <p class="mb-5 subtitle-2">
+                Icon:
+              </p>
+
+              <v-row v-if="item.icon" class="mb-5" justify="center">
+                <v-col cols="5" sm="3">
+                  <v-img
+                    contain
+                    :src="item.icon"
+                  />
+                </v-col>
+              </v-row>
+
+              <v-row>
+                <file-uploader
+                  ref="fileUploader"
+                  :file.sync="file"
+                  gif
+                  label="Upload Icon"
+                  mode="image"
+                  path="activity-type"
+                  placeholder="Select an icon for this activity type"
+                  png
+                  prepend-icon="mdi-camera"
+                  svg
+                />
+              </v-row>
             </v-form>
           </v-container>
         </v-card-text>
@@ -64,8 +128,8 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
+            class="white--text"
             color="green"
-            :dark="$vuetify.breakpoint.xs"
             :disabled="invalid"
             :loading="loading"
             :text="$vuetify.breakpoint.smAndUp"
@@ -74,8 +138,8 @@
             Save
           </v-btn>
           <v-btn
+            class="white--text"
             color="red"
-            :dark="$vuetify.breakpoint.xs"
             :disabled="loading"
             :text="$vuetify.breakpoint.smAndUp"
             @click.stop="close"
@@ -89,19 +153,31 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
+function generateItemTemplate () {
+  return {
+    name: '',
+    description: '',
+    lesson: false,
+    extra: false,
+    activity: false,
+    color: '#FF0000',
+    icon: null
+  }
+}
+
 export default {
   name: 'ActivityTypeEditorDialog',
 
   data () {
     return {
+      file: null,
       dialog: false,
       loading: false,
       valid: true,
       id: null,
-      item: {
-        name: '',
-        description: ''
-      }
+      item: generateItemTemplate()
     }
   },
 
@@ -112,6 +188,12 @@ export default {
   },
 
   methods: {
+    ...mapActions('admin/activity', [
+      'createType',
+      'updateType',
+      'getTypes'
+    ]),
+
     close () {
       this.$nextTick(() => {
         this.dialog = false
@@ -123,12 +205,14 @@ export default {
     async save () {
       this.loading = true
       try {
+        const icon = await this.$refs.fileUploader.handleFileUpload()
+        this.item.icon = icon
         if (this.id === null) {
-          await this.$store.dispatch('admin/activity/createType', this.item)
+          await this.createType(this.item)
         } else {
-          await this.$store.dispatch('admin/activity/updateType', { id: this.id, data: this.item })
+          await this.updateType({ id: this.id, data: this.item })
         }
-        await this.$store.dispatch('admin/activity/getTypes')
+        await this.getTypes()
       } catch (err) {
         this.loading = false
         return
@@ -137,10 +221,36 @@ export default {
       }
     },
 
-    open ({ id = null, name = '', description = '' } = {}) {
-      this.id = id
-      this.item.name = name
-      this.item.description = description
+    resetItem () {
+      this.id = null
+      this.item = generateItemTemplate()
+      this.file = null
+    },
+
+    loadItem (item) {
+      this.id = item.id
+
+      // Handle keys
+      Object.keys(item).forEach((key) => {
+        if (Object.prototype.hasOwnProperty.call(this.item, key)) {
+          this.item[key] = item[key]
+        }
+      })
+
+      // Handle types
+      Object.keys(item.type).forEach((key) => {
+        if (Object.prototype.hasOwnProperty.call(this.item, key)) {
+          this.item[key] = item.type[key]
+        }
+      })
+    },
+
+    open (evt, item = null) {
+      this.resetItem()
+
+      if (item) {
+        this.loadItem(item)
+      }
 
       this.$nextTick(() => {
         this.dialog = true

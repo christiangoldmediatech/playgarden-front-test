@@ -1,7 +1,7 @@
 export default {
 
   async get ({ commit }, params) {
-    const data = await this.$axios.$get(`${process.env.apiBaseUrl}/users`, { params })
+    const data = await this.$axios.$get('/users', { params })
     commit('SET_USERS', data.users)
     commit('SET_FILTERED', data.filtered)
     commit('SET_LIMIT', data.limit)
@@ -10,19 +10,19 @@ export default {
   },
 
   async getById (ctx, id) {
-    const data = await this.$axios.$get(`${process.env.apiBaseUrl}/users/${id}`)
+    const data = await this.$axios.$get(`/users/${id}`)
     return data
   },
 
   async create (ctx, data) {
-    await this.$axios.$post(`${process.env.apiBaseUrl}/users`, data)
+    await this.$axios.$post('/users', data)
   },
 
   async update (ctx, { id, data }) {
-    await this.$axios.$patch(`${process.env.apiBaseUrl}/users/${id}`, data)
+    await this.$axios.$patch(`/users/${id}`, data)
   },
 
   async delete (ctx, id) {
-    await this.$axios.$delete(`${process.env.apiBaseUrl}/users/${id}`)
+    await this.$axios.$delete(`/users/${id}`)
   }
 }
