@@ -59,6 +59,17 @@
       </v-avatar>
     </template>
 
+    <template v-slot:item.icon="{ item }">
+      <img
+        v-if="item.icon"
+        :src="item.icon"
+        width="32px"
+      >
+      <span v-else>
+        N/A
+      </span>
+    </template>
+
     <template v-slot:item.type="{ item }">
       <span class="text-capitalize">
         {{ itemTypeString(item.type) }}
@@ -120,19 +131,20 @@ export default {
           text: 'Color',
           align: 'start',
           sortable: true,
+          width: '10%',
           value: 'color'
         },
-        /*
         {
           text: 'Icon',
           align: 'start',
           sortable: true,
+          width: '10%',
           value: 'icon'
         },
-        */
         {
           text: 'Activity Type Name',
           align: 'start',
+          width: '30%',
           sortable: true,
           value: 'name'
         },
@@ -140,6 +152,7 @@ export default {
           text: 'Type',
           align: 'start',
           sortable: true,
+          width: '30%',
           value: 'type'
         },
         {

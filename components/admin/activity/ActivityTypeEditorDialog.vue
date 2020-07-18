@@ -95,14 +95,16 @@
               <p class="mb-5 subtitle-2">
                 Icon:
               </p>
-              <!--
-              <v-row v-if="item.icon" justify="center">
-                <img
-                  :src="item.icon"
-                  width="50%"
-                >
+
+              <v-row v-if="item.icon" class="mb-5" justify="center">
+                <v-col cols="5" sm="3">
+                  <v-img
+                    contain
+                    :src="item.icon"
+                  />
+                </v-col>
               </v-row>
-              -->
+
               <v-row>
                 <file-uploader
                   ref="fileUploader"
