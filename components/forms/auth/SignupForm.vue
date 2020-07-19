@@ -62,7 +62,7 @@
         <v-text-field
           v-model="user.email"
           clearable
-          :disabled="loading"
+          :disabled="loading || inInvitationProcess"
           :error-messages="errors"
           label="Email"
           :loading="loading"
@@ -91,7 +91,7 @@
         />
       </validation-provider>
 
-      <!-- Password -->
+      <!-- Password confirmation -->
       <validation-provider
         v-slot="{ errors }"
         name="Password confirmation"
@@ -136,16 +136,25 @@ export default {
   props: {
     loading: Boolean
   },
-  data: () => ({
+
+  data: vm => ({
     user: {
       firstName: '',
       lastName: '',
       phoneNumber: '',
-      email: '',
+      email: vm.$route.query.email || '',
       password: '',
       passwordConfirmation: ''
     }
   }),
+
+  computed: {
+    inInvitationProcess () {
+      const { query } = this.$route
+
+      return Boolean(query.process === 'invitation' && query.email)
+    }
+  },
 
   methods: {
     onSubmit () {

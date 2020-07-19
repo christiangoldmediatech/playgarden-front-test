@@ -62,5 +62,33 @@ export default {
 
       throw new Error(error)
     }
+  },
+
+  async updateUserInfo ({ commit }, draft) {
+    try {
+      const { data } = await this.$axios.patch('/auth/me/edit', draft)
+
+      commit('SET_USER_INFO', data)
+
+      return data
+    } catch (error) {
+      snotifyError(commit, {
+        body: 'Sorry! There was an error while updating user info!'
+      })
+
+      throw new Error(error)
+    }
+  },
+
+  async updateUserPassword ({ commit }, draft) {
+    try {
+      await this.$axios.patch('/auth/password/change', draft)
+    } catch (error) {
+      snotifyError(commit, {
+        body: 'Sorry! There was an error while updating user password!'
+      })
+
+      throw new Error(error)
+    }
   }
 }

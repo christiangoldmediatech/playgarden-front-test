@@ -1,16 +1,9 @@
 <template>
-  <v-footer
-    class="mt-16"
-    padless
-    tile
-  >
-    <v-card
-      flat
-      tile
-      width="100%"
-    >
-      <div class="green-line-1" />
-      <div class="green-line-2" />
+  <v-footer class="mt-16" padless tile>
+    <v-card flat tile width="100%">
+      <div class="green-line green-line-1" />
+      <div class="green-line green-line-2" />
+
       <v-card-text class="pt-0">
         <v-container fluid py-0>
           <v-row>
@@ -24,36 +17,40 @@
             >
               <v-container py-0>
                 <v-row no-gutters>
-                  <v-col
-                    cols="12"
-                    lg="9"
-                    xl="8"
-                  >
+                  <v-col cols="12" lg="9" xl="8">
                     <v-img
                       alt="Playgarden Prep's Logo"
                       class="mb-1 mt-0"
                       contain
-                      :src="require('@/assets/svg/logo.svg')"
+                      :src="require('~/assets/svg/logo.svg')"
                     />
                   </v-col>
                 </v-row>
-                <div class="align-center d-flex justify-center justify-md-start">
+
+                <div
+                  class="align-center d-flex justify-center justify-md-start"
+                >
                   <img
                     alt="Facebook"
                     class="clickable mr-1"
                     src="@/assets/svg/social-media/facebook.svg"
                   >
+
                   <img
                     alt="Instagram"
                     class="clickable mx-1"
                     src="@/assets/svg/social-media/instagram.svg"
                   >
-                  <div class="clickable d-flex justify-center mx-1 social-media-circle">
+
+                  <div
+                    class="clickable d-flex justify-center mx-1 social-media-circle"
+                  >
                     <img
                       alt="Email"
                       src="@/assets/svg/social-media/email.svg"
                     >
                   </div>
+
                   <img
                     alt="Twitter"
                     class="clickable mx-1"
@@ -156,6 +153,7 @@
             <template v-if="new Date().getFullYear() > 2020">
               - {{ new Date().getFullYear() }}
             </template>
+
             &copy; Playgarden Prep. All rights reserved.
           </v-col>
         </v-row>
@@ -187,17 +185,17 @@ export default {
   background-color: var(--v-primary-base);
 }
 
-.green-line-1 {
+.green-line {
   height: 1rem;
   width: 100%;
-  background-color: var(--v-primary-base);
   box-shadow: 0 -1px 6px 0 rgba(0, 0, 0, 0.12);
 }
 
+.green-line-1 {
+  background-color: var(--v-primary-base);
+}
+
 .green-line-2 {
-  height: 1rem;
-  width: 100%;
   background-color: #dce7b5;
-  box-shadow: 0 -1px 6px 0 rgba(0, 0, 0, 0.12);
 }
 </style>

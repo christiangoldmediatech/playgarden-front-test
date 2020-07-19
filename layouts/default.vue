@@ -19,7 +19,7 @@
 
 <script>
 import ApplicationHeader from '@/components/app/menu/ApplicationHeader'
-import DefaultFooter from '@/components/app/DefaultFooter'
+import DefaultFooter from '@/components/app/footer/DefaultFooter'
 
 export default {
   name: 'Default',
