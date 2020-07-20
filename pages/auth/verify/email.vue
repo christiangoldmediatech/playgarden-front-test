@@ -45,7 +45,7 @@
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  name: 'VerifyEmail',
+  name: 'Email',
 
   data: vm => ({
     loading: false,
@@ -85,7 +85,10 @@ export default {
 
       try {
         await this.validateRegister(this.token)
-        await this.fetchUserInfo()
+
+        if (this.isUserLoggedIn) {
+          await this.fetchUserInfo()
+        }
 
         await this.$snotify.success('Email has been verified successfully!')
 

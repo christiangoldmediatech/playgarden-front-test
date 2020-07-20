@@ -2,6 +2,7 @@
   "auth-forgot-password": 1,
   "auth-login": 1,
   "auth-signup": 1,
+  "auth-verify-caregiver": 1,
   "auth-verify-email": 1,
   "index": 1,
   "jwt-recovery": 1,

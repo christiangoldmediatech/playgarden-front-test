@@ -2,10 +2,8 @@
   <span>
     <v-navigation-drawer v-model="drawer" app temporary>
       <v-col cols="12">
-        <v-row>
-          <v-spacer />
-
-          <v-btn color="white" depressed tile @click.stop="drawer = !drawer">
+        <v-row class="pr-3" justify="end">
+          <v-btn icon @click.stop="drawer = !drawer">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-row>

@@ -29,15 +29,47 @@
     </v-col>
 
     <v-col class="px-12" cols="12" md="6">
-      <!--        <user-profile-form-->
-      <!--          :loading="loading"-->
-      <!--          :user="userInfo"-->
-      <!--          @set-loading-state="setLoadingState"-->
-      <!--        />-->
+      <update-profile :loading="loading" :user="userInfo" />
 
-      <!--        <membership-form :loading="loading" />-->
+      <v-dialog
+        v-model="passwordModal"
+        content-class="white"
+        :fullscreen="$vuetify.breakpoint.smAndDown"
+        max-width="1000"
+        persistent
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            v-bind="attrs"
+            block
+            class="mb-6"
+            color="accent"
+            text
+            x-large
+            v-on="on"
+          >
+            EDIT PASSWORD
+          </v-btn>
+        </template>
 
-      <!--        <caregivers-form :loading="loading" />-->
+        <v-col cols="12">
+          <v-row class="pr-3" justify="end">
+            <v-btn icon @click.stop="passwordModal = false">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </v-row>
+
+          <update-password
+            v-if="passwordModal"
+            @click:cancel="passwordModal = false"
+            @update:success="passwordModal = false"
+          />
+        </v-col>
+      </v-dialog>
+
+      <membership-details :loading="loading" />
+
+      <caregiver-list :loading="loading" />
     </v-col>
   </v-row>
 </template>
@@ -45,30 +77,27 @@
 <script>
 import { mapGetters } from 'vuex'
 
-// import CaregiversForm from '@/components/forms/account/CaregiversForm'
-// import UserProfileForm from '@/components/forms/account/UserProfileForm'
-// import MembershipForm from '@/components/forms/account/MembershipForm'
+import CaregiverList from '~/components/app/caregiver/CaregiverList'
+import MembershipDetails from '~/components/app/payment/MembershipDetails'
+import UpdateProfile from '@/components/app/user/UpdateProfile'
+import UpdatePassword from '@/components/app/password/UpdatePassword'
 
 export default {
   name: 'Index',
 
   components: {
-    // CaregiversForm,
-    // MembershipForm,
-    // UserProfileForm
+    CaregiverList,
+    MembershipDetails,
+    UpdatePassword,
+    UpdateProfile
   },
 
   data: () => ({
-    loading: false
+    loading: false,
+    passwordModal: false
   }),
 
-  computed: mapGetters('auth', { userInfo: 'getUserInfo' }),
-
-  methods: {
-    setLoadingState (state) {
-      this.loading = state
-    }
-  }
+  computed: mapGetters('auth', { userInfo: 'getUserInfo' })
 }
 </script>
 

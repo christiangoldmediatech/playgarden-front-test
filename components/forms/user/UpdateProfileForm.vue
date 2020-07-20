@@ -1,0 +1,114 @@
+<template>
+  <validation-observer v-slot="{ invalid, validated, passes, reset }">
+    <v-form :readonly="!editing || loading" @submit.prevent="passes(onSubmit)">
+      <p class="font-weight-bold">
+        GENERAL
+      </p>
+
+      <!-- First name -->
+      <validation-provider
+        v-slot="{ errors }"
+        name="First name"
+        rules="required"
+      >
+        <v-text-field
+          v-model="draft.firstName"
+          clearable
+          :disabled="!editing || loading"
+          :error-messages="errors"
+          label="First name"
+          :loading="loading"
+          solo
+        />
+      </validation-provider>
+
+      <!-- Last name -->
+      <validation-provider
+        v-slot="{ errors }"
+        name="Last name"
+        rules="required"
+      >
+        <v-text-field
+          v-model="draft.lastName"
+          clearable
+          :disabled="!editing || loading"
+          :error-messages="errors"
+          label="Last name"
+          :loading="loading"
+          solo
+        />
+      </validation-provider>
+
+      <!-- Phone number -->
+      <validation-provider
+        v-slot="{ errors }"
+        name="Phone number"
+        rules="required|min:7|max:20|phone"
+      >
+        <v-text-field
+          v-model="draft.phoneNumber"
+          clearable
+          :disabled="!editing || loading"
+          :error-messages="errors"
+          label="Phone number"
+          :loading="loading"
+          maxlength="20"
+          solo
+        />
+      </validation-provider>
+
+      <template v-if="editing">
+        <v-btn
+          block
+          class="mb-6"
+          color="primary"
+          :disabled="invalid"
+          :loading="loading"
+          type="submit"
+          x-large
+        >
+          SAVE
+        </v-btn>
+
+        <v-btn
+          block
+          class="mb-6"
+          color="primary"
+          :loading="loading"
+          text
+          x-large
+          @click="onCancel(reset)"
+        >
+          CANCEL
+        </v-btn>
+      </template>
+    </v-form>
+  </validation-observer>
+</template>
+
+<script>
+import submittable from '@/utils/mixins/submittable'
+
+export default {
+  name: 'UpdateProfileForm',
+
+  mixins: [submittable],
+
+  props: {
+    editing: Boolean,
+
+    loading: Boolean,
+
+    user: {
+      type: Object,
+      required: true
+    }
+  },
+
+  methods: {
+    resetDraft () {
+      this.draft = this.$jsonCopy({ ...this.user })
+    }
+  }
+}
+</script>

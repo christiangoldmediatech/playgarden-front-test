@@ -1,5 +1,5 @@
 <template>
-  <validation-observer v-slot="{ invalid, validated, passes }">
+  <validation-observer v-slot="{ invalid, validated, passes, reset }">
     <p>
       <span class="font-weight-bold text-h5">
         CARD INFORMATION
@@ -18,10 +18,9 @@
           clearable
           :disabled="loading"
           :error-messages="errors"
-          label="Card number"
           :loading="loading"
           maxlength="19"
-          placeholder="1234-4567-8901-2345"
+          placeholder="Card number"
           solo
         />
       </validation-provider>
@@ -39,7 +38,6 @@
               clearable
               :disabled="loading"
               :error-messages="errors"
-              label="Expiration date"
               :loading="loading"
               maxlength="5"
               placeholder="MM/YY"
@@ -60,10 +58,9 @@
               clearable
               :disabled="loading"
               :error-messages="errors"
-              label="CVV"
               :loading="loading"
               maxlength="3"
-              placeholder="123"
+              placeholder="CVV"
               solo
             />
           </validation-provider>
@@ -79,40 +76,65 @@
         type="submit"
         x-large
       >
-        BUY
+        {{ buttonText }}
+      </v-btn>
+
+      <v-btn
+        v-if="cancelable"
+        block
+        class="mb-6"
+        color="accent"
+        :loading="loading"
+        text
+        type="submit"
+        x-large
+        @click="onCancel(reset)"
+      >
+        CANCEL
       </v-btn>
     </v-form>
   </validation-observer>
 </template>
 
 <script>
+import submittable from '@/utils/mixins/submittable'
+
 export default {
   name: 'StripeForm',
 
+  mixins: [submittable],
+
   props: {
+    buttonText: {
+      type: String,
+      default: 'BUY'
+    },
+
+    cancelable: Boolean,
+
     loading: Boolean
   },
 
-  data: () => ({
-    draft: {
-      number: '',
-      date: '',
-      cvv: ''
-    }
-  }),
-
   methods: {
-    onSubmit () {
+    getSubmittableData () {
       const [month, year] = this.draft.date.split('/')
 
-      this.$emit('click:submit', {
+      return {
         card: {
           number: this.draft.number.replace(/\D/gm, ''),
           exp_month: month * 1,
           exp_year: year * 1 + 2000,
           cvc: this.draft.cvv
         }
-      })
+      }
+    },
+
+    resetDraft () {
+      this.draft = {
+        number: '',
+        date: '',
+        cvv: ''
+      }
     }
   }
 }
