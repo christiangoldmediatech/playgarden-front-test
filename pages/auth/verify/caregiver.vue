@@ -6,7 +6,7 @@
 import { mapActions } from 'vuex'
 
 export default {
-  name: 'Verification',
+  name: 'Caregiver',
 
   layout: 'loading',
 
@@ -33,10 +33,14 @@ export default {
           'Invitation has been verified successfully!'
         )
 
-        await this.$router.push({
-          name: 'auth-signup',
-          query: { email, process: 'invitation' }
-        })
+        setTimeout(
+          () =>
+            this.$router.push({
+              name: 'auth-signup',
+              query: { email, process: 'invitation' }
+            }),
+          1000
+        )
       } catch (e) {
         await this.$router.push({ name: 'auth-signup' })
       }
