@@ -92,7 +92,7 @@
 import { mapActions } from 'vuex'
 
 export default {
-  name: 'CurriculumEditorDialog',
+  name: 'CurriculumTypesEditorDialog',
 
   data () {
     return {

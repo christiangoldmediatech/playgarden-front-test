@@ -6,11 +6,12 @@
       v-model="appDrawer"
       app
       :permanent="$vuetify.breakpoint.mdAndUp"
+      width="296"
     >
       <!-- Logo -->
       <v-container fluid>
         <v-row class="px-6 py-2 py-md-7">
-          <span class="font-weight-bold logo-text pl-4">Web Admin</span>
+          <span class="font-weight-medium logo-text pl-4">Web Admin</span>
           <img
             alt="Playarden Prep Online Logo"
             class="logo"
@@ -25,13 +26,13 @@
       <v-list
         dense
         mandatory
-        nav
       >
         <template v-for="(item, i) in menuItems">
           <!-- Menu with sub items color="accent" -->
           <v-list-group
             v-if="item.children"
             :key="`app-menu-item-${i}`"
+            active-class="white--text active-menu-item font-weight-black"
             :group="item.rootPath"
             no-action
           >
@@ -51,6 +52,7 @@
             <v-list-item
               v-for="(subItem, j) in item.children"
               :key="`app-menu-item-${i}-sub-item-${j}`"
+              active-class="white--text active-menu-item font-weight-black"
               exact
               link
               nuxt
@@ -66,7 +68,7 @@
           <v-list-item
             v-else
             :key="`app-menu-item-${i}`"
-            active-class="white--text active-menu-item font-weight-bold"
+            active-class="white--text active-menu-item font-weight-black"
             exact
             link
             nuxt
@@ -87,6 +89,7 @@
 
         <!-- Log out button -->
         <v-list-item
+          active-class="white--text active-menu-item font-weight-black"
           link
           nuxt
           :to="{ name: 'auth-logout' }"
@@ -110,16 +113,23 @@
       clipped-left
       color="primary"
       dark
+      elevation="0"
     >
       <v-app-bar-nav-icon class="app-bar-style" @click.stop="appDrawer = !appDrawer" />
 
-      <v-toolbar-title class="hidden-md-and-up">
-        PlayGarden Prep Online Admin
+      <v-toolbar-title class="d-flex flex-column hidden-md-and-up">
+        <!-- PlayGarden Prep Online - Web Admin -->
+        <span class="font-weight-medium navbar-logo-text pl-4">Web Admin</span>
+        <img
+          alt="Playarden Prep Online Logo"
+          class="navbar-logo"
+          src="@/assets/svg/logo.svg"
+        >
       </v-toolbar-title>
 
       <v-spacer />
 
-      <p>User: {{ userInfo.fullName }}</p>
+      <span class="black--text mr-2 text--lighten-1">{{ userInfo.fullName }}</span>
 
       <v-btn class="hidden-md-and-up" icon nuxt :to="{ name: 'auth-logout' }">
         <v-icon>
@@ -138,15 +148,15 @@
       </v-btn>
     </v-app-bar>
 
-    <v-main>
+    <v-main class="pg-bkg">
       <admin-prompt-dialog />
       <nuxt />
     </v-main>
-
+    <!--
     <v-footer app>
       &copy; 2020 <span v-if="new Date().getFullYear() > 2020"> - {{ new Date().getFullYear() }}</span>
     </v-footer>
-
+    -->
     <notify-event />
   </v-app>
 </template>
@@ -168,30 +178,32 @@ export default {
     return {
       appDrawer: false,
       menuItemsData: [
+        /*
         {
           icon: 'mdi-home',
           title: 'Home',
           route: '/admin'
         },
+        */
         {
-          icon: 'mdi-order-alphabetical-ascending',
-          title: 'Curriculum',
-          route: '/admin/curriculum'
+          icon: 'mdi-teach',
+          title: 'Curriculum management',
+          route: '/admin/curriculum-management'
         },
         {
-          icon: 'mdi-calendar',
-          title: 'Activities',
-          route: '/admin/activities'
+          icon: 'mdi-television-play',
+          title: 'Activities management',
+          route: '/admin/activity-management'
         },
         {
-          icon: 'mdi-human-greeting',
-          title: 'Parents Corner',
-          route: '/admin/parents-corner'
+          icon: 'mdi-account-supervisor',
+          title: 'Parents corner blog',
+          route: '/admin/parents-corner-blog'
         },
         {
-          icon: 'mdi-account-multiple',
-          title: 'Users',
-          route: '/admin/users'
+          icon: 'mdi-account',
+          title: 'User manager',
+          route: '/admin/user-manager'
         },
         {
           icon: 'mdi-cog',
@@ -243,25 +255,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.logo {
-  max-width: 100%;
-}
-
-.logo-text {
-  color: #78c383 !important;
-}
-
-.active-menu-item {
-  background-color: #f39b44;
-}
-
-.pg-app {
-  height: 100%;
-  margin: 0 auto;
-  color: $pg-black;
-}
-
 .v-application ::v-deep {
+  *,
   .display-1,
   .display-2,
   .display-3,
@@ -282,18 +277,53 @@ export default {
   .text-h6 {
     font-family: 'Poppins', sans-serif !important;
   }
+
   .v-data-footer {
     border: none;
   }
+
   .v-data-table tr > td, thead > tr > th {
     border-bottom: 1px dashed rgba(0, 0, 0, 0.12) !important;
   }
+
   .v-data-table tr > td:not(:last-child), thead > tr > th:not(:last-child) {
     border-right: 1px dashed rgba(0, 0, 0, 0.12) !important;
   }
+
   header.v-app-bar {
     background-image: linear-gradient(to bottom, #d3f5a8 -132%, #c2daa5 202%) !important;
     background-color: transparent !important;
+  }
+
+  .navbar-logo {
+  max-height: 32px;
+  }
+
+  .logo {
+  max-width: 100%;
+  }
+
+  .logo-text {
+    color: #78c383 !important;
+  }
+
+  .navbar-logo-text {
+    color: #78c383 !important;
+    font-size: 12px;
+  }
+
+  .active-menu-item {
+    background-color: #f39b44 !important;
+  }
+
+  .pg-app {
+    height: 100%;
+    margin: 0 auto;
+    color: $pg-black;
+  }
+
+  .pg-bkg {
+    background-color: #F9F9F9 !important;
   }
 }
 </style>

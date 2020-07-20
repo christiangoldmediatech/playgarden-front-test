@@ -1,4 +1,6 @@
 <template>
+  <users-data-table ref="UsersDataTable" />
+  <!--
   <v-container>
     <v-card>
       <v-toolbar
@@ -18,6 +20,7 @@
       </v-card-text>
     </v-card>
   </v-container>
+  -->
 </template>
 
 <script>

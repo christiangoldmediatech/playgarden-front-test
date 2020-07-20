@@ -1,4 +1,6 @@
 <template>
+  <curriculum-types-data-table ref="CurriculumDataTable" />
+  <!--
   <v-container>
     <v-card>
       <v-toolbar
@@ -14,14 +16,15 @@
       <v-card-text>
         <p>View, create, update, or delete a curriculum types.</p>
 
-        <curriculum-data-table ref="CurriculumDataTable" />
+        <curriculum-types-data-table ref="CurriculumDataTable" />
       </v-card-text>
     </v-card>
   </v-container>
+  -->
 </template>
 
 <script>
-import CurriculumDataTable from '@/components/admin/curriculum/CurriculumDataTable.vue'
+import CurriculumTypesDataTable from '@/components/admin/curriculum/CurriculumTypesDataTable.vue'
 
 export default {
   name: 'CurriculumTypes',
@@ -29,7 +32,7 @@ export default {
   layout: 'admin',
 
   components: {
-    CurriculumDataTable
+    CurriculumTypesDataTable
   },
 
   data () {

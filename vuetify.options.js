@@ -15,6 +15,9 @@ export default function ({ app }) {
           black: '#606060'
         }
       }
+    },
+    icons: {
+      iconfont: 'mdi'
     }
   }
 }

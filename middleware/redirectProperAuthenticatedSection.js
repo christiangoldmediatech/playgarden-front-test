@@ -13,7 +13,7 @@ export default function ({ redirect, route, store }) {
       /^app-.*$/.test(route.name) &&
       user.role.section === 'ADMIN'
     ) {
-      redirect({ name: 'admin' })
+      redirect({ name: 'admin-curriculum-management' })
     }
   }
 }
