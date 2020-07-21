@@ -1,4 +1,6 @@
 <template>
+  <activity-type-data-table ref="ActivityTypeDataTable" />
+  <!--
   <v-container>
     <v-card>
       <v-toolbar
@@ -18,6 +20,7 @@
       </v-card-text>
     </v-card>
   </v-container>
+  -->
 </template>
 
 <script>

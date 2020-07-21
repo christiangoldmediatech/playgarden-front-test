@@ -3,7 +3,7 @@
     v-bind="$props"
     :accepts="accepts"
     class="clickable"
-    outlined
+    solo
     :value="file"
     @change="$emit('update:file', $event)"
   />

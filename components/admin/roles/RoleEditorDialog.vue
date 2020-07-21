@@ -43,7 +43,7 @@
                   v-model="item.name"
                   :error-messages="errors"
                   label="Name"
-                  outlined
+                  solo
                 />
               </validation-provider>
 

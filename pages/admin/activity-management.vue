@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  name: 'Index',
+  name: 'ActivityManagement',
 
   layout: 'admin',
 

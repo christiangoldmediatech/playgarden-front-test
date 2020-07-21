@@ -24,7 +24,11 @@ export default {
         content: process.env.npm_package_description || ''
       }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'stylesheet', type: 'text/css', href: 'https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;700;900&display=swap' },
+      { rel: 'stylesheet', type: 'text/css', href: 'https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css' }
+    ],
   },
   /*
    ** Global CSS
@@ -38,7 +42,8 @@ export default {
     '@/plugins/axios',
     '@/plugins/globalPartials',
     '@/plugins/snotify',
-    '@/plugins/validate'
+    '@/plugins/validate',
+    '@/plugins/filters'
   ],
   /*
    ** Auto import components
@@ -57,7 +62,8 @@ export default {
    * Vuetify Options
    */
   vuetify: {
-    optionsPath: './vuetify.options.js'
+    optionsPath: './vuetify.options.js',
+    defaultAssets: false
   },
   /*
    ** Nuxt.js modules
