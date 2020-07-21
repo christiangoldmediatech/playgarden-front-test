@@ -1,6 +1,11 @@
 <template>
   <v-row class="flex-column-reverse flex-md-row" justify="center" no-gutters>
     <v-col class="px-12" cols="12" lg="7" md="8" xl="5">
+      <p class="text-center text-md-left">
+        <span class="font-weight-bold text-h5">
+          PARENT'S INFORMATION
+        </span>
+      </p>
       <signup-form :loading="loading" @click:submit="onSubmit" />
     </v-col>
 
