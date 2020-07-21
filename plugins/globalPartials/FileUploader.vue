@@ -1,7 +1,7 @@
 <template>
   <v-file-input
     v-bind="$props"
-    :accepts="accepts"
+    :accept="accepts"
     class="clickable"
     solo
     :value="file"
@@ -128,6 +128,11 @@ export default {
       required: false,
       default: false
     },
+    mov: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     webm: {
       type: Boolean,
       required: false,
@@ -154,7 +159,8 @@ export default {
         { 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': this.xlsx },
         { 'application/zip': this.zip },
         { 'video/mpeg': this.mpeg },
-        { 'video/webm': this.mpeg }
+        { 'video/quicktime': this.mov },
+        { 'video/webm': this.webm }
       ]
 
       const compiledList = []

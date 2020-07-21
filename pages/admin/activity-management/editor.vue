@@ -61,6 +61,7 @@
                   label="Upload Video"
                   mode="image"
                   mpeg
+                  mov
                   path="activity-video"
                   placeholder="Select a video for this activity"
                   prepend-icon="mdi-video"
