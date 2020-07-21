@@ -86,9 +86,17 @@
               </template>
 
               <template v-slot:item.name="{ item }">
-                <v-icon v-show="item.featured" color="accent">
-                  mdi-star
-                </v-icon>
+                <v-btn
+                  class="mr-2"
+                  :disabled="loading"
+                  icon
+                  @click.stop="toggleFeatured(item)"
+                >
+                  <v-icon
+                    :color="(item.featured) ? 'accent' : ''"
+                    v-text="(item.featured) ? 'mdi-star' : 'mdi-star-outline'"
+                  />
+                </v-btn>
                 {{ item.name }}
               </template>
 
@@ -257,7 +265,21 @@ export default {
   },
 
   methods: {
-    ...mapActions('admin/activity', ['getActivities', 'deleteActivity']),
+    ...mapActions('admin/activity', ['getActivities', 'updateActivity', 'deleteActivity']),
+
+    async toggleFeatured (item) {
+      this.loading = true
+      await this.updateActivity({
+        id: item.id,
+        data: {
+          name: item.name,
+          type: item.type,
+          activityTypeId: item.activityType.id,
+          featured: !item.featured
+        }
+      })
+      await this.refresh()
+    },
 
     toggleAll () {
       this.allFilters = !this.allFilters
