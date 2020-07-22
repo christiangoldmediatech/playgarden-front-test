@@ -39,6 +39,8 @@ export default {
       callback(data).then(() => {
         commit('REMOVE_UPLOAD', uploadId)
       })
+    }).catch(() => {
+      commit('REMOVE_UPLOAD', uploadId)
     })
 
     return true

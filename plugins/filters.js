@@ -15,9 +15,9 @@ Vue.filter('formatDate', (value) => {
 })
 
 Vue.filter('shorten', (value) => {
-  if (value.length > 30) {
-    const partA = value.slice(0, 15)
-    const partB = value.slice(value.length - 15, value.length)
+  if (value.length > 23) {
+    const partA = value.slice(0, 10)
+    const partB = value.slice(value.length - 10, value.length)
     return `${partA}...${partB}`
   }
   return value

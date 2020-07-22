@@ -16,6 +16,8 @@ export default {
   },
   REMOVE_UPLOAD: (state, uploadId) => {
     const index = state.uploads.findIndex(({ id }) => id === uploadId)
-    state.uploads.splice(index, 1)
+    if (index >= 0) {
+      state.uploads.splice(index, 1)
+    }
   }
 }

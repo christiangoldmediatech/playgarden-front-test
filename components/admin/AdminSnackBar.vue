@@ -2,7 +2,7 @@
   <v-snackbar
     v-model="snackbar"
     color="primary darken-2"
-    :content-class="(minimized) ? '' : 'container container--fluid mr-0'"
+    :content-class="(minimized) ? '' : 'container mr-0'"
     width="320px"
     max-width="320"
     app
@@ -19,11 +19,11 @@
       no-gutters
     >
       <v-col>
-        <span class="text-caption font-weight-light">
+        <span class="text-wrap-anywhere text-caption font-weight-light">
           {{ upload.name | shorten }}
         </span>
       </v-col>
-      <v-col>
+      <v-col cols="5">
         <v-progress-linear
           color="accent darken-1"
           height="16"
@@ -110,3 +110,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.text-wrap-anywhere {
+  overflow-wrap: anywhere !important;
+}
+</style>
