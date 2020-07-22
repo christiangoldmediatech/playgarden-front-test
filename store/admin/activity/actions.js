@@ -21,7 +21,8 @@ export default {
   },
 
   async createActivity (ctx, data) {
-    await this.$axios.$post('/activities', data)
+    const response = await this.$axios.$post('/activities', data)
+    return response
   },
 
   async updateActivity (ctx, { id, data }) {

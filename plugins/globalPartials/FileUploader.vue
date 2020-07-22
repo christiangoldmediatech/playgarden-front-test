@@ -62,6 +62,11 @@ export default {
       required: false,
       default: 'mdi-file'
     },
+    appendIcon: {
+      type: String,
+      required: false,
+      default: ''
+    },
     showSize: {
       type: Boolean,
       required: false,
@@ -128,6 +133,11 @@ export default {
       required: false,
       default: false
     },
+    mp4: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     mov: {
       type: Boolean,
       required: false,
@@ -159,6 +169,7 @@ export default {
         { 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': this.xlsx },
         { 'application/zip': this.zip },
         { 'video/mpeg': this.mpeg },
+        { 'video/mp4': this.mp4 },
         { 'video/quicktime': this.mov },
         { 'video/webm': this.webm }
       ]
@@ -179,7 +190,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('upload', ['doUpload']),
+    ...mapActions('upload', ['doUpload', 'doBackgroundUpload']),
 
     async handleFileUpload () {
       if (this.file) {
@@ -191,6 +202,23 @@ export default {
           formData
         })
         return filePath
+      }
+      return false
+    },
+
+    handleBackgroundFileUpload (callback = () => {}, meta = {}) {
+      if (this.file) {
+        const formData = new FormData()
+        formData.append('file', this.file)
+        this.doBackgroundUpload({
+          type: `upload-${this.mode}`,
+          path: this.path,
+          name: this.file.name,
+          formData,
+          callback,
+          meta
+        })
+        return true
       }
       return false
     }

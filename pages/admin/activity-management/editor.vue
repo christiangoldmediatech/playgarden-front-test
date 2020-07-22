@@ -27,52 +27,95 @@
           <validation-observer v-slot="{ invalid, passes }">
             <v-card-text>
               <v-form>
-                <validation-provider v-slot="{ errors }" name="Activity Title" rules="required">
-                  <v-text-field
-                    v-model="activity.name"
-                    :error-messages="errors"
-                    label="Activity Title"
-                    solo
-                  />
-                </validation-provider>
+                <v-row>
+                  <v-col
+                    class="text-md-right"
+                    cols="12"
+                    sm="3"
+                  >
+                    <span class="subheader">Activity title:</span>
+                  </v-col>
+                  <v-col cols="12" sm="9" lg="6">
+                    <validation-provider v-slot="{ errors }" name="Activity Title" rules="required">
+                      <v-text-field
+                        v-model="activity.name"
+                        :error-messages="errors"
+                        solo
+                      />
+                    </validation-provider>
+                  </v-col>
+                </v-row>
 
-                <validation-provider v-slot="{ errors }" name="Description" rules="required">
-                  <v-textarea
-                    v-model="activity.description"
-                    :error-messages="errors"
-                    label="Description"
-                    solo
-                  />
-                </validation-provider>
+                <v-row>
+                  <v-col class="text-md-right" cols="12" sm="3">
+                    <span class="subheader">Description:</span>
+                  </v-col>
+                  <v-col cols="12" sm="9" lg="6">
+                    <validation-provider v-slot="{ errors }" name="Description" rules="required">
+                      <v-textarea
+                        v-model="activity.description"
+                        :error-messages="errors"
+                        solo
+                      />
+                    </validation-provider>
+                  </v-col>
+                </v-row>
 
-                <validation-provider v-slot="{ errors }" name="Category" rules="required">
-                  <v-select
-                    v-model="activity.activityTypeId"
-                    :error-messages="errors"
-                    :items="activityTypes"
-                    label="Category"
-                    solo
-                  />
-                </validation-provider>
+                <v-row>
+                  <v-col class="text-md-right" cols="12" sm="3">
+                    <span class="subheader">Category:</span>
+                  </v-col>
+                  <v-col cols="12" sm="9" lg="6">
+                    <validation-provider v-slot="{ errors }" name="Category" rules="required">
+                      <v-select
+                        v-model="activity.activityTypeId"
+                        :error-messages="errors"
+                        :items="activityTypes"
+                        solo
+                      />
+                    </validation-provider>
+                  </v-col>
+                </v-row>
 
-                <file-uploader
-                  ref="fileUploader"
-                  :file.sync="file"
-                  label="Upload Video"
-                  mode="image"
-                  mpeg
-                  mov
-                  path="activity-video"
-                  placeholder="Select a video for this activity"
-                  prepend-icon="mdi-video"
-                  webm
-                />
-
-                <v-checkbox
-                  v-model="activity.featured"
-                  color="primary darken-2"
-                  label="Featured"
-                />
+                <v-row>
+                  <v-col class="text-md-right" cols="12" sm="3">
+                    <span class="subheader">Video:</span>
+                  </v-col>
+                  <v-col class="text-center" cols="12" sm="9" lg="6">
+                    <video v-if="!['', 'https://activity-url.com/', 'https://activity-url-updated.com/', null].includes(activity.url)" class="mb-3" width="100%" controls autoplay>
+                      <source :src="activity.url" type="video/mp4">
+                    </video>
+                    <v-progress-circular
+                      v-else-if="isVideoUploading"
+                      class="mb-3"
+                      color="primary"
+                      width="8"
+                      size="256"
+                      indeterminate
+                    >
+                      <span class="black--text">
+                        Your video is uploading
+                      </span>
+                    </v-progress-circular>
+                    <validation-provider ref="fileProvider" v-slot="{ errors }" name="Video" :rules="`${(activity.url === null && file === null) ? 'required' : ''}`">
+                      <file-uploader
+                        ref="fileUploader"
+                        :error-messages="errors"
+                        :file.sync="file"
+                        label="Upload Video"
+                        mode="image"
+                        path="activity-video"
+                        placeholder="Select a video for this activity"
+                        prepend-icon=""
+                        append-icon="mdi-video"
+                        mp4
+                        mov
+                        mpeg
+                        webm
+                      />
+                    </validation-provider>
+                  </v-col>
+                </v-row>
               </v-form>
             </v-card-text>
 
@@ -122,6 +165,7 @@ export default {
 
   computed: {
     ...mapGetters('admin/activity', ['rows', 'types']),
+    ...mapGetters('upload', ['uploads']),
 
     id () {
       return (this.$route.query.id) ? parseInt(this.$route.query.id) : null
@@ -131,11 +175,30 @@ export default {
       return this.id ? 'Edit Activity' : 'New Activity'
     },
 
+    isVideoUploading () {
+      if (this.id) {
+        const upload = this.uploads.find(({ meta }) => {
+          return meta.type === 'activity-video' && meta.id === this.id
+        })
+        if (upload) {
+          return true
+        }
+      }
+      return false
+    },
+
     activityTypes () {
       return this.types.map(type => ({
         text: type.name,
         value: type.id
       }))
+    }
+  },
+
+  watch: {
+    file (val) {
+      this.$refs.fileProvider.syncValue(val)
+      this.$refs.fileProvider.validate()
     }
   },
 
@@ -156,11 +219,23 @@ export default {
       this.activity.featured = data.featured
       this.activity.name = data.name
       this.activity.description = data.description
-      // this.activity.activityTypeId = data.activityType.id
+      this.activity.activityTypeId = data.activityType.id
       this.activity.url = data.url
     }
 
     this.loading = false
+  },
+
+  mounted () {
+    if (this.loading) {
+      const interval = window.setInterval(() => {
+        if (this.loading === false) {
+          this.$refs.fileProvider.syncValue(this.file)
+          this.$refs.fileProvider.validate()
+          window.clearInterval(interval)
+        }
+      }, 50)
+    }
   },
 
   methods: {
@@ -170,15 +245,20 @@ export default {
 
     async save () {
       this.loading = true
+      let id = this.id
+      const activity = this.activity
+
       try {
-        const videoUrl = await this.$refs.fileUploader.handleFileUpload()
-        this.activity.url = videoUrl
-        if (this.id === null) {
-          await this.createActivity(this.actvitiy)
+        if (id === null) {
+          const response = await this.createActivity(activity)
+          id = response.id
         } else {
-          this.user.password = undefined
-          await this.updateActivity({ id: this.id, data: this.activity })
+          await this.updateActivity({ id, data: activity })
         }
+        this.$refs.fileUploader.handleBackgroundFileUpload(async ({ filePath }) => {
+          activity.url = filePath
+          await this.updateActivity({ id, data: activity })
+        }, { type: 'activity-video', id })
       } catch (err) {
         this.loading = false
         return

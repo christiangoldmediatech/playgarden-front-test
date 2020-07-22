@@ -47,42 +47,44 @@
               @update:page="page = $event"
             >
               <template v-slot:top>
-                <v-toolbar color="white" flat>
-                  <v-icon color="accent">
-                    mdi-tune
-                  </v-icon>
-                  <v-checkbox
-                    class="mx-1"
-                    color="primary darken-2"
-                    hide-details
-                    :input-value="allFilters"
-                    label="All"
-                    @click.stop="toggleAll"
-                  />
-                  <v-checkbox
-                    v-for="(item, i) in filterList"
-                    :key="`filter-item-${i}`"
-                    v-model="activeFilters"
-                    class="mx-1"
-                    color="primary darken-2"
-                    hide-details
-                    :label="item.text"
-                    multiple
-                    :value="item.value"
-                  />
-                  <v-spacer />
-                  <v-text-field
-                    v-model="search"
-                    append-icon="mdi-magnify"
-                    class="shrink"
-                    clearable
-                    hide-details
-                    label="Search"
-                    single-line
-                    solo
-                    @keydown.enter="refresh(false)"
-                  />
-                </v-toolbar>
+                <v-container flui>
+                  <v-row color="white" align="center">
+                    <v-icon class="my-1" color="accent">
+                      mdi-tune
+                    </v-icon>
+                    <v-checkbox
+                      class="mx-1 my-1 pa-0"
+                      color="primary darken-2"
+                      hide-details
+                      :input-value="allFilters"
+                      label="All"
+                      @click.stop="toggleAll"
+                    />
+                    <v-checkbox
+                      v-for="(item, i) in filterList"
+                      :key="`filter-item-${i}`"
+                      v-model="activeFilters"
+                      class="mx-1 my-1 pa-0"
+                      color="primary darken-2"
+                      hide-details
+                      :label="item.text"
+                      multiple
+                      :value="item.value"
+                    />
+                    <v-spacer />
+                    <v-text-field
+                      v-model="search"
+                      append-icon="mdi-magnify"
+                      class="shrink"
+                      clearable
+                      hide-details
+                      label="Search"
+                      single-line
+                      solo
+                      @keydown.enter="refresh(false)"
+                    />
+                  </v-row>
+                </v-container>
               </template>
 
               <template v-slot:item.name="{ item }">
