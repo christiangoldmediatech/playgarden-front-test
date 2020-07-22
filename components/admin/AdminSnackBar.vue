@@ -2,7 +2,7 @@
   <v-snackbar
     v-model="snackbar"
     color="primary darken-2"
-    content-class="container fluid mr-0"
+    :content-class="(minimized) ? '' : 'container container--fluid mr-0'"
     width="320px"
     max-width="320"
     app
@@ -14,6 +14,7 @@
     <v-row
       v-for="upload in uploads"
       :key="`upload-progress-${upload.id}`"
+      :class="{ 'd-none': minimized }"
       align="center"
       no-gutters
     >

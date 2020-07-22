@@ -292,6 +292,10 @@ export default {
     font-family: 'Poppins', sans-serif !important;
   }
 
+  .container:not(.container--fluid) {
+    max-width: 1200px;
+  }
+
   .v-data-footer {
     border: none;
   }
