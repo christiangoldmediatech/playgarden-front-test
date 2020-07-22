@@ -4,7 +4,7 @@
       <v-col cols="12">
         <v-card width="100%">
           <v-card-title>
-            Users
+            Activities Management
             <v-spacer />
             <v-btn
               class="mr-2 text-none"
@@ -12,7 +12,7 @@
               dark
               :icon="$vuetify.breakpoint.xs"
               nuxt
-              :to="{ name: 'admin-user-manager-editor' }"
+              :to="{ name: 'admin-activity-management-editor' }"
             >
               <v-icon class="hidden-sm-and-up">
                 mdi-plus-circle
@@ -20,12 +20,12 @@
               <v-icon class="hidden-xs-only" small>
                 mdi-plus
               </v-icon>
-              <span class="hidden-xs-only">Add new user</span>
+              <span class="hidden-xs-only">Add new activity</span>
             </v-btn>
           </v-card-title>
 
           <v-card-text>
-            View, create, update, or delete users.
+            View, create, update, or delete activities.
           </v-card-text>
         </v-card>
       </v-col>
@@ -39,7 +39,7 @@
               dense
               :headers="headers"
               hide-default-footer
-              :items="types"
+              :items="rows"
               :loading="loading"
               :page.sync="page"
               :server-items-length="total"
@@ -75,6 +75,7 @@
                     <v-text-field
                       v-model="search"
                       append-icon="mdi-magnify"
+                      class="shrink"
                       clearable
                       hide-details
                       label="Search"
@@ -84,6 +85,21 @@
                     />
                   </v-row>
                 </v-container>
+              </template>
+
+              <template v-slot:item.name="{ item }">
+                <v-btn
+                  class="mr-2"
+                  :disabled="loading"
+                  icon
+                  @click.stop="toggleFeatured(item)"
+                >
+                  <v-icon
+                    :color="(item.featured) ? 'accent' : ''"
+                    v-text="(item.featured) ? 'mdi-star' : 'mdi-star-outline'"
+                  />
+                </v-btn>
+                {{ item.name }}
               </template>
 
               <template v-slot:item.createdAt="{ item }">
@@ -98,7 +114,7 @@
                 <v-icon
                   color="#81A1F7"
                   dense
-                  @click.stop="$router.push({ name: 'admin-user-manager-editor', query: { id: item.id } })"
+                  @click.stop="$router.push({ name: 'admin-activity-management-editor', query: { id: item.id } })"
                 >
                   mdi-pencil-outline
                 </v-icon>
@@ -172,7 +188,7 @@
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  name: 'UsersDataTable',
+  name: 'ActivityDataTable',
 
   data () {
     return {
@@ -181,53 +197,19 @@ export default {
       limit: 10,
       page: 1,
       allFilters: false,
-      activeFilters: ['firstName', 'lastName'],
-      filterList: [
-        {
-          text: 'First Name',
-          value: 'firstName'
-        },
-        {
-          text: 'Last Name',
-          value: 'lastName'
-        },
-        {
-          text: 'E-mail',
-          value: 'email'
-        },
-        {
-          text: 'Phone Number',
-          value: 'phoneNumber'
-        },
-        {
-          text: 'Role',
-          value: 'role'
-        }
-      ],
+      activeFilters: [],
       headers: [
         {
-          text: 'Name',
+          text: 'Activity Title',
           align: 'start',
-          sortable: false,
-          value: 'fullName'
+          sortable: true,
+          value: 'name'
         },
         {
-          text: 'E-mail',
+          text: 'Category',
           align: 'start',
-          sortable: false,
-          value: 'email'
-        },
-        {
-          text: 'Phone',
-          align: 'start',
-          sortable: false,
-          value: 'phoneNumber'
-        },
-        {
-          text: 'Role',
-          align: 'start',
-          sortable: false,
-          value: 'role.name'
+          sortable: true,
+          value: 'activityType.name'
         },
         {
           text: 'Created',
@@ -252,10 +234,16 @@ export default {
   },
 
   computed: {
-    ...mapGetters('admin/users', {
-      types: 'rows',
-      total: 'total'
-    })
+    ...mapGetters('admin/activity', ['rows', 'total', 'types']),
+
+    filterList () {
+      return this.types.map((type) => {
+        return {
+          text: type.name,
+          value: type.id
+        }
+      })
+    }
   },
 
   watch: {
@@ -279,10 +267,21 @@ export default {
   },
 
   methods: {
-    ...mapActions('admin/users', {
-      getUsers: 'get',
-      deleteUser: 'delete'
-    }),
+    ...mapActions('admin/activity', ['getActivities', 'updateActivity', 'deleteActivity']),
+
+    async toggleFeatured (item) {
+      this.loading = true
+      await this.updateActivity({
+        id: item.id,
+        data: {
+          name: item.name,
+          type: item.type,
+          activityTypeId: item.activityType.id,
+          featured: !item.featured
+        }
+      })
+      await this.refresh()
+    },
 
     toggleAll () {
       this.allFilters = !this.allFilters
@@ -310,24 +309,22 @@ export default {
       this.loading = true
       const params = { limit: this.limit, page: this.page }
 
-      if (clear) {
-        this.search = ''
-      } else {
-        this.activeFilters.forEach((filter) => {
-          params[filter] = this.search
-        })
+      // params.name = this.search
+
+      if (this.activeFilters.length > 0) {
+        params.activityTypeId = this.activeFilters
       }
 
-      await this.getUsers(params)
+      await this.getActivities(params)
       this.loading = false
     },
 
-    remove ({ id, firstName, lastName, email }) {
+    remove ({ id, name }) {
       this.$nuxt.$emit('open-admin-prompt', {
-        title: 'Delete user?',
-        message: `Are you sure you wish to delete user '${firstName} ${lastName}' (${email})?`,
+        title: 'Delete activity?',
+        message: `Are you sure you wish to delete '${name}' activity?`,
         action: async () => {
-          await this.deleteUser(id)
+          await this.deleteActivity(id)
           this.refresh()
         }
       })

@@ -13,3 +13,12 @@ Vue.filter('formatDate', (value) => {
 
   return `${pad(month, 2)}-${pad(day, 2)}-${year} ${pad(hours, 2)}:${pad(minutes, 2)}:${pad(seconds, 2)}`
 })
+
+Vue.filter('shorten', (value) => {
+  if (value.length > 23) {
+    const partA = value.slice(0, 10)
+    const partB = value.slice(value.length - 10, value.length)
+    return `${partA}...${partB}`
+  }
+  return value
+})

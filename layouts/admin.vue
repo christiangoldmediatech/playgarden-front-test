@@ -152,18 +152,20 @@
       <admin-prompt-dialog />
       <nuxt />
     </v-main>
+    <notify-event />
+    <admin-snack-bar />
     <!--
     <v-footer app>
       &copy; 2020 <span v-if="new Date().getFullYear() > 2020"> - {{ new Date().getFullYear() }}</span>
     </v-footer>
     -->
-    <notify-event />
   </v-app>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import AdminPromptDialog from '@/components/admin/AdminPromptDialog.vue'
+import AdminSnackBar from '@/components/admin/AdminSnackBar.vue'
 
 export default {
   name: 'Admin',
@@ -171,7 +173,8 @@ export default {
   middleware: ['checkJWT'],
 
   components: {
-    AdminPromptDialog
+    AdminPromptDialog,
+    AdminSnackBar
   },
 
   data () {
@@ -237,6 +240,8 @@ export default {
       userInfo: 'getUserInfo'
     }),
 
+    ...mapGetters('upload', ['uploads']),
+
     menuItems () {
       return this.menuItemsData.map((item) => {
         if (item.children) {
@@ -250,6 +255,15 @@ export default {
         return item
       })
     }
+  },
+
+  mounted () {
+    window.addEventListener('beforeunload', (e) => {
+      if (this.uploads.length > 0) {
+        e.preventDefault()
+        e.returnValue = ''
+      }
+    })
   }
 }
 </script>
@@ -276,6 +290,10 @@ export default {
   .text-h5,
   .text-h6 {
     font-family: 'Poppins', sans-serif !important;
+  }
+
+  .container:not(.container--fluid) {
+    max-width: 1200px;
   }
 
   .v-data-footer {
