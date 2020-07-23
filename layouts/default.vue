@@ -14,12 +14,14 @@
     <default-footer class="mt-12" />
 
     <notify-event />
+    <prompt-dialog event-trigger="open-prompt" />
   </v-app>
 </template>
 
 <script>
 import ApplicationHeader from '@/components/app/menu/ApplicationHeader'
 import DefaultFooter from '@/components/app/footer/DefaultFooter'
+import PromptDialog from '@/components/prompt/PromptDialog.vue'
 
 export default {
   name: 'Default',
@@ -28,7 +30,8 @@ export default {
 
   components: {
     ApplicationHeader,
-    DefaultFooter
+    DefaultFooter,
+    PromptDialog
   }
 }
 </script>

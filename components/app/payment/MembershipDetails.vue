@@ -151,18 +151,21 @@ export default {
       }
     },
 
-    async removeCard (card) {
-      // eslint-disable-next-line no-alert
-      if (confirm('Are you sure about remove this card?')) {
-        try {
+    removeCard (card) {
+      this.$nuxt.$emit('open-prompt', {
+        title: 'Remove card?',
+        message: `Are you sure you wish to remove your card that ends in '${card.details.last4}'?`,
+        action: async () => {
           this.loading = true
-          await this.removeBillingCard(card.id)
-          this.$snotify.success('Card has been removed successfully!')
-          await this.getBillingCards()
-        } finally {
-          this.loading = false
+          try {
+            await this.removeBillingCard(card.id)
+            await this.getBillingCards()
+            this.$snotify.success('Card has been removed successfully!')
+          } finally {
+            this.loading = false
+          }
         }
-      }
+      })
     },
 
     async removeSubscription () {

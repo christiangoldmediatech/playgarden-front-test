@@ -8,6 +8,10 @@ export default function ({ $axios, redirect, store }) {
 
     let body = 'Something went wrong.'
 
+    if (error.response.status === 400) {
+      body = error.response.data.message
+    }
+
     if (error.response.status === 401) {
       body = 'Please login before using this section.'
 

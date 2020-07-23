@@ -33,7 +33,9 @@
 
       <v-card-text>
         <v-container>
-          <p>{{ message }}</p>
+          <p :class="contentClasses">
+            {{ message }}
+          </p>
         </v-container>
       </v-card-text>
 
@@ -66,7 +68,14 @@
 
 <script>
 export default {
-  name: 'AdminPromptDialog',
+  name: 'PromptDialog',
+
+  props: {
+    eventTrigger: {
+      type: String,
+      required: true
+    }
+  },
 
   data () {
     return {
@@ -74,6 +83,7 @@ export default {
       loading: false,
       title: 'Do you wish to proceed?',
       message: 'Are you sure you wish to proceed with this action?',
+      contentClasses: '',
       color: 'primary darken-1',
       dark: true,
       action: () => { this.close() }
@@ -81,7 +91,7 @@ export default {
   },
 
   created () {
-    this.$nuxt.$on('open-admin-prompt', (params) => {
+    this.$nuxt.$on(this.eventTrigger, (params) => {
       this.open(params)
     })
   },
@@ -90,12 +100,14 @@ export default {
     open ({
       title = 'Do you wish to proceed?',
       message = 'Are you sure you wish to proceed with this action?',
+      contentClasses = '',
       action = () => { this.close() },
       dark = true,
       color = 'primary darken-1'
     }) {
       this.title = title
       this.message = message
+      this.contentClasses = contentClasses
       this.action = action
       this.color = color
       this.dark = dark
