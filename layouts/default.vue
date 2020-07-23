@@ -5,7 +5,7 @@
 
     <!-- CONTENT -->
     <v-main>
-      <v-container class="fill-height" fluid mt-6 mt-md-0 pa-0>
+      <v-container class="fill-height" mt-6 mt-md-0 pa-0>
         <nuxt />
       </v-container>
     </v-main>

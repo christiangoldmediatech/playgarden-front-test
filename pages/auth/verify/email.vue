@@ -1,12 +1,12 @@
 <template>
   <v-row align="center" justify="center" no-gutters>
-    <v-col cols="11" lg="4" md="6" sm="7" xl="3">
+    <v-col cols="11" md="6">
       <div class="image">
         <img alt="Smiling Girl Picture" src="@/assets/svg/girl-smiling.svg">
       </div>
     </v-col>
 
-    <v-col cols="12" lg="5" md="6" xl="4">
+    <v-col cols="12" md="6">
       <div class="form mx-auto px-4">
         <div class="my-5 my-md-0 text-center text-md-left">
           <underlined-title text="Welcome to Playgarden Prep" />
