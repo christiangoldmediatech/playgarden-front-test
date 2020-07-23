@@ -35,6 +35,7 @@
           >
             <v-text-field
               v-model="draft.date"
+              v-mask="['##/##']"
               clearable
               :disabled="loading"
               :error-messages="errors"

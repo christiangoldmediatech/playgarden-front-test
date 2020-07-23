@@ -43,7 +43,8 @@ export default {
     '@/plugins/globalPartials',
     '@/plugins/snotify',
     '@/plugins/validate',
-    '@/plugins/filters'
+    '@/plugins/filters',
+    '@/plugins/mask'
   ],
   /*
    ** Auto import components
