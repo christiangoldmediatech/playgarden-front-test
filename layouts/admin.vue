@@ -149,7 +149,7 @@
     </v-app-bar>
 
     <v-main class="pg-bkg">
-      <admin-prompt-dialog />
+      <prompt-dialog event-trigger="open-admin-prompt" />
       <nuxt />
     </v-main>
     <notify-event />
@@ -164,7 +164,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import AdminPromptDialog from '@/components/admin/AdminPromptDialog.vue'
+import PromptDialog from '@/components/prompt/PromptDialog.vue'
 import AdminSnackBar from '@/components/admin/AdminSnackBar.vue'
 
 export default {
@@ -173,7 +173,7 @@ export default {
   middleware: ['checkJWT'],
 
   components: {
-    AdminPromptDialog,
+    PromptDialog,
     AdminSnackBar
   },
 
