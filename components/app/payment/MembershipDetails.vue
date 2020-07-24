@@ -31,26 +31,40 @@
           {{ card.details.brand }} .... .... .... {{ card.details.last4 }}
         </span>
 
-        <v-btn color="accent" small text @click="removeCard(card)">
+        <v-btn
+          v-if="isBillingCardRemovable"
+          color="accent"
+          small
+          text
+          @click="removeCard(card)"
+        >
           REMOVE CARD
         </v-btn>
       </v-row>
 
-      <!-- Add payment method -->
-      <v-btn
-        block
-        class="my-6"
-        color="primary"
-        x-large
-        @click="newCardModal = true"
-      >
-        ADD NEW CARD
-      </v-btn>
+      <template v-if="billing.subscriptionId">
+        <!-- Add payment method -->
+        <v-btn
+          block
+          class="my-6"
+          color="primary"
+          x-large
+          @click="newCardModal = true"
+        >
+          ADD NEW CARD
+        </v-btn>
 
-      <!-- Cancel suscription -->
-      <v-btn block color="accent" text x-large @click="removeSubscription">
-        CANCEL MEMBERSHIP
-      </v-btn>
+        <!-- Cancel suscription -->
+        <v-btn block color="accent" text x-large @click="removeSubscription">
+          CANCEL MEMBERSHIP
+        </v-btn>
+      </template>
+
+      <div class="my-6 text-center">
+        <nuxt-link :to="{ name: 'app-payment-register' }">
+          CREATE MEMBERSHIP
+        </nuxt-link>
+      </div>
     </v-col>
 
     <v-dialog
@@ -94,10 +108,17 @@ export default {
       loading: false,
       billing: {
         monthlyMembershipFee: 0,
-        nextBillingDate: ''
+        nextBillingDate: '',
+        subscriptionId: null
       },
       newCardModal: false,
       userCards: []
+    }
+  },
+
+  computed: {
+    isBillingCardRemovable () {
+      return this.userCards.length > 1
     }
   },
 
@@ -119,6 +140,8 @@ export default {
         this.loading = true
         const data = await this.fetchBillingDetails()
 
+        this.billing.subscriptionId = data.subscriptionId
+
         if (data.subscriptionData) {
           // TODO: improve this after get more info about this process
           const billingItems = data.subscriptionData.items.data
@@ -131,7 +154,7 @@ export default {
           this.billing.nextBillingDate =
             month + ' ' + nextDate.getDate() + ', ' + nextDate.getFullYear()
 
-          billingItems.forEach((item, index) => {
+          billingItems.forEach((item) => {
             cost += parseFloat(item.price.unit_amount_decimal)
           })
 

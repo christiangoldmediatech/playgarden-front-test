@@ -28,6 +28,18 @@ export default {
     }
   },
 
+  async fetchCaregiverInvitationList ({ commit }) {
+    try {
+      const response = await this.$axios.get('/caregivers/invites/list')
+
+      return response.data
+    } catch (error) {
+      snotifyError(commit, {
+        body: 'Sorry! There was an error while sending your Invitation!'
+      })
+    }
+  },
+
   async sendCaregiverInvitation ({ commit }, { email }) {
     try {
       const response = await this.$axios.post('/caregivers/invite', { email })
@@ -36,6 +48,20 @@ export default {
     } catch (error) {
       snotifyError(commit, {
         body: 'Sorry! There was an error while sending your Invitation!'
+      })
+    }
+  },
+
+  async resendCaregiverInvitation ({ commit }, email) {
+    try {
+      const response = await this.$axios.post('/caregivers/invite/resend', {
+        email
+      })
+
+      return response.data
+    } catch (error) {
+      snotifyError(commit, {
+        body: 'Sorry! There was an error while resending your Invitation!'
       })
     }
   },

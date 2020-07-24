@@ -98,6 +98,8 @@ export default {
       snotifyError(commit, {
         body: 'Sorry! There was an error while paying your Subscription!'
       })
+
+      throw error
     }
   }
 }

@@ -34,6 +34,8 @@
 
       <v-row class="flex-column-reverse flex-md-row">
         <v-col class="px-6" cols="12" md="6">
+          <invitation-list />
+
           <send-invitation-form
             v-if="modal"
             :loading="loading"
@@ -58,12 +60,14 @@
 import { mapActions } from 'vuex'
 
 import SendInvitationForm from '@/components/forms/caregiver/SendInvitationForm'
+import InvitationList from '@/components/app/caregiver/InvitationList'
 
 export default {
   name: 'ManageCaregivers',
 
   components: {
-    SendInvitationForm
+    SendInvitationForm,
+    InvitationList
   },
 
   data: () => ({
@@ -72,7 +76,10 @@ export default {
   }),
 
   methods: {
-    ...mapActions('caregiver', ['sendCaregiverInvitation']),
+    ...mapActions('caregiver', [
+      'fetchCaregiverInvitationList',
+      'sendCaregiverInvitation'
+    ]),
 
     onCancel () {
       this.loading = false

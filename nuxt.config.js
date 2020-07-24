@@ -40,11 +40,11 @@ export default {
    */
   plugins: [
     '@/plugins/axios',
+    '@/plugins/directives',
+    '@/plugins/filters',
     '@/plugins/globalPartials',
     '@/plugins/snotify',
-    '@/plugins/validate',
-    '@/plugins/filters',
-    '@/plugins/mask'
+    '@/plugins/validate'
   ],
   /*
    ** Auto import components
