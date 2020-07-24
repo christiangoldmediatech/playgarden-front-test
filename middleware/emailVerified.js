@@ -5,6 +5,7 @@ export default function ({ redirect, route, store }) {
     if (
       user.id &&
       !user.validatedDate &&
+      route.name !== 'auth-logout' &&
       route.name !== 'auth-verify-email' &&
       route.name !== 'jwt-recovery' &&
       route.query.process !== 'signup' &&
