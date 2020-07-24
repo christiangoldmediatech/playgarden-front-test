@@ -10,8 +10,6 @@ export default {
       snotifyError(commit, {
         body: 'Sorry! Wrong email or password.'
       })
-
-      throw error
     }
   }
 }

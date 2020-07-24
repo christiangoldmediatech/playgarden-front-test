@@ -10,8 +10,6 @@ export default {
       snotifyError(commit, {
         body: 'Sorry! There was an error while getting your Caregivers data!'
       })
-
-      throw error
     }
   },
 
@@ -24,8 +22,6 @@ export default {
       snotifyError(commit, {
         body: 'Sorry! There was an error while sending your Invitation!'
       })
-
-      throw error
     }
   },
 
@@ -38,8 +34,6 @@ export default {
       snotifyError(commit, {
         body: 'Sorry! There was an error while verifying your invitation!'
       })
-
-      throw error
     }
   }
 }

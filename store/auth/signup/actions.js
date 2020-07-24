@@ -10,8 +10,6 @@ export default {
       snotifyError(commit, {
         body: 'Sorry! There was an error while signing you up.'
       })
-
-      throw error
     }
   }
 }
