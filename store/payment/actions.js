@@ -55,7 +55,7 @@ export default {
    */
   async cancelSubscription ({ commit }) {
     try {
-      const { data } = await this.$axios.post('/billing/subscription/cancel')
+      const { data } = await this.$axios.delete('/billing/subscription/cancel')
 
       return data
     } catch (error) {

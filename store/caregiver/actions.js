@@ -1,6 +1,21 @@
 import { snotifyError } from '@/utils/vuex'
 
 export default {
+  async signup ({ commit, dispatch }, { data, token }) {
+    try {
+      const response = await this.$axios.post(
+        `/caregivers/signup/${token}`,
+        data
+      )
+
+      dispatch('auth/setToken', response.data.accessToken, { root: true })
+    } catch (error) {
+      snotifyError(commit, {
+        body: 'Sorry! There was an error while signing you up.'
+      })
+    }
+  },
+
   async fetchCaregiversList ({ commit }) {
     try {
       const { data } = await this.$axios.get('/caregivers')

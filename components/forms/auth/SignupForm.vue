@@ -152,7 +152,9 @@ export default {
     inInvitationProcess () {
       const { query } = this.$route
 
-      return Boolean(query.process === 'invitation' && query.email)
+      return Boolean(
+        query.process === 'invitation' && query.email && query.token
+      )
     }
   },
 

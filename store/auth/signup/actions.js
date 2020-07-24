@@ -1,7 +1,7 @@
 import { snotifyError } from '@/utils/vuex'
 
 export default {
-  async signup ({ commit, dispatch, getters }, data) {
+  async signup ({ commit, dispatch }, data) {
     try {
       const response = await this.$axios.post('/auth/signup', data)
 

@@ -23,22 +23,24 @@
         </small>
       </p>
 
-      <p>
-        Pricing:
+      <template v-if="!inInvitationProcess">
+        <p>
+          Pricing:
 
-        <br>
+          <br>
 
-        <span class="font-weight-bold">
-          Pay $0.99 USD a day for first child and $0.20 USD a day per
-          additional*
-        </span>
-      </p>
+          <span class="font-weight-bold">
+            Pay $0.99 USD a day for first child and $0.20 USD a day per
+            additional*
+          </span>
+        </p>
 
-      <p>*Get a FREE trial for the first week!</p>
+        <p>*Get a FREE trial for the first week!</p>
 
-      <p>
-        <small>You can cancel at any time from your account settings</small>
-      </p>
+        <p>
+          <small>You can cancel at any time from your account settings</small>
+        </p>
+      </template>
     </v-col>
   </v-row>
 </template>
@@ -55,35 +57,52 @@ export default {
     SignupForm
   },
 
-  data: () => ({
-    loading: false
+  data: vm => ({
+    loading: false,
+    token: vm.$route.query.token
   }),
 
+  computed: {
+    inInvitationProcess () {
+      const { query } = this.$route
+
+      return Boolean(
+        query.process === 'invitation' && query.email && query.token
+      )
+    }
+  },
+
   methods: {
-    ...mapActions('auth/signup', ['signup']),
+    ...mapActions('auth/signup', { newParent: 'signup' }),
+
+    ...mapActions('caregiver', { newCaregiver: 'signup' }),
 
     async onSubmit (data) {
       this.loading = true
 
-      try {
-        await this.signup(data)
+      await this.registerProcess(
+        this.inInvitationProcess ? { data, token: this.token } : data
+      )
 
-        this.$snotify.success('Welcome to Playgarden Prep!')
+      this.$snotify.success('Welcome to Playgarden Prep!')
 
+      if (this.inInvitationProcess) {
+        await this.$router.push({ name: 'app-dashboard' })
+      } else {
         await this.$router.push({
           name: 'app-children-register',
           query: { process: 'signup', step: '2' }
         })
-      } finally {
-        this.loading = false
       }
+
+      this.loading = false
+    },
+
+    async registerProcess (data) {
+      return this.inInvitationProcess
+        ? await this.newCaregiver(data)
+        : await this.newParent(data)
     }
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.error-message {
-  color: $pg-error;
-}
-</style>
