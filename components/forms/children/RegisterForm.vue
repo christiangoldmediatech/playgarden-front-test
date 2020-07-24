@@ -106,32 +106,6 @@
             <input v-model="item.gender" type="hidden">
           </validation-provider>
 
-          <!-- Level -->
-          <validation-provider
-            :name="(removable ? `Child #${indexD + 1} - ` : '') + 'Level'"
-            rules="required"
-          >
-            <v-row class="mb-6">
-              <v-col
-                v-for="(level, indexL) in levels"
-                :key="indexL"
-                cols="12"
-                sm="4"
-              >
-                <v-btn
-                  block
-                  :color="item.level === level ? 'primary' : 'grey lighten-5'"
-                  :disabled="loading"
-                  @click="item.level = level"
-                >
-                  {{ level }}
-                </v-btn>
-              </v-col>
-            </v-row>
-
-            <input v-model="item.level" type="hidden">
-          </validation-provider>
-
           <!-- Backpack -->
           <validation-provider
             :name="(removable ? `Child #${indexD + 1} - ` : '') + 'Backpack'"
@@ -210,8 +184,7 @@ export default {
   data: () => ({
     backpacks: [],
     draft: [],
-    genders: ['MALE', 'FEMALE'],
-    levels: ['BEGINNER', 'INTERMEDIATE', 'ADVANCED']
+    genders: ['MALE', 'FEMALE']
   }),
 
   computed: {
@@ -238,7 +211,7 @@ export default {
         firstName: '',
         gender: '',
         lastName: '',
-        level: ''
+        level: 'BEGINNER'
       })
     },
 
