@@ -1,6 +1,6 @@
 <template>
-  <v-row no-gutters>
-    <v-col cols="6">
+  <v-row align="center" justify="center" no-gutters>
+    <v-col cols="11" md="6">
       <div class="image">
         <img alt="Smiling Girl Picture" src="@/assets/svg/girl-smiling.svg">
       </div>
@@ -101,14 +101,13 @@ export default {
 
 <style lang="scss" scoped>
 .image {
-  height: 100%;
   max-height: 500px;
   width: 100%;
   display: flex;
   justify-content: center;
   align-content: center;
   img {
-    height: 100%;
+    max-width: 90%;
   }
 }
 .form {

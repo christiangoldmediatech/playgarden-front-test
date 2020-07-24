@@ -1,23 +1,21 @@
 <template>
-  <v-footer class="mt-16" padless tile>
-    <v-card flat tile width="100%">
-      <div class="green-line green-line-1" />
-      <div class="green-line green-line-2" />
+  <v-footer class="mt-16 text-center justify-center pg-app-footer" padless tile>
+    <div class="green-line green-line-1" />
+    <div class="green-line green-line-2" />
 
+    <v-card flat tile width="100%" max-width="1200">
       <v-card-text class="pt-0">
         <v-container fluid py-0>
           <v-row>
             <v-col
               class="text-center text-md-left"
               cols="12"
-              lg="5"
-              md="4"
               sm="6"
-              xl="4"
+              md="4"
             >
               <v-container py-0>
                 <v-row no-gutters>
-                  <v-col cols="12" lg="9" xl="8">
+                  <v-col cols="12">
                     <v-img
                       alt="Playgarden Prep's Logo"
                       class="mb-1 mt-0"
@@ -63,10 +61,8 @@
             <v-col
               class="text-center text-md-left"
               cols="12"
-              lg="3"
-              md="2"
               sm="6"
-              xl="2"
+              md="2"
             >
               <v-container>
                 <nuxt-link
@@ -98,10 +94,8 @@
             <v-col
               class="text-center"
               cols="12"
-              lg="2"
-              md="3"
               sm="6"
-              xl="3"
+              md="3"
             >
               <p class="font-weight-bold mb-1 mt-0 primary--text text-h5">
                 Upper East Side
@@ -121,10 +115,8 @@
             <v-col
               class="text-center"
               cols="12"
-              lg="2"
-              md="3"
               sm="6"
-              xl="3"
+              md="3"
             >
               <p class="font-weight-bold mb-1 mt-0 primary--text text-h5">
                 Tribeca

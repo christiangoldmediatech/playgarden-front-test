@@ -1,10 +1,10 @@
 <template>
   <v-row class="flex-column-reverse flex-md-row" justify="center" no-gutters>
-    <v-col class="px-12" cols="12" lg="7" md="8" xl="5">
+    <v-col class="px-12" cols="12" md="8">
       <register-form :loading="loading" @click:submit="onSubmit" />
     </v-col>
 
-    <v-col class="px-12" cols="12" lg="3" md="4" xl="2">
+    <v-col class="px-12" cols="12" md="4">
       <p>
         <span class="font-weight-bold text-h5">
           MEMBERSHIP
