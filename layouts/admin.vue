@@ -314,11 +314,11 @@ export default {
   }
 
   .navbar-logo {
-  max-height: 32px;
+    max-height: 32px;
   }
 
   .logo {
-  max-width: 100%;
+    max-width: 100%;
   }
 
   .logo-text {

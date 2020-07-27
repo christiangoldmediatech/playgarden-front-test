@@ -1,10 +1,10 @@
 <template>
-  <v-footer class="mt-16 text-center justify-center pg-app-footer" padless tile>
+  <v-footer class="text-center justify-center pg-app-footer" padless tile>
     <div class="green-line green-line-1" />
     <div class="green-line green-line-2" />
 
     <v-card flat tile width="100%" max-width="1200">
-      <v-card-text class="pt-0">
+      <v-card-text class="py-0">
         <v-container fluid py-0>
           <v-row>
             <v-col
@@ -136,9 +136,9 @@
         </v-container>
       </v-card-text>
 
-      <v-divider class="mx-md-16 mx-sm-8" />
+      <v-divider class="mx-sm-8 mx-md-16" />
 
-      <v-container>
+      <v-container py-0>
         <v-row>
           <v-col class="text-center" cols="12">
             2020

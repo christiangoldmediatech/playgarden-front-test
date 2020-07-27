@@ -1,17 +1,18 @@
 <template>
   <v-app>
-    <!-- APP BAR -->
+    <!-- APP MAV & BAR -->
+    <app-navigation />
     <application-header />
 
     <!-- CONTENT -->
     <v-main>
-      <v-container class="fill-height" mt-6 mt-md-0 pa-0>
+      <v-container fill-height>
         <nuxt />
       </v-container>
     </v-main>
 
     <!-- FOOTER -->
-    <default-footer class="mt-12" />
+    <default-footer />
 
     <notify-event />
     <prompt-dialog event-trigger="open-prompt" />
@@ -19,7 +20,8 @@
 </template>
 
 <script>
-import ApplicationHeader from '@/components/app/menu/ApplicationHeader'
+import AppNavigation from '@/components/app/header/AppNavigation'
+import ApplicationHeader from '@/components/app/header/ApplicationHeader'
 import DefaultFooter from '@/components/app/footer/DefaultFooter'
 import PromptDialog from '@/components/prompt/PromptDialog.vue'
 
@@ -30,6 +32,7 @@ export default {
 
   components: {
     ApplicationHeader,
+    AppNavigation,
     DefaultFooter,
     PromptDialog
   }
