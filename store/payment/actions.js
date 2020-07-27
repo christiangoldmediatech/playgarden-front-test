@@ -13,8 +13,6 @@ export default {
       snotifyError(commit, {
         body: 'Sorry! There was an error while adding your Credit Card!'
       })
-
-      throw error
     }
   },
 
@@ -27,8 +25,6 @@ export default {
       snotifyError(commit, {
         body: 'Sorry! There was an error while getting your Subscription data!'
       })
-
-      throw error
     }
   },
 
@@ -39,8 +35,6 @@ export default {
       snotifyError(commit, {
         body: 'Sorry! There was an error while removing your Credit Card!'
       })
-
-      throw error
     }
   },
 
@@ -53,8 +47,6 @@ export default {
       snotifyError(commit, {
         body: 'Sorry! There was an error while validating your Credit Card!'
       })
-
-      throw error
     }
   },
 
@@ -63,15 +55,13 @@ export default {
    */
   async cancelSubscription ({ commit }) {
     try {
-      const { data } = await this.$axios.post('/billing/subscription/cancel')
+      const { data } = await this.$axios.delete('/billing/subscription/cancel')
 
       return data
     } catch (error) {
       snotifyError(commit, {
         body: 'Sorry! There was an error while canceling your Subscription!'
       })
-
-      throw error
     }
   },
 
@@ -84,8 +74,6 @@ export default {
       snotifyError(commit, {
         body: 'Sorry! There was an error while getting your Subscription cost!'
       })
-
-      throw error
     }
   },
 
@@ -98,8 +86,6 @@ export default {
       snotifyError(commit, {
         body: 'Sorry! There was an error while getting your Subscription cost!'
       })
-
-      throw error
     }
   },
 

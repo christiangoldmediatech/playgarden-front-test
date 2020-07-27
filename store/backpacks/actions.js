@@ -10,7 +10,7 @@ export default {
           snotifyError(commit, {
             body: 'Sorry! There was an error while getting backpacks.'
           })
-
+          // TO DO async away
           reject(error)
         })
     )

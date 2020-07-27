@@ -1,6 +1,21 @@
 import { snotifyError } from '@/utils/vuex'
 
 export default {
+  async signup ({ commit, dispatch }, { data, token }) {
+    try {
+      const response = await this.$axios.post(
+        `/caregivers/signup/${token}`,
+        data
+      )
+
+      dispatch('auth/setToken', response.data.accessToken, { root: true })
+    } catch (error) {
+      snotifyError(commit, {
+        body: 'Sorry! There was an error while signing you up.'
+      })
+    }
+  },
+
   async fetchCaregiversList ({ commit }) {
     try {
       const { data } = await this.$axios.get('/caregivers')
@@ -10,8 +25,18 @@ export default {
       snotifyError(commit, {
         body: 'Sorry! There was an error while getting your Caregivers data!'
       })
+    }
+  },
 
-      throw error
+  async fetchCaregiverInvitationList ({ commit }) {
+    try {
+      const response = await this.$axios.get('/caregivers/invites/list')
+
+      return response.data
+    } catch (error) {
+      snotifyError(commit, {
+        body: 'Sorry! There was an error while sending your Invitation!'
+      })
     }
   },
 
@@ -24,8 +49,20 @@ export default {
       snotifyError(commit, {
         body: 'Sorry! There was an error while sending your Invitation!'
       })
+    }
+  },
 
-      throw error
+  async resendCaregiverInvitation ({ commit }, email) {
+    try {
+      const response = await this.$axios.post('/caregivers/invite/resend', {
+        email
+      })
+
+      return response.data
+    } catch (error) {
+      snotifyError(commit, {
+        body: 'Sorry! There was an error while resending your Invitation!'
+      })
     }
   },
 
@@ -38,8 +75,6 @@ export default {
       snotifyError(commit, {
         body: 'Sorry! There was an error while verifying your invitation!'
       })
-
-      throw error
     }
   }
 }

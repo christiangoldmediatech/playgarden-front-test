@@ -13,7 +13,8 @@ export default function ({ redirect, route, store }) {
       user.id &&
       (registerStep === 2 || registerStep === 3) &&
       user.role.section === 'USERS' &&
-      route.query.process !== 'signup'
+      route.query.process !== 'signup' &&
+      route.name !== 'auth-logout'
     ) {
       let name
       let step
@@ -35,7 +36,7 @@ export default function ({ redirect, route, store }) {
         query: {
           process: 'signup',
           step,
-          _time: new Date().getTime() // <- just in order to avoid loading bar infinite
+          _time: new Date().getTime() // <- just in order to avoid infinite loading bar
         }
       })
     }
