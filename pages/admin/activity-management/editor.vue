@@ -82,8 +82,8 @@
                     <span class="subheader">Video:</span>
                   </v-col>
                   <v-col class="text-center" cols="12" sm="9" lg="6">
-                    <video v-if="!['', 'https://activity-url.com/', 'https://activity-url-updated.com/', null].includes(activity.url)" class="mb-3" width="100%" controls autoplay>
-                      <source :src="activity.url" type="video/mp4">
+                    <video v-if="!['', 'https://activity-url.com/', 'https://activity-url-updated.com/', null].includes(activity.videoId)" class="mb-3" width="100%" controls autoplay>
+                      <source :src="activity.videoId" type="video/mp4">
                     </video>
                     <v-progress-circular
                       v-else-if="isVideoUploading"
@@ -97,13 +97,13 @@
                         Your video is uploading
                       </span>
                     </v-progress-circular>
-                    <validation-provider ref="fileProvider" v-slot="{ errors }" name="Video" :rules="`${(activity.url === null && file === null) ? 'required' : ''}`">
+                    <validation-provider ref="fileProvider" v-slot="{ errors }" name="Video" :rules="`${(activity.videoId === null && file === null) ? 'required' : ''}`">
                       <file-uploader
                         ref="fileUploader"
                         :error-messages="errors"
                         :file.sync="file"
                         label="Upload Video"
-                        mode="image"
+                        mode="video"
                         path="activity-video"
                         placeholder="Select a video for this activity"
                         prepend-icon=""
@@ -157,7 +157,7 @@ export default {
         name: '',
         description: '',
         activityTypeId: null,
-        url: '',
+        videoId: 1,
         type: 'VIDEO'
       }
     }
@@ -220,7 +220,7 @@ export default {
       this.activity.name = data.name
       this.activity.description = data.description
       this.activity.activityTypeId = data.activityType.id
-      this.activity.url = data.url
+      this.activity.videoId = data.videoId
     }
 
     this.loading = false
@@ -245,25 +245,30 @@ export default {
 
     async save () {
       this.loading = true
-      let id = this.id
-      const activity = this.activity
+      // let id = this.id
+      // const activity = this.activity
 
       try {
+        await this.$refs.fileUploader.handleMultiPartBackgroundFileUpload()
+        /*
         if (id === null) {
           const response = await this.createActivity(activity)
           id = response.id
         } else {
           await this.updateActivity({ id, data: activity })
         }
-        this.$refs.fileUploader.handleBackgroundFileUpload(async ({ filePath }) => {
-          activity.url = filePath
+        this.$refs.fileUploader.handleMultiPartBackgroundFileUpload(async ({ videoId }) => {
+          activity.videoId = videoId
           await this.updateActivity({ id, data: activity })
         }, { type: 'activity-video', id })
+
       } catch (err) {
         this.loading = false
         return
+        */
       } finally {
-        this.$router.push({ name: 'admin-activity-management' })
+        // this.$router.push({ name: 'admin-activity-management' })
+        this.loading = false
       }
     }
   }

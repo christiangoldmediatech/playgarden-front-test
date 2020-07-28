@@ -190,7 +190,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('upload', ['doUpload', 'doBackgroundUpload']),
+    ...mapActions('upload', ['doUpload', 'doBackgroundUpload', 'doMultiPartBackgroundUpload']),
 
     async handleFileUpload () {
       if (this.file) {
@@ -219,6 +219,20 @@ export default {
           meta
         })
         return true
+      }
+      return false
+    },
+
+    async handleMultiPartBackgroundFileUpload (callback = () => {}, meta = {}) {
+      if (this.file) {
+        const result = await this.doMultiPartBackgroundUpload({
+          type: `upload-${this.mode}`,
+          path: this.path,
+          file: this.file,
+          callback,
+          meta
+        })
+        return result
       }
       return false
     }
