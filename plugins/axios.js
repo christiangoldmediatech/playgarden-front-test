@@ -2,10 +2,9 @@ export default function ({ $axios, redirect, store }) {
   $axios.setBaseURL(process.env.apiBaseUrl)
 
   $axios.onError((error) => {
-    // TODO: review this with Jesse
-    // if (error.message !== 'CANCELLED_BY_USER') {
-    //   return
-    // }
+    if (error.message === 'UPLOAD_CANCELLED_BY_USER') {
+      return
+    }
 
     let body = 'Something went wrong.'
 
