@@ -16,6 +16,16 @@ export default {
     }
   },
 
+  SET_UPLOAD_STATUS: (state, { uploadId, status }) => {
+    const index = state.uploads.findIndex(({ id }) => id === uploadId)
+    state.uploads[index].status = status
+  },
+
+  SET_UPLOAD_ACTIVE_PART_INDEX: (state, { uploadId, partIndex }) => {
+    const index = state.uploads.findIndex(({ id }) => id === uploadId)
+    state.uploads[index].activePartIndex = partIndex
+  },
+
   SET_UPLOAD_PROGRESS: (state, { uploadId, progress }) => {
     const index = state.uploads.findIndex(({ id }) => id === uploadId)
     state.uploads[index].progress = progress
@@ -28,9 +38,14 @@ export default {
     }
   },
 
-  SET_UPLOAD_CANCEL: (state, { uploadId, cancel }) => {
+  SET_UPLOAD_PART_CANCEL_TOKEN: (state, { uploadId, partIndex, cancelToken }) => {
     const index = state.uploads.findIndex(({ id }) => id === uploadId)
-    state.uploads[index].cancel = cancel
+    state.uploads[index].parts[partIndex].cancelToken = cancelToken
+  },
+
+  SET_UPLOAD_CANCEL_TOKEN: (state, { uploadId, cancelToken }) => {
+    const index = state.uploads.findIndex(({ id }) => id === uploadId)
+    state.uploads[index].cancelToken = cancelToken
   },
 
   REMOVE_UPLOAD: (state, uploadId) => {

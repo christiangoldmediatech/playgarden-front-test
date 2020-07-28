@@ -105,6 +105,7 @@
                         label="Upload Video"
                         mode="video"
                         path="activity-video"
+                        multi-part
                         placeholder="Select a video for this activity"
                         prepend-icon=""
                         append-icon="mdi-video"
@@ -245,30 +246,25 @@ export default {
 
     async save () {
       this.loading = true
-      // let id = this.id
-      // const activity = this.activity
+      let id = this.id
 
       try {
-        await this.$refs.fileUploader.handleMultiPartBackgroundFileUpload()
-        /*
+        const data = await this.$refs.fileUploader.handleUpload({ type: 'activity-video', id })
+        if (data) {
+          this.activity.videoId = data.video.id
+        }
+        const activity = this.activity
         if (id === null) {
           const response = await this.createActivity(activity)
           id = response.id
         } else {
           await this.updateActivity({ id, data: activity })
         }
-        this.$refs.fileUploader.handleMultiPartBackgroundFileUpload(async ({ videoId }) => {
-          activity.videoId = videoId
-          await this.updateActivity({ id, data: activity })
-        }, { type: 'activity-video', id })
-
       } catch (err) {
         this.loading = false
         return
-        */
       } finally {
-        // this.$router.push({ name: 'admin-activity-management' })
-        this.loading = false
+        this.$router.push({ name: 'admin-activity-management' })
       }
     }
   }
