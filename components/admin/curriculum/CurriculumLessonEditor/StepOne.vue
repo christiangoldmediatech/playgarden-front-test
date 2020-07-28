@@ -242,7 +242,7 @@ export default {
       this.loading = true
 
       this.getLessonById(this.lessonId).then((data) => {
-        this.draft = data
+        this.draft = { ...data, curriculumTypeId: data.curriculumType.id }
         this.loading = false
       })
     }
