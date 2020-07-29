@@ -1,6 +1,5 @@
-/* eslint-disable */
 export default {
-  async doUpload (ctx, { type, path, formData }) {
+  async doUpload(ctx, { type, path, formData }) {
     const { data } = await this.$axios.post(`/files/${type}/${path}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
@@ -9,7 +8,7 @@ export default {
     return data
   },
 
-  doBackgroundUpload ({ state, commit }, { type, path, name, formData, callback, meta }) {
+  doBackgroundUpload({ state, commit }, { type, path, name, formData, callback, meta }) {
     // Create a background upload process
     const uploadId = state.nextUploadId
     commit('INCREMENT_ID')
@@ -24,7 +23,7 @@ export default {
       cancel: async () => {
         const upload = state.uploads.find(({ id }) => id === uploadId)
         if (upload.status === 'UPLOADING') {
-          commit('SET_UPLOAD_STATUS', { uploadId, status:'CANCELLING' })
+          commit('SET_UPLOAD_STATUS', { uploadId, status: 'CANCELLING' })
           await upload.cancelToken('UPLOAD_CANCELLED_BY_USER')
         }
       }
@@ -61,7 +60,7 @@ export default {
     return true
   },
 
-  async doMultiPartBackgroundUpload ({ state, dispatch, commit }, { type, path, file, callback, meta }) {
+  async doMultiPartBackgroundUpload({ state, dispatch, commit }, { type, path, file, callback, meta }) {
     // Find number of file parts
     const FILE_CHUNK_SIZE = 10000000
     const FILE_SIZE = file.size
@@ -69,8 +68,6 @@ export default {
     const NUMBER_OF_CHUNKS = Math.ceil(FILE_SIZE / FILE_CHUNK_SIZE)
 
     const { data } = await this.$axios.post(`/files/${type}/${path}/${NUMBER_OF_CHUNKS}`)
-
-    console.log(data)
 
     // Break file up into chunks
     const parts = []
@@ -100,7 +97,7 @@ export default {
         const upload = state.uploads.find(({ id }) => id === uploadId)
         const activePart = upload.parts[upload.activePartIndex]
         if (upload.status === 'UPLOADING' && activePart) {
-          commit('SET_UPLOAD_STATUS', { uploadId, status:'CANCELLING' })
+          commit('SET_UPLOAD_STATUS', { uploadId, status: 'CANCELLING' })
           await activePart.cancelToken('UPLOAD_CANCELLED_BY_USER')
           await this.$axios.delete(`/files/video/abort/${data.video.id}`, {
             data: {
@@ -114,11 +111,10 @@ export default {
     commit('ADD_UPLOAD', uploadProcess)
 
     // Do chunks
-    //dispatch('doChunks', { uploadId, file, key: data.urlKey, callback })
     const doChunks = async () => {
       const Axios = this.$axios.create()
       delete Axios.defaults.headers.put['Content-Type']
-      delete Axios.defaults.headers.common['Authorization']
+      delete Axios.defaults.headers.common.Authorization
 
       const uploadIndex = state.uploads.findIndex(({ id }) => id === uploadId)
       const upload = state.uploads[uploadIndex]
@@ -166,12 +162,6 @@ export default {
 
         // Do callback
         await callback()
-      } catch (err) {
-        if (err.response) {
-          console.log(err.response.data)
-        } else {
-          console.log(err)
-        }
       } finally {
         commit('REMOVE_UPLOAD', uploadId)
       }
@@ -180,10 +170,5 @@ export default {
     doChunks()
 
     return data
-  },
-  /*
-  async doChunks ({ state, commit }, { uploadId, file, key, callback }) {
-    
   }
-  */
 }

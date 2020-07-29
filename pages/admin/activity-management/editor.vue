@@ -82,9 +82,16 @@
                     <span class="subheader">Video:</span>
                   </v-col>
                   <v-col class="text-center" cols="12" sm="9" lg="6">
+                    <!--
                     <video v-if="!['', 'https://activity-url.com/', 'https://activity-url-updated.com/', null].includes(activity.videoId)" class="mb-3" width="100%" controls autoplay>
                       <source :src="activity.videoId" type="video/mp4">
                     </video>
+                    -->
+                    <jw-player
+                      v-if="video"
+                      :hls="video.videoUrl.HLS"
+                    />
+                    <!--
                     <v-progress-circular
                       v-else-if="isVideoUploading"
                       class="mb-3"
@@ -97,6 +104,7 @@
                         Your video is uploading
                       </span>
                     </v-progress-circular>
+                    -->
                     <validation-provider ref="fileProvider" v-slot="{ errors }" name="Video" :rules="`${(activity.videoId === null && file === null) ? 'required' : ''}`">
                       <file-uploader
                         ref="fileUploader"
@@ -153,12 +161,13 @@ export default {
     return {
       loading: false,
       file: null,
+      video: null,
       activity: {
         featured: false,
         name: '',
         description: '',
         activityTypeId: null,
-        videoId: 1,
+        videoId: null,
         type: 'VIDEO'
       }
     }
@@ -221,7 +230,10 @@ export default {
       this.activity.name = data.name
       this.activity.description = data.description
       this.activity.activityTypeId = data.activityType.id
-      this.activity.videoId = data.videoId
+      if (data.video) {
+        this.activity.videoId = data.video.id
+        this.video = data.video
+      }
     }
 
     this.loading = false
