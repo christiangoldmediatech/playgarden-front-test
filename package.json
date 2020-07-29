@@ -16,6 +16,9 @@
     "lint": "yarn lint:js",
     "test": "jest"
   },
+  "resolutions": {
+    "prosemirror-model": "1.8.2"
+  },
   "dependencies": {
     "@mdi/font": "^5.3.45",
     "@nuxtjs/axios": "^5.12.0",
@@ -23,6 +26,7 @@
     "jwt-decode": "^2.2.0",
     "material-design-icons-iconfont": "^5.0.1",
     "nuxt": "^2.13.3",
+    "tiptap-vuetify": "^2.24.0",
     "vee-validate": "^3.3.7",
     "vue": "^2.6.11",
     "vue-snotify": "^3.2.1",
