@@ -77,10 +77,10 @@
 <script>
 import { mapGetters } from 'vuex'
 
-import CaregiverList from '~/components/app/caregiver/CaregiverList'
-import MembershipDetails from '~/components/app/payment/MembershipDetails'
-import UpdateProfile from '@/components/app/user/UpdateProfile'
+import CaregiverList from '@/components/app/caregiver/CaregiverList'
+import MembershipDetails from '@/components/app/payment/MembershipDetails'
 import UpdatePassword from '@/components/app/password/UpdatePassword'
+import UpdateProfile from '@/components/app/user/UpdateProfile'
 
 export default {
   name: 'Index',

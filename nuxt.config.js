@@ -26,9 +26,19 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'stylesheet', type: 'text/css', href: 'https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;700;900&display=swap' },
-      { rel: 'stylesheet', type: 'text/css', href: 'https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css' }
-    ],
+      {
+        rel: 'stylesheet',
+        type: 'text/css',
+        href:
+          'https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;700;900&display=swap'
+      },
+      {
+        rel: 'stylesheet',
+        type: 'text/css',
+        href:
+          'https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css'
+      }
+    ]
   },
   /*
    ** Global CSS
@@ -40,11 +50,12 @@ export default {
    */
   plugins: [
     '@/plugins/axios',
+    '@/plugins/directives',
+    '@/plugins/filters',
     '@/plugins/globalPartials',
     '@/plugins/snotify',
     '@/plugins/validate',
-    '@/plugins/filters',
-    '@/plugins/mask'
+    { src: '@/plugins/tiptapVuetify', mode: 'client' }
   ],
   /*
    ** Auto import components
@@ -87,7 +98,7 @@ export default {
    ** See https://nuxtjs.org/api/configuration-build/
    */
   build: {
-    transpile: ['vee-validate/dist/rules']
+    transpile: ['vee-validate/dist/rules', 'tiptap-vuetify']
   },
   env: {
     apiBaseUrl:

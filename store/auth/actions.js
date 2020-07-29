@@ -59,8 +59,6 @@ export default {
       snotifyError(commit, {
         body: 'Sorry! There was an error while fetching user info!'
       })
-
-      throw new Error(error)
     }
   },
 
@@ -75,8 +73,6 @@ export default {
       snotifyError(commit, {
         body: 'Sorry! There was an error while updating user info!'
       })
-
-      throw new Error(error)
     }
   },
 
@@ -87,8 +83,6 @@ export default {
       snotifyError(commit, {
         body: 'Sorry! There was an error while updating user password!'
       })
-
-      throw new Error(error)
     }
   }
 }

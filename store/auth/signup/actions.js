@@ -1,7 +1,7 @@
 import { snotifyError } from '@/utils/vuex'
 
 export default {
-  async signup ({ commit, dispatch, getters }, data) {
+  async signup ({ commit, dispatch }, data) {
     try {
       const response = await this.$axios.post('/auth/signup', data)
 
@@ -10,8 +10,6 @@ export default {
       snotifyError(commit, {
         body: 'Sorry! There was an error while signing you up.'
       })
-
-      throw error
     }
   }
 }

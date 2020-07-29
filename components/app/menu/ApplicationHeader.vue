@@ -15,7 +15,7 @@
         <v-col cols="12">
           <v-row>
             <template v-if="isUserLoggedIn">
-              <v-col cols="12">
+              <v-col v-if="userInfo.registerStep === 5" cols="12">
                 <v-btn block color="primary" nuxt :to="{ name: 'app-account' }">
                   ACCOUNT SETTINGS
                 </v-btn>
@@ -34,7 +34,7 @@
               </v-col>
             </template>
 
-            <v-col v-else cols="12">
+            <v-col v-else-if="$route.name !== 'auth-login'" cols="12">
               <v-btn
                 block
                 class="mb-3"
@@ -81,6 +81,7 @@
         </nuxt-link>
 
         <v-btn
+          v-if="isUserLoggedIn && $route.name !== 'auth-login'"
           class="app-bar-action-btn hidden-sm-and-down"
           color="primary"
           nuxt
@@ -93,8 +94,18 @@
           </template>
 
           <template v-else>
-            LOGIN
+            LOG IN
           </template>
+        </v-btn>
+
+        <v-btn
+          v-if="isUserLoggedIn && userInfo.registerStep < 5"
+          class="app-bar-action-btn hidden-sm-and-down"
+          color="accent"
+          nuxt
+          :to="{ name: 'auth-logout' }"
+        >
+          LOGOUT
         </v-btn>
       </v-row>
 
@@ -125,7 +136,10 @@ export default {
     drawer: false
   }),
 
-  computed: mapGetters('auth', ['isUserLoggedIn']),
+  computed: mapGetters('auth', {
+    isUserLoggedIn: 'isUserLoggedIn',
+    userInfo: 'getUserInfo'
+  }),
 
   watch: {
     '$vuetify.breakpoint.smAndDown' (v) {

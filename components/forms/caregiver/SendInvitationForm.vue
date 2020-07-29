@@ -1,5 +1,11 @@
 <template>
   <validation-observer v-slot="{ invalid, validated, passes, reset }">
+    <div class="pr-3 text-center">
+      <span class="font-weight-bold text-h5">
+        NEW INVITATION
+      </span>
+    </div>
+
     <v-form @submit.prevent="passes(onSubmit)">
       <!-- Email -->
       <validation-provider

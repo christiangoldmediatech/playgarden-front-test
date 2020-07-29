@@ -47,7 +47,7 @@
               @update:page="page = $event"
             >
               <template v-slot:top>
-                <v-container flui>
+                <v-container fluid>
                   <v-row color="white" align="center">
                     <v-icon class="my-1" color="accent">
                       mdi-tune
