@@ -1,5 +1,5 @@
 export default {
-  async doUpload(ctx, { type, path, formData }) {
+  async doUpload (ctx, { type, path, formData }) {
     const { data } = await this.$axios.post(`/files/${type}/${path}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
@@ -8,7 +8,7 @@ export default {
     return data
   },
 
-  doBackgroundUpload({ state, commit }, { type, path, name, formData, callback, meta }) {
+  doBackgroundUpload ({ state, commit }, { type, path, name, formData, callback, meta }) {
     // Create a background upload process
     const uploadId = state.nextUploadId
     commit('INCREMENT_ID')
@@ -42,7 +42,7 @@ export default {
             const progress = ((progressEvent.loaded * 100) / progressEvent.total).toFixed(2)
             commit('SET_UPLOAD_PROGRESS', { uploadId, progress })
           },
-          cancelToken: new this.$axios.CancelToken(function executor(cancelToken) {
+          cancelToken: new this.$axios.CancelToken(function executor (cancelToken) {
             commit('SET_UPLOAD_CANCEL_TOKEN', { uploadId, cancelToken })
           })
         })
@@ -60,7 +60,7 @@ export default {
     return true
   },
 
-  async doMultiPartBackgroundUpload({ state, dispatch, commit }, { type, path, file, callback, meta }) {
+  async doMultiPartBackgroundUpload ({ state, dispatch, commit }, { type, path, file, callback, meta }) {
     // Find number of file parts
     const FILE_CHUNK_SIZE = 10000000
     const FILE_SIZE = file.size
@@ -140,7 +140,7 @@ export default {
               commit('SET_UPLOAD_PROGRESS', { uploadId, progress: completed })
             },
 
-            cancelToken: new this.$axios.CancelToken(function executor(cancelToken) {
+            cancelToken: new this.$axios.CancelToken(function executor (cancelToken) {
               commit('SET_UPLOAD_PART_CANCEL_TOKEN', { uploadId, partIndex, cancelToken })
             })
           })
