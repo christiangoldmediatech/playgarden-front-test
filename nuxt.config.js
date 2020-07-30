@@ -38,6 +38,11 @@ export default {
         href:
           'https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css'
       }
+    ],
+    script: [
+      {
+        src: 'https://cdn.jwplayer.com/libraries/Emctu8OT.js'
+      }
     ]
   },
   /*

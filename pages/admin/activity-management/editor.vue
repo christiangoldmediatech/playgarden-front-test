@@ -85,6 +85,8 @@
                     <jw-player
                       v-if="video && video.videoUrl"
                       :file="video.videoUrl.HLS"
+                      :title="video.name"
+                      :description="video.description"
                     />
                     <v-progress-circular
                       v-else-if="video && ['PROCESSING', 'UPLOADING'].includes(video.status)"
@@ -185,18 +187,6 @@ export default {
       return this.id ? 'Edit Activity' : 'New Activity'
     },
 
-    isVideoUploading () {
-      if (this.id) {
-        const upload = this.uploads.find(({ meta }) => {
-          return meta.type === 'activity-video' && meta.id === this.id
-        })
-        if (upload) {
-          return true
-        }
-      }
-      return false
-    },
-
     activityTypes () {
       return this.types.map(type => ({
         text: type.name,
@@ -261,7 +251,7 @@ export default {
       let id = this.id
 
       try {
-        const data = await this.$refs.fileUploader.handleUpload({ type: 'activity-video', id })
+        const data = await this.$refs.fileUploader.handleUpload()
         if (data) {
           this.activity.videoId = data.video.id
         }

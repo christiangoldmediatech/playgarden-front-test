@@ -40,37 +40,15 @@ export default {
   },
 
   data: () => {
-    return {
-      src: 'https://cdn.jwplayer.com/libraries/Emctu8OT.js'
-    }
+    return {}
   },
 
   mounted () {
-    const script = document.createElement('script')
-    script.setAttribute('src', this.src)
-    script.async = true
-
-    script.onload = () => {
-      /*
-      const source = {
-        file: this.file,
-        playlist: this.playlist
-      }
-      ...source,
-        image: this.image,
-        title: this.title,
-        description: this.description,
-        cast: {},
-        nextUpDisplay: this.nextUpDisplay
-      */
-      /* eslint-disable */
+    if (jwplayer) {
       jwplayer('player').setup({
         ...this.$props
       })
-      /* eslint-disable */
     }
-
-    document.head.appendChild(script)
   }
 }
 </script>
