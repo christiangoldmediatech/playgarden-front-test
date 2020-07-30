@@ -1,15 +1,17 @@
 export default {
   async doUpload (ctx, { type, path, formData }) {
+    let result = false
     try {
       const { data } = await this.$axios.post(`/files/${type}/${path}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       })
-      return data
+      result = data
     } catch (error) {
       Promise.reject(error)
     }
+    return result
   },
 
   doBackgroundUpload ({ state, commit }, { type, path, name, formData, callback, meta }) {
