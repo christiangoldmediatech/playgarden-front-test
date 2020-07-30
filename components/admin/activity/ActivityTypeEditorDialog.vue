@@ -109,13 +109,13 @@
                 <file-uploader
                   ref="fileUploader"
                   :file.sync="file"
-                  gif
                   label="Upload Icon"
                   mode="image"
                   path="activity-type"
                   placeholder="Select an icon for this activity type"
-                  png
                   prepend-icon="mdi-camera"
+                  gif
+                  png
                   svg
                 />
               </v-row>
@@ -205,7 +205,7 @@ export default {
     async save () {
       this.loading = true
       try {
-        const icon = await this.$refs.fileUploader.handleFileUpload()
+        const icon = await this.$refs.fileUploader.handleUpload()
         this.item.icon = icon
         if (this.id === null) {
           await this.createType(this.item)

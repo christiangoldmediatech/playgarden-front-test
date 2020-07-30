@@ -38,7 +38,7 @@ export default {
         { 'application/zip': this.zip },
         { 'video/mpeg': this.mpeg },
         { 'video/mp4': this.mp4 },
-        { 'video/quicktime': this.mov },
+        { '.mov,video/quicktime': this.mov },
         { 'video/webm': this.webm }
       ]
 
@@ -53,7 +53,7 @@ export default {
 
       const finalList = compiledList.concat(this.mimeTypes)
 
-      return finalList.join(' ')
+      return finalList.join(',')
     }
   },
 
