@@ -1,11 +1,15 @@
 export default {
   async doUpload (ctx, { type, path, formData }) {
-    const { data } = await this.$axios.post(`/files/${type}/${path}`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
-    return data
+    try {
+      const { data } = await this.$axios.post(`/files/${type}/${path}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      return data
+    } catch (error) {
+      Promise.reject(error)
+    }
   },
 
   doBackgroundUpload ({ state, commit }, { type, path, name, formData, callback, meta }) {
@@ -155,13 +159,15 @@ export default {
         commit('SET_UPLOAD_STATUS', { uploadId, status: 'COMPLETING' })
 
         // Complete upload
-        await this.$axios.patch(`/files/video/complete/${uploadId}`, {
+        await this.$axios.patch(`/files/video/complete/${data.video.id}`, {
           key: data.urlKey,
           parts: etags
         })
 
         // Do callback
         await callback()
+      } catch (error) {
+        Promise.reject(error)
       } finally {
         commit('REMOVE_UPLOAD', uploadId)
       }

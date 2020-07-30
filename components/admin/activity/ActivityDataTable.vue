@@ -87,7 +87,7 @@
                 </v-container>
               </template>
 
-              <template v-slot:item.name="{ item }">
+              <template v-slot:item.videos.name="{ item }">
                 <v-btn
                   class="mr-2"
                   :disabled="loading"
@@ -99,7 +99,7 @@
                     v-text="(item.featured) ? 'mdi-star' : 'mdi-star-outline'"
                   />
                 </v-btn>
-                {{ item.name }}
+                {{ item.videos.name }}
               </template>
 
               <template v-slot:item.createdAt="{ item }">
@@ -203,7 +203,7 @@ export default {
           text: 'Activity Title',
           align: 'start',
           sortable: true,
-          value: 'name'
+          value: 'videos.name'
         },
         {
           text: 'Category',
