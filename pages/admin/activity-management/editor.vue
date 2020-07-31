@@ -97,12 +97,11 @@
                       indeterminate
                     >
                       <span class="black--text">
-                        Your video is
                         <span v-if="video.status === 'UPLOADING'">
-                          uploading
+                          Uploading
                         </span>
                         <span v-else>
-                          processing
+                          Processing
                         </span>
                       </span>
                     </v-progress-circular>
