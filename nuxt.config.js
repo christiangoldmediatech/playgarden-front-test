@@ -43,7 +43,7 @@ export default {
   /*
    ** Global CSS
    */
-  css: ['@/assets/scss/app.scss'],
+  css: ['tiptap-vuetify/dist/main.css', '@/assets/scss/app.scss'],
   /*
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
@@ -98,7 +98,7 @@ export default {
    ** See https://nuxtjs.org/api/configuration-build/
    */
   build: {
-    transpile: ['vee-validate/dist/rules', 'tiptap-vuetify']
+    transpile: ['vuetify/lib', 'vee-validate/dist/rules', 'tiptap-vuetify']
   },
   env: {
     apiBaseUrl:
