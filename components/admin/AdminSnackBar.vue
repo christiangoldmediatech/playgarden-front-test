@@ -37,9 +37,15 @@
       <v-btn
         text
         small
+        :disabled="upload.status === 'COMPLETING'"
         @click.stop="cancelUpload(upload)"
       >
-        Cancel
+        <template v-if="upload.status === 'COMPLETING'">
+          Finishing
+        </template>
+        <template v-else>
+          Cancel
+        </template>
       </v-btn>
     </v-row>
     <template v-slot:action="{ attrs }">
@@ -102,8 +108,8 @@ export default {
         title: 'Cancel upload?',
         message: `Are you sure you wish to cancel the upload for '${upload.name}'?`,
         action: () => {
-          upload.cancel('CANCELLED_BY_USER')
-          this.removeUpload(upload.id)
+          upload.cancel()
+          // this.removeUpload(upload.id)
         }
       })
     }

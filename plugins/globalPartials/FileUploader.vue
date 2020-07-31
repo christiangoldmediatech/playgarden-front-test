@@ -33,6 +33,16 @@ export default {
         return ['image', 'document', 'video', 'file'].includes(value) !== -1
       }
     },
+    backgroundUpload: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    multiPart: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     clearable: {
       type: Boolean,
       required: false,
@@ -190,7 +200,21 @@ export default {
   },
 
   methods: {
-    ...mapActions('upload', ['doUpload', 'doBackgroundUpload']),
+    ...mapActions('upload', ['doUpload', 'doBackgroundUpload', 'doMultiPartBackgroundUpload']),
+
+    async handleUpload (meta = {}, callback = () => {}) {
+      let result
+
+      if (this.multiPart) {
+        result = await this.handleMultiPartBackgroundFileUpload(meta, callback)
+      } else if (this.backgroundUpload) {
+        result = await this.handleBackgroundFileUpload(meta, callback)
+      } else {
+        result = await this.handleFileUpload()
+      }
+
+      return result
+    },
 
     async handleFileUpload () {
       if (this.file) {
@@ -206,7 +230,7 @@ export default {
       return false
     },
 
-    handleBackgroundFileUpload (callback = () => {}, meta = {}) {
+    handleBackgroundFileUpload (meta = {}, callback = () => {}) {
       if (this.file) {
         const formData = new FormData()
         formData.append('file', this.file)
@@ -219,6 +243,20 @@ export default {
           meta
         })
         return true
+      }
+      return false
+    },
+
+    async handleMultiPartBackgroundFileUpload (meta = {}, callback = () => {}) {
+      if (this.file) {
+        const result = await this.doMultiPartBackgroundUpload({
+          type: `upload-${this.mode}`,
+          path: this.path,
+          file: this.file,
+          callback,
+          meta
+        })
+        return result
       }
       return false
     }

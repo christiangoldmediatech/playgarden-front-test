@@ -82,9 +82,16 @@
                     <span class="subheader">Video:</span>
                   </v-col>
                   <v-col class="text-center" cols="12" sm="9" lg="6">
-                    <video v-if="!['', 'https://activity-url.com/', 'https://activity-url-updated.com/', null].includes(activity.url)" class="mb-3" width="100%" controls autoplay>
-                      <source :src="activity.url" type="video/mp4">
+                    <!--
+                    <video v-if="!['', 'https://activity-url.com/', 'https://activity-url-updated.com/', null].includes(activity.videoId)" class="mb-3" width="100%" controls autoplay>
+                      <source :src="activity.videoId" type="video/mp4">
                     </video>
+                    -->
+                    <jw-player
+                      v-if="video"
+                      :hls="video.videoUrl.HLS"
+                    />
+                    <!--
                     <v-progress-circular
                       v-else-if="isVideoUploading"
                       class="mb-3"
@@ -97,14 +104,16 @@
                         Your video is uploading
                       </span>
                     </v-progress-circular>
-                    <validation-provider ref="fileProvider" v-slot="{ errors }" name="Video" :rules="`${(activity.url === null && file === null) ? 'required' : ''}`">
+                    -->
+                    <validation-provider ref="fileProvider" v-slot="{ errors }" name="Video" :rules="`${(activity.videoId === null && file === null) ? 'required' : ''}`">
                       <file-uploader
                         ref="fileUploader"
                         :error-messages="errors"
                         :file.sync="file"
                         label="Upload Video"
-                        mode="image"
+                        mode="video"
                         path="activity-video"
+                        multi-part
                         placeholder="Select a video for this activity"
                         prepend-icon=""
                         append-icon="mdi-video"
@@ -152,12 +161,13 @@ export default {
     return {
       loading: false,
       file: null,
+      video: null,
       activity: {
         featured: false,
         name: '',
         description: '',
         activityTypeId: null,
-        url: '',
+        videoId: null,
         type: 'VIDEO'
       }
     }
@@ -220,7 +230,10 @@ export default {
       this.activity.name = data.name
       this.activity.description = data.description
       this.activity.activityTypeId = data.activityType.id
-      this.activity.url = data.url
+      if (data.video) {
+        this.activity.videoId = data.video.id
+        this.video = data.video
+      }
     }
 
     this.loading = false
@@ -246,19 +259,19 @@ export default {
     async save () {
       this.loading = true
       let id = this.id
-      const activity = this.activity
 
       try {
+        const data = await this.$refs.fileUploader.handleUpload({ type: 'activity-video', id })
+        if (data) {
+          this.activity.videoId = data.video.id
+        }
+        const activity = this.activity
         if (id === null) {
           const response = await this.createActivity(activity)
           id = response.id
         } else {
           await this.updateActivity({ id, data: activity })
         }
-        this.$refs.fileUploader.handleBackgroundFileUpload(async ({ filePath }) => {
-          activity.url = filePath
-          await this.updateActivity({ id, data: activity })
-        }, { type: 'activity-video', id })
       } catch (err) {
         this.loading = false
         return

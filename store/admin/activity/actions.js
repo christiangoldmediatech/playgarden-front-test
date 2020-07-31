@@ -8,7 +8,7 @@ export default {
         type: 'VIDEO'
       }
     })
-    commit('SET_ROWS', data)
+    commit('SET_ROWS', data.activities)
     commit('SET_FILTERED', data.filtered)
     commit('SET_LIMIT', data.limit)
     commit('SET_TOTAL', data.total)
