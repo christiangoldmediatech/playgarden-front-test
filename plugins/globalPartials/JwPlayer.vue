@@ -7,37 +7,48 @@ export default {
   name: 'JwPlayer',
 
   props: {
-    hls: {
+    file: {
       type: String,
       required: false,
-      default: ''
+      default: undefined
+    },
+    playlist: {
+      type: Array,
+      required: false,
+      default: undefined
+    },
+    image: {
+      type: String,
+      required: false,
+      default: undefined
+    },
+    description: {
+      type: String,
+      required: false,
+      default: undefined
+    },
+    title: {
+      type: String,
+      required: false,
+      default: undefined
+    },
+    nextUpDisplay: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
 
   data: () => {
-    return {
-      src: 'https://cdn.jwplayer.com/libraries/Emctu8OT.js'
-    }
+    return {}
   },
 
   mounted () {
-    const script = document.createElement('script')
-    script.setAttribute('src', this.src)
-    script.async = true
-
-    script.onload = () => {
-      /* eslint-disable */
+    if (jwplayer) {
       jwplayer('player').setup({
-        playlist: [
-          {
-            'hls': this.hls
-          }
-        ]
+        ...this.$props
       })
-      /* eslint-disable */
     }
-
-    document.head.appendChild(script)
   }
 }
 </script>

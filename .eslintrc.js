@@ -4,6 +4,9 @@ module.exports = {
     browser: true,
     node: true
   },
+  globals: {
+    jwplayer: true
+  },
   parserOptions: {
     parser: 'babel-eslint'
   },

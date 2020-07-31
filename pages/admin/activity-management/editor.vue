@@ -82,18 +82,14 @@
                     <span class="subheader">Video:</span>
                   </v-col>
                   <v-col class="text-center" cols="12" sm="9" lg="6">
-                    <!--
-                    <video v-if="!['', 'https://activity-url.com/', 'https://activity-url-updated.com/', null].includes(activity.videoId)" class="mb-3" width="100%" controls autoplay>
-                      <source :src="activity.videoId" type="video/mp4">
-                    </video>
-                    -->
                     <jw-player
-                      v-if="video"
-                      :hls="video.videoUrl.HLS"
+                      v-if="video && video.videoUrl"
+                      :file="video.videoUrl.HLS"
+                      :title="video.name"
+                      :description="video.description"
                     />
-                    <!--
                     <v-progress-circular
-                      v-else-if="isVideoUploading"
+                      v-else-if="video && ['PROCESSING', 'UPLOADING'].includes(video.status)"
                       class="mb-3"
                       color="primary"
                       width="8"
@@ -101,10 +97,15 @@
                       indeterminate
                     >
                       <span class="black--text">
-                        Your video is uploading
+                        <span v-if="video.status === 'UPLOADING'">
+                          Uploading
+                        </span>
+                        <span v-else>
+                          Processing
+                        </span>
                       </span>
                     </v-progress-circular>
-                    -->
+
                     <validation-provider ref="fileProvider" v-slot="{ errors }" name="Video" :rules="`${(activity.videoId === null && file === null) ? 'required' : ''}`">
                       <file-uploader
                         ref="fileUploader"
@@ -185,18 +186,6 @@ export default {
       return this.id ? 'Edit Activity' : 'New Activity'
     },
 
-    isVideoUploading () {
-      if (this.id) {
-        const upload = this.uploads.find(({ meta }) => {
-          return meta.type === 'activity-video' && meta.id === this.id
-        })
-        if (upload) {
-          return true
-        }
-      }
-      return false
-    },
-
     activityTypes () {
       return this.types.map(type => ({
         text: type.name,
@@ -227,12 +216,12 @@ export default {
     if (results[1]) {
       const data = results[1]
       this.activity.featured = data.featured
-      this.activity.name = data.name
-      this.activity.description = data.description
       this.activity.activityTypeId = data.activityType.id
-      if (data.video) {
-        this.activity.videoId = data.video.id
-        this.video = data.video
+      if (data.videos) {
+        this.activity.name = data.videos.name
+        this.activity.description = data.videos.description
+        this.activity.videoId = data.videos.id
+        this.video = data.videos
       }
     }
 
@@ -261,7 +250,7 @@ export default {
       let id = this.id
 
       try {
-        const data = await this.$refs.fileUploader.handleUpload({ type: 'activity-video', id })
+        const data = await this.$refs.fileUploader.handleUpload()
         if (data) {
           this.activity.videoId = data.video.id
         }

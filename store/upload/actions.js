@@ -1,66 +1,18 @@
 export default {
   async doUpload (ctx, { type, path, formData }) {
-    const { data } = await this.$axios.post(`/files/${type}/${path}`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
-    return data
-  },
-
-  doBackgroundUpload ({ state, commit }, { type, path, name, formData, callback, meta }) {
-    // Create a background upload process
-    const uploadId = state.nextUploadId
-    commit('INCREMENT_ID')
-
-    const uploadProcess = {
-      id: uploadId,
-      name,
-      progress: 0,
-      status: 'UPLOADING',
-      meta,
-      cancelToken: null,
-      cancel: async () => {
-        const upload = state.uploads.find(({ id }) => id === uploadId)
-        if (upload.status === 'UPLOADING') {
-          commit('SET_UPLOAD_STATUS', { uploadId, status: 'CANCELLING' })
-          await upload.cancelToken('UPLOAD_CANCELLED_BY_USER')
+    try {
+      const { data } = await this.$axios.post(`/files/${type}/${path}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
         }
-      }
+      })
+      return data
+    } catch (error) {
+      Promise.reject(error)
     }
-
-    commit('ADD_UPLOAD', uploadProcess)
-
-    // Handle request
-    const handleBkgRequest = async () => {
-      try {
-        const { data } = await this.$axios.post(`/files/${type}/${path}`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          },
-          onUploadProgress: (progressEvent) => {
-            const progress = ((progressEvent.loaded * 100) / progressEvent.total).toFixed(2)
-            commit('SET_UPLOAD_PROGRESS', { uploadId, progress })
-          },
-          cancelToken: new this.$axios.CancelToken(function executor (cancelToken) {
-            commit('SET_UPLOAD_CANCEL_TOKEN', { uploadId, cancelToken })
-          })
-        })
-
-        commit('SET_UPLOAD_STATUS', { uploadId, status: 'COMPLETING' })
-
-        await callback(data)
-      } finally {
-        commit('REMOVE_UPLOAD', uploadId)
-      }
-    }
-
-    handleBkgRequest()
-
-    return true
   },
 
-  async doMultiPartBackgroundUpload ({ state, dispatch, commit }, { type, path, file, callback, meta }) {
+  async doMultiPartBackgroundUpload ({ state, commit }, { type, mode, path, file, callback, meta }) {
     // Find number of file parts
     const FILE_CHUNK_SIZE = 10000000
     const FILE_SIZE = file.size
@@ -99,7 +51,7 @@ export default {
         if (upload.status === 'UPLOADING' && activePart) {
           commit('SET_UPLOAD_STATUS', { uploadId, status: 'CANCELLING' })
           await activePart.cancelToken('UPLOAD_CANCELLED_BY_USER')
-          await this.$axios.delete(`/files/video/abort/${data.video.id}`, {
+          await this.$axios.delete(`/files/${mode}/abort/${data.video.id}`, {
             data: {
               key: data.urlKey
             }
@@ -155,13 +107,22 @@ export default {
         commit('SET_UPLOAD_STATUS', { uploadId, status: 'COMPLETING' })
 
         // Complete upload
-        await this.$axios.patch(`/files/video/complete/${uploadId}`, {
+        await this.$axios.patch(`/files/${mode}/complete/${data.video.id}`, {
           key: data.urlKey,
           parts: etags
         })
 
         // Do callback
         await callback()
+      } catch (error) {
+        if (error && error.message !== 'UPLOAD_CANCELLED_BY_USER') {
+          await this.$axios.delete(`/files/${mode}/abort/${data.video.id}`, {
+            data: {
+              key: data.urlKey
+            }
+          })
+          Promise.reject(error)
+        }
       } finally {
         commit('REMOVE_UPLOAD', uploadId)
       }
