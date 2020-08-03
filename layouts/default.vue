@@ -5,11 +5,12 @@
     <application-header />
 
     <!-- CONTENT -->
-    <v-main>
+    <v-main v-if="!fullWidth">
       <v-container fill-height>
         <nuxt />
       </v-container>
     </v-main>
+    <nuxt v-else />
 
     <!-- FOOTER -->
     <default-footer />
@@ -20,6 +21,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import AppNavigation from '@/components/app/header/AppNavigation'
 import ApplicationHeader from '@/components/app/header/ApplicationHeader'
 import DefaultFooter from '@/components/app/footer/DefaultFooter'
@@ -35,6 +37,14 @@ export default {
     AppNavigation,
     DefaultFooter,
     PromptDialog
+  },
+
+  computed: {
+    ...mapState(['fullWidthPages']),
+
+    fullWidth () {
+      return this.fullWidthPages.includes(this.$route.name)
+    }
   }
 }
 </script>

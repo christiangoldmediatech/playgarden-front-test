@@ -5,16 +5,6 @@ export default {
     ...mapGetters('auth', ['isUserLoggedIn']),
 
     items () {
-      /*
-      if (this.inAppendDrawer) {
-        return [
-          { title: 'Help', to: { name: 'app-dashboard' } },
-          { title: 'Privacy Policy', to: { name: 'app-dashboard' } },
-          { title: 'Terms & Conditions', to: { name: 'app-dashboard' } }
-        ]
-      }
-      */
-
       if (this.isUserLoggedIn) {
         return [
           { title: 'Dashboard', to: { name: 'app-dashboard' } },

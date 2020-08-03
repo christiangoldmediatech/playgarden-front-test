@@ -29,7 +29,7 @@
         v-for="(item, index) in items"
         :key="`${_uid}-${index}`"
         class="text-none link-text"
-        active-class="no-active"
+        active-class="custom-active"
         text
         :ripple="true"
         exact
@@ -60,7 +60,7 @@
     <v-btn
       v-if="isUserLoggedIn"
       class="hidden-md-and-up"
-      active-class="no-active"
+      active-class="custom-active"
       icon
       :to="{ name: 'app-account' }"
     >
@@ -72,7 +72,7 @@
     <v-btn
       class="hidden-md-and-up"
       :color="(isUserLoggedIn) ? 'primary' : '#f89838'"
-      active-class="no-active"
+      active-class="custom-active"
       icon
       :to="{ name: isUserLoggedIn ? 'auth-logout' : 'auth-login' }"
     >
@@ -123,8 +123,20 @@ export default {
   max-height: 48px;
 }
 
-.v-btn--active.no-active::before {
-  opacity: 0 !important;
+.v-btn--active.custom-active {
+  &::before {
+    opacity: 0 !important;
+  }
+  &::after {
+    width: 60%;
+    position: absolute;
+    bottom: 33.33%;
+    left: 20%;
+    content: "";
+    z-index: -1;
+    border-bottom: 2px solid var(--v-primary-base);
+    border-radius: 7px;
+  }
 }
 
 .link-text {
