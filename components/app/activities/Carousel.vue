@@ -45,7 +45,9 @@
             <v-col
               v-for="activity in list"
               :key="`activity-${activity.id}`"
-              cols="3"
+              cols="12"
+              sm="6"
+              md="3"
             >
               <v-hover v-slot:default="{ hover }">
                 <v-card :elevation="(hover) ? 12 : 2">
@@ -128,12 +130,17 @@ export default {
 
   data: () => {
     return {
-      limit: 4,
       page: 1
     }
   },
 
   computed: {
+    limit () {
+      if (this.$vuetify.breakpoint.mdAndUp) return 4
+      if (this.$vuetify.breakpoint.sm) return 2
+      if (this.$vuetify.breakpoint.xs) return 1
+    },
+
     total () {
       return this.activities.length
     },
