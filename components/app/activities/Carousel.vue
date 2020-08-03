@@ -8,7 +8,7 @@
       <v-row align="end">
         <img
           :src="icon"
-          height="48px"
+          :height="($vuetify.breakpoint.xs) ? '32px' : '48px'"
         >
 
         <div class="mx-3">
@@ -19,6 +19,7 @@
 
         <v-btn
           color="primary"
+          :small="$vuetify.breakpoint.xs"
           @click.stop="playAll"
         >
           <v-icon left>
@@ -36,68 +37,66 @@
         >
           <v-img
             :src="require('@/assets/png/player/left-arrow.svg')"
-            max-height="32px"
+            max-width="32px"
           />
         </v-btn>
 
-        <v-col>
-          <v-row>
-            <v-col
-              v-for="activity in list"
-              :key="`activity-${activity.id}`"
-              cols="12"
-              sm="6"
-              md="3"
-            >
-              <v-hover v-slot:default="{ hover }">
-                <v-card :elevation="(hover) ? 12 : 2">
-                  <jw-player
-                    v-if="activity.videos && activity.videos.videoUrl"
-                    :ref="`${_uid}_players`"
-                    :file="activity.videos.videoUrl.HLS"
-                    :title="activity.videos.name"
-                    :description="activity.videos.description"
-                    next-up-display
-                    @play="goFullScreen"
-                  />
+        <v-row>
+          <v-col
+            v-for="activity in list"
+            :key="`activity-${activity.id}`"
+            cols="12"
+            sm="6"
+            md="3"
+          >
+            <v-hover v-slot:default="{ hover }">
+              <v-card :elevation="(hover) ? 12 : 2">
+                <jw-player
+                  v-if="activity.videos && activity.videos.videoUrl"
+                  :ref="`${_uid}_players`"
+                  :file="activity.videos.videoUrl.HLS"
+                  :title="activity.videos.name"
+                  :description="activity.videos.description"
+                  next-up-display
+                  @play="goFullScreen"
+                />
 
-                  <v-card-actions>
-                    <img
-                      :src="icon"
-                      height="48px"
-                    >
-                    <div class="ml-2">
-                      <span>
-                        {{ categoryName }}
-                      </span>
-                      <br>
-                      <span class="font-weight-bold">
-                        {{ activity.videos.name }}
-                      </span>
-                    </div>
+                <v-card-actions>
+                  <img
+                    :src="icon"
+                    height="48px"
+                  >
+                  <div class="ml-2">
+                    <span>
+                      {{ categoryName }}
+                    </span>
+                    <br>
+                    <span class="font-weight-bold">
+                      {{ activity.videos.name }}
+                    </span>
+                  </div>
 
-                    <v-spacer />
+                  <v-spacer />
 
-                    <v-btn icon>
-                      <v-icon color="#F5737F">
-                        mdi-heart-outline
-                      </v-icon>
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-hover>
-            </v-col>
-          </v-row>
-        </v-col>
+                  <v-btn icon>
+                    <v-icon color="#F5737F">
+                      mdi-heart-outline
+                    </v-icon>
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-hover>
+          </v-col>
+        </v-row>
 
         <v-btn
           text
-          :disabled="(page * limit) > total"
+          :disabled="(page * limit) >= total"
           @click.stop="moveCarousel(1)"
         >
           <v-img
             :src="require('@/assets/png/player/right-arrow.svg')"
-            max-height="32px"
+            max-width="32px"
           />
         </v-btn>
       </v-row>
@@ -136,9 +135,9 @@ export default {
 
   computed: {
     limit () {
-      if (this.$vuetify.breakpoint.mdAndUp) return 4
-      if (this.$vuetify.breakpoint.sm) return 2
-      if (this.$vuetify.breakpoint.xs) return 1
+      if (this.$vuetify.breakpoint.sm) { return 2 }
+      if (this.$vuetify.breakpoint.xs) { return 1 }
+      return 4
     },
 
     total () {
