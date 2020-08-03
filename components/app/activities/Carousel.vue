@@ -144,11 +144,24 @@ export default {
       return this.activities.length
     },
 
-    list () {
-      const start = (this.page - 1) * this.limit
-      const end = ((start + this.limit) < this.total) ? start + this.limit : this.total
+    start () {
+      return (this.page - 1) * this.limit
+    },
 
-      return this.activities.slice(start, end)
+    end () {
+      return ((this.start + this.limit) < this.total) ? this.start + this.limit : this.total
+    },
+
+    list () {
+      return this.activities.slice(this.start, this.end)
+    }
+  },
+
+  watch: {
+    limit (val) {
+      if (this.start >= this.total) {
+        this.page = Math.ceil(this.total / this.limit)
+      }
     }
   },
 
