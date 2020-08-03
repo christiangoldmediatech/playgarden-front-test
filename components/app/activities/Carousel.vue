@@ -30,82 +30,76 @@
 
       <v-row align="center" justify="space-between">
         <v-btn
-          icon
+          text
           :disabled="page === 1"
           @click.stop="moveCarousel(-1)"
         >
-          <v-icon>
-            mdi-arrow-left
-          </v-icon>
+          <v-img
+            :src="require('@/assets/png/player/left-arrow.svg')"
+            max-height="32px"
+          />
         </v-btn>
 
         <v-col>
           <v-row>
             <v-col
-              v-for="(activity, i) in list"
+              v-for="activity in list"
               :key="`activity-${activity.id}`"
               cols="3"
             >
-              <v-card>
-                <jw-player
-                  v-if="activity.videos && activity.videos.videoUrl"
-                  :ref="`player_${i}`"
-                  :file="activity.videos.videoUrl.HLS"
-                  :title="activity.videos.name"
-                  :description="activity.videos.description"
-                  next-up-display
-                  @ready="seek"
-                  @play="goFullScreen"
-                />
+              <v-hover v-slot:default="{ hover }">
+                <v-card :elevation="(hover) ? 12 : 2">
+                  <jw-player
+                    v-if="activity.videos && activity.videos.videoUrl"
+                    :ref="`${_uid}_players`"
+                    :file="activity.videos.videoUrl.HLS"
+                    :title="activity.videos.name"
+                    :description="activity.videos.description"
+                    next-up-display
+                    @play="goFullScreen"
+                  />
 
-                <v-card-actions>
-                  <img
-                    :src="icon"
-                    height="48px"
-                  >
-                  <div class="ml-2">
-                    <span>
-                      {{ categoryName }}
-                    </span>
-                    <br>
-                    <span class="font-weight-bold">
-                      {{ activity.videos.name }}
-                    </span>
-                  </div>
+                  <v-card-actions>
+                    <img
+                      :src="icon"
+                      height="48px"
+                    >
+                    <div class="ml-2">
+                      <span>
+                        {{ categoryName }}
+                      </span>
+                      <br>
+                      <span class="font-weight-bold">
+                        {{ activity.videos.name }}
+                      </span>
+                    </div>
 
-                  <v-spacer />
+                    <v-spacer />
 
-                  <v-btn icon>
-                    <v-icon color="#F5737F">
-                      mdi-heart-outline
-                    </v-icon>
-                  </v-btn>
-                </v-card-actions>
-              </v-card>
+                    <v-btn icon>
+                      <v-icon color="#F5737F">
+                        mdi-heart-outline
+                      </v-icon>
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-hover>
             </v-col>
           </v-row>
         </v-col>
 
         <v-btn
-          icon
+          text
           :disabled="(page * limit) > total"
           @click.stop="moveCarousel(1)"
         >
-          <v-icon>
-            mdi-arrow-right
-          </v-icon>
+          <v-img
+            :src="require('@/assets/png/player/right-arrow.svg')"
+            max-height="32px"
+          />
         </v-btn>
       </v-row>
     </v-container>
-    <!--
-    <div class="d-none">
-      <jw-player
-        ref="player"
-        next-up-display
-        @play="goFullScreen"
-      />
-    </div>
-    -->
   </v-container>
 </template>
 
@@ -162,17 +156,13 @@ export default {
         }
       })
 
-      const player = this.$refs.player_0[0].player
+      const player = this.$refs[`${this._uid}_players`][0].player
       player.load(playlist)
       player.play()
     },
 
     moveCarousel (direction) {
       this.page += direction
-    },
-
-    seek (player) {
-      player.seek(0.25)
     },
 
     goFullScreen ({ player, params }) {
@@ -184,6 +174,7 @@ export default {
 
 <style lang="scss" scoped>
 .category-text {
+  font-size: 1.5rem !important;
   position: relative;
   z-index: 1;
   &::after {

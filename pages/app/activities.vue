@@ -44,6 +44,7 @@
           v-for="category in categories"
           :key="`category-${category.id}`"
           class="clickable text-center mx-2"
+          @click="$scrollTo(`#category_row_${category.id}`, 500, { offset: -60 })"
         >
           <div
             class="category d-flex justify-center align-center"
@@ -66,6 +67,7 @@
 
     <carousel
       v-for="category in categories"
+      :id="`category_row_${category.id}`"
       :key="`category-playlist-${category.id}`"
       :category-name="category.name"
       :color="category.color"
@@ -126,6 +128,7 @@ export default {
   background-image: linear-gradient(transparent calc(100% - 10px), var(--v-primary-base) 10px);
   background-repeat: no-repeat;
   background-size: 100% 100%;
+  color: var(--v-black-base);
 }
 
 .category {
@@ -138,6 +141,7 @@ export default {
 .category-text {
   position: relative;
   z-index: 1;
+  color: var(--v-black-base);
   &::after {
     width: 115%;
     opacity: 0.5;

@@ -25,7 +25,11 @@ export default {
     image: {
       type: String,
       required: false,
-      default: undefined
+      default: () => {
+        const images = ['child1.png', 'child2.png', 'child3.png', 'child4.png']
+        const index = Math.floor(Math.random() * 4)
+        return require(`@/assets/png/player/${images[index]}`)
+      }
     },
     description: {
       type: String,
@@ -68,10 +72,9 @@ export default {
   mounted () {
     if (jwplayer) {
       const player = jwplayer(`player_${this._uid}`)
+      const config = { ...this.$props }
 
-      player.setup({
-        ...this.$props
-      })
+      player.setup(config)
 
       this.$emit('ready', player)
 
@@ -84,12 +87,6 @@ export default {
       })
 
       this.player = player
-    }
-  },
-
-  methods: {
-    get () {
-      return this.player
     }
   }
 }
