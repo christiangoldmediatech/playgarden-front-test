@@ -17,7 +17,6 @@
           </span>
         </div>
 
-        <!--
         <v-btn
           color="primary"
           @click.stop="playAll"
@@ -27,7 +26,6 @@
           </v-icon>
           PLAY ALL
         </v-btn>
-        -->
       </v-row>
 
       <v-row align="center" justify="space-between">
@@ -44,16 +42,18 @@
         <v-col>
           <v-row>
             <v-col
-              v-for="activity in list"
+              v-for="(activity, i) in list"
               :key="`activity-${activity.id}`"
               cols="3"
             >
               <v-card>
                 <jw-player
                   v-if="activity.videos && activity.videos.videoUrl"
+                  :ref="`player_${i}`"
                   :file="activity.videos.videoUrl.HLS"
                   :title="activity.videos.name"
                   :description="activity.videos.description"
+                  next-up-display
                   @ready="seek"
                   @play="goFullScreen"
                 />
@@ -153,7 +153,6 @@ export default {
   },
 
   methods: {
-    /*
     playAll () {
       const playlist = this.activities.map((activity) => {
         return {
@@ -163,13 +162,10 @@ export default {
         }
       })
 
-      console.log(playlist)
-
-      const player = this.$refs.player.get()
+      const player = this.$refs.player_0[0].player
       player.load(playlist)
       player.play()
     },
-    */
 
     moveCarousel (direction) {
       this.page += direction
