@@ -10,18 +10,18 @@
       <v-row class="pr-3">
         <v-col cols="12">
           <v-row
-            v-for="({ email }, indexIS) in invitationSent"
+            v-for="({ email, phone }, indexIS) in invitationSent"
             :key="indexIS"
             justify="space-between"
           >
-            {{ email }}
+            {{ email || phone }}
 
             <v-btn
               color="accent"
               :loading="loading"
               x-small
               text
-              @click="onResend(email)"
+              @click="onResend({ email, phone })"
             >
               RESEND
             </v-btn>
@@ -57,11 +57,11 @@ export default {
       this.invitationSent = await this.fetchCaregiverInvitationList()
     },
 
-    async onResend (email) {
+    async onResend (data) {
       this.loading = true
 
       try {
-        await this.resendCaregiverInvitation(email)
+        await this.resendCaregiverInvitation(data)
 
         this.$snotify.success('Invitation has been resent successfully!')
       } finally {

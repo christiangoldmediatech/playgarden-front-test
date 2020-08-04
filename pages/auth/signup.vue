@@ -6,7 +6,12 @@
           PARENT'S INFORMATION
         </span>
       </p>
-      <signup-form :loading="loading" @click:submit="onSubmit" />
+
+      <signup-form
+        :in-invitation-process="inInvitationProcess"
+        :loading="loading"
+        @click:submit="onSubmit"
+      />
     </v-col>
 
     <v-col class="px-12" cols="12" md="4">
@@ -59,18 +64,17 @@ export default {
 
   data: vm => ({
     loading: false,
-    token: vm.$route.query.token
-  }),
-
-  computed: {
-    inInvitationProcess () {
-      const { query } = this.$route
+    inInvitationProcess: (() => {
+      const { query } = vm.$route
 
       return Boolean(
-        query.process === 'invitation' && query.email && query.token
+        query.process === 'invitation' &&
+          (query.email || query.phone) &&
+          query.token
       )
-    }
-  },
+    })(),
+    token: vm.$route.query.token
+  }),
 
   methods: {
     ...mapActions('auth/signup', { newParent: 'signup' }),

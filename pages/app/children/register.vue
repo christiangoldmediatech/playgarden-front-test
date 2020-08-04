@@ -81,6 +81,7 @@ export default {
         } else {
           await this.$router.push({ name: 'app-children' })
         }
+      } catch (e) {
       } finally {
         this.loading = false
       }
