@@ -203,13 +203,6 @@ export default {
       }
     },
 
-    firstLastName () {
-      if (this.items.length) {
-        return this.items[0].lastName
-      }
-      return null
-    },
-
     firstBackpack () {
       if (this.backpacks.length) {
         return this.backpacks[0].id
@@ -248,7 +241,7 @@ export default {
       }
     },
 
-    loadChild ({ id, backpack, birthday, firstName, lastName, gender, level }, index = null) {
+    loadChild ({ id, backpack, birthday, firstName, gender, level }, index = null) {
       const _birthdayPicker = new Date(birthday).toISOString().substr(0, 10)
       const item = {
         _birthdayPicker,
@@ -257,7 +250,6 @@ export default {
         backpackId: backpack.id,
         birthday,
         firstName,
-        lastName,
         gender,
         level
       }
@@ -279,7 +271,6 @@ export default {
         backpackId: this.firstBackpack,
         birthday: '',
         firstName: '',
-        lastName: this.firstLastName,
         level: 'BEGINNER',
         gender: '',
         ...data
@@ -325,7 +316,6 @@ export default {
           const params = {
             backpackId: item.backpackId,
             firstName: item.firstName,
-            lastName: item.lastName,
             birthday: item.birthday,
             gender: item.gender,
             level: item.level
