@@ -30,17 +30,13 @@
       </validation-provider>
 
       <!-- Worksheet name -->
-      <validation-provider
-        v-slot="{ errors }"
-        name="Worksheet name"
-        rules="required"
-      >
+      <validation-provider v-slot="{ errors }" name="Name" rules="required">
         <v-text-field
-          v-model="draft.name"
+          v-model="fakeName"
           clearable
           :disabled="loading"
           :error-messages="errors"
-          label="Worksheet name"
+          label="Name"
           :loading="loading"
           solo
         />
@@ -53,45 +49,11 @@
         rules="required"
       >
         <v-textarea
-          v-model="draft.description"
+          v-model="fakeDescription"
           clearable
           :disabled="loading"
           :error-messages="errors"
           label="Description"
-          :loading="loading"
-          solo
-        />
-      </validation-provider>
-
-      <!-- Matching name -->
-      <validation-provider
-        v-slot="{ errors }"
-        name="Matching name"
-        rules="required"
-      >
-        <v-text-field
-          v-model="matchingDraft.name"
-          clearable
-          :disabled="loading"
-          :error-messages="errors"
-          label="Matching name"
-          :loading="loading"
-          solo
-        />
-      </validation-provider>
-
-      <!-- Matching question -->
-      <validation-provider
-        v-slot="{ errors }"
-        name="Matching question"
-        rules="required"
-      >
-        <v-text-field
-          v-model="matchingDraft.question"
-          clearable
-          :disabled="loading"
-          :error-messages="errors"
-          label="Matching question"
           :loading="loading"
           solo
         />
@@ -234,6 +196,26 @@ export default {
   computed: {
     editing () {
       return Boolean(this.resource.id)
+    },
+
+    fakeName: {
+      get () {
+        return this.draft.name
+      },
+      set (v) {
+        this.draft.name = v
+        this.matchingDraft.name = v
+      }
+    },
+
+    fakeDescription: {
+      get () {
+        return this.draft.description
+      },
+      set (v) {
+        this.draft.description = v
+        this.matchingDraft.question = v
+      }
     }
   },
 
