@@ -79,6 +79,19 @@
 
                 <v-row>
                   <v-col class="text-md-right" cols="12" sm="3">
+                    <span class="subheader">Curriculum:</span>
+                  </v-col>
+                  <v-col cols="12" sm="9" lg="6">
+                    <v-select
+                      v-model="activity.curriculumTypeId"
+                      :items="curriculumTypes"
+                      solo
+                    />
+                  </v-col>
+                </v-row>
+
+                <v-row>
+                  <v-col class="text-md-right" cols="12" sm="3">
                     <span class="subheader">Video:</span>
                   </v-col>
                   <v-col class="text-center" cols="12" sm="9" lg="6">
@@ -168,6 +181,7 @@ export default {
         name: '',
         description: '',
         activityTypeId: null,
+        curriculumTypeId: null,
         videoId: null,
         type: 'VIDEO'
       }
@@ -175,6 +189,7 @@ export default {
   },
 
   computed: {
+    ...mapGetters('admin/curriculum', { curriculumTypeRows: 'types' }),
     ...mapGetters('admin/activity', ['rows', 'types']),
     ...mapGetters('upload', ['uploads']),
 
@@ -188,6 +203,13 @@ export default {
 
     activityTypes () {
       return this.types.map(type => ({
+        text: type.name,
+        value: type.id
+      }))
+    },
+
+    curriculumTypes () {
+      return this.curriculumTypeRows.map(type => ({
         text: type.name,
         value: type.id
       }))
@@ -205,18 +227,23 @@ export default {
     this.loading = true
     const promises = []
 
-    promises.push(this.getTypes())
+    promises.push(this.getTypes(), this.getCurriculumTypes())
 
     if (this.id) {
       promises.push(this.getActivityById(this.id))
     }
 
     const results = await Promise.all(promises)
+    const data = results[2]
 
-    if (results[1]) {
-      const data = results[1]
+    if (data) {
       this.activity.featured = data.featured
       this.activity.activityTypeId = data.activityType.id
+
+      if (data.curriculum) {
+        this.activity.curriculumTypeId = data.curriculum.id
+      }
+
       if (data.videos) {
         this.activity.name = data.videos.name
         this.activity.description = data.videos.description
@@ -244,6 +271,8 @@ export default {
     ...mapActions('admin/activity', [
       'getActivities', 'getActivityById', 'createActivity', 'updateActivity', 'getTypes'
     ]),
+
+    ...mapActions('admin/curriculum', { getCurriculumTypes: 'getTypes' }),
 
     async save () {
       this.loading = true
