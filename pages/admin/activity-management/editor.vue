@@ -70,6 +70,7 @@
                       <v-select
                         v-model="activity.activityTypeId"
                         :error-messages="errors"
+                        placeholder="Select a category"
                         :items="activityTypes"
                         solo
                       />
@@ -209,10 +210,16 @@ export default {
     },
 
     curriculumTypes () {
-      return this.curriculumTypeRows.map(type => ({
-        text: type.name,
-        value: type.id
-      }))
+      return [
+        {
+          text: 'None',
+          value: null
+        },
+        ...this.curriculumTypeRows.map(type => ({
+          text: type.name,
+          value: type.id
+        }))
+      ]
     }
   },
 
@@ -240,8 +247,8 @@ export default {
       this.activity.featured = data.featured
       this.activity.activityTypeId = data.activityType.id
 
-      if (data.curriculum) {
-        this.activity.curriculumTypeId = data.curriculum.id
+      if (data.curriculumType) {
+        this.activity.curriculumTypeId = data.curriculumType.id
       }
 
       if (data.videos) {
