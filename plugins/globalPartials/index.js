@@ -1,13 +1,15 @@
 import Vue from 'vue'
 
-import NotifyEvent from './NotifyEvent'
-import UnderlinedSubtitle from './UnderlinedSubtitle'
-import UnderlinedTitle from './UnderlinedTitle'
 import FileUploader from './file-uploader/FileUploader'
 import JwPlayer from './JwPlayer'
+import NotifyEvent from './NotifyEvent'
+import TiptapField from './TiptapField'
+import UnderlinedSubtitle from './UnderlinedSubtitle'
+import UnderlinedTitle from './UnderlinedTitle'
 
-const components = { NotifyEvent, UnderlinedSubtitle, UnderlinedTitle, FileUploader, JwPlayer }
-
-Object.entries(components).forEach(([name, component]) => {
-  Vue.component(name, component)
-})
+Vue.component(FileUploader.name, FileUploader)
+Vue.component(JwPlayer.name, JwPlayer)
+Vue.component(NotifyEvent.name, NotifyEvent)
+Vue.component(TiptapField.name, TiptapField)
+Vue.component(UnderlinedSubtitle.name, UnderlinedSubtitle)
+Vue.component(UnderlinedTitle.name, UnderlinedTitle)

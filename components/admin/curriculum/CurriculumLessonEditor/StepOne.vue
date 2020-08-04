@@ -1,5 +1,9 @@
 <template>
   <validation-observer v-slot="{ invalid, validated, passes, reset }">
+    <p class="primary--text text-h5">
+      Lesson details
+    </p>
+
     <v-form @submit.prevent="passes(onSubmit)">
       <!-- Name -->
       <validation-provider v-slot="{ errors }" name="Name" rules="required">
@@ -83,13 +87,10 @@
       </validation-provider>
 
       <!-- Introduction -->
-      <span class="v-label theme--light">Introduction</span>
-
-      <tiptap-vuetify
+      <tiptap-field
         v-model="draft.introduction"
-        class="elevation-1 mb-6 mt-3"
         :disabled="loading"
-        :extensions="extensions"
+        label="Introduction"
         output-format="json"
       />
 
@@ -112,19 +113,27 @@
         </div>
       </template>
 
-      <file-uploader
+      <validation-provider
         v-else
-        ref="fileUploader"
-        :file.sync="photo"
-        gif
-        label="Upload Photo"
-        mode="image"
-        path="lesson"
-        placeholder="Select a photo for this lesson"
-        png
-        prepend-icon="mdi-camera"
-        svg
-      />
+        v-slot="{ errors }"
+        name="File"
+        rules="required"
+      >
+        <file-uploader
+          ref="fileUploader"
+          v-model="file"
+          :error-messages="errors"
+          :file.sync="file"
+          gif
+          label="Upload Photo"
+          mode="image"
+          path="lesson"
+          placeholder="Select a photo for this lesson"
+          png
+          prepend-icon="mdi-camera"
+          svg
+        />
+      </validation-provider>
 
       <v-btn
         block
@@ -155,33 +164,11 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import {
-  TiptapVuetify,
-  Heading,
-  Bold,
-  Italic,
-  Strike,
-  Underline,
-  Code,
-  Paragraph,
-  BulletList,
-  OrderedList,
-  ListItem,
-  Link,
-  Blockquote,
-  HardBreak,
-  HorizontalRule,
-  History
-} from 'tiptap-vuetify'
 
 import submittable from '@/utils/mixins/submittable'
 
 export default {
   name: 'StepOne',
-
-  components: {
-    TiptapVuetify
-  },
 
   mixins: [submittable],
 
@@ -194,38 +181,13 @@ export default {
   },
 
   data: () => ({
-    photo: null,
+    file: null,
     loading: false,
 
     levels: [
       { label: 'Beginner', value: 'BEGINNER' },
       { label: 'Intermediate', value: 'INTERMEDIATE' },
       { label: 'Advanced', value: 'ADVANCED' }
-    ],
-
-    extensions: [
-      History,
-      Blockquote,
-      Link,
-      Underline,
-      Strike,
-      Italic,
-      ListItem,
-      BulletList,
-      OrderedList,
-      [
-        Heading,
-        {
-          options: {
-            levels: [1, 2, 3]
-          }
-        }
-      ],
-      Bold,
-      Code,
-      HorizontalRule,
-      Paragraph,
-      HardBreak
     ]
   }),
 
@@ -258,31 +220,24 @@ export default {
       'updateLesson'
     ]),
 
-    onSubmit () {
+    async onSubmit () {
       this.loading = true
 
-      if (this.photo) {
-        this.$refs.fileUploader.handleBackgroundFileUpload(
-          ({ filePath }) =>
-            new Promise((resolve, reject) =>
-              this.submitMethod({
-                ...this.getSubmittableData(),
-                photoUrl: filePath
-              })
-                .then(data => resolve(this.$emit('click:submit', data)))
-                .catch(reject)
-                .finally(() => (this.loading = false))
-            )
-        )
-      } else {
-        this.submitMethod(this.getSubmittableData())
-          .then(data => this.$emit('click:submit', data))
-          .finally(() => (this.loading = false))
+      try {
+        if (this.file) {
+          this.draft.photoUrl = await this.$refs.fileUploader.handleUpload()
+        }
+
+        const data = await this.submitMethod(this.getSubmittableData())
+
+        this.$emit('click:submit', data)
+      } catch (e) {
+      } finally {
+        this.loading = false
       }
     },
 
     resetDraft () {
-      // to be override in component
       this.draft = {
         name: null,
         description: null,
