@@ -10,7 +10,7 @@ export default {
           { title: 'Dashboard', to: { name: 'app-dashboard' } },
           { title: 'Library', to: { name: 'app-library' } },
           { title: 'Activities', to: { name: 'app-activities' } },
-          { title: 'Profile', to: { name: 'app-profile' } }
+          { title: 'Profiles', to: { name: 'app-profile' } }
         ]
       }
 
