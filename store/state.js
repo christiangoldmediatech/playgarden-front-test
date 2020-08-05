@@ -1,6 +1,7 @@
 export default () => ({
   fullWidthPages: [
-    'app-activities'
+    'app-activities',
+    'app-profile'
   ],
   // For more options please see the doc for vue-snotify
   globalNotificationMessage: {
