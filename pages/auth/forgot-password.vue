@@ -54,7 +54,7 @@ export default {
           throw new Error('error')
         }
       } catch (e) {
-        this.$snotify.error('Sorry! There was an error sending the instructions')
+        this.$snotify.error('Sorry! There was an error sending the reset password instructions')
       } finally {
         this.loading = false
       }
