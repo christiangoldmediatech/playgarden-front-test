@@ -10,7 +10,7 @@
         <v-spacer />
         <v-btn
           icon
-          @click.stop="dialog = false"
+          @click.stop="close"
         >
           <v-icon>
             mdi-close
