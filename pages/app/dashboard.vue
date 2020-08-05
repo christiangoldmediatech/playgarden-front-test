@@ -1,17 +1,20 @@
 <template>
-  <v-row no-gutters>
-    <v-col cols="12" md="6">
-      <div class="image">
-        <img alt="Smiling Girl Picture" src="@/assets/svg/girl-smiling.svg">
-      </div>
+  <v-row>
+    <v-col cols="12" sm="6" lg="4">
+      <v-card>
+        <v-card-title>
+          Componente menu
+        </v-card-title>
+
+        <v-card-text>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, ipsam dignissimos sed eveniet quidem tenetur impedit omnis beatae illum, assumenda architecto odio alias expedita explicabo tempora! Aspernatur sit voluptas adipisci.
+        </v-card-text>
+      </v-card>
     </v-col>
 
-    <v-col cols="12" md="6">
-      <div class="form mx-auto px-4">
-        <div>
-          <underlined-title text="Welcome Back" />
-        </div>
-      </div>
+    <v-col>
+      <!-- Aquí se van a cargar los pages de la carpeta dashboard -->
+      <nuxt/>
     </v-col>
   </v-row>
 </template>
@@ -21,16 +24,3 @@ export default {
   name: 'Dashboard'
 }
 </script>
-
-<style lang="scss" scoped>
-.image {
-  max-height: 500px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  img {
-    max-width: 90%;
-  }
-}
-</style>
