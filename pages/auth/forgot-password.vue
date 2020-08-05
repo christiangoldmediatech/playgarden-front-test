@@ -13,36 +13,20 @@
         </div>
 
         <p class="text-center text-md-justify">
-          Enter your email to reset your password. You will receive an email
-          with instructions on how to reset your password.
+          Enter your email or phone number to reset your password. You will
+          receive an email or SMS with instructions on how to reset your
+          password.
         </p>
 
-        <p v-show="errorMessage" class="error-message">
-          <v-icon color="error">
-            mdi-close-circle
-          </v-icon>
-
-          {{ errorMessage }}
-        </p>
-
-        <p v-show="successMessage" class="success-message">
-          <v-icon color="success">
-            mdi-checkbox-marked-circle-outline
-          </v-icon>
-
-          {{ successMessage }}
-        </p>
-
-        <forgot-password-form
-          :loading="isLoadingForm"
-          @click:submit="handleResetPassword"
-        />
+        <forgot-password-form :loading="loading" @click:submit="onSubmit" />
       </div>
     </v-col>
   </v-row>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 import ForgotPasswordForm from '@/components/forms/password/ForgotPasswordForm'
 
 export default {
@@ -52,41 +36,28 @@ export default {
     ForgotPasswordForm
   },
 
-  data () {
-    return {
-      isLoadingForm: false,
-      errorMessage: '',
-      successMessage: ''
-    }
-  },
+  data: () => ({
+    loading: false
+  }),
 
   methods: {
-    async handleResetPassword (email) {
+    ...mapActions('auth/password', ['forgotUserPassword']),
+
+    async onSubmit (draft) {
       try {
-        this.isLoadingForm = true
-        // TODO: move to store and use mapActions
-        const { data } = await this.$axios.post(
-          `${process.env.apiBaseUrl}/auth/password/forget`,
-          email
-        )
-        if (data.sent) {
-          this.errorMessage = ''
-          this.successMessage = 'Email Sent!'
+        this.loading = true
+        const { sent } = await this.forgotUserPassword(draft)
+
+        if (sent) {
+          this.$snotify.success('Instructions Sent!')
         } else {
-          throw new Error('error sending email')
+          throw new Error('error')
         }
-      } catch (error) {
-        this.handleLoginError(error)
+      } catch (e) {
+        this.$snotify.error('Sorry! There was an error sending the reset password instructions')
       } finally {
-        this.isLoadingForm = false
+        this.loading = false
       }
-    },
-    handleLoginError (error) {
-      // TODO: Remove this alert to a global component
-      this.successMessage = ''
-      this.errorMessage = 'Sorry! There was an error sending the email'
-      // eslint-disable-next-line
-      console.error(error);
     }
   }
 }

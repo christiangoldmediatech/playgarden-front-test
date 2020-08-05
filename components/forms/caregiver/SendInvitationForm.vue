@@ -1,5 +1,5 @@
 <template>
-  <validation-observer v-slot="{ invalid, validated, passes, reset }">
+  <validation-observer v-slot="{ invalid, passes, reset }">
     <div class="pr-3 text-center">
       <span class="font-weight-bold text-h5">
         NEW INVITATION

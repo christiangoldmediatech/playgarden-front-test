@@ -1,68 +1,100 @@
 <template>
-  <v-form
-    ref="forgotPasswordForm"
-    v-model="isValidForm"
-    @submit.prevent="handleClick"
-  >
-    <!-- Email -->
-    <v-text-field
-      v-model="email"
-      clearable
-      :disabled="loading"
-      label="Email"
-      :loading="loading"
-      :rules="[required, isValidEmail]"
-      solo
-      type="email"
-    />
+  <validation-observer v-slot="{ invalid, passes }">
+    <v-form @submit.prevent="passes(onSubmit)">
+      <!-- Email -->
+      <validation-provider
+        v-slot="{ errors }"
+        name="Email"
+        :rules="{
+          required: !draft.phone,
+          email: true
+        }"
+      >
+        <v-text-field
+          v-model="draft.email"
+          clearable
+          :disabled="loading || Boolean(draft.phone)"
+          :error-messages="errors"
+          label="Email"
+          :loading="loading"
+          solo
+          type="email"
+        />
+      </validation-provider>
 
-    <v-btn
-      block
-      color="primary"
-      :disabled="isButtonDisabled"
-      :loading="loading"
-      type="submit"
-      x-large
-    >
-      RESET PASSWORD
-    </v-btn>
+      <v-row class="my-3" no-gutters>
+        <v-col class="hr-line">
+          <v-divider />
+        </v-col>
 
-    <v-row class="my-3" no-gutters>
-      <v-col class="hr-line">
-        <v-divider />
-      </v-col>
+        <v-col class="text-center">
+          or
+        </v-col>
 
-      <v-col class="text-center">
-        or
-      </v-col>
+        <v-col class="hr-line">
+          <v-divider />
+        </v-col>
+      </v-row>
 
-      <v-col class="hr-line">
-        <v-divider />
-      </v-col>
-    </v-row>
+      <!-- Phone -->
+      <validation-provider
+        v-slot="{ errors }"
+        name="Phone"
+        :rules="{
+          required: !draft.email,
+          min: 7,
+          max: 20,
+          phone: true
+        }"
+      >
+        <v-text-field
+          v-model="draft.phone"
+          class="mt-9"
+          clearable
+          :disabled="loading || Boolean(draft.email)"
+          :error-messages="errors"
+          label="Phone"
+          :loading="loading"
+          maxlength="20"
+          solo
+        />
+      </validation-provider>
 
-    <p class="login mt-4">
-      <nuxt-link class="primary--text" :to="{ name: 'index' }">
-        <span>return to login</span>
-      </nuxt-link>
-    </p>
+      <v-btn
+        block
+        color="primary"
+        :disabled="invalid"
+        :loading="loading"
+        type="submit"
+        x-large
+      >
+        RESET PASSWORD
+      </v-btn>
 
-    <p class="mt-4 signup text-center text-md-left">
-      Don't have an account?
+      <p class="login mt-4">
+        <nuxt-link class="primary--text" :to="{ name: 'index' }">
+          <span>return to login</span>
+        </nuxt-link>
+      </p>
 
-      <nuxt-link :to="{ name: 'auth-signup' }">
-        <span>SIGNUP</span>
-      </nuxt-link>
-    </p>
-  </v-form>
+      <p class="mt-4 signup text-center text-md-left">
+        Don't have an account?
+
+        <nuxt-link :to="{ name: 'auth-signup' }">
+          <span>SIGNUP</span>
+        </nuxt-link>
+      </p>
+    </v-form>
+  </validation-observer>
 </template>
 
 <script>
-import { required, isValidEmail } from '@/utils/validations/forms.js'
-import { jsonCopy } from '@/utils/objectTools.js'
+import submittable from '@/utils/mixins/submittable'
 
 export default {
   name: 'ForgotPasswordForm',
+
+  mixins: [submittable],
 
   props: {
     loading: {
@@ -72,34 +104,11 @@ export default {
     }
   },
 
-  data () {
-    return {
-      required,
-      isValidEmail,
-      isValidForm: true,
-      email: ''
-    }
-  },
-
-  computed: {
-    isButtonDisabled () {
-      return this.loading || !this.isValidForm
-    }
-  },
-
   methods: {
-    handleClick () {
-      if (this.$refs.forgotPasswordForm) {
-        this.$refs.forgotPasswordForm.validate()
-        if (this.isValidForm) {
-          this.$emit(
-            'click:submit',
-            jsonCopy({
-              email: this.email
-            })
-          )
-          this.$refs.forgotPasswordForm.resetValidation()
-        }
+    resetDraft () {
+      this.draft = {
+        email: null,
+        phone: null
       }
     }
   }
@@ -112,6 +121,7 @@ export default {
   justify-content: center;
   align-items: center;
 }
+
 .login {
   color: $pg-main;
   text-transform: uppercase;
@@ -119,8 +129,10 @@ export default {
   text-align: center;
   font-size: 20px;
 }
+
 .signup {
   font-size: 20px;
+
   span {
     color: $pg-main;
     text-transform: uppercase;
