@@ -151,13 +151,14 @@
     <prompt-dialog />
 
     <admin-snack-bar />
+    <video-preview />
   </v-app>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-
 import AdminSnackBar from '@/components/admin/AdminSnackBar.vue'
+import VideoPreview from '@/components/admin/video-preview/VideoPreview.vue'
 
 export default {
   name: 'Admin',
@@ -165,7 +166,8 @@ export default {
   middleware: ['checkJWT'],
 
   components: {
-    AdminSnackBar
+    AdminSnackBar,
+    VideoPreview
   },
 
   data () {
