@@ -16,7 +16,8 @@
     <default-footer />
 
     <notify-event />
-    <prompt-dialog event-trigger="open-prompt" />
+
+    <prompt-dialog />
   </v-app>
 </template>
 
@@ -25,7 +26,6 @@ import { mapState } from 'vuex'
 import AppNavigation from '@/components/app/header/AppNavigation'
 import ApplicationHeader from '@/components/app/header/ApplicationHeader'
 import DefaultFooter from '@/components/app/footer/DefaultFooter'
-import PromptDialog from '@/components/prompt/PromptDialog.vue'
 
 export default {
   name: 'Default',
@@ -35,8 +35,7 @@ export default {
   components: {
     ApplicationHeader,
     AppNavigation,
-    DefaultFooter,
-    PromptDialog
+    DefaultFooter
   },
 
   computed: {

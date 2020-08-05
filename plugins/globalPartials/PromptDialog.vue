@@ -7,24 +7,14 @@
     scrollable
   >
     <v-card>
-      <v-toolbar
-        class="flex-grow-0"
-        :color="color"
-        :dark="dark"
-        dense
-        flat
-      >
+      <v-toolbar class="flex-grow-0" :color="color" :dark="dark" dense flat>
         <v-toolbar-title>
           {{ title }}
         </v-toolbar-title>
 
         <v-spacer />
 
-        <v-btn
-          :disabled="loading"
-          icon
-          @click.stop="close"
-        >
+        <v-btn :disabled="loading" icon @click.stop="close">
           <v-icon>
             mdi-close
           </v-icon>
@@ -43,6 +33,7 @@
 
       <v-card-actions>
         <v-spacer />
+
         <v-btn
           color="green"
           :dark="$vuetify.breakpoint.xs"
@@ -52,6 +43,7 @@
         >
           Yes
         </v-btn>
+
         <v-btn
           color="red"
           :dark="$vuetify.breakpoint.xs"
@@ -73,7 +65,8 @@ export default {
   props: {
     eventTrigger: {
       type: String,
-      required: true
+      required: false,
+      default: 'open-prompt'
     }
   },
 
@@ -86,7 +79,9 @@ export default {
       contentClasses: '',
       color: 'primary darken-1',
       dark: true,
-      action: () => { this.close() }
+      action: () => {
+        this.close()
+      }
     }
   },
 
@@ -101,7 +96,9 @@ export default {
       title = 'Do you wish to proceed?',
       message = 'Are you sure you wish to proceed with this action?',
       contentClasses = '',
-      action = () => { this.close() },
+      action = () => {
+        this.close()
+      },
       dark = true,
       color = 'primary darken-1'
     }) {

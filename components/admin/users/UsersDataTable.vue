@@ -323,7 +323,7 @@ export default {
     },
 
     remove ({ id, firstName, lastName, email }) {
-      this.$nuxt.$emit('open-admin-prompt', {
+      this.$nuxt.$emit('open-prompt', {
         title: 'Delete user?',
         message: `Are you sure you wish to delete user '${firstName} ${lastName}' (${email})?`,
         action: async () => {

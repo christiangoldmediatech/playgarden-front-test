@@ -16,6 +16,10 @@ export default {
     }
   },
 
+  deleteCaregiver (_, id) {
+    return this.$axios.$delete(`/caregivers/${id}`)
+  },
+
   async fetchCaregiversList ({ commit }) {
     try {
       const { data } = await this.$axios.get('/caregivers')
