@@ -116,14 +116,16 @@ export default {
   methods: {
     ...mapActions('children', { getChildren: 'get' }),
 
+    ...mapActions({ setChild: 'setChild' }),
+
     selectChild (child) {
       if (!this.selected) {
         this.selected = child
 
         if (child.id) {
-          this.$store.commit('SET_CURRENT_CHILD', child)
+          this.setChild({ value: child, save: true })
         } else {
-          this.$store.commit('SET_CURRENT_CHILD', this.rows)
+          this.setChild({ value: this.rows, save: true })
         }
 
         if (this.$route.query.redirect) {

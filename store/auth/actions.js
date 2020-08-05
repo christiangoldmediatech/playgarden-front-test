@@ -1,6 +1,6 @@
 import jwtDecode from 'jwt-decode'
 import { snotifyError } from '@/utils/vuex'
-import { hasSessionStorage } from '@/utils/window'
+import { hasSessionStorage, hasLocalStorage } from '@/utils/window'
 
 export default {
   checkAuth ({ getters }) {
@@ -26,11 +26,18 @@ export default {
     }
   },
 
-  logout ({ commit, getters }, redirect) {
+  logout ({ commit, rootGetters }, redirect) {
     commit('LOGOUT')
 
     if (hasSessionStorage()) {
       window.sessionStorage.removeItem('authToken')
+    }
+
+    // Only reset if we were logged in to begin with
+    if (hasLocalStorage() && rootGetters.getCurrentChild) {
+      commit('SET_CURRENT_CHILD', null, { root: true })
+      commit('SET_CURRENT_CHILD_EXPIRES', null, { root: true })
+      window.localStorage.removeItem('selectedChild')
     }
 
     if (redirect) {

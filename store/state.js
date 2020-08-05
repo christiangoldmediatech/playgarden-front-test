@@ -1,5 +1,6 @@
 export default () => ({
   currentChild: null,
+  currentChildExpires: null,
 
   fullWidthPages: [
     'app-activities',

@@ -21,5 +21,14 @@ export default {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+
+  async getById (ctx, id) {
+    try {
+      const { data } = await this.$axios.get(`/children/${id}`)
+      return data
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
