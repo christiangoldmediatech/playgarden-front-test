@@ -8,7 +8,7 @@ export default {
       })
       return data
     } catch (error) {
-      Promise.reject(error)
+      return Promise.reject(error)
     }
   },
 
@@ -121,7 +121,7 @@ export default {
               key: data.urlKey
             }
           })
-          Promise.reject(error)
+          return Promise.reject(error)
         }
       } finally {
         commit('REMOVE_UPLOAD', uploadId)

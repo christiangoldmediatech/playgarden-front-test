@@ -1,5 +1,5 @@
 <template>
-  <validation-observer v-slot="{ invalid, validated, passes, reset }">
+  <validation-observer v-slot="{ invalid, passes, reset }">
     <v-form :readonly="!editing || loading" @submit.prevent="passes(onSubmit)">
       <p class="font-weight-bold">
         GENERAL

@@ -1,5 +1,5 @@
 <template>
-  <validation-observer v-slot="{ invalid, validated, passes, reset }">
+  <validation-observer v-slot="{ invalid, passes, reset }">
     <v-form @submit.prevent="passes(onSubmit)">
       <!-- New password -->
       <validation-provider

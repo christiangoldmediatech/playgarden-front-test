@@ -24,10 +24,8 @@ export default {
     ...mapActions('caregiver', ['validateInvitation']),
 
     async onToken () {
-      this.loading = true
-
       try {
-        const { email } = await this.validateInvitation(this.token)
+        const { email, phone } = await this.validateInvitation(this.token)
 
         await this.$snotify.success(
           'Invitation has been verified successfully!'
@@ -37,12 +35,12 @@ export default {
           () =>
             this.$router.push({
               name: 'auth-signup',
-              query: { email, process: 'invitation' }
+              query: { email, phone, process: 'invitation', token: this.token }
             }),
           1000
         )
       } catch (e) {
-        await this.$router.push({ name: 'auth-signup' })
+        setTimeout(() => this.$router.push({ name: 'auth-signup' }), 2000)
       }
     }
   }

@@ -1,5 +1,3 @@
-import { snotifyError } from '@/utils/vuex'
-
 export default {
   async store ({ commit }, data) {
     try {

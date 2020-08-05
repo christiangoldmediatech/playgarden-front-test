@@ -47,15 +47,6 @@ export default {
     )
   },
 
-  fetchVideosByLessonId (_, { id, params }) {
-    return new Promise((resolve, reject) =>
-      this.$axios
-        .get(`/lessons/${id}/videos`, { params })
-        .then(({ data }) => resolve(data))
-        .catch(reject)
-    )
-  },
-
   /*
    * TYPES
    */

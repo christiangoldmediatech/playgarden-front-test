@@ -45,7 +45,7 @@ export default {
   }),
 
   methods: {
-    ...mapActions('auth', ['updateUserPassword']),
+    ...mapActions('auth/password', ['updateUserPassword']),
 
     async onSubmit (draft) {
       this.loading = true

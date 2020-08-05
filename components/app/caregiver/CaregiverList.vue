@@ -11,13 +11,17 @@
         class="justify-space-between my-1"
         no-gutters
       >
-        <span class="caregivers-list-text">
+        <span>
           {{ caregiver.firstName }}
         </span>
 
-        <span class="caregivers-list-text">
+        <div>
           {{ caregiver.email }}
-        </span>
+
+          <v-icon color="#d30909" dense @click="remove(caregiver)">
+            mdi-delete-outline
+          </v-icon>
+        </div>
       </v-row>
 
       <manage-caregivers class="my-6" />
@@ -49,7 +53,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('caregiver', ['fetchCaregiversList']),
+    ...mapActions('caregiver', ['fetchCaregiversList', 'deleteCaregiver']),
 
     async getCaregiversData () {
       try {
@@ -59,6 +63,14 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+
+    remove ({ id, firstName }) {
+      this.$nuxt.$emit('open-prompt', {
+        title: 'Delete caregiver?',
+        message: `Are you sure you wish to delete '${firstName}' caregiver?`,
+        action: () => this.deleteCaregiver(id).then(this.getCaregiversData)
+      })
     }
   }
 }
