@@ -4,7 +4,7 @@ export default {
   setChild ({ commit }, { value, oldExp = null, save = false }) {
     commit('SET_CURRENT_CHILD', value)
 
-    const expires = oldExp || new Date().getTime() + (1000 * 60)
+    const expires = oldExp || new Date().getTime() + (24 * 60 * 60 * 1000)
     commit('SET_CURRENT_CHILD_EXPIRES', expires)
 
     if (hasLocalStorage() && save) {
