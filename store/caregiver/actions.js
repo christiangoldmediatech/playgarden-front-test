@@ -44,23 +44,19 @@ export default {
     }
   },
 
-  async sendCaregiverInvitation ({ commit }, { email }) {
-    try {
-      const response = await this.$axios.post('/caregivers/invite', { email })
-
-      return response.data
-    } catch (error) {
-      snotifyError(commit, {
-        body: 'Sorry! There was an error while sending your Invitation!'
-      })
-    }
+  sendCaregiverInvitation (_, { email, phone }) {
+    return this.$axios.$post(
+      '/caregivers/invite',
+      email ? { email } : { phone }
+    )
   },
 
-  async resendCaregiverInvitation ({ commit }, email) {
+  async resendCaregiverInvitation ({ commit }, { email, phone }) {
     try {
-      const response = await this.$axios.post('/caregivers/invite/resend', {
-        email
-      })
+      const response = await this.$axios.post(
+        '/caregivers/invite/resend',
+        email ? { email } : { phone }
+      )
 
       return response.data
     } catch (error) {
@@ -72,13 +68,13 @@ export default {
 
   async validateInvitation ({ commit }, token) {
     try {
-      const response = await this.$axios.get(`/caregivers/validate/${token}`)
-
-      return response.data
+      return await this.$axios.$get(`/caregivers/validate/${token}`)
     } catch (error) {
       snotifyError(commit, {
         body: 'Sorry! There was an error while verifying your invitation!'
       })
+
+      throw error
     }
   }
 }
