@@ -42,10 +42,11 @@
             <v-data-table
               :headers="headers"
               hide-default-footer
-              :items="lessons"
+              :items="resources"
               :loading="loading"
-              :page.sync="page"
-              @update:page="page = $event"
+              :page.sync="pagination.page"
+              :server-items-length="pagination.total"
+              @update:page="pagination.page = $event"
             >
               <template v-slot:top>
                 <v-row>
@@ -124,7 +125,7 @@
                 <nuxt-link
                   :to="{
                     name: 'admin-curriculum-management-editor',
-                    query: { id: item.id }
+                    query: { lessonId: item.id }
                   }"
                 >
                   <v-icon color="#81A1F7" dense>
@@ -155,7 +156,7 @@
                       color="green"
                       :disabled="props.pagination.page === 1 || loading"
                       x-small
-                      @click.stop="page--"
+                      @click.stop="pagination.page--"
                       v-text="'mdi-less-than'"
                     />
 
@@ -170,7 +171,7 @@
                             clickable: props.pagination.page !== i
                           }
                         ]"
-                        @click.stop="page = i"
+                        @click.stop="pagination.page = i"
                       >
                         {{ i }}
                       </span>
@@ -191,7 +192,7 @@
                           loading
                       "
                       x-small
-                      @click.stop="page++"
+                      @click.stop="pagination.page++"
                       v-text="'mdi-greater-than'"
                     />
                   </v-row>
@@ -208,18 +209,21 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 
+import paginable from '@/utils/mixins/paginable'
+
 export default {
   name: 'CurriculumLessonDataTable',
+
+  mixins: [paginable],
 
   data: () => ({
     loading: false,
     search: '',
-    page: 1,
     filters: {
       curriculumTypeId: null,
       level: null
     },
-    lessons: [],
+    resources: [],
     headers: [
       {
         text: 'Level',
@@ -266,8 +270,10 @@ export default {
   },
 
   watch: {
-    page () {
-      this.refresh()
+    'pagination.page' () {
+      if (!this.loading) {
+        this.refresh()
+      }
     }
   },
 
@@ -283,25 +289,31 @@ export default {
       'getTypes'
     ]),
 
-    refresh (clear = false) {
+    async refresh (clear = false) {
       this.loading = true
 
       if (clear) {
         this.search = ''
       }
 
-      this.fetchLessons({
-        name: this.search || null,
-        curriculumTypeId: this.filters.curriculumTypeId || null,
-        level: this.filters.level || null,
-        page: this.page
-      })
-        .then(({ lessons }) => (this.lessons = lessons))
-        .finally(() => (this.loading = false))
+      try {
+        const { lessons, page, total } = await this.fetchLessons({
+          name: this.search || null,
+          curriculumTypeId: this.filters.curriculumTypeId || null,
+          level: this.filters.level || null,
+          page: this.pagination.page
+        })
+
+        this.resources = lessons
+        this.setPagination({ page, total })
+      } catch (e) {
+      } finally {
+        this.loading = false
+      }
     },
 
     remove ({ id, name }) {
-      this.$nuxt.$emit('open-admin-prompt', {
+      this.$nuxt.$emit('open-prompt', {
         title: 'Delete curriculum lesson?',
         message: `Are you sure you wish to delete '${name}' curriculum lesson?`,
         action: () => this.deleteLesson(id).then(this.refresh)

@@ -74,15 +74,5 @@ export default {
         body: 'Sorry! There was an error while updating user info!'
       })
     }
-  },
-
-  async updateUserPassword ({ commit }, draft) {
-    try {
-      await this.$axios.patch('/auth/password/change', draft)
-    } catch (error) {
-      snotifyError(commit, {
-        body: 'Sorry! There was an error while updating user password!'
-      })
-    }
   }
 }

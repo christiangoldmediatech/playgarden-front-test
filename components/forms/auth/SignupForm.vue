@@ -1,5 +1,5 @@
 <template>
-  <validation-observer v-slot="{ invalid, validated, passes }">
+  <validation-observer v-slot="{ invalid, passes }">
     <v-form @submit.prevent="passes(onSubmit)">
       <!-- First name -->
       <validation-provider
@@ -44,7 +44,7 @@
         <v-text-field
           v-model="user.phoneNumber"
           clearable
-          :disabled="loading"
+          :disabled="loading || hasInvitationPhone"
           :error-messages="errors"
           label="Phone number"
           :loading="loading"
@@ -62,7 +62,7 @@
         <v-text-field
           v-model="user.email"
           clearable
-          :disabled="loading || inInvitationProcess"
+          :disabled="loading || hasInvitationEmail"
           :error-messages="errors"
           label="Email"
           :loading="loading"
@@ -134,29 +134,29 @@ export default {
   name: 'SignupForm',
 
   props: {
+    inInvitationProcess: Boolean,
+
     loading: Boolean
   },
 
   data: vm => ({
+    hasInvitationEmail: (() => {
+      return Boolean(vm.inInvitationProcess && vm.$route.query.email)
+    })(),
+
+    hasInvitationPhone: (() => {
+      return Boolean(vm.inInvitationProcess && vm.$route.query.phone)
+    })(),
+
     user: {
       firstName: '',
       lastName: '',
-      phoneNumber: '',
+      phoneNumber: vm.$route.query.phone || '',
       email: vm.$route.query.email || '',
       password: '',
       passwordConfirmation: ''
     }
   }),
-
-  computed: {
-    inInvitationProcess () {
-      const { query } = this.$route
-
-      return Boolean(
-        query.process === 'invitation' && query.email && query.token
-      )
-    }
-  },
 
   methods: {
     onSubmit () {

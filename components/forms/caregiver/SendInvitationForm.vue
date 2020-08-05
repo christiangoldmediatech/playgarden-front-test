@@ -1,5 +1,5 @@
 <template>
-  <validation-observer v-slot="{ invalid, validated, passes, reset }">
+  <validation-observer v-slot="{ invalid, passes, reset }">
     <div class="pr-3 text-center">
       <span class="font-weight-bold text-h5">
         NEW INVITATION
@@ -11,17 +11,58 @@
       <validation-provider
         v-slot="{ errors }"
         name="Email"
-        rules="required|email"
+        :rules="{
+          required: !draft.phone,
+          email: true
+        }"
       >
         <v-text-field
           v-model="draft.email"
           clearable
-          :disabled="loading"
+          :disabled="loading || Boolean(draft.phone)"
           :error-messages="errors"
           label="Email"
           :loading="loading"
           solo
           type="email"
+        />
+      </validation-provider>
+
+      <v-row class="my-3" no-gutters>
+        <v-col class="hr-line">
+          <v-divider />
+        </v-col>
+
+        <v-col class="text-center">
+          or
+        </v-col>
+
+        <v-col class="hr-line">
+          <v-divider />
+        </v-col>
+      </v-row>
+
+      <!-- Phone -->
+      <validation-provider
+        v-slot="{ errors }"
+        name="Phone"
+        :rules="{
+          required: !draft.email,
+          min: 7,
+          max: 20,
+          phone: true
+        }"
+      >
+        <v-text-field
+          v-model="draft.phone"
+          class="mt-9"
+          clearable
+          :disabled="loading || Boolean(draft.email)"
+          :error-messages="errors"
+          label="Phone"
+          :loading="loading"
+          maxlength="20"
+          solo
         />
       </validation-provider>
 
@@ -67,9 +108,18 @@ export default {
   methods: {
     resetDraft () {
       this.draft = {
-        email: ''
+        email: null,
+        phone: null
       }
     }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.hr-line {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>
