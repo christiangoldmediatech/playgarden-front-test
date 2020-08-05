@@ -67,6 +67,7 @@
             <jw-player
               :file="draft.videoUrl.HLS"
               :title="draft.name"
+              :image="draft.thumbnail"
               :description="draft.description"
             />
           </v-badge>
