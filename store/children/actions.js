@@ -28,5 +28,23 @@ export default {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+
+  async update (ctx, { id, params }) {
+    try {
+      const { data } = await this.$axios.patch(`/children/${id}`, params)
+      return data
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+
+  async delete (ctx, id) {
+    try {
+      const { data } = await this.$axios.delete(`/children/${id}`)
+      return data
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
