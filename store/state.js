@@ -2,7 +2,8 @@ export default () => ({
   currentChild: null,
 
   fullWidthPages: [
-    'app-activities'
+    'app-activities',
+    'app-pick-child'
   ],
   // For more options please see the doc for vue-snotify
   globalNotificationMessage: {

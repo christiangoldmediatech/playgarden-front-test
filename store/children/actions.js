@@ -11,5 +11,15 @@ export default {
         body: 'Sorry! There was an error while storing.'
       })
     }
+  },
+
+  async get ({ commit }) {
+    try {
+      const { data } = await this.$axios.get('/children')
+      commit('SET_ROWS', data)
+      return data
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
