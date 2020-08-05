@@ -98,13 +98,22 @@ export default {
     }
   },
 
+  mounted () {
+    window.addEventListener('beforeunload', (e) => {
+      if (this.uploads.length > 0) {
+        e.preventDefault()
+        e.returnValue = ''
+      }
+    })
+  },
+
   methods: {
     ...mapMutations('upload', {
       removeUpload: 'REMOVE_UPLOAD'
     }),
 
     cancelUpload (upload) {
-      this.$nuxt.$emit('open-admin-prompt', {
+      this.$nuxt.$emit('open-prompt', {
         title: 'Cancel upload?',
         message: `Are you sure you wish to cancel the upload for '${upload.name}'?`,
         action: () => {

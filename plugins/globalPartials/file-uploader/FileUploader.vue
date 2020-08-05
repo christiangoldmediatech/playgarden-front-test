@@ -70,7 +70,7 @@ export default {
           result = await this.handleFileUpload()
         }
       } catch (error) {
-        Promise.reject(error)
+        return Promise.reject(error)
       }
 
       return result
@@ -89,7 +89,7 @@ export default {
           return filePath
         }
       } catch (error) {
-        Promise.reject(error)
+        return Promise.reject(error)
       }
       return false
     },

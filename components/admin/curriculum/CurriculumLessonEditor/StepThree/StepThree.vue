@@ -5,7 +5,7 @@
         <v-card width="100%">
           <v-card-title>
             <p class="primary--text text-h5">
-              Video details
+              Worksheet online details
             </p>
 
             <v-spacer />
@@ -25,7 +25,7 @@
                 mdi-plus
               </v-icon>
 
-              <span class="hidden-xs-only">Add new video</span>
+              <span class="hidden-xs-only">Add new worksheet</span>
             </v-btn>
           </v-card-title>
         </v-card>
@@ -44,10 +44,6 @@
               :page.sync="page"
               @update:page="page = $event"
             >
-              <template v-slot:item.createdAt="{ item }">
-                {{ item.createdAt | formatDate }}
-              </template>
-
               <template v-slot:item.actions="{ item }">
                 <v-btn icon @click="openModal(item)">
                   <v-icon color="#81A1F7" dense>
@@ -138,7 +134,7 @@
               </v-btn>
             </v-row>
 
-            <step-two-form
+            <step-three-form
               v-if="showModal"
               :lesson-id="lessonId"
               :resource="resourceSelected"
@@ -169,7 +165,7 @@
           :to="{
             name: 'admin-curriculum-management-editor',
             query: {
-              step: 1,
+              step: 2,
               lessonId
             }
           }"
@@ -185,13 +181,13 @@
 <script>
 import { mapActions } from 'vuex'
 
-import StepTwoForm from './StepTwoForm'
+import StepThreeForm from './StepThreeForm'
 
 export default {
-  name: 'StepTwo',
+  name: 'StepThree',
 
   components: {
-    StepTwoForm
+    StepThreeForm
   },
 
   props: {
@@ -215,16 +211,6 @@ export default {
         value: 'name'
       },
       {
-        text: 'Status',
-        sortable: false,
-        value: 'status'
-      },
-      {
-        text: 'Activity',
-        sortable: false,
-        value: 'activityType.name'
-      },
-      {
         align: 'right',
         sortable: false,
         value: 'actions'
@@ -237,9 +223,9 @@ export default {
   },
 
   methods: {
-    ...mapActions('admin/curriculum/video', [
-      'deleteVideoByLessonId',
-      'fetchVideosByLessonId'
+    ...mapActions('admin/curriculum/worksheet', [
+      'deleteWorksheetByLessonId',
+      'fetchWorksheetsByLessonId'
     ]),
 
     onSubmit () {
@@ -256,8 +242,9 @@ export default {
       this.loading = true
 
       try {
-        this.resources = await this.fetchVideosByLessonId({
-          lessonId: this.lessonId
+        this.resources = await this.fetchWorksheetsByLessonId({
+          lessonId: this.lessonId,
+          type: 'ONLINE'
         })
       } catch (e) {
       } finally {
@@ -267,10 +254,10 @@ export default {
 
     remove ({ id, name }) {
       this.$nuxt.$emit('open-admin-prompt', {
-        title: 'Delete curriculum lesson video?',
-        message: `Are you sure you wish to delete '${name}' curriculum lesson video?`,
+        title: 'Delete curriculum lesson worksheet?',
+        message: `Are you sure you wish to delete '${name}' curriculum lesson worksheet?`,
         action: () =>
-          this.deleteVideoByLessonId({
+          this.deleteWorksheetByLessonId({
             id,
             lessonId: this.lessonId
           }).then(this.refresh)

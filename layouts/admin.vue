@@ -1,7 +1,5 @@
 <template>
-  <v-app
-    class="pg-app"
-  >
+  <v-app class="pg-app">
     <v-navigation-drawer
       v-model="appDrawer"
       app
@@ -12,6 +10,7 @@
       <v-container fluid>
         <v-row class="px-6 py-2 py-md-7">
           <span class="font-weight-medium logo-text pl-4">Web Admin</span>
+
           <img
             alt="Playarden Prep Online Logo"
             class="logo"
@@ -23,10 +22,7 @@
       <v-divider />
 
       <!-- Menu -->
-      <v-list
-        dense
-        mandatory
-      >
+      <v-list dense mandatory>
         <template v-for="(item, i) in menuItems">
           <!-- Menu with sub items color="accent" -->
           <v-list-group
@@ -38,9 +34,7 @@
           >
             <template v-slot:prependIcon>
               <!-- Former color="primary darken-2" -->
-              <v-icon
-                v-text="item.icon"
-              />
+              <v-icon v-text="item.icon" />
             </template>
 
             <template v-slot:activator>
@@ -108,18 +102,16 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar
-      app
-      clipped-left
-      color="primary"
-      dark
-      elevation="0"
-    >
-      <v-app-bar-nav-icon class="app-bar-style" @click.stop="appDrawer = !appDrawer" />
+    <v-app-bar app clipped-left color="primary" dark elevation="0">
+      <v-app-bar-nav-icon
+        class="app-bar-style"
+        @click.stop="appDrawer = !appDrawer"
+      />
 
       <v-toolbar-title class="d-flex flex-column hidden-md-and-up">
         <!-- PlayGarden Prep Online - Web Admin -->
         <span class="font-weight-medium navbar-logo-text pl-4">Web Admin</span>
+
         <img
           alt="Playarden Prep Online Logo"
           class="navbar-logo"
@@ -129,7 +121,9 @@
 
       <v-spacer />
 
-      <span class="black--text mr-2 text--lighten-1">{{ userInfo.fullName }}</span>
+      <span class="black--text mr-2 text--lighten-1">
+        {{ userInfo.fullName }}
+      </span>
 
       <v-btn class="hidden-md-and-up" icon nuxt :to="{ name: 'auth-logout' }">
         <v-icon>
@@ -149,22 +143,20 @@
     </v-app-bar>
 
     <v-main class="pg-bkg">
-      <prompt-dialog event-trigger="open-admin-prompt" />
       <nuxt />
     </v-main>
+
     <notify-event />
+
+    <prompt-dialog />
+
     <admin-snack-bar />
-    <!--
-    <v-footer app>
-      &copy; 2020 <span v-if="new Date().getFullYear() > 2020"> - {{ new Date().getFullYear() }}</span>
-    </v-footer>
-    -->
   </v-app>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import PromptDialog from '@/components/prompt/PromptDialog.vue'
+
 import AdminSnackBar from '@/components/admin/AdminSnackBar.vue'
 
 export default {
@@ -173,7 +165,6 @@ export default {
   middleware: ['checkJWT'],
 
   components: {
-    PromptDialog,
     AdminSnackBar
   },
 
@@ -181,13 +172,6 @@ export default {
     return {
       appDrawer: false,
       menuItemsData: [
-        /*
-        {
-          icon: 'mdi-home',
-          title: 'Home',
-          route: '/admin'
-        },
-        */
         {
           icon: 'mdi-teach',
           title: 'Curriculum management',
@@ -240,14 +224,16 @@ export default {
       userInfo: 'getUserInfo'
     }),
 
-    ...mapGetters('upload', ['uploads']),
-
     menuItems () {
       return this.menuItemsData.map((item) => {
         if (item.children) {
           item.children.sort((a, b) => {
-            if (a.title < b.title) { return -1 }
-            if (a.title > b.title) { return 1 }
+            if (a.title < b.title) {
+              return -1
+            }
+            if (a.title > b.title) {
+              return 1
+            }
             return 0
           })
         }
@@ -255,15 +241,6 @@ export default {
         return item
       })
     }
-  },
-
-  mounted () {
-    window.addEventListener('beforeunload', (e) => {
-      if (this.uploads.length > 0) {
-        e.preventDefault()
-        e.returnValue = ''
-      }
-    })
   }
 }
 </script>
@@ -289,7 +266,7 @@ export default {
   .text-h4,
   .text-h5,
   .text-h6 {
-    font-family: 'Poppins', sans-serif !important;
+    font-family: "Poppins", sans-serif !important;
   }
 
   .container:not(.container--fluid) {
@@ -300,16 +277,22 @@ export default {
     border: none;
   }
 
-  .v-data-table tr > td, thead > tr > th {
+  .v-data-table tr > td,
+  thead > tr > th {
     border-bottom: 1px dashed rgba(0, 0, 0, 0.12) !important;
   }
 
-  .v-data-table tr > td:not(:last-child), thead > tr > th:not(:last-child) {
+  .v-data-table tr > td:not(:last-child),
+  thead > tr > th:not(:last-child) {
     border-right: 1px dashed rgba(0, 0, 0, 0.12) !important;
   }
 
   header.v-app-bar {
-    background-image: linear-gradient(to bottom, #d3f5a8 -132%, #c2daa5 202%) !important;
+    background-image: linear-gradient(
+      to bottom,
+      #d3f5a8 -132%,
+      #c2daa5 202%
+    ) !important;
     background-color: transparent !important;
   }
 
@@ -341,7 +324,7 @@ export default {
   }
 
   .pg-bkg {
-    background-color: #F9F9F9 !important;
+    background-color: #f9f9f9 !important;
   }
 }
 </style>

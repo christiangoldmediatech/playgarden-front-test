@@ -94,6 +94,7 @@ export default {
         this.modal = false
 
         this.$snotify.success('Invitation has been sent successfully!')
+      } catch (e) {
       } finally {
         this.loading = false
       }

@@ -38,14 +38,36 @@
                 </v-stepper-content>
 
                 <v-stepper-content step="2">
-                  <step-two v-if="currentStep === 2" @click:submit="onSubmit" />
+                  <step-two
+                    v-if="currentStep === 2"
+                    :lesson-id="lessonId"
+                    @click:submit="onSubmit"
+                  />
                 </v-stepper-content>
 
-                <v-stepper-content step="3" />
+                <v-stepper-content step="3">
+                  <step-three
+                    v-if="currentStep === 3"
+                    :lesson-id="lessonId"
+                    @click:submit="onSubmit"
+                  />
+                </v-stepper-content>
 
-                <v-stepper-content step="4" />
+                <v-stepper-content step="4">
+                  <step-four
+                    v-if="currentStep === 4"
+                    :lesson-id="lessonId"
+                    @click:submit="onSubmit"
+                  />
+                </v-stepper-content>
 
-                <v-stepper-content step="5" />
+                <v-stepper-content step="5">
+                  <step-five
+                    v-if="currentStep === 5"
+                    :lesson-id="lessonId"
+                    @click:submit="onSubmit"
+                  />
+                </v-stepper-content>
               </v-stepper-items>
             </v-stepper>
           </v-card-text>
@@ -58,19 +80,31 @@
 <script>
 import StepOne from './StepOne'
 import StepTwo from './StepTwo'
+import StepThree from './StepThree'
+import StepFour from './StepFour'
+import StepFive from './StepFive'
 
 export default {
   name: 'CurriculumLessonEditor',
 
-  components: { StepOne, StepTwo },
+  components: {
+    StepOne,
+    StepTwo,
+    StepThree,
+    StepFour,
+    StepFive
+  },
 
   data: vm => ({
-    currentStep: parseInt(vm.$route.query.step || 1)
+    currentStep: parseInt(vm.$route.query.step || 1),
+    lessonId: vm.$route.query.lessonId
+      ? parseInt(vm.$route.query.lessonId)
+      : null
   }),
 
-  computed: {
-    lessonId () {
-      return this.$route.query.id ? parseInt(this.$route.query.id) : null
+  watch: {
+    '$route.query.step' (v) {
+      this.currentStep = parseInt(v || 1)
     }
   },
 
@@ -78,8 +112,27 @@ export default {
     onSubmit (lesson) {
       switch (this.currentStep) {
         case 1:
+          this.lessonId = lesson.id
           this.currentStep++
-          this.setQuery({ id: lesson.id, step: this.currentStep })
+          this.setQuery({ lessonId: lesson.id, step: this.currentStep })
+          break
+
+        case 2:
+        case 3:
+        case 4:
+          this.currentStep++
+          this.setQuery({ lessonId: this.lessonId, step: this.currentStep })
+          break
+
+        case 5:
+          this.$snotify.success(
+            '¡Your lesson has been successfully loaded!',
+            'Congratulations'
+          )
+
+          this.$router.push({
+            name: 'admin-curriculum-management'
+          })
           break
       }
     },
