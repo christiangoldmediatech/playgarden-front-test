@@ -14,7 +14,7 @@
 
     <v-col>
       <!-- Aquí se van a cargar los pages de la carpeta dashboard -->
-      <nuxt/>
+      <nuxt />
     </v-col>
   </v-row>
 </template>
