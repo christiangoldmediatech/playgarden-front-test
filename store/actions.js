@@ -3,7 +3,7 @@ import { hasLocalStorage } from '@/utils/window'
 export default {
   setChild ({ commit }, { value, oldExp = null, save = false }) {
     commit('SET_CURRENT_CHILD', value)
-    
+
     const moment = new Date()
     moment.setHours(23)
     moment.setMinutes(59)
