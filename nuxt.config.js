@@ -118,7 +118,8 @@ export default {
       'redirectProperAuthenticatedSection',
       'recoverRegistrationProcess',
       'redirectIfAuthenticated',
-      'emailVerified'
+      'emailVerified',
+      'pickChild'
     ]
   }
 }

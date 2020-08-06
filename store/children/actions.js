@@ -2,7 +2,6 @@ export default {
   async store (ctx, data) {
     try {
       const response = await this.$axios.post('/children', data)
-
       return response.data
     } catch (error) {
       return Promise.reject(error)
