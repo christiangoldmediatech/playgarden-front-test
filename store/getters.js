@@ -1,5 +1,7 @@
 import { get } from '@/utils/vuex'
 
 export default {
-  getGlobalNotificationMessage: get('globalNotificationMessage')
+  getGlobalNotificationMessage: get('globalNotificationMessage'),
+  getCurrentChild: get('currentChild'),
+  getCurrentChildExpires: get('currentChildExpires')
 }
