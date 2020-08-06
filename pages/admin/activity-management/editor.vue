@@ -100,6 +100,7 @@
                       v-if="video && video.videoUrl"
                       :file="video.videoUrl.HLS"
                       :title="video.name"
+                      :image="video.thumbnail"
                       :description="video.description"
                     />
                     <v-progress-circular
@@ -120,7 +121,7 @@
                       </span>
                     </v-progress-circular>
 
-                    <validation-provider ref="fileProvider" v-slot="{ errors }" name="Video" :rules="`${(activity.videoId === null && file === null) ? 'required' : ''}`">
+                    <validation-provider ref="fileProvider" v-slot="{ errors }" name="Video" :rules="`${(activity.thumbnail === null && thumbnail === null) ? 'required' : ''}`">
                       <file-uploader
                         ref="fileUploader"
                         :error-messages="errors"
@@ -136,6 +137,29 @@
                         mov
                         mpeg
                         webm
+                      />
+                    </validation-provider>
+                  </v-col>
+                </v-row>
+
+                <v-row>
+                  <v-col class="text-md-right" cols="12" sm="3">
+                    <span class="subheader">Video Thumbnail:</span>
+                  </v-col>
+                  <v-col class="text-center" cols="12" sm="9" lg="6">
+                    <validation-provider ref="thumbnailFileProvider" v-slot="{ errors }" name="Video" :rules="`${(!id || file) ? 'required' : ''}`">
+                      <file-uploader
+                        ref="fileUploader2"
+                        :error-messages="errors"
+                        :file.sync="thumbnail"
+                        label="Upload Thumbnail"
+                        mode="image"
+                        path="activity-thumbnail"
+                        placeholder="Select a thumbnail for this activity video"
+                        prepend-icon=""
+                        append-icon="mdi-photo"
+                        jpg
+                        png
                       />
                     </validation-provider>
                   </v-col>
@@ -176,6 +200,7 @@ export default {
     return {
       loading: false,
       file: null,
+      thumbnail: null,
       video: null,
       activity: {
         featured: false,
@@ -184,6 +209,7 @@ export default {
         activityTypeId: null,
         curriculumTypeId: null,
         videoId: null,
+        thumbnail: null,
         type: 'VIDEO'
       }
     }
@@ -227,6 +253,12 @@ export default {
     file (val) {
       this.$refs.fileProvider.syncValue(val)
       this.$refs.fileProvider.validate()
+      this.thumbnail = null
+    },
+
+    thumbnail (val) {
+      this.$refs.thumbnailFileProvider.syncValue(val)
+      this.$refs.thumbnailFileProvider.validate()
     }
   },
 
@@ -268,6 +300,8 @@ export default {
         if (this.loading === false) {
           this.$refs.fileProvider.syncValue(this.file)
           this.$refs.fileProvider.validate()
+          this.$refs.thumbnailFileProvider.syncValue(this.thumbnail)
+          this.$refs.thumbnailFileProvider.validate()
           window.clearInterval(interval)
         }
       }, 50)
@@ -286,6 +320,11 @@ export default {
       let id = this.id
 
       try {
+        const thumbnail = await this.$refs.fileUploader2.handleUpload()
+        if (thumbnail) {
+          this.activity.thumbnail = thumbnail
+        }
+
         const data = await this.$refs.fileUploader.handleUpload()
         if (data) {
           this.activity.videoId = data.video.id

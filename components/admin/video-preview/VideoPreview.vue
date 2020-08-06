@@ -67,11 +67,11 @@ export default {
       this.title = video.name
       if (this.player === null) {
         this.file = video.videoUrl.HLS
-        this.image = video.image || undefined
+        this.image = video.thumbnail || undefined
       } else {
         this.player.load([{
           file: video.videoUrl.HLS,
-          image: video.image || undefined
+          image: video.thumbnail || undefined
         }])
       }
       this.open()

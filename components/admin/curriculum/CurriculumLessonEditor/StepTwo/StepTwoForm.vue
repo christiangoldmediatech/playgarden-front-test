@@ -67,6 +67,7 @@
             <jw-player
               :file="draft.videoUrl.HLS"
               :title="draft.name"
+              :image="draft.thumbnail"
               :description="draft.description"
             />
           </v-badge>
@@ -94,6 +95,26 @@
           placeholder="Select a video for this lesson"
           prepend-icon="mdi-video"
           webm
+        />
+      </validation-provider>
+
+      <validation-provider
+        v-slot="{ errors }"
+        name="Thumbnail"
+        :rules="`${(file || !editing) ? 'required' : ''}`"
+      >
+        <file-uploader
+          ref="fileUploader2"
+          v-model="thumbnail"
+          :file.sync="thumbnail"
+          :error-messages="errors"
+          label="Upload Thumbnail"
+          mode="image"
+          path="curriculum-thumbnail"
+          placeholder="Select a thumbnail for this lesson's video"
+          prepend-icon="mdi-video"
+          png
+          jpg
         />
       </validation-provider>
 
@@ -150,6 +171,7 @@ export default {
 
   data: () => ({
     file: null,
+    thumbnail: null,
     loading: false
   }),
 
@@ -173,6 +195,7 @@ export default {
     async onSubmit () {
       this.loading = true
       let id = this.draft.id
+      let thumbnail = this.draft.thumbnail
 
       try {
         if (this.file) {
@@ -181,10 +204,17 @@ export default {
           id = video.id
         }
 
+        if (this.thumbnail) {
+          const thumbnailUrl = await this.$refs.fileUploader2.handleUpload()
+
+          thumbnail = thumbnailUrl
+        }
+
         const data = await this.updateVideoByLessonId({
           data: this.getSubmittableData(),
           lessonId: this.lessonId,
-          id
+          id,
+          thumbnail
         })
 
         this.$emit('click:submit', data)
