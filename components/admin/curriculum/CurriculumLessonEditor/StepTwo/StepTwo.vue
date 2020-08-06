@@ -49,6 +49,8 @@
               </template>
 
               <template v-slot:item.actions="{ item }">
+                <video-preview-btn :video="item" />
+
                 <v-btn icon @click="openModal(item)">
                   <v-icon color="#81A1F7" dense>
                     mdi-pencil-outline
@@ -184,14 +186,15 @@
 
 <script>
 import { mapActions } from 'vuex'
-
+import VideoPreviewBtn from '@/components/admin/video-preview/VideoPreviewBtn.vue'
 import StepTwoForm from './StepTwoForm'
 
 export default {
   name: 'StepTwo',
 
   components: {
-    StepTwoForm
+    StepTwoForm,
+    VideoPreviewBtn
   },
 
   props: {

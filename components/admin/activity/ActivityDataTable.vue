@@ -111,6 +111,8 @@
               </template>
 
               <template v-slot:item.actions="{ item }">
+                <video-preview-btn :video="item.videos" />
+
                 <v-icon
                   color="#81A1F7"
                   dense
@@ -186,9 +188,14 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import VideoPreviewBtn from '@/components/admin/video-preview/VideoPreviewBtn.vue'
 
 export default {
   name: 'ActivityDataTable',
+
+  components: {
+    VideoPreviewBtn
+  },
 
   data () {
     return {
