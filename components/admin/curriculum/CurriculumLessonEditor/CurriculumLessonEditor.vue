@@ -141,7 +141,7 @@ export default {
 
         case 6:
           this.$snotify.success(
-            '¡Your lesson has been successfully loaded!',
+            'Your lesson has been successfully saved!',
             'Congratulations'
           )
 
