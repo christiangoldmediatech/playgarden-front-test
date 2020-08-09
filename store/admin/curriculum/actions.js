@@ -3,48 +3,23 @@ export default {
    * LESSONS
    */
   createLesson (_, data) {
-    return new Promise((resolve, reject) =>
-      this.$axios
-        .post('/lessons', data)
-        .then(({ data }) => resolve(data))
-        .catch(reject)
-    )
+    return this.$axios.$post('/lessons', data)
   },
 
   deleteLesson (_, id) {
-    return new Promise((resolve, reject) =>
-      this.$axios
-        .delete(`/lessons/${id}`)
-        .then(resolve)
-        .catch(reject)
-    )
+    return this.$axios.$delete(`/lessons/${id}`)
   },
 
   getLessonById (_, id) {
-    return new Promise((resolve, reject) =>
-      this.$axios
-        .get(`/lessons/${id}`)
-        .then(({ data }) => resolve(data))
-        .catch(reject)
-    )
+    return this.$axios.$get(`/lessons/${id}`)
   },
 
   fetchLessons (_, params) {
-    return new Promise((resolve, reject) =>
-      this.$axios
-        .get('/lessons', { params })
-        .then(({ data }) => resolve(data))
-        .catch(reject)
-    )
+    return this.$axios.$get('/lessons', { params })
   },
 
   updateLesson (_, { id, data }) {
-    return new Promise((resolve, reject) =>
-      this.$axios
-        .patch(`/lessons/${id}`, data)
-        .then(({ data }) => resolve(data))
-        .catch(reject)
-    )
+    return this.$axios.$patch(`/lessons/${id}`, data)
   },
 
   /*
