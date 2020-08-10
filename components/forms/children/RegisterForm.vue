@@ -6,6 +6,7 @@
           <span class="font-weight-bold text-h5">
             CHILD’S INFORMATION
           </span>
+
           <v-row class="mb-6">
             <v-spacer />
 

@@ -1,26 +1,39 @@
 <template>
-  <v-row>
-    <v-col cols="12" sm="6" lg="4">
-      <v-card>
-        <v-card-title>
-          Componente menu
-        </v-card-title>
+  <v-main>
+    <v-container fluid>
+      <v-row>
+        <v-col cols="12" sm="5" md="4" lg="3">
+          <dashboard-panel />
+        </v-col>
 
-        <v-card-text>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, ipsam dignissimos sed eveniet quidem tenetur impedit omnis beatae illum, assumenda architecto odio alias expedita explicabo tempora! Aspernatur sit voluptas adipisci.
-        </v-card-text>
-      </v-card>
-    </v-col>
+        <v-col>
+          <v-row align="center" class="pr-3" justify="end">
+            First time using Playgarden?
 
-    <v-col>
-      <!-- Aquí se van a cargar los pages de la carpeta dashboard -->
-      <nuxt-child />
-    </v-col>
-  </v-row>
+            <v-btn color="primary" text>
+              WATCH TUTORIAL HERE
+            </v-btn>
+          </v-row>
+
+          <v-row>
+            <v-col class="pt-5">
+              <nuxt-child />
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-main>
 </template>
 
 <script>
+import DashboardPanel from '@/components/app/dashboard/DashboardPanel'
+
 export default {
-  name: 'Dashboard'
+  name: 'Dashboard',
+
+  components: {
+    DashboardPanel
+  }
 }
 </script>

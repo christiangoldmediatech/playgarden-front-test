@@ -65,7 +65,7 @@
             </template>
 
             <jw-player
-              :file="draft.videoUrl.HLS"
+              :file="draft.videoUrl"
               :title="draft.name"
               :image="draft.thumbnail"
               :description="draft.description"

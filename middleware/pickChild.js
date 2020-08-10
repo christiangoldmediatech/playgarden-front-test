@@ -1,12 +1,12 @@
 import { hasLocalStorage } from '@/utils/window'
 
 export default async function ({ redirect, route, store }) {
-  if (/^(\/app(\/)?)/.test(route.fullPath) && process.client) {
-    const whiteList = [
-      'app-pick-child',
-      'app-account',
-      'app-profile'
-    ]
+  if (/^app-.*$/.test(route.name) && process.client) {
+    const whiteList = {
+      'app-pick-child': 1,
+      'app-account': 1,
+      'app-profile': 1
+    }
 
     let child = store.getters.getCurrentChild
     let childExpires = store.getters.getCurrentChildExpires
@@ -15,6 +15,7 @@ export default async function ({ redirect, route, store }) {
     // Load child if stored and not expired
     if (!child && hasLocalStorage()) {
       let storedData = window.localStorage.getItem('selectedChild')
+
       if (storedData) {
         storedData = JSON.parse(storedData)
 
@@ -25,10 +26,15 @@ export default async function ({ redirect, route, store }) {
             if (Array.isArray(storedData.value)) {
               result = await store.dispatch('children/get')
             } else {
-              result = await store.dispatch('children/getById', storedData.value)
+              result = [
+                await store.dispatch('children/getById', storedData.value)
+              ]
             }
 
-            store.dispatch('setChild', { value: result, oldExp: storedData.expires })
+            store.dispatch('setChild', {
+              value: result,
+              oldExp: storedData.expires
+            })
 
             // Update local value
             child = store.getters.getCurrentChild
@@ -43,9 +49,11 @@ export default async function ({ redirect, route, store }) {
     // If no child is selected
     if (
       (!child || !childExpires || currentMoment >= childExpires) &&
-      (!whiteList.includes(route.name))
+      !whiteList[route.name]
     ) {
-      redirect(`/app/pick-child?redirect=${encodeURIComponent(route.fullPath)}`)
+      redirect(
+        `/app/pick-child?redirect=${encodeURIComponent(route.fullPath)}`
+      )
     }
   }
 }

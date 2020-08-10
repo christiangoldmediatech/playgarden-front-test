@@ -8,7 +8,7 @@ export default {
 
   props: {
     file: {
-      type: String,
+      type: [Object, String],
       required: false,
       default: undefined
     },
@@ -63,31 +63,45 @@ export default {
     }
   },
 
-  data: () => {
-    return {
-      player: null
+  data: () => ({
+    player: null
+  }),
+
+  computed: {
+    _file () {
+      if (this.file) {
+        return this.file.HLS || this.file
+      }
+
+      return undefined
     }
   },
 
   mounted () {
-    if (jwplayer) {
-      const player = jwplayer(`player_${this._uid}`)
-      const config = { ...this.$props }
+    if (window.jwplayer) {
+      const player = window.jwplayer(`player_${this._uid}`)
+      const config = { ...this.$props, file: this._file }
 
-      player.setup(config)
+      setTimeout(() => {
+        player.setup(config)
 
-      this.$emit('ready', player)
+        this.$emit('ready', player)
 
-      player.on('play', (params) => {
-        this.$emit('play', { player, params })
-      })
+        player.on('play', (params) => {
+          this.$emit('play', { player, params })
+        })
 
-      player.on('complete', (params) => {
-        this.$emit('complete', { player, params })
-      })
+        player.on('complete', (params) => {
+          this.$emit('complete', { player, params })
+        })
 
-      this.player = player
+        this.player = player
+      }, 250)
     }
+  },
+
+  beforeDestroy () {
+    this.player = null
   }
 }
 </script>
