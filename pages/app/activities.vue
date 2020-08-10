@@ -27,43 +27,17 @@
       </v-row>
 
       <v-row justify="center">
-        <v-col class="text-center" cols="12" md="8" lg="6">
+        <v-col class="text-center" cols="12" lg="9">
           <p class="text-h3">
             <span class="title-text">
-              Activities to engage curious minds!
+              Master subjects to collect patches for your Student Cubby!
             </span>
           </p>
         </v-col>
-        <v-col class="text-center text-h5" cols="12">
-          Browse by category
-        </v-col>
-      </v-row>
-
-      <v-row align="center" justify="center">
-        <div
-          v-for="category in categories"
-          :key="`category-${category.id}`"
-          class="clickable text-center mx-2"
-          @click="$scrollTo(`#category_row_${category.id}`, 500, { offset: -60 })"
-        >
-          <div
-            class="category d-flex justify-center align-center"
-            :style="{'--bgColor': category.color}"
-          >
-            <img
-              :src="category.icon"
-              height="60px"
-            >
-          </div>
-          <span
-            class="font-weight-bold text-uppercase category-text"
-            :style="{'--bgColor': category.color}"
-          >
-            {{ category.name }}
-          </span>
-        </div>
       </v-row>
     </v-container>
+
+    <category-header v-bind="{ categories }" />
 
     <carousel
       v-for="category in categories"
@@ -74,24 +48,27 @@
       :icon="category.icon"
       :activities="playlist(category.id)"
     />
+    <activity-player />
   </v-main>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import ActivityPlayer from '@/components/app/activities/ActivityPlayer'
 import Carousel from '@/components/app/activities/Carousel'
+import CategoryHeader from '@/components/app/activities/CategoryHeader'
 
 export default {
   name: 'Activities',
 
   components: {
-    Carousel
+    Carousel,
+    CategoryHeader,
+    ActivityPlayer
   },
 
   data: () => {
-    return {
-
-    }
+    return {}
   },
 
   computed: {
@@ -129,13 +106,6 @@ export default {
   background-repeat: no-repeat;
   background-size: 100% 100%;
   color: var(--v-black-base);
-}
-
-.category {
-  width: 103px;
-  height: 103px;
-  border: solid 6px var(--bgColor);
-  border-radius: 50%;
 }
 
 .category-text {

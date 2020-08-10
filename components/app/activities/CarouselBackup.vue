@@ -4,8 +4,32 @@
     :style="{'--bgColor': color}"
     fluid
   >
-    <v-container class="pa-0">
-      <v-row class="flex-nowrap" align="center">
+    <v-container>
+      <v-row align="end">
+        <img
+          :src="icon"
+          :height="($vuetify.breakpoint.xs) ? '32px' : '48px'"
+        >
+
+        <div class="mx-3">
+          <span class="font-weight-black text-outline category-text text-uppercase" :style="{'--bgColor': color}">
+            {{ categoryName }}
+          </span>
+        </div>
+
+        <v-btn
+          color="primary"
+          :small="$vuetify.breakpoint.xs"
+          @click.stop="playAll"
+        >
+          <v-icon left>
+            mdi-play
+          </v-icon>
+          PLAY ALL
+        </v-btn>
+      </v-row>
+      <!--
+      <v-row align="center" justify="space-between">
         <v-btn
           text
           :disabled="page === 1"
@@ -17,36 +41,11 @@
           />
         </v-btn>
 
-        <v-col :id="`cardSpace_${_uid}`">
-          <v-row align="end">
-            <img
-              :src="icon"
-              :height="($vuetify.breakpoint.xs) ? '32px' : '48px'"
-            >
-
-            <div class="mx-3">
-              <span class="font-weight-black text-outline category-text text-uppercase" :style="{'--bgColor': color}">
-                {{ categoryName }}
-              </span>
-            </div>
-
-            <v-btn
-              color="primary"
-              :small="$vuetify.breakpoint.xs"
-              @click.stop="playAll"
-            >
-              <v-icon left>
-                mdi-play
-              </v-icon>
-              PLAY ALL
-            </v-btn>
-          </v-row>
-
+        <v-col>
           <v-row>
             <activity-card
               v-for="activity in list"
               :key="`activity-${activity.id}`"
-              :activity-id="activity.id"
               :activity="activity.videos"
               :icon="icon"
               :category-name="categoryName"
@@ -64,6 +63,46 @@
             max-width="32px"
           />
         </v-btn>
+      </v-row>
+      -->
+      <v-row>
+        <v-col>
+          <v-btn
+            text
+            :disabled="page === 1"
+            @click.stop="moveCarousel(-1)"
+          >
+            <v-img
+              :src="require('@/assets/png/player/left-arrow.svg')"
+              max-width="32px"
+            />
+          </v-btn>
+        </v-col>
+
+        <v-col>
+          <v-row>
+            <activity-card
+              v-for="activity in list"
+              :key="`activity-${activity.id}`"
+              :activity="activity.videos"
+              :icon="icon"
+              :category-name="categoryName"
+            />
+          </v-row>
+        </v-col>
+
+        <v-col>
+          <v-btn
+            text
+            :disabled="(page * limit) >= total"
+            @click.stop="moveCarousel(1)"
+          >
+            <v-img
+              :src="require('@/assets/png/player/right-arrow.svg')"
+              max-width="32px"
+            />
+          </v-btn>
+        </v-col>
       </v-row>
     </v-container>
   </v-container>
@@ -105,12 +144,6 @@ export default {
   },
 
   computed: {
-    cardWidth () {
-      const breakpoint = this.$vuetify.breakpoint
-      if (breakpoint.xs) { return 272 }
-      return 400
-    },
-
     limit () {
       if (this.$vuetify.breakpoint.sm) { return 2 }
       if (this.$vuetify.breakpoint.xs) { return 1 }
@@ -147,15 +180,14 @@ export default {
       const playlist = this.activities.map((activity) => {
         return {
           file: activity.videos.videoUrl.HLS,
-          thumbnail: activity.videos.thumbnail,
-          activityId: activity.id
+          title: activity.videos.name,
+          description: activity.videos.description
         }
       })
 
-      this.$nuxt.$emit('play-activity', {
-        title: `${this.categoryName} | Play All`,
-        playlist
-      })
+      const player = this.$refs[`${this._uid}_players`][0].player
+      player.load(playlist)
+      player.play()
     },
 
     moveCarousel (direction) {
