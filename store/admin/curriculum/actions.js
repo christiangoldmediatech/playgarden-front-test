@@ -10,8 +10,12 @@ export default {
     return this.$axios.$delete(`/lessons/${id}`)
   },
 
-  getLessonById (_, id) {
-    return this.$axios.$get(`/lessons/${id}`)
+  async getLessonById ({ commit }, id) {
+    const data = await this.$axios.$get(`/lessons/${id}`)
+
+    commit('SET_LESSON', data)
+
+    return data
   },
 
   fetchLessons (_, params) {

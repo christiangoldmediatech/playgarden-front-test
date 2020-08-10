@@ -5,6 +5,7 @@ export default () => ({
   fullWidthPages: {
     'app-activities': 1,
     'app-dashboard': 1,
+    'app-dashboard-videos-id': 1,
     'app-pick-child': 1,
     'app-profile': 1
   },

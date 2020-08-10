@@ -7,5 +7,6 @@ const RESET_STATE = (state) => {
 
 export default {
   SET_TYPES: set('types'),
+  SET_LESSON: set('lesson'),
   RESET_STATE
 }
