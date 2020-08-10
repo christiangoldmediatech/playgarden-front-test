@@ -1,5 +1,5 @@
 <template>
-  <validation-observer v-slot="{ invalid, validated, passes, reset }">
+  <validation-observer v-slot="{ invalid, passes, reset }">
     <p class="primary--text text-h5">
       {{ editing ? "Editing" : "New" }} video
     </p>
@@ -81,7 +81,7 @@
         rules="required"
       >
         <file-uploader
-          ref="fileUploader"
+          ref="videoUploader"
           v-model="file"
           :error-messages="errors"
           :file.sync="file"
@@ -98,13 +98,36 @@
         />
       </validation-provider>
 
+      <!-- Thumbnail -->
+      <span class="v-label theme--light">Thumbnail</span>
+
+      <template v-if="draft.thumbnail">
+        <div class="mb-6 mt-3">
+          <v-badge avatar color="error" overlap>
+            <template v-slot:badge>
+              <v-avatar
+                class="clickable"
+                @click.native="draft.thumbnail = null"
+              >
+                <v-icon>
+                  mdi-close
+                </v-icon>
+              </v-avatar>
+            </template>
+
+            <v-img width="250" :src="draft.thumbnail" />
+          </v-badge>
+        </div>
+      </template>
+
       <validation-provider
+        v-else
         v-slot="{ errors }"
         name="Thumbnail"
-        :rules="`${(file || !editing) ? 'required' : ''}`"
+        rules="required"
       >
         <file-uploader
-          ref="fileUploader2"
+          ref="thumbnailUploader"
           v-model="thumbnail"
           :file.sync="thumbnail"
           :error-messages="errors"
@@ -112,7 +135,7 @@
           mode="image"
           path="curriculum-thumbnail"
           placeholder="Select a thumbnail for this lesson's video"
-          prepend-icon="mdi-video"
+          prepend-icon="mdi-camera"
           png
           jpg
         />
@@ -195,26 +218,22 @@ export default {
     async onSubmit () {
       this.loading = true
       let id = this.draft.id
-      let thumbnail = this.draft.thumbnail
 
       try {
         if (this.file) {
-          const { video } = await this.$refs.fileUploader.handleUpload()
+          const { video } = await this.$refs.videoUploader.handleUpload()
 
           id = video.id
         }
 
         if (this.thumbnail) {
-          const thumbnailUrl = await this.$refs.fileUploader2.handleUpload()
-
-          thumbnail = thumbnailUrl
+          this.draft.thumbnail = await this.$refs.thumbnailUploader.handleUpload()
         }
 
         const data = await this.updateVideoByLessonId({
           data: this.getSubmittableData(),
           lessonId: this.lessonId,
-          id,
-          thumbnail
+          id
         })
 
         this.$emit('click:submit', data)
@@ -231,9 +250,10 @@ export default {
           activityTypeId: this.resource.activityType.id
         })
         : {
+          activityTypeId: null,
           name: null,
           description: null,
-          activityTypeId: null
+          thumbnail: null
         }
     }
   }

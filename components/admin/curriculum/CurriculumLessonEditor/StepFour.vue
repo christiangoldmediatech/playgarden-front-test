@@ -1,5 +1,5 @@
 <template>
-  <validation-observer v-slot="{ invalid, validated, passes, reset }">
+  <validation-observer v-slot="{ invalid, passes, reset }">
     <p class="primary--text text-h5">
       {{ editing ? "Editing" : "New" }} offline worksheet
     </p>

@@ -22,7 +22,11 @@
 
                 <v-divider />
 
-                <v-stepper-step step="5" />
+                <v-stepper-step :complete="currentStep > 5" step="5" />
+
+                <v-divider />
+
+                <v-stepper-step step="6" />
               </v-stepper-header>
 
               <v-stepper-items>
@@ -68,6 +72,14 @@
                     @click:submit="onSubmit"
                   />
                 </v-stepper-content>
+
+                <v-stepper-content step="6">
+                  <step-six
+                    v-if="currentStep === 6"
+                    :lesson-id="lessonId"
+                    @click:submit="onSubmit"
+                  />
+                </v-stepper-content>
               </v-stepper-items>
             </v-stepper>
           </v-card-text>
@@ -83,6 +95,7 @@ import StepTwo from './StepTwo'
 import StepThree from './StepThree'
 import StepFour from './StepFour'
 import StepFive from './StepFive'
+import StepSix from './StepSix'
 
 export default {
   name: 'CurriculumLessonEditor',
@@ -92,7 +105,8 @@ export default {
     StepTwo,
     StepThree,
     StepFour,
-    StepFive
+    StepFive,
+    StepSix
   },
 
   data: vm => ({
@@ -120,13 +134,14 @@ export default {
         case 2:
         case 3:
         case 4:
+        case 5:
           this.currentStep++
           this.setQuery({ lessonId: this.lessonId, step: this.currentStep })
           break
 
-        case 5:
+        case 6:
           this.$snotify.success(
-            '¡Your lesson has been successfully loaded!',
+            'Your lesson has been successfully saved!',
             'Congratulations'
           )
 
