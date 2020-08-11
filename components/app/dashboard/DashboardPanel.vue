@@ -3,7 +3,7 @@
     <v-row class="letter-day-row" justify="center">
       <div class="letter-day-circle white">
         <div class="accent--text font-weight-bold text-center text-h3">
-          {{ lesson ? lesson.curriculumType.name : null }}
+          {{ lesson ? lesson.curriculumType.letter : null }}
         </div>
 
         <div
@@ -251,11 +251,15 @@ export default {
     videosCompletionRate () {
       const total = this.videos.length
 
-      const completed = this.videos.reduce(
-        (accumulator = 0, { viewed }) => accumulator + Number(viewed || 0)
-      )
+      if (total) {
+        const completed = this.videos
+          .map(({ viewed }) => Number(viewed || 0))
+          .reduce((a, b) => a + b)
 
-      return completed ? (total / completed) * 100 : 0
+        return completed ? (total / completed) * 100 : 0
+      }
+
+      return 0
     },
 
     worksheets () {
