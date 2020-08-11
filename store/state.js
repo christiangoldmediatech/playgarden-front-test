@@ -6,6 +6,7 @@ export default () => ({
     'app-activities': 1,
     'app-dashboard': 1,
     'app-dashboard-videos-id': 1,
+    'app-dashboard-worksheets-id': 1,
     'app-pick-child': 1,
     'app-profile': 1
   },
