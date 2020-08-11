@@ -21,24 +21,21 @@
         <!-- Videos -->
         <v-row class="my-2" no-gutters>
           <v-col cols="2">
-            <!-- TODO: set the color using the complete rate -->
             <v-row
               align="center"
               class="chip mb-2"
-              :class="1 ? 'primary' : 'grey'"
+              :class="videosCompletionRate ? 'primary' : 'grey'"
               justify="center"
             >
               <span>1</span>
             </v-row>
 
-            <!-- TODO: set the color using the complete rate -->
-            <!-- TODO: set value using the complete rate -->
             <progress-linear
               class="ml-3"
-              :color="1 ? 'primary' : 'grey'"
+              :color="videosCompletionRate ? 'primary' : 'grey'"
               :height="`${55 * videos.length}px`"
               rounded
-              value="15"
+              :value="videosCompletionRate"
               width="10px"
             />
           </v-col>
@@ -54,14 +51,16 @@
                 :key="indexV"
                 class="px-0"
                 nuxt
-                @click="_setCurrentLessonVideo(video)"
+                :to="{
+                  name: 'app-dashboard-videos-id',
+                  params: { id: video.id }
+                }"
               >
                 <v-list-item-avatar>
-                  <!-- TODO: set the gradient using the complete rate -->
                   <v-img
                     :src="video.thumbnail"
                     :gradient="
-                      1
+                      video.viewed
                         ? undefined
                         : 'rgba(128, 128, 128, 0.75), rgba(128, 128, 128, 0.75)'
                     "
@@ -239,11 +238,24 @@ export default {
     },
 
     childrenIds () {
-      return this.currentChild ? this.currentChild.map(({ id }) => id) : []
+      // TODO: return ids array when Juan fix the endpoint
+      // return this.currentChild ? this.currentChild.map(({ id }) => id) : []
+
+      return 28
     },
 
     videos () {
       return this.lesson ? this.lesson.videos || [] : []
+    },
+
+    videosCompletionRate () {
+      const total = this.videos.length
+
+      const completed = this.videos.reduce(
+        (accumulator = 0, { viewed }) => accumulator + Number(viewed || 0)
+      )
+
+      return completed ? (total / completed) * 100 : 0
     },
 
     worksheets () {
@@ -275,27 +287,11 @@ export default {
   created () {
     try {
       this.getCurrentLessonByChildrenId({ childrenIds: this.childrenIds })
-
-      this.getLessonById(17)
     } catch (e) {}
   },
 
   methods: {
-    ...mapActions('admin/curriculum', ['getLessonById']),
-
-    ...mapActions('children/lesson', [
-      'getCurrentLessonByChildrenId',
-      'setCurrentLessonVideo'
-    ]),
-
-    _setCurrentLessonVideo (video) {
-      this.setCurrentLessonVideo(video)
-
-      this.$router.push({
-        name: 'app-dashboard-videos-id',
-        params: { id: video.id }
-      })
-    }
+    ...mapActions('children/lesson', ['getCurrentLessonByChildrenId'])
   }
 }
 </script>
