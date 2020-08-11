@@ -9,4 +9,4 @@ export const getDefaultState = () => ({
   total: 0
 })
 
-export default () => getDefaultState()
+export default () => getDefaultState

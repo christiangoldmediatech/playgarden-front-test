@@ -90,7 +90,7 @@ export default {
 
   created () {
     this.getTypes()
-    this.getActivities({ type: 'VIDEO' })
+    this.getActivities({ type: 'VIDEO', limit: 50 })
   },
 
   methods: {
