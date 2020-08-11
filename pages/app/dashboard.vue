@@ -6,7 +6,7 @@
           <dashboard-panel />
         </v-col>
 
-        <v-col>
+        <v-col cols="12" sm="7" md="8" lg="9">
           <v-row align="center" class="pr-3" justify="end">
             First time using Playgarden?
 

@@ -45,10 +45,10 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
-  name: 'ActivityPlayer',
+  name: 'VideoLessonPlayer',
 
   data: () => {
     return {
@@ -56,11 +56,7 @@ export default {
       title: '',
       playlist: [],
       player: null,
-      videoHeight: 0,
-      analytics: {
-        itemIndex: null,
-        entries: []
-      }
+      videoHeight: 0
     }
   },
 
@@ -78,9 +74,8 @@ export default {
   },
 
   created () {
-    this.$nuxt.$on('play-activity', (params) => {
+    this.$nuxt.$on('play-video-lesson', (params) => {
       this.title = params.title
-      this.resetAnalytics()
       if (this.player) {
         this.player.load(params.playlist)
         this.player.play()
@@ -90,69 +85,13 @@ export default {
       this.open()
     })
   },
-
   methods: {
-    ...mapActions('admin/activity/analytics', {
-      createAnalytic: 'create',
-      getAnalytic: 'getById',
-      updateAnalytic: 'update'
-    }),
-
     setPlayer (player) {
       this.player = player
       if (this.playlist.length) {
         this.player.play()
       }
     },
-
-    resetAnalytics () {
-      this.analytics.itemIndex = null
-      this.analytics.entries = []
-    },
-
-    /*
-    async onPlay () {
-      const itemIndex = this.player.getPlaylistIndex()
-      if (this.analytics.itemIndex !== itemIndex) {
-        this.analytics.itemIndex = itemIndex
-        const item = this.player.getPlaylistItem(itemIndex)
-        const stack = []
-
-        this.children.forEach((child) => {
-          stack.push(
-            this.getAnalytic({ activityId: item.activityId, childrenId: child.id }).then((data) => {
-              if (data.length) {
-
-              }
-            })
-          )
-        })
-
-        const results = await Promise.all(stack)
-        console.log(results, stack)
-        stack = []
-
-        this.children.forEach((child, i) => {
-          if (results[i]) {
-            this.analytics.entries.push({
-              childrenId: child.id,
-              activityId: item.activityId,
-              ...results[i]
-            })
-          } else {
-            stack.push(
-              this.createAnalytic({ childrenId: child.id, activityId: item.activityId })
-            )
-          }
-        })
-
-        results = await Promise.all(stack)
-        results.forEach((result) => {
-          this.analytics.entries.push(result)
-        })
-      }
-    },
-    */
 
     open () {
       this.dialog = true

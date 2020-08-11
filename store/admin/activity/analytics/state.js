@@ -2,4 +2,4 @@ export const getDefaultState = () => ({
   rows: []
 })
 
-export default getDefaultState()
+export default getDefaultState
