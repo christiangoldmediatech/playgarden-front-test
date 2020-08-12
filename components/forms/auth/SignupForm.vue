@@ -77,9 +77,8 @@
         name="Password"
         rules="required|min:8|max:20|w_number|w_special|w_upper|confirmed:passwordConfirmation"
       >
-        <v-text-field
+        <password-field
           v-model="user.password"
-          append-icon="mdi-lock"
           clearable
           :disabled="loading"
           :error-messages="errors"
@@ -87,7 +86,6 @@
           :loading="loading"
           maxlength="20"
           solo
-          type="password"
         />
       </validation-provider>
 
@@ -98,9 +96,8 @@
         rules="required"
         vid="passwordConfirmation"
       >
-        <v-text-field
+        <password-field
           v-model="user.passwordConfirmation"
-          append-icon="mdi-lock"
           clearable
           :disabled="loading"
           :error-messages="errors"
@@ -108,7 +105,6 @@
           :loading="loading"
           maxlength="20"
           solo
-          type="password"
         />
       </validation-provider>
 

@@ -7,9 +7,8 @@
         name="New password"
         rules="required|min:8|max:20|w_number|w_special|w_upper|confirmed:passwordConfirmation"
       >
-        <v-text-field
+        <password-field
           v-model="draft.password"
-          :append-icon="showPass ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
           clearable
           :disabled="loading"
           :error-messages="errors"
@@ -17,8 +16,6 @@
           :loading="loading"
           maxlength="20"
           solo
-          :type="showPass ? 'text' : 'password'"
-          @click:append="showPass = !showPass"
         />
       </validation-provider>
 
@@ -29,9 +26,8 @@
         rules="required"
         vid="passwordConfirmation"
       >
-        <v-text-field
+        <password-field
           v-model="draft.passwordConfirmation"
-          :append-icon="showPass ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
           clearable
           :disabled="loading"
           :error-messages="errors"
@@ -39,8 +35,6 @@
           :loading="loading"
           maxlength="20"
           solo
-          :type="showPass ? 'text' : 'password'"
-          @click:append="showPass = !showPass"
         />
       </validation-provider>
 
@@ -83,14 +77,8 @@ export default {
     loading: Boolean
   },
 
-  data: () => ({
-    showPass: false
-  }),
-
   methods: {
     resetDraft () {
-      this.showPass = false
-
       this.draft = {
         password: '',
         passwordConfirmation: ''

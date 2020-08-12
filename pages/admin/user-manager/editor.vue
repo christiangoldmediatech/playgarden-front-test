@@ -5,7 +5,9 @@
         <v-card width="100%">
           <v-card-title>
             {{ title }}
+
             <v-spacer />
+
             <v-btn
               class="text-none"
               color="accent darken-1"
@@ -28,12 +30,12 @@
             <v-card-text>
               <v-form>
                 <v-row>
-                  <v-col
-                    cols="12"
-                    lg="4"
-                    md="6"
-                  >
-                    <validation-provider v-slot="{ errors }" name="First Name" rules="required">
+                  <v-col cols="12" lg="4" md="6">
+                    <validation-provider
+                      v-slot="{ errors }"
+                      name="First Name"
+                      rules="required"
+                    >
                       <v-text-field
                         v-model="user.firstName"
                         :error-messages="errors"
@@ -43,12 +45,12 @@
                     </validation-provider>
                   </v-col>
 
-                  <v-col
-                    cols="12"
-                    lg="4"
-                    md="6"
-                  >
-                    <validation-provider v-slot="{ errors }" name="Last Name" rules="required">
+                  <v-col cols="12" lg="4" md="6">
+                    <validation-provider
+                      v-slot="{ errors }"
+                      name="Last Name"
+                      rules="required"
+                    >
                       <v-text-field
                         v-model="user.lastName"
                         :error-messages="errors"
@@ -58,12 +60,12 @@
                     </validation-provider>
                   </v-col>
 
-                  <v-col
-                    cols="12"
-                    lg="4"
-                    md="6"
-                  >
-                    <validation-provider v-slot="{ errors }" name="E-mail" rules="required|email">
+                  <v-col cols="12" lg="4" md="6">
+                    <validation-provider
+                      v-slot="{ errors }"
+                      name="E-mail"
+                      rules="required|email"
+                    >
                       <v-text-field
                         v-model="user.email"
                         :error-messages="errors"
@@ -73,12 +75,12 @@
                     </validation-provider>
                   </v-col>
 
-                  <v-col
-                    cols="12"
-                    lg="4"
-                    md="6"
-                  >
-                    <validation-provider v-slot="{ errors }" name="Phone Number" rules="required|phone">
+                  <v-col cols="12" lg="4" md="6">
+                    <validation-provider
+                      v-slot="{ errors }"
+                      name="Phone Number"
+                      rules="required|phone"
+                    >
                       <v-text-field
                         v-model="user.phoneNumber"
                         :error-messages="errors"
@@ -88,12 +90,12 @@
                     </validation-provider>
                   </v-col>
 
-                  <v-col
-                    cols="12"
-                    lg="4"
-                    md="6"
-                  >
-                    <validation-provider v-slot="{ errors }" name="Role" rules="required">
+                  <v-col cols="12" lg="4" md="6">
+                    <validation-provider
+                      v-slot="{ errors }"
+                      name="Role"
+                      rules="required"
+                    >
                       <v-select
                         v-model="user.roleId"
                         :error-messages="errors"
@@ -104,23 +106,19 @@
                     </validation-provider>
                   </v-col>
 
-                  <v-col
-                    v-if="!id"
-                    cols="12"
-                    lg="4"
-                    md="6"
-                  >
-                    <validation-provider v-slot="{ errors }" name="Password" rules="required|min:8|max:20|w_number|w_special|w_upper">
-                      <v-text-field
+                  <v-col v-if="!id" cols="12" lg="4" md="6">
+                    <validation-provider
+                      v-slot="{ errors }"
+                      name="Password"
+                      rules="required|min:8|max:20|w_number|w_special|w_upper"
+                    >
+                      <password-field
                         v-model="user.password"
-                        :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
                         counter
                         :error-messages="errors"
                         hint="At least 8 characters"
                         label="Password"
                         solo
-                        :type="showPass ? 'text' : 'password'"
-                        @click:append="showPass = !showPass"
                       />
                     </validation-provider>
                   </v-col>
@@ -130,6 +128,7 @@
 
             <v-card-actions>
               <v-spacer />
+
               <v-btn
                 class="px-5 text-none"
                 color="primary"
@@ -140,18 +139,6 @@
               >
                 Finalize
               </v-btn>
-              <v-spacer />
-              <!--
-              <v-btn
-                color="red"
-                :dark="$vuetify.breakpoint.xs"
-                :disabled="loading"
-                :text="$vuetify.breakpoint.smAndUp"
-                @click.stop="$router.push({ name: 'admin-users' })"
-              >
-                Cancel
-              </v-btn>
-              -->
             </v-card-actions>
           </validation-observer>
         </v-card>
@@ -171,7 +158,6 @@ export default {
   data () {
     return {
       loading: false,
-      showPass: false,
       user: {
         firstName: '',
         lastName: '',
@@ -189,7 +175,7 @@ export default {
     }),
 
     id () {
-      return (this.$route.query.id) ? parseInt(this.$route.query.id) : null
+      return this.$route.query.id ? parseInt(this.$route.query.id) : null
     },
 
     title () {
