@@ -50,6 +50,7 @@
                 v-for="(video, indexV) in videos"
                 :key="indexV"
                 class="px-0"
+                :disabled="Boolean(indexV && !videos[indexV - 1].viewed)"
                 nuxt
                 :to="{
                   name: 'app-dashboard-videos-id',
