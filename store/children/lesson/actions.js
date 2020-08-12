@@ -1,8 +1,12 @@
 export default {
-  getCurrentLessonByChildrenId (_, params) {
-    return this.$axios.$get('/lessons-childrens/current', {
+  async getCurrentLessonByChildrenId ({ commit }, params) {
+    const { lesson } = await this.$axios.$get('/lessons/childrens/current', {
       params
     })
+
+    commit('admin/curriculum/SET_LESSON', lesson, { root: true })
+
+    return lesson
   },
 
   setCurrentLessonVideo ({ commit }, video) {
