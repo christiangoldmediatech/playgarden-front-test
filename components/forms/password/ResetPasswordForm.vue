@@ -5,7 +5,7 @@
     @submit.prevent="handleClick"
   >
     <!-- Password -->
-    <v-text-field
+    <password-field
       v-model="password"
       clearable
       :disabled="loading"
@@ -13,7 +13,6 @@
       :loading="loading"
       :rules="[required, ...isValidPassword]"
       solo
-      type="password"
     />
 
     <v-btn
