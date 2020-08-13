@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 import DashboardPanel from '@/components/app/dashboard/DashboardPanel'
 
 export default {
@@ -34,6 +35,32 @@ export default {
 
   components: {
     DashboardPanel
+  },
+
+  computed: {
+    ...mapGetters({ currentChild: 'getCurrentChild' }),
+
+    childrenIds () {
+      return this.currentChild ? this.currentChild.map(({ id }) => id) : []
+    }
+  },
+
+  created () {
+    try {
+      // this.getCurrentLessonByChildrenId({ childrenIds: this.childrenIds })
+
+      this.getLessonById(17).then((data) => {
+        if (this.$route.name === 'app-dashboard') {
+          const id = data.videos[0].id
+          this.$router.push({ name: 'app-dashboard-videos-id', params: { id } })
+        }
+      })
+    } catch (e) {}
+  },
+
+  methods: {
+    ...mapActions('admin/curriculum', ['getLessonById'])
+    // ...mapActions('children/lesson', ['getCurrentLessonByChildrenId'])
   }
 }
 </script>

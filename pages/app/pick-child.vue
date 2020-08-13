@@ -154,20 +154,6 @@ export default {
   }
 }
 
-.green-line {
-  height: 1rem;
-  width: 100%;
-  box-shadow: 0 -1px 6px 0 rgba(0, 0, 0, 0.12);
-}
-
-.green-line-1 {
-  background-color: var(--v-primary-base);
-}
-
-.green-line-2 {
-  background-color: #dce7b5;
-}
-
 .underlined-title {
   font-size: 2rem;
   font-weight: bold;

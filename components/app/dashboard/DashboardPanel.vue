@@ -117,6 +117,7 @@
               ONLINE WORKSHEET
             </div>
 
+            <!--
             <v-list dense>
               <v-list-item
                 v-for="(worksheet, indexWO) in worksheets.ONLINE"
@@ -134,6 +135,7 @@
                 </v-list-item-content>
               </v-list-item>
             </v-list>
+            -->
 
             <div v-if="worksheets.OFFLINE" class="font-weight-bold mt-3">
               HANDS-ON LEARNING
@@ -272,6 +274,7 @@ export default {
     }
   },
 
+  /*
   created () {
     try {
       this.getCurrentLessonByChildrenId({ childrenIds: this.childrenIds })
@@ -279,6 +282,7 @@ export default {
       this.getLessonById(17)
     } catch (e) {}
   },
+  */
 
   methods: {
     ...mapActions('admin/curriculum', ['getLessonById']),

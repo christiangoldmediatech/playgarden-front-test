@@ -46,15 +46,27 @@
           :key="`images-${item.code}`"
           v-slot="{ hover }"
         >
-          <v-avatar
-            size="198"
-            :class="['mx-4 clickable item', { 'scaled': hover || selected === item.code, 'selected': item.code === selected }]"
+          <div
+            :class="['rounded-circle item text-center mx-4 clickable', { 'scaled': hover || selected === item.code }]"
             @click.stop="select(item.code)"
           >
-            <v-img
-              :src="item.image"
-            />
-          </v-avatar>
+            <v-responsive
+              :class="['rounded-circle', { 'selected': item.code === selected }]"
+              width="198"
+              height="198"
+            >
+              <v-img
+                :src="item.image"
+                aspect-ratio="1"
+              />
+            </v-responsive>
+            <span
+              v-if="type === 'TAP_CORRECT'"
+              class="d-block font-weight-bold"
+            >
+              {{ item.word }}
+            </span>
+          </div>
         </v-hover>
       </v-row>
 
@@ -180,8 +192,16 @@ export default {
 }
 
 .selected {
-  border: solid 10px var(--v-primary-base);
-  border-radius: 50%;
+  ::after {
+    border-radius: 50%;
+    box-shadow:inset 0px 0px 0px 10px var(--v-primary-base);
+    content: '';
+    display: block;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
 }
 
 .green-line {
