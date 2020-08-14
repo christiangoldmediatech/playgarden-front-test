@@ -40,19 +40,12 @@
     </v-toolbar-items>
 
     <v-btn
-      class="white--text px-13 ml-3 hidden-sm-and-down"
-      :color="(isUserLoggedIn) ? 'primary' : '#f89838'"
+      class="px-13 ml-3 hidden-sm-and-down"
+      color="accent"
+      nuxt
       :to="{ name: isUserLoggedIn ? 'app-account' : 'auth-login' }"
     >
-      <template v-if="isUserLoggedIn">
-        ACCOUNT
-        <v-icon right>
-          mdi-cog-outline
-        </v-icon>
-      </template>
-      <template v-else>
-        Login
-      </template>
+      {{ isUserLoggedIn ? 'ACCOUNT' : 'LOGIN' }}
     </v-btn>
 
     <v-spacer class="hidden-sm-and-down" />
