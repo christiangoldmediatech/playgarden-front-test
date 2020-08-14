@@ -27,7 +27,7 @@
             <v-form ref="activityTypeForm" @submit.prevent="passes(save)">
               <validation-provider
                 v-slot="{ errors }"
-                name="Activity Type Name"
+                name="Name"
                 rules="required"
               >
                 <v-text-field
@@ -40,61 +40,24 @@
 
               <validation-provider
                 v-slot="{ errors }"
-                name="Activity Type Description"
+                name="Code"
                 rules="required"
               >
-                <v-textarea
-                  v-model="item.description"
+                <v-text-field
+                  v-model="item.code"
                   :error-messages="errors"
-                  label="Description"
+                  label="Code"
                   solo
                 />
               </validation-provider>
 
-              <span class="subtitle-2">Type:</span>
-
-              <v-row justify="space-around">
-                <v-checkbox
-                  v-model="item.extra"
-                  class="mt-1"
-                  dense
-                  label="Extra"
-                />
-
-                <v-checkbox
-                  v-model="item.lesson"
-                  class="mt-1"
-                  dense
-                  label="Lesson"
-                />
-
-                <v-checkbox
-                  v-model="item.activity"
-                  class="mt-1"
-                  dense
-                  label="Activity"
-                />
-              </v-row>
-
-              <span class="subtitle-2">Color:</span>
-
-              <v-row justify="center">
-                <v-color-picker
-                  v-model="item.color"
-                  hide-mode-switch
-                  hide_inputs
-                  mode="hexa"
-                  :show-swatches="false"
-                />
-              </v-row>
-
               <p class="mb-5 subtitle-2">
-                Icon:
+                Image:
               </p>
 
-              <v-row v-if="item.icon" class="mb-5" justify="center">
+              <v-row v-if="item.image" class="mb-5" justify="center">
                 <v-col cols="5" sm="3">
-                  <v-img contain :src="item.icon" />
+                  <v-img contain :src="item.image" />
                 </v-col>
               </v-row>
 
@@ -102,10 +65,10 @@
                 <file-uploader
                   ref="fileUploader"
                   :file.sync="file"
-                  label="Upload Icon"
+                  label="Upload Image"
                   mode="image"
-                  path="activity-type"
-                  placeholder="Select an icon for this activity type"
+                  path="backpack"
+                  placeholder="Select an image for this backpack"
                   prepend-icon="mdi-camera"
                   gif
                   png
@@ -152,25 +115,20 @@ import { mapActions } from 'vuex'
 
 function generateItemTemplate () {
   return {
-    name: '',
-    description: '',
-    lesson: false,
-    extra: false,
-    activity: false,
-    color: '#FF0000',
-    icon: null
+    name: null,
+    code: null,
+    image: null
   }
 }
 
 export default {
-  name: 'ActivityTypeEditorDialog',
+  name: 'BackpackEditorDialog',
 
   data () {
     return {
       file: null,
       dialog: false,
       loading: false,
-      valid: true,
       id: null,
       item: generateItemTemplate()
     }
@@ -178,12 +136,12 @@ export default {
 
   computed: {
     title () {
-      return this.id === null ? 'New Activity Type' : 'Edit Activity Type'
+      return this.id === null ? 'New Backpack' : 'Edit Backpack'
     }
   },
 
   methods: {
-    ...mapActions('admin/activity', ['createType', 'updateType', 'getTypes']),
+    ...mapActions('backpacks', ['createBackpack', 'updateBackpack']),
 
     close () {
       this.$nextTick(() => {
@@ -196,15 +154,15 @@ export default {
     async save () {
       this.loading = true
       try {
-        this.item.icon = await this.$refs.fileUploader.handleUpload()
+        this.item.image = await this.$refs.fileUploader.handleUpload()
 
         if (this.id === null) {
-          await this.createType(this.item)
+          await this.createBackpack(this.item)
         } else {
-          await this.updateType({ id: this.id, data: this.item })
+          await this.updateBackpack({ id: this.id, data: this.item })
         }
 
-        await this.getTypes()
+        this.$emit('saved')
       } catch (err) {
         this.loading = false
       } finally {
@@ -225,13 +183,6 @@ export default {
       Object.keys(item).forEach((key) => {
         if (Object.prototype.hasOwnProperty.call(this.item, key)) {
           this.item[key] = item[key]
-        }
-      })
-
-      // Handle types
-      Object.keys(item.type).forEach((key) => {
-        if (Object.prototype.hasOwnProperty.call(this.item, key)) {
-          this.item[key] = item.type[key]
         }
       })
     },
