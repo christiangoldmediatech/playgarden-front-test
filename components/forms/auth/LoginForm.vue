@@ -13,16 +13,14 @@
     />
 
     <!-- Password -->
-    <v-text-field
+    <password-field
       v-model="user.password"
-      append-icon="mdi-lock"
       clearable
       :disabled="loading"
       label="Password"
       :loading="loading"
       :rules="[required, ...isValidPassword]"
       solo
-      type="password"
     />
 
     <v-btn

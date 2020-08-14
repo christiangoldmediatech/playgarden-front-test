@@ -163,6 +163,12 @@ export default {
           text: 'Letter',
           align: 'start',
           sortable: true,
+          value: 'letter'
+        },
+        {
+          text: 'Name',
+          align: 'start',
+          sortable: true,
           value: 'name'
         },
         {
