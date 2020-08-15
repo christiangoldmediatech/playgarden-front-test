@@ -196,7 +196,9 @@ export default {
     async save () {
       this.loading = true
       try {
-        this.item.icon = await this.$refs.fileUploader.handleUpload()
+        if (this.file) {
+          this.item.icon = await this.$refs.fileUploader.handleUpload()
+        }
 
         if (this.id === null) {
           await this.createType(this.item)

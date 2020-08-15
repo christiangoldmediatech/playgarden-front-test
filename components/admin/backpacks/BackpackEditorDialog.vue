@@ -154,7 +154,9 @@ export default {
     async save () {
       this.loading = true
       try {
-        this.item.image = await this.$refs.fileUploader.handleUpload()
+        if (this.file) {
+          this.item.image = await this.$refs.fileUploader.handleUpload()
+        }
 
         if (this.id === null) {
           await this.createBackpack(this.item)
