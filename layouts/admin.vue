@@ -173,7 +173,7 @@ export default {
   data () {
     return {
       appDrawer: false,
-      menuItemsData: [
+      menuItems: [
         {
           icon: 'mdi-teach',
           title: 'Curriculum management',
@@ -200,6 +200,14 @@ export default {
           rootPath: '/admin/settings',
           children: [
             {
+              title: 'Activity Types',
+              route: 'activity-types'
+            },
+            {
+              title: 'Backpack Management',
+              route: 'backpack-management'
+            },
+            {
               title: 'Curriculum Types',
               route: 'curriculum-types'
             },
@@ -210,10 +218,6 @@ export default {
             {
               title: 'Role Management',
               route: 'role-management'
-            },
-            {
-              title: 'Activity Types',
-              route: 'activity-types'
             }
           ]
         }
@@ -224,25 +228,7 @@ export default {
   computed: {
     ...mapGetters('auth', {
       userInfo: 'getUserInfo'
-    }),
-
-    menuItems () {
-      return this.menuItemsData.map((item) => {
-        if (item.children) {
-          item.children.sort((a, b) => {
-            if (a.title < b.title) {
-              return -1
-            }
-            if (a.title > b.title) {
-              return 1
-            }
-            return 0
-          })
-        }
-
-        return item
-      })
-    }
+    })
   }
 }
 </script>

@@ -24,10 +24,10 @@
 
         <v-card-text>
           <v-container>
-            <v-form ref="roleForm" @submit.prevent="passes(save)">
+            <v-form ref="activityTypeForm" @submit.prevent="passes(save)">
               <validation-provider
                 v-slot="{ errors }"
-                name="Role Name"
+                name="Name"
                 rules="required"
               >
                 <v-text-field
@@ -40,18 +40,41 @@
 
               <validation-provider
                 v-slot="{ errors }"
-                name="Role Section"
+                name="Code"
                 rules="required"
               >
-                <v-radio-group
-                  v-model="item.section"
+                <v-text-field
+                  v-model="item.code"
                   :error-messages="errors"
-                  label="Section"
-                >
-                  <v-radio label="Admin" value="ADMIN" />
-                  <v-radio label="Users" value="USERS" />
-                </v-radio-group>
+                  label="Code"
+                  solo
+                />
               </validation-provider>
+
+              <p class="mb-5 subtitle-2">
+                Image:
+              </p>
+
+              <v-row v-if="item.image" class="mb-5" justify="center">
+                <v-col cols="5" sm="3">
+                  <v-img contain :src="item.image" />
+                </v-col>
+              </v-row>
+
+              <v-row>
+                <file-uploader
+                  ref="fileUploader"
+                  :file.sync="file"
+                  label="Upload Image"
+                  mode="image"
+                  path="backpack"
+                  placeholder="Select an image for this backpack"
+                  prepend-icon="mdi-camera"
+                  gif
+                  png
+                  svg
+                />
+              </v-row>
             </v-form>
           </v-container>
         </v-card-text>
@@ -62,8 +85,8 @@
           <v-spacer />
 
           <v-btn
+            class="white--text"
             color="green"
-            :dark="$vuetify.breakpoint.xs"
             :disabled="invalid"
             :loading="loading"
             :text="$vuetify.breakpoint.smAndUp"
@@ -73,8 +96,8 @@
           </v-btn>
 
           <v-btn
+            class="white--text"
             color="red"
-            :dark="$vuetify.breakpoint.xs"
             :disabled="loading"
             :text="$vuetify.breakpoint.smAndUp"
             @click.stop="close"
@@ -90,34 +113,35 @@
 <script>
 import { mapActions } from 'vuex'
 
+function generateItemTemplate () {
+  return {
+    name: null,
+    code: null,
+    image: null
+  }
+}
+
 export default {
-  name: 'RoleEditorDialog',
+  name: 'BackpackEditorDialog',
 
   data () {
     return {
+      file: null,
       dialog: false,
       loading: false,
-      valid: true,
       id: null,
-      item: {
-        name: '',
-        section: ''
-      }
+      item: generateItemTemplate()
     }
   },
 
   computed: {
     title () {
-      return this.id === null ? 'New Role' : 'Edit Role'
+      return this.id === null ? 'New Backpack' : 'Edit Backpack'
     }
   },
 
   methods: {
-    ...mapActions('admin/roles', {
-      createRole: 'create',
-      updateRole: 'update',
-      getRoles: 'get'
-    }),
+    ...mapActions('backpacks', ['createBackpack', 'updateBackpack']),
 
     close () {
       this.$nextTick(() => {
@@ -130,13 +154,17 @@ export default {
     async save () {
       this.loading = true
       try {
-        if (this.id === null) {
-          await this.createRole(this.item)
-        } else {
-          await this.updateRole({ id: this.id, data: this.item })
+        if (this.file) {
+          this.item.image = await this.$refs.fileUploader.handleUpload()
         }
 
-        await this.getRoles()
+        if (this.id === null) {
+          await this.createBackpack(this.item)
+        } else {
+          await this.updateBackpack({ id: this.id, data: this.item })
+        }
+
+        this.$emit('saved')
       } catch (err) {
         this.loading = false
       } finally {
@@ -144,10 +172,29 @@ export default {
       }
     },
 
-    open ({ id = null, name = '', section = '' } = {}) {
-      this.id = id
-      this.item.name = name
-      this.item.section = section
+    resetItem () {
+      this.id = null
+      this.item = generateItemTemplate()
+      this.file = null
+    },
+
+    loadItem (item) {
+      this.id = item.id
+
+      // Handle keys
+      Object.keys(item).forEach((key) => {
+        if (Object.prototype.hasOwnProperty.call(this.item, key)) {
+          this.item[key] = item[key]
+        }
+      })
+    },
+
+    open (evt, item = null) {
+      this.resetItem()
+
+      if (item) {
+        this.loadItem(item)
+      }
 
       this.$nextTick(() => {
         this.dialog = true

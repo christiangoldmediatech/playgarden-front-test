@@ -1,44 +1,35 @@
 <template>
-  <v-dialog
-    v-model="dialog"
-    :fullscreen="$vuetify.breakpoint.xs"
-    max-width="500px"
-    persistent
-    scrollable
-  >
-    <v-card>
-      <v-toolbar
-        class="flex-grow-0"
-        color="primary darken-1"
-        dark
-        dense
-        flat
-      >
-        <v-toolbar-title>
-          {{ title }}
-        </v-toolbar-title>
+  <validation-observer ref="obs" v-slot="{ invalid, passes }">
+    <v-dialog
+      v-model="dialog"
+      :fullscreen="$vuetify.breakpoint.xs"
+      max-width="500px"
+      persistent
+      scrollable
+    >
+      <v-card>
+        <v-toolbar class="flex-grow-0" color="primary darken-1" dark dense flat>
+          <v-toolbar-title>
+            {{ title }}
+          </v-toolbar-title>
 
-        <v-spacer />
+          <v-spacer />
 
-        <v-btn
-          :disabled="loading"
-          icon
-          @click.stop="close"
-        >
-          <v-icon>
-            mdi-close
-          </v-icon>
-        </v-btn>
-      </v-toolbar>
+          <v-btn :disabled="loading" icon @click.stop="close">
+            <v-icon>
+              mdi-close
+            </v-icon>
+          </v-btn>
+        </v-toolbar>
 
-      <validation-observer ref="obs" v-slot="{ invalid, passes }">
         <v-card-text>
           <v-container>
-            <v-form
-              ref="reportCardTypeForm"
-              @submit.prevent="passes(save)"
-            >
-              <validation-provider v-slot="{ errors }" name="Report Card Type Name" rules="required">
+            <v-form ref="reportCardTypeForm" @submit.prevent="passes(save)">
+              <validation-provider
+                v-slot="{ errors }"
+                name="Report Card Type Name"
+                rules="required"
+              >
                 <v-text-field
                   v-model="item.name"
                   :error-messages="errors"
@@ -47,7 +38,11 @@
                 />
               </validation-provider>
 
-              <validation-provider v-slot="{ errors }" name="Report Card Type Description" rules="required">
+              <validation-provider
+                v-slot="{ errors }"
+                name="Report Card Type Description"
+                rules="required"
+              >
                 <v-textarea
                   v-model="item.description"
                   :error-messages="errors"
@@ -63,6 +58,7 @@
 
         <v-card-actions>
           <v-spacer />
+
           <v-btn
             color="green"
             :dark="$vuetify.breakpoint.xs"
@@ -73,6 +69,7 @@
           >
             Save
           </v-btn>
+
           <v-btn
             color="red"
             :dark="$vuetify.breakpoint.xs"
@@ -83,9 +80,9 @@
             Cancel
           </v-btn>
         </v-card-actions>
-      </validation-observer>
-    </v-card>
-  </v-dialog>
+      </v-card>
+    </v-dialog>
+  </validation-observer>
 </template>
 
 <script>
@@ -109,12 +106,18 @@ export default {
 
   computed: {
     title () {
-      return this.id === null ? 'New Report Card Type' : 'Edit Report Card Type'
+      return this.id === null
+        ? 'New Report Card Type'
+        : 'Edit Report Card Type'
     }
   },
 
   methods: {
-    ...mapActions('admin/report-card', ['createType', 'updateType', 'getTypes']),
+    ...mapActions('admin/report-card', [
+      'createType',
+      'updateType',
+      'getTypes'
+    ]),
 
     close () {
       this.$nextTick(() => {
@@ -132,10 +135,10 @@ export default {
         } else {
           await this.updateType({ id: this.id, data: this.item })
         }
+
         await this.getTypes()
       } catch (err) {
         this.loading = false
-        return
       } finally {
         this.close()
       }
