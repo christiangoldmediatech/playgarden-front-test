@@ -4,6 +4,17 @@
     <div class="green-line green-line-2" />
 
     <v-card-text>
+      <v-btn
+        color="primary"
+        class="py-2"
+        text
+        @click.stop="prevPage"
+      >
+        <v-icon left>
+          mdi-less-than
+        </v-icon>
+        Back
+      </v-btn>
       <template v-if="currentSheet">
         <span class="d-block text-center text-h6 text-uppercase font-weight-bold">
           Online Worksheet
@@ -40,54 +51,7 @@
           {{ worksheetTable.question }}
         </span>
 
-        <!-- Answers -->
-        <!-- <v-row class="my-8" justify="center">
-          <v-hover
-            v-for="item in images"
-            :key="`images-${item.code}`"
-            v-slot="{ hover }"
-          >
-            <div
-              :class="['rounded-circle item text-center mx-4 clickable', { 'scaled': hover || selected === item.code }]"
-              @click.stop="select(item.code)"
-            >
-              <v-responsive
-                :class="['rounded-circle', { 'selected': item.code === selected }]"
-                width="198"
-                height="198"
-              >
-                <v-img
-                  :src="item.image"
-                  aspect-ratio="1"
-                />
-              </v-responsive>
-              <span
-                v-if="type === 'TAP_CORRECT'"
-                class="d-block font-weight-bold"
-              >
-                {{ item.word }}
-              </span>
-            </div>
-          </v-hover>
-        </v-row> -->
-
-        <!-- Continue button -->
-        <v-row justify="center">
-          <v-col cols="12" sm="10" md="8" lg="6" xl="4">
-            <v-btn
-              color="primary"
-              class="py-2"
-              block
-              large
-              @click.stop="nextPage"
-            >
-              Continue
-              <v-icon right>
-                mdi-greater-than
-              </v-icon>
-            </v-btn>
-          </v-col>
-        </v-row>
+        <component :is="type" v-bind="{ images }" @next="nextPage" />
       </template>
     </v-card-text>
   </v-card>
@@ -95,16 +59,21 @@
 
 <script>
 import { mapGetters } from 'vuex'
-// import { shuffle } from '@/utils/arrayTools'
+import ConnectingPairs from '@/components/app/dashboard/worksheets/ConnectingPairs.vue'
+import TapCorrect from '@/components/app/dashboard/worksheets/TapCorrect.vue'
 
 export default {
   // eslint-disable-next-line vue/match-component-file-name
   name: 'OnlineWorksheet',
 
+  components: {
+    ConnectingPairs,
+    TapCorrect
+  },
+
   data: () => {
     return {
-      step: 1,
-      selected: null
+      step: 1
     }
   },
 
@@ -137,6 +106,20 @@ export default {
       return this.currentSheet.worksheetTable || null
     },
 
+    type () {
+      const type = this.worksheetTable.type || null
+
+      if (type === 'CONNECTING_PAIRS') {
+        return 'ConnectingPairs'
+      }
+
+      if (type === 'TAP_CORRECT') {
+        return 'TapCorrect'
+      }
+
+      return ''
+    },
+
     images () {
       return this.worksheetTable.images || []
     }
@@ -144,41 +127,16 @@ export default {
 
   methods: {
     nextPage () {
-      this.step++
-      this.selected = null
+      if (this.step < this.stepCount) {
+        this.step++
+      }
     },
 
-    select (code) {
-      if (this.selected === code) {
-        this.selected = null
-      } else {
-        this.selected = code
+    prevPage () {
+      if (this.step > 1) {
+        this.step--
       }
     }
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.item {
-  transition: transform 250ms;
-}
-
-.scaled {
-  transform: scale(1.11);
-  z-index: 1;
-}
-
-.selected {
-  ::after {
-    border-radius: 50%;
-    box-shadow:inset 0px 0px 0px 10px var(--v-primary-base);
-    content: '';
-    display: block;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    width: 100%;
-  }
-}
-</style>
