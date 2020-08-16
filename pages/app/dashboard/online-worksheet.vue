@@ -15,7 +15,20 @@
         </v-icon>
         Back
       </v-btn>
-      <template v-if="currentSheet">
+
+      <v-btn
+        color="primary"
+        class="py-2"
+        text
+        @click.stop="finished = true"
+      >
+        Finish
+        <v-icon right>
+          mdi-greater-than
+        </v-icon>
+      </v-btn>
+
+      <template v-if="currentSheet && !finished">
         <span class="d-block text-center text-h6 text-uppercase font-weight-bold">
           Online Worksheet
         </span>
@@ -51,9 +64,14 @@
           {{ worksheetTable.question }}
         </span>
 
-        <component :is="type" v-bind="{ images }" @next="nextPage" />
+        <component
+          :is="type"
+          v-bind="{ images, lastQuestion }"
+          @next="nextPage"
+        />
       </template>
     </v-card-text>
+    <completed-message v-model="finished" />
   </v-card>
 </template>
 
@@ -61,6 +79,7 @@
 import { mapGetters } from 'vuex'
 import ConnectingPairs from '@/components/app/dashboard/worksheets/ConnectingPairs.vue'
 import TapCorrect from '@/components/app/dashboard/worksheets/TapCorrect.vue'
+import CompletedMessage from '@/components/app/dashboard/CompletedMessage.vue'
 
 export default {
   // eslint-disable-next-line vue/match-component-file-name
@@ -68,12 +87,15 @@ export default {
 
   components: {
     ConnectingPairs,
-    TapCorrect
+    TapCorrect,
+    CompletedMessage
   },
 
   data: () => {
     return {
-      step: 1
+      step: 1,
+      loading: false,
+      finished: false
     }
   },
 
@@ -89,6 +111,10 @@ export default {
 
     stepCount () {
       return this.sheets.length
+    },
+
+    lastQuestion () {
+      return this.step === this.stepCount
     },
 
     progress () {
@@ -125,14 +151,25 @@ export default {
     }
   },
 
+  mounted () {
+    console.log('sheet mounted')
+  },
+
   methods: {
     nextPage () {
       if (this.step < this.stepCount) {
         this.step++
+      } else {
+        this.finished = true
       }
     },
 
     prevPage () {
+      if (this.finished) {
+        this.finished = false
+        return
+      }
+
       if (this.step > 1) {
         this.step--
       }

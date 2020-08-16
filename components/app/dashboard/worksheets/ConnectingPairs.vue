@@ -61,26 +61,13 @@
               :disabled="!selected"
               @click.stop="nextQuestion"
             >
-              <template v-if="correct">
-                <template v-if="$attrs.lastQuestion !== undefined">
-                  Complete Worksheet
-                </template>
-                <template v-else-if="answers.length === items.length">
-                  Continue
-                </template>
-                <template v-else>
-                  Next Question
-                </template>
-                <v-icon right>
-                  mdi-greater-than
-                </v-icon>
-              </template>
-              <template v-else>
-                <v-icon left>
-                  mdi-less-than
-                </v-icon>
-                Go back
-              </template>
+              <v-icon v-if="!correct" left>
+                mdi-less-than
+              </v-icon>
+              {{ `${correct ? buttonText : 'Go back'}` }}
+              <v-icon v-if="correct" right>
+                mdi-greater-than
+              </v-icon>
             </continue-button>
           </v-col>
         </v-row>
@@ -127,6 +114,16 @@ export default {
         return true
       }
       return false
+    },
+
+    buttonText () {
+      if (this.answers.length === (this.items.length - 1)) {
+        if (this.$attrs.lastQuestion) {
+          return 'Complete worksheet'
+        }
+        return 'Next question'
+      }
+      return 'Next word'
     }
   },
 

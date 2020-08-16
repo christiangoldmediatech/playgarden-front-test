@@ -8,12 +8,7 @@
     <v-card>
       <v-container class="black--text">
         <span class="my-6 d-block text-center text-h4 font-weight-bold">
-          <template v-if="correct">
-            GREAT JOB!
-          </template>
-          <template v-else>
-            TRY AGAIN!
-          </template>
+          {{ `${correct ? 'GREAT JOB!' : 'TRY AGAIN!'}` }}
         </span>
 
         <v-row v-if="Object.keys(selected).length > 0" class="my-6" align="center" justify="center">

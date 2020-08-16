@@ -26,67 +26,43 @@
       />
     </v-col>
 
-    <v-dialog
+    <worksheet-message
       v-model="dialog"
-      max-width="978"
-      persistent
+      v-bind="{ correct, selected: selected || {} }"
     >
-      <v-card>
-        <v-container class="black--text">
-          <span class="my-6 d-block text-center text-h4 font-weight-bold">
-            <template v-if="correct">
-              GREAT JOB!
-            </template>
-            <template v-else>
-              TRY AGAIN!
-            </template>
-          </span>
-
-          <v-row v-if="selected" class="my-6" align="center" justify="center">
-            <v-col class="flex-grow-0 flex-shrink-1">
-              <v-row class="text-center" justify="center">
-                <worksheet-image size="301" v-bind="{ item: selected, selected: selected.code }">
-                  <span class="d-block mt-3 text-h5 font-weight-bold">
-                    {{ selected.word }}
-                  </span>
-                </worksheet-image>
-              </v-row>
-            </v-col>
-
-            <div class="info-column text-center">
-              <v-img
-                :src="require(`@/assets/svg/${correct ? 'correct' : 'incorrect' }.svg`)"
-                class="ma-auto"
-                :aspect-ratio="1"
-                :max-width="168"
-              />
-
-              <span class="d-block mt-2 text-h6 font-weight-bold">
-                {{ selected.word }}
-              </span>
-
-              <p>
-                starts with a {{ selected.word[0].toUpperCase() }}{{ selected.word[0].toLowerCase() }}
-              </p>
-            </div>
-          </v-row>
-
-          <v-btn
-            text
-            block
-            @click="dialog = false"
+      <template v-slot:actions>
+        <v-row justify="center">
+          <v-col
+            class="my-3"
+            cols="12"
+            sm="10"
+            md="8"
+            lg="6"
+            xl="4"
           >
-            Close
-          </v-btn>
-        </v-container>
-      </v-card>
-    </v-dialog>
+            <continue-button
+              :disabled="!selected"
+              @click.stop="nextQuestion"
+            >
+              <v-icon v-if="!correct" left>
+                mdi-less-than
+              </v-icon>
+              {{ `${correct ? buttonText : 'Go back'}` }}
+              <v-icon v-if="correct" right>
+                mdi-greater-than
+              </v-icon>
+            </continue-button>
+          </v-col>
+        </v-row>
+      </template>
+    </worksheet-message>
   </v-row>
 </template>
 
 <script>
 import { shuffle } from '@/utils/arrayTools'
 import WorksheetImage from './WorksheetImage.vue'
+import WorksheetMessage from './WorksheetMessage.vue'
 import ContinueButton from './ContinueButton.vue'
 
 export default {
@@ -94,6 +70,7 @@ export default {
 
   components: {
     WorksheetImage,
+    WorksheetMessage,
     ContinueButton
   },
 
@@ -108,13 +85,20 @@ export default {
     return {
       dialog: false,
       selected: null,
-      correct: null
+      correct: false
     }
   },
 
   computed: {
     items () {
       return shuffle(this.images)
+    },
+
+    buttonText () {
+      if (this.$attrs.lastQuestion) {
+        return 'Complete worksheet'
+      }
+      return 'Next question'
     }
   },
 
@@ -130,6 +114,13 @@ export default {
     check () {
       this.correct = this.selected && this.selected.is_correct
       this.dialog = true
+    },
+
+    nextQuestion () {
+      if (this.correct) {
+        this.$emit('next')
+      }
+      this.dialog = false
     }
   }
 }
