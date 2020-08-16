@@ -1,11 +1,19 @@
 import { snotifyError } from '@/utils/vuex'
 
 export default {
-  index ({ commit }, data) {
+  createBackpack (_, data) {
+    return this.$axios.$post('/backpacks', data)
+  },
+
+  deleteBackpack (_, id) {
+    return this.$axios.$delete(`/backpacks/${id}`)
+  },
+
+  getBackpacks ({ commit }, params) {
     return new Promise((resolve, reject) =>
       this.$axios
-        .get('/backpacks', data)
-        .then(({ data = [] } = {}) => resolve(data))
+        .$get('/backpacks', { params })
+        .then(resolve)
         .catch((error) => {
           snotifyError(commit, {
             body: 'Sorry! There was an error while getting backpacks.'
@@ -14,5 +22,9 @@ export default {
           reject(error)
         })
     )
+  },
+
+  updateBackpack (_, { id, data }) {
+    return this.$axios.$patch(`/backpacks/${id}`, data)
   }
 }

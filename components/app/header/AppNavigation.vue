@@ -1,9 +1,5 @@
 <template>
-  <v-navigation-drawer
-    v-model="appDrawer"
-    temporary
-    app
-  >
+  <v-navigation-drawer v-model="appDrawer" temporary app>
     <template v-slot:prepend>
       <v-row class="pr-3" justify="end">
         <v-btn icon @click.stop="appDrawer = !appDrawer">
@@ -19,18 +15,13 @@
           :key="`${_uid}-drawer-item-${index}`"
           cols="12"
         >
-          <v-btn
-            class="list-item"
-            exact
-            nuxt
-            text
-            :to="item.to"
-          >
+          <v-btn class="list-item" exact nuxt text :to="item.to">
             {{ item.title }}
           </v-btn>
         </v-col>
       </v-row>
     </v-container>
+
     <template v-slot:append>
       <v-container fluid mb-6>
         <v-row>
@@ -74,13 +65,7 @@
             :key="`${_uid}-append-drawer-${index}`"
             cols="12"
           >
-            <v-btn
-              class="list-item"
-              exact
-              nuxt
-              text
-              :to="item.to"
-            >
+            <v-btn class="list-item" exact nuxt text :to="item.to">
               {{ item.title }}
             </v-btn>
           </v-col>

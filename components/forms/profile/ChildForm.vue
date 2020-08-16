@@ -7,7 +7,10 @@
     >
       <v-row class="mb-6">
         <v-col>
-          <v-form :readonly="loading" @submit.prevent="passes().then(onSubmit(item, indexD))">
+          <v-form
+            :readonly="loading"
+            @submit.prevent="passes().then(onSubmit(item, indexD))"
+          >
             <!-- Backpack -->
             <validation-provider
               :name="(removable ? `Child #${indexD + 1} - ` : '') + 'Backpack'"
@@ -23,11 +26,7 @@
               </v-row>
 
               <v-row justify="center" no-gutters>
-                <v-col
-                  cols="12"
-                  md="10"
-                  lg="8"
-                >
+                <v-col cols="12" md="10" lg="8">
                   <v-row no-gutters>
                     <v-col cols="12">
                       <span class="text-h6 font-weight-bold text-uppercase">
@@ -85,7 +84,8 @@
                 <validation-provider
                   v-slot="{ errors }"
                   :name="
-                    (removable ? `Child #${indexD + 1} - ` : '') + 'Birthday date'
+                    (removable ? `Child #${indexD + 1} - ` : '') +
+                      'Birthday date'
                   "
                   rules="required"
                 >
@@ -118,10 +118,17 @@
               rules="required"
             >
               <v-row class="mb-6">
-                <v-col v-for="(gender, indexG) in genders" :key="indexG" class="text-center" cols="6">
+                <v-col
+                  v-for="(gender, indexG) in genders"
+                  :key="indexG"
+                  class="text-center"
+                  cols="6"
+                >
                   <v-btn
                     class="px-12"
-                    :color="item.gender === gender ? 'primary' : 'grey lighten-5'"
+                    :color="
+                      item.gender === gender ? 'primary' : 'grey lighten-5'
+                    "
                     :disabled="loading"
                     @click="item.gender = gender"
                   >
@@ -216,7 +223,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('backpacks', { indexBackpacks: 'index' }),
+    ...mapActions('backpacks', ['getBackpacks']),
 
     ...mapActions('children', {
       createChild: 'store',
@@ -241,7 +248,10 @@ export default {
       }
     },
 
-    loadChild ({ id, backpack, birthday, firstName, gender, level }, index = null) {
+    loadChild (
+      { id, backpack, birthday, firstName, gender, level },
+      index = null
+    ) {
       const _birthdayPicker = new Date(birthday).toISOString().substr(0, 10)
       const item = {
         _birthdayPicker,
@@ -278,7 +288,7 @@ export default {
     },
 
     fetchBackpacks () {
-      this.indexBackpacks().then(data => (this.backpacks = data))
+      this.getBackpacks().then(data => (this.backpacks = data))
     },
 
     onInputBirthday (item) {
