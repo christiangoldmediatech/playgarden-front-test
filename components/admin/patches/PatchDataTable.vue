@@ -4,7 +4,7 @@
       <v-col cols="12">
         <v-card width="100%">
           <v-card-title>
-            Backpacks
+            Patches
 
             <v-spacer />
 
@@ -22,12 +22,12 @@
               <v-icon class="hidden-xs-only" small>
                 mdi-plus
               </v-icon>
-              <span class="hidden-xs-only">Add new backpack</span>
+              <span class="hidden-xs-only">Add new patch</span>
             </v-btn>
           </v-card-title>
 
           <v-card-text>
-            View, create, update, or delete backpacks.
+            View, create, update, or delete patches.
           </v-card-text>
         </v-card>
       </v-col>
@@ -40,15 +40,29 @@
             <v-data-table
               :headers="headers"
               hide-default-footer
-              :items="backpacks"
+              :items="patches"
               :loading="loading"
               :page.sync="page"
               @update:page="page = $event"
             >
               <template v-slot:top>
-                <backpack-editor-dialog ref="editor" @saved="refresh(false)" />
+                <patch-editor-dialog ref="editor" @saved="refresh(false)" />
 
                 <v-toolbar color="white" flat>
+                  <v-select
+                    v-model="filters.activityTypeId"
+                    class="shrink"
+                    clearable
+                    hide-details
+                    :disabled="loading"
+                    :items="types"
+                    item-text="name"
+                    item-value="id"
+                    label="Activity"
+                    solo
+                    @change="refresh(false)"
+                  />
+
                   <v-spacer />
 
                   <v-text-field
@@ -164,64 +178,69 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import BackpackEditorDialog from './BackpackEditorDialog'
+import { mapActions, mapGetters } from 'vuex'
+import PatchEditorDialog from './PatchEditorDialog'
 
 export default {
-  name: 'BackpackDataTable',
+  name: 'PatchDataTable',
 
   components: {
-    BackpackEditorDialog
+    PatchEditorDialog
   },
 
-  data () {
-    return {
-      backpacks: [],
-      loading: false,
-      search: null,
-      page: 1,
-      headers: [
-        {
-          text: 'Image',
-          align: 'start',
-          sortable: true,
-          value: 'image'
-        },
-        {
-          text: 'Name',
-          align: 'start',
-          sortable: true,
-          value: 'name'
-        },
-        {
-          text: 'Code',
-          align: 'start',
-          sortable: true,
-          value: 'code'
-        },
-        {
-          text: 'Created',
-          align: 'start',
-          sortable: false,
-          value: 'createdAt'
-        },
-        {
-          text: 'Last Updated',
-          align: 'start',
-          sortable: false,
-          value: 'updatedAt'
-        },
-        {
-          align: 'right',
-          sortable: false,
-          value: 'actions'
-        }
-      ]
-    }
+  data: () => ({
+    filters: {
+      activityTypeId: null
+    },
+    patches: [],
+    loading: false,
+    search: null,
+    page: 1,
+    headers: [
+      {
+        text: 'Image',
+        align: 'start',
+        sortable: true,
+        value: 'image'
+      },
+      {
+        text: 'Name',
+        align: 'start',
+        sortable: true,
+        value: 'name'
+      },
+      {
+        text: 'Created',
+        align: 'start',
+        sortable: false,
+        value: 'createdAt'
+      },
+      {
+        text: 'Last Updated',
+        align: 'start',
+        sortable: false,
+        value: 'updatedAt'
+      },
+      {
+        align: 'right',
+        sortable: false,
+        value: 'actions'
+      }
+    ]
+  }),
+
+  computed: {
+    ...mapGetters('admin/activity', ['types'])
+  },
+
+  created () {
+    this.getTypes()
   },
 
   methods: {
-    ...mapActions('backpacks', ['getBackpacks', 'deleteBackpack']),
+    ...mapActions('admin/activity', ['getTypes']),
+
+    ...mapActions('patches', ['getPatches', 'deletePatch']),
 
     async refresh (clear = false) {
       this.loading = true
@@ -231,7 +250,7 @@ export default {
       }
 
       try {
-        this.backpacks = await this.getBackpacks({ name: this.search })
+        this.patches = await this.getPatches({ ...this.filters, name: this.search })
       } catch (e) {
       } finally {
         this.loading = false
@@ -240,10 +259,10 @@ export default {
 
     remove ({ id, name }) {
       this.$nuxt.$emit('open-prompt', {
-        title: 'Delete backpack?',
-        message: `Are you sure you wish to delete '${name}' backpack?`,
+        title: 'Delete patch?',
+        message: `Are you sure you wish to delete '${name}' patch?`,
         action: async () => {
-          await this.deleteBackpack(id)
+          await this.deletePatch(id)
           await this.refresh()
         }
       })

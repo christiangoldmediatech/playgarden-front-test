@@ -212,6 +212,10 @@ export default {
               route: 'curriculum-types'
             },
             {
+              title: 'Patch Management',
+              route: 'patch-management'
+            },
+            {
               title: 'Report Card Types',
               route: 'report-card-types'
             },
