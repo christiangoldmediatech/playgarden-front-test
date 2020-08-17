@@ -143,15 +143,13 @@ function generateItemTemplate () {
 export default {
   name: 'PatchEditorDialog',
 
-  data () {
-    return {
-      file: null,
-      dialog: false,
-      loading: false,
-      id: null,
-      item: generateItemTemplate()
-    }
-  },
+  data: () => ({
+    file: null,
+    dialog: false,
+    loading: false,
+    id: null,
+    item: generateItemTemplate()
+  }),
 
   computed: {
     ...mapGetters('admin/activity', ['types']),
@@ -208,6 +206,10 @@ export default {
           this.item[key] = item[key]
         }
       })
+
+      if (item.activityType) {
+        this.item.activityTypeId = item.activityType.id
+      }
     },
 
     open (evt, item = null) {
