@@ -212,6 +212,10 @@ export default {
               route: 'curriculum-types'
             },
             {
+              title: 'Offline Worksheet Categories',
+              route: 'offline-worksheet-categories'
+            },
+            {
               title: 'Report Card Types',
               route: 'report-card-types'
             },
