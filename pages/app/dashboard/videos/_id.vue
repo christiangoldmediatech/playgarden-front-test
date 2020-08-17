@@ -3,7 +3,7 @@
     <template v-if="currentLessonVideo">
       <v-img
         class="clickable"
-        :src="currentLessonVideo.thumbnail"
+        :src="currentLessonVideo.image"
         :aspect-ratio="16/9"
         @click.stop="playVideo"
       >
@@ -31,7 +31,7 @@
         <v-row align="center">
           <v-col class="flex-grow-0 flex-shrink-1 pr-0">
             <v-avatar class="ml-2" size="48">
-              <v-img :src="currentLessonVideo.thumbnail" />
+              <v-img :src="currentLessonVideo.image" />
             </v-avatar>
           </v-col>
 
@@ -41,7 +41,7 @@
                 {{ currentLessonVideo.name }}
               </v-col>
               <v-col cols="12">
-                {{ currentLessonVideo.description }}
+                {{ currentLessonVideo.text }}
               </v-col>
             </v-row>
           </v-col>
@@ -50,9 +50,16 @@
             <v-btn
               icon
               large
+              :loading="loading"
+              @click.stop="setFavorite"
             >
               <v-icon color="#F5737F">
-                mdi-heart-outline
+                <template v-if="favorite">
+                  mdi-heart
+                </template>
+                <template v-else>
+                  mdi-heart-outline
+                </template>
               </v-icon>
             </v-btn>
           </v-col>
@@ -64,8 +71,9 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import VideoLessonPlayer from '@/components/app/dashboard/VideoLessonPlayer.vue'
+import { jsonCopy } from '@/utils/objectTools'
 
 export default {
   // eslint-disable-next-line vue/match-component-file-name
@@ -76,38 +84,112 @@ export default {
   },
 
   data: () => {
-    return {}
+    return {
+      loading: false,
+      favorite: false,
+      favoriteIds: []
+    }
   },
 
   computed: {
     ...mapGetters('admin/curriculum', ['getLesson']),
+    ...mapGetters({ children: 'getCurrentChild' }),
 
     id () {
       return parseInt(this.$route.params.id)
     },
 
-    currentLessonVideo () {
-      if (this.id && this.getLesson) {
-        return this.getLesson.videos.find(({ id }) => id === this.id)
+    videos () {
+      return this.getLesson ? this.getLesson.videos : []
+    },
+
+    playlist () {
+      const videos = jsonCopy(this.videos)
+      const index = videos.findIndex(({ id }) => id === this.id)
+      if (index >= 0) {
+        const list = videos.splice(index, videos.length)
+        return list.map(({ name, description, videoUrl, thumbnail, id }) => {
+          return {
+            name,
+            text: description,
+            file: videoUrl.HLS,
+            image: thumbnail,
+            videoId: id
+          }
+        })
       }
-      return null
+      return []
+    },
+
+    currentLessonVideo () {
+      return this.playlist[0] || null
     }
   },
 
+  mounted () {
+    this.loading = true
+    const stack = []
+
+    this.children.forEach(({ id }) => {
+      stack.push(
+        this.getFavorites({
+          childrenId: id,
+          videoId: this.id
+        }).then((data) => {
+          if (data.length) {
+            data.forEach((row) => {
+              this.favoriteIds.push(row.id)
+            })
+            this.favorite = true
+          }
+        })
+      )
+    })
+
+    Promise.all(stack).then(() => {
+      this.loading = false
+    })
+  },
+
   methods: {
+    ...mapActions('video', ['getFavorites', 'addFavorite', 'deleteFavorite']),
+
     playVideo () {
       if (this.currentLessonVideo) {
         this.$nuxt.$emit('play-video-lesson', {
-          title: this.currentLessonVideo.name,
-          playlist: [
-            {
-              file: this.currentLessonVideo.videoUrl.HLS,
-              image: this.currentLessonVideo.thumbnail,
-              videoId: this.currentLessonVideo.id
-            }
-          ]
+          playlist: this.playlist
         })
       }
+    },
+
+    setFavorite () {
+      this.loading = true
+      const stack = []
+
+      if (this.favorite === false) {
+        this.children.forEach(({ id }) => {
+          stack.push(
+            this.addFavorite({
+              childrenId: id,
+              videoId: this.id
+            }).then((data) => {
+              this.favoriteIds.push(data.id)
+            })
+          )
+        })
+      } else {
+        this.favoriteIds.forEach((id) => {
+          stack.push(
+            this.deleteFavorite(id)
+          )
+        })
+        this.favoriteIds = []
+      }
+
+      Promise.all(stack).then(() => {
+        this.favorite = !this.favorite
+        this.loading = false
+      })
     }
   }
 }

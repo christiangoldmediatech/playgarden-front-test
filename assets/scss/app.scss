@@ -46,6 +46,14 @@
   }
 }
 
+.title-text {
+  width: calc(100%);
+  background-image: linear-gradient(transparent calc(100% - 10px), var(--v-primary-base) 10px);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  color: #606060;
+}
+
 // *,
 // .display-1,
 // .display-2,

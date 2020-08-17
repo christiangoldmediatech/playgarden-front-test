@@ -10,71 +10,58 @@
       <div class="green-line green-line-2" />
 
       <v-img
-        :src="require('@/assets/jpg/worksheets_completed_1.jpg')"
+        :src="backgroundImage"
+        class="align-end white--text"
+        gradient="to top, rgba(39, 39, 39, 0.9), rgba(255, 255, 255, 0) 80%"
         contain
       >
-        <v-container class="finish-background" fluid fill-height pa-0>
-          <div class="d-flex flex-column fill-height align-center justify-end white--text">
-            <div class="pa-2">
-              <slot name="title">
-                <span class="d-block text-center text-h3 font-weight-medium">
-                  Coming Next:
-                </span>
-              </slot>
-            </div>
-            <div>
-              <v-row justify="center">
-                <v-col class="py-0" cols="12" md="8" lg="8" xl="4">
-                  <slot>
-                    <p class="text-center">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure assumenda rem, laudantium voluptas facere est corporis illo animi cupiditate amet magni quisquam praesentium dolores deserunt!
-                    </p>
-                  </slot>
-                </v-col>
-              </v-row>
-            </div>
-            <v-progress-linear v-if="showProgress" color="#f89838" :size="4" :value="progress" />
-          </div>
-        </v-container>
+        <v-row justify="center">
+          <v-col class="text-center" cols="12">
+            <slot name="title">
+              <span class="text-h3 font-weight-medium">
+                Coming Next:
+              </span>
+            </slot>
+          </v-col>
+          <v-col class="py-0" cols="12" md="8" lg="8" xl="4">
+            <slot>
+              <p class="text-center">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure assumenda rem, laudantium voluptas facere est corporis illo animi cupiditate amet magni quisquam praesentium dolores deserunt!
+              </p>
+            </slot>
+          </v-col>
+        </v-row>
+        <v-progress-linear v-if="timeOut" color="#f89838" :size="4" :value="progress" />
       </v-img>
 
       <v-container>
         <v-row class="flex-column" align="center">
-          <v-col v-if="buttons.first" cols="12" sm="10" md="8" lg="7">
-            <v-btn
-              color="#f89838"
-              class="white--text"
-              :loading="loading"
-              block
-              @click.stop="doAction(buttons.first.action)"
-            >
-              <v-icon left>
-                <!-- mdi-square-edit-outline -->
-                {{ buttons.first.icon }}
-              </v-icon>
-              <!-- GO TO TEACHER’S VIDEO -->
-              {{ buttons.first.text }}
-            </v-btn>
-          </v-col>
-
           <h5 class="text-h5 font-weight-bold">
             What do you want to do next?
           </h5>
 
-          <v-col v-if="buttons.second" cols="12" sm="10" md="8" lg="7">
+          <v-col
+            v-for="(button, i) in buttons"
+            :key="`complete-message-${_uid}-button-${i}`"
+            cols="12"
+            sm="10"
+            md="8"
+            lg="7"
+          >
             <v-btn
-              color="accent"
+              :color="button.color"
               class="white--text"
               :loading="loading"
               block
-              @click.stop="doAction(buttons.second.action)"
+              @click.stop="doAction(button.action)"
             >
-              <v-icon left>
-                <!-- mdi-download-outline -->
-                {{ buttons.second.icon }}
+              <v-icon v-if="button.iconLeft" large left>
+                {{ button.iconLeft }}
               </v-icon>
-              <!-- DOWNLOAD HANDS-ON WORKSHEET -->
-              {{ buttons.second.text }}
+              {{ button.text }}
+              <v-icon v-if="button.iconRight" right left>
+                {{ button.iconRight }}
+              </v-icon>
             </v-btn>
           </v-col>
 
@@ -84,7 +71,7 @@
               text
               block
               :disabled="loading"
-              @click.stop="close"
+              @click.stop="returnToDashboard"
             >
               RETURN TO DASHBOARD
             </v-btn>
@@ -106,7 +93,7 @@ export default {
     },
 
     timeOut: {
-      type: Number,
+      type: [Number, Boolean],
       required: false,
       default: 15
     },
@@ -117,18 +104,24 @@ export default {
       default: () => {}
     },
 
+    returnAction: {
+      type: Function,
+      required: false,
+      default: () => {}
+    },
+
     buttons: {
-      type: Object,
+      type: Array,
       required: false,
       default: () => {
-        return {}
+        return []
       }
     },
 
-    showProgress: {
-      type: Boolean,
+    backgroundImage: {
+      type: [Function, Object, String],
       required: false,
-      default: true
+      default: require('@/assets/jpg/worksheets_completed_2.jpg')
     }
   },
 
@@ -143,12 +136,19 @@ export default {
   computed: {
     timeOutMs () {
       return this.timeOut * 1000
+    },
+
+    returnToDashboard () {
+      return () => {
+        this.returnAction()
+        this.close()
+      }
     }
   },
 
   watch: {
     value (val) {
-      if (val) {
+      if (val && this.timeOut) {
         this.progress = 0
         let end = new Date().getTime()
         end += this.timeOutMs

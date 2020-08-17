@@ -226,7 +226,8 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+// import { mapActions, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'DashboardPanel',
@@ -289,7 +290,7 @@ export default {
         55 * this.worksheets.total + (this.worksheets.ONLINE.length ? 50 : 0)
       )
     }
-  },
+  }
 
   /*
   created () {
@@ -297,11 +298,11 @@ export default {
       this.getCurrentLessonByChildrenId({ childrenIds: this.childrenIds })
     } catch (e) {}
   },
-  */
 
   methods: {
     ...mapActions('children/lesson', ['getCurrentLessonByChildrenId'])
   }
+  */
 }
 </script>
 

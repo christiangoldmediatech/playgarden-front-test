@@ -4,7 +4,7 @@
     <div class="green-line green-line-2" />
 
     <v-card-text>
-      <v-btn
+      <!-- <v-btn
         color="primary"
         class="py-2"
         text
@@ -26,16 +26,15 @@
         <v-icon right>
           mdi-greater-than
         </v-icon>
-      </v-btn>
-
+      </v-btn> -->
       <template v-if="currentSheet && !finished">
-        <span class="d-block text-center text-h6 text-uppercase font-weight-bold">
+        <span class="d-block text-center text-h4 text-uppercase font-weight-bold">
           Online Worksheet
         </span>
 
         <!-- Progress -->
         <v-row justify="center">
-          <v-col cols="12" sm="8" md="6" lg="4" xl="3">
+          <v-col cols="12" sm="8" md="6" lg="3" xl="2">
             <v-row no-gutters>
               <v-col cols="12">
                 <v-progress-linear
@@ -71,12 +70,26 @@
         />
       </template>
     </v-card-text>
-    <completed-message v-model="finished" />
+    <completed-message
+      v-model="finished"
+      :buttons="buttons"
+      :return-action="returnAction"
+      :time-out-action="buttons[0].action"
+    >
+      <template v-slot:title>
+        <span class="white--text text-h3 font-weight-medium">
+          Coming Next:
+        </span>
+      </template>
+      <p class="text-center font-weight-medium">
+        Hands-on learning is a crucial part of the educational experience. Learning through doing strengthens the cognitive connections and builds a strong foundation for knowledge.
+      </p>
+    </completed-message>
   </v-card>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import ConnectingPairs from '@/components/app/dashboard/worksheets/ConnectingPairs.vue'
 import TapCorrect from '@/components/app/dashboard/worksheets/TapCorrect.vue'
 import CompletedMessage from '@/components/app/dashboard/CompletedMessage.vue'
@@ -100,7 +113,27 @@ export default {
   },
 
   computed: {
+    ...mapGetters({ children: 'getCurrentChild' }),
     ...mapGetters('admin/curriculum', ['getLesson']),
+
+    buttons () {
+      return [
+        {
+          text: 'COMPLETE WORKSHEETS',
+          color: 'accent',
+          iconLeft: 'mdi-square-edit-outline',
+          action: () => {
+            this.$router.push({ name: 'app-dashboard-online-worksheet' })
+          }
+        },
+        {
+          text: 'DOWNLOAD HANDS-ON WORKSHEET',
+          color: '#FEC572',
+          iconLeft: 'mdi-download-outline',
+          action: () => {}
+        }
+      ]
+    },
 
     sheets () {
       if (this.getLesson) {
@@ -151,28 +184,44 @@ export default {
     }
   },
 
-  mounted () {
-    console.log('sheet mounted')
-  },
-
   methods: {
+    ...mapActions('children/lesson', ['saveWorksheetProgress']),
+
     nextPage () {
       if (this.step < this.stepCount) {
         this.step++
       } else {
         this.finished = true
       }
+
+      const date = new Date().toISOString().substr(0, 19)
+      this.children.forEach((child) => {
+        this.saveWorksheetProgress({
+          lessonId: this.getLesson.id,
+          childId: child.id,
+          worksheet: {
+            id: this.currentSheet.id,
+            completed: true,
+            date
+          }
+        })
+      })
     },
-
-    prevPage () {
-      if (this.finished) {
-        this.finished = false
-        return
-      }
-
-      if (this.step > 1) {
-        this.step--
-      }
+    // prevPage () {
+    //   if (this.finished) {
+    //     this.finished = false
+    //     return
+    //   }
+    //   if (this.step > 1) {
+    //     this.step--
+    //   }
+    // },
+    returnAction () {
+      const id = this.getLesson.videos[0].id
+      this.$router.push({
+        name: 'app-dashboard-videos-id',
+        params: { id }
+      })
     }
   }
 }

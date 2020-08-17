@@ -46,7 +46,7 @@ export default {
     classes () {
       return (hover, code) => {
         return [
-          'worksheet-item rounded-circle text-center mx-4',
+          'worksheet-item rounded-circle text-center mx-4 my-2',
           { clickable: this.$attrs.hoverable !== undefined },
           { 'worksheet-scaled': this.$attrs.hoverable !== undefined && (hover || this.selected === code) }
         ]
