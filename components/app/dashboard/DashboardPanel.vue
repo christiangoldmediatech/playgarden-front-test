@@ -113,7 +113,11 @@
               WORKSHEETS
             </span>
 
-            <div v-if="worksheets.ONLINE.length" class="font-weight-bold mt-3">
+            <div
+              v-if="worksheets.ONLINE.length"
+              class="clickable font-weight-bold mt-3"
+              @click="$router.push({ name: 'app-dashboard-online-worksheet' })"
+            >
               ONLINE WORKSHEET
             </div>
 
