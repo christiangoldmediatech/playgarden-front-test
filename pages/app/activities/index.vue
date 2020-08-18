@@ -1,40 +1,8 @@
 <template>
   <v-main>
     <v-container>
-      <v-row align="center">
-        <v-btn
-          class="text-none mx-3"
-          color="white"
-          x-large
-        >
-          Favorites
-          <v-icon class="ml-2" color="#F5737F">
-            mdi-heart
-          </v-icon>
-        </v-btn>
-
-        <v-spacer />
-
-        <v-col cols="12" sm="4" xl="3">
-          <v-text-field
-            placeholder="Search"
-            append-icon="mdi-magnify"
-            clearable
-            hide-details
-            solo
-          />
-        </v-col>
-      </v-row>
-
-      <v-row justify="center">
-        <v-col class="text-center" cols="12" lg="9">
-          <p class="text-h3">
-            <span class="title-text">
-              Master subjects to collect patches for your Student Cubby!
-            </span>
-          </p>
-        </v-col>
-      </v-row>
+      <top-bar />
+      <activity-title />
     </v-container>
 
     <category-header v-bind="{ categories }" />
@@ -54,17 +22,19 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import ActivityPlayer from '@/components/app/activities/ActivityPlayer'
-import Carousel from '@/components/app/activities/Carousel'
-import CategoryHeader from '@/components/app/activities/CategoryHeader'
+import ActivityPlayer from '@/components/app/activities/ActivityPlayer.vue'
+import ActivityTitle from '@/components/app/activities/ActivityTitle.vue'
+import Carousel from '@/components/app/activities/Carousel.vue'
+import CategoryHeader from '@/components/app/activities/CategoryHeader.vue'
 
 export default {
-  name: 'Activities',
+  name: 'Index',
 
   components: {
     Carousel,
     CategoryHeader,
-    ActivityPlayer
+    ActivityPlayer,
+    ActivityTitle
   },
 
   data: () => {
