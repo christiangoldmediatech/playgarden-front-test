@@ -82,25 +82,42 @@ export default {
       const player = window.jwplayer(`player_${this._uid}`)
       const config = { ...this.$props, file: this._file }
 
-      setTimeout(() => {
-        player.setup(config)
+      player.setup(config)
 
-        this.$emit('ready', player)
+      this.$emit('ready', player)
 
-        player.on('play', (params) => {
-          this.$emit('play', { player, params })
-        })
+      player.on('play', (params) => {
+        this.$emit('play', { player, params })
+      })
 
-        player.on('complete', (params) => {
-          this.$emit('complete', { player, params })
-        })
+      player.on('pause', (params) => {
+        this.$emit('play', { player, params })
+      })
 
-        this.player = player
-      }, 250)
+      player.on('complete', (params) => {
+        this.$emit('complete', { player, params })
+      })
+
+      player.on('beforeComplete', (params) => {
+        this.$emit('beforeComplete', { player, params })
+      })
+
+      player.on('seek', (params) => {
+        this.$emit('seek', { player, params })
+      })
+
+      player.on('playlistComplete', (params) => {
+        this.$emit('playlistComplete', { player, params })
+      })
+
+      this.player = player
     }
   },
 
   beforeDestroy () {
+    if (this.player) {
+      this.player.remove()
+    }
     this.player = null
   }
 }

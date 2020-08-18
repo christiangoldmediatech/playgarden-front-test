@@ -11,5 +11,23 @@ export default {
 
   setCurrentLessonVideo ({ commit }, video) {
     commit('SET_CURRENT_LESSON_VIDEO', video)
+  },
+
+  async saveVideoProgress (ctx, { lessonId, childId, video }) {
+    try {
+      const { data } = await this.$axios.$post(`/lessons/${lessonId}/children/${childId}/video`, { video })
+      return data
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+
+  async saveWorksheetProgress (ctx, { lessonId, childId, worksheet }) {
+    try {
+      const { data } = await this.$axios.$post(`/lessons/${lessonId}/children/${childId}/worksheet`, { worksheet })
+      return data
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }

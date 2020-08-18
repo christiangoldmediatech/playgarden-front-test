@@ -53,7 +53,6 @@ export default {
   data: () => {
     return {
       dialog: false,
-      mounted: false,
       title: '',
       playlist: [],
       player: null,
@@ -67,12 +66,8 @@ export default {
 
   computed: {
     ...mapGetters({
-      childrenData: 'getCurrentChild'
+      children: 'getCurrentChild'
     }),
-
-    children () {
-      return (Array.isArray(this.childrenData)) ? this.childrenData : [this.childrenData]
-    },
 
     videoWidth () {
       if (this.videoHeight > 0) {

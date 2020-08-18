@@ -72,14 +72,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.title-text {
-  width: calc(100%);
-  background-image: linear-gradient(transparent calc(100% - 10px), var(--v-primary-base) 10px);
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  color: var(--v-black-base);
-}
-
 .category-text {
   position: relative;
   z-index: 1;

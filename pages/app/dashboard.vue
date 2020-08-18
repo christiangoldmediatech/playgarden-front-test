@@ -6,7 +6,7 @@
           <dashboard-panel />
         </v-col>
 
-        <v-col>
+        <v-col cols="12" sm="7" md="8" lg="9">
           <v-row align="center" class="pr-3" justify="end">
             First time using Playgarden?
 
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 import DashboardPanel from '@/components/app/dashboard/DashboardPanel'
 
 export default {
@@ -34,6 +35,30 @@ export default {
 
   components: {
     DashboardPanel
+  },
+
+  computed: {
+    ...mapGetters({ currentChild: 'getCurrentChild' }),
+
+    childrenIds () {
+      return this.currentChild ? this.currentChild.map(({ id }) => id) : []
+    }
+  },
+
+  created () {
+    try {
+      this.getCurrentLessonByChildrenId({ childrenIds: this.currentChild[0].id }).then((data) => {
+        if (this.$route.name === 'app-dashboard') {
+          const id = data.videos[0].id
+          this.$router.push({ name: 'app-dashboard-videos-id', params: { id } })
+        }
+      })
+    } catch (e) {}
+  },
+
+  methods: {
+    // ...mapActions('admin/curriculum', ['getLessonById'])
+    ...mapActions('children/lesson', ['getCurrentLessonByChildrenId'])
   }
 }
 </script>
