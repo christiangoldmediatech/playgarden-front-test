@@ -230,7 +230,8 @@ export default {
       {
         align: 'right',
         sortable: false,
-        value: 'actions'
+        value: 'actions',
+        width: 100
       }
     ]
   }),

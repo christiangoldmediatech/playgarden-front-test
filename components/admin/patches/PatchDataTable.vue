@@ -4,9 +4,7 @@
       <v-col cols="12">
         <v-card width="100%">
           <v-card-title>
-            <p class="primary--text text-h5">
-              Worksheet online details
-            </p>
+            Patches
 
             <v-spacer />
 
@@ -15,7 +13,7 @@
               color="primary darken-1"
               dark
               :icon="$vuetify.breakpoint.xs"
-              @click="openModal({})"
+              @click.stop="$refs.editor.open"
             >
               <v-icon class="hidden-sm-and-up">
                 mdi-plus-circle
@@ -24,10 +22,13 @@
               <v-icon class="hidden-xs-only" small>
                 mdi-plus
               </v-icon>
-
-              <span class="hidden-xs-only">Add new worksheet</span>
+              <span class="hidden-xs-only">Add new patch</span>
             </v-btn>
           </v-card-title>
+
+          <v-card-text>
+            View, create, update, or delete patches.
+          </v-card-text>
         </v-card>
       </v-col>
     </v-row>
@@ -39,17 +40,69 @@
             <v-data-table
               :headers="headers"
               hide-default-footer
-              :items="resources"
+              :items="patches"
               :loading="loading"
               :page.sync="page"
               @update:page="page = $event"
             >
+              <template v-slot:top>
+                <patch-editor-dialog ref="editor" @saved="refresh(false)" />
+
+                <v-toolbar color="white" flat>
+                  <v-select
+                    v-model="filters.activityTypeId"
+                    class="shrink"
+                    clearable
+                    hide-details
+                    :disabled="loading"
+                    :items="types"
+                    item-text="name"
+                    item-value="id"
+                    label="Activity"
+                    solo
+                    @change="refresh(false)"
+                  />
+
+                  <v-spacer />
+
+                  <v-text-field
+                    v-model="search"
+                    append-icon="mdi-magnify"
+                    class="shrink"
+                    clearable
+                    hide-details
+                    label="Search"
+                    single-line
+                    solo
+                    @keydown.enter="refresh(false)"
+                  />
+                </v-toolbar>
+              </template>
+
+              <template v-slot:item.image="{ item }">
+                <img v-if="item.image" :src="item.image" width="32px">
+
+                <span v-else>
+                  N/A
+                </span>
+              </template>
+
+              <template v-slot:item.createdAt="{ item }">
+                {{ item.createdAt | formatDate }}
+              </template>
+
+              <template v-slot:item.updatedAt="{ item }">
+                {{ item.updatedAt | formatDate }}
+              </template>
+
               <template v-slot:item.actions="{ item }">
-                <v-btn icon @click="openModal(item)">
-                  <v-icon color="#81A1F7" dense>
-                    mdi-pencil-outline
-                  </v-icon>
-                </v-btn>
+                <v-icon
+                  color="#81A1F7"
+                  dense
+                  @click="$refs.editor.open(null, item)"
+                >
+                  mdi-pencil-outline
+                </v-icon>
 
                 <v-icon color="#d30909" dense @click="remove(item)">
                   mdi-delete-outline
@@ -57,7 +110,7 @@
               </template>
 
               <template v-slot:no-data>
-                <v-btn color="primary" text @click="refresh">
+                <v-btn color="primary" text @click="refresh(true)">
                   Refresh
                 </v-btn>
               </template>
@@ -119,96 +172,66 @@
             </v-data-table>
           </v-card-text>
         </v-card>
-
-        <v-dialog
-          v-model="showModal"
-          content-class="white"
-          :fullscreen="$vuetify.breakpoint.smAndDown"
-          max-width="1000"
-          persistent
-        >
-          <v-col cols="12">
-            <v-row class="pr-3" justify="end">
-              <v-btn icon @click.stop="showModal = false">
-                <v-icon>mdi-close</v-icon>
-              </v-btn>
-            </v-row>
-
-            <step-three-form
-              v-if="showModal"
-              :lesson-id="lessonId"
-              :resource="resourceSelected"
-              @click:cancel="showModal = false"
-              @click:submit="onSubmit"
-            />
-          </v-col>
-        </v-dialog>
-
-        <v-btn
-          block
-          class="my-6"
-          color="primary"
-          :disabled="!resources.length"
-          :loading="loading"
-          x-large
-          @click="$emit('click:submit')"
-        >
-          NEXT
-        </v-btn>
-
-        <v-btn
-          block
-          class="mb-6"
-          color="primary"
-          :loading="loading"
-          text
-          :to="{
-            name: 'admin-curriculum-management-editor',
-            query: {
-              step: 2,
-              lessonId
-            }
-          }"
-          x-large
-        >
-          BACK
-        </v-btn>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
-import StepThreeForm from './StepThreeForm'
+import PatchEditorDialog from './PatchEditorDialog'
 
 export default {
-  name: 'StepThree',
+  name: 'PatchDataTable',
 
   components: {
-    StepThreeForm
-  },
-
-  props: {
-    lessonId: {
-      type: [Number, String],
-      required: false,
-      default: null
-    }
+    PatchEditorDialog
   },
 
   data: () => ({
-    showModal: false,
-    resourceSelected: {},
+    filters: {
+      activityTypeId: null
+    },
+    patches: [],
     loading: false,
+    search: null,
     page: 1,
-    resources: [],
     headers: [
       {
+        text: 'Image',
+        sortable: true,
+        value: 'image'
+      },
+      {
         text: 'Name',
-        sortable: false,
+        sortable: true,
         value: 'name'
+      },
+      {
+        text: 'Number',
+        sortable: true,
+        value: 'number'
+      },
+      {
+        text: 'Type',
+        sortable: true,
+        value: 'patchType'
+      },
+      {
+        text: 'Activity',
+        sortable: true,
+        value: 'activityType.name'
+      },
+      {
+        text: 'Created',
+        sortable: false,
+        value: 'createdAt'
+      },
+      {
+        text: 'Last Updated',
+        sortable: false,
+        value: 'updatedAt'
       },
       {
         align: 'right',
@@ -219,34 +242,28 @@ export default {
     ]
   }),
 
+  computed: {
+    ...mapGetters('admin/activity', ['types'])
+  },
+
   created () {
-    this.refresh()
+    this.getTypes()
   },
 
   methods: {
-    ...mapActions('admin/curriculum/worksheet', [
-      'deleteWorksheetByLessonId',
-      'fetchWorksheetsByLessonId'
-    ]),
+    ...mapActions('admin/activity', ['getTypes']),
 
-    onSubmit () {
-      this.showModal = false
-      this.refresh()
-    },
+    ...mapActions('patches', ['getPatches', 'deletePatch']),
 
-    openModal (resource = {}) {
-      this.resourceSelected = resource
-      this.showModal = true
-    },
-
-    async refresh () {
+    async refresh (clear = false) {
       this.loading = true
 
+      if (clear) {
+        this.search = null
+      }
+
       try {
-        this.resources = await this.fetchWorksheetsByLessonId({
-          lessonId: this.lessonId,
-          type: 'ONLINE'
-        })
+        this.patches = await this.getPatches({ ...this.filters, name: this.search })
       } catch (e) {
       } finally {
         this.loading = false
@@ -255,13 +272,12 @@ export default {
 
     remove ({ id, name }) {
       this.$nuxt.$emit('open-prompt', {
-        title: 'Delete curriculum lesson worksheet?',
-        message: `Are you sure you wish to delete '${name}' curriculum lesson worksheet?`,
-        action: () =>
-          this.deleteWorksheetByLessonId({
-            id,
-            lessonId: this.lessonId
-          }).then(this.refresh)
+        title: 'Delete patch?',
+        message: `Are you sure you wish to delete '${name}' patch?`,
+        action: async () => {
+          await this.deletePatch(id)
+          await this.refresh()
+        }
       })
     }
   }

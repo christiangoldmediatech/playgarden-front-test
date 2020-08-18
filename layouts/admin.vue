@@ -216,6 +216,10 @@ export default {
               route: 'offline-worksheet-categories'
             },
             {
+              title: 'Patch Management',
+              route: 'patch-management'
+            },
+            {
               title: 'Report Card Types',
               route: 'report-card-types'
             },

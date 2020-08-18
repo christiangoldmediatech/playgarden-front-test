@@ -182,7 +182,7 @@ export default {
       page: 1,
       headers: [
         {
-          text: 'Icon',
+          text: 'Image',
           align: 'start',
           sortable: true,
           value: 'image'
@@ -214,7 +214,8 @@ export default {
         {
           align: 'right',
           sortable: false,
-          value: 'actions'
+          value: 'actions',
+          width: 100
         }
       ]
     }
