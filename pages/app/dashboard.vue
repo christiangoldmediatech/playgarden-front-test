@@ -47,20 +47,20 @@ export default {
 
   created () {
     try {
-      // this.getCurrentLessonByChildrenId({ childrenIds: this.childrenIds })
+      this.getCurrentLessonByChildrenId({ childrenIds: `[${this.childrenIds.join(',')}]` })
 
-      this.getLessonById(17).then((data) => {
-        if (this.$route.name === 'app-dashboard') {
-          const id = data.videos[0].id
-          this.$router.push({ name: 'app-dashboard-videos-id', params: { id } })
-        }
-      })
+      // this.getLessonById(17).then((data) => {
+      //   if (this.$route.name === 'app-dashboard') {
+      //     const id = data.videos[0].id
+      //     this.$router.push({ name: 'app-dashboard-videos-id', params: { id } })
+      //   }
+      // })
     } catch (e) {}
   },
 
   methods: {
-    ...mapActions('admin/curriculum', ['getLessonById'])
-    // ...mapActions('children/lesson', ['getCurrentLessonByChildrenId'])
+    // ...mapActions('admin/curriculum', ['getLessonById'])
+    ...mapActions('children/lesson', ['getCurrentLessonByChildrenId'])
   }
 }
 </script>

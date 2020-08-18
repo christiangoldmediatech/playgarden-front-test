@@ -117,26 +117,6 @@
               ONLINE WORKSHEET
             </div>
 
-            <!--
-            <v-list dense>
-              <v-list-item
-                v-for="(worksheet, indexWO) in worksheets.ONLINE"
-                :key="indexWO"
-                class="px-0"
-              >
-                <v-list-item-content>
-                  <v-list-item-title>
-                    {{ worksheet.name }}
-                  </v-list-item-title>
-
-                  <v-list-item-subtitle>
-                    {{ worksheet.description }}
-                  </v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list>
-            -->
-
             <div v-if="worksheets.OFFLINE" class="font-weight-bold mt-3">
               HANDS-ON LEARNING
 
@@ -291,18 +271,6 @@ export default {
       )
     }
   }
-
-  /*
-  created () {
-    try {
-      this.getCurrentLessonByChildrenId({ childrenIds: this.childrenIds })
-    } catch (e) {}
-  },
-
-  methods: {
-    ...mapActions('children/lesson', ['getCurrentLessonByChildrenId'])
-  }
-  */
 }
 </script>
 

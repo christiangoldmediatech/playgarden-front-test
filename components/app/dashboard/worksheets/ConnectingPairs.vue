@@ -34,7 +34,7 @@
     >
       <template v-if="selected">
         <span class="d-block mt-2 text-h6 font-weight-bold">
-          {{ randomWord }}
+          {{ selected.word || '' }}
         </span>
 
         <p>

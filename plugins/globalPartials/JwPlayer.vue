@@ -82,7 +82,6 @@ export default {
       const player = window.jwplayer(`player_${this._uid}`)
       const config = { ...this.$props, file: this._file }
 
-      // setTimeout(() => {
       player.setup(config)
 
       this.$emit('ready', player)
@@ -112,7 +111,6 @@ export default {
       })
 
       this.player = player
-      // }, 250)
     }
   },
 

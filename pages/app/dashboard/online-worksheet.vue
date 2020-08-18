@@ -4,29 +4,6 @@
     <div class="green-line green-line-2" />
 
     <v-card-text>
-      <!-- <v-btn
-        color="primary"
-        class="py-2"
-        text
-        @click.stop="prevPage"
-      >
-        <v-icon left>
-          mdi-less-than
-        </v-icon>
-        Back
-      </v-btn>
-
-      <v-btn
-        color="primary"
-        class="py-2"
-        text
-        @click.stop="finished = true"
-      >
-        Finish
-        <v-icon right>
-          mdi-greater-than
-        </v-icon>
-      </v-btn> -->
       <template v-if="currentSheet && !finished">
         <span class="d-block text-center text-h4 text-uppercase font-weight-bold">
           Online Worksheet

@@ -24,7 +24,7 @@ export default {
 
   async saveWorksheetProgress (ctx, { lessonId, childId, worksheet }) {
     try {
-      const { data } = await this.$axios.$post(`/lessons/${lessonId}/children/${childId}/worksheets`, { worksheet })
+      const { data } = await this.$axios.$post(`/lessons/${lessonId}/children/${childId}/worksheet`, { worksheet })
       return data
     } catch (error) {
       return Promise.reject(error)
