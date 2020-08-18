@@ -33,17 +33,9 @@
         </v-img>
 
         <v-card-actions>
-          <img
-            :src="icon"
-            height="48px"
-          >
           <div class="ml-2">
-            <span>
-              {{ categoryName }}
-            </span>
-            <br>
             <span class="font-weight-bold">
-              {{ activity.name }}
+              {{ video.name }}
             </span>
           </div>
 
@@ -73,25 +65,13 @@
 import VideoFavoriteMixin from './VideoFavoriteMixin'
 
 export default {
-  name: 'ActivityCard',
+  name: 'VideoCard',
 
   mixins: [VideoFavoriteMixin],
 
   props: {
-    activityId: {
-      type: Number,
-      required: true
-    },
-    activity: {
+    video: {
       type: Object,
-      required: true
-    },
-    icon: {
-      type: String,
-      required: true
-    },
-    categoryName: {
-      type: String,
       required: true
     }
   },
@@ -104,23 +84,22 @@ export default {
 
   computed: {
     videoId () {
-      return this.activity.id
+      return this.video.id
     },
 
     thumbnail () {
-      return this.activity.thumbnail || require('@/assets/jpg/abacus_counting_lesson.jpg')
+      return this.video.thumbnail || require('@/assets/jpg/abacus_counting_lesson.jpg')
     }
   },
 
   methods: {
     playVideo () {
-      this.$nuxt.$emit('play-activity', {
-        title: this.activity.name,
+      this.$nuxt.$emit('play-video', {
+        title: this.video.name,
         playlist: [
           {
-            file: this.activity.videoUrl.HLS,
-            image: this.thumbnail,
-            activityId: this.activityId
+            file: this.video.videoUrl.HLS,
+            image: this.thumbnail
           }
         ]
       })
