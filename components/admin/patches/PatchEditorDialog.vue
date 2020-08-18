@@ -69,6 +69,46 @@
                 />
               </validation-provider>
 
+              <validation-provider
+                v-slot="{ errors }"
+                name="Number"
+                rules="required|integer|min_value:1"
+              >
+                <v-text-field
+                  v-model="item.number"
+                  :error-messages="errors"
+                  label="Number"
+                  min="1"
+                  type="number"
+                  solo
+                />
+              </validation-provider>
+
+              <validation-provider name="Matching type" rules="required">
+                <v-row class="mb-6">
+                  <v-col
+                    v-for="(type, indexPT) in patchTypes"
+                    :key="indexPT"
+                    cols="6"
+                  >
+                    <v-btn
+                      block
+                      :color="
+                        item.patchType === type.value
+                          ? 'primary'
+                          : 'grey lighten-5'
+                      "
+                      :disabled="loading"
+                      @click="item.patchType = type.value"
+                    >
+                      {{ type.label }}
+                    </v-btn>
+                  </v-col>
+                </v-row>
+
+                <input v-model="item.patchType" type="hidden">
+              </validation-provider>
+
               <p class="mb-5 subtitle-2">
                 Image:
               </p>
@@ -135,6 +175,8 @@ function generateItemTemplate () {
   return {
     activityTypeId: null,
     name: null,
+    number: null,
+    patchType: null,
     description: null,
     image: null
   }
@@ -148,7 +190,11 @@ export default {
     dialog: false,
     loading: false,
     id: null,
-    item: generateItemTemplate()
+    item: generateItemTemplate(),
+    patchTypes: [
+      { label: 'ONLINE', value: 'ONLINE' },
+      { label: 'OFFLINE', value: 'OFFLINE' }
+    ]
   }),
 
   computed: {

@@ -179,6 +179,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+
 import PatchEditorDialog from './PatchEditorDialog'
 
 export default {
@@ -199,32 +200,44 @@ export default {
     headers: [
       {
         text: 'Image',
-        align: 'start',
         sortable: true,
         value: 'image'
       },
       {
         text: 'Name',
-        align: 'start',
         sortable: true,
         value: 'name'
       },
       {
+        text: 'Number',
+        sortable: true,
+        value: 'number'
+      },
+      {
+        text: 'Type',
+        sortable: true,
+        value: 'patchType'
+      },
+      {
+        text: 'Activity',
+        sortable: true,
+        value: 'activityType.name'
+      },
+      {
         text: 'Created',
-        align: 'start',
         sortable: false,
         value: 'createdAt'
       },
       {
         text: 'Last Updated',
-        align: 'start',
         sortable: false,
         value: 'updatedAt'
       },
       {
         align: 'right',
         sortable: false,
-        value: 'actions'
+        value: 'actions',
+        width: 100
       }
     ]
   }),
