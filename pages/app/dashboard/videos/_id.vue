@@ -104,7 +104,8 @@ export default {
     },
 
     playlist () {
-      const videos = jsonCopy(this.videos)
+      let videos = jsonCopy(this.videos)
+      videos = videos.filter(({ videoUrl }) => videoUrl)
       const index = videos.findIndex(({ id }) => id === this.id)
       if (index >= 0) {
         const list = videos.splice(index, videos.length)

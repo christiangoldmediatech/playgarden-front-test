@@ -47,14 +47,12 @@ export default {
 
   created () {
     try {
-      this.getCurrentLessonByChildrenId({ childrenIds: `[${this.childrenIds.join(',')}]` })
-
-      // this.getLessonById(17).then((data) => {
-      //   if (this.$route.name === 'app-dashboard') {
-      //     const id = data.videos[0].id
-      //     this.$router.push({ name: 'app-dashboard-videos-id', params: { id } })
-      //   }
-      // })
+      this.getCurrentLessonByChildrenId({ childrenIds: this.currentChild[0].id }).then((data) => {
+        if (this.$route.name === 'app-dashboard') {
+          const id = data.videos[0].id
+          this.$router.push({ name: 'app-dashboard-videos-id', params: { id } })
+        }
+      })
     } catch (e) {}
   },
 
