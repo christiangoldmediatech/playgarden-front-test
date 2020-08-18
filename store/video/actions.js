@@ -19,10 +19,6 @@ export default {
       response.forEach((resultSet) => {
         resultSet.forEach((video) => {
           results.push(video)
-          // const index = results.findIndex(({ id }) => id === video.id)
-          // if (index === -1) {
-          //   results.push(video)
-          // }
         })
       })
       commit('SET_ROWS', results)
