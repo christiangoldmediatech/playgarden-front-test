@@ -1,8 +1,27 @@
 export default {
-  async getFavorites ({ commit }, params) {
+  async getFavorites (ctx, childrenId) {
     try {
-      const { data } = await this.$axios.get('/videos-favorites', { params })
+      const { data } = await this.$axios.get(`/videos-favorites/children/${childrenId}`)
       return data
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+
+  async getAllFavorites ({ commit, dispatch, rootGetters }) {
+    try {
+      const results = []
+      const promises = []
+      rootGetters.getCurrentChild.forEach((child) => {
+        promises.push(dispatch('getFavorites', child.id))
+      })
+      const response = await Promise.all(promises)
+      response.forEach((resultSet) => {
+        resultSet.forEach((video) => {
+          results.push(video)
+        })
+      })
+      commit('SET_ROWS', results)
     } catch (error) {
       return Promise.reject(error)
     }

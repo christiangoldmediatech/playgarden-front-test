@@ -4,9 +4,7 @@
       <v-col cols="12">
         <v-card width="100%">
           <v-card-title>
-            <p class="primary--text text-h5">
-              Worksheet online details
-            </p>
+            Offline Worksheet Categories
 
             <v-spacer />
 
@@ -15,7 +13,7 @@
               color="primary darken-1"
               dark
               :icon="$vuetify.breakpoint.xs"
-              @click="openModal({})"
+              @click.stop="$refs.editor.open"
             >
               <v-icon class="hidden-sm-and-up">
                 mdi-plus-circle
@@ -24,10 +22,15 @@
               <v-icon class="hidden-xs-only" small>
                 mdi-plus
               </v-icon>
-
-              <span class="hidden-xs-only">Add new worksheet</span>
+              <span
+                class="hidden-xs-only"
+              >Add new offline worksheet category</span>
             </v-btn>
           </v-card-title>
+
+          <v-card-text>
+            View, create, update, or delete offline worksheet categories.
+          </v-card-text>
         </v-card>
       </v-col>
     </v-row>
@@ -39,17 +42,70 @@
             <v-data-table
               :headers="headers"
               hide-default-footer
-              :items="resources"
+              :items="offlineWorksheetCategories"
               :loading="loading"
               :page.sync="page"
               @update:page="page = $event"
             >
+              <template v-slot:top>
+                <offline-worksheet-category-editor-dialog
+                  ref="editor"
+                  @saved="refresh(false)"
+                />
+
+                <v-toolbar color="white" flat>
+                  <v-spacer />
+
+                  <v-text-field
+                    v-model="search"
+                    append-icon="mdi-magnify"
+                    class="shrink"
+                    clearable
+                    hide-details
+                    label="Search"
+                    single-line
+                    solo
+                    @keydown.enter="refresh(false)"
+                  />
+                </v-toolbar>
+              </template>
+
+              <template v-slot:item.color="{ item }">
+                <v-avatar
+                  color="black"
+                  size="32"
+                >
+                  <v-avatar
+                    :color="item.color"
+                    size="28"
+                  />
+                </v-avatar>
+              </template>
+
+              <template v-slot:item.icon="{ item }">
+                <img v-if="item.icon" :src="item.icon" width="32px">
+
+                <span v-else>
+                  N/A
+                </span>
+              </template>
+
+              <template v-slot:item.createdAt="{ item }">
+                {{ item.createdAt | formatDate }}
+              </template>
+
+              <template v-slot:item.updatedAt="{ item }">
+                {{ item.updatedAt | formatDate }}
+              </template>
+
               <template v-slot:item.actions="{ item }">
-                <v-btn icon @click="openModal(item)">
-                  <v-icon color="#81A1F7" dense>
-                    mdi-pencil-outline
-                  </v-icon>
-                </v-btn>
+                <v-icon
+                  color="#81A1F7"
+                  dense
+                  @click="$refs.editor.open(null, item)"
+                >
+                  mdi-pencil-outline
+                </v-icon>
 
                 <v-icon color="#d30909" dense @click="remove(item)">
                   mdi-delete-outline
@@ -57,7 +113,7 @@
               </template>
 
               <template v-slot:no-data>
-                <v-btn color="primary" text @click="refresh">
+                <v-btn color="primary" text @click="refresh(true)">
                   Refresh
                 </v-btn>
               </template>
@@ -119,60 +175,6 @@
             </v-data-table>
           </v-card-text>
         </v-card>
-
-        <v-dialog
-          v-model="showModal"
-          content-class="white"
-          :fullscreen="$vuetify.breakpoint.smAndDown"
-          max-width="1000"
-          persistent
-        >
-          <v-col cols="12">
-            <v-row class="pr-3" justify="end">
-              <v-btn icon @click.stop="showModal = false">
-                <v-icon>mdi-close</v-icon>
-              </v-btn>
-            </v-row>
-
-            <step-three-form
-              v-if="showModal"
-              :lesson-id="lessonId"
-              :resource="resourceSelected"
-              @click:cancel="showModal = false"
-              @click:submit="onSubmit"
-            />
-          </v-col>
-        </v-dialog>
-
-        <v-btn
-          block
-          class="my-6"
-          color="primary"
-          :disabled="!resources.length"
-          :loading="loading"
-          x-large
-          @click="$emit('click:submit')"
-        >
-          NEXT
-        </v-btn>
-
-        <v-btn
-          block
-          class="mb-6"
-          color="primary"
-          :loading="loading"
-          text
-          :to="{
-            name: 'admin-curriculum-management-editor',
-            query: {
-              step: 2,
-              lessonId
-            }
-          }"
-          x-large
-        >
-          BACK
-        </v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -180,73 +182,76 @@
 
 <script>
 import { mapActions } from 'vuex'
-
-import StepThreeForm from './StepThreeForm'
+import OfflineWorksheetCategoryEditorDialog from './OfflineWorksheetCategoryEditorDialog'
 
 export default {
-  name: 'StepThree',
+  name: 'OfflineWorksheetCategoryDataTable',
 
   components: {
-    StepThreeForm
-  },
-
-  props: {
-    lessonId: {
-      type: [Number, String],
-      required: false,
-      default: null
-    }
+    OfflineWorksheetCategoryEditorDialog
   },
 
   data: () => ({
-    showModal: false,
-    resourceSelected: {},
+    offlineWorksheetCategories: [],
     loading: false,
+    search: null,
     page: 1,
-    resources: [],
     headers: [
       {
-        text: 'Name',
+        text: 'Color',
+        align: 'start',
+        sortable: true,
+        value: 'color'
+      },
+      {
+        text: 'Icon',
+        align: 'start',
+        sortable: true,
+        value: 'icon'
+      },
+      {
+        text: 'Category',
+        align: 'start',
+        sortable: true,
+        value: 'category'
+      },
+      {
+        text: 'Created',
+        align: 'start',
         sortable: false,
-        value: 'name'
+        value: 'createdAt'
+      },
+      {
+        text: 'Last Updated',
+        align: 'start',
+        sortable: false,
+        value: 'updatedAt'
       },
       {
         align: 'right',
         sortable: false,
-        value: 'actions',
-        width: 100
+        value: 'actions'
       }
     ]
   }),
 
-  created () {
-    this.refresh()
-  },
-
   methods: {
-    ...mapActions('admin/curriculum/worksheet', [
-      'deleteWorksheetByLessonId',
-      'fetchWorksheetsByLessonId'
+    ...mapActions('offline-worksheet-categories', [
+      'getOfflineWorksheetCategories',
+      'deleteOfflineWorksheetCategory'
     ]),
 
-    onSubmit () {
-      this.showModal = false
-      this.refresh()
-    },
-
-    openModal (resource = {}) {
-      this.resourceSelected = resource
-      this.showModal = true
-    },
-
-    async refresh () {
+    async refresh (clear = false) {
       this.loading = true
 
+      if (clear) {
+        this.search = null
+      }
+
       try {
-        this.resources = await this.fetchWorksheetsByLessonId({
-          lessonId: this.lessonId,
-          type: 'ONLINE'
-        })
+        this.offlineWorksheetCategories = await this.getOfflineWorksheetCategories(
+          { category: this.search }
+        )
       } catch (e) {
       } finally {
         this.loading = false
@@ -255,13 +260,12 @@ export default {
 
     remove ({ id, name }) {
       this.$nuxt.$emit('open-prompt', {
-        title: 'Delete curriculum lesson worksheet?',
-        message: `Are you sure you wish to delete '${name}' curriculum lesson worksheet?`,
-        action: () =>
-          this.deleteWorksheetByLessonId({
-            id,
-            lessonId: this.lessonId
-          }).then(this.refresh)
+        title: 'Delete offline worksheet category?',
+        message: `Are you sure you wish to delete '${name}' offline worksheet category?`,
+        action: async () => {
+          await this.deleteOfflineWorksheetCategory(id)
+          await this.refresh()
+        }
       })
     }
   }
