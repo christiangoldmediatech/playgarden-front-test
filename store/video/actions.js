@@ -1,7 +1,7 @@
 export default {
-  async getFavorites ({ commit }, params) {
+  async getFavorites ({ commit }, { childrenId, params = {} }) {
     try {
-      const { data } = await this.$axios.get('/videos-favorites', { params })
+      const { data } = await this.$axios.get(`/videos-favorites/children/${childrenId}`, { params })
       return data
     } catch (error) {
       return Promise.reject(error)

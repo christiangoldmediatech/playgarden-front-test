@@ -124,7 +124,9 @@ export default {
       stack.push(
         this.getFavorites({
           childrenId: id,
-          videoId: this.activity.id
+          params: {
+            videoId: this.activity.id
+          }
         }).then((data) => {
           if (data.length) {
             data.forEach((row) => {
