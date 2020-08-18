@@ -212,6 +212,10 @@ export default {
               route: 'curriculum-types'
             },
             {
+              title: 'Notification Management',
+              route: 'notification-management'
+            },
+            {
               title: 'Offline Worksheet Categories',
               route: 'offline-worksheet-categories'
             },
