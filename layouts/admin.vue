@@ -220,12 +220,20 @@ export default {
               route: 'patch-management'
             },
             {
+              title: 'Privacy Policy Management',
+              route: 'privacy-policy-management'
+            },
+            {
               title: 'Report Card Types',
               route: 'report-card-types'
             },
             {
               title: 'Role Management',
               route: 'role-management'
+            },
+            {
+              title: 'Terms & Conditions Management',
+              route: 'terms-conditions-management'
             }
           ]
         }
