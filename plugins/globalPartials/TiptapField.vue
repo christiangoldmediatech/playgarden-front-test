@@ -6,9 +6,9 @@
       v-model="input"
       v-bind="$attrs"
       class="mb-6 mt-3"
-      :class="{ 'elevation-1': !flat, flat }"
+      :class="{ 'elevation-1': !flat, flat, readonly }"
       :editor-properties="{ ...editorProperties, editable: !readonly }"
-      :extensions="readonly ? [] : extensions"
+      :extensions="extensions"
       v-on="$listeners"
     />
   </span>
@@ -134,6 +134,12 @@ export default {
 .flat ::v-deep {
   .v-card {
     box-shadow: none;
+  }
+}
+
+.readonly ::v-deep {
+  .v-toolbar {
+    display: none;
   }
 }
 </style>
