@@ -59,12 +59,14 @@ export default {
   },
 
   created () {
+    this.getAllFavorites()
     this.getTypes()
     this.getActivities({ type: 'VIDEO', limit: 50 })
   },
 
   methods: {
-    ...mapActions('admin/activity', ['getTypes', 'getActivities'])
+    ...mapActions('admin/activity', ['getTypes', 'getActivities']),
+    ...mapActions('video', ['getAllFavorites'])
   }
 }
 </script>
