@@ -2,11 +2,13 @@
   <v-container>
     <v-row>
       <v-col cols="12">
-        <validation-observer v-slot="{ invalid, passes }">
-          <p class="primary--text text-h5">
+        <v-card class="mb-6" width="100%">
+          <v-card-title>
             Privacy Policy Management
-          </p>
+          </v-card-title>
+        </v-card>
 
+        <validation-observer v-slot="{ invalid, passes }">
           <v-form @submit.prevent="passes(onSubmit)">
             <validation-provider
               v-slot="{ errors }"
@@ -17,7 +19,6 @@
                 v-model="draft.privacy"
                 :disabled="loading"
                 :error-messages="errors"
-                label="Privacy"
               />
             </validation-provider>
 
