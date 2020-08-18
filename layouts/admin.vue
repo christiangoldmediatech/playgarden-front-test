@@ -212,6 +212,10 @@ export default {
               route: 'curriculum-types'
             },
             {
+              title: 'Offline Worksheet Categories',
+              route: 'offline-worksheet-categories'
+            },
+            {
               title: 'Patch Management',
               route: 'patch-management'
             },
