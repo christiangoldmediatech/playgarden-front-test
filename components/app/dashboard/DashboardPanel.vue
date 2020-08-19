@@ -59,7 +59,7 @@
               >
                 <v-list-item-avatar>
                   <v-img
-                    :src="video.thumbnail"
+                    :src="video.activityType.icon"
                     :gradient="
                       video.viewed
                         ? undefined
