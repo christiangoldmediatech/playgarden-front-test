@@ -72,7 +72,6 @@ import TapCorrect from '@/components/app/dashboard/worksheets/TapCorrect.vue'
 import CompletedMessage from '@/components/app/dashboard/CompletedMessage.vue'
 
 export default {
-  // eslint-disable-next-line vue/match-component-file-name
   name: 'OnlineWorksheet',
 
   components: {
