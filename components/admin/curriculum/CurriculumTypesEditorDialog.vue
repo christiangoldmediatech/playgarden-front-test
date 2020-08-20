@@ -228,10 +228,11 @@ export default {
         }
 
         await this.getTypes()
-      } catch (err) {
-        this.loading = false
-      } finally {
+
         this.close()
+      } catch (err) {
+      } finally {
+        this.loading = false
       }
     },
 
