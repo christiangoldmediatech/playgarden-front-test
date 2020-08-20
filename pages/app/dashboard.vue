@@ -7,7 +7,13 @@
         </v-col>
 
         <v-col cols="12" sm="7" md="8" lg="9">
-          <v-row align="center" class="pr-3" justify="end">
+          <v-row align="center" class="px-3">
+            <v-btn color="primary" :to="{ name: 'app-pick-child' }">
+              PICK CHILD
+            </v-btn>
+
+            <v-spacer />
+
             First time using Playgarden?
 
             <v-btn color="primary" text>
@@ -17,6 +23,21 @@
 
           <v-row>
             <v-col class="pt-5">
+              <v-row
+                v-if="$route.name === 'app-dashboard'"
+                align="center"
+                fill-height
+                justify="center"
+              >
+                <v-col class="text-center" cols="4">
+                  <div>
+                    <img class="logo-img" src="@/assets/svg/logo.svg">
+                  </div>
+
+                  <v-progress-linear color="primary" indeterminate :size="20" />
+                </v-col>
+              </v-row>
+
               <nuxt-child />
             </v-col>
           </v-row>
@@ -27,7 +48,6 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
 import DashboardPanel from '@/components/app/dashboard/DashboardPanel'
 
 export default {
@@ -35,30 +55,6 @@ export default {
 
   components: {
     DashboardPanel
-  },
-
-  computed: {
-    ...mapGetters({ currentChild: 'getCurrentChild' }),
-
-    childrenIds () {
-      return this.currentChild ? this.currentChild.map(({ id }) => id) : []
-    }
-  },
-
-  created () {
-    try {
-      this.getCurrentLessonByChildrenId({ childrenIds: this.currentChild[0].id }).then((data) => {
-        if (this.$route.name === 'app-dashboard') {
-          const id = data.videos[0].id
-          this.$router.push({ name: 'app-dashboard-videos-id', params: { id } })
-        }
-      })
-    } catch (e) {}
-  },
-
-  methods: {
-    // ...mapActions('admin/curriculum', ['getLessonById'])
-    ...mapActions('children/lesson', ['getCurrentLessonByChildrenId'])
   }
 }
 </script>

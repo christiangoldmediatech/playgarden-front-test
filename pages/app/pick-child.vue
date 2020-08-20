@@ -120,7 +120,7 @@ export default {
         this.selected = child
 
         if (child.id) {
-          this.setChild({ value: child, save: true })
+          this.setChild({ value: [child], save: true })
         } else {
           this.setChild({ value: this.rows, save: true })
         }

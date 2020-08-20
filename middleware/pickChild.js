@@ -23,12 +23,16 @@ export default async function ({ redirect, route, store }) {
           try {
             let result
             // If array, then we get everyone, else we get just the child
-            if (Array.isArray(storedData.value)) {
-              result = await store.dispatch('children/get')
-            } else {
+            if (
+              Array.isArray(storedData.value) &&
+              storedData.value.length &&
+              storedData.value.length === 1
+            ) {
               result = [
-                await store.dispatch('children/getById', storedData.value)
+                await store.dispatch('children/getById', storedData.value[0])
               ]
+            } else {
+              result = await store.dispatch('children/get')
             }
 
             store.dispatch('setChild', {
