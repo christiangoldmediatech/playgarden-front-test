@@ -126,6 +126,7 @@ export default {
       'recoverRegistrationProcess',
       'redirectIfAuthenticated',
       'emailVerified',
+      'onboardingDone',
       'pickChild'
     ]
   }

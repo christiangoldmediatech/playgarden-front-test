@@ -81,5 +81,11 @@ export default {
         body: 'Sorry! There was an error while updating user info!'
       })
     }
+  },
+
+  async updateAuthOnboarding ({ dispatch }) {
+    await this.$axios.patch('/auth/onboarding')
+
+    return dispatch('fetchUserInfo')
   }
 }
