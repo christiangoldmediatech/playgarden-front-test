@@ -18,25 +18,20 @@ export default {
     video: {
       type: Object,
       required: false,
-      default: () => {
-        return {}
-      }
+      default: () => ({})
     }
   },
 
   computed: {
     disabled () {
-      if (!this.video.status) {
-        return true
-      }
-      return false
+      return !this.video.status
     },
 
     loading () {
-      if (this.video.status && ['UPLOADING', 'PROCESSING'].includes(this.video.status)) {
-        return true
-      }
-      return false
+      return !!(
+        this.video.status &&
+        ['UPLOADING', 'PROCESSING'].includes(this.video.status)
+      )
     }
   },
 

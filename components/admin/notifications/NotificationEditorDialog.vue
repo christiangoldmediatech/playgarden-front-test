@@ -197,11 +197,8 @@ export default {
 
     async save () {
       this.loading = true
-      try {
-        if (this.file) {
-          this.item.image = await this.$refs.fileUploader.handleUpload()
-        }
 
+      try {
         if (this.id === null) {
           await this.createNotification(this.item)
         } else {
@@ -219,7 +216,6 @@ export default {
     resetItem () {
       this.id = null
       this.item = generateItemTemplate()
-      this.file = null
     },
 
     loadItem (item) {

@@ -77,7 +77,7 @@
       <validation-provider
         v-else
         v-slot="{ errors }"
-        name="File"
+        name="Video"
         rules="required"
       >
         <file-uploader
