@@ -4,9 +4,27 @@
       <div :id="playerId" />
     </div>
     <div class="content d-flex flex-column align-center justify-end">
-      <div class="align-self-start ml-3 my-2 text-left black--text">
-        Press CMND + SHIFT + E to EXIT
-      </div>
+      <v-row class="w-100">
+        <span
+          v-if="$vuetify.breakpoint.mdAndUp"
+          class="ma-3"
+        >
+          Press CMND + SHIFT + E to EXIT
+        </span>
+        <v-spacer />
+        <v-btn
+          v-if="$vuetify.breakpoint.smAndDown"
+          class="ma-2"
+          color="rgba(0, 0, 0, 0.74)"
+          fab
+          x-small
+          @click.stop="$emit('hotkey')"
+        >
+          <v-icon color="white">
+            mdi-close
+          </v-icon>
+        </v-btn>
+      </v-row>
       <div class="d-flex align-center justify-center flex-grow-1 flex-shrink-0">
         <v-progress-circular v-if="status === 'buffering'" width="6" size="128" color="accent" indeterminate />
       </div>
