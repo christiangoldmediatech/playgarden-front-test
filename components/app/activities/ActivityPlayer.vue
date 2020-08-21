@@ -1,6 +1,5 @@
 <template>
   <v-dialog
-    id="playerDialog"
     v-model="dialog"
     fullscreen
     persistent
@@ -10,7 +9,7 @@
       color="black"
       dark
     >
-      <v-card-title id="titleElement">
+      <!-- <v-card-title id="titleElement">
         {{ title }}
         <v-spacer />
         <v-btn
@@ -21,25 +20,27 @@
             mdi-close
           </v-icon>
         </v-btn>
-      </v-card-title>
+      </v-card-title> -->
 
       <v-row no-gutters align="center" justify="center">
         <div
           class="videoContainer"
           :style="{'--videoW': `${videoWidth}px`, '--videoH': `${videoHeight}px` }"
         >
-          <jw-player
+          <children-jw-player
+            ref="playerRef"
             :playlist="playlist"
             @ready="setPlayer"
+            @hotkey="close"
           />
         </div>
       </v-row>
 
-      <v-card-actions id="hintElement">
+      <!-- <v-card-actions id="hintElement">
         <v-spacer />
         CTRL + SHIFT + Q to Exit
         <v-spacer />
-      </v-card-actions>
+      </v-card-actions> -->
     </v-card>
   </v-dialog>
 </template>
@@ -65,9 +66,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters({
-      children: 'getCurrentChild'
-    }),
+    ...mapGetters({ children: 'getCurrentChild' }),
 
     videoWidth () {
       if (this.videoHeight > 0) {
@@ -98,8 +97,8 @@ export default {
       updateAnalytic: 'update'
     }),
 
-    setPlayer (player) {
-      this.player = player
+    setPlayer () {
+      this.player = this.$refs.playerRef.player
       if (this.playlist.length) {
         this.player.play()
       }
@@ -156,26 +155,31 @@ export default {
 
     open () {
       this.dialog = true
-
-      this.$nextTick(() => {
-        const checker = window.setInterval(() => {
-          const titleElement = document.getElementById('titleElement')
-          const hintElement = document.getElementById('hintElement')
-          if (titleElement && hintElement) {
-            const titleHeight = titleElement.clientHeight
-            const hintHeight = hintElement.clientHeight
-            if (titleHeight > 0) {
-              this.videoHeight = window.innerHeight - titleHeight - hintHeight
-              window.clearInterval(checker)
-            }
-          }
-        }, 25)
-      })
+      this.videoHeight = window.innerHeight - 1
+      // this.$nextTick(() => {
+      //   const checker = window.setInterval(() => {
+      //     // const titleElement = document.getElementById('titleElement')
+      //     // const hintElement = document.getElementById('hintElement')
+      //     if (titleElement && hintElement) {
+      //       // const titleHeight = titleElement.clientHeight
+      //       // const hintHeight = hintElement.clientHeight
+      //       if (titleHeight > 0) {
+      //         this.videoHeight = window.innerHeight - titleHeight - hintHeight
+      //         window.clearInterval(checker)
+      //       }
+      //     }
+      //   }, 25)
+      // })
     },
 
     close () {
-      this.dialog = false
-      this.player.stop()
+      if (this.dialog && this.player) {
+        const status = this.player.getState()
+        if (['playing', 'buffering'].includes(status)) {
+          this.player.stop()
+        }
+        this.dialog = false
+      }
     }
   }
 }
