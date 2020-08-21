@@ -29,6 +29,7 @@
             close-on-click
             close-on-content-click
             rounded
+            :attach="`#${playerContainerId}`"
           >
             <template v-slot:activator="{ on, attrs }">
               <v-btn
