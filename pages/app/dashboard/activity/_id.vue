@@ -12,6 +12,7 @@
 
 <script>
 export default {
-  name: 'Activity'
+  // eslint-disable-next-line vue/match-component-file-name
+  name: 'Id'
 }
 </script>

@@ -4,9 +4,7 @@
       <v-col cols="12">
         <v-card width="100%">
           <v-card-title>
-            <p class="primary--text text-h5">
-              Video details
-            </p>
+            Onboardings
 
             <v-spacer />
 
@@ -15,7 +13,7 @@
               color="primary darken-1"
               dark
               :icon="$vuetify.breakpoint.xs"
-              @click="openModal({})"
+              @click.stop="$refs.editor.open"
             >
               <v-icon class="hidden-sm-and-up">
                 mdi-plus-circle
@@ -24,10 +22,13 @@
               <v-icon class="hidden-xs-only" small>
                 mdi-plus
               </v-icon>
-
-              <span class="hidden-xs-only">Add new video</span>
+              <span class="hidden-xs-only">Add new onboarding</span>
             </v-btn>
           </v-card-title>
+
+          <v-card-text>
+            View, create, update, or delete onboardings.
+          </v-card-text>
         </v-card>
       </v-col>
     </v-row>
@@ -39,23 +40,52 @@
             <v-data-table
               :headers="headers"
               hide-default-footer
-              :items="resources"
+              :items="onboardings"
               :loading="loading"
               :page.sync="page"
               @update:page="page = $event"
             >
+              <template v-slot:top>
+                <onboarding-editor-dialog
+                  ref="editor"
+                  @saved="refresh(false)"
+                />
+
+                <v-toolbar color="white" flat>
+                  <v-spacer />
+
+                  <v-text-field
+                    v-model="search"
+                    append-icon="mdi-magnify"
+                    class="shrink"
+                    clearable
+                    hide-details
+                    label="Search"
+                    single-line
+                    solo
+                    @keydown.enter="refresh(false)"
+                  />
+                </v-toolbar>
+              </template>
+
               <template v-slot:item.createdAt="{ item }">
                 {{ item.createdAt | formatDate }}
               </template>
 
-              <template v-slot:item.actions="{ item }">
-                <video-preview-btn :video="item" />
+              <template v-slot:item.updatedAt="{ item }">
+                {{ item.updatedAt | formatDate }}
+              </template>
 
-                <v-btn icon @click="openModal(item)">
-                  <v-icon color="#81A1F7" dense>
-                    mdi-pencil-outline
-                  </v-icon>
-                </v-btn>
+              <template v-slot:item.actions="{ item }">
+                <video-preview-btn :video="item.videos" />
+
+                <v-icon
+                  color="#81A1F7"
+                  dense
+                  @click="$refs.editor.open(null, item)"
+                >
+                  mdi-pencil-outline
+                </v-icon>
 
                 <v-icon color="#d30909" dense @click="remove(item)">
                   mdi-delete-outline
@@ -63,7 +93,7 @@
               </template>
 
               <template v-slot:no-data>
-                <v-btn color="primary" text @click="refresh">
+                <v-btn color="primary" text @click="refresh(true)">
                   Refresh
                 </v-btn>
               </template>
@@ -125,60 +155,6 @@
             </v-data-table>
           </v-card-text>
         </v-card>
-
-        <v-dialog
-          v-model="showModal"
-          content-class="white"
-          :fullscreen="$vuetify.breakpoint.smAndDown"
-          max-width="1000"
-          persistent
-        >
-          <v-col cols="12">
-            <v-row class="pr-3" justify="end">
-              <v-btn icon @click.stop="showModal = false">
-                <v-icon>mdi-close</v-icon>
-              </v-btn>
-            </v-row>
-
-            <step-two-form
-              v-if="showModal"
-              :lesson-id="lessonId"
-              :resource="resourceSelected"
-              @click:cancel="showModal = false"
-              @click:submit="onSubmit"
-            />
-          </v-col>
-        </v-dialog>
-
-        <v-btn
-          block
-          class="my-6"
-          color="primary"
-          :disabled="!resources.length"
-          :loading="loading"
-          x-large
-          @click="$emit('click:submit')"
-        >
-          NEXT
-        </v-btn>
-
-        <v-btn
-          block
-          class="mb-6"
-          color="primary"
-          :loading="loading"
-          text
-          :to="{
-            name: 'admin-curriculum-management-editor',
-            query: {
-              step: 1,
-              lessonId
-            }
-          }"
-          x-large
-        >
-          BACK
-        </v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -187,44 +163,40 @@
 <script>
 import { mapActions } from 'vuex'
 
-import StepTwoForm from './StepTwoForm'
+import OnboardingEditorDialog from './OnboardingEditorDialog'
 
 export default {
-  name: 'StepTwo',
+  name: 'OnboardingDataTable',
 
   components: {
-    StepTwoForm
-  },
-
-  props: {
-    lessonId: {
-      type: [Number, String],
-      required: false,
-      default: null
-    }
+    OnboardingEditorDialog
   },
 
   data: () => ({
-    showModal: false,
-    resourceSelected: {},
+    onboardings: [],
     loading: false,
+    search: null,
     page: 1,
-    resources: [],
     headers: [
       {
         text: 'Name',
-        sortable: false,
+        sortable: true,
         value: 'name'
       },
       {
-        text: 'Status',
-        sortable: false,
-        value: 'status'
+        text: 'Description',
+        sortable: true,
+        value: 'description'
       },
       {
-        text: 'Activity',
+        text: 'Created',
         sortable: false,
-        value: 'activityType.name'
+        value: 'createdAt'
+      },
+      {
+        text: 'Last Updated',
+        sortable: false,
+        value: 'updatedAt'
       },
       {
         align: 'right',
@@ -235,33 +207,18 @@ export default {
     ]
   }),
 
-  created () {
-    this.refresh()
-  },
-
   methods: {
-    ...mapActions('admin/curriculum/video', [
-      'deleteVideoByLessonId',
-      'fetchVideosByLessonId'
-    ]),
+    ...mapActions('onboarding', ['getOnboardings', 'deleteOnboarding']),
 
-    onSubmit () {
-      this.showModal = false
-      this.refresh()
-    },
-
-    openModal (resource = {}) {
-      this.resourceSelected = resource
-      this.showModal = true
-    },
-
-    async refresh () {
+    async refresh (clear = false) {
       this.loading = true
 
+      if (clear) {
+        this.search = null
+      }
+
       try {
-        this.resources = await this.fetchVideosByLessonId({
-          lessonId: this.lessonId
-        })
+        this.onboardings = await this.getOnboardings({ name: this.search })
       } catch (e) {
       } finally {
         this.loading = false
@@ -270,13 +227,12 @@ export default {
 
     remove ({ id, name }) {
       this.$nuxt.$emit('open-prompt', {
-        title: 'Delete curriculum lesson video?',
-        message: `Are you sure you wish to delete '${name}' curriculum lesson video?`,
-        action: () =>
-          this.deleteVideoByLessonId({
-            id,
-            lessonId: this.lessonId
-          }).then(this.refresh)
+        title: 'Delete onboarding?',
+        message: `Are you sure you wish to delete '${name}' onboarding?`,
+        action: async () => {
+          await this.deleteOnboarding(id)
+          await this.refresh()
+        }
       })
     }
   }

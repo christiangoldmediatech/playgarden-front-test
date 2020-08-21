@@ -1,36 +1,23 @@
 <template>
-  <v-dialog
-    v-model="dialog"
-    persistent
-    max-width="854"
-  >
+  <v-dialog v-model="dialog" persistent max-width="854">
     <v-card>
       <v-card-title>
         {{ title }}
+
         <v-spacer />
-        <v-btn
-          icon
-          @click.stop="close"
-        >
+
+        <v-btn icon @click.stop="close">
           <v-icon>
             mdi-close
           </v-icon>
         </v-btn>
       </v-card-title>
 
-      <jw-player
-        :file="file"
-        :image="image"
-        @ready="setPlayer"
-      />
+      <jw-player :file="file" :image="image" @ready="setPlayer" />
 
       <v-card-actions>
         <v-spacer />
-        <v-btn
-          color="blue"
-          text
-          @click.stop="close"
-        >
+        <v-btn color="blue" text @click.stop="close">
           Close
         </v-btn>
       </v-card-actions>
@@ -58,6 +45,11 @@ export default {
     })
   },
 
+  beforeDestroy () {
+    this.$nuxt.$off('open-video-preview')
+    this.player = null
+  },
+
   methods: {
     setPlayer (player) {
       this.player = player
@@ -69,10 +61,12 @@ export default {
         this.file = video.videoUrl.HLS
         this.image = video.thumbnail || undefined
       } else {
-        this.player.load([{
-          file: video.videoUrl.HLS,
-          image: video.thumbnail || undefined
-        }])
+        this.player.load([
+          {
+            file: video.videoUrl.HLS,
+            image: video.thumbnail || undefined
+          }
+        ])
       }
       this.open()
     },

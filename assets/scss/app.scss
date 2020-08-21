@@ -6,6 +6,10 @@
   text-decoration: none;
 }
 
+.black--link {
+  color: var(--pg-black) !important;
+}
+
 .clickable {
   cursor: pointer;
 }
@@ -36,8 +40,8 @@
 .worksheet-selected {
   ::after {
     border-radius: 50%;
-    box-shadow:inset 0px 0px 0px 10px var(--v-primary-base);
-    content: '';
+    box-shadow: inset 0px 0px 0px 10px var(--v-primary-base);
+    content: "";
     display: block;
     height: 100%;
     position: absolute;
@@ -48,7 +52,10 @@
 
 .title-text {
   width: calc(100%);
-  background-image: linear-gradient(transparent calc(100% - 10px), var(--v-primary-base) 10px);
+  background-image: linear-gradient(
+    transparent calc(100% - 10px),
+    var(--v-primary-base) 10px
+  );
   background-repeat: no-repeat;
   background-size: 100% 100%;
   color: #606060;

@@ -59,7 +59,7 @@
               >
                 <v-list-item-avatar>
                   <v-img
-                    :src="video.thumbnail"
+                    :src="video.activityType.icon"
                     :gradient="
                       video.viewed
                         ? undefined
@@ -86,24 +86,21 @@
         <!-- Worksheets -->
         <v-row class="my-2" no-gutters>
           <v-col cols="2">
-            <!-- TODO: set the color using the complete rate -->
             <v-row
               align="center"
               class="chip mb-2"
-              :class="0 ? 'primary' : 'grey'"
+              :class="worksheetsCompletionRate ? 'primary' : 'grey'"
               justify="center"
             >
               <span>2</span>
             </v-row>
 
-            <!-- TODO: set the color using the complete rate -->
-            <!-- TODO: set value using the complete rate -->
             <progress-linear
               class="ml-3"
-              :color="0 ? 'primary' : 'grey'"
-              :height="`${worksheetsHeightProgress}px`"
+              :color="worksheetsCompletionRate ? 'primary' : 'grey'"
+              :height="`${worksheetsProgressHeight}px`"
               rounded
-              value="0"
+              :value="worksheetsCompletionRate"
               width="10px"
             />
           </v-col>
@@ -113,12 +110,14 @@
               WORKSHEETS
             </span>
 
-            <div
-              v-if="worksheets.ONLINE.length"
-              class="clickable font-weight-bold mt-3"
-              @click="$router.push({ name: 'app-dashboard-online-worksheet' })"
-            >
-              ONLINE WORKSHEET
+            <div v-if="worksheets.ONLINE.length" class="mt-3">
+              <component
+                :is="videosCompletionRate < 100 ? 'span' : 'nuxt-link'"
+                class="black--link font-weight-bold"
+                :to="{ name: 'app-dashboard-online-worksheet' }"
+              >
+                ONLINE WORKSHEET
+              </component>
             </div>
 
             <div v-if="worksheets.OFFLINE" class="font-weight-bold mt-3">
@@ -128,6 +127,7 @@
                 block
                 class="mb-3"
                 color="primary"
+                :disabled="videosCompletionRate < 100"
                 :href="worksheets.OFFLINE.pdfUrl"
                 small
                 target="_blank"
@@ -145,24 +145,21 @@
         <!-- Activities -->
         <v-row class="my-2" no-gutters>
           <v-col cols="2">
-            <!-- TODO: set the color using the complete rate -->
             <v-row
               align="center"
               class="chip mb-2"
-              :class="0 ? 'primary' : 'grey'"
+              :class="activitiesCompletionRate ? 'primary' : 'grey'"
               justify="center"
             >
               <span>3</span>
             </v-row>
 
-            <!-- TODO: set the color using the complete rate -->
-            <!-- TODO: set value using the complete rate -->
             <progress-linear
               class="ml-3"
-              :color="0 ? 'primary' : 'grey'"
+              :color="activitiesCompletionRate ? 'primary' : 'grey'"
               :height="`${55 * activities.length}px`"
               rounded
-              value="0"
+              :value="activitiesCompletionRate"
               width="10px"
             />
           </v-col>
@@ -174,16 +171,26 @@
 
             <v-list dense>
               <v-list-item
-                v-for="({ activity }, indexA) in activities"
+                v-for="(activity, indexA) in activities"
                 :key="indexA"
                 class="px-0"
+                :disabled="
+                  Boolean(
+                    videosCompletionRate < 100 ||
+                      (indexA && !activities[indexA - 1].viewed)
+                  )
+                "
+                nuxt
+                :to="{
+                  name: 'app-dashboard-activity-id',
+                  params: { id: activity.id }
+                }"
               >
                 <v-list-item-avatar>
-                  <!-- TODO: set the gradient using the complete rate -->
                   <v-img
                     :src="activity.activityType.icon"
                     :gradient="
-                      0
+                      activity.viewed
                         ? undefined
                         : 'rgba(128, 128, 128, 0.75), rgba(128, 128, 128, 0.75)'
                     "
@@ -210,8 +217,7 @@
 </template>
 
 <script>
-// import { mapActions, mapGetters } from 'vuex'
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'DashboardPanel',
@@ -222,14 +228,22 @@ export default {
     ...mapGetters('admin/curriculum', { lesson: 'getLesson' }),
 
     activities () {
-      return this.lesson ? this.lesson.lessonsActivities || [] : []
+      return this.lesson
+        ? (this.lesson.lessonsActivities || []).map(({ activity }) => activity)
+        : []
+    },
+
+    activitiesCompletionRate () {
+      return this.getCompletionRate(this.activities)
     },
 
     childrenIds () {
-      // TODO: return ids array when Juan fix the endpoint
-      // return this.currentChild ? this.currentChild.map(({ id }) => id) : []
+      const ids = (this.currentChild
+        ? this.currentChild.map(({ id }) => id)
+        : []
+      ).join(',')
 
-      return 28
+      return `[${ids}]`
     },
 
     videos () {
@@ -237,17 +251,7 @@ export default {
     },
 
     videosCompletionRate () {
-      const total = this.videos.length
-
-      if (total) {
-        const completed = this.videos
-          .map(({ viewed }) => Number(viewed || 0))
-          .reduce((a, b) => a + b)
-
-        return completed ? (total / completed) * 100 : 0
-      }
-
-      return 0
+      return this.getCompletionRate(this.videos)
     },
 
     worksheets () {
@@ -269,10 +273,100 @@ export default {
       return result
     },
 
-    worksheetsHeightProgress () {
+    worksheetsCompletionRate () {
+      return this.getCompletionRate(this.worksheets.ONLINE)
+    },
+
+    worksheetsProgressHeight () {
       return (
-        55 * this.worksheets.total + (this.worksheets.ONLINE.length ? 50 : 0)
+        (this.worksheets.ONLINE.length ? 25 : 0) +
+        (this.worksheets.OFFLINE ? 70 : 0)
       )
+    }
+  },
+
+  watch: {
+    '$route.name' () {
+      this.redirectDashboard()
+    }
+  },
+
+  created () {
+    this.getCurrentLesson(true)
+
+    this.$nuxt.$on('dashboard-panel-update', () => {
+      this.getCurrentLesson()
+    })
+  },
+
+  beforeDestroy () {
+    this.$nuxt.$off('dashboard-panel-update')
+  },
+
+  methods: {
+    ...mapActions('children/lesson', ['getCurrentLessonByChildrenId']),
+
+    getCompletionRate (items = []) {
+      const total = items.length
+
+      if (total) {
+        const completed = items
+          .map(({ viewed }) => Number(Boolean(viewed)))
+          .reduce((a, b) => a + b)
+
+        return completed ? (completed * 100) / total : 0
+      }
+
+      return 0
+    },
+
+    getNextId (items = []) {
+      const { id } = items.find(({ viewed }) => !viewed)
+
+      return id
+    },
+
+    async getCurrentLesson (redirect = false) {
+      try {
+        await this.getCurrentLessonByChildrenId({
+          childrenIds: this.childrenIds
+        })
+
+        if (redirect) {
+          this.redirectDashboard()
+        }
+      } catch (e) {}
+    },
+
+    redirectDashboard () {
+      if (this.lesson && this.$route.name === 'app-dashboard') {
+        if (this.videosCompletionRate < 100) {
+          this.$router.push({
+            name: 'app-dashboard-videos-id',
+            params: { id: this.getNextId(this.videos) }
+          })
+        } else if (this.worksheetsCompletionRate < 100) {
+          this.$router.push({
+            name: 'app-dashboard-online-worksheet',
+            query: { id: this.getNextId(this.worksheets.ONLINE) }
+          })
+        } else if (this.activitiesCompletionRate < 100) {
+          this.$router.push({
+            name: 'app-dashboard-activity-id',
+            params: { id: this.getNextId(this.activities) }
+          })
+        } else {
+          this.$router.push({ name: 'app-dashboard-lesson-completed' })
+        }
+      } else if (this.lesson && this.$route.name === 'app-dashboard-lesson-completed') {
+        if (
+          this.videosCompletionRate < 100 ||
+          this.worksheetsCompletionRate < 100 ||
+          this.activitiesCompletionRate < 100
+        ) {
+          this.$router.push({ name: 'app-dashboard' })
+        }
+      }
     }
   }
 }
