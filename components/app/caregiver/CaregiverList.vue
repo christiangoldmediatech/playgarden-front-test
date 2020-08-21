@@ -60,6 +60,7 @@ export default {
         this.loading = true
         const { users } = await this.fetchCaregiversList()
         this.caregivers = users
+      } catch (e) {
       } finally {
         this.loading = false
       }
