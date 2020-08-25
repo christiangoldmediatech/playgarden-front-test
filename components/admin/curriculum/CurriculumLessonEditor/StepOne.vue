@@ -124,14 +124,12 @@
           v-model="file"
           :error-messages="errors"
           :file.sync="file"
-          gif
           label="Upload Photo"
           mode="image"
           path="lesson"
           placeholder="Select a photo for this lesson"
           png
           prepend-icon="mdi-camera"
-          svg
         />
       </validation-provider>
 

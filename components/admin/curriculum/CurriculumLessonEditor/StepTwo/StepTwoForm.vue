@@ -137,7 +137,6 @@
           placeholder="Select a thumbnail for this lesson's video"
           prepend-icon="mdi-camera"
           png
-          jpg
         />
       </validation-provider>
 
