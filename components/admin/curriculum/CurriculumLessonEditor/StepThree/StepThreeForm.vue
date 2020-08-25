@@ -119,12 +119,14 @@
               v-model="item.file"
               :error-messages="errors"
               :file.sync="item.file"
+              jpg
               :label="`Image ${indexMT + 1}`"
               mode="image"
               path="lesson"
               :placeholder="`Select image ${indexMT + 1}`"
               png
               prepend-icon="mdi-camera"
+              svg
             />
           </validation-provider>
         </v-col>
