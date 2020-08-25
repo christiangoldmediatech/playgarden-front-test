@@ -4,7 +4,8 @@
     :items="childrenList"
     placeholder="Select a child"
     solo
-    @input="$emit('update:value', $event)"
+    v-bind="{ $attrs }"
+    @input="$emit('input', $event)"
   >
     <template v-slot:selection="{ item }">
       <v-list-item>
