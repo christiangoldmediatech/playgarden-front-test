@@ -135,12 +135,17 @@ export default {
 
   computed: {
     title () {
-      return this.id === null ? 'New Offline Worksheet Category' : 'Edit Offline  Worksheet Category'
+      return this.id === null
+        ? 'New Offline Worksheet Category'
+        : 'Edit Offline  Worksheet Category'
     }
   },
 
   methods: {
-    ...mapActions('offline-worksheet-categories', ['createOfflineWorksheetCategory', 'updateOfflineWorksheetCategory']),
+    ...mapActions('offline-worksheet-categories', [
+      'createOfflineWorksheetCategory',
+      'updateOfflineWorksheetCategory'
+    ]),
 
     close () {
       this.$nextTick(() => {
@@ -160,14 +165,18 @@ export default {
         if (this.id === null) {
           await this.createOfflineWorksheetCategory(this.item)
         } else {
-          await this.updateOfflineWorksheetCategory({ id: this.id, data: this.item })
+          await this.updateOfflineWorksheetCategory({
+            id: this.id,
+            data: this.item
+          })
         }
 
         this.$emit('saved')
-      } catch (err) {
-        this.loading = false
-      } finally {
+
         this.close()
+      } catch (err) {
+      } finally {
+        this.loading = false
       }
     },
 
