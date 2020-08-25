@@ -33,43 +33,7 @@
               lg="3"
               xl="2"
             >
-              <v-select
-                v-model="selectedChild"
-                :items="childrenList"
-                placeholder="Select a child"
-                solo
-              >
-                <template v-slot:selection="{ item }">
-                  <v-list-item>
-                    <v-list-item-avatar>
-                      <v-img :src="item.backpack.image" />
-                    </v-list-item-avatar>
-
-                    <v-list-item-content>
-                      <v-list-item-title>
-                        {{ item.firstName }}
-                      </v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-                </template>
-
-                <template v-slot:item="{ item, on, attrs }">
-                  <v-list-item
-                    v-bind="attrs"
-                    v-on="on"
-                  >
-                    <v-list-item-avatar>
-                      <v-img :src="item.backpack.image" />
-                    </v-list-item-avatar>
-
-                    <v-list-item-content>
-                      <v-list-item-title>
-                        {{ item.firstName }}
-                      </v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-                </template>
-              </v-select>
+              <child-select v-model="selectedChild" />
             </v-col>
           </v-row>
         </div>
@@ -125,9 +89,14 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import ChildSelect from './ChildSelect.vue'
 
 export default {
   name: 'UploadOfflineWorksheet',
+
+  components: {
+    ChildSelect
+  },
 
   props: {
     value: {
@@ -145,21 +114,10 @@ export default {
   },
 
   computed: {
-    ...mapGetters('children', { children: 'rows' }),
     ...mapGetters('admin/curriculum', ['getLesson']),
 
     disabled () {
       return (this.selectedChild === null || this.loading)
-    },
-
-    childrenList () {
-      return this.children.map((child) => {
-        return {
-          value: child.id,
-          text: child.firstName,
-          ...child
-        }
-      })
     }
   },
 
@@ -172,14 +130,12 @@ export default {
   },
 
   created () {
-    this.getChildren()
     this.getOfflineWorksheetCategories().then((data) => { this.categories = data })
   },
 
   methods: {
     ...mapActions('offline-worksheet-categories', ['getOfflineWorksheetCategories']),
     ...mapActions('offline-worksheet', { uploadWorksheet: 'upload' }),
-    ...mapActions('children', { getChildren: 'get' }),
 
     reset () {
       this.loading = false
