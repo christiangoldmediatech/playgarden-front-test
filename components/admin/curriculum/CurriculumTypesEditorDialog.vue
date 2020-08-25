@@ -1,44 +1,36 @@
 <template>
-  <v-dialog
-    v-model="dialog"
-    :fullscreen="$vuetify.breakpoint.xs"
-    max-width="500px"
-    persistent
-    scrollable
-  >
-    <v-card>
-      <v-toolbar
-        class="flex-grow-0"
-        color="primary darken-1"
-        dark
-        dense
-        flat
-      >
-        <v-toolbar-title>
-          {{ title }}
-        </v-toolbar-title>
+  <validation-observer ref="obs" v-slot="{ invalid, passes }">
+    <v-dialog
+      v-model="dialog"
+      :fullscreen="$vuetify.breakpoint.xs"
+      max-width="500px"
+      persistent
+      scrollable
+    >
+      <v-card>
+        <v-toolbar class="flex-grow-0" color="primary darken-1" dark dense flat>
+          <v-toolbar-title>
+            {{ title }}
+          </v-toolbar-title>
 
-        <v-spacer />
+          <v-spacer />
 
-        <v-btn
-          :disabled="loading"
-          icon
-          @click.stop="close"
-        >
-          <v-icon>
-            mdi-close
-          </v-icon>
-        </v-btn>
-      </v-toolbar>
+          <v-btn :disabled="loading" icon @click.stop="close">
+            <v-icon>
+              mdi-close
+            </v-icon>
+          </v-btn>
+        </v-toolbar>
 
-      <validation-observer ref="obs" v-slot="{ invalid, passes }">
         <v-card-text>
           <v-container>
-            <v-form
-              ref="curriculumTypeForm"
-              @submit.prevent="passes(save)"
-            >
-              <validation-provider v-slot="{ errors }" name="Curriculum Type Name" rules="required">
+            <v-form @submit.prevent="passes(save)">
+              <!-- Name -->
+              <validation-provider
+                v-slot="{ errors }"
+                name="Curriculum Type Name"
+                rules="required"
+              >
                 <v-text-field
                   v-model="item.name"
                   :error-messages="errors"
@@ -47,11 +39,75 @@
                 />
               </validation-provider>
 
-              <validation-provider v-slot="{ errors }" name="Curriculum Type Description" rules="required">
+              <!-- Description -->
+              <validation-provider
+                v-slot="{ errors }"
+                name="Curriculum Type Description"
+                rules="required"
+              >
                 <v-textarea
                   v-model="item.description"
                   :error-messages="errors"
                   label="Description"
+                  solo
+                />
+              </validation-provider>
+
+              <!-- Icon -->
+              <span class="v-label theme--light">Icon</span>
+
+              <template v-if="item.icon">
+                <div class="mb-6 mt-3">
+                  <v-badge avatar color="error" overlap>
+                    <template v-slot:badge>
+                      <v-avatar
+                        class="clickable"
+                        @click.native="item.icon = null"
+                      >
+                        <v-icon>
+                          mdi-close
+                        </v-icon>
+                      </v-avatar>
+                    </template>
+
+                    <v-img width="250" :src="item.icon" />
+                  </v-badge>
+                </div>
+              </template>
+
+              <validation-provider
+                v-else
+                v-slot="{ errors }"
+                name="Icon"
+                rules="required"
+              >
+                <file-uploader
+                  ref="iconUploader"
+                  v-model="icon"
+                  :error-messages="errors"
+                  :file.sync="icon"
+                  gif
+                  label="Upload Icon"
+                  mode="image"
+                  path="curriculum-type"
+                  placeholder="Select a icon for this Curriculum Type"
+                  png
+                  prepend-icon="mdi-camera"
+                  svg
+                />
+              </validation-provider>
+
+              <!-- Letter -->
+              <validation-provider
+                v-slot="{ errors }"
+                name="Curriculum Type Letter"
+                rules="required"
+              >
+                <v-select
+                  v-model="item.letter"
+                  :error-messages="errors"
+                  :items="letters"
+                  label="Letter"
                   solo
                 />
               </validation-provider>
@@ -63,6 +119,7 @@
 
         <v-card-actions>
           <v-spacer />
+
           <v-btn
             color="green"
             :dark="$vuetify.breakpoint.xs"
@@ -73,6 +130,7 @@
           >
             Save
           </v-btn>
+
           <v-btn
             color="red"
             :dark="$vuetify.breakpoint.xs"
@@ -83,9 +141,9 @@
             Cancel
           </v-btn>
         </v-card-actions>
-      </validation-observer>
-    </v-card>
-  </v-dialog>
+      </v-card>
+    </v-dialog>
+  </validation-observer>
 </template>
 
 <script>
@@ -99,11 +157,42 @@ export default {
       dialog: false,
       loading: false,
       valid: true,
+      icon: null,
       id: null,
       item: {
         name: '',
-        description: ''
-      }
+        description: '',
+        icon: '',
+        letter: ''
+      },
+      letters: [
+        'Aa',
+        'Bb',
+        'Cc',
+        'Dd',
+        'Ee',
+        'Ff',
+        'Gg',
+        'Hh',
+        'Ii',
+        'Jj',
+        'Kk',
+        'Ll',
+        'Mm',
+        'Nn',
+        'Oo',
+        'Pp',
+        'Qq',
+        'Rr',
+        'Ss',
+        'Tt',
+        'Uu',
+        'Vv',
+        'Ww',
+        'Xx',
+        'Yy',
+        'Zz'
+      ]
     }
   },
 
@@ -118,6 +207,7 @@ export default {
 
     close () {
       this.$nextTick(() => {
+        this.icon = null
         this.dialog = false
         this.loading = false
         this.$refs.obs.reset()
@@ -127,24 +217,36 @@ export default {
     async save () {
       this.loading = true
       try {
+        if (this.icon) {
+          this.item.icon = await this.$refs.iconUploader.handleUpload()
+        }
+
         if (this.id === null) {
           await this.createType(this.item)
         } else {
           await this.updateType({ id: this.id, data: this.item })
         }
+
         await this.getTypes()
       } catch (err) {
         this.loading = false
-        return
       } finally {
         this.close()
       }
     },
 
-    open ({ id = null, name = '', description = '' } = {}) {
+    open ({
+      id = null,
+      name = '',
+      description = '',
+      icon = '',
+      letter = ''
+    } = {}) {
       this.id = id
       this.item.name = name
       this.item.description = description
+      this.item.icon = icon
+      this.item.letter = letter
 
       this.$nextTick(() => {
         this.dialog = true

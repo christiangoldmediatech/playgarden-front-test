@@ -4,32 +4,8 @@
     :style="{'--bgColor': color}"
     fluid
   >
-    <v-container>
-      <v-row align="end">
-        <img
-          :src="icon"
-          :height="($vuetify.breakpoint.xs) ? '32px' : '48px'"
-        >
-
-        <div class="mx-3">
-          <span class="font-weight-black text-outline category-text text-uppercase" :style="{'--bgColor': color}">
-            {{ categoryName }}
-          </span>
-        </div>
-
-        <v-btn
-          color="primary"
-          :small="$vuetify.breakpoint.xs"
-          @click.stop="playAll"
-        >
-          <v-icon left>
-            mdi-play
-          </v-icon>
-          PLAY ALL
-        </v-btn>
-      </v-row>
-
-      <v-row align="center" justify="space-between">
+    <v-container class="pa-0">
+      <v-row class="flex-nowrap" align="center">
         <v-btn
           text
           :disabled="page === 1"
@@ -41,53 +17,42 @@
           />
         </v-btn>
 
-        <v-row>
-          <v-col
-            v-for="activity in list"
-            :key="`activity-${activity.id}`"
-            cols="12"
-            sm="6"
-            md="3"
-          >
-            <v-hover v-slot:default="{ hover }">
-              <v-card :elevation="(hover) ? 12 : 2">
-                <jw-player
-                  v-if="activity.videos && activity.videos.videoUrl"
-                  :ref="`${_uid}_players`"
-                  :file="activity.videos.videoUrl.HLS"
-                  :title="activity.videos.name"
-                  :description="activity.videos.description"
-                  next-up-display
-                  @play="goFullScreen"
-                />
+        <v-col :id="`cardSpace_${_uid}`">
+          <v-row align="end">
+            <img
+              :src="icon"
+              :height="($vuetify.breakpoint.xs) ? '32px' : '48px'"
+            >
 
-                <v-card-actions>
-                  <img
-                    :src="icon"
-                    height="48px"
-                  >
-                  <div class="ml-2">
-                    <span>
-                      {{ categoryName }}
-                    </span>
-                    <br>
-                    <span class="font-weight-bold">
-                      {{ activity.videos.name }}
-                    </span>
-                  </div>
+            <div class="mx-3">
+              <span class="font-weight-black text-outline category-text text-uppercase" :style="{'--bgColor': color}">
+                {{ categoryName }}
+              </span>
+            </div>
 
-                  <v-spacer />
+            <v-btn
+              color="primary"
+              :small="$vuetify.breakpoint.xs"
+              @click.stop="playAll"
+            >
+              <v-icon left>
+                mdi-play
+              </v-icon>
+              PLAY ALL
+            </v-btn>
+          </v-row>
 
-                  <v-btn icon>
-                    <v-icon color="#F5737F">
-                      mdi-heart-outline
-                    </v-icon>
-                  </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-hover>
-          </v-col>
-        </v-row>
+          <v-row>
+            <activity-card
+              v-for="activity in list"
+              :key="`activity-${activity.id}`"
+              :activity-id="activity.id"
+              :activity="activity.videos"
+              :icon="icon"
+              :category-name="categoryName"
+            />
+          </v-row>
+        </v-col>
 
         <v-btn
           text
@@ -105,8 +70,14 @@
 </template>
 
 <script>
+import ActivityCard from './ActivityCard.vue'
+
 export default {
   name: 'Carousel',
+
+  components: {
+    ActivityCard
+  },
 
   props: {
     color: {
@@ -134,6 +105,12 @@ export default {
   },
 
   computed: {
+    cardWidth () {
+      const breakpoint = this.$vuetify.breakpoint
+      if (breakpoint.xs) { return 272 }
+      return 400
+    },
+
     limit () {
       if (this.$vuetify.breakpoint.sm) { return 2 }
       if (this.$vuetify.breakpoint.xs) { return 1 }
@@ -170,22 +147,19 @@ export default {
       const playlist = this.activities.map((activity) => {
         return {
           file: activity.videos.videoUrl.HLS,
-          title: activity.videos.name,
-          description: activity.videos.description
+          thumbnail: activity.videos.thumbnail,
+          activityId: activity.id
         }
       })
 
-      const player = this.$refs[`${this._uid}_players`][0].player
-      player.load(playlist)
-      player.play()
+      this.$nuxt.$emit('play-activity', {
+        title: `${this.categoryName} | Play All`,
+        playlist
+      })
     },
 
     moveCarousel (direction) {
       this.page += direction
-    },
-
-    goFullScreen ({ player, params }) {
-      player.setFullscreen(true)
     }
   }
 }

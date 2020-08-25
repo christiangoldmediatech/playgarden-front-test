@@ -12,6 +12,7 @@
 
 <script>
 export default {
-  name: 'Worksheet'
+  // eslint-disable-next-line vue/match-component-file-name
+  name: 'Id'
 }
 </script>

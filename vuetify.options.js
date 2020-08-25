@@ -1,4 +1,4 @@
-export default function ({ app }) {
+export default function () {
   return {
     theme: {
       options: {
@@ -10,7 +10,7 @@ export default function ({ app }) {
           primary: '#C2DAA5',
           secondary: '#E2EBBA',
           error: '#C61818',
-          accent: '#FEC572',
+          accent: '#f89838',
           success: '#C5DCA6',
           black: '#606060'
         }

@@ -151,14 +151,15 @@
     <prompt-dialog />
 
     <admin-snack-bar />
+
     <video-preview />
   </v-app>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+
 import AdminSnackBar from '@/components/admin/AdminSnackBar.vue'
-import VideoPreview from '@/components/admin/video-preview/VideoPreview.vue'
 
 export default {
   name: 'Admin',
@@ -166,14 +167,13 @@ export default {
   middleware: ['checkJWT'],
 
   components: {
-    AdminSnackBar,
-    VideoPreview
+    AdminSnackBar
   },
 
   data () {
     return {
       appDrawer: false,
-      menuItemsData: [
+      menuItems: [
         {
           icon: 'mdi-teach',
           title: 'Curriculum management',
@@ -200,8 +200,36 @@ export default {
           rootPath: '/admin/settings',
           children: [
             {
+              title: 'Activity Types',
+              route: 'activity-types'
+            },
+            {
+              title: 'Backpack Management',
+              route: 'backpack-management'
+            },
+            {
               title: 'Curriculum Types',
               route: 'curriculum-types'
+            },
+            {
+              title: 'Notification Management',
+              route: 'notification-management'
+            },
+            {
+              title: 'Offline Worksheet Categories',
+              route: 'offline-worksheet-categories'
+            },
+            {
+              title: 'Onboarding Management',
+              route: 'onboarding'
+            },
+            {
+              title: 'Patch Management',
+              route: 'patch-management'
+            },
+            {
+              title: 'Privacy Policy Management',
+              route: 'privacy-policy-management'
             },
             {
               title: 'Report Card Types',
@@ -212,8 +240,8 @@ export default {
               route: 'role-management'
             },
             {
-              title: 'Activity Types',
-              route: 'activity-types'
+              title: 'Terms & Conditions Management',
+              route: 'terms-conditions-management'
             }
           ]
         }
@@ -224,25 +252,7 @@ export default {
   computed: {
     ...mapGetters('auth', {
       userInfo: 'getUserInfo'
-    }),
-
-    menuItems () {
-      return this.menuItemsData.map((item) => {
-        if (item.children) {
-          item.children.sort((a, b) => {
-            if (a.title < b.title) {
-              return -1
-            }
-            if (a.title > b.title) {
-              return 1
-            }
-            return 0
-          })
-        }
-
-        return item
-      })
-    }
+    })
   }
 }
 </script>

@@ -9,8 +9,10 @@ import {
   confirmed,
   digits,
   email,
+  integer,
   max,
   min,
+  min_value as minValue,
   required
 } from 'vee-validate/dist/rules'
 import en from 'vee-validate/dist/locale/en.json'
@@ -25,8 +27,10 @@ localize({ en })
 extend('confirmed', confirmed)
 extend('digits', digits)
 extend('email', email)
+extend('integer', integer)
 extend('max', max)
 extend('min', min)
+extend('min_value', minValue)
 extend('required', required)
 
 // Custom

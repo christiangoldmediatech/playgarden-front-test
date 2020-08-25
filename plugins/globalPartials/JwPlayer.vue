@@ -8,7 +8,7 @@ export default {
 
   props: {
     file: {
-      type: String,
+      type: [Object, String],
       required: false,
       default: undefined
     },
@@ -63,16 +63,24 @@ export default {
     }
   },
 
-  data: () => {
-    return {
-      player: null
+  data: () => ({
+    player: null
+  }),
+
+  computed: {
+    _file () {
+      if (this.file) {
+        return this.file.HLS || this.file
+      }
+
+      return undefined
     }
   },
 
   mounted () {
-    if (jwplayer) {
-      const player = jwplayer(`player_${this._uid}`)
-      const config = { ...this.$props }
+    if (window.jwplayer) {
+      const player = window.jwplayer(`player_${this._uid}`)
+      const config = { ...this.$props, file: this._file }
 
       player.setup(config)
 
@@ -82,12 +90,35 @@ export default {
         this.$emit('play', { player, params })
       })
 
+      player.on('pause', (params) => {
+        this.$emit('play', { player, params })
+      })
+
       player.on('complete', (params) => {
         this.$emit('complete', { player, params })
       })
 
+      player.on('beforeComplete', (params) => {
+        this.$emit('beforeComplete', { player, params })
+      })
+
+      player.on('seek', (params) => {
+        this.$emit('seek', { player, params })
+      })
+
+      player.on('playlistComplete', (params) => {
+        this.$emit('playlistComplete', { player, params })
+      })
+
       this.player = player
     }
+  },
+
+  beforeDestroy () {
+    if (this.player) {
+      this.player.remove()
+    }
+    this.player = null
   }
 }
 </script>

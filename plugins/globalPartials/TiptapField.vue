@@ -5,7 +5,9 @@
     <tiptap-vuetify
       v-model="input"
       v-bind="$attrs"
-      class="elevation-1 mb-6 mt-3"
+      class="mb-6 mt-3"
+      :class="{ 'elevation-1': !flat, flat, readonly }"
+      :editor-properties="{ ...editorProperties, editable: !readonly }"
       :extensions="extensions"
       v-on="$listeners"
     />
@@ -48,13 +50,28 @@ export default {
   },
 
   props: {
+    editorProperties: {
+      type: Object,
+      default: () => ({})
+    },
+
+    flat: {
+      type: [Boolean, Number, String],
+      default: false
+    },
+
     label: {
       type: String,
       default: ''
     },
 
+    readonly: {
+      type: [Boolean, Number, String],
+      default: false
+    },
+
     value: {
-      type: [String, Number, Object],
+      type: [Number, Object, String],
       default: ''
     }
   },
@@ -112,3 +129,17 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.flat ::v-deep {
+  .v-card {
+    box-shadow: none;
+  }
+}
+
+.readonly ::v-deep {
+  .v-toolbar {
+    display: none;
+  }
+}
+</style>

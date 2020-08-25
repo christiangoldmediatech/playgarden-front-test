@@ -69,37 +69,22 @@
               </template>
 
               <template v-slot:item.actions="{ item }">
-                <v-icon
-                  color="#81A1F7"
-                  dense
-                  @click="$refs.editor.open(item)"
-                >
+                <v-icon color="#81A1F7" dense @click="$refs.editor.open(item)">
                   mdi-pencil-outline
                 </v-icon>
-                <v-icon
-                  color="#d30909"
-                  dense
-                  @click="remove(item)"
-                >
+                <v-icon color="#d30909" dense @click="remove(item)">
                   mdi-delete-outline
                 </v-icon>
               </template>
 
               <template v-slot:no-data>
-                <v-btn
-                  color="primary"
-                  text
-                  @click="refresh(true)"
-                >
+                <v-btn color="primary" text @click="refresh(true)">
                   Refresh
                 </v-btn>
               </template>
 
               <template v-slot:loading>
-                <v-skeleton-loader
-                  class="mx-auto"
-                  type="table-row-divider@3"
-                />
+                <v-skeleton-loader class="mx-auto" type="table-row-divider@3" />
               </template>
 
               <template v-slot:footer="{ props }">
@@ -115,10 +100,25 @@
                     />
 
                     <template v-for="i in props.pagination.pageCount">
-                      <span :key="`footer-page-number-${i}`" :class="['font-weight-normal', { 'accent--text text--darken-1': props.pagination.page === i, 'clickable': props.pagination.page !== i }]" @click.stop="page = i">
+                      <span
+                        :key="`footer-page-number-${i}`"
+                        :class="[
+                          'font-weight-normal',
+                          {
+                            'accent--text text--darken-1':
+                              props.pagination.page === i,
+                            clickable: props.pagination.page !== i
+                          }
+                        ]"
+                        @click.stop="page = i"
+                      >
                         {{ i }}
                       </span>
-                      <span v-if="i !== props.pagination.pageCount" :key="`footer-page-dot-${i}`" class="font-weight-normal mx-1">
+                      <span
+                        v-if="i !== props.pagination.pageCount"
+                        :key="`footer-page-dot-${i}`"
+                        class="font-weight-normal mx-1"
+                      >
                         &centerdot;
                       </span>
                     </template>
@@ -126,7 +126,10 @@
                     <v-icon
                       class="clickable ml-2"
                       color="green"
-                      :disabled="props.pagination.page === props.pagination.pageCount || loading"
+                      :disabled="
+                        props.pagination.page === props.pagination.pageCount ||
+                          loading
+                      "
                       x-small
                       @click.stop="page++"
                       v-text="'mdi-greater-than'"
@@ -163,6 +166,12 @@ export default {
           text: 'Letter',
           align: 'start',
           sortable: true,
+          value: 'letter'
+        },
+        {
+          text: 'Name',
+          align: 'start',
+          sortable: true,
           value: 'name'
         },
         {
@@ -178,10 +187,10 @@ export default {
           value: 'updatedAt'
         },
         {
-          text: '',
           align: 'right',
           sortable: false,
-          value: 'actions'
+          value: 'actions',
+          width: 100
         }
       ]
     }

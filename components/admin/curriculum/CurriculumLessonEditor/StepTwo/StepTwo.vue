@@ -186,15 +186,14 @@
 
 <script>
 import { mapActions } from 'vuex'
-import VideoPreviewBtn from '@/components/admin/video-preview/VideoPreviewBtn.vue'
+
 import StepTwoForm from './StepTwoForm'
 
 export default {
   name: 'StepTwo',
 
   components: {
-    StepTwoForm,
-    VideoPreviewBtn
+    StepTwoForm
   },
 
   props: {
@@ -230,7 +229,8 @@ export default {
       {
         align: 'right',
         sortable: false,
-        value: 'actions'
+        value: 'actions',
+        width: 125
       }
     ]
   }),
@@ -269,7 +269,7 @@ export default {
     },
 
     remove ({ id, name }) {
-      this.$nuxt.$emit('open-admin-prompt', {
+      this.$nuxt.$emit('open-prompt', {
         title: 'Delete curriculum lesson video?',
         message: `Are you sure you wish to delete '${name}' curriculum lesson video?`,
         action: () =>

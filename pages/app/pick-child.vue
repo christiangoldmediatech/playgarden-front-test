@@ -29,35 +29,32 @@
                     lg="2"
                     @click.stop="selectChild(child)"
                   >
-                    <div class="d-flex flex-column align-center justify-end min-col">
-                      <template v-if="child.everyone">
+                    <div class="align-center min-col">
+                      <v-img
+                        v-if="child.everyone"
+                        class="mb-3"
+                        :src="require('@/assets/svg/everyone.svg')"
+                        :max-height="hover ? 114 : 100"
+                        contain
+                      />
+
+                      <v-avatar
+                        v-else
+                        class="mb-3"
+                        :color="hover ? 'primary' : 'accent'"
+                        :size="hover ? 112 : 96"
+                      >
                         <v-img
-                          class="mb-3"
-                          :src="require('@/assets/svg/everyone.svg')"
-                          :max-height="hover ? '114px' : '100px'"
+                          :src="child.backpack.image"
+                          max-height="70%"
                           contain
                         />
-                        <p class="font-weight-bold">
-                          {{ child.firstName }}
-                        </p>
-                      </template>
-                      <template v-else>
-                        <v-avatar
-                          class="mb-3"
-                          :color="hover ? 'primary' : 'accent'"
-                          :size="hover ? 112 : 96"
-                        >
-                          <v-img
-                            :src="child.backpack.image"
-                            max-height="70%"
-                            contain
-                          />
-                        </v-avatar>
-                        <p class="font-weight-bold">
-                          {{ child.firstName }}
-                        </p>
-                      </template>
+                      </v-avatar>
                     </div>
+
+                    <p class="font-weight-bold">
+                      {{ child.firstName }}
+                    </p>
                   </v-col>
                 </v-hover>
               </v-row>
@@ -123,7 +120,7 @@ export default {
         this.selected = child
 
         if (child.id) {
-          this.setChild({ value: child, save: true })
+          this.setChild({ value: [child], save: true })
         } else {
           this.setChild({ value: this.rows, save: true })
         }
@@ -141,7 +138,7 @@ export default {
 
 <style lang="scss" scoped>
 .min-col {
-  min-height: 165px !important;
+  min-height: 125px !important;
 }
 
 .bkg {
@@ -152,20 +149,6 @@ export default {
   &::before {
     opacity: 0 !important;
   }
-}
-
-.green-line {
-  height: 1rem;
-  width: 100%;
-  box-shadow: 0 -1px 6px 0 rgba(0, 0, 0, 0.12);
-}
-
-.green-line-1 {
-  background-color: var(--v-primary-base);
-}
-
-.green-line-2 {
-  background-color: #dce7b5;
 }
 
 .underlined-title {

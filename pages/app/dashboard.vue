@@ -1,26 +1,60 @@
 <template>
-  <v-row>
-    <v-col cols="12" sm="6" lg="4">
-      <v-card>
-        <v-card-title>
-          Componente menu
-        </v-card-title>
+  <v-main>
+    <v-container fluid>
+      <v-row>
+        <v-col cols="12" sm="5" md="4" lg="3">
+          <dashboard-panel />
+        </v-col>
 
-        <v-card-text>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, ipsam dignissimos sed eveniet quidem tenetur impedit omnis beatae illum, assumenda architecto odio alias expedita explicabo tempora! Aspernatur sit voluptas adipisci.
-        </v-card-text>
-      </v-card>
-    </v-col>
+        <v-col cols="12" sm="7" md="8" lg="9">
+          <v-row align="center" class="px-3">
+            <v-btn color="primary" :to="{ name: 'app-pick-child' }">
+              PICK CHILD
+            </v-btn>
 
-    <v-col>
-      <!-- Aquí se van a cargar los pages de la carpeta dashboard -->
-      <nuxt-child />
-    </v-col>
-  </v-row>
+            <v-spacer />
+
+            First time using Playgarden?
+
+            <v-btn color="primary" text>
+              WATCH TUTORIAL HERE
+            </v-btn>
+          </v-row>
+
+          <v-row>
+            <v-col class="pt-5">
+              <v-row
+                v-if="$route.name === 'app-dashboard'"
+                align="center"
+                fill-height
+                justify="center"
+              >
+                <v-col class="text-center" cols="4">
+                  <div>
+                    <img class="logo-img" src="@/assets/svg/logo.svg">
+                  </div>
+
+                  <v-progress-linear color="primary" indeterminate :size="20" />
+                </v-col>
+              </v-row>
+
+              <nuxt-child />
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-main>
 </template>
 
 <script>
+import DashboardPanel from '@/components/app/dashboard/DashboardPanel'
+
 export default {
-  name: 'Dashboard'
+  name: 'Dashboard',
+
+  components: {
+    DashboardPanel
+  }
 }
 </script>

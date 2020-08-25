@@ -2,6 +2,7 @@
   <v-app>
     <!-- APP MAV & BAR -->
     <app-navigation />
+
     <application-header />
 
     <!-- CONTENT -->
@@ -10,6 +11,7 @@
         <nuxt />
       </v-container>
     </v-main>
+
     <nuxt v-else />
 
     <!-- FOOTER -->
@@ -42,7 +44,7 @@ export default {
     ...mapState(['fullWidthPages']),
 
     fullWidth () {
-      return this.fullWidthPages.includes(this.$route.name)
+      return this.fullWidthPages[this.$route.name]
     }
   }
 }
@@ -71,6 +73,7 @@ export default {
   .text-h6 {
     font-family: "Poppins", sans-serif !important;
   }
+
   .container:not(.container--fluid) {
     max-width: 1200px;
   }

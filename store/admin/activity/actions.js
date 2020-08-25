@@ -1,28 +1,23 @@
 export default {
-
-  async getActivities ({ commit }, { name = null, activityTypeId = null }) {
+  async getActivities ({ commit }, params) {
     const data = await this.$axios.$get('/activities', {
-      params: {
-        name,
-        activityTypeId,
-        type: 'VIDEO'
-      }
+      params
     })
     commit('SET_ROWS', data.activities)
     commit('SET_FILTERED', data.filtered)
     commit('SET_LIMIT', data.limit)
     commit('SET_TOTAL', data.total)
     commit('SET_PAGE', data.page)
-  },
 
-  async getActivityById (ctx, id) {
-    const data = await this.$axios.$get(`/activities/${id}`)
     return data
   },
 
+  async getActivityById (ctx, id) {
+    return await this.$axios.$get(`/activities/${id}`)
+  },
+
   async createActivity (ctx, data) {
-    const response = await this.$axios.$post('/activities', data)
-    return response
+    return await this.$axios.$post('/activities', data)
   },
 
   async updateActivity (ctx, { id, data }) {
@@ -34,7 +29,9 @@ export default {
   },
 
   async getTypes ({ commit }, name = null) {
-    const data = await this.$axios.$get('/activity-types', { params: { name } })
+    const data = await this.$axios.$get('/activity-types', {
+      params: { name }
+    })
     commit('SET_TYPES', data)
   },
 

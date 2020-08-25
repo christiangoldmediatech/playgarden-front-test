@@ -11,6 +11,57 @@
   text-decoration: none;
 }
 
+.black--link {
+  color: var(--pg-black) !important;
+}
+
 .clickable {
   cursor: pointer;
+}
+
+.green-line {
+  height: 1rem;
+  width: 100%;
+  box-shadow: 0 -1px 6px 0 rgba(0, 0, 0, 0.12);
+}
+
+.green-line-1 {
+  background-color: var(--v-primary-base);
+}
+
+.green-line-2 {
+  background-color: #dce7b5;
+}
+
+.worksheet-item {
+  transition: transform 250ms;
+}
+
+.worksheet-scaled {
+  transform: scale(1.11);
+  z-index: 1;
+}
+
+.worksheet-selected {
+  ::after {
+    border-radius: 50%;
+    box-shadow: inset 0px 0px 0px 10px var(--v-primary-base);
+    content: "";
+    display: block;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
+}
+
+.title-text {
+  width: calc(100%);
+  background-image: linear-gradient(
+    transparent calc(100% - 10px),
+    var(--v-primary-base) 10px
+  );
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  color: #606060;
 }

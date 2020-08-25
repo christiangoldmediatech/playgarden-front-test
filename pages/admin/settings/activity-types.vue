@@ -1,26 +1,5 @@
 <template>
   <activity-type-data-table ref="ActivityTypeDataTable" />
-  <!--
-  <v-container>
-    <v-card>
-      <v-toolbar
-        color="accent darken-1"
-        dark
-        flat
-      >
-        <v-toolbar-title>
-          Activity Types
-        </v-toolbar-title>
-      </v-toolbar>
-
-      <v-card-text>
-        <p>View, create, update, or delete an activity types.</p>
-
-        <activity-type-data-table ref="ActivityTypeDataTable" />
-      </v-card-text>
-    </v-card>
-  </v-container>
-  -->
 </template>
 
 <script>

@@ -6,6 +6,7 @@
           <span class="font-weight-bold text-h5">
             CHILD’S INFORMATION
           </span>
+
           <v-row class="mb-6">
             <v-spacer />
 
@@ -199,7 +200,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('backpacks', { indexBackpacks: 'index' }),
+    ...mapActions('backpacks', ['getBackpacks']),
 
     addRow () {
       this.draft.push({
@@ -216,7 +217,7 @@ export default {
     },
 
     fetchBackpacks () {
-      this.indexBackpacks().then(data => (this.backpacks = data))
+      this.getBackpacks().then(data => (this.backpacks = data))
     },
 
     onInputBirthday (item) {
