@@ -10,7 +10,8 @@ export default {
           { title: 'Dashboard', to: { name: 'app-dashboard' } },
           { title: 'Student Cubby', to: { name: 'app-student-cubby' } },
           { title: 'Activities', to: { name: 'app-activities' } },
-          { title: 'Parents Corner', to: { name: 'app-parents-corner' } }
+          { title: 'Profiles', to: { name: 'app-profile' } },
+          { title: 'Parent Corner', to: { name: 'app-parent-corner' } }
         ]
       }
 
