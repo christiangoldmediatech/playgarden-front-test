@@ -69,7 +69,7 @@
 import { mapGetters, mapActions } from 'vuex'
 import ConnectingPairs from '@/components/app/dashboard/worksheets/ConnectingPairs.vue'
 import TapCorrect from '@/components/app/dashboard/worksheets/TapCorrect.vue'
-import CompletedMessage from '@/components/app/dashboard/CompletedMessage.vue'
+import CompletedDialog from '@/components/app/dashboard/CompletedDialog.vue'
 
 export default {
   name: 'OnlineWorksheet',
@@ -77,7 +77,7 @@ export default {
   components: {
     ConnectingPairs,
     TapCorrect,
-    CompletedMessage
+    CompletedDialog
   },
 
   data: () => {
