@@ -23,18 +23,20 @@ export default {
 
 <style lang="scss" scoped>
 .underlined-title {
-  font-size: 20px;
   position: relative;
   z-index: 1;
+  color: $pg-black;
+  font-weight: 500;
+  font-size: 18px;
   &::after {
-    width: 100%;
+    width: 105%;
     position: absolute;
-    bottom: 5px;
-    left: 0;
+    bottom: 3px;
+    left: -3%;
     content: "";
     z-index: -1;
     border-bottom: 5px solid $pg-accent;
-    border-radius: 5px;
+    border-radius: 0px;
   }
 }
 </style>

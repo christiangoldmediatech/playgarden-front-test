@@ -68,20 +68,12 @@
         type="submit"
         x-large
       >
-        RESET PASSWORD
+        SEND RECOVERY LINK
       </v-btn>
 
-      <p class="login mt-4">
+      <p class="login mt-8">
         <nuxt-link class="primary--text" :to="{ name: 'index' }">
           <span>return to login</span>
-        </nuxt-link>
-      </p>
-
-      <p class="mt-4 signup text-center text-md-left">
-        Don't have an account?
-
-        <nuxt-link :to="{ name: 'auth-signup' }">
-          <span>SIGNUP</span>
         </nuxt-link>
       </p>
     </v-form>

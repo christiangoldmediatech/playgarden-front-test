@@ -36,15 +36,15 @@
 
     <p class="forgot-password text-center text-md-right">
       <nuxt-link class="black--text" :to="{ name: 'auth-forgot-password' }">
-        <underlined-subtitle class="clickable mt-2" text="Forgot Password" />
+        <underlined-subtitle class="clickable mt-2" text="Forgot password?" />
       </nuxt-link>
     </p>
 
     <p class="signup text-center text-md-left">
-      Don't have an account?
+      New to Playgarden Prep Online?
 
       <nuxt-link :to="{ name: 'auth-signup' }">
-        <span>SIGNUP</span>
+        <span>SIGN UP NOW!</span>
       </nuxt-link>
     </p>
   </v-form>
@@ -113,7 +113,7 @@ export default {
   text-align: right;
 }
 .signup {
-  font-size: 20px;
+  font-size: 17px;
 
   span {
     color: $pg-main;
