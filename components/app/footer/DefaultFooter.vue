@@ -73,13 +73,13 @@
 
                 <nuxt-link
                   class="d-block link-text"
-                  :to="{ name: 'index' }"
+                  :to="{ name: 'terms-conditions' }"
                   v-text="'Terms & Conditions'"
                 />
 
                 <nuxt-link
                   class="d-block link-text"
-                  :to="{ name: 'index' }"
+                  :to="{ name: 'privacy-policy' }"
                   v-text="'Privacy Policy'"
                 />
 

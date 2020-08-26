@@ -25,6 +25,7 @@
 
 <script>
 import { mapState } from 'vuex'
+
 import AppNavigation from '@/components/app/header/AppNavigation'
 import ApplicationHeader from '@/components/app/header/ApplicationHeader'
 import DefaultFooter from '@/components/app/footer/DefaultFooter'

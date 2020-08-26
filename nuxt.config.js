@@ -55,19 +55,22 @@ export default {
   /*
    ** Global CSS
    */
-  css: ['tiptap-vuetify/dist/main.css'],
+  css: [
+    'tiptap-vuetify/dist/main.css',
+    'vue-snotify/styles/material.css'
+  ],
   /*
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
   plugins: [
     '@/plugins/axios',
+    '@/plugins/components',
     '@/plugins/directives',
     '@/plugins/filters',
     '@/plugins/globalPartials',
     '@/plugins/snotify',
     '@/plugins/validate',
-    '@/plugins/components',
     { src: '@/plugins/tiptapVuetify', mode: 'client' }
   ],
   /*
@@ -108,8 +111,8 @@ export default {
   ],
   styleResources: {
     scss: [
-      '@/assets/scss/variables.scss',
-      '@/assets/scss/app.scss'
+      './assets/scss/variables.scss',
+      './assets/scss/app.scss'
     ]
   },
   /*
