@@ -31,13 +31,19 @@ export default {
 
   async created () {
     try {
-      this.data = await this.getPrivacyPolicy()
+      const { privacy } = await this.getPrivacyPolicy()
+
+      this.data = privacy
     } catch (e) {
     } finally {
       this.loading = false
     }
   },
 
-  methods: mapActions('privacy-policy', ['getPrivacyPolicy'])
+  methods: mapActions('privacy-policy', ['getPrivacyPolicy']),
+
+  head: () => ({
+    title: 'Privacy Policy'
+  })
 }
 </script>

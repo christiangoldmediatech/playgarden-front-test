@@ -31,13 +31,19 @@ export default {
 
   async created () {
     try {
-      this.data = await this.getTermsConditions()
+      const { termsConditions } = await this.getTermsConditions()
+
+      this.data = termsConditions
     } catch (e) {
     } finally {
       this.loading = false
     }
   },
 
-  methods: mapActions('terms-conditions', ['getTermsConditions'])
+  methods: mapActions('terms-conditions', ['getTermsConditions']),
+
+  head: () => ({
+    title: 'Terms & Conditions'
+  })
 }
 </script>
