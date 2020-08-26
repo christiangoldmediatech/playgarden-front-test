@@ -70,7 +70,7 @@
                 </v-list-item-avatar>
 
                 <v-list-item-content>
-                  <v-list-item-title>
+                  <v-list-item-title class="titleDashboard">
                     {{ video.name }}
                   </v-list-item-title>
 
@@ -204,7 +204,7 @@
                 </v-list-item-avatar>
 
                 <v-list-item-content>
-                  <v-list-item-title>
+                  <v-list-item-title class="titleDashboard">
                     {{ activity.videos.name }}
                   </v-list-item-title>
 
@@ -401,6 +401,15 @@ export default {
   margin: 0;
   padding: 0;
   width: 35px;
+}
+
+.text-h5 {
+  color: $pg-black !important;
+}
+
+.titleDashboard {
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
 }
 
 .card-border-top {

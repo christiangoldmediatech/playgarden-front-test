@@ -31,6 +31,7 @@ export default {
   font-weight: bold;
   position: relative;
   z-index: 1;
+  color: $pg-black;
   &::after {
     width: 102%;
     position: absolute;

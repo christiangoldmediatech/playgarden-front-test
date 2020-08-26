@@ -1,7 +1,7 @@
 <template>
   <v-row no-gutters>
     <v-col cols="12">
-      <p class="font-weight-bold">
+      <p class="font-weight-bold titleAccount">
         MEMBERSHIP
       </p>
 
@@ -17,7 +17,7 @@
         <label class="mb-1 monthly-membership-fee-text mt-1">
           Your monthly membership fee is
 
-          <b>${{ billing.monthlyMembershipFee }}</b>
+          <b>${{ billing.monthlyMembershipFee/100 }}</b>
         </label>
       </p>
 
@@ -211,3 +211,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.titleAccount {
+  color: $pg-black !important;
+}
+</style>
