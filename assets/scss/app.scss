@@ -1,3 +1,8 @@
+/* CUSTOM */
+@import 'mixins.scss';
+@import 'text.scss';
+@import 'image.scss';
+
 /* VENDOR */
 
 @import "~vue-snotify/styles/material";

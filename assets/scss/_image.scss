@@ -1,0 +1,26 @@
+/*
+  Helper classes with custom CSS
+  ------------------------------
+  - PG prefix is used in order to avoid collisions with
+    existing global classes.
+  - Recomended BEM convenction for class naming
+*/
+
+
+/* Image size helpers */
+
+.pg-image--cover {
+  > img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.pg-image--contain {
+  > img {
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+  }
+}

@@ -124,7 +124,7 @@
           v-model="file"
           :error-messages="errors"
           :file.sync="file"
-          gif
+          jpg
           label="Upload Photo"
           mode="image"
           path="lesson"

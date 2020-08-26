@@ -16,7 +16,7 @@
 
             First time using Playgarden?
 
-            <v-btn color="primary" text>
+            <v-btn color="primary" nuxt text :to="{ name: 'app-onboarding' }">
               WATCH TUTORIAL HERE
             </v-btn>
           </v-row>
