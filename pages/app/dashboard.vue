@@ -14,7 +14,7 @@
 
             <v-spacer />
 
-            First time using Playgarden?
+            <span class="titleOnDashboard">First time using Playgarden?</span>
 
             <v-btn color="primary" nuxt text :to="{ name: 'app-onboarding' }">
               WATCH TUTORIAL HERE
@@ -58,3 +58,10 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.titleOnDashboard {
+  font-weight: 500 !important;
+  color: $pg-black !important;
+}
+</style>

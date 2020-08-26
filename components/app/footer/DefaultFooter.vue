@@ -3,7 +3,7 @@
     <div class="green-line green-line-1" />
     <div class="green-line green-line-2" />
 
-    <v-card flat tile width="100%" max-width="1200">
+    <v-card flat tile width="100%" max-width="1200" class="card-infoPlaygarden">
       <v-card-text class="py-0">
         <v-container fluid py-0>
           <v-row>
@@ -140,7 +140,7 @@
 
       <v-container py-0>
         <v-row>
-          <v-col class="text-center" cols="12">
+          <v-col class="text-center text-footer" cols="12">
             2020
             <template v-if="new Date().getFullYear() > 2020">
               - {{ new Date().getFullYear() }}
@@ -166,8 +166,18 @@ export default {
   color: $pg-black !important;
 }
 
+.text-footer {
+  font-size: 11px;
+  color: $pg-black !important;
+  font-weight: 300;
+}
+
 .link-text {
   color: var(--v-black-base);
+}
+
+.card-infoPlaygarden {
+  margin-top: 37px !important;
 }
 
 .social-media-circle {
