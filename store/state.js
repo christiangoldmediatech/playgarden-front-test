@@ -15,6 +15,7 @@ export default () => ({
     'app-student-cubby-student-portfolio': 1,
     'app-student-cubby-badges': 1,
     'app-dashboard-online-worksheet': 1,
+    'app-dashboard-offline-worksheet': 1,
     'app-pick-child': 1,
     'app-profile': 1
   },

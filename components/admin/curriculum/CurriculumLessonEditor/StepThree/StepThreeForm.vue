@@ -119,7 +119,7 @@
               v-model="item.file"
               :error-messages="errors"
               :file.sync="item.file"
-              gif
+              jpg
               :label="`Image ${indexMT + 1}`"
               mode="image"
               path="lesson"

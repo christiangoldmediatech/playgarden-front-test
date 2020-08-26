@@ -5,7 +5,7 @@
 <script>
 import { mapActions } from 'vuex'
 
-import { hasSessionStorage } from '@/utils/window'
+import { hasLocalStorage } from '@/utils/window'
 
 export default {
   name: 'JwtRecovery',
@@ -13,7 +13,7 @@ export default {
   layout: 'loading',
 
   async mounted () {
-    if (hasSessionStorage()) {
+    if (hasLocalStorage()) {
       await this.restoreAuth()
     }
 

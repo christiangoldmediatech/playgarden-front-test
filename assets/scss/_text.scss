@@ -1,0 +1,38 @@
+/*
+  Helper classes with custom CSS
+  ------------------------------
+  - PG prefix is used in order to avoid collisions with
+    existing global classes.
+  - Recomended BEM convenction for class naming
+*/
+
+/* Text helpers */
+
+.pg-text--spaced {
+  letter-spacing: 0.3em;
+}
+
+/* Title variations */
+
+.pg-title--uppercase {
+  @extend .pg-text--spaced;
+  text-transform: uppercase;
+  color: $pg-black;
+  font-weight: 600;
+  font-size: 30px;
+}
+
+.pg-text--underlined {
+  &::after {
+    content: '';
+    position: absolute;
+    border-radius: 10px;
+    background: $pg-main;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 0.3em;
+    width: 100%;
+    z-index: -1;
+  }
+}
