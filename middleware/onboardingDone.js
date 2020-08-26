@@ -2,7 +2,7 @@ export default function ({ redirect, route, store }) {
   if (/^app-.*$/.test(route.name) && process.client) {
     const user = store.getters['auth/getUserInfo']
 
-    const whiteList = {
+    const ignoreRoute = {
       'auth-logout': 1,
       'auth-verify-email': 1,
       'app-account': 1,
@@ -12,7 +12,7 @@ export default function ({ redirect, route, store }) {
     if (
       user.id &&
       !user.onboardingDone &&
-      !whiteList[route.name] &&
+      !ignoreRoute[route.name] &&
       (user.role.name === 'PARENTS' || user.role.name === 'CAREGIVERS')
     ) {
       redirect({ name: 'app-onboarding' })

@@ -1,10 +1,11 @@
+/* VENDOR */
+/* import them directly into nuxt.config.js */
+
 /* CUSTOM */
 @import 'mixins.scss';
 @import 'text.scss';
 @import 'image.scss';
 
-/* VENDOR */
-@import "~vue-snotify/styles/material";
 
 /* GLOBAL */
 .v-application a {
