@@ -1,9 +1,10 @@
+/* VENDOR */
+/* import them directly into nuxt.config.js */
+
 /* CUSTOM */
 @import 'mixins.scss';
 @import 'text.scss';
 @import 'image.scss';
-
-/* VENDOR */
 
 @import "~vue-snotify/styles/material";
 
@@ -79,4 +80,21 @@ p {
 .theme--light.v-btn,
 .v-btn__content {
     font-weight: bold;
+    font-weight: bold;
+}
+.category-text {
+  font-size: 1.5rem !important;
+  position: relative;
+  z-index: 1;
+  &::after {
+    width: 115%;
+    opacity: 0.5;
+    position: absolute;
+    bottom: 0%;
+    left: -7.5%;
+    content: "";
+    z-index: -1;
+    border-bottom: 11px solid var(--bgColor);
+    border-radius: 7px;
+  }
 }
