@@ -98,10 +98,10 @@
               md="3"
             >
               <p class="font-weight-bold mb-1 mt-0 primary--text text-h5">
-                Upper East Side
+                <span class="info-footer-title">Upper East Side</span>
               </p>
 
-              <p class="font-weight-bold mb-1">
+              <p class="mb-1">
                 ues@playgardenprep.com<br>
                 212-965-9718
               </p>
@@ -118,11 +118,11 @@
               sm="6"
               md="3"
             >
-              <p class="font-weight-bold mb-1 mt-0 primary--text text-h5">
-                Tribeca
+              <p class="font-weight-bold mb-1 mt-0 primary--text text-h5 titleFooter">
+                <span class="info-footer-title">Tribeca</span>
               </p>
 
-              <p class="font-weight-bold mb-1">
+              <p class="mb-1">
                 tribeca@playgardenprep.com<br>
                 212-965-9717
               </p>
@@ -189,5 +189,9 @@ export default {
   height: 25px;
   border-radius: 50%;
   background-color: var(--v-primary-base);
+}
+
+.info-footer-title {
+  color: #8ab591 !important;
 }
 </style>

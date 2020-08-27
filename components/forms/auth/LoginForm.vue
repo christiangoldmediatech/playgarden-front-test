@@ -10,7 +10,7 @@
       :rules="[required, isValidEmail]"
       solo
       type="email"
-      class="label-signup"
+      class="label-color-signin"
     />
 
     <!-- Password -->
@@ -123,7 +123,13 @@ export default {
     font-weight: bold;
   }
 }
-.label-signup.v-input--has-state.error--text .v-label {
+
+.v-text-field.v-text-field.v-label {
   color: red !important;
+}
+
+.v-label {
+  color: red !important;
+  opacity: 1;
 }
 </style>
