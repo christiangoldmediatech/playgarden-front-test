@@ -9,19 +9,6 @@
       color="black"
       dark
     >
-      <!-- <v-card-title id="titleElement">
-        {{ title }}
-        <v-spacer />
-        <v-btn
-          icon
-          @click.stop="close"
-        >
-          <v-icon>
-            mdi-close
-          </v-icon>
-        </v-btn>
-      </v-card-title> -->
-
       <v-row no-gutters align="center" justify="center">
         <div
           class="videoContainer"
@@ -40,12 +27,6 @@
           />
         </div>
       </v-row>
-
-      <!-- <v-card-actions id="hintElement">
-        <v-spacer />
-        CTRL + SHIFT + Q to Exit
-        <v-spacer />
-      </v-card-actions> -->
     </v-card>
     <completed-dialog
       v-model="completed"
@@ -194,20 +175,6 @@ export default {
     open () {
       this.dialog = true
       this.videoHeight = window.innerHeight - 1
-      // this.$nextTick(() => {
-      //   const checker = window.setInterval(() => {
-      //     const titleElement = document.getElementById('titleElement')
-      //     const hintElement = document.getElementById('hintElement')
-      //     if (titleElement && hintElement) {
-      //       const titleHeight = titleElement.clientHeight
-      //       const hintHeight = hintElement.clientHeight
-      //       if (titleHeight > 0) {
-      //         this.videoHeight = window.innerHeight - titleHeight - hintHeight
-      //         window.clearInterval(checker)
-      //       }
-      //     }
-      //   }, 25)
-      // })
     },
 
     close () {
