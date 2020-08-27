@@ -40,7 +40,9 @@
           </span>
         </p>
 
-        <p>*Get a FREE trial for the first week!</p>
+        <p class="subtitle-signIn">
+          Get one week FREE trial
+        </p>
 
         <p>
           <small>You can cancel at any time from your account settings</small>
@@ -110,3 +112,14 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.text-h5 {
+  color: $pg-black !important;
+}
+
+.subtitle-signIn {
+  color: $pg-black !important;
+  font-weight: 600 !important;
+}
+</style>
