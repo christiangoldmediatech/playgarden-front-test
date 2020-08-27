@@ -13,23 +13,16 @@
         <br>
 
         <small>
-          Complete your registration and membership subscription to start
-          enjoying our learning experience!
+          Complete the registration and choose the plan that best suits you, to
+          start your learning experience!
         </small>
       </p>
 
       <p>
-        Pricing:
-
-        <br>
-
         <span class="font-weight-bold">
-          Pay $0.99 USD a day for first child and $0.20 USD a day per
-          additional*
+          Get one week FREE trial
         </span>
       </p>
-
-      <p>*Get a FREE trial for the first week!</p>
 
       <p>
         <small>You can cancel at any time from your account settings</small>
@@ -63,6 +56,8 @@ export default {
   },
 
   methods: {
+    ...mapActions('auth', ['fetchUserInfo']),
+
     ...mapActions('children', { storeChildren: 'store' }),
 
     async onSubmit (children) {
@@ -70,6 +65,8 @@ export default {
 
       try {
         await Promise.all(children.map(child => this.storeChildren(child)))
+
+        await this.fetchUserInfo()
 
         this.$snotify.success('Children have been stored successfully!')
 

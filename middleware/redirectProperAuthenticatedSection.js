@@ -1,3 +1,5 @@
+import { get } from 'lodash'
+
 export default function ({ redirect, route, store }) {
   if (process.client) {
     const user = store.getters['auth/getUserInfo']
@@ -5,13 +7,13 @@ export default function ({ redirect, route, store }) {
     if (
       user.id &&
       /^admin.*$/.test(route.name) &&
-      user.role.section === 'USERS'
+      get(user, 'role.section') === 'USERS'
     ) {
       redirect({ name: 'app-dashboard' })
     } else if (
       user.id &&
       /^app-.*$/.test(route.name) &&
-      user.role.section === 'ADMIN'
+      get(user, 'role.section') === 'ADMIN'
     ) {
       redirect({ name: 'admin-curriculum-management' })
     }

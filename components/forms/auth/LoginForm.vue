@@ -36,7 +36,11 @@
 
     <p class="forgot-password text-center text-md-right">
       <nuxt-link class="black--text" :to="{ name: 'auth-forgot-password' }">
-        <underlined-subtitle class="clickable mt-2" text="Forgot password?" />
+        <underlined-title
+          class="clickable mt-2"
+          subtitle
+          text="Forgot password?"
+        />
       </nuxt-link>
     </p>
 

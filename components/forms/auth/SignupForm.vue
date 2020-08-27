@@ -8,7 +8,7 @@
         rules="required"
       >
         <v-text-field
-          v-model="user.firstName"
+          v-model="draft.firstName"
           clearable
           :disabled="loading"
           :error-messages="errors"
@@ -25,7 +25,7 @@
         rules="required"
       >
         <v-text-field
-          v-model="user.lastName"
+          v-model="draft.lastName"
           clearable
           :disabled="loading"
           :error-messages="errors"
@@ -42,7 +42,7 @@
         rules="required|min:7|max:20|phone"
       >
         <v-text-field
-          v-model="user.phoneNumber"
+          v-model="draft.phoneNumber"
           clearable
           :disabled="loading || hasInvitationPhone"
           :error-messages="errors"
@@ -60,7 +60,7 @@
         rules="required|email"
       >
         <v-text-field
-          v-model="user.email"
+          v-model="draft.email"
           clearable
           :disabled="loading || hasInvitationEmail"
           :error-messages="errors"
@@ -78,7 +78,7 @@
         rules="required|min:8|max:20|w_number|w_special|w_upper|confirmed:passwordConfirmation"
       >
         <password-field
-          v-model="user.password"
+          v-model="draft.password"
           clearable
           :disabled="loading"
           :error-messages="errors"
@@ -97,7 +97,7 @@
         vid="passwordConfirmation"
       >
         <password-field
-          v-model="user.passwordConfirmation"
+          v-model="draft.passwordConfirmation"
           clearable
           :disabled="loading"
           :error-messages="errors"
@@ -124,6 +124,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 import { jsonCopy } from '@/utils/objectTools'
 
 export default {
@@ -135,31 +137,42 @@ export default {
     loading: Boolean
   },
 
-  data: vm => ({
-    hasInvitationEmail: (() => {
-      return Boolean(vm.inInvitationProcess && vm.$route.query.email)
-    })(),
-
-    hasInvitationPhone: (() => {
-      return Boolean(vm.inInvitationProcess && vm.$route.query.phone)
-    })(),
-
-    user: {
-      firstName: '',
-      lastName: '',
-      phoneNumber: vm.$route.query.phone || '',
-      email: vm.$route.query.email || '',
-      password: '',
-      passwordConfirmation: ''
-    }
+  data: () => ({
+    draft: {}
   }),
+
+  computed: {
+    ...mapGetters('auth', ['getUserInfo', 'isUserLoggedIn']),
+
+    hasInvitationEmail () {
+      return Boolean(
+        (this.inInvitationProcess && this.$route.query.email) ||
+          this.isUserLoggedIn
+      )
+    },
+
+    hasInvitationPhone () {
+      return Boolean(this.inInvitationProcess && this.$route.query.phone)
+    }
+  },
+
+  mounted () {
+    this.draft = {
+      firstName: null,
+      lastName: null,
+      phoneNumber: this.$route.query.phone || null,
+      email: this.$route.query.email || this.getUserInfo.email || null,
+      password: null,
+      passwordConfirmation: null
+    }
+  },
 
   methods: {
     onSubmit () {
       this.$emit(
         'click:submit',
         jsonCopy({
-          ...this.user
+          ...this.draft
         })
       )
     }
