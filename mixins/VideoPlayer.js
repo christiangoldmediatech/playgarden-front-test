@@ -54,13 +54,11 @@ export default {
     },
 
     close () {
-      if (this.dialog && this.player) {
-        const status = this.player.getState()
-        if (['playing', 'buffering'].includes(status)) {
-          this.player.stop()
-        }
-        this.dialog = false
+      const status = this.player.getState()
+      if (['playing', 'buffering'].includes(status)) {
+        this.player.stop()
       }
+      this.dialog = false
     }
   }
 }
