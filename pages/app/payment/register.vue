@@ -57,7 +57,7 @@ export default {
     inSignUpProcess () {
       const { query } = this.$route
 
-      return query.process === 'signup' && query.step === '3'
+      return query.process === 'signup' && query.step === '4'
     }
   },
 

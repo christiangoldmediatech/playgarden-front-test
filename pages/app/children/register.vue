@@ -72,7 +72,7 @@ export default {
 
         if (this.inSignUpProcess) {
           await this.$router.push({
-            name: 'app-payment-register',
+            name: 'app-payment-plan',
             query: { process: 'signup', step: '3' }
           })
         } else {

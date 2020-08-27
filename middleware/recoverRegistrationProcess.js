@@ -15,7 +15,7 @@ export default function ({ redirect, route, store }) {
 
     if (
       user.id &&
-      (step === 1 || step === 2 || step === 3) &&
+      (step === 1 || step === 2 || step === 3 || step === 4) &&
       (!user.role || get(user, 'role.section') === 'USERS') &&
       route.query.process !== 'signup' &&
       route.name !== 'auth-logout'
@@ -32,6 +32,10 @@ export default function ({ redirect, route, store }) {
           break
 
         case 3:
+          name = 'app-payment-plan'
+          break
+
+        case 4:
           name = 'app-payment-register'
           break
       }
