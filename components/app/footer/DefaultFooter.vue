@@ -28,32 +28,40 @@
                 <div
                   class="align-center d-flex justify-center justify-md-start"
                 >
-                  <img
-                    alt="Facebook"
-                    class="clickable mr-1"
-                    src="@/assets/svg/social-media/facebook.svg"
-                  >
+                  <a href="https://www.facebook.com/Playgardennyc">
+                    <img
+                      alt="Facebook"
+                      class="clickable mr-1"
+                      src="@/assets/svg/social-media/facebook.svg"
+                    >
+                  </a>
 
-                  <img
-                    alt="Instagram"
-                    class="clickable mx-1"
-                    src="@/assets/svg/social-media/instagram.svg"
-                  >
+                  <a href="https://www.instagram.com/playgardenprep/">
+                    <img
+                      alt="Instagram"
+                      class="clickable mx-1"
+                      src="@/assets/svg/social-media/instagram.svg"
+                    >
+                  </a>
 
                   <div
                     class="clickable d-flex justify-center mx-1 social-media-circle circle-email"
                   >
-                    <img
-                      alt="Email"
-                      src="@/assets/svg/social-media/email.svg"
-                    >
+                    <a href="mailto:online@playgardenprep.com">
+                      <img
+                        alt="Email"
+                        src="@/assets/svg/social-media/email.svg"
+                      >
+                    </a>
                   </div>
 
-                  <img
-                    alt="Twitter"
-                    class="clickable mx-1"
-                    src="@/assets/svg/social-media/twitter.svg"
-                  >
+                  <a href="https://twitter.com/playgardennyc">
+                    <img
+                      alt="Twitter"
+                      class="clickable mx-1"
+                      src="@/assets/svg/social-media/twitter.svg"
+                    >
+                  </a>
                 </div>
               </v-container>
             </v-col>

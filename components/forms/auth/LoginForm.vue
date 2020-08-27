@@ -22,6 +22,7 @@
       :loading="loading"
       :rules="[required, ...isValidPassword]"
       solo
+      class="label-color-signin"
     />
 
     <v-btn
@@ -38,7 +39,7 @@
     <p class="forgot-password text-center text-md-right">
       <nuxt-link class="black--text" :to="{ name: 'auth-forgot-password' }">
         <underlined-title
-          class="clickable mt-2 forgot-password"
+          class="clickable mt-2 forgot-password color-line"
           subtitle
           text="Forgot password?"
         />
@@ -129,12 +130,16 @@ export default {
   }
 }
 
-.v-text-field.v-text-field.v-label {
-  color: red !important;
+.label-color-signin::v-deep.v-text-field.v-text-field--solo .v-label {
+  color: rgba(0, 0, 0, 0.16) !important;
 }
 
 .v-label.theme--light {
   color: red !important;
   opacity: 1;
+}
+
+.v-text-field.v-text-field--solo:not(.v-text-field--solo-flat) > .v-input_control > .v-input__slot {
+  box-shadow: 1px 2px 8px #797676e0 !important;
 }
 </style>
