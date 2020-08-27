@@ -37,7 +37,11 @@
 
     <p class="forgot-password text-center text-md-right">
       <nuxt-link class="black--text" :to="{ name: 'auth-forgot-password' }">
-        <underlined-subtitle class="clickable mt-2 forgot-password" text="Forgot password?" />
+        <underlined-title
+          class="clickable mt-2 forgot-password"
+          subtitle
+          text="Forgot password?"
+        />
       </nuxt-link>
     </p>
 
@@ -128,7 +132,7 @@ export default {
   color: red !important;
 }
 
-.v-label {
+.v-label.theme--light {
   color: red !important;
   opacity: 1;
 }

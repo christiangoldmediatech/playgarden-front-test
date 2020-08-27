@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar color="white" elevation="3" app>
+  <v-app-bar color="white" elevation="3" app height="85">
     <v-app-bar-nav-icon
       class="hidden-md-and-up primary app-bar-nav-icon"
       color="white"

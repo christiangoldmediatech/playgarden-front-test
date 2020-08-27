@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer v-model="appDrawer" temporary app>
+  <v-navigation-drawer v-model="appDrawer" temporary app class="headerPage">
     <template v-slot:prepend>
       <v-row class="pr-3" justify="end">
         <v-btn icon @click.stop="appDrawer = !appDrawer">
@@ -105,6 +105,10 @@ export default {
 <style lang="scss" scoped>
 .active-menu-item {
   background-color: #f39b44 !important;
+}
+
+.headerPage {
+  height: 80px !important;
 }
 
 .list-item {

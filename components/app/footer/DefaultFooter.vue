@@ -66,25 +66,25 @@
             >
               <v-container>
                 <nuxt-link
-                  class="d-block link-text"
+                  class="d-block link-text text-footer-contact"
                   :to="{ name: 'index' }"
                   v-text="'Playgarden Prep'"
                 />
 
                 <nuxt-link
-                  class="d-block link-text"
+                  class="d-block link-text text-footer-contact"
                   :to="{ name: 'terms-conditions' }"
                   v-text="'Terms & Conditions'"
                 />
 
                 <nuxt-link
-                  class="d-block link-text"
+                  class="d-block link-text text-footer-contact"
                   :to="{ name: 'privacy-policy' }"
                   v-text="'Privacy Policy'"
                 />
 
                 <nuxt-link
-                  class="d-block link-text"
+                  class="d-block link-text text-footer-contact"
                   :to="{ name: 'index' }"
                   v-text="'Help'"
                 />
@@ -101,12 +101,12 @@
                 <span class="info-footer-title">Upper East Side</span>
               </p>
 
-              <p class="mb-1">
+              <p class="mb-1 text-footer-contact">
                 ues@playgardenprep.com<br>
                 212-965-9718
               </p>
 
-              <p>
+              <p class="text-footer-contact">
                 1366 Madison Avenue<br>
                 New York, NY 10128
               </p>
@@ -122,12 +122,12 @@
                 <span class="info-footer-title">Tribeca</span>
               </p>
 
-              <p class="mb-1">
+              <p class="mb-1 text-footer-contact">
                 tribeca@playgardenprep.com<br>
                 212-965-9717
               </p>
 
-              <p>
+              <p class="text-footer-contact">
                 95 Franklin Street<br>
                 New York, NY 10013
               </p>
@@ -193,5 +193,9 @@ export default {
 
 .info-footer-title {
   color: #8ab591 !important;
+}
+
+.text-footer-contact {
+  font-weight: 500;
 }
 </style>
