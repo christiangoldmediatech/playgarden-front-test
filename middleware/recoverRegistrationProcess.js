@@ -1,33 +1,38 @@
+import { get } from 'lodash'
+
 export default function ({ redirect, route, store }) {
   if (process.client) {
     const user = store.getters['auth/getUserInfo']
-    const registerStep = Number(user.registerStep)
+    const step = Number(user.registerStep)
 
-    // REGISTER_PARENT=1 <- sign up
-    // REGISTER_CHILDREN=2
-    // PAYMENT=3
-    // VERIFICATION=4 <- covered by "emailVerified" middleware
-    // COMPLETED=5 <- no action
+    // EMAIL_ENTERED=0 -> Enter email page <- sign up
+    // REGISTER_PARENT=1 -> Enter parent info page <- sign up
+    // REGISTER_CHILDREN=2 -> Enter children information page
+    // PLAN_SELECTION=3 -> Enter plan selection page
+    // PAYMENT=4 -> Enter payment page
+    // VERIFICATION=5 -> Enter email verifciation page <- covered by "emailVerified" middleware
+    // COMPLETED=6 -> Completed <- no action
 
     if (
       user.id &&
-      (registerStep === 2 || registerStep === 3) &&
-      user.role.section === 'USERS' &&
+      (step === 1 || step === 2 || step === 3) &&
+      (!user.role || get(user, 'role.section') === 'USERS') &&
       route.query.process !== 'signup' &&
       route.name !== 'auth-logout'
     ) {
       let name
-      let step
 
-      switch (registerStep) {
+      switch (step) {
+        case 1:
+          name = 'auth-signup'
+          break
+
         case 2:
           name = 'app-children-register'
-          step = 2
           break
 
         case 3:
           name = 'app-payment-register'
-          step = 3
           break
       }
 

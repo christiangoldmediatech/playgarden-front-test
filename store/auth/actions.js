@@ -18,6 +18,7 @@ export default {
     const auth = jwtDecode(token)
 
     commit('SET_ACCESS_TOKEN', token)
+    commit('SET_AXIOS_TOKEN', token)
     commit('SET_ISSUED_AT', auth.iat)
     commit('SET_EXPIRES_AT', auth.exp * 1000)
 
