@@ -11,7 +11,7 @@
     >
       <v-row no-gutters align="center" justify="center">
         <div
-          class="videoContainer"
+          class="video-container"
           :style="{'--videoW': `${videoWidth}px`, '--videoH': `${videoHeight}px` }"
         >
           <children-jw-player
@@ -27,48 +27,30 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
+import VideoPlayerMixin from '@/mixins/VideoPlayer.js'
 
 export default {
   name: 'ActivityPlayer',
 
+  mixins: [VideoPlayerMixin],
+
+  props: {
+    doAnalytics: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
+
   data: () => {
     return {
-      dialog: false,
-      title: '',
-      playlist: [],
-      player: null,
-      videoHeight: 0,
       analytics: {
         itemIndex: null,
         entries: []
-      }
+      },
+      eventName: 'play-activity'
     }
-  },
-
-  computed: {
-    ...mapGetters({ children: 'getCurrentChild' }),
-
-    videoWidth () {
-      if (this.videoHeight > 0) {
-        return Math.round(this.videoHeight * (16 / 9))
-      }
-      return 0
-    }
-  },
-
-  created () {
-    this.$nuxt.$on('play-activity', (params) => {
-      this.title = params.title
-      this.resetAnalytics()
-      if (this.player) {
-        this.player.load(params.playlist)
-        this.player.play()
-      } else {
-        this.playlist = params.playlist
-      }
-      this.open()
-    })
   },
 
   methods: {
@@ -78,18 +60,14 @@ export default {
       updateAnalytic: 'update'
     }),
 
-    setPlayer () {
-      this.player = this.$refs.playerRef.player
-      if (this.playlist.length) {
-        this.player.play()
-      }
-    },
-
     resetAnalytics () {
       this.analytics.itemIndex = null
       this.analytics.entries = []
     },
 
+    beforeOpen () {
+      this.resetAnalytics()
+    }
     /*
     async onPlay () {
       const itemIndex = this.player.getPlaylistIndex()
@@ -133,28 +111,13 @@ export default {
       }
     },
     */
-
-    open () {
-      this.dialog = true
-      this.videoHeight = window.innerHeight - 1
-    },
-
-    close () {
-      if (this.dialog && this.player) {
-        const status = this.player.getState()
-        if (['playing', 'buffering'].includes(status)) {
-          this.player.stop()
-        }
-        this.dialog = false
-      }
-    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.videoContainer {
-  width: var(--videoW);
-  height: var(--videoH);
+.video-container {
+  width: var(--videoW) !important;
+  height: var(--videoH) !important;
 }
 </style>

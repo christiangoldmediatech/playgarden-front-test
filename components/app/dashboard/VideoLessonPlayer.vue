@@ -11,7 +11,7 @@
     >
       <v-row no-gutters align="center" justify="center">
         <div
-          class="videoContainer"
+          class="video-container"
           :style="{'--videoW': `${videoWidth}px`, '--videoH': `${videoHeight}px` }"
         >
           <children-jw-player
@@ -49,6 +49,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import VideoPlayerMixin from '@/mixins/VideoPlayer.js'
 import CompletedDialog from '@/components/app/dashboard/CompletedDialog.vue'
 
 export default {
@@ -58,30 +59,17 @@ export default {
     CompletedDialog
   },
 
+  mixins: [VideoPlayerMixin],
+
   data: () => {
     return {
-      dialog: false,
       completed: false,
-      title: '',
-      playlist: [],
-      player: null,
-      videoHeight: 0
+      eventName: 'play-video-lesson'
     }
   },
 
   computed: {
-    ...mapGetters({
-      children: 'getCurrentChild'
-    }),
-
     ...mapGetters('admin/curriculum', ['getLesson']),
-
-    videoWidth () {
-      if (this.videoHeight > 0) {
-        return Math.round(this.videoHeight * (16 / 9))
-      }
-      return 0
-    },
 
     buttons () {
       return [
@@ -103,19 +91,6 @@ export default {
         }
       ]
     }
-  },
-
-  created () {
-    this.$nuxt.$on('play-video-lesson', (params) => {
-      this.title = params.playlist[0] ? params.playlist[0].name : ''
-      if (this.player) {
-        this.player.load(params.playlist)
-        this.player.play()
-      } else {
-        this.playlist = params.playlist
-      }
-      this.open()
-    })
   },
 
   methods: {
@@ -157,40 +132,20 @@ export default {
       })
     },
 
-    setPlayer () {
-      this.player = this.$refs.playerRef.player
-      if (this.playlist.length) {
-        this.player.play()
-      }
-    },
-
     showMessage () {
       this.completed = true
     },
 
     returnAction () {
       this.close()
-    },
-
-    open () {
-      this.dialog = true
-      this.videoHeight = window.innerHeight - 1
-    },
-
-    close () {
-      const status = this.player.getState()
-      if (['playing', 'buffering'].includes(status)) {
-        this.player.stop()
-      }
-      this.dialog = false
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.videoContainer {
-  width: var(--videoW);
-  height: var(--videoH);
+.video-container {
+  width: var(--videoW) !important;
+  height: var(--videoH) !important;
 }
 </style>
