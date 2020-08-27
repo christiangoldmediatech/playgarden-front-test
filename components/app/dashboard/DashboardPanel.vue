@@ -70,7 +70,7 @@
                 </v-list-item-avatar>
 
                 <v-list-item-content>
-                  <v-list-item-title>
+                  <v-list-item-title class="titleDashboard">
                     {{ video.name }}
                   </v-list-item-title>
 
@@ -121,9 +121,14 @@
             </div>
 
             <div v-if="worksheets.OFFLINE" class="font-weight-bold mt-3">
-              HANDS-ON LEARNING
-
-              <v-btn
+              <component
+                :is="videosCompletionRate < 100 ? 'span' : 'nuxt-link'"
+                class="black--link font-weight-bold"
+                :to="{ name: 'app-dashboard-offline-worksheet' }"
+              >
+                HANDS-ON LEARNING
+              </component>
+              <!-- <v-btn
                 block
                 class="mb-3"
                 color="primary"
@@ -137,7 +142,7 @@
                 </v-icon>
 
                 DOWNLOAD
-              </v-btn>
+              </v-btn> -->
             </div>
           </v-col>
         </v-row>
@@ -199,7 +204,7 @@
                 </v-list-item-avatar>
 
                 <v-list-item-content>
-                  <v-list-item-title>
+                  <v-list-item-title class="titleDashboard">
                     {{ activity.videos.name }}
                   </v-list-item-title>
 
@@ -238,12 +243,13 @@ export default {
     },
 
     childrenIds () {
-      const ids = (this.currentChild
-        ? this.currentChild.map(({ id }) => id)
-        : []
-      ).join(',')
+      // const ids = (this.currentChild
+      //   ? this.currentChild.map(({ id }) => id)
+      //   : []
+      // ).join(',')
 
-      return `[${ids}]`
+      // return `[${ids}]`
+      return this.currentChild[0].id
     },
 
     videos () {
@@ -395,6 +401,15 @@ export default {
   margin: 0;
   padding: 0;
   width: 35px;
+}
+
+.text-h5 {
+  color: $pg-black !important;
+}
+
+.titleDashboard {
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
 }
 
 .card-border-top {

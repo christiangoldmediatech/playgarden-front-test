@@ -1,0 +1,14 @@
+@mixin squared-element($size) {
+  width: $size;
+  height: $size;
+}
+
+@mixin rounded-element($size) {
+  @include squared-element($size);
+  border-radius: 50%;
+}
+
+@mixin parent-stack-context() {
+  position: relative;
+  z-index: 0;
+}

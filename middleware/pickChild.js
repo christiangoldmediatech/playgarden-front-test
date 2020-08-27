@@ -3,9 +3,11 @@ import { hasLocalStorage } from '@/utils/window'
 export default async function ({ redirect, route, store }) {
   if (/^app-.*$/.test(route.name) && process.client) {
     const whiteList = {
+      'auth-logout': 1,
+      'auth-verify-email': 1,
       'app-pick-child': 1,
       'app-account': 1,
-      'app-profile': 1
+      'app-onboarding': 1
     }
 
     let child = store.getters.getCurrentChild

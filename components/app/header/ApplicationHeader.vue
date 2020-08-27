@@ -134,13 +134,12 @@ export default {
 
 .link-text {
   font-size: 14px;
-  font-weight: normal;
-  font-stretch: normal;
+  font-weight: 400 !important;
   font-style: normal;
   line-height: 1.44;
   letter-spacing: normal;
   text-align: left;
-  color: #606060;
+  color: #606060 !important;
 }
 
 .no-border-radius {

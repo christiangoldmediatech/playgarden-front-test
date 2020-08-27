@@ -1,6 +1,5 @@
 <template>
   <v-dialog
-    id="playerDialog"
     v-model="dialog"
     fullscreen
     persistent
@@ -48,8 +47,9 @@
         <v-spacer />
       </v-card-actions> -->
     </v-card>
-    <completed-message
+    <completed-dialog
       v-model="completed"
+      :time-out="15"
       :buttons="buttons"
       :return-action="returnAction"
       :time-out-action="buttons[0].action"
@@ -62,19 +62,19 @@
       <p class="text-h5 text-center font-weight-medium">
         You have completed the daily lessons.
       </p>
-    </completed-message>
+    </completed-dialog>
   </v-dialog>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import CompletedMessage from '@/components/app/dashboard/CompletedMessage.vue'
+import CompletedDialog from '@/components/app/dashboard/CompletedDialog.vue'
 
 export default {
   name: 'VideoLessonPlayer',
 
   components: {
-    CompletedMessage
+    CompletedDialog
   },
 
   data: () => {

@@ -9,7 +9,13 @@ export default () => ({
     'app-dashboard': 1,
     'app-dashboard-activity-id': 1,
     'app-dashboard-videos-id': 1,
+    'app-student-cubby': 1,
+    'app-student-cubby-puzzle': 1,
+    'app-student-cubby-course-progress': 1,
+    'app-student-cubby-student-portfolio': 1,
+    'app-student-cubby-badges': 1,
     'app-dashboard-online-worksheet': 1,
+    'app-dashboard-offline-worksheet': 1,
     'app-pick-child': 1,
     'app-profile': 1
   },

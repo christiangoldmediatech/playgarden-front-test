@@ -55,13 +55,17 @@ export default {
   /*
    ** Global CSS
    */
-  css: ['tiptap-vuetify/dist/main.css', '@/assets/scss/app.scss'],
+  css: [
+    'tiptap-vuetify/dist/main.css',
+    'vue-snotify/styles/material.css'
+  ],
   /*
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
   plugins: [
     '@/plugins/axios',
+    '@/plugins/components',
     '@/plugins/directives',
     '@/plugins/filters',
     '@/plugins/globalPartials',
@@ -97,9 +101,19 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/style-resources',
     'vue-scrollto/nuxt',
+    [
+      'storyblok-nuxt',
+      {
+        accessToken: 'LJnuWOtv8zRkJrzhU2osxAtt',
+        cacheProvider: 'memory'
+      }
+    ]
   ],
   styleResources: {
-    scss: ['@/assets/scss/variables.scss']
+    scss: [
+      './assets/scss/variables.scss',
+      './assets/scss/app.scss'
+    ]
   },
   /*
    ** Axios module configuration
@@ -126,6 +140,7 @@ export default {
       'recoverRegistrationProcess',
       'redirectIfAuthenticated',
       'emailVerified',
+      'onboardingDone',
       'pickChild'
     ]
   }

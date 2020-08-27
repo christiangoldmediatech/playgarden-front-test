@@ -240,10 +240,11 @@ export default {
         }
 
         this.$emit('saved')
-      } catch (err) {
-        this.loading = false
-      } finally {
+
         this.close()
+      } catch (err) {
+      } finally {
+        this.loading = false
       }
     },
 

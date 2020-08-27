@@ -103,6 +103,8 @@
         <membership-details :loading="loading" />
 
         <caregiver-list :loading="loading" />
+
+        <notification-list :loading="loading" />
       </div>
 
       <child-form v-show="!showSetting" />
@@ -116,6 +118,7 @@ import { mapGetters } from 'vuex'
 import CaregiverList from '@/components/app/caregiver/CaregiverList'
 import ChildForm from '@/components/forms/profile/ChildForm.vue'
 import MembershipDetails from '@/components/app/payment/MembershipDetails'
+import NotificationList from '@/components/app/notifications/NotificationUserList'
 import UpdatePassword from '@/components/app/password/UpdatePassword'
 import UpdateProfile from '@/components/app/user/UpdateProfile'
 
@@ -126,6 +129,7 @@ export default {
     CaregiverList,
     ChildForm,
     MembershipDetails,
+    NotificationList,
     UpdatePassword,
     UpdateProfile
   },

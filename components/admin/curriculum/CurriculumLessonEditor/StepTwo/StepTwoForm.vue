@@ -129,15 +129,16 @@
         <file-uploader
           ref="thumbnailUploader"
           v-model="thumbnail"
-          :file.sync="thumbnail"
           :error-messages="errors"
+          :file.sync="thumbnail"
+          jpg
           label="Upload Thumbnail"
           mode="image"
           path="curriculum-thumbnail"
           placeholder="Select a thumbnail for this lesson's video"
           prepend-icon="mdi-camera"
           png
-          jpg
+          svg
         />
       </validation-provider>
 
