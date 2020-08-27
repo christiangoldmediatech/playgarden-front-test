@@ -10,6 +10,7 @@
       :rules="[required, isValidEmail]"
       solo
       type="email"
+      class="label-signup"
     />
 
     <!-- Password -->
@@ -36,7 +37,7 @@
 
     <p class="forgot-password text-center text-md-right">
       <nuxt-link class="black--text" :to="{ name: 'auth-forgot-password' }">
-        <underlined-subtitle class="clickable mt-2" text="Forgot password?" />
+        <underlined-subtitle class="clickable mt-2 forgot-password" text="Forgot password?" />
       </nuxt-link>
     </p>
 
@@ -111,6 +112,7 @@ export default {
 <style lang="scss" scoped>
 .forgot-password {
   text-align: right;
+  font-size: 15px !important;
 }
 .signup {
   font-size: 17px;
@@ -120,5 +122,8 @@ export default {
     text-transform: uppercase;
     font-weight: bold;
   }
+}
+.label-signup.v-input--has-state.error--text .v-label {
+  color: red !important;
 }
 </style>

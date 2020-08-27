@@ -20,6 +20,7 @@
                 :disabled="loading"
                 :error-messages="errors"
                 label="First name"
+                class="input-signup"
                 :loading="loading"
                 solo
               />

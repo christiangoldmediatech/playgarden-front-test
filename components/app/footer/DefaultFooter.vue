@@ -14,7 +14,7 @@
               md="4"
             >
               <v-container py-0>
-                <v-row no-gutters>
+                <v-row no-gutters class="logo-footer">
                   <v-col cols="12">
                     <v-img
                       alt="Playgarden Prep's Logo"
@@ -41,7 +41,7 @@
                   >
 
                   <div
-                    class="clickable d-flex justify-center mx-1 social-media-circle"
+                    class="clickable d-flex justify-center mx-1 social-media-circle circle-email"
                   >
                     <img
                       alt="Email"
@@ -180,9 +180,13 @@ export default {
   margin-top: 37px !important;
 }
 
+.logo-footer {
+  margin-bottom: 15px !important;
+}
+
 .social-media-circle {
-  width: 47px;
-  height: 47px;
+  width: 25px;
+  height: 25px;
   border-radius: 50%;
   background-color: var(--v-primary-base);
 }

@@ -127,7 +127,6 @@ export default {
   color: $pg-black !important;
   font-weight: 600 !important;
 }
-
 .info-signIn {
   margin-top: 10px !important;
 }
