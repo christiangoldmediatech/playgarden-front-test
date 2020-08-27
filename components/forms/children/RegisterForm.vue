@@ -161,7 +161,7 @@
             type="submit"
             x-large
           >
-            REGISTER
+            CONTINUE TO PLAN SELECTION
           </v-btn>
         </v-col>
       </v-row>

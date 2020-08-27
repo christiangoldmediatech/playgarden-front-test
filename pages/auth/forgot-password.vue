@@ -77,7 +77,4 @@ export default {
 .form {
   max-width: 500px;
 }
-.error-message {
-  color: $pg-error;
-}
 </style>

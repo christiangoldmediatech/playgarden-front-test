@@ -1,9 +1,5 @@
 <template>
-  <v-app-bar
-    color="white"
-    elevation="3"
-    app
-  >
+  <v-app-bar color="white" elevation="3" app>
     <v-app-bar-nav-icon
       class="hidden-md-and-up primary app-bar-nav-icon"
       color="white"
@@ -45,7 +41,7 @@
       nuxt
       :to="{ name: isUserLoggedIn ? 'app-account' : 'auth-login' }"
     >
-      {{ isUserLoggedIn ? 'ACCOUNT' : 'LOGIN' }}
+      {{ isUserLoggedIn ? "ACCOUNT" : "LOGIN" }}
     </v-btn>
 
     <v-spacer class="hidden-sm-and-down" />
@@ -57,23 +53,24 @@
       icon
       :to="{ name: 'app-account' }"
     >
-      <v-icon color="#f89838">
+      <v-icon color="accent">
         mdi-cog
       </v-icon>
     </v-btn>
 
     <v-btn
       class="hidden-md-and-up"
-      :color="(isUserLoggedIn) ? 'primary' : '#f89838'"
+      :color="isUserLoggedIn ? 'primary' : 'accent'"
       active-class="custom-active"
       icon
       :to="{ name: isUserLoggedIn ? 'auth-logout' : 'auth-login' }"
     >
       <template v-if="isUserLoggedIn">
-        <v-icon color="#f89838">
+        <v-icon color="accent">
           mdi-logout
         </v-icon>
       </template>
+
       <template v-else>
         <v-icon color="primary">
           mdi-login
@@ -90,12 +87,6 @@ export default {
   name: 'ApplicationHeader',
 
   mixins: [computedMixin],
-
-  data () {
-    return {
-
-    }
-  },
 
   methods: {
     toggleDrawer () {
