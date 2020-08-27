@@ -9,25 +9,13 @@
       color="black"
       dark
     >
-      <v-card-title id="titleElement">
-        {{ title }}
-        <v-spacer />
-        <v-btn
-          icon
-          @click.stop="close"
-        >
-          <v-icon>
-            mdi-close
-          </v-icon>
-        </v-btn>
-      </v-card-title>
-
       <v-row no-gutters align="center" justify="center">
         <div
-          class="videoContainer"
+          class="video-container"
           :style="{'--videoW': `${videoWidth}px`, '--videoH': `${videoHeight}px` }"
         >
-          <jw-player
+          <children-jw-player
+            ref="playerRef"
             :playlist="playlist"
             next-up-display
             @playlistComplete="showMessage"
@@ -35,15 +23,10 @@
             @play="saveProgress"
             @pause="saveProgress"
             @beforeComplete="completedVideo"
+            @hotkey="close"
           />
         </div>
       </v-row>
-
-      <v-card-actions id="hintElement">
-        <v-spacer />
-        CTRL + SHIFT + Q to Exit
-        <v-spacer />
-      </v-card-actions>
     </v-card>
     <completed-dialog
       v-model="completed"
@@ -66,6 +49,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import VideoPlayerMixin from '@/mixins/VideoPlayer.js'
 import CompletedDialog from '@/components/app/dashboard/CompletedDialog.vue'
 
 export default {
@@ -75,30 +59,17 @@ export default {
     CompletedDialog
   },
 
+  mixins: [VideoPlayerMixin],
+
   data: () => {
     return {
-      dialog: false,
       completed: false,
-      title: '',
-      playlist: [],
-      player: null,
-      videoHeight: 0
+      eventName: 'play-video-lesson'
     }
   },
 
   computed: {
-    ...mapGetters({
-      children: 'getCurrentChild'
-    }),
-
     ...mapGetters('admin/curriculum', ['getLesson']),
-
-    videoWidth () {
-      if (this.videoHeight > 0) {
-        return Math.round(this.videoHeight * (16 / 9))
-      }
-      return 0
-    },
 
     buttons () {
       return [
@@ -120,19 +91,6 @@ export default {
         }
       ]
     }
-  },
-
-  created () {
-    this.$nuxt.$on('play-video-lesson', (params) => {
-      this.title = params.playlist[0] ? params.playlist[0].name : ''
-      if (this.player) {
-        this.player.load(params.playlist)
-        this.player.play()
-      } else {
-        this.playlist = params.playlist
-      }
-      this.open()
-    })
   },
 
   methods: {
@@ -174,55 +132,20 @@ export default {
       })
     },
 
-    setPlayer (player) {
-      this.player = player
-      if (this.playlist.length) {
-        this.player.play()
-      }
-    },
-
     showMessage () {
       this.completed = true
     },
 
     returnAction () {
       this.close()
-    },
-
-    open () {
-      this.dialog = true
-
-      this.$nextTick(() => {
-        const checker = window.setInterval(() => {
-          const titleElement = document.getElementById('titleElement')
-          const hintElement = document.getElementById('hintElement')
-          if (titleElement && hintElement) {
-            const titleHeight = titleElement.clientHeight
-            const hintHeight = hintElement.clientHeight
-            if (titleHeight > 0) {
-              this.videoHeight = window.innerHeight - titleHeight - hintHeight
-              this.completed = true
-              window.clearInterval(checker)
-            }
-          }
-        }, 25)
-      })
-    },
-
-    close () {
-      const status = this.player.getState()
-      if (['playing', 'buffering'].includes(status)) {
-        this.player.stop()
-      }
-      this.dialog = false
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.videoContainer {
-  width: var(--videoW);
-  height: var(--videoH);
+.video-container {
+  width: var(--videoW) !important;
+  height: var(--videoH) !important;
 }
 </style>
