@@ -9,8 +9,6 @@
             </div>
 
             <v-progress-linear color="primary" indeterminate :size="20" />
-
-            <nuxt />
           </v-col>
         </v-row>
 
@@ -168,5 +166,3 @@ export default {
   }
 }
 </script>
-
-<style scoped></style>

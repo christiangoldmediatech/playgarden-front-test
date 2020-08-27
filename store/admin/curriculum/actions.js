@@ -34,6 +34,7 @@ export default {
       params: { name }
     })
     commit('SET_TYPES', data)
+    return data
   },
 
   async createType (ctx, data) {

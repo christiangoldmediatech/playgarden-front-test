@@ -29,10 +29,11 @@ export default {
   },
 
   async getTypes ({ commit }, name = null) {
-    const data = await this.$axios.$get('/activity-types', {
+    const { data } = await this.$axios.get('/activity-types', {
       params: { name }
     })
     commit('SET_TYPES', data)
+    return data
   },
 
   async createType (ctx, data) {

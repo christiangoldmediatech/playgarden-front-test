@@ -166,23 +166,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.category-text {
-  font-size: 1.5rem !important;
-  position: relative;
-  z-index: 1;
-  &::after {
-    width: 115%;
-    opacity: 0.5;
-    position: absolute;
-    bottom: 0%;
-    left: -7.5%;
-    content: "";
-    z-index: -1;
-    border-bottom: 11px solid var(--bgColor);
-    border-radius: 7px;
-  }
-}
-
 .background-line {
   position: relative;
   z-index: 1;
