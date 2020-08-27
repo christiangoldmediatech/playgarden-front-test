@@ -15,17 +15,22 @@
     </v-col>
 
     <v-col class="px-12" cols="12" md="4">
+      <span class="font-weight-bold text-h5">
+        MEMBERSHIP
+      </span>
+      <v-container row class="lighten-5">
+        <v-row
+          no-gutters
+          class="info-signIn"
+        >
+          <small>
+            Complete your registration and membership subscription to start
+            enjoying our learning experience!
+          </small>
+        </v-row>
+      </v-container>
       <p class="text-center text-md-left">
-        <span class="font-weight-bold text-h5">
-          MEMBERSHIP
-        </span>
-
         <br>
-
-        <small>
-          Complete your registration and membership subscription to start
-          enjoying our learning experience!
-        </small>
       </p>
 
       <template v-if="!inInvitationProcess">
@@ -121,5 +126,9 @@ export default {
 .subtitle-signIn {
   color: $pg-black !important;
   font-weight: 600 !important;
+}
+
+.info-signIn {
+  margin-top: 10px !important;
 }
 </style>
