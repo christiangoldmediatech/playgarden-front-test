@@ -7,8 +7,8 @@
       'underlined-title': $vuetify.breakpoint.mdAndUp
     }"
     :style="{
-      '--ut-abb-color': _abbColor,
-      '--ut-abb-width': _abbFontSize,
+      '--ut-line-color': _lineColor,
+      '--ut-background-from': _lineFrom,
       fontSize: _fontSize,
       fontWeight: _fontWeight
     }"
@@ -23,7 +23,7 @@ export default {
   name: 'UnderlinedTitle',
 
   props: {
-    abbColor: {
+    lineColor: {
       type: [Object, String],
       default: () => ({ color: 'primary', light: 'base' }),
       validator: (value) => {
@@ -74,9 +74,9 @@ export default {
       }
     },
 
-    abbFontSize: {
-      type: String,
-      default: '20px'
+    lineFrom: {
+      type: Number,
+      default: 55
     },
 
     fontSize: {
@@ -100,25 +100,25 @@ export default {
   },
 
   computed: {
-    _abbColor () {
+    _lineColor () {
       if (this.subtitle) {
         return 'var(--v-accent-base)'
       }
 
       // using HEX or vuetify colors vars
-      if (typeof this.abbColor === 'string') {
-        return this.abbColor
+      if (typeof this.lineColor === 'string') {
+        return this.lineColor
       }
 
-      return `var(--v-${this.abbColor.color}-${this.abbColor.light || 'base'})`
+      return `var(--v-${this.lineColor.color}-${this.lineColor.light || 'base'})`
     },
 
-    _abbFontSize () {
+    _lineFrom () {
       if (this.subtitle) {
-        return '5px'
+        return '65%'
       }
 
-      return this.abbFontSize
+      return `${this.lineFrom}%`
     },
 
     _fontSize () {
@@ -146,17 +146,14 @@ export default {
   z-index: 1;
   color: $pg-black;
 
-  &::after {
-    width: 102%;
-    position: absolute;
-    bottom: 15%;
-    left: -1%;
-    content: "";
-    z-index: -1;
-    border-bottom-color: var(--ut-abb-color);
-    border-bottom-style: solid;
-    border-bottom-width: var(--ut-abb-width);
-    border-radius: 7px;
-  }
+  background: linear-gradient(
+    180deg,
+    transparent var(--ut-background-from),
+    var(--ut-line-color) var(--ut-background-from),
+    var(--ut-line-color) 80%,
+    transparent 80%
+  );
+  padding: 0 1%;
+  border-radius: 0px;
 }
 </style>
