@@ -117,6 +117,7 @@ export default {
 .forgot-password {
   text-align: right;
   font-size: 15px !important;
+  margin-top: 8px;
 }
 .signup {
   font-size: 17px;
