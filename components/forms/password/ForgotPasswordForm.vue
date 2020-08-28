@@ -1,6 +1,6 @@
 <template>
   <validation-observer v-slot="{ invalid, passes }">
-    <v-form @submit.prevent="passes(onSubmit)" class="row">
+    <v-form class="row" @submit.prevent="passes(onSubmit)">
       <v-container>
         <!-- Email -->
         <validation-provider
