@@ -44,16 +44,15 @@
                     >
                   </a>
 
-                  <div
+                  <a
+                    href="mailto:online@playgardenprep.com"
                     class="clickable d-flex justify-center mx-1 social-media-circle circle-email"
                   >
-                    <a href="mailto:online@playgardenprep.com">
-                      <img
-                        alt="Email"
-                        src="@/assets/svg/social-media/email.svg"
-                      >
-                    </a>
-                  </div>
+                    <img
+                      alt="Email"
+                      src="@/assets/svg/social-media/email.svg"
+                    >
+                  </a>
 
                   <a href="https://twitter.com/playgardennyc">
                     <img
@@ -196,6 +195,7 @@ export default {
   width: 25px;
   height: 25px;
   border-radius: 50%;
+  margin-top: -5px;
   background-color: var(--v-primary-base);
 }
 
