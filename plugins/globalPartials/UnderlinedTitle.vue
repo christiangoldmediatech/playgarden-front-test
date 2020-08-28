@@ -10,7 +10,8 @@
       '--ut-line-color': _lineColor,
       '--ut-background-from': _lineFrom,
       fontSize: _fontSize,
-      fontWeight: _fontWeight
+      fontWeight: _fontWeight,
+      paddingBottom: _paddingBoottom
     }"
     v-on="$listeners"
   >
@@ -89,6 +90,11 @@ export default {
       default: 'bold'
     },
 
+    paddingBoottom: {
+      type: String,
+      default: '3px'
+    },
+
     // easy shortcut for faster styling
     // Note: it override the others options
     subtitle: Boolean,
@@ -135,6 +141,14 @@ export default {
       }
 
       return this.fontWeight
+    },
+
+    _paddingBoottom () {
+      if (this.subtitle) {
+        return '3px'
+      }
+
+      return this.paddingBoottom
     }
   }
 }
@@ -150,10 +164,10 @@ export default {
     180deg,
     transparent var(--ut-background-from),
     var(--ut-line-color) var(--ut-background-from),
-    var(--ut-line-color) 80%,
+    var(--ut-line-color) 78%,
     transparent 80%
   );
-  padding: 0 1%;
+  padding: 0px 1%;
   border-radius: 0px;
 }
 </style>

@@ -140,6 +140,6 @@ export default {
 }
 
 .label-color-signin::v-deep.v-text-field.v-text-field--solo:not(.v-text-field--solo-flat) > .v-input__control > .v-input__slot {
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.14) !important;
+  box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.16) !important;
 }
 </style>
