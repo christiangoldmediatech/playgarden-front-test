@@ -102,7 +102,7 @@ export default {
   computed: {
     _lineColor () {
       if (this.subtitle) {
-        return 'var(--v-accent-base)'
+        return 'rgba(254, 197, 114, 0.71)'
       }
 
       // using HEX or vuetify colors vars
@@ -115,7 +115,7 @@ export default {
 
     _lineFrom () {
       if (this.subtitle) {
-        return '65%'
+        return '60%'
       }
 
       return `${this.lineFrom}%`

@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="loginForm" v-model="isValidForm" @submit.prevent="handleClick">
+  <v-form ref="loginForm" v-model="isValidForm" class="formLogin" @submit.prevent="handleClick">
     <!-- Email -->
     <v-text-field
       v-model="user.email"
@@ -39,7 +39,7 @@
     <p class="forgot-password text-center text-md-right">
       <nuxt-link class="black--text" :to="{ name: 'auth-forgot-password' }">
         <underlined-title
-          class="clickable mt-2 forgot-password color-line"
+          class="clickable mt-2 forgot-password"
           subtitle
           text="Forgot password?"
         />
@@ -139,7 +139,7 @@ export default {
   opacity: 1;
 }
 
-.v-text-field.v-text-field--solo:not(.v-text-field--solo-flat) > .v-input_control > .v-input__slot {
-  box-shadow: 1px 2px 8px #797676e0 !important;
+.label-color-signin::v-deep.v-text-field.v-text-field--solo:not(.v-text-field--solo-flat) > .v-input__control > .v-input__slot {
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.14) !important;
 }
 </style>
