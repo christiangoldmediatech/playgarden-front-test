@@ -57,8 +57,7 @@ export default {
    */
   css: [
     'tiptap-vuetify/dist/main.css',
-    'vue-snotify/styles/material.css',
-    '~/css/main.css'
+    'vue-snotify/styles/material.css'
   ],
   /*
    ** Plugins to load before mounting the App
