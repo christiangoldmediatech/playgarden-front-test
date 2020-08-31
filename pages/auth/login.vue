@@ -37,6 +37,10 @@ export default {
     }
   },
 
+  mounted () {
+    console.log(process.env.testEnv)
+  },
+
   methods: {
     ...mapActions('auth/login', ['login']),
 
