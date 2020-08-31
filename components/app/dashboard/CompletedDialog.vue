@@ -1,16 +1,14 @@
 <template>
-  <v-dialog
+  <v-overlay
     :value="value"
-    max-width="800"
-    persistent
-    @input="$emit('input', $event)"
+    :z-index="300"
   >
-    <dashboard-message v-bind="{ ...$attrs, returnAction }">
+    <dashboard-message ref="message" v-bind="{ ...$attrs, returnAction, maxWidth: 800, light: true }">
       <template v-for="(_, slot) of $scopedSlots" v-slot:[slot]="scope">
         <slot :name="slot" v-bind="scope" />
       </template>
     </dashboard-message>
-  </v-dialog>
+  </v-overlay>
 </template>
 
 <script>
@@ -27,6 +25,12 @@ export default {
     value: {
       type: Boolean,
       required: true
+    },
+
+    attach: {
+      type: [Boolean, String, Object],
+      required: false,
+      default: false
     }
   },
 

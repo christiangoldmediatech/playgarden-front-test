@@ -4,8 +4,10 @@ export default {
   data: () => {
     return {
       dialog: false,
+      loading: false,
       playlist: [],
       player: null,
+      playerId: null,
       videoHeight: 0
     }
   },
@@ -22,26 +24,54 @@ export default {
   },
 
   created () {
-    this.$nuxt.$on(this.eventName, (params) => {
+    this.$nuxt.$on(this.eventName, ({ playlist }) => {
       if (!this.dialog) {
         this.beforeOpen()
-        if (this.player) {
-          this.player.load(params.playlist)
-          this.player.play()
-        } else {
-          this.playlist = params.playlist
-        }
+        // if (this.player) {
+        //   // this.player.load(playlist)
+        //   // this.player.play()
+        //   // console.log('Seeking to position', playlist[0])
+        //   // if (playlist[0].viewed && !playlist[0].viewed.completed) {
+        //   //   console.log('Seeking to position', playlist[0].viewed.time)
+        //   //   this.player.seek(playlist[0].viewed.time)
+        //   // } else {
+        //   //   this.player.play()
+        //   // }
+        // } else {
+        //   this.playlist = playlist
+        // }
+        this.playlist = playlist
         this.open()
       }
     })
   },
 
+  beforeDestroy () {
+    this.$nuxt.$off(this.eventName)
+  },
+
   methods: {
     setPlayer () {
+      this.playerId = this.$refs.playerRef.playerId
       this.player = this.$refs.playerRef.player
-      if (this.playlist.length) {
-        this.player.play()
+    },
+
+    startPlaying ({ viewable }) {
+      if (viewable === 1) {
+        jwplayer(this.playerId).load(this.playlist)
+        // const viewed = this.playlist[0].viewed
+        // const position = this.player.getPosition()
+        // if (viewed && !viewed.completed && viewed.time > position) {
+        //   this.player.seek(viewed.time)
+        // }
       }
+      // console.log(playlist)
+      // this.player.play()
+      // const viewed = playlist[0].viewed
+      // const position = this.player.getPosition()
+      // if (viewed && !viewed.completed && viewed.time > position) {
+      //   this.player.seek(playlist[0].viewed.time)
+      // }
     },
 
     beforeOpen () {
@@ -56,7 +86,8 @@ export default {
     close () {
       const status = this.player.getState()
       if (['playing', 'buffering'].includes(status)) {
-        this.player.stop()
+        // this.player.pause()
+        jwplayer(this.playerId).pause()
       }
       this.dialog = false
     }

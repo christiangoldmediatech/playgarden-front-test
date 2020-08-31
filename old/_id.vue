@@ -113,13 +113,14 @@ export default {
       const index = videos.findIndex(({ id }) => id === this.id)
       if (index >= 0) {
         const list = videos.splice(index, videos.length)
-        return list.map(({ name, description, videoUrl, thumbnail, id }) => {
+        return list.map(({ name, description, videoUrl, thumbnail, id, viewed }) => {
           return {
             name,
             text: description,
             file: videoUrl.HLS,
             image: thumbnail,
-            videoId: id
+            videoId: id,
+            viewed
           }
         })
       }

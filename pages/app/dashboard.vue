@@ -3,7 +3,7 @@
     <v-container fluid>
       <v-row>
         <v-col cols="12" sm="5" md="4" lg="3">
-          <dashboard-panel />
+          <dashboard-panel v-bind="{ lesson }" />
         </v-col>
 
         <v-col cols="12" sm="7" md="8" lg="9">
@@ -48,6 +48,8 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
+import DashboardMixin from '@/mixins/Dashboard.js'
 import DashboardPanel from '@/components/app/dashboard/DashboardPanel'
 
 export default {
@@ -55,6 +57,90 @@ export default {
 
   components: {
     DashboardPanel
+  },
+
+  mixins: [DashboardMixin],
+
+  computed: {
+    ...mapGetters({ currentChild: 'getCurrentChild' }),
+    ...mapGetters('admin/curriculum', { lesson: 'getLesson' }),
+
+    childrenIds () {
+      // const ids = (this.currentChild
+      //   ? this.currentChild.map(({ id }) => id)
+      //   : []
+      // ).join(',')
+
+      // return `[${ids}]`
+      return this.currentChild[0].id
+    }
+  },
+
+  watch: {
+    '$route.name' () {
+      this.redirectDashboard()
+    }
+  },
+
+  created () {
+    this.getCurrentLesson(true)
+
+    this.$nuxt.$on('dashboard-panel-update', () => {
+      this.getCurrentLesson()
+    })
+  },
+
+  beforeDestroy () {
+    this.$nuxt.$off('dashboard-panel-update')
+  },
+
+  methods: {
+    ...mapActions('children/lesson', ['getCurrentLessonByChildrenId']),
+
+    async getCurrentLesson (redirect = false) {
+      try {
+        await this.getCurrentLessonByChildrenId({
+          childrenIds: this.childrenIds
+        })
+
+        if (redirect) {
+          this.redirectDashboard()
+        }
+      } catch (e) {
+        return Promise.reject(e)
+      }
+    },
+
+    redirectDashboard () {
+      if (this.lesson && this.$route.name === 'app-dashboard') {
+        if (this.videosCompletionRate < 100) {
+          this.$router.push({
+            name: 'app-dashboard-video-lesson',
+            query: { id: this.getNextId(this.videos) }
+          })
+        } else if (this.worksheetsCompletionRate < 100) {
+          this.$router.push({
+            name: 'app-dashboard-online-worksheet',
+            query: { id: this.getNextId(this.worksheets.ONLINE) }
+          })
+        } else if (this.activitiesCompletionRate < 100) {
+          this.$router.push({
+            name: 'app-dashboard-activity',
+            query: { id: this.getNextId(this.activities) }
+          })
+        } else {
+          this.$router.push({ name: 'app-dashboard-lesson-completed' })
+        }
+      } else if (this.lesson && this.$route.name === 'app-dashboard-lesson-completed') {
+        if (
+          this.videosCompletionRate < 100 ||
+          this.worksheetsCompletionRate < 100 ||
+          this.activitiesCompletionRate < 100
+        ) {
+          this.$router.push({ name: 'app-dashboard' })
+        }
+      }
+    }
   }
 }
 </script>
