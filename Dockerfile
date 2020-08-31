@@ -14,6 +14,9 @@ ARG TEST_ENV
 ENV API_BASE_URL="${API_BASE_URL}" \
   TEST_ENV="${TEST_ENV}"
 
+# TEST envs
+RUN echo "USING API_BASE_URL => $API_BASE_URL || TEST_ENV => $TEST_ENV"
+
 # Install production dependencies.
 RUN yarn
 
