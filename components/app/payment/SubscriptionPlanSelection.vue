@@ -1,71 +1,9 @@
 <template>
-  <v-row class="c-row">
-    <v-col class="c-col" cols="12">
-      <p>
-        <span class="font-weight-bold text-h5">
-          CHOOSE YOUR PLAN
-        </span>
-      </p>
-
-      <v-row>
-        <v-col v-for="(plan, indexP) in plans" :key="indexP">
-          <v-card class="c-card">
-            <p class="text-center">
-              <underlined-title
-                font-size="20px"
-                :line-from="65"
-                :text="plan.name"
-              />
-            </p>
-
-            <v-card-text>
-              <ul>
-                <li
-                  v-for="(benefit, indexPCB) in plan.commonBenefits.benefits"
-                  :key="indexPCB"
-                >
-                  {{ benefit }}
-                </li>
-              </ul>
-
-              <template v-if="plan.homeDeliveryBenefits">
-                <section class="font-weight-bold mt-6">
-                  Home Delivery of:
-                </section>
-
-                <ul>
-                  <li
-                    v-for="(benefit, indexHDB) in plan.homeDeliveryBenefits
-                      .benefits"
-                    :key="indexHDB"
-                  >
-                    {{ benefit }}
-                  </li>
-                </ul>
-              </template>
-
-              <template v-if="plan.plusBenefits">
-                <section class="font-weight-bold mt-6">
-                  Plus:
-                </section>
-
-                <ul>
-                  <li
-                    v-for="(benefit, indexPB) in plan.plusBenefits.benefits"
-                    :key="indexPB"
-                  >
-                    {{ benefit }}
-                  </li>
-                </ul>
-              </template>
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
-
+  <v-row>
+    <v-col>
       <validation-observer v-slot="{ invalid, passes }">
-        <!-- Plan -->
         <v-form @submit.prevent="passes(onSubmit)">
+          <!-- Plan -->
           <validation-provider v-slot="{ errors }" name="Plan" rules="required">
             <v-radio-group
               v-model="radioGroup"
@@ -73,44 +11,112 @@
               :error-messages="errors"
               :loading="loading"
             >
+              <p>
+                <span class="font-weight-bold text-h5">
+                  CHOOSE YOUR PLAN
+                </span>
+              </p>
+
               <v-row>
-                <v-col v-for="(plan, indexP) in plans" :key="indexP">
-                  <v-radio
-                    :label="`${plan.priceMonthly} a month/child`"
-                    :value="`${indexP}-monthly`"
-                    @change="
-                      draft = {
-                        id: plan.id,
-                        type: 'monthly',
-                        requireAddress: Boolean(
-                          plan.homeDeliveryBenefits || plan.plusBenefits
-                        )
-                      }
-                    "
-                  />
+                <v-col
+                  v-for="(plan, indexP) in plans"
+                  :key="indexP"
+                  class="c-col elevation-3 mx-md-3 my-3"
+                  cols="12"
+                  md=""
+                >
+                  <div>
+                    <p class="text-center">
+                      <underlined-title
+                        font-size="20px"
+                        :line-from="65"
+                        :text="plan.name"
+                      />
+                    </p>
 
-                  <v-radio
-                    class="mb-0"
-                    :label="`${plan.priceAnnual} School Year Special/child`"
-                    :value="`${indexP}-annual`"
-                    @change="
-                      draft = {
-                        id: plan.id,
-                        type: 'annual',
-                        requireAddress: Boolean(
-                          plan.homeDeliveryBenefits || plan.plusBenefits
-                        )
-                      }
-                    "
-                  />
+                    <ul>
+                      <li
+                        v-for="(benefit, indexPCB) in plan.commonBenefits
+                          .benefits"
+                        :key="indexPCB"
+                      >
+                        {{ benefit }}
+                      </li>
+                    </ul>
 
-                  <small class="ml-8">(10 months)</small>
+                    <template v-if="plan.homeDeliveryBenefits">
+                      <section class="font-weight-bold mt-6">
+                        Home Delivery of:
+                      </section>
+
+                      <ul>
+                        <li
+                          v-for="(benefit, indexHDB) in plan
+                            .homeDeliveryBenefits.benefits"
+                          :key="indexHDB"
+                        >
+                          {{ benefit }}
+                        </li>
+                      </ul>
+                    </template>
+
+                    <template v-if="plan.plusBenefits">
+                      <section class="font-weight-bold mt-6">
+                        Plus:
+                      </section>
+
+                      <ul>
+                        <li
+                          v-for="(benefit, indexPB) in plan.plusBenefits
+                            .benefits"
+                          :key="indexPB"
+                        >
+                          {{ benefit }}
+                        </li>
+                      </ul>
+                    </template>
+                  </div>
+
+                  <div>
+                    <v-divider class="my-3" />
+
+                    <v-radio
+                      :label="`$${plan.priceMonthly} a month/child`"
+                      :value="`${indexP}-monthly`"
+                      @change="
+                        draft = {
+                          id: plan.id,
+                          type: 'monthly',
+                          requireAddress: Boolean(
+                            plan.homeDeliveryBenefits || plan.plusBenefits
+                          )
+                        }
+                      "
+                    />
+
+                    <v-radio
+                      class="mb-0"
+                      :label="`$${plan.priceAnnual} School Year Special/child`"
+                      :value="`${indexP}-annual`"
+                      @change="
+                        draft = {
+                          id: plan.id,
+                          type: 'annual',
+                          requireAddress: Boolean(
+                            plan.homeDeliveryBenefits || plan.plusBenefits
+                          )
+                        }
+                      "
+                    />
+
+                    <small class="ml-8">(10 months)</small>
+                  </div>
                 </v-col>
               </v-row>
             </v-radio-group>
           </validation-provider>
 
-          <v-row v-if="draft.requireAddress">
+          <v-row v-if="!noAddress && draft.requireAddress">
             <v-col>
               <p>
                 <span class="font-weight-bold text-h5">
@@ -213,7 +219,7 @@
             type="submit"
             x-large
           >
-            CONTINUE TO PAYMENT
+            {{ noPayment ? "SAVE" : "CONTINUE TO PAYMENT" }}
           </v-btn>
         </v-form>
       </validation-observer>
@@ -232,7 +238,11 @@ export default {
   mixins: [submittable],
 
   props: {
-    inSignUpProcess: Boolean
+    inSignUpProcess: Boolean,
+
+    noAddress: Boolean,
+
+    noPayment: Boolean
   },
 
   data: () => ({
@@ -264,7 +274,7 @@ export default {
       this.loading = true
 
       try {
-        if (this.draft.requireAddress) {
+        if (!this.noAddress && this.draft.requireAddress) {
           await this.createShippingAddress(this.draftAddress)
         }
 
@@ -294,8 +304,7 @@ export default {
         address2: null,
         city: null,
         state: null,
-        zipCode: null,
-        countryId: 1
+        zipCode: null
       }
     }
   }
@@ -303,16 +312,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.c-row {
-  overflow-x: auto;
-}
-
 .c-col {
-  min-width: 550px;
-}
-
-.c-card {
-  height: 100%;
+  align-content: space-between;
+  display: grid;
 }
 
 ul {

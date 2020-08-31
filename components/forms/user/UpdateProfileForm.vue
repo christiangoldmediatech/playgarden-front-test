@@ -1,7 +1,7 @@
 <template>
   <validation-observer v-slot="{ invalid, passes, reset }">
     <v-form :readonly="!editing || loading" @submit.prevent="passes(onSubmit)">
-      <p class="font-weight-bold titleAccount">
+      <p class="font-weight-bold">
         GENERAL
       </p>
 
@@ -112,9 +112,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.titleAccount {
-  color: $pg-black !important;
-}
-</style>
