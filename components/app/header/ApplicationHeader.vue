@@ -110,6 +110,7 @@ export default {
 .v-btn--active.custom-active {
   &::before {
     opacity: 0 !important;
+    font-weight: bold !important;
   }
   &::after {
     width: 60%;
@@ -121,6 +122,8 @@ export default {
     border-bottom: 2px solid var(--v-primary-base);
     border-radius: 7px;
   }
+  color: black !important;
+  font-weight: bold !important;
 }
 
 .link-text {

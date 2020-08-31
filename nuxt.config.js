@@ -57,7 +57,8 @@ export default {
    */
   css: [
     'tiptap-vuetify/dist/main.css',
-    'vue-snotify/styles/material.css'
+    'vue-snotify/styles/material.css',
+    '~/css/main.css'
   ],
   /*
    ** Plugins to load before mounting the App
@@ -129,7 +130,7 @@ export default {
   },
   env: {
     apiBaseUrl:
-      process.env.API_BASE_URL ||
+    process.env.API_BASE_URL ||
       'https://j2ld7v9jji.execute-api.us-east-1.amazonaws.com/staging'
   },
   router: {
