@@ -28,15 +28,15 @@
             <v-card-text>
               <v-form>
                 <v-row>
-                  <v-col
-                    class="text-md-right"
-                    cols="12"
-                    sm="3"
-                  >
+                  <v-col class="text-md-right" cols="12" sm="3">
                     <span class="subheader">Activity title:</span>
                   </v-col>
                   <v-col cols="12" sm="9" lg="6">
-                    <validation-provider v-slot="{ errors }" name="Activity Title" rules="required">
+                    <validation-provider
+                      v-slot="{ errors }"
+                      name="Activity Title"
+                      rules="required"
+                    >
                       <v-text-field
                         v-model="activity.name"
                         :error-messages="errors"
@@ -51,7 +51,11 @@
                     <span class="subheader">Description:</span>
                   </v-col>
                   <v-col cols="12" sm="9" lg="6">
-                    <validation-provider v-slot="{ errors }" name="Description" rules="required">
+                    <validation-provider
+                      v-slot="{ errors }"
+                      name="Description"
+                      rules="required"
+                    >
                       <v-textarea
                         v-model="activity.description"
                         :error-messages="errors"
@@ -66,7 +70,11 @@
                     <span class="subheader">Category:</span>
                   </v-col>
                   <v-col cols="12" sm="9" lg="6">
-                    <validation-provider v-slot="{ errors }" name="Category" rules="required">
+                    <validation-provider
+                      v-slot="{ errors }"
+                      name="Category"
+                      rules="required"
+                    >
                       <v-select
                         v-model="activity.activityTypeId"
                         :error-messages="errors"
@@ -104,7 +112,10 @@
                       :description="video.description"
                     />
                     <v-progress-circular
-                      v-else-if="video && ['PROCESSING', 'UPLOADING'].includes(video.status)"
+                      v-else-if="
+                        video &&
+                          ['PROCESSING', 'UPLOADING'].includes(video.status)
+                      "
                       class="mb-3"
                       color="primary"
                       width="8"
@@ -121,18 +132,26 @@
                       </span>
                     </v-progress-circular>
 
-                    <validation-provider ref="fileProvider" v-slot="{ errors }" name="Video" :rules="`${(activity.thumbnail === null && thumbnail === null) ? 'required' : ''}`">
+                    <validation-provider
+                      ref="fileProvider"
+                      v-slot="{ errors }"
+                      name="Video"
+                      :rules="{
+                        required:
+                          activity.thumbnail === null && thumbnail === null
+                      }"
+                    >
                       <file-uploader
                         ref="fileUploader"
+                        v-model="file"
                         :error-messages="errors"
-                        :file.sync="file"
+                        append-icon="mdi-video"
                         label="Upload Video"
                         mode="video"
-                        path="activity-video"
                         multi-part
+                        path="activity-video"
                         placeholder="Select a video for this activity"
-                        prepend-icon=""
-                        append-icon="mdi-video"
+                        solo
                         mp4
                         mov
                         mpeg
@@ -146,20 +165,27 @@
                   <v-col class="text-md-right" cols="12" sm="3">
                     <span class="subheader">Video Thumbnail:</span>
                   </v-col>
+
                   <v-col class="text-center" cols="12" sm="9" lg="6">
-                    <validation-provider ref="thumbnailFileProvider" v-slot="{ errors }" name="Video" :rules="`${(!id || file) ? 'required' : ''}`">
+                    <validation-provider
+                      ref="thumbnailFileProvider"
+                      v-slot="{ errors }"
+                      name="Video"
+                      :rules="{ required: !id || file, size: 10000 }"
+                    >
                       <file-uploader
                         ref="fileUploader2"
+                        v-model="thumbnail"
                         :error-messages="errors"
-                        :file.sync="thumbnail"
                         label="Upload Thumbnail"
                         mode="image"
                         path="activity-thumbnail"
                         placeholder="Select a thumbnail for this activity video"
-                        prepend-icon=""
                         append-icon="mdi-photo"
+                        solo
                         jpg
                         png
+                        svg
                       />
                     </validation-provider>
                   </v-col>
@@ -221,7 +247,7 @@ export default {
     ...mapGetters('upload', ['uploads']),
 
     id () {
-      return (this.$route.query.id) ? parseInt(this.$route.query.id) : null
+      return this.$route.query.id ? parseInt(this.$route.query.id) : null
     },
 
     title () {
@@ -310,7 +336,11 @@ export default {
 
   methods: {
     ...mapActions('admin/activity', [
-      'getActivities', 'getActivityById', 'createActivity', 'updateActivity', 'getTypes'
+      'getActivities',
+      'getActivityById',
+      'createActivity',
+      'updateActivity',
+      'getTypes'
     ]),
 
     ...mapActions('admin/curriculum', { getCurriculumTypes: 'getTypes' }),

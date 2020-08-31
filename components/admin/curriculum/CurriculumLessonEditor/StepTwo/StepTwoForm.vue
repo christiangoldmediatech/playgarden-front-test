@@ -84,16 +84,16 @@
           ref="videoUploader"
           v-model="file"
           :error-messages="errors"
-          :file.sync="file"
           label="Upload Video"
           mode="video"
-          mov
-          mp4
-          mpeg
           multi-part
           path="lesson"
           placeholder="Select a video for this lesson"
           prepend-icon="mdi-video"
+          solo
+          mov
+          mp4
+          mpeg
           webm
         />
       </validation-provider>
@@ -124,19 +124,19 @@
         v-else
         v-slot="{ errors }"
         name="Thumbnail"
-        rules="required"
+        rules="required|size:10000"
       >
         <file-uploader
           ref="thumbnailUploader"
           v-model="thumbnail"
           :error-messages="errors"
-          :file.sync="thumbnail"
-          jpg
           label="Upload Thumbnail"
           mode="image"
           path="curriculum-thumbnail"
           placeholder="Select a thumbnail for this lesson's video"
           prepend-icon="mdi-camera"
+          solo
+          jpg
           png
           svg
         />

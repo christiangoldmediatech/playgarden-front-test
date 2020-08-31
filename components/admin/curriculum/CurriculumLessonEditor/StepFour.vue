@@ -66,13 +66,13 @@
           ref="fileUploader"
           v-model="file"
           :error-messages="errors"
-          :file.sync="file"
           label="Upload File"
           mode="document"
           path="lesson"
           placeholder="Select a pdf for this lesson"
-          pdf
           prepend-icon="mdi-file"
+          solo
+          pdf
         />
       </validation-provider>
 
