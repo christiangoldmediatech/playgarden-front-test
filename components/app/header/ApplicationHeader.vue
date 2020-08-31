@@ -107,35 +107,6 @@ export default {
   max-height: 48px;
 }
 
-.v-btn--active.custom-active {
-  &::before {
-    opacity: 0 !important;
-    font-weight: bold !important;
-  }
-  &::after {
-    width: 60%;
-    position: absolute;
-    bottom: 33.33%;
-    left: 20%;
-    content: "";
-    z-index: -1;
-    border-bottom: 2px solid var(--v-primary-base);
-    border-radius: 7px;
-  }
-  color: black !important;
-  font-weight: bold !important;
-}
-
-.link-text {
-  font-size: 14px;
-  font-weight: 400 !important;
-  font-style: normal;
-  line-height: 1.44;
-  letter-spacing: normal;
-  text-align: left;
-  color: #606060 !important;
-}
-
 .no-border-radius {
   border-radius: 0px !important;
 }
