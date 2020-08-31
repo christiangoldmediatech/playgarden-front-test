@@ -15,10 +15,10 @@
             </v-btn>
           </v-row>
 
-          <!-- First name -->
+          <!-- Name -->
           <validation-provider
             v-slot="{ errors }"
-            :name="(removable ? `Child #${indexD + 1} - ` : '') + 'First name'"
+            :name="(removable ? `Child #${indexD + 1} - ` : '') + 'Name'"
             rules="required"
           >
             <v-text-field
@@ -26,23 +26,7 @@
               clearable
               :disabled="loading"
               :error-messages="errors"
-              label="First name"
-              solo
-            />
-          </validation-provider>
-
-          <!-- Last name -->
-          <validation-provider
-            v-slot="{ errors }"
-            :name="(removable ? `Child #${indexD + 1} - ` : '') + 'Last name'"
-            rules="required"
-          >
-            <v-text-field
-              v-model="item.lastName"
-              clearable
-              :disabled="loading"
-              :error-messages="errors"
-              label="Last name"
+              label="Name"
               solo
             />
           </validation-provider>
@@ -211,7 +195,7 @@ export default {
         birthday: '',
         firstName: '',
         gender: '',
-        lastName: '',
+        lastName: ' ',
         level: 'BEGINNER'
       })
     },
