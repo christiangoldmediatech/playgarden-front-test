@@ -24,6 +24,16 @@ export default {
   name: 'UnderlinedTitle',
 
   props: {
+    fontSize: {
+      type: String,
+      default: '50px'
+    },
+
+    fontWeight: {
+      type: [Number, String],
+      default: 'bold'
+    },
+
     lineColor: {
       type: [Object, String],
       default: () => ({ color: 'primary', light: 'base' }),
@@ -80,16 +90,6 @@ export default {
       default: 55
     },
 
-    fontSize: {
-      type: String,
-      default: '50px'
-    },
-
-    fontWeight: {
-      type: [Number, String],
-      default: 'bold'
-    },
-
     paddingBoottom: {
       type: String,
       default: '3px'
@@ -116,7 +116,8 @@ export default {
         return this.lineColor
       }
 
-      return `var(--v-${this.lineColor.color}-${this.lineColor.light || 'base'})`
+      return `var(--v-${this.lineColor.color}-${this.lineColor.light ||
+        'base'})`
     },
 
     _lineFrom () {

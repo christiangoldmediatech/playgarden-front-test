@@ -18,8 +18,9 @@ p {
     text-decoration: none;
 }
 
+.theme--light.v-application,
 .black--link {
-    color: var(--pg-black) !important;
+    color: $pg-black !important;
 }
 
 .clickable {
@@ -82,6 +83,11 @@ p {
     font-weight: bold;
     font-weight: bold;
 }
+
+.w-100 {
+  width: 100% !important;
+}
+
 .category-text {
   font-size: 1.5rem !important;
   position: relative;
@@ -98,7 +104,6 @@ p {
     border-radius: 7px;
   }
 }
-
 .label-custom::v-deep.v-text-field.v-text-field--solo .v-label {
   color: rgba(0, 0, 0, 0.16) !important;
 }

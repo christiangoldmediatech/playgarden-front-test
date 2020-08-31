@@ -9,6 +9,7 @@ export default async function ({ redirect, route, store }) {
       'app-account': 1,
       'app-children-register': 1,
       'app-onboarding': 1,
+      'app-payment-plan': 1,
       'app-payment-register': 1
     }
 

@@ -1,7 +1,7 @@
 <template>
   <v-row no-gutters>
     <v-col cols="12">
-      <p class="font-weight-bold titleAccount">
+      <p class="font-weight-bold">
         MEMBERSHIP
       </p>
 
@@ -15,11 +15,19 @@
 
       <p>
         <label class="mb-1 monthly-membership-fee-text mt-1">
-          Your monthly membership fee is
+          Your {{ membershipInterval }} membership fee is
 
-          <b>${{ billing.monthlyMembershipFee/100 }}</b>
+          <b>${{ billing.membershipFee / 100 }}</b>
         </label>
       </p>
+
+      <v-row class="justify-space-between my-1" no-gutters>
+        <span>Plan</span>
+
+        <v-btn color="primary" small text @click="changePlanModal = true">
+          CHANGE PLAN
+        </v-btn>
+      </v-row>
 
       <v-row
         v-for="(card, indexUC) in userCards"
@@ -42,7 +50,7 @@
         </v-btn>
       </v-row>
 
-      <template v-if="billing.subscriptionId">
+      <template v-if="hasMembership">
         <!-- Add payment method -->
         <v-btn
           block
@@ -60,10 +68,14 @@
         </v-btn>
       </template>
 
-      <div class="my-6 text-center">
+      <div v-else class="my-6 text-center">
         <nuxt-link :to="{ name: 'app-payment-register' }">
           CREATE MEMBERSHIP
         </nuxt-link>
+      </div>
+
+      <div v-if="isTrialingStatus" class="my-6 text--accent text-center">
+        Trial ends: {{ billing.trialEndDate }}
       </div>
     </v-col>
 
@@ -83,8 +95,31 @@
 
         <new-billing-method
           v-if="newCardModal"
-          @add:success="onSuccess"
+          @add:success="onSuccessNewBilling"
           @click:cancel="newCardModal = false"
+        />
+      </v-col>
+    </v-dialog>
+
+    <v-dialog
+      v-model="changePlanModal"
+      content-class="white"
+      :fullscreen="$vuetify.breakpoint.smAndDown"
+      max-width="90%"
+      persistent
+    >
+      <v-col cols="12">
+        <v-row class="pr-3" justify="end">
+          <v-btn icon @click.stop="changePlanModal = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-row>
+
+        <subscription-plan-selection
+          v-if="changePlanModal"
+          no-address
+          no-payment
+          @click:submit="onSuccessChangePlan"
         />
       </v-col>
     </v-dialog>
@@ -92,33 +127,68 @@
 </template>
 
 <script>
+import dayjs from 'dayjs'
+import { get } from 'lodash'
 import { mapActions } from 'vuex'
 
 import NewBillingMethod from '@/components/app/payment/NewBillingMethod'
+import SubscriptionPlanSelection from '@/components/app/payment/SubscriptionPlanSelection'
 
 export default {
   name: 'MembershipDetails',
 
   components: {
-    NewBillingMethod
+    NewBillingMethod,
+    SubscriptionPlanSelection
   },
 
   data () {
     return {
       loading: false,
       billing: {
-        monthlyMembershipFee: 0,
-        nextBillingDate: '',
-        subscriptionId: null
+        membershipFee: 0,
+        membershipInterval: 0,
+        nextBillingDate: null,
+        trialEndDate: null,
+        subscriptionId: null,
+        status: null
       },
       newCardModal: false,
+      changePlanModal: false,
       userCards: []
     }
   },
 
   computed: {
+    hasMembership () {
+      const status = this.billing.status
+
+      return (
+        !status ||
+        (status !== 'incomplete' &&
+          status !== 'incomplete_expired' &&
+          status !== 'canceled')
+      )
+    },
+
     isBillingCardRemovable () {
       return this.userCards.length > 1
+    },
+
+    isTrialingStatus () {
+      return this.billing.status === 'trialing'
+    },
+
+    membershipInterval () {
+      switch (this.billing.membershipInterval) {
+        case 'month':
+          return 'monthly'
+
+        case 'year':
+          return 'yearly'
+      }
+
+      return null
     }
   },
 
@@ -143,22 +213,32 @@ export default {
         this.billing.subscriptionId = data.subscriptionId
 
         if (data.subscriptionData) {
-          // TODO: improve this after get more info about this process
-          const billingItems = data.subscriptionData.items.data
-          const unixTimestamp = data.subscriptionData.current_period_end
-          const milliseconds = unixTimestamp * 1000
-          const nextDate = new Date(milliseconds)
-          const month = nextDate.toLocaleString('default', { month: 'long' })
+          this.billing.membershipInterval = get(
+            data,
+            'subscriptionData.plan.interval',
+            null
+          )
+          this.billing.status = get(data, 'subscriptionData.status', null)
+          this.billing.trialEndDate = get(
+            data,
+            'subscriptionData.trial_end',
+            null
+          )
+          this.billing.trialEndDate = this.billing.trialEndDate
+            ? dayjs(this.billing.trialEndDate * 1000).format('MMMM D, YYYY')
+            : null
+          this.billing.nextBillingDate = dayjs(
+            data.subscriptionData.current_period_end * 1000
+          ).format('MMMM D, YYYY')
+
+          const billingItems = get(data, 'subscriptionData.items.data', [])
           let cost = 0
 
-          this.billing.nextBillingDate =
-            month + ' ' + nextDate.getDate() + ', ' + nextDate.getFullYear()
-
-          billingItems.forEach((item) => {
-            cost += parseFloat(item.price.unit_amount_decimal)
+          billingItems.map((item) => {
+            cost += parseFloat(get(item, 'price.unit_amount_decimal', 0))
           })
 
-          this.billing.monthlyMembershipFee = cost.toFixed(2)
+          this.billing.membershipFee = cost.toFixed(2)
         }
       } finally {
         this.loading = false
@@ -191,29 +271,35 @@ export default {
       })
     },
 
-    async removeSubscription () {
-      // eslint-disable-next-line no-alert
-      if (confirm('Are you sure about cancel your subscription?')) {
-        try {
-          this.loading = true
-          await this.cancelSubscription()
-          this.$snotify.success('Subscription has been canceled successfully!')
-        } finally {
-          this.loading = false
+    removeSubscription () {
+      this.$nuxt.$emit('open-prompt', {
+        title: 'Cancel subscription?',
+        message: 'Are you sure about cancel your subscription?',
+        action: async () => {
+          try {
+            this.loading = true
+            await this.cancelSubscription()
+            this.$snotify.success(
+              'Subscription has been canceled successfully!'
+            )
+            await this.getBillingDetails()
+          } catch (e) {
+          } finally {
+            this.loading = false
+          }
         }
-      }
+      })
     },
 
-    onSuccess () {
+    onSuccessNewBilling () {
       this.newCardModal = false
-      this.getBillingCards()
+      this.getBillingDetails()
+    },
+
+    onSuccessChangePlan () {
+      this.changePlanModal = false
+      this.getBillingDetails()
     }
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.titleAccount {
-  color: $pg-black !important;
-}
-</style>
