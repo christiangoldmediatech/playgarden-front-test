@@ -111,7 +111,7 @@ export default {
 
     // NOTE: "everyone" count as one child here
     if (this.children.length === 2) {
-      this.selectChild(this.children.pop())
+      this.selectChild(this.children[0])
     }
   },
 
