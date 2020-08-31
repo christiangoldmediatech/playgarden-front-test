@@ -10,7 +10,7 @@
       :rules="[required, isValidEmail]"
       solo
       type="email"
-      class="label-color-signin"
+      class="label-custom"
     />
 
     <!-- Password -->
@@ -22,7 +22,7 @@
       :loading="loading"
       :rules="[required, ...isValidPassword]"
       solo
-      class="label-color-signin"
+      class="label-custom"
     />
 
     <v-btn
@@ -122,14 +122,10 @@ export default {
 }
 .signup {
   font-size: 17px;
-
   span {
     color: $pg-main;
     text-transform: uppercase;
     font-weight: bold;
   }
-}
-.label-color-signin::v-deep.v-text-field.v-text-field--solo:not(.v-text-field--solo-flat) > .v-input__control > .v-input__slot {
-  box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.16) !important;
 }
 </style>
