@@ -102,6 +102,8 @@
 
         <membership-details :loading="loading" />
 
+        <shipping-address-details :loading="loading" />
+
         <caregiver-list :loading="loading" />
 
         <notification-list :loading="loading" />
@@ -119,6 +121,7 @@ import CaregiverList from '@/components/app/caregiver/CaregiverList'
 import ChildForm from '@/components/forms/profile/ChildForm.vue'
 import MembershipDetails from '@/components/app/payment/MembershipDetails'
 import NotificationList from '@/components/app/notifications/NotificationUserList'
+import ShippingAddressDetails from '@/components/app/payment/ShippingAddressDetails'
 import UpdatePassword from '@/components/app/password/UpdatePassword'
 import UpdateProfile from '@/components/app/user/UpdateProfile'
 
@@ -130,6 +133,7 @@ export default {
     ChildForm,
     MembershipDetails,
     NotificationList,
+    ShippingAddressDetails,
     UpdatePassword,
     UpdateProfile
   },

@@ -18,8 +18,9 @@ p {
     text-decoration: none;
 }
 
+.theme--light.v-application,
 .black--link {
-    color: var(--pg-black) !important;
+    color: $pg-black !important;
 }
 
 .clickable {
