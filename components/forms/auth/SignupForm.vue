@@ -59,7 +59,6 @@
                     :loading="loading"
                     maxlength="20"
                     solo
-                    v-mask="'(###) ###-####'"
                   />
                 </validation-provider>
 

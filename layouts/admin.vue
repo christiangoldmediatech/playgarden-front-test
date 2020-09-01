@@ -345,5 +345,8 @@ export default {
   .v-label {
     color: rgba(0, 0, 0, 0.16) !important;
   }
+  div.v-text-field__suffix {
+    color: rgba(0, 0, 0, 0.16) !important;
+  }
 }
 </style>
