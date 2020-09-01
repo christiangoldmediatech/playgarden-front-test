@@ -25,7 +25,7 @@
               <v-row align="center" justify="center">
                 <v-col class="text-center">
                   <div>
-                    <img class="logo-img" src="@//assets/svg/logo.svg">
+                    <img class="logo-img" src="@/assets/svg/logo.svg">
                   </div>
 
                   <span class="primary--text text-h5 font-weight-bold">

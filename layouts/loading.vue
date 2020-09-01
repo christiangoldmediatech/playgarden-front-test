@@ -6,7 +6,7 @@
         <v-row align="center" fill-height justify="center">
           <v-col class="text-center" cols="4">
             <div>
-              <img class="logo-img" src="@//assets/svg/logo.svg">
+              <img class="logo-img" src="@/assets/svg/logo.svg">
             </div>
 
             <v-progress-linear color="primary" indeterminate :size="20" />

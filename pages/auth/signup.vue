@@ -23,17 +23,6 @@
       <span class="font-weight-bold text-h5">
         MEMBERSHIP
       </span>
-      <v-container row class="lighten-5">
-        <v-row
-          no-gutters
-          class="info-signIn"
-        >
-          <small>
-            Complete your registration and membership subscription to start
-            enjoying our learning experience!
-          </small>
-        </v-row>
-      </v-container>
       <p class="text-center text-md-left">
         <br>
         <small>
@@ -47,9 +36,6 @@
           <span class="font-weight-bold">
             Get one week FREE trial
           </span>
-        </p>
-        <p class="subtitle-signIn">
-          Get one week FREE trial
         </p>
         <p>
           <small>You can cancel at any time from your account settings</small>

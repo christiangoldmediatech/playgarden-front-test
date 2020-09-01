@@ -14,7 +14,7 @@
           <img
             alt="Playarden Prep Online Logo"
             class="logo"
-            src="@//assets/svg/logo.svg"
+            src="@/assets/svg/logo.svg"
           >
         </v-row>
       </v-container>
@@ -115,7 +115,7 @@
         <img
           alt="Playarden Prep Online Logo"
           class="navbar-logo"
-          src="@//assets/svg/logo.svg"
+          src="@/assets/svg/logo.svg"
         >
       </v-toolbar-title>
 
