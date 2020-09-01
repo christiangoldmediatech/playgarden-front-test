@@ -62,7 +62,18 @@
       </v-row>
 
       <div v-show="showSetting">
-        <update-profile :loading="loading" :user="userInfo" />
+        <v-row no-gutters>
+          <v-col>
+            <v-text-field
+              disabled
+              label="First name"
+              solo
+              :value="userInfo.email"
+            />
+
+            <v-text-field disabled label="Password" solo suffix="••••••••••" />
+          </v-col>
+        </v-row>
 
         <v-dialog
           v-model="passwordModal"
@@ -72,17 +83,11 @@
           persistent
         >
           <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              v-bind="attrs"
-              block
-              class="mb-6"
-              color="accent"
-              text
-              x-large
-              v-on="on"
-            >
-              EDIT PASSWORD
-            </v-btn>
+            <v-row class="mb-6" justify="end" no-gutters>
+              <v-btn v-bind="attrs" color="primary" text v-on="on">
+                CHANGE PASSWORD
+              </v-btn>
+            </v-row>
           </template>
 
           <v-col cols="12">
@@ -123,7 +128,6 @@ import MembershipDetails from '@/components/app/payment/MembershipDetails'
 import NotificationList from '@/components/app/notifications/NotificationUserList'
 import ShippingAddressDetails from '@/components/app/payment/ShippingAddressDetails'
 import UpdatePassword from '@/components/app/password/UpdatePassword'
-import UpdateProfile from '@/components/app/user/UpdateProfile'
 
 export default {
   name: 'Index',
@@ -134,8 +138,7 @@ export default {
     MembershipDetails,
     NotificationList,
     ShippingAddressDetails,
-    UpdatePassword,
-    UpdateProfile
+    UpdatePassword
   },
 
   data: () => ({
