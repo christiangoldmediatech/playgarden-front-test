@@ -104,15 +104,12 @@ p {
     border-radius: 7px;
   }
 }
-
 ::v-deep.v-text-field.v-text-field--solo .v-label {
   color: rgba(0, 0, 0, 0.16) !important;
 }
-
 ::v-deep.v-text-field.v-text-field--solo:not(.v-text-field--solo-flat) > .v-input__control > .v-input__slot {
   box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.16) !important;
 }
-
 .v-btn--active.custom-active {
   &::before {
     opacity: 0 !important;
@@ -140,4 +137,8 @@ p {
   letter-spacing: normal;
   text-align: left;
   color: $pg-black !important;
+}
+
+.v-input__slot .v-label{
+  color: rgba(0, 0, 0, 0.16) !important;
 }
