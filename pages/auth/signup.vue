@@ -20,13 +20,11 @@
     </v-col>
 
     <v-col class="px-12" cols="12" md="4">
+      <span class="font-weight-bold text-h5">
+        MEMBERSHIP
+      </span>
       <p class="text-center text-md-left">
-        <span class="font-weight-bold text-h5">
-          MEMBERSHIP
-        </span>
-
         <br>
-
         <small>
           Complete the registration and choose the plan that best suits you, to
           start your learning experience!
@@ -39,7 +37,6 @@
             Get one week FREE trial
           </span>
         </p>
-
         <p>
           <small>You can cancel at any time from your account settings</small>
         </p>
@@ -145,15 +142,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.text-h5 {
+  color: $pg-black !important;
+}
+
+.subtitle-signIn {
+  color: $pg-black !important;
+  font-weight: 600 !important;
+}
+.info-signIn {
+  margin-top: 10px !important;
+}
 .image {
   max-height: 500px;
   width: 100%;
   display: flex;
   justify-content: center;
   align-content: center;
-  img {
+}
+img {
     max-width: 90%;
-  }
 }
 .form {
   max-width: 500px;

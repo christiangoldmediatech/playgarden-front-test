@@ -7,7 +7,6 @@
             <div>
               <img class="logo-img" src="@/assets/svg/logo.svg">
             </div>
-
             <v-progress-linear color="primary" indeterminate :size="20" />
           </v-col>
         </v-row>
