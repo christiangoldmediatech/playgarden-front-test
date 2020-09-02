@@ -19,7 +19,7 @@
           v-for="category in categories"
           :key="`category-${category.id}`"
         >
-          <v-list-item @click="$scrollTo(`#category_row_${category.id}`, 500, { offset: -192 })">
+          <v-list-item @click="$scrollTo(`#category_row_${category.id}`, 500, { offset: $vuetify.breakpoint.mobile ? -96 : -128 })">
             <v-list-item-avatar tile>
               <v-img
                 :src="category.icon"
