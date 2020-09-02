@@ -126,6 +126,6 @@ export default {
 
 .justify-end {
   position: relative;
-  right: -10%;
+  right: -8%;
 }
 </style>
