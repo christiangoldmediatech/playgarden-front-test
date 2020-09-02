@@ -117,20 +117,20 @@
         v-else
         v-slot="{ errors }"
         name="File"
-        rules="required"
+        rules="required|size:10000"
       >
         <file-uploader
           ref="fileUploader"
           v-model="file"
           :error-messages="errors"
-          :file.sync="file"
-          jpg
           label="Upload Photo"
           mode="image"
           path="lesson"
           placeholder="Select a photo for this lesson"
-          png
           prepend-icon="mdi-camera"
+          solo
+          jpg
+          png
           svg
         />
       </validation-provider>
