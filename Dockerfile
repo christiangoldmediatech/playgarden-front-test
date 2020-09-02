@@ -8,6 +8,15 @@ WORKDIR /home/node/app
 # Copying this separately prevents re-running npm install on every code change.
 COPY package.json yarn.lock ./
 
+ARG API_BASE_URL
+ARG TEST_ENV
+
+ENV API_BASE_URL="${API_BASE_URL}" \
+  TEST_ENV="${TEST_ENV}"
+
+# TEST envs
+RUN echo "USING API_BASE_URL => $API_BASE_URL || TEST_ENV => $TEST_ENV"
+
 # Install production dependencies.
 RUN yarn
 

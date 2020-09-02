@@ -117,15 +117,15 @@
               :name="(removable ? `Child #${indexD + 1} - ` : '') + 'Gender'"
               rules="required"
             >
-              <v-row class="mb-6">
+              <v-row class="mb-6 px-12">
                 <v-col
                   v-for="(gender, indexG) in genders"
                   :key="indexG"
-                  class="text-center"
+                  :class="{ 'text-left': indexG, 'text-right': !indexG }"
                   cols="6"
                 >
                   <v-btn
-                    class="px-12"
+                    block
                     :color="
                       item.gender === gender ? 'primary' : 'grey lighten-5'
                     "
