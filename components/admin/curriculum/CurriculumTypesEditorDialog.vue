@@ -58,13 +58,13 @@
 
               <template v-if="item.icon">
                 <div class="mb-6 mt-3">
-                  <v-badge avatar color="error" overlap>
+                  <v-badge avatar color="white" overlap>
                     <template v-slot:badge>
                       <v-avatar
                         class="clickable"
                         @click.native="item.icon = null"
                       >
-                        <v-icon>
+                        <v-icon color="#757575" size="20">
                           mdi-close
                         </v-icon>
                       </v-avatar>
