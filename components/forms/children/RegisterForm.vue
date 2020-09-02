@@ -191,7 +191,7 @@ export default {
     addRow () {
       this.draft.push({
         _birthdayFormatted: '',
-        _birthdayPicker: '',
+        _birthdayPicker: `${new Date().getFullYear() - 2}-01-01`,
         _menu: false,
         backpackId: '',
         birthday: '',
@@ -211,8 +211,7 @@ export default {
         item._birthdayFormatted = dayjs(item._birthdayPicker).format(
           'MM/DD/YYYY'
         )
-        // item.birthday = `${item._birthdayPicker}T00:00:00.000`
-        item.birthday = `${new Date().getFullYear() - 2}-01-01`
+        item.birthday = `${item._birthdayPicker}T00:00:00.000`
       }
     },
 
