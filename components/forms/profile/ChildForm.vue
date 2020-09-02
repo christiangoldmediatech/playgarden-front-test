@@ -5,7 +5,7 @@
       :key="indexD"
       v-slot="{ invalid, passes }"
     >
-      <v-row class="mb-6">
+      <v-row>
         <v-col>
           <v-form
             :readonly="loading"
@@ -20,7 +20,7 @@
                 <img
                   v-if="firstBackpack"
                   :alt="childBackpack(item.backpackId).name"
-                  class="active"
+                  class="backpack-active"
                   :src="childBackpack(item.backpackId).image"
                 >
               </v-row>
@@ -33,6 +33,7 @@
                         Change backpack:
                       </span>
                     </v-col>
+
                     <v-col
                       v-for="(backpack, indexB) in backpacks"
                       :key="indexB"
@@ -140,7 +141,7 @@
               <input v-model="item.gender" type="hidden">
             </validation-provider>
 
-            <v-row class="mb-6" justify="center">
+            <v-row v-if="isChildChanged(item)" class="mb-6" justify="center">
               <v-btn
                 class="px-8"
                 color="primary"
@@ -148,7 +149,7 @@
                 :loading="loading"
                 type="submit"
               >
-                Save
+                SAVE
               </v-btn>
             </v-row>
 
@@ -178,7 +179,7 @@
           x-large
           @click="addRow"
         >
-          ADD ANOTHER CHILD
+          ADD NEW CHILD PROFILE
         </v-btn>
       </v-col>
     </v-row>
@@ -200,6 +201,10 @@ export default {
   }),
 
   computed: {
+    isChildChanged () {
+      return child => child._original !== this.getOriginalChild(child)
+    },
+
     removable () {
       return this.items.length > 1
     },
@@ -233,6 +238,16 @@ export default {
       deleteChild: 'delete'
     }),
 
+    getOriginalChild ({ backpackId, birthday, firstName, level, gender } = {}) {
+      return JSON.stringify({
+        backpackId,
+        birthday,
+        firstName,
+        level,
+        gender
+      })
+    },
+
     async loadChildren () {
       try {
         this.loading = true
@@ -249,13 +264,15 @@ export default {
     },
 
     loadChild (
-      { id, backpack, birthday, firstName, gender, level },
+      { _original, id, backpack, birthday, firstName, gender, level },
       index = null
     ) {
       const _birthdayPicker = new Date(birthday).toISOString().substr(0, 10)
+
       const item = {
         _birthdayPicker,
         _birthdayFormatted: '',
+        _original,
         id,
         backpackId: backpack.id,
         birthday,
@@ -274,17 +291,22 @@ export default {
     },
 
     addRow (data = {}) {
-      this.items.push({
+      const _data = {
         _birthdayFormatted: '',
         _birthdayPicker: '',
         _menu: false,
+        _original: null,
         backpackId: this.firstBackpack,
         birthday: '',
         firstName: '',
         level: 'BEGINNER',
         gender: '',
         ...data
-      })
+      }
+
+      _data._original = this.getOriginalChild(_data)
+
+      this.items.push(_data)
     },
 
     fetchBackpacks () {
@@ -322,6 +344,7 @@ export default {
     async onSubmit (item, index) {
       try {
         this.loading = true
+
         if (item.id) {
           const params = {
             backpackId: item.backpackId,
@@ -330,9 +353,14 @@ export default {
             gender: item.gender,
             level: item.level
           }
+
           await this.updateChild({ id: item.id, params })
+          item._original = this.getOriginalChild(item)
         } else {
           const data = await this.createChild(item)
+
+          data._original = this.getOriginalChild(item)
+
           this.loadChild(data, index)
         }
       } catch (error) {
@@ -347,7 +375,7 @@ export default {
 
 <style lang="scss" scoped>
 .image {
-  height: 145px;
+  height: 85px;
 
   img {
     max-height: 145px;
@@ -360,5 +388,9 @@ export default {
       padding: 5px;
     }
   }
+}
+
+.backpack-active {
+  height: 175px;
 }
 </style>
