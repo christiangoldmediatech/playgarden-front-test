@@ -112,20 +112,20 @@
             v-else
             v-slot="{ errors }"
             :name="`Image ${indexMT + 1}`"
-            rules="required"
+            rules="required|size:10000"
           >
             <file-uploader
               :ref="`fileUploader${indexMT}`"
               v-model="item.file"
               :error-messages="errors"
-              :file.sync="item.file"
-              jpg
               :label="`Image ${indexMT + 1}`"
               mode="image"
               path="lesson"
               :placeholder="`Select image ${indexMT + 1}`"
-              png
               prepend-icon="mdi-camera"
+              solo
+              jpg
+              png
               svg
             />
           </validation-provider>

@@ -79,20 +79,20 @@
                 v-else
                 v-slot="{ errors }"
                 name="Icon"
-                rules="required"
+                rules="required|size:10000"
               >
                 <file-uploader
                   ref="iconUploader"
                   v-model="icon"
                   :error-messages="errors"
-                  :file.sync="icon"
-                  gif
                   label="Upload Icon"
                   mode="image"
                   path="curriculum-type"
                   placeholder="Select a icon for this Curriculum Type"
-                  png
                   prepend-icon="mdi-camera"
+                  solo
+                  jpg
+                  png
                   svg
                 />
               </validation-provider>

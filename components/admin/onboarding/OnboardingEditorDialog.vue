@@ -87,16 +87,16 @@
                   ref="videoUploader"
                   v-model="video"
                   :error-messages="errors"
-                  :file.sync="video"
                   label="Upload Video"
                   mode="video"
-                  mov
-                  mp4
-                  mpeg
                   multi-part
                   path="onboarding"
                   placeholder="Select a video for this onboarding"
                   prepend-icon="mdi-video"
+                  solo
+                  mov
+                  mp4
+                  mpeg
                   webm
                 />
               </validation-provider>
@@ -126,20 +126,21 @@
                 v-else
                 v-slot="{ errors }"
                 name="Thumbnail"
-                rules="required"
+                rules="required|size:10000"
               >
                 <file-uploader
                   ref="thumbnailUploader"
                   v-model="thumbnail"
                   :error-messages="errors"
-                  :file.sync="thumbnail"
                   label="Upload Thumbnail"
                   mode="image"
                   path="onboarding-thumbnail"
                   placeholder="Select a thumbnail for this onboarding"
                   prepend-icon="mdi-camera"
-                  png
+                  solo
                   jpg
+                  png
+                  svg
                 />
               </validation-provider>
             </v-form>
