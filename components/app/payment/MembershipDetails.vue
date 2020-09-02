@@ -17,14 +17,14 @@
         <label class="mb-1 monthly-membership-fee-text mt-1">
           Your {{ membershipInterval }} membership fee is
 
-          <b>${{ billing.membershipFee / 100 }}</b>
+          <b>${{ billing.planAmount }}</b>
         </label>
       </p>
 
       <v-row class="justify-space-between my-1" no-gutters>
-        <span>Plan</span>
+        <span>Plan: <b>{{ billing.planName }}</b></span>
 
-        <v-btn color="primary" small text @click="changePlanModal = true">
+        <v-btn color="primary" text @click="changePlanModal = true">
           CHANGE PLAN
         </v-btn>
       </v-row>
@@ -42,7 +42,6 @@
         <v-btn
           v-if="isBillingCardRemovable"
           color="accent"
-          small
           text
           @click="removeCard(card)"
         >
@@ -50,23 +49,23 @@
         </v-btn>
       </v-row>
 
-      <template v-if="hasMembership">
+      <v-row
+        v-if="hasMembership"
+        align="center"
+        class="my-1"
+        justify="space-between"
+        no-gutters
+      >
         <!-- Add payment method -->
-        <v-btn
-          block
-          class="my-6"
-          color="primary"
-          x-large
-          @click="newCardModal = true"
-        >
+        <v-btn class="ml-n5" color="primary" text @click="newCardModal = true">
           ADD NEW CARD
         </v-btn>
 
         <!-- Cancel suscription -->
-        <v-btn block color="accent" text x-large @click="removeSubscription">
+        <v-btn color="accent" text @click="removeSubscription">
           CANCEL MEMBERSHIP
         </v-btn>
-      </template>
+      </v-row>
 
       <div v-else class="my-6 text-center">
         <nuxt-link :to="{ name: 'app-payment-register' }">
@@ -146,9 +145,10 @@ export default {
     return {
       loading: false,
       billing: {
-        membershipFee: 0,
         membershipInterval: 0,
         nextBillingDate: null,
+        planAmount: 0,
+        planName: null,
         trialEndDate: null,
         subscriptionId: null,
         status: null
@@ -211,6 +211,8 @@ export default {
         const data = await this.fetchBillingDetails()
 
         this.billing.subscriptionId = data.subscriptionId
+        this.billing.planAmount = data.planAmount || null
+        this.billing.planName = data.planName || null
 
         if (data.subscriptionData) {
           this.billing.membershipInterval = get(
@@ -230,15 +232,6 @@ export default {
           this.billing.nextBillingDate = dayjs(
             data.subscriptionData.current_period_end * 1000
           ).format('MMMM D, YYYY')
-
-          const billingItems = get(data, 'subscriptionData.items.data', [])
-          let cost = 0
-
-          billingItems.map((item) => {
-            cost += parseFloat(get(item, 'price.unit_amount_decimal', 0))
-          })
-
-          this.billing.membershipFee = cost.toFixed(2)
         }
       } finally {
         this.loading = false

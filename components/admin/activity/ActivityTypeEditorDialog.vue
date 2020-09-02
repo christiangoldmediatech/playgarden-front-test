@@ -98,20 +98,26 @@
                 </v-col>
               </v-row>
 
-              <v-row>
+              <validation-provider
+                v-slot="{ errors }"
+                name="Icon"
+                rules="size:10000"
+              >
                 <file-uploader
                   ref="fileUploader"
-                  :file.sync="file"
+                  v-model="file"
+                  :error-messages="errors"
                   label="Upload Icon"
                   mode="image"
                   path="activity-type"
                   placeholder="Select an icon for this activity type"
                   prepend-icon="mdi-camera"
-                  gif
+                  solo
+                  jpg
                   png
                   svg
                 />
-              </v-row>
+              </validation-provider>
             </v-form>
           </v-container>
         </v-card-text>

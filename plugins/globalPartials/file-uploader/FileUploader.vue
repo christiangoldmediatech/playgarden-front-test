@@ -1,29 +1,27 @@
 <template>
   <v-file-input
-    v-bind="$props"
-    :accept="accepts"
+    v-model="file"
+    v-bind="$attrs"
+    :accept="accept"
+    :clearable="clearable"
+    :prepend-icon="prependIcon"
+    :show-size="showSize"
     class="clickable"
-    solo
-    :value="file"
-    @change="$emit('update:file', $event)"
   />
 </template>
 
 <script>
 import { mapActions } from 'vuex'
-import Props from './Props'
+
+import props from './props'
 
 export default {
   name: 'FileUploader',
 
-  mixins: [Props],
-
-  data () {
-    return {}
-  },
+  mixins: [props],
 
   computed: {
-    accepts () {
+    accept () {
       const list = [
         { 'image/svg+xml': this.svg },
         { 'image/png': this.png },
@@ -31,10 +29,16 @@ export default {
         { 'image/jpeg': this.jpg },
         { 'application/pdf': this.pdf },
         { 'application/msword': this.doc },
-        { 'application/vnd.openxmlformats-officedocument.wordprocessingml.document': this.docx },
+        {
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document': this
+            .docx
+        },
         { 'text/plain': this.txt },
         { 'application/vnd.ms-excel': this.xls },
-        { 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': this.xlsx },
+        {
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': this
+            .xlsx
+        },
         { 'application/zip': this.zip },
         { 'video/mpeg': this.mpeg },
         { 'video/mp4': this.mp4 },
@@ -44,8 +48,9 @@ export default {
 
       const compiledList = []
 
-      list.forEach((mimeType) => {
+      list.map((mimeType) => {
         const key = Object.keys(mimeType)[0]
+
         if (mimeType[key]) {
           compiledList.push(key)
         }
@@ -54,6 +59,16 @@ export default {
       const finalList = compiledList.concat(this.mimeTypes)
 
       return finalList.join(',')
+    },
+
+    file: {
+      get () {
+        return this.value
+      },
+
+      set (input) {
+        this.$emit('input', input)
+      }
     }
   },
 
@@ -65,7 +80,10 @@ export default {
 
       try {
         if (this.multiPart) {
-          result = await this.handleMultiPartBackgroundFileUpload(meta, callback)
+          result = await this.handleMultiPartBackgroundFileUpload(
+            meta,
+            callback
+          )
         } else {
           result = await this.handleFileUpload()
         }
@@ -81,11 +99,13 @@ export default {
         if (this.file) {
           const formData = new FormData()
           formData.append('file', this.file)
+
           const { filePath } = await this.doUpload({
             type: `upload-${this.mode}`,
             path: this.path,
             formData
           })
+
           return filePath
         }
       } catch (error) {
@@ -104,6 +124,7 @@ export default {
           callback,
           meta
         })
+
         return result
       }
       return false

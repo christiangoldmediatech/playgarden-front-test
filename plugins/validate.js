@@ -13,7 +13,8 @@ import {
   max,
   min,
   min_value as minValue,
-  required
+  required,
+  size
 } from 'vee-validate/dist/rules'
 import en from 'vee-validate/dist/locale/en.json'
 
@@ -32,6 +33,7 @@ extend('max', max)
 extend('min', min)
 extend('min_value', minValue)
 extend('required', required)
+extend('size', size)
 
 // Custom
 // 4242424242424242
