@@ -8,8 +8,12 @@
 
         <v-col cols="12" sm="7" md="8" lg="9">
           <v-row align="center" class="px-3">
-            <v-btn color="primary" :to="{ name: 'app-pick-child' }">
+            <v-btn v-if="allChildren.length > 1" color="primary" :to="{ name: 'app-pick-child' }">
               PICK CHILD
+            </v-btn>
+
+            <v-btn color="primary" @click.stop="onResetChild">
+              RESET CHILD
             </v-btn>
 
             <v-spacer />
@@ -64,6 +68,7 @@ export default {
   computed: {
     ...mapGetters({ currentChild: 'getCurrentChild' }),
     ...mapGetters('admin/curriculum', { lesson: 'getLesson' }),
+    ...mapGetters('children', { allChildren: 'rows' }),
 
     childrenIds () {
       // const ids = (this.currentChild
@@ -83,6 +88,7 @@ export default {
   },
 
   created () {
+    this.getAllChildren()
     this.getCurrentLesson(true)
 
     this.$nuxt.$on('dashboard-panel-update', () => {
@@ -95,7 +101,13 @@ export default {
   },
 
   methods: {
-    ...mapActions('children/lesson', ['getCurrentLessonByChildrenId']),
+    ...mapActions('children', { getAllChildren: 'get' }),
+    ...mapActions('children/lesson', ['getCurrentLessonByChildrenId', 'resetChild']),
+
+    async onResetChild () {
+      await this.resetChild({ lessonId: 20, childId: this.childrenIds })
+      this.$nuxt.$emit('dashboard-panel-update')
+    },
 
     async getCurrentLesson (redirect = false) {
       try {
@@ -115,7 +127,7 @@ export default {
       if (this.lesson && this.$route.name === 'app-dashboard') {
         if (this.videosCompletionRate < 100) {
           this.$router.push({
-            name: 'app-dashboard-video-lesson',
+            name: 'app-dashboard-lesson-videos',
             query: { id: this.getNextId(this.videos) }
           })
         } else if (this.worksheetsCompletionRate < 100) {
@@ -125,7 +137,7 @@ export default {
           })
         } else if (this.activitiesCompletionRate < 100) {
           this.$router.push({
-            name: 'app-dashboard-activity',
+            name: 'app-dashboard-lesson-activities',
             query: { id: this.getNextId(this.activities) }
           })
         } else {

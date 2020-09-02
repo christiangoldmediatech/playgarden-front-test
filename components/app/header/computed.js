@@ -7,7 +7,7 @@ export default {
     items () {
       if (this.isUserLoggedIn) {
         return [
-          { title: 'Dashboard', to: { name: 'app-dashboard' } },
+          { title: 'Lessons', to: { name: 'app-dashboard' } },
           { title: 'Student Cubby', to: { name: 'app-student-cubby' } },
           { title: 'Activities', to: { name: 'app-activities' } },
           { title: 'Parent Corner', to: { name: 'app-parent-corner' } }

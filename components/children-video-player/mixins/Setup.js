@@ -60,7 +60,8 @@ export default {
         preload: 'auto',
         aspectRatio: '16:9',
         fluid: true,
-        sources: []
+        sources: [],
+        loadingSpinner: false
       }
     }
   },
@@ -105,7 +106,7 @@ export default {
   methods: {
     onPlayerReady () {
       // Setup events
-      this.player.on('loadstart', () => {
+      this.player.on(['loadstart', 'seeking', 'waiting', 'stalled'], () => {
         // console.log('loadstart')
         this.status = 'LOADING'
       })

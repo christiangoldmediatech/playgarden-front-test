@@ -25,12 +25,6 @@ export default {
     value: {
       type: Boolean,
       required: true
-    },
-
-    attach: {
-      type: [Boolean, String, Object],
-      required: false,
-      default: false
     }
   },
 
@@ -40,7 +34,7 @@ export default {
 
   watch: {
     value (val) {
-      if (val && this.$attrs.timeOut) {
+      if (val && this.$attrs.timeOut !== false) {
         this.$nextTick(() => {
           this.$refs.message.startInterval()
         })

@@ -11,7 +11,7 @@
           <v-container fill-height fluid>
             <v-row align="center" justify="center">
               <div
-                :class="['play-icon rounded-circle d-flex flex-column align-center justify-center', { 'scaled': hover }]"
+                :class="['play-icon rounded-circle d-flex flex-column align-center justify-center', { 'scaled-play-icon': hover }]"
               >
                 <img
                   src="@/assets/svg/play-button.svg"
@@ -27,24 +27,61 @@
         </v-hover>
       </v-img>
 
-      <v-card-text>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ratione dolorem dolorum voluptatibus incidunt. Accusantium quae numquam cumque. Natus recusandae debitis fugiat possimus ducimus ad repellendus, fuga, error expedita ipsam sit?
-      </v-card-text>
+      <v-list>
+        <v-list-item>
+          <v-list-item-avatar tile>
+            <v-img
+              :src="currentVideoLesson.activityType.icon"
+              contain
+            />
+          </v-list-item-avatar>
+          <v-list-item-content>
+            <v-list-item-title class="font-weight-bold text-uppercase">
+              {{ currentVideoLesson.title }}
+            </v-list-item-title>
+
+            <v-list-item-subtitle>
+              {{ currentVideoLesson.description }}
+            </v-list-item-subtitle>
+          </v-list-item-content>
+
+          <v-list-item-action>
+            <v-btn
+              icon
+              large
+              :loading="loading"
+              @click.stop="setFavorite"
+            >
+              <v-icon color="#F5737F">
+                <template v-if="isFavorite">
+                  mdi-heart
+                </template>
+                <template v-else>
+                  mdi-heart-outline
+                </template>
+              </v-icon>
+            </v-btn>
+          </v-list-item-action>
+        </v-list-item>
+      </v-list>
     </template>
-    <video-player-dialog />
+    <lesson-video-player />
   </v-card>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import VideoPlayerDialog from '@/components/VideoPlayerDialog.vue'
+import LessonVideoPlayer from '@/components/app/dashboard/LessonVideoPlayer.vue'
+import VideoFavoriteMixin from '@/components/app/activities/VideoFavoriteMixin.js'
 
 export default {
-  name: 'VideoLesson',
+  name: 'LessonVideos',
 
   components: {
-    VideoPlayerDialog
+    LessonVideoPlayer
   },
+
+  mixins: [VideoFavoriteMixin],
 
   data: () => {
     return {
@@ -64,10 +101,11 @@ export default {
     },
 
     playlist () {
-      return this.videos.map(({ name, description, videoUrl, thumbnail, id, viewed }) => {
+      return this.videos.map(({ activityType, name, description, videoUrl, thumbnail, id, viewed }) => {
         return {
           title: name,
           description,
+          activityType,
           src: {
             src: videoUrl.HLS,
             type: 'application/x-mpegURL'
@@ -93,7 +131,7 @@ export default {
 
   methods: {
     playVideo () {
-      this.$nuxt.$emit('open-video-dialog', { playlist: this.playlist, index: this.currentVideoLessonIndex })
+      this.$nuxt.$emit('open-lesson-video-player', { playlist: this.playlist, index: this.currentVideoLessonIndex })
     }
   }
 }
@@ -107,7 +145,7 @@ export default {
   transition: transform 250ms;
 }
 
-.scaled {
+.scaled-play-icon {
   transform: scale(1.25);
 }
 </style>

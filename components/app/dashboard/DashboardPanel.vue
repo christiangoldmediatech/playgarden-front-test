@@ -54,7 +54,7 @@
                 nuxt
                 exact
                 :to="{
-                  name: 'app-dashboard-video-lesson',
+                  name: 'app-dashboard-lesson-videos',
                   query: { id: video.id }
                 }"
               >
@@ -163,8 +163,9 @@
                 class="px-0"
                 :disabled="videosCompletionRate < 100 || checkVideoDisabled(indexA, 'activities')"
                 nuxt
+                exact
                 :to="{
-                  name: 'app-dashboard-activity',
+                  name: 'app-dashboard-lesson-activities',
                   query: { id: activity.id }
                 }"
               >
