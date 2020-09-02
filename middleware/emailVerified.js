@@ -15,8 +15,8 @@ export default function ({ redirect, route, store }) {
       !ignoreRoute[route.name] &&
       route.name !== 'auth-verify-email' &&
       route.query.process !== 'signup' &&
-      (get(user, 'role.section') === 'PARENTS' ||
-        get(user, 'role.section') === 'CAREGIVERS')
+      (get(user, 'role.name') === 'PARENTS' ||
+        get(user, 'role.name') === 'CAREGIVERS')
     ) {
       redirect({ name: 'auth-verify-email' })
     } else if (
