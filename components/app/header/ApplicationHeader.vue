@@ -14,7 +14,7 @@
       <img
         alt="Playarden Prep Online Logo"
         class="navbar-logo"
-        src="@//assets/svg/logo.svg"
+        src="@/assets/svg/logo.svg"
       >
     </v-toolbar-title>
 
@@ -35,14 +35,27 @@
       />
     </v-toolbar-items>
 
-    <v-btn
-      class="px-13 ml-3 hidden-sm-and-down"
-      color="accent"
-      nuxt
-      :to="{ name: isUserLoggedIn ? 'app-account' : 'auth-login' }"
-    >
-      {{ isUserLoggedIn ? "ACCOUNT" : "LOGIN" }}
-    </v-btn>
+    <div class="justify-end">
+      <v-btn
+        class="px-13 ml-3 hidden-sm-and-down text-right"
+        color="accent"
+        nuxt
+        v-if="!isUserLoggedIn"
+        text
+        :to="{ name: 'auth-signup' }"
+      >
+        REGISTER
+      </v-btn>
+
+      <v-btn
+        class="px-13 ml-3 hidden-sm-and-down text-right"
+        color="accent"
+        nuxt
+        :to="{ name: isUserLoggedIn ? 'app-account' : 'auth-login' }"
+      >
+        {{ isUserLoggedIn ? "ACCOUNT" : "LOGIN" }}
+      </v-btn>
+    </div>
 
     <v-spacer class="hidden-sm-and-down" />
 
@@ -109,5 +122,10 @@ export default {
 
 .no-border-radius {
   border-radius: 0px !important;
+}
+
+.justify-end {
+  position: relative;
+  right: -10%;
 }
 </style>

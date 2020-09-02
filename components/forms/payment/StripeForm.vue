@@ -20,6 +20,7 @@
           :error-messages="errors"
           :loading="loading"
           maxlength="19"
+          mask="credit-card"
           placeholder="Card number"
           solo
         />
