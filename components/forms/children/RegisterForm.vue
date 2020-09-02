@@ -64,7 +64,7 @@
             <v-date-picker
               v-model="item._birthdayPicker"
               :max="new Date().toISOString().substr(0, 10)"
-              :min="minDate"
+              min="1990-01-01"
               @input="onInputBirthday(item)"
             />
           </v-menu>
@@ -211,7 +211,8 @@ export default {
         item._birthdayFormatted = dayjs(item._birthdayPicker).format(
           'MM/DD/YYYY'
         )
-        item.birthday = `${item._birthdayPicker}T00:00:00.000`
+        // item.birthday = `${item._birthdayPicker}T00:00:00.000`
+        item.birthday = `${new Date().getFullYear() - 2}-01-01`
       }
     },
 
