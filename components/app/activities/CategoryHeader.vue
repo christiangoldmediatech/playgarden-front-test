@@ -1,5 +1,5 @@
 <template>
-  <v-container :class="{ 'content-padding': sticky }">
+  <v-container :class="{ 'content-padding': sticky }" :style="{ '--paddingHeight': `${$vuetify.breakpoint.mobile ? 64 : 128}px` }">
     <v-row justify="center">
       <v-col class="text-center font-weight-bold text-h5" cols="12">
         Browse by category
@@ -12,9 +12,30 @@
       :class="{ sticky }"
       color="white"
       flat
-      prominent
+      :prominent="!$vuetify.breakpoint.mobile"
     >
-      <v-row align="center" justify="center">
+      <v-slide-group v-if="$vuetify.breakpoint.mobile" show-arrows="always">
+        <v-slide-item
+          v-for="category in categories"
+          :key="`category-${category.id}`"
+        >
+          <v-list-item @click="$scrollTo(`#category_row_${category.id}`, 500, { offset: -192 })">
+            <v-list-item-avatar tile>
+              <v-img
+                :src="category.icon"
+                contain
+              />
+            </v-list-item-avatar>
+
+            <v-list-item-content>
+              <v-list-item-title>
+                {{ category.name }}
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-slide-item>
+      </v-slide-group>
+      <v-row v-else align="center" justify="center">
         <v-hover
           v-for="category in categories"
           :key="`category-${category.id}`"
@@ -84,7 +105,7 @@ export default {
 
 <style lang="scss" scoped>
 .content-padding {
-  padding-top: 128px;
+  padding-top: var(--paddingHeight);
 }
 
 .sticky {
