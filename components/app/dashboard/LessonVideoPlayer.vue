@@ -4,7 +4,7 @@
     eager
     dark
     fullscreen
-    :persistent="false"
+    :persistent="true"
   >
     <div class="d-flex align-center justify-center bkg-black">
       <children-video-player
