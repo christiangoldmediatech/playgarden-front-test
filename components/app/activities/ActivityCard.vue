@@ -98,6 +98,10 @@ export default {
     categoryName: {
       type: String,
       required: true
+    },
+    playlist: {
+      type: Array,
+      required: true
     }
   },
 
@@ -119,16 +123,11 @@ export default {
 
   methods: {
     playVideo () {
-      this.$nuxt.$emit('play-activity', {
-        title: this.activity.name,
-        playlist: [
-          {
-            file: this.activity.videoUrl.HLS,
-            image: this.thumbnail,
-            activityId: this.activityId
-          }
-        ]
-      })
+      const index = this.playlist.findIndex(({ activityId }) => activityId === this.activityId)
+
+      if (index !== -1) {
+        this.$nuxt.$emit('open-lesson-activity-player', { playlist: this.playlist, index })
+      }
     }
   }
 }

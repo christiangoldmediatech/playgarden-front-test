@@ -12,9 +12,9 @@
               PICK CHILD
             </v-btn>
 
-            <v-btn color="primary" @click.stop="onResetChild">
+            <!-- <v-btn color="primary" @click.stop="onResetChild">
               RESET CHILD
-            </v-btn>
+            </v-btn> -->
 
             <v-spacer />
 
