@@ -31,6 +31,7 @@
                   <v-col class="text-md-right" cols="12" sm="3">
                     <span class="subheader">Activity title:</span>
                   </v-col>
+
                   <v-col cols="12" sm="9" lg="6">
                     <validation-provider
                       v-slot="{ errors }"
@@ -50,6 +51,7 @@
                   <v-col class="text-md-right" cols="12" sm="3">
                     <span class="subheader">Description:</span>
                   </v-col>
+
                   <v-col cols="12" sm="9" lg="6">
                     <validation-provider
                       v-slot="{ errors }"
@@ -69,6 +71,7 @@
                   <v-col class="text-md-right" cols="12" sm="3">
                     <span class="subheader">Category:</span>
                   </v-col>
+
                   <v-col cols="12" sm="9" lg="6">
                     <validation-provider
                       v-slot="{ errors }"
@@ -90,6 +93,7 @@
                   <v-col class="text-md-right" cols="12" sm="3">
                     <span class="subheader">Curriculum:</span>
                   </v-col>
+
                   <v-col cols="12" sm="9" lg="6">
                     <v-select
                       v-model="activity.curriculumTypeId"
@@ -103,6 +107,7 @@
                   <v-col class="text-md-right" cols="12" sm="3">
                     <span class="subheader">Video:</span>
                   </v-col>
+
                   <v-col class="text-center" cols="12" sm="9" lg="6">
                     <jw-player
                       v-if="video && video.videoUrl"
@@ -111,6 +116,7 @@
                       :image="video.thumbnail"
                       :description="video.description"
                     />
+
                     <v-progress-circular
                       v-else-if="
                         video &&
@@ -126,6 +132,7 @@
                         <span v-if="video.status === 'UPLOADING'">
                           Uploading
                         </span>
+
                         <span v-else>
                           Processing
                         </span>
@@ -133,13 +140,9 @@
                     </v-progress-circular>
 
                     <validation-provider
-                      ref="fileProvider"
                       v-slot="{ errors }"
                       name="Video"
-                      :rules="{
-                        required:
-                          activity.thumbnail === null && thumbnail === null
-                      }"
+                      :rules="{ required: Boolean(!id && !file) }"
                     >
                       <file-uploader
                         ref="fileUploader"
@@ -151,6 +154,7 @@
                         multi-part
                         path="activity-video"
                         placeholder="Select a video for this activity"
+                        prepend-icon=""
                         solo
                         mp4
                         mov
@@ -167,21 +171,30 @@
                   </v-col>
 
                   <v-col class="text-center" cols="12" sm="9" lg="6">
+                    <v-img
+                      v-if="activity.thumbnail"
+                      max-width="250"
+                      :src="activity.thumbnail"
+                    />
+
                     <validation-provider
-                      ref="thumbnailFileProvider"
                       v-slot="{ errors }"
-                      name="Video"
-                      :rules="{ required: !id || file, size: 10000 }"
+                      name="Thumbnail"
+                      :rules="{
+                        required: !activity.thumbnail && !thumbnail,
+                        size: 10000
+                      }"
                     >
                       <file-uploader
                         ref="fileUploader2"
                         v-model="thumbnail"
+                        append-icon="mdi-camera"
                         :error-messages="errors"
                         label="Upload Thumbnail"
                         mode="image"
                         path="activity-thumbnail"
                         placeholder="Select a thumbnail for this activity video"
-                        append-icon="mdi-photo"
+                        prepend-icon=""
                         solo
                         jpg
                         png
@@ -276,15 +289,8 @@ export default {
   },
 
   watch: {
-    file (val) {
-      this.$refs.fileProvider.syncValue(val)
-      this.$refs.fileProvider.validate()
+    file () {
       this.thumbnail = null
-    },
-
-    thumbnail (val) {
-      this.$refs.thumbnailFileProvider.syncValue(val)
-      this.$refs.thumbnailFileProvider.validate()
     }
   },
 
@@ -313,25 +319,12 @@ export default {
         this.activity.name = data.videos.name
         this.activity.description = data.videos.description
         this.activity.videoId = data.videos.id
+        this.activity.thumbnail = data.videos.thumbnail
         this.video = data.videos
       }
     }
 
     this.loading = false
-  },
-
-  mounted () {
-    if (this.loading) {
-      const interval = window.setInterval(() => {
-        if (this.loading === false) {
-          this.$refs.fileProvider.syncValue(this.file)
-          this.$refs.fileProvider.validate()
-          this.$refs.thumbnailFileProvider.syncValue(this.thumbnail)
-          this.$refs.thumbnailFileProvider.validate()
-          window.clearInterval(interval)
-        }
-      }, 50)
-    }
   },
 
   methods: {
