@@ -66,35 +66,22 @@
             </v-col>
 
             <v-col
-              class="text-center text-md-left"
+              class="text-center"
               cols="12"
               sm="6"
               md="2"
             >
-              <v-container>
-                <nuxt-link
-                  class="d-block link-text text-footer-contact"
-                  :to="{ name: 'index' }"
-                  v-text="'Playgarden Prep'"
-                />
-
-                <nuxt-link
-                  class="d-block link-text text-footer-contact"
-                  :to="{ name: 'terms-conditions' }"
-                  v-text="'Terms & Conditions'"
-                />
-
-                <nuxt-link
-                  class="d-block link-text text-footer-contact"
-                  :to="{ name: 'privacy-policy' }"
-                  v-text="'Privacy Policy'"
-                />
-
-                <nuxt-link
-                  class="d-block link-text text-footer-contact"
-                  :to="{ name: 'index' }"
-                  v-text="'Help'"
-                />
+              <v-container fluid>
+                <v-row>
+                  <v-col cols="12">
+                    <div class="center-info">
+                      <span class="d-block link-text text-footer-contact">Playgarden Prep</span>
+                      <span class="d-block link-text text-footer-contact">Terms & Conditions</span>
+                      <span class="d-block link-text text-footer-contact">Privacy Policy</span>
+                      <span class="d-block link-text text-footer-contact">Help</span>
+                    </div>
+                  </v-col>
+                </v-row>
               </v-container>
             </v-col>
 
@@ -201,6 +188,12 @@ export default {
 
 .info-footer-title {
   color: #8ab591 !important;
+}
+@media only screen and (max-width: 600px) {
+  .center-info {
+    width: 50%;
+    margin: auto;
+  }
 }
 
 .text-footer-contact {
