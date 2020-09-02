@@ -130,16 +130,19 @@ export default {
   env: {
     apiBaseUrl:
       process.env.API_BASE_URL ||
-      'https://j2ld7v9jji.execute-api.us-east-1.amazonaws.com/staging'
+      'https://j2ld7v9jji.execute-api.us-east-1.amazonaws.com/staging',
+    testEnv:
+      process.env.TEST_ENV ||
+      'LOCAL'
   },
   router: {
     middleware: [
       'auth',
       'fetchUserInfo',
-      'redirectProperAuthenticatedSection',
       'recoverRegistrationProcess',
-      'redirectIfAuthenticated',
       'emailVerified',
+      'redirectProperAuthenticatedSection',
+      'redirectIfAuthenticated',
       'onboardingDone',
       'pickChild'
     ]

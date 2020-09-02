@@ -1,41 +1,37 @@
 <template>
-  <v-row class="flex-column-reverse flex-md-row" justify="center" no-gutters>
-    <v-col class="px-12" cols="12" md="8">
-      <register-form :loading="loading" @click:submit="onSubmit" />
-    </v-col>
+  <v-container>
+    <v-row class="flex-column-reverse flex-md-row" justify="center" no-gutters>
+      <v-col class="px-12" cols="12" md="8">
+        <register-form :loading="loading" @click:submit="onSubmit" />
+      </v-col>
 
-    <v-col class="px-12" cols="12" md="4">
-      <p>
-        <span class="font-weight-bold text-h5">
-          MEMBERSHIP
-        </span>
+      <v-col class="px-12" cols="12" md="4">
+        <v-row class="mt-4">
+          <span class="font-weight-bold text-h5">
+            MEMBERSHIP
+          </span>
+          <p class="mt-3">
+            <span>
+              <small>
+                Complete the registration and choose the plan that best suits you, to
+                start your learning experience!
+              </small>
+            </span>
+          </p>
 
-        <br>
+          <p>
+            <span class="font-weight-bold">
+              Get one week FREE trial
+            </span>
+          </p>
 
-        <small>
-          Complete your registration and membership subscription to start
-          enjoying our learning experience!
-        </small>
-      </p>
-
-      <p>
-        Pricing:
-
-        <br>
-
-        <span class="font-weight-bold">
-          Pay $0.99 USD a day for first child and $0.20 USD a day per
-          additional*
-        </span>
-      </p>
-
-      <p>*Get a FREE trial for the first week!</p>
-
-      <p>
-        <small>You can cancel at any time from your account settings</small>
-      </p>
-    </v-col>
-  </v-row>
+          <p>
+            <small>You can cancel at any time from your account settings</small>
+          </p>
+        </v-row>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -63,6 +59,8 @@ export default {
   },
 
   methods: {
+    ...mapActions('auth', ['fetchUserInfo']),
+
     ...mapActions('children', { storeChildren: 'store' }),
 
     async onSubmit (children) {
@@ -71,15 +69,17 @@ export default {
       try {
         await Promise.all(children.map(child => this.storeChildren(child)))
 
+        await this.fetchUserInfo()
+
         this.$snotify.success('Children have been stored successfully!')
 
         if (this.inSignUpProcess) {
           await this.$router.push({
-            name: 'app-payment-register',
+            name: 'app-payment-plan',
             query: { process: 'signup', step: '3' }
           })
         } else {
-          await this.$router.push({ name: 'app-children' })
+          await this.$router.push({ name: 'app-account' })
         }
       } catch (e) {
       } finally {

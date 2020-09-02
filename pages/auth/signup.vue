@@ -1,5 +1,10 @@
 <template>
-  <v-row class="flex-column-reverse flex-md-row" justify="center" no-gutters>
+  <v-row
+    v-if="inInvitationProcess || isUserLoggedIn"
+    class="flex-column-reverse flex-md-row"
+    justify="center"
+    no-gutters
+  >
     <v-col class="px-12" cols="12" md="8">
       <p class="text-center text-md-left">
         <span class="font-weight-bold text-h5">
@@ -15,50 +20,65 @@
     </v-col>
 
     <v-col class="px-12" cols="12" md="4">
+      <span class="font-weight-bold text-h5">
+        MEMBERSHIP
+      </span>
       <p class="text-center text-md-left">
-        <span class="font-weight-bold text-h5">
-          MEMBERSHIP
-        </span>
-
         <br>
-
         <small>
-          Complete your registration and membership subscription to start
-          enjoying our learning experience!
+          Complete the registration and choose the plan that best suits you, to
+          start your learning experience!
         </small>
       </p>
 
       <template v-if="!inInvitationProcess">
         <p>
-          Pricing:
-
-          <br>
-
           <span class="font-weight-bold">
-            Pay $0.99 USD a day for first child and $0.20 USD a day per
-            additional*
+            Get one week FREE trial
           </span>
         </p>
-
-        <p>*Get a FREE trial for the first week!</p>
-
         <p>
           <small>You can cancel at any time from your account settings</small>
         </p>
       </template>
     </v-col>
   </v-row>
+
+  <v-row v-else align="center" justify="center" no-gutters>
+    <v-col cols="11" md="6">
+      <div class="image">
+        <img alt="Smiling Girl Picture" src="@/assets/svg/girl-smiling.svg">
+      </div>
+    </v-col>
+
+    <v-col cols="12" md="6">
+      <div class="form mx-auto px-4">
+        <div class="my-5 my-md-0 text-center text-md-left">
+          <underlined-title text="Sign Up now!" />
+        </div>
+
+        <p>
+          Ready to start learning at home? Enter your email to create your
+          account and start your membership today.
+        </p>
+
+        <signup-email-form :loading="loading" @click:submit="onSubmit" />
+      </div>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
+import SignupEmailForm from '@/components/forms/auth/SignupEmailForm'
 import SignupForm from '@/components/forms/auth/SignupForm'
 
 export default {
   name: 'Signup',
 
   components: {
+    SignupEmailForm,
     SignupForm
   },
 
@@ -76,12 +96,18 @@ export default {
     token: vm.$route.query.token
   }),
 
+  computed: mapGetters('auth', ['getUserInfo', 'isUserLoggedIn']),
+
   methods: {
-    ...mapActions('auth/signup', { newParent: 'signup' }),
+    ...mapActions('auth/signup', {
+      newParent: 'signupEmail',
+      completeParentRegister: 'signupToken'
+    }),
 
     ...mapActions('caregiver', { newCaregiver: 'signup' }),
 
     async onSubmit (data) {
+      const isUserLoggedIn = this.isUserLoggedIn
       this.loading = true
 
       await this.registerProcess(
@@ -92,7 +118,7 @@ export default {
 
       if (this.inInvitationProcess) {
         await this.$router.push({ name: 'app-dashboard' })
-      } else {
+      } else if (isUserLoggedIn) {
         await this.$router.push({
           name: 'app-children-register',
           query: { process: 'signup', step: '2' }
@@ -103,6 +129,10 @@ export default {
     },
 
     async registerProcess (data) {
+      if (this.isUserLoggedIn) {
+        return await this.completeParentRegister(data)
+      }
+
       return this.inInvitationProcess
         ? await this.newCaregiver(data)
         : await this.newParent(data)
@@ -110,3 +140,30 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.text-h5 {
+  color: $pg-black !important;
+}
+
+.subtitle-signIn {
+  color: $pg-black !important;
+  font-weight: 600 !important;
+}
+.info-signIn {
+  margin-top: 10px !important;
+}
+.image {
+  max-height: 500px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+img {
+    max-width: 90%;
+}
+.form {
+  max-width: 500px;
+}
+</style>

@@ -338,5 +338,15 @@ export default {
   .pg-bkg {
     background-color: #f9f9f9 !important;
   }
+
+  .v-input__control .v-input__slot {
+    box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.16) !important;
+  }
+  .v-label {
+    color: rgba(0, 0, 0, 0.16) !important;
+  }
+  div.v-text-field__suffix {
+    color: rgba(0, 0, 0, 0.16) !important;
+  }
 }
 </style>

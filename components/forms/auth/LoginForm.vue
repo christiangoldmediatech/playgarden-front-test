@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="loginForm" v-model="isValidForm" @submit.prevent="handleClick">
+  <v-form ref="loginForm" v-model="isValidForm" class="formLogin" @submit.prevent="handleClick">
     <!-- Email -->
     <v-text-field
       v-model="user.email"
@@ -10,6 +10,7 @@
       :rules="[required, isValidEmail]"
       solo
       type="email"
+      class="label-custom"
     />
 
     <!-- Password -->
@@ -21,6 +22,7 @@
       :loading="loading"
       :rules="[required, ...isValidPassword]"
       solo
+      class="label-custom"
     />
 
     <v-btn
@@ -36,7 +38,11 @@
 
     <p class="forgot-password text-center text-md-right">
       <nuxt-link class="black--text" :to="{ name: 'auth-forgot-password' }">
-        <underlined-subtitle class="clickable mt-2" text="Forgot password?" />
+        <underlined-title
+          class="clickable mt-2 forgot-password"
+          subtitle
+          text="Forgot password?"
+        />
       </nuxt-link>
     </p>
 
@@ -111,10 +117,11 @@ export default {
 <style lang="scss" scoped>
 .forgot-password {
   text-align: right;
+  font-size: 15px !important;
+  margin-top: 8px;
 }
 .signup {
   font-size: 17px;
-
   span {
     color: $pg-main;
     text-transform: uppercase;
