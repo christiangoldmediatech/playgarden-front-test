@@ -61,7 +61,7 @@ export default {
   created () {
     this.getAllFavorites()
     this.getTypes()
-    this.getActivities({ type: 'VIDEO', limit: 50 })
+    this.getActivities({ status: 'COMPLETED', type: 'VIDEO', limit: 50 })
   },
 
   methods: {
