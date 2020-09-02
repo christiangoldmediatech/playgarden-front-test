@@ -125,7 +125,7 @@
 
           <v-btn
             block
-            class="mb-8 margin-add-another"
+            class="mb-8"
             color="primary"
             :disabled="loading"
             text
@@ -174,9 +174,6 @@ export default {
   computed: {
     removable () {
       return this.draft.length > 1
-    },
-    minDate () {
-      return `${new Date().getFullYear() - 2}-01-01`
     }
   },
 
@@ -240,8 +237,5 @@ export default {
 }
 .choose_a_backpak {
   color: #606060;
-}
-.margin-add-another {
-  margin-top: -26px;
 }
 </style>

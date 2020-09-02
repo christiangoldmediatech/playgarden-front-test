@@ -143,7 +143,10 @@ p {
   color: rgba(0, 0, 0, 0.16) !important;
 }
 .custom-btn::v-deep.v-btn {
-    background-color: #f2f2f2 important;
-    color: #9d9d9d important;
+    background-color: #f2f2f2;
+    color: #9d9d9d;
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+}
+::v-deep.v-btn:not(.v-btn--outlined).primary {
+  color: #FFFFFF !important;
 }
