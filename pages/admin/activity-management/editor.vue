@@ -154,7 +154,6 @@
                         multi-part
                         path="activity-video"
                         placeholder="Select a video for this activity"
-                        prepend-icon=""
                         solo
                         mp4
                         mov
@@ -194,7 +193,6 @@
                         mode="image"
                         path="activity-thumbnail"
                         placeholder="Select a thumbnail for this activity video"
-                        prepend-icon=""
                         solo
                         jpg
                         png

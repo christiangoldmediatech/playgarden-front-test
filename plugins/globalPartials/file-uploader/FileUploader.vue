@@ -4,6 +4,7 @@
     v-bind="$attrs"
     :accept="accept"
     :clearable="clearable"
+    :prepend-icon="prependIcon"
     :show-size="showSize"
     class="clickable"
   />

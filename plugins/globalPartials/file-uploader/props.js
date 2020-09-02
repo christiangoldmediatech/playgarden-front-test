@@ -8,6 +8,10 @@ export default {
       required: false,
       default: true
     },
+    prependIcon: {
+      type: String,
+      default: ''
+    },
     showSize: {
       type: Boolean,
       required: false,
