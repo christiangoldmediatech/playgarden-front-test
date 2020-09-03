@@ -18,7 +18,7 @@
 
             <v-spacer />
 
-            <span class="titleOnDashboard">First time using Playgarden?</span>
+            <span class="font-weight-medium">First time using Playgarden?</span>
 
             <v-btn color="primary" nuxt text :to="{ name: 'app-onboarding' }">
               WATCH TUTORIAL HERE

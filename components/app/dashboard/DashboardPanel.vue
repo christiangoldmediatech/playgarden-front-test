@@ -67,7 +67,7 @@
                 </v-list-item-avatar>
 
                 <v-list-item-content>
-                  <v-list-item-title class="titleDashboard">
+                  <v-list-item-title class="font-weight-bold text-uppercase">
                     {{ video.name }}
                   </v-list-item-title>
 
@@ -189,7 +189,7 @@
                 </v-list-item-avatar>
 
                 <v-list-item-content>
-                  <v-list-item-title class="titleDashboard">
+                  <v-list-item-title class="font-weight-bold text-uppercase">
                     {{ activity.videos.name }}
                   </v-list-item-title>
 
@@ -231,7 +231,60 @@ export default {
         const completed = video.viewed ? video.viewed.completed : false
         return !completed
       }
-      return false
+
+      return 0
+    },
+
+    getNextId (items = []) {
+      const { id } = items.find(({ viewed }) => !viewed)
+
+      return id
+    },
+
+    async getCurrentLesson (redirect = false) {
+      try {
+        await this.getCurrentLessonByChildrenId({
+          childrenIds: this.childrenIds
+        })
+
+        if (redirect) {
+          this.redirectDashboard()
+        }
+      } catch (e) {}
+    },
+
+    redirectDashboard () {
+      if (this.lesson && this.$route.name === 'app-dashboard') {
+        if (this.videosCompletionRate < 100) {
+          this.$router.push({
+            name: 'app-dashboard-videos-id',
+            params: { id: this.getNextId(this.videos) }
+          })
+        } else if (this.worksheetsCompletionRate < 100) {
+          this.$router.push({
+            name: 'app-dashboard-online-worksheet',
+            query: { id: this.getNextId(this.worksheets.ONLINE) }
+          })
+        } else if (this.activitiesCompletionRate < 100) {
+          this.$router.push({
+            name: 'app-dashboard-activity-id',
+            params: { id: this.getNextId(this.activities) }
+          })
+        } else {
+          this.$router.push({ name: 'app-dashboard-lesson-completed' })
+        }
+      } else if (
+        this.lesson &&
+        this.$route.name === 'app-dashboard-lesson-completed'
+      ) {
+        if (
+          this.videosCompletionRate < 100 ||
+          this.worksheetsCompletionRate < 100 ||
+          this.activitiesCompletionRate < 100
+        ) {
+          this.$router.push({ name: 'app-dashboard' })
+        }
+      }
     }
   }
 }
@@ -260,15 +313,6 @@ export default {
   margin: 0;
   padding: 0;
   width: 35px;
-}
-
-.text-h5 {
-  color: $pg-black !important;
-}
-
-.titleDashboard {
-  font-weight: 700 !important;
-  text-transform: uppercase !important;
 }
 
 .card-border-top {

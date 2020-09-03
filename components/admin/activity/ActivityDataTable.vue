@@ -6,6 +6,7 @@
           <v-card-title>
             Activities Management
             <v-spacer />
+
             <v-btn
               class="mr-2 text-none"
               color="primary darken-1"
@@ -17,10 +18,12 @@
               <v-icon class="hidden-sm-and-up">
                 mdi-plus-circle
               </v-icon>
+
               <v-icon class="hidden-xs-only" small>
                 mdi-plus
               </v-icon>
-              <span class="hidden-xs-only">Add new activity</span>
+
+              <span class="hidden-xs-only white--text">Add new activity</span>
             </v-btn>
           </v-card-title>
 

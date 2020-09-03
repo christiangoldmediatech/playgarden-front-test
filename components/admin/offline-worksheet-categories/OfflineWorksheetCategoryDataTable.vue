@@ -22,9 +22,10 @@
               <v-icon class="hidden-xs-only" small>
                 mdi-plus
               </v-icon>
-              <span
-                class="hidden-xs-only"
-              >Add new offline worksheet category</span>
+
+              <span class="hidden-xs-only white--text">
+                Add new offline worksheet category
+              </span>
             </v-btn>
           </v-card-title>
 
@@ -71,14 +72,8 @@
               </template>
 
               <template v-slot:item.color="{ item }">
-                <v-avatar
-                  color="black"
-                  size="32"
-                >
-                  <v-avatar
-                    :color="item.color"
-                    size="28"
-                  />
+                <v-avatar color="black" size="32">
+                  <v-avatar :color="item.color" size="28" />
                 </v-avatar>
               </template>
 
