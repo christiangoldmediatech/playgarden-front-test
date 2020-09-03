@@ -18,8 +18,8 @@ export default function ({ redirect, route, store }) {
       user.id &&
       !user.onboardingDone &&
       !ignoreRoute[route.name] &&
-      (get(user, 'role.name') === 'PARENTS' ||
-        get(user, 'role.name') === 'CAREGIVERS')
+      (get(user, 'role.section') === 'PARENTS' ||
+        get(user, 'role.section') === 'CAREGIVERS')
     ) {
       redirect({ name: 'app-onboarding' })
     }
