@@ -79,6 +79,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+
 import { jsonCopy } from '@/utils/objectTools'
 
 export default {

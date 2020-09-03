@@ -1,87 +1,93 @@
 /* VENDOR */
 /* import them directly into nuxt.config.js */
 
-/* CUSTOM */
-@import 'mixins.scss';
-@import 'text.scss';
-@import 'image.scss';
-
-@import "~vue-snotify/styles/material";
-
 /* GLOBAL */
-
-p {
-    color: $pg-black
+* {
+  color: $pg-black;
+  font-family: "Poppins", sans-serif !important;
 }
 
 .v-application a {
-    text-decoration: none;
+  text-decoration: none;
 }
 
-.theme--light.v-application,
-.black--link {
-    color: $pg-black !important;
+// Default links have primary color
+.black--link,
+
+// Default inputs have black as color
+.theme--light.v-input input,
+.theme--light.v-input textarea {
+  color: $pg-black !important;
+}
+
+// Default datepicker has the header fonts in white
+.v-date-picker-title__date div,
+.v-date-picker-title__year {
+  color: #ffffff;
 }
 
 .clickable {
-    cursor: pointer;
+  cursor: pointer;
 }
 
+/* COMPONENTS */
 .green-line {
-    height: 1rem;
-    width: 100%;
-    box-shadow: 0 -1px 6px 0 rgba(0, 0, 0, 0.12);
+  height: 1rem;
+  width: 100%;
+  box-shadow: 0 -1px 6px 0 rgba(0, 0, 0, 0.12);
 }
 
 .green-line-1 {
-    background-color: var(--v-primary-base);
+  background-color: var(--v-primary-base);
 }
 
 .green-line-2 {
-    background-color: #dce7b5;
+  background-color: #dce7b5;
 }
 
 .worksheet-item {
-    transition: transform 250ms;
+  transition: transform 250ms;
 }
 
 .worksheet-scaled {
-    transform: scale(1.11);
-    z-index: 1;
+  transform: scale(1.11);
+  z-index: 1;
 }
 
 .worksheet-selected {
-     ::after {
-        border-radius: 50%;
-        box-shadow: inset 0px 0px 0px 10px var(--v-primary-base);
-        content: "";
-        display: block;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        width: 100%;
-    }
+  ::after {
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 10px var(--v-primary-base);
+    content: "";
+    display: block;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
 }
 
 .title-text {
-    width: calc(100%);
-    background-image: linear-gradient( transparent calc(100% - 10px), var(--v-primary-base) 10px);
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    color: $pg-black;
+  width: calc(100%);
+  background-image: linear-gradient(
+    transparent calc(100% - 10px),
+    var(--v-primary-base) 10px
+  );
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  color: $pg-black;
 }
 
 .v-label {
-    color: $pg-black;
-    opacity: 0.49;
-    font-size: 14px;
+  color: $pg-black;
+  opacity: 0.49;
+  font-size: 14px;
 }
 
 .v-btn,
 .theme--light.v-btn,
 .v-btn__content {
-    font-weight: bold;
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .w-100 {
@@ -96,7 +102,7 @@ p {
     width: 115%;
     opacity: 0.5;
     position: absolute;
-    bottom: 0%;
+    bottom: 0;
     left: -7.5%;
     content: "";
     z-index: -1;
