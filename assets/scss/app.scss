@@ -41,28 +41,6 @@ p {
     background-color: #dce7b5;
 }
 
-.worksheet-item {
-    transition: transform 250ms;
-}
-
-.worksheet-scaled {
-    transform: scale(1.11);
-    z-index: 1;
-}
-
-.worksheet-selected {
-     ::after {
-        border-radius: 50%;
-        box-shadow: inset 0px 0px 0px 10px var(--v-primary-base);
-        content: "";
-        display: block;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        width: 100%;
-    }
-}
-
 .title-text {
     width: calc(100%);
     background-image: linear-gradient( transparent calc(100% - 10px), var(--v-primary-base) 10px);
@@ -89,7 +67,7 @@ p {
 }
 
 .category-text {
-  font-size: 1.5rem !important;
+  font-size: 1.0rem !important;
   position: relative;
   z-index: 1;
   &::after {

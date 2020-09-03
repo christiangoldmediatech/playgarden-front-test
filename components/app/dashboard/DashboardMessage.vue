@@ -65,7 +65,7 @@
             text
             block
             :disabled="loading"
-            @click.stop="returnToDashboard"
+            @click.stop="returnAction"
           >
             {{ returnText }}
           </v-btn>
@@ -130,16 +130,14 @@ export default {
   computed: {
     timeOutMs () {
       return this.timeOut * 1000
-    },
-
-    returnToDashboard () {
-      return () => {
-        this.returnAction()
-      }
     }
   },
 
   methods: {
+    doReturnAction () {
+      this.returnAction()
+    },
+
     startInterval () {
       if (this.timeOut) {
         this.progress = 0

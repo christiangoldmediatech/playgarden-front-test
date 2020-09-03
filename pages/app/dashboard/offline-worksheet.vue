@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import DashboardMessage from '@/components/app/dashboard/DashboardMessage.vue'
 import UploadOfflineWorksheet from '@/components/app/dashboard/worksheets/UploadOfflineWorksheet.vue'
 
@@ -41,6 +41,7 @@ export default {
   },
 
   computed: {
+    ...mapGetters({ children: 'getCurrentChild' }),
     ...mapGetters('admin/curriculum', ['getLesson']),
 
     sheets () {
@@ -62,6 +63,24 @@ export default {
           iconLeft: 'mdi-download',
           action: () => {
             if (this.sheets[0]) {
+              const date = new Date().toISOString().substr(0, 19)
+              const promises = []
+              this.children.forEach((child) => {
+                promises.push(
+                  this.saveWorksheetProgress({
+                    lessonId: this.getLesson.id,
+                    childId: child.id,
+                    worksheet: {
+                      id: this.sheets[0].id,
+                      completed: true,
+                      date
+                    }
+                  })
+                )
+              })
+              Promise.all(promises).then(() => {
+                this.$nuxt.$emit('dashboard-panel-update')
+              })
               window.open(this.url, '_blank')
             }
           }
@@ -76,6 +95,10 @@ export default {
         }
       ]
     }
+  },
+
+  methods: {
+    ...mapActions('children/lesson', ['saveWorksheetProgress'])
   }
 }
 </script>

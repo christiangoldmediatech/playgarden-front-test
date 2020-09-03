@@ -103,9 +103,20 @@
           </v-col>
 
           <v-col cols="10">
-            <span class="font-weight-bold text-h5">
-              WORKSHEETS
-            </span>
+            <div class="d-flex align-center justify-start">
+              <span class="font-weight-bold text-h5">
+                WORKSHEETS
+              </span>
+              <div class="ml-2">
+                <v-img
+                  class="ma-0"
+                  :src="require('@/assets/png/dashboard/worksheets.png')"
+                  max-width="32px"
+                  max-height="32px"
+                  contain
+                />
+              </div>
+            </div>
 
             <div v-if="worksheets.ONLINE.length" class="mt-3">
               <component
