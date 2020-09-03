@@ -12,7 +12,7 @@
           Hands-on Learning
         </span>
       </template>
-      <p>
+      <p class="white--text">
         Hands-on learning is a crucial part of the educational experience. Learning through doing strengthens the cognitive connections and builds a strong foundation for knowledge.
       </p>
     </dashboard-message>
