@@ -65,7 +65,7 @@
                 text
                 block
                 x-large
-                :to="{ name: 'app-profile' }"
+                :to="{ name: 'app-account' }"
               >
                 MANAGE PROFILES
               </v-btn>

@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card v-bind="{ ...$attrs }">
     <div class="green-line green-line-1" />
     <div class="green-line green-line-2" />
 
