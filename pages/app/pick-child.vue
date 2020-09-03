@@ -15,52 +15,42 @@
               </div>
 
               <v-row class="text-center" justify="center">
-                <v-hover
-                  v-for="child in children"
-                  :key="`child-${child.id}`"
-                  v-slot:default="{ hover }"
-                  open-delay="100"
-                  close-delay="100"
+                <v-row
+                  no-gutters
+                  class="ml-6 mr-6"
                 >
                   <v-col
-                    class="clickable"
-                    cols="6"
-                    sm="3"
-                    lg="2"
+                    cols="4"
+                    v-for="child in children"
+                    :key="`child-${child.id}`"
+                    class="selected-child"
                     @click.stop="selectChild(child)"
                   >
-                    <div class="align-center min-col">
+                    <div class="">
                       <v-avatar
                         v-if="child.everyone"
-                        class="mb-3 everyone-img"
-                        :size="hover ? 100 : 68"
+                        size="134"
                       >
                         <v-img
-                          class="mb-3"
                           :src="require('@/assets/svg/everyone.svg')"
-                          max-height="hover ? 114 : 96"
                           contain
                         />
                       </v-avatar>
-
                       <v-avatar
                         v-else
-                        class="mb-3"
-                        :size="hover ? 112 : 96"
+                        size="134"
                       >
                         <v-img
                           :src="child.backpack.image"
-                          max-height="70%"
                           contain
                         />
                       </v-avatar>
                     </div>
-
-                    <p class="font-weight-bold">
+                    <span class="font-weight-bold">
                       {{ child.firstName }}
-                    </p>
+                    </span>
                   </v-col>
-                </v-hover>
+                </v-row>
               </v-row>
 
               <v-btn
@@ -181,6 +171,14 @@ export default {
 .pick-child {
   margin-top: 90px;
   margin-bottom: 90px;
+}
+
+.name-child {
+  text-align: center;
+}
+
+.selected-child {
+  cursor: pointer;
 }
 
 .everyone-img {
