@@ -2,7 +2,7 @@
   <v-main class="bkg">
     <v-container fluid fill-height>
       <v-row align="center" justify="center">
-        <v-col cols="12" md="8" lg="6">
+        <v-col cols="12" md="8" lg="6" class="pick-child">
           <v-card>
             <div class="green-line green-line-1" />
             <div class="green-line green-line-2" />
@@ -30,18 +30,22 @@
                     @click.stop="selectChild(child)"
                   >
                     <div class="align-center min-col">
-                      <v-img
+                      <v-avatar
                         v-if="child.everyone"
-                        class="mb-3"
-                        :src="require('@/assets/svg/everyone.svg')"
-                        :max-height="hover ? 114 : 100"
-                        contain
-                      />
+                        class="mb-3 everyone-img"
+                        :size="hover ? 100 : 70"
+                      >
+                        <v-img
+                          class="mb-3"
+                          :src="require('@/assets/svg/everyone.svg')"
+                          max-height="hover ? 114 : 96"
+                          contain
+                        />
+                      </v-avatar>
 
                       <v-avatar
                         v-else
                         class="mb-3"
-                        :color="hover ? 'primary' : 'accent'"
                         :size="hover ? 112 : 96"
                       >
                         <v-img
@@ -147,7 +151,7 @@ export default {
 }
 
 .bkg {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.68);
 }
 
 .v-btn--active.custom-active {
@@ -171,5 +175,14 @@ export default {
     border-bottom: 0.8rem solid $pg-main;
     border-radius: 0.2rem;
   }
+}
+
+.pick-child {
+  margin-top: 90px;
+  margin-bottom: 90px;
+}
+
+.everyone-img {
+  margin-top: 17px;
 }
 </style>

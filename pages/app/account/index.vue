@@ -10,10 +10,12 @@
         </p>
       </div>
 
-      <div v-show="showSetting" class="image">
+      <div v-show="showSetting" class="image image-bar">
         <img
           alt="Montessori Nutrition Lesson"
           src="@/assets/svg/montessori-nutrition-lesson.svg"
+          class="pr-6"
+          contain
         >
       </div>
 

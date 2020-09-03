@@ -21,13 +21,21 @@
         </label>
       </p>
 
-      <v-row class="justify-space-between my-1" no-gutters>
-        <span>Plan: <b>{{ billing.planName }}</b></span>
-
-        <v-btn color="primary" text @click="changePlanModal = true">
-          CHANGE PLAN
-        </v-btn>
-      </v-row>
+      <template>
+        <v-row class="justify-space-between mt-3" no-gutters>
+          <span>Plan: <b>{{ billing.planName }}</b></span>
+          <v-btn
+            v-bind="attrs"
+            color="primary"
+            text
+            class="btn-green"
+            v-on="on"
+            @click="changePlanModal = true"
+          >
+            CHANGE PLAN
+          </v-btn>
+        </v-row>
+      </template>
 
       <v-row
         v-for="(card, indexUC) in userCards"
