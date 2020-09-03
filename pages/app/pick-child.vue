@@ -20,31 +20,38 @@
                   class="ml-6 mr-6"
                 >
                   <v-col
-                    cols="4"
                     v-for="child in children"
                     :key="`child-${child.id}`"
+                    cols="4"
                     class="selected-child"
                     @click.stop="selectChild(child)"
                   >
                     <div class="">
-                      <v-avatar
-                        v-if="child.everyone"
-                        size="134"
+                      <v-hover
+                        :key="`child-${child.id}`"
+                        v-slot:default="{ hover }"
+                        open-delay="100"
+                        close-delay="100"
                       >
-                        <v-img
-                          :src="require('@/assets/svg/everyone.svg')"
-                          contain
-                        />
-                      </v-avatar>
-                      <v-avatar
-                        v-else
-                        size="134"
-                      >
-                        <v-img
-                          :src="child.backpack.image"
-                          contain
-                        />
-                      </v-avatar>
+                        <v-avatar
+                          v-if="child.everyone"
+                          :size="hover ? 160 : 134"
+                        >
+                          <v-img
+                            :src="require('@/assets/svg/everyone.svg')"
+                            contain
+                          />
+                        </v-avatar>
+                        <v-avatar
+                          v-else
+                          :size="hover ? 160 : 134"
+                        >
+                          <v-img
+                            :src="child.backpack.image"
+                            contain
+                          />
+                        </v-avatar>
+                      </v-hover>
                     </div>
                     <span class="font-weight-bold">
                       {{ child.firstName }}
