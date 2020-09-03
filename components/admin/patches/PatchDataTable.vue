@@ -22,7 +22,9 @@
               <v-icon class="hidden-xs-only" small>
                 mdi-plus
               </v-icon>
-              <span class="hidden-xs-only">Add new patch</span>
+              <span class="hidden-xs-only white--text">
+                Add new patch
+              </span>
             </v-btn>
           </v-card-title>
 
@@ -263,7 +265,10 @@ export default {
       }
 
       try {
-        this.patches = await this.getPatches({ ...this.filters, name: this.search })
+        this.patches = await this.getPatches({
+          ...this.filters,
+          name: this.search
+        })
       } catch (e) {
       } finally {
         this.loading = false

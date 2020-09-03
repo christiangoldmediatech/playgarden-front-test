@@ -142,29 +142,29 @@
         />
       </validation-provider>
 
-      <v-btn
-        block
-        class="mb-6"
-        color="primary"
-        :disabled="invalid"
-        :loading="loading"
-        type="submit"
-        x-large
-      >
-        SAVE
-      </v-btn>
+      <v-row class="mb-6" justify="center">
+        <v-btn
+          class="ma-3"
+          color="primary"
+          :loading="loading"
+          text
+          x-large
+          @click="onCancel(reset)"
+        >
+          CANCEL
+        </v-btn>
 
-      <v-btn
-        block
-        class="mb-6"
-        color="primary"
-        :loading="loading"
-        text
-        x-large
-        @click="onCancel(reset)"
-      >
-        CANCEL
-      </v-btn>
+        <v-btn
+          class="ma-3"
+          color="primary"
+          :disabled="invalid"
+          :loading="loading"
+          type="submit"
+          x-large
+        >
+          SAVE
+        </v-btn>
+      </v-row>
     </v-form>
   </validation-observer>
 </template>
