@@ -196,6 +196,10 @@ export default {
   }
 }
 
+.center-info {
+  text-align: left !important;
+}
+
 .text-footer-contact {
   font-weight: 500;
 }
