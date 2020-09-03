@@ -1,37 +1,34 @@
 <template>
-  <v-container>
-    <v-row class="flex-column-reverse flex-md-row" justify="center" no-gutters>
-      <v-col class="px-12" cols="12" md="8">
-        <register-form :loading="loading" @click:submit="onSubmit" />
-      </v-col>
+  <v-row class="flex-column-reverse flex-md-row" justify="center" no-gutters>
+    <v-col class="px-12" cols="12" md="8">
+      <register-form :loading="loading" @click:submit="onSubmit" />
+    </v-col>
 
-      <v-col class="px-12" cols="12" md="4">
-        <v-row class="mt-4">
-          <span class="font-weight-bold text-h5">
-            MEMBERSHIP
-          </span>
-          <p class="mt-3">
-            <span>
-              <small>
-                Complete the registration and choose the plan that best suits you, to
-                start your learning experience!
-              </small>
-            </span>
-          </p>
+    <v-col class="px-12" cols="12" md="4">
+      <p>
+        <span class="font-weight-bold text-h5">
+          MEMBERSHIP
+        </span>
 
-          <p>
-            <span class="font-weight-bold">
-              Get one week FREE trial
-            </span>
-          </p>
+        <br>
 
-          <p>
-            <small>You can cancel at any time from your account settings</small>
-          </p>
-        </v-row>
-      </v-col>
-    </v-row>
-  </v-container>
+        <small>
+          Complete the registration and choose the plan that best suits you, to
+          start your learning experience!
+        </small>
+      </p>
+
+      <p>
+        <span class="font-weight-bold">
+          Get one week FREE trial
+        </span>
+      </p>
+
+      <p>
+        <small>You can cancel at any time from your account settings</small>
+      </p>
+    </v-col>
+  </v-row>
 </template>
 
 <script>

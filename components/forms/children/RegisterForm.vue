@@ -51,7 +51,7 @@
                   v-bind="attrs"
                   :disabled="loading"
                   :error-messages="errors"
-                  label="Birthday"
+                  label="Birthday date"
                   readonly
                   solo
                   suffix="MM/DD/YYYY"
@@ -61,6 +61,7 @@
                 />
               </validation-provider>
             </template>
+
             <v-date-picker
               v-model="item._birthdayPicker"
               :max="new Date().toISOString().substr(0, 10)"
@@ -80,7 +81,6 @@
                   block
                   :color="item.gender === gender ? 'primary' : 'grey lighten-5'"
                   :disabled="loading"
-                  class="custom-btn"
                   @click="item.gender = gender"
                 >
                   {{ gender === "FEMALE" ? "Girl" : "Boy" }}
@@ -91,9 +91,6 @@
             <input v-model="item.gender" type="hidden">
           </validation-provider>
 
-          <center>
-            <label class="choose_a_backpak">Choose a Backpak:</label>
-          </center>
           <!-- Backpack -->
           <validation-provider
             :name="(removable ? `Child #${indexD + 1} - ` : '') + 'Backpack'"
@@ -121,11 +118,15 @@
             <input v-model="item.backpackId" type="hidden">
           </validation-provider>
 
-          <v-divider v-if="removable" class="mt-4" />
+          <v-divider v-if="removable" class="mt-6" />
+        </v-col>
+      </v-row>
 
+      <v-row>
+        <v-col>
           <v-btn
             block
-            class="mb-8"
+            class="mb-12 mt-6"
             color="primary"
             :disabled="loading"
             text
@@ -188,7 +189,7 @@ export default {
     addRow () {
       this.draft.push({
         _birthdayFormatted: '',
-        _birthdayPicker: `${new Date().getFullYear() - 2}-01-01`,
+        _birthdayPicker: '',
         _menu: false,
         backpackId: '',
         birthday: '',
@@ -234,8 +235,5 @@ export default {
       padding: 5px;
     }
   }
-}
-.choose_a_backpak {
-  color: #606060;
 }
 </style>
