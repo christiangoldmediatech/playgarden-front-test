@@ -32,7 +32,44 @@
           </v-container>
         </v-img>
 
-        <v-card-actions>
+        <v-list dense>
+          <v-list-item>
+            <!-- <v-list-item-avatar tile>
+              <v-img
+                :src="video.activityType.icon"
+                contain
+              />
+            </v-list-item-avatar> -->
+            <v-list-item-content>
+              <v-list-item-title class="font-weight-bold text-uppercase">
+                {{ video.name }}
+              </v-list-item-title>
+
+              <v-list-item-subtitle>
+                {{ video.description }}
+              </v-list-item-subtitle>
+            </v-list-item-content>
+
+            <v-list-item-action>
+              <v-btn
+                icon
+                large
+                :loading="loading"
+                @click.stop="setFavorite"
+              >
+                <v-icon color="#F5737F">
+                  <template v-if="isFavorite">
+                    mdi-heart
+                  </template>
+                  <template v-else>
+                    mdi-heart-outline
+                  </template>
+                </v-icon>
+              </v-btn>
+            </v-list-item-action>
+          </v-list-item>
+        </v-list>
+        <!-- <v-card-actions>
           <div class="ml-2">
             <span class="font-weight-bold">
               {{ video.name }}
@@ -55,7 +92,7 @@
               </template>
             </v-icon>
           </v-btn>
-        </v-card-actions>
+        </v-card-actions> -->
       </v-card>
     </v-hover>
   </v-col>
@@ -89,20 +126,29 @@ export default {
 
     thumbnail () {
       return this.video.thumbnail || require('@/assets/jpg/abacus_counting_lesson.jpg')
+    },
+
+    playlist () {
+      return {
+        title: this.video.name,
+        description: this.video.description,
+        activityId: false,
+        src: {
+          src: this.video.videoUrl.HLS,
+          type: 'application/x-mpegURL'
+        },
+        poster: this.video.thumbnail,
+        videoId: this.video.id,
+        viewed: {
+          completed: true
+        }
+      }
     }
   },
 
   methods: {
     playVideo () {
-      this.$nuxt.$emit('play-video', {
-        title: this.video.name,
-        playlist: [
-          {
-            file: this.video.videoUrl.HLS,
-            image: this.thumbnail
-          }
-        ]
-      })
+      this.$nuxt.$emit('open-lesson-activity-player', { playlist: this.playlist, index: 0 })
     }
   }
 }

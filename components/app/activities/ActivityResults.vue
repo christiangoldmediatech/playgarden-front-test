@@ -8,6 +8,7 @@
         :activity="activity.videos"
         :icon="activity.activityType.icon"
         :category-name="activity.activityType.name"
+        :playlist="playlist"
       />
     </v-row>
 
@@ -46,6 +47,34 @@ export default {
 
   data: () => {
     return {}
+  },
+
+  computed: {
+    playlist () {
+      const validActivities = this.activities.filter((activity) => {
+        return activity.videos.videoUrl
+      })
+
+      return validActivities.map((activity, playlistIndex) => {
+        return {
+          playlistIndex,
+          title: activity.videos.name,
+          description: activity.videos.description,
+          activityType: activity.activityType,
+          curriculumType: activity.curriculumType,
+          src: {
+            src: activity.videos.videoUrl.HLS,
+            type: 'application/x-mpegURL'
+          },
+          poster: activity.videos.thumbnail,
+          activityId: activity.id,
+          videoId: activity.videos.id,
+          viewed: {
+            completed: true
+          }
+        }
+      })
+    }
   }
 }
 </script>

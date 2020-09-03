@@ -98,7 +98,7 @@ export default {
     }),
 
     doAnalytics () {
-      if (this.analyticsLoading) {
+      if (this.analyticsLoading || !this.mediaObject.activityId) {
         return
       }
 
@@ -221,6 +221,9 @@ export default {
       } else {
         // Find random video
         // this.$refs.childrenVideoPlayer.showCompletedDialog()
+        if (!this.mediaObject.activityId) {
+          return
+        }
         const curriculumTypeId = this.mediaObject.curriculumType ? this.mediaObject.curriculumType.id : undefined
 
         this.getNextActivity({

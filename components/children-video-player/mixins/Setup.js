@@ -90,7 +90,7 @@ export default {
     this.player = videojs(this.$refs.videoPlayer, this.options, this.onPlayerReady)
 
     this._keyListener = (e) => {
-      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'E') {
+      if (e.ctrlKey && e.shiftKey && e.key === 'E') {
         e.preventDefault()
         if (this.fullscreen) {
           this.toggleFullscreen()

@@ -1,7 +1,7 @@
 <template>
   <div class="control-container d-flex align-start justify-start">
     <p class="mt-3 ml-6">
-      Press CMND + SHIFT + E to EXIT
+      Press CTRL + SHIFT + E to EXIT
     </p>
   </div>
 </template>
