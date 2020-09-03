@@ -109,7 +109,7 @@
               </span>
               <div class="ml-2">
                 <v-img
-                  class="ma-0"
+                  :class="['ma-0', { 'grayscale': videosCompletionRate < 100 }]"
                   :src="require('@/assets/png/dashboard/worksheets.png')"
                   max-width="32px"
                   max-height="32px"
