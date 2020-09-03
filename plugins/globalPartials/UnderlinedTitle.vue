@@ -10,8 +10,7 @@
       '--ut-line-color': _lineColor,
       '--ut-background-from': _lineFrom,
       fontSize: _fontSize,
-      fontWeight: _fontWeight,
-      paddingBottom: _paddingBoottom
+      fontWeight: _fontWeight
     }"
     v-on="$listeners"
   >
@@ -90,11 +89,6 @@ export default {
       default: 55
     },
 
-    paddingBoottom: {
-      type: String,
-      default: '3px'
-    },
-
     // easy shortcut for faster styling
     // Note: it override the others options
     subtitle: Boolean,
@@ -108,7 +102,7 @@ export default {
   computed: {
     _lineColor () {
       if (this.subtitle) {
-        return 'rgba(254, 197, 114, 0.71)'
+        return 'var(--v-accent-base)'
       }
 
       // using HEX or vuetify colors vars
@@ -122,7 +116,7 @@ export default {
 
     _lineFrom () {
       if (this.subtitle) {
-        return '60%'
+        return '65%'
       }
 
       return `${this.lineFrom}%`
@@ -142,14 +136,6 @@ export default {
       }
 
       return this.fontWeight
-    },
-
-    _paddingBoottom () {
-      if (this.subtitle) {
-        return '3px'
-      }
-
-      return this.paddingBoottom
     }
   }
 }
@@ -165,10 +151,10 @@ export default {
     180deg,
     transparent var(--ut-background-from),
     var(--ut-line-color) var(--ut-background-from),
-    var(--ut-line-color) 78%,
+    var(--ut-line-color) 80%,
     transparent 80%
   );
-  padding: 0px 1%;
+  padding: 0 1%;
   border-radius: 0px;
 }
 </style>

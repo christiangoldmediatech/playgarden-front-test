@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar color="white" elevation="3" app height="85">
+  <v-app-bar color="white" elevation="3" app>
     <v-app-bar-nav-icon
       class="hidden-md-and-up primary app-bar-nav-icon"
       color="white"
@@ -35,27 +35,14 @@
       />
     </v-toolbar-items>
 
-    <div class="justify-end">
-      <v-btn
-        class="px-13 ml-3 hidden-sm-and-down text-right btn-register"
-        color="accent"
-        nuxt
-        v-if="!isUserLoggedIn"
-        text
-        :to="{ name: 'auth-signup' }"
-      >
-        REGISTER
-      </v-btn>
-
-      <v-btn
-        class="px-13 ml-3 hidden-sm-and-down text-right"
-        color="accent"
-        nuxt
-        :to="{ name: isUserLoggedIn ? 'app-account' : 'auth-login' }"
-      >
-        {{ isUserLoggedIn ? "ACCOUNT" : "LOGIN" }}
-      </v-btn>
-    </div>
+    <v-btn
+      class="px-13 ml-3 hidden-sm-and-down"
+      color="accent"
+      nuxt
+      :to="{ name: isUserLoggedIn ? 'app-account' : 'auth-login' }"
+    >
+      {{ isUserLoggedIn ? "ACCOUNT" : "LOGIN" }}
+    </v-btn>
 
     <v-spacer class="hidden-sm-and-down" />
 
@@ -120,16 +107,33 @@ export default {
   max-height: 48px;
 }
 
+.v-btn--active.custom-active {
+  &::before {
+    opacity: 0 !important;
+  }
+  &::after {
+    width: 60%;
+    position: absolute;
+    bottom: 33.33%;
+    left: 20%;
+    content: "";
+    z-index: -1;
+    border-bottom: 2px solid var(--v-primary-base);
+    border-radius: 7px;
+  }
+}
+
+.link-text {
+  font-size: 14px;
+  font-weight: 400 !important;
+  font-style: normal;
+  line-height: 1.44;
+  letter-spacing: normal;
+  text-align: left;
+  color: #606060 !important;
+}
+
 .no-border-radius {
   border-radius: 0px !important;
-}
-
-.btn-register:before {
-  background-color: transparent !important;
-}
-
-.justify-end {
-  position: relative;
-  right: -8%;
 }
 </style>

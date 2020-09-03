@@ -80,6 +80,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.hr-line {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .login {
   color: $pg-main;

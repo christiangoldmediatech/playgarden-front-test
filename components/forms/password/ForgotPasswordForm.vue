@@ -1,86 +1,81 @@
 <template>
   <validation-observer v-slot="{ invalid, passes }">
-    <v-form class="row" @submit.prevent="passes(onSubmit)">
-      <v-container>
-        <!-- Email -->
-        <validation-provider
-          v-slot="{ errors }"
-          name="Email"
-          :rules="{
-            required: !draft.phone,
-            email: true
-          }"
-        >
-          <v-text-field
-            v-model="draft.email"
-            clearable
-            :disabled="loading || Boolean(draft.phone)"
-            :error-messages="errors"
-            label="Email"
-            :loading="loading"
-            solo
-            type="email"
-            class="label-custom"
-          />
-        </validation-provider>
-
-        <v-row class="my-3" no-gutters>
-          <v-col>
-            <v-divider />
-          </v-col>
-          <v-col cols="1" class="text-center">
-            <span class="spanHr">
-              or
-            </span>
-          </v-col>
-          <v-col>
-            <v-divider />
-          </v-col>
-
-          <v-col cols="12" class="data-phone">
-            <!-- Phone -->
-            <validation-provider
-              v-slot="{ errors }"
-              name="Phone"
-              :rules="{
-                required: !draft.email,
-                min: 7,
-                max: 20,
-                phone: true
-              }"
-            >
-              <v-text-field
-                v-model="draft.phone"
-                class="mt-9 label-custom"
-                clearable
-                :disabled="loading || Boolean(draft.email)"
-                :error-messages="errors"
-                label="Phone"
-                :loading="loading"
-                maxlength="20"
-                solo
-              />
-            </validation-provider>
-          </v-col>
-        </v-row>
-
-        <v-btn
-          block
-          color="primary"
-          :disabled="invalid"
+    <v-form @submit.prevent="passes(onSubmit)">
+      <!-- Email -->
+      <validation-provider
+        v-slot="{ errors }"
+        name="Email"
+        :rules="{
+          required: !draft.phone,
+          email: true
+        }"
+      >
+        <v-text-field
+          v-model="draft.email"
+          clearable
+          :disabled="loading || Boolean(draft.phone)"
+          :error-messages="errors"
+          label="Email"
           :loading="loading"
-          type="submit"
-          x-large
-        >
-          SEND RECOVERY LINK
-        </v-btn>
+          solo
+          type="email"
+        />
+      </validation-provider>
 
-        <p class="login mt-8">
-          <nuxt-link class="primary--text" :to="{ name: 'index' }">
-            <span>return to login</span>
-          </nuxt-link>
-        </p>
-      </v-container>
+      <v-row class="my-3" no-gutters>
+        <v-col class="hr-line">
+          <v-divider />
+        </v-col>
+
+        <v-col class="text-center">
+          or
+        </v-col>
+
+        <v-col class="hr-line">
+          <v-divider />
+        </v-col>
+      </v-row>
+
+      <!-- Phone -->
+      <validation-provider
+        v-slot="{ errors }"
+        name="Phone"
+        :rules="{
+          required: !draft.email,
+          min: 7,
+          max: 20,
+          phone: true
+        }"
+      >
+        <v-text-field
+          v-model="draft.phone"
+          class="mt-9"
+          clearable
+          :disabled="loading || Boolean(draft.email)"
+          :error-messages="errors"
+          label="Phone"
+          :loading="loading"
+          maxlength="20"
+          solo
+        />
+      </validation-provider>
+
+      <v-btn
+        block
+        color="primary"
+        :disabled="invalid"
+        :loading="loading"
+        type="submit"
+        x-large
+      >
+        SEND RECOVERY LINK
+      </v-btn>
+
+      <p class="login mt-8">
+        <nuxt-link class="primary--text" :to="{ name: 'index' }">
+          <span>return to login</span>
+        </nuxt-link>
+      </p>
     </v-form>
   </validation-observer>
 </template>
@@ -135,23 +130,5 @@ export default {
     text-transform: uppercase;
     font-weight: bold;
   }
-}
-
-.margin-or {
-  margin-left: 5px;
-  margin-right: 5px;
-}
-
-.spanHr {
-  margin-top: -11px !important;
-  color: #989696;
-  position: relative;
-  top: -11px;
-}
-.hr-forgot {
-  border-top: 2px solid #989696;
-}
-.data-phone {
-  margin-top: -27px !important;
 }
 </style>
