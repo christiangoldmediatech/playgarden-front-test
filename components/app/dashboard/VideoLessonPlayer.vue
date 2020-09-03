@@ -40,7 +40,7 @@
           Congratulations!
         </span>
       </template>
-      <p class="text-h5 text-center font-weight-medium">
+      <p class="text-h5 text-center font-weight-medium white--text">
         You have completed the daily lessons.
       </p>
     </completed-dialog>
