@@ -164,6 +164,9 @@ export default {
     this._keyListener = (e) => {
       if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'E') {
         e.preventDefault()
+        if (this.fullscreen) {
+          this.toggleFullscreen()
+        }
         this.$emit('hotkey')
       }
     }

@@ -30,6 +30,7 @@
     "storyblok-nuxt": "^1.2.0",
     "tiptap-vuetify": "^2.24.0",
     "vee-validate": "^3.3.7",
+    "video.js": "^7.8.4",
     "vue": "^2.6.11",
     "vue-scrollto": "^2.18.2",
     "vue-snotify": "^3.2.1",

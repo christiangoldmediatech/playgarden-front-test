@@ -47,7 +47,7 @@
         />
       </template>
     </v-card-text>
-    <completed-message
+    <completed-dialog
       v-model="finished"
       :buttons="buttons"
       :return-action="returnAction"
@@ -61,7 +61,7 @@
       <p class="text-center font-weight-medium">
         Hands-on learning is a crucial part of the educational experience. Learning through doing strengthens the cognitive connections and builds a strong foundation for knowledge.
       </p>
-    </completed-message>
+    </completed-dialog>
   </v-card>
 </template>
 

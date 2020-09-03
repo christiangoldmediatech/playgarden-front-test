@@ -5,13 +5,14 @@
       <activity-title />
     </v-container>
     <video-results v-bind="{ videos }" />
-    <video-player />
+    <lesson-activity-player />
   </v-main>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import VideoPlayer from '@/components/app/activities/VideoPlayer.vue'
+// import VideoPlayer from '@/components/app/activities/VideoPlayer.vue'
+import LessonActivityPlayer from '@/components/app/dashboard/LessonActivityPlayer.vue'
 import TopBar from '@/components/app/activities/TopBar.vue'
 import VideoResults from '@/components/app/activities/VideoResults.vue'
 import ActivityTitle from '@/components/app/activities/ActivityTitle.vue'
@@ -20,7 +21,8 @@ export default {
   name: 'Favorites',
 
   components: {
-    VideoPlayer,
+    // VideoPlayer,
+    LessonActivityPlayer,
     VideoResults,
     ActivityTitle,
     TopBar

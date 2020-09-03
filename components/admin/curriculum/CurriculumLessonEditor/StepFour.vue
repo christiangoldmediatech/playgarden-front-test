@@ -40,10 +40,10 @@
 
       <template v-if="draft.pdfUrl">
         <div class="mb-6 mt-3">
-          <v-badge avatar color="error" overlap>
+          <v-badge avatar color="white" overlap>
             <template v-slot:badge>
               <v-avatar class="clickable" @click.native="draft.pdfUrl = null">
-                <v-icon>
+                <v-icon color="#757575" size="20">
                   mdi-close
                 </v-icon>
               </v-avatar>
@@ -76,36 +76,36 @@
         />
       </validation-provider>
 
-      <v-btn
-        block
-        class="mb-6"
-        color="primary"
-        :disabled="invalid"
-        :loading="loading"
-        type="submit"
-        x-large
-      >
-        NEXT
-      </v-btn>
+      <v-row class="mb-6" justify="center">
+        <v-btn
+          class="ma-3"
+          color="primary"
+          :loading="loading"
+          text
+          :to="{
+            name: 'admin-curriculum-management-editor',
+            query: {
+              step: 3,
+              lessonId
+            }
+          }"
+          x-large
+          @click="onCancel(reset)"
+        >
+          BACK
+        </v-btn>
 
-      <v-btn
-        block
-        class="mb-6"
-        color="primary"
-        :loading="loading"
-        text
-        :to="{
-          name: 'admin-curriculum-management-editor',
-          query: {
-            step: 3,
-            lessonId
-          }
-        }"
-        x-large
-        @click="onCancel(reset)"
-      >
-        BACK
-      </v-btn>
+        <v-btn
+          class="ma-3"
+          color="primary"
+          :disabled="invalid"
+          :loading="loading"
+          type="submit"
+          x-large
+        >
+          NEXT
+        </v-btn>
+      </v-row>
     </v-form>
   </validation-observer>
 </template>
