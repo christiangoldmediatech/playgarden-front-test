@@ -15,6 +15,7 @@
           label="First name"
           :loading="loading"
           solo
+          class="custom-text-field"
         />
       </validation-provider>
 
@@ -32,6 +33,7 @@
           label="Last name"
           :loading="loading"
           solo
+          class="custom-text-field"
         />
       </validation-provider>
 
@@ -50,6 +52,7 @@
           :loading="loading"
           maxlength="20"
           solo
+          class="custom-text-field"
         />
       </validation-provider>
 
@@ -68,6 +71,7 @@
           :loading="loading"
           solo
           type="email"
+          class="custom-text-field"
         />
       </validation-provider>
 
@@ -86,6 +90,7 @@
           :loading="loading"
           maxlength="20"
           solo
+          class="custom-text-field"
         />
       </validation-provider>
 
@@ -105,6 +110,7 @@
           :loading="loading"
           maxlength="20"
           solo
+          class="custom-text-field"
         />
       </validation-provider>
 
