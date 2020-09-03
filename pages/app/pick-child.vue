@@ -69,7 +69,7 @@
                 text
                 block
                 x-large
-                :to="{ name: 'app-profile' }"
+                :to="{ name: 'app-account' }"
               >
                 MANAGE PROFILES
               </v-btn>
@@ -83,6 +83,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+
 import { jsonCopy } from '@/utils/objectTools'
 
 export default {

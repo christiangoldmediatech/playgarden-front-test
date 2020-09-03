@@ -22,7 +22,10 @@
               <v-icon class="hidden-xs-only" small>
                 mdi-plus
               </v-icon>
-              <span class="hidden-xs-only">Add new onboarding</span>
+
+              <span class="hidden-xs-only white--text">
+                Add new onboarding
+              </span>
             </v-btn>
           </v-card-title>
 

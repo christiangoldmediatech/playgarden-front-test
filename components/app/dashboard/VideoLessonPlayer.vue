@@ -17,10 +17,10 @@
           <children-jw-player
             ref="playerRef"
             :playlist="playlist"
-            next-up-display
+            :videoId="videoId"
             @playlistComplete="showMessage"
             @ready="setPlayer"
-            @play="saveProgress"
+            @viewable="startPlaying"
             @pause="saveProgress"
             @beforeComplete="completedVideo"
             @hotkey="close"
@@ -100,36 +100,61 @@ export default {
       const videoItem = this.player.getPlaylistItem()
       const date = new Date().toISOString().substr(0, 19)
       const time = this.player.getPosition()
-      this.children.forEach((child) => {
-        this.saveVideoProgress({
-          lessonId: this.getLesson.id,
-          childId: child.id,
-          video: {
-            id: videoItem.videoId,
-            completed: false,
-            time,
-            date
-          }
+      if (
+        !videoItem.viewed ||
+        (videoItem.viewed && !videoItem.viewed.completed && videoItem.viewed.time < time)
+      ) {
+        const promises = []
+        this.children.forEach((child) => {
+          promises.push(
+            this.saveVideoProgress({
+              lessonId: this.getLesson.id,
+              childId: child.id,
+              video: {
+                id: videoItem.videoId,
+                completed: false,
+                time,
+                date
+              }
+            })
+          )
         })
-      })
+        Promise.all(promises).then(() => {
+          this.$nuxt.$emit('dashboard-panel-update')
+        })
+      }
     },
 
     completedVideo () {
       const videoItem = this.player.getPlaylistItem()
       const date = new Date().toISOString().substr(0, 19)
       const time = this.player.getPosition()
+      const promises = []
       this.children.forEach((child) => {
-        this.saveVideoProgress({
-          lessonId: this.getLesson.id,
-          childId: child.id,
-          video: {
-            id: videoItem.videoId,
-            completed: true,
-            time,
-            date
-          }
-        })
+        promises.push(
+          this.saveVideoProgress({
+            lessonId: this.getLesson.id,
+            childId: child.id,
+            video: {
+              id: videoItem.videoId,
+              completed: true,
+              time,
+              date
+            }
+          })
+        )
       })
+      Promise.all(promises).then(() => {
+        this.$nuxt.$emit('dashboard-panel-update')
+      })
+
+      // If not last item, then switch
+      const videoIndex = this.player.getPlaylistIndex()
+      const playlist = this.player.getPlaylist()
+      if (videoIndex < (playlist.length - 1)) {
+        const nextItem = playlist[videoIndex + 1]
+        this.$router.push({ name: 'app-dashboard-video-id', params: { id: nextItem.videoId } })
+      }
     },
 
     showMessage () {

@@ -1,4 +1,9 @@
 export default {
+  async resetChild (ctx, { lessonId, childId }) {
+    const { data } = await this.$axios.delete(`/lessons/${lessonId}/children/${childId}`)
+    return data
+  },
+
   async getCurrentLessonByChildrenId ({ commit }, params) {
     const { lesson } = await this.$axios.$get('/lessons/childrens/current', {
       params
@@ -25,6 +30,15 @@ export default {
   async saveWorksheetProgress (ctx, { lessonId, childId, worksheet }) {
     try {
       const { data } = await this.$axios.$post(`/lessons/${lessonId}/children/${childId}/worksheet`, { worksheet })
+      return data
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+
+  async saveActivityProgres (ctx, { lessonId, childId, activity }) {
+    try {
+      const { data } = await this.$axios.$post(`/lessons/${lessonId}/children/${childId}/activity`, { activity })
       return data
     } catch (error) {
       return Promise.reject(error)

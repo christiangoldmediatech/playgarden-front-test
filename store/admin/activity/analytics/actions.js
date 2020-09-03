@@ -8,9 +8,9 @@ export default {
     }
   },
 
-  async getById (ctx, activityId) {
+  async getByChildId (ctx, { activityId, childId }) {
     try {
-      const { data } = await this.$axios.get(`/activities-analytics/activity/${activityId}`)
+      const { data } = await this.$axios.get(`/activities-analytics/activity/${activityId}/children/${childId}`)
       return data
     } catch (error) {
       return Promise.reject(error)
