@@ -1,13 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" id="prefix__instagram-social-network-logo-of-photo-camera" width="46.611" height="46.611" viewBox="0 0 46.611 46.611">
-    <defs>
-        <style>
-            .prefix__cls-1{fill:#c2daa5}
-        </style>
-    </defs>
-    <g id="prefix__Grupo_55" data-name="Grupo 55">
-        <ellipse id="prefix__Elipse_2" cx="6.898" cy="6.684" class="prefix__cls-1" data-name="Elipse 2" rx="6.898" ry="6.684" transform="translate(16.441 16.547)"/>
-        <path id="prefix__Trazado_354" d="M44.929 46.268a10.681 10.681 0 0 1-21.352 0 10.045 10.045 0 0 1 .441-2.947h-3.155V57.83a1.369 1.369 0 0 0 1.365 1.37h23.918a1.369 1.369 0 0 0 1.366-1.365V43.321h-3.023a10.06 10.06 0 0 1 .44 2.947z" class="prefix__cls-1" data-name="Trazado 354" transform="translate(-10.915 -22.664)"/>
-        <path id="prefix__Trazado_355" d="M63.635 27.657h3.882a1.55 1.55 0 0 0 1.546-1.546v-3.7a1.55 1.55 0 0 0-1.546-1.546h-3.882a1.55 1.55 0 0 0-1.546 1.546v3.7a1.55 1.55 0 0 0 1.546 1.546z" class="prefix__cls-1" data-name="Trazado 355" transform="translate(-32.482 -10.915)"/>
-        <path id="prefix__Trazado_356" d="M23.306 0a23.306 23.306 0 1 0 23.305 23.306A23.306 23.306 0 0 0 23.306 0zm12.765 40.48h-25.53a4.3 4.3 0 0 1-4.409-4.408V10.541a4.3 4.3 0 0 1 4.409-4.408h25.53a4.3 4.3 0 0 1 4.409 4.408v25.531a4.3 4.3 0 0 1-4.409 4.408z" class="prefix__cls-1" data-name="Trazado 356"/>
-    </g>
+<svg id="instagram-social-network-logo-of-photo-camera" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 40 40">
+  <g id="Grupo_55" data-name="Grupo 55">
+    <ellipse id="Elipse_2" data-name="Elipse 2" cx="6.898" cy="6.684" rx="6.898" ry="6.684" transform="translate(13.129 13.257)" fill="#78c383"/>
+    <path id="Trazado_354" data-name="Trazado 354" d="M38.959,46.268c0,5.713-3.594,10.344-8.027,10.344S22.9,51.981,22.9,46.268a13.137,13.137,0,0,1,.331-2.947H20.863V57.83c0,.751.462,1.365,1.027,1.365H39.874c.565,0,1.027-.614,1.027-1.365V43.321H38.627A13.157,13.157,0,0,1,38.959,46.268Z" transform="translate(-10.915 -27.107)" fill="#78c383"/>
+    <path id="Trazado_355" data-name="Trazado 355" d="M63.635,27.657h3.882a1.55,1.55,0,0,0,1.546-1.546v-3.7a1.55,1.55,0,0,0-1.546-1.546H63.635a1.55,1.55,0,0,0-1.546,1.546v3.7A1.55,1.55,0,0,0,63.635,27.657Z" transform="translate(-37.421 -12.566)" fill="#78c383"/>
+    <path id="Trazado_356" data-name="Trazado 356" d="M20,0A20,20,0,1,0,40,20,20,20,0,0,0,20,0ZM30.954,34.738H9.046a3.694,3.694,0,0,1-3.784-3.783V9.046A3.693,3.693,0,0,1,9.046,5.262H30.954a3.694,3.694,0,0,1,3.784,3.783v21.91A3.694,3.694,0,0,1,30.954,34.738Z" fill="#78c383"/>
+  </g>
 </svg>
