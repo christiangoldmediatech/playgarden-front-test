@@ -10,7 +10,7 @@ export default {
         formData
       }, { root: true })
 
-      const { data } = await this.$axios.$post('/worksheets/upload', {
+      const data = await this.$axios.$post('/worksheets/upload', {
         lessonId,
         childrenId,
         categoryId,
@@ -21,5 +21,10 @@ export default {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+
+  async getUploaded (ctx, childId) {
+    const { data } = await this.$axios.get(`/worksheets/children/${childId}`)
+    return data
   }
 }

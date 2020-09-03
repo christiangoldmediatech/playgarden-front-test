@@ -42,7 +42,7 @@
 
         <component
           :is="type"
-          v-bind="{ images, lastQuestion }"
+          v-bind="{ images, lastQuestion, loading }"
           @next="nextPage"
         />
       </template>
@@ -50,7 +50,7 @@
     <completed-dialog
       v-model="finished"
       :buttons="buttons"
-      :return-action="returnAction"
+      :return-text="false"
       :time-out-action="buttons[0].action"
     >
       <template v-slot:title>
@@ -58,7 +58,7 @@
           Coming Next:
         </span>
       </template>
-      <p class="text-center font-weight-medium">
+      <p class="text-center font-weight-medium white--text">
         Hands-on learning is a crucial part of the educational experience. Learning through doing strengthens the cognitive connections and builds a strong foundation for knowledge.
       </p>
     </completed-dialog>
@@ -95,18 +95,23 @@ export default {
     buttons () {
       return [
         {
-          text: 'COMPLETE WORKSHEETS',
+          text: 'GO TO ACTIVITIES',
           color: 'accent',
-          iconLeft: 'mdi-square-edit-outline',
+          iconLeft: 'mdi-play',
           action: () => {
-            this.$router.push({ name: 'app-dashboard-online-worksheet' })
+            this.$router.push({
+              name: 'app-dashboard-lesson-activities',
+              query: { id: this.getLesson.lessonsActivities[0].activity.id }
+            })
           }
         },
         {
           text: 'DOWNLOAD HANDS-ON WORKSHEET',
           color: '#FEC572',
           iconLeft: 'mdi-download-outline',
-          action: () => {}
+          action: () => {
+            this.$router.push({ name: 'app-dashboard-offline-worksheet' })
+          }
         }
       ]
     },
@@ -164,11 +169,8 @@ export default {
     ...mapActions('children/lesson', ['saveWorksheetProgress']),
 
     nextPage () {
-      if (this.step < this.stepCount) {
-        this.step++
-      } else {
-        this.finished = true
-      }
+      this.loading = true
+      const promises = []
 
       const date = new Date().toISOString().substr(0, 19)
       this.children.forEach((child) => {
@@ -182,7 +184,17 @@ export default {
           }
         })
       })
-    },
+
+      Promise.all(promises).then(() => {
+        this.$nuxt.$emit('dashboard-panel-update')
+        if (this.step < this.stepCount) {
+          this.step++
+        } else {
+          this.finished = true
+        }
+        this.loading = false
+      })
+    }
     // prevPage () {
     //   if (this.finished) {
     //     this.finished = false
@@ -192,13 +204,6 @@ export default {
     //     this.step--
     //   }
     // },
-    returnAction () {
-      const id = this.getLesson.videos[0].id
-      this.$router.push({
-        name: 'app-dashboard-videos-id',
-        params: { id }
-      })
-    }
   }
 }
 </script>

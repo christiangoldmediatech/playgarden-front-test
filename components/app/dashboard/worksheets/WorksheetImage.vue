@@ -55,3 +55,27 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.worksheet-item {
+    transition: transform 250ms;
+}
+
+.worksheet-scaled {
+    transform: scale(1.11);
+    z-index: 1;
+}
+
+.worksheet-selected {
+     ::after {
+        border-radius: 50%;
+        box-shadow: inset 0px 0px 0px 10px var(--v-primary-base);
+        content: "";
+        display: block;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        width: 100%;
+    }
+}
+</style>
