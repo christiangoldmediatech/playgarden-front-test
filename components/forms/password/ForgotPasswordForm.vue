@@ -26,7 +26,9 @@
 
         <v-row class="my-3" no-gutters>
           <v-col>
-            <v-divider />
+            <span>
+              <hr class="hr-forgot"></hr>
+            </span>
           </v-col>
           <v-col cols="1" class="text-center">
             <span class="spanHr">
@@ -34,7 +36,9 @@
             </span>
           </v-col>
           <v-col>
-            <v-divider />
+            <span>
+              <hr class="hr-forgot"></hr>
+            </span>
           </v-col>
 
           <v-col cols="12" class="data-phone">
