@@ -74,15 +74,11 @@ export default {
   .text-h6 {
     font-family: "Poppins", sans-serif !important;
   }
-
   .container:not(.container--fluid) {
     max-width: 1200px;
   }
-  .custom-text-field .v-input__control .v-input__slot {
+  .v-text-field .v-input__control .v-input__slot {
     box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.16) !important;
-  }
-  .custom-text-field .v-label {
-    color: rgba(0, 0, 0, 0.16) !important;
   }
 }
 </style>
