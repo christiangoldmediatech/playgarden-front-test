@@ -50,6 +50,7 @@
     <completed-dialog
       v-model="finished"
       :buttons="buttons"
+      :return-text="false"
       :time-out-action="buttons[0].action"
     >
       <template v-slot:title>
@@ -57,7 +58,7 @@
           Coming Next:
         </span>
       </template>
-      <p class="text-center font-weight-medium">
+      <p class="text-center font-weight-medium white--text">
         Hands-on learning is a crucial part of the educational experience. Learning through doing strengthens the cognitive connections and builds a strong foundation for knowledge.
       </p>
     </completed-dialog>
@@ -99,7 +100,7 @@ export default {
           iconLeft: 'mdi-play',
           action: () => {
             this.$router.push({
-              name: 'app-dashboard-online-worksheet',
+              name: 'app-dashboard-lesson-activities',
               query: { id: this.getLesson.lessonsActivities[0].activity.id }
             })
           }
