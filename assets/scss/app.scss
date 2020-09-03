@@ -105,9 +105,17 @@ p {
   }
 }
 
+.custom-text-field::v-deep.v-input__control .v-input__slot {
+  box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.16) !important;
+}
 .custom-text-field::v-deep.v-text-field.v-text-field--solo .v-label {
   color: rgba(0, 0, 0, 0.16) !important;
 }
 .custom-text-field::v-deep.v-text-field.v-text-field--solo:not(.v-text-field--solo-flat) > .v-input__control > .v-input__slot {
   box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.16) !important;
+}
+.custom-btn::v-deep.v-btn {
+    background-color: #f2f2f2;
+    color: #9d9d9d;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
 }

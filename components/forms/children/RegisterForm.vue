@@ -28,6 +28,7 @@
               :error-messages="errors"
               label="Name"
               solo
+              class="custom-text-field"
             />
           </validation-provider>
 
@@ -58,6 +59,7 @@
                   validate-on-blur
                   :value="item._birthdayFormatted"
                   v-on="on"
+                  class="custom-text-field"
                 />
               </validation-provider>
             </template>
@@ -81,6 +83,7 @@
                   block
                   :color="item.gender === gender ? 'primary' : 'grey lighten-5'"
                   :disabled="loading"
+                  class="custom-btn"
                   @click="item.gender = gender"
                 >
                   {{ gender === "FEMALE" ? "Girl" : "Boy" }}
@@ -189,7 +192,7 @@ export default {
     addRow () {
       this.draft.push({
         _birthdayFormatted: '',
-        _birthdayPicker: '',
+        _birthdayPicker: `${new Date().getFullYear() - 2}-01-01`,
         _menu: false,
         backpackId: '',
         birthday: '',
