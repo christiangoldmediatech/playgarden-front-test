@@ -78,23 +78,5 @@ export default {
   .container:not(.container--fluid) {
     max-width: 1200px;
   }
-
-  .v-input__control .v-input__slot {
-    box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.16) !important;
-  }
-  .v-label {
-    color: rgba(0, 0, 0, 0.16) !important;
-  }
-  .custom-btn .v-btn {
-      background-color: #f2f2f2 !important;
-      color: #9d9d9d !important;
-      box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
-  }
-  .v-text-field__suffix {
-    color: red !important;
-  }
-  div.v-text-field__suffix {
-    color: rgba(0, 0, 0, 0.16) !important;
-  }
 }
 </style>
