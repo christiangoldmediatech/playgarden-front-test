@@ -8,9 +8,10 @@
     >
       <v-row justify="center">
         <v-col class="text-center" cols="12">
-          <span class="text-h3 title-text font-weight-medium">
-            Congratulations!
-          </span>
+          <underlined-title
+            class="text-h3 font-weight-medium"
+            text="Congratulations!"
+          />
         </v-col>
         <v-col class="py-0" cols="12">
           <p class="text-center">

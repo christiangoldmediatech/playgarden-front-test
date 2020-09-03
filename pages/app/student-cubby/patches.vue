@@ -2,9 +2,10 @@
   <v-card flat>
     <v-card-text>
       <div class="text-center">
-        <span class="text-h3 title-text">
-          Earn Activity Patches for learning!
-        </span>
+        <underlined-title
+          class="text-h3"
+          text="Earn Activity Patches for learning!"
+        />
 
         <p class="mt-5">
           Master subjects in the Activities section to collect patches for your
@@ -32,7 +33,7 @@ import PatchRow from '@/components/app/student-cubby/PatchRow.vue'
 import PatchOverlay from '@/components/app/student-cubby/PatchOverlay.vue'
 
 export default {
-  name: 'Badges',
+  name: 'Patches',
 
   components: {
     PatchRow,

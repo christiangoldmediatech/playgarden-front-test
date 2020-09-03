@@ -5,21 +5,24 @@
         <v-col class="flex-grow-0 flex-shrink-1">
           <student-cubby-panel />
         </v-col>
+
         <v-col>
           <v-row align="center">
             <v-spacer />
 
-            First time using Playgarden?
+            <span class="font-weight-medium">First time using Playgarden?</span>
 
-            <v-btn color="primary" text>
+            <v-btn class="mr-3" color="primary" nuxt text :to="{ name: 'app-onboarding' }">
               WATCH TUTORIAL HERE
             </v-btn>
           </v-row>
+
           <template v-if="studentId">
             <v-container>
               <nuxt-child />
             </v-container>
           </template>
+
           <template v-else>
             <v-container fill-height>
               <v-row align="center" justify="center">
