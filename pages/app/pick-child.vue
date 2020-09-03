@@ -33,7 +33,7 @@
                       <v-avatar
                         v-if="child.everyone"
                         class="mb-3 everyone-img"
-                        :size="hover ? 100 : 70"
+                        :size="hover ? 100 : 68"
                       >
                         <v-img
                           class="mb-3"
@@ -71,7 +71,7 @@
                 x-large
                 :to="{ name: 'app-account' }"
               >
-                MANAGE PROFILES
+                MANAGE STUDENT PROFILES
               </v-btn>
             </v-card-text>
           </v-card>
