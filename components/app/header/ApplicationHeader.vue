@@ -37,7 +37,7 @@
 
     <div class="justify-end">
       <v-btn
-        class="px-13 ml-3 hidden-sm-and-down text-right btn-register"
+        class="px-13 ml-3 hidden-sm-and-down text-right"
         color="accent"
         nuxt
         v-if="!isUserLoggedIn"
@@ -122,10 +122,6 @@ export default {
 
 .no-border-radius {
   border-radius: 0px !important;
-}
-
-.btn-register:before {
-  background-color: transparent !important;
 }
 
 .justify-end {
