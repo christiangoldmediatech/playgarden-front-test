@@ -11,7 +11,7 @@
       '--ut-background-from': _lineFrom,
       fontSize: _fontSize,
       fontWeight: _fontWeight,
-
+      paddingBottom: _paddingBoottom
     }"
     v-on="$listeners"
   >
