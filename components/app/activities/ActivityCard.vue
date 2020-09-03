@@ -32,38 +32,43 @@
           </v-container>
         </v-img>
 
-        <v-card-actions>
-          <img
-            :src="icon"
-            height="48px"
-          >
-          <div class="ml-2">
-            <span>
-              {{ categoryName }}
-            </span>
-            <br>
-            <span class="font-weight-bold">
-              {{ activity.name }}
-            </span>
-          </div>
+        <v-list dense>
+          <v-list-item>
+            <v-list-item-avatar tile>
+              <v-img
+                :src="icon"
+                contain
+              />
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title class="font-weight-bold text-uppercase">
+                {{ categoryName }}
+              </v-list-item-title>
 
-          <v-spacer />
+              <v-list-item-subtitle>
+                {{ activity.name }}
+              </v-list-item-subtitle>
+            </v-list-item-content>
 
-          <v-btn
-            icon
-            :loading="loading"
-            @click.stop="setFavorite"
-          >
-            <v-icon color="#F5737F">
-              <template v-if="isFavorite">
-                mdi-heart
-              </template>
-              <template v-else>
-                mdi-heart-outline
-              </template>
-            </v-icon>
-          </v-btn>
-        </v-card-actions>
+            <v-list-item-action>
+              <v-btn
+                icon
+                large
+                :loading="loading"
+                @click.stop="setFavorite"
+              >
+                <v-icon color="#F5737F">
+                  <template v-if="isFavorite">
+                    mdi-heart
+                  </template>
+                  <template v-else>
+                    mdi-heart-outline
+                  </template>
+                </v-icon>
+              </v-btn>
+            </v-list-item-action>
+          </v-list-item>
+        </v-list>
       </v-card>
     </v-hover>
   </v-col>
@@ -93,6 +98,10 @@ export default {
     categoryName: {
       type: String,
       required: true
+    },
+    playlist: {
+      type: Array,
+      required: true
     }
   },
 
@@ -114,16 +123,11 @@ export default {
 
   methods: {
     playVideo () {
-      this.$nuxt.$emit('play-activity', {
-        title: this.activity.name,
-        playlist: [
-          {
-            file: this.activity.videoUrl.HLS,
-            image: this.thumbnail,
-            activityId: this.activityId
-          }
-        ]
-      })
+      const index = this.playlist.findIndex(({ activityId }) => activityId === this.activityId)
+
+      if (index !== -1) {
+        this.$nuxt.$emit('open-lesson-activity-player', { playlist: this.playlist, index })
+      }
     }
   }
 }

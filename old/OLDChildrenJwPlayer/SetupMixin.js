@@ -12,6 +12,7 @@ export default {
         // stretching: 'fill',
         height: '100%',
         width: '100%',
+        cast: {},
         ...this.$attrs
       })
 

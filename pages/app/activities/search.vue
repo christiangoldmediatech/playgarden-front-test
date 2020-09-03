@@ -5,13 +5,13 @@
       <activity-title />
     </v-container>
     <activity-results v-bind="{ activities }" />
-    <activity-player />
+    <lesson-activity-player />
   </v-main>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import ActivityPlayer from '@/components/app/activities/ActivityPlayer.vue'
+import LessonActivityPlayer from '@/components/app/dashboard/LessonActivityPlayer.vue'
 import ActivityResults from '@/components/app/activities/ActivityResults.vue'
 import ActivityTitle from '@/components/app/activities/ActivityTitle.vue'
 import TopBar from '@/components/app/activities/TopBar.vue'
@@ -20,7 +20,8 @@ export default {
   name: 'Search',
 
   components: {
-    ActivityPlayer,
+    // ActivityPlayer,
+    LessonActivityPlayer,
     ActivityResults,
     ActivityTitle,
     TopBar
@@ -50,9 +51,11 @@ export default {
 
   methods: {
     ...mapActions('admin/activity', ['getActivities']),
+    ...mapActions('video', ['getAllFavorites']),
 
     refresh () {
-      this.getActivities({ type: 'VIDEO', limit: 50, name: this.query })
+      this.getAllFavorites()
+      this.getActivities({ status: 'COMPLETED', type: 'VIDEO', limit: 50, name: this.query })
     }
   }
 }

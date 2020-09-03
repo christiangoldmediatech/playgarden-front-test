@@ -18,6 +18,7 @@
             ref="playerRef"
             :playlist="playlist"
             @ready="setPlayer"
+            @playlist="startPlaying"
             @hotkey="close"
           />
         </div>

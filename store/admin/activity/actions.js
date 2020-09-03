@@ -46,5 +46,14 @@ export default {
 
   async deleteType (ctx, id) {
     await this.$axios.$delete(`/activity-types/${id}`)
+  },
+
+  async getNextActivity (ctx, { prevActivityId, params = {} }) {
+    try {
+      const data = await this.$axios.$get(`/activities/${prevActivityId}/next`, { params })
+      return data
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
