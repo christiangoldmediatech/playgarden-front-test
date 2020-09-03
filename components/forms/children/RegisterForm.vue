@@ -58,8 +58,8 @@
                   suffix="MM/DD/YYYY"
                   validate-on-blur
                   :value="item._birthdayFormatted"
-                  v-on="on"
                   class="custom-text-field"
+                  v-on="on"
                 />
               </validation-provider>
             </template>

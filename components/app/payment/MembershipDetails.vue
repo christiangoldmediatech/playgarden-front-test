@@ -76,7 +76,7 @@
       </v-row>
 
       <div v-else class="my-6 text-center">
-        <nuxt-link :to="{ name: 'app-payment-register' }">
+        <nuxt-link class="btn-green" :to="{ name: 'app-payment-register' }">
           CREATE MEMBERSHIP
         </nuxt-link>
       </div>
