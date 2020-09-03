@@ -1,16 +1,20 @@
 <template>
   <v-row class="my-8" justify="center">
-    <worksheet-image
-      v-for="item in items"
-      :key="`images-${item.code}`"
-      v-bind="{ item, selected: selected ? selected.code : null }"
-      hoverable
-      @click.stop="select(item)"
-    >
-      <span class="d-block font-weight-bold">
-        {{ item.word }}
-      </span>
-    </worksheet-image>
+    <v-col cols="12">
+      <v-row justify="center">
+        <worksheet-image
+          v-for="item in items"
+          :key="`images-${item.code}`"
+          v-bind="{ item, selected: selected ? selected.code : null }"
+          hoverable
+          @click.stop="select(item)"
+        >
+          <span class="d-block font-weight-bold">
+            {{ item.word }}
+          </span>
+        </worksheet-image>
+      </v-row>
+    </v-col>
 
     <v-col
       class="mt-10"
@@ -42,6 +46,7 @@
           >
             <continue-button
               :disabled="!selected"
+              :loading="loading"
               @click.stop="nextQuestion"
             >
               <v-icon v-if="!correct" left>
@@ -77,6 +82,11 @@ export default {
   props: {
     images: {
       type: Array,
+      required: true
+    },
+
+    loading: {
+      type: Boolean,
       required: true
     }
   },

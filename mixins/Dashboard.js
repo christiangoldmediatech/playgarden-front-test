@@ -26,7 +26,7 @@ export default {
         total: worksheets.length
       }
 
-      worksheets.map((i) => {
+      worksheets.forEach((i) => {
         if (i.type === 'ONLINE') {
           result.ONLINE.push(i)
         } else if (i.type === 'OFFLINE') {
@@ -38,7 +38,22 @@ export default {
     },
 
     worksheetsCompletionRate () {
-      return this.getCompletionRate(this.worksheets.ONLINE)
+      const worksheets = this.worksheets.ONLINE.map(({ completed }) => {
+        return {
+          viewed: {
+            completed: completed || false
+          }
+        }
+      })
+
+      if (this.worksheets.OFFLINE) {
+        worksheets.push({
+          viewed: {
+            completed: this.worksheets.OFFLINE.completed || false
+          }
+        })
+      }
+      return this.getCompletionRate(worksheets)
     },
 
     worksheetsProgressHeight () {
@@ -55,7 +70,7 @@ export default {
 
       if (total) {
         const completed = items
-          .map(({ viewed }) => Number(viewed ? viewed.completed : false))
+          .map(({ viewed }) => Number(viewed && viewed.completed ? 1 : 0))
           .reduce((a, b) => a + b)
 
         return completed ? (completed * 100) / total : 0
