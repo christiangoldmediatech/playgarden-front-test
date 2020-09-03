@@ -9,6 +9,7 @@
     <div class="d-flex align-center justify-center bkg-black">
       <children-video-player
         ref="childrenVideoPlayer"
+        :video-id="videoId"
         :width="dimensions.width"
         :height="dimensions.height"
         @hotkey="close"

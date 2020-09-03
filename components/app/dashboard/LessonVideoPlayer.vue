@@ -12,6 +12,7 @@
         :width="dimensions.width"
         :height="dimensions.height"
         :completed-props="completedProps"
+        :video-id="videoId"
         @hotkey="close"
         @ready="onReady"
       >

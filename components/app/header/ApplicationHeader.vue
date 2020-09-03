@@ -28,7 +28,7 @@
         active-class="custom-active"
         text
         :ripple="true"
-        exact
+        :exact="item.exact"
         nuxt
         :to="item.to"
         v-text="item.title"

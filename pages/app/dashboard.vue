@@ -9,7 +9,7 @@
         <v-col cols="12" sm="7" md="8" lg="9">
           <v-row align="center" class="px-3">
             <v-btn v-if="allChildren.length > 1" color="primary" :to="{ name: 'app-pick-child' }">
-              PICK CHILD
+              Change Children
             </v-btn>
 
             <!-- <v-btn color="primary" @click.stop="onResetChild">

@@ -27,6 +27,13 @@ export default {
       default: 'auto'
     },
 
+    videoId: {
+      required: true,
+      validator: (val) => {
+        return val === null || typeof val === 'number'
+      }
+    },
+
     completedProps: {
       type: Object,
       required: false,

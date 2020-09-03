@@ -96,6 +96,13 @@ export default {
       return parseInt(this.$route.query.id)
     },
 
+    // TODO: refactor favorites mixin to avoid ugly workarounds
+    activity () {
+      return {
+        id: this.videoId
+      }
+    },
+
     videos () {
       return this.getLesson ? this.getLesson.videos : []
     },
@@ -127,6 +134,10 @@ export default {
       }
       return null
     }
+  },
+
+  created () {
+    this.getAllFavorites()
   },
 
   methods: {

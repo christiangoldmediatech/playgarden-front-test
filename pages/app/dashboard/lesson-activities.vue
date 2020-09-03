@@ -132,7 +132,22 @@ export default {
         return this.playlist[this.currentLessonActivityIndex]
       }
       return null
+    },
+
+    videoId () {
+      return this.currentLessonActivity ? this.currentLessonActivity.id : null
+    },
+
+    // TODO: refactor favorites mixin to avoid ugly workarounds
+    activity () {
+      return {
+        id: this.videoId
+      }
     }
+  },
+
+  created () {
+    this.getAllFavorites()
   },
 
   methods: {

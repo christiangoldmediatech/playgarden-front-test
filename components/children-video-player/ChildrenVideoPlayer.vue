@@ -29,7 +29,7 @@
     <!-- Controls -->
     <control-bar
       v-if="player"
-      v-bind="{ player, playerContainerId, status, position, duration, fullscreen, volume, muted, toggleFullscreen }"
+      v-bind="{ player, playerContainerId, status, position, duration, fullscreen, volume, muted, toggleFullscreen, videoId }"
     />
 
     <!-- Completed dialog -->

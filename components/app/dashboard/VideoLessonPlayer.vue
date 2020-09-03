@@ -17,6 +17,7 @@
           <children-jw-player
             ref="playerRef"
             :playlist="playlist"
+            :videoId="videoId"
             @playlistComplete="showMessage"
             @ready="setPlayer"
             @viewable="startPlaying"

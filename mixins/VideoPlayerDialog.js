@@ -22,6 +22,10 @@ export default {
     ...mapGetters({ children: 'getCurrentChild' }),
     ...mapGetters('admin/curriculum', ['getLesson']),
 
+    videoId () {
+      return this.mediaObject.videoId || null
+    },
+
     dimensions () {
       const aspectRatio = 16 / 9
       let width = this.winWidth
