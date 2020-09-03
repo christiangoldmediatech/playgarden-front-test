@@ -60,7 +60,7 @@
               >
                 <v-list-item-avatar tile>
                   <v-img
-                    :class="{ 'grayscale': checkVideoDisabled(indexV) }"
+                    :class="{ grayscale: checkVideoDisabled(indexV) }"
                     :src="video.activityType.icon"
                     contain
                   />
@@ -161,7 +161,10 @@
                 v-for="(activity, indexA) in activities"
                 :key="indexA"
                 class="px-0"
-                :disabled="videosCompletionRate < 100 || checkVideoDisabled(indexA, 'activities')"
+                :disabled="
+                  videosCompletionRate < 100 ||
+                    checkVideoDisabled(indexA, 'activities')
+                "
                 nuxt
                 exact
                 :to="{
@@ -171,7 +174,11 @@
               >
                 <v-list-item-avatar tile>
                   <v-img
-                    :class="{ 'grayscale': videosCompletionRate < 100 || checkVideoDisabled(indexA, 'activities') }"
+                    :class="{
+                      grayscale:
+                        videosCompletionRate < 100 ||
+                        checkVideoDisabled(indexA, 'activities')
+                    }"
                     :src="activity.activityType.icon"
                     contain
                   />
@@ -218,10 +225,11 @@ export default {
       if (index > 0) {
         const video = this[collection][index - 1]
         const completed = video.viewed ? video.viewed.completed : false
+
         return !completed
       }
 
-      return 0
+      return false
     },
 
     getNextId (items = []) {
@@ -311,10 +319,5 @@ export default {
   position: absolute;
   top: 0;
   width: 100%;
-}
-
-.grayscale {
-  -webkit-filter: grayscale(100%); /* Chrome, Safari, Opera */
-  filter: grayscale(100%);
 }
 </style>

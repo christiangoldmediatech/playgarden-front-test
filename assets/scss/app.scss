@@ -30,6 +30,11 @@
   cursor: pointer;
 }
 
+.grayscale {
+  -webkit-filter: grayscale(100%); /* Chrome, Safari, Opera */
+  filter: grayscale(100%);
+}
+
 /* COMPONENTS */
 .green-line {
   height: 1rem;
