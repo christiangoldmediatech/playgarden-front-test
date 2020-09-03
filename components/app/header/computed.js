@@ -14,12 +14,7 @@ export default {
         ]
       }
 
-      return [
-        { title: 'Home', to: { name: 'auth-login' } },
-        { title: 'What we offer', to: { name: 'public-offer' } },
-        { title: 'Our Curriculum', to: { name: 'public-curriculum' } },
-        { title: 'Get to know us', to: { name: 'public-about-us' } }
-      ]
+      return []
     }
   }
 }
