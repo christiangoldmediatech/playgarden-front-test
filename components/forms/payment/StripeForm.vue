@@ -70,12 +70,12 @@
           </validation-provider>
         </v-col>
       </v-row>
-
-      <v-checkbox
-        v-model="draft.accepTerms"
-        label="I have read and accept Terms & Conditions"
-        class="accept-terms"
-      ></v-checkbox>
+            
+        <v-checkbox
+          v-model="draft.accepTerms"
+          label="I have read and accept Terms & Conditions"
+          class="accept-terms"
+        ></v-checkbox>
 
       <v-btn
         block
@@ -89,7 +89,7 @@
         {{ buttonText }}
       </v-btn>
       <center class="mb-15">
-        <span>You will only be billed after one week of FREE trial is completed</span>
+        <span>You will only be billed after the one week of FREE trial is completed</span>
       </center>
 
       <v-btn
