@@ -17,7 +17,7 @@
         </p>
 
         <nuxt-link :to="{ name: 'auth-login' }">
-          <v-btn block color="primary">
+          <v-btn color="primary">
             RETURN TO LOG IN
           </v-btn>
         </nuxt-link>

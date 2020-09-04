@@ -37,18 +37,20 @@
           <span class="due-today">
             TOTAL
           </span>
-          <br />
+        </v-col>
+        <v-col cols="3">
+          <b class="footer-total">${{ cost.total || 0 }}</b>
+        </v-col>
+      </v-row>
+      <v-row class="px-12">
+        <v-col cols="9">
           <span class="due-today">
             DUE TODAY
           </span>
         </v-col>
         <v-col cols="3">
-          <b class="footer-total">${{ cost.total || 0 }}</b>
-          <br />
           <b class="footer-total">${{ 0 }}</b>
         </v-col>
-      </v-row>
-      <v-row class="px-12">
       </v-row>
     </v-col>
   </v-row>
@@ -147,10 +149,10 @@ export default {
 .due-today {
   color: $pg-black !important;
   font-weight: bold;
-  font-size: 17px;
+  font-size: 25px;
 }
 
 .footer-total {
-  font-size: 17px !important;
+  font-size: 25px !important;
 }
 </style>
