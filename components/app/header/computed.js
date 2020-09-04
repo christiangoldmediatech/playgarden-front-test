@@ -15,10 +15,10 @@ export default {
       }
 
       return [
-        { title: 'Home', to: { name: 'auth-login' } },
-        { title: 'What we offer', to: { name: 'public-offer' } },
-        { title: 'Our Curriculum', to: { name: 'public-curriculum' } },
-        { title: 'Get to know us', to: { name: 'public-about-us' } }
+        { title: 'Home', to: { name: 'auth-login' }, exact: true },
+        { title: 'What we offer', to: { name: 'public-offer' }, exact: true },
+        { title: 'Our Curriculum', to: { name: 'public-curriculum' }, exact: true },
+        { title: 'Get to know us', to: { name: 'public-about-us' }, exact: true }
       ]
     }
   }
