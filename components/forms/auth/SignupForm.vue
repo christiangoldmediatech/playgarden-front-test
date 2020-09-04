@@ -5,7 +5,7 @@
         <v-row
           no-gutters
         >
-          <v-col>
+          <v-col class="mr-5">
             <!-- First name -->
             <validation-provider
               v-slot="{ errors }"
