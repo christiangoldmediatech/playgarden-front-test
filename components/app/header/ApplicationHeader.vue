@@ -35,7 +35,7 @@
       />
     </v-toolbar-items>
 
-    <div class="justify-end">
+    <div class="position-header-btn">
       <v-btn
         class="px-13 ml-3 hidden-sm-and-down text-right btn-register"
         color="accent"
@@ -154,7 +154,7 @@ export default {
   background-color: transparent !important;
 }
 
-.justify-end {
+.position-header-btn {
   position: relative;
   right: -8%;
 }

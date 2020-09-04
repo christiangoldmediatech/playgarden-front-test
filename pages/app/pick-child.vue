@@ -35,7 +35,7 @@
                       >
                         <v-avatar
                           v-if="child.everyone"
-                          :size="hover ? 160 : 134"
+                          :size="hover ? 140 : 134"
                         >
                           <v-img
                             :src="require('@/assets/svg/everyone.svg')"

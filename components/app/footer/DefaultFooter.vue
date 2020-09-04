@@ -75,10 +75,29 @@
                 <v-row>
                   <v-col cols="12">
                     <div class="center-info">
-                      <span class="d-block link-text text-footer-contact">Playgarden Prep</span>
-                      <span class="d-block link-text text-footer-contact">Terms & Conditions</span>
-                      <span class="d-block link-text text-footer-contact">Privacy Policy</span>
-                      <span class="d-block link-text text-footer-contact">Help</span>
+                      <nuxt-link
+                        class="d-block link-text"
+                        :to="{ name: 'index' }"
+                        v-text="'Playgarden Prep'"
+                      />
+
+                      <nuxt-link
+                        class="d-block link-text"
+                        :to="{ name: 'terms-conditions' }"
+                        v-text="'Terms & Conditions'"
+                      />
+
+                      <nuxt-link
+                        class="d-block link-text"
+                        :to="{ name: 'privacy-policy' }"
+                        v-text="'Privacy Policy'"
+                      />
+
+                      <nuxt-link
+                        class="d-block link-text"
+                        :to="{ name: 'index' }"
+                        v-text="'Help'"
+                      />
                     </div>
                   </v-col>
                 </v-row>

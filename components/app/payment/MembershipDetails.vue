@@ -29,7 +29,6 @@
             color="primary"
             text
             class="btn-green"
-            v-on="on"
             @click="changePlanModal = true"
           >
             CHANGE PLAN
