@@ -29,6 +29,13 @@
   color: #ffffff;
 }
 
+// Overlay
+.v-overlay--active .v-overlay__scrim {
+  opacity: 0.68 !important;
+  background-color: rgb(0, 0, 0) !important;
+  border-color: rgb(0, 0, 0) !important;
+}
+
 .clickable {
   cursor: pointer;
 }
