@@ -14,7 +14,8 @@
       <v-row
         v-for="(item, indexCI) in cost.items"
         :key="indexCI"
-        class="px-12 py-2"
+        no-gutters
+        class="px-8 py-2"
       >
         <v-col cols="8">
           <span class="product-name">
@@ -32,7 +33,7 @@
 
       <v-divider />
 
-      <v-row class="px-12">
+      <v-row no-gutters class="px-8">
         <v-col cols="9">
           <span class="due-today">
             TOTAL
@@ -42,7 +43,7 @@
           <b class="footer-total">${{ cost.total || 0 }}</b>
         </v-col>
       </v-row>
-      <v-row class="px-12">
+      <v-row class="px-8">
         <v-col cols="9">
           <span class="due-today">
             DUE TODAY
