@@ -71,6 +71,12 @@
         </v-col>
       </v-row>
 
+      <v-checkbox
+        v-model="draft.accepTerms"
+        label="I have read and accept Terms & Conditions"
+        class="accept-terms"
+      ></v-checkbox>
+
       <v-btn
         block
         class="mb-6"
@@ -82,6 +88,9 @@
       >
         {{ buttonText }}
       </v-btn>
+      <center class="mb-15">
+        <span>You will only be billed after one week of FREE trial is completed</span>
+      </center>
 
       <v-btn
         v-if="cancelable"
@@ -111,7 +120,7 @@ export default {
   props: {
     buttonText: {
       type: String,
-      default: 'BUY'
+      default: 'START YOUR FREE TRIAL'
     },
 
     cancelable: Boolean,
@@ -137,9 +146,17 @@ export default {
       this.draft = {
         number: '',
         date: '',
-        cvv: ''
+        cvv: '',
+        accepTerms: false
       }
     }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.accept-terms ::v-deep .v-label {
+  color: $pg-black !important;
+  opacity: 2.49 !important;
+}
+</style>
