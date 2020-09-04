@@ -83,6 +83,7 @@
                     <v-radio
                       :label="`$${plan.priceMonthly} a month/child`"
                       :value="`${indexP}-monthly`"
+                      class="plan-pricing"
                       @change="
                         draft = {
                           id: plan.id,
@@ -95,7 +96,7 @@
                     />
 
                     <v-radio
-                      class="mb-0"
+                      class="mb-0 plan-pricing"
                       :label="`$${plan.priceAnnual} School Year Special/child`"
                       :value="`${indexP}-annual`"
                       @change="
@@ -329,4 +330,10 @@ ul li::before {
   width: 1em; /* Also needed for space (tweak if needed) */
   margin-left: -1rem; /* Also needed for space (tweak if needed) */
 }
+
+.plan-pricing ::v-deep .v-label {
+  color: $pg-black;
+  opacity: 2.49 !important;
+}
+
 </style>

@@ -21,13 +21,20 @@
         </label>
       </p>
 
-      <v-row class="justify-space-between my-1" no-gutters>
-        <span>Plan: <b>{{ billing.planName }}</b></span>
-
-        <v-btn color="primary" text @click="changePlanModal = true">
-          CHANGE PLAN
-        </v-btn>
-      </v-row>
+      <template>
+        <v-row class="justify-space-between mt-3" no-gutters>
+          <span>Plan: <b>{{ billing.planName }}</b></span>
+          <v-btn
+            v-bind="attrs"
+            color="primary"
+            text
+            class="btn-green"
+            @click="changePlanModal = true"
+          >
+            CHANGE PLAN
+          </v-btn>
+        </v-row>
+      </template>
 
       <v-row
         v-for="(card, indexUC) in userCards"
@@ -68,7 +75,7 @@
       </v-row>
 
       <div v-else class="my-6 text-center">
-        <nuxt-link :to="{ name: 'app-payment-register' }">
+        <nuxt-link class="btn-green" :to="{ name: 'app-payment-register' }">
           CREATE MEMBERSHIP
         </nuxt-link>
       </div>

@@ -1,11 +1,5 @@
 <template>
-  <v-dialog
-    v-model="dialog"
-    eager
-    dark
-    fullscreen
-    :persistent="true"
-  >
+  <v-dialog v-model="dialog" eager dark fullscreen :persistent="true">
     <div class="d-flex align-center justify-center bkg-black">
       <children-video-player
         ref="childrenVideoPlayer"
@@ -17,10 +11,12 @@
         @ready="onReady"
       >
         <template v-slot:title>
-          <span class="title-text white--text text-h3 font-weight-medium">
-            Congratulations!
-          </span>
+          <underlined-title
+            class="white--text text-h3 font-weight-medium"
+            text="Congratulations!"
+          />
         </template>
+
         <p class="text-h5 text-center white--text font-weight-medium">
           You have completed the daily lessons.
         </p>
@@ -103,7 +99,10 @@ export default {
       const promises = []
 
       // Only save progress if the video hasn't been completed and we are ahead of where we last left off
-      if (!mediaObject.viewed || (!mediaObject.viewed.completed && mediaObject.viewed.time < time)) {
+      if (
+        !mediaObject.viewed ||
+        (!mediaObject.viewed.completed && mediaObject.viewed.time < time)
+      ) {
         this.children.forEach((child) => {
           promises.push(
             this.saveVideoProgress({
@@ -111,7 +110,7 @@ export default {
               childId: child.id,
               video: {
                 id: mediaObject.videoId,
-                completed: ((duration - time) < 3),
+                completed: duration - time < 3,
                 time,
                 date
               }
@@ -153,11 +152,14 @@ export default {
       }
 
       // If not last item, then switch
-      if (this.index < (this.playlist.length - 1)) {
+      if (this.index < this.playlist.length - 1) {
         this.index++
         this.mediaObject = this.playlist[this.index]
         this.loadAndPlay()
-        this.$router.push({ name: 'app-dashboard-lesson-videos', query: { id: this.mediaObject.videoId } })
+        this.$router.push({
+          name: 'app-dashboard-lesson-videos',
+          query: { id: this.mediaObject.videoId }
+        })
       } else {
         this.$refs.childrenVideoPlayer.showCompletedDialog()
       }

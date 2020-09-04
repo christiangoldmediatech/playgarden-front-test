@@ -10,7 +10,8 @@
       '--ut-line-color': _lineColor,
       '--ut-background-from': _lineFrom,
       fontSize: _fontSize,
-      fontWeight: _fontWeight
+      fontWeight: _fontWeight,
+      paddingBottom: _paddingBoottom
     }"
     v-on="$listeners"
   >
@@ -31,6 +32,11 @@ export default {
     fontWeight: {
       type: [Number, String],
       default: 'bold'
+    },
+
+    paddingBoottom: {
+      type: String,
+      default: '3px'
     },
 
     lineColor: {
@@ -102,7 +108,7 @@ export default {
   computed: {
     _lineColor () {
       if (this.subtitle) {
-        return 'var(--v-accent-base)'
+        return 'rgba(254, 197, 114, 0.71)'
       }
 
       // using HEX or vuetify colors vars
@@ -136,6 +142,14 @@ export default {
       }
 
       return this.fontWeight
+    },
+
+    _paddingBoottom () {
+      if (this.subtitle) {
+        return '3px'
+      }
+
+      return this.paddingBoottom
     }
   }
 }

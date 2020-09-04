@@ -53,8 +53,32 @@ export default {
 
 <style lang="scss" scoped>
 .v-application ::v-deep {
+  *,	
+  .display-1,	
+  .display-2,	
+  .display-3,	
+  .display-4,	
+  .headline,	
+  .title,	
+  .subtitle-1,	
+  .subtitle-2,	
+  .body-1,	
+  .body-2,	
+  .caption,	
+  .overline,	
+  .text-h1,	
+  .text-h2,	
+  .text-h3,	
+  .text-h4,	
+  .text-h5,	
+  .text-h6 {	
+    font-family: "Poppins", sans-serif !important;	
+  }
   .container:not(.container--fluid) {
     max-width: 1200px;
+  }
+  .v-text-field .v-input__control .v-input__slot {
+    box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.16) !important;
   }
 }
 </style>

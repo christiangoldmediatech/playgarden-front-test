@@ -19,7 +19,10 @@
 .theme--light.v-input textarea {
   color: $pg-black !important;
 }
-
+.error--text,
+.error--text * {
+  color: $pg-error !important;
+}
 // Default datepicker has the header fonts in white
 .v-date-picker-title__date div,
 .v-date-picker-title__year {
@@ -28,6 +31,11 @@
 
 .clickable {
   cursor: pointer;
+}
+
+.grayscale {
+  -webkit-filter: grayscale(100%); /* Chrome, Safari, Opera */
+  filter: grayscale(100%);
 }
 
 /* COMPONENTS */
@@ -45,16 +53,6 @@
   background-color: #dce7b5;
 }
 
-.title-text {
-  width: calc(100%);
-  background-image: linear-gradient(
-    transparent calc(100% - 10px),
-    var(--v-primary-base) 10px
-  );
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  color: $pg-black;
-}
 
 .v-label {
   color: $pg-black;
@@ -87,4 +85,21 @@
     border-bottom: 11px solid var(--bgColor);
     border-radius: 7px;
   }
+}
+
+.custom-text-field::v-deep.v-input__control .v-input__slot {
+  box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.16) !important;
+}
+.custom-text-field::v-deep.v-text-field.v-text-field--solo:not(.v-text-field--solo-flat) > .v-input__control > .v-input__slot {
+  box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.16) !important;
+}
+.custom-btn::v-deep.v-btn {
+    background-color: #f2f2f2;
+    color: #9d9d9d;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+}
+
+.btn-green {
+  font-weight: bold !important;
+  color: $pg-btn-green;
 }

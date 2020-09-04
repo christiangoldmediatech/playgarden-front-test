@@ -8,10 +8,12 @@
       :return-text="false"
     >
       <template v-slot:title>
-        <span class="title-text white--text text-h3 font-weight-medium">
-          Hands-on Learning
-        </span>
+        <underlined-title
+          class="white--text text-h3 font-weight-medium"
+          text="Hands-on Learning"
+        />
       </template>
+
       <p class="white--text">
         Hands-on learning is a crucial part of the educational experience. Learning through doing strengthens the cognitive connections and builds a strong foundation for knowledge.
       </p>
@@ -46,7 +48,9 @@ export default {
 
     sheets () {
       if (this.getLesson) {
-        return this.getLesson.worksheets.filter(({ type }) => type === 'OFFLINE')
+        return this.getLesson.worksheets.filter(
+          ({ type }) => type === 'OFFLINE'
+        )
       }
       return []
     },

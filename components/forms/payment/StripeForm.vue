@@ -22,6 +22,7 @@
           maxlength="19"
           placeholder="Card number"
           solo
+          class="custom-text-field"
         />
       </validation-provider>
 
@@ -43,6 +44,7 @@
               maxlength="5"
               placeholder="MM/YY"
               solo
+              class="custom-text-field"
             />
           </validation-provider>
         </v-col>
@@ -63,6 +65,7 @@
               maxlength="3"
               placeholder="CVV"
               solo
+              class="custom-text-field"
             />
           </validation-provider>
         </v-col>

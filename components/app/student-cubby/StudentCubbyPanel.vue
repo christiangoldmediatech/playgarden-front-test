@@ -1,8 +1,5 @@
 <template>
-  <v-card
-    min-width="290"
-    max-width="426"
-  >
+  <v-card min-width="290" max-width="426">
     <div class="green-line green-line-1" />
     <div class="green-line green-line-2" />
 
@@ -37,11 +34,20 @@
               class="clickable"
               :disabled="!selectedChildId"
               :elevation="hover ? 9 : 3"
-              @click.stop="$router.push({ name: `app-student-cubby-${link.route}`, query: { id: selectedChildId } })"
+              @click.stop="
+                $router.push({
+                  name: `app-student-cubby-${link.route}`,
+                  query: { id: selectedChildId }
+                })
+              "
             >
-              <v-card-text :class="{ 'selected': i === selected }">
+              <v-card-text :class="{ selected: i === selected }">
                 <div class="d-flex flex-column fixed-height">
-                  <v-img class="flex-shrink-1 flex-grow-0" :src="require(`@/assets/png/student-cubby/${link.img}`)" contain />
+                  <v-img
+                    class="flex-shrink-1 flex-grow-0"
+                    :src="require(`@/assets/png/student-cubby/${link.img}`)"
+                    contain
+                  />
                   <span class="d-block text-h6 text-center">
                     {{ link.text }}
                   </span>
@@ -86,15 +92,17 @@ export default {
           route: 'student-portfolio'
         },
         {
-          text: 'BADGES',
+          text: 'PATCHES',
           img: 'trophy.png',
-          route: 'badges'
+          route: 'patches'
         }
       ]
     }
   },
 
   computed: {
+    ...mapGetters({ currentChild: 'getCurrentChild' }),
+
     ...mapGetters('children', { children: 'rows' }),
 
     id () {
@@ -102,7 +110,9 @@ export default {
     },
 
     selected () {
-      const routes = this.links.map(({ route }) => `app-student-cubby-${route}`)
+      const routes = this.links.map(
+        ({ route }) => `app-student-cubby-${route}`
+      )
       return routes.findIndex(route => route === this.$route.name)
     },
 
@@ -123,6 +133,8 @@ export default {
   created () {
     if (this.id) {
       this.selectedChildId = parseInt(this.id)
+    } else if (this.currentChild.length) {
+      this.selectedChildId = this.currentChild[0].id
     }
   }
 }
@@ -134,6 +146,6 @@ export default {
 }
 
 .selected {
-  box-shadow: inset 0px 0px 0px 10px var(--v-primary-base);
+  box-shadow: inset 0 0 0 10px var(--v-primary-base);
 }
 </style>
