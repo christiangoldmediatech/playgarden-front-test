@@ -128,7 +128,6 @@ export default {
 
   methods: {
     playVideo () {
-      console.log(this.playlist)
       const index = this.playlist.findIndex(({ activityId }) => activityId === this.activityId)
 
       if (index !== -1) {
