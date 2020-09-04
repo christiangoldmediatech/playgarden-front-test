@@ -87,7 +87,9 @@ export default {
     waitAndLoad () {
       const interval = window.setInterval(() => {
         if (this.player) {
-          this.loadAndPlay(this.mediaObject)
+          if (this.dialog) {
+            this.loadAndPlay(this.mediaObject)
+          }
           window.clearInterval(interval)
         }
       }, 50)

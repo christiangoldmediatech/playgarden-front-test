@@ -4,7 +4,7 @@
       <v-img
         class="clickable"
         :src="currentVideoLesson.poster"
-        :aspect-ratio="16/9"
+        max-width="100%"
         @click.stop="playVideo"
       >
         <v-hover v-slot="{ hover }">

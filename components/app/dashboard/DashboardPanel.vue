@@ -24,7 +24,7 @@
             <v-row
               align="center"
               class="chip mb-2"
-              :class="videosCompletionRate ? 'primary' : 'grey'"
+              :class="videosCompletionRate ? 'primary white--text' : 'grey'"
               justify="center"
             >
               <span>1</span>
@@ -86,7 +86,7 @@
             <v-row
               align="center"
               class="chip mb-2"
-              :class="worksheetsCompletionRate ? 'primary' : 'grey'"
+              :class="worksheetsCompletionRate ? 'primary white--text' : 'grey'"
               justify="center"
             >
               <span>2</span>
@@ -146,7 +146,7 @@
             <v-row
               align="center"
               class="chip mb-2"
-              :class="activitiesCompletionRate ? 'primary' : 'grey'"
+              :class="activitiesCompletionRate ? 'primary white--text' : 'grey'"
               justify="center"
             >
               <span>3</span>
@@ -239,13 +239,11 @@ export default {
 
         return !completed
       }
-
       return false
     },
 
     getNextId (items = []) {
       const { id } = items.find(({ viewed }) => !viewed)
-
       return id
     },
 
