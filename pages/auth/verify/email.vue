@@ -16,8 +16,19 @@
           We are happy you have you LEARN with us! Please check your email to confirm your account and start today
         </p>
 
-        <nuxt-link :to="{ name: 'auth-login' }">
-          <v-btn color="primary">
+        <v-btn
+          v-if="isUserLoggedIn"
+          block
+          color="primary"
+          :disabled="loading"
+          :loading="loading"
+          @click="onResend"
+        >
+          RETURN TO LOG IN
+        </v-btn>
+
+        <nuxt-link v-else :to="{ name: 'auth-login' }">
+          <v-btn block color="primary">
             RETURN TO LOG IN
           </v-btn>
         </nuxt-link>
