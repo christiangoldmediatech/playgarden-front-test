@@ -5,7 +5,7 @@
         <v-row
           no-gutters
         >
-          <v-col class="margin-col custom-text-field">
+          <v-col>
             <!-- First name -->
             <validation-provider
               v-slot="{ errors }"
@@ -20,7 +20,6 @@
                 label="Name"
                 :loading="loading"
                 solo
-                class="custom-text-field"
               />
             </validation-provider>
           </v-col>
@@ -39,7 +38,6 @@
                 label="Last name"
                 :loading="loading"
                 solo
-                class="custom-text-field"
               />
             </validation-provider>
           </v-col>
@@ -61,7 +59,6 @@
                     :loading="loading"
                     maxlength="20"
                     solo
-                    class="custom-text-field"
                   />
                 </validation-provider>
 
@@ -80,7 +77,6 @@
                     :loading="loading"
                     solo
                     type="email"
-                    class="custom-text-field"
                   />
                 </validation-provider>
 
@@ -99,7 +95,6 @@
                     :loading="loading"
                     maxlength="20"
                     solo
-                    class="custom-text-field"
                   />
                 </validation-provider>
 
@@ -119,7 +114,6 @@
                     :loading="loading"
                     maxlength="20"
                     solo
-                    class="custom-text-field"
                   />
                 </validation-provider>
 
@@ -199,9 +193,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.margin-col{
-  margin-right: 15px;
-}
-</style>
