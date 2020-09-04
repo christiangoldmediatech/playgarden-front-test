@@ -3,12 +3,7 @@
     <v-container class="pa-0 fullscreen" fluid>
       <v-row no-gutters>
         <v-col cols="ml-3 mt-3">
-          <v-btn
-            class="text-none"
-            text
-            x-large
-            @click.stop="overlay = false"
-          >
+          <v-btn class="text-none" text x-large @click.stop="overlay = false">
             <v-icon class="mr-2" small left>
               mdi-less-than
             </v-icon>
@@ -16,8 +11,9 @@
           </v-btn>
         </v-col>
       </v-row>
+
       <v-row class="fill-height" align="center" justify="center">
-        <patch :patch="patch" display-mode />
+        <patch display-mode :patch="patch" :unblocked="unblocked" />
       </v-row>
     </v-container>
   </v-overlay>
@@ -31,6 +27,13 @@ export default {
 
   components: {
     Patch
+  },
+
+  props: {
+    unblocked: {
+      type: Object,
+      required: true
+    }
   },
 
   data: () => {

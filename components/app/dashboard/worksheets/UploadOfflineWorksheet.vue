@@ -10,9 +10,10 @@
 
       <v-card-text>
         <div class="text-center">
-          <span class="text-h4 title-text">
-            Student Portfolio
-          </span>
+          <underlined-title
+            class="text-h4"
+            text="Student Portfolio"
+          />
         </div>
 
         <div class="text-center mb-4">
@@ -51,21 +52,28 @@
               @click.stop="openFileDialog(category.id)"
             >
               <v-card-text>
-                <v-row no-gutters justify="center">
-                  <v-col class="text-center" cols="12">
-                    <p class="text-h6 my-0">
-                      {{ category.category }}
-                    </p>
-                    <v-icon
-                      size="128"
-                      v-text="'mdi-image-outline'"
-                    />
-                    <p class="text-h6 my-0">
-                      Upload Worksheet
-                    </p>
-                  </v-col>
-                </v-row>
-                <input :id="`category-${category.id}-upload`" class="d-none" type="file" @change="setFile($event, category.id)">
+                <div class="d-flex flex-column align-center">
+                  <p class="text-h6 my-0">
+                    {{ category.category }}
+                  </p>
+                  <v-img
+                    v-if="images[`image_${category.id}`]"
+                    class="flex-shrink-1 flex-grow-0"
+                    :src="images[`image_${category.id}`]"
+                    max-width="128"
+                    height="128"
+                    contain
+                  />
+                  <v-icon
+                    v-else
+                    size="128"
+                    v-text="'mdi-image-outline'"
+                  />
+                  <p class="text-h6 my-0">
+                    Upload Worksheet
+                  </p>
+                </div>
+                <input :id="`category-${category.id}-upload`" class="d-none" type="file" accept="image/*" @change="setFile($event, category.id)">
               </v-card-text>
             </v-card>
           </v-hover>
@@ -109,11 +117,13 @@ export default {
     return {
       loading: false,
       categories: [],
-      selectedChild: null
+      selectedChild: null,
+      images: {}
     }
   },
 
   computed: {
+    ...mapGetters({ children: 'getCurrentChild' }),
     ...mapGetters('admin/curriculum', ['getLesson']),
 
     disabled () {
@@ -126,18 +136,42 @@ export default {
       if (val) {
         this.reset()
       }
+    },
+
+    children (val) {
+      this.selectedChild = val[0].id
+    },
+
+    selectedChild (val) {
+      if (val) {
+        this.getUploadedWorksheets()
+      }
     }
   },
 
   created () {
     this.getOfflineWorksheetCategories().then((data) => { this.categories = data })
+    this.selectedChild = this.children[0].id
   },
 
   methods: {
     ...mapActions('offline-worksheet-categories', ['getOfflineWorksheetCategories']),
-    ...mapActions('offline-worksheet', { uploadWorksheet: 'upload' }),
+    ...mapActions('offline-worksheet', { uploadWorksheet: 'upload', getUploaded: 'getUploaded' }),
+
+    async getUploadedWorksheets () {
+      this.images = {}
+      this.loading = true
+      const uploads = await this.getUploaded(this.selectedChild)
+      uploads.forEach(({ id, worksheetUploads }) => {
+        if (worksheetUploads.length) {
+          this.images[`image_${id}`] = worksheetUploads[worksheetUploads.length - 1].url
+        }
+      })
+      this.loading = false
+    },
 
     reset () {
+      this.images = {}
       this.loading = false
       this.selectedChild = null
     },
@@ -160,9 +194,10 @@ export default {
         categoryId,
         File: e.target.files[0]
       })
-        .then(() => {
+        .then(({ url }) => {
+          this.images[`image_${categoryId}`] = url
           this.$snotify.success('Your worksheet has been uploaded!')
-          this.close()
+          // this.close()
           this.loading = false
         })
     }

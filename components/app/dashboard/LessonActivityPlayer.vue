@@ -15,17 +15,6 @@
         @hotkey="close"
         @ready="onReady"
       />
-      <!--
-        :completed-props="completedProps"
-        <template v-slot:title>
-        <span class="title-text white--text text-h3 font-weight-medium">
-          Congratulations!
-        </span>
-      </template>
-      <p class="text-h5 text-center white--text font-weight-medium">
-        You have completed the daily lessons.
-      </p>
-      -->
     </div>
   </v-dialog>
 </template>

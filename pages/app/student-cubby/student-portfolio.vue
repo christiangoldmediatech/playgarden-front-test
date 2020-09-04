@@ -2,9 +2,8 @@
   <v-card flat>
     <v-card-text>
       <div class="text-center">
-        <span class="text-h3 title-text">
-          Student Portfolio
-        </span>
+        <underlined-title class="text-h3" text="Student Portfolio" />
+
         <p class="mt-5">
           Keep track of your worksheets and progress!
         </p>
@@ -63,7 +62,10 @@ export default {
   },
 
   methods: {
-    ...mapActions('offline-worksheet-categories', ['getOfflineWorksheetCategories', 'getChildWorksheets']),
+    ...mapActions('offline-worksheet-categories', [
+      'getOfflineWorksheetCategories',
+      'getChildWorksheets'
+    ]),
 
     async loadCategories () {
       this.categoryRows = await this.getOfflineWorksheetCategories()

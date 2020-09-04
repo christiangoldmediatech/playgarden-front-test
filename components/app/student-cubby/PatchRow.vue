@@ -3,10 +3,14 @@
     <v-row align="end">
       <img
         :src="activityType.icon"
-        :height="($vuetify.breakpoint.xs) ? '32px' : '48px'"
+        :height="$vuetify.breakpoint.xs ? '32px' : '48px'"
       >
+
       <div class="mx-3">
-        <span class="font-weight-black text-outline category-text text-uppercase" :style="{'--bgColor': activityType.color}">
+        <span
+          class="font-weight-black text-outline category-text text-uppercase"
+          :style="{ '--bgColor': activityType.color }"
+        >
           {{ activityType.name }}
         </span>
       </div>
@@ -17,6 +21,7 @@
         v-for="patch in activityType.patches"
         :key="`activityType-${activityType.id}-patch-${patch.id}`"
         v-bind="{ patch }"
+        :unblocked="unblocked"
       />
     </v-row>
   </div>
@@ -34,6 +39,11 @@ export default {
 
   props: {
     activityType: {
+      type: Object,
+      required: true
+    },
+
+    unblocked: {
       type: Object,
       required: true
     }

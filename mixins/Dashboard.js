@@ -38,13 +38,28 @@ export default {
     },
 
     worksheetsCompletionRate () {
-      return this.getCompletionRate(this.worksheets.ONLINE)
+      const worksheets = this.worksheets.ONLINE.map(({ completed }) => {
+        return {
+          viewed: {
+            completed: completed || false
+          }
+        }
+      })
+
+      if (this.worksheets.OFFLINE) {
+        worksheets.push({
+          viewed: {
+            completed: this.worksheets.OFFLINE.completed || false
+          }
+        })
+      }
+      return this.getCompletionRate(worksheets)
     },
 
     worksheetsProgressHeight () {
       return (
-        (this.worksheets.ONLINE.length ? 25 : 0) +
-        (this.worksheets.OFFLINE ? 70 : 0)
+        (this.worksheets.ONLINE.length ? 30 : 0) +
+        (this.worksheets.OFFLINE ? 30 : 0)
       )
     }
   },
@@ -55,7 +70,7 @@ export default {
 
       if (total) {
         const completed = items
-          .map(({ viewed }) => Number(viewed ? viewed.completed : false))
+          .map(({ viewed }) => Number(viewed && viewed.completed ? 1 : 0))
           .reduce((a, b) => a + b)
 
         return completed ? (completed * 100) / total : 0

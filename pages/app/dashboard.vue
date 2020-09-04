@@ -125,17 +125,17 @@ export default {
 
     redirectDashboard () {
       if (this.lesson && this.$route.name === 'app-dashboard') {
-        if (this.videosCompletionRate < 100) {
+        if (this.videosCompletionRate < 100 && this.videos.length) {
           this.$router.push({
             name: 'app-dashboard-lesson-videos',
             query: { id: this.getNextId(this.videos) }
           })
-        } else if (this.worksheetsCompletionRate < 100) {
+        } else if (this.worksheetsCompletionRate < 100 && this.worksheets.ONLINE) {
           this.$router.push({
             name: 'app-dashboard-online-worksheet',
             query: { id: this.getNextId(this.worksheets.ONLINE) }
           })
-        } else if (this.activitiesCompletionRate < 100) {
+        } else if (this.activitiesCompletionRate < 100 && this.activities.length) {
           this.$router.push({
             name: 'app-dashboard-lesson-activities',
             query: { id: this.getNextId(this.activities) }
@@ -145,9 +145,9 @@ export default {
         }
       } else if (this.lesson && this.$route.name === 'app-dashboard-lesson-completed') {
         if (
-          this.videosCompletionRate < 100 ||
-          this.worksheetsCompletionRate < 100 ||
-          this.activitiesCompletionRate < 100
+          (this.videosCompletionRate < 100 && this.videos.length) ||
+          (this.worksheetsCompletionRate < 100 && this.worksheets.ONLINE) ||
+          (this.activitiesCompletionRate < 100 && this.activities.length)
         ) {
           this.$router.push({ name: 'app-dashboard' })
         }
@@ -156,3 +156,14 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.menu-max-width {
+  max-width: 471px;
+}
+
+.titleOnDashboard {
+  font-weight: 500 !important;
+  color: $pg-black !important;
+}
+</style>

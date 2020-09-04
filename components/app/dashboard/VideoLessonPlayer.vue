@@ -1,23 +1,18 @@
 <template>
-  <v-dialog
-    v-model="dialog"
-    fullscreen
-    persistent
-    transition="fade-transition"
-  >
-    <v-card
-      color="black"
-      dark
-    >
+  <v-dialog v-model="dialog" fullscreen persistent transition="fade-transition">
+    <v-card color="black" dark>
       <v-row no-gutters align="center" justify="center">
         <div
           class="video-container"
-          :style="{'--videoW': `${videoWidth}px`, '--videoH': `${videoHeight}px` }"
+          :style="{
+            '--videoW': `${videoWidth}px`,
+            '--videoH': `${videoHeight}px`
+          }"
         >
           <children-jw-player
             ref="playerRef"
             :playlist="playlist"
-            :videoId="videoId"
+            :video-id="videoId"
             @playlistComplete="showMessage"
             @ready="setPlayer"
             @viewable="startPlaying"
@@ -36,11 +31,13 @@
       :time-out-action="buttons[0].action"
     >
       <template v-slot:title>
-        <span class="title-text white--text text-h3 font-weight-medium">
-          Congratulations!
-        </span>
+        <underlined-title
+          class="white--text text-h3 font-weight-medium"
+          text="Congratulations!"
+        />
       </template>
-      <p class="text-h5 text-center font-weight-medium">
+
+      <p class="text-h5 text-center font-weight-medium white--text">
         You have completed the daily lessons.
       </p>
     </completed-dialog>
@@ -102,7 +99,9 @@ export default {
       const time = this.player.getPosition()
       if (
         !videoItem.viewed ||
-        (videoItem.viewed && !videoItem.viewed.completed && videoItem.viewed.time < time)
+        (videoItem.viewed &&
+          !videoItem.viewed.completed &&
+          videoItem.viewed.time < time)
       ) {
         const promises = []
         this.children.forEach((child) => {
@@ -151,9 +150,12 @@ export default {
       // If not last item, then switch
       const videoIndex = this.player.getPlaylistIndex()
       const playlist = this.player.getPlaylist()
-      if (videoIndex < (playlist.length - 1)) {
+      if (videoIndex < playlist.length - 1) {
         const nextItem = playlist[videoIndex + 1]
-        this.$router.push({ name: 'app-dashboard-video-id', params: { id: nextItem.videoId } })
+        this.$router.push({
+          name: 'app-dashboard-video-id',
+          params: { id: nextItem.videoId }
+        })
       }
     },
 
