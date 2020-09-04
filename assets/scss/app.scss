@@ -19,7 +19,10 @@
 .theme--light.v-input textarea {
   color: $pg-black !important;
 }
-
+.error--text,
+.error--text * {
+  color: $pg-error !important;
+}
 // Default datepicker has the header fonts in white
 .v-date-picker-title__date div,
 .v-date-picker-title__year {
