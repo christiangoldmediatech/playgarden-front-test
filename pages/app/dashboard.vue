@@ -8,9 +8,12 @@
 
         <v-col cols="12" sm="7" md="8" lg="9">
           <v-row align="center" class="px-3">
-            <v-btn v-if="allChildren.length > 1" color="primary" :to="{ name: 'app-pick-child' }">
+            <!-- <v-btn v-if="allChildren.length > 1" color="primary" :to="{ name: 'app-pick-child' }">
               Change Children
-            </v-btn>
+            </v-btn> -->
+            <v-col cols="12" sm="6" lg="3" xl="2">
+              <child-select v-model="selectedChild" hide-details />
+            </v-col>
 
             <!-- <v-btn color="primary" @click.stop="onResetChild">
               RESET CHILD
@@ -55,15 +58,23 @@
 import { mapGetters, mapActions } from 'vuex'
 import DashboardMixin from '@/mixins/Dashboard.js'
 import DashboardPanel from '@/components/app/dashboard/DashboardPanel'
+import ChildSelect from '@/components/app/ChildSelect.vue'
 
 export default {
   name: 'Dashboard',
 
   components: {
-    DashboardPanel
+    DashboardPanel,
+    ChildSelect
   },
 
   mixins: [DashboardMixin],
+
+  data: () => {
+    return {
+      selectedChild: null
+    }
+  },
 
   computed: {
     ...mapGetters({ currentChild: 'getCurrentChild' }),
@@ -84,6 +95,12 @@ export default {
   watch: {
     '$route.name' () {
       this.redirectDashboard()
+    },
+
+    selectedChild (val) {
+      if (val && val !== this.currentChild[0].id) {
+        this.changeChild(val)
+      }
     }
   },
 
@@ -94,6 +111,7 @@ export default {
     this.$nuxt.$on('dashboard-panel-update', () => {
       this.getCurrentLesson()
     })
+    this.selectedChild = this.currentChild[0].id
   },
 
   beforeDestroy () {
@@ -103,6 +121,13 @@ export default {
   methods: {
     ...mapActions('children', { getAllChildren: 'get' }),
     ...mapActions('children/lesson', ['getCurrentLessonByChildrenId', 'resetChild']),
+    ...mapActions({ setChild: 'setChild' }),
+
+    changeChild (newId) {
+      const child = this.allChildren.find(({ id }) => id === newId)
+      this.setChild({ value: [child], save: true })
+      this.$router.push({ name: 'app-dashboard' })
+    },
 
     async onResetChild () {
       await this.resetChild({ lessonId: 20, childId: this.childrenIds })
