@@ -26,7 +26,7 @@
                     class="selected-child"
                     @click.stop="selectChild(child)"
                   >
-                    <div class="">
+                    <div class="image-child-max">
                       <v-hover
                         :key="`child-${child.id}`"
                         v-slot:default="{ hover }"
@@ -39,15 +39,17 @@
                         >
                           <v-img
                             :src="require('@/assets/svg/everyone.svg')"
+                            max-height="hover ? 90 : 100"
                             contain
                           />
                         </v-avatar>
                         <v-avatar
                           v-else
-                          :size="hover ? 160 : 134"
+                          :size="hover ? 140 : 134"
                         >
                           <v-img
                             :src="child.backpack.image"
+                            max-height="hover ? 90 : 100"
                             contain
                           />
                         </v-avatar>
@@ -190,5 +192,9 @@ export default {
 
 .everyone-img {
   margin-top: 17px;
+}
+
+.image-child-max {
+  height: 148px;
 }
 </style>
