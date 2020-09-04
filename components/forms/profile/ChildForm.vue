@@ -378,7 +378,7 @@ export default {
   height: 85px;
 
   img {
-    max-height: 145px;
+    max-height: 85px;
     padding: 10px;
     width: 100%;
 
