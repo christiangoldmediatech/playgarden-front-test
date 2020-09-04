@@ -9,7 +9,7 @@
         </p>
       </div>
 
-      <v-row>
+      <v-row justify="center">
         <letter-card
           v-for="letter in letters"
           :key="`letter-card-${letter.id}`"

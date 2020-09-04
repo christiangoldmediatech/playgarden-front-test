@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="sticky">
     <v-row class="letter-day-row" justify="center">
       <div class="letter-day-circle white">
         <div class="accent--text font-weight-bold text-center text-h3">
@@ -109,7 +109,7 @@
               </span>
               <div class="ml-2">
                 <v-img
-                  :class="['ma-0', { 'grayscale': videosCompletionRate < 100 }]"
+                  :class="['ma-0', { grayscale: videosCompletionRate < 100 }]"
                   :src="require('@/assets/png/dashboard/worksheets.png')"
                   max-width="32px"
                   max-height="32px"
@@ -328,5 +328,11 @@ export default {
   position: absolute;
   top: 0;
   width: 100%;
+}
+
+.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 100px;
 }
 </style>

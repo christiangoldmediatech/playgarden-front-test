@@ -1,5 +1,5 @@
 <template>
-  <v-card min-width="290" max-width="426">
+  <v-card class="sticky" min-width="290" max-width="426">
     <div class="green-line green-line-1" />
     <div class="green-line green-line-2" />
 
@@ -147,5 +147,11 @@ export default {
 
 .selected {
   box-shadow: inset 0 0 0 10px var(--v-primary-base);
+}
+
+.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 25px;
 }
 </style>
