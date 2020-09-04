@@ -25,8 +25,10 @@
         <v-col cols="4">
           <p class="product-description">
             <b class="product-price">${{ item.unit_amount / 100 }}</b>
-            <br />
-            <span class="product-info"> a year <br /> <span class="product-info-1">*Pricing is per child</span></span>
+            <br>
+            <span class="product-info">
+              a year <br>
+              <span class="product-info-1">*Pricing is per child</span></span>
           </p>
         </v-col>
       </v-row>
