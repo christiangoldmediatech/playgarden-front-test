@@ -47,7 +47,8 @@ export default {
 
   props: {
     value: {
-      required: true,
+      required: false,
+      default: null,
       validator: (val) => {
         return (val === null || typeof val === 'number')
       }

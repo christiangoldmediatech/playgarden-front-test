@@ -37,10 +37,10 @@
 
     <div class="position-header-btn">
       <v-btn
+        v-if="!isUserLoggedIn"
         class="px-13 ml-3 hidden-sm-and-down text-right btn-register"
         color="accent"
         nuxt
-        v-if="!isUserLoggedIn"
         text
         :to="{ name: 'auth-signup' }"
       >

@@ -11,21 +11,20 @@
             <!-- <v-btn v-if="allChildren.length > 1" color="primary" :to="{ name: 'app-pick-child' }">
               Change Children
             </v-btn> -->
-            <v-col cols="12" sm="6" lg="3" xl="2">
+            <v-col class="flex-shrink-1 flex-grow-0">
               <child-select v-model="selectedChild" hide-details />
             </v-col>
 
             <!-- <v-btn color="primary" @click.stop="onResetChild">
               RESET CHILD
             </v-btn> -->
+            <v-col class="text-right">
+              <span class="font-weight-medium">First time using Playgarden?</span>
 
-            <v-spacer />
-
-            <span class="font-weight-medium">First time using Playgarden?</span>
-
-            <v-btn color="primary" nuxt text :to="{ name: 'app-onboarding' }">
-              WATCH TUTORIAL HERE
-            </v-btn>
+              <v-btn color="primary" nuxt text :to="{ name: 'app-onboarding' }">
+                WATCH TUTORIAL HERE
+              </v-btn>
+            </v-col>
           </v-row>
 
           <v-row>
