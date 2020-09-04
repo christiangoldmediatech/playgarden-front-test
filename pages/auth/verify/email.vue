@@ -12,18 +12,11 @@
           <underlined-title text="Welcome to Playgarden Prep" />
         </div>
 
-        <v-btn
-          v-if="isUserLoggedIn"
-          block
-          color="primary"
-          :disabled="loading"
-          :loading="loading"
-          @click="onResend"
-        >
-          RESEND EMAIL
-        </v-btn>
+        <p class="mt-6 text-center text-md-left">
+          We are happy you have you LEARN with us! Please check your email to confirm your account and start today
+        </p>
 
-        <nuxt-link v-else :to="{ name: 'auth-login' }">
+        <nuxt-link :to="{ name: 'auth-login' }">
           <v-btn block color="primary">
             RETURN TO LOG IN
           </v-btn>
