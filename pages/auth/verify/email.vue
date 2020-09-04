@@ -37,7 +37,7 @@
           Didn’t receive an email?
 
           <nuxt-link to="#">
-            <span>CONTACT US</span>
+            <span class="contact-color">CONTACT US</span>
           </nuxt-link>
         </p>
       </div>
@@ -119,5 +119,9 @@ export default {
 }
 .form {
   max-width: 500px;
+}
+
+.contact-color {
+  color: $pg-btn-green !important;
 }
 </style>
