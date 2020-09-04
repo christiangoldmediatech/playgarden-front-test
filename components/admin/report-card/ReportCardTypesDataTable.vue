@@ -5,7 +5,9 @@
         <v-card width="100%">
           <v-card-title>
             Report Card Types
+
             <v-spacer />
+
             <v-btn
               class="mr-2 text-none"
               color="primary darken-1"
@@ -16,10 +18,14 @@
               <v-icon class="hidden-sm-and-up">
                 mdi-plus-circle
               </v-icon>
+
               <v-icon class="hidden-xs-only" small>
                 mdi-plus
               </v-icon>
-              <span class="hidden-xs-only">Add new report card type</span>
+
+              <span class="hidden-xs-only white--text">
+                Add new report card type
+              </span>
             </v-btn>
           </v-card-title>
 

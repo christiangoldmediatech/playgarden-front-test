@@ -9,7 +9,7 @@
     >
       <v-card>
         <v-toolbar class="flex-grow-0" color="primary darken-1" dark dense flat>
-          <v-toolbar-title>
+          <v-toolbar-title class="white--text">
             {{ title }}
           </v-toolbar-title>
 
@@ -61,20 +61,26 @@
                 </v-col>
               </v-row>
 
-              <v-row>
+              <validation-provider
+                v-slot="{ errors }"
+                name="Image"
+                rules="size:10000"
+              >
                 <file-uploader
                   ref="fileUploader"
-                  :file.sync="file"
+                  v-model="file"
+                  :error-messages="errors"
                   label="Upload Image"
                   mode="image"
                   path="backpack"
                   placeholder="Select an image for this backpack"
                   prepend-icon="mdi-camera"
-                  gif
+                  solo
+                  jpg
                   png
                   svg
                 />
-              </v-row>
+              </validation-provider>
             </v-form>
           </v-container>
         </v-card-text>
@@ -165,10 +171,11 @@ export default {
         }
 
         this.$emit('saved')
-      } catch (err) {
-        this.loading = false
-      } finally {
+
         this.close()
+      } catch (err) {
+      } finally {
+        this.loading = false
       }
     },
 

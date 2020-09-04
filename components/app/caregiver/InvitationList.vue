@@ -64,6 +64,7 @@ export default {
         await this.resendCaregiverInvitation(data)
 
         this.$snotify.success('Invitation has been resent successfully!')
+      } catch (e) {
       } finally {
         this.loading = false
       }

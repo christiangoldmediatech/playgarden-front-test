@@ -1,6 +1,6 @@
 import jwtDecode from 'jwt-decode'
 import { snotifyError } from '@/utils/vuex'
-import { hasSessionStorage, hasLocalStorage } from '@/utils/window'
+import { hasLocalStorage } from '@/utils/window'
 
 export default {
   checkAuth ({ getters }) {
@@ -18,19 +18,20 @@ export default {
     const auth = jwtDecode(token)
 
     commit('SET_ACCESS_TOKEN', token)
+    commit('SET_AXIOS_TOKEN', token)
     commit('SET_ISSUED_AT', auth.iat)
     commit('SET_EXPIRES_AT', auth.exp * 1000)
 
-    if (hasSessionStorage()) {
-      window.sessionStorage.setItem('authToken', JSON.stringify(token))
+    if (hasLocalStorage()) {
+      window.localStorage.setItem('authToken', JSON.stringify(token))
     }
   },
 
   logout ({ commit, rootGetters }, redirect) {
     commit('LOGOUT')
 
-    if (hasSessionStorage()) {
-      window.sessionStorage.removeItem('authToken')
+    if (hasLocalStorage()) {
+      window.localStorage.removeItem('authToken')
     }
 
     // Only reset if we were logged in to begin with
@@ -46,8 +47,8 @@ export default {
   },
 
   restoreAuthFromSessionStorage ({ dispatch }) {
-    if (hasSessionStorage()) {
-      const token = window.sessionStorage.getItem('authToken')
+    if (hasLocalStorage()) {
+      const token = window.localStorage.getItem('authToken')
 
       if (token) {
         dispatch('setToken', JSON.parse(token))
@@ -81,5 +82,11 @@ export default {
         body: 'Sorry! There was an error while updating user info!'
       })
     }
+  },
+
+  async updateAuthOnboarding ({ dispatch }) {
+    await this.$axios.patch('/auth/onboarding')
+
+    return dispatch('fetchUserInfo')
   }
 }

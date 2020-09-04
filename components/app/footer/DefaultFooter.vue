@@ -3,7 +3,7 @@
     <div class="green-line green-line-1" />
     <div class="green-line green-line-2" />
 
-    <v-card flat tile width="100%" max-width="1200">
+    <v-card flat tile width="100%" max-width="1200" class="card-infoPlaygarden">
       <v-card-text class="py-0">
         <v-container fluid py-0>
           <v-row>
@@ -14,7 +14,7 @@
               md="4"
             >
               <v-container py-0>
-                <v-row no-gutters>
+                <v-row no-gutters class="logo-footer">
                   <v-col cols="12">
                     <v-img
                       alt="Playgarden Prep's Logo"
@@ -28,66 +28,79 @@
                 <div
                   class="align-center d-flex justify-center justify-md-start"
                 >
-                  <img
-                    alt="Facebook"
-                    class="clickable mr-1"
-                    src="@/assets/svg/social-media/facebook.svg"
-                  >
+                  <a href="https://www.facebook.com/Playgardennyc">
+                    <img
+                      alt="Facebook"
+                      class="clickable mr-1"
+                      src="@/assets/svg/social-media/facebook.svg"
+                    >
+                  </a>
 
-                  <img
-                    alt="Instagram"
-                    class="clickable mx-1"
-                    src="@/assets/svg/social-media/instagram.svg"
-                  >
+                  <a href="https://www.instagram.com/playgardenprep/">
+                    <img
+                      alt="Instagram"
+                      class="clickable mx-1"
+                      src="@/assets/svg/social-media/instagram.svg"
+                    >
+                  </a>
 
-                  <div
-                    class="clickable d-flex justify-center mx-1 social-media-circle"
+                  <a
+                    href="mailto:online@playgardenprep.com"
+                    class="clickable d-flex justify-center mx-1 social-media-circle circle-email"
                   >
                     <img
                       alt="Email"
                       src="@/assets/svg/social-media/email.svg"
                     >
-                  </div>
+                  </a>
 
-                  <img
-                    alt="Twitter"
-                    class="clickable mx-1"
-                    src="@/assets/svg/social-media/twitter.svg"
-                  >
+                  <a href="https://twitter.com/playgardennyc">
+                    <img
+                      alt="Twitter"
+                      class="clickable mx-1"
+                      src="@/assets/svg/social-media/twitter.svg"
+                    >
+                  </a>
                 </div>
               </v-container>
             </v-col>
 
             <v-col
-              class="text-center text-md-left"
+              class="text-center"
               cols="12"
               sm="6"
               md="2"
             >
-              <v-container>
-                <nuxt-link
-                  class="d-block link-text"
-                  :to="{ name: 'index' }"
-                  v-text="'Playgarden Prep'"
-                />
+              <v-container fluid>
+                <v-row>
+                  <v-col cols="12">
+                    <div :class="{'align-info-footer-mobile': $vuetify.breakpoint.smAndDown, 'align-info-footer': $vuetify.breakpoint.mdAndUp}">
+                      <nuxt-link
+                        class="d-block link-text"
+                        :to="{ name: 'index' }"
+                        v-text="'Playgarden Prep'"
+                      />
 
-                <nuxt-link
-                  class="d-block link-text"
-                  :to="{ name: 'index' }"
-                  v-text="'Terms & Conditions'"
-                />
+                      <nuxt-link
+                        class="d-block link-text"
+                        :to="{ name: 'terms-conditions' }"
+                        v-text="'Terms & Conditions'"
+                      />
 
-                <nuxt-link
-                  class="d-block link-text"
-                  :to="{ name: 'index' }"
-                  v-text="'Privacy Policy'"
-                />
+                      <nuxt-link
+                        class="d-block link-text"
+                        :to="{ name: 'privacy-policy' }"
+                        v-text="'Privacy Policy'"
+                      />
 
-                <nuxt-link
-                  class="d-block link-text"
-                  :to="{ name: 'index' }"
-                  v-text="'Help'"
-                />
+                      <nuxt-link
+                        class="d-block link-text"
+                        :to="{ name: 'index' }"
+                        v-text="'Help'"
+                      />
+                    </div>
+                  </v-col>
+                </v-row>
               </v-container>
             </v-col>
 
@@ -98,15 +111,15 @@
               md="3"
             >
               <p class="font-weight-bold mb-1 mt-0 primary--text text-h5">
-                Upper East Side
+                <span class="info-footer-title">Upper East Side</span>
               </p>
 
-              <p class="font-weight-bold mb-1">
+              <p class="mb-1 text-footer-contact">
                 ues@playgardenprep.com<br>
                 212-965-9718
               </p>
 
-              <p>
+              <p class="text-footer-contact">
                 1366 Madison Avenue<br>
                 New York, NY 10128
               </p>
@@ -118,16 +131,16 @@
               sm="6"
               md="3"
             >
-              <p class="font-weight-bold mb-1 mt-0 primary--text text-h5">
-                Tribeca
+              <p class="font-weight-bold mb-1 mt-0 primary--text text-h5 titleFooter">
+                <span class="info-footer-title">Tribeca</span>
               </p>
 
-              <p class="font-weight-bold mb-1">
+              <p class="mb-1 text-footer-contact">
                 tribeca@playgardenprep.com<br>
                 212-965-9717
               </p>
 
-              <p>
+              <p class="text-footer-contact">
                 95 Franklin Street<br>
                 New York, NY 10013
               </p>
@@ -140,7 +153,7 @@
 
       <v-container py-0>
         <v-row>
-          <v-col class="text-center" cols="12">
+          <v-col class="text-center text-footer" cols="12">
             2020
             <template v-if="new Date().getFullYear() > 2020">
               - {{ new Date().getFullYear() }}
@@ -166,14 +179,44 @@ export default {
   color: $pg-black !important;
 }
 
+.text-footer {
+  font-size: 11px;
+  color: $pg-black !important;
+  font-weight: 300;
+}
+
 .link-text {
   color: var(--v-black-base);
 }
 
+.card-infoPlaygarden {
+  margin-top: 37px !important;
+}
+
+.logo-footer {
+  margin-bottom: 15px !important;
+}
+
 .social-media-circle {
-  width: 47px;
-  height: 47px;
+  width: 25px;
+  height: 25px;
   border-radius: 50%;
+  margin-top: -5px;
   background-color: var(--v-primary-base);
+}
+
+.info-footer-title {
+  color: #8ab591 !important;
+}
+
+.align-info-footer-mobile {
+  text-align: center !important;
+}
+.align-info-footer {
+  text-align: left !important;
+}
+
+.text-footer-contact {
+  font-weight: 500;
 }
 </style>

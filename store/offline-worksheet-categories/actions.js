@@ -26,5 +26,9 @@ export default {
 
   updateOfflineWorksheetCategory (_, { id, data }) {
     return this.$axios.$patch(`/offline-worksheets-cats/${id}`, data)
+  },
+
+  getChildWorksheets (_, id) {
+    return this.$axios.$get(`/worksheets/children/${id}`)
   }
 }

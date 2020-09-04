@@ -1,104 +1,72 @@
 <template>
-  <v-dialog
-    id="playerDialog"
-    v-model="dialog"
-    fullscreen
-    persistent
-    transition="fade-transition"
-  >
-    <v-card
-      color="black"
-      dark
-    >
-      <v-card-title id="titleElement">
-        {{ title }}
-        <v-spacer />
-        <v-btn
-          icon
-          @click.stop="close"
-        >
-          <v-icon>
-            mdi-close
-          </v-icon>
-        </v-btn>
-      </v-card-title>
-
+  <v-dialog v-model="dialog" fullscreen persistent transition="fade-transition">
+    <v-card color="black" dark>
       <v-row no-gutters align="center" justify="center">
         <div
-          class="videoContainer"
-          :style="{'--videoW': `${videoWidth}px`, '--videoH': `${videoHeight}px` }"
+          class="video-container"
+          :style="{
+            '--videoW': `${videoWidth}px`,
+            '--videoH': `${videoHeight}px`
+          }"
         >
-          <jw-player
+          <children-jw-player
+            ref="playerRef"
             :playlist="playlist"
-            next-up-display
+            :video-id="videoId"
             @playlistComplete="showMessage"
             @ready="setPlayer"
-            @play="saveProgress"
+            @viewable="startPlaying"
             @pause="saveProgress"
             @beforeComplete="completedVideo"
+            @hotkey="close"
           />
         </div>
       </v-row>
-
-      <v-card-actions id="hintElement">
-        <v-spacer />
-        CTRL + SHIFT + Q to Exit
-        <v-spacer />
-      </v-card-actions>
     </v-card>
-    <completed-message
+    <completed-dialog
       v-model="completed"
+      :time-out="15"
       :buttons="buttons"
       :return-action="returnAction"
       :time-out-action="buttons[0].action"
     >
       <template v-slot:title>
-        <span class="title-text white--text text-h3 font-weight-medium">
-          Congratulations!
-        </span>
+        <underlined-title
+          class="white--text text-h3 font-weight-medium"
+          text="Congratulations!"
+        />
       </template>
-      <p class="text-h5 text-center font-weight-medium">
+
+      <p class="text-h5 text-center font-weight-medium white--text">
         You have completed the daily lessons.
       </p>
-    </completed-message>
+    </completed-dialog>
   </v-dialog>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import CompletedMessage from '@/components/app/dashboard/CompletedMessage.vue'
+import VideoPlayerMixin from '@/mixins/VideoPlayer.js'
+import CompletedDialog from '@/components/app/dashboard/CompletedDialog.vue'
 
 export default {
   name: 'VideoLessonPlayer',
 
   components: {
-    CompletedMessage
+    CompletedDialog
   },
+
+  mixins: [VideoPlayerMixin],
 
   data: () => {
     return {
-      dialog: false,
       completed: false,
-      title: '',
-      playlist: [],
-      player: null,
-      videoHeight: 0
+      eventName: 'play-video-lesson'
     }
   },
 
   computed: {
-    ...mapGetters({
-      children: 'getCurrentChild'
-    }),
-
     ...mapGetters('admin/curriculum', ['getLesson']),
-
-    videoWidth () {
-      if (this.videoHeight > 0) {
-        return Math.round(this.videoHeight * (16 / 9))
-      }
-      return 0
-    },
 
     buttons () {
       return [
@@ -122,19 +90,6 @@ export default {
     }
   },
 
-  created () {
-    this.$nuxt.$on('play-video-lesson', (params) => {
-      this.title = params.playlist[0] ? params.playlist[0].name : ''
-      if (this.player) {
-        this.player.load(params.playlist)
-        this.player.play()
-      } else {
-        this.playlist = params.playlist
-      }
-      this.open()
-    })
-  },
-
   methods: {
     ...mapActions('children/lesson', ['saveVideoProgress']),
 
@@ -142,42 +97,65 @@ export default {
       const videoItem = this.player.getPlaylistItem()
       const date = new Date().toISOString().substr(0, 19)
       const time = this.player.getPosition()
-      this.children.forEach((child) => {
-        this.saveVideoProgress({
-          lessonId: this.getLesson.id,
-          childId: child.id,
-          video: {
-            id: videoItem.videoId,
-            completed: false,
-            time,
-            date
-          }
+      if (
+        !videoItem.viewed ||
+        (videoItem.viewed &&
+          !videoItem.viewed.completed &&
+          videoItem.viewed.time < time)
+      ) {
+        const promises = []
+        this.children.forEach((child) => {
+          promises.push(
+            this.saveVideoProgress({
+              lessonId: this.getLesson.id,
+              childId: child.id,
+              video: {
+                id: videoItem.videoId,
+                completed: false,
+                time,
+                date
+              }
+            })
+          )
         })
-      })
+        Promise.all(promises).then(() => {
+          this.$nuxt.$emit('dashboard-panel-update')
+        })
+      }
     },
 
     completedVideo () {
       const videoItem = this.player.getPlaylistItem()
       const date = new Date().toISOString().substr(0, 19)
       const time = this.player.getPosition()
+      const promises = []
       this.children.forEach((child) => {
-        this.saveVideoProgress({
-          lessonId: this.getLesson.id,
-          childId: child.id,
-          video: {
-            id: videoItem.videoId,
-            completed: true,
-            time,
-            date
-          }
-        })
+        promises.push(
+          this.saveVideoProgress({
+            lessonId: this.getLesson.id,
+            childId: child.id,
+            video: {
+              id: videoItem.videoId,
+              completed: true,
+              time,
+              date
+            }
+          })
+        )
       })
-    },
+      Promise.all(promises).then(() => {
+        this.$nuxt.$emit('dashboard-panel-update')
+      })
 
-    setPlayer (player) {
-      this.player = player
-      if (this.playlist.length) {
-        this.player.play()
+      // If not last item, then switch
+      const videoIndex = this.player.getPlaylistIndex()
+      const playlist = this.player.getPlaylist()
+      if (videoIndex < playlist.length - 1) {
+        const nextItem = playlist[videoIndex + 1]
+        this.$router.push({
+          name: 'app-dashboard-video-id',
+          params: { id: nextItem.videoId }
+        })
       }
     },
 
@@ -187,41 +165,14 @@ export default {
 
     returnAction () {
       this.close()
-    },
-
-    open () {
-      this.dialog = true
-
-      this.$nextTick(() => {
-        const checker = window.setInterval(() => {
-          const titleElement = document.getElementById('titleElement')
-          const hintElement = document.getElementById('hintElement')
-          if (titleElement && hintElement) {
-            const titleHeight = titleElement.clientHeight
-            const hintHeight = hintElement.clientHeight
-            if (titleHeight > 0) {
-              this.videoHeight = window.innerHeight - titleHeight - hintHeight
-              window.clearInterval(checker)
-            }
-          }
-        }, 25)
-      })
-    },
-
-    close () {
-      const status = this.player.getState()
-      if (['playing', 'buffering'].includes(status)) {
-        this.player.stop()
-      }
-      this.dialog = false
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.videoContainer {
-  width: var(--videoW);
-  height: var(--videoH);
+.video-container {
+  width: var(--videoW) !important;
+  height: var(--videoH) !important;
 }
 </style>

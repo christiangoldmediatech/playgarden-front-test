@@ -3,61 +3,65 @@ import { hasLocalStorage } from '@/utils/window'
 export default async function ({ redirect, route, store }) {
   if (/^app-.*$/.test(route.name) && process.client) {
     const whiteList = {
+      'auth-logout': 1,
+      'auth-verify-email': 1,
       'app-pick-child': 1,
       'app-account': 1,
-      'app-profile': 1
+      'app-children-register': 1,
+      'app-onboarding': 1,
+      'app-payment-plan': 1,
+      'app-payment-register': 1
     }
 
-    let child = store.getters.getCurrentChild
-    let childExpires = store.getters.getCurrentChildExpires
-    const currentMoment = new Date().getTime()
+    if (!whiteList[route.name]) {
+      let child = store.getters.getCurrentChild
+      let childExpires = store.getters.getCurrentChildExpires
+      const currentMoment = new Date().getTime()
 
-    // Load child if stored and not expired
-    if (!child && hasLocalStorage()) {
-      let storedData = window.localStorage.getItem('selectedChild')
+      // Load child if stored and not expired
+      if (!child && hasLocalStorage()) {
+        let storedData = window.localStorage.getItem('selectedChild')
 
-      if (storedData) {
-        storedData = JSON.parse(storedData)
+        if (storedData) {
+          storedData = JSON.parse(storedData)
 
-        if (currentMoment < storedData.expires) {
-          try {
-            let result
-            // If array, then we get everyone, else we get just the child
-            if (
-              Array.isArray(storedData.value) &&
-              storedData.value.length &&
-              storedData.value.length === 1
-            ) {
-              result = [
-                await store.dispatch('children/getById', storedData.value[0])
-              ]
-            } else {
-              result = await store.dispatch('children/get')
+          if (currentMoment < storedData.expires) {
+            try {
+              let result
+              // If array, then we get everyone, else we get just the child
+              if (
+                Array.isArray(storedData.value) &&
+                storedData.value.length &&
+                storedData.value.length === 1
+              ) {
+                result = [
+                  await store.dispatch('children/getById', storedData.value[0])
+                ]
+              } else {
+                result = await store.dispatch('children/get')
+              }
+
+              store.dispatch('setChild', {
+                value: result,
+                oldExp: storedData.expires
+              })
+
+              // Update local value
+              child = store.getters.getCurrentChild
+              childExpires = store.getters.getCurrentChildExpires
+            } catch (error) {
+              return Promise.reject(error)
             }
-
-            store.dispatch('setChild', {
-              value: result,
-              oldExp: storedData.expires
-            })
-
-            // Update local value
-            child = store.getters.getCurrentChild
-            childExpires = store.getters.getCurrentChildExpires
-          } catch (error) {
-            return Promise.reject(error)
           }
         }
       }
-    }
 
-    // If no child is selected
-    if (
-      (!child || !childExpires || currentMoment >= childExpires) &&
-      !whiteList[route.name]
-    ) {
-      redirect(
-        `/app/pick-child?redirect=${encodeURIComponent(route.fullPath)}`
-      )
+      // If no child is selected
+      if (!child || !childExpires || currentMoment >= childExpires) {
+        redirect(
+          `/app/pick-child?redirect=${encodeURIComponent(route.fullPath)}`
+        )
+      }
     }
   }
 }

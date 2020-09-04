@@ -57,7 +57,7 @@ export default {
     inSignUpProcess () {
       const { query } = this.$route
 
-      return query.process === 'signup' && query.step === '3'
+      return query.process === 'signup' && query.step === '4'
     }
   },
 
@@ -94,7 +94,7 @@ export default {
           await this.$router.push({ name: 'auth-verify-email' })
         } else {
           this.$snotify.success('Payment has been processed successfully!')
-          await this.$router.push({ name: 'app-children' })
+          await this.$router.push({ name: 'app-account' })
         }
       } catch (e) {
       } finally {

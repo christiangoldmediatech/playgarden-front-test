@@ -9,7 +9,7 @@
     >
       <v-card>
         <v-toolbar class="flex-grow-0" color="primary darken-1" dark dense flat>
-          <v-toolbar-title>
+          <v-toolbar-title class="white--text">
             {{ title }}
           </v-toolbar-title>
 
@@ -58,13 +58,13 @@
 
               <template v-if="item.icon">
                 <div class="mb-6 mt-3">
-                  <v-badge avatar color="error" overlap>
+                  <v-badge avatar color="white" overlap>
                     <template v-slot:badge>
                       <v-avatar
                         class="clickable"
                         @click.native="item.icon = null"
                       >
-                        <v-icon>
+                        <v-icon color="#757575" size="20">
                           mdi-close
                         </v-icon>
                       </v-avatar>
@@ -79,20 +79,20 @@
                 v-else
                 v-slot="{ errors }"
                 name="Icon"
-                rules="required"
+                rules="required|size:10000"
               >
                 <file-uploader
                   ref="iconUploader"
                   v-model="icon"
                   :error-messages="errors"
-                  :file.sync="icon"
-                  gif
                   label="Upload Icon"
                   mode="image"
                   path="curriculum-type"
                   placeholder="Select a icon for this Curriculum Type"
-                  png
                   prepend-icon="mdi-camera"
+                  solo
+                  jpg
+                  png
                   svg
                 />
               </validation-provider>
@@ -228,10 +228,11 @@ export default {
         }
 
         await this.getTypes()
-      } catch (err) {
-        this.loading = false
-      } finally {
+
         this.close()
+      } catch (err) {
+      } finally {
+        this.loading = false
       }
     },
 

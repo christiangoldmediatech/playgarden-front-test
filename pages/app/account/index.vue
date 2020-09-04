@@ -10,10 +10,12 @@
         </p>
       </div>
 
-      <div v-show="showSetting" class="image">
+      <div v-show="showSetting" class="image image-bar">
         <img
           alt="Montessori Nutrition Lesson"
           src="@/assets/svg/montessori-nutrition-lesson.svg"
+          class="pr-6"
+          contain
         >
       </div>
 
@@ -62,7 +64,18 @@
       </v-row>
 
       <div v-show="showSetting">
-        <update-profile :loading="loading" :user="userInfo" />
+        <v-row no-gutters>
+          <v-col>
+            <v-text-field
+              disabled
+              label="First name"
+              solo
+              :value="userInfo.email"
+            />
+
+            <v-text-field disabled label="Password" solo suffix="••••••••••" />
+          </v-col>
+        </v-row>
 
         <v-dialog
           v-model="passwordModal"
@@ -72,17 +85,11 @@
           persistent
         >
           <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              v-bind="attrs"
-              block
-              class="mb-6"
-              color="accent"
-              text
-              x-large
-              v-on="on"
-            >
-              EDIT PASSWORD
-            </v-btn>
+            <v-row class="mb-6" justify="end" no-gutters>
+              <v-btn v-bind="attrs" color="primary" text v-on="on">
+                CHANGE PASSWORD
+              </v-btn>
+            </v-row>
           </template>
 
           <v-col cols="12">
@@ -102,7 +109,11 @@
 
         <membership-details :loading="loading" />
 
+        <shipping-address-details :loading="loading" />
+
         <caregiver-list :loading="loading" />
+
+        <notification-list :loading="loading" />
       </div>
 
       <child-form v-show="!showSetting" />
@@ -116,8 +127,9 @@ import { mapGetters } from 'vuex'
 import CaregiverList from '@/components/app/caregiver/CaregiverList'
 import ChildForm from '@/components/forms/profile/ChildForm.vue'
 import MembershipDetails from '@/components/app/payment/MembershipDetails'
+import NotificationList from '@/components/app/notifications/NotificationUserList'
+import ShippingAddressDetails from '@/components/app/payment/ShippingAddressDetails'
 import UpdatePassword from '@/components/app/password/UpdatePassword'
-import UpdateProfile from '@/components/app/user/UpdateProfile'
 
 export default {
   name: 'Index',
@@ -126,8 +138,9 @@ export default {
     CaregiverList,
     ChildForm,
     MembershipDetails,
-    UpdatePassword,
-    UpdateProfile
+    NotificationList,
+    ShippingAddressDetails,
+    UpdatePassword
   },
 
   data: () => ({

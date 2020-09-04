@@ -9,7 +9,7 @@
     >
       <v-card>
         <v-toolbar class="flex-grow-0" color="primary darken-1" dark dense flat>
-          <v-toolbar-title>
+          <v-toolbar-title class="white--text">
             {{ title }}
           </v-toolbar-title>
 
@@ -87,16 +87,16 @@
                   ref="videoUploader"
                   v-model="video"
                   :error-messages="errors"
-                  :file.sync="video"
                   label="Upload Video"
                   mode="video"
-                  mov
-                  mp4
-                  mpeg
                   multi-part
                   path="onboarding"
                   placeholder="Select a video for this onboarding"
                   prepend-icon="mdi-video"
+                  solo
+                  mov
+                  mp4
+                  mpeg
                   webm
                 />
               </validation-provider>
@@ -105,13 +105,13 @@
 
               <template v-if="item.thumbnail">
                 <div class="mb-6 mt-3">
-                  <v-badge avatar color="error" overlap>
+                  <v-badge avatar color="white" overlap>
                     <template v-slot:badge>
                       <v-avatar
                         class="clickable"
                         @click.native="item.thumbnail = null"
                       >
-                        <v-icon>
+                        <v-icon color="#757575" size="20">
                           mdi-close
                         </v-icon>
                       </v-avatar>
@@ -126,20 +126,21 @@
                 v-else
                 v-slot="{ errors }"
                 name="Thumbnail"
-                rules="required"
+                rules="required|size:10000"
               >
                 <file-uploader
                   ref="thumbnailUploader"
                   v-model="thumbnail"
                   :error-messages="errors"
-                  :file.sync="thumbnail"
                   label="Upload Thumbnail"
                   mode="image"
                   path="onboarding-thumbnail"
                   placeholder="Select a thumbnail for this onboarding"
                   prepend-icon="mdi-camera"
-                  png
+                  solo
                   jpg
+                  png
+                  svg
                 />
               </validation-provider>
             </v-form>
@@ -240,10 +241,11 @@ export default {
         }
 
         this.$emit('saved')
-      } catch (err) {
-        this.loading = false
-      } finally {
+
         this.close()
+      } catch (err) {
+      } finally {
+        this.loading = false
       }
     },
 

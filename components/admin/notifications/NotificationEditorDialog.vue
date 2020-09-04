@@ -9,7 +9,7 @@
     >
       <v-card>
         <v-toolbar class="flex-grow-0" color="primary darken-1" dark dense flat>
-          <v-toolbar-title>
+          <v-toolbar-title class="white--text">
             {{ title }}
           </v-toolbar-title>
 
@@ -206,10 +206,11 @@ export default {
         }
 
         this.$emit('saved')
-      } catch (err) {
-        this.loading = false
-      } finally {
+
         this.close()
+      } catch (err) {
+      } finally {
+        this.loading = false
       }
     },
 

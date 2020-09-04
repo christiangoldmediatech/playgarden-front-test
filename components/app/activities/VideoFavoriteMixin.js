@@ -1,6 +1,12 @@
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
+  data: () => {
+    return {
+      loading: false
+    }
+  },
+
   computed: {
     ...mapGetters({ children: 'getCurrentChild' }),
     ...mapGetters('video', { favorites: 'getRows' }),

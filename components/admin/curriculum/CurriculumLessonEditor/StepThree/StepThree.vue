@@ -25,7 +25,9 @@
                 mdi-plus
               </v-icon>
 
-              <span class="hidden-xs-only">Add new worksheet</span>
+              <span class="hidden-xs-only white--text">
+                Add new worksheet
+              </span>
             </v-btn>
           </v-card-title>
         </v-card>
@@ -144,35 +146,35 @@
           </v-col>
         </v-dialog>
 
-        <v-btn
-          block
-          class="my-6"
-          color="primary"
-          :disabled="!resources.length"
-          :loading="loading"
-          x-large
-          @click="$emit('click:submit')"
-        >
-          NEXT
-        </v-btn>
+        <v-row class="mb-6" justify="center">
+          <v-btn
+            class="ma-3"
+            color="primary"
+            :loading="loading"
+            text
+            :to="{
+              name: 'admin-curriculum-management-editor',
+              query: {
+                step: 2,
+                lessonId
+              }
+            }"
+            x-large
+          >
+            BACK
+          </v-btn>
 
-        <v-btn
-          block
-          class="mb-6"
-          color="primary"
-          :loading="loading"
-          text
-          :to="{
-            name: 'admin-curriculum-management-editor',
-            query: {
-              step: 2,
-              lessonId
-            }
-          }"
-          x-large
-        >
-          BACK
-        </v-btn>
+          <v-btn
+            class="ma-3"
+            color="primary"
+            :disabled="!resources.length"
+            :loading="loading"
+            x-large
+            @click="$emit('click:submit')"
+          >
+            NEXT
+          </v-btn>
+        </v-row>
       </v-col>
     </v-row>
   </v-container>

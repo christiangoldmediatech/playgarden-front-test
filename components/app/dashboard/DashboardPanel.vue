@@ -48,29 +48,26 @@
             <v-list dense>
               <v-list-item
                 v-for="(video, indexV) in videos"
-                :key="indexV"
+                :key="`video-lesson-index-${indexV}-id-${video.id}`"
                 class="px-0"
-                :disabled="Boolean(indexV && !videos[indexV - 1].viewed)"
+                :disabled="checkVideoDisabled(indexV)"
                 nuxt
+                exact
                 :to="{
-                  name: 'app-dashboard-videos-id',
-                  params: { id: video.id }
+                  name: 'app-dashboard-lesson-videos',
+                  query: { id: video.id }
                 }"
               >
-                <v-list-item-avatar>
+                <v-list-item-avatar tile>
                   <v-img
+                    :class="{ grayscale: checkVideoDisabled(indexV) }"
                     :src="video.activityType.icon"
-                    :gradient="
-                      video.viewed
-                        ? undefined
-                        : 'rgba(128, 128, 128, 0.75), rgba(128, 128, 128, 0.75)'
-                    "
-                    height="200"
+                    contain
                   />
                 </v-list-item-avatar>
 
                 <v-list-item-content>
-                  <v-list-item-title>
+                  <v-list-item-title class="font-weight-bold text-uppercase">
                     {{ video.name }}
                   </v-list-item-title>
 
@@ -106,9 +103,20 @@
           </v-col>
 
           <v-col cols="10">
-            <span class="font-weight-bold text-h5">
-              WORKSHEETS
-            </span>
+            <div class="d-flex align-center justify-start">
+              <span class="font-weight-bold text-h5">
+                WORKSHEETS
+              </span>
+              <div class="ml-2">
+                <v-img
+                  :class="['ma-0', { 'grayscale': videosCompletionRate < 100 }]"
+                  :src="require('@/assets/png/dashboard/worksheets.png')"
+                  max-width="32px"
+                  max-height="32px"
+                  contain
+                />
+              </div>
+            </div>
 
             <div v-if="worksheets.ONLINE.length" class="mt-3">
               <component
@@ -121,23 +129,13 @@
             </div>
 
             <div v-if="worksheets.OFFLINE" class="font-weight-bold mt-3">
-              HANDS-ON LEARNING
-
-              <v-btn
-                block
-                class="mb-3"
-                color="primary"
-                :disabled="videosCompletionRate < 100"
-                :href="worksheets.OFFLINE.pdfUrl"
-                small
-                target="_blank"
+              <component
+                :is="videosCompletionRate < 100 ? 'span' : 'nuxt-link'"
+                class="black--link font-weight-bold"
+                :to="{ name: 'app-dashboard-offline-worksheet' }"
               >
-                <v-icon left>
-                  mdi-download
-                </v-icon>
-
-                DOWNLOAD
-              </v-btn>
+                HANDS-ON LEARNING
+              </component>
             </div>
           </v-col>
         </v-row>
@@ -175,31 +173,30 @@
                 :key="indexA"
                 class="px-0"
                 :disabled="
-                  Boolean(
-                    videosCompletionRate < 100 ||
-                      (indexA && !activities[indexA - 1].viewed)
-                  )
+                  videosCompletionRate < 100 ||
+                    checkVideoDisabled(indexA, 'activities')
                 "
                 nuxt
+                exact
                 :to="{
-                  name: 'app-dashboard-activity-id',
-                  params: { id: activity.id }
+                  name: 'app-dashboard-lesson-activities',
+                  query: { id: activity.id }
                 }"
               >
-                <v-list-item-avatar>
+                <v-list-item-avatar tile>
                   <v-img
+                    :class="{
+                      grayscale:
+                        videosCompletionRate < 100 ||
+                        checkVideoDisabled(indexA, 'activities')
+                    }"
                     :src="activity.activityType.icon"
-                    :gradient="
-                      activity.viewed
-                        ? undefined
-                        : 'rgba(128, 128, 128, 0.75), rgba(128, 128, 128, 0.75)'
-                    "
-                    height="200"
+                    contain
                   />
                 </v-list-item-avatar>
 
                 <v-list-item-content>
-                  <v-list-item-title>
+                  <v-list-item-title class="font-weight-bold text-uppercase">
                     {{ activity.videos.name }}
                   </v-list-item-title>
 
@@ -217,107 +214,33 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import DashboardMixin from '@/mixins/Dashboard.js'
 
 export default {
   name: 'DashboardPanel',
 
-  computed: {
-    ...mapGetters({ currentChild: 'getCurrentChild' }),
+  mixins: [DashboardMixin],
 
-    ...mapGetters('admin/curriculum', { lesson: 'getLesson' }),
-
-    activities () {
-      return this.lesson
-        ? (this.lesson.lessonsActivities || []).map(({ activity }) => activity)
-        : []
-    },
-
-    activitiesCompletionRate () {
-      return this.getCompletionRate(this.activities)
-    },
-
-    childrenIds () {
-      const ids = (this.currentChild
-        ? this.currentChild.map(({ id }) => id)
-        : []
-      ).join(',')
-
-      return `[${ids}]`
-    },
-
-    videos () {
-      return this.lesson ? this.lesson.videos || [] : []
-    },
-
-    videosCompletionRate () {
-      return this.getCompletionRate(this.videos)
-    },
-
-    worksheets () {
-      const worksheets = this.lesson ? this.lesson.worksheets || [] : []
-      const result = {
-        OFFLINE: null,
-        ONLINE: [],
-        total: worksheets.length
-      }
-
-      worksheets.map((i) => {
-        if (i.type === 'ONLINE') {
-          result.ONLINE.push(i)
-        } else if (i.type === 'OFFLINE') {
-          result.OFFLINE = i
-        }
-      })
-
-      return result
-    },
-
-    worksheetsCompletionRate () {
-      return this.getCompletionRate(this.worksheets.ONLINE)
-    },
-
-    worksheetsProgressHeight () {
-      return (
-        (this.worksheets.ONLINE.length ? 25 : 0) +
-        (this.worksheets.OFFLINE ? 70 : 0)
-      )
+  props: {
+    lesson: {
+      required: false,
+      validator: (val) => {
+        return val === null || typeof val === 'object'
+      },
+      default: null
     }
-  },
-
-  watch: {
-    '$route.name' () {
-      this.redirectDashboard()
-    }
-  },
-
-  created () {
-    this.getCurrentLesson(true)
-
-    this.$nuxt.$on('dashboard-panel-update', () => {
-      this.getCurrentLesson()
-    })
-  },
-
-  beforeDestroy () {
-    this.$nuxt.$off('dashboard-panel-update')
   },
 
   methods: {
-    ...mapActions('children/lesson', ['getCurrentLessonByChildrenId']),
+    checkVideoDisabled (index, collection = 'videos') {
+      if (index > 0) {
+        const video = this[collection][index - 1]
+        const completed = video.viewed ? video.viewed.completed : false
 
-    getCompletionRate (items = []) {
-      const total = items.length
-
-      if (total) {
-        const completed = items
-          .map(({ viewed }) => Number(Boolean(viewed)))
-          .reduce((a, b) => a + b)
-
-        return completed ? (completed * 100) / total : 0
+        return !completed
       }
 
-      return 0
+      return false
     },
 
     getNextId (items = []) {
@@ -358,7 +281,10 @@ export default {
         } else {
           this.$router.push({ name: 'app-dashboard-lesson-completed' })
         }
-      } else if (this.lesson && this.$route.name === 'app-dashboard-lesson-completed') {
+      } else if (
+        this.lesson &&
+        this.$route.name === 'app-dashboard-lesson-completed'
+      ) {
         if (
           this.videosCompletionRate < 100 ||
           this.worksheetsCompletionRate < 100 ||

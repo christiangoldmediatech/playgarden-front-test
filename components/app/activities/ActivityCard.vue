@@ -32,47 +32,43 @@
           </v-container>
         </v-img>
 
-        <v-card-actions>
-          <!-- CMS Card -->
-          <template v-if="blok">
-            <div class="title">
-              {{ blok.title }}
-            </div>
-          </template>
-          <!-- Default actions -->
-          <template v-else>
-            <img
-              :src="icon"
-              height="48px"
-            >
-            <div class="ml-2">
-              <span>
+        <v-list dense>
+          <v-list-item>
+            <v-list-item-avatar tile>
+              <v-img
+                :src="icon"
+                contain
+              />
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title class="font-weight-bold text-uppercase">
                 {{ categoryName }}
-              </span>
-              <br>
-              <span class="font-weight-bold">
+              </v-list-item-title>
+
+              <v-list-item-subtitle>
                 {{ activity.name }}
-              </span>
-            </div>
+              </v-list-item-subtitle>
+            </v-list-item-content>
 
-            <v-spacer />
-
-            <v-btn
-              icon
-              :loading="loading"
-              @click.stop="setFavorite"
-            >
-              <v-icon color="#F5737F">
-                <template v-if="isFavorite">
-                  mdi-heart
-                </template>
-                <template v-else>
-                  mdi-heart-outline
-                </template>
-              </v-icon>
-            </v-btn>
-          </template>
-        </v-card-actions>
+            <v-list-item-action>
+              <v-btn
+                icon
+                large
+                :loading="loading"
+                @click.stop="setFavorite"
+              >
+                <v-icon color="#F5737F">
+                  <template v-if="isFavorite">
+                    mdi-heart
+                  </template>
+                  <template v-else>
+                    mdi-heart-outline
+                  </template>
+                </v-icon>
+              </v-btn>
+            </v-list-item-action>
+          </v-list-item>
+        </v-list>
       </v-card>
     </v-hover>
   </v-col>
@@ -102,11 +98,11 @@ export default {
     },
     categoryName: {
       type: String,
-      default: undefined
+      required: true
     },
-    blok: {
-      type: Object,
-      default: null
+    playlist: {
+      type: Array,
+      required: true
     }
   },
 
@@ -126,24 +122,13 @@ export default {
     }
   },
 
-  mounted () {
-    console.log(this.blok)
-  },
-
   methods: {
     playVideo () {
-      console.log(this.activity)
+      const index = this.playlist.findIndex(({ activityId }) => activityId === this.activityId)
 
-      this.$nuxt.$emit('play-activity', {
-        title: get(this.blok, 'title') || this.activity.name,
-        playlist: [
-          {
-            file: get(this.blok, 'file.filename') || this.activity.videoUrl.HLS,
-            image: this.thumbnail,
-            activityId: get(this.blok, 'file.id') || this.activityId
-          }
-        ]
-      })
+      if (index !== -1) {
+        this.$nuxt.$emit('open-lesson-activity-player', { playlist: this.playlist, index })
+      }
     }
   }
 }

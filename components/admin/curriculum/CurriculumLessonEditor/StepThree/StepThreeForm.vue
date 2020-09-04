@@ -112,49 +112,49 @@
             v-else
             v-slot="{ errors }"
             :name="`Image ${indexMT + 1}`"
-            rules="required"
+            rules="required|size:10000"
           >
             <file-uploader
               :ref="`fileUploader${indexMT}`"
               v-model="item.file"
               :error-messages="errors"
-              :file.sync="item.file"
-              gif
               :label="`Image ${indexMT + 1}`"
               mode="image"
               path="lesson"
               :placeholder="`Select image ${indexMT + 1}`"
-              png
               prepend-icon="mdi-camera"
+              solo
+              jpg
+              png
               svg
             />
           </validation-provider>
         </v-col>
       </v-row>
 
-      <v-btn
-        block
-        class="mb-6"
-        color="primary"
-        :disabled="invalid"
-        :loading="loading"
-        type="submit"
-        x-large
-      >
-        SAVE
-      </v-btn>
+      <v-row class="mb-6" justify="center">
+        <v-btn
+          class="ma-3"
+          color="primary"
+          :loading="loading"
+          text
+          x-large
+          @click="onCancel(reset)"
+        >
+          CANCEL
+        </v-btn>
 
-      <v-btn
-        block
-        class="mb-6"
-        color="primary"
-        :loading="loading"
-        text
-        x-large
-        @click="onCancel(reset)"
-      >
-        CANCEL
-      </v-btn>
+        <v-btn
+          class="ma-3"
+          color="primary"
+          :disabled="invalid"
+          :loading="loading"
+          type="submit"
+          x-large
+        >
+          SAVE
+        </v-btn>
+      </v-row>
     </v-form>
   </validation-observer>
 </template>

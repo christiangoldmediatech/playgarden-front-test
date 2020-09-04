@@ -15,10 +15,10 @@
             </v-btn>
           </v-row>
 
-          <!-- First name -->
+          <!-- Name -->
           <validation-provider
             v-slot="{ errors }"
-            :name="(removable ? `Child #${indexD + 1} - ` : '') + 'First name'"
+            :name="(removable ? `Child #${indexD + 1} - ` : '') + 'Name'"
             rules="required"
           >
             <v-text-field
@@ -26,24 +26,9 @@
               clearable
               :disabled="loading"
               :error-messages="errors"
-              label="First name"
+              label="Name"
               solo
-            />
-          </validation-provider>
-
-          <!-- Last name -->
-          <validation-provider
-            v-slot="{ errors }"
-            :name="(removable ? `Child #${indexD + 1} - ` : '') + 'Last name'"
-            rules="required"
-          >
-            <v-text-field
-              v-model="item.lastName"
-              clearable
-              :disabled="loading"
-              :error-messages="errors"
-              label="Last name"
-              solo
+              class="custom-text-field"
             />
           </validation-provider>
 
@@ -73,6 +58,7 @@
                   suffix="MM/DD/YYYY"
                   validate-on-blur
                   :value="item._birthdayFormatted"
+                  class="custom-text-field"
                   v-on="on"
                 />
               </validation-provider>
@@ -97,6 +83,7 @@
                   block
                   :color="item.gender === gender ? 'primary' : 'grey lighten-5'"
                   :disabled="loading"
+                  class="custom-btn"
                   @click="item.gender = gender"
                 >
                   {{ gender === "FEMALE" ? "Girl" : "Boy" }}
@@ -161,7 +148,7 @@
             type="submit"
             x-large
           >
-            REGISTER
+            CONTINUE TO PLAN SELECTION
           </v-btn>
         </v-col>
       </v-row>
@@ -205,13 +192,13 @@ export default {
     addRow () {
       this.draft.push({
         _birthdayFormatted: '',
-        _birthdayPicker: '',
+        _birthdayPicker: `${new Date().getFullYear() - 2}-01-01`,
         _menu: false,
         backpackId: '',
         birthday: '',
         firstName: '',
         gender: '',
-        lastName: '',
+        lastName: ' ',
         level: 'BEGINNER'
       })
     },

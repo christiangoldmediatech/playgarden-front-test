@@ -29,10 +29,11 @@ export default {
   },
 
   async getTypes ({ commit }, name = null) {
-    const data = await this.$axios.$get('/activity-types', {
+    const { data } = await this.$axios.get('/activity-types', {
       params: { name }
     })
     commit('SET_TYPES', data)
+    return data
   },
 
   async createType (ctx, data) {
@@ -45,5 +46,14 @@ export default {
 
   async deleteType (ctx, id) {
     await this.$axios.$delete(`/activity-types/${id}`)
+  },
+
+  async getNextActivity (ctx, { prevActivityId, params = {} }) {
+    try {
+      const data = await this.$axios.$get(`/activities/${prevActivityId}/next`, { params })
+      return data
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }

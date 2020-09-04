@@ -22,7 +22,7 @@
               <v-icon class="hidden-xs-only" small>
                 mdi-plus
               </v-icon>
-              <span class="hidden-xs-only">Add new backpack</span>
+              <span class="hidden-xs-only white--text">Add new backpack</span>
             </v-btn>
           </v-card-title>
 

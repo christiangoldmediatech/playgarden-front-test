@@ -7,20 +7,14 @@ export default {
     items () {
       if (this.isUserLoggedIn) {
         return [
-          { title: 'Dashboard', to: { name: 'app-dashboard' } },
-          { title: 'Student Cubby', to: { name: 'app-student-cubby' } },
-          { title: 'Activities', to: { name: 'app-activities' } },
-          { title: 'Profiles', to: { name: 'app-profile' } },
-          { title: 'Parent Corner', to: { name: 'app-parent-corner' } }
+          { title: 'Lessons', to: { name: 'app-dashboard' }, exact: false },
+          { title: 'Student Cubby', to: { name: 'app-student-cubby' }, exact: false },
+          { title: 'Activities', to: { name: 'app-activities' }, exact: false },
+          { title: 'Parent Corner', to: { name: 'app-parent-corner' }, exact: false }
         ]
       }
 
-      return [
-        { title: 'Home', to: { name: 'auth-login' } },
-        { title: 'What we offer', to: { name: 'public-offer' } },
-        { title: 'Our Curriculum', to: { name: 'public-curriculum' } },
-        { title: 'Get to know us', to: { name: 'public-about-us' } }
-      ]
+      return []
     }
   }
 }

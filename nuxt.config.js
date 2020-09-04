@@ -55,19 +55,23 @@ export default {
   /*
    ** Global CSS
    */
-  css: ['tiptap-vuetify/dist/main.css'],
+  css: [
+    'tiptap-vuetify/dist/main.css',
+    'vue-snotify/styles/material.css',
+    './assets/scss/app.scss'
+  ],
   /*
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
   plugins: [
     '@/plugins/axios',
+    '@/plugins/components',
     '@/plugins/directives',
     '@/plugins/filters',
     '@/plugins/globalPartials',
     '@/plugins/snotify',
     '@/plugins/validate',
-    '@/plugins/components',
     { src: '@/plugins/tiptapVuetify', mode: 'client' }
   ],
   /*
@@ -108,8 +112,10 @@ export default {
   ],
   styleResources: {
     scss: [
-      '@/assets/scss/variables.scss',
-      '@/assets/scss/app.scss'
+      './assets/scss/variables.scss',
+      './assets/scss/_mixins.scss',
+      './assets/scss/_text.scss',
+      './assets/scss/_image.scss'
     ]
   },
   /*
@@ -127,16 +133,18 @@ export default {
   env: {
     apiBaseUrl:
       process.env.API_BASE_URL ||
-      'https://j2ld7v9jji.execute-api.us-east-1.amazonaws.com/staging'
+      'https://j2ld7v9jji.execute-api.us-east-1.amazonaws.com/staging',
+    testEnv: process.env.TEST_ENV || 'LOCAL'
   },
   router: {
     middleware: [
       'auth',
       'fetchUserInfo',
-      'redirectProperAuthenticatedSection',
       'recoverRegistrationProcess',
-      'redirectIfAuthenticated',
       'emailVerified',
+      'redirectProperAuthenticatedSection',
+      'redirectIfAuthenticated',
+      'onboardingDone',
       'pickChild'
     ]
   }
