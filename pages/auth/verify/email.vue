@@ -19,12 +19,12 @@
         <v-btn
           v-if="isUserLoggedIn"
           block
-          color="primary"
+          color="secondary"
           :disabled="loading"
           :loading="loading"
           @click="onResend"
         >
-          RETURN TO LOG IN
+          RESEND EMAIL
         </v-btn>
 
         <nuxt-link v-else :to="{ name: 'auth-login' }">
@@ -36,9 +36,9 @@
         <p class="mt-6 text-center text-md-left">
           Didn’t receive an email?
 
-          <nuxt-link to="#">
+          <a href="mailto:hello@playgardenprep.com">
             <span class="contact-color">CONTACT US</span>
-          </nuxt-link>
+          </a>
         </p>
       </div>
     </v-col>
