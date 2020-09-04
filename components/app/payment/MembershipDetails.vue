@@ -24,8 +24,8 @@
       <template>
         <v-row class="justify-space-between mt-3" no-gutters>
           <span>Plan: <b>{{ billing.planName }}</b></span>
+
           <v-btn
-            v-bind="attrs"
             color="primary"
             text
             class="btn-green"
