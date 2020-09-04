@@ -19,7 +19,7 @@
         <v-btn
           v-if="isUserLoggedIn"
           block
-          color="secondary"
+          color="primary"
           :disabled="loading"
           :loading="loading"
           @click="onResend"
