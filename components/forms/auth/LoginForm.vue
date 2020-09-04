@@ -10,6 +10,7 @@
       :rules="[required, isValidEmail]"
       solo
       type="email"
+      class="custom-text-field"
     />
 
     <!-- Password -->
@@ -21,6 +22,7 @@
       :loading="loading"
       :rules="[required, ...isValidPassword]"
       solo
+      class="custom-text-field"
     />
 
     <v-btn

@@ -16,6 +16,7 @@
           :loading="loading"
           solo
           type="email"
+          class="custom-text-field"
         />
       </validation-provider>
 

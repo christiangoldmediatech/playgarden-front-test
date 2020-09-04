@@ -19,6 +19,7 @@
           :loading="loading"
           solo
           type="email"
+          class="custom-text-field"
         />
       </validation-provider>
 
@@ -49,7 +50,7 @@
       >
         <v-text-field
           v-model="draft.phone"
-          class="mt-9"
+          class="mt-9 custom-text-field"
           clearable
           :disabled="loading || Boolean(draft.email)"
           :error-messages="errors"

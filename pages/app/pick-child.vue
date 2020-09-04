@@ -2,7 +2,7 @@
   <v-main class="bkg">
     <v-container fluid fill-height>
       <v-row align="center" justify="center">
-        <v-col cols="12" md="8" lg="6">
+        <v-col cols="12" md="8" lg="6" class="pick-child">
           <v-card>
             <div class="green-line green-line-1" />
             <div class="green-line green-line-2" />
@@ -15,48 +15,49 @@
               </div>
 
               <v-row class="text-center" justify="center">
-                <v-hover
-                  v-for="child in children"
-                  :key="`child-${child.id}`"
-                  v-slot:default="{ hover }"
-                  open-delay="100"
-                  close-delay="100"
+                <v-row
+                  no-gutters
+                  class="ml-6 mr-6"
                 >
                   <v-col
-                    class="clickable"
-                    cols="6"
-                    sm="3"
-                    lg="2"
+                    v-for="child in children"
+                    :key="`child-${child.id}`"
+                    cols="4"
+                    class="selected-child"
                     @click.stop="selectChild(child)"
                   >
-                    <div class="align-center min-col">
-                      <v-img
-                        v-if="child.everyone"
-                        class="mb-3"
-                        :src="require('@/assets/svg/everyone.svg')"
-                        :max-height="hover ? 114 : 100"
-                        contain
-                      />
-
-                      <v-avatar
-                        v-else
-                        class="mb-3"
-                        :color="hover ? 'primary' : 'accent'"
-                        :size="hover ? 112 : 96"
+                    <div class="">
+                      <v-hover
+                        :key="`child-${child.id}`"
+                        v-slot:default="{ hover }"
+                        open-delay="100"
+                        close-delay="100"
                       >
-                        <v-img
-                          :src="child.backpack.image"
-                          max-height="70%"
-                          contain
-                        />
-                      </v-avatar>
+                        <v-avatar
+                          v-if="child.everyone"
+                          :size="hover ? 140 : 134"
+                        >
+                          <v-img
+                            :src="require('@/assets/svg/everyone.svg')"
+                            contain
+                          />
+                        </v-avatar>
+                        <v-avatar
+                          v-else
+                          :size="hover ? 160 : 134"
+                        >
+                          <v-img
+                            :src="child.backpack.image"
+                            contain
+                          />
+                        </v-avatar>
+                      </v-hover>
                     </div>
-
-                    <p class="font-weight-bold">
+                    <span class="font-weight-bold">
                       {{ child.firstName }}
-                    </p>
+                    </span>
                   </v-col>
-                </v-hover>
+                </v-row>
               </v-row>
 
               <v-btn
@@ -67,7 +68,7 @@
                 x-large
                 :to="{ name: 'app-account' }"
               >
-                MANAGE PROFILES
+                MANAGE STUDENT PROFILES
               </v-btn>
             </v-card-text>
           </v-card>
@@ -148,7 +149,7 @@ export default {
 }
 
 .bkg {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.68);
 }
 
 .v-btn--active.custom-active {
@@ -172,5 +173,22 @@ export default {
     border-bottom: 0.8rem solid $pg-main;
     border-radius: 0.2rem;
   }
+}
+
+.pick-child {
+  margin-top: 90px;
+  margin-bottom: 90px;
+}
+
+.name-child {
+  text-align: center;
+}
+
+.selected-child {
+  cursor: pointer;
+}
+
+.everyone-img {
+  margin-top: 17px;
 }
 </style>

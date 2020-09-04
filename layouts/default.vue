@@ -56,5 +56,8 @@ export default {
   .container:not(.container--fluid) {
     max-width: 1200px;
   }
+  .v-text-field .v-input__control .v-input__slot {
+    box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.16) !important;
+  }
 }
 </style>
