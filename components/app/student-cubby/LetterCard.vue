@@ -7,12 +7,12 @@
       :width="141"
       :elevation="hover ? 9 : 3"
     >
-      <div class="align-center d-flex flex-column justify-end fill-height">
+      <div class="align-center d-flex flex-column justify-center fill-height">
         <v-img
           class="flex-shrink-1 flex-grow-0"
           contain
-          max-height="80"
-          max-width="80"
+          height="80"
+          width="80"
           :src="letter.icon"
         />
 
