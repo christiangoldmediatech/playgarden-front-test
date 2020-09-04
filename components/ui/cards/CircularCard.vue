@@ -85,6 +85,7 @@ $shadow-offset: 15px;
     @include rounded-element($card-size);
     overflow: hidden;
     object-fit: cover;
+    object-position: center center;
   }
 }
 

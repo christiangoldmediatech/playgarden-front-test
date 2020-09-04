@@ -98,11 +98,15 @@ export default {
     },
     categoryName: {
       type: String,
-      required: true
+      default: undefined
     },
     playlist: {
       type: Array,
-      required: true
+      default: undefined
+    },
+    blok: {
+      type: Object,
+      default: null
     }
   },
 
@@ -124,6 +128,7 @@ export default {
 
   methods: {
     playVideo () {
+      console.log(this.playlist)
       const index = this.playlist.findIndex(({ activityId }) => activityId === this.activityId)
 
       if (index !== -1) {
