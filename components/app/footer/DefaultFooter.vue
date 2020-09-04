@@ -74,7 +74,7 @@
               <v-container fluid>
                 <v-row>
                   <v-col cols="12">
-                    <div class="center-info">
+                    <div :class="{'align-info-footer-mobile': $vuetify.breakpoint.smAndDown, 'align-info-footer': $vuetify.breakpoint.mdAndUp}">
                       <nuxt-link
                         class="d-block link-text"
                         :to="{ name: 'index' }"
@@ -208,13 +208,11 @@ export default {
 .info-footer-title {
   color: #8ab591 !important;
 }
-@media only screen and (max-width: 600px) {
-  .center-info {
-    text-align: center !important;
-  }
-}
 
-.center-info {
+.align-info-footer-mobile {
+  text-align: center !important;
+}
+.align-info-footer {
   text-align: left !important;
 }
 
