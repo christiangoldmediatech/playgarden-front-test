@@ -12,7 +12,13 @@
 
             <span class="font-weight-medium">First time using Playgarden?</span>
 
-            <v-btn class="mr-3" color="primary" nuxt text :to="{ name: 'app-onboarding' }">
+            <v-btn
+              class="mr-3"
+              color="primary"
+              nuxt
+              text
+              :to="{ name: 'app-onboarding' }"
+            >
               WATCH TUTORIAL HERE
             </v-btn>
           </v-row>
@@ -60,10 +66,15 @@ export default {
     }
   },
 
-  created () {
-    // Redirect to puzzle by default
-    if (this.$route.name === 'app-student-cubby') {
-      this.$router.push({ name: 'app-student-cubby-puzzle' })
+  watch: {
+    studentId () {
+      // Redirect to puzzle by default
+      if (this.$route.name === 'app-student-cubby') {
+        this.$router.push({
+          name: 'app-student-cubby-puzzle',
+          query: { id: this.studentId }
+        })
+      }
     }
   }
 }
