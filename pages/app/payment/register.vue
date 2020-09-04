@@ -43,8 +43,9 @@
           </span>
         </v-col>
         <v-col cols="3">
-          <b class="total-membership">${{ cost.total || 0 }}</b>
-          <b class="total-membership">${{ 0 }}</b>
+          <b>${{ cost.total || 0 }}</b>
+          <br />
+          <b>${{ 0 }}</b>
         </v-col>
       </v-row>
       <v-row class="px-12">
@@ -141,10 +142,6 @@ export default {
 
 .product-description {
   text-align: center;
-}
-
-.total-membership {
-  font-size: 30px;
 }
 
 .due-today {
