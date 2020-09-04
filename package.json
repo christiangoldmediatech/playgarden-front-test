@@ -23,6 +23,7 @@
     "@mdi/font": "^5.3.45",
     "@nuxtjs/axios": "^5.12.0",
     "dayjs": "^1.8.29",
+    "hammerjs": "^2.0.8",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.20",
     "material-design-icons-iconfont": "^5.0.1",

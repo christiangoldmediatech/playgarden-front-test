@@ -9,11 +9,13 @@ import CmsButton from '@/components/cms/buttons/CmsButton.vue'
 import CmsContainer from '@/components/cms/containers/CmsContainer.vue'
 import CmsForumList from '@/components/cms/forum/CmsForumList.vue'
 import GenericCarousel from '@/components/cms/carousel/GenericCarousel.vue'
+import ActivityCard from '@/components/app/activities/ActivityCard.vue'
 
 Vue.component('page', Page)
 Vue.component('circular-card', CircularCard)
 Vue.component('squared-card', SquaredCard)
 Vue.component('generic-carousel', GenericCarousel)
+Vue.component('activity-card', ActivityCard)
 Vue.component('cms-section-title', CmsSectionTitle)
 Vue.component('cms-container', CmsContainer)
 Vue.component('cms-header', CmsHeader)

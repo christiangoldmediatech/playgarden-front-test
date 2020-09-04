@@ -6,10 +6,18 @@
       class="carousel"
       :style="{
         '--line-color': blok.lineColor,
-        '--line-position': linePosition
+        '--line-position': isMobile ? '-25px' : linePosition
       }"
       :class="{ 'carousel__background-line': blok.useLineColor }"
     >
+      <div class="carousel__mobile-controllers">
+        <div
+          v-for="n in pageContent.length"
+          :key="n"
+          class="controller-item"
+          :class="{ 'controller-item--active': page + 1 === n }"
+        />
+      </div>
       <v-btn
         text
         class="carousel__btn"
@@ -68,7 +76,8 @@ export default {
       page: 0,
       pageContent: [],
       container: null,
-      children: []
+      children: [],
+      isMobile: false
     }
   },
 
@@ -89,8 +98,29 @@ export default {
     }
   },
 
-  mounted () {
+  async mounted () {
     const { container } = this.$refs
+    /* Mobile handler */
+    const mql = window.matchMedia('(max-width: 850px)')
+
+    this.isMobile = mql.matches
+    mql.addListener((e) => { this.isMobile = e.matches })
+
+    const Hammer = (await import(
+      'hammerjs'
+    )).default
+
+    /* Mobile gestures */
+    const hammerHandler = new Hammer(container)
+    hammerHandler.on('swipe', (event) => {
+      if (event.deltaX < 0) {
+        this.nextPage()
+      } else {
+        this.prevPage()
+      }
+    })
+
+    /* Handling for elements inside container */
     let { components } = this.$refs
     components = components || []
 
@@ -174,6 +204,9 @@ export default {
             : 'none'
         })
       })
+    },
+    handleSwipe () {
+
     }
   }
 }
@@ -227,4 +260,34 @@ $background-line-height: 80px;
   position: relative;
   z-index: 1;
 }
+
+@media (max-width: 850px) {
+  .carousel__btn {
+    display: none;
+  }
+
+  .carousel__mobile-controllers {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    z-index: 1;
+  }
+
+  .controller-item {
+    @include rounded-element(6px);
+    border: 1px solid $pg-black;
+    margin: 0 2px;
+  }
+
+  .controller-item--active {
+    background: $pg-black;
+  }
+
+  .carousel__background-line--mobile {
+    --line-position: 0;
+  }
+}
+
 </style>

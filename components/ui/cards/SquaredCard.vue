@@ -70,6 +70,12 @@ $border-height: 3px;
   display: flex;
   flex-flow: column;
   justify-content: space-between;
+  transition: transform 0.2s;
+  transform: scale(1);
+
+  &:hover {
+    transform: scale(1.07);
+  }
 }
 
 .card__image {

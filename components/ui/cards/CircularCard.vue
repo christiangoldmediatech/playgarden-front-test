@@ -4,12 +4,15 @@
     class="wrapper"
     :style="{'--card-shadow-color': bgColor}"
   >
-    <div class="card">
+    <a
+      class="card"
+      :href="blok.link || link"
+    >
       <img
         v-if="image !== ''"
         :src="image"
       >
-    </div>
+    </a>
     <div class="card__title">
       {{ title }}
     </div>
@@ -36,6 +39,10 @@ export default {
     title: {
       type: String,
       default: ''
+    },
+    link: {
+      type: String,
+      default: ''
     }
   }
 }
@@ -44,7 +51,7 @@ export default {
 <style lang="scss" scoped>
 
 $shadow-color:  rgba(0, 0, 0, 0.25);
-$card-size: 180px;
+$card-size: 160px;
 $shadow-offset: 15px;
 
 .wrapper {
@@ -57,8 +64,10 @@ $shadow-offset: 15px;
 
 .card {
   @include rounded-element($card-size);
+  display: block;
   position: relative;
   background: white;
+  cursor: pointer;
   box-shadow: 0 3px 12px 0 $shadow-color;
 
   &::before {
@@ -86,6 +95,36 @@ $shadow-offset: 15px;
   font-size: 20px;
   text-align: center;
   color: #707070;
+}
+
+@media (max-width: 600px) {
+  .wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .card {
+    &,
+    & > img {
+      @include rounded-element(56px);
+    }
+
+    &::before {
+      left: 5px;
+      top: 5px;
+    }
+  }
+
+  .card__title {
+    max-width: 300px;
+    flex: 1 0;
+    text-align: left;
+    padding-left: 20px;
+    margin-top: 0;
+  }
 }
 
 </style>

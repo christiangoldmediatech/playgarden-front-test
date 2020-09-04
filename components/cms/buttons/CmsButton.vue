@@ -1,6 +1,6 @@
 <template>
   <v-btn
-    class="px-13 button"
+    class="button"
     color="primary"
   >
     <a :href="blok.link || link">{{ blok.text || text }}</a>
@@ -31,17 +31,7 @@ export default {
 <style lang="scss" scoped>
 
 .button {
-  margin: 0 15px;
-
-  &:first-child {
-    margin-left: 0;
-    margin-right: 15px;
-  }
-
-  &:last-child {
-    margin-right: 0;
-    margin-left: 15px;
-  }
+  width: 100%;
 
   a {
     color: white !important;

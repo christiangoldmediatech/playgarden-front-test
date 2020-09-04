@@ -2,7 +2,7 @@
   <v-col
     cols="12"
     sm="6"
-    md="3"
+    :md="blok ? '4' : '3'"
   >
     <v-hover v-slot:default="{ hover }">
       <v-card
@@ -33,36 +33,45 @@
         </v-img>
 
         <v-card-actions>
-          <img
-            :src="icon"
-            height="48px"
-          >
-          <div class="ml-2">
-            <span>
-              {{ categoryName }}
-            </span>
-            <br>
-            <span class="font-weight-bold">
-              {{ activity.name }}
-            </span>
-          </div>
+          <!-- CMS Card -->
+          <template v-if="blok">
+            <div class="title">
+              {{ blok.title }}
+            </div>
+          </template>
+          <!-- Default actions -->
+          <template v-else>
+            <img
+              :src="icon"
+              height="48px"
+            >
+            <div class="ml-2">
+              <span>
+                {{ categoryName }}
+              </span>
+              <br>
+              <span class="font-weight-bold">
+                {{ activity.name }}
+              </span>
+            </div>
 
-          <v-spacer />
+            <v-spacer />
 
-          <v-btn
-            icon
-            :loading="loading"
-            @click.stop="setFavorite"
-          >
-            <v-icon color="#F5737F">
-              <template v-if="isFavorite">
-                mdi-heart
-              </template>
-              <template v-else>
-                mdi-heart-outline
-              </template>
-            </v-icon>
-          </v-btn>
+            <v-btn
+              icon
+              :loading="loading"
+              @click.stop="setFavorite"
+            >
+              <v-icon color="#F5737F">
+                <template v-if="isFavorite">
+                  mdi-heart
+                </template>
+                <template v-else>
+                  mdi-heart-outline
+                </template>
+              </v-icon>
+            </v-btn>
+          </template>
         </v-card-actions>
       </v-card>
     </v-hover>
@@ -70,6 +79,7 @@
 </template>
 
 <script>
+import get from 'lodash/get'
 import VideoFavoriteMixin from './VideoFavoriteMixin'
 
 export default {
@@ -80,19 +90,23 @@ export default {
   props: {
     activityId: {
       type: Number,
-      required: true
+      default: undefined
     },
     activity: {
       type: Object,
-      required: true
+      default: undefined
     },
     icon: {
       type: String,
-      required: true
+      default: undefined
     },
     categoryName: {
       type: String,
-      required: true
+      default: undefined
+    },
+    blok: {
+      type: Object,
+      default: null
     }
   },
 
@@ -108,19 +122,25 @@ export default {
     },
 
     thumbnail () {
-      return this.activity.thumbnail || require('@/assets/jpg/abacus_counting_lesson.jpg')
+      return get(this.blok, 'thumbnail') || this.activity.thumbnail || require('@/assets/jpg/abacus_counting_lesson.jpg')
     }
+  },
+
+  mounted () {
+    console.log(this.blok)
   },
 
   methods: {
     playVideo () {
+      console.log(this.activity)
+
       this.$nuxt.$emit('play-activity', {
-        title: this.activity.name,
+        title: get(this.blok, 'title') || this.activity.name,
         playlist: [
           {
-            file: this.activity.videoUrl.HLS,
+            file: get(this.blok, 'file.filename') || this.activity.videoUrl.HLS,
             image: this.thumbnail,
-            activityId: this.activityId
+            activityId: get(this.blok, 'file.id') || this.activityId
           }
         ]
       })
@@ -142,5 +162,10 @@ export default {
 .play-icon {
   width: 75px;
   height: 75px;
+}
+
+.title {
+  color: $pg-black;
+  font-weight: 600;
 }
 </style>
