@@ -152,6 +152,6 @@ export default {
 .sticky {
   position: -webkit-sticky;
   position: sticky;
-  top: 25px;
+  top: 75px;
 }
 </style>
