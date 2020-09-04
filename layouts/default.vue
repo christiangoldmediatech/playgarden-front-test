@@ -52,6 +52,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.v-application ::v-deep {
   .container:not(.container--fluid) {
     max-width: 1200px;
   }
