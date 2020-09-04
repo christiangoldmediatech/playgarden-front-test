@@ -336,4 +336,8 @@ ul li::before {
   opacity: 2.49 !important;
 }
 
+.v-item--active ::v-deep .v-label {
+  font-weight: bold !important;
+}
+
 </style>

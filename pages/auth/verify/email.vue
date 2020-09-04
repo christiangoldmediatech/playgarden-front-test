@@ -12,6 +12,10 @@
           <underlined-title text="Welcome to Playgarden Prep" />
         </div>
 
+        <p class="mt-6 text-center text-md-left">
+          We are happy you have you LEARN with us! Please check your email to confirm your account and start today
+        </p>
+
         <v-btn
           v-if="isUserLoggedIn"
           block
@@ -32,9 +36,9 @@
         <p class="mt-6 text-center text-md-left">
           Didn’t receive an email?
 
-          <nuxt-link to="#">
-            <span>CONTACT US</span>
-          </nuxt-link>
+          <a href="mailto:hello@playgardenprep.com">
+            <span class="contact-color">CONTACT US</span>
+          </a>
         </p>
       </div>
     </v-col>
@@ -115,5 +119,10 @@ export default {
 }
 .form {
   max-width: 500px;
+}
+
+.contact-color {
+  color: $pg-btn-green !important;
+  font-weight: bold !important;
 }
 </style>
