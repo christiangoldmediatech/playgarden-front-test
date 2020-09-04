@@ -210,8 +210,7 @@ export default {
 }
 @media only screen and (max-width: 600px) {
   .center-info {
-    width: 50%;
-    margin: auto;
+    text-align: center !important;
   }
 }
 
