@@ -123,6 +123,6 @@ export default {
 
 .contact-color {
   color: $pg-btn-green !important;
-  font-weight: bold;
+  font-weight: bold !important;
 }
 </style>
