@@ -86,9 +86,9 @@ export default {
           route: 'student-portfolio'
         },
         {
-          text: 'BADGES',
+          text: 'PATCHES',
           img: 'trophy.png',
-          route: 'badges'
+          route: 'patches'
         }
       ]
     }

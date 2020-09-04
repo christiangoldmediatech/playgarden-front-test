@@ -26,7 +26,7 @@ export default {
         total: worksheets.length
       }
 
-      worksheets.forEach((i) => {
+      worksheets.map((i) => {
         if (i.type === 'ONLINE') {
           result.ONLINE.push(i)
         } else if (i.type === 'OFFLINE') {
@@ -58,8 +58,8 @@ export default {
 
     worksheetsProgressHeight () {
       return (
-        (this.worksheets.ONLINE.length ? 25 : 0) +
-        (this.worksheets.OFFLINE ? 70 : 0)
+        (this.worksheets.ONLINE.length ? 30 : 0) +
+        (this.worksheets.OFFLINE ? 30 : 0)
       )
     }
   },

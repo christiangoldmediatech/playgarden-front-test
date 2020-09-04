@@ -10,9 +10,10 @@
 
       <v-card-text>
         <div class="text-center">
-          <span class="text-h4 title-text">
-            Student Portfolio
-          </span>
+          <underlined-title
+            class="text-h4"
+            text="Student Portfolio"
+          />
         </div>
 
         <div class="text-center mb-4">

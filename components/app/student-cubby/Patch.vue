@@ -1,7 +1,10 @@
 <template>
   <v-hover v-slot="{ hover }">
     <v-col
-      :class="['text-center patch-item', { 'clickable': !displayMode, 'scaled': hover && !displayMode }]"
+      :class="[
+        'text-center patch-item',
+        { clickable: !displayMode, scaled: hover && !displayMode }
+      ]"
       cols="12"
       sm="6"
       :lg="displayMode ? 3 : 2"
@@ -14,13 +17,16 @@
         :max-width="!displayMode ? 200 : undefined"
       >
         <v-img
+          :class="{ grayscale: unblocked && !unblocked[patch.id] }"
           :src="patch.image"
           aspect-ratio="1"
         />
       </v-responsive>
+
       <span class="d-block text-center font-weight-bold">
         {{ patch.name }}
       </span>
+
       <span class="d-block text-center">
         {{ patch.description }}
       </span>
@@ -42,6 +48,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+
+    unblocked: {
+      type: Object,
+      required: true
     }
   },
 
