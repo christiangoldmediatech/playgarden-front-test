@@ -1,5 +1,5 @@
 <template>
-  <v-card class="sticky" min-width="290" max-width="426">
+  <v-card class="sticky">
     <div class="green-line green-line-1" />
     <div class="green-line green-line-2" />
 
@@ -14,7 +14,7 @@
       </span>
 
       <v-row no-gutters justify="center">
-        <v-col cols="8">
+        <v-col>
           <child-select v-model="selectedChildId" hide-details />
         </v-col>
       </v-row>
@@ -27,19 +27,20 @@
         <v-col
           v-for="(link, i) in links"
           :key="`link-route-${link.route}`"
-          cols="6"
+          cols="12"
+          lg="6"
         >
           <v-hover v-slot="{ hover }">
             <v-card
               class="clickable"
               :disabled="!selectedChildId"
               :elevation="hover ? 9 : 3"
-              @click.stop="
-                $router.push({
-                  name: `app-student-cubby-${link.route}`,
-                  query: { id: selectedChildId }
-                })
-              "
+              nuxt
+              :to="{
+                name: `app-student-cubby-${link.route}`,
+                query: { id: selectedChildId }
+              }"
+              @click.native="$scrollTo('body')"
             >
               <v-card-text :class="{ selected: i === selected }">
                 <div class="d-flex flex-column fixed-height">
@@ -48,6 +49,7 @@
                     :src="require(`@/assets/png/student-cubby/${link.img}`)"
                     contain
                   />
+
                   <span class="d-block text-h6 text-center">
                     {{ link.text }}
                   </span>

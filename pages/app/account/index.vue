@@ -146,10 +146,10 @@ export default {
     UpdatePassword
   },
 
-  data: () => ({
+  data: vm => ({
     loading: false,
     passwordModal: false,
-    showSetting: true
+    showSetting: Number(vm.$route.query.tab) !== 2
   }),
 
   computed: mapGetters('auth', { userInfo: 'getUserInfo' })
