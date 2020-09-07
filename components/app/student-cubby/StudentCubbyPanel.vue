@@ -1,5 +1,5 @@
 <template>
-  <v-card class="sticky">
+  <v-card class="sticky" min-width="300">
     <div class="green-line green-line-1" />
     <div class="green-line green-line-2" />
 
@@ -27,8 +27,7 @@
         <v-col
           v-for="(link, i) in links"
           :key="`link-route-${link.route}`"
-          cols="12"
-          lg="6"
+          cols="6"
         >
           <v-hover v-slot="{ hover }">
             <v-card
@@ -95,7 +94,7 @@ export default {
         },
         {
           text: 'PATCHES',
-          img: 'trophy.png',
+          img: 'patches.svg',
           route: 'patches'
         }
       ]
