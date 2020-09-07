@@ -1,5 +1,12 @@
 export default {
   computed: {
+    headerHeight () {
+      if (this.$vuetify.breakpoint.mobile) {
+        return '56px'
+      }
+      return '64px'
+    },
+
     activities () {
       return this.lesson
         ? (this.lesson.lessonsActivities || []).map(({ activity }) => activity)
@@ -59,7 +66,7 @@ export default {
     worksheetsProgressHeight () {
       return (
         (this.worksheets.ONLINE.length ? 30 : 0) +
-        (this.worksheets.OFFLINE ? 30 : 0)
+        (this.worksheets.OFFLINE ? 60 : 0)
       )
     }
   },

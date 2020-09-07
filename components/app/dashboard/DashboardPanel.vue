@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="d-flex flex-column fill-height">
     <v-row class="letter-day-row" justify="center">
       <div class="letter-day-circle white">
         <div class="accent--text font-weight-bold text-center text-h3">
@@ -14,20 +14,19 @@
       </div>
     </v-row>
 
-    <v-card class="pt-12">
+    <v-card class="d-flex flex-column flex-grow-1 flex-shrink-0 panel-card">
       <div class="card-border-top" />
-
-      <v-card-text class="pt-12">
+      <div class="panel-container px-3" :style="{ '--headerHeight': headerHeight }">
         <!-- Videos -->
-        <v-row class="my-2" no-gutters>
+        <v-row dense>
           <v-col cols="2">
             <v-row
-              align="center"
               class="chip mb-2"
               :class="videosCompletionRate ? 'primary white--text' : 'grey'"
+              align="center"
               justify="center"
             >
-              <span>1</span>
+              <span class="font-weight-bold">1</span>
             </v-row>
 
             <progress-linear
@@ -60,9 +59,8 @@
               >
                 <v-list-item-avatar tile>
                   <v-img
-                    :class="{ grayscale: checkVideoDisabled(indexV) }"
+                    :class="{ 'dashboard-disabled': checkVideoDisabled(indexV) }"
                     :src="video.activityType.icon"
-                    contain
                   />
                 </v-list-item-avatar>
 
@@ -81,15 +79,15 @@
         </v-row>
 
         <!-- Worksheets -->
-        <v-row class="my-2" no-gutters>
+        <v-row dense>
           <v-col cols="2">
             <v-row
-              align="center"
               class="chip mb-2"
               :class="worksheetsCompletionRate ? 'primary white--text' : 'grey'"
+              align="center"
               justify="center"
             >
-              <span>2</span>
+              <span class="font-weight-bold">2</span>
             </v-row>
 
             <progress-linear
@@ -109,7 +107,7 @@
               </span>
               <div class="ml-2">
                 <v-img
-                  :class="['ma-0', { 'grayscale': videosCompletionRate < 100 }]"
+                  :class="['ma-0', { 'dashboard-disabled': videosCompletionRate < 100 }]"
                   :src="require('@/assets/png/dashboard/worksheets.png')"
                   max-width="32px"
                   max-height="32px"
@@ -129,27 +127,37 @@
             </div>
 
             <div v-if="worksheets.OFFLINE" class="font-weight-bold mt-3">
-              <component
-                :is="videosCompletionRate < 100 ? 'span' : 'nuxt-link'"
-                class="black--link font-weight-bold"
+              <span class="black--link font-weight-bold">
+                HANDS-ON LEARNING
+              </span>
+
+              <v-btn
+                color="primary"
+                small
+                block
+                :disabled="videosCompletionRate < 100"
+                nuxt
                 :to="{ name: 'app-dashboard-offline-worksheet' }"
               >
-                HANDS-ON LEARNING
-              </component>
+                <v-icon left>
+                  mdi-download
+                </v-icon>
+                Download Worksheet
+              </v-btn>
             </div>
           </v-col>
         </v-row>
 
         <!-- Activities -->
-        <v-row class="my-2" no-gutters>
+        <v-row dense>
           <v-col cols="2">
             <v-row
-              align="center"
               class="chip mb-2"
               :class="activitiesCompletionRate ? 'primary white--text' : 'grey'"
+              align="center"
               justify="center"
             >
-              <span>3</span>
+              <span class="font-weight-bold">3</span>
             </v-row>
 
             <progress-linear
@@ -186,7 +194,7 @@
                 <v-list-item-avatar tile>
                   <v-img
                     :class="{
-                      grayscale:
+                      'dashboard-disabled':
                         videosCompletionRate < 100 ||
                         checkVideoDisabled(indexA, 'activities')
                     }"
@@ -208,7 +216,7 @@
             </v-list>
           </v-col>
         </v-row>
-      </v-card-text>
+      </div>
     </v-card>
   </div>
 </template>
@@ -297,12 +305,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.panel-card {
+  padding-top: 100px;
+}
+
+.panel-container {
+  overflow-x: hidden;
+  overflow-y: auto;
+  border-radius: 0%;
+  height: calc(100vh - 223px - var(--headerHeight));
+}
+
+.dashboard-disabled {
+  -webkit-filter: opacity(40%); /* Chrome, Safari, Opera */
+  filter: opacity(40%);
+}
+
 .letter-day {
   &-row {
-    height: 55px;
+    height: 79px;
+    max-height: 79px;
   }
 
   &-circle {
+    margin-top: 24px;
     border-radius: 50%;
     box-shadow: #dce7b5 0px 0px 0px 8px, #c2daa5 0px 0px 0px 19px;
     height: 120px;

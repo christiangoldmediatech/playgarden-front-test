@@ -1,10 +1,9 @@
 <template>
-  <v-card>
+  <v-card class="d-flex flex-column" height="100%">
     <v-img
       :src="require('@/assets/jpg/worksheets_completed_2.jpg')"
       class="align-center white--text"
       gradient="to top, rgba(39, 39, 39, 0.9), rgba(255, 255, 255, 0) 80%"
-      contain
     >
       <v-row justify="center">
         <v-col class="text-center" cols="12">
