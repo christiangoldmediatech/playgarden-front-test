@@ -4,16 +4,20 @@
       :class="classes(hover, item.code)"
       v-on="$listeners"
     >
-      <v-responsive
+      <!-- <v-responsive
         :class="['rounded-circle', { 'worksheet-selected': item.code === selected }]"
-        :width="size"
-        :height="size"
+        :aspect-ratio="1"
       >
         <v-img
           :src="item.image"
-          aspect-ratio="1"
+          :aspect-ratio="1"
         />
-      </v-responsive>
+      </v-responsive> -->
+      <v-img
+        :class="['rounded-circle', { 'worksheet-selected': item.code === selected }]"
+        :src="item.image"
+        :aspect-ratio="1"
+      />
       <slot />
     </div>
   </v-hover>

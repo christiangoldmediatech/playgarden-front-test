@@ -1,33 +1,48 @@
 <template>
-  <v-row class="my-8" justify="center">
-    <v-col cols="12">
-      <v-row justify="center">
-        <worksheet-image
+  <v-row class="flex-column flex-nowrap fill-height align-center justify-space-around" no-gutters>
+    <v-col class="flex-shrink-1 flex-grow-0">
+      <!-- Question -->
+      <span class="d-block text-center font-weight-bold">
+        {{ question }}
+      </span>
+    </v-col>
+
+    <v-col class="flex-shrink-1 flex-grow-0">
+      <v-row align="center" justify="center" no-gutters>
+        <v-col
           v-for="item in items"
           :key="`images-${item.code}`"
-          v-bind="{ item, selected: selected ? selected.code : null }"
-          hoverable
-          @click.stop="select(item)"
+          cols="5"
+          sm="3"
         >
-          <span class="d-block font-weight-bold">
-            {{ item.word }}
-          </span>
-        </worksheet-image>
+          <worksheet-image
+            v-bind="{ item, selected: selected ? selected.code : null }"
+            hoverable
+            @click.stop="select(item)"
+          >
+            <span class="d-block font-weight-bold">
+              {{ item.word }}
+            </span>
+          </worksheet-image>
+        </v-col>
       </v-row>
     </v-col>
 
-    <v-col
-      class="mt-10"
-      cols="12"
-      sm="10"
-      md="8"
-      lg="6"
-      xl="4"
-    >
-      <continue-button
-        :disabled="!selected"
-        @click.stop="check"
-      />
+    <v-col class="d-flex align-center justify-center flex-shrink-0 flex-grow-1">
+      <v-row justify="center">
+        <v-col
+          cols="12"
+          sm="10"
+          md="8"
+          lg="6"
+          xl="4"
+        >
+          <continue-button
+            :disabled="!selected"
+            @click.stop="check"
+          />
+        </v-col>
+      </v-row>
     </v-col>
 
     <worksheet-message
@@ -66,7 +81,7 @@
 
 <script>
 import { shuffle } from '@/utils/arrayTools'
-import WorksheetImage from './WorksheetImage.vue'
+// import WorksheetImage from './WorksheetImage.vue'
 import WorksheetMessage from './WorksheetMessage.vue'
 import ContinueButton from './ContinueButton.vue'
 
@@ -74,7 +89,7 @@ export default {
   name: 'TapCorrect',
 
   components: {
-    WorksheetImage,
+    // WorksheetImage,
     WorksheetMessage,
     ContinueButton
   },
@@ -87,6 +102,11 @@ export default {
 
     loading: {
       type: Boolean,
+      required: true
+    },
+
+    question: {
+      type: String,
       required: true
     }
   },
