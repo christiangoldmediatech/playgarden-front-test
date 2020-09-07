@@ -1,16 +1,13 @@
 <template>
   <v-main>
-    <v-container fluid>
-      <v-row>
-        <v-col cols="12" sm="5" md="4" lg="3">
+    <v-container :class="{ 'dashboard-container': !$vuetify.breakpoint.mobile }" :style="{ '--headerHeight': headerHeight }" fluid>
+      <v-row class="dashboard-row" justify="center">
+        <v-col class="order-last order-md-first" cols="12" sm="8" md="4" lg="3">
           <dashboard-panel v-bind="{ lesson }" />
         </v-col>
-
-        <v-col cols="12" sm="7" md="8" lg="9">
-          <v-row align="center" class="px-3">
-            <!-- <v-btn v-if="allChildren.length > 1" color="primary" :to="{ name: 'app-pick-child' }">
-              Change Children
-            </v-btn> -->
+        <v-col class="d-flex flex-column" cols="12" md="8" lg="9">
+          <!-- Tutorial row -->
+          <v-row class="flex-grow-0 flex-shrink-1 mb-6" align="center" no-gutters>
             <v-col class="flex-shrink-1 flex-grow-0">
               <child-select v-model="selectedChild" hide-details />
             </v-col>
@@ -18,7 +15,12 @@
             <!-- <v-btn color="primary" @click.stop="onResetChild">
               RESET CHILD
             </v-btn> -->
-            <v-col class="text-right">
+
+            <!-- <span>
+              {{ breakpoints }}
+            </span> -->
+
+            <v-col class="text-center text-md-right">
               <span class="font-weight-medium">First time using Playgarden?</span>
 
               <v-btn color="primary" nuxt text :to="{ name: 'app-onboarding' }">
@@ -27,8 +29,8 @@
             </v-col>
           </v-row>
 
-          <v-row>
-            <v-col class="pt-5">
+          <v-row no-gutters>
+            <v-col cols="12">
               <v-row
                 v-if="$route.name === 'app-dashboard'"
                 align="center"
@@ -43,7 +45,6 @@
                   <v-progress-linear color="primary" indeterminate :size="20" />
                 </v-col>
               </v-row>
-
               <nuxt-child />
             </v-col>
           </v-row>
@@ -79,6 +80,11 @@ export default {
     ...mapGetters({ currentChild: 'getCurrentChild' }),
     ...mapGetters('admin/curriculum', { lesson: 'getLesson' }),
     ...mapGetters('children', { allChildren: 'rows' }),
+
+    breakpoints () {
+      const keys = Object.keys(this.$vuetify.breakpoint).filter(key => this.$vuetify.breakpoint[key])
+      return keys.join(', ')
+    },
 
     childrenIds () {
       // const ids = (this.currentChild
@@ -167,21 +173,31 @@ export default {
         } else {
           this.$router.push({ name: 'app-dashboard-lesson-completed' })
         }
-      } else if (this.lesson && this.$route.name === 'app-dashboard-lesson-completed') {
-        if (
-          (this.videosCompletionRate < 100 && this.videos.length) ||
-          (this.worksheetsCompletionRate < 100 && this.worksheets.ONLINE) ||
-          (this.activitiesCompletionRate < 100 && this.activities.length)
-        ) {
-          this.$router.push({ name: 'app-dashboard' })
-        }
       }
+      // else if (this.lesson && this.$route.name === 'app-dashboard-lesson-completed') {
+      //   if (
+      //     (this.videosCompletionRate < 100 && this.videos.length) ||
+      //     (this.worksheetsCompletionRate < 100 && this.worksheets.ONLINE) ||
+      //     (this.activitiesCompletionRate < 100 && this.activities.length)
+      //   ) {
+      //     this.$router.push({ name: 'app-dashboard' })
+      //   }
+      // }
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.dashboard-container {
+  max-height: calc(100vh - var(--headerHeight)) !important;
+  height: calc(100vh - var(--headerHeight)) !important;
+}
+
+.dashboard-row {
+  height: 100%;
+}
+
 .menu-max-width {
   max-width: 471px;
 }
