@@ -45,7 +45,6 @@
                 text
                 block
                 x-large
-                class="mt-15"
                 :to="{ name: 'app-account' }"
               >
                 MANAGE STUDENT PROFILES
