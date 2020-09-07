@@ -21,11 +21,11 @@
           <v-row align="end">
             <img
               :src="icon"
-              :height="($vuetify.breakpoint.xs) ? '32px' : '48px'"
+              height="38"
             >
 
-            <div class="mx-3">
-              <span class="font-weight-black text-outline category-text text-uppercase" :style="{'--bgColor': color}">
+            <div class="px-5">
+              <span class="font-weight-black text-outline category-text carousel-text text-uppercase" :style="{'--bgColor': color}">
                 {{ categoryName }}
               </span>
             </div>
@@ -141,7 +141,7 @@ export default {
     limit () {
       if (this.$vuetify.breakpoint.sm) { return 2 }
       if (this.$vuetify.breakpoint.xs) { return 1 }
-      return 4
+      return 3
     },
 
     total () {

@@ -2,7 +2,7 @@
   <v-col
     cols="12"
     sm="6"
-    md="3"
+    md="4"
   >
     <v-hover v-slot:default="{ hover }">
       <v-card
@@ -13,7 +13,7 @@
           class="clickable"
           :src="thumbnail"
           max-width="100%"
-          :aspect-ratio="16/9"
+          :aspect-ratio="18/6"
           @click.stop="playVideo"
         >
           <v-container fill-height fluid>
