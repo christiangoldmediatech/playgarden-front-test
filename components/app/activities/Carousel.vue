@@ -18,20 +18,21 @@
         </v-btn>
 
         <v-col :id="`cardSpace_${_uid}`">
-          <v-row align="end">
+          <v-row align="end" class="pl-3">
             <img
               :src="icon"
               height="38"
             >
 
             <div class="px-5">
-              <span class="font-weight-black text-outline category-text carousel-text text-uppercase" :style="{'--bgColor': color}">
+              <span class="font-weight-black text-outline category-text carousel-text text-uppercase pg-letter-spacing " :style="{'--bgColor': color}">
                 {{ categoryName }}
               </span>
             </div>
 
             <v-btn
               color="primary"
+              class="ml-2"
               :small="$vuetify.breakpoint.xs"
               @click.stop="playAll"
             >
