@@ -1,7 +1,7 @@
 import videojs from 'video.js'
 import CompletedDialog from '@/components/app/dashboard/CompletedDialog.vue'
 import ExitTip from '../controls/ExitTip.vue'
-import MobileExitBtn from '../controls/MobileExitBtn.vue'
+import FavoriteBtn from '../controls/FavoriteBtn.vue'
 import BufferingCircle from '../controls/BufferingCircle.vue'
 import ControlBar from '../controls/ControlBar.vue'
 
@@ -9,8 +9,8 @@ export default {
   components: {
     CompletedDialog,
     ExitTip,
-    MobileExitBtn,
     BufferingCircle,
+    FavoriteBtn,
     ControlBar
   },
 
