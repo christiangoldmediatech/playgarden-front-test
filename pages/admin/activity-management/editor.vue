@@ -109,12 +109,18 @@
                   </v-col>
 
                   <v-col class="text-center" cols="12" sm="9" lg="6">
-                    <jw-player
+                    <video-js-player
                       v-if="video && video.videoUrl"
-                      :file="video.videoUrl.HLS"
-                      :title="video.name"
-                      :image="video.thumbnail"
-                      :description="video.description"
+                      :options="{
+                        title: video.name,
+                        poster: video.thumbnail,
+                        sources: [
+                          {
+                            src: video.videoUrl.HLS,
+                            type: 'application/x-mpegURL'
+                          }
+                        ]
+                      }"
                     />
 
                     <v-progress-circular
@@ -227,11 +233,16 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import VideoJsPlayer from '@/components/video-player/VideoJsPlayer'
 
 export default {
   name: 'Editor',
 
   layout: 'admin',
+
+  components: {
+    VideoJsPlayer
+  },
 
   data () {
     return {

@@ -45,7 +45,6 @@
 </template>
 
 <script>
-import 'video.js/dist/video-js.css'
 import Setup from './mixins/Setup'
 
 export default {
