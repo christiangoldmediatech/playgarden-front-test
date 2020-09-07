@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import { get } from 'lodash'
 import { mapActions } from 'vuex'
 
 import PatchRow from '@/components/app/student-cubby/PatchRow.vue'
@@ -56,8 +57,9 @@ export default {
     items () {
       return this.activityTypes.map((type) => {
         const patches = this.patches.filter(
-          patch => patch.activityType.id === type.id
+          patch => get(patch, 'activityType.id') === type.id
         )
+
         return {
           ...type,
           patches

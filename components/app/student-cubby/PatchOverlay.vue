@@ -44,6 +44,11 @@ export default {
   },
 
   created () {
+    this.$nuxt.$on('close-patch-overlay', () => {
+      this.patch = null
+      this.overlay = false
+    })
+
     this.$nuxt.$on('open-patch-overlay', (patch) => {
       this.patch = patch
       this.overlay = true

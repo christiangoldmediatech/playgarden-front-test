@@ -1,5 +1,6 @@
 <template>
   <div class="d-flex flex-column fill-height">
+    <!-- <div class="sticky"> -->
     <v-row class="letter-day-row" justify="center">
       <div class="letter-day-circle white">
         <div class="accent--text font-weight-bold text-center text-h3">
@@ -354,5 +355,11 @@ export default {
   position: absolute;
   top: 0;
   width: 100%;
+}
+
+.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 100px;
 }
 </style>

@@ -5,7 +5,7 @@
         <v-row
           no-gutters
         >
-          <v-col class="mr-5">
+          <v-col :class="{'pr-2': $vuetify.breakpoint.mdAndUp}" :cols="$vuetify.breakpoint.mdAndUp ? '6' : '12'">
             <!-- First name -->
             <validation-provider
               v-slot="{ errors }"
@@ -23,7 +23,7 @@
               />
             </validation-provider>
           </v-col>
-          <v-col>
+          <v-col :class="{'pl-2': $vuetify.breakpoint.mdAndUp}" :cols="$vuetify.breakpoint.mdAndUp ? '6' : '12'">
             <!-- Last name -->
             <validation-provider
               v-slot="{ errors }"
