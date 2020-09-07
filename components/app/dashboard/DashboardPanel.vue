@@ -62,6 +62,7 @@
                   <v-img
                     :class="{ 'dashboard-disabled': checkVideoDisabled(indexV) }"
                     :src="video.activityType.icon"
+                    contain
                   />
                 </v-list-item-avatar>
 

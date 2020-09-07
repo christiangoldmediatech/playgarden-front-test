@@ -31,7 +31,7 @@
             class="white--text"
             :loading="loading"
             block
-            @click.stop="doAction(button.action)"
+            @click.stop="button.action"
           >
             <v-icon v-if="button.iconLeft" large left>
               {{ button.iconLeft }}
