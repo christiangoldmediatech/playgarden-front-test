@@ -1,7 +1,7 @@
 <template>
   <v-container :class="{ 'content-padding': sticky }" :style="{ '--paddingHeight': `${$vuetify.breakpoint.mobile ? 64 : 128}px` }">
     <v-row justify="center">
-      <v-col class="text-center font-weight-bold text-h5" cols="12">
+      <v-col class="text-center font-weight-bold text-h5 pt-0" cols="12">
         Browse by category
       </v-col>
     </v-row>
@@ -40,6 +40,7 @@
           v-for="category in categories"
           :key="`category-${category.id}`"
           v-slot:default="{ hover }"
+          class="px-2"
         >
           <div
             :class="['wrapper clickable text-center mx-2', { 'scaled': hover }]"
