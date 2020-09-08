@@ -3,7 +3,7 @@
     <div class="green-line green-line-1" />
     <div class="green-line green-line-2" />
 
-    <v-card flat tile width="100%" max-width="2000" class="mt-11">
+    <v-card flat tile width="100%" max-width="1600" class="mt-11">
       <v-card-text class="py-0">
         <v-container fluid py-0>
           <v-row>
@@ -12,7 +12,6 @@
               cols="12"
               sm="6"
               md="4"
-              lg="6"
             >
               <v-container py-0>
                 <v-row no-gutters class="logo-footer">
@@ -21,7 +20,7 @@
                       alt="Playgarden Prep's Logo"
                       class="mb-1 mt-0"
                       contain
-                      max-width="600"
+                      max-width="450"
                       :src="require('~/assets/svg/logo.svg')"
                     />
                   </v-col>
@@ -198,7 +197,7 @@ export default {
 }
 
 .info-footer-title {
-  color: #8ab591 !important;
+  color: #78c383 !important;
 }
 
 .text-footer-contact {
