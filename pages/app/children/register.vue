@@ -94,7 +94,9 @@ export default {
       try {
         await Promise.all(
           children.map(child =>
-            child.id ? this.updateChild(child) : this.storeChildren(child)
+            child.id
+              ? this.updateChild({ id: child.id, params: child })
+              : this.storeChildren(child)
           )
         )
 

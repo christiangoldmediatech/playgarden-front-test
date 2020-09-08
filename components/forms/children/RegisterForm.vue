@@ -165,6 +165,8 @@
 
 <script>
 import dayjs from 'dayjs'
+import { get } from 'lodash'
+
 import { mapActions, mapGetters } from 'vuex'
 
 import { jsonCopy } from '@/utils/objectTools'
@@ -212,12 +214,15 @@ export default {
       child = child || {}
 
       this.draft.push({
-        _birthdayFormatted: child._birthdayFormatted || '',
-        _birthdayPicker: dayjs(
+        _birthdayFormatted: dayjs(
           child.birthday || `${new Date().getFullYear() - 2}-01-01`
         ).format('MM/DD/YYYY'),
+        _birthdayPicker: dayjs(
+          child.birthday || `${new Date().getFullYear() - 2}-01-01`
+        ).format('YYYY-MM-DD'),
         _menu: child._menu || false,
-        backpackId: child.backpackId || '',
+        id: child.id || null,
+        backpackId: get(child, 'backpack.id', ''),
         birthday: child.birthday || '',
         firstName: child.firstName || '',
         gender: child.gender || '',
@@ -254,6 +259,7 @@ export default {
             if (item.id) {
               await this.deleteChild(item.id)
             }
+
             this.$delete(this.draft, index)
           } finally {
             this.loading = false
