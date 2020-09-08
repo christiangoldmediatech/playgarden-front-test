@@ -35,9 +35,3 @@ export default {
   })
 }
 </script>
-
-<style scoped>
-.logo-img {
-  max-width: 200px;
-}
-</style>

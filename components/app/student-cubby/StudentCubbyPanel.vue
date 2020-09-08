@@ -1,5 +1,5 @@
 <template>
-  <v-card class="sticky" min-width="300">
+  <v-card class="sticky" min-width="275">
     <div class="green-line green-line-1" />
     <div class="green-line green-line-2" />
 
