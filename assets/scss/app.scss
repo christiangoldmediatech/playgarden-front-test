@@ -2,9 +2,13 @@
 /* import them directly into nuxt.config.js */
 
 /* GLOBAL */
-*:not(div.video-js, div.video-js *) {
+* {
   color: $pg-black;
   font-family: "Poppins", sans-serif !important;
+}
+.video-js * {
+  font-family: VideoJS !important;
+  color: white !important;
 }
 
 .v-application a {

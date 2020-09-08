@@ -53,7 +53,7 @@ export default {
 
 <style lang="scss" scoped>
 .v-application ::v-deep {
-  *:not(div.video-js, div.video-js *),
+  *,
   .display-1,
   .display-2,
   .display-3,
@@ -72,7 +72,11 @@ export default {
   .text-h4,
   .text-h5,
   .text-h6 {
-    font-family: "Poppins", sans-serif !important;
+    font-family: "Poppins", Arial, Helvetica, sans-serif !important;
+  }
+  .video-js * {
+    font-family: VideoJS !important;
+    color: white !important;
   }
   .container:not(.container--fluid) {
     max-width: 1200px;
