@@ -53,6 +53,7 @@ export default {
 
 <style lang="scss" scoped>
 .v-application ::v-deep {
+  *:not(div.video-js, div.video-js *),
   .display-1,
   .display-2,
   .display-3,

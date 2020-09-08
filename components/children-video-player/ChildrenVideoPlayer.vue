@@ -15,14 +15,6 @@
     <!-- Favorite Btn -->
     <favorite-btn v-if="videoId" v-bind="{ videoId }" />
 
-    <!-- Test Dialog -->
-    <!-- <div class="control-container d-flex align-center justify-center">
-      <v-btn @click.stop="dialog = !dialog">
-        @click.stop="nextUp.show = !nextUp.show"
-        Test
-      </v-btn>
-    </div> -->
-
     <!-- Next Up Component -->
     <next-up :params="nextUp" />
 

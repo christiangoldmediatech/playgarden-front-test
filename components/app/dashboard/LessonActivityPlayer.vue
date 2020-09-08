@@ -63,23 +63,10 @@ export default {
         }
       ]
     }
-    // completedProps () {
-    //   return {
-    //     timeOutAction: () => {
-    //       this.$router.push({ name: 'app-dashboard-online-worksheet' })
-    //     },
-    //     buttons: this.buttons,
-    //     returnAction: () => {
-    //       this.dialog = false
-    //     }
-    //   }
-    // }
   },
 
   methods: {
     ...mapActions('children/lesson', ['saveActivityProgres']),
-    ...mapActions('admin/activity', ['getNextActivity']),
-
     ...mapActions('admin/activity/analytics', {
       createAnalytic: 'create',
       getAnalytics: 'getByChildId',
@@ -138,6 +125,7 @@ export default {
 
     onReady (player) {
       this.player = player
+      player.on('timeupdate', this.handleNextUp)
       player.on('pause', this.saveProgress)
       player.on('ended', this.completedVideo)
     },
@@ -206,39 +194,9 @@ export default {
         this.index++
         this.mediaObject = this.playlist[this.index]
         this.loadAndPlay()
-        this.$router.push({ name: 'app-dashboard-lesson-activities', query: { id: this.mediaObject.activityId } })
-      } else {
-        // Find random video
-        // this.$refs.childrenVideoPlayer.showCompletedDialog()
-        if (!this.mediaObject.activityId) {
-          return
+        if (this.mediaObject.redirect) {
+          this.$router.push({ name: 'app-dashboard-lesson-activities', query: { id: this.mediaObject.activityId } })
         }
-        const curriculumTypeId = this.mediaObject.curriculumType ? this.mediaObject.curriculumType.id : undefined
-
-        this.getNextActivity({
-          prevActivityId: this.mediaObject.activityId,
-          params: {
-            curriculumTypeId
-          }
-        }).then(({ id, activityType, curriculumType, videos }) => {
-          this.mediaObject = {
-            title: videos.name,
-            description: videos.name,
-            activityId: id,
-            activityType,
-            curriculumType,
-            src: {
-              src: videos.videoUrl.HLS,
-              type: 'application/x-mpegURL'
-            },
-            poster: videos.thumbnail,
-            videoId: videos.id,
-            viewed: {
-              completed: true
-            }
-          }
-          this.loadAndPlay()
-        })
       }
     }
   }

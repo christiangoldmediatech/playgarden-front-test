@@ -196,6 +196,17 @@ export default {
 
     showCompletedDialog () {
       this.dialog = true
+    },
+
+    showNextUp (params) {
+      this.nextUp = params
+      this.$set(this.nextUp, 'show', true)
+      return new Promise((resolve) => {
+        window.setTimeout(() => {
+          this.$set(this.nextUp, 'show', false)
+          resolve()
+        }, 5000)
+      })
     }
   }
 }
