@@ -72,7 +72,7 @@ export default {
   .text-h4,
   .text-h5,
   .text-h6 {
-    font-family: "Poppins", Arial, Helvetica, sans-serif !important;
+    font-family: "Poppins", sans-serif !important;
   }
   .video-js * {
     font-family: VideoJS !important;
