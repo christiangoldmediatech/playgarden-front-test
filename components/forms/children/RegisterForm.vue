@@ -1,19 +1,16 @@
 <template>
   <validation-observer v-slot="{ invalid, passes }">
     <v-form :readonly="loading" @submit.prevent="passes(onSubmit)">
-      <v-row v-for="(item, indexD) in draft" :key="indexD" class="mb-6">
+      <v-row
+        v-for="(item, indexD) in draft"
+        :key="indexD"
+        class="mb-6"
+        no-gutters
+      >
         <v-col>
           <span class="font-weight-bold text-h5">
             CHILD’S INFORMATION
           </span>
-
-          <v-row class="mb-6">
-            <v-spacer />
-
-            <v-btn v-if="removable" icon @click="$delete(draft, indexD)">
-              <v-icon>mdi-close</v-icon>
-            </v-btn>
-          </v-row>
 
           <!-- Name -->
           <validation-provider
@@ -121,6 +118,16 @@
             <input v-model="item.backpackId" type="hidden">
           </validation-provider>
 
+          <v-btn
+            v-if="removable"
+            block
+            text
+            color="primary"
+            @click.stop="removeChild(item, indexD)"
+          >
+            DELETE CHILD PROFILE
+          </v-btn>
+
           <v-divider v-if="removable" class="mt-6" />
         </v-col>
       </v-row>
@@ -158,7 +165,7 @@
 
 <script>
 import dayjs from 'dayjs'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 import { jsonCopy } from '@/utils/objectTools'
 
@@ -176,30 +183,42 @@ export default {
   }),
 
   computed: {
+    ...mapGetters('auth', ['isUserLoggedIn']),
+
     removable () {
       return this.draft.length > 1
     }
   },
 
-  created () {
+  async created () {
     this.addRow()
     this.fetchBackpacks()
+
+    if (this.isUserLoggedIn) {
+      this.loadChildren()
+    }
   },
 
   methods: {
     ...mapActions('backpacks', ['getBackpacks']),
 
-    addRow () {
+    ...mapActions('children', {
+      getChildren: 'get',
+      deleteChild: 'delete'
+    }),
+
+    addRow (child = {}) {
       this.draft.push({
-        _birthdayFormatted: '',
-        _birthdayPicker: `${new Date().getFullYear() - 2}-01-01`,
-        _menu: false,
-        backpackId: '',
-        birthday: '',
-        firstName: '',
-        gender: '',
-        lastName: ' ',
-        level: 'BEGINNER'
+        _birthdayFormatted: child._birthdayFormatted || '',
+        _birthdayPicker:
+          child._birthdayPicker || `${new Date().getFullYear() - 2}-01-01`,
+        _menu: child._menu || false,
+        backpackId: child.backpackId || '',
+        birthday: child.birthday || '',
+        firstName: child.firstName || '',
+        gender: child.gender || '',
+        lastName: child.lastName || ' ',
+        level: child.level || 'BEGINNER'
       })
     },
 
@@ -218,6 +237,37 @@ export default {
 
     onSubmit () {
       this.$emit('click:submit', jsonCopy([...this.draft]))
+    },
+
+    removeChild (item, index) {
+      this.$nuxt.$emit('open-prompt', {
+        title: 'Delete child profile?',
+        message: `Are you sure you wish to delete '${item.firstName}'s' profile?`,
+        action: async () => {
+          this.loading = true
+
+          try {
+            if (item.id) {
+              await this.deleteChild(item.id)
+            }
+            this.$delete(this.draft, index)
+          } finally {
+            this.loading = false
+          }
+        }
+      })
+      return false
+    },
+
+    async loadChildren () {
+      try {
+        const rows = await this.getChildren()
+
+        this.draft = rows.map(this.addRow)
+      } catch (e) {
+      } finally {
+        this.loading = false
+      }
     }
   }
 }

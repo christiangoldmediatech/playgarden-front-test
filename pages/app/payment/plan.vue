@@ -1,5 +1,29 @@
 <template>
-  <subscription-plan-selection @click:submit="onSubmit" />
+  <v-row>
+    <v-col>
+      <v-row>
+        <v-btn
+          v-if="inSignUpProcess"
+          class="ma-2"
+          color="accent"
+          nuxt
+          text
+          :to="{
+            name: 'app-children-register',
+            query: { process: 'signup', step: '2' }
+          }"
+        >
+          <v-icon left>
+            mdi-less-than
+          </v-icon>
+
+          Back
+        </v-btn>
+      </v-row>
+
+      <subscription-plan-selection @click:submit="onSubmit" />
+    </v-col>
+  </v-row>
 </template>
 
 <script>
