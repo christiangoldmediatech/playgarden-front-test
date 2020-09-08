@@ -18,18 +18,21 @@
         />
       </v-row>
     </v-card-text>
+    <course-progress-overlay />
   </v-card>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
 import LetterCard from '@/components/app/student-cubby/LetterCard.vue'
+import CourseProgressOverlay from '@/components/app/student-cubby/CourseProgressOverlay.vue'
 
 export default {
   name: 'CourseProgress',
 
   components: {
-    LetterCard
+    LetterCard,
+    CourseProgressOverlay
   },
 
   data: () => {
