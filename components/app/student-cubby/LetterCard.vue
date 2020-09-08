@@ -28,6 +28,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   name: 'LetterCard',
 
@@ -35,31 +37,31 @@ export default {
     letter: {
       type: Object,
       required: true
-    },
-
-    unblocked: {
-      type: Object,
-      required: true
     }
   },
 
   computed: {
-    _unblocked () {
-      return this.unblocked && this.unblocked[this.letter.id]
+    studentId () {
+      return this.$route.query.id
     },
 
-    lessons () {
-      if (this._unblocked) {
-        return this.unblocked[this.letter.id].map(({ lesson }) => lesson)
-      }
-      return []
+    _unblocked () {
+      return this.letter.enabled
     }
   },
 
   methods: {
-    showProgress () {
+    ...mapActions('children/course-progress', ['getCourseProgressByChildId']),
+
+    async showProgress () {
       if (this._unblocked) {
-        this.$nuxt.$emit('show-curriculum-progress', this.lessons)
+        const data = await this.getCourseProgressByChildId({
+          id: this.studentId,
+          curriculumTypeId: this.letter.id
+        })
+
+        const lessons = data.map(({ lesson }) => lesson)
+        this.$nuxt.$emit('show-curriculum-progress', lessons)
       }
     }
   }

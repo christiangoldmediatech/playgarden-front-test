@@ -17,7 +17,7 @@
 
     <v-card class="d-flex flex-column flex-grow-1 flex-shrink-0 panel-card">
       <div class="card-border-top" />
-      <div class="panel-container px-3" :style="{ '--headerHeight': headerHeight }">
+      <div v-if="false" class="panel-container px-3" :style="{ '--headerHeight': headerHeight }">
         <!-- Videos -->
         <v-row dense>
           <v-col cols="2">
@@ -238,6 +238,21 @@ export default {
         return val === null || typeof val === 'object'
       },
       default: null
+    },
+
+    displayMode: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
+
+  computed: {
+    panelHeight () {
+      if (document) {
+        return 10
+      }
+      return 0
     }
   },
 
@@ -315,7 +330,8 @@ export default {
   overflow-x: hidden;
   overflow-y: auto;
   border-radius: 0%;
-  height: calc(100vh - 223px - var(--headerHeight));
+  // height: calc(100vh - 223px - var(--headerHeight));
+  // height: calc(100% - 179px);
 }
 
 .dashboard-disabled {

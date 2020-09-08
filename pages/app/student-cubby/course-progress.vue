@@ -14,7 +14,6 @@
           v-for="letter in letters"
           :key="`letter-card-${letter.id}`"
           v-bind="{ letter }"
-          :unblocked="unblocked"
         />
       </v-row>
     </v-card-text>
@@ -37,8 +36,7 @@ export default {
 
   data: () => {
     return {
-      letters: [],
-      unblocked: {}
+      letters: []
     }
   },
 
@@ -55,31 +53,17 @@ export default {
   },
 
   created () {
-    this.loadLetters()
+    this.fetchChildProgress()
   },
 
   methods: {
-    ...mapActions('admin/curriculum', ['getTypes']),
-
     ...mapActions('children/course-progress', ['getCourseProgressByChildId']),
 
     async fetchChildProgress () {
-      const unblocked = {}
       const data = await this.getCourseProgressByChildId({
         id: this.studentId
       })
-
-      data.map(progress => (unblocked[progress.id] = progress.childProgress))
-
-      this.unblocked = unblocked
-    },
-
-    async loadLetters () {
-      this.letters = await this.getTypes()
-
-      if (this.studentId) {
-        await this.fetchChildProgress()
-      }
+      this.letters = data
     }
   }
 }
