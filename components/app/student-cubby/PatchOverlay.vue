@@ -1,6 +1,6 @@
 <template>
   <v-overlay :value="overlay" dark z-index="100">
-    <v-container class="pa-0 fullscreen" fluid>
+    <v-container class="pa-0 fullscreen-overlay" fluid>
       <v-row no-gutters>
         <v-col cols="ml-3 mt-3">
           <v-btn class="text-none" text x-large @click.stop="overlay = false">
@@ -56,10 +56,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.fullscreen {
-  width: 100vw !important;
-  height: 100vh !important;
-}
-</style>

@@ -6,6 +6,7 @@
       :height="141"
       :width="141"
       :elevation="hover ? 9 : 3"
+      @click.stop="showProgress"
     >
       <div class="align-center d-flex flex-column justify-center fill-height">
         <v-img
@@ -45,6 +46,21 @@ export default {
   computed: {
     _unblocked () {
       return this.unblocked && this.unblocked[this.letter.id]
+    },
+
+    lessons () {
+      if (this._unblocked) {
+        return this.unblocked[this.letter.id].map(({ lesson }) => lesson)
+      }
+      return []
+    }
+  },
+
+  methods: {
+    showProgress () {
+      if (this._unblocked) {
+        this.$nuxt.$emit('show-curriculum-progress', this.lessons)
+      }
     }
   }
 }
