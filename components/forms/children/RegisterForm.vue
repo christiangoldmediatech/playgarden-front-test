@@ -141,7 +141,7 @@
             :disabled="loading"
             text
             x-large
-            @click="addRow"
+            @click="addRow(null)"
           >
             ADD ANOTHER CHILD
           </v-btn>
@@ -190,12 +190,13 @@ export default {
     }
   },
 
-  async created () {
-    this.addRow()
+  created () {
     this.fetchBackpacks()
 
     if (this.isUserLoggedIn) {
       this.loadChildren()
+    } else {
+      this.addRow()
     }
   },
 
@@ -207,11 +208,14 @@ export default {
       deleteChild: 'delete'
     }),
 
-    addRow (child = {}) {
+    addRow (child) {
+      child = child || {}
+
       this.draft.push({
         _birthdayFormatted: child._birthdayFormatted || '',
-        _birthdayPicker:
-          child._birthdayPicker || `${new Date().getFullYear() - 2}-01-01`,
+        _birthdayPicker: dayjs(
+          child.birthday || `${new Date().getFullYear() - 2}-01-01`
+        ).format('MM/DD/YYYY'),
         _menu: child._menu || false,
         backpackId: child.backpackId || '',
         birthday: child.birthday || '',
@@ -263,7 +267,7 @@ export default {
       try {
         const rows = await this.getChildren()
 
-        this.draft = rows.map(this.addRow)
+        rows.map(this.addRow)
       } catch (e) {
       } finally {
         this.loading = false
