@@ -110,25 +110,28 @@ export default {
     ...mapActions('caregiver', { newCaregiver: 'signup' }),
 
     async onSubmit (data) {
-      const isUserLoggedIn = this.isUserLoggedIn
-      this.loading = true
+      try {
+        const isUserLoggedIn = this.isUserLoggedIn
+        this.loading = true
 
-      await this.registerProcess(
-        this.inInvitationProcess ? { data, token: this.token } : data
-      )
+        await this.registerProcess(
+          this.inInvitationProcess ? { data, token: this.token } : data
+        )
 
-      this.$snotify.success('Welcome to Playgarden Prep!')
+        this.$snotify.success('Welcome to Playgarden Prep!')
 
-      if (this.inInvitationProcess) {
-        await this.$router.push({ name: 'app-dashboard' })
-      } else if (isUserLoggedIn) {
-        await this.$router.push({
-          name: 'app-children-register',
-          query: { process: 'signup', step: '2' }
-        })
+        if (this.inInvitationProcess) {
+          await this.$router.push({ name: 'app-dashboard' })
+        } else if (isUserLoggedIn) {
+          await this.$router.push({
+            name: 'app-children-register',
+            query: { process: 'signup', step: '2' }
+          })
+        }
+      } catch (e) {
+      } finally {
+        this.loading = false
       }
-
-      this.loading = false
     },
 
     async registerProcess (data) {

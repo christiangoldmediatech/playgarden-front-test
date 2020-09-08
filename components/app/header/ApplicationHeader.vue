@@ -2,12 +2,7 @@
   <v-app-bar app class="pg-app-bar" color="white" flat>
     <v-row align="center" justify="center" no-gutters>
       <v-col class="pg-app-bar-col">
-        <v-row
-          align="center"
-          class="px-lg-3"
-          justify="space-between"
-          no-gutters
-        >
+        <v-row align="center" justify="space-between" no-gutters>
           <v-app-bar-nav-icon
             class="hidden-md-and-up primary pg-app-bar-nav-icon"
             color="white"
@@ -53,18 +48,39 @@
             </v-btn>
 
             <v-btn
+              v-if="isUserLoggedIn && !isUserInSingupProcess"
               class="px-13 ml-3"
               color="accent"
               nuxt
-              :to="{ name: isUserLoggedIn ? 'app-account' : 'auth-login' }"
+              :to="{ name: 'app-account' }"
             >
-              {{ isUserLoggedIn ? "ACCOUNT" : "LOGIN" }}
+              ACCOUNT
+            </v-btn>
+
+            <v-btn
+              v-if="isUserLoggedIn && isUserInSingupProcess"
+              class="px-13 ml-3"
+              color="accent"
+              nuxt
+              :to="{ name: 'auth-logout' }"
+            >
+              LOG OUT
+            </v-btn>
+
+            <v-btn
+              v-else-if="!isUserLoggedIn"
+              class="px-13 ml-3"
+              color="accent"
+              nuxt
+              :to="{ name: 'auth-login' }"
+            >
+              LOGIN
             </v-btn>
           </div>
 
           <div class="hidden-xs-only hidden-md-and-up">
             <v-btn
-              v-if="isUserLoggedIn"
+              v-if="isUserLoggedIn && !isUserInSingupProcess"
               active-class="transparent--text"
               icon
               nuxt
@@ -158,10 +174,6 @@ export default {
   letter-spacing: normal;
   text-align: left;
   color: #606060 !important;
-}
-
-.no-border-radius {
-  border-radius: 0px !important;
 }
 
 .btn-register:before {
