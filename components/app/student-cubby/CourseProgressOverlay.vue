@@ -1,5 +1,9 @@
 <template>
-  <v-overlay class="justify-start" :dark="false" :value="show">
+  <v-overlay
+    :class="`${loading ? 'align-center justify-center' : 'align-start justify-start'}`"
+    :dark="false"
+    :value="show"
+  >
     <v-btn
       class="top-left text-none white--text px-4"
       text
@@ -11,103 +15,97 @@
       </v-icon>
       Back
     </v-btn>
-    <perfect-scrollbar>
+    <v-progress-circular
+      v-if="loading"
+      color="#f89838"
+      indeterminate
+      size="128"
+      width="8"
+    />
+    <perfect-scrollbar v-else>
       <v-container class="panel-container" fill-height fluid>
         <v-row class="flex-nowrap">
-          <!-- <v-col v-for="i in 5" :key="`test-${i}`" cols="3">
-            <v-card height="100%">
-              <v-card-title>
-                Test
-              </v-card-title>
-
-              <v-card-text>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam consequuntur, quod ipsa rerum illo blanditiis. Impedit ex commodi a similique provident rem deserunt dicta adipisci soluta nisi minima, libero quis?
-              </v-card-text>
-            </v-card>
-          </v-col> -->
-          <v-col
-            v-for="lesson in lessons"
-            :key="`curriculum-lesson-progress-2-${lesson.id}`"
-            cols="3"
-          >
-            <dashboard-panel
-              v-bind="{ lesson }"
-              display-mode
-            />
-          </v-col>
-        </v-row>
-        <!-- <v-row class="flex-nowrap">
           <v-col
             v-for="lesson in lessons"
             :key="`curriculum-lesson-progress-${lesson.id}`"
-            cols="3"
+            cols="10"
+            sm="8"
+            md="4"
+            lg="3"
           >
             <dashboard-panel
               v-bind="{ lesson }"
               display-mode
             />
           </v-col>
-
           <v-col
-            v-for="lesson in lessons"
-            :key="`curriculum-lesson-progress-2-${lesson.id}`"
-            cols="3"
+            v-for="i in missing"
+            :key="`curriculum-lesson-missing-${i}`"
+            cols="10"
+            sm="8"
+            md="4"
+            lg="3"
           >
-            <dashboard-panel
-              v-bind="{ lesson }"
-              display-mode
+            <blank-dashboard-panel
+              :letter="(lessons[0]) ? lessons[0].curriculumType.letter : ''"
+              :day="i + lessons.length"
             />
           </v-col>
-
-          <v-col
-            v-for="lesson in lessons"
-            :key="`curriculum-lesson-progress-3-${lesson.id}`"
-            cols="3"
-          >
-            <dashboard-panel
-              v-bind="{ lesson }"
-              display-mode
-            />
-          </v-col>
-        </v-row> -->
+        </v-row>
       </v-container>
     </perfect-scrollbar>
   </v-overlay>
 </template>
 
 <script>
-// import DashboardPanel from '@/components/app/dashboard/DashboardPanel'
+import DashboardPanel from '@/components/app/dashboard/DashboardPanel.vue'
+import BlankDashboardPanel from '@/components/app/dashboard/BlankDashboardPanel.vue'
 import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'CourseProgressOverlay',
 
   components: {
-    // DashboardPanel,
+    DashboardPanel,
+    BlankDashboardPanel,
     PerfectScrollbar
   },
 
   data: () => {
     return {
       show: false,
-      lessons: [],
-      settings: {
-        suppressScrollY: true,
-        suppressScrollX: false,
-        wheelPropagation: false
-      }
+      loading: false,
+      lessons: []
+    }
+  },
+
+  computed: {
+    studentId () {
+      return this.$route.query.id
+    },
+
+    missing () {
+      return 5 - this.lessons.length
     }
   },
 
   mounted () {
-    this.$nuxt.$on('show-curriculum-progress', (lessons) => {
-      this.lessons = lessons
+    this.$nuxt.$on('show-curriculum-progress', (curriculumTypeId) => {
+      this.lessons = []
+      this.loading = true
+      this.getCourseProgressByChildId({ id: this.studentId, curriculumTypeId }).then((data) => {
+        this.lessons = data.map(({ lesson }) => lesson)
+        this.loading = false
+      })
       this.show = true
       document.querySelector('html').style.overflowY = 'hidden'
     })
   },
 
   methods: {
+    ...mapActions('children/course-progress', ['getCourseProgressByChildId']),
+
     close () {
       this.show = false
       document.querySelector('html').style.overflowY = 'auto'
@@ -143,5 +141,9 @@ export default {
   padding-bottom: 64px;
   overflow: auto;
   z-index: 300;
+}
+
+.ps__rail-x:hover > .ps__thumb-x, .ps__rail-x:focus > .ps__thumb-x, .ps__rail-x.ps--clicking .ps__thumb-x {
+  background-color: #C2DAA5 !important;
 }
 </style>

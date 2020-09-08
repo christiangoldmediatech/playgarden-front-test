@@ -17,7 +17,7 @@
 
     <v-card class="d-flex flex-column flex-grow-1 flex-shrink-0 panel-card">
       <div class="card-border-top" />
-      <div v-if="false" class="panel-container px-3" :style="{ '--headerHeight': headerHeight }">
+      <div class="panel-container px-3" :style="{ '--panelHeight': panelHeight }">
         <!-- Videos -->
         <v-row dense>
           <v-col cols="2">
@@ -51,12 +51,7 @@
                 :key="`video-lesson-index-${indexV}-id-${video.id}`"
                 class="px-0"
                 :disabled="checkVideoDisabled(indexV)"
-                nuxt
-                exact
-                :to="{
-                  name: 'app-dashboard-lesson-videos',
-                  query: { id: video.id }
-                }"
+                v-bind="generateProperties({ name: 'app-dashboard-lesson-videos', query: { id: video.id } })"
               >
                 <v-list-item-avatar tile>
                   <v-img
@@ -120,7 +115,7 @@
 
             <div v-if="worksheets.ONLINE.length" class="mt-3">
               <component
-                :is="videosCompletionRate < 100 ? 'span' : 'nuxt-link'"
+                :is="videosCompletionRate < 100 || displayMode ? 'span' : 'nuxt-link'"
                 class="black--link font-weight-bold"
                 :to="{ name: 'app-dashboard-online-worksheet' }"
               >
@@ -138,8 +133,7 @@
                 small
                 block
                 :disabled="videosCompletionRate < 100"
-                nuxt
-                :to="{ name: 'app-dashboard-offline-worksheet' }"
+                v-bind="generateProperties({ name: 'app-dashboard-offline-worksheet' })"
               >
                 <v-icon left>
                   mdi-download
@@ -186,12 +180,10 @@
                   videosCompletionRate < 100 ||
                     checkVideoDisabled(indexA, 'activities')
                 "
-                nuxt
-                exact
-                :to="{
+                v-bind="generateProperties({
                   name: 'app-dashboard-lesson-activities',
                   query: { id: activity.id }
-                }"
+                })"
               >
                 <v-list-item-avatar tile>
                   <v-img
@@ -248,11 +240,37 @@ export default {
   },
 
   computed: {
-    panelHeight () {
-      if (document) {
-        return 10
+    generateProperties () {
+      return (to) => {
+        if (this.displayMode) {
+          return {}
+        }
+        return {
+          nuxt: true,
+          exact: true,
+          to
+        }
       }
-      return 0
+    },
+
+    headerHeight () {
+      if (this.$vuetify.breakpoint.mobile) {
+        return 56
+      }
+      return 64
+    },
+
+    panelHeight () {
+      if (window) {
+        let height
+        if (this.displayMode) {
+          height = window.innerHeight - 387
+        } else {
+          height = window.innerHeight - 223 - this.headerHeight
+        }
+        return `${height}px`
+      }
+      return '100%'
     }
   },
 
@@ -330,7 +348,7 @@ export default {
   overflow-x: hidden;
   overflow-y: auto;
   border-radius: 0%;
-  // height: calc(100vh - 223px - var(--headerHeight));
+  height: var(--panelHeight);
   // height: calc(100% - 179px);
 }
 
