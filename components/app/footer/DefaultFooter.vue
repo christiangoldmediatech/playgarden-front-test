@@ -3,7 +3,7 @@
     <div class="green-line green-line-1" />
     <div class="green-line green-line-2" />
 
-    <v-card flat tile width="100%" max-width="1200" class="card-infoPlaygarden">
+    <v-card flat tile width="100%" max-width="2000" class="mt-11">
       <v-card-text class="py-0">
         <v-container fluid py-0>
           <v-row>
@@ -12,6 +12,7 @@
               cols="12"
               sm="6"
               md="4"
+              lg="6"
             >
               <v-container py-0>
                 <v-row no-gutters class="logo-footer">
@@ -20,6 +21,7 @@
                       alt="Playgarden Prep's Logo"
                       class="mb-1 mt-0"
                       contain
+                      max-width="600"
                       :src="require('~/assets/svg/logo.svg')"
                     />
                   </v-col>
@@ -28,7 +30,10 @@
                 <div
                   class="align-center d-flex justify-center justify-md-start"
                 >
-                  <a href="https://www.facebook.com/Playgardennyc">
+                  <a
+                    target="_blank"
+                    href="https://www.facebook.com/Playgardennyc"
+                  >
                     <img
                       alt="Facebook"
                       class="clickable mr-1"
@@ -36,7 +41,10 @@
                     >
                   </a>
 
-                  <a href="https://www.instagram.com/playgardenprep/">
+                  <a
+                    target="_blank"
+                    href="https://www.instagram.com/playgardenprep/"
+                  >
                     <img
                       alt="Instagram"
                       class="clickable mx-1"
@@ -45,6 +53,7 @@
                   </a>
 
                   <a
+                    target="_blank"
                     href="mailto:online@playgardenprep.com"
                     class="clickable d-flex justify-center mx-1 social-media-circle circle-email"
                   >
@@ -54,7 +63,7 @@
                     >
                   </a>
 
-                  <a href="https://twitter.com/playgardennyc">
+                  <a target="_blank" href="https://twitter.com/playgardennyc">
                     <img
                       alt="Twitter"
                       class="clickable mx-1"
@@ -65,16 +74,11 @@
               </v-container>
             </v-col>
 
-            <v-col
-              class="text-center"
-              cols="12"
-              sm="6"
-              md="2"
-            >
+            <v-col class="text-center" cols="12" sm="6" md="2" lg="2">
               <v-container fluid>
                 <v-row>
                   <v-col cols="12">
-                    <div :class="{'align-info-footer-mobile': $vuetify.breakpoint.smAndDown, 'align-info-footer': $vuetify.breakpoint.mdAndUp}">
+                    <div class="text-center text-md-left">
                       <nuxt-link
                         class="d-block link-text"
                         :to="{ name: 'index' }"
@@ -104,12 +108,7 @@
               </v-container>
             </v-col>
 
-            <v-col
-              class="text-center"
-              cols="12"
-              sm="6"
-              md="3"
-            >
+            <v-col class="text-center" cols="12" sm="6" md="3" lg="2">
               <p class="font-weight-bold mb-1 mt-0 primary--text text-h5">
                 <span class="info-footer-title">Upper East Side</span>
               </p>
@@ -125,14 +124,11 @@
               </p>
             </v-col>
 
-            <v-col
-              class="text-center"
-              cols="12"
-              sm="6"
-              md="3"
-            >
-              <p class="font-weight-bold mb-1 mt-0 primary--text text-h5 titleFooter">
-                <span class="info-footer-title">Tribeca</span>
+            <v-col class="text-center" cols="12" sm="6" md="2" lg="2">
+              <p class="font-weight-bold mb-1 mt-0 primary--text text-h5">
+                <span class="info-footer-title">
+                  Tribeca
+                </span>
               </p>
 
               <p class="mb-1 text-footer-contact">
@@ -189,10 +185,6 @@ export default {
   color: var(--v-black-base);
 }
 
-.card-infoPlaygarden {
-  margin-top: 37px !important;
-}
-
 .logo-footer {
   margin-bottom: 15px !important;
 }
@@ -207,13 +199,6 @@ export default {
 
 .info-footer-title {
   color: #8ab591 !important;
-}
-
-.align-info-footer-mobile {
-  text-align: center !important;
-}
-.align-info-footer {
-  text-align: left !important;
 }
 
 .text-footer-contact {
