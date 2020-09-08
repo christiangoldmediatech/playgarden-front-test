@@ -45,20 +45,25 @@ export default {
         href:
           'https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css'
       }
-    ],
-    script: [
-      {
-        src: 'https://cdn.jwplayer.com/libraries/Emctu8OT.js'
-      }
     ]
   },
   /*
    ** Global CSS
    */
   css: [
-    'tiptap-vuetify/dist/main.css',
-    'vue-snotify/styles/material.css',
-    './assets/scss/app.scss'
+    './assets/scss/app.scss',
+    {
+      src: 'tiptap-vuetify/dist/main.css',
+      lang: 'css'
+    },
+    {
+      src: 'vue-snotify/styles/material.css',
+      lang: 'css'
+    },
+    {
+      src: 'video.js/dist/video-js.css',
+      lang: 'css'
+    }
   ],
   /*
    ** Plugins to load before mounting the App

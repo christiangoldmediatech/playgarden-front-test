@@ -25,25 +25,23 @@
     <template v-slot:append>
       <v-container fluid mb-6>
         <v-row>
-          <template v-if="isUserLoggedIn">
-            <v-col cols="12">
-              <v-btn block color="primary" nuxt :to="{ name: 'app-account' }">
-                ACCOUNT SETTINGS
-              </v-btn>
-            </v-col>
+          <v-col v-if="isUserLoggedIn && !isUserInSingupProcess" cols="12">
+            <v-btn block color="primary" nuxt :to="{ name: 'app-account' }">
+              ACCOUNT SETTINGS
+            </v-btn>
+          </v-col>
 
-            <v-col class="pb-0" cols="12">
-              <v-btn
-                block
-                class="mb-3"
-                color="accent"
-                text
-                :to="{ name: 'auth-logout' }"
-              >
-                LOG OUT
-              </v-btn>
-            </v-col>
-          </template>
+          <v-col v-if="isUserLoggedIn" class="pb-0" cols="12">
+            <v-btn
+              block
+              class="mb-3"
+              color="accent"
+              text
+              :to="{ name: 'auth-logout' }"
+            >
+              LOG OUT
+            </v-btn>
+          </v-col>
 
           <v-col v-else class="pb-0" cols="12">
             <v-btn

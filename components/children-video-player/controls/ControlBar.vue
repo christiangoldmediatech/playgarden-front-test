@@ -70,36 +70,16 @@
             </v-icon>
           </v-btn>
 
-          <div>
-            <!-- TODO: refactor favorites mixin to avoid ugly workarounds -->
-            <v-btn
-              v-if="activity.id !== null"
-              icon
-              large
-              :loading="loading"
-              @click.stop="setFavorite"
-            >
-              <v-icon color="#F5737F">
-                <template v-if="isFavorite">
-                  mdi-heart
-                </template>
-                <template v-else>
-                  mdi-heart-outline
-                </template>
-              </v-icon>
-            </v-btn>
-
-            <v-btn
-              color="#D2D2D2"
-              icon
-              x-large
-              @click.stop="toggleFullscreen"
-            >
-              <v-icon x-large>
-                {{ fullscreenIcon }}
-              </v-icon>
-            </v-btn>
-          </div>
+          <v-btn
+            color="#D2D2D2"
+            icon
+            x-large
+            @click.stop="toggleFullscreen"
+          >
+            <v-icon x-large>
+              {{ fullscreenIcon }}
+            </v-icon>
+          </v-btn>
         </div>
         <div class="d-flex align-center justify-space-between">
           <span class="player-grey-text">
@@ -126,8 +106,6 @@
 </template>
 
 <script>
-import VideoFavoriteMixin from '@/components/app/activities/VideoFavoriteMixin.js'
-
 export default {
   name: 'ControlBar',
 
@@ -139,8 +117,6 @@ export default {
       return MHSTime
     }
   },
-
-  mixins: [VideoFavoriteMixin],
 
   props: {
     playerContainerId: {
@@ -186,13 +162,6 @@ export default {
     toggleFullscreen: {
       type: Function,
       required: true
-    },
-
-    videoId: {
-      required: true,
-      validator: (val) => {
-        return val === null || typeof val === 'number'
-      }
     }
   },
 
@@ -203,13 +172,6 @@ export default {
   },
 
   computed: {
-    // TODO: refactor favorites mixin to avoid ugly workarounds
-    activity () {
-      return {
-        id: this.videoId
-      }
-    },
-
     speakerIcon () {
       if (this.muted || this.volume === 0) {
         return 'mdi-volume-off'

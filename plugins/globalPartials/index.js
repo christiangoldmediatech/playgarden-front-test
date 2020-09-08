@@ -1,8 +1,6 @@
 import Vue from 'vue'
 
 import FileUploader from './file-uploader/FileUploader'
-import JwPlayer from './JwPlayer'
-// import ChildrenJwPlayer from './ChildrenJwPlayer/ChildrenJwPlayer'
 import NotifyEvent from './NotifyEvent'
 import PasswordField from './PasswordField'
 import ProgressLinear from './ProgressLinear'
@@ -13,8 +11,6 @@ import VideoPreview from './video-preview/VideoPreview'
 import VideoPreviewBtn from './video-preview/VideoPreviewBtn'
 
 Vue.component(FileUploader.name, FileUploader)
-Vue.component(JwPlayer.name, JwPlayer)
-// Vue.component(ChildrenJwPlayer.name, ChildrenJwPlayer)
 Vue.component(NotifyEvent.name, NotifyEvent)
 Vue.component(PasswordField.name, PasswordField)
 Vue.component(ProgressLinear.name, ProgressLinear)

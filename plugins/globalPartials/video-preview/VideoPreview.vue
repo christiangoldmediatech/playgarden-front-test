@@ -13,7 +13,7 @@
         </v-btn>
       </v-card-title>
 
-      <jw-player :file="file" :image="image" @ready="setPlayer" />
+      <video-js-player @ready="onPlayerReady" />
 
       <v-card-actions>
         <v-spacer />
@@ -26,16 +26,20 @@
 </template>
 
 <script>
+import VideoJsPlayer from '@/components/video-player/VideoJsPlayer'
+
 export default {
   name: 'VideoPreview',
+
+  components: {
+    VideoJsPlayer
+  },
 
   data: () => {
     return {
       dialog: false,
-      player: null,
       title: '',
-      file: null,
-      image: null
+      player: null
     }
   },
 
@@ -51,23 +55,27 @@ export default {
   },
 
   methods: {
-    setPlayer (player) {
+    onPlayerReady (player) {
       this.player = player
     },
 
     load (video) {
       this.title = video.name
-      if (this.player === null) {
-        this.file = video.videoUrl.HLS
-        this.image = video.thumbnail || undefined
-      } else {
-        this.player.load([
-          {
-            file: video.videoUrl.HLS,
-            image: video.thumbnail || undefined
-          }
-        ])
+      const mediaObject = {
+        title: video.name,
+        poster: video.thumbnail,
+        src: {
+          src: video.videoUrl.HLS,
+          type: 'application/x-mpegURL'
+        }
       }
+
+      const interval = window.setInterval(() => {
+        if (this.player) {
+          this.player.loadMedia(mediaObject)
+          window.clearInterval(interval)
+        }
+      }, 50)
       this.open()
     },
 
@@ -76,7 +84,9 @@ export default {
     },
 
     close () {
-      this.player.stop()
+      if (this.player) {
+        this.player.pause()
+      }
       this.dialog = false
     }
   }

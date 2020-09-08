@@ -87,6 +87,7 @@ export default {
 
     onReady (player) {
       this.player = player
+      player.on('timeupdate', this.handleNextUp)
       player.on('pause', this.saveProgress)
       player.on('ended', this.completedVideo)
     },

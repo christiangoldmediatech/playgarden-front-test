@@ -60,7 +60,7 @@
         </v-list-item>
       </v-list>
     </template>
-    <lesson-activity-player />
+    <lesson-activity-player activity-mode />
   </v-card>
 </template>
 
@@ -111,7 +111,8 @@ export default {
             lessonActivityId: id,
             activityId: activity.id,
             videoId: activity.videos.id,
-            viewed: activity.viewed
+            viewed: activity.viewed,
+            redirect: true
           }
         })
       }

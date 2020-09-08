@@ -67,11 +67,17 @@
                       </v-avatar>
                     </template>
 
-                    <jw-player
-                      :file="item.videos.videoUrl"
-                      :title="item.videos.name"
-                      :image="item.videos.thumbnail"
-                      :description="item.videos.description"
+                    <video-js-player
+                      :options="{
+                        title: item.videos.name,
+                        poster: item.videos.thumbnail,
+                        sources: [
+                          {
+                            src: item.videos.videoUrl.HLS,
+                            type: 'application/x-mpegURL'
+                          }
+                        ]
+                      }"
                     />
                   </v-badge>
                 </div>
@@ -180,6 +186,7 @@
 
 <script>
 import { mapActions } from 'vuex'
+import VideoJsPlayer from '@/components/video-player/VideoJsPlayer'
 
 function generateItemTemplate () {
   return {
@@ -193,6 +200,10 @@ function generateItemTemplate () {
 
 export default {
   name: 'OnboardingEditorDialog',
+
+  components: {
+    VideoJsPlayer
+  },
 
   data: () => ({
     dialog: false,
