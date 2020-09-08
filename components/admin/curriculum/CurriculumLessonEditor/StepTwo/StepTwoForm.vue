@@ -63,12 +63,17 @@
                 </v-icon>
               </v-avatar>
             </template>
-
-            <jw-player
-              :file="draft.videoUrl"
-              :title="draft.name"
-              :image="draft.thumbnail"
-              :description="draft.description"
+            <video-js-player
+              :options="{
+                title: draft.name,
+                poster: draft.thumbnail,
+                sources: [
+                  {
+                    src: draft.videoUrl.HLS,
+                    type: 'application/x-mpegURL'
+                  }
+                ]
+              }"
             />
           </v-badge>
         </div>
@@ -171,11 +176,15 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-
+import VideoJsPlayer from '@/components/video-player/VideoJsPlayer'
 import submittable from '@/utils/mixins/submittable'
 
 export default {
   name: 'StepTwoForm',
+
+  components: {
+    VideoJsPlayer
+  },
 
   mixins: [submittable],
 

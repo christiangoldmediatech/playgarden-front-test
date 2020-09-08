@@ -6,6 +6,10 @@
   color: $pg-black;
   font-family: "Poppins", sans-serif !important;
 }
+.video-js * {
+  font-family: VideoJS !important;
+  color: white !important;
+}
 
 .v-application a {
   text-decoration: none;

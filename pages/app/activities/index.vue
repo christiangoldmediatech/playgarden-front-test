@@ -16,7 +16,7 @@
       :icon="category.icon"
       :activities="playlist(category.id)"
     />
-    <lesson-activity-player />
+    <lesson-activity-player activity-mode />
   </v-main>
 </template>
 
