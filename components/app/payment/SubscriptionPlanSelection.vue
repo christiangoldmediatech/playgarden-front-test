@@ -1,5 +1,5 @@
 <template>
-  <v-row>
+  <v-row v-if="initialized">
     <v-col>
       <validation-observer v-slot="{ invalid, passes }">
         <v-form @submit.prevent="passes(onSubmit)">
@@ -82,7 +82,7 @@
 
                     <v-radio
                       :label="`$${plan.priceMonthly} a month/child`"
-                      :value="`${indexP}-monthly`"
+                      :value="plan.monthlyStripeId"
                       class="plan-pricing"
                       @change="
                         draft = {
@@ -98,7 +98,7 @@
                     <v-radio
                       class="mb-0 plan-pricing"
                       :label="`$${plan.priceAnnual} School Year Special/child`"
-                      :value="`${indexP}-annual`"
+                      :value="plan.anualStripeId"
                       @change="
                         draft = {
                           id: plan.id,
@@ -226,10 +226,13 @@
       </validation-observer>
     </v-col>
   </v-row>
+
+  <pg-loading v-else />
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { get } from 'lodash'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 
 import submittable from '@/utils/mixins/submittable'
 
@@ -250,20 +253,69 @@ export default {
     draftAddress: {},
     plans: [],
     loading: false,
+    initialized: false,
     radioGroup: null
   }),
 
-  created () {
-    this.fetchPlans()
+  computed: mapGetters('auth', ['isUserLoggedIn']),
+
+  async created () {
+    await this.fetchPlans()
+
+    this.initialized = true
+    this.$emit('initialized')
+
+    if (this.isUserLoggedIn) {
+      await this.getBillingDetails()
+    }
   },
 
   methods: {
     ...mapActions('shipping-address', ['createShippingAddress']),
 
     ...mapActions('payment', [
+      'fetchBillingDetails',
       'fetchSubscriptionPlan',
       'selectSubscriptionPlan'
     ]),
+
+    ...mapMutations({
+      disableAxiosGlobal: 'DISABLE_AXIOS_GLOBAL_ERROR_HANDLER',
+      enableAxiosGlobal: 'ENABLE_AXIOS_GLOBAL_ERROR_HANDLER'
+    }),
+
+    async getBillingDetails () {
+      try {
+        this.disableAxiosGlobal()
+        const data = await this.fetchBillingDetails()
+
+        this.radioGroup = get(data, 'subscriptionData.plan.id')
+
+        this.plans.forEach(
+          ({
+            id,
+            anualStripeId,
+            monthlyStripeId,
+            plusBenefits,
+            homeDeliveryBenefits
+          }) => {
+            if (
+              anualStripeId === this.radioGroup ||
+              monthlyStripeId === this.radioGroup
+            ) {
+              this.draft = {
+                id,
+                type: anualStripeId === this.radioGroup ? 'annual' : 'monthly',
+                requireAddress: Boolean(homeDeliveryBenefits || plusBenefits)
+              }
+            }
+          }
+        )
+      } catch (e) {
+      } finally {
+        this.enableAxiosGlobal()
+      }
+    },
 
     async fetchPlans () {
       try {
@@ -339,5 +391,4 @@ ul li::before {
 .v-item--active ::v-deep .v-label {
   font-weight: bold !important;
 }
-
 </style>

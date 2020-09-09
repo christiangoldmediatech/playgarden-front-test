@@ -2,7 +2,10 @@ export default function ({ $axios, redirect, store }) {
   $axios.setBaseURL(process.env.apiBaseUrl)
 
   $axios.onError((error) => {
-    if (error.message === 'UPLOAD_CANCELLED_BY_USER') {
+    if (
+      store.getters.isDisabledAxiosGlobalErrorHandler ||
+      error.message === 'UPLOAD_CANCELLED_BY_USER'
+    ) {
       return
     }
 

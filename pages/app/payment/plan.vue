@@ -3,7 +3,7 @@
     <v-col>
       <v-row>
         <v-btn
-          v-if="inSignUpProcess"
+          v-if="initialized && inSignUpProcess"
           class="ma-2"
           color="accent"
           nuxt
@@ -21,7 +21,10 @@
         </v-btn>
       </v-row>
 
-      <subscription-plan-selection @click:submit="onSubmit" />
+      <subscription-plan-selection
+        @click:submit="onSubmit"
+        @initialized="initialized = true"
+      />
     </v-col>
   </v-row>
 </template>
@@ -37,6 +40,10 @@ export default {
   components: {
     SubscriptionPlanSelection
   },
+
+  data: () => ({
+    initialized: false
+  }),
 
   computed: {
     inSignUpProcess () {

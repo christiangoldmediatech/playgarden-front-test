@@ -12,6 +12,7 @@
               cols="12"
               sm="6"
               md="4"
+              lg="6"
             >
               <v-container py-0>
                 <v-row no-gutters class="logo-footer">

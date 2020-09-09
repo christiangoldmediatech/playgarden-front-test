@@ -1,58 +1,91 @@
 <template>
-  <v-row class="flex-column-reverse flex-md-row" justify="center" no-gutters>
-    <v-col class="px-12" cols="12" lg="6" md="8" xl="6">
-      <stripe-form :loading="loading" @click:submit="onSubmit" />
-    </v-col>
+  <v-row no-gutters>
+    <v-col>
+      <v-row>
+        <v-btn
+          v-if="inSignUpProcess"
+          class="ma-2"
+          color="accent"
+          nuxt
+          text
+          :to="{
+            name: 'app-payment-plan',
+            query: { process: 'signup', step: '3' }
+          }"
+        >
+          <v-icon left>
+            mdi-less-than
+          </v-icon>
 
-    <v-col class="px-12" cols="12" lg="6" md="4" xl="6">
-      <p class="text-center text-md-left">
-        <span class="font-weight-bold text-h5">
-          MEMBERSHIP REVIEW
-        </span>
-      </p>
+          Back
+        </v-btn>
+      </v-row>
 
       <v-row
-        v-for="(item, indexCI) in cost.items"
-        :key="indexCI"
+        class="flex-column-reverse flex-md-row"
+        justify="center"
         no-gutters
-        class="px-8 py-2"
       >
-        <v-col cols="8">
-          <span class="product-name">
-            {{ item.product.name }}
-          </span>
+        <v-col class="px-12" cols="12" lg="6" md="8" xl="6">
+          <stripe-form :loading="loading" @click:submit="onSubmit" />
         </v-col>
-        <v-col cols="4">
-          <p class="product-description">
-            <b class="product-price">${{ item.unit_amount / 100 }}</b>
-            <br>
-            <span class="product-info">
-              a year <br>
-              <span class="product-info-1">*Pricing is per child</span></span>
+
+        <v-col class="px-12" cols="12" lg="6" md="4" xl="6">
+          <p class="text-center text-md-left">
+            <span class="font-weight-bold text-h5">
+              MEMBERSHIP REVIEW
+            </span>
           </p>
-        </v-col>
-      </v-row>
 
-      <v-divider />
+          <v-row
+            v-for="(item, indexCI) in cost.items"
+            :key="indexCI"
+            no-gutters
+            class="px-8 py-2"
+          >
+            <v-col cols="8">
+              <span class="product-name">
+                {{ item.product.name }}
+              </span>
+            </v-col>
+            <v-col cols="4">
+              <p class="product-description">
+                <b class="product-price">${{ item.unit_amount / 100 }}</b>
+                <br>
+                <span class="product-info">
+                  a year <br>
 
-      <v-row no-gutters class="px-8">
-        <v-col cols="9">
-          <span class="due-today">
-            TOTAL
-          </span>
-        </v-col>
-        <v-col cols="3">
-          <b class="footer-total">${{ cost.total || 0 }}</b>
-        </v-col>
-      </v-row>
-      <v-row class="px-8">
-        <v-col cols="9">
-          <span class="due-today">
-            DUE TODAY
-          </span>
-        </v-col>
-        <v-col cols="3">
-          <b class="footer-total">${{ 0 }}</b>
+                  <span class="product-info-1">
+                    *Pricing is per child
+                  </span>
+                </span>
+              </p>
+            </v-col>
+          </v-row>
+
+          <v-divider />
+
+          <v-row no-gutters class="px-8">
+            <v-col cols="9">
+              <span class="due-today">
+                TOTAL
+              </span>
+            </v-col>
+            <v-col cols="3">
+              <b class="footer-total">${{ cost.total || 0 }}</b>
+            </v-col>
+          </v-row>
+
+          <v-row class="px-8">
+            <v-col cols="9">
+              <span class="due-today">
+                DUE TODAY
+              </span>
+            </v-col>
+            <v-col cols="3">
+              <b class="footer-total">${{ 0 }}</b>
+            </v-col>
+          </v-row>
         </v-col>
       </v-row>
     </v-col>

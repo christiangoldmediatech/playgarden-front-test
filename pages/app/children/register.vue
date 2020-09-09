@@ -1,5 +1,5 @@
 <template>
-  <v-row class="flex-column-reverse flex-md-row" justify="center" no-gutters>
+  <v-row no-gutters>
     <v-col>
       <v-row>
         <v-btn

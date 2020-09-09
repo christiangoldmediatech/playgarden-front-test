@@ -1,6 +1,6 @@
 <template>
   <validation-observer v-slot="{ invalid, passes }">
-    <v-form :readonly="loading" @submit.prevent="passes(onSubmit)">
+    <v-form :readonly="isLoading" @submit.prevent="passes(onSubmit)">
       <v-row
         v-for="(item, indexD) in draft"
         :key="indexD"
@@ -21,7 +21,7 @@
             <v-text-field
               v-model="item.firstName"
               clearable
-              :disabled="loading"
+              :disabled="isLoading"
               :error-messages="errors"
               label="Name"
               solo
@@ -47,7 +47,7 @@
               >
                 <v-text-field
                   v-bind="attrs"
-                  :disabled="loading"
+                  :disabled="isLoading"
                   :error-messages="errors"
                   label="Birthday date"
                   readonly
@@ -79,7 +79,7 @@
                 <v-btn
                   block
                   :color="item.gender === gender ? 'primary' : 'grey lighten-5'"
-                  :disabled="loading"
+                  :disabled="isLoading"
                   class="custom-btn"
                   @click="item.gender = gender"
                 >
@@ -138,7 +138,7 @@
             block
             class="mb-12 mt-6"
             color="primary"
-            :disabled="loading"
+            :disabled="isLoading"
             text
             x-large
             @click="addRow(null)"
@@ -151,7 +151,7 @@
             class="mb-6"
             color="primary"
             :disabled="invalid"
-            :loading="loading"
+            :loading="isLoading"
             type="submit"
             x-large
           >
@@ -181,11 +181,16 @@ export default {
   data: () => ({
     backpacks: [],
     draft: [],
-    genders: ['MALE', 'FEMALE']
+    genders: ['MALE', 'FEMALE'],
+    dataLoading: false
   }),
 
   computed: {
     ...mapGetters('auth', ['isUserLoggedIn']),
+
+    isLoading () {
+      return this.dataLoading || this.loading
+    },
 
     removable () {
       return this.draft.length > 1
@@ -214,9 +219,9 @@ export default {
       child = child || {}
 
       this.draft.push({
-        _birthdayFormatted: dayjs(
-          child.birthday || `${new Date().getFullYear() - 2}-01-01`
-        ).format('MM/DD/YYYY'),
+        _birthdayFormatted: child.birthday
+          ? dayjs(child.birthday).format('MM/DD/YYYY')
+          : '',
         _birthdayPicker: dayjs(
           child.birthday || `${new Date().getFullYear() - 2}-01-01`
         ).format('YYYY-MM-DD'),
@@ -253,7 +258,7 @@ export default {
         title: 'Delete child profile?',
         message: `Are you sure you wish to delete '${item.firstName}'s' profile?`,
         action: async () => {
-          this.loading = true
+          this.dataLoading = true
 
           try {
             if (item.id) {
@@ -261,22 +266,28 @@ export default {
             }
 
             this.$delete(this.draft, index)
+          } catch (e) {
           } finally {
-            this.loading = false
+            this.dataLoading = false
           }
         }
       })
-      return false
     },
 
     async loadChildren () {
       try {
+        this.dataLoading = true
+
         const rows = await this.getChildren()
 
-        rows.map(this.addRow)
+        if (rows.length) {
+          rows.map(this.addRow)
+        } else {
+          this.addRow()
+        }
       } catch (e) {
       } finally {
-        this.loading = false
+        this.dataLoading = false
       }
     }
   }

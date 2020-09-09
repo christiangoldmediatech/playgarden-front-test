@@ -67,13 +67,16 @@ export default {
     }
   },
 
-  async fetchBillingDetails ({ commit }) {
+  async fetchBillingDetails ({ commit, rootGetters }) {
     try {
       return await this.$axios.$get('/billing')
     } catch (error) {
-      snotifyError(commit, {
-        body: 'Sorry! There was an error while getting your Subscription cost!'
-      })
+      if (!rootGetters.isDisabledAxiosGlobalErrorHandler) {
+        snotifyError(commit, {
+          body:
+            'Sorry! There was an error while getting your Subscription cost!'
+        })
+      }
 
       throw error
     }
