@@ -87,6 +87,13 @@ export default {
     ...mapGetters({ children: 'getCurrentChild' }),
     ...mapGetters('admin/curriculum', ['getLesson']),
 
+    overrides () {
+      return {
+        childId: this.$route.query.childId,
+        lessonId: this.$route.query.lessonId
+      }
+    },
+
     buttons () {
       return [
         {
@@ -96,7 +103,7 @@ export default {
           action: () => {
             this.$router.push({
               name: 'app-dashboard-lesson-activities',
-              query: { id: this.getLesson.lessonsActivities[0].activity.id }
+              query: { ...this.overrides, id: this.getLesson.lessonsActivities[0].activity.id }
             })
           }
         },
@@ -105,7 +112,7 @@ export default {
           color: '#FEC572',
           iconLeft: 'mdi-download-outline',
           action: () => {
-            this.$router.push({ name: 'app-dashboard-offline-worksheet' })
+            this.$router.push({ name: 'app-dashboard-offline-worksheet', query: { ...this.overrides } })
           }
         }
       ]

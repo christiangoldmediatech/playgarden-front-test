@@ -56,6 +56,10 @@ export default {
     this.fetchChildProgress()
   },
 
+  beforeDestroy () {
+    document.querySelector('html').style.overflowY = 'auto'
+  },
+
   methods: {
     ...mapActions('children/course-progress', ['getCourseProgressByChildId']),
 

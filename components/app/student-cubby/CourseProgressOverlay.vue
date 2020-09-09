@@ -34,7 +34,7 @@
             lg="3"
           >
             <dashboard-panel
-              v-bind="{ lesson }"
+              v-bind="{ lesson, customOverrides: { lessonId: lesson.id, childId: studentId } }"
               display-mode
             />
           </v-col>

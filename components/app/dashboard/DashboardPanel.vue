@@ -51,7 +51,9 @@
                 :key="`video-lesson-index-${indexV}-id-${video.id}`"
                 class="px-0"
                 :disabled="checkVideoDisabled(indexV)"
-                v-bind="generateProperties({ name: 'app-dashboard-lesson-videos', query: { id: video.id } })"
+                nuxt
+                exact
+                :to="{ name: 'app-dashboard-lesson-videos', query: { ...overrides, id: video.id } }"
               >
                 <v-list-item-avatar tile>
                   <v-img
@@ -117,7 +119,7 @@
               <component
                 :is="videosCompletionRate < 100 || displayMode ? 'span' : 'nuxt-link'"
                 class="black--link font-weight-bold"
-                :to="{ name: 'app-dashboard-online-worksheet' }"
+                :to="{ name: 'app-dashboard-online-worksheet', query: { ...overrides } }"
               >
                 ONLINE WORKSHEET
               </component>
@@ -133,7 +135,9 @@
                 small
                 block
                 :disabled="videosCompletionRate < 100"
-                v-bind="generateProperties({ name: 'app-dashboard-offline-worksheet' })"
+                nuxt
+                exact
+                :to="{ name: 'app-dashboard-offline-worksheet', query: { ...overrides } }"
               >
                 <v-icon left>
                   mdi-download
@@ -180,10 +184,12 @@
                   videosCompletionRate < 100 ||
                     checkVideoDisabled(indexA, 'activities')
                 "
-                v-bind="generateProperties({
+                nuxt
+                exact
+                :to="{
                   name: 'app-dashboard-lesson-activities',
-                  query: { id: activity.id }
-                })"
+                  query: { overrides, id: activity.id }
+                }"
               >
                 <v-list-item-avatar tile>
                   <v-img
@@ -236,20 +242,21 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+
+    customOverrides: {
+      type: Object,
+      required: false,
+      default: () => {}
     }
   },
 
   computed: {
-    generateProperties () {
-      return (to) => {
-        if (this.displayMode) {
-          return {}
-        }
-        return {
-          nuxt: true,
-          exact: true,
-          to
-        }
+    overrides () {
+      return {
+        childId: this.$route.query.childId,
+        lessonId: this.$route.query.lessonId,
+        ...this.customOverrides
       }
     },
 
