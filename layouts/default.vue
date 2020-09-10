@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 
 import AppNavigation from '@/components/app/header/AppNavigation'
 import ApplicationHeader from '@/components/app/header/ApplicationHeader'
@@ -33,19 +33,66 @@ import DefaultFooter from '@/components/app/footer/DefaultFooter'
 export default {
   name: 'Default',
 
-  middleware: ['checkJWT'],
-
   components: {
     ApplicationHeader,
     AppNavigation,
     DefaultFooter
   },
 
+  data: () => ({
+    verifyEmailToast: null
+  }),
+
+  middleware: ['checkJWT'],
+
   computed: {
+    ...mapGetters('auth', ['isUserLoggedIn', 'isUserEmailUnverified']),
+
     ...mapState(['fullWidthPages']),
 
     fullWidth () {
       return this.fullWidthPages[this.$route.name]
+    }
+  },
+
+  watch: {
+    '$route.name' (v) {
+      if (v === 'auth-verify-email' && this.verifyEmailToast) {
+        this.$snotify.remove(this.verifyEmailToast.id)
+        this.verifyEmailToast = null
+      } else if (!this.verifyEmailToast) {
+        this.showVerifyEmailToast()
+      }
+    }
+  },
+
+  mounted () {
+    this.showVerifyEmailToast()
+  },
+
+  methods: {
+    showVerifyEmailToast () {
+      if (
+        this.isUserEmailUnverified &&
+        this.isUserLoggedIn &&
+        this.$route.name !== 'auth-verify-email' &&
+        !this.verifyEmailToast
+      ) {
+        this.verifyEmailToast = this.$snotify.warning(
+          'Please verify your email',
+          'Verification',
+          {
+            buttons: [
+              {
+                text: 'Go to resend email page',
+                action: () => this.$router.push({ name: 'auth-verify-email' })
+              }
+            ],
+            closeOnClick: false,
+            timeout: 0
+          }
+        )
+      }
     }
   }
 }

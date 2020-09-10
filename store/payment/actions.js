@@ -67,16 +67,13 @@ export default {
     }
   },
 
-  async fetchBillingDetails ({ commit, rootGetters }) {
+  async fetchBillingDetails ({ commit }) {
     try {
       return await this.$axios.$get('/billing')
     } catch (error) {
-      if (!rootGetters.isDisabledAxiosGlobalErrorHandler) {
-        snotifyError(commit, {
-          body:
-            'Sorry! There was an error while getting your Subscription cost!'
-        })
-      }
+      snotifyError(commit, {
+        body: 'Sorry! There was an error while getting your Subscription cost!'
+      })
 
       throw error
     }
@@ -119,6 +116,10 @@ export default {
 
       throw error
     }
+  },
+
+  getSelectedSubscriptionPlan () {
+    return this.$axios.$get('/auth/user/plan')
   },
 
   async selectSubscriptionPlan ({ commit }, { id, type } = {}) {

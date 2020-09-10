@@ -27,7 +27,7 @@
       </validation-provider>
 
       <v-row>
-        <v-col cols="6">
+        <v-col class="pb-0" cols="6">
           <!-- Expiration date -->
           <validation-provider
             v-slot="{ errors }"
@@ -49,7 +49,7 @@
           </validation-provider>
         </v-col>
 
-        <v-col cols="6">
+        <v-col class="pb-0" cols="6">
           <!-- CVV -->
           <validation-provider
             v-slot="{ errors }"
@@ -70,11 +70,17 @@
           </validation-provider>
         </v-col>
       </v-row>
-      <v-checkbox
-        v-model="draft.accepTerms"
-        label="I have read and accept Terms & Conditions"
-        class="accept-terms"
-      />
+
+      <validation-provider v-slot="{ errors }" name="Terms" rules="required">
+        <v-checkbox
+          v-model="draft.acceptTerms"
+          class="accept-terms mb-6 mt-0"
+          :error-messages="errors"
+          :true-value="true"
+          :false-value="null"
+          label="I have read and accept Terms & Conditions"
+        />
+      </validation-provider>
 
       <v-btn
         block
@@ -87,10 +93,12 @@
       >
         {{ buttonText }}
       </v-btn>
-      <center class="mb-15">
-        <span>You will only be billed after the one week of FREE trial is
-          completed</span>
-      </center>
+
+      <p class="mb-15 text-center">
+        <span>
+          You will only be billed after the one week of FREE trial is completed
+        </span>
+      </p>
 
       <v-btn
         v-if="cancelable"
@@ -144,10 +152,10 @@ export default {
 
     resetDraft () {
       this.draft = {
-        number: '',
-        date: '',
-        cvv: '',
-        accepTerms: false
+        number: '2222222222222222',
+        date: '11/22',
+        cvv: '222',
+        acceptTerms: null
       }
     }
   }

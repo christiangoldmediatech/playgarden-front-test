@@ -25,9 +25,13 @@
                   @click.stop="selectChild(child)"
                 >
                   <v-hover v-slot:default="{ hover }">
-                    <div :class="['child-option', { 'scaled': hover }]">
+                    <div :class="['child-option', { scaled: hover }]">
                       <v-img
-                        :src="child.everyone ? require('@/assets/svg/everyone.svg') : child.backpack.image"
+                        :src="
+                          child.everyone
+                            ? require('@/assets/svg/everyone.svg')
+                            : child.backpack.image
+                        "
                         aspect-ratio="1"
                         contain
                       />
@@ -99,7 +103,7 @@ export default {
   methods: {
     ...mapActions('children', { getChildren: 'get' }),
 
-    ...mapActions({ setChild: 'setChild' }),
+    ...mapActions(['setChild']),
 
     selectChild (child) {
       if (!this.selected) {
@@ -114,7 +118,12 @@ export default {
         if (this.$route.query.redirect) {
           this.$router.push(decodeURIComponent(this.$route.query.redirect))
         } else {
-          this.$router.push({ name: 'app-dashboard' })
+          this.$router.push({
+            name: 'app-dashboard',
+            query: {
+              _time: new Date().getTime() // <- just in order to avoid infinite loading bar
+            }
+          })
         }
       }
     }

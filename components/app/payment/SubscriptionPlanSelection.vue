@@ -266,7 +266,7 @@ export default {
     this.$emit('initialized')
 
     if (this.isUserLoggedIn) {
-      await this.getBillingDetails()
+      await this.getPlan()
     }
   },
 
@@ -274,7 +274,7 @@ export default {
     ...mapActions('shipping-address', ['createShippingAddress']),
 
     ...mapActions('payment', [
-      'fetchBillingDetails',
+      'getSelectedSubscriptionPlan',
       'fetchSubscriptionPlan',
       'selectSubscriptionPlan'
     ]),
@@ -284,12 +284,12 @@ export default {
       enableAxiosGlobal: 'ENABLE_AXIOS_GLOBAL_ERROR_HANDLER'
     }),
 
-    async getBillingDetails () {
+    async getPlan () {
       try {
         this.disableAxiosGlobal()
-        const data = await this.fetchBillingDetails()
+        const plan = await this.getSelectedSubscriptionPlan()
 
-        this.radioGroup = get(data, 'subscriptionData.plan.id')
+        this.radioGroup = get(plan, 'planSelected')
 
         this.plans.forEach(
           ({
