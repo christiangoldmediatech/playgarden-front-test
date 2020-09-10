@@ -24,7 +24,7 @@
     />
     <perfect-scrollbar v-else>
       <v-container class="panel-container" fill-height fluid>
-        <v-row class="flex-nowrap">
+        <v-row class="fill-height flex-nowrap">
           <v-col
             v-for="lesson in lessons"
             :key="`curriculum-lesson-progress-${lesson.id}`"
@@ -137,20 +137,72 @@ export default {
   overflow-x: visible;
 }
 
-.ps {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: calc(100vh - 32px);
-  max-height: calc(100vh - 32px);
-  padding-top: 64px;
-  padding-bottom: 64px;
-  overflow: auto;
-  z-index: 300;
-}
+::v-deep {
+  .ps {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: calc(100vh - 16px);
+    max-height: calc(100vh - 16px);
+    padding-top: 32px;
+    padding-bottom: 16px;
+    overflow: auto;
+    z-index: 300;
+  }
 
-.ps__rail-x:hover > .ps__thumb-x, .ps__rail-x:focus > .ps__thumb-x, .ps__rail-x.ps--clicking .ps__thumb-x {
-  background-color: #C2DAA5 !important;
+  .ps__rail-x {
+    background-color: #F2EDED;
+    transition: none;
+    margin-left: 15%;
+    margin-right: 15%;
+    border-radius: 8px;
+    opacity: 1;
+    height: 16px;
+  }
+
+  .ps--active-x > .ps__rail-x,
+  .ps--active-y > .ps__rail-y {
+    display: block;
+    background-color: #F2EDED;
+  }
+  .ps:hover > .ps__rail-x,
+  .ps:hover > .ps__rail-y,
+  .ps--focus > .ps__rail-x,
+  .ps--focus > .ps__rail-y,
+  .ps--scrolling-x > .ps__rail-x,
+  .ps--scrolling-y > .ps__rail-y {
+    opacity: 1;
+  }
+
+  .ps .ps__rail-x:hover,
+  .ps .ps__rail-y:hover,
+  .ps .ps__rail-x:focus,
+  .ps .ps__rail-y:focus,
+  .ps .ps__rail-x.ps--clicking,
+  .ps .ps__rail-y.ps--clicking {
+    background-color: #F2EDED;
+    opacity: 1;
+  }
+
+  .ps__thumb-x {
+    background-color: var(--v-primary-base);
+    border-radius: 6px;
+    transition: none;
+    height: 14px;
+    opacity: 1;
+    /* there must be 'bottom' for ps__thumb-x */
+    bottom: 1px;
+    /* please don't change 'position' */
+    position: absolute;
+  }
+
+  .ps__rail-x:hover > .ps__thumb-x,
+  .ps__rail-x:focus > .ps__thumb-x,
+  .ps__rail-x.ps--clicking .ps__thumb-x {
+    background-color: var(--v-primary-base);
+    opacity: 1;
+    height: 14px;
+  }
 }
 </style>
