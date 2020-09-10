@@ -1,49 +1,72 @@
 <template>
   <v-row
-    v-if="inInvitationProcess || isUserLoggedIn"
-    class="flex-column-reverse flex-md-row"
-    justify="center"
+    v-if="inInvitationProcess || isUserLoggedIn || emailValidated"
     no-gutters
   >
-    <v-col class="px-12" cols="12" md="8">
-      <p class="text-center text-md-left">
-        <span class="font-weight-bold text-h5">
-          PARENT'S INFORMATION
-        </span>
-      </p>
+    <v-col>
+      <v-row>
+        <v-btn
+          v-if="emailValidated && !isUserLoggedIn"
+          class="ma-2"
+          color="accent"
+          text
+          @click="emailValidated = null"
+        >
+          <v-icon left>
+            mdi-less-than
+          </v-icon>
 
-      <signup-form
-        :in-invitation-process="inInvitationProcess"
-        :loading="loading"
-        @click:submit="onSubmit"
-      />
-    </v-col>
+          Back
+        </v-btn>
+      </v-row>
 
-    <v-col class="px-12" cols="12" md="4">
-      <p class="text-center text-md-left">
-        <span class="font-weight-bold text-h5">
-          MEMBERSHIP
-        </span>
+      <v-row
+        class="flex-column-reverse flex-md-row"
+        justify="center"
+        no-gutters
+      >
+        <v-col class="px-12" cols="12" md="8">
+          <p class="text-center text-md-left">
+            <span class="font-weight-bold text-h5">
+              PARENT'S INFORMATION
+            </span>
+          </p>
 
-        <br>
+          <signup-form
+            :email-validated="emailValidated"
+            :in-invitation-process="inInvitationProcess"
+            :loading="loading"
+            @click:submit="onSubmit"
+          />
+        </v-col>
 
-        <small>
-          Complete the registration and choose the plan that best suits you, to
-          start your learning experience!
-        </small>
-      </p>
+        <v-col class="px-12" cols="12" md="4">
+          <p class="text-center text-md-left">
+            <span class="font-weight-bold text-h5">
+              MEMBERSHIP
+            </span>
 
-      <template v-if="!inInvitationProcess">
-        <p>
-          <span class="font-weight-bold">
-            Get one week FREE trial
-          </span>
-        </p>
+            <br>
 
-        <p>
-          <small>You can cancel at any time from your account settings</small>
-        </p>
-      </template>
+            <small>
+              Complete the registration and choose the plan that best suits you,
+              to start your learning experience!
+            </small>
+          </p>
+
+          <template v-if="!inInvitationProcess">
+            <p>
+              <span class="font-weight-bold">
+                Get one week FREE trial
+              </span>
+            </p>
+
+            <p>
+              <small>You can cancel at any time from your account settings</small>
+            </p>
+          </template>
+        </v-col>
+      </v-row>
     </v-col>
   </v-row>
 
@@ -87,6 +110,7 @@ export default {
 
   data: vm => ({
     loading: false,
+    emailValidated: null,
     inInvitationProcess: (() => {
       const { query } = vm.$route
 
@@ -103,30 +127,34 @@ export default {
 
   methods: {
     ...mapActions('auth/signup', {
-      newParent: 'signupEmail',
-      completeParentRegister: 'signupToken'
+      newParent: 'signup',
+      validateEmail: 'signupEmail',
+      updateParentRegister: 'signupToken'
     }),
 
     ...mapActions('caregiver', { newCaregiver: 'signup' }),
 
     async onSubmit (data) {
       try {
-        const isUserLoggedIn = this.isUserLoggedIn
         this.loading = true
 
         await this.registerProcess(
           this.inInvitationProcess ? { data, token: this.token } : data
         )
 
-        this.$snotify.success('Welcome to Playgarden Prep!')
-
         if (this.inInvitationProcess) {
           await this.$router.push({ name: 'app-dashboard' })
-        } else if (isUserLoggedIn) {
+        } else if (this.isUserLoggedIn) {
           await this.$router.push({
             name: 'app-children-register',
             query: { process: 'signup', step: '2' }
           })
+        } else {
+          this.emailValidated = data.email
+        }
+
+        if (!this.emailValidated) {
+          this.$snotify.success('Welcome to Playgarden Prep!')
         }
       } catch (e) {
       } finally {
@@ -136,12 +164,16 @@ export default {
 
     async registerProcess (data) {
       if (this.isUserLoggedIn) {
-        return await this.completeParentRegister(data)
+        return await this.updateParentRegister(data)
+      }
+
+      if (this.emailValidated) {
+        return await this.newParent(data)
       }
 
       return this.inInvitationProcess
         ? await this.newCaregiver(data)
-        : await this.newParent(data)
+        : await this.validateEmail(data)
     }
   }
 }

@@ -1,4 +1,5 @@
 export default () => ({
+  axiosGlobalErrorHandler: false,
   currentChild: null,
   currentChildExpires: null,
 
