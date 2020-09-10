@@ -4,13 +4,15 @@ export default {
     return data
   },
 
-  async getCurrentLessonByChildrenId ({ commit }, params) {
-    const { lesson } = await this.$axios.$get('/lessons/childrens/current', {
-      params
-    })
-
+  async getCurrentLessonByChildrenId ({ commit }, { lessonId, childId }) {
+    const { lesson } = await this.$axios.$get(`/lessons/${lessonId}/children/${childId}`)
     commit('admin/curriculum/SET_LESSON', lesson, { root: true })
+    return lesson
+  },
 
+  async getCurrentLesson ({ commit }, params) {
+    const { lesson } = await this.$axios.$get('/lessons/childrens/current', { params })
+    commit('admin/curriculum/SET_LESSON', lesson, { root: true })
     return lesson
   },
 

@@ -3,7 +3,6 @@
     <v-card-text>
       <div class="text-center">
         <underlined-title class="text-h3" text="Student Portfolio" />
-
         <p class="mt-5">
           Keep track of your worksheets and progress!
         </p>
@@ -34,23 +33,22 @@ export default {
 
   data: () => {
     return {
-      categoryRows: [],
       uploadedWorksheets: []
     }
   },
 
   computed: {
-    id () {
+    studentId () {
       return this.$route.query.id
     },
 
     categories () {
-      return this.categoryRows
+      return this.uploadedWorksheets.filter(({ worksheetUploads }) => worksheetUploads.length)
     }
   },
 
   watch: {
-    id (id) {
+    studentId (id) {
       if (id) {
         this.refresh()
       }
@@ -58,21 +56,14 @@ export default {
   },
 
   created () {
-    this.loadCategories()
+    this.refresh()
   },
 
   methods: {
-    ...mapActions('offline-worksheet-categories', [
-      'getOfflineWorksheetCategories',
-      'getChildWorksheets'
-    ]),
-
-    async loadCategories () {
-      this.categoryRows = await this.getOfflineWorksheetCategories()
-    },
+    ...mapActions('offline-worksheet', { getUploaded: 'getUploaded' }),
 
     async refresh () {
-      this.uploadedWorksheets = await this.getChildWorksheets(this.id)
+      this.uploadedWorksheets = await this.getUploaded(this.studentId)
     }
   }
 }

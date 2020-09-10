@@ -35,31 +35,19 @@ export default {
     letter: {
       type: Object,
       required: true
-    },
-
-    unblocked: {
-      type: Object,
-      required: true
     }
   },
 
   computed: {
     _unblocked () {
-      return this.unblocked && this.unblocked[this.letter.id]
-    },
-
-    lessons () {
-      if (this._unblocked) {
-        return this.unblocked[this.letter.id].map(({ lesson }) => lesson)
-      }
-      return []
+      return this.letter.enabled
     }
   },
 
   methods: {
     showProgress () {
       if (this._unblocked) {
-        this.$nuxt.$emit('show-curriculum-progress', this.lessons)
+        this.$nuxt.$emit('show-curriculum-progress', this.letter.id)
       }
     }
   }

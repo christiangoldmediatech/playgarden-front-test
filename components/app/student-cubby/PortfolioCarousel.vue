@@ -8,15 +8,13 @@
     <v-col cols="12">
       <v-row>
         <v-col
-          v-for="i in 4"
-          :key="`category-${category.id}-card-${i}`"
+          v-for="upload in list"
+          :key="`category-${category.id}-card-${upload.id}`"
           cols="12"
           sm="6"
           lg="3"
         >
-          <portfolio-card
-            :image="require(`@/assets/png/student-cubby/portfolio/placeholder-${i}.png`)"
-          />
+          <portfolio-card :image="upload.url" />
         </v-col>
       </v-row>
     </v-col>
@@ -49,6 +47,7 @@
 
 <script>
 import PortfolioCard from './PortfolioCard.vue'
+import { jsonCopy } from '~/utils/objectTools'
 
 export default {
   name: 'PortfolioCarousel',
@@ -78,7 +77,7 @@ export default {
     },
 
     total () {
-      return this.category.items ? this.category.items.length : 0
+      return this.category.worksheetUploads ? this.category.worksheetUploads.length : 0
     },
 
     start () {
@@ -91,7 +90,8 @@ export default {
 
     list () {
       if (this.total > 0) {
-        return this.category.items.slice(this.start, this.end)
+        const worksheets = jsonCopy(this.category.worksheetUploads)
+        return worksheets.slice(this.start, this.end)
       }
       return []
     }

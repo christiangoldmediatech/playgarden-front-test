@@ -1,5 +1,5 @@
 export default {
-  getCourseProgressByChildId (_, { id }) {
-    return this.$axios.$get(`/children/${id}/progress`)
+  getCourseProgressByChildId (_, { id, curriculumTypeId = null }) {
+    return this.$axios.$get(`/children/${id}/progress${curriculumTypeId ? `/${curriculumTypeId}` : ''}`)
   }
 }
