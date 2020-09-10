@@ -152,9 +152,9 @@ export default {
 
     resetDraft () {
       this.draft = {
-        number: '2222222222222222',
-        date: '11/22',
-        cvv: '222',
+        number: null,
+        date: null,
+        cvv: null,
         acceptTerms: null
       }
     }

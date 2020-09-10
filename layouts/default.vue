@@ -79,12 +79,12 @@ export default {
         !this.verifyEmailToast
       ) {
         this.verifyEmailToast = this.$snotify.warning(
-          'Please verify your email',
-          'Verification',
+          'Missing email verification',
+          'Unverified',
           {
             buttons: [
               {
-                text: 'Go to resend email page',
+                text: 'Verify',
                 action: () => this.$router.push({ name: 'auth-verify-email' })
               }
             ],
