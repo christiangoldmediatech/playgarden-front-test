@@ -36,6 +36,13 @@ export default {
   },
 
   computed: {
+    overrides () {
+      return {
+        childId: this.$route.query.childId,
+        lessonId: this.$route.query.lessonId
+      }
+    },
+
     buttons () {
       return [
         {
@@ -43,7 +50,7 @@ export default {
           color: 'accent',
           iconLeft: 'mdi-square-edit-outline',
           action: () => {
-            this.$router.push({ name: 'app-dashboard-online-worksheet' })
+            this.$router.push({ name: 'app-dashboard-online-worksheet', query: { ...this.overrides } })
           }
         },
         {
@@ -56,7 +63,7 @@ export default {
             if (activities.length) {
               this.$router.push({
                 name: 'app-dashboard-lesson-activities',
-                query: { id: activities[0].id }
+                query: { ...this.overrides, id: activities[0].id }
               })
             }
           }
@@ -195,7 +202,7 @@ export default {
         this.mediaObject = this.playlist[this.index]
         this.loadAndPlay()
         if (this.mediaObject.redirect) {
-          this.$router.push({ name: 'app-dashboard-lesson-activities', query: { id: this.mediaObject.activityId } })
+          this.$router.push({ name: 'app-dashboard-lesson-activities', query: { ...this.overrides, id: this.mediaObject.activityId } })
         }
       }
     }

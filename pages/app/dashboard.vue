@@ -81,9 +81,23 @@ export default {
     ...mapGetters('admin/curriculum', { lesson: 'getLesson' }),
     ...mapGetters('children', { allChildren: 'rows' }),
 
-    breakpoints () {
-      const keys = Object.keys(this.$vuetify.breakpoint).filter(key => this.$vuetify.breakpoint[key])
-      return keys.join(', ')
+    // breakpoints () {
+    //   const keys = Object.keys(this.$vuetify.breakpoint).filter(key => this.$vuetify.breakpoint[key])
+    //   return keys.join(', ')
+    // },
+
+    overrides () {
+      return {
+        childId: this.$route.query.childId,
+        lessonId: this.$route.query.lessonId
+      }
+    },
+
+    overrideMode () {
+      if (this.overrides.childId && this.overrides.lessonId) {
+        return true
+      }
+      return false
     },
 
     childrenIds () {
@@ -109,13 +123,26 @@ export default {
     }
   },
 
-  created () {
-    this.getAllChildren()
-    this.getCurrentLesson(true)
+  async created () {
+    const currentChild = this.currentChild[0].id
+    if (this.overrideMode) {
+      await this.getAllChildren()
+      if (currentChild !== this.overrides.childId) {
+        this.changeChild(this.overrides.childId, false)
+      }
+    } else {
+      this.getAllChildren()
+    }
 
+    // Load current lesson
+    this.handleLesson(true)
+
+    // Setup update listener
     this.$nuxt.$on('dashboard-panel-update', () => {
-      this.getCurrentLesson()
+      this.handleLesson()
     })
+
+    // Set selected child
     this.selectedChild = this.currentChild[0].id
   },
 
@@ -125,13 +152,16 @@ export default {
 
   methods: {
     ...mapActions('children', { getAllChildren: 'get' }),
-    ...mapActions('children/lesson', ['getCurrentLessonByChildrenId', 'resetChild']),
+    ...mapActions('children/lesson', ['getCurrentLesson', 'getCurrentLessonByChildrenId', 'resetChild']),
     ...mapActions({ setChild: 'setChild' }),
 
-    changeChild (newId) {
-      const child = this.allChildren.find(({ id }) => id === newId)
+    changeChild (newId, redirect = true) {
+      const child = this.allChildren.find(({ id }) => id === parseInt(newId))
       this.setChild({ value: [child], save: true })
-      this.$router.push({ name: 'app-dashboard' })
+      if (redirect) {
+        this.handleLesson()
+        this.$router.push({ name: 'app-dashboard' })
+      }
     },
 
     async onResetChild () {
@@ -139,12 +169,15 @@ export default {
       this.$nuxt.$emit('dashboard-panel-update')
     },
 
-    async getCurrentLesson (redirect = false) {
+    async handleLesson (redirect = false) {
       try {
-        await this.getCurrentLessonByChildrenId({
-          childrenIds: this.childrenIds
-        })
-
+        if (this.overrideMode && this.childrenIds === parseInt(this.overrides.childId)) {
+          await this.getCurrentLessonByChildrenId(this.overrides)
+        } else {
+          await this.getCurrentLesson({
+            childrenIds: this.childrenIds
+          })
+        }
         if (redirect) {
           this.redirectDashboard()
         }
@@ -158,31 +191,30 @@ export default {
         if (this.videosCompletionRate < 100 && this.videos.length) {
           this.$router.push({
             name: 'app-dashboard-lesson-videos',
-            query: { id: this.getNextId(this.videos) }
+            query: { ...this.overrides, id: this.getNextId(this.videos) }
           })
         } else if (this.worksheetsCompletionRate < 100 && this.worksheets.ONLINE) {
           this.$router.push({
             name: 'app-dashboard-online-worksheet',
-            query: { id: this.getNextId(this.worksheets.ONLINE) }
+            query: { ...this.overrides, id: this.getNextId(this.worksheets.ONLINE) }
           })
         } else if (this.activitiesCompletionRate < 100 && this.activities.length) {
           this.$router.push({
             name: 'app-dashboard-lesson-activities',
-            query: { id: this.getNextId(this.activities) }
+            query: { ...this.overrides, id: this.getNextId(this.activities) }
           })
         } else {
-          this.$router.push({ name: 'app-dashboard-lesson-completed' })
+          this.$router.push({ name: 'app-dashboard-lesson-completed', query: { ...this.overrides } })
+        }
+      } else if (this.lesson && this.$route.name === 'app-dashboard-lesson-completed') {
+        if (
+          (this.videosCompletionRate < 100 && this.videos.length) ||
+          (this.worksheetsCompletionRate < 100 && this.worksheets.ONLINE) ||
+          (this.activitiesCompletionRate < 100 && this.activities.length)
+        ) {
+          this.$router.push({ name: 'app-dashboard', query: { ...this.overrides } })
         }
       }
-      // else if (this.lesson && this.$route.name === 'app-dashboard-lesson-completed') {
-      //   if (
-      //     (this.videosCompletionRate < 100 && this.videos.length) ||
-      //     (this.worksheetsCompletionRate < 100 && this.worksheets.ONLINE) ||
-      //     (this.activitiesCompletionRate < 100 && this.activities.length)
-      //   ) {
-      //     this.$router.push({ name: 'app-dashboard' })
-      //   }
-      // }
     }
   }
 }
