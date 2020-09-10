@@ -18,7 +18,7 @@
       <div class="card-border-top" />
       <div class="px-3">
         <div class="font-weight-bold text-center spaced-out">
-          COME BACK TO UNLOCK THIS DAY TOMORROW
+          <slot />
         </div>
       </div>
     </v-card>

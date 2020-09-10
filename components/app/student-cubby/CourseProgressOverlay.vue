@@ -49,7 +49,14 @@
             <blank-dashboard-panel
               :letter="(lessons[0]) ? lessons[0].curriculumType.letter : ''"
               :day="i + lessons.length"
-            />
+            >
+              <template v-if="i === 1">
+                COME BACK TOMORROW TO UNLOCK THIS DAY
+              </template>
+              <template v-else>
+                COME BACK LATER TO UNLOCK THIS DAY
+              </template>
+            </blank-dashboard-panel>
           </v-col>
         </v-row>
       </v-container>
