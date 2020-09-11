@@ -271,7 +271,7 @@ export default {
       if (window) {
         let height
         if (this.displayMode) {
-          height = window.innerHeight - 387
+          height = window.innerHeight - 290.6
         } else {
           height = window.innerHeight - 223 - this.headerHeight
         }
