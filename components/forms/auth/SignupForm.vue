@@ -125,7 +125,7 @@
 
                 <v-btn
                   block
-                  class="mb-6"
+                  class="mb-6 main-btn"
                   color="primary"
                   :disabled="invalid"
                   :loading="loading"

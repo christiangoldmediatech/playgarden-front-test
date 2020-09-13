@@ -8,7 +8,7 @@
         no-gutters
       >
         <v-col>
-          <span class="font-weight-bold text-h5">
+          <span class="font-weight-bold text-h5 pg-letter-spacing">
             CHILD’S INFORMATION
           </span>
 
@@ -136,7 +136,7 @@
         <v-col>
           <v-btn
             block
-            class="mb-12 mt-6"
+            class="mb-12 mt-6 main-btn"
             color="primary"
             :disabled="isLoading"
             text
@@ -148,7 +148,7 @@
 
           <v-btn
             block
-            class="mb-6"
+            class="mb-6 main-btn"
             color="primary"
             :disabled="invalid"
             :loading="isLoading"

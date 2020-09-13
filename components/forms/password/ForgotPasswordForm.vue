@@ -67,6 +67,7 @@
         :disabled="invalid"
         :loading="loading"
         type="submit"
+        class="main-btn"
         x-large
       >
         SEND RECOVERY LINK

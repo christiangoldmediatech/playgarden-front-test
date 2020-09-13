@@ -1,7 +1,7 @@
 <template>
   <validation-observer v-slot="{ invalid, passes, reset }">
     <p>
-      <span class="font-weight-bold text-h5">
+      <span class="font-weight-bold text-h5 pg-letter-spacing">
         CARD INFORMATION
       </span>
     </p>
@@ -103,7 +103,7 @@
       <v-btn
         v-if="cancelable"
         block
-        class="mb-6"
+        class="mb-6 main-btn"
         color="accent"
         :loading="loading"
         text

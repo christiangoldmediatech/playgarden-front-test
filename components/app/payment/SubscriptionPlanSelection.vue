@@ -12,7 +12,7 @@
               :loading="loading"
             >
               <p>
-                <span class="font-weight-bold text-h5">
+                <span class="font-weight-bold text-h5 pg-letter-spacing">
                   CHOOSE YOUR PLAN
                 </span>
               </p>
@@ -120,8 +120,8 @@
           <v-row v-if="!noAddress && draft.requireAddress">
             <v-col>
               <p>
-                <span class="font-weight-bold text-h5">
-                  Shipping address
+                <span class="font-weight-bold text-h5 pg-letter-spacing">
+                  SHIPPING ADDRESS
                 </span>
               </p>
 
@@ -213,7 +213,7 @@
 
           <v-btn
             block
-            class="mb-6"
+            class="mb-6 main-btn"
             color="primary"
             :disabled="invalid"
             :loading="loading"

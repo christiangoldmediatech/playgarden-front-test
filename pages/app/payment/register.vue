@@ -32,7 +32,7 @@
 
         <v-col class="px-12" cols="12" lg="6" md="4" xl="6">
           <p class="text-center text-md-left">
-            <span class="font-weight-bold text-h5">
+            <span class="font-weight-bold text-h5 pg-letter-spacing">
               MEMBERSHIP REVIEW
             </span>
           </p>

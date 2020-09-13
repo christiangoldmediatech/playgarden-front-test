@@ -25,6 +25,7 @@
         color="primary"
         :disabled="invalid"
         :loading="loading"
+        class="main-btn"
         type="submit"
         x-large
       >
