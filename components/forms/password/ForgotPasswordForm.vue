@@ -23,7 +23,7 @@
         />
       </validation-provider>
 
-      <v-row class="my-3" no-gutters>
+      <v-row class="my-0" no-gutters>
         <v-col class="hr-line">
           <v-divider />
         </v-col>
@@ -50,7 +50,7 @@
       >
         <v-text-field
           v-model="draft.phone"
-          class="mt-9 custom-text-field"
+          class="mt-6 custom-text-field"
           clearable
           :disabled="loading || Boolean(draft.email)"
           :error-messages="errors"
