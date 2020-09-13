@@ -1,22 +1,24 @@
 <template>
-  <div class="d-flex flex-column fill-height">
-    <!-- <div class="sticky"> -->
-    <v-row class="letter-day-row" justify="center">
-      <div class="letter-day-circle white">
-        <div class="accent--text font-weight-bold text-center text-h3">
-          {{ letter }}
-        </div>
+  <div class="dashboard-panel-container">
+    <v-card class="dashboard-panel-card pt-0" height="100%">
+      <div class="dashboard-panel-card-border-top" />
+      <div class="lesson-day-row">
+        <div class="lesson-day-outer">
+          <div class="lesson-day-inner">
+            <div class="lesson-day-circle">
+              <span class="lesson-day-letter">
+                {{ letter }}
+              </span>
 
-        <div
-          class="accent--text font-weight-bold text-center text-h5 text-uppercase"
-        >
-          DAY {{ day }}
+              <span class="lesson-day-number">
+                DAY {{ day }}
+              </span>
+            </div>
+          </div>
         </div>
       </div>
-    </v-row>
-    <v-card class="d-flex flex-column justify-center flex-grow-1 flex-shrink-0 panel-card">
-      <div class="card-border-top" />
-      <div class="px-3">
+
+      <div class="dashboard-panel-content pa-3 d-flex align-center">
         <div class="font-weight-bold text-center spaced-out">
           <slot />
         </div>
@@ -43,35 +45,9 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.letter-day {
-  &-row {
-    height: 79px;
-    max-height: 79px;
-  }
-
-  &-circle {
-    margin-top: 24px;
-    border-radius: 50%;
-    box-shadow: #dce7b5 0px 0px 0px 8px, #c2daa5 0px 0px 0px 19px;
-    height: 120px;
-    padding-top: 20px;
-    width: 120px;
-    z-index: 1;
-  }
-}
-
-.card-border-top {
-  background-color: #c2daa5;
-  border-radius: 4px;
-  height: 18px;
-  position: absolute;
-  top: 0;
-  width: 100%;
-}
-
+<style scoped>
 .spaced-out {
-  font-size: 24px;
-  letter-spacing: 0.150em !important;
+  font-size: 24px !important;
+  letter-spacing: 0.15em !important;
 }
 </style>
