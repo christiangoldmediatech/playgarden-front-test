@@ -1,7 +1,7 @@
 <template>
   <validation-observer v-slot="{ invalid, passes, reset }">
-    <p>
-      <span class="font-weight-bold text-h5">
+    <p :class="{ 'mt-8': $vuetify.breakpoint.smAndDown }">
+      <span class="font-weight-bold text-h5 pg-letter-spacing">
         CARD INFORMATION
       </span>
     </p>
@@ -15,6 +15,7 @@
       >
         <v-text-field
           v-model="draft.number"
+          v-mask="['#### #### #### ####']"
           clearable
           :disabled="loading"
           :error-messages="errors"
@@ -71,16 +72,27 @@
         </v-col>
       </v-row>
 
-      <validation-provider v-slot="{ errors }" name="Terms" rules="required">
-        <v-checkbox
-          v-model="draft.acceptTerms"
-          class="accept-terms mb-6 mt-0"
-          :error-messages="errors"
-          :true-value="true"
-          :false-value="null"
-          label="I have read and accept Terms & Conditions"
+      <v-row>
+        <validation-provider v-slot="{ errors }" name="Terms" rules="required">
+          <v-checkbox
+            v-model="draft.acceptTerms"
+            class="accept-terms mb-6 mt-0 pt-0"
+            :error-messages="errors"
+            :true-value="true"
+            :false-value="null"
+          >
+            <template #label>
+              <span class="read-accept">I have read and accept the</span>
+            </template>
+          </v-checkbox>
+        </validation-provider>
+        <nuxt-link
+          class="terms-conditions link-text ml-1"
+          :to="{ name: 'terms-conditions' }"
+          tag="span"
+          v-text="'Terms & Conditions'"
         />
-      </validation-provider>
+      </v-row>
 
       <v-btn
         block
@@ -103,7 +115,7 @@
       <v-btn
         v-if="cancelable"
         block
-        class="mb-6"
+        class="mb-6 main-btn"
         color="accent"
         :loading="loading"
         text
@@ -166,5 +178,11 @@ export default {
 .accept-terms ::v-deep .v-label {
   color: $pg-black !important;
   opacity: 2.49 !important;
+}
+.terms-conditions {
+  text-decoration: underline !important;
+  color: $pg-black;
+  font-weight: 400;
+  cursor: pointer;
 }
 </style>

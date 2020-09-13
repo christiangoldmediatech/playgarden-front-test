@@ -29,7 +29,7 @@
 
         <v-col class="px-12" cols="12" md="4">
           <p>
-            <span class="font-weight-bold text-h5">
+            <span class="font-weight-bold text-h5 pg-letter-spacing">
               MEMBERSHIP
             </span>
 

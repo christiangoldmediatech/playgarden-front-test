@@ -20,6 +20,7 @@
           v-if="isUserLoggedIn"
           block
           color="primary"
+          class="main-btn"
           :disabled="loading"
           :loading="loading"
           @click="onResend"
