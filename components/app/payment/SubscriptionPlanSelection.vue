@@ -17,11 +17,11 @@
                 </span>
               </p>
 
-              <v-row>
+              <v-row no-gutters>
                 <v-col
                   v-for="(plan, indexP) in plans"
                   :key="indexP"
-                  class="c-col elevation-3 mx-md-3 my-3"
+                  class="c-col elevation-3 mx-md-3 my-3 pa-3"
                   cols="12"
                   md=""
                 >
@@ -39,6 +39,7 @@
                         v-for="(benefit, indexPCB) in plan.commonBenefits
                           .benefits"
                         :key="indexPCB"
+                        class="plan-item"
                       >
                         {{ benefit }}
                       </li>
@@ -54,6 +55,7 @@
                           v-for="(benefit, indexHDB) in plan
                             .homeDeliveryBenefits.benefits"
                           :key="indexHDB"
+                          class="plan-item"
                         >
                           {{ benefit }}
                         </li>
@@ -70,6 +72,7 @@
                           v-for="(benefit, indexPB) in plan.plusBenefits
                             .benefits"
                           :key="indexPB"
+                          class="plan-item"
                         >
                           {{ benefit }}
                         </li>
@@ -390,5 +393,8 @@ ul li::before {
 
 .v-item--active ::v-deep .v-label {
   font-weight: bold !important;
+}
+.plan-item {
+  font-size: 14px;
 }
 </style>
