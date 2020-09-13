@@ -4,13 +4,12 @@
       <v-row
         v-for="(item, indexD) in draft"
         :key="indexD"
-        class="mb-6"
         no-gutters
       >
         <v-col>
-          <span class="font-weight-bold text-h5 pg-letter-spacing">
+          <p class="font-weight-bold text-h5 pg-letter-spacing my-4">
             CHILD’S INFORMATION
-          </span>
+          </p>
 
           <!-- Name -->
           <validation-provider
@@ -96,14 +95,14 @@
             :name="(removable ? `Child #${indexD + 1} - ` : '') + 'Backpack'"
             rules="required"
           >
-            <v-row>
+            <v-row no-gutters>
               <v-col
                 v-for="(backpack, indexB) in backpacks"
                 :key="indexB"
                 class="image"
                 cols="6"
-                md="2"
                 sm="4"
+                md="2"
               >
                 <img
                   :alt="backpack.name"
@@ -136,7 +135,7 @@
         <v-col>
           <v-btn
             block
-            class="mb-12 mt-6 main-btn"
+            class="mb-4 mt-4 main-btn"
             color="primary"
             :disabled="isLoading"
             text
@@ -155,7 +154,7 @@
             type="submit"
             x-large
           >
-            CONTINUE TO PLAN SELECTION
+            {{ $vuetify.breakpoint.mdAndUp ? 'CONTINUE TO PLAN SELECTION' : 'CONTINUE' }}
           </v-btn>
         </v-col>
       </v-row>
@@ -296,16 +295,21 @@ export default {
 
 <style lang="scss" scoped>
 .image {
-  height: 145px;
+  height: 100px;
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
 
   img {
-    max-height: 145px;
+    max-height: 100px;
+    max-width: 100px;
     padding: 10px;
     width: 100%;
 
     &.active {
       background-color: $pg-secondary;
-      border-radius: 25px;
+      border-radius: 50%;
       padding: 5px;
     }
   }
