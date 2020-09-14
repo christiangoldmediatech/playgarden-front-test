@@ -1,37 +1,51 @@
 <template>
-  <v-row class="my-8" justify="center">
-    <v-col cols="12">
-      <span class="d-block text-center text-h4 font-weight-bold">
+  <v-row class="flex-column flex-nowrap fill-height align-center justify-space-around" no-gutters>
+    <v-col class="flex-shrink-1 flex-grow-0">
+      <!-- Question -->
+      <span class="d-block text-center font-weight-bold">
+        {{ question }}
+      </span>
+    </v-col>
+
+    <v-col class="d-flex align-center justify-center flex-shrink-1 flex-grow-0">
+      <span class="text-center text-h4 font-weight-bold">
         {{ randomWord }}
       </span>
     </v-col>
 
-    <v-col cols="12">
-      <v-row justify="center">
-        <worksheet-image
+    <v-col class="flex-shrink-1 flex-grow-0">
+      <v-row align="center" justify="center">
+        <v-col
           v-for="item in items"
           :key="`images-${item.code}`"
-          v-bind="{ item, selected: selected ? selected.code : null }"
-          hoverable
-          @click.stop="select(item)"
-        />
+          cols="5"
+          sm="3"
+        >
+          <worksheet-image
+            v-bind="{ item, selected: selected ? selected.code : null }"
+            hoverable
+            @click.stop="select(item)"
+          />
+        </v-col>
       </v-row>
     </v-col>
 
-    <v-col
-      class="mt-10"
-      cols="12"
-      sm="10"
-      md="8"
-      lg="6"
-      xl="4"
-    >
-      <continue-button
-        :disabled="!selected"
-        @click.stop="showResult"
-      />
+    <v-col class="d-flex align-center justify-center flex-shrink-0 flex-grow-1">
+      <v-row justify="center" no-gutters>
+        <v-col
+          cols="12"
+          sm="10"
+          md="8"
+          lg="6"
+          xl="4"
+        >
+          <continue-button
+            :disabled="!selected"
+            @click.stop="showResult"
+          />
+        </v-col>
+      </v-row>
     </v-col>
-
     <worksheet-message
       v-model="dialog"
       v-bind="{ correct, selected: selected || {} }"
@@ -97,6 +111,11 @@ export default {
   },
 
   props: {
+    question: {
+      type: String,
+      required: true
+    },
+
     images: {
       type: Array,
       required: true

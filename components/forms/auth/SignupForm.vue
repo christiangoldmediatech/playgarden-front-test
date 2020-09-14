@@ -1,11 +1,12 @@
 <template>
   <validation-observer v-slot="{ invalid, passes }">
     <v-form @submit.prevent="passes(onSubmit)">
-      <v-container row>
-        <v-row
-          no-gutters
-        >
-          <v-col class="mr-5">
+      <v-container class="px-0">
+        <v-row no-gutters>
+          <v-col
+            :class="{ 'pr-2': $vuetify.breakpoint.mdAndUp }"
+            :cols="$vuetify.breakpoint.mdAndUp ? '6' : '12'"
+          >
             <!-- First name -->
             <validation-provider
               v-slot="{ errors }"
@@ -23,11 +24,14 @@
               />
             </validation-provider>
           </v-col>
-          <v-col>
+          <v-col
+            :class="{ 'pl-2': $vuetify.breakpoint.mdAndUp }"
+            :cols="$vuetify.breakpoint.mdAndUp ? '6' : '12'"
+          >
             <!-- Last name -->
             <validation-provider
               v-slot="{ errors }"
-              name="Last name"
+              name="Last Name"
               rules="required"
             >
               <v-text-field
@@ -42,7 +46,7 @@
             </validation-provider>
           </v-col>
           <v-col cols="12">
-            <v-row>
+            <v-row no-gutters>
               <v-col cols="12">
                 <!-- Phone number -->
                 <validation-provider
@@ -52,6 +56,7 @@
                 >
                   <v-text-field
                     v-model="draft.phoneNumber"
+                    v-mask="['(###) ###-####']"
                     clearable
                     :disabled="loading || hasInvitationPhone"
                     :error-messages="errors"
@@ -80,53 +85,59 @@
                   />
                 </validation-provider>
 
-                <!-- Password -->
-                <validation-provider
-                  v-slot="{ errors }"
-                  name="Password"
-                  rules="required|min:8|max:20|w_number|w_special|w_upper|confirmed:passwordConfirmation"
-                >
-                  <password-field
-                    v-model="draft.password"
-                    clearable
-                    :disabled="loading"
-                    :error-messages="errors"
-                    label="Password"
-                    :loading="loading"
-                    maxlength="20"
-                    solo
-                  />
-                </validation-provider>
+                <template v-if="inInvitationProcess || !isUserLoggedIn">
+                  <!-- Password -->
+                  <validation-provider
+                    v-slot="{ errors }"
+                    name="Password"
+                    rules="required|min:8|max:20|w_number|w_special|w_upper|confirmed:passwordConfirmation"
+                  >
+                    <password-field
+                      v-model="draft.password"
+                      clearable
+                      :disabled="loading"
+                      :error-messages="errors"
+                      label="Password"
+                      :loading="loading"
+                      maxlength="20"
+                      solo
+                    />
+                  </validation-provider>
 
-                <!-- Password confirmation -->
-                <validation-provider
-                  v-slot="{ errors }"
-                  name="Password confirmation"
-                  rules="required"
-                  vid="passwordConfirmation"
-                >
-                  <password-field
-                    v-model="draft.passwordConfirmation"
-                    clearable
-                    :disabled="loading"
-                    :error-messages="errors"
-                    label="Password confirmation"
-                    :loading="loading"
-                    maxlength="20"
-                    solo
-                  />
-                </validation-provider>
+                  <!-- Password confirmation -->
+                  <validation-provider
+                    v-slot="{ errors }"
+                    name="Confirm password"
+                    rules="required"
+                    vid="passwordConfirmation"
+                  >
+                    <password-field
+                      v-model="draft.passwordConfirmation"
+                      clearable
+                      :disabled="loading"
+                      :error-messages="errors"
+                      label="Confirm password"
+                      :loading="loading"
+                      maxlength="20"
+                      solo
+                    />
+                  </validation-provider>
+                </template>
 
                 <v-btn
                   block
-                  class="mb-6"
+                  class="mb-6 main-btn"
                   color="primary"
                   :disabled="invalid"
                   :loading="loading"
                   type="submit"
                   x-large
                 >
-                  SIGNUP
+                  {{
+                    inInvitationProcess || !isUserLoggedIn
+                      ? "SIGNUP"
+                      : "CONTINUE"
+                  }}
                 </v-btn>
               </v-col>
             </v-row>
@@ -146,6 +157,11 @@ export default {
   name: 'SignupForm',
 
   props: {
+    emailValidated: {
+      type: String,
+      default: null
+    },
+
     inInvitationProcess: Boolean,
 
     loading: Boolean
@@ -172,10 +188,15 @@ export default {
 
   mounted () {
     this.draft = {
-      firstName: null,
-      lastName: null,
-      phoneNumber: this.$route.query.phone || null,
-      email: this.$route.query.email || this.getUserInfo.email || null,
+      firstName: this.getUserInfo.firstName || null,
+      lastName: this.getUserInfo.lastName || null,
+      phoneNumber:
+        this.$route.query.phone || this.getUserInfo.phoneNumber || null,
+      email:
+        this.$route.query.email ||
+        this.getUserInfo.email ||
+        this.emailValidated ||
+        null,
       password: null,
       passwordConfirmation: null
     }

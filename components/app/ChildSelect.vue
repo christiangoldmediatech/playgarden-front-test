@@ -8,13 +8,13 @@
     @input="$emit('input', $event)"
   >
     <template v-slot:selection="{ item }">
-      <v-list-item>
+      <v-list-item class="pa-0 w-100">
         <v-list-item-avatar>
           <v-img :src="item.backpack.image" />
         </v-list-item-avatar>
 
         <v-list-item-content>
-          <v-list-item-title>
+          <v-list-item-title class="text-truncate">
             {{ item.firstName }}
           </v-list-item-title>
         </v-list-item-content>
@@ -22,10 +22,7 @@
     </template>
 
     <template v-slot:item="{ item, on, attrs }">
-      <v-list-item
-        v-bind="attrs"
-        v-on="on"
-      >
+      <v-list-item v-bind="attrs" class="w-100" v-on="on">
         <v-list-item-avatar>
           <v-img :src="item.backpack.image" />
         </v-list-item-avatar>
@@ -44,7 +41,7 @@
           <v-btn
             color="primary"
             nuxt
-            :to="{ name: 'app-account' }"
+            :to="{ name: 'app-account', query: { tab: 2 } }"
           >
             Manage Student Profiles
           </v-btn>
@@ -63,7 +60,7 @@ export default {
     value: {
       required: true,
       validator: (val) => {
-        return (val === null || typeof val === 'number')
+        return val === null || typeof val === 'number'
       }
     }
   },

@@ -10,18 +10,10 @@
     <buffering-circle v-if="status === 'LOADING'" />
 
     <!-- Exit tip -->
-    <exit-tip v-if="!$vuetify.breakpoint.mobile" />
+    <exit-tip v-if="!$vuetify.breakpoint.mobile" @quit="$emit('hotkey')" />
 
-    <!-- Mobile exit button -->
-    <mobile-exit-btn v-if="$vuetify.breakpoint.mobile" @quit="$emit('hotkey')" />
-
-    <!-- Test Dialog -->
-    <!-- <div class="control-container d-flex align-center justify-center">
-      <v-btn @click.stop="dialog = !dialog">
-        @click.stop="nextUp.show = !nextUp.show"
-        Test
-      </v-btn>
-    </div> -->
+    <!-- Favorite Btn -->
+    <favorite-btn v-if="videoId" v-bind="{ videoId }" />
 
     <!-- Next Up Component -->
     <next-up :params="nextUp" />
@@ -29,7 +21,7 @@
     <!-- Controls -->
     <control-bar
       v-if="player"
-      v-bind="{ player, playerContainerId, status, position, duration, fullscreen, volume, muted, toggleFullscreen, videoId }"
+      v-bind="{ player, playerContainerId, status, position, duration, fullscreen, volume, muted, toggleFullscreen }"
     />
 
     <!-- Completed dialog -->
@@ -45,7 +37,6 @@
 </template>
 
 <script>
-import 'video.js/dist/video-js.css'
 import Setup from './mixins/Setup'
 
 export default {

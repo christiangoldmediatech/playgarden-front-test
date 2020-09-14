@@ -1,46 +1,49 @@
 <template>
-  <v-row class="mt-md-6 mt-n9" no-gutters>
+  <v-row class="mt-md-6 mt-0" no-gutters>
     <v-col cols="12" md="6">
-      <div class="mx-12">
-        <underlined-title text="Account" />
+      <div class="sticky">
+        <div class="mx-12">
+          <underlined-title text="Account" />
 
-        <p>
-          Welcome back {{ userInfo.fullName }}! Here you can manage everything
-          related to your account.
-        </p>
-      </div>
+          <p>
+            Welcome back {{ userInfo.fullName }}! Here you can manage everything
+            related to your account.
+          </p>
+        </div>
 
-      <div v-show="showSetting" class="image image-bar">
-        <img
-          alt="Montessori Nutrition Lesson"
-          src="@/assets/svg/montessori-nutrition-lesson.svg"
-          class="pr-6"
-          contain
-        >
-      </div>
+        <div class="pb-10">
+          <div v-show="showSetting" class="image image-bar">
+            <img
+              alt="Montessori Nutrition Lesson"
+              src="@/assets/svg/montessori-nutrition-lesson.svg"
+              class="pr-6"
+            >
+          </div>
 
-      <div v-show="!showSetting" class="pr-6 image-bar mb-10">
-        <v-img
-          :src="require('@/assets/png/profile/child-profile-bkg.png')"
-          contain
-        />
-      </div>
+          <div v-show="!showSetting" class="pr-6 image-bar">
+            <v-img
+              :src="require('@/assets/png/profile/child-profile-bkg.png')"
+              contain
+            />
+          </div>
+        </div>
 
-      <div class="mb-12 mt-6 text-right">
-        <v-btn
-          class="px-13 hidden-sm-and-down"
-          color="accent"
-          nuxt
-          :to="{ name: 'auth-logout' }"
-        >
-          LOG OUT
-        </v-btn>
+        <div class="hidden-sm-and-down mb-12 mt-6 text-right">
+          <v-btn
+            class="px-13"
+            color="accent"
+            nuxt
+            :to="{ name: 'auth-logout' }"
+          >
+            LOG OUT
+          </v-btn>
+        </div>
       </div>
     </v-col>
 
     <v-col class="px-12" cols="12" md="6">
       <v-row class="mb-6">
-        <v-col cols="6">
+        <v-col cols="12" md="6">
           <v-btn
             block
             :color="showSetting ? 'primary' : 'grey lighten-5'"
@@ -51,7 +54,7 @@
           </v-btn>
         </v-col>
 
-        <v-col cols="6">
+        <v-col cols="12" md="6">
           <v-btn
             block
             :color="!showSetting ? 'primary' : 'grey lighten-5'"
@@ -143,10 +146,10 @@ export default {
     UpdatePassword
   },
 
-  data: () => ({
+  data: vm => ({
     loading: false,
     passwordModal: false,
-    showSetting: true
+    showSetting: Number(vm.$route.query.tab) !== 2
   }),
 
   computed: mapGetters('auth', { userInfo: 'getUserInfo' })
@@ -176,5 +179,11 @@ export default {
     z-index: -1;
     border-bottom: 32px solid var(--v-primary-base);
   }
+}
+
+.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 100px;
 }
 </style>

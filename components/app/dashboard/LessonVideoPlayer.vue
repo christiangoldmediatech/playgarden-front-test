@@ -41,6 +41,13 @@ export default {
   },
 
   computed: {
+    overrides () {
+      return {
+        childId: this.$route.query.childId,
+        lessonId: this.$route.query.lessonId
+      }
+    },
+
     buttons () {
       return [
         {
@@ -48,7 +55,7 @@ export default {
           color: 'accent',
           iconLeft: 'mdi-square-edit-outline',
           action: () => {
-            this.$router.push({ name: 'app-dashboard-online-worksheet' })
+            this.$router.push({ name: 'app-dashboard-online-worksheet', query: { ...this.overrides } })
           }
         },
         {
@@ -61,7 +68,7 @@ export default {
             if (activities.length) {
               this.$router.push({
                 name: 'app-dashboard-lesson-activities',
-                query: { id: activities[0].id }
+                query: { ...this.overrides, id: activities[0].id }
               })
             }
           }
@@ -72,7 +79,7 @@ export default {
     completedProps () {
       return {
         timeOutAction: () => {
-          this.$router.push({ name: 'app-dashboard-online-worksheet' })
+          this.$router.push({ name: 'app-dashboard-online-worksheet', query: { ...this.overrides } })
         },
         buttons: this.buttons,
         returnAction: () => {
@@ -87,6 +94,7 @@ export default {
 
     onReady (player) {
       this.player = player
+      player.on('timeupdate', this.handleNextUp)
       player.on('pause', this.saveProgress)
       player.on('ended', this.completedVideo)
     },
@@ -158,7 +166,7 @@ export default {
         this.loadAndPlay()
         this.$router.push({
           name: 'app-dashboard-lesson-videos',
-          query: { id: this.mediaObject.videoId }
+          query: { ...this.overrides, id: this.mediaObject.videoId }
         })
       } else {
         this.$refs.childrenVideoPlayer.showCompletedDialog()

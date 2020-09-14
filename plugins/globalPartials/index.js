@@ -1,10 +1,9 @@
 import Vue from 'vue'
 
 import FileUploader from './file-uploader/FileUploader'
-import JwPlayer from './JwPlayer'
-// import ChildrenJwPlayer from './ChildrenJwPlayer/ChildrenJwPlayer'
 import NotifyEvent from './NotifyEvent'
 import PasswordField from './PasswordField'
+import PgLoading from './PgLoading'
 import ProgressLinear from './ProgressLinear'
 import PromptDialog from './PromptDialog'
 import TiptapField from './TiptapField'
@@ -13,10 +12,9 @@ import VideoPreview from './video-preview/VideoPreview'
 import VideoPreviewBtn from './video-preview/VideoPreviewBtn'
 
 Vue.component(FileUploader.name, FileUploader)
-Vue.component(JwPlayer.name, JwPlayer)
-// Vue.component(ChildrenJwPlayer.name, ChildrenJwPlayer)
 Vue.component(NotifyEvent.name, NotifyEvent)
 Vue.component(PasswordField.name, PasswordField)
+Vue.component(PgLoading.name, PgLoading)
 Vue.component(ProgressLinear.name, ProgressLinear)
 Vue.component(PromptDialog.name, PromptDialog)
 Vue.component(TiptapField.name, TiptapField)

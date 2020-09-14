@@ -28,7 +28,7 @@
 
     <p class="login mt-4 text-center text-md-left">
       <nuxt-link :to="{ name: 'index' }">
-        <span>return to login</span>
+        <span class="return-link">return to login</span>
       </nuxt-link>
     </p>
   </v-form>
@@ -95,5 +95,8 @@ export default {
   font-weight: bold;
   text-align: center;
   font-size: 20px;
+}
+.return-link {
+  color:  $pg-btn-green;
 }
 </style>

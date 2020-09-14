@@ -2,6 +2,13 @@ import { get } from 'lodash'
 
 export default function ({ redirect, route, store }) {
   if (process.client) {
+    const ignoreRoute = {
+      'auth-logout': 1,
+      'jwt-recovery': 1,
+      'privacy-policy': 1,
+      'terms-conditions': 1
+    }
+
     const user = store.getters['auth/getUserInfo']
     const step = Number(user.registerStep)
 
@@ -18,7 +25,7 @@ export default function ({ redirect, route, store }) {
       (step === 1 || step === 2 || step === 3 || step === 4) &&
       (!user.role || get(user, 'role.section') === 'USERS') &&
       route.query.process !== 'signup' &&
-      route.name !== 'auth-logout'
+      !ignoreRoute[route.name]
     ) {
       let name
 

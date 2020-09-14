@@ -9,7 +9,7 @@
         </p>
       </div>
 
-      <v-row>
+      <v-row justify="center">
         <letter-card
           v-for="letter in letters"
           :key="`letter-card-${letter.id}`"
@@ -17,18 +17,21 @@
         />
       </v-row>
     </v-card-text>
+    <course-progress-overlay />
   </v-card>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
 import LetterCard from '@/components/app/student-cubby/LetterCard.vue'
+import CourseProgressOverlay from '@/components/app/student-cubby/CourseProgressOverlay.vue'
 
 export default {
   name: 'CourseProgress',
 
   components: {
-    LetterCard
+    LetterCard,
+    CourseProgressOverlay
   },
 
   data: () => {
@@ -37,15 +40,34 @@ export default {
     }
   },
 
+  computed: {
+    studentId () {
+      return this.$route.query.id
+    }
+  },
+
+  watch: {
+    studentId () {
+      this.fetchChildProgress()
+    }
+  },
+
   created () {
-    this.loadLetters()
+    this.fetchChildProgress()
+  },
+
+  beforeDestroy () {
+    document.querySelector('html').style.overflowY = 'auto'
   },
 
   methods: {
-    ...mapActions('admin/curriculum', ['getTypes']),
+    ...mapActions('children/course-progress', ['getCourseProgressByChildId']),
 
-    async loadLetters () {
-      this.letters = await this.getTypes()
+    async fetchChildProgress () {
+      const data = await this.getCourseProgressByChildId({
+        id: this.studentId
+      })
+      this.letters = data
     }
   }
 }

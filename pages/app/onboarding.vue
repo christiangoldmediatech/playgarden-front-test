@@ -2,15 +2,7 @@
   <v-container fluid>
     <v-row>
       <v-col cols="12">
-        <v-row v-if="loading" align="center" fill-height justify="center">
-          <v-col class="text-center" cols="4">
-            <div>
-              <img class="logo-img" src="@/assets/svg/logo.svg">
-            </div>
-
-            <v-progress-linear color="primary" indeterminate :size="20" />
-          </v-col>
-        </v-row>
+        <pg-loading v-if="loading" />
 
         <v-card v-else>
           <v-card-title>
@@ -43,12 +35,10 @@
                   :key="indexOI"
                   :step="indexOI + 1"
                 >
-                  <jw-player
-                    :file="videos.videoUrl"
-                    :title="videos.name"
-                    :image="videos.thumbnail"
-                    :description="videos.description"
-                    @complete="nextStep"
+                  <video-js-player
+                    v-bind="{ videos }"
+                    @ready="onPlayerReady"
+                    @ended="nextStep"
                   />
                 </v-stepper-content>
               </v-stepper-items>
@@ -92,15 +82,21 @@
 
 <script>
 import { mapActions } from 'vuex'
+import VideoJsPlayer from '@/components/video-player/VideoJsPlayer'
 
 export default {
   name: 'Onboarding',
+
+  components: {
+    VideoJsPlayer
+  },
 
   data: () => ({
     loading: true,
     finishing: false,
     step: 1,
-    onboardings: []
+    onboardings: [],
+    player: null
   }),
 
   computed: {
@@ -142,8 +138,25 @@ export default {
 
   methods: {
     ...mapActions('auth', ['updateAuthOnboarding']),
-
     ...mapActions('onboarding', ['getOnboardings']),
+
+    onPlayerReady (player) {
+      this.player = player
+      const interval = window.setInterval(() => {
+        if (this.onboardings.length) {
+          const { videos } = this.onboardings[0]
+          this.player.loadMedia({
+            title: videos.name,
+            poster: videos.thumbnail,
+            src: {
+              src: videos.videoUrl.HLS,
+              type: 'application/x-mpegURL'
+            }
+          })
+          window.clearInterval(interval)
+        }
+      }, 50)
+    },
 
     nextStep () {
       if (this.step < this.steps) {

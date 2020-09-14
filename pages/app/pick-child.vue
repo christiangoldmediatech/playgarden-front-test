@@ -14,52 +14,33 @@
                 </span>
               </div>
 
-              <v-row class="text-center" justify="center">
-                <v-row
-                  no-gutters
-                  class="ml-6 mr-6"
+              <v-row justify="center">
+                <v-col
+                  v-for="child in children"
+                  :key="`child-${child.id}`"
+                  class="selected-child text-center"
+                  cols="6"
+                  md="4"
+                  lg="3"
+                  @click.stop="selectChild(child)"
                 >
-                  <v-col
-                    v-for="child in children"
-                    :key="`child-${child.id}`"
-                    cols="4"
-                    class="selected-child"
-                    @click.stop="selectChild(child)"
-                  >
-                    <div class="image-child-max">
-                      <v-hover
-                        :key="`child-${child.id}`"
-                        v-slot:default="{ hover }"
-                        open-delay="100"
-                        close-delay="100"
-                      >
-                        <v-avatar
-                          v-if="child.everyone"
-                          :size="hover ? 140 : 134"
-                        >
-                          <v-img
-                            :src="require('@/assets/svg/everyone.svg')"
-                            max-height="hover ? 90 : 100"
-                            contain
-                          />
-                        </v-avatar>
-                        <v-avatar
-                          v-else
-                          :size="hover ? 140 : 134"
-                        >
-                          <v-img
-                            :src="child.backpack.image"
-                            max-height="hover ? 90 : 100"
-                            contain
-                          />
-                        </v-avatar>
-                      </v-hover>
+                  <v-hover v-slot:default="{ hover }">
+                    <div :class="['child-option', { scaled: hover }]">
+                      <v-img
+                        :src="
+                          child.everyone
+                            ? require('@/assets/svg/everyone.svg')
+                            : child.backpack.image
+                        "
+                        aspect-ratio="1"
+                        contain
+                      />
+                      <span class="font-weight-bold">
+                        {{ child.firstName }}
+                      </span>
                     </div>
-                    <span class="font-weight-bold">
-                      {{ child.firstName }}
-                    </span>
-                  </v-col>
-                </v-row>
+                  </v-hover>
+                </v-col>
               </v-row>
 
               <v-btn
@@ -122,7 +103,7 @@ export default {
   methods: {
     ...mapActions('children', { getChildren: 'get' }),
 
-    ...mapActions({ setChild: 'setChild' }),
+    ...mapActions(['setChild']),
 
     selectChild (child) {
       if (!this.selected) {
@@ -137,7 +118,12 @@ export default {
         if (this.$route.query.redirect) {
           this.$router.push(decodeURIComponent(this.$route.query.redirect))
         } else {
-          this.$router.push({ name: 'app-dashboard' })
+          this.$router.push({
+            name: 'app-dashboard',
+            query: {
+              _time: new Date().getTime() // <- just in order to avoid infinite loading bar
+            }
+          })
         }
       }
     }
@@ -146,6 +132,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.child-option {
+  transition: transform 250ms;
+}
+
+.scaled {
+  transform: scale(1.15);
+}
+
 .min-col {
   min-height: 125px !important;
 }

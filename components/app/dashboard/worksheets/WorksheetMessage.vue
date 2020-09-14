@@ -11,18 +11,16 @@
           {{ `${correct ? 'GREAT JOB!' : 'TRY AGAIN!'}` }}
         </span>
 
-        <v-row v-if="Object.keys(selected).length > 0" class="my-6" align="center" justify="center">
-          <v-col class="flex-grow-0 flex-shrink-1">
-            <v-row class="text-center" justify="center">
-              <worksheet-image size="301" v-bind="{ item: selected, selected: selected.code }">
-                <span v-if="showImageWord" class="d-block mt-3 text-h5 font-weight-bold">
-                  {{ selected.word }}
-                </span>
-              </worksheet-image>
-            </v-row>
+        <v-row v-if="Object.keys(selected).length > 0" class="my-6 mx-0" align="center" justify="center">
+          <v-col cols="4" class="text-center">
+            <worksheet-image size="301" v-bind="{ item: selected, selected: selected.code }">
+              <span v-if="showImageWord" class="d-block mt-3 text-h5 font-weight-bold">
+                {{ selected.word }}
+              </span>
+            </worksheet-image>
           </v-col>
 
-          <div class="info-column text-center">
+          <v-col class="flex-shrink-1 flex-grow-0 info-column text-center">
             <v-img
               :src="require(`@/assets/svg/${correct ? 'correct' : 'incorrect' }.svg`)"
               class="ma-auto"
@@ -39,7 +37,7 @@
                 starts with a {{ selected.word[0].toUpperCase() }}{{ selected.word[0].toLowerCase() }}
               </p>
             </slot>
-          </div>
+          </v-col>
         </v-row>
 
         <slot name="actions" />

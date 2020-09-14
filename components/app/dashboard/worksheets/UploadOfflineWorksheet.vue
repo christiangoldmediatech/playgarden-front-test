@@ -22,23 +22,6 @@
           </span>
         </div>
 
-        <div class="text-center">
-          <span>
-            Who is uploading?
-          </span>
-          <v-row no-gutters justify="center">
-            <v-col
-              cols="12"
-              sm="8"
-              md="6"
-              lg="3"
-              xl="2"
-            >
-              <child-select v-model="selectedChild" />
-            </v-col>
-          </v-row>
-        </div>
-
         <v-row justify="center">
           <v-hover
             v-for="category in categories"
@@ -48,7 +31,7 @@
             <v-card
               :class="['ma-2 clickable category-card', { 'scaled': hover }]"
               :elevation="(hover) ? 12 : 2"
-              :disabled="disabled"
+              :disabled="loading"
               @click.stop="openFileDialog(category.id)"
             >
               <v-card-text>
@@ -97,14 +80,9 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import ChildSelect from './ChildSelect.vue'
 
 export default {
   name: 'UploadOfflineWorksheet',
-
-  components: {
-    ChildSelect
-  },
 
   props: {
     value: {
@@ -117,18 +95,13 @@ export default {
     return {
       loading: false,
       categories: [],
-      selectedChild: null,
       images: {}
     }
   },
 
   computed: {
-    ...mapGetters({ children: 'getCurrentChild' }),
-    ...mapGetters('admin/curriculum', ['getLesson']),
-
-    disabled () {
-      return (this.selectedChild === null || this.loading)
-    }
+    ...mapGetters({ currentChild: 'getCurrentChild' }),
+    ...mapGetters('admin/curriculum', ['getLesson'])
   },
 
   watch: {
@@ -136,22 +109,11 @@ export default {
       if (val) {
         this.reset()
       }
-    },
-
-    children (val) {
-      this.selectedChild = val[0].id
-    },
-
-    selectedChild (val) {
-      if (val) {
-        this.getUploadedWorksheets()
-      }
     }
   },
 
   created () {
     this.getOfflineWorksheetCategories().then((data) => { this.categories = data })
-    this.selectedChild = this.children[0].id
   },
 
   methods: {
@@ -161,7 +123,7 @@ export default {
     async getUploadedWorksheets () {
       this.images = {}
       this.loading = true
-      const uploads = await this.getUploaded(this.selectedChild)
+      const uploads = await this.getUploaded(this.currentChild[0].id)
       uploads.forEach(({ id, worksheetUploads }) => {
         if (worksheetUploads.length) {
           this.images[`image_${id}`] = worksheetUploads[worksheetUploads.length - 1].url
@@ -173,7 +135,6 @@ export default {
     reset () {
       this.images = {}
       this.loading = false
-      this.selectedChild = null
     },
 
     close () {
@@ -190,7 +151,7 @@ export default {
 
       this.uploadWorksheet({
         lessonId: this.getLesson.id,
-        childrenId: this.selectedChild,
+        childrenId: this.currentChild[0].id,
         categoryId,
         File: e.target.files[0]
       })

@@ -1,23 +1,24 @@
 <template>
   <v-overlay :value="overlay" dark z-index="100">
     <v-container class="pa-0 fullscreen" fluid>
-      <v-row>
-        <v-col cols="ml-3 mt-3">
+      <v-row class="fill-height" align="center" justify="center">
+        <v-col
+          class="position-relative"
+          cols="7"
+          sm="6"
+          md="5"
+          lg="4"
+          xl="3"
+        >
           <v-btn
-            class="text-none"
-            text
-            x-large
+            class="top-right"
+            icon
             @click.stop="overlay = false"
           >
-            <v-icon class="mr-2" small left>
-              mdi-less-than
+            <v-icon>
+              mdi-close
             </v-icon>
-            Back
           </v-btn>
-        </v-col>
-      </v-row>
-      <v-row class="fill-height" align="center" justify="center">
-        <v-col cols="3">
           <portfolio-card v-bind="{ image }" display-mode />
         </v-col>
       </v-row>
@@ -52,6 +53,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.position-relative {
+  position: relative;
+}
+
+.top-right {
+  position: absolute;
+  top: 0;
+  right: -36px;
+  z-index: 1;
+}
+
 .fullscreen {
   width: 100vw !important;
   height: 100vh !important;

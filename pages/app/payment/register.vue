@@ -1,36 +1,98 @@
 <template>
-  <v-row class="flex-column-reverse flex-md-row" justify="center" no-gutters>
-    <v-col class="px-12" cols="12" lg="7" md="8" xl="5">
-      <stripe-form :loading="loading" @click:submit="onSubmit" />
-    </v-col>
+  <v-row no-gutters>
+    <v-col>
+      <v-row>
+        <v-btn
+          v-if="inSignUpProcess"
+          class="ma-2"
+          color="accent"
+          nuxt
+          text
+          :to="{
+            name: 'app-payment-plan',
+            query: { process: 'signup', step: '3' }
+          }"
+        >
+          <v-icon left>
+            mdi-less-than
+          </v-icon>
 
-    <v-col class="px-12" cols="12" lg="3" md="4" xl="3">
-      <p class="text-center text-md-left">
-        <span class="font-weight-bold text-h5">
-          MEMBERSHIP REVIEW
-        </span>
-      </p>
-
-      <v-row
-        v-for="(item, indexCI) in cost.items"
-        :key="indexCI"
-        class="px-12 py-2"
-      >
-        MEMBERSHIP {{ indexCI + 1 }}
-
-        <v-spacer />
-
-        <b>${{ item.price }}</b>
+          Back
+        </v-btn>
       </v-row>
 
-      <v-divider />
+      <v-row
+        class="flex-column-reverse flex-md-row"
+        justify="center"
+        no-gutters
+      >
+        <v-col class="px-12" cols="12" lg="6" md="8" xl="6">
+          <stripe-form :loading="loading" @click:submit="onSubmit" />
+        </v-col>
 
-      <v-row class="px-12">
-        TOTAL
+        <v-col class="px-12" cols="12" lg="6" md="4" xl="6">
+          <p class="text-center text-md-left">
+            <span class="font-weight-bold text-h5 pg-letter-spacing">
+              MEMBERSHIP REVIEW
+            </span>
+          </p>
 
-        <v-spacer />
+          <v-row
+            v-for="(item, indexCI) in cost.items"
+            :key="indexCI"
+            no-gutters
+            class="px-8 py-2"
+          >
+            <v-col cols="8">
+              <span class="product-name">
+                {{ item.product.name }}
+              </span>
+            </v-col>
+            <v-col cols="4">
+              <p class="product-description">
+                <span class="product-price">
+                  <b>${{ item.unit_amount / 100 }}</b>
+                </span>
+                <br>
+                <span class="product-info">
+                  a year <br>
 
-        <b>${{ cost.total || 0 }}</b>
+                  <span class="product-info-1">
+                    *Pricing is per child
+                  </span>
+                </span>
+              </p>
+            </v-col>
+          </v-row>
+
+          <v-divider />
+
+          <v-row no-gutters class="px-8">
+            <v-col cols="9">
+              <span class="total">
+                TOTAL
+              </span>
+            </v-col>
+            <v-col cols="3">
+              <span class="total-cost">
+                <b>${{ cost.total || 0 }}</b>
+              </span>
+            </v-col>
+          </v-row>
+
+          <v-row class="px-8">
+            <v-col cols="9">
+              <span class="due-today">
+                DUE TODAY
+              </span>
+            </v-col>
+            <v-col cols="3">
+              <span class="due-today-total">
+                <b>${{ 0 }}</b>
+              </span>
+            </v-col>
+          </v-row>
+        </v-col>
       </v-row>
     </v-col>
   </v-row>
@@ -77,6 +139,7 @@ export default {
     async fetchSubCosts () {
       try {
         this.cost = await this.fetchSubscriptionCost()
+        this.cost.items = this.cost.items.slice(0, 1)
       } catch (e) {}
     },
 
@@ -104,3 +167,42 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.product-name {
+  text-transform: uppercase !important;
+}
+
+.product-price {
+  font-size: 30px !important;
+}
+
+.product-info {
+  font-size: 14px !important;
+}
+.product-info-1 {
+  font-size: 9px !important;
+}
+
+.product-description {
+  text-align: center !important;
+}
+
+.due-today {
+  color: $pg-black !important;
+  font-weight: bold !important;
+  font-size: 25px !important;
+}
+.due-today-total {
+  color: $pg-black !important;
+  font-weight: 500 !important;
+  font-size: 25px !important;
+}
+
+.total {
+  font-size: 20px !important;
+}
+.total-cost {
+  font-size: 20px !important;
+}
+</style>

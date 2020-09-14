@@ -1,32 +1,26 @@
 <template>
-  <v-card>
+  <v-card class="d-flex flex-column" height="100%">
     <template v-if="currentVideoLesson">
-      <v-img
-        class="clickable"
-        :src="currentVideoLesson.poster"
-        :aspect-ratio="16/9"
+      <div
+        class="d-flex justify-center align-center clickable dashboard-video-thumbnail flex-grow-1 flex-shrink-0"
+        :style="{ '--videoThumbnailUrl': `url(${currentVideoLesson.poster})` }"
         @click.stop="playVideo"
       >
         <v-hover v-slot="{ hover }">
-          <v-container fill-height fluid>
-            <v-row align="center" justify="center">
-              <div
-                :class="['play-icon rounded-circle d-flex flex-column align-center justify-center', { 'scaled-play-icon': hover }]"
-              >
-                <img
-                  src="@/assets/svg/play-button.svg"
-                  class="ml-4 mt-2"
-                  width="40%"
-                >
-                <p class="mb-0 font-weight-bold text-uppercase white--text">
-                  Start
-                </p>
-              </div>
-            </v-row>
-          </v-container>
+          <div
+            :class="['play-icon rounded-circle d-flex flex-column align-center justify-center', { 'scaled-play-icon': hover }]"
+          >
+            <img
+              src="@/assets/svg/play-button.svg"
+              class="ml-4 mt-2"
+              width="40%"
+            >
+            <p class="mb-0 font-weight-bold text-uppercase white--text">
+              Start
+            </p>
+          </div>
         </v-hover>
-      </v-img>
-
+      </div>
       <v-list>
         <v-list-item>
           <v-list-item-avatar tile>

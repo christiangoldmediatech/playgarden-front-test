@@ -28,6 +28,7 @@
     <v-btn
       block
       color="primary"
+      class="main-btn"
       :disabled="isButtonDisabled"
       :loading="loading"
       type="submit"
@@ -120,6 +121,7 @@ export default {
 }
 .signup {
   font-size: 17px;
+  font-weight: 500;
 
   span {
     color: $pg-main;

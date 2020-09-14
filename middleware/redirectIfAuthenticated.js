@@ -15,7 +15,8 @@ export default function ({ redirect, route, store }) {
     store.getters['auth/getAccessToken'] &&
     unauthenticatedRoutes[route.name] &&
     !ignoreRoute[route.name] &&
-    user.role
+    user.role &&
+    route.query.process !== 'signup'
   ) {
     redirect({ name: 'app-dashboard' })
   }

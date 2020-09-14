@@ -13,7 +13,7 @@
           class="clickable"
           :src="thumbnail"
           max-width="100%"
-          :aspect-ratio="16/9"
+          :aspect-ratio="18/6"
           @click.stop="playVideo"
         >
           <v-container fill-height fluid>

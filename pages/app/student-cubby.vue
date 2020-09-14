@@ -2,23 +2,15 @@
   <v-main>
     <v-container fluid>
       <v-row justify="center">
-        <v-col class="flex-grow-0 flex-shrink-1">
+        <v-col cols="12" md="4" lg="3">
           <student-cubby-panel />
         </v-col>
 
-        <v-col>
-          <v-row align="center">
-            <v-spacer />
-
+        <v-col cols="12" md="">
+          <v-row align="center" class="mr-3" justify="end">
             <span class="font-weight-medium">First time using Playgarden?</span>
 
-            <v-btn
-              class="mr-3"
-              color="primary"
-              nuxt
-              text
-              :to="{ name: 'app-onboarding' }"
-            >
+            <v-btn color="primary" nuxt text :to="{ name: 'app-onboarding' }">
               WATCH TUTORIAL HERE
             </v-btn>
           </v-row>

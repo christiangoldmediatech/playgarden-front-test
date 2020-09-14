@@ -118,6 +118,10 @@ export default {
     }
   },
 
+  getSelectedSubscriptionPlan () {
+    return this.$axios.$get('/auth/user/plan')
+  },
+
   async selectSubscriptionPlan ({ commit }, { id, type } = {}) {
     try {
       return await this.$axios.$patch(`/auth/user/plan/${id}/${type}`)

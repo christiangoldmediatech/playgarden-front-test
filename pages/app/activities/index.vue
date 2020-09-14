@@ -1,6 +1,6 @@
 <template>
   <v-main>
-    <v-container>
+    <v-container class="pb-0">
       <top-bar />
       <activity-title />
     </v-container>
@@ -16,7 +16,7 @@
       :icon="category.icon"
       :activities="playlist(category.id)"
     />
-    <lesson-activity-player />
+    <lesson-activity-player activity-mode />
   </v-main>
 </template>
 

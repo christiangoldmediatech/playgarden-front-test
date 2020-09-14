@@ -1,52 +1,47 @@
 <template>
-  <v-card>
+  <v-card class="row mx-0 flex-column flex-nowrap" height="100%">
     <div class="green-line green-line-1" />
     <div class="green-line green-line-2" />
 
-    <v-card-text>
-      <template v-if="currentSheet && !finished">
-        <span class="d-block text-center text-h4 text-uppercase font-weight-bold">
-          Online Worksheet
-        </span>
+    <v-col class="d-flex flex-column justify-end align-content-center flex-shrink-1 title-section py-0 py-md-2">
+      <span class="text-center text-h4 text-uppercase font-weight-bold">
+        Online Worksheet
+      </span>
 
-        <!-- Progress -->
-        <v-row justify="center">
-          <v-col cols="12" sm="8" md="6" lg="3" xl="2">
-            <v-row no-gutters>
-              <v-col cols="12">
-                <v-progress-linear
-                  height="13"
-                  rounded
-                  :value="progress"
-                />
-              </v-col>
-              <v-col
-                v-for="i in stepCount"
-                :key="`question-marker-${i}`"
-                class="text-center"
+      <!-- Progress -->
+      <v-row class="flex-grow-0" justify="center">
+        <v-col cols="12" sm="8" md="6" lg="3" xl="2">
+          <v-row no-gutters>
+            <v-col cols="12">
+              <v-progress-linear
+                height="13"
+                rounded
+                :value="progress"
+              />
+            </v-col>
+            <v-col
+              v-for="i in stepCount"
+              :key="`question-marker-${i}`"
+              class="text-center"
+            >
+              <span
+                :class="['font-weight-bold', { 'primary--text': step >= i }]"
               >
-                <span
-                  :class="['font-weight-bold', { 'primary--text': step >= i }]"
-                >
-                  {{ i }}
-                </span>
-              </v-col>
-            </v-row>
-          </v-col>
-        </v-row>
+                {{ i }}
+              </span>
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
+    </v-col>
+    <v-col v-if="currentSheet && !finished" class="pt-0 pt-md-2">
+      <component
+        :is="type"
+        v-bind="{ question: worksheetTable.question, images, lastQuestion, loading }"
+        @next="nextPage"
+      />
+    </v-col>
 
-        <!-- Question -->
-        <span class="d-block text-center font-weight-bold">
-          {{ worksheetTable.question }}
-        </span>
-
-        <component
-          :is="type"
-          v-bind="{ images, lastQuestion, loading }"
-          @next="nextPage"
-        />
-      </template>
-    </v-card-text>
     <completed-dialog
       v-model="finished"
       :buttons="buttons"
@@ -92,6 +87,13 @@ export default {
     ...mapGetters({ children: 'getCurrentChild' }),
     ...mapGetters('admin/curriculum', ['getLesson']),
 
+    overrides () {
+      return {
+        childId: this.$route.query.childId,
+        lessonId: this.$route.query.lessonId
+      }
+    },
+
     buttons () {
       return [
         {
@@ -101,7 +103,7 @@ export default {
           action: () => {
             this.$router.push({
               name: 'app-dashboard-lesson-activities',
-              query: { id: this.getLesson.lessonsActivities[0].activity.id }
+              query: { ...this.overrides, id: this.getLesson.lessonsActivities[0].activity.id }
             })
           }
         },
@@ -110,7 +112,7 @@ export default {
           color: '#FEC572',
           iconLeft: 'mdi-download-outline',
           action: () => {
-            this.$router.push({ name: 'app-dashboard-offline-worksheet' })
+            this.$router.push({ name: 'app-dashboard-offline-worksheet', query: { ...this.overrides } })
           }
         }
       ]
@@ -207,3 +209,10 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.title-section {
+  max-height: calc(33% - 2rem);
+  /* max-height: 33%; */
+}
+</style>

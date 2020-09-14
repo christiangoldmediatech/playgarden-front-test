@@ -1,19 +1,15 @@
 <template>
   <validation-observer v-slot="{ invalid, passes }">
-    <v-form :readonly="loading" @submit.prevent="passes(onSubmit)">
-      <v-row v-for="(item, indexD) in draft" :key="indexD" class="mb-6">
+    <v-form :readonly="isLoading" @submit.prevent="passes(onSubmit)">
+      <v-row
+        v-for="(item, indexD) in draft"
+        :key="indexD"
+        no-gutters
+      >
         <v-col>
-          <span class="font-weight-bold text-h5">
+          <p class="font-weight-bold text-h5 pg-letter-spacing my-4">
             CHILD’S INFORMATION
-          </span>
-
-          <v-row class="mb-6">
-            <v-spacer />
-
-            <v-btn v-if="removable" icon @click="$delete(draft, indexD)">
-              <v-icon>mdi-close</v-icon>
-            </v-btn>
-          </v-row>
+          </p>
 
           <!-- Name -->
           <validation-provider
@@ -24,7 +20,7 @@
             <v-text-field
               v-model="item.firstName"
               clearable
-              :disabled="loading"
+              :disabled="isLoading"
               :error-messages="errors"
               label="Name"
               solo
@@ -50,7 +46,7 @@
               >
                 <v-text-field
                   v-bind="attrs"
-                  :disabled="loading"
+                  :disabled="isLoading"
                   :error-messages="errors"
                   label="Birthday date"
                   readonly
@@ -82,7 +78,7 @@
                 <v-btn
                   block
                   :color="item.gender === gender ? 'primary' : 'grey lighten-5'"
-                  :disabled="loading"
+                  :disabled="isLoading"
                   class="custom-btn"
                   @click="item.gender = gender"
                 >
@@ -99,14 +95,14 @@
             :name="(removable ? `Child #${indexD + 1} - ` : '') + 'Backpack'"
             rules="required"
           >
-            <v-row>
+            <v-row no-gutters>
               <v-col
                 v-for="(backpack, indexB) in backpacks"
                 :key="indexB"
                 class="image"
                 cols="6"
-                md="2"
                 sm="4"
+                md="2"
               >
                 <img
                   :alt="backpack.name"
@@ -121,6 +117,16 @@
             <input v-model="item.backpackId" type="hidden">
           </validation-provider>
 
+          <v-btn
+            v-if="removable"
+            block
+            text
+            color="primary"
+            @click.stop="removeChild(item, indexD)"
+          >
+            DELETE CHILD PROFILE
+          </v-btn>
+
           <v-divider v-if="removable" class="mt-6" />
         </v-col>
       </v-row>
@@ -129,26 +135,26 @@
         <v-col>
           <v-btn
             block
-            class="mb-12 mt-6"
+            class="mb-4 mt-4 main-btn"
             color="primary"
-            :disabled="loading"
+            :disabled="isLoading"
             text
             x-large
-            @click="addRow"
+            @click="addRow(null)"
           >
             ADD ANOTHER CHILD
           </v-btn>
 
           <v-btn
             block
-            class="mb-6"
+            class="mb-6 main-btn"
             color="primary"
             :disabled="invalid"
-            :loading="loading"
+            :loading="isLoading"
             type="submit"
             x-large
           >
-            CONTINUE TO PLAN SELECTION
+            {{ $vuetify.breakpoint.mdAndUp ? 'CONTINUE TO PLAN SELECTION' : 'CONTINUE' }}
           </v-btn>
         </v-col>
       </v-row>
@@ -158,7 +164,9 @@
 
 <script>
 import dayjs from 'dayjs'
-import { mapActions } from 'vuex'
+import { get } from 'lodash'
+
+import { mapActions, mapGetters } from 'vuex'
 
 import { jsonCopy } from '@/utils/objectTools'
 
@@ -172,34 +180,58 @@ export default {
   data: () => ({
     backpacks: [],
     draft: [],
-    genders: ['MALE', 'FEMALE']
+    genders: ['MALE', 'FEMALE'],
+    dataLoading: false
   }),
 
   computed: {
+    ...mapGetters('auth', ['isUserLoggedIn']),
+
+    isLoading () {
+      return this.dataLoading || this.loading
+    },
+
     removable () {
       return this.draft.length > 1
     }
   },
 
   created () {
-    this.addRow()
     this.fetchBackpacks()
+
+    if (this.isUserLoggedIn) {
+      this.loadChildren()
+    } else {
+      this.addRow()
+    }
   },
 
   methods: {
     ...mapActions('backpacks', ['getBackpacks']),
 
-    addRow () {
+    ...mapActions('children', {
+      getChildren: 'get',
+      deleteChild: 'delete'
+    }),
+
+    addRow (child) {
+      child = child || {}
+
       this.draft.push({
-        _birthdayFormatted: '',
-        _birthdayPicker: `${new Date().getFullYear() - 2}-01-01`,
-        _menu: false,
-        backpackId: '',
-        birthday: '',
-        firstName: '',
-        gender: '',
-        lastName: ' ',
-        level: 'BEGINNER'
+        _birthdayFormatted: child.birthday
+          ? dayjs(child.birthday).format('MM/DD/YYYY')
+          : '',
+        _birthdayPicker: dayjs(
+          child.birthday || `${new Date().getFullYear() - 2}-01-01`
+        ).format('YYYY-MM-DD'),
+        _menu: child._menu || false,
+        id: child.id || null,
+        backpackId: get(child, 'backpack.id', ''),
+        birthday: child.birthday || '',
+        firstName: child.firstName || '',
+        gender: child.gender || '',
+        lastName: child.lastName || ' ',
+        level: child.level || 'BEGINNER'
       })
     },
 
@@ -218,6 +250,44 @@ export default {
 
     onSubmit () {
       this.$emit('click:submit', jsonCopy([...this.draft]))
+    },
+
+    removeChild (item, index) {
+      this.$nuxt.$emit('open-prompt', {
+        title: 'Delete child profile?',
+        message: `Are you sure you wish to delete '${item.firstName}'s' profile?`,
+        action: async () => {
+          this.dataLoading = true
+
+          try {
+            if (item.id) {
+              await this.deleteChild(item.id)
+            }
+
+            this.$delete(this.draft, index)
+          } catch (e) {
+          } finally {
+            this.dataLoading = false
+          }
+        }
+      })
+    },
+
+    async loadChildren () {
+      try {
+        this.dataLoading = true
+
+        const rows = await this.getChildren()
+
+        if (rows.length) {
+          rows.map(this.addRow)
+        } else {
+          this.addRow()
+        }
+      } catch (e) {
+      } finally {
+        this.dataLoading = false
+      }
     }
   }
 }
@@ -225,16 +295,21 @@ export default {
 
 <style lang="scss" scoped>
 .image {
-  height: 145px;
+  height: 100px;
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
 
   img {
-    max-height: 145px;
+    max-height: 100px;
+    max-width: 100px;
     padding: 10px;
     width: 100%;
 
     &.active {
       background-color: $pg-secondary;
-      border-radius: 25px;
+      border-radius: 50%;
       padding: 5px;
     }
   }

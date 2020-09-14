@@ -3,21 +3,7 @@ import { snotifyError } from '@/utils/vuex'
 export default {
   async signup ({ commit, dispatch }, data) {
     try {
-      const response = await this.$axios.post('/auth/signup', data)
-
-      return dispatch('auth/setToken', response.data.accessToken, {
-        root: true
-      })
-    } catch (error) {
-      snotifyError(commit, {
-        body: 'Sorry! There was an error while signing you up.'
-      })
-    }
-  },
-
-  async signupEmail ({ commit, dispatch }, data) {
-    try {
-      const { accessToken } = await this.$axios.$post('/auth/email', data)
+      const { accessToken } = await this.$axios.$post('/auth/signup', data)
 
       await dispatch('auth/setToken', accessToken, {
         root: true
@@ -28,14 +14,23 @@ export default {
       snotifyError(commit, {
         body: 'Sorry! There was an error while signing you up.'
       })
+
+      throw error
     }
+  },
+
+  signupEmail ({ commit, dispatch }, data) {
+    return this.$axios.$post('/auth/email', data)
   },
 
   async signupToken ({ commit, dispatch }, data) {
     try {
-      const response = await this.$axios.post('/auth/signup/token', data)
+      const { accessToken } = await this.$axios.$post(
+        '/auth/signup/token',
+        data
+      )
 
-      await dispatch('auth/setToken', response.data.accessToken, {
+      await dispatch('auth/setToken', accessToken, {
         root: true
       })
 
@@ -44,6 +39,8 @@ export default {
       snotifyError(commit, {
         body: 'Sorry! There was an error while signing you up.'
       })
+
+      throw error
     }
   }
 }

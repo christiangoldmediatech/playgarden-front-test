@@ -1,5 +1,5 @@
 <template>
-  <v-row>
+  <v-row v-if="initialized">
     <v-col>
       <validation-observer v-slot="{ invalid, passes }">
         <v-form @submit.prevent="passes(onSubmit)">
@@ -12,16 +12,16 @@
               :loading="loading"
             >
               <p>
-                <span class="font-weight-bold text-h5">
+                <span class="font-weight-bold text-h5 pg-letter-spacing">
                   CHOOSE YOUR PLAN
                 </span>
               </p>
 
-              <v-row>
+              <v-row no-gutters>
                 <v-col
                   v-for="(plan, indexP) in plans"
                   :key="indexP"
-                  class="c-col elevation-3 mx-md-3 my-3"
+                  class="c-col elevation-3 mx-md-3 my-3 pa-3"
                   cols="12"
                   md=""
                 >
@@ -39,6 +39,7 @@
                         v-for="(benefit, indexPCB) in plan.commonBenefits
                           .benefits"
                         :key="indexPCB"
+                        class="plan-item"
                       >
                         {{ benefit }}
                       </li>
@@ -54,6 +55,7 @@
                           v-for="(benefit, indexHDB) in plan
                             .homeDeliveryBenefits.benefits"
                           :key="indexHDB"
+                          class="plan-item"
                         >
                           {{ benefit }}
                         </li>
@@ -70,6 +72,7 @@
                           v-for="(benefit, indexPB) in plan.plusBenefits
                             .benefits"
                           :key="indexPB"
+                          class="plan-item"
                         >
                           {{ benefit }}
                         </li>
@@ -82,7 +85,7 @@
 
                     <v-radio
                       :label="`$${plan.priceMonthly} a month/child`"
-                      :value="`${indexP}-monthly`"
+                      :value="plan.monthlyStripeId"
                       class="plan-pricing"
                       @change="
                         draft = {
@@ -98,7 +101,7 @@
                     <v-radio
                       class="mb-0 plan-pricing"
                       :label="`$${plan.priceAnnual} School Year Special/child`"
-                      :value="`${indexP}-annual`"
+                      :value="plan.anualStripeId"
                       @change="
                         draft = {
                           id: plan.id,
@@ -120,8 +123,8 @@
           <v-row v-if="!noAddress && draft.requireAddress">
             <v-col>
               <p>
-                <span class="font-weight-bold text-h5">
-                  Shipping address
+                <span class="font-weight-bold text-h5 pg-letter-spacing">
+                  SHIPPING ADDRESS
                 </span>
               </p>
 
@@ -213,7 +216,7 @@
 
           <v-btn
             block
-            class="mb-6"
+            class="mb-6 main-btn"
             color="primary"
             :disabled="invalid"
             :loading="loading"
@@ -226,10 +229,13 @@
       </validation-observer>
     </v-col>
   </v-row>
+
+  <pg-loading v-else />
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { get } from 'lodash'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 
 import submittable from '@/utils/mixins/submittable'
 
@@ -250,20 +256,69 @@ export default {
     draftAddress: {},
     plans: [],
     loading: false,
+    initialized: false,
     radioGroup: null
   }),
 
-  created () {
-    this.fetchPlans()
+  computed: mapGetters('auth', ['isUserLoggedIn']),
+
+  async created () {
+    await this.fetchPlans()
+
+    this.initialized = true
+    this.$emit('initialized')
+
+    if (this.isUserLoggedIn) {
+      await this.getPlan()
+    }
   },
 
   methods: {
     ...mapActions('shipping-address', ['createShippingAddress']),
 
     ...mapActions('payment', [
+      'getSelectedSubscriptionPlan',
       'fetchSubscriptionPlan',
       'selectSubscriptionPlan'
     ]),
+
+    ...mapMutations({
+      disableAxiosGlobal: 'DISABLE_AXIOS_GLOBAL_ERROR_HANDLER',
+      enableAxiosGlobal: 'ENABLE_AXIOS_GLOBAL_ERROR_HANDLER'
+    }),
+
+    async getPlan () {
+      try {
+        this.disableAxiosGlobal()
+        const plan = await this.getSelectedSubscriptionPlan()
+
+        this.radioGroup = get(plan, 'planSelected')
+
+        this.plans.forEach(
+          ({
+            id,
+            anualStripeId,
+            monthlyStripeId,
+            plusBenefits,
+            homeDeliveryBenefits
+          }) => {
+            if (
+              anualStripeId === this.radioGroup ||
+              monthlyStripeId === this.radioGroup
+            ) {
+              this.draft = {
+                id,
+                type: anualStripeId === this.radioGroup ? 'annual' : 'monthly',
+                requireAddress: Boolean(homeDeliveryBenefits || plusBenefits)
+              }
+            }
+          }
+        )
+      } catch (e) {
+      } finally {
+        this.enableAxiosGlobal()
+      }
+    },
 
     async fetchPlans () {
       try {
@@ -336,4 +391,10 @@ ul li::before {
   opacity: 2.49 !important;
 }
 
+.v-item--active ::v-deep .v-label {
+  font-weight: bold !important;
+}
+.plan-item {
+  font-size: 14px;
+}
 </style>

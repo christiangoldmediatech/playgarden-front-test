@@ -1,9 +1,18 @@
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import ChildrenVideoPlayer from '@/components/children-video-player/ChildrenVideoPlayer.vue'
+import { jsonCopy } from '@/utils/objectTools'
 
 export default {
   components: {
     ChildrenVideoPlayer
+  },
+
+  props: {
+    activityMode: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
   },
 
   data: () => {
@@ -11,6 +20,8 @@ export default {
       dialog: false,
       player: null,
       playlist: [],
+      showingNextUp: false,
+      findingNext: false,
       index: null,
       mediaObject: {},
       winWidth: window.innerWidth,
@@ -45,7 +56,7 @@ export default {
 
   created () {
     this.$nuxt.$on(this.eventMessage, ({ playlist, index }) => {
-      this.playlist = playlist
+      this.playlist = jsonCopy(playlist)
       this.index = index
       this.mediaObject = this.playlist[index]
       if (this.player) {
@@ -68,6 +79,8 @@ export default {
   },
 
   methods: {
+    ...mapActions('admin/activity', ['getNextActivity']),
+
     open () {
       this.dialog = true
     },
@@ -87,7 +100,9 @@ export default {
     waitAndLoad () {
       const interval = window.setInterval(() => {
         if (this.player) {
-          this.loadAndPlay(this.mediaObject)
+          if (this.dialog) {
+            this.loadAndPlay(this.mediaObject)
+          }
           window.clearInterval(interval)
         }
       }, 50)
@@ -99,6 +114,62 @@ export default {
         this.player.currentTime(this.mediaObject.viewed.time)
       }
       this.player.play()
+    },
+
+    handleNextUp () {
+      const position = this.player.currentTime()
+      const duration = this.player.duration()
+      const { videoId } = this.mediaObject
+      const index = this.playlist.findIndex(mediaObject => videoId === mediaObject.videoId)
+      const last = index === (this.playlist.length - 1)
+
+      if (this.activityMode && !this.findingNext && last && (duration - position) <= 10) {
+        this.findNextActivity()
+      }
+
+      if (index >= 0 && !last && (duration - position) <= 5 && !this.showingNextUp) {
+        this.showingNextUp = true
+        const next = this.playlist[index + 1]
+        this.$refs.childrenVideoPlayer.showNextUp({
+          image: next.poster,
+          title: next.title,
+          description: next.description
+        }).then(() => {
+          this.showingNextUp = false
+        })
+      }
+    },
+
+    findNextActivity () {
+      // Find random video
+      this.findingNext = true
+      const curriculumTypeId = this.mediaObject.curriculumType ? this.mediaObject.curriculumType.id : undefined
+
+      this.getNextActivity({
+        prevActivityId: this.mediaObject.activityId,
+        params: {
+          curriculumTypeId
+        }
+      }).then(({ id, activityType, curriculumType, videos }) => {
+        this.playlist.push({
+          title: videos.name,
+          description: videos.name,
+          activityId: id,
+          activityType,
+          curriculumType,
+          src: {
+            src: videos.videoUrl.HLS,
+            type: 'application/x-mpegURL'
+          },
+          poster: videos.thumbnail,
+          videoId: videos.id,
+          viewed: {
+            completed: true
+          }
+        })
+      }).then(() => {
+        this.findingNext = false
+      })
     }
   }
 }
