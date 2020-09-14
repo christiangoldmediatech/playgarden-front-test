@@ -55,7 +55,7 @@
               }"
             >
               <v-list-item-content>
-                <v-list-item-title class="dashboard-panel-worksheet-text">
+                <v-list-item-title :class="['dashboard-panel-worksheet-text', { 'dashboard-item-disabled': videos.progress < 100 }]">
                   ONLINE WORKSHEET
                 </v-list-item-title>
               </v-list-item-content>
@@ -71,7 +71,7 @@
               }"
             >
               <v-list-item-content>
-                <v-list-item-title class="dashboard-panel-worksheet-text">
+                <v-list-item-title :class="['dashboard-panel-worksheet-text', { 'dashboard-item-disabled': videos.progress < 100 }]">
                   HANDS-ON LEARNING
                 </v-list-item-title>
                 <v-btn
@@ -239,5 +239,9 @@ export default {
     text-align: center;
     margin-bottom: 11px;
   }
+}
+
+.dashboard-item-disabled {
+  color: rgba(0, 0, 0, 0.38) !important;
 }
 </style>

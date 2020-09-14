@@ -16,7 +16,7 @@
         />
       </v-list-item-avatar>
       <v-list-item-content>
-        <v-list-item-title class="font-weight-bold">
+        <v-list-item-title :class="['font-weight-bold', { 'dashboard-item-disabled': item.disabled }]">
           {{ item.name }}
         </v-list-item-title>
         <v-list-item-subtitle>

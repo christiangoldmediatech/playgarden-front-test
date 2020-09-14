@@ -4,7 +4,7 @@
       <v-row class="fill-height" justify="center">
         <v-col
           class="dashboard-column order-last order-md-first"
-          cols="11"
+          cols="12"
           sm="8"
           md="5"
           lg="3"
@@ -20,15 +20,17 @@
         >
           <!-- Tutorial row -->
           <v-row
-            class="flex-grow-0 flex-shrink-1 mb-6"
+            class="dashboard-tip-row flex-grow-0 flex-shrink-1"
+            justify="center"
+            justify-md="start"
             align="center"
-            no-gutters
+            :no-gutters="$vuetify.breakpoint.smAndUp"
           >
             <v-col class="flex-shrink-1 flex-grow-0">
               <child-select v-model="selectedChild" hide-details />
             </v-col>
 
-            <v-col class="text-center text-md-right">
+            <v-col class="text-center text-sm-right">
               <span class="font-weight-medium">
                 First time using Playgarden?
               </span>
@@ -39,7 +41,7 @@
             </v-col>
           </v-row>
 
-          <v-row no-gutters>
+          <v-row :class="{ 'dashboard-mobile-content': $vuetify.breakpoint.sm, 'dashboard-xs-content': $vuetify.breakpoint.xs }" no-gutters>
             <v-col cols="12">
               <pg-loading v-if="$route.name === 'app-dashboard' || loading" />
               <nuxt-child />
@@ -78,6 +80,13 @@ export default {
     ...mapGetters({ currentChild: 'getCurrentChild' }),
     ...mapGetters('admin/curriculum', { lesson: 'getLesson' }),
     ...mapGetters('children', { allChildren: 'rows' }),
+
+    overrideMode () {
+      if (this.overrides.childId && this.overrides.lessonId) {
+        return true
+      }
+      return false
+    },
 
     childrenIds () {
       // const ids = (this.currentChild
@@ -134,19 +143,30 @@ export default {
     ...mapActions('children/lesson', ['getCurrentLesson', 'getCurrentLessonByChildrenId', 'resetChild']),
     ...mapActions({ setChild: 'setChild' }),
 
+    getNextId (items = []) {
+      const { id } = items.find(({ viewed, complete }) => {
+        if (complete) {
+          return !complete
+        }
+        return !viewed || (viewed && !viewed.complete)
+      })
+      return id
+    },
+
     changeChild (newId, redirect = true) {
       const child = this.allChildren.find(({ id }) => id === parseInt(newId))
       this.setChild({ value: [child], save: true })
       if (redirect) {
+        this.loading = true
         this.handleLesson().then(() => {
           this.$router.push({ name: 'app-dashboard' })
+          this.loading = false
         })
       }
     },
 
     async handleLesson (redirect = false) {
       try {
-        this.loading = true
         if (this.overrideMode && this.childrenIds === parseInt(this.overrides.childId)) {
           await this.getCurrentLessonByChildrenId(this.overrides)
         } else {
@@ -159,8 +179,6 @@ export default {
         }
       } catch (e) {
         return Promise.reject(e)
-      } finally {
-        this.loading = false
       }
     },
 
@@ -213,6 +231,15 @@ export default {
   &-column {
     height: 100%;
     max-height: 100%;
+  }
+  &-tip-row {
+    min-height: 70px;
+  }
+  &-mobile-content {
+    min-height: calc(100vh - 162px);
+  }
+  &-xs-content {
+    min-height: calc(100vh - 256px);
   }
 }
 </style>

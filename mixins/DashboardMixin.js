@@ -8,13 +8,6 @@ export default {
       }
     },
 
-    overrideMode () {
-      if (this.overrides.childId && this.overrides.lessonId) {
-        return true
-      }
-      return false
-    },
-
     videos () {
       // Exit if lesson or videos are not loaded
       if (!this.lesson || this.lesson.videos.length === 0) {
@@ -133,18 +126,6 @@ export default {
         progress,
         items: videos
       }
-    }
-  },
-
-  methods: {
-    getNextId (items = []) {
-      const { id } = items.find(({ viewed, complete }) => {
-        if (complete) {
-          return !complete
-        }
-        return !viewed || (viewed && !viewed.complete)
-      })
-      return id
     }
   }
 }
