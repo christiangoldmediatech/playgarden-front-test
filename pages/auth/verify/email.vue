@@ -21,6 +21,7 @@
           block
           color="primary"
           class="main-btn"
+          min-height="60"
           :disabled="loading"
           :loading="loading"
           @click="onResend"

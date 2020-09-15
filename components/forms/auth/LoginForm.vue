@@ -28,6 +28,7 @@
     <v-btn
       block
       color="primary"
+      min-height="60"
       class="main-btn"
       :disabled="isButtonDisabled"
       :loading="loading"

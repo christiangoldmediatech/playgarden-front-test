@@ -81,7 +81,7 @@
       </div>
 
       <div v-if="isTrialingStatus" class="my-6 text--accent text-center">
-        Trial ends: {{ billing.trialEndDate }}
+        Ends: {{ billing.trialEndDate }}
       </div>
     </v-col>
 

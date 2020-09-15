@@ -217,6 +217,7 @@
           <v-btn
             block
             class="mb-6 main-btn"
+            min-height="60"
             color="primary"
             :disabled="invalid"
             :loading="loading"
