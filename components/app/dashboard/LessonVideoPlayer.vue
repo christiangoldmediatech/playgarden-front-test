@@ -34,6 +34,17 @@ export default {
 
   mixins: [VideoPlayerDialog],
 
+  props: {
+    ignoreProgress: {
+      type: Boolean,
+      default: false
+    },
+    playerId: {
+      type: String,
+      default: ''
+    }
+  },
+
   data: () => {
     return {
       eventMessage: 'open-lesson-video-player'
@@ -94,6 +105,9 @@ export default {
 
     onReady (player) {
       this.player = player
+
+      if (this.ignoreProgress) { return }
+
       player.on('timeupdate', this.handleNextUp)
       player.on('pause', this.saveProgress)
       player.on('ended', this.completedVideo)

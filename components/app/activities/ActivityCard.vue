@@ -2,7 +2,7 @@
   <v-col
     cols="12"
     sm="6"
-    :md="blok ? '4' : '3'"
+    md="4"
   >
     <v-hover v-slot:default="{ hover }">
       <v-card
