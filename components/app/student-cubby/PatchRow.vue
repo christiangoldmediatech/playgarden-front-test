@@ -7,10 +7,7 @@
       >
 
       <div class="mx-3">
-        <span
-          class="font-weight-black text-outline category-text text-uppercase"
-          :style="{ '--bgColor': activityType.color }"
-        >
+        <span class="font-weight-black text-outline subtitle-text carousel-text text-uppercase pg-letter-spacing" :style="{ '--bgColor': activityType.color }">
           {{ activityType.name }}
         </span>
       </div>
