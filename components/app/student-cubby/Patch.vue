@@ -2,7 +2,7 @@
   <v-hover v-slot="{ hover }">
     <v-col
       :class="[
-        'text-center patch-item',
+        'text-center patch-item mr-2',
         {
           clickable: _unblocked && !displayMode,
           scaled: hover && _unblocked && !displayMode

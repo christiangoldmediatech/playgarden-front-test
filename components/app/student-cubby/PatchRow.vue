@@ -18,6 +18,7 @@
         v-for="patch in activityType.patches"
         :key="`activityType-${activityType.id}-patch-${patch.id}`"
         v-bind="{ patch }"
+        class="mb-6"
         :unblocked="unblocked"
       />
     </v-row>
