@@ -3,7 +3,7 @@
     <v-card-text class="text-center">
       <underlined-title class="text-h3" text="Complete the puzzle!" />
 
-      <p class="mt-5">
+      <p class="mt-2">
         Complete each letter in the curriculum to unlock a new puzzle piece!
       </p>
 

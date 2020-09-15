@@ -4,8 +4,9 @@
     <div class="green-line green-line-2" />
 
     <v-img
-      :src="require('@/assets/png/student-cubby/butterfly-lesson.png')"
+      class="hidden-sm-and-down"
       contain
+      :src="require('@/assets/png/student-cubby/butterfly-lesson.png')"
     />
 
     <v-card-text>
@@ -23,17 +24,20 @@
         {{ selectedChildLevel }}
       </span>
 
-      <v-row>
+      <v-row dense>
         <v-col
           v-for="(link, i) in links"
           :key="`link-route-${link.route}`"
           cols="6"
+          sm="3"
+          md="6"
         >
           <v-hover v-slot="{ hover }">
             <v-card
-              class="clickable"
+              class="clickable square"
+              :class="{ primary: i === selected }"
               :disabled="!selectedChildId"
-              :elevation="hover ? 9 : 3"
+              :elevation="hover || i === selected ? 9 : 3"
               nuxt
               :to="{
                 name: `app-student-cubby-${link.route}`,
@@ -41,19 +45,23 @@
               }"
               @click.native="$scrollTo('body')"
             >
-              <v-card-text :class="{ selected: i === selected }">
-                <div class="d-flex flex-column fixed-height">
-                  <v-img
-                    class="flex-shrink-1 flex-grow-0"
-                    :src="require(`@/assets/png/student-cubby/${link.img}`)"
-                    contain
-                  />
+              <div
+                class="content align-center d-flex flex-column justify-center"
+              >
+                <v-img
+                  class="flex-shrink-1 flex-grow-0 pa-0"
+                  contain
+                  height="200"
+                  :src="require(`@/assets/png/student-cubby/${link.img}`)"
+                  width="200"
+                />
 
-                  <span class="d-block text-h6 text-center">
-                    {{ link.text }}
-                  </span>
-                </div>
-              </v-card-text>
+                <span
+                  class="font-weight-bold d-block text-center text-body-2 text-md-subtitle-2 text-xl-h6 text-kerning"
+                >
+                  {{ link.text }}
+                </span>
+              </div>
             </v-card>
           </v-hover>
         </v-col>
@@ -143,16 +151,36 @@ export default {
 
 <style lang="scss" scoped>
 .fixed-height {
-  height: 164px;
-}
-
-.selected {
-  box-shadow: inset 0 0 0 10px var(--v-primary-base);
+  height: 125px;
 }
 
 .sticky {
   position: -webkit-sticky;
   position: sticky;
   top: 75px;
+}
+
+.text-kerning {
+  letter-spacing: 1.5px !important;
+}
+
+.square {
+  padding: 5%;
+  position: relative;
+  width: 100%;
+}
+
+.square:after {
+  content: "";
+  display: block;
+  padding-bottom: 100%;
+}
+
+.content {
+  background-color: #ffffff;
+  height: 90%;
+  padding: 5%;
+  position: absolute;
+  width: 90%;
 }
 </style>
