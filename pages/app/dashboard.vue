@@ -41,7 +41,7 @@
             </v-col>
           </v-row>
 
-          <v-row :class="{ 'dashboard-mobile-content': $vuetify.breakpoint.sm, 'dashboard-xs-content': $vuetify.breakpoint.xs }" no-gutters>
+          <v-row :class="['dashboard-content', { 'dashboard-mobile-content': $vuetify.breakpoint.sm, 'dashboard-xs-content': $vuetify.breakpoint.xs }]" no-gutters>
             <v-col cols="12">
               <pg-loading v-if="$route.name === 'app-dashboard' || loading" />
               <nuxt-child />
@@ -231,6 +231,9 @@ export default {
   &-column {
     height: 100%;
     max-height: 100%;
+  }
+  &-content {
+    height: calc(100% - 70px);
   }
   &-tip-row {
     min-height: 70px;
