@@ -176,6 +176,10 @@ export default {
   color: #606060 !important;
 }
 
+.pg-app-bar::v-deep.v-sheet.v-app-bar.v-toolbar:not(.v-sheet--outlined) {
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16) !important;
+
+}
 .btn-register:before {
   background-color: transparent !important;
 }

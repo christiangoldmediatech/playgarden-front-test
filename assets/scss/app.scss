@@ -110,6 +110,23 @@
   }
 }
 
+.subtitle-text {
+  font-size: 1rem !important;
+  position: relative;
+  z-index: 1;
+  &::after {
+    width: 115%;
+    opacity: 0.5;
+    position: absolute;
+    bottom: 7px;
+    left: -7.5%;
+    content: "";
+    z-index: -1;
+    border-bottom: 11px solid var(--bgColor);
+    border-radius: 7px;
+  }
+}
+
 .carousel-text {
   font-size: 28px !important;
 }
