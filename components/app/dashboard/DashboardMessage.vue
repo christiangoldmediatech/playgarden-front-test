@@ -18,11 +18,7 @@
           </slot>
         </v-col>
         <v-col class="py-0" cols="12" md="8" lg="8" xl="4">
-          <slot>
-            <p class="text-center">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure assumenda rem, laudantium voluptas facere est corporis illo animi cupiditate amet magni quisquam praesentium dolores deserunt!
-            </p>
-          </slot>
+          <slot />
         </v-col>
       </v-row>
       <v-progress-linear v-if="timeOut" color="#f89838" :size="4" :value="progress" />

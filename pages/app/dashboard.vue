@@ -7,7 +7,8 @@
           cols="12"
           sm="8"
           md="5"
-          lg="3"
+          lg="4"
+          xl="3"
         >
           <dashboard-panel v-bind="{ lesson }" />
         </v-col>
@@ -16,7 +17,8 @@
           cols="12"
           sm="12"
           md="7"
-          lg="9"
+          lg="8"
+          xl="9"
         >
           <!-- Tutorial row -->
           <v-row
@@ -42,7 +44,7 @@
           </v-row>
 
           <v-row :class="['dashboard-content', { 'dashboard-mobile-content': $vuetify.breakpoint.sm, 'dashboard-xs-content': $vuetify.breakpoint.xs }]" no-gutters>
-            <v-col cols="12">
+            <v-col class="dashboard-content-column" cols="12">
               <pg-loading v-if="$route.name === 'app-dashboard' || loading" />
               <nuxt-child />
             </v-col>
@@ -234,6 +236,9 @@ export default {
   }
   &-content {
     height: calc(100% - 70px);
+    &-column {
+      max-height: 100%;
+    }
   }
   &-tip-row {
     min-height: 70px;
