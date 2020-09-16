@@ -1,231 +1,120 @@
 <template>
-  <div class="d-flex flex-column fill-height">
-    <!-- <div class="sticky"> -->
-    <v-row class="letter-day-row" justify="center">
-      <div class="letter-day-circle white">
-        <div class="accent--text font-weight-bold text-center text-h3">
-          {{ lesson ? lesson.curriculumType.letter : null }}
-        </div>
+  <div class="dashboard-panel-container">
+    <v-card class="dashboard-panel-card" height="100%">
+      <div class="dashboard-panel-card-border-top" />
+      <div class="lesson-day-row">
+        <div class="lesson-day-outer">
+          <div class="lesson-day-inner">
+            <div class="lesson-day-circle">
+              <span class="lesson-day-letter">
+                {{ lesson ? lesson.curriculumType.letter : null }}
+              </span>
 
-        <div
-          class="accent--text font-weight-bold text-center text-h5 text-uppercase"
-        >
-          DAY {{ lesson ? lesson.day : null }}
+              <span class="lesson-day-number">
+                DAY {{ lesson ? lesson.day : null }}
+              </span>
+            </div>
+          </div>
         </div>
       </div>
-    </v-row>
 
-    <v-card class="d-flex flex-column flex-grow-1 flex-shrink-0 panel-card">
-      <div class="card-border-top" />
-      <div class="panel-container px-3" :style="{ '--panelHeight': panelHeight }">
-        <!-- Videos -->
-        <v-row dense>
-          <v-col cols="2">
-            <v-row
-              class="chip mb-2"
-              :class="videosCompletionRate ? 'primary white--text' : 'grey'"
-              align="center"
-              justify="center"
-            >
-              <span class="font-weight-bold">1</span>
-            </v-row>
+      <div class="dashboard-panel-content pa-3">
+        <content-section
+          number="1"
+          title="Video Lessons"
+          :progress="videos.progress"
+          enabled
+        >
+          <content-list :items="videos.items" />
+        </content-section>
 
-            <progress-linear
-              class="ml-3"
-              :color="videosCompletionRate ? 'primary' : 'grey'"
-              :height="`${55 * videos.length}px`"
-              rounded
-              :value="videosCompletionRate"
-              width="10px"
+        <content-section
+          number="2"
+          title="Worksheets"
+          :progress="worksheets.progress"
+          :enabled="videos.progress === 100"
+        >
+          <template v-slot:title-append>
+            <v-img
+              :class="['ml-2', { 'dashboard-panel-disabled': videos.progress < 100 }]"
+              :src="require('@/assets/png/dashboard/worksheets.png')"
+              max-width="32px"
+              max-height="32px"
+              contain
             />
-          </v-col>
-
-          <v-col cols="10">
-            <span class="font-weight-bold text-h5">
-              VIDEO LESSONS
-            </span>
-
-            <v-list dense>
-              <v-list-item
-                v-for="(video, indexV) in videos"
-                :key="`video-lesson-index-${indexV}-id-${video.id}`"
-                class="px-0"
-                :disabled="checkVideoDisabled(indexV)"
-                nuxt
-                exact
-                :to="{ name: 'app-dashboard-lesson-videos', query: { ...overrides, id: video.id } }"
-              >
-                <v-list-item-avatar tile>
-                  <v-img
-                    :class="{ 'dashboard-disabled': checkVideoDisabled(indexV) }"
-                    :src="video.activityType.icon"
-                    contain
-                  />
-                </v-list-item-avatar>
-
-                <v-list-item-content>
-                  <v-list-item-title class="font-weight-bold text-uppercase">
-                    {{ video.name }}
-                  </v-list-item-title>
-
-                  <v-list-item-subtitle>
-                    {{ video.description }}
-                  </v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list>
-          </v-col>
-        </v-row>
-
-        <!-- Worksheets -->
-        <v-row dense>
-          <v-col cols="2">
-            <v-row
-              class="chip mb-2"
-              :class="worksheetsCompletionRate ? 'primary white--text' : 'grey'"
-              align="center"
-              justify="center"
+          </template>
+          <v-list class="py-0" dense>
+            <v-list-item
+              v-if="worksheets.ONLINE.length"
+              :disabled="videos.progress < 100"
+              nuxt
+              exact
+              :to="{
+                name: 'app-dashboard-online-worksheet',
+                query: { ...overrides }
+              }"
             >
-              <span class="font-weight-bold">2</span>
-            </v-row>
-
-            <progress-linear
-              class="ml-3"
-              :color="worksheetsCompletionRate ? 'primary' : 'grey'"
-              :height="`${worksheetsProgressHeight}px`"
-              rounded
-              :value="worksheetsCompletionRate"
-              width="10px"
-            />
-          </v-col>
-
-          <v-col cols="10">
-            <div class="d-flex align-center justify-start">
-              <span class="font-weight-bold text-h5">
-                WORKSHEETS
-              </span>
-              <div class="ml-2">
-                <v-img
-                  :class="['ma-0', { 'dashboard-disabled': videosCompletionRate < 100 }]"
-                  :src="require('@/assets/png/dashboard/worksheets.png')"
-                  max-width="32px"
-                  max-height="32px"
-                  contain
-                />
-              </div>
-            </div>
-
-            <div v-if="worksheets.ONLINE.length" class="mt-3">
-              <component
-                :is="videosCompletionRate < 100 || displayMode ? 'span' : 'nuxt-link'"
-                class="black--link font-weight-bold"
-                :to="{ name: 'app-dashboard-online-worksheet', query: { ...overrides } }"
-              >
-                ONLINE WORKSHEET
-              </component>
-            </div>
-
-            <div v-if="worksheets.OFFLINE" class="font-weight-bold mt-3">
-              <span class="black--link font-weight-bold">
-                HANDS-ON LEARNING
-              </span>
-
-              <v-btn
-                color="primary"
-                small
-                block
-                :disabled="videosCompletionRate < 100"
-                nuxt
-                exact
-                :to="{ name: 'app-dashboard-offline-worksheet', query: { ...overrides } }"
-              >
-                <v-icon left>
-                  mdi-download
-                </v-icon>
-                Download Worksheet
-              </v-btn>
-            </div>
-          </v-col>
-        </v-row>
-
-        <!-- Activities -->
-        <v-row dense>
-          <v-col cols="2">
-            <v-row
-              class="chip mb-2"
-              :class="activitiesCompletionRate ? 'primary white--text' : 'grey'"
-              align="center"
-              justify="center"
+              <v-list-item-content>
+                <v-list-item-title :class="['dashboard-panel-worksheet-text', { 'dashboard-item-disabled': videos.progress < 100 }]">
+                  ONLINE WORKSHEET
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item
+              v-if="worksheets.OFFLINE"
+              :disabled="videos.progress < 100"
+              nuxt
+              exact
+              :to="{
+                name: 'app-dashboard-offline-worksheet',
+                query: { ...overrides }
+              }"
             >
-              <span class="font-weight-bold">3</span>
-            </v-row>
+              <v-list-item-content>
+                <v-list-item-title :class="['dashboard-panel-worksheet-text', { 'dashboard-item-disabled': videos.progress < 100 }]">
+                  HANDS-ON LEARNING
+                </v-list-item-title>
+                <v-btn
+                  color="primary"
+                  :disabled="videos.progress < 100"
+                  block
+                  small
+                >
+                  <v-icon left>
+                    mdi-download
+                  </v-icon>
+                  DOWNLOAD WORKSHEET
+                </v-btn>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </content-section>
 
-            <progress-linear
-              class="ml-3"
-              :color="activitiesCompletionRate ? 'primary' : 'grey'"
-              :height="`${55 * activities.length}px`"
-              rounded
-              :value="activitiesCompletionRate"
-              width="10px"
-            />
-          </v-col>
-
-          <v-col cols="10">
-            <span class="font-weight-bold text-h5">
-              ACTIVITIES
-            </span>
-
-            <v-list dense>
-              <v-list-item
-                v-for="(activity, indexA) in activities"
-                :key="indexA"
-                class="px-0"
-                :disabled="
-                  videosCompletionRate < 100 ||
-                    checkVideoDisabled(indexA, 'activities')
-                "
-                nuxt
-                exact
-                :to="{
-                  name: 'app-dashboard-lesson-activities',
-                  query: { overrides, id: activity.id }
-                }"
-              >
-                <v-list-item-avatar tile>
-                  <v-img
-                    :class="{
-                      'dashboard-disabled':
-                        videosCompletionRate < 100 ||
-                        checkVideoDisabled(indexA, 'activities')
-                    }"
-                    :src="activity.activityType.icon"
-                    contain
-                  />
-                </v-list-item-avatar>
-
-                <v-list-item-content>
-                  <v-list-item-title class="font-weight-bold text-uppercase">
-                    {{ activity.videos.name }}
-                  </v-list-item-title>
-
-                  <v-list-item-subtitle>
-                    {{ activity.activityType.description }}
-                  </v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list>
-          </v-col>
-        </v-row>
+        <content-section
+          number="3"
+          title="Activities"
+          :progress="activities.progress"
+          :enabled="videos.progress === 100"
+        >
+          <content-list :items="activities.items" />
+        </content-section>
       </div>
     </v-card>
   </div>
 </template>
 
 <script>
-import DashboardMixin from '@/mixins/Dashboard.js'
+import DashboardMixin from '@/mixins/DashboardMixin'
+import ContentSection from './ContentSection.vue'
+import ContentList from './ContentList.vue'
 
 export default {
   name: 'DashboardPanel',
+
+  components: {
+    ContentSection,
+    ContentList
+  },
 
   mixins: [DashboardMixin],
 
@@ -249,159 +138,110 @@ export default {
       required: false,
       default: () => {}
     }
-  },
-
-  computed: {
-    overrides () {
-      return {
-        childId: this.$route.query.childId,
-        lessonId: this.$route.query.lessonId,
-        ...this.customOverrides
-      }
-    },
-
-    headerHeight () {
-      if (this.$vuetify.breakpoint.mobile) {
-        return 56
-      }
-      return 64
-    },
-
-    panelHeight () {
-      if (window) {
-        let height
-        if (this.displayMode) {
-          height = window.innerHeight - 290.6
-        } else {
-          height = window.innerHeight - 223 - this.headerHeight
-        }
-        return `${height}px`
-      }
-      return '100%'
-    }
-  },
-
-  methods: {
-    checkVideoDisabled (index, collection = 'videos') {
-      if (index > 0) {
-        const video = this[collection][index - 1]
-        const completed = video.viewed ? video.viewed.completed : false
-
-        return !completed
-      }
-      return false
-    },
-
-    getNextId (items = []) {
-      const { id } = items.find(({ viewed }) => !viewed)
-      return id
-    },
-
-    async getCurrentLesson (redirect = false) {
-      try {
-        await this.getCurrentLessonByChildrenId({
-          childrenIds: this.childrenIds
-        })
-
-        if (redirect) {
-          this.redirectDashboard()
-        }
-      } catch (e) {}
-    },
-
-    redirectDashboard () {
-      if (this.lesson && this.$route.name === 'app-dashboard') {
-        if (this.videosCompletionRate < 100) {
-          this.$router.push({
-            name: 'app-dashboard-videos-id',
-            params: { id: this.getNextId(this.videos) }
-          })
-        } else if (this.worksheetsCompletionRate < 100) {
-          this.$router.push({
-            name: 'app-dashboard-online-worksheet',
-            query: { id: this.getNextId(this.worksheets.ONLINE) }
-          })
-        } else if (this.activitiesCompletionRate < 100) {
-          this.$router.push({
-            name: 'app-dashboard-activity-id',
-            params: { id: this.getNextId(this.activities) }
-          })
-        } else {
-          this.$router.push({ name: 'app-dashboard-lesson-completed' })
-        }
-      } else if (
-        this.lesson &&
-        this.$route.name === 'app-dashboard-lesson-completed'
-      ) {
-        if (
-          this.videosCompletionRate < 100 ||
-          this.worksheetsCompletionRate < 100 ||
-          this.activitiesCompletionRate < 100
-        ) {
-          this.$router.push({ name: 'app-dashboard' })
-        }
-      }
-    }
   }
 }
 </script>
 
-<style lang="scss" scoped>
-.panel-card {
-  padding-top: 100px;
+<style lang="scss">
+.dashboard-panel {
+  &-container {
+    height: 100%;
+    padding-top: 70px;
+    max-width: 471px;
+  }
+
+  &-card {
+    padding-top: 87px;
+    &-border-top {
+      width: 100%;
+      height: 18px;
+      position: absolute;
+      top: 0;
+      background-color: #c2daa5;
+      box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.29);
+      border-radius: 5px;
+    }
+  }
+
+  &-content {
+    height: 100%;
+    max-height: 100%;
+    overflow-y: auto;
+  }
+
+  &-worksheet-text {
+    font-weight: bold !important;
+    letter-spacing: 0.1em !important;
+  }
+
+  &-disabled {
+    -webkit-filter: opacity(40%); /* Chrome, Safari, Opera */
+    filter: opacity(40%);
+  }
 }
 
-.panel-container {
-  overflow-x: hidden;
-  overflow-y: auto;
-  border-radius: 0%;
-  height: var(--panelHeight);
-  // height: calc(100% - 179px);
-}
-
-.dashboard-disabled {
-  -webkit-filter: opacity(40%); /* Chrome, Safari, Opera */
-  filter: opacity(40%);
-}
-
-.letter-day {
+.lesson-day {
   &-row {
-    height: 79px;
-    max-height: 79px;
+    position: absolute;
+    top: -70px;
+    justify-content: center;
+    width: 100%;
+    display: flex;
+    margin: 0 auto;
+  }
+
+  &-outer {
+    width: 158px;
+    height: 158px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: #c2daa5;
+    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.18);
+  }
+
+  &-inner {
+    width: 136px;
+    height: 136px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: #dce7b5;
+    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.18);
   }
 
   &-circle {
-    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
     border-radius: 50%;
-    box-shadow: #dce7b5 0px 0px 0px 8px, #c2daa5 0px 0px 0px 19px;
     height: 120px;
-    padding-top: 20px;
     width: 120px;
-    z-index: 1;
+  }
+
+  &-letter {
+    color: var(--v-accent-base);
+    font-size: 49px;
+    line-height: 49px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  &-number {
+    color: var(--v-accent-base);
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 24px;
+    text-align: center;
+    margin-bottom: 11px;
   }
 }
 
-.chip {
-  border-radius: 50%;
-  color: white;
-  height: 35px;
-  margin: 0;
-  padding: 0;
-  width: 35px;
-}
-
-.card-border-top {
-  background-color: #c2daa5;
-  border-radius: 4px;
-  height: 18px;
-  position: absolute;
-  top: 0;
-  width: 100%;
-}
-
-.sticky {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 100px;
+.dashboard-item-disabled {
+  color: rgba(0, 0, 0, 0.38) !important;
 }
 </style>
