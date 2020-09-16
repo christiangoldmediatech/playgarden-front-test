@@ -126,6 +126,7 @@
 
                 <v-btn
                   block
+                  min-height="60"
                   class="mb-6 main-btn"
                   color="primary"
                   :disabled="invalid"

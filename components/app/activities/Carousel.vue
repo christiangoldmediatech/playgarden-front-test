@@ -25,7 +25,7 @@
             >
 
             <div class="px-5">
-              <span class="font-weight-black text-outline category-text carousel-text text-uppercase pg-letter-spacing " :style="{'--bgColor': color}">
+              <span class="font-weight-black text-outline subtitle-text carousel-text text-uppercase pg-letter-spacing " :style="{'--bgColor': color}">
                 {{ categoryName }}
               </span>
             </div>

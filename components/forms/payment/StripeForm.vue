@@ -97,6 +97,7 @@
       <v-btn
         block
         class="mb-6"
+        min-height="60"
         color="primary"
         :disabled="invalid"
         :loading="loading"

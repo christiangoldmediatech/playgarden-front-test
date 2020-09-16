@@ -203,9 +203,14 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import VideoPreviewBtn from '@/components/admin/video-preview/VideoPreviewBtn.vue'
 
 export default {
   name: 'ActivityDataTable',
+
+  components: {
+    VideoPreviewBtn
+  },
 
   data () {
     return {
