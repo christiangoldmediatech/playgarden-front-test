@@ -117,9 +117,10 @@
 
       <v-divider class="mx-sm-8 mx-md-16" />
 
-      <v-row>
-        <v-col class="text-center text-footer" cols="12">
+      <v-row no-gutters>
+        <v-col class="pa-3 text-center text-footer" cols="12">
           2020
+
           <template v-if="new Date().getFullYear() > 2020">
             - {{ new Date().getFullYear() }}
           </template>

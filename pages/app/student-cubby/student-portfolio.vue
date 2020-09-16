@@ -3,7 +3,7 @@
     <v-card-text>
       <div class="text-center">
         <underlined-title class="text-h3" text="Student Portfolio" />
-        <p class="portfolio-subtitle mt-3">
+        <p class="portfolio-subtitle mt-2">
           Keep track of your worksheets and progress!
         </p>
       </div>
@@ -60,6 +60,7 @@
 
 <script>
 import { mapActions } from 'vuex'
+
 import PortfolioCarousel from '@/components/app/student-cubby/PortfolioCarousel.vue'
 import PortfolioOverlay from '@/components/app/student-cubby/PortfolioOverlay.vue'
 

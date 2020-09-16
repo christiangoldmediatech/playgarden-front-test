@@ -14,11 +14,11 @@
     </v-col>
 
     <v-col class="flex-shrink-1 flex-grow-0">
-      <v-row align="center" justify="center">
+      <v-row align="center" justify="center" :no-gutters="$vuetify.breakpoint.mdAndDown">
         <v-col
           v-for="item in items"
           :key="`images-${item.code}`"
-          cols="5"
+          cols="6"
           sm="3"
         >
           <worksheet-image
