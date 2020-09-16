@@ -9,7 +9,7 @@
       </div>
     </v-card-text>
 
-    <template v-if="!loading && uploadedWorksheets.length === 0">
+    <template v-if="!loading && (!uploadedWorksheets || uploadedWorksheets.length === 0)">
       <v-row justify="center">
         <v-col cols="8">
           <v-row align="center" justify="center">
@@ -84,7 +84,7 @@ export default {
     },
 
     categories () {
-      return this.uploadedWorksheets.filter(({ worksheetUploads }) => worksheetUploads.length)
+      return this.uploadedWorksheets ? this.uploadedWorksheets.filter(({ worksheetUploads }) => worksheetUploads.length) : []
     }
   },
 
