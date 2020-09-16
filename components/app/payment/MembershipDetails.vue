@@ -79,7 +79,6 @@
           CREATE MEMBERSHIP
         </nuxt-link>
       </div>
-   
     </v-col>
 
     <v-dialog
