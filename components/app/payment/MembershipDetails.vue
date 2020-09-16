@@ -79,10 +79,7 @@
           CREATE MEMBERSHIP
         </nuxt-link>
       </div>
-
-      <div v-if="isTrialingStatus" class="my-6 text--accent text-center">
-        Ends: {{ billing.trialEndDate }}
-      </div>
+   
     </v-col>
 
     <v-dialog
