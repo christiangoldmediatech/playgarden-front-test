@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app class="pg-app-bar" color="white">
+  <v-app-bar app class="pg-app-bar" color="white" elevation="1">
     <v-row align="center" justify="center" no-gutters>
       <v-col class="pg-app-bar-col">
         <v-row align="center" justify="space-between" no-gutters>

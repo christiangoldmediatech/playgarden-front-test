@@ -188,14 +188,15 @@
 
 <script>
 import { mapActions } from 'vuex'
-
+import VideoPreviewBtn from '@/components/admin/video-preview/VideoPreviewBtn.vue'
 import StepTwoForm from './StepTwoForm'
 
 export default {
   name: 'StepTwo',
 
   components: {
-    StepTwoForm
+    StepTwoForm,
+    VideoPreviewBtn
   },
 
   props: {

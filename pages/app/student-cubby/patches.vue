@@ -7,7 +7,7 @@
           text="Earn Activity Patches for learning!"
         />
 
-        <p class="mt-1">
+        <p class="mt-2">
           Master subjects in the Activities section to collect patches for your
           Student Cubby! Collect all badges to receive a real patch for your
           backpack.

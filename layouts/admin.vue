@@ -154,7 +154,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-
+import VideoPreview from '@/components/admin/video-preview/VideoPreview.vue'
 import AdminSnackBar from '@/components/admin/AdminSnackBar.vue'
 
 export default {
@@ -163,7 +163,8 @@ export default {
   middleware: ['checkJWT'],
 
   components: {
-    AdminSnackBar
+    AdminSnackBar,
+    VideoPreview
   },
 
   data () {
