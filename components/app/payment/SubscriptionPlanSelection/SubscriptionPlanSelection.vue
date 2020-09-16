@@ -17,13 +17,11 @@
                 </span>
               </p>
 
-              <v-row no-gutters>
+              <v-row v-if="$vuetify.breakpoint.mdAndUp" no-gutters>
                 <v-col
                   v-for="(plan, indexP) in plans"
                   :key="indexP"
                   class="c-col elevation-3 mx-md-3 my-3 pa-3"
-                  cols="12"
-                  md=""
                 >
                   <div>
                     <p class="text-center">
@@ -34,87 +32,43 @@
                       />
                     </p>
 
-                    <ul>
-                      <li
-                        v-for="(benefit, indexPCB) in plan.commonBenefits
-                          .benefits"
-                        :key="indexPCB"
-                        class="plan-item"
-                      >
-                        {{ benefit }}
-                      </li>
-                    </ul>
-
-                    <template v-if="plan.homeDeliveryBenefits">
-                      <section class="font-weight-bold mt-6">
-                        Home Delivery of:
-                      </section>
-
-                      <ul>
-                        <li
-                          v-for="(benefit, indexHDB) in plan
-                            .homeDeliveryBenefits.benefits"
-                          :key="indexHDB"
-                          class="plan-item"
-                        >
-                          {{ benefit }}
-                        </li>
-                      </ul>
-                    </template>
-
-                    <template v-if="plan.plusBenefits">
-                      <section class="font-weight-bold mt-6">
-                        Plus:
-                      </section>
-
-                      <ul>
-                        <li
-                          v-for="(benefit, indexPB) in plan.plusBenefits
-                            .benefits"
-                          :key="indexPB"
-                          class="plan-item"
-                        >
-                          {{ benefit }}
-                        </li>
-                      </ul>
-                    </template>
+                    <plan-description :plan="plan" />
                   </div>
 
-                  <div>
-                    <v-divider class="my-3" />
+                  <radio-selectors v-model="draft" :plan="plan" />
+                </v-col>
+              </v-row>
 
-                    <v-radio
-                      :label="`$${plan.priceMonthly} a month/child`"
-                      :value="plan.monthlyStripeId"
-                      class="plan-pricing"
-                      @change="
-                        draft = {
-                          id: plan.id,
-                          type: 'monthly',
-                          requireAddress: Boolean(
-                            plan.homeDeliveryBenefits || plan.plusBenefits
-                          )
-                        }
-                      "
-                    />
+              <v-row v-else no-gutters>
+                <v-col
+                  v-for="(plan, indexP) in plans"
+                  :key="indexP"
+                  class="my-3 pr-1"
+                  cols="12"
+                >
+                  <v-expansion-panels>
+                    <v-expansion-panel>
+                      <v-expansion-panel-header>
+                        <div class="text-center">
+                          <underlined-title
+                            font-size="20px"
+                            :line-from="65"
+                            :text="plan.name"
+                          />
+                        </div>
+                      </v-expansion-panel-header>
 
-                    <v-radio
-                      class="mb-0 plan-pricing"
-                      :label="`$${plan.priceAnnual} School Year Special/child`"
-                      :value="plan.anualStripeId"
-                      @change="
-                        draft = {
-                          id: plan.id,
-                          type: 'annual',
-                          requireAddress: Boolean(
-                            plan.homeDeliveryBenefits || plan.plusBenefits
-                          )
-                        }
-                      "
-                    />
+                      <v-expansion-panel-content class="pa-0 ma-0">
+                        <plan-description :plan="plan" />
+                      </v-expansion-panel-content>
 
-                    <small class="ml-8">(10 months)</small>
-                  </div>
+                      <radio-selectors
+                        v-model="draft"
+                        class="mb-6 px-6"
+                        :plan="plan"
+                      />
+                    </v-expansion-panel>
+                  </v-expansion-panels>
                 </v-col>
               </v-row>
             </v-radio-group>
@@ -239,8 +193,16 @@ import { mapActions, mapGetters, mapMutations } from 'vuex'
 
 import submittable from '@/utils/mixins/submittable'
 
+import PlanDescription from './PlanDescription'
+import RadioSelectors from './RadioSelectors'
+
 export default {
   name: 'SubscriptionPlanSelection',
+
+  components: {
+    PlanDescription,
+    RadioSelectors
+  },
 
   mixins: [submittable],
 
@@ -373,27 +335,6 @@ export default {
   display: grid;
 }
 
-ul {
-  list-style: none; /* Remove default bullets */
-}
-
-ul li::before {
-  content: "✔";
-  color: var(--v-primary-base); /* Change the color */
-  font-weight: bold; /* If you want it to be bold */
-  display: inline-block; /* Needed to add space between the bullet and the text */
-  width: 1em; /* Also needed for space (tweak if needed) */
-  margin-left: -1rem; /* Also needed for space (tweak if needed) */
-}
-
-.plan-pricing ::v-deep .v-label {
-  color: $pg-black;
-  opacity: 2.49 !important;
-}
-
-.v-item--active ::v-deep .v-label {
-  font-weight: bold !important;
-}
 .plan-item {
   font-size: 14px;
 }
