@@ -12,3 +12,9 @@
   position: relative;
   z-index: 0;
 }
+
+@mixin flex($horizontal: center, $vertical: center) {
+  display: flex;
+  align-items: center;
+  justify-content: $horizontal;
+}

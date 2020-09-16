@@ -55,7 +55,9 @@ export default {
   },
 
   created () {
-    this.$nuxt.$on(this.eventMessage, ({ playlist, index }) => {
+    const playerId = this.playerId ? this.playerId : ''
+
+    this.$nuxt.$on(this.eventMessage + playerId, ({ playlist, index }) => {
       this.playlist = jsonCopy(playlist)
       this.index = index
       this.mediaObject = this.playlist[index]
