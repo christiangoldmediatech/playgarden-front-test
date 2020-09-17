@@ -1,11 +1,7 @@
 <template>
   <span
     v-bind="$attrs"
-    :class="{
-      'text-h5 font-weight-bold text-uppercase': $vuetify.breakpoint.smAndDown,
-      'text-none': $vuetify.breakpoint.mdAndUp,
-      'underlined-title': $vuetify.breakpoint.mdAndUp
-    }"
+    class="text-none underlined-title"
     :style="{
       '--ut-line-color': _lineColor,
       '--ut-background-from': _lineFrom,

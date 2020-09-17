@@ -8,20 +8,18 @@
       <v-row
         v-for="caregiver in caregivers"
         :key="caregiver.id"
-        class="justify-space-between my-1"
+        class="my-1"
         no-gutters
       >
-        <span>
+        <v-col class="text-truncate">
           {{ caregiver.firstName }}
-        </span>
+        </v-col>
 
-        <div>
-          {{ caregiver.email }}
-
+        <v-col class="text-right" cols="1">
           <v-icon color="#d30909" dense @click="remove(caregiver)">
             mdi-delete-outline
           </v-icon>
-        </div>
+        </v-col>
       </v-row>
 
       <manage-caregivers class="my-6" />
