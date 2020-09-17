@@ -7,7 +7,7 @@
 
     <!-- CONTENT -->
     <v-main v-if="!fullWidth">
-      <v-container fill-height>
+      <v-container class="pa-md-3 pa-0" fill-height>
         <nuxt />
       </v-container>
     </v-main>

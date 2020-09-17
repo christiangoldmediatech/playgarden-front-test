@@ -17,6 +17,7 @@
         />
       </v-row>
     </v-card-text>
+
     <course-progress-overlay />
   </v-card>
 </template>
