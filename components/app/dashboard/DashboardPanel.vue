@@ -29,6 +29,7 @@
         </content-section>
 
         <content-section
+          class="my-2"
           number="2"
           title="Worksheets"
           :progress="worksheets.progress"
@@ -218,6 +219,7 @@ export default {
     align-items: center;
     justify-content: center;
     background-color: white;
+    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.18);
     border-radius: 50%;
     height: 120px;
     width: 120px;

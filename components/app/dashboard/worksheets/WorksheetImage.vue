@@ -1,26 +1,28 @@
 <template>
-  <v-hover v-slot="{ hover }">
-    <div
-      :class="classes(hover, item.code)"
-      v-on="$listeners"
-    >
-      <!-- <v-responsive
-        :class="['rounded-circle', { 'worksheet-selected': item.code === selected }]"
-        :aspect-ratio="1"
+  <v-col
+    class="pa-4 py-0"
+    cols="6"
+    sm="3"
+    xl="2"
+  >
+    <v-hover v-slot="{ hover }">
+      <div
+        :class="['text-center worksheet-item', { 'worksheet-item-scaled': hover || active }]"
       >
         <v-img
+          class="rounded-circle mx-auto worksheet-item-shadow"
           :src="item.image"
-          :aspect-ratio="1"
-        />
-      </v-responsive> -->
-      <v-img
-        :class="['rounded-circle', { 'worksheet-selected': item.code === selected }]"
-        :src="item.image"
-        :aspect-ratio="1"
-      />
-      <slot />
-    </div>
-  </v-hover>
+          max-width="200"
+          aspect-ratio="1"
+        >
+          <div :class="['worksheet-item-image', { 'clickable': clickable, 'worksheet-item-image-selected': active }]" @click.stop="setActive" />
+        </v-img>
+        <span v-if="showWord" class="d-block text-center">
+          {{ item.word }}
+        </span>
+      </div>
+    </v-hover>
+  </v-col>
 </template>
 
 <script>
@@ -32,54 +34,65 @@ export default {
       type: Object,
       required: true
     },
-
     selected: {
-      type: [Number, String],
-      required: false,
-      default: null
+      required: true,
+      validator: (val) => {
+        if (['number', 'string'].includes(typeof val) || val === null) {
+          return true
+        }
+        return false
+      }
     },
-
-    size: {
-      type: [Number, String],
+    clickable: {
+      type: Boolean,
       required: false,
-      default: 198
+      default: false
+    },
+    showWord: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
 
   computed: {
-    classes () {
-      return (hover, code) => {
-        return [
-          'worksheet-item rounded-circle text-center mx-4 my-2',
-          { clickable: this.$attrs.hoverable !== undefined },
-          { 'worksheet-scaled': this.$attrs.hoverable !== undefined && (hover || this.selected === code) }
-        ]
+    active () {
+      return this.selected === this.item.code
+    }
+  },
+
+  methods: {
+    setActive () {
+      if (this.clickable) {
+        let value = this.item.code
+        if (value === this.selected) {
+          value = null
+        }
+        this.$emit('update:selected', value)
       }
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
-.worksheet-item {
+<style lang="scss">
+.worksheet {
+  &-item {
     transition: transform 250ms;
-}
-
-.worksheet-scaled {
-    transform: scale(1.11);
-    z-index: 1;
-}
-
-.worksheet-selected {
-     ::after {
-        border-radius: 50%;
-        box-shadow: inset 0px 0px 0px 10px var(--v-primary-base);
-        content: "";
-        display: block;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        width: 100%;
+    &-scaled {
+      transform: scale(1.11);
     }
+    &-shadow {
+      box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2);
+    }
+    &-image {
+      border-radius: 50%;
+      width: 100%;
+      height: 100%;
+      &-selected {
+        box-shadow: inset 0px 0px 0px 8px var(--v-primary-base);
+      }
+    }
+  }
 }
 </style>
