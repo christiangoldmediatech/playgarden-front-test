@@ -28,9 +28,9 @@
             align="center"
             :no-gutters="$vuetify.breakpoint.smAndUp"
           >
-            <v-col class="flex-shrink-1 flex-grow-0">
+            <div class="dashboard-child-pick-container">
               <child-select v-model="selectedChild" hide-details />
-            </v-col>
+            </div>
 
             <v-col class="text-center text-sm-right">
               <span class="font-weight-medium">
@@ -233,6 +233,9 @@ export default {
   &-column {
     height: 100%;
     max-height: 100%;
+  }
+  &-child-pick-container {
+    width: 225px;
   }
   &-content {
     height: calc(100% - 70px);
