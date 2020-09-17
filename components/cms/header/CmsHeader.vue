@@ -5,7 +5,10 @@
   >
     <div class="header pg-image--cover">
       <!-- Header outer titlte -->
-      <div class="header__title pg-title--uppercase">
+      <div
+        v-if="blok.displayTitle"
+        class="header__title pg-title--uppercase"
+      >
         <img
           v-if="blok.icon"
           class="header__title__icon"
@@ -19,19 +22,24 @@
       <img :src="blok.image" :alt="blok.imageCaption">
       <!-- Header card -->
       <div class="header__card">
-        <div class="pg-title--uppercase">
+        <div class="header__card__title pg-title--uppercase">
           {{ blok.cardTitle }}
         </div>
         <p>
           {{ blok.cardDescription }}
         </p>
         <div class="header__card__button">
-          <component
-            :is="button.component"
+          <div
             v-for="button in blok.cardButtons"
             :key="button._uid"
-            :blok="button"
-          />
+            class="button__container"
+          >
+            <component
+              :is="button.component"
+              :key="button._uid"
+              :blok="button"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -124,6 +132,77 @@ $header-title-margin: 10px;
 
   > * {
     flex: 1 1;
+  }
+}
+
+.button__container {
+  margin: 0 15px;
+
+  &:first-child {
+    margin-left: 0;
+    margin-right: 15px;
+  }
+
+  &:last-child {
+    margin-right: 0;
+    margin-left: 15px;
+  }
+}
+
+@media (max-width: 860px) {
+  .header {
+    @include flex();
+    flex-flow: row wrap;
+    height: auto;
+
+    > img {
+      height: 200px;
+    }
+  }
+
+  .header__card {
+    width: 80vw;
+    margin-top: -70px;
+    position: static;
+    padding: 15px 20px;
+  }
+
+  .header__card__button {
+    flex-flow: row wrap;
+
+    > * {
+      flex: 1 0 80%;
+    }
+  }
+
+  .button__container {
+    display: flex;
+
+    &,
+    &:first-child,
+    &:last-child {
+      margin: 10px 0;
+    }
+
+    > * {
+      flex: 1 0;
+    }
+  }
+
+  .header__card__title {
+    text-align: center;
+    letter-spacing: 0.1em;
+  }
+}
+
+@media (max-width: 700px) {
+  .header__title {
+    letter-spacing: 0.2em;
+    font-size: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    padding: 10px 20px;
   }
 }
 

@@ -246,4 +246,49 @@ $icon-size: 60px;
   font-size: 20px;
 }
 
+$mobile-image-height: 300px;
+
+@media (max-width: 1250px) {
+  .blog__icons--vertical {
+    display: none;
+  }
+
+  .blog {
+    .blog__main-image {
+      height: $mobile-image-height;
+    }
+  }
+}
+
+@media (max-width: 800px) {
+  .blog__title {
+    margin-bottom: 20px;
+    line-height: 1;
+  }
+
+  .blog__title__line {
+    font-size: 34px;
+    line-height: 0.6;
+
+    &::after {
+      bottom: -10px;
+    }
+  }
+
+  .blog__body {
+    max-width: initial;
+    font-size: 16px;
+    padding-left: 0;
+
+    img {
+      height: $mobile-image-height;
+      object-fit: cover;
+    }
+  }
+
+  .blog__share {
+    padding-left: 0;
+  }
+}
+
 </style>

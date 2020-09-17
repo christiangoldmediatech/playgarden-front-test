@@ -75,6 +75,7 @@
 </template>
 
 <script>
+import get from 'lodash/get'
 import VideoFavoriteMixin from './VideoFavoriteMixin'
 
 export default {
@@ -85,23 +86,27 @@ export default {
   props: {
     activityId: {
       type: Number,
-      required: true
+      default: undefined
     },
     activity: {
       type: Object,
-      required: true
+      default: undefined
     },
     icon: {
       type: String,
-      required: true
+      default: undefined
     },
     categoryName: {
       type: String,
-      required: true
+      default: undefined
     },
     playlist: {
       type: Array,
-      required: true
+      default: undefined
+    },
+    blok: {
+      type: Object,
+      default: null
     }
   },
 
@@ -117,7 +122,7 @@ export default {
     },
 
     thumbnail () {
-      return this.activity.thumbnail || require('@/assets/jpg/abacus_counting_lesson.jpg')
+      return get(this.blok, 'thumbnail') || this.activity.thumbnail || require('@/assets/jpg/abacus_counting_lesson.jpg')
     }
   },
 
@@ -146,5 +151,10 @@ export default {
 .play-icon {
   width: 75px;
   height: 75px;
+}
+
+.title {
+  color: $pg-black;
+  font-weight: 600;
 }
 </style>

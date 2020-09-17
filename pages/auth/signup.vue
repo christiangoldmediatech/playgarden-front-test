@@ -27,8 +27,8 @@
       >
         <v-col class="px-12" cols="12" md="8">
           <p class="text-center text-md-left">
-            <span class="font-weight-bold text-h5">
-              PARENT'S INFORMATION
+            <span class="font-weight-bold text-h5 pg-letter-spacing">
+              PARENT INFORMATION
             </span>
           </p>
 
@@ -42,7 +42,7 @@
 
         <v-col class="px-12" cols="12" md="4">
           <p class="text-center text-md-left">
-            <span class="font-weight-bold text-h5">
+            <span class="font-weight-bold text-h5 pg-letter-spacing">
               MEMBERSHIP
             </span>
 

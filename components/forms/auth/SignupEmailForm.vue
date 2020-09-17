@@ -25,6 +25,8 @@
         color="primary"
         :disabled="invalid"
         :loading="loading"
+        min-height="60"
+        class="main-btn"
         type="submit"
         x-large
       >
@@ -47,7 +49,7 @@
 
       <p class="login mt-8">
         <nuxt-link class="primary--text" :to="{ name: 'index' }">
-          <span>return to login</span>
+          <span class="return-link">return to login</span>
         </nuxt-link>
       </p>
     </v-form>
@@ -103,5 +105,8 @@ export default {
     text-transform: uppercase;
     font-weight: bold;
   }
+}
+.return-link {
+  color:  $pg-btn-green;
 }
 </style>

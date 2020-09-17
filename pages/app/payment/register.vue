@@ -32,7 +32,7 @@
 
         <v-col class="px-12" cols="12" lg="6" md="4" xl="6">
           <p class="text-center text-md-left">
-            <span class="font-weight-bold text-h5">
+            <span class="font-weight-bold text-h5 pg-letter-spacing">
               MEMBERSHIP REVIEW
             </span>
           </p>
@@ -43,47 +43,51 @@
             no-gutters
             class="px-8 py-2"
           >
-            <v-col cols="8">
+            <v-col cols="7">
               <span class="product-name">
                 {{ item.product.name }}
               </span>
             </v-col>
-            <v-col cols="4">
-              <p class="product-description">
-                <b class="product-price">${{ item.unit_amount / 100 }}</b>
-                <br>
-                <span class="product-info">
-                  a year <br>
-
-                  <span class="product-info-1">
-                    *Pricing is per child
-                  </span>
+            <v-col cols="5">
+              <div class="product-description">
+                <span class="product-price">
+                  ${{ item.unit_amount / 100 }}
                 </span>
-              </p>
+                <br>
+                <span no-gutters class="product-info">
+                  a year
+                </span>
+                <br>
+                <span class="product-info-1">*Pricing is per child</span>
+              </div>
             </v-col>
           </v-row>
 
           <v-divider />
 
           <v-row no-gutters class="px-8">
-            <v-col cols="9">
-              <span class="due-today">
+            <v-col cols="7">
+              <span class="total">
                 TOTAL
               </span>
             </v-col>
-            <v-col cols="3">
-              <b class="footer-total">${{ cost.total || 0 }}</b>
+            <v-col cols="3" class="text-align-right">
+              <span class="total-cost">
+                <b>${{ cost.total || 0 }}</b>
+              </span>
             </v-col>
           </v-row>
 
           <v-row class="px-8">
-            <v-col cols="9">
+            <v-col cols="7">
               <span class="due-today">
                 DUE TODAY
               </span>
             </v-col>
-            <v-col cols="3">
-              <b class="footer-total">${{ 0 }}</b>
+            <v-col cols="3" class="text-align-right">
+              <span class="due-today-total">
+                <b>${{ 0 }}</b>
+              </span>
             </v-col>
           </v-row>
         </v-col>
@@ -162,33 +166,46 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 .product-name {
   text-transform: uppercase !important;
 }
 
 .product-price {
-  font-size: 30px;
+  font-size: 30px !important;
 }
 
 .product-info {
-  font-size: 14px;
+  font-size: 14px !important;
 }
 .product-info-1 {
-  font-size: 9px;
+  font-size: 9px !important;
 }
 
 .product-description {
-  text-align: center;
+  text-align: center !important;
+  line-height: 1.1 !important;
 }
 
 .due-today {
   color: $pg-black !important;
-  font-weight: bold;
-  font-size: 25px;
+  font-weight: bold !important;
+  font-size: 25px !important;
+}
+.due-today-total {
+  color: $pg-black !important;
+  font-weight: 500 !important;
+  font-size: 25px !important;
 }
 
-.footer-total {
-  font-size: 25px !important;
+.total {
+  font-size: 20px !important;
+}
+.total-cost {
+  font-size: 20px !important;
+}
+
+.text-align-right {
+  text-align: right !important;
 }
 </style>

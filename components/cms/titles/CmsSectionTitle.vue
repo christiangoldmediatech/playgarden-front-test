@@ -53,4 +53,16 @@ export default {
   color: #707070
 }
 
+@media (max-width: 600px) {
+  .section__title {
+    text-align: center;
+    font-size: 28px;
+  }
+
+  .section__subtitle {
+    font-size: 17px;
+    text-align: center;
+  }
+}
+
 </style>

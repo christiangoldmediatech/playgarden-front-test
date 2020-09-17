@@ -1,7 +1,7 @@
 <template>
   <validation-observer v-slot="{ invalid, passes }">
     <v-form @submit.prevent="passes(onSubmit)">
-      <v-container row>
+      <v-container class="px-0">
         <v-row no-gutters>
           <v-col
             :class="{ 'pr-2': $vuetify.breakpoint.mdAndUp }"
@@ -31,7 +31,7 @@
             <!-- Last name -->
             <validation-provider
               v-slot="{ errors }"
-              name="Last name"
+              name="Last Name"
               rules="required"
             >
               <v-text-field
@@ -46,7 +46,7 @@
             </validation-provider>
           </v-col>
           <v-col cols="12">
-            <v-row>
+            <v-row no-gutters>
               <v-col cols="12">
                 <!-- Phone number -->
                 <validation-provider
@@ -56,6 +56,7 @@
                 >
                   <v-text-field
                     v-model="draft.phoneNumber"
+                    v-mask="['(###) ###-####']"
                     clearable
                     :disabled="loading || hasInvitationPhone"
                     :error-messages="errors"
@@ -106,7 +107,7 @@
                   <!-- Password confirmation -->
                   <validation-provider
                     v-slot="{ errors }"
-                    name="Password confirmation"
+                    name="Confirm password"
                     rules="required"
                     vid="passwordConfirmation"
                   >
@@ -115,7 +116,7 @@
                       clearable
                       :disabled="loading"
                       :error-messages="errors"
-                      label="Password confirmation"
+                      label="Confirm password"
                       :loading="loading"
                       maxlength="20"
                       solo
@@ -125,7 +126,8 @@
 
                 <v-btn
                   block
-                  class="mb-6"
+                  min-height="60"
+                  class="mb-6 main-btn"
                   color="primary"
                   :disabled="invalid"
                   :loading="loading"

@@ -23,7 +23,7 @@
         />
       </validation-provider>
 
-      <v-row class="my-3" no-gutters>
+      <v-row class="my-0" no-gutters>
         <v-col class="hr-line">
           <v-divider />
         </v-col>
@@ -50,7 +50,7 @@
       >
         <v-text-field
           v-model="draft.phone"
-          class="mt-9 custom-text-field"
+          class="mt-6 custom-text-field"
           clearable
           :disabled="loading || Boolean(draft.email)"
           :error-messages="errors"
@@ -67,6 +67,7 @@
         :disabled="invalid"
         :loading="loading"
         type="submit"
+        class="main-btn"
         x-large
       >
         SEND RECOVERY LINK
@@ -74,7 +75,7 @@
 
       <p class="login mt-8">
         <nuxt-link class="primary--text" :to="{ name: 'index' }">
-          <span>return to login</span>
+          <span class="return-link">return to login</span>
         </nuxt-link>
       </p>
     </v-form>
@@ -131,5 +132,8 @@ export default {
     text-transform: uppercase;
     font-weight: bold;
   }
+}
+.return-link {
+  color:  $pg-btn-green;
 }
 </style>

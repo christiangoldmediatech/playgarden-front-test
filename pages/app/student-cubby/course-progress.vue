@@ -4,7 +4,7 @@
       <div class="text-center">
         <underlined-title class="text-h3" text="Review all Curriculum" />
 
-        <p class="mt-5">
+        <p class="mt-2">
           Scroll through to review your lessons and worksheets!
         </p>
       </div>
@@ -23,6 +23,7 @@
 
 <script>
 import { mapActions } from 'vuex'
+
 import LetterCard from '@/components/app/student-cubby/LetterCard.vue'
 import CourseProgressOverlay from '@/components/app/student-cubby/CourseProgressOverlay.vue'
 

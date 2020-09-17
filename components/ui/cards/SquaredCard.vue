@@ -15,12 +15,13 @@
           {{ blok.title || title }}
         </div>
         <div class="card__link">
-          <nuxt-link
-            :to="blok.link || link"
+          <a
+            :href="blok.link.url || link"
             class="underlined-link"
+            @click="toLink"
           >
             Read here
-          </nuxt-link>
+          </a>
           <img
             :src="require('@/assets/png/player/right-arrow.svg')"
             class="arrow"
@@ -53,6 +54,17 @@ export default {
       type: String,
       default: ''
     }
+  },
+
+  methods: {
+    toLink (event) {
+      const link = this.blok.link
+
+      if (link.url === '') {
+        event.preventDefault()
+        this.$router.push(link.cached_url.replace('app/', ''))
+      }
+    }
   }
 }
 </script>
@@ -70,6 +82,12 @@ $border-height: 3px;
   display: flex;
   flex-flow: column;
   justify-content: space-between;
+  transition: transform 0.2s;
+  transform: scale(1);
+
+  &:hover {
+    transform: scale(1.07);
+  }
 }
 
 .card__image {
