@@ -29,7 +29,7 @@
         </content-section>
 
         <content-section
-          class="my-4"
+          class="my-2"
           number="2"
           title="Worksheets"
           :progress="worksheets.progress"
