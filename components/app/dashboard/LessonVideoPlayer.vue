@@ -11,11 +11,11 @@
       ref="videoPlayer"
       autoplay
       show-next-up
+      :no-seek="noSeek"
       :fullscreen-override="handleFullscreen"
       @ready="onReady"
       @playlist-index-change="updateIndex"
       @playlist-complete="showCompletedDialog"
-      @dispose="player = null"
     />
     <!-- Completed dialog -->
     <completed-dialog
@@ -40,6 +40,7 @@
 import { mapGetters } from 'vuex'
 import { jsonCopy } from '@/utils/objectTools'
 import VideoPlayerDialogMixin from '@/mixins/VideoPlayerDialogMixin.js'
+import SaveVideoProgress from '@/mixins/SaveVideoProgressMixin.js'
 import Fullscreen from '@/mixins/FullscreenMixin.js'
 import VideoPlayerDialog from '@/components/pg-video-js-player/VideoPlayerDialog.vue'
 import PgVideoJsPlayer from '@/components/pg-video-js-player/PgVideoJsPlayer.vue'
@@ -54,7 +55,7 @@ export default {
     CompletedDialog
   },
 
-  mixins: [VideoPlayerDialogMixin, Fullscreen],
+  mixins: [VideoPlayerDialogMixin, SaveVideoProgress, Fullscreen],
 
   data: () => {
     return {
@@ -72,6 +73,13 @@ export default {
 
     currentVideo () {
       return this.playlist[this.index] || null
+    },
+
+    noSeek () {
+      if (this.currentVideo && this.currentVideo.viewed && this.currentVideo.viewed.completed === false) {
+        return true
+      }
+      return false
     },
 
     overrides () {
@@ -129,6 +137,16 @@ export default {
   },
 
   methods: {
+    onReady (player) {
+      this.player = player
+
+      player.on('pause', this.saveVideoProgress)
+      player.on('ended', this.saveVideoProgress)
+      player.on('dispose', () => {
+        this.player = null
+      })
+    },
+
     updateIndex (index) {
       this.index = index
       this.$router.push({
