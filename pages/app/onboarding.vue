@@ -29,11 +29,11 @@
                 class="pa-4"
                 :step="indexOI + 1"
               >
-                <video-js-player
+                <!-- <video-js-player
                   v-bind="{ videos }"
                   @ready="onPlayerReady"
                   @ended="nextStep"
-                />
+                /> -->
               </v-stepper-content>
             </v-stepper-items>
           </v-stepper>
@@ -79,14 +79,14 @@
 import { get } from 'lodash'
 import { mapActions } from 'vuex'
 
-import VideoJsPlayer from '@/components/video-player/VideoJsPlayer'
+// import VideoJsPlayer from '@/components/video-player/VideoJsPlayer'
 
 export default {
   name: 'Onboarding',
 
-  components: {
-    VideoJsPlayer
-  },
+  // components: {
+  //   VideoJsPlayer
+  // },
 
   data: () => ({
     loading: true,

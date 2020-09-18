@@ -60,21 +60,21 @@
         </v-list-item>
       </v-list>
     </template>
-    <lesson-activity-player activity-mode />
+    <!-- <lesson-activity-player activity-mode /> -->
   </v-card>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import LessonActivityPlayer from '@/components/app/dashboard/LessonActivityPlayer.vue'
+// import LessonActivityPlayer from '@/components/app/dashboard/LessonActivityPlayer.vue'
 import VideoFavoriteMixin from '@/components/app/activities/VideoFavoriteMixin.js'
 
 export default {
   name: 'LessonActivities',
 
-  components: {
-    LessonActivityPlayer
-  },
+  // components: {
+  //   LessonActivityPlayer
+  // },
 
   mixins: [VideoFavoriteMixin],
 

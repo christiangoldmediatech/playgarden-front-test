@@ -61,7 +61,7 @@
             text
             block
             :disabled="loading"
-            @click.stop="returnAction"
+            @click.stop="doReturnAction"
           >
             {{ returnText }}
           </v-btn>
@@ -131,6 +131,7 @@ export default {
 
   methods: {
     doReturnAction () {
+      this.stopInterval()
       this.returnAction()
     },
 
@@ -167,6 +168,7 @@ export default {
     async doAction (action) {
       try {
         this.loading = true
+        this.stopInterval()
         await action()
       } catch (error) {
         return Promise.reject(error)

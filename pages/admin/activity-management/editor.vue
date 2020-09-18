@@ -109,7 +109,7 @@
                   </v-col>
 
                   <v-col class="text-center" cols="12" sm="9" lg="6">
-                    <video-js-player
+                    <!-- <video-js-player
                       v-if="video && video.videoUrl"
                       :options="{
                         title: video.name,
@@ -144,6 +144,7 @@
                         </span>
                       </span>
                     </v-progress-circular>
+                    -->
 
                     <validation-provider
                       v-slot="{ errors }"
@@ -233,16 +234,16 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import VideoJsPlayer from '@/components/video-player/VideoJsPlayer'
+// import VideoJsPlayer from '@/components/video-player/VideoJsPlayer'
 
 export default {
   name: 'Editor',
 
   layout: 'admin',
 
-  components: {
-    VideoJsPlayer
-  },
+  // components: {
+  //   VideoJsPlayer
+  // },
 
   data () {
     return {

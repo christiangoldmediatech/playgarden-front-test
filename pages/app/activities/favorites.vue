@@ -5,14 +5,14 @@
       <activity-title />
     </v-container>
     <video-results v-bind="{ videos }" />
-    <lesson-activity-player />
+    <!-- <lesson-activity-player /> -->
   </v-main>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
 // import VideoPlayer from '@/components/app/activities/VideoPlayer.vue'
-import LessonActivityPlayer from '@/components/app/dashboard/LessonActivityPlayer.vue'
+// import LessonActivityPlayer from '@/components/app/dashboard/LessonActivityPlayer.vue'
 import TopBar from '@/components/app/activities/TopBar.vue'
 import VideoResults from '@/components/app/activities/VideoResults.vue'
 import ActivityTitle from '@/components/app/activities/ActivityTitle.vue'
@@ -22,7 +22,7 @@ export default {
 
   components: {
     // VideoPlayer,
-    LessonActivityPlayer,
+    // LessonActivityPlayer,
     VideoResults,
     ActivityTitle,
     TopBar

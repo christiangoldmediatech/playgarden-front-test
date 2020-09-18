@@ -16,13 +16,13 @@
       :icon="category.icon"
       :activities="playlist(category.id)"
     />
-    <lesson-activity-player activity-mode />
+    <!-- <lesson-activity-player activity-mode /> -->
   </v-main>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import LessonActivityPlayer from '@/components/app/dashboard/LessonActivityPlayer.vue'
+// import LessonActivityPlayer from '@/components/app/dashboard/LessonActivityPlayer.vue'
 import ActivityTitle from '@/components/app/activities/ActivityTitle.vue'
 import Carousel from '@/components/app/activities/Carousel.vue'
 import CategoryHeader from '@/components/app/activities/CategoryHeader.vue'
@@ -33,7 +33,7 @@ export default {
   components: {
     Carousel,
     CategoryHeader,
-    LessonActivityPlayer,
+    // LessonActivityPlayer,
     ActivityTitle
   },
 

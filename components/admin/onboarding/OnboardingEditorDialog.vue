@@ -67,7 +67,7 @@
                       </v-avatar>
                     </template>
 
-                    <video-js-player
+                    <!-- <video-js-player
                       :options="{
                         title: item.videos.name,
                         poster: item.videos.thumbnail,
@@ -78,7 +78,7 @@
                           }
                         ]
                       }"
-                    />
+                    /> -->
                   </v-badge>
                 </div>
               </template>
@@ -186,7 +186,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import VideoJsPlayer from '@/components/video-player/VideoJsPlayer'
+// import VideoJsPlayer from '@/components/video-player/VideoJsPlayer'
 
 function generateItemTemplate () {
   return {
@@ -201,9 +201,9 @@ function generateItemTemplate () {
 export default {
   name: 'OnboardingEditorDialog',
 
-  components: {
-    VideoJsPlayer
-  },
+  // components: {
+  //   VideoJsPlayer
+  // },
 
   data: () => ({
     dialog: false,

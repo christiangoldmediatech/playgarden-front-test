@@ -3,10 +3,10 @@
     v-editable="blok"
     class="card pg-image--cover"
   >
-    <lesson-video-player
+    <!-- <lesson-video-player
       :player-id="'' + _uid"
       ignore-progress
-    />
+    /> -->
     <v-hover v-slot:default="{ hover }">
       <v-card
         :class="['activity-card', { 'scaled': hover }]"
@@ -43,14 +43,14 @@
 </template>
 
 <script>
-import LessonVideoPlayer from '@/components/app/dashboard/LessonVideoPlayer.vue'
+// import LessonVideoPlayer from '@/components/app/dashboard/LessonVideoPlayer.vue'
 
 export default {
   name: 'CmsVideoCard',
 
-  components: {
-    LessonVideoPlayer
-  },
+  // components: {
+  //   LessonVideoPlayer
+  // },
 
   props: {
     blok: {

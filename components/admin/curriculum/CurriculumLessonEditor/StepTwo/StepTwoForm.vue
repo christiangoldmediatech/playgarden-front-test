@@ -63,7 +63,7 @@
                 </v-icon>
               </v-avatar>
             </template>
-            <video-js-player
+            <!-- <video-js-player
               :options="{
                 title: draft.name,
                 poster: draft.thumbnail,
@@ -74,7 +74,7 @@
                   }
                 ]
               }"
-            />
+            /> -->
           </v-badge>
         </div>
       </template>
@@ -176,15 +176,15 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import VideoJsPlayer from '@/components/video-player/VideoJsPlayer'
+// import VideoJsPlayer from '@/components/video-player/VideoJsPlayer'
 import submittable from '@/utils/mixins/submittable'
 
 export default {
   name: 'StepTwoForm',
 
-  components: {
-    VideoJsPlayer
-  },
+  // components: {
+  //   VideoJsPlayer
+  // },
 
   mixins: [submittable],
 

@@ -1,57 +1,78 @@
 <template>
-  <v-dialog v-model="dialog" eager dark fullscreen :persistent="true">
-    <div class="d-flex align-center justify-center bkg-black">
-      <children-video-player
-        ref="childrenVideoPlayer"
-        :width="dimensions.width"
-        :height="dimensions.height"
-        :completed-props="completedProps"
-        :video-id="videoId"
-        @hotkey="close"
-        @ready="onReady"
-      >
-        <template v-slot:title>
-          <underlined-title
-            class="white--text text-h3 font-weight-medium"
-            text="Congratulations!"
-          />
-        </template>
+  <video-player-dialog
+    :id="dialogContainerId"
+    ref="videoPlayerDialog"
+    v-model="dialog"
+    @close="handleClose"
+  >
+    <pg-video-js-player
+      ref="videoPlayer"
+      autoplay
+      show-next-up
+      :playlist="playlist"
+      :fullscreen-override="handleFullscreen"
+      @ready="onReady"
+      @playlist-index-change="updateIndex"
+      @playlist-complete="showCompletedDialog"
+      @dispose="player = null"
+    />
+    <!-- Completed dialog -->
+    <completed-dialog
+      v-model="completed"
+      v-bind="completedProps"
+    >
+      <template v-slot:title>
+        <underlined-title
+          class="white--text text-h3 font-weight-medium"
+          text="Congratulations!"
+        />
+      </template>
 
-        <p class="text-h5 text-center white--text font-weight-medium">
-          You have completed the daily lessons.
-        </p>
-      </children-video-player>
-    </div>
-  </v-dialog>
+      <p class="text-h5 text-center white--text font-weight-medium">
+        You have completed the daily lessons.
+      </p>
+    </completed-dialog>
+  </video-player-dialog>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import VideoPlayerDialog from '@/mixins/VideoPlayerDialog.js'
+import { mapGetters } from 'vuex'
+import { jsonCopy } from '@/utils/objectTools'
+import VideoPlayerDialogMixin from '@/mixins/VideoPlayerDialogMixin.js'
+import Fullscreen from '@/mixins/FullscreenMixin.js'
+import VideoPlayerDialog from '@/components/pg-video-js-player/VideoPlayerDialog.vue'
+import PgVideoJsPlayer from '@/components/pg-video-js-player/PgVideoJsPlayer.vue'
+import CompletedDialog from '@/components/app/dashboard/CompletedDialog.vue'
 
 export default {
   name: 'LessonVideoPlayer',
 
-  mixins: [VideoPlayerDialog],
-
-  props: {
-    ignoreProgress: {
-      type: Boolean,
-      default: false
-    },
-    playerId: {
-      type: String,
-      default: ''
-    }
+  components: {
+    VideoPlayerDialog,
+    PgVideoJsPlayer,
+    CompletedDialog
   },
+
+  mixins: [VideoPlayerDialogMixin, Fullscreen],
 
   data: () => {
     return {
-      eventMessage: 'open-lesson-video-player'
+      dialog: false,
+      completed: false,
+      player: null,
+      playlist: [],
+      index: 0
     }
   },
 
   computed: {
+    ...mapGetters({ children: 'getCurrentChild' }),
+    ...mapGetters('admin/curriculum', { lesson: 'getLesson' }),
+
+    currentVideo () {
+      return this.playlist[this.index] || null
+    },
+
     overrides () {
       return {
         childId: this.$route.query.childId,
@@ -75,7 +96,7 @@ export default {
           iconLeft: 'mdi-play-outline',
           action: () => {
             // Find first activity
-            const activities = this.getLesson.lessonsActivities
+            const activities = this.lesson.lessonsActivities
             if (activities.length) {
               this.$router.push({
                 name: 'app-dashboard-lesson-activities',
@@ -94,106 +115,55 @@ export default {
         },
         buttons: this.buttons,
         returnAction: () => {
-          this.dialog = false
+          this.$refs.videoPlayerDialog.close()
         }
       }
     }
   },
 
+  created () {
+    this.$nuxt.$on('open-lesson-video-player', (params) => {
+      this.open(params)
+    })
+  },
+
   methods: {
-    ...mapActions('children/lesson', ['saveVideoProgress']),
-
-    onReady (player) {
-      this.player = player
-
-      if (this.ignoreProgress) { return }
-
-      player.on('timeupdate', this.handleNextUp)
-      player.on('pause', this.saveProgress)
-      player.on('ended', this.completedVideo)
+    updateIndex (index) {
+      this.index = index
+      this.$router.push({
+        name: 'app-dashboard-lesson-videos',
+        query: { ...this.overrides, id: this.playlist[index].videoId }
+      })
     },
 
-    saveProgress () {
-      const mediaObject = this.mediaObject
-      const date = new Date().toISOString().substr(0, 19)
-      const time = this.player.currentTime()
-      const duration = this.player.duration()
-      const promises = []
-
-      // Only save progress if the video hasn't been completed and we are ahead of where we last left off
-      if (
-        !mediaObject.viewed ||
-        (!mediaObject.viewed.completed && mediaObject.viewed.time < time)
-      ) {
-        this.children.forEach((child) => {
-          promises.push(
-            this.saveVideoProgress({
-              lessonId: this.getLesson.id,
-              childId: child.id,
-              video: {
-                id: mediaObject.videoId,
-                completed: duration - time < 3,
-                time,
-                date
-              }
-            })
-          )
-        })
-        Promise.all(promises).then(() => {
-          this.$nuxt.$emit('dashboard-panel-update')
-        })
+    open ({ playlist, index }) {
+      this.dialog = true
+      this.playlist = jsonCopy(playlist)
+      this.index = index
+      // Force fullscreen on small and mobile devices
+      if (this.$vuetify.breakpoint.mobile || this.$vuetify.breakpoint.smAndDown) {
+        if (!this.fullscreen) {
+          this.toggleFullscreen(this.dialogContainerId)
+        }
       }
+      // Load new media
+      this.$nextTick(() => {
+        if (!this.player) {
+          const waitAndLoad = window.setInterval(() => {
+            if (this.player) {
+              this.$refs.videoPlayer.loadPlaylist(playlist, index)
+              window.clearInterval(waitAndLoad)
+            }
+          }, 50)
+        } else {
+          this.$refs.videoPlayer.loadPlaylist(playlist, index)
+        }
+      })
     },
 
-    completedVideo () {
-      if (!this.mediaObject.viewed || !this.mediaObject.viewed.completed) {
-        const date = new Date().toISOString().substr(0, 19)
-        const time = this.player.currentTime()
-        const promises = []
-
-        // Do promises
-        this.children.forEach((child) => {
-          promises.push(
-            this.saveVideoProgress({
-              lessonId: this.getLesson.id,
-              childId: child.id,
-              video: {
-                id: this.mediaObject.videoId,
-                completed: true,
-                time,
-                date
-              }
-            })
-          )
-        })
-
-        // Do promises
-        Promise.all(promises).then(() => {
-          this.$nuxt.$emit('dashboard-panel-update')
-        })
-      }
-
-      // If not last item, then switch
-      if (this.index < this.playlist.length - 1) {
-        this.index++
-        this.mediaObject = this.playlist[this.index]
-        this.loadAndPlay()
-        this.$router.push({
-          name: 'app-dashboard-lesson-videos',
-          query: { ...this.overrides, id: this.mediaObject.videoId }
-        })
-      } else {
-        this.$refs.childrenVideoPlayer.showCompletedDialog()
-      }
+    showCompletedDialog () {
+      this.completed = true
     }
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.bkg-black {
-  background-color: black;
-  width: 100vw;
-  height: 100vh;
-}
-</style>

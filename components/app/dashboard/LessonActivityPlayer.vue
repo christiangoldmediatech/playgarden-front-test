@@ -1,219 +1,83 @@
 <template>
-  <v-dialog
+  <video-player-dialog
+    :id="dialogContainerId"
     v-model="dialog"
-    eager
-    dark
-    fullscreen
-    :persistent="true"
+    @close="handleClose"
   >
-    <div class="d-flex align-center justify-center bkg-black">
-      <children-video-player
-        ref="childrenVideoPlayer"
-        :video-id="videoId"
-        :width="dimensions.width"
-        :height="dimensions.height"
-        @hotkey="close"
-        @ready="onReady"
-      />
-    </div>
-  </v-dialog>
+    <pg-video-js-player
+      ref="videoPlayer"
+      autoplay
+      show-next-up
+      :playlist="playlist"
+      :fullscreen-override="handleFullscreen"
+      @ready="onReady"
+      @last-playlist-item="loadNewItem"
+      @playlist-complete="showCompletedDialog"
+    />
+  </video-player-dialog>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import VideoPlayerDialog from '@/mixins/VideoPlayerDialog.js'
+import lesson from '@/resources/lesson.js'
+import VideoPlayerDialogMixin from '@/mixins/VideoPlayerDialogMixin.js'
+import Fullscreen from '@/mixins/FullscreenMixin.js'
+import VideoPlayerDialog from '@/components/pg-video-js-player/VideoPlayerDialog.vue'
+import PgVideoJsPlayer from '@/components/pg-video-js-player/PgVideoJsPlayer.vue'
 
 export default {
   name: 'LessonActivityPlayer',
 
-  mixins: [VideoPlayerDialog],
+  components: {
+    VideoPlayerDialog,
+    PgVideoJsPlayer
+  },
+
+  mixins: [VideoPlayerDialogMixin, Fullscreen],
 
   data: () => {
     return {
-      eventMessage: 'open-lesson-activity-player',
-      analyticsLoading: false
+      dialog: false,
+      eventName: 'open-lesson-video-player',
+      lesson,
+      playlist: []
     }
   },
 
-  computed: {
-    overrides () {
+  mounted () {
+    // Create a playlist
+    this.playlist = this.lesson.videos.map(({ activityType, name, description, videoUrl, thumbnail, id, viewed }) => {
       return {
-        childId: this.$route.query.childId,
-        lessonId: this.$route.query.lessonId
-      }
-    },
-
-    buttons () {
-      return [
-        {
-          text: 'COMPLETE WORKSHEETS',
-          color: 'accent',
-          iconLeft: 'mdi-square-edit-outline',
-          action: () => {
-            this.$router.push({ name: 'app-dashboard-online-worksheet', query: { ...this.overrides } })
-          }
+        title: name,
+        description,
+        activityType,
+        src: {
+          src: videoUrl.HLS,
+          type: 'application/x-mpegURL'
         },
-        {
-          text: 'SKIP TO ACTIVITIES',
-          color: '#FEC572',
-          iconLeft: 'mdi-play-outline',
-          action: () => {
-            // Find first activity
-            const activities = this.getLesson.lessonsActivities
-            if (activities.length) {
-              this.$router.push({
-                name: 'app-dashboard-lesson-activities',
-                query: { ...this.overrides, id: activities[0].id }
-              })
-            }
-          }
-        }
-      ]
-    }
+        poster: thumbnail,
+        videoId: id,
+        viewed
+      }
+    })
   },
 
   methods: {
-    ...mapActions('children/lesson', ['saveActivityProgres']),
-    ...mapActions('admin/activity/analytics', {
-      createAnalytic: 'create',
-      getAnalytics: 'getByChildId',
-      updateAnalytic: 'update'
-    }),
-
-    doAnalytics () {
-      if (this.analyticsLoading || !this.mediaObject.activityId) {
-        return
-      }
-
-      this.analyticsLoading = true
-      const promises = []
-      const mediaObject = this.mediaObject
-      const time = this.player.currentTime()
-      const duration = this.player.duration()
-      const didFinish = ((duration - time) < 3)
-
-      this.children.forEach((child) => {
-        const analyticOperation = new Promise((resolve, reject) => {
-          this.getAnalytics({ activityId: mediaObject.activityId, childId: child.id })
-            .then((result) => {
-              if (typeof result === 'string' || Object.keys(result).length === 0) {
-                return this.createAnalytic({
-                  childrenId: child.id,
-                  activityId: mediaObject.activityId,
-                  didFinish,
-                  time
-                })
-              } else if (result.didFinish) {
-                return true
-              }
-              // In all other cases, update
-              return this.updateAnalytic({
-                analyticsId: result.id,
-                params: {
-                  didFinish,
-                  time
-                }
-              })
-            })
-            .then((result) => {
-              resolve(result)
-            })
-            .catch((err) => {
-              reject(err)
-            })
-        })
-        promises.push(analyticOperation)
-      })
-
-      Promise.all(promises).then(() => {
-        this.analyticsLoading = false
-      })
-    },
-
-    onReady (player) {
-      this.player = player
-      player.on('timeupdate', this.handleNextUp)
-      player.on('pause', this.saveProgress)
-      player.on('ended', this.completedVideo)
-    },
-
-    saveProgress () {
-      this.doAnalytics()
-      const mediaObject = this.mediaObject
-      const date = new Date().toISOString().substr(0, 19)
-      const time = this.player.currentTime()
-      const duration = this.player.duration()
-      const promises = []
-
-      // Only save progress if the video hasn't been completed and we are ahead of where we last left off
-      if (!mediaObject.viewed || (!mediaObject.viewed.completed && mediaObject.viewed.time < time)) {
-        this.children.forEach((child) => {
-          promises.push(
-            this.saveActivityProgres({
-              lessonId: this.getLesson.id,
-              childId: child.id,
-              activity: {
-                id: mediaObject.activityId,
-                completed: ((duration - time) < 3),
-                time,
-                date
-              }
-            })
-          )
-        })
-        Promise.all(promises).then(() => {
-          this.$nuxt.$emit('dashboard-panel-update')
-        })
-      }
-    },
-
-    completedVideo () {
-      this.doAnalytics()
-      if (!this.mediaObject.viewed || !this.mediaObject.viewed.completed) {
-        const date = new Date().toISOString().substr(0, 19)
-        const time = this.player.currentTime()
-        const promises = []
-
-        // Do promises
-        this.children.forEach((child) => {
-          promises.push(
-            this.saveActivityProgres({
-              lessonId: this.getLesson.id,
-              childId: child.id,
-              activity: {
-                id: this.mediaObject.activityId,
-                completed: true,
-                time,
-                date
-              }
-            })
-          )
-        })
-
-        // Do promises
-        Promise.all(promises).then(() => {
-          this.$nuxt.$emit('dashboard-panel-update')
-        })
-      }
-
-      // If not last item, then switch
-      if (this.index < (this.playlist.length - 1)) {
-        this.index++
-        this.mediaObject = this.playlist[this.index]
-        this.loadAndPlay()
-        if (this.mediaObject.redirect) {
-          this.$router.push({ name: 'app-dashboard-lesson-activities', query: { ...this.overrides, id: this.mediaObject.activityId } })
+    loadNewItem () {
+      // Add new media items here when needed
+      this.playlist.push({
+        title: 'Test Media',
+        description: 'Test media description bla bla bla bla bla bla',
+        poster: null,
+        src: {
+          src: 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8',
+          type: 'application/x-mpegURL'
         }
-      }
+      })
+    },
+
+    showCompletedDialog () {
+      console.log('showing completed dialog, playlist complete.')
     }
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.bkg-black {
-  background-color: black;
-  width: 100vw;
-  height: 100vh;
-}
-</style>

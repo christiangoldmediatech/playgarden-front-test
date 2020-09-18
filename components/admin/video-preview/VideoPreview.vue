@@ -13,7 +13,7 @@
         </v-btn>
       </v-card-title>
 
-      <video-js-player @ready="onPlayerReady" />
+      <!-- <video-js-player @ready="onPlayerReady" /> -->
 
       <v-card-actions>
         <v-spacer />
@@ -26,14 +26,14 @@
 </template>
 
 <script>
-import VideoJsPlayer from '@/components/video-player/VideoJsPlayer'
+// import VideoJsPlayer from '@/components/video-player/VideoJsPlayer'
 
 export default {
   name: 'VideoPreview',
 
-  components: {
-    VideoJsPlayer
-  },
+  // components: {
+  //   VideoJsPlayer
+  // },
 
   data: () => {
     return {
