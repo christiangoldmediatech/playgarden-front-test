@@ -38,10 +38,10 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { jsonCopy } from '@/utils/objectTools'
 import VideoPlayerDialogMixin from '@/mixins/VideoPlayerDialogMixin.js'
 import SaveVideoProgress from '@/mixins/SaveVideoProgressMixin.js'
 import Fullscreen from '@/mixins/FullscreenMixin.js'
+import DashboardOverrides from '@/mixins/DashboardOverridesMixin.js'
 import VideoPlayerDialog from '@/components/pg-video-js-player/VideoPlayerDialog.vue'
 import PgVideoJsPlayer from '@/components/pg-video-js-player/PgVideoJsPlayer.vue'
 import CompletedDialog from '@/components/app/dashboard/CompletedDialog.vue'
@@ -55,38 +55,22 @@ export default {
     CompletedDialog
   },
 
-  mixins: [VideoPlayerDialogMixin, SaveVideoProgress, Fullscreen],
+  mixins: [VideoPlayerDialogMixin, SaveVideoProgress, DashboardOverrides, Fullscreen],
 
   data: () => {
     return {
-      dialog: false,
-      completed: false,
-      player: null,
-      playlist: [],
-      index: 0
+      completed: false
     }
   },
 
   computed: {
-    ...mapGetters({ children: 'getCurrentChild' }),
     ...mapGetters('admin/curriculum', { lesson: 'getLesson' }),
 
-    currentVideo () {
-      return this.playlist[this.index] || null
-    },
-
     noSeek () {
-      if (this.currentVideo && this.currentVideo.viewed && this.currentVideo.viewed.completed === false) {
+      if (this.currentVideo && (this.currentVideo.viewed === null || this.currentVideo.viewed.completed === false)) {
         return true
       }
       return false
-    },
-
-    overrides () {
-      return {
-        childId: this.$route.query.childId,
-        lessonId: this.$route.query.lessonId
-      }
     },
 
     buttons () {
@@ -152,31 +136,6 @@ export default {
       this.$router.push({
         name: 'app-dashboard-lesson-videos',
         query: { ...this.overrides, id: this.playlist[index].videoId }
-      })
-    },
-
-    open ({ playlist, index }) {
-      this.dialog = true
-      this.playlist = jsonCopy(playlist)
-      this.index = index
-      // Force fullscreen on small and mobile devices
-      if (this.$vuetify.breakpoint.mobile || this.$vuetify.breakpoint.smAndDown) {
-        if (!this.fullscreen) {
-          this.toggleFullscreen(this.dialogContainerId)
-        }
-      }
-      // Load new media
-      this.$nextTick(() => {
-        if (!this.player) {
-          const waitAndLoad = window.setInterval(() => {
-            if (this.player) {
-              this.$refs.videoPlayer.loadPlaylist(playlist, index)
-              window.clearInterval(waitAndLoad)
-            }
-          }, 50)
-        } else {
-          this.$refs.videoPlayer.loadPlaylist(playlist, index)
-        }
       })
     },
 

@@ -133,6 +133,10 @@ export default {
       }
     },
 
+    pushPlaylistItem (mediaObject) {
+      this.playlist.push(jsonCopy(mediaObject))
+    },
+
     onPlayerReady () {
       // Setup events
       this.playerInstance.on(['loadstart', 'seeking', 'waiting', 'stalled'], () => {

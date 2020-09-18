@@ -3,7 +3,7 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   data: () => {
     return {
-      savingProgress: false
+      savingActivityProgress: false
     }
   },
 
@@ -13,10 +13,10 @@ export default {
   },
 
   methods: {
-    ...mapActions('children/lesson', { sendVideoProgress: 'saveVideoProgress' }),
+    ...mapActions('children/lesson', { sendActivityProgress: 'saveActivityProgres' }),
 
-    saveVideoProgress () {
-      if (!this.currentVideo || this.currentVideo.ignoreVideoProgress || this.savingProgress) { return }
+    saveActivityProgress () {
+      if (!this.currentVideo || this.currentVideo.ignoreVideoProgress || this.savingActivityProgress) { return }
       const mediaObject = this.currentVideo // From video player dialog mixin
       const date = new Date().toISOString().substr(0, 19)
       const time = this.player.currentTime()
@@ -28,14 +28,14 @@ export default {
         !mediaObject.viewed ||
         (!mediaObject.viewed.completed && mediaObject.viewed.time < time)
       ) {
-        this.savingProgress = true
+        this.savingActivityProgress = true
         this.children.forEach((child) => {
           promises.push(
-            this.sendVideoProgress({
+            this.sendActivityProgress({
               lessonId: this.lesson.id,
               childId: child.id,
-              video: {
-                id: mediaObject.videoId,
+              activity: {
+                id: mediaObject.activityId,
                 completed: duration - time < 3,
                 time,
                 date
@@ -45,7 +45,7 @@ export default {
         })
         Promise.all(promises).then(() => {
           this.$nuxt.$emit('dashboard-panel-update')
-          this.savingProgress = false
+          this.savingActivityProgress = false
         })
       }
     }

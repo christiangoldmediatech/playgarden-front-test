@@ -1,26 +1,32 @@
 <template>
   <video-player-dialog
     :id="dialogContainerId"
+    ref="videoPlayerDialog"
     v-model="dialog"
+    show-favorite
+    :video-id="currentVideo ? currentVideo.videoId : -1"
     @close="handleClose"
   >
     <pg-video-js-player
       ref="videoPlayer"
       autoplay
       show-next-up
-      :playlist="playlist"
+      :no-seek="noSeek"
       :fullscreen-override="handleFullscreen"
       @ready="onReady"
-      @last-playlist-item="loadNewItem"
-      @playlist-complete="showCompletedDialog"
+      @playlist-index-change="updateIndex"
+      @last-playlist-item="findNextActivity"
     />
   </video-player-dialog>
 </template>
 
 <script>
-import lesson from '@/resources/lesson.js'
 import VideoPlayerDialogMixin from '@/mixins/VideoPlayerDialogMixin.js'
+import SaveActivityProgress from '@/mixins/SaveActivityProgressMixin.js'
+import ActivityAnalytics from '@/mixins/ActivityAnalyticsMixin.js'
+import FindNextActivity from '@/mixins/FindNextActivityMixin.js'
 import Fullscreen from '@/mixins/FullscreenMixin.js'
+import DashboardOverrides from '@/mixins/DashboardOverridesMixin.js'
 import VideoPlayerDialog from '@/components/pg-video-js-player/VideoPlayerDialog.vue'
 import PgVideoJsPlayer from '@/components/pg-video-js-player/PgVideoJsPlayer.vue'
 
@@ -32,51 +38,48 @@ export default {
     PgVideoJsPlayer
   },
 
-  mixins: [VideoPlayerDialogMixin, Fullscreen],
+  mixins: [VideoPlayerDialogMixin, SaveActivityProgress, ActivityAnalytics, FindNextActivity, DashboardOverrides, Fullscreen],
 
-  data: () => {
-    return {
-      dialog: false,
-      eventName: 'open-lesson-video-player',
-      lesson,
-      playlist: []
+  computed: {
+    noSeek () {
+      if (this.currentVideo && (this.currentVideo.viewed === null || this.currentVideo.viewed.completed === false)) {
+        return true
+      }
+      return false
     }
   },
 
-  mounted () {
-    // Create a playlist
-    this.playlist = this.lesson.videos.map(({ activityType, name, description, videoUrl, thumbnail, id, viewed }) => {
-      return {
-        title: name,
-        description,
-        activityType,
-        src: {
-          src: videoUrl.HLS,
-          type: 'application/x-mpegURL'
-        },
-        poster: thumbnail,
-        videoId: id,
-        viewed
-      }
+  created () {
+    this.$nuxt.$on('open-lesson-activity-player', (params) => {
+      this.open(params)
     })
   },
 
   methods: {
-    loadNewItem () {
-      // Add new media items here when needed
-      this.playlist.push({
-        title: 'Test Media',
-        description: 'Test media description bla bla bla bla bla bla',
-        poster: null,
-        src: {
-          src: 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8',
-          type: 'application/x-mpegURL'
-        }
+    onReady (player) {
+      this.player = player
+
+      player.on('pause', () => {
+        this.saveActivityProgress()
+        this.doAnalytics()
+      })
+      player.on('ended', () => {
+        this.saveActivityProgress()
+        this.doAnalytics()
+      })
+      player.on('dispose', () => {
+        this.player = null
       })
     },
 
-    showCompletedDialog () {
-      console.log('showing completed dialog, playlist complete.')
+    updateIndex (index) {
+      if (!this.currentVideo.ignoreVideoProgress) {
+        this.index = index
+        this.$router.push({
+          name: 'app-dashboard-lesson-activities',
+          query: { ...this.overrides, id: this.playlist[index].activityId }
+        })
+      }
     }
   }
 }
