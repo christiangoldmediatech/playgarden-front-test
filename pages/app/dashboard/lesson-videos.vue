@@ -107,10 +107,12 @@ export default {
           title: name,
           description,
           activityType,
-          src: {
-            src: videoUrl.HLS,
-            type: 'application/x-mpegURL'
-          },
+          src: [
+            {
+              src: videoUrl.HLS,
+              type: 'application/x-mpegURL'
+            }
+          ],
           poster: thumbnail,
           videoId: id,
           viewed

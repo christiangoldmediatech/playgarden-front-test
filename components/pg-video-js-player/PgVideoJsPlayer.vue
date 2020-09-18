@@ -39,9 +39,10 @@ export default {
       options: {
         controls: false,
         autoplay: false,
+        preload: 'auto',
+        sources: [],
         loadingSpinner: true,
-        fluid: true,
-        sources: []
+        fluid: true
       },
       nextUp: {
         image: null,
@@ -110,8 +111,13 @@ export default {
     loadMediaObject (index) {
       this.position = 0
       this.duration = 0.1
-      this.mediaObject = jsonCopy(this.playlist[index])
-      this.playerInstance.loadMedia(this.mediaObject)
+      if (this.playlist[index]) {
+        const mediaObject = jsonCopy(this.playlist[index])
+        this.mediaObject = mediaObject
+        this.playerInstance.loadMedia(mediaObject)
+      } else {
+        return
+      }
 
       this.$emit('playlist-index-change', index)
 

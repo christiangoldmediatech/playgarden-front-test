@@ -27,14 +27,19 @@
           </v-icon>
         </v-btn>
         <v-btn
-          v-if="showFavorite"
+          v-if="showFavorite && videoId > 0"
           class="ml-2"
           :loading="favoritesLoading"
           icon
           @click.stop="handleFavorites"
         >
           <v-icon color="#F5737F">
-            mdi-heart-outline
+            <template v-if="isFavorite">
+              mdi-heart
+            </template>
+            <template v-else>
+              mdi-heart-outline
+            </template>
           </v-icon>
         </v-btn>
       </div>
@@ -44,24 +49,13 @@
 </template>
 
 <script>
-/*
-  TODO:
-  1.- Refactor player into a base component with custom controls, playlist functionality, nextUp functionality, and corresponding event emission and methods, inclusion for anywhere in the app.
-  3.- Refactor this dialog into an extendable dialog that handles fullscreen functionality, video casting, video favoriting, and exit key combos.
-  2.- Create lesson-videos, lesson-activities, activities and favorites player dialog components. These components will need to handle completion dialogs.
-  3.- Incorporate changes into the feature/player-refactor branch
-  4.- Test and fix
-  5.- Commit, push and open PR
-
-  DONE:
-  0.- Test disabling all but loading spinner, and style it for use with playgarden prep
-*/
 import SmallScreen from '@/mixins/SmallScreenMixin.js'
+import Favorites from '@/mixins/FavoritesMixin.js'
 
 export default {
   name: 'VideoPlayerDialog',
 
-  mixins: [SmallScreen],
+  mixins: [Favorites, SmallScreen],
 
   props: {
     value: {
@@ -151,10 +145,6 @@ export default {
     getWindowDimensions () {
       this.winWidth = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
       this.winHeight = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
-    },
-
-    handleFavorites () {
-      return true
     }
   }
 }
