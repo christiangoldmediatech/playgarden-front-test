@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mt-6">
     <!-- Circle and title -->
     <v-row class="flex-nowrap" align="center" justify="start">
       <v-col class="flex-shrink-1 flex-grow-0 py-0">
@@ -18,11 +18,12 @@
       <v-col class="flex-shrink-1 flex-grow-0 py-1">
         <div class="progress-container justify-end">
           <div class="progress-track my-1">
+            <div v-if="enabled" class="progress-next-thumb" :style="{ '--progressNextThumbHeight': `${progressNext}%` }" />
             <div class="progress-thumb" :style="{ '--progressThumbHeight': `${progress}%` }" />
           </div>
         </div>
       </v-col>
-      <v-col class="content pl-0 py-1">
+      <v-col class="content-section-slot pl-0 py-1">
         <slot />
       </v-col>
     </v-row>
@@ -51,6 +52,12 @@ export default {
     },
 
     progress: {
+      type: Number,
+      required: false,
+      default: 0
+    },
+
+    progressNext: {
       type: Number,
       required: false,
       default: 0
@@ -94,6 +101,7 @@ export default {
   }
 
   &-track {
+    position: relative;
     width: 11px;
     max-width: 11px;
     background-color: rgba(242, 237, 237, 0.85);
@@ -102,15 +110,29 @@ export default {
   }
 
   &-thumb {
+    position: absolute;
+    top: 0px;
+    left: 0px;
     width: 11px;
     max-width: 11px;
     background-color: var(--v-primary-base);
     height: var(--progressThumbHeight);
     border-radius: 5.5px;
   }
+
+  &-next-thumb {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 11px;
+    max-width: 11px;
+    background-color: rgba(194, 218, 165, 0.33);
+    height: var(--progressNextThumbHeight);
+    border-radius: 5.5px;
+  }
 }
 
-.content {
+.content-section-slot {
   overflow-x: hidden;
 }
 </style>
