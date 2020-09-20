@@ -22,6 +22,7 @@ export default {
         .reduce((a, b) => a + b)
 
       const progress = (completedCount / this.lesson.videos.length) * 100
+      const progressNext = (completedCount < this.lesson.videos.length) ? ((completedCount + 1) / this.lesson.videos.length) * 100 : 100
 
       // Get items for links
       const videos = this.lesson.videos.map(({ id, activityType, name, description, viewed }, i) => {
@@ -46,6 +47,7 @@ export default {
 
       return {
         progress,
+        progressNext,
         items: videos
       }
     },
@@ -55,7 +57,8 @@ export default {
       const result = {
         OFFLINE: null,
         ONLINE: [],
-        progress: 0
+        progress: 0,
+        progressNext: 0
       }
 
       if (!this.lesson || this.lesson.worksheets.length === 0) {
@@ -68,6 +71,7 @@ export default {
         .reduce((a, b) => a + b)
 
       result.progress = worksheets.length ? (completedCount / worksheets.length) * 100 : 0
+      result.progressNext = (worksheets.length && completedCount < worksheets.length) ? ((completedCount + 1) / worksheets.length) * 100 : 100
 
       worksheets.map((i) => {
         if (i.type === 'ONLINE') {
@@ -100,17 +104,17 @@ export default {
         .reduce((a, b) => a + b)
 
       const progress = (completedCount / activities.length) * 100
+      const progressNext = (completedCount < activities.length) ? ((completedCount + 1) / activities.length) * 100 : 100
 
       // Get items for links
       const videos = activities.map(({ id, activityType, videos, viewed }, i) => {
-        let disabled = true
+        let disabled = (this.videos.progress !== 100)
         const previous = i > 0 ? activities[i - 1] : null
         if (previous) {
           disabled = !(previous.viewed && previous.viewed.completed)
         }
         return {
           id,
-          name: videos.name,
           description: videos.description,
           activityType,
           to: {
@@ -124,6 +128,7 @@ export default {
 
       return {
         progress,
+        progressNext,
         items: videos
       }
     }

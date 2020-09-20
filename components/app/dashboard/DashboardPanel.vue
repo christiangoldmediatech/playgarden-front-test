@@ -23,16 +23,17 @@
           number="1"
           title="Video Lessons"
           :progress="videos.progress"
+          :progress-next="videos.progressNext"
           enabled
         >
           <content-list :items="videos.items" />
         </content-section>
 
         <content-section
-          class="my-2"
           number="2"
           title="Worksheets"
           :progress="worksheets.progress"
+          :progress-next="worksheets.progressNext"
           :enabled="videos.progress === 100"
         >
           <template v-slot:title-append>
@@ -76,12 +77,13 @@
                   HANDS-ON LEARNING
                 </v-list-item-title>
                 <v-btn
+                  id="worksheet-btn"
+                  class="dashboard-panel-worksheet-btn white--text"
                   color="primary"
                   :disabled="videos.progress < 100"
                   block
-                  small
                 >
-                  <v-icon left>
+                  <v-icon color="white" left>
                     mdi-download
                   </v-icon>
                   DOWNLOAD WORKSHEET
@@ -95,6 +97,7 @@
           number="3"
           title="Activities"
           :progress="activities.progress"
+          :progress-next="activities.progressNext"
           :enabled="videos.progress === 100"
         >
           <content-list :items="activities.items" />
@@ -170,15 +173,28 @@ export default {
     overflow-y: auto;
   }
 
-  &-worksheet-text {
-    font-weight: bold !important;
-    letter-spacing: 0.1em !important;
+  &-worksheet {
+    &-text {
+      font-size: 16px !important;
+      font-weight: bold !important;
+      letter-spacing: 0.1em !important;
+    }
+    &-btn {
+      height: 36px;
+    }
   }
 
   &-disabled {
     -webkit-filter: opacity(40%); /* Chrome, Safari, Opera */
     filter: opacity(40%);
   }
+}
+
+#worksheet-btn.v-btn--disabled, #worksheet-btn.v-btn--disabled i.v-icon {
+  color: white !important;
+  font-size: 18px !important;
+  font-weight: bold !important;
+  letter-spacing: 0.04em !important;
 }
 
 .lesson-day {
@@ -241,9 +257,5 @@ export default {
     text-align: center;
     margin-bottom: 11px;
   }
-}
-
-.dashboard-item-disabled {
-  color: rgba(0, 0, 0, 0.38) !important;
 }
 </style>
