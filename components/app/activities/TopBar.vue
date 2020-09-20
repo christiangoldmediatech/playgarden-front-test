@@ -1,20 +1,22 @@
 <template>
-  <v-row align="center">
-    <v-btn
-      class="text-none mx-3"
-      color="white"
-      x-large
-      @click.stop="goToFavorites"
-    >
-      Favorites
-      <v-icon class="ml-2" color="#F5737F">
-        mdi-heart
-      </v-icon>
-    </v-btn>
+  <v-row align="center" no-gutters>
+    <v-col cols="4" md="3">
+      <v-btn
+        class="text-none mx-3"
+        color="white"
+        x-large
+        @click.stop="goToFavorites"
+      >
+        Favorites
+        <v-icon class="ml-2" color="#F5737F">
+          mdi-heart
+        </v-icon>
+      </v-btn>
+    </v-col>
 
     <v-spacer />
 
-    <v-col cols="12" sm="4" xl="3">
+    <v-col cols="6" md="4">
       <v-text-field
         v-model="query"
         placeholder="Search"
