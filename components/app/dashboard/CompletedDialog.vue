@@ -1,7 +1,7 @@
 <template>
   <v-overlay
     :value="value"
-    :z-index="300"
+    :z-index="600"
   >
     <dashboard-message ref="message" v-bind="{ ...$attrs, returnAction, maxWidth: 800, light: true }">
       <template v-for="(_, slot) of $scopedSlots" v-slot:[slot]="scope">

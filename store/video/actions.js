@@ -8,8 +8,10 @@ export default {
     }
   },
 
-  async getAllFavorites ({ commit, dispatch, rootGetters }) {
+  async getAllFavorites ({ state, commit, dispatch, rootGetters }) {
+    if (state.loading) { return }
     try {
+      commit('SET_LOADING', true)
       const results = []
       const promises = []
       rootGetters.getCurrentChild.forEach((child) => {
@@ -24,6 +26,8 @@ export default {
       commit('SET_ROWS', results)
     } catch (error) {
       return Promise.reject(error)
+    } finally {
+      commit('SET_LOADING', false)
     }
   },
 
