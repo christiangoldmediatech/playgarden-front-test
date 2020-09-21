@@ -3,10 +3,7 @@
     v-editable="blok"
     class="card pg-image--cover"
   >
-    <!-- <lesson-video-player
-      :player-id="'' + _uid"
-      ignore-progress
-    /> -->
+    <cms-video-player />
     <v-hover v-slot:default="{ hover }">
       <v-card
         :class="['activity-card', { 'scaled': hover }]"
@@ -43,14 +40,14 @@
 </template>
 
 <script>
-// import LessonVideoPlayer from '@/components/app/dashboard/LessonVideoPlayer.vue'
+import CmsVideoPlayer from '@/components/cms/player/CmsVideoPlayer.vue'
 
 export default {
   name: 'CmsVideoCard',
 
-  // components: {
-  //   LessonVideoPlayer
-  // },
+  components: {
+    CmsVideoPlayer
+  },
 
   props: {
     blok: {
@@ -69,7 +66,7 @@ export default {
     playVideo () {
       const { title, file, thumbnail, url } = this.blok
 
-      this.$nuxt.$emit('open-lesson-video-player' + this._uid, {
+      this.$nuxt.$emit('open-cms-video-player' + this._uid, {
         playlist: [{
           activityType: {},
           videoId: 0,
