@@ -1,24 +1,41 @@
 <template>
   <v-card flat>
     <v-card-text class="text-center">
-      <underlined-title class="text-h3" text="Complete the puzzle!" />
+      <underlined-title
+        class="text-h6 text-md-h3"
+        text="Complete the puzzle!"
+      />
 
       <p class="mt-2">
         Complete each letter in the curriculum to unlock a new puzzle piece!
       </p>
 
       <v-row justify="center">
-        <img
-          :src="require('@/assets/png/student-cubby/puzzle.png')"
-          width="100%"
-        >
+        <puzzle-cover
+          :background-image="
+            require('@/assets/jpg/student-cubby/puzzle-background.jpg')
+          "
+          :student-id="studentId"
+        />
       </v-row>
     </v-card-text>
   </v-card>
 </template>
 
 <script>
+import PuzzleCover from '@/components/app/student-cubby/PuzzleCover'
+
 export default {
-  name: 'Puzzle'
+  name: 'Puzzle',
+
+  components: {
+    PuzzleCover
+  },
+
+  computed: {
+    studentId () {
+      return this.$route.query.id
+    }
+  }
 }
 </script>

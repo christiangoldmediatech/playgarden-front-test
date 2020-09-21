@@ -2,7 +2,7 @@
   <v-card flat>
     <v-card-text>
       <div class="text-center">
-        <underlined-title class="text-h3" text="Student Portfolio" />
+        <underlined-title class="text-h6 text-md-h3" text="Student Portfolio" />
 
         <p class="portfolio-subtitle mt-2">
           Keep track of your worksheets and progress!
