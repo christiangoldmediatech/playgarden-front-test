@@ -91,6 +91,8 @@ export default {
       default: 55
     },
 
+    noAutoresizeFont: Boolean,
+
     // easy shortcut for faster styling
     // Note: it override the others options
     subtitle: Boolean,
@@ -129,7 +131,11 @@ export default {
         return '18px'
       }
 
-      return this.fontSize
+      if (this.noAutoresizeFont) {
+        return this.fontSize
+      }
+
+      return this.$vuetify.breakpoint.mdAndUp ? this.fontSize : '1.25rem'
     },
 
     _fontWeight () {
