@@ -132,7 +132,7 @@ export default {
       const index = this.playlist.findIndex(({ activityId }) => activityId === this.activityId)
 
       if (index !== -1) {
-        this.$nuxt.$emit('open-lesson-activity-player', { playlist: this.playlist, index })
+        this.$nuxt.$emit('open-activity-player', { playlist: this.playlist, index })
       }
     }
   }

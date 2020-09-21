@@ -163,7 +163,7 @@ export default {
           activityId: activity.id,
           videoId: activity.videos.id,
           viewed: {
-            completed: true
+            completed: false
           }
         }
       })
