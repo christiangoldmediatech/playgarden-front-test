@@ -65,8 +65,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import FavoritesMixin from '@/mixins/FavoritesMixin.js'
 import LessonVideoPlayer from '@/components/app/dashboard/LessonVideoPlayer.vue'
-import VideoFavoriteMixin from '@/components/app/activities/VideoFavoriteMixin.js'
 
 export default {
   name: 'LessonVideos',
@@ -75,7 +75,7 @@ export default {
     LessonVideoPlayer
   },
 
-  mixins: [VideoFavoriteMixin],
+  mixins: [FavoritesMixin],
 
   data: () => {
     return {
@@ -130,10 +130,6 @@ export default {
       }
       return null
     }
-  },
-
-  created () {
-    this.getAllFavorites()
   },
 
   methods: {

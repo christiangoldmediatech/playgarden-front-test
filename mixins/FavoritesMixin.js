@@ -20,6 +20,10 @@ export default {
     }
   },
 
+  created () {
+    this.getAllFavorites()
+  },
+
   methods: {
     ...mapActions('video', ['getAllFavorites', 'addFavorite', 'deleteFavorite']),
 

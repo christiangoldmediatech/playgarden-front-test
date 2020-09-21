@@ -99,12 +99,12 @@
 </template>
 
 <script>
-import VideoFavoriteMixin from './VideoFavoriteMixin'
+import FavoritesMixin from '@/mixins/FavoritesMixin.js'
 
 export default {
   name: 'VideoCard',
 
-  mixins: [VideoFavoriteMixin],
+  mixins: [FavoritesMixin],
 
   props: {
     video: {

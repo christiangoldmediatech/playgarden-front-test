@@ -77,12 +77,12 @@
 
 <script>
 import get from 'lodash/get'
-import VideoFavoriteMixin from './VideoFavoriteMixin'
+import FavoritesMixin from '@/mixins/FavoritesMixin.js'
 
 export default {
   name: 'ActivityCard',
 
-  mixins: [VideoFavoriteMixin],
+  mixins: [FavoritesMixin],
 
   props: {
     activityId: {
