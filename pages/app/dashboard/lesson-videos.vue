@@ -30,10 +30,14 @@
             />
           </v-list-item-avatar>
           <v-list-item-content>
-            <v-list-item-title class="font-weight-bold text-uppercase">
-              {{ currentVideoLesson.title }}
+            <v-list-item-title>
+              <span class="dashboard-item-activity-type">
+                {{ currentVideoLesson.activityType.name }}
+              </span>
+              <span class="dashboard-item-name">
+                with {{ currentVideoLesson.title }}
+              </span>
             </v-list-item-title>
-
             <v-list-item-subtitle>
               {{ currentVideoLesson.description }}
             </v-list-item-subtitle>

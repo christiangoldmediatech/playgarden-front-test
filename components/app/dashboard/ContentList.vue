@@ -55,6 +55,9 @@ export default {
 <style lang="scss">
 .dashboard {
   &-item {
+    &.v-list-item--link:before {
+      content: none;
+    }
     &-disabled {
       color: rgba(0, 0, 0, 0.38) !important;
     }
@@ -67,20 +70,9 @@ export default {
     &-name {
       font-size: 12px !important;
     }
-    // &-active, &-active.v-list-item--link {
-    //   background-color: rgba(0, 0, 0, 0) !important;
-    //   ::before {
-    //     content: none !important;
-    //   }
-    // }
+    &-exact, &-active {
+      border-left: var(--v-primary-base) solid 8px;
+    }
   }
-}
-
-.dashboard-item.v-list-item--link:before {
-  content: none;
-}
-.dashboard-item-exact {
-  border-left: var(--v-primary-base) solid 8px;
-  border-end-end-radius: 4px;
 }
 </style>
