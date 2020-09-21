@@ -1,10 +1,10 @@
 <template>
   <v-row align="center" no-gutters>
-    <v-col cols="4" md="3">
+    <v-col cols="3">
       <v-btn
         class="text-none mx-3"
         color="white"
-        x-large
+        height="48"
         @click.stop="goToFavorites"
       >
         Favorites
