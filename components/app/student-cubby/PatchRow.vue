@@ -1,9 +1,10 @@
 <template>
-  <div>
-    <v-row align="end">
+  <div class="mt-2">
+    <v-row align="end" class="mb-2">
       <img
         :src="activityType.icon"
-        :height="$vuetify.breakpoint.xs ? '32px' : '48px'"
+        height="32"
+        class="mr-2"
       >
 
       <div class="mx-3">
@@ -13,7 +14,7 @@
       </div>
     </v-row>
 
-    <v-row>
+    <v-row no-gutters justify="space-between">
       <patch
         v-for="patch in activityType.patches"
         :key="`activityType-${activityType.id}-patch-${patch.id}`"
