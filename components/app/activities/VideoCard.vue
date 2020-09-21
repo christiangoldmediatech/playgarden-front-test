@@ -34,12 +34,6 @@
 
         <v-list dense>
           <v-list-item>
-            <!-- <v-list-item-avatar tile>
-              <v-img
-                :src="video.activityType.icon"
-                contain
-              />
-            </v-list-item-avatar> -->
             <v-list-item-content>
               <v-list-item-title class="font-weight-bold text-uppercase">
                 {{ video.name }}
@@ -69,30 +63,6 @@
             </v-list-item-action>
           </v-list-item>
         </v-list>
-        <!-- <v-card-actions>
-          <div class="ml-2">
-            <span class="font-weight-bold">
-              {{ video.name }}
-            </span>
-          </div>
-
-          <v-spacer />
-
-          <v-btn
-            icon
-            :loading="loading"
-            @click.stop="setFavorite"
-          >
-            <v-icon color="#F5737F">
-              <template v-if="isFavorite">
-                mdi-heart
-              </template>
-              <template v-else>
-                mdi-heart-outline
-              </template>
-            </v-icon>
-          </v-btn>
-        </v-card-actions> -->
       </v-card>
     </v-hover>
   </v-col>
@@ -148,7 +118,7 @@ export default {
 
   methods: {
     playVideo () {
-      this.$nuxt.$emit('open-lesson-activity-player', { playlist: this.playlist, index: 0 })
+      this.$nuxt.$emit('open-activity-player', { playlist: [this.playlist], index: 0 })
     }
   }
 }

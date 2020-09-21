@@ -134,6 +134,10 @@ export default {
     }
   },
 
+  created () {
+    this.getAllFavorites()
+  },
+
   methods: {
     playVideo () {
       this.$nuxt.$emit('open-lesson-activity-player', { playlist: this.playlist, index: this.currentLessonActivityIndex })
