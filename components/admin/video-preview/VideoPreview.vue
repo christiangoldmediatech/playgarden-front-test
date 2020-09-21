@@ -13,7 +13,11 @@
         </v-btn>
       </v-card-title>
 
-      <!-- <video-js-player @ready="onPlayerReady" /> -->
+      <pg-video-js-player
+        ref="videoPlayer"
+        autoplay
+        @ready="onReady"
+      />
 
       <v-card-actions>
         <v-spacer />
@@ -26,14 +30,14 @@
 </template>
 
 <script>
-// import VideoJsPlayer from '@/components/video-player/VideoJsPlayer'
+import PgVideoJsPlayer from '@/components/pg-video-js-player/PgVideoJsPlayer.vue'
 
 export default {
   name: 'VideoPreview',
 
-  // components: {
-  //   VideoJsPlayer
-  // },
+  components: {
+    PgVideoJsPlayer
+  },
 
   data: () => {
     return {
