@@ -13,7 +13,7 @@
           width="100%"
           rounded
         >
-          <div class="d-flex justify-center justify-lg-space-between">
+          <div :class="['d-flex', `${noSmallscreen ? 'justify-space-between' : 'justify-center justify-md-space-between'}`]">
             <!-- Volume Menu -->
             <v-menu
               v-if="!smallScreen"

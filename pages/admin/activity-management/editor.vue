@@ -111,16 +111,7 @@
                   <v-col class="text-center" cols="12" sm="9" lg="6">
                     <pg-inline-video-player
                       v-if="video && video.videoUrl"
-                      :options="{
-                        title: video.name,
-                        poster: video.thumbnail,
-                        sources: [
-                          {
-                            src: video.videoUrl.HLS,
-                            type: 'application/x-mpegURL'
-                          }
-                        ]
-                      }"
+                      @ready="onPlayerReady"
                     />
 
                     <v-progress-circular
@@ -250,6 +241,7 @@ export default {
       file: null,
       thumbnail: null,
       video: null,
+      player: null,
       activity: {
         featured: false,
         name: '',
@@ -330,6 +322,7 @@ export default {
         this.activity.videoId = data.videos.id
         this.activity.thumbnail = data.videos.thumbnail
         this.video = data.videos
+        this.waitAndLoad()
       }
     }
 
@@ -346,6 +339,44 @@ export default {
     ]),
 
     ...mapActions('admin/curriculum', { getCurriculumTypes: 'getTypes' }),
+
+    onPlayerReady (player) {
+      this.player = player
+    },
+
+    playVideo () {
+      this.player.play()
+    },
+
+    waitAndLoad () {
+      return new Promise((resolve, reject) => {
+        const start = new Date().getTime()
+        const { name, thumbnail, videoUrl } = this.video
+        const mediaObject = {
+          title: name,
+          poster: thumbnail,
+          src: [
+            {
+              src: videoUrl.HLS,
+              type: 'application/x-mpegURL'
+            }
+          ]
+        }
+        const interval = window.setInterval(() => {
+          if (this.player) {
+            this.player.loadMedia(mediaObject)
+            window.clearInterval(interval)
+            resolve()
+            return
+          }
+          const elapsed = ((new Date().getTime()) - start)
+          if (elapsed > 30000) {
+            window.clearInterval(interval)
+            reject(new Error('Player loading timed out'))
+          }
+        }, 50)
+      })
+    },
 
     async save () {
       this.loading = true

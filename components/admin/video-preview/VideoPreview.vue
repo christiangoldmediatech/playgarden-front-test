@@ -15,6 +15,7 @@
 
       <pg-video-js-player
         ref="videoPlayer"
+        no-smallscreen
         autoplay
         @ready="onPlayerReady"
       />

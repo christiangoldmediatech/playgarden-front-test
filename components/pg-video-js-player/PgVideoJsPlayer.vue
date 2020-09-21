@@ -4,7 +4,7 @@
     <!-- Controls -->
     <control-bar
       v-if="playerInstance && playerContainerId"
-      v-bind="{ ...controlBarProps }"
+      v-bind="{ ...controlBarProps, noSmallscreen }"
       @fullscreen="handleFullscreen"
     />
   </div>

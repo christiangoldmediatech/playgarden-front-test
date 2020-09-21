@@ -29,11 +29,10 @@
                 class="pa-4"
                 :step="indexOI + 1"
               >
-                <!-- <video-js-player
-                  v-bind="{ videos }"
-                  @ready="onPlayerReady"
+                <pg-inline-video-player
+                  @ready="onPlayerReady({ player: $event, videos })"
                   @ended="nextStep"
-                /> -->
+                />
               </v-stepper-content>
             </v-stepper-items>
           </v-stepper>
@@ -78,15 +77,14 @@
 <script>
 import { get } from 'lodash'
 import { mapActions } from 'vuex'
-
-// import VideoJsPlayer from '@/components/video-player/VideoJsPlayer'
+import PgInlineVideoPlayer from '@/components/pg-video-js-player/PgInlineVideoPlayer.vue'
 
 export default {
   name: 'Onboarding',
 
-  // components: {
-  //   VideoJsPlayer
-  // },
+  components: {
+    PgInlineVideoPlayer
+  },
 
   data: () => ({
     loading: true,
@@ -142,12 +140,12 @@ export default {
     ...mapActions('auth', ['updateAuthOnboarding']),
     ...mapActions('onboarding', ['getOnboardings']),
 
-    onPlayerReady (player) {
+    onPlayerReady ({ player, videos }) {
       this.player = player
 
       const interval = window.setInterval(() => {
         if (this.onboardings.length) {
-          const { videos } = this.onboardings[0]
+          // const { videos } = this.onboardings[0]
           this.player.loadMedia({
             title: videos.name,
             poster: videos.thumbnail,

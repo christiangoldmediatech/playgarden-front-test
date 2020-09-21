@@ -1,8 +1,11 @@
 <template>
-  <div class="inline-video-container">
-    <div class="play-button-container">
+  <div :id="containerId" class="inline-video-container">
+    <div v-if="show" class="play-button-container">
       <v-hover v-slot="{ hover }">
-        <div :class="['play-button-icon', { 'play-button-icon-scaled': hover }]">
+        <div
+          :class="['play-button-icon', { 'play-button-icon-scaled': hover }]"
+          @click.stop="onClick"
+        >
           <div class="play-button-icon-content">
             <img
               class="ml-2"
@@ -16,18 +19,64 @@
         </div>
       </v-hover>
     </div>
-    <pg-video-js-player />
+    <pg-video-js-player
+      :fullscreen-override="handleFullscreen"
+      no-smallscreen
+      @ready="onPlayerReady"
+    />
   </div>
 </template>
 
 <script>
-import PgVideoJsPlayer from './PgVideoJsPlayer'
+import Fullscreen from '@/mixins/FullscreenMixin.js'
+import PgVideoJsPlayer from './PgVideoJsPlayer.vue'
+const excludedListeners = ['ready']
 
 export default {
   name: 'PgInlineVideoPlayer',
 
   components: {
     PgVideoJsPlayer
+  },
+
+  mixins: [Fullscreen],
+
+  data: () => {
+    return {
+      player: null,
+      show: true
+    }
+  },
+
+  computed: {
+    containerId () {
+      return `inline-video-player-${this._uid}`
+    }
+  },
+
+  methods: {
+    onPlayerReady (player) {
+      this.player = player
+      // attach listeners
+      const listenerKeys = Object.keys(this.$listeners).filter(key => !excludedListeners.includes(key))
+      listenerKeys.forEach((key) => {
+        player.on(key, this.$listeners[key].fns)
+      })
+      this.$emit('ready', player)
+    },
+
+    onClick () {
+      this.show = false
+      this.player.play()
+    },
+
+    reset () {
+      this.show = true
+    },
+
+    handleFullscreen () {
+      this.toggleFullscreen(this.containerId)
+    }
   }
 }
 </script>
@@ -38,6 +87,7 @@ export default {
     position: relative;
     width: 100%;
     height: auto;
+    pointer-events: auto;
   }
 }
 
@@ -57,7 +107,8 @@ export default {
   &-icon {
     position: relative;
     width: 33%;
-    padding-top: 33%;
+    padding-top: calc(33% - (33% - 150px));
+    max-width: 150px;
     border-radius: 50%;
     cursor: pointer;
     background-color: #F89838;
@@ -78,7 +129,7 @@ export default {
       text-align: center;
     }
     &-text {
-      font-size: 30px;
+      font-size: 24px;
       font-weight: bold;
       color: white !important;
       letter-spacing: 0.04em;

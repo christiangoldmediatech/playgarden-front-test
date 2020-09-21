@@ -63,18 +63,7 @@
                 </v-icon>
               </v-avatar>
             </template>
-            <!-- <video-js-player
-              :options="{
-                title: draft.name,
-                poster: draft.thumbnail,
-                sources: [
-                  {
-                    src: draft.videoUrl.HLS,
-                    type: 'application/x-mpegURL'
-                  }
-                ]
-              }"
-            /> -->
+            <pg-inline-video-player @ready="onPlayerReady({ player: $event, video: draft })" />
           </v-badge>
         </div>
       </template>
@@ -176,15 +165,15 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-// import VideoJsPlayer from '@/components/video-player/VideoJsPlayer'
+import PgInlineVideoPlayer from '@/components/pg-video-js-player/PgInlineVideoPlayer.vue'
 import submittable from '@/utils/mixins/submittable'
 
 export default {
   name: 'StepTwoForm',
 
-  // components: {
-  //   VideoJsPlayer
-  // },
+  components: {
+    PgInlineVideoPlayer
+  },
 
   mixins: [submittable],
 
@@ -224,6 +213,19 @@ export default {
     ...mapActions('admin/activity', ['getTypes']),
 
     ...mapActions('admin/curriculum/video', ['updateVideoByLessonId']),
+
+    onPlayerReady ({ player, video }) {
+      player.loadMedia({
+        title: video.name,
+        poster: video.thumbnail,
+        src: [
+          {
+            src: video.videoUrl.HLS,
+            type: 'application/x-mpegURL'
+          }
+        ]
+      })
+    },
 
     async onSubmit () {
       this.loading = true

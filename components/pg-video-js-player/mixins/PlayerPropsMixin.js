@@ -6,6 +6,12 @@ export default {
       default: false
     },
 
+    noSmallscreen: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
     showNextUp: {
       type: Boolean,
       required: false,
