@@ -16,7 +16,7 @@
       <pg-video-js-player
         ref="videoPlayer"
         autoplay
-        @ready="onReady"
+        @ready="onPlayerReady"
       />
 
       <v-card-actions>

@@ -62,7 +62,7 @@ export default {
             docElement.msRequestFullscreen()
           }
           if ('orientation' in screen) {
-            screen.orientation.lock('landscape')
+            screen.orientation.lock('landscape').catch(() => {})
           }
         }
       } catch (error) {
