@@ -1,4 +1,5 @@
 import { mapGetters, mapActions } from 'vuex'
+import { jsonCopy } from '@/utils/objectTools'
 
 export default {
   data: () => {
@@ -20,25 +21,25 @@ export default {
     }),
 
     doAnalytics () {
-      if (this.analyticsLoading || !this.currentVideo.activityId) {
+      const currentVideo = jsonCopy(this.currentVideo)
+      if (this.analyticsLoading || !currentVideo.activityId) {
         return
       }
 
       this.analyticsLoading = true
       const promises = []
-      const mediaObject = this.currentVideo
       const time = this.player.currentTime()
       const duration = this.player.duration()
       const didFinish = ((duration - time) < 3)
 
       this.children.forEach((child) => {
         const analyticOperation = new Promise((resolve, reject) => {
-          this.getAnalytics({ activityId: mediaObject.activityId, childId: child.id })
+          this.getAnalytics({ activityId: currentVideo.activityId, childId: child.id })
             .then((result) => {
               if (typeof result === 'string' || Object.keys(result).length === 0) {
                 return this.createAnalytic({
                   childrenId: child.id,
-                  activityId: mediaObject.activityId,
+                  activityId: currentVideo.activityId,
                   didFinish,
                   time
                 })
