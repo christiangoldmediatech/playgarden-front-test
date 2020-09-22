@@ -29,7 +29,7 @@
           clearable
           :disabled="loading"
           :error-messages="errors"
-          label="Video lesson description"
+          label="lesson Video description"
           :loading="loading"
           solo
         />

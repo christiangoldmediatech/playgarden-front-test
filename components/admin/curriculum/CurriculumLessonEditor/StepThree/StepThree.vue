@@ -213,6 +213,11 @@ export default {
         value: 'name'
       },
       {
+        text: 'Type',
+        sortable: false,
+        value: 'type'
+      },
+      {
         align: 'right',
         sortable: false,
         value: 'actions',
