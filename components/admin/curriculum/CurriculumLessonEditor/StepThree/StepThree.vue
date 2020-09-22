@@ -215,7 +215,7 @@ export default {
       {
         text: 'Type',
         sortable: false,
-        value: 'type'
+        value: 'worksheetTable.type'
       },
       {
         align: 'right',
