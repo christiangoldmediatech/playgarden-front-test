@@ -3,7 +3,7 @@
     <v-card-text>
       <div class="text-center">
         <underlined-title
-          class="text-h3"
+          class="text-h6 text-md-h3"
           text="Earn Activity Patches for learning!"
         />
 

@@ -77,12 +77,12 @@
 
 <script>
 import get from 'lodash/get'
-import VideoFavoriteMixin from './VideoFavoriteMixin'
+import FavoritesMixin from '@/mixins/FavoritesMixin.js'
 
 export default {
   name: 'ActivityCard',
 
-  mixins: [VideoFavoriteMixin],
+  mixins: [FavoritesMixin],
 
   props: {
     activityId: {
@@ -132,7 +132,7 @@ export default {
       const index = this.playlist.findIndex(({ activityId }) => activityId === this.activityId)
 
       if (index !== -1) {
-        this.$nuxt.$emit('open-lesson-activity-player', { playlist: this.playlist, index })
+        this.$nuxt.$emit('open-activity-player', { playlist: this.playlist, index })
       }
     }
   }

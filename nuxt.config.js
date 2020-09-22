@@ -59,10 +59,6 @@ export default {
     {
       src: 'vue-snotify/styles/material.css',
       lang: 'css'
-    },
-    {
-      src: 'video.js/dist/video-js.css',
-      lang: 'css'
     }
   ],
   /*

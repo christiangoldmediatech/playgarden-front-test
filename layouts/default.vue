@@ -121,10 +121,10 @@ export default {
   .text-h6 {
     font-family: "Poppins", sans-serif !important;
   }
-  .video-js * {
-    font-family: VideoJS !important;
-    color: white !important;
-  }
+  // .video-js * {
+  //   font-family: VideoJS !important;
+  //   color: white !important;
+  // }
   .container:not(.container--fluid) {
     max-width: 1200px;
   }
