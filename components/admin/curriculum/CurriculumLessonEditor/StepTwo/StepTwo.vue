@@ -5,7 +5,7 @@
         <v-card width="100%">
           <v-card-title>
             <p class="primary--text text-h5">
-              Video details
+              Lesson Video
             </p>
 
             <v-spacer />

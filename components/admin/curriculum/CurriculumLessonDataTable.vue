@@ -4,7 +4,7 @@
       <v-col cols="12">
         <v-card width="100%">
           <v-card-title>
-            Curriculum Management
+            Lesson Management
 
             <v-spacer />
 
@@ -24,12 +24,12 @@
                 mdi-plus
               </v-icon>
 
-              <span class="hidden-xs-only white--text">Add new curriculum</span>
+              <span class="hidden-xs-only white--text">Add new lesson</span>
             </v-btn>
           </v-card-title>
 
           <v-card-text>
-            View, create, update, or delete curriculum.
+            View, create, update, or delete lesson.
           </v-card-text>
         </v-card>
       </v-col>

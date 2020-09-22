@@ -173,7 +173,7 @@ export default {
       menuItems: [
         {
           icon: 'mdi-teach',
-          title: 'Curriculum management',
+          title: 'Lesson management',
           route: '/admin/curriculum-management'
         },
         {

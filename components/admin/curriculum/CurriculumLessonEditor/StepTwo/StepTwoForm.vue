@@ -12,7 +12,7 @@
           clearable
           :disabled="loading"
           :error-messages="errors"
-          label="Name"
+          label="Teacher's Name"
           :loading="loading"
           solo
         />
@@ -29,7 +29,7 @@
           clearable
           :disabled="loading"
           :error-messages="errors"
-          label="Description"
+          label="Video lesson description"
           :loading="loading"
           solo
         />
