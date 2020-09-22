@@ -27,5 +27,19 @@ export default {
 
       throw new Error(error)
     }
+  },
+
+  async completeRegister ({ commit }) {
+    try {
+      const response = await this.$axios.patch('/auth/register/finish')
+
+      return response.data
+    } catch (error) {
+      snotifyError(commit, {
+        body: 'Sorry! There was an error while going to Lessons!'
+      })
+
+      throw new Error(error)
+    }
   }
 }
