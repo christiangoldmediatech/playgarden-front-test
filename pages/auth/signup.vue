@@ -1,6 +1,8 @@
 <template>
   <v-row
-    v-if="inInvitationProcess || isUserLoggedIn || emailValidated"
+    v-if="
+      emailValidated || inInvitationProcess || isUserLoggedIn || userSocialData
+    "
     no-gutters
   >
     <v-col>
@@ -36,6 +38,7 @@
             :email-validated="emailValidated"
             :in-invitation-process="inInvitationProcess"
             :loading="loading"
+            :user-social-data="userSocialData"
             @click:submit="onSubmit"
           />
         </v-col>
@@ -111,6 +114,7 @@ export default {
   data: vm => ({
     loading: false,
     emailValidated: null,
+
     inInvitationProcess: (() => {
       const { query } = vm.$route
 
@@ -120,10 +124,28 @@ export default {
           query.token
       )
     })(),
+
+    userSocialData: (() => {
+      const { query } = vm.$route
+      if (query.process === 'social-signup' && query._u) {
+        try {
+          return JSON.parse(atob(query._u))
+        } catch (e) {}
+      }
+
+      return null
+    })(),
+
     token: vm.$route.query.token
   }),
 
   computed: mapGetters('auth', ['getUserInfo', 'isUserLoggedIn']),
+
+  beforeMount () {
+    if (this.userSocialData) {
+      this.emailValidated = this.userSocialData.email
+    }
+  },
 
   methods: {
     ...mapActions('auth/signup', {

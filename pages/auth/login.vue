@@ -19,9 +19,11 @@
           <v-col class="hr-line">
             <v-divider />
           </v-col>
+
           <v-col class="text-center">
             or
           </v-col>
+
           <v-col class="hr-line">
             <v-divider />
           </v-col>
@@ -30,47 +32,27 @@
         <!-- Social buttons -->
         <v-row no-gutters>
           <!-- FACEBOOK -->
-          <v-col
-            cols="12"
-            md="6"
-            :class="{
-              'pr-4': $vuetify.breakpoint.mdAndUp,
-              'mb-4': $vuetify.breakpoint.smAndDown
-            }"
-          >
-            <v-btn
-              block
-              height="45"
-              class="social-btn"
-              @click="facebookSignIn"
-            >
+          <v-col class="mb-4 mb-md-0 pr-md-4" cols="12" md="6">
+            <v-btn block height="45" class="social-btn" @click="facebookSignIn">
               <img
                 alt="Facebook"
-                class="clickable mr-1"
+                class="mr-1"
                 src="@/assets/svg/facebook_icon.svg"
               >
+
               <span class="spanSocialNetwork">Continue with Facebook</span>
             </v-btn>
           </v-col>
+
           <!-- GOOGLE -->
-          <v-col
-            cols="12"
-            md="6"
-            :class="{
-              'pl-4': $vuetify.breakpoint.mdAndUp,
-              'mb-6': $vuetify.breakpoint.smAndDown
-            }"
-          >
-            <v-btn
-              block
-              height="45"
-              class="social-btn"
-              @click="googleSignIn"
-            >
+          <v-col class="mb-6 mb-md-0 pl-md-4" cols="12" md="6">
+            <v-btn block height="45" class="social-btn" @click="googleSignIn">
               <img
-                class="clickable mr-1"
+                alt="Google"
+                class="mr-1"
                 src="@/assets/svg/google_icon.svg"
               >
+
               <span class="spanSocialNetwork">Continue with Google</span>
             </v-btn>
           </v-col>
@@ -95,13 +77,19 @@ export default {
   data () {
     return {
       loading: false,
-      errorMessage: '',
-      userSocialNetwork: {}
+      errorMessage: ''
     }
   },
 
   methods: {
+    ...mapActions(['disableAxiosGlobal', 'enableAxiosGlobal']),
+
     ...mapActions('auth/login', ['login']),
+
+    ...mapActions('auth/signup', {
+      validateEmail: 'signupEmail'
+    }),
+
     ...mapActions('auth/socialUser', ['authLoginSocial']),
 
     async onSubmit (data) {
@@ -118,44 +106,66 @@ export default {
         this.loading = false
       }
     },
+
     googleSignIn () {
-      const nameSocialNetwork = 'GOOGLE'
-      const provider = new this.$fireAuthObj.GoogleAuthProvider()
-      this.$fireAuthObj().signInWithPopup(provider).then((result) => {
-        const profile = { ...result.additionalUserInfo.profile }
-        this.userSocialNetwork.firstName = profile.given_name
-        this.userSocialNetwork.lastName = profile.family_name
-        this.userSocialNetwork.email = profile.email
-        this.userSocialNetwork.socialNetwork = nameSocialNetwork
-        this.userSocialNetwork.socialNetworkId = profile.id
-        this.loginWithSocialNetwork(this.userSocialNetwork)
-      }).catch((e) => {
-        this.$snotify.error(e.message)
-      })
+      this.socialSignIn('GOOGLE', new this.$fireAuthObj.GoogleAuthProvider())
     },
+
     facebookSignIn () {
-      const nameSocialNetwork = 'FACEBOOK'
-      const provider = new this.$fireAuthObj.FacebookAuthProvider()
-      this.$fireAuthObj().signInWithPopup(provider).then((result) => {
-        const profile = { ...result.additionalUserInfo.profile }
-        this.userSocialNetwork.firstName = profile.first_name
-        this.userSocialNetwork.lastName = profile.last_name
-        this.userSocialNetwork.email = profile.email
-        this.userSocialNetwork.socialNetwork = nameSocialNetwork
-        this.userSocialNetwork.socialNetworkId = profile.id
-        this.loginWithSocialNetwork(this.userSocialNetwork)
-      }).catch((e) => {
-        this.$snotify.error(e.message)
-      })
+      this.socialSignIn(
+        'FACEBOOK',
+        new this.$fireAuthObj.FacebookAuthProvider()
+      )
     },
-    async loginWithSocialNetwork (user) {
-      const response = await this.authLoginSocial(user)
-      if (response.status === 201) {
-        this.$router.push({ name: 'app-dashboard' })
-      } else {
-        await this.$router.push({
-          name: 'auth-signup'
+
+    socialSignIn (nameSocialNetwork, provider) {
+      const fireAuthObj = this.$fireAuthObj()
+
+      fireAuthObj
+        .signInWithPopup(provider)
+        .then((result) => {
+          const profile = { ...result.additionalUserInfo.profile }
+
+          this.loginWithSocialNetwork({
+            firstName: profile.given_name || profile.first_name || '',
+            lastName: profile.family_name || profile.last_name || '',
+            email: profile.email,
+            socialNetwork: nameSocialNetwork,
+            socialNetworkId: profile.id
+          })
         })
+        .catch((e) => {
+          this.$snotify.error(e.message)
+        })
+        .finally(() => fireAuthObj.signOut())
+    },
+
+    async loginWithSocialNetwork (user) {
+      try {
+        this.disableAxiosGlobal()
+
+        await this.authLoginSocial(user)
+
+        this.enableAxiosGlobal()
+
+        await this.$router.push({ name: 'app-dashboard' })
+      } catch (e) {
+        await this.onFailLoginSocial(user)
+      }
+    },
+
+    async onFailLoginSocial (user) {
+      try {
+        this.validateEmail(user)
+
+        await this.$router.push({
+          name: 'auth-signup',
+          query: { process: 'social-signup', _u: btoa(JSON.stringify(user)) }
+        })
+      } catch (e) {
+        this.$snotify.error('This email is already on used!')
+      } finally {
+        this.enableAxiosGlobal()
       }
     }
   }
