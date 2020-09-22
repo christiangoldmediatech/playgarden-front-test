@@ -29,9 +29,9 @@ export default {
     }
   },
 
-  async completeRegister({ commit }) {
+  async completeRegister ({ commit }) {
     try {
-      const response = await this.$axios.patch(`/auth/register/finish`)
+      const response = await this.$axios.patch('/auth/register/finish')
 
       return response.data
     } catch (error) {

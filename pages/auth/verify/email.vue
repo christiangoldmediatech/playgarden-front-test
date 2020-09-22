@@ -125,6 +125,15 @@ export default {
 
       try {
         await this.completeRegister()
+
+        if (this.isUserLoggedIn) {
+          await this.fetchUserInfo()
+        }
+
+        await this.$router.push({ name: 'index' })
+      } catch (e) {
+      } finally {
+        this.loading = false
       }
     }
   }
