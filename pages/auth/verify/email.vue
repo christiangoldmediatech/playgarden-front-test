@@ -13,7 +13,7 @@
         </div>
 
         <p class="mt-6 text-center text-md-left">
-          We are happy you have you LEARN with us! Please check your email to confirm your account and start today
+          We are happy to have you LEARN with us! Please check your email to confirm your account and start learning today
         </p>
 
         <v-btn
@@ -24,9 +24,9 @@
           min-height="60"
           :disabled="loading"
           :loading="loading"
-          @click="onResend"
+          @click="goToLessons"
         >
-          RESEND EMAIL
+          GO TO LESSONS
         </v-btn>
 
         <nuxt-link v-else :to="{ name: 'auth-login' }">
@@ -37,10 +37,25 @@
 
         <p class="mt-6 text-center text-md-left">
           Didn’t receive an email?
-
-          <a href="mailto:hello@playgardenprep.com">
-            <span class="contact-color">CONTACT US</span>
-          </a>
+          <v-btn
+            color="primary"
+            text
+            class="btn-green"
+            @click="onResend"
+          >
+            RESEND EMAIL
+          </v-btn>
+        </p>
+        <p class="text-center text-md-left">
+          Need support?
+          <v-btn
+            color="primary"
+            text
+            class="btn-green"
+            @click="'mailto:hello@playgardenprep.com'"
+          >
+            CONTACT US
+          </v-btn>
         </p>
       </div>
     </v-col>
@@ -71,7 +86,7 @@ export default {
   methods: {
     ...mapActions('auth', ['fetchUserInfo']),
 
-    ...mapActions('auth/verify', ['resendEmail', 'validateRegister']),
+    ...mapActions('auth/verify', ['resendEmail', 'validateRegister', 'completeRegister']),
 
     async onResend () {
       this.loading = true
@@ -102,6 +117,14 @@ export default {
       } catch (e) {
       } finally {
         this.loading = false
+      }
+    },
+
+    async goToLessons () {
+      this.loading = true
+
+      try {
+        await this.completeRegister()
       }
     }
   }
