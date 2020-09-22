@@ -79,8 +79,8 @@ export default {
         !this.verifyEmailToast
       ) {
         this.verifyEmailToast = this.$snotify.warning(
-          'Missing email verification',
-          'Unverified',
+          'Please verify your account',
+          'Warning',
           {
             buttons: [
               {

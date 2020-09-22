@@ -316,4 +316,7 @@ export default {
     }
   }
 }
+.grey {
+  color: $pg-black;
+}
 </style>
