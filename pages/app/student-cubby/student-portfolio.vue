@@ -126,11 +126,13 @@ export default {
     ...mapActions('offline-worksheet', { getUploaded: 'getUploaded' }),
 
     async refresh () {
-      this.uploadedWorksheets = await this.getUploaded(this.studentId).then(
-        () => {
-          this.loading = false
-        }
-      )
+      try {
+        this.uploadedWorksheets = await this.getUploaded(this.studentId)
+      } catch (error) {
+        this.$snotify.error('Sorry! There was an error loading your progress.')
+      } finally {
+        this.loading = false
+      }
     }
   }
 }

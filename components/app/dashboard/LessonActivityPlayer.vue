@@ -58,12 +58,7 @@ export default {
   methods: {
     onReady (player) {
       this.player = player
-
       player.on('pause', () => {
-        this.saveActivityProgress()
-        this.doAnalytics()
-      })
-      player.on('ended', () => {
         this.saveActivityProgress()
         this.doAnalytics()
       })

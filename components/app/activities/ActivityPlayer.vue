@@ -56,9 +56,7 @@ export default {
   methods: {
     onReady (player) {
       this.player = player
-
       player.on('pause', this.doAnalytics)
-      player.on('ended', this.doAnalytics)
       player.on('dispose', () => {
         this.player = null
       })

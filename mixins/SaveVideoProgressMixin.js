@@ -1,4 +1,5 @@
 import { mapActions, mapGetters } from 'vuex'
+import { jsonCopy } from '@/utils/objectTools'
 
 export default {
   data: () => {
@@ -16,8 +17,9 @@ export default {
     ...mapActions('children/lesson', { sendVideoProgress: 'saveVideoProgress' }),
 
     saveVideoProgress () {
-      if (!this.currentVideo || this.currentVideo.ignoreVideoProgress || this.savingProgress) { return }
-      const mediaObject = this.currentVideo // From video player dialog mixin
+      // Save it before we have moved on
+      const currentVideo = jsonCopy(this.currentVideo)
+      if (!currentVideo || currentVideo.ignoreVideoProgress || this.savingProgress) { return }
       const date = new Date().toISOString().substr(0, 19)
       const time = this.player.currentTime()
       const duration = this.player.duration()
@@ -25,8 +27,8 @@ export default {
 
       // Only save progress if the video hasn't been completed and we are ahead of where we last left off
       if (
-        !mediaObject.viewed ||
-        (!mediaObject.viewed.completed && mediaObject.viewed.time < time)
+        !currentVideo.viewed ||
+        (!currentVideo.viewed.completed && currentVideo.viewed.time < time)
       ) {
         this.savingProgress = true
         this.children.forEach((child) => {
@@ -35,7 +37,7 @@ export default {
               lessonId: this.lesson.id,
               childId: child.id,
               video: {
-                id: mediaObject.videoId,
+                id: currentVideo.videoId,
                 completed: duration - time < 3,
                 time,
                 date
