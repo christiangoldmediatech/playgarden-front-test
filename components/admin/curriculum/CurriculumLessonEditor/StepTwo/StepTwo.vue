@@ -211,6 +211,7 @@ export default {
     showModal: false,
     resourceSelected: {},
     loading: false,
+    checkStatusInterval: null,
     page: 1,
     resources: [],
     headers: [
@@ -251,11 +252,18 @@ export default {
     onSubmit () {
       this.showModal = false
       this.refresh()
+      this.checkStatus()
     },
 
     openModal (resource = {}) {
       this.resourceSelected = resource
       this.showModal = true
+    },
+
+    checkStatus () {
+      this.checkStatusInterval = setInterval(() => {
+        this.refresh()
+      }, 120000)
     },
 
     async refresh () {
