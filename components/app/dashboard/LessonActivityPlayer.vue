@@ -17,6 +17,7 @@
       @playlist-index-change="updateIndex"
       @last-playlist-item="findNextActivity"
     />
+    <patch-earned-dialog v-model="patchEarnedDialog" />
   </video-player-dialog>
 </template>
 
@@ -29,16 +30,24 @@ import Fullscreen from '@/mixins/FullscreenMixin.js'
 import DashboardOverrides from '@/mixins/DashboardOverridesMixin.js'
 import VideoPlayerDialog from '@/components/pg-video-js-player/VideoPlayerDialog.vue'
 import PgVideoJsPlayer from '@/components/pg-video-js-player/PgVideoJsPlayer.vue'
+import PatchEarnedDialog from '@/components/app/PatchEarnedDialog.vue'
 
 export default {
   name: 'LessonActivityPlayer',
 
   components: {
     VideoPlayerDialog,
-    PgVideoJsPlayer
+    PgVideoJsPlayer,
+    PatchEarnedDialog
   },
 
   mixins: [VideoPlayerDialogMixin, SaveActivityProgress, ActivityAnalytics, FindNextActivity, DashboardOverrides, Fullscreen],
+
+  data: () => {
+    return {
+      patchEarnedDialog: true
+    }
+  },
 
   computed: {
     noSeek () {
