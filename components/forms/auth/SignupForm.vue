@@ -76,7 +76,9 @@
                   <v-text-field
                     v-model="draft.email"
                     clearable
-                    :disabled="loading || hasInvitationEmail"
+                    :disabled="
+                      loading || hasInvitationEmail || hasUserSocialData
+                    "
                     :error-messages="errors"
                     label="Email"
                     :loading="loading"
@@ -85,7 +87,11 @@
                   />
                 </validation-provider>
 
-                <template v-if="inInvitationProcess || !isUserLoggedIn">
+                <template
+                  v-if="
+                    (inInvitationProcess || !isUserLoggedIn) && !userSocialData
+                  "
+                >
                   <!-- Password -->
                   <validation-provider
                     v-slot="{ errors }"
@@ -165,7 +171,12 @@ export default {
 
     inInvitationProcess: Boolean,
 
-    loading: Boolean
+    loading: Boolean,
+
+    userSocialData: {
+      type: Object,
+      default: undefined
+    }
   },
 
   data: () => ({
@@ -184,22 +195,37 @@ export default {
 
     hasInvitationPhone () {
       return Boolean(this.inInvitationProcess && this.$route.query.phone)
+    },
+
+    hasUserSocialData () {
+      return Boolean(this.userSocialData)
     }
   },
 
   mounted () {
     this.draft = {
-      firstName: this.getUserInfo.firstName || null,
-      lastName: this.getUserInfo.lastName || null,
+      firstName: this.hasUserSocialData
+        ? this.userSocialData.firstName
+        : this.getUserInfo.firstName || null,
+      lastName: this.hasUserSocialData
+        ? this.userSocialData.lastName
+        : this.getUserInfo.lastName || null,
       phoneNumber:
         this.$route.query.phone || this.getUserInfo.phoneNumber || null,
-      email:
-        this.$route.query.email ||
-        this.getUserInfo.email ||
-        this.emailValidated ||
-        null,
+      email: this.hasUserSocialData
+        ? this.userSocialData.email
+        : this.$route.query.email ||
+          this.getUserInfo.email ||
+          this.emailValidated ||
+          null,
       password: null,
-      passwordConfirmation: null
+      passwordConfirmation: null,
+      socialNetwork: this.hasUserSocialData
+        ? this.userSocialData.socialNetwork
+        : null,
+      socialNetworkId: this.hasUserSocialData
+        ? this.userSocialData.socialNetworkId
+        : null
     }
   },
 

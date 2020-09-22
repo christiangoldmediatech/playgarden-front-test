@@ -51,6 +51,8 @@
     <p class="signup text-center text-md-left">
       New to Playgarden Prep Online?
 
+      <br class="hidden-md-and-up">
+
       <nuxt-link :to="{ name: 'auth-signup' }">
         <span>SIGN UP NOW!</span>
       </nuxt-link>

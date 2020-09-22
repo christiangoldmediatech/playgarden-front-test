@@ -190,7 +190,7 @@
 
 <script>
 import { get } from 'lodash'
-import { mapActions, mapGetters, mapMutations } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 import submittable from '@/utils/mixins/submittable'
 
@@ -237,6 +237,8 @@ export default {
   },
 
   methods: {
+    ...mapActions(['disableAxiosGlobal', 'enableAxiosGlobal']),
+
     ...mapActions('shipping-address', ['createShippingAddress']),
 
     ...mapActions('payment', [
@@ -244,11 +246,6 @@ export default {
       'fetchSubscriptionPlan',
       'selectSubscriptionPlan'
     ]),
-
-    ...mapMutations({
-      disableAxiosGlobal: 'DISABLE_AXIOS_GLOBAL_ERROR_HANDLER',
-      enableAxiosGlobal: 'ENABLE_AXIOS_GLOBAL_ERROR_HANDLER'
-    }),
 
     async getPlan () {
       try {
