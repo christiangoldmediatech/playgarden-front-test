@@ -89,7 +89,7 @@ export default {
           iconLeft: 'mdi-play-outline',
           action: () => {
             // Find first activity
-            const activities = this.lesson.lessonsActivities
+            const activities = this.lesson.lessonsActivities.map(({ activity }) => activity)
             if (activities.length) {
               this.$router.push({
                 name: 'app-dashboard-lesson-activities',
@@ -123,9 +123,7 @@ export default {
   methods: {
     onReady (player) {
       this.player = player
-
       player.on('pause', this.saveVideoProgress)
-      player.on('ended', this.saveVideoProgress)
       player.on('dispose', () => {
         this.player = null
       })

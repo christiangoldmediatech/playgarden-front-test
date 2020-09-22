@@ -5,15 +5,16 @@
       :style="dimensions"
     >
       <template v-if="smallScreen">
-        <v-btn
-          class="player-dialog-close-btn"
-          icon
-          @click.stop="close"
-        >
-          <v-icon color="#D2D2D2">
-            mdi-close
-          </v-icon>
-        </v-btn>
+        <div class="player-dialog-close-btn">
+          <v-btn
+            icon
+            @click.stop="close"
+          >
+            <v-icon color="#D2D2D2">
+              mdi-close
+            </v-icon>
+          </v-btn>
+        </div>
       </template>
       <template v-else>
         <p class="player-dialog-close-tip">
@@ -187,7 +188,7 @@ export default {
     position: absolute;
     top: 4px;
     left: 4px;
-    z-index: 510;
+    z-index: 515;
   }
   &-close-tip {
     position: absolute;
@@ -196,13 +197,13 @@ export default {
     font-size: 24px;
     font-weight: medium;
     color: #606060 !important;
-    z-index: 510;
+    z-index: 520;
   }
   &-top-right-icons {
     position: absolute;
     top: 4px;
     right: 4px;
-    z-index: 520;
+    z-index: 525;
   }
 }
 </style>

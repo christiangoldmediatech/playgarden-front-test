@@ -127,10 +127,13 @@ export default {
           color: 'accent',
           iconLeft: 'mdi-play',
           action: () => {
-            this.$router.push({
-              name: 'app-dashboard-lesson-activities',
-              query: { ...this.overrides, id: this.getLesson.lessonsActivities[0].activity.id }
-            })
+            const activities = this.lesson.lessonsActivities.map(({ activity }) => activity)
+            if (activities.length) {
+              this.$router.push({
+                name: 'app-dashboard-lesson-activities',
+                query: { ...this.overrides, id: this.getLesson.lessonsActivities[0].id }
+              })
+            }
           }
         },
         {
