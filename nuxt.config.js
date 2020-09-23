@@ -152,7 +152,7 @@ export default {
   env: {
     apiBaseUrl:
       process.env.API_BASE_URL ||
-      'https://j2ld7v9jji.execute-api.us-east-1.amazonaws.com/staging',
+      'https://apidev.playgardenonline.com',
     testEnv: process.env.TEST_ENV || 'LOCAL'
   },
   router: {
