@@ -3,7 +3,7 @@
     <!-- APP MAV & BAR -->
     <app-navigation />
 
-    <application-header />
+    <application-header :full-width="Boolean(fullWidth)" />
 
     <!-- CONTENT -->
     <v-main v-if="!fullWidth">
