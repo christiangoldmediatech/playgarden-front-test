@@ -40,7 +40,7 @@ export default {
   mounted () {
     const assignTitle = () => {
       this.$nextTick(() => {
-        this.titleElements = TextHandler.breakTextIntoLines(window, this.title, 'word')
+        this.titleElements = TextHandler.breakTextIntoLines(window, this.title, this.$refs.title)
       })
     }
 
