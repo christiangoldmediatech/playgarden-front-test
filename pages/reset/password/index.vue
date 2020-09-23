@@ -88,6 +88,7 @@ export default {
         this.isLoadingForm = false
       }
     },
+
     handleLoginError (error) {
       // TODO: Remove this alert to a global component
       this.errorMessage =
