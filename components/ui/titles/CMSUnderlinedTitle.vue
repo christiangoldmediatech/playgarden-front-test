@@ -21,7 +21,7 @@
 import TextHandler from '@/utils/textHandlers'
 
 export default {
-  name: 'UnderlinedTitle',
+  name: 'CMSUnderlinedTitle',
 
   props: {
     title: {
@@ -40,7 +40,7 @@ export default {
   mounted () {
     const assignTitle = () => {
       this.$nextTick(() => {
-        this.titleElements = TextHandler.breakTextIntoLines(window, this.title, this.$refs.title)
+        this.titleElements = TextHandler.breakTextIntoLines(window, this.title, 'word')
       })
     }
 
