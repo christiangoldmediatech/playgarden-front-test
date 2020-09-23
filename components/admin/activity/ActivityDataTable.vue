@@ -234,16 +234,10 @@ export default {
           value: 'activityType.name'
         },
         {
-          text: 'Created',
+          text: 'Letter',
           align: 'start',
           sortable: false,
-          value: 'createdAt'
-        },
-        {
-          text: 'Last Updated',
-          align: 'start',
-          sortable: false,
-          value: 'updatedAt'
+          value: 'curriculumType.letter'
         },
         {
           text: '',
