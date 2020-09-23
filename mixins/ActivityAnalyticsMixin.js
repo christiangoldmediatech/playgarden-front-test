@@ -90,7 +90,7 @@ export default {
         promises.push(analyticOperation)
       })
 
-      Promise.all(promises).then(() => {
+      return Promise.all(promises).then(() => {
         this.analyticsLoading = false
       })
     }

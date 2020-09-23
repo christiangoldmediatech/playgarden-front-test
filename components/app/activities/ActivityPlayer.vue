@@ -13,10 +13,12 @@
       show-next-up
       :no-seek="noSeek"
       :fullscreen-override="handleFullscreen"
+      no-auto-track-change
       @ready="onReady"
-      @playlist-index-change="doAnalytics(true)"
+      @playlist-index-change="updateIndex"
       @last-playlist-item="findNextActivity"
     />
+    <patch-earned-dialog v-model="patchEarnedDialog" v-bind="{ player, ...patchData }" />
   </video-player-dialog>
 </template>
 
@@ -57,10 +59,20 @@ export default {
   methods: {
     onReady (player) {
       this.player = player
-      player.on('pause', this.doAnalytics)
+      player.on('pause', () => {
+        this.doAnalytics()
+        if (this.player.currentTime() === this.player.duration()) {
+          this.player.nextVideo()
+        }
+      })
       player.on('dispose', () => {
         this.player = null
       })
+    },
+
+    updateIndex (index) {
+      this.doAnalytics(true)
+      this.index = index
     }
   }
 }
