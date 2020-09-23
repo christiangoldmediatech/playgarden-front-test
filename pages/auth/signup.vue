@@ -11,8 +11,9 @@
           v-if="emailValidated && !isUserLoggedIn"
           class="ma-2"
           color="accent"
+          nuxt
           text
-          @click="emailValidated = null"
+          :to="{ name: 'auth-login' }"
         >
           <v-icon left>
             mdi-less-than
