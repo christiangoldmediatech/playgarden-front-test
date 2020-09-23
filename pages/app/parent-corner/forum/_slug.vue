@@ -8,7 +8,7 @@
         :src="require('@/assets/svg/chevron-left.svg')"
         max-width="38px"
       />
-      <span class="">Back</span>
+      <span class="orange-text">Back</span>
     </div>
     <div
       ref="title"
@@ -276,6 +276,9 @@ $icon-size: 60px;
   cursor: pointer;
   align-items: center;
   font-size: 20px;
+}
+
+.orange-text {
   color: #f89838;
 }
 
