@@ -24,6 +24,12 @@ export default {
       default: false
     },
 
+    noAutoTrackChange: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
     fullscreenOverride: {
       validator: (val) => {
         return typeof val === 'function' || val === null

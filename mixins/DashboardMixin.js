@@ -131,6 +131,10 @@ export default {
         progressNext,
         items: videos
       }
+    },
+
+    lessonCompleted () {
+      return (this.videos.progress === 100 && this.worksheets.progress === 100 && this.activities.progress === 100)
     }
   }
 }
