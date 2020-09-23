@@ -240,6 +240,7 @@ export default {
   }),
 
   created () {
+    this.checkStatus()
     this.refresh()
   },
 
@@ -270,6 +271,12 @@ export default {
       }, 120000)
     },
 
+    stopInterval () {
+      if (this.resources.filter(data => data.status !== 'COMPLETED').length === 0) {
+        clearInterval(this.checkStatusInterval)
+      }
+    },
+
     async refresh () {
       this.loading = true
 
@@ -277,6 +284,7 @@ export default {
         this.resources = await this.fetchVideosByLessonId({
           lessonId: this.lessonId
         })
+        this.stopInterval()
       } catch (e) {
       } finally {
         this.loading = false
