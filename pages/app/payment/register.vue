@@ -73,7 +73,7 @@
             </v-col>
             <v-col cols="3" class="text-align-right">
               <span class="total-cost">
-                <b>${{ cost.total || 0 }}</b>
+                ${{ cost.total || 0 }}
               </span>
             </v-col>
           </v-row>
