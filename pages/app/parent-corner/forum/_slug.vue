@@ -8,7 +8,7 @@
         :src="require('@/assets/svg/chevron-left.svg')"
         max-width="38px"
       />
-      <span>Back</span>
+      <span class="">Back</span>
     </div>
     <div
       ref="title"
@@ -274,9 +274,9 @@ $icon-size: 60px;
 .back-btn {
   display: flex;
   cursor: pointer;
-  color: $pg-accent;
   align-items: center;
   font-size: 20px;
+  color: #f89838;
 }
 
 $mobile-image-height: 300px;

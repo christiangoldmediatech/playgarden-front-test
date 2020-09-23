@@ -31,8 +31,6 @@ function breakTextIntoLines (containerElement, text, mode = 'word') {
     textArr = text.match(/\S+|\s/g)
   } else if (mode === 'letter') {
     textArr = [...text]
-  } else {
-    throw new Error('The selected mode is not supported')
   }
 
   textArr.reduce((prev, curr, index) => {

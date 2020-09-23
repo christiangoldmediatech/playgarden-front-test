@@ -40,7 +40,7 @@ export default {
 <style lang="scss" scoped>
 
 .section__wrapper {
-  margin: 20px 0;
+  margin: 40px 0;
   position: relative;
 }
 
