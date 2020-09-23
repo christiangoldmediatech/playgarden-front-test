@@ -18,7 +18,7 @@
       @playlist-index-change="updateIndex"
       @last-playlist-item="findNextActivity"
     />
-    <patch-earned-dialog v-model="patchEarnedDialog" v-bind="{ player, ...patchData }" />
+    <patch-earned-dialog v-model="patchEarnedDialog" v-bind="{ player, ...patchData }" @return="handleClose" />
   </video-player-dialog>
 </template>
 
@@ -50,9 +50,12 @@ export default {
 
   computed: {
     noSeek () {
-      // if (this.currentVideo && (this.currentVideo.viewed === null || this.currentVideo.viewed.completed === false)) {
-      //   return true
-      // }
+      if (!['production', 'staging'].includes(process.env.TEST_ENV)) {
+        return false
+      }
+      if (this.currentVideo && (this.currentVideo.viewed === null || this.currentVideo.viewed.completed === false)) {
+        return true
+      }
       return false
     }
   },
@@ -67,10 +70,16 @@ export default {
     onReady (player) {
       this.player = player
       player.on('pause', () => {
+        this.player.showLoading()
         this.saveActivityProgress()
-        this.doAnalytics()
-        if (this.player.currentTime() === this.player.duration()) {
-          this.player.nextVideo()
+        if (this.analyticsLoading === false) {
+          this.player.showLoading()
+          this.doAnalytics().then(() => {
+            this.player.hideLoading()
+            if (this.player.currentTime() === this.player.duration() && !this.patchEarnedDialog) {
+              this.player.nextVideo()
+            }
+          })
         }
       })
       player.on('dispose', () => {
@@ -79,7 +88,6 @@ export default {
     },
 
     updateIndex (index) {
-      this.doAnalytics(true)
       const nextVideo = jsonCopy(this.playlist[index])
       if (!nextVideo.ignoreVideoProgress || nextVideo.ignoreVideoProgress === false) {
         this.$router.push({
@@ -92,6 +100,7 @@ export default {
         })
       }
       this.index = index
+      this.doAnalytics(true)
     }
   }
 }

@@ -67,6 +67,9 @@ export default {
     ...mapGetters('admin/curriculum', { lesson: 'getLesson' }),
 
     noSeek () {
+      if (!['production', 'staging'].includes(process.env.TEST_ENV)) {
+        return false
+      }
       if (this.currentVideo && (this.currentVideo.viewed === null || this.currentVideo.viewed.completed === false)) {
         return true
       }

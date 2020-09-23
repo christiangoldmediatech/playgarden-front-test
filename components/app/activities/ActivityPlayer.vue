@@ -18,7 +18,7 @@
       @playlist-index-change="updateIndex"
       @last-playlist-item="findNextActivity"
     />
-    <patch-earned-dialog v-model="patchEarnedDialog" v-bind="{ player, ...patchData }" />
+    <patch-earned-dialog v-model="patchEarnedDialog" v-bind="{ player, ...patchData }" @return="handleClose" />
   </video-player-dialog>
 </template>
 
@@ -43,6 +43,9 @@ export default {
 
   computed: {
     noSeek () {
+      if (!['production', 'staging'].includes(process.env.TEST_ENV)) {
+        return false
+      }
       if (this.currentVideo && (this.currentVideo.viewed === null || this.currentVideo.viewed.completed === false)) {
         return true
       }
@@ -60,9 +63,14 @@ export default {
     onReady (player) {
       this.player = player
       player.on('pause', () => {
-        this.doAnalytics()
-        if (this.player.currentTime() === this.player.duration()) {
-          this.player.nextVideo()
+        if (this.analyticsLoading === false) {
+          this.player.showLoading()
+          this.doAnalytics().then(() => {
+            this.player.hideLoading()
+            if (this.player.currentTime() === this.player.duration() && !this.patchEarnedDialog) {
+              this.player.nextVideo()
+            }
+          })
         }
       })
       player.on('dispose', () => {
@@ -71,8 +79,8 @@ export default {
     },
 
     updateIndex (index) {
-      this.doAnalytics(true)
       this.index = index
+      this.doAnalytics(true)
     }
   }
 }
