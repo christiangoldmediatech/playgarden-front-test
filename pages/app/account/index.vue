@@ -111,7 +111,9 @@
 
         <shipping-address-details :loading="loading" />
 
-        <caregiver-list :loading="loading" />
+        <caregiver-list :loading="loading" manageable />
+
+        <manage-caregivers class="my-6" />
 
         <notification-list :loading="loading" />
       </div>
@@ -136,6 +138,7 @@ import { mapGetters } from 'vuex'
 
 import CaregiverList from '@/components/app/caregiver/CaregiverList'
 import ChildForm from '@/components/forms/profile/ChildForm.vue'
+import ManageCaregivers from '@/components/app/caregiver/ManageCaregivers'
 import MembershipDetails from '@/components/app/payment/MembershipDetails'
 import NotificationList from '@/components/app/notifications/NotificationUserList'
 import ShippingAddressDetails from '@/components/app/payment/ShippingAddressDetails'
@@ -147,6 +150,7 @@ export default {
   components: {
     CaregiverList,
     ChildForm,
+    ManageCaregivers,
     MembershipDetails,
     NotificationList,
     ShippingAddressDetails,
