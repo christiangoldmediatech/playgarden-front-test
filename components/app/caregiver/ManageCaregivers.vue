@@ -32,12 +32,9 @@
         </span>
       </v-row>
 
-      <v-row class="flex-column-reverse flex-md-row">
-        <v-col class="px-6" cols="12" md="6">
-          <invitation-list />
-
+      <v-row v-if="modal" class="flex-column-reverse flex-md-row">
+        <v-col class="pt-5 px-6" cols="12" md="6">
           <send-invitation-form
-            v-if="modal"
             :loading="loading"
             @click:cancel="onCancel"
             @click:submit="onSubmit"
@@ -45,11 +42,9 @@
         </v-col>
 
         <v-col class="px-6" cols="12" md="6">
-          <v-img
-            alt="Caregiver invitation"
-            max-width="100%"
-            :src="require('@/assets/svg/art-activity-photo.svg')"
-          />
+          <caregiver-list deletable />
+
+          <invitation-list />
         </v-col>
       </v-row>
     </v-col>
@@ -59,6 +54,7 @@
 <script>
 import { mapActions } from 'vuex'
 
+import CaregiverList from '@/components/app/caregiver/CaregiverList'
 import SendInvitationForm from '@/components/forms/caregiver/SendInvitationForm'
 import InvitationList from '@/components/app/caregiver/InvitationList'
 
@@ -66,6 +62,7 @@ export default {
   name: 'ManageCaregivers',
 
   components: {
+    CaregiverList,
     SendInvitationForm,
     InvitationList
   },

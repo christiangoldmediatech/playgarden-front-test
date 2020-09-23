@@ -46,6 +46,10 @@ export default {
     }
   },
 
+  deleteCaregiverInvitation (_, { id }) {
+    return this.$axios.$delete(`/caregivers/invite/${id}`)
+  },
+
   sendCaregiverInvitation (_, { email, phone }) {
     return this.$axios.$post(
       '/caregivers/invite',
