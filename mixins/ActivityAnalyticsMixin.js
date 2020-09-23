@@ -89,7 +89,7 @@ export default {
               }
             })
             .then((result) => {
-              console.log(result)
+              // console.log(result)
               if (!startCheck && result && result.patch && this.patchEarnedDialog === false) {
                 const { activityType, number, image } = result.patch
                 this.patchData = {
