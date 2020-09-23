@@ -42,7 +42,7 @@ export default {
 <style lang="scss" scoped>
 
 .button {
-  width: 100%;
+  display: inline-flex;
 
   a {
     color: white !important;
