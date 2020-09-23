@@ -212,6 +212,7 @@ export default {
     resourceSelected: {},
     loading: false,
     page: 1,
+    checkStatusInterval: null,
     resources: [],
     headers: [
       {
@@ -242,6 +243,10 @@ export default {
     this.refresh()
   },
 
+  beforeDestroy () {
+    clearInterval(this.checkStatusInterval)
+  },
+
   methods: {
     ...mapActions('admin/curriculum/video', [
       'deleteVideoByLessonId',
@@ -251,11 +256,18 @@ export default {
     onSubmit () {
       this.showModal = false
       this.refresh()
+      this.checkStatus()
     },
 
     openModal (resource = {}) {
       this.resourceSelected = resource
       this.showModal = true
+    },
+
+    checkStatus () {
+      this.checkStatusInterval = setInterval(() => {
+        this.refresh()
+      }, 120000)
     },
 
     async refresh () {
