@@ -1,6 +1,6 @@
 <template>
-  <validation-observer v-slot="{ invalid, passes, reset }">
-    <v-form @submit.prevent="passes(onSubmit)">
+  <validation-observer v-if="showAddress" v-slot="{ invalid, passes, reset }">
+    <v-form id="shipping-address-form" @submit.prevent="passes(onSubmit)">
       <p>
         <span class="font-weight-bold">
           SHIPPING ADDRESS
@@ -137,29 +137,67 @@ export default {
   mixins: [submittable],
 
   data: () => ({
+    showAddress: false,
     editing: false,
-    loading: false
+    loading: true
   }),
 
-  created () {
-    this.fetchAddress()
+  async created () {
+    await this.getPlan()
+
+    if (this.showAddress) {
+      await this.fetchAddress()
+    }
   },
 
   methods: {
+    ...mapActions(['disableAxiosGlobal', 'enableAxiosGlobal']),
+
     ...mapActions('shipping-address', [
       'createShippingAddress',
       'getShippingAddress',
       'updateShippingAddress'
     ]),
 
+    ...mapActions('payment', ['getSelectedSubscriptionPlan']),
+
     async fetchAddress () {
       this.loading = true
 
       try {
+        this.disableAxiosGlobal()
         this.draft = await this.getShippingAddress()
       } catch (e) {
+        this.$snotify.warning('Please check your shipping address', 'Warning', {
+          buttons: [
+            {
+              text: 'Edit',
+              action: () => {
+                this.editing = true
+                this.$scrollTo('#shipping-address-form', { offset: -65 })
+              }
+            }
+          ],
+          closeOnClick: true,
+          timeout: 30 * 1000
+        })
       } finally {
         this.loading = false
+        this.enableAxiosGlobal()
+      }
+    },
+
+    async getPlan () {
+      try {
+        this.disableAxiosGlobal()
+        const { plan } = await this.getSelectedSubscriptionPlan()
+
+        this.showAddress = Boolean(
+          plan.homeDeliveryBenefits || plan.plusBenefits
+        )
+      } catch (e) {
+      } finally {
+        this.enableAxiosGlobal()
       }
     },
 
