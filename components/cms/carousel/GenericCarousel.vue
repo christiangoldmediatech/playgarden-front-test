@@ -19,6 +19,7 @@
         />
       </div>
       <v-btn
+        v-show="showControllers"
         text
         class="carousel__btn"
         @click="prevPage"
@@ -34,18 +35,24 @@
         class="carousel__content"
         align="center"
       >
-        <component
-          :is="card.component"
-          v-for="card in blok.cards"
-          ref="components"
-          :key="card._uid"
-          :image="card.image"
-          :title="card.title"
-          :blok="card"
-        />
+        <template v-if="blok.cards">
+          <component
+            :is="card.component"
+            v-for="card in blok.cards"
+            ref="components"
+            :key="card._uid"
+            :image="card.image"
+            :title="card.title"
+            :blok="card"
+          />
+        </template>
+        <template v-else>
+          <slot />
+        </template>
       </div>
 
       <v-btn
+        v-show="showControllers"
         text
         class="carousel__btn"
         @click="nextPage"
@@ -67,7 +74,7 @@ export default {
   props: {
     blok: {
       type: Object,
-      default: () => ([])
+      default: () => ({})
     }
   },
 
@@ -89,6 +96,9 @@ export default {
     linePosition () {
       if (this.blok && this.blok.linePosition) { return `${this.blok.linePosition}%` }
       return '3%'
+    },
+    showControllers () {
+      return this.pageContent.length > 1
     }
   },
 

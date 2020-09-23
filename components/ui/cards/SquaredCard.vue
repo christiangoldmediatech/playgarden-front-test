@@ -16,7 +16,7 @@
         </div>
         <div class="card__link">
           <a
-            :href="blok.link.url || link"
+            :href="(blok.link && blok.link.url) || link"
             class="underlined-link"
             @click="toLink"
           >

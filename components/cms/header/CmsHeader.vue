@@ -62,7 +62,7 @@ export default {
 
 <style lang="scss" scoped>
 $inner-line-height: 140px;
-$header-height: 500px;
+$header-height: 400px;
 $top-spacing: 70px;
 $bottom-spacing: 70px;
 $page-margin: 12px;
@@ -76,7 +76,6 @@ $page-margin: 12px;
   height: $header-height;
   position: relative;
   background: white;
-  margin-top: $top-spacing;
   margin-bottom: $bottom-spacing;
 
   /* Background block */
@@ -84,12 +83,12 @@ $page-margin: 12px;
     content: '';
     position: absolute;
     z-index: -1;
-    top: -$top-spacing - $page-margin;
+    top: 60%;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%, -50%);
     background: $pg-main;
     width: 100vw;
-    height: $inner-line-height;
+    height: 40%;
   }
 }
 
@@ -119,7 +118,7 @@ $header-title-margin: 10px;
   bottom: 0;
   right: 5%;
   transform: translateY(30px);
-  padding: 30px 40px;
+  padding: 30px 80px;
   background: white;
   box-shadow: 4px 3px 6px 0 rgba(0, 0, 0, 0.2);
   color: $pg-black;
@@ -129,10 +128,6 @@ $header-title-margin: 10px;
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
-
-  > * {
-    flex: 1 1;
-  }
 }
 
 .button__container {
@@ -169,10 +164,6 @@ $header-title-margin: 10px;
 
   .header__card__button {
     flex-flow: row wrap;
-
-    > * {
-      flex: 1 0 80%;
-    }
   }
 
   .button__container {
@@ -182,10 +173,6 @@ $header-title-margin: 10px;
     &:first-child,
     &:last-child {
       margin: 10px 0;
-    }
-
-    > * {
-      flex: 1 0;
     }
   }
 
