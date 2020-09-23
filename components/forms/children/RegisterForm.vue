@@ -136,6 +136,7 @@
           <v-btn
             block
             class="mb-4 mt-4 main-btn"
+            min-height="60"
             color="primary"
             :disabled="isLoading"
             text
@@ -148,6 +149,7 @@
           <v-btn
             block
             class="mb-6 main-btn"
+            min-height="60"
             color="primary"
             :disabled="invalid"
             :loading="isLoading"
@@ -313,5 +315,8 @@ export default {
       padding: 5px;
     }
   }
+}
+.grey {
+  color: $pg-black;
 }
 </style>

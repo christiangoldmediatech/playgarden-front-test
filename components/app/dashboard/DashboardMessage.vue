@@ -18,11 +18,7 @@
           </slot>
         </v-col>
         <v-col class="py-0" cols="12" md="8" lg="8" xl="4">
-          <slot>
-            <p class="text-center">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure assumenda rem, laudantium voluptas facere est corporis illo animi cupiditate amet magni quisquam praesentium dolores deserunt!
-            </p>
-          </slot>
+          <slot />
         </v-col>
       </v-row>
       <v-progress-linear v-if="timeOut" color="#f89838" :size="4" :value="progress" />
@@ -65,7 +61,7 @@
             text
             block
             :disabled="loading"
-            @click.stop="returnAction"
+            @click.stop="doReturnAction"
           >
             {{ returnText }}
           </v-btn>
@@ -135,6 +131,7 @@ export default {
 
   methods: {
     doReturnAction () {
+      this.stopInterval()
       this.returnAction()
     },
 
@@ -171,6 +168,7 @@ export default {
     async doAction (action) {
       try {
         this.loading = true
+        this.stopInterval()
         await action()
       } catch (error) {
         return Promise.reject(error)

@@ -31,10 +31,11 @@
             />
           </v-list-item-avatar>
           <v-list-item-content>
-            <v-list-item-title class="font-weight-bold text-uppercase">
-              {{ currentLessonActivity.title }}
+            <v-list-item-title>
+              <span class="dashboard-item-activity-type">
+                {{ currentLessonActivity.activityType.name }}
+              </span>
             </v-list-item-title>
-
             <v-list-item-subtitle>
               {{ currentLessonActivity.description }}
             </v-list-item-subtitle>
@@ -60,14 +61,14 @@
         </v-list-item>
       </v-list>
     </template>
-    <lesson-activity-player activity-mode />
+    <lesson-activity-player />
   </v-card>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import FavoritesMixin from '@/mixins/FavoritesMixin.js'
 import LessonActivityPlayer from '@/components/app/dashboard/LessonActivityPlayer.vue'
-import VideoFavoriteMixin from '@/components/app/activities/VideoFavoriteMixin.js'
 
 export default {
   name: 'LessonActivities',
@@ -76,7 +77,7 @@ export default {
     LessonActivityPlayer
   },
 
-  mixins: [VideoFavoriteMixin],
+  mixins: [FavoritesMixin],
 
   data: () => {
     return {
@@ -111,8 +112,7 @@ export default {
             lessonActivityId: id,
             activityId: activity.id,
             videoId: activity.videos.id,
-            viewed: activity.viewed,
-            redirect: true
+            viewed: activity.viewed
           }
         })
       }
@@ -132,13 +132,6 @@ export default {
 
     videoId () {
       return this.currentLessonActivity ? this.currentLessonActivity.id : null
-    },
-
-    // TODO: refactor favorites mixin to avoid ugly workarounds
-    activity () {
-      return {
-        id: this.videoId
-      }
     }
   },
 

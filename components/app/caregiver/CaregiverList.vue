@@ -8,23 +8,21 @@
       <v-row
         v-for="caregiver in caregivers"
         :key="caregiver.id"
-        class="justify-space-between my-1"
+        class="my-1 px-md-6"
         no-gutters
       >
-        <span>
+        <v-col class="text-truncate">
           {{ caregiver.firstName }}
-        </span>
+        </v-col>
 
-        <div>
-          {{ caregiver.email }}
-
-          <v-icon color="#d30909" dense @click="remove(caregiver)">
-            mdi-delete-outline
-          </v-icon>
-        </div>
+        <v-col v-if="deletable" class="text-right" cols="1">
+          <v-btn color="accent" icon x-small text @click="remove(caregiver)">
+            <v-icon>
+              mdi-close-circle-outline
+            </v-icon>
+          </v-btn>
+        </v-col>
       </v-row>
-
-      <manage-caregivers class="my-6" />
     </v-col>
   </v-row>
 </template>
@@ -32,13 +30,11 @@
 <script>
 import { mapActions } from 'vuex'
 
-import ManageCaregivers from '@/components/app/caregiver/ManageCaregivers'
-
 export default {
   name: 'CaregiverList',
 
-  components: {
-    ManageCaregivers
+  props: {
+    deletable: Boolean
   },
 
   data () {

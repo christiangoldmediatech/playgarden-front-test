@@ -1,31 +1,48 @@
 <template>
   <v-row>
-    <v-col v-if="invitationSent.length" cols="12">
-      <v-row class="pr-3" justify="center">
-        <span class="font-weight-bold text-h5">
-          RESEND INVITATION
-        </span>
-      </v-row>
+    <v-col cols="12">
+      <p class="font-weight-bold">
+        INVITES SENT
+      </p>
 
-      <v-row class="pr-3">
-        <v-col cols="12">
-          <v-row
-            v-for="({ email, phone }, indexIS) in invitationSent"
-            :key="indexIS"
-            justify="space-between"
-          >
-            {{ email || phone }}
+      <v-row
+        v-for="({ id, email, phone }, indexIS) in invitationSent"
+        :key="indexIS"
+        class="my-1 px-md-6"
+        no-gutters
+      >
+        <v-col class="text-truncate">
+          {{ email || phone }}
+        </v-col>
 
+        <v-col class="shrink">
+          <div>
             <v-btn
               color="accent"
+              icon
               :loading="loading"
               x-small
               text
               @click="onResend({ email, phone })"
             >
-              RESEND
+              <v-icon>
+                mdi-email-sync-outline
+              </v-icon>
             </v-btn>
-          </v-row>
+
+            <v-btn
+              color="accent"
+              icon
+              :loading="loading"
+              x-small
+              text
+              @click="onDelete(id)"
+            >
+              <v-icon>
+                mdi-close-circle-outline
+              </v-icon>
+            </v-btn>
+          </div>
         </v-col>
       </v-row>
     </v-col>
@@ -50,11 +67,27 @@ export default {
   methods: {
     ...mapActions('caregiver', [
       'fetchCaregiverInvitationList',
+      'deleteCaregiverInvitation',
       'resendCaregiverInvitation'
     ]),
 
     async getInvitationList () {
       this.invitationSent = await this.fetchCaregiverInvitationList()
+    },
+
+    async onDelete (id) {
+      this.loading = true
+
+      try {
+        await this.deleteCaregiverInvitation({ id })
+
+        this.$snotify.success('Invitation has been deleted successfully!')
+
+        this.getInvitationList()
+      } catch (e) {
+      } finally {
+        this.loading = false
+      }
     },
 
     async onResend (data) {
@@ -72,3 +105,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.shrink > div {
+  width: 45px;
+}
+</style>

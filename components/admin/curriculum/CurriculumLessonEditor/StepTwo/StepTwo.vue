@@ -5,7 +5,7 @@
         <v-card width="100%">
           <v-card-title>
             <p class="primary--text text-h5">
-              Video details
+              Video Lesson
             </p>
 
             <v-spacer />
@@ -188,14 +188,15 @@
 
 <script>
 import { mapActions } from 'vuex'
-
+import VideoPreviewBtn from '@/components/admin/video-preview/VideoPreviewBtn.vue'
 import StepTwoForm from './StepTwoForm'
 
 export default {
   name: 'StepTwo',
 
   components: {
-    StepTwoForm
+    StepTwoForm,
+    VideoPreviewBtn
   },
 
   props: {

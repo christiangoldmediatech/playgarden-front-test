@@ -25,6 +25,7 @@
         color="primary"
         :disabled="invalid"
         :loading="loading"
+        min-height="60"
         class="main-btn"
         type="submit"
         x-large

@@ -6,10 +6,11 @@
   color: $pg-black;
   font-family: "Poppins", sans-serif !important;
 }
-.video-js * {
-  font-family: VideoJS !important;
-  color: white !important;
-}
+
+// .video-js * {
+//   font-family: VideoJS !important;
+//   color: white !important;
+// }
 
 .v-application a {
   text-decoration: none;
@@ -38,6 +39,14 @@
   opacity: 0.68 !important;
   background-color: rgb(0, 0, 0) !important;
   border-color: rgb(0, 0, 0) !important;
+}
+
+.theme--light.v-radio .v-label {
+  color: $pg-black;
+  opacity: 2.49;
+}
+.theme--light.v-radio.v-item--active .v-label {
+  font-weight: bold !important;
 }
 
 .clickable {
@@ -87,12 +96,30 @@
 .category-text {
   font-size: 1rem !important;
   position: relative;
+  font-weight: 500 !important;
   z-index: 1;
   &::after {
     width: 115%;
     opacity: 0.5;
     position: absolute;
     bottom: 0;
+    left: -7.5%;
+    content: "";
+    z-index: -1;
+    border-bottom: 11px solid var(--bgColor);
+    border-radius: 7px;
+  }
+}
+
+.subtitle-text {
+  font-size: 1rem !important;
+  position: relative;
+  z-index: 1;
+  &::after {
+    width: 115%;
+    opacity: 0.5;
+    position: absolute;
+    bottom: 7px;
     left: -7.5%;
     content: "";
     z-index: -1;

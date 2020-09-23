@@ -7,11 +7,6 @@
       </v-container>
     </v-main>
 
-    <!-- FOOTER -->
-    <v-footer app>
-      <span>&copy; {{ new Date().getFullYear() }} </span>
-    </v-footer>
-
     <notify-event />
   </v-app>
 </template>

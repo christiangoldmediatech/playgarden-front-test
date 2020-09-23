@@ -1,15 +1,8 @@
 import { set } from '@/utils/vuex'
 
 export default {
-  DISABLE_AXIOS_GLOBAL_ERROR_HANDLER: (state, { autoEnableIn = 30 } = {}) => {
+  DISABLE_AXIOS_GLOBAL_ERROR_HANDLER: (state) => {
     state.axiosGlobalErrorHandler = true
-
-    if (autoEnableIn) {
-      setTimeout(
-        () => (state.axiosGlobalErrorHandler = false),
-        autoEnableIn * 1000
-      )
-    }
   },
   ENABLE_AXIOS_GLOBAL_ERROR_HANDLER: (state) => {
     state.axiosGlobalErrorHandler = false

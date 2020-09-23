@@ -3,14 +3,15 @@
     cols="12"
     sm="6"
     md="4"
+    class="activiti-card-wrapper"
   >
     <v-hover v-slot:default="{ hover }">
       <v-card
-        :class="['activity-card', { 'scaled': hover }]"
+        :class="['activity-card', { 'scaled': hover && !$vuetify.breakpoint.mobile }]"
         :elevation="(hover) ? 12 : 2"
       >
         <v-img
-          class="clickable"
+          class="clickable activity-card-image"
           :src="thumbnail"
           max-width="100%"
           :aspect-ratio="18/6"
@@ -76,12 +77,12 @@
 
 <script>
 import get from 'lodash/get'
-import VideoFavoriteMixin from './VideoFavoriteMixin'
+import FavoritesMixin from '@/mixins/FavoritesMixin.js'
 
 export default {
   name: 'ActivityCard',
 
-  mixins: [VideoFavoriteMixin],
+  mixins: [FavoritesMixin],
 
   props: {
     activityId: {
@@ -131,7 +132,7 @@ export default {
       const index = this.playlist.findIndex(({ activityId }) => activityId === this.activityId)
 
       if (index !== -1) {
-        this.$nuxt.$emit('open-lesson-activity-player', { playlist: this.playlist, index })
+        this.$nuxt.$emit('open-activity-player', { playlist: this.playlist, index })
       }
     }
   }
@@ -142,7 +143,13 @@ export default {
 .activity-card {
   transition: transform 250ms;
 }
+.activiti-card-wrapper {
+  min-height: 300px;
+}
 
+.activity-card-image {
+  height: 180px;
+}
 .scaled {
   transform: scale(1.25);
   z-index: 1;

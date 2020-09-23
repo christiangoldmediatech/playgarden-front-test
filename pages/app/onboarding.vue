@@ -4,46 +4,38 @@
       <v-col cols="12">
         <pg-loading v-if="loading" />
 
-        <v-card v-else>
-          <v-card-title>
-            Oboarding
-          </v-card-title>
+        <v-card v-else elevation="0">
+          <v-stepper v-if="!none" v-model="step" class="elevation-0">
+            <v-stepper-header v-if="!single">
+              <template v-for="({ name, description }, indexOH) in onboardings">
+                <v-divider v-if="indexOH" :key="`divider-${indexOH}`" />
 
-          <v-card-text v-if="!none">
-            <v-stepper v-model="step">
-              <v-stepper-header>
-                <template
-                  v-for="({ name, description }, indexOH) in onboardings"
+                <v-stepper-step
+                  :key="`step-header-${indexOH}`"
+                  :complete="step > indexOH + 1"
+                  :step="indexOH + 1"
                 >
-                  <v-divider v-if="indexOH" :key="`divider-${indexOH}`" />
+                  {{ name }}
 
-                  <v-stepper-step
-                    :key="`step-header-${indexOH}`"
-                    :complete="step > indexOH + 1"
-                    :step="indexOH + 1"
-                  >
-                    {{ name }}
+                  <small>{{ description }}</small>
+                </v-stepper-step>
+              </template>
+            </v-stepper-header>
 
-                    <small>{{ description }}</small>
-                  </v-stepper-step>
-                </template>
-              </v-stepper-header>
-
-              <v-stepper-items>
-                <v-stepper-content
-                  v-for="({ videos }, indexOI) in onboardings"
-                  :key="indexOI"
-                  :step="indexOI + 1"
-                >
-                  <video-js-player
-                    v-bind="{ videos }"
-                    @ready="onPlayerReady"
-                    @ended="nextStep"
-                  />
-                </v-stepper-content>
-              </v-stepper-items>
-            </v-stepper>
-          </v-card-text>
+            <v-stepper-items>
+              <v-stepper-content
+                v-for="({ videos }, indexOI) in onboardings"
+                :key="indexOI"
+                class="pa-4"
+                :step="indexOI + 1"
+              >
+                <pg-inline-video-player
+                  @ready="onPlayerReady({ player: $event, videos })"
+                  @ended="nextStep"
+                />
+              </v-stepper-content>
+            </v-stepper-items>
+          </v-stepper>
 
           <v-card-actions v-if="!none">
             <v-spacer />
@@ -52,6 +44,7 @@
               <v-btn
                 color="accent"
                 :disabled="first"
+                large
                 :loading="finishing"
                 text
                 @click="step--"
@@ -59,19 +52,20 @@
                 PREV
               </v-btn>
 
-              <v-btn v-if="!last" color="primary" text @click="step++">
+              <v-btn v-if="!last" color="primary" large text @click="step++">
                 NEXT
               </v-btn>
             </template>
 
             <v-btn
               v-if="single || last"
+              class="text-h6"
               color="primary"
               :loading="finishing"
               text
               @click="onFinish"
             >
-              FINISH
+              GO TO LESSONS
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -81,14 +75,15 @@
 </template>
 
 <script>
+import { get } from 'lodash'
 import { mapActions } from 'vuex'
-import VideoJsPlayer from '@/components/video-player/VideoJsPlayer'
+import PgInlineVideoPlayer from '@/components/pg-video-js-player/PgInlineVideoPlayer.vue'
 
 export default {
   name: 'Onboarding',
 
   components: {
-    VideoJsPlayer
+    PgInlineVideoPlayer
   },
 
   data: () => ({
@@ -123,7 +118,8 @@ export default {
 
   async created () {
     try {
-      this.onboardings = await this.getOnboardings()
+      // this.onboardings = await this.getOnboardings()
+      this.onboardings = [get(await this.getOnboardings(), '0', {})]
     } catch (e) {
     } finally {
       setTimeout(() => {
@@ -136,15 +132,20 @@ export default {
     }
   },
 
+  beforeDestroy () {
+    this.player = null
+  },
+
   methods: {
     ...mapActions('auth', ['updateAuthOnboarding']),
     ...mapActions('onboarding', ['getOnboardings']),
 
-    onPlayerReady (player) {
+    onPlayerReady ({ player, videos }) {
       this.player = player
+
       const interval = window.setInterval(() => {
         if (this.onboardings.length) {
-          const { videos } = this.onboardings[0]
+          // const { videos } = this.onboardings[0]
           this.player.loadMedia({
             title: videos.name,
             poster: videos.thumbnail,

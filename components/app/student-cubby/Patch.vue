@@ -2,7 +2,7 @@
   <v-hover v-slot="{ hover }">
     <v-col
       :class="[
-        'text-center patch-item',
+        'text-center patch-item mr-2',
         {
           clickable: _unblocked && !displayMode,
           scaled: hover && _unblocked && !displayMode
@@ -15,23 +15,22 @@
       @click.stop="displayBadge"
     >
       <v-row justify="center" align="center">
-        <v-badge
+        <div
           v-if="displayMode"
           class="w-100"
-          avatar
           color="white"
           offset-x="15%"
           offset-y="15%"
           overlap
         >
-          <template v-slot:badge>
-            <v-avatar class="clickable" @click.stop="close">
-              <v-icon color="#757575" size="20">
-                mdi-close
-              </v-icon>
-            </v-avatar>
+          <template v-if="!$vuetify.breakpoint.mobile">
+            <v-img
+              :src="require('@/assets/svg/close-icon.svg')"
+              class="clickable close-btn-playgarden"
+              width="18px"
+              @click.stop="close"
+            />
           </template>
-
           <v-responsive
             class="rounded-circle"
             aspect-ratio="1"
@@ -43,7 +42,7 @@
               aspect-ratio="1"
             />
           </v-responsive>
-        </v-badge>
+        </div>
 
         <v-responsive
           v-else
@@ -123,5 +122,10 @@ export default {
 .scaled {
   transform: scale(1.1);
   z-index: 1;
+}
+
+.close-btn-playgarden {
+  position: absolute !important;
+  right: 30% !important;
 }
 </style>

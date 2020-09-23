@@ -66,19 +66,7 @@
                         </v-icon>
                       </v-avatar>
                     </template>
-
-                    <video-js-player
-                      :options="{
-                        title: item.videos.name,
-                        poster: item.videos.thumbnail,
-                        sources: [
-                          {
-                            src: item.videos.videoUrl.HLS,
-                            type: 'application/x-mpegURL'
-                          }
-                        ]
-                      }"
-                    />
+                    <pg-inline-video-player @ready="onPlayerReady({ player: $event, video: item.videos })" />
                   </v-badge>
                 </div>
               </template>
@@ -186,7 +174,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import VideoJsPlayer from '@/components/video-player/VideoJsPlayer'
+import PgInlineVideoPlayer from '@/components/pg-video-js-player/PgInlineVideoPlayer.vue'
 
 function generateItemTemplate () {
   return {
@@ -202,7 +190,7 @@ export default {
   name: 'OnboardingEditorDialog',
 
   components: {
-    VideoJsPlayer
+    PgInlineVideoPlayer
   },
 
   data: () => ({
@@ -222,6 +210,19 @@ export default {
 
   methods: {
     ...mapActions('onboarding', ['createOnboarding', 'updateOnboarding']),
+
+    onPlayerReady ({ player, video }) {
+      player.loadMedia({
+        title: video.name,
+        poster: video.thumbnail,
+        src: [
+          {
+            src: video.videoUrl.HLS,
+            type: 'application/x-mpegURL'
+          }
+        ]
+      })
+    },
 
     close () {
       this.$nextTick(() => {

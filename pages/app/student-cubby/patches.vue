@@ -1,29 +1,30 @@
 <template>
-  <v-card flat>
-    <v-card-text>
-      <div class="text-center">
-        <underlined-title
-          class="text-h3"
-          text="Earn Activity Patches for learning!"
-        />
-
-        <p class="mt-5">
-          Master subjects in the Activities section to collect patches for your
-          Student Cubby! Collect all badges to receive a real patch for your
-          backpack.
-        </p>
-      </div>
-
-      <patch-row
-        v-for="activityType in items"
-        :key="`activity-type-patch-row-${activityType.id}`"
-        :activity-type="activityType"
-        :unblocked="unblocked"
-      />
-    </v-card-text>
-
+  <div>
     <patch-overlay :unblocked="unblocked" />
-  </v-card>
+    <v-card flat>
+      <v-card-text>
+        <div class="text-center">
+          <underlined-title
+            class="text-h6 text-md-h3"
+            text="Earn Activity Patches for learning!"
+          />
+
+          <p class="mt-2">
+            Master subjects in the Activities section to collect patches for your
+            Student Cubby! Collect all badges to receive a real patch for your
+            backpack.
+          </p>
+        </div>
+
+        <patch-row
+          v-for="activityType in items"
+          :key="`activity-type-patch-row-${activityType.id}`"
+          :activity-type="activityType"
+          :unblocked="unblocked"
+        />
+      </v-card-text>
+    </v-card>
+  </div>
 </template>
 
 <script>

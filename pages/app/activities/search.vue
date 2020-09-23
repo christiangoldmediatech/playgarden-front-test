@@ -5,13 +5,13 @@
       <activity-title />
     </v-container>
     <activity-results v-bind="{ activities }" />
-    <lesson-activity-player />
+    <activity-player />
   </v-main>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import LessonActivityPlayer from '@/components/app/dashboard/LessonActivityPlayer.vue'
+import ActivityPlayer from '@/components/app/activities/ActivityPlayer.vue'
 import ActivityResults from '@/components/app/activities/ActivityResults.vue'
 import ActivityTitle from '@/components/app/activities/ActivityTitle.vue'
 import TopBar from '@/components/app/activities/TopBar.vue'
@@ -20,8 +20,7 @@ export default {
   name: 'Search',
 
   components: {
-    // ActivityPlayer,
-    LessonActivityPlayer,
+    ActivityPlayer,
     ActivityResults,
     ActivityTitle,
     TopBar

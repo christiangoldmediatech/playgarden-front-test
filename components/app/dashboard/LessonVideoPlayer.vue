@@ -1,62 +1,76 @@
 <template>
-  <v-dialog v-model="dialog" eager dark fullscreen :persistent="true">
-    <div class="d-flex align-center justify-center bkg-black">
-      <children-video-player
-        ref="childrenVideoPlayer"
-        :width="dimensions.width"
-        :height="dimensions.height"
-        :completed-props="completedProps"
-        :video-id="videoId"
-        @hotkey="close"
-        @ready="onReady"
-      >
-        <template v-slot:title>
-          <underlined-title
-            class="white--text text-h3 font-weight-medium"
-            text="Congratulations!"
-          />
-        </template>
+  <video-player-dialog
+    :id="dialogContainerId"
+    ref="videoPlayerDialog"
+    v-model="dialog"
+    show-favorite
+    :video-id="currentVideo ? currentVideo.videoId : -1"
+    @close="handleClose"
+  >
+    <pg-video-js-player
+      ref="videoPlayer"
+      autoplay
+      show-next-up
+      :no-seek="noSeek"
+      :fullscreen-override="handleFullscreen"
+      @ready="onReady"
+      @playlist-index-change="updateIndex"
+      @playlist-complete="showCompletedDialog"
+    />
+    <!-- Completed dialog -->
+    <completed-dialog
+      v-model="completed"
+      v-bind="completedProps"
+    >
+      <template v-slot:title>
+        <underlined-title
+          class="white--text text-h3 font-weight-medium"
+          text="Congratulations!"
+        />
+      </template>
 
-        <p class="text-h5 text-center white--text font-weight-medium">
-          You have completed the daily lessons.
-        </p>
-      </children-video-player>
-    </div>
-  </v-dialog>
+      <p class="text-h5 text-center white--text font-weight-medium">
+        You have completed the daily lessons.
+      </p>
+    </completed-dialog>
+  </video-player-dialog>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import VideoPlayerDialog from '@/mixins/VideoPlayerDialog.js'
+import { mapGetters } from 'vuex'
+import VideoPlayerDialogMixin from '@/mixins/VideoPlayerDialogMixin.js'
+import SaveVideoProgress from '@/mixins/SaveVideoProgressMixin.js'
+import Fullscreen from '@/mixins/FullscreenMixin.js'
+import DashboardOverrides from '@/mixins/DashboardOverridesMixin.js'
+import VideoPlayerDialog from '@/components/pg-video-js-player/VideoPlayerDialog.vue'
+import PgVideoJsPlayer from '@/components/pg-video-js-player/PgVideoJsPlayer.vue'
+import CompletedDialog from '@/components/app/dashboard/CompletedDialog.vue'
 
 export default {
   name: 'LessonVideoPlayer',
 
-  mixins: [VideoPlayerDialog],
-
-  props: {
-    ignoreProgress: {
-      type: Boolean,
-      default: false
-    },
-    playerId: {
-      type: String,
-      default: ''
-    }
+  components: {
+    VideoPlayerDialog,
+    PgVideoJsPlayer,
+    CompletedDialog
   },
+
+  mixins: [VideoPlayerDialogMixin, SaveVideoProgress, DashboardOverrides, Fullscreen],
 
   data: () => {
     return {
-      eventMessage: 'open-lesson-video-player'
+      completed: false
     }
   },
 
   computed: {
-    overrides () {
-      return {
-        childId: this.$route.query.childId,
-        lessonId: this.$route.query.lessonId
+    ...mapGetters('admin/curriculum', { lesson: 'getLesson' }),
+
+    noSeek () {
+      if (this.currentVideo && (this.currentVideo.viewed === null || this.currentVideo.viewed.completed === false)) {
+        return true
       }
+      return false
     },
 
     buttons () {
@@ -75,7 +89,7 @@ export default {
           iconLeft: 'mdi-play-outline',
           action: () => {
             // Find first activity
-            const activities = this.getLesson.lessonsActivities
+            const activities = this.lesson.lessonsActivities.map(({ activity }) => activity)
             if (activities.length) {
               this.$router.push({
                 name: 'app-dashboard-lesson-activities',
@@ -94,106 +108,38 @@ export default {
         },
         buttons: this.buttons,
         returnAction: () => {
-          this.dialog = false
+          this.$refs.videoPlayerDialog.close()
         }
       }
     }
   },
 
-  methods: {
-    ...mapActions('children/lesson', ['saveVideoProgress']),
+  created () {
+    this.$nuxt.$on('open-lesson-video-player', (params) => {
+      this.open(params)
+    })
+  },
 
+  methods: {
     onReady (player) {
       this.player = player
-
-      if (this.ignoreProgress) { return }
-
-      player.on('timeupdate', this.handleNextUp)
-      player.on('pause', this.saveProgress)
-      player.on('ended', this.completedVideo)
+      player.on('pause', this.saveVideoProgress)
+      player.on('dispose', () => {
+        this.player = null
+      })
     },
 
-    saveProgress () {
-      const mediaObject = this.mediaObject
-      const date = new Date().toISOString().substr(0, 19)
-      const time = this.player.currentTime()
-      const duration = this.player.duration()
-      const promises = []
-
-      // Only save progress if the video hasn't been completed and we are ahead of where we last left off
-      if (
-        !mediaObject.viewed ||
-        (!mediaObject.viewed.completed && mediaObject.viewed.time < time)
-      ) {
-        this.children.forEach((child) => {
-          promises.push(
-            this.saveVideoProgress({
-              lessonId: this.getLesson.id,
-              childId: child.id,
-              video: {
-                id: mediaObject.videoId,
-                completed: duration - time < 3,
-                time,
-                date
-              }
-            })
-          )
-        })
-        Promise.all(promises).then(() => {
-          this.$nuxt.$emit('dashboard-panel-update')
-        })
-      }
+    updateIndex (index) {
+      this.index = index
+      this.$router.push({
+        name: 'app-dashboard-lesson-videos',
+        query: { ...this.overrides, id: this.playlist[index].videoId }
+      })
     },
 
-    completedVideo () {
-      if (!this.mediaObject.viewed || !this.mediaObject.viewed.completed) {
-        const date = new Date().toISOString().substr(0, 19)
-        const time = this.player.currentTime()
-        const promises = []
-
-        // Do promises
-        this.children.forEach((child) => {
-          promises.push(
-            this.saveVideoProgress({
-              lessonId: this.getLesson.id,
-              childId: child.id,
-              video: {
-                id: this.mediaObject.videoId,
-                completed: true,
-                time,
-                date
-              }
-            })
-          )
-        })
-
-        // Do promises
-        Promise.all(promises).then(() => {
-          this.$nuxt.$emit('dashboard-panel-update')
-        })
-      }
-
-      // If not last item, then switch
-      if (this.index < this.playlist.length - 1) {
-        this.index++
-        this.mediaObject = this.playlist[this.index]
-        this.loadAndPlay()
-        this.$router.push({
-          name: 'app-dashboard-lesson-videos',
-          query: { ...this.overrides, id: this.mediaObject.videoId }
-        })
-      } else {
-        this.$refs.childrenVideoPlayer.showCompletedDialog()
-      }
+    showCompletedDialog () {
+      this.completed = true
     }
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.bkg-black {
-  background-color: black;
-  width: 100vw;
-  height: 100vh;
-}
-</style>

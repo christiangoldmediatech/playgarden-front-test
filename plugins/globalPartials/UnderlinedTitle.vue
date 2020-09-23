@@ -1,11 +1,7 @@
 <template>
   <span
     v-bind="$attrs"
-    :class="{
-      'text-h5 font-weight-bold text-uppercase': $vuetify.breakpoint.smAndDown,
-      'text-none': $vuetify.breakpoint.mdAndUp,
-      'underlined-title': $vuetify.breakpoint.mdAndUp
-    }"
+    class="text-none underlined-title"
     :style="{
       '--ut-line-color': _lineColor,
       '--ut-background-from': _lineFrom,
@@ -95,6 +91,8 @@ export default {
       default: 55
     },
 
+    noAutoresizeFont: Boolean,
+
     // easy shortcut for faster styling
     // Note: it override the others options
     subtitle: Boolean,
@@ -133,7 +131,11 @@ export default {
         return '18px'
       }
 
-      return this.fontSize
+      if (this.noAutoresizeFont) {
+        return this.fontSize
+      }
+
+      return this.$vuetify.breakpoint.mdAndUp ? this.fontSize : '1.25rem'
     },
 
     _fontWeight () {

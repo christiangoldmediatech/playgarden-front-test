@@ -3,11 +3,11 @@
     <!-- APP MAV & BAR -->
     <app-navigation />
 
-    <application-header />
+    <application-header :full-width="Boolean(fullWidth)" />
 
     <!-- CONTENT -->
     <v-main v-if="!fullWidth">
-      <v-container fill-height>
+      <v-container class="pa-md-3 pa-0" fill-height>
         <nuxt />
       </v-container>
     </v-main>
@@ -79,8 +79,8 @@ export default {
         !this.verifyEmailToast
       ) {
         this.verifyEmailToast = this.$snotify.warning(
-          'Missing email verification',
-          'Unverified',
+          'Please verify your account',
+          'Warning',
           {
             buttons: [
               {
@@ -121,10 +121,10 @@ export default {
   .text-h6 {
     font-family: "Poppins", sans-serif !important;
   }
-  .video-js * {
-    font-family: VideoJS !important;
-    color: white !important;
-  }
+  // .video-js * {
+  //   font-family: VideoJS !important;
+  //   color: white !important;
+  // }
   .container:not(.container--fluid) {
     max-width: 1200px;
   }

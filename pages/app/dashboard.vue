@@ -1,37 +1,41 @@
 <template>
   <v-main>
-    <v-container
-      :class="{ 'dashboard-container': !$vuetify.breakpoint.mobile }"
-      :style="{ '--headerHeight': headerHeight }"
-      fluid
-    >
-      <v-row class="dashboard-row" justify="center">
-        <v-col class="order-last order-md-first" cols="12" sm="8" md="4" lg="3">
+    <v-container :class="{ 'dashboard-container': !$vuetify.breakpoint.smAndDown }" fluid>
+      <v-row class="fill-height" justify="center">
+        <v-col
+          class="dashboard-column order-last order-md-first"
+          cols="12"
+          sm="8"
+          md="5"
+          lg="4"
+          xl="3"
+        >
           <dashboard-panel v-bind="{ lesson }" />
         </v-col>
-        <v-col class="d-flex flex-column" cols="12" md="8" lg="9">
+        <v-col
+          class="dashboard-column d-flex flex-column"
+          cols="12"
+          sm="12"
+          md="7"
+          lg="8"
+          xl="9"
+        >
           <!-- Tutorial row -->
           <v-row
-            class="flex-grow-0 flex-shrink-1 mb-6"
+            class="dashboard-tip-row flex-grow-0 flex-shrink-1"
+            justify="center"
+            justify-md="start"
             align="center"
-            no-gutters
+            :no-gutters="$vuetify.breakpoint.smAndUp"
           >
-            <v-col class="flex-shrink-1 flex-grow-0">
+            <div class="dashboard-child-pick-container">
               <child-select v-model="selectedChild" hide-details />
-            </v-col>
+            </div>
 
-            <!-- <v-btn color="primary" @click.stop="onResetChild">
-              RESET CHILD
-            </v-btn> -->
-
-            <!-- <span>
-              {{ breakpoints }}
-            </span> -->
-
-            <v-col class="text-center text-md-right">
-              <span
-                class="font-weight-medium"
-              >First time using Playgarden?</span>
+            <v-col class="text-center text-sm-right">
+              <span class="font-weight-medium">
+                First time using Playgarden?
+              </span>
 
               <v-btn color="primary" nuxt text :to="{ name: 'app-onboarding' }">
                 WATCH TUTORIAL HERE
@@ -39,10 +43,9 @@
             </v-col>
           </v-row>
 
-          <v-row no-gutters>
-            <v-col cols="12">
-              <pg-loading v-if="$route.name === 'app-dashboard'" />
-
+          <v-row :class="['dashboard-content', { 'dashboard-mobile-content': $vuetify.breakpoint.sm, 'dashboard-xs-content': $vuetify.breakpoint.xs }]" no-gutters>
+            <v-col class="dashboard-content-column" cols="12">
+              <pg-loading v-if="$route.name === 'app-dashboard' || loading" />
               <nuxt-child />
             </v-col>
           </v-row>
@@ -54,23 +57,24 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import DashboardMixin from '@/mixins/Dashboard.js'
-import DashboardPanel from '@/components/app/dashboard/DashboardPanel'
 import ChildSelect from '@/components/app/ChildSelect.vue'
+import DashboardPanel from '@/components/app/dashboard/DashboardPanel.vue'
+import DashboardMixin from '@/mixins/DashboardMixin.js'
 
 export default {
   name: 'Dashboard',
 
   components: {
-    DashboardPanel,
-    ChildSelect
+    ChildSelect,
+    DashboardPanel
   },
 
   mixins: [DashboardMixin],
 
   data: () => {
     return {
-      selectedChild: null
+      selectedChild: null,
+      loading: false
     }
   },
 
@@ -78,18 +82,6 @@ export default {
     ...mapGetters({ currentChild: 'getCurrentChild' }),
     ...mapGetters('admin/curriculum', { lesson: 'getLesson' }),
     ...mapGetters('children', { allChildren: 'rows' }),
-
-    // breakpoints () {
-    //   const keys = Object.keys(this.$vuetify.breakpoint).filter(key => this.$vuetify.breakpoint[key])
-    //   return keys.join(', ')
-    // },
-
-    overrides () {
-      return {
-        childId: this.$route.query.childId,
-        lessonId: this.$route.query.lessonId
-      }
-    },
 
     overrideMode () {
       if (this.overrides.childId && this.overrides.lessonId) {
@@ -153,18 +145,26 @@ export default {
     ...mapActions('children/lesson', ['getCurrentLesson', 'getCurrentLessonByChildrenId', 'resetChild']),
     ...mapActions({ setChild: 'setChild' }),
 
+    getNextId (items = []) {
+      const { id } = items.find(({ viewed, complete }) => {
+        if (complete) {
+          return !complete
+        }
+        return !viewed || (viewed && !viewed.complete)
+      })
+      return id
+    },
+
     changeChild (newId, redirect = true) {
       const child = this.allChildren.find(({ id }) => id === parseInt(newId))
       this.setChild({ value: [child], save: true })
       if (redirect) {
-        this.handleLesson()
-        this.$router.push({ name: 'app-dashboard' })
+        this.loading = true
+        this.handleLesson().then(() => {
+          this.$router.push({ name: 'app-dashboard' })
+          this.loading = false
+        })
       }
-    },
-
-    async onResetChild () {
-      await this.resetChild({ lessonId: 20, childId: this.childrenIds })
-      this.$nuxt.$emit('dashboard-panel-update')
     },
 
     async handleLesson (redirect = false) {
@@ -186,13 +186,13 @@ export default {
 
     redirectDashboard () {
       if (this.lesson && this.$route.name === 'app-dashboard') {
-        if (this.videosCompletionRate < 100 && this.videos.length) {
+        if (this.videos.progress < 100 && this.videos.items.length) {
           this.$router.push({
             name: 'app-dashboard-lesson-videos',
-            query: { ...this.overrides, id: this.getNextId(this.videos) }
+            query: { ...this.overrides, id: this.getNextId(this.videos.items) }
           })
         } else if (
-          this.worksheetsCompletionRate < 100 &&
+          this.worksheets.progress < 100 &&
           this.worksheets.ONLINE
         ) {
           this.$router.push({
@@ -200,21 +200,21 @@ export default {
             query: { ...this.overrides, id: this.getNextId(this.worksheets.ONLINE) }
           })
         } else if (
-          this.activitiesCompletionRate < 100 &&
-          this.activities.length
+          this.activities.progress < 100 &&
+          this.activities.items.length
         ) {
           this.$router.push({
             name: 'app-dashboard-lesson-activities',
-            query: { ...this.overrides, id: this.getNextId(this.activities) }
+            query: { ...this.overrides, id: this.getNextId(this.activities.items) }
           })
         } else {
           this.$router.push({ name: 'app-dashboard-lesson-completed', query: { ...this.overrides } })
         }
       } else if (this.lesson && this.$route.name === 'app-dashboard-lesson-completed') {
         if (
-          (this.videosCompletionRate < 100 && this.videos.length) ||
-          (this.worksheetsCompletionRate < 100 && this.worksheets.ONLINE) ||
-          (this.activitiesCompletionRate < 100 && this.activities.length)
+          (this.videos.progress < 100 && this.videos.items.length) ||
+          (this.worksheets.progress < 100 && this.worksheets.ONLINE) ||
+          (this.activities.progress < 100 && this.activities.items.length)
         ) {
           this.$router.push({ name: 'app-dashboard', query: { ...this.overrides } })
         }
@@ -225,21 +225,32 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.dashboard-container {
-  max-height: calc(100vh - var(--headerHeight)) !important;
-  height: calc(100vh - var(--headerHeight)) !important;
-}
-
-.dashboard-row {
-  height: 100%;
-}
-
-.menu-max-width {
-  max-width: 471px;
-}
-
-.titleOnDashboard {
-  font-weight: 500 !important;
-  color: $pg-black !important;
+.dashboard {
+  &-container {
+    height: calc(100vh - 64px);
+    max-height: calc(100vh - 64px);
+  }
+  &-column {
+    height: 100%;
+    max-height: 100%;
+  }
+  &-child-pick-container {
+    width: 225px;
+  }
+  &-content {
+    height: calc(100% - 70px);
+    &-column {
+      max-height: 100%;
+    }
+  }
+  &-tip-row {
+    min-height: 70px;
+  }
+  &-mobile-content {
+    min-height: calc(100vh - 162px);
+  }
+  &-xs-content {
+    min-height: calc(100vh - 256px);
+  }
 }
 </style>

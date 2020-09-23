@@ -1,10 +1,8 @@
 <template>
-  <validation-observer v-slot="{ invalid, passes, reset }">
-    <div class="pr-3 text-center">
-      <span class="font-weight-bold text-h5">
-        NEW INVITATION
-      </span>
-    </div>
+  <validation-observer v-slot="{ invalid, passes }">
+    <p class="font-weight-bold">
+      ADD NEW CAREGIVERS
+    </p>
 
     <v-form @submit.prevent="passes(onSubmit)">
       <!-- Email -->
@@ -75,19 +73,7 @@
         type="submit"
         x-large
       >
-        SEND INVITATION
-      </v-btn>
-
-      <v-btn
-        block
-        class="mb-6"
-        color="primary"
-        :loading="loading"
-        text
-        x-large
-        @click="onCancel(reset)"
-      >
-        CANCEL
+        SEND INVITES
       </v-btn>
     </v-form>
   </validation-observer>

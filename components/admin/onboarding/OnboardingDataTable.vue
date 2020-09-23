@@ -165,14 +165,15 @@
 
 <script>
 import { mapActions } from 'vuex'
-
+import VideoPreviewBtn from '@/components/admin/video-preview/VideoPreviewBtn.vue'
 import OnboardingEditorDialog from './OnboardingEditorDialog'
 
 export default {
   name: 'OnboardingDataTable',
 
   components: {
-    OnboardingEditorDialog
+    OnboardingEditorDialog,
+    VideoPreviewBtn
   },
 
   data: () => ({

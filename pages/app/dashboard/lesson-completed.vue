@@ -8,12 +8,12 @@
       <v-row justify="center">
         <v-col class="text-center" cols="12">
           <underlined-title
-            class="text-h3 font-weight-medium"
+            class="text-h3 font-weight-medium white--text"
             text="Congratulations!"
           />
         </v-col>
         <v-col class="py-0" cols="12">
-          <p class="text-center">
+          <p class="text-center white--text">
             You have completed all the tasks for the day.<br>Come back tomorrow for more.
           </p>
         </v-col>

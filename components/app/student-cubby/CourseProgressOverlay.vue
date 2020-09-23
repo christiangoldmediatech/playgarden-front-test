@@ -41,9 +41,9 @@
           <v-col
             v-for="i in missing"
             :key="`curriculum-lesson-missing-${i}`"
-            cols="10"
+            cols="11"
             sm="8"
-            md="4"
+            md="5"
             lg="3"
           >
             <blank-dashboard-panel

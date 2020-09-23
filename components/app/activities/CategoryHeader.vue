@@ -29,7 +29,12 @@
 
             <v-list-item-content>
               <v-list-item-title>
-                {{ category.name }}
+                <span
+                  class="text-uppercase category-text"
+                  :style="{'--bgColor': category.color}"
+                >
+                  {{ category.name }}
+                </span>
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
@@ -57,7 +62,7 @@
               />
             </div>
             <span
-              class="font-weight-bold text-uppercase category-text"
+              class="text-uppercase category-text"
               :style="{'--bgColor': category.color}"
             >
               {{ category.name }}

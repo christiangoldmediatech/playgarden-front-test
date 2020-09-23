@@ -28,6 +28,7 @@
     <v-btn
       block
       color="primary"
+      min-height="60"
       class="main-btn"
       :disabled="isButtonDisabled"
       :loading="loading"
@@ -49,6 +50,8 @@
 
     <p class="signup text-center text-md-left">
       New to Playgarden Prep Online?
+
+      <br class="hidden-md-and-up">
 
       <nuxt-link :to="{ name: 'auth-signup' }">
         <span>SIGN UP NOW!</span>

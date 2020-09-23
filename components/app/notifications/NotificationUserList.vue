@@ -8,23 +8,25 @@
       <v-row
         v-for="notification in notifications"
         :key="notification.id"
-        class="justify-space-between my-1"
+        class="justify-space-between my-1 px-md-6"
         no-gutters
       >
-        <span>
+        <v-col class="text-truncate">
           {{ notification.name }}
-        </span>
+        </v-col>
 
-        <v-switch
-          v-model="notification.enabled"
-          class="ma-0 pa-0"
-          dense
-          hide-details
-          inset
-          :loading="loading"
-          :readonly="loading"
-          @change="toggleNotification(notification)"
-        />
+        <v-col class="text-right" cols="1">
+          <v-switch
+            v-model="notification.enabled"
+            class="ma-0 pa-0"
+            dense
+            hide-details
+            inset
+            :loading="loading"
+            :readonly="loading"
+            @change="toggleNotification(notification)"
+          />
+        </v-col>
       </v-row>
     </v-col>
   </v-row>

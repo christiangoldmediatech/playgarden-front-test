@@ -1,6 +1,21 @@
 import { hasLocalStorage } from '@/utils/window'
 
 export default {
+  disableAxiosGlobal: ({ commit }, { autoEnableIn = 1 } = {}) => {
+    commit('DISABLE_AXIOS_GLOBAL_ERROR_HANDLER')
+
+    if (autoEnableIn) {
+      setTimeout(
+        () => commit('ENABLE_AXIOS_GLOBAL_ERROR_HANDLER'),
+        autoEnableIn * 1000
+      )
+    }
+  },
+
+  enableAxiosGlobal: ({ commit }) => {
+    commit('ENABLE_AXIOS_GLOBAL_ERROR_HANDLER')
+  },
+
   setChild ({ commit }, { value, oldExp = null, save = false }) {
     commit('SET_CURRENT_CHILD', value)
 
@@ -21,10 +36,13 @@ export default {
         data = value.id
       }
 
-      window.localStorage.setItem('selectedChild', JSON.stringify({
-        value: data,
-        expires
-      }))
+      window.localStorage.setItem(
+        'selectedChild',
+        JSON.stringify({
+          value: data,
+          expires
+        })
+      )
     }
   }
 }

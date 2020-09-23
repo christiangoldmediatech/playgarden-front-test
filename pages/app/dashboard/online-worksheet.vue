@@ -1,49 +1,42 @@
 <template>
-  <v-card class="row mx-0 flex-column flex-nowrap" height="100%">
+  <v-card height="100%">
     <div class="green-line green-line-1" />
     <div class="green-line green-line-2" />
-
-    <v-col class="d-flex flex-column justify-end align-content-center flex-shrink-1 title-section py-0 py-md-2">
-      <span class="text-center text-h4 text-uppercase font-weight-bold">
-        Online Worksheet
-      </span>
-
-      <!-- Progress -->
-      <v-row class="flex-grow-0" justify="center">
-        <v-col cols="12" sm="8" md="6" lg="3" xl="2">
-          <v-row no-gutters>
-            <v-col cols="12">
-              <v-progress-linear
-                height="13"
-                rounded
-                :value="progress"
-              />
-            </v-col>
-            <v-col
-              v-for="i in stepCount"
-              :key="`question-marker-${i}`"
-              class="text-center"
-            >
-              <span
-                :class="['font-weight-bold', { 'primary--text': step >= i }]"
-              >
-                {{ i }}
-              </span>
-            </v-col>
+    <div class="worksheet-content">
+      <v-row justify="center">
+        <worksheet-header v-bind="{ step }" />
+        <worksheet-question v-bind="{ step, randomWord }" />
+        <!-- Images Row -->
+        <v-col class="py-0" cols="12">
+          <v-row class="mx-2" justify="center" justify-md="space-around">
+            <worksheet-image
+              v-for="item in items"
+              :key="`worksheet-image-${item.code}`"
+              :item="item"
+              :selected.sync="selected"
+              :clickable="!loading"
+              :show-word="tapCorrect"
+            />
           </v-row>
         </v-col>
+        <worksheet-continue-btn v-bind="{ selected }" @click.stop="dialog = true" />
       </v-row>
-    </v-col>
-    <v-col v-if="currentSheet && !finished" class="pt-0 pt-md-2">
-      <component
-        :is="type"
-        v-bind="{ question: worksheetTable.question, images, lastQuestion, loading }"
-        @next="nextPage"
-      />
-    </v-col>
-
+    </div>
+    <worksheet-message
+      v-model="dialog"
+      v-bind="{ item: selectedItem, selected, correct, showWord: tapCorrect, connectingPairs, tapCorrect, randomWord }"
+      @click.stop="nextStep"
+    >
+      <v-icon v-if="!correct" left>
+        mdi-less-than
+      </v-icon>
+      {{ `${correct ? buttonText : 'Go back'}` }}
+      <v-icon v-if="correct" right>
+        mdi-greater-than
+      </v-icon>
+    </worksheet-message>
     <completed-dialog
-      v-model="finished"
+      v-model="completed"
       :buttons="buttons"
       :return-text="false"
       :time-out-action="buttons[0].action"
@@ -61,31 +54,64 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
-import ConnectingPairs from '@/components/app/dashboard/worksheets/ConnectingPairs.vue'
-import TapCorrect from '@/components/app/dashboard/worksheets/TapCorrect.vue'
+import { mapGetters } from 'vuex'
+import WorksheetComputedMixin from '@/mixins/WorksheetComputedMixin.js'
+import WorksheetFunctionalityMixin from '@/mixins/WorksheetFunctionalityMixin.js'
+import WorksheetHeader from '@/components/app/dashboard/worksheets/WorksheetHeader.vue'
+import WorksheetQuestion from '@/components/app/dashboard/worksheets/WorksheetQuestion.vue'
+import WorksheetImage from '@/components/app/dashboard/worksheets/WorksheetImage.vue'
+import WorksheetContinueBtn from '@/components/app/dashboard/worksheets/WorksheetContinueBtn.vue'
+import WorksheetMessage from '@/components/app/dashboard/worksheets/WorksheetMessage.vue'
 import CompletedDialog from '@/components/app/dashboard/CompletedDialog.vue'
 
 export default {
   name: 'OnlineWorksheet',
 
   components: {
-    ConnectingPairs,
-    TapCorrect,
+    WorksheetHeader,
+    WorksheetQuestion,
+    WorksheetImage,
+    WorksheetContinueBtn,
+    WorksheetMessage,
     CompletedDialog
   },
 
+  mixins: [WorksheetComputedMixin, WorksheetFunctionalityMixin],
+
   data: () => {
     return {
-      step: 1,
-      loading: false,
-      finished: false
+      dialog: false,
+      completed: false,
+      step: 0,
+      randomWord: null,
+      answers: [],
+      items: [],
+      correct: false,
+      selected: null,
+      loading: false
     }
   },
 
   computed: {
     ...mapGetters({ children: 'getCurrentChild' }),
-    ...mapGetters('admin/curriculum', ['getLesson']),
+
+    id () {
+      return this.$route.query.id
+    },
+
+    buttonText () {
+      if (this.connectingPairs) {
+        if (!this.lastWord) {
+          return 'Next word'
+        }
+      }
+
+      if (this.lastQuestion) {
+        return 'Complete worksheet'
+      }
+
+      return 'Next question'
+    },
 
     overrides () {
       return {
@@ -101,10 +127,13 @@ export default {
           color: 'accent',
           iconLeft: 'mdi-play',
           action: () => {
-            this.$router.push({
-              name: 'app-dashboard-lesson-activities',
-              query: { ...this.overrides, id: this.getLesson.lessonsActivities[0].activity.id }
-            })
+            const activities = this.lesson.lessonsActivities.map(({ activity }) => activity)
+            if (activities.length) {
+              this.$router.push({
+                name: 'app-dashboard-lesson-activities',
+                query: { ...this.overrides, id: this.getLesson.lessonsActivities[0].id }
+              })
+            }
           }
         },
         {
@@ -116,103 +145,40 @@ export default {
           }
         }
       ]
-    },
-
-    sheets () {
-      if (this.getLesson) {
-        return this.getLesson.worksheets.filter(({ type }) => type === 'ONLINE')
-      }
-      return []
-    },
-
-    stepCount () {
-      return this.sheets.length
-    },
-
-    lastQuestion () {
-      return this.step === this.stepCount
-    },
-
-    progress () {
-      if (this.stepCount) {
-        return Math.round((this.step / this.stepCount) * 100)
-      }
-      return 0
-    },
-
-    currentSheet () {
-      return this.sheets[this.step - 1] || null
-    },
-
-    worksheetTable () {
-      return this.currentSheet.worksheetTable || null
-    },
-
-    type () {
-      const type = this.worksheetTable.type || null
-
-      if (type === 'CONNECTING_PAIRS') {
-        return 'ConnectingPairs'
-      }
-
-      if (type === 'TAP_CORRECT') {
-        return 'TapCorrect'
-      }
-
-      return ''
-    },
-
-    images () {
-      return this.worksheetTable.images || []
     }
   },
 
-  methods: {
-    ...mapActions('children/lesson', ['saveWorksheetProgress']),
-
-    nextPage () {
-      this.loading = true
-      const promises = []
-
-      const date = new Date().toISOString().substr(0, 19)
-      this.children.forEach((child) => {
-        this.saveWorksheetProgress({
-          lessonId: this.getLesson.id,
-          childId: child.id,
-          worksheet: {
-            id: this.currentSheet.id,
-            completed: true,
-            date
+  watch: {
+    selected (val) {
+      if (val) {
+        if (this.connectingPairs) {
+          if (this.selectedItem.word === this.randomWord) {
+            this.correct = true
+            return
           }
-        })
-      })
-
-      Promise.all(promises).then(() => {
-        this.$nuxt.$emit('dashboard-panel-update')
-        if (this.step < this.stepCount) {
-          this.step++
-        } else {
-          this.finished = true
+        } else if (this.tapCorrect) {
+          this.correct = this.selectedItem.is_correct
+          return
         }
-        this.loading = false
-      })
+      }
+      this.correct = false
     }
-    // prevPage () {
-    //   if (this.finished) {
-    //     this.finished = false
-    //     return
-    //   }
-    //   if (this.step > 1) {
-    //     this.step--
-    //   }
-    // },
+  },
+
+  created () {
+    this.waitAndLoad()
   }
 }
 </script>
 
-<style lang="scss" scoped>
-.title-section {
-  max-height: calc(33% - 2rem);
-  /* max-height: 33%; */
+<style lang="scss">
+.worksheet {
+  &-content {
+    height: calc(100% - 32px);
+    display: flex;
+    flex-flow: column;
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
 }
 </style>

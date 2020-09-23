@@ -94,47 +94,6 @@
         output-format="json"
       />
 
-      <!-- Photo -->
-      <span class="v-label theme--light">Photo</span>
-
-      <template v-if="draft.photoUrl">
-        <div class="mb-6 mt-3">
-          <v-badge avatar color="white" overlap>
-            <template v-slot:badge>
-              <v-avatar class="clickable" @click.native="draft.photoUrl = null">
-                <v-icon color="#757575" size="20">
-                  mdi-close
-                </v-icon>
-              </v-avatar>
-            </template>
-
-            <v-img width="250" :src="draft.photoUrl" />
-          </v-badge>
-        </div>
-      </template>
-
-      <validation-provider
-        v-else
-        v-slot="{ errors }"
-        name="File"
-        rules="required|size:10000"
-      >
-        <file-uploader
-          ref="fileUploader"
-          v-model="file"
-          :error-messages="errors"
-          label="Upload Photo"
-          mode="image"
-          path="lesson"
-          placeholder="Select a photo for this lesson"
-          prepend-icon="mdi-camera"
-          solo
-          jpg
-          png
-          svg
-        />
-      </validation-provider>
-
       <v-row class="mb-6" justify="center">
         <v-btn
           class="ma-3"
