@@ -220,6 +220,7 @@ export default {
       page: 1,
       allFilters: false,
       activeFilters: [],
+      checkStatusInterval: null,
       headers: [
         {
           text: 'Activity Title',
@@ -238,6 +239,12 @@ export default {
           align: 'start',
           sortable: false,
           value: 'curriculumType.letter'
+        },
+        {
+          text: 'Status',
+          align: 'start',
+          sortable: false,
+          value: 'videos.status'
         },
         {
           text: '',
@@ -281,6 +288,14 @@ export default {
         this.allFilters = true
       }
     }
+  },
+
+  created () {
+    this.checkStatus()
+  },
+
+  beforeDestroy () {
+    clearInterval(this.checkStatusInterval)
   },
 
   methods: {
@@ -337,6 +352,7 @@ export default {
       }
 
       await this.getActivities(params)
+      this.stopInterval()
       this.loading = false
     },
 
@@ -349,6 +365,18 @@ export default {
           this.refresh()
         }
       })
+    },
+
+    checkStatus () {
+      this.checkStatusInterval = setInterval(() => {
+        this.refresh()
+      }, 120000)
+    },
+
+    stopInterval () {
+      if (this.rows.filter(data => data.videos.status !== 'COMPLETED').length === 0) {
+        clearInterval(this.checkStatusInterval)
+      }
     }
   }
 }
