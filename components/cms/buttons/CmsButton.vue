@@ -2,6 +2,7 @@
   <v-btn
     class="button"
     color="primary"
+    :style="{ 'margin-top': `${blok.marginTop}px`}"
   >
     <a :href="blok.link.url || link" @click="toLink">{{ blok.text || text }}</a>
   </v-btn>
