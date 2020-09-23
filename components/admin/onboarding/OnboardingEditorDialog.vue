@@ -212,7 +212,7 @@ export default {
     ...mapActions('onboarding', ['createOnboarding', 'updateOnboarding']),
 
     onPlayerReady ({ player, video }) {
-      /* player.loadMedia({
+      player.loadMedia({
         title: video.name,
         poster: video.thumbnail,
         src: [
@@ -221,7 +221,7 @@ export default {
             type: 'application/x-mpegURL'
           }
         ]
-      }) */
+      })
     },
 
     close () {
