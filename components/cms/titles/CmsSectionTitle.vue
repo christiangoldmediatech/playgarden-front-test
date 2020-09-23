@@ -40,7 +40,8 @@ export default {
 <style lang="scss" scoped>
 
 .section__wrapper {
-  margin: 40px 0;
+  margin: 30px 0;
+  margin-top: 60px;
   position: relative;
 }
 
@@ -60,7 +61,7 @@ export default {
 
 .link-helper {
   position: absolute;
-  top: -10px;
+  top: -100px;
 }
 
 @media (max-width: 600px) {
