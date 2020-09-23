@@ -17,7 +17,7 @@
       @playlist-index-change="updateIndex"
       @last-playlist-item="findNextActivity"
     />
-    <patch-earned-dialog v-model="patchEarnedDialog" />
+    <patch-earned-dialog v-model="patchEarnedDialog" :player="player" />
   </video-player-dialog>
 </template>
 
@@ -45,7 +45,7 @@ export default {
 
   data: () => {
     return {
-      patchEarnedDialog: true
+      patchEarnedDialog: false
     }
   },
 
@@ -68,6 +68,7 @@ export default {
     onReady (player) {
       this.player = player
       player.on('pause', () => {
+        this.patchEarnedDialog = true
         this.saveActivityProgress()
         this.doAnalytics()
       })

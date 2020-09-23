@@ -143,6 +143,15 @@ export default {
         this.status = 'LOADING'
       })
 
+      // Add show loading methods
+      this.playerInstance.showLoading = () => {
+        this.playerInstance.addClass('vjs-waiting')
+      }
+
+      this.playerInstance.hideLoading = () => {
+        this.playerInstance.removeClass('vjs-waiting')
+      }
+
       this.playerInstance.on(['play', 'playing'], () => {
         this.status = 'PLAYING'
       })
