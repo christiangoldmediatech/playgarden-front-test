@@ -1,7 +1,7 @@
 <template>
   <v-app-bar app class="pg-app-bar" color="white" elevation="1">
     <v-row align="center" justify="center" no-gutters>
-      <v-col class="pg-app-bar-col">
+      <v-col class="pg-app-bar-col" :class="{ 'full-width': fullWidth }">
         <v-row align="center" justify="space-between" no-gutters>
           <v-app-bar-nav-icon
             class="hidden-md-and-up primary pg-app-bar-nav-icon"
@@ -15,7 +15,7 @@
             <v-img
               alt="Playarden Prep Online Logo"
               contain
-              :max-width="$vuetify.breakpoint.xs ? '200px' : '300px'"
+              max-width="200"
               :src="require('@/assets/svg/logo.svg')"
             />
           </v-toolbar-title>
@@ -127,6 +127,14 @@ export default {
 
   mixins: [computedMixin],
 
+  props: {
+    fullWidth: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
+
   methods: {
     toggleDrawer () {
       this.$nuxt.$emit('toggle-nav-drawer')
@@ -148,6 +156,12 @@ export default {
 
 .pg-app-bar-col {
   max-width: 1200px;
+
+  &.full-width {
+    max-width: unset;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
 }
 
 .v-btn--active.custom-active {

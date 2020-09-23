@@ -3,6 +3,10 @@
     v-editable="blok"
     class="section__wrapper"
   >
+    <div
+      :id="blok.sectionLink"
+      class="link-helper"
+    />
     <div class="section__title">
       {{ blok.title || title }}
     </div>
@@ -37,6 +41,7 @@ export default {
 
 .section__wrapper {
   margin: 20px 0;
+  position: relative;
 }
 
 .section__title {
@@ -51,6 +56,11 @@ export default {
 .section__subtitle {
   font-size: 19px;
   color: #707070
+}
+
+.link-helper {
+  position: absolute;
+  top: -10px;
 }
 
 @media (max-width: 600px) {

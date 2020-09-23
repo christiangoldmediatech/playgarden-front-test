@@ -58,6 +58,19 @@
         </a>
       </div>
     </div>
+
+    <cms-section-title
+      title="You might also like"
+    />
+    <generic-carousel>
+      <squared-card
+        v-for="(forum, idx) in forumList"
+        :key="idx"
+        :title="forum.title"
+        :link="forum.link"
+        :image="forum.image"
+      />
+    </generic-carousel>
   </div>
 </template>
 
@@ -87,7 +100,9 @@ export default {
       story: { content: { body: '' } },
       title: [],
       listenerFn: null,
-      shareLinks: []
+      shareLinks: [],
+      /* Forum  */
+      forumList: []
     }
   },
 
@@ -98,6 +113,7 @@ export default {
   },
 
   mounted () {
+    this.fetchForumStories()
     this.generateShareLinks()
 
     // Use the bridge to listen to events
@@ -153,6 +169,21 @@ export default {
     },
     toParentsCorner () {
       this.$router.push('/app/parent-corner')
+    },
+    async fetchForumStories () {
+      const version = this.$storyapi.isDev ? 'draft' : 'published'
+
+      const res = await this.$storyapi.get('cdn/stories/', {
+        version,
+        starts_with: 'app/parent-corner/forum'
+      })
+
+      this.forumList = res.data.stories.map(story => ({
+        id: story.id,
+        title: story.content.title,
+        link: `/${story.full_slug}`,
+        image: story.content.image
+      }))
     }
   }
 

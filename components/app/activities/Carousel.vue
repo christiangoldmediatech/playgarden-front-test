@@ -1,6 +1,7 @@
 <template>
   <v-container
     class="background-line"
+    :class="{ mobile: $vuetify.breakpoint.xs }"
     :style="{'--bgColor': color}"
     fluid
   >
@@ -26,7 +27,7 @@
             >
 
             <div class="px-5">
-              <span class="font-weight-black text-outline subtitle-text carousel-text text-uppercase pg-letter-spacing " :style="{'--bgColor': color}">
+              <span class="font-weight-black text-outline subtitle-text carousel-text text-uppercase pg-letter-spacing category-name" :style="{'--bgColor': color}">
                 {{ categoryName }}
               </span>
             </div>
@@ -232,5 +233,11 @@ export default {
     box-shadow: 0 -1px 6px 0 rgba(0, 0, 0, 0.12);
     z-index: -1;
   }
+  &.mobile::before {
+    top: calc(90% - 2.5rem); left: 0; right: 0; bottom: 0;
+  }
+}
+.category-name {
+  font-weight: 600 !important;
 }
 </style>
