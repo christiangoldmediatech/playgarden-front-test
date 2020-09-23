@@ -233,19 +233,34 @@ export default {
 
     if (this.isUserLoggedIn) {
       await this.getPlan()
+      await this.fetchAddress()
     }
   },
 
   methods: {
     ...mapActions(['disableAxiosGlobal', 'enableAxiosGlobal']),
 
-    ...mapActions('shipping-address', ['createShippingAddress']),
+    ...mapActions('shipping-address', [
+      'createShippingAddress',
+      'getShippingAddress',
+      'updateShippingAddress'
+    ]),
 
     ...mapActions('payment', [
       'getSelectedSubscriptionPlan',
       'fetchSubscriptionPlan',
       'selectSubscriptionPlan'
     ]),
+
+    async fetchAddress () {
+      try {
+        this.disableAxiosGlobal()
+        this.draftAddress = await this.getShippingAddress()
+      } catch (e) {
+      } finally {
+        this.enableAxiosGlobal()
+      }
+    },
 
     async getPlan () {
       try {
@@ -291,7 +306,7 @@ export default {
 
       try {
         if (!this.noAddress && this.draft.requireAddress) {
-          await this.createShippingAddress(this.draftAddress)
+          await this.submitMethodShippingAddress(this.draftAddress)
         }
 
         await this.selectSubscriptionPlan(this.getSubmittableData())
@@ -306,6 +321,12 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+
+    submitMethodShippingAddress (data) {
+      return this.draftAddress.id
+        ? this.updateShippingAddress({ id: this.draftAddress.id, data })
+        : this.createShippingAddress(data)
     },
 
     resetDraft () {
