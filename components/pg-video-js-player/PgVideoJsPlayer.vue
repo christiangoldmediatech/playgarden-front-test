@@ -152,6 +152,14 @@ export default {
         this.playerInstance.removeClass('vjs-waiting')
       }
 
+      this.playerInstance.nextVideo = () => {
+        if (!this.lastPlaylistItem) {
+          this.loadMediaObject(this.playlistItemIndex + 1)
+        } else {
+          this.$emit('playlist-complete')
+        }
+      }
+
       this.playerInstance.on(['play', 'playing'], () => {
         this.status = 'PLAYING'
       })
@@ -197,11 +205,10 @@ export default {
 
       // Move onto next playlist item
       this.playerInstance.on('ended', () => {
-        if (!this.lastPlaylistItem && this.position === this.duration) {
-          this.loadMediaObject(this.playlistItemIndex + 1)
-        } else {
-          this.$emit('playlist-complete')
+        if (this.noAutoTrackChange) {
+          return
         }
+        this.playerInstance.nextVideo()
       })
 
       const excludeList = ['ready', 'playlist-index-change', 'last-playlist-item', 'playlist-complete']

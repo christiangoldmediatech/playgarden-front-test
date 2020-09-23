@@ -14,6 +14,7 @@
       :no-seek="noSeek"
       :fullscreen-override="handleFullscreen"
       @ready="onReady"
+      @playlist-index-change="doAnalytics(true)"
       @last-playlist-item="findNextActivity"
     />
   </video-player-dialog>

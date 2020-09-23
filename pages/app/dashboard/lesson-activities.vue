@@ -61,21 +61,15 @@
         </v-list-item>
       </v-list>
     </template>
-    <lesson-activity-player />
   </v-card>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import FavoritesMixin from '@/mixins/FavoritesMixin.js'
-import LessonActivityPlayer from '@/components/app/dashboard/LessonActivityPlayer.vue'
 
 export default {
   name: 'LessonActivities',
-
-  components: {
-    LessonActivityPlayer
-  },
 
   mixins: [FavoritesMixin],
 

@@ -52,6 +52,7 @@
         </v-col>
       </v-row>
     </v-container>
+    <lesson-activity-player />
   </v-main>
 </template>
 
@@ -60,13 +61,15 @@ import { mapGetters, mapActions } from 'vuex'
 import ChildSelect from '@/components/app/ChildSelect.vue'
 import DashboardPanel from '@/components/app/dashboard/DashboardPanel.vue'
 import DashboardMixin from '@/mixins/DashboardMixin.js'
+import LessonActivityPlayer from '@/components/app/dashboard/LessonActivityPlayer.vue'
 
 export default {
   name: 'Dashboard',
 
   components: {
     ChildSelect,
-    DashboardPanel
+    DashboardPanel,
+    LessonActivityPlayer
   },
 
   mixins: [DashboardMixin],

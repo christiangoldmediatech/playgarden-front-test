@@ -1,10 +1,21 @@
 import { mapGetters, mapActions } from 'vuex'
 import { jsonCopy } from '@/utils/objectTools'
+import PatchEarnedDialog from '@/components/app/PatchEarnedDialog.vue'
 
 export default {
+  components: {
+    PatchEarnedDialog
+  },
+
   data: () => {
     return {
-      analyticsLoading: false
+      analyticsLoading: false,
+      patchEarnedDialog: false,
+      patchData: {
+        category: '',
+        number: 0,
+        icon: null
+      }
     }
   },
 
@@ -20,7 +31,7 @@ export default {
       updateAnalytic: 'update'
     }),
 
-    doAnalytics () {
+    doAnalytics (startCheck = false) {
       const currentVideo = jsonCopy(this.currentVideo)
       if (this.analyticsLoading || !currentVideo.activityId) {
         return
@@ -44,18 +55,32 @@ export default {
                   time
                 })
               } else if (result.didFinish) {
-                return true
-              }
-              // In all other cases, update
-              return this.updateAnalytic({
-                analyticsId: result.id,
-                params: {
-                  didFinish,
-                  time
+                return false
+              } else {
+                if (startCheck) {
+                  return false
                 }
-              })
+                // In all other cases, update
+                return this.updateAnalytic({
+                  analyticsId: result.id,
+                  params: {
+                    didFinish,
+                    time
+                  }
+                })
+              }
             })
             .then((result) => {
+              if (startCheck) { return }
+              if (result && result.patch && this.patchEarnedDialog === false) {
+                const { activityType, number } = result.patch
+                this.patchData = {
+                  number,
+                  category: activityType.name,
+                  icon: activityType.icon
+                }
+                this.patchEarnedDialog = true
+              }
               resolve(result)
             })
             .catch((err) => {

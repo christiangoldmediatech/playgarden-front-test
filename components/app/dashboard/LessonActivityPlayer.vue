@@ -13,11 +13,12 @@
       show-next-up
       :no-seek="noSeek"
       :fullscreen-override="handleFullscreen"
+      no-auto-track-change
       @ready="onReady"
       @playlist-index-change="updateIndex"
       @last-playlist-item="findNextActivity"
     />
-    <patch-earned-dialog v-model="patchEarnedDialog" :player="player" />
+    <patch-earned-dialog v-model="patchEarnedDialog" v-bind="{ player, ...patchData }" />
   </video-player-dialog>
 </template>
 
@@ -30,30 +31,28 @@ import Fullscreen from '@/mixins/FullscreenMixin.js'
 import DashboardOverrides from '@/mixins/DashboardOverridesMixin.js'
 import VideoPlayerDialog from '@/components/pg-video-js-player/VideoPlayerDialog.vue'
 import PgVideoJsPlayer from '@/components/pg-video-js-player/PgVideoJsPlayer.vue'
-import PatchEarnedDialog from '@/components/app/PatchEarnedDialog.vue'
+import DashboardMixin from '~/mixins/DashboardMixin'
+import { jsonCopy } from '~/utils/objectTools'
 
 export default {
   name: 'LessonActivityPlayer',
 
   components: {
     VideoPlayerDialog,
-    PgVideoJsPlayer,
-    PatchEarnedDialog
+    PgVideoJsPlayer
   },
 
-  mixins: [VideoPlayerDialogMixin, SaveActivityProgress, ActivityAnalytics, FindNextActivity, DashboardOverrides, Fullscreen],
+  mixins: [VideoPlayerDialogMixin, DashboardMixin, SaveActivityProgress, ActivityAnalytics, FindNextActivity, DashboardOverrides, Fullscreen],
 
   data: () => {
-    return {
-      patchEarnedDialog: false
-    }
+    return {}
   },
 
   computed: {
     noSeek () {
-      if (this.currentVideo && (this.currentVideo.viewed === null || this.currentVideo.viewed.completed === false)) {
-        return true
-      }
+      // if (this.currentVideo && (this.currentVideo.viewed === null || this.currentVideo.viewed.completed === false)) {
+      //   return true
+      // }
       return false
     }
   },
@@ -68,9 +67,11 @@ export default {
     onReady (player) {
       this.player = player
       player.on('pause', () => {
-        this.patchEarnedDialog = true
         this.saveActivityProgress()
         this.doAnalytics()
+        if (this.player.currentTime() === this.player.duration()) {
+          this.player.nextVideo()
+        }
       })
       player.on('dispose', () => {
         this.player = null
@@ -78,13 +79,19 @@ export default {
     },
 
     updateIndex (index) {
-      if (!this.currentVideo.ignoreVideoProgress) {
-        this.index = index
+      this.doAnalytics(true)
+      const nextVideo = jsonCopy(this.playlist[index])
+      if (!nextVideo.ignoreVideoProgress || nextVideo.ignoreVideoProgress === false) {
         this.$router.push({
           name: 'app-dashboard-lesson-activities',
           query: { ...this.overrides, id: this.playlist[index].activityId }
         })
+      } else if (this.$route.name !== 'app-dashboard-lesson-completed' && this.lessonCompleted) {
+        this.$router.push({
+          name: 'app-dashboard-lesson-completed'
+        })
       }
+      this.index = index
     }
   }
 }

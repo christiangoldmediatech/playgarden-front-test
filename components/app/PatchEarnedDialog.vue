@@ -8,7 +8,7 @@
           <v-col cols="10" lg="5">
             <v-img
               class="mx-auto"
-              :src="require('@/assets/png/dashboard/badge.png')"
+              :src="icon || require('@/assets/png/dashboard/badge.png')"
               max-width="352px"
             />
           </v-col>
@@ -23,7 +23,11 @@
               />
             </div>
             <p class="patch-earned-paragraph-1">
-              You have watched 5 videos for cognitive, you won a patch!
+              You have watched {{ number }} videos for
+              <span class="text-lowercase">
+                {{ category }}
+              </span>
+              , you won a patch!
             </p>
             <p class="patch-earned-paragraph-2">
               Keep watching videos to master the category and earn more patches.
@@ -100,6 +104,23 @@ export default {
       validator: (val) => {
         return (typeof val === 'object' || val === null)
       },
+      required: true
+    },
+
+    icon: {
+      validator: (val) => {
+        return (typeof val === 'string' || val === null)
+      },
+      required: true
+    },
+
+    number: {
+      type: Number,
+      required: true
+    },
+
+    category: {
+      type: String,
       required: true
     }
   },
