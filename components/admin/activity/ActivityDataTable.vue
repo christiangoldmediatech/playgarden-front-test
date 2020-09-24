@@ -287,6 +287,10 @@ export default {
       if (val.length === this.filterList.length) {
         this.allFilters = true
       }
+    },
+
+    rows () {
+      this.checkStatus()
     }
   },
 
@@ -368,9 +372,11 @@ export default {
     },
 
     checkStatus () {
-      this.checkStatusInterval = setInterval(() => {
-        this.refresh()
-      }, 120000)
+      if (this.rows.filter(data => data.videos.status !== 'COMPLETED').length > 0) {
+        this.checkStatusInterval = setInterval(() => {
+          this.refresh()
+        }, 120000)
+      }
     },
 
     stopInterval () {

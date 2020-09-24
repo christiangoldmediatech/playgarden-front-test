@@ -239,6 +239,12 @@ export default {
     ]
   }),
 
+  watch: {
+    resources () {
+      this.checkStatus()
+    }
+  },
+
   created () {
     this.checkStatus()
     this.refresh()
@@ -266,9 +272,11 @@ export default {
     },
 
     checkStatus () {
-      this.checkStatusInterval = setInterval(() => {
-        this.refresh()
-      }, 120000)
+      if (this.resources.filter(data => data.status !== 'COMPLETED').length > 0) {
+        this.checkStatusInterval = setInterval(() => {
+          this.refresh()
+        }, 120000)
+      }
     },
 
     stopInterval () {

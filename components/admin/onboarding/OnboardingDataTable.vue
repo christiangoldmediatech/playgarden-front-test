@@ -217,6 +217,12 @@ export default {
     ]
   }),
 
+  watch: {
+    onboardings () {
+      this.checkStatus()
+    }
+  },
+
   created () {
     this.checkStatus()
   },
@@ -260,9 +266,11 @@ export default {
     },
 
     checkStatus () {
-      this.checkStatusInterval = setInterval(() => {
-        this.refresh()
-      }, 120000)
+      if (this.onboardings.filter(data => data.videos.status !== 'COMPLETED').length > 0) {
+        this.checkStatusInterval = setInterval(() => {
+          this.refresh()
+        }, 120000)
+      }
     },
 
     stopInterval () {
