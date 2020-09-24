@@ -2,6 +2,7 @@
   <v-btn
     class="button"
     color="primary"
+    :style="{ 'margin-top': `${blok.marginTop}px`}"
   >
     <a :href="blok.link.url || link" @click="toLink">{{ blok.text || text }}</a>
   </v-btn>
@@ -42,7 +43,7 @@ export default {
 <style lang="scss" scoped>
 
 .button {
-  width: 100%;
+  display: inline-flex;
 
   a {
     color: white !important;

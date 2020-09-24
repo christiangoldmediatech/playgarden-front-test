@@ -57,7 +57,7 @@ export default {
 <style lang="scss" scoped>
 
 $shadow-color:  rgba(0, 0, 0, 0.15);
-$card-size: 90px;
+$card-size: 80px;
 $shadow-offset: 15px;
 
 $bg-dark-green: #c2daa5;
