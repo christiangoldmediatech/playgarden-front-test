@@ -13,9 +13,12 @@
       show-next-up
       :no-seek="noSeek"
       :fullscreen-override="handleFullscreen"
+      no-auto-track-change
       @ready="onReady"
+      @playlist-index-change="updateIndex"
       @last-playlist-item="findNextActivity"
     />
+    <patch-earned-dialog v-model="patchEarnedDialog" v-bind="{ player, ...patchData }" @return="handleClose" />
   </video-player-dialog>
 </template>
 
@@ -40,6 +43,9 @@ export default {
 
   computed: {
     noSeek () {
+      if (!['production', 'staging'].includes(process.env.testEnv)) {
+        return false
+      }
       if (this.currentVideo && (this.currentVideo.viewed === null || this.currentVideo.viewed.completed === false)) {
         return true
       }
@@ -56,10 +62,25 @@ export default {
   methods: {
     onReady (player) {
       this.player = player
-      player.on('pause', this.doAnalytics)
+      player.on('pause', () => {
+        if (this.analyticsLoading === false) {
+          this.player.showLoading()
+          this.doAnalytics().then(() => {
+            this.player.hideLoading()
+            if (this.player.currentTime() === this.player.duration() && !this.patchEarnedDialog) {
+              this.player.nextVideo()
+            }
+          })
+        }
+      })
       player.on('dispose', () => {
         this.player = null
       })
+    },
+
+    updateIndex (index) {
+      this.index = index
+      this.doAnalytics(true)
     }
   }
 }

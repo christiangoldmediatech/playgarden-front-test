@@ -1,7 +1,7 @@
 import { hasLocalStorage } from '@/utils/window'
 
 export default {
-  disableAxiosGlobal: ({ commit }, { autoEnableIn = 1 } = {}) => {
+  disableAxiosGlobal: ({ commit }, { autoEnableIn = 30 } = {}) => {
     commit('DISABLE_AXIOS_GLOBAL_ERROR_HANDLER')
 
     if (autoEnableIn) {
