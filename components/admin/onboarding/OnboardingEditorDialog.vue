@@ -66,7 +66,7 @@
                         </v-icon>
                       </v-avatar>
                     </template>
-                    <pg-inline-video-player @ready="onPlayerReady({ player: $event, video: item.videos })" />
+                    <pg-inline-video-player @ready="onPlayerReady" />
                   </v-badge>
                 </div>
               </template>
@@ -211,17 +211,26 @@ export default {
   methods: {
     ...mapActions('onboarding', ['createOnboarding', 'updateOnboarding']),
 
-    onPlayerReady ({ player, video }) {
-      player.loadMedia({
-        title: video.name,
-        poster: video.thumbnail,
-        src: [
-          {
-            src: video.videoUrl.HLS,
-            type: 'application/x-mpegURL'
-          }
-        ]
-      })
+    onPlayerReady (player) {
+      this.player = player
+    },
+
+    waitAndLoad (video) {
+      const interval = window.setInterval(() => {
+        if (this.player) {
+          this.player.loadMedia({
+            title: video.name,
+            poster: video.thumbnail,
+            src: [
+              {
+                src: video.videoUrl.HLS,
+                type: 'application/x-mpegURL'
+              }
+            ]
+          })
+          window.clearInterval(interval)
+        }
+      }, 50)
     },
 
     close () {
@@ -281,6 +290,7 @@ export default {
       if (item.videos) {
         this.item.videoId = item.videos.id
         this.item.thumbnail = item.videos.thumbnail
+        this.waitAndLoad(item.videos)
       }
     },
 
