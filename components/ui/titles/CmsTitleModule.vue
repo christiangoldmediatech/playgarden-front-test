@@ -29,7 +29,7 @@ export default {
 .title {
   font-size: 50px;
   margin: 30px auto;
-  margin-top: 50px;
+  margin-top: 80px;
   max-width: 800px;
   color: $pg-black;
   font-weight: bold;

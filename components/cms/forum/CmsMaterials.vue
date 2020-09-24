@@ -114,6 +114,7 @@ export default {
   @include parent-stack-context;
   font-size: 50px;
   margin: 0 auto;
+  margin-top: 40px;
   max-width: 800px;
   color: $pg-black;
   font-weight: bold;

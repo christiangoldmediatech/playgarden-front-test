@@ -41,7 +41,7 @@ export default {
 
 .section__wrapper {
   margin: 30px 0;
-  margin-top: 60px;
+  margin-top: 80px;
   position: relative;
 }
 
