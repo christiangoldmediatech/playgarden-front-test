@@ -49,6 +49,8 @@
             <v-list-item
               v-if="worksheets.ONLINE.length"
               class="dashboard-item"
+              active-class="dashboard-item-active"
+              exact-active-class="dashboard-item-exact"
               :disabled="videos.progress < 100"
               nuxt
               exact
@@ -63,6 +65,8 @@
             <v-list-item
               v-if="worksheets.OFFLINE"
               class="dashboard-item"
+              active-class="dashboard-item-active"
+              exact-active-class="dashboard-item-exact"
               :disabled="videos.progress < 100"
               nuxt
               exact
