@@ -47,16 +47,19 @@
                 {{ item.product.name }}
               </span>
             </v-col>
+
             <v-col cols="5">
               <div class="product-description">
                 <span class="product-price">
                   ${{ item.unit_amount / 100 }}
                 </span>
-                <br>
+
                 <span no-gutters class="product-info">
-                  a year
+                  / {{ productPeriod(item.product.name) }}
                 </span>
+
                 <br>
+
                 <span class="product-info-1">*Pricing is per child</span>
               </div>
             </v-col>
@@ -70,10 +73,9 @@
                 TOTAL
               </span>
             </v-col>
-            <v-col cols="3" class="text-align-right">
-              <span class="total-cost">
-                ${{ cost.total || 0 }}
-              </span>
+
+            <v-col cols="3" class="text-right">
+              <span class="total-cost"> ${{ cost.total || 0 }} </span>
             </v-col>
           </v-row>
 
@@ -83,7 +85,8 @@
                 DUE TODAY
               </span>
             </v-col>
-            <v-col cols="3" class="text-align-right">
+
+            <v-col cols="3" class="text-right">
               <span class="due-today-total">
                 <b>${{ 0 }}</b>
               </span>
@@ -133,6 +136,10 @@ export default {
       'validateCard'
     ]),
 
+    productPeriod (name = '') {
+      return /month.*$/.test(name.toLowerCase()) ? 'month' : 'year'
+    },
+
     async fetchSubCosts () {
       try {
         this.cost = await this.fetchSubscriptionCost()
@@ -166,17 +173,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.product-name {
-  text-transform: uppercase !important;
-}
-
-.product-price {
-  font-size: 30px !important;
-}
-
 .product-info {
   font-size: 14px !important;
 }
+
 .product-info-1 {
   font-size: 9px !important;
 }
@@ -186,25 +186,19 @@ export default {
   line-height: 1.1 !important;
 }
 
-.due-today {
-  color: $pg-black !important;
-  font-weight: bold !important;
-  font-size: 25px !important;
-}
+.due-today,
 .due-today-total {
   color: $pg-black !important;
-  font-weight: 500 !important;
-  font-size: 25px !important;
-}
-
-.total {
   font-size: 20px !important;
 }
+
+.due-today-total {
+  font-weight: 500 !important;
+}
+
+.product-price,
+.total,
 .total-cost {
   font-size: 20px !important;
-}
-
-.text-align-right {
-  text-align: right !important;
 }
 </style>

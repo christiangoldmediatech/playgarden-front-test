@@ -6,7 +6,7 @@
       </span>
     </p>
 
-    <v-form @submit.prevent="passes(onSubmit)">
+    <v-form class="mt-7" @submit.prevent="passes(onSubmit)">
       <!-- Card number -->
       <validation-provider
         v-slot="{ errors }"
@@ -76,7 +76,7 @@
         <validation-provider v-slot="{ errors }" name="Terms" rules="required">
           <v-checkbox
             v-model="draft.acceptTerms"
-            class="accept-terms mb-6 mt-0 pt-0"
+            class="accept-terms mb-6 ml-3 mt-0 pt-0"
             :error-messages="errors"
             :true-value="true"
             :false-value="null"
@@ -86,8 +86,9 @@
             </template>
           </v-checkbox>
         </validation-provider>
+
         <nuxt-link
-          class="terms-conditions link-text ml-1"
+          class="terms-conditions link-text ml-1 mt-5"
           :to="{ name: 'terms-conditions' }"
           tag="span"
           v-text="'Terms & Conditions'"
@@ -107,7 +108,7 @@
         {{ buttonText }}
       </v-btn>
 
-      <p class="mb-15 text-center">
+      <p class="mb-15 text-body-2 text-center">
         <span>
           You will only be billed after the one week of FREE trial is completed
         </span>
