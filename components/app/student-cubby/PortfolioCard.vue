@@ -2,13 +2,13 @@
   <v-hover v-slot="{ hover }">
     <v-card
       :class="['portfolio-card', { 'clickable': !displayMode, 'scaled': hover && !displayMode }]"
-      light
       :elevation="(hover && !displayMode) ? 9 : 0"
       @click.stop="$nuxt.$emit('open-portfolio-overlay', image)"
     >
       <v-img
         :src="image"
         :aspect-ratio="1"
+        contain
       />
       <div v-if="!displayMode" class="mt-3">
         <span
