@@ -142,12 +142,14 @@ export default {
     loading: true
   }),
 
-  async created () {
-    await this.getPlan()
+  created () {
+    this.init()
 
-    if (this.showAddress) {
-      await this.fetchAddress()
-    }
+    this.$nuxt.$on('plan-membership-changed', () => this.init())
+  },
+
+  beforeDestroy () {
+    this.$nuxt.$off('plan-membership-changed')
   },
 
   methods: {
@@ -160,6 +162,14 @@ export default {
     ]),
 
     ...mapActions('payment', ['getSelectedSubscriptionPlan']),
+
+    async init () {
+      await this.getPlan()
+
+      if (this.showAddress) {
+        await this.fetchAddress()
+      }
+    },
 
     async fetchAddress () {
       this.loading = true
