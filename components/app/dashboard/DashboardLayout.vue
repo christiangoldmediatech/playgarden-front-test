@@ -42,7 +42,7 @@
                 First time using Playgarden?
               </span>
 
-              <v-btn color="primary" text v-bind="!previewMode ? { nuxt, to: { name: 'app-onboarding' } } : {}">
+              <v-btn color="primary" text v-bind="!previewMode ? { nuxt: true, to: { name: 'app-onboarding' } } : {}">
                 WATCH TUTORIAL HERE
               </v-btn>
             </v-col>

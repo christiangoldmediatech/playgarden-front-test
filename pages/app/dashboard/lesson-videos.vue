@@ -5,7 +5,7 @@
         icon
         large
         :loading="favoritesLoading"
-        @click.stop="setFavorite"
+        @click.stop="handleFavorites"
       >
         <v-icon color="#F5737F">
           <template v-if="isFavorite">
