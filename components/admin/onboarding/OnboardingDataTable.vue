@@ -51,7 +51,7 @@
               <template v-slot:top>
                 <onboarding-editor-dialog
                   ref="editor"
-                  @saved="refresh(false)"
+                  @savedNewVideo="updateListTable"
                 />
 
                 <v-toolbar color="white" flat>
@@ -180,6 +180,7 @@ export default {
     onboardings: [],
     loading: false,
     search: null,
+    checkStatusInterval: null,
     page: 1,
     headers: [
       {
@@ -191,6 +192,11 @@ export default {
         text: 'Description',
         sortable: true,
         value: 'description'
+      },
+      {
+        text: 'Status',
+        sortable: false,
+        value: 'videos.status'
       },
       {
         text: 'Created',
@@ -211,18 +217,32 @@ export default {
     ]
   }),
 
+  watch: {
+    onboardings () {
+      this.checkStatus()
+    }
+  },
+
+  created () {
+    this.checkStatus()
+  },
+
+  beforeDestroy () {
+    clearInterval(this.checkStatusInterval)
+  },
+
   methods: {
     ...mapActions('onboarding', ['getOnboardings', 'deleteOnboarding']),
 
     async refresh (clear = false) {
       this.loading = true
-
       if (clear) {
         this.search = null
       }
 
       try {
         this.onboardings = await this.getOnboardings({ name: this.search })
+        this.stopInterval()
       } catch (e) {
       } finally {
         this.loading = false
@@ -238,6 +258,25 @@ export default {
           await this.refresh()
         }
       })
+    },
+
+    updateListTable () {
+      this.refresh()
+      this.checkStatus()
+    },
+
+    checkStatus () {
+      if (this.onboardings.filter(data => data.videos.status !== 'COMPLETED').length > 0) {
+        this.checkStatusInterval = setInterval(() => {
+          this.refresh()
+        }, 120000)
+      }
+    },
+
+    stopInterval () {
+      if (this.onboardings.filter(data => data.videos.status !== 'COMPLETED').length === 0) {
+        clearInterval(this.checkStatusInterval)
+      }
     }
   }
 }

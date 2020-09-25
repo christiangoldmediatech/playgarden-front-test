@@ -48,7 +48,7 @@
             </v-btn>
 
             <v-btn
-              v-if="isUserLoggedIn && !isUserInSingupProcess"
+              v-if="isUserLoggedIn && !isUserInSignupProcess"
               class="px-13 ml-3"
               color="accent"
               nuxt
@@ -58,7 +58,17 @@
             </v-btn>
 
             <v-btn
-              v-if="isUserLoggedIn && isUserInSingupProcess"
+              v-if="previewMode"
+              class="px-13 ml-3"
+              color="accent"
+              nuxt
+              :to="{ name: 'admin-curriculum-management' }"
+            >
+              Go Back
+            </v-btn>
+
+            <v-btn
+              v-else-if="isUserLoggedIn && isUserInSignupProcess"
               class="px-13 ml-3"
               color="accent"
               nuxt
@@ -80,7 +90,7 @@
 
           <div class="hidden-xs-only hidden-md-and-up">
             <v-btn
-              v-if="isUserLoggedIn && !isUserInSingupProcess"
+              v-if="isUserLoggedIn && !isUserInSignupProcess"
               active-class="transparent--text"
               icon
               nuxt
@@ -129,6 +139,12 @@ export default {
 
   props: {
     fullWidth: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
+    previewMode: {
       type: Boolean,
       required: false,
       default: false

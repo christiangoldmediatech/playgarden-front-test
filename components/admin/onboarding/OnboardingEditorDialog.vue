@@ -237,7 +237,7 @@ export default {
       this.$nextTick(() => {
         this.dialog = false
         this.loading = false
-        this.$refs.obs.reset()
+        // this.$refs.obs.reset()
       })
     },
 
@@ -261,7 +261,7 @@ export default {
           await this.updateOnboarding({ id: this.id, data: this.item })
         }
 
-        this.$emit('saved')
+        this.$emit('savedNewVideo')
 
         this.close()
       } catch (err) {

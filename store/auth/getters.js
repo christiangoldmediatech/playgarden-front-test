@@ -5,10 +5,10 @@ export default {
   getExpiresAt: get('expiresAt'),
   getIssuedAt: get('issuedAt'),
   getUserInfo: state => state.userInfo || {},
-  isUserInSingupProcess: (_, getters) =>
+  isUserInSignupProcess: (_, getters) =>
     (getters.getUserInfo.registerStep || 0) < 5,
   isUserEmailUnverified: (_, getters) =>
-    (getters.getUserInfo.registerStep || 0) < 6 &&
-    (getters.getUserInfo.registerStep || 0) === 5,
+    (getters.getUserInfo.registerStep || 0) === 6 &&
+    !getters.getUserInfo.validatedDate,
   isUserLoggedIn: (_, getters) => Boolean(getters.getUserInfo.id)
 }

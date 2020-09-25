@@ -14,7 +14,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('children/lesson', { sendActivityProgress: 'saveActivityProgres' }),
+    ...mapActions('children/lesson', { sendActivityProgress: 'saveActivityProgress' }),
 
     saveActivityProgress () {
       const currentVideo = jsonCopy(this.currentVideo)

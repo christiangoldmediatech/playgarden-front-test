@@ -3,7 +3,7 @@
     :id="dialogContainerId"
     ref="videoPlayerDialog"
     v-model="dialog"
-    show-favorite
+    :show-favorite="lesson && !lesson.previewMode"
     :video-id="currentVideo ? currentVideo.videoId : -1"
     @close="handleClose"
   >
@@ -39,9 +39,9 @@
 <script>
 import { mapGetters } from 'vuex'
 import VideoPlayerDialogMixin from '@/mixins/VideoPlayerDialogMixin.js'
+import DashboardLink from '@/mixins/DashboardLinkMixin.js'
 import SaveVideoProgress from '@/mixins/SaveVideoProgressMixin.js'
 import Fullscreen from '@/mixins/FullscreenMixin.js'
-import DashboardOverrides from '@/mixins/DashboardOverridesMixin.js'
 import VideoPlayerDialog from '@/components/pg-video-js-player/VideoPlayerDialog.vue'
 import PgVideoJsPlayer from '@/components/pg-video-js-player/PgVideoJsPlayer.vue'
 import CompletedDialog from '@/components/app/dashboard/CompletedDialog.vue'
@@ -55,7 +55,7 @@ export default {
     CompletedDialog
   },
 
-  mixins: [VideoPlayerDialogMixin, SaveVideoProgress, DashboardOverrides, Fullscreen],
+  mixins: [VideoPlayerDialogMixin, SaveVideoProgress, DashboardLink, Fullscreen],
 
   data: () => {
     return {
@@ -83,7 +83,7 @@ export default {
           color: 'accent',
           iconLeft: 'mdi-square-edit-outline',
           action: () => {
-            this.$router.push({ name: 'app-dashboard-online-worksheet', query: { ...this.overrides } })
+            this.$router.push(this.generateNuxtRoute('online-worksheet'))
           }
         },
         {
@@ -94,10 +94,7 @@ export default {
             // Find first activity
             const activities = this.lesson.lessonsActivities.map(({ activity }) => activity)
             if (activities.length) {
-              this.$router.push({
-                name: 'app-dashboard-lesson-activities',
-                query: { ...this.overrides, id: activities[0].id }
-              })
+              this.$router.push(this.generateNuxtRoute('lesson-activities', { id: activities[0].id }))
             }
           }
         }
@@ -107,7 +104,7 @@ export default {
     completedProps () {
       return {
         timeOutAction: () => {
-          this.$router.push({ name: 'app-dashboard-online-worksheet', query: { ...this.overrides } })
+          this.$router.push(this.generateNuxtRoute('online-worksheet'))
         },
         buttons: this.buttons,
         returnAction: () => {
@@ -134,10 +131,7 @@ export default {
 
     updateIndex (index) {
       this.index = index
-      this.$router.push({
-        name: 'app-dashboard-lesson-videos',
-        query: { ...this.overrides, id: this.playlist[index].videoId }
-      })
+      this.$router.push(this.generateNuxtRoute('lesson-videos', { id: this.playlist[index].videoId }))
     },
 
     showCompletedDialog () {

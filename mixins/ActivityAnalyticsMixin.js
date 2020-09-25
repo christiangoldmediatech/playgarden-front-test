@@ -24,7 +24,6 @@ export default {
   },
 
   methods: {
-    ...mapActions('children/lesson', ['saveActivityProgres']),
     ...mapActions('admin/activity/analytics', {
       createAnalytic: 'create',
       getAnalytics: 'getByChildId',
