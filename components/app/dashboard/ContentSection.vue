@@ -71,7 +71,6 @@ export default {
   width: 48px;
   height: 48px;
   background-color: #D2D2D2;
-  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.18);
   display: flex;
   align-items: center;
   justify-content: center;
