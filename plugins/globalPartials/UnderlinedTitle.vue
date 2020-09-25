@@ -128,14 +128,14 @@ export default {
 
     _fontSize () {
       if (this.subtitle) {
-        return '18px'
+        return '17px'
       }
 
       if (this.noAutoresizeFont) {
         return this.fontSize
       }
 
-      return this.$vuetify.breakpoint.mdAndUp ? this.fontSize : '1.25rem'
+      return this.$vuetify.breakpoint.mdAndUp ? this.fontSize : '28px'
     },
 
     _fontWeight () {

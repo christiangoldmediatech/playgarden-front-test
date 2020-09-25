@@ -1,7 +1,7 @@
 <template>
   <v-row align="center" justify="center" no-gutters>
     <v-col cols="11" md="6">
-      <div class="image">
+      <div class="image mt-6 mt-md-0">
         <img alt="Smiling Girl Picture" src="@/assets/svg/girl-smiling.svg">
       </div>
     </v-col>
@@ -195,13 +195,11 @@ export default {
   color: $pg-error;
 }
 .spanSocialNetwork {
-  font-size: 12px;
+  font-size: 10px;
   line-height: 1.5;
   font-weight: 600;
   text-align: left;
-  text-transform: none !important;
   color: #606060;
-  text-transform: initial !important;
 }
 .social-btn {
   background-color: white !important;
