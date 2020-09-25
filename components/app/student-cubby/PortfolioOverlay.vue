@@ -1,40 +1,38 @@
 <template>
   <v-dialog :value="overlay" :fullscreen="fullscreen">
     <v-card class="dialog-portfolio-overlay">
-      <v-container class="pa-0" fluid>
-        <v-btn
-          class="top-left text-none white--text px-4"
-          text
-          x-large
-          @click.stop="overlay = false"
+      <v-btn
+        class="top-left text-none white--text px-4"
+        text
+        x-large
+        @click.stop="overlay = false"
+      >
+        <v-icon left>
+          mdi-less-than
+        </v-icon>
+        Back
+      </v-btn>
+      <v-row class="fill-height" align="center" justify="center">
+        <v-col
+          class="position-relative"
+          cols="12"
+          sm="6"
+          md="5"
+          lg="8"
+          xl="10"
         >
-          <v-icon left>
-            mdi-less-than
-          </v-icon>
-          Back
-        </v-btn>
-        <v-row class="fill-height" align="center" justify="center">
-          <v-col
-            class="position-relative"
-            cols="7"
-            sm="6"
-            md="5"
-            lg="8"
-            xl="10"
+          <v-btn
+            class="top-right color-close"
+            icon
+            @click.stop="overlay = false"
           >
-            <v-btn
-              class="top-right color-close"
-              icon
-              @click.stop="overlay = false"
-            >
-              <v-icon>
-                mdi-close
-              </v-icon>
-            </v-btn>
-            <portfolio-card v-bind="{ image }" display-mode />
-          </v-col>
-        </v-row>
-      </v-container>
+            <v-icon>
+              mdi-close
+            </v-icon>
+          </v-btn>
+          <portfolio-card v-bind="{ image }" display-mode />
+        </v-col>
+      </v-row>
     </v-card>
   </v-dialog>
 </template>
