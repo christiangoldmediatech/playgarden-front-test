@@ -11,7 +11,7 @@
         :src="require('@/assets/svg/chevron-left.svg')"
         max-width="38px"
       />
-      <span>Back</span>
+      <span class="orange-text">Back</span>
     </div>
     <div class="materials-title">
       <div
@@ -114,6 +114,7 @@ export default {
   @include parent-stack-context;
   font-size: 50px;
   margin: 0 auto;
+  margin-top: 40px;
   max-width: 800px;
   color: $pg-black;
   font-weight: bold;
@@ -189,9 +190,12 @@ export default {
 .back-btn {
   display: flex;
   cursor: pointer;
-  color: $pg-accent;
   align-items: center;
   font-size: 20px;
+}
+
+.orange-text {
+  color: #f89838;
 }
 
 .underlined-title {

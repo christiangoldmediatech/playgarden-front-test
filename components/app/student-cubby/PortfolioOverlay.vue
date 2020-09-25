@@ -1,6 +1,17 @@
 <template>
   <v-overlay :value="overlay" dark z-index="100">
     <v-container class="pa-0 fullscreen" fluid>
+      <v-btn
+        class="top-left text-none white--text px-4"
+        text
+        x-large
+        @click.stop="overlay = false"
+      >
+        <v-icon left>
+          mdi-less-than
+        </v-icon>
+        Back
+      </v-btn>
       <v-row class="fill-height" align="center" justify="center">
         <v-col
           class="position-relative"
