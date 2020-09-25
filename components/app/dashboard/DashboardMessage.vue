@@ -7,14 +7,16 @@
       :src="backgroundImage"
       class="align-end white--text"
       gradient="to top, rgba(39, 39, 39, 0.9), rgba(255, 255, 255, 0) 80%"
-      contain
     >
-      <v-row justify="center">
-        <v-col class="text-center" cols="12">
+      <v-row class="mx-0 content message-padding" justify="center">
+        <v-col class="text-center pb-0" cols="12">
           <slot name="title">
-            <span class="text-h3 font-weight-medium">
-              Coming Next:
-            </span>
+            <underlined-title
+              class="white--text"
+              font-size="56px"
+              font-weight="bold"
+              text="Coming Next:"
+            />
           </slot>
         </v-col>
         <v-col class="py-0" cols="12" md="8" lg="8" xl="4">
@@ -60,6 +62,7 @@
             color="primary"
             text
             block
+            tile
             :disabled="loading"
             @click.stop="doReturnAction"
           >
@@ -180,8 +183,12 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .finish-background {
   background: linear-gradient(to top, rgba(39, 39, 39, 0.9), rgba(255, 255, 255, 0) 80%);
+}
+
+.message-padding {
+  padding-bottom: 100px;
 }
 </style>

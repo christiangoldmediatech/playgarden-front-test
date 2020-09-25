@@ -1,5 +1,5 @@
 <template>
-  <v-card class="d-flex flex-column" height="100%">
+  <v-card class="d-flex flex-column dashboard-content-card" height="100%">
     <template v-if="currentVideoLesson">
       <div
         class="d-flex justify-center align-center clickable dashboard-video-thumbnail flex-grow-1 flex-shrink-0"
