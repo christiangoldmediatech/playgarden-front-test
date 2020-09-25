@@ -21,6 +21,7 @@
       </v-row>
 
       <subscription-plan-selection
+        class="mt-n6"
         @click:submit="onSubmit"
         @initialized="initialized = true"
       />

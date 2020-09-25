@@ -147,10 +147,10 @@
                 </v-col>
 
                 <v-col cols="6">
-                  <!-- Zipcode -->
+                  <!-- Zip code -->
                   <validation-provider
                     v-slot="{ errors }"
-                    name="Zipcode"
+                    name="Zip code"
                     rules="required"
                   >
                     <v-text-field
@@ -159,7 +159,7 @@
                       :disabled="loading"
                       :error-messages="errors"
                       :loading="loading"
-                      placeholder="Zipcode"
+                      placeholder="Zip code"
                       solo
                     />
                   </validation-provider>

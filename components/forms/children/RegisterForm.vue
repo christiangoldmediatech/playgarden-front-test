@@ -76,6 +76,7 @@
                   class="custom-btn"
                   :color="item.gender === gender ? 'primary' : 'grey lighten-5'"
                   :disabled="isLoading"
+                  min-height="60"
                   x-large
                   @click="item.gender = gender"
                 >
