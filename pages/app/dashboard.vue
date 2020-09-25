@@ -1,76 +1,15 @@
 <template>
-  <v-main>
-    <v-container :class="{ 'dashboard-container': !$vuetify.breakpoint.smAndDown }" fluid>
-      <v-row class="fill-height" justify="center">
-        <v-col
-          class="dashboard-column order-last order-md-first"
-          cols="12"
-          sm="8"
-          md="5"
-          lg="4"
-          xl="3"
-        >
-          <dashboard-panel v-bind="{ lesson }" />
-        </v-col>
-        <v-col
-          class="dashboard-column d-flex flex-column"
-          cols="12"
-          sm="12"
-          md="7"
-          lg="8"
-          xl="9"
-        >
-          <!-- Tutorial row -->
-          <v-row
-            class="dashboard-tip-row flex-grow-0 flex-shrink-1"
-            justify="center"
-            justify-md="start"
-            align="center"
-            :no-gutters="$vuetify.breakpoint.smAndUp"
-          >
-            <div class="dashboard-child-pick-container">
-              <child-select v-model="selectedChild" hide-details />
-            </div>
-
-            <v-col class="text-center text-sm-right">
-              <span class="font-weight-medium">
-                First time using Playgarden?
-              </span>
-
-              <v-btn color="primary" nuxt text :to="{ name: 'app-onboarding' }">
-                WATCH TUTORIAL HERE
-              </v-btn>
-            </v-col>
-          </v-row>
-
-          <v-row :class="['dashboard-content', { 'dashboard-mobile-content': $vuetify.breakpoint.sm, 'dashboard-xs-content': $vuetify.breakpoint.xs }]" no-gutters>
-            <v-col class="dashboard-content-column" cols="12">
-              <pg-loading v-if="$route.name === 'app-dashboard' || loading" />
-              <nuxt-child />
-            </v-col>
-          </v-row>
-        </v-col>
-      </v-row>
-    </v-container>
-    <lesson-activity-player />
-  </v-main>
+  <dashboard-layout v-model="selectedChild" v-bind="{ lesson, loading }">
+    <nuxt-child />
+  </dashboard-layout>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import ChildSelect from '@/components/app/ChildSelect.vue'
-import DashboardPanel from '@/components/app/dashboard/DashboardPanel.vue'
 import DashboardMixin from '@/mixins/DashboardMixin.js'
-import LessonActivityPlayer from '@/components/app/dashboard/LessonActivityPlayer.vue'
 
 export default {
   name: 'Dashboard',
-
-  components: {
-    ChildSelect,
-    DashboardPanel,
-    LessonActivityPlayer
-  },
 
   mixins: [DashboardMixin],
 
@@ -94,12 +33,6 @@ export default {
     },
 
     childrenIds () {
-      // const ids = (this.currentChild
-      //   ? this.currentChild.map(({ id }) => id)
-      //   : []
-      // ).join(',')
-
-      // return `[${ids}]`
       return this.currentChild[0].id
     }
   },
@@ -190,28 +123,22 @@ export default {
     redirectDashboard () {
       if (this.lesson && this.$route.name === 'app-dashboard') {
         if (this.videos.progress < 100 && this.videos.items.length) {
-          this.$router.push({
-            name: 'app-dashboard-lesson-videos',
-            query: { ...this.overrides, id: this.getNextId(this.videos.items) }
-          })
+          const route = this.generateNuxtRoute('lesson-videos', { id: this.getNextId(this.videos.items) })
+          this.$router.push(route)
         } else if (
           this.worksheets.progress < 100 &&
           this.worksheets.ONLINE
         ) {
-          this.$router.push({
-            name: 'app-dashboard-online-worksheet',
-            query: { ...this.overrides, id: this.getNextId(this.worksheets.ONLINE) }
-          })
+          const route = this.generateNuxtRoute('online-worksheet', { id: this.getNextId(this.worksheets.ONLINE) })
+          this.$router.push(route)
         } else if (
           this.activities.progress < 100 &&
           this.activities.items.length
         ) {
-          this.$router.push({
-            name: 'app-dashboard-lesson-activities',
-            query: { ...this.overrides, id: this.getNextId(this.activities.items) }
-          })
+          const route = this.generateNuxtRoute('lesson-activities', { id: this.getNextId(this.activities.items) })
+          this.$router.push(route)
         } else {
-          this.$router.push({ name: 'app-dashboard-lesson-completed', query: { ...this.overrides } })
+          this.$router.push(this.generateNuxtRoute('lesson-completed'))
         }
       } else if (this.lesson && this.$route.name === 'app-dashboard-lesson-completed') {
         if (
@@ -226,34 +153,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.dashboard {
-  &-container {
-    height: calc(100vh - 64px);
-    max-height: calc(100vh - 64px);
-  }
-  &-column {
-    height: 100%;
-    max-height: 100%;
-  }
-  &-child-pick-container {
-    width: 225px;
-  }
-  &-content {
-    height: calc(100% - 70px);
-    &-column {
-      max-height: 100%;
-    }
-  }
-  &-tip-row {
-    min-height: 70px;
-  }
-  &-mobile-content {
-    min-height: calc(100vh - 162px);
-  }
-  &-xs-content {
-    min-height: calc(100vh - 256px);
-  }
-}
-</style>

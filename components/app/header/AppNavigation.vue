@@ -25,7 +25,7 @@
     <template v-slot:append>
       <v-container fluid mb-6>
         <v-row>
-          <v-col v-if="isUserLoggedIn && !isUserInSingupProcess" cols="12">
+          <v-col v-if="isUserLoggedIn && !isUserInSignupProcess" cols="12">
             <v-btn block color="primary" nuxt :to="{ name: 'app-account' }">
               ACCOUNT SETTINGS
             </v-btn>

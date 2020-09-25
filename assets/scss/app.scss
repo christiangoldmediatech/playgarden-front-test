@@ -161,12 +161,12 @@
   font-size: 20px !important;
 }
 
-.dashboard-video-thumbnail {
-  background-image: var(--videoThumbnailUrl);
-  background-position: center, center;
-  background-repeat: no-repeat, no-repeat;
-  background-size: cover;
-}
+// .dashboard-video-thumbnail {
+//   background-image: var(--videoThumbnailUrl);
+//   background-position: center, center;
+//   background-repeat: no-repeat, no-repeat;
+//   background-size: cover;
+// }
 
 .pg-letter-spacing {
   letter-spacing: 6.75px !important;
@@ -175,4 +175,15 @@
 .fullscreen-overlay {
   min-width: 100vw !important;
   max-height: 100vh !important;
+}
+
+.play-icon {
+  background-color: #F89838;
+  width: 150px;
+  height: 150px;
+  transition: transform 250ms;
+}
+
+.scaled-play-icon {
+  transform: scale(1.25);
 }

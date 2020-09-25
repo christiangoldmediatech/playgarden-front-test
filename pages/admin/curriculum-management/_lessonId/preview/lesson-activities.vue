@@ -1,5 +1,5 @@
 <template>
-  <lesson-activities-card show-favorites />
+  <lesson-activities-card />
 </template>
 
 <script>

@@ -38,12 +38,47 @@ export default {
     }
   },
 
-  async saveActivityProgres (ctx, { lessonId, childId, activity }) {
+  async saveActivityProgress (ctx, { lessonId, childId, activity }) {
     try {
       const { data } = await this.$axios.$post(`/lessons/${lessonId}/children/${childId}/activity`, { activity })
       return data
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+
+  async getLessonPreview ({ commit }, lessonId) {
+    const lesson = await this.$axios.$get(`/lessons/${lessonId}`)
+    lesson.previewMode = true
+    lesson.videos = lesson.videos.map((video) => {
+      return {
+        ...video,
+        viewed: {
+          completed: true
+        }
+      }
+    })
+
+    lesson.worksheets = lesson.worksheets.map((worksheet) => {
+      return {
+        ...worksheet,
+        completed: true
+      }
+    })
+
+    lesson.lessonsActivities = lesson.lessonsActivities.map(({ id, activity }) => {
+      return {
+        id,
+        activity: {
+          ...activity,
+          viewed: {
+            completed: true
+          }
+        }
+      }
+    })
+
+    commit('admin/curriculum/SET_LESSON', lesson, { root: true })
+    return lesson
   }
 }

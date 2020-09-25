@@ -1,13 +1,9 @@
-export default {
-  computed: {
-    overrides () {
-      return {
-        childId: this.$route.query.childId,
-        lessonId: this.$route.query.lessonId,
-        ...this.customOverrides
-      }
-    },
+import DashboardLink from './DashboardLinkMixin.js'
 
+export default {
+  mixins: [DashboardLink],
+
+  computed: {
     videos () {
       // Exit if lesson or videos are not loaded
       if (!this.lesson || this.lesson.videos.length === 0) {
@@ -36,10 +32,7 @@ export default {
           name,
           description,
           activityType,
-          to: {
-            name: 'app-dashboard-lesson-videos',
-            query: { ...this.overrides, id }
-          },
+          to: this.generateNuxtRoute('lesson-videos', { id }),
           viewed,
           disabled
         }
@@ -117,10 +110,7 @@ export default {
           id,
           description: videos.description,
           activityType,
-          to: {
-            name: 'app-dashboard-lesson-activities',
-            query: { ...this.overrides, id }
-          },
+          to: this.generateNuxtRoute('lesson-activities', { id }),
           viewed,
           disabled
         }
