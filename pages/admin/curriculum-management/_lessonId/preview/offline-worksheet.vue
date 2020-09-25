@@ -1,7 +1,5 @@
 <template>
-  <div>
-    Offline Worksheet test
-  </div>
+  <offline-worksheet-card />
 </template>
 
 <script>

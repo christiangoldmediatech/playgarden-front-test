@@ -1,7 +1,5 @@
 <template>
-  <div>
-    Online Worksheet test
-  </div>
+  <online-worksheet-card />
 </template>
 
 <script>

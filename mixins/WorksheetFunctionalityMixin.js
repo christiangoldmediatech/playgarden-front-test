@@ -22,15 +22,17 @@ export default {
 
       const date = new Date().toISOString().substr(0, 19)
       this.children.forEach((child) => {
-        this.saveWorksheetProgress({
-          lessonId: this.lesson.id,
-          childId: child.id,
-          worksheet: {
-            id: this.currentSheet.id,
-            completed: true,
-            date
-          }
-        })
+        if (!this.currentSheet.completed) {
+          this.saveWorksheetProgress({
+            lessonId: this.lesson.id,
+            childId: child.id,
+            worksheet: {
+              id: this.currentSheet.id,
+              completed: true,
+              date
+            }
+          })
+        }
       })
 
       Promise.all(promises).then(() => {

@@ -10,12 +10,14 @@
 
 <script>
 import { mapActions } from 'vuex'
-// import DashboardMixin from '@/mixins/DashboardMixin.js'
+import DashboardLink from '@/mixins/DashboardLinkMixin.js'
 
 export default {
   name: 'Preview',
 
   layout: 'lesson-preview',
+
+  mixins: [DashboardLink],
 
   data: () => {
     return {
@@ -35,6 +37,7 @@ export default {
     this.getLessonPreview(this.lessonId).then((lesson) => {
       this.lesson = lesson
       this.loading = false
+      this.$router.push(this.generateNuxtRoute('lesson-videos', { id: lesson.videos[0].id }))
     })
   },
 
