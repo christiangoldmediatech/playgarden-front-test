@@ -1,6 +1,6 @@
 <template>
   <v-dialog :value="overlay" fullscreen="true">
-    <div class="dialog-portfolio-overlay">
+    <v-card class="dialog-portfolio-overlay">
       <v-container class="pa-0" fluid>
         <v-btn
           class="top-left text-none white--text px-4"
@@ -35,7 +35,7 @@
           </v-col>
         </v-row>
       </v-container>
-    </div>
+    </v-card>
   </v-dialog>
 </template>
 
