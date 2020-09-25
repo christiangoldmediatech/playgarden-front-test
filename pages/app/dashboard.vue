@@ -226,34 +226,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.dashboard {
-  &-container {
-    height: calc(100vh - 64px);
-    max-height: calc(100vh - 64px);
-  }
-  &-column {
-    height: 100%;
-    max-height: 100%;
-  }
-  &-child-pick-container {
-    width: 225px;
-  }
-  &-content {
-    height: calc(100% - 70px);
-    &-column {
-      max-height: 100%;
-    }
-  }
-  &-tip-row {
-    min-height: 70px;
-  }
-  &-mobile-content {
-    min-height: calc(100vh - 162px);
-  }
-  &-xs-content {
-    min-height: calc(100vh - 256px);
-  }
-}
-</style>

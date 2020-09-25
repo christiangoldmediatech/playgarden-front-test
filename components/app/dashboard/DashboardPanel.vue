@@ -54,10 +54,7 @@
               :disabled="videos.progress < 100"
               nuxt
               exact
-              :to="{
-                name: 'app-dashboard-online-worksheet',
-                query: { ...overrides }
-              }"
+              :to="generateNuxtRoute('online-worksheet')"
             >
               <v-list-item-content>
                 <v-list-item-title :class="['dashboard-panel-worksheet-text', { 'dashboard-item-disabled': videos.progress < 100 }]">
@@ -73,10 +70,7 @@
               :disabled="videos.progress < 100"
               nuxt
               exact
-              :to="{
-                name: 'app-dashboard-offline-worksheet',
-                query: { ...overrides }
-              }"
+              :to="generateNuxtRoute('offline-worksheet')"
             >
               <v-list-item-content>
                 <v-list-item-title :class="['dashboard-panel-worksheet-text', { 'dashboard-item-disabled': videos.progress < 100 }]">

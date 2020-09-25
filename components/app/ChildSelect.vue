@@ -36,7 +36,7 @@
     </template>
 
     <template v-slot:append-item>
-      <v-list-item>
+      <v-list-item v-if="!previewMode">
         <v-list-item-content>
           <v-btn
             color="primary"
@@ -62,6 +62,12 @@ export default {
       validator: (val) => {
         return val === null || typeof val === 'number'
       }
+    },
+
+    previewMode: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
 
