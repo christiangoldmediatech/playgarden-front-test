@@ -1,6 +1,12 @@
 <template>
   <v-container fluid>
     <v-row>
+      <v-col class="text-center" cols="12">
+        <underlined-title
+          class="text-h3"
+          text="Learn how to use Playgarden Prep Online"
+        />
+      </v-col>
       <v-col cols="12">
         <pg-loading v-if="loading" />
 
