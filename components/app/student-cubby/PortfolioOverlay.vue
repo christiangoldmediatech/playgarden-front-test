@@ -1,5 +1,5 @@
 <template>
-  <v-dialog :value="overlay" fullscreen="true">
+  <v-dialog :value="overlay" :fullscreen="fullscreen">
     <v-card class="dialog-portfolio-overlay">
       <v-container class="pa-0" fluid>
         <v-btn
@@ -52,7 +52,8 @@ export default {
   data: () => {
     return {
       image: null,
-      overlay: false
+      overlay: false,
+      fullscreen: true
     }
   },
 

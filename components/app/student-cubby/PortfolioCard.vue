@@ -3,13 +3,23 @@
     <v-card
       :class="['portfolio-card', { 'clickable': !displayMode, 'scaled': hover && !displayMode }]"
       light
-      :elevation="(hover && !displayMode) ? 9 : 3"
+      :elevation="(hover && !displayMode) ? 9 : 0"
       @click.stop="$nuxt.$emit('open-portfolio-overlay', image)"
     >
       <v-img
         :src="image"
         :aspect-ratio="1"
       />
+      <span
+        class="d-block text-center font-weight-bold"
+        :class="{ 'white--text': displayMode }"
+      >
+        name
+      </span>
+
+      <span class="d-block text-center" :class="{ 'white--text': displayMode }">
+        descripcion
+      </span>
     </v-card>
   </v-hover>
 </template>
