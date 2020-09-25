@@ -10,16 +10,18 @@
         :src="image"
         :aspect-ratio="1"
       />
-      <span
-        class="d-block text-center font-weight-bold mt-3"
-        :class="{ 'white--text': displayMode }"
-      >
-        {{ `Lesson ${lesson.curriculumType.name}` }}
-      </span>
+      <div v-if="!displayMode" class="mt-3">
+        <span
+          class="d-block text-center font-weight-bold"
+          :class="{ 'white--text': displayMode }"
+        >
+          {{ `Lesson ${lesson.curriculumType.name}` }}
+        </span>
 
-      <span class="d-block text-center" :class="{ 'white--text': displayMode }">
-        {{ `Day ${lesson.day}` }}
-      </span>
+        <span class="d-block text-center" :class="{ 'white--text': displayMode }">
+          {{ `Day ${lesson.day}` }}
+        </span>
+      </div>
     </v-card>
   </v-hover>
 </template>
@@ -35,8 +37,9 @@ export default {
     },
 
     lesson: {
-      type: [Object],
-      required: true
+      type: Object,
+      required: false,
+      default: () => {}
     },
 
     displayMode: {
