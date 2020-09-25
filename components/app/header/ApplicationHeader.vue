@@ -68,7 +68,7 @@
             </v-btn>
 
             <v-btn
-              v-else-if="isUserLoggedIn && isUserInSingupProcess"
+              v-else-if="isUserLoggedIn && isUserInSignupProcess"
               class="px-13 ml-3"
               color="accent"
               nuxt
