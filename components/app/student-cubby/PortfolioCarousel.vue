@@ -14,7 +14,7 @@
           sm="6"
           lg="3"
         >
-          <portfolio-card :image="upload.url" />
+          <portfolio-card :image="upload.url" :lesson="upload.lesson" />
         </v-col>
       </v-row>
     </v-col>

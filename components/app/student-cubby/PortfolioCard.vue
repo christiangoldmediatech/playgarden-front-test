@@ -11,14 +11,14 @@
         :aspect-ratio="1"
       />
       <span
-        class="d-block text-center font-weight-bold"
+        class="d-block text-center font-weight-bold mt-3"
         :class="{ 'white--text': displayMode }"
       >
-        name
+        {{ `Lesson ${lesson.curriculumType.name}` }}
       </span>
 
       <span class="d-block text-center" :class="{ 'white--text': displayMode }">
-        descripcion
+        {{ `Day ${lesson.day}` }}
       </span>
     </v-card>
   </v-hover>
@@ -31,6 +31,11 @@ export default {
   props: {
     image: {
       type: [Object, Function, String],
+      required: true
+    },
+
+    lesson: {
+      type: [Object],
       required: true
     },
 
