@@ -11,20 +11,15 @@
           scaled: hover && _unblocked && !displayMode
         }
       ]"
-      cols="12"
-      sm="6"
-      :lg="displayMode ? 3 : 2"
-      xl="2"
-      @click.stop="displayBadge"
+      :cols="displayMode ? 12 : 2"
+      :sm="displayMode ? 6 : 2"
+      :md="displayMode ? 4 : 2"
+      :xl="displayMode ? 3 : 2"
     >
       <v-row justify="center" align="center">
         <div
           v-if="displayMode"
           class="w-100"
-          color="white"
-          offset-x="15%"
-          offset-y="15%"
-          overlap
         >
           <template v-if="!$vuetify.breakpoint.mobile">
             <v-img
