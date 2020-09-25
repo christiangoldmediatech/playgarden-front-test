@@ -313,6 +313,8 @@ export default {
 
         this.$snotify.success('Payment plan has been selected successfully!')
 
+        this.$nuxt.$emit('plan-membership-changed')
+
         this.$emit('click:submit', {
           draft: this.getSubmittableData(),
           draftAddress: this.draftAddress

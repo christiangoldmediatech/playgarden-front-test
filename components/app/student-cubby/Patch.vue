@@ -1,5 +1,8 @@
 <template>
-  <v-hover v-slot="{ hover }">
+  <v-hover
+    v-if="$vuetify.breakpoint.smAndUp || displayMode"
+    v-slot="{ hover }"
+  >
     <v-col
       :class="[
         'text-center patch-item mr-2',
@@ -8,20 +11,15 @@
           scaled: hover && _unblocked && !displayMode
         }
       ]"
-      cols="12"
-      sm="6"
-      :lg="displayMode ? 3 : 2"
-      xl="2"
-      @click.stop="displayBadge"
+      :cols="displayMode ? 12 : 2"
+      :sm="displayMode ? 6 : 2"
+      :md="displayMode ? 4 : 2"
+      :xl="displayMode ? 3 : 2"
     >
       <v-row justify="center" align="center">
         <div
           v-if="displayMode"
           class="w-100"
-          color="white"
-          offset-x="15%"
-          offset-y="15%"
-          overlap
         >
           <template v-if="!$vuetify.breakpoint.mobile">
             <v-img
@@ -31,6 +29,7 @@
               @click.stop="close"
             />
           </template>
+
           <v-responsive
             class="rounded-circle"
             aspect-ratio="1"
@@ -70,6 +69,28 @@
       </span>
     </v-col>
   </v-hover>
+
+  <v-carousel-item v-else @click.native.stop="displayBadge">
+    <v-col>
+      <v-row justify="center" align="center">
+        <v-responsive class="rounded-circle" aspect-ratio="1">
+          <v-img
+            :class="{ grayscale: !_unblocked }"
+            :src="patch.image"
+            aspect-ratio="1"
+          />
+        </v-responsive>
+      </v-row>
+
+      <span class="d-block text-center font-weight-bold">
+        {{ patch.name }}
+      </span>
+
+      <span class="d-block text-center" :class="{ 'white--text': displayMode }">
+        {{ patch.description }}
+      </span>
+    </v-col>
+  </v-carousel-item>
 </template>
 
 <script>

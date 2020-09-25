@@ -72,6 +72,9 @@ export default {
 .text-container {
   text-align: center;
   padding: 10px 15px;
+  height: 95px;
+  @include flex;
+  flex-flow: column nowrap;
 }
 
 .link {

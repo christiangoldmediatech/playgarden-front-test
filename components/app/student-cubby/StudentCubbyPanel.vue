@@ -14,13 +14,13 @@
         STUDENTS CUBBY
       </span>
 
-      <v-row no-gutters justify="center">
+      <v-row no-gutters justify="center" class="mb-8">
         <v-col>
           <child-select v-model="selectedChildId" hide-details />
         </v-col>
       </v-row>
 
-      <span class="d-block text-center text-h6">
+      <span class="d-none text-center text-h6">
         {{ selectedChildLevel }}
       </span>
 
@@ -91,12 +91,12 @@ export default {
           route: 'puzzle'
         },
         {
-          text: 'COURSE PROGRESS',
+          text: 'PROGRESS',
           img: 'abc.png',
           route: 'course-progress'
         },
         {
-          text: 'STUDENT PORTFOLIO',
+          text: 'PORTFOLIO',
           img: 'group.png',
           route: 'student-portfolio'
         },

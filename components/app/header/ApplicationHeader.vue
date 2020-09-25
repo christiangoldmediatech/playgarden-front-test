@@ -48,7 +48,7 @@
             </v-btn>
 
             <v-btn
-              v-if="isUserLoggedIn && !isUserInSingupProcess"
+              v-if="isUserLoggedIn && !isUserInSignupProcess"
               class="px-13 ml-3"
               color="accent"
               nuxt
@@ -90,7 +90,7 @@
 
           <div class="hidden-xs-only hidden-md-and-up">
             <v-btn
-              v-if="isUserLoggedIn && !isUserInSingupProcess"
+              v-if="isUserLoggedIn && !isUserInSignupProcess"
               active-class="transparent--text"
               icon
               nuxt

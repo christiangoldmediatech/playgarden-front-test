@@ -1,6 +1,7 @@
 <template>
   <div>
     <patch-overlay :unblocked="unblocked" />
+
     <v-card flat>
       <v-card-text>
         <div class="text-center">
@@ -10,9 +11,9 @@
           />
 
           <p class="mt-2">
-            Master subjects in the Activities section to collect patches for your
-            Student Cubby! Collect all badges to receive a real patch for your
-            backpack.
+            Master subjects in the Activities section to collect patches for
+            your Student Cubby! Collect all badges to receive a real patch for
+            your backpack.
           </p>
         </div>
 
@@ -92,7 +93,7 @@ export default {
 
       data.map(({ id }) => (unblocked[id] = 1))
 
-      this.unblocked = unblocked
+      this.unblocked = { 1: 1 }
     },
 
     async refresh () {
