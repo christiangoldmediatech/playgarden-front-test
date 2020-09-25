@@ -1,7 +1,7 @@
 <template>
   <v-dialog :value="overlay" fullscreen="true">
     <div class="dialog-portfolio-overlay">
-      <v-container class="pa-0 fullscreen" fluid>
+      <v-container class="pa-0" fluid>
         <v-btn
           class="top-left text-none white--text px-4"
           text
@@ -88,6 +88,5 @@ export default {
 
 .dialog-portfolio-overlay {
   background-color: rgba(0, 0, 0, 0.68) !important;
-  background: #1d1c1ccc !important;
 }
 </style>
