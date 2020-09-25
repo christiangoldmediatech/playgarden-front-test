@@ -51,7 +51,7 @@
               <template v-slot:top>
                 <onboarding-editor-dialog
                   ref="editor"
-                  @savedNewVideo="updateLisTable"
+                  @savedNewVideo="updateListTable"
                 />
 
                 <v-toolbar color="white" flat>
@@ -260,7 +260,7 @@ export default {
       })
     },
 
-    updateLisTable () {
+    updateListTable () {
       this.refresh()
       this.checkStatus()
     },
