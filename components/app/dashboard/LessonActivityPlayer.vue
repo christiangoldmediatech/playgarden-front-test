@@ -3,7 +3,7 @@
     :id="dialogContainerId"
     ref="videoPlayerDialog"
     v-model="dialog"
-    show-favorite
+    :show-favorite="lesson && !lesson.previewMode"
     :video-id="currentVideo ? currentVideo.videoId : -1"
     @close="handleClose"
   >
@@ -70,15 +70,17 @@ export default {
     onReady (player) {
       this.player = player
       player.on('pause', () => {
-        this.player.showLoading()
+        if (this.lesson.previewMode) {
+          this.nextVideo()
+          return
+        }
+
         this.saveActivityProgress()
         if (this.analyticsLoading === false) {
           this.player.showLoading()
           this.doAnalytics().then(() => {
             this.player.hideLoading()
-            if (this.player.currentTime() === this.player.duration() && !this.patchEarnedDialog) {
-              this.player.nextVideo()
-            }
+            this.nextVideo()
           })
         }
       })
@@ -87,20 +89,24 @@ export default {
       })
     },
 
+    nextVideo () {
+      if (this.player.currentTime() === this.player.duration() && !this.patchEarnedDialog) {
+        this.player.nextVideo()
+      }
+    },
+
     updateIndex (index) {
       const nextVideo = jsonCopy(this.playlist[index])
+      const completedRoute = this.generateNuxtRoute('lesson-completed')
       if (!nextVideo.ignoreVideoProgress || nextVideo.ignoreVideoProgress === false) {
-        this.$router.push({
-          name: 'app-dashboard-lesson-activities',
-          query: { ...this.overrides, id: this.playlist[index].activityId }
-        })
-      } else if (this.$route.name !== 'app-dashboard-lesson-completed' && this.lessonCompleted) {
-        this.$router.push({
-          name: 'app-dashboard-lesson-completed'
-        })
+        this.$router.push(this.generateNuxtRoute('lesson-activities', { id: this.playlist[index].activityId }))
+      } else if (this.$route.name !== completedRoute.name && this.lessonCompleted) {
+        this.$router.push(completedRoute)
       }
       this.index = index
-      this.doAnalytics(true)
+      if (!this.lesson.previewMode) {
+        this.doAnalytics(true)
+      }
     }
   }
 }

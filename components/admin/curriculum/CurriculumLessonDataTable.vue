@@ -124,6 +124,17 @@
               <template v-slot:item.actions="{ item }">
                 <nuxt-link
                   :to="{
+                    name: 'admin-curriculum-management-lessonId-preview',
+                    params: { lessonId: item.id }
+                  }"
+                >
+                  <v-icon color="accent" dense>
+                    mdi-play
+                  </v-icon>
+                </nuxt-link>
+
+                <nuxt-link
+                  :to="{
                     name: 'admin-curriculum-management-editor',
                     query: { lessonId: item.id }
                   }"
