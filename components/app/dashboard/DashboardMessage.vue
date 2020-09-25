@@ -189,6 +189,6 @@ export default {
 }
 
 .message-padding {
-  padding-bottom: 100px;
+  padding-bottom: 30px;
 }
 </style>
