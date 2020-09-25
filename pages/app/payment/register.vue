@@ -42,13 +42,13 @@
             no-gutters
             class="px-8 py-2"
           >
-            <v-col cols="7">
+            <v-col>
               <span class="product-name">
                 {{ item.product.name }}
               </span>
             </v-col>
 
-            <v-col cols="5">
+            <v-col cols="4" class="pr-3">
               <div class="product-description">
                 <span class="product-price">
                   ${{ item.unit_amount / 100 }}
@@ -67,28 +67,28 @@
 
           <v-divider />
 
-          <v-row no-gutters class="px-8">
-            <v-col cols="7">
+          <v-row class="pt-3 px-8" no-gutters>
+            <v-col>
               <span class="total">
                 TOTAL
               </span>
             </v-col>
 
-            <v-col cols="3" class="text-right">
+            <v-col cols="4">
               <span class="total-cost"> ${{ cost.total || 0 }} </span>
             </v-col>
           </v-row>
 
-          <v-row class="px-8">
-            <v-col cols="7">
+          <v-row class="px-8" no-gutters>
+            <v-col>
               <span class="due-today">
-                DUE TODAY
+                <b>DUE TODAY</b>
               </span>
             </v-col>
 
-            <v-col cols="3" class="text-right">
+            <v-col cols="4">
               <span class="due-today-total">
-                <b>${{ 0 }}</b>
+                <b>$0</b>
               </span>
             </v-col>
           </v-row>
@@ -182,20 +182,11 @@ export default {
 }
 
 .product-description {
-  text-align: center !important;
   line-height: 1.1 !important;
 }
 
 .due-today,
-.due-today-total {
-  color: $pg-black !important;
-  font-size: 20px !important;
-}
-
-.due-today-total {
-  font-weight: 500 !important;
-}
-
+.due-today-total,
 .product-price,
 .total,
 .total-cost {

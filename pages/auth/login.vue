@@ -40,7 +40,7 @@
                 src="@/assets/svg/facebook_icon.svg"
               >
 
-              <span class="spanSocialNetwork">Continue with Facebook</span>
+              <span class="spanSocialNetwork">Login with Facebook</span>
             </v-btn>
           </v-col>
 
@@ -53,7 +53,7 @@
                 src="@/assets/svg/google_icon.svg"
               >
 
-              <span class="spanSocialNetwork">Continue with Google</span>
+              <span class="spanSocialNetwork">Login with Google</span>
             </v-btn>
           </v-col>
         </v-row>
@@ -195,7 +195,7 @@ export default {
   color: $pg-error;
 }
 .spanSocialNetwork {
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.5;
   font-weight: 600;
   text-align: left;

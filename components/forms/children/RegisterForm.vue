@@ -3,7 +3,9 @@
     <v-form :readonly="isLoading" @submit.prevent="passes(onSubmit)">
       <v-row v-for="(item, indexD) in draft" :key="indexD" no-gutters>
         <v-col>
-          <p class="font-weight-bold text-h5 pg-letter-spacing mb-6">
+          <p
+            class="font-weight-bold mb-6 pg-letter-spacing text-center text-h5 text-md-left"
+          >
             CHILD INFORMATION
           </p>
 

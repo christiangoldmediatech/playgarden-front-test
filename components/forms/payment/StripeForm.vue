@@ -1,6 +1,9 @@
 <template>
   <validation-observer v-slot="{ invalid, passes, reset }">
-    <p :class="{ 'mt-8': $vuetify.breakpoint.smAndDown }">
+    <p
+      class="text-center text-md-left"
+      :class="{ 'mt-8': $vuetify.breakpoint.smAndDown }"
+    >
       <span class="font-weight-bold text-h5 pg-letter-spacing">
         CARD INFORMATION
       </span>
@@ -72,27 +75,31 @@
         </v-col>
       </v-row>
 
-      <v-row>
+      <v-row class="mb-6">
         <validation-provider v-slot="{ errors }" name="Terms" rules="required">
           <v-checkbox
             v-model="draft.acceptTerms"
-            class="accept-terms mb-6 ml-3 mt-0 pt-0"
+            class="accept-terms ml-3 mt-0 pt-0"
             :error-messages="errors"
             :true-value="true"
             :false-value="null"
           >
             <template #label>
-              <span class="read-accept">I have read and accept the</span>
+              <span>
+                I have read and accept the
+
+                <nuxt-link
+                  class="terms-conditions link-text ml-1"
+                  :to="{ name: 'terms-conditions' }"
+                  target="_blank"
+                  @click.native.stop=""
+                >
+                  Terms & Conditions
+                </nuxt-link>
+              </span>
             </template>
           </v-checkbox>
         </validation-provider>
-
-        <nuxt-link
-          class="terms-conditions link-text ml-1 mt-5"
-          :to="{ name: 'terms-conditions' }"
-          tag="span"
-          v-text="'Terms & Conditions'"
-        />
       </v-row>
 
       <v-btn
