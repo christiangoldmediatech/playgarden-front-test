@@ -4,7 +4,6 @@
       <v-row>
         <v-btn
           v-if="inSignUpProcess"
-          class="ma-2"
           color="accent"
           nuxt
           text
