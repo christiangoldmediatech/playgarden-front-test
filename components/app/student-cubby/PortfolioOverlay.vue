@@ -16,9 +16,7 @@
         <v-row class="fill-height" align="center" justify="center">
           <v-col
             class="position-relative"
-            :cols="$vuetify.breakpoint.mobile ? 12 : 7"
-            sm="6"
-            md="5"
+            sm="12"
             lg="8"
             xl="10"
           >

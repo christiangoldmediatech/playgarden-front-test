@@ -7,7 +7,7 @@
     >
       <v-img
         :src="image"
-        :aspect-ratio="$vuetify.breakpoint.mobile ? 0 : 1"
+        aspect-ratio="1"
         contain
       />
       <div v-if="!displayMode" class="mt-3">
