@@ -4,8 +4,7 @@
       v-for="item in items"
       :key="`list-${_uid}-item-${item.id}`"
       class="dashboard-item"
-      active-class="dashboard-item-active"
-      exact-active-class="dashboard-item-exact"
+      color="primary"
       :disabled="item.disabled"
       nuxt
       link
@@ -55,9 +54,6 @@ export default {
 <style lang="scss">
 .dashboard {
   &-item {
-    &.v-list-item--link:before {
-      content: none;
-    }
     &-disabled {
       color: rgba(0, 0, 0, 0.38) !important;
     }
@@ -69,9 +65,6 @@ export default {
     }
     &-name {
       font-size: 12px !important;
-    }
-    &-exact, &-active {
-      border-left: var(--v-primary-base) solid 8px;
     }
   }
 }
