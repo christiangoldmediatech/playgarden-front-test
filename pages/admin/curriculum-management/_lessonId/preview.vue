@@ -37,7 +37,7 @@ export default {
     this.getLessonPreview(this.lessonId).then((lesson) => {
       this.lesson = lesson
       this.loading = false
-      if (this.$route.name === 'admin-curriculum-management-lessonId-preivew') {
+      if (this.$route.name === 'admin-curriculum-management-lessonId-preview') {
         this.$router.push(this.generateNuxtRoute('lesson-videos', { id: lesson.videos[0].id }))
       }
     })
