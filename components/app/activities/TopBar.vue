@@ -2,7 +2,7 @@
   <v-row align="center" no-gutters>
     <v-col cols="3">
       <v-btn
-        class="text-none mx-3"
+        class="text-none mx-3 btn-favorities"
         color="white"
         height="48"
         @click.stop="goToFavorites"
@@ -58,3 +58,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.btn-favorities {
+  color: $pg-black !important;
+}
+</style>
