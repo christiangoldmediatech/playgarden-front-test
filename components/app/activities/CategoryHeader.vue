@@ -191,7 +191,6 @@ export default {
   transform: scale(1.25);
   z-index: 1;
 }
-
 .btn-mobile-menu {
   color: $pg-black !important;
   text-transform: initial;
