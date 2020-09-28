@@ -22,7 +22,7 @@
         </p>
       </template>
       <div class="player-dialog-top-right-icons">
-        <v-btn icon>
+        <v-btn large icon>
           <v-icon color="#D2D2D2">
             mdi-cast-education
           </v-icon>
@@ -32,6 +32,7 @@
           class="ml-2"
           :loading="favoritesLoading"
           icon
+          large
           @click.stop="handleFavorites"
         >
           <v-icon color="#F5737F">

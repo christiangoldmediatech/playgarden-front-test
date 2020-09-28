@@ -36,6 +36,24 @@ export default {
       },
       required: false,
       default: null
+    },
+
+    showRestart: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
+    showStepBack: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
+    useStandardPoster: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   }
 }
