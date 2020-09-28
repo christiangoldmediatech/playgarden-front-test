@@ -47,7 +47,7 @@
               </v-list-item-title>
 
               <v-list-item-subtitle>
-                <span>{{ activity.description }}</span>
+                <span class="activity-description">{{ activity.description }}</span>
               </v-list-item-subtitle>
             </v-list-item-content>
 
@@ -168,6 +168,9 @@ export default {
 .play-icon {
   width: 75px;
   height: 75px;
+}
+.activity-description {
+  white-space: pre-wrap;
 }
 .title {
   color: $pg-black;
