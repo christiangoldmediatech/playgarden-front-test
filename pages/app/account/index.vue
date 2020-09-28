@@ -18,15 +18,16 @@
           >
             <img
               alt="Montessori Nutrition Lesson"
+              class="pr-md-6"
               :src="
                 showSetting
                   ? require('@/assets/svg/montessori-nutrition-lesson.svg')
                   : require('@/assets/png/profile/child-profile-bkg.png')
               "
-              class="pr-md-6"
             >
 
             <v-select
+              v-if="!isUserCaregiver"
               v-model="showSetting"
               class="hidden-md-and-up show-setting-select white"
               hide-details
