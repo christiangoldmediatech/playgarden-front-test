@@ -4,10 +4,11 @@
     class="text-none underlined-title"
     :style="{
       '--ut-line-color': _lineColor,
+      '--ut-line-x-size': lineXSize,
       '--ut-background-from': _lineFrom,
       fontSize: _fontSize,
       fontWeight: _fontWeight,
-      paddingBottom: _paddingBoottom
+      paddingBottom: _paddingBottom
     }"
     v-on="$listeners"
   >
@@ -22,17 +23,17 @@ export default {
   props: {
     fontSize: {
       type: String,
-      default: '50px'
+      default: '3rem'
+    },
+
+    fontSizeMobile: {
+      type: String,
+      default: '1.5rem'
     },
 
     fontWeight: {
       type: [Number, String],
       default: 'bold'
-    },
-
-    paddingBoottom: {
-      type: String,
-      default: '3px'
     },
 
     lineColor: {
@@ -91,10 +92,20 @@ export default {
       default: 55
     },
 
+    lineXSize: {
+      type: String,
+      default: '1%'
+    },
+
     noAutoresizeFont: Boolean,
 
+    paddingBottom: {
+      type: String,
+      default: '3px'
+    },
+
     // easy shortcut for faster styling
-    // Note: it override the others options
+    // Note: this overrides some others options
     subtitle: Boolean,
 
     text: {
@@ -135,7 +146,9 @@ export default {
         return this.fontSize
       }
 
-      return this.$vuetify.breakpoint.mdAndUp ? this.fontSize : '28px'
+      return this.$vuetify.breakpoint.mdAndUp
+        ? this.fontSize
+        : this.fontSizeMobile
     },
 
     _fontWeight () {
@@ -146,12 +159,12 @@ export default {
       return this.fontWeight
     },
 
-    _paddingBoottom () {
+    _paddingBottom () {
       if (this.subtitle) {
         return '3px'
       }
 
-      return this.paddingBoottom
+      return this.paddingBottom
     }
   }
 }
@@ -170,7 +183,7 @@ export default {
     var(--ut-line-color) 80%,
     transparent 80%
   );
-  padding: 0 1%;
-  border-radius: 0px;
+  padding: 0 var(--ut-line-x-size);
+  border-radius: 0;
 }
 </style>

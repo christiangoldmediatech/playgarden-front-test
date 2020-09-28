@@ -1,5 +1,5 @@
 <template>
-  <v-card height="100%">
+  <v-card class="dashboard-content-card" height="100%">
     <div class="green-line green-line-1" />
     <div class="green-line green-line-2" />
     <div class="worksheet-content">
@@ -41,11 +41,6 @@
       :return-text="false"
       :time-out-action="buttons[0].action"
     >
-      <template v-slot:title>
-        <span class="white--text text-h3 font-weight-medium">
-          Coming Next:
-        </span>
-      </template>
       <p class="text-center font-weight-medium white--text">
         Hands-on learning is a crucial part of the educational experience. Learning through doing strengthens the cognitive connections and builds a strong foundation for knowledge.
       </p>

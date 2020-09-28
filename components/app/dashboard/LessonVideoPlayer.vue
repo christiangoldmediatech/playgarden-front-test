@@ -24,12 +24,14 @@
     >
       <template v-slot:title>
         <underlined-title
-          class="white--text text-h3 font-weight-medium"
+          class="white--text"
+          font-size="56px"
+          font-weight="bold"
           text="Congratulations!"
         />
       </template>
 
-      <p class="text-h5 text-center white--text font-weight-medium">
+      <p class="text-h5 text-center white--text font-weight-medium mb-0">
         You have completed the daily lessons.
       </p>
     </completed-dialog>

@@ -3,7 +3,7 @@
     <v-row>
       <v-col class="text-center" cols="12">
         <underlined-title
-          class="text-h3"
+          class="text-h6 text-md-h3"
           text="Learn how to use Playgarden Prep Online"
         />
       </v-col>

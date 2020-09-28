@@ -23,7 +23,7 @@
           </div>
         </div>
       </v-col>
-      <v-col class="content-section-slot pl-0 py-1">
+      <v-col class="content-section-slot">
         <slot />
       </v-col>
     </v-row>
@@ -71,7 +71,6 @@ export default {
   width: 48px;
   height: 48px;
   background-color: #D2D2D2;
-  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.18);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -134,5 +133,8 @@ export default {
 
 .content-section-slot {
   overflow-x: hidden;
+  padding-left: 2px;
+  padding-top: 4px;
+  padding-bottom: 4px;
 }
 </style>
