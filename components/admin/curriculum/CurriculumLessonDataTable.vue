@@ -103,7 +103,7 @@
                   </v-col>
 
                   <v-col cols="12" md="4">
-                    <v-text-field
+                    <pg-text-field
                       v-model="search"
                       append-icon="mdi-magnify"
                       clearable

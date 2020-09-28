@@ -58,7 +58,7 @@
                       name="Description"
                       rules="required"
                     >
-                      <v-textarea
+                      <pg-textarea
                         v-model="activity.description"
                         :error-messages="errors"
                         solo

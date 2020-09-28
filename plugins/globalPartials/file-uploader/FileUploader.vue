@@ -1,5 +1,5 @@
 <template>
-  <v-file-input
+  <pg-file-input
     v-model="file"
     v-bind="$attrs"
     :accept="accept"

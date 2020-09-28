@@ -7,7 +7,7 @@
         name="New password"
         rules="required|min:8|max:20|w_number|w_special|w_upper|confirmed:passwordConfirmation"
       >
-        <password-field
+        <pg-password-field
           v-model="draft.password"
           clearable
           :disabled="loading"
@@ -19,6 +19,8 @@
         />
       </validation-provider>
 
+      <pg-file-input truncate-length="15" />
+
       <!-- Password confirmation -->
       <validation-provider
         v-slot="{ errors }"
@@ -26,7 +28,7 @@
         rules="required"
         vid="passwordConfirmation"
       >
-        <password-field
+        <pg-password-field
           v-model="draft.passwordConfirmation"
           clearable
           :disabled="loading"

@@ -17,7 +17,7 @@
     <v-spacer />
 
     <v-col cols="6" md="4">
-      <v-text-field
+      <pg-text-field
         v-model="query"
         placeholder="Search"
         append-icon="mdi-magnify"

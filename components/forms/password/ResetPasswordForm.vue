@@ -5,7 +5,7 @@
     @submit.prevent="handleClick"
   >
     <!-- Password -->
-    <password-field
+    <pg-password-field
       v-model="password"
       clearable
       :disabled="loading"

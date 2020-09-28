@@ -7,7 +7,7 @@
     <v-form @submit.prevent="passes(onSubmit)">
       <!-- Name -->
       <validation-provider v-slot="{ errors }" name="Name" rules="required">
-        <v-text-field
+        <pg-text-field
           v-model="draft.name"
           clearable
           :disabled="loading"
@@ -24,7 +24,7 @@
         name="Description"
         rules="required"
       >
-        <v-textarea
+        <pg-textarea
           v-model="draft.description"
           clearable
           :disabled="loading"

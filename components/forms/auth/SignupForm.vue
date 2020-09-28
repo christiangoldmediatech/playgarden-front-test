@@ -13,7 +13,7 @@
               name="Name"
               rules="required"
             >
-              <v-text-field
+              <pg-text-field
                 v-model="draft.firstName"
                 clearable
                 :disabled="loading"
@@ -34,7 +34,7 @@
               name="Last Name"
               rules="required"
             >
-              <v-text-field
+              <pg-text-field
                 v-model="draft.lastName"
                 clearable
                 :disabled="loading"
@@ -54,7 +54,7 @@
                   name="Phone number"
                   rules="required|min:7|max:20|phone"
                 >
-                  <v-text-field
+                  <pg-text-field
                     v-model="draft.phoneNumber"
                     v-mask="['(###) ###-####']"
                     clearable
@@ -73,7 +73,7 @@
                   name="Email"
                   rules="required|email"
                 >
-                  <v-text-field
+                  <pg-text-field
                     v-model="draft.email"
                     clearable
                     :disabled="
@@ -98,7 +98,7 @@
                     name="Password"
                     rules="required|min:8|max:20|w_number|w_special|w_upper|confirmed:passwordConfirmation"
                   >
-                    <password-field
+                    <pg-password-field
                       v-model="draft.password"
                       clearable
                       :disabled="loading"
@@ -117,7 +117,7 @@
                     rules="required"
                     vid="passwordConfirmation"
                   >
-                    <password-field
+                    <pg-password-field
                       v-model="draft.passwordConfirmation"
                       clearable
                       :disabled="loading"

@@ -112,7 +112,7 @@
                       name="Password"
                       rules="required|min:8|max:20|w_number|w_special|w_upper"
                     >
-                      <password-field
+                      <pg-password-field
                         v-model="user.password"
                         counter
                         :error-messages="errors"
