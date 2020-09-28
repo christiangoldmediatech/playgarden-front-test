@@ -13,7 +13,8 @@
         </div>
 
         <p class="mt-6 text-center text-md-left">
-          We are happy to have you LEARN with us! Please check your email to confirm your account and start learning today
+          We are happy to have you LEARN with us! Please check your email to
+          confirm your account and start learning today
         </p>
 
         <v-btn
@@ -35,28 +36,26 @@
           </v-btn>
         </nuxt-link>
 
-        <p class="mt-6 text-center text-md-left">
+        <div class="mt-6 text-center text-md-left">
           Didn’t receive an email?
-          <v-btn
-            color="primary"
-            text
-            class="btn-green"
-            @click="onResend"
-          >
+
+          <v-btn color="primary" text class="btn-green" @click="onResend">
             RESEND EMAIL
           </v-btn>
-        </p>
-        <p class="text-center text-md-left">
+        </div>
+
+        <div class="text-center text-md-left">
           Need support?
+
           <v-btn
             color="primary"
             text
             class="btn-green"
-            @click="'mailto:hello@playgardenprep.com'"
+            href="mailto:hello@playgardenprep.com"
           >
             CONTACT US
           </v-btn>
-        </p>
+        </div>
       </div>
     </v-col>
   </v-row>
@@ -86,7 +85,11 @@ export default {
   methods: {
     ...mapActions('auth', ['fetchUserInfo']),
 
-    ...mapActions('auth/verify', ['resendEmail', 'validateRegister', 'completeRegister']),
+    ...mapActions('auth/verify', [
+      'resendEmail',
+      'validateRegister',
+      'completeRegister'
+    ]),
 
     async onResend () {
       this.loading = true
