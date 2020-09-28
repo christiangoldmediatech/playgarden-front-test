@@ -1,5 +1,20 @@
 <template>
   <v-container>
+    <v-row v-if="videos.length">
+      <v-col>
+        <v-btn
+          color="primary"
+          class="ml-2"
+          :small="$vuetify.breakpoint.xs"
+          @click.stop="playAll"
+        >
+          <v-icon left>
+            mdi-play
+          </v-icon>
+          PLAY ALL
+        </v-btn>
+      </v-col>
+    </v-row>
     <v-row>
       <video-card
         v-for="item in videos"
@@ -43,6 +58,31 @@ export default {
 
   data: () => {
     return {}
+  },
+
+  methods: {
+    playAll () {
+      const playlist = this.videos.map(({ video }) => {
+        return {
+          title: video.name,
+          description: video.description,
+          activityId: video.activityType ? video.activityType.id : false,
+          src: {
+            src: video.videoUrl.HLS,
+            type: 'application/x-mpegURL'
+          },
+          poster: video.thumbnail,
+          videoId: video.id,
+          viewed: {
+            completed: true
+          }
+        }
+      })
+
+      if (playlist.length) {
+        this.$nuxt.$emit('open-activity-player', { playlist, index: 0 })
+      }
+    }
   }
 }
 </script>

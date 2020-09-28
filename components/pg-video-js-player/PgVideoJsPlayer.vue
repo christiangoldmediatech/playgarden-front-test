@@ -62,7 +62,7 @@ export default {
     },
 
     lastPlaylistItem () {
-      if (this.playlistItemIndex && this.playlistItemIndex === (this.playlist.length - 1)) {
+      if (this.playlistItemIndex !== null && this.playlistItemIndex === (this.playlist.length - 1)) {
         return true
       }
       return false
