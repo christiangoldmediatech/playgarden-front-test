@@ -15,7 +15,7 @@
             <v-img
               alt="Playarden Prep Online Logo"
               contain
-              max-width="200"
+              max-height="50"
               :src="require('@/assets/svg/logo.svg')"
             />
           </v-toolbar-title>
