@@ -1,14 +1,12 @@
 <template>
   <validation-observer v-slot="{ invalid, passes }">
     <v-form :readonly="isLoading" @submit.prevent="passes(onSubmit)">
-      <v-row
-        v-for="(item, indexD) in draft"
-        :key="indexD"
-        no-gutters
-      >
+      <v-row v-for="(item, indexD) in draft" :key="indexD" no-gutters>
         <v-col>
-          <p class="font-weight-bold text-h5 pg-letter-spacing my-4">
-            CHILD’S INFORMATION
+          <p
+            class="font-weight-bold mb-6 pg-letter-spacing text-center text-h5 text-md-left"
+          >
+            CHILD INFORMATION
           </p>
 
           <!-- Name -->
@@ -28,7 +26,7 @@
             />
           </validation-provider>
 
-          <!-- Birthday date -->
+          <!-- Birth date -->
           <v-menu
             v-model="item._menu"
             :close-on-content-click="false"
@@ -40,7 +38,7 @@
               <validation-provider
                 v-slot="{ errors }"
                 :name="
-                  (removable ? `Child #${indexD + 1} - ` : '') + 'Birthday date'
+                  (removable ? `Child #${indexD + 1} - ` : '') + 'Birth date'
                 "
                 rules="required"
               >
@@ -48,7 +46,7 @@
                   v-bind="attrs"
                   :disabled="isLoading"
                   :error-messages="errors"
-                  label="Birthday date"
+                  label="Birth date"
                   readonly
                   solo
                   suffix="MM/DD/YYYY"
@@ -77,9 +75,11 @@
               <v-col v-for="(gender, indexG) in genders" :key="indexG" cols="6">
                 <v-btn
                   block
+                  class="custom-btn"
                   :color="item.gender === gender ? 'primary' : 'grey lighten-5'"
                   :disabled="isLoading"
-                  class="custom-btn"
+                  min-height="60"
+                  x-large
                   @click="item.gender = gender"
                 >
                   {{ gender === "FEMALE" ? "Girl" : "Boy" }}
@@ -156,7 +156,11 @@
             type="submit"
             x-large
           >
-            {{ $vuetify.breakpoint.mdAndUp ? 'CONTINUE TO PLAN SELECTION' : 'CONTINUE' }}
+            {{
+              $vuetify.breakpoint.mdAndUp
+                ? "CONTINUE TO PLAN SELECTION"
+                : "CONTINUE"
+            }}
           </v-btn>
         </v-col>
       </v-row>
@@ -306,7 +310,6 @@ export default {
   img {
     max-height: 100px;
     max-width: 100px;
-    padding: 10px;
     width: 100%;
 
     &.active {

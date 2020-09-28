@@ -39,6 +39,7 @@
       v-model="completed"
       :buttons="buttons"
       :return-text="false"
+      :time-out="30"
       :time-out-action="buttons[0].action"
     >
       <p class="text-center font-weight-medium white--text">
@@ -53,24 +54,9 @@ import { mapGetters } from 'vuex'
 import DashboardLink from '@/mixins/DashboardLinkMixin.js'
 import WorksheetComputedMixin from '@/mixins/WorksheetComputedMixin.js'
 import WorksheetFunctionalityMixin from '@/mixins/WorksheetFunctionalityMixin.js'
-// import WorksheetHeader from '@/components/app/dashboard/worksheets/WorksheetHeader.vue'
-// import WorksheetQuestion from '@/components/app/dashboard/worksheets/WorksheetQuestion.vue'
-// import WorksheetImage from '@/components/app/dashboard/worksheets/WorksheetImage.vue'
-// import WorksheetContinueBtn from '@/components/app/dashboard/worksheets/WorksheetContinueBtn.vue'
-// import WorksheetMessage from '@/components/app/dashboard/worksheets/WorksheetMessage.vue'
-// import CompletedDialog from '@/components/app/dashboard/CompletedDialog.vue'
 
 export default {
   name: 'OnlineWorksheetCard',
-
-  // components: {
-  //   WorksheetHeader,
-  //   WorksheetQuestion,
-  //   WorksheetImage,
-  //   WorksheetContinueBtn,
-  //   WorksheetMessage,
-  //   CompletedDialog
-  // },
 
   mixins: [DashboardLink, WorksheetComputedMixin, WorksheetFunctionalityMixin],
 
@@ -121,7 +107,7 @@ export default {
         {
           text: 'GO TO ACTIVITIES',
           color: 'accent',
-          iconLeft: 'mdi-play',
+          iconLeft: 'pg-icon-play',
           action: () => {
             const activities = this.lesson.lessonsActivities.map(({ activity }) => activity)
             if (activities.length) {
@@ -132,7 +118,7 @@ export default {
         {
           text: 'DOWNLOAD HANDS-ON WORKSHEET',
           color: '#FEC572',
-          iconLeft: 'mdi-download-outline',
+          iconLeft: 'pg-icon-download',
           action: () => {
             this.$router.push(this.generateNuxtRoute('offline-worksheet'))
           }

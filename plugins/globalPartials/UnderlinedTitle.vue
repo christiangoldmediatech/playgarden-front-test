@@ -139,7 +139,7 @@ export default {
 
     _fontSize () {
       if (this.subtitle) {
-        return '18px'
+        return '17px'
       }
 
       if (this.noAutoresizeFont) {

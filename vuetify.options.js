@@ -17,7 +17,10 @@ export default function () {
       }
     },
     icons: {
-      iconfont: 'mdi'
+      iconfont: 'mdi',
+      values: {
+        pgDownload: 'e901'
+      }
     }
   }
 }
