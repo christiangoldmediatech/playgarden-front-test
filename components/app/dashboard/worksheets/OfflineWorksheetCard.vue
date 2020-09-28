@@ -1,11 +1,13 @@
 <template>
   <v-card class="d-flex flex-column dashboard-content-card" height="100%">
     <div
-      class="d-flex flex-column justify-end align-center offline-image flex-grow-1 flex-shrink-0"
+      class="d-flex flex-column justify-end align-center offline-worksheet-image flex-grow-1 flex-shrink-0 dashboard-message-padding"
       :style="{ '--offlineWorksheetThumbnailUrl': `url(${require('@/assets/jpg/worksheets_completed_1.jpg')})` }"
     >
       <underlined-title
-        class="white--text text-h3 font-weight-medium"
+        class="white--text"
+        font-size="56px"
+        font-weight="bold"
         text="Hands-on Learning"
       />
       <p class="white--text text-center">
@@ -21,6 +23,7 @@
         <v-col
           v-for="(button, i) in buttons"
           :key="`complete-message-${_uid}-button-${i}`"
+          class="pb-1"
           cols="12"
           sm="10"
           md="8"
@@ -28,17 +31,17 @@
         >
           <v-btn
             :color="button.color"
-            class="white--text"
+            class="offline-worksheet-btn"
             :loading="loading"
             :disabled="button.disabled"
             block
             @click.stop="button.action"
           >
-            <v-icon v-if="button.iconLeft" large left>
+            <v-icon v-if="button.iconLeft" class="dashboard-message-btn-icon">
               {{ button.iconLeft }}
             </v-icon>
             {{ button.text }}
-            <v-icon v-if="button.iconRight" right left>
+            <v-icon v-if="button.iconRight" right>
               {{ button.iconRight }}
             </v-icon>
           </v-btn>
@@ -51,16 +54,9 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-// import DashboardMessage from '@/components/app/dashboard/DashboardMessage.vue'
-// import UploadOfflineWorksheet from '@/components/app/dashboard/worksheets/UploadOfflineWorksheet.vue'
 
 export default {
   name: 'OfflineWorksheetCard',
-
-  // components: {
-  //  DashboardMessage,
-  //  UploadOfflineWorksheet
-  // },
 
   data: () => {
     return {
@@ -91,7 +87,7 @@ export default {
         {
           text: 'DOWNLOAD HANDS-ON WORKSHEET',
           color: 'accent',
-          iconLeft: 'mdi-download',
+          iconLeft: 'pg-icon-download',
           action: () => {
             if (this.sheets[0]) {
               const date = new Date().toISOString().substr(0, 19)
@@ -139,11 +135,21 @@ export default {
 }
 </script>
 
-<style scoped>
-.offline-image {
-  background-image: linear-gradient(to top, rgba(39, 39, 39, 0.9), rgba(255, 255, 255, 0) 80%), var(--offlineWorksheetThumbnailUrl);
-  position: center, center;
-  background-repeat: no-repeat, no-repeat;
-  background-size: cover;
+<style lang="scss">
+.offline-worksheet {
+  &-image {
+    background-image: linear-gradient(to top, rgba(39, 39, 39, 0.9), rgba(255, 255, 255, 0) 80%), var(--offlineWorksheetThumbnailUrl);
+    position: center, center;
+    background-repeat: no-repeat, no-repeat;
+    background-size: cover;
+  }
+  &-btn.v-btn {
+    height: 59px !important;
+    font-size: 20px;
+    letter-spacing: 0.04em;
+    font-weight: bold;
+    line-height: 1.46;
+    color: white !important;
+  }
 }
 </style>

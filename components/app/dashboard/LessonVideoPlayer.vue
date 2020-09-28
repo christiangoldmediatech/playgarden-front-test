@@ -83,7 +83,7 @@ export default {
         {
           text: 'COMPLETE WORKSHEETS',
           color: 'accent',
-          iconLeft: 'mdi-square-edit-outline',
+          iconLeft: 'pg-icon-paper-pencil',
           action: () => {
             this.$router.push(this.generateNuxtRoute('online-worksheet'))
           }
@@ -91,7 +91,7 @@ export default {
         {
           text: 'SKIP TO ACTIVITIES',
           color: '#FEC572',
-          iconLeft: 'mdi-play-outline',
+          iconLeft: 'pg-icon-play',
           action: () => {
             // Find first activity
             const activities = this.lesson.lessonsActivities.map(({ activity }) => activity)
@@ -105,8 +105,13 @@ export default {
 
     completedProps () {
       return {
+        timeOut: (this.lesson && this.lesson.previewMode) ? false : 30,
         timeOutAction: () => {
-          this.$router.push(this.generateNuxtRoute('online-worksheet'))
+          // Find first activity
+          const activities = this.lesson.lessonsActivities.map(({ activity }) => activity)
+          if (activities.length) {
+            this.$router.push(this.generateNuxtRoute('lesson-activities', { id: activities[0].id }))
+          }
         },
         buttons: this.buttons,
         returnAction: () => {

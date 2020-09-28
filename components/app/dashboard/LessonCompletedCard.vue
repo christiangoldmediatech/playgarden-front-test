@@ -5,7 +5,7 @@
       class="align-center white--text"
       gradient="to top, rgba(39, 39, 39, 0.9), rgba(255, 255, 255, 0) 80%"
     >
-      <v-row class="mx-0 content message-padding" justify="center">
+      <v-row class="mx-0 content dashboard-message-padding mt-16 pt-16" justify="center">
         <v-col class="text-center pb-0" cols="12">
           <underlined-title
             class="white--text"
