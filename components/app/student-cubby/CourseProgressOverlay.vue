@@ -28,10 +28,12 @@
           <v-col
             v-for="lesson in lessons"
             :key="`curriculum-lesson-progress-${lesson.id}`"
-            cols="10"
-            sm="8"
-            md="4"
-            lg="3"
+            class="panel-column"
+            cols="12"
+            sm="7"
+            md="6"
+            lg="5"
+            xl="4"
           >
             <dashboard-panel
               v-bind="{ lesson, customOverrides: { lessonId: lesson.id, childId: studentId } }"
@@ -41,10 +43,12 @@
           <v-col
             v-for="i in missing"
             :key="`curriculum-lesson-missing-${i}`"
-            cols="11"
-            sm="8"
-            md="5"
-            lg="3"
+            class="panel-column"
+            cols="12"
+            sm="7"
+            md="6"
+            lg="5"
+            xl="4"
           >
             <blank-dashboard-panel
               :letter="(lessons[0]) ? lessons[0].curriculumType.letter : ''"
@@ -127,6 +131,10 @@ export default {
   top: 6px !important;
   left: 6px !important;
   z-index: 400;
+}
+
+.panel-column {
+  max-width: 471px;
 }
 </style>
 
