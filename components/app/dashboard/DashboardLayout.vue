@@ -3,7 +3,7 @@
     <v-container :class="{ 'dashboard-container': !$vuetify.breakpoint.smAndDown }" fluid>
       <v-row class="fill-height" justify="center">
         <v-col
-          class="dashboard-column order-last order-md-first"
+          class="dashboard-column order-last order-md-first d-flex justify-center justify-md-start"
           cols="12"
           sm="8"
           md="5"

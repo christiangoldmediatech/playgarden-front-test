@@ -1,76 +1,82 @@
 <template>
-  <v-card v-bind="{ ...$attrs }">
-    <div class="green-line green-line-1" />
-    <div class="green-line green-line-2" />
+  <v-card class="dashboard-message-container" v-bind="{ ...$attrs }">
+    <div class="green-line-bigger green-line-1" />
+    <div class="green-line-bigger green-line-2" />
 
-    <v-img
-      :src="backgroundImage"
-      class="align-end white--text"
-      gradient="to top, rgba(39, 39, 39, 0.9), rgba(255, 255, 255, 0) 80%"
-    >
-      <v-row class="mx-0 content message-padding" justify="center">
-        <v-col class="text-center pb-0" cols="12">
-          <slot name="title">
-            <underlined-title
-              class="white--text"
-              font-size="56px"
-              font-weight="bold"
-              text="Coming Next:"
-            />
-          </slot>
-        </v-col>
-        <v-col class="py-0" cols="12" md="8" lg="8" xl="4">
-          <slot />
-        </v-col>
-      </v-row>
-      <v-progress-linear v-if="timeOut" color="#f89838" :size="4" :value="progress" />
-    </v-img>
+    <div class="dashboard-message-content">
+      <v-img
+        :src="backgroundImage"
+        class="align-end white--text"
+        gradient="to top, rgba(39, 39, 39, 0.9), rgba(255, 255, 255, 0) 80%"
+        max-height="400px"
+      >
+        <v-row class="mx-0 dashboard-message-padding" justify="center">
+          <v-col class="text-center pb-0" cols="12">
+            <slot name="title">
+              <underlined-title
+                class="white--text"
+                font-size="56px"
+                font-weight="bold"
+                text="Coming Next:"
+              />
+            </slot>
+          </v-col>
+          <v-col class="py-0" cols="12" md="8" lg="8" xl="4">
+            <slot />
+          </v-col>
+        </v-row>
+        <v-progress-linear v-if="timeOut" color="#f89838" :size="4" :value="progress" />
+      </v-img>
 
-    <v-container>
-      <v-row class="flex-column" align="center">
-        <h5 class="text-h5 font-weight-bold">
-          What do you want to do next?
-        </h5>
+      <v-container>
+        <v-row class="flex-column mx-0" align="center">
+          <h5 class="my-2 text-h5 font-weight-bold text-center">
+            What do you want to do next?
+          </h5>
 
-        <v-col
-          v-for="(button, i) in buttons"
-          :key="`complete-message-${_uid}-button-${i}`"
-          cols="12"
-          sm="10"
-          md="8"
-          lg="7"
-        >
-          <v-btn
-            :color="button.color"
-            class="white--text"
-            :loading="loading"
-            block
-            @click.stop="doAction(button.action)"
+          <v-col
+            v-for="(button, i) in buttons"
+            :key="`complete-message-${_uid}-button-${i}`"
+            class="pb-1"
+            cols="12"
+            sm="10"
+            md="8"
+            lg="7"
           >
-            <v-icon v-if="button.iconLeft" large left>
-              {{ button.iconLeft }}
-            </v-icon>
-            {{ button.text }}
-            <v-icon v-if="button.iconRight" right left>
-              {{ button.iconRight }}
-            </v-icon>
-          </v-btn>
-        </v-col>
+            <v-btn
+              :color="button.color"
+              class="dashboard-message-btn white--text"
+              :loading="loading"
+              block
+              x-large
+              @click.stop="doAction(button.action)"
+            >
+              <v-icon v-if="button.iconLeft" class="dashboard-message-btn-icon">
+                {{ button.iconLeft }}
+              </v-icon>
+              {{ button.text }}
+              <v-icon v-if="button.iconRight" right>
+                {{ button.iconRight }}
+              </v-icon>
+            </v-btn>
+          </v-col>
 
-        <v-col v-if="returnText" class="pb-1" cols="12">
-          <v-btn
-            color="primary"
-            text
-            block
-            tile
-            :disabled="loading"
-            @click.stop="doReturnAction"
-          >
-            {{ returnText }}
-          </v-btn>
-        </v-col>
-      </v-row>
-    </v-container>
+          <v-col v-if="returnText" cols="12">
+            <v-btn
+              class="dashboard-message-btn"
+              color="primary"
+              text
+              block
+              tile
+              :disabled="loading"
+              @click.stop="doReturnAction"
+            >
+              {{ returnText }}
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-container>
+    </div>
   </v-card>
 </template>
 
@@ -184,11 +190,51 @@ export default {
 </script>
 
 <style lang="scss">
-.finish-background {
-  background: linear-gradient(to top, rgba(39, 39, 39, 0.9), rgba(255, 255, 255, 0) 80%);
-}
-
-.message-padding {
-  padding-bottom: 30px;
+.dashboard-message {
+  &-container {
+    margin: 0 16px;
+    max-width: 100vw;
+    max-height: 90vh;
+    overflow: hidden;
+  }
+  &-content {
+    max-height: calc(90vh - 60px);
+    box-shadow: 0 -1px 6px 0 rgba(0, 0, 0, 0.12);
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  &-padding, &-padding.row {
+    padding-bottom: 30px;
+  }
+  &-btn {
+    &.v-btn {
+      height: 59px !important;
+      font-size: 20px;
+      letter-spacing: 0.04em;
+      font-weight: bold;
+      line-height: 1.46;
+    }
+    &-icon.v-icon {
+      font-size: 31px !important;
+      line-height: 1 !important;
+      position: relative;
+      right: 16px;
+    }
+    @media screen and (max-width: 599px) {
+      &.v-btn {
+        height: 36px !important;
+        font-size: 16px;
+        letter-spacing: 0.04em;
+        font-weight: bold;
+        line-height: 1.46;
+      }
+      &-icon.v-icon {
+        font-size: 23px !important;
+        line-height: 1 !important;
+        position: relative;
+        right: 12px;
+      }
+    }
+  }
 }
 </style>

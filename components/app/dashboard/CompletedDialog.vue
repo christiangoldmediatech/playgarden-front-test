@@ -3,7 +3,7 @@
     :value="value"
     :z-index="600"
   >
-    <dashboard-message ref="message" v-bind="{ ...$attrs, returnAction, maxWidth: 800, light: true }">
+    <dashboard-message ref="message" v-bind="{ ...$attrs, returnAction, light: true }">
       <template v-for="(_, slot) of $scopedSlots" v-slot:[slot]="scope">
         <slot :name="slot" v-bind="scope" />
       </template>

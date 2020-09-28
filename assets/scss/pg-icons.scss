@@ -1,0 +1,49 @@
+@font-face {
+  font-family: 'icomoon';
+  src:  url('fonts/icomoon.eot?zcxd0i');
+  src:  url('fonts/icomoon.eot?zcxd0i#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?zcxd0i') format('truetype'),
+    url('fonts/icomoon.woff?zcxd0i') format('woff'),
+    url('fonts/icomoon.svg?zcxd0i#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+i[class^="pg-icon-"], i[class*=" pg-icon-"] {
+  &.v-icon {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'icomoon' !important;
+    speak: never;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+.pg-icon-camera:before {
+  content: "\e900";
+  color: #fff;
+}
+.pg-icon-download:before {
+  content: "\e901";
+  color: #fff;
+}
+.pg-icon-paper-pencil:before {
+  content: "\e902";
+  color: #fff;
+}
+.pg-icon-play:before {
+  content: "\e903";
+  color: #fff;
+}
+.pg-icon-play-full:before {
+  content: "\e904";
+  color: #fff;
+}
