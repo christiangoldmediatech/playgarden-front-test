@@ -1,28 +1,27 @@
 <template>
-  <v-dialog
+  <v-overlay
     :value="value"
-    persistent
-    @input="$emit('input', $event)"
+    :z-index="400"
   >
-    <v-card>
-      <div class="green-line green-line-1" />
-      <div class="green-line green-line-2" />
+    <v-card class="upload-dialog-container" light>
+      <div class="green-line-bigger green-line-1" />
+      <div class="green-line-bigger green-line-2" />
 
-      <v-card-text>
-        <div class="text-center">
+      <v-card-text class="upload-dialog-content">
+        <div class="text-center mt-3 mb-2">
           <underlined-title
-            class="text-h4"
+            class="text-h3"
             text="Student Portfolio"
           />
         </div>
 
-        <div class="text-center mb-4">
+        <div class="text-center mb-6">
           <span>
             Keep track of your worksheets and progress!
           </span>
         </div>
 
-        <v-row justify="center">
+        <v-row class="mx-0" justify="center">
           <v-hover
             v-for="category in categories"
             :key="`category-${category.id}`"
@@ -47,10 +46,12 @@
                     height="128"
                     contain
                   />
-                  <v-icon
+                  <v-img
                     v-else
-                    size="128"
-                    v-text="'mdi-image-outline'"
+                    class="flex-shrink-1 flex-grow-0"
+                    :src="category.icon"
+                    height="128"
+                    contain
                   />
                   <p class="text-h6 my-0">
                     Upload Worksheet
@@ -61,21 +62,24 @@
             </v-card>
           </v-hover>
         </v-row>
+        <v-row>
+          <v-col cols="12">
+            <v-btn
+              class="dashboard-message-btn mt-3"
+              color="primary"
+              text
+              block
+              tile
+              :disabled="loading"
+              @click.stop="close"
+            >
+              Close
+            </v-btn>
+          </v-col>
+        </v-row>
       </v-card-text>
-
-      <v-card-actions>
-        <v-spacer />
-        <v-btn
-          text
-          :disabled="loading"
-          @click.stop="close"
-        >
-          Close
-        </v-btn>
-        <v-spacer />
-      </v-card-actions>
     </v-card>
-  </v-dialog>
+  </v-overlay>
 </template>
 
 <script>
@@ -166,7 +170,21 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+.upload-dialog {
+  &-container {
+    margin: 0 16px;
+    max-width: 100vw;
+    max-height: 90vh;
+    overflow: hidden;
+  }
+  &-content {
+    max-height: calc(90vh - 60px);
+    box-shadow: 0 -1px 6px 0 rgba(0, 0, 0, 0.12);
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+}
 .category-card {
   transition: transform 250ms;
 }
