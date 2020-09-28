@@ -7,6 +7,10 @@
   font-family: "Poppins", sans-serif !important;
 }
 
+.v-application {
+  line-height: 1.2 !important;
+}
+
 .v-application a {
   text-decoration: none;
 }
@@ -24,9 +28,18 @@
   color: $pg-error !important;
 }
 // Default datepicker has the header fonts in white
-.v-date-picker-title__date div,
-.v-date-picker-title__year {
+.theme--light .v-date-picker-title__date div,
+.theme--light .v-date-picker-title__year {
   color: #ffffff;
+}
+
+.theme--light .v-date-picker-table .v-btn__content {
+  font-weight: normal;
+}
+
+// Default inputs height
+.theme--light.v-input .v-input__slot {
+  min-height: 60px;
 }
 
 // Overlay
@@ -166,7 +179,7 @@
 }
 
 .play-icon {
-  background-color: #F89838;
+  background-color: #f89838;
   width: 150px;
   height: 150px;
   transition: transform 250ms;

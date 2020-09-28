@@ -1,10 +1,9 @@
 <template>
   <v-row no-gutters>
     <v-col>
-      <v-row>
+      <v-row no-gutters>
         <v-btn
           v-if="inSignUpProcess"
-          class="ma-2"
           color="accent"
           nuxt
           text
@@ -41,23 +40,26 @@
             v-for="(item, indexCI) in cost.items"
             :key="indexCI"
             no-gutters
-            class="px-8 py-2"
+            class="py-2"
           >
-            <v-col cols="7">
+            <v-col>
               <span class="product-name">
                 {{ item.product.name }}
               </span>
             </v-col>
-            <v-col cols="5">
+
+            <v-col cols="4" class="pr-3">
               <div class="product-description">
                 <span class="product-price">
                   ${{ item.unit_amount / 100 }}
                 </span>
-                <br>
-                <span no-gutters class="product-info">
-                  a year
+
+                <span class="product-info">
+                  / {{ productPeriod(item.product.name) }}
                 </span>
+
                 <br>
+
                 <span class="product-info-1">*Pricing is per child</span>
               </div>
             </v-col>
@@ -65,28 +67,28 @@
 
           <v-divider />
 
-          <v-row no-gutters class="px-8">
-            <v-col cols="7">
+          <v-row class="pt-3" no-gutters>
+            <v-col>
               <span class="total">
                 TOTAL
               </span>
             </v-col>
-            <v-col cols="3" class="text-align-right">
-              <span class="total-cost">
-                ${{ cost.total || 0 }}
-              </span>
+
+            <v-col cols="4">
+              <span class="total-cost"> ${{ cost.total || 0 }} </span>
             </v-col>
           </v-row>
 
-          <v-row class="px-8">
-            <v-col cols="7">
+          <v-row no-gutters>
+            <v-col>
               <span class="due-today">
-                DUE TODAY
+                <b>DUE TODAY</b>
               </span>
             </v-col>
-            <v-col cols="3" class="text-align-right">
+
+            <v-col cols="4">
               <span class="due-today-total">
-                <b>${{ 0 }}</b>
+                <b>$0</b>
               </span>
             </v-col>
           </v-row>
@@ -134,6 +136,10 @@ export default {
       'validateCard'
     ]),
 
+    productPeriod (name = '') {
+      return /month.*$/.test(name.toLowerCase()) ? 'month' : 'year'
+    },
+
     async fetchSubCosts () {
       try {
         this.cost = await this.fetchSubscriptionCost()
@@ -167,45 +173,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.product-name {
-  text-transform: uppercase !important;
-}
-
-.product-price {
-  font-size: 30px !important;
-}
-
 .product-info {
   font-size: 14px !important;
 }
+
 .product-info-1 {
   font-size: 9px !important;
 }
 
 .product-description {
-  text-align: center !important;
   line-height: 1.1 !important;
 }
 
-.due-today {
-  color: $pg-black !important;
-  font-weight: bold !important;
-  font-size: 25px !important;
-}
-.due-today-total {
-  color: $pg-black !important;
-  font-weight: 500 !important;
-  font-size: 25px !important;
-}
-
-.total {
-  font-size: 20px !important;
-}
+.due-today,
+.due-today-total,
+.product-price,
+.total,
 .total-cost {
   font-size: 20px !important;
-}
-
-.text-align-right {
-  text-align: right !important;
 }
 </style>
