@@ -45,7 +45,7 @@
     </v-col>
 
     <v-col class="px-12" cols="12" md="6">
-      <v-row class="hidden-sm-and-down mb-6">
+      <v-row v-if="!isUserCaregiver" class="hidden-sm-and-down">
         <v-col
           v-for="({ text, value }, indexSS) in showSettings"
           :key="indexSS"
@@ -63,7 +63,7 @@
         </v-col>
       </v-row>
 
-      <div v-show="showSetting">
+      <div v-show="showSetting" class="mt-6">
         <v-row no-gutters>
           <v-col>
             <v-text-field
@@ -107,15 +107,17 @@
           </v-col>
         </v-dialog>
 
-        <membership-details :loading="loading" />
+        <template v-if="!isUserCaregiver">
+          <membership-details :loading="loading" />
 
-        <shipping-address-details :loading="loading" />
+          <shipping-address-details :loading="loading" />
 
-        <caregiver-list :loading="loading" manageable />
+          <caregiver-list :loading="loading" manageable />
 
-        <manage-caregivers class="my-6" />
+          <manage-caregivers class="my-6" />
 
-        <notification-list :loading="loading" />
+          <notification-list :loading="loading" />
+        </template>
       </div>
 
       <child-form v-show="!showSetting" />
@@ -157,17 +159,25 @@ export default {
     UpdatePassword
   },
 
-  data: vm => ({
+  data: () => ({
     loading: false,
     passwordModal: false,
-    showSetting: Number(vm.$route.query.tab) !== 2,
+    showSetting: true,
     showSettings: [
       { text: 'ACCOUNT SETTINGS', value: true },
       { text: 'STUDENT PROFILES', value: false }
     ]
   }),
 
-  computed: mapGetters('auth', { userInfo: 'getUserInfo' })
+  computed: mapGetters('auth', {
+    userInfo: 'getUserInfo',
+    isUserCaregiver: 'isUserCaregiver'
+  }),
+
+  created () {
+    this.showSetting =
+      Number(this.$route.query.tab) !== 2 || this.isUserCaregiver
+  }
 }
 </script>
 
