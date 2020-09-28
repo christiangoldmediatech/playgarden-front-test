@@ -6,7 +6,7 @@
     no-gutters
   >
     <v-col>
-      <v-row>
+      <v-row no-gutters>
         <v-btn
           v-if="emailValidated && !isUserLoggedIn"
           color="accent"

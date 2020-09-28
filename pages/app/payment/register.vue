@@ -1,7 +1,7 @@
 <template>
   <v-row no-gutters>
     <v-col>
-      <v-row>
+      <v-row no-gutters>
         <v-btn
           v-if="inSignUpProcess"
           color="accent"
@@ -40,7 +40,7 @@
             v-for="(item, indexCI) in cost.items"
             :key="indexCI"
             no-gutters
-            class="px-8 py-2"
+            class="py-2"
           >
             <v-col>
               <span class="product-name">
@@ -54,7 +54,7 @@
                   ${{ item.unit_amount / 100 }}
                 </span>
 
-                <span no-gutters class="product-info">
+                <span class="product-info">
                   / {{ productPeriod(item.product.name) }}
                 </span>
 
@@ -67,7 +67,7 @@
 
           <v-divider />
 
-          <v-row class="pt-3 px-8" no-gutters>
+          <v-row class="pt-3" no-gutters>
             <v-col>
               <span class="total">
                 TOTAL
@@ -79,7 +79,7 @@
             </v-col>
           </v-row>
 
-          <v-row class="px-8" no-gutters>
+          <v-row no-gutters>
             <v-col>
               <span class="due-today">
                 <b>DUE TODAY</b>

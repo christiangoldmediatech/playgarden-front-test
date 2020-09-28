@@ -1,5 +1,5 @@
 <template>
-  <v-row v-if="initialized">
+  <v-row v-if="initialized" no-gutters>
     <v-col>
       <validation-observer v-slot="{ invalid, passes }">
         <v-form @submit.prevent="passes(onSubmit)">
@@ -17,7 +17,11 @@
                 </span>
               </p>
 
-              <v-row v-if="$vuetify.breakpoint.mdAndUp" no-gutters>
+              <v-row
+                v-if="$vuetify.breakpoint.mdAndUp"
+                class="mx-n3"
+                no-gutters
+              >
                 <v-col
                   v-for="(plan, indexP) in plans"
                   :key="indexP"
@@ -43,7 +47,7 @@
                 <v-col
                   v-for="(plan, indexP) in plans"
                   :key="indexP"
-                  class="my-3 pr-1"
+                  class="my-3"
                   cols="12"
                 >
                   <v-expansion-panels>
@@ -74,7 +78,7 @@
             </v-radio-group>
           </validation-provider>
 
-          <v-row v-if="!noAddress && draft.requireAddress">
+          <v-row v-if="!noAddress && draft.requireAddress" no-gutters>
             <v-col>
               <p>
                 <span class="font-weight-bold text-h5 pg-letter-spacing">
@@ -126,8 +130,8 @@
                 />
               </validation-provider>
 
-              <v-row>
-                <v-col cols="6">
+              <v-row no-gutters>
+                <v-col class="pr-3" cols="6">
                   <!-- State -->
                   <validation-provider
                     v-slot="{ errors }"
@@ -146,7 +150,7 @@
                   </validation-provider>
                 </v-col>
 
-                <v-col cols="6">
+                <v-col class="pl-3" cols="6">
                   <!-- Zip code -->
                   <validation-provider
                     v-slot="{ errors }"

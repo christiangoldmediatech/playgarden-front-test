@@ -8,7 +8,7 @@
 
     <v-col cols="12" md="6">
       <div class="form mx-auto px-4">
-        <div class="my-5 my-md-0 text-center text-md-left">
+        <div class="my-5 mb-md-2 mt-md-0 text-center text-md-left">
           <underlined-title text="Welcome back!" />
         </div>
 

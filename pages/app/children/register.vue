@@ -1,7 +1,7 @@
 <template>
   <v-row no-gutters>
     <v-col>
-      <v-row>
+      <v-row no-gutters>
         <v-btn
           v-if="inSignUpProcess"
           color="accent"
