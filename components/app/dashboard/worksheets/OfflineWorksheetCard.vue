@@ -1,5 +1,5 @@
 <template>
-  <v-card class="d-flex flex-column" height="100%">
+  <v-card class="d-flex flex-column dashboard-content-card" height="100%">
     <div
       class="d-flex flex-column justify-end align-center offline-image flex-grow-1 flex-shrink-0"
       :style="{ '--offlineWorksheetThumbnailUrl': `url(${require('@/assets/jpg/worksheets_completed_1.jpg')})` }"

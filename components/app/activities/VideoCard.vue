@@ -48,8 +48,8 @@
               <v-btn
                 icon
                 large
-                :loading="loading"
-                @click.stop="setFavorite"
+                :loading="favoritesLoading"
+                @click.stop="handleFavorites"
               >
                 <v-icon color="#F5737F">
                   <template v-if="isFavorite">

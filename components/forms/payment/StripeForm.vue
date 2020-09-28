@@ -1,12 +1,15 @@
 <template>
   <validation-observer v-slot="{ invalid, passes, reset }">
-    <p :class="{ 'mt-8': $vuetify.breakpoint.smAndDown }">
+    <p
+      class="text-center text-md-left"
+      :class="{ 'mt-8': $vuetify.breakpoint.smAndDown }"
+    >
       <span class="font-weight-bold text-h5 pg-letter-spacing">
         CARD INFORMATION
       </span>
     </p>
 
-    <v-form @submit.prevent="passes(onSubmit)">
+    <v-form class="mt-7" @submit.prevent="passes(onSubmit)">
       <!-- Card number -->
       <validation-provider
         v-slot="{ errors }"
@@ -72,26 +75,31 @@
         </v-col>
       </v-row>
 
-      <v-row>
+      <v-row class="mb-6">
         <validation-provider v-slot="{ errors }" name="Terms" rules="required">
           <v-checkbox
             v-model="draft.acceptTerms"
-            class="accept-terms mb-6 mt-0 pt-0"
+            class="accept-terms ml-3 mt-0 pt-0"
             :error-messages="errors"
             :true-value="true"
             :false-value="null"
           >
             <template #label>
-              <span class="read-accept">I have read and accept the</span>
+              <span>
+                I have read and accept the
+
+                <nuxt-link
+                  class="terms-conditions link-text ml-1"
+                  :to="{ name: 'terms-conditions' }"
+                  target="_blank"
+                  @click.native.stop=""
+                >
+                  Terms & Conditions
+                </nuxt-link>
+              </span>
             </template>
           </v-checkbox>
         </validation-provider>
-        <nuxt-link
-          class="terms-conditions link-text ml-1"
-          :to="{ name: 'terms-conditions' }"
-          tag="span"
-          v-text="'Terms & Conditions'"
-        />
       </v-row>
 
       <v-btn
@@ -107,7 +115,7 @@
         {{ buttonText }}
       </v-btn>
 
-      <p class="mb-15 text-center">
+      <p class="mb-15 text-body-2 text-center">
         <span>
           You will only be billed after the one week of FREE trial is completed
         </span>

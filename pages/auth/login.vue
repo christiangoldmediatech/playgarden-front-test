@@ -1,14 +1,14 @@
 <template>
   <v-row align="center" justify="center" no-gutters>
     <v-col cols="11" md="6">
-      <div class="image">
+      <div class="image mt-6 mt-md-0">
         <img alt="Smiling Girl Picture" src="@/assets/svg/girl-smiling.svg">
       </div>
     </v-col>
 
     <v-col cols="12" md="6">
       <div class="form mx-auto px-4">
-        <div class="my-5 my-md-0 text-center text-md-left">
+        <div class="my-5 mb-md-2 mt-md-0 text-center text-md-left">
           <underlined-title text="Welcome back!" />
         </div>
 
@@ -40,7 +40,7 @@
                 src="@/assets/svg/facebook_icon.svg"
               >
 
-              <span class="spanSocialNetwork">Continue with Facebook</span>
+              <span class="spanSocialNetwork">Login with Facebook</span>
             </v-btn>
           </v-col>
 
@@ -53,7 +53,7 @@
                 src="@/assets/svg/google_icon.svg"
               >
 
-              <span class="spanSocialNetwork">Continue with Google</span>
+              <span class="spanSocialNetwork">Login with Google</span>
             </v-btn>
           </v-col>
         </v-row>
@@ -199,9 +199,7 @@ export default {
   line-height: 1.5;
   font-weight: 600;
   text-align: left;
-  text-transform: none !important;
   color: #606060;
-  text-transform: initial !important;
 }
 .social-btn {
   background-color: white !important;

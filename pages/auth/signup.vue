@@ -6,10 +6,9 @@
     no-gutters
   >
     <v-col>
-      <v-row>
+      <v-row no-gutters>
         <v-btn
           v-if="emailValidated && !isUserLoggedIn"
-          class="ma-2"
           color="accent"
           nuxt
           text
@@ -45,13 +44,13 @@
         </v-col>
 
         <v-col class="px-12" cols="12" md="4">
-          <p class="text-center text-md-left">
-            <span class="font-weight-bold text-h5 pg-letter-spacing">
-              MEMBERSHIP
-            </span>
+          <p
+            class="font-weight-bold text-h5 pg-letter-spacing text-center text-md-left"
+          >
+            MEMBERSHIP
+          </p>
 
-            <br>
-
+          <p class="mt-6 text-center text-md-left">
             <small>
               Complete the registration and choose the plan that best suits you,
               to start your learning experience!
@@ -59,13 +58,13 @@
           </p>
 
           <template v-if="!inInvitationProcess">
-            <p>
+            <p class="text-center text-md-left">
               <span class="font-weight-bold">
                 Get one week FREE trial
               </span>
             </p>
 
-            <p>
+            <p class="text-center text-md-left">
               <small>You can cancel at any time from your account settings</small>
             </p>
           </template>
