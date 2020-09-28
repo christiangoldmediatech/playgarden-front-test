@@ -43,11 +43,11 @@
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title class="font-weight-bold text-uppercase">
-                {{ categoryName }}
+                {{ categoryName }} <span class="with-activity-card">with</span> <span class="subtitle-activity-card">{{ activity.name }}</span>
               </v-list-item-title>
 
               <v-list-item-subtitle>
-                {{ activity.name }}
+                <span>{{ activity.description }}</span>
               </v-list-item-subtitle>
             </v-list-item-content>
 
@@ -154,12 +154,20 @@ export default {
   transform: scale(1.25);
   z-index: 1;
 }
-
+.subtitle-activity-card {
+  font-weight: 400 !important;
+  color: $pg-black !important;
+  text-transform: capitalize !important;
+}
+.with-activity-card {
+  font-weight: 400 !important;
+  color: $pg-black !important;
+  text-transform: lowercase !important;
+}
 .play-icon {
   width: 75px;
   height: 75px;
 }
-
 .title {
   color: $pg-black;
   font-weight: 600;
