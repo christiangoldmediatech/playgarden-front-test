@@ -84,8 +84,9 @@
                   block
                 >
                   <v-icon color="white" left>
-                    mdi-download
+                    pg-icon-download
                   </v-icon>
+                  <!-- <pg-icon /> -->
                   DOWNLOAD WORKSHEET
                 </v-btn>
               </v-list-item-content>
