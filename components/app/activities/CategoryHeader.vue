@@ -21,9 +21,9 @@
             <v-list-item-title @click="$scrollTo(`#category_row_${category.id}`, 500, { offset: $vuetify.breakpoint.mobile ? -96 : -128 })">
               <v-row no-gutters class="menu-border">
                 <v-col
-                  cols="6"
-                  sm="6"
-                  xs="6"
+                  cols="4"
+                  sm="4"
+                  xs="4"
                   class="mb-2 mt-2"
                 >
                   <v-img
@@ -199,5 +199,6 @@ export default {
 
 .menu-border {
   border-bottom: 0.5px solid rgb(204 197 197 / 39%);
+  width: 222px;
 }
 </style>
