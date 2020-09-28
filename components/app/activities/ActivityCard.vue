@@ -158,6 +158,8 @@ export default {
   font-weight: 400 !important;
   color: $pg-black !important;
   text-transform: capitalize !important;
+  display: inline-block;
+  width: 5em;
 }
 .with-activity-card {
   font-weight: 400 !important;
