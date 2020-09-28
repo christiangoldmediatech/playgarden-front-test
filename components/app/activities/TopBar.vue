@@ -4,7 +4,7 @@
       <v-btn
         class="text-none mx-3 btn-favorities"
         color="white"
-        height="48"
+        height="60"
         @click.stop="goToFavorites"
       >
         Favorites
@@ -24,6 +24,7 @@
         clearable
         hide-details
         solo
+        class="search-top-bar"
         @keydown.enter="search"
       />
     </v-col>

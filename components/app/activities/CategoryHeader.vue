@@ -24,10 +24,11 @@
                   cols="6"
                   sm="6"
                   xs="6"
+                  class="mb-2 mt-2"
                 >
                   <v-img
                     :src="category.icon"
-                    height="60px"
+                    height="28px"
                     contain
                   />
                 </v-col>
@@ -176,6 +177,7 @@ export default {
 .category-name-mobile {
   text-transform: uppercase;
   font-weight: 700;
+  font-size: 13px;
 }
 
 .category {
