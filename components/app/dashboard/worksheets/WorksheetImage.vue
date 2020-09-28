@@ -10,7 +10,7 @@
         :class="['text-center worksheet-item', { 'worksheet-item-scaled': hover || active }]"
       >
         <v-img
-          class="rounded-circle mx-auto worksheet-item-shadow"
+          class="mx-auto worksheet-item-shadow"
           :src="item.image"
           max-width="200"
           aspect-ratio="1"
@@ -86,7 +86,6 @@ export default {
       box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2);
     }
     &-image {
-      border-radius: 50%;
       width: 100%;
       height: 100%;
       &-selected {

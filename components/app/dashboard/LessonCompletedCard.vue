@@ -1,19 +1,21 @@
 <template>
-  <v-card class="d-flex flex-column" height="100%">
+  <v-card class="d-flex flex-column dashboard-content-card" height="100%">
     <v-img
       :src="require('@/assets/jpg/worksheets_completed_2.jpg')"
       class="align-center white--text"
       gradient="to top, rgba(39, 39, 39, 0.9), rgba(255, 255, 255, 0) 80%"
     >
-      <v-row justify="center">
-        <v-col class="text-center" cols="12">
+      <v-row class="mx-0 content message-padding" justify="center">
+        <v-col class="text-center pb-0" cols="12">
           <underlined-title
-            class="text-h3 font-weight-medium white--text"
+            class="white--text"
+            font-size="56px"
+            font-weight="bold"
             text="Congratulations!"
           />
         </v-col>
         <v-col class="py-0" cols="12">
-          <p class="text-center white--text">
+          <p class="text-h5 text-center white--text font-weight-medium mb-0">
             You have completed all the tasks for the day.<br>Come back tomorrow for more.
           </p>
         </v-col>
@@ -22,7 +24,6 @@
           color="accent"
           elevation="0"
           :disabled="!disabled"
-          rounded
           x-large
           @click.stop="onClick"
         >
