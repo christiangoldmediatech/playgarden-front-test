@@ -4,13 +4,21 @@
     color="primary"
     :style="{ 'margin-top': `${blok.marginTop}px`}"
   >
-    <a :href="blok.link.url || link" @click="toLink">{{ blok.text || text }}</a>
+    <a
+      :target="linkTarget"
+      :href="blok.link.url || link"
+      @click="toLink"
+    >{{ blok.text || text }}</a>
   </v-btn>
 </template>
 
 <script>
+import linkTarget from '@/utils/mixins/cms/linkTarget'
+
 export default {
   name: 'CmsButton',
+
+  mixins: [linkTarget],
 
   props: {
     blok: {
@@ -24,17 +32,6 @@ export default {
     link: {
       type: String,
       default: ''
-    }
-  },
-
-  methods: {
-    toLink (event) {
-      const link = this.blok.link
-
-      if (link.url === '') {
-        event.preventDefault()
-        this.$router.push(link.cached_url.replace('app/', ''))
-      }
     }
   }
 }

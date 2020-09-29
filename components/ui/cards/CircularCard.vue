@@ -20,8 +20,12 @@
 </template>
 
 <script>
+import linkTarget from '@/utils/mixins/cms/linkTarget'
+
 export default {
   name: 'CircularCard',
+
+  mixins: [linkTarget],
 
   props: {
     blok: {
@@ -66,7 +70,7 @@ $bg-dark-green: #c2daa5;
   display: flex;
   align-items: center;
   flex-flow: column nowrap;
-  margin: 10px 0;
+  margin: 30px 0;
   position: relative;
   z-index: 1;
 }
@@ -113,6 +117,7 @@ $bg-dark-green: #c2daa5;
   font-weight: 600;
   font-size: 16px;
   text-align: center;
+  line-height: 20px;
   color: #707070;
   letter-spacing: 3px;
 }

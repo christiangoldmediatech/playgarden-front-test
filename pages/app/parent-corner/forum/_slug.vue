@@ -28,17 +28,11 @@
       class="blog__main-image pg-image--cover"
     >
       <img :src="story.content.image">
-      <div class="blog__icons--vertical">
-        <a
-          v-for="media in shareLinks"
-          :key="media.media"
-          :href="media.link"
-        >
-          <img
-            class="pg-image--cover"
-            :src="require('@/assets/svg/social-media/' + media.imageSrc)"
-          >
-        </a>
+      <div
+        v-if="story.content.collaborationImage"
+        class="collaboration pg-image--contain"
+      >
+        <img :src="story.content.collaborationImage">
       </div>
     </div>
     <!-- Body -->
@@ -280,6 +274,17 @@ $icon-size: 60px;
 
 .orange-text {
   color: #f89838;
+}
+
+.collaboration {
+  position: absolute;
+  bottom: 0;
+  right: 20px;
+  transform: translateY(50%);
+  width: 280px;
+  height: 100px;
+  box-shadow: 4px 3px 6px 0 rgba(0, 0, 0, 0.2);
+  background: white;
 }
 
 $mobile-image-height: 300px;

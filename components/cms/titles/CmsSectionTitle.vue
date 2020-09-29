@@ -52,6 +52,7 @@ export default {
   line-height: 27px;
   color: $pg-black;
   text-transform: uppercase;
+  margin-bottom: 10px;
 }
 
 .section__subtitle {

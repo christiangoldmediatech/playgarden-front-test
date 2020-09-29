@@ -29,7 +29,7 @@
         <img :src="blok.image" class="material-image">
       </div>
 
-      <div class="px-5">
+      <div class="px-5 d-flex justify-center flex-column">
         <div class="pg-title--uppercase">
           Monthly workbooks
         </div>
@@ -114,7 +114,7 @@ export default {
   @include parent-stack-context;
   font-size: 50px;
   margin: 0 auto;
-  margin-top: 40px;
+  margin-top: 60px;
   max-width: 800px;
   color: $pg-black;
   font-weight: bold;

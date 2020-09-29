@@ -16,6 +16,7 @@
         </div>
         <div class="card__link">
           <a
+            :target="linkTarget"
             :href="innerLink"
             class="underlined-link"
             @click="toLink"
@@ -34,8 +35,12 @@
 </template>
 
 <script>
+import linkTarget from '@/utils/mixins/cms/linkTarget'
+
 export default {
   name: 'SquaredCard',
+
+  mixins: [linkTarget],
 
   props: {
     blok: {
@@ -60,17 +65,6 @@ export default {
     innerLink () {
       if (this.blok.link) { return this.blok.link.cached_url.replace('app/', '') }
       return this.link
-    }
-  },
-
-  methods: {
-    toLink (event) {
-      const link = this.blok.link
-
-      if (link.url === '') {
-        event.preventDefault()
-        this.$router.push(link.cached_url.replace('app/', ''))
-      }
     }
   }
 }
