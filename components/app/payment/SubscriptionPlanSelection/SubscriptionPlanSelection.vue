@@ -403,4 +403,8 @@ export default {
   line-height: 1.48;
   background-color: $pg-orange !important;
 }
+
+.text-orange-info::v-deep.v-chip--label {
+    border-radius: 0px !important;
+}
 </style>
