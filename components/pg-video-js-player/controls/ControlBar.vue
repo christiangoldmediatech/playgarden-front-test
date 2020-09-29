@@ -13,55 +13,84 @@
           width="100%"
           rounded
         >
-          <div :class="['d-flex', `${noSmallscreen ? 'justify-space-between' : 'justify-center justify-md-space-between'}`]">
-            <!-- Volume Menu -->
-            <v-menu
-              v-if="!smallScreen"
-              v-model="visible"
-              dark
-              offset-y
-              top
-              open-on-hover
-              open-on-focus
-              open-on-click
-              close-on-click
-              close-on-content-click
-              rounded
-              :attach="`#${controlBarId}`"
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  color="#D2D2D2"
-                  icon
-                  x-large
-                  v-bind="attrs"
-                  v-on="on"
-                  @click.stop="toggleMute"
-                >
-                  <v-icon x-large>
-                    {{ speakerIcon }}
-                  </v-icon>
-                </v-btn>
-              </template>
-              <v-list
-                color="rgba(0, 0, 0, 0.74)"
-                dense
+          <div class="d-flex justify-space-between">
+            <!-- `${noSmallscreen ? 'justify-space-between' : 'justify-center justify-md-space-between'}` -->
+            <div class="control-bar-area">
+              <!-- Volume Menu -->
+              <v-menu
+                v-if="!smallScreen"
+                v-model="visible"
+                dark
+                offset-y
+                top
+                open-on-hover
+                open-on-focus
+                open-on-click
+                close-on-click
+                close-on-content-click
+                rounded
+                :attach="`#${controlBarId}`"
               >
-                <v-list-item>
-                  <v-slider
-                    v-model="volumeVal"
-                    class="py-2"
-                    thumb-size="8"
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
                     color="#D2D2D2"
-                    dark
-                    hide-details
-                    vertical
-                    :min="0"
-                    :max="100"
-                  />
-                </v-list-item>
-              </v-list>
-            </v-menu>
+                    icon
+                    x-large
+                    v-bind="attrs"
+                    v-on="on"
+                    @click.stop="toggleMute"
+                  >
+                    <v-icon x-large>
+                      {{ speakerIcon }}
+                    </v-icon>
+                  </v-btn>
+                </template>
+                <v-list
+                  color="rgba(0, 0, 0, 0.74)"
+                  dense
+                >
+                  <v-list-item>
+                    <v-slider
+                      v-model="volumeVal"
+                      class="py-2"
+                      thumb-size="8"
+                      color="#D2D2D2"
+                      dark
+                      hide-details
+                      vertical
+                      :min="0"
+                      :max="100"
+                    />
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+
+              <v-btn
+                v-if="showRestart"
+                color="#D2D2D2"
+                icon
+                x-large
+                :disabled="status === 'LOADING'"
+                @click.stop="restart"
+              >
+                <v-icon x-large>
+                  mdi-restart
+                </v-icon>
+              </v-btn>
+
+              <v-btn
+                v-if="showStepBack"
+                color="#D2D2D2"
+                icon
+                x-large
+                :disabled="status === 'LOADING'"
+                @click.stop="stepBack"
+              >
+                <v-icon x-large>
+                  mdi-step-backward
+                </v-icon>
+              </v-btn>
+            </div>
 
             <!-- Play Button -->
             <v-btn
@@ -76,18 +105,20 @@
               </v-icon>
             </v-btn>
 
-            <!-- Fullscreen Button -->
-            <v-btn
-              v-if="!smallScreen"
-              color="#D2D2D2"
-              icon
-              x-large
-              @click.stop="$emit('fullscreen')"
-            >
-              <v-icon x-large>
-                {{ fullscreenIcon }}
-              </v-icon>
-            </v-btn>
+            <div class="control-bar-area text-right">
+              <!-- Fullscreen Button -->
+              <v-btn
+                v-if="!smallScreen"
+                color="#D2D2D2"
+                icon
+                x-large
+                @click.stop="$emit('fullscreen')"
+              >
+                <v-icon x-large>
+                  {{ fullscreenIcon }}
+                </v-icon>
+              </v-btn>
+            </div>
           </div>
           <!-- Timeline -->
           <div class="d-flex align-center justify-space-between">
@@ -204,6 +235,19 @@ export default {
       }
     },
 
+    restart () {
+      this.player.currentTime(0)
+    },
+
+    stepBack () {
+      const currentTime = this.player.currentTime()
+      if (currentTime - 15 > 0) {
+        this.player.currentTime(currentTime - 15)
+      } else {
+        this.player.currentTime(0)
+      }
+    },
+
     togglePlay () {
       if (this.status === 'PLAYING') {
         this.player.pause()
@@ -230,6 +274,9 @@ export default {
   bottom: 16px;
   user-select: none;
   pointer-events: auto;
+  &-area {
+    width: calc(50% - 52px);
+  }
   &-sheet {
     &-container {
       opacity: 0.0;
