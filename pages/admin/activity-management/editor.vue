@@ -29,13 +29,13 @@
               <v-form>
                 <v-row>
                   <v-col class="text-md-right" cols="12" sm="3">
-                    <span class="subheader">Activity title:</span>
+                    <span class="subheader">Teachers' name:</span>
                   </v-col>
 
                   <v-col cols="12" sm="9" lg="6">
                     <validation-provider
                       v-slot="{ errors }"
-                      name="Activity Title"
+                      name="Teachers' name"
                       rules="required"
                     >
                       <v-text-field
@@ -49,13 +49,13 @@
 
                 <v-row>
                   <v-col class="text-md-right" cols="12" sm="3">
-                    <span class="subheader">Description:</span>
+                    <span class="subheader">Video Description:</span>
                   </v-col>
 
                   <v-col cols="12" sm="9" lg="6">
                     <validation-provider
                       v-slot="{ errors }"
-                      name="Description"
+                      name="Video Description"
                       rules="required"
                     >
                       <v-textarea
