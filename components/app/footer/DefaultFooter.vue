@@ -16,7 +16,7 @@
             />
 
             <div class="align-center d-flex justify-center justify-md-start">
-              <a target="_blank" href="https://www.facebook.com/Playgardennyc">
+              <a target="_blank" target="_blank" href="https://www.facebook.com/Playgardennyc">
                 <img
                   alt="Facebook"
                   class="clickable mr-1"
