@@ -41,7 +41,7 @@
                 contain
               />
             </v-list-item-avatar>
-            <v-list-item-content>
+            <v-list-item-content class="data-video">
               <v-list-item-title class="font-weight-bold text-uppercase">
                 {{ categoryName }} <span class="with-activity-card">with</span> <span class="subtitle-activity-card">{{ activity.name }}</span>
               </v-list-item-title>
@@ -176,5 +176,8 @@ export default {
 .title {
   color: $pg-black;
   font-weight: 600;
+}
+.data-video {
+  min-height: 80px;
 }
 </style>
