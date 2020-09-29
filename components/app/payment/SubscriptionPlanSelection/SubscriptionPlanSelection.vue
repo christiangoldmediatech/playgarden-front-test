@@ -31,7 +31,7 @@
                     <p class="text-center">
                       <v-chip
                         color="orange"
-                        class="text-orange-info"
+                        class="text-orange-info mb-3"
                         label
                       >
                         {{ getTypePlan(indexP) }}
@@ -391,6 +391,8 @@ export default {
 .text-orange-info {
   background-color: $pg-orange !important;
   color: $pg-white !important;
+  height: 19px;
+  font-size: 18px;
 }
 
 .text-orange-info::v-deep.v-chip .v-chip__content {
