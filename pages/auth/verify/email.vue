@@ -39,10 +39,10 @@
         <p class="mt-6 text-center text-md-left">
           Didn’t receive an email?
 
-          <v-btn color="primary" text class="btn-green" @click="onResend" height="10">
+          <v-btn color="primary" text class="btn-green" height="10" @click="onResend">
             RESEND EMAIL
           </v-btn>
-          <br />
+          <br>
           Need support?
 
           <v-btn

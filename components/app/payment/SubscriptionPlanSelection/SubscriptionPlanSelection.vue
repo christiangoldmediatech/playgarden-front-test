@@ -36,7 +36,7 @@
                       >
                         {{ getTypePlan(indexP) }}
                       </v-chip>
-                      <br />
+                      <br>
                       <underlined-title
                         font-size="20px"
                         :line-from="65"
@@ -88,11 +88,11 @@
 
           <v-row v-if="!noAddress && draft.requireAddress" no-gutters>
             <v-col>
-              <p class="shipping-info">
+              <p class="text-justify">
                 <span class="font-weight-bold text-h5 pg-letter-spacing">
                   SHIPPING ADDRESS
                 </span>
-                <br />
+                <br>
                 <span class="text-h8">
                   For our GOLD and PLATINUM plans, we require a shipping address in order to send the Welcome Kit with Backpack, workbooks, and additional materials so you can easily receive them at the comfort of your home.
                 </span>
@@ -410,9 +410,5 @@ export default {
 
 .text-orange-info::v-deep.v-chip--label {
     border-radius: 0px !important;
-}
-
-.shipping-info {
-  text-align: justify;
 }
 </style>
