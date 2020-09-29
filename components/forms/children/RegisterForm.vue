@@ -109,6 +109,7 @@
                   class="clickable"
                   :class="{ active: item.backpackId === backpack.id }"
                   :src="backpack.image"
+                  height="100px"
                   @click="item.backpackId = backpack.id"
                 >
               </v-col>
