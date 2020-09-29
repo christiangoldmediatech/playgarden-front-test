@@ -1,14 +1,14 @@
 <template>
   <v-row>
     <v-col cols="12">
-      <p class="font-weight-bold">
+      <p class="font-weight-bold mb-0">
         NOTIFICATIONS
       </p>
 
       <v-row
         v-for="notification in notifications"
         :key="notification.id"
-        class="justify-space-between my-1 px-md-6"
+        class="align-center justify-space-between px-md-6"
         no-gutters
       >
         <v-col class="text-truncate">

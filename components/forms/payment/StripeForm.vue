@@ -75,7 +75,7 @@
         </v-col>
       </v-row>
 
-      <v-row class="mb-6">
+      <v-row v-if="!noTerms" class="mb-6">
         <validation-provider v-slot="{ errors }" name="Terms" rules="required">
           <v-checkbox
             v-model="draft.acceptTerms"
@@ -115,7 +115,7 @@
         {{ buttonText }}
       </v-btn>
 
-      <p class="mb-15 text-body-2 text-center">
+      <p v-if="!noTrial" class="mb-15 text-body-2 text-center">
         <span>
           You will only be billed after the one week of FREE trial is completed
         </span>
@@ -154,7 +154,11 @@ export default {
 
     cancelable: Boolean,
 
-    loading: Boolean
+    loading: Boolean,
+
+    noTerms: Boolean,
+
+    noTrial: Boolean
   },
 
   methods: {

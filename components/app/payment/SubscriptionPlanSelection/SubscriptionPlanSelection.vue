@@ -13,7 +13,7 @@
             >
               <p>
                 <span class="font-weight-bold text-h5 pg-letter-spacing">
-                  CHOOSE YOUR PLAN
+                  {{ updating ? "UPDATE" : "CHOOSE YOUR" }} PLAN
                 </span>
               </p>
 
@@ -184,6 +184,21 @@
           >
             {{ noPayment ? "SAVE" : "CONTINUE TO PAYMENT" }}
           </v-btn>
+
+          <v-btn
+            v-if="updating"
+            block
+            class="mb-6 main-btn"
+            color="accent"
+            min-height="60"
+            :disabled="invalid"
+            :loading="loading"
+            text
+            x-large
+            @click="$emit('click:cancel')"
+          >
+            CANCEL
+          </v-btn>
         </v-form>
       </validation-observer>
     </v-col>
@@ -216,7 +231,9 @@ export default {
 
     noAddress: Boolean,
 
-    noPayment: Boolean
+    noPayment: Boolean,
+
+    updating: Boolean
   },
 
   data: () => ({
