@@ -1,5 +1,5 @@
 <template>
-  <v-row align="center" fill-height justify="center">
+  <v-row align="center" fill-height justify="center" no-gutters>
     <v-col class="text-center" cols="4">
       <div class="mb-3">
         <v-img class="logo-img" :src="require('@/assets/svg/logo.svg')" />

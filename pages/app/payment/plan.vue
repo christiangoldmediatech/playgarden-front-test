@@ -1,10 +1,9 @@
 <template>
-  <v-row>
+  <v-row no-gutters>
     <v-col>
-      <v-row>
+      <v-row no-gutters>
         <v-btn
           v-if="initialized && inSignUpProcess"
-          class="ma-2"
           color="accent"
           nuxt
           text
@@ -22,6 +21,7 @@
       </v-row>
 
       <subscription-plan-selection
+        class="mt-n6"
         @click:submit="onSubmit"
         @initialized="initialized = true"
       />

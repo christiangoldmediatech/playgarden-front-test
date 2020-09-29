@@ -7,10 +7,9 @@
   font-family: "Poppins", sans-serif !important;
 }
 
-// .video-js * {
-//   font-family: VideoJS !important;
-//   color: white !important;
-// }
+.v-application {
+  line-height: 1.2 !important;
+}
 
 .v-application a {
   text-decoration: none;
@@ -29,9 +28,18 @@
   color: $pg-error !important;
 }
 // Default datepicker has the header fonts in white
-.v-date-picker-title__date div,
-.v-date-picker-title__year {
+.theme--light .v-date-picker-title__date div,
+.theme--light .v-date-picker-title__year {
   color: #ffffff;
+}
+
+.theme--light .v-date-picker-table .v-btn__content {
+  font-weight: normal;
+}
+
+// Default inputs height
+.theme--light.v-input .v-input__slot {
+  min-height: 60px;
 }
 
 // Overlay
@@ -65,6 +73,12 @@
 /* COMPONENTS */
 .green-line {
   height: 1rem;
+  width: 100%;
+  box-shadow: 0 -1px 6px 0 rgba(0, 0, 0, 0.12);
+}
+
+.green-line-bigger {
+  height: 30px;
   width: 100%;
   box-shadow: 0 -1px 6px 0 rgba(0, 0, 0, 0.12);
 }
@@ -107,7 +121,6 @@
     content: "";
     z-index: -1;
     border-bottom: 11px solid var(--bgColor);
-    border-radius: 7px;
   }
 }
 
@@ -116,15 +129,14 @@
   position: relative;
   z-index: 1;
   &::after {
-    width: 115%;
+    width: 110%;
     opacity: 0.5;
     position: absolute;
     bottom: 7px;
-    left: -7.5%;
+    left: -5.5%;
     content: "";
     z-index: -1;
     border-bottom: 11px solid var(--bgColor);
-    border-radius: 7px;
   }
 }
 
@@ -140,11 +152,6 @@
   > .v-input__slot {
   box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.16) !important;
 }
-.custom-btn::v-deep.v-btn {
-  background-color: #f2f2f2;
-  color: #9d9d9d;
-  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
-}
 
 .btn-green {
   font-weight: bold !important;
@@ -155,13 +162,6 @@
   font-size: 20px !important;
 }
 
-.dashboard-video-thumbnail {
-  background-image: var(--videoThumbnailUrl);
-  background-position: center, center;
-  background-repeat: no-repeat, no-repeat;
-  background-size: cover;
-}
-
 .pg-letter-spacing {
   letter-spacing: 6.75px !important;
 }
@@ -169,4 +169,15 @@
 .fullscreen-overlay {
   min-width: 100vw !important;
   max-height: 100vh !important;
+}
+
+.play-icon {
+  background-color: #f89838;
+  width: 150px;
+  height: 150px;
+  transition: transform 250ms;
+}
+
+.scaled-play-icon {
+  transform: scale(1.25);
 }

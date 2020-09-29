@@ -40,7 +40,6 @@ export default {
         controls: false,
         autoplay: false,
         preload: 'auto',
-        sources: [],
         loadingSpinner: true,
         fluid: true
       },
@@ -62,7 +61,7 @@ export default {
     },
 
     lastPlaylistItem () {
-      if (this.playlistItemIndex && this.playlistItemIndex === (this.playlist.length - 1)) {
+      if (this.playlistItemIndex !== null && this.playlistItemIndex === (this.playlist.length - 1)) {
         return true
       }
       return false
@@ -82,7 +81,9 @@ export default {
         volume: this.volume,
         muted: this.muted,
         nextUp: this.nextUp,
-        noSeek: this.noSeek
+        noSeek: this.noSeek,
+        showRestart: this.showRestart,
+        showStepBack: this.showStepBack
       }
     }
   },
@@ -113,6 +114,9 @@ export default {
       this.duration = 0.1
       if (this.playlist[index]) {
         const mediaObject = jsonCopy(this.playlist[index])
+        if (this.useStandardPoster || !mediaObject.poster) {
+          mediaObject.poster = '/standard-video-poster.jpg'
+        }
         this.mediaObject = mediaObject
         this.playerInstance.loadMedia(mediaObject)
       } else {
@@ -142,6 +146,23 @@ export default {
       this.playerInstance.on(['loadstart', 'seeking', 'waiting', 'stalled'], () => {
         this.status = 'LOADING'
       })
+
+      // Add show loading methods
+      this.playerInstance.showLoading = () => {
+        this.playerInstance.addClass('vjs-waiting')
+      }
+
+      this.playerInstance.hideLoading = () => {
+        this.playerInstance.removeClass('vjs-waiting')
+      }
+
+      this.playerInstance.nextVideo = () => {
+        if (!this.lastPlaylistItem) {
+          this.loadMediaObject(this.playlistItemIndex + 1)
+        } else {
+          this.$emit('playlist-complete')
+        }
+      }
 
       this.playerInstance.on(['play', 'playing'], () => {
         this.status = 'PLAYING'
@@ -188,11 +209,10 @@ export default {
 
       // Move onto next playlist item
       this.playerInstance.on('ended', () => {
-        if (!this.lastPlaylistItem && this.position === this.duration) {
-          this.loadMediaObject(this.playlistItemIndex + 1)
-        } else {
-          this.$emit('playlist-complete')
+        if (this.noAutoTrackChange) {
+          return
         }
+        this.playerInstance.nextVideo()
       })
 
       const excludeList = ['ready', 'playlist-index-change', 'last-playlist-item', 'playlist-complete']

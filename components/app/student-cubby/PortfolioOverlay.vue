@@ -1,29 +1,40 @@
 <template>
-  <v-overlay :value="overlay" dark z-index="100">
-    <v-container class="pa-0 fullscreen" fluid>
-      <v-row class="fill-height" align="center" justify="center">
-        <v-col
-          class="position-relative"
-          cols="7"
-          sm="6"
-          md="5"
-          lg="4"
-          xl="3"
+  <v-dialog :value="overlay" :fullscreen="fullscreen">
+    <v-card class="dialog-portfolio-overlay">
+      <v-container class="pa-0" fluid>
+        <v-btn
+          class="top-left text-none white--text px-4"
+          text
+          x-large
+          @click.stop="overlay = false"
         >
-          <v-btn
-            class="top-right"
-            icon
-            @click.stop="overlay = false"
+          <v-icon left>
+            mdi-less-than
+          </v-icon>
+          Back
+        </v-btn>
+        <v-row class="fill-height" align="center" justify="center">
+          <v-col
+            class="position-relative"
+            sm="12"
+            lg="8"
+            xl="10"
           >
-            <v-icon>
-              mdi-close
-            </v-icon>
-          </v-btn>
-          <portfolio-card v-bind="{ image }" display-mode />
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-overlay>
+            <v-btn
+              class="top-right color-close"
+              icon
+              @click.stop="overlay = false"
+            >
+              <v-icon>
+                mdi-close
+              </v-icon>
+            </v-btn>
+            <portfolio-card v-bind="{ image }" display-mode />
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
@@ -39,7 +50,8 @@ export default {
   data: () => {
     return {
       image: null,
-      overlay: false
+      overlay: false,
+      fullscreen: true
     }
   },
 
@@ -65,7 +77,15 @@ export default {
 }
 
 .fullscreen {
-  width: 100vw !important;
-  height: 100vh !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.color-close {
+  color: white !important;
+}
+
+.dialog-portfolio-overlay {
+  background-color: rgba(0, 0, 0, 0.68) !important;
 }
 </style>

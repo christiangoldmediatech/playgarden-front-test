@@ -26,11 +26,14 @@ function getFontData (containerElement) {
 function breakTextIntoLines (containerElement, text, mode = 'word') {
   const textLines = []
   let textArr
-
   if (mode === 'word') {
     textArr = text.match(/\S+|\s/g)
   } else if (mode === 'letter') {
     textArr = [...text]
+  }
+
+  if (!textArr) {
+    textArr = []
   }
 
   textArr.reduce((prev, curr, index) => {

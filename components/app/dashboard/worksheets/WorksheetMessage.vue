@@ -21,7 +21,7 @@
           <v-col class="flex-shrink-1 flex-grow-0" cols="7" sm="5">
             <div class="text-center worksheet-item">
               <v-img
-                class="rounded-circle mx-auto worksheet-item-shadow"
+                class="mx-auto worksheet-item-shadow"
                 :src="item.image"
                 max-width="200"
                 aspect-ratio="1"

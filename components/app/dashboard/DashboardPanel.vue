@@ -54,10 +54,7 @@
               :disabled="videos.progress < 100"
               nuxt
               exact
-              :to="{
-                name: 'app-dashboard-online-worksheet',
-                query: { ...overrides }
-              }"
+              :to="generateNuxtRoute('online-worksheet')"
             >
               <v-list-item-content>
                 <v-list-item-title :class="['dashboard-panel-worksheet-text', { 'dashboard-item-disabled': videos.progress < 100 }]">
@@ -73,10 +70,7 @@
               :disabled="videos.progress < 100"
               nuxt
               exact
-              :to="{
-                name: 'app-dashboard-offline-worksheet',
-                query: { ...overrides }
-              }"
+              :to="generateNuxtRoute('offline-worksheet')"
             >
               <v-list-item-content>
                 <v-list-item-title :class="['dashboard-panel-worksheet-text', { 'dashboard-item-disabled': videos.progress < 100 }]">
@@ -90,8 +84,9 @@
                   block
                 >
                   <v-icon color="white" left>
-                    mdi-download
+                    pg-icon-download
                   </v-icon>
+                  <!-- <pg-icon /> -->
                   DOWNLOAD WORKSHEET
                 </v-btn>
               </v-list-item-content>
@@ -162,6 +157,7 @@ export default {
 
   &-card {
     padding-top: 87px;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16) !important;
     &-border-top {
       width: 100%;
       height: 18px;

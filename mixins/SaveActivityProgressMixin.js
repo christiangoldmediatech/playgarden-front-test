@@ -14,7 +14,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('children/lesson', { sendActivityProgress: 'saveActivityProgres' }),
+    ...mapActions('children/lesson', { sendActivityProgress: 'saveActivityProgress' }),
 
     saveActivityProgress () {
       const currentVideo = jsonCopy(this.currentVideo)
@@ -45,7 +45,13 @@ export default {
           )
         })
         Promise.all(promises).then(() => {
-          this.$nuxt.$emit('dashboard-panel-update')
+          this.$nuxt.$emit('dashboard-panel-update').then(() => {
+            if (this.$route.name !== 'app-dashboard-lesson-completed' && this.lessonCompleted) {
+              this.$router.push({
+                name: 'app-dashboard-lesson-completed'
+              })
+            }
+          })
           this.savingActivityProgress = false
         })
       }

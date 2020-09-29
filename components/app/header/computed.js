@@ -2,10 +2,10 @@ import { mapGetters } from 'vuex'
 
 export default {
   computed: {
-    ...mapGetters('auth', ['isUserInSingupProcess', 'isUserLoggedIn']),
+    ...mapGetters('auth', ['isUserInSignupProcess', 'isUserLoggedIn']),
 
     items () {
-      if (!this.isUserInSingupProcess && this.isUserLoggedIn) {
+      if (!this.isUserInSignupProcess && this.isUserLoggedIn) {
         return [
           { title: 'Lessons', to: { name: 'app-dashboard' }, exact: false },
           { title: 'Activities', to: { name: 'app-activities' }, exact: false },
@@ -15,7 +15,7 @@ export default {
             exact: false
           },
           {
-            title: 'Parent\'s Corner',
+            title: 'Parent Corner',
             to: { name: 'app-parent-corner' },
             exact: false
           }

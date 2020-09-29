@@ -1,10 +1,18 @@
 export default {
-  async getFavorites (ctx, childrenId) {
+  async getFavorites ({ commit }, childrenId) {
     try {
+      commit('SET_LOADING', true)
+      const results = []
       const { data } = await this.$axios.get(`/videos-favorites/children/${childrenId}`)
+      data.forEach((video) => {
+        results.push(video)
+      })
+      commit('SET_ROWS', results)
       return data
     } catch (error) {
       return Promise.reject(error)
+    } finally {
+      commit('SET_LOADING', false)
     }
   },
 

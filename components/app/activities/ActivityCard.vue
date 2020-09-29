@@ -41,13 +41,13 @@
                 contain
               />
             </v-list-item-avatar>
-            <v-list-item-content>
+            <v-list-item-content class="data-video">
               <v-list-item-title class="font-weight-bold text-uppercase">
-                {{ categoryName }}
+                {{ categoryName }} <span class="with-activity-card">with</span> <span class="subtitle-activity-card">{{ activity.name }}</span>
               </v-list-item-title>
 
               <v-list-item-subtitle>
-                {{ activity.name }}
+                <span class="activity-description">{{ activity.description }}</span>
               </v-list-item-subtitle>
             </v-list-item-content>
 
@@ -55,8 +55,8 @@
               <v-btn
                 icon
                 large
-                :loading="loading"
-                @click.stop="setFavorite"
+                :loading="favoritesLoading"
+                @click.stop="handleFavorites"
               >
                 <v-icon color="#F5737F">
                   <template v-if="isFavorite">
@@ -154,14 +154,30 @@ export default {
   transform: scale(1.25);
   z-index: 1;
 }
-
+.subtitle-activity-card {
+  font-weight: 400 !important;
+  color: $pg-black !important;
+  text-transform: capitalize !important;
+  white-space: pre-wrap;
+}
+.with-activity-card {
+  font-weight: 400 !important;
+  color: $pg-black !important;
+  text-transform: lowercase !important;
+}
 .play-icon {
   width: 75px;
   height: 75px;
 }
-
+.activity-description {
+  white-space: pre-wrap;
+  font-weight: 500;
+}
 .title {
   color: $pg-black;
   font-weight: 600;
+}
+.data-video {
+  min-height: 67px;
 }
 </style>

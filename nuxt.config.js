@@ -52,6 +52,7 @@ export default {
    */
   css: [
     './assets/scss/app.scss',
+    './assets/scss/pg-icons.scss',
     {
       src: 'tiptap-vuetify/dist/main.css',
       lang: 'css'

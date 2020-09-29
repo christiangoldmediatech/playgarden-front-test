@@ -36,7 +36,7 @@
     </template>
 
     <template v-slot:append-item>
-      <v-list-item>
+      <v-list-item v-if="!previewMode && !isUserCaregiver">
         <v-list-item-content>
           <v-btn
             color="primary"
@@ -53,6 +53,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+
 export default {
   name: 'ChildSelect',
 
@@ -62,10 +63,18 @@ export default {
       validator: (val) => {
         return val === null || typeof val === 'number'
       }
+    },
+
+    previewMode: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
 
   computed: {
+    ...mapGetters('auth', ['isUserCaregiver']),
+
     ...mapGetters('children', { children: 'rows' }),
 
     childrenList () {

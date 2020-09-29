@@ -209,7 +209,7 @@ export default {
 
   methods: {
     playAll () {
-      this.$nuxt.$emit('open-lesson-activity-player', { playlist: this.playlist, index: 0 })
+      this.$nuxt.$emit('open-activity-player', { playlist: this.playlist, index: 0 })
     },
 
     moveCarousel (direction) {

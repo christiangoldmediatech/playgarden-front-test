@@ -172,8 +172,6 @@ export default {
         starts_with: 'app/parent-corner/forum'
       })
 
-      console.log(res)
-
       this.forumList = res.data.stories.map(story => ({
         id: story.id,
         title: story.content.title,

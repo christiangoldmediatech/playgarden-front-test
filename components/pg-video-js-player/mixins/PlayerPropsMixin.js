@@ -24,12 +24,36 @@ export default {
       default: false
     },
 
+    noAutoTrackChange: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
     fullscreenOverride: {
       validator: (val) => {
         return typeof val === 'function' || val === null
       },
       required: false,
       default: null
+    },
+
+    showRestart: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
+    showStepBack: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
+    useStandardPoster: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   }
 }

@@ -8,6 +8,7 @@
       <v-row
         v-for="({ id, email, phone }, indexIS) in invitationSent"
         :key="indexIS"
+        align="center"
         class="my-1 px-md-6"
         no-gutters
       >
@@ -18,10 +19,9 @@
         <v-col class="shrink">
           <div>
             <v-btn
-              color="accent"
+              color="primary"
               icon
               :loading="loading"
-              x-small
               text
               @click="onResend({ email, phone })"
             >
@@ -34,9 +34,8 @@
               color="accent"
               icon
               :loading="loading"
-              x-small
               text
-              @click="onDelete(id)"
+              @click="onDelete({ id, email, phone })"
             >
               <v-icon>
                 mdi-close-circle-outline
@@ -75,7 +74,16 @@ export default {
       this.invitationSent = await this.fetchCaregiverInvitationList()
     },
 
-    async onDelete (id) {
+    onDelete ({ id, email, phone }) {
+      this.$nuxt.$emit('open-prompt', {
+        title: 'Delete invitation?',
+        message: `Are you sure you wish to delete '${email ||
+          phone}' invitation?`,
+        action: () => this.confirmDelete(id)
+      })
+    },
+
+    async confirmDelete (id) {
       this.loading = true
 
       try {
@@ -108,6 +116,6 @@ export default {
 
 <style scoped>
 .shrink > div {
-  width: 45px;
+  width: 77px;
 }
 </style>
