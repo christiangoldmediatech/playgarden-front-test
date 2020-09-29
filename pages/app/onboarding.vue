@@ -65,7 +65,7 @@
 
             <v-btn
               v-if="single || last"
-              class="text-h6"
+              class="text-h6 margin-negative"
               color="primary"
               :loading="finishing"
               text
@@ -186,3 +186,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.margin-negative {
+  margin-top: -30px !important;
+}
+</style>
