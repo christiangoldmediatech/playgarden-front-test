@@ -1,9 +1,15 @@
 <template>
   <v-row>
     <v-col cols="12">
-      <span class="text-uppercase font-weight-bold text-h6">
-        {{ category.category }}
-      </span>
+      <v-row align="end" class="mb-2">
+        <img :src="category.icon" height="32" class="mr-2">
+
+        <div class="mx-3">
+          <span class="text-uppercase font-weight-bold text-h6">
+            {{ category.category }}
+          </span>
+        </div>
+      </v-row>
     </v-col>
     <v-col cols="12">
       <v-row>
