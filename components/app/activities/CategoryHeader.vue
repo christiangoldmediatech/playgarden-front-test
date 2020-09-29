@@ -10,7 +10,7 @@
             v-on="on"
           >
             Browse by category
-            <v-icon>mdi-menu-up</v-icon>
+            <v-icon>mdi-menu-down</v-icon>
           </v-btn>
         </template>
         <v-list>
