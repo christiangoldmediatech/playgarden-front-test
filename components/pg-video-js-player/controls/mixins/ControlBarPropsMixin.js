@@ -43,6 +43,18 @@ export default {
     noSeek: {
       type: Boolean,
       required: true
+    },
+
+    showRestart: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
+    showStepBack: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   }
 }

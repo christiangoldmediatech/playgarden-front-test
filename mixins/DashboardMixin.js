@@ -108,6 +108,7 @@ export default {
         }
         return {
           id,
+          name: videos.name,
           description: videos.description,
           activityType,
           to: this.generateNuxtRoute('lesson-activities', { id }),

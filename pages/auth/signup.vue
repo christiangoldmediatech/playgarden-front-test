@@ -30,7 +30,7 @@
         <v-col class="px-12" cols="12" md="8">
           <p class="text-center text-md-left">
             <span class="font-weight-bold text-h5 pg-letter-spacing">
-              PARENT INFORMATION
+              {{ inInvitationProcess ? 'CAREGIVER' : 'PARENT' }} INFORMATION
             </span>
           </p>
 

@@ -8,6 +8,7 @@
       <v-row
         v-for="caregiver in caregivers"
         :key="caregiver.id"
+        align="center"
         class="my-1 px-md-6"
         no-gutters
       >
@@ -16,7 +17,7 @@
         </v-col>
 
         <v-col v-if="deletable" class="text-right" cols="1">
-          <v-btn color="accent" icon x-small text @click="remove(caregiver)">
+          <v-btn color="accent" icon text @click="remove(caregiver)">
             <v-icon>
               mdi-close-circle-outline
             </v-icon>

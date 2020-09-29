@@ -30,10 +30,14 @@
               contain
             />
           </v-list-item-avatar>
+
           <v-list-item-content>
             <v-list-item-title>
               <span class="dashboard-item-activity-type">
                 {{ currentLessonActivity.activityType.name }}
+              </span>
+              <span class="dashboard-item-name">
+                with {{ currentLessonActivity.title }}
               </span>
             </v-list-item-title>
             <v-list-item-subtitle>

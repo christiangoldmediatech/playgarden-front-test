@@ -121,7 +121,6 @@
     content: "";
     z-index: -1;
     border-bottom: 11px solid var(--bgColor);
-    border-radius: 7px;
   }
 }
 
@@ -130,15 +129,14 @@
   position: relative;
   z-index: 1;
   &::after {
-    width: 115%;
+    width: 110%;
     opacity: 0.5;
     position: absolute;
     bottom: 7px;
-    left: -7.5%;
+    left: -5.5%;
     content: "";
     z-index: -1;
     border-bottom: 11px solid var(--bgColor);
-    border-radius: 7px;
   }
 }
 
@@ -153,11 +151,6 @@
   > .v-input__control
   > .v-input__slot {
   box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.16) !important;
-}
-.custom-btn::v-deep.v-btn {
-  background-color: #f2f2f2;
-  color: #9d9d9d;
-  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
 }
 
 .btn-green {

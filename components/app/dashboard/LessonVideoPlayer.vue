@@ -11,6 +11,9 @@
       ref="videoPlayer"
       autoplay
       show-next-up
+      show-restart
+      show-step-back
+      use-standard-poster
       :no-seek="noSeek"
       :fullscreen-override="handleFullscreen"
       @ready="onReady"

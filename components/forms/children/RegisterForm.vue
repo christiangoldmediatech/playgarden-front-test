@@ -109,6 +109,7 @@
                   class="clickable"
                   :class="{ active: item.backpackId === backpack.id }"
                   :src="backpack.image"
+                  height="100px"
                   @click="item.backpackId = backpack.id"
                 >
               </v-col>
@@ -321,5 +322,15 @@ export default {
 }
 .grey {
   color: $pg-black;
+}
+
+.custom-btn::v-deep.v-btn.grey {
+  background-color: #f2f2f2;
+  color: #9d9d9d !important;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+  text-transform: capitalize !important;
+}
+.custom-btn::v-deep.v-btn {
+  text-transform: capitalize !important;
 }
 </style>
