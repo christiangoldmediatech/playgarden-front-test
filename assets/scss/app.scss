@@ -32,6 +32,9 @@
 .theme--light .v-date-picker-title__year {
   color: #ffffff;
 }
+.theme--light.v-date-picker-header .v-date-picker-header__value:not(.v-date-picker-header__value--disabled) button:not(:hover):not(:focus) {
+  color: $pg-black !important;
+}
 
 .theme--light .v-date-picker-table .v-btn__content {
   font-weight: normal;
