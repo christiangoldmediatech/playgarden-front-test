@@ -178,6 +178,6 @@ export default {
   font-weight: 600;
 }
 .data-video {
-  min-height: 80px;
+  min-height: 67px;
 }
 </style>
