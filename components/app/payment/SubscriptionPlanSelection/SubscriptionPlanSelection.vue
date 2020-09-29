@@ -88,9 +88,13 @@
 
           <v-row v-if="!noAddress && draft.requireAddress" no-gutters>
             <v-col>
-              <p>
+              <p class="shipping-info">
                 <span class="font-weight-bold text-h5 pg-letter-spacing">
                   SHIPPING ADDRESS
+                </span>
+                <br />
+                <span class="text-h8">
+                  For our GOLD and PLATINUM plans, we require a shipping address in order to send the Welcome Kit with Backpack, workbooks, and additional materials so you can easily receive them at the comfort of your home.
                 </span>
               </p>
 
@@ -406,5 +410,9 @@ export default {
 
 .text-orange-info::v-deep.v-chip--label {
     border-radius: 0px !important;
+}
+
+.shipping-info {
+  text-align: justify;
 }
 </style>

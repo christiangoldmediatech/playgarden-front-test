@@ -54,11 +54,7 @@
           </v-col>
 
           <v-col class="text-center text-md-left" cols="12" sm="6" md="">
-            <nuxt-link
-              class="d-block link-text"
-              :to="{ name: 'index' }"
-              v-text="'Playgarden Prep'"
-            />
+            <a class="d-block link-text" href="https://playgardenprep.com/">Playgarden Prep</a>
 
             <nuxt-link
               class="d-block link-text"

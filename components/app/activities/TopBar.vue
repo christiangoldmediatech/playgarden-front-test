@@ -1,6 +1,6 @@
 <template>
   <v-row align="center" no-gutters>
-    <v-col cols="3">
+    <v-col cols="5" xs="4" sm="4" md="3">
       <v-btn
         class="text-none mx-3 btn-favorities"
         color="white"
@@ -64,5 +64,6 @@ export default {
 .btn-favorities {
   color: $pg-black !important;
   width: 100% !important;
+  font-size: 1.2rem !important;
 }
 </style>
