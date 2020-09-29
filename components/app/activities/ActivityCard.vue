@@ -155,6 +155,7 @@ export default {
   z-index: 1;
 }
 .subtitle-activity-card {
+  font-weight: 400 !important;
   color: $pg-black !important;
   text-transform: capitalize !important;
   white-space: pre-wrap;
@@ -170,6 +171,7 @@ export default {
 }
 .activity-description {
   white-space: pre-wrap;
+  font-weight: 500;
 }
 .title {
   color: $pg-black;
