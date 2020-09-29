@@ -59,9 +59,13 @@
 
           <template v-if="!inInvitationProcess">
             <p class="text-center text-md-left">
-              <span class="font-weight-bold">
+              <v-chip
+                color="orange"
+                class="text-orange-info"
+                label
+              >
                 Get one week FREE trial
-              </span>
+              </v-chip>
             </p>
 
             <p class="text-center text-md-left">
@@ -214,5 +218,17 @@ export default {
 }
 .form {
   max-width: 500px;
+}
+.text-orange-info {
+  background-color: $pg-orange !important;
+  color: $pg-white !important;
+}
+.text-orange-info::v-deep.v-chip .v-chip__content {
+  color: $pg-white !important;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 3.15px;
+  line-height: 1.48;
+  background-color: $pg-orange !important;
 }
 </style>
