@@ -36,7 +36,7 @@
     </template>
 
     <template v-slot:append-item>
-      <v-list-item v-if="!previewMode">
+      <v-list-item v-if="!previewMode && !isUserCaregiver">
         <v-list-item-content>
           <v-btn
             color="primary"
@@ -72,6 +72,8 @@ export default {
   },
 
   computed: {
+    ...mapGetters('auth', ['isUserCaregiver']),
+
     ...mapGetters('children', { children: 'rows' }),
 
     childrenList () {
