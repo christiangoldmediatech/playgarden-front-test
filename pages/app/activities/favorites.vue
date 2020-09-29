@@ -4,7 +4,7 @@
       <top-bar />
       <activity-title />
     </v-container>
-    <video-results v-bind="{ videos }" />
+    <video-results v-model="selectedChild" v-bind="{ videos }" />
     <activity-player />
   </v-main>
 </template>
@@ -28,21 +28,34 @@ export default {
 
   data: () => {
     return {
-      activities: []
+      selectedChild: null
     }
   },
 
   computed: {
-    ...mapGetters({ children: 'getCurrentChild' }),
+    ...mapGetters({ currentChild: 'getCurrentChild' }),
     ...mapGetters('video', { videos: 'getRows' })
   },
 
+  watch: {
+    selectedChild (val, oldVal) {
+      if (val && val !== oldVal) {
+        this.refresh()
+      }
+    }
+  },
+
   created () {
-    this.getAllFavorites()
+    this.selectedChild = this.currentChild[0].id
+    this.refresh()
   },
 
   methods: {
-    ...mapActions('video', ['getAllFavorites'])
+    ...mapActions('video', ['getFavorites']),
+
+    refresh () {
+      this.getFavorites(this.selectedChild)
+    }
   }
 }
 </script>

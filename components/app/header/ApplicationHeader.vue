@@ -16,6 +16,7 @@
               alt="Playarden Prep Online Logo"
               contain
               max-height="50"
+              :max-width="$vuetify.breakpoint.mdAndUp ? null : 200"
               :src="require('@/assets/svg/logo.svg')"
             />
           </v-toolbar-title>
