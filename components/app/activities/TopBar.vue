@@ -2,9 +2,9 @@
   <v-row align="center" no-gutters>
     <v-col cols="3">
       <v-btn
-        class="text-none mx-3"
+        class="text-none mx-3 btn-favorities"
         color="white"
-        height="48"
+        height="60"
         @click.stop="goToFavorites"
       >
         Favorites
@@ -24,6 +24,7 @@
         clearable
         hide-details
         solo
+        class="search-top-bar"
         @keydown.enter="search"
       />
     </v-col>
@@ -58,3 +59,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.btn-favorities {
+  color: $pg-black !important;
+}
+</style>
