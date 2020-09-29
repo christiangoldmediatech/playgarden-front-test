@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <v-row>
+    <v-row no-gutters>
       <v-col class="text-center" cols="12">
         <underlined-title
           class="text-h6 text-md-h3"
