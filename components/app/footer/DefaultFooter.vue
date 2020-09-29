@@ -16,7 +16,7 @@
             />
 
             <div class="align-center d-flex justify-center justify-md-start">
-              <a target="_blank" target="_blank" href="https://www.facebook.com/Playgardennyc">
+              <a target="_blank" href="https://www.facebook.com/Playgardennyc">
                 <img
                   alt="Facebook"
                   class="clickable mr-1"
@@ -54,7 +54,7 @@
           </v-col>
 
           <v-col class="text-center text-md-left" cols="12" sm="6" md="">
-            <a class="d-block link-text" href="https://playgardenprep.com/">Playgarden Prep</a>
+            <a class="d-block link-text" target="_blank" href="https://playgardenprep.com/">Playgarden Prep</a>
 
             <nuxt-link
               class="d-block link-text"
