@@ -69,6 +69,7 @@
           label="Upload File"
           mode="document"
           path="lesson"
+          :send-name-file="sendNameFile"
           placeholder="Select a pdf for this lesson"
           prepend-icon="mdi-file"
           solo
@@ -153,7 +154,7 @@ export default {
 
   data: () => ({
     file: null,
-    nameFile: null,
+    sendNameFile: true,
     videoFile: null,
     loading: false
   }),
@@ -199,17 +200,14 @@ export default {
       try {
         if (this.file) {
           this.draft.pdfUrl = await this.$refs.fileUploader.handleUpload()
-          this.nameFile = this.file.name.replace(/ /g, '-')
         }
 
         if (this.videoFile) {
           const { video } = await this.$refs.videoUploader.handleUpload()
-
           this.draft.videoId = video.id
         }
 
         const data = await this.submitMethod(this.getSubmittableData())
-        data.lesson.name = this.nameFile
         this.$emit('click:submit', data)
       } catch (e) {
       } finally {

@@ -40,6 +40,11 @@ export default {
       type: String,
       required: true
     },
+    sendNameFile: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     value: {
       default: undefined,
       required: false
