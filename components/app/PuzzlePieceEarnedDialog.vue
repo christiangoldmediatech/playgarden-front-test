@@ -96,7 +96,8 @@ export default {
 
     letter: {
       type: String,
-      required: true
+      required: false,
+      default: ''
     }
   },
 

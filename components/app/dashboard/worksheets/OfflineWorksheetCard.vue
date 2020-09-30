@@ -1,6 +1,10 @@
 <template>
   <v-card class="d-flex flex-column dashboard-content-card" height="100%">
+    <div v-if="offlineWorksheet && offlineWorksheet.videoDetail">
+      <pg-inline-video-player />
+    </div>
     <div
+      v-else
       class="d-flex flex-column justify-end align-center offline-worksheet-image flex-grow-1 flex-shrink-0 dashboard-message-padding"
       :style="{ '--offlineWorksheetThumbnailUrl': `url(${require('@/assets/jpg/worksheets_completed_1.jpg')})` }"
     >
@@ -69,17 +73,11 @@ export default {
     ...mapGetters({ children: 'getCurrentChild' }),
     ...mapGetters('admin/curriculum', ['getLesson']),
 
-    sheets () {
+    offlineWorksheet () {
       if (this.getLesson) {
-        return this.getLesson.worksheets.filter(
-          ({ type }) => type === 'OFFLINE'
-        )
+        return this.getLesson.worksheets.find(({ type }) => type === 'OFFLINE')
       }
-      return []
-    },
-
-    url () {
-      return this.sheets[0] ? this.sheets[0].pdfUrl : ''
+      return null
     },
 
     buttons () {
@@ -89,8 +87,8 @@ export default {
           color: 'accent',
           iconLeft: 'pg-icon-download',
           action: () => {
-            if (this.sheets[0]) {
-              window.open(this.url, '_blank')
+            if (this.offlineWorksheet) {
+              window.open(this.offlineWorksheet.pdfUrl, '_blank')
             }
           }
         },
