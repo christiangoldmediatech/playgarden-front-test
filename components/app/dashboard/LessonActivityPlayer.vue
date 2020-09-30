@@ -22,6 +22,7 @@
       @last-playlist-item="findNextActivity"
     />
     <patch-earned-dialog v-model="patchEarnedDialog" v-bind="{ player, ...patchData }" @return="handleClose" />
+    <puzzle-piece-earned-dialog v-model="pieceEarnedDialog" v-bind="{ letter }" @return="handleClose" />
   </video-player-dialog>
 </template>
 
@@ -93,7 +94,7 @@ export default {
     },
 
     nextVideo () {
-      if (this.player.currentTime() === this.player.duration() && !this.patchEarnedDialog) {
+      if (this.player.currentTime() === this.player.duration() && !this.patchEarnedDialog && !this.pieceEarnedDialog) {
         this.player.nextVideo()
       }
     },

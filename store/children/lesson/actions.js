@@ -40,7 +40,7 @@ export default {
 
   async saveActivityProgress (ctx, { lessonId, childId, activity }) {
     try {
-      const { data } = await this.$axios.$post(`/lessons/${lessonId}/children/${childId}/activity`, { activity })
+      const data = await this.$axios.$post(`/lessons/${lessonId}/children/${childId}/activity`, { activity })
       return data
     } catch (error) {
       return Promise.reject(error)

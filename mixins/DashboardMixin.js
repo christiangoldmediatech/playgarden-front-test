@@ -4,6 +4,13 @@ export default {
   mixins: [DashboardLink],
 
   computed: {
+    letter () {
+      if (this.lesson) {
+        return this.lesson.curriculumType.letter
+      }
+      return ''
+    },
+
     videos () {
       // Exit if lesson or videos are not loaded
       if (!this.lesson || this.lesson.videos.length === 0) {

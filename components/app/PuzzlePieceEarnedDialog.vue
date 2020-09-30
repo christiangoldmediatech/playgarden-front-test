@@ -8,7 +8,7 @@
           <v-col cols="10" lg="4">
             <v-img
               class="mx-auto"
-              :src="icon || require('@/assets/png/dashboard/piece.png')"
+              :src="require('@/assets/png/dashboard/piece.png')"
               max-width="348px"
             />
           </v-col>
@@ -92,13 +92,6 @@ export default {
       type: Boolean,
       required: false,
       default: false
-    },
-
-    icon: {
-      validator: (val) => {
-        return (typeof val === 'string' || val === null)
-      },
-      required: true
     },
 
     letter: {

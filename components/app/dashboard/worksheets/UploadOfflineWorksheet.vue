@@ -73,7 +73,7 @@
               :disabled="loading"
               @click.stop="close"
             >
-              Close
+              Return to Dashboard
             </v-btn>
           </v-col>
         </v-row>
