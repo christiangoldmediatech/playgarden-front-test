@@ -3,7 +3,7 @@
     <!-- APP MAV & BAR -->
     <app-navigation />
 
-    <application-header :full-width="Boolean(fullWidth)" />
+    <application-header :full-width="Boolean(fullWidthHeader)" />
 
     <!-- CONTENT -->
     <v-main v-if="!fullWidth">
@@ -48,10 +48,14 @@ export default {
   computed: {
     ...mapGetters('auth', ['isUserLoggedIn', 'isUserEmailUnverified']),
 
-    ...mapState(['fullWidthPages']),
+    ...mapState(['fullWidthPages', 'fullWidthHeaderPages']),
 
     fullWidth () {
       return this.fullWidthPages[this.$route.name]
+    },
+
+    fullWidthHeader () {
+      return this.fullWidthHeaderPages[this.$route.name]
     }
   },
 
