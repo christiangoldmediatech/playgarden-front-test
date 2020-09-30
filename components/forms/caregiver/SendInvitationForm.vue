@@ -53,6 +53,7 @@
       >
         <v-text-field
           v-model="draft.phone"
+          v-mask="['(###) ###-####']"
           class="mt-9"
           clearable
           :disabled="loading || Boolean(draft.email)"
