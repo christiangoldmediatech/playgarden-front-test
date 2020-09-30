@@ -65,13 +65,15 @@ export default {
         this.$snotify.remove(this.verifyEmailToast.id)
         this.verifyEmailToast = null
       } else if (!this.verifyEmailToast) {
-        this.showVerifyEmailToast()
+        // Commented requested by Natalia
+        // this.showVerifyEmailToast()
       }
     }
   },
 
   mounted () {
-    this.showVerifyEmailToast()
+    // Commented requested by Natalia
+    // this.showVerifyEmailToast()
   },
 
   methods: {
