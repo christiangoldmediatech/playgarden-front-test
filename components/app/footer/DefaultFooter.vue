@@ -59,24 +59,24 @@
           </v-col>
 
           <v-col class="text-center" cols="12" sm="6" md="">
-            <v-row no-gutters justify="center" align="center" class="footer-ref-links">
+            <v-row no-gutters justify="center" align="start" class="footer-ref-links">
               <v-col>
-                <a class="d-block link-text" target="_blank" href="https://playgardenprep.com/">Playgarden Prep</a>
+                <a class="d-block link-text mb-2 mt-1" target="_blank" href="https://playgardenprep.com/">Playgarden Prep</a>
 
                 <nuxt-link
-                  class="d-block link-text"
+                  class="d-block link-text mb-2"
                   :to="{ name: 'terms-conditions' }"
                   v-text="'Terms & Conditions'"
                 />
 
                 <nuxt-link
-                  class="d-block link-text"
+                  class="d-block link-text mb-2"
                   :to="{ name: 'privacy-policy' }"
                   v-text="'Privacy Policy'"
                 />
 
                 <nuxt-link
-                  class="d-block link-text"
+                  class="d-block link-text mb-2"
                   :to="{ name: 'index' }"
                   v-text="'Help'"
                 />
