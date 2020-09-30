@@ -5,25 +5,23 @@
         MEMBERSHIP
       </p>
 
-      <p>
-        <label class="mb-1 membership-billing-date-text mt-1">
-          Your next billing date is
+      <p class="mb-6">
+        Your next billing date is
 
-          <b>{{ billing.nextBillingDate }}</b>
-        </label>
+        <b>{{ billing.nextBillingDate }}</b>
       </p>
 
-      <p>
-        <label class="mb-1 monthly-membership-fee-text mt-1">
-          Your {{ membershipInterval }} membership fee is
+      <p class="mb-4">
+        Your {{ membershipInterval }} membership fee is
 
-          <b>${{ billing.planAmount }}</b>
-        </label>
+        <b>${{ billing.planAmount }}</b>
       </p>
 
       <template>
-        <v-row class="justify-space-between mt-3" no-gutters>
-          <span>Plan: <b>{{ billing.planName }}</b></span>
+        <v-row align="center" class="mb-2" no-gutters>
+          <v-col class="text-truncate">
+            Plan: <b>{{ billing.planName }}</b>
+          </v-col>
 
           <v-btn
             color="primary"
@@ -39,20 +37,18 @@
       <v-row
         v-for="(card, indexUC) in userCards"
         :key="indexUC"
-        class="justify-space-between my-1"
+        align="center"
+        class="mb-2"
         no-gutters
       >
-        <span class="font-weight-bold">
-          {{ card.details.brand }} .... .... .... {{ card.details.last4 }}
-        </span>
+        <v-col class="text-truncate">
+          <span class="font-weight-bold">
+            {{ card.details.brand }} .... .... .... {{ card.details.last4 }}
+          </span>
+        </v-col>
 
-        <v-btn
-          v-if="isBillingCardRemovable"
-          color="accent"
-          text
-          @click="removeCard(card)"
-        >
-          REMOVE CARD
+        <v-btn color="primary" text @click="onUpdateCard(card)">
+          UPDATE PAYMENT
         </v-btn>
       </v-row>
 
@@ -60,14 +56,9 @@
         v-if="hasMembership"
         align="center"
         class="my-1"
-        justify="space-between"
+        justify="end"
         no-gutters
       >
-        <!-- Add payment method -->
-        <v-btn class="ml-n5" color="primary" text @click="newCardModal = true">
-          ADD NEW CARD
-        </v-btn>
-
         <!-- Cancel suscription -->
         <v-btn color="accent" text @click="removeSubscription">
           CANCEL MEMBERSHIP
@@ -82,7 +73,7 @@
     </v-col>
 
     <v-dialog
-      v-model="newCardModal"
+      v-model="stripeCardModal"
       content-class="white"
       :fullscreen="$vuetify.breakpoint.smAndDown"
       max-width="1000"
@@ -90,16 +81,23 @@
     >
       <v-col cols="12">
         <v-row class="pr-3" justify="end">
-          <v-btn icon @click.stop="newCardModal = false">
+          <v-btn icon @click.stop="stripeCardModal = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-row>
 
-        <new-billing-method
-          v-if="newCardModal"
-          @add:success="onSuccessNewBilling"
-          @click:cancel="newCardModal = false"
-        />
+        <v-row class="px-6">
+          <v-col>
+            <update-billing-method
+              v-if="stripeCardModal"
+              :card-id="cardToUpate.id"
+              no-terms
+              no-trial
+              @update:success="onSuccessUpdateBilling"
+              @click:cancel="stripeCardModal = false"
+            />
+          </v-col>
+        </v-row>
       </v-col>
     </v-dialog>
 
@@ -121,6 +119,8 @@
           v-if="changePlanModal"
           no-address
           no-payment
+          updating
+          @click:cancel="changePlanModal = false"
           @click:submit="onSuccessChangePlan"
         />
       </v-col>
@@ -133,14 +133,14 @@ import dayjs from 'dayjs'
 import { get } from 'lodash'
 import { mapActions } from 'vuex'
 
-import NewBillingMethod from '@/components/app/payment/NewBillingMethod'
+import UpdateBillingMethod from '@/components/app/payment/UpdateBillingMethod'
 import SubscriptionPlanSelection from '@/components/app/payment/SubscriptionPlanSelection'
 
 export default {
   name: 'MembershipDetails',
 
   components: {
-    NewBillingMethod,
+    UpdateBillingMethod,
     SubscriptionPlanSelection
   },
 
@@ -156,7 +156,8 @@ export default {
         subscriptionId: null,
         status: null
       },
-      newCardModal: false,
+      cardToUpate: null,
+      stripeCardModal: false,
       changePlanModal: false,
       userCards: []
     }
@@ -172,10 +173,6 @@ export default {
           status !== 'incomplete_expired' &&
           status !== 'canceled')
       )
-    },
-
-    isBillingCardRemovable () {
-      return this.userCards.length > 1
     },
 
     isTrialingStatus () {
@@ -250,21 +247,9 @@ export default {
       }
     },
 
-    removeCard (card) {
-      this.$nuxt.$emit('open-prompt', {
-        title: 'Remove card?',
-        message: `Are you sure you wish to remove your card that ends in '${card.details.last4}'?`,
-        action: async () => {
-          this.loading = true
-          try {
-            await this.removeBillingCard(card.id)
-            await this.getBillingCards()
-            this.$snotify.success('Card has been removed successfully!')
-          } finally {
-            this.loading = false
-          }
-        }
-      })
+    onUpdateCard (card) {
+      this.stripeCardModal = true
+      this.cardToUpate = card
     },
 
     removeSubscription () {
@@ -287,8 +272,9 @@ export default {
       })
     },
 
-    onSuccessNewBilling () {
-      this.newCardModal = false
+    onSuccessUpdateBilling () {
+      this.stripeCardModal = false
+      this.getBillingCards()
       this.getBillingDetails()
     },
 

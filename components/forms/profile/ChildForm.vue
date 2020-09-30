@@ -131,6 +131,7 @@
                       item.gender === gender ? 'primary' : 'grey lighten-5'
                     "
                     :disabled="loading"
+                    x-large
                     @click="item.gender = gender"
                   >
                     {{ gender === "FEMALE" ? "Girl" : "Boy" }}

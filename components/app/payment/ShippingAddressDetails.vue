@@ -76,7 +76,7 @@
               :disabled="!editing || loading"
               :error-messages="errors"
               :loading="loading"
-              placeholder="Zipcode"
+              placeholder="Zip code"
               solo
             />
           </validation-provider>

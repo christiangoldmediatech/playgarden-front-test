@@ -1,8 +1,13 @@
 <template>
   <v-row align="center" fill-height justify="center" no-gutters>
-    <v-col class="text-center" cols="4">
+    <v-col class="text-center" cols="auto">
       <div class="mb-3">
-        <v-img class="logo-img" :src="require('@/assets/svg/logo.svg')" />
+        <v-img
+          alt="Playarden Prep Online Logo"
+          contain
+          class="logo-img"
+          :src="require('@/assets/svg/logo.svg')"
+        />
       </div>
 
       <v-progress-linear color="primary" indeterminate :size="20" />

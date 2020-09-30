@@ -38,7 +38,13 @@
         </div>
 
         <div class="hidden-sm-and-down mb-12 mt-6 text-right">
-          <v-btn color="accent" nuxt :to="{ name: 'auth-logout' }">
+          <v-btn
+            color="accent"
+            nuxt
+            :to="{ name: 'auth-logout' }"
+            width="200"
+            x-large
+          >
             LOG OUT
           </v-btn>
         </div>
@@ -57,6 +63,7 @@
             block
             :color="showSetting === value ? 'primary' : 'grey lighten-5'"
             :disabled="loading"
+            x-large
             @click="showSetting = value"
           >
             {{ text }}
@@ -74,7 +81,13 @@
               :value="userInfo.email"
             />
 
-            <pg-text-field disabled label="Password" solo suffix="••••••••••" />
+            <pg-text-field
+              disabled
+              hide-details
+              label="Password"
+              solo
+              suffix="••••••••••"
+            />
           </v-col>
         </v-row>
 
@@ -129,6 +142,7 @@
         color="accent"
         nuxt
         :to="{ name: 'auth-logout' }"
+        x-large
       >
         LOG OUT
       </v-btn>
@@ -201,12 +215,13 @@ export default {
   z-index: 1;
 
   &::after {
-    width: 100%;
-    position: absolute;
+    border-bottom: 32px solid var(--v-primary-base);
     bottom: -16px;
     content: "";
+    position: absolute;
+    right: 0;
+    width: 1000%;
     z-index: -1;
-    border-bottom: 32px solid var(--v-primary-base);
   }
 }
 
