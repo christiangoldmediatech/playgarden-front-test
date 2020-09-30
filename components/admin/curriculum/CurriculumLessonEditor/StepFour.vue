@@ -210,7 +210,6 @@ export default {
 
         const data = await this.submitMethod(this.getSubmittableData())
         data.lesson.name = this.nameFile
-        console.log('name--', data)
         this.$emit('click:submit', data)
       } catch (e) {
       } finally {
