@@ -3,10 +3,15 @@
     <div class="green-line green-line-1" />
     <div class="green-line green-line-2" />
 
-    <v-card flat tile width="100%" max-width="1600" class="pt-6">
+    <v-card
+      flat
+      tile
+      class="pt-6 footer-wrapper-card"
+      :class="{ 'full-width': fullWidth }"
+    >
       <v-card-text class="py-0">
         <v-row>
-          <v-col cols="12" sm="6" md="4" lg="6">
+          <v-col cols="12" sm="6" md="4">
             <v-img
               alt="Playgarden Prep's Logo"
               class="mb-3"
@@ -53,26 +58,30 @@
             </div>
           </v-col>
 
-          <v-col class="text-center text-md-left" cols="12" sm="6" md="">
-            <a class="d-block link-text" target="_blank" href="https://playgardenprep.com/">Playgarden Prep</a>
+          <v-col class="text-center" cols="12" sm="6" md="">
+            <v-row no-gutters justify="center" align="center" class="footer-ref-links">
+              <v-col>
+                <a class="d-block link-text" target="_blank" href="https://playgardenprep.com/">Playgarden Prep</a>
 
-            <nuxt-link
-              class="d-block link-text"
-              :to="{ name: 'terms-conditions' }"
-              v-text="'Terms & Conditions'"
-            />
+                <nuxt-link
+                  class="d-block link-text"
+                  :to="{ name: 'terms-conditions' }"
+                  v-text="'Terms & Conditions'"
+                />
 
-            <nuxt-link
-              class="d-block link-text"
-              :to="{ name: 'privacy-policy' }"
-              v-text="'Privacy Policy'"
-            />
+                <nuxt-link
+                  class="d-block link-text"
+                  :to="{ name: 'privacy-policy' }"
+                  v-text="'Privacy Policy'"
+                />
 
-            <nuxt-link
-              class="d-block link-text"
-              :to="{ name: 'index' }"
-              v-text="'Help'"
-            />
+                <nuxt-link
+                  class="d-block link-text"
+                  :to="{ name: 'index' }"
+                  v-text="'Help'"
+                />
+              </v-col>
+            </v-row>
           </v-col>
 
           <v-col class="text-center" cols="12" sm="6" md="">
@@ -130,11 +139,26 @@
 
 <script>
 export default {
-  name: 'DefaultFooter'
+  name: 'DefaultFooter',
+
+  props: {
+    fullWidth: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
+.footer-wrapper-card {
+  width: 100%;
+  max-width: 1200px;
+  &.full-width {
+    max-width: 1600px;
+  }
+}
 .text-footer {
   font-size: 11px;
   font-weight: 300;
@@ -154,5 +178,9 @@ export default {
 
 .info-footer-title {
   color: #78c383 !important;
+}
+
+.footer-ref-links {
+  height: 100%;
 }
 </style>

@@ -15,7 +15,7 @@
     <nuxt v-else />
 
     <!-- FOOTER -->
-    <default-footer />
+    <default-footer :full-width="Boolean(fullWidthFooter)" />
 
     <notify-event />
 
@@ -48,10 +48,14 @@ export default {
   computed: {
     ...mapGetters('auth', ['isUserLoggedIn', 'isUserEmailUnverified']),
 
-    ...mapState(['fullWidthPages']),
+    ...mapState(['fullWidthPages', 'fullWidthFooterPages']),
 
     fullWidth () {
       return this.fullWidthPages[this.$route.name]
+    },
+
+    fullWidthFooter () {
+      return this.fullWidthFooterPages[this.$route.name]
     }
   },
 
