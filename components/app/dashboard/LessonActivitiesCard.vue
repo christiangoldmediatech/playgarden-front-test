@@ -9,7 +9,6 @@
         <v-hover v-slot="{ hover }">
           <img
             :class="['play-icon no-background', { 'scaled-play-icon': hover }]"
-            class="ml-2"
             src="/svg/play-button-icon.svg"
             width="100%"
           >

@@ -6,7 +6,7 @@
           mdi-close
         </v-icon>
       </v-btn>
-      <pg-video-js-player @ready="onPlayerReady" />
+      <pg-video-js-player @ready="onPlayerReady" @ended="close" />
     </div>
   </v-overlay>
 </template>
@@ -32,6 +32,12 @@ export default {
       default: () => {
         return {}
       }
+    },
+
+    removeScroll: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
 
@@ -41,10 +47,33 @@ export default {
     }
   },
 
+  watch: {
+    value (val) {
+      if (val) {
+        const waitAndPlay = window.setInterval(() => {
+          if (this.player) {
+            this.player.play()
+            window.clearInterval(waitAndPlay)
+          }
+        }, 50)
+      }
+
+      if (this.removeScroll) {
+        if (val) {
+          document.querySelector('html').style.overflowY = 'hidden'
+        } else {
+          this.player.pause()
+          document.querySelector('html').style.overflowY = 'scroll'
+        }
+      }
+    }
+  },
+
   methods: {
     onPlayerReady (player) {
       this.player = player
       player.loadMedia({
+        title: '',
         src: {
           src: this.video.videoUrl.HLS,
           type: 'application/x-mpegURL'

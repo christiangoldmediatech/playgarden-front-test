@@ -52,7 +52,7 @@
       </template>
       <p class="text-center font-weight-medium white--text mt-2">
         <template v-if="offlineWorksheet && offlineWorksheet.completed">
-          <span class="font-weight-bold white--text">You have completed the hands-on learning experience.</span>
+          <span class="font-weight-bold white--text">You have completed the hands-on learning for the day</span>
         </template>
         <template v-else>
           <span class="font-weight-bold white--text">HANDS-ON LEARNING</span> is a crucial part of the educational experience. Learning through doing strengthens the cognitive connections and builds a strong foundation for knowledge.
@@ -166,13 +166,15 @@ export default {
         }
 
         if (this.downloaded) {
-          buttons.push(uploadHandsOn)
+          if (this.offlineWorksheet && !this.offlineWorksheet.completed) {
+            buttons.push(uploadHandsOn)
+          }
         } else {
           buttons.push(downloadHandsOn)
         }
       }
 
-      return [
+      const result = [
         ...buttons,
         {
           text: 'SKIP TO ACTIVITIES',
@@ -181,11 +183,38 @@ export default {
           action: () => {
             const activities = this.lesson.lessonsActivities.map(({ activity }) => activity)
             if (activities.length) {
+              const validActivities = this.lesson.lessonsActivities.filter(({ activity }) => {
+                return activity.videos.videoUrl
+              })
+
+              const playlist = validActivities.map(({ id, activity }) => {
+                return {
+                  title: activity.videos.name,
+                  description: activity.videos.description,
+                  activityType: activity.activityType,
+                  curriculumType: activity.curriculumType,
+                  src: {
+                    src: activity.videos.videoUrl.HLS,
+                    type: 'application/x-mpegURL'
+                  },
+                  poster: activity.videos.thumbnail,
+                  lessonActivityId: id,
+                  activityId: activity.id,
+                  videoId: activity.videos.id,
+                  viewed: activity.viewed
+                }
+              })
+
+              this.$nuxt.$emit('open-lesson-activity-player', { playlist, index: 0 })
               this.$router.push(this.generateNuxtRoute('lesson-activities', { id: activities[0].id }))
             }
           }
         }
       ]
+
+      result[0].color = 'accent'
+
+      return result
     }
   },
 

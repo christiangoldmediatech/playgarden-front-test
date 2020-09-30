@@ -98,7 +98,7 @@ export default {
 
   mounted () {
     this._keyListener = (e) => {
-      if (e.ctrlKey && e.shiftKey && e.key === 'E') {
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'E' || e.key === 'e')) {
         e.preventDefault()
         if (this.value) {
           this.close()

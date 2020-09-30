@@ -1,24 +1,31 @@
 <template>
   <v-card class="d-flex flex-column dashboard-content-card" height="100%">
-    <div v-if="offlineWorksheet && offlineWorksheet.videoDetail" class="test-height">
-      <div class="test-width" :style="{ '--max-video-width': testWidth }">
-        <pg-inline-video-player @ready="onPlayerReady" />
-      </div>
-    </div>
     <div
-      v-else
-      class="d-flex flex-column justify-end align-center offline-worksheet-image flex-grow-1 flex-shrink-0 dashboard-message-padding"
+      class="d-flex flex-column align-center offline-worksheet-image flex-grow-1 flex-shrink-0"
+      :class="{ 'dashboard-message-padding justify-end ': offlineWorksheet && !offlineWorksheet.videoDetail, 'justify-center': offlineWorksheet && offlineWorksheet.videoDetail }"
       :style="{ '--offlineWorksheetThumbnailUrl': `url(${require('@/assets/jpg/worksheets_completed_1.jpg')})` }"
+      @click.stop="teachersVideoDialog = true"
     >
-      <underlined-title
-        class="white--text"
-        font-size="56px"
-        font-weight="bold"
-        text="Hands-on Learning"
-      />
-      <p class="white--text text-center">
-        Hands-on learning is a crucial part of the educational experience. Learning through doing strengthens the cognitive connections and builds a strong foundation for knowledge.
-      </p>
+      <template v-if="offlineWorksheet && offlineWorksheet.videoDetail">
+        <v-hover v-slot="{ hover }">
+          <img
+            :class="['play-icon no-background', { 'scaled-play-icon': hover }]"
+            src="/svg/play-button-icon.svg"
+            width="100%"
+          >
+        </v-hover>
+      </template>
+      <template v-else>
+        <underlined-title
+          class="white--text"
+          font-size="56px"
+          font-weight="bold"
+          text="Hands-on Learning"
+        />
+        <p class="white--text text-center">
+          Hands-on learning is a crucial part of the educational experience. Learning through doing strengthens the cognitive connections and builds a strong foundation for knowledge.
+        </p>
+      </template>
     </div>
     <v-container>
       <v-row class="flex-column" align="center">
@@ -55,6 +62,12 @@
       </v-row>
     </v-container>
     <upload-offline-worksheet v-model="dialog" />
+
+    <teacher-video-overlay
+      v-model="teachersVideoDialog"
+      :video="offlineWorksheet ? offlineWorksheet.videoDetail : undefined"
+      remove-scroll
+    />
   </v-card>
 </template>
 
@@ -67,6 +80,7 @@ export default {
   data: () => {
     return {
       dialog: false,
+      teachersVideoDialog: false,
       loading: false,
       testHeight: 0
     }
@@ -96,7 +110,7 @@ export default {
           }
         },
         {
-          text: 'UPLOAD HANDS-ON WORKSHEET',
+          text: 'UPLOAD COMPLETED WORKSHEET',
           color: '#FEC572',
           iconLeft: 'pg-icon-camera',
           disabled: (this.getLesson && this.getLesson.previewMode),

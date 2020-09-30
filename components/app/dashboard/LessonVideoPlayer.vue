@@ -99,6 +99,29 @@ export default {
             // Find first activity
             const activities = this.lesson.lessonsActivities.map(({ activity }) => activity)
             if (activities.length) {
+              const validActivities = this.lesson.lessonsActivities.filter(({ activity }) => {
+                return activity.videos.videoUrl
+              })
+
+              const playlist = validActivities.map(({ id, activity }) => {
+                return {
+                  title: activity.videos.name,
+                  description: activity.videos.description,
+                  activityType: activity.activityType,
+                  curriculumType: activity.curriculumType,
+                  src: {
+                    src: activity.videos.videoUrl.HLS,
+                    type: 'application/x-mpegURL'
+                  },
+                  poster: activity.videos.thumbnail,
+                  lessonActivityId: id,
+                  activityId: activity.id,
+                  videoId: activity.videos.id,
+                  viewed: activity.viewed
+                }
+              })
+
+              this.$nuxt.$emit('open-lesson-activity-player', { playlist, index: 0 })
               this.$router.push(this.generateNuxtRoute('lesson-activities', { id: activities[0].id }))
             }
           }
