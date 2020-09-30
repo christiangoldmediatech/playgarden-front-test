@@ -71,7 +71,8 @@ export default {
   },
 
   mounted () {
-    this.showVerifyEmailToast()
+    // momentary commented
+    // this.showVerifyEmailToast()
   },
 
   methods: {
