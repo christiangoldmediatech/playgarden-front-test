@@ -153,6 +153,7 @@ export default {
 
   data: () => ({
     file: null,
+    nameFile: null,
     videoFile: null,
     loading: false
   }),
@@ -198,6 +199,7 @@ export default {
       try {
         if (this.file) {
           this.draft.pdfUrl = await this.$refs.fileUploader.handleUpload()
+          this.nameFile = { name: this.file.name.replace(/ /g, '-') }
         }
 
         if (this.videoFile) {
@@ -207,7 +209,7 @@ export default {
         }
 
         const data = await this.submitMethod(this.getSubmittableData())
-
+        data.lesson.name = this.nameFile
         this.$emit('click:submit', data)
       } catch (e) {
       } finally {
