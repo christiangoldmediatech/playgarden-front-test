@@ -53,7 +53,7 @@
       <v-btn
         block
         class="mb-6"
-        color="primary"
+        color="accent"
         :loading="loading"
         text
         x-large
