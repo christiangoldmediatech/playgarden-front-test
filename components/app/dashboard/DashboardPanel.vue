@@ -101,6 +101,7 @@
                 </v-btn>
 
                 <v-btn
+                  v-if="!displayMode"
                   id="upload-worksheet-btn"
                   class="dashboard-panel-worksheet-btn white--text mt-2"
                   color="primary"
@@ -130,7 +131,7 @@
         </content-section>
       </div>
     </v-card>
-    <upload-offline-worksheet v-model="uploadDialog" />
+    <upload-offline-worksheet v-if="!displayMode" v-model="uploadDialog" />
   </div>
 </template>
 
