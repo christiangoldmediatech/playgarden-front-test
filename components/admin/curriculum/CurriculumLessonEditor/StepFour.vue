@@ -76,6 +76,29 @@
         />
       </validation-provider>
 
+      <validation-provider
+        v-slot="{ errors }"
+        name="Video"
+        rules="required"
+      >
+        <file-uploader
+          ref="videoUploader"
+          v-model="videoFile"
+          :error-messages="errors"
+          label="Upload Video"
+          mode="video"
+          multi-part
+          path="lesson"
+          placeholder="Select a video for this lesson"
+          prepend-icon="mdi-video"
+          solo
+          mov
+          mp4
+          mpeg
+          webm
+        />
+      </validation-provider>
+
       <v-row class="mb-6" justify="center">
         <v-btn
           class="ma-3"
@@ -130,6 +153,7 @@ export default {
 
   data: () => ({
     file: null,
+    videoFile: null,
     loading: false
   }),
 
@@ -174,6 +198,12 @@ export default {
       try {
         if (this.file) {
           this.draft.pdfUrl = await this.$refs.fileUploader.handleUpload()
+        }
+
+        if (this.videoFile) {
+          const { video } = await this.$refs.videoUploader.handleUpload()
+
+          this.draft.videoId = video.id
         }
 
         const data = await this.submitMethod(this.getSubmittableData())
