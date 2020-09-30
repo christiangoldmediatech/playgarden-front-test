@@ -197,7 +197,7 @@ export default {
   max-width: 1200px;
 
   &.full-width {
-    max-width: unset;
+    max-width: 1600px;
     padding-left: 24px;
     padding-right: 24px;
 
