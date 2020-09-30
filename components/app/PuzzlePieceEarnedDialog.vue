@@ -1,5 +1,5 @@
 <template>
-  <v-overlay :dark="false" :value="value" z-index="700">
+  <v-overlay :dark="false" :value="value" z-index="800">
     <v-card class="piece-earned-card" max-width="1124px">
       <div class="green-line-bigger green-line-1" />
       <div class="green-line-bigger green-line-2" />
@@ -56,7 +56,7 @@
                       color="accent"
                       block
                       nuxt
-                      :to="$router.push({ name: 'app-dashboard-lesson-activities' })"
+                      :to="{ name: 'app-activities' }"
                     >
                       <img class="piece-earned-play-btn-icon" height="30px;" src="@/assets/svg/play-button.svg">
                       Go to activites
