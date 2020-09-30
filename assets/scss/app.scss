@@ -181,6 +181,10 @@
   transition: transform 250ms;
 }
 
+.play-icon.no-background {
+  background-color: transparent !important;
+}
+
 .scaled-play-icon {
   transform: scale(1.25);
 }

@@ -8,13 +8,12 @@
         >
           <div class="play-button-icon-content">
             <img
-              class="ml-2"
-              src="@/assets/svg/play-button.svg"
-              width="40%"
+              src="/svg/play-button-icon.svg"
+              width="100%"
             >
-            <span class="play-button-icon-text">
+            <!-- <span class="play-button-icon-text">
               START
-            </span>
+            </span> -->
           </div>
         </div>
       </v-hover>
@@ -109,9 +108,9 @@ export default {
     width: 33%;
     padding-top: calc(33% - (33% - 150px));
     max-width: 150px;
-    border-radius: 50%;
+    // border-radius: 50%;
     cursor: pointer;
-    background-color: #F89838;
+    // background-color: #F89838;
     transition: transform 250ms;
     &-scaled {
       transform: scale(1.15);

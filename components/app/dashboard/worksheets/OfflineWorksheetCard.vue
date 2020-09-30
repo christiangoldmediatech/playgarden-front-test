@@ -1,7 +1,7 @@
 <template>
-  <v-card class="d-flex flex-column dashboard-content-card" height="100%">
+  <v-card class="d-flex flex-column dashboard-content-card dashboard-content-scroll" height="100%">
     <div v-if="offlineWorksheet && offlineWorksheet.videoDetail">
-      <pg-inline-video-player />
+      <pg-inline-video-player @ready="onPlayerReady" />
     </div>
     <div
       v-else
@@ -102,6 +102,23 @@ export default {
           }
         }
       ]
+    }
+  },
+
+  methods: {
+    onPlayerReady (player) {
+      const waitAndLoad = window.setInterval(() => {
+        if (this.getLesson) {
+          player.loadMedia({
+            poster: this.offlineWorksheet.videoDetail.thumbnail,
+            src: {
+              src: this.offlineWorksheet.videoDetail.videoUrl.HLS,
+              type: 'application/x-mpegURL'
+            }
+          })
+          window.clearInterval(waitAndLoad)
+        }
+      }, 50)
     }
   }
 }
