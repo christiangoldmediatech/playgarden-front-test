@@ -7,6 +7,7 @@
           <validation-provider v-slot="{ errors }" name="Plan" rules="required">
             <v-radio-group
               v-model="radioGroup"
+              class="ma-0 pa-0"
               :disabled="loading"
               :error-messages="errors"
               :loading="loading"

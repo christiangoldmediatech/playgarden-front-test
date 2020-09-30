@@ -8,7 +8,7 @@
       <v-row
         v-for="notification in notifications"
         :key="notification.id"
-        class="align-center justify-space-between px-md-6"
+        class="align-center justify-space-between px-md-6 mb-n6"
         no-gutters
       >
         <v-col class="text-truncate">
