@@ -1,42 +1,64 @@
 <template>
   <v-app-bar app class="pg-app-bar" color="white" elevation="1">
     <v-row align="center" justify="center" no-gutters>
-      <v-col class="pg-app-bar-col" :class="{ 'full-width': fullWidth }">
+      <v-col
+        class="pg-app-bar-col"
+        :class="{
+          'full-width': fullWidth,
+          'mobile': $vuetify.breakpoint.mdAndDown
+        }"
+      >
         <v-row align="center" justify="space-between" no-gutters>
-          <v-app-bar-nav-icon
-            class="hidden-md-and-up primary pg-app-bar-nav-icon"
-            color="white"
-            tile
-            large
-            @click.stop="toggleDrawer"
-          />
-
-          <v-toolbar-title class="d-flex align-self-center">
-            <v-img
-              alt="Playarden Prep Online Logo"
-              contain
-              max-height="50"
-              :max-width="$vuetify.breakpoint.mdAndUp ? null : 200"
-              :src="require('@/assets/svg/logo.svg')"
+          <v-col cols="auto" class="hidden-lg-and-up">
+            <v-app-bar-nav-icon
+              class="primary pg-app-bar-nav-icon"
+              :class="{ 'isMd': $vuetify.breakpoint.md }"
+              color="white"
+              tile
+              large
+              @click.stop="toggleDrawer"
             />
-          </v-toolbar-title>
+          </v-col>
 
-          <v-toolbar-items class="hidden-sm-and-down">
-            <v-btn
-              v-for="(item, index) in items"
-              :key="`${_uid}-${index}`"
-              class="text-none link-text"
-              active-class="custom-active"
-              text
-              :ripple="true"
-              :exact="item.exact"
-              nuxt
-              :to="item.to"
-              v-text="item.title"
-            />
-          </v-toolbar-items>
+          <v-col class="hidden-lg-and-up">
+            <!-- DON'T remove it, using for grid purposes -->
+          </v-col>
 
-          <div class="hidden-sm-and-down">
+          <v-col cols="auto" align-self="center">
+            <v-toolbar-title>
+              <v-img
+                alt="Playarden Prep Online Logo"
+                contain
+                max-height="50"
+                :max-width="$vuetify.breakpoint.mdAndUp ? null : 200"
+                :src="require('@/assets/svg/logo.svg')"
+              />
+            </v-toolbar-title>
+          </v-col>
+
+          <v-col>
+            <!-- DON'T remove it, using for grid purposes -->
+          </v-col>
+
+          <!-- ITEMS -->
+          <v-col cols="auto" class="hidden-md-and-down">
+            <v-toolbar-items>
+              <v-btn
+                v-for="(item, index) in items"
+                :key="`${_uid}-${index}`"
+                class="text-none link-text"
+                active-class="custom-active"
+                text
+                :ripple="true"
+                :exact="item.exact"
+                nuxt
+                :to="item.to"
+                v-text="item.title"
+              />
+            </v-toolbar-items>
+          </v-col>
+
+          <v-col cols="auto" class="hidden-md-and-down">
             <v-btn
               v-if="!isUserLoggedIn"
               class="px-13 ml-3 btn-register"
@@ -87,9 +109,9 @@
             >
               LOGIN
             </v-btn>
-          </div>
+          </v-col>
 
-          <div class="hidden-xs-only hidden-md-and-up">
+          <v-col cols="auto" class="hidden-xs-only hidden-lg-and-up">
             <v-btn
               v-if="isUserLoggedIn && !isUserInSignupProcess"
               active-class="transparent--text"
@@ -119,11 +141,7 @@
                 mdi-login
               </v-icon>
             </v-btn>
-          </div>
-
-          <div class="hidden-sm-and-up">
-            <!-- DON'T remove it, using for gird purposes -->
-          </div>
+          </v-col>
         </v-row>
       </v-col>
     </v-row>
@@ -169,15 +187,24 @@ export default {
 .pg-app-bar-nav-icon {
   height: 56px !important;
   width: 56px !important;
+  &.isMd {
+    height: 64px !important;
+    width: 64px !important;
+  }
 }
 
 .pg-app-bar-col {
   max-width: 1200px;
 
   &.full-width {
-    max-width: unset;
+    max-width: 1600px;
     padding-left: 24px;
     padding-right: 24px;
+
+    &.mobile {
+      padding-left: 0px;
+      padding-right: 0px;
+    }
   }
 }
 

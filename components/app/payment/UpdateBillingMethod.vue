@@ -3,6 +3,8 @@
     button-text="SAVE"
     cancelable
     :loading="loading"
+    :no-terms="noTerms"
+    :no-trial="noTrial"
     @click:cancel="$emit('click:cancel')"
     @click:submit="onSubmit"
   />
@@ -14,10 +16,21 @@ import { mapActions } from 'vuex'
 import StripeForm from '@/components/forms/payment/StripeForm'
 
 export default {
-  name: 'NewBillingMethod',
+  name: 'UpdateBillingMethod',
 
   components: {
     StripeForm
+  },
+
+  props: {
+    cardId: {
+      type: [Number, String],
+      required: true
+    },
+
+    noTerms: Boolean,
+
+    noTrial: Boolean
   },
 
   data: () => ({
@@ -25,18 +38,18 @@ export default {
   }),
 
   methods: {
-    ...mapActions('payment', ['addBillingCard']),
+    ...mapActions('payment', ['updateBillingCard']),
 
-    async onSubmit (draft) {
+    async onSubmit (data) {
       this.loading = true
 
       try {
-        await this.addBillingCard(draft)
+        await this.updateBillingCard({ id: this.cardId, data })
         this.editing = false
 
-        this.$snotify.success('Card has been added successfully!')
+        this.$snotify.success('Card has been updated successfully!')
 
-        this.$emit('add:success')
+        this.$emit('update:success')
       } catch (e) {
       } finally {
         this.loading = false

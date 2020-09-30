@@ -40,6 +40,10 @@ export default {
     }
   },
 
+  async updateBillingCard ({ commit }, { id, data }) {
+    return await this.$axios.$patch(`/billing/card/${id}`, data)
+  },
+
   async validateCard ({ commit }, data) {
     try {
       return await this.$axios.$post('/billing/validate/card', data)

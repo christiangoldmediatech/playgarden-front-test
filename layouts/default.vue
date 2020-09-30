@@ -3,7 +3,7 @@
     <!-- APP MAV & BAR -->
     <app-navigation />
 
-    <application-header :full-width="Boolean(fullWidth)" />
+    <application-header :full-width="Boolean(fullWidthHeader)" />
 
     <!-- CONTENT -->
     <v-main v-if="!fullWidth">
@@ -48,7 +48,7 @@ export default {
   computed: {
     ...mapGetters('auth', ['isUserLoggedIn', 'isUserEmailUnverified']),
 
-    ...mapState(['fullWidthPages', 'fullWidthFooterPages']),
+    ...mapState(['fullWidthPages', 'fullWidthHeaderPages', 'fullWidthFooterPages']),
 
     fullWidth () {
       return this.fullWidthPages[this.$route.name]
@@ -56,6 +56,10 @@ export default {
 
     fullWidthFooter () {
       return this.fullWidthFooterPages[this.$route.name]
+    },
+
+    fullWidthHeader () {
+      return this.fullWidthHeaderPages[this.$route.name]
     }
   },
 
@@ -65,13 +69,15 @@ export default {
         this.$snotify.remove(this.verifyEmailToast.id)
         this.verifyEmailToast = null
       } else if (!this.verifyEmailToast) {
-        this.showVerifyEmailToast()
+        // Commented requested by Natalia
+        // this.showVerifyEmailToast()
       }
     }
   },
 
   mounted () {
-    this.showVerifyEmailToast()
+    // Commented requested by Natalia
+    // this.showVerifyEmailToast()
   },
 
   methods: {
@@ -125,10 +131,11 @@ export default {
   .text-h6 {
     font-family: "Poppins", sans-serif !important;
   }
-  // .video-js * {
-  //   font-family: VideoJS !important;
-  //   color: white !important;
-  // }
+
+  .v-btn {
+    color: var(--v-black-base);
+  }
+
   .container:not(.container--fluid) {
     max-width: 1200px;
   }

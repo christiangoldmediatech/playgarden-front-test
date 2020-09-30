@@ -2,7 +2,7 @@
   <v-row>
     <v-col cols="12">
       <p class="font-weight-bold">
-        INVITES SENT
+        PENDING INVITATIONS SENT
       </p>
 
       <v-row
