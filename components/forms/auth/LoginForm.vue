@@ -1,7 +1,7 @@
 <template>
   <v-form ref="loginForm" v-model="isValidForm" @submit.prevent="handleClick">
     <!-- Email -->
-    <v-text-field
+    <pg-text-field
       v-model="user.email"
       clearable
       :disabled="loading"
@@ -14,7 +14,7 @@
     />
 
     <!-- Password -->
-    <password-field
+    <pg-password-field
       v-model="user.password"
       clearable
       :disabled="loading"
@@ -69,7 +69,6 @@ import { jsonCopy } from '@/utils/objectTools'
 
 export default {
   name: 'LoginForm',
-
   props: {
     loading: {
       type: Boolean,

@@ -16,7 +16,7 @@
         name="Card number"
         rules="required|cc_number"
       >
-        <v-text-field
+        <pg-text-field
           v-model="draft.number"
           v-mask="['#### #### #### ####']"
           clearable
@@ -38,7 +38,7 @@
             name="Expiration date"
             rules="required|cc_exp_date"
           >
-            <v-text-field
+            <pg-text-field
               v-model="draft.date"
               v-mask="['##/##']"
               clearable
@@ -60,7 +60,7 @@
             name="CVV"
             rules="required|digits:3"
           >
-            <v-text-field
+            <pg-text-field
               v-model="draft.cvv"
               clearable
               :disabled="loading"

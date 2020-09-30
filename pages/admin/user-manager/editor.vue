@@ -36,7 +36,7 @@
                       name="First Name"
                       rules="required"
                     >
-                      <v-text-field
+                      <pg-text-field
                         v-model="user.firstName"
                         :error-messages="errors"
                         label="First Name"
@@ -51,7 +51,7 @@
                       name="Last Name"
                       rules="required"
                     >
-                      <v-text-field
+                      <pg-text-field
                         v-model="user.lastName"
                         :error-messages="errors"
                         label="Last Name"
@@ -66,7 +66,7 @@
                       name="E-mail"
                       rules="required|email"
                     >
-                      <v-text-field
+                      <pg-text-field
                         v-model="user.email"
                         :error-messages="errors"
                         label="E-mail"
@@ -81,7 +81,7 @@
                       name="Phone Number"
                       rules="required|phone"
                     >
-                      <v-text-field
+                      <pg-text-field
                         v-model="user.phoneNumber"
                         :error-messages="errors"
                         label="Phone Number"
@@ -96,7 +96,7 @@
                       name="Role"
                       rules="required"
                     >
-                      <v-select
+                      <pg-select
                         v-model="user.roleId"
                         :error-messages="errors"
                         :items="roles"
@@ -112,7 +112,7 @@
                       name="Password"
                       rules="required|min:8|max:20|w_number|w_special|w_upper"
                     >
-                      <password-field
+                      <pg-password-field
                         v-model="user.password"
                         counter
                         :error-messages="errors"

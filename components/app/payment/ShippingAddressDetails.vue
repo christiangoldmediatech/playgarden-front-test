@@ -9,7 +9,7 @@
 
       <!-- Street 1 -->
       <validation-provider v-slot="{ errors }" name="Street 1" rules="required">
-        <v-text-field
+        <pg-text-field
           v-model="draft.address1"
           clearable
           :disabled="!editing || loading"
@@ -21,7 +21,7 @@
       </validation-provider>
 
       <!-- Street 2 -->
-      <v-text-field
+      <pg-text-field
         v-model="draft.address2"
         clearable
         :disabled="!editing || loading"
@@ -32,7 +32,7 @@
 
       <!-- City -->
       <validation-provider v-slot="{ errors }" name="City" rules="required">
-        <v-text-field
+        <pg-text-field
           v-model="draft.city"
           clearable
           :disabled="!editing || loading"
@@ -51,7 +51,7 @@
             name="State"
             rules="required"
           >
-            <v-text-field
+            <pg-text-field
               v-model="draft.state"
               clearable
               :disabled="!editing || loading"
@@ -70,7 +70,7 @@
             name="Zipcode"
             rules="required"
           >
-            <v-text-field
+            <pg-text-field
               v-model="draft.zipCode"
               clearable
               :disabled="!editing || loading"

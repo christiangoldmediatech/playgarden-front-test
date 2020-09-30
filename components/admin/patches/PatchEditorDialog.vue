@@ -30,7 +30,7 @@
                 name="Activity"
                 rules="required"
               >
-                <v-select
+                <pg-select
                   v-model="item.activityTypeId"
                   clearable
                   :disabled="loading"
@@ -48,7 +48,7 @@
                 name="Name"
                 rules="required"
               >
-                <v-text-field
+                <pg-text-field
                   v-model="item.name"
                   :error-messages="errors"
                   label="Name"
@@ -61,7 +61,7 @@
                 name="Description"
                 rules="required"
               >
-                <v-textarea
+                <pg-textarea
                   v-model="item.description"
                   :error-messages="errors"
                   label="Description"
@@ -74,7 +74,7 @@
                 name="Number"
                 rules="required|integer|min_value:1"
               >
-                <v-text-field
+                <pg-text-field
                   v-model="item.number"
                   :error-messages="errors"
                   label="Number"

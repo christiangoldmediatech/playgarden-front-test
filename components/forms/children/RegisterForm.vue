@@ -15,7 +15,7 @@
             :name="(removable ? `Child #${indexD + 1} - ` : '') + 'Name'"
             rules="required"
           >
-            <v-text-field
+            <pg-text-field
               v-model="item.firstName"
               clearable
               :disabled="isLoading"
@@ -42,7 +42,7 @@
                 "
                 rules="required"
               >
-                <v-text-field
+                <pg-text-field
                   v-bind="attrs"
                   :disabled="isLoading"
                   :error-messages="errors"

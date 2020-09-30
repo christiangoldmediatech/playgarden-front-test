@@ -51,7 +51,7 @@
                 <patch-editor-dialog ref="editor" @saved="refresh(false)" />
 
                 <v-toolbar color="white" flat>
-                  <v-select
+                  <pg-select
                     v-model="filters.activityTypeId"
                     class="shrink"
                     clearable
@@ -67,7 +67,7 @@
 
                   <v-spacer />
 
-                  <v-text-field
+                  <pg-text-field
                     v-model="search"
                     append-icon="mdi-magnify"
                     class="shrink"
