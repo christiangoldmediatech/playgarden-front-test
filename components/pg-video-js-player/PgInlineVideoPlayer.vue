@@ -11,9 +11,6 @@
               src="/svg/play-button-icon.svg"
               width="100%"
             >
-            <!-- <span class="play-button-icon-text">
-              START
-            </span> -->
           </div>
         </div>
       </v-hover>

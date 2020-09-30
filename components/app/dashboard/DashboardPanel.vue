@@ -241,7 +241,7 @@ export default {
   }
 }
 
-#download-worksheet-btn.v-btn--disabled, #download-worksheet-btn.v-btn--disabled i.v-icon {
+#download-worksheet-btn.v-btn--disabled, #download-worksheet-btn.v-btn--disabled i.v-icon, #upload-worksheet-btn.v-btn--disabled, #upload-worksheet-btn.v-btn--disabled i.v-icon {
   color: white !important;
   font-size: 18px !important;
   font-weight: bold !important;
