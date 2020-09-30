@@ -57,7 +57,7 @@
                   </v-col>
 
                   <v-col cols="11" md="2">
-                    <v-select
+                    <pg-select
                       v-model="filters.curriculumTypeId"
                       clearable
                       hide-details
@@ -89,7 +89,7 @@
                       </v-row>
                     </v-radio-group>
 
-                    <v-select
+                    <pg-select
                       v-else
                       v-model="filters.level"
                       :items="levels"

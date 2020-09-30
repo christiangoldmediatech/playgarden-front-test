@@ -26,7 +26,7 @@
               "
             >
 
-            <v-select
+            <pg-select
               v-if="!isUserCaregiver"
               v-model="showSetting"
               class="hidden-md-and-up show-setting-select white"
@@ -67,14 +67,14 @@
       <div v-show="showSetting" class="mt-6">
         <v-row no-gutters>
           <v-col>
-            <v-text-field
+            <pg-text-field
               disabled
               label="First name"
               solo
               :value="userInfo.email"
             />
 
-            <v-text-field disabled label="Password" solo suffix="••••••••••" />
+            <pg-text-field disabled label="Password" solo suffix="••••••••••" />
           </v-col>
         </v-row>
 

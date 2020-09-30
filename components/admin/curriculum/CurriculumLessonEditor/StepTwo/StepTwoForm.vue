@@ -37,7 +37,7 @@
 
       <!-- Activity -->
       <validation-provider v-slot="{ errors }" name="Activity" rules="required">
-        <v-select
+        <pg-select
           v-model="draft.activityTypeId"
           clearable
           :disabled="loading"

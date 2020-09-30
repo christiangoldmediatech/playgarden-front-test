@@ -37,7 +37,7 @@
 
       <!-- Level -->
       <validation-provider v-slot="{ errors }" name="Level" rules="required">
-        <v-select
+        <pg-select
           v-model="draft.level"
           clearable
           :disabled="loading"
@@ -52,7 +52,7 @@
 
       <!-- Letter -->
       <validation-provider v-slot="{ errors }" name="Letter" rules="required">
-        <v-select
+        <pg-select
           v-model="draft.curriculumTypeId"
           clearable
           :disabled="loading"

@@ -30,7 +30,7 @@
                 name="Activity"
                 rules="required"
               >
-                <v-select
+                <pg-select
                   v-model="item.activityTypeId"
                   clearable
                   :disabled="loading"

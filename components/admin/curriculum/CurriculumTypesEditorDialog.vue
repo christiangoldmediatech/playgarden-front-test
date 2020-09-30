@@ -103,7 +103,7 @@
                 name="Curriculum Type Letter"
                 rules="required"
               >
-                <v-select
+                <pg-select
                   v-model="item.letter"
                   :error-messages="errors"
                   :items="letters"
