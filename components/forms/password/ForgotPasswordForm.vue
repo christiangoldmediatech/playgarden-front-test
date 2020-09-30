@@ -10,7 +10,7 @@
           email: true
         }"
       >
-        <v-text-field
+        <pg-text-field
           v-model="draft.email"
           clearable
           :disabled="loading || Boolean(draft.phone)"
@@ -48,7 +48,7 @@
           phone: true
         }"
       >
-        <v-text-field
+        <pg-text-field
           v-model="draft.phone"
           class="mt-6 custom-text-field"
           clearable

@@ -31,7 +31,7 @@
 
       <!-- Worksheet name -->
       <validation-provider v-slot="{ errors }" name="Name" rules="required">
-        <v-text-field
+        <pg-text-field
           v-model="fakeName"
           clearable
           :disabled="loading"
@@ -48,7 +48,7 @@
         name="Description"
         rules="required"
       >
-        <v-textarea
+        <pg-textarea
           v-model="fakeDescription"
           clearable
           :disabled="loading"
@@ -80,7 +80,7 @@
             :name="`Word ${indexMT + 1}`"
             rules="required"
           >
-            <v-text-field
+            <pg-text-field
               v-model="item.word"
               clearable
               :disabled="loading"

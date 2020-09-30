@@ -7,7 +7,7 @@
         name="Email"
         rules="required|email"
       >
-        <v-text-field
+        <pg-text-field
           v-model="draft.email"
           clearable
           :disabled="loading"

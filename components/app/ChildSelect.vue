@@ -1,5 +1,5 @@
 <template>
-  <v-select
+  <pg-select
     :value="value"
     :items="childrenList"
     placeholder="Select a child"
@@ -48,7 +48,7 @@
         </v-list-item-content>
       </v-list-item>
     </template>
-  </v-select>
+  </pg-select>
 </template>
 
 <script>
