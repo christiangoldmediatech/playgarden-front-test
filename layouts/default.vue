@@ -65,7 +65,8 @@ export default {
         this.$snotify.remove(this.verifyEmailToast.id)
         this.verifyEmailToast = null
       } else if (!this.verifyEmailToast) {
-        this.showVerifyEmailToast()
+        // momentary commented
+        // this.showVerifyEmailToast()
       }
     }
   },
