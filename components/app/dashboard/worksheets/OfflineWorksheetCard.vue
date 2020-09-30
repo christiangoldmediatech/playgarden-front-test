@@ -1,7 +1,9 @@
 <template>
-  <v-card class="d-flex flex-column dashboard-content-card dashboard-content-scroll" height="100%">
-    <div v-if="offlineWorksheet && offlineWorksheet.videoDetail">
-      <pg-inline-video-player @ready="onPlayerReady" />
+  <v-card class="d-flex flex-column dashboard-content-card" height="100%">
+    <div v-if="offlineWorksheet && offlineWorksheet.videoDetail" class="test-height">
+      <div class="test-width" :style="{ '--max-video-width': testWidth }">
+        <pg-inline-video-player @ready="onPlayerReady" />
+      </div>
     </div>
     <div
       v-else
@@ -65,7 +67,8 @@ export default {
   data: () => {
     return {
       dialog: false,
-      loading: false
+      loading: false,
+      testHeight: 0
     }
   },
 
@@ -102,7 +105,21 @@ export default {
           }
         }
       ]
+    },
+
+    testWidth () {
+      return `${((this.testHeight * 16) / 9)}px`
     }
+  },
+
+  watch: {
+    offlineWorksheet () {
+      this.getDims()
+    }
+  },
+
+  mounted () {
+    this.getDims()
   },
 
   methods: {
@@ -119,12 +136,29 @@ export default {
           window.clearInterval(waitAndLoad)
         }
       }, 50)
+    },
+
+    getDims () {
+      const el = document.querySelector('.test-height')
+      if (el) {
+        this.testHeight = el.clientHeight
+      }
     }
   }
 }
 </script>
 
 <style lang="scss">
+.test-height {
+  background-color: rgba(127, 127, 127, 0.125);
+  height: calc(100% - 206px);
+  max-height: calc(100% - 206px);
+}
+
+.test-width {
+  max-width: var(--max-video-width);
+  margin: 0 auto;
+}
 .offline-worksheet {
   &-image {
     background-image: linear-gradient(to top, rgba(39, 39, 39, 0.9), rgba(255, 255, 255, 0) 80%), var(--offlineWorksheetThumbnailUrl);
