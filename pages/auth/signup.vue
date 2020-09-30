@@ -222,7 +222,10 @@ export default {
 .text-orange-info {
   background-color: $pg-orange !important;
   color: $pg-white !important;
+  height: 19px;
+  font-size: 15px;
 }
+
 .text-orange-info::v-deep.v-chip .v-chip__content {
   color: $pg-white !important;
   font-weight: bold;
@@ -230,5 +233,9 @@ export default {
   letter-spacing: 3.15px;
   line-height: 1.48;
   background-color: $pg-orange !important;
+}
+
+.text-orange-info::v-deep.v-chip--label {
+    border-radius: 0px !important;
 }
 </style>
