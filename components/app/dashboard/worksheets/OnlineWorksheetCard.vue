@@ -40,7 +40,6 @@
     <completed-dialog
       v-model="completed"
       :buttons="buttons"
-      return-text="Return to dashboard"
       :time-out="false"
     >
       <template v-slot:title>

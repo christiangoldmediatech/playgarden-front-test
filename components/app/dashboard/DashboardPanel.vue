@@ -76,18 +76,43 @@
                 <v-list-item-title :class="['dashboard-panel-worksheet-text', { 'dashboard-item-disabled': videos.progress < 100 }]">
                   HANDS-ON LEARNING
                 </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+
+            <v-list-item
+              v-if="worksheets.OFFLINE"
+              class="dashboard-item"
+              :disabled="videos.progress < 100"
+            >
+              <v-list-item-content>
                 <v-btn
-                  id="worksheet-btn"
+                  id="download-worksheet-btn"
                   class="dashboard-panel-worksheet-btn white--text"
-                  color="primary"
+                  color="#dce7b5"
                   :disabled="videos.progress < 100"
                   block
+                  @click.stop="openPdf"
                 >
                   <v-icon color="white" left>
                     pg-icon-download
                   </v-icon>
                   <!-- <pg-icon /> -->
                   DOWNLOAD WORKSHEET
+                </v-btn>
+
+                <v-btn
+                  id="upload-worksheet-btn"
+                  class="dashboard-panel-worksheet-btn white--text mt-2"
+                  color="primary"
+                  :disabled="videos.progress < 100"
+                  block
+                  @click.stop="uploadDialog = true"
+                >
+                  <v-icon color="white" left>
+                    pg-icon-camera
+                  </v-icon>
+                  <!-- <pg-icon /> -->
+                  UPLOAD WORKSHEET
                 </v-btn>
               </v-list-item-content>
             </v-list-item>
@@ -105,6 +130,7 @@
         </content-section>
       </div>
     </v-card>
+    <upload-offline-worksheet v-model="uploadDialog" />
   </div>
 </template>
 
@@ -142,6 +168,29 @@ export default {
       type: Object,
       required: false,
       default: () => {}
+    }
+  },
+
+  data: () => {
+    return {
+      uploadDialog: false
+    }
+  },
+
+  computed: {
+    offlineWorksheet () {
+      if (this.lesson) {
+        return this.lesson.worksheets.find(({ type }) => type === 'OFFLINE')
+      }
+      return null
+    }
+  },
+
+  methods: {
+    openPdf () {
+      if (this.offlineWorksheet) {
+        window.open(this.offlineWorksheet.pdfUrl, '_blank')
+      }
     }
   }
 }
@@ -191,7 +240,7 @@ export default {
   }
 }
 
-#worksheet-btn.v-btn--disabled, #worksheet-btn.v-btn--disabled i.v-icon {
+#download-worksheet-btn.v-btn--disabled, #download-worksheet-btn.v-btn--disabled i.v-icon {
   color: white !important;
   font-size: 18px !important;
   font-weight: bold !important;
