@@ -32,7 +32,7 @@
           class="pb-1"
           cols="12"
           sm="10"
-          md="8"
+          md="9"
           lg="7"
         >
           <v-btn
@@ -166,7 +166,7 @@ export default {
     background-repeat: no-repeat, no-repeat;
     background-size: cover;
   }
-  &-btn.v-btn {
+  &-btn.v-btn, &-btn.v-btn.v-btn--disabled {
     height: 59px !important;
     font-size: 20px;
     letter-spacing: 0.04em;
