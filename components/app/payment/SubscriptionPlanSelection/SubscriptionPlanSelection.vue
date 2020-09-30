@@ -26,10 +26,18 @@
                 <v-col
                   v-for="(plan, indexP) in plans"
                   :key="indexP"
-                  class="c-col elevation-3 mx-md-3 my-3 pa-3"
+                  class="c-col elevation-3 mx-md-3 pa-3"
                 >
                   <div>
                     <p class="text-center">
+                      <v-chip
+                        color="orange"
+                        class="text-orange-info mb-3"
+                        label
+                      >
+                        {{ getTypePlan(indexP) }}
+                      </v-chip>
+                      <br>
                       <underlined-title
                         font-size="20px"
                         :line-from="65"
@@ -81,9 +89,13 @@
 
           <v-row v-if="!noAddress && draft.requireAddress" no-gutters>
             <v-col>
-              <p>
+              <p class="text-justify">
                 <span class="font-weight-bold text-h5 pg-letter-spacing">
                   SHIPPING ADDRESS
+                </span>
+                <br>
+                <span class="text-h8">
+                  For our GOLD and PLATINUM plans, we require a shipping address in order to send the Welcome Kit with Backpack, workbooks, and additional materials so you can easily receive them at the comfort of your home.
                 </span>
               </p>
 
@@ -274,6 +286,22 @@ export default {
       'selectSubscriptionPlan'
     ]),
 
+    getTypePlan (index) {
+      let plan = ''
+      switch (index) {
+        case 0:
+          plan = 'SILVER'
+          break
+        case 1:
+          plan = 'GOLD'
+          break
+        case 2:
+          plan = 'PLATINUM'
+          break
+      }
+      return plan
+    },
+
     async fetchAddress () {
       try {
         this.disableAxiosGlobal()
@@ -380,5 +408,25 @@ export default {
 
 .plan-item {
   font-size: 14px;
+}
+
+.text-orange-info {
+  background-color: $pg-orange !important;
+  color: $pg-white !important;
+  height: 19px;
+  font-size: 18px;
+}
+
+.text-orange-info::v-deep.v-chip .v-chip__content {
+  color: $pg-white !important;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 3.15px;
+  line-height: 1.48;
+  background-color: $pg-orange !important;
+}
+
+.text-orange-info::v-deep.v-chip--label {
+    border-radius: 0px !important;
 }
 </style>
