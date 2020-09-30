@@ -36,26 +36,25 @@
           </v-btn>
         </nuxt-link>
 
-        <div class="mt-6 text-center text-md-left">
+        <p class="mt-6 text-center text-md-left">
           Didn’t receive an email?
 
-          <v-btn color="primary" text class="btn-green" @click="onResend">
+          <v-btn color="primary" text class="btn-green" height="10" @click="onResend">
             RESEND EMAIL
           </v-btn>
-        </div>
-
-        <div class="text-center text-md-left">
+          <br>
           Need support?
 
           <v-btn
             color="primary"
             text
             class="btn-green"
+            height="10"
             href="mailto:hello@playgardenprep.com"
           >
             CONTACT US
           </v-btn>
-        </div>
+        </p>
       </div>
     </v-col>
   </v-row>
