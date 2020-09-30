@@ -22,6 +22,7 @@
         <worksheet-continue-btn v-bind="{ selected }" @click.stop="dialog = true" />
       </v-row>
     </div>
+
     <worksheet-message
       v-model="dialog"
       v-bind="{ item: selectedItem, selected, correct, showWord: tapCorrect, connectingPairs, tapCorrect, randomWord }"
@@ -35,17 +36,37 @@
         mdi-greater-than
       </v-icon>
     </worksheet-message>
+
     <completed-dialog
       v-model="completed"
       :buttons="buttons"
-      :return-text="false"
-      :time-out="30"
-      :time-out-action="buttons[0].action"
+      return-text="Return to dashboard"
+      :time-out="false"
     >
-      <p class="text-center font-weight-medium white--text">
-        Hands-on learning is a crucial part of the educational experience. Learning through doing strengthens the cognitive connections and builds a strong foundation for knowledge.
+      <template v-slot:title>
+        <underlined-title
+          class="white--text"
+          font-size="56px"
+          font-weight="bold"
+          :text="offlineWorksheet && offlineWorksheet.completed ? 'Congratulations!' : 'Coming Next:'"
+        />
+      </template>
+      <p class="text-center font-weight-medium white--text mt-2">
+        <template v-if="offlineWorksheet && offlineWorksheet.completed">
+          <span class="font-weight-bold white--text">You have completed the hands-on learning experience.</span>
+        </template>
+        <template v-else>
+          <span class="font-weight-bold white--text">HANDS-ON LEARNING</span> is a crucial part of the educational experience. Learning through doing strengthens the cognitive connections and builds a strong foundation for knowledge.
+        </template>
       </p>
     </completed-dialog>
+
+    <upload-offline-worksheet v-model="uploadDialog" />
+
+    <teacher-video-overlay
+      v-model="teachersVideoDialog"
+      :video="offlineWorksheet ? offlineWorksheet.videoDetail : undefined"
+    />
   </v-card>
 </template>
 
@@ -64,6 +85,10 @@ export default {
     return {
       dialog: false,
       completed: false,
+      teachersVideoDialog: false,
+      showTeachers: true,
+      downloaded: false,
+      uploadDialog: false,
       step: 0,
       randomWord: null,
       answers: [],
@@ -95,32 +120,70 @@ export default {
       return 'Next question'
     },
 
-    overrides () {
-      return {
-        childId: this.$route.query.childId,
-        lessonId: this.$route.query.lessonId
+    offlineWorksheet () {
+      if (this.lesson) {
+        return this.lesson.worksheets.find(({ type }) => type === 'OFFLINE')
       }
+      return null
     },
 
     buttons () {
+      const buttons = []
+
+      const goToTeachersVideo = {
+        text: 'GO TO TEACHER\'S VIDEO',
+        color: 'accent',
+        iconLeft: 'pg-icon-paper-pencil',
+        action: () => {
+          this.teachersVideoDialog = true
+          this.showTeachers = false
+        }
+      }
+
+      const downloadHandsOn = {
+        text: 'DOWNLOAD HANDS-ON WORKSHEET',
+        color: '#FEC572',
+        iconLeft: 'pg-icon-download',
+        action: () => {
+          if (this.offlineWorksheet) {
+            this.downloaded = true
+            window.open(this.offlineWorksheet.pdfUrl, '_blank')
+          }
+        }
+      }
+
+      const uploadHandsOn = {
+        text: 'UPLOAD COMPLETED WORKSHEET',
+        color: 'accent',
+        iconLeft: 'pg-icon-camera',
+        action: () => {
+          this.uploadDialog = true
+        }
+      }
+
+      if (this.offlineWorksheet && !this.offlineWorksheet.completed) {
+        if (this.showTeachers && this.offlineWorksheet.videoDetail) {
+          buttons.push(goToTeachersVideo)
+        }
+
+        if (this.downloaded) {
+          buttons.push(uploadHandsOn)
+        } else {
+          buttons.push(downloadHandsOn)
+        }
+      }
+
       return [
+        ...buttons,
         {
-          text: 'GO TO ACTIVITIES',
-          color: 'accent',
+          text: 'SKIP TO ACTIVITIES',
+          color: '#FEC572',
           iconLeft: 'pg-icon-play',
           action: () => {
             const activities = this.lesson.lessonsActivities.map(({ activity }) => activity)
             if (activities.length) {
               this.$router.push(this.generateNuxtRoute('lesson-activities', { id: activities[0].id }))
             }
-          }
-        },
-        {
-          text: 'DOWNLOAD HANDS-ON WORKSHEET',
-          color: '#FEC572',
-          iconLeft: 'pg-icon-download',
-          action: () => {
-            this.$router.push(this.generateNuxtRoute('offline-worksheet'))
           }
         }
       ]

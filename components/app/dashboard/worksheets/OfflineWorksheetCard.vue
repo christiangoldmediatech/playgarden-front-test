@@ -48,12 +48,12 @@
         </v-col>
       </v-row>
     </v-container>
-    <upload-offline-worksheet v-model="dialog" v-bind="{ url }" />
+    <upload-offline-worksheet v-model="dialog" />
   </v-card>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'OfflineWorksheetCard',
@@ -90,28 +90,6 @@ export default {
           iconLeft: 'pg-icon-download',
           action: () => {
             if (this.sheets[0]) {
-              const date = new Date().toISOString().substr(0, 19)
-              const promises = []
-
-              if (!this.sheets[0].completed) {
-                this.children.forEach((child) => {
-                  promises.push(
-                    this.saveWorksheetProgress({
-                      lessonId: this.getLesson.id,
-                      childId: child.id,
-                      worksheet: {
-                        id: this.sheets[0].id,
-                        completed: true,
-                        date
-                      }
-                    })
-                  )
-                })
-              }
-
-              Promise.all(promises).then(() => {
-                this.$nuxt.$emit('dashboard-panel-update')
-              })
               window.open(this.url, '_blank')
             }
           }
@@ -119,7 +97,7 @@ export default {
         {
           text: 'UPLOAD HANDS-ON WORKSHEET',
           color: '#FEC572',
-          iconLeft: 'mdi-paperclip',
+          iconLeft: 'pg-icon-camera',
           disabled: (this.getLesson && this.getLesson.previewMode),
           action: () => {
             this.dialog = true
@@ -127,10 +105,6 @@ export default {
         }
       ]
     }
-  },
-
-  methods: {
-    ...mapActions('children/lesson', ['saveWorksheetProgress'])
   }
 }
 </script>

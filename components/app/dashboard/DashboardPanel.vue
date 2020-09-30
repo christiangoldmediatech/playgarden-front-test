@@ -164,7 +164,6 @@ export default {
       position: absolute;
       top: 0;
       background-color: #c2daa5;
-      box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.29);
       border-radius: 5px;
     }
   }
