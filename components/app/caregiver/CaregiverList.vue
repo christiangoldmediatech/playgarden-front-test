@@ -2,7 +2,7 @@
   <v-row>
     <v-col cols="12">
       <p class="font-weight-bold">
-        CAREGIVERS
+        VERIFIED CAREGIVERS
       </p>
 
       <v-row

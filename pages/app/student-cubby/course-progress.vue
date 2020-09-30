@@ -8,7 +8,7 @@
         />
 
         <p class="mt-2">
-          Scroll through to review your lessons and worksheets!
+          Tap on a letter and scroll through to review all lessons & course work
         </p>
       </div>
 
