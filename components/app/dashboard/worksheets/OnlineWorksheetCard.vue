@@ -86,7 +86,7 @@ export default {
   data: () => {
     return {
       dialog: false,
-      completed: true,
+      completed: false,
       // teachersVideoDialog: false,
       showTeachers: true,
       downloaded: false,
