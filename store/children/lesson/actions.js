@@ -62,7 +62,7 @@ export default {
     lesson.worksheets = lesson.worksheets.map((worksheet) => {
       return {
         ...worksheet,
-        completed: true
+        completed: (worksheet.type !== 'OFFLINE')
       }
     })
 

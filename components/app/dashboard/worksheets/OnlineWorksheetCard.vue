@@ -51,21 +51,24 @@
         />
       </template>
       <p class="text-center font-weight-medium white--text mt-2">
-        <template v-if="offlineWorksheet && offlineWorksheet.completed">
-          <span class="font-weight-bold white--text">You have completed the hands-on learning for the day</span>
+        <template v-if="showTeachers">
+          <span class="font-weight-bold white--text">HANDS-ON LEARNING</span> is a crucial part of the educational experience. Learning through doing strengthens the cognitive connections and builds a strong foundation for knowledge.
+        </template>
+        <template v-else-if="offlineWorksheet && offlineWorksheet.completed">
+          <span class="font-weight-bold white--text">You have completed the hands-on learning for the day.</span>
         </template>
         <template v-else>
-          <span class="font-weight-bold white--text">HANDS-ON LEARNING</span> is a crucial part of the educational experience. Learning through doing strengthens the cognitive connections and builds a strong foundation for knowledge.
+          <span class="font-weight-bold white--text">You have completed the hands-on learning.</span>
         </template>
       </p>
     </completed-dialog>
 
     <upload-offline-worksheet v-model="uploadDialog" />
 
-    <teacher-video-overlay
+    <!-- <teacher-video-overlay
       v-model="teachersVideoDialog"
       :video="offlineWorksheet ? offlineWorksheet.videoDetail : undefined"
-    />
+    /> -->
   </v-card>
 </template>
 
@@ -83,8 +86,8 @@ export default {
   data: () => {
     return {
       dialog: false,
-      completed: false,
-      teachersVideoDialog: false,
+      completed: true,
+      // teachersVideoDialog: false,
       showTeachers: true,
       downloaded: false,
       uploadDialog: false,
@@ -134,7 +137,21 @@ export default {
         color: 'accent',
         iconLeft: 'pg-icon-paper-pencil',
         action: () => {
-          this.teachersVideoDialog = true
+          const playlist = [
+            {
+              title: '',
+              src: {
+                src: this.offlineWorksheet.videoDetail.videoUrl.HLS,
+                type: 'application/x-mpegURL'
+              }
+            }
+          ]
+
+          this.$nuxt.$emit('open-lesson-teacher-video', {
+            playlist, index: 0
+          })
+
+          // this.teachersVideoDialog = true
           this.showTeachers = false
         }
       }

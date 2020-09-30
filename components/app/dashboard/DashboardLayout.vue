@@ -58,6 +58,7 @@
       </v-row>
     </v-container>
     <lesson-activity-player />
+    <lesson-teacher-video />
   </v-main>
 </template>
 
