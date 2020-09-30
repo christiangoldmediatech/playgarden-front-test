@@ -96,7 +96,8 @@
                   <validation-provider
                     v-slot="{ errors }"
                     name="Password"
-                    rules="required|min:8|max:20|w_number|w_special|w_upper|confirmed:passwordConfirmation"
+                    rules="required|min:8|max:20|w_number|w_special|w_upper"
+                    vid="password_field"
                   >
                     <pg-password-field
                       v-model="draft.password"
@@ -113,9 +114,8 @@
                   <!-- Password confirmation -->
                   <validation-provider
                     v-slot="{ errors }"
-                    name="Confirm password"
-                    rules="required"
-                    vid="passwordConfirmation"
+                    name="Password"
+                    rules="required|confirmed:password_field"
                   >
                     <pg-password-field
                       v-model="draft.passwordConfirmation"
