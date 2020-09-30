@@ -14,8 +14,7 @@
 
         <p class="text-center text-md-justify">
           Enter your email or phone number to reset your password. You will
-          receive an email or SMS with instructions on how to reset your
-          password.
+          receive an email or SMS with instructions.
         </p>
 
         <forgot-password-form :loading="loading" @click:submit="onSubmit" />

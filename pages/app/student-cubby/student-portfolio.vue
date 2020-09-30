@@ -4,8 +4,8 @@
       <div class="text-center">
         <underlined-title class="text-h6 text-md-h3" text="Student Portfolio" />
 
-        <p class="portfolio-subtitle mt-2">
-          Keep track of your worksheets and progress!
+        <p class="mt-2">
+          Keep track of your worksheets and progress! aqui
         </p>
       </div>
     </v-card-text>
@@ -54,7 +54,7 @@
         </v-col>
 
         <v-col cols="8">
-          <p class="portfolio-text">
+          <p class="text-justify">
             Take a photo of the completed worksheets and upload them here to
             keep track of progress in tracing, math, science, language and
             cognitive activities.

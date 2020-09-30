@@ -11,7 +11,7 @@
     </ul>
 
     <template v-if="plan.homeDeliveryBenefits">
-      <section class="font-weight-bold mt-6">
+      <section class="font-weight-bold mt-3">
         Home Delivery of:
       </section>
 
@@ -27,7 +27,7 @@
     </template>
 
     <template v-if="plan.plusBenefits">
-      <section class="font-weight-bold mt-6">
+      <section class="font-weight-bold mt-3">
         Plus:
       </section>
 
