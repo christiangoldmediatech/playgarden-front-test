@@ -126,15 +126,15 @@ export default {
 
 <style lang="scss" scoped>
 .text-orange-info {
-  background-color: $pg-orange !important;
-  color: $pg-white !important;
+  background-color: var(--v-accent-base) !important;
+  color: var(--v-white-base) !important;
 }
 .text-orange-info::v-deep.v-chip .v-chip__content {
-  color: $pg-white !important;
+  color: var(--v-white-base) !important;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 3.15px;
   line-height: 1.48;
-  background-color: $pg-orange !important;
+  background-color: var(--v-accent-base) !important;
 }
 </style>

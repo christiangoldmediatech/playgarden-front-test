@@ -192,7 +192,7 @@ export default {
   max-width: 500px;
 }
 .error-message {
-  color: $pg-error;
+  color: var(--v-error-base);
 }
 .spanSocialNetwork {
   font-size: 12px;

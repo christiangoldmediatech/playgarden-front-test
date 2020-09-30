@@ -166,7 +166,7 @@ export default {
     left: -1%;
     content: "";
     z-index: -1;
-    border-bottom: 0.8rem solid $pg-main;
+    border-bottom: 0.8rem solid var(--v-primary-base);
     border-radius: 0.2rem;
   }
 }

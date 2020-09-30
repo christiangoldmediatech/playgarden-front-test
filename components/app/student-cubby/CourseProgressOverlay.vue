@@ -17,7 +17,7 @@
     </v-btn>
     <v-progress-circular
       v-if="loading"
-      color="#f89838"
+      color="accent"
       indeterminate
       size="128"
       width="8"

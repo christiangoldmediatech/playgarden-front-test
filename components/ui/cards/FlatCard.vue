@@ -83,7 +83,7 @@ export default {
 
   a {
     font-size: 15px;
-    color: $pg-black;
+    color: var(--v-black-base);
   }
 }
 </style>

@@ -278,7 +278,7 @@ export default {
     background-image: linear-gradient(
       to bottom,
       #d3f5a8 -132%,
-      #c2daa5 202%
+      var(--v-primary-base) 202%
     ) !important;
     background-color: transparent !important;
   }
@@ -314,10 +314,6 @@ export default {
   }
   .v-text-field .v-input__control .v-input__slot {
     box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.16) !important;
-  }
-
-  .v-btn {
-    color: var(--v-black-base);
   }
 }
 </style>

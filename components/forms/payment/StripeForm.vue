@@ -189,12 +189,12 @@ export default {
 
 <style lang="scss" scoped>
 .accept-terms ::v-deep .v-label {
-  color: $pg-black !important;
+  color: var(--v-black-base) !important;
   opacity: 2.49 !important;
 }
 .terms-conditions {
   text-decoration: underline !important;
-  color: $pg-black;
+  color: var(--v-black-base);
   font-weight: 400;
   cursor: pointer;
 }

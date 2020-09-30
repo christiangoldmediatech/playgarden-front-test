@@ -1,0 +1,58 @@
+/*
+ * GLOBAL
+ */
+.v-application a {
+  text-decoration: none;
+}
+
+// FONTS
+*,
+.theme--light.v-btn.grey,
+.theme--light.v-input input,
+.theme--light.v-input textarea,
+.theme--light.v-date-picker-header
+  .v-date-picker-header__value:not(.v-date-picker-header__value--disabled)
+  button:not(:hover):not(:focus),
+.theme--light.v-radio .v-label  {
+  color: var(--v-black-base);
+}
+
+/*
+ * DATEPICKER
+ */
+// Default datepicker has the header fonts in white
+.theme--light .v-date-picker-title__date div,
+.theme--light .v-date-picker-title__year {
+  color: #ffffff;
+}
+
+.theme--light .v-date-picker-table .v-btn__content {
+  font-weight: normal;
+}
+
+/*
+ * INPUT
+ */
+.theme--light.v-input .v-input__slot {
+  min-height: 60px;
+}
+
+/*
+ * OVERLAY
+ */
+.v-overlay--active .v-overlay__scrim {
+  opacity: 0.68 !important;
+  background-color: rgb(0, 0, 0) !important;
+  border-color: rgb(0, 0, 0) !important;
+}
+
+/*
+ * RADIO
+ */
+.theme--light.v-radio .v-label {
+  opacity: 2.49;
+}
+
+.theme--light.v-radio.v-item--active .v-label {
+  font-weight: bold !important;
+}

@@ -23,12 +23,7 @@
             Plan: <b>{{ billing.planName }}</b>
           </v-col>
 
-          <v-btn
-            color="primary"
-            text
-            class="btn-green"
-            @click="changePlanModal = true"
-          >
+          <v-btn color="primary" text @click="changePlanModal = true">
             CHANGE PLAN
           </v-btn>
         </v-row>
@@ -66,7 +61,7 @@
       </v-row>
 
       <div v-else class="my-6 text-center">
-        <nuxt-link class="btn-green" :to="{ name: 'app-payment-register' }">
+        <nuxt-link :to="{ name: 'app-payment-register' }">
           CREATE MEMBERSHIP
         </nuxt-link>
       </div>

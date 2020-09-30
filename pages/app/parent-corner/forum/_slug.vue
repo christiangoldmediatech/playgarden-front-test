@@ -209,7 +209,7 @@ $title-font-size: 50px;
 .blog__title {
   margin: 0 auto;
   max-width: 800px;
-  color: $pg-black;
+  color: var(--v-black-base);
   font-weight: bold;
   text-align: center;
   position: relative;
@@ -226,7 +226,7 @@ $title-font-size: 50px;
 .blog__body {
   max-width: 800px;
   line-height: 1.6;
-  color: $pg-black;
+  color: var(--v-black-base);
   font-size: 19px;
   padding-left: 80px;
 
@@ -240,7 +240,7 @@ $title-font-size: 50px;
 }
 
 .blog__share {
-  color: $pg-black;
+  color: var(--v-black-base);
   letter-spacing: 3px;
   padding-left: 80px;
   font-size: 24px;
@@ -277,7 +277,7 @@ $icon-size: 60px;
 }
 
 .orange-text {
-  color: #f89838;
+  color: var(--v-accent-base);
 }
 
 $mobile-image-height: 300px;

@@ -25,7 +25,7 @@
             <slot />
           </v-col>
         </v-row>
-        <v-progress-linear v-if="timeOut" color="#f89838" :size="4" :value="progress" />
+        <v-progress-linear v-if="timeOut" color="accent" :size="4" :value="progress" />
       </v-img>
 
       <v-container>
