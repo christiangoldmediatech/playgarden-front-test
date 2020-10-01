@@ -253,7 +253,7 @@ $background-line-height: 80px;
     transform: translateX(-50%);
     position: absolute;
     box-shadow: 0 -1px 6px 0 rgba(0, 0, 0, 0.12);
-    background: var(--line-color, $pg-main);
+    background: var(--line-color, var(--v-primary-base));
     z-index: 0;
   }
 }
@@ -263,7 +263,7 @@ $background-line-height: 80px;
   font-size: 30px;
   letter-spacing: 3px;
   letter-spacing: 6.75px;
-  color: $pg-black;
+  color: var(--v-black-base);
 }
 
 .carousel__btn {
@@ -287,12 +287,12 @@ $background-line-height: 80px;
 
   .controller-item {
     @include rounded-element(6px);
-    border: 1px solid $pg-black;
+    border: 1px solid var(--v-black-base);
     margin: 0 2px;
   }
 
   .controller-item--active {
-    background: $pg-black;
+    background: var(--v-black-base);
   }
 
   .carousel__background-line--mobile {

@@ -213,7 +213,7 @@ export default {
       height: 18px;
       position: absolute;
       top: 0;
-      background-color: #c2daa5;
+      background-color: var(--v-primary-base);
       border-radius: 5px;
     }
   }
@@ -265,7 +265,7 @@ export default {
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background-color: #c2daa5;
+    background-color: var(--v-primary-base);
     box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.18);
   }
 

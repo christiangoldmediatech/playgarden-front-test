@@ -49,7 +49,7 @@
                   label="Birth date"
                   readonly
                   solo
-                  suffix="MM/DD/YYYY"
+                  :suffix="item._birthdayFormatted ? '' : 'MM/DD/YYYY'"
                   validate-on-blur
                   :value="item._birthdayFormatted"
                   class="custom-text-field"
@@ -314,14 +314,14 @@ export default {
     width: 100%;
 
     &.active {
-      background-color: $pg-secondary;
+      background-color: var(--v-secondary-base);
       border-radius: 50%;
       padding: 5px;
     }
   }
 }
 .grey {
-  color: $pg-black;
+  color: var(--v-black-base);
 }
 
 .custom-btn::v-deep.v-btn.grey {
