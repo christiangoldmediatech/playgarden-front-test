@@ -86,7 +86,7 @@ $page-margin: 12px;
     top: 60%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: $pg-main;
+    background: var(--v-primary-base);
     width: 100vw;
     height: 40%;
   }
@@ -121,7 +121,7 @@ $header-title-margin: 10px;
   padding: 30px 80px;
   background: white;
   box-shadow: 4px 3px 6px 0 rgba(0, 0, 0, 0.2);
-  color: $pg-black;
+  color: var(--v-black-base);
 }
 
 .header__card__button {

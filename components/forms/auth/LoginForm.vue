@@ -125,7 +125,7 @@ export default {
   font-weight: 500;
 
   span {
-    color: $pg-main;
+    color: var(--v-primary-base);
     text-transform: uppercase;
     font-weight: bold;
   }

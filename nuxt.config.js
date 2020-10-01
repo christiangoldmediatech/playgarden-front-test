@@ -94,8 +94,13 @@ export default {
    * Vuetify Options
    */
   vuetify: {
+    customVariables: [
+      './assets/scss/vuetify/variables.scss',
+      './assets/scss/vuetify/overrides.scss'
+    ],
+    defaultAssets: false,
     optionsPath: './vuetify.options.js',
-    defaultAssets: false
+    treeShake: true
   },
   /*
    ** Nuxt.js modules
@@ -132,10 +137,9 @@ export default {
   ],
   styleResources: {
     scss: [
-      './assets/scss/variables.scss',
-      './assets/scss/_mixins.scss',
-      './assets/scss/_text.scss',
-      './assets/scss/_image.scss'
+      './assets/scss/mixins/_mixins.scss',
+      './assets/scss/mixins/_text.scss',
+      './assets/scss/mixins/_image.scss'
     ]
   },
   /*
@@ -151,9 +155,7 @@ export default {
     transpile: ['vuetify/lib', 'vee-validate/dist/rules', 'tiptap-vuetify']
   },
   env: {
-    apiBaseUrl:
-      process.env.API_BASE_URL ||
-      'https://apidev.playgardenonline.com',
+    apiBaseUrl: process.env.API_BASE_URL || 'https://apidev.playgardenonline.com',
     testEnv: process.env.TEST_ENV || 'LOCAL'
   },
   router: {

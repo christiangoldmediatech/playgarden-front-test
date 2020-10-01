@@ -62,7 +62,7 @@ export default {
 
 <style lang="scss" scoped>
 .btn-favorities {
-  color: $pg-black !important;
+  color: var(--v-black-base) !important;
   width: 100% !important;
   font-size: 1.2rem !important;
 }

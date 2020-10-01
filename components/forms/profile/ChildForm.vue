@@ -383,7 +383,7 @@ export default {
     width: 100%;
 
     &.active {
-      background-color: $pg-secondary;
+      background-color: var(--v-secondary-base);
       border-radius: 50%;
       padding: 5px;
     }

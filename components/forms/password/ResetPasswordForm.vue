@@ -90,13 +90,13 @@ export default {
   align-items: center;
 }
 .login {
-  color: $pg-main;
+  color: var(--v-primary-base);
   text-transform: uppercase;
   font-weight: bold;
   text-align: center;
   font-size: 20px;
 }
 .return-link {
-  color:  $pg-btn-green;
+  color:  var(--v-primary-base);
 }
 </style>

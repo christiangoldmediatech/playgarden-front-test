@@ -107,7 +107,7 @@ export default {
     max-width: 150px;
     // border-radius: 50%;
     cursor: pointer;
-    // background-color: #F89838;
+    // background-color: var(--v-accent-base);
     transition: transform 250ms;
     &-scaled {
       transform: scale(1.15);

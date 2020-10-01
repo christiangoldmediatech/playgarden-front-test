@@ -156,13 +156,13 @@ export default {
 }
 .subtitle-activity-card {
   font-weight: 400 !important;
-  color: $pg-black !important;
+  color: var(--v-black-base) !important;
   text-transform: capitalize !important;
   white-space: pre-wrap;
 }
 .with-activity-card {
   font-weight: 400 !important;
-  color: $pg-black !important;
+  color: var(--v-black-base) !important;
   text-transform: lowercase !important;
 }
 .play-icon {
@@ -174,7 +174,7 @@ export default {
   font-weight: 500;
 }
 .title {
-  color: $pg-black;
+  color: var(--v-black-base);
   font-weight: 600;
 }
 .data-video {
