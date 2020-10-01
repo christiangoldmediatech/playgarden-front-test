@@ -39,6 +39,12 @@ export default {
           this.$refs.message.startInterval()
         })
       }
+
+      if (val) {
+        document.querySelector('html').style.overflowY = 'hidden'
+      } else {
+        document.querySelector('html').style.overflowY = 'scroll'
+      }
     }
   },
 

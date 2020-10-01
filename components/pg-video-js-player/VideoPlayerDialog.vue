@@ -1,5 +1,5 @@
 <template>
-  <div :class="['player-dialog', { 'player-dialog-visible': value }]">
+  <div :class="['player-dialog', { 'player-dialog-visible': value }]" :style="{ '--dialog-z-index': zIndex }">
     <div
       class="player-dialog-container"
       :style="dimensions"
@@ -53,11 +53,12 @@
 <script>
 import SmallScreen from '@/mixins/SmallScreenMixin.js'
 import Favorites from '@/mixins/FavoritesMixin.js'
+import Dimensions from '@/mixins/DimensionsMixin.js'
 
 export default {
   name: 'VideoPlayerDialog',
 
-  mixins: [Favorites, SmallScreen],
+  mixins: [Dimensions, Favorites, SmallScreen],
 
   props: {
     value: {
@@ -76,33 +77,12 @@ export default {
       type: Number,
       required: false,
       default: -1
-    }
-  },
+    },
 
-  data: () => {
-    return {
-      winWidth: 0,
-      winHeight: 0
-    }
-  },
-
-  computed: {
-    dimensions () {
-      const aspectRatio = 16 / 9
-      let width = this.winWidth
-      let height = Math.round(this.winWidth / aspectRatio)
-
-      if (height > this.winHeight) {
-        width = Math.round(this.winHeight * aspectRatio)
-        height = this.winHeight
-      }
-
-      return {
-        '--containerWidth': `${width}px`,
-        '--containerHeight': `${height}px`,
-        '--containerMarginTop': `-${height / 2}px`,
-        '--containerMarginLeft': `-${width / 2}px`
-      }
+    zIndex: {
+      type: Number,
+      required: false,
+      default: 500
     }
   },
 
@@ -117,11 +97,8 @@ export default {
   },
 
   mounted () {
-    this.getWindowDimensions()
-    window.addEventListener('resize', this.getWindowDimensions)
-
     this._keyListener = (e) => {
-      if (e.ctrlKey && e.shiftKey && e.key === 'E') {
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'E' || e.key === 'e')) {
         e.preventDefault()
         if (this.value) {
           this.close()
@@ -142,11 +119,6 @@ export default {
     close () {
       this.$emit('close')
       this.$emit('input', false)
-    },
-
-    getWindowDimensions () {
-      this.winWidth = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
-      this.winHeight = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
     }
   }
 }
@@ -161,7 +133,7 @@ export default {
   max-height: 100vh;
   top: 0;
   left: 0;
-  z-index: 500;
+  z-index: var(--dialog-z-index);
   background-color: black;
   color: white;
   overflow: hidden;

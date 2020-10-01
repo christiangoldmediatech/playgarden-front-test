@@ -131,10 +131,10 @@ export default {
 
   computed: {
     returnText () {
-      if (this.$route.name === 'app-dashboard-lesson-activities') {
-        return 'Return to Dashboard'
+      if (this.$route.name === 'app-activities') {
+        return 'Return to Activities'
       }
-      return 'Return to Activities'
+      return 'Return to Dashboard'
     }
   },
 

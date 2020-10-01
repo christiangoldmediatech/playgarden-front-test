@@ -46,7 +46,9 @@ export default {
           )
         })
         Promise.all(promises).then(() => {
-          this.$nuxt.$emit('dashboard-panel-update')
+          if (promises.length) {
+            this.$nuxt.$emit('dashboard-panel-update')
+          }
           this.savingProgress = false
         })
       }
