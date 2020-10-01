@@ -60,7 +60,7 @@
         no-gutters
       >
         <!-- Cancel suscription -->
-        <v-btn color="accent" text @click="removeSubscription">
+        <v-btn color="accent" text @click="removeSubscriptionModal = true">
           CANCEL MEMBERSHIP
         </v-btn>
       </v-row>
@@ -71,6 +71,78 @@
         </nuxt-link>
       </div>
     </v-col>
+
+    <!-- Cancel suscription modal -->
+    <v-dialog
+      v-model="removeSubscriptionModal"
+      content-class="white"
+      :fullscreen="$vuetify.breakpoint.smAndDown"
+      max-width="1000"
+    >
+      <v-col cols="12">
+        <v-row class="pr-3" justify="end">
+          <v-btn icon @click.stop="removeSubscriptionModal = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-row>
+      </v-col>
+
+      <v-col cols="12">
+        <v-row class="flex-column-reverse flex-md-row">
+          <v-col class="px-6" cols="12" md="6">
+            <v-col class="mb-6 text-center" cols="12">
+              <span class="font-weight-bold pg-letter-spacing text-h4">
+                WE ARE SORRY
+                <br>
+                TO SEE YOU GO!
+              </span>
+            </v-col>
+
+            <v-card-text>
+              Early child development is super important, and consistency is key
+              to ensure early learning!<br>
+              <br>
+              Are you sure you want to cancel your membership?.
+            </v-card-text>
+          </v-col>
+
+          <v-col class="px-6" cols="12" md="6">
+            <div>
+              <v-img
+                alt="Remove Subscription"
+                max-width="100%"
+                :src="require('assets/png/remove-subscription.png')"
+              />
+            </div>
+          </v-col>
+        </v-row>
+      </v-col>
+
+      <v-row align-content="center">
+        <v-col class="text-center" cols="12">
+          <v-btn
+            color="primary"
+            :loading="loading"
+            x-large
+            @click="removeSubscription"
+          >
+            CONFIRM CANCELATION
+          </v-btn>
+        </v-col>
+
+        <v-col class="text-center" cols="12">
+          <v-btn
+            color="accent"
+            :loading="loading"
+            x-large
+            text
+            @click.stop="removeSubscriptionModal = false"
+          >
+            GO BACK
+          </v-btn>
+        </v-col>
+      </v-row>
+    </v-dialog>
 
     <v-dialog
       v-model="stripeCardModal"
@@ -159,6 +231,7 @@ export default {
       cardToUpate: null,
       stripeCardModal: false,
       changePlanModal: false,
+      removeSubscriptionModal: false,
       userCards: []
     }
   },
@@ -252,24 +325,17 @@ export default {
       this.cardToUpate = card
     },
 
-    removeSubscription () {
-      this.$nuxt.$emit('open-prompt', {
-        title: 'Cancel subscription?',
-        message: 'Are you sure about cancel your subscription?',
-        action: async () => {
-          try {
-            this.loading = true
-            await this.cancelSubscription()
-            this.$snotify.success(
-              'Subscription has been canceled successfully!'
-            )
-            await this.getBillingDetails()
-          } catch (e) {
-          } finally {
-            this.loading = false
-          }
-        }
-      })
+    async removeSubscription () {
+      try {
+        this.loading = true
+        await this.cancelSubscription()
+        this.$snotify.success('Subscription has been canceled successfully!')
+        await this.getBillingDetails()
+        this.removeSubscriptionModal = false
+      } catch (e) {
+      } finally {
+        this.loading = false
+      }
     },
 
     onSuccessUpdateBilling () {
