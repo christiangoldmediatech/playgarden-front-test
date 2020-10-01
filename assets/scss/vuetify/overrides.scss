@@ -13,8 +13,13 @@
 .theme--light.v-date-picker-header
   .v-date-picker-header__value:not(.v-date-picker-header__value--disabled)
   button:not(:hover):not(:focus),
-.theme--light.v-radio .v-label  {
+.theme--light.v-radio .v-label {
   color: var(--v-black-base);
+}
+
+.error--text,
+.error--text * {
+  color: var(--v-error-base) !important;
 }
 
 /*
