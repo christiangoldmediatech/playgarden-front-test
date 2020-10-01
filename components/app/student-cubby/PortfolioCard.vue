@@ -1,28 +1,31 @@
 <template>
   <v-hover v-slot="{ hover }">
-    <div
-      :class="['portfolio-card', { 'clickable': !displayMode, 'scaled': hover && !displayMode }]"
-      :elevation="(hover && !displayMode) ? 9 : 0"
-      @click.stop="$nuxt.$emit('open-portfolio-overlay', image)"
-    >
-      <v-img
-        :src="image"
-        aspect-ratio="1"
-        contain
-      />
-      <div v-if="!displayMode" class="mt-3">
-        <span
-          class="d-block text-center font-weight-bold"
-          :class="{ 'white--text': displayMode }"
-        >
-          {{ `Lesson ${lesson.curriculumType.name}` }}
-        </span>
-
-        <span class="d-block text-center" :class="{ 'white--text': displayMode }">
-          {{ `Day ${lesson.day}` }}
-        </span>
-      </div>
-    </div>
+    <v-container fluid :class="['portfolio-card', { 'clickable': !displayMode, 'scaled': hover && !displayMode }]">
+      <v-row no-gutters justify="space-around" @click.stop="$nuxt.$emit('open-portfolio-overlay', image)">
+        <v-col cols="12">
+          <v-img
+            :src="image"
+            aspect-ratio="1.7"
+            contain
+          />
+          <div v-if="!displayMode" class="mt-3">
+            <div class="title mb-1">
+              <span
+                class="d-block text-center font-weight-bold"
+                :class="{ 'white--text': displayMode }"
+              >
+                {{ `Lesson ${lesson.curriculumType.name}` }}
+              </span>
+            </div>
+            <div class="subheading">
+              <span class="d-block text-center" :class="{ 'white--text': displayMode }">
+                {{ `Day ${lesson.day}` }}
+              </span>
+            </div>
+          </div>
+        </v-col>
+      </v-row>
+    </v-container>
   </v-hover>
 </template>
 

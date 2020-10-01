@@ -1,7 +1,7 @@
 <template>
-  <v-row>
+  <v-row no-gutters>
     <v-col cols="12">
-      <v-row align="end" class="mb-2">
+      <v-row no-gutters align="end" class="mb-2">
         <img :src="category.icon" height="32" class="mr-2">
 
         <div class="mx-3">
@@ -12,7 +12,7 @@
       </v-row>
     </v-col>
     <v-col cols="12">
-      <v-row>
+      <v-row no-gutters>
         <v-col
           v-for="upload in list"
           :key="`category-${category.id}-card-${upload.id}`"
