@@ -94,12 +94,12 @@
             </validation-provider>
           </v-col>
           <v-col
-            cols="12"
-            lg="4"
+            cols="6"
+            :lg="item.image ? '1' : '4'"
           >
             <!-- Matching image -->
             <template v-if="item.image">
-              <div class="mb-6 mt-3">
+              <div justify="center">
                 <v-badge avatar class="image-badge" color="error" overlap>
                   <template v-slot:badge>
                     <v-avatar class="clickable" @click.native="item.image = null">
@@ -109,7 +109,7 @@
                     </v-avatar>
                   </template>
 
-                  <v-img max-width="100%" :src="item.image" />
+                  <v-img max-width="50%" :src="item.image" class="text-center" />
                 </v-badge>
               </div>
             </template>
