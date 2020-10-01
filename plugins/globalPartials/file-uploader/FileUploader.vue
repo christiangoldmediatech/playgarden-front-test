@@ -99,8 +99,8 @@ export default {
         if (this.file) {
           const formData = new FormData()
           formData.append('file', this.file)
-          if (this.sendNameFile) {
-            formData.append('name', this.file.name.replace(/ /g, '-'))
+          if (this.fileName) {
+            formData.append('name', this.fileName)
           }
 
           const { filePath } = await this.doUpload({

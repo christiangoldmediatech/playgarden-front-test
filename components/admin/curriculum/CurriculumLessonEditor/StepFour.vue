@@ -69,7 +69,7 @@
           label="Upload File"
           mode="document"
           path="lesson"
-          :send-name-file="sendNameFile"
+          :file-name="fileName"
           placeholder="Select a pdf for this lesson"
           prepend-icon="mdi-file"
           solo
@@ -154,9 +154,10 @@ export default {
 
   data: () => ({
     file: null,
-    sendNameFile: true,
+    fileName: null,
     videoFile: null,
-    loading: false
+    loading: false,
+    dataLesson: null
   }),
 
   computed: {
@@ -167,6 +168,10 @@ export default {
 
   created () {
     this.refresh()
+    this.getLessonById(this.lessonId).then((data) => {
+      this.dataLesson = { ...data }
+      this.fileName = this.dataLesson.name.replace(/ /g, '-')
+    })
   },
 
   methods: {
@@ -175,16 +180,17 @@ export default {
       'fetchWorksheetsByLessonId',
       'updateWorksheetByLessonId'
     ]),
+    ...mapActions('admin/curriculum', [
+      'getLessonById'
+    ]),
 
     async refresh () {
       this.loading = true
-
       try {
         const data = await this.fetchWorksheetsByLessonId({
           lessonId: this.lessonId,
           type: 'OFFLINE'
         })
-
         if (data.length) {
           this.draft = data[0]
         }

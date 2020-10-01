@@ -40,10 +40,10 @@ export default {
       type: String,
       required: true
     },
-    sendNameFile: {
-      type: Boolean,
+    fileName: {
+      type: String,
       required: false,
-      default: false
+      default: ''
     },
     value: {
       default: undefined,
