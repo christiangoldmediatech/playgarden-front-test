@@ -4,7 +4,8 @@ import { jsonCopy } from '@/utils/objectTools'
 export default {
   data: () => {
     return {
-      savingActivityProgress: false
+      savingActivityProgress: false,
+      pieceEarnedDialog: false
     }
   },
 
@@ -41,17 +42,18 @@ export default {
                 time,
                 date
               }
+            }).then((result) => {
+              if (result.puzzle) {
+                this.player.pause()
+                this.pieceEarnedDialog = true
+              }
             })
           )
         })
         Promise.all(promises).then(() => {
-          this.$nuxt.$emit('dashboard-panel-update').then(() => {
-            if (this.$route.name !== 'app-dashboard-lesson-completed' && this.lessonCompleted) {
-              this.$router.push({
-                name: 'app-dashboard-lesson-completed'
-              })
-            }
-          })
+          if (promises.length) {
+            this.$nuxt.$emit('dashboard-panel-update')
+          }
           this.savingActivityProgress = false
         })
       }

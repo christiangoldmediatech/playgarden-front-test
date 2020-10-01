@@ -7,18 +7,11 @@
         @click.stop="playVideo"
       >
         <v-hover v-slot="{ hover }">
-          <div
-            :class="['play-icon rounded-circle d-flex flex-column align-center justify-center', { 'scaled-play-icon': hover }]"
+          <img
+            :class="['play-icon no-background', { 'scaled-play-icon': hover }]"
+            src="/svg/play-button-icon.svg"
+            width="100%"
           >
-            <img
-              src="@/assets/svg/play-button.svg"
-              class="ml-4 mt-2"
-              width="40%"
-            >
-            <p class="mb-0 font-weight-bold text-uppercase white--text">
-              Start
-            </p>
-          </div>
         </v-hover>
       </div>
       <v-list>

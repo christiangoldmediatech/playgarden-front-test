@@ -99,6 +99,9 @@ export default {
         if (this.file) {
           const formData = new FormData()
           formData.append('file', this.file)
+          if (this.fileName) {
+            formData.append('name', this.fileName)
+          }
 
           const { filePath } = await this.doUpload({
             type: `upload-${this.mode}`,

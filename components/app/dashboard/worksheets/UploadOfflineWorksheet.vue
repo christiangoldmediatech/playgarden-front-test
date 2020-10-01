@@ -1,7 +1,7 @@
 <template>
   <v-overlay
     :value="value"
-    :z-index="400"
+    :z-index="700"
   >
     <v-card class="upload-dialog-container" light>
       <div class="green-line-bigger green-line-1" />
@@ -73,7 +73,7 @@
               :disabled="loading"
               @click.stop="close"
             >
-              Close
+              Return to Dashboard
             </v-btn>
           </v-col>
         </v-row>
@@ -105,7 +105,14 @@ export default {
 
   computed: {
     ...mapGetters({ currentChild: 'getCurrentChild' }),
-    ...mapGetters('admin/curriculum', ['getLesson'])
+    ...mapGetters('admin/curriculum', ['getLesson']),
+
+    offlineWorksheet () {
+      if (this.getLesson) {
+        return this.getLesson.worksheets.find(({ type }) => type === 'OFFLINE')
+      }
+      return null
+    }
   },
 
   watch: {
@@ -123,6 +130,7 @@ export default {
   methods: {
     ...mapActions('offline-worksheet-categories', ['getOfflineWorksheetCategories']),
     ...mapActions('offline-worksheet', { uploadWorksheet: 'upload', getUploaded: 'getUploaded' }),
+    ...mapActions('children/lesson', ['saveWorksheetProgress']),
 
     async getUploadedWorksheets () {
       this.images = {}
@@ -162,7 +170,19 @@ export default {
         .then(({ url }) => {
           this.images[`image_${categoryId}`] = url
           this.$snotify.success('Your worksheet has been uploaded!')
-          // this.close()
+          const date = new Date().toISOString().substr(0, 19)
+          return this.saveWorksheetProgress({
+            lessonId: this.getLesson.id,
+            childId: this.currentChild[0].id,
+            worksheet: {
+              id: this.offlineWorksheet.id,
+              completed: true,
+              date
+            }
+          })
+        })
+        .then(() => {
+          this.$nuxt.$emit('dashboard-panel-update')
           this.loading = false
         })
     }

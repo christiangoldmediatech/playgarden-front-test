@@ -22,30 +22,23 @@
       @last-playlist-item="findNextActivity"
     />
     <patch-earned-dialog v-model="patchEarnedDialog" v-bind="{ player, ...patchData }" @return="handleClose" />
+    <puzzle-piece-earned-dialog v-model="pieceEarnedDialog" v-bind="{ letter }" @return="handleClose" />
   </video-player-dialog>
 </template>
 
 <script>
 import VideoPlayerDialogMixin from '@/mixins/VideoPlayerDialogMixin.js'
+import DashboardMixin from '@/mixins/DashboardMixin'
 import SaveActivityProgress from '@/mixins/SaveActivityProgressMixin.js'
 import ActivityAnalytics from '@/mixins/ActivityAnalyticsMixin.js'
 import FindNextActivity from '@/mixins/FindNextActivityMixin.js'
 import Fullscreen from '@/mixins/FullscreenMixin.js'
-import DashboardOverrides from '@/mixins/DashboardOverridesMixin.js'
-import VideoPlayerDialog from '@/components/pg-video-js-player/VideoPlayerDialog.vue'
-import PgVideoJsPlayer from '@/components/pg-video-js-player/PgVideoJsPlayer.vue'
-import DashboardMixin from '~/mixins/DashboardMixin'
-import { jsonCopy } from '~/utils/objectTools'
+import { jsonCopy } from '@/utils/objectTools'
 
 export default {
   name: 'LessonActivityPlayer',
 
-  components: {
-    VideoPlayerDialog,
-    PgVideoJsPlayer
-  },
-
-  mixins: [VideoPlayerDialogMixin, DashboardMixin, SaveActivityProgress, ActivityAnalytics, FindNextActivity, DashboardOverrides, Fullscreen],
+  mixins: [VideoPlayerDialogMixin, DashboardMixin, SaveActivityProgress, ActivityAnalytics, FindNextActivity, Fullscreen],
 
   data: () => {
     return {}
@@ -93,7 +86,7 @@ export default {
     },
 
     nextVideo () {
-      if (this.player.currentTime() === this.player.duration() && !this.patchEarnedDialog) {
+      if (this.player.currentTime() === this.player.duration() && !this.patchEarnedDialog && !this.pieceEarnedDialog) {
         this.player.nextVideo()
       }
     },

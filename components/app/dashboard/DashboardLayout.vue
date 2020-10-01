@@ -58,22 +58,13 @@
       </v-row>
     </v-container>
     <lesson-activity-player />
+    <lesson-teacher-video />
   </v-main>
 </template>
 
 <script>
-import ChildSelect from '@/components/app/ChildSelect.vue'
-import DashboardPanel from '@/components/app/dashboard/DashboardPanel.vue'
-import LessonActivityPlayer from '@/components/app/dashboard/LessonActivityPlayer.vue'
-
 export default {
   name: 'DashboardLayout',
-
-  components: {
-    ChildSelect,
-    DashboardPanel,
-    LessonActivityPlayer
-  },
 
   props: {
     value: {
@@ -125,6 +116,9 @@ export default {
     }
     &-card {
       box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16) !important;
+    }
+    &-scroll {
+      overflow-y: auto;
     }
   }
   &-tip-row {
