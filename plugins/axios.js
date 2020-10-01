@@ -18,9 +18,7 @@ export default function ({ $axios, redirect, store }) {
     }
 
     if (error.response.status === 401) {
-      body = 'Please login before using this section.'
-
-      redirect({ name: 'index' })
+      store.dispatch('auth/logout', redirect)
     }
 
     if (error.response.status === 409) {
