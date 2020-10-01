@@ -30,7 +30,7 @@ export default {
     },
     bgColor: {
       type: String,
-      default: '#c2daa5'
+      default: 'var(--v-primary-base)'
     },
     image: {
       type: String,
@@ -60,7 +60,7 @@ $shadow-color:  rgba(0, 0, 0, 0.15);
 $card-size: 80px;
 $shadow-offset: 15px;
 
-$bg-dark-green: #c2daa5;
+$bg-dark-green: var(--v-primary-base);
 
 .wrapper {
   display: flex;
@@ -84,7 +84,7 @@ $bg-dark-green: #c2daa5;
     content: '';
     @include absoluteCentered;
     @include rounded-element(114%);
-    background: $pg-secondary;
+    background: var(--v-secondary-base);
     z-index: -1;
     box-shadow: 0 2px 4px 0 $shadow-color;
   }
@@ -95,7 +95,7 @@ $bg-dark-green: #c2daa5;
     content: '';
     position: absolute;
     z-index: -2;
-    background: $pg-main;
+    background: var(--v-primary-base);
     box-shadow: 0 2px 4px 0 $shadow-color;
   }
 

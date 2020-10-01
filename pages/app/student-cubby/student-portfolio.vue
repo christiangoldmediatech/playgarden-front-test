@@ -5,7 +5,7 @@
         <underlined-title class="text-h6 text-md-h3" text="Student Portfolio" />
 
         <p class="mt-2">
-          Keep track of your worksheets and progress! aqui
+          Keep track of your worksheets and progress!
         </p>
       </div>
     </v-card-text>

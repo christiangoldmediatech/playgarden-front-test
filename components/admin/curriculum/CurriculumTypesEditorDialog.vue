@@ -31,7 +31,7 @@
                 name="Curriculum Type Name"
                 rules="required"
               >
-                <v-text-field
+                <pg-text-field
                   v-model="item.name"
                   :error-messages="errors"
                   label="Name"
@@ -45,7 +45,7 @@
                 name="Curriculum Type Description"
                 rules="required"
               >
-                <v-textarea
+                <pg-textarea
                   v-model="item.description"
                   :error-messages="errors"
                   label="Description"
@@ -103,7 +103,7 @@
                 name="Curriculum Type Letter"
                 rules="required"
               >
-                <v-select
+                <pg-select
                   v-model="item.letter"
                   :error-messages="errors"
                   :items="letters"

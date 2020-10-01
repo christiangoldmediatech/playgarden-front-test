@@ -30,7 +30,7 @@
                 name="Activity Type Name"
                 rules="required"
               >
-                <v-text-field
+                <pg-text-field
                   v-model="item.name"
                   :error-messages="errors"
                   label="Name"
@@ -43,7 +43,7 @@
                 name="Activity Type Description"
                 rules="required"
               >
-                <v-textarea
+                <pg-textarea
                   v-model="item.description"
                   :error-messages="errors"
                   label="Description"

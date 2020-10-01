@@ -57,7 +57,7 @@
                 <v-toolbar color="white" flat>
                   <v-spacer />
 
-                  <v-text-field
+                  <pg-text-field
                     v-model="search"
                     append-icon="mdi-magnify"
                     class="shrink"

@@ -7,13 +7,14 @@
           <validation-provider v-slot="{ errors }" name="Plan" rules="required">
             <v-radio-group
               v-model="radioGroup"
+              class="ma-0 pa-0"
               :disabled="loading"
               :error-messages="errors"
               :loading="loading"
             >
               <p>
                 <span class="font-weight-bold text-h5 pg-letter-spacing">
-                  CHOOSE YOUR PLAN
+                  {{ updating ? "UPDATE" : "CHOOSE YOUR" }} PLAN
                 </span>
               </p>
 
@@ -104,7 +105,7 @@
                 name="Street 1"
                 rules="required"
               >
-                <v-text-field
+                <pg-text-field
                   v-model="draftAddress.address1"
                   clearable
                   :disabled="loading"
@@ -116,7 +117,7 @@
               </validation-provider>
 
               <!-- Street 2 -->
-              <v-text-field
+              <pg-text-field
                 v-model="draftAddress.address2"
                 clearable
                 :disabled="loading"
@@ -131,7 +132,7 @@
                 name="City"
                 rules="required"
               >
-                <v-text-field
+                <pg-text-field
                   v-model="draftAddress.city"
                   clearable
                   :disabled="loading"
@@ -150,7 +151,7 @@
                     name="State"
                     rules="required"
                   >
-                    <v-text-field
+                    <pg-text-field
                       v-model="draftAddress.state"
                       clearable
                       :disabled="loading"
@@ -169,7 +170,7 @@
                     name="Zip code"
                     rules="required"
                   >
-                    <v-text-field
+                    <pg-text-field
                       v-model="draftAddress.zipCode"
                       clearable
                       :disabled="loading"
@@ -195,6 +196,21 @@
             x-large
           >
             {{ noPayment ? "SAVE" : "CONTINUE TO PAYMENT" }}
+          </v-btn>
+
+          <v-btn
+            v-if="updating"
+            block
+            class="mb-6 main-btn"
+            color="accent"
+            min-height="60"
+            :disabled="invalid"
+            :loading="loading"
+            text
+            x-large
+            @click="$emit('click:cancel')"
+          >
+            CANCEL
           </v-btn>
         </v-form>
       </validation-observer>
@@ -228,7 +244,9 @@ export default {
 
     noAddress: Boolean,
 
-    noPayment: Boolean
+    noPayment: Boolean,
+
+    updating: Boolean
   },
 
   data: () => ({
@@ -393,19 +411,19 @@ export default {
 }
 
 .text-orange-info {
-  background-color: $pg-orange !important;
-  color: $pg-white !important;
+  background-color: var(--v-accent-base) !important;
+  color: var(--v-white-base) !important;
   height: 19px;
   font-size: 18px;
 }
 
 .text-orange-info::v-deep.v-chip .v-chip__content {
-  color: $pg-white !important;
+  color: var(--v-white-base) !important;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 3.15px;
   line-height: 1.48;
-  background-color: $pg-orange !important;
+  background-color: var(--v-accent-base) !important;
 }
 
 .text-orange-info::v-deep.v-chip--label {

@@ -116,7 +116,7 @@ export default {
   margin: 0 auto;
   margin-top: 40px;
   max-width: 800px;
-  color: $pg-black;
+  color: var(--v-black-base);
   font-weight: bold;
   text-align: center;
   display: flex;
@@ -128,7 +128,7 @@ export default {
   margin: 0 auto;
   margin-bottom: 40px;
   text-align: center;
-  color: $pg-black;
+  color: var(--v-black-base);
   font-size: 17px;
 }
 
@@ -161,7 +161,7 @@ export default {
     width: 100%;
     height: 100px;
     z-index: -1;
-    background: $pg-main;
+    background: var(--v-primary-base);
   }
 }
 
@@ -184,7 +184,7 @@ export default {
 }
 
 .letter-selector--active {
-  border: solid 4px $pg-main;
+  border: solid 4px var(--v-primary-base);
 }
 
 .back-btn {
@@ -195,7 +195,7 @@ export default {
 }
 
 .orange-text {
-  color: #f89838;
+  color: var(--v-accent-base);
 }
 
 .underlined-title {
@@ -204,7 +204,7 @@ export default {
 
   > * {
     display: inline;
-    background: linear-gradient(to bottom, transparent 70%, $pg-main 70%);
+    background: linear-gradient(to bottom, transparent 70%, var(--v-primary-base) 70%);
     box-decoration-break: clone;
   }
 }

@@ -278,7 +278,7 @@ export default {
     background-image: linear-gradient(
       to bottom,
       #d3f5a8 -132%,
-      #c2daa5 202%
+      var(--v-primary-base) 202%
     ) !important;
     background-color: transparent !important;
   }

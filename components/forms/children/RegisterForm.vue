@@ -15,7 +15,7 @@
             :name="(removable ? `Child #${indexD + 1} - ` : '') + 'Name'"
             rules="required"
           >
-            <v-text-field
+            <pg-text-field
               v-model="item.firstName"
               clearable
               :disabled="isLoading"
@@ -42,14 +42,14 @@
                 "
                 rules="required"
               >
-                <v-text-field
+                <pg-text-field
                   v-bind="attrs"
                   :disabled="isLoading"
                   :error-messages="errors"
                   label="Birth date"
                   readonly
                   solo
-                  suffix="MM/DD/YYYY"
+                  :suffix="item._birthdayFormatted ? '' : 'MM/DD/YYYY'"
                   validate-on-blur
                   :value="item._birthdayFormatted"
                   class="custom-text-field"
@@ -314,14 +314,14 @@ export default {
     width: 100%;
 
     &.active {
-      background-color: $pg-secondary;
+      background-color: var(--v-secondary-base);
       border-radius: 50%;
       padding: 5px;
     }
   }
 }
 .grey {
-  color: $pg-black;
+  color: var(--v-black-base);
 }
 
 .custom-btn::v-deep.v-btn.grey {

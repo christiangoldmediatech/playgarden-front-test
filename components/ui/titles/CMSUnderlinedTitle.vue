@@ -66,7 +66,7 @@ $title-font-size: 50px;
 .title {
   margin: 0 auto;
   max-width: 800px;
-  color: $pg-black;
+  color: var(--v-black-base);
   text-align: center;
   position: relative;
   font-size: $title-font-size;

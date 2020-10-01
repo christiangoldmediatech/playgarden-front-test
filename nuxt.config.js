@@ -94,8 +94,13 @@ export default {
    * Vuetify Options
    */
   vuetify: {
+    customVariables: [
+      './assets/scss/vuetify/variables.scss',
+      './assets/scss/vuetify/overrides.scss'
+    ],
+    defaultAssets: false,
     optionsPath: './vuetify.options.js',
-    defaultAssets: false
+    treeShake: true
   },
   /*
    ** Nuxt.js modules
@@ -118,11 +123,11 @@ export default {
         config: {
           apiKey: process.env.FIRE_API_KEY || 'AIzaSyC4eRWANSBArXz29BDqIVrnj5uitK7gRkU',
           authDomain: process.env.FIRE_AUTH_DOMAIN || 'playgarden-96da1.firebaseapp.com',
-          databaseURL: process.env.FIRE_DATABASE_URL ||'https://playgarden-96da1.firebaseio.com',
-          projectId: process.env.FIRE_PROJECT_ID ||'playgarden-96da1',
-          storageBucket: process.env.FIRE_STORAGE_BUCKET ||'playgarden-96da1.appspot.com',
-          messagingSenderId: process.env.FIRE_MESSAGING_SENDER ||'102635929320',
-          appId: process.env.FIRE_APP_ID ||'1:102635929320:web:830f8d83e04f936368935d'
+          databaseURL: process.env.FIRE_DATABASE_URL || 'https://playgarden-96da1.firebaseio.com',
+          projectId: process.env.FIRE_PROJECT_ID || 'playgarden-96da1',
+          storageBucket: process.env.FIRE_STORAGE_BUCKET || 'playgarden-96da1.appspot.com',
+          messagingSenderId: process.env.FIRE_MESSAGING_SENDER || '102635929320',
+          appId: process.env.FIRE_APP_ID || '1:102635929320:web:830f8d83e04f936368935d'
         },
         services: {
           auth: true
@@ -132,10 +137,9 @@ export default {
   ],
   styleResources: {
     scss: [
-      './assets/scss/variables.scss',
-      './assets/scss/_mixins.scss',
-      './assets/scss/_text.scss',
-      './assets/scss/_image.scss'
+      './assets/scss/mixins/_mixins.scss',
+      './assets/scss/mixins/_text.scss',
+      './assets/scss/mixins/_image.scss'
     ]
   },
   /*
@@ -151,9 +155,7 @@ export default {
     transpile: ['vuetify/lib', 'vee-validate/dist/rules', 'tiptap-vuetify']
   },
   env: {
-    apiBaseUrl:
-      process.env.API_BASE_URL ||
-      'https://apidev.playgardenonline.com',
+    apiBaseUrl: process.env.API_BASE_URL || 'https://apidev.playgardenonline.com',
     testEnv: process.env.TEST_ENV || 'LOCAL'
   },
   router: {

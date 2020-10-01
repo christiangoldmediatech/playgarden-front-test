@@ -31,7 +31,7 @@ export default {
   margin: 30px auto;
   margin-top: 80px;
   max-width: 800px;
-  color: $pg-black;
+  color: var(--v-black-base);
   font-weight: bold;
   text-align: center;
 }
@@ -41,7 +41,7 @@ export default {
   text-align: center;
   max-width: 800px;
   margin-top: 25px;
-  color: $pg-black;
+  color: var(--v-black-base);
 }
 
 .underlined-title {
@@ -52,7 +52,7 @@ export default {
     display: inline;
     font-size: 50px;
     font-weight: bold;
-    background: linear-gradient(to bottom, transparent 70%, $pg-main 70%);
+    background: linear-gradient(to bottom, transparent 70%, var(--v-primary-base) 70%);
     box-decoration-break: clone;
   }
 }

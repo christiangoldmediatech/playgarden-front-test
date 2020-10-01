@@ -37,6 +37,7 @@ export default {
         this.$snotify.success('Card has been added successfully!')
 
         this.$emit('add:success')
+      } catch (e) {
       } finally {
         this.loading = false
       }

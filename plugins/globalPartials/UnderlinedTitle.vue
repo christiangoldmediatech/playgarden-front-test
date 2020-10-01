@@ -174,7 +174,7 @@ export default {
 .underlined-title {
   position: relative;
   z-index: 1;
-  color: $pg-black;
+  color: var(--v-black-base);
 
   background: linear-gradient(
     180deg,

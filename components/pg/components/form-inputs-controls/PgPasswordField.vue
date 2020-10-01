@@ -1,5 +1,5 @@
 <template>
-  <v-text-field
+  <pg-text-field
     v-model="input"
     v-bind="$attrs"
     :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  name: 'PasswordField',
+  name: 'PgPasswordField',
 
   props: {
     value: {
