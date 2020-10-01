@@ -135,7 +135,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 import submittable from '@/utils/mixins/submittable'
 
@@ -156,22 +156,21 @@ export default {
     file: null,
     fileName: null,
     videoFile: null,
-    loading: false,
-    dataLesson: null
+    loading: false
   }),
 
   computed: {
     editing () {
       return Boolean(this.draft.id)
-    }
+    },
+    ...mapGetters('admin/curriculum', [
+      'getLesson'
+    ])
   },
 
   created () {
     this.refresh()
-    this.getLessonById(this.lessonId).then((data) => {
-      this.dataLesson = { ...data }
-      this.fileName = this.dataLesson.name.replace(/ /g, '-')
-    })
+    this.fileName = this.getLesson.name.replace(/ /g, '-')
   },
 
   methods: {
@@ -179,9 +178,6 @@ export default {
       'createWorksheetByLessonId',
       'fetchWorksheetsByLessonId',
       'updateWorksheetByLessonId'
-    ]),
-    ...mapActions('admin/curriculum', [
-      'getLessonById'
     ]),
 
     async refresh () {
