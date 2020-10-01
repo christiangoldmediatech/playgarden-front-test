@@ -102,7 +102,7 @@
               Early child development is super important, and consistency is key
               to ensure early learning!<br>
               <br>
-              Are you sure you want to cancel your membership?.
+              Are you sure you want to cancel your membership?
             </v-card-text>
           </v-col>
 
