@@ -38,9 +38,9 @@
                       v-for="(backpack, indexB) in backpacks"
                       :key="indexB"
                       class="image"
-                      cols="6"
+                      cols="4"
                       md="2"
-                      sm="4"
+                      sm="2"
                     >
                       <img
                         :alt="backpack.name"
@@ -125,7 +125,6 @@
                     class="custom-btn"
                     :color="item.gender === gender ? 'primary' : 'grey lighten-5'"
                     :disabled="loading"
-                    min-height="50"
                     x-large
                     @click="item.gender = gender"
                   >
@@ -144,7 +143,6 @@
                 :disabled="invalid"
                 :loading="loading"
                 type="submit"
-                min-height="50"
                 x-large
               >
                 SAVE
