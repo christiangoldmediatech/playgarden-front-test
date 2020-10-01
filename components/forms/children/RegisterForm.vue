@@ -49,7 +49,7 @@
                   label="Birth date"
                   readonly
                   solo
-                  suffix="MM/DD/YYYY"
+                  :suffix="item._birthdayFormatted ? '' : 'MM/DD/YYYY'"
                   validate-on-blur
                   :value="item._birthdayFormatted"
                   class="custom-text-field"
