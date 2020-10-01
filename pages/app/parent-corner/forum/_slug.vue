@@ -1,5 +1,5 @@
 <template>
-  <div v-editable="story.content" class="blog">
+  <div v-editable="story.content" class="blog mb-10">
     <div
       class="back-btn"
       @click="toParentsCorner"
@@ -143,14 +143,14 @@ export default {
     generateShareLinks () {
       const mediaList = [
         'facebook',
-        'linkedin',
+        'email',
         'twitter'
       ]
 
       this.shareLinks = mediaList.map((media) => {
         const linkData = {
           facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`,
-          linkedin: `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(window.location.href)}&title=${this.story.content.title}&summary=&source=`,
+          email: `mailto:?subject=Playgarden prep: ${this.story.content.title}&amp;body=Check out this site ${encodeURIComponent(window.location.href)}`,
           twitter: `https://twitter.com/intent/tweet?text=${this.story.content.title}%0A${encodeURIComponent(window.location.href)}`
         }
 

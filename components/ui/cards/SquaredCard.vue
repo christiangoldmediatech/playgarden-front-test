@@ -74,7 +74,7 @@ export default {
 $border-height: 3px;
 
 .card__wrapper {
-  padding: 0 10px;
+  padding: 0 18px;
 }
 
 .card {

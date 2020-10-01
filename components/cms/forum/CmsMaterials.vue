@@ -53,6 +53,8 @@
           <v-btn
             class="button"
             color="primary"
+            :target="linkTarget"
+            :href="getSelectedBook"
           >
             <v-icon left>
               mdi-download-outline
@@ -92,6 +94,15 @@ export default {
         'Kk - Rr',
         'Ss - Zz'
       ]
+    }
+  },
+
+  computed: {
+    getSelectedBook () {
+      return this.blok[`book${this.activeInterval}`].filename
+    },
+    linkTarget () {
+      return this.blok.newTab ? '_blank' : '_self'
     }
   },
 

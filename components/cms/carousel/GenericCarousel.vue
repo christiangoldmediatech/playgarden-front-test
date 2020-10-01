@@ -21,7 +21,7 @@
       <v-btn
         v-show="showControllers"
         text
-        class="carousel__btn"
+        class="carousel__btn left-btn"
         @click="prevPage"
       >
         <v-img
@@ -54,7 +54,7 @@
       <v-btn
         v-show="showControllers"
         text
-        class="carousel__btn"
+        class="carousel__btn right-btn"
         @click="nextPage"
       >
         <v-img
@@ -267,8 +267,20 @@ $background-line-height: 80px;
 }
 
 .carousel__btn {
-  position: relative;
-  z-index: 1;
+  position: absolute;
+  z-index: 4;
+}
+
+.left-btn {
+  top: 50%;
+  left: -5px;
+  transform: translateY(-50%);
+}
+
+.right-btn {
+  top: 50%;
+  right: -5px;
+  transform: translateY(-50%);
 }
 
 @media (max-width: 850px) {

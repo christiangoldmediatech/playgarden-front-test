@@ -91,8 +91,8 @@ export default {
 }
 
 .card {
-  width: 260px;
-  padding: 0 10px;
+  max-width: 275px;
+  padding: 0 18px;
   transition: 200ms ease;
 }
 
