@@ -125,6 +125,8 @@
                     class="custom-btn"
                     :color="item.gender === gender ? 'primary' : 'grey lighten-5'"
                     :disabled="loading"
+                    min-height="50"
+                    x-large
                     @click="item.gender = gender"
                   >
                     {{ gender === "FEMALE" ? "Girl" : "Boy" }}
@@ -142,6 +144,8 @@
                 :disabled="invalid"
                 :loading="loading"
                 type="submit"
+                min-height="50"
+                x-large
               >
                 SAVE
               </v-btn>
