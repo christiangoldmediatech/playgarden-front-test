@@ -26,7 +26,7 @@
               </v-row>
 
               <v-row justify="center" no-gutters>
-                <v-col cols="12" md="10" lg="8">
+                <v-col cols="12" md="10" lg="12">
                   <v-row no-gutters>
                     <v-col cols="12">
                       <span class="text-h6 font-weight-bold text-uppercase">
@@ -38,9 +38,9 @@
                       v-for="(backpack, indexB) in backpacks"
                       :key="indexB"
                       class="image"
-                      cols="6"
+                      cols="4"
                       md="2"
-                      sm="4"
+                      sm="2"
                     >
                       <img
                         :alt="backpack.name"
@@ -97,7 +97,7 @@
                     label="Birthday date"
                     readonly
                     solo
-                    suffix="MM/DD/YYYY"
+                    :suffix="item._birthdayFormatted ? '' : 'MM/DD/YYYY'"
                     validate-on-blur
                     :value="item._birthdayFormatted"
                     v-on="on"
@@ -118,18 +118,12 @@
               :name="(removable ? `Child #${indexD + 1} - ` : '') + 'Gender'"
               rules="required"
             >
-              <v-row class="mb-6 px-12">
-                <v-col
-                  v-for="(gender, indexG) in genders"
-                  :key="indexG"
-                  :class="{ 'text-left': indexG, 'text-right': !indexG }"
-                  cols="6"
-                >
+              <v-row class="mb-6">
+                <v-col v-for="(gender, indexG) in genders" :key="indexG" cols="6">
                   <v-btn
                     block
-                    :color="
-                      item.gender === gender ? 'primary' : 'grey lighten-5'
-                    "
+                    class="custom-btn"
+                    :color="item.gender === gender ? 'primary' : 'grey lighten-5'"
                     :disabled="loading"
                     x-large
                     @click="item.gender = gender"
@@ -149,6 +143,7 @@
                 :disabled="invalid"
                 :loading="loading"
                 type="submit"
+                x-large
               >
                 SAVE
               </v-btn>
@@ -376,16 +371,20 @@ export default {
 
 <style lang="scss" scoped>
 .image {
-  height: 85px;
+  height: 100px;
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
 
   img {
-    max-height: 85px;
-    padding: 10px;
+    max-height: 80px;
+    max-width: 80px;
     width: 100%;
 
     &.active {
       background-color: $pg-secondary;
-      border-radius: 25px;
+      border-radius: 50%;
       padding: 5px;
     }
   }
@@ -393,5 +392,16 @@ export default {
 
 .backpack-active {
   height: 175px;
+}
+
+.custom-btn::v-deep.v-btn.grey {
+  background-color: #f2f2f2;
+  color: #9d9d9d !important;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+  text-transform: capitalize !important;
+}
+
+.custom-btn::v-deep.v-btn {
+  text-transform: capitalize !important;
 }
 </style>
