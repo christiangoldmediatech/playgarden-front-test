@@ -9,7 +9,8 @@
         }"
       >
         <v-row align="center" justify="space-between" no-gutters>
-          <v-col cols="auto" class="hidden-lg-and-up">
+          <!-- HAMBURGER MENU -->
+          <v-col cols="auto" class="hidden-md-and-up">
             <v-app-bar-nav-icon
               class="primary pg-app-bar-nav-icon"
               :class="{ 'isMd': $vuetify.breakpoint.md }"
@@ -20,28 +21,31 @@
             />
           </v-col>
 
-          <v-col class="hidden-lg-and-up">
+          <!-- SPACER -->
+          <v-col class="hidden-md-and-up">
             <!-- DON'T remove it, using for grid purposes -->
           </v-col>
 
+          <!-- LOGO -->
           <v-col cols="auto" align-self="center">
             <v-toolbar-title>
               <v-img
                 alt="Playarden Prep Online Logo"
                 contain
                 max-height="50"
-                :max-width="$vuetify.breakpoint.mdAndUp ? null : 200"
+                :max-width="$vuetify.breakpoint.mdAndUp ? 290 : 200"
                 :src="require('@/assets/svg/logo.svg')"
               />
             </v-toolbar-title>
           </v-col>
 
+          <!-- SPACER -->
           <v-col>
             <!-- DON'T remove it, using for grid purposes -->
           </v-col>
 
           <!-- ITEMS -->
-          <v-col cols="auto" class="hidden-md-and-down">
+          <v-col cols="auto" class="hidden-sm-and-down">
             <v-toolbar-items>
               <v-btn
                 v-for="(item, index) in items"
@@ -58,7 +62,8 @@
             </v-toolbar-items>
           </v-col>
 
-          <v-col cols="auto" class="hidden-md-and-down">
+          <!-- AUTH BUTTONS -->
+          <v-col cols="auto" class="hidden-sm-and-down">
             <v-btn
               v-if="!isUserLoggedIn"
               class="px-13 ml-3 btn-register"
@@ -111,7 +116,8 @@
             </v-btn>
           </v-col>
 
-          <v-col cols="auto" class="hidden-xs-only hidden-lg-and-up">
+          <!-- MOBILE ICONS -->
+          <v-col cols="auto" class="hidden-xs-only hidden-md-and-up">
             <v-btn
               v-if="isUserLoggedIn && !isUserInSignupProcess"
               active-class="transparent--text"
