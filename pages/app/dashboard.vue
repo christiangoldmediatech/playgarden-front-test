@@ -93,7 +93,10 @@ export default {
       if (item) {
         return item.id
       }
-      return items[0].id
+      if (items[0]) {
+        return items[0].id
+      }
+      return undefined
     },
 
     changeChild (newId, redirect = true) {
