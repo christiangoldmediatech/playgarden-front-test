@@ -39,18 +39,24 @@
         <p class="mt-6 text-center text-md-left">
           Didn’t receive an email?
 
-          <v-btn color="primary" text class="btn-green" height="10" @click="onResend">
+          <v-btn
+            color="primary"
+            small
+            text
+            @click="onResend"
+          >
             RESEND EMAIL
           </v-btn>
+
           <br>
+
           Need support?
 
           <v-btn
             color="primary"
-            text
-            class="btn-green"
-            height="10"
             href="mailto:hello@playgardenprep.com"
+            small
+            text
           >
             CONTACT US
           </v-btn>
@@ -158,7 +164,7 @@ export default {
 }
 
 .contact-color {
-  color: $pg-btn-green !important;
+  color: var(--v-primary-base) !important;
   font-weight: bold !important;
 }
 </style>

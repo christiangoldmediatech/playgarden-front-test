@@ -11,7 +11,7 @@
         name="First name"
         rules="required"
       >
-        <v-text-field
+        <pg-text-field
           v-model="draft.firstName"
           clearable
           :disabled="!editing || loading"
@@ -28,7 +28,7 @@
         name="Last name"
         rules="required"
       >
-        <v-text-field
+        <pg-text-field
           v-model="draft.lastName"
           clearable
           :disabled="!editing || loading"
@@ -45,7 +45,7 @@
         name="Phone number"
         rules="required|min:7|max:20|phone"
       >
-        <v-text-field
+        <pg-text-field
           v-model="draft.phoneNumber"
           clearable
           :disabled="!editing || loading"

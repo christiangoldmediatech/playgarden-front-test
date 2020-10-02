@@ -5,9 +5,10 @@
       <validation-provider
         v-slot="{ errors }"
         name="New password"
-        rules="required|min:8|max:20|w_number|w_special|w_upper|confirmed:passwordConfirmation"
+        rules="required|min:8|max:20|w_number|w_special|w_upper"
+        vid="password_field"
       >
-        <password-field
+        <pg-password-field
           v-model="draft.password"
           clearable
           :disabled="loading"
@@ -22,11 +23,10 @@
       <!-- Password confirmation -->
       <validation-provider
         v-slot="{ errors }"
-        name="Password confirmation"
-        rules="required"
-        vid="passwordConfirmation"
+        name="password"
+        rules="required|confirmed:password_field"
       >
-        <password-field
+        <pg-password-field
           v-model="draft.passwordConfirmation"
           clearable
           :disabled="loading"

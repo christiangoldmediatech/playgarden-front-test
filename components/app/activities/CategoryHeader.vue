@@ -192,7 +192,7 @@ export default {
   z-index: 1;
 }
 .btn-mobile-menu {
-  color: $pg-black !important;
+  color: var(--v-black-base) !important;
   text-transform: initial;
 }
 

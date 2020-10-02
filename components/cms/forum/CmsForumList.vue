@@ -147,7 +147,7 @@ export default {
   border-radius: 3px;
   box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.16);
   background: white;
-  color: $pg-black;
+  color: var(--v-black-base);
   font-weight: 500;
   width: 100%;
 

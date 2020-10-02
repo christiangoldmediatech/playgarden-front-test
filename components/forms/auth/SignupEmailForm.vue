@@ -7,7 +7,7 @@
         name="Email"
         rules="required|email"
       >
-        <v-text-field
+        <pg-text-field
           v-model="draft.email"
           clearable
           :disabled="loading"
@@ -90,7 +90,7 @@ export default {
 }
 
 .login {
-  color: $pg-main;
+  color: var(--v-primary-base);
   text-transform: uppercase;
   font-weight: bold;
   text-align: center;
@@ -101,12 +101,12 @@ export default {
   font-size: 20px;
 
   span {
-    color: $pg-main;
+    color: var(--v-primary-base);
     text-transform: uppercase;
     font-weight: bold;
   }
 }
 .return-link {
-  color:  $pg-btn-green;
+  color:  var(--v-primary-base);
 }
 </style>

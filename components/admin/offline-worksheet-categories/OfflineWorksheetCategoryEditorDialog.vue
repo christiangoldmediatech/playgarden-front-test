@@ -30,7 +30,7 @@
                 name="Category"
                 rules="required"
               >
-                <v-text-field
+                <pg-text-field
                   v-model="item.category"
                   :error-messages="errors"
                   label="Category"

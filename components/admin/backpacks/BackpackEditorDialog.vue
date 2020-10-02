@@ -30,7 +30,7 @@
                 name="Name"
                 rules="required"
               >
-                <v-text-field
+                <pg-text-field
                   v-model="item.name"
                   :error-messages="errors"
                   label="Name"
@@ -43,7 +43,7 @@
                 name="Code"
                 rules="required"
               >
-                <v-text-field
+                <pg-text-field
                   v-model="item.code"
                   :error-messages="errors"
                   label="Code"

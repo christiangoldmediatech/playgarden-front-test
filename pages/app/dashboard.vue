@@ -15,7 +15,6 @@ export default {
 
   data: () => {
     return {
-      selectedChild: null,
       loading: false
     }
   },
@@ -34,24 +33,29 @@ export default {
 
     childrenIds () {
       return this.currentChild[0].id
-    }
-  },
-
-  watch: {
-    '$route.name' () {
-      this.redirectDashboard()
     },
 
-    selectedChild (val) {
-      if (val && val !== this.currentChild[0].id) {
-        this.changeChild(val)
+    selectedChild: {
+      get () {
+        return this.currentChild[0].id
+      },
+      set (val) {
+        if (val && val !== this.currentChild[0].id) {
+          this.changeChild(val)
+        }
       }
     }
   },
 
+  // watch: {
+  //   '$route.name' () {
+  //     this.redirectDashboard()
+  //   }
+  // },
+
   async created () {
-    const currentChild = this.currentChild[0].id
     if (this.overrideMode) {
+      const currentChild = this.currentChild[0].id
       await this.getAllChildren()
       if (currentChild !== this.overrides.childId) {
         this.changeChild(this.overrides.childId, false)
@@ -67,9 +71,6 @@ export default {
     this.$nuxt.$on('dashboard-panel-update', () => {
       this.handleLesson()
     })
-
-    // Set selected child
-    this.selectedChild = this.currentChild[0].id
   },
 
   beforeDestroy () {
@@ -82,13 +83,17 @@ export default {
     ...mapActions({ setChild: 'setChild' }),
 
     getNextId (items = []) {
-      const { id } = items.find(({ viewed, complete }) => {
-        if (complete) {
-          return !complete
+      const item = items.find(({ viewed, completed }) => {
+        if (completed === false || completed === null) {
+          return true
         }
-        return !viewed || (viewed && !viewed.complete)
+        return !viewed || (viewed && !viewed.completed)
       })
-      return id
+
+      if (item) {
+        return item.id
+      }
+      return items[0].id
     },
 
     changeChild (newId, redirect = true) {
@@ -96,8 +101,9 @@ export default {
       this.setChild({ value: [child], save: true })
       if (redirect) {
         this.loading = true
-        this.handleLesson().then(() => {
-          this.$router.push({ name: 'app-dashboard' })
+        this.handleLesson(true).then(() => {
+          // this.$router.push({ name: 'app-dashboard' })
+          // this.redirectDashboard()
           this.loading = false
         })
       }
@@ -112,8 +118,9 @@ export default {
             childrenIds: this.childrenIds
           })
         }
-        if (redirect) {
+        if (redirect || this.lessonCompleted) {
           this.redirectDashboard()
+          return
         }
       } catch (e) {
         return Promise.reject(e)
@@ -121,7 +128,7 @@ export default {
     },
 
     redirectDashboard () {
-      if (this.lesson && this.$route.name === 'app-dashboard') {
+      if (this.lesson) {
         if (this.videos.progress < 100 && this.videos.items.length) {
           const route = this.generateNuxtRoute('lesson-videos', { id: this.getNextId(this.videos.items) })
           this.$router.push(route)

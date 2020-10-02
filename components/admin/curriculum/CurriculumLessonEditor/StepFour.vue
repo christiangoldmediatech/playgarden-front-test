@@ -7,7 +7,7 @@
     <v-form @submit.prevent="passes(onSubmit)">
       <!-- Name -->
       <validation-provider v-slot="{ errors }" name="Name" rules="required">
-        <v-text-field
+        <pg-text-field
           v-model="draft.name"
           clearable
           :disabled="loading"
@@ -24,7 +24,7 @@
         name="Description"
         rules="required"
       >
-        <v-textarea
+        <pg-textarea
           v-model="draft.description"
           clearable
           :disabled="loading"
@@ -69,10 +69,34 @@
           label="Upload File"
           mode="document"
           path="lesson"
+          :file-name="fileName"
           placeholder="Select a pdf for this lesson"
           prepend-icon="mdi-file"
           solo
           pdf
+        />
+      </validation-provider>
+
+      <validation-provider
+        v-slot="{ errors }"
+        name="Video"
+        rules="required"
+      >
+        <file-uploader
+          ref="videoUploader"
+          v-model="videoFile"
+          :error-messages="errors"
+          label="Upload Video"
+          mode="video"
+          multi-part
+          path="lesson"
+          placeholder="Select a video for this lesson"
+          prepend-icon="mdi-video"
+          solo
+          mov
+          mp4
+          mpeg
+          webm
         />
       </validation-provider>
 
@@ -111,7 +135,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 import submittable from '@/utils/mixins/submittable'
 
@@ -130,17 +154,23 @@ export default {
 
   data: () => ({
     file: null,
+    fileName: null,
+    videoFile: null,
     loading: false
   }),
 
   computed: {
     editing () {
       return Boolean(this.draft.id)
-    }
+    },
+    ...mapGetters('admin/curriculum', [
+      'getLesson'
+    ])
   },
 
   created () {
     this.refresh()
+    this.fileName = this.getLesson.name.replace(/ /g, '-')
   },
 
   methods: {
@@ -152,13 +182,11 @@ export default {
 
     async refresh () {
       this.loading = true
-
       try {
         const data = await this.fetchWorksheetsByLessonId({
           lessonId: this.lessonId,
           type: 'OFFLINE'
         })
-
         if (data.length) {
           this.draft = data[0]
         }
@@ -176,8 +204,12 @@ export default {
           this.draft.pdfUrl = await this.$refs.fileUploader.handleUpload()
         }
 
-        const data = await this.submitMethod(this.getSubmittableData())
+        if (this.videoFile) {
+          const { video } = await this.$refs.videoUploader.handleUpload()
+          this.draft.videoId = video.id
+        }
 
+        const data = await this.submitMethod(this.getSubmittableData())
         this.$emit('click:submit', data)
       } catch (e) {
       } finally {

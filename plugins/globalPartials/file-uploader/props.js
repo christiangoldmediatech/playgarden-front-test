@@ -40,6 +40,11 @@ export default {
       type: String,
       required: true
     },
+    fileName: {
+      type: String,
+      required: false,
+      default: ''
+    },
     value: {
       default: undefined,
       required: false

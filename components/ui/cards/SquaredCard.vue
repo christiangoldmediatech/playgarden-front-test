@@ -118,7 +118,7 @@ $border-height: 3px;
 }
 
 .card__title {
-  color: $pg-black;
+  color: var(--v-black-base);
   font-weight: 600;
   font-size: 18px;
   text-align: left;
@@ -133,7 +133,7 @@ $border-height: 3px;
   font-size: 11px;
   letter-spacing: 1.4px;
   text-transform: uppercase;
-  color: $pg-black;
+  color: var(--v-black-base);
   z-index: 0;
 
   &::after {
@@ -145,7 +145,7 @@ $border-height: 3px;
     bottom: 2px;
     transform: translateX(-50%);
     border-radius: 30px;
-    background: $pg-main;
+    background: var(--v-primary-base);
     z-index: -1;
   }
 }

@@ -50,7 +50,7 @@ export default {
   font-size: 32px;
   letter-spacing: 6.75px;
   line-height: 27px;
-  color: $pg-black;
+  color: var(--v-black-base);
   text-transform: uppercase;
 }
 

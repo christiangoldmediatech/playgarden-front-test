@@ -1,5 +1,5 @@
 <template>
-  <v-overlay :dark="false" :value="value" z-index="700">
+  <v-overlay :dark="false" :value="value" z-index="800">
     <v-card class="piece-earned-card" max-width="1124px">
       <div class="green-line-bigger green-line-1" />
       <div class="green-line-bigger green-line-2" />
@@ -8,7 +8,7 @@
           <v-col cols="10" lg="4">
             <v-img
               class="mx-auto"
-              :src="icon || require('@/assets/png/dashboard/piece.png')"
+              :src="require('@/assets/png/dashboard/piece.png')"
               max-width="348px"
             />
           </v-col>
@@ -56,7 +56,7 @@
                       color="accent"
                       block
                       nuxt
-                      :to="$router.push({ name: 'app-dashboard-lesson-activities' })"
+                      :to="{ name: 'app-activities' }"
                     >
                       <img class="piece-earned-play-btn-icon" height="30px;" src="@/assets/svg/play-button.svg">
                       Go to activites
@@ -94,16 +94,10 @@ export default {
       default: false
     },
 
-    icon: {
-      validator: (val) => {
-        return (typeof val === 'string' || val === null)
-      },
-      required: true
-    },
-
     letter: {
       type: String,
-      required: true
+      required: false,
+      default: ''
     }
   },
 

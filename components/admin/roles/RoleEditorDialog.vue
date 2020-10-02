@@ -30,7 +30,7 @@
                 name="Role Name"
                 rules="required"
               >
-                <v-text-field
+                <pg-text-field
                   v-model="item.name"
                   :error-messages="errors"
                   label="Name"

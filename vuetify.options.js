@@ -7,12 +7,16 @@ export default function () {
       dark: false,
       themes: {
         light: {
+          // vuetify shortcut colors
+          accent: '#F89838',
+          error: '#C61818',
           primary: '#C2DAA5',
           secondary: '#E2EBBA',
-          error: '#C61818',
-          accent: '#f89838',
           success: '#C5DCA6',
-          black: '#606060'
+
+          // general colors
+          black: '#606060',
+          white: '#FFFFFF'
         }
       }
     },

@@ -105,7 +105,7 @@
                 name="Street 1"
                 rules="required"
               >
-                <v-text-field
+                <pg-text-field
                   v-model="draftAddress.address1"
                   clearable
                   :disabled="loading"
@@ -117,7 +117,7 @@
               </validation-provider>
 
               <!-- Street 2 -->
-              <v-text-field
+              <pg-text-field
                 v-model="draftAddress.address2"
                 clearable
                 :disabled="loading"
@@ -132,7 +132,7 @@
                 name="City"
                 rules="required"
               >
-                <v-text-field
+                <pg-text-field
                   v-model="draftAddress.city"
                   clearable
                   :disabled="loading"
@@ -151,7 +151,7 @@
                     name="State"
                     rules="required"
                   >
-                    <v-text-field
+                    <pg-text-field
                       v-model="draftAddress.state"
                       clearable
                       :disabled="loading"
@@ -170,7 +170,7 @@
                     name="Zip code"
                     rules="required"
                   >
-                    <v-text-field
+                    <pg-text-field
                       v-model="draftAddress.zipCode"
                       clearable
                       :disabled="loading"
@@ -411,19 +411,19 @@ export default {
 }
 
 .text-orange-info {
-  background-color: $pg-orange !important;
-  color: $pg-white !important;
+  background-color: var(--v-accent-base) !important;
+  color: var(--v-white-base) !important;
   height: 19px;
   font-size: 18px;
 }
 
 .text-orange-info::v-deep.v-chip .v-chip__content {
-  color: $pg-white !important;
+  color: var(--v-white-base) !important;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 3.15px;
   line-height: 1.48;
-  background-color: $pg-orange !important;
+  background-color: var(--v-accent-base) !important;
 }
 
 .text-orange-info::v-deep.v-chip--label {

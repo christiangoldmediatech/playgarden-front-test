@@ -106,7 +106,7 @@ export default {
 }
 
 .list-item {
-  color: $pg-black !important;
+  color: var(--v-black-base) !important;
   &::before {
     opacity: 0;
   }

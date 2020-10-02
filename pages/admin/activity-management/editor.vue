@@ -38,7 +38,7 @@
                       name="Teachers' name"
                       rules="required"
                     >
-                      <v-text-field
+                      <pg-text-field
                         v-model="activity.name"
                         :error-messages="errors"
                         solo
@@ -58,7 +58,7 @@
                       name="Video Description"
                       rules="required"
                     >
-                      <v-textarea
+                      <pg-textarea
                         v-model="activity.description"
                         :error-messages="errors"
                         solo
@@ -78,7 +78,7 @@
                       name="Category"
                       rules="required"
                     >
-                      <v-select
+                      <pg-select
                         v-model="activity.activityTypeId"
                         :error-messages="errors"
                         placeholder="Select a category"
@@ -95,7 +95,7 @@
                   </v-col>
 
                   <v-col cols="12" sm="9" lg="6">
-                    <v-select
+                    <pg-select
                       v-model="activity.curriculumTypeId"
                       :items="curriculumTypes"
                       solo

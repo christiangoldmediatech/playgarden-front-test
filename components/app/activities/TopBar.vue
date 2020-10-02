@@ -17,7 +17,7 @@
     <v-spacer />
 
     <v-col cols="6" md="4">
-      <v-text-field
+      <pg-text-field
         v-model="query"
         placeholder="Search"
         append-icon="mdi-magnify"
@@ -62,7 +62,7 @@ export default {
 
 <style lang="scss" scoped>
 .btn-favorities {
-  color: $pg-black !important;
+  color: var(--v-black-base) !important;
   width: 100% !important;
   font-size: 1.2rem !important;
 }

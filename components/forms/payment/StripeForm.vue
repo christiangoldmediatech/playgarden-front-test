@@ -16,7 +16,7 @@
         name="Card number"
         rules="required|cc_number"
       >
-        <v-text-field
+        <pg-text-field
           v-model="draft.number"
           v-mask="['#### #### #### ####']"
           clearable
@@ -38,7 +38,7 @@
             name="Expiration date"
             rules="required|cc_exp_date"
           >
-            <v-text-field
+            <pg-text-field
               v-model="draft.date"
               v-mask="['##/##']"
               clearable
@@ -60,7 +60,7 @@
             name="CVV"
             rules="required|digits:3"
           >
-            <v-text-field
+            <pg-text-field
               v-model="draft.cvv"
               clearable
               :disabled="loading"
@@ -189,12 +189,12 @@ export default {
 
 <style lang="scss" scoped>
 .accept-terms ::v-deep .v-label {
-  color: $pg-black !important;
+  color: var(--v-black-base) !important;
   opacity: 2.49 !important;
 }
 .terms-conditions {
   text-decoration: underline !important;
-  color: $pg-black;
+  color: var(--v-black-base);
   font-weight: 400;
   cursor: pointer;
 }
