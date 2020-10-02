@@ -61,16 +61,16 @@
           <v-col class="text-center" cols="12" sm="6" md="">
             <v-row no-gutters justify="center" align="start" class="footer-ref-links">
               <v-col>
-                <a class="d-block link-text mb-2 mt-1" target="_blank" href="https://playgardenprep.com/">Playgarden Prep</a>
+                <a class="d-block link-text mb-1 mt-1" target="_blank" href="https://playgardenprep.com/">Playgarden Prep</a>
 
                 <nuxt-link
-                  class="d-block link-text mb-2"
+                  class="d-block link-text mb-1"
                   :to="{ name: 'terms-conditions' }"
                   v-text="'Terms & Conditions'"
                 />
 
                 <nuxt-link
-                  class="d-block link-text mb-2"
+                  class="d-block link-text mb-1"
                   :to="{ name: 'privacy-policy' }"
                   v-text="'Privacy Policy'"
                 />
@@ -91,7 +91,6 @@
 
             <p class="mb-1 text-footer-contact">
               ues@playgardenprep.com<br>
-              212-965-9718
             </p>
 
             <p class="text-footer-contact">
@@ -109,7 +108,6 @@
 
             <p class="mb-1 text-footer-contact">
               tribeca@playgardenprep.com<br>
-              212-965-9717
             </p>
 
             <p class="text-footer-contact">
