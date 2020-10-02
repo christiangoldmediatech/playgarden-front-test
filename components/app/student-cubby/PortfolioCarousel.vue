@@ -1,5 +1,5 @@
 <template>
-  <v-row no-gutters>
+  <v-row no-gutters class="mb-4">
     <v-col cols="12">
       <v-row no-gutters align="end" class="mb-2">
         <img :src="category.icon" height="32" class="mr-2">
