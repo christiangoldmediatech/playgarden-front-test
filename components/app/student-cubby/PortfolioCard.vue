@@ -1,6 +1,6 @@
 <template>
   <v-hover v-slot="{ hover }">
-    <v-container fluid :class="['portfolio-card', { 'clickable': !displayMode, 'scaled': hover && !displayMode }]">
+    <v-container v-if="!displayMode" fluid :class="['portfolio-card', { 'clickable': !displayMode, 'scaled': hover && !displayMode }]">
       <v-row no-gutters justify="space-around" @click.stop="$nuxt.$emit('open-portfolio-overlay', image)">
         <v-col cols="12">
           <v-img
@@ -26,6 +26,17 @@
         </v-col>
       </v-row>
     </v-container>
+    <div
+      v-else
+      :class="['portfolio-card', { 'clickable': !displayMode, 'scaled': hover && !displayMode }]"
+      :elevation="(hover && !displayMode) ? 9 : 0"
+    >
+      <v-img
+        :src="image"
+        aspect-ratio="1"
+        contain
+      />
+    </div>
   </v-hover>
 </template>
 
