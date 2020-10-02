@@ -16,30 +16,27 @@
           </v-col>
         </v-row>
 
-        <v-row v-if="item" align="center" justify="center">
-          <v-col cols="6" class="text-right">
-            <img
-              :src="item.image"
-              width="75%"
-            >
-            <!-- <div class="text-center worksheet-message-item">
+        <v-row v-if="item" align="center">
+          <v-col class="d-flex justify-end" cols="6">
+            <div class="worksheet-message-item">
               <v-img
-                class="mx-auto worksheet-item-shadow"
+                class="ml-auto worksheet-item-shadow"
                 :src="item.image"
                 aspect-ratio="1"
+                max-width="300px"
+                max-height="300px"
               >
                 <div class="worksheet-item-image worksheet-item-image-selected" />
               </v-img>
-            </div> -->
+            </div>
           </v-col>
 
-          <v-col cols="6">
+          <v-col cols="6" lg="5">
             <div class="text-center">
               <v-img
                 :src="require(`@/assets/svg/${correct ? 'correct' : 'incorrect' }.svg`)"
-                class="mx-auto"
+                class="mx-auto worksheet-message-icon"
                 :aspect-ratio="1"
-                max-width="168px"
               />
               <div class="mt-2 text-h6 font-weight-bold">
                 {{ item.word }}
@@ -131,9 +128,15 @@ export default {
   &-content {
     padding: 45px 55px;
   }
-  @media screen and (max-width: 599px) {
+  &-icon {
+    max-width: 168px;
+  }
+  @media screen and (max-width: 600px) {
     &-content {
       padding: 12px 16px;
+    }
+    &-icon {
+      max-width: 80px;
     }
   }
   &-title {
@@ -144,6 +147,7 @@ export default {
     display: block;
   }
   &-item {
+    width: 75%;
     max-width: 75%;
   }
 }
