@@ -41,17 +41,24 @@
               <div class="mt-2 text-h6 font-weight-bold">
                 {{ item.word }}
               </div>
-              <p v-if="tapCorrect">
-                starts with a {{ item.word[0].toUpperCase() }}{{ item.word[0].toLowerCase() }}
-              </p>
-              <p v-else>
-                <template v-if="correct">
-                  is the correct answer!
-                </template>
-                <template v-else>
-                  is not a {{ randomWord }}
-                </template>
-              </p>
+              <template v-if="item.errorMessage && !correct">
+                <p>
+                  {{ item.errorMessage }}
+                </p>
+              </template>
+              <template v-else>
+                <p v-if="tapCorrect">
+                  starts with a {{ item.word[0].toUpperCase() }}{{ item.word[0].toLowerCase() }}
+                </p>
+                <p v-else>
+                  <template v-if="correct">
+                    is the correct answer!
+                  </template>
+                  <template v-else>
+                    is not a {{ randomWord }}
+                  </template>
+                </p>
+              </template>
             </div>
           </v-col>
         </v-row>
