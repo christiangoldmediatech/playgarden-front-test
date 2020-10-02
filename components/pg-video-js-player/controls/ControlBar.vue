@@ -127,14 +127,13 @@
             </span>
             <div class="flex-grow-1 flex-shrink-0">
               <v-slider
-                class="no-transition"
-                color="#D2D2D2"
+                class="no-transition control-bar-progress-slider"
+                color="accent"
+                track-color="#D2D2D2"
                 :value="Math.round(position)"
                 :max="Math.round(duration)"
                 :min="0"
-                thumb-label
-                :thumb-size="24"
-                thumb-color="rgba(0,0,0,0)"
+                thumb-color="accent"
                 :readonly="noSeek"
                 hide-details
                 @input="seek"
@@ -292,6 +291,9 @@ export default {
     color: #D2D2D2;
     text-align: center;
     width: 60px;
+  }
+  &-progress-slider .v-slider__thumb-label.accent {
+    background-color: transparent !important;
   }
 }
 </style>
