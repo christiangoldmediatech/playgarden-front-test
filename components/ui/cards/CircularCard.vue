@@ -7,6 +7,7 @@
     <a
       class="card"
       :href="innerLink"
+      @click="emitEvent"
     >
       <img
         v-if="image !== ''"
@@ -53,6 +54,17 @@ export default {
   computed: {
     innerLink () {
       return `#${this.blok.link || this.link}`
+    }
+  },
+
+  mounted () {
+    this.$nuxt.$on(this.blok.emitEvent, () => {
+    })
+  },
+
+  methods: {
+    emitEvent () {
+      this.$nuxt.$emit(this.blok.emitEvent)
     }
   }
 }
