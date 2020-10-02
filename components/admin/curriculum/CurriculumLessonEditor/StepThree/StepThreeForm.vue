@@ -67,69 +67,97 @@
         First image is always the correct
       </p>
 
-      <v-row class="mb-6">
-        <v-col
+      <v-row class="mb-6 ml-1 mr-1">
+        <v-row
           v-for="(item, indexMT) in matchingDraft.images"
           :key="indexMT"
-          cols="6"
-          lg="3"
         >
-          <!-- Matching word -->
-          <validation-provider
-            v-slot="{ errors }"
-            :name="`Word ${indexMT + 1}`"
-            rules="required"
+          <v-col
+            cols="12"
+            lg="4"
           >
-            <pg-text-field
-              v-model="item.word"
-              clearable
-              :disabled="loading"
-              :error-messages="errors"
-              :label="`Word ${indexMT + 1}`"
-              :loading="loading"
-              solo
-            />
-          </validation-provider>
-
-          <!-- Matching image -->
-          <template v-if="item.image">
-            <div class="mb-6 mt-3">
-              <v-badge avatar class="image-badge" color="error" overlap>
-                <template v-slot:badge>
-                  <v-avatar class="clickable" @click.native="item.image = null">
-                    <v-icon>
-                      mdi-close
-                    </v-icon>
-                  </v-avatar>
-                </template>
-
-                <v-img max-width="100%" :src="item.image" />
-              </v-badge>
-            </div>
-          </template>
-
-          <validation-provider
-            v-else
-            v-slot="{ errors }"
-            :name="`Image ${indexMT + 1}`"
-            rules="required|size:10000"
+            <!-- Matching word -->
+            <validation-provider
+              v-slot="{ errors }"
+              :name="`Word ${indexMT + 1}`"
+              rules="required"
+            >
+              <pg-text-field
+                v-model="item.word"
+                clearable
+                :disabled="loading"
+                :error-messages="errors"
+                :label="`Word ${indexMT + 1}`"
+                :loading="loading"
+                solo
+              />
+            </validation-provider>
+          </v-col>
+          <v-col
+            cols="6"
+            :lg="item.image ? '1' : '4'"
           >
-            <file-uploader
-              :ref="`fileUploader${indexMT}`"
-              v-model="item.file"
-              :error-messages="errors"
-              :label="`Image ${indexMT + 1}`"
-              mode="image"
-              path="lesson"
-              :placeholder="`Select image ${indexMT + 1}`"
-              prepend-icon="mdi-camera"
-              solo
-              jpg
-              png
-              svg
-            />
-          </validation-provider>
-        </v-col>
+            <!-- Matching image -->
+            <template v-if="item.image">
+              <div justify="center">
+                <v-badge avatar class="image-badge" color="error" overlap>
+                  <template v-slot:badge>
+                    <v-avatar class="clickable" @click.native="item.image = null">
+                      <v-icon>
+                        mdi-close
+                      </v-icon>
+                    </v-avatar>
+                  </template>
+
+                  <v-img max-width="50%" :src="item.image" class="text-center" />
+                </v-badge>
+              </div>
+            </template>
+
+            <validation-provider
+              v-else
+              v-slot="{ errors }"
+              :name="`Image ${indexMT + 1}`"
+              rules="required|size:10000"
+            >
+              <file-uploader
+                :ref="`fileUploader${indexMT}`"
+                v-model="item.file"
+                :error-messages="errors"
+                :label="`Image ${indexMT + 1}`"
+                mode="image"
+                path="lesson"
+                :placeholder="`Select image ${indexMT + 1}`"
+                prepend-icon="mdi-camera"
+                solo
+                jpg
+                png
+                svg
+              />
+            </validation-provider>
+          </v-col>
+          <v-col
+            cols="12"
+            lg="4"
+          >
+            <!-- Matching word -->
+            <validation-provider
+              v-slot="{ errors }"
+              :name="`Error ${indexMT + 1}`"
+              rules="required"
+            >
+              <pg-text-field
+                v-model="item.errorMessage"
+                clearable
+                :disabled="loading"
+                :error-messages="errors"
+                :label="`Error Message ${indexMT + 1}`"
+                :loading="loading"
+                solo
+              />
+            </validation-provider>
+          </v-col>
+        </v-row>
       </v-row>
 
       <v-row class="mb-6" justify="center">
