@@ -98,7 +98,7 @@
               <span class="info-footer-title">Upper East Side</span>
             </p>
 
-            <p class="mb-1 mt-8 text-footer-contact" />
+            <p class="mb-1 mt-2 mt-md-8 text-footer-contact" />
 
             <p class="text-footer-contact">
               1366 Madison Avenue<br>
@@ -114,7 +114,7 @@
               </span>
             </p>
 
-            <p class="mb-1 mt-8 text-footer-contact" />
+            <p class="mb-1 mt-2 mt-md-8 text-footer-contact" />
 
             <p class="text-footer-contact">
               95 Franklin Street<br>
