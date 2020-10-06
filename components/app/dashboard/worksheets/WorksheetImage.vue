@@ -17,9 +17,9 @@
         >
           <div :class="['worksheet-item-image', { 'clickable': clickable, 'worksheet-item-image-selected': active }]" @click.stop="setActive" />
         </v-img>
-        <!-- <span v-if="showWord" class="d-block text-center">
+        <span v-if="showWord" class="d-block text-center">
           {{ item.word }}
-        </span> -->
+        </span>
       </div>
     </v-hover>
   </v-col>
