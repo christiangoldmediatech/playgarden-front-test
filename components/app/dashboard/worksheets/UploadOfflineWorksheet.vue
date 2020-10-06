@@ -8,6 +8,23 @@
       <div class="green-line-bigger green-line-2" />
 
       <v-card-text class="upload-dialog-content">
+        <v-overlay
+          v-if="loading"
+          absolute
+          :value="loading"
+          :opacity="0.13"
+          :z-index="1000"
+          :dark="false"
+          light
+        >
+          <v-progress-circular
+            color="rgba(248, 152, 56, 1)"
+            size="128"
+            width="12"
+            indeterminate
+          />
+        </v-overlay>
+
         <div class="text-center mt-3 mb-2">
           <underlined-title
             class="text-h3"
@@ -199,6 +216,7 @@ export default {
     overflow: hidden;
   }
   &-content {
+    position: relative;
     max-height: calc(90vh - 60px);
     box-shadow: 0 -1px 6px 0 rgba(0, 0, 0, 0.12);
     overflow-x: hidden;
