@@ -59,9 +59,18 @@
           </v-col>
 
           <v-col class="text-center" cols="12" sm="6" md="">
-            <v-row no-gutters justify="center" align="start" class="footer-ref-links">
+            <v-row
+              no-gutters
+              justify="center"
+              align="start"
+              class="footer-ref-links"
+            >
               <v-col>
-                <a class="d-block link-text mb-1 mt-1" target="_blank" href="https://playgardenprep.com/">Playgarden Prep</a>
+                <a
+                  class="d-block link-text mb-1 mt-1"
+                  target="_blank"
+                  href="https://playgardenprep.com/"
+                >Playgarden Prep</a>
 
                 <nuxt-link
                   class="d-block link-text mb-1"
@@ -89,14 +98,13 @@
               <span class="info-footer-title">Upper East Side</span>
             </p>
 
-            <p class="mb-1 text-footer-contact">
-              ues@playgardenprep.com<br>
-            </p>
+            <p class="mb-1 mt-2 mt-md-8 text-footer-contact" />
 
             <p class="text-footer-contact">
               1366 Madison Avenue<br>
               New York, NY 10128
             </p>
+            <br>
           </v-col>
 
           <v-col class="text-center" cols="12" sm="6" md="">
@@ -106,14 +114,13 @@
               </span>
             </p>
 
-            <p class="mb-1 text-footer-contact">
-              tribeca@playgardenprep.com<br>
-            </p>
+            <p class="mb-1 mt-2 mt-md-8 text-footer-contact" />
 
             <p class="text-footer-contact">
               95 Franklin Street<br>
               New York, NY 10013
             </p>
+            <br>
           </v-col>
         </v-row>
       </v-card-text>
