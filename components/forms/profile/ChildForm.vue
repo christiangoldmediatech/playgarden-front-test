@@ -119,11 +119,17 @@
               rules="required"
             >
               <v-row class="mb-6">
-                <v-col v-for="(gender, indexG) in genders" :key="indexG" cols="6">
+                <v-col
+                  v-for="(gender, indexG) in genders"
+                  :key="indexG"
+                  cols="6"
+                >
                   <v-btn
                     block
                     class="custom-btn"
-                    :color="item.gender === gender ? 'primary' : 'grey lighten-5'"
+                    :color="
+                      item.gender === gender ? 'primary' : 'grey lighten-5'
+                    "
                     :disabled="loading"
                     x-large
                     @click="item.gender = gender"
@@ -329,6 +335,9 @@ export default {
               await this.deleteChild(item.id)
             }
             this.items.splice(index, 1)
+
+            this.$nuxt.$emit('children-changed')
+          } catch (e) {
           } finally {
             this.loading = false
           }
@@ -358,6 +367,8 @@ export default {
           data._original = this.getOriginalChild(item)
 
           this.loadChild(data, index)
+
+          this.$nuxt.$emit('children-changed')
         }
       } catch (error) {
         return Promise.reject(error)

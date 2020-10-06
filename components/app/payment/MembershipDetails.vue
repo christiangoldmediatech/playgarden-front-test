@@ -263,6 +263,12 @@ export default {
   created () {
     this.getBillingDetails()
     this.getBillingCards()
+
+    this.$nuxt.$on('children-changed', this.getBillingDetails)
+  },
+
+  beforeDestroy () {
+    this.$nuxt.$off('children-changed')
   },
 
   methods: {
