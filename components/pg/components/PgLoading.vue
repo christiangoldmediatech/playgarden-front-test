@@ -6,7 +6,7 @@
           alt="Playarden Prep Online Logo"
           contain
           class="logo-img"
-          :src="require('@/assets/svg/logo.svg')"
+          :src="require('assets/svg/logo.svg')"
         />
       </div>
 

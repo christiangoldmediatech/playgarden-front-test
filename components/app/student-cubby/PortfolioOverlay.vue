@@ -13,13 +13,9 @@
           </v-icon>
           Back
         </v-btn>
+
         <v-row class="fill-height" align="center" justify="center">
-          <v-col
-            class="position-relative"
-            sm="12"
-            lg="8"
-            xl="10"
-          >
+          <v-col class="position-relative" sm="12" lg="8" xl="10">
             <v-btn
               class="top-right color-close"
               icon
@@ -29,7 +25,8 @@
                 mdi-close
               </v-icon>
             </v-btn>
-            <portfolio-card v-bind="{ image }" display-mode />
+
+            <portfolio-card v-bind="{ child, image }" display-mode />
           </v-col>
         </v-row>
       </v-container>
@@ -47,6 +44,13 @@ export default {
     PortfolioCard
   },
 
+  props: {
+    child: {
+      type: Object,
+      default: () => {}
+    }
+  },
+
   data: () => {
     return {
       image: null,
@@ -60,6 +64,10 @@ export default {
       this.image = image
       this.overlay = true
     })
+  },
+
+  beforeDestroy () {
+    this.$nuxt.$off('open-portfolio-overlay')
   }
 }
 </script>
