@@ -17,7 +17,7 @@
         >
           <div :class="['worksheet-item-image', { 'clickable': clickable, 'worksheet-item-image-selected': active }]" @click.stop="setActive" />
         </v-img>
-        <span v-if="showWord" class="d-block text-center">
+        <span v-if="showWord" class="worksheet-item-text">
           {{ item.word }}
         </span>
       </div>
@@ -91,6 +91,13 @@ export default {
       &-selected {
         box-shadow: inset 0px 0px 0px 8px var(--v-primary-base);
       }
+    }
+    &-text {
+      display: block;
+      text-align: center;
+      font-weight: bold;
+      font-size: 18px;
+      margin-top: 16px;
     }
   }
 }
