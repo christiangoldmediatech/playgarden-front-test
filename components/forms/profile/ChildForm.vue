@@ -295,7 +295,7 @@ export default {
     addRow (data = {}) {
       const _data = {
         _birthdayFormatted: '',
-        _birthdayPicker: '',
+        _birthdayPicker: dayjs(`${new Date().getFullYear() - 2}-01-01`).format('YYYY-MM-DD'),
         _menu: false,
         _original: null,
         backpackId: this.firstBackpack,
