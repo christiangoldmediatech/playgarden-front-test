@@ -23,11 +23,11 @@
               />
             </div>
             <p class="patch-earned-paragraph-1">
-              You have watched {{ number }} videos for
+              You have watched {{ number }}
               <span class="text-lowercase">
                 {{ category }}
               </span>
-              , you won a patch!
+              Activitie and earned a NEW patch!
             </p>
             <p class="patch-earned-paragraph-2">
               Keep watching videos to master the category and earn more patches.

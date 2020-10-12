@@ -58,7 +58,7 @@
           <span class="font-weight-bold white--text">You have completed the hands-on learning for the day.</span>
         </template>
         <template v-else>
-          <span class="font-weight-bold white--text">You have completed the hands-on learning.</span>
+          <span class="font-weight-bold white--text">You have completed your worksheet!</span>
         </template>
       </p>
     </completed-dialog>
