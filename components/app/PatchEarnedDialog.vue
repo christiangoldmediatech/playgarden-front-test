@@ -27,7 +27,7 @@
               <span class="text-lowercase">
                 {{ category }}
               </span>
-              Activitie and earned a NEW patch!
+              Activities and earned a NEW patch!
             </p>
             <p class="patch-earned-paragraph-2">
               Keep watching videos to master the category and earn more patches.

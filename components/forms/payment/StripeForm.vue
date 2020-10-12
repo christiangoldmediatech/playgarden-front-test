@@ -117,7 +117,7 @@
 
       <p v-if="!noTrial" class="mb-15 text-body-2 text-center">
         <span>
-          You will only be billed after first FREE trial week is complete.
+          You will only be billed after the first FREE trial week is complete.
         </span>
       </p>
 
