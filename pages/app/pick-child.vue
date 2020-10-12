@@ -9,9 +9,10 @@
 
             <v-card-text>
               <div class="text-center my-6">
-                <span class="underlined-title">
-                  Who is at school today?
-                </span>
+                <underlined-title
+                  class="text-h4 text-md-h3"
+                  text="Who is at school today?"
+                />
               </div>
 
               <v-row justify="center">
@@ -19,7 +20,7 @@
                   v-for="child in children"
                   :key="`child-${child.id}`"
                   class="selected-child text-center"
-                  cols="6"
+                  cols="4"
                   md="4"
                   lg="3"
                   @click.stop="selectChild(child)"
@@ -132,6 +133,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~vuetify/src/styles/styles.sass';
+
 .child-option {
   transition: transform 250ms;
 }
@@ -154,26 +157,13 @@ export default {
   }
 }
 
-.underlined-title {
-  font-size: 2rem;
-  font-weight: bold;
-  position: relative;
-  z-index: 1;
-  &::after {
-    width: 102%;
-    position: absolute;
-    bottom: 0.15rem;
-    left: -1%;
-    content: "";
-    z-index: -1;
-    border-bottom: 0.8rem solid var(--v-primary-base);
-    border-radius: 0.2rem;
-  }
-}
-
 .pick-child {
   margin-top: 90px;
   margin-bottom: 90px;
+  @media #{map-get($display-breakpoints, 'sm-and-down')} {
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
 }
 
 .name-child {

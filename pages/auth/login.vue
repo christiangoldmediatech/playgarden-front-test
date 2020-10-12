@@ -173,6 +173,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~vuetify/src/styles/styles.sass';
+
 .image {
   max-height: 500px;
   width: 100%;
@@ -181,6 +183,9 @@ export default {
   align-content: center;
   img {
     max-width: 90%;
+  }
+  @media #{map-get($display-breakpoints, 'sm-and-down')} {
+    max-height: 250px;
   }
 }
 .hr-line {

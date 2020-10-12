@@ -1,9 +1,9 @@
 <template>
   <v-container fluid>
     <v-row no-gutters>
-      <v-col class="text-center" cols="12">
+      <v-col class="text-center mt-4" cols="12">
         <underlined-title
-          class="text-h6 text-md-h3"
+          class="text-h4 text-md-h3"
           text="Learn how to use Playgarden Prep Online"
         />
       </v-col>
@@ -65,7 +65,7 @@
 
             <v-btn
               v-if="single || last"
-              class="text-h6 margin-negative"
+              class="text-h6 mt-n6"
               color="primary"
               :loading="finishing"
               text
@@ -186,9 +186,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.margin-negative {
-  margin-top: -30px !important;
-}
-</style>

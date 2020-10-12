@@ -100,8 +100,7 @@
                 v-for="(backpack, indexB) in backpacks"
                 :key="indexB"
                 class="image"
-                cols="6"
-                sm="4"
+                cols="4"
                 md="2"
               >
                 <img

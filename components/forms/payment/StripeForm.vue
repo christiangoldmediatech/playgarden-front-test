@@ -104,7 +104,7 @@
 
       <v-btn
         block
-        class="mb-4 mt-4 main-btn"
+        class="mb-4 mt-4 main-btn ml-n4 ml-md-0"
         min-height="60"
         color="primary"
         :disabled="invalid"
