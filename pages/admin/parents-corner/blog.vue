@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  name: 'ParentsCornerBlog',
+  name: 'Blog',
 
   layout: 'admin',
 
