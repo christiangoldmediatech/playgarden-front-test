@@ -136,6 +136,8 @@
 </template>
 
 <script>
+import { doEvent } from '@/utils/events.js'
+
 import { VDataTable } from 'vuetify/lib/components/VDataTable'
 import { VContainer, VRow, VCol, VSpacer } from 'vuetify/lib/components/VGrid'
 import { VIcon } from 'vuetify/lib/components/VIcon'
@@ -158,23 +160,14 @@ export default {
     PgTextField
   },
 
+  doEvent,
+
   slotAvailable (slot, scopedSlots) {
     const keys = Object.keys(scopedSlots)
     if (keys.includes(slot)) {
       return false
     }
     return true
-  },
-
-  doEvent (name, value, listeners) {
-    if (listeners[name]) {
-      if (typeof listeners[name] === 'function') {
-        return listeners[name](value)
-      } else {
-        return listeners[name].map(callback => callback(value))
-      }
-    }
-    return undefined
   },
 
   filterScopedSlots (scopedSlots) {

@@ -221,6 +221,10 @@ export default {
               route: 'onboarding'
             },
             {
+              title: 'Parents Corner Categories',
+              route: 'parents-corner-categories'
+            },
+            {
               title: 'Patch Management',
               route: 'patch-management'
             },
