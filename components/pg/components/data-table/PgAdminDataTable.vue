@@ -128,8 +128,8 @@
       </component>
     </template>
 
-    <!-- User defined slots -->
-    <template v-for="(index, name) in scopedSlots" v-slot:[name]="data">
+    <!-- Parent defined slots -->
+    <template v-for="(index, name) in $options.filterScopedSlots(scopedSlots)" v-slot:[name]="data">
       <slot :name="name" v-bind="data" />
     </template>
   </component>
@@ -175,6 +175,25 @@ export default {
       }
     }
     return undefined
+  },
+
+  filterScopedSlots (scopedSlots) {
+    const result = {}
+    const slots = Object.keys(scopedSlots)
+    const exclusionList = [
+      'top.prepend',
+      'item.actions.prepend',
+      'item.actions.append'
+    ]
+
+    slots.forEach((slot) => {
+      if (exclusionList.includes(slot)) {
+        return
+      }
+      result[slot] = scopedSlots[slot]
+    })
+
+    return result
   }
 }
 </script>
