@@ -5,7 +5,11 @@
         MEMBERSHIP
       </p>
 
-      <p class="mb-6">
+      <p v-if="billing.status === 'trialing'">
+        Free trial period ends <b>{{ billing.trialEndDate }}</b>
+      </p>
+
+      <p v-else class="mb-6">
         Your next billing date is
 
         <b>{{ billing.nextBillingDate }}</b>
