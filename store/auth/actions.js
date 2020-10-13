@@ -32,13 +32,12 @@ export default {
 
     if (hasLocalStorage()) {
       window.localStorage.removeItem('authToken')
-    }
-
-    // Only reset if we were logged in to begin with
-    if (hasLocalStorage() && rootGetters.getCurrentChild) {
-      commit('SET_CURRENT_CHILD', null, { root: true })
-      commit('SET_CURRENT_CHILD_EXPIRES', null, { root: true })
-      window.localStorage.removeItem('selectedChild')
+      // Only reset child if we one was set to begin with
+      if (rootGetters.getCurrentChild) {
+        commit('SET_CURRENT_CHILD', null, { root: true })
+        commit('SET_CURRENT_CHILD_EXPIRES', null, { root: true })
+        window.localStorage.removeItem('selectedChild')
+      }
     }
 
     if (redirect) {
