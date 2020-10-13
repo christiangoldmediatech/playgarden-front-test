@@ -1,7 +1,7 @@
 <template>
   <v-row align="center" justify="center" no-gutters>
     <v-col cols="11" md="6">
-      <div class="image mt-6 mt-md-0">
+      <div class="image mt-6 mt-md-0" :class="{mobile: $vuetify.breakpoint.smAndDown}">
         <img alt="Smiling Girl Picture" src="@/assets/svg/girl-smiling.svg">
       </div>
     </v-col>
@@ -181,6 +181,9 @@ export default {
   align-content: center;
   img {
     max-width: 90%;
+  }
+  &.mobile {
+    max-height: 250px;
   }
 }
 .hr-line {

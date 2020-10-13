@@ -78,7 +78,7 @@
 
   <v-row v-else align="center" justify="center" no-gutters>
     <v-col cols="11" md="6">
-      <div class="image">
+      <div class="image mt-4" :class="{mobile: $vuetify.breakpoint.smAndDown}">
         <img alt="Smiling Girl Picture" src="@/assets/svg/girl-smiling.svg">
       </div>
     </v-col>
@@ -213,6 +213,9 @@ export default {
   align-content: center;
   img {
     max-width: 90%;
+  }
+  &.mobile {
+    max-height: 250px;
   }
 }
 .form {

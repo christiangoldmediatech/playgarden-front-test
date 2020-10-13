@@ -2,16 +2,17 @@
   <v-main class="bkg">
     <v-container fluid fill-height>
       <v-row align="center" justify="center">
-        <v-col cols="12" md="8" lg="6" class="pick-child">
+        <v-col cols="12" md="8" lg="6" class="pick-child" :class="{mobile: $vuetify.breakpoint.smAndDown}">
           <v-card>
             <div class="green-line green-line-1" />
             <div class="green-line green-line-2" />
 
             <v-card-text>
               <div class="text-center my-6">
-                <span class="underlined-title">
-                  Who is at school today?
-                </span>
+                <underlined-title
+                  class="text-h4 text-md-h3"
+                  text="Who is at school today?"
+                />
               </div>
 
               <v-row justify="center">
@@ -19,8 +20,7 @@
                   v-for="child in children"
                   :key="`child-${child.id}`"
                   class="selected-child text-center"
-                  cols="6"
-                  md="4"
+                  cols="4"
                   lg="3"
                   @click.stop="selectChild(child)"
                 >
@@ -154,26 +154,13 @@ export default {
   }
 }
 
-.underlined-title {
-  font-size: 2rem;
-  font-weight: bold;
-  position: relative;
-  z-index: 1;
-  &::after {
-    width: 102%;
-    position: absolute;
-    bottom: 0.15rem;
-    left: -1%;
-    content: "";
-    z-index: -1;
-    border-bottom: 0.8rem solid var(--v-primary-base);
-    border-radius: 0.2rem;
-  }
-}
-
 .pick-child {
   margin-top: 90px;
   margin-bottom: 90px;
+  &.mobile {
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
 }
 
 .name-child {

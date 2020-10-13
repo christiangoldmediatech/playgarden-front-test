@@ -28,7 +28,7 @@ export default {
 
     fontSizeMobile: {
       type: String,
-      default: '1.5rem'
+      default: '2rem'
     },
 
     fontWeight: {

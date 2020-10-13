@@ -40,7 +40,6 @@
                       class="image"
                       cols="4"
                       md="2"
-                      sm="2"
                     >
                       <img
                         :alt="backpack.name"
