@@ -75,7 +75,7 @@
                 <nuxt-link
                   class="d-block link-text mb-1"
                   :to="{ name: 'terms-conditions' }"
-                  v-text="'Terms & Conditions'"
+                  v-text="'Terms of Use'"
                 />
 
                 <nuxt-link
