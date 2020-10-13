@@ -1,7 +1,7 @@
 <template>
   <v-row align="center" justify="center" no-gutters>
     <v-col cols="11" md="6">
-      <div class="image mt-4 mt-md-0">
+      <div class="image mt-4 mt-md-0" :class="{mobile: $vuetify.breakpoint.smAndDown}">
         <img alt="Smiling Girl Picture" src="@/assets/svg/girl-smiling.svg">
       </div>
     </v-col>
@@ -149,8 +149,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~vuetify/src/styles/styles.sass';
-
 .image {
   max-height: 500px;
   width: 100%;
@@ -160,7 +158,7 @@ export default {
   img {
     max-width: 90%;
   }
-  @media #{map-get($display-breakpoints, 'sm-and-down')} {
+  &.mobile {
     max-height: 250px;
   }
 }

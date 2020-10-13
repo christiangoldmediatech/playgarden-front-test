@@ -2,7 +2,7 @@
   <v-main class="bkg">
     <v-container fluid fill-height>
       <v-row align="center" justify="center">
-        <v-col cols="12" md="8" lg="6" class="pick-child">
+        <v-col cols="12" md="8" lg="6" class="pick-child" :class="{mobile: $vuetify.breakpoint.smAndDown}">
           <v-card>
             <div class="green-line green-line-1" />
             <div class="green-line green-line-2" />
@@ -21,7 +21,6 @@
                   :key="`child-${child.id}`"
                   class="selected-child text-center"
                   cols="4"
-                  md="4"
                   lg="3"
                   @click.stop="selectChild(child)"
                 >
@@ -133,8 +132,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~vuetify/src/styles/styles.sass';
-
 .child-option {
   transition: transform 250ms;
 }
@@ -160,7 +157,7 @@ export default {
 .pick-child {
   margin-top: 90px;
   margin-bottom: 90px;
-  @media #{map-get($display-breakpoints, 'sm-and-down')} {
+  &.mobile {
     margin-top: 30px;
     margin-bottom: 30px;
   }
