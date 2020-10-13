@@ -16,7 +16,7 @@
         </v-col>
         <v-col class="py-0" cols="12">
           <p class="text-h5 text-center white--text font-weight-medium mb-0">
-            You have completed all the tasks for the day.<br>Come back tomorrow for more.
+            You have completed your learning for today!<br>See you tomorrow!
           </p>
         </v-col>
         <v-btn
