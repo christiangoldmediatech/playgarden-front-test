@@ -2,7 +2,7 @@
   <v-card flat class="pt-0 pt-md-3">
     <v-card-text class="text-center pt-0 pt-md-3">
       <underlined-title
-        class="text-h6 text-md-h3"
+        class="text-h5 text-md-h3"
         text="Complete the puzzle!"
       />
 

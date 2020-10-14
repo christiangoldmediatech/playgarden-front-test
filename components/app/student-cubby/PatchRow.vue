@@ -24,34 +24,31 @@
         />
       </template>
 
-      <v-carousel
-        v-else
-        :continuous="false"
-        :show-arrows="false"
-        hide-delimiter-background
-        light
-        height="110vw"
-      >
-        <patch
-          v-for="patch in activityType.patches"
-          :key="`activityType-${activityType.id}-patch-${patch.id}`"
-          v-bind="{ patch }"
-          class="mb-6"
-          :unblocked="unblocked"
-        />
-      </v-carousel>
+      <perfect-scrollbar v-else>
+        <v-row class="flex-nowrap mobile-patch-container">
+          <patch
+            v-for="patch in activityType.patches"
+            :key="`activityType-${activityType.id}-patch-${patch.id}`"
+            v-bind="{ patch }"
+            class="mb-6"
+            :unblocked="unblocked"
+          />
+        </v-row>
+      </perfect-scrollbar>
     </v-row>
   </div>
 </template>
 
 <script>
+import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
 import Patch from './Patch.vue'
 
 export default {
   name: 'PatchRow',
 
   components: {
-    Patch
+    Patch,
+    PerfectScrollbar
   },
 
   props: {
@@ -67,3 +64,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.mobile-patch-container {
+  overflow-x: visible;
+}
+</style>
