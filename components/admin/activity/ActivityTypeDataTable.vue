@@ -50,7 +50,7 @@
               :loading="loading"
               :page.sync="page"
               @update:page="page = $event"
-              @search="search = $event; refresh(false)"
+              @search="onSearch"
               @refresh="refresh(true)"
               @edit-item="$refs.editor.open(null, $event)"
               @remove-item="remove"
@@ -87,6 +87,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import onSearch from '@/mixins/OnSearchMixin.js'
 import ActivityTypeEditorDialog from './ActivityTypeEditorDialog'
 
 export default {
@@ -95,6 +96,8 @@ export default {
   components: {
     ActivityTypeEditorDialog
   },
+
+  mixins: [onSearch],
 
   data () {
     return {

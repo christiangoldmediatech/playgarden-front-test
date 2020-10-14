@@ -45,7 +45,7 @@
               :loading="loading"
               :page.sync="page"
               @update:page="page = $event"
-              @search="search = $event; refresh(false)"
+              @search="onSearch"
               @refresh="refresh(true)"
               @edit-item="$refs.editor.open(null, $event)"
               @remove-item="remove"
@@ -67,6 +67,7 @@
 
 <script>
 import { mapActions } from 'vuex'
+import onSearch from '@/mixins/OnSearchMixin.js'
 import BackpackEditorDialog from './BackpackEditorDialog'
 
 export default {
@@ -75,6 +76,8 @@ export default {
   components: {
     BackpackEditorDialog
   },
+
+  mixins: [onSearch],
 
   data () {
     return {

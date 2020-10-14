@@ -45,7 +45,7 @@
               :page.sync="page"
               :server-items-length="total"
               top-justify="space-between"
-              @search="search = $event; refresh(false)"
+              @search="onSearch"
               @refresh="refresh(true)"
               @update:items-per-page="setLimit"
               @update:page="page = $event"
@@ -116,6 +116,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import onSearch from '@/mixins/OnSearchMixin.js'
 import VideoPreviewBtn from '@/components/admin/video-preview/VideoPreviewBtn.vue'
 
 export default {
@@ -124,6 +125,8 @@ export default {
   components: {
     VideoPreviewBtn
   },
+
+  mixins: [onSearch],
 
   data () {
     return {

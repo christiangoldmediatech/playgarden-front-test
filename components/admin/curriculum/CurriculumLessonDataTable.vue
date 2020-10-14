@@ -46,7 +46,7 @@
               :page.sync="pagination.page"
               :server-items-length="pagination.total"
               @refresh="refresh(true)"
-              @search="search = $event; refresh(false)"
+              @search="onSearch"
               @update:page="pagination.page = $event"
               @edit-item="onEdit"
               @remove-item="remove"
@@ -127,13 +127,13 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-
+import onSearch from '@/mixins/OnSearchMixin.js'
 import paginable from '@/utils/mixins/paginable'
 
 export default {
   name: 'CurriculumLessonDataTable',
 
-  mixins: [paginable],
+  mixins: [paginable, onSearch],
 
   data: () => ({
     loading: false,
