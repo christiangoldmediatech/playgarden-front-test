@@ -70,27 +70,25 @@
     </v-col>
   </v-hover>
 
-  <v-carousel-item v-else @click.native.stop="displayBadge">
-    <v-col>
-      <v-row justify="center" align="center">
-        <v-responsive class="rounded-circle" aspect-ratio="1">
-          <v-img
-            :class="{ grayscale: !_unblocked }"
-            :src="patch.image"
-            aspect-ratio="1"
-          />
-        </v-responsive>
-      </v-row>
+  <v-col v-else cols="5" @click.stop="displayBadge" class="px-6">
+    <v-row justify="center" align="center">
+      <v-responsive class="rounded-circle" aspect-ratio="1">
+        <v-img
+          :class="{ grayscale: !_unblocked }"
+          :src="patch.image"
+          aspect-ratio="1"
+        />
+      </v-responsive>
+    </v-row>
 
-      <span class="d-block text-center font-weight-bold">
-        {{ patch.name }}
-      </span>
+    <span class="d-block text-center font-weight-bold">
+      {{ patch.name }}
+    </span>
 
-      <span class="d-block text-center" :class="{ 'white--text': displayMode }">
-        {{ patch.description }}
-      </span>
-    </v-col>
-  </v-carousel-item>
+    <span class="d-block text-center" :class="{ 'white--text': displayMode }">
+      {{ patch.description }}
+    </span>
+  </v-col>
 </template>
 
 <script>
