@@ -70,7 +70,7 @@
     </v-col>
   </v-hover>
 
-  <v-col v-else cols="5" @click.stop="displayBadge" class="px-6">
+  <v-col v-else cols="5" class="px-6" @click.stop="displayBadge">
     <v-row justify="center" align="center">
       <v-responsive class="rounded-circle" aspect-ratio="1">
         <v-img

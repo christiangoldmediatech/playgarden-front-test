@@ -34,7 +34,7 @@
             :unblocked="unblocked"
           />
         </v-row>
-      </perfect-scrollbar>      
+      </perfect-scrollbar>
     </v-row>
   </div>
 </template>
