@@ -11,12 +11,14 @@
       </p>
 
       <v-row justify="center">
-        <puzzle-cover
-          :background-image="
-            require('@/assets/jpg/student-cubby/puzzle-background.jpg')
-          "
-          :student-id="studentId"
-        />
+        <v-col cols="12">
+          <puzzle-cover
+            :background-image="
+              require('@/assets/jpg/student-cubby/puzzle-background.jpg')
+            "
+            :student-id="studentId"
+          />
+        </v-col>
       </v-row>
     </v-card-text>
   </v-card>
