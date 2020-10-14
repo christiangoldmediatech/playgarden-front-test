@@ -44,5 +44,14 @@ export default {
         })
       )
     }
+  },
+
+  resetCurrentChild ({ commit }) {
+    commit('SET_CURRENT_CHILD', null)
+    commit('SET_CURRENT_CHILD_EXPIRES', null)
+
+    if (hasLocalStorage() && window.localStorage.getItem('selectedChild')) {
+      window.localStorage.removeItem('selectedChild')
+    }
   }
 }
