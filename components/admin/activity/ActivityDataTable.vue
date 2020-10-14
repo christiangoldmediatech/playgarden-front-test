@@ -260,7 +260,12 @@ export default {
 
     async refresh (clear = false) {
       this.loading = true
-      const params = { limit: this.limit, page: this.page, type: 'VIDEO' }
+
+      if (this.clear) {
+        this.search = ''
+      }
+
+      const params = { limit: this.limit, page: this.page, type: 'VIDEO', name: this.search }
 
       // params.name = this.search
 
