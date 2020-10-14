@@ -2,8 +2,8 @@
   <div>
     <patch-overlay :unblocked="unblocked" />
 
-    <v-card flat>
-      <v-card-text>
+    <v-card flat class="pt-0 pt-md-3">
+      <v-card-text class="pt-0 pt-md-4">
         <div class="text-center">
           <underlined-title
             class="text-h6 text-md-h3"
