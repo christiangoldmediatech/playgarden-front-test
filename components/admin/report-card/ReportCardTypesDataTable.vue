@@ -49,7 +49,7 @@
               :page.sync="page"
               @update:page="page = $event"
               @refresh="refresh(true)"
-              @search="search = $event; refresh(false)"
+              @search="onSearch"
               @edit-item="$refs.editor.open($event)"
               @remove-item="remove"
             />
@@ -62,6 +62,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import onSearch from '@/mixins/OnSearchMixin.js'
 import ReportCardTypeEditorDialog from './ReportCardTypeEditorDialog'
 
 export default {
@@ -70,6 +71,8 @@ export default {
   components: {
     ReportCardTypeEditorDialog
   },
+
+  mixins: [onSearch],
 
   data () {
     return {

@@ -52,7 +52,7 @@
               :page.sync="page"
               @update:page="page = $event"
               @refresh="refresh(true)"
-              @search="search = $event; refresh(false)"
+              @search="onSearch"
               @edit-item="$refs.editor.open(null, $event)"
               @remove-item="remove"
             >
@@ -69,6 +69,7 @@
 
 <script>
 import { mapActions } from 'vuex'
+import onSearch from '@/mixins/OnSearchMixin.js'
 import VideoPreviewBtn from '@/components/admin/video-preview/VideoPreviewBtn.vue'
 import OnboardingEditorDialog from './OnboardingEditorDialog'
 
@@ -79,6 +80,8 @@ export default {
     OnboardingEditorDialog,
     VideoPreviewBtn
   },
+
+  mixins: [onSearch],
 
   data: () => ({
     onboardings: [],
