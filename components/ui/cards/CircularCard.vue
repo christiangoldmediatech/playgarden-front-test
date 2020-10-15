@@ -64,6 +64,8 @@ export default {
 
   methods: {
     emitEvent () {
+      if (!this.blok.emitEvent) { return }
+
       this.$nuxt.$emit(this.blok.emitEvent)
     }
   }

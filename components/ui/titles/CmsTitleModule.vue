@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-editable="blok">
     <div class="title underlined-title">
       <span>
         {{ blok.title }}
