@@ -138,16 +138,16 @@ $bg-dark-green: #c2daa5;
 
 @media (max-width: 600px) {
   .wrapper {
-    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 20px;
     flex-flow: row nowrap;
+    width: auto;
   }
 
   .card {
-    @include rounded-element(70px);
+    @include rounded-element(60px);
   }
 
   .card__title {
@@ -156,6 +156,7 @@ $bg-dark-green: #c2daa5;
     text-align: left;
     padding-left: 20px;
     margin-top: 0;
+    display: none;
   }
 }
 
