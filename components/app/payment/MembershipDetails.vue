@@ -18,16 +18,16 @@
       <p class="mb-4">
         Your {{ membershipInterval }} membership fee is
 
-        <b>${{ billing.planAmount }}</b>
+        <b>${{ billing.planAmount.toLocaleString('en-US') }}</b>
       </p>
 
       <template>
         <v-row align="center" class="mb-2" no-gutters>
-          <v-col class="text-truncate">
+          <v-col class="text-truncate" cols="12" md="">
             Plan: <b>{{ billing.planName }}</b>
           </v-col>
 
-          <v-btn color="primary" text @click="changePlanModal = true">
+          <v-btn color="primary" class="pa-md-4 ml-n4 md-n0" text @click="changePlanModal = true">
             CHANGE PLAN
           </v-btn>
         </v-row>
@@ -55,7 +55,8 @@
         v-if="hasMembership"
         align="center"
         class="my-1"
-        justify="end"
+        justify="center"
+        justify-md="end"
         no-gutters
       >
         <!-- Cancel suscription -->

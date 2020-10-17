@@ -11,8 +11,8 @@
           </p>
         </div>
 
-        <div class="pb-md-10">
-          <div
+        <v-col class="pb-md-10">
+          <v-row
             class="image"
             :class="{ 'image-bar': $vuetify.breakpoint.mdAndUp }"
           >
@@ -34,8 +34,8 @@
               :items="showSettings"
               solo
             />
-          </div>
-        </div>
+          </v-row>
+        </v-col>
 
         <div class="hidden-sm-and-down mb-12 mt-6 text-right">
           <v-btn
