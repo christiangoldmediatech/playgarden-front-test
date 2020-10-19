@@ -60,6 +60,7 @@ export default {
     search: null,
     categoryId: null,
     page: 1,
+    checkStatusInterval: null,
     headers: [
       {
         text: 'Name',
@@ -102,6 +103,10 @@ export default {
     this.refresh()
   },
 
+  beforeDestroy () {
+    clearInterval(this.checkStatusInterval)
+  },
+
   methods: {
     ...mapActions('parents-corner', [
       'getCategories',
@@ -118,6 +123,8 @@ export default {
         }
 
         await this.getVideos({ name: this.search, categoryId: this.categoryId })
+        this.checkStatus()
+        this.stopInterval()
       } catch (e) {
         Promise.reject(e)
       } finally {
@@ -134,6 +141,20 @@ export default {
           await this.refresh()
         }
       })
+    },
+
+    checkStatus () {
+      if (this.items.filter(data => data.video.status !== 'COMPLETED').length > 0) {
+        this.checkStatusInterval = setInterval(() => {
+          this.refresh()
+        }, 120000)
+      }
+    },
+
+    stopInterval () {
+      if (this.items.filter(data => data.video.status !== 'COMPLETED').length === 0) {
+        clearInterval(this.checkStatusInterval)
+      }
     }
   }
 }
