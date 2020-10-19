@@ -32,7 +32,7 @@ export default {
 
     if (hasLocalStorage()) {
       window.localStorage.removeItem('authToken')
-      // Resets child silection.
+      // Resets child selection.
       if (rootGetters.getCurrentChild) {
         commit('SET_CURRENT_CHILD', null, { root: true })
         commit('SET_CURRENT_CHILD_EXPIRES', null, { root: true })
