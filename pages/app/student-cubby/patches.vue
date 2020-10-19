@@ -92,8 +92,6 @@ export default {
       const data = await this.getPatchesByChildId({ id: this.studentId })
 
       data.map(({ id }) => (unblocked[id] = 1))
-
-      this.unblocked = { 1: 1 }
     },
 
     async refresh () {
