@@ -120,14 +120,14 @@ export default {
 
 .subtitle-activity-card {
   font-weight: 400 !important;
-  color: $pg-black !important;
+  color: var(--v-primary-base) !important;
   text-transform: capitalize !important;
   white-space: pre-wrap;
 }
 
 .with-activity-card {
   font-weight: 400 !important;
-  color: $pg-black !important;
+  color: var(--v-primary-base) !important;
   text-transform: lowercase !important;
 }
 
@@ -142,7 +142,7 @@ export default {
 }
 
 .title {
-  color: $pg-black;
+  color: var(--v-primary-base);
   font-weight: 600;
 }
 
