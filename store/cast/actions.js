@@ -10,7 +10,7 @@ export default {
         if (isAvailable) {
           cast.framework.CastContext.getInstance().setOptions({
             // receiverApplicationId: chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID,
-            receiverApplicationId: '82E99DC4',
+            receiverApplicationId: 'D6A7373A',
             autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
           })
 
