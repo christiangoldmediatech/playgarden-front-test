@@ -21,7 +21,7 @@
           </v-btn>
         </v-toolbar>
 
-        <v-card-text>
+        <v-card-text class="pt-5">
           <v-container>
             <v-form ref="roleForm" @submit.prevent="passes(save)">
               <validation-provider
@@ -32,6 +32,7 @@
                 <pg-text-field
                   v-model="item.category"
                   :error-messages="errors"
+                  hide-details
                   label="Name"
                   solo
                 />

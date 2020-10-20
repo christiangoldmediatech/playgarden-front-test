@@ -183,8 +183,18 @@ export default {
         },
         {
           icon: 'mdi-account-supervisor',
-          title: 'Parents corner blog',
-          route: '/admin/parents-corner-blog'
+          title: 'Parents Corner',
+          rootPath: '/admin/parents-corner',
+          children: [
+            {
+              title: 'Blog',
+              route: 'blog'
+            },
+            {
+              title: 'Videos',
+              route: 'videos'
+            }
+          ]
         },
         {
           icon: 'mdi-account',

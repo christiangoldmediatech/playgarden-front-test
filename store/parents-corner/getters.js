@@ -1,5 +1,6 @@
 import { get } from '@/utils/vuex'
 
 export default {
-  getCategories: get('categories')
+  getCategories: get('categories'),
+  getVideos: get('videos')
 }
