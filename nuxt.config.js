@@ -1,3 +1,6 @@
+import path from 'path'
+import fs from 'fs'
+
 export default {
   /*
    ** Nuxt rendering mode
@@ -6,7 +9,11 @@ export default {
   mode: 'universal',
   server: {
     port: process.env.PORT || 8080,
-    host: process.env.HOST || '0.0.0.0'
+    host: process.env.HOST || '0.0.0.0',
+    https: !['production', 'staging'].includes(process.env.NODE_ENV) ? {
+      key: fs.readFileSync(path.resolve(__dirname, 'keys/server.key')),
+      cert: fs.readFileSync(path.resolve(__dirname, 'keys/server.crt'))
+    } : undefined
   },
   serverMiddleware: {
     '/healthcheck': '@/middleware/healthCheck'
