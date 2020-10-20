@@ -5,6 +5,8 @@
     v-model="dialog"
     :show-favorite="lesson && !lesson.previewMode"
     :video-id="currentVideo ? currentVideo.videoId : -1"
+    :media="currentVideo"
+    show-cast
     @close="handleClose"
   >
     <pg-video-js-player
