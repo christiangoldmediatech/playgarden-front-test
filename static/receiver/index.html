@@ -13,12 +13,6 @@
     <script>
       const context = cast.framework.CastReceiverContext.getInstance();
       const playerManager = context.getPlayerManager();
-      // intercept the LOAD request to be able to read in a contentId and get data
-      playerManager.setMessageInterceptor(
-        cast.framework.messages.MessageType.LOAD, loadRequestData => {
-          // loadRequestData.media.hlsSegmentFormat = 'ts';
-          return loadRequestData;
-        });
       context.start();
     </script>
   </footer>
