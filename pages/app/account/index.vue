@@ -2,7 +2,7 @@
   <v-row class="mt-md-6 mt-0" no-gutters>
     <v-col cols="12" md="6">
       <v-row class="flex-column-reverse flex-md-column sticky" no-gutters>
-        <div class="mb-3 mx-12 text-center text-md-left">
+        <div class="mb-3 mt-6 mt-md-0 mx-12 text-center text-md-left">
           <underlined-title text="Account" />
 
           <p>
@@ -22,8 +22,8 @@
               class="pr-md-6"
               :src="
                 showSetting
-                  ? require('@/assets/svg/montessori-nutrition-lesson.svg')
-                  : require('@/assets/png/profile/child-profile-bkg.png')
+                  ? require('@/assets/jpg/Montessori_Nutrition_Lesson.jpg')
+                  : require('@/assets/jpg/Test_tube_lesson.jpg')
               "
             >
 
@@ -208,6 +208,7 @@ export default {
 
   img {
     max-width: 100%;
+    height: 250px;
   }
 }
 

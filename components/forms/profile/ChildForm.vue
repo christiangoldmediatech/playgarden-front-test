@@ -180,7 +180,7 @@
           x-large
           @click="addRow"
         >
-          ADD <span class="d-none d-sm-flex white--text">NEW</span> CHILD PROFILE
+          ADD <span class="d-none d-sm-flex white--text">NEW</span> CHILD
         </v-btn>
       </v-col>
     </v-row>
