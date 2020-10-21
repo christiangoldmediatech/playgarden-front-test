@@ -1,16 +1,16 @@
 <template>
   <v-container>
-    <parents-corner-category-editor ref="editor" @saved="update" />
+    <parents-corner-video-editor ref="editor" @saved="update" />
 
     <admin-content-header
-      title="Parent's Corner Categories"
-      description="View, create, update, or delete parent corner categories."
-      create-button-text="Add new category"
+      title="Parent's Corner Videos"
+      description="View, create, update, or delete parent corner videos."
+      create-button-text="Add new video"
       :xs="$vuetify.breakpoint.xs"
       @open-editor="openEditor(null)"
     />
 
-    <parents-corner-categories-data-table
+    <parents-corner-videos-data-table
       ref="table"
       @open-editor="openEditor"
     />
@@ -19,7 +19,7 @@
 
 <script>
 export default {
-  name: 'ParentsCornerCategories',
+  name: 'Videos',
 
   layout: 'admin',
 
