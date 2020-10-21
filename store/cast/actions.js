@@ -12,7 +12,8 @@ export default {
             // receiverApplicationId: chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID,
             // receiverApplicationId: '82E99DC4',
             // receiverApplicationId: 'D6A7373A',
-            receiverApplicationId: 'E6D45FF1',
+            // receiverApplicationId: 'E6D45FF1',
+            receiverApplicationId: 'B3A826A2',
             autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
           })
 
