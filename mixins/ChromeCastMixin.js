@@ -49,8 +49,10 @@ export default {
 
         const castSession = cast.framework.CastContext.getInstance().getCurrentSession()
 
-        const mediaInfo = new chrome.cast.media.MediaInfo(url, type)
-        mediaInfo.hlsSegmentFormat = 'ts'
+        const mediaInfo = new chrome.cast.media.MediaInfo()
+        mediaInfo.contentId = ''
+        mediaInfo.contentUrl = url
+        // mediaInfo.hlsSegmentFormat = 'ts'
         const request = new chrome.cast.media.LoadRequest(mediaInfo)
         castSession.loadMedia(request).then(
           function (session) {
