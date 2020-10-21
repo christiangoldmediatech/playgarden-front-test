@@ -13,6 +13,7 @@
   <cast-media-player id="player"></cast-media-player>
   <footer>
     <script>
+      cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
       const context = cast.framework.CastReceiverContext.getInstance();
       const playerManager = context.getPlayerManager();
       // intercept the LOAD request to be able to read in a contentId and get data
