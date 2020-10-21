@@ -34,17 +34,18 @@ export default {
 
     onCastBtn () {
       cast.framework.CastContext.getInstance().requestSession().then(() => {
-        let url, type
+        // let url, type
+        let url
         const sources = this.media.src
 
         if (Array.isArray(sources)) {
           url = sources[0].src
           // url = 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8'
           // url = 'https://d111phhthppitx.cloudfront.net/out/v1/b1940d391d7c476aa03c77d7e76d1c86/1b56e7ba94b6449393af1bcf0e6f439c/0a550f87dac44f4cb8fd401ed45ca455/index.m3u8'
-          type = sources[0].type
+          // type = sources[0].type
         } else {
           url = sources.src
-          type = sources.type
+          // type = sources.type
         }
 
         const castSession = cast.framework.CastContext.getInstance().getCurrentSession()
