@@ -180,7 +180,7 @@
           x-large
           @click="addRow"
         >
-          ADD NEW CHILD PROFILE
+          ADD <span class="d-none d-sm-flex white--text">NEW</span> CHILD PROFILE
         </v-btn>
       </v-col>
     </v-row>
@@ -294,7 +294,9 @@ export default {
     addRow (data = {}) {
       const _data = {
         _birthdayFormatted: '',
-        _birthdayPicker: dayjs(`${new Date().getFullYear() - 2}-01-01`).format('YYYY-MM-DD'),
+        _birthdayPicker: dayjs(`${new Date().getFullYear() - 2}-01-01`).format(
+          'YYYY-MM-DD'
+        ),
         _menu: false,
         _original: null,
         backpackId: this.firstBackpack,
