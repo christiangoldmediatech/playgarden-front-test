@@ -41,14 +41,16 @@ export default async function ({ redirect, route, store }) {
                 result = await store.dispatch('children/get')
               }
 
-              store.dispatch('setChild', {
-                value: result,
-                oldExp: storedData.expires
-              })
+              if (result.length) {
+                store.dispatch('setChild', {
+                  value: result,
+                  oldExp: storedData.expires
+                })
 
-              // Update local value
-              child = store.getters.getCurrentChild
-              childExpires = store.getters.getCurrentChildExpires
+                // Update local value
+                child = store.getters.getCurrentChild
+                childExpires = store.getters.getCurrentChildExpires
+              }
             } catch (error) {
               return Promise.reject(error)
             }

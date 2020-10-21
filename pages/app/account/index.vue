@@ -15,6 +15,7 @@
           <v-row
             class="image"
             :class="{ 'image-bar': $vuetify.breakpoint.mdAndUp }"
+            no-gutters
           >
             <img
               alt="Montessori Nutrition Lesson"

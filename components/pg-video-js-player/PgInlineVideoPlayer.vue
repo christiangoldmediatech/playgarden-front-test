@@ -16,6 +16,7 @@
       </v-hover>
     </div>
     <pg-video-js-player
+      v-bind="$attrs"
       :fullscreen-override="handleFullscreen"
       no-smallscreen
       @ready="onPlayerReady"

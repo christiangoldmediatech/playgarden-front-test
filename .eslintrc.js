@@ -5,7 +5,8 @@ module.exports = {
     node: true
   },
   globals: {
-    jwplayer: true
+    chrome: true,
+    cast: true
   },
   parserOptions: {
     parser: 'babel-eslint'

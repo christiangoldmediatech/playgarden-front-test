@@ -36,8 +36,13 @@ export default {
     }
   },
 
-  async delete (ctx, id) {
+  async delete ({ dispatch, rootGetters }, id) {
     try {
+      const currentChildren = rootGetters.getCurrentChild.find(child => child.id === id)
+      // Check if child is selected
+      if (currentChildren) {
+        dispatch('resetCurrentChild', null, { root: true })
+      }
       const { data } = await this.$axios.delete(`/children/${id}`)
       return data
     } catch (error) {

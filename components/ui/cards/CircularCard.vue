@@ -7,6 +7,7 @@
     <a
       class="card"
       :href="innerLink"
+      @click="emitEvent"
     >
       <img
         v-if="image !== ''"
@@ -20,8 +21,12 @@
 </template>
 
 <script>
+import linkTarget from '@/utils/mixins/cms/linkTarget'
+
 export default {
   name: 'CircularCard',
+
+  mixins: [linkTarget],
 
   props: {
     blok: {
@@ -50,6 +55,19 @@ export default {
     innerLink () {
       return `#${this.blok.link || this.link}`
     }
+  },
+
+  mounted () {
+    this.$nuxt.$on(this.blok.emitEvent, () => {
+    })
+  },
+
+  methods: {
+    emitEvent () {
+      if (!this.blok.emitEvent) { return }
+
+      this.$nuxt.$emit(this.blok.emitEvent)
+    }
   }
 }
 </script>
@@ -66,7 +84,7 @@ $bg-dark-green: var(--v-primary-base);
   display: flex;
   align-items: center;
   flex-flow: column nowrap;
-  margin: 10px 0;
+  margin: 30px 0;
   position: relative;
   z-index: 1;
 }
@@ -113,22 +131,23 @@ $bg-dark-green: var(--v-primary-base);
   font-weight: 600;
   font-size: 16px;
   text-align: center;
+  line-height: 20px;
   color: #707070;
   letter-spacing: 3px;
 }
 
 @media (max-width: 600px) {
   .wrapper {
-    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 20px;
     flex-flow: row nowrap;
+    width: auto;
   }
 
   .card {
-    @include rounded-element(70px);
+    @include rounded-element(60px);
   }
 
   .card__title {
@@ -137,6 +156,7 @@ $bg-dark-green: var(--v-primary-base);
     text-align: left;
     padding-left: 20px;
     margin-top: 0;
+    display: none;
   }
 }
 

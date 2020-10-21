@@ -147,6 +147,8 @@ export default {
         this.status = 'LOADING'
       })
 
+      this.playerInstance.loadPlaylist = this.loadPlaylist
+
       // Add show loading methods
       this.playerInstance.showLoading = () => {
         this.playerInstance.addClass('vjs-waiting')
