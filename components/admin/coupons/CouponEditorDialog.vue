@@ -178,9 +178,20 @@ export default {
       })
     },
 
+    cleanFields (obj) {
+      Object.keys(obj).forEach((key) => {
+      // for (var propName in obj) {
+        if (obj[key] === null || obj[key] === undefined) {
+          delete obj[key]
+        }
+      })
+      return obj
+    },
+
     async save () {
       this.loading = true
       try {
+        this.item = this.cleanFields(this.item)
         if (this.id === null) {
           await this.createCoupon(this.item)
         } else {
