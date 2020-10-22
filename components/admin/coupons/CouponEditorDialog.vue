@@ -40,6 +40,25 @@
 
               <validation-provider
                 v-slot="{ errors }"
+                name="Duration"
+                rules="required"
+              >
+                <pg-select
+                  class="mb-6"
+                  v-model="item.duration"
+                  clearable
+                  hide-details
+                  :items="durationList"
+                  item-text="name"
+                  item-value="value"
+                  label="Duration"
+                  :error-messages="errors"
+                  solo
+                />
+              </validation-provider>
+
+              <validation-provider
+                v-slot="{ errors }"
                 name="Percent off"
                 rules="required"
               >
@@ -47,6 +66,20 @@
                   v-model="item.percent_off"
                   :error-messages="errors"
                   label="Percent off"
+                  solo
+                />
+              </validation-provider>
+
+              <validation-provider
+                v-if="item.duration === 'repeating'"
+                v-slot="{ errors }"
+                name="Duration in months"
+                rules="required"
+              >
+                <pg-text-field
+                  v-model="item.duration_in_months"
+                  :error-messages="errors"
+                  label="Duration in months"
                   solo
                 />
               </validation-provider>
@@ -109,6 +142,20 @@ export default {
       file: null,
       dialog: false,
       loading: false,
+      durationList: [
+        {
+          value: 'once',
+          name: 'ONCE'
+        },
+        {
+          value: 'repeating',
+          name: 'REPEATING'
+        },
+        {
+          value: 'forever',
+          name: 'FOREVER'
+        }
+      ],
       id: null,
       item: generateItemTemplate()
     }

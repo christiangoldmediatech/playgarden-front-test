@@ -131,7 +131,8 @@ export default {
       }
 
       try {
-        this.coupons = await this.getCoupons({ name: this.search })
+        // this.coupons = await this.getCoupons({ name: this.search })
+        this.coupons = await this.getCoupons()
       } catch (e) {
       } finally {
         this.loading = false

@@ -1,11 +1,25 @@
 import { snotifyError } from '@/utils/vuex'
 
 export default {
-  getCoupons ({ commit }, params) {
+  async getCoupons ({ commit }) {
+    try {
+      return await this.$axios.$get('/coupons').then(response => response.data)
+    } catch (error) {
+      snotifyError(commit, {
+        body: 'Sorry! There was an error while getting coupons'
+      })
+
+      throw error
+    }
+  },
+
+  /* getCoupons ({ commit }, params) {
     return new Promise((resolve, reject) =>
       this.$axios
         .$get('/coupons', { params })
-        .then(resolve)
+        .then(resolve) => {
+          console.log('resolve--', resolve);
+        }
         .catch((error) => {
           snotifyError(commit, {
             body: 'Sorry! There was an error while getting coupons.'
@@ -14,7 +28,7 @@ export default {
           reject(error)
         })
     )
-  },
+  }, */
 
   createCoupon (_, data) {
     return this.$axios.$post('/coupons', data)
