@@ -1,6 +1,6 @@
 <template>
   <v-container
-    class="pa-0"
+    class="pa-0 mb-10"
   >
     <component
       :is="story.content.component"

@@ -1,69 +1,76 @@
 <template>
   <v-dialog
     :value="value"
-    max-width="640"
+    max-width="978px"
+    max-height="710px"
     persistent
     @input="$emit('input', $event.target.value)"
   >
     <v-card>
-      <v-card-title>
+      <div class="worksheet-message-content">
         <v-row>
-          <v-col cols="12">
+          <v-col class="pt-0" cols="12">
             <div class="worksheet-message-title">
               {{ `${correct ? 'GREAT JOB!' : 'TRY AGAIN!'}` }}
             </div>
           </v-col>
         </v-row>
-      </v-card-title>
 
-      <v-card-text>
-        <v-row v-if="item" align="center" justify="center">
-          <v-col class="flex-shrink-1 flex-grow-0" cols="7" sm="5">
-            <div class="text-center worksheet-item">
+        <v-row v-if="item" align="center">
+          <v-col class="d-flex justify-end" cols="6">
+            <div class="worksheet-message-item">
               <v-img
-                class="mx-auto worksheet-item-shadow"
+                class="ml-auto worksheet-item-shadow"
                 :src="item.image"
-                max-width="200"
                 aspect-ratio="1"
+                max-width="300px"
+                max-height="300px"
               >
                 <div class="worksheet-item-image worksheet-item-image-selected" />
               </v-img>
-              <div class="my-3 text-center font-weight-bold">
-                {{ item.word }}
-              </div>
             </div>
           </v-col>
-          <v-col cols="5" sm="4">
+
+          <v-col cols="6" lg="5">
             <div class="text-center">
               <v-img
                 :src="require(`@/assets/svg/${correct ? 'correct' : 'incorrect' }.svg`)"
-                class="mx-auto"
+                class="mx-auto worksheet-message-icon"
                 :aspect-ratio="1"
-                :max-width="100"
               />
               <div class="mt-2 text-h6 font-weight-bold">
                 {{ item.word }}
               </div>
-              <p v-if="tapCorrect">
-                starts with a {{ item.word[0].toUpperCase() }}{{ item.word[0].toLowerCase() }}
-              </p>
-              <p v-else>
-                <template v-if="correct">
-                  is the correct answer!
-                </template>
-                <template v-else>
-                  is not a {{ randomWord }}
-                </template>
-              </p>
+              <template v-if="item.errorMessage && !correct">
+                <p>
+                  {{ item.errorMessage }}
+                </p>
+              </template>
+              <template v-else>
+                <p v-if="tapCorrect">
+                  starts with a {{ item.word[0].toUpperCase() }}{{ item.word[0].toLowerCase() }}
+                </p>
+                <p v-else>
+                  <template v-if="correct">
+                    is the correct answer!
+                  </template>
+                  <template v-else>
+                    is not a {{ randomWord }}
+                  </template>
+                </p>
+              </template>
             </div>
           </v-col>
-          <v-col cols="12" sm="9">
+        </v-row>
+
+        <v-row justify="center">
+          <v-col class="pb-0" cols="12" sm="9">
             <v-btn color="primary" block v-on="{ click: $listeners.click }">
               <slot />
             </v-btn>
           </v-col>
         </v-row>
-      </v-card-text>
+      </div>
     </v-card>
   </v-dialog>
 </template>
@@ -124,13 +131,31 @@ export default {
 </script>
 
 <style lang="scss">
-.worksheet {
-  &-message-title {
+.worksheet-message {
+  &-content {
+    padding: 45px 55px;
+  }
+  &-icon {
+    max-width: 168px;
+  }
+  @media screen and (max-width: 600px) {
+    &-content {
+      padding: 12px 16px;
+    }
+    &-icon {
+      max-width: 80px;
+    }
+  }
+  &-title {
     font-size: 28px !important;
     font-weight: bold !important;
     letter-spacing: 0.15em !important;
     text-align: center !important;
     display: block;
+  }
+  &-item {
+    width: 75%;
+    max-width: 75%;
   }
 }
 </style>

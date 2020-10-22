@@ -40,7 +40,6 @@
                       class="image"
                       cols="4"
                       md="2"
-                      sm="2"
                     >
                       <img
                         :alt="backpack.name"
@@ -295,7 +294,7 @@ export default {
     addRow (data = {}) {
       const _data = {
         _birthdayFormatted: '',
-        _birthdayPicker: '',
+        _birthdayPicker: dayjs(`${new Date().getFullYear() - 2}-01-01`).format('YYYY-MM-DD'),
         _menu: false,
         _original: null,
         backpackId: this.firstBackpack,

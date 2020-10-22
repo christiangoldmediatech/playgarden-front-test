@@ -50,8 +50,12 @@
 
           <v-row :class="['dashboard-content', { 'dashboard-mobile-content': $vuetify.breakpoint.sm, 'dashboard-xs-content': $vuetify.breakpoint.xs }]" no-gutters>
             <v-col class="dashboard-content-column" cols="12">
-              <pg-loading v-if="$route.name === 'app-dashboard' || loading" />
-              <slot />
+              <template v-if="$route.name === 'app-dashboard' || loading">
+                <pg-loading />
+              </template>
+              <template v-else>
+                <slot />
+              </template>
             </v-col>
           </v-row>
         </v-col>

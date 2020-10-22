@@ -52,6 +52,7 @@ export default {
   line-height: 27px;
   color: var(--v-black-base);
   text-transform: uppercase;
+  margin-bottom: 10px;
 }
 
 .section__subtitle {

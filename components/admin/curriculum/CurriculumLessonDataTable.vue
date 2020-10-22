@@ -39,89 +39,73 @@
       <v-col cols="12">
         <v-card width="100%">
           <v-card-text>
-            <v-data-table
+            <pg-admin-data-table
               :headers="headers"
-              hide-default-footer
               :items="resources"
               :loading="loading"
               :page.sync="pagination.page"
               :server-items-length="pagination.total"
+              @refresh="refresh(true)"
+              @search="onSearch"
               @update:page="pagination.page = $event"
+              @edit-item="onEdit"
+              @remove-item="remove"
             >
-              <template v-slot:top>
-                <v-row>
-                  <v-col class="mt-2" cols="1">
-                    <v-icon class="my-1" color="accent">
-                      mdi-tune
-                    </v-icon>
-                  </v-col>
+              <template v-slot:[`top.prepend`]>
+                <v-col class="mt-2" cols="1">
+                  <v-icon class="my-1" color="accent">
+                    mdi-tune
+                  </v-icon>
+                </v-col>
 
-                  <v-col cols="11" md="2">
-                    <pg-select
-                      v-model="filters.curriculumTypeId"
-                      clearable
-                      hide-details
-                      :items="types"
-                      item-text="name"
-                      item-value="id"
-                      label="Letter"
-                      solo
-                      @change="refresh(false)"
-                    />
-                  </v-col>
+                <v-col cols="11" md="2">
+                  <pg-select
+                    v-model="filters.curriculumTypeId"
+                    clearable
+                    hide-details
+                    :items="types"
+                    item-text="name"
+                    item-value="id"
+                    label="Letter"
+                    solo
+                    @change="refresh(false)"
+                  />
+                </v-col>
 
-                  <v-col cols="12" md="5">
-                    <v-radio-group
-                      v-if="$vuetify.breakpoint.lgAndUp"
-                      v-model="filters.level"
-                      hide-details
-                      @change="refresh(false)"
-                    >
-                      <v-row align="start" justify="start" no-gutters>
-                        <v-radio
-                          v-for="(item, i) in levels"
-                          :key="`filters-level-${i}`"
-                          class="mx-1 pa-0"
-                          color="primary darken-2"
-                          :label="item.label"
-                          :value="item.value"
-                        />
-                      </v-row>
-                    </v-radio-group>
+                <v-col cols="12" md="5">
+                  <v-radio-group
+                    v-if="$vuetify.breakpoint.lgAndUp"
+                    v-model="filters.level"
+                    hide-details
+                    @change="refresh(false)"
+                  >
+                    <v-row align="start" justify="start" no-gutters>
+                      <v-radio
+                        v-for="(item, i) in levels"
+                        :key="`filters-level-${i}`"
+                        class="mx-1 pa-0"
+                        color="primary darken-2"
+                        :label="item.label"
+                        :value="item.value"
+                      />
+                    </v-row>
+                  </v-radio-group>
 
-                    <pg-select
-                      v-else
-                      v-model="filters.level"
-                      :items="levels"
-                      hide-details
-                      item-text="label"
-                      item-value="value"
-                      label="Level"
-                      solo
-                      @change="refresh(false)"
-                    />
-                  </v-col>
-
-                  <v-col cols="12" md="4">
-                    <pg-text-field
-                      v-model="search"
-                      append-icon="mdi-magnify"
-                      clearable
-                      hide-details
-                      label="Search"
-                      single-line
-                      solo
-                      @keydown.enter="refresh(false)"
-                    />
-                  </v-col>
-                </v-row>
+                  <pg-select
+                    v-else
+                    v-model="filters.level"
+                    :items="levels"
+                    hide-details
+                    item-text="label"
+                    item-value="value"
+                    label="Level"
+                    solo
+                    @change="refresh(false)"
+                  />
+                </v-col>
               </template>
 
-              <template v-slot:item.createdAt="{ item }">
-                {{ item.createdAt | formatDate }}
-              </template>
-
-              <template v-slot:item.actions="{ item }">
+              <template v-slot:[`item.actions.prepend`]="{ item }">
                 <nuxt-link
                   :to="{
                     name: 'admin-curriculum-management-lessonId-preview',
@@ -132,84 +116,8 @@
                     mdi-play
                   </v-icon>
                 </nuxt-link>
-
-                <nuxt-link
-                  :to="{
-                    name: 'admin-curriculum-management-editor',
-                    query: { lessonId: item.id }
-                  }"
-                >
-                  <v-icon color="#81A1F7" dense>
-                    mdi-pencil-outline
-                  </v-icon>
-                </nuxt-link>
-
-                <v-icon color="#d30909" dense @click="remove(item)">
-                  mdi-delete-outline
-                </v-icon>
               </template>
-
-              <template v-slot:no-data>
-                <v-btn color="primary" text @click="refresh(true)">
-                  Refresh
-                </v-btn>
-              </template>
-
-              <template v-slot:loading>
-                <v-skeleton-loader class="mx-auto" type="table-row-divider@3" />
-              </template>
-
-              <template v-slot:footer="{ props }">
-                <v-container fluid>
-                  <v-row align="center" justify="end">
-                    <v-icon
-                      class="clickable mr-2"
-                      color="green"
-                      :disabled="props.pagination.page === 1 || loading"
-                      x-small
-                      @click.stop="pagination.page--"
-                      v-text="'mdi-less-than'"
-                    />
-
-                    <template v-for="i in props.pagination.pageCount">
-                      <span
-                        :key="`footer-page-number-${i}`"
-                        :class="[
-                          'font-weight-normal',
-                          {
-                            'accent--text text--darken-1':
-                              props.pagination.page === i,
-                            clickable: props.pagination.page !== i
-                          }
-                        ]"
-                        @click.stop="pagination.page = i"
-                      >
-                        {{ i }}
-                      </span>
-                      <span
-                        v-if="i !== props.pagination.pageCount"
-                        :key="`footer-page-dot-${i}`"
-                        class="font-weight-normal mx-1"
-                      >
-                        &centerdot;
-                      </span>
-                    </template>
-
-                    <v-icon
-                      class="clickable ml-2"
-                      color="green"
-                      :disabled="
-                        props.pagination.page === props.pagination.pageCount ||
-                          loading
-                      "
-                      x-small
-                      @click.stop="pagination.page++"
-                      v-text="'mdi-greater-than'"
-                    />
-                  </v-row>
-                </v-container>
-              </template>
-            </v-data-table>
+            </pg-admin-data-table>
           </v-card-text>
         </v-card>
       </v-col>
@@ -219,13 +127,13 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-
+import onSearch from '@/mixins/OnSearchMixin.js'
 import paginable from '@/utils/mixins/paginable'
 
 export default {
   name: 'CurriculumLessonDataTable',
 
-  mixins: [paginable],
+  mixins: [paginable, onSearch],
 
   data: () => ({
     loading: false,
@@ -300,6 +208,13 @@ export default {
       'fetchLessons',
       'getTypes'
     ]),
+
+    onEdit (item) {
+      this.$router.push({
+        name: 'admin-curriculum-management-editor',
+        query: { lessonId: item.id }
+      })
+    },
 
     async refresh (clear = false) {
       this.loading = true

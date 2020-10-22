@@ -1,9 +1,9 @@
 <template>
-  <v-card flat>
-    <v-card-text>
+  <v-card flat class="pt-0 pt-md-3">
+    <v-card-text class="pt-0 pt-md-4">
       <div class="text-center">
         <underlined-title
-          class="text-h6 text-md-h3"
+          class="text-h5 text-md-h3"
           text="Review all Curriculum"
         />
 

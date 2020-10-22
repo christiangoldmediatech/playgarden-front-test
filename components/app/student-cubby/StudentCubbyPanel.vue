@@ -28,8 +28,7 @@
         <v-col
           v-for="(link, i) in links"
           :key="`link-route-${link.route}`"
-          cols="6"
-          sm="3"
+          cols="3"
           md="6"
         >
           <v-hover v-slot="{ hover }">
@@ -57,7 +56,8 @@
                 />
 
                 <span
-                  class="font-weight-bold d-block text-center text-body-2 text-md-subtitle-2 text-xl-h6 text-kerning"
+                  class="font-weight-bold d-block text-center text-body-2 text-md-subtitle-2 text-xl-h6 text-kerning menu-link"
+                  :class="{mobile: $vuetify.breakpoint.xs}"
                 >
                   {{ link.text }}
                 </span>
@@ -182,5 +182,11 @@ export default {
   padding: 5%;
   position: absolute;
   width: 90%;
+}
+
+.menu-link {
+  &.mobile {
+    display: none !important;
+  }
 }
 </style>

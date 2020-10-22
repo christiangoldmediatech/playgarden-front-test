@@ -2,11 +2,11 @@
   <div>
     <patch-overlay :unblocked="unblocked" />
 
-    <v-card flat>
-      <v-card-text>
+    <v-card flat class="pt-0 pt-md-3">
+      <v-card-text class="pt-0 pt-md-4">
         <div class="text-center">
           <underlined-title
-            class="text-h6 text-md-h3"
+            class="text-h5 text-md-h3"
             text="Earn Activity Patches for learning!"
           />
 
@@ -92,8 +92,6 @@ export default {
       const data = await this.getPatchesByChildId({ id: this.studentId })
 
       data.map(({ id }) => (unblocked[id] = 1))
-
-      this.unblocked = { 1: 1 }
     },
 
     async refresh () {

@@ -104,7 +104,7 @@
 
       <v-btn
         block
-        class="mb-4 mt-4 main-btn"
+        class="mb-4 mt-4 main-btn ml-n4 ml-md-0"
         min-height="60"
         color="primary"
         :disabled="invalid"
@@ -117,7 +117,7 @@
 
       <p v-if="!noTrial" class="mb-15 text-body-2 text-center">
         <span>
-          You will only be billed after the one week of FREE trial is completed
+          You will only be billed after the first FREE trial week is complete.
         </span>
       </p>
 

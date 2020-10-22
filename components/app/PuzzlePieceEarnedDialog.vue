@@ -23,7 +23,7 @@
               />
             </div>
             <p class="piece-earned-paragraph-1">
-              You have completed all lessons for Letter {{ letter }}, you won a puzzle piece!
+              You have completed the Letter {{ letter }} lesson! You earned a piece of your Letter {{ letter }} puzzle!
             </p>
           </v-col>
           <v-col cols="12">

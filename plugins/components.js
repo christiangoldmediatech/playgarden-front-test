@@ -13,6 +13,7 @@ import GenericCarousel from '@/components/cms/carousel/GenericCarousel.vue'
 import CmsVideoCard from '@/components/cms/cards/CmsVideoCard.vue'
 import CmsMaterials from '@/components/cms/forum/CmsMaterials.vue'
 import CmsTitleModule from '@/components/ui/titles/CmsTitleModule.vue'
+import CmsActivityCard from '@/components/cms/cards/CmsActivityCard.vue'
 
 Vue.component('page', Page)
 Vue.component('circular-card', CircularCard)
@@ -25,5 +26,6 @@ Vue.component('cms-header', CmsHeader)
 Vue.component('cms-button', CmsButton)
 Vue.component('cms-forum-list', CmsForumList)
 Vue.component('cms-materials', CmsMaterials)
+Vue.component('cms-activity-card', CmsActivityCard)
 Vue.component('flat-card', FlatCard)
 Vue.component('CmsTitleModule', CmsTitleModule)

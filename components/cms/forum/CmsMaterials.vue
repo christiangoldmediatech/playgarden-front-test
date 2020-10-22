@@ -29,7 +29,7 @@
         <img :src="blok.image" class="material-image">
       </div>
 
-      <div class="px-5">
+      <div class="px-5 d-flex justify-center flex-column">
         <div class="pg-title--uppercase">
           Monthly workbooks
         </div>
@@ -53,6 +53,8 @@
           <v-btn
             class="button"
             color="primary"
+            :target="linkTarget"
+            :href="getSelectedBook"
           >
             <v-icon left>
               mdi-download-outline
@@ -95,6 +97,15 @@ export default {
     }
   },
 
+  computed: {
+    getSelectedBook () {
+      return this.blok[`book${this.activeInterval}`].filename
+    },
+    linkTarget () {
+      return this.blok.newTab ? '_blank' : '_self'
+    }
+  },
+
   methods: {
     toParentsCorner () {
       this.$router.push('/app/parent-corner')
@@ -114,7 +125,7 @@ export default {
   @include parent-stack-context;
   font-size: 50px;
   margin: 0 auto;
-  margin-top: 40px;
+  margin-top: 60px;
   max-width: 800px;
   color: var(--v-black-base);
   font-weight: bold;

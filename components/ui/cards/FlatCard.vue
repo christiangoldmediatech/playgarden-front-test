@@ -18,7 +18,10 @@
         <div class="text-container">
           <b>{{ blok.title }}</b>
           <div class="link">
-            <a :href="blok.link">{{ blok.textLink }}</a>
+            <a
+              :target="linkTarget"
+              :href="blok.link"
+            >{{ blok.textLink }}</a>
           </div>
         </div>
       </v-card>
@@ -29,6 +32,7 @@
       v-if="blok.downloadFile && blok.downloadFile.filename"
       class="button mt-4"
       color="primary"
+      :target="downloadTarget"
       :href="blok.downloadFile.filename"
     >
       <v-icon left>
@@ -48,6 +52,15 @@ export default {
     blok: {
       type: Object,
       default: () => ({})
+    }
+  },
+
+  computed: {
+    linkTarget () {
+      return this.blok.newTab ? '_blank' : '_self'
+    },
+    downloadTarget () {
+      return this.blok.downloadNewTab ? '_blank' : '_self'
     }
   }
 }

@@ -22,7 +22,12 @@
         </p>
       </template>
       <div class="player-dialog-top-right-icons">
-        <v-btn large icon>
+        <v-btn
+          v-if="canCast"
+          large
+          icon
+          @click.stop="onCastBtn"
+        >
           <v-icon color="#D2D2D2">
             mdi-cast-education
           </v-icon>
@@ -54,11 +59,12 @@
 import SmallScreen from '@/mixins/SmallScreenMixin.js'
 import Favorites from '@/mixins/FavoritesMixin.js'
 import Dimensions from '@/mixins/DimensionsMixin.js'
+import ChromeCast from '@/mixins/ChromeCastMixin.js'
 
 export default {
   name: 'VideoPlayerDialog',
 
-  mixins: [Dimensions, Favorites, SmallScreen],
+  mixins: [Dimensions, Favorites, SmallScreen, ChromeCast],
 
   props: {
     value: {

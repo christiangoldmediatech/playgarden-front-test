@@ -7,7 +7,7 @@
         </v-col>
 
         <v-col cols="12" md="">
-          <v-row align="center" class="mr-3" justify="end">
+          <v-row align="center" class="mr-3 hidden-sm-and-down" justify="end">
             <span class="font-weight-medium">First time using Playgarden?</span>
 
             <v-btn color="primary" nuxt text :to="{ name: 'app-onboarding' }">
@@ -16,7 +16,7 @@
           </v-row>
 
           <template v-if="studentId">
-            <v-container>
+            <v-container class="pt-0 pt-md-3">
               <nuxt-child />
             </v-container>
           </template>

@@ -52,8 +52,7 @@
 
           <p class="mt-6 text-center text-md-left">
             <small>
-              Complete the registration and choose the plan that best suits you,
-              to start your learning experience!
+              Complete the registration and choose the best plan for your child to start learning now!
             </small>
           </p>
 
@@ -69,7 +68,7 @@
             </p>
 
             <p class="text-center text-md-left">
-              <small>You can cancel at any time from your account settings</small>
+              <small>You may cancel your membership at any time through your account settings.</small>
             </p>
           </template>
         </v-col>
@@ -79,7 +78,7 @@
 
   <v-row v-else align="center" justify="center" no-gutters>
     <v-col cols="11" md="6">
-      <div class="image">
+      <div class="image mt-4" :class="{mobile: $vuetify.breakpoint.smAndDown}">
         <img alt="Smiling Girl Picture" src="@/assets/svg/girl-smiling.svg">
       </div>
     </v-col>
@@ -214,6 +213,9 @@ export default {
   align-content: center;
   img {
     max-width: 90%;
+  }
+  &.mobile {
+    max-height: 250px;
   }
 }
 .form {

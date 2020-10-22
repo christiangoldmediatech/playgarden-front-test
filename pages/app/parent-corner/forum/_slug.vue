@@ -1,5 +1,5 @@
 <template>
-  <div v-editable="story.content" class="blog">
+  <div v-editable="story.content" class="blog mb-10">
     <div
       class="back-btn"
       @click="toParentsCorner"
@@ -28,17 +28,11 @@
       class="blog__main-image pg-image--cover"
     >
       <img :src="story.content.image">
-      <div class="blog__icons--vertical">
-        <a
-          v-for="media in shareLinks"
-          :key="media.media"
-          :href="media.link"
-        >
-          <img
-            class="pg-image--cover"
-            :src="require('@/assets/svg/social-media/' + media.imageSrc)"
-          >
-        </a>
+      <div
+        v-if="story.content.collaborationImage"
+        class="collaboration pg-image--contain"
+      >
+        <img :src="story.content.collaborationImage">
       </div>
     </div>
     <!-- Body -->
@@ -149,14 +143,14 @@ export default {
     generateShareLinks () {
       const mediaList = [
         'facebook',
-        'linkedin',
+        'email',
         'twitter'
       ]
 
       this.shareLinks = mediaList.map((media) => {
         const linkData = {
           facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`,
-          linkedin: `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(window.location.href)}&title=${this.story.content.title}&summary=&source=`,
+          email: `mailto:?subject=Playgarden prep: ${this.story.content.title}&amp;body=Check out this site ${encodeURIComponent(window.location.href)}`,
           twitter: `https://twitter.com/intent/tweet?text=${this.story.content.title}%0A${encodeURIComponent(window.location.href)}`
         }
 
@@ -278,6 +272,17 @@ $icon-size: 60px;
 
 .orange-text {
   color: var(--v-accent-base);
+}
+
+.collaboration {
+  position: absolute;
+  bottom: 0;
+  right: 20px;
+  transform: translateY(50%);
+  width: 280px;
+  height: 100px;
+  box-shadow: 4px 3px 6px 0 rgba(0, 0, 0, 0.2);
+  background: white;
 }
 
 $mobile-image-height: 300px;

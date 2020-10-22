@@ -12,10 +12,10 @@
               :error-messages="errors"
               :loading="loading"
             >
-              <p>
-                <span class="font-weight-bold text-h5 pg-letter-spacing">
-                  {{ updating ? "UPDATE" : "CHOOSE YOUR" }} PLAN
-                </span>
+              <p
+                class="font-weight-bold mb-6 pg-letter-spacing text-center text-h5 text-md-left"
+              >
+                {{ updating ? "UPDATE" : "CHOOSE YOUR" }} PLAN
               </p>
 
               <v-row
@@ -87,10 +87,15 @@
             </v-radio-group>
           </validation-provider>
 
-          <v-row v-if="!noAddress && draft.requireAddress" no-gutters>
-            <v-col>
-              <p class="text-justify">
-                <span class="font-weight-bold text-h5 pg-letter-spacing">
+          <v-row
+            v-if="!noAddress && draft.requireAddress"
+            class="flex-md-row"
+            justify="center"
+            no-gutters
+          >
+            <v-col class="px-6">
+              <p class="text-center text-md-justify">
+                <span class="font-weight-bold text-h5 pg-letter-spacing text-center text-md-justify">
                   SHIPPING ADDRESS
                 </span>
                 <br>

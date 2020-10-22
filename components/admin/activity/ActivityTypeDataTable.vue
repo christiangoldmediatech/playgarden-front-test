@@ -42,39 +42,26 @@
       <v-col cols="12">
         <v-card width="100%">
           <v-card-text>
-            <v-data-table
+            <activity-type-editor-dialog ref="editor" />
+
+            <pg-admin-data-table
               :headers="headers"
-              hide-default-footer
               :items="types"
               :loading="loading"
               :page.sync="page"
               @update:page="page = $event"
+              @search="onSearch"
+              @refresh="refresh(true)"
+              @edit-item="$refs.editor.open(null, $event)"
+              @remove-item="remove"
             >
-              <template v-slot:top>
-                <activity-type-editor-dialog ref="editor" />
-                <v-toolbar color="white" flat>
-                  <v-spacer />
-                  <pg-text-field
-                    v-model="search"
-                    append-icon="mdi-magnify"
-                    class="shrink"
-                    clearable
-                    hide-details
-                    label="Search"
-                    single-line
-                    solo
-                    @keydown.enter="refresh(false)"
-                  />
-                </v-toolbar>
-              </template>
-
-              <template v-slot:item.color="{ item }">
+              <template v-slot:[`item.color`]="{ item }">
                 <v-avatar color="black" size="32">
                   <v-avatar :color="item.color" size="28" />
                 </v-avatar>
               </template>
 
-              <template v-slot:item.icon="{ item }">
+              <template v-slot:[`item.icon`]="{ item }">
                 <img
                   v-if="item.icon && item.icon !== '0'"
                   :src="item.icon"
@@ -85,94 +72,12 @@
                 </span>
               </template>
 
-              <template v-slot:item.type="{ item }">
+              <template v-slot:[`item.type`]="{ item }">
                 <span class="text-capitalize">
                   {{ itemTypeString(item.type) }}
                 </span>
               </template>
-
-              <template v-slot:item.createdAt="{ item }">
-                {{ item.createdAt | formatDate }}
-              </template>
-
-              <template v-slot:item.updatedAt="{ item }">
-                {{ item.updatedAt | formatDate }}
-              </template>
-
-              <template v-slot:item.actions="{ item }">
-                <v-icon
-                  color="#81A1F7"
-                  dense
-                  @click="$refs.editor.open(null, item)"
-                >
-                  mdi-pencil-outline
-                </v-icon>
-                <v-icon color="#d30909" dense @click="remove(item)">
-                  mdi-delete-outline
-                </v-icon>
-              </template>
-
-              <template v-slot:no-data>
-                <v-btn color="primary" text @click="refresh(true)">
-                  Refresh
-                </v-btn>
-              </template>
-
-              <template v-slot:loading>
-                <v-skeleton-loader class="mx-auto" type="table-row-divider@3" />
-              </template>
-
-              <template v-slot:footer="{ props }">
-                <v-container fluid>
-                  <v-row align="center" justify="end">
-                    <v-icon
-                      class="clickable mr-2"
-                      color="green"
-                      :disabled="props.pagination.page === 1 || loading"
-                      x-small
-                      @click.stop="page--"
-                      v-text="'mdi-less-than'"
-                    />
-
-                    <template v-for="i in props.pagination.pageCount">
-                      <span
-                        :key="`footer-page-number-${i}`"
-                        :class="[
-                          'font-weight-normal',
-                          {
-                            'accent--text text--darken-1':
-                              props.pagination.page === i,
-                            clickable: props.pagination.page !== i
-                          }
-                        ]"
-                        @click.stop="page = i"
-                      >
-                        {{ i }}
-                      </span>
-                      <span
-                        v-if="i !== props.pagination.pageCount"
-                        :key="`footer-page-dot-${i}`"
-                        class="font-weight-normal mx-1"
-                      >
-                        &centerdot;
-                      </span>
-                    </template>
-
-                    <v-icon
-                      class="clickable ml-2"
-                      color="green"
-                      :disabled="
-                        props.pagination.page === props.pagination.pageCount ||
-                          loading
-                      "
-                      x-small
-                      @click.stop="page++"
-                      v-text="'mdi-greater-than'"
-                    />
-                  </v-row>
-                </v-container>
-              </template>
-            </v-data-table>
+            </pg-admin-data-table>
           </v-card-text>
         </v-card>
       </v-col>
@@ -182,6 +87,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import onSearch from '@/mixins/OnSearchMixin.js'
 import ActivityTypeEditorDialog from './ActivityTypeEditorDialog'
 
 export default {
@@ -190,6 +96,8 @@ export default {
   components: {
     ActivityTypeEditorDialog
   },
+
+  mixins: [onSearch],
 
   data () {
     return {
