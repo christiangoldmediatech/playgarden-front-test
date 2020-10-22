@@ -19,7 +19,7 @@
         <v-btn
           v-if="fakeNetworks.download"
           block
-          class="mb-2"
+          class="mb-2 movSpa"
           :color="fakeNetworks.download.color"
           :href="url"
           target="_blank"
@@ -48,12 +48,12 @@
           :twitter-user="twitterUser"
           :url="url"
         >
-          <v-btn block :color="network.color">
+          <v-btn class="movSpa" block :color="network.color">
             <v-icon v-if="network.icon" left>
               {{ network.icon }}
             </v-icon>
 
-            <span :style="{ color: network.textColor || textColor }">
+            <span class="movSpa" :style="{ color: network.textColor || textColor }">
               {{ network.name }}
             </span>
           </v-btn>
@@ -94,13 +94,13 @@ export default {
           network: 'download',
           name: 'Download',
           icon: 'mdi-download',
-          color: 'primary lighten-1'
+          color: 'primary'
         },
         {
           network: 'email',
           name: 'Email',
           icon: 'mdi-email-outline',
-          color: 'primary lighten-1'
+          color: 'primary'
         },
         {
           network: 'facebook',
@@ -167,3 +167,11 @@ export default {
   }
 }
 </script>
+
+<style>
+@media only screen and (max-width: 959px) {
+  .movSpa {
+  align-content: start;
+  justify-content: start;
+}}
+</style>
