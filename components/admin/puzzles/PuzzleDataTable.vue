@@ -216,12 +216,8 @@ export default {
         value: 'rows'
       },
       {
-        text: 'Created',
-        value: 'createdAt'
-      },
-      {
-        text: 'Last Updated',
-        value: 'updatedAt'
+        text: 'Letter',
+        value: 'curriculumType.letter'
       },
       {
         align: 'right',
