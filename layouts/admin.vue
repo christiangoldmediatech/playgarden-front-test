@@ -239,6 +239,10 @@ export default {
               route: 'patch-management'
             },
             {
+              title: 'Puzzle Management',
+              route: 'puzzle-management'
+            },
+            {
               title: 'Privacy Policy Management',
               route: 'privacy-policy-management'
             },
