@@ -5,7 +5,7 @@
       fluid
       :class="[
         'portfolio-card',
-        { clickable: !displayMode, scaled: hover && !displayMode }
+        { clickable: !displayMode, scaled: hover && !displayMode },
       ]"
     >
       <v-row
@@ -39,25 +39,21 @@
       </v-row>
     </v-container>
 
-    <div v-else class="portfolio-card">
-      <pg-social-buttons
-        :quote="textShare"
-        :title="textShare"
-        :toolbar-title="`Share ${textShare}`"
-        :toolbar-subtitle="textShare"
-        :url="image"
-      />
+    <v-row v-else align="center" class="portfolio-card">
+      <v-col cols="12" md="">
+        <img class="w-100" :src="image">
+      </v-col>
 
-      <v-img :src="image" aspect-ratio="1" contain />
-
-      <pg-social-buttons
-        :quote="textShare"
-        :title="textShare"
-        :toolbar-title="`Share ${textShare}`"
-        :toolbar-subtitle="textShare"
-        :url="image"
-      />
-    </div>
+      <v-col class="shrink" cols="12" md="">
+        <pg-social-buttons
+          :quote="textShare"
+          :title="textShare"
+          :toolbar-title="`Share ${textShare}`"
+          :toolbar-subtitle="textShare"
+          :url="image"
+        />
+      </v-col>
+    </v-row>
   </v-hover>
 </template>
 

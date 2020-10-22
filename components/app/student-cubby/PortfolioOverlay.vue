@@ -1,7 +1,7 @@
 <template>
   <v-dialog :value="overlay" :fullscreen="fullscreen">
     <v-card class="dialog-portfolio-overlay">
-      <v-container class="pa-0" fluid>
+      <v-container class="vh-container pa-0" fluid>
         <v-btn
           class="top-left text-none white--text px-4"
           text
@@ -11,20 +11,19 @@
           <v-icon left>
             mdi-less-than
           </v-icon>
+
           Back
         </v-btn>
 
-        <v-row class="fill-height" align="center" justify="center">
-          <v-col class="position-relative" sm="12" lg="8" xl="10">
-            <v-btn
-              class="top-right color-close"
-              icon
-              @click.stop="overlay = false"
-            >
-              <v-icon>
-                mdi-close
-              </v-icon>
-            </v-btn>
+        <v-row class="vh-row" align="center" justify="center" no-gutters>
+          <v-col class="px-3 px-md-0" sm="12" lg="8" xl="10">
+            <v-row justify="end">
+              <v-btn color="white" icon @click.stop="overlay = false">
+                <v-icon>
+                  mdi-close
+                </v-icon>
+              </v-btn>
+            </v-row>
 
             <portfolio-card v-bind="{ child, image }" display-mode />
           </v-col>
@@ -73,24 +72,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.position-relative {
-  position: relative;
+.vh-container {
+  min-height: 100vh;
 }
 
-.top-right {
-  position: absolute;
-  top: 0;
-  right: -36px;
-  z-index: 1;
+.vh-row {
+  min-height: 90vh;
 }
 
 .fullscreen {
   width: 100% !important;
   height: 100% !important;
-}
-
-.color-close {
-  color: white !important;
 }
 
 .dialog-portfolio-overlay {

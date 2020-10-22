@@ -1,11 +1,13 @@
 <template>
-  <v-card max-width="500" class="mx-auto">
+  <v-card width="300" class="mx-auto">
     <v-toolbar color="primary" dense>
       <v-icon color="white">
         mdi-share-variant-outline
       </v-icon>
 
-      <span v-if="toolbarTitle" class="font-weight-bold ml-3 white--text">{{ toolbarTitle }}</span>
+      <span v-if="toolbarTitle" class="font-weight-bold ml-3 white--text">{{
+        toolbarTitle
+      }}</span>
     </v-toolbar>
 
     <p v-if="toolbarSubtitle" class="font-weight-bold mb-0 mt-3 text-center">
@@ -13,10 +15,10 @@
     </p>
 
     <v-card-text>
-      <v-row :justify="fakeBlock ? null : 'space-between'">
+      <v-row>
         <v-btn
           v-if="fakeNetworks.download"
-          :block="fakeBlock"
+          block
           class="mb-2"
           :color="fakeNetworks.download.color"
           :href="url"
@@ -36,8 +38,7 @@
         <share-network
           v-for="(network, indexN) in fakeNetworks.share"
           :key="indexN"
-          class="mb-2"
-          :class="{ 'w-100': fakeBlock }"
+          class="mb-2 w-100"
           :description="description"
           :hashtags="hashtags"
           :media="media"
@@ -47,7 +48,7 @@
           :twitter-user="twitterUser"
           :url="url"
         >
-          <v-btn :block="fakeBlock" :color="network.color">
+          <v-btn block :color="network.color">
             <v-icon v-if="network.icon" left>
               {{ network.icon }}
             </v-icon>
@@ -71,10 +72,6 @@ export default {
   name: 'PgSocialButtons',
 
   props: {
-    noAutoBlock: Boolean,
-
-    block: Boolean,
-
     description: {
       type: String,
       default: ''
@@ -151,10 +148,6 @@ export default {
   },
 
   computed: {
-    fakeBlock () {
-      return this.noAutoBlock ? this.block : this.$vuetify.breakpoint.mobile
-    },
-
     fakeNetworks () {
       const result = {
         download: null,
