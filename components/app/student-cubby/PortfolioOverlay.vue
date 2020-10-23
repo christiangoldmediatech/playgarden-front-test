@@ -16,7 +16,7 @@
         </v-btn>
 
         <v-row class="vh-row" align="center" justify="center" no-gutters>
-          <v-col class="px-3 px-md-0" sm="12" lg="8" xl="10">
+          <v-col class="px-3 px-lg-0" sm="12" lg="8" xl="10">
             <v-row justify="end">
               <v-btn color="white" icon @click.stop="overlay = false">
                 <v-icon>
