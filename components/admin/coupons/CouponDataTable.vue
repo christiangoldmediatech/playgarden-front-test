@@ -99,18 +99,6 @@ export default {
           value: 'duration'
         },
         {
-          text: 'Percent off',
-          align: 'start',
-          sortable: false,
-          value: 'percent_off'
-        },
-        {
-          text: 'Duration in months',
-          align: 'start',
-          sortable: false,
-          value: 'duration_in_months'
-        },
-        {
           align: 'right',
           sortable: false,
           value: 'actions',
