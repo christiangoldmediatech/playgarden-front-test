@@ -3,7 +3,7 @@
     <v-dialog
       v-model="dialog"
       :fullscreen="$vuetify.breakpoint.xs"
-      max-width="500px"
+      max-width="900px"
       persistent
       scrollable
     >
@@ -25,64 +25,166 @@
         <v-card-text>
           <v-container>
             <v-form ref="activityTypeForm" @submit.prevent="passes(save)">
-              <validation-provider
-                v-slot="{ errors }"
-                name="Name"
-                rules="required"
-              >
-                <pg-text-field
-                  v-model="item.name"
-                  :error-messages="errors"
-                  label="Name"
-                  solo
-                />
-              </validation-provider>
+              <v-row no-gutters>
+                <v-col class="mr-5">
+                  <validation-provider
+                    v-slot="{ errors }"
+                    name="Name"
+                    rules="required"
+                  >
+                    <pg-text-field
+                      v-model="item.coupon.name"
+                      :error-messages="errors"
+                      label="Name"
+                      solo
+                    />
+                  </validation-provider>
 
-              <validation-provider
-                v-slot="{ errors }"
-                name="Duration"
-                rules="required"
-              >
-                <pg-select
-                  class="mb-6"
-                  v-model="item.duration"
-                  clearable
-                  hide-details
-                  :items="durationList"
-                  item-text="name"
-                  item-value="value"
-                  label="Duration"
-                  :error-messages="errors"
-                  solo
-                />
-              </validation-provider>
+                  <validation-provider
+                    v-slot="{ errors }"
+                    name="Type"
+                    rules="required"
+                  >
+                    <v-radio-group
+                      v-if="$vuetify.breakpoint.lgAndUp"
+                      v-model="typeSelected"
+                      :error-messages="errors"
+                      hide-details
+                    >
+                      <v-row align="start" justify="start" no-gutters>
+                        <v-radio
+                          v-for="(type, i) in types"
+                          :key="`filters-level-${i}`"
+                          class="mx-1 pa-0"
+                          color="primary darken-2"
+                          :label="type.name"
+                          :value="type.value"
+                        />
+                      </v-row>
+                    </v-radio-group>
+                  </validation-provider>
 
-              <validation-provider
-                v-slot="{ errors }"
-                name="Percent off"
-                rules="required"
-              >
-                <pg-text-field
-                  v-model="item.percent_off"
-                  :error-messages="errors"
-                  label="Percent off"
-                  solo
-                />
-              </validation-provider>
+                  <validation-provider
+                    v-if="typeSelected === 'percentage'"
+                    v-slot="{ errors }"
+                    name="Percent off"
+                    rules="required"
+                  >
+                    <pg-text-field
+                      v-model="item.coupon.percent_off"
+                      :error-messages="errors"
+                      label="Percent off"
+                      solo
+                    />
+                  </validation-provider>
 
-              <validation-provider
-                v-if="item.duration === 'repeating'"
-                v-slot="{ errors }"
-                name="Duration in months"
-                rules="required"
-              >
-                <pg-text-field
-                  v-model="item.duration_in_months"
-                  :error-messages="errors"
-                  label="Duration in months"
-                  solo
-                />
-              </validation-provider>
+                  <div v-else>
+                    <validation-provider
+                      v-slot="{ errors }"
+                      name="Money"
+                      rules="required"
+                    >
+                      <pg-select
+                        v-model="item.coupon.currency"
+                        class="mb-6"
+                        clearable
+                        hide-details
+                        :items="moneyList"
+                        item-text="name"
+                        item-value="value"
+                        label="Money"
+                        :error-messages="errors"
+                        solo
+                      />
+                    </validation-provider>
+
+                    <validation-provider
+                      v-slot="{ errors }"
+                      name="Amount off"
+                      rules="required"
+                    >
+                      <pg-text-field
+                        v-model="item.coupon.amount_off"
+                        :error-messages="errors"
+                        label="Amount off"
+                        solo
+                      />
+                    </validation-provider>
+                  </div>
+
+                  <validation-provider
+                    v-slot="{ errors }"
+                    name="Duration"
+                    rules="required"
+                  >
+                    <pg-select
+                      v-model="item.coupon.duration"
+                      class="mb-6"
+                      clearable
+                      hide-details
+                      :items="durationList"
+                      item-text="name"
+                      item-value="value"
+                      label="Duration"
+                      :error-messages="errors"
+                      solo
+                    />
+                  </validation-provider>
+
+                  <validation-provider
+                    v-if="item.coupon.duration === 'repeating'"
+                    v-slot="{ errors }"
+                    name="Duration in months"
+                    rules="required"
+                  >
+                    <pg-text-field
+                      v-model="item.coupon.duration_in_months"
+                      :error-messages="errors"
+                      label="Duration in months"
+                      solo
+                    />
+                  </validation-provider>
+                </v-col>
+                <v-col>
+                  <label for="">Exchange limits</label>
+
+                  <v-checkbox
+                    v-model="dateRange"
+                    class="mx-1 my-1 pa-0"
+                    color="primary darken-2"
+                    hide-details
+                    label="Limit the date range within which customers can redeem this coupon"
+                  />
+
+                  <v-date-picker
+                    v-if="dateRange === true"
+                    :max="new Date().toISOString().substr(0, 10)"
+                    min="1990-01-01"
+                  />
+
+                  <v-checkbox
+                    v-model="limitRedeemed"
+                    class="mx-1 my-1 pa-0"
+                    color="primary darken-2"
+                    hide-details
+                    label="Limits the total number of times this coupon can be redeemed"
+                  />
+
+                  <validation-provider
+                    v-if="limitRedeemed === true"
+                    v-slot="{ errors }"
+                    name="Duration in months"
+                    rules="required"
+                  >
+                    <pg-text-field
+                      v-model="item.coupon.max_redemptions"
+                      :error-messages="errors"
+                      label="Max redemptions"
+                      solo
+                    />
+                  </validation-provider>
+                </v-col>
+              </v-row>
             </v-form>
           </v-container>
         </v-card-text>
@@ -123,14 +225,19 @@ import { mapActions } from 'vuex'
 
 function generateItemTemplate () {
   return {
-    name: null,
-    percent_off: null,
-    duration: null,
-    duration_in_months: null,
-    applies_to: null,
-    metadata: null,
-    max_redemptions: null,
-    redeem_by: null
+    coupon: {
+      name: null,
+      percent_off: null,
+      amount_off: null,
+      currency: null,
+      duration: null,
+      duration_in_months: null,
+      applies_to: null,
+      metadata: null,
+      max_redemptions: null,
+      redeem_by: null
+    },
+    promotion: {}
   }
 }
 
@@ -142,6 +249,20 @@ export default {
       file: null,
       dialog: false,
       loading: false,
+      typeSelected: null,
+      dateRange: false,
+      limitRedeemed: false,
+      dateSelected: new Date(),
+      types: [
+        {
+          value: 'percentage',
+          name: 'DISCOUNT RATE'
+        },
+        {
+          value: 'amount',
+          name: 'FIXED AMOUNT DISCOUNT'
+        }
+      ],
       durationList: [
         {
           value: 'once',
@@ -154,6 +275,12 @@ export default {
         {
           value: 'forever',
           name: 'FOREVER'
+        }
+      ],
+      moneyList: [
+        {
+          value: 'USD',
+          name: 'USD - AMERICAN DOLLAR'
         }
       ],
       id: null,
@@ -191,7 +318,7 @@ export default {
     async save () {
       this.loading = true
       try {
-        this.item = this.cleanFields(this.item)
+        this.item.coupon = this.cleanFields(this.item.coupon)
         if (this.id === null) {
           await this.createCoupon(this.item)
         } else {
