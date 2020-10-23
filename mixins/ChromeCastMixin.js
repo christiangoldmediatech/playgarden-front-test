@@ -56,11 +56,13 @@ export default {
         // mediaInfo.hlsSegmentFormat = 'ts'
         const request = new chrome.cast.media.LoadRequest(mediaInfo)
         castSession.loadMedia(request).then(
-          function (session) {
+          function () {
+            // eslint-disable-next-line
             console.log('Load succeed')
-            cast.session = session
+            // cast.session = session
           },
           function (errorCode) {
+            // eslint-disable-next-line
             console.log('Error code: ' + errorCode)
           }
         )
