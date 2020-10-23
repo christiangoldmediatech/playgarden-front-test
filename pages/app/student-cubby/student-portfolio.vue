@@ -70,13 +70,13 @@
         v-bind="{ category }"
       />
 
-      <portfolio-overlay />
+      <portfolio-overlay :child="child" />
     </template>
   </v-card>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 import PortfolioCarousel from '@/components/app/student-cubby/PortfolioCarousel.vue'
 import PortfolioOverlay from '@/components/app/student-cubby/PortfolioOverlay.vue'
@@ -97,6 +97,8 @@ export default {
   },
 
   computed: {
+    ...mapGetters('children', { children: 'rows' }),
+
     studentId () {
       return this.$route.query.id
     },
@@ -107,6 +109,10 @@ export default {
           ({ worksheetUploads }) => worksheetUploads.length
         )
         : []
+    },
+
+    child () {
+      return this.children.find(({ id }) => id === Number(this.studentId)) || {}
     }
   },
 
