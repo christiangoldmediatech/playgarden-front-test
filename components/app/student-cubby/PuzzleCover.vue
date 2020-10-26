@@ -19,7 +19,6 @@
 
 <script>
 import { line, curveBasis } from 'd3-shape'
-import { mapActions } from 'vuex'
 import { colorValidator } from '@/components/pg/utils/validators'
 import { colorMaker } from '@/components/pg/utils/colorable'
 
@@ -56,7 +55,7 @@ export default {
 
     height: {
       type: [Number, String],
-      default: 90
+      default: 25
     },
 
     rows: {
@@ -74,11 +73,6 @@ export default {
       type: [Number, String],
       default: 0.5,
       validator: value => !Number.isNaN(parseFloat(value))
-    },
-
-    studentId: {
-      type: [Number, String],
-      default: undefined
     },
 
     uncover: {
@@ -106,9 +100,7 @@ export default {
   data: () => ({
     d3CurvedLine: line().curve(curveBasis),
 
-    paths: [],
-
-    pieces: null
+    paths: []
   }),
 
   computed: {
@@ -131,8 +123,8 @@ export default {
     uncovered () {
       let uncover = []
 
-      if (this.pieces > 0 || Number.isInteger(parseInt(this.uncover))) {
-        uncover = Array(parseInt(this.pieces || this.uncover))
+      if (Number.isInteger(parseInt(this.uncover))) {
+        uncover = Array(parseInt(this.uncover))
           .fill()
           .map((_, i) => i)
       } else if (Array.isArray(this.uncover)) {
@@ -160,8 +152,8 @@ export default {
       this.buildPaths()
     },
 
-    studentId () {
-      this.getPieces()
+    uncover () {
+      this.buildPaths()
     },
 
     width () {
@@ -170,16 +162,10 @@ export default {
   },
 
   created () {
-    if (this.studentId) {
-      this.getPieces()
-    }
-
     this.buildPaths()
   },
 
   methods: {
-    ...mapActions('children/puzzle', ['getPuzzleByChildId']),
-
     buildPaths () {
       this.paths = this.buildPiecePaths(
         this.buildPieces(parseInt(this.rows, 10), parseInt(this.columns, 10))
@@ -357,18 +343,6 @@ export default {
 
     transposePoint (point) {
       return [point[1], point[0]]
-    },
-
-    async getPieces () {
-      if (this.studentId) {
-        try {
-          const { pieces } = await this.getPuzzleByChildId({
-            id: this.studentId
-          })
-
-          this.pieces = pieces
-        } catch (e) {}
-      }
     }
   }
 }

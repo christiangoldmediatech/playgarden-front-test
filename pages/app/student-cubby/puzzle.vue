@@ -10,35 +10,14 @@
         Complete each letter in the curriculum to unlock a new puzzle piece!
       </p>
 
-      <v-row>
-        <v-col>
-          <input v-model="seed" type="number" step="10" min="0" max="1000">
-          <br>
-          <input v-model="rows" type="number" min="1">
-          <input v-model="columns" type="number" min="1">
-          <br>
-          <input v-model="height" type="number" step="10" min="10">
-          <input v-model="width" type="number" step="10" min="10">
-          <br>
-          <input v-model="strokeWidth" type="number" step="0.5" min="0">
-          <br>
-          <v-color-picker v-model="strokeColor" show-swatches />
-        </v-col>
-      </v-row>
-
       <v-row justify="center">
         <puzzle-cover
-          :background-image="
-            require('@/assets/jpg/student-cubby/puzzle-background.jpg')
-          "
+          v-if="backgroundImage"
+          :background-image="backgroundImage"
           :columns="columns"
-          :edges-seed="seed"
-          :height="height"
           :rows="rows"
+          :uncover="uncover"
           :student-id="studentId"
-          :stroke-color="strokeColor"
-          :stroke-width="strokeWidth"
-          :width="width"
         />
       </v-row>
     </v-card-text>
@@ -46,6 +25,9 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+import { get } from 'lodash'
+
 import PuzzleCover from '@/components/app/student-cubby/PuzzleCover'
 
 export default {
@@ -56,18 +38,62 @@ export default {
   },
 
   data: () => ({
-    strokeColor: 'blue',
-    strokeWidth: 0.5,
-    width: 160,
-    height: 90,
-    rows: 4,
-    columns: 7,
-    seed: 0
+    backgroundImage: null,
+    columns: 5,
+    rows: 1,
+    uncover: 0
   }),
 
   computed: {
     studentId () {
       return this.$route.query.id
+    }
+  },
+
+  watch: {
+    studentId () {
+      this.getUncoverPieces()
+      this.getPuzzle()
+    }
+  },
+
+  created () {
+    if (this.studentId) {
+      this.getUncoverPieces()
+      this.getPuzzle()
+    }
+  },
+
+  methods: {
+    ...mapActions('children/puzzle', [
+      'getPuzzleActiveByChildId',
+      'getPuzzleByChildId'
+    ]),
+
+    async getUncoverPieces () {
+      if (this.studentId) {
+        try {
+          const { pieces } = await this.getPuzzleByChildId({
+            id: this.studentId
+          })
+
+          this.uncover = pieces
+        } catch (e) {}
+      }
+    },
+
+    async getPuzzle () {
+      if (this.studentId) {
+        try {
+          const { puzzle } = await this.getPuzzleActiveByChildId({
+            id: this.studentId
+          })
+
+          this.backgroundImage = get(puzzle, 'image')
+          this.columns = get(puzzle, 'columns', 5)
+          this.rows = get(puzzle, 'rows', 1)
+        } catch (e) {}
+      }
     }
   }
 }
