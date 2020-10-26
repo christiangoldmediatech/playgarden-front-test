@@ -173,7 +173,7 @@
                   <VueCtkDateTimePicker
                     v-if="dateRange === true"
                     v-model="datetimeSelected"
-                    color="c2daa5"
+                    color="#c2daa5"
                   />
 
                   <v-checkbox

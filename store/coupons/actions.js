@@ -13,23 +13,6 @@ export default {
     }
   },
 
-  /* getCoupons ({ commit }, params) {
-    return new Promise((resolve, reject) =>
-      this.$axios
-        .$get('/coupons', { params })
-        .then(resolve) => {
-          console.log('resolve--', resolve);
-        }
-        .catch((error) => {
-          snotifyError(commit, {
-            body: 'Sorry! There was an error while getting coupons.'
-          })
-          // TO DO async away
-          reject(error)
-        })
-    )
-  }, */
-
   createCoupon (_, data) {
     return this.$axios.$post('/coupons', data)
   },
