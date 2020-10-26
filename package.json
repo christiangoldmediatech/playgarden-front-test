@@ -35,6 +35,7 @@
     "vee-validate": "^3.3.7",
     "video.js": "^7.8.4",
     "vue": "^2.6.11",
+    "vue-ctk-date-time-picker": "^2.5.0",
     "vue-scrollto": "^2.18.2",
     "vue-snotify": "^3.2.1",
     "vue2-perfect-scrollbar": "^1.5.0",

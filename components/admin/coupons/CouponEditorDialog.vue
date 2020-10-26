@@ -42,12 +42,26 @@
 
                   <validation-provider
                     v-slot="{ errors }"
+                    name="Promotion code"
+                    rules="required"
+                  >
+                    <pg-text-field
+                      v-model="item.promotion.code"
+                      :error-messages="errors"
+                      label="Promotion code"
+                      solo
+                    />
+                  </validation-provider>
+
+                  <validation-provider
+                    v-slot="{ errors }"
                     name="Type"
                     rules="required"
                   >
                     <v-radio-group
                       v-if="$vuetify.breakpoint.lgAndUp"
                       v-model="typeSelected"
+                      class="mb-5"
                       :error-messages="errors"
                       hide-details
                     >
@@ -156,10 +170,10 @@
                     label="Limit the date range within which customers can redeem this coupon"
                   />
 
-                  <v-date-picker
+                  <VueCtkDateTimePicker
                     v-if="dateRange === true"
-                    :max="new Date().toISOString().substr(0, 10)"
-                    min="1990-01-01"
+                    v-model="datetimeSelected"
+                    color="c2daa5"
                   />
 
                   <v-checkbox
@@ -237,7 +251,9 @@ function generateItemTemplate () {
       max_redemptions: null,
       redeem_by: null
     },
-    promotion: {}
+    promotion: {
+      code: null
+    }
   }
 }
 
@@ -246,13 +262,12 @@ export default {
 
   data () {
     return {
-      file: null,
       dialog: false,
       loading: false,
-      typeSelected: null,
+      typeSelected: 'percentage',
       dateRange: false,
       limitRedeemed: false,
-      dateSelected: new Date(),
+      datetimeSelected: null,
       types: [
         {
           value: 'percentage',
@@ -291,6 +306,12 @@ export default {
   computed: {
     title () {
       return this.id === null ? 'New Coupon' : 'Edit Coupon'
+    }
+  },
+
+  watch: {
+    datetimeSelected (val) {
+      this.item.coupon.redeem_by = new Date(val).getTime() / 1000
     }
   },
 
@@ -337,7 +358,6 @@ export default {
     resetItem () {
       this.id = null
       this.item = generateItemTemplate()
-      this.file = null
     },
 
     loadItem (item) {

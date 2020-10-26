@@ -81,6 +81,7 @@ export default {
     '@/plugins/globalPartials',
     '@/plugins/snotify',
     '@/plugins/validate',
+    '@/plugins/vueCtkDateTimePicker',
     { src: '@/plugins/tiptapVuetify', mode: 'client' },
     { src: '@/plugins/firebase', mode: 'client' }
   ],
