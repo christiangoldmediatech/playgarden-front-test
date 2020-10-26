@@ -312,6 +312,11 @@ export default {
   watch: {
     datetimeSelected (val) {
       this.item.coupon.redeem_by = new Date(val).getTime() / 1000
+    },
+    'item.promotion.code' (val) {
+      if (val) {
+        this.item.promotion.code = val.toUpperCase()
+      }
     }
   },
 
