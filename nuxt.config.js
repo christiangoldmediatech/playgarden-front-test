@@ -117,6 +117,7 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/style-resources',
     'vue-scrollto/nuxt',
+    'vue-social-sharing/nuxt',
     [
       'storyblok-nuxt',
       {

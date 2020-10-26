@@ -104,7 +104,7 @@
 
       <v-btn
         block
-        class="mb-4 mt-4 main-btn ml-n4 ml-md-0"
+        class="mb-4 mt-4 main-btn ml-md-0"
         min-height="60"
         color="primary"
         :disabled="invalid"
@@ -124,7 +124,7 @@
       <v-btn
         v-if="cancelable"
         block
-        class="mb-6 main-btn"
+        class="mb-6 main-btn text-center"
         color="accent"
         :loading="loading"
         text

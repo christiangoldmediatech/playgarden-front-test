@@ -2,7 +2,7 @@
   <v-row class="mt-md-6 mt-0" no-gutters>
     <v-col cols="12" md="6">
       <v-row class="flex-column-reverse flex-md-column sticky" no-gutters>
-        <div class="mb-3 mx-12 text-center text-md-left">
+        <div class="mb-3 mt-6 mt-md-0 mx-12 text-center text-md-left">
           <underlined-title text="Account" />
 
           <p>
@@ -11,18 +11,19 @@
           </p>
         </div>
 
-        <div class="pb-md-10">
-          <div
+        <v-col class="pb-md-10">
+          <v-row
             class="image"
             :class="{ 'image-bar': $vuetify.breakpoint.mdAndUp }"
+            no-gutters
           >
             <img
               alt="Montessori Nutrition Lesson"
               class="pr-md-6"
               :src="
                 showSetting
-                  ? require('@/assets/svg/montessori-nutrition-lesson.svg')
-                  : require('@/assets/png/profile/child-profile-bkg.png')
+                  ? require('@/assets/jpg/Montessori_Nutrition_Lesson.jpg')
+                  : require('@/assets/jpg/Test_tube_lesson.jpg')
               "
             >
 
@@ -34,8 +35,8 @@
               :items="showSettings"
               solo
             />
-          </div>
-        </div>
+          </v-row>
+        </v-col>
 
         <div class="hidden-sm-and-down mb-12 mt-6 text-right">
           <v-btn
@@ -207,6 +208,7 @@ export default {
 
   img {
     max-width: 100%;
+    height: 250px;
   }
 }
 
