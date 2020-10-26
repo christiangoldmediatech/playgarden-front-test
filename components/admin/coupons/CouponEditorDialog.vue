@@ -49,6 +49,7 @@
                       v-model="item.promotion.code"
                       :error-messages="errors"
                       label="Promotion code"
+                      :disabled="getDissabled"
                       solo
                     />
                   </validation-provider>
@@ -64,6 +65,7 @@
                       class="mb-5"
                       :error-messages="errors"
                       hide-details
+                      :disabled="getDissabled"
                     >
                       <v-row align="start" justify="start" no-gutters>
                         <v-radio
@@ -88,6 +90,7 @@
                       v-model="item.coupon.percent_off"
                       :error-messages="errors"
                       label="Percent off"
+                      :disabled="getDissabled"
                       solo
                     />
                   </validation-provider>
@@ -108,6 +111,7 @@
                         item-value="value"
                         label="Money"
                         :error-messages="errors"
+                        :disabled="getDissabled"
                         solo
                       />
                     </validation-provider>
@@ -121,6 +125,7 @@
                         v-model="item.coupon.amount_off"
                         :error-messages="errors"
                         label="Amount off"
+                        :disabled="getDissabled"
                         solo
                       />
                     </validation-provider>
@@ -141,6 +146,7 @@
                       item-value="value"
                       label="Duration"
                       :error-messages="errors"
+                      :disabled="getDissabled"
                       solo
                     />
                   </validation-provider>
@@ -155,6 +161,7 @@
                       v-model="item.coupon.duration_in_months"
                       :error-messages="errors"
                       label="Duration in months"
+                      :disabled="getDissabled"
                       solo
                     />
                   </validation-provider>
@@ -167,12 +174,14 @@
                     class="mx-1 my-1 pa-0"
                     color="primary darken-2"
                     hide-details
+                    :disabled="getDissabled"
                     label="Limit the date range within which customers can redeem this coupon"
                   />
 
                   <VueCtkDateTimePicker
                     v-if="dateRange === true"
                     v-model="datetimeSelected"
+                    :readonly="getDissabled"
                     color="#c2daa5"
                   />
 
@@ -182,6 +191,7 @@
                     color="primary darken-2"
                     hide-details
                     label="Limits the total number of times this coupon can be redeemed"
+                    :disabled="getDissabled"
                   />
 
                   <validation-provider
@@ -194,6 +204,7 @@
                       v-model="item.coupon.max_redemptions"
                       :error-messages="errors"
                       label="Max redemptions"
+                      :disabled="getDissabled"
                       solo
                     />
                   </validation-provider>
@@ -240,6 +251,7 @@ import { mapActions } from 'vuex'
 function generateItemTemplate () {
   return {
     coupon: {
+      id: null,
       name: null,
       percent_off: null,
       amount_off: null,
@@ -305,7 +317,10 @@ export default {
 
   computed: {
     title () {
-      return this.id === null ? 'New Coupon' : 'Edit Coupon'
+      return this.item.coupon.id === null ? 'New Coupon' : 'Edit Coupon'
+    },
+    getDissabled () {
+      return (this.item.coupon.id !== null)
     }
   },
 
@@ -321,7 +336,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('coupons', ['createCoupon', 'updateCoupon']),
+    ...mapActions('coupons', ['createCoupon', 'updateCoupon', 'getCouponById']),
 
     close () {
       this.$nextTick(() => {
@@ -333,7 +348,6 @@ export default {
 
     cleanFields (obj) {
       Object.keys(obj).forEach((key) => {
-      // for (var propName in obj) {
         if (obj[key] === null || obj[key] === undefined) {
           delete obj[key]
         }
@@ -345,14 +359,14 @@ export default {
       this.loading = true
       try {
         this.item.coupon = this.cleanFields(this.item.coupon)
-        if (this.id === null) {
+        if (this.item.id === null) {
           await this.createCoupon(this.item)
         } else {
-          await this.updateCoupon({ id: this.id, data: this.item })
+          const dataEdit = { coupon: { name: this.item.coupon.name } }
+          await this.updateCoupon({ id: this.item.coupon.id, data: dataEdit })
         }
 
         this.$emit('saved')
-
         this.close()
       } catch (err) {
       } finally {
@@ -361,19 +375,22 @@ export default {
     },
 
     resetItem () {
-      this.id = null
       this.item = generateItemTemplate()
     },
 
-    loadItem (item) {
-      this.id = item.id
+    async loadItem (item) {
+      const data = await this.getCouponById({ id: item.id })
+      this.item.coupon = { ...data }
+      this.item.promotion = { ...data.listPromotion.data[0] }
+      delete this.item.coupon.listPromotion
+      if (this.item.coupon.max_redemptions) {
+        this.limitRedeemed = true
+      }
 
-      // Handle keys
-      Object.keys(item).forEach((key) => {
-        if (Object.prototype.hasOwnProperty.call(this.item, key)) {
-          this.item[key] = item[key]
-        }
-      })
+      if (this.item.coupon.redeem_by) {
+        this.dateRange = true
+        this.datetimeSelected = this.$moment.unix(this.item.coupon.redeem_by).tz('America/Los_Angeles').format('YYYY-MM-DDTHH:mm:ssZ')
+      }
     },
 
     open (evt, item = null) {

@@ -1,9 +1,13 @@
 import { snotifyError } from '@/utils/vuex'
 
 export default {
-  async getCoupons ({ commit }) {
+  getCouponById (_, { id }) {
+    return this.$axios.$get(`/coupons/${id}`)
+  },
+
+  async getCoupons ({ commit }, params) {
     try {
-      return await this.$axios.$get('/coupons').then(response => response.data)
+      return await this.$axios.$get('/coupons', { params }).then(response => response.data)
     } catch (error) {
       snotifyError(commit, {
         body: 'Sorry! There was an error while getting coupons'
