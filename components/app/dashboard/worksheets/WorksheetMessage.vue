@@ -67,7 +67,7 @@
 
         <v-row justify="center">
           <v-col class="pb-0" cols="12" sm="9">
-            <v-btn v-if="correct" color="primary" block v-on="{ click: $listeners.click }">
+            <v-btn color="primary" block v-on="{ click: $listeners.click }">
               <slot />
             </v-btn>
           </v-col>
