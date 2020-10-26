@@ -25,8 +25,8 @@
         <v-card-text>
           <v-container>
             <v-form ref="activityTypeForm" @submit.prevent="passes(save)">
-              <v-row no-gutters>
-                <v-col class="mr-5">
+              <v-row>
+                <v-col cols="12" sm="12" md="6">
                   <validation-provider
                     v-slot="{ errors }"
                     name="Name"
@@ -166,7 +166,7 @@
                     />
                   </validation-provider>
                 </v-col>
-                <v-col>
+                <v-col cols="12" sm="12" md="6">
                   <label for="">Exchange limits</label>
 
                   <v-checkbox
