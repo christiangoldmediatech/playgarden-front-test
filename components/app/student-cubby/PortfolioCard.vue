@@ -1,14 +1,22 @@
 <template>
   <v-hover v-slot="{ hover }">
-    <v-container v-if="!displayMode" fluid :class="['portfolio-card', { 'clickable': !displayMode, 'scaled': hover && !displayMode }]">
-      <v-row no-gutters justify="space-around" @click.stop="$nuxt.$emit('open-portfolio-overlay', image)">
+    <v-container
+      v-if="!displayMode"
+      fluid
+      :class="[
+        'portfolio-card',
+        { clickable: !displayMode, scaled: hover && !displayMode },
+      ]"
+    >
+      <v-row
+        no-gutters
+        justify="space-around"
+        @click.stop="$nuxt.$emit('open-portfolio-overlay', image)"
+      >
         <v-col cols="12">
-          <v-img
-            :src="image"
-            aspect-ratio="1.7"
-            contain
-          />
-          <div v-if="!displayMode" class="mt-3">
+          <v-img :src="image" aspect-ratio="1.7" contain />
+
+          <div class="mt-3">
             <div class="title mb-1">
               <span
                 class="d-block text-center font-weight-bold"
@@ -17,8 +25,12 @@
                 {{ `Lesson ${lesson.curriculumType.name}` }}
               </span>
             </div>
+
             <div class="subheading">
-              <span class="d-block text-center" :class="{ 'white--text': displayMode }">
+              <span
+                class="d-block text-center"
+                :class="{ 'white--text': displayMode }"
+              >
                 {{ `Day ${lesson.day}` }}
               </span>
             </div>
@@ -26,17 +38,22 @@
         </v-col>
       </v-row>
     </v-container>
-    <div
-      v-else
-      :class="['portfolio-card', { 'clickable': !displayMode, 'scaled': hover && !displayMode }]"
-      :elevation="(hover && !displayMode) ? 9 : 0"
-    >
-      <v-img
-        :src="image"
-        aspect-ratio="1"
-        contain
-      />
-    </div>
+
+    <v-row v-else align="center" class="portfolio-card">
+      <v-col cols="12" md="">
+        <img class="w-100" :src="image">
+      </v-col>
+
+      <v-col class="shrink" cols="12" md="">
+        <pg-social-buttons
+          :quote="textShare"
+          :title="textShare"
+          :toolbar-title="`Share ${textShare}`"
+          :toolbar-subtitle="textShare"
+          :url="image"
+        />
+      </v-col>
+    </v-row>
   </v-hover>
 </template>
 
@@ -45,6 +62,11 @@ export default {
   name: 'PortfolioCard',
 
   props: {
+    child: {
+      type: Object,
+      default: () => {}
+    },
+
     image: {
       type: [Object, Function, String],
       required: true
@@ -60,6 +82,12 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    }
+  },
+
+  computed: {
+    textShare () {
+      return `${this.child.firstName || 'Child'}'s awesome work!`
     }
   }
 }
