@@ -359,7 +359,7 @@ export default {
       this.loading = true
       try {
         this.item.coupon = this.cleanFields(this.item.coupon)
-        if (this.item.coupon.id === null) {
+        if (this.item.coupon.id === null || this.item.coupon.id === undefined) {
           await this.createCoupon(this.item)
         } else {
           const dataEdit = { coupon: { name: this.item.coupon.name } }
@@ -389,7 +389,7 @@ export default {
 
       if (this.item.coupon.redeem_by) {
         this.dateRange = true
-        this.datetimeSelected = this.$moment.unix(this.item.coupon.redeem_by).utc().format('YYYY-MM-DDTHH:mm:ssZ')
+        this.datetimeSelected = this.$moment.unix(this.item.coupon.redeem_by).tz('America/Los_Angeles').format('YYYY-MM-DDTHH:mm:ssZ')
       }
     },
 
