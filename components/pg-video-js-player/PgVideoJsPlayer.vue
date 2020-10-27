@@ -83,7 +83,7 @@ export default {
         nextUp: this.nextUp,
         noSeek: this.noSeek,
         showRestart: this.showRestart,
-        showStepBack: this.showStepBack
+        showSteps: this.showSteps
       }
     }
   },
@@ -148,6 +148,8 @@ export default {
       })
 
       this.playerInstance.loadPlaylist = this.loadPlaylist
+
+      this.playerInstance.getMediaObject = () => this.mediaObject
 
       // Add show loading methods
       this.playerInstance.showLoading = () => {

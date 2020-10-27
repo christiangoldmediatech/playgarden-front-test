@@ -15,111 +15,128 @@
         >
           <div class="d-flex justify-space-between">
             <!-- `${noSmallscreen ? 'justify-space-between' : 'justify-center justify-md-space-between'}` -->
-            <div class="control-bar-area">
-              <!-- Volume Menu -->
-              <v-menu
-                v-if="!smallScreen"
-                v-model="visible"
-                dark
-                offset-y
-                top
-                open-on-hover
-                open-on-focus
-                open-on-click
-                close-on-click
-                close-on-content-click
-                rounded
-                :attach="`#${controlBarId}`"
-              >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn
-                    color="#D2D2D2"
-                    icon
-                    x-large
-                    v-bind="attrs"
-                    v-on="on"
-                    @click.stop="toggleMute"
-                  >
-                    <v-icon x-large>
-                      {{ speakerIcon }}
-                    </v-icon>
-                  </v-btn>
-                </template>
-                <v-list
-                  color="rgba(0, 0, 0, 0.74)"
-                  dense
+            <!-- Volume Menu -->
+            <v-menu
+              v-if="!smallScreen"
+              v-model="visible"
+              dark
+              offset-y
+              top
+              open-on-hover
+              open-on-focus
+              open-on-click
+              close-on-click
+              close-on-content-click
+              rounded
+              :attach="`#${controlBarId}`"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  color="#D2D2D2"
+                  icon
+                  :x-large="!mobile"
+                  v-bind="attrs"
+                  v-on="on"
+                  @click.stop="toggleMute"
                 >
-                  <v-list-item>
-                    <v-slider
-                      v-model="volumeVal"
-                      class="py-2"
-                      thumb-size="8"
-                      color="#D2D2D2"
-                      dark
-                      hide-details
-                      vertical
-                      :min="0"
-                      :max="100"
-                    />
-                  </v-list-item>
-                </v-list>
-              </v-menu>
+                  <v-icon :x-large="!mobile">
+                    {{ speakerIcon }}
+                  </v-icon>
+                </v-btn>
+              </template>
+              <v-list
+                color="rgba(0, 0, 0, 0.74)"
+                dense
+              >
+                <v-list-item>
+                  <v-slider
+                    v-model="volumeVal"
+                    class="py-2"
+                    thumb-size="8"
+                    color="#D2D2D2"
+                    dark
+                    hide-details
+                    vertical
+                    :min="0"
+                    :max="100"
+                  />
+                </v-list-item>
+              </v-list>
+            </v-menu>
 
+            <div>
               <v-btn
                 v-if="showRestart"
                 color="#D2D2D2"
                 icon
-                x-large
+                :x-large="!mobile"
                 :disabled="status === 'LOADING'"
                 @click.stop="restart"
               >
-                <v-icon x-large>
-                  mdi-restart
-                </v-icon>
+                <!-- <v-icon small>
+                  pg-icon-previous
+                </v-icon> -->
+                <img class="control-bar-svg-icon" src="/player/previous.svg" width="100%">
               </v-btn>
 
+              <!-- Step backward 15 sec -->
               <v-btn
-                v-if="showStepBack"
+                v-if="showSteps"
                 color="#D2D2D2"
                 icon
-                x-large
+                :x-large="!mobile"
                 :disabled="status === 'LOADING'"
                 @click.stop="stepBack"
               >
-                <v-icon x-large>
-                  mdi-step-backward
-                </v-icon>
+                <!-- <v-icon small>
+                  pg-icon-backward-15-sec
+                </v-icon> -->
+                <img class="control-bar-svg-icon" src="/player/back15sec.svg" width="100%">
               </v-btn>
-            </div>
 
-            <!-- Play Button -->
-            <v-btn
-              color="#D2D2D2"
-              icon
-              x-large
-              :disabled="status === 'LOADING'"
-              @click.stop="togglePlay"
-            >
-              <v-icon x-large>
-                {{ playIcon }}
-              </v-icon>
-            </v-btn>
-
-            <div class="control-bar-area text-right">
-              <!-- Fullscreen Button -->
+              <!-- Play Button -->
               <v-btn
-                v-if="!smallScreen"
                 color="#D2D2D2"
                 icon
-                x-large
-                @click.stop="$emit('fullscreen')"
+                :x-large="!mobile"
+                :disabled="status === 'LOADING'"
+                @click.stop="togglePlay"
               >
-                <v-icon x-large>
-                  {{ fullscreenIcon }}
+                <v-icon :x-large="!mobile">
+                  {{ playIcon }}
                 </v-icon>
               </v-btn>
+
+              <!-- Step forward 15 sec -->
+              <v-btn
+                v-if="showSteps"
+                color="#D2D2D2"
+                icon
+                :x-large="!mobile"
+                :disabled="status === 'LOADING'"
+                @click.stop="stepForward"
+              >
+                <!-- <v-icon small>
+                  pg-icon-forward-15-sec
+                </v-icon> -->
+                <img class="control-bar-svg-icon" src="/player/forward15sec.svg" width="100%">
+              </v-btn>
             </div>
+
+            <!-- Fullscreen Button -->
+            <v-btn
+              v-if="!smallScreen"
+              color="#D2D2D2"
+              icon
+              :x-large="!mobile"
+              @click.stop="$emit('fullscreen')"
+            >
+              <v-icon :x-large="!mobile">
+                {{ fullscreenIcon }}
+              </v-icon>
+            </v-btn>
           </div>
+
           <!-- Timeline -->
           <div class="d-flex align-center justify-space-between">
             <span class="control-bar-text">
@@ -247,6 +264,30 @@ export default {
       }
     },
 
+    stepForward () {
+      const currentTime = this.player.currentTime()
+      const nextTime = currentTime + 15
+      const duration = this.player.currentTime()
+      const mediaObj = this.player.getMediaObject()
+
+      if (nextTime < duration) {
+        if (this.noSeek) {
+          if (this.mediaObj.viewed && mediaObj.time && typeof mediaObj.time === 'number') {
+            const viewdUpTo = mediaObj.time
+            if (nextTime <= viewdUpTo) {
+              this.player.currentTime(nextTime)
+            } else if (currentTime < viewdUpTo) {
+              this.player.currentTime(viewdUpTo)
+            }
+          }
+        } else {
+          this.player.currentTime(nextTime)
+        }
+      } else if (!this.noSeek) {
+        this.player.currentTime(duration - 1)
+      }
+    },
+
     togglePlay () {
       if (this.status === 'PLAYING') {
         this.player.pause()
@@ -273,6 +314,9 @@ export default {
   bottom: 16px;
   user-select: none;
   pointer-events: auto;
+  @media screen and (max-width: 599px) {
+    bottom: 4px;
+  }
   &-area {
     width: calc(50% - 52px);
   }
@@ -292,8 +336,24 @@ export default {
     text-align: center;
     width: 60px;
   }
-  &-progress-slider .v-slider__thumb-label.accent {
-    background-color: transparent !important;
+  &-progress-slider {
+    .v-slider__thumb-label.accent {
+      background-color: transparent !important;
+    }
+    @media screen and (max-width: 599px) {
+      .v-input__control,.v-input__control > div.v-input__slot {
+        min-height: 32px;
+        max-height: 32px;
+      }
+    }
+  }
+  &-svg-icon {
+    max-width: 32px !important;
+    max-height: 32px !important;
+    @media screen and (max-width: 599px) {
+      max-width: 24px !important;
+      max-height: 24px !important;
+    }
   }
 }
 </style>
