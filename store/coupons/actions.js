@@ -7,7 +7,7 @@ export default {
 
   async getCoupons ({ commit }, params) {
     try {
-      return await this.$axios.$get('/coupons', { params }).then(response => response.data)
+      return await this.$axios.$get('/coupons', { params })
     } catch (error) {
       snotifyError(commit, {
         body: 'Sorry! There was an error while getting coupons'
