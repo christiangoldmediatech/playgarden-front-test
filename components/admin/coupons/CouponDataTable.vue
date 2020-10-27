@@ -87,7 +87,7 @@ export default {
       page: 1,
       headers: [
         {
-          text: 'Code',
+          text: 'Code Coupon',
           align: 'start',
           sortable: true,
           value: 'id'

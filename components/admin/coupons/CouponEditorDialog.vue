@@ -181,7 +181,7 @@
                   <VueCtkDateTimePicker
                     v-if="dateRange === true"
                     v-model="datetimeSelected"
-                    :readonly="getDissabled"
+                    :disabled="getDissabled"
                     color="#c2daa5"
                   />
 
