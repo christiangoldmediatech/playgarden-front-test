@@ -55,7 +55,7 @@ export default {
 
     height: {
       type: [Number, String],
-      default: 25
+      default: 90
     },
 
     rows: {
