@@ -75,6 +75,18 @@
         </v-col>
       </v-row>
 
+      <validation-provider
+        v-slot="{ errors }"
+        name="Promotion Code"
+      >
+        <pg-text-field
+          v-model="draft.promotion_code"
+          :error-messages="errors"
+          label="Promotion Code"
+          solo
+        />
+      </validation-provider>
+
       <v-row v-if="!noTerms" class="mb-6">
         <validation-provider v-slot="{ errors }" name="Terms" rules="required">
           <v-checkbox
@@ -180,6 +192,7 @@ export default {
         number: null,
         date: null,
         cvv: null,
+        promotion_code: null,
         acceptTerms: null
       }
     }
