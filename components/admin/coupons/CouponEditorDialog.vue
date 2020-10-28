@@ -29,7 +29,21 @@
                 <v-col cols="12" sm="12" md="6">
                   <validation-provider
                     v-slot="{ errors }"
-                    name="Name"
+                    name="Coupon Code"
+                    rules="required"
+                  >
+                    <pg-text-field
+                      v-model="item.coupon.id"
+                      :error-messages="errors"
+                      label="Coupon Code"
+                      :disabled="edit"
+                      solo
+                    />
+                  </validation-provider>
+
+                  <validation-provider
+                    v-slot="{ errors }"
+                    name="Coupon Name"
                     rules="required"
                   >
                     <pg-text-field
@@ -49,7 +63,7 @@
                       v-model="item.promotion.code"
                       :error-messages="errors"
                       label="Promotion code"
-                      :disabled="getDissabled"
+                      :disabled="edit"
                       solo
                     />
                   </validation-provider>
@@ -65,7 +79,7 @@
                       class="mb-5"
                       :error-messages="errors"
                       hide-details
-                      :disabled="getDissabled"
+                      :disabled="edit"
                     >
                       <v-row align="start" justify="start" no-gutters>
                         <v-radio
@@ -90,7 +104,7 @@
                       v-model="item.coupon.percent_off"
                       :error-messages="errors"
                       label="Percent off"
-                      :disabled="getDissabled"
+                      :disabled="edit"
                       solo
                     />
                   </validation-provider>
@@ -111,7 +125,7 @@
                         item-value="value"
                         label="Money"
                         :error-messages="errors"
-                        :disabled="getDissabled"
+                        :disabled="edit"
                         solo
                       />
                     </validation-provider>
@@ -125,7 +139,7 @@
                         v-model="item.coupon.amount_off"
                         :error-messages="errors"
                         label="Amount off"
-                        :disabled="getDissabled"
+                        :disabled="edit"
                         solo
                       />
                     </validation-provider>
@@ -146,7 +160,7 @@
                       item-value="value"
                       label="Duration"
                       :error-messages="errors"
-                      :disabled="getDissabled"
+                      :disabled="edit"
                       solo
                     />
                   </validation-provider>
@@ -161,7 +175,7 @@
                       v-model="item.coupon.duration_in_months"
                       :error-messages="errors"
                       label="Duration in months"
-                      :disabled="getDissabled"
+                      :disabled="edit"
                       solo
                     />
                   </validation-provider>
@@ -174,14 +188,14 @@
                     class="mx-1 my-1 pa-0"
                     color="primary darken-2"
                     hide-details
-                    :disabled="getDissabled"
+                    :disabled="edit"
                     label="Limit the date range within which customers can redeem this coupon"
                   />
 
                   <VueCtkDateTimePicker
                     v-if="dateRange === true"
                     v-model="datetimeSelected"
-                    :disabled="getDissabled"
+                    :disabled="edit"
                     color="#c2daa5"
                   />
 
@@ -191,7 +205,7 @@
                     color="primary darken-2"
                     hide-details
                     label="Limits the total number of times this coupon can be redeemed"
-                    :disabled="getDissabled"
+                    :disabled="edit"
                   />
 
                   <validation-provider
@@ -204,7 +218,7 @@
                       v-model="item.coupon.max_redemptions"
                       :error-messages="errors"
                       label="Max redemptions"
-                      :disabled="getDissabled"
+                      :disabled="edit"
                       solo
                     />
                   </validation-provider>
@@ -276,6 +290,7 @@ export default {
     return {
       dialog: false,
       loading: false,
+      edit: false,
       typeSelected: 'percentage',
       dateRange: false,
       limitRedeemed: false,
@@ -318,9 +333,6 @@ export default {
   computed: {
     title () {
       return this.item.coupon.id === null ? 'New Coupon' : 'Edit Coupon'
-    },
-    getDissabled () {
-      return (this.item.coupon.id !== null)
     }
   },
 
@@ -359,7 +371,7 @@ export default {
       this.loading = true
       try {
         this.item.coupon = this.cleanFields(this.item.coupon)
-        if (this.item.coupon.id === null || this.item.coupon.id === undefined) {
+        if (!this.edit) {
           await this.createCoupon(this.item)
         } else {
           const dataEdit = { coupon: { name: this.item.coupon.name } }
@@ -397,6 +409,7 @@ export default {
       this.resetItem()
 
       if (item) {
+        this.edit = true
         this.loadItem(item)
       }
 
