@@ -87,10 +87,10 @@ export default {
       page: 1,
       headers: [
         {
-          text: 'Code Coupon',
+          text: 'Code Promotion',
           align: 'start',
           sortable: true,
-          value: 'id'
+          value: 'promotion_code'
         },
         {
           text: 'Name',
@@ -125,7 +125,7 @@ export default {
       }
 
       try {
-        this.coupons = await this.getCoupons({ coupon: this.search, active: true })
+        this.coupons = await this.getCoupons({ code: this.search, active: true })
       } catch (e) {
       } finally {
         this.loading = false
