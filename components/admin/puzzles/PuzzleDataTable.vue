@@ -39,7 +39,7 @@
       <v-col cols="12">
         <v-card width="100%">
           <v-card-text>
-            <v-data-table
+            <pg-data-table
               :headers="headers"
               hide-default-footer
               :items="puzzles"
@@ -110,58 +110,7 @@
               <template v-slot:loading>
                 <v-skeleton-loader class="mx-auto" type="table-row-divider@3" />
               </template>
-
-              <template v-slot:footer="{ props }">
-                <v-container fluid>
-                  <v-row align="center" justify="end">
-                    <v-icon
-                      class="clickable mr-2"
-                      color="green"
-                      :disabled="props.pagination.page === 1 || loading"
-                      x-small
-                      @click.stop="pagination.page--"
-                      v-text="'mdi-less-than'"
-                    />
-
-                    <template v-for="i in props.pagination.pageCount">
-                      <span
-                        :key="`footer-page-number-${i}`"
-                        :class="[
-                          'font-weight-normal',
-                          {
-                            'accent--text text--darken-1':
-                              props.pagination.page === i,
-                            clickable: props.pagination.page !== i,
-                          },
-                        ]"
-                        @click.stop="pagination.page = i"
-                      >
-                        {{ i }}
-                      </span>
-                      <span
-                        v-if="i !== props.pagination.pageCount"
-                        :key="`footer-page-dot-${i}`"
-                        class="font-weight-normal mx-1"
-                      >
-                        &centerdot;
-                      </span>
-                    </template>
-
-                    <v-icon
-                      class="clickable ml-2"
-                      color="green"
-                      :disabled="
-                        props.pagination.page === props.pagination.pageCount ||
-                          loading
-                      "
-                      x-small
-                      @click.stop="pagination.page++"
-                      v-text="'mdi-greater-than'"
-                    />
-                  </v-row>
-                </v-container>
-              </template>
-            </v-data-table>
+            </pg-data-table>
           </v-card-text>
         </v-card>
       </v-col>
