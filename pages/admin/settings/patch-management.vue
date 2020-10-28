@@ -14,10 +14,6 @@ export default {
     PatchDataTable
   },
 
-  data () {
-    return {}
-  },
-
   mounted () {
     this.$refs.PatchDataTable.refresh()
   }
