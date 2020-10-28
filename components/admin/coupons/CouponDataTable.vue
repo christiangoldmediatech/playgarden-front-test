@@ -85,6 +85,7 @@ export default {
       loading: false,
       search: null,
       page: 1,
+      query: null,
       headers: [
         {
           text: 'Code Promotion',
@@ -119,13 +120,17 @@ export default {
 
     async refresh (clear = false) {
       this.loading = true
-
+      this.query = { active: true, code: this.search }
       if (clear) {
         this.search = null
       }
 
+      if (!this.search) {
+        delete this.query.code
+      }
+
       try {
-        this.coupons = await this.getCoupons({ code: this.search, active: true })
+        this.coupons = await this.getCoupons(this.query)
       } catch (e) {
       } finally {
         this.loading = false
