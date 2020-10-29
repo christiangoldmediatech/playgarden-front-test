@@ -247,6 +247,7 @@
 
 <script>
 import { mapActions } from 'vuex'
+import dayjs from 'dayjs'
 
 function generateItemTemplate () {
   return {
@@ -389,7 +390,7 @@ export default {
 
       if (this.item.coupon.redeem_by) {
         this.dateRange = true
-        this.datetimeSelected = this.$moment.unix(this.item.coupon.redeem_by).tz('America/Los_Angeles').format('YYYY-MM-DDTHH:mm:ssZ')
+        this.datetimeSelected = dayjs.unix(this.item.coupon.redeem_by).format('YYYY-MM-DDTHH:mm:ssZ')
       }
     },
 

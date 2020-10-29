@@ -23,7 +23,6 @@
     "@mdi/font": "^5.3.45",
     "@nuxtjs/axios": "^5.12.0",
     "@nuxtjs/firebase": "^6.1.1",
-    "@nuxtjs/moment": "^1.6.1",
     "dayjs": "^1.8.29",
     "firebase": "^7.21.0",
     "hammerjs": "^2.0.8",
