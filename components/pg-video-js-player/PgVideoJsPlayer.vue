@@ -37,6 +37,7 @@ export default {
       position: 0,
       duration: 0,
       options: {
+        nativeControlsForTouch: false,
         controls: false,
         autoplay: false,
         preload: 'auto',
