@@ -140,31 +140,22 @@
 
 <script>
 import submittable from '@/utils/mixins/submittable'
-
 export default {
   name: 'StripeForm',
-
   mixins: [submittable],
-
   props: {
     buttonText: {
       type: String,
       default: 'START YOUR FREE TRIAL'
     },
-
     cancelable: Boolean,
-
     loading: Boolean,
-
     noTerms: Boolean,
-
     noTrial: Boolean
   },
-
   methods: {
     getSubmittableData () {
       const [month, year] = this.draft.date.split('/')
-
       return {
         card: {
           number: this.draft.number.replace(/\D/gm, ''),
@@ -174,7 +165,6 @@ export default {
         }
       }
     },
-
     resetDraft () {
       this.draft = {
         number: null,
