@@ -84,6 +84,7 @@
           :error-messages="errors"
           label="Promotion Code"
           solo
+          @blur="checkValid"
         />
       </validation-provider>
 
@@ -116,7 +117,7 @@
 
       <v-btn
         block
-        class="mb-4 mt-4 main-btn ml-md-0"
+        class="mb-4 mt-4 main-btn ml-n4 ml-md-0"
         min-height="60"
         color="primary"
         :disabled="invalid"
@@ -136,7 +137,7 @@
       <v-btn
         v-if="cancelable"
         block
-        class="mb-6 main-btn text-center"
+        class="mb-6 main-btn"
         color="accent"
         :loading="loading"
         text
@@ -151,6 +152,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import submittable from '@/utils/mixins/submittable'
 
 export default {
@@ -173,7 +175,16 @@ export default {
     noTrial: Boolean
   },
 
+  watch: {
+    'draft.promotion_code' (val) {
+      if (val) {
+        this.draft.promotion_code = val.toUpperCase()
+      }
+    }
+  },
+
   methods: {
+    ...mapActions('coupons', ['getCoupons']),
     getSubmittableData () {
       const [month, year] = this.draft.date.split('/')
 
@@ -184,6 +195,16 @@ export default {
           exp_year: year * 1 + 2000,
           cvc: this.draft.cvv
         }
+      }
+    },
+
+    async checkValid () {
+      const coupons = await this.getCoupons({ active: true, code: this.draft.promotion_code })
+      if (coupons.length > 0) {
+        this.$snotify.success('Coupon is valid.')
+      } else {
+        this.$snotify.warning('Coupon is not valid.', 'Warning', {})
+        this.draft.promotion_code = null
       }
     },
 
