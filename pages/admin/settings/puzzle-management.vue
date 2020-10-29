@@ -14,10 +14,6 @@ export default {
     PuzzleDataTable
   },
 
-  data () {
-    return {}
-  },
-
   mounted () {
     this.$refs.PuzzleDataTable.refresh()
   }

@@ -19,7 +19,7 @@
             />
           </v-row>
         </v-col>
-        <worksheet-continue-btn v-bind="{ selected }" @click.stop="dialog = true" />
+        <!-- <worksheet-continue-btn v-bind="{ selected }" @click.stop="dialog = true" /> -->
       </v-row>
     </div>
 
@@ -237,18 +237,17 @@ export default {
 
   watch: {
     selected (val) {
+      this.correct = false
       if (val) {
         if (this.connectingPairs) {
           if (this.selectedItem.word === this.randomWord) {
             this.correct = true
-            return
           }
         } else if (this.tapCorrect) {
           this.correct = this.selectedItem.is_correct
-          return
         }
+        this.dialog = true
       }
-      this.correct = false
     }
   },
 

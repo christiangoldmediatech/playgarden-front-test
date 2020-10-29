@@ -243,6 +243,10 @@ export default {
               route: 'puzzle-management'
             },
             {
+              title: 'Live Session Management',
+              route: 'live-session-management'
+            },
+            {
               title: 'Privacy Policy Management',
               route: 'privacy-policy-management'
             },
