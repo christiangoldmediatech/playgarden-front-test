@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import isURL from 'validator/lib/isURL'
 import {
   extend,
   localize,
@@ -88,6 +89,10 @@ extend(
     (value &&
       /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/.test(value)) ||
     'The {_field_} field must be a valid phone number'
+)
+extend(
+  'url',
+  value => isURL(value) || 'The {_field_} field must be a valid url'
 )
 extend(
   'w_number',

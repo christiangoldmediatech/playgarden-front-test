@@ -3,7 +3,7 @@
     <v-divider class="my-3" />
 
     <v-radio
-      :label="`$${plan.priceMonthly} a month/child`"
+      :label="`$${plan.priceMonthly.toLocaleString('en-US')} a month/child`"
       :value="plan.monthlyStripeId"
       @change="
         $emit('input', {
@@ -18,7 +18,7 @@
 
     <v-radio
       class="mb-0"
-      :label="`$${plan.priceAnnual} School Year Special/child`"
+      :label="`$${plan.priceAnnual.toLocaleString('en-US')} School Year Special/child`"
       :value="plan.anualStripeId"
       @change="
         $emit('input', {
