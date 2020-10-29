@@ -4,6 +4,7 @@ export default () => ({
   currentChildExpires: null,
 
   fullWidthPages: {
+    'app-live-sessions': 1,
     'app-pick-child': 1,
     'app-activities': 1,
     'app-activities-favorites': 1,
