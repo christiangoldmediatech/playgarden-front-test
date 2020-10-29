@@ -104,7 +104,7 @@
 
       <v-btn
         block
-        class="mb-4 mt-4 main-btn ml-n4 ml-md-0"
+        class="mb-4 mt-4 main-btn ml-md-0"
         min-height="60"
         color="primary"
         :disabled="invalid"
@@ -124,7 +124,7 @@
       <v-btn
         v-if="cancelable"
         block
-        class="mb-6 main-btn"
+        class="mb-6 main-btn text-center"
         color="accent"
         :loading="loading"
         text
@@ -140,31 +140,22 @@
 
 <script>
 import submittable from '@/utils/mixins/submittable'
-
 export default {
   name: 'StripeForm',
-
   mixins: [submittable],
-
   props: {
     buttonText: {
       type: String,
       default: 'START YOUR FREE TRIAL'
     },
-
     cancelable: Boolean,
-
     loading: Boolean,
-
     noTerms: Boolean,
-
     noTrial: Boolean
   },
-
   methods: {
     getSubmittableData () {
       const [month, year] = this.draft.date.split('/')
-
       return {
         card: {
           number: this.draft.number.replace(/\D/gm, ''),
@@ -174,7 +165,6 @@ export default {
         }
       }
     },
-
     resetDraft () {
       this.draft = {
         number: null,
