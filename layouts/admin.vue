@@ -215,6 +215,10 @@ export default {
               route: 'backpack-management'
             },
             {
+              title: 'Coupon Management',
+              route: 'coupon-management'
+            },
+            {
               title: 'Curriculum Types',
               route: 'curriculum-types'
             },

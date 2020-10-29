@@ -154,40 +154,23 @@
 <script>
 import { mapActions } from 'vuex'
 import submittable from '@/utils/mixins/submittable'
-
 export default {
   name: 'StripeForm',
-
   mixins: [submittable],
-
   props: {
     buttonText: {
       type: String,
       default: 'START YOUR FREE TRIAL'
     },
-
     cancelable: Boolean,
-
     loading: Boolean,
-
     noTerms: Boolean,
-
     noTrial: Boolean
   },
-
-  watch: {
-    'draft.promotion_code' (val) {
-      if (val) {
-        this.draft.promotion_code = val.toUpperCase()
-      }
-    }
-  },
-
   methods: {
     ...mapActions('coupons', ['getCoupons']),
     getSubmittableData () {
       const [month, year] = this.draft.date.split('/')
-
       return {
         card: {
           number: this.draft.number.replace(/\D/gm, ''),
@@ -197,17 +180,6 @@ export default {
         }
       }
     },
-
-    async checkValid () {
-      const coupons = await this.getCoupons({ active: true, code: this.draft.promotion_code })
-      if (coupons.length > 0) {
-        this.$snotify.success('Coupon is valid.')
-      } else {
-        this.$snotify.warning('Coupon is not valid.', 'Warning', {})
-        this.draft.promotion_code = null
-      }
-    },
-
     resetDraft () {
       this.draft = {
         number: null,

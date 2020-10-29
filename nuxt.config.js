@@ -81,6 +81,7 @@ export default {
     '@/plugins/globalPartials',
     '@/plugins/snotify',
     '@/plugins/validate',
+    '@/plugins/vueCtkDateTimePicker',
     { src: '@/plugins/tiptapVuetify', mode: 'client' },
     { src: '@/plugins/firebase', mode: 'client' }
   ],
@@ -96,7 +97,7 @@ export default {
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
     '@nuxtjs/vuetify'
-  ],
+  ],  
   /**
    * Vuetify Options
    */
