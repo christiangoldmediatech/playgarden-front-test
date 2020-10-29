@@ -36,7 +36,9 @@
               <v-img
                 :src="require(`@/assets/svg/${correct ? 'correct' : 'incorrect' }.svg`)"
                 class="mx-auto worksheet-message-icon"
+                :class="{ 'clickable': !correct }"
                 :aspect-ratio="1"
+                v-on="{ click: correct ? () => {} : $listeners.click }"
               />
               <div class="mt-2 text-h6 font-weight-bold">
                 {{ item.word }}

@@ -215,6 +215,10 @@ export default {
               route: 'backpack-management'
             },
             {
+              title: 'Coupon Management',
+              route: 'coupon-management'
+            },
+            {
               title: 'Curriculum Types',
               route: 'curriculum-types'
             },
@@ -241,6 +245,10 @@ export default {
             {
               title: 'Puzzle Management',
               route: 'puzzle-management'
+            },
+            {
+              title: 'Live Session Management',
+              route: 'live-session-management'
             },
             {
               title: 'Privacy Policy Management',

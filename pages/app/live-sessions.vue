@@ -43,9 +43,9 @@ export default {
     ...mapState('live-sessions', ['sessions'])
   },
 
-  created () {
-    this.getLiveSessions()
-  },
+  // created () {
+  //   this.getLiveSessions()
+  // },
 
   methods: {
     ...mapActions('live-sessions', ['getLiveSessions'])

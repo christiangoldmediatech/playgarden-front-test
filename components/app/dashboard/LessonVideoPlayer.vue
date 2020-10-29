@@ -14,7 +14,7 @@
       autoplay
       show-next-up
       show-restart
-      show-step-back
+      show-steps
       use-standard-poster
       :no-seek="noSeek"
       :fullscreen-override="handleFullscreen"

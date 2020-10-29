@@ -1,6 +1,6 @@
 <template>
   <div :id="playerContainerId" class="video-player-container">
-    <video ref="videoPlayer" class="video-js" />
+    <video ref="videoPlayer" class="video-js" playsinline />
     <!-- Controls -->
     <control-bar
       v-if="playerInstance && playerContainerId"
@@ -37,6 +37,7 @@ export default {
       position: 0,
       duration: 0,
       options: {
+        nativeControlsForTouch: false,
         controls: false,
         autoplay: false,
         preload: 'auto',
@@ -83,7 +84,7 @@ export default {
         nextUp: this.nextUp,
         noSeek: this.noSeek,
         showRestart: this.showRestart,
-        showStepBack: this.showStepBack
+        showSteps: this.showSteps
       }
     }
   },
@@ -148,6 +149,8 @@ export default {
       })
 
       this.playerInstance.loadPlaylist = this.loadPlaylist
+
+      this.playerInstance.getMediaObject = () => this.mediaObject
 
       // Add show loading methods
       this.playerInstance.showLoading = () => {
