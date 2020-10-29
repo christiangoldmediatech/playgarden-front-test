@@ -4,7 +4,7 @@
       <v-col cols="12">
         <v-card width="100%">
           <v-card-title>
-            Puzzles
+            Live Sessions Management
 
             <v-spacer />
 
@@ -23,13 +23,13 @@
                 mdi-plus
               </v-icon>
               <span class="hidden-xs-only white--text">
-                Add new puzzle
+                Add new live session
               </span>
             </v-btn>
           </v-card-title>
 
           <v-card-text>
-            View, create, update, or delete puzzles.
+            View, create, update, or delete live sessions.
           </v-card-text>
         </v-card>
       </v-col>
@@ -42,14 +42,18 @@
             <v-data-table
               :headers="headers"
               hide-default-footer
-              :items="puzzles"
+              :items="liveSessions"
               :loading="loading"
               :page.sync="pagination.page"
               :server-items-length="pagination.total"
               @update:page="pagination.page = $event"
+              @refresh="refresh(true)"
             >
               <template v-slot:top>
-                <puzzle-editor-dialog ref="editor" @saved="refresh(false)" />
+                <live-session-editor-dialog
+                  ref="editor"
+                  @saved="refresh(false)"
+                />
 
                 <v-toolbar color="white" flat>
                   <v-spacer />
@@ -71,12 +75,12 @@
                 </v-toolbar>
               </template>
 
-              <template v-slot:item.image="{ item }">
-                <img v-if="item.image" :src="item.image" width="32px">
+              <template v-slot:item.dateStart="{ item }">
+                {{ item.dateStart | formatDate }}
+              </template>
 
-                <span v-else>
-                  N/A
-                </span>
+              <template v-slot:item.dateEnd="{ item }">
+                {{ item.dateEnd | formatDate }}
               </template>
 
               <template v-slot:item.createdAt="{ item }">
@@ -173,50 +177,53 @@
 import { mapActions, mapGetters } from 'vuex'
 
 import paginable from '@/utils/mixins/paginable'
-import PuzzleEditorDialog from './PuzzleEditorDialog'
+import LiveSessionEditorDialog from './LiveSessionEditorDialog'
 
 export default {
-  name: 'PuzzleDataTable',
+  name: 'LiveSessionDataTable',
 
   components: {
-    PuzzleEditorDialog
+    LiveSessionEditorDialog
   },
 
   mixins: [paginable],
 
   data: () => ({
     filters: {
-      curriculumTypeId: null,
-      level: null
+      activityTypeId: null
     },
-    puzzles: [],
+    liveSessions: [],
     loading: false,
     search: null,
+    page: 1,
     headers: [
       {
-        text: 'Level',
-        sortable: false,
-        value: 'level'
+        text: 'Date Start',
+        value: 'dateStart'
       },
       {
-        text: 'Image',
-        value: 'image'
+        text: 'Date End',
+        value: 'dateEnd'
       },
       {
-        text: 'Name',
-        value: 'name'
+        text: 'Title',
+        value: 'title'
       },
       {
-        text: 'Columns',
-        value: 'columns'
+        text: 'Link',
+        value: 'link'
       },
       {
-        text: 'Rows',
-        value: 'rows'
+        text: 'Teacher',
+        value: 'teacher'
       },
       {
-        text: 'Letter',
-        value: 'curriculumType.letter'
+        text: 'Ages',
+        value: 'ages'
+      },
+      {
+        text: 'Duration',
+        value: 'duration'
       },
       {
         align: 'right',
@@ -224,12 +231,6 @@ export default {
         value: 'actions',
         width: 100
       }
-    ],
-    levels: [
-      { label: 'All', value: null },
-      { label: 'Beginner', value: 'BEGINNER' },
-      { label: 'Intermediate', value: 'INTERMEDIATE' },
-      { label: 'Advanced', value: 'ADVANCED' }
     ]
   }),
 
@@ -250,9 +251,9 @@ export default {
   },
 
   methods: {
-    ...mapActions('admin/curriculum', ['getTypes']),
+    ...mapActions('admin/activity', ['getTypes']),
 
-    ...mapActions('puzzles', ['getPuzzles', 'deletePuzzle']),
+    ...mapActions('live-sessions', ['getLiveSessions', 'deleteLiveSession']),
 
     async refresh (clear = false) {
       this.loading = true
@@ -262,14 +263,15 @@ export default {
       }
 
       try {
-        const { page, puzzle, total } = await this.getPuzzles({
+        const { page, liveSessions, total } = await this.getLiveSessions({
           name: this.search,
-          curriculumTypeId: this.filters.curriculumTypeId || null,
+          activityTypeId: this.filters.activityTypeId || null,
           level: this.filters.level || null,
-          page: this.pagination.page
+          page: this.pagination.page,
+          limit: this.pagination.limit
         })
 
-        this.puzzles = puzzle
+        this.liveSessions = liveSessions
         this.setPagination({ page, total })
       } catch (e) {
       } finally {
@@ -279,10 +281,10 @@ export default {
 
     remove ({ id, name }) {
       this.$nuxt.$emit('open-prompt', {
-        title: 'Delete puzzle?',
-        message: `Are you sure you wish to delete '${name}' puzzle?`,
+        title: 'Delete Live Session?',
+        message: `Are you sure you wish to delete '${name}' Live Session?`,
         action: async () => {
-          await this.deletePuzzle(id)
+          await this.deleteLiveSession(id)
           await this.refresh()
         }
       })
