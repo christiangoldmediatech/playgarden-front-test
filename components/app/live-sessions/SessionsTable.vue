@@ -10,9 +10,9 @@
       </v-row>
     </div>
 
-    <div v-for="i in 13" :key="`hour-${i}`" class="lsess-table-hour-row">
+    <div v-for="i in 16" :key="`hour-${i}`" class="lsess-table-hour-row">
       <div class="d-flex align-center justify-center lsess-table-offset">
-        {{ 10 + i }}:00
+        {{ 7 + i }}:00
       </div>
       <v-row>
         <v-col
@@ -20,7 +20,7 @@
           :key="`days-row-${i}-column-${index}`"
           class="lsess-table-col"
         >
-          <table-entry v-if="index === 3 && i === 1" />
+          <table-entry v-if="index === 3 && i === 4" />
         </v-col>
       </v-row>
     </div>
