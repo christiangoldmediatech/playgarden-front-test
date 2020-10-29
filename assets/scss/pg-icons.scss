@@ -27,6 +27,7 @@ i[class^="pg-icon-"], i[class*=" pg-icon-"] {
   }
 }
 
+
 .pg-icon-camera:before {
   content: "\e900";
   color: #fff;
@@ -46,4 +47,16 @@ i[class^="pg-icon-"], i[class*=" pg-icon-"] {
 .pg-icon-play-full:before {
   content: "\e904";
   color: #fff;
+}
+.pg-icon-backward-15-sec:before {
+  content: "\e905";
+  color: #d2d2d2;
+}
+.pg-icon-forward-15-sec:before {
+  content: "\e906";
+  color: #d2d2d2;
+}
+.pg-icon-previous:before {
+  content: "\e907";
+  color: #d2d2d2;
 }

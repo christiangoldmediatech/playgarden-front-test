@@ -31,7 +31,6 @@
             v-model="item._menu"
             :close-on-content-click="false"
             min-width="290px"
-            solo
             transition="scale-transition"
           >
             <template v-slot:activator="{ on, attrs }">

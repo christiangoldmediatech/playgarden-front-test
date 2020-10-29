@@ -28,11 +28,11 @@ export default {
       // Load new media
       this.$nextTick(() => {
         // Force fullscreen on small and mobile devices
-        if (this.$vuetify.breakpoint.mobile || this.$vuetify.breakpoint.smAndDown) {
-          if (!this.fullscreen) {
-            this.toggleFullscreen(this.dialogContainerId)
-          }
-        }
+        // if (this.$vuetify.breakpoint.mobile || this.$vuetify.breakpoint.smAndDown) {
+        //   if (!this.fullscreen) {
+        //     this.toggleFullscreen(this.dialogContainerId)
+        //   }
+        // }
 
         if (!this.player) {
           const waitAndLoad = window.setInterval(() => {

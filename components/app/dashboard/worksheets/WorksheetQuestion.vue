@@ -4,7 +4,7 @@
     <div class="worksheet-question">
       {{ question }}
     </div>
-    <div v-if="connectingPairs" class="worksheet-word">
+    <div v-if="connectingPairs" class="worksheet-word pt-2">
       {{ randomWord }}
     </div>
   </v-col>
