@@ -51,7 +51,7 @@ export default {
       default: false
     },
 
-    showStepBack: {
+    showSteps: {
       type: Boolean,
       required: false,
       default: false

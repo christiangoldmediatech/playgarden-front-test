@@ -13,6 +13,10 @@ export default {
         return false
       }
       return this.$vuetify.breakpoint.mobile || this.$vuetify.breakpoint.smAndDown
+    },
+
+    mobile () {
+      return this.$vuetify.breakpoint.mobile || this.$vuetify.breakpoint.smAndDown
     }
   }
 }
