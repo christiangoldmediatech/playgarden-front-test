@@ -1,6 +1,6 @@
 <template>
   <div :id="playerContainerId" class="video-player-container">
-    <video ref="videoPlayer" class="video-js" />
+    <video ref="videoPlayer" class="video-js" playsinline />
     <!-- Controls -->
     <control-bar
       v-if="playerInstance && playerContainerId"
