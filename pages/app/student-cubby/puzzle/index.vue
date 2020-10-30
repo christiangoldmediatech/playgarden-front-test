@@ -20,6 +20,16 @@
           />
         </v-col>
       </v-row>
+
+      <v-row justify="center">
+        <v-btn
+          color="primary"
+          nuxt
+          :to="{ name: 'app-student-cubby-puzzle-list', query: { id: studentId } }"
+        >
+          VIEW ALL PUZZLES
+        </v-btn>
+      </v-row>
     </v-card-text>
   </v-card>
 </template>
@@ -28,7 +38,7 @@
 import PuzzleCover from '@/components/app/student-cubby/PuzzleCover'
 
 export default {
-  name: 'Puzzle',
+  name: 'Index',
 
   components: {
     PuzzleCover

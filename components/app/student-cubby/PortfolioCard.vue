@@ -46,6 +46,7 @@
 
       <v-col class="shrink" cols="12" md="">
         <pg-social-buttons
+          class="mx-auto mx-md-0"
           :quote="textShare"
           :title="textShare"
           :toolbar-title="`Share ${textShare}`"

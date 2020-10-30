@@ -43,6 +43,13 @@
 }
 
 /*
+ * INPUT
+ */
+.v-image__placeholder {
+  z-index: 0;
+}
+
+/*
  * OVERLAY
  */
 .v-overlay--active .v-overlay__scrim {
