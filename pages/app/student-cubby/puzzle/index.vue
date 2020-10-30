@@ -11,14 +11,14 @@
       </p>
 
       <v-row justify="center">
-        <v-col cols="12">
-          <puzzle-cover
-            :background-image="
-              require('@/assets/jpg/student-cubby/puzzle-background.jpg')
-            "
-            :student-id="studentId"
-          />
-        </v-col>
+        <puzzle-cover
+          v-if="backgroundImage"
+          :background-image="backgroundImage"
+          :columns="columns"
+          :rows="rows"
+          :uncover="uncover"
+          :student-id="studentId"
+        />
       </v-row>
 
       <v-row justify="center">
@@ -35,6 +35,9 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+import { get } from 'lodash'
+
 import PuzzleCover from '@/components/app/student-cubby/PuzzleCover'
 
 export default {
@@ -44,9 +47,63 @@ export default {
     PuzzleCover
   },
 
+  data: () => ({
+    backgroundImage: null,
+    columns: 5,
+    rows: 1,
+    uncover: 0
+  }),
+
   computed: {
     studentId () {
       return this.$route.query.id
+    }
+  },
+
+  watch: {
+    studentId () {
+      this.getUncoverPieces()
+      this.getPuzzle()
+    }
+  },
+
+  created () {
+    if (this.studentId) {
+      this.getUncoverPieces()
+      this.getPuzzle()
+    }
+  },
+
+  methods: {
+    ...mapActions('children/puzzle', [
+      'getPuzzleActiveByChildId',
+      'getPuzzleByChildId'
+    ]),
+
+    async getUncoverPieces () {
+      if (this.studentId) {
+        try {
+          const { pieces } = await this.getPuzzleByChildId({
+            id: this.studentId
+          })
+
+          this.uncover = pieces
+        } catch (e) {}
+      }
+    },
+
+    async getPuzzle () {
+      if (this.studentId) {
+        try {
+          const { puzzle } = await this.getPuzzleActiveByChildId({
+            id: this.studentId
+          })
+
+          this.backgroundImage = get(puzzle, 'image')
+          this.columns = get(puzzle, 'columns', 5)
+          this.rows = get(puzzle, 'rows', 1)
+        } catch (e) {}
+      }
     }
   }
 }

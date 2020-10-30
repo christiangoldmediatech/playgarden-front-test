@@ -17,6 +17,9 @@
 </template>
 
 <script>
+import { colorValidator } from '@/components/pg/utils/validators'
+import { colorMaker } from '@/components/pg/utils/colorable'
+
 export default {
   name: 'UnderlinedTitle',
 
@@ -39,52 +42,7 @@ export default {
     lineColor: {
       type: [Object, String],
       default: () => ({ color: 'primary', light: 'base' }),
-      validator: (value) => {
-        if (!value) {
-          return false
-        }
-
-        // using HEX or vuetify colors vars
-        if (typeof value === 'string') {
-          return true
-        }
-
-        // using vuetify color with object
-        if (!value.color || !value.light) {
-          return false
-        }
-
-        if (
-          ![
-            'primary',
-            'secondary',
-            'accent',
-            'error',
-            'info',
-            'success',
-            'warning',
-            'black'
-          ].includes(value.color)
-        ) {
-          return false
-        }
-
-        return (
-          !value.light ||
-          [
-            'base',
-            'lighten5',
-            'lighten4',
-            'lighten3',
-            'lighten2',
-            'lighten1',
-            'darken1',
-            'darken2',
-            'darken3',
-            'darken4'
-          ].includes(value.light)
-        )
-      }
+      validator: colorValidator
     },
 
     lineFrom: {
@@ -120,13 +78,7 @@ export default {
         return 'rgba(254, 197, 114, 0.71)'
       }
 
-      // using HEX or vuetify colors vars
-      if (typeof this.lineColor === 'string') {
-        return this.lineColor
-      }
-
-      return `var(--v-${this.lineColor.color}-${this.lineColor.light ||
-        'base'})`
+      return colorMaker(this.lineColor)
     },
 
     _lineFrom () {
