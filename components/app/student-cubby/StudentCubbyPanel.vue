@@ -57,7 +57,7 @@
 
                 <span
                   class="font-weight-bold d-block text-center text-body-2 text-md-subtitle-2 text-xl-h6 text-kerning menu-link"
-                  :class="{mobile: $vuetify.breakpoint.xs}"
+                  :class="{ mobile: $vuetify.breakpoint.xs }"
                 >
                   {{ link.text }}
                 </span>
@@ -119,10 +119,10 @@ export default {
     },
 
     selected () {
-      const routes = this.links.map(
-        ({ route }) => `app-student-cubby-${route}`
+      const routes = this.links.map(({ route }) =>
+        RegExp(`app-student-cubby-${route}*`)
       )
-      return routes.findIndex(route => route === this.$route.name)
+      return routes.findIndex(route => route.test(this.$route.name))
     },
 
     selectedChildLevel () {

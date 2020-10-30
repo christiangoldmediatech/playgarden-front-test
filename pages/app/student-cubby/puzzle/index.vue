@@ -21,7 +21,7 @@
         />
       </v-row>
 
-      <v-row justify="center">
+      <v-row class="mt-2" justify="center">
         <v-btn
           color="primary"
           nuxt
