@@ -152,8 +152,9 @@ export default {
 
       try {
         const token = await this.validateCard(cardData)
+        const dataSubscrition = (cardData.promotion_id) ? { ...token, promotion_id: cardData.promotion_id } : token
 
-        await this.paySubscription(token)
+        await this.paySubscription(dataSubscrition)
 
         if (this.inSignUpProcess) {
           await this.fetchUserInfo()
