@@ -146,7 +146,7 @@ export default {
       }
     }
     &-content {
-      max-height: calc(100% - 80px);
+      max-height: calc(95vh - 200px);
       overflow-y: scroll;
     }
     &-activity-type {
