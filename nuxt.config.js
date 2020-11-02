@@ -7,6 +7,8 @@ export default {
    ** See https://nuxtjs.org/api/configuration-mode
    */
   mode: 'universal',
+  paralell: true,
+  cache: true,
   server: {
     port: process.env.PORT || 8080,
     host: process.env.HOST || '0.0.0.0',

@@ -26,12 +26,9 @@ export default {
 
   updateLiveSession (_, { id, data }) {
     return this.$axios.$patch(`/live-sessions/${id}`, data)
-  }
-}
+  },
 
-/*
-export default {
-  async getLiveSessions ({ commit }) {
+  async getUserLiveSessions ({ commit }) {
     try {
       const today = new Date()
       const monday = new Date()
@@ -67,4 +64,3 @@ export default {
     }
   }
 }
-*/

@@ -4,14 +4,7 @@
       <v-row class="fill-height">
         <v-col class="lsess-daily" cols="12" md="4" lg="3" xl="2">
           <div class="fill-height d-flex flex-column">
-            <v-card class="mb-8  flex-shrink-0 flex-grow-1">
-              <v-row class="mx-0" align="center">
-                <img class="ml-4 mr-3" src="/svg/sessions-camera.svg">
-                <span class="lsess-title">Live Sessions Schedule</span>
-              </v-row>
-
-              <today-cards />
-            </v-card>
+            <today-cards-panel />
 
             <v-btn
               class="text-none font-weight-bold flex-shrink-1 flex-grow-0"
@@ -30,6 +23,7 @@
         </v-col>
       </v-row>
     </v-container>
+    <entry-dialog />
   </v-main>
 </template>
 
@@ -43,12 +37,12 @@ export default {
     ...mapState('live-sessions', ['sessions'])
   },
 
-  // created () {
-  //   this.getLiveSessions()
-  // },
+  created () {
+    this.getUserLiveSessions()
+  },
 
   methods: {
-    ...mapActions('live-sessions', ['getLiveSessions'])
+    ...mapActions('live-sessions', ['getUserLiveSessions'])
   }
 }
 </script>
@@ -66,8 +60,6 @@ export default {
   }
   &-schedule {
     max-height: 100%;
-    overflow-x: hidden;
-    overflow-y: scroll;
   }
   &-title {
     font-size: 1.5rem;
