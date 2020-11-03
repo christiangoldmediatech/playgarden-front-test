@@ -3,7 +3,7 @@ import Snotify, { SnotifyPosition } from 'vue-snotify'
 
 Vue.use(Snotify, {
   toast: {
-    position: SnotifyPosition.rightBottom,
+    position: SnotifyPosition.rightTop,
     closeOnClick: true
   }
 })
