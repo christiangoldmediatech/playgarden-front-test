@@ -12,13 +12,19 @@
       <v-card-text class="py-0">
         <v-row>
           <v-col cols="12" sm="6" md="4">
-            <v-img
-              alt="Playgarden Prep's Logo"
-              class="mb-3"
-              contain
-              :max-width="$vuetify.breakpoint.smAndUp ? '400' : null"
-              :src="require('~/assets/svg/logo.svg')"
-            />
+            <nuxt-link
+              :to="{
+                name: 'app-dashboard',
+              }"
+            >
+              <v-img
+                alt="Playgarden Prep's Logo"
+                class="mb-3"
+                contain
+                :max-width="$vuetify.breakpoint.smAndUp ? '400' : null"
+                :src="require('~/assets/svg/logo.svg')"
+              />
+            </nuxt-link>
 
             <div class="align-center d-flex justify-center justify-md-start">
               <a target="_blank" href="https://www.facebook.com/Playgardennyc">
