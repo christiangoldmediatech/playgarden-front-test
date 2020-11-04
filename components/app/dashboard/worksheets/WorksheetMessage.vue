@@ -8,54 +8,78 @@
   >
     <v-card>
       <div class="worksheet-message-content">
+        <v-row class="d-md-none mb-3" justify="end">
+          <v-btn icon v-on="{ click: $listeners.click }">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-row>
+
         <v-row>
           <v-col class="pt-0" cols="12">
             <div class="worksheet-message-title">
-              {{ `${correct ? 'GREAT JOB!' : 'TRY AGAIN!'}` }}
+              {{ `${correct ? "GREAT JOB!" : "TRY AGAIN!"}` }}
             </div>
           </v-col>
         </v-row>
 
         <v-row v-if="item" align="center">
-          <v-col class="d-flex justify-end" cols="6">
+          <v-col class="d-flex justify-center justify-md-end" cols="12" md="6">
             <div class="worksheet-message-item">
-              <v-img
-                class="ml-auto worksheet-item-shadow"
-                :src="item.image"
-                aspect-ratio="1"
-                max-width="300px"
-                max-height="300px"
+              <v-badge
+                bottom
+                class="w-100"
+                :color="correct ? 'success' : 'error'"
+                :icon="correct ? 'mdi-check' : 'mdi-close'"
+                offset-x="40"
+                offset-y="40"
+                :value="$vuetify.breakpoint.mobile"
               >
-                <div class="worksheet-item-image worksheet-item-image-selected" />
-              </v-img>
+                <v-img
+                  class="ml-auto worksheet-item-shadow"
+                  :class="{ 'rounded-circle': $vuetify.breakpoint.mobile }"
+                  :src="item.image"
+                  aspect-ratio="1"
+                  max-width="300px"
+                  max-height="300px"
+                />
+              </v-badge>
             </div>
           </v-col>
 
-          <v-col cols="6" lg="5">
+          <v-col cols="12" md="6" lg="5">
             <div class="text-center">
               <v-img
-                :src="require(`@/assets/svg/${correct ? 'correct' : 'incorrect' }.svg`)"
-                class="mx-auto worksheet-message-icon"
-                :class="{ 'clickable': !correct }"
+                :src="
+                  require(`@/assets/svg/${
+                    correct ? 'correct' : 'incorrect'
+                  }.svg`)
+                "
+                class="d-none d-md-block mx-auto worksheet-message-icon"
+                :class="{ clickable: !correct }"
                 :aspect-ratio="1"
                 v-on="{ click: correct ? () => {} : $listeners.click }"
               />
+
               <div class="mt-2 text-h6 font-weight-bold">
                 {{ item.word }}
               </div>
+
               <template v-if="item.errorMessage && !correct">
                 <p>
                   {{ item.errorMessage }}
                 </p>
               </template>
+
               <template v-else>
                 <p v-if="tapCorrect">
-                  starts with a {{ item.word[0].toUpperCase() }}{{ item.word[0].toLowerCase() }}
+                  starts with a {{ item.word[0].toUpperCase()
+                  }}{{ item.word[0].toLowerCase() }}
                 </p>
                 <p v-else>
                   <template v-if="correct">
                     is the correct answer!
                   </template>
+
                   <template v-else>
                     is not a {{ randomWord }}
                   </template>
