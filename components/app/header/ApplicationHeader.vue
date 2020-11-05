@@ -5,7 +5,7 @@
         class="pg-app-bar-col"
         :class="{
           'full-width': fullWidth,
-          'mobile': $vuetify.breakpoint.mdAndDown
+          mobile: $vuetify.breakpoint.mdAndDown,
         }"
       >
         <v-row align="center" justify="space-between" no-gutters>
@@ -13,7 +13,7 @@
           <v-col cols="auto" class="hidden-md-and-up">
             <v-app-bar-nav-icon
               class="primary pg-app-bar-nav-icon"
-              :class="{ 'isMd': $vuetify.breakpoint.md }"
+              :class="{ isMd: $vuetify.breakpoint.md }"
               color="white"
               tile
               large
@@ -29,13 +29,19 @@
           <!-- LOGO -->
           <v-col cols="auto" align-self="center">
             <v-toolbar-title>
-              <v-img
-                alt="Playarden Prep Online Logo"
-                contain
-                max-height="50"
-                :max-width="$vuetify.breakpoint.mdAndUp ? 290 : 200"
-                :src="require('@/assets/svg/logo.svg')"
-              />
+              <nuxt-link
+                :to="{
+                  name: 'app-dashboard',
+                }"
+              >
+                <v-img
+                  alt="Playarden Prep Online Logo"
+                  contain
+                  max-height="50"
+                  :max-width="$vuetify.breakpoint.mdAndUp ? 290 : 200"
+                  :src="require('@/assets/svg/logo.svg')"
+                />
+              </nuxt-link>
             </v-toolbar-title>
           </v-col>
 
@@ -242,7 +248,6 @@ export default {
 
 .pg-app-bar::v-deep.v-sheet.v-app-bar.v-toolbar:not(.v-sheet--outlined) {
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16) !important;
-
 }
 .btn-register:before {
   background-color: transparent !important;
