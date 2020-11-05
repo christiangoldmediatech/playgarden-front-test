@@ -27,7 +27,6 @@
         >
           <v-img
             aspect-ratio="1.7"
-            contain
             :[getSrcType(puzzle.completed)]="puzzle.src"
           >
             <template v-slot:placeholder>
@@ -41,7 +40,7 @@
             <v-row align="end" class="fill-height" justify="end" no-gutters>
               <pg-circle-letter-day
                 class="mb-3 mr-3"
-                letter="2"
+                :letter="puzzle.letter"
                 no-auto-position
                 size="50"
               />
@@ -80,18 +79,15 @@
 </template>
 
 <script>
+import { get } from 'lodash'
+import { mapActions } from 'vuex'
+
 export default {
   name: 'List',
 
   data: () => ({
     dialog: false,
-    puzzles: Array(24)
-      .fill()
-      .map((_, id) => ({
-        id,
-        completed: id % 2 === 1,
-        src: 'https://picsum.photos/510/300?random'
-      })),
+    puzzles: [],
     toShow: {}
   }),
 
@@ -100,8 +96,46 @@ export default {
       return this.$route.query.id
     }
   },
+  watch: {
+    studentId () {
+      if (!this.loading) {
+        this.fetchPuzzles()
+      }
+    }
+  },
+
+  created () {
+    this.fetchPuzzles()
+  },
 
   methods: {
+    ...mapActions('children/puzzle', ['findPuzzlesByChildrenId']),
+
+    async fetchPuzzles (clear = false) {
+      this.loading = true
+
+      if (clear) {
+        this.search = null
+      }
+      try {
+        const puzzles = await this.findPuzzlesByChildrenId({
+          id: this.studentId
+        })
+
+        this.puzzles = puzzles.map(
+          ({ id, image, curriculumType, puzzleChildren }) => ({
+            id,
+            completed: get(puzzleChildren, 'completed', false),
+            letter: get(curriculumType, 'letter', ' '),
+            src: image
+          })
+        )
+      } catch (e) {
+      } finally {
+        this.loading = false
+      }
+    },
+
     getSrcType (completed) {
       return completed ? 'src' : 'lazy-src'
     },

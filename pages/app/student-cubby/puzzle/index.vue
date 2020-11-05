@@ -25,7 +25,10 @@
         <v-btn
           color="primary"
           nuxt
-          :to="{ name: 'app-student-cubby-puzzle-list', query: { id: studentId } }"
+          :to="{
+            name: 'app-student-cubby-puzzle-list',
+            query: { id: studentId },
+          }"
         >
           VIEW ALL PUZZLES
         </v-btn>
