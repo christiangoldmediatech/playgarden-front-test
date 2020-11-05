@@ -123,10 +123,10 @@ export default {
         })
 
         this.puzzles = puzzles.map(
-          ({ id, image, curriculumType, puzzleChildren }) => ({
+          ({ id, image, curriculumType, completed }) => ({
             id,
-            completed: get(puzzleChildren, 'completed', false),
-            letter: get(curriculumType, 'letter', ' '),
+            completed,
+            letter: get(curriculumType, 'letter', ''),
             src: image
           })
         )
