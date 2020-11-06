@@ -88,7 +88,7 @@ export default {
         object-position: center center;
       }
       &-title {
-        font-size: 1.15rem;
+        font-size: 1.10rem;
         line-height: 1.25;
       }
       &-scaled {

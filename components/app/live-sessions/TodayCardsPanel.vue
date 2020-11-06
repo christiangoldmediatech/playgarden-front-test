@@ -1,19 +1,32 @@
 <template>
-  <div class="lsess-daily-container pb-8">
-    <v-card class="lsess-daily-card">
-      <v-row class="mx-0" align="center">
-        <img class="ml-4 mr-3" src="/svg/sessions-camera.svg">
-        <span class="lsess-title">Live Sessions Schedule</span>
-      </v-row>
+  <div class="fill-height d-flex flex-column">
+    <div class="lsess-daily-container pb-8">
+      <v-card class="lsess-daily-card pt-4">
+        <v-row class="mx-0" align="center" justify="center">
+          <img class="mr-3" src="/svg/sessions-camera.svg">
+          <span class="lsess-title">Live Sessions Schedule</span>
+        </v-row>
 
-      <v-row class="mx-0 lsess-schedule-container">
-        <v-col cols="12" class="pl-2 pr-3 lsess-schedule-container-col">
-          <perfect-scrollbar>
-            <today-card v-for="i in nextSessions" :key="`today-card-${i.id}`" :entry="i" />
-          </perfect-scrollbar>
-        </v-col>
-      </v-row>
-    </v-card>
+        <v-row class="mx-0 lsess-schedule-container">
+          <v-col cols="12" class="pl-2 pr-3 lsess-schedule-container-col">
+            <perfect-scrollbar>
+              <today-card v-for="i in nextSessions" :key="`today-card-${i.id}`" :entry="i" />
+            </perfect-scrollbar>
+          </v-col>
+        </v-row>
+      </v-card>
+    </div>
+
+    <v-btn
+      class="lsess-calendar-btn text-none font-weight-bold flex-shrink-1 flex-grow-0"
+      color="white"
+      block
+      solo
+      x-large
+      @click="$emit('mode-change')"
+    >
+      Calendar
+    </v-btn>
   </div>
 </template>
 

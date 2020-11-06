@@ -40,15 +40,30 @@ export default {
     PerfectScrollbar
   },
 
+  props: {
+    today: {
+      type: String,
+      required: true
+    }
+  },
+
   data: () => {
     return {
-      days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-      activeDay: new Date().getDay() - 1
+      days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
     }
   },
 
   computed: {
-    ...mapGetters('live-sessions', ['getWeeklySchedule'])
+    ...mapGetters('live-sessions', ['getWeeklySchedule']),
+    activeDay () {
+      const parts = this.today.split('-')
+      const date = new Date()
+      date.setFullYear(parts[0])
+      date.setMonth(parts[1] + 1)
+      date.setDate(parts[2])
+
+      return date.getDay() - 1
+    }
   }
 }
 </script>

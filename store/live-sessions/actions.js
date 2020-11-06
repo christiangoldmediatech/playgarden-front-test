@@ -28,9 +28,9 @@ export default {
     return this.$axios.$patch(`/live-sessions/${id}`, data)
   },
 
-  async getUserLiveSessions ({ commit }) {
+  async getUserLiveSessions ({ commit }, input = new Date()) {
     try {
-      const today = new Date()
+      const today = new Date(input)
       const monday = new Date()
       const friday = new Date()
 
@@ -52,8 +52,8 @@ export default {
         params: {
           limit: 100,
           page: 1,
-          dateStart: monday,
-          dateEnd: friday
+          startDate: monday,
+          endDate: friday
         }
       })
       commit('SET_SESSIONS', liveSessions)
