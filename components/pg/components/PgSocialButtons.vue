@@ -1,34 +1,43 @@
 <template>
-  <v-card width="300" class="mx-auto">
+  <v-card :width="miniVariant ? 50 : 300">
     <v-toolbar color="primary" dense>
       <v-icon color="white">
         mdi-share-variant-outline
       </v-icon>
 
-      <span v-if="toolbarTitle" class="font-weight-bold ml-3 white--text">{{
-        toolbarTitle
-      }}</span>
+      <span
+        v-if="toolbarTitle && !miniVariant"
+        class="font-weight-bold ml-3 white--text"
+      >
+        {{ toolbarTitle }}
+      </span>
     </v-toolbar>
 
-    <p v-if="toolbarSubtitle" class="font-weight-bold mb-0 mt-3 text-center">
+    <p
+      v-if="toolbarSubtitle && !miniVariant"
+      class="font-weight-bold mb-0 mt-3 text-center"
+    >
       {{ toolbarSubtitle }}
     </p>
 
-    <v-card-text>
-      <v-row>
+    <v-card-text :class="{ 'mt-3 pa-0': miniVariant }">
+      <v-row :justify="miniVariant ? 'center' : null" :no-gutters="miniVariant">
         <v-btn
           v-if="fakeNetworks.download"
-          block
-          class="mb-2 movSpa"
+          :block="!miniVariant"
+          class="mb-2"
+          :class="{ 'mov-spa': !miniVariant }"
           :color="fakeNetworks.download.color"
           :href="url"
+          :icon="miniVariant"
           target="_blank"
         >
-          <v-icon v-if="fakeNetworks.download.icon" left>
+          <v-icon v-if="fakeNetworks.download.icon" :left="!miniVariant">
             {{ fakeNetworks.download.icon }}
           </v-icon>
 
           <span
+            v-if="!miniVariant"
             :style="{ color: fakeNetworks.download.textColor || textColor }"
           >
             {{ fakeNetworks.download.name }}
@@ -38,7 +47,8 @@
         <share-network
           v-for="(network, indexN) in fakeNetworks.share"
           :key="indexN"
-          class="mb-2 w-100"
+          class="mb-2"
+          :class="{ 'w-100': !miniVariant }"
           :description="description"
           :hashtags="hashtags"
           :media="media"
@@ -48,12 +58,21 @@
           :twitter-user="twitterUser"
           :url="url"
         >
-          <v-btn class="movSpa" block :color="network.color">
-            <v-icon v-if="network.icon" left>
+          <v-btn
+            :block="!miniVariant"
+            :class="{ 'mov-spa': !miniVariant }"
+            :color="network.color"
+            :icon="miniVariant"
+          >
+            <v-icon v-if="network.icon" :left="!miniVariant">
               {{ network.icon }}
             </v-icon>
 
-            <span class="movSpa" :style="{ color: network.textColor || textColor }">
+            <span
+              v-if="!miniVariant"
+              :class="{ 'mov-spa': !miniVariant }"
+              :style="{ color: network.textColor || textColor }"
+            >
               {{ network.name }}
             </span>
           </v-btn>
@@ -86,6 +105,8 @@ export default {
       type: String,
       default: ''
     },
+
+    miniVariant: Boolean,
 
     networks: {
       type: Array,
@@ -123,7 +144,7 @@ export default {
 
     title: {
       type: String,
-      required: true
+      default: ''
     },
 
     toolbarTitle: {
@@ -168,10 +189,11 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 @media only screen and (max-width: 959px) {
-  .movSpa {
-  align-content: start;
-  justify-content: start;
-}}
+  .mov-spa {
+    align-content: start;
+    justify-content: start;
+  }
+}
 </style>

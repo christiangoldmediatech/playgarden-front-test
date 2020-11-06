@@ -11,14 +11,29 @@
       </p>
 
       <v-row justify="center">
-        <puzzle-cover
-          v-if="backgroundImage"
-          :background-image="backgroundImage"
-          :columns="columns"
-          :rows="rows"
-          :uncover="uncover"
-          :student-id="studentId"
-        />
+        <v-col>
+          <puzzle-cover
+            v-if="backgroundImage"
+            :background-image="backgroundImage"
+            :columns="columns"
+            :rows="rows"
+            :uncover="uncover"
+            :student-id="studentId"
+          />
+        </v-col>
+      </v-row>
+
+      <v-row class="mt-2" justify="center">
+        <v-btn
+          color="primary"
+          nuxt
+          :to="{
+            name: 'app-student-cubby-puzzle-list',
+            query: { id: studentId },
+          }"
+        >
+          VIEW ALL PUZZLES
+        </v-btn>
       </v-row>
     </v-card-text>
   </v-card>
@@ -31,7 +46,7 @@ import { get } from 'lodash'
 import PuzzleCover from '@/components/app/student-cubby/PuzzleCover'
 
 export default {
-  name: 'Puzzle',
+  name: 'Index',
 
   components: {
     PuzzleCover
