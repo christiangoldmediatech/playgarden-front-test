@@ -11,14 +11,16 @@
       </p>
 
       <v-row justify="center">
-        <puzzle-cover
-          v-if="backgroundImage"
-          :background-image="backgroundImage"
-          :columns="columns"
-          :rows="rows"
-          :uncover="uncover"
-          :student-id="studentId"
-        />
+        <v-col>
+          <puzzle-cover
+            v-if="backgroundImage"
+            :background-image="backgroundImage"
+            :columns="columns"
+            :rows="rows"
+            :uncover="uncover"
+            :student-id="studentId"
+          />
+        </v-col>
       </v-row>
 
       <v-row class="mt-2" justify="center">
