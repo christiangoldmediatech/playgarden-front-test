@@ -308,7 +308,7 @@ export default {
         piece
           .map(this.d3CurvedLine)
           .join(',')
-          .replaceAll('M', '')
+          .replace(/M/g, '')
       )
     },
 
