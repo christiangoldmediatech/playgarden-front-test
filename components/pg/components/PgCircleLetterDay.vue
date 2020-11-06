@@ -1,0 +1,63 @@
+<template>
+  <div
+    :class="{
+      'pg-letter-day-size': noAutoPosition,
+      'pg-letter-day-row': !noAutoPosition
+    }"
+    :style="{
+      '--pg-letter-day-size': `${size}px`
+    }"
+  >
+    <!--      position: noAutoPosition ? 'relative' : null,-->
+    <!--      top: noAutoPosition ? 0 : null,-->
+    <!--      width: noAutoPosition ? '100px' : null,-->
+    <div
+      class="pg-letter-day-outer"
+      :class="{ 'pg-letter-day-size': !noAutoPosition }"
+    >
+      <div class="pg-letter-day-inner">
+        <div class="pg-letter-day-circle">
+          <span
+            class="pg-letter-day-letter"
+            :style="{ fontSize: `${size * (day ? 0.31 : 0.44)}px` }"
+          >
+            {{ letter }}
+          </span>
+
+          <span
+            v-if="day"
+            class="pg-letter-day-number"
+            :style="{ fontSize: `${size * 0.15}px` }"
+          >
+            DAY {{ day }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'PgCircleLetterDay',
+
+  props: {
+    day: {
+      type: [Number, String],
+      default: undefined
+    },
+
+    letter: {
+      type: String,
+      default: ''
+    },
+
+    noAutoPosition: Boolean,
+
+    size: {
+      type: [Number, String],
+      default: 158
+    }
+  }
+}
+</script>

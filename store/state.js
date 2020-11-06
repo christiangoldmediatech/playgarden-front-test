@@ -19,6 +19,7 @@ export default () => ({
     'app-student-cubby-course-progress': 1,
     'app-student-cubby-patches': 1,
     'app-student-cubby-puzzle': 1,
+    'app-student-cubby-puzzle-list': 1,
     'app-student-cubby-student-portfolio': 1
   },
 
@@ -34,6 +35,7 @@ export default () => ({
     'app-student-cubby-course-progress': 1,
     'app-student-cubby-patches': 1,
     'app-student-cubby-puzzle': 1,
+    'app-student-cubby-puzzle-list': 1,
     'app-student-cubby-student-portfolio': 1
   },
 
@@ -49,6 +51,7 @@ export default () => ({
     'app-student-cubby-course-progress': 1,
     'app-student-cubby-patches': 1,
     'app-student-cubby-puzzle': 1,
+    'app-student-cubby-puzzle-list': 1,
     'app-student-cubby-student-portfolio': 1
   },
 

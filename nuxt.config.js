@@ -60,8 +60,6 @@ export default {
    ** Global CSS
    */
   css: [
-    './assets/scss/app.scss',
-    './assets/scss/pg-icons.scss',
     {
       src: 'tiptap-vuetify/dist/main.css',
       lang: 'css'
@@ -69,7 +67,10 @@ export default {
     {
       src: 'vue-snotify/styles/material.css',
       lang: 'css'
-    }
+    },
+    './assets/scss/pg-components/index.scss',
+    './assets/scss/app.scss',
+    './assets/scss/pg-icons.scss'
   ],
   /*
    ** Plugins to load before mounting the App
@@ -99,7 +100,7 @@ export default {
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
     '@nuxtjs/vuetify'
-  ],  
+  ],
   /**
    * Vuetify Options
    */

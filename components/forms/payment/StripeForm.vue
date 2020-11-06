@@ -75,6 +75,19 @@
         </v-col>
       </v-row>
 
+      <validation-provider
+        v-slot="{ errors }"
+        name="Promotion Code"
+      >
+        <pg-text-field
+          v-model="draft.promotion_code"
+          :error-messages="errors"
+          label="Promotion Code"
+          solo
+          @blur="checkValid"
+        />
+      </validation-provider>
+
       <v-row v-if="!noTerms" class="mb-6">
         <validation-provider v-slot="{ errors }" name="Terms" rules="required">
           <v-checkbox
@@ -104,7 +117,7 @@
 
       <v-btn
         block
-        class="mb-4 mt-4 main-btn ml-md-0"
+        class="mb-4 mt-4 main-btn ml-n4 ml-md-0"
         min-height="60"
         color="primary"
         :disabled="invalid"
@@ -124,7 +137,7 @@
       <v-btn
         v-if="cancelable"
         block
-        class="mb-6 main-btn text-center"
+        class="mb-6 main-btn"
         color="accent"
         :loading="loading"
         text
@@ -139,37 +152,73 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import submittable from '@/utils/mixins/submittable'
+
 export default {
   name: 'StripeForm',
+
   mixins: [submittable],
+
   props: {
     buttonText: {
       type: String,
       default: 'START YOUR FREE TRIAL'
     },
+
     cancelable: Boolean,
+
     loading: Boolean,
+
     noTerms: Boolean,
+
     noTrial: Boolean
   },
+
+  watch: {
+    'draft.promotion_code' (val) {
+      if (val) {
+        this.draft.promotion_code = val.toUpperCase()
+      }
+    }
+  },
+
   methods: {
+    ...mapActions('coupons', ['getCoupons']),
     getSubmittableData () {
       const [month, year] = this.draft.date.split('/')
+
       return {
         card: {
           number: this.draft.number.replace(/\D/gm, ''),
           exp_month: month * 1,
           exp_year: year * 1 + 2000,
           cvc: this.draft.cvv
-        }
+        },
+        promotion_id: this.draft.promotion_id
       }
     },
+
+    async checkValid () {
+      const coupons = await this.getCoupons({ active: true, code: this.draft.promotion_code })
+      if (coupons.length > 0) {
+        console.log(coupons[0].promotion_id)
+        this.draft.promotion_id = coupons[0].promotion_id
+        this.$snotify.success('Coupon is valid.')
+      } else {
+        this.$snotify.warning('Coupon is not valid.', 'Warning', {})
+        this.draft.promotion_code = null
+        this.draft.promotion_id = null
+      }
+    },
+
     resetDraft () {
       this.draft = {
         number: null,
         date: null,
         cvv: null,
+        promotion_code: null,
+        promotion_id: null,
         acceptTerms: null
       }
     }

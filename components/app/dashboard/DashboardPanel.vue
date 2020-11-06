@@ -2,21 +2,8 @@
   <div class="dashboard-panel-container">
     <v-card class="dashboard-panel-card" height="100%">
       <div class="dashboard-panel-card-border-top" />
-      <div class="lesson-day-row">
-        <div class="lesson-day-outer">
-          <div class="lesson-day-inner">
-            <div class="lesson-day-circle">
-              <span class="lesson-day-letter">
-                {{ lesson ? lesson.curriculumType.letter : null }}
-              </span>
 
-              <span class="lesson-day-number">
-                DAY {{ lesson ? lesson.day : null }}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <pg-circle-letter-day :day="lesson ? lesson.day : null" :letter="lesson ? lesson.curriculumType.letter : null" />
 
       <div class="dashboard-panel-content pa-3">
         <content-section
@@ -130,6 +117,7 @@
           <content-list :items="activities.items" />
         </content-section>
       </div>
+      </pgcircleletterday>
     </v-card>
     <upload-offline-worksheet v-if="!displayMode" v-model="uploadDialog" />
   </div>
@@ -137,6 +125,7 @@
 
 <script>
 import DashboardMixin from '@/mixins/DashboardMixin'
+import PgCircleLetterDay from '@/components/pg/components/PgCircleLetterDay'
 import ContentSection from './ContentSection.vue'
 import ContentList from './ContentList.vue'
 
@@ -144,6 +133,7 @@ export default {
   name: 'DashboardPanel',
 
   components: {
+    PgCircleLetterDay,
     ContentSection,
     ContentList
   },
@@ -246,67 +236,5 @@ export default {
   font-size: 18px !important;
   font-weight: bold !important;
   letter-spacing: 0.04em !important;
-}
-
-.lesson-day {
-  &-row {
-    position: absolute;
-    top: -70px;
-    justify-content: center;
-    width: 100%;
-    display: flex;
-    margin: 0 auto;
-  }
-
-  &-outer {
-    width: 158px;
-    height: 158px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background-color: var(--v-primary-base);
-    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.18);
-  }
-
-  &-inner {
-    width: 136px;
-    height: 136px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background-color: #dce7b5;
-    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.18);
-  }
-
-  &-circle {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: white;
-    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.18);
-    border-radius: 50%;
-    height: 120px;
-    width: 120px;
-  }
-
-  &-letter {
-    color: var(--v-accent-base);
-    font-size: 49px;
-    line-height: 49px;
-    font-weight: bold;
-    text-align: center;
-  }
-
-  &-number {
-    color: var(--v-accent-base);
-    font-size: 24px;
-    font-weight: bold;
-    line-height: 24px;
-    text-align: center;
-    margin-bottom: 11px;
-  }
 }
 </style>
