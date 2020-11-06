@@ -58,8 +58,48 @@
               </v-btn>
             </div>
 
+            <v-list class="entry-card-calendar-links" dense mandatory>
+              <v-list-group :value="true" no-action>
+                <template v-slot:prependIcon>
+                  <img class="calendar-links-logo" src="/svg/sessions-camera.svg">
+                </template>
+
+                <template v-slot:activator>
+                  <v-list-item-content>
+                    <v-list-item-title>
+                      ADD TO CALENDAR
+                    </v-list-item-title>
+                  </v-list-item-content>
+                </template>
+
+                <v-list-item :href="googleCalendarLink" target="_blank">
+                  <v-list-item-icon>
+                    <img class="entry-card-calendar-links-logo" src="/svg/google-calendar.png">
+                  </v-list-item-icon>
+
+                  <v-list-item-content>
+                    <v-list-item-title>
+                      Google Calendar
+                    </v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+
+                <!-- <v-list-item :href="appleCalendarLink" target="_blank">
+                  <v-list-item-icon>
+                    <img class="entry-card-calendar-links-logo" src="/svg/apple-calendar.png">
+                  </v-list-item-icon>
+
+                  <v-list-item-content>
+                    <v-list-item-title>
+                      Apple Calendar
+                    </v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item> -->
+              </v-list-group>
+            </v-list>
+
             <v-btn block text @click.stop="dialog = false">
-              Return to calendar
+              Close
             </v-btn>
           </v-container>
         </template>
@@ -97,7 +137,26 @@ export default {
         return `${date.hour()}:${(date.minute()).toString().padStart(2, '0')}`
       }
       return ''
+    },
+
+    googleCalendarLink () {
+      if (this.entry) {
+        const link = new URL('/calendar/render', 'https://calendar.google.com')
+        link.searchParams.set('action', 'TEMPLATE')
+        link.searchParams.set('text', this.entry.title)
+        link.searchParams.set('dates', this.entry.dateStart | this.entry.dateEnd)
+        link.searchParams.set('details', this.entry.description)
+        return link.toString()
+      }
+      return ''
     }
+
+    // appleCalendarLink () {
+    //   if (this.entry) {
+    //     return ''
+    //   }
+    //   return ''
+    // }
   },
 
   created () {
@@ -178,6 +237,15 @@ export default {
       font-size: 24px;
       font-weight: 500;
       line-height: 1.46;
+    }
+    &-calendar-links {
+      max-width: 330px;
+      margin: 0 auto;
+      &-logo {
+        max-width: 32px;
+        object-fit: contain;
+        object-position: center;
+      }
     }
   }
 }
