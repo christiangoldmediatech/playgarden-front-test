@@ -47,6 +47,7 @@
               v-for="(subItem, j) in item.children"
               :key="`app-menu-item-${i}-sub-item-${j}`"
               active-class="white--text active-menu-item font-weight-black"
+              exact
               nuxt
               :to="`${item.rootPath}/${subItem.route}`"
             >
@@ -172,45 +173,20 @@ export default {
       appDrawer: false,
       menuItems: [
         {
-          icon: 'mdi-teach',
-          title: 'Lesson management',
-          route: '/admin/curriculum-management'
-        },
-        {
           icon: 'mdi-television-play',
           title: 'Activities management',
           route: '/admin/activity-management'
         },
         {
-          icon: 'mdi-phone',
-          title: 'Live Session Management',
-          route: '/admin/live-session-management'
-        },
-        {
-          icon: 'mdi-account-supervisor',
-          title: 'Parents Corner',
-          rootPath: '/admin/parents-corner',
+          icon: 'mdi-teach',
+          title: 'Lesson management',
+          rootPath: '/admin/curriculum-management',
           children: [
             {
-              title: 'Blog',
-              route: 'blog'
+              icon: 'mdi-teach',
+              title: 'Lessons',
+              route: ''
             },
-            {
-              title: 'Videos',
-              route: 'videos'
-            }
-          ]
-        },
-        {
-          icon: 'mdi-account',
-          title: 'User manager',
-          route: '/admin/user-manager'
-        },
-        {
-          icon: 'mdi-cog',
-          title: 'Settings',
-          rootPath: '/admin/settings',
-          children: [
             {
               title: 'Activity Types',
               route: 'activity-types'
@@ -240,10 +216,6 @@ export default {
               route: 'onboarding'
             },
             {
-              title: 'Parents Corner Categories',
-              route: 'parents-corner-categories'
-            },
-            {
               title: 'Patch Management',
               route: 'patch-management'
             },
@@ -260,12 +232,48 @@ export default {
               route: 'report-card-types'
             },
             {
+              title: 'Terms & Conditions Management',
+              route: 'terms-conditions-management'
+            }
+          ]
+        },
+        {
+          icon: 'mdi-phone',
+          title: 'Live Session Management',
+          route: '/admin/live-session-management'
+        },
+        {
+          icon: 'mdi-account-supervisor',
+          title: 'Parents Corner',
+          rootPath: '/admin/parents-corner',
+          children: [
+            {
+              title: 'Blog',
+              route: 'blog'
+            },
+            {
+              title: 'Categories',
+              route: 'categories'
+            },
+            {
+              title: 'Videos',
+              route: 'videos'
+            }
+          ]
+        },
+        {
+          icon: 'mdi-account',
+          title: 'User manager',
+          rootPath: '/admin/user-manager',
+          children: [
+            {
               title: 'Role Management',
               route: 'role-management'
             },
             {
-              title: 'Terms & Conditions Management',
-              route: 'terms-conditions-management'
+              icon: 'mdi-account',
+              title: 'Users',
+              route: ''
             }
           ]
         }

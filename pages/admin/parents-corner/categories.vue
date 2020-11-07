@@ -19,7 +19,7 @@
 
 <script>
 export default {
-  name: 'ParentsCornerCategories',
+  name: 'Categories',
 
   layout: 'admin',
 
