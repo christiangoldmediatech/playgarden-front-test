@@ -3,10 +3,7 @@
     <v-row align="center" justify="center" no-gutters>
       <v-col
         class="pg-app-bar-col"
-        :class="{
-          'full-width': fullWidth,
-          mobile: $vuetify.breakpoint.mdAndDown,
-        }"
+        :class="['full-width', { mobile: $vuetify.breakpoint.mdAndDown }]"
       >
         <v-row align="center" justify="space-between" no-gutters>
           <!-- HAMBURGER MENU -->
@@ -169,12 +166,6 @@ export default {
   mixins: [computedMixin],
 
   props: {
-    fullWidth: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-
     previewMode: {
       type: Boolean,
       required: false,
