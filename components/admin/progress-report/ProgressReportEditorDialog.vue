@@ -131,7 +131,8 @@ export default {
         return {
           text: type.name,
           value: type.id,
-          points: null,
+          reportCardTypeId: type.id,
+          points: 0,
           total: null
         }
       })
@@ -140,7 +141,6 @@ export default {
 
   created () {
     this.$nuxt.$on('open-dialog-progress-report', (dataItem) => {
-      console.log('data aqui', dataItem)
       this.open(dataItem)
     })
   },
@@ -170,8 +170,7 @@ export default {
       try {
         this.item.grades = this.reportCardTypes
         if (this.id === null) {
-          console.log('save--', this.item)
-          // await this.createGrade(this.item)
+          await this.createGrade(this.item)
         } else {
           await this.updateGrades({ id: this.id, data: this.item })
         }
