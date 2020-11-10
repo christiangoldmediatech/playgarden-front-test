@@ -1,31 +1,64 @@
 <template>
   <div class="lsess-table">
-    <div class="pl-16 pr-8">
-      <v-row>
-        <v-col v-for="(day, index) in days" :key="`days-row-column-${index}`" class="lsess-table-col lsess-table-col-header">
-          {{ day }}
+    <template v-if="$vuetify.breakpoint.mobile">
+      <div class="mt-4">
+        <v-carousel
+          v-model="selectedDay"
+          height="48px"
+          :hide-delimiter-background="true"
+          :hide-delimiters="true"
+        >
+          <v-carousel-item v-for="(day, index) in days" :key="`days-row-column-${index}`">
+            <div class="d-flex align-center justify-center fill-height">
+              <span class="font-weight-bold">
+                {{ day }}
+              </span>
+            </div>
+          </v-carousel-item>
+        </v-carousel>
 
-          <div v-if="index === activeDay" class="lsess-table-col-header-active" />
-        </v-col>
-      </v-row>
-    </div>
-
-    <perfect-scrollbar>
-      <div v-for="hour in 16" :key="`hour-${hour}`" class="lsess-table-hour-row">
-        <div class="d-flex align-center justify-center lsess-table-offset">
-          {{ 7 + hour }}:00
-        </div>
+        <template v-for="(entry, hourIndex) in getWeeklySchedule[selectedDay]">
+          <template v-if="entry">
+            <div :key="`mobile-day-${selectedDay}-hour-${hourIndex}`" class="d-flex align-center justify-center lsess-table-offset mb-2 mt-4">
+              {{ 8 + hourIndex }}:00
+            </div>
+            <table-entry :key="`mobile-day-${selectedDay}-hour-${hourIndex}-entry`" :entry="entry" />
+          </template>
+        </template>
+        <template v-if="noEntries(getWeeklySchedule[selectedDay])">
+          <div class="font-weight-bold my-4 text-center">
+            There are no events on this day.
+          </div>
+        </template>
+      </div>
+    </template>
+    <template v-else>
+      <div class="pl-16 pr-8">
         <v-row>
-          <v-col
-            v-for="(day, dayIndex) in days"
-            :key="`days-row-${hour}-column-${dayIndex}`"
-            class="lsess-table-col d-flex align-center"
-          >
-            <table-entry v-if="getWeeklySchedule[dayIndex][hour - 1]" :entry="getWeeklySchedule[dayIndex][hour - 1]" />
+          <v-col v-for="(day, index) in days" :key="`days-row-column-${index}`" class="lsess-table-col lsess-table-col-header">
+            {{ day }}
+            <div v-if="index === activeDay" class="lsess-table-col-header-active" />
           </v-col>
         </v-row>
       </div>
-    </perfect-scrollbar>
+
+      <perfect-scrollbar>
+        <div v-for="hour in 16" :key="`hour-${hour}`" class="lsess-table-hour-row">
+          <div class="d-flex align-center justify-center lsess-table-offset">
+            {{ 7 + hour }}:00
+          </div>
+          <v-row>
+            <v-col
+              v-for="(day, dayIndex) in days"
+              :key="`days-row-${hour}-column-${dayIndex}`"
+              class="lsess-table-col d-flex align-center"
+            >
+              <table-entry v-if="getWeeklySchedule[dayIndex][hour - 1]" :entry="getWeeklySchedule[dayIndex][hour - 1]" />
+            </v-col>
+          </v-row>
+        </div>
+      </perfect-scrollbar>
+    </template>
   </div>
 </template>
 
@@ -49,12 +82,14 @@ export default {
 
   data: () => {
     return {
-      days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+      days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      selectedDay: null
     }
   },
 
   computed: {
     ...mapGetters('live-sessions', ['getWeeklySchedule']),
+
     activeDay () {
       const parts = this.today.split('-')
       const date = new Date()
@@ -63,6 +98,15 @@ export default {
       date.setDate(parts[2])
 
       return date.getDay() - 1
+    }
+  },
+
+  methods: {
+    noEntries (day) {
+      if (day) {
+        return (day.findIndex(entry => entry !== null) === -1)
+      }
+      return true
     }
   }
 }
@@ -110,6 +154,10 @@ export default {
 
 <style lang="scss" scoped>
 ::v-deep {
+  // .v-carousel__controls {
+  //   display: none;
+  // }
+
   .ps {
     position: relative;
     width: 100%;

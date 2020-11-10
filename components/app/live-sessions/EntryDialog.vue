@@ -59,7 +59,7 @@
             </div>
 
             <v-list class="entry-card-calendar-links" dense mandatory>
-              <v-list-group :value="true" no-action>
+              <v-list-group no-action>
                 <template v-slot:prependIcon>
                   <img class="calendar-links-logo" src="/svg/sessions-camera.svg">
                 </template>
@@ -84,7 +84,7 @@
                   </v-list-item-content>
                 </v-list-item>
 
-                <!-- <v-list-item :href="appleCalendarLink" target="_blank">
+                <v-list-item @click="downloadIcs">
                   <v-list-item-icon>
                     <img class="entry-card-calendar-links-logo" src="/svg/apple-calendar.png">
                   </v-list-item-icon>
@@ -94,7 +94,19 @@
                       Apple Calendar
                     </v-list-item-title>
                   </v-list-item-content>
-                </v-list-item> -->
+                </v-list-item>
+
+                <v-list-item @click="downloadIcs">
+                  <v-list-item-icon>
+                    <img class="entry-card-calendar-links-logo" src="/svg/outlook-calendar.png">
+                  </v-list-item-icon>
+
+                  <v-list-item-content>
+                    <v-list-item-title>
+                      Outlook Calendar
+                    </v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
               </v-list-group>
             </v-list>
 
@@ -149,14 +161,27 @@ export default {
         return link.toString()
       }
       return ''
-    }
+    },
 
-    // appleCalendarLink () {
-    //   if (this.entry) {
-    //     return ''
-    //   }
-    //   return ''
-    // }
+    icsFile () {
+      if (this.entry) {
+        /* eslint-disable-next-line */
+        const cal = new ics()
+        cal.addEvent(this.entry.title, this.entry.description, 'Online', this.entry.dateStart, this.entry.dateEnd)
+        return cal
+      }
+      return null
+    }
+  },
+
+  watch: {
+    dialog (val) {
+      if (val) {
+        document.querySelector('html').style.overflowY = 'hidden'
+      } else {
+        document.querySelector('html').style.overflowY = 'auto'
+      }
+    }
   },
 
   created () {
@@ -164,6 +189,14 @@ export default {
       this.entry = entry
       this.dialog = true
     })
+  },
+
+  methods: {
+    downloadIcs () {
+      if (this.icsFile) {
+        this.icsFile.download()
+      }
+    }
   }
 }
 </script>

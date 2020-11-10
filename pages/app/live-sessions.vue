@@ -30,19 +30,46 @@ export default {
   },
 
   computed: {
-    ...mapState('live-sessions', ['sessions'])
+    ...mapState('live-sessions', ['sessions']),
+
+    days () {
+      if (this.today) {
+        const today = new Date(this.today)
+        const monday = new Date()
+        const friday = new Date()
+
+        if (today.getDay() === 6 || today.getDay() === 0) {
+          // Get next week
+          monday.setDate(today.getDate() + (7 - today.getDay()) % 7 + 1)
+          friday.setDate(today.getDate() + (7 - today.getDay()) % 7 + 5)
+        } else {
+          // Get current week
+          monday.setDate(today.getDate() - (today.getDay() - 1))
+          friday.setDate(today.getDate() - (today.getDay() - 5))
+        }
+
+        monday.setHours(0, 0, 0, 0)
+        friday.setHours(23, 59, 59, 999)
+
+        return {
+          monday,
+          friday
+        }
+      }
+      return null
+    }
   },
 
   watch: {
-    today () {
-      this.getUserLiveSessions(this.today)
+    days () {
+      this.getUserLiveSessions(this.days)
     }
   },
 
   created () {
-    this.getUserLiveSessions(this.today)
     const today = new Date()
     this.today = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${(today.getDate()).toString().padStart(2, '0')}`
+    this.getUserLiveSessions(this.days)
   },
 
   methods: {
