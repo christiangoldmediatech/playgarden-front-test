@@ -105,6 +105,7 @@
 
               <template v-slot:[`item.actions.prepend`]="{ item }">
                 <video-preview-btn :video="item.videos" />
+                <progress-report-btn :data-item="item" :entity-type="entityType" />
               </template>
             </pg-admin-data-table>
           </v-card-text>
@@ -118,12 +119,14 @@
 import { mapActions, mapGetters } from 'vuex'
 import onSearch from '@/mixins/OnSearchMixin.js'
 import VideoPreviewBtn from '@/components/admin/video-preview/VideoPreviewBtn.vue'
+import ProgressReportBtn from '@/components/admin/progress-report/ProgressReportBtn.vue'
 
 export default {
   name: 'ActivityDataTable',
 
   components: {
-    VideoPreviewBtn
+    VideoPreviewBtn,
+    ProgressReportBtn
   },
 
   mixins: [onSearch],
@@ -137,6 +140,7 @@ export default {
       allFilters: false,
       activeFilters: [],
       checkStatusInterval: null,
+      entityType: 'Activities',
       headers: [
         {
           text: 'Activity Title',

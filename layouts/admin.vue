@@ -149,6 +149,8 @@
     <admin-snack-bar />
 
     <video-preview />
+
+    <progress-report-editor-dialog />
   </v-app>
 </template>
 
@@ -156,6 +158,7 @@
 import { mapGetters } from 'vuex'
 import VideoPreview from '@/components/admin/video-preview/VideoPreview.vue'
 import AdminSnackBar from '@/components/admin/AdminSnackBar.vue'
+import ProgressReportEditorDialog from '@/components/admin/progress-report/ProgressReportEditorDialog.vue'
 
 export default {
   name: 'Admin',
@@ -164,7 +167,8 @@ export default {
 
   components: {
     AdminSnackBar,
-    VideoPreview
+    VideoPreview,
+    ProgressReportEditorDialog
   },
 
   data () {
