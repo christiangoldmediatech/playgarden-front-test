@@ -207,7 +207,6 @@ export default {
       this.item.entityId = item.id
       this.item.entityType = item.entityType
       this.item.lessonId = item.lessonId
-      console.log('data--', this.item)
       this.dialog = true
     }
   }
