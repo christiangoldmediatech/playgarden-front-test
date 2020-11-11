@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  name: 'ProgressReportBtn',
+  name: 'GradesBtn',
 
   props: {
     dataItem: {

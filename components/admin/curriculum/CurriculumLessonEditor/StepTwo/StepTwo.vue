@@ -53,7 +53,7 @@
               <template v-slot:item.actions="{ item }">
                 <video-preview-btn :video="item" />
 
-                <progress-report-btn :data-item="item" :entity-type="entityType" :lesson-id="lessonId" />
+                <grades-btn :data-item="item" :entity-type="entityType" :lesson-id="lessonId" />
 
                 <v-btn icon @click="openModal(item)">
                   <v-icon color="#81A1F7" dense>
@@ -191,6 +191,7 @@
 <script>
 import { mapActions } from 'vuex'
 import VideoPreviewBtn from '@/components/admin/video-preview/VideoPreviewBtn.vue'
+import GradesBtn from '@/components/admin/grades/GradesBtn.vue'
 import StepTwoForm from './StepTwoForm'
 
 export default {
@@ -198,7 +199,8 @@ export default {
 
   components: {
     StepTwoForm,
-    VideoPreviewBtn
+    VideoPreviewBtn,
+    GradesBtn
   },
 
   props: {

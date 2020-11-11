@@ -47,7 +47,7 @@
               @update:page="page = $event"
             >
               <template v-slot:item.actions="{ item }">
-                <progress-report-btn :data-item="item" :entity-type="entityType" :lesson-id="lessonId" />
+                <grades-btn :data-item="item" :entity-type="entityType" :lesson-id="lessonId" />
 
                 <v-btn icon @click="openModal(item)">
                   <v-icon color="#81A1F7" dense>
@@ -184,14 +184,15 @@
 
 <script>
 import { mapActions } from 'vuex'
-
+import GradesBtn from '@/components/admin/grades/GradesBtn.vue'
 import StepThreeForm from './StepThreeForm'
 
 export default {
   name: 'StepThree',
 
   components: {
-    StepThreeForm
+    StepThreeForm,
+    GradesBtn
   },
 
   props: {

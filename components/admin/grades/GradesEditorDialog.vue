@@ -108,7 +108,7 @@ function generateItemTemplate () {
 }
 
 export default {
-  name: 'ProgressReportEditorDialog',
+  name: 'GradesEditorDialog',
 
   data () {
     return {
@@ -118,7 +118,7 @@ export default {
       id: null,
       gradesList: [],
       item: generateItemTemplate(),
-      entityTypeList: ['Activities', 'Worksheets', 'Videos']
+      entityTypeList: ['Activities', 'Worksheets', 'Videos', 'LiveSessions']
     }
   },
 
