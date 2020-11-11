@@ -49,7 +49,7 @@
                 <label>{{ cardType.text }}</label>
                 <validation-provider
                   v-slot="{ errors }"
-                  :name="`Points to ${cardType.text}`"
+                  :name="`Total points to ${cardType.text}`"
                   rules="required"
                 >
                   <pg-text-field
@@ -116,6 +116,7 @@ export default {
       dialog: false,
       loading: false,
       id: null,
+      gradesList: [],
       item: generateItemTemplate(),
       entityTypeList: ['Activities', 'Worksheets', 'Videos']
     }
@@ -128,12 +129,14 @@ export default {
     },
     reportCardTypes () {
       return this.types.map((type) => {
+        const grade = this.gradesList.find(data => type.id === data.reportCardType.id)
         return {
           text: type.name,
           value: type.id,
+          id: (grade) ? grade.id : null,
           reportCardTypeId: type.id,
-          points: 0,
-          total: null
+          points: (grade) ? grade.points : 0,
+          total: (grade) ? grade.total : null
         }
       })
     }
@@ -151,7 +154,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('grades', ['createGrade', 'updateGrades']),
+    ...mapActions('grades', ['createGrade', 'updateGrades', 'getGrades']),
 
     ...mapActions('admin/report-card', [
       'getTypes'
@@ -199,6 +202,8 @@ export default {
     async open (item) {
       this.resetItem()
       await this.getTypes()
+      const { grades } = await this.getGrades({ entityId: item.id, entityType: item.entityType })
+      this.gradesList = grades
       this.item.entityId = item.id
       this.item.entityType = item.entityType
       this.dialog = true
