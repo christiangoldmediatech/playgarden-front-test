@@ -22,6 +22,11 @@ export default {
       type: String,
       required: false,
       default: () => ('')
+    },
+    lessonId: {
+      type: [Number, String],
+      required: false,
+      default: null
     }
   },
 
@@ -30,6 +35,9 @@ export default {
   methods: {
     onClick () {
       this.dataItem.entityType = this.entityType
+      if (this.lessonId) {
+        this.dataItem.lessonId = this.lessonId
+      }
       this.$nuxt.$emit('open-dialog-progress-report', this.dataItem)
     }
   }

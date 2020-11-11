@@ -53,6 +53,8 @@
               <template v-slot:item.actions="{ item }">
                 <video-preview-btn :video="item" />
 
+                <progress-report-btn :data-item="item" :entity-type="entityType" :lesson-id="lessonId" />
+
                 <v-btn icon @click="openModal(item)">
                   <v-icon color="#81A1F7" dense>
                     mdi-pencil-outline
@@ -212,6 +214,7 @@ export default {
     resourceSelected: {},
     loading: false,
     page: 1,
+    entityType: 'Videos',
     checkStatusInterval: null,
     resources: [],
     headers: [
