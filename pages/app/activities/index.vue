@@ -22,6 +22,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import TopBar from '@/components/app/activities/TopBar.vue'
 import ActivityPlayer from '@/components/app/activities/ActivityPlayer.vue'
 import ActivityTitle from '@/components/app/activities/ActivityTitle.vue'
 import Carousel from '@/components/app/activities/Carousel.vue'
@@ -31,6 +32,7 @@ export default {
   name: 'Index',
 
   components: {
+    TopBar,
     Carousel,
     CategoryHeader,
     ActivityPlayer,
