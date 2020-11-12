@@ -55,7 +55,7 @@ export default {
   data: () => ({
     backgroundImage: null,
     columns: 5,
-    rows: 1,
+    rows: 2,
     uncover: 0
   }),
 
@@ -106,7 +106,7 @@ export default {
 
           this.backgroundImage = get(puzzle, 'image')
           this.columns = get(puzzle, 'columns', 5)
-          this.rows = get(puzzle, 'rows', 1)
+          this.rows = get(puzzle, 'rows', 2)
         } catch (e) {}
       }
     }

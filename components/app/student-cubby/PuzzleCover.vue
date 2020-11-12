@@ -22,6 +22,7 @@ import { line, curveBasis } from 'd3-shape'
 import { colorValidator } from '@/components/pg/utils/validators'
 import { colorMaker } from '@/components/pg/utils/colorable'
 
+const ROW_MULTIPLIER = 4
 // You can find more about theory in these links
 // http://dev.inventables.com/2016/02/26/generating-svg-jigsaw-puzzles.html
 // http://bl.ocks.org/nevernormal1/f808cffb897c63a8dd4e
@@ -100,7 +101,9 @@ export default {
   data: () => ({
     d3CurvedLine: line().curve(curveBasis),
 
-    paths: []
+    paths: [],
+
+    maxPiecesCount: 0
   }),
 
   computed: {
@@ -124,7 +127,7 @@ export default {
       let uncover = []
 
       if (Number.isInteger(parseInt(this.uncover))) {
-        uncover = Array(parseInt(this.uncover))
+        uncover = Array(parseInt(this.uncover * ROW_MULTIPLIER))
           .fill()
           .map((_, i) => i)
       } else if (Array.isArray(this.uncover)) {
@@ -167,8 +170,9 @@ export default {
 
   methods: {
     buildPaths () {
+      this.maxPiecesCount = (this.rows * ROW_MULTIPLIER) + this.columns
       this.paths = this.buildPiecePaths(
-        this.buildPieces(parseInt(this.rows, 10), parseInt(this.columns, 10))
+        this.buildPieces(parseInt(this.rows * ROW_MULTIPLIER, 10), parseInt(this.columns, 10))
       )
     },
 

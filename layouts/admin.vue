@@ -182,6 +182,11 @@ export default {
           route: '/admin/activity-management'
         },
         {
+          icon: 'mdi-phone',
+          title: 'Live Session Management',
+          route: '/admin/live-session-management'
+        },
+        {
           icon: 'mdi-account-supervisor',
           title: 'Parents Corner',
           rootPath: '/admin/parents-corner',
@@ -245,10 +250,6 @@ export default {
             {
               title: 'Puzzle Management',
               route: 'puzzle-management'
-            },
-            {
-              title: 'Live Session Management',
-              route: 'live-session-management'
             },
             {
               title: 'Privacy Policy Management',
