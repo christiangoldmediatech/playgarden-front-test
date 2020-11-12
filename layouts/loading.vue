@@ -12,14 +12,14 @@
 </template>
 
 <script>
-import PgLoading from '@/components/pg/components/PgLoading.vue'
+// import PgLoading from '@/components/pg/components/PgLoading.vue'
 
 export default {
-  name: 'Loading',
+  name: 'Loading'
 
-  components: {
-    PgLoading
-  }
+  // components: {
+  //   PgLoading
+  // }
 }
 </script>
 

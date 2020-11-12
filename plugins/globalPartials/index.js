@@ -8,7 +8,7 @@ import VideoPlayerDialog from '@/components/pg-video-js-player/VideoPlayerDialog
 // Global PG Components
 import PgCircleLetterDay from '@/components/pg/components/PgCircleLetterDay.vue'
 import PgLoading from '@/components/pg/components/PgLoading.vue'
-import PgPagination from '@/components/pg/components/PgPagination.vue'
+// import PgPagination from '@/components/pg/components/PgPagination.vue'
 import PgSocialButtons from '@/components/pg/components/PgSocialButtons.vue'
 
 // Pg Admin Table
@@ -45,7 +45,7 @@ Vue.component(VideoPlayerDialog.name, VideoPlayerDialog)
 
 Vue.component(PgCircleLetterDay.name, PgCircleLetterDay)
 Vue.component(PgLoading.name, PgLoading)
-Vue.component(PgPagination.name, PgPagination)
+// Vue.component(PgPagination.name, PgPagination)
 Vue.component(PgSocialButtons.name, PgSocialButtons)
 
 Vue.component(PgAdminDataTable.name, PgAdminDataTable)
