@@ -65,12 +65,14 @@
 <script>
 import { mapGetters } from 'vuex'
 import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
+import TableEntry from './TableEntry.vue'
 
 export default {
   name: 'SessionsTable',
 
   components: {
-    PerfectScrollbar
+    PerfectScrollbar,
+    TableEntry
   },
 
   props: {
