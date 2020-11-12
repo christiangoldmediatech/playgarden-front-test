@@ -7,7 +7,6 @@
       flat
       tile
       class="pt-6 footer-wrapper-card"
-      :class="{ 'full-width': fullWidth }"
     >
       <v-card-text class="py-0">
         <v-row>

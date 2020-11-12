@@ -26,5 +26,24 @@ export default {
 
   updateLiveSession (_, { id, data }) {
     return this.$axios.$patch(`/live-sessions/${id}`, data)
+  },
+
+  async getUserLiveSessions ({ commit }, { monday, friday }) {
+    try {
+      let data
+      const { total, liveSessions } = data = await this.$axios.$get('/live-sessions', {
+        params: {
+          limit: 100,
+          page: 1,
+          startDate: monday,
+          endDate: friday
+        }
+      })
+      commit('SET_SESSIONS', liveSessions)
+      commit('SET_TOTAL', total)
+      return data
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }

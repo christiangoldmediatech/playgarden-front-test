@@ -7,7 +7,8 @@ export default {
    ** See https://nuxtjs.org/api/configuration-mode
    */
   mode: 'universal',
-  parallel: true,
+  paralell: true,
+  cache: true,
   server: {
     port: process.env.PORT || 8080,
     host: process.env.HOST || '0.0.0.0'
@@ -53,6 +54,10 @@ export default {
         href:
           'https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css'
       }
+    ],
+    script: [
+      { src: '/js/filesaver.min.js' },
+      { src: '/js/ics.min.js' }
     ]
   },
   /*
