@@ -7,6 +7,7 @@ export default {
     items () {
       if (!this.isUserInSignupProcess && this.isUserLoggedIn) {
         return [
+          { title: 'Live Session', to: { name: 'app-live-sessions' }, exact: false },
           { title: 'Lessons', to: { name: 'app-dashboard' }, exact: false },
           { title: 'Activities', to: { name: 'app-activities' }, exact: false },
           {
