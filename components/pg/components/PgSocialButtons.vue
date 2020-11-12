@@ -128,6 +128,12 @@ export default {
           name: 'Facebook',
           icon: 'mdi-facebook',
           color: 'primary'
+        },
+        {
+          network: 'twitter',
+          name: 'Twitter',
+          icon: 'mdi-twitter',
+          color: 'primary'
         }
       ]
     },
