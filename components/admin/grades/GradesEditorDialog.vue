@@ -36,6 +36,7 @@
                   clearable
                   hide-details
                   :items="entityTypeList"
+                  disabled
                   label="Tasks to grade"
                   solo
                 />
@@ -125,7 +126,7 @@ export default {
   computed: {
     ...mapGetters('admin/report-card', ['types']),
     title () {
-      return this.id === null ? 'New Progress Report' : 'Edit Progress Report'
+      return this.id === null ? 'Config Progress Report' : 'Config Progress Report'
     },
     reportCardTypes () {
       return this.types.map((type) => {

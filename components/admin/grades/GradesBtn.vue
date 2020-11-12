@@ -4,7 +4,7 @@
     icon
     @click.stop="onClick"
   >
-    <v-icon v-text="'mdi-garage'" />
+    <v-icon v-text="'mdi-view-list'" />
   </v-btn>
 </template>
 
