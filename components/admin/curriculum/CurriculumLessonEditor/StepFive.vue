@@ -65,6 +65,7 @@
               @update:page="pagination.page = $event"
             >
               <template v-slot:item.actions="{ item }">
+                <grades-btn :data-item="item" :entity-type="entityType" :lesson-id="lessonId" />
                 <v-icon color="#81A1F7" dense @click="associateActivity(item)">
                   mdi-content-save-outline
                 </v-icon>
@@ -191,6 +192,7 @@ export default {
     loading: false,
     activities: [],
     resources: [],
+    entityType: 'Activities',
     headers: [
       {
         text: 'Name',
@@ -206,7 +208,7 @@ export default {
         align: 'right',
         sortable: false,
         value: 'actions',
-        width: 50
+        width: 100
       }
     ]
   }),

@@ -214,7 +214,6 @@ export default {
           const { video } = await this.$refs.videoUploader.handleUpload()
           this.draft.videoId = video.id
         }
-
         const data = await this.submitMethod(this.getSubmittableData())
         this.$emit('click:submit', data)
       } catch (e) {
