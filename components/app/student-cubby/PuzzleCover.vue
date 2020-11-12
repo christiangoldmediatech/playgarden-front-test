@@ -127,9 +127,15 @@ export default {
       let uncover = []
 
       if (Number.isInteger(parseInt(this.uncover))) {
-        uncover = Array(parseInt(this.uncover * ROW_MULTIPLIER))
+        const rowsToFill = (this.rows * ROW_MULTIPLIER) - this.rows
+        Array(parseInt(this.uncover * ROW_MULTIPLIER + 1))
           .fill()
-          .map((_, i) => i)
+          .forEach((_, i) => {
+            uncover.push(i)
+            for (i = 1; i < rowsToFill + 1; i++) {
+              uncover.push((i * this.maxPiecesCount))
+            }
+          })
       } else if (Array.isArray(this.uncover)) {
         uncover = this.uncover.map(parseInt)
       }
@@ -165,12 +171,13 @@ export default {
   },
 
   created () {
+    this.maxPiecesCount = this.rows * this.columns
     this.buildPaths()
   },
 
   methods: {
     buildPaths () {
-      this.maxPiecesCount = (this.rows * ROW_MULTIPLIER) + this.columns
+      this.maxPiecesCount = this.rows * this.columns
       this.paths = this.buildPiecePaths(
         this.buildPieces(parseInt(this.rows * ROW_MULTIPLIER, 10), parseInt(this.columns, 10))
       )
