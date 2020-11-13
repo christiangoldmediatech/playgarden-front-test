@@ -314,15 +314,19 @@ export default {
   bottom: 16px;
   user-select: none;
   pointer-events: auto;
-  @media screen and (max-width: 599px) {
+  @media screen and (max-width: 599px) and (orientation:landscape) {
     bottom: 4px;
+  }
+  @media screen and (max-width: 599px) and (orientation:portrait) {
+    bottom: -84px;
+    z-index: 10000;
   }
   &-area {
     width: calc(50% - 52px);
   }
   &-sheet {
     &-container {
-      opacity: 0.0;
+      opacity: 1.0;
       transition: opacity 500ms ease-in-out;
       -moz-transition: opacity 500ms ease-in-out;
       -webkit-transition: opacity 500ms ease-in-out;

@@ -161,7 +161,7 @@ export default {
     height: var(--containerHeight);
     max-height: var(--containerHeight);
     background-color: rgba(127, 127, 127, 0.125);
-    overflow: hidden;
+    // overflow: hidden;
   }
   &-close-btn {
     position: absolute;

@@ -11,6 +11,20 @@ export default {
   },
 
   computed: {
+    dimensions () {
+      return {
+        width: this.$vuetify.breakpoint.width,
+        height: this.$vuetify.breakpoint.height
+      }
+    },
+
+    mobilePortrait () {
+      if (this.$vuetify.breakpoint.smAndDown) {
+        return (this.dimensions.height > this.dimensions.width)
+      }
+      return false
+    },
+
     currentVideo () {
       return this.playlist[this.index] || null
     },
@@ -28,11 +42,11 @@ export default {
       // Load new media
       this.$nextTick(() => {
         // Force fullscreen on small and mobile devices
-        // if (this.$vuetify.breakpoint.mobile || this.$vuetify.breakpoint.smAndDown) {
-        //   if (!this.fullscreen) {
-        //     this.toggleFullscreen(this.dialogContainerId)
-        //   }
-        // }
+        if (this.$vuetify.breakpoint.mobile || this.$vuetify.breakpoint.smAndDown) {
+          if (!this.fullscreen) {
+            this.toggleFullscreen(this.dialogContainerId)
+          }
+        }
 
         if (!this.player) {
           const waitAndLoad = window.setInterval(() => {
