@@ -47,13 +47,17 @@ import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
 
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
+
+import TodayCard from './TodayCard.vue'
+
 dayjs.extend(utc)
 
 export default {
   name: 'TodayCardsPanel',
 
   components: {
-    PerfectScrollbar
+    PerfectScrollbar,
+    TodayCard
   },
 
   computed: {

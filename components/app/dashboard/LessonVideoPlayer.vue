@@ -49,16 +49,16 @@ import VideoPlayerDialogMixin from '@/mixins/VideoPlayerDialogMixin.js'
 import DashboardLink from '@/mixins/DashboardLinkMixin.js'
 import SaveVideoProgress from '@/mixins/SaveVideoProgressMixin.js'
 import Fullscreen from '@/mixins/FullscreenMixin.js'
-import VideoPlayerDialog from '@/components/pg-video-js-player/VideoPlayerDialog.vue'
-import PgVideoJsPlayer from '@/components/pg-video-js-player/PgVideoJsPlayer.vue'
+// import VideoPlayerDialog from '@/components/pg-video-js-player/VideoPlayerDialog.vue'
+// import PgVideoJsPlayer from '@/components/pg-video-js-player/PgVideoJsPlayer.vue'
 import CompletedDialog from '@/components/app/dashboard/CompletedDialog.vue'
 
 export default {
   name: 'LessonVideoPlayer',
 
   components: {
-    VideoPlayerDialog,
-    PgVideoJsPlayer,
+    // VideoPlayerDialog,
+    // PgVideoJsPlayer,
     CompletedDialog
   },
 

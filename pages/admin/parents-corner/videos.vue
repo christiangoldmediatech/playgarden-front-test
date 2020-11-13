@@ -18,8 +18,18 @@
 </template>
 
 <script>
+import ParentsCornerVideoEditor from '@/components/admin/parents-corner/ParentsCornerVideoEditor.vue'
+import ParentsCornerVideosDataTable from '@/components/admin/parents-corner/ParentsCornerVideosDataTable.vue'
+import AdminContentHeader from '@/components/admin/AdminContentHeader.vue'
+
 export default {
   name: 'Videos',
+
+  components: {
+    ParentsCornerVideoEditor,
+    ParentsCornerVideosDataTable,
+    AdminContentHeader
+  },
 
   layout: 'admin',
 

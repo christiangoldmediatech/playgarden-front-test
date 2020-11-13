@@ -18,8 +18,18 @@
 </template>
 
 <script>
+import ParentsCornerCategoryEditor from '@/components/admin/parents-corner/ParentsCornerCategoryEditor.vue'
+import ParentsCornerCategoriesDataTable from '@/components/admin/parents-corner/ParentsCornerCategoriesDataTable.vue'
+import AdminContentHeader from '@/components/admin/AdminContentHeader.vue'
+
 export default {
   name: 'ParentsCornerCategories',
+
+  components: {
+    ParentsCornerCategoriesDataTable,
+    ParentsCornerCategoryEditor,
+    AdminContentHeader
+  },
 
   layout: 'admin',
 

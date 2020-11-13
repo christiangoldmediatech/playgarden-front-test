@@ -18,9 +18,20 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
+import TodayCardsPanel from '@/components/app/live-sessions/TodayCardsPanel.vue'
+import CalendarPanel from '@/components/app/live-sessions/CalendarPanel.vue'
+import EntryDialog from '@/components/app/live-sessions/EntryDialog.vue'
+import SessionsTable from '@/components/app/live-sessions/SessionsTable.vue'
 
 export default {
   name: 'LiveSessions',
+
+  components: {
+    TodayCardsPanel,
+    CalendarPanel,
+    EntryDialog,
+    SessionsTable
+  },
 
   data: () => {
     return {

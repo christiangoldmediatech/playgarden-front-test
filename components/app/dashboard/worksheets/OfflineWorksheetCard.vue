@@ -73,9 +73,14 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import UploadOfflineWorksheet from './UploadOfflineWorksheet.vue'
 
 export default {
   name: 'OfflineWorksheetCard',
+
+  components: {
+    UploadOfflineWorksheet
+  },
 
   data: () => {
     return {

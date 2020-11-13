@@ -25,9 +25,18 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex'
+import AppNavigation from '@/components/app/header/AppNavigation'
+import ApplicationHeader from '@/components/app/header/ApplicationHeader'
+import DefaultFooter from '@/components/app/footer/DefaultFooter'
 
 export default {
   name: 'Default',
+
+  components: {
+    ApplicationHeader,
+    AppNavigation,
+    DefaultFooter
+  },
 
   data: () => ({
     verifyEmailToast: null

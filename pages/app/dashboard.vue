@@ -6,10 +6,15 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import DashboardLayout from '@/components/app/dashboard/DashboardLayout.vue'
 import DashboardMixin from '@/mixins/DashboardMixin.js'
 
 export default {
   name: 'Dashboard',
+
+  components: {
+    DashboardLayout
+  },
 
   mixins: [DashboardMixin],
 

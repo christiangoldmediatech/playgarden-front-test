@@ -31,16 +31,16 @@ import ActivityAnalytics from '@/mixins/ActivityAnalyticsMixin.js'
 import FindNextActivity from '@/mixins/FindNextActivityMixin.js'
 import Fullscreen from '@/mixins/FullscreenMixin.js'
 import DashboardOverrides from '@/mixins/DashboardOverridesMixin.js'
-import VideoPlayerDialog from '@/components/pg-video-js-player/VideoPlayerDialog.vue'
-import PgVideoJsPlayer from '@/components/pg-video-js-player/PgVideoJsPlayer.vue'
+// import VideoPlayerDialog from '@/components/pg-video-js-player/VideoPlayerDialog.vue'
+// import PgVideoJsPlayer from '@/components/pg-video-js-player/PgVideoJsPlayer.vue'
 
 export default {
   name: 'ActivityPlayer',
 
-  components: {
-    VideoPlayerDialog,
-    PgVideoJsPlayer
-  },
+  // components: {
+  //   VideoPlayerDialog,
+  //   PgVideoJsPlayer
+  // },
 
   mixins: [VideoPlayerDialogMixin, ActivityAnalytics, FindNextActivity, DashboardOverrides, Fullscreen],
 
