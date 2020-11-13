@@ -118,3 +118,7 @@
 .scaled-play-icon {
   transform: scale(1.25);
 }
+
+.accent--text-fl::first-letter {
+  color: var(--v-accent-base);
+}
