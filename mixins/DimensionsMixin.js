@@ -15,7 +15,7 @@ export default {
     },
 
     mobilePortrait () {
-      return (this.$vuetify.breakpoint.width < this.$vuetify.breakpoint.height)
+      return (this.$vuetify.breakpoint.xsOnly && this.$vuetify.breakpoint.width < this.$vuetify.breakpoint.height)
     },
 
     dimensions () {

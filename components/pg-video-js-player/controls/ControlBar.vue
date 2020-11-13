@@ -316,7 +316,6 @@ export default {
   @media screen and (max-width: 599px) and (orientation:portrait) {
     &-mobile-portrait {
       bottom: -84px !important;
-      z-index: 1000;
     }
   }
   &-area {
