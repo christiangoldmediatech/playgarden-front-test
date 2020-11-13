@@ -18,7 +18,8 @@
       <p class="mb-4">
         Your {{ membershipInterval }} membership fee is
 
-        <b>${{ billing.planAmount.toLocaleString("en-US") }}</b>
+        <b :class="(billing.planAmountDiscount)?'discount':''">${{ billing.planAmount.toLocaleString("en-US") }}</b>
+        <b v-if="billing.planAmountDiscount">${{ billing.planAmountDiscount.toLocaleString("en-US") }}</b>
       </p>
 
       <template>
@@ -234,6 +235,7 @@ export default {
         membershipInterval: 0,
         nextBillingDate: null,
         planAmount: 0,
+        planAmountDiscount: null,
         planName: null,
         trialEndDate: null,
         subscriptionId: null,
@@ -303,6 +305,7 @@ export default {
         this.billing.subscriptionId = data.subscriptionId
         this.billing.planAmount = data.planAmount || null
         this.billing.planName = data.planName || null
+        this.billing.planAmountDiscount = data.planAmountDiscount || null
 
         if (data.subscriptionData) {
           this.billing.membershipInterval = get(
@@ -368,3 +371,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.discount{
+  text-decoration: line-through !important;
+}
+</style>
