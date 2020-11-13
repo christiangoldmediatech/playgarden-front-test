@@ -224,16 +224,16 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import PgInlineVideoPlayer from '@/components/pg-video-js-player/PgInlineVideoPlayer.vue'
+// import PgInlineVideoPlayer from '@/components/pg-video-js-player/PgInlineVideoPlayer.vue'
 
 export default {
   name: 'Editor',
 
   layout: 'admin',
 
-  components: {
-    PgInlineVideoPlayer
-  },
+  // components: {
+  //   PgInlineVideoPlayer
+  // },
 
   data () {
     return {

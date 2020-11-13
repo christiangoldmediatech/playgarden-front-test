@@ -125,7 +125,8 @@
 
 <script>
 import DashboardMixin from '@/mixins/DashboardMixin'
-import PgCircleLetterDay from '@/components/pg/components/PgCircleLetterDay'
+// import PgCircleLetterDay from '@/components/pg/components/PgCircleLetterDay'
+import UploadOfflineWorksheet from './worksheets/UploadOfflineWorksheet'
 import ContentSection from './ContentSection.vue'
 import ContentList from './ContentList.vue'
 
@@ -133,7 +134,8 @@ export default {
   name: 'DashboardPanel',
 
   components: {
-    PgCircleLetterDay,
+    // PgCircleLetterDay,
+    UploadOfflineWorksheet,
     ContentSection,
     ContentList
   },

@@ -35,8 +35,16 @@ import FindNextActivity from '@/mixins/FindNextActivityMixin.js'
 import Fullscreen from '@/mixins/FullscreenMixin.js'
 import { jsonCopy } from '@/utils/objectTools'
 
+import PatchEarnedDialog from '@/components/app/PatchEarnedDialog.vue'
+import PuzzlePieceEarnedDialog from '@/components/app/PuzzlePieceEarnedDialog.vue'
+
 export default {
   name: 'LessonActivityPlayer',
+
+  components: {
+    PatchEarnedDialog,
+    PuzzlePieceEarnedDialog
+  },
 
   mixins: [VideoPlayerDialogMixin, DashboardMixin, SaveActivityProgress, ActivityAnalytics, FindNextActivity, Fullscreen],
 

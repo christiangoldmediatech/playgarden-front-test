@@ -83,14 +83,14 @@
 <script>
 import { get } from 'lodash'
 import { mapActions } from 'vuex'
-import PgInlineVideoPlayer from '@/components/pg-video-js-player/PgInlineVideoPlayer.vue'
+// import PgInlineVideoPlayer from '@/components/pg-video-js-player/PgInlineVideoPlayer.vue'
 
 export default {
   name: 'Onboarding',
 
-  components: {
-    PgInlineVideoPlayer
-  },
+  // components: {
+  //   PgInlineVideoPlayer
+  // },
 
   data: () => ({
     loading: true,

@@ -51,9 +51,14 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import VideoPreviewBtn from '@/components/admin/video-preview/VideoPreviewBtn.vue'
 
 export default {
   name: 'ParentsCornerVideosDataTable',
+
+  components: {
+    VideoPreviewBtn
+  },
 
   data: () => ({
     loading: false,

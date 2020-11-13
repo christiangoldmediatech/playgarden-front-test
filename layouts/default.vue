@@ -3,7 +3,7 @@
     <!-- APP MAV & BAR -->
     <app-navigation />
 
-    <application-header :full-width="Boolean(fullWidthHeader)" />
+    <application-header />
 
     <!-- CONTENT -->
     <v-main v-if="!fullWidth">
@@ -15,7 +15,7 @@
     <nuxt v-else />
 
     <!-- FOOTER -->
-    <default-footer :full-width="Boolean(fullWidthFooter)" />
+    <default-footer />
 
     <notify-event />
 
@@ -25,7 +25,6 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex'
-
 import AppNavigation from '@/components/app/header/AppNavigation'
 import ApplicationHeader from '@/components/app/header/ApplicationHeader'
 import DefaultFooter from '@/components/app/footer/DefaultFooter'
@@ -48,18 +47,10 @@ export default {
   computed: {
     ...mapGetters('auth', ['isUserLoggedIn', 'isUserEmailUnverified']),
 
-    ...mapState(['fullWidthPages', 'fullWidthHeaderPages', 'fullWidthFooterPages']),
+    ...mapState(['fullWidthPages']),
 
     fullWidth () {
       return this.fullWidthPages[this.$route.name]
-    },
-
-    fullWidthFooter () {
-      return this.fullWidthFooterPages[this.$route.name]
-    },
-
-    fullWidthHeader () {
-      return this.fullWidthHeaderPages[this.$route.name]
     }
   },
 

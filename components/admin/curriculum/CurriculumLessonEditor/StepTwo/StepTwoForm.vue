@@ -165,15 +165,15 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import PgInlineVideoPlayer from '@/components/pg-video-js-player/PgInlineVideoPlayer.vue'
+// import PgInlineVideoPlayer from '@/components/pg-video-js-player/PgInlineVideoPlayer.vue'
 import submittable from '@/utils/mixins/submittable'
 
 export default {
   name: 'StepTwoForm',
 
-  components: {
-    PgInlineVideoPlayer
-  },
+  // components: {
+  //   PgInlineVideoPlayer
+  // },
 
   mixins: [submittable],
 

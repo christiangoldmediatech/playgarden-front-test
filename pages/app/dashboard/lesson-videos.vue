@@ -22,9 +22,14 @@
 
 <script>
 import FavoritesMixin from '@/mixins/FavoritesMixin.js'
+import LessonVideosCard from '@/components/app/dashboard/LessonVideosCard.vue'
 
 export default {
   name: 'LessonVideos',
+
+  components: {
+    LessonVideosCard
+  },
 
   mixins: [FavoritesMixin],
 

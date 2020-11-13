@@ -7,9 +7,11 @@ export default {
    ** See https://nuxtjs.org/api/configuration-mode
    */
   mode: 'universal',
+  paralell: true,
+  cache: true,
   server: {
     port: process.env.PORT || 8080,
-    host: process.env.HOST || '0.0.0.0',
+    host: process.env.HOST || '0.0.0.0'
     // https: !['production', 'staging'].includes(process.env.NODE_ENV) ? {
     //   key: fs.readFileSync(path.resolve(__dirname, 'keys/server.key')),
     //   cert: fs.readFileSync(path.resolve(__dirname, 'keys/server.crt'))
@@ -52,6 +54,10 @@ export default {
         href:
           'https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css'
       }
+    ],
+    script: [
+      { src: '/js/filesaver.min.js' },
+      { src: '/js/ics.min.js' }
     ]
   },
   /*
@@ -90,7 +96,7 @@ export default {
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components
    */
-  components: true,
+  components: false,
   /*
    ** Nuxt.js dev-modules
    */

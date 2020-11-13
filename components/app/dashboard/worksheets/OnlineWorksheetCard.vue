@@ -78,8 +78,24 @@ import DashboardLink from '@/mixins/DashboardLinkMixin.js'
 import WorksheetComputedMixin from '@/mixins/WorksheetComputedMixin.js'
 import WorksheetFunctionalityMixin from '@/mixins/WorksheetFunctionalityMixin.js'
 
+import CompletedDialog from '@/components/app/dashboard/CompletedDialog'
+import WorksheetHeader from './WorksheetHeader.vue'
+import WorksheetImage from './WorksheetImage.vue'
+import WorksheetMessage from './WorksheetMessage.vue'
+import WorksheetQuestion from './WorksheetQuestion.vue'
+import UploadOfflineWorksheet from './UploadOfflineWorksheet.vue'
+
 export default {
   name: 'OnlineWorksheetCard',
+
+  components: {
+    CompletedDialog,
+    WorksheetHeader,
+    WorksheetImage,
+    WorksheetMessage,
+    WorksheetQuestion,
+    UploadOfflineWorksheet
+  },
 
   mixins: [DashboardLink, WorksheetComputedMixin, WorksheetFunctionalityMixin],
 
