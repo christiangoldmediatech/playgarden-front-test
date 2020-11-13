@@ -54,6 +54,12 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+
+    inline: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   }
 }

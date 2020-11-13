@@ -14,6 +14,10 @@ export default {
       return 0
     },
 
+    mobilePortrait () {
+      return (this.$vuetify.breakpoint.width < this.$vuetify.breakpoint.height)
+    },
+
     dimensions () {
       const aspectRatio = 16 / 9
       let width = this.winWidth

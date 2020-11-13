@@ -84,7 +84,8 @@ export default {
         nextUp: this.nextUp,
         noSeek: this.noSeek,
         showRestart: this.showRestart,
-        showSteps: this.showSteps
+        showSteps: this.showSteps,
+        inline: this.inline
       }
     }
   },

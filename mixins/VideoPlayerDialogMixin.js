@@ -11,20 +11,6 @@ export default {
   },
 
   computed: {
-    dimensions () {
-      return {
-        width: this.$vuetify.breakpoint.width,
-        height: this.$vuetify.breakpoint.height
-      }
-    },
-
-    mobilePortrait () {
-      if (this.$vuetify.breakpoint.smAndDown) {
-        return (this.dimensions.height > this.dimensions.width)
-      }
-      return false
-    },
-
     currentVideo () {
       return this.playlist[this.index] || null
     },
