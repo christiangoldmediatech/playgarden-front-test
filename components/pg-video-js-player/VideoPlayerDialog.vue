@@ -58,7 +58,7 @@
           <img src="/svg/phone-rotate.svg">
         </div>
 
-        <div class="text-center pt-3">
+        <div class="text-center pt-3 rotate-text">
           Rotate your phone for a better experience
         </div>
       </div>
@@ -181,6 +181,10 @@ export default {
 </script>
 
 <style lang="scss">
+.rotate-text {
+  color: #ABABAB;
+}
+
 .player-dialog {
   position: fixed;
   width: 100vw;
