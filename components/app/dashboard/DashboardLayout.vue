@@ -67,8 +67,20 @@
 </template>
 
 <script>
+import DashboardPanel from '@/components/app/dashboard/DashboardPanel.vue'
+import LessonActivityPlayer from '@/components/app/dashboard/LessonActivityPlayer.vue'
+import LessonTeacherVideo from '@/components/app/dashboard/LessonTeacherVideo.vue'
+import ChildSelect from '@/components/app/ChildSelect.vue'
+
 export default {
   name: 'DashboardLayout',
+
+  components: {
+    DashboardPanel,
+    LessonActivityPlayer,
+    LessonTeacherVideo,
+    ChildSelect
+  },
 
   props: {
     value: {

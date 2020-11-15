@@ -174,7 +174,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import PgInlineVideoPlayer from '@/components/pg-video-js-player/PgInlineVideoPlayer.vue'
+// import PgInlineVideoPlayer from '@/components/pg-video-js-player/PgInlineVideoPlayer.vue'
 
 function generateItemTemplate () {
   return {
@@ -189,9 +189,9 @@ function generateItemTemplate () {
 export default {
   name: 'OnboardingEditorDialog',
 
-  components: {
-    PgInlineVideoPlayer
-  },
+  // components: {
+  //   PgInlineVideoPlayer
+  // },
 
   data: () => ({
     dialog: false,

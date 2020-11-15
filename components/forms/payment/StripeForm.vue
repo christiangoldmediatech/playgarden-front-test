@@ -202,7 +202,7 @@ export default {
     async checkValid () {
       const coupons = await this.getCoupons({ active: true, code: this.draft.promotion_code })
       if (coupons.length > 0) {
-        console.log(coupons[0].promotion_id)
+        // console.log(coupons[0].promotion_id)
         this.draft.promotion_id = coupons[0].promotion_id
         this.$snotify.success('Coupon is valid.')
       } else {

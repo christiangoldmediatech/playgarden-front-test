@@ -3,8 +3,13 @@
 </template>
 
 <script>
+import LessonActivitiesCard from '@/components/app/dashboard/LessonActivitiesCard'
 
 export default {
-  name: 'LessonActivities'
+  name: 'LessonActivities',
+
+  components: {
+    LessonActivitiesCard
+  }
 }
 </script>
