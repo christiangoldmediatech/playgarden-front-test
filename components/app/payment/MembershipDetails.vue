@@ -8,6 +8,7 @@
       <v-row
         v-if="billing.status === 'trialing'"
         no-gutters
+        class="mb-3"
       >
         <v-col cols="8" sm="12">
           <span>
@@ -26,6 +27,7 @@
       <v-row
         v-else
         no-gutters
+        class="mb-3"
       >
         <v-col cols="12" md="8" lg="8">
           <span>
@@ -33,7 +35,7 @@
           </span>
         </v-col>
 
-        <v-col cols="12" md="4" lg="4" class="pr-3">
+        <v-col cols="12" md="4" lg="4" class="pr-3 text-right">
           <div>
             <span>
               <b>{{ billing.nextBillingDate }}</b>
@@ -44,6 +46,7 @@
 
       <v-row
         no-gutters
+        class="mb-3"
       >
         <v-col cols="12" md="8">
           <span>
@@ -51,7 +54,7 @@
           </span>
         </v-col>
 
-        <v-col cols="12" md="4" class="pr-3">
+        <v-col cols="12" md="4" class="pr-3 text-right">
           <div>
             <span>
               <b :class="(billing.planAmountDiscount)?'discount':''">${{ billing.planAmount.toLocaleString("en-US") }}</b>
@@ -68,7 +71,7 @@
           </span>
         </v-col>
 
-        <v-col cols="12" md="4" class="pr-3">
+        <v-col cols="12" md="4" class="pr-3 text-right">
           <div>
             <span v-if="billing.percentOff">
               <b>- {{ billing.percentOff }} %</b>
@@ -84,13 +87,14 @@
 
       <v-row
         no-gutters
+        class="mt-2"
       >
         <v-col cols="8">
           <span>
           </span>
         </v-col>
 
-        <v-col cols="4" class="pr-3">
+        <v-col cols="4" class="pr-3 text-right">
           <div>
             <span>
               <b v-if="billing.planAmountDiscount">${{ billing.planAmountDiscount.toLocaleString("en-US") }}</b>
