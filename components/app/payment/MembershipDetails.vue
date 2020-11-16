@@ -57,12 +57,13 @@
         <v-col cols="12" md="4" class="pr-3 text-right">
           <div>
             <span>
-              <b :class="(billing.planAmountDiscount)?'discount':''">${{ billing.planAmount.toLocaleString("en-US") }}</b>
+              <b>${{ billing.planAmount.toLocaleString("en-US") }}</b>
             </span>
           </div>
         </v-col>
       </v-row>
       <v-row
+        v-if="billing.planAmountDiscount"
         no-gutters
       >
         <v-col cols="12" md="8" :class="(!$vuetify.breakpoint.mobile) ? 'text-right discount-label' : ''">
@@ -86,6 +87,7 @@
       <v-divider />
 
       <v-row
+        v-if="billing.planAmountDiscount"
         no-gutters
         class="mt-2"
       >
@@ -458,9 +460,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.discount{
-  text-decoration: line-through !important;
-}
 .discount-label{
   padding-right: 17%;
 }
