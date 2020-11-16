@@ -5,7 +5,7 @@
         MEMBERSHIP
       </p>
 
-      <p v-if="billing.status === 'trialing'">
+      <!-- <p v-if="billing.status === 'trialing'">
         Free trial period ends <b>{{ billing.trialEndDate }}</b>
       </p>
 
@@ -13,14 +13,108 @@
         Your next billing date is
 
         <b>{{ billing.nextBillingDate }}</b>
-      </p>
+      </p> -->
 
-      <p class="mb-4">
+      <!-- <p class="mb-4">
         Your {{ membershipInterval }} membership fee is
 
         <b :class="(billing.planAmountDiscount)?'discount':''">${{ billing.planAmount.toLocaleString("en-US") }}</b>
         <b v-if="billing.planAmountDiscount">${{ billing.planAmountDiscount.toLocaleString("en-US") }}</b>
-      </p>
+      </p> -->
+
+      <v-row
+        v-if="billing.status === 'trialing'"
+        no-gutters
+      >
+        <v-col cols="8">
+          <span>
+            Free trial period ends
+          </span>
+        </v-col>
+
+        <v-col cols="4" class="pr-3">
+          <div>
+            <span>
+              <b>{{ billing.trialEndDate }}</b>
+            </span>
+          </div>
+        </v-col>
+      </v-row>
+      <v-row
+        v-else
+        no-gutters
+      >
+        <v-col cols="8">
+          <span>
+            Your next billing date is
+          </span>
+        </v-col>
+
+        <v-col cols="4" class="pr-3">
+          <div>
+            <span>
+              <b>{{ billing.nextBillingDate }}</b>
+            </span>
+          </div>
+        </v-col>
+      </v-row>
+
+      <v-row
+        no-gutters
+      >
+        <v-col cols="8">
+          <span>
+            Your {{ membershipInterval }} membership fee is
+          </span>
+        </v-col>
+
+        <v-col cols="4" class="pr-3">
+          <div>
+            <span>
+              <b :class="(billing.planAmountDiscount)?'discount':''">${{ billing.planAmount.toLocaleString("en-US") }}</b>
+            </span>
+          </div>
+        </v-col>
+      </v-row>
+      <v-row
+        no-gutters
+      >
+        <v-col cols="8" class="align-md-end">
+          <span>
+            Discount
+          </span>
+        </v-col>
+
+        <v-col cols="4" class="pr-3">
+          <div>
+            <span v-if="billing.percentOff">
+              <b>- {{ billing.percentOff }} %</b>
+            </span>
+            <span v-if="billing.amountOff">
+              <b>${{ billing.amountOff.toLocaleString("en-US") }}</b>
+            </span>
+          </div>
+        </v-col>
+      </v-row>
+
+      <v-divider />
+
+      <v-row
+        no-gutters
+      >
+        <v-col cols="8">
+          <span>
+          </span>
+        </v-col>
+
+        <v-col cols="4" class="pr-3">
+          <div>
+            <span>
+              <b v-if="billing.planAmountDiscount">${{ billing.planAmountDiscount.toLocaleString("en-US") }}</b>
+            </span>
+          </div>
+        </v-col>
+      </v-row>
 
       <template>
         <v-row align="center" class="mb-2" no-gutters>
@@ -236,6 +330,8 @@ export default {
         nextBillingDate: null,
         planAmount: 0,
         planAmountDiscount: null,
+        percentOff: null,
+        amountOff: null,
         planName: null,
         trialEndDate: null,
         subscriptionId: null,
@@ -306,6 +402,8 @@ export default {
         this.billing.planAmount = data.planAmount || null
         this.billing.planName = data.planName || null
         this.billing.planAmountDiscount = data.planAmountDiscount || null
+        this.billing.amountOff = data.amountOff || null
+        this.billing.percentOff = data.percentOff || null
 
         if (data.subscriptionData) {
           this.billing.membershipInterval = get(
