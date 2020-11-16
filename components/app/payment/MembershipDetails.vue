@@ -10,18 +10,14 @@
         no-gutters
         class="mb-3"
       >
-        <v-col cols="8" sm="12">
+        <v-col cols="12" md="8" lg="8">
           <span>
             Free trial period ends
           </span>
         </v-col>
 
-        <v-col cols="4" class="pr-3" sm="12">
-          <div>
-            <span>
-              <b>{{ billing.trialEndDate }}</b>
-            </span>
-          </div>
+        <v-col cols="12" md="4" lg="4" class="pr-3 text-right">
+          <b>{{ billing.trialEndDate }}</b>
         </v-col>
       </v-row>
       <v-row
