@@ -175,6 +175,7 @@ export default {
     testEnv: process.env.TEST_ENV || 'LOCAL'
   },
   router: {
+    base: process.env.TEST_ENV === 'production' ? '/app/' : '/',
     middleware: [
       'auth',
       'fetchUserInfo',
