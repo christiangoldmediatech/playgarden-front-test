@@ -5,34 +5,17 @@
         MEMBERSHIP
       </p>
 
-      <!-- <p v-if="billing.status === 'trialing'">
-        Free trial period ends <b>{{ billing.trialEndDate }}</b>
-      </p>
-
-      <p v-else class="mb-6">
-        Your next billing date is
-
-        <b>{{ billing.nextBillingDate }}</b>
-      </p> -->
-
-      <!-- <p class="mb-4">
-        Your {{ membershipInterval }} membership fee is
-
-        <b :class="(billing.planAmountDiscount)?'discount':''">${{ billing.planAmount.toLocaleString("en-US") }}</b>
-        <b v-if="billing.planAmountDiscount">${{ billing.planAmountDiscount.toLocaleString("en-US") }}</b>
-      </p> -->
-
       <v-row
         v-if="billing.status === 'trialing'"
         no-gutters
       >
-        <v-col cols="8">
+        <v-col cols="8" sm="12">
           <span>
             Free trial period ends
           </span>
         </v-col>
 
-        <v-col cols="4" class="pr-3">
+        <v-col cols="4" class="pr-3" sm="12">
           <div>
             <span>
               <b>{{ billing.trialEndDate }}</b>
@@ -44,13 +27,13 @@
         v-else
         no-gutters
       >
-        <v-col cols="8">
+        <v-col cols="12" md="8" lg="8">
           <span>
             Your next billing date is
           </span>
         </v-col>
 
-        <v-col cols="4" class="pr-3">
+        <v-col cols="12" md="4" lg="4" class="pr-3">
           <div>
             <span>
               <b>{{ billing.nextBillingDate }}</b>
@@ -62,13 +45,13 @@
       <v-row
         no-gutters
       >
-        <v-col cols="8">
+        <v-col cols="12" md="8">
           <span>
             Your {{ membershipInterval }} membership fee is
           </span>
         </v-col>
 
-        <v-col cols="4" class="pr-3">
+        <v-col cols="12" md="4" class="pr-3">
           <div>
             <span>
               <b :class="(billing.planAmountDiscount)?'discount':''">${{ billing.planAmount.toLocaleString("en-US") }}</b>
@@ -79,13 +62,13 @@
       <v-row
         no-gutters
       >
-        <v-col cols="8" class="align-md-end">
+        <v-col cols="12" md="8" :class="(!$vuetify.breakpoint.mobile) ? 'text-right discount-label' : ''">
           <span>
             Discount
           </span>
         </v-col>
 
-        <v-col cols="4" class="pr-3">
+        <v-col cols="12" md="4" class="pr-3">
           <div>
             <span v-if="billing.percentOff">
               <b>- {{ billing.percentOff }} %</b>
@@ -473,5 +456,8 @@ export default {
 <style lang="scss" scoped>
 .discount{
   text-decoration: line-through !important;
+}
+.discount-label{
+  padding-right: 17%;
 }
 </style>
