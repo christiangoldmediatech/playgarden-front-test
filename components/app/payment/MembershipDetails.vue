@@ -80,7 +80,7 @@
         </v-col>
       </v-row>
 
-      <v-divider />
+      <v-divider v-if="billing.planAmountDiscount" />
 
       <v-row
         v-if="billing.planAmountDiscount"
