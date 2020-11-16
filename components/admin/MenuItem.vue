@@ -1,7 +1,7 @@
 <template>
   <v-list-group
     v-if="item.children"
-    active-class="white--text accent font-weight-black"
+    active-class="accent selected-menu-item"
     :group="itemRootPath"
     :prepend-icon="item.icon"
     no-action
@@ -24,7 +24,7 @@
   <!-- Normal menu item -->
   <v-list-item
     v-else
-    active-class="white--text accent font-weight-black"
+    active-class="accent selected-menu-item"
     exact
     nuxt
     :to="itemRoute"
@@ -88,3 +88,12 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.selected-menu-item ::v-deep .v-list-item__title {
+  color: var(--v-white-base);
+}
+.selected-menu-item ::v-deep .v-list-item__icon {
+  color: var(--v-white-base);
+}
+</style>
