@@ -4,6 +4,7 @@
       emailValidated || inInvitationProcess || isUserLoggedIn || userSocialData
     "
     no-gutters
+    class="py-0 py-md-16"
   >
     <v-col>
       <v-row no-gutters>
