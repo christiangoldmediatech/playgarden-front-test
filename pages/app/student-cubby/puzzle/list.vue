@@ -44,7 +44,7 @@
                 >
                   <v-row justify="center" no-gutters>
                     <span class="font-weight-black white--text">
-                      {{ puzzle.piecesUnclocked }}/{{ puzzle.pieces }}
+                      {{ puzzle.piecesUnclocked * 4 }}/{{ puzzle.pieces * 4 }}
                     </span>
 
                     <v-progress-linear
