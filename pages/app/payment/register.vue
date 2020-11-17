@@ -65,6 +65,27 @@
             </v-col>
           </v-row>
 
+          <v-row
+            v-if="coupon"
+            no-gutters
+          >
+            <v-col>
+              <span>
+                Discount
+              </span>
+            </v-col>
+            <v-col cols="4" class="pr-3">
+              <div>
+                <span v-if="coupon.percent_off">
+                  <b>- {{ coupon.percent_off }} %</b>
+                </span>
+                <span v-if="coupon.amount_off">
+                  <b>${{ coupon.amount_off.toLocaleString("en-US") }}</b>
+                </span>
+              </div>
+            </v-col>
+          </v-row>
+
           <v-divider />
 
           <v-row class="pt-3" no-gutters>
@@ -75,7 +96,8 @@
             </v-col>
 
             <v-col cols="4">
-              <span class="total-cost"> ${{ cost.total || 0 }} </span>
+              <span v-if="!coupon" class="total-cost"> ${{ cost.total || 0 }} </span>
+              <span v-else class="total-cost"> ${{ getTotal || 0 }} </span>
             </v-col>
           </v-row>
 
@@ -112,7 +134,8 @@ export default {
 
   data: () => ({
     cost: {},
-    loading: false
+    loading: false,
+    coupon: null
   }),
 
   computed: {
@@ -120,11 +143,28 @@ export default {
       const { query } = this.$route
 
       return query.process === 'signup' && query.step === '4'
+    },
+    getTotal () {
+      let discount = 0
+      if (this.coupon.amount_off) {
+        discount = this.cost.total - this.coupon.amount_off
+      } else {
+        discount = ((this.cost.total * this.coupon.percent_off) / 100)
+        discount = this.cost.total - discount
+      }
+      return discount
     }
   },
 
   created () {
     this.fetchSubCosts()
+    this.$nuxt.$on('send-coupon', (coupon) => {
+      this.coupon = coupon
+    })
+  },
+
+  beforeDestroy () {
+    this.$nuxt.$off('send-coupon')
   },
 
   methods: {
