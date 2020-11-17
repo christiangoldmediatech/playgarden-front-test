@@ -69,7 +69,7 @@
             v-if="coupon"
             no-gutters
           >
-            <v-col>
+            <v-col class="text-right discount-label">
               <span>
                 Discount
               </span>
@@ -216,6 +216,10 @@ export default {
 <style lang="scss" scoped>
 .product-info {
   font-size: 14px !important;
+}
+
+.discount-label {
+  margin-right: 17%;
 }
 
 .product-info-1 {
