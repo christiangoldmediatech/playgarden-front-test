@@ -1,7 +1,10 @@
 <template>
-  <v-card :width="miniVariant ? 50 : 300">
+  <v-card
+    :class="{ 'rounded-pill': miniVariant }"
+    :width="miniVariant ? 50 : 300"
+  >
     <v-toolbar color="primary" dense>
-      <v-icon color="white">
+      <v-icon :class="{ 'ml-n1': miniVariant }" color="white">
         mdi-share-variant-outline
       </v-icon>
 
@@ -29,7 +32,8 @@
           :class="{ 'mov-spa': !miniVariant }"
           :color="fakeNetworks.download.color"
           :href="url"
-          :icon="miniVariant"
+          :fab="miniVariant"
+          small
           target="_blank"
         >
           <v-icon v-if="fakeNetworks.download.icon" :left="!miniVariant">
@@ -62,7 +66,8 @@
             :block="!miniVariant"
             :class="{ 'mov-spa': !miniVariant }"
             :color="network.color"
-            :icon="miniVariant"
+            :fab="miniVariant"
+            small
           >
             <v-icon v-if="network.icon" :left="!miniVariant">
               {{ network.icon }}
