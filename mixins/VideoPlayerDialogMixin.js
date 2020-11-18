@@ -52,6 +52,7 @@ export default {
         this.toggleFullscreen(this.dialogContainerId)
       }
       this.player.pause()
+      this.player.stopCasting()
     },
 
     handleFullscreen () {
