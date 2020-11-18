@@ -23,7 +23,7 @@ import ParentsCornerCategoriesDataTable from '@/components/admin/parents-corner/
 import AdminContentHeader from '@/components/admin/AdminContentHeader.vue'
 
 export default {
-  name: 'ParentsCornerCategories',
+  name: 'Categories',
 
   components: {
     ParentsCornerCategoriesDataTable,

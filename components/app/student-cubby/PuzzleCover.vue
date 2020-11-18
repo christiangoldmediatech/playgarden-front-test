@@ -22,7 +22,8 @@ import { line, curveBasis } from 'd3-shape'
 import { colorValidator } from '@/components/pg/utils/validators'
 import { colorMaker } from '@/components/pg/utils/colorable'
 
-const ROW_MULTIPLIER = 4
+const MIN_ROW_COUNT = 4
+const MIN_COL_COUNT = 5
 // You can find more about theory in these links
 // http://dev.inventables.com/2016/02/26/generating-svg-jigsaw-puzzles.html
 // http://bl.ocks.org/nevernormal1/f808cffb897c63a8dd4e
@@ -103,7 +104,11 @@ export default {
 
     paths: [],
 
-    maxPiecesCount: 0
+    maxPiecesCount: 0,
+
+    rowCount: 0,
+
+    colCount: 0
   }),
 
   computed: {
@@ -126,10 +131,56 @@ export default {
     uncovered () {
       let uncover = []
 
-      if (Number.isInteger(parseInt(this.uncover))) {
-        uncover = Array(parseInt(this.uncover * ROW_MULTIPLIER))
-          .fill()
-          .map((_, i) => i)
+      const uncoveredPieces = parseInt(this.uncover)
+      if (Number.isInteger(uncoveredPieces)) {
+        if (this.maxPiecesCount > (this.rows * this.columns)) {
+          /**
+           * We have spaces to fill that will not be covered by the amount if
+           * indexes for pieces there are. Let fill thouse out depending on the
+           * pieces that have been unlocked
+           */
+          const piecesCount = this.rows * this.columns
+          let spacesOfNpiecesToFill = 0
+          let extraSpacesLeft = 0
+          if (this.rows * this.columns) {
+            spacesOfNpiecesToFill = this.maxPiecesCount / piecesCount
+            extraSpacesLeft = this.maxPiecesCount % piecesCount
+          }
+
+          // Push the given indexes as those are always correct
+          for (let j = 0; j < uncoveredPieces; j++) {
+            uncover.push(j)
+          }
+
+          if (spacesOfNpiecesToFill) {
+            let nSpaceRandomOffset, nSpaceIndexOffset
+            const randomPrime = 3
+            // Fill n spaces of piecesCount length
+            for (let i = 1; i <= spacesOfNpiecesToFill; i++) {
+              nSpaceIndexOffset = piecesCount * i
+              nSpaceRandomOffset = (i + spacesOfNpiecesToFill) % piecesCount
+              for (let j = 1; j <= uncoveredPieces; j++) {
+                uncover.push(nSpaceIndexOffset + ((j + nSpaceRandomOffset * randomPrime) % piecesCount))
+              }
+            }
+          }
+
+          if (extraSpacesLeft) {
+            // Fill the remainder of spaces to fill of length extraSpacesLeft
+            const extraSpacesOffset = (spacesOfNpiecesToFill * piecesCount) + piecesCount
+            for (let j = 0; j < uncoveredPieces; j++) {
+              uncover.push(extraSpacesOffset + uncoveredPieces - 1)
+            }
+          }
+        } else {
+          /**
+           * Indexes of pieces are exact, just pushed to the right index the amount of
+           * unlocked
+           */
+          for (let i = 0; i < uncoveredPieces; i++) {
+            uncover.push(i)
+          }
+        }
       } else if (Array.isArray(this.uncover)) {
         uncover = this.uncover.map(parseInt)
       }
@@ -165,14 +216,21 @@ export default {
   },
 
   created () {
+    this.calculateMaxPiezesCount()
     this.buildPaths()
   },
 
   methods: {
+    calculateMaxPiezesCount () {
+      this.colCount = Math.max(this.columns, MIN_COL_COUNT)
+      this.rowCount = Math.max(this.rows, MIN_ROW_COUNT)
+
+      this.maxPiecesCount = this.colCount * this.rowCount
+    },
     buildPaths () {
-      this.maxPiecesCount = (this.rows * ROW_MULTIPLIER) + this.columns
+      this.calculateMaxPiezesCount()
       this.paths = this.buildPiecePaths(
-        this.buildPieces(parseInt(this.rows * ROW_MULTIPLIER, 10), parseInt(this.columns, 10))
+        this.buildPieces(parseInt(this.rowCount, 10), parseInt(this.colCount, 10))
       )
     },
 

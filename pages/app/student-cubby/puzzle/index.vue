@@ -55,7 +55,7 @@ export default {
   data: () => ({
     backgroundImage: null,
     columns: 5,
-    rows: 2,
+    rows: 1,
     uncover: 0
   }),
 
@@ -67,14 +67,12 @@ export default {
 
   watch: {
     studentId () {
-      this.getUncoverPieces()
       this.getPuzzle()
     }
   },
 
   created () {
     if (this.studentId) {
-      this.getUncoverPieces()
       this.getPuzzle()
     }
   },
@@ -85,28 +83,17 @@ export default {
       'getPuzzleByChildId'
     ]),
 
-    async getUncoverPieces () {
-      if (this.studentId) {
-        try {
-          const { pieces } = await this.getPuzzleByChildId({
-            id: this.studentId
-          })
-
-          this.uncover = pieces
-        } catch (e) {}
-      }
-    },
-
     async getPuzzle () {
       if (this.studentId) {
         try {
-          const { puzzle } = await this.getPuzzleActiveByChildId({
+          const { puzzle, piecesUnlock } = await this.getPuzzleActiveByChildId({
             id: this.studentId
           })
 
           this.backgroundImage = get(puzzle, 'image')
           this.columns = get(puzzle, 'columns', 5)
-          this.rows = get(puzzle, 'rows', 2)
+          this.rows = get(puzzle, 'rows', 1)
+          this.uncover = piecesUnlock
         } catch (e) {}
       }
     }
