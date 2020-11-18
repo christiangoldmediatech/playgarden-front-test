@@ -16,11 +16,13 @@
           </v-btn>
         </div>
       </template>
+
       <template v-else>
         <p class="player-dialog-close-tip">
           Press CTRL + SHIFT + E to EXIT
         </p>
       </template>
+
       <div class="player-dialog-top-right-icons">
         <v-btn
           v-if="canCast"
@@ -50,6 +52,17 @@
           </v-icon>
         </v-btn>
       </div>
+
+      <div v-if="overlayTimer" class="player-dialog-mobile-portrait-overlay">
+        <div>
+          <img src="/svg/phone-rotate.svg">
+        </div>
+
+        <div class="text-center pt-3 rotate-text">
+          Rotate your phone for a better experience
+        </div>
+      </div>
+
       <slot />
     </div>
   </div>
@@ -92,12 +105,42 @@ export default {
     }
   },
 
+  data: () => {
+    return {
+      overlayTimer: null
+    }
+  },
+
   watch: {
     value (val) {
+      this.clearOverlayTimer()
+
       if (val) {
         document.querySelector('html').style.overflowY = 'hidden'
+
+        this.$nextTick(() => {
+          if (this.mobilePortrait) {
+            this.overlayTimer = window.setTimeout(() => {
+              this.clearOverlayTimer()
+            }, 3000)
+          }
+        })
       } else {
         document.querySelector('html').style.overflowY = 'scroll'
+      }
+    },
+
+    mobilePortrait (val) {
+      if (val && this.value) {
+        this.$nextTick(() => {
+          if (this.mobilePortrait) {
+            this.overlayTimer = window.setTimeout(() => {
+              this.clearOverlayTimer()
+            }, 3000)
+          }
+        })
+      } else {
+        this.clearOverlayTimer()
       }
     }
   },
@@ -125,12 +168,23 @@ export default {
     close () {
       this.$emit('close')
       this.$emit('input', false)
+    },
+
+    clearOverlayTimer () {
+      if (this.overlayTimer) {
+        window.clearTimeout(this.overlayTimer)
+        this.overlayTimer = null
+      }
     }
   }
 }
 </script>
 
 <style lang="scss">
+.rotate-text {
+  color: #ABABAB;
+}
+
 .player-dialog {
   position: fixed;
   width: 100vw;
@@ -146,6 +200,18 @@ export default {
   visibility: hidden;
   opacity: 0;
   transition: visibility 0s, opacity 0.2s ease-in;
+  &-mobile-portrait-overlay {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 550;
+    background-color: rgba(0, 0, 0, 0.74);
+  }
   &-visible {
     visibility: visible;
     opacity: 1;
@@ -161,7 +227,7 @@ export default {
     height: var(--containerHeight);
     max-height: var(--containerHeight);
     background-color: rgba(127, 127, 127, 0.125);
-    overflow: hidden;
+    // overflow: hidden;
   }
   &-close-btn {
     position: absolute;

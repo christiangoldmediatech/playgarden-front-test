@@ -1,12 +1,12 @@
 <template>
-  <div class="control-bar">
+  <div class="control-bar" :class="{ 'control-bar-mobile-portrait': !inline }">
     <!-- Next Up Component -->
     <next-up :params="nextUp" />
     <v-hover v-slot="{ hover }" close-delay="500">
       <v-row class="mx-0" justify="center">
         <v-sheet
           :id="controlBarId"
-          :class="['control-bar-sheet-container py-2 px-4 mx-4', { 'control-bar-sheet-show': hover || visible }]"
+          :class="['control-bar-sheet-container py-2 px-4 mx-4', { 'control-bar-sheet-show': hover || visible }, { 'control-bar-sheet-container-mobile-portrait': !inline }]"
           color="rgba(0, 0, 0, 0.74)"
           max-width="656"
           min-width="290"
@@ -16,72 +16,76 @@
           <div class="d-flex justify-space-between">
             <!-- `${noSmallscreen ? 'justify-space-between' : 'justify-center justify-md-space-between'}` -->
             <!-- Volume Menu -->
-            <v-menu
-              v-if="!smallScreen"
-              v-model="visible"
-              dark
-              offset-y
-              top
-              open-on-hover
-              open-on-focus
-              open-on-click
-              close-on-click
-              close-on-content-click
-              rounded
-              :attach="`#${controlBarId}`"
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  color="#D2D2D2"
-                  icon
-                  :x-large="!mobile"
-                  v-bind="attrs"
-                  v-on="on"
-                  @click.stop="toggleMute"
-                >
-                  <v-icon :x-large="!mobile">
-                    {{ speakerIcon }}
-                  </v-icon>
-                </v-btn>
-              </template>
-              <v-list
-                color="rgba(0, 0, 0, 0.74)"
-                dense
+            <div>
+              <v-menu
+                v-if="!smallScreen"
+                v-model="visible"
+                dark
+                offset-y
+                top
+                open-on-hover
+                open-on-focus
+                open-on-click
+                close-on-click
+                close-on-content-click
+                rounded
+                :attach="`#${controlBarId}`"
               >
-                <v-list-item>
-                  <v-slider
-                    v-model="volumeVal"
-                    class="py-2"
-                    thumb-size="8"
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
                     color="#D2D2D2"
-                    dark
-                    hide-details
-                    vertical
-                    :min="0"
-                    :max="100"
-                  />
-                </v-list-item>
-              </v-list>
-            </v-menu>
+                    icon
+                    :x-large="!mobile"
+                    v-bind="attrs"
+                    v-on="on"
+                    @click.stop="toggleMute"
+                  >
+                    <v-icon :small="$vuetify.breakpoint.xsOnly">
+                      {{ speakerIcon }}
+                    </v-icon>
+                  </v-btn>
+                </template>
+                <v-list
+                  color="rgba(0, 0, 0, 0.74)"
+                  dense
+                >
+                  <v-list-item>
+                    <v-slider
+                      v-model="volumeVal"
+                      class="py-2"
+                      thumb-size="8"
+                      color="#D2D2D2"
+                      dark
+                      hide-details
+                      vertical
+                      :min="0"
+                      :max="100"
+                    />
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </div>
 
             <div>
               <v-btn
                 v-if="showRestart"
+                class="mx-1"
                 color="#D2D2D2"
                 icon
                 :x-large="!mobile"
                 :disabled="status === 'LOADING'"
                 @click.stop="restart"
               >
-                <!-- <v-icon small>
+                <v-icon :small="$vuetify.breakpoint.xsOnly">
                   pg-icon-previous
-                </v-icon> -->
-                <img class="control-bar-svg-icon" src="/player/previous.svg" width="100%">
+                </v-icon>
+                <!-- <img class="control-bar-svg-icon" src="/player/previous.svg" width="100%"> -->
               </v-btn>
 
               <!-- Step backward 15 sec -->
               <v-btn
                 v-if="showSteps"
+                class="mx-1"
                 color="#D2D2D2"
                 icon
                 :x-large="!mobile"
@@ -97,12 +101,13 @@
               <!-- Play Button -->
               <v-btn
                 color="#D2D2D2"
+                class="mx-1"
                 icon
                 :x-large="!mobile"
                 :disabled="status === 'LOADING'"
                 @click.stop="togglePlay"
               >
-                <v-icon :x-large="!mobile">
+                <v-icon :large="$vuetify.breakpoint.smAndUp">
                   {{ playIcon }}
                 </v-icon>
               </v-btn>
@@ -110,6 +115,7 @@
               <!-- Step forward 15 sec -->
               <v-btn
                 v-if="showSteps"
+                class="mx-1"
                 color="#D2D2D2"
                 icon
                 :x-large="!mobile"
@@ -123,18 +129,20 @@
               </v-btn>
             </div>
 
-            <!-- Fullscreen Button -->
-            <v-btn
-              v-if="!smallScreen"
-              color="#D2D2D2"
-              icon
-              :x-large="!mobile"
-              @click.stop="$emit('fullscreen')"
-            >
-              <v-icon :x-large="!mobile">
-                {{ fullscreenIcon }}
-              </v-icon>
-            </v-btn>
+            <div>
+              <!-- Fullscreen Button -->
+              <v-btn
+                v-if="!smallScreen"
+                color="#D2D2D2"
+                icon
+                :x-large="!mobile"
+                @click.stop="$emit('fullscreen')"
+              >
+                <v-icon :small="$vuetify.breakpoint.xsOnly">
+                  {{ fullscreenIcon }}
+                </v-icon>
+              </v-btn>
+            </div>
           </div>
 
           <!-- Timeline -->
@@ -267,24 +275,12 @@ export default {
     stepForward () {
       const currentTime = this.player.currentTime()
       const nextTime = currentTime + 15
-      const duration = this.player.currentTime()
+      const duration = this.player.duration()
       const mediaObj = this.player.getMediaObject()
+      const availTime = (mediaObj.viewed && mediaObj.viewed.time) ? mediaObj.viewed.time : currentTime
 
-      if (nextTime < duration) {
-        if (this.noSeek) {
-          if (this.mediaObj.viewed && mediaObj.time && typeof mediaObj.time === 'number') {
-            const viewdUpTo = mediaObj.time
-            if (nextTime <= viewdUpTo) {
-              this.player.currentTime(nextTime)
-            } else if (currentTime < viewdUpTo) {
-              this.player.currentTime(viewdUpTo)
-            }
-          }
-        } else {
-          this.player.currentTime(nextTime)
-        }
-      } else if (!this.noSeek) {
-        this.player.currentTime(duration - 1)
+      if (nextTime < (duration - 1) && nextTime < availTime) {
+        this.player.currentTime(nextTime)
       }
     },
 
@@ -317,15 +313,25 @@ export default {
   @media screen and (max-width: 599px) {
     bottom: 4px;
   }
+  @media screen and (max-width: 599px) and (orientation:portrait) {
+    &-mobile-portrait {
+      bottom: -84px !important;
+    }
+  }
   &-area {
     width: calc(50% - 52px);
   }
   &-sheet {
     &-container {
-      opacity: 0.0;
+      opacity: 0;
       transition: opacity 500ms ease-in-out;
       -moz-transition: opacity 500ms ease-in-out;
       -webkit-transition: opacity 500ms ease-in-out;
+      @media screen and (max-width: 599px) and (orientation:portrait) {
+        &-mobile-portrait {
+          opacity: 1 !important;
+        }
+      }
     }
     &-show{
       opacity: 1.0;

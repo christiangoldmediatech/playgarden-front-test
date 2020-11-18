@@ -84,7 +84,8 @@ export default {
         nextUp: this.nextUp,
         noSeek: this.noSeek,
         showRestart: this.showRestart,
-        showSteps: this.showSteps
+        showSteps: this.showSteps,
+        inline: this.inline
       }
     }
   },
@@ -242,7 +243,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "@/assets/scss/video-js/video-js-compact";
+@import "@/assets/scss/video-js/vjs.scss";
 
 .vjs-tech {
   pointer-events: none;
@@ -253,7 +254,7 @@ export default {
     position: relative;
     max-width: 100%;
     max-height: 100%;
-    overflow: hidden;
+    // overflow: hidden;
   }
 }
 </style>
