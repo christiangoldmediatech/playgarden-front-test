@@ -3,7 +3,13 @@
 </template>
 
 <script>
+import LessonCompletedCard from '@/components/app/dashboard/LessonCompletedCard.vue'
+
 export default {
-  name: 'LessonCompleted'
+  name: 'LessonCompleted',
+
+  components: {
+    LessonCompletedCard
+  }
 }
 </script>
