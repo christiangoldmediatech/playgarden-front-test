@@ -147,6 +147,16 @@ export default {
           rootPath: '/admin/settings',
           children: [
             {
+              title: 'FAQs',
+              rootPath: '/faqs',
+              children: [
+                {
+                  title: 'Categories',
+                  route: 'categories'
+                }
+              ]
+            },
+            {
               title: 'General',
               rootPath: '/general',
               children: [

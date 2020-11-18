@@ -1,8 +1,8 @@
 <script>
-import { VBtn } from 'vuetify/lib/components/VBtn'
 import { VDataFooter } from 'vuetify/lib/components/VDataIterator'
-import { VIcon } from 'vuetify/lib/components/VIcon'
 
+import PgBtn from '../PgBtn'
+import PgIcon from '../PgIcon'
 import PgPagination from '../PgPagination'
 import PgSelect from '../form-inputs-controls/PgSelect'
 
@@ -115,7 +115,7 @@ export default {
 
     genIcon (click, disabled, label, icon) {
       return this.$createElement(
-        VBtn,
+        PgBtn,
         {
           props: {
             color: 'primary',
@@ -131,7 +131,7 @@ export default {
             'aria-label': label
           }
         },
-        [this.$createElement(VIcon, icon)]
+        [this.$createElement(PgIcon, icon)]
       )
     },
 
