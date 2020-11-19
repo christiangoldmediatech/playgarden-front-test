@@ -133,7 +133,8 @@ export default {
 
     completedProps () {
       return {
-        timeOut: (this.lesson && this.lesson.previewMode) ? false : 30,
+        // timeOut: (this.lesson && this.lesson.previewMode) ? false : 30,
+        timeOut: false,
         timeOutAction: () => {
           // Find first activity
           const activities = this.lesson.lessonsActivities.map(({ activity }) => activity)

@@ -345,6 +345,9 @@ export default {
   &-progress-slider {
     .v-slider__thumb-label.accent {
       background-color: transparent !important;
+      @media screen and (max-width: 599px) {
+        display: none;
+      }
     }
     @media screen and (max-width: 599px) {
       .v-input__control,.v-input__control > div.v-input__slot {
