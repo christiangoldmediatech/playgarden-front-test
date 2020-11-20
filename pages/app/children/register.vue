@@ -58,8 +58,8 @@
             </v-row>
           </p>
 
-          <p class="text-center text-md-left">
-            <small>You may cancel your membership at any time through your account settings.</small>
+          <p class="text-center text-md-left mt-10">
+            <small>*You can cancel your membership any time from the account settings.</small>
           </p>
         </v-col>
       </v-row>

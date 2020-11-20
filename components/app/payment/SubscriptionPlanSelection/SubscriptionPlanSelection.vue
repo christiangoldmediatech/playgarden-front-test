@@ -17,29 +17,39 @@
               >
                 {{ updating ? "UPDATE" : "CHOOSE YOUR" }} PLAN
               </p>
-
+              <span class="product-info">*Pricing is per child</span>
               <v-row
                 v-if="$vuetify.breakpoint.mdAndUp"
                 class="mx-n3"
+                justify="center"
                 no-gutters
               >
                 <v-col
                   v-for="(plan, indexP) in plans"
                   :key="indexP"
-                  class="c-col elevation-3 mx-md-3 pa-3"
+                  :class="`${indexP === 1 ? 'c-col elevation-3 mx-md-3 card-plan' : 'c-col elevation-3 mx-md-3 pa-3 card-plan mt-6'}`"
                 >
+                  <div v-if="indexP === 1" class="text-right">
+                    <v-chip
+                      color="orange"
+                      class="text-orange-info"
+                      label
+                    >
+                      Most Popular
+                    </v-chip>
+                  </div>
                   <div>
                     <p class="text-center">
                       <v-chip
                         color="orange"
-                        class="text-orange-info mb-3"
+                        class="text-orange-info mb-8"
                         label
                       >
                         {{ getTypePlan(indexP) }}
                       </v-chip>
                       <br>
                       <underlined-title
-                        font-size="20px"
+                        font-size="30px"
                         :line-from="65"
                         :text="plan.name"
                       />
@@ -429,6 +439,14 @@ export default {
   letter-spacing: 3.15px;
   line-height: 1.48;
   background-color: var(--v-accent-base) !important;
+}
+
+.product-info {
+  font-size: 11px !important;
+}
+
+.card-plan {
+  max-width: 350px !important;
 }
 
 .text-orange-info::v-deep.v-chip--label {
