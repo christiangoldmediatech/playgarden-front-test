@@ -27,12 +27,11 @@
                 <v-col
                   v-for="(plan, indexP) in plans"
                   :key="indexP"
-                  :class="`${indexP === 1 ? 'c-col elevation-3 mx-md-3 card-plan' : 'c-col elevation-3 mx-md-3 pa-3 card-plan mt-6'}`"
+                  :class="`${indexP === 1 ? 'c-col elevation-3 mx-md-3 card-plan' : 'c-col elevation-3 mx-md-3 pa-3 card-plan mt-10'}`"
                 >
                   <div v-if="indexP === 1" class="text-right">
                     <v-chip
-                      color="orange"
-                      class="text-orange-info"
+                      class="most-popular"
                       label
                     >
                       Most Popular
@@ -451,5 +450,15 @@ export default {
 
 .text-orange-info::v-deep.v-chip--label {
     border-radius: 0px !important;
+}
+.most-popular::v-deep.v-chip .v-chip__content {
+  color: #FF8000 !important;
+  font-weight: bold;
+}
+.most-popular::v-deep.v-chip--label {
+  font-weight: bold;
+  color: var(--v-white-base) !important;
+  border-radius: 0px !important;
+  background-color: rgba(255, 163, 72, 0.647059) !important;
 }
 </style>
