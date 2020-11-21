@@ -20,6 +20,7 @@ import PgPasswordField from '@/components/pg/components/form-inputs-controls/PgP
 import PgSelect from '@/components/pg/components/form-inputs-controls/PgSelect.vue'
 import PgTextarea from '@/components/pg/components/form-inputs-controls/PgTextarea.vue'
 import PgTextField from '@/components/pg/components/form-inputs-controls/PgTextField.vue'
+import PgTiptapField from '@/components/pg/components/form-inputs-controls/PgTiptapField'
 
 // PG Tables
 import PgDataFooter from '@/components/pg/components/tables/PgDataFooter.vue'
@@ -30,13 +31,11 @@ import PgDataTable from '@/components/pg/components/tables/PgDataTable.vue'
 import FileUploader from './file-uploader/FileUploader'
 import NotifyEvent from './NotifyEvent'
 import PromptDialog from './PromptDialog'
-import TiptapField from './TiptapField'
 import UnderlinedTitle from './UnderlinedTitle'
 
 Vue.component(FileUploader.name, FileUploader)
 Vue.component(NotifyEvent.name, NotifyEvent)
 Vue.component(PromptDialog.name, PromptDialog)
-Vue.component(TiptapField.name, TiptapField)
 Vue.component(UnderlinedTitle.name, UnderlinedTitle)
 
 Vue.component(PgVideoJsPlayer.name, PgVideoJsPlayer)
@@ -55,6 +54,7 @@ Vue.component(PgPasswordField.name, PgPasswordField)
 Vue.component(PgSelect.name, PgSelect)
 Vue.component(PgTextarea.name, PgTextarea)
 Vue.component(PgTextField.name, PgTextField)
+Vue.component(PgTiptapField.name, PgTiptapField)
 
 Vue.component(PgDataFooter.name, PgDataFooter)
 Vue.component(PgDataIterator.name, PgDataIterator)
