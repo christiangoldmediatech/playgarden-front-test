@@ -3,8 +3,6 @@
     :id="dialogContainerId"
     ref="videoPlayerDialog"
     v-model="dialog"
-    :show-favorite="lesson && !lesson.previewMode"
-    :video-id="currentVideo ? currentVideo.videoId : -1"
     @close="handleClose"
   >
     <pg-video-js-player
@@ -13,6 +11,8 @@
       show-next-up
       show-restart
       show-steps
+      :show-favorite="lesson && !lesson.previewMode"
+      show-cast
       use-standard-poster
       :no-seek="noSeek"
       :fullscreen-override="handleFullscreen"

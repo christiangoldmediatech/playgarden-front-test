@@ -23,36 +23,6 @@
         </p>
       </template>
 
-      <div class="player-dialog-top-right-icons">
-        <v-btn
-          v-if="canCast"
-          large
-          icon
-          @click.stop="onCastBtn"
-        >
-          <v-icon color="#D2D2D2">
-            mdi-cast-education
-          </v-icon>
-        </v-btn>
-        <v-btn
-          v-if="showFavorite && videoId > 0"
-          class="ml-2"
-          :loading="favoritesLoading"
-          icon
-          large
-          @click.stop="handleFavorites"
-        >
-          <v-icon color="#F5737F">
-            <template v-if="isFavorite">
-              mdi-heart
-            </template>
-            <template v-else>
-              mdi-heart-outline
-            </template>
-          </v-icon>
-        </v-btn>
-      </div>
-
       <div v-if="overlayTimer" class="player-dialog-mobile-portrait-overlay">
         <div>
           <img src="/svg/phone-rotate.svg">
@@ -70,32 +40,18 @@
 
 <script>
 import SmallScreen from '@/mixins/SmallScreenMixin.js'
-import Favorites from '@/mixins/FavoritesMixin.js'
 import Dimensions from '@/mixins/DimensionsMixin.js'
-import ChromeCast from '@/mixins/ChromeCastMixin.js'
 
 export default {
   name: 'VideoPlayerDialog',
 
-  mixins: [Dimensions, Favorites, SmallScreen, ChromeCast],
+  mixins: [Dimensions, SmallScreen],
 
   props: {
     value: {
       type: Boolean,
       required: false,
       default: false
-    },
-
-    showFavorite: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-
-    videoId: {
-      type: Number,
-      required: false,
-      default: -1
     },
 
     zIndex: {
@@ -227,7 +183,6 @@ export default {
     height: var(--containerHeight);
     max-height: var(--containerHeight);
     background-color: rgba(127, 127, 127, 0.125);
-    // overflow: hidden;
   }
   &-close-btn {
     position: absolute;
@@ -243,12 +198,6 @@ export default {
     font-weight: medium;
     color: #606060 !important;
     z-index: 520;
-  }
-  &-top-right-icons {
-    position: absolute;
-    top: 4px;
-    right: 4px;
-    z-index: 525;
   }
 }
 </style>
