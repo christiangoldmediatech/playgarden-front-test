@@ -16,40 +16,23 @@
           </v-btn>
         </div>
       </template>
+
       <template v-else>
         <p class="player-dialog-close-tip">
           Press CTRL + SHIFT + E to EXIT
         </p>
       </template>
-      <div class="player-dialog-top-right-icons">
-        <v-btn
-          v-if="canCast"
-          large
-          icon
-          @click.stop="onCastBtn"
-        >
-          <v-icon color="#D2D2D2">
-            mdi-cast-education
-          </v-icon>
-        </v-btn>
-        <v-btn
-          v-if="showFavorite && videoId > 0"
-          class="ml-2"
-          :loading="favoritesLoading"
-          icon
-          large
-          @click.stop="handleFavorites"
-        >
-          <v-icon color="#F5737F">
-            <template v-if="isFavorite">
-              mdi-heart
-            </template>
-            <template v-else>
-              mdi-heart-outline
-            </template>
-          </v-icon>
-        </v-btn>
+
+      <div v-if="overlayTimer" class="player-dialog-mobile-portrait-overlay">
+        <div>
+          <img src="/svg/phone-rotate.svg">
+        </div>
+
+        <div class="text-center pt-3 rotate-text">
+          Rotate your phone for a better experience
+        </div>
       </div>
+
       <slot />
     </div>
   </div>
@@ -57,32 +40,18 @@
 
 <script>
 import SmallScreen from '@/mixins/SmallScreenMixin.js'
-import Favorites from '@/mixins/FavoritesMixin.js'
 import Dimensions from '@/mixins/DimensionsMixin.js'
-import ChromeCast from '@/mixins/ChromeCastMixin.js'
 
 export default {
   name: 'VideoPlayerDialog',
 
-  mixins: [Dimensions, Favorites, SmallScreen, ChromeCast],
+  mixins: [Dimensions, SmallScreen],
 
   props: {
     value: {
       type: Boolean,
       required: false,
       default: false
-    },
-
-    showFavorite: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-
-    videoId: {
-      type: Number,
-      required: false,
-      default: -1
     },
 
     zIndex: {
@@ -92,12 +61,42 @@ export default {
     }
   },
 
+  data: () => {
+    return {
+      overlayTimer: null
+    }
+  },
+
   watch: {
     value (val) {
+      this.clearOverlayTimer()
+
       if (val) {
         document.querySelector('html').style.overflowY = 'hidden'
+
+        this.$nextTick(() => {
+          if (this.mobilePortrait) {
+            this.overlayTimer = window.setTimeout(() => {
+              this.clearOverlayTimer()
+            }, 3000)
+          }
+        })
       } else {
         document.querySelector('html').style.overflowY = 'scroll'
+      }
+    },
+
+    mobilePortrait (val) {
+      if (val && this.value) {
+        this.$nextTick(() => {
+          if (this.mobilePortrait) {
+            this.overlayTimer = window.setTimeout(() => {
+              this.clearOverlayTimer()
+            }, 3000)
+          }
+        })
+      } else {
+        this.clearOverlayTimer()
       }
     }
   },
@@ -125,12 +124,23 @@ export default {
     close () {
       this.$emit('close')
       this.$emit('input', false)
+    },
+
+    clearOverlayTimer () {
+      if (this.overlayTimer) {
+        window.clearTimeout(this.overlayTimer)
+        this.overlayTimer = null
+      }
     }
   }
 }
 </script>
 
 <style lang="scss">
+.rotate-text {
+  color: #ABABAB;
+}
+
 .player-dialog {
   position: fixed;
   width: 100vw;
@@ -146,6 +156,18 @@ export default {
   visibility: hidden;
   opacity: 0;
   transition: visibility 0s, opacity 0.2s ease-in;
+  &-mobile-portrait-overlay {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 550;
+    background-color: rgba(0, 0, 0, 0.74);
+  }
   &-visible {
     visibility: visible;
     opacity: 1;
@@ -161,7 +183,6 @@ export default {
     height: var(--containerHeight);
     max-height: var(--containerHeight);
     background-color: rgba(127, 127, 127, 0.125);
-    overflow: hidden;
   }
   &-close-btn {
     position: absolute;
@@ -177,12 +198,6 @@ export default {
     font-weight: medium;
     color: #606060 !important;
     z-index: 520;
-  }
-  &-top-right-icons {
-    position: absolute;
-    top: 4px;
-    right: 4px;
-    z-index: 525;
   }
 }
 </style>

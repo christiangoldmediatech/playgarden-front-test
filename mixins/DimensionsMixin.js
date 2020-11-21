@@ -1,12 +1,23 @@
 export default {
-  data: () => {
-    return {
-      winWidth: 0,
-      winHeight: 0
-    }
-  },
-
   computed: {
+    winWidth () {
+      if (this.$vuetify.breakpoint.width) {
+        return document.documentElement.clientWidth || window.innerWidth || 0
+      }
+      return 0
+    },
+
+    winHeight () {
+      if (this.$vuetify.breakpoint.height) {
+        return document.documentElement.clientHeight || window.innerHeight || 0
+      }
+      return 0
+    },
+
+    mobilePortrait () {
+      return (this.$vuetify.breakpoint.xsOnly && this.$vuetify.breakpoint.width < this.$vuetify.breakpoint.height)
+    },
+
     dimensions () {
       const aspectRatio = 16 / 9
       let width = this.winWidth
@@ -23,18 +34,6 @@ export default {
         '--containerMarginTop': `-${height / 2}px`,
         '--containerMarginLeft': `-${width / 2}px`
       }
-    }
-  },
-
-  mounted () {
-    this.getWindowDimensions()
-    window.addEventListener('resize', this.getWindowDimensions)
-  },
-
-  methods: {
-    getWindowDimensions () {
-      this.winWidth = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
-      this.winHeight = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
     }
   }
 }

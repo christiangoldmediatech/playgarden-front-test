@@ -152,23 +152,27 @@ export default {
       const interval = window.setInterval(() => {
         if (this.onboardings.length) {
           // const { videos } = this.onboardings[0]
-          this.player.loadMedia({
-            title: videos.name,
-            poster: videos.thumbnail,
-            src: {
-              src: videos.videoUrl.HLS,
-              type: 'application/x-mpegURL'
+          this.player.loadPlaylist([
+            {
+              videoId: 1,
+              title: videos.name,
+              poster: videos.thumbnail,
+              src: {
+                src: videos.videoUrl.HLS,
+                type: 'application/x-mpegURL'
+              }
             }
-          })
+          ], 0)
           window.clearInterval(interval)
         }
       }, 50)
     },
 
     nextStep () {
-      if (this.step < this.steps) {
-        this.step++
-      }
+      this.$router.push({ name: 'app-dashboard' })
+      // if (this.step < this.steps) {
+      //   this.step++
+      // }
     },
 
     async onFinish () {

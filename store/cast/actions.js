@@ -1,5 +1,5 @@
 export default {
-  init ({ state, commit, getters }) {
+  init ({ state, commit }) {
     const { castFrameworkLoading } = state
 
     // Chromecast available callback handler
@@ -8,16 +8,12 @@ export default {
 
       window.__onGCastApiAvailable = (isAvailable) => {
         if (isAvailable) {
-          cast.framework.CastContext.getInstance().setOptions({
-            // receiverApplicationId: chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID,
-            // receiverApplicationId: '82E99DC4',
-            // receiverApplicationId: 'D6A7373A',
-            // receiverApplicationId: 'E6D45FF1',
-            receiverApplicationId: 'B3A826A2',
+          const context = cast.framework.CastContext.getInstance()
+
+          context.setOptions({
+            receiverApplicationId: ['production', 'staging'].includes(process.env.testEnv) ? 'B3A826A2' : '3BF50408',
             autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
           })
-
-          // cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG)
 
           commit('SET_AVAILABLE', isAvailable)
         }

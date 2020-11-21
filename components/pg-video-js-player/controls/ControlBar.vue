@@ -1,12 +1,12 @@
 <template>
-  <div class="control-bar">
+  <div class="control-bar" :class="{ 'control-bar-mobile-portrait': !inline }">
     <!-- Next Up Component -->
     <next-up :params="nextUp" />
     <v-hover v-slot="{ hover }" close-delay="500">
       <v-row class="mx-0" justify="center">
         <v-sheet
           :id="controlBarId"
-          :class="['control-bar-sheet-container py-2 px-4 mx-4', { 'control-bar-sheet-show': hover || visible }]"
+          :class="['control-bar-sheet-container py-2 px-4 mx-4', { 'control-bar-sheet-show': hover || visible }, { 'control-bar-sheet-container-mobile-portrait': !inline }]"
           color="rgba(0, 0, 0, 0.74)"
           max-width="656"
           min-width="290"
@@ -16,77 +16,81 @@
           <div class="d-flex justify-space-between">
             <!-- `${noSmallscreen ? 'justify-space-between' : 'justify-center justify-md-space-between'}` -->
             <!-- Volume Menu -->
-            <v-menu
-              v-if="!smallScreen"
-              v-model="visible"
-              dark
-              offset-y
-              top
-              open-on-hover
-              open-on-focus
-              open-on-click
-              close-on-click
-              close-on-content-click
-              rounded
-              :attach="`#${controlBarId}`"
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  color="#D2D2D2"
-                  icon
-                  :x-large="!mobile"
-                  v-bind="attrs"
-                  v-on="on"
-                  @click.stop="toggleMute"
-                >
-                  <v-icon :x-large="!mobile">
-                    {{ speakerIcon }}
-                  </v-icon>
-                </v-btn>
-              </template>
-              <v-list
-                color="rgba(0, 0, 0, 0.74)"
-                dense
+            <div>
+              <v-menu
+                v-if="!smallScreen"
+                v-model="visible"
+                dark
+                offset-y
+                top
+                open-on-hover
+                open-on-focus
+                open-on-click
+                close-on-click
+                close-on-content-click
+                rounded
+                :attach="`#${controlBarId}`"
               >
-                <v-list-item>
-                  <v-slider
-                    v-model="volumeVal"
-                    class="py-2"
-                    thumb-size="8"
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
                     color="#D2D2D2"
-                    dark
-                    hide-details
-                    vertical
-                    :min="0"
-                    :max="100"
-                  />
-                </v-list-item>
-              </v-list>
-            </v-menu>
+                    icon
+                    :x-large="!mobile"
+                    v-bind="attrs"
+                    v-on="on"
+                    @click.stop="player.toggleMute"
+                  >
+                    <v-icon :small="$vuetify.breakpoint.xsOnly">
+                      {{ speakerIcon }}
+                    </v-icon>
+                  </v-btn>
+                </template>
+                <v-list
+                  color="rgba(0, 0, 0, 0.74)"
+                  dense
+                >
+                  <v-list-item>
+                    <v-slider
+                      v-model="volumeVal"
+                      class="py-2"
+                      thumb-size="8"
+                      color="#D2D2D2"
+                      dark
+                      hide-details
+                      vertical
+                      :min="0"
+                      :max="100"
+                    />
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </div>
 
             <div>
               <v-btn
                 v-if="showRestart"
+                class="mx-1"
                 color="#D2D2D2"
                 icon
                 :x-large="!mobile"
                 :disabled="status === 'LOADING'"
-                @click.stop="restart"
+                @click.stop="player.restart"
               >
-                <!-- <v-icon small>
+                <v-icon small>
                   pg-icon-previous
-                </v-icon> -->
-                <img class="control-bar-svg-icon" src="/player/previous.svg" width="100%">
+                </v-icon>
+                <!-- <img class="control-bar-svg-icon" src="/player/previous.svg" width="100%"> -->
               </v-btn>
 
               <!-- Step backward 15 sec -->
               <v-btn
                 v-if="showSteps"
+                class="mx-1"
                 color="#D2D2D2"
                 icon
                 :x-large="!mobile"
                 :disabled="status === 'LOADING'"
-                @click.stop="stepBack"
+                @click.stop="player.stepBack"
               >
                 <!-- <v-icon small>
                   pg-icon-backward-15-sec
@@ -97,12 +101,13 @@
               <!-- Play Button -->
               <v-btn
                 color="#D2D2D2"
+                class="mx-1"
                 icon
                 :x-large="!mobile"
                 :disabled="status === 'LOADING'"
-                @click.stop="togglePlay"
+                @click.stop="player.togglePlay"
               >
-                <v-icon :x-large="!mobile">
+                <v-icon :large="$vuetify.breakpoint.smAndUp">
                   {{ playIcon }}
                 </v-icon>
               </v-btn>
@@ -110,11 +115,12 @@
               <!-- Step forward 15 sec -->
               <v-btn
                 v-if="showSteps"
+                class="mx-1"
                 color="#D2D2D2"
                 icon
                 :x-large="!mobile"
                 :disabled="status === 'LOADING'"
-                @click.stop="stepForward"
+                @click.stop="player.stepForward"
               >
                 <!-- <v-icon small>
                   pg-icon-forward-15-sec
@@ -123,18 +129,20 @@
               </v-btn>
             </div>
 
-            <!-- Fullscreen Button -->
-            <v-btn
-              v-if="!smallScreen"
-              color="#D2D2D2"
-              icon
-              :x-large="!mobile"
-              @click.stop="$emit('fullscreen')"
-            >
-              <v-icon :x-large="!mobile">
-                {{ fullscreenIcon }}
-              </v-icon>
-            </v-btn>
+            <div>
+              <!-- Fullscreen Button -->
+              <v-btn
+                v-if="!smallScreen"
+                color="#D2D2D2"
+                icon
+                :x-large="!mobile"
+                @click.stop="$emit('fullscreen')"
+              >
+                <v-icon :small="$vuetify.breakpoint.xsOnly">
+                  {{ fullscreenIcon }}
+                </v-icon>
+              </v-btn>
+            </div>
           </div>
 
           <!-- Timeline -->
@@ -153,7 +161,7 @@
                 thumb-color="accent"
                 :readonly="noSeek"
                 hide-details
-                @input="seek"
+                @input="player.seek"
               >
                 <template v-slot:thumb-label="{ value }">
                   <span class="control-bar-text">
@@ -242,67 +250,6 @@ export default {
         this.player.volume(volume / 100)
       }
     }
-  },
-
-  methods: {
-    seek (position) {
-      if (this.duration > 0) {
-        this.player.currentTime(position)
-      }
-    },
-
-    restart () {
-      this.player.currentTime(0)
-    },
-
-    stepBack () {
-      const currentTime = this.player.currentTime()
-      if (currentTime - 15 > 0) {
-        this.player.currentTime(currentTime - 15)
-      } else {
-        this.player.currentTime(0)
-      }
-    },
-
-    stepForward () {
-      const currentTime = this.player.currentTime()
-      const nextTime = currentTime + 15
-      const duration = this.player.currentTime()
-      const mediaObj = this.player.getMediaObject()
-
-      if (nextTime < duration) {
-        if (this.noSeek) {
-          if (this.mediaObj.viewed && mediaObj.time && typeof mediaObj.time === 'number') {
-            const viewdUpTo = mediaObj.time
-            if (nextTime <= viewdUpTo) {
-              this.player.currentTime(nextTime)
-            } else if (currentTime < viewdUpTo) {
-              this.player.currentTime(viewdUpTo)
-            }
-          }
-        } else {
-          this.player.currentTime(nextTime)
-        }
-      } else if (!this.noSeek) {
-        this.player.currentTime(duration - 1)
-      }
-    },
-
-    togglePlay () {
-      if (this.status === 'PLAYING') {
-        this.player.pause()
-      } else {
-        this.player.play()
-      }
-    },
-
-    toggleMute () {
-      if (this.volumeVal > 0) {
-        this.volumeVal = 0
-      } else {
-        this.volumeVal = 100
-      }
-    }
   }
 }
 </script>
@@ -317,15 +264,25 @@ export default {
   @media screen and (max-width: 599px) {
     bottom: 4px;
   }
+  @media screen and (max-width: 599px) and (orientation:portrait) {
+    &-mobile-portrait {
+      bottom: -84px !important;
+    }
+  }
   &-area {
     width: calc(50% - 52px);
   }
   &-sheet {
     &-container {
-      opacity: 0.0;
+      opacity: 0;
       transition: opacity 500ms ease-in-out;
       -moz-transition: opacity 500ms ease-in-out;
       -webkit-transition: opacity 500ms ease-in-out;
+      @media screen and (max-width: 599px) and (orientation:portrait) {
+        &-mobile-portrait {
+          opacity: 1 !important;
+        }
+      }
     }
     &-show{
       opacity: 1.0;
@@ -339,6 +296,9 @@ export default {
   &-progress-slider {
     .v-slider__thumb-label.accent {
       background-color: transparent !important;
+      @media screen and (max-width: 599px) {
+        display: none;
+      }
     }
     @media screen and (max-width: 599px) {
       .v-input__control,.v-input__control > div.v-input__slot {

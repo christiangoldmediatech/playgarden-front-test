@@ -182,6 +182,18 @@ export default {
   &-item {
     width: 75%;
     max-width: 75%;
+    .v-badge__badge {
+      height: 32px;
+      width: 32px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      i.v-icon {
+        font-size: 20px;
+        line-height: 32px;
+      }
+    }
   }
 }
 </style>

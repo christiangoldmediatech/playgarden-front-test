@@ -19,6 +19,7 @@
       v-bind="$attrs"
       :fullscreen-override="handleFullscreen"
       no-smallscreen
+      inline
       @ready="onPlayerReady"
     />
   </div>
@@ -26,15 +27,10 @@
 
 <script>
 import Fullscreen from '@/mixins/FullscreenMixin.js'
-// import PgVideoJsPlayer from './PgVideoJsPlayer.vue'
 const excludedListeners = ['ready']
 
 export default {
   name: 'PgInlineVideoPlayer',
-
-  // components: {
-  //   PgVideoJsPlayer
-  // },
 
   mixins: [Fullscreen],
 

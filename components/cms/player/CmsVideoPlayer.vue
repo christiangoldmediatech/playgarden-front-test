@@ -3,14 +3,13 @@
     :id="dialogContainerId"
     ref="videoPlayerDialog"
     v-model="dialog"
-    show-favorite
-    :video-id="currentVideo ? currentVideo.videoId : -1"
     @close="handleClose"
   >
     <pg-video-js-player
       ref="videoPlayer"
       autoplay
       show-next-up
+      show-favorite
       :fullscreen-override="handleFullscreen"
       @ready="onReady"
     />

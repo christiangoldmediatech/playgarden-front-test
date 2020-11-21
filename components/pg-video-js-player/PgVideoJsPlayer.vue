@@ -1,9 +1,61 @@
 <template>
   <div :id="playerContainerId" class="video-player-container">
+    <!-- Video tag -->
     <video ref="videoPlayer" class="video-js" playsinline />
+
+    <div class="video-player-top-right-icons">
+      <!-- ChromeCast Button -->
+      <v-btn
+        v-if="canCast"
+        large
+        icon
+        @click.stop="onCastBtn"
+      >
+        <v-icon color="#D2D2D2">
+          mdi-cast-education
+        </v-icon>
+      </v-btn>
+
+      <!-- Favorite Button -->
+      <v-btn
+        v-if="showFavorite && videoId > 0"
+        class="ml-2"
+        :loading="favoritesLoading"
+        icon
+        large
+        @click.stop="handleFavorites"
+      >
+        <v-icon color="#F5737F">
+          <template v-if="isFavorite">
+            mdi-heart
+          </template>
+          <template v-else>
+            mdi-heart-outline
+          </template>
+        </v-icon>
+      </v-btn>
+    </div>
+
+    <div v-if="isCasting" class="video-player-casting-overlay">
+      <v-btn
+        class="mb-6"
+        icon
+        x-large
+        @click.stop="playerInstance.stopCasting"
+      >
+        <v-icon large color="#ABABAB">
+          mdi-cast-connected
+        </v-icon>
+      </v-btn>
+
+      <div class="overlay-text">
+        You are casting this video to your device.
+      </div>
+    </div>
+
     <!-- Controls -->
     <control-bar
-      v-if="playerInstance && playerContainerId"
+      v-if="playerInstance && playerContainerId && playerInstance.toggleMute"
       v-bind="{ ...controlBarProps, noSmallscreen }"
       @fullscreen="handleFullscreen"
     />
@@ -12,8 +64,10 @@
 
 <script>
 import { jsonCopy } from '@/utils/objectTools.js'
+import { mapState, mapActions } from 'vuex'
 import videojs from 'video.js'
 import Fullscreen from '@/mixins/FullscreenMixin.js'
+import Favorites from '@/mixins/FavoritesMixin.js'
 import PlayerProps from './mixins/PlayerPropsMixin.js'
 import ControlBar from './controls/ControlBar.vue'
 
@@ -24,7 +78,7 @@ export default {
     ControlBar
   },
 
-  mixins: [PlayerProps, Fullscreen],
+  mixins: [PlayerProps, Fullscreen, Favorites],
 
   data: () => {
     return {
@@ -32,7 +86,7 @@ export default {
       playlist: [],
       mediaObject: {},
       status: 'IDLE',
-      volume: 100,
+      volume: 1,
       muted: false,
       position: 0,
       duration: 0,
@@ -49,11 +103,33 @@ export default {
         title: '',
         description: '',
         show: false
-      }
+      },
+      isCasting: false,
+      castLoading: false,
+      MEDIA_NAMESPACE: 'urn:x-cast:com.google.cast.media',
+      requestId: 1,
+      remotePlayer: null,
+      remotePlayerController: null
     }
   },
 
   computed: {
+    ...mapState('cast', ['castAvailable', 'castContext']),
+
+    canCast () {
+      return this.showCast && this.castAvailable
+    },
+
+    volumeVal: {
+      get () {
+        return Math.round(this.volume * 100)
+      },
+
+      set (volume) {
+        this.playerInstance.volume(volume / 100)
+      }
+    },
+
     playlistItemIndex () {
       if (this.mediaObject.videoId) {
         return this.playlist.findIndex(({ videoId }) => videoId === this.mediaObject.videoId)
@@ -84,13 +160,22 @@ export default {
         nextUp: this.nextUp,
         noSeek: this.noSeek,
         showRestart: this.showRestart,
-        showSteps: this.showSteps
+        showSteps: this.showSteps,
+        inline: this.inline
       }
+    },
+
+    videoId () {
+      if (this.mediaObject && this.mediaObject.videoId) {
+        return this.mediaObject.videoId
+      }
+      return -1
     }
   },
 
   mounted () {
     this.setup()
+    this.init()
   },
 
   beforeDestroy () {
@@ -101,6 +186,8 @@ export default {
   },
 
   methods: {
+    ...mapActions('cast', ['init']),
+
     setup () {
       this.playerInstance = videojs(this.$refs.videoPlayer, this.options, this.onPlayerReady)
     },
@@ -143,31 +230,10 @@ export default {
     },
 
     onPlayerReady () {
-      // Setup events
+      // Player callback events
       this.playerInstance.on(['loadstart', 'seeking', 'waiting', 'stalled'], () => {
         this.status = 'LOADING'
       })
-
-      this.playerInstance.loadPlaylist = this.loadPlaylist
-
-      this.playerInstance.getMediaObject = () => this.mediaObject
-
-      // Add show loading methods
-      this.playerInstance.showLoading = () => {
-        this.playerInstance.addClass('vjs-waiting')
-      }
-
-      this.playerInstance.hideLoading = () => {
-        this.playerInstance.removeClass('vjs-waiting')
-      }
-
-      this.playerInstance.nextVideo = () => {
-        if (!this.lastPlaylistItem) {
-          this.loadMediaObject(this.playlistItemIndex + 1)
-        } else {
-          this.$emit('playlist-complete')
-        }
-      }
 
       this.playerInstance.on(['play', 'playing'], () => {
         this.status = 'PLAYING'
@@ -202,6 +268,10 @@ export default {
         } else {
           this.muted = false
         }
+        if (this.isCasting) {
+          this.remotePlayer.volumeLevel = this.volume
+          this.remotePlayerController.setVolumeLevel()
+        }
       })
 
       this.playerInstance.on('durationchange', () => {
@@ -227,6 +297,130 @@ export default {
         this.playerInstance.on(key, this.$listeners[key].fns)
       })
 
+      // Custom player functions
+      this.playerInstance.loadPlaylist = this.loadPlaylist
+
+      this.playerInstance.getMediaObject = () => this.mediaObject
+
+      // Add show loading methods
+      this.playerInstance.showLoading = () => {
+        this.playerInstance.addClass('vjs-waiting')
+      }
+
+      this.playerInstance.hideLoading = () => {
+        this.playerInstance.removeClass('vjs-waiting')
+      }
+
+      this.playerInstance.nextVideo = () => {
+        if (!this.lastPlaylistItem) {
+          this.loadMediaObject(this.playlistItemIndex + 1)
+        } else {
+          this.$emit('playlist-complete')
+        }
+      }
+
+      this.playerInstance.stopCasting = () => {
+        if (this.isCasting) {
+          cast.framework.CastContext.getInstance().endCurrentSession(true)
+          this.isCasting = false
+          this.status = 'IDLE'
+        }
+      }
+
+      // Player controls
+      // Play or pause
+      this.playerInstance.togglePlay = () => {
+        if (this.isCasting) {
+          this.remotePlayerController.playOrPause()
+          return
+        }
+        if (this.status === 'PLAYING') {
+          this.playerInstance.pause()
+        } else {
+          this.playerInstance.play()
+        }
+      }
+
+      // Seek
+      this.playerInstance.seek = (position) => {
+        if (this.duration > 0) {
+          if (this.isCasting) {
+            this.remotePlayer.currentTime = position
+            this.remotePlayerController.seek()
+          } else {
+            this.playerInstance.currentTime(position)
+          }
+        }
+      }
+
+      // Restart video
+      this.playerInstance.restart = () => {
+        if (this.isCasting) {
+          this.remotePlayer.currentTime = 0
+          this.remotePlayerController.seek()
+        } else {
+          this.playerInstance.currentTime(0)
+        }
+        this.position = 0
+      }
+
+      // Step back 15 seconds
+      this.playerInstance.stepBack = () => {
+        let currentTime = this.playerInstance.currentTime()
+        if (this.isCasting) {
+          currentTime = this.position
+        }
+        let newTime = 0
+        if (currentTime - 15 > 0) {
+          newTime = currentTime - 15
+        }
+
+        if (this.isCasting) {
+          this.remotePlayer.currentTime = newTime
+          this.remotePlayerController.seek()
+        } else {
+          this.playerInstance.currentTime(newTime)
+        }
+
+        this.position = newTime
+      }
+
+      // Step forward 15 seconds
+      this.playerInstance.stepForward = () => {
+        let currentTime = this.playerInstance.currentTime()
+        if (this.isCasting) {
+          currentTime = this.position
+        }
+        const nextTime = currentTime + 15
+        const duration = this.playerInstance.duration()
+        const mediaObj = this.playerInstance.getMediaObject()
+        const availTime = (mediaObj.viewed && mediaObj.viewed.time) ? mediaObj.viewed.time : currentTime
+
+        if (nextTime < (duration - 1) && nextTime < availTime) {
+          if (this.isCasting) {
+            this.remotePlayer.currentTime = nextTime
+            this.remotePlayerController.seek()
+          } else {
+            this.playerInstance.currentTime(nextTime)
+          }
+          this.position = nextTime
+        }
+      }
+
+      // Mute or unmute
+      this.playerInstance.toggleMute = () => {
+        if (this.isCasting) {
+          this.remotePlayerController.muteOrUnmute()
+          this.muted = !this.muted
+          return
+        }
+        if (this.volumeVal > 0) {
+          this.volumeVal = 0
+        } else {
+          this.volumeVal = 100
+        }
+      }
+
       this.$emit('ready', this.playerInstance)
     },
 
@@ -236,13 +430,90 @@ export default {
       } else {
         this.toggleFullscreen(this.playerContainerId)
       }
+    },
+
+    setupRemoteController () {
+      if (!this.remotePlayer || !this.remotePlayerController) {
+        // Create remote player for listening to events
+        this.remotePlayer = new cast.framework.RemotePlayer()
+        this.remotePlayerController = new cast.framework.RemotePlayerController(this.remotePlayer)
+
+        // CURRENT_TIME_CHANGED change
+        const updatePosition = (event) => {
+          this.position = event.value
+        }
+        this.remotePlayerController.addEventListener(cast.framework.RemotePlayerEventType.CURRENT_TIME_CHANGED, updatePosition)
+
+        this.remotePlayerController.addEventListener(cast.framework.RemotePlayerEventType.PLAYER_STATE_CHANGED, (event) => {
+          if (event.value === 'PLAYING') {
+            this.status = 'PLAYING'
+          } else if (event.value === 'PAUSED') {
+            this.status = 'IDLE'
+          } else {
+            this.status = 'LOADING'
+          }
+        })
+
+        this.remotePlayerController.addEventListener(cast.framework.RemotePlayerEventType.IS_CONNECTED_CHANGED, (event) => {
+          if (event.value === false) {
+            this.isCasting = false
+            this.status = 'IDLE'
+          } else {
+            this.isCasting = true
+          }
+        })
+      }
+    },
+
+    onCastBtn () {
+      this.setupRemoteController()
+      cast.framework.CastContext.getInstance().requestSession().then(() => {
+        // let url, type
+        let url
+        const sources = this.mediaObject.src
+        const currentTime = this.position
+
+        this.isCasting = true
+
+        if (Array.isArray(sources)) {
+          url = sources[0].src
+        } else {
+          url = sources.src
+        }
+
+        const castSession = cast.framework.CastContext.getInstance().getCurrentSession()
+
+        const mediaInfo = new chrome.cast.media.MediaInfo()
+        mediaInfo.contentId = ''
+        mediaInfo.contentUrl = url
+
+        const request = new chrome.cast.media.LoadRequest(mediaInfo)
+
+        castSession.loadMedia(request).then(
+          () => {
+            this.remotePlayer.currentTime = currentTime
+            this.remotePlayerController.seek()
+          },
+          (errorCode) => {
+            // eslint-disable-next-line
+            console.log('Error code: ' + errorCode)
+            this.isCasting = false
+          }
+        )
+      }, (error) => {
+        this.isCasting = false
+        this.status = 'IDLE'
+        if (error !== 'cancel') {
+          Promise.reject(error)
+        }
+      })
     }
   }
 }
 </script>
 
 <style lang="scss">
-@import "@/assets/scss/video-js/video-js-compact";
+@import "@/assets/scss/video-js/vjs.scss";
 
 .vjs-tech {
   pointer-events: none;
@@ -253,7 +524,27 @@ export default {
     position: relative;
     max-width: 100%;
     max-height: 100%;
-    overflow: hidden;
   }
+  &-top-right-icons {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    z-index: 525;
+  }
+  &-casting-overlay {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.74);
+  }
+}
+
+.overlay-text {
+  color: #ABABAB !important;
 }
 </style>

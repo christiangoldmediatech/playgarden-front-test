@@ -4,25 +4,27 @@
       <div class="green-line-bigger green-line-1" />
       <div class="green-line-bigger green-line-2" />
       <v-card-text class="piece-earned-content">
-        <v-row align="center" justify="center">
-          <v-col cols="10" lg="4">
+        <v-row :class="{ 'mx-0': $vuetify.breakpoint.xsOnly }" align="center" justify="center">
+          <v-col cols="10" sm="4" md="4" lg="3">
             <v-img
               class="mx-auto"
               :src="require('@/assets/png/dashboard/piece.png')"
-              max-width="348px"
+              :max-width="$vuetify.breakpoint.xsOnly ? '196px' : '348px'"
+              max-height="268px"
+              contain
             />
           </v-col>
-          <v-col cols="12" lg="8">
+          <v-col cols="12" sm="8" md="7" lg="6">
             <div class="piece-earned-title-container">
               <underlined-title
                 no-autoresize-font
-                :font-size="$vuetify.breakpoint.xs ? '36px' : '56px'"
+                :font-size="$vuetify.breakpoint.xs ? '30px' : '46px'"
                 font-weight="bold"
                 class="piece-earned-title"
                 text="Congratulations!"
               />
             </div>
-            <p class="piece-earned-paragraph-1">
+            <p class="piece-earned-paragraph">
               You have completed the Letter {{ letter }} lesson! You earned a piece of your Letter {{ letter }} puzzle!
             </p>
           </v-col>
@@ -59,7 +61,12 @@
                       :to="{ name: 'app-activities' }"
                     >
                       <img class="piece-earned-play-btn-icon" height="30px;" src="@/assets/svg/play-button.svg">
-                      Go to activites
+                      <template v-if="$vuetify.breakpoint.xsOnly">
+                        Activities
+                      </template>
+                      <template v-else>
+                        Go to activites
+                      </template>
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -123,12 +130,13 @@ export default {
   &-card.v-sheet.v-card {
     margin: 0 16px;
     max-width: 100vw;
-    max-height: 90vh;
+    max-height: 95vh;
     overflow: hidden;
     border-radius: 4px;
   }
   &-content.v-card__text {
-    max-height: calc(90vh - 60px);
+    max-height: calc(95vh - 60px);
+    max-width: 95vw;
     overflow-x: hidden;
     overflow-y: auto;
     box-shadow: 0 -1px 6px 0 rgba(0, 0, 0, 0.12);
@@ -141,10 +149,13 @@ export default {
     }
   }
   &-paragraph {
-    font-size: 33px;
+    font-size: 26px;
     line-height: 1.52;
     font-weight: 600;
     text-align: center;
+    @media screen and (max-width: 599px) {
+      font-size: 20px;
+    }
   }
   &-next-text {
     font-size: 33px;
@@ -152,6 +163,9 @@ export default {
     line-height: 1.52;
     text-align: center;
     margin-bottom: 0 !important;
+    @media screen and (max-width: 599px) {
+      font-size: 24px;
+    }
   }
   &-button.v-btn {
     height: 59px !important;
@@ -169,6 +183,9 @@ export default {
     font-weight: bold;
     letter-spacing: 0.04em;
     line-height: 1.46;
+    @media screen and (max-width: 599px) {
+      font-size: 18px;
+    }
   }
 }
 </style>
