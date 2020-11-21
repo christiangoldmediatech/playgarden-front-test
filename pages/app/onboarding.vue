@@ -169,7 +169,6 @@ export default {
     },
 
     nextStep () {
-      console.log('ended')
       this.$router.push({ name: 'app-dashboard' })
       // if (this.step < this.steps) {
       //   this.step++
