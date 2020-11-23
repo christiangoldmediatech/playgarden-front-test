@@ -38,7 +38,7 @@
                     </v-chip>
                   </div>
                   <div>
-                    <p class="text-center mb-10">
+                    <p :class="`${indexP === 2 ? 'text-center margin-info-product' : 'text-center mb-10'}`">
                       <v-chip
                         color="orange"
                         :class="`${indexP === 1 ? 'text-orange-info mb-12' : 'text-orange-info mb-8'}`"
@@ -491,5 +491,8 @@ export default {
 .product-month {
   font-weight: bold;
   font-size: 28px !important;
+}
+.margin-info-product {
+  margin-bottom: 73px;
 }
 </style>
