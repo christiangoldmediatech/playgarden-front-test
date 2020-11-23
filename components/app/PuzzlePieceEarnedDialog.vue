@@ -8,7 +8,7 @@
           <v-col cols="10" sm="4" md="4" lg="3">
             <v-img
               class="mx-auto"
-              :src="require('@/assets/png/dashboard/piece.png')"
+              :src="puzzleImg || require('@/assets/png/dashboard/piece.png')"
               :max-width="$vuetify.breakpoint.xsOnly ? '196px' : '348px'"
               max-height="268px"
               contain
@@ -105,6 +105,14 @@ export default {
       type: String,
       required: false,
       default: ''
+    },
+
+    puzzleImg: {
+      validator: (val) => {
+        return typeof val === 'string' || val === null
+      },
+      required: false,
+      default: null
     }
   },
 
