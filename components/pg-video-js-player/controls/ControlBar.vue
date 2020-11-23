@@ -79,7 +79,7 @@
                 <v-icon small>
                   pg-icon-previous
                 </v-icon>
-                <!-- <img class="control-bar-svg-icon" src="/player/previous.svg" width="100%"> -->
+                <!-- <img class="control-bar-svg-icon" src="@/assets/player/previous.svg" width="100%"> -->
               </v-btn>
 
               <!-- Step backward 15 sec -->
@@ -95,7 +95,7 @@
                 <!-- <v-icon small>
                   pg-icon-backward-15-sec
                 </v-icon> -->
-                <img class="control-bar-svg-icon" src="/player/back15sec.svg" width="100%">
+                <img class="control-bar-svg-icon" src="@/assets/player/back15sec.svg" width="100%">
               </v-btn>
 
               <!-- Play Button -->
@@ -125,7 +125,7 @@
                 <!-- <v-icon small>
                   pg-icon-forward-15-sec
                 </v-icon> -->
-                <img class="control-bar-svg-icon" src="/player/forward15sec.svg" width="100%">
+                <img class="control-bar-svg-icon" src="@/assets/player/forward15sec.svg" width="100%">
               </v-btn>
             </div>
 
