@@ -7,7 +7,7 @@
       <v-img
         :src="backgroundImage"
         class="align-end white--text"
-        gradient="to top, rgba(39, 39, 39, 0.9), rgba(255, 255, 255, 0) 80%"
+        :gradient="gradient"
         max-height="400px"
       >
         <v-row class="mx-0 dashboard-message-padding" justify="center">
@@ -16,6 +16,7 @@
               <underlined-title
                 class="white--text"
                 font-size="56px"
+                font-size-mobile="1.5rem"
                 font-weight="bold"
                 text="Coming Next:"
               />
@@ -28,54 +29,52 @@
         <v-progress-linear v-if="timeOut" color="accent" :size="4" :value="progress" />
       </v-img>
 
-      <v-container>
-        <v-row class="flex-column mx-0" align="center">
-          <h5 class="my-2 text-h5 font-weight-bold text-center">
-            What do you want to do next?
-          </h5>
+      <v-row class="flex-column mx-0" align="center">
+        <h5 class="my-2 text-h5 font-weight-bold text-center">
+          What do you want to do next?
+        </h5>
 
-          <v-col
-            v-for="(button, i) in buttons"
-            :key="`complete-message-${_uid}-button-${i}`"
-            class="pb-1"
-            cols="12"
-            sm="10"
-            md="8"
-            lg="7"
+        <v-col
+          v-for="(button, i) in buttons"
+          :key="`complete-message-${_uid}-button-${i}`"
+          class="pb-1"
+          cols="12"
+          sm="10"
+          md="8"
+          lg="7"
+        >
+          <v-btn
+            :color="button.color"
+            class="dashboard-message-btn white--text"
+            :loading="loading"
+            block
+            x-large
+            @click.stop="doAction(button.action)"
           >
-            <v-btn
-              :color="button.color"
-              class="dashboard-message-btn white--text"
-              :loading="loading"
-              block
-              x-large
-              @click.stop="doAction(button.action)"
-            >
-              <v-icon v-if="button.iconLeft" class="dashboard-message-btn-icon">
-                {{ button.iconLeft }}
-              </v-icon>
-              {{ button.text }}
-              <v-icon v-if="button.iconRight" right>
-                {{ button.iconRight }}
-              </v-icon>
-            </v-btn>
-          </v-col>
+            <v-icon v-if="button.iconLeft" class="dashboard-message-btn-icon">
+              {{ button.iconLeft }}
+            </v-icon>
+            {{ button.text }}
+            <v-icon v-if="button.iconRight" right>
+              {{ button.iconRight }}
+            </v-icon>
+          </v-btn>
+        </v-col>
 
-          <v-col v-if="returnText" cols="12">
-            <v-btn
-              class="dashboard-message-btn"
-              color="primary"
-              text
-              block
-              tile
-              :disabled="loading"
-              @click.stop="doReturnAction"
-            >
-              {{ returnText }}
-            </v-btn>
-          </v-col>
-        </v-row>
-      </v-container>
+        <v-col v-if="returnText" cols="12">
+          <v-btn
+            class="dashboard-message-btn"
+            color="primary"
+            text
+            block
+            tile
+            :disabled="loading"
+            @click.stop="doReturnAction"
+          >
+            {{ returnText }}
+          </v-btn>
+        </v-col>
+      </v-row>
     </div>
   </v-card>
 </template>
@@ -135,6 +134,13 @@ export default {
   computed: {
     timeOutMs () {
       return this.timeOut * 1000
+    },
+
+    gradient () {
+      if (this.$vuetify.breakpoint.xsOnly) {
+        return 'to top, rgba(39, 39, 39, 0.9), rgba(255, 255, 255, 0) 120%'
+      }
+      return 'to top, rgba(39, 39, 39, 0.9), rgba(255, 255, 255, 0) 80%'
     }
   },
 
@@ -193,7 +199,7 @@ export default {
 .dashboard-message {
   &-container {
     margin: 0 16px;
-    max-width: 100vw;
+    max-width: 98vw;
     max-height: 90vh;
     overflow: hidden;
   }
@@ -205,6 +211,9 @@ export default {
   }
   &-padding, &-padding.row {
     padding-bottom: 30px;
+    @media screen and (max-width: 599px) {
+      padding-bottom: 12px;
+    }
   }
   &-btn {
     &.v-btn {

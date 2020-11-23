@@ -153,6 +153,10 @@ export default {
                 {
                   title: 'Categories',
                   route: 'categories'
+                },
+                {
+                  title: 'FAQs',
+                  route: 'faqs'
                 }
               ]
             },

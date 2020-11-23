@@ -10,6 +10,7 @@
       ref="videoPlayer"
       autoplay
       use-standard-poster
+      show-cast
       :fullscreen-override="handleFullscreen"
       :show-next-up="false"
       no-auto-track-change

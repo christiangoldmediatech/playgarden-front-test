@@ -12,10 +12,11 @@ export default {
   server: {
     port: process.env.PORT || 8080,
     host: process.env.HOST || '0.0.0.0'
-    // https: !['production', 'staging'].includes(process.env.NODE_ENV) ? {
-    //   key: fs.readFileSync(path.resolve(__dirname, 'keys/server.key')),
-    //   cert: fs.readFileSync(path.resolve(__dirname, 'keys/server.crt'))
-    // } : undefined
+  //   host: process.env.HOST || '0.0.0.0',
+  //   https: !['production', 'staging'].includes(process.env.NODE_ENV) ? {
+  //   key: fs.readFileSync(path.resolve(__dirname, 'keys/server.key')),
+  //   cert: fs.readFileSync(path.resolve(__dirname, 'keys/server.crt'))
+  //  } : undefined
   },
   serverMiddleware: {
     '/healthcheck': '@/middleware/healthCheck'
@@ -41,7 +42,11 @@ export default {
       }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      {
+        rel: 'icon',
+        type: 'image/x-icon',
+        href: process.env.TEST_ENV === 'production' ? '/app/favicon.ico' : '/favicon.ico'
+      },
       {
         rel: 'stylesheet',
         type: 'text/css',
@@ -56,8 +61,13 @@ export default {
       }
     ],
     script: [
-      { src: '/js/filesaver.min.js' },
-      { src: '/js/ics.min.js' }
+      {
+        src: process.env.TEST_ENV === 'production' ? '/app/js/filesaver.min.js' : '/js/filesaver.min.js',
+      },
+      {
+        src: process.env.TEST_ENV === 'production' ? '/app/js/ics.min.js' : '/js/ics.min.js'
+      },
+      { src: 'https://widget.manychat.com/108368577679635.js', async: true }
     ]
   },
   /*
@@ -121,6 +131,7 @@ export default {
    ** Nuxt.js modules
    */
   modules: [
+    '@nuxtjs/sentry',
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/style-resources',
@@ -151,6 +162,12 @@ export default {
       }
     ]
   ],
+  sentry: {
+    dsn: "https://1ab1121d06eb4b3181d83b9da1d69489@o443725.ingest.sentry.io/5417852",
+    config: {
+      environment: process.env.TEST_ENV || 'LOCAL'
+    }
+  },
   styleResources: {
     scss: [
       './assets/scss/mixins/_mixins.scss',

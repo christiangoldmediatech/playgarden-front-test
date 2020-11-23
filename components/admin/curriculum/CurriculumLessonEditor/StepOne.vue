@@ -87,7 +87,7 @@
       </validation-provider>
 
       <!-- Introduction -->
-      <tiptap-field
+      <pg-tiptap-field
         v-model="draft.introduction"
         :disabled="loading"
         label="Introduction"

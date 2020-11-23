@@ -6,8 +6,7 @@ export default {
 
     items () {
       if (!this.isUserInSignupProcess && this.isUserLoggedIn) {
-        return [
-          { title: 'Live Sessions', to: { name: 'app-live-sessions' }, exact: false },
+        const list = [
           { title: 'Lessons', to: { name: 'app-dashboard' }, exact: false },
           { title: 'Activities', to: { name: 'app-activities' }, exact: false },
           {
@@ -21,6 +20,12 @@ export default {
             exact: false
           }
         ]
+
+        if (!['production'].includes(process.env.testEnv)) {
+          list.unshift({ title: 'Live Sessions', to: { name: 'app-live-sessions' }, exact: false })
+        }
+
+        return list
       }
 
       return []

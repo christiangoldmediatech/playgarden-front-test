@@ -5,7 +5,7 @@
     </div>
     <v-hover v-slot="{ hover }">
       <v-card class="lsess-card clickable" :class="{ 'lsess-card-scaled': hover, 'lsess-card-active': isLive }" @click.stop="openLink">
-        <img v-if="isLive" class="active-camera" src="/svg/sessions-active-camera.svg">
+        <img v-if="isLive" class="active-camera" src="@/assets/svg/sessions-active-camera.svg">
         <v-row class="mx-0">
           <v-col class="flex-grow-0 flex-shrink-1">
             <img class="lsess-card-activity-type" :src="entry.activityType.icon">

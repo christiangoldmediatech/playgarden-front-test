@@ -5,18 +5,18 @@
       <div class="green-line-bigger green-line-2" />
       <v-card-text class="patch-earned-content">
         <v-row align="center" justify="center">
-          <v-col cols="10" lg="5">
+          <v-col cols="10" sm="4" md="4" lg="5">
             <v-img
               class="mx-auto"
               :src="icon || require('@/assets/png/dashboard/badge.png')"
-              max-width="352px"
+              :max-width="$vuetify.breakpoint.xsOnly ? '196px' : '352px'"
             />
           </v-col>
-          <v-col cols="12" lg="6">
+          <v-col cols="12" md="7" lg="6">
             <div class="patch-earned-title-container">
               <underlined-title
                 no-autoresize-font
-                :font-size="$vuetify.breakpoint.xs ? '36px' : '56px'"
+                :font-size="$vuetify.breakpoint.xsOnly ? '30px' : '56px'"
                 font-weight="bold"
                 class="patch-earned-title"
                 text="Congratulations!"
@@ -50,7 +50,12 @@
                       @click.stop="nextVideo"
                     >
                       <img class="patch-earned-play-btn-icon" height="30px;" src="@/assets/svg/play-button.svg">
-                      Go to next video
+                      <template v-if="$vuetify.breakpoint.xsOnly">
+                        Next video
+                      </template>
+                      <template v-else>
+                        Go to next video
+                      </template>
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -65,7 +70,7 @@
                       nuxt
                       :to="{ name: 'app-student-cubby-patches' }"
                     >
-                      Go to patches
+                      Go to Patches
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -161,12 +166,13 @@ export default {
   &-card.v-sheet.v-card {
     margin: 0 16px;
     max-width: 100vw;
-    max-height: 90vh;
+    max-height: 95vh;
     overflow: hidden;
     border-radius: 4px;
   }
   &-content.v-card__text {
-    max-height: calc(90vh - 60px);
+    max-height: calc(95vh - 60px);
+    max-width: 95vw;
     overflow-x: hidden;
     overflow-y: auto;
     box-shadow: 0 -1px 6px 0 rgba(0, 0, 0, 0.12);
@@ -179,13 +185,13 @@ export default {
     }
   }
   &-paragraph-1 {
-    font-size: 28px;
+    font-size: 24px;
     line-height: 1.52;
     font-weight: 600;
     text-align: center;
   }
   &-paragraph-2 {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 500;
     line-height: 1.38;
     text-align: center;
@@ -214,6 +220,9 @@ export default {
     font-weight: bold;
     letter-spacing: 0.04em;
     line-height: 1.46;
+    @media screen and (max-width: 599px) {
+      font-size: 18px;
+    }
   }
 }
 </style>

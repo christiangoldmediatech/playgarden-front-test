@@ -38,7 +38,7 @@
                     :x-large="!mobile"
                     v-bind="attrs"
                     v-on="on"
-                    @click.stop="toggleMute"
+                    @click.stop="player.toggleMute"
                   >
                     <v-icon :small="$vuetify.breakpoint.xsOnly">
                       {{ speakerIcon }}
@@ -74,12 +74,12 @@
                 icon
                 :x-large="!mobile"
                 :disabled="status === 'LOADING'"
-                @click.stop="restart"
+                @click.stop="player.restart"
               >
-                <v-icon :small="$vuetify.breakpoint.xsOnly">
+                <v-icon small>
                   pg-icon-previous
                 </v-icon>
-                <!-- <img class="control-bar-svg-icon" src="/player/previous.svg" width="100%"> -->
+                <!-- <img class="control-bar-svg-icon" src="@/assets/player/previous.svg" width="100%"> -->
               </v-btn>
 
               <!-- Step backward 15 sec -->
@@ -90,12 +90,12 @@
                 icon
                 :x-large="!mobile"
                 :disabled="status === 'LOADING'"
-                @click.stop="stepBack"
+                @click.stop="player.stepBack"
               >
                 <!-- <v-icon small>
                   pg-icon-backward-15-sec
                 </v-icon> -->
-                <img class="control-bar-svg-icon" src="/player/back15sec.svg" width="100%">
+                <img class="control-bar-svg-icon" src="@/assets/player/back15sec.svg" width="100%">
               </v-btn>
 
               <!-- Play Button -->
@@ -105,7 +105,7 @@
                 icon
                 :x-large="!mobile"
                 :disabled="status === 'LOADING'"
-                @click.stop="togglePlay"
+                @click.stop="player.togglePlay"
               >
                 <v-icon :large="$vuetify.breakpoint.smAndUp">
                   {{ playIcon }}
@@ -120,12 +120,12 @@
                 icon
                 :x-large="!mobile"
                 :disabled="status === 'LOADING'"
-                @click.stop="stepForward"
+                @click.stop="player.stepForward"
               >
                 <!-- <v-icon small>
                   pg-icon-forward-15-sec
                 </v-icon> -->
-                <img class="control-bar-svg-icon" src="/player/forward15sec.svg" width="100%">
+                <img class="control-bar-svg-icon" src="@/assets/player/forward15sec.svg" width="100%">
               </v-btn>
             </div>
 
@@ -161,7 +161,7 @@
                 thumb-color="accent"
                 :readonly="noSeek"
                 hide-details
-                @input="seek"
+                @input="player.seek"
               >
                 <template v-slot:thumb-label="{ value }">
                   <span class="control-bar-text">
@@ -250,55 +250,6 @@ export default {
         this.player.volume(volume / 100)
       }
     }
-  },
-
-  methods: {
-    seek (position) {
-      if (this.duration > 0) {
-        this.player.currentTime(position)
-      }
-    },
-
-    restart () {
-      this.player.currentTime(0)
-    },
-
-    stepBack () {
-      const currentTime = this.player.currentTime()
-      if (currentTime - 15 > 0) {
-        this.player.currentTime(currentTime - 15)
-      } else {
-        this.player.currentTime(0)
-      }
-    },
-
-    stepForward () {
-      const currentTime = this.player.currentTime()
-      const nextTime = currentTime + 15
-      const duration = this.player.duration()
-      const mediaObj = this.player.getMediaObject()
-      const availTime = (mediaObj.viewed && mediaObj.viewed.time) ? mediaObj.viewed.time : currentTime
-
-      if (nextTime < (duration - 1) && nextTime < availTime) {
-        this.player.currentTime(nextTime)
-      }
-    },
-
-    togglePlay () {
-      if (this.status === 'PLAYING') {
-        this.player.pause()
-      } else {
-        this.player.play()
-      }
-    },
-
-    toggleMute () {
-      if (this.volumeVal > 0) {
-        this.volumeVal = 0
-      } else {
-        this.volumeVal = 100
-      }
-    }
   }
 }
 </script>
@@ -345,6 +296,9 @@ export default {
   &-progress-slider {
     .v-slider__thumb-label.accent {
       background-color: transparent !important;
+      @media screen and (max-width: 599px) {
+        display: none;
+      }
     }
     @media screen and (max-width: 599px) {
       .v-input__control,.v-input__control > div.v-input__slot {
