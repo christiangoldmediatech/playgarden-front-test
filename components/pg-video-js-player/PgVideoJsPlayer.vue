@@ -203,7 +203,7 @@ export default {
       if (this.playlist[index]) {
         const mediaObject = jsonCopy(this.playlist[index])
         if (this.useStandardPoster || !mediaObject.poster) {
-          mediaObject.poster = '/standard-video-poster.jpg'
+          mediaObject.poster = './standard-video-poster.jpg'
         }
         this.mediaObject = mediaObject
         this.playerInstance.loadMedia(mediaObject)
