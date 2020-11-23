@@ -15,7 +15,7 @@
               name="Privacy"
               rules="required"
             >
-              <tiptap-field
+              <pg-tiptap-field
                 v-model="draft.termsConditions"
                 :disabled="loading"
                 :error-messages="errors"

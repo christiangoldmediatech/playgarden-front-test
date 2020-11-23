@@ -61,7 +61,7 @@
             <v-list class="entry-card-calendar-links" dense mandatory>
               <v-list-group no-action>
                 <template v-slot:prependIcon>
-                  <img class="calendar-links-logo" src="/svg/sessions-camera.svg">
+                  <img class="calendar-links-logo" src="@/assets/svg/sessions-camera.svg">
                 </template>
 
                 <template v-slot:activator>
@@ -74,7 +74,7 @@
 
                 <v-list-item :href="googleCalendarLink" target="_blank">
                   <v-list-item-icon>
-                    <img class="entry-card-calendar-links-logo" src="/svg/google-calendar.png">
+                    <img class="entry-card-calendar-links-logo" src="@/assets/svg/google-calendar.png">
                   </v-list-item-icon>
 
                   <v-list-item-content>
@@ -86,7 +86,7 @@
 
                 <v-list-item @click="downloadIcs">
                   <v-list-item-icon>
-                    <img class="entry-card-calendar-links-logo" src="/svg/apple-calendar.png">
+                    <img class="entry-card-calendar-links-logo" src="@/assets/svg/apple-calendar.png">
                   </v-list-item-icon>
 
                   <v-list-item-content>
@@ -98,7 +98,7 @@
 
                 <v-list-item @click="downloadIcs">
                   <v-list-item-icon>
-                    <img class="entry-card-calendar-links-logo" src="/svg/outlook-calendar.png">
+                    <img class="entry-card-calendar-links-logo" src="@/assets/svg/outlook-calendar.png">
                   </v-list-item-icon>
 
                   <v-list-item-content>

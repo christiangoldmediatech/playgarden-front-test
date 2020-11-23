@@ -27,41 +27,44 @@
             <v-form @submit.prevent="passes(save)">
               <validation-provider
                 v-slot="{ errors }"
-                name="Name"
+                name="Question"
                 rules="required"
               >
                 <pg-text-field
-                  v-model="item.name"
+                  v-model="item.question"
                   :error-messages="errors"
-                  label="Name"
+                  label="Question"
                   solo
                 />
               </validation-provider>
 
               <validation-provider
                 v-slot="{ errors }"
-                name="Description"
-                rules="required"
-              >
-                <pg-textarea
-                  v-model="item.description"
-                  :error-messages="errors"
-                  label="Description"
-                  solo
-                />
-              </validation-provider>
-
-              <validation-provider
-                v-slot="{ errors }"
-                name="Message"
+                name="Answer"
                 rules="required"
               >
                 <pg-tiptap-field
-                  v-model="item.template"
+                  v-model="item.answer"
                   :disabled="loading"
                   :error-messages="errors"
-                  label="Message"
-                  output-format="json"
+                />
+              </validation-provider>
+
+              <validation-provider
+                v-slot="{ errors }"
+                name="Category"
+                rules="required"
+              >
+                <pg-select
+                  v-model="item.faqsCategoryId"
+                  clearable
+                  :disabled="loading"
+                  :error-messages="errors"
+                  :items="categories"
+                  item-text="name"
+                  item-value="id"
+                  label="Category"
+                  solo
                 />
               </validation-provider>
             </v-form>
@@ -71,16 +74,6 @@
         <v-divider />
 
         <v-card-actions>
-          <v-btn
-            color="accent"
-            :disabled="invalid"
-            :loading="loading"
-            :text="$vuetify.breakpoint.smAndUp"
-            @click.stop="passes(() => (previewDialog = true))"
-          >
-            Preview
-          </v-btn>
-
           <v-spacer />
 
           <v-btn
@@ -101,51 +94,7 @@
             :text="$vuetify.breakpoint.smAndUp"
             @click.stop="close"
           >
-            Close
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
-    <v-dialog
-      v-model="previewDialog"
-      :fullscreen="$vuetify.breakpoint.xs"
-      max-width="80%"
-      persistent
-      scrollable
-    >
-      <v-card>
-        <v-toolbar class="flex-grow-0" color="primary darken-1" dark dense flat>
-          <v-toolbar-title>
-            Message preview
-          </v-toolbar-title>
-
-          <v-spacer />
-
-          <v-btn :disabled="loading" icon @click.stop="previewDialog = false">
-            <v-icon>
-              mdi-close
-            </v-icon>
-          </v-btn>
-        </v-toolbar>
-
-        <v-card-text>
-          <pg-tiptap-field flat readonly :value="item.template" />
-        </v-card-text>
-
-        <v-divider />
-
-        <v-card-actions>
-          <v-spacer />
-
-          <v-btn
-            class="white--text"
-            color="red"
-            :disabled="loading"
-            :text="$vuetify.breakpoint.smAndUp"
-            @click.stop="previewDialog = false"
-          >
-            Close
+            Cancel
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -156,36 +105,51 @@
 <script>
 import { mapActions } from 'vuex'
 
+import submittable from '@/utils/mixins/submittable'
+
 function generateItemTemplate () {
   return {
-    name: null,
-    description: null,
-    template: {}
+    question: null,
+    answer: null,
+    faqsCategoryId: null,
+    name: null
   }
 }
 
 export default {
-  name: 'NotificationEditorDialog',
+  name: 'FaqsEditorDialog',
 
-  data: () => ({
-    previewDialog: false,
-    dialog: false,
-    loading: false,
-    id: null,
-    item: generateItemTemplate()
-  }),
+  mixins: [submittable],
+
+  data () {
+    return {
+      categories: [],
+      dialog: false,
+      loading: false,
+      id: null,
+      item: generateItemTemplate()
+    }
+  },
 
   computed: {
     title () {
-      return this.id === null ? 'New Notification' : 'Edit Notification'
+      return this.id === null ? 'New FAQ' : 'Edit FAQ'
+    }
+  },
+
+  async created () {
+    try {
+      this.categories = await this.getFAQsCategories()
+    } catch (e) {
+    } finally {
+      this.loading = false
     }
   },
 
   methods: {
-    ...mapActions('notifications', [
-      'createNotification',
-      'updateNotification'
-    ]),
+    ...mapActions('faqs', ['createFAQs', 'updateFAQs']),
+
+    ...mapActions('faqs-categories', ['getFAQsCategories']),
 
     close () {
       this.$nextTick(() => {
@@ -200,13 +164,12 @@ export default {
 
       try {
         if (this.id === null) {
-          await this.createNotification(this.item)
+          await this.createFAQs(this.item)
         } else {
-          await this.updateNotification({ id: this.id, data: this.item })
+          await this.updateFAQs({ id: this.id, data: this.item })
         }
 
         this.$emit('saved')
-
         this.close()
       } catch (err) {
       } finally {
@@ -217,6 +180,7 @@ export default {
     resetItem () {
       this.id = null
       this.item = generateItemTemplate()
+      this.file = null
     },
 
     loadItem (item) {
@@ -228,6 +192,10 @@ export default {
           this.item[key] = item[key]
         }
       })
+
+      if (item.faqsCategory) {
+        this.item.faqsCategoryId = item.faqsCategory.id
+      }
     },
 
     open (evt, item = null) {

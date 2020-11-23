@@ -8,7 +8,7 @@
       x-large
       @click="$emit('mode-change')"
     >
-      <img class="mr-3" src="/svg/sessions-camera.svg">
+      <img class="mr-3" src="@/assets/svg/sessions-camera.svg">
       <span>Live Sessions Schedule</span>
     </v-btn>
 

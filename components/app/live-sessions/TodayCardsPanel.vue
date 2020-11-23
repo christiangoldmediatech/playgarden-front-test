@@ -3,7 +3,7 @@
     <div class="lsess-daily-container pb-8">
       <v-card class="lsess-daily-card pt-4">
         <v-row class="mx-0" align="center" justify="center">
-          <img class="mr-3" src="/svg/sessions-camera.svg">
+          <img class="mr-3" src="@/assets/svg/sessions-camera.svg">
           <span class="lsess-title">Live Sessions Schedule</span>
         </v-row>
 
