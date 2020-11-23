@@ -123,6 +123,7 @@ export default {
    ** Nuxt.js modules
    */
   modules: [
+    '@nuxtjs/sentry',
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/style-resources',
@@ -153,6 +154,12 @@ export default {
       }
     ]
   ],
+  sentry: {
+    dsn: "https://1ab1121d06eb4b3181d83b9da1d69489@o443725.ingest.sentry.io/5417852",
+    config: {
+      environment: process.env.TEST_ENV || 'LOCAL'
+    }
+  },
   styleResources: {
     scss: [
       './assets/scss/mixins/_mixins.scss',
