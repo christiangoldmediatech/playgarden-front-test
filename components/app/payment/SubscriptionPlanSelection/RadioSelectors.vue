@@ -18,7 +18,7 @@
 
     <v-radio
       class="mb-0"
-      :label="`$${plan.priceAnnual.toLocaleString('en-US')} School Year Special/child`"
+      :label="`$${((plan.priceAnnual/12)).toFixed(2).toLocaleString('en-US')} /month`"
       :value="plan.anualStripeId"
       @change="
         $emit('input', {
@@ -31,7 +31,8 @@
       "
     />
 
-    <small class="ml-8">(10 months)</small>
+    <small v-if="indexPlan <= 1" class="ml-8">Billed Annually (save 24 %)</small>
+    <small v-else class="ml-8">Billed Annually (save 20 %)</small>
   </div>
 </template>
 
@@ -42,6 +43,11 @@ export default {
   props: {
     plan: {
       type: Object,
+      required: true
+    },
+
+    indexPlan: {
+      type: Number,
       required: true
     },
 

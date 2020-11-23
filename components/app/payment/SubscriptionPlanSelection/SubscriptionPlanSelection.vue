@@ -37,11 +37,11 @@
                       Most Popular
                     </v-chip>
                   </div>
-                  <div :class="`${indexP === 1 ? 'margin-product' : ''}`">
+                  <div>
                     <p class="text-center mb-10">
                       <v-chip
                         color="orange"
-                        class="text-orange-info mb-8"
+                        :class="`${indexP === 1 ? 'text-orange-info mb-12' : 'text-orange-info mb-8'}`"
                         label
                       >
                         {{ getTypePlan(indexP) }}
@@ -56,7 +56,7 @@
 
                     <p class="text-center">
                       <span class="product-price">
-                        ${{ productPrice }}
+                        ${{ (plan.priceAnnual/12).toFixed(2) }}
                       </span>
                       <span class="product-month">/Month</span>
                       <br />
@@ -72,10 +72,10 @@
                       <span v-if="indexP === 2" class="info-prodcut-detail">Everything in GOLD Plan, <span class="font-weight-bold">plus</span></span>
                     </p>
 
-                    <plan-description :plan="plan" class="ml-8 mr-8" />
+                    <plan-description :plan="plan" :index-plan="indexP" class="ml-8 mr-8" />
                   </div>
 
-                  <radio-selectors v-model="draft" :plan="plan" />
+                  <radio-selectors v-model="draft" :plan="plan" :index-plan="indexP" />
                 </v-col>
               </v-row>
 
@@ -99,7 +99,7 @@
                       </v-expansion-panel-header>
 
                       <v-expansion-panel-content class="pa-0 ma-0">
-                        <plan-description :plan="plan" />
+                        <plan-description :plan="plan" :index-plan="indexP" />
                       </v-expansion-panel-content>
 
                       <radio-selectors
@@ -491,8 +491,5 @@ export default {
 .product-month {
   font-weight: bold;
   font-size: 28px !important;
-}
-.margin-product {
-  margin-top: -96px !important;
 }
 </style>
