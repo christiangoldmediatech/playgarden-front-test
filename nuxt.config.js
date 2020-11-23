@@ -57,8 +57,12 @@ export default {
       }
     ],
     script: [
-      { src: '/js/filesaver.min.js' },
-      { src: '/js/ics.min.js' }
+      {
+        src: process.env.TEST_ENV === 'production' ? '/app/js/filesaver.min.js' : '/js/filesaver.min.js',
+      },
+      {
+        src: process.env.TEST_ENV === 'production' ? '/app/js/ics.min.js' : '/js/ics.min.js'
+      }
     ]
   },
   /*
@@ -180,7 +184,6 @@ export default {
   },
   env: {
     apiBaseUrl: process.env.API_BASE_URL || 'https://apidev.playgardenonline.com',
-    baseUrl: process.env.TEST_ENV === 'production' ? '/app/' : '/',
     testEnv: process.env.TEST_ENV || 'LOCAL'
   },
   router: {
