@@ -11,11 +11,11 @@
       show-next-up
       show-restart
       show-steps
+      :show-favorite="lesson && !lesson.previewMode"
+      show-cast
       use-standard-poster
       :no-seek="noSeek"
       :fullscreen-override="handleFullscreen"
-      :show-favorite="lesson && !lesson.previewMode"
-      show-cast
       @ready="onReady"
       @playlist-index-change="updateIndex"
       @playlist-complete="showCompletedDialog"
