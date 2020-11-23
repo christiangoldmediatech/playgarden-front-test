@@ -42,7 +42,11 @@ export default {
       }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      {
+        rel: 'icon',
+        type: 'image/x-icon',
+        href: process.env.TEST_ENV === 'production' ? '/app/favicon.ico' : '/favicon.ico'
+      },
       {
         rel: 'stylesheet',
         type: 'text/css',
