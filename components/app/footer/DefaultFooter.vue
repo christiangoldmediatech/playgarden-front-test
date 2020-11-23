@@ -91,7 +91,7 @@
 
                 <nuxt-link
                   class="d-block link-text mb-2"
-                  :to="{ name: 'index' }"
+                  :to="{ name: 'help' }"
                   v-text="'Help'"
                 />
               </v-col>
