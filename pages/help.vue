@@ -223,7 +223,7 @@
                         clearable
                         :disabled="sending"
                         :error-messages="errors"
-                        :items="[]"
+                        :items="emailTopics"
                         label="How can we help you?"
                         :loading="sending"
                         solo
@@ -255,7 +255,7 @@
                       rules="required"
                     >
                       <pg-textarea
-                        v-model="help.request"
+                        v-model="help.description"
                         clearable
                         :disabled="sending"
                         :error-messages="errors"
@@ -293,6 +293,15 @@
 import { get } from 'lodash'
 import { mapActions } from 'vuex'
 
+const EMAIL_TOPICS = {
+  ACCOUNT: 'ACCOUNT',
+  ACTIVITIES: 'ACTIVITIES',
+  LESSONS: 'LESSONS',
+  LIVE_SESSIONS: 'LIVE SESSIONS',
+  PARENT_CORNER: 'PARENT CORNER',
+  STUDENT_CUBBY: 'STUDENT CUBBY'
+}
+
 export default {
   name: 'Help',
 
@@ -307,9 +316,15 @@ export default {
       email: null,
       issueType: null,
       subject: null,
-      request: null
+      description: null
     }
   }),
+
+  computed: {
+    emailTopics () {
+      return Object.values(EMAIL_TOPICS)
+    }
+  },
 
   async created () {
     try {
@@ -343,13 +358,26 @@ export default {
     ...mapActions('faqs', ['getFAQs']),
 
     ...mapActions('faqs-categories', ['getFAQsCategories']),
+    ...mapActions('help', ['sendHelpEmail']),
 
-    onSubmit (reset) {
-      // TODO: resolve the request when BE endpoint is ready
-      setTimeout(() => {
-        this.$snotify.success('Success')
+    async onSubmit (reset) {
+      try {
+        await this.sendHelpEmail({
+          ...this.help
+        })
+        this.$snotify.success('Email sent! We will reach out to you as soon as we can!')
+        this.help = {
+          name: null,
+          email: null,
+          issueType: EMAIL_TOPICS.ACCOUNT,
+          subject: null,
+          description: null
+        }
+      } catch (error) {
+        this.$snotify.error('There was a problem sending the email, please try again.')
+      } finally {
         reset()
-      }, 500)
+      }
     }
   },
 
