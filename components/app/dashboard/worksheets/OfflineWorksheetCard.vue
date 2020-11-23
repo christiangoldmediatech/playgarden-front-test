@@ -29,7 +29,7 @@
     </div>
     <v-container>
       <v-row class="flex-column" align="center">
-        <h5 class="text-h5 font-weight-bold">
+        <h5 class="text-h5 font-weight-bold text-center">
           What do you want to do next?
         </h5>
 
@@ -105,7 +105,7 @@ export default {
     buttons () {
       return [
         {
-          text: 'DOWNLOAD HANDS-ON WORKSHEET',
+          text: this.$vuetify.breakpoint.xsOnly ? 'DOWNLOAD WORKSHEET' : 'DOWNLOAD HANDS-ON WORKSHEET',
           color: 'accent',
           iconLeft: 'pg-icon-download',
           action: () => {
@@ -115,7 +115,7 @@ export default {
           }
         },
         {
-          text: 'UPLOAD COMPLETED WORKSHEET',
+          text: this.$vuetify.breakpoint.xsOnly ? 'UPLOAD WORKSHEET' : 'UPLOAD COMPLETED WORKSHEET',
           color: '#FEC572',
           iconLeft: 'pg-icon-camera',
           disabled: (this.getLesson && this.getLesson.previewMode),
@@ -208,6 +208,9 @@ export default {
     font-weight: bold;
     line-height: 1.46;
     color: white !important;
+    @media screen and (max-width: 599px) {
+      font-size: 16px;
+    }
   }
 }
 </style>

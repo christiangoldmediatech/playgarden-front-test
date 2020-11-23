@@ -56,7 +56,7 @@
                 name="Message"
                 rules="required"
               >
-                <tiptap-field
+                <pg-tiptap-field
                   v-model="item.template"
                   :disabled="loading"
                   :error-messages="errors"
@@ -130,7 +130,7 @@
         </v-toolbar>
 
         <v-card-text>
-          <tiptap-field flat readonly :value="item.template" />
+          <pg-tiptap-field flat readonly :value="item.template" />
         </v-card-text>
 
         <v-divider />

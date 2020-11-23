@@ -12,10 +12,11 @@ export default {
   server: {
     port: process.env.PORT || 8080,
     host: process.env.HOST || '0.0.0.0'
-    // https: !['production', 'staging'].includes(process.env.NODE_ENV) ? {
-    //   key: fs.readFileSync(path.resolve(__dirname, 'keys/server.key')),
-    //   cert: fs.readFileSync(path.resolve(__dirname, 'keys/server.crt'))
-    // } : undefined
+  //   host: process.env.HOST || '0.0.0.0',
+  //   https: !['production', 'staging'].includes(process.env.NODE_ENV) ? {
+  //   key: fs.readFileSync(path.resolve(__dirname, 'keys/server.key')),
+  //   cert: fs.readFileSync(path.resolve(__dirname, 'keys/server.crt'))
+  //  } : undefined
   },
   serverMiddleware: {
     '/healthcheck': '@/middleware/healthCheck'
@@ -57,7 +58,8 @@ export default {
     ],
     script: [
       { src: '/js/filesaver.min.js' },
-      { src: '/js/ics.min.js' }
+      { src: '/js/ics.min.js' },
+      { src: 'https://widget.manychat.com/108368577679635.js', async: true }
     ]
   },
   /*
