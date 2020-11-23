@@ -62,7 +62,8 @@ export default {
       },
       {
         src: process.env.TEST_ENV === 'production' ? '/app/js/ics.min.js' : '/js/ics.min.js'
-      }
+      },
+      { src: 'https://widget.manychat.com/108368577679635.js', async: true }
     ]
   },
   /*
