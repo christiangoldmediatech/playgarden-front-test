@@ -18,7 +18,7 @@
 
     <v-radio
       class="mb-0"
-      :label="`$${((plan.priceAnnual/12)).toFixed(2).toLocaleString('en-US')} /month`"
+      :label="`$${((plan.priceAnnual/12)).toFixed(2).toLocaleString('en-US')} a month/child`"
       :value="plan.anualStripeId"
       @change="
         $emit('input', {
