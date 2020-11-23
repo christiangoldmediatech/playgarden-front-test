@@ -8,7 +8,7 @@
         >
           <div class="play-button-icon-content">
             <img
-              src="/svg/play-button-icon.svg"
+              src="@/assets/svg/play-button-icon.svg"
               width="100%"
             >
           </div>
