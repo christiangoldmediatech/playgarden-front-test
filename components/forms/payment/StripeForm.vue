@@ -128,9 +128,9 @@
         {{ buttonText }}
       </v-btn>
 
-      <p v-if="!noTrial" class="mb-15 text-body-2 text-center">
+      <p v-if="!noTrial" class="mb-15 text-body-2 text-center messages-info-register">
         <span>
-          You will only be billed after the first FREE trial week is complete.
+          You will only be billed after 30 days of FREE trial is completed
         </span>
       </p>
 

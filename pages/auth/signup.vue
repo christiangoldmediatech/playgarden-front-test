@@ -51,25 +51,34 @@
             MEMBERSHIP
           </p>
 
-          <p class="mt-6 text-center text-md-left">
+          <p class="mt-6 mb-12 text-center text-md-left">
             <small>
-              Complete the registration and choose the best plan for your child to start learning now!
+              Complete the registration and choose the plan that best suits you, to start your experience!
             </small>
           </p>
 
           <template v-if="!inInvitationProcess">
-            <p class="text-center text-md-left">
-              <v-chip
-                color="orange"
-                class="text-orange-info"
-                label
+            <p class="text-center text-md-left mt-6">
+              <v-row
+                no-gutters
               >
-                Get one week FREE trial
-              </v-chip>
+                <v-col cols="1">
+                  <v-img
+                    :src="require('@/assets/png/gift-icon.png')"
+                    class="clickable close-btn-playgarden"
+                    width="18px"
+                  />
+                </v-col>
+                <v-col>
+                  <span class="font-weight-bold text-uppercase pg-letter-spacing-subtitle" :style="{'--bgColor': color}">
+                    Get 30 days of free trial
+                  </span>
+                </v-col>
+              </v-row>
             </p>
 
-            <p class="text-center text-md-left">
-              <small>You may cancel your membership at any time through your account settings.</small>
+            <p class="text-center text-md-left mt-10">
+              <small>*You can cancel your membership any time from the account settings.</small>
             </p>
           </template>
         </v-col>
