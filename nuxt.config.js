@@ -180,6 +180,7 @@ export default {
   },
   env: {
     apiBaseUrl: process.env.API_BASE_URL || 'https://apidev.playgardenonline.com',
+    baseUrl: process.env.TEST_ENV === 'production' ? '/app/' : '/',
     testEnv: process.env.TEST_ENV || 'LOCAL'
   },
   router: {
