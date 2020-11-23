@@ -3,7 +3,7 @@
     <v-container v-if="environment" :class="{ 'lsess-container': !$vuetify.breakpoint.smAndDown }" fluid>
       <v-row class="fill-height">
         <v-col v-if="$vuetify.breakpoint.mdAndUp" class="lsess-daily pl-0" md="5" xl="6">
-          <img class="lsess-coming-soon" src="/png/comingsoonkid.png">
+          <img class="lsess-coming-soon" src="@/assets/png/comingsoonkid.png">
         </v-col>
         <v-col class="d-flex flex-column justify-center fill-height" cols="12" md="7" xl="6">
           <coming-soon />
