@@ -81,7 +81,6 @@
 </template>
 
 <script>
-import { get } from 'lodash'
 import { mapActions } from 'vuex'
 // import PgInlineVideoPlayer from '@/components/pg-video-js-player/PgInlineVideoPlayer.vue'
 
@@ -124,8 +123,13 @@ export default {
 
   async created () {
     try {
-      // this.onboardings = await this.getOnboardings()
-      this.onboardings = [get(await this.getOnboardings(), '0', {})]
+      const onboardings = await this.getOnboardings()
+
+      if (Array.isArray(onboardings) && onboardings.length > 0) {
+        this.onboardings = [onboardings[0]]
+      } else {
+        this.onboardings = []
+      }
     } catch (e) {
     } finally {
       setTimeout(() => {
