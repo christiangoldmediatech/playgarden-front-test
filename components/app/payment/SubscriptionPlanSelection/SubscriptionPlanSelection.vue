@@ -37,8 +37,8 @@
                       Most Popular
                     </v-chip>
                   </div>
-                  <div>
-                    <p class="text-center">
+                  <div :class="`${indexP === 1 ? 'margin-product' : ''}`">
+                    <p class="text-center mb-10">
                       <v-chip
                         color="orange"
                         class="text-orange-info mb-8"
@@ -54,7 +54,25 @@
                       />
                     </p>
 
-                    <plan-description :plan="plan" />
+                    <p class="text-center">
+                      <span class="product-price">
+                        ${{ productPrice }}
+                      </span>
+                      <span class="product-month">/Month</span>
+                      <br />
+                      <label class="font-weight-bold">School Year Special</label>
+                      <br />
+                      <span v-if="indexP === 0" class="info-prodcut-detail">Billed Annually (save 24%)</span>
+                    </p>
+
+                    <p class="text-center mt-12">
+                      <label class="font-weight-bold">What's included</label>
+                      <br />
+                      <span v-if="indexP === 1" class="info-prodcut-detail">Everything in SILVER Plan, <span class="font-weight-bold">plus</span></span>
+                      <span v-if="indexP === 2" class="info-prodcut-detail">Everything in GOLD Plan, <span class="font-weight-bold">plus</span></span>
+                    </p>
+
+                    <plan-description :plan="plan" class="ml-8 mr-8" />
                   </div>
 
                   <radio-selectors v-model="draft" :plan="plan" />
@@ -266,6 +284,7 @@ export default {
   data: () => ({
     draftAddress: {},
     plans: [],
+    productPrice: 324,
     loading: false,
     initialized: false,
     radioGroup: null
@@ -460,5 +479,20 @@ export default {
   color: var(--v-white-base) !important;
   border-radius: 0px !important;
   background-color: rgba(255, 163, 72, 0.647059) !important;
+}
+.product-price {
+  font-size: 38px !important;
+  color: var(--v-black-base) !important;
+  font-weight: bold;
+}
+.info-prodcut-detail {
+  font-size: 11px;
+}
+.product-month {
+  font-weight: bold;
+  font-size: 28px !important;
+}
+.margin-product {
+  margin-top: -96px !important;
 }
 </style>
