@@ -29,7 +29,7 @@
                   :key="indexP"
                   :class="`${indexP === 1 ? 'c-col elevation-3 mx-md-3 card-plan' : 'c-col elevation-3 mx-md-3 pa-3 card-plan mt-10'}`"
                 >
-                  <div v-if="indexP === 1" class="text-right">
+                  <div v-show="indexP === 1" class="text-right">
                     <v-chip
                       class="most-popular"
                       label
@@ -38,10 +38,10 @@
                     </v-chip>
                   </div>
                   <div>
-                    <p :class="`${indexP === 2 ? 'text-center margin-info-product' : 'text-center mb-10'}`">
+                    <p :class="`${indexP === 1 ? 'plan-name text-center mt-10' : 'plan-name text-center mt-5'}`">
                       <v-chip
                         color="orange"
-                        :class="`${indexP === 1 ? 'text-orange-info mb-12' : 'text-orange-info mb-8'}`"
+                        class="text-orange-info mb-8"
                         label
                       >
                         {{ getTypePlan(indexP) }}
@@ -62,10 +62,11 @@
                       <br />
                       <label class="font-weight-bold">School Year Special</label>
                       <br />
-                      <span v-if="indexP === 0" class="info-prodcut-detail">Billed Annually (save 24%)</span>
+                      <span v-if="indexP === 0 || indexP === 1" class="info-prodcut-detail">Billed Annually (save 24%)</span>
+                      <span v-if="indexP === 2" class="info-prodcut-detail">Billed Annually (save 20%)</span>
                     </p>
 
-                    <p class="text-center mt-12">
+                    <p class="text-center mt-12 plan-included">
                       <label class="font-weight-bold">What's included</label>
                       <br />
                       <span v-if="indexP === 1" class="info-prodcut-detail">Everything in SILVER Plan, <span class="font-weight-bold">plus</span></span>
@@ -492,7 +493,10 @@ export default {
   font-weight: bold;
   font-size: 28px !important;
 }
-.margin-info-product {
-  margin-bottom: 73px;
+.plan-name {
+  min-height: 125px;
+}
+.plan-included {
+  min-height: 50px;
 }
 </style>
