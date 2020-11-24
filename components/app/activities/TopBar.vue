@@ -18,13 +18,23 @@
       <pg-text-field
         v-model="query"
         placeholder="Search"
-        append-icon="mdi-magnify"
         clearable
         hide-details
         solo
         class="search-top-bar"
         @keydown.enter="search"
-      />
+      >
+        <template v-slot:append>
+          <v-btn
+            icon
+            @click.stop="search"
+          >
+            <v-icon :color="query !== null && query.length ? 'primary' : ''">
+              mdi-magnify
+            </v-icon>
+          </v-btn>
+        </template>
+      </pg-text-field>
     </v-col>
   </v-row>
 </template>
