@@ -17,38 +17,65 @@
               >
                 {{ updating ? "UPDATE" : "CHOOSE YOUR" }} PLAN
               </p>
-
+              <span class="product-info">*Pricing is per child</span>
               <v-row
                 v-if="$vuetify.breakpoint.mdAndUp"
                 class="mx-n3"
+                justify="center"
                 no-gutters
               >
                 <v-col
                   v-for="(plan, indexP) in plans"
                   :key="indexP"
-                  class="c-col elevation-3 mx-md-3 pa-3"
+                  :class="`${indexP === 1 ? 'c-col elevation-3 mx-md-3 card-plan' : 'c-col elevation-3 mx-md-3 pa-3 card-plan mt-10'}`"
                 >
+                  <div v-if="indexP === 1" class="text-right">
+                    <v-chip
+                      class="most-popular"
+                      label
+                    >
+                      Most Popular
+                    </v-chip>
+                  </div>
                   <div>
-                    <p class="text-center">
+                    <p :class="`${indexP === 2 ? 'text-center margin-info-product' : 'text-center mb-10'}`">
                       <v-chip
                         color="orange"
-                        class="text-orange-info mb-3"
+                        :class="`${indexP === 1 ? 'text-orange-info mb-12' : 'text-orange-info mb-8'}`"
                         label
                       >
                         {{ getTypePlan(indexP) }}
                       </v-chip>
                       <br>
                       <underlined-title
-                        font-size="20px"
+                        font-size="30px"
                         :line-from="65"
                         :text="plan.name"
                       />
                     </p>
 
-                    <plan-description :plan="plan" />
+                    <p class="text-center">
+                      <span class="product-price">
+                        ${{ (plan.priceAnnual/12).toFixed(2) }}
+                      </span>
+                      <span class="product-month">/Month</span>
+                      <br />
+                      <label class="font-weight-bold">School Year Special</label>
+                      <br />
+                      <span v-if="indexP === 0" class="info-prodcut-detail">Billed Annually (save 24%)</span>
+                    </p>
+
+                    <p class="text-center mt-12">
+                      <label class="font-weight-bold">What's included</label>
+                      <br />
+                      <span v-if="indexP === 1" class="info-prodcut-detail">Everything in SILVER Plan, <span class="font-weight-bold">plus</span></span>
+                      <span v-if="indexP === 2" class="info-prodcut-detail">Everything in GOLD Plan, <span class="font-weight-bold">plus</span></span>
+                    </p>
+
+                    <plan-description :plan="plan" :index-plan="indexP" class="ml-8 mr-8" />
                   </div>
 
-                  <radio-selectors v-model="draft" :plan="plan" />
+                  <radio-selectors v-model="draft" :plan="plan" :index-plan="indexP" />
                 </v-col>
               </v-row>
 
@@ -72,7 +99,7 @@
                       </v-expansion-panel-header>
 
                       <v-expansion-panel-content class="pa-0 ma-0">
-                        <plan-description :plan="plan" />
+                        <plan-description :plan="plan" :index-plan="indexP" />
                       </v-expansion-panel-content>
 
                       <radio-selectors
@@ -257,6 +284,7 @@ export default {
   data: () => ({
     draftAddress: {},
     plans: [],
+    productPrice: 324,
     loading: false,
     initialized: false,
     radioGroup: null
@@ -431,7 +459,40 @@ export default {
   background-color: var(--v-accent-base) !important;
 }
 
+.product-info {
+  font-size: 11px !important;
+}
+
+.card-plan {
+  max-width: 350px !important;
+}
+
 .text-orange-info::v-deep.v-chip--label {
     border-radius: 0px !important;
+}
+.most-popular::v-deep.v-chip .v-chip__content {
+  color: #FF8000 !important;
+  font-weight: bold;
+}
+.most-popular::v-deep.v-chip--label {
+  font-weight: bold;
+  color: var(--v-white-base) !important;
+  border-radius: 0px !important;
+  background-color: rgba(255, 163, 72, 0.647059) !important;
+}
+.product-price {
+  font-size: 38px !important;
+  color: var(--v-black-base) !important;
+  font-weight: bold;
+}
+.info-prodcut-detail {
+  font-size: 11px;
+}
+.product-month {
+  font-weight: bold;
+  font-size: 28px !important;
+}
+.margin-info-product {
+  margin-bottom: 73px;
 }
 </style>
