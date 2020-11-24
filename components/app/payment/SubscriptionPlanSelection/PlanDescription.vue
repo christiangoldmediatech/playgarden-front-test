@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="plan-description">
     <ul class="plan-detail" v-if="indexPlan === 0">
       <li
         v-for="(benefit, indexPCB) in plan.commonBenefits.benefits"
@@ -12,7 +12,7 @@
       </li>
     </ul>
     <template v-if="plan.homeDeliveryBenefits && indexPlan === 1">
-      <section class="font-weight-bold mt-3">
+      <section class="font-weight-bold">
         Home Delivery of:
       </section>
 
@@ -30,7 +30,7 @@
     </template>
 
     <template v-if="plan.plusBenefits">
-      <section class="font-weight-bold mt-3">
+      <section class="font-weight-bold">
         Plus:
       </section>
 
@@ -101,4 +101,7 @@ ul li::before {
 .plan-detail li span{
   *display: inline;
 } /* haslayout for IE6/7 */
+.plan-description {
+  min-height: 220px !important;
+}
 </style>

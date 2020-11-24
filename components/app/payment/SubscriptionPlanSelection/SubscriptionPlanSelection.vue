@@ -66,7 +66,7 @@
                       <span v-if="indexP === 2" class="info-prodcut-detail">Billed Annually (save 20%)</span>
                     </p>
 
-                    <p class="text-center mt-12 plan-included">
+                    <p :class="`${indexP === 1 ? 'text-center mt-10 plan-included' : 'text-center mt-12 plan-included'}`">
                       <label class="font-weight-bold">What's included</label>
                       <br />
                       <span v-if="indexP === 1" class="info-prodcut-detail">Everything in SILVER Plan, <span class="font-weight-bold">plus</span></span>
@@ -76,7 +76,7 @@
                     <plan-description :plan="plan" :index-plan="indexP" class="ml-8 mr-8" />
                   </div>
 
-                  <radio-selectors v-model="draft" :plan="plan" :index-plan="indexP" />
+                  <radio-selectors v-model="draft" :plan="plan" :index-plan="indexP" :class="`${indexP === 1 ? 'mb-9 px-6' : 'mb-6 px-6'}`" />
                 </v-col>
               </v-row>
 
@@ -107,6 +107,7 @@
                         v-model="draft"
                         class="mb-6 px-6"
                         :plan="plan"
+                        :index-plan="indexP"
                       />
                     </v-expansion-panel>
                   </v-expansion-panels>
