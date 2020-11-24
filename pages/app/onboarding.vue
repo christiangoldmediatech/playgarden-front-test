@@ -81,7 +81,6 @@
 </template>
 
 <script>
-import { get } from 'lodash'
 import { mapActions } from 'vuex'
 // import PgInlineVideoPlayer from '@/components/pg-video-js-player/PgInlineVideoPlayer.vue'
 
@@ -124,8 +123,13 @@ export default {
 
   async created () {
     try {
-      // this.onboardings = await this.getOnboardings()
-      this.onboardings = [get(await this.getOnboardings(), '0', {})]
+      const onboardings = await this.getOnboardings()
+
+      if (Array.isArray(onboardings) && onboardings.length > 0) {
+        this.onboardings = [onboardings[0]]
+      } else {
+        this.onboardings = []
+      }
     } catch (e) {
     } finally {
       setTimeout(() => {
@@ -152,23 +156,27 @@ export default {
       const interval = window.setInterval(() => {
         if (this.onboardings.length) {
           // const { videos } = this.onboardings[0]
-          this.player.loadMedia({
-            title: videos.name,
-            poster: videos.thumbnail,
-            src: {
-              src: videos.videoUrl.HLS,
-              type: 'application/x-mpegURL'
+          this.player.loadPlaylist([
+            {
+              videoId: 1,
+              title: videos.name,
+              poster: videos.thumbnail,
+              src: {
+                src: videos.videoUrl.HLS,
+                type: 'application/x-mpegURL'
+              }
             }
-          })
+          ], 0)
           window.clearInterval(interval)
         }
       }, 50)
     },
 
     nextStep () {
-      if (this.step < this.steps) {
-        this.step++
-      }
+      this.$router.push({ name: 'app-dashboard' })
+      // if (this.step < this.steps) {
+      //   this.step++
+      // }
     },
 
     async onFinish () {

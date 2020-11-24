@@ -7,7 +7,8 @@ export default function ({ redirect, route, store }) {
     'auth-verify-email': 1,
     'jwt-recovery': 1,
     'privacy-policy': 1,
-    'terms-conditions': 1
+    'terms-conditions': 1,
+    help: 1
   }
 
   if (

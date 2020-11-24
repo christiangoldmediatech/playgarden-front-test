@@ -8,7 +8,7 @@
         >
           <div class="play-button-icon-content">
             <img
-              src="/svg/play-button-icon.svg"
+              src="@/assets/svg/play-button-icon.svg"
               width="100%"
             >
           </div>
@@ -19,6 +19,7 @@
       v-bind="$attrs"
       :fullscreen-override="handleFullscreen"
       no-smallscreen
+      inline
       @ready="onPlayerReady"
     />
   </div>
@@ -26,15 +27,10 @@
 
 <script>
 import Fullscreen from '@/mixins/FullscreenMixin.js'
-// import PgVideoJsPlayer from './PgVideoJsPlayer.vue'
 const excludedListeners = ['ready']
 
 export default {
   name: 'PgInlineVideoPlayer',
-
-  // components: {
-  //   PgVideoJsPlayer
-  // },
 
   mixins: [Fullscreen],
 
