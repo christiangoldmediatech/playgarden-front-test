@@ -93,7 +93,7 @@
                   "
                 >
                   <!-- Password -->
-                  <v-tooltip right>
+                  <v-tooltip :bottom="$vuetify.breakpoint.smAndUp ? false : true" :right="$vuetify.breakpoint.smAndUp ? true : false">
                     <template v-slot:activator="{ on, attrs }">
                       <validation-provider
                         v-slot="{ errors }"
@@ -115,7 +115,7 @@
                         />
                       </validation-provider>
                     </template>
-                    <span class="white--text">At least 8 characters—the more characters, the better.</span><br />
+                    <span class="white--text">At least 6 characters—the more characters, the better.</span><br />
                     <span class="white--text">A mixture of both uppercase and lowercase letters.</span><br />
                     <span class="white--text">A mixture of letters and numbers.</span><br />
                     <span class="white--text">Inclusion of at least one special character, e.g., ! @ # ? ]</span><br />
