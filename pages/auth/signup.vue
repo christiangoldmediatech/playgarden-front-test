@@ -70,7 +70,7 @@
                   />
                 </v-col>
                 <v-col>
-                  <span class="font-weight-bold text-uppercase pg-letter-spacing-subtitle" :style="{'--bgColor': color}">
+                  <span class="font-weight-bold text-uppercase pg-letter-spacing-subtitle">
                     Get 30 days of free trial
                   </span>
                 </v-col>
