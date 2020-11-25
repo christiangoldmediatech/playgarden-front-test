@@ -1,5 +1,13 @@
 // import path from 'path'
 // import fs from 'fs'
+const googleTagManagerNoScript = '<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M57SKCV" height="0" width="0" style="display:none;visibility:hidden"></iframe>'
+
+const getTagManagerText = () => {
+  if (process.env.TEST_ENV === 'production') {
+    return googleTagManagerNoScript
+  }
+  return ''
+}
 
 export default {
   /*
@@ -67,8 +75,18 @@ export default {
       {
         src: process.env.TEST_ENV === 'production' ? '/app/js/ics.min.js' : '/js/ics.min.js'
       },
-      { src: 'https://widget.manychat.com/108368577679635.js', async: true }
-    ]
+      { src: 'https://widget.manychat.com/108368577679635.js', async: true },
+      {
+        src: process.env.TEST_ENV === 'production' ? '/app/js/google-tag-manager.js' : '/js/empty.js'
+      }
+    ],
+    noscript: [
+      {
+        body: true,
+        innerHTML: getTagManagerText()
+      }
+    ],
+    __dangerouslyDisableSanitizers: ['noscript']
   },
   /*
    ** Global CSS

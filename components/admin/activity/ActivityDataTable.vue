@@ -49,10 +49,12 @@
               @refresh="refresh(true)"
               @update:items-per-page="setLimit"
               @update:page="page = $event"
-              @edit-item="$router.push({
-                name: 'admin-activity-management-editor',
-                query: { id: $event.id }
-              })"
+              @edit-item="
+                $router.push({
+                  name: 'admin-activity-management-editor',
+                  query: { id: $event.id },
+                })
+              "
               @remove-item="remove"
             >
               <template v-slot:[`top.prepend`]>
@@ -163,6 +165,11 @@ export default {
           value: 'videos.status'
         },
         {
+          text: 'Description',
+          sortable: false,
+          value: 'activityType.description'
+        },
+        {
           text: '',
           align: 'right',
           sortable: false,
@@ -268,7 +275,12 @@ export default {
         this.search = ''
       }
 
-      const params = { limit: this.limit, page: this.page, type: 'VIDEO', name: this.search }
+      const params = {
+        limit: this.limit,
+        page: this.page,
+        type: 'VIDEO',
+        name: this.search
+      }
 
       // params.name = this.search
 
@@ -293,7 +305,10 @@ export default {
     },
 
     checkStatus () {
-      if (this.rows.filter(data => data.videos.status !== 'COMPLETED').length > 0) {
+      if (
+        this.rows.filter(data => data.videos.status !== 'COMPLETED').length >
+        0
+      ) {
         this.checkStatusInterval = setInterval(() => {
           this.refresh()
         }, 120000)
@@ -301,7 +316,10 @@ export default {
     },
 
     stopInterval () {
-      if (this.rows.filter(data => data.videos.status !== 'COMPLETED').length === 0) {
+      if (
+        this.rows.filter(data => data.videos.status !== 'COMPLETED')
+          .length === 0
+      ) {
         clearInterval(this.checkStatusInterval)
       }
     }
