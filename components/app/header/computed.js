@@ -27,7 +27,7 @@ export default {
         // }
 
         if (!['production'].includes(process.env.testEnv)) {
-          list.push({ title: 'Parent Corner', to: { name: 'app-live-sessions' }, exact: false })
+          list.push({ title: 'Parent Corner', to: { name: 'app-parent-corner' }, exact: false })
         }
 
         return list
