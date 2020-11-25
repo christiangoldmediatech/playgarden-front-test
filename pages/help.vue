@@ -96,7 +96,6 @@
                             class="rounded-circle"
                             max-width="50"
                             :src="category.icon"
-                            :style="{ backgroundColor: category.color }"
                           />
                         </v-row>
                       </v-col>
@@ -120,7 +119,6 @@
                   :key="categorySelect.id"
                   accordion
                   class="mt-6"
-                  multiple
                 >
                   <v-expansion-panel
                     v-for="(faq, indexF) in faqs[categorySelect.id]"
@@ -341,7 +339,6 @@ export default {
           if (!_faqs[id]) {
             _faqs[id] = []
           }
-
           _faqs[id].push(faq)
         }
       })
@@ -365,7 +362,9 @@ export default {
         await this.sendHelpEmail({
           ...this.help
         })
-        this.$snotify.success('Email sent! We will reach out to you as soon as we can!')
+        this.$snotify.success(
+          'Email sent! We will reach out to you as soon as we can!'
+        )
         this.help = {
           name: null,
           email: null,
@@ -374,7 +373,9 @@ export default {
           description: null
         }
       } catch (error) {
-        this.$snotify.error('There was a problem sending the email, please try again.')
+        this.$snotify.error(
+          'There was a problem sending the email, please try again.'
+        )
       } finally {
         reset()
       }

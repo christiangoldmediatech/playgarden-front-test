@@ -93,23 +93,33 @@
                   "
                 >
                   <!-- Password -->
-                  <validation-provider
-                    v-slot="{ errors }"
-                    name="Password"
-                    rules="required|min:8|max:20|w_number|w_special|w_upper"
-                    vid="password_field"
-                  >
-                    <pg-password-field
-                      v-model="draft.password"
-                      clearable
-                      :disabled="loading"
-                      :error-messages="errors"
-                      label="Password"
-                      :loading="loading"
-                      maxlength="20"
-                      solo
-                    />
-                  </validation-provider>
+                  <v-tooltip :bottom="$vuetify.breakpoint.smAndUp ? false : true" :right="$vuetify.breakpoint.smAndUp ? true : false">
+                    <template v-slot:activator="{ on, attrs }">
+                      <validation-provider
+                        v-slot="{ errors }"
+                        name="Password"
+                        rules="required|min:8|max:20|w_number|w_special|w_upper"
+                        vid="password_field"
+                      >
+                        <pg-password-field
+                          v-model="draft.password"
+                          clearable
+                          :disabled="loading"
+                          :error-messages="errors"
+                          label="Password"
+                          :loading="loading"
+                          v-bind="attrs"
+                          v-on="on"
+                          maxlength="20"
+                          solo
+                        />
+                      </validation-provider>
+                    </template>
+                    <span class="white--text">At least 6 characters—the more characters, the better.</span><br />
+                    <span class="white--text">A mixture of both uppercase and lowercase letters.</span><br />
+                    <span class="white--text">A mixture of letters and numbers.</span><br />
+                    <span class="white--text">Inclusion of at least one special character, e.g., ! @ # ? ]</span><br />
+                  </v-tooltip>
 
                   <!-- Password confirmation -->
                   <validation-provider
@@ -129,7 +139,6 @@
                     />
                   </validation-provider>
                 </template>
-
                 <v-btn
                   block
                   min-height="60"
@@ -183,7 +192,8 @@ export default {
   },
 
   data: () => ({
-    draft: {}
+    draft: {},
+    show: true
   }),
 
   computed: {

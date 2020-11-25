@@ -14,17 +14,21 @@ export default {
             title: 'Student Cubby',
             to: { name: 'app-student-cubby' },
             exact: false
-          },
-          {
-            title: 'Parent Corner',
-            to: { name: 'app-parent-corner' },
-            exact: false
           }
+          // {
+          //   title: 'Parent Corner',
+          //   to: { name: 'app-parent-corner' },
+          //   exact: false
+          // }
         ]
 
         // if (!['production'].includes(process.env.testEnv)) {
         //   list.unshift({ title: 'Live Sessions', to: { name: 'app-live-sessions' }, exact: false })
         // }
+
+        if (!['production'].includes(process.env.testEnv)) {
+          list.push({ title: 'Parent Corner', to: { name: 'app-parent-corner' }, exact: false })
+        }
 
         return list
       }
