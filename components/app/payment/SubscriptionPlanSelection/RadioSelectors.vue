@@ -31,8 +31,8 @@
       "
     />
 
-    <small v-if="indexPlan <= 1" class="ml-8">Billed Annually (save 24 %)</small>
-    <small v-else class="ml-8">Billed Annually (save 20 %)</small>
+    <small v-if="indexPlan <= 1" class="ml-8">Billed Annually (save 24%)</small>
+    <small v-else class="ml-8">Billed Annually (save 20%)</small>
   </div>
 </template>
 

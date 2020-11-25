@@ -151,7 +151,7 @@
                 >
                   {{
                     inInvitationProcess || !isUserLoggedIn
-                      ? "SIGNUP"
+                      ? "SIGN UP"
                       : "CONTINUE"
                   }}
                 </v-btn>
@@ -160,7 +160,7 @@
           </v-col>
         </v-row>
         <p class="text-center messages-info-register">
-          You will only be billed after 30 days of FREE trial is completed
+          You will only be billed after your 30-day FREE trial is complete!
         </p>
       </v-container>
     </v-form>

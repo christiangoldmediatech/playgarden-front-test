@@ -130,7 +130,7 @@
 
       <p v-if="!noTrial" class="mb-15 text-body-2 text-center messages-info-register">
         <span>
-          You will only be billed after 30 days of FREE trial is completed
+          You will only be billed after your 30-day FREE trial is complete!
         </span>
       </p>
 
