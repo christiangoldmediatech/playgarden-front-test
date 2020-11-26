@@ -77,7 +77,7 @@
             <v-col cols="4" class="pr-3">
               <div>
                 <span v-if="coupon.percent_off">
-                  <b>- {{ coupon.percent_off }} %</b>
+                  <b>- {{ coupon.percent_off }}%</b>
                 </span>
                 <span v-if="coupon.amount_off">
                   <b>${{ coupon.amount_off.toLocaleString("en-US") }}</b>

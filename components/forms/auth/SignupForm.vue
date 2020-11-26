@@ -98,7 +98,7 @@
                       <validation-provider
                         v-slot="{ errors }"
                         name="Password"
-                        rules="required|min:8|max:20|w_number|w_special|w_upper"
+                        rules="required|min:6|max:20|w_number|w_special|w_upper"
                         vid="password_field"
                       >
                         <pg-password-field
@@ -151,7 +151,7 @@
                 >
                   {{
                     inInvitationProcess || !isUserLoggedIn
-                      ? "SIGNUP"
+                      ? "SIGN UP"
                       : "CONTINUE"
                   }}
                 </v-btn>
@@ -160,7 +160,7 @@
           </v-col>
         </v-row>
         <p class="text-center messages-info-register">
-          You will only be billed after 30 days of FREE trial is completed
+          You will only be billed after your 30-day FREE trial is complete!
         </p>
       </v-container>
     </v-form>

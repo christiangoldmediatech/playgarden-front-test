@@ -3,7 +3,7 @@
     <v-divider class="mb-3" />
 
     <v-radio
-      :label="`$${plan.priceMonthly.toLocaleString('en-US')} a month/child`"
+      :label="`$${plan.priceMonthly.toFixed(2).toLocaleString('en-US')} a month/child`"
       :value="plan.monthlyStripeId"
       @change="
         $emit('input', {
@@ -31,8 +31,8 @@
       "
     />
 
-    <small v-if="indexPlan <= 1" class="ml-8">Billed Annually (save 24 %)</small>
-    <small v-else class="ml-8">Billed Annually (save 20 %)</small>
+    <small v-if="indexPlan <= 1" class="ml-8">Billed Annually (save 24%)</small>
+    <small v-else class="ml-8">Billed Annually (save 20%)</small>
   </div>
 </template>
 
