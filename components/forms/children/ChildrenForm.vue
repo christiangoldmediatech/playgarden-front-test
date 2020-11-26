@@ -166,6 +166,9 @@ export default {
   created () {
     this.index = this.position
     this.itemCurrent = this.item
+    if (this.itemCurrent.id) {
+      this.selectedDate = this.itemCurrent._birthdayFormatted
+    }
     this.fetchBackpacks()
     if (this.isUserLoggedIn) {
       this.loadChildren()
