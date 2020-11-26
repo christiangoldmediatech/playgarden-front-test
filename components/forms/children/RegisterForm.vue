@@ -5,6 +5,7 @@
         <v-col>
           <p
             class="font-weight-bold mb-6 pg-letter-spacing text-center text-h5 text-md-left"
+            :class="{ 'mt-3': index !== 0 }"
           >
             CHILD INFORMATION
           </p>
