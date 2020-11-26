@@ -1,15 +1,14 @@
 <template>
   <validation-observer v-slot="{ invalid, passes }">
     <v-form :readonly="isLoading" @submit.prevent="passes(onSubmit)">
-      <v-row v-for="(item, indexD) in draft" :key="indexD" no-gutters>
+      <v-row v-for="(item, index) in draft" :key="index" no-gutters>
         <v-col>
           <p
             class="font-weight-bold mb-6 pg-letter-spacing text-center text-h5 text-md-left"
           >
             CHILD INFORMATION
           </p>
-          {{ indexD }}
-          <children-form :date="item._birthdayPicker" :item="item" :index="indexD" :draft="draft" :loading="loading" />
+          <children-form :date="item._birthdayPicker" :item="item" :position="index" :draft="draft" :loading="loading" />
         </v-col>
       </v-row>
 

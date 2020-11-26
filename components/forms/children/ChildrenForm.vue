@@ -7,7 +7,7 @@
       rules="required"
     >
       <pg-text-field
-        v-model="item.firstName"
+        v-model="itemCurrent.firstName"
         clearable
         :disabled="isLoading"
         :error-messages="errors"
@@ -30,7 +30,7 @@
           label="Birth date"
           readonly
           solo
-          :suffix="item._birthdayFormatted ? '' : 'MM/DD/YYYY'"
+          :suffix="itemCurrent._birthdayFormatted ? '' : 'MM/DD/YYYY'"
           validate-on-blur
           :value="selectedDate"
           v-bind="attrs"
@@ -40,10 +40,10 @@
       </template>
       <v-date-picker
         ref="picker"
-        v-model="item._birthdayPicker"
+        v-model="itemCurrent._birthdayPicker"
         :max="new Date().toISOString().substr(0, 10)"
         min="1950-01-01"
-        @input="onInputBirthday(item)"
+        @input="onInputBirthday(itemCurrent)"
         @change="save"
       />
     </v-menu>
@@ -58,18 +58,18 @@
           <v-btn
             block
             class="custom-btn"
-            :color="item.gender === gender ? 'primary' : 'grey lighten-5'"
+            :color="itemCurrent.gender === gender ? 'primary' : 'grey lighten-5'"
             :disabled="isLoading"
             min-height="60"
             x-large
-            @click="item.gender = gender"
+            @click="itemCurrent.gender = gender"
           >
             {{ gender === "FEMALE" ? "Girl" : "Boy" }}
           </v-btn>
         </v-col>
       </v-row>
 
-      <input v-model="item.gender" type="hidden">
+      <input v-model="itemCurrent.gender" type="hidden">
     </validation-provider>
 
     <!-- Backpack -->
@@ -88,15 +88,15 @@
           <img
             :alt="backpack.name"
             class="clickable"
-            :class="{ active: item.backpackId === backpack.id }"
+            :class="{ active: itemCurrent.backpackId === backpack.id }"
             :src="backpack.image"
             height="100px"
-            @click="item.backpackId = backpack.id"
+            @click="itemCurrent.backpackId = backpack.id"
           >
         </v-col>
       </v-row>
 
-      <input v-model="item.backpackId" type="hidden">
+      <input v-model="itemCurrent.backpackId" type="hidden">
     </validation-provider>
 
     <v-btn
@@ -104,7 +104,7 @@
       block
       text
       color="primary"
-      @click.stop="removeChild(item, index)"
+      @click.stop="removeChild"
     >
       DELETE CHILD PROFILE
     </v-btn>
@@ -123,7 +123,7 @@ export default {
       type: Object,
       required: true
     },
-    index: {
+    position: {
       type: Number,
       required: true
     },
@@ -136,6 +136,8 @@ export default {
   data: () => ({
     backpacks: [],
     menu: false,
+    itemCurrent: null,
+    indexCurrent: null,
     dataLoading: false,
     genders: ['MALE', 'FEMALE'],
     selectedDate: null
@@ -157,6 +159,8 @@ export default {
     }
   },
   created () {
+    this.index = this.position
+    this.itemCurrent = this.item
     this.fetchBackpacks()
     if (this.isUserLoggedIn) {
       this.loadChildren()
@@ -176,30 +180,28 @@ export default {
       this.getBackpacks().then(data => (this.backpacks = data))
     },
 
-    onInputBirthday (item) {
-      if (item._birthdayPicker) {
-        this.selectedDate = item._birthdayPicker
-        item._birthdayFormatted = dayjs(item._birthdayPicker).format(
+    onInputBirthday () {
+      if (this.itemCurrent._birthdayPicker) {
+        this.selectedDate = this.itemCurrent._birthdayPicker
+        this.itemCurrent._birthdayFormatted = dayjs(this.itemCurrent._birthdayPicker).format(
           'MM/DD/YYYY'
         )
-        item.birthday = `${item._birthdayPicker}T00:00:00.000`
+        this.itemCurrent.birthday = `${this.itemCurrent._birthdayPicker}T00:00:00.000`
       }
     },
 
-    removeChild (item, index) {
-      console.log('item--', item)
-      console.log('index--', index)
+    removeChild () {
       this.$nuxt.$emit('open-prompt', {
         title: 'Delete child profile?',
-        message: `Are you sure you wish to delete '${item.firstName}'s' profile?`,
+        message: `Are you sure you wish to delete '${this.itemCurrent.firstName}'s' profile?`,
         action: async () => {
           this.dataLoading = true
           try {
-            if (item.id) {
-              await this.deleteChild(item.id)
+            if (this.itemCurrent.id) {
+              await this.deleteChild(this.itemCurrent.id)
             }
 
-            this.$delete(this.draft, index)
+            this.$delete(this.draft, this.index)
           } catch (e) {
           } finally {
             this.dataLoading = false
