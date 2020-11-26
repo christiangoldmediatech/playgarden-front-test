@@ -73,6 +73,11 @@
     </validation-provider>
 
     <!-- Backpack -->
+    <center class="mb-4">
+      <small>
+        Choose a Backpack for you child:
+      </small>
+    </center>
     <validation-provider
       :name="(removable ? `Child #${index + 1} - ` : '') + 'Backpack'"
       rules="required"
@@ -182,10 +187,10 @@ export default {
 
     onInputBirthday () {
       if (this.itemCurrent._birthdayPicker) {
-        this.selectedDate = this.itemCurrent._birthdayPicker
         this.itemCurrent._birthdayFormatted = dayjs(this.itemCurrent._birthdayPicker).format(
           'MM/DD/YYYY'
         )
+        this.selectedDate = this.itemCurrent._birthdayFormatted
         this.itemCurrent.birthday = `${this.itemCurrent._birthdayPicker}T00:00:00.000`
       }
     },

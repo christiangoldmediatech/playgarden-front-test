@@ -13,8 +13,7 @@
         </div>
 
         <p class="mt-6 text-center text-md-left">
-          We are happy to have you LEARN with us! Please check your email to
-          confirm your account and start learning today
+          We are happy to have you LEARN with us! Please check your email to confirm account and start learning today!
         </p>
 
         <v-btn
