@@ -6,7 +6,7 @@
 
     <v-form @submit.prevent="passes(onSubmit)">
       <!-- Ending text -->
-      <tiptap-field
+      <pg-tiptap-field
         v-model="draft.ending"
         :disabled="loading"
         label="Ending text"
@@ -14,7 +14,7 @@
       />
 
       <!-- Learning -->
-      <tiptap-field
+      <pg-tiptap-field
         v-model="draft.learning"
         :disabled="loading"
         label="Learning"

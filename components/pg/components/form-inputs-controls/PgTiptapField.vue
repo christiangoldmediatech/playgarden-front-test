@@ -43,7 +43,7 @@ import {
 } from 'tiptap-vuetify'
 
 export default {
-  name: 'TiptapField',
+  name: 'PgTiptapField',
 
   components: {
     TiptapVuetify

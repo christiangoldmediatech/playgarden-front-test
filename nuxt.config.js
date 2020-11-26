@@ -1,5 +1,13 @@
 // import path from 'path'
 // import fs from 'fs'
+const googleTagManagerNoScript = '<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M57SKCV" height="0" width="0" style="display:none;visibility:hidden"></iframe>'
+
+const getTagManagerText = () => {
+  if (process.env.TEST_ENV === 'production') {
+    return googleTagManagerNoScript
+  }
+  return ''
+}
 
 export default {
   /*
@@ -7,14 +15,16 @@ export default {
    ** See https://nuxtjs.org/api/configuration-mode
    */
   mode: 'universal',
-  parallel: true,
+  paralell: true,
+  cache: true,
   server: {
     port: process.env.PORT || 8080,
-    host: process.env.HOST || '0.0.0.0',
-    // https: !['production', 'staging'].includes(process.env.NODE_ENV) ? {
-    //   key: fs.readFileSync(path.resolve(__dirname, 'keys/server.key')),
-    //   cert: fs.readFileSync(path.resolve(__dirname, 'keys/server.crt'))
-    // } : undefined
+    host: process.env.HOST || '0.0.0.0'
+  //   host: process.env.HOST || '0.0.0.0',
+  //   https: !['production', 'staging'].includes(process.env.NODE_ENV) ? {
+  //   key: fs.readFileSync(path.resolve(__dirname, 'keys/server.key')),
+  //   cert: fs.readFileSync(path.resolve(__dirname, 'keys/server.crt'))
+  //  } : undefined
   },
   serverMiddleware: {
     '/healthcheck': '@/middleware/healthCheck'
@@ -40,7 +50,11 @@ export default {
       }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      {
+        rel: 'icon',
+        type: 'image/x-icon',
+        href: process.env.TEST_ENV === 'production' ? '/app/favicon.ico' : '/favicon.ico'
+      },
       {
         rel: 'stylesheet',
         type: 'text/css',
@@ -53,7 +67,26 @@ export default {
         href:
           'https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css'
       }
-    ]
+    ],
+    script: [
+      {
+        src: process.env.TEST_ENV === 'production' ? '/app/js/filesaver.min.js' : '/js/filesaver.min.js',
+      },
+      {
+        src: process.env.TEST_ENV === 'production' ? '/app/js/ics.min.js' : '/js/ics.min.js'
+      },
+      { src: 'https://widget.manychat.com/108368577679635.js', async: true },
+      {
+        src: process.env.TEST_ENV === 'production' ? '/app/js/google-tag-manager.js' : '/js/empty.js'
+      }
+    ],
+    noscript: [
+      {
+        body: true,
+        innerHTML: getTagManagerText()
+      }
+    ],
+    __dangerouslyDisableSanitizers: ['noscript']
   },
   /*
    ** Global CSS
@@ -91,7 +124,7 @@ export default {
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components
    */
-  components: true,
+  components: false,
   /*
    ** Nuxt.js dev-modules
    */
@@ -116,6 +149,7 @@ export default {
    ** Nuxt.js modules
    */
   modules: [
+    '@nuxtjs/sentry',
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/style-resources',
@@ -146,6 +180,12 @@ export default {
       }
     ]
   ],
+  sentry: {
+    dsn: "https://1ab1121d06eb4b3181d83b9da1d69489@o443725.ingest.sentry.io/5417852",
+    config: {
+      environment: process.env.TEST_ENV || 'LOCAL'
+    }
+  },
   styleResources: {
     scss: [
       './assets/scss/mixins/_mixins.scss',
@@ -170,6 +210,7 @@ export default {
     testEnv: process.env.TEST_ENV || 'LOCAL'
   },
   router: {
+    base: process.env.TEST_ENV === 'production' ? '/app/' : '/',
     middleware: [
       'auth',
       'fetchUserInfo',

@@ -1,157 +1,139 @@
 <template>
   <v-app-bar app class="pg-app-bar" color="white" elevation="1">
-    <v-row align="center" justify="center" no-gutters>
-      <v-col
-        class="pg-app-bar-col"
-        :class="['full-width', { mobile: $vuetify.breakpoint.mdAndDown }]"
-      >
-        <v-row align="center" justify="space-between" no-gutters>
-          <!-- HAMBURGER MENU -->
-          <v-col cols="auto" class="hidden-md-and-up">
-            <v-app-bar-nav-icon
-              class="primary pg-app-bar-nav-icon"
-              :class="{ isMd: $vuetify.breakpoint.md }"
-              color="white"
-              tile
-              large
-              @click.stop="toggleDrawer"
+    <v-row class="flex-nowrap" align="center" justify="space-between" no-gutters>
+      <!-- HAMBURGER MENU -->
+      <v-col class="d-flex align-center" cols="auto">
+        <v-app-bar-nav-icon
+          class="primary pg-app-bar-nav-icon hidden-md-and-up"
+          :class="{ isMd: $vuetify.breakpoint.md }"
+          color="white"
+          tile
+          large
+          @click.stop="toggleDrawer"
+        />
+
+        <v-toolbar-title class="mx-3">
+          <nuxt-link
+            :to="{
+              name: 'app-dashboard',
+            }"
+          >
+            <v-img
+              alt="Playarden Prep Online Logo"
+              contain
+              max-height="50"
+              :max-width="$vuetify.breakpoint.mdAndUp ? 290 : 200"
+              :src="require('@/assets/svg/logo.svg')"
             />
-          </v-col>
+          </nuxt-link>
+        </v-toolbar-title>
+      </v-col>
 
-          <!-- SPACER -->
-          <v-col class="hidden-md-and-up">
-            <!-- DON'T remove it, using for grid purposes -->
-          </v-col>
-
-          <!-- LOGO -->
-          <v-col cols="auto" align-self="center">
-            <v-toolbar-title>
-              <nuxt-link
-                :to="{
-                  name: 'app-dashboard',
-                }"
-              >
-                <v-img
-                  alt="Playarden Prep Online Logo"
-                  contain
-                  max-height="50"
-                  :max-width="$vuetify.breakpoint.mdAndUp ? 290 : 200"
-                  :src="require('@/assets/svg/logo.svg')"
-                />
-              </nuxt-link>
-            </v-toolbar-title>
-          </v-col>
-
-          <!-- SPACER -->
-          <v-col>
-            <!-- DON'T remove it, using for grid purposes -->
-          </v-col>
-
-          <!-- ITEMS -->
-          <v-col cols="auto" class="hidden-sm-and-down">
-            <v-toolbar-items>
-              <v-btn
-                v-for="(item, index) in items"
-                :key="`${_uid}-${index}`"
-                class="text-none link-text"
-                active-class="custom-active"
-                text
-                :ripple="true"
-                :exact="item.exact"
-                nuxt
-                :to="item.to"
-                v-text="item.title"
-              />
-            </v-toolbar-items>
-          </v-col>
-
-          <!-- AUTH BUTTONS -->
-          <v-col cols="auto" class="hidden-sm-and-down">
+      <v-col class="d-flex align-center pr-3" cols="auto">
+        <!-- ITEMS -->
+        <div class="hidden-sm-and-down">
+          <v-toolbar-items>
             <v-btn
-              v-if="!isUserLoggedIn"
-              class="px-13 ml-3 btn-register"
-              color="accent"
-              nuxt
+              v-for="(item, index) in items"
+              :key="`${_uid}-${index}`"
+              class="text-none link-text"
+              active-class="custom-active"
               text
-              :to="{ name: 'auth-signup' }"
-            >
-              REGISTER
-            </v-btn>
-
-            <v-btn
-              v-if="isUserLoggedIn && !isUserInSignupProcess"
-              class="px-13 ml-3"
-              color="accent"
+              :ripple="true"
+              :exact="item.exact"
               nuxt
-              :to="{ name: 'app-account' }"
-            >
-              ACCOUNT
-            </v-btn>
+              :to="item.to"
+              v-text="item.title"
+            />
+          </v-toolbar-items>
+        </div>
 
-            <v-btn
-              v-if="previewMode"
-              class="px-13 ml-3"
-              color="accent"
-              nuxt
-              :to="{ name: 'admin-curriculum-management' }"
-            >
-              Go Back
-            </v-btn>
+        <!-- AUTH BUTTONS -->
+        <div class="pg-app-bar-buttons auth-buttons">
+          <v-btn
+            v-if="!isUserLoggedIn"
+            class="px-13 ml-3 btn-register"
+            color="accent"
+            nuxt
+            text
+            :to="{ name: 'auth-signup' }"
+          >
+            REGISTER
+          </v-btn>
 
-            <v-btn
-              v-else-if="isUserLoggedIn && isUserInSignupProcess"
-              class="px-13 ml-3"
-              color="accent"
-              nuxt
-              :to="{ name: 'auth-logout' }"
-            >
-              LOG OUT
-            </v-btn>
+          <v-btn
+            v-if="isUserLoggedIn && !isUserInSignupProcess"
+            class="px-13 ml-3"
+            color="accent"
+            nuxt
+            :to="{ name: 'app-account' }"
+          >
+            ACCOUNT
+          </v-btn>
 
-            <v-btn
-              v-else-if="!isUserLoggedIn"
-              class="px-13 ml-3"
-              color="accent"
-              nuxt
-              :to="{ name: 'auth-login' }"
-            >
-              LOGIN
-            </v-btn>
-          </v-col>
+          <v-btn
+            v-if="previewMode"
+            class="px-13 ml-3"
+            color="accent"
+            nuxt
+            :to="{ name: 'admin-curriculum-management' }"
+          >
+            Go Back
+          </v-btn>
 
-          <!-- MOBILE ICONS -->
-          <v-col cols="auto" class="hidden-xs-only hidden-md-and-up">
-            <v-btn
-              v-if="isUserLoggedIn && !isUserInSignupProcess"
-              active-class="transparent--text"
-              icon
-              nuxt
-              small
-              :to="{ name: 'app-account' }"
-            >
-              <v-icon color="accent">
-                mdi-cog
-              </v-icon>
-            </v-btn>
+          <v-btn
+            v-else-if="isUserLoggedIn && isUserInSignupProcess"
+            class="px-13 ml-3"
+            color="accent"
+            nuxt
+            :to="{ name: 'auth-logout' }"
+          >
+            LOG OUT
+          </v-btn>
 
-            <v-btn
-              :color="isUserLoggedIn ? 'primary' : 'accent'"
-              active-class="transparent--text"
-              icon
-              nuxt
-              small
-              :to="{ name: isUserLoggedIn ? 'auth-logout' : 'auth-login' }"
-            >
-              <v-icon v-if="isUserLoggedIn" color="accent">
-                mdi-logout
-              </v-icon>
+          <v-btn
+            v-else-if="!isUserLoggedIn"
+            class="px-13 ml-3"
+            color="accent"
+            nuxt
+            :to="{ name: 'auth-login' }"
+          >
+            LOGIN
+          </v-btn>
+        </div>
 
-              <v-icon v-else color="primary">
-                mdi-login
-              </v-icon>
-            </v-btn>
-          </v-col>
-        </v-row>
+        <!-- MOBILE ICONS -->
+        <div class="hidden-xs-only pg-app-bar-buttons mobile-icons">
+          <v-btn
+            v-if="isUserLoggedIn && !isUserInSignupProcess"
+            active-class="transparent--text"
+            icon
+            nuxt
+            small
+            :to="{ name: 'app-account' }"
+          >
+            <v-icon color="accent">
+              mdi-cog
+            </v-icon>
+          </v-btn>
+
+          <v-btn
+            :color="isUserLoggedIn ? 'primary' : 'accent'"
+            active-class="transparent--text"
+            icon
+            nuxt
+            small
+            :to="{ name: isUserLoggedIn ? 'auth-logout' : 'auth-login' }"
+          >
+            <v-icon v-if="isUserLoggedIn" color="accent">
+              mdi-logout
+            </v-icon>
+
+            <v-icon v-else color="primary">
+              mdi-login
+            </v-icon>
+          </v-btn>
+        </div>
       </v-col>
     </v-row>
   </v-app-bar>
@@ -196,20 +178,39 @@ export default {
   }
 }
 
-.pg-app-bar-col {
-  max-width: 1200px;
+.pg-app-bar-buttons {
+  &.auth-buttons {
+    display: block;
+  }
 
-  &.full-width {
-    max-width: 1600px;
-    padding-left: 24px;
-    padding-right: 24px;
+  &.mobile-icons {
+    display: none;
+  }
 
-    &.mobile {
-      padding-left: 0px;
-      padding-right: 0px;
+  @media screen and (max-width: 1100px) {
+    &.auth-buttons {
+      display: none;
+    }
+    &.mobile-icons {
+      display: block;
     }
   }
 }
+
+// .pg-app-bar-col {
+//   max-width: 1200px;
+
+//   &.full-width {
+//     max-width: 1600px;
+//     padding-left: 24px;
+//     padding-right: 24px;
+
+//     &.mobile {
+//       padding-left: 0px;
+//       padding-right: 0px;
+//     }
+//   }
+// }
 
 .v-btn--active.custom-active {
   &::before {

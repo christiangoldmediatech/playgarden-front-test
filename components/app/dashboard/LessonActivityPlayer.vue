@@ -3,8 +3,6 @@
     :id="dialogContainerId"
     ref="videoPlayerDialog"
     v-model="dialog"
-    :show-favorite="lesson && !lesson.previewMode"
-    :video-id="currentVideo ? currentVideo.videoId : -1"
     @close="handleClose"
   >
     <pg-video-js-player
@@ -13,6 +11,8 @@
       show-next-up
       show-restart
       show-steps
+      :show-favorite="lesson && !lesson.previewMode"
+      show-cast
       use-standard-poster
       :no-seek="noSeek"
       :fullscreen-override="handleFullscreen"
@@ -35,8 +35,16 @@ import FindNextActivity from '@/mixins/FindNextActivityMixin.js'
 import Fullscreen from '@/mixins/FullscreenMixin.js'
 import { jsonCopy } from '@/utils/objectTools'
 
+import PatchEarnedDialog from '@/components/app/PatchEarnedDialog.vue'
+import PuzzlePieceEarnedDialog from '@/components/app/PuzzlePieceEarnedDialog.vue'
+
 export default {
   name: 'LessonActivityPlayer',
+
+  components: {
+    PatchEarnedDialog,
+    PuzzlePieceEarnedDialog
+  },
 
   mixins: [VideoPlayerDialogMixin, DashboardMixin, SaveActivityProgress, ActivityAnalytics, FindNextActivity, Fullscreen],
 

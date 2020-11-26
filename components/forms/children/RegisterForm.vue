@@ -163,6 +163,9 @@
           </v-btn>
         </v-col>
       </v-row>
+      <p class="text-center messages-info-register">
+        You will only be billed after 30 days of FREE trial is completed
+      </p>
     </v-form>
   </validation-observer>
 </template>

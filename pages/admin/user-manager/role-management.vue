@@ -14,10 +14,6 @@ export default {
     RolesDataTable
   },
 
-  data () {
-    return {}
-  },
-
   mounted () {
     this.$refs.RolesDataTable.refresh()
   }

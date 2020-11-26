@@ -373,6 +373,7 @@ export default {
         this.billing.planAmountDiscount = data.planAmountDiscount || null
         this.billing.amountOff = data.amountOff || null
         this.billing.percentOff = data.percentOff || null
+
         if (data.subscriptionData) {
           this.billing.membershipInterval = get(
             data,

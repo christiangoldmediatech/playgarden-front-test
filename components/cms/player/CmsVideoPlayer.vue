@@ -3,14 +3,13 @@
     :id="dialogContainerId"
     ref="videoPlayerDialog"
     v-model="dialog"
-    show-favorite
-    :video-id="currentVideo ? currentVideo.videoId : -1"
     @close="handleClose"
   >
     <pg-video-js-player
       ref="videoPlayer"
       autoplay
       show-next-up
+      show-favorite
       :fullscreen-override="handleFullscreen"
       @ready="onReady"
     />
@@ -21,16 +20,16 @@
 import VideoPlayerDialogMixin from '@/mixins/VideoPlayerDialogMixin.js'
 import Fullscreen from '@/mixins/FullscreenMixin.js'
 import DashboardOverrides from '@/mixins/DashboardOverridesMixin.js'
-import VideoPlayerDialog from '@/components/pg-video-js-player/VideoPlayerDialog.vue'
-import PgVideoJsPlayer from '@/components/pg-video-js-player/PgVideoJsPlayer.vue'
+// import VideoPlayerDialog from '@/components/pg-video-js-player/VideoPlayerDialog.vue'
+// import PgVideoJsPlayer from '@/components/pg-video-js-player/PgVideoJsPlayer.vue'
 
 export default {
   name: 'CmsVideoPlayer',
 
-  components: {
-    VideoPlayerDialog,
-    PgVideoJsPlayer
-  },
+  // components: {
+  //   VideoPlayerDialog,
+  //   PgVideoJsPlayer
+  // },
 
   mixins: [VideoPlayerDialogMixin, DashboardOverrides, Fullscreen],
 

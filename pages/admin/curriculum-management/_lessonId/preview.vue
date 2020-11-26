@@ -11,9 +11,14 @@
 <script>
 import { mapActions } from 'vuex'
 import DashboardLink from '@/mixins/DashboardLinkMixin.js'
+import DashboardLayout from '@/components/app/dashboard/DashboardLayout.vue'
 
 export default {
   name: 'Preview',
+
+  components: {
+    DashboardLayout
+  },
 
   layout: 'lesson-preview',
 

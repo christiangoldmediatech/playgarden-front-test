@@ -58,13 +58,15 @@
 </template>
 
 <script>
+import ChildSelect from '@/components/app/ChildSelect.vue'
 import VideoCard from './VideoCard.vue'
 
 export default {
   name: 'VideoResults',
 
   components: {
-    VideoCard
+    VideoCard,
+    ChildSelect
   },
 
   props: {

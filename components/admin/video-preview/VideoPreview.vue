@@ -31,14 +31,14 @@
 </template>
 
 <script>
-import PgVideoJsPlayer from '@/components/pg-video-js-player/PgVideoJsPlayer.vue'
+// import PgVideoJsPlayer from '@/components/pg-video-js-player/PgVideoJsPlayer.vue'
 
 export default {
   name: 'VideoPreview',
 
-  components: {
-    PgVideoJsPlayer
-  },
+  // components: {
+  //   PgVideoJsPlayer
+  // },
 
   data: () => {
     return {

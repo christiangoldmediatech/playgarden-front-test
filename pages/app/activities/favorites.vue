@@ -11,8 +11,8 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import ActivityPlayer from '@/components/app/activities/ActivityPlayer.vue'
 import TopBar from '@/components/app/activities/TopBar.vue'
+import ActivityPlayer from '@/components/app/activities/ActivityPlayer.vue'
 import VideoResults from '@/components/app/activities/VideoResults.vue'
 import ActivityTitle from '@/components/app/activities/ActivityTitle.vue'
 

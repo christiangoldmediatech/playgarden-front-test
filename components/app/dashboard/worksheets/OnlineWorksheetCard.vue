@@ -46,6 +46,7 @@
         <underlined-title
           class="white--text"
           font-size="56px"
+          font-size-mobile="1.9rem"
           font-weight="bold"
           :text="offlineWorksheet && offlineWorksheet.completed ? 'Congratulations!' : 'Coming Next:'"
         />
@@ -78,8 +79,24 @@ import DashboardLink from '@/mixins/DashboardLinkMixin.js'
 import WorksheetComputedMixin from '@/mixins/WorksheetComputedMixin.js'
 import WorksheetFunctionalityMixin from '@/mixins/WorksheetFunctionalityMixin.js'
 
+import CompletedDialog from '@/components/app/dashboard/CompletedDialog'
+import WorksheetHeader from './WorksheetHeader.vue'
+import WorksheetImage from './WorksheetImage.vue'
+import WorksheetMessage from './WorksheetMessage.vue'
+import WorksheetQuestion from './WorksheetQuestion.vue'
+import UploadOfflineWorksheet from './UploadOfflineWorksheet.vue'
+
 export default {
   name: 'OnlineWorksheetCard',
+
+  components: {
+    CompletedDialog,
+    WorksheetHeader,
+    WorksheetImage,
+    WorksheetMessage,
+    WorksheetQuestion,
+    UploadOfflineWorksheet
+  },
 
   mixins: [DashboardLink, WorksheetComputedMixin, WorksheetFunctionalityMixin],
 
@@ -124,7 +141,13 @@ export default {
 
     offlineWorksheet () {
       if (this.lesson) {
-        return this.lesson.worksheets.find(({ type }) => type === 'OFFLINE')
+        // return this.lesson.worksheets.find(({ type }) => type === 'OFFLINE')
+        const offline = this.lesson.worksheets.find(({ type }) => type === 'OFFLINE')
+        if (offline) {
+          const copy = JSON.parse(JSON.stringify(offline))
+          copy.completed = false
+          return copy
+        }
       }
       return null
     },
@@ -133,7 +156,7 @@ export default {
       const buttons = []
 
       const goToTeachersVideo = {
-        text: 'GO TO TEACHER\'S VIDEO',
+        text: this.$vuetify.breakpoint.xsOnly ? 'TEACHER\'S VIDEO' : 'GO TO TEACHER\'S VIDEO',
         color: 'accent',
         iconLeft: 'pg-icon-paper-pencil',
         action: () => {
@@ -157,7 +180,7 @@ export default {
       }
 
       const downloadHandsOn = {
-        text: 'DOWNLOAD HANDS-ON WORKSHEET',
+        text: this.$vuetify.breakpoint.xsOnly ? 'DOWNLOAD WORKSHEET' : 'DOWNLOAD HANDS-ON WORKSHEET',
         color: '#FEC572',
         iconLeft: 'pg-icon-download',
         action: () => {
@@ -169,7 +192,7 @@ export default {
       }
 
       const uploadHandsOn = {
-        text: 'UPLOAD COMPLETED WORKSHEET',
+        text: this.$vuetify.breakpoint.xsOnly ? 'UPLOAD WORKSHEET' : 'UPLOAD COMPLETED WORKSHEET',
         color: 'accent',
         iconLeft: 'pg-icon-camera',
         action: () => {

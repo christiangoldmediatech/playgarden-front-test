@@ -12,7 +12,7 @@
           <span class="font-weight-medium logo-text pl-4">Web Admin</span>
 
           <img
-            alt="Playarden Prep Online Logo"
+            alt="Playgarden Prep Online Logo"
             class="logo"
             src="@/assets/svg/logo.svg"
           >
@@ -22,79 +22,12 @@
       <v-divider />
 
       <!-- Menu -->
-      <v-list dense mandatory>
-        <template v-for="(item, i) in menuItems">
-          <!-- Menu with sub items color="accent" -->
-          <v-list-group
-            v-if="item.children"
-            :key="`app-menu-item-${i}`"
-            active-class="white--text active-menu-item font-weight-black"
-            :group="item.rootPath"
-            no-action
-          >
-            <template v-slot:prependIcon>
-              <!-- Former color="primary darken-2" -->
-              <v-icon v-text="item.icon" />
-            </template>
-
-            <template v-slot:activator>
-              <v-list-item-content>
-                <v-list-item-title v-text="item.title" />
-              </v-list-item-content>
-            </template>
-
-            <v-list-item
-              v-for="(subItem, j) in item.children"
-              :key="`app-menu-item-${i}-sub-item-${j}`"
-              active-class="white--text active-menu-item font-weight-black"
-              nuxt
-              :to="`${item.rootPath}/${subItem.route}`"
-            >
-              <v-list-item-content>
-                <v-list-item-title v-text="subItem.title" />
-              </v-list-item-content>
-            </v-list-item>
-          </v-list-group>
-
-          <!-- Normal menu item -->
-          <v-list-item
-            v-else
-            :key="`app-menu-item-${i}`"
-            active-class="white--text active-menu-item font-weight-black"
-            nuxt
-            :to="item.route"
-          >
-            <v-list-item-icon>
-              <!-- Former color="primary darken-2" -->
-              <v-icon>
-                {{ item.icon }}
-              </v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-content>
-              <v-list-item-title v-text="item.title" />
-            </v-list-item-content>
-          </v-list-item>
-        </template>
-
-        <!-- Log out button -->
-        <v-list-item
-          active-class="white--text active-menu-item font-weight-black"
-          link
-          nuxt
-          :to="{ name: 'auth-logout' }"
-        >
-          <v-list-item-icon>
-            <!-- Former color="accent" -->
-            <v-icon>
-              mdi-logout
-            </v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-content>
-            <v-list-item-title>Log out</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+      <v-list>
+        <menu-item
+          v-for="(item, indexMI) in menuItems"
+          :key="indexMI"
+          :item="item"
+        />
       </v-list>
     </v-navigation-drawer>
 
@@ -159,6 +92,7 @@ import { mapGetters } from 'vuex'
 import VideoPreview from '@/components/admin/video-preview/VideoPreview.vue'
 import AdminSnackBar from '@/components/admin/AdminSnackBar.vue'
 import GradesEditorDialog from '@/components/admin/grades/GradesEditorDialog.vue'
+import MenuItem from '@/components/admin/MenuItem'
 
 export default {
   name: 'Admin',
@@ -167,23 +101,25 @@ export default {
 
   components: {
     AdminSnackBar,
-    VideoPreview,
-    GradesEditorDialog
+    GradesEditorDialog,
+    MenuItem,
+    VideoPreview
   },
 
   data () {
     return {
       appDrawer: false,
+
       menuItems: [
-        {
-          icon: 'mdi-teach',
-          title: 'Lesson management',
-          route: '/admin/curriculum-management'
-        },
         {
           icon: 'mdi-television-play',
           title: 'Activities management',
           route: '/admin/activity-management'
+        },
+        {
+          icon: 'mdi-teach',
+          title: 'Curriculum management',
+          route: '/admin/curriculum-management'
         },
         {
           icon: 'mdi-phone',
@@ -200,15 +136,14 @@ export default {
               route: 'blog'
             },
             {
+              title: 'Categories',
+              route: 'categories'
+            },
+            {
               title: 'Videos',
               route: 'videos'
             }
           ]
-        },
-        {
-          icon: 'mdi-account',
-          title: 'User manager',
-          route: '/admin/user-manager'
         },
         {
           icon: 'mdi-cog',
@@ -216,62 +151,106 @@ export default {
           rootPath: '/admin/settings',
           children: [
             {
-              title: 'Activity Types',
-              route: 'activity-types'
+              title: 'FAQs',
+              rootPath: '/faqs',
+              children: [
+                {
+                  title: 'Categories',
+                  route: 'categories'
+                },
+                {
+                  title: 'FAQs',
+                  route: 'faqs'
+                }
+              ]
             },
             {
-              title: 'Backpack Management',
-              route: 'backpack-management'
+              title: 'General',
+              rootPath: '/general',
+              children: [
+                {
+                  title: 'Coupon Management',
+                  route: 'coupon-management'
+                },
+                {
+                  title: 'Notification Management',
+                  route: 'notification-management'
+                },
+                {
+                  title: 'Privacy Policy Management',
+                  route: 'privacy-policy-management'
+                },
+                {
+                  title: 'Terms & Conditions Management',
+                  route: 'terms-conditions-management'
+                }
+              ]
             },
             {
-              title: 'Coupon Management',
-              route: 'coupon-management'
+              title: 'Lesson Configurations',
+              rootPath: '/lesson-configurations',
+              children: [
+                {
+                  title: 'Activity Types',
+                  route: 'activity-types'
+                },
+                {
+                  title: 'Curriculum Types',
+                  route: 'curriculum-types'
+                },
+                {
+                  title: 'Offline Worksheet Categories',
+                  route: 'offline-worksheet-categories'
+                },
+                {
+                  title: 'Onboarding Management',
+                  route: 'onboarding'
+                },
+                {
+                  title: 'Report Card Types',
+                  route: 'report-card-types'
+                }
+              ]
             },
             {
-              title: 'Curriculum Types',
-              route: 'curriculum-types'
-            },
-            {
-              title: 'Notification Management',
-              route: 'notification-management'
-            },
-            {
-              title: 'Offline Worksheet Categories',
-              route: 'offline-worksheet-categories'
-            },
-            {
-              title: 'Onboarding Management',
-              route: 'onboarding'
-            },
-            {
-              title: 'Parents Corner Categories',
-              route: 'parents-corner-categories'
-            },
-            {
-              title: 'Patch Management',
-              route: 'patch-management'
-            },
-            {
-              title: 'Puzzle Management',
-              route: 'puzzle-management'
-            },
-            {
-              title: 'Privacy Policy Management',
-              route: 'privacy-policy-management'
-            },
-            {
-              title: 'Report Card Types',
-              route: 'report-card-types'
-            },
+              title: 'Student Cubby',
+              rootPath: '/student-cubby',
+              children: [
+                {
+                  title: 'Backpack Management',
+                  route: 'backpack-management'
+                },
+                {
+                  title: 'Patch Management',
+                  route: 'patch-management'
+                },
+                {
+                  title: 'Puzzle Management',
+                  route: 'puzzle-management'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          icon: 'mdi-account',
+          title: 'User manager',
+          rootPath: '/admin/user-manager',
+          children: [
             {
               title: 'Role Management',
               route: 'role-management'
             },
             {
-              title: 'Terms & Conditions Management',
-              route: 'terms-conditions-management'
+              title: 'Users',
+              route: ''
             }
           ]
+        },
+        {
+          icon: 'mdi-logout',
+          title: 'Log out',
+          route: '/auth/logout'
         }
       ]
     }
@@ -329,10 +308,6 @@ export default {
   .navbar-logo-text {
     color: #78c383 !important;
     font-size: 12px;
-  }
-
-  .active-menu-item {
-    background-color: #f39b44 !important;
   }
 
   .pg-app {

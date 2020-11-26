@@ -66,7 +66,7 @@
             v-for="category in categories"
             :key="`category-${category.id}`"
           >
-            <v-list-item @click="$scrollTo(`#category_row_${category.id}`, 500, { offset: $vuetify.breakpoint.mobile ? -96 : -128 })">
+            <v-list-item @click="$scrollTo(`#category_row_${category.id}`, 125, { offset: -96, ease: 'ease-out', lazy: true, force: true })">
               <v-list-item-avatar tile>
                 <v-img
                   :src="category.icon"
@@ -96,7 +96,7 @@
           >
             <div
               :class="['wrapper clickable text-center mx-2', { 'scaled': hover }]"
-              @click="$scrollTo(`#category_row_${category.id}`, 500, { offset: -192 })"
+              @click="$scrollTo(`#category_row_${category.id}`, 125, { offset: -192, ease: 'ease-out', lazy: true, force: true })"
             >
               <div
                 class="category d-flex justify-center align-center"

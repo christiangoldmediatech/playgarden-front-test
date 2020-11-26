@@ -128,9 +128,9 @@
         {{ buttonText }}
       </v-btn>
 
-      <p v-if="!noTrial" class="mb-15 text-body-2 text-center">
+      <p v-if="!noTrial" class="mb-15 text-body-2 text-center messages-info-register">
         <span>
-          You will only be billed after the first FREE trial week is complete.
+          You will only be billed after 30 days of FREE trial is completed
         </span>
       </p>
 
@@ -203,11 +203,12 @@ export default {
       if (this.draft.promotion_code) {
         const coupons = await this.getCoupons({ active: true, code: this.draft.promotion_code })
         if (coupons.length > 0) {
-          console.log(coupons[0].promotion_id)
           this.draft.promotion_id = coupons[0].promotion_id
+          this.$nuxt.$emit('send-coupon', coupons[0])
           this.$snotify.success('Coupon is valid.')
         } else {
           this.$snotify.warning('Coupon is not valid.', 'Warning', {})
+          this.$nuxt.$emit('send-coupon', null)
           this.draft.promotion_code = null
           this.draft.promotion_id = null
         }

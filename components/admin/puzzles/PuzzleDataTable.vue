@@ -22,6 +22,7 @@
               <v-icon class="hidden-xs-only" small>
                 mdi-plus
               </v-icon>
+
               <span class="hidden-xs-only white--text">
                 Add new puzzle
               </span>
@@ -41,36 +42,16 @@
           <v-card-text>
             <pg-data-table
               :headers="headers"
-              hide-default-footer
               :items="puzzles"
               :loading="loading"
               :page.sync="pagination.page"
               :server-items-length="pagination.total"
+              @click:delete-item="remove($event)"
+              @click:edit-item="$refs.editor.open(null, $event)"
+              @click:refresh="refresh(true)"
+              @search="onSearch"
               @update:page="pagination.page = $event"
             >
-              <template v-slot:top>
-                <puzzle-editor-dialog ref="editor" @saved="refresh(false)" />
-
-                <v-toolbar color="white" flat>
-                  <v-spacer />
-
-                  <pg-text-field
-                    v-model="search"
-                    append-icon="mdi-magnify"
-                    class="shrink"
-                    clearable
-                    hide-details
-                    label="Search"
-                    single-line
-                    solo
-                    @keydown.enter="refresh(false)"
-                  />
-                </v-toolbar>
-                <v-toolbar color="white" flat>
-                  <v-spacer />
-                </v-toolbar>
-              </template>
-
               <template v-slot:item.image="{ item }">
                 <img v-if="item.image" :src="item.image" width="32px">
 
@@ -78,43 +59,13 @@
                   N/A
                 </span>
               </template>
-
-              <template v-slot:item.createdAt="{ item }">
-                {{ item.createdAt | formatDate }}
-              </template>
-
-              <template v-slot:item.updatedAt="{ item }">
-                {{ item.updatedAt | formatDate }}
-              </template>
-
-              <template v-slot:item.actions="{ item }">
-                <v-icon
-                  color="#81A1F7"
-                  dense
-                  @click="$refs.editor.open(null, item)"
-                >
-                  mdi-pencil-outline
-                </v-icon>
-
-                <v-icon color="#d30909" dense @click="remove(item)">
-                  mdi-delete-outline
-                </v-icon>
-              </template>
-
-              <template v-slot:no-data>
-                <v-btn color="primary" text @click="refresh(true)">
-                  Refresh
-                </v-btn>
-              </template>
-
-              <template v-slot:loading>
-                <v-skeleton-loader class="mx-auto" type="table-row-divider@3" />
-              </template>
             </pg-data-table>
           </v-card-text>
         </v-card>
       </v-col>
     </v-row>
+
+    <puzzle-editor-dialog ref="editor" @saved="refresh(false)" />
   </v-container>
 </template>
 
@@ -122,6 +73,7 @@
 import { mapActions, mapGetters } from 'vuex'
 
 import paginable from '@/utils/mixins/paginable'
+import onSearch from '@/mixins/OnSearchMixin'
 import PuzzleEditorDialog from './PuzzleEditorDialog'
 
 export default {
@@ -131,7 +83,7 @@ export default {
     PuzzleEditorDialog
   },
 
-  mixins: [paginable],
+  mixins: [onSearch, paginable],
 
   data: () => ({
     filters: {

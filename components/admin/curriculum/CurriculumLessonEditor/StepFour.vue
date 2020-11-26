@@ -80,7 +80,6 @@
       <validation-provider
         v-slot="{ errors }"
         name="Video"
-        rules="required"
       >
         <file-uploader
           ref="videoUploader"

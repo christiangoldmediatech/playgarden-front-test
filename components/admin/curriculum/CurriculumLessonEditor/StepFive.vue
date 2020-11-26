@@ -101,8 +101,8 @@
                           {
                             'accent--text text--darken-1':
                               props.pagination.page === i,
-                            clickable: props.pagination.page !== i
-                          }
+                            clickable: props.pagination.page !== i,
+                          },
                         ]"
                         @click.stop="pagination.page = i"
                       >
@@ -145,8 +145,8 @@
               name: 'admin-curriculum-management-editor',
               query: {
                 step: 4,
-                lessonId
-              }
+                lessonId,
+              },
             }"
             x-large
           >
@@ -203,6 +203,11 @@ export default {
         text: 'Activity type',
         sortable: false,
         value: 'activityType.name'
+      },
+      {
+        text: 'Description',
+        sortable: false,
+        value: 'activityType.description'
       },
       {
         align: 'right',

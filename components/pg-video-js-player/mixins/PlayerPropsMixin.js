@@ -54,6 +54,24 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+
+    inline: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
+    showFavorite: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
+    showCast: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   }
 }

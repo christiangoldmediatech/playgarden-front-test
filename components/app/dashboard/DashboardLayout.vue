@@ -37,7 +37,7 @@
               />
             </div>
 
-            <v-col class="text-center text-sm-right">
+            <!-- <v-col class="text-center text-sm-right">
               <span class="font-weight-medium">
                 First time using Playgarden?
               </span>
@@ -45,7 +45,7 @@
               <v-btn color="primary" text v-bind="!previewMode ? { nuxt: true, to: { name: 'app-onboarding' } } : {}">
                 WATCH TUTORIAL HERE
               </v-btn>
-            </v-col>
+            </v-col> -->
           </v-row>
 
           <v-row :class="['dashboard-content', { 'dashboard-mobile-content': $vuetify.breakpoint.sm, 'dashboard-xs-content': $vuetify.breakpoint.xs }]" no-gutters>
@@ -67,8 +67,20 @@
 </template>
 
 <script>
+import DashboardPanel from '@/components/app/dashboard/DashboardPanel.vue'
+import LessonActivityPlayer from '@/components/app/dashboard/LessonActivityPlayer.vue'
+import LessonTeacherVideo from '@/components/app/dashboard/LessonTeacherVideo.vue'
+import ChildSelect from '@/components/app/ChildSelect.vue'
+
 export default {
   name: 'DashboardLayout',
+
+  components: {
+    DashboardPanel,
+    LessonActivityPlayer,
+    LessonTeacherVideo,
+    ChildSelect
+  },
 
   props: {
     value: {
