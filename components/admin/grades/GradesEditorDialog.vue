@@ -192,7 +192,6 @@ export default {
 
     loadItem (item) {
       this.id = item.id
-      // Handle keys
       Object.keys(item).forEach((key) => {
         if (Object.prototype.hasOwnProperty.call(this.item, key)) {
           this.item[key] = item[key]
