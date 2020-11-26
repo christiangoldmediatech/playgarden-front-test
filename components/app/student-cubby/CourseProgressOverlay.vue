@@ -245,6 +245,7 @@ export default {
 
 .mobile-panel-container {
   height: calc(100% - 48px);
+  max-width: 100vw;
   max-height: calc(100% - 48px);
   padding-bottom: 12px;
   display: flex;
