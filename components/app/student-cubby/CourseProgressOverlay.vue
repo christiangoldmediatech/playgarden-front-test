@@ -22,49 +22,91 @@
       size="128"
       width="8"
     />
-    <perfect-scrollbar v-else>
-      <v-container class="panel-container" fill-height fluid>
-        <v-row class="fill-height flex-nowrap">
-          <v-col
-            v-for="lesson in lessons"
-            :key="`curriculum-lesson-progress-${lesson.id}`"
-            class="panel-column"
-            cols="12"
-            sm="7"
-            md="6"
-            lg="5"
-            xl="4"
-          >
+    <template v-else>
+      <template v-if="$vuetify.breakpoint.mdAndUp">
+        <perfect-scrollbar ref="scrollbar">
+          <v-container class="panel-container" fill-height fluid>
+            <v-row class="fill-height flex-nowrap">
+              <v-col
+                v-for="lesson in lessons"
+                :key="`curriculum-lesson-progress-${lesson.id}`"
+                class="panel-column"
+                cols="12"
+                sm="7"
+                md="6"
+                lg="5"
+                xl="4"
+              >
+                <dashboard-panel
+                  v-bind="{ lesson, customOverrides: { lessonId: lesson.id, childId: studentId } }"
+                  display-mode
+                />
+              </v-col>
+              <v-col
+                v-for="i in missing"
+                :key="`curriculum-lesson-missing-${i}`"
+                class="panel-column"
+                cols="12"
+                sm="7"
+                md="6"
+                lg="5"
+                xl="4"
+              >
+                <blank-dashboard-panel
+                  :letter="(lessons[0]) ? lessons[0].curriculumType.letter : ''"
+                  :day="i + lessons.length"
+                >
+                  <template v-if="i === 1">
+                    COME BACK TOMORROW TO UNLOCK THIS DAY
+                  </template>
+                  <template v-else>
+                    COME BACK LATER TO UNLOCK THIS DAY
+                  </template>
+                </blank-dashboard-panel>
+              </v-col>
+            </v-row>
+          </v-container>
+        </perfect-scrollbar>
+      </template>
+      <template v-else>
+        <v-container class="panel-container" fill-height fluid>
+          <div class="mobile-panel-container">
             <dashboard-panel
-              v-bind="{ lesson, customOverrides: { lessonId: lesson.id, childId: studentId } }"
+              v-if="currentMobileLesson && typeof currentMobileLesson === 'object'"
+              v-bind="{ lesson: currentMobileLesson, customOverrides: { lessonId: currentMobileLesson.id, childId: studentId } }"
               display-mode
             />
-          </v-col>
-          <v-col
-            v-for="i in missing"
-            :key="`curriculum-lesson-missing-${i}`"
-            class="panel-column"
-            cols="12"
-            sm="7"
-            md="6"
-            lg="5"
-            xl="4"
-          >
             <blank-dashboard-panel
+              v-else
               :letter="(lessons[0]) ? lessons[0].curriculumType.letter : ''"
-              :day="i + lessons.length"
+              :day="selectedDay"
             >
-              <template v-if="i === 1">
+              <template v-if="currentMobileLesson === -1">
                 COME BACK TOMORROW TO UNLOCK THIS DAY
               </template>
               <template v-else>
                 COME BACK LATER TO UNLOCK THIS DAY
               </template>
             </blank-dashboard-panel>
-          </v-col>
-        </v-row>
-      </v-container>
-    </perfect-scrollbar>
+          </div>
+          <v-carousel
+            v-model="selectedDay"
+            height="48px"
+            width="100%"
+            :hide-delimiter-background="true"
+            :hide-delimiters="true"
+          >
+            <v-carousel-item v-for="i in 5" :key="`day-${i}`">
+              <div class="d-flex align-center justify-center fill-height">
+                <span class="font-weight-bold white--text">
+                  Day {{ i }}
+                </span>
+              </div>
+            </v-carousel-item>
+          </v-carousel>
+        </v-container>
+      </template>
+    </template>
   </v-overlay>
 </template>
 
@@ -86,6 +128,7 @@ export default {
   data: () => {
     return {
       show: false,
+      selectedDay: 0,
       loading: false,
       lessons: []
     }
@@ -98,6 +141,47 @@ export default {
 
     missing () {
       return 5 - this.lessons.length
+    },
+
+    currentMobileLesson () {
+      const index = this.selectedDay
+      const total = 5
+
+      if (this.lessons[index]) {
+        return this.lessons[index]
+      } else if (this.lessons.length > 0) {
+        const difference = total - this.lessons.length
+        const current = index + 1
+        const offset = current + difference
+        return total - offset
+      }
+      return null
+    }
+  },
+
+  watch: {
+    '$vuetify.breakpoint.width' () {
+      if (this.$refs.scrollbar && this.$vuetify.breakpoint.mdAndUp) {
+        this.$nextTick(() => {
+          this.$refs.scrollbar.update()
+        })
+      }
+    },
+
+    '$vuetify.breakpoint.height' () {
+      if (this.$refs.scrollbar && this.$vuetify.breakpoint.mdAndUp) {
+        this.$nextTick(() => {
+          this.$refs.scrollbar.update()
+        })
+      }
+    },
+
+    lessons (val) {
+      if (val.length > 0 && this.$refs.scrollbar && this.$vuetify.breakpoint.mdAndUp) {
+        this.$nextTick(() => {
+          this.$refs.scrollbar.update()
+        })
+      }
     }
   },
 
@@ -119,6 +203,7 @@ export default {
 
     close () {
       this.show = false
+      this.selectedDay = 0
       document.querySelector('html').style.overflowY = 'auto'
     }
   }
@@ -143,6 +228,28 @@ export default {
 <style lang="scss" scoped>
 .panel-container {
   overflow-x: visible;
+  @media screen and (max-width: 960px) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    max-width: 100vw;
+    padding-top: 32px;
+    padding-bottom: 8px;
+    z-index: 300;
+    display: block;
+  }
+}
+
+.mobile-panel-container {
+  height: calc(100% - 48px);
+  max-width: 100vw;
+  max-height: calc(100% - 48px);
+  padding-bottom: 12px;
+  display: flex;
+  justify-content: center;
 }
 
 ::v-deep {
