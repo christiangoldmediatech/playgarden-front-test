@@ -191,9 +191,13 @@ export default {
       this.loading = true
 
       try {
-        const token = await this.validateCard(cardData)
-        const dataSubscrition = (cardData.promotion_id) ? { ...token, promotion_id: cardData.promotion_id } : token
+        const dataSubscrition = {
+          token: cardData.token
+        }
 
+        if (cardData.promotion_id) {
+          dataSubscrition.promotion_id = cardData.promotion_id
+        }
         await this.paySubscription(dataSubscrition)
 
         if (this.inSignUpProcess) {
