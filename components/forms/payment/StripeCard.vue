@@ -7,7 +7,7 @@
     align="center"
   >
     <v-col cols="12">
-      <div ref="cardInput" class="card-input"></div>
+      <div ref="cardInput" class="card-input" />
     </v-col>
   </v-row>
 </template>
