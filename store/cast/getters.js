@@ -1,5 +1,7 @@
 import { get } from '@/utils/vuex'
 
 export default {
-  getCastContext: get('castContext')
+  getStatus: get('status'),
+  getCurrentTime: get('currentTime'),
+  getCasting: get('isCasting')
 }

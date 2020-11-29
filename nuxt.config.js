@@ -76,6 +76,7 @@ export default {
         src: process.env.TEST_ENV === 'production' ? '/app/js/ics.min.js' : '/js/ics.min.js'
       },
       { src: 'https://widget.manychat.com/108368577679635.js', async: true },
+      { src: 'https://js.stripe.com/v3/', async: true },
       {
         src: process.env.TEST_ENV === 'production' ? '/app/js/google-tag-manager.js' : '/js/empty.js'
       }
@@ -207,7 +208,8 @@ export default {
   },
   env: {
     apiBaseUrl: process.env.API_BASE_URL || 'https://apidev.playgardenonline.com',
-    testEnv: process.env.TEST_ENV || 'LOCAL'
+    testEnv: process.env.TEST_ENV || 'LOCAL',
+    stripePublicKey: process.env.STRIPE_PUBLIC || 'pk_test_51HKUavFlV2s2JR4RIPnTwt7laAa7Q5T3CXKL5xhGReFmtvcbi2YQDJBz8JnAHw5STCGxNmoWUDlZUnxzCE9imzxF00J5yVNU5Z'
   },
   router: {
     base: process.env.TEST_ENV === 'production' ? '/app/' : '/',

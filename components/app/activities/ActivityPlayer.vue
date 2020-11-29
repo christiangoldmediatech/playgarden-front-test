@@ -11,11 +11,11 @@
       show-next-up
       show-restart
       show-steps
+      show-favorite
+      show-cast
       use-standard-poster
       :no-seek="noSeek"
       :fullscreen-override="handleFullscreen"
-      show-favorite
-      show-cast
       no-auto-track-change
       @ready="onReady"
       @playlist-index-change="updateIndex"

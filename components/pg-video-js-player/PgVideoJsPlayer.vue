@@ -64,7 +64,7 @@
 
 <script>
 import { jsonCopy } from '@/utils/objectTools.js'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
 import videojs from 'video.js'
 import Fullscreen from '@/mixins/FullscreenMixin.js'
 import Favorites from '@/mixins/FavoritesMixin.js'
@@ -106,15 +106,13 @@ export default {
       },
       isCasting: false,
       castLoading: false,
-      MEDIA_NAMESPACE: 'urn:x-cast:com.google.cast.media',
-      requestId: 1,
-      remotePlayer: null,
-      remotePlayerController: null
+      MEDIA_NAMESPACE: 'urn:x-cast:com.google.cast.media'
     }
   },
 
   computed: {
     ...mapState('cast', ['castAvailable', 'castContext']),
+    ...mapGetters('cast', ['getCasting', 'getStatus', 'getCurrentTime']),
 
     canCast () {
       return this.showCast && this.castAvailable
@@ -170,6 +168,28 @@ export default {
         return this.mediaObject.videoId
       }
       return -1
+    }
+  },
+
+  watch: {
+    getCurrentTime (val) {
+      if (this.isCasting && this.getCasting) {
+        this.position = val
+      }
+    },
+
+    getStatus (val) {
+      if (this.isCasting && this.getCasting) {
+        this.status = val
+      }
+    },
+
+    getCasting (val) {
+      if (this.isCasting && !val) {
+        this.isCasting = false
+        this.status = 'IDLE'
+        this.playerInstance.currentTime(this.position)
+      }
     }
   },
 
@@ -269,8 +289,8 @@ export default {
           this.muted = false
         }
         if (this.isCasting) {
-          this.remotePlayer.volumeLevel = this.volume
-          this.remotePlayerController.setVolumeLevel()
+          window.remotePlayer.volumeLevel = this.volume
+          window.remotePlayerController.setVolumeLevel()
         }
       })
 
@@ -331,7 +351,7 @@ export default {
       // Play or pause
       this.playerInstance.togglePlay = () => {
         if (this.isCasting) {
-          this.remotePlayerController.playOrPause()
+          window.remotePlayerController.playOrPause()
           return
         }
         if (this.status === 'PLAYING') {
@@ -345,8 +365,8 @@ export default {
       this.playerInstance.seek = (position) => {
         if (this.duration > 0) {
           if (this.isCasting) {
-            this.remotePlayer.currentTime = position
-            this.remotePlayerController.seek()
+            window.remotePlayer.currentTime = position
+            window.remotePlayerController.seek()
           } else {
             this.playerInstance.currentTime(position)
           }
@@ -356,8 +376,8 @@ export default {
       // Restart video
       this.playerInstance.restart = () => {
         if (this.isCasting) {
-          this.remotePlayer.currentTime = 0
-          this.remotePlayerController.seek()
+          window.remotePlayer.currentTime = 0
+          window.remotePlayerController.seek()
         } else {
           this.playerInstance.currentTime(0)
         }
@@ -376,8 +396,8 @@ export default {
         }
 
         if (this.isCasting) {
-          this.remotePlayer.currentTime = newTime
-          this.remotePlayerController.seek()
+          window.remotePlayer.currentTime = newTime
+          window.remotePlayerController.seek()
         } else {
           this.playerInstance.currentTime(newTime)
         }
@@ -398,8 +418,8 @@ export default {
 
         if (nextTime < (duration - 1) && nextTime < availTime) {
           if (this.isCasting) {
-            this.remotePlayer.currentTime = nextTime
-            this.remotePlayerController.seek()
+            window.remotePlayer.currentTime = nextTime
+            window.remotePlayerController.seek()
           } else {
             this.playerInstance.currentTime(nextTime)
           }
@@ -410,7 +430,7 @@ export default {
       // Mute or unmute
       this.playerInstance.toggleMute = () => {
         if (this.isCasting) {
-          this.remotePlayerController.muteOrUnmute()
+          window.remotePlayerController.muteOrUnmute()
           this.muted = !this.muted
           return
         }
@@ -432,41 +452,7 @@ export default {
       }
     },
 
-    setupRemoteController () {
-      if (!this.remotePlayer || !this.remotePlayerController) {
-        // Create remote player for listening to events
-        this.remotePlayer = new cast.framework.RemotePlayer()
-        this.remotePlayerController = new cast.framework.RemotePlayerController(this.remotePlayer)
-
-        // CURRENT_TIME_CHANGED change
-        const updatePosition = (event) => {
-          this.position = event.value
-        }
-        this.remotePlayerController.addEventListener(cast.framework.RemotePlayerEventType.CURRENT_TIME_CHANGED, updatePosition)
-
-        this.remotePlayerController.addEventListener(cast.framework.RemotePlayerEventType.PLAYER_STATE_CHANGED, (event) => {
-          if (event.value === 'PLAYING') {
-            this.status = 'PLAYING'
-          } else if (event.value === 'PAUSED') {
-            this.status = 'IDLE'
-          } else {
-            this.status = 'LOADING'
-          }
-        })
-
-        this.remotePlayerController.addEventListener(cast.framework.RemotePlayerEventType.IS_CONNECTED_CHANGED, (event) => {
-          if (event.value === false) {
-            this.isCasting = false
-            this.status = 'IDLE'
-          } else {
-            this.isCasting = true
-          }
-        })
-      }
-    },
-
     onCastBtn () {
-      this.setupRemoteController()
       cast.framework.CastContext.getInstance().requestSession().then(() => {
         // let url, type
         let url
@@ -491,8 +477,8 @@ export default {
 
         castSession.loadMedia(request).then(
           () => {
-            this.remotePlayer.currentTime = currentTime
-            this.remotePlayerController.seek()
+            window.remotePlayer.currentTime = currentTime
+            window.remotePlayerController.seek()
           },
           (errorCode) => {
             // eslint-disable-next-line
