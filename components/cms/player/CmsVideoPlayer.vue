@@ -9,7 +9,9 @@
       ref="videoPlayer"
       autoplay
       show-next-up
+      show-steps
       show-favorite
+      show-cast
       :fullscreen-override="handleFullscreen"
       @ready="onReady"
     />

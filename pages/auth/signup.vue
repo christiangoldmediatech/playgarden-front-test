@@ -53,7 +53,7 @@
 
           <p class="mt-6 mb-12 text-center text-md-left">
             <small>
-              Complete the registration and choose the plan that best suits you, to start your experience!
+              Complete the registration and choose the plan that best suits your family's needs!
             </small>
           </p>
 
@@ -71,7 +71,7 @@
                 </v-col>
                 <v-col>
                   <span class="font-weight-bold text-uppercase pg-letter-spacing-subtitle">
-                    Get 30 days of free trial
+                    ENJOY 30 DAYS OF FREE TRIAL
                   </span>
                 </v-col>
               </v-row>

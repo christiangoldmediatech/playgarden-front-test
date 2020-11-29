@@ -102,6 +102,6 @@ ul li::before {
   *display: inline;
 } /* haslayout for IE6/7 */
 .plan-description {
-  min-height: 220px !important;
+  min-height: 155px !important;
 }
 </style>

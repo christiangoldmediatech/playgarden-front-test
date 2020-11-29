@@ -117,7 +117,7 @@
           <content-list :items="activities.items" />
         </content-section>
       </div>
-      </pgcircleletterday>
+      <!-- </pgcircleletterday> -->
     </v-card>
     <upload-offline-worksheet v-if="!displayMode" v-model="uploadDialog" />
   </div>
@@ -195,6 +195,9 @@ export default {
     height: 100%;
     padding-top: 70px;
     max-width: 471px;
+    @media screen and (max-width: 470px) {
+      max-width: calc(100vw - 24px);
+    }
   }
 
   &-card {
