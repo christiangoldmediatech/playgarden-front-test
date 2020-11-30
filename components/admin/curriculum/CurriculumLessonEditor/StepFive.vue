@@ -22,17 +22,17 @@
             xl="3"
           >
             <v-card>
-              <v-list-item @click="loadDataSelected(data)">
-                <v-list-item-avatar>
+              <v-list-item class="activities-selected">
+                <v-list-item-avatar @click="loadDataSelected(data)">
                   <v-img :src="data.activity.activityType.icon" height="200" />
                 </v-list-item-avatar>
 
-                <v-list-item-content>
+                <v-list-item-content @click="loadDataSelected(data)">
                   <v-list-item-title class="headline">
                     {{ data.activity.videos.name }}
                   </v-list-item-title>
 
-                  <v-list-item-subtitle>
+                  <v-list-item-subtitle @click="loadDataSelected(data)">
                     {{ data.activity.activityType.description }}
                   </v-list-item-subtitle>
                 </v-list-item-content>
@@ -404,3 +404,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.activities-selected:hover {
+  cursor: pointer !important;
+}
+</style>
