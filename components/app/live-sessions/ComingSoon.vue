@@ -47,7 +47,7 @@ export default {
   },
 
   mounted () {
-    const countDownDate = new Date('Nov 30, 2020 00:00:00').getTime()
+    const countDownDate = new Date('Dec 07, 2020 00:00:00').getTime()
 
     const getTime = () => {
       // Get today's date and time
