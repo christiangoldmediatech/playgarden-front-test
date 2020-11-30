@@ -205,7 +205,7 @@ export default {
       {
         text: 'Description',
         sortable: false,
-        value: 'video.description'
+        value: 'videos.description'
       },
       {
         align: 'right',
