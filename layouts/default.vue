@@ -62,7 +62,7 @@ export default {
     },
 
     isComingSoonDialogOpen () {
-      if (!['production'].includes(process.env.testEnv)) {
+      if (['production'].includes(process.env.testEnv)) {
         const routes = ComingSoonRoutes
         return Boolean(routes[this.$route.name])
       }
