@@ -8,7 +8,7 @@
       <div class="green-line green-line-1" />
       <div class="green-line green-line-2" />
       <v-card-text class="pa-0">
-        <v-row>
+        <v-row no-gutters>
           <v-col cols="4" class="hidden-sm-and-down pa-0">
             <v-container class="img-container pa-0 ma-0">
               <img src="@/assets/png/coming-soon.png" class="image" />
@@ -65,12 +65,17 @@
                   Here's a sneak peek of Playgarden Online!
                 </h4>
                 <div class="text-center text-md-left">
-                  <v-btn class="px-13 ml-3" color="accent">
+                  <v-btn class="px-13 ml-3" color="accent" @click="showVideos">
                     Take a Look!
                   </v-btn>
                 </div>
               </div>
             </v-container>
+            <!-- <template v-if="!showingVideos">
+            </template>
+            <template v-else> -->
+            <!-- TODO: ADD VIDEO PLAYER -->
+            <!-- </template> -->
           </v-col>
         </v-row>
       </v-card-text>
@@ -97,7 +102,8 @@ export default {
         days: 0,
         hours: 0,
         minutes: 0
-      }
+      },
+      showingVideos: false
     }
   },
 
@@ -140,6 +146,12 @@ export default {
     if (this.interval) {
       window.clearInterval(this.interval)
       this.interval = null
+    }
+  },
+
+  methods: {
+    showVideos () {
+      this.showingVideos = true
     }
   }
 }
