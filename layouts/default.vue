@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <coming-soon-player />
     <!-- APP MAV & BAR -->
     <app-navigation :override-dialogs="isComingSoonDialogOpen" />
 
@@ -31,8 +32,8 @@ import AppNavigation from '@/components/app/header/AppNavigation'
 import ApplicationHeader from '@/components/app/header/ApplicationHeader'
 import DefaultFooter from '@/components/app/footer/DefaultFooter'
 import ComingSoonDialog from '@/components/app/ComingSoonDialog'
-
 import ComingSoonRoutes from '@/utils/consts/comingSoonRoutes'
+import ComingSoonPlayer from '@/components/app/ComingSoonPlayer.vue'
 
 export default {
   name: 'Default',
@@ -41,7 +42,8 @@ export default {
     ApplicationHeader,
     AppNavigation,
     DefaultFooter,
-    ComingSoonDialog
+    ComingSoonDialog,
+    ComingSoonPlayer
   },
 
   data: () => ({
@@ -60,7 +62,7 @@ export default {
     },
 
     isComingSoonDialogOpen () {
-      if (['production'].includes(process.env.testEnv)) {
+      if (!['production'].includes(process.env.testEnv)) {
         const routes = ComingSoonRoutes
         return Boolean(routes[this.$route.name])
       }

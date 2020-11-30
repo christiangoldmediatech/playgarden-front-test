@@ -57,7 +57,7 @@
                   </v-col>
                 </v-row>
               </div>
-              <!-- <div class="my-6">
+              <div class="my-6">
                 <h2 class="pl-3 mb-2 mt-6 font-weight-medium text-title text-center text-md-left">
                   Can't wait?
                 </h2>
@@ -66,13 +66,8 @@
                     Check out a sneak peek!
                   </v-btn>
                 </div>
-              </div> -->
+              </div>
             </v-container>
-            <!-- <template v-if="!showingVideos">
-            </template>
-            <template v-else> -->
-            <!-- TODO: ADD VIDEO PLAYER -->
-            <!-- </template> -->
           </v-col>
         </v-row>
       </v-card-text>
@@ -99,8 +94,7 @@ export default {
         days: 0,
         hours: 0,
         minutes: 0
-      },
-      showingVideos: false
+      }
     }
   },
 
@@ -148,7 +142,7 @@ export default {
 
   methods: {
     showVideos () {
-      this.showingVideos = true
+      this.$nuxt.$emit('open-coming-soon-video-player')
     }
   }
 }

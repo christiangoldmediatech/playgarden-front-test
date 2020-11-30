@@ -55,7 +55,7 @@
 
     <!-- Controls -->
     <control-bar
-      v-if="playerInstance && playerContainerId && playerInstance.toggleMute"
+      v-if="showControls"
       v-bind="{ ...controlBarProps, noSmallscreen }"
       @fullscreen="handleFullscreen"
     />
@@ -113,6 +113,10 @@ export default {
   computed: {
     ...mapState('cast', ['castAvailable', 'castContext']),
     ...mapGetters('cast', ['getCasting', 'getStatus', 'getCurrentTime']),
+
+    showControls () {
+      return Boolean(this.playerInstance && this.playerContainerId && this.playerInstance.toggleMute)
+    },
 
     canCast () {
       return this.showCast && this.castAvailable
@@ -318,38 +322,40 @@ export default {
       })
 
       // Custom player functions
-      this.playerInstance.loadPlaylist = this.loadPlaylist
+      this.$set(this.playerInstance, 'loadPlaylist', this.loadPlaylist)
+      // this.playerInstance.loadPlaylist = this.loadPlaylist
 
-      this.playerInstance.getMediaObject = () => this.mediaObject
+      this.$set(this.playerInstance, 'getMediaObject', () => this.mediaObject)
+      // this.playerInstance.getMediaObject = () => this.mediaObject
 
       // Add show loading methods
-      this.playerInstance.showLoading = () => {
+      this.$set(this.playerInstance, 'showLoading', () => {
         this.playerInstance.addClass('vjs-waiting')
-      }
+      })
 
-      this.playerInstance.hideLoading = () => {
+      this.$set(this.playerInstance, 'hideLoading', () => {
         this.playerInstance.removeClass('vjs-waiting')
-      }
+      })
 
-      this.playerInstance.nextVideo = () => {
+      this.$set(this.playerInstance, 'nextVideo', () => {
         if (!this.lastPlaylistItem) {
           this.loadMediaObject(this.playlistItemIndex + 1)
         } else {
           this.$emit('playlist-complete')
         }
-      }
+      })
 
-      this.playerInstance.stopCasting = () => {
+      this.$set(this.playerInstance, 'stopCasting', () => {
         if (this.isCasting) {
           cast.framework.CastContext.getInstance().endCurrentSession(true)
           this.isCasting = false
           this.status = 'IDLE'
         }
-      }
+      })
 
       // Player controls
       // Play or pause
-      this.playerInstance.togglePlay = () => {
+      this.$set(this.playerInstance, 'togglePlay', () => {
         if (this.isCasting) {
           window.remotePlayerController.playOrPause()
           return
@@ -359,10 +365,10 @@ export default {
         } else {
           this.playerInstance.play()
         }
-      }
+      })
 
       // Seek
-      this.playerInstance.seek = (position) => {
+      this.$set(this.playerInstance, 'seek', (position) => {
         if (this.duration > 0) {
           if (this.isCasting) {
             window.remotePlayer.currentTime = position
@@ -371,10 +377,10 @@ export default {
             this.playerInstance.currentTime(position)
           }
         }
-      }
+      })
 
       // Restart video
-      this.playerInstance.restart = () => {
+      this.$set(this.playerInstance, 'restart', () => {
         if (this.isCasting) {
           window.remotePlayer.currentTime = 0
           window.remotePlayerController.seek()
@@ -382,10 +388,10 @@ export default {
           this.playerInstance.currentTime(0)
         }
         this.position = 0
-      }
+      })
 
       // Step back 15 seconds
-      this.playerInstance.stepBack = () => {
+      this.$set(this.playerInstance, 'stepBack', () => {
         let currentTime = this.playerInstance.currentTime()
         if (this.isCasting) {
           currentTime = this.position
@@ -403,10 +409,10 @@ export default {
         }
 
         this.position = newTime
-      }
+      })
 
       // Step forward 15 seconds
-      this.playerInstance.stepForward = () => {
+      this.$set(this.playerInstance, 'stepForward', () => {
         let currentTime = this.playerInstance.currentTime()
         if (this.isCasting) {
           currentTime = this.position
@@ -425,10 +431,10 @@ export default {
           }
           this.position = nextTime
         }
-      }
+      })
 
       // Mute or unmute
-      this.playerInstance.toggleMute = () => {
+      this.$set(this.playerInstance, 'toggleMute', () => {
         if (this.isCasting) {
           window.remotePlayerController.muteOrUnmute()
           this.muted = !this.muted
@@ -439,7 +445,7 @@ export default {
         } else {
           this.volumeVal = 100
         }
-      }
+      })
 
       this.$emit('ready', this.playerInstance)
     },
