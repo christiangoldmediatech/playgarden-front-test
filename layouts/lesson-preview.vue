@@ -1,13 +1,14 @@
 <template>
   <v-app>
     <!-- APP MAV & BAR -->
-    <app-navigation />
-    <application-header full-width preview-mode />
+    <app-navigation :override-dialogs="isComingSoonDialogOpen" />
+    <application-header full-width preview-mode :override-dialogs="isComingSoonDialogOpen" />
     <!-- CONTENT -->
     <nuxt />
     <!-- FOOTER -->
     <default-footer />
     <notify-event />
+    <coming-soon-dialog :showing="isComingSoonDialogOpen" />
   </v-app>
 </template>
 
@@ -15,6 +16,9 @@
 import AppNavigation from '@/components/app/header/AppNavigation'
 import ApplicationHeader from '@/components/app/header/ApplicationHeader'
 import DefaultFooter from '@/components/app/footer/DefaultFooter'
+import ComingSoonDialog from '@/components/app/ComingSoonDialog'
+
+import ComingSoonRoutes from '@/utils/consts/comingSoonRoutes'
 
 export default {
   name: 'LessonPreview',
@@ -24,7 +28,18 @@ export default {
   components: {
     ApplicationHeader,
     AppNavigation,
-    DefaultFooter
+    DefaultFooter,
+    ComingSoonDialog
+  },
+
+  computed: {
+    isComingSoonDialogOpen () {
+      if (['production'].includes(process.env.testEnv)) {
+        const routes = ComingSoonRoutes
+        return Boolean(routes[this.$route.name])
+      }
+      return false
+    }
   }
 }
 </script>
