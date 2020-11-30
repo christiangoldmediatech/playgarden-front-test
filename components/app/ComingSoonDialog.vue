@@ -1,6 +1,6 @@
 <template>
   <v-dialog
-    :value="showing"
+    :value="showing && isBeforeDueDate"
     max-width="1100px"
     persistent
   >
@@ -92,6 +92,7 @@ export default {
   data: () => {
     return {
       interval: null,
+      isBeforeDueDate: true,
       timeLeft: {
         days: 0,
         hours: 0,
@@ -109,6 +110,9 @@ export default {
 
       // Find the distance between now and the count down date
       const distance = countDownDate - now
+      if (distance <= 0) {
+        this.isBeforeDueDate = false
+      }
 
       // Time calculations for days, hours, minutes and seconds
       const days = Math.floor(distance / (1000 * 60 * 60 * 24))
