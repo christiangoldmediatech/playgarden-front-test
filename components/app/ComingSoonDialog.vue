@@ -7,7 +7,7 @@
     <v-card>
       <div class="green-line green-line-1" />
       <div class="green-line green-line-2" />
-      <v-card-text>
+      <v-card-text class="pa-0">
         <v-row>
           <v-col cols="4" class="hidden-sm-and-down pa-0">
             <v-container class="img-container pa-0 ma-0">
@@ -64,9 +64,11 @@
                 <h4 class="pl-3 mb-6 font-weight-medium text-subtitle text-center text-md-left">
                   Here's a sneak peek of Playgarden Online!
                 </h4>
-                <v-btn class="px-13 ml-3 mt-6 text-center text-md-left" color="accent">
-                  Take a Look!
-                </v-btn>
+                <div class="text-center text-md-left">
+                  <v-btn class="px-13 ml-3" color="accent">
+                    Take a Look!
+                  </v-btn>
+                </div>
               </div>
             </v-container>
           </v-col>
