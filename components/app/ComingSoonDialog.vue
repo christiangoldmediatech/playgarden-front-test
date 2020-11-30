@@ -4,7 +4,7 @@
     max-width="1100px"
     persistent
   >
-    <v-card>
+    <v-card color="white" max-width="1100px">
       <div class="green-line green-line-1" />
       <div class="green-line green-line-2" />
       <v-card-text class="pa-0">
@@ -25,7 +25,7 @@
               </div>
               <div class="mb-6">
                 <h2 class="pl-3 mb-6 font-weight-medium text-title text-center text-md-left">
-                  We will be online soon!
+                  Letter A will start December 7th!
                 </h2>
               </div>
               <div class="my-6">
@@ -57,19 +57,16 @@
                   </v-col>
                 </v-row>
               </div>
-              <div class="mt-6">
+              <!-- <div class="my-6">
                 <h2 class="pl-3 mb-2 mt-6 font-weight-medium text-title text-center text-md-left">
-                  Can't wait anymore?
+                  Can't wait?
                 </h2>
-                <h4 class="pl-3 mb-6 font-weight-medium text-subtitle text-center text-md-left">
-                  Here's a sneak peek of Playgarden Online!
-                </h4>
                 <div class="text-center text-md-left">
                   <v-btn class="px-13 ml-3" color="accent" @click="showVideos">
-                    Take a Look!
+                    Check out a sneak peek!
                   </v-btn>
                 </div>
-              </div>
+              </div> -->
             </v-container>
             <!-- <template v-if="!showingVideos">
             </template>
