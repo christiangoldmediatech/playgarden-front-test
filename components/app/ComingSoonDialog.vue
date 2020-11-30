@@ -23,7 +23,7 @@
                   text="Welcome to Playgarden Online!"
                 />
               </div>
-              <div>
+              <div class="mb-6">
                 <h2 class="pl-3 mb-6 font-weight-medium text-title text-center text-md-left">
                   We will be online soon!
                 </h2>
@@ -57,7 +57,7 @@
                   </v-col>
                 </v-row>
               </div>
-              <div>
+              <div class="mt-6">
                 <h2 class="pl-3 mb-2 mt-6 font-weight-medium text-title text-center text-md-left">
                   Can't wait anymore?
                 </h2>
