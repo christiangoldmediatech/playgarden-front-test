@@ -1,8 +1,8 @@
 <template>
   <v-app>
     <!-- APP MAV & BAR -->
-    <app-navigation />
-    <application-header full-width preview-mode />
+    <app-navigation :override-dialogs="isComingSoonDialogOpen" />
+    <application-header full-width preview-mode :override-dialogs="isComingSoonDialogOpen" />
     <!-- CONTENT -->
     <nuxt />
     <!-- FOOTER -->

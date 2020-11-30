@@ -1,9 +1,9 @@
 <template>
   <v-app>
     <!-- APP MAV & BAR -->
-    <app-navigation />
+    <app-navigation :override-dialogs="isComingSoonDialogOpen" />
 
-    <application-header />
+    <application-header :override-dialogs="isComingSoonDialogOpen" />
 
     <!-- CONTENT -->
     <v-main v-if="!fullWidth">
@@ -60,7 +60,7 @@ export default {
     },
 
     isComingSoonDialogOpen () {
-      if (['production'].includes(process.env.testEnv)) {
+      if (!['production'].includes(process.env.testEnv)) {
         const routes = ComingSoonRoutes
         return Boolean(routes[this.$route.name])
       }
