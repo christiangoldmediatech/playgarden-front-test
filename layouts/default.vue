@@ -60,8 +60,11 @@ export default {
     },
 
     isComingSoonDialogOpen () {
-      const routes = ComingSoonRoutes
-      return Boolean(routes[this.$route.name])
+      if (['production'].includes(process.env.testEnv)) {
+        const routes = ComingSoonRoutes
+        return Boolean(routes[this.$route.name])
+      }
+      return false
     }
   },
 
