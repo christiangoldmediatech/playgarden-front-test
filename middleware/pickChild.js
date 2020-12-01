@@ -2,7 +2,6 @@ import { hasLocalStorage } from '@/utils/window'
 
 export default async function ({ redirect, route, store }) {
   if (/^app-.*$/.test(route.name) && process.client) {
-    console.log('on pickChild')
     const whiteList = {
       'auth-logout': 1,
       'auth-verify-email': 1,
@@ -61,7 +60,6 @@ export default async function ({ redirect, route, store }) {
 
       // If no child is selected
       if (!child || !childExpires || currentMoment >= childExpires) {
-        console.log('redirecting to pick-child')
         redirect(
           `/app/pick-child?_time=${currentMoment}&redirect=${encodeURIComponent(
             route.fullPath
