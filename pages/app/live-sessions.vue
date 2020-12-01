@@ -1,17 +1,6 @@
 <template>
   <v-main>
-    <v-container v-if="environment" :class="{ 'lsess-container': !$vuetify.breakpoint.smAndDown }" fluid>
-      <v-row class="fill-height">
-        <v-col v-if="$vuetify.breakpoint.mdAndUp" class="lsess-daily pl-0" md="5" xl="6">
-          <img class="lsess-coming-soon" src="@/assets/png/comingsoonkid.png">
-        </v-col>
-        <v-col class="d-flex flex-column justify-center fill-height" cols="12" md="7" xl="6">
-          <coming-soon />
-        </v-col>
-      </v-row>
-    </v-container>
     <v-container
-      v-else
       :class="{ 'lsess-container': !$vuetify.breakpoint.smAndDown }"
       fluid
     >
@@ -36,7 +25,6 @@ import TodayCardsPanel from '@/components/app/live-sessions/TodayCardsPanel.vue'
 import CalendarPanel from '@/components/app/live-sessions/CalendarPanel.vue'
 import EntryDialog from '@/components/app/live-sessions/EntryDialog.vue'
 import SessionsTable from '@/components/app/live-sessions/SessionsTable.vue'
-import ComingSoon from '@/components/app/live-sessions/ComingSoon.vue'
 
 export default {
   name: 'LiveSessions',
@@ -45,8 +33,7 @@ export default {
     TodayCardsPanel,
     CalendarPanel,
     EntryDialog,
-    SessionsTable,
-    ComingSoon
+    SessionsTable
   },
 
   data: () => {
@@ -58,10 +45,6 @@ export default {
 
   computed: {
     ...mapState('live-sessions', ['sessions']),
-
-    environment () {
-      return ['production', 'staging'].includes(process.env.testEnv)
-    },
 
     days () {
       if (this.today) {
