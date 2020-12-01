@@ -77,7 +77,7 @@
           <v-col>
             <pg-text-field
               disabled
-              label="First name"
+              label="Email"
               solo
               :value="userInfo.email"
             />
@@ -121,6 +121,35 @@
             />
           </v-col>
         </v-dialog>
+
+        <!-- Social buttons -->
+        <v-row>
+          <!-- FACEBOOK -->
+          <v-col class="mb-4 mb-md-0 pr-md-4" cols="12" md="6">
+            <v-btn block height="45" class="social-btn" @click="facebookSignIn">
+              <img
+                alt="Facebook"
+                class="mr-1"
+                src="@/assets/svg/facebook_icon.svg"
+              >
+
+              <span class="spanSocialNetwork">Sync with Facebook</span>
+            </v-btn>
+          </v-col>
+
+          <!-- GOOGLE -->
+          <v-col class="mb-6 mb-md-0 pl-md-4" cols="12" md="6">
+            <v-btn block height="45" class="social-btn" @click="googleSignIn">
+              <img
+                alt="Google"
+                class="mr-1"
+                src="@/assets/svg/google_icon.svg"
+              >
+
+              <span class="spanSocialNetwork">Sync with Google</span>
+            </v-btn>
+          </v-col>
+        </v-row>
 
         <template v-if="!isUserCaregiver">
           <membership-details :loading="loading" />
@@ -193,6 +222,42 @@ export default {
   created () {
     this.showSetting =
       Number(this.$route.query.tab) !== 2 || this.isUserCaregiver
+  },
+
+  methods: {
+    facebookSignIn () {
+      this.syncAccount(
+        'FACEBOOK',
+        new this.$fireAuthObj.FacebookAuthProvider()
+      )
+    },
+
+    googleSignIn () {
+      this.syncAccount('GOOGLE', new this.$fireAuthObj.GoogleAuthProvider())
+    },
+
+    syncAccount (nameSocialNetwork, provider) {
+      // const fireAuthObj = this.$fireAuthObj()
+
+      /* fireAuthObj
+        .signInWithPopup(provider)
+        .then((result) => {
+          const profile = { ...result.additionalUserInfo.profile }
+
+          this.loginWithSocialNetwork({
+            firstName: profile.given_name || profile.first_name || '',
+            lastName: profile.family_name || profile.last_name || '',
+            email: profile.email,
+            socialNetwork: nameSocialNetwork,
+            socialNetworkId: profile.id
+          })
+        })
+        .catch((e) => {
+          this.$snotify.error(e.message)
+        })
+        .finally(() => fireAuthObj.signOut()) */
+    }
+
   }
 }
 </script>
