@@ -1,6 +1,7 @@
 import unauthenticatedRoutes from '~/utils/consts/unauthenticatedRoutes.json'
 
 export default function ({ redirect, route, store }) {
+  console.log('on redirectIfAuthenticated')
   const user = store.getters['auth/getUserInfo']
 
   const ignoreRoute = {
@@ -19,6 +20,7 @@ export default function ({ redirect, route, store }) {
     user.role &&
     route.query.process !== 'signup'
   ) {
+    console.log('redirecting to dashboard')
     redirect({ name: 'app-dashboard' })
   }
 }
