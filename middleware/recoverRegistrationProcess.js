@@ -2,7 +2,6 @@ import { get } from 'lodash'
 
 export default function ({ redirect, route, store }) {
   if (process.client) {
-    console.log('on recoverRegistrationProcess')
     const ignoreRoute = {
       'auth-logout': 1,
       'jwt-recovery': 1,
@@ -13,8 +12,6 @@ export default function ({ redirect, route, store }) {
 
     const user = store.getters['auth/getUserInfo']
     const step = Number(user.registerStep)
-    console.log('got user', user)
-    console.log('on step', step)
 
     // EMAIL_ENTERED=0 -> Enter email page <- sign up
     // REGISTER_PARENT=1 -> Enter parent info page <- sign up
@@ -50,8 +47,6 @@ export default function ({ redirect, route, store }) {
           name = 'app-payment-register'
           break
       }
-
-      console.log('redirecting to', name)
 
       redirect({
         name,

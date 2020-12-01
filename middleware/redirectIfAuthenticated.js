@@ -3,7 +3,6 @@ import { get } from 'lodash'
 import unauthenticatedRoutes from '~/utils/consts/unauthenticatedRoutes.json'
 
 export default function ({ redirect, route, store }) {
-  console.log('on redirectIfAuthenticated')
   const user = store.getters['auth/getUserInfo']
 
   const ignoreRoute = {
@@ -23,10 +22,8 @@ export default function ({ redirect, route, store }) {
     route.query.process !== 'signup'
   ) {
     if (get(user, 'role.section') === 'ADMIN') {
-      console.log('redirecting admin curriculum management')
       return redirect({ name: 'admin-curriculum-management' })
     } else {
-      console.log('redirecting to dashboard')
       return redirect({ name: 'app-dashboard' })
     }
   }

@@ -2,7 +2,6 @@ import { get } from 'lodash'
 
 export default function ({ redirect, route, store }) {
   if (/^app-.*$/.test(route.name) && process.client) {
-    console.log('on onboardingDone')
     const user = store.getters['auth/getUserInfo']
 
     const ignoreRoute = {
@@ -22,7 +21,6 @@ export default function ({ redirect, route, store }) {
       (get(user, 'role.name') === 'PARENTS' ||
         get(user, 'role.name') === 'CAREGIVERS')
     ) {
-      console.log('redirecting to dashbaord')
       redirect({ name: 'app-onboarding' })
     }
   }
