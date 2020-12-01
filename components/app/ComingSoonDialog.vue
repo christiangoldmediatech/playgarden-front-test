@@ -1,7 +1,7 @@
 <template>
   <v-dialog
     :value="showing && isBeforeDueDate"
-    max-width="1100px"
+    max-width="1000px"
     persistent
   >
     <v-card color="white" max-width="1100px">
@@ -17,16 +17,19 @@
           </v-col>
           <v-col cols="12" md="8">
             <v-container>
-              <div class="text-center my-6">
+              <div class="text-center text-md-left my-6">
                 <underlined-title
                   class="text-h4 text-md-h3"
-                  text="Welcome to Playgarden Online!"
+                  text="Welcome to Playgarden Prep Online!"
                 />
               </div>
               <div class="mb-6">
                 <h2 class="pl-3 mb-6 font-weight-medium text-title text-center text-md-left">
-                  Letter A will start December 7th!
+                  School starts Monday, December 7th!
                 </h2>
+                <h3 class="pl-3 mb-6 font-weight-medium text-subtitle text-center text-md-left">
+                  Count down with us:
+                </h3>
               </div>
               <div class="my-6">
                 <v-row no-gutters justify="space-between" class="time-left-wrapper">
@@ -52,7 +55,7 @@
                       {{ timeLeft.minutes }}
                     </p>
                     <p class="text-center">
-                      min
+                      minutes
                     </p>
                   </v-col>
                 </v-row>
@@ -61,9 +64,12 @@
                 <h2 class="pl-3 mb-4 mt-6 font-weight-medium text-title text-center text-md-left">
                   Can't wait?
                 </h2>
-                <div class="text-center text-md-left mt-6">
-                  <v-btn class="px-3 ml-3" color="accent" @click="showVideos">
-                    Check out a sneak peek!
+                <h3 class="pl-3 mb-2 mt-6 font-weight-medium text-subtitle text-center text-md-left">
+                  Check out a sneak peak!
+                </h3>
+                <div class="text-center mt-5 text-md-left">
+                  <v-btn class="px-13 ml-3" color="accent" @click="showVideos">
+                    Video Lessons
                   </v-btn>
                 </div>
               </div>
@@ -151,7 +157,7 @@ export default {
 <style lang="scss" scoped>
 .text {
   &-number-title {
-    font-size: 38px !important;
+    font-size: 45px !important;
     line-height: 38px !important;
     color: #C2DAA5;
   }
@@ -184,6 +190,8 @@ export default {
   .image {
     height: 100%;
     width: 100%;
+    object-fit: cover;
+    object-position: center;
   }
 }
 </style>
