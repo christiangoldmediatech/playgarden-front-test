@@ -51,6 +51,7 @@ export default {
           // Create a card element
           const elements = this.stripe.elements()
           this.card = elements.create('card', {
+            hidePostalCode: true,
             style: {
               base: {
                 color: '#606060',
