@@ -181,7 +181,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 import CaregiverList from '@/components/app/caregiver/CaregiverList'
 import ChildForm from '@/components/forms/profile/ChildForm.vue'
@@ -225,6 +225,10 @@ export default {
   },
 
   methods: {
+    ...mapActions(['disableAxiosGlobal', 'enableAxiosGlobal']),
+
+    ...mapActions('auth/socialUser', ['authSyncSocial']),
+
     facebookSignIn () {
       this.syncAccount(
         'FACEBOOK',
@@ -237,14 +241,15 @@ export default {
     },
 
     syncAccount (nameSocialNetwork, provider) {
-      // const fireAuthObj = this.$fireAuthObj()
+      const fireAuthObj = this.$fireAuthObj()
 
-      /* fireAuthObj
+      fireAuthObj
         .signInWithPopup(provider)
         .then((result) => {
           const profile = { ...result.additionalUserInfo.profile }
+          console.log('profile', profile)
 
-          this.loginWithSocialNetwork({
+          this.syncWithSocialNetwork({
             firstName: profile.given_name || profile.first_name || '',
             lastName: profile.family_name || profile.last_name || '',
             email: profile.email,
@@ -255,7 +260,20 @@ export default {
         .catch((e) => {
           this.$snotify.error(e.message)
         })
-        .finally(() => fireAuthObj.signOut()) */
+        .finally(() => fireAuthObj.signOut())
+    },
+
+    async syncWithSocialNetwork (user) {
+      try {
+        this.disableAxiosGlobal()
+
+        await this.authSyncSocial(user)
+
+        this.enableAxiosGlobal()
+      } catch (e) {
+        // await this.onFailLoginSocial(user)
+        console.log(e)
+      }
     }
 
   }
