@@ -10,13 +10,13 @@
         no-gutters
         class="mb-3"
       >
-        <v-col cols="12" md="8" lg="8">
+        <v-col cols="12" md="7" lg="7">
           <span>
             Free trial period ends
           </span>
         </v-col>
 
-        <v-col cols="12" md="4" lg="4" class="pr-3 text-right">
+        <v-col cols="12" md="5" lg="5" class="pr-3 text-left">
           <b>{{ billing.trialEndDate }}</b>
         </v-col>
       </v-row>
@@ -25,13 +25,13 @@
         no-gutters
         class="mb-3"
       >
-        <v-col cols="12" md="8" lg="8">
+        <v-col cols="12" md="7" lg="7">
           <span>
             Your next billing date is
           </span>
         </v-col>
 
-        <v-col cols="12" md="4" lg="4" class="pr-3 text-right">
+        <v-col cols="12" md="5" lg="5" class="pr-3 text-left">
           <div>
             <span>
               <b>{{ billing.nextBillingDate }}</b>
@@ -44,16 +44,16 @@
         no-gutters
         class="mb-3"
       >
-        <v-col cols="12" md="8">
+        <v-col cols="12" md="7">
           <span>
             Your {{ membershipInterval }} membership fee is
           </span>
         </v-col>
 
-        <v-col cols="12" md="4" class="pr-3 text-right">
+        <v-col cols="12" md="5" class="pr-3 text-left">
           <div>
             <span>
-              <b>${{ billing.planAmount.toLocaleString("en-US") }}</b>
+              <b>{{ billing.planAmount.toLocaleString("en-US", { style: 'currency', currency: 'USD' }) }}</b>
             </span>
           </div>
         </v-col>
@@ -62,19 +62,19 @@
         v-if="billing.planAmountDiscount"
         no-gutters
       >
-        <v-col cols="12" md="8" :class="(!$vuetify.breakpoint.mobile) ? 'text-right discount-label' : ''">
+        <v-col cols="12" md="7" :class="(!$vuetify.breakpoint.mobile) ? 'text-right discount-label' : ''">
           <span>
             Discount
           </span>
         </v-col>
 
-        <v-col cols="12" md="4" class="pr-3 text-right">
+        <v-col cols="12" md="5" class="pr-3 text-left">
           <div>
             <span v-if="billing.percentOff">
               <b>- {{ billing.percentOff }} %</b>
             </span>
             <span v-if="billing.amountOff">
-              <b>${{ billing.amountOff.toLocaleString("en-US") }}</b>
+              <b>{{ billing.amountOff.toLocaleString("en-US", { style: 'currency', currency: 'USD' }) }}</b>
             </span>
           </div>
         </v-col>
@@ -87,14 +87,14 @@
         no-gutters
         class="mt-2"
       >
-        <v-col cols="8">
+        <v-col cols="7">
           <span />
         </v-col>
 
-        <v-col cols="4" class="pr-3 text-right">
+        <v-col cols="5" class="pr-3 text-left">
           <div>
             <span>
-              <b v-if="billing.planAmountDiscount">${{ billing.planAmountDiscount.toLocaleString("en-US") }}</b>
+              <b v-if="billing.planAmountDiscount">{{ billing.planAmountDiscount.toLocaleString("en-US", { style: 'currency', currency: 'USD' }) }}</b>
             </span>
           </div>
         </v-col>
@@ -102,18 +102,25 @@
 
       <template>
         <v-row align="center" class="mb-2" no-gutters>
-          <v-col cols="12" md="">
-            Plan: <b>{{ billing.planName }}</b>
+          <v-col cols="12" md="7">
+            Plan:
           </v-col>
-
-          <v-btn
-            color="primary"
-            class="pa-md-4 ml-n4 md-n0"
-            text
-            @click="changePlanModal = true"
-          >
-            CHANGE PLAN
-          </v-btn>
+          <v-col cols="12" md="5">
+            <b>{{ billing.planName }}</b>
+          </v-col>
+        </v-row>
+        <v-row align="center" class="mb-2" no-gutters>
+          <v-col cols="12" md="7" />
+          <v-col cols="12" md="5">
+            <v-btn
+              color="primary"
+              class="pa-md-4 ml-n4 md-n0"
+              text
+              @click="changePlanModal = true"
+            >
+              CHANGE PLAN
+            </v-btn>
+          </v-col>
         </v-row>
       </template>
 
@@ -124,21 +131,28 @@
         class="mb-2"
         no-gutters
       >
-        <v-col class="text-truncate" cols="12" md="">
+        <v-col class="text-truncate" cols="12" md="7">
+          Card:
+        </v-col>
+        <v-col cols="12" md="5">
           <span class="font-weight-bold">
-            {{ card.details.brand }} .... .... .... {{ card.details.last4 }}
+            {{ card.details.brand }} <br>.... .... .... {{ card.details.last4 }}
           </span>
         </v-col>
-
-        <v-btn
-          color="primary"
-          justify-md="end"
-          class="pa-md-4 ml-n4 md-n0"
-          text
-          @click="onUpdateCard(card)"
-        >
-          UPDATE PAYMENT
-        </v-btn>
+      </v-row>
+      <v-row align="center" class="mb-2" no-gutters>
+        <v-col cols="12" md="7" />
+        <v-col cols="12" md="5">
+          <v-btn
+            color="primary"
+            justify-md="end"
+            class="pa-md-4 ml-n4 md-n0"
+            text
+            @click="onUpdateCard(card)"
+          >
+            UPDATE PAYMENT
+          </v-btn>
+        </v-col>
       </v-row>
 
       <v-row
@@ -146,7 +160,7 @@
         align="center"
         class="my-1"
         justify="center"
-        justify-md="end"
+        justify-md="center"
         no-gutters
       >
         <!-- Cancel suscription -->

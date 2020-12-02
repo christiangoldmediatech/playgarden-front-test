@@ -1,9 +1,10 @@
 <template>
   <v-app>
+    <coming-soon-player />
     <!-- APP MAV & BAR -->
-    <app-navigation />
+    <app-navigation :override-dialogs="isComingSoonDialogOpen" />
 
-    <application-header />
+    <application-header :override-dialogs="isComingSoonDialogOpen" />
 
     <!-- CONTENT -->
     <v-main v-if="!fullWidth">
@@ -20,6 +21,8 @@
     <notify-event />
 
     <prompt-dialog />
+
+    <coming-soon-dialog :showing="isComingSoonDialogOpen" />
   </v-app>
 </template>
 
@@ -28,6 +31,10 @@ import { mapGetters, mapState } from 'vuex'
 import AppNavigation from '@/components/app/header/AppNavigation'
 import ApplicationHeader from '@/components/app/header/ApplicationHeader'
 import DefaultFooter from '@/components/app/footer/DefaultFooter'
+import ComingSoonDialog from '@/components/app/ComingSoonDialog'
+import ComingSoonPlayer from '@/components/app/ComingSoonPlayer.vue'
+
+import ComingSoonRoutes from '@/utils/consts/comingSoonRoutes'
 
 export default {
   name: 'Default',
@@ -35,7 +42,9 @@ export default {
   components: {
     ApplicationHeader,
     AppNavigation,
-    DefaultFooter
+    DefaultFooter,
+    ComingSoonDialog,
+    ComingSoonPlayer
   },
 
   data: () => ({
@@ -51,6 +60,14 @@ export default {
 
     fullWidth () {
       return this.fullWidthPages[this.$route.name]
+    },
+
+    isComingSoonDialogOpen () {
+      if (['production'].includes(process.env.testEnv)) {
+        const routes = ComingSoonRoutes
+        return Boolean(routes[this.$route.name])
+      }
+      return false
     }
   },
 

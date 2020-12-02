@@ -10,70 +10,13 @@
     </p>
 
     <v-form class="mt-7" @submit.prevent="passes(onSubmit)">
-      <!-- Card number -->
+      <!-- Card -->
       <validation-provider
-        v-slot="{ errors }"
         name="Card number"
-        rules="required|cc_number"
+        rules="required"
       >
-        <pg-text-field
-          v-model="draft.number"
-          v-mask="['#### #### #### ####']"
-          clearable
-          :disabled="loading"
-          :error-messages="errors"
-          :loading="loading"
-          maxlength="19"
-          placeholder="Card number"
-          solo
-          class="custom-text-field"
-        />
+        <stripe-card v-model="draft.token" class="mb-4" />
       </validation-provider>
-
-      <v-row>
-        <v-col class="pb-0" cols="6">
-          <!-- Expiration date -->
-          <validation-provider
-            v-slot="{ errors }"
-            name="Expiration date"
-            rules="required|cc_exp_date"
-          >
-            <pg-text-field
-              v-model="draft.date"
-              v-mask="['##/##']"
-              clearable
-              :disabled="loading"
-              :error-messages="errors"
-              :loading="loading"
-              maxlength="5"
-              placeholder="MM/YY"
-              solo
-              class="custom-text-field"
-            />
-          </validation-provider>
-        </v-col>
-
-        <v-col class="pb-0" cols="6">
-          <!-- CVV -->
-          <validation-provider
-            v-slot="{ errors }"
-            name="CVV"
-            rules="required|digits:3"
-          >
-            <pg-text-field
-              v-model="draft.cvv"
-              clearable
-              :disabled="loading"
-              :error-messages="errors"
-              :loading="loading"
-              maxlength="3"
-              placeholder="CVV"
-              solo
-              class="custom-text-field"
-            />
-          </validation-provider>
-        </v-col>
-      </v-row>
 
       <validation-provider
         v-slot="{ errors }"
@@ -155,8 +98,14 @@
 import { mapActions } from 'vuex'
 import submittable from '@/utils/mixins/submittable'
 
+import StripeCard from '@/components/forms/payment/StripeCard.vue'
+
 export default {
   name: 'StripeForm',
+
+  components: {
+    StripeCard
+  },
 
   mixins: [submittable],
 
@@ -186,15 +135,8 @@ export default {
   methods: {
     ...mapActions('coupons', ['getCoupons']),
     getSubmittableData () {
-      const [month, year] = this.draft.date.split('/')
-
       return {
-        card: {
-          number: this.draft.number.replace(/\D/gm, ''),
-          exp_month: month * 1,
-          exp_year: year * 1 + 2000,
-          cvc: this.draft.cvv
-        },
+        token: this.draft.token,
         promotion_id: this.draft.promotion_id
       }
     },
@@ -217,9 +159,7 @@ export default {
 
     resetDraft () {
       this.draft = {
-        number: null,
-        date: null,
-        cvv: null,
+        token: '',
         promotion_code: null,
         promotion_id: null,
         acceptTerms: null

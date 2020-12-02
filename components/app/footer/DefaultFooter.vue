@@ -26,7 +26,7 @@
             </nuxt-link>
 
             <div class="align-center d-flex justify-center justify-md-start">
-              <a target="_blank" href="https://www.facebook.com/Playgardennyc">
+              <a target="_blank" href="https://www.facebook.com/Playgarden-Online-108368577679635">
                 <img
                   alt="Facebook"
                   class="clickable mr-1"
@@ -36,7 +36,7 @@
 
               <a
                 target="_blank"
-                href="https://www.instagram.com/playgardenprep/"
+                href="https://www.instagram.com/playgardenpreponline/"
               >
                 <img
                   alt="Instagram"
@@ -53,7 +53,7 @@
                 <img alt="Email" src="@/assets/svg/social-media/email.svg">
               </a>
 
-              <a target="_blank" href="https://twitter.com/playgardennyc">
+              <a target="_blank" href="https://twitter.com/playgarden_prep">
                 <img
                   alt="Twitter"
                   class="clickable mx-1"
