@@ -116,7 +116,7 @@
           </validation-provider>
 
           <v-row
-            v-if="!noAddress && draft.requireAddress"
+            v-if="!noAddress && draft.type "
             class="flex-md-row"
             justify="center"
             no-gutters
