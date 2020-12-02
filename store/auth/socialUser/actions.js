@@ -1,5 +1,3 @@
-import { snotifyError } from '@/utils/vuex'
-
 export default {
   async authLoginSocial ({ dispatch }, data) {
     // eslint-disable-next-line no-useless-catch
@@ -28,10 +26,6 @@ export default {
       )
       return user
     } catch (error) {
-      console.log(error)
-      snotifyError(data, {
-        body: 'Sorry! There was an error while getting patches.'
-      })
       throw error
     }
   }

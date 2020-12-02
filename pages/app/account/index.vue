@@ -123,7 +123,7 @@
         </v-dialog>
 
         <!-- Social buttons -->
-        <v-row>
+        <v-row v-if="!userInfo.socialNetwork && !userInfo.socialNetworkId">
           <!-- FACEBOOK -->
           <v-col class="mb-4 mb-md-0 pr-md-4" cols="12" md="6">
             <v-btn block height="45" class="social-btn" @click="facebookSignIn">
@@ -247,8 +247,6 @@ export default {
         .signInWithPopup(provider)
         .then((result) => {
           const profile = { ...result.additionalUserInfo.profile }
-          console.log('profile', profile)
-
           this.syncWithSocialNetwork({
             firstName: profile.given_name || profile.first_name || '',
             lastName: profile.family_name || profile.last_name || '',
@@ -270,10 +268,8 @@ export default {
         await this.authSyncSocial(user)
 
         this.enableAxiosGlobal()
-      } catch (e) {
-        // await this.onFailLoginSocial(user)
-        console.log(e)
-      }
+        this.$snotify.success('The account has been successfully synchronized with the social network.')
+      } catch (e) {}
     }
 
   }
