@@ -88,8 +88,7 @@
         class="mt-2"
       >
         <v-col cols="8">
-          <span>
-          </span>
+          <span />
         </v-col>
 
         <v-col cols="4" class="pr-3 text-right">

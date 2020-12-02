@@ -49,6 +49,24 @@
                 </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
+
+            <v-list-item
+              v-if="worksheets.ONLINE.length"
+              class="dashboard-item"
+              active-class="dashboard-item-active"
+              exact-active-class="dashboard-item-exact"
+              :disabled="videos.progress < 100"
+              nuxt
+              exact
+              :to="generateNuxtRoute('online-worksheet-redesign')"
+            >
+              <v-list-item-content>
+                <v-list-item-title :class="['dashboard-panel-worksheet-text', { 'dashboard-item-disabled': videos.progress < 100 }]">
+                  ONLINE WORKSHEET 2
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+
             <v-list-item
               v-if="worksheets.OFFLINE"
               class="dashboard-item"

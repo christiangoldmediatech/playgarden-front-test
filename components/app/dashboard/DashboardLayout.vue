@@ -131,7 +131,63 @@ export default {
       max-height: 100%;
     }
     &-card {
+      display: block;
+      position: relative;
+      width: 100%;
+      height: 100%;
+      max-width: 100%;
+      max-height: 100%;
       box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16) !important;
+    }
+    &-card-2 {
+      display: block;
+      position: relative;
+      width: 100%;
+      height: auto;
+      max-width: 100%;
+      max-height: 100%;
+      padding-top: 20px;
+      box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16) !important;
+      @media screen and (min-width: 600px) {
+        padding-top: 32px;
+      }
+      @media screen and (min-width: 960px) {
+        height: 100%;
+      }
+      &-content {
+        height: 100%;
+        max-height: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+        @media screen and (min-height: 864px) {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+      }
+      &-line-1 {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 10px;
+        background-color: var(--v-primary-base);
+        box-shadow: 0 -1px 6px 0 rgba(0, 0, 0, 0.12);
+        @media screen and (min-width: 600px) {
+          height: 16px;
+        }
+      }
+      &-line-2 {
+        position: absolute;
+        top: 10px;
+        width: 100%;
+        height: 10px;
+        background-color: #dce7b5;
+        box-shadow: 0 -1px 6px 0 rgba(0, 0, 0, 0.12);
+        @media screen and (min-width: 600px) {
+          height: 16px;
+          top: 16px;
+        }
+      }
     }
     &-scroll {
       overflow-y: auto;
