@@ -1,3 +1,5 @@
+import { get } from 'lodash'
+
 import unauthenticatedRoutes from '~/utils/consts/unauthenticatedRoutes.json'
 
 export default function ({ redirect, route, store }) {
@@ -19,6 +21,10 @@ export default function ({ redirect, route, store }) {
     user.role &&
     route.query.process !== 'signup'
   ) {
-    redirect({ name: 'app-dashboard' })
+    if (get(user, 'role.section') === 'ADMIN') {
+      return redirect({ name: 'admin-curriculum-management' })
+    } else {
+      return redirect({ name: 'app-dashboard' })
+    }
   }
 }
