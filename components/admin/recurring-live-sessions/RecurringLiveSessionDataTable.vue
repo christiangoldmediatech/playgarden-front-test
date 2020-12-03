@@ -23,13 +23,13 @@
                 mdi-plus
               </v-icon>
               <span class="hidden-xs-only white--text">
-                Add new live session
+                Add new  Recurring live session
               </span>
             </v-btn>
           </v-card-title>
 
           <v-card-text>
-            View, create, update, or delete live sessions.
+            View, create, update, or delete Recurring live sessions.
           </v-card-text>
         </v-card>
       </v-col>
@@ -202,6 +202,10 @@ export default {
         value: 'dateStart'
       },
       {
+        text: 'Day',
+        value: 'day'
+      },
+      {
         text: 'Title',
         value: 'title'
       },
@@ -275,10 +279,10 @@ export default {
       }
     },
 
-    remove ({ id, name }) {
+    remove ({ id, title }) {
       this.$nuxt.$emit('open-prompt', {
-        title: 'Delete Live Session?',
-        message: `Are you sure you wish to delete '${name}' Live Session?`,
+        title: 'Delete Recurring Live Session?',
+        message: `Are you sure you wish to delete '${title}' Recurring Live Session?`,
         action: async () => {
           await this.deleteRecurringLiveSession(id)
           await this.refresh()

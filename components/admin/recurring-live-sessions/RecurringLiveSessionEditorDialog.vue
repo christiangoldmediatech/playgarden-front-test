@@ -119,69 +119,19 @@
               </v-col>
             </v-row>
 
-            <v-row>
-              <v-col>
-                <v-menu
-                  v-model="menuDateEnd"
-                  :close-on-content-click="false"
-                  min-width="290px"
-                  offset-y
-                  transition="scale-transition"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <validation-provider
-                      v-slot="{ errors }"
-                      name="Date End"
-                      rules="required"
-                    >
-                      <pg-text-field
-                        :disabled="loading"
-                        :error-message="errors"
-                        label="Date End"
-                        readonly
-                        solo
-                        :value="dataEndFormatted"
-                        v-bind="attrs"
-                        v-on="on"
-                      />
-                    </validation-provider>
-                  </template>
-
-                  <v-date-picker v-model="dateEnd" />
-                </v-menu>
-              </v-col>
-
-              <v-col>
-                <v-menu
-                  v-model="menuTimeEnd"
-                  :close-on-content-click="false"
-                  transition="scale-transition"
-                  offset-y
-                  width="290px"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <validation-provider
-                      v-slot="{ errors }"
-                      name="Time End"
-                      rules="required"
-                    >
-                      <pg-text-field
-                        :disabled="loading"
-                        :error-message="errors"
-                        label="Time End"
-                        readonly
-                        solo
-                        :value="timeEnd"
-                        v-bind="attrs"
-                        v-on="on"
-                      />
-                    </validation-provider>
-                  </template>
-
-                  <v-time-picker v-model="timeEnd" format="24hr" />
-                </v-menu>
-              </v-col>
-            </v-row>
+            <validation-provider
+              v-slot="{ errors }"
+              name="Day"
+              rules="required"
+            >
+              <pg-text-field
+                v-model="item.day"
+                :error-messages="errors"
+                readonly
+                label="Day"
+                solo
+              />
+            </validation-provider>
 
             <validation-provider
               v-slot="{ errors }"
@@ -299,7 +249,7 @@ function generateItemTemplate () {
     ages: null,
     duration: null,
     dateStart: null,
-    dateEnd: null
+    day: null
   }
 }
 
@@ -328,17 +278,19 @@ export default {
       return this.dateStart ? dayjs(this.dateStart).format('MM/DD/YYYY') : null
     },
 
-    dataEndFormatted () {
-      return this.dateEnd ? dayjs(this.dateEnd).format('MM/DD/YYYY') : null
-    },
-
     title () {
-      return this.id === null ? 'New LiveSession' : 'Edit LiveSession'
+      return this.id === null ? 'New Recurring LiveSession' : 'Edit Recurring LiveSession'
+    }
+  },
+
+  watch: {
+    dateStart (val) {
+      this.item.day = dayjs(this.dateStart).format('dddd').toUpperCase()
     }
   },
 
   methods: {
-    ...mapActions('live-sessions', ['createLiveSession', 'updateLiveSession']),
+    ...mapActions('admin/recurring-live-sessions', ['createRecurringLiveSession', 'updateRecurringLiveSession']),
 
     async refresh (clear = false) {
       this.loading = true
@@ -379,9 +331,9 @@ export default {
 
       try {
         if (this.id === null) {
-          await this.createLiveSession(this.item)
+          await this.createRecurringLiveSession(this.item)
         } else {
-          await this.updateLiveSession({ id: this.id, data: this.item })
+          await this.updateRecurringLiveSession({ id: this.id, data: this.item })
         }
 
         this.$emit('saved')
