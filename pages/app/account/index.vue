@@ -348,9 +348,7 @@ export default {
 
 .messages-info-sync {
   font-size: 14px !important;
-  color: var(--v-black-base);
-  font-weight: 600;
-  opacity: 0.49;
+  font-weight: 500;
 }
 
 .show-setting-select {
