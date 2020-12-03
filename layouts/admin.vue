@@ -123,6 +123,11 @@ export default {
           route: '/admin/live-session-management'
         },
         {
+          icon: 'mdi-google-circles-extended',
+          title: 'Recurring Live Session',
+          route: '/admin/recurring-live-sessions-management'
+        },
+        {
           icon: 'mdi-account-supervisor',
           title: 'Parents Corner',
           rootPath: '/admin/parents-corner',
