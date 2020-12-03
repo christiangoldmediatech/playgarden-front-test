@@ -78,7 +78,7 @@ export default {
       const start = translateUTC(this.entry.dateStart)
       const end = translateUTC(this.entry.dateEnd)
 
-      return today.unix() >= start.unix() && today.unix <= end.unix()
+      return today.unix() >= start.unix() && today.unix() <= end.unix()
     }
   },
 

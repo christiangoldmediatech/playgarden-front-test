@@ -225,15 +225,13 @@
             <validation-provider
               v-slot="{ errors }"
               name="Ages"
-              rules="required|integer|min_value:1"
+              rules="required"
             >
               <pg-text-field
                 v-model="item.ages"
                 :error-messages="errors"
                 label="Ages"
-                min="1"
                 solo
-                type="number"
               />
             </validation-provider>
 

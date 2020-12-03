@@ -43,7 +43,7 @@
       </div>
 
       <perfect-scrollbar>
-        <div v-for="hour in 16" :key="`hour-${hour}`" class="lsess-table-hour-row">
+        <div v-for="hour in 11" :key="`hour-${hour}`" class="lsess-table-hour-row">
           <div class="d-flex align-center justify-center lsess-table-offset">
             {{ 7 + hour }}:00
           </div>
@@ -96,7 +96,7 @@ export default {
       const parts = this.today.split('-')
       const date = new Date()
       date.setFullYear(parts[0])
-      date.setMonth(parts[1] + 1)
+      date.setMonth(parts[1] - 1)
       date.setDate(parts[2])
 
       return date.getDay() - 1
