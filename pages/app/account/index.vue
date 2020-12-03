@@ -123,32 +123,67 @@
         </v-dialog>
 
         <!-- Social buttons -->
-        <v-row v-if="!userInfo.socialNetwork && !userInfo.socialNetworkId">
+        <v-row v-if="!userInfo.socialNetwork && !userInfo.socialNetworkId" class="mb-10">
           <!-- FACEBOOK -->
-          <v-col class="mb-4 mb-md-0 pr-md-4" cols="12" md="6">
-            <v-btn block height="45" class="social-btn" @click="facebookSignIn">
+          <v-col class="mb-4 mb-md-0 pr-md-4" cols="12" md="12">
+            <v-btn block height="45" class="social-sync" @click="facebookSignIn">
               <img
                 alt="Facebook"
                 class="mr-1"
                 src="@/assets/svg/facebook_icon.svg"
               >
 
-              <span class="spanSocialNetwork">Sync with Facebook</span>
+              <span>Sync your facebook account</span>
             </v-btn>
           </v-col>
 
           <!-- GOOGLE -->
-          <v-col class="mb-6 mb-md-0 pl-md-4" cols="12" md="6">
-            <v-btn block height="45" class="social-btn" @click="googleSignIn">
+          <v-col class="mb-6 mb-md-0 pl-md-4" cols="12" md="12">
+            <v-btn block height="45" class="social-sync" @click="googleSignIn">
               <img
                 alt="Google"
                 class="mr-1"
                 src="@/assets/svg/google_icon.svg"
               >
 
-              <span class="spanSocialNetwork">Sync with Google</span>
+              <span>Sync your google account</span>
             </v-btn>
           </v-col>
+        </v-row>
+        <v-row v-else justify="center" class="mb-8">
+          <!-- FACEBOOK -->
+          <div v-if="userInfo.socialNetwork === 'FACEBOOK'">
+            <v-row
+              class="text-center"
+            >
+              <v-col cols="1" class="text-center">
+                <img
+                  alt="Facebook"
+                  src="@/assets/svg/facebook_icon.svg"
+                >
+              </v-col>
+              <v-col class="text-center">
+                <span class="messages-info-sync">Your account is synced with Facebook</span>
+              </v-col>
+            </v-row>
+          </div>
+
+          <!-- GOOGLE -->
+          <div v-else>
+            <v-row
+              class="text-center"
+            >
+              <v-col cols="1" class="text-center">
+                <img
+                  alt="Google"
+                  src="@/assets/svg/google_icon.svg"
+                >
+              </v-col>
+              <v-col class="text-center">
+                <span class="messages-info-sync">Your accoutn is synced with Google</span>
+              </v-col>
+            </v-row>
+          </div>
         </v-row>
 
         <template v-if="!isUserCaregiver">
@@ -304,6 +339,18 @@ export default {
     width: 1000%;
     z-index: -1;
   }
+}
+
+.social-sync {
+  text-transform: capitalize !important;
+  font-size: 14px !important;
+}
+
+.messages-info-sync {
+  font-size: 14px !important;
+  color: var(--v-black-base);
+  font-weight: 600;
+  opacity: 0.49;
 }
 
 .show-setting-select {
