@@ -240,6 +240,10 @@ export default {
             {
               title: 'Users',
               route: ''
+            },
+            {
+              title: 'Specialists',
+              route: 'specialists-management'
             }
           ]
         },
