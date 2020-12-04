@@ -1,6 +1,6 @@
-import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
-dayjs.extend(utc)
+// import dayjs from 'dayjs'
+// import utc from 'dayjs/plugin/utc'
+// dayjs.extend(utc)
 
 export default {
   getWeeklySchedule (state) {
@@ -10,16 +10,18 @@ export default {
 
     for (let day = 1; day <= 5; day++) {
       const daySessions = sessions.filter(({ dateStart }) => {
-        const date = dayjs.utc(dateStart)
-        return date.day() === day
+        // const date = dayjs.utc(dateStart)
+        const date = new Date(dateStart)
+        return date.getDay() === day
       })
 
       const hours = []
       for (let hour = 8; hour <= 18; hour++) {
         if (daySessions.length) {
           const session = daySessions.find(({ dateStart }) => {
-            const date = dayjs.utc(dateStart)
-            return date.hour() === hour
+            // const date = dayjs.utc(dateStart)
+            const date = new Date(dateStart)
+            return date.getHours() === hour
           }) || null
           hours.push(session)
         } else {

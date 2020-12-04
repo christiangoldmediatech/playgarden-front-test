@@ -49,8 +49,8 @@ export default {
     days () {
       if (this.today) {
         const today = new Date(this.today)
-        const monday = new Date()
-        const friday = new Date()
+        const monday = new Date(this.today)
+        const friday = new Date(this.today)
 
         if (today.getDay() === 6 || today.getDay() === 0) {
           // Get next week

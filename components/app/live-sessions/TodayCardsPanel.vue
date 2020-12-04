@@ -41,16 +41,16 @@
 </template>
 
 <script>
-import { translateUTC } from '@/utils/dateTools.js'
+// import { translateUTC } from '@/utils/dateTools.js'
 import { mapState } from 'vuex'
 import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
 
-import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
+// import dayjs from 'dayjs'
+// import utc from 'dayjs/plugin/utc'
 
 import TodayCard from './TodayCard.vue'
 
-dayjs.extend(utc)
+// dayjs.extend(utc)
 
 export default {
   name: 'TodayCardsPanel',
@@ -64,17 +64,18 @@ export default {
     ...mapState('live-sessions', ['sessions']),
 
     nextSessions () {
-      const today = dayjs()
-      const filtered = this.sessions.filter(({ dateEnd }) => {
-        const date = translateUTC(dateEnd)
-        return today.unix() < date.unix()
+      const today = new Date()
+      const filtered = this.sessions.filter(({ dateStart, dateEnd }) => {
+        const end = new Date(dateEnd)
+
+        return today < end
       })
 
       const sorted = filtered.sort((a, b) => {
-        const dateA = translateUTC(a.dateStart)
-        const dateB = translateUTC(b.dateStart)
+        const dateA = new Date(a.dateStart)
+        const dateB = new Date(b.dateStart)
 
-        return dateA - dateB
+        return dateA.getTime() - dateB.getTime()
       })
 
       return sorted

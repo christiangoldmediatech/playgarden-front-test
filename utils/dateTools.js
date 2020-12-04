@@ -36,3 +36,16 @@ export const formatDate = (value) => {
     2
   )}:${pad(seconds, 2)}`
 }
+
+export const sameDay = (d1, d2) => {
+  return d1.getFullYear() === d2.getFullYear() &&
+    d1.getMonth() === d2.getMonth() &&
+    d1.getDate() === d2.getDate()
+}
+
+export const isTomorrow = (date) => {
+  const today = new Date()
+  return today.getFullYear() === date.getFullYear() &&
+    today.getMonth() === date.getMonth() &&
+    date.getDate() === (today.getDate() + 1)
+}

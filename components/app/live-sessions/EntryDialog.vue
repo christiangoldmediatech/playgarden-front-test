@@ -122,8 +122,8 @@
 </template>
 
 <script>
-import dayjs from 'dayjs'
-import { translateUTC } from '@/utils/dateTools.js'
+// import dayjs from 'dayjs'
+// import { translateUTC } from '@/utils/dateTools.js'
 
 export default {
   name: 'EntryDialog',
@@ -138,18 +138,18 @@ export default {
 
   computed: {
     isLive () {
-      const today = dayjs()
-      const start = translateUTC(this.entry.dateStart)
-      const end = translateUTC(this.entry.dateEnd)
+      const today = new Date()
+      const start = new Date(this.entry.dateStart)
+      const end = new Date(this.entry.dateEnd)
 
-      return today.unix() >= start.unix() && today.unix() <= end.unix()
+      return today.getTime() >= start.getTime() && today.getTime() <= end.getTime()
     },
 
     past () {
-      const today = dayjs()
-      const end = translateUTC(this.entry.dateEnd)
+      const today = new Date()
+      const end = new Date(this.entry.dateEnd)
 
-      return today.unix() >= end.unix()
+      return today.getTime() >= end.getTime()
     },
 
     ages () {
@@ -161,16 +161,16 @@ export default {
 
     date () {
       if (this.entry) {
-        const date = translateUTC(this.entry.dateStart)
-        return `${this.months[date.month()]} ${date.date()}`
+        const date = new Date(this.entry.dateStart)
+        return `${this.months[date.getMonth()]} ${date.getDate()}`
       }
       return ''
     },
 
     time () {
       if (this.entry) {
-        const date = translateUTC(this.entry.dateStart)
-        return `${date.hour()}:${(date.minute()).toString().padStart(2, '0')}`
+        const date = new Date(this.entry.dateStart)
+        return `${date.getHours()}:${(date.getMinutes()).toString().padStart(2, '0')}`
       }
       return ''
     },
