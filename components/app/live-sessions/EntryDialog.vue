@@ -35,7 +35,7 @@
             </div>
 
             <div class="entry-card-description pb-4 d-flex align-center">
-              Ages: <span class="entry-card-info ml-3">2{{ `${entry.ages > 2 ? ' - ' + entry.ages : ''}` }}</span>
+              Ages: <span class="entry-card-info ml-3">{{ ages }}</span>
             </div>
 
             <div class="entry-card-description pb-4 d-flex align-center">
@@ -46,19 +46,20 @@
               Duration: <span class="entry-card-info ml-3">{{ entry.duration }} minutes</span>
             </div>
 
-            <div class="text-center pb-3">
+            <div v-if="!past" class="text-center pb-3">
               <v-btn
                 class="white--text"
                 color="#f89838"
                 x-large
                 :href="entry.link"
+                :disabled="!isLive"
                 target="_blank"
               >
                 OPEN ZOOM LINK
               </v-btn>
             </div>
 
-            <v-list class="entry-card-calendar-links" dense mandatory>
+            <v-list v-if="!past" class="entry-card-calendar-links" dense mandatory>
               <v-list-group no-action>
                 <template v-slot:prependIcon>
                   <img class="calendar-links-logo" src="@/assets/svg/sessions-camera.svg">
@@ -121,6 +122,7 @@
 </template>
 
 <script>
+import dayjs from 'dayjs'
 import { translateUTC } from '@/utils/dateTools.js'
 
 export default {
@@ -135,6 +137,28 @@ export default {
   },
 
   computed: {
+    isLive () {
+      const today = dayjs()
+      const start = translateUTC(this.entry.dateStart)
+      const end = translateUTC(this.entry.dateEnd)
+
+      return today.unix() >= start.unix() && today.unix() <= end.unix()
+    },
+
+    past () {
+      const today = dayjs()
+      const end = translateUTC(this.entry.dateEnd)
+
+      return today.unix() >= end.unix()
+    },
+
+    ages () {
+      if (this.entry && !isNaN(this.entry.ages)) {
+        return `2${this.entry.ages > 2 ? ' - ' + this.entry.ages : ''}`
+      }
+      return 'All ages'
+    },
+
     date () {
       if (this.entry) {
         const date = translateUTC(this.entry.dateStart)
@@ -204,15 +228,15 @@ export default {
 <style lang="scss">
 .entry {
   &-container {
-    max-width: 1126px;
-    max-height: 95vh;
+    max-width: 800px;
+    max-height: 99vh;
     padding-top: 80px;
     overflow-y: hidden;
   }
   &-card {
     position: relative;
     overflow-y: visible;
-    max-height: calc(95vh - 140px);
+    max-height: calc(99vh - 140px);
     &-elipse{
       position: absolute;
       width: 156px;
@@ -238,7 +262,7 @@ export default {
       }
     }
     &-content {
-      max-height: calc(95vh - 200px);
+      max-height: calc(99vh - 200px);
       overflow-y: scroll;
     }
     &-activity-type {

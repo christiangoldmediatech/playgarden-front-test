@@ -15,7 +15,7 @@ export default {
       })
 
       const hours = []
-      for (let hour = 8; hour <= 23; hour++) {
+      for (let hour = 8; hour <= 18; hour++) {
         if (daySessions.length) {
           const session = daySessions.find(({ dateStart }) => {
             const date = dayjs.utc(dateStart)
