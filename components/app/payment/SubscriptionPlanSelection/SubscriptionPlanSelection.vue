@@ -116,7 +116,7 @@
           </validation-provider>
 
           <v-row
-            v-if="!noAddress && draft.requireAddress"
+            v-if="!noAddress"
             class="flex-md-row"
             justify="center"
             no-gutters
@@ -389,7 +389,7 @@ export default {
       this.loading = true
 
       try {
-        if (!this.noAddress && this.draft.requireAddress) {
+        if (!this.noAddress) {
           await this.submitMethodShippingAddress(this.draftAddress)
         }
 

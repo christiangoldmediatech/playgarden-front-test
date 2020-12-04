@@ -13,7 +13,7 @@
       </div>
 
       <div>
-        {{ description }}
+        {{ title }}
       </div>
     </v-card>
   </v-hover>
@@ -44,8 +44,12 @@ export default {
       return today.unix() >= start.unix() && today.unix <= end.unix()
     },
 
-    description () {
-      return this.entry.description.substr(0, 37).replace(/\s+$/, '') + '...'
+    title () {
+      let str = this.entry.title.substr(0, 37).replace(/\s+$/, '')
+      if (this.entry.title.lenght > str.length) {
+        str += '...'
+      }
+      return str
     }
   },
 
