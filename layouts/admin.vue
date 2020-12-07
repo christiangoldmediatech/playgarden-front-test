@@ -22,9 +22,16 @@
       <v-divider />
 
       <!-- Menu -->
-      <v-list>
+      <v-list v-if="userInfo.rol === 'ADMIN'">
         <menu-item
           v-for="(item, indexMI) in menuItems"
+          :key="indexMI"
+          :item="item"
+        />
+      </v-list>
+      <v-list v-else>
+        <menu-item
+          v-for="(item, indexMI) in menuItemsSpecialists"
           :key="indexMI"
           :item="item"
         />
@@ -251,6 +258,14 @@ export default {
           icon: 'mdi-logout',
           title: 'Log out',
           route: '/auth/logout'
+        }
+      ],
+
+      menuItemsSpecialists: [
+        {
+          icon: 'mdi-television-play',
+          title: 'Agenda and Playdates',
+          route: '/admin/agenda'
         }
       ]
     }
