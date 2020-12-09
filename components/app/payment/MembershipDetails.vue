@@ -88,8 +88,7 @@
         class="mt-2"
       >
         <v-col cols="7">
-          <span>
-          </span>
+          <span />
         </v-col>
 
         <v-col cols="5" class="pr-3 text-left">
@@ -111,8 +110,7 @@
           </v-col>
         </v-row>
         <v-row align="center" class="mb-2" no-gutters>
-          <v-col cols="12" md="7">
-          </v-col>
+          <v-col cols="12" md="7" />
           <v-col cols="12" md="5">
             <v-btn
               color="primary"
@@ -143,8 +141,7 @@
         </v-col>
       </v-row>
       <v-row align="center" class="mb-2" no-gutters>
-        <v-col cols="12" md="7">
-        </v-col>
+        <v-col cols="12" md="7" />
         <v-col cols="12" md="5">
           <v-btn
             color="primary"
