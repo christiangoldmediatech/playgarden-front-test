@@ -83,6 +83,7 @@
                     >
                       <pg-text-field
                         v-model="specialist.phoneNumber"
+                        v-mask="['(###) ###-####']"
                         :error-messages="errors"
                         label="Phone Number"
                         solo
@@ -108,20 +109,30 @@
                   </v-col>
 
                   <v-col v-if="!id" cols="12" lg="4" md="6">
-                    <validation-provider
-                      v-slot="{ errors }"
-                      name="Password"
-                      rules="required|min:8|max:20|w_number|w_special|w_upper"
-                    >
-                      <pg-password-field
-                        v-model="specialist.password"
-                        counter
-                        :error-messages="errors"
-                        hint="At least 8 characters"
-                        label="Password"
-                        solo
-                      />
-                    </validation-provider>
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <validation-provider
+                          v-slot="{ errors }"
+                          name="Password"
+                          rules="required|min:8|max:20|w_number|w_special|w_upper"
+                        >
+                          <pg-password-field
+                            v-model="specialist.password"
+                            counter
+                            :error-messages="errors"
+                            hint="At least 8 characters"
+                            label="Password"
+                            v-bind="attrs"
+                            v-on="on"
+                            solo
+                          />
+                        </validation-provider>
+                      </template>
+                      <span class="white--text">At least 6 characters—the more characters, the better.</span><br />
+                      <span class="white--text">A mixture of both uppercase and lowercase letters.</span><br />
+                      <span class="white--text">A mixture of letters and numbers.</span><br />
+                      <span class="white--text">Inclusion of at least one special character, e.g., ! @ # ? ]</span><br />
+                    </v-tooltip>
                   </v-col>
 
                   <v-col cols="12" lg="4" md="6">
@@ -130,7 +141,7 @@
                       name="Profile"
                       rules="required"
                     >
-                      <pg-text-field
+                      <pg-textarea
                         v-model="specialist.profile"
                         :error-messages="errors"
                         label="Profile"
@@ -145,7 +156,7 @@
                       name="Profession"
                       rules="required"
                     >
-                      <pg-text-field
+                      <pg-textarea
                         v-model="specialist.profession"
                         :error-messages="errors"
                         label="Profession"
