@@ -33,12 +33,6 @@
 
 <script>
 import { sameDay, isTomorrow } from '@/utils/dateTools.js'
-// import dayjs from 'dayjs'
-// import utc from 'dayjs/plugin/utc'
-// import dayOfYear from 'dayjs/plugin/dayOfYear'
-
-// dayjs.extend(utc)
-// dayjs.extend(dayOfYear)
 
 export default {
   name: 'TodayCard',
@@ -58,8 +52,6 @@ export default {
 
   computed: {
     time () {
-      // const today = dayjs()
-      // const date = translateUTC(this.entry.dateStart)
       const today = new Date()
       const date = new Date(this.entry.dateStart)
 

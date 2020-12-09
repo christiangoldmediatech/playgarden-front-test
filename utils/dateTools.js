@@ -49,3 +49,19 @@ export const isTomorrow = (date) => {
     today.getMonth() === date.getMonth() &&
     date.getDate() === (today.getDate() + 1)
 }
+
+export const stringsToDate = (date, time) => {
+  const result = new Date()
+  const dateParts = date.split('-')
+  const timeParts = time.splie(':')
+
+  result.setFullYear(dateParts[0])
+  result.setMonth(dateParts[1] - 1)
+  result.setDate(dateParts[2])
+  result.setHours(timeParts[0])
+  result.setMinutes(timeParts[1])
+  result.setSeconds(0)
+  result.setMilliseconds(0)
+
+  return result
+}

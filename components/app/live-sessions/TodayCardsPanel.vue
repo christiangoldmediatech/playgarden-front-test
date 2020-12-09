@@ -41,16 +41,10 @@
 </template>
 
 <script>
-// import { translateUTC } from '@/utils/dateTools.js'
 import { mapState } from 'vuex'
 import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
 
-// import dayjs from 'dayjs'
-// import utc from 'dayjs/plugin/utc'
-
 import TodayCard from './TodayCard.vue'
-
-// dayjs.extend(utc)
 
 export default {
   name: 'TodayCardsPanel',

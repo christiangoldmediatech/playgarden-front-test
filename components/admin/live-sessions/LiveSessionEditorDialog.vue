@@ -285,6 +285,7 @@
 
 <script>
 import dayjs from 'dayjs'
+import { stringsToDate } from '@/utils/dateTools'
 import { mapActions, mapGetters } from 'vuex'
 
 function generateItemTemplate () {
@@ -372,28 +373,8 @@ export default {
     async save () {
       this.loading = true
 
-      const start = new Date()
-      const end = new Date()
-      const parsedDateStart = this.dateStart.split('-')
-      const parsedStartTime = this.timeStart.split(':')
-      const parsedDateEnd = this.dateEnd.split('-')
-      const parsedEndTime = this.timeEnd.split(':')
-
-      start.setFullYear(parsedDateStart[0])
-      start.setMonth(parsedDateStart[1] - 1)
-      start.setDate(parsedDateStart[2])
-      start.setHours(parsedStartTime[0])
-      start.setMinutes(parsedStartTime[1])
-      start.setSeconds(0)
-      start.setMilliseconds(0)
-
-      end.setFullYear(parsedDateEnd[0])
-      end.setMonth(parsedDateEnd[1] - 1)
-      end.setDate(parsedDateEnd[2])
-      end.setHours(parsedEndTime[0])
-      end.setMinutes(parsedEndTime[1])
-      end.setSeconds(0)
-      end.setMilliseconds(0)
+      const start = stringsToDate(this.dateStart, this.timeStart)
+      const end = stringsToDate(this.dateEnd, this.timeEnd)
 
       this.item.dateStart = start
       this.item.dateEnd = end

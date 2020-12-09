@@ -46,6 +46,10 @@
               Duration: <span class="entry-card-info ml-3">{{ entry.duration }} minutes</span>
             </div>
 
+            <div v-if="entry.inCollaborationWith" class="entry-card-description pb-4 d-flex align-center">
+              By: <img class="entry-card-collaborator" :src="entry.inCollaborationWith">
+            </div>
+
             <div v-if="!past" class="text-center pb-3">
               <v-btn
                 class="white--text"
@@ -122,9 +126,6 @@
 </template>
 
 <script>
-// import dayjs from 'dayjs'
-// import { translateUTC } from '@/utils/dateTools.js'
-
 export default {
   name: 'EntryDialog',
 
@@ -303,6 +304,10 @@ export default {
         object-fit: contain;
         object-position: center;
       }
+    }
+    &-collaborator {
+      width: 100%;
+      max-width: 142px;
     }
   }
 }
