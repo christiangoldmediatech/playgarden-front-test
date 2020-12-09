@@ -64,6 +64,9 @@ export default {
       position: relative;
       transition: transform 250ms;
       padding: 8px;
+      &.v-card.v-sheet {
+        box-shadow: 0px 6px 24px rgba(0, 0, 0, 0.25);
+      }
       &-active {
         border: solid 3px #F89838;
       }
@@ -90,6 +93,7 @@ export default {
       &-title {
         font-size: 1.10rem;
         line-height: 1.25;
+        font-weight: bold;
       }
       &-scaled {
         transform: scale(1.10);

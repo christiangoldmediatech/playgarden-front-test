@@ -1,6 +1,6 @@
 <template>
-  <div class="fill-height d-flex flex-column">
-    <div class="lsess-daily-container pb-8">
+  <div class="fill-height d-flex flex-column justify-space-between">
+    <div class="lsess-daily-container">
       <v-card class="lsess-daily-card pt-4">
         <v-row class="mx-0" align="center" justify="center">
           <img class="mr-3" src="@/assets/svg/sessions-camera.svg">
@@ -9,7 +9,7 @@
 
         <v-row class="mx-0 lsess-schedule-container">
           <v-col cols="12" class="pl-2 pr-3 lsess-schedule-container-col">
-            <template v-if="$vuetify.breakpoint.mobile">
+            <template v-if="$vuetify.breakpoint.smAndDown">
               <today-card v-for="i in nextSessions" :key="`today-card-${i.id}`" :entry="i" />
             </template>
 
@@ -82,8 +82,11 @@ export default {
 .lsess {
   &-daily {
     &-container {
-      height: calc(100% - 24px);
-      max-height: calc(100% - 24px);
+      height: auto;
+      max-height: calc(100% - 64px);
+      @media screen and (max-width: 959px) {
+        margin-bottom: 12px;
+      }
     }
     &-card {
       height: calc(100% - 30px);
@@ -114,6 +117,7 @@ export default {
     -ms-overflow-style: none;
     touch-action: auto;
     -ms-touch-action: auto;
+    padding-bottom: 24px;
   }
 
   .ps__rail-y {

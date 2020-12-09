@@ -22,8 +22,8 @@
           </v-col>
         </v-row>
         <v-row class="mx-0">
-          <v-col class="pt-0">
-            {{ entry.description }}
+          <v-col class="pt-0 lsess-card-description">
+            {{ entry.description | descriptionFilter }}
           </v-col>
         </v-row>
       </v-card>
@@ -36,6 +36,15 @@ import { sameDay, isTomorrow } from '@/utils/dateTools.js'
 
 export default {
   name: 'TodayCard',
+
+  filters: {
+    descriptionFilter (val) {
+      if (val.length > 100) {
+        return val.substr(0, 97) + '...'
+      }
+      return val
+    }
+  },
 
   props: {
     entry: {
@@ -96,6 +105,9 @@ export default {
     font-size: 17px;
     margin-bottom: 10px;
   }
+  &-card.v-card.v-sheet {
+    box-shadow: 0px 6px 24px rgba(0, 0, 0, 0.25);
+  }
   &-card {
     transition: transform 250ms;
     &-scaled {
@@ -121,15 +133,18 @@ export default {
       }
     }
     &-title {
-      font-size: 1.25rem;
+      font-size: 1.1rem;
       font-weight: bold;
       line-height: 1.13;
     }
     &-subtitle {
-      font-size: 1.25rem;
+      font-size: 1.1rem;
       font-weight: 500;
       line-height: 1.5;
       color: #707070;
+    }
+    &-description {
+      font-size: 1rem;
     }
   }
 }
