@@ -65,7 +65,7 @@ export default {
       transition: transform 250ms;
       padding: 8px;
       &.v-card.v-sheet {
-        box-shadow: 0px 6px 24px rgba(0, 0, 0, 0.25);
+        box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.160784);
       }
       &-active {
         border: solid 3px #F89838;
