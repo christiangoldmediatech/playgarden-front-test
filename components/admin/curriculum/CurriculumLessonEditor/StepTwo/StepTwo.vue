@@ -231,10 +231,15 @@ export default {
         value: 'activityType.name'
       },
       {
+        text: 'Order',
+        sortable: false,
+        value: 'order'
+      },
+      {
         align: 'right',
         sortable: false,
         value: 'actions',
-        width: 125
+        width: 135
       }
     ]
   }),
