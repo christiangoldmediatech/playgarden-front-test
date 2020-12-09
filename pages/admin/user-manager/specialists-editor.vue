@@ -37,7 +37,7 @@
                       rules="required"
                     >
                       <pg-text-field
-                        v-model="user.firstName"
+                        v-model="specialist.firstName"
                         :error-messages="errors"
                         label="First Name"
                         solo
@@ -52,7 +52,7 @@
                       rules="required"
                     >
                       <pg-text-field
-                        v-model="user.lastName"
+                        v-model="specialist.lastName"
                         :error-messages="errors"
                         label="Last Name"
                         solo
@@ -67,7 +67,7 @@
                       rules="required|email"
                     >
                       <pg-text-field
-                        v-model="user.email"
+                        v-model="specialist.email"
                         :error-messages="errors"
                         label="E-mail"
                         solo
@@ -82,7 +82,7 @@
                       rules="required|phone"
                     >
                       <pg-text-field
-                        v-model="user.phoneNumber"
+                        v-model="specialist.phoneNumber"
                         :error-messages="errors"
                         label="Phone Number"
                         solo
@@ -97,7 +97,7 @@
                       rules="required"
                     >
                       <pg-select
-                        v-model="user.roleId"
+                        v-model="specialist.roleId"
                         :error-messages="errors"
                         :items="roles"
                         label="Role"
@@ -114,11 +114,41 @@
                       rules="required|min:8|max:20|w_number|w_special|w_upper"
                     >
                       <pg-password-field
-                        v-model="user.password"
+                        v-model="specialist.password"
                         counter
                         :error-messages="errors"
                         hint="At least 8 characters"
                         label="Password"
+                        solo
+                      />
+                    </validation-provider>
+                  </v-col>
+
+                  <v-col cols="12" lg="4" md="6">
+                    <validation-provider
+                      v-slot="{ errors }"
+                      name="Profile"
+                      rules="required"
+                    >
+                      <pg-text-field
+                        v-model="specialist.profile"
+                        :error-messages="errors"
+                        label="Profile"
+                        solo
+                      />
+                    </validation-provider>
+                  </v-col>
+
+                  <v-col cols="12" lg="4" md="6">
+                    <validation-provider
+                      v-slot="{ errors }"
+                      name="Profession"
+                      rules="required"
+                    >
+                      <pg-text-field
+                        v-model="specialist.profession"
+                        :error-messages="errors"
+                        label="Profession"
                         solo
                       />
                     </validation-provider>
@@ -159,13 +189,15 @@ export default {
   data () {
     return {
       loading: false,
-      user: {
+      specialist: {
         firstName: '',
         lastName: '',
         email: '',
         phoneNumber: '',
         roleId: null,
-        password: null
+        password: null,
+        profile: null,
+        profession: null
       }
     }
   },
@@ -198,31 +230,33 @@ export default {
     promises.push(this.getRoles())
 
     if (this.id) {
-      promises.push(this.getUserById(this.id))
+      promises.push(this.getSpecialistsById(this.id))
     }
 
     const results = await Promise.all(promises)
     const { value } = this.roles.find(rol => rol.text === 'SPECIALISTS')
-    this.user.roleId = value
+    this.specialist.roleId = value
 
     if (results[1]) {
       const data = results[1]
-      this.user.firstName = data.firstName
-      this.user.lastName = data.lastName
-      this.user.email = data.email
-      this.user.phoneNumber = data.phoneNumber
-      this.user.roleId = data.role.id
+      this.specialist.firstName = data.user.firstName
+      this.specialist.lastName = data.user.lastName
+      this.specialist.email = data.user.email
+      this.specialist.phoneNumber = data.user.phoneNumber
+      this.specialist.roleId = data.user.role.id
+      this.specialist.profile = data.profile
+      this.specialist.profession = data.profession
     }
 
     this.loading = false
   },
 
   methods: {
-    ...mapActions('admin/users', {
-      getUsers: 'get',
-      getUserById: 'getById',
-      createUser: 'create',
-      updateUser: 'update'
+    ...mapActions('admin/specialists', {
+      getSpecialists: 'get',
+      getSpecialistsById: 'getById',
+      createSpecialists: 'create',
+      updateSpecialists: 'update'
     }),
 
     ...mapActions('admin/roles', {
@@ -233,10 +267,10 @@ export default {
       this.loading = true
       try {
         if (this.id === null) {
-          await this.createUser(this.user)
+          await this.createSpecialists(this.specialist)
         } else {
-          this.user.password = undefined
-          await this.updateUser({ id: this.id, data: this.user })
+          this.specialist.password = undefined
+          await this.updateSpecialists({ id: this.id, data: this.specialist })
         }
       } catch (err) {
         this.loading = false

@@ -28,7 +28,7 @@
           </v-card-title>
 
           <v-card-text>
-            View, create, update, or delete users.
+            View, create, update, or delete specialists.
           </v-card-text>
         </v-card>
       </v-col>
@@ -115,19 +115,19 @@ export default {
       filterList: [
         {
           text: 'First Name',
-          value: 'firstName'
+          value: 'user.firstName'
         },
         {
           text: 'Last Name',
-          value: 'lastName'
+          value: 'user.lastName'
         },
         {
           text: 'E-mail',
-          value: 'email'
+          value: 'user.email'
         },
         {
           text: 'Phone Number',
-          value: 'phoneNumber'
+          value: 'user.phoneNumber'
         }
       ],
       headers: [
@@ -135,37 +135,31 @@ export default {
           text: 'Name',
           align: 'start',
           sortable: false,
-          value: 'fullName'
+          value: 'user.fullName'
         },
         {
           text: 'E-mail',
           align: 'start',
           sortable: false,
-          value: 'email'
+          value: 'user.email'
         },
         {
           text: 'Phone',
           align: 'start',
           sortable: false,
-          value: 'phoneNumber'
+          value: 'user.phoneNumber'
         },
         {
-          text: 'Role',
+          text: 'Profile',
           align: 'start',
           sortable: false,
-          value: 'role.name'
+          value: 'profile'
         },
         {
-          text: 'Created',
+          text: 'Profession',
           align: 'start',
           sortable: false,
-          value: 'createdAt'
-        },
-        {
-          text: 'Last Updated',
-          align: 'start',
-          sortable: false,
-          value: 'updatedAt'
+          value: 'profession'
         },
         {
           align: 'right',
@@ -178,7 +172,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters('admin/users', {
+    ...mapGetters('admin/specialists', {
       types: 'rows',
       total: 'total'
     }),
@@ -208,9 +202,9 @@ export default {
   },
 
   methods: {
-    ...mapActions('admin/users', {
-      getUsers: 'get',
-      deleteUser: 'delete'
+    ...mapActions('admin/specialists', {
+      getSpecialists: 'get',
+      deleteSpecialists: 'delete'
     }),
     ...mapActions('admin/roles', {
       getRoles: 'get'
@@ -252,16 +246,16 @@ export default {
         })
       }
 
-      await this.getUsers(params)
+      await this.getSpecialists(params)
       this.loading = false
     },
 
-    remove ({ id, firstName, lastName, email }) {
+    remove ({ id, user }) {
       this.$nuxt.$emit('open-prompt', {
         title: 'Delete user?',
-        message: `Are you sure you wish to delete user '${firstName} ${lastName}' (${email})?`,
+        message: `Are you sure you wish to delete user '${user.firstName} ${user.lastName}' (${user.email})?`,
         action: async () => {
-          await this.deleteUser(id)
+          await this.deleteSpecialists(id)
           this.refresh()
         }
       })

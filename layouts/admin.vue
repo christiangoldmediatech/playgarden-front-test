@@ -22,7 +22,7 @@
       <v-divider />
 
       <!-- Menu -->
-      <v-list v-if="userInfo.rol === 'ADMIN'">
+      <v-list v-if="userInfo.role.name === 'SUPER_ADMINISTRATORS'">
         <menu-item
           v-for="(item, indexMI) in menuItems"
           :key="indexMI"
