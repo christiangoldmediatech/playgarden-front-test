@@ -55,7 +55,7 @@
 
     <!-- Controls -->
     <control-bar
-      v-if="playerInstance && playerContainerId && playerInstance.toggleMute"
+      v-if="showControls"
       v-bind="{ ...controlBarProps, noSmallscreen }"
       @fullscreen="handleFullscreen"
     />
@@ -64,7 +64,7 @@
 
 <script>
 import { jsonCopy } from '@/utils/objectTools.js'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
 import videojs from 'video.js'
 import Fullscreen from '@/mixins/FullscreenMixin.js'
 import Favorites from '@/mixins/FavoritesMixin.js'
@@ -106,15 +106,17 @@ export default {
       },
       isCasting: false,
       castLoading: false,
-      MEDIA_NAMESPACE: 'urn:x-cast:com.google.cast.media',
-      requestId: 1,
-      remotePlayer: null,
-      remotePlayerController: null
+      MEDIA_NAMESPACE: 'urn:x-cast:com.google.cast.media'
     }
   },
 
   computed: {
     ...mapState('cast', ['castAvailable', 'castContext']),
+    ...mapGetters('cast', ['getCasting', 'getStatus', 'getCurrentTime']),
+
+    showControls () {
+      return Boolean(this.playerInstance && this.playerContainerId && this.playerInstance.toggleMute)
+    },
 
     canCast () {
       return this.showCast && this.castAvailable
@@ -170,6 +172,28 @@ export default {
         return this.mediaObject.videoId
       }
       return -1
+    }
+  },
+
+  watch: {
+    getCurrentTime (val) {
+      if (this.isCasting && this.getCasting) {
+        this.position = val
+      }
+    },
+
+    getStatus (val) {
+      if (this.isCasting && this.getCasting) {
+        this.status = val
+      }
+    },
+
+    getCasting (val) {
+      if (this.isCasting && !val) {
+        this.isCasting = false
+        this.status = 'IDLE'
+        this.playerInstance.currentTime(this.position)
+      }
     }
   },
 
@@ -269,8 +293,8 @@ export default {
           this.muted = false
         }
         if (this.isCasting) {
-          this.remotePlayer.volumeLevel = this.volume
-          this.remotePlayerController.setVolumeLevel()
+          window.remotePlayer.volumeLevel = this.volume
+          window.remotePlayerController.setVolumeLevel()
         }
       })
 
@@ -298,40 +322,42 @@ export default {
       })
 
       // Custom player functions
-      this.playerInstance.loadPlaylist = this.loadPlaylist
+      this.$set(this.playerInstance, 'loadPlaylist', this.loadPlaylist)
+      // this.playerInstance.loadPlaylist = this.loadPlaylist
 
-      this.playerInstance.getMediaObject = () => this.mediaObject
+      this.$set(this.playerInstance, 'getMediaObject', () => this.mediaObject)
+      // this.playerInstance.getMediaObject = () => this.mediaObject
 
       // Add show loading methods
-      this.playerInstance.showLoading = () => {
+      this.$set(this.playerInstance, 'showLoading', () => {
         this.playerInstance.addClass('vjs-waiting')
-      }
+      })
 
-      this.playerInstance.hideLoading = () => {
+      this.$set(this.playerInstance, 'hideLoading', () => {
         this.playerInstance.removeClass('vjs-waiting')
-      }
+      })
 
-      this.playerInstance.nextVideo = () => {
+      this.$set(this.playerInstance, 'nextVideo', () => {
         if (!this.lastPlaylistItem) {
           this.loadMediaObject(this.playlistItemIndex + 1)
         } else {
           this.$emit('playlist-complete')
         }
-      }
+      })
 
-      this.playerInstance.stopCasting = () => {
+      this.$set(this.playerInstance, 'stopCasting', () => {
         if (this.isCasting) {
           cast.framework.CastContext.getInstance().endCurrentSession(true)
           this.isCasting = false
           this.status = 'IDLE'
         }
-      }
+      })
 
       // Player controls
       // Play or pause
-      this.playerInstance.togglePlay = () => {
+      this.$set(this.playerInstance, 'togglePlay', () => {
         if (this.isCasting) {
-          this.remotePlayerController.playOrPause()
+          window.remotePlayerController.playOrPause()
           return
         }
         if (this.status === 'PLAYING') {
@@ -339,33 +365,33 @@ export default {
         } else {
           this.playerInstance.play()
         }
-      }
+      })
 
       // Seek
-      this.playerInstance.seek = (position) => {
+      this.$set(this.playerInstance, 'seek', (position) => {
         if (this.duration > 0) {
           if (this.isCasting) {
-            this.remotePlayer.currentTime = position
-            this.remotePlayerController.seek()
+            window.remotePlayer.currentTime = position
+            window.remotePlayerController.seek()
           } else {
             this.playerInstance.currentTime(position)
           }
         }
-      }
+      })
 
       // Restart video
-      this.playerInstance.restart = () => {
+      this.$set(this.playerInstance, 'restart', () => {
         if (this.isCasting) {
-          this.remotePlayer.currentTime = 0
-          this.remotePlayerController.seek()
+          window.remotePlayer.currentTime = 0
+          window.remotePlayerController.seek()
         } else {
           this.playerInstance.currentTime(0)
         }
         this.position = 0
-      }
+      })
 
       // Step back 15 seconds
-      this.playerInstance.stepBack = () => {
+      this.$set(this.playerInstance, 'stepBack', () => {
         let currentTime = this.playerInstance.currentTime()
         if (this.isCasting) {
           currentTime = this.position
@@ -376,17 +402,17 @@ export default {
         }
 
         if (this.isCasting) {
-          this.remotePlayer.currentTime = newTime
-          this.remotePlayerController.seek()
+          window.remotePlayer.currentTime = newTime
+          window.remotePlayerController.seek()
         } else {
           this.playerInstance.currentTime(newTime)
         }
 
         this.position = newTime
-      }
+      })
 
       // Step forward 15 seconds
-      this.playerInstance.stepForward = () => {
+      this.$set(this.playerInstance, 'stepForward', () => {
         let currentTime = this.playerInstance.currentTime()
         if (this.isCasting) {
           currentTime = this.position
@@ -398,19 +424,19 @@ export default {
 
         if (nextTime < (duration - 1) && nextTime < availTime) {
           if (this.isCasting) {
-            this.remotePlayer.currentTime = nextTime
-            this.remotePlayerController.seek()
+            window.remotePlayer.currentTime = nextTime
+            window.remotePlayerController.seek()
           } else {
             this.playerInstance.currentTime(nextTime)
           }
           this.position = nextTime
         }
-      }
+      })
 
       // Mute or unmute
-      this.playerInstance.toggleMute = () => {
+      this.$set(this.playerInstance, 'toggleMute', () => {
         if (this.isCasting) {
-          this.remotePlayerController.muteOrUnmute()
+          window.remotePlayerController.muteOrUnmute()
           this.muted = !this.muted
           return
         }
@@ -419,7 +445,7 @@ export default {
         } else {
           this.volumeVal = 100
         }
-      }
+      })
 
       this.$emit('ready', this.playerInstance)
     },
@@ -432,41 +458,7 @@ export default {
       }
     },
 
-    setupRemoteController () {
-      if (!this.remotePlayer || !this.remotePlayerController) {
-        // Create remote player for listening to events
-        this.remotePlayer = new cast.framework.RemotePlayer()
-        this.remotePlayerController = new cast.framework.RemotePlayerController(this.remotePlayer)
-
-        // CURRENT_TIME_CHANGED change
-        const updatePosition = (event) => {
-          this.position = event.value
-        }
-        this.remotePlayerController.addEventListener(cast.framework.RemotePlayerEventType.CURRENT_TIME_CHANGED, updatePosition)
-
-        this.remotePlayerController.addEventListener(cast.framework.RemotePlayerEventType.PLAYER_STATE_CHANGED, (event) => {
-          if (event.value === 'PLAYING') {
-            this.status = 'PLAYING'
-          } else if (event.value === 'PAUSED') {
-            this.status = 'IDLE'
-          } else {
-            this.status = 'LOADING'
-          }
-        })
-
-        this.remotePlayerController.addEventListener(cast.framework.RemotePlayerEventType.IS_CONNECTED_CHANGED, (event) => {
-          if (event.value === false) {
-            this.isCasting = false
-            this.status = 'IDLE'
-          } else {
-            this.isCasting = true
-          }
-        })
-      }
-    },
-
     onCastBtn () {
-      this.setupRemoteController()
       cast.framework.CastContext.getInstance().requestSession().then(() => {
         // let url, type
         let url
@@ -491,8 +483,8 @@ export default {
 
         castSession.loadMedia(request).then(
           () => {
-            this.remotePlayer.currentTime = currentTime
-            this.remotePlayerController.seek()
+            window.remotePlayer.currentTime = currentTime
+            window.remotePlayerController.seek()
           },
           (errorCode) => {
             // eslint-disable-next-line

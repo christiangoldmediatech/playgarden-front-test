@@ -5,7 +5,8 @@ export default {
   data: () => {
     return {
       savingActivityProgress: false,
-      pieceEarnedDialog: false
+      pieceEarnedDialog: false,
+      puzzleImg: null
     }
   },
 
@@ -46,6 +47,7 @@ export default {
               if (result.puzzle) {
                 this.player.pause()
                 this.pieceEarnedDialog = true
+                this.puzzleImg = result.puzzleImg
               }
             })
           )

@@ -1,6 +1,6 @@
 <template>
   <div class="plan-description">
-    <ul class="plan-detail" v-if="indexPlan === 0">
+    <ul v-if="indexPlan === 0" class="plan-detail">
       <li
         v-for="(benefit, indexPCB) in plan.commonBenefits.benefits"
         :key="indexPCB"
@@ -102,6 +102,6 @@ ul li::before {
   *display: inline;
 } /* haslayout for IE6/7 */
 .plan-description {
-  min-height: 220px !important;
+  min-height: 155px !important;
 }
 </style>

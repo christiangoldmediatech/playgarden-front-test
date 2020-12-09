@@ -51,16 +51,12 @@
             <v-col cols="4" class="pr-3">
               <div class="product-description">
                 <span class="product-price">
-                  ${{ item.unit_amount / 100 }}
+                  {{ productValue(item) }}
                 </span>
 
                 <span class="product-info">
-                  / {{ productPeriod(item.product.name) }}
+                  / month
                 </span>
-
-                <br>
-
-                <span class="product-info-1">*Pricing is per child</span>
               </div>
             </v-col>
           </v-row>
@@ -77,10 +73,10 @@
             <v-col cols="4" class="pr-3">
               <div>
                 <span v-if="coupon.percent_off">
-                  <b>- {{ coupon.percent_off }} %</b>
+                  <b>- {{ coupon.percent_off }}%</b>
                 </span>
                 <span v-if="coupon.amount_off">
-                  <b>${{ coupon.amount_off.toLocaleString("en-US") }}</b>
+                  <b>${{ coupon.amount_off.toLocaleString('en-US', {style: 'currency', currency: 'USD'}) }}</b>
                 </span>
               </div>
             </v-col>
@@ -96,8 +92,8 @@
             </v-col>
 
             <v-col cols="4">
-              <span v-if="!coupon" class="total-cost"> ${{ cost.total || 0 }} </span>
-              <span v-else class="total-cost"> ${{ getTotal || 0 }} </span>
+              <span v-if="!coupon" class="total-cost"> {{ (cost.total || 0).toLocaleString('en-US', {style: 'currency', currency: 'USD'}) }} </span>
+              <span v-else class="total-cost"> {{ (getTotal || 0 ).toLocaleString('en-US', {style: 'currency', currency: 'USD'}) }} </span>
             </v-col>
           </v-row>
 
@@ -176,8 +172,9 @@ export default {
       'validateCard'
     ]),
 
-    productPeriod (name = '') {
-      return /month.*$/.test(name.toLowerCase()) ? 'month' : 'year'
+    productValue (value) {
+      const monthlyCost = /month.*$/.test(value.recurring.interval.toLowerCase()) ? value.unit_amount / 100 : value.unit_amount / 12 / 100
+      return monthlyCost.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
     },
 
     async fetchSubCosts () {
@@ -191,9 +188,13 @@ export default {
       this.loading = true
 
       try {
-        const token = await this.validateCard(cardData)
-        const dataSubscrition = (cardData.promotion_id) ? { ...token, promotion_id: cardData.promotion_id } : token
+        const dataSubscrition = {
+          token: cardData.token
+        }
 
+        if (cardData.promotion_id) {
+          dataSubscrition.promotion_id = cardData.promotion_id
+        }
         await this.paySubscription(dataSubscrition)
 
         if (this.inSignUpProcess) {

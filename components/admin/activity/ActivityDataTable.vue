@@ -171,7 +171,7 @@ export default {
         {
           text: 'Description',
           sortable: false,
-          value: 'activityType.description'
+          value: 'videos.description'
         },
         {
           text: '',

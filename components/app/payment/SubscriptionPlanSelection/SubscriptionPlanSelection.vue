@@ -59,18 +59,17 @@
                         ${{ (plan.priceAnnual/12).toFixed(2) }}
                       </span>
                       <span class="product-month">/Month</span>
-                      <br />
-                      <label class="font-weight-bold">School Year Special</label>
-                      <br />
-                      <span v-if="indexP === 0 || indexP === 1" class="info-prodcut-detail">Billed Annually (save 24%)</span>
-                      <span v-if="indexP === 2" class="info-prodcut-detail">Billed Annually (save 20%)</span>
+                      <br>
+                      <span v-if="indexP === 0" class="info-prodcut-detail">Billed Annually (Save ~$170)</span>
+                      <span v-if="indexP === 1" class="info-prodcut-detail">Billed Annually (Save ~$300)</span>
+                      <span v-if="indexP === 2" class="info-prodcut-detail">Billed Annually (Save ~$1,200)</span>
                     </p>
 
                     <p :class="`${indexP === 1 ? 'text-center mt-10 plan-included' : 'text-center mt-12 plan-included'}`">
                       <label class="font-weight-bold">What's included</label>
-                      <br />
-                      <span v-if="indexP === 1" class="info-prodcut-detail">Everything in SILVER Plan, <span class="font-weight-bold">plus</span></span>
-                      <span v-if="indexP === 2" class="info-prodcut-detail">Everything in GOLD Plan, <span class="font-weight-bold">plus</span></span>
+                      <br>
+                      <span v-if="indexP === 1" class="info-prodcut-detail">Everything in the SILVER Plan, <span class="font-weight-bold">plus extra!</span></span>
+                      <span v-if="indexP === 2" class="info-prodcut-detail">Everything in the GOLD Plan, <span class="font-weight-bold">plus extra!</span></span>
                     </p>
 
                     <plan-description :plan="plan" :index-plan="indexP" class="ml-8 mr-8" />
@@ -117,7 +116,7 @@
           </validation-provider>
 
           <v-row
-            v-if="!noAddress && draft.requireAddress"
+            v-if="!noAddress"
             class="flex-md-row"
             justify="center"
             no-gutters
@@ -129,7 +128,7 @@
                 </span>
                 <br>
                 <span class="text-h8">
-                  For our GOLD and PLATINUM plans, we require a shipping address in order to send the Welcome Kit with Backpack, workbooks, and additional materials so you can easily receive them at the comfort of your home.
+                  GOLD and PLATINUM Plans require a shipping address to send Playgarden Prep Workbooks, Backpacks and Materials. Enhance your child's learning experience at home!
                 </span>
               </p>
 
@@ -390,7 +389,7 @@ export default {
       this.loading = true
 
       try {
-        if (!this.noAddress && this.draft.requireAddress) {
+        if (!this.noAddress) {
           await this.submitMethodShippingAddress(this.draftAddress)
         }
 

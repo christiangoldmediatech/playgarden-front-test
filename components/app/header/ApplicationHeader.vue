@@ -1,5 +1,11 @@
 <template>
-  <v-app-bar app class="pg-app-bar" color="white" elevation="1">
+  <v-app-bar
+    app
+    class="pg-app-bar"
+    color="white"
+    elevation="1"
+    :class="{'overrideDialog': overrideDialogs}"
+  >
     <v-row class="flex-nowrap" align="center" justify="space-between" no-gutters>
       <!-- HAMBURGER MENU -->
       <v-col class="d-flex align-center" cols="auto">
@@ -152,6 +158,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    overrideDialogs: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
 
@@ -243,5 +254,8 @@ export default {
 }
 .btn-register:before {
   background-color: transparent !important;
+}
+.overrideDialog {
+  z-index: 300;
 }
 </style>

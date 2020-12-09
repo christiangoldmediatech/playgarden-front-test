@@ -1,6 +1,10 @@
 export default {
-  createActivityByLessonId (_, { activityId, lessonId }) {
-    return this.$axios.$post(`/lessons/${lessonId}/activities/${activityId}`)
+  createActivityByLessonId (_, { activityId, lessonId, order }) {
+    return this.$axios.$post(`/lessons/${lessonId}/activities/${activityId}/${order}`)
+  },
+
+  updateActivityByLessonId (_, { idCurrent, activityId, lessonId, order }) {
+    return this.$axios.$patch(`/lessons/${lessonId}/activities/${idCurrent}/${activityId}/${order}`)
   },
 
   deleteActivityByLessonId (_, { id, lessonId }) {

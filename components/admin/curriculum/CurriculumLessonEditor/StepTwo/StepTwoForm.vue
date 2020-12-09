@@ -35,6 +35,19 @@
         />
       </validation-provider>
 
+      <!-- Order -->
+      <validation-provider v-slot="{ errors }" name="Order" rules="required">
+        <pg-text-field
+          v-model="draft.order"
+          clearable
+          :disabled="loading"
+          :error-messages="errors"
+          label="Order"
+          :loading="loading"
+          solo
+        />
+      </validation-provider>
+
       <!-- Activity -->
       <validation-provider v-slot="{ errors }" name="Activity" rules="required">
         <pg-select

@@ -98,7 +98,7 @@
                       <validation-provider
                         v-slot="{ errors }"
                         name="Password"
-                        rules="required|min:8|max:20|w_number|w_special|w_upper"
+                        rules="required|min:6|max:20|w_number|w_special|w_upper"
                         vid="password_field"
                       >
                         <pg-password-field
@@ -108,17 +108,17 @@
                           :error-messages="errors"
                           label="Password"
                           :loading="loading"
-                          v-bind="attrs"
-                          v-on="on"
                           maxlength="20"
                           solo
+                          v-bind="attrs"
+                          v-on="on"
                         />
                       </validation-provider>
                     </template>
-                    <span class="white--text">At least 6 characters—the more characters, the better.</span><br />
-                    <span class="white--text">A mixture of both uppercase and lowercase letters.</span><br />
-                    <span class="white--text">A mixture of letters and numbers.</span><br />
-                    <span class="white--text">Inclusion of at least one special character, e.g., ! @ # ? ]</span><br />
+                    <span class="white--text">At least 6 characters—the more characters, the better.</span><br>
+                    <span class="white--text">A mixture of both uppercase and lowercase letters.</span><br>
+                    <span class="white--text">A mixture of letters and numbers.</span><br>
+                    <span class="white--text">Inclusion of at least one special character, e.g., ! @ # ? ]</span><br>
                   </v-tooltip>
 
                   <!-- Password confirmation -->
@@ -151,7 +151,7 @@
                 >
                   {{
                     inInvitationProcess || !isUserLoggedIn
-                      ? "SIGNUP"
+                      ? "SIGN UP"
                       : "CONTINUE"
                   }}
                 </v-btn>
@@ -160,7 +160,7 @@
           </v-col>
         </v-row>
         <p class="text-center messages-info-register">
-          You will only be billed after 30 days of FREE trial is completed
+          You will only be billed after your 30-day FREE trial is complete!
         </p>
       </v-container>
     </v-form>
