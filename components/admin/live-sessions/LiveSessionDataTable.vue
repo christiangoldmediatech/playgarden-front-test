@@ -92,6 +92,8 @@
               </template>
 
               <template v-slot:item.actions="{ item }">
+                <video-preview-btn v-if="item.videos" :video="item.videos" />
+
                 <v-icon
                   color="#81A1F7"
                   dense
@@ -175,6 +177,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import VideoPreviewBtn from '@/components/admin/video-preview/VideoPreviewBtn.vue'
 
 import paginable from '@/utils/mixins/paginable'
 import LiveSessionEditorDialog from './LiveSessionEditorDialog'
@@ -183,7 +186,8 @@ export default {
   name: 'LiveSessionDataTable',
 
   components: {
-    LiveSessionEditorDialog
+    LiveSessionEditorDialog,
+    VideoPreviewBtn
   },
 
   mixins: [paginable],
@@ -192,6 +196,7 @@ export default {
     filters: {
       activityTypeId: null
     },
+    checkStatusInterval: null,
     liveSessions: [],
     loading: false,
     search: null,
@@ -250,6 +255,10 @@ export default {
     this.getTypes()
   },
 
+  beforeDestroy () {
+    clearInterval(this.checkStatusInterval)
+  },
+
   methods: {
     ...mapActions('admin/activity', ['getTypes']),
 
@@ -270,6 +279,8 @@ export default {
           page: this.pagination.page,
           limit: this.pagination.limit
         })
+        this.checkStatus()
+        this.stopInterval()
 
         this.liveSessions = liveSessions
         this.setPagination({ page, total })
@@ -288,6 +299,20 @@ export default {
           await this.refresh()
         }
       })
+    },
+
+    checkStatus () {
+      if (this.liveSessions.filter(data => data.videos && data.videos.status !== 'COMPLETED').length > 0) {
+        this.checkStatusInterval = setInterval(() => {
+          this.refresh()
+        }, 120000)
+      }
+    },
+
+    stopInterval () {
+      if (this.liveSessions.filter(data => data.videos && data.videos.status !== 'COMPLETED').length === 0) {
+        clearInterval(this.checkStatusInterval)
+      }
     }
   }
 }
