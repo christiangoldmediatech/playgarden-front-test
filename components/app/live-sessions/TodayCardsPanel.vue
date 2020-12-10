@@ -1,5 +1,5 @@
 <template>
-  <div class="fill-height d-flex flex-column justify-space-between">
+  <div class="fill-height d-flex flex-column">
     <div class="lsess-daily-container">
       <v-card class="lsess-daily-card pt-4">
         <v-row class="mx-0" align="center" justify="center">
@@ -82,7 +82,6 @@ export default {
 .lsess {
   &-daily {
     &-container {
-      height: auto;
       max-height: calc(100% - 64px);
       @media screen and (max-width: 959px) {
         margin-bottom: 12px;
@@ -111,6 +110,7 @@ export default {
   .ps {
     position: relative;
     width: 100%;
+    height: auto;
     max-height: 100%;
     overflow: hidden;
     overflow-anchor: none;
