@@ -169,7 +169,10 @@ export default {
 
   created () {
     this.refresh()
-    this.fileName = this.getLesson.name.replace(/ /g, '-')
+    this.getLessonById(this.lessonId).then((data) => {
+      this.fileName = data.name.replace(/ /g, '-')
+      this.loading = false
+    })
   },
 
   methods: {
@@ -177,6 +180,9 @@ export default {
       'createWorksheetByLessonId',
       'fetchWorksheetsByLessonId',
       'updateWorksheetByLessonId'
+    ]),
+    ...mapActions('admin/curriculum', [
+      'getLessonById'
     ]),
 
     async refresh () {
@@ -207,7 +213,6 @@ export default {
           const { video } = await this.$refs.videoUploader.handleUpload()
           this.draft.videoId = video.id
         }
-
         const data = await this.submitMethod(this.getSubmittableData())
         this.$emit('click:submit', data)
       } catch (e) {

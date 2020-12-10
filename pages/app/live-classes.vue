@@ -6,8 +6,15 @@
     >
       <v-row class="fill-height">
         <v-col class="lsess-daily" cols="12" md="4" lg="3" xl="2">
-          <today-cards-panel v-if="mode === 'TODAY'" @mode-change="mode = 'CALENDAR'" />
-          <calendar-panel v-else v-model="today" @mode-change="mode = 'TODAY'" />
+          <today-cards-panel
+            v-if="mode === 'TODAY'"
+            @mode-change="mode = 'CALENDAR'"
+          />
+          <calendar-panel
+            v-else
+            v-model="today"
+            @mode-change="mode = 'TODAY'"
+          />
         </v-col>
 
         <v-col class="lsess-schedule" cols="12" md="8" lg="9" xl="10">
@@ -16,11 +23,70 @@
       </v-row>
     </v-container>
     <entry-dialog />
+
+    <v-dialog
+      :value="!hasTrialOrPlatinumPlan"
+      content-class="elevation-0"
+      :fullscreen="fullscreen"
+      persistent
+    >
+      <v-card class="dialog-overlay">
+        <v-row no-gutters justify="start" class="mt-0">
+          <v-btn
+            class="top-left text-none white--text px-4"
+            color="white"
+            text
+            :to="'./dashboard'"
+            @click.stop="overlay = false"
+          >
+            <v-icon class="mr-2" small left>
+              mdi-less-than
+            </v-icon>
+            Back
+          </v-btn>
+        </v-row>
+        <v-col class="mt-16">
+          <v-row
+            class="mb-15 mt-16"
+            justify="center"
+            align-content="center"
+            no-gutters
+          >
+            <v-card
+              cols="12"
+              sm="4"
+              class="px-3 mt-16"
+              width="400"
+              height="200"
+              tile
+            >
+              <p class="text-center font-weight-bold mt-5">
+                Get access to Live Lessons
+              </p>
+              <p class="text-center">
+                Upgraded your plan
+              </p>
+              <v-row justify="center" no-gutters>
+                <v-btn
+                  href="https://playgardenprep.com/online/"
+                  color="accent"
+                  width="250"
+                  tile
+                  x-large
+                >
+                  Know our plans
+                </v-btn>
+              </v-row>
+            </v-card>
+          </v-row>
+        </v-col>
+      </v-card>
+    </v-dialog>
   </v-main>
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
 import TodayCardsPanel from '@/components/app/live-sessions/TodayCardsPanel.vue'
 import CalendarPanel from '@/components/app/live-sessions/CalendarPanel.vue'
 import EntryDialog from '@/components/app/live-sessions/EntryDialog.vue'
@@ -39,12 +105,17 @@ export default {
   data: () => {
     return {
       mode: 'TODAY',
-      today: null
+      today: null,
+      loading: false,
+      fullscreen: true
     }
   },
 
   computed: {
     ...mapState('live-sessions', ['sessions']),
+    ...mapGetters('auth', {
+      hasTrialOrPlatinumPlan: 'hasTrialOrPlatinumPlan'
+    }),
 
     days () {
       if (this.today) {
@@ -54,8 +125,8 @@ export default {
 
         if (today.getDay() === 6 || today.getDay() === 0) {
           // Get next week
-          monday.setDate(today.getDate() + (7 - today.getDay()) % 7 + 1)
-          friday.setDate(today.getDate() + (7 - today.getDay()) % 7 + 5)
+          monday.setDate(today.getDate() + ((7 - today.getDay()) % 7) + 1)
+          friday.setDate(today.getDate() + ((7 - today.getDay()) % 7) + 5)
         } else {
           // Get current week
           monday.setDate(today.getDate() - (today.getDay() - 1))
@@ -82,12 +153,20 @@ export default {
 
   created () {
     const today = new Date()
-    this.today = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${(today.getDate()).toString().padStart(2, '0')}`
+    this.today = `${today.getFullYear()}-${(today.getMonth() + 1)
+      .toString()
+      .padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`
     this.getUserLiveSessions(this.days)
   },
 
   methods: {
-    ...mapActions('live-sessions', ['getUserLiveSessions'])
+    ...mapActions('live-sessions', ['getUserLiveSessions']),
+    close () {
+      this.$nextTick(() => {
+        this.dialog = false
+        this.loading = false
+      })
+    }
   }
 }
 </script>
@@ -105,7 +184,7 @@ export default {
     object-fit: cover;
     object-position: center;
   }
-  &-daily{
+  &-daily {
     height: 100%;
     max-height: 100%;
   }
@@ -122,5 +201,12 @@ export default {
       min-height: 64px;
     }
   }
+}
+.dialog-overlay {
+  background-color: rgba(0, 0, 0, 0.68) !important;
+}
+.fullscreen {
+  width: 100% !important;
+  height: 100% !important;
 }
 </style>

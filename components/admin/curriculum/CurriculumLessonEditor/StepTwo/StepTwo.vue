@@ -53,6 +53,8 @@
               <template v-slot:item.actions="{ item }">
                 <video-preview-btn :video="item" />
 
+                <grades-btn :data-item="item" :entity-type="entityType" :lesson-id="lessonId" />
+
                 <v-btn icon @click="openModal(item)">
                   <v-icon color="#81A1F7" dense>
                     mdi-pencil-outline
@@ -189,6 +191,7 @@
 <script>
 import { mapActions } from 'vuex'
 import VideoPreviewBtn from '@/components/admin/video-preview/VideoPreviewBtn.vue'
+import GradesBtn from '@/components/admin/grades/GradesBtn.vue'
 import StepTwoForm from './StepTwoForm'
 
 export default {
@@ -196,7 +199,8 @@ export default {
 
   components: {
     StepTwoForm,
-    VideoPreviewBtn
+    VideoPreviewBtn,
+    GradesBtn
   },
 
   props: {
@@ -212,6 +216,7 @@ export default {
     resourceSelected: {},
     loading: false,
     page: 1,
+    entityType: 'Videos',
     checkStatusInterval: null,
     resources: [],
     headers: [
@@ -231,10 +236,15 @@ export default {
         value: 'activityType.name'
       },
       {
+        text: 'Order',
+        sortable: false,
+        value: 'order'
+      },
+      {
         align: 'right',
         sortable: false,
         value: 'actions',
-        width: 125
+        width: 173
       }
     ]
   }),
