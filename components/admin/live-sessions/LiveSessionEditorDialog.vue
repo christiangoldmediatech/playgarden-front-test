@@ -335,6 +335,7 @@
 
 <script>
 import dayjs from 'dayjs'
+import { stringsToDate } from '@/utils/dateTools'
 import { mapActions, mapGetters } from 'vuex'
 
 function generateItemTemplate () {
@@ -445,8 +446,11 @@ export default {
         this.item.videoId = data.video.id
       }
 
-      this.item.dateStart = `${this.dateStart}T${this.timeStart}:00.000`
-      this.item.dateEnd = `${this.dateEnd}T${this.timeEnd}:00.000`
+      const start = stringsToDate(this.dateStart, this.timeStart)
+      const end = stringsToDate(this.dateEnd, this.timeEnd)
+
+      this.item.dateStart = start
+      this.item.dateEnd = end
 
       try {
         if (this.id === null) {
@@ -481,17 +485,23 @@ export default {
       })
 
       if (item.dateStart) {
-        const dateStart = item.dateStart.replace(':00.000Z', '').split('T')
+        // const dateStart = item.dateStart.replace(':00.000Z', '').split('T')
 
-        this.dateStart = dateStart[0]
-        this.timeStart = dateStart[1]
+        // this.dateStart = dateStart[0]
+        // this.timeStart = dateStart[1]
+        const dateStart = new Date(item.dateStart)
+        this.dateStart = `${dateStart.getFullYear()}-${(dateStart.getMonth() + 1).toString().padStart(2, '0')}-${dateStart.getDate().toString().padStart(2, '0')}`
+        this.timeStart = `${dateStart.getHours().toString().padStart(2, '0')}:${dateStart.getMinutes().toString().padStart(2, '0')}`
       }
 
       if (item.dateEnd) {
-        const dateEnd = item.dateEnd.replace(':00.000Z', '').split('T')
+        // const dateEnd = item.dateEnd.replace(':00.000Z', '').split('T')
 
-        this.dateEnd = dateEnd[0]
-        this.timeEnd = dateEnd[1]
+        // this.dateEnd = dateEnd[0]
+        // this.timeEnd = dateEnd[1]
+        const dateEnd = new Date(item.dateEnd)
+        this.dateEnd = `${dateEnd.getFullYear()}-${(dateEnd.getMonth() + 1).toString().padStart(2, '0')}-${dateEnd.getDate().toString().padStart(2, '0')}`
+        this.timeEnd = `${dateEnd.getHours().toString().padStart(2, '0')}:${dateEnd.getMinutes().toString().padStart(2, '0')}`
       }
 
       if (item.activityType) {

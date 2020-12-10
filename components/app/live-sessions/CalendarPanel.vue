@@ -1,7 +1,7 @@
 <template>
-  <div class="fill-height d-flex flex-column justify-space-between">
+  <div class="fill-height d-flex flex-column">
     <v-btn
-      class="lsess-calendar-btn text-none font-weight-bold flex-shrink-1 flex-grow-0 d-flex align-center mb-6"
+      class="lsess-calendar-btn text-none font-weight-bold flex-shrink-1 flex-grow-0 d-flex align-center mb-3 mb-md-6"
       color="white"
       block
       solo
@@ -12,10 +12,10 @@
       <span>Live Sessions Schedule</span>
     </v-btn>
 
-    <div class="flex-shrink-0 flex-grow-1">
-      <v-card class="fill-height">
+    <div>
+      <v-card class="lsess-calendar-card">
         <v-row class="flex-column" align="center">
-          <div class="lsess-title mb-5 mt-6 text-center">
+          <div class="lsess-title mb-3 mb-md-5 mt-3 mt-md-6 text-center">
             Calendar
           </div>
           <v-date-picker class="lsess-date-picker" :value="value" @change="$emit('input', $event)" />
@@ -51,6 +51,11 @@ export default {
     div.v-date-picker-table {
       height: auto;
     }
+  }
+  &-calendar-card {
+    height: auto;
+    max-height: 100%;
+    padding-bottom: 20px;
   }
 }
 </style>
