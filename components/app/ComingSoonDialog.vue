@@ -25,7 +25,7 @@
               </div>
               <div class="mb-6">
                 <h2 class="pl-3 mb-6 font-weight-medium text-title text-center text-md-left">
-                  School starts Monday, December 7th!
+                  School starts Monday, December 14th!
                 </h2>
                 <h3 class="pl-3 mb-6 font-weight-medium text-subtitle text-center text-md-left">
                   Count down with us:
@@ -105,7 +105,7 @@ export default {
   },
 
   mounted () {
-    const countDownDate = new Date('Dec 07, 2020 00:00:00').getTime()
+    const countDownDate = new Date('Dec 14, 2020 00:00:00').getTime()
 
     const getTime = () => {
       // Get today's date and time

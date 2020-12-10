@@ -1,42 +1,18 @@
 <template>
-  <v-card class="dashboard-content-card" height="100%">
-    <div class="green-line green-line-1" />
-    <div class="green-line green-line-2" />
-    <div class="worksheet-content">
-      <v-row justify="center">
-        <worksheet-header v-bind="{ step }" />
-        <worksheet-question v-bind="{ step, randomWord }" />
-        <!-- Images Row -->
-        <v-col class="py-0" cols="12">
-          <v-row class="mx-2" justify="center" justify-md="space-around">
-            <worksheet-image
-              v-for="item in items"
-              :key="`worksheet-image-${item.code}`"
-              :item="item"
-              :selected.sync="selected"
-              :clickable="!loading"
-              :show-word="tapCorrect"
-            />
-          </v-row>
-        </v-col>
-        <!-- <worksheet-continue-btn v-bind="{ selected }" @click.stop="dialog = true" /> -->
-      </v-row>
-    </div>
-
-    <worksheet-message
-      v-model="dialog"
-      v-bind="{ item: selectedItem, selected, correct, showWord: tapCorrect, connectingPairs, tapCorrect, randomWord }"
-      @click.stop="nextStep"
-    >
-      <v-icon v-if="!correct" left>
-        mdi-less-than
-      </v-icon>
-      {{ `${correct ? buttonText : 'Go back'}` }}
-      <v-icon v-if="correct" right>
-        mdi-greater-than
-      </v-icon>
-    </worksheet-message>
-
+  <v-card class="dashboard-content-card-2">
+    <template v-if="worksheets.length">
+      <div class="dashboard-content-card-2-line-1" />
+      <div class="dashboard-content-card-2-line-2" />
+      <div class="dashboard-content-card-2-content">
+        <ow-header
+          :day="lesson.day"
+          v-bind="{ worksheets, index, question }"
+        />
+        <transition name="fade">
+          <component :is="type" v-bind="{ question }" @next-question="onNextQuestion" />
+        </transition>
+      </div>
+    </template>
     <completed-dialog
       v-model="completed"
       :buttons="buttons"
@@ -65,83 +41,77 @@
     </completed-dialog>
 
     <upload-offline-worksheet v-model="uploadDialog" />
-
-    <!-- <teacher-video-overlay
-      v-model="teachersVideoDialog"
-      :video="offlineWorksheet ? offlineWorksheet.videoDetail : undefined"
-    /> -->
   </v-card>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import DashboardLink from '@/mixins/DashboardLinkMixin.js'
-import WorksheetComputedMixin from '@/mixins/WorksheetComputedMixin.js'
-import WorksheetFunctionalityMixin from '@/mixins/WorksheetFunctionalityMixin.js'
-
 import CompletedDialog from '@/components/app/dashboard/CompletedDialog'
-import WorksheetHeader from './WorksheetHeader.vue'
-import WorksheetImage from './WorksheetImage.vue'
-import WorksheetMessage from './WorksheetMessage.vue'
-import WorksheetQuestion from './WorksheetQuestion.vue'
-import UploadOfflineWorksheet from './UploadOfflineWorksheet.vue'
+import UploadOfflineWorksheet from '../UploadOfflineWorksheet.vue'
+import OwHeader from './OwHeader.vue'
+import OwConnectingPairs from './OwConnectingPairs.vue'
+import OwTapCorrect from './OwTapCorrect.vue'
 
 export default {
-  name: 'OnlineWorksheetCard',
+  name: 'OwCard',
 
   components: {
-    CompletedDialog,
-    WorksheetHeader,
-    WorksheetImage,
-    WorksheetMessage,
-    WorksheetQuestion,
-    UploadOfflineWorksheet
+    OwHeader,
+    OwConnectingPairs,
+    OwTapCorrect,
+    UploadOfflineWorksheet,
+    CompletedDialog
   },
 
-  mixins: [DashboardLink, WorksheetComputedMixin, WorksheetFunctionalityMixin],
+  mixins: [DashboardLink],
 
   data: () => {
     return {
-      dialog: false,
+      index: 0,
       completed: false,
-      // teachersVideoDialog: false,
       showTeachers: true,
       downloaded: false,
-      uploadDialog: false,
-      step: 0,
-      randomWord: null,
-      answers: [],
-      items: [],
-      correct: false,
-      selected: null,
-      loading: false
+      uploadDialog: false
     }
   },
 
   computed: {
     ...mapGetters({ children: 'getCurrentChild' }),
+    ...mapGetters('admin/curriculum', { lesson: 'getLesson' }),
 
-    id () {
-      return this.$route.query.id
+    worksheets () {
+      if (this.lesson) {
+        return this.lesson.worksheets.filter(({ type }) => type === 'ONLINE')
+      }
+      return []
     },
 
-    buttonText () {
-      if (this.connectingPairs) {
-        if (!this.lastWord) {
-          return 'Next word'
+    question () {
+      if (this.worksheets.length) {
+        return this.worksheets[this.index]
+      }
+      return null
+    },
+
+    lastQuestion () {
+      return this.worksheets.length - 1 === this.index
+    },
+
+    type () {
+      if (this.question) {
+        const type = this.question.worksheetTable.type
+        if (type === 'CONNECTING_PAIRS') {
+          return 'ow-connecting-pairs'
+        } else if (type === 'TAP_CORRECT') {
+          return 'ow-tap-correct'
         }
       }
-
-      if (this.lastQuestion) {
-        return 'Complete worksheet'
-      }
-
-      return 'Next question'
+      return ''
     },
 
     offlineWorksheet () {
       if (this.lesson) {
-        // return this.lesson.worksheets.find(({ type }) => type === 'OFFLINE')
         const offline = this.lesson.worksheets.find(({ type }) => type === 'OFFLINE')
         if (offline) {
           const copy = JSON.parse(JSON.stringify(offline))
@@ -174,7 +144,6 @@ export default {
             playlist, index: 0
           })
 
-          // this.teachersVideoDialog = true
           this.showTeachers = false
         }
       }
@@ -258,36 +227,103 @@ export default {
     }
   },
 
-  watch: {
-    selected (val) {
-      this.correct = false
-      if (val) {
-        if (this.connectingPairs) {
-          if (this.selectedItem.word === this.randomWord) {
-            this.correct = true
-          }
-        } else if (this.tapCorrect) {
-          this.correct = this.selectedItem.is_correct
-        }
-        this.dialog = true
+  methods: {
+    ...mapActions('children/lesson', ['saveWorksheetProgress']),
+
+    async saveProgress () {
+      const promises = []
+
+      const date = new Date().toISOString().substr(0, 19)
+      this.children.forEach((child) => {
+        promises.push(
+          this.saveWorksheetProgress({
+            lessonId: this.lesson.id,
+            childId: child.id,
+            worksheet: {
+              id: this.question.id,
+              completed: true,
+              date
+            }
+          })
+        )
+      })
+
+      await Promise.all(promises)
+      this.$nuxt.$emit('dashboard-panel-update')
+    },
+
+    async onNextQuestion () {
+      if (!this.question.completed) {
+        await this.saveProgress()
+      }
+      if (this.lastQuestion) {
+        this.completed = true
+      } else {
+        this.index += 1
+        this.$nuxt.$emit('reset-question')
       }
     }
-  },
-
-  created () {
-    this.waitAndLoad()
   }
 }
 </script>
 
 <style lang="scss">
-.worksheet {
-  &-content {
-    height: calc(100% - 32px);
-    display: flex;
-    flex-flow: column;
-    overflow-x: hidden;
-    overflow-y: hidden;
+.dashboard-content {
+  &-card-2 {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    padding-top: 20px;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16) !important;
+    @media screen and (min-width: 600px) {
+      padding-top: 32px;
+    }
+    @media screen and (min-width: 960px) {
+      height: 100%;
+    }
+    &-content {
+      height: 100%;
+      max-height: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+      @media screen and (min-height: 864px) {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+    }
+    &-line-1 {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      height: 10px;
+      background-color: var(--v-primary-base);
+      box-shadow: 0 -1px 6px 0 rgba(0, 0, 0, 0.12);
+      @media screen and (min-width: 600px) {
+        height: 16px;
+      }
+    }
+    &-line-2 {
+      position: absolute;
+      top: 10px;
+      width: 100%;
+      height: 10px;
+      background-color: #dce7b5;
+      box-shadow: 0 -1px 6px 0 rgba(0, 0, 0, 0.12);
+      @media screen and (min-width: 600px) {
+        height: 16px;
+        top: 16px;
+      }
+    }
   }
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>

@@ -36,29 +36,37 @@
           <v-img aspect-ratio="1.7" :[puzzle.srcType]="puzzle.src">
             <template v-slot:placeholder>
               <v-overlay absolute :value="true">
-                <v-card
-                  v-if="puzzle.active"
-                  color="transparent"
-                  elevation="0"
-                  width="300"
+                <v-lazy
+                  v-model="isActive"
+                  :options="{
+                    threshold: 0.5,
+                  }"
+                  transition="scroll-y-transition"
                 >
-                  <v-row justify="center" no-gutters>
-                    <span class="font-weight-black white--text">
-                      {{ puzzle.piecesUnclocked * 4 }}/{{ puzzle.pieces * 4 }}
-                    </span>
+                  <v-card
+                    v-if="puzzle.active"
+                    color="transparent"
+                    elevation="0"
+                    width="300"
+                  >
+                    <v-row justify="center" no-gutters>
+                      <span class="font-weight-black white--text">
+                        {{ puzzle.piecesUnclocked * 4 }}/{{ puzzle.pieces * 4 }}
+                      </span>
 
-                    <v-progress-linear
-                      class="mt-2 white"
-                      color="accent"
-                      height="15"
-                      :value="puzzle.percentageCompleted"
-                    />
-                  </v-row>
-                </v-card>
+                      <v-progress-linear
+                        class="mt-2 white"
+                        color="accent"
+                        height="15"
+                        :value="puzzle.percentageCompleted"
+                      />
+                    </v-row>
+                  </v-card>
 
-                <v-icon v-else color="grey" size="100">
-                  mdi-lock-outline
-                </v-icon>
+                  <v-icon v-else color="grey" size="100">
+                    mdi-lock-outline
+                  </v-icon>
+                </v-lazy>
               </v-overlay>
             </template>
 

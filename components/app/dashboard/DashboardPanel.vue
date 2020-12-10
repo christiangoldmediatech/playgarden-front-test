@@ -49,6 +49,7 @@
                 </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
+
             <v-list-item
               v-if="worksheets.OFFLINE"
               class="dashboard-item"
