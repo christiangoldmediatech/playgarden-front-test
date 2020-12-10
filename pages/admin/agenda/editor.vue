@@ -286,7 +286,7 @@ export default {
       this.agenda.start = data.start
       this.agenda.end = data.end
       this.agenda.spots = data.spots
-      this.agenda.specialistId = data.specialistId
+      this.agenda.specialistId = data.specialistUser.id
     }
   },
 
