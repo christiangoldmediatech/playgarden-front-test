@@ -3,7 +3,8 @@
     <v-card class="lsess-table-entry clickable" :class="{ 'lsess-table-entry-active': isLive, 'lsess-table-entry-scaled': hover }" @click.stop="openLink">
       <div class="lsess-table-entry-live">
         <span v-if="isLive">Live</span>
-        <img class="lsess-table-entry-live-icon mt-2 mr-2" :src="isLive ? '/svg/sessions-active-camera.svg' : '/svg/sessions-camera.svg'">
+        <img v-if="isLive" class="lsess-table-entry-live-icon mt-2 mr-2" src="@/assets/svg/sessions-active-camera.svg">
+        <img v-else class="lsess-table-entry-live-icon mt-2 mr-2" src="@/assets/svg/sessions-camera.svg">
       </div>
       <div class="d-flex align-end mb-2">
         <img class="lsess-table-entry-type" :src="entry.activityType.icon">
@@ -20,11 +21,6 @@
 </template>
 
 <script>
-import { translateUTC } from '@/utils/dateTools.js'
-import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
-dayjs.extend(utc)
-
 export default {
   name: 'TableEntry',
 
@@ -37,11 +33,11 @@ export default {
 
   computed: {
     isLive () {
-      const today = dayjs()
-      const start = translateUTC(this.entry.dateStart)
-      const end = translateUTC(this.entry.dateEnd)
+      const today = new Date()
+      const start = new Date(this.entry.dateStart)
+      const end = new Date(this.entry.dateEnd)
 
-      return today.unix() >= start.unix() && today.unix <= end.unix()
+      return today.getTime() >= start.getTime() && today.getTime() <= end.getTime()
     },
 
     title () {
@@ -68,6 +64,11 @@ export default {
       position: relative;
       transition: transform 250ms;
       padding: 8px;
+      width: 100%;
+      height: 100%;
+      &.v-card.v-sheet {
+        box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.160784);
+      }
       &-active {
         border: solid 3px #F89838;
       }
@@ -94,6 +95,7 @@ export default {
       &-title {
         font-size: 1.10rem;
         line-height: 1.25;
+        font-weight: bold;
       }
       &-scaled {
         transform: scale(1.10);

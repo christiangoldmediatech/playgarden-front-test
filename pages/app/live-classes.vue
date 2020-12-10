@@ -93,7 +93,7 @@ import EntryDialog from '@/components/app/live-sessions/EntryDialog.vue'
 import SessionsTable from '@/components/app/live-sessions/SessionsTable.vue'
 
 export default {
-  name: 'LiveSessions',
+  name: 'LiveClasses',
 
   components: {
     TodayCardsPanel,
@@ -120,8 +120,8 @@ export default {
     days () {
       if (this.today) {
         const today = new Date(this.today)
-        const monday = new Date()
-        const friday = new Date()
+        const monday = new Date(this.today)
+        const friday = new Date(this.today)
 
         if (today.getDay() === 6 || today.getDay() === 0) {
           // Get next week

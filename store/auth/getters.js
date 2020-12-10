@@ -13,5 +13,8 @@ export default {
     !getters.getUserInfo.validatedDate,
   isUserInSignupProcess: (_, getters) =>
     (getters.getUserInfo.registerStep || 0) < 5,
-  isUserLoggedIn: (_, getters) => Boolean(getters.getUserInfo.id)
+  isUserLoggedIn: (_, getters) => Boolean(getters.getUserInfo.id),
+  hasTrialOrPlatinumPlan: (_, getters) =>
+    getL(getters, 'getUserInfo.planSelected.id') === 3 ||
+    getL(getters, 'getUserInfo.trial')
 }
