@@ -1,5 +1,6 @@
 <template>
   <v-overlay
+    class="entry-overlay"
     v-model="dialog"
     :dark="false"
     :light="true"
@@ -44,6 +45,10 @@
 
             <div class="entry-card-description pb-4 d-flex align-center">
               Duration: <span class="entry-card-info ml-3">{{ entry.duration }} minutes</span>
+            </div>
+
+            <div v-if="entry.inCollaborationWith" class="entry-card-description pb-4 d-flex align-start">
+              By: <img class="entry-card-collaborator ml-3" :src="entry.inCollaborationWith">
             </div>
 
             <div v-if="!past" class="text-center pb-3">
@@ -122,9 +127,6 @@
 </template>
 
 <script>
-import dayjs from 'dayjs'
-import { translateUTC } from '@/utils/dateTools.js'
-
 export default {
   name: 'EntryDialog',
 
@@ -138,18 +140,18 @@ export default {
 
   computed: {
     isLive () {
-      const today = dayjs()
-      const start = translateUTC(this.entry.dateStart)
-      const end = translateUTC(this.entry.dateEnd)
+      const today = new Date()
+      const start = new Date(this.entry.dateStart)
+      const end = new Date(this.entry.dateEnd)
 
-      return today.unix() >= start.unix() && today.unix() <= end.unix()
+      return today.getTime() >= start.getTime() && today.getTime() <= end.getTime()
     },
 
     past () {
-      const today = dayjs()
-      const end = translateUTC(this.entry.dateEnd)
+      const today = new Date()
+      const end = new Date(this.entry.dateEnd)
 
-      return today.unix() >= end.unix()
+      return today.getTime() >= end.getTime()
     },
 
     ages () {
@@ -161,16 +163,16 @@ export default {
 
     date () {
       if (this.entry) {
-        const date = translateUTC(this.entry.dateStart)
-        return `${this.months[date.month()]} ${date.date()}`
+        const date = new Date(this.entry.dateStart)
+        return `${this.months[date.getMonth()]} ${date.getDate()}`
       }
       return ''
     },
 
     time () {
       if (this.entry) {
-        const date = translateUTC(this.entry.dateStart)
-        return `${date.hour()}:${(date.minute()).toString().padStart(2, '0')}`
+        const date = new Date(this.entry.dateStart)
+        return `${date.getHours()}:${(date.getMinutes()).toString().padStart(2, '0')}`
       }
       return ''
     },
@@ -227,11 +229,16 @@ export default {
 
 <style lang="scss">
 .entry {
+  &-overlay .v-overlay__content {
+    min-width: 100vw;
+    padding: 12px;
+  }
   &-container {
     max-width: 800px;
     max-height: 99vh;
     padding-top: 80px;
     overflow-y: hidden;
+    margin: 0 auto;
   }
   &-card {
     position: relative;
@@ -303,6 +310,10 @@ export default {
         object-fit: contain;
         object-position: center;
       }
+    }
+    &-collaborator {
+      width: 100%;
+      max-width: 142px;
     }
   }
 }
