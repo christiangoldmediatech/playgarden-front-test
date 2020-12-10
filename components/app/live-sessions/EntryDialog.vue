@@ -1,5 +1,6 @@
 <template>
   <v-overlay
+    class="entry-overlay"
     v-model="dialog"
     :dark="false"
     :light="true"
@@ -46,8 +47,8 @@
               Duration: <span class="entry-card-info ml-3">{{ entry.duration }} minutes</span>
             </div>
 
-            <div v-if="entry.inCollaborationWith" class="entry-card-description pb-4 d-flex align-center">
-              By: <img class="entry-card-collaborator" :src="entry.inCollaborationWith">
+            <div v-if="entry.inCollaborationWith" class="entry-card-description pb-4 d-flex align-start">
+              By: <img class="entry-card-collaborator ml-3" :src="entry.inCollaborationWith">
             </div>
 
             <div v-if="!past" class="text-center pb-3">
@@ -228,11 +229,16 @@ export default {
 
 <style lang="scss">
 .entry {
+  &-overlay .v-overlay__content {
+    min-width: 100vw;
+    padding: 12px;
+  }
   &-container {
     max-width: 800px;
     max-height: 99vh;
     padding-top: 80px;
     overflow-y: hidden;
+    margin: 0 auto;
   }
   &-card {
     position: relative;

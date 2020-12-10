@@ -53,7 +53,7 @@ export const isTomorrow = (date) => {
 export const stringsToDate = (date, time) => {
   const result = new Date()
   const dateParts = date.split('-')
-  const timeParts = time.splie(':')
+  const timeParts = time.split(':')
 
   result.setFullYear(dateParts[0])
   result.setMonth(dateParts[1] - 1)
