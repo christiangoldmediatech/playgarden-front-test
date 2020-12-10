@@ -1,15 +1,15 @@
 <template>
-  <online-worksheet-card />
+  <ow-card />
 </template>
 
 <script>
-import OnlineWorksheetCard from '@/components/app/dashboard/worksheets/OnlineWorksheetCard.vue'
+import OwCard from '@/components/app/dashboard/worksheets/online/OwCard.vue'
 
 export default {
   name: 'OnlineWorksheet',
 
   components: {
-    OnlineWorksheetCard
+    'ow-card': OwCard
   }
 }
 </script>

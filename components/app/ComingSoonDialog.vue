@@ -25,7 +25,7 @@
               </div>
               <div class="mb-6">
                 <h2 class="pl-3 mb-6 font-weight-medium text-title text-center text-md-left">
-                  School starts Monday, December 7th!
+                  School starts Monday, December 14th!
                 </h2>
                 <h3 class="pl-3 mb-6 font-weight-medium text-subtitle text-center text-md-left">
                   Count down with us:

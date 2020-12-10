@@ -4,7 +4,7 @@
       <v-col cols="12">
         <v-card width="100%">
           <v-card-title>
-            Live Sessions Management
+            Recurring Live Sessions Management
 
             <v-spacer />
 
@@ -23,13 +23,13 @@
                 mdi-plus
               </v-icon>
               <span class="hidden-xs-only white--text">
-                Add new live session
+                Add new  Recurring live session
               </span>
             </v-btn>
           </v-card-title>
 
           <v-card-text>
-            View, create, update, or delete live sessions.
+            View, create, update, or delete Recurring live sessions.
           </v-card-text>
         </v-card>
       </v-col>
@@ -42,7 +42,7 @@
             <v-data-table
               :headers="headers"
               hide-default-footer
-              :items="liveSessions"
+              :items="recurringLiveSessions"
               :loading="loading"
               :page.sync="pagination.page"
               :server-items-length="pagination.total"
@@ -50,7 +50,7 @@
               @refresh="refresh(true)"
             >
               <template v-slot:top>
-                <live-session-editor-dialog
+                <recurring-live-session-editor-dialog
                   ref="editor"
                   @saved="refresh(false)"
                 />
@@ -75,27 +75,23 @@
                 </v-toolbar>
               </template>
 
-              <template v-slot:[`item.dateStart`]="{ item }">
+              <template v-slot:item.dateStart="{ item }">
                 {{ item.dateStart | formatDate }}
               </template>
 
-              <template v-slot:[`item.dateEnd`]="{ item }">
+              <template v-slot:item.dateEnd="{ item }">
                 {{ item.dateEnd | formatDate }}
               </template>
 
-              <template v-slot:[`item.createdAt`]="{ item }">
+              <template v-slot:item.createdAt="{ item }">
                 {{ item.createdAt | formatDate }}
               </template>
 
-              <template v-slot:[`item.updatedAt`]="{ item }">
+              <template v-slot:item.updatedAt="{ item }">
                 {{ item.updatedAt | formatDate }}
               </template>
 
-              <template v-slot:[`item.actions`]="{ item }">
-                <video-preview-btn v-if="item.videos" :video="item.videos" />
-
-                <grades-btn :data-item="item" :entity-type="entityType" />
-
+              <template v-slot:item.actions="{ item }">
                 <v-icon
                   color="#81A1F7"
                   dense
@@ -179,19 +175,15 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import VideoPreviewBtn from '@/components/admin/video-preview/VideoPreviewBtn.vue'
 
 import paginable from '@/utils/mixins/paginable'
-import GradesBtn from '@/components/admin/grades/GradesBtn.vue'
-import LiveSessionEditorDialog from './LiveSessionEditorDialog'
+import RecurringLiveSessionEditorDialog from './RecurringLiveSessionEditorDialog'
 
 export default {
-  name: 'LiveSessionDataTable',
+  name: 'RecurringLiveSessionDataTable',
 
   components: {
-    LiveSessionEditorDialog,
-    VideoPreviewBtn,
-    GradesBtn
+    RecurringLiveSessionEditorDialog
   },
 
   mixins: [paginable],
@@ -200,9 +192,7 @@ export default {
     filters: {
       activityTypeId: null
     },
-    checkStatusInterval: null,
-    liveSessions: [],
-    entityType: 'LiveSessions',
+    recurringLiveSessions: [],
     loading: false,
     search: null,
     page: 1,
@@ -212,8 +202,8 @@ export default {
         value: 'dateStart'
       },
       {
-        text: 'Date End',
-        value: 'dateEnd'
+        text: 'Day',
+        value: 'day'
       },
       {
         text: 'Title',
@@ -239,7 +229,7 @@ export default {
         align: 'right',
         sortable: false,
         value: 'actions',
-        width: 120
+        width: 100
       }
     ]
   }),
@@ -260,14 +250,10 @@ export default {
     this.getTypes()
   },
 
-  beforeDestroy () {
-    clearInterval(this.checkStatusInterval)
-  },
-
   methods: {
     ...mapActions('admin/activity', ['getTypes']),
 
-    ...mapActions('live-sessions', ['getLiveSessions', 'deleteLiveSession']),
+    ...mapActions('admin/recurring-live-sessions', ['getRecurringLiveSessions', 'deleteRecurringLiveSession']),
 
     async refresh (clear = false) {
       this.loading = true
@@ -277,17 +263,15 @@ export default {
       }
 
       try {
-        const { page, liveSessions, total } = await this.getLiveSessions({
+        const { page, recurringLiveSessions, total } = await this.getRecurringLiveSessions({
           name: this.search,
           activityTypeId: this.filters.activityTypeId || null,
           level: this.filters.level || null,
           page: this.pagination.page,
           limit: this.pagination.limit
         })
-        this.checkStatus()
-        this.stopInterval()
 
-        this.liveSessions = liveSessions
+        this.recurringLiveSessions = recurringLiveSessions
         this.setPagination({ page, total })
       } catch (e) {
       } finally {
@@ -295,29 +279,15 @@ export default {
       }
     },
 
-    remove ({ id, name }) {
+    remove ({ id, title }) {
       this.$nuxt.$emit('open-prompt', {
-        title: 'Delete Live Session?',
-        message: `Are you sure you wish to delete '${name}' Live Session?`,
+        title: 'Delete Recurring Live Session?',
+        message: `Are you sure you wish to delete '${title}' Recurring Live Session?`,
         action: async () => {
-          await this.deleteLiveSession(id)
+          await this.deleteRecurringLiveSession(id)
           await this.refresh()
         }
       })
-    },
-
-    checkStatus () {
-      if (this.liveSessions.filter(data => data.videos && data.videos.status !== 'COMPLETED').length > 0) {
-        this.checkStatusInterval = setInterval(() => {
-          this.refresh()
-        }, 120000)
-      }
-    },
-
-    stopInterval () {
-      if (this.liveSessions.filter(data => data.videos && data.videos.status !== 'COMPLETED').length === 0) {
-        clearInterval(this.checkStatusInterval)
-      }
     }
   }
 }

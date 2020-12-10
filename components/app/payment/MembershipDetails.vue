@@ -88,8 +88,7 @@
         class="mt-2"
       >
         <v-col cols="7">
-          <span>
-          </span>
+          <span />
         </v-col>
 
         <v-col cols="5" class="pr-3 text-left">
@@ -111,8 +110,7 @@
           </v-col>
         </v-row>
         <v-row align="center" class="mb-2" no-gutters>
-          <v-col cols="12" md="7">
-          </v-col>
+          <v-col cols="12" md="7" />
           <v-col cols="12" md="5">
             <v-btn
               color="primary"
@@ -143,8 +141,7 @@
         </v-col>
       </v-row>
       <v-row align="center" class="mb-2" no-gutters>
-        <v-col cols="12" md="7">
-        </v-col>
+        <v-col cols="12" md="7" />
         <v-col cols="12" md="5">
           <v-btn
             color="primary"
@@ -311,18 +308,14 @@
 import dayjs from 'dayjs'
 import { get } from 'lodash'
 import { mapActions } from 'vuex'
-
 import UpdateBillingMethod from '@/components/app/payment/UpdateBillingMethod'
 import SubscriptionPlanSelection from '@/components/app/payment/SubscriptionPlanSelection'
-
 export default {
   name: 'MembershipDetails',
-
   components: {
     UpdateBillingMethod,
     SubscriptionPlanSelection
   },
-
   data () {
     return {
       loading: false,
@@ -345,11 +338,9 @@ export default {
       userCards: []
     }
   },
-
   computed: {
     hasMembership () {
       const status = this.billing.status
-
       return (
         !status ||
         (status !== 'incomplete' &&
@@ -357,35 +348,27 @@ export default {
           status !== 'canceled')
       )
     },
-
     isTrialingStatus () {
       return this.billing.status === 'trialing'
     },
-
     membershipInterval () {
       switch (this.billing.membershipInterval) {
         case 'month':
           return 'monthly'
-
         case 'year':
           return 'yearly'
       }
-
       return null
     }
   },
-
   created () {
     this.getBillingDetails()
     this.getBillingCards()
-
     this.$nuxt.$on('children-changed', this.getBillingDetails)
   },
-
   beforeDestroy () {
     this.$nuxt.$off('children-changed')
   },
-
   methods: {
     ...mapActions('payment', [
       'cancelSubscription',
@@ -393,12 +376,10 @@ export default {
       'fetchBillingDetails',
       'removeBillingCard'
     ]),
-
     async getBillingDetails () {
       try {
         this.loading = true
         const data = await this.fetchBillingDetails()
-
         this.billing.subscriptionId = data.subscriptionId
         this.billing.planAmount = data.planAmount || null
         this.billing.planName = data.planName || null
@@ -429,7 +410,6 @@ export default {
         this.loading = false
       }
     },
-
     async getBillingCards () {
       try {
         this.loading = true
@@ -438,12 +418,10 @@ export default {
         this.loading = false
       }
     },
-
     onUpdateCard (card) {
       this.stripeCardModal = true
       this.cardToUpate = card
     },
-
     async removeSubscription () {
       try {
         this.loading = true
@@ -456,13 +434,11 @@ export default {
         this.loading = false
       }
     },
-
     onSuccessUpdateBilling () {
       this.stripeCardModal = false
       this.getBillingCards()
       this.getBillingDetails()
     },
-
     onSuccessChangePlan () {
       this.changePlanModal = false
       this.getBillingDetails()
