@@ -82,6 +82,7 @@ export default {
 .lsess {
   &-daily {
     &-container {
+      height: 100%;
       max-height: calc(100% - 64px);
       @media screen and (max-width: 959px) {
         margin-bottom: 12px;
@@ -110,7 +111,7 @@ export default {
   .ps {
     position: relative;
     width: 100%;
-    height: auto;
+    height: 100%;
     max-height: 100%;
     overflow: hidden;
     overflow-anchor: none;
