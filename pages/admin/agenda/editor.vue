@@ -245,9 +245,6 @@ export default {
   ),
 
   computed: {
-    /* ...mapGetters('admin/curriculum', { curriculumTypeRows: 'types' }),
-    ...mapGetters('admin/activity', ['rows', 'types']),
-    ...mapGetters('upload', ['uploads']), */
 
     id () {
       return this.$route.query.id ? parseInt(this.$route.query.id) : null
