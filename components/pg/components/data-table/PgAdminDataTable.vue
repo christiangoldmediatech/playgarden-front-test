@@ -59,6 +59,16 @@
       <slot name="item.actions.prepend" v-bind="{ item }" />
 
       <component
+        v-if="props.action"
+        :is="$options.components.VIcon"
+        color="#f89838"
+        dense
+        @click.stop="$options.doEvent('action-item', item, listeners)"
+      >
+        mdi-clipboard-text
+      </component>
+
+      <component
         :is="$options.components.VIcon"
         color="#81A1F7"
         dense

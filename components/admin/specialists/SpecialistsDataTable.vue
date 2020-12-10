@@ -44,6 +44,7 @@
               :loading="loading"
               :page.sync="page"
               :server-items-length="total"
+              :action="action"
               top-justify="space-between"
               @search="onSearch"
               @refresh="refresh(true)"
@@ -54,6 +55,7 @@
                 query: { id: $event.id }
               })"
               @remove-item="remove"
+              @action-item="agendas"
             >
               <template v-slot:[`top.prepend`]>
                 <v-col class="fkex-shrink-1 flex-grow-0">
@@ -107,6 +109,7 @@ export default {
   data () {
     return {
       loading: false,
+      action: true,
       search: '',
       limit: 10,
       page: 1,
@@ -258,6 +261,13 @@ export default {
           await this.deleteSpecialists(id)
           this.refresh()
         }
+      })
+    },
+
+    agendas (item) {
+      this.$router.push({
+        name: 'admin-agenda',
+        query: { userId: item.id }
       })
     }
   }
