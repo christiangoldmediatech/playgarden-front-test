@@ -92,6 +92,8 @@
               </template>
 
               <template v-slot:item.actions="{ item }">
+                <grades-btn :data-item="item" :entity-type="entityType" />
+
                 <v-icon
                   color="#81A1F7"
                   dense
@@ -177,13 +179,15 @@
 import { mapActions, mapGetters } from 'vuex'
 
 import paginable from '@/utils/mixins/paginable'
+import GradesBtn from '@/components/admin/grades/GradesBtn.vue'
 import LiveSessionEditorDialog from './LiveSessionEditorDialog'
 
 export default {
   name: 'LiveSessionDataTable',
 
   components: {
-    LiveSessionEditorDialog
+    LiveSessionEditorDialog,
+    GradesBtn
   },
 
   mixins: [paginable],
@@ -193,6 +197,7 @@ export default {
       activityTypeId: null
     },
     liveSessions: [],
+    entityType: 'LiveSessions',
     loading: false,
     search: null,
     page: 1,
@@ -229,7 +234,7 @@ export default {
         align: 'right',
         sortable: false,
         value: 'actions',
-        width: 100
+        width: 120
       }
     ]
   }),

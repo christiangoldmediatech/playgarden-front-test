@@ -82,6 +82,8 @@
     <admin-snack-bar />
 
     <video-preview />
+
+    <grades-editor-dialog />
   </v-app>
 </template>
 
@@ -89,6 +91,7 @@
 import { mapGetters } from 'vuex'
 import VideoPreview from '@/components/admin/video-preview/VideoPreview.vue'
 import AdminSnackBar from '@/components/admin/AdminSnackBar.vue'
+import GradesEditorDialog from '@/components/admin/grades/GradesEditorDialog.vue'
 import MenuItem from '@/components/admin/MenuItem'
 
 export default {
@@ -98,6 +101,7 @@ export default {
 
   components: {
     AdminSnackBar,
+    GradesEditorDialog,
     MenuItem,
     VideoPreview
   },
