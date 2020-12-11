@@ -90,9 +90,12 @@ export default {
         return
       }
       this.selected = code
+      this.$nextTick(() => {
+        this.openAnswerDialog()
+      })
     },
 
-    openAnswerDialog (e) {
+    openAnswerDialog () {
       this.$nuxt.$emit('show-ow-message')
     },
 

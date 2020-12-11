@@ -1,19 +1,29 @@
 <template>
   <v-card class="d-flex flex-column dashboard-content-card" height="100%">
     <div
-      class="d-flex flex-column align-center offline-worksheet-image flex-grow-1 flex-shrink-0"
-      :class="{ 'dashboard-message-padding justify-end ': offlineWorksheet && !offlineWorksheet.videoDetail, 'justify-center clickable': offlineWorksheet && offlineWorksheet.videoDetail }"
+      class="ofws-header offline-worksheet-image"
       :style="{ '--offlineWorksheetThumbnailUrl': `url(${require('@/assets/jpg/worksheets_completed_1.jpg')})` }"
       @click.stop="showVideo"
     >
       <template v-if="offlineWorksheet && offlineWorksheet.videoDetail">
         <v-hover v-slot="{ hover }">
           <img
-            :class="['play-icon no-background', { 'scaled-play-icon': hover }]"
+            :class="['ofws-icon play-icon no-background', { 'scaled-play-icon': hover }]"
             src="@/assets/svg/play-button-icon.svg"
             width="100%"
           >
         </v-hover>
+        <div class="text-center ofws-content">
+          <underlined-title
+            class="white--text"
+            font-size="56px"
+            font-weight="bold"
+            text="Worksheet Videos"
+          />
+          <p class="white--text text-center">
+            Complete the hands-on learning with your teacher.
+          </p>
+        </div>
       </template>
       <template v-else>
         <underlined-title
@@ -184,6 +194,34 @@ export default {
 </script>
 
 <style lang="scss">
+.ofws {
+  &-header {
+    position: relative;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 12px;
+    @media screen and (max-width: 599px) {
+      min-height: 370px
+    };
+  }
+  &-content {
+    width: 100%;
+  }
+  &-icon {
+    margin: 12px;
+    @media screen and (min-width: 960px) {
+      position: absolute;
+      top: calc(50% - 125px);
+      left: calc(50% - 75px);
+      z-index: 100;
+    };
+  }
+}
+
 .test-height {
   background-color: rgba(127, 127, 127, 0.125);
   height: calc(100% - 206px);
