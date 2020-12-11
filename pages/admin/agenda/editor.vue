@@ -65,131 +65,150 @@
                       />
                     </validation-provider>
                   </v-col>
-
-                  <v-row>
-                    <v-col class="text-md-right" cols="12" sm="4">
-                      <span class="subheader">Day:</span>
-                    </v-col>
-
-                    <v-col cols="12" sm="9" lg="7">
-                      <validation-provider
-                        v-slot="{ errors }"
-                        name="Day"
-                        rules="required"
-                      >
-                        <pg-select
-                          v-model="agenda.day"
-                          :error-messages="errors"
-                          placeholder="Select a Day"
-                          :items="days"
-                          solo
-                        />
-                      </validation-provider>
-                    </v-col>
-                  </v-row>
-
-                  <v-row>
-                    <v-col class="text-md-right" cols="12" sm="4">
-                      <span class="subheader">Spots:</span>
-                    </v-col>
-
-                    <v-col cols="12" sm="9" lg="4">
-                      <validation-provider
-                        v-slot="{ errors }"
-                        name="Spots"
-                        rules="required"
-                      >
-                        <pg-text-field
-                          v-model="agenda.spots"
-                          :error-messages="errors"
-                          solo
-                        />
-                      </validation-provider>
-                    </v-col>
-                  </v-row>
-
-                  <v-row>
-                    <v-col class="text-md-right" cols="12" sm="4">
-                      <span class="subheader">Duration:</span>
-                    </v-col>
-
-                    <v-col cols="12" sm="9" lg="4">
-                      <validation-provider
-                        v-slot="{ errors }"
-                        name="Duration"
-                        rules="required"
-                      >
-                        <pg-text-field
-                          v-model="agenda.duration"
-                          :error-messages="errors"
-                          solo
-                        />
-                      </validation-provider>
-                    </v-col>
-                  </v-row>
                 </v-row>
+
+                <v-row>
+                  <v-col class="text-md-right" cols="12" sm="3">
+                    <span class="subheader">Day:</span>
+                  </v-col>
+
+                  <v-col cols="12" sm="9" lg="6">
+                    <validation-provider
+                      v-slot="{ errors }"
+                      name="Day"
+                      rules="required"
+                    >
+                      <pg-select
+                        v-model="agenda.day"
+                        :error-messages="errors"
+                        placeholder="Select a Day"
+                        :items="days"
+                        solo
+                      />
+                    </validation-provider>
+                  </v-col>
+                </v-row>
+
                 <v-row justify="center">
-                  <v-col cols="2">
-                    <v-menu offset-y>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn
-                          color="primary"
-                          dark
-                          v-bind="attrs"
-                          v-on="on"
-                        >
-                          Time start
-                        </v-btn>
-                      </template>
-                      <v-time-picker v-model="agenda.start" format="24hr" />
-                    </v-menu>
+                  <v-col class="text-md-right" cols="12" sm="2">
+                    <span class="subheader">Spots:</span>
                   </v-col>
-                  <v-col class="text-md-right" cols="2">
+
+                  <v-col cols="12" sm="9" lg="2">
                     <validation-provider
                       v-slot="{ errors }"
-                      name="Time start"
+                      name="Spots"
                       rules="required"
                     >
                       <pg-text-field
+                        v-model="agenda.spots"
+                        :error-messages="errors"
+                        solo
+                      />
+                    </validation-provider>
+                  </v-col>
+
+                  <v-col class="text-md-right" cols="12" sm="2">
+                    <span class="subheader">Duration:</span>
+                  </v-col>
+
+                  <v-col cols="12" sm="9" lg="2">
+                    <validation-provider
+                      v-slot="{ errors }"
+                      name="Duration"
+                      rules="required"
+                    >
+                      <pg-text-field
+                        v-model="agenda.duration"
+                        :error-messages="errors"
+                        solo
+                      />
+                    </validation-provider>
+                  </v-col>
+                </v-row>
+
+                <v-row justify="center">
+                  <v-col
+                    cols="4"
+                  >
+                    <v-menu
+                      ref="menu"
+                      v-model="menuStart"
+                      :close-on-content-click="false"
+                      :nudge-right="40"
+                      :return-value.sync="agenda.start"
+                      transition="scale-transition"
+                      offset-y
+                      max-width="290px"
+                      min-width="290px"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <validation-provider
+                          v-slot="{ errors }"
+                          name="Time start"
+                          rules="required"
+                        >
+                          <pg-text-field
+                            v-model="agenda.start"
+                            label="Time start"
+                            prepend-icon="mdi-clock-time-four-outline"
+                            readonly
+                            :error-messages="errors"
+                            v-bind="attrs"
+                            solo
+                            v-on="on"
+                          />
+                        </validation-provider>
+                      </template>
+                      <v-time-picker
+                        v-if="menuStart"
                         v-model="agenda.start"
-                        readonly
-                        label="start"
-                        :value="agenda.start"
-                        :error-messages="errors"
-                        solo
-                      />
-                    </validation-provider>
-                  </v-col>
-                  <v-col cols="2">
-                    <v-menu offset-y>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn
-                          color="primary"
-                          dark
-                          v-bind="attrs"
-                          v-on="on"
-                        >
-                          Time end
-                        </v-btn>
-                      </template>
-                      <v-time-picker v-model="agenda.end" format="24hr" />
+                        format="24hr"
+                        full-width
+                        @click:minute="$refs.menu.save(agenda.start)"
+                      ></v-time-picker>
                     </v-menu>
                   </v-col>
-                  <v-col class="text-md-right" cols="2">
-                    <validation-provider
-                      v-slot="{ errors }"
-                      name="Time end"
-                      rules="required"
+                  <v-col
+                    cols="4"
+                  >
+                    <v-menu
+                      ref="menu2"
+                      v-model="menuEnd"
+                      :close-on-content-click="false"
+                      :nudge-right="40"
+                      :return-value.sync="agenda.end"
+                      transition="scale-transition"
+                      offset-y
+                      max-width="290px"
+                      min-width="290px"
                     >
-                      <pg-text-field
+                      <template v-slot:activator="{ on, attrs }">
+                        <validation-provider
+                          v-slot="{ errors }"
+                          name="Time start"
+                          rules="required"
+                        >
+                          <pg-text-field
+                            v-model="agenda.end"
+                            label="Time end"
+                            prepend-icon="mdi-clock-time-four-outline"
+                            readonly
+                            :error-messages="errors"
+                            v-bind="attrs"
+                            solo
+                            v-on="on"
+                          />
+                        </validation-provider>
+                      </template>
+                      <v-time-picker
+                        v-if="menuEnd"
                         v-model="agenda.end"
-                        readonly
-                        label="end"
-                        :value="agenda.end"
-                        :error-messages="errors"
-                        solo
-                      />
-                    </validation-provider>
+                        format="24hr"
+                        full-width
+                        @click:minute="$refs.menu2.save(agenda.end)"
+                      ></v-time-picker>
+                    </v-menu>
                   </v-col>
                 </v-row>
               </v-form>
@@ -228,8 +247,10 @@ export default {
       userId: vm.$route.query.userId
         ? parseInt(vm.$route.query.userId)
         : null,
-      loading: false,
-      menuTimeStart: false,
+      loading: true,
+      time: null,
+      menuStart: false,
+      menuEnd: false,
       days: ['MONDAY', 'THUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'],
       agenda: {
         name: '',
