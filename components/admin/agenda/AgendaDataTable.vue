@@ -151,6 +151,9 @@ export default {
   ),
 
   computed: {
+    ...mapGetters('auth', {
+      userInfo: 'getUserInfo'
+    }),
     ...mapGetters('agendas', ['rows', 'total']),
 
     filterList () {
@@ -184,7 +187,8 @@ export default {
   },
 
   created () {
-    this.currentUserId = this.userId
+    console.log(this.userInfo)
+    this.currentUserId = (this.userInfo.role.name === 'SPECIALISTS') ? this.userInfo.id : this.userId
   },
 
   methods: {
