@@ -34,7 +34,7 @@
                   v-model="item.name"
                   :error-messages="errors"
                   label="Name"
-                  solo
+                  solo-labeled
                 />
               </validation-provider>
 
@@ -47,7 +47,7 @@
                   v-model="item.description"
                   :error-messages="errors"
                   label="Description"
-                  solo
+                  solo-labeled
                 />
               </validation-provider>
 
@@ -87,7 +87,7 @@
                   path="faq-category"
                   placeholder="Select an icon for this FAQ category"
                   prepend-icon="mdi-camera"
-                  solo
+                  solo-labeled
                   jpg
                   png
                   svg

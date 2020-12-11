@@ -34,7 +34,7 @@
                   v-model="item.category"
                   :error-messages="errors"
                   label="Category"
-                  solo
+                  solo-labeled
                 />
               </validation-provider>
 
@@ -74,7 +74,7 @@
                   path="offline-worksheet-categories"
                   placeholder="Select an icon for this offline worksheet category"
                   prepend-icon="mdi-camera"
-                  solo
+                  solo-labeled
                   jpg
                   png
                   svg

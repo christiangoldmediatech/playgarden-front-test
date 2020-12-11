@@ -34,7 +34,7 @@
                   v-model="item.name"
                   :error-messages="errors"
                   label="Name"
-                  solo
+                  solo-labeled
                 />
               </validation-provider>
 
@@ -47,7 +47,7 @@
                   v-model="item.description"
                   :error-messages="errors"
                   label="Description"
-                  solo
+                  solo-labeled
                 />
               </validation-provider>
 
@@ -87,7 +87,7 @@
                   path="onboarding"
                   placeholder="Select a video for this onboarding"
                   prepend-icon="mdi-video"
-                  solo
+                  solo-labeled
                   mov
                   mp4
                   mpeg
@@ -131,7 +131,7 @@
                   path="onboarding-thumbnail"
                   placeholder="Select a thumbnail for this onboarding"
                   prepend-icon="mdi-camera"
-                  solo
+                  solo-labeled
                   jpg
                   png
                   svg

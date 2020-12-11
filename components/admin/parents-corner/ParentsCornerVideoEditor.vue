@@ -33,7 +33,7 @@
                   v-model="item.name"
                   :error-messages="errors"
                   label="Name"
-                  solo
+                  solo-labeled
                 />
               </validation-provider>
 
@@ -46,7 +46,7 @@
                   v-model="item.description"
                   :error-messages="errors"
                   label="Description"
-                  solo
+                  solo-labeled
                 />
               </validation-provider>
 
@@ -62,7 +62,7 @@
                   :items="categories"
                   item-text="category"
                   item-value="id"
-                  solo
+                  solo-labeled
                 />
               </validation-provider>
 
@@ -114,7 +114,7 @@
                   multi-part
                   path="activity-video"
                   placeholder="Select a file for this video"
-                  solo
+                  solo-labeled
                   mp4
                   mov
                   mpeg
@@ -147,7 +147,7 @@
                   mode="image"
                   path="parents-corner-thumbnail"
                   placeholder="Select a thumbnail for this video"
-                  solo
+                  solo-labeled
                   jpg
                   png
                   svg

@@ -39,7 +39,7 @@
                   item-text="name"
                   item-value="id"
                   label="Activity"
-                  solo
+                  solo-labeled
                 />
               </validation-provider>
 
@@ -52,7 +52,7 @@
                   v-model="item.name"
                   :error-messages="errors"
                   label="Name"
-                  solo
+                  solo-labeled
                 />
               </validation-provider>
 
@@ -65,7 +65,7 @@
                   v-model="item.description"
                   :error-messages="errors"
                   label="Description"
-                  solo
+                  solo-labeled
                 />
               </validation-provider>
 
@@ -80,7 +80,7 @@
                   label="Number"
                   min="1"
                   type="number"
-                  solo
+                  solo-labeled
                 />
               </validation-provider>
 
@@ -133,7 +133,7 @@
                   path="patch"
                   placeholder="Select an image for this patch"
                   prepend-icon="mdi-camera"
-                  solo
+                  solo-labeled
                   jpg
                   png
                   svg
