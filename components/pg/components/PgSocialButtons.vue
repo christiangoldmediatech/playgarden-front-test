@@ -1,6 +1,7 @@
 <template>
   <v-card
     :class="{ 'rounded-pill': miniVariant }"
+    color="white"
     :width="miniVariant ? 50 : 300"
   >
     <v-toolbar color="primary" dense>
@@ -31,7 +32,7 @@
           class="mb-2"
           :class="{ 'mov-spa': !miniVariant }"
           :color="fakeNetworks.download.color"
-          :href="url"
+          :href="fakeImage"
           :fab="miniVariant"
           small
           target="_blank"
@@ -53,14 +54,14 @@
           :key="indexN"
           class="mb-2"
           :class="{ 'w-100': !miniVariant }"
-          :description="description"
+          :description="fakeDescription"
           :hashtags="hashtags"
           :media="media"
           :network="network.network"
-          :quote="quote"
-          :title="title"
+          :quote="fakeQuote"
+          :title="fakeTitle"
           :twitter-user="twitterUser"
-          :url="url"
+          :url="fakeUrl"
         >
           <v-btn
             :block="!miniVariant"
@@ -88,6 +89,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 /**
  * Official doc
  * https://nicolasbeauvais.github.io/vue-social-sharing
@@ -99,6 +101,23 @@ export default {
     description: {
       type: String,
       default: ''
+    },
+
+    entityAutoResolve: Boolean,
+
+    entityId: {
+      type: [Number, String],
+      default: ''
+    },
+
+    entityType: {
+      type: String,
+      default: '',
+      validator: (val) => {
+        const values = { PATCH: 1, PUZZLE: 1, WORKSHEET: 1 }
+
+        return val === null || val === '' || Boolean(values[val])
+      }
     },
 
     hashtags: {
@@ -175,11 +194,28 @@ export default {
 
     url: {
       type: String,
-      required: true
+      default: ''
     }
   },
 
+  data: () => ({
+    apiData: {
+      link: null,
+      imageUrl: null,
+      text: null,
+      description: null
+    }
+  }),
+
   computed: {
+    fakeDescription () {
+      return this.apiData.description || this.description
+    },
+
+    fakeImage () {
+      return this.apiData.imageUrl || this.url || window.location.host
+    },
+
     fakeNetworks () {
       const result = {
         download: null,
@@ -195,8 +231,47 @@ export default {
       })
 
       return result
+    },
+
+    fakeQuote () {
+      return this.apiData.text || this.quote
+    },
+
+    fakeTitle () {
+      return this.apiData.text || this.title
+    },
+
+    fakeUrl () {
+      return this.apiData.link || this.url || window.location.host
     }
-  }
+  },
+
+  async created () {
+    if (this.entityAutoResolve) {
+      try {
+        const {
+          link,
+          imageUrl,
+          text,
+          description
+        } = await this.createSocialSharing({
+          entityId: this.entityId,
+          entityType: this.entityType
+        })
+
+        this.apiData = { link, imageUrl, text, description }
+      } catch (e) {
+        this.$snotify.error(
+          'There was an error generating your social sharing link.'
+        )
+      }
+    }
+  },
+
+  methods: mapActions('social-sharing', [
+    'createSocialSharing',
+    'getSocialSharingById'
+  ])
 }
 </script>
 

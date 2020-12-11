@@ -11,6 +11,7 @@
         </div>
       </v-row>
     </v-col>
+
     <v-col cols="12">
       <v-row no-gutters>
         <v-col
@@ -20,26 +21,29 @@
           sm="6"
           lg="3"
         >
-          <portfolio-card :image="upload.url" :lesson="upload.lesson" />
+          <portfolio-card
+            :entity-id="upload.id"
+            entity-type="WORKSHEET"
+            :image="upload.url"
+            :lesson="upload.lesson"
+          />
         </v-col>
       </v-row>
     </v-col>
+
     <v-col cols="6">
-      <v-btn
-        text
-        :disabled="page === 1"
-        @click.stop="moveCarousel(-1)"
-      >
+      <v-btn text :disabled="page === 1" @click.stop="moveCarousel(-1)">
         <v-img
           :src="require('@/assets/png/player/left-arrow.svg')"
           max-width="32px"
         />
       </v-btn>
     </v-col>
+
     <v-col class="text-right" cols="6">
       <v-btn
         text
-        :disabled="(page * limit) >= total"
+        :disabled="page * limit >= total"
         @click.stop="moveCarousel(1)"
       >
         <v-img
@@ -77,13 +81,19 @@ export default {
 
   computed: {
     limit () {
-      if (this.$vuetify.breakpoint.sm) { return 2 }
-      if (this.$vuetify.breakpoint.xs) { return 1 }
+      if (this.$vuetify.breakpoint.sm) {
+        return 2
+      }
+      if (this.$vuetify.breakpoint.xs) {
+        return 1
+      }
       return 4
     },
 
     total () {
-      return this.category.worksheetUploads ? this.category.worksheetUploads.length : 0
+      return this.category.worksheetUploads
+        ? this.category.worksheetUploads.length
+        : 0
     },
 
     start () {
@@ -91,7 +101,9 @@ export default {
     },
 
     end () {
-      return ((this.start + this.limit) < this.total) ? this.start + this.limit : this.total
+      return this.start + this.limit < this.total
+        ? this.start + this.limit
+        : this.total
     },
 
     list () {

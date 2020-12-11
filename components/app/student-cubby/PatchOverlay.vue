@@ -1,21 +1,46 @@
 <template>
-  <v-overlay :value="overlay" dark z-index="100" class="patches-students">
+  <v-dialog
+    :value="overlay"
+    persistent
+    fullscreen
+    content-class="patch-overlay-dialog"
+  >
     <v-row no-gutters>
       <v-col cols="ml-3 mb-15">
-        <v-btn class="text-none" text x-large @click.stop="overlay = false">
+        <v-btn
+          class="text-none white--text"
+          text
+          x-large
+          @click.stop="overlay = false"
+        >
           <v-icon class="mr-2" small left>
             mdi-less-than
           </v-icon>
+
           Back
         </v-btn>
       </v-col>
     </v-row>
+
     <v-container class="pa-0 fullscreen-overlay mt-10" fluid>
-      <v-row class="fill-height" align="center" justify="center">
+      <v-row class="fill-height" align="center" justify="center" no-gutters>
         <patch display-mode :patch="patch" :unblocked="unblocked" />
+
+        <pg-social-buttons
+          v-if="overlay"
+          class="mt-6"
+          :description="patch.description"
+          entity-auto-resolve
+          :entity-id="patch.childrenPatchId"
+          entity-type="PATCH"
+          :mini-variant="!$vuetify.breakpoint.xs"
+          :url="patch.image"
+          :quote="patch.name"
+          :title="patch.name"
+        />
       </v-row>
     </v-container>
-  </v-overlay>
+  </v-dialog>
 </template>
 
 <script>
@@ -44,7 +69,6 @@ export default {
 
   created () {
     this.$nuxt.$on('close-patch-overlay', () => {
-      this.patch = null
       this.overlay = false
     })
 
@@ -56,9 +80,9 @@ export default {
 }
 </script>
 
-<style>
-.patches-students .v-overlay__content {
-    position: absolute !important;
-    top: 0% !important;
+<style lang="scss">
+.patch-overlay-dialog {
+  background-color: rgba(0, 0, 0, 0.68) !important;
+  border-color: rgba(0, 0, 0, 0.68) !important;
 }
 </style>
