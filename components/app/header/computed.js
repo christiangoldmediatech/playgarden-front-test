@@ -26,7 +26,7 @@ export default {
         //   list.unshift({ title: 'Live Sessions', to: { name: 'app-live-sessions' }, exact: false })
         // }
 
-        if (!['production'].includes(process.env.testEnv)) {
+        if (!['production', 'staging'].includes(process.env.testEnv)) {
           list.push({ title: 'Parent Corner', to: { name: 'app-parent-corner' }, exact: false })
         }
 

@@ -4,7 +4,7 @@
       <v-card class="lsess-daily-card pt-4">
         <v-row class="mx-0" align="center" justify="center">
           <img class="mr-3" src="@/assets/svg/sessions-camera.svg">
-          <span class="lsess-title">Live Sessions Schedule</span>
+          <span class="lsess-title">Live Class Schedule</span>
         </v-row>
 
         <v-row class="mx-0 lsess-schedule-container">
