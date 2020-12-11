@@ -16,6 +16,7 @@
     <completed-dialog
       v-model="completed"
       :buttons="buttons"
+      :return-action="returnAction"
       :time-out="false"
     >
       <template v-slot:title>
@@ -229,6 +230,10 @@ export default {
 
   methods: {
     ...mapActions('children/lesson', ['saveWorksheetProgress']),
+
+    returnAction () {
+      this.$router.push(this.generateNuxtRoute('offline-worksheet'))
+    },
 
     async saveProgress () {
       const promises = []

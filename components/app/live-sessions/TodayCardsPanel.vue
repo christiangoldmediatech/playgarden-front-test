@@ -9,15 +9,17 @@
 
         <v-row class="mx-0 lsess-schedule-container">
           <v-col cols="12" class="pl-2 pr-3 lsess-schedule-container-col">
-            <template v-if="$vuetify.breakpoint.smAndDown">
-              <today-card v-for="i in nextSessions" :key="`today-card-${i.id}`" :entry="i" />
+            <template v-if="nextSessions.length > 0">
+              <template v-if="$vuetify.breakpoint.smAndDown">
+                <today-card v-for="i in nextSessions" :key="`today-card-${i.id}`" :entry="i" />
+              </template>
+
+              <perfect-scrollbar v-else>
+                <today-card v-for="i in nextSessions" :key="`today-card-${i.id}`" :entry="i" />
+              </perfect-scrollbar>
             </template>
 
-            <perfect-scrollbar v-else>
-              <today-card v-for="i in nextSessions" :key="`today-card-${i.id}`" :entry="i" />
-            </perfect-scrollbar>
-
-            <template v-if="nextSessions.length === 0">
+            <template v-else>
               <div class="my-10 lsess-title text-center">
                 There are no pending events for this week.
               </div>

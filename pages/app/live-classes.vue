@@ -61,20 +61,22 @@
               tile
             >
               <p class="text-center font-weight-bold mt-5">
-                Get access to Live Lessons
+                Get access to Live Classes
               </p>
               <p class="text-center">
-                Upgraded your plan
+                Upgrade your plan
               </p>
               <v-row justify="center" no-gutters>
                 <v-btn
-                  href="https://playgardenprep.com/online/"
                   color="accent"
                   width="250"
                   tile
                   x-large
+                  nuxt
+                  :to="{ name: 'app-account', params: { changeplan: 1 } }"
                 >
-                  Know our plans
+                  <!-- nuxt to app-account ?changeplan=1 -->
+                  COMPARE PLANS
                 </v-btn>
               </v-row>
             </v-card>
