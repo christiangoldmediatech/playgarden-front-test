@@ -1,6 +1,6 @@
 <template>
   <div>
-    <patch-overlay :unblocked="unblocked" />
+    <patch-overlay />
 
     <v-card flat class="pt-0 pt-md-3">
       <v-card-text class="pt-0 pt-md-4">
@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import { get } from 'lodash'
 import { mapActions } from 'vuex'
 
 import PatchRow from '@/components/app/student-cubby/PatchRow.vue'
@@ -68,7 +69,9 @@ export default {
 
     async refresh () {
       if (this.studentId) {
-        this.items = await this.getPatchesByChildId({ id: this.studentId })
+        this.items = (
+          await this.getPatchesByChildId({ id: this.studentId })
+        ).filter(item => get(item, 'patches', []).length)
       }
     }
   }

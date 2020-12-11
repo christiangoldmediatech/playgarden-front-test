@@ -24,7 +24,7 @@
 
     <v-container class="pa-0 fullscreen-overlay mt-10" fluid>
       <v-row class="fill-height" align="center" justify="center" no-gutters>
-        <patch display-mode :patch="patch" :unblocked="unblocked" />
+        <patch display-mode :patch="patch" />
 
         <pg-social-buttons
           v-if="overlay"
@@ -51,13 +51,6 @@ export default {
 
   components: {
     Patch
-  },
-
-  props: {
-    unblocked: {
-      type: Object,
-      required: true
-    }
   },
 
   data: () => {
