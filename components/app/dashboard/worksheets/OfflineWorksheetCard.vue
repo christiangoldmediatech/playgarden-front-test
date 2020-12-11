@@ -21,7 +21,7 @@
             text="Worksheet Videos"
           />
           <p class="white--text text-center">
-            Complete the hands-on learning with your teacher.
+            Complete your hands-on worksheets with a Playgarden Prep teacher!
           </p>
         </div>
       </template>
