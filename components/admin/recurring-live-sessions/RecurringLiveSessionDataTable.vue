@@ -65,7 +65,6 @@
                     clearable
                     hide-details
                     label="Search"
-                    single-line
                     solo-labeled
                     @keydown.enter="refresh(false)"
                   />
