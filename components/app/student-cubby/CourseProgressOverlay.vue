@@ -114,7 +114,7 @@
 import DashboardPanel from '@/components/app/dashboard/DashboardPanel.vue'
 import BlankDashboardPanel from '@/components/app/dashboard/BlankDashboardPanel.vue'
 import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'CourseProgressOverlay',
@@ -135,8 +135,13 @@ export default {
   },
 
   computed: {
+    ...mapGetters({ currentChild: 'getCurrentChild' }),
+
     studentId () {
-      return this.$route.query.id
+      if (this.$route.name === 'app-student-cubby-course-progress') {
+        return this.$route.query.id
+      }
+      return this.currentChild[0].id
     },
 
     missing () {

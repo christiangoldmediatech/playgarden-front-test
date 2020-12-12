@@ -3,7 +3,12 @@
     <v-card class="dashboard-panel-card" height="100%">
       <div class="dashboard-panel-card-border-top" />
 
-      <pg-circle-letter-day :day="lesson ? lesson.day : null" :letter="lesson ? lesson.curriculumType.letter : null" />
+      <pg-circle-letter-day
+        :class="{ 'clickable': !displayMode }"
+        :day="lesson ? lesson.day : null"
+        :letter="lesson ? lesson.curriculumType.letter : null"
+        @click.native="openCourseProgress"
+      />
 
       <div class="dashboard-panel-content pa-3">
         <content-section
@@ -201,6 +206,12 @@ export default {
     openPdf () {
       if (this.offlineWorksheet) {
         window.open(this.offlineWorksheet.pdfUrl, '_blank')
+      }
+    },
+
+    openCourseProgress () {
+      if (!this.displayMode) {
+        this.$nuxt.$emit('show-curriculum-progress', this.lesson.curriculumType.id)
       }
     }
   }

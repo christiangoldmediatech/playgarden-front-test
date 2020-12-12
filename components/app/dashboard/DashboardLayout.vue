@@ -63,6 +63,7 @@
     </v-container>
     <lesson-activity-player />
     <lesson-teacher-video />
+    <course-progress-overlay />
   </v-main>
 </template>
 
@@ -71,6 +72,7 @@ import DashboardPanel from '@/components/app/dashboard/DashboardPanel.vue'
 import LessonActivityPlayer from '@/components/app/dashboard/LessonActivityPlayer.vue'
 import LessonTeacherVideo from '@/components/app/dashboard/LessonTeacherVideo.vue'
 import ChildSelect from '@/components/app/ChildSelect.vue'
+import CourseProgressOverlay from '@/components/app/student-cubby/CourseProgressOverlay.vue'
 
 export default {
   name: 'DashboardLayout',
@@ -79,7 +81,8 @@ export default {
     DashboardPanel,
     LessonActivityPlayer,
     LessonTeacherVideo,
-    ChildSelect
+    ChildSelect,
+    CourseProgressOverlay
   },
 
   props: {
