@@ -246,6 +246,20 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 
+function generateAgendaTemplate () {
+  return {
+    id: null,
+    name: '',
+    description: '',
+    duration: '',
+    day: null,
+    start: null,
+    end: null,
+    spots: null,
+    specialistId: null
+  }
+}
+
 export default {
   name: 'Editor',
 
@@ -261,16 +275,7 @@ export default {
       menuStart: false,
       menuEnd: false,
       days: ['MONDAY', 'THUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'],
-      agenda: {
-        name: '',
-        description: '',
-        duration: '',
-        day: null,
-        start: null,
-        end: null,
-        spots: null,
-        specialistId: null
-      }
+      agenda: generateAgendaTemplate()
     }
   ),
 
@@ -278,16 +283,6 @@ export default {
     ...mapGetters('auth', {
       userInfo: 'getUserInfo'
     }),
-
-    getUrl () {
-      const url = {
-        name: 'admin-agenda-editor'
-      }
-      if (this.userInfo.role.name === 'SUPER_ADMINISTRATORS') {
-        url.query = { specialistId: this.specialistId }
-      }
-      return url
-    },
 
     getUrlBack () {
       const url = {
@@ -328,6 +323,7 @@ export default {
     const results = await Promise.all(promises)
     if (results[0]) {
       const data = results[0]
+      this.agenda.id = data.id
       this.agenda.name = data.name
       this.agenda.description = data.description
       this.agenda.duration = data.duration
@@ -336,6 +332,7 @@ export default {
       this.agenda.end = data.end
       this.agenda.spots = data.spots
       this.agenda.specialistId = data.specialistUser.id
+      this.specialistId = data.specialistUser.id
     }
   },
 
@@ -362,7 +359,7 @@ export default {
         this.loading = false
         return
       } finally {
-        this.$router.push(this.getUrl)
+        this.$router.push(this.getUrlBack)
       }
     }
   }
