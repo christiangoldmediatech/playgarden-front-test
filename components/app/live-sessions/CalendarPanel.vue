@@ -9,7 +9,7 @@
       @click="$emit('mode-change')"
     >
       <img class="mr-3" src="@/assets/svg/sessions-camera.svg">
-      <span>Live Sessions Schedule</span>
+      <span>Live Class Schedule</span>
     </v-btn>
 
     <div>
