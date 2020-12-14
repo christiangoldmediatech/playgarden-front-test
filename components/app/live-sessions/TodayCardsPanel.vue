@@ -31,8 +31,8 @@
 
     <v-btn
       class="lsess-calendar-btn text-none font-weight-bold flex-shrink-1 flex-grow-0"
-      color="white"
       block
+      color="grey lighten-5"
       solo
       x-large
       @click="$emit('mode-change')"
