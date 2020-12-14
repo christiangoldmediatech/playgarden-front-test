@@ -93,8 +93,8 @@ export default {
 
   data: vm => (
     {
-      userId: vm.$route.query.userId
-        ? parseInt(vm.$route.query.userId)
+      specialistId: vm.$route.query.specialistId
+        ? parseInt(vm.$route.query.specialistId)
         : null,
       loading: false,
       currentUserId: null,
@@ -187,8 +187,7 @@ export default {
   },
 
   created () {
-    console.log(this.userInfo)
-    this.currentUserId = (this.userInfo.role.name === 'SPECIALISTS') ? this.userInfo.id : this.userId
+    this.specialistId = (this.userInfo.role.name === 'SPECIALISTS') ? this.userInfo.specialists[0].id : this.specialistId
   },
 
   methods: {
@@ -218,17 +217,19 @@ export default {
         page: this.page,
         name: this.search
       }
-
-      params.specialistId = this.currentUserId
+      params.specialistId = this.specialistId
       await this.getAgendas(params)
       this.loading = false
     },
 
     goNewAgenda () {
-      this.$router.push({
-        name: 'admin-agenda-editor',
-        query: { userId: this.currentUserId }
-      })
+      const rootUrl = {
+        name: 'admin-agenda-editor'
+      }
+      if (this.userInfo.role.name === 'SUPER_ADMINISTRATORS') {
+        rootUrl.query = { specialistId: this.specialistId }
+      }
+      this.$router.push(rootUrl)
     },
 
     remove ({ id, name }) {

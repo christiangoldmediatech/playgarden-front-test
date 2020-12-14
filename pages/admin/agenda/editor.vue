@@ -12,7 +12,7 @@
               depressed
               nuxt
               small
-              :to="{ name: 'admin-activity-management' }"
+              :to="getUrlBack"
             >
               Back
             </v-btn>
@@ -235,7 +235,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'Editor',
@@ -244,8 +244,8 @@ export default {
 
   data: vm => (
     {
-      userId: vm.$route.query.userId
-        ? parseInt(vm.$route.query.userId)
+      specialistId: vm.$route.query.specialistId
+        ? parseInt(vm.$route.query.specialistId)
         : null,
       loading: true,
       time: null,
@@ -266,6 +266,29 @@ export default {
   ),
 
   computed: {
+    ...mapGetters('auth', {
+      userInfo: 'getUserInfo'
+    }),
+
+    getUrl () {
+      const url = {
+        name: 'admin-agenda-editor'
+      }
+      if (this.userInfo.role.name === 'SUPER_ADMINISTRATORS') {
+        url.query = { specialistId: this.specialistId }
+      }
+      return url
+    },
+
+    getUrlBack () {
+      const url = {
+        name: 'admin-agenda'
+      }
+      if (this.userInfo.role.name === 'SUPER_ADMINISTRATORS') {
+        url.query = { specialistId: this.specialistId }
+      }
+      return url
+    },
 
     id () {
       return this.$route.query.id ? parseInt(this.$route.query.id) : null
@@ -288,8 +311,7 @@ export default {
   async created () {
     const promises = []
     this.loading = true
-    this.agenda.specialistId = this.userId
-
+    this.agenda.specialistId = (this.userInfo.role.name === 'SPECIALISTS') ? this.userInfo.specialists[0].id : this.specialistId
     if (this.id) {
       promises.push(this.getAgendaById(this.id))
     }
@@ -331,10 +353,7 @@ export default {
         this.loading = false
         return
       } finally {
-        this.$router.push({
-          name: 'admin-agenda',
-          query: { userId: this.userId }
-        })
+        this.$router.push(this.getUrl)
       }
     }
   }

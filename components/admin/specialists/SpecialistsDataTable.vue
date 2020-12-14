@@ -267,7 +267,7 @@ export default {
     agendas (item) {
       this.$router.push({
         name: 'admin-agenda',
-        query: { userId: item.id }
+        query: { specialistId: item.id }
       })
     }
   }
