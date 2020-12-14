@@ -177,7 +177,7 @@ export default {
   },
 
   created () {
-    this.specialistId = (this.userInfo.role.name === 'SPECIALISTS') ? this.userInfo.specialists[0].id : this.specialistId
+    this.specialistId = (this.userInfo.role.name === 'SPECIALISTS') ? this.userInfo.specialists.id : this.specialistId
   },
 
   methods: {

@@ -315,7 +315,7 @@ export default {
   async created () {
     const promises = []
     this.loading = true
-    this.agenda.specialistId = (this.userInfo.role.name === 'SPECIALISTS') ? this.userInfo.specialists[0].id : this.specialistId
+    this.agenda.specialistId = (this.userInfo.role.name === 'SPECIALISTS') ? this.userInfo.specialists.id : this.specialistId
     if (this.id) {
       promises.push(this.getAgendaById(this.id))
     }
