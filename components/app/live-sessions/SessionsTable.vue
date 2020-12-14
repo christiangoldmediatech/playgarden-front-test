@@ -42,7 +42,7 @@
         </v-row>
       </div>
 
-      <perfect-scrollbar>
+      <perfect-scrollbar id="scrollArea">
         <div v-for="hour in 11" :key="`hour-${hour}`" class="lsess-table-hour-row">
           <div class="d-flex align-center justify-center lsess-table-offset">
             {{ 7 + hour }}:00
@@ -53,7 +53,11 @@
               :key="`days-row-${hour}-column-${dayIndex}`"
               class="lsess-table-col d-flex align-center"
             >
-              <table-entry v-if="getWeeklySchedule[dayIndex][hour - 1]" :entry="getWeeklySchedule[dayIndex][hour - 1]" />
+              <table-entry
+                v-if="getWeeklySchedule[dayIndex][hour - 1]"
+                :id="`entry-${dayIndex}-${hour - 1}`"
+                :entry="getWeeklySchedule[dayIndex][hour - 1]"
+              />
             </v-col>
           </v-row>
         </div>
@@ -85,7 +89,8 @@ export default {
   data: () => {
     return {
       days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-      selectedDay: null
+      selectedDay: null,
+      scrolling: false
     }
   },
 
@@ -103,7 +108,53 @@ export default {
     }
   },
 
+  watch: {
+    getWeeklySchedule () {
+      this.scrollToFirst()
+    },
+
+    activeDay () {
+      this.scrollToFirst()
+    }
+  },
+
+  mounted () {
+    this.scrollToFirst()
+  },
+
   methods: {
+    scrollToFirst () {
+      if (this.scrolling) {
+        return
+      }
+      this.scrolling = true
+
+      const waitToFinish = window.setTimeout(() => {
+        const scrollArea = document.querySelector('#scrollArea')
+        if (scrollArea) {
+          scrollArea.scrollTop = 0
+          const rows = this.getWeeklySchedule[this.activeDay]
+          const index = rows.findIndex(entry => entry !== null)
+
+          if (index >= 0) {
+            const entry = document.querySelector(`#entry-${this.activeDay}-${index}`)
+            if (entry) {
+              let offset = entry.offsetTop - 64
+              if (offset < 0) {
+                offset = 0
+              }
+              scrollArea.scroll({
+                top: offset,
+                behaviour: 'smooth'
+              })
+            }
+          }
+          window.clearInterval(waitToFinish)
+          this.scrolling = false
+        }
+      }, 50)
+    },
+
     noEntries (day) {
       if (day) {
         return (day.findIndex(entry => entry !== null) === -1)

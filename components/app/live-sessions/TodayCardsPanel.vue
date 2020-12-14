@@ -1,23 +1,25 @@
 <template>
   <div class="fill-height d-flex flex-column">
-    <div class="lsess-daily-container pb-8">
+    <div class="lsess-daily-container">
       <v-card class="lsess-daily-card pt-4">
         <v-row class="mx-0" align="center" justify="center">
           <img class="mr-3" src="@/assets/svg/sessions-camera.svg">
-          <span class="lsess-title">Live Sessions Schedule</span>
+          <span class="lsess-title">Live Class Schedule</span>
         </v-row>
 
         <v-row class="mx-0 lsess-schedule-container">
           <v-col cols="12" class="pl-2 pr-3 lsess-schedule-container-col">
-            <template v-if="$vuetify.breakpoint.mobile">
-              <today-card v-for="i in nextSessions" :key="`today-card-${i.id}`" :entry="i" />
+            <template v-if="nextSessions.length > 0">
+              <template v-if="$vuetify.breakpoint.smAndDown">
+                <today-card v-for="i in nextSessions" :key="`today-card-${i.id}`" :entry="i" />
+              </template>
+
+              <perfect-scrollbar v-else>
+                <today-card v-for="i in nextSessions" :key="`today-card-${i.id}`" :entry="i" />
+              </perfect-scrollbar>
             </template>
 
-            <perfect-scrollbar v-else>
-              <today-card v-for="i in nextSessions" :key="`today-card-${i.id}`" :entry="i" />
-            </perfect-scrollbar>
-
-            <template v-if="nextSessions.length === 0">
+            <template v-else>
               <div class="my-10 lsess-title text-center">
                 There are no pending events for this week.
               </div>
@@ -41,16 +43,10 @@
 </template>
 
 <script>
-import { translateUTC } from '@/utils/dateTools.js'
 import { mapState } from 'vuex'
 import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
 
-import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
-
 import TodayCard from './TodayCard.vue'
-
-dayjs.extend(utc)
 
 export default {
   name: 'TodayCardsPanel',
@@ -64,17 +60,18 @@ export default {
     ...mapState('live-sessions', ['sessions']),
 
     nextSessions () {
-      const today = dayjs()
-      const filtered = this.sessions.filter(({ dateEnd }) => {
-        const date = translateUTC(dateEnd)
-        return today.unix() < date.unix()
+      const today = new Date()
+      const filtered = this.sessions.filter(({ dateStart, dateEnd }) => {
+        const end = new Date(dateEnd)
+
+        return today < end
       })
 
       const sorted = filtered.sort((a, b) => {
-        const dateA = translateUTC(a.dateStart)
-        const dateB = translateUTC(b.dateStart)
+        const dateA = new Date(a.dateStart)
+        const dateB = new Date(b.dateStart)
 
-        return dateA - dateB
+        return dateA.getTime() - dateB.getTime()
       })
 
       return sorted
@@ -87,8 +84,11 @@ export default {
 .lsess {
   &-daily {
     &-container {
-      height: calc(100% - 24px);
-      max-height: calc(100% - 24px);
+      height: 100%;
+      max-height: calc(100% - 64px);
+      @media screen and (max-width: 959px) {
+        margin-bottom: 12px;
+      }
     }
     &-card {
       height: calc(100% - 30px);
@@ -113,12 +113,14 @@ export default {
   .ps {
     position: relative;
     width: 100%;
+    height: 100%;
     max-height: 100%;
     overflow: hidden;
     overflow-anchor: none;
     -ms-overflow-style: none;
     touch-action: auto;
     -ms-touch-action: auto;
+    padding-bottom: 24px;
   }
 
   .ps__rail-y {

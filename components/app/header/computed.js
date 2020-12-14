@@ -8,7 +8,7 @@ export default {
       if (!this.isUserInSignupProcess && this.isUserLoggedIn) {
         const list = [
           { title: 'Daily Lessons', to: { name: 'app-dashboard' }, exact: false },
-          { title: 'Live Sessions', to: { name: 'app-live-sessions' }, exact: false },
+          { title: 'Live Classes', to: { name: 'app-live-classes' }, exact: false },
           { title: 'Activities', to: { name: 'app-activities' }, exact: false },
           {
             title: 'Student Cubby',
@@ -26,7 +26,7 @@ export default {
         //   list.unshift({ title: 'Live Sessions', to: { name: 'app-live-sessions' }, exact: false })
         // }
 
-        if (!['production'].includes(process.env.testEnv)) {
+        if (!['production', 'staging'].includes(process.env.testEnv)) {
           list.push({ title: 'Parent Corner', to: { name: 'app-parent-corner' }, exact: false })
         }
 

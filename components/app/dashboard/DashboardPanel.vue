@@ -49,6 +49,7 @@
                 </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
+
             <v-list-item
               v-if="worksheets.OFFLINE"
               class="dashboard-item"
@@ -75,6 +76,23 @@
                 <v-btn
                   id="download-worksheet-btn"
                   class="dashboard-panel-worksheet-btn white--text"
+                  color="#dce7b5"
+                  :disabled="videos.progress < 100"
+                  block
+                  nuxt
+                  exact
+                  :to="generateNuxtRoute('offline-worksheet')"
+                >
+                  <v-icon color="white" left>
+                    pg-icon-play
+                  </v-icon>
+                  <!-- <pg-icon /> -->
+                  WORKSHEET VIDEOS
+                </v-btn>
+
+                <v-btn
+                  id="download-worksheet-btn"
+                  class="dashboard-panel-worksheet-btn white--text mt-2"
                   color="#dce7b5"
                   :disabled="videos.progress < 100"
                   block

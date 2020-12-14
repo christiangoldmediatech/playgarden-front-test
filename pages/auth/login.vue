@@ -197,14 +197,4 @@ export default {
 .error-message {
   color: var(--v-error-base);
 }
-.spanSocialNetwork {
-  font-size: 12px;
-  line-height: 1.5;
-  font-weight: 600;
-  text-align: left;
-  color: #606060;
-}
-.social-btn {
-  background-color: white !important;
-}
 </style>

@@ -119,69 +119,19 @@
               </v-col>
             </v-row>
 
-            <v-row>
-              <v-col>
-                <v-menu
-                  v-model="menuDateEnd"
-                  :close-on-content-click="false"
-                  min-width="290px"
-                  offset-y
-                  transition="scale-transition"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <validation-provider
-                      v-slot="{ errors }"
-                      name="Date End"
-                      rules="required"
-                    >
-                      <pg-text-field
-                        :disabled="loading"
-                        :error-message="errors"
-                        label="Date End"
-                        readonly
-                        solo
-                        :value="dataEndFormatted"
-                        v-bind="attrs"
-                        v-on="on"
-                      />
-                    </validation-provider>
-                  </template>
-
-                  <v-date-picker v-model="dateEnd" />
-                </v-menu>
-              </v-col>
-
-              <v-col>
-                <v-menu
-                  v-model="menuTimeEnd"
-                  :close-on-content-click="false"
-                  transition="scale-transition"
-                  offset-y
-                  width="290px"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <validation-provider
-                      v-slot="{ errors }"
-                      name="Time End"
-                      rules="required"
-                    >
-                      <pg-text-field
-                        :disabled="loading"
-                        :error-message="errors"
-                        label="Time End"
-                        readonly
-                        solo
-                        :value="timeEnd"
-                        v-bind="attrs"
-                        v-on="on"
-                      />
-                    </validation-provider>
-                  </template>
-
-                  <v-time-picker v-model="timeEnd" format="24hr" />
-                </v-menu>
-              </v-col>
-            </v-row>
+            <validation-provider
+              v-slot="{ errors }"
+              name="Day"
+              rules="required"
+            >
+              <pg-text-field
+                v-model="item.day"
+                :error-messages="errors"
+                readonly
+                label="Day"
+                solo
+              />
+            </validation-provider>
 
             <validation-provider
               v-slot="{ errors }"
@@ -231,7 +181,9 @@
                 v-model="item.ages"
                 :error-messages="errors"
                 label="Ages"
+                min="1"
                 solo
+                type="text"
               />
             </validation-provider>
 
@@ -285,7 +237,6 @@
 
 <script>
 import dayjs from 'dayjs'
-import { stringsToDate } from '@/utils/dateTools'
 import { mapActions, mapGetters } from 'vuex'
 
 function generateItemTemplate () {
@@ -298,12 +249,12 @@ function generateItemTemplate () {
     ages: null,
     duration: null,
     dateStart: null,
-    dateEnd: null
+    day: null
   }
 }
 
 export default {
-  name: 'LiveSessionEditorDialog',
+  name: 'RecurringLiveSessionEditorDialog',
 
   data: () => ({
     dateStart: null,
@@ -327,17 +278,19 @@ export default {
       return this.dateStart ? dayjs(this.dateStart).format('MM/DD/YYYY') : null
     },
 
-    dataEndFormatted () {
-      return this.dateEnd ? dayjs(this.dateEnd).format('MM/DD/YYYY') : null
-    },
-
     title () {
-      return this.id === null ? 'New LiveSession' : 'Edit LiveSession'
+      return this.id === null ? 'New Recurring LiveSession' : 'Edit Recurring LiveSession'
+    }
+  },
+
+  watch: {
+    dateStart (val) {
+      this.item.day = dayjs(this.dateStart).format('dddd').toUpperCase()
     }
   },
 
   methods: {
-    ...mapActions('live-sessions', ['createLiveSession', 'updateLiveSession']),
+    ...mapActions('admin/recurring-live-sessions', ['createRecurringLiveSession', 'updateRecurringLiveSession']),
 
     async refresh (clear = false) {
       this.loading = true
@@ -373,17 +326,14 @@ export default {
     async save () {
       this.loading = true
 
-      const start = stringsToDate(this.dateStart, this.timeStart)
-      const end = stringsToDate(this.dateEnd, this.timeEnd)
-
-      this.item.dateStart = start
-      this.item.dateEnd = end
+      this.item.dateStart = `${this.dateStart}T${this.timeStart}:00.000`
+      this.item.dateEnd = `${this.dateEnd}T${this.timeEnd}:00.000`
 
       try {
         if (this.id === null) {
-          await this.createLiveSession(this.item)
+          await this.createRecurringLiveSession(this.item)
         } else {
-          await this.updateLiveSession({ id: this.id, data: this.item })
+          await this.updateRecurringLiveSession({ id: this.id, data: this.item })
         }
 
         this.$emit('saved')
@@ -411,23 +361,17 @@ export default {
       })
 
       if (item.dateStart) {
-        // const dateStart = item.dateStart.replace(':00.000Z', '').split('T')
+        const dateStart = item.dateStart.replace(':00.000Z', '').split('T')
 
-        // this.dateStart = dateStart[0]
-        // this.timeStart = dateStart[1]
-        const dateStart = new Date(item.dateStart)
-        this.dateStart = `${dateStart.getFullYear()}-${(dateStart.getMonth() + 1).toString().padStart(2, '0')}-${dateStart.getDate().toString().padStart(2, '0')}`
-        this.timeStart = `${dateStart.getHours().toString().padStart(2, '0')}:${dateStart.getMinutes().toString().padStart(2, '0')}`
+        this.dateStart = dateStart[0]
+        this.timeStart = dateStart[1]
       }
 
       if (item.dateEnd) {
-        // const dateEnd = item.dateEnd.replace(':00.000Z', '').split('T')
+        const dateEnd = item.dateEnd.replace(':00.000Z', '').split('T')
 
-        // this.dateEnd = dateEnd[0]
-        // this.timeEnd = dateEnd[1]
-        const dateEnd = new Date(item.dateEnd)
-        this.dateEnd = `${dateEnd.getFullYear()}-${(dateEnd.getMonth() + 1).toString().padStart(2, '0')}-${dateEnd.getDate().toString().padStart(2, '0')}`
-        this.timeEnd = `${dateEnd.getHours().toString().padStart(2, '0')}:${dateEnd.getMinutes().toString().padStart(2, '0')}`
+        this.dateEnd = dateEnd[0]
+        this.timeEnd = dateEnd[1]
       }
 
       if (item.activityType) {
