@@ -28,103 +28,112 @@
             <v-card-text>
               <v-form>
                 <v-row>
-                  <v-col class="text-md-right" cols="12" sm="3">
-                    <span class="subheader">Name:</span>
-                  </v-col>
-
+                  <!-- COL2-->
                   <v-col cols="12" sm="9" lg="6">
-                    <validation-provider
-                      v-slot="{ errors }"
-                      name="name"
-                      rules="required"
-                    >
-                      <pg-text-field
-                        v-model="agenda.name"
-                        :error-messages="errors"
-                        solo
-                      />
-                    </validation-provider>
-                  </v-col>
-                </v-row>
+                    <v-row>
+                      <v-col class="text-md-right" cols="12" sm="3">
+                        <span class="subheader">Name:</span>
+                      </v-col>
 
-                <v-row>
-                  <v-col class="text-md-right" cols="12" sm="3">
-                    <span class="subheader">Description:</span>
-                  </v-col>
+                      <v-col>
+                        <validation-provider
+                          v-slot="{ errors }"
+                          name="name"
+                          rules="required"
+                        >
+                          <pg-text-field
+                            v-model="agenda.name"
+                            :error-messages="errors"
+                            solo
+                          />
+                        </validation-provider>
+                      </v-col>
+                    </v-row>
 
+                    <v-row>
+                      <v-col class="text-md-right" cols="12" sm="3">
+                        <span class="subheader">Description:</span>
+                      </v-col>
+
+                      <v-col>
+                        <validation-provider
+                          v-slot="{ errors }"
+                          name="description"
+                          rules="required"
+                        >
+                          <pg-textarea
+                            v-model="agenda.description"
+                            :error-messages="errors"
+                            solo
+                          />
+                        </validation-provider>
+                      </v-col>
+                    </v-row>
+                  </v-col>
+                  <!-- END COL1 -->
+                  <!-- COL2-->
                   <v-col cols="12" sm="9" lg="6">
-                    <validation-provider
-                      v-slot="{ errors }"
-                      name="description"
-                      rules="required"
-                    >
-                      <pg-textarea
-                        v-model="agenda.description"
-                        :error-messages="errors"
-                        solo
-                      />
-                    </validation-provider>
-                  </v-col>
-                </v-row>
+                    <v-row>
+                      <v-col class="text-md-right" cols="12" sm="3">
+                        <span class="subheader">Day:</span>
+                      </v-col>
 
-                <v-row>
-                  <v-col class="text-md-right" cols="12" sm="3">
-                    <span class="subheader">Day:</span>
-                  </v-col>
+                      <v-col>
+                        <validation-provider
+                          v-slot="{ errors }"
+                          name="Day"
+                          rules="required"
+                        >
+                          <pg-select
+                            v-model="agenda.day"
+                            :error-messages="errors"
+                            placeholder="Select a Day"
+                            :items="days"
+                            solo
+                          />
+                        </validation-provider>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col class="text-md-right" cols="12" sm="3">
+                        <span class="subheader">Spots:</span>
+                      </v-col>
 
-                  <v-col cols="12" sm="9" lg="6">
-                    <validation-provider
-                      v-slot="{ errors }"
-                      name="Day"
-                      rules="required"
-                    >
-                      <pg-select
-                        v-model="agenda.day"
-                        :error-messages="errors"
-                        placeholder="Select a Day"
-                        :items="days"
-                        solo
-                      />
-                    </validation-provider>
-                  </v-col>
-                </v-row>
+                      <v-col>
+                        <validation-provider
+                          v-slot="{ errors }"
+                          name="Spots"
+                          rules="required"
+                        >
+                          <pg-text-field
+                            v-model="agenda.spots"
+                            :error-messages="errors"
+                            solo
+                          />
+                        </validation-provider>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col class="text-md-right" cols="12" sm="3">
+                        <span class="subheader">Duration:</span>
+                      </v-col>
 
-                <v-row justify="center">
-                  <v-col class="text-md-right" cols="12" sm="2">
-                    <span class="subheader">Spots:</span>
+                      <v-col>
+                        <validation-provider
+                          v-slot="{ errors }"
+                          name="Duration"
+                          rules="required"
+                        >
+                          <pg-text-field
+                            v-model="agenda.duration"
+                            :error-messages="errors"
+                            solo
+                          />
+                        </validation-provider>
+                      </v-col>
+                    </v-row>
                   </v-col>
-
-                  <v-col cols="12" sm="9" lg="2">
-                    <validation-provider
-                      v-slot="{ errors }"
-                      name="Spots"
-                      rules="required"
-                    >
-                      <pg-text-field
-                        v-model="agenda.spots"
-                        :error-messages="errors"
-                        solo
-                      />
-                    </validation-provider>
-                  </v-col>
-
-                  <v-col class="text-md-right" cols="12" sm="2">
-                    <span class="subheader">Duration:</span>
-                  </v-col>
-
-                  <v-col cols="12" sm="9" lg="2">
-                    <validation-provider
-                      v-slot="{ errors }"
-                      name="Duration"
-                      rules="required"
-                    >
-                      <pg-text-field
-                        v-model="agenda.duration"
-                        :error-messages="errors"
-                        solo
-                      />
-                    </validation-provider>
-                  </v-col>
+                  <!-- END COL1 -->
                 </v-row>
 
                 <v-row justify="center">

@@ -38,16 +38,6 @@
       <v-col cols="12">
         <v-card width="100%">
           <v-card-text>
-            AGENDA
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
-
-    <v-row>
-      <v-col cols="12">
-        <v-card width="100%">
-          <v-card-text>
             <pg-admin-data-table
               :headers="headers"
               :items="rows"
