@@ -425,7 +425,6 @@ export default {
       }
     },
     onUpdateCard (card) {
-      console.log(card)
       this.stripeCardModal = true
       this.cardToUpate = card
     },
