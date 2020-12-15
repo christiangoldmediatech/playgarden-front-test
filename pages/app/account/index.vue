@@ -133,7 +133,7 @@
                 src="@/assets/svg/facebook_icon.svg"
               >
 
-              <span>Sync your facebook account</span>
+              <span class="text-sync">Sync your Facebook Account</span>
             </v-btn>
           </v-col>
 
@@ -146,7 +146,7 @@
                 src="@/assets/svg/google_icon.svg"
               >
 
-              <span>Sync your google account</span>
+              <span class="text-sync">Sync your Google Account</span>
             </v-btn>
           </v-col>
         </v-row>
@@ -354,6 +354,9 @@ export default {
 .messages-info-sync {
   font-size: 14px !important;
   font-weight: 500;
+}
+.text-sync {
+  text-transform: none !important;
 }
 
 .show-setting-select {
