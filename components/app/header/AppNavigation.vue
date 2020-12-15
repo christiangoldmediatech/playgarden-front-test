@@ -30,12 +30,12 @@
     <template v-slot:append>
       <v-container fluid mb-6>
         <v-row>
-          <!-- <v-col cols="12">
+          <v-col cols="12">
             <span class="font-weight-medium">First time using Playgarden?</span>
             <v-btn color="primary" nuxt text :to="{ name: 'app-onboarding' }">
               WATCH TUTORIAL HERE
             </v-btn>
-          </v-col> -->
+          </v-col>
 
           <v-col v-if="isUserLoggedIn && !isUserInSignupProcess" cols="12">
             <v-btn block color="primary" nuxt :to="{ name: 'app-account' }">
