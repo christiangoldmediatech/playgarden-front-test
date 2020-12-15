@@ -41,7 +41,8 @@
                       <pg-text-field
                         v-model="activity.name"
                         :error-messages="errors"
-                        solo
+                        label="Teachers' name"
+                        solo-labeled
                       />
                     </validation-provider>
                   </v-col>
@@ -61,7 +62,8 @@
                       <pg-textarea
                         v-model="activity.description"
                         :error-messages="errors"
-                        solo
+                        label="Video Description"
+                        solo-labeled
                       />
                     </validation-provider>
                   </v-col>
@@ -81,9 +83,9 @@
                       <pg-select
                         v-model="activity.activityTypeId"
                         :error-messages="errors"
-                        placeholder="Select a category"
                         :items="activityTypes"
-                        solo
+                        label="Select a category"
+                        solo-labeled
                       />
                     </validation-provider>
                   </v-col>
@@ -98,7 +100,8 @@
                     <pg-select
                       v-model="activity.curriculumTypeId"
                       :items="curriculumTypes"
-                      solo
+                      label="Curriculum"
+                      solo-labeled
                     />
                   </v-col>
                 </v-row>
@@ -151,7 +154,7 @@
                         multi-part
                         path="activity-video"
                         placeholder="Select a video for this activity"
-                        solo
+                        solo-labeled
                         mp4
                         mov
                         mpeg
@@ -190,7 +193,7 @@
                         mode="image"
                         path="activity-thumbnail"
                         placeholder="Select a thumbnail for this activity video"
-                        solo
+                        solo-labeled
                         jpg
                         png
                         svg

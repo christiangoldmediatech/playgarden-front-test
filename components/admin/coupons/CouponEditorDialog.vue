@@ -36,7 +36,7 @@
                       v-model="item.coupon.name"
                       :error-messages="errors"
                       label="Name"
-                      solo
+                      solo-labeled
                     />
                   </validation-provider>
 
@@ -50,7 +50,7 @@
                       :error-messages="errors"
                       label="Promotion code"
                       :disabled="getDissabled"
-                      solo
+                      solo-labeled
                     />
                   </validation-provider>
 
@@ -91,7 +91,7 @@
                       :error-messages="errors"
                       label="Percent off"
                       :disabled="getDissabled"
-                      solo
+                      solo-labeled
                     />
                   </validation-provider>
 
@@ -112,7 +112,7 @@
                         label="Money"
                         :error-messages="errors"
                         :disabled="getDissabled"
-                        solo
+                        solo-labeled
                       />
                     </validation-provider>
 
@@ -126,7 +126,7 @@
                         :error-messages="errors"
                         label="Amount off"
                         :disabled="getDissabled"
-                        solo
+                        solo-labeled
                       />
                     </validation-provider>
                   </div>
@@ -147,7 +147,7 @@
                       label="Duration"
                       :error-messages="errors"
                       :disabled="getDissabled"
-                      solo
+                      solo-labeled
                     />
                   </validation-provider>
 
@@ -162,7 +162,7 @@
                       :error-messages="errors"
                       label="Duration in months"
                       :disabled="getDissabled"
-                      solo
+                      solo-labeled
                     />
                   </validation-provider>
                 </v-col>
@@ -205,7 +205,7 @@
                       :error-messages="errors"
                       label="Max redemptions"
                       :disabled="getDissabled"
-                      solo
+                      solo-labeled
                     />
                   </validation-provider>
                 </v-col>

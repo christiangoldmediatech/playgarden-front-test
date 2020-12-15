@@ -34,7 +34,7 @@
                   v-model="item.name"
                   :error-messages="errors"
                   label="Name"
-                  solo
+                  solo-labeled
                 />
               </validation-provider>
 
@@ -47,7 +47,7 @@
                   v-model="item.description"
                   :error-messages="errors"
                   label="Description"
-                  solo
+                  solo-labeled
                 />
               </validation-provider>
             </v-form>

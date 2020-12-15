@@ -201,7 +201,7 @@
                     v-model="order"
                     :error-messages="errors"
                     label="Order"
-                    solo
+                    solo-labeled
                   />
                 </validation-provider>
               </v-form>

@@ -22,7 +22,10 @@
         </v-col>
       </v-row>
     </v-container>
+
     <entry-dialog />
+
+    <recorded-class-player />
 
     <v-dialog
       :value="!hasTrialOrPlatinumPlan"
@@ -84,6 +87,63 @@
         </v-col>
       </v-card>
     </v-dialog>
+
+    <v-dialog
+      v-model="showNotice"
+      content-class="elevation-0"
+      :fullscreen="fullscreen"
+      persistent
+    >
+      <v-card class="dialog-overlay">
+        <v-row no-gutters justify="start" class="mt-0">
+          <v-btn
+            class="top-left text-none white--text px-4"
+            color="white"
+            text
+            @click.stop="showNotice = false"
+          >
+            <v-icon class="mr-2" small left>
+              mdi-less-than
+            </v-icon>
+            Close
+          </v-btn>
+        </v-row>
+        <v-col class="mt-16">
+          <v-row
+            class="mb-15 mt-16"
+            justify="center"
+            align-content="center"
+            no-gutters
+          >
+            <v-card
+              cols="12"
+              sm="4"
+              class="px-3 mt-16"
+              height="200"
+              tile
+            >
+              <p class="text-center font-weight-bold mt-5">
+                Live Classes will begin on January 8th, 2021
+              </p>
+              <p class="text-center">
+                In the mean time, enjoy our recorded classes.
+              </p>
+              <v-row justify="center" no-gutters>
+                <v-btn
+                  color="accent"
+                  tile
+                  large
+                  @click.stop="showNotice = false"
+                >
+                  <!-- nuxt to app-account ?changeplan=1 -->
+                  Watch recorded classes
+                </v-btn>
+              </v-row>
+            </v-card>
+          </v-row>
+        </v-col>
+      </v-card>
+    </v-dialog>
   </v-main>
 </template>
 
@@ -93,6 +153,7 @@ import TodayCardsPanel from '@/components/app/live-sessions/TodayCardsPanel.vue'
 import CalendarPanel from '@/components/app/live-sessions/CalendarPanel.vue'
 import EntryDialog from '@/components/app/live-sessions/EntryDialog.vue'
 import SessionsTable from '@/components/app/live-sessions/SessionsTable.vue'
+import RecordedClassPlayer from '@/components/app/live-sessions/RecordedClassPlayer.vue'
 
 export default {
   name: 'LiveClasses',
@@ -101,7 +162,8 @@ export default {
     TodayCardsPanel,
     CalendarPanel,
     EntryDialog,
-    SessionsTable
+    SessionsTable,
+    RecordedClassPlayer
   },
 
   data: () => {
@@ -109,7 +171,8 @@ export default {
       mode: 'TODAY',
       today: null,
       loading: false,
-      fullscreen: true
+      fullscreen: true,
+      showNotice: true
     }
   },
 

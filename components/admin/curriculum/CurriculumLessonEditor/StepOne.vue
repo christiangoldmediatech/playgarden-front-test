@@ -14,7 +14,7 @@
           :error-messages="errors"
           label="Name"
           :loading="loading"
-          solo
+          solo-labeled
         />
       </validation-provider>
 
@@ -31,7 +31,7 @@
           :error-messages="errors"
           label="Description"
           :loading="loading"
-          solo
+          solo-labeled
         />
       </validation-provider>
 
@@ -46,7 +46,7 @@
           item-text="label"
           item-value="value"
           label="Level"
-          solo
+          solo-labeled
         />
       </validation-provider>
 
@@ -61,7 +61,7 @@
           item-text="name"
           item-value="id"
           label="Letter"
-          solo
+          solo-labeled
         />
       </validation-provider>
 
