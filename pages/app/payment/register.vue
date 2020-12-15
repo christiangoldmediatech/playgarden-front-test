@@ -21,17 +21,17 @@
       </v-row>
 
       <v-row
-        class="flex-column-reverse flex-md-row"
+        class="flex-column flex-md-row"
         justify="center"
         no-gutters
       >
         <v-col cols="12" class="px-12">
-          <p>
+          <p class="text-center text-md-left">
             <span class="font-weight-bold text-h5">
               Why do we need a credit card?
             </span>
           </p>
-          <p class="text-justify">
+          <p class="text-center text-md-left">
             Playgarden Prep Online is currently <span class="font-weight-bold">FREE</span> for you for the next 30 days. We need your credit card information to complete the registration process, but you will <span class="font-weight-bold">NOT</span> be charged.
           </p>
         </v-col>
@@ -39,7 +39,7 @@
           <stripe-form :loading="loading" @click:submit="onSubmit" />
         </v-col>
 
-        <v-col class="px-12 mt-12" cols="12" lg="6" md="4" xl="6">
+        <v-col class="px-12 mt-12 mb-12" cols="12" lg="6" md="4" xl="6">
           <p class="text-center text-md-left">
             <span class="font-weight-bold text-h5 pg-letter-spacing">
               MEMBERSHIP REVIEW
