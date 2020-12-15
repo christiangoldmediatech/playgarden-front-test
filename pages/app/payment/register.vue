@@ -209,10 +209,10 @@ export default {
 
         if (this.inSignUpProcess) {
           await this.fetchUserInfo()
-          this.$snotify.success('Payment has been processed successfully!')
+          this.$snotify.success('Registration has been completed successfully!')
           await this.$router.push({ name: 'auth-verify-email' })
         } else {
-          this.$snotify.success('Payment has been processed successfully!')
+          this.$snotify.success('Plan change has been processed successfully!')
           await this.$router.push({ name: 'app-account' })
         }
       } catch (e) {
