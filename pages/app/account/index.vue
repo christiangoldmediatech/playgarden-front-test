@@ -260,6 +260,8 @@ export default {
   },
 
   methods: {
+    ...mapActions('auth', ['fetchUserInfo']),
+
     ...mapActions(['disableAxiosGlobal', 'enableAxiosGlobal']),
 
     ...mapActions('auth/socialUser', ['authSyncSocial']),
@@ -299,12 +301,15 @@ export default {
     async syncWithSocialNetwork (user) {
       try {
         this.disableAxiosGlobal()
-
         await this.authSyncSocial(user)
-
         this.enableAxiosGlobal()
-        this.$snotify.success('The account has been successfully synchronized with the social network.')
-      } catch (e) {}
+        if (this.userInfo.email === user.email) {
+          await this.fetchUserInfo()
+          this.$snotify.success('The account has been successfully synchronized with the social network.')
+        }
+      } catch (e) {
+        this.$snotify.error(e.message)
+      }
     }
 
   }
