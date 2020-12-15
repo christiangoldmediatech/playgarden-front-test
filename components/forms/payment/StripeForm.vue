@@ -5,7 +5,7 @@
       :class="{ 'mt-8': $vuetify.breakpoint.smAndDown }"
     >
       <span class="font-weight-bold text-h5 pg-letter-spacing">
-        CARD INFORMATION
+        PAYMENT INFORMATION
       </span>
     </p>
 
