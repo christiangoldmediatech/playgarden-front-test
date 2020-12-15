@@ -152,38 +152,25 @@
         </v-row>
         <v-row v-else justify="center" class="mb-8">
           <!-- FACEBOOK -->
-          <div v-if="userInfo.socialNetwork === 'FACEBOOK'">
-            <v-row
-              class="text-center"
+          <v-btn v-if="userInfo.socialNetwork === 'FACEBOOK'" block height="45" class="social-sync" text>
+            <img
+              alt="Facebook"
+              class="mr-1"
+              src="@/assets/svg/facebook_icon.svg"
             >
-              <v-col cols="1" class="text-center">
-                <img
-                  alt="Facebook"
-                  src="@/assets/svg/facebook_icon.svg"
-                >
-              </v-col>
-              <v-col class="text-center">
-                <span class="messages-info-sync">Your account is synced with Facebook</span>
-              </v-col>
-            </v-row>
-          </div>
 
+            <span class="text-sync">Sync your Facebook Account</span>
+          </v-btn>
           <!-- GOOGLE -->
-          <div v-else>
-            <v-row
-              class="text-center"
+          <v-btn v-if="userInfo.socialNetwork === 'GOOGLE'" block height="45" class="social-sync" text>
+            <img
+              alt="Google"
+              class="mr-1"
+              src="@/assets/svg/google_icon.svg"
             >
-              <v-col cols="1" class="text-center">
-                <img
-                  alt="Google"
-                  src="@/assets/svg/google_icon.svg"
-                >
-              </v-col>
-              <v-col class="text-center">
-                <span class="messages-info-sync">Your account is synced with Google</span>
-              </v-col>
-            </v-row>
-          </div>
+
+            <span class="text-sync">Sync your Google Account</span>
+          </v-btn>
         </v-row>
 
         <template v-if="!isUserCaregiver">
