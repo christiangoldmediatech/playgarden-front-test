@@ -249,6 +249,56 @@
                 type="number"
               />
             </validation-provider>
+
+            <img
+              v-if="item.inCollaborationWith"
+              class="collaborator-image"
+              :src="item.inCollaborationWith"
+            >
+
+            <validation-provider
+              v-slot="{ errors }"
+              name="Icon"
+              rules="size:10000"
+            >
+              <file-uploader
+                ref="imageUploader"
+                v-model="image"
+                :error-messages="errors"
+                label="Upload Image"
+                mode="image"
+                path="live-session-collaborator"
+                placeholder="Select an image for collaborator"
+                prepend-icon="mdi-camera"
+                solo
+                jpg
+                png
+                svg
+              />
+            </validation-provider>
+
+            <!-- Video -->
+            <validation-provider
+              v-slot="{ errors }"
+              name="Video"
+            >
+              <file-uploader
+                ref="fileUploader"
+                v-model="file"
+                :error-messages="errors"
+                append-icon="mdi-video"
+                label="Upload Video"
+                mode="video"
+                multi-part
+                path="live-session-video"
+                placeholder="Select a file for this video"
+                solo
+                mp4
+                mov
+                mpeg
+                webm
+              />
+            </validation-provider>
           </v-container>
         </v-card-text>
 
@@ -294,11 +344,13 @@ function generateItemTemplate () {
     title: null,
     description: null,
     link: null,
+    videos: null,
     teacher: null,
     ages: null,
     duration: null,
     dateStart: null,
-    dateEnd: null
+    dateEnd: null,
+    inCollaborationWith: null
   }
 }
 
@@ -317,6 +369,10 @@ export default {
     dialog: false,
     loading: false,
     id: null,
+    video: null,
+    player: null,
+    file: null,
+    image: null,
     item: generateItemTemplate()
   }),
 
@@ -338,6 +394,10 @@ export default {
 
   methods: {
     ...mapActions('live-sessions', ['createLiveSession', 'updateLiveSession']),
+
+    onPlayerReady (player) {
+      this.player = player
+    },
 
     async refresh (clear = false) {
       this.loading = true
@@ -366,12 +426,25 @@ export default {
       this.$nextTick(() => {
         this.dialog = false
         this.loading = false
+        this.image = null
+        this.video = null
+        this.file = null
         this.$refs.obs.reset()
       })
     },
 
     async save () {
       this.loading = true
+
+      const imageData = await this.$refs.imageUploader.handleUpload()
+      if (imageData) {
+        this.item.inCollaborationWith = imageData
+      }
+
+      const data = await this.$refs.fileUploader.handleUpload()
+      if (data) {
+        this.item.videoId = data.video.id
+      }
 
       const start = stringsToDate(this.dateStart, this.timeStart)
       const end = stringsToDate(this.dateEnd, this.timeEnd)
@@ -397,6 +470,7 @@ export default {
 
     resetItem () {
       this.id = null
+      this.video = null
       this.item = generateItemTemplate()
     },
 
@@ -433,6 +507,34 @@ export default {
       if (item.activityType) {
         this.item.activityTypeId = item.activityType.id
       }
+
+      if (item.inCollaborationWith) {
+        this.item.inCollaborationWith = item.inCollaborationWith
+      }
+
+      if (item.videos && item.videos.videoUrl) {
+        this.video = item.videos
+        const mediaObject = {
+          title: item.name,
+          // poster: thumbnail,
+          src: {
+            src: item.videos.videoUrl.HLS,
+            type: 'application/x-mpegURL'
+          },
+          videoId: item.videos.id
+        }
+
+        if (this.player) {
+          this.player.loadPlaylist([mediaObject], 0)
+        } else {
+          const waitAndLoad = window.setInterval(() => {
+            if (this.player) {
+              this.player.loadPlaylist([mediaObject], 0)
+              window.clearInterval(waitAndLoad)
+            }
+          }, 50)
+        }
+      }
     },
 
     open (evt, item = null) {
@@ -449,3 +551,10 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.collaborator-image {
+  width: 100%;
+  max-width: 100%;
+}
+</style>

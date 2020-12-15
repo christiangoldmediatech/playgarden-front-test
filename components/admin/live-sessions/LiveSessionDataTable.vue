@@ -75,23 +75,25 @@
                 </v-toolbar>
               </template>
 
-              <template v-slot:item.dateStart="{ item }">
+              <template v-slot:[`item.dateStart`]="{ item }">
                 {{ item.dateStart | formatDate }}
               </template>
 
-              <template v-slot:item.dateEnd="{ item }">
+              <template v-slot:[`item.dateEnd`]="{ item }">
                 {{ item.dateEnd | formatDate }}
               </template>
 
-              <template v-slot:item.createdAt="{ item }">
+              <template v-slot:[`item.createdAt`]="{ item }">
                 {{ item.createdAt | formatDate }}
               </template>
 
-              <template v-slot:item.updatedAt="{ item }">
+              <template v-slot:[`item.updatedAt`]="{ item }">
                 {{ item.updatedAt | formatDate }}
               </template>
 
-              <template v-slot:item.actions="{ item }">
+              <template v-slot:[`item.actions`]="{ item }">
+                <video-preview-btn v-if="item.videos" :video="item.videos" />
+
                 <grades-btn :data-item="item" :entity-type="entityType" />
 
                 <v-icon
@@ -177,6 +179,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import VideoPreviewBtn from '@/components/admin/video-preview/VideoPreviewBtn.vue'
 
 import paginable from '@/utils/mixins/paginable'
 import GradesBtn from '@/components/admin/grades/GradesBtn.vue'
@@ -187,6 +190,7 @@ export default {
 
   components: {
     LiveSessionEditorDialog,
+    VideoPreviewBtn,
     GradesBtn
   },
 
@@ -196,6 +200,7 @@ export default {
     filters: {
       activityTypeId: null
     },
+    checkStatusInterval: null,
     liveSessions: [],
     entityType: 'LiveSessions',
     loading: false,
@@ -255,6 +260,10 @@ export default {
     this.getTypes()
   },
 
+  beforeDestroy () {
+    clearInterval(this.checkStatusInterval)
+  },
+
   methods: {
     ...mapActions('admin/activity', ['getTypes']),
 
@@ -275,6 +284,8 @@ export default {
           page: this.pagination.page,
           limit: this.pagination.limit
         })
+        this.checkStatus()
+        this.stopInterval()
 
         this.liveSessions = liveSessions
         this.setPagination({ page, total })
@@ -293,6 +304,20 @@ export default {
           await this.refresh()
         }
       })
+    },
+
+    checkStatus () {
+      if (this.liveSessions.filter(data => data.videos && data.videos.status !== 'COMPLETED').length > 0) {
+        this.checkStatusInterval = setInterval(() => {
+          this.refresh()
+        }, 120000)
+      }
+    },
+
+    stopInterval () {
+      if (this.liveSessions.filter(data => data.videos && data.videos.status !== 'COMPLETED').length === 0) {
+        clearInterval(this.checkStatusInterval)
+      }
     }
   }
 }
