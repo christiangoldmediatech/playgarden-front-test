@@ -31,7 +31,7 @@
               Why do we need a credit card?
             </span>
           </p>
-          <p>
+          <p class="text-justify">
             Playgarden Prep Online is currently <span class="font-weight-bold">FREE</span> for you for the next 30 days. We need your credit card information to complete the registration process, but you will <span class="font-weight-bold">NOT</span> be charged.
           </p>
         </v-col>
