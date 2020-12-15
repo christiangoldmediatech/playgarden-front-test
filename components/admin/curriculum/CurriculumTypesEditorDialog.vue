@@ -35,7 +35,7 @@
                   v-model="item.name"
                   :error-messages="errors"
                   label="Name"
-                  solo
+                  solo-labeled
                 />
               </validation-provider>
 
@@ -49,7 +49,7 @@
                   v-model="item.description"
                   :error-messages="errors"
                   label="Description"
-                  solo
+                  solo-labeled
                 />
               </validation-provider>
 
@@ -90,7 +90,7 @@
                   path="curriculum-type"
                   placeholder="Select a icon for this Curriculum Type"
                   prepend-icon="mdi-camera"
-                  solo
+                  solo-labeled
                   jpg
                   png
                   svg
@@ -108,7 +108,7 @@
                   :error-messages="errors"
                   :items="letters"
                   label="Letter"
-                  solo
+                  solo-labeled
                 />
               </validation-provider>
             </v-form>

@@ -25,7 +25,7 @@
                   item-value="id"
                   clearable
                   hide-details
-                  solo
+                  solo-labeled
                   @change="refresh(false)"
                 />
               </v-col>

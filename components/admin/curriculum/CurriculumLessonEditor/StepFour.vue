@@ -14,7 +14,7 @@
           :error-messages="errors"
           label="Name"
           :loading="loading"
-          solo
+          solo-labeled
         />
       </validation-provider>
 
@@ -31,7 +31,7 @@
           :error-messages="errors"
           label="Description"
           :loading="loading"
-          solo
+          solo-labeled
         />
       </validation-provider>
 
@@ -72,7 +72,7 @@
           :file-name="fileName"
           placeholder="Select a pdf for this lesson"
           prepend-icon="mdi-file"
-          solo
+          solo-labeled
           pdf
         />
       </validation-provider>
@@ -91,7 +91,7 @@
           path="lesson"
           placeholder="Select a video for this lesson"
           prepend-icon="mdi-video"
-          solo
+          solo-labeled
           mov
           mp4
           mpeg

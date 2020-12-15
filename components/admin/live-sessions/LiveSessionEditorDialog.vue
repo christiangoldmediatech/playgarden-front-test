@@ -38,7 +38,7 @@
                 item-text="name"
                 item-value="id"
                 label="Activity"
-                solo
+                solo-labeled
               />
             </validation-provider>
 
@@ -51,7 +51,7 @@
                 v-model="item.title"
                 :error-messages="errors"
                 label="Title"
-                solo
+                solo-labeled
               />
             </validation-provider>
 
@@ -75,7 +75,7 @@
                         :error-message="errors"
                         label="Date Start"
                         readonly
-                        solo
+                        solo-labeled
                         :value="dataStartFormatted"
                         v-bind="attrs"
                         v-on="on"
@@ -106,7 +106,7 @@
                         :error-message="errors"
                         label="Time Start"
                         readonly
-                        solo
+                        solo-labeled
                         :value="timeStart"
                         v-bind="attrs"
                         v-on="on"
@@ -139,7 +139,7 @@
                         :error-message="errors"
                         label="Date End"
                         readonly
-                        solo
+                        solo-labeled
                         :value="dataEndFormatted"
                         v-bind="attrs"
                         v-on="on"
@@ -170,7 +170,7 @@
                         :error-message="errors"
                         label="Time End"
                         readonly
-                        solo
+                        solo-labeled
                         :value="timeEnd"
                         v-bind="attrs"
                         v-on="on"
@@ -192,7 +192,7 @@
                 v-model="item.description"
                 :error-messages="errors"
                 label="Description"
-                solo
+                solo-labeled
               />
             </validation-provider>
 
@@ -205,7 +205,7 @@
                 v-model="item.teacher"
                 :error-messages="errors"
                 label="Teacher"
-                solo
+                solo-labeled
               />
             </validation-provider>
 
@@ -218,7 +218,7 @@
                 v-model="item.link"
                 :error-messages="errors"
                 label="Link"
-                solo
+                solo-labeled
               />
             </validation-provider>
 
@@ -231,7 +231,7 @@
                 v-model="item.ages"
                 :error-messages="errors"
                 label="Ages"
-                solo
+                solo-labeled
               />
             </validation-provider>
 

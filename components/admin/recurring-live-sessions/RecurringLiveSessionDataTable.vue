@@ -65,8 +65,7 @@
                     clearable
                     hide-details
                     label="Search"
-                    single-line
-                    solo
+                    solo-labeled
                     @keydown.enter="refresh(false)"
                   />
                 </v-toolbar>

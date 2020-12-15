@@ -33,7 +33,7 @@
                 v-model="item.name"
                 :error-messages="errors"
                 label="Name"
-                solo
+                solo-labeled
               />
             </validation-provider>
 
@@ -48,7 +48,7 @@
                 label="Columns"
                 min="1"
                 type="number"
-                solo
+                solo-labeled
               />
             </validation-provider>
 
@@ -63,7 +63,7 @@
                 label="Rows"
                 min="1"
                 type="number"
-                solo
+                solo-labeled
               />
             </validation-provider>
 
@@ -81,7 +81,7 @@
                 item-text="name"
                 item-value="id"
                 label="lesson"
-                solo
+                solo-labeled
               />
             </validation-provider>
 
@@ -99,7 +99,7 @@
                 item-text="label"
                 item-value="value"
                 label="Level"
-                solo
+                solo-labeled
               />
             </validation-provider>
 
@@ -127,7 +127,7 @@
                 path="puzzle"
                 placeholder="Select an image for this puzzle"
                 prepend-icon="mdi-camera"
-                solo
+                solo-labeled
                 jpg
                 png
                 svg

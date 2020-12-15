@@ -1,0 +1,4 @@
+.v-input.v-file-input:not(.v-input--is-disabled):not(.v-input--is-readonly)
+  .v-text-field__slot {
+  cursor: pointer;
+}

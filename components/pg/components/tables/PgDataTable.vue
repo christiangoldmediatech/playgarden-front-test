@@ -182,12 +182,11 @@ export default {
               this.$createElement(PgTextField, {
                 staticClass: 'shrink',
                 props: {
-                  'append-icon': 'mdi-magnify',
+                  appendIcon: 'mdi-magnify',
                   clearable: true,
-                  'hide-details': true,
+                  hideDetails: true,
                   label: 'Search',
-                  'single-line': true,
-                  solo: true
+                  soloLabeled: true
                 },
                 on: {
                   'click:clear': () => {

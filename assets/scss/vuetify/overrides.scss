@@ -36,17 +36,17 @@
 }
 
 /*
- * INPUT
+ * IMG
  */
-.theme--light.v-input .v-input__slot {
-  min-height: 60px;
+.v-image__placeholder {
+  z-index: 0;
 }
 
 /*
  * INPUT
  */
-.v-image__placeholder {
-  z-index: 0;
+.theme--light.v-input .v-input__slot {
+  min-height: 60px;
 }
 
 /*
