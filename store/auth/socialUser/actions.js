@@ -24,7 +24,8 @@ export default {
       return response
     } catch (error) {
       snotifyError(commit, {
-        body: 'The synchronization with the social network cannot be completed because the emails do not match.'
+        body: 'The synchronization with the social network cannot be completed because the emails do not match.',
+        config: { timeout: 8000 }
       })
     }
   }
