@@ -1,7 +1,7 @@
 <template>
   <v-overlay
-    class="entry-overlay"
     v-model="dialog"
+    class="entry-overlay"
     :dark="false"
     :light="true"
   >
@@ -10,48 +10,59 @@
         <template v-if="entry">
           <div class="green-line-bigger green-line-1" />
           <div class="green-line-bigger green-line-2" />
-          <div class="entry-card-elipse">
+          <div v-if="$vuetify.breakpoint.smAndDown" class="entry-card-elipse">
             <img class="entry-card-elipse-img" :src="entry.activityType.icon">
           </div>
 
           <v-container class="entry-card-content">
-            <div class="entry-card-activity-type pt-8 pb-4 text-center">
-              {{ entry.activityType.name }}
+            <v-row>
+              <div v-if="$vuetify.breakpoint.mdAndUp" class="entry-card-elipse">
+                <img class="entry-card-elipse-img" :src="entry.activityType.icon">
+              </div>
+              <v-col>
+                <div class="entry-card-title">
+                  {{ entry.title }}
+                </div>
+                <div class="entry-card-date">
+                  {{ date }}
+                </div>
+                <div class="entry-card-teacher pb-10">
+                  With {{ entry.teacher }}
+                </div>
+
+                <div class="entry-card-description pb-6">
+                  <p class="entry-card-description-title">
+                    Description
+                  </p>
+                  {{ entry.description }}
+                </div>
+
+                <div class="entry-card-description pb-6">
+                  <p class="entry-card-description-title">
+                    Recommended ages
+                  </p>
+                  {{ entry.ages }}
+                </div>
+
+                <div v-if="entry.inCollaborationWith" class="entry-card-description-title pb-6 d-flex align-start">
+                  By: <img class="entry-card-collaborator ml-6" :src="entry.inCollaborationWith">
+                </div>
+              </v-col>
+            </v-row>
+
+            <div v-if="isRecorded" class="pb-3">
+              <v-btn
+                class="white--text text-none"
+                color="#f89838"
+                x-large
+                block
+                @click.stop="openVideo"
+              >
+                Watch recorded video
+              </v-btn>
             </div>
 
-            <div class="entry-card-subheading pb-4 text-center">
-              LIVE SESSION
-            </div>
-
-            <div class="entry-card-date pb-4 text-center">
-              {{ date }}
-            </div>
-
-            <div class="entry-card-title pb-4">
-              {{ entry.title }}
-            </div>
-
-            <div class="entry-card-description pb-4">
-              {{ entry.description }}
-            </div>
-
-            <div class="entry-card-description pb-4 d-flex align-center">
-              Ages: <span class="entry-card-info ml-3">{{ ages }}</span>
-            </div>
-
-            <div class="entry-card-description pb-4 d-flex align-center">
-              Starts: <span class="entry-card-info ml-3">{{ time }}</span>
-            </div>
-
-            <div class="entry-card-description pb-4 d-flex align-center">
-              Duration: <span class="entry-card-info ml-3">{{ entry.duration }} minutes</span>
-            </div>
-
-            <div v-if="entry.inCollaborationWith" class="entry-card-description pb-4 d-flex align-start">
-              By: <img class="entry-card-collaborator ml-3" :src="entry.inCollaborationWith">
-            </div>
-
-            <div v-if="!past" class="text-center pb-3">
+            <div v-if="!past" class="pb-3">
               <v-btn
                 class="white--text"
                 color="#f89838"
@@ -59,6 +70,7 @@
                 :href="entry.link"
                 :disabled="!isLive"
                 target="_blank"
+                block
               >
                 OPEN ZOOM LINK
               </v-btn>
@@ -127,6 +139,8 @@
 </template>
 
 <script>
+import { getNumberOrder, hours24ToHours12 } from '@/utils/dateTools'
+
 export default {
   name: 'EntryDialog',
 
@@ -154,6 +168,12 @@ export default {
       return today.getTime() >= end.getTime()
     },
 
+    isRecorded () {
+      return this.entry.videos &&
+            this.entry.videos.videoUrl &&
+            this.entry.videos.videoUrl.HLS
+    },
+
     ages () {
       if (this.entry && !isNaN(this.entry.ages)) {
         return `2${this.entry.ages > 2 ? ' - ' + this.entry.ages : ''}`
@@ -164,15 +184,11 @@ export default {
     date () {
       if (this.entry) {
         const date = new Date(this.entry.dateStart)
-        return `${this.months[date.getMonth()]} ${date.getDate()}`
-      }
-      return ''
-    },
-
-    time () {
-      if (this.entry) {
-        const date = new Date(this.entry.dateStart)
-        return `${date.getHours()}:${(date.getMinutes()).toString().padStart(2, '0')}`
+        const endDate = new Date(this.entry.dateEnd)
+        const monthAndDay = `${this.months[date.getMonth()]} ${getNumberOrder(date.getDate())}`
+        const startTime = `${hours24ToHours12(date.getHours(), date.getMinutes())}`
+        const endTime = `${hours24ToHours12(endDate.getHours(), endDate.getMinutes())}`
+        return `${monthAndDay},  ${startTime} - ${endTime}`
       }
       return ''
     },
@@ -222,6 +238,24 @@ export default {
       if (this.icsFile) {
         this.icsFile.download()
       }
+    },
+
+    openVideo () {
+      this.$nuxt.$emit('open-recorded-class-player', {
+        playlist: [
+          {
+            title: this.entry.title,
+            videoId: this.entry.id,
+            src: [
+              {
+                src: this.entry.videos.videoUrl.HLS,
+                type: 'application/x-mpegURL'
+              }
+            ]
+          }
+        ],
+        index: 0
+      })
     }
   }
 }
@@ -235,15 +269,18 @@ export default {
   }
   &-container {
     max-width: 800px;
-    max-height: 99vh;
+    max-height: 95vh;
     padding-top: 80px;
     overflow-y: hidden;
     margin: 0 auto;
+    @media screen and (min-width: 960px) {
+      padding-top: 0px;
+    }
   }
   &-card {
     position: relative;
     overflow-y: visible;
-    max-height: calc(99vh - 140px);
+    max-height: 100%;
     &-elipse{
       position: absolute;
       width: 156px;
@@ -259,6 +296,16 @@ export default {
       align-items: center;
       justify-content: center;
       z-index: 300;
+      @media screen and (min-width: 960px) {
+        width: 111px;
+        height: 111px;
+        position: static;
+        top: auto;
+        left: auto;
+        z-index: auto;
+        margin: 12px;
+        border: solid 5px #c2daa5;
+      }
       &-img {
         width: 70px;
         height: 70px;
@@ -271,39 +318,42 @@ export default {
     &-content {
       max-height: calc(99vh - 200px);
       overflow-y: scroll;
+      @media screen and (min-width: 960px) {
+        max-height: calc(95vh - 60px);
+        padding: 0 12%;
+        padding-top: 64px;
+        padding-bottom: 32px;
+      }
+    }
+    &-title {
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+    &-date {
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 1.5;
+    }
+    &-teacher {
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+    &-description {
+      font-weight: 400;
+      line-height: 1.5;
+      &-title {
+        font-weight: 700;
+        line-height: 1.5;
+      }
     }
     &-activity-type {
       font-size: 30px;
       font-weight: bold;
       line-height: 1.87;
     }
-    &-subheading {
-      font-size: 20px;
-      font-weight: bold;
-      line-height: 1.5;
-      letter-spacing: 3px;
-    }
-    &-date {
-      font-size: 20px;
-      font-weight: 500;
-      line-height: 1.35;
-      text-transform: uppercase;
-    }
-    &-title {
-      font-size: 24px;
-      font-weight: bold;
-      line-height: 1.13;
-    }
-    &-description {
-      line-height: 1.5;
-    }
-    &-info {
-      font-size: 24px;
-      font-weight: 500;
-      line-height: 1.46;
-    }
     &-calendar-links {
-      max-width: 330px;
       margin: 0 auto;
       &-logo {
         max-width: 32px;

@@ -38,7 +38,7 @@
           :error-messages="errors"
           label="Name"
           :loading="loading"
-          solo
+          solo-labeled
         />
       </validation-provider>
 
@@ -55,7 +55,7 @@
           :error-messages="errors"
           label="Description"
           :loading="loading"
-          solo
+          solo-labeled
         />
       </validation-provider>
 
@@ -89,7 +89,7 @@
                 :error-messages="errors"
                 :label="`Word ${indexMT + 1}`"
                 :loading="loading"
-                solo
+                solo-labeled
               />
             </validation-provider>
           </v-col>
@@ -129,7 +129,7 @@
                 path="lesson"
                 :placeholder="`Select image ${indexMT + 1}`"
                 prepend-icon="mdi-camera"
-                solo
+                solo-labeled
                 jpg
                 png
                 svg
@@ -153,7 +153,7 @@
                 :error-messages="errors"
                 :label="`Error Message ${indexMT + 1}`"
                 :loading="loading"
-                solo
+                solo-labeled
               />
             </validation-provider>
           </v-col>

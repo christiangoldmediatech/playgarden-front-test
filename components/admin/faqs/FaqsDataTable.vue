@@ -60,7 +60,7 @@
                   item-text="name"
                   item-value="id"
                   label="Category"
-                  solo
+                  solo-labeled
                   @change="refresh(false)"
                 />
 

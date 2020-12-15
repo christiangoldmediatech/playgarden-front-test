@@ -40,7 +40,7 @@
                         v-model="user.firstName"
                         :error-messages="errors"
                         label="First Name"
-                        solo
+                        solo-labeled
                       />
                     </validation-provider>
                   </v-col>
@@ -55,7 +55,7 @@
                         v-model="user.lastName"
                         :error-messages="errors"
                         label="Last Name"
-                        solo
+                        solo-labeled
                       />
                     </validation-provider>
                   </v-col>
@@ -70,7 +70,7 @@
                         v-model="user.email"
                         :error-messages="errors"
                         label="E-mail"
-                        solo
+                        solo-labeled
                       />
                     </validation-provider>
                   </v-col>
@@ -85,7 +85,7 @@
                         v-model="user.phoneNumber"
                         :error-messages="errors"
                         label="Phone Number"
-                        solo
+                        solo-labeled
                       />
                     </validation-provider>
                   </v-col>
@@ -101,7 +101,7 @@
                         :error-messages="errors"
                         :items="roles"
                         label="Role"
-                        solo
+                        solo-labeled
                       />
                     </validation-provider>
                   </v-col>
@@ -118,7 +118,7 @@
                         :error-messages="errors"
                         hint="At least 8 characters"
                         label="Password"
-                        solo
+                        solo-labeled
                       />
                     </validation-provider>
                   </v-col>

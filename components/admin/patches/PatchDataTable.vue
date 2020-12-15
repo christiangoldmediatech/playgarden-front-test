@@ -64,7 +64,7 @@
                     item-text="name"
                     item-value="id"
                     label="Activity"
-                    solo
+                    solo-labeled
                     @change="refresh(false)"
                   />
                 </v-col>
