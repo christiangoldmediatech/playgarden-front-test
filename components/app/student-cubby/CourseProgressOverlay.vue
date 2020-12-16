@@ -206,6 +206,10 @@ export default {
         document.querySelector('html').style.overflowY = 'hidden'
       }
     })
+
+    this.$nuxt.$on('close-curriculum-progress', (curriculumTypeId) => {
+      this.close()
+    })
   },
 
   methods: {

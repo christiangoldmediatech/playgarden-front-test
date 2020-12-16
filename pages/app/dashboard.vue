@@ -52,11 +52,16 @@ export default {
     }
   },
 
-  // watch: {
-  //   '$route.name' () {
-  //     this.redirectDashboard()
-  //   }
-  // },
+  watch: {
+    '$route.name' () {
+      this.$nuxt.$emit('close-curriculum-progress')
+      this.handleLesson()
+    },
+    '$route.query' () {
+      this.$nuxt.$emit('close-curriculum-progress')
+      this.handleLesson()
+    }
+  },
 
   async created () {
     if (this.overrideMode) {
