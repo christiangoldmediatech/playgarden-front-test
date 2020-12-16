@@ -152,7 +152,7 @@ export default {
   &-icon {
     position: relative;
     width: 33%;
-    padding-top: calc(33% - (33% - 150px));
+    padding-top: calc(33% - (33% - 55px));
     max-width: 150px;
     // border-radius: 50%;
     cursor: pointer;
