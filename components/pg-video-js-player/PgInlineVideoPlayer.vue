@@ -5,10 +5,10 @@
         src="@/assets/svg/play-image.svg"
         width="20%"
       >
-      <p class="pt-12">
+      <p class="text-center pt-3">
         <span class="title-video text-md-h5">Watch a video on how to use our online preschool!</span>
       </p>
-      <v-hover v-slot="{ hover }">
+      <v-hover v-slot="{ hover }" class="pt-10">
         <div
           :class="['play-button-icon', { 'play-button-icon-scaled': hover }]"
           @click.stop="onClick"
@@ -22,12 +22,12 @@
         </div>
       </v-hover>
     </div>
-    <div v-if="showEnd" class="play-button-container">
+    <div v-if="showEnd" class="play-button-container background-video-end">
       <img
         src="@/assets/svg/play-image.svg"
         width="20%"
       >
-      <v-hover v-slot="{ hover }">
+      <v-hover v-slot="{ hover }" class="pt-12">
         <div
           :class="['play-button-icon', { 'play-button-icon-scaled': hover }]"
           @click.stop="goLessons"
@@ -40,7 +40,7 @@
           </div>
         </div>
       </v-hover>
-      <v-hover v-slot="{ hover }">
+      <v-hover v-slot="{ hover }" class="pt-12">
         <div
           :class="['play-button-icon', { 'play-button-icon-scaled': hover }]"
           @click.stop="onClick"
@@ -130,6 +130,11 @@ export default {
   }
 }
 
+.background-video-end {
+  // background-image: url("~assets/svg/play-end-video.svg") !important;
+  // opacity: 0.6;
+}
+
 .title-video {
   color: #FFFFFF;
   font-weight: bold !important;
@@ -152,7 +157,6 @@ export default {
   &-icon {
     position: relative;
     width: 33%;
-    padding-top: calc(33% - (33% - 55px));
     max-width: 150px;
     // border-radius: 50%;
     cursor: pointer;

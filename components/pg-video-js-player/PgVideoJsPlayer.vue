@@ -298,6 +298,10 @@ export default {
         }
       })
 
+      this.playerInstance.on('ended', () => {
+        this.posterImage.show()
+      })
+
       this.playerInstance.on('durationchange', () => {
         this.duration = this.playerInstance.duration()
       })
