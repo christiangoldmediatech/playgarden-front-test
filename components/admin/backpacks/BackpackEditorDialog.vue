@@ -34,7 +34,7 @@
                   v-model="item.name"
                   :error-messages="errors"
                   label="Name"
-                  solo
+                  solo-labeled
                 />
               </validation-provider>
 
@@ -47,7 +47,7 @@
                   v-model="item.code"
                   :error-messages="errors"
                   label="Code"
-                  solo
+                  solo-labeled
                 />
               </validation-provider>
 
@@ -75,7 +75,7 @@
                   path="backpack"
                   placeholder="Select an image for this backpack"
                   prepend-icon="mdi-camera"
-                  solo
+                  solo-labeled
                   jpg
                   png
                   svg

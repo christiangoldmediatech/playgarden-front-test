@@ -34,7 +34,7 @@
                   :error-messages="errors"
                   hide-details
                   label="Name"
-                  solo
+                  solo-labeled
                 />
               </validation-provider>
             </v-form>

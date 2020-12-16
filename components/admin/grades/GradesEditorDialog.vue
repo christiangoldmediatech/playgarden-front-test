@@ -38,7 +38,7 @@
                   :items="entityTypeList"
                   disabled
                   label="Tasks to grade"
-                  solo
+                  solo-labeled
                 />
               </validation-provider>
               <br />
@@ -57,7 +57,7 @@
                     v-model="cardType.total"
                     :error-messages="errors"
                     :label="`Points to ${cardType.text}`"
-                    solo
+                    solo-labeled
                   />
                 </validation-provider>
               </div>

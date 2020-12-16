@@ -67,7 +67,7 @@
                     item-text="name"
                     item-value="id"
                     label="Letter"
-                    solo
+                    solo-labeled
                     @change="refresh(false)"
                   />
                 </v-col>
@@ -99,7 +99,7 @@
                     item-text="label"
                     item-value="value"
                     label="Level"
-                    solo
+                    solo-labeled
                     @change="refresh(false)"
                   />
                 </v-col>
