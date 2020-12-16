@@ -1,6 +1,13 @@
 <template>
   <div :id="containerId" class="inline-video-container">
     <div v-if="show" class="play-button-container">
+      <img
+        src="@/assets/svg/play-image.svg"
+        width="20%"
+      >
+      <p class="pt-12">
+        <span class="title-video text-md-h5">Watch a video on how to use our online preschool!</span>
+      </p>
       <v-hover v-slot="{ hover }">
         <div
           :class="['play-button-icon', { 'play-button-icon-scaled': hover }]"
@@ -15,12 +22,43 @@
         </div>
       </v-hover>
     </div>
+    <div v-if="showEnd" class="play-button-container">
+      <img
+        src="@/assets/svg/play-image.svg"
+        width="20%"
+      >
+      <v-hover v-slot="{ hover }">
+        <div
+          :class="['play-button-icon', { 'play-button-icon-scaled': hover }]"
+          @click.stop="onClick"
+        >
+          <div class="play-button-icon-content">
+            <img
+              src="@/assets/svg/play-button-replay.svg"
+              width="100%"
+            >
+          </div>
+        </div>
+        <div
+          :class="['play-button-icon', { 'play-button-icon-scaled': hover }]"
+          @click.stop="onClick"
+        >
+          <div class="play-button-icon-content">
+            <img
+              src="@/assets/svg/play-button-replay.svg"
+              width="100%"
+            >
+          </div>
+        </div>
+      </v-hover>
+    </div>
     <pg-video-js-player
       v-bind="$attrs"
       :fullscreen-override="handleFullscreen"
       no-smallscreen
       inline
       @ready="onPlayerReady"
+      @ended="showEnd = true"
     />
   </div>
 </template>
@@ -37,7 +75,8 @@ export default {
   data: () => {
     return {
       player: null,
-      show: true
+      show: true,
+      showEnd: false
     }
   },
 
@@ -60,6 +99,7 @@ export default {
 
     onClick () {
       this.show = false
+      this.showEnd = false
       this.player.play()
     },
 
@@ -84,6 +124,11 @@ export default {
   }
 }
 
+.title-video {
+  color: #FFFFFF;
+  font-weight: bold !important;
+}
+
 .play-button {
   &-container {
     position: absolute;
@@ -93,6 +138,7 @@ export default {
     height: 100%;
     display: flex;
     align-items: center;
+    flex-direction: column;
     justify-content: center;
     user-select: none;
     z-index: 1;

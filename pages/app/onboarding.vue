@@ -37,7 +37,6 @@
               >
                 <pg-inline-video-player
                   @ready="onPlayerReady({ player: $event, videos })"
-                  @ended="nextStep"
                 />
               </v-stepper-content>
             </v-stepper-items>
