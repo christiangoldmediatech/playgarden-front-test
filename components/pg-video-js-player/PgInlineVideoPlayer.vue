@@ -30,15 +30,17 @@
       <v-hover v-slot="{ hover }">
         <div
           :class="['play-button-icon', { 'play-button-icon-scaled': hover }]"
-          @click.stop="onClick"
+          @click.stop="goLessons"
         >
           <div class="play-button-icon-content">
             <img
-              src="@/assets/svg/play-button-replay.svg"
+              src="@/assets/svg/play-button-lessons.svg"
               width="100%"
             >
           </div>
         </div>
+      </v-hover>
+      <v-hover v-slot="{ hover }">
         <div
           :class="['play-button-icon', { 'play-button-icon-scaled': hover }]"
           @click.stop="onClick"
@@ -105,6 +107,10 @@ export default {
 
     reset () {
       this.show = true
+    },
+
+    goLessons () {
+      this.$router.push({ name: 'app-dashboard' })
     },
 
     handleFullscreen () {
