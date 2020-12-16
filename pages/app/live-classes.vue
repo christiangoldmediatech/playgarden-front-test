@@ -4,6 +4,13 @@
       :class="{ 'lsess-container': !$vuetify.breakpoint.smAndDown }"
       fluid
     >
+      <v-row>
+        <v-col cols="12">
+          <p class="text-center font-weight-bold mt-5">
+            Live Classes will start January 11th, 2021
+          </p>
+        </v-col>
+      </v-row>
       <v-row class="fill-height">
         <v-col class="lsess-daily" cols="12" md="4" lg="3" xl="2">
           <today-cards-panel
@@ -88,7 +95,7 @@
       </v-card>
     </v-dialog>
 
-    <v-dialog
+    <!-- <v-dialog
       v-model="showNotice"
       content-class="elevation-0"
       :fullscreen="fullscreen"
@@ -135,7 +142,6 @@
                   large
                   @click.stop="showNotice = false"
                 >
-                  <!-- nuxt to app-account ?changeplan=1 -->
                   Watch recorded classes
                 </v-btn>
               </v-row>
@@ -143,7 +149,7 @@
           </v-row>
         </v-col>
       </v-card>
-    </v-dialog>
+    </v-dialog> -->
   </v-main>
 </template>
 
