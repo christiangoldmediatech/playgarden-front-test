@@ -4,6 +4,13 @@
       :class="{ 'lsess-container': !$vuetify.breakpoint.smAndDown }"
       fluid
     >
+      <v-row>
+        <v-col cols="12">
+          <p class="text-center font-weight-bold mt-5">
+            Live Classes will start January 11th, 2021
+          </p>
+        </v-col>
+      </v-row>
       <v-row class="fill-height">
         <v-col class="lsess-daily" cols="12" md="4" lg="3" xl="2">
           <today-cards-panel
@@ -80,63 +87,6 @@
                 >
                   <!-- nuxt to app-account ?changeplan=1 -->
                   COMPARE PLANS
-                </v-btn>
-              </v-row>
-            </v-card>
-          </v-row>
-        </v-col>
-      </v-card>
-    </v-dialog>
-
-    <v-dialog
-      v-model="showNotice"
-      content-class="elevation-0"
-      :fullscreen="fullscreen"
-      persistent
-    >
-      <v-card class="dialog-overlay">
-        <v-row no-gutters justify="start" class="mt-0">
-          <v-btn
-            class="top-left text-none white--text px-4"
-            color="white"
-            text
-            @click.stop="showNotice = false"
-          >
-            <v-icon class="mr-2" small left>
-              mdi-less-than
-            </v-icon>
-            Close
-          </v-btn>
-        </v-row>
-        <v-col class="mt-16">
-          <v-row
-            class="mb-15 mt-16"
-            justify="center"
-            align-content="center"
-            no-gutters
-          >
-            <v-card
-              cols="12"
-              sm="4"
-              class="px-3 mt-16"
-              height="200"
-              tile
-            >
-              <p class="text-center font-weight-bold mt-5">
-                Live Classes will begin on January 8th, 2021
-              </p>
-              <p class="text-center">
-                In the mean time, enjoy our recorded classes.
-              </p>
-              <v-row justify="center" no-gutters>
-                <v-btn
-                  color="accent"
-                  tile
-                  large
-                  @click.stop="showNotice = false"
-                >
-                  <!-- nuxt to app-account ?changeplan=1 -->
-                  Watch recorded classes
                 </v-btn>
               </v-row>
             </v-card>
