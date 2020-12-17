@@ -208,7 +208,10 @@ export default {
     })
 
     this.$nuxt.$on('close-curriculum-progress', (curriculumTypeId) => {
-      this.close()
+      if (this.show) {
+        this.close()
+        this.$nuxt.$emit('dashboard-panel-update')
+      }
     })
   },
 
