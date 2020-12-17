@@ -133,7 +133,7 @@
                 src="@/assets/svg/facebook_icon.svg"
               >
 
-              <span>Sync your facebook account</span>
+              <span class="text-sync">Sync your Facebook Account</span>
             </v-btn>
           </v-col>
 
@@ -146,44 +146,31 @@
                 src="@/assets/svg/google_icon.svg"
               >
 
-              <span>Sync your google account</span>
+              <span class="text-sync">Sync your Google Account</span>
             </v-btn>
           </v-col>
         </v-row>
         <v-row v-else justify="center" class="mb-8">
           <!-- FACEBOOK -->
-          <div v-if="userInfo.socialNetwork === 'FACEBOOK'">
-            <v-row
-              class="text-center"
+          <v-btn v-if="userInfo.socialNetwork === 'FACEBOOK'" block height="45" class="social-sync" text>
+            <img
+              alt="Facebook"
+              class="mr-1"
+              src="@/assets/svg/facebook_icon.svg"
             >
-              <v-col cols="1" class="text-center">
-                <img
-                  alt="Facebook"
-                  src="@/assets/svg/facebook_icon.svg"
-                >
-              </v-col>
-              <v-col class="text-center">
-                <span class="messages-info-sync">Your account is synced with Facebook</span>
-              </v-col>
-            </v-row>
-          </div>
 
+            <span class="text-sync">Your account is synced with Facebook</span>
+          </v-btn>
           <!-- GOOGLE -->
-          <div v-else>
-            <v-row
-              class="text-center"
+          <v-btn v-if="userInfo.socialNetwork === 'GOOGLE'" block height="45" class="social-sync" text>
+            <img
+              alt="Google"
+              class="mr-1"
+              src="@/assets/svg/google_icon.svg"
             >
-              <v-col cols="1" class="text-center">
-                <img
-                  alt="Google"
-                  src="@/assets/svg/google_icon.svg"
-                >
-              </v-col>
-              <v-col class="text-center">
-                <span class="messages-info-sync">Your account is synced with Google</span>
-              </v-col>
-            </v-row>
-          </div>
+
+            <span class="text-sync">Your account is synced with Google</span>
+          </v-btn>
         </v-row>
 
         <template v-if="!isUserCaregiver">
@@ -260,6 +247,8 @@ export default {
   },
 
   methods: {
+    ...mapActions('auth', ['fetchUserInfo']),
+
     ...mapActions(['disableAxiosGlobal', 'enableAxiosGlobal']),
 
     ...mapActions('auth/socialUser', ['authSyncSocial']),
@@ -299,12 +288,15 @@ export default {
     async syncWithSocialNetwork (user) {
       try {
         this.disableAxiosGlobal()
-
         await this.authSyncSocial(user)
-
         this.enableAxiosGlobal()
-        this.$snotify.success('The account has been successfully synchronized with the social network.')
-      } catch (e) {}
+        if (this.userInfo.email === user.email) {
+          await this.fetchUserInfo()
+          this.$snotify.success('The account has been successfully synchronized with the social network.')
+        }
+      } catch (e) {
+        this.$snotify.error(e.message)
+      }
     }
 
   }
@@ -349,6 +341,9 @@ export default {
 .messages-info-sync {
   font-size: 14px !important;
   font-weight: 500;
+}
+.text-sync {
+  text-transform: none !important;
 }
 
 .show-setting-select {
