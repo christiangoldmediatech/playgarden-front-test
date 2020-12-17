@@ -321,7 +321,7 @@ export default {
       @media screen and (min-width: 960px) {
         max-height: calc(95vh - 60px);
         padding: 0 12%;
-        padding-top: 64px;
+        padding-top: 32px;
         padding-bottom: 32px;
       }
     }
