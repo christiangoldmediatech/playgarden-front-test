@@ -4,10 +4,11 @@
   "auth-signup": 1,
   "auth-verify-caregiver": 1,
   "auth-verify-email": 1,
+  "help": 1,
   "index": 1,
   "jwt-recovery": 1,
   "privacy-policy": 1,
   "reset-password": 1,
-  "terms-conditions": 1,
-  "help": 1
+  "shared-slug": 1,
+  "terms-conditions": 1
 }
