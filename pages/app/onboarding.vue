@@ -3,8 +3,14 @@
     <v-row no-gutters>
       <v-col cols="12">
         <pg-loading v-if="loading" />
-
         <v-card v-else elevation="0">
+          <v-row v-v-if="userInfo.onboardingDone === true" justify="end">
+            <v-btn class="mr-3" icon @click.stop="nextStep">
+              <v-icon>
+                mdi-close
+              </v-icon>
+            </v-btn>
+          </v-row>
           <v-stepper v-if="!none" v-model="step" class="elevation-0">
             <v-stepper-header v-if="!single">
               <template v-for="({ name, description }, indexOH) in onboardings">
