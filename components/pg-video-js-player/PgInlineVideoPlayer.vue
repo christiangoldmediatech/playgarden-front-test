@@ -8,18 +8,18 @@
       <p class="text-center pt-3">
         <span class="title-video text-md-h5">Watch a video on how to use our online preschool!</span>
       </p>
-      <v-hover v-slot="{ hover }" class="pt-10">
-        <div
+      <v-hover v-slot="{ hover }">
+        <v-btn
+          color="accent"
           :class="['play-button-icon', { 'play-button-icon-scaled': hover }]"
+          :small="$vuetify.breakpoint.xs"
           @click.stop="onClick"
         >
-          <div class="play-button-icon-content">
-            <img
-              src="@/assets/svg/play-button-icon.svg"
-              width="100%"
-            >
-          </div>
-        </div>
+          <v-icon left>
+            mdi-play
+          </v-icon>
+          START
+        </v-btn>
       </v-hover>
     </div>
     <div v-if="showEnd" class="play-button-container background-video-end">
@@ -27,31 +27,29 @@
         src="@/assets/svg/play-image.svg"
         width="20%"
       >
-      <v-hover v-slot="{ hover }" class="pt-12">
-        <div
+      <v-hover v-slot="{ hover }" class="mt-4 mb-4">
+        <v-btn
+          color="accent"
           :class="['play-button-icon', { 'play-button-icon-scaled': hover }]"
-          @click.stop="goLessons"
+          :small="$vuetify.breakpoint.xs"
+          @click.stop="goToLessons"
         >
-          <div class="play-button-icon-content">
-            <img
-              src="@/assets/svg/play-button-lessons.svg"
-              width="100%"
-            >
-          </div>
-        </div>
+          GO TO LESSONS
+        </v-btn>
       </v-hover>
-      <v-hover v-slot="{ hover }" :class="(!$vuetify.breakpoint.mobile) ? 'pt-12' : 'pt-2'">
-        <div
-          :class="['play-button-icon', { 'play-button-icon-scaled': hover }]"
+
+      <v-hover v-slot="{ hover }">
+        <v-btn
+          color="--v-error-base"
+          :class="['play-button-icon replay-btn', { 'play-button-icon-scaled replay-btn': hover }]"
+          :small="$vuetify.breakpoint.xs"
           @click.stop="onClick"
         >
-          <div class="play-button-icon-content">
-            <img
-              src="@/assets/svg/play-button-replay.svg"
-              width="100%"
-            >
-          </div>
-        </div>
+          <v-icon left>
+            mdi-replay
+          </v-icon>
+          Replay
+        </v-btn>
       </v-hover>
     </div>
     <pg-video-js-player
@@ -109,7 +107,7 @@ export default {
       this.show = true
     },
 
-    goLessons () {
+    goToLessons () {
       this.$router.push({ name: 'app-dashboard' })
     },
 
@@ -138,6 +136,11 @@ export default {
 .title-video {
   color: #FFFFFF;
   font-weight: bold !important;
+}
+
+.replay-btn {
+   background-color: var(--v-accent-lighten2) !important;
+   color: white !important;
 }
 
 .play-button {
