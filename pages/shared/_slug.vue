@@ -74,8 +74,10 @@
                         </v-btn>
                       </v-row>
 
-                      <v-row class="white" justify="center">
-                        <underlined-title :text="pageTitle" />
+                      <v-row class="white">
+                        <p class="text-center">
+                          <underlined-title :text="pageTitle" />
+                        </p>
                       </v-row>
 
                       <v-row class="white" justify="center">
@@ -247,9 +249,7 @@
             <v-row class="mb-md-12 mt-12" justify="center" no-gutters>
               <v-col cols="12" sm="4" class="px-3">
                 <p>
-                  <underlined-title
-                    text="Instill an early  love for learning"
-                  />
+                  <underlined-title text="Instill an early love for learning" />
                 </p>
 
                 <p class="text-md-left text-sm-center">
