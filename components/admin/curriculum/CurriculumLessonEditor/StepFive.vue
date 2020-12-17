@@ -33,7 +33,7 @@
                   </v-list-item-title>
 
                   <v-list-item-subtitle @click="loadDataSelected(data)">
-                    {{ data.activity.activityType.description }}
+                    {{ data.activity.videos.description }}
                   </v-list-item-subtitle>
                 </v-list-item-content>
 
