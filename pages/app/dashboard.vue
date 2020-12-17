@@ -52,13 +52,17 @@ export default {
     }
   },
 
-  // watch: {
-  //   '$route.name' () {
-  //     this.redirectDashboard()
-  //   }
-  // },
+  watch: {
+    '$route.name' () {
+      this.$nuxt.$emit('close-curriculum-progress')
+    },
+    '$route.query' () {
+      this.$nuxt.$emit('close-curriculum-progress')
+    }
+  },
 
   async created () {
+    // console.log('created')
     if (this.overrideMode) {
       const currentChild = this.currentChild[0].id
       await this.getAllChildren()
@@ -126,8 +130,8 @@ export default {
             childrenIds: this.childrenIds
           })
         }
-        if (redirect || this.lessonCompleted) {
-          this.redirectDashboard()
+        if (redirect || (this.lessonCompleted && !this.overrideMode)) {
+          this.redirectDashboard('handleLesson')
           return
         }
       } catch (e) {
@@ -136,6 +140,7 @@ export default {
     },
 
     redirectDashboard () {
+      // console.log('redirect method called from', from)
       if (this.lesson) {
         if (this.videos.progress < 100 && this.videos.items.length) {
           const route = this.generateNuxtRoute('lesson-videos', { id: this.getNextId(this.videos.items) })

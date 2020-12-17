@@ -114,7 +114,7 @@
 import DashboardPanel from '@/components/app/dashboard/DashboardPanel.vue'
 import BlankDashboardPanel from '@/components/app/dashboard/BlankDashboardPanel.vue'
 import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'CourseProgressOverlay',
@@ -135,8 +135,16 @@ export default {
   },
 
   computed: {
+    ...mapGetters({ currentChild: 'getCurrentChild' }),
+
     studentId () {
-      return this.$route.query.id
+      if (this.$route.name === 'app-student-cubby-course-progress') {
+        return this.$route.query.id
+      }
+      if (this.currentChild && this.currentChild.length > 0) {
+        return this.currentChild[0].id
+      }
+      return null
     },
 
     missing () {
@@ -187,14 +195,23 @@ export default {
 
   mounted () {
     this.$nuxt.$on('show-curriculum-progress', (curriculumTypeId) => {
-      this.lessons = []
-      this.loading = true
-      this.getCourseProgressByChildId({ id: this.studentId, curriculumTypeId }).then((data) => {
-        this.lessons = data.map(({ lesson }) => lesson)
-        this.loading = false
-      })
-      this.show = true
-      document.querySelector('html').style.overflowY = 'hidden'
+      if (this.studentId) {
+        this.lessons = []
+        this.loading = true
+        this.getCourseProgressByChildId({ id: this.studentId, curriculumTypeId }).then((data) => {
+          this.lessons = data.map(({ lesson }) => lesson)
+          this.loading = false
+        })
+        this.show = true
+        document.querySelector('html').style.overflowY = 'hidden'
+      }
+    })
+
+    this.$nuxt.$on('close-curriculum-progress', (curriculumTypeId) => {
+      if (this.show) {
+        this.close()
+        this.$nuxt.$emit('dashboard-panel-update')
+      }
     })
   },
 
