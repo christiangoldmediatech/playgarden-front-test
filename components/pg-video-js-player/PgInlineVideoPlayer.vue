@@ -65,6 +65,7 @@
 
 <script>
 import Fullscreen from '@/mixins/FullscreenMixin.js'
+import { mapActions } from 'vuex'
 const excludedListeners = ['ready']
 
 export default {
@@ -87,6 +88,8 @@ export default {
   },
 
   methods: {
+    ...mapActions('auth', ['updateAuthOnboarding']),
+
     onPlayerReady (player) {
       this.player = player
       // attach listeners
@@ -107,8 +110,15 @@ export default {
       this.show = true
     },
 
-    goToLessons () {
-      this.$router.push({ name: 'app-dashboard' })
+    async goToLessons () {
+      try {
+        await this.updateAuthOnboarding()
+
+        this.$router.push({ name: 'app-dashboard' })
+      } catch (e) {
+      } finally {
+        this.finishing = false
+      }
     },
 
     handleFullscreen () {
