@@ -243,7 +243,7 @@
             x-large
             @click="$emit('click:cancel')"
           >
-            CANCEL
+            CLOSE
           </v-btn>
         </v-form>
       </validation-observer>
