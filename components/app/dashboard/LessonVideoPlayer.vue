@@ -20,24 +20,8 @@
       @playlist-index-change="updateIndex"
       @playlist-complete="showCompletedDialog"
     />
-    <!-- Completed dialog -->
-    <completed-dialog
-      v-model="completed"
-      v-bind="completedProps"
-    >
-      <template v-slot:title>
-        <underlined-title
-          class="white--text"
-          font-size="56px"
-          font-weight="bold"
-          text="Congratulations!"
-        />
-      </template>
-
-      <p class="text-h5 text-center white--text font-weight-medium mb-0">
-        You have completed the daily lessons.
-      </p>
-    </completed-dialog>
+    <!-- Lesson Completed dialog -->
+    <lesson-completed-dialog v-model="completed" />
   </video-player-dialog>
 </template>
 
@@ -47,17 +31,13 @@ import VideoPlayerDialogMixin from '@/mixins/VideoPlayerDialogMixin.js'
 import DashboardLink from '@/mixins/DashboardLinkMixin.js'
 import SaveVideoProgress from '@/mixins/SaveVideoProgressMixin.js'
 import Fullscreen from '@/mixins/FullscreenMixin.js'
-// import VideoPlayerDialog from '@/components/pg-video-js-player/VideoPlayerDialog.vue'
-// import PgVideoJsPlayer from '@/components/pg-video-js-player/PgVideoJsPlayer.vue'
-import CompletedDialog from '@/components/app/dashboard/CompletedDialog.vue'
+import LessonCompletedDialog from '@/components/app/dashboard/LessonCompletedDialog.vue'
 
 export default {
   name: 'LessonVideoPlayer',
 
   components: {
-    // VideoPlayerDialog,
-    // PgVideoJsPlayer,
-    CompletedDialog
+    LessonCompletedDialog
   },
 
   mixins: [VideoPlayerDialogMixin, SaveVideoProgress, DashboardLink, Fullscreen],
