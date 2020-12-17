@@ -128,7 +128,7 @@
                 </span>
                 <br>
                 <span class="text-h8">
-                  GOLD and PLATINUM Plans require a shipping address to send Playgarden Prep Workbooks, Backpacks and Materials. Enhance your child's learning experience at home!
+                  GOLD and PLATINUM Plans require a shipping address so we can send you the Playgarden Prep Workbooks, Backpacks and Materials. Enhance your child's learning experience at home!
                 </span>
               </p>
 

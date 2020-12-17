@@ -180,7 +180,7 @@
                 >
               </v-col>
               <v-col class="text-center">
-                <span class="messages-info-sync">Your accoutn is synced with Google</span>
+                <span class="messages-info-sync">Your account is synced with Google</span>
               </v-col>
             </v-row>
           </div>

@@ -124,6 +124,9 @@ export default {
         return
       }
       this.selected = code
+      this.$nextTick(() => {
+        this.openAnswerDialog()
+      })
     },
 
     getRandomWord () {

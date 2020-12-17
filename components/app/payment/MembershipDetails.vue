@@ -366,6 +366,12 @@ export default {
     this.getBillingCards()
     this.$nuxt.$on('children-changed', this.getBillingDetails)
   },
+  mounted () {
+    const val = this.$route.params.changeplan
+    if (val && Boolean(val)) {
+      this.changePlanModal = true
+    }
+  },
   beforeDestroy () {
     this.$nuxt.$off('children-changed')
   },

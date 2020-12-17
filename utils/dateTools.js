@@ -65,3 +65,25 @@ export const stringsToDate = (date, time) => {
 
   return result
 }
+
+export const getNumberOrder = (dayInMonth) => {
+  const st = [1, 21, 31]
+  const nd = [2, 22]
+  const rd = [3, 23]
+
+  if (st.includes[dayInMonth]) {
+    return `${dayInMonth}st`
+  } else if (nd.includes[dayInMonth]) {
+    return `${dayInMonth}nd`
+  } else if (rd.includes[dayInMonth]) {
+    return `${dayInMonth}rd`
+  }
+  return `${dayInMonth}th`
+}
+
+export const hours24ToHours12 = (hours, minutes, am = 'am', pm = 'pm') => {
+  if (hours >= 13) {
+    return `${hours - 12}:${minutes.toString().padStart(2, '0')}${pm}`
+  }
+  return `${hours}:${minutes.toString().padStart(2, '0')}${am}`
+}
