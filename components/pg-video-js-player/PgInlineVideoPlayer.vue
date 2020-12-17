@@ -40,7 +40,7 @@
           </div>
         </div>
       </v-hover>
-      <v-hover v-slot="{ hover }" class="pt-12">
+      <v-hover v-slot="{ hover }" :class="(!$vuetify.breakpoint.mobile) ? 'pt-12' : 'pt-2'">
         <div
           :class="['play-button-icon', { 'play-button-icon-scaled': hover }]"
           @click.stop="onClick"
