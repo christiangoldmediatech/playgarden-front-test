@@ -1,18 +1,55 @@
 <template>
   <div :id="containerId" class="inline-video-container">
     <div v-if="show" class="play-button-container">
+      <img
+        src="@/assets/svg/play-image.svg"
+        width="20%"
+      >
+      <p class="text-center pt-3">
+        <span class="title-video text-md-h5">Watch a video on how to use our online preschool!</span>
+      </p>
       <v-hover v-slot="{ hover }">
-        <div
+        <v-btn
+          color="accent"
           :class="['play-button-icon', { 'play-button-icon-scaled': hover }]"
+          :small="$vuetify.breakpoint.xs"
           @click.stop="onClick"
         >
-          <div class="play-button-icon-content">
-            <img
-              src="@/assets/svg/play-button-icon.svg"
-              width="100%"
-            >
-          </div>
-        </div>
+          <v-icon left>
+            mdi-play
+          </v-icon>
+          START
+        </v-btn>
+      </v-hover>
+    </div>
+    <div v-if="showEnd" class="play-button-container background-video-end">
+      <img
+        src="@/assets/svg/play-image.svg"
+        width="20%"
+      >
+      <v-hover v-slot="{ hover }" :class="($vuetify.breakpoint.mobile) ? 'mt-2 mb-2' : 'mt-4 mb-4'">
+        <v-btn
+          color="accent"
+          :class="['play-button-icon', { 'play-button-icon-scaled': hover }]"
+          :small="$vuetify.breakpoint.xs"
+          @click.stop="goToLessons"
+        >
+          GO TO LESSONS
+        </v-btn>
+      </v-hover>
+
+      <v-hover v-slot="{ hover }">
+        <v-btn
+          color="--v-error-base"
+          :class="['play-button-icon replay-btn', { 'play-button-icon-scaled replay-btn': hover }]"
+          :small="$vuetify.breakpoint.xs"
+          @click.stop="onClick"
+        >
+          <v-icon left>
+            mdi-replay
+          </v-icon>
+          Replay
+        </v-btn>
       </v-hover>
     </div>
     <pg-video-js-player
@@ -21,23 +58,26 @@
       no-smallscreen
       inline
       @ready="onPlayerReady"
+      @ended="showEnd = true"
     />
   </div>
 </template>
 
 <script>
 import Fullscreen from '@/mixins/FullscreenMixin.js'
+import { mapActions } from 'vuex'
 const excludedListeners = ['ready']
 
 export default {
-  name: 'PgInlineVideoPlayer',
+  name: 'PgOnboardingVideoPlayer',
 
   mixins: [Fullscreen],
 
   data: () => {
     return {
       player: null,
-      show: true
+      show: true,
+      showEnd: false
     }
   },
 
@@ -48,6 +88,8 @@ export default {
   },
 
   methods: {
+    ...mapActions('auth', ['updateAuthOnboarding']),
+
     onPlayerReady (player) {
       this.player = player
       // attach listeners
@@ -60,11 +102,23 @@ export default {
 
     onClick () {
       this.show = false
+      this.showEnd = false
       this.player.play()
     },
 
     reset () {
       this.show = true
+    },
+
+    async goToLessons () {
+      try {
+        await this.updateAuthOnboarding()
+
+        this.$router.push({ name: 'app-dashboard' })
+      } catch (e) {
+      } finally {
+        this.finishing = false
+      }
     },
 
     handleFullscreen () {
@@ -84,6 +138,21 @@ export default {
   }
 }
 
+.background-video-end {
+  // background-image: url("~assets/svg/play-end-video.svg") !important;
+  // opacity: 0.6;
+}
+
+.title-video {
+  color: #FFFFFF;
+  font-weight: bold !important;
+}
+
+.replay-btn {
+   background-color: var(--v-accent-lighten2) !important;
+   color: white !important;
+}
+
 .play-button {
   &-container {
     position: absolute;
@@ -93,6 +162,7 @@ export default {
     height: 100%;
     display: flex;
     align-items: center;
+    flex-direction: column;
     justify-content: center;
     user-select: none;
     z-index: 1;
@@ -100,7 +170,6 @@ export default {
   &-icon {
     position: relative;
     width: 33%;
-    padding-top: calc(33% - (33% - 150px));
     max-width: 150px;
     // border-radius: 50%;
     cursor: pointer;

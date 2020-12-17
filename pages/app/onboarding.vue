@@ -35,7 +35,7 @@
                 class="pa-4"
                 :step="indexOI + 1"
               >
-                <pg-inline-video-player
+                <pg-onboarding-video-player
                   @ready="onPlayerReady({ player: $event, videos })"
                 />
               </v-stepper-content>
