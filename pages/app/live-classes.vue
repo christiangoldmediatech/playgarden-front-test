@@ -4,14 +4,14 @@
       :class="{ 'lsess-container': !$vuetify.breakpoint.smAndDown }"
       fluid
     >
-      <v-row>
+      <v-row class="fill-height">
+        <!-- TODO: Remove after date make changes in Styles -->
         <v-col cols="12">
           <p class="text-center font-weight-bold mt-5">
             Live Classes will start January 11th, 2021
           </p>
         </v-col>
-      </v-row>
-      <v-row class="fill-height">
+        <!-- END TODO: Remove after date make changes in Styles -->
         <v-col class="lsess-daily" cols="12" md="4" lg="3" xl="2">
           <today-cards-panel
             v-if="mode === 'TODAY'"
@@ -200,8 +200,8 @@ export default {
     object-position: center;
   }
   &-daily {
-    height: 100%;
-    max-height: 100%;
+    height: 90%; // TODO: Change back to 1005 when removing text Live Classes start
+    max-height: 90%; // TODO: Change back to 1005 when removing text Live Classes start
   }
   &-schedule {
     max-height: 100%;

@@ -140,6 +140,7 @@
 
 <script>
 import { getNumberOrder, hours24ToHours12 } from '@/utils/dateTools'
+import dayjs from 'dayjs'
 
 export default {
   name: 'EntryDialog',
@@ -198,7 +199,8 @@ export default {
         const link = new URL('/calendar/render', 'https://calendar.google.com')
         link.searchParams.set('action', 'TEMPLATE')
         link.searchParams.set('text', this.entry.title)
-        link.searchParams.set('dates', this.entry.dateStart | this.entry.dateEnd)
+        link.searchParams.set('location', this.entry.link)
+        link.searchParams.set('dates', `${dayjs(this.entry.dateStart).format('YYYYMMDDTHHmmssZ')}/${dayjs(this.entry.dateEnd).format('YYYYMMDDTHHmmssZ')}`)
         link.searchParams.set('details', this.entry.description)
         return link.toString()
       }
@@ -209,7 +211,7 @@ export default {
       if (this.entry) {
         /* eslint-disable-next-line */
         const cal = new ics()
-        cal.addEvent(this.entry.title, this.entry.description, 'Online', this.entry.dateStart, this.entry.dateEnd)
+        cal.addEvent(this.entry.title, this.entry.description, this.entry.link, this.entry.dateStart, this.entry.dateEnd)
         return cal
       }
       return null
