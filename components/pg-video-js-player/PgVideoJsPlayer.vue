@@ -298,10 +298,6 @@ export default {
         }
       })
 
-      this.playerInstance.on('ended', () => {
-        this.posterImage.show()
-      })
-
       this.playerInstance.on('durationchange', () => {
         this.duration = this.playerInstance.duration()
       })
@@ -312,6 +308,9 @@ export default {
 
       // Move onto next playlist item
       this.playerInstance.on('ended', () => {
+        this.playerInstance.currentTime(0)
+        this.playerInstance.hasStarted(false)
+        this.playerInstance.trigger('ready')
         if (this.noAutoTrackChange) {
           return
         }
