@@ -14,7 +14,7 @@
               depressed
               nuxt
               small
-              :to="{ name: 'admin-user-manager' }"
+              :to="{ name: 'admin-user-manager-specialists-management' }"
             >
               Back
             </v-btn>
@@ -40,7 +40,7 @@
                         v-model="specialist.firstName"
                         :error-messages="errors"
                         label="First Name"
-                        solo
+                        solo-labeled
                       />
                     </validation-provider>
                   </v-col>
@@ -55,7 +55,7 @@
                         v-model="specialist.lastName"
                         :error-messages="errors"
                         label="Last Name"
-                        solo
+                        solo-labeled
                       />
                     </validation-provider>
                   </v-col>
@@ -70,7 +70,7 @@
                         v-model="specialist.email"
                         :error-messages="errors"
                         label="E-mail"
-                        solo
+                        solo-labeled
                       />
                     </validation-provider>
                   </v-col>
@@ -86,7 +86,7 @@
                         v-mask="['(###) ###-####']"
                         :error-messages="errors"
                         label="Phone Number"
-                        solo
+                        solo-labeled
                       />
                     </validation-provider>
                   </v-col>
@@ -103,7 +103,7 @@
                         :items="roles"
                         label="Role"
                         disabled
-                        solo
+                        solo-labeled
                       />
                     </validation-provider>
                   </v-col>
@@ -124,7 +124,7 @@
                             label="Password"
                             v-bind="attrs"
                             v-on="on"
-                            solo
+                            solo-labeled
                           />
                         </validation-provider>
                       </template>
@@ -145,7 +145,7 @@
                         v-model="specialist.profile"
                         :error-messages="errors"
                         label="Profile"
-                        solo
+                        solo-labeled
                       />
                     </validation-provider>
                   </v-col>
@@ -160,7 +160,7 @@
                         v-model="specialist.profession"
                         :error-messages="errors"
                         label="Profession"
-                        solo
+                        solo-labeled
                       />
                     </validation-provider>
                   </v-col>
