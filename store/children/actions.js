@@ -38,7 +38,9 @@ export default {
 
   async delete ({ dispatch, rootGetters }, id) {
     try {
-      const currentChildren = rootGetters.getCurrentChild.find(child => child.id === id)
+      const currentChildren = (rootGetters.getCurrentChild || []).find(
+        child => child.id === id
+      )
       // Check if child is selected
       if (currentChildren) {
         dispatch('resetCurrentChild', null, { root: true })

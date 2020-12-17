@@ -96,7 +96,6 @@ export default {
 
   methods: {
     open ({
-      title = 'Do you wish to proceed?',
       message = 'Are you sure you wish to proceed with this action?',
       contentClasses = '',
       action = () => {
@@ -105,7 +104,6 @@ export default {
       dark = true,
       color = 'primary darken-1'
     }) {
-      this.title = title
       this.message = message
       this.contentClasses = contentClasses
       this.action = action
@@ -127,11 +125,11 @@ export default {
       this.loading = true
       try {
         await this.action()
-      } catch (err) {
-        this.loading = false
-        return
+        this.dialog = false
+      } catch (e) {
+        this.$snotify.error('Something went wrong!')
       } finally {
-        this.close()
+        this.loading = false
       }
     }
   }
