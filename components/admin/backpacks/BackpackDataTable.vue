@@ -147,7 +147,7 @@ export default {
     remove ({ id, name }) {
       this.$nuxt.$emit('open-prompt', {
         title: 'Delete backpack?',
-        message: `Are you sure you wish to delete '${name}' backpack?`,
+        message: `Are you sure you want to delete <b>${name}</b>?`,
         action: async () => {
           await this.deleteBackpack(id)
           await this.refresh()
