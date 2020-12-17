@@ -27,7 +27,7 @@
         src="@/assets/svg/play-image.svg"
         width="20%"
       >
-      <v-hover v-slot="{ hover }" class="mt-4 mb-4">
+      <v-hover v-slot="{ hover }" :class="($vuetify.breakpoint.mobile) ? 'mt-2 mb-2' : 'mt-4 mb-4'">
         <v-btn
           color="accent"
           :class="['play-button-icon', { 'play-button-icon-scaled': hover }]"
