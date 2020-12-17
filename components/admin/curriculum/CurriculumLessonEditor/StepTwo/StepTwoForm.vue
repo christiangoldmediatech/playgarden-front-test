@@ -14,7 +14,7 @@
           :error-messages="errors"
           label="Teacher's Name"
           :loading="loading"
-          solo
+          solo-labeled
         />
       </validation-provider>
 
@@ -31,7 +31,20 @@
           :error-messages="errors"
           label="lesson Video description"
           :loading="loading"
-          solo
+          solo-labeled
+        />
+      </validation-provider>
+
+      <!-- Order -->
+      <validation-provider v-slot="{ errors }" name="Order" rules="required">
+        <pg-text-field
+          v-model="draft.order"
+          clearable
+          :disabled="loading"
+          :error-messages="errors"
+          label="Order"
+          :loading="loading"
+          solo-labeled
         />
       </validation-provider>
 
@@ -46,7 +59,7 @@
           item-text="name"
           item-value="id"
           label="Activity"
-          solo
+          solo-labeled
         />
       </validation-provider>
 
@@ -84,7 +97,7 @@
           path="lesson"
           placeholder="Select a video for this lesson"
           prepend-icon="mdi-video"
-          solo
+          solo-labeled
           mov
           mp4
           mpeg
@@ -129,7 +142,7 @@
           path="curriculum-thumbnail"
           placeholder="Select a thumbnail for this lesson's video"
           prepend-icon="mdi-camera"
-          solo
+          solo-labeled
           jpg
           png
           svg

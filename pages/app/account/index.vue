@@ -77,7 +77,7 @@
           <v-col>
             <pg-text-field
               disabled
-              label="First name"
+              label="Email"
               solo
               :value="userInfo.email"
             />
@@ -122,6 +122,70 @@
           </v-col>
         </v-dialog>
 
+        <!-- Social buttons -->
+        <v-row v-if="!userInfo.socialNetwork && !userInfo.socialNetworkId" class="mb-10">
+          <!-- FACEBOOK -->
+          <v-col class="mb-4 mb-md-0 pr-md-4" cols="12" md="12">
+            <v-btn block height="45" class="social-sync" @click="facebookSignIn">
+              <img
+                alt="Facebook"
+                class="mr-1"
+                src="@/assets/svg/facebook_icon.svg"
+              >
+
+              <span>Sync your facebook account</span>
+            </v-btn>
+          </v-col>
+
+          <!-- GOOGLE -->
+          <v-col class="mb-6 mb-md-0 pl-md-4" cols="12" md="12">
+            <v-btn block height="45" class="social-sync" @click="googleSignIn">
+              <img
+                alt="Google"
+                class="mr-1"
+                src="@/assets/svg/google_icon.svg"
+              >
+
+              <span>Sync your google account</span>
+            </v-btn>
+          </v-col>
+        </v-row>
+        <v-row v-else justify="center" class="mb-8">
+          <!-- FACEBOOK -->
+          <div v-if="userInfo.socialNetwork === 'FACEBOOK'">
+            <v-row
+              class="text-center"
+            >
+              <v-col cols="1" class="text-center">
+                <img
+                  alt="Facebook"
+                  src="@/assets/svg/facebook_icon.svg"
+                >
+              </v-col>
+              <v-col class="text-center">
+                <span class="messages-info-sync">Your account is synced with Facebook</span>
+              </v-col>
+            </v-row>
+          </div>
+
+          <!-- GOOGLE -->
+          <div v-else>
+            <v-row
+              class="text-center"
+            >
+              <v-col cols="1" class="text-center">
+                <img
+                  alt="Google"
+                  src="@/assets/svg/google_icon.svg"
+                >
+              </v-col>
+              <v-col class="text-center">
+                <span class="messages-info-sync">Your account is synced with Google</span>
+              </v-col>
+            </v-row>
+          </div>
+        </v-row>
+
         <template v-if="!isUserCaregiver">
           <membership-details :loading="loading" />
 
@@ -152,7 +216,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 import CaregiverList from '@/components/app/caregiver/CaregiverList'
 import ChildForm from '@/components/forms/profile/ChildForm.vue'
@@ -193,6 +257,56 @@ export default {
   created () {
     this.showSetting =
       Number(this.$route.query.tab) !== 2 || this.isUserCaregiver
+  },
+
+  methods: {
+    ...mapActions(['disableAxiosGlobal', 'enableAxiosGlobal']),
+
+    ...mapActions('auth/socialUser', ['authSyncSocial']),
+
+    facebookSignIn () {
+      this.syncAccount(
+        'FACEBOOK',
+        new this.$fireAuthObj.FacebookAuthProvider()
+      )
+    },
+
+    googleSignIn () {
+      this.syncAccount('GOOGLE', new this.$fireAuthObj.GoogleAuthProvider())
+    },
+
+    syncAccount (nameSocialNetwork, provider) {
+      const fireAuthObj = this.$fireAuthObj()
+
+      fireAuthObj
+        .signInWithPopup(provider)
+        .then((result) => {
+          const profile = { ...result.additionalUserInfo.profile }
+          this.syncWithSocialNetwork({
+            firstName: profile.given_name || profile.first_name || '',
+            lastName: profile.family_name || profile.last_name || '',
+            email: profile.email,
+            socialNetwork: nameSocialNetwork,
+            socialNetworkId: profile.id
+          })
+        })
+        .catch((e) => {
+          this.$snotify.error(e.message)
+        })
+        .finally(() => fireAuthObj.signOut())
+    },
+
+    async syncWithSocialNetwork (user) {
+      try {
+        this.disableAxiosGlobal()
+
+        await this.authSyncSocial(user)
+
+        this.enableAxiosGlobal()
+        this.$snotify.success('The account has been successfully synchronized with the social network.')
+      } catch (e) {}
+    }
+
   }
 }
 </script>
@@ -225,6 +339,16 @@ export default {
     width: 1000%;
     z-index: -1;
   }
+}
+
+.social-sync {
+  text-transform: capitalize !important;
+  font-size: 14px !important;
+}
+
+.messages-info-sync {
+  font-size: 14px !important;
+  font-weight: 500;
 }
 
 .show-setting-select {

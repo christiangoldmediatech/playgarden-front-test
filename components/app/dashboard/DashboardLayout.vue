@@ -37,7 +37,7 @@
               />
             </div>
 
-            <!-- <v-col class="text-center text-sm-right">
+            <v-col class="text-center text-sm-right">
               <span class="font-weight-medium">
                 First time using Playgarden?
               </span>
@@ -45,7 +45,7 @@
               <v-btn color="primary" text v-bind="!previewMode ? { nuxt: true, to: { name: 'app-onboarding' } } : {}">
                 WATCH TUTORIAL HERE
               </v-btn>
-            </v-col> -->
+            </v-col>
           </v-row>
 
           <v-row :class="['dashboard-content', { 'dashboard-mobile-content': $vuetify.breakpoint.sm, 'dashboard-xs-content': $vuetify.breakpoint.xs }]" no-gutters>
@@ -131,6 +131,12 @@ export default {
       max-height: 100%;
     }
     &-card {
+      display: block;
+      position: relative;
+      width: 100%;
+      height: 100%;
+      max-width: 100%;
+      max-height: 100%;
       box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16) !important;
     }
     &-scroll {

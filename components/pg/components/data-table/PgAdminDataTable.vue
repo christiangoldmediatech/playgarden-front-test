@@ -19,8 +19,7 @@
             clearable
             hide-details
             label="Search"
-            single-line
-            solo
+            solo-labeled
             @keydown.enter="$options.doEvent('search', $event.target.value, listeners)"
           />
         </component>

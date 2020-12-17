@@ -13,7 +13,7 @@
           >
             <!-- Backpack -->
             <validation-provider
-              :name="(removable ? `Child #${indexD + 1} - ` : '') + 'Backpack'"
+              :name="(removable(item) ? `Child #${indexD + 1} - ` : '') + 'Backpack'"
               rules="required"
             >
               <v-row class="mb-6" justify="center">
@@ -59,7 +59,7 @@
             <!-- First name -->
             <validation-provider
               v-slot="{ errors }"
-              :name="(removable ? `Child #${indexD + 1} - ` : '') + 'Name'"
+              :name="(removable(item) ? `Child #${indexD + 1} - ` : '') + 'Name'"
               rules="required"
             >
               <pg-text-field
@@ -84,7 +84,7 @@
                 <validation-provider
                   v-slot="{ errors }"
                   :name="
-                    (removable ? `Child #${indexD + 1} - ` : '') +
+                    (removable(item) ? `Child #${indexD + 1} - ` : '') +
                       'Birthday date'
                   "
                   rules="required"
@@ -114,7 +114,7 @@
 
             <!-- Gender -->
             <validation-provider
-              :name="(removable ? `Child #${indexD + 1} - ` : '') + 'Gender'"
+              :name="(removable(item) ? `Child #${indexD + 1} - ` : '') + 'Gender'"
               rules="required"
             >
               <v-row class="mb-6">
@@ -155,7 +155,7 @@
             </v-row>
 
             <v-btn
-              v-if="removable"
+              v-if="removable(item)"
               block
               text
               color="primary"
@@ -164,7 +164,7 @@
               DELETE CHILD PROFILE
             </v-btn>
 
-            <v-divider v-if="removable" class="mt-6" />
+            <v-divider v-if="removable(item)" class="mt-6" />
           </v-form>
         </v-col>
       </v-row>
@@ -207,7 +207,13 @@ export default {
     },
 
     removable () {
-      return this.items.length > 1
+      return (item) => {
+        if (!item.id) {
+          return true
+        }
+        const items = this.items.filter(item => item.id)
+        return items.length > 1
+      }
     },
 
     childBackpack () {

@@ -14,7 +14,7 @@
       <v-col cols="12">
         <v-row>
           <v-col
-            v-for="({ activity }, indexR) in resources"
+            v-for="(data, indexR) in resources"
             :key="indexR"
             cols="12"
             md="4"
@@ -22,23 +22,23 @@
             xl="3"
           >
             <v-card>
-              <v-list-item>
-                <v-list-item-avatar>
-                  <v-img :src="activity.activityType.icon" height="200" />
+              <v-list-item class="activities-selected">
+                <v-list-item-avatar @click="loadDataSelected(data)">
+                  <v-img :src="data.activity.activityType.icon" height="200" />
                 </v-list-item-avatar>
 
-                <v-list-item-content>
+                <v-list-item-content @click="loadDataSelected(data)">
                   <v-list-item-title class="headline">
-                    {{ activity.videos.name }}
+                    {{ data.activity.videos.name }}
                   </v-list-item-title>
 
-                  <v-list-item-subtitle>
-                    {{ activity.activityType.description }}
+                  <v-list-item-subtitle @click="loadDataSelected(data)">
+                    {{ data.activity.videos.description }}
                   </v-list-item-subtitle>
                 </v-list-item-content>
 
                 <v-list-item-action>
-                  <v-btn icon @click="remove(activity)">
+                  <v-btn icon @click="remove(data.activity)">
                     <v-icon color="grey lighten-1">
                       mdi-close
                     </v-icon>
@@ -65,7 +65,8 @@
               @update:page="pagination.page = $event"
             >
               <template v-slot:item.actions="{ item }">
-                <v-icon color="#81A1F7" dense @click="associateActivity(item)">
+                <grades-btn :data-item="item" :entity-type="entityType" :lesson-id="lessonId" />
+                <v-icon color="#81A1F7" dense @click="itemSelected=item; dialogAssociateActivity=true;">
                   mdi-content-save-outline
                 </v-icon>
               </template>
@@ -165,6 +166,77 @@
         </v-row>
       </v-col>
     </v-row>
+    <validation-observer ref="obs" v-slot="{ invalid, passes }">
+      <v-dialog
+        v-model="dialogAssociateActivity"
+        :fullscreen="$vuetify.breakpoint.xs"
+        max-width="500px"
+        persistent
+        scrollable
+      >
+        <v-card v-if="dialogAssociateActivity">
+          <v-toolbar class="flex-grow-0" color="primary darken-1" dark dense flat>
+            <v-toolbar-title class="white--text">
+              {{ itemSelected.videos.name }}
+            </v-toolbar-title>
+
+            <v-spacer />
+
+            <v-btn :disabled="loading" icon @click.stop="dialogAssociateActivity = false">
+              <v-icon>
+                mdi-close
+              </v-icon>
+            </v-btn>
+          </v-toolbar>
+
+          <v-card-text>
+            <v-container>
+              <v-form ref="activityTypeForm" @submit.prevent="passes(associateActivity)">
+                <validation-provider
+                  v-slot="{ errors }"
+                  name="Order"
+                  rules="required"
+                >
+                  <pg-text-field
+                    v-model="order"
+                    :error-messages="errors"
+                    label="Order"
+                    solo-labeled
+                  />
+                </validation-provider>
+              </v-form>
+            </v-container>
+          </v-card-text>
+
+          <v-divider />
+
+          <v-card-actions>
+            <v-spacer />
+
+            <v-btn
+              class="white--text"
+              color="green"
+              :disabled="invalid"
+              :loading="loading"
+              :text="$vuetify.breakpoint.smAndUp"
+              @click.stop="passes(associateActivity)"
+            >
+              Save
+            </v-btn>
+
+            <v-btn
+              class="white--text"
+              color="red"
+              :disabled="loading"
+              :text="$vuetify.breakpoint.smAndUp"
+              @click.stop="dialogAssociateActivity = false"
+            >
+              Cancel
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </validation-observer>
   </v-container>
 </template>
 
@@ -191,6 +263,11 @@ export default {
     loading: false,
     activities: [],
     resources: [],
+    entityType: 'Activities',
+    itemSelected: null,
+    order: null,
+    idCurrent: null,
+    dialogAssociateActivity: false,
     headers: [
       {
         text: 'Name',
@@ -211,7 +288,7 @@ export default {
         align: 'right',
         sortable: false,
         value: 'actions',
-        width: 50
+        width: 100
       }
     ]
   }),
@@ -240,6 +317,7 @@ export default {
 
     ...mapActions('admin/curriculum/activity', [
       'createActivityByLessonId',
+      'updateActivityByLessonId',
       'deleteActivityByLessonId',
       'fetchActivitiesByLessonId'
     ]),
@@ -278,20 +356,40 @@ export default {
       }
     },
 
-    async associateActivity ({ id }) {
+    async associateActivity () {
       this.loading = true
-
       try {
-        await this.createActivityByLessonId({
-          activityId: id,
-          lessonId: this.lessonId
-        })
+        if (this.idCurrent) {
+          await this.updateActivityByLessonId({
+            idCurrent: this.idCurrent,
+            activityId: this.itemSelected.id,
+            lessonId: this.lessonId,
+            order: this.order
+          })
+        } else {
+          await this.createActivityByLessonId({
+            activityId: this.itemSelected.id,
+            lessonId: this.lessonId,
+            order: this.order
+          })
+        }
 
+        this.order = null
+        this.dialogAssociateActivity = false
+        this.itemSelected = null
+        this.idCurrent = null
         await this.getActivitiesLesson()
       } catch (e) {
       } finally {
         this.loading = false
       }
+    },
+
+    loadDataSelected (data) {
+      this.itemSelected = data.activity
+      this.order = data.order
+      this.idCurrent = data.id
+      this.dialogAssociateActivity = true
     },
 
     remove ({ id, name }) {
@@ -308,3 +406,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.activities-selected:hover {
+  cursor: pointer !important;
+}
+</style>

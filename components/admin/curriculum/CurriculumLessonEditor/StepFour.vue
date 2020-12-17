@@ -14,7 +14,7 @@
           :error-messages="errors"
           label="Name"
           :loading="loading"
-          solo
+          solo-labeled
         />
       </validation-provider>
 
@@ -31,7 +31,7 @@
           :error-messages="errors"
           label="Description"
           :loading="loading"
-          solo
+          solo-labeled
         />
       </validation-provider>
 
@@ -72,7 +72,7 @@
           :file-name="fileName"
           placeholder="Select a pdf for this lesson"
           prepend-icon="mdi-file"
-          solo
+          solo-labeled
           pdf
         />
       </validation-provider>
@@ -91,7 +91,7 @@
           path="lesson"
           placeholder="Select a video for this lesson"
           prepend-icon="mdi-video"
-          solo
+          solo-labeled
           mov
           mp4
           mpeg
@@ -169,7 +169,10 @@ export default {
 
   created () {
     this.refresh()
-    this.fileName = this.getLesson.name.replace(/ /g, '-')
+    this.getLessonById(this.lessonId).then((data) => {
+      this.fileName = data.name.replace(/ /g, '-')
+      this.loading = false
+    })
   },
 
   methods: {
@@ -177,6 +180,9 @@ export default {
       'createWorksheetByLessonId',
       'fetchWorksheetsByLessonId',
       'updateWorksheetByLessonId'
+    ]),
+    ...mapActions('admin/curriculum', [
+      'getLessonById'
     ]),
 
     async refresh () {
@@ -207,7 +213,6 @@ export default {
           const { video } = await this.$refs.videoUploader.handleUpload()
           this.draft.videoId = video.id
         }
-
         const data = await this.submitMethod(this.getSubmittableData())
         this.$emit('click:submit', data)
       } catch (e) {

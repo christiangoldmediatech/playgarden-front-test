@@ -392,6 +392,10 @@ export default {
 .main::v-deep {
   min-height: 500px;
 
+  .v-expansion-panel:before {
+    box-shadow: none;
+  }
+
   .v-overlay__content {
     width: 600px;
   }

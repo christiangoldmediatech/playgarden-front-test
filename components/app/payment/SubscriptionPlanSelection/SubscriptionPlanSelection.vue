@@ -59,7 +59,7 @@
                         ${{ (plan.priceAnnual/12).toFixed(2) }}
                       </span>
                       <span class="product-month">/Month</span>
-                      <br />
+                      <br>
                       <span v-if="indexP === 0" class="info-prodcut-detail">Billed Annually (Save ~$170)</span>
                       <span v-if="indexP === 1" class="info-prodcut-detail">Billed Annually (Save ~$300)</span>
                       <span v-if="indexP === 2" class="info-prodcut-detail">Billed Annually (Save ~$1,200)</span>
@@ -67,7 +67,7 @@
 
                     <p :class="`${indexP === 1 ? 'text-center mt-10 plan-included' : 'text-center mt-12 plan-included'}`">
                       <label class="font-weight-bold">What's included</label>
-                      <br />
+                      <br>
                       <span v-if="indexP === 1" class="info-prodcut-detail">Everything in the SILVER Plan, <span class="font-weight-bold">plus extra!</span></span>
                       <span v-if="indexP === 2" class="info-prodcut-detail">Everything in the GOLD Plan, <span class="font-weight-bold">plus extra!</span></span>
                     </p>
@@ -128,7 +128,7 @@
                 </span>
                 <br>
                 <span class="text-h8">
-                  GOLD and PLATINUM Plans require a shipping address to send Playgarden Prep Workbooks, Backpacks and Materials. Enhance your child's learning experience at home!
+                  GOLD and PLATINUM Plans require a shipping address so we can send you the Playgarden Prep Workbooks, Backpacks and Materials. Enhance your child's learning experience at home!
                 </span>
               </p>
 
