@@ -159,7 +159,7 @@
               src="@/assets/svg/facebook_icon.svg"
             >
 
-            <span class="text-sync">Sync your Facebook Account</span>
+            <span class="text-sync">Your account is synced with Facebook</span>
           </v-btn>
           <!-- GOOGLE -->
           <v-btn v-if="userInfo.socialNetwork === 'GOOGLE'" block height="45" class="social-sync" text>
@@ -169,7 +169,7 @@
               src="@/assets/svg/google_icon.svg"
             >
 
-            <span class="text-sync">Sync your Google Account</span>
+            <span class="text-sync">Your account is synced with Google</span>
           </v-btn>
         </v-row>
 
