@@ -11,7 +11,9 @@
       <v-row
         no-gutters
         justify="space-around"
-        @click.stop="$nuxt.$emit('open-portfolio-overlay', image)"
+        @click.stop="
+          $nuxt.$emit('open-portfolio-overlay', { entityId, entityType, image })
+        "
       >
         <v-col cols="12">
           <v-img :src="image" aspect-ratio="1.7" contain />
@@ -47,6 +49,9 @@
       <v-col class="shrink" cols="12" md="">
         <pg-social-buttons
           class="mx-auto mx-md-0"
+          entity-auto-resolve
+          :entity-id="entityId"
+          :entity-type="entityType"
           :quote="textShare"
           :title="textShare"
           :toolbar-title="`Share ${textShare}`"
@@ -71,6 +76,21 @@ export default {
     image: {
       type: [Object, Function, String],
       required: true
+    },
+
+    entityId: {
+      type: [Number, String],
+      default: ''
+    },
+
+    entityType: {
+      type: String,
+      default: '',
+      validator: (val) => {
+        const values = { PATCH: 1, PUZZLE: 1, WORKSHEET: 1 }
+
+        return val === null || val === '' || Boolean(values[val])
+      }
     },
 
     lesson: {
