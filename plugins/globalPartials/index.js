@@ -3,6 +3,7 @@ import Vue from 'vue'
 // Videoplayers
 import PgVideoJsPlayer from '@/components/pg-video-js-player/PgVideoJsPlayer.vue'
 import PgInlineVideoPlayer from '@/components/pg-video-js-player/PgInlineVideoPlayer.vue'
+import PgOnboardingVideoPlayer from '@/components/pg-video-js-player/PgOnboardingVideoPlayer.vue'
 import VideoPlayerDialog from '@/components/pg-video-js-player/VideoPlayerDialog.vue'
 
 // Global PG Components
@@ -40,6 +41,7 @@ Vue.component(UnderlinedTitle.name, UnderlinedTitle)
 
 Vue.component(PgVideoJsPlayer.name, PgVideoJsPlayer)
 Vue.component(PgInlineVideoPlayer.name, PgInlineVideoPlayer)
+Vue.component(PgOnboardingVideoPlayer.name, PgOnboardingVideoPlayer)
 Vue.component(VideoPlayerDialog.name, VideoPlayerDialog)
 
 Vue.component(PgCircleLetterDay.name, PgCircleLetterDay)
