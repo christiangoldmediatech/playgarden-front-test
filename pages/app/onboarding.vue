@@ -13,8 +13,9 @@
             <v-row justify="end" class="mt-6 mr-6">
               <v-btn
                 v-if="userInfo.onboardingDone === true"
-                class="text-h6 mt-n6"
+                class="text-h7 text-md-h6 mt-n6"
                 color="accent"
+                :small="$vuetify.breakpoint.xs"
                 :loading="finishing"
                 @click="onFinish"
               >
