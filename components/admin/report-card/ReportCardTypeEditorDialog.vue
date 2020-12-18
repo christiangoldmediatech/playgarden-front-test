@@ -87,7 +87,7 @@
                 rules="required"
               >
                 <pg-textarea
-                  v-model="progressing"
+                  v-model="item.progressing"
                   :error-messages="errors"
                   label="Progressing"
                   solo-labeled
@@ -100,7 +100,7 @@
                 rules="required"
               >
                 <pg-textarea
-                  v-model="areaStrenght"
+                  v-model="item.areaStrenght"
                   :error-messages="errors"
                   label="Area Strenght"
                   solo-labeled
@@ -113,7 +113,7 @@
                 rules="required"
               >
                 <pg-text-field
-                  v-model="ageAppropiate"
+                  v-model="item.ageAppropiate"
                   :error-messages="errors"
                   label="Age Appropiate"
                   solo-labeled
@@ -167,14 +167,13 @@ export default {
       valid: true,
       id: null,
       icon: null,
-      progressing: null,
-      ageAppropiate: null,
-      areaStrenght: null,
       item: {
         name: '',
         description: '',
         icon: '',
-        descriptionProgress: ''
+        progressing: null,
+        ageAppropiate: null,
+        areaStrenght: null
       }
     }
   },
@@ -206,8 +205,6 @@ export default {
       this.loading = true
       try {
         const icon = await this.$refs.fileUploader.handleUpload()
-        const descriptionProgress = { progressing: this.progressing, ageAppropiate: this.ageAppropiate, areaStrenght: this.areaStrenght }
-        this.item.descriptionProgress = JSON.stringify(descriptionProgress)
         if (icon) {
           this.item.icon = icon
         }
@@ -226,20 +223,21 @@ export default {
       }
     },
 
-    open ({ id = null, name = '', description = '', icon = '', descriptionProgress = '' } = {}) {
+    open ({ id = null, name = '', description = '', icon = '', descriptionProgress = {} } = {}) {
       this.id = id
       this.item.name = name
       this.item.description = description
       this.item.icon = icon
       if (descriptionProgress) {
-        this.item.descriptionProgress = JSON.parse(descriptionProgress)
-        this.progressing = this.item.descriptionProgress.progressing
-        this.ageAppropiate = this.item.descriptionProgress.ageAppropiate
-        this.areaStrenght = this.item.descriptionProgress.areaStrenght
+        const { progressing, ageAppropiate, areaStrenght } = descriptionProgress
+        this.item.progressing = progressing
+        this.item.ageAppropiate = ageAppropiate
+        this.item.areaStrenght = areaStrenght
       } else {
-        this.progressing = ''
-        this.ageAppropiate = ''
-        this.areaStrenght = ''
+        this.item.progressing = ''
+        this.item.ageAppropiate = ''
+        this.item.areaStrenght = ''
+        this.icon = ''
       }
       this.$nextTick(() => {
         this.dialog = true
