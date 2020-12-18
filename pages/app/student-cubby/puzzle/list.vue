@@ -33,11 +33,19 @@
           width="340"
           @click="puzzle.completed ? showOverlay(puzzle) : null"
         >
-          <v-img aspect-ratio="1.7" :[puzzle.srcType]="puzzle.src">
+          <v-img
+            aspect-ratio="1.7"
+            :contain="!puzzle.lazy"
+            :[puzzle.srcType]="
+              puzzle.lazy
+                ? puzzle.src
+                : require('@/assets/png/student-cubby/puzzle-piece.png')
+            "
+          >
             <template v-slot:placeholder>
               <v-overlay absolute :value="true">
                 <v-lazy
-                  v-model="isActive"
+                  v-model="puzzle.lazy"
                   :options="{
                     threshold: 0.5,
                   }"
@@ -108,7 +116,11 @@
 
                 <v-row justify="end" no-gutters>
                   <pg-social-buttons
+                    v-if="dialog"
                     class="mr-3"
+                    entity-auto-resolve
+                    :entity-id="toShow.puzzleChildrenId"
+                    entity-type="PUZZLE"
                     mini-variant
                     :url="toShow.src"
                   />
@@ -194,16 +206,19 @@ export default {
             image = '',
             name = '',
             pieces = 0,
-            piecesUnclocked = 0
+            piecesUnclocked = 0,
+            puzzleChildrenId
           }) => ({
             id,
             active,
             completed,
+            lazy: false,
             letter: get(curriculumType, 'letter', ''),
             name,
             pieces,
             piecesUnclocked,
             percentageCompleted: (piecesUnclocked * 100) / pieces,
+            puzzleChildrenId,
             src: image,
             srcType: this.getSrcType(completed && !active)
           })

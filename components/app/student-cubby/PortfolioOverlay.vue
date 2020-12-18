@@ -1,5 +1,5 @@
 <template>
-  <v-dialog :value="overlay" :fullscreen="fullscreen">
+  <v-dialog :value="overlay" fullscreen>
     <v-card class="dialog-portfolio-overlay">
       <v-container class="vh-container pa-0" fluid>
         <v-btn
@@ -25,7 +25,11 @@
               </v-btn>
             </v-row>
 
-            <portfolio-card v-bind="{ child, image }" display-mode />
+            <portfolio-card
+              v-if="overlay"
+              v-bind="{ child, entityId, entityType, image }"
+              display-mode
+            />
           </v-col>
         </v-row>
       </v-container>
@@ -52,17 +56,23 @@ export default {
 
   data: () => {
     return {
+      entityId: null,
+      entityType: null,
       image: null,
-      overlay: false,
-      fullscreen: true
+      overlay: false
     }
   },
 
   created () {
-    this.$nuxt.$on('open-portfolio-overlay', (image) => {
-      this.image = image
-      this.overlay = true
-    })
+    this.$nuxt.$on(
+      'open-portfolio-overlay',
+      ({ entityId, entityType, image }) => {
+        this.entityId = entityId
+        this.entityType = entityType
+        this.image = image
+        this.overlay = true
+      }
+    )
   },
 
   beforeDestroy () {

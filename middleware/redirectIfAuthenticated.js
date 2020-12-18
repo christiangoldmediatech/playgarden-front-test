@@ -7,10 +7,11 @@ export default function ({ redirect, route, store }) {
 
   const ignoreRoute = {
     'auth-verify-email': 1,
+    help: 1,
     'jwt-recovery': 1,
     'privacy-policy': 1,
     'terms-conditions': 1,
-    help: 1
+    'shared-slug': 1
   }
 
   if (

@@ -1,15 +1,12 @@
 <template>
-  <v-hover
-    v-if="$vuetify.breakpoint.smAndUp || displayMode"
-    v-slot="{ hover }"
-  >
+  <v-hover v-if="$vuetify.breakpoint.smAndUp || displayMode" v-slot="{ hover }">
     <v-col
       :class="[
         'text-center patch-item mr-2',
         {
-          clickable: _unblocked && !displayMode,
-          scaled: hover && _unblocked && !displayMode
-        }
+          clickable: patch.unblocked && !displayMode,
+          scaled: hover && patch.unblocked && !displayMode,
+        },
       ]"
       :cols="displayMode ? 12 : 2"
       :sm="displayMode ? 6 : 2"
@@ -17,10 +14,7 @@
       :xl="displayMode ? 3 : 2"
     >
       <v-row justify="center" align="center">
-        <div
-          v-if="displayMode"
-          class="w-100"
-        >
+        <div v-if="displayMode" class="w-100">
           <template v-if="!$vuetify.breakpoint.mobile">
             <v-img
               :src="require('@/assets/svg/close-icon.svg')"
@@ -36,7 +30,7 @@
             :max-width="!displayMode ? 200 : undefined"
           >
             <v-img
-              :class="{ grayscale: !_unblocked }"
+              :class="{ grayscale: !patch.unblocked }"
               :src="patch.image"
               aspect-ratio="1"
             />
@@ -50,9 +44,10 @@
           :max-width="!displayMode ? 200 : undefined"
         >
           <v-img
-            :class="{ grayscale: !_unblocked }"
+            :class="{ grayscale: !patch.unblocked }"
             :src="patch.image"
             aspect-ratio="1"
+            @click.stop="displayBadge"
           />
         </v-responsive>
       </v-row>
@@ -70,13 +65,14 @@
     </v-col>
   </v-hover>
 
-  <v-col v-else cols="5" class="px-6" @click.stop="displayBadge">
+  <v-col v-else cols="5" class="px-6">
     <v-row justify="center" align="center">
       <v-responsive class="rounded-circle" aspect-ratio="1">
         <v-img
-          :class="{ grayscale: !_unblocked }"
+          :class="{ grayscale: !patch.unblocked }"
           :src="patch.image"
           aspect-ratio="1"
+          @click.stop="displayBadge"
         />
       </v-responsive>
     </v-row>
@@ -105,17 +101,6 @@ export default {
       type: Boolean,
       required: false,
       default: false
-    },
-
-    unblocked: {
-      type: Object,
-      required: true
-    }
-  },
-
-  computed: {
-    _unblocked () {
-      return this.unblocked && this.unblocked[this.patch.id]
     }
   },
 
@@ -125,7 +110,7 @@ export default {
     },
 
     displayBadge () {
-      if (this._unblocked) {
+      if (this.patch.unblocked) {
         this.$nuxt.$emit('open-patch-overlay', this.patch)
       }
     }
