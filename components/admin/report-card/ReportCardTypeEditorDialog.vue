@@ -3,7 +3,7 @@
     <v-dialog
       v-model="dialog"
       :fullscreen="$vuetify.breakpoint.xs"
-      max-width="500px"
+      max-width="750px"
       persistent
       scrollable
     >
@@ -47,6 +47,75 @@
                   v-model="item.description"
                   :error-messages="errors"
                   label="Description"
+                  solo-labeled
+                />
+              </validation-provider>
+
+              <v-img
+                v-if="item.icon"
+                max-width="250"
+                :src="item.icon"
+              />
+
+              <validation-provider
+                v-slot="{ errors }"
+                name="Icon"
+                :rules="{
+                  required: !item.icon && !icon,
+                  size: 10000
+                }"
+              >
+                <file-uploader
+                  ref="fileUploader"
+                  v-model="icon"
+                  append-icon="mdi-camera"
+                  :error-messages="errors"
+                  label="Upload icon"
+                  mode="image"
+                  path="item-icon"
+                  placeholder="Select a icon for this report card"
+                  solo-labeled
+                  jpg
+                  png
+                  svg
+                />
+              </validation-provider>
+
+              <validation-provider
+                v-slot="{ errors }"
+                name="Progressing"
+                rules="required"
+              >
+                <pg-text-field
+                  v-model="progressing"
+                  :error-messages="errors"
+                  label="Progressing"
+                  solo-labeled
+                />
+              </validation-provider>
+
+              <validation-provider
+                v-slot="{ errors }"
+                name="Age Appropiate"
+                rules="required"
+              >
+                <pg-text-field
+                  v-model="ageAppropiate"
+                  :error-messages="errors"
+                  label="Age Appropiate"
+                  solo-labeled
+                />
+              </validation-provider>
+
+              <validation-provider
+                v-slot="{ errors }"
+                name="Area Strenght"
+                rules="required"
+              >
+                <pg-text-field
+                  v-model="areaStrenght"
+                  :error-messages="errors"
+                  label="Area Strenght"
                   solo-labeled
                 />
               </validation-provider>
@@ -97,9 +166,15 @@ export default {
       loading: false,
       valid: true,
       id: null,
+      icon: null,
+      progressing: null,
+      ageAppropiate: null,
+      areaStrenght: null,
       item: {
         name: '',
-        description: ''
+        description: '',
+        icon: '',
+        descriptionProgress: ''
       }
     }
   },
@@ -130,6 +205,12 @@ export default {
     async save () {
       this.loading = true
       try {
+        const icon = await this.$refs.fileUploader.handleUpload()
+        const descriptionProgress = { progressing: this.progressing, ageAppropiate: this.ageAppropiate, areaStrenght: this.areaStrenght }
+        this.item.descriptionProgress = JSON.stringify(descriptionProgress)
+        if (icon) {
+          this.item.icon = icon
+        }
         if (this.id === null) {
           await this.createType(this.item)
         } else {
