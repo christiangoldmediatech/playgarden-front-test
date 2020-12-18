@@ -4,12 +4,23 @@
       <v-col cols="12">
         <pg-loading v-if="loading" />
         <v-card v-else elevation="0">
-          <v-row v-if="userInfo.onboardingDone === true" justify="end">
-            <v-btn class="mr-3" icon @click.stop="nextStep">
+          <v-row>
+            <v-btn class="ml-3" icon @click.stop="nextStep">
               <v-icon>
                 mdi-close
               </v-icon>
             </v-btn>
+            <v-row justify="end" class="mt-6 mr-6">
+              <v-btn
+                v-if="userInfo.onboardingDone === true"
+                class="text-h6 mt-n6"
+                color="accent"
+                :loading="finishing"
+                @click="onFinish"
+              >
+                GO TO LESSONS
+              </v-btn>
+            </v-row>
           </v-row>
           <v-stepper v-if="!none" v-model="step" class="elevation-0">
             <v-stepper-header v-if="!single">
@@ -61,17 +72,6 @@
                 NEXT
               </v-btn>
             </template>
-
-            <v-btn
-              v-if="userInfo.onboardingDone === true"
-              class="text-h6 mt-n6"
-              color="primary"
-              :loading="finishing"
-              text
-              @click="onFinish"
-            >
-              GO TO LESSONS
-            </v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
