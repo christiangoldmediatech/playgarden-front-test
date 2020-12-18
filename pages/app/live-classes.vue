@@ -2,7 +2,7 @@
   <v-main>
     <div class="startLiveClass">
       <p class="text-center pt-3">
-        <span class="text-h5 text-md-h5 font-weight-bold white--text pt-5">Live Classes will start January 11th, 2021</span>
+        <span class="text-h7 text-md-h5 font-weight-bold white--text pt-5">Live Classes will start January 11th, 2021</span>
       </p>
     </div>
     <v-container
