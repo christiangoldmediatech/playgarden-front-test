@@ -10,7 +10,7 @@
                 mdi-close
               </v-icon>
             </v-btn>
-            <v-row justify="end" class="mt-6 mr-6">
+            <v-row justify="end" :class="($vuetify.breakpoint.xs)? 'mt-8 mr-6' : 'mt-6 mr-6'">
               <v-btn
                 v-if="userInfo.onboardingDone === true"
                 class="text-h7 text-md-h6 mt-n6"
