@@ -72,7 +72,7 @@
                   :error-messages="errors"
                   label="Upload icon"
                   mode="image"
-                  path="item-icon"
+                  path="report-card-icon"
                   placeholder="Select a icon for this report card"
                   solo-labeled
                   jpg
@@ -86,10 +86,23 @@
                 name="Progressing"
                 rules="required"
               >
-                <pg-text-field
+                <pg-textarea
                   v-model="progressing"
                   :error-messages="errors"
                   label="Progressing"
+                  solo-labeled
+                />
+              </validation-provider>
+
+              <validation-provider
+                v-slot="{ errors }"
+                name="Area Strenght"
+                rules="required"
+              >
+                <pg-textarea
+                  v-model="areaStrenght"
+                  :error-messages="errors"
+                  label="Area Strenght"
                   solo-labeled
                 />
               </validation-provider>
@@ -103,19 +116,6 @@
                   v-model="ageAppropiate"
                   :error-messages="errors"
                   label="Age Appropiate"
-                  solo-labeled
-                />
-              </validation-provider>
-
-              <validation-provider
-                v-slot="{ errors }"
-                name="Area Strenght"
-                rules="required"
-              >
-                <pg-text-field
-                  v-model="areaStrenght"
-                  :error-messages="errors"
-                  label="Area Strenght"
                   solo-labeled
                 />
               </validation-provider>
@@ -226,11 +226,15 @@ export default {
       }
     },
 
-    open ({ id = null, name = '', description = '' } = {}) {
+    open ({ id = null, name = '', description = '', icon = '', descriptionProgress = '' } = {}) {
       this.id = id
       this.item.name = name
       this.item.description = description
-
+      this.item.icon = icon
+      this.item.descriptionProgress = JSON.parse(descriptionProgress)
+      this.progressing = this.item.descriptionProgress.progressing
+      this.ageAppropiate = this.item.descriptionProgress.ageAppropiate
+      this.areaStrenght = this.item.descriptionProgress.areaStrenght
       this.$nextTick(() => {
         this.dialog = true
       })
