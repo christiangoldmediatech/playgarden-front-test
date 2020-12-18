@@ -108,6 +108,7 @@
                           <v-time-picker
                             v-if="menuStart"
                             v-model="agenda.start"
+                            :max="agenda.end"
                             format="24hr"
                             full-width
                             @click:minute="$refs.menu.save(agenda.start)"
@@ -216,6 +217,7 @@
                           <v-time-picker
                             v-if="menuEnd"
                             v-model="agenda.end"
+                            :min="agenda.start"
                             format="24hr"
                             full-width
                             @click:minute="$refs.menu2.save(agenda.end)"
