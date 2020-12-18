@@ -231,10 +231,16 @@ export default {
       this.item.name = name
       this.item.description = description
       this.item.icon = icon
-      this.item.descriptionProgress = JSON.parse(descriptionProgress)
-      this.progressing = this.item.descriptionProgress.progressing
-      this.ageAppropiate = this.item.descriptionProgress.ageAppropiate
-      this.areaStrenght = this.item.descriptionProgress.areaStrenght
+      if (descriptionProgress) {
+        this.item.descriptionProgress = JSON.parse(descriptionProgress)
+        this.progressing = this.item.descriptionProgress.progressing
+        this.ageAppropiate = this.item.descriptionProgress.ageAppropiate
+        this.areaStrenght = this.item.descriptionProgress.areaStrenght
+      } else {
+        this.progressing = ''
+        this.ageAppropiate = ''
+        this.areaStrenght = ''
+      }
       this.$nextTick(() => {
         this.dialog = true
       })
