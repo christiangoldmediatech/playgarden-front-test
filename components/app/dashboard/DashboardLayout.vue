@@ -1,6 +1,47 @@
 <template>
   <v-main>
-    <v-container :class="{ 'dashboard-container': !$vuetify.breakpoint.smAndDown }" fluid>
+    <v-container v-if="showScreen">
+      <v-row justify="center" align-sm="center">
+        <v-col cols="10" sm="6" md="5">
+          <div class="dashboard-weekend-container">
+            <div class="dashboard-weekend-content">
+              <div class="dashboard-weekend-circle-1">
+                <div class="dashboard-weekend-circle-2">
+                  <img class="dashboard-weekend-img" src="@/assets/png/dashboard/weekendchild.png">
+                </div>
+              </div>
+            </div>
+          </div>
+        </v-col>
+        <v-col cols="12" sm="6" md="7" xl="6">
+          <div class="dashboard-weekend-title">
+            <underlined-title
+              font-size="30px"
+              font-size-mobile="16px"
+              font-weight="700"
+              padding-bottom="0px"
+              text="You finished school for the week, YAY!"
+            />
+          </div>
+          <div class="dashboard-weekend-message">
+            If you want more, go to the Activities Page and watch all your favorite teachers and Lessons all over again! See you back at school on Monday!
+          </div>
+          <v-row justify="center" justify-md="start">
+            <v-col cols="9" md="5" lg="4">
+              <v-btn color="accent" block @click="openCourseProgress">
+                Rewatch letter A
+              </v-btn>
+            </v-col>
+            <v-col cols="9" md="5" lg="4">
+              <v-btn color="#FFAF4B" class="white--text" block nuxt :to="{ name: 'app-activities' }">
+                Go to Activities
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
+    </v-container>
+    <v-container v-else :class="{ 'dashboard-container': !$vuetify.breakpoint.smAndDown }" fluid>
       <v-row class="fill-height" justify="center">
         <v-col
           class="dashboard-column order-last order-md-first d-flex justify-center justify-md-start"
@@ -69,6 +110,7 @@
 
 <script>
 import DashboardPanel from '@/components/app/dashboard/DashboardPanel.vue'
+import DashboardMixin from '@/mixins/DashboardMixin.js'
 import LessonActivityPlayer from '@/components/app/dashboard/LessonActivityPlayer.vue'
 import LessonTeacherVideo from '@/components/app/dashboard/LessonTeacherVideo.vue'
 import ChildSelect from '@/components/app/ChildSelect.vue'
@@ -84,6 +126,8 @@ export default {
     ChildSelect,
     CourseProgressOverlay
   },
+
+  mixins: [DashboardMixin],
 
   props: {
     value: {
@@ -110,6 +154,27 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    }
+  },
+
+  computed: {
+    overrideMode () {
+      if (this.overrides.childId && this.overrides.lessonId) {
+        return true
+      }
+      return false
+    },
+
+    showScreen () {
+      const today = new Date().getTime()
+      const monday = Date.parse('2020-12-21T08:00:00.000-05:00')
+      return !this.overrideMode && today < monday
+    }
+  },
+
+  methods: {
+    openCourseProgress () {
+      this.$nuxt.$emit('show-curriculum-progress', 1)
     }
   }
 }
@@ -160,6 +225,68 @@ export default {
     background-position: center, center;
     background-repeat: no-repeat, no-repeat;
     background-size: cover;
+  }
+  &-weekend {
+    &-container {
+      width: 100%;
+      height: 0px;
+      max-width: 634px;
+      padding-top: 100%;
+      position: relative;
+      margin: 0 auto;
+    }
+    &-content {
+      width: 100%;
+      max-height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    &-circle-1 {
+      width: 100%;
+      height: 100%;
+      padding: 7%;
+      border-radius: 50%;
+      background: #C2DAA5;
+      box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.184314);
+    }
+    &-circle-2 {
+      width: 100%;
+      height: 100%;
+      padding: 7%;
+      border-radius: 50%;
+      background: #DCE7B5;
+      box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.184314);
+    }
+    &-img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center;
+    }
+    &-title {
+      line-height: 1.5;
+      text-align: center;
+      margin-bottom: 16px;
+      @media screen and (min-width: 960px) {
+        text-align: left;
+      }
+    }
+    &-message {
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 1.5;
+      text-align: center;
+      margin-bottom: 16px;
+      @media screen and (min-width: 960px) {
+        text-align: left;
+        font-size: 20px;
+      }
+      @media screen and (min-width: 1264px) {
+        font-size: 24px;
+      }
+    }
   }
 }
 </style>
