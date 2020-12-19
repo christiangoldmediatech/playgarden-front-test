@@ -133,7 +133,7 @@ export default {
     remove ({ id, name }) {
       this.$nuxt.$emit('open-prompt', {
         title: 'Delete curicculum type?',
-        message: `Are you sure you wish to delete '${name}' curriculum type?`,
+        message: `Are you sure you want to delete <b>${name}</b>?`,
         action: async () => {
           await this.deleteType(id)
           this.refresh()

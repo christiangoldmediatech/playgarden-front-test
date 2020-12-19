@@ -256,7 +256,7 @@ export default {
     remove ({ id, firstName, lastName, email }) {
       this.$nuxt.$emit('open-prompt', {
         title: 'Delete user?',
-        message: `Are you sure you wish to delete user '${firstName} ${lastName}' (${email})?`,
+        message: `Are you sure you want to delete <b>${firstName} ${lastName}' (${email})</b>?`,
         action: async () => {
           await this.deleteUser(id)
           this.refresh()

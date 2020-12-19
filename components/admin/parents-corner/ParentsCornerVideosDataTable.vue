@@ -140,7 +140,7 @@ export default {
     remove ({ id, video }) {
       this.$nuxt.$emit('open-prompt', {
         title: 'Delete parent\'s corner video?',
-        message: `Are you sure you wish to delete '${video.name}' parent's corner video?`,
+        message: `Are you sure you want to delete <b>${video.name}</b>?`,
         action: async () => {
           await this.deleteVideo(id)
           await this.refresh()

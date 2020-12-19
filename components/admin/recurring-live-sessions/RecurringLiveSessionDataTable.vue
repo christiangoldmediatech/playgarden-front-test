@@ -281,7 +281,7 @@ export default {
     remove ({ id, title }) {
       this.$nuxt.$emit('open-prompt', {
         title: 'Delete Recurring Live Session?',
-        message: `Are you sure you wish to delete '${title}' Recurring Live Session?`,
+        message: `Are you sure you want to delete <b>${title}</b>?`,
         action: async () => {
           await this.deleteRecurringLiveSession(id)
           await this.refresh()
