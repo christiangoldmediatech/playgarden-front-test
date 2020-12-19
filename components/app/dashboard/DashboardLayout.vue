@@ -1,7 +1,7 @@
 <template>
   <v-main>
-    <v-container v-if="showScreen">
-      <v-row justify="center" align-sm="center">
+    <v-container v-if="showScreen" fill-height>
+      <v-row justify="center" align-sm="center" fill-height>
         <v-col cols="10" sm="6" md="5">
           <div class="dashboard-weekend-container">
             <div class="dashboard-weekend-content">
