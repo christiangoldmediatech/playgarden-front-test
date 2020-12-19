@@ -166,9 +166,9 @@ export default {
     },
 
     showScreen () {
-      const today = new Date().getTime()
-      const monday = Date.parse('2020-12-21T08:00:00.000-05:00')
-      return !this.overrideMode && today < monday
+      // const today = new Date().getTime()
+      // const monday = Date.parse('2020-12-21T08:00:00.000-05:00')
+      return !this.overrideMode && (this.lesson && this.lesson.curriculumType.id > 1)
     }
   },
 
