@@ -8,12 +8,11 @@
       '--ut-background-from': _lineFrom,
       fontSize: _fontSize,
       fontWeight: _fontWeight,
-      paddingBottom: _paddingBottom
+      paddingBottom: _paddingBottom,
     }"
     v-on="$listeners"
-  >
-    {{ text }}
-  </span>
+    v-html="text"
+  />
 </template>
 
 <script>

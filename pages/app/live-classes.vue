@@ -1,17 +1,15 @@
 <template>
   <v-main>
+    <div class="startLiveClass">
+      <p class="text-center pt-3">
+        <span class="text-h7 text-md-h5 font-weight-bold white--text pt-5">Live Classes will start January 11th, 2021</span>
+      </p>
+    </div>
     <v-container
       :class="{ 'lsess-container': !$vuetify.breakpoint.smAndDown }"
       fluid
     >
       <v-row class="fill-height">
-        <!-- TODO: Remove after date make changes in Styles -->
-        <v-col cols="12">
-          <p class="text-center font-weight-bold mt-5">
-            Live Classes will start January 11th, 2021
-          </p>
-        </v-col>
-        <!-- END TODO: Remove after date make changes in Styles -->
         <v-col class="lsess-daily" cols="12" md="4" lg="3" xl="2">
           <today-cards-panel
             v-if="mode === 'TODAY'"
@@ -219,6 +217,12 @@ export default {
 }
 .dialog-overlay {
   background-color: rgba(0, 0, 0, 0.68) !important;
+}
+.startLiveClass{
+  background-color: var(--v-accent-base) !important;
+  text-transform: uppercase !important;
+  min-height: 50px !important;
+  vertical-align: middle
 }
 .fullscreen {
   width: 100% !important;

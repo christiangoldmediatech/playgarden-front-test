@@ -312,7 +312,7 @@ export default {
     remove ({ id, name }) {
       this.$nuxt.$emit('open-prompt', {
         title: 'Delete curriculum lesson video?',
-        message: `Are you sure you wish to delete '${name}' curriculum lesson video?`,
+        message: `Are you sure you want to delete <b>${name}</b>?`,
         action: () =>
           this.deleteVideoByLessonId({
             id,
