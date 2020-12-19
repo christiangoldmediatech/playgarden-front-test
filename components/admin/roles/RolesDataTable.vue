@@ -139,7 +139,7 @@ export default {
     remove ({ id, name }) {
       this.$nuxt.$emit('open-prompt', {
         title: 'Delete role?',
-        message: `Are you sure you wish to delete the '${name}' role?`,
+        message: `Are you sure you want to delete <b>${name}</b>?`,
         action: async () => {
           await this.deleteRole(id)
           this.refresh()

@@ -142,8 +142,7 @@ export default {
 
     removeChild (item, index) {
       this.$nuxt.$emit('open-prompt', {
-        title: 'Delete child profile?',
-        message: `Are you sure you wish to delete '${item.firstName}'s' profile?`,
+        message: `Are you sure you want to delete <b>${item.firstName}</b>?`,
         action: async () => {
           this.dataLoading = true
 

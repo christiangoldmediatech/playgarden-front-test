@@ -1,58 +1,63 @@
 <template>
-  <v-dialog
-    v-model="dialog"
-    max-width="500px"
-    persistent
-    scrollable
-  >
+  <v-dialog v-model="dialog" max-width="500px" persistent scrollable>
     <v-card>
-      <v-toolbar class="flex-grow-0" :color="color" :dark="dark" dense flat>
-        <v-toolbar-title>
-          {{ title }}
-        </v-toolbar-title>
-
-        <v-spacer />
-
-        <v-btn :disabled="loading" icon @click.stop="close">
-          <v-icon>
-            mdi-close
-          </v-icon>
-        </v-btn>
-      </v-toolbar>
+      <div class="green-line green-line-1" />
+      <div class="green-line green-line-2" />
 
       <v-card-text>
         <v-container>
-          <p :class="contentClasses">
-            {{ message }}
-          </p>
+          <v-row justify="center">
+            <v-img
+              alt="delete"
+              class="mb-3"
+              contain
+              :max-height="80"
+              :src="require('~/assets/svg/delete.svg')"
+            />
+          </v-row>
+          <v-row justify="center">
+            <v-col class="text-center" cols="12" lg="9">
+              <underlined-title
+                class="text-h6 text-md-subtitle-1 font-weight-medium text-center"
+                :text="(message)"
+              />
+            </v-col>
+          </v-row>
         </v-container>
+
+        <p class="text-center">
+          This item will be deleted immediatly.<br>
+          You can't undo this action!
+        </p>
       </v-card-text>
 
-      <v-divider />
-
       <v-card-actions>
-        <v-spacer />
+        <v-row justify="center" no-gutters class="mb-5">
+          <v-btn
+            color="#D7D7D7"
+            :dark="$vuetify.breakpoint.xs"
+            :disabled="loading"
+            width="120"
+            class="mr-5 white--text custom-text"
+            @click="close"
+          >
+            Cancel
+          </v-btn>
 
-        <v-btn
-          color="green"
-          :dark="$vuetify.breakpoint.xs"
-          :loading="loading"
-          :text="$vuetify.breakpoint.smAndUp"
-          @click="doAction"
-        >
-          Yes
-        </v-btn>
-
-        <v-btn
-          color="red"
-          :dark="$vuetify.breakpoint.xs"
-          :disabled="loading"
-          :text="$vuetify.breakpoint.smAndUp"
-          @click="close"
-        >
-          No
-        </v-btn>
+          <v-btn
+            color="accent"
+            :dark="$vuetify.breakpoint.xs"
+            :loading="loading"
+            width="120"
+            class="custom-text"
+            @click="doAction"
+          >
+            Delete it!
+          </v-btn>
+        </v-row>
       </v-card-actions>
+      <div class="green-line green-line-2" />
+      <div class="green-line green-line-1" />
     </v-card>
   </v-dialog>
 </template>
@@ -73,7 +78,6 @@ export default {
     return {
       dialog: false,
       loading: false,
-      title: 'Do you wish to proceed?',
       message: 'Are you sure you wish to proceed with this action?',
       contentClasses: '',
       color: 'primary darken-1',
@@ -92,7 +96,6 @@ export default {
 
   methods: {
     open ({
-      title = 'Do you wish to proceed?',
       message = 'Are you sure you wish to proceed with this action?',
       contentClasses = '',
       action = () => {
@@ -101,7 +104,6 @@ export default {
       dark = true,
       color = 'primary darken-1'
     }) {
-      this.title = title
       this.message = message
       this.contentClasses = contentClasses
       this.action = action
@@ -123,13 +125,19 @@ export default {
       this.loading = true
       try {
         await this.action()
-      } catch (err) {
-        this.loading = false
-        return
+        this.dialog = false
+      } catch (e) {
+        this.$snotify.error('Something went wrong!')
       } finally {
-        this.close()
+        this.loading = false
       }
     }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.custom-text {
+  text-transform: none !important;
+}
+</style>
