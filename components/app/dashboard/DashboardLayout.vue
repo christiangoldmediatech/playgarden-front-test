@@ -1,6 +1,6 @@
 <template>
   <v-main>
-    <v-container v-if="showScreen" fill-height>
+    <!-- <v-container v-if="showScreen" fill-height>
       <v-row justify="center" align-sm="center" fill-height>
         <v-col cols="10" sm="6" md="5">
           <div class="dashboard-weekend-container">
@@ -40,8 +40,8 @@
           </v-row>
         </v-col>
       </v-row>
-    </v-container>
-    <v-container v-else :class="{ 'dashboard-container': !$vuetify.breakpoint.smAndDown }" fluid>
+    </v-container> -->
+    <v-container :class="{ 'dashboard-container': !$vuetify.breakpoint.smAndDown }" fluid>
       <v-row class="fill-height" justify="center">
         <v-col
           class="dashboard-column order-last order-md-first d-flex justify-center justify-md-start"
@@ -110,7 +110,7 @@
 
 <script>
 import DashboardPanel from '@/components/app/dashboard/DashboardPanel.vue'
-import DashboardMixin from '@/mixins/DashboardMixin.js'
+// import DashboardMixin from '@/mixins/DashboardMixin.js'
 import LessonActivityPlayer from '@/components/app/dashboard/LessonActivityPlayer.vue'
 import LessonTeacherVideo from '@/components/app/dashboard/LessonTeacherVideo.vue'
 import ChildSelect from '@/components/app/ChildSelect.vue'
@@ -127,7 +127,7 @@ export default {
     CourseProgressOverlay
   },
 
-  mixins: [DashboardMixin],
+  // mixins: [DashboardMixin],
 
   props: {
     value: {
@@ -163,13 +163,13 @@ export default {
         return true
       }
       return false
-    },
-
-    showScreen () {
-      const today = new Date().getTime()
-      const monday = Date.parse('2020-12-21T08:00:00.000-05:00')
-      return !this.overrideMode && (this.lesson && this.lesson.curriculumType.id > 1) && (today < monday)
     }
+
+    // showScreen () {
+    //   const today = new Date().getTime()
+    //   const monday = Date.parse('2020-12-21T08:00:00.000-05:00')
+    //   return !this.overrideMode && (this.lesson && this.lesson.curriculumType.id > 1) && (today < monday)
+    // }
   },
 
   methods: {
