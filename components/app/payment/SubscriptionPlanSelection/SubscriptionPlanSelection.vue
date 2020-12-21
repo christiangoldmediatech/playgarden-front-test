@@ -1,6 +1,6 @@
 <template>
-  <v-row v-if="initialized" no-gutters>
-    <v-col>
+  <v-row v-if="initialized" justify="center" no-gutters>
+    <v-col cols="12">
       <validation-observer v-slot="{ invalid, passes }">
         <v-form @submit.prevent="passes(onSubmit)">
           <!-- Plan -->
@@ -12,12 +12,18 @@
               :error-messages="errors"
               :loading="loading"
             >
-              <p
-                class="font-weight-bold mb-6 pg-letter-spacing text-center text-h5 text-md-left"
-              >
-                {{ updating ? "UPDATE" : "CHOOSE YOUR" }} PLAN
-              </p>
-              <span class="product-info">*Pricing is per child</span>
+              <v-row justify="start" class="update-plan-margin">
+                <v-col>
+                  <p
+                    class="font-weight-bold mb-6 text-center text-h5 text-md-left"
+                  >
+                    {{ updating ? "UPDATE" : "CHOOSE YOUR" }} PLAN
+                  </p>
+                  <p class="product-info">
+                    *Pricing is per child
+                  </p>
+                </v-col>
+              </v-row>
               <v-row
                 v-if="$vuetify.breakpoint.mdAndUp"
                 class="mx-n3"
@@ -27,18 +33,25 @@
                 <v-col
                   v-for="(plan, indexP) in plans"
                   :key="indexP"
-                  :class="`${indexP === 1 ? 'c-col elevation-3 mx-md-3 card-plan' : 'c-col elevation-3 mx-md-3 pa-3 card-plan mt-10'}`"
+                  :class="`${
+                    indexP === 1
+                      ? 'c-col elevation-3 mx-md-3 card-plan'
+                      : 'c-col elevation-3 mx-md-3 pa-3 card-plan mt-10'
+                  }`"
                 >
                   <div v-show="indexP === 1" class="text-right">
-                    <v-chip
-                      class="most-popular"
-                      label
-                    >
+                    <v-chip class="most-popular" label>
                       Most Popular
                     </v-chip>
                   </div>
                   <div>
-                    <p :class="`${indexP === 1 ? 'plan-name text-center mt-10' : 'plan-name text-center mt-5'}`">
+                    <p
+                      :class="`${
+                        indexP === 1
+                          ? 'plan-name text-center mt-10'
+                          : 'plan-name text-center mt-5'
+                      }`"
+                    >
                       <v-chip
                         color="orange"
                         class="text-orange-info mb-8"
@@ -56,26 +69,58 @@
 
                     <p class="text-center">
                       <span class="product-price">
-                        ${{ (plan.priceAnnual/12).toFixed(2) }}
+                        ${{ (plan.priceAnnual / 12).toFixed(2) }}
                       </span>
                       <span class="product-month">/Month</span>
                       <br>
-                      <span v-if="indexP === 0" class="info-prodcut-detail">Billed Annually (Save ~$170)</span>
-                      <span v-if="indexP === 1" class="info-prodcut-detail">Billed Annually (Save ~$300)</span>
-                      <span v-if="indexP === 2" class="info-prodcut-detail">Billed Annually (Save ~$1,200)</span>
+                      <span
+                        v-if="indexP === 0"
+                        class="info-prodcut-detail"
+                      >Billed Annually (Save ~$170)</span>
+                      <span
+                        v-if="indexP === 1"
+                        class="info-prodcut-detail"
+                      >Billed Annually (Save ~$300)</span>
+                      <span
+                        v-if="indexP === 2"
+                        class="info-prodcut-detail"
+                      >Billed Annually (Save ~$1,200)</span>
                     </p>
 
-                    <p :class="`${indexP === 1 ? 'text-center mt-10 plan-included' : 'text-center mt-12 plan-included'}`">
+                    <p
+                      :class="`${
+                        indexP === 1
+                          ? 'text-center mt-10 plan-included'
+                          : 'text-center mt-12 plan-included'
+                      }`"
+                    >
                       <label class="font-weight-bold">What's included</label>
                       <br>
-                      <span v-if="indexP === 1" class="info-prodcut-detail">Everything in the SILVER Plan, <span class="font-weight-bold">plus extra!</span></span>
-                      <span v-if="indexP === 2" class="info-prodcut-detail">Everything in the GOLD Plan, <span class="font-weight-bold">plus extra!</span></span>
+                      <span
+                        v-if="indexP === 1"
+                        class="info-prodcut-detail"
+                      >Everything in the SILVER Plan,
+                        <span class="font-weight-bold">plus extra!</span></span>
+                      <span
+                        v-if="indexP === 2"
+                        class="info-prodcut-detail"
+                      >Everything in the GOLD Plan,
+                        <span class="font-weight-bold">plus extra!</span></span>
                     </p>
 
-                    <plan-description :plan="plan" :index-plan="indexP" class="ml-8 mr-8" />
+                    <plan-description
+                      :plan="plan"
+                      :index-plan="indexP"
+                      class="ml-8 mr-8"
+                    />
                   </div>
 
-                  <radio-selectors v-model="draft" :plan="plan" :index-plan="indexP" :class="`${indexP === 1 ? 'mb-9 px-6' : 'mb-6 px-6'}`" />
+                  <radio-selectors
+                    v-model="draft"
+                    :plan="plan"
+                    :index-plan="indexP"
+                    :class="`${indexP === 1 ? 'mb-9 px-6' : 'mb-6 px-6'}`"
+                  />
                 </v-col>
               </v-row>
 
@@ -123,12 +168,16 @@
           >
             <v-col class="px-6">
               <p class="text-center text-md-justify">
-                <span class="font-weight-bold text-h5 pg-letter-spacing text-center text-md-justify">
+                <span
+                  class="font-weight-bold text-h5 pg-letter-spacing text-center text-md-justify"
+                >
                   SHIPPING ADDRESS
                 </span>
                 <br>
                 <span class="text-h8">
-                  GOLD and PLATINUM Plans require a shipping address so we can send you the Playgarden Prep Workbooks, Backpacks and Materials. Enhance your child's learning experience at home!
+                  GOLD and PLATINUM Plans require a shipping address so we can
+                  send you the Playgarden Prep Workbooks, Backpacks and
+                  Materials. Enhance your child's learning experience at home!
                 </span>
               </p>
 
@@ -218,33 +267,34 @@
             </v-col>
           </v-row>
 
-          <v-btn
-            block
-            class="mb-6 main-btn"
-            min-height="60"
-            color="primary"
-            :disabled="invalid"
-            :loading="loading"
-            type="submit"
-            x-large
-          >
-            {{ noPayment ? "SAVE" : "CONTINUE TO PAYMENT" }}
-          </v-btn>
+          <v-row justify="center" no-gutters>
+            <v-col cols="12" sm="6">
+              <v-btn
+                block
+                color="primary"
+                :disabled="invalid"
+                :loading="loading"
+                type="submit"
+                large
+              >
+                {{ noPayment ? "SAVE" : "CONTINUE TO PAYMENT" }}
+              </v-btn>
 
-          <v-btn
-            v-if="updating"
-            block
-            class="mb-6 main-btn"
-            color="accent"
-            min-height="60"
-            :disabled="invalid"
-            :loading="loading"
-            text
-            x-large
-            @click="$emit('click:cancel')"
-          >
-            CLOSE
-          </v-btn>
+              <v-btn
+                v-if="updating"
+                block
+                class="mb-6 main-btn"
+                color="accent"
+                :disabled="invalid"
+                :loading="loading"
+                text
+                large
+                @click="$emit('click:cancel')"
+              >
+                CLOSE
+              </v-btn>
+            </v-col>
+          </v-row>.
         </v-form>
       </validation-observer>
     </v-col>
@@ -469,10 +519,10 @@ export default {
 }
 
 .text-orange-info::v-deep.v-chip--label {
-    border-radius: 0px !important;
+  border-radius: 0px !important;
 }
 .most-popular::v-deep.v-chip .v-chip__content {
-  color: #FF8000 !important;
+  color: #ff8000 !important;
   font-weight: bold;
 }
 .most-popular::v-deep.v-chip--label {
@@ -498,5 +548,8 @@ export default {
 }
 .plan-included {
   min-height: 50px;
+}
+.update-plan-margin {
+  margin-left: 8%;
 }
 </style>
