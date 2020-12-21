@@ -88,7 +88,7 @@
         x-large
         @click="onCancel(reset)"
       >
-        CANCEL
+        CLOSE
       </v-btn>
     </v-form>
   </validation-observer>

@@ -13,7 +13,9 @@
           >
             <!-- Backpack -->
             <validation-provider
-              :name="(removable(item) ? `Child #${indexD + 1} - ` : '') + 'Backpack'"
+              :name="
+                (removable(item) ? `Child #${indexD + 1} - ` : '') + 'Backpack'
+              "
               rules="required"
             >
               <v-row class="mb-6" justify="center">
@@ -59,7 +61,9 @@
             <!-- First name -->
             <validation-provider
               v-slot="{ errors }"
-              :name="(removable(item) ? `Child #${indexD + 1} - ` : '') + 'Name'"
+              :name="
+                (removable(item) ? `Child #${indexD + 1} - ` : '') + 'Name'
+              "
               rules="required"
             >
               <pg-text-field
@@ -114,7 +118,9 @@
 
             <!-- Gender -->
             <validation-provider
-              :name="(removable(item) ? `Child #${indexD + 1} - ` : '') + 'Gender'"
+              :name="
+                (removable(item) ? `Child #${indexD + 1} - ` : '') + 'Gender'
+              "
               rules="required"
             >
               <v-row class="mb-6">
@@ -333,8 +339,7 @@ export default {
 
     removeChild (item, index) {
       this.$nuxt.$emit('open-prompt', {
-        title: 'Delete child profile?',
-        message: `Are you sure you wish to delete '${item.firstName}'s' profile?`,
+        message: `Are you sure you want to delete <b>${item.firstName}</b>?`,
         action: async () => {
           this.loading = true
           try {

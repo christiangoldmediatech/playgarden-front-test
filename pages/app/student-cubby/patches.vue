@@ -1,6 +1,6 @@
 <template>
   <div>
-    <patch-overlay :unblocked="unblocked" />
+    <patch-overlay />
 
     <v-card flat class="pt-0 pt-md-3">
       <v-card-text class="pt-0 pt-md-4">
@@ -21,7 +21,6 @@
           v-for="activityType in items"
           :key="`activity-type-patch-row-${activityType.id}`"
           :activity-type="activityType"
-          :unblocked="unblocked"
         />
       </v-card-text>
     </v-card>
@@ -45,34 +44,19 @@ export default {
 
   data () {
     return {
-      activityTypes: [],
-      patches: [],
-      unblocked: {}
+      items: []
     }
   },
 
   computed: {
     studentId () {
       return this.$route.query.id
-    },
-
-    items () {
-      return this.activityTypes.map((type) => {
-        const patches = this.patches.filter(
-          patch => get(patch, 'activityType.id') === type.id
-        )
-
-        return {
-          ...type,
-          patches
-        }
-      })
     }
   },
 
   watch: {
     studentId () {
-      this.fetchChildPatches()
+      this.refresh()
     }
   },
 
@@ -81,27 +65,13 @@ export default {
   },
 
   methods: {
-    ...mapActions('admin/activity', ['getTypes']),
-
-    ...mapActions('patches', ['getPatches']),
-
     ...mapActions('children/patches', ['getPatchesByChildId']),
 
-    async fetchChildPatches () {
-      const unblocked = {}
-      const data = await this.getPatchesByChildId({ id: this.studentId })
-
-      data.map(({ id }) => (unblocked[id] = 1))
-    },
-
     async refresh () {
-      const results = await Promise.all([this.getTypes(), this.getPatches()])
-
-      this.activityTypes = results[0]
-      this.patches = results[1]
-
       if (this.studentId) {
-        await this.fetchChildPatches()
+        this.items = (
+          await this.getPatchesByChildId({ id: this.studentId })
+        ).filter(item => get(item, 'patches', []).length)
       }
     }
   }
