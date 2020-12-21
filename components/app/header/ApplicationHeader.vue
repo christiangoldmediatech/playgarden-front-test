@@ -19,19 +19,19 @@
         />
 
         <v-toolbar-title class="mx-3">
-          <nuxt-link
+          <!-- <nuxt-link
             :to="{
               name: 'app-dashboard',
             }"
-          >
-            <v-img
-              alt="Playarden Prep Online Logo"
-              contain
-              max-height="50"
-              :max-width="$vuetify.breakpoint.mdAndUp ? 290 : 200"
-              :src="require('@/assets/svg/logo.svg')"
-            />
-          </nuxt-link>
+          > -->
+          <v-img
+            alt="Playarden Prep Online Logo"
+            contain
+            max-height="50"
+            :max-width="$vuetify.breakpoint.mdAndUp ? 290 : 200"
+            :src="require('@/assets/svg/logo.svg')"
+          />
+          <!-- </nuxt-link> -->
         </v-toolbar-title>
       </v-col>
 
