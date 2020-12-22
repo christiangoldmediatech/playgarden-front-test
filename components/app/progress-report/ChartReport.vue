@@ -66,6 +66,12 @@ export default {
         xAxis: {
           categories: ['Lenguage & Literacy', 'Cognitive', 'Physical', 'Social and Emotional']
         },
+        tooltip: {
+          formatter () {
+            return this.series.name + 'Progress' +
+               '</b>: <b> ' + this.point.y + ' data.' + '</b>'
+          }
+        },
         series: [{
           data: [47.0, 60, 40, 10]
         }],
