@@ -52,12 +52,26 @@ export default {
             }
           }
         },
+        title: {
+          text: ''
+        },
+        yAxis: {
+          labels: {
+            format: '{value} %'
+          },
+          title: {
+            text: ''
+          }
+        },
         xAxis: {
           categories: ['Lenguage & Literacy', 'Cognitive', 'Physical', 'Social and Emotional']
         },
         series: [{
           data: [47.0, 60, 40, 10]
-        }]
+        }],
+        credits: {
+          enabled: false
+        }
       }
     }
   },

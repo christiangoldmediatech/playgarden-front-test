@@ -7,12 +7,8 @@
       <v-card-text class="text-center pt-0 pt-md-3">
         <underlined-title
           class="text-h5 text-md-h3"
-          text="Complete the puzzle!"
+          text="General Progress Report"
         />
-
-        <p class="mt-2">
-          Progress Report
-        </p>
       </v-card-text>
       <chart-report />
     </v-card>
