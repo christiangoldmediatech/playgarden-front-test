@@ -156,6 +156,7 @@ export default {
     '@nuxtjs/style-resources',
     'vue-scrollto/nuxt',
     'vue-social-sharing/nuxt',
+    'nuxt-highcharts',
     [
       'storyblok-nuxt',
       {
