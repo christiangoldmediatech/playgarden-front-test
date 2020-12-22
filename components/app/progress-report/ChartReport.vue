@@ -39,6 +39,27 @@ export default {
                 'url(https://playgarden-assets.s3.amazonaws.com/images/report-card-icon/6b8d617d-46d0-4ca3-bf5a-c90d2f7fa7f8.png)',
                 'url(https://playgarden-assets.s3.amazonaws.com/images/report-card-icon/c992a995-413a-4795-9dfd-08bc711d227c.png)'
               ]
+              // start text
+              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.4">Area of Strenght</span>', 400, 100)
+                .css({
+                  fontSize: '34px',
+                  color: '#DADADA'
+                })
+                .add()
+
+              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.4">Age Appropiate</span>', 405, 186)
+                .css({
+                  fontSize: '34px',
+                  color: '#DADADA'
+                })
+                .add()
+              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.4">Progressing</span>', 425, 286)
+                .css({
+                  fontSize: '34px',
+                  color: '#DADADA'
+                })
+                .add()
+              // end text
               let position = -1
               data.forEach((element) => {
                 position += 1
