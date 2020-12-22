@@ -43,7 +43,7 @@ export default {
               data.forEach((element) => {
                 position += 1
                 element.update({
-                  color: 'red',
+                  color: '#F89838',
                   marker: {
                     symbol: dataImage[position]
                   }
@@ -56,12 +56,14 @@ export default {
           text: ''
         },
         yAxis: {
+          tickPositions: [0, 20, 40, 60, 80, 100],
           labels: {
             format: '{value} %'
           },
           title: {
             text: ''
-          }
+          },
+          min: 0
         },
         xAxis: {
           categories: ['Lenguage & Literacy', 'Cognitive', 'Physical', 'Social and Emotional']
@@ -73,7 +75,7 @@ export default {
           }
         },
         series: [{
-          data: [47.0, 60, 40, 10]
+          data: [47.0, 90, 40, 10]
         }],
         credits: {
           enabled: false
