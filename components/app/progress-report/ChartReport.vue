@@ -40,20 +40,20 @@ export default {
                 'url(https://playgarden-assets.s3.amazonaws.com/images/report-card-icon/c992a995-413a-4795-9dfd-08bc711d227c.png)'
               ]
               // start text
-              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.4">Area of Strenght</span>', 400, 100)
+              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.4">Area of Strenght</span>', 300, 100)
                 .css({
                   fontSize: '34px',
                   color: '#DADADA'
                 })
                 .add()
 
-              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.4">Age Appropiate</span>', 405, 186)
+              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.4">Age Appropiate</span>', 305, 186)
                 .css({
                   fontSize: '34px',
                   color: '#DADADA'
                 })
                 .add()
-              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.4">Progressing</span>', 425, 286)
+              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.4">Progressing</span>', 325, 286)
                 .css({
                   fontSize: '34px',
                   color: '#DADADA'
@@ -77,6 +77,7 @@ export default {
           text: ''
         },
         yAxis: {
+          gridLineColor: 'transparent',
           tickPositions: [0, 20, 40, 60, 80, 100],
           labels: {
             format: '{value} %'
@@ -92,11 +93,16 @@ export default {
         tooltip: {
           formatter () {
             return this.series.name + 'Progress' +
-               '</b>: <b> ' + this.point.y + ' data.' + '</b>'
+               '</b>: <b> ' + this.point.y + ' data.' + '</b><br /><p>Lorem Ipsum is simply dummy text of<br />the printing and typesetting industry Ipsum is simply dummy text of the printing and typesIpsum.</p>'
           }
         },
         series: [{
-          data: [47.0, 90, 40, 10]
+          data: [
+            { y: 47.0, st: 'hshs' },
+            { y: 90.0, st: 'hshs' },
+            { y: 40.0, st: 'hshs' },
+            { y: 10.0, st: 'hshs' }
+          ]
         }],
         credits: {
           enabled: false

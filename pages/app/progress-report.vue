@@ -1,21 +1,43 @@
 <template>
   <v-container
-    :class="{ 'lsess-container': !$vuetify.breakpoint.smAndDown }"
     fluid
   >
-    <v-card flat class="pt-0 pt-md-3">
-      <v-card-text class="text-center pt-0 pt-md-3">
-        <underlined-title
-          class="text-h5 text-md-h3"
-          text="General Progress Report"
-        />
-      </v-card-text>
-      <chart-report />
-    </v-card>
+    <v-row>
+      <v-col cols="12" md="2" lg="2" xl="1">
+        <v-card>
+          <v-list three-line>
+            <template v-for="(item, index) in types">
+              <v-list-item
+                :key="index"
+              >
+                <v-list-item-avatar>
+                  <v-img :src="item.icon"></v-img>
+                </v-list-item-avatar>
+
+                <v-list-item-content>
+                  <div class="">
+                    {{ item.name }}
+                  </div>
+                </v-list-item-content>
+              </v-list-item>
+            </template>
+          </v-list>
+        </v-card>
+      </v-col>
+
+      <v-col cols="12" md="8" lg="8" xl="10">
+        <chart-report />
+      </v-col>
+
+      <v-col cols="12" md="2" lg="2" xl="1">
+        mnue3
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 import ChartReport from '@/components/app/progress-report/ChartReport.vue'
 export default {
   name: 'ProgressReport',
@@ -28,12 +50,25 @@ export default {
     columns: 5
   }),
 
-  computed: {},
+  computed: {
+    ...mapGetters('admin/report-card', ['types']),
+
+    reportCardTypes () {
+      return this.types.map(type => ({
+        text: type.name,
+        value: type.id
+      }))
+    }
+  },
 
   watch: {},
 
-  created () {},
+  created () {
+    this.getTypes()
+  },
 
-  methods: {}
+  methods: {
+    ...mapActions('admin/report-card', ['getTypes'])
+  }
 }
 </script>
