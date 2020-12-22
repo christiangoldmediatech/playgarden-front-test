@@ -272,6 +272,7 @@
               <v-btn
                 block
                 color="primary"
+                class="mb-6 main-btn"
                 :disabled="invalid"
                 :loading="loading"
                 type="submit"
