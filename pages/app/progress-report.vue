@@ -20,9 +20,22 @@
       </v-col>
       <v-col cols="12" md="10" lg="10" xl="11">
         <v-card-text class="mt-12">
-          <div class="text-center">
-            <underlined-title class="text-h5 text-md-h3" text="Student progress report" />
-          </div>
+          <v-row no-gutters>
+            <v-col>
+              <div>
+                <underlined-title class="text-h6 text-md-h4" text="Student progress report" />
+              </div>
+            </v-col>
+
+            <v-col cols="2" class="text-center text-sm-right">
+              <child-select
+                :value="value"
+                hide-details
+                :preview-mode="previewMode"
+                @input="$emit('input', $event)"
+              />
+            </v-col>
+          </v-row>
         </v-card-text>
       </v-col>
       <v-col cols="12" md="2" lg="2" xl="1">
@@ -75,11 +88,13 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import ChartReport from '@/components/app/progress-report/ChartReport.vue'
+import ChildSelect from '@/components/app/ChildSelect.vue'
 export default {
   name: 'ProgressReport',
 
   components: {
-    ChartReport
+    ChartReport,
+    ChildSelect
   },
 
   data: () => ({
