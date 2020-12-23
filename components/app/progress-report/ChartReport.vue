@@ -54,20 +54,20 @@ export default {
               const chart = this
               const data = chart.series[0].data
               // start text
-              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.4">Area of Strenght</span>', 300, 100)
+              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.4">Area of Strenght</span>', 230, 100)
                 .css({
                   fontSize: '34px',
                   color: '#DADADA'
                 })
                 .add()
 
-              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.4">Age Appropiate</span>', 305, 186)
+              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.4">Age Appropiate</span>', 250, 186)
                 .css({
                   fontSize: '34px',
                   color: '#DADADA'
                 })
                 .add()
-              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.4">Progressing</span>', 325, 286)
+              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.4">Progressing</span>', 275, 286)
                 .css({
                   fontSize: '34px',
                   color: '#DADADA'
