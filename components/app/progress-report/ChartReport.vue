@@ -1,6 +1,6 @@
 <template>
   <div class="report-children">
-    <highchart v-if="report" :options="chartOptions" />
+    <highchart v-if="report" :options="chartOptions" :update-args="updateArgs" />
   </div>
 </template>
 
@@ -22,6 +22,9 @@ export default {
   }),
 
   computed: {
+    updateArgs () {
+      return [true, true, { duration: 1000 }]
+    },
     getDataImage () {
       return (this.report.dataImage) ? this.report.dataImage : []
     },
@@ -50,14 +53,7 @@ export default {
             load () {
               const chart = this
               const data = chart.series[0].data
-              const dataImage = [
-                'url(https://playgarden-assets.s3.amazonaws.com/images/report-card-icon/c1c31b01-88c0-468c-aeb8-533037ed8637.png)',
-                'url(https://playgarden-assets.s3.amazonaws.com/images/report-card-icon/9d402339-edd5-453e-9e7b-c076132871f8.png)',
-                'url(https://playgarden-assets.s3.amazonaws.com/images/report-card-icon/6b8d617d-46d0-4ca3-bf5a-c90d2f7fa7f8.png)',
-                'url(https://playgarden-assets.s3.amazonaws.com/images/report-card-icon/c992a995-413a-4795-9dfd-08bc711d227c.png)'
-              ]
               // start text
-              // const dataImage = this.getDataImage
               chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.4">Area of Strenght</span>', 300, 100)
                 .css({
                   fontSize: '34px',
@@ -78,13 +74,12 @@ export default {
                 })
                 .add()
               // end text
-              let position = -1
               data.forEach((element) => {
-                position += 1
+                console.log('ement3', element)
                 element.update({
                   color: '#F89838',
                   marker: {
-                    symbol: dataImage[position]
+                    symbol: element.icon
                   }
                 })
               })
