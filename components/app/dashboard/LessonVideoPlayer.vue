@@ -21,7 +21,7 @@
       @playlist-complete="showCompletedDialog"
     />
     <!-- Lesson Completed dialog -->
-    <lesson-completed-dialog v-model="completed" />
+    <lesson-completed-dialog v-model="completed" @close="close" />
   </video-player-dialog>
 </template>
 
@@ -150,6 +150,11 @@ export default {
 
     showCompletedDialog () {
       this.completed = true
+    },
+
+    close () {
+      this.handleClose()
+      this.dialog = false
     }
   }
 }
