@@ -353,14 +353,15 @@ export default {
   name: 'Slug',
 
   async asyncData ({ query, $axios }) {
-    const { imageUrl, text, description } = await $axios.$get(
+    const { imageUrl, text, description, link } = await $axios.$get(
       `/social-sharings/${query.link}`
     )
 
     return {
       pageImage: imageUrl || require('assets/svg/shared/parent-rating.svg'),
       pageTitle: text,
-      pageDescription: description
+      pageDescription: description,
+      link
     }
   },
 
@@ -425,6 +426,16 @@ export default {
           content: this.pageTitle
         },
         {
+          hid: 'og:type',
+          property: 'og:type',
+          content: 'article'
+        },
+        {
+          hid: 'og:url',
+          property: 'og:url',
+          content: this.link
+        },
+        {
           hid: 'og:title',
           property: 'og:title',
           content: this.pageTitle
@@ -448,6 +459,11 @@ export default {
           hid: 'og:image:alt',
           property: 'og:image:alt',
           content: this.pageTitle
+        },
+        {
+          hid: 'fb:app_id',
+          property: 'fb:app_id',
+          content: '639126580353169'
         }
       ]
     }
