@@ -5,7 +5,7 @@
     :z-index="600"
   >
     <v-card class="lesson-completed-container" light>
-      <div class="p-absolute p-top-0 p-left-0 w-100">
+      <div class="pos-absolute pos-top-0 pos-left-0 w-100">
         <div class="green-line-bigger green-line-1" />
         <div class="green-line-bigger green-line-2" />
       </div>
