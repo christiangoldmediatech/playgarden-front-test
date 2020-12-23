@@ -3,26 +3,44 @@
     fluid
   >
     <v-row>
-      <v-card-text class="mt-12">
-        <div class="text-center">
-          <underlined-title class="text-h5 text-md-h3" text="Student progress report" />
-        </div>
-      </v-card-text>
+      <v-col cols="12" md="2" lg="2" xl="1">
+        <v-card-text class="mt-12">
+          <div class="">
+            <v-list-item>
+              <v-list-item-avatar>
+                <v-img :src="require('@/assets/svg/chevron-left.svg')" max-width="38px" />
+              </v-list-item-avatar>
+
+              <v-list-item-content>
+                <underlined-title class="text-h7 text-md-h6" text="General" />
+              </v-list-item-content>
+            </v-list-item>
+          </div>
+        </v-card-text>
+      </v-col>
+      <v-col cols="12" md="10" lg="10" xl="11">
+        <v-card-text class="mt-12">
+          <div class="text-center">
+            <underlined-title class="text-h5 text-md-h3" text="Student progress report" />
+          </div>
+        </v-card-text>
+      </v-col>
       <v-col cols="12" md="2" lg="2" xl="1">
         <v-card>
           <v-list three-line>
             <template v-for="(item, index) in types">
               <v-list-item
                 :key="index"
+                class="mt-6 mb-6"
               >
                 <v-list-item-avatar>
-                  <v-img :src="item.icon" />
+                  <v-img :src="item.icon" min-width="38px" />
                 </v-list-item-avatar>
 
-                <v-list-item-content>
-                  <div class="">
+                <v-list-item-content class="font-weight-bold ">
+                  <span>
                     {{ item.name }}
-                  </div>
+                  </span>
                 </v-list-item-content>
               </v-list-item>
             </template>
