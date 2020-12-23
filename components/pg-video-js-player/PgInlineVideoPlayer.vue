@@ -21,6 +21,7 @@
       no-smallscreen
       inline
       @ready="onPlayerReady"
+      @play="show = false"
     />
   </div>
 </template>
