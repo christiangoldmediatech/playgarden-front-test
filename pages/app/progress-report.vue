@@ -32,7 +32,7 @@
                 :value="value"
                 hide-details
                 :preview-mode="previewMode"
-                @input="$emit('input', $event)"
+                @input="$emit('input', getReport())"
               />
             </v-col>
           </v-row>
