@@ -158,11 +158,6 @@ export default {
       type: Boolean,
       required: false,
       default: false
-    },
-    overrideDialogs: {
-      type: Boolean,
-      required: false,
-      default: false
     }
   },
 
@@ -254,8 +249,5 @@ export default {
 }
 .btn-register:before {
   background-color: transparent !important;
-}
-.overrideDialog {
-  z-index: 300;
 }
 </style>
