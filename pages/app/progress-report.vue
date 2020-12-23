@@ -11,7 +11,7 @@
                 :key="index"
               >
                 <v-list-item-avatar>
-                  <v-img :src="item.icon"></v-img>
+                  <v-img :src="item.icon" />
                 </v-list-item-avatar>
 
                 <v-list-item-content>
@@ -26,11 +26,11 @@
       </v-col>
 
       <v-col cols="12" md="8" lg="8" xl="10">
-        <chart-report />
+        <chart-report v-if="report" :report="report" />
       </v-col>
 
       <v-col cols="12" md="2" lg="2" xl="1">
-        mnue3
+        {{ report }}
       </v-col>
     </v-row>
   </v-container>
@@ -52,23 +52,19 @@ export default {
 
   computed: {
     ...mapGetters('admin/report-card', ['types']),
-
-    reportCardTypes () {
-      return this.types.map(type => ({
-        text: type.name,
-        value: type.id
-      }))
-    }
+    ...mapGetters('progress-report', ['report'])
   },
 
   watch: {},
 
   created () {
     this.getTypes()
+    this.getReport()
   },
 
   methods: {
-    ...mapActions('admin/report-card', ['getTypes'])
+    ...mapActions('admin/report-card', ['getTypes']),
+    ...mapActions('progress-report', ['getReport'])
   }
 }
 </script>

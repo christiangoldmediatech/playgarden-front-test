@@ -1,5 +1,7 @@
 <template>
-  <highchart :options="chartOptions" />
+  <div class="report-children">
+    <highchart v-if="report" :options="chartOptions" />
+  </div>
 </template>
 
 <script>
@@ -7,13 +9,28 @@
 export default {
   name: 'ChartReport',
 
-  components: {},
+  props: {
+    report: {
+      type: Object,
+      required: true,
+      default: () => {}
+    }
+  },
 
   data: () => ({
     columns: 5
   }),
 
   computed: {
+    getDataImage () {
+      return (this.report.dataImage) ? this.report.dataImage : []
+    },
+    getCategories () {
+      return (this.report.categories) ? this.report.categories : []
+    },
+    getSeries () {
+      return (this.report.dataSerie) ? this.report.dataSerie : []
+    },
     chartOptions () {
       return {
         chart: {
@@ -40,6 +57,7 @@ export default {
                 'url(https://playgarden-assets.s3.amazonaws.com/images/report-card-icon/c992a995-413a-4795-9dfd-08bc711d227c.png)'
               ]
               // start text
+              // const dataImage = this.getDataImage
               chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.4">Area of Strenght</span>', 300, 100)
                 .css({
                   fontSize: '34px',
@@ -88,21 +106,15 @@ export default {
           min: 0
         },
         xAxis: {
-          categories: ['Lenguage & Literacy', 'Cognitive', 'Physical', 'Social and Emotional']
+          categories: this.getCategories
         },
         tooltip: {
           formatter () {
-            return this.series.name + 'Progress' +
-               '</b>: <b> ' + this.point.y + ' data.' + '</b><br /><p>Lorem Ipsum is simply dummy text of<br />the printing and typesetting industry Ipsum is simply dummy text of the printing and typesIpsum.</p>'
+            return `Data: <b> ${this.point.y} </b> <br /> Progressing: ${this.point.progressing} <br />Strenght: ${this.point.areaStrenght} <br /> Appropiate: ${this.point.ageAppropiate}`
           }
         },
         series: [{
-          data: [
-            { y: 47.0, st: 'hshs' },
-            { y: 90.0, st: 'hshs' },
-            { y: 40.0, st: 'hshs' },
-            { y: 10.0, st: 'hshs' }
-          ]
+          data: this.getSeries
         }],
         credits: {
           enabled: false
