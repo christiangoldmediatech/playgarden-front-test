@@ -50,7 +50,7 @@
 
       <v-col cols="12" md="10" lg="10" xl="11">
         <v-card>
-          <v-row class="ml-2 mr-2 mt-2">
+          <v-row class="ml-2 mr-2">
             <v-col cols="12" md="7" lg="7" xl="10">
               <div class="pt-4 mb-4">
                 <underlined-title class="text-h6 text-md-h5" text="General Progress Report" />
