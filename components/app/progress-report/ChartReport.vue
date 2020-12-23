@@ -1,6 +1,6 @@
 <template>
-  <div class="report-children">
-    <highchart v-if="report" :options="chartOptions" :update-args="updateArgs" />
+  <div v-if="getSeries.length > 0" class="report-children">
+    <highchart :options="chartOptions" :update-args="updateArgs" />
   </div>
 </template>
 
@@ -75,7 +75,6 @@ export default {
                 .add()
               // end text
               data.forEach((element) => {
-                console.log('ement3', element)
                 element.update({
                   color: '#F89838',
                   marker: {
