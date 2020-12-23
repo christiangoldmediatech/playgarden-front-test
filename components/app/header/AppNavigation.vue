@@ -3,7 +3,6 @@
     v-model="appDrawer"
     temporary
     app
-    :class="{'overrideDialog': overrideDialogs}"
   >
     <template v-slot:prepend>
       <v-row class="pr-3" justify="end">
@@ -93,14 +92,6 @@ export default {
 
   mixins: [computedMixin],
 
-  props: {
-    overrideDialogs: {
-      type: Boolean,
-      required: false,
-      default: false
-    }
-  },
-
   data () {
     return {
       appDrawer: false,
@@ -130,9 +121,5 @@ export default {
   &::before {
     opacity: 0;
   }
-}
-
-.overrideDialog {
-  z-index: 320;
 }
 </style>
