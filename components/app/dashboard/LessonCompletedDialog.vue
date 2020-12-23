@@ -45,7 +45,7 @@
                 </v-btn>
               </div>
 
-              <v-col class="pa-1 pa-md-3" cols="12">
+              <v-col class="pa-1" cols="12">
                 <v-btn
                   class="dashboard-message-btn"
                   color="primary"
