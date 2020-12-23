@@ -9,7 +9,7 @@
             <v-row
               class="px-5 py-12"
               :class="{
-                'flex-column-reverse flex-md-column': $vuetify.breakpoint.xs,
+                'flex-column-reverse flex-md-column': $vuetify.breakpoint.xs
               }"
               no-gutters
             >
@@ -348,20 +348,28 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
+import { hasLocalStorage } from '@/utils/window'
+
 export default {
   // eslint-disable-next-line vue/match-component-file-name
   name: 'Slug',
 
-  async asyncData ({ query, $axios }) {
-    const { imageUrl, text, description, link } = await $axios.$get(
-      `/social-sharings/${query.link}`
-    )
+  async asyncData ({ redirect, query, $axios }) {
+    try {
+      const { imageUrl, text, description, link } = await $axios.$get(
+        `/social-sharings/${query.link}`
+      )
 
-    return {
-      pageImage: imageUrl || require('assets/svg/shared/parent-rating.svg'),
-      pageTitle: text,
-      pageDescription: description,
-      link
+      return {
+        pageImage: imageUrl || require('assets/svg/shared/parent-rating.svg'),
+        pageTitle: text,
+        pageDescription: description,
+        link
+      }
+    } catch (e) {
+      return redirect({ name: 'index' })
     }
   },
 
@@ -385,15 +393,39 @@ export default {
     }
   },
 
-  created () {
+  async created () {
     if (!this.isValidSlug) {
       return this.$router.push({ name: 'index' })
+    }
+
+    // restoring session
+    if (hasLocalStorage()) {
+      try {
+        const isLoggedIn = await this.checkAuth()
+
+        // If the user is not authenticated check if we can restore his session
+        if (!isLoggedIn) {
+          await this.restoreAuth()
+        }
+
+        this.disableAxiosGlobal()
+        await this.fetchUserInfo()
+        this.enableAxiosGlobal()
+      } catch (e) {}
     }
 
     this.loading = false
   },
 
   methods: {
+    ...mapActions(['disableAxiosGlobal', 'enableAxiosGlobal']),
+
+    ...mapActions('auth', {
+      checkAuth: 'checkAuth',
+      fetchUserInfo: 'fetchUserInfo',
+      restoreAuth: 'restoreAuthFromSessionStorage'
+    }),
+
     close () {
       this.$nextTick(() => {
         this.dialog = false
@@ -405,6 +437,11 @@ export default {
   head () {
     return {
       meta: [
+        {
+          hid: 'twitter:card',
+          name: 'twitter:card',
+          content: 'summary_large_image'
+        },
         {
           hid: 'twitter:title',
           name: 'twitter:title',
