@@ -75,7 +75,7 @@
                 <underlined-title class="text-h6 text-md-h5" text="Letter" />
               </div>
               <v-card>
-                data
+                <letter-stats />
               </v-card>
             </v-col>
           </v-row>
@@ -89,12 +89,14 @@
 import { mapActions, mapGetters } from 'vuex'
 import ChartReport from '@/components/app/progress-report/ChartReport.vue'
 import ChildSelect from '@/components/app/ChildSelect.vue'
+import LetterStats from '@/components/app/progress-report/LetterStats.vue'
 export default {
   name: 'ProgressReport',
 
   components: {
     ChartReport,
-    ChildSelect
+    ChildSelect,
+    LetterStats
   },
 
   data: () => ({
