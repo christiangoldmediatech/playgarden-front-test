@@ -1,12 +1,12 @@
 <template>
-  <v-row>
+  <v-row class="testCss">
     <v-col cols="2" class="ml-4">
       <v-progress-circular
         :rotate="360"
         :size="70"
         :width="15"
         :value="item.progress"
-        color="red"
+        color="orange lighten-1"
       >
         {{ item.progress }}
       </v-progress-circular>
@@ -47,3 +47,9 @@ export default {
   methods: {}
 }
 </script>
+
+<style lang="scss" scoped>
+.v-progress-circular__underlay {
+  stroke: #ff6859 !important;
+}
+</style>
