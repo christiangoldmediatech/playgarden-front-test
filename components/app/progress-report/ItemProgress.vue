@@ -13,7 +13,7 @@
     </v-col>
     <v-col class="ml-6">
       <p>
-        <span>
+        <span class="font-weight-bold">
           {{ item.name }}
         </span>
       </p>

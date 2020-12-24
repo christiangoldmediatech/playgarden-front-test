@@ -50,7 +50,7 @@
                   <v-img :src="item.icon" min-width="38px" />
                 </v-list-item-avatar>
 
-                <v-list-item-content class="font-weight-bold ">
+                <v-list-item-content class="font-weight-bold">
                   <span>
                     {{ item.name }}
                   </span>
