@@ -1,5 +1,7 @@
 <template>
   <v-main class="main">
+    <div class="green-line green-line-1" />
+    <div class="green-line green-line-2" />
     <v-container class="pt-0" :class="{ 'fill-height': loading }" fluid>
       <v-row no-gutters>
         <v-col cols="12">
@@ -7,40 +9,46 @@
 
           <template v-else>
             <v-row
-              class="px-5 py-12"
+              class="px-5 py-12 ml-md-16"
               :class="{
                 'flex-column-reverse flex-md-column': $vuetify.breakpoint.xs
               }"
               no-gutters
             >
-              <v-col cols="12" md="5">
-                <underlined-title
-                  class="hidden-sm-and-down"
-                  :text="pageTitle"
-                />
+              <v-col cols="12" md="5" class="align-self-center">
+                <v-row justify="center">
+                  <v-col cols="12">
+                    <underlined-title
+                      class="hidden-sm-and-down text-sm-h4"
+                      :text="pageTitle"
+                    />
 
-                <p class="mt-6 text-md-left text-sm-center">
-                  {{ pageDescription }}
-                </p>
+                    <p class="mt-6 text-md-left text-sm-center">
+                      {{ pageDescription }}
+                    </p>
 
-                <v-row justify="center" no-gutters>
-                  <v-btn
-                    href="https://playgardenprep.com/online/"
-                    color="accent"
-                    width="250"
-                    tile
-                    x-large
-                  >
-                    Learn more
-                  </v-btn>
+                    <v-row justify="center" no-gutters justify-sm="end">
+                      <v-btn
+                        href="https://playgardenprep.com/online/"
+                        color="accent"
+                        width="250"
+                        tile
+                        x-large
+                      >
+                        Learn more
+                      </v-btn>
+                    </v-row>
+                  </v-col>
                 </v-row>
               </v-col>
 
               <v-col cols="12" md="7">
                 <v-row justify="center" no-gutters>
-                  <p class="hidden-md-and-up text-center">
-                    <underlined-title :text="pageTitle" />
-                  </p>
+                  <v-col cols="12">
+                    <p class="hidden-md-and-up text-center">
+                      <underlined-title :text="pageTitle" class=" text-sm-h6" />
+                    </p>
+                  </v-col>
 
                   <v-dialog
                     v-model="dialog"
@@ -106,8 +114,9 @@
               </v-col>
             </v-row>
 
-            <v-row class="mb-12">
-              <div class="curt" />
+            <v-row>
+              <div class="green-line green-line-1" />
+              <div class="green-line green-line-2" />
 
               <v-img
                 max-height="500"
@@ -166,28 +175,28 @@
             </v-row>
 
             <v-row justify="center">
-              <div class="curt" />
+              <div class="curt mb-n16" />
 
-              <v-col class="fill-height" cols="12" sm="4">
-                <v-card class="mt-n12 pa-3" elevation="12" height="120">
-                  <v-list-item three-line>
+              <v-col class="fill-height shrink">
+                <v-card class="pa-3" elevation="10" height="150" width="400">
+                  <v-list-item class="fill-height" three-line>
                     <v-img
                       class="ml-2"
                       contain
-                      max-height="100"
-                      max-width="100"
+                      max-height="96"
+                      max-width="96"
                       :src="
                         require('assets/svg/shared/best-kids-play-areas.svg')
                       "
                     />
 
-                    <v-list-item-content>
-                      <v-list-item-title class="font-weight-bold ml-2 text-h6">
+                    <v-list-item-content class="d-flex fill-height">
+                      <v-list-item-title class="align-self-start font-weight-bold ml-2 text-6">
                         BEST KIDS’ <br>
                         PLAY AREAS
                       </v-list-item-title>
 
-                      <v-list-item-subtitle>
+                      <v-list-item-subtitle class="align-self-end text-right">
                         - Time Out New York
                       </v-list-item-subtitle>
                     </v-list-item-content>
@@ -195,26 +204,28 @@
                 </v-card>
               </v-col>
 
-              <v-col class="fill-height" cols="12" sm="4">
-                <v-card class="mt-sm-n12 pa-3" elevation="12" height="120">
-                  <v-list-item three-line>
+              <v-col class="fill-height shrink">
+                <v-card class="pa-3" elevation="10" height="150" width="400">
+                  <v-list-item class="fill-height" three-line>
                     <v-img
-                      class="ml-2"
+                      class="ml-2 mt-n4"
                       contain
-                      max-height="100"
-                      max-width="100"
+                      max-height="96"
+                      max-width="96"
                       :src="
                         require('assets/svg/shared/best-kids-play-space-in-ny.svg')
                       "
                     />
 
-                    <v-list-item-content>
-                      <v-list-item-title class="font-weight-bold ml-2 text-h6">
-                        BEST KIDS'<br>
-                        PLAY SPACE IN NY
+                    <v-list-item-content class="d-flex fill-height">
+                      <v-list-item-title class="align-self-start font-weight-bold ml-2 text-6">
+                        BEST <br>
+                        CHILDREN'S<br>
+                        PLAY SPACE IN<br>
+                        NYC
                       </v-list-item-title>
 
-                      <v-list-item-subtitle>
+                      <v-list-item-subtitle class="align-self-end text-right">
                         - Grubstreet
                       </v-list-item-subtitle>
                     </v-list-item-content>
@@ -222,23 +233,23 @@
                 </v-card>
               </v-col>
 
-              <v-col class="fill-height" cols="12" sm="4">
-                <v-card class="mt-sm-n12 pa-3" elevation="12" height="120">
-                  <v-list-item three-line>
+              <v-col class="fill-height shrink">
+                <v-card class="pa-3" elevation="10" height="150" width="400">
+                  <v-list-item class="fill-height" three-line>
                     <v-img
                       class="ml-2"
                       contain
-                      max-height="100"
-                      max-width="100"
+                      max-height="96"
+                      max-width="96"
                       :src="
                         require('assets/svg/shared/over-a-decade-of-experience.svg')
                       "
                     />
 
                     <v-list-item-content>
-                      <v-list-item-title class="font-weight-bold ml-2 text-h6">
+                      <v-list-item-title class="font-weight-bold ml-2 text-6">
                         OVER A DECADE <br>
-                        OF EXPERIENCES
+                        OF EXPERIENCE
                       </v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
@@ -246,20 +257,19 @@
               </v-col>
             </v-row>
 
-            <v-row class="mb-md-12 mt-12" justify="center" no-gutters>
-              <v-col cols="12" sm="4" class="px-3">
-                <p>
-                  <underlined-title text="Instill an early love for learning" />
+            <v-row class="my-12" justify="center">
+              <v-col class="pl-3 pl-md-0" cols="12" md="4">
+                <p class="text-md-left text-center">
+                  <underlined-title text="Instill an early love for learning" class="text-sm-h4" />
                 </p>
 
-                <p class="text-md-left text-sm-center">
-                  Early education is the foundation for all future learning.
-                  with over a decade of educating children in Manhattan,
-                  Playgarden Prep now offers our proven preschool curriculum at
-                  home!
+                <p class="text-md-left text-center">
+                  We believe early education provides the foundation for all
+                  future learning. We provide a variety of visual and hands-
+                  on learning for ages 2 to 4 years to promote whole-child development.!
                 </p>
 
-                <v-row justify="center" no-gutters>
+                <v-row justify="center" no-gutters justify-sm="end" class="hidden-sm-and-down">
                   <v-btn
                     href="https://playgardenprep.com/online/"
                     color="accent"
@@ -272,72 +282,80 @@
                 </v-row>
               </v-col>
 
-              <v-col cols="12" sm="">
-                <v-row class="mt-6" no-gutters>
-                  <v-col class="mt-0" cols="6" md="3">
-                    <v-img
-                      contain
-                      max-height="150"
-                      :src="require('assets/svg/shared/backpack.svg')"
-                    />
-
-                    <h4 class="font-weight-bold text-center text-h6">
-                      1000+
-                    </h4>
-
-                    <h6 class="text-center">
-                      Satisfied students
-                    </h6>
-                  </v-col>
-
-                  <v-col class="mt-md-16" cols="6" md="3">
-                    <v-img
-                      contain
-                      max-height="150"
-                      :src="require('assets/svg/shared/succes-rate.svg')"
-                    />
-
-                    <h4 class="font-weight-bold text-center text-h6">
-                      99%
-                    </h4>
-
-                    <h6 class="text-center">
-                      Success rate
-                    </h6>
-                  </v-col>
-
-                  <v-col class="mt-3 mt-md-0" cols="6" md="3">
-                    <v-img
-                      contain
-                      max-height="150"
-                      :src="require('assets/svg/shared/parent-rating.svg')"
-                    />
-
-                    <h4 class="font-weight-bold text-center text-h6">
-                      4.9
-                    </h4>
-
-                    <h6 class="text-center">
-                      Parent rating
-                    </h6>
-                  </v-col>
-
-                  <v-col class="mt-3 mt-md-16" cols="6" md="3">
-                    <v-img
-                      contain
-                      max-height="150"
-                      :src="require('assets/svg/shared/based-on-science.svg')"
-                    />
-
-                    <h6 class="text-center">
-                      Based on
-                    </h6>
-
-                    <h4 class="font-weight-bold text-center text-h6">
-                      Science
-                    </h4>
-                  </v-col>
+              <v-col class="mt-0 shrink" cols="6" md="">
+                <v-row justify="center">
+                  <v-img
+                    contain
+                    height="150"
+                    width="150"
+                    :src="require('assets/svg/shared/backpack.svg')"
+                  />
                 </v-row>
+
+                <h4 class="font-weight-bold text-center text-h5">
+                  1000+
+                </h4>
+
+                <h6 class="text-center">
+                  Satisfied students
+                </h6>
+              </v-col>
+
+              <v-col class="mt-md-16 shrink" cols="6" md="">
+                <v-row justify="center">
+                  <v-img
+                    contain
+                    height="150"
+                    width="150"
+                    :src="require('assets/svg/shared/succes-rate.svg')"
+                  />
+                </v-row>
+
+                <h4 class="font-weight-bold text-center text-h5">
+                  99%
+                </h4>
+
+                <h6 class="text-center">
+                  Success rate
+                </h6>
+              </v-col>
+
+              <v-col class="mt-3 mt-md-0 shrink" cols="6" md="">
+                <v-row justify="center">
+                  <v-img
+                    contain
+                    height="150"
+                    width="150"
+                    :src="require('assets/svg/shared/parent-rating.svg')"
+                  />
+                </v-row>
+
+                <h4 class="font-weight-bold text-center text-h5">
+                  4.9
+                </h4>
+
+                <h6 class="text-center">
+                  Parent rating
+                </h6>
+              </v-col>
+
+              <v-col class="mt-3 mt-md-16 shrink" cols="6" md="">
+                <v-row justify="center">
+                  <v-img
+                    contain
+                    height="150"
+                    width="150"
+                    :src="require('assets/svg/shared/based-on-science.svg')"
+                  />
+                </v-row>
+
+                <h6 class="text-center">
+                  Based on
+                </h6>
+
+                <h4 class="font-weight-bold text-center text-h5">
+                  Science
+                </h4>
               </v-col>
             </v-row>
           </template>
@@ -440,7 +458,7 @@ export default {
         {
           hid: 'twitter:card',
           name: 'twitter:card',
-          content: 'summary_large_image'
+          content: 'summary'
         },
         {
           hid: 'twitter:title',
