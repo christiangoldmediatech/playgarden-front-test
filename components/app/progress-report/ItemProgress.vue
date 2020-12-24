@@ -3,21 +3,21 @@
     <v-col cols="2" class="ml-4">
       <v-progress-circular
         :rotate="360"
-        :size="100"
+        :size="70"
         :width="15"
         :value="item.progress"
-        color="accent"
+        color="red"
       >
         {{ item.progress }}
       </v-progress-circular>
     </v-col>
-    <v-col class="ml-12">
-      <p class="ml-3">
+    <v-col class="ml-6">
+      <p>
         <span>
           {{ item.name }}
         </span>
       </p>
-      <p class="ml-3">
+      <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Diam et, posuere risus.
       </p>
     </v-col>
