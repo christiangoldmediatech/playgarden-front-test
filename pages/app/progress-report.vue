@@ -29,7 +29,7 @@
 
             <v-col cols="2" class="text-center text-sm-right">
               <child-select
-                :value="value"
+                :value="selectedChild"
                 hide-details
                 :preview-mode="previewMode"
                 @input="$emit('input', getReport())"
@@ -87,6 +87,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import FavoritesMixin from '@/mixins/FavoritesMixin.js'
 import ChartReport from '@/components/app/progress-report/ChartReport.vue'
 import ChildSelect from '@/components/app/ChildSelect.vue'
 import LetterStats from '@/components/app/progress-report/LetterStats.vue'
@@ -99,13 +100,32 @@ export default {
     LetterStats
   },
 
+  mixins: [FavoritesMixin],
+
   data: () => ({
-    columns: 5
+    previewMode: false
   }),
 
   computed: {
+    ...mapGetters({ currentChild: 'getCurrentChild' }),
     ...mapGetters('admin/report-card', ['types']),
-    ...mapGetters('progress-report', ['report'])
+    ...mapGetters('progress-report', ['report']),
+    ...mapGetters('children', { allChildren: 'rows' }),
+
+    childrenIds () {
+      return this.currentChild[0].id
+    },
+
+    selectedChild: {
+      get () {
+        return this.currentChild[0].id
+      },
+      set (val) {
+        if (val && val !== this.currentChild[0].id) {
+          this.changeChild(val)
+        }
+      }
+    }
   },
 
   watch: {},
@@ -117,7 +137,13 @@ export default {
 
   methods: {
     ...mapActions('admin/report-card', ['getTypes']),
-    ...mapActions('progress-report', ['getReport'])
+    ...mapActions('progress-report', ['getReport']),
+    ...mapActions({ setChild: 'setChild' }),
+
+    changeChild (newId, redirect = true) {
+      const child = this.allChildren.find(({ id }) => id === parseInt(newId))
+      this.setChild({ value: [child], save: true })
+    }
   }
 }
 </script>
