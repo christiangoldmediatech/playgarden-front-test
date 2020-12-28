@@ -138,3 +138,27 @@
 .accent--text-fl::first-letter {
   color: var(--v-accent-base);
 }
+
+.pos-relative {
+  position: relative;
+}
+
+.pos-absolute {
+  position: absolute;
+}
+
+.pos-top-0 {
+  top: 0;
+}
+
+.pos-bottom-0 {
+  bottom: 0;
+}
+
+.pos-left-0 {
+  left: 0;
+}
+
+.pos-right-0 {
+  right:  0;
+}

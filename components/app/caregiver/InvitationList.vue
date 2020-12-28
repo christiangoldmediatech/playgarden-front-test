@@ -77,8 +77,8 @@ export default {
     onDelete ({ id, email, phone }) {
       this.$nuxt.$emit('open-prompt', {
         title: 'Delete invitation?',
-        message: `Are you sure you wish to delete '${email ||
-          phone}' invitation?`,
+        message: `Are you sure you want to delete <b>${email ||
+          phone}</b>?`,
         action: () => this.confirmDelete(id)
       })
     },

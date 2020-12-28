@@ -2,9 +2,9 @@
   <v-app>
     <coming-soon-player />
     <!-- APP MAV & BAR -->
-    <app-navigation :override-dialogs="isComingSoonDialogOpen" />
+    <app-navigation />
 
-    <application-header :override-dialogs="isComingSoonDialogOpen" />
+    <application-header />
 
     <!-- CONTENT -->
     <v-main v-if="!fullWidth">
@@ -34,8 +34,6 @@ import DefaultFooter from '@/components/app/footer/DefaultFooter'
 import ComingSoonDialog from '@/components/app/ComingSoonDialog'
 import ComingSoonPlayer from '@/components/app/ComingSoonPlayer.vue'
 
-import ComingSoonRoutes from '@/utils/consts/comingSoonRoutes'
-
 export default {
   name: 'Default',
 
@@ -60,14 +58,6 @@ export default {
 
     fullWidth () {
       return this.fullWidthPages[this.$route.name]
-    },
-
-    isComingSoonDialogOpen () {
-      if (['production'].includes(process.env.testEnv)) {
-        const routes = ComingSoonRoutes
-        return Boolean(routes[this.$route.name])
-      }
-      return false
     }
   },
 

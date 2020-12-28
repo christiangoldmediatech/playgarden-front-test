@@ -161,7 +161,7 @@ export default {
     remove ({ id, name }) {
       this.$nuxt.$emit('open-prompt', {
         title: 'Delete offline worksheet category?',
-        message: `Are you sure you wish to delete '${name}' offline worksheet category?`,
+        message: `Are you sure you want to delete <b>${name}</b>?`,
         action: async () => {
           await this.deleteOfflineWorksheetCategory(id)
           await this.refresh()

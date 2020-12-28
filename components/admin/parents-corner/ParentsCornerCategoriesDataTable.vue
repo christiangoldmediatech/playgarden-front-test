@@ -90,7 +90,7 @@ export default {
     remove ({ id, name }) {
       this.$nuxt.$emit('open-prompt', {
         title: 'Delete parent\'s corner category?',
-        message: `Are you sure you wish to delete '${name}' parent's corner category?`,
+        message: `Are you sure you want to delete <b>${name}</b>?`,
         action: async () => {
           await this.deleteCategory(id)
           await this.refresh()

@@ -1,16 +1,28 @@
 <template>
   <v-container fluid>
     <v-row no-gutters>
-      <v-col class="text-center mt-4" cols="12">
-        <underlined-title
-          class="text-h4 text-md-h3"
-          text="Learn how to use Playgarden Prep Online"
-        />
-      </v-col>
       <v-col cols="12">
         <pg-loading v-if="loading" />
-
         <v-card v-else elevation="0">
+          <v-row>
+            <v-btn class="ml-3" icon @click.stop="nextStep">
+              <v-icon>
+                mdi-close
+              </v-icon>
+            </v-btn>
+            <v-row justify="end" :class="($vuetify.breakpoint.xs)? 'mt-8 mr-6' : 'mt-6 mr-6'">
+              <v-btn
+                v-if="userInfo.onboardingDone === true"
+                class="text-h7 text-md-h6 mt-n6"
+                color="accent"
+                :small="$vuetify.breakpoint.xs"
+                :loading="finishing"
+                @click="onFinish"
+              >
+                GO TO LESSONS
+              </v-btn>
+            </v-row>
+          </v-row>
           <v-stepper v-if="!none" v-model="step" class="elevation-0">
             <v-stepper-header v-if="!single">
               <template v-for="({ name, description }, indexOH) in onboardings">
@@ -35,9 +47,8 @@
                 class="pa-4"
                 :step="indexOI + 1"
               >
-                <pg-inline-video-player
+                <pg-onboarding-video-player
                   @ready="onPlayerReady({ player: $event, videos })"
-                  @ended="nextStep"
                 />
               </v-stepper-content>
             </v-stepper-items>
@@ -62,17 +73,6 @@
                 NEXT
               </v-btn>
             </template>
-
-            <v-btn
-              v-if="single || last"
-              class="text-h6 mt-n6"
-              color="primary"
-              :loading="finishing"
-              text
-              @click="onFinish"
-            >
-              GO TO LESSONS
-            </v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 // import PgInlineVideoPlayer from '@/components/pg-video-js-player/PgInlineVideoPlayer.vue'
 
 export default {
@@ -100,6 +100,10 @@ export default {
   }),
 
   computed: {
+    ...mapGetters('auth', {
+      userInfo: 'getUserInfo'
+    }),
+
     first () {
       return this.step === 1
     },

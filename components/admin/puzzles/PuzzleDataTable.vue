@@ -181,7 +181,7 @@ export default {
     remove ({ id, name }) {
       this.$nuxt.$emit('open-prompt', {
         title: 'Delete puzzle?',
-        message: `Are you sure you wish to delete '${name}' puzzle?`,
+        message: `Are you sure you want to delete <b>${name}</b>?`,
         action: async () => {
           await this.deletePuzzle(id)
           await this.refresh()

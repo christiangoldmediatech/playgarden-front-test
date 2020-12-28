@@ -4,7 +4,7 @@
       <div class="lsess-table-entry-live">
         <span v-if="isLive">Live</span>
         <img v-if="isLive" class="lsess-table-entry-live-icon mt-2 mr-2" src="@/assets/svg/sessions-active-camera.svg">
-        <img v-else class="lsess-table-entry-live-icon mt-2 mr-2" src="@/assets/svg/sessions-camera.svg">
+        <img v-if="isFuture" class="lsess-table-entry-live-icon mt-2 mr-2" src="@/assets/svg/sessions-camera.svg">
       </div>
       <div class="d-flex align-end mb-2">
         <img class="lsess-table-entry-type" :src="entry.activityType.icon">
@@ -38,6 +38,12 @@ export default {
       const end = new Date(this.entry.dateEnd)
 
       return today.getTime() >= start.getTime() && today.getTime() <= end.getTime()
+    },
+
+    isFuture () {
+      const today = new Date()
+      const start = new Date(this.entry.dateStart)
+      return today.getTime() <= start.getTime()
     },
 
     title () {

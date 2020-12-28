@@ -115,7 +115,7 @@ export default {
     cancelUpload (upload) {
       this.$nuxt.$emit('open-prompt', {
         title: 'Cancel upload?',
-        message: `Are you sure you wish to cancel the upload for '${upload.name}'?`,
+        message: `Are you sure you want to cancel the upload for <b>${upload.name}</b>?`,
         action: () => {
           upload.cancel()
           // this.removeUpload(upload.id)

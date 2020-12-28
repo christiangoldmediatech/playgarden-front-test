@@ -187,7 +187,7 @@ export default {
     remove ({ id, name }) {
       this.$nuxt.$emit('open-prompt', {
         title: 'Delete FAQ?',
-        message: `Are you sure you wish to delete '${name}' FAQ?`,
+        message: `Are you sure you want to delete <b>${name}</b>?`,
         action: async () => {
           await this.deleteFAQs(id)
           await this.refresh()

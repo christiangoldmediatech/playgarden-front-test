@@ -1,5 +1,10 @@
 <template>
   <v-main>
+    <div class="startLiveClass">
+      <p class="text-center pt-3">
+        <span class="text-h7 text-md-h5 font-weight-bold white--text pt-5">Live Classes will start January 11th, 2021</span>
+      </p>
+    </div>
     <v-container
       :class="{ 'lsess-container': !$vuetify.breakpoint.smAndDown }"
       fluid
@@ -80,63 +85,6 @@
                 >
                   <!-- nuxt to app-account ?changeplan=1 -->
                   COMPARE PLANS
-                </v-btn>
-              </v-row>
-            </v-card>
-          </v-row>
-        </v-col>
-      </v-card>
-    </v-dialog>
-
-    <v-dialog
-      v-model="showNotice"
-      content-class="elevation-0"
-      :fullscreen="fullscreen"
-      persistent
-    >
-      <v-card class="dialog-overlay">
-        <v-row no-gutters justify="start" class="mt-0">
-          <v-btn
-            class="top-left text-none white--text px-4"
-            color="white"
-            text
-            @click.stop="showNotice = false"
-          >
-            <v-icon class="mr-2" small left>
-              mdi-less-than
-            </v-icon>
-            Close
-          </v-btn>
-        </v-row>
-        <v-col class="mt-16">
-          <v-row
-            class="mb-15 mt-16"
-            justify="center"
-            align-content="center"
-            no-gutters
-          >
-            <v-card
-              cols="12"
-              sm="4"
-              class="px-3 mt-16"
-              height="200"
-              tile
-            >
-              <p class="text-center font-weight-bold mt-5">
-                Live Classes will begin on January 8th, 2021
-              </p>
-              <p class="text-center">
-                In the mean time, enjoy our recorded classes.
-              </p>
-              <v-row justify="center" no-gutters>
-                <v-btn
-                  color="accent"
-                  tile
-                  large
-                  @click.stop="showNotice = false"
-                >
-                  <!-- nuxt to app-account ?changeplan=1 -->
-                  Watch recorded classes
                 </v-btn>
               </v-row>
             </v-card>
@@ -250,8 +198,8 @@ export default {
     object-position: center;
   }
   &-daily {
-    height: 100%;
-    max-height: 100%;
+    height: 90%; // TODO: Change back to 1005 when removing text Live Classes start
+    max-height: 90%; // TODO: Change back to 1005 when removing text Live Classes start
   }
   &-schedule {
     max-height: 100%;
@@ -269,6 +217,12 @@ export default {
 }
 .dialog-overlay {
   background-color: rgba(0, 0, 0, 0.68) !important;
+}
+.startLiveClass{
+  background-color: var(--v-accent-base) !important;
+  text-transform: uppercase !important;
+  min-height: 50px !important;
+  vertical-align: middle
 }
 .fullscreen {
   width: 100% !important;

@@ -66,7 +66,7 @@ export default {
     remove ({ id, firstName }) {
       this.$nuxt.$emit('open-prompt', {
         title: 'Delete caregiver?',
-        message: `Are you sure you wish to delete '${firstName}' caregiver?`,
+        message: `Are you sure you want to delete <b>${firstName}</b>?`,
         action: () => this.deleteCaregiver(id).then(this.getCaregiversData)
       })
     }
