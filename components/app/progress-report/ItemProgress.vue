@@ -4,21 +4,21 @@
       <v-progress-circular
         :rotate="360"
         :size="70"
-        :width="15"
-        :value="item.progress"
+        :width="10"
+        :value="item.percentage"
         color="orange lighten-1"
       >
-        {{ item.progress }}
+        {{ `${item.done}/${item.total}` }}
       </v-progress-circular>
     </v-col>
     <v-col class="ml-6">
       <p>
         <span class="font-weight-bold">
-          {{ item.name }}
+          {{ item.title }}
         </span>
       </p>
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Diam et, posuere risus.
+        {{ item.description }}
       </p>
     </v-col>
   </v-row>

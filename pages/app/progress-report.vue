@@ -32,7 +32,7 @@
                 :value="selectedChild"
                 hide-details
                 :preview-mode="previewMode"
-                @input="$emit('input', getReport())"
+                @input="$emit('input', getReport(), getDataLessonsReport())"
               />
             </v-col>
           </v-row>
@@ -72,10 +72,10 @@
             </v-col>
             <v-col cols="12" md="5" lg="5" xl="2">
               <div class="pt-4 mb-4">
-                <underlined-title class="text-h6 text-md-h5" text="Letter" />
+                <underlined-title class="text-h6 text-md-h5" :text="letterStats.name" />
               </div>
               <v-card>
-                <letter-stats />
+                <letter-stats :letter-stats="letterStats" />
               </v-card>
             </v-col>
           </v-row>
@@ -103,7 +103,11 @@ export default {
   mixins: [FavoritesMixin],
 
   data: () => ({
-    previewMode: false
+    previewMode: false,
+    letterStats: {
+      name: '',
+      reports: []
+    }
   }),
 
   computed: {
@@ -128,21 +132,30 @@ export default {
     }
   },
 
-  watch: {},
-
   created () {
     this.getTypes()
     this.getReport()
+    this.getDataReport()
   },
 
   methods: {
     ...mapActions('admin/report-card', ['getTypes']),
-    ...mapActions('progress-report', ['getReport']),
+    ...mapActions('progress-report', ['getReport', 'getDataLessonsReport']),
     ...mapActions({ setChild: 'setChild' }),
 
     changeChild (newId, redirect = true) {
       const child = this.allChildren.find(({ id }) => id === parseInt(newId))
       this.setChild({ value: [child], save: true })
+    },
+
+    getDataReport () {
+      console.log('Idchild--', this.selectedChild)
+      if (this.selectedChild) {
+        this.getDataLessonsReport({ childId: this.selectedChild })
+          .then((result) => {
+            this.letterStats = result
+          })
+      }
     }
   }
 }

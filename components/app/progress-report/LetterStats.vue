@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <v-list three-line>
-      <template v-for="(item, index) in types">
+      <template v-for="(item, index) in letterStats.reports">
         <item-progress :key="index" :item="item" />
       </template>
     </v-list>
@@ -15,6 +15,14 @@ export default {
 
   components: {
     ItemProgress
+  },
+
+  props: {
+    letterStats: {
+      type: Object,
+      required: true,
+      default: () => {}
+    }
   },
 
   data: () => ({
