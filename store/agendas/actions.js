@@ -1,6 +1,6 @@
 export default {
   async getAgendas ({ commit }, params) {
-    const data = await this.$axios.$get('/agendas', {
+    const data = await this.$axios.$get('/playdates', {
       params
     })
     commit('SET_ROWS', data)
@@ -13,20 +13,20 @@ export default {
   },
 
   async getAgendaById (ctx, id) {
-    const data = await this.$axios.$get(`/agendas/${id}`)
+    const data = await this.$axios.$get(`/playdates/${id}`)
     return data
   },
 
   async createAgenda (ctx, data) {
-    return await this.$axios.$post('/agendas', data)
+    return await this.$axios.$post('/playdates', data)
   },
 
   async updateAgenda (ctx, { id, data }) {
-    await this.$axios.$patch(`/agendas/${id}`, data)
+    await this.$axios.$patch(`/playdates/${id}`, data)
   },
 
   async deleteAgenda (ctx, id) {
-    await this.$axios.$delete(`/agendas/${id}`)
+    await this.$axios.$delete(`/playdates/${id}`)
   }
 
 }
