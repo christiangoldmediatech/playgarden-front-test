@@ -8,7 +8,7 @@
           <div class="">
             <v-list-item>
               <v-list-item-avatar>
-                <v-img :src="require('@/assets/svg/chevron-left.svg')" max-width="38px" />
+                <v-img :src="require('@/assets/svg/general.svg')" max-width="45px" />
               </v-list-item-avatar>
 
               <v-list-item-content>
@@ -29,10 +29,10 @@
 
             <v-col cols="2" class="text-center text-sm-right">
               <child-select
-                :value="selectedChild"
+                v-model="selectedChild"
                 hide-details
                 :preview-mode="previewMode"
-                @input="$emit('input', getReport(), getDataLessonsReport())"
+                @input="$emit('input', getReport())"
               />
             </v-col>
           </v-row>
@@ -46,11 +46,11 @@
                 :key="index"
                 class="mt-6 mb-6"
               >
-                <v-list-item-avatar>
+                <v-list-item-avatar size="60">
                   <v-img :src="item.icon" min-width="38px" />
                 </v-list-item-avatar>
 
-                <v-list-item-content class="font-weight-bold">
+                <v-list-item-content class="font-weight-bold report-card-type">
                   <span>
                     {{ item.name }}
                   </span>
@@ -132,6 +132,12 @@ export default {
     }
   },
 
+  watch: {
+    selectedChild (val, oldVal) {
+      this.getDataReport()
+    }
+  },
+
   created () {
     this.getTypes()
     this.getReport()
@@ -149,7 +155,6 @@ export default {
     },
 
     getDataReport () {
-      console.log('Idchild--', this.selectedChild)
       if (this.selectedChild) {
         this.getDataLessonsReport({ childId: this.selectedChild })
           .then((result) => {
@@ -160,3 +165,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.report-card-type {
+  color: var(--v-black-base) !important;
+}
+</style>

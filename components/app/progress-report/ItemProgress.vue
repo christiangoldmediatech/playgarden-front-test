@@ -4,7 +4,7 @@
       <v-progress-circular
         :rotate="360"
         :size="70"
-        :width="10"
+        :width="5"
         :value="item.percentage"
         color="orange lighten-1"
       >

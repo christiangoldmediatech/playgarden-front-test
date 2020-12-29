@@ -78,7 +78,9 @@ export default {
                 element.update({
                   color: '#F89838',
                   marker: {
-                    symbol: element.icon
+                    symbol: element.icon,
+                    width: 70,
+                    height: 70
                   }
                 })
               })
