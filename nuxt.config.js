@@ -76,10 +76,7 @@ export default {
         src: process.env.TEST_ENV === 'production' ? '/app/js/ics.min.js' : '/js/ics.min.js'
       },
       { src: 'https://widget.manychat.com/108368577679635.js', async: true },
-      { src: 'https://js.stripe.com/v3/', async: true },
-      {
-        src: process.env.TEST_ENV === 'production' ? '/app/js/google-tag-manager.js' : '/js/empty.js'
-      }
+      { src: 'https://js.stripe.com/v3/', async: true }
     ],
     noscript: [
       {
@@ -154,6 +151,7 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/style-resources',
+    '@nuxtjs/gtm',
     'vue-scrollto/nuxt',
     'vue-social-sharing/nuxt',
     [
@@ -181,6 +179,11 @@ export default {
       }
     ]
   ],
+  // https://www.npmjs.com/package/@nuxtjs/google-tag-manager
+  gtm: {
+    id: process.env.GTM_ID,
+    pageTracking: true // dev test
+  },
   sentry: {
     dsn: "https://1ab1121d06eb4b3181d83b9da1d69489@o443725.ingest.sentry.io/5417852",
     config: {
