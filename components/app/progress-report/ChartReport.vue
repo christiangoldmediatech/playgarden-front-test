@@ -38,7 +38,7 @@ export default {
       return {
         chart: {
           type: 'scatter',
-          backgroundColor: {
+          /* backgroundColor: {
             linearGradient: [0, 0, 0, '100%'],
             stops: [
               [0, 'rgba(196, 217, 171, 0.5)'],
@@ -48,26 +48,26 @@ export default {
               [0.8, 'rgba(248, 152, 56, 0.25)'],
               [1, 'rgba(248, 152, 56, 0.25)']
             ]
-          },
+          }, */
           events: {
             load () {
               const chart = this
               const data = chart.series[0].data
               // start text
-              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.4">Area of Strenght</span>', 150, 100)
+              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.9">Area of Strenght</span>', 200, 60)
                 .css({
                   fontSize: '34px',
                   color: '#DADADA'
                 })
                 .add()
 
-              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.4">Age Appropiate</span>', 160, 186)
+              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.9">Age Appropiate</span>', 210, 186)
                 .css({
                   fontSize: '34px',
                   color: '#DADADA'
                 })
                 .add()
-              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.4">Progressing</span>', 175, 286)
+              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.9">Progressing</span>', 225, 340)
                 .css({
                   fontSize: '34px',
                   color: '#DADADA'
@@ -99,6 +99,23 @@ export default {
           title: {
             text: ''
           },
+          plotBands: [
+            {
+              color: 'rgba(248, 152, 56, 0.25)',
+              from: 0,
+              to: 20
+            },
+            {
+              color: 'rgba(220, 231, 181, 0.25)',
+              from: 0,
+              to: 80
+            },
+            {
+              color: 'rgba(196, 217, 171, 0.5)',
+              from: 80,
+              to: 100
+            }
+          ],
           min: 0
         },
         xAxis: {
