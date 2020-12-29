@@ -62,7 +62,7 @@
                         contain
                         max-height="500"
                         max-width="500"
-                        :src="pageImage"
+                        :src="imageShared"
                         v-bind="attrs"
                         v-on="on"
                       />
@@ -93,7 +93,7 @@
                           contain
                           max-height="60vh"
                           max-width="60vh"
-                          :src="pageImage"
+                          :src="imageShared"
                         />
                       </v-row>
 
@@ -124,12 +124,8 @@
               >
                 <v-row align="center" class="my-10" justify="center" no-gutters>
                   <v-col cols="6" class="hidden-sm-and-down" />
-                  <v-col
-                    class="shrink text-center"
-                    cols="12"
-                    sm=""
-                    xs="12"
-                  >
+
+                  <v-col class="shrink text-center" cols="12" sm="" xs="12">
                     <v-img
                       max-height="100"
                       :width="$vuetify.breakpoint.xs ? null : '65%'"
@@ -141,17 +137,20 @@
                       text="Premier Online Preschool"
                       class="text-pre white--text"
                     />
+
                     <v-row justify="center" no-gutters>
                       <h2 class="white--text font-weight-regular">
                         Offering children 2-4 years a<br>
                         private preschool experience at home!<br>
                       </h2>
+
                       <v-row justify="center" no-gutters justify-sm="start">
                         <p class="white--text text-md-left">
                           – Private preschool curriculum<br>
                           – Lessons with certified teachers<br>
                           – Hands-on learning tools<br>
                         </p>
+
                         <v-row justify="center" no-gutters justify-sm="end">
                           <v-btn
                             href="https://playgardenprep.com/online/"
@@ -187,7 +186,9 @@
                     />
 
                     <v-list-item-content class="d-flex fill-height">
-                      <v-list-item-title class="align-self-start font-weight-bold ml-2 text-6">
+                      <v-list-item-title
+                        class="align-self-start font-weight-bold ml-2 text-6"
+                      >
                         BEST KIDS’ <br>
                         PLAY AREAS
                       </v-list-item-title>
@@ -214,7 +215,9 @@
                     />
 
                     <v-list-item-content class="d-flex fill-height">
-                      <v-list-item-title class="align-self-start font-weight-bold ml-2 text-6">
+                      <v-list-item-title
+                        class="align-self-start font-weight-bold ml-2 text-6"
+                      >
                         BEST <br>
                         CHILDREN'S<br>
                         PLAY SPACE IN<br>
@@ -258,14 +261,25 @@
                 <v-row justify="center">
                   <v-col cols="12" md="8" sm="12">
                     <p class="text-md-left text-center">
-                      <underlined-title text="Instill an early love for learning" class="text-sm-h4" />
+                      <underlined-title
+                        text="Instill an early love for learning"
+                        class="text-sm-h4"
+                      />
                     </p>
+
                     <p class="text-md-left text-center">
                       We believe early education provides the foundation for all
                       future learning. We provide a variety of visual and hands-
-                      on learning for ages 2 to 4 years to promote whole-child development.!
+                      on learning for ages 2 to 4 years to promote whole-child
+                      development.!
                     </p>
-                    <v-row justify="center" no-gutters justify-sm="end" class="hidden-sm-and-down">
+
+                    <v-row
+                      justify="center"
+                      no-gutters
+                      justify-sm="end"
+                      class="hidden-sm-and-down"
+                    >
                       <v-btn
                         href="https://playgardenprep.com/online/"
                         color="accent"
@@ -372,48 +386,48 @@ export default {
   // eslint-disable-next-line vue/match-component-file-name
   name: 'Slug',
 
-  async asyncData ({ redirect, query, $axios }) {
+  async asyncData ({ redirect, query, $axios, params }) {
+    const slug = (() => {
+      switch ((params.slug || '').toLowerCase()) {
+        case 'puzzle':
+          return 'puzzle'
+        case 'worksheet':
+          return 'worksheet'
+        case 'patch':
+          return 'patch'
+      }
+
+      return false
+    })()
+
+    if (!slug) {
+      return redirect({ name: 'index' })
+    }
+
     try {
-      const { imageUrl, text, description, link } = await $axios.$get(
+      const { imageUrl, text, description } = await $axios.$get(
         `/social-sharings/${query.link}`
       )
 
       return {
-        pageImage: imageUrl || require('assets/svg/shared/parent-rating.svg'),
+        imageShared: imageUrl || require('assets/svg/shared/parent-rating.svg'),
+        pageImage:
+          process.env.apiBaseUrl + require(`assets/png/shared/${slug}.png`),
         pageTitle: text,
-        pageDescription: description,
-        link
+        pageDescription: description
       }
     } catch (e) {
       return redirect({ name: 'index' })
     }
   },
 
-  data: vm => ({
+  data: () => ({
     childName: 'Sophie',
     dialog: false,
-    loading: false,
-    slug: (vm.$route.params.slug || '').toLowerCase()
+    loading: false
   }),
 
-  computed: {
-    isValidSlug () {
-      switch (this.slug) {
-        case 'puzzle':
-        case 'worksheet':
-        case 'patch':
-          return true
-      }
-
-      return false
-    }
-  },
-
   async created () {
-    if (!this.isValidSlug) {
-      return this.$router.push({ name: 'index' })
-    }
-
     // restoring session
     if (hasLocalStorage()) {
       try {
@@ -454,44 +468,9 @@ export default {
     return {
       meta: [
         {
-          hid: 'twitter:card',
-          name: 'twitter:card',
-          content: 'summary'
-        },
-        {
-          hid: 'twitter:title',
-          name: 'twitter:title',
-          content: this.pageTitle
-        },
-        {
-          hid: 'twitter:description',
-          name: 'twitter:description',
-          content: this.pageDescription
-        },
-        {
-          hid: 'twitter:image',
-          name: 'twitter:image',
-          content: this.pageImage
-        },
-        {
-          hid: 'twitter:image:alt',
-          name: 'twitter:image:alt',
-          content: this.pageTitle
-        },
-        {
-          hid: 'og:type',
-          property: 'og:type',
-          content: 'article'
-        },
-        {
-          hid: 'og:url',
-          property: 'og:url',
-          content: this.link
-        },
-        {
-          hid: 'og:title',
-          property: 'og:title',
-          content: this.pageTitle
+          hid: 'fb:app_id',
+          property: 'fb:app_id',
+          content: '639126580353169'
         },
         {
           hid: 'og:description',
@@ -504,19 +483,49 @@ export default {
           content: this.pageImage
         },
         {
-          hid: 'og:image:secure_url',
-          property: 'og:image:secure_url',
-          content: this.pageImage
-        },
-        {
           hid: 'og:image:alt',
           property: 'og:image:alt',
           content: this.pageTitle
         },
         {
-          hid: 'fb:app_id',
-          property: 'fb:app_id',
-          content: '639126580353169'
+          hid: 'og:image:secure_url',
+          property: 'og:image:secure_url',
+          content: this.pageImage
+        },
+        {
+          hid: 'og:title',
+          property: 'og:title',
+          content: this.pageTitle
+        },
+        {
+          hid: 'og:type',
+          property: 'og:type',
+          content: 'website'
+        },
+        {
+          hid: 'og:site_name',
+          property: 'og:site_name',
+          content: process.env.apiBaseUrl
+        },
+        {
+          hid: 'og:url',
+          property: 'og:url',
+          content: process.env.apiBaseUrl
+        },
+        {
+          hid: 'twitter:card',
+          name: 'twitter:card',
+          content: 'summary_large_image'
+        },
+        {
+          hid: 'twitter:domain',
+          name: 'twitter:domain',
+          content: process.env.apiBaseUrl
+        },
+        {
+          hid: 'twitter:image:alt',
+          name: 'twitter:image:alt',
+          content: this.pageTitle
         }
       ]
     }
@@ -534,10 +543,11 @@ export default {
   height: 100px;
   background-color: #c2daa5;
 }
-.text-pre{
+.text-pre {
   text-transform: none;
 }
-.space-text{
+
+.space-text {
   margin-left: 40%;
 }
 </style>
