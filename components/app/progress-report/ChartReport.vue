@@ -104,6 +104,9 @@ export default {
         xAxis: {
           categories: this.getCategories
         },
+        legend: {
+          enabled: false
+        },
         tooltip: {
           formatter () {
             return `Data: <b> ${this.point.y} </b> <br /> Progressing: ${this.point.progressing} <br />Strenght: ${this.point.areaStrenght} <br /> Appropiate: ${this.point.ageAppropiate}`

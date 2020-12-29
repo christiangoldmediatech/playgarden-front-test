@@ -7,8 +7,8 @@
         <v-card-text class="mt-12">
           <div class="">
             <v-list-item>
-              <v-list-item-avatar>
-                <v-img :src="require('@/assets/svg/general.svg')" max-width="45px" />
+              <v-list-item-avatar size="50">
+                <v-img :src="require('@/assets/svg/general.svg')" />
               </v-list-item-avatar>
 
               <v-list-item-content>
