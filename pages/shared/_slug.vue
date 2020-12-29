@@ -122,53 +122,49 @@
                 max-height="500"
                 :src="require('assets/png/banner-girl.png')"
               >
-                <v-row align="center" class="my-6" justify="end" no-gutters>
+                <v-row align="center" class="my-10" justify="center" no-gutters>
+                  <v-col cols="6" class="hidden-sm-and-down" />
                   <v-col
-                    class="shrink text-center text-sm-left"
+                    class="shrink text-center"
                     cols="12"
                     sm=""
+                    xs="12"
                   >
                     <v-img
                       max-height="100"
                       :width="$vuetify.breakpoint.xs ? null : '65%'"
                       :src="require('assets/svg/logo.svg')"
+                      class="ml-6 mr-6"
                     />
 
-                    <h1 class="white--text">
-                      Premier Online <br>
-                      Preschool
-                    </h1>
-
-                    <v-list-item>
-                      <v-list-item-content>
-                        <v-list-item-title class="white--text">
-                          Offering children 2-4 years a private <br>
-                          preschool experience at home!<br>
-                        </v-list-item-title>
-
-                        <v-list-item-title class="white--text">
-                          – Private preschool curriculum
-                        </v-list-item-title>
-
-                        <v-list-item-title class="white--text">
-                          – Lessons with certified teachers
-                        </v-list-item-title>
-
-                        <v-list-item-title class="white--text">
-                          – Hands-on learning tools
-                        </v-list-item-title>
-                      </v-list-item-content>
-                    </v-list-item>
-
-                    <v-btn
-                      href="https://playgardenprep.com/online/"
-                      color="accent"
-                      width="250"
-                      tile
-                      x-large
-                    >
-                      Learn more
-                    </v-btn>
+                    <underlined-title
+                      text="Premier Online Preschool"
+                      class="text-pre white--text"
+                    />
+                    <v-row justify="center" no-gutters>
+                      <h2 class="white--text font-weight-regular">
+                        Offering children 2-4 years a<br>
+                        private preschool experience at home!<br>
+                      </h2>
+                      <v-row justify="center" no-gutters justify-sm="start">
+                        <p class="white--text text-md-left">
+                          – Private preschool curriculum<br>
+                          – Lessons with certified teachers<br>
+                          – Hands-on learning tools<br>
+                        </p>
+                        <v-row justify="center" no-gutters justify-sm="end">
+                          <v-btn
+                            href="https://playgardenprep.com/online/"
+                            color="accent"
+                            width="250"
+                            tile
+                            x-large
+                          >
+                            Learn more
+                          </v-btn>
+                        </v-row>
+                      </v-row>
+                    </v-row>
                   </v-col>
                 </v-row>
               </v-img>
@@ -259,26 +255,28 @@
 
             <v-row class="my-12" justify="center">
               <v-col class="pl-3 pl-md-0" cols="12" md="4">
-                <p class="text-md-left text-center">
-                  <underlined-title text="Instill an early love for learning" class="text-sm-h4" />
-                </p>
-
-                <p class="text-md-left text-center">
-                  We believe early education provides the foundation for all
-                  future learning. We provide a variety of visual and hands-
-                  on learning for ages 2 to 4 years to promote whole-child development.!
-                </p>
-
-                <v-row justify="center" no-gutters justify-sm="end" class="hidden-sm-and-down">
-                  <v-btn
-                    href="https://playgardenprep.com/online/"
-                    color="accent"
-                    width="250"
-                    tile
-                    x-large
-                  >
-                    Learn more
-                  </v-btn>
+                <v-row justify="center">
+                  <v-col cols="12" md="8" sm="12">
+                    <p class="text-md-left text-center">
+                      <underlined-title text="Instill an early love for learning" class="text-sm-h4" />
+                    </p>
+                    <p class="text-md-left text-center">
+                      We believe early education provides the foundation for all
+                      future learning. We provide a variety of visual and hands-
+                      on learning for ages 2 to 4 years to promote whole-child development.!
+                    </p>
+                    <v-row justify="center" no-gutters justify-sm="end" class="hidden-sm-and-down">
+                      <v-btn
+                        href="https://playgardenprep.com/online/"
+                        color="accent"
+                        width="250"
+                        tile
+                        x-large
+                      >
+                        Learn more
+                      </v-btn>
+                    </v-row>
+                  </v-col>
                 </v-row>
               </v-col>
 
@@ -301,7 +299,7 @@
                 </h6>
               </v-col>
 
-              <v-col class="mt-md-16 shrink" cols="6" md="">
+              <v-col class="mt-md-16 shrink ml-md-6" cols="6" md="">
                 <v-row justify="center">
                   <v-img
                     contain
@@ -320,7 +318,7 @@
                 </h6>
               </v-col>
 
-              <v-col class="mt-3 mt-md-0 shrink" cols="6" md="">
+              <v-col class="mt-3 mt-md-0 shrink ml-md-6" cols="6" md="">
                 <v-row justify="center">
                   <v-img
                     contain
@@ -339,7 +337,7 @@
                 </h6>
               </v-col>
 
-              <v-col class="mt-3 mt-md-16 shrink" cols="6" md="">
+              <v-col class="mt-3 mt-md-16 shrink ml-md-6" cols="6" md="">
                 <v-row justify="center">
                   <v-img
                     contain
@@ -535,5 +533,11 @@ export default {
   width: 100%;
   height: 100px;
   background-color: #c2daa5;
+}
+.text-pre{
+  text-transform: none;
+}
+.space-text{
+  margin-left: 40%;
 }
 </style>
