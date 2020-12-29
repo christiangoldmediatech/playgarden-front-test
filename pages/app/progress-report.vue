@@ -2,8 +2,8 @@
   <v-container
     fluid
   >
-    <v-row>
-      <v-col cols="12" md="2" lg="2" xl="1" class="pt-12">
+    <v-row no-gutters class="mt-4">
+      <v-col cols="12" md="2" lg="2" xl="1">
         <v-list three-line class="mt-9">
           <v-list-item>
             <v-list-item-avatar size="60">
@@ -11,18 +11,18 @@
             </v-list-item-avatar>
 
             <v-list-item-content>
-              <underlined-title class="text-h7 text-md-h6" text="General" />
+              <div class="">
+                <underlined-title class="text-h7 text-md-h6" text="General" />
+              </div>
             </v-list-item-content>
           </v-list-item>
         </v-list>
       </v-col>
-      <v-col cols="12" md="10" lg="10" xl="11">
-        <v-card-text class="pt-12">
-          <v-row no-gutters class="pt-10">
-            <v-col class="pt-12">
-              <div>
-                <underlined-title class="text-h6 text-md-h4" text="Student progress report" />
-              </div>
+      <v-col cols="12" md="10" lg="10" xl="11" class="pt-7">
+        <v-card-text>
+          <v-row no-gutters>
+            <v-col class="mt-10">
+              <underlined-title class="text-h6 text-md-h4" text="Student progress report" />
             </v-col>
 
             <v-col cols="2" class="text-center text-sm-right pt-7">
@@ -36,6 +36,8 @@
           </v-row>
         </v-card-text>
       </v-col>
+    </v-row>
+    <v-row>
       <v-col cols="12" md="2" lg="2" xl="1">
         <v-card class="content-report">
           <v-list three-line>
@@ -59,7 +61,7 @@
         </v-card>
       </v-col>
 
-      <v-col cols="12" md="10" lg="10" xl="11">
+      <v-col v-if="general === true" cols="12" md="10" lg="10" xl="11">
         <v-card>
           <v-row class="ml-2 mr-2">
             <v-col cols="12" md="7" lg="7" xl="10">
@@ -78,6 +80,9 @@
             </v-col>
           </v-row>
         </v-card>
+      </v-col>
+      <v-col v-else cols="12" md="10" lg="10" xl="11">
+        detail
       </v-col>
     </v-row>
   </v-container>
@@ -102,6 +107,7 @@ export default {
 
   data: () => ({
     previewMode: false,
+    general: true,
     letterStats: {
       name: '',
       reports: []

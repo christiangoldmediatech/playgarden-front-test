@@ -54,7 +54,7 @@ export default {
               const chart = this
               const data = chart.series[0].data
               // start text
-              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.9">Area of Strenght</span>', 200, 60)
+              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.9">Area of Strenght</span>', 200, 100)
                 .css({
                   fontSize: '34px',
                   fontFamily: 'Poppins-SemiBold, Poppins',
@@ -62,7 +62,7 @@ export default {
                 })
                 .add()
 
-              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.9">Age Appropiate</span>', 210, 186)
+              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.9">Age Appropiate</span>', 210, 216)
                 .css({
                   fontSize: '34px',
                   color: '#DADADA',
@@ -91,7 +91,11 @@ export default {
           }
         },
         title: {
-          text: ''
+          text: 'text',
+          margin: 20,
+          style: {
+            color: 'white'
+          }
         },
         yAxis: {
           gridLineColor: 'transparent',
