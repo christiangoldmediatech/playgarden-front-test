@@ -57,6 +57,7 @@ export default {
               chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.9">Area of Strenght</span>', 200, 60)
                 .css({
                   fontSize: '34px',
+                  fontFamily: 'Poppins-SemiBold, Poppins',
                   color: '#DADADA'
                 })
                 .add()
@@ -64,13 +65,15 @@ export default {
               chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.9">Age Appropiate</span>', 210, 186)
                 .css({
                   fontSize: '34px',
-                  color: '#DADADA'
+                  color: '#DADADA',
+                  fontFamily: 'Poppins-SemiBold, Poppins'
                 })
                 .add()
               chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.9">Progressing</span>', 225, 340)
                 .css({
                   fontSize: '34px',
-                  color: '#DADADA'
+                  color: '#DADADA',
+                  fontFamily: 'Poppins-SemiBold, Poppins'
                 })
                 .add()
               // end text

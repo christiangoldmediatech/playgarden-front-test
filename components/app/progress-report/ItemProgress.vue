@@ -8,16 +8,16 @@
         :value="item.percentage"
         color="orange lighten-1"
       >
-        {{ `${item.done}/${item.total}` }}
+        <span class="stats">{{ `${item.done}/${item.total}` }}</span>
       </v-progress-circular>
     </v-col>
     <v-col class="ml-6">
-      <p>
-        <span class="font-weight-bold">
+      <p class="text-stats">
+        <span class="font-weight-bold text-stats">
           {{ item.title }}
         </span>
       </p>
-      <p>
+      <p class="text-stats">
         {{ item.description }}
       </p>
     </v-col>
@@ -49,7 +49,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.v-progress-circular__underlay {
-  stroke: #ff6859 !important;
+.stats {
+  color: var(--v-black-base) !important;
+}
+
+.text-stats {
+  color: var(--v-black-base) !important;
 }
 </style>

@@ -3,31 +3,29 @@
     fluid
   >
     <v-row>
-      <v-col cols="12" md="2" lg="2" xl="1">
-        <v-card-text class="mt-12">
-          <div class="">
-            <v-list-item>
-              <v-list-item-avatar size="50">
-                <v-img :src="require('@/assets/svg/general.svg')" />
-              </v-list-item-avatar>
+      <v-col cols="12" md="2" lg="2" xl="1" class="pt-12">
+        <v-list three-line>
+          <v-list-item>
+            <v-list-item-avatar size="60">
+              <v-img :src="require('@/assets/svg/general.svg')" />
+            </v-list-item-avatar>
 
-              <v-list-item-content>
-                <underlined-title class="text-h7 text-md-h6" text="General" />
-              </v-list-item-content>
-            </v-list-item>
-          </div>
-        </v-card-text>
+            <v-list-item-content>
+              <underlined-title class="text-h7 text-md-h6" text="General" />
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
       </v-col>
       <v-col cols="12" md="10" lg="10" xl="11">
-        <v-card-text class="mt-12">
-          <v-row no-gutters>
-            <v-col>
+        <v-card-text>
+          <v-row no-gutters class="pt-10">
+            <v-col class="pt-12">
               <div>
                 <underlined-title class="text-h6 text-md-h4" text="Student progress report" />
               </div>
             </v-col>
 
-            <v-col cols="2" class="text-center text-sm-right">
+            <v-col cols="2" class="text-center text-sm-right pt-7">
               <child-select
                 v-model="selectedChild"
                 hide-details
@@ -39,7 +37,7 @@
         </v-card-text>
       </v-col>
       <v-col cols="12" md="2" lg="2" xl="1">
-        <v-card>
+        <v-card class="content-report">
           <v-list three-line>
             <template v-for="(item, index) in types">
               <v-list-item
@@ -50,7 +48,7 @@
                   <v-img :src="item.icon" min-width="38px" />
                 </v-list-item-avatar>
 
-                <v-list-item-content class="font-weight-bold report-card-type">
+                <v-list-item-content class="report-card-type">
                   <span>
                     {{ item.name }}
                   </span>
@@ -169,5 +167,9 @@ export default {
 <style>
 .report-card-type {
   color: var(--v-black-base) !important;
+}
+
+.content-report {
+  height: 100% !important;
 }
 </style>
