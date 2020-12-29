@@ -4,7 +4,7 @@
   >
     <v-row>
       <v-col cols="12" md="2" lg="2" xl="1" class="pt-12">
-        <v-list three-line>
+        <v-list three-line class="mt-9">
           <v-list-item>
             <v-list-item-avatar size="60">
               <v-img :src="require('@/assets/svg/general.svg')" />
@@ -17,7 +17,7 @@
         </v-list>
       </v-col>
       <v-col cols="12" md="10" lg="10" xl="11">
-        <v-card-text>
+        <v-card-text class="pt-12">
           <v-row no-gutters class="pt-10">
             <v-col class="pt-12">
               <div>

@@ -1,5 +1,5 @@
 <template>
-  <v-row class="testCss">
+  <v-row>
     <v-col cols="2" class="ml-4">
       <v-progress-circular
         :rotate="360"
@@ -11,7 +11,7 @@
         <span class="stats">{{ `${item.done}/${item.total}` }}</span>
       </v-progress-circular>
     </v-col>
-    <v-col class="ml-6">
+    <v-col class="ml-2">
       <p class="text-stats">
         <span class="font-weight-bold text-stats">
           {{ item.title }}
