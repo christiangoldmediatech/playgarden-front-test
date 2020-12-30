@@ -5,7 +5,7 @@
     <v-row no-gutters class="mt-4">
       <v-col cols="12" md="2" lg="2" xl="1">
         <v-list three-line class="mt-9">
-          <v-list-item>
+          <v-list-item @click="general = true">
             <v-list-item-avatar size="60">
               <v-img :src="require('@/assets/svg/general.svg')" />
             </v-list-item-avatar>
@@ -28,6 +28,7 @@
             <v-col cols="2" class="text-center text-sm-right pt-7">
               <child-select
                 v-model="selectedChild"
+                :disabled="!general"
                 hide-details
                 :preview-mode="previewMode"
                 @input="$emit('input', getReport())"
