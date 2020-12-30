@@ -41,7 +41,7 @@
                   solo-labeled
                 />
               </validation-provider>
-              <br />
+              <br>
 
               <div
                 v-for="(cardType, i) in reportCardTypes"
@@ -126,18 +126,22 @@ export default {
   computed: {
     ...mapGetters('admin/report-card', ['types']),
     title () {
-      return this.id === null ? 'Config Progress Report' : 'Config Progress Report'
+      return this.id === null
+        ? 'Config Progress Report'
+        : 'Config Progress Report'
     },
     reportCardTypes () {
       return this.types.map((type) => {
-        const grade = this.gradesList.find(data => type.id === data.reportCardType.id)
+        const grade = this.gradesList.find(
+          data => type.id === data.reportCardType.id
+        )
         return {
           text: type.name,
           value: type.id,
-          id: (grade) ? grade.id : null,
+          id: grade ? grade.id : null,
           reportCardTypeId: type.id,
-          points: (grade) ? grade.points : 0,
-          total: (grade) ? grade.total : null
+          points: grade ? grade.points : 0,
+          total: grade ? grade.total : null
         }
       })
     }
@@ -157,9 +161,7 @@ export default {
   methods: {
     ...mapActions('grades', ['createGrade', 'updateGrades', 'getGrades']),
 
-    ...mapActions('admin/report-card', [
-      'getTypes'
-    ]),
+    ...mapActions('admin/report-card', ['getTypes']),
 
     close () {
       this.$nextTick(() => {
@@ -202,7 +204,10 @@ export default {
     async open (item) {
       this.resetItem()
       await this.getTypes()
-      const { grades } = await this.getGrades({ entityId: item.id, entityType: item.entityType })
+      const { grades } = await this.getGrades({
+        entityId: item.id,
+        entityType: item.entityType
+      })
       this.gradesList = grades
       this.item.entityId = item.id
       this.item.entityType = item.entityType

@@ -55,7 +55,7 @@ export default {
     }
   },
 
-  async fetchUserInfo ({ commit }) {
+  async fetchUserInfo ({ commit, rootGetters }) {
     try {
       const { data } = await this.$axios.get('/auth/me')
 
@@ -63,9 +63,11 @@ export default {
 
       return data
     } catch (error) {
-      snotifyError(commit, {
-        body: 'Sorry! There was an error while fetching user info!'
-      })
+      if (!rootGetters.isDisabledAxiosGlobalErrorHandler) {
+        snotifyError(commit, {
+          body: 'Sorry! There was an error while fetching user info!'
+        })
+      }
     }
   },
 
