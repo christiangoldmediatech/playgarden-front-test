@@ -1,6 +1,6 @@
 <template>
   <div v-if="getSeries.length > 0" class="report-children">
-    <highchart :options="chartOptions" :update-args="updateArgs" />
+    <highchart :options="chartOptions" :update-args="updateArgs" ref="chart" />
   </div>
 </template>
 
@@ -81,9 +81,9 @@ export default {
                 element.update({
                   color: '#F89838',
                   marker: {
-                    symbol: element.icon,
-                    width: 70,
-                    height: 70
+                    symbol: `url(${element.icon})`,
+                    width: 60,
+                    height: 60
                   }
                 })
               })
@@ -136,6 +136,16 @@ export default {
             return `Data: <b> ${this.point.y} </b> <br /> Progressing: ${this.point.progressing} <br />Strenght: ${this.point.areaStrenght} <br /> Appropiate: ${this.point.ageAppropiate}`
           }
         },
+        plotOptions: {
+          series: {
+            cursor: 'pointer',
+            events: {
+              click: (e) => {
+                this.pointClick(e)
+              }
+            }
+          }
+        },
         series: [{
           data: this.getSeries
         }],
@@ -150,6 +160,10 @@ export default {
 
   created () {},
 
-  methods: {}
+  methods: {
+    pointClick (event) {
+      this.$nuxt.$emit('detail-progress-report', event)
+    }
+  }
 }
 </script>

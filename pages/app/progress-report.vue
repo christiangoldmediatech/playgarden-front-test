@@ -45,6 +45,7 @@
               <v-list-item
                 :key="index"
                 class="mt-6 mb-6"
+                @click="loadDetailReport(item.name)"
               >
                 <v-list-item-avatar size="60">
                   <v-img :src="item.icon" min-width="38px" />
@@ -82,7 +83,9 @@
         </v-card>
       </v-col>
       <v-col v-else cols="12" md="10" lg="10" xl="11">
-        detail
+        <v-card>
+          <detail-progress :report-card-type="reportCardTypeSelected" :report="report" />
+        </v-card>
       </v-col>
     </v-row>
   </v-container>
@@ -94,13 +97,15 @@ import FavoritesMixin from '@/mixins/FavoritesMixin.js'
 import ChartReport from '@/components/app/progress-report/ChartReport.vue'
 import ChildSelect from '@/components/app/ChildSelect.vue'
 import LetterStats from '@/components/app/progress-report/LetterStats.vue'
+import DetailProgress from '@/components/app/progress-report/DetailProgress.vue'
 export default {
   name: 'ProgressReport',
 
   components: {
     ChartReport,
     ChildSelect,
-    LetterStats
+    LetterStats,
+    DetailProgress
   },
 
   mixins: [FavoritesMixin],
@@ -108,6 +113,7 @@ export default {
   data: () => ({
     previewMode: false,
     general: true,
+    reportCardTypeSelected: null,
     letterStats: {
       name: '',
       reports: []
@@ -143,9 +149,17 @@ export default {
   },
 
   created () {
+    this.general = true
     this.getTypes()
     this.getReport()
     this.getDataReport()
+    this.$nuxt.$on('detail-progress-report', (data) => {
+      this.loadDetailReport(data.point.category)
+    })
+  },
+
+  beforeDestroy () {
+    this.$nuxt.$off('detail-progress-report')
   },
 
   methods: {
@@ -165,6 +179,11 @@ export default {
             this.letterStats = result
           })
       }
+    },
+
+    loadDetailReport (reportCardType) {
+      this.reportCardTypeSelected = reportCardType
+      this.general = false
     }
   }
 }
