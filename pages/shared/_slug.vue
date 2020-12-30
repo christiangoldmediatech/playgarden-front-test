@@ -257,13 +257,13 @@
             </v-row>
 
             <v-row class="my-12" justify="center">
-              <v-col class="pl-3 pl-md-0" cols="12" md="4">
-                <v-row justify="center">
+              <v-col class="pl-3 pl-md-0 ml-md-n16" cols="12" md="4">
+                <v-row justify="center" class="ml-md-n16">
                   <v-col cols="12" md="8" sm="12">
                     <p class="text-md-left text-center">
                       <underlined-title
                         text="Instill an early love for learning"
-                        class="text-sm-h4"
+                        class="text-sm-h4 text-h3"
                       />
                     </p>
 
