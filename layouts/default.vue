@@ -46,6 +46,7 @@ export default {
   },
 
   data: () => ({
+    isComingSoonDialogOpen: false,
     verifyEmailToast: null
   }),
 

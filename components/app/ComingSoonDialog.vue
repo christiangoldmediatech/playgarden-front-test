@@ -1,9 +1,5 @@
 <template>
-  <v-dialog
-    :value="showing && isBeforeDueDate"
-    max-width="1000px"
-    persistent
-  >
+  <v-dialog :value="showing && isBeforeDueDate" max-width="1000px" persistent>
     <v-card color="white" max-width="1100px">
       <div class="green-line green-line-1" />
       <div class="green-line green-line-2" />
@@ -11,7 +7,7 @@
         <v-row no-gutters>
           <v-col cols="4" class="hidden-sm-and-down pa-0">
             <v-container class="img-container pa-0 ma-0">
-              <img src="@/assets/png/coming-soon.png" class="image" />
+              <img src="@/assets/png/coming-soon.png" class="image">
               <!-- <v-img cover :src="require('@/assets/png/coming-soon.png')" /> -->
             </v-container>
           </v-col>
@@ -24,16 +20,24 @@
                 />
               </div>
               <div class="mb-6">
-                <h2 class="pl-3 mb-6 font-weight-medium text-title text-center text-md-left">
+                <h2
+                  class="pl-3 mb-6 font-weight-medium text-title text-center text-md-left"
+                >
                   School starts Monday, December 14th!
                 </h2>
-                <h3 class="pl-3 mb-6 font-weight-medium text-subtitle text-center text-md-left">
+                <h3
+                  class="pl-3 mb-6 font-weight-medium text-subtitle text-center text-md-left"
+                >
                   Count down with us:
                 </h3>
               </div>
               <div class="my-6">
-                <v-row no-gutters justify="space-between" class="time-left-wrapper">
-                  <div class="time-left-background"></div>
+                <v-row
+                  no-gutters
+                  justify="space-between"
+                  class="time-left-wrapper"
+                >
+                  <div class="time-left-background" />
                   <v-col>
                     <p class="text-center text-number-title font-weight-bold">
                       {{ timeLeft.days }}
@@ -61,10 +65,14 @@
                 </v-row>
               </div>
               <div class="my-6">
-                <h2 class="pl-3 mb-4 mt-6 font-weight-medium text-title text-center text-md-left">
+                <h2
+                  class="pl-3 mb-4 mt-6 font-weight-medium text-title text-center text-md-left"
+                >
                   Can't wait?
                 </h2>
-                <h3 class="pl-3 mb-2 mt-6 font-weight-medium text-subtitle text-center text-md-left">
+                <h3
+                  class="pl-3 mb-2 mt-6 font-weight-medium text-subtitle text-center text-md-left"
+                >
                   Check out a sneak peak!
                 </h3>
                 <div class="text-center mt-5 text-md-left">
@@ -119,7 +127,9 @@ export default {
 
       // Time calculations for days, hours, minutes and seconds
       const days = Math.floor(distance / (1000 * 60 * 60 * 24))
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+      const hours = Math.floor(
+        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      )
       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
 
       this.timeLeft = {
@@ -159,7 +169,7 @@ export default {
   &-number-title {
     font-size: 45px !important;
     line-height: 38px !important;
-    color: #C2DAA5;
+    color: #c2daa5;
   }
   &-title {
     font-size: 32px !important;

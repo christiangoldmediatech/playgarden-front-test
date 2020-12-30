@@ -23,7 +23,7 @@ export default function ({ redirect, route, store }) {
     route.query.process !== 'signup'
   ) {
     if (get(user, 'role.section') === 'ADMIN') {
-      return redirect({ name: 'admin-curriculum-management' })
+      return (get(user, 'role.name') === 'SPECIALISTS') ? redirect({ name: 'admin-agenda' }) : redirect({ name: 'admin-curriculum-management' })
     } else {
       return redirect({ name: 'app-dashboard' })
     }
