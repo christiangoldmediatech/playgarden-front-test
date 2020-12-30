@@ -204,5 +204,7 @@ export default {
 .active-css {
   box-shadow: 0px 3px 9px #999 !important;
   color: white !important;
+  /* border-style: solid !important;
+  border-color: #ff0000 #00ff00 #0000ff #ffffff !important; */
 }
 </style>
