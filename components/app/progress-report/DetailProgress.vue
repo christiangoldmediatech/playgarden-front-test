@@ -2,9 +2,7 @@
   <v-row>
     <v-col cols="3">
       <center>
-        {{ getDataCurrent.icon }}
         <v-img :src="getDataCurrent.icon" />
-        <br />
       </center>
     </v-col>
     <v-col cols="9">
