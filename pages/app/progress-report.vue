@@ -28,7 +28,6 @@
             <v-col cols="2" class="text-center text-sm-right pt-7">
               <child-select
                 v-model="selectedChild"
-                :disabled="!general"
                 hide-details
                 :preview-mode="previewMode"
                 @input="$emit('input', getReport())"
@@ -84,7 +83,7 @@
         </v-card>
       </v-col>
       <v-col v-else cols="12" md="10" lg="10" xl="11">
-        <v-card>
+        <v-card class="content-report">
           <detail-progress :report-card-type="reportCardTypeSelected" :report="report" />
         </v-card>
       </v-col>
