@@ -83,7 +83,7 @@
         </v-card>
       </v-col>
       <v-col v-else cols="12" md="10" lg="10" xl="11">
-        <v-card class="content-report">
+        <v-card class="content-report mr-3">
           <detail-progress :report-card-type="reportCardTypeSelected" :report="report" />
         </v-card>
       </v-col>

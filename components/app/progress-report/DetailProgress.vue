@@ -4,8 +4,8 @@
       <center>
         <v-img :src="getDataCurrent.icon" />
         <div class="ml-3">
-          <v-progress-linear :value="getDataCurrent.y" height="15" rounded color="accent"></v-progress-linear>
-          <span class="text-progress mt-1">{{ `${getDataCurrent.y}/100` }}</span>
+          <v-progress-linear class="mb-3" :value="getDataCurrent.y" height="15" rounded color="accent" />
+          <span class="text-progress">{{ `${getDataCurrent.y}/100` }}</span>
         </div>
       </center>
     </v-col>
@@ -20,11 +20,11 @@
         <p>
           <v-row no-gutters>
             <v-col class="mt-10">
-              <span class="progress-title font-weight-bold text-h6 text-md-h5">Progressing</span>
+              <span class="progress-title font-weight-bold text-h6 text-md-h5">{{ getScale }}</span>
             </v-col>
 
             <v-col cols="2" class="text-center text-sm-right pt-12">
-              <span class="text-h6 text-md-h5">{{ `${getDataCurrent.y}%` }}</span>
+              <span class="font-weight-bold text-h6 text-md-h5">{{ `${getDataCurrent.y}%` }}</span>
             </v-col>
           </v-row>
         </p>
@@ -64,6 +64,18 @@ export default {
     getDataCurrent () {
       const index = this.report.categories.indexOf(this.reportCardType)
       return this.report.dataSerie[index]
+    },
+
+    getScale () {
+      let position = ''
+      if (this.getDataCurrent.y <= 20) {
+        position = 'Progressing'
+      } else if (this.getDataCurrent.y > 20 && this.getDataCurrent.y <= 80) {
+        position = 'Age Appropiate'
+      } else {
+        position = 'Area of Strenght'
+      }
+      return position
     }
   },
 
