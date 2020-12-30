@@ -15,7 +15,11 @@ export default function ({ redirect, route, store }) {
       /^app-.*$/.test(route.name) &&
       get(user, 'role.section') === 'ADMIN'
     ) {
-      redirect({ name: 'admin-curriculum-management' })
+      if (get(user, 'role.name') === 'SPECIALISTS') {
+        redirect({ name: 'admin-agenda' })
+      } else {
+        redirect({ name: 'admin-curriculum-management' })
+      }
     }
   }
 }
