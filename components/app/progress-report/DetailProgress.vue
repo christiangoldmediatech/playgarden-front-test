@@ -3,14 +3,30 @@
     <v-col cols="3">
       <center>
         <v-img :src="getDataCurrent.icon" />
+        <div class="ml-3">
+          <v-progress-linear :value="getDataCurrent.y" height="15" rounded color="accent"></v-progress-linear>
+          <span class="text-progress mt-1">{{ `${getDataCurrent.y}/100` }}</span>
+        </div>
       </center>
     </v-col>
     <v-col cols="9">
       <div class="pt-4 mb-4">
         <underlined-title class="text-h6 text-md-h3" :text="reportCardType" />
 
+        <p class="text-progress mt-4">
+          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+        </p>
+
         <p>
-          {{ getDataCurrent }}
+          <span class="progress-title font-weight-bold text-h6 text-md-h5">Progressing</span>
+        </p>
+
+        <p>
+          <span class="progress-subtitle font-weight-bold text-h6 text-md-h7">What is this?</span>
+        </p>
+
+        <p class="text-progress">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Amet elementum gravida viverra lorem volutpat in. Malesuada accumsan, habitasse suspendisse dignissim massa sit. Adipiscing cursus at augue in. Pellentesque rhoncus tellus turpis integer velit. Et vitae malesuada bibendum quis dui. Mauris pretium ridiculus vitae non pellentesque urna. Accumsan morbi eu eu gravida magnis vitae. Et vitae malesuada bibendum quis dui. Mauris pretium ridiculus vitae non pellentesque urna. Accumsan morbi eu eu gravida magnis vitae.
         </p>
       </div>
     </v-col>
@@ -50,3 +66,18 @@ export default {
   methods: {}
 }
 </script>
+
+<style lang="scss" scoped>
+.text-progress {
+  color: var(--v-black-base) !important;
+  text-align: justify;
+}
+
+.progress-title {
+  color: var(--v-accent-base) !important;
+}
+
+.progress-subtitle {
+  color: var(--v-primary-base) !important;
+}
+</style>
