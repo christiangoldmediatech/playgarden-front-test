@@ -10,7 +10,7 @@
       </center>
     </v-col>
     <v-col cols="9">
-      <div class="pt-4 mb-4">
+      <div class="pt-4 mb-4 mr-6">
         <underlined-title class="text-h6 text-md-h3" :text="reportCardType" />
 
         <p class="text-progress mt-4">
