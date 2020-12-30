@@ -20,7 +20,7 @@
         <p>
           <v-row no-gutters>
             <v-col class="mt-10">
-              <span class="progress-title font-weight-bold text-h6 text-md-h5">{{ getScale }}</span>
+              <span :class="getClassColor">{{ getScale }}</span>
             </v-col>
 
             <v-col cols="2" class="text-center text-sm-right pt-12">
@@ -30,7 +30,7 @@
         </p>
 
         <p>
-          <span class="progress-subtitle font-weight-bold text-h6 text-md-h7">What is this?</span>
+          <underlined-title class="text-h6 text-md-h7" text="What is this?" />
         </p>
 
         <p class="text-progress">
@@ -76,6 +76,18 @@ export default {
         position = 'Area of Strenght'
       }
       return position
+    },
+
+    getClassColor () {
+      let colorClass = 'font-weight-bold text-h6 text-md-h5'
+      if (this.getDataCurrent.y <= 20) {
+        colorClass = `progress-title ${colorClass}`
+      } else if (this.getDataCurrent.y > 20 && this.getDataCurrent.y <= 80) {
+        colorClass = `age-title ${colorClass}`
+      } else {
+        colorClass = `area-title ${colorClass}`
+      }
+      return colorClass
     }
   },
 
@@ -95,6 +107,14 @@ export default {
 
 .progress-title {
   color: var(--v-accent-base) !important;
+}
+
+.age-title {
+  color: #DCE7B5 !important
+}
+
+.area-title {
+  color: var(--v-primary-base) !important;
 }
 
 .progress-subtitle {

@@ -41,23 +41,26 @@
       <v-col cols="12" md="2" lg="2" xl="1">
         <v-card class="content-report">
           <v-list three-line>
-            <template v-for="(item, index) in types">
-              <v-list-item
-                :key="index"
-                class="mt-6 mb-6"
-                @click="loadDetailReport(item.name)"
-              >
-                <v-list-item-avatar size="60">
-                  <v-img :src="item.icon" min-width="38px" />
-                </v-list-item-avatar>
+            <v-list-item-group>
+              <template v-for="(item, index) in types">
+                <v-list-item
+                  :key="index"
+                  class="mt-6 mb-6"
+                  active-class="active-css"
+                  @click="loadDetailReport(item.name)"
+                >
+                  <v-list-item-avatar size="60">
+                    <v-img :src="item.icon" min-width="38px" />
+                  </v-list-item-avatar>
 
-                <v-list-item-content class="report-card-type">
-                  <span>
-                    {{ item.name }}
-                  </span>
-                </v-list-item-content>
-              </v-list-item>
-            </template>
+                  <v-list-item-content class="report-card-type">
+                    <span>
+                      {{ item.name }}
+                    </span>
+                  </v-list-item-content>
+                </v-list-item>
+              </template>
+            </v-list-item-group>
           </v-list>
         </v-card>
       </v-col>
@@ -196,5 +199,10 @@ export default {
 
 .content-report {
   height: 100% !important;
+}
+
+.active-css {
+  box-shadow: 0px 3px 9px #999 !important;
+  color: white !important;
 }
 </style>
