@@ -48,7 +48,7 @@
             </v-col>
           </v-row>
         </v-card-text>
-        <v-row class="mr-1" no-gutters>
+        <v-row class="mr-3" no-gutters>
           <v-col v-if="general === true" cols="12" md="12" lg="12" xl="12">
             <v-card class="content-report">
               <v-row class="ml-2 mr-2">
@@ -71,7 +71,11 @@
           </v-col>
           <v-col v-else cols="12" md="12" lg="12" xl="12">
             <v-card class="content-report">
-              <detail-progress :report-card-type="reportCardTypeSelected" :report="report" />
+              <v-row>
+                <v-col cols="12">
+                  <detail-progress :report-card-type="reportCardTypeSelected" :report="report" />
+                </v-col>
+              </v-row>
             </v-card>
           </v-col>
         </v-row>

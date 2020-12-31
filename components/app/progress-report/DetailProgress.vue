@@ -3,7 +3,7 @@
     <v-col cols="3">
       <center>
         <v-img :src="getDataCurrent.icon" />
-        <div class="ml-3">
+        <div class="ml-7">
           <v-progress-linear class="mb-3" :value="getDataCurrent.y" height="15" rounded color="accent" />
           <span class="text-progress">{{ `${getDataCurrent.y}/100` }}</span>
         </div>
