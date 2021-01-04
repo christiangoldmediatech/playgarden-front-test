@@ -70,7 +70,7 @@
             </v-card>
           </v-col>
           <v-col v-else cols="12" md="12" lg="12" xl="12">
-            <v-card class="content-report">
+            <v-card>
               <v-row>
                 <v-col cols="12">
                   <detail-progress :report-card-type="reportCardTypeSelected" :report="report" />
