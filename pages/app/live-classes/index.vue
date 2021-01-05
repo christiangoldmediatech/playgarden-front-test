@@ -104,7 +104,7 @@ import SessionsTable from '@/components/app/live-sessions/SessionsTable.vue'
 import RecordedClassPlayer from '@/components/app/live-sessions/RecordedClassPlayer.vue'
 
 export default {
-  name: 'LiveClasses',
+  name: 'Index',
 
   components: {
     TodayCardsPanel,

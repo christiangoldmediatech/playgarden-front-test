@@ -1,0 +1,313 @@
+<template>
+  <v-main>
+    <!-- Header section -->
+    <v-container fluid>
+      <!-- Back button -->
+      <v-row>
+        <v-col cols="12">
+          <v-btn
+            color="accent"
+            class="text-none"
+            text
+            x-large
+            nuxt
+            :to="{ name: 'app-live-classes' }"
+          >
+            <v-icon left>
+              mdi-less-than
+            </v-icon>
+            Back
+          </v-btn>
+        </v-col>
+      </v-row>
+
+      <!-- Title -->
+      <v-row class="pos-relative" align="center" justify="center">
+        <v-col class="text-center">
+          <underlined-title
+            font-size="60px"
+            font-size-moible="26px"
+            line-height="1.5"
+            text="Recorded Live Classes"
+          />
+        </v-col>
+
+        <!-- Search type selector -->
+        <v-col cols="12" class="recorded-search-type mr-lg-8">
+          <div class="recorded-search-by">
+            Search by
+          </div>
+          <v-btn-toggle v-model="modeValue" dense>
+            <v-btn
+              class="text-none"
+              :class="{ 'white--text': mode === 'LETTER' }"
+              :color="mode === 'LETTER' ? 'accent' : undefined"
+              :small="$vuetify.breakpoint.mobile"
+            >
+              Letter
+            </v-btn>
+            <v-btn
+              class="text-none"
+              :class="{ 'white--text': mode === 'CATEGORY' }"
+              :color="mode === 'CATEGORY' ? 'accent' : undefined"
+              :small="$vuetify.breakpoint.mobile"
+            >
+              Category
+            </v-btn>
+          </v-btn-toggle>
+        </v-col>
+
+        <!-- Bottom subtitle / dropdown -->
+        <v-col v-if="$vuetify.breakpoint.mobile && mode === 'LETTER'" cols="11" sm="6" md="4">
+          <pg-select
+            v-model="selectedLetter"
+            :items="letters"
+            item-value="id"
+            hide-details
+            solo
+            placeholder="Browse by letter"
+          >
+            <template v-slot:selection="{ item }">
+              <v-list-item class="w-100">
+                <recorded-letter
+                  v-bind="{ letter: item }"
+                  list-mode
+                />
+
+                <v-list-item-content>
+                  <v-list-item-title class="font-weight-bold pl-4">
+                    Letter {{ item.name.substr(0, 1) }}
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </template>
+
+            <template v-slot:item="{ item, on, attrs }">
+              <v-list-item v-bind="attrs" class="w-100" v-on="on">
+                <recorded-letter
+                  v-bind="{ letter: item }"
+                  list-mode
+                />
+
+                <v-list-item-content>
+                  <v-list-item-title class="pl-4">
+                    Letter {{ item.name.substr(0, 1) }}
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </template>
+          </pg-select>
+        </v-col>
+
+        <!-- Desktop subtitle -->
+        <v-col v-else class="hidden-md-and-down" cols="12">
+          <div class="recorded-browse-by">
+            {{ `Browse by ${mode === 'LETTER' ? 'Letter' : 'Category'}` }}
+          </div>
+        </v-col>
+      </v-row>
+    </v-container>
+
+    <!-- Desktop letter finder -->
+    <v-container v-if="$vuetify.breakpoint.lgAndUp && mode === 'LETTER'" fluid>
+      <!-- Desktop letter selector -->
+      <v-row justify="center">
+        <recorded-letter
+          v-for="letter in letters"
+          :key="`letter-${letter.id}`"
+          v-bind="{ letter, selectedLetter }"
+          @click.native="selectLetter(letter.id)"
+        />
+      </v-row>
+    </v-container>
+
+    <!-- Letter Mode Content -->
+    <v-container v-if="mode === 'LETTER' && letterObject" fluid>
+      <v-row>
+        <v-col cols="12" class="text-center text-lg-left">
+          <underlined-title
+            font-size="40px"
+            font-size-moible="20px"
+            line-height="1.5"
+            :text="`Recorded Classes of Letter ${letterObject.name.substr(0, 1)}`"
+          />
+        </v-col>
+        <v-col
+          v-for="recording in recorded"
+          :key="`recording-${recording.id}`"
+          class="px-lg-8"
+          cols="12"
+          sm="8"
+          md="6"
+          lg="4"
+          xl="3"
+        >
+          <recorded-card :entry="recording" />
+        </v-col>
+      </v-row>
+    </v-container>
+
+    <template v-if="mode === 'CATEGORY'">
+      <!-- Category finder -->
+      <category-header v-bind="{ categories }" />
+
+      <!-- Category Mode Content -->
+      <recorded-carousel
+        v-for="category in categories"
+        :id="`category_row_${category.id}`"
+        :key="`category-playlist-${category.id}`"
+        v-bind="category"
+      />
+    </template>
+
+    <entry-dialog />
+    <recorded-class-player />
+  </v-main>
+</template>
+
+<script>
+import { mapActions, mapGetters } from 'vuex'
+import CategoryHeader from '@/components/app/activities/CategoryHeader.vue'
+import EntryDialog from '@/components/app/live-sessions/EntryDialog.vue'
+import RecordedLetter from '@/components/app/live-sessions/recorded/RecordedLetter.vue'
+import RecordedClassPlayer from '@/components/app/live-sessions/RecordedClassPlayer.vue'
+import RecordedCard from '@/components/app/live-sessions/recorded/RecordedCard.vue'
+import RecordedCarousel from '@/components/app/live-sessions/recorded/RecordedCarousel.vue'
+
+export default {
+  name: 'Recorded',
+
+  components: {
+    EntryDialog,
+    RecordedLetter,
+    RecordedClassPlayer,
+    RecordedCard,
+    RecordedCarousel,
+    CategoryHeader
+  },
+
+  data: () => {
+    return {
+      modeValue: 0,
+      selectedLetter: null,
+      selectedCategory: null,
+      recorded: []
+    }
+  },
+
+  computed: {
+    ...mapGetters('admin/curriculum', { letters: 'types' }),
+    ...mapGetters('admin/activity', { categoryTypes: 'types' }),
+
+    mode () {
+      if (this.modeValue === 0) {
+        return 'LETTER'
+      }
+      return 'CATEGORY'
+    },
+
+    letterObject () {
+      return this.letters.find(({ id }) => id === this.selectedLetter)
+    },
+
+    categories () {
+      const categories = []
+
+      if (this.mode === 'CATEGORY') {
+        this.categoryTypes.forEach((category) => {
+          const recordings = this.recorded.filter((recording) => {
+            if (recording.activityType && recording.activityType.id === category.id) {
+              return true
+            }
+            return false
+          })
+
+          if (recordings.length) {
+            categories.push({
+              ...category,
+              recordings
+            })
+          }
+        })
+      }
+
+      return categories
+    }
+  },
+
+  watch: {
+    mode (val) {
+      this.recorded = []
+      this.selectedLetter = null
+      if (val === 'CATEGORY') {
+        this.getRecorded({}).then(({ liveSessions }) => {
+          this.recorded = liveSessions
+        })
+      }
+    },
+
+    selectedLetter (val) {
+      if (val && this.mode === 'LETTER') {
+        this.getRecorded({ curriculumTypeId: val }).then(({ liveSessions }) => {
+          this.recorded = liveSessions
+        })
+      }
+    }
+  },
+
+  created () {
+    this.getLetters()
+    this.getCategories()
+  },
+
+  methods: {
+    ...mapActions('admin/curriculum', {
+      getLetters: 'getTypes'
+    }),
+    ...mapActions('admin/activity', {
+      getCategories: 'getTypes'
+    }),
+    ...mapActions('live-sessions', ['getRecorded']),
+
+    selectLetter (id) {
+      if (this.selectedLetter === id) {
+        this.selectedLetter = null
+      } else {
+        this.selectedLetter = id
+      }
+    }
+  }
+}
+</script>
+
+<style lang="scss">
+.recorded {
+  &-search-type {
+    width: 100%;
+    text-align: center;
+    @media screen and (min-width: 1264px) {
+      width: auto;
+      text-align: left;
+      position: absolute;
+      right: 0;
+    }
+  }
+  &-search-by {
+    display: inline;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.5;
+    margin-right: 12px;
+    @media screen and(min-width: 1264px) {
+      display: block;
+      font-size: 22px;
+    }
+  }
+  &-browse-by {
+    text-align: center;
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1.5;
+  }
+}
+</style>
