@@ -31,18 +31,6 @@
                 {{ name }}
               </span>
             </div>
-
-            <!-- <v-btn
-              color="primary"
-              class="ml-2"
-              :small="$vuetify.breakpoint.xs"
-              @click.stop="playAll"
-            >
-              <v-icon left>
-                mdi-play
-              </v-icon>
-              PLAY ALL
-            </v-btn> -->
           </v-row>
 
           <v-row v-if="!$vuetify.breakpoint.xs">
@@ -51,7 +39,7 @@
               :key="`recording-${recording.id}`"
               :cols="12 / limit"
             >
-              <recorded-card :entry="recording" />
+              <recorded-card :entry="recording" show-letter />
             </v-col>
           </v-row>
           <v-carousel
@@ -79,6 +67,7 @@
                   <recorded-card
                     :key="`recording-${recording.id}`"
                     :entry="recording"
+                    show-letter
                   />
                 </v-row>
               </v-sheet>

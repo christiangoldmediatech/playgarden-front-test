@@ -23,6 +23,9 @@
 
       <div class="recorded-card-description">
         {{ entry.description }}
+        <div v-if="showLetter && entry.curriculumType" class="recorded-card-letter">
+          Letter: <span class="recored-card-letter-bold">{{ entry.curriculumType.name.substr(0, 1) }}</span>
+        </div>
       </div>
     </v-card>
   </v-hover>
@@ -36,6 +39,12 @@ export default {
     entry: {
       type: Object,
       required: true
+    },
+
+    showLetter: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
 
@@ -102,6 +111,15 @@ export default {
     max-height: 50px;
     object-fit: contain;
     object-position: top right;
+    filter: drop-shadow(0px 3px 9px rgba(0, 0, 0, 0.25));
+  }
+  &-letter {
+    font-size: 23px;
+    line-height: 1.5;
+    font-weight: 400;
+    &-bold {
+      font-weight: 700;
+    }
   }
   &-scaled {
     transform: scale(1.10);
