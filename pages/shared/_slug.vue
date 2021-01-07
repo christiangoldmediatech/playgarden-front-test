@@ -61,7 +61,7 @@
                         class="clickable"
                         contain
                         max-height="500"
-                        max-width="500"
+                        max-width="350"
                         :src="imageShared"
                         v-bind="attrs"
                         v-on="on"
@@ -91,8 +91,8 @@
                       <v-row class="white" justify="center">
                         <v-img
                           contain
-                          max-height="60vh"
-                          max-width="60vh"
+                          max-height="500"
+                          max-width="500"
                           :src="imageShared"
                         />
                       </v-row>
@@ -128,30 +128,34 @@
                   <v-col class="shrink text-center" cols="12" sm="" xs="12">
                     <v-img
                       max-height="100"
-                      :width="$vuetify.breakpoint.xs ? null : '65%'"
+                      :width="$vuetify.breakpoint.xs ? null : '75%'"
                       :src="require('assets/svg/logo.svg')"
                       class="ml-6 mr-6"
                     />
 
-                    <underlined-title
-                      text="Premier Online Preschool"
-                      class="text-pre white--text"
-                    />
-
                     <v-row justify="center" no-gutters>
-                      <h2 class="white--text font-weight-regular">
+                      <v-col cols="12" sm="" xs="12" class="text-sm-center text-md-left">
+                        <underlined-title
+                          text="Premier Online Preschool"
+                          class="white--text text-left"
+                        />
+                      </v-col>
+                    </v-row>
+
+                    <v-row justify="center" no-gutters justify-sm="start">
+                      <h3 class="white--text font-weight-regular text-sm-center text-md-left">
                         Offering children 2-4 years a<br>
                         private preschool experience at home!<br>
-                      </h2>
+                      </h3>
 
                       <v-row justify="center" no-gutters justify-sm="start">
-                        <p class="white--text text-md-left">
+                        <p class="white--text text-left mt-5">
                           – Private preschool curriculum<br>
                           – Lessons with certified teachers<br>
                           – Hands-on learning tools<br>
                         </p>
 
-                        <v-row justify="center" no-gutters justify-sm="end">
+                        <v-row justify="center" no-gutters justify-sm="start">
                           <v-btn
                             href="https://playgardenprep.com/online/"
                             color="accent"
@@ -263,11 +267,11 @@
                     <p class="text-md-left text-center">
                       <underlined-title
                         text="Instill an early love for learning"
-                        class="text-sm-h4 text-h3"
+                        class="text-sm-h6 text-md-h4"
                       />
                     </p>
 
-                    <p class="text-md-left text-center">
+                    <p class="text-md-left text-center text-sm-subtitle-1">
                       We believe early education provides the foundation for all
                       future learning. We provide a variety of visual and hands-
                       on learning for ages 2 to 4 years to promote whole-child
@@ -412,7 +416,7 @@ export default {
       return {
         imageShared: imageUrl || require('assets/svg/shared/parent-rating.svg'),
         pageImage:
-          process.env.apiBaseUrl + require(`assets/png/shared/${slug}.png`),
+          (process.env.frontendUrl + require(`assets/png/shared/${slug}.png`)).replace('//', '/'),
         pageTitle: text,
         pageDescription: description
       }
@@ -542,9 +546,6 @@ export default {
   width: 100%;
   height: 100px;
   background-color: #c2daa5;
-}
-.text-pre {
-  text-transform: none;
 }
 
 .space-text {
