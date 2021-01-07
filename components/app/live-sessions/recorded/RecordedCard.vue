@@ -22,7 +22,7 @@
       </div>
 
       <div class="recorded-card-description">
-        {{ entry.description }}
+        {{ entry.description | trimDescription }}
         <div v-if="showLetter && entry.curriculumType" class="recorded-card-letter">
           Letter: <span class="recored-card-letter-bold">{{ entry.curriculumType.name.substr(0, 1) }}</span>
         </div>
@@ -34,6 +34,15 @@
 <script>
 export default {
   name: 'RecordedCard',
+
+  filters: {
+    trimDescription (val) {
+      if (val.length > 80) {
+        return val.substr(0, 80) + '...'
+      }
+      return val
+    }
+  },
 
   props: {
     entry: {
@@ -59,7 +68,9 @@ export default {
 <style lang="scss">
 .recorded-card {
   width: 100%;
-  height: 100%;
+  height: 260px;
+  max-height: 260px;
+  overflow: hidden;
   position: relative;
   transition: transform 250ms;
   &.v-card.v-sheet {
@@ -114,11 +125,13 @@ export default {
     filter: drop-shadow(0px 3px 9px rgba(0, 0, 0, 0.25));
   }
   &-letter {
-    font-size: 23px;
+    font-size: 18px;
     line-height: 1.5;
     font-weight: 400;
     &-bold {
-      font-weight: 700;
+      font-size: 23px;
+      line-height: 1.5;
+      font-weight: bold;
     }
   }
   &-scaled {

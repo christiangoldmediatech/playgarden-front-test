@@ -2,28 +2,25 @@
   <v-main>
     <!-- Header section -->
     <v-container fluid>
-      <!-- Back button -->
-      <v-row>
-        <v-col cols="12">
+      <!-- Title -->
+      <v-row class="pos-relative" align="center" justify="center">
+        <v-col class="recorded-back-btn pb-0" cols="12">
           <v-btn
             color="accent"
             class="text-none"
             text
-            x-large
-            nuxt
-            :to="{ name: 'app-live-classes' }"
+            :x-large="!$vuetify.breakpoint.mobile"
+            :small="$vuetify.breakpoint.mobile"
+            @click.stop="goBack"
           >
-            <v-icon left>
+            <v-icon left :small="$vuetify.breakpoint.mobile">
               mdi-less-than
             </v-icon>
             Back
           </v-btn>
         </v-col>
-      </v-row>
 
-      <!-- Title -->
-      <v-row class="pos-relative" align="center" justify="center">
-        <v-col class="text-center">
+        <v-col class="text-center pt-0 pt-lg-3">
           <underlined-title
             font-size="60px"
             font-size-moible="26px"
@@ -39,7 +36,7 @@
           </div>
           <v-btn-toggle v-model="modeValue" dense>
             <v-btn
-              class="text-none"
+              class="text-none recorded-search-by-btn"
               :class="{ 'white--text': mode === 'LETTER' }"
               :color="mode === 'LETTER' ? 'accent' : undefined"
               :small="$vuetify.breakpoint.mobile"
@@ -109,7 +106,7 @@
     </v-container>
 
     <!-- Desktop letter finder -->
-    <v-container v-if="$vuetify.breakpoint.lgAndUp && mode === 'LETTER'" fluid>
+    <v-container v-if="$vuetify.breakpoint.lgAndUp && mode === 'LETTER'" class="recorded-letters" :class="{ 'mb-6': recorded.length === 0 }">
       <!-- Desktop letter selector -->
       <v-row justify="center">
         <recorded-letter
@@ -122,7 +119,7 @@
     </v-container>
 
     <!-- Letter Mode Content -->
-    <v-container v-if="mode === 'LETTER' && letterObject" fluid>
+    <v-container v-if="mode === 'LETTER' && letterObject">
       <v-row>
         <v-col cols="12" class="text-center text-lg-left">
           <underlined-title
@@ -140,7 +137,6 @@
           sm="8"
           md="6"
           lg="4"
-          xl="3"
         >
           <recorded-card :entry="recording" />
         </v-col>
@@ -275,6 +271,10 @@ export default {
       } else {
         this.selectedLetter = id
       }
+    },
+
+    goBack () {
+      this.$router.push({ name: 'app-live-classes' })
     }
   }
 }
@@ -282,6 +282,16 @@ export default {
 
 <style lang="scss">
 .recorded {
+  &-letters {
+    max-width: 1264px !important;
+  }
+  &-back-btn {
+    @media screen and (min-width: 1264px) {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  }
   &-search-type {
     width: 100%;
     text-align: center;
@@ -301,6 +311,12 @@ export default {
     @media screen and(min-width: 1264px) {
       display: block;
       font-size: 22px;
+    }
+    &-btn {
+      width: 85px;
+      @media screen and (min-width: 1264px) {
+        width: 96px;
+      }
     }
   }
   &-browse-by {
