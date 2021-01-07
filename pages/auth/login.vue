@@ -83,7 +83,7 @@ export default {
 
   mounted () {
     // eslint-disable-next-line
-    console.log(process.env.frontEndUrl)
+    console.log(process.env.frontendUrl)
   },
 
   methods: {
