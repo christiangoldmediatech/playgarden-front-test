@@ -24,7 +24,7 @@
       <div class="recorded-card-description">
         {{ entry.description | trimDescription }}
         <div v-if="showLetter && entry.curriculumType" class="recorded-card-letter">
-          Letter: <span class="recored-card-letter-bold">{{ entry.curriculumType.name.substr(0, 1) }}</span>
+          Letter: <span class="recorded-card-letter-bold">{{ entry.curriculumType.name.substr(0, 1) }}</span>
         </div>
       </div>
     </v-card>
@@ -131,7 +131,7 @@ export default {
     &-bold {
       font-size: 23px;
       line-height: 1.5;
-      font-weight: bold;
+      font-weight: 500;
     }
   }
   &-scaled {
