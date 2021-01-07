@@ -212,6 +212,7 @@ export default {
   env: {
     apiBaseUrl: process.env.API_BASE_URL || 'https://apidev.playgardenonline.com',
     testEnv: process.env.TEST_ENV || 'LOCAL',
+    frontEndUrl: process.env.FRONTEND_URL || 'http://localhost:8080/',
     stripePublicKey: process.env.STRIPE_PUBLIC || 'pk_test_51HKUavFlV2s2JR4RIPnTwt7laAa7Q5T3CXKL5xhGReFmtvcbi2YQDJBz8JnAHw5STCGxNmoWUDlZUnxzCE9imzxF00J5yVNU5Z'
   },
   router: {

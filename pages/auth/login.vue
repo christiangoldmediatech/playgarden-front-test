@@ -81,6 +81,11 @@ export default {
     }
   },
 
+  mounted () {
+    // eslint-disable-next-line
+    console.log(process.env.frontEndUrl)
+  },
+
   methods: {
     ...mapActions(['disableAxiosGlobal', 'enableAxiosGlobal']),
 
