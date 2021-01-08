@@ -214,7 +214,7 @@ export default {
   .ps {
     position: relative;
     width: 100%;
-    max-height: calc(100% - 51px);
+    max-height: calc(100% - 101px);
     overflow: hidden !important;
     overflow-anchor: none;
     -ms-overflow-style: none;
