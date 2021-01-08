@@ -1,6 +1,6 @@
 <template>
   <v-container
-    class="my-5"
+    class="background-line my-5"
     :class="{ mobile: $vuetify.breakpoint.xs }"
     :style="{'--bgColor': color}"
     fluid
