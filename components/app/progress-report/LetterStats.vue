@@ -2,7 +2,7 @@
   <div class="">
     <v-list three-line>
       <template v-for="(item, index) in letterStats.reports">
-        <item-progress :key="index" :item="item" />
+        <item-progress :key="index" :item="item" :index="index" :total="letterStats.reports.length" />
       </template>
     </v-list>
   </div>

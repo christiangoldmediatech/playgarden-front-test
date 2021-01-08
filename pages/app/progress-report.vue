@@ -5,7 +5,7 @@
     <v-row>
       <v-col cols="12" md="2" lg="2" xl="1">
         <v-card class="content-report">
-          <v-list three-line>
+          <v-list three-line class="pt-9">
             <v-list-item-group>
               <template v-for="(item, index) in getMenu">
                 <v-list-item
