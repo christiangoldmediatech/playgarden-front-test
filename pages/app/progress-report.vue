@@ -43,7 +43,7 @@
                 v-model="selectedChild"
                 hide-details
                 :preview-mode="previewMode"
-                @input="$emit('input', getReport())"
+                @input="$emit('input', getDataGraphic())"
               />
             </v-col>
           </v-row>
@@ -152,7 +152,7 @@ export default {
   created () {
     this.general = true
     this.getTypes()
-    this.getReport()
+    this.getDataGraphic()
     this.getDataReport()
     this.$nuxt.$on('detail-progress-report', (data) => {
       this.loadDetailReport(data.point.category)
@@ -165,7 +165,7 @@ export default {
 
   methods: {
     ...mapActions('admin/report-card', ['getTypes']),
-    ...mapActions('progress-report', ['getReport', 'getDataLessonsReport']),
+    ...mapActions('progress-report', ['getGraphicByChildrenId', 'getLastLessonChildren']),
     ...mapActions({ setChild: 'setChild' }),
 
     changeChild (newId, redirect = true) {
@@ -175,10 +175,16 @@ export default {
 
     getDataReport () {
       if (this.selectedChild) {
-        this.getDataLessonsReport({ childId: this.selectedChild })
+        this.getLastLessonChildren({ childId: this.selectedChild })
           .then((result) => {
             this.letterStats = result
           })
+      }
+    },
+
+    getDataGraphic () {
+      if (this.selectedChild) {
+        this.getGraphicByChildrenId({ childId: this.selectedChild })
       }
     },
 
