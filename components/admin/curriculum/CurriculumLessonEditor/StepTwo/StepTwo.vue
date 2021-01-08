@@ -226,6 +226,11 @@ export default {
         value: 'name'
       },
       {
+        text: 'Description',
+        sortable: false,
+        value: 'description'
+      },
+      {
         text: 'Status',
         sortable: false,
         value: 'status'
