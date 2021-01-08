@@ -1,9 +1,18 @@
 <template>
   <v-main>
-    <div class="startLiveClass">
+    <!-- <div class="startLiveClass">
       <p class="text-center pt-3">
         <span class="text-h7 text-md-h5 font-weight-bold white--text pt-5">Live Classes will start January 11th, 2021</span>
       </p>
+    </div> -->
+    <div class="text-right pt-4 px-4">
+      <v-btn
+        class="text-none"
+        color="accent"
+        @click.stop="goToRecordings"
+      >
+        Watch recorded videos
+      </v-btn>
     </div>
     <v-container
       :class="{ 'lsess-container': !$vuetify.breakpoint.smAndDown }"
@@ -81,7 +90,7 @@
                   tile
                   x-large
                   nuxt
-                  :to="{ name: 'app-account', params: { changeplan: 1 } }"
+                  :to="{ name: 'app-account', params: { changeplan: 1, planRedirect: 'app-live-classes' } }"
                 >
                   <!-- nuxt to app-account ?changeplan=1 -->
                   COMPARE PLANS
@@ -104,7 +113,7 @@ import SessionsTable from '@/components/app/live-sessions/SessionsTable.vue'
 import RecordedClassPlayer from '@/components/app/live-sessions/RecordedClassPlayer.vue'
 
 export default {
-  name: 'LiveClasses',
+  name: 'Index',
 
   components: {
     TodayCardsPanel,
@@ -179,6 +188,9 @@ export default {
         this.dialog = false
         this.loading = false
       })
+    },
+    goToRecordings () {
+      this.$router.push({ name: 'app-live-classes-recorded' })
     }
   }
 }

@@ -45,5 +45,22 @@ export default {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+
+  async getRecorded (_, { curriculumTypeId = null, activityTypeId = null }) {
+    try {
+      const data = await this.$axios.$get('/live-sessions', {
+        params: {
+          limit: 100,
+          page: 1,
+          recorded: true,
+          activityTypeId,
+          curriculumTypeId
+        }
+      })
+      return data
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }

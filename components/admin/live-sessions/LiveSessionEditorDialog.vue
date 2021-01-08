@@ -44,6 +44,23 @@
 
             <validation-provider
               v-slot="{ errors }"
+              name="Letter"
+            >
+              <pg-select
+                v-model="item.curriculumTypeId"
+                clearable
+                :disabled="loading"
+                :error-messages="errors"
+                :items="curriculumTypes"
+                item-text="name"
+                item-value="id"
+                label="Letter"
+                solo-labeled
+              />
+            </validation-provider>
+
+            <validation-provider
+              v-slot="{ errors }"
               name="Title"
               rules="required"
             >
@@ -341,6 +358,7 @@ import { mapActions, mapGetters } from 'vuex'
 function generateItemTemplate () {
   return {
     activityTypeId: null,
+    curriculumTypeId: null,
     title: null,
     description: null,
     link: null,
@@ -378,6 +396,7 @@ export default {
 
   computed: {
     ...mapGetters('admin/activity', ['types']),
+    ...mapGetters('admin/curriculum', { curriculumTypes: 'types' }),
 
     dataStartFormatted () {
       return this.dateStart ? dayjs(this.dateStart).format('MM/DD/YYYY') : null
@@ -508,11 +527,16 @@ export default {
         this.item.activityTypeId = item.activityType.id
       }
 
+      if (item.curriculumType) {
+        this.item.curriculumTypeId = item.curriculumType.id
+      }
+
       if (item.inCollaborationWith) {
         this.item.inCollaborationWith = item.inCollaborationWith
       }
 
       if (item.videos && item.videos.videoUrl) {
+        this.item.videoId = item.videos.id
         this.video = item.videos
         const mediaObject = {
           title: item.name,
