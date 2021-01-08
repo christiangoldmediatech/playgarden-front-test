@@ -1,6 +1,6 @@
 <template>
   <v-container class="sticky px-0" fluid>
-    <div class="text-center hidden-lg-and-up">
+    <div v-if="$vuetify.breakpoint.mobile" class="text-center">
       <v-menu id="categoryHeader" offset-y>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
@@ -46,11 +46,18 @@
         </v-list>
       </v-menu>
     </div>
-    <div class="hidden-md-and-down">
+    <div v-else>
+      <v-row justify="center">
+        <v-col class="text-center font-weight-bold text-h5 pt-0" cols="12">
+          Browse by category
+        </v-col>
+      </v-row>
+
+      <!-- :class="{ sticky }" -->
+      <!-- v-scroll="giveMeInfo" -->
       <v-toolbar
         id="categoryHeader"
         color="white"
-        class="test-z-index"
         flat
         :prominent="!$vuetify.breakpoint.mobile"
       >
@@ -124,6 +131,28 @@ export default {
       type: Array,
       required: true
     }
+  },
+
+  data: () => {
+    return {
+      offsetTop: 0,
+      sticky: false
+    }
+  },
+
+  mounted () {
+    const header = document.getElementById('categoryHeader')
+    this.offsetTop = header.offsetTop
+  },
+
+  methods: {
+    // giveMeInfo () {
+    //   if (window.pageYOffset > this.offsetTop) {
+    //     this.sticky = true
+    //   } else {
+    //     this.sticky = false
+    //   }
+    // }
   }
 }
 </script>
@@ -133,10 +162,21 @@ export default {
   @media screen and (min-width: 1264px) {
     position: -webkit-sticky; /* Safari */
     position: sticky;
-    top: 52px;
-    z-index: 5;
+    top: 8px;
+    z-index: 2;
   }
 }
+// .content-padding {
+//   padding-top: var(--paddingHeight);
+// }
+
+// .sticky {
+//   position: fixed;
+//   top: 64px;
+//   left: 0;
+//   width: 100%;
+//   z-index: 5;
+// }
 
 .wrapper {
   transition: transform 250ms;
