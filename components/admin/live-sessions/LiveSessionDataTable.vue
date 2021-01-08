@@ -257,6 +257,7 @@ export default {
 
   created () {
     this.getTypes()
+    this.getCurriculumTypes()
   },
 
   beforeDestroy () {
@@ -265,6 +266,9 @@ export default {
 
   methods: {
     ...mapActions('admin/activity', ['getTypes']),
+    ...mapActions('admin/curriculum', {
+      getCurriculumTypes: 'getTypes'
+    }),
 
     ...mapActions('live-sessions', ['getLiveSessions', 'deleteLiveSession']),
 

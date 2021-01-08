@@ -5,6 +5,14 @@
       <activity-title />
     </v-container>
 
+    <v-container class="hidden-md-and-down">
+      <v-row justify="center">
+        <v-col class="text-center font-weight-bold text-h5 py-0" cols="12">
+          Browse by category
+        </v-col>
+      </v-row>
+    </v-container>
+
     <category-header v-bind="{ categories }" />
 
     <carousel

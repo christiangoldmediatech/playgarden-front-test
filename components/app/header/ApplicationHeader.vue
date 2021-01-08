@@ -4,9 +4,14 @@
     class="pg-app-bar"
     color="white"
     elevation="1"
-    :class="{'overrideDialog': overrideDialogs}"
+    :class="{ overrideDialog: overrideDialogs }"
   >
-    <v-row class="flex-nowrap" align="center" justify="space-between" no-gutters>
+    <v-row
+      class="flex-nowrap"
+      align="center"
+      justify="space-between"
+      no-gutters
+    >
       <!-- HAMBURGER MENU -->
       <v-col class="d-flex align-center" cols="auto">
         <v-app-bar-nav-icon
@@ -158,13 +163,12 @@ export default {
       type: Boolean,
       required: false,
       default: false
-    },
-    overrideDialogs: {
-      type: Boolean,
-      required: false,
-      default: false
     }
   },
+
+  data: () => ({
+    overrideDialogs: false
+  }),
 
   methods: {
     toggleDrawer () {
@@ -254,8 +258,5 @@ export default {
 }
 .btn-register:before {
   background-color: transparent !important;
-}
-.overrideDialog {
-  z-index: 300;
 }
 </style>

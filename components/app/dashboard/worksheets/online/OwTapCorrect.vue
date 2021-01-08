@@ -6,7 +6,7 @@
 
     <div class="ow-tap-cqt-answers">
       <ow-image
-        v-for="image in question.worksheetTable.images"
+        v-for="image in images"
         :key="`image-${image.code}`"
         clickable
         :word="image.word"
@@ -36,6 +36,9 @@
 </template>
 
 <script>
+import { jsonCopy } from '@/utils/objectTools.js'
+import { shuffle } from '@/utils/arrayTools.js'
+
 import OwImage from './OwImage.vue'
 import OwCtnBtn from './OwCtnBtn.vue'
 import OwMessage from './OwMessage.vue'
@@ -73,6 +76,10 @@ export default {
 
     correct () {
       return Boolean(this.selectedImage && this.selectedImage.is_correct)
+    },
+
+    images () {
+      return shuffle(jsonCopy(this.question.worksheetTable.images))
     }
   },
 
