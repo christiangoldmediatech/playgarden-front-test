@@ -8,14 +8,15 @@ import VideoPlayerDialog from '@/components/pg-video-js-player/VideoPlayerDialog
 
 // Global PG Components
 import PgCircleLetterDay from '@/components/pg/components/PgCircleLetterDay.vue'
+import PgIcsCalendar from '@/components/pg/components/PgIcsCalendar.vue'
 import PgLoading from '@/components/pg/components/PgLoading.vue'
-// import PgPagination from '@/components/pg/components/PgPagination.vue'
 import PgSocialButtons from '@/components/pg/components/PgSocialButtons.vue'
 
 // Pg Admin Table
 import PgAdminDataTable from '@/components/pg/components/data-table/PgAdminDataTable.vue'
 
 // PG Form Input Controls
+import PgAutocomplete from '@/components/pg/components/form-inputs-controls/PgAutocomplete.vue'
 import PgFileInput from '@/components/pg/components/form-inputs-controls/PgFileInput.vue'
 import PgPasswordField from '@/components/pg/components/form-inputs-controls/PgPasswordField.vue'
 import PgSelect from '@/components/pg/components/form-inputs-controls/PgSelect.vue'
@@ -45,12 +46,14 @@ Vue.component(PgOnboardingVideoPlayer.name, PgOnboardingVideoPlayer)
 Vue.component(VideoPlayerDialog.name, VideoPlayerDialog)
 
 Vue.component(PgCircleLetterDay.name, PgCircleLetterDay)
+Vue.component(PgIcsCalendar.name, PgIcsCalendar)
 Vue.component(PgLoading.name, PgLoading)
-// Vue.component(PgPagination.name, PgPagination)
 Vue.component(PgSocialButtons.name, PgSocialButtons)
 
 Vue.component(PgAdminDataTable.name, PgAdminDataTable)
 
+// PG Form Input Controls
+Vue.component(PgAutocomplete.name, PgAutocomplete)
 Vue.component(PgFileInput.name, PgFileInput)
 Vue.component(PgPasswordField.name, PgPasswordField)
 Vue.component(PgSelect.name, PgSelect)
@@ -58,6 +61,7 @@ Vue.component(PgTextarea.name, PgTextarea)
 Vue.component(PgTextField.name, PgTextField)
 Vue.component(PgTiptapField.name, PgTiptapField)
 
+// PG Tables
 Vue.component(PgDataFooter.name, PgDataFooter)
 Vue.component(PgDataIterator.name, PgDataIterator)
 Vue.component(PgDataTable.name, PgDataTable)
