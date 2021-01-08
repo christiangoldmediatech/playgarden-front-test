@@ -1,5 +1,6 @@
 // import path from 'path'
 // import fs from 'fs'
+import webpack from 'webpack'
 const googleTagManagerNoScript = '<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M57SKCV" height="0" width="0" style="display:none;visibility:hidden"></iframe>'
 
 const getTagManagerText = () => {
@@ -205,7 +206,12 @@ export default {
    ** See https://nuxtjs.org/api/configuration-build/
    */
   build: {
-    transpile: ['vuetify/lib', 'vee-validate/dist/rules', 'tiptap-vuetify']
+    transpile: ['vuetify/lib', 'vee-validate/dist/rules', 'tiptap-vuetify'],
+    plugins: [
+      new webpack.IgnorePlugin({
+        resourceRegExp: /\@highcharts\/map\-collection/
+      })
+    ]
   },
   env: {
     apiBaseUrl: process.env.API_BASE_URL || 'https://apidev.playgardenonline.com',

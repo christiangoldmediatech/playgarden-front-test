@@ -3,7 +3,7 @@
     <v-col cols="2" class="ml-4">
       <v-progress-circular
         :rotate="360"
-        :size="70"
+        :size="($vuetify.breakpoint.mobile) ? 50 : 70"
         :width="5"
         :value="item.percentage"
         color="orange lighten-1"
