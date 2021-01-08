@@ -10,7 +10,7 @@
               <template v-for="(item, index) in getMenu">
                 <v-list-item
                   :key="index"
-                  class="mt-6 mb-6"
+                  class="mt-4 mb-4"
                   active-class="active-css"
                   @click="loadDetailReport(item.name)"
                 >
