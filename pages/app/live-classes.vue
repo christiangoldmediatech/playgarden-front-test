@@ -81,7 +81,7 @@
                   tile
                   x-large
                   nuxt
-                  :to="{ name: 'app-account', params: { changeplan: 1 } }"
+                  :to="{ name: 'app-account', params: { changeplan: 1, planRedirect: 'app-live-classes' } }"
                 >
                   <!-- nuxt to app-account ?changeplan=1 -->
                   COMPARE PLANS
