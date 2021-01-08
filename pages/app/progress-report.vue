@@ -14,7 +14,7 @@
                   active-class="active-css"
                   @click="loadDetailReport(item.name)"
                 >
-                  <v-list-item-avatar size="60">
+                  <v-list-item-avatar size="56">
                     <v-img v-if="item.name === 'General'" :src="require('@/assets/svg/general.svg')" />
                     <v-img v-else :src="item.icon" min-width="38px" />
                   </v-list-item-avatar>
