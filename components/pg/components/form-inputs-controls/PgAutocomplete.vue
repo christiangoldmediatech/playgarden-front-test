@@ -171,6 +171,8 @@ export default {
         this.internalValue = value
       }
 
+      this.internalSearch = ''
+
       this.setSelectedItems()
 
       this.$emit('update:item-added', search)
