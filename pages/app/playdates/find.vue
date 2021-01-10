@@ -1,65 +1,69 @@
 <template>
-  <v-main class="mt-n5">
-    <v-col class="mt-n10">
-      <v-row
-        class="mt-mb-n16 mt-sm-n6"
-        :class="{ mobile: $vuetify.breakpoint.smAndDown }"
-        no-gutters
+  <v-col class="fill-height">
+    <v-row>
+      <v-btn
+        class="top-left text-none"
+        color="#f89838"
+        nuxt
+        :to="{ name: 'app-playdates' }"
+        text
+        exact
       >
-        <v-col cols="12">
-          <v-row no-gutters justify="start">
-            <v-btn
-              class="top-left text-none"
-              color="#f89838"
-              nuxt
-              :to="{ name: 'app-playdates' }"
-              text
-              exact
-            >
-              <v-icon class="mr-2" small left color="#f89838">
-                mdi-less-than
-              </v-icon>
-              Back
-            </v-btn>
-          </v-row>
+        <v-icon class="mr-2" small left color="#f89838">
+          mdi-less-than
+        </v-icon>
+        Back
+      </v-btn>
+    </v-row>
 
-          <v-row class="mt-md-5">
-            <underlined-title
-              text="Find the playdate that best suits your child"
-              class="text-h5 mt-5"
-            />
-            <p class="mt-5">
-              Here you will find playdates from other playgardenprep partners
-              with available places!
-            </p>
-          </v-row>
-        </v-col>
-      </v-row>
-    </v-col>
+    <v-row class="mt-md-5" no-gutters>
+      <underlined-title text="Find the playdate that best suits your child" />
 
-    <v-container fluid>
-      <v-row dense>
-        <v-col cols="12" md="6">
-          <card-playdate />
-        </v-col>
+      <p class="mt-5">
+        Here you will find playdates from other playgardenprep partners with
+        available places!
+      </p>
+    </v-row>
 
-        <v-col>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn color="primary" dark v-bind="attrs" v-on="on">
-              Open Dialog
-            </v-btn>
-          </template>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-main>
+    <v-row>
+      <v-col
+        v-for="(playdate, indexP) in playdates"
+        :key="indexP"
+        cols="12"
+        md="6"
+      >
+        <card-playdate finding :playdate="playdate" />
+      </v-col>
+    </v-row>
+  </v-col>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 import CardPlaydate from '@/components/app/playdates/CardPlaydate'
 
 export default {
   name: 'Find',
-  components: { CardPlaydate }
+
+  components: { CardPlaydate },
+
+  data: () => ({
+    playdates: []
+  }),
+
+  mounted () {
+    this.getActivePlaydates()
+  },
+
+  methods: {
+    ...mapActions('playdates', ['getAndFilterPlaydates']),
+
+    async getActivePlaydates () {
+      try {
+        this.playdates = await this.getAndFilterPlaydates()
+      } catch (e) {}
+    }
+  }
 }
 </script>

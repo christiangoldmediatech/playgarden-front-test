@@ -1,282 +1,222 @@
 <template>
-  <v-main>
-    <v-col>
-      <v-row
-        class="mt-n15"
-        :class="{ mobile: $vuetify.breakpoint.smAndDown }"
-        no-gutters
+  <v-col class="fill-height">
+    <v-row class="pt-3" no-gutters>
+      <v-col cols="12" sm="">
+        <underlined-title text="Educational Playdates" />
+      </v-col>
+
+      <v-col cols="12" sm="auto" class="mt-3 mt-sm-0">
+        <v-row
+          class="fill-height"
+          align-content="center"
+          justify="end"
+          no-gutters
+        >
+          <div :class="{ 'hidden-sm-and-down': !hasPlaydates }">
+            <v-btn
+              v-if="hasPlaydates"
+              class="text-transform-none mr-3"
+              color="accent"
+              dark
+              :fab="$vuetify.breakpoint.smAndDown"
+              :large="$vuetify.breakpoint.mdAndUp"
+              nuxt
+              :to="{ name: 'app-playdates-create' }"
+              :small="$vuetify.breakpoint.smAndDown"
+            >
+              <template v-if="$vuetify.breakpoint.mdAndUp">
+                Create Playdate
+              </template>
+
+              <v-icon v-else>
+                mdi-plus
+              </v-icon>
+            </v-btn>
+
+            <v-btn
+              large
+              nuxt
+              :to="{ name: 'app-playdates-find' }"
+              color="primary"
+              class="text-transform-none"
+            >
+              Find Playdate
+            </v-btn>
+          </div>
+        </v-row>
+      </v-col>
+    </v-row>
+
+    <v-row v-if="hasPlaydates" class="mt-6" dense>
+      <v-col
+        v-for="(playdate, indexP) in playdatesComputed"
+        :key="indexP"
+        class="mb-3"
+        cols="12"
+        md="6"
       >
-        <v-col cols="12" class="text-md-left text-center">
-          <underlined-title text="Educational Playdates" class="text-h5" />
+        <card-playdate :playdate="playdate" />
+      </v-col>
+    </v-row>
 
-          <v-col>
-            <v-row justify="end" no-gutters class="ml-16">
-              <div class="text-center mt-n16 ml-16 mr-n16">
-                <v-btn
-                  v-if="hasPlaydates"
-                  nuxt
-                  :to="{ name: 'app-playdates-create' }"
-                  large
-                  color="accent"
-                  class="text-btn hidden-sm-and-down"
-                >
-                  Create Playdate
-                </v-btn>
+    <v-row v-else class="mt-6 mt-md-0" no-gutters>
+      <v-col cols="12" md="6" sm="12">
+        <v-img
+          contain
+          alt="Educational Playdates"
+          :src="require('@/assets/png/playdates/playdate.png')"
+          class="align-center mr-md-15"
+        />
+      </v-col>
 
-                <v-btn
-                  large
-                  nuxt
-                  :to="{ name: 'app-playdates-find' }"
-                  color="primary"
-                  class="text-btn  hidden-sm-and-down"
-                >
-                  Find Playdate
-                </v-btn>
-              </div>
+      <v-col cols="12" md="6">
+        <v-row align-content="center" class="fill-height">
+          <v-col cols="12" class="text-md-left text-center font-weight-bold">
+            What's a Playdates?
+          </v-col>
+
+          <v-col cols="12" class="text-md-left text-center">
+            A playdate is a place where your child can have fun with their
+            friends while they have fun playing, all supervised by a specialist.
+          </v-col>
+
+          <v-col cols="12">
+            <v-row justify="center" justify-md="start" no-gutters>
+              <v-btn
+                nuxt
+                :to="{ name: 'app-playdates-create' }"
+                width="200"
+                large
+                :loading="loading"
+                color="accent"
+                class="text-transform-none"
+              >
+                Create Playdate
+              </v-btn>
+            </v-row>
+
+            <v-row class="hidden-md-and-up" justify="center" no-gutters>
+              <v-btn
+                nuxt
+                :to="{ name: 'app-playdates-find' }"
+                width="200"
+                large
+                color="primary"
+                class="my-5 text-transform-none"
+              >
+                Find Playdate
+              </v-btn>
+            </v-row>
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
+
+    <!-- PlatinumPlan Popup -->
+    <v-dialog
+      :value="hasTrialOrPlatinumPlan"
+      content-class="elevation-0"
+      max-width="700"
+      persistent
+    >
+      <v-card>
+        <div class="green-line green-line-1" />
+        <div class="green-line green-line-2" />
+
+        <v-row justify="center" align-content="center" no-gutters>
+          <v-col cols="5">
+            <v-img
+              :src="require('assets/png/playdates/playdate-1.png')"
+              class="hidden-sm-and-down"
+            />
+          </v-col>
+
+          <v-col cols="12" class="hidden-md-and-up">
+            <v-row justify="center" no-gutters>
+              <v-img
+                max-width="250"
+                :src="require('assets/png/playdates/popup.png')"
+                class="hidden-md-and-up mt-5"
+              />
             </v-row>
           </v-col>
 
-          <v-container v-if="hasPlaydates" fluid>
-            <v-row dense>
-              <v-col
-                v-for="(playdate, indexP) in playdates"
-                :key="indexP"
-                cols="12"
-                md="6"
-              >
-                <card-playdate :playdate="playdate" />
-              </v-col>
-            </v-row>
-          </v-container>
+          <v-col cols="12" md="7" sm="12">
+            <v-row align-content="center" class="fill-height" no-gutters>
+              <v-col cols="12" class="text-md-left text-center">
+                <underlined-title
+                  text="What's a Playdate?"
+                  class="text-h5 ml-sm-0 ml-md-5"
+                />
 
-          <v-row v-else no-gutters class="mt-md-10">
-            <v-col>
-              <v-row
-                class="mt-6 mt-md-0"
-                :class="{ mobile: $vuetify.breakpoint.smAndDown }"
-                no-gutters
-              >
-                <v-col cols="12" md="6" sm="12">
-                  <v-img
-                    contain
-                    alt="Educational Playdates"
-                    :src="require('assets/png/playdates/playdate.png')"
-                    class="align-center mr-md-15"
-                  />
-                </v-col>
-
-                <v-col cols="12" md="6" sm="12">
-                  <v-row
-                    justify-sm="center"
-                    justify-md="start"
-                    no-gutters
-                    class="mt-10"
-                  >
-                    <v-col>
-                      <p class="text-md-left text-sm-center font-weight-bold">
-                        What's a Playdates?
-                      </p>
-                    </v-col>
-                  </v-row>
-
-                  <v-row justify-sm="center" justify-md="start" no-gutters>
-                    <v-col sm="12">
-                      <p class="text-md-left text-sm-center">
+                <v-row justify="center" justify-md="start" no-gutters>
+                  <v-col sm="12">
+                    <v-row no-gutters>
+                      <v-col
+                        class="text-md-left text-center mt-5 mr-md-5 ml-md-5"
+                      >
                         A playdate is a place where your child can have fun with
                         their friends while they have fun playing, all
                         supervised by a specialist.
-                      </p>
-                    </v-col>
-                  </v-row>
+                      </v-col>
+                    </v-row>
 
-                  <v-row justify="center" no-gutters>
-                    <v-col>
-                      <v-btn
-                        nuxt
-                        :to="{ name: 'app-playdates-create' }"
-                        large
-                        color="accent"
-                        class="text-btn hidden-sm-and-down"
+                    <v-row no-gutters>
+                      <v-col
+                        class="text-md-left text-center mt-5 font-weight-bold ml-md-5"
                       >
-                        Create Playdate
-                      </v-btn>
-                    </v-col>
-                  </v-row>
+                        Get access to Educationals Playdates
+                      </v-col>
+                    </v-row>
 
-                  <v-row justify-sm="center" no-gutters>
-                    <v-col>
-                      <v-row justify="center" no-gutters>
+                    <v-row no-gutters>
+                      <v-col class="text-md-left text-center mt-5 ml-md-5">
+                        Upgraded your plan
+                      </v-col>
+                    </v-row>
+
+                    <v-row no-gutters>
+                      <v-col sm="12">
                         <v-btn
-                          nuxt
-                          :to="{ name: 'app-playdates-create' }"
-                          width="200"
-                          large
                           color="accent"
-                          class="text-btn hidden-md-and-up "
-                        >
-                          Create Playdate
-                        </v-btn>
-                      </v-row>
-
-                      <v-row justify="center" no-gutters>
-                        <v-btn
-                          nuxt
-                          :to="{ name: 'app-playdates-find' }"
-                          width="200"
+                          class="hidden-md-and-up mb-5"
+                          tile
                           large
-                          color="primary"
-                          class="text-btn hidden-md-and-up mb-5 mt-5"
+                          nuxt
+                          :to="{
+                            name: 'app-account',
+                            params: { changeplan: 1 }
+                          }"
                         >
-                          Find Playdate
+                          <!-- nuxt to app-account ?changeplan=1 -->
+                          COMPARE PLANS
                         </v-btn>
-                      </v-row>
-                    </v-col>
-                  </v-row>
-                </v-col>
-              </v-row>
-            </v-col>
-          </v-row>
-        </v-col>
 
-        <!-- PlatinumPlan Popup -->
-        <v-dialog
-          :value="!hasTrialOrPlatinumPlan"
-          content-class="elevation-0"
-          max-width="700"
-          persistent
-        >
-          <v-card>
-            <div class="green-line green-line-1" />
-            <div class="green-line green-line-2" />
-            <v-row justify="center" align-content="center" no-gutters>
-              <v-col cols="5">
-                <v-img
-                  :src="require('assets/png/playdates/playdate-1.png')"
-                  class="hidden-sm-and-down"
-                />
-              </v-col>
-
-              <v-col cols="12" class="hidden-md-and-up">
-                <v-row justify="center" no-gutters>
-                  <v-img
-                    max-width="250"
-                    :src="require('assets/png/playdates/popup.png')"
-                    class="hidden-md-and-up mt-5"
-                  />
-                </v-row>
-              </v-col>
-
-              <v-col cols="12" md="7" sm="12" class="mt-md-15 mt-sm-0">
-                <v-row justify="center" no-gutters>
-                  <v-col cols="12">
-                    <v-row
-                      :class="{ mobile: $vuetify.breakpoint.smAndDown }"
-                      no-gutters
-                    >
-                      <v-col cols="12" class="text-md-left text-center">
-                        <underlined-title
-                          text="What's a Playdate?"
-                          class="text-h5 ml-sm-0 ml-md-5"
-                        />
-
-                        <v-row
-                          justify-sm="center"
-                          justify-md="start"
-                          no-gutters
+                        <v-btn
+                          color="accent"
+                          class="hidden-sm-and-down ml-md-5"
+                          tile
+                          x-large
+                          nuxt
+                          :to="{
+                            name: 'app-account',
+                            params: { changeplan: 1 }
+                          }"
                         >
-                          <v-col sm="12">
-                            <v-row
-                              justify-sm="center"
-                              justify-md="start"
-                              no-gutters
-                            >
-                              <p
-                                class="text-md-left text-sm-center mt-5 mr-md-5 ml-md-5"
-                              >
-                                A playdate is a place where your child can have
-                                fun with their friends while they have fun
-                                playing, all supervised by a specialist.
-                              </p>
-                            </v-row>
-
-                            <v-row
-                              justify-sm="center"
-                              justify-md="start"
-                              no-gutters
-                            >
-                              <v-col cols="12">
-                                <p
-                                  class="text-md-left text-sm-center mt-5 font-weight-bold ml-md-5"
-                                >
-                                  Get access to Educationals Playdates
-                                </p>
-                              </v-col>
-                            </v-row>
-
-                            <v-row
-                              justify-sm="center"
-                              justify-md="start"
-                              no-gutters
-                            >
-                              <v-col sm="12">
-                                <p
-                                  class="text-md-left text-sm-center mt-5 ml-md-5"
-                                >
-                                  Upgraded your plan
-                                </p>
-                              </v-col>
-                            </v-row>
-
-                            <v-row
-                              justify-sm="center"
-                              justify-md="start"
-                              no-gutters
-                            >
-                              <v-col sm="12">
-                                <v-btn
-                                  color="accent"
-                                  class="hidden-md-and-up mb-5"
-                                  tile
-                                  large
-                                  nuxt
-                                  :to="{
-                                    name: 'app-account',
-                                    params: { changeplan: 1 }
-                                  }"
-                                >
-                                  <!-- nuxt to app-account ?changeplan=1 -->
-                                  COMPARE PLANS
-                                </v-btn>
-
-                                <v-btn
-                                  color="accent"
-                                  class="hidden-sm-and-down ml-md-5"
-                                  tile
-                                  x-large
-                                  nuxt
-                                  :to="{
-                                    name: 'app-account',
-                                    params: { changeplan: 1 }
-                                  }"
-                                >
-                                  <!-- nuxt to app-account ?changeplan=1 -->
-                                  COMPARE PLANS
-                                </v-btn>
-                              </v-col>
-                            </v-row>
-                          </v-col>
-                        </v-row>
+                          <!-- nuxt to app-account ?changeplan=1 -->
+                          COMPARE PLANS
+                        </v-btn>
                       </v-col>
                     </v-row>
                   </v-col>
                 </v-row>
               </v-col>
             </v-row>
-          </v-card>
-        </v-dialog>
-      </v-row>
-    </v-col>
-  </v-main>
+          </v-col>
+        </v-row>
+      </v-card>
+    </v-dialog>
+  </v-col>
 </template>
 
 <script>
@@ -291,13 +231,29 @@ export default {
     CardPlaydate
   },
 
-  data: () => ({ playdates: [] }),
+  data: () => ({
+    loading: false,
+
+    playdates: []
+  }),
 
   computed: {
     ...mapGetters('auth', ['hasTrialOrPlatinumPlan']),
 
+    playdatesComputed () {
+      return this.playdates.flatMap(
+        ({ backpackChildrenImages = [], children, playdates }) => {
+          return playdates.map(({ playdate } = {}, indexP) => ({
+            backpackChildrenImages: backpackChildrenImages[indexP] || [],
+            children,
+            ...playdate
+          }))
+        }
+      )
+    },
+
     hasPlaydates () {
-      return Boolean(this.playdates.length)
+      return Boolean(this.playdatesComputed.length)
     }
   },
 
@@ -313,23 +269,15 @@ export default {
     ...mapActions('playdates', ['getChildrenInfo']),
 
     async getActivePlaydates () {
+      this.loading = true
+
       try {
         this.playdates = await this.getChildrenInfo()
-      } catch (e) {}
+      } catch (e) {
+      } finally {
+        this.loading = false
+      }
     }
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.text-btn {
-  text-transform: none !important;
-}
-.dialog-overlay {
-  background-color: rgba(0, 0, 0, 0.68) !important;
-}
-.fullscreen {
-  width: 100% !important;
-  height: 100% !important;
-}
-</style>

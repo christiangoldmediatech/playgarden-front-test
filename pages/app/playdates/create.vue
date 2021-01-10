@@ -1,126 +1,128 @@
 <template>
-  <v-main>
-    <v-col>
-      <v-row
-        class="mt-0 mt-md-0"
-        :class="{ mobile: $vuetify.breakpoint.smAndDown }"
-        no-gutters
-      >
-        <v-col cols="12" md="6" sm="12">
-          <v-img
-            alt="Educational Playdates"
-            :src="require('assets/png/playdates/playdate.png')"
-            class="align-center mr-md-15"
-          />
-        </v-col>
+  <v-col class="fill-height">
+    <v-row
+      class="mt-0 mt-md-0"
+      :class="{ mobile: $vuetify.breakpoint.smAndDown }"
+      no-gutters
+    >
+      <v-col cols="12" md="6" sm="12">
+        <v-img
+          alt="Educational Playdates"
+          :src="require('@/assets/png/playdates/playdate.png')"
+          class="align-center mr-md-15"
+        />
+      </v-col>
 
-        <v-col cols="12" md="6" sm="12">
-          <underlined-title text="Create Playdate!" class="text-h5" />
+      <v-col cols="12" md="6" sm="12">
+        <underlined-title text="Create Playdate!" />
 
-          <p>you just can create or join one playdate per week</p>
+        <p>You just can create or join one playdate per week</p>
 
-          <v-row>
-            <v-col>
-              <p class="text-md-left text-sm-center font-weight-bold">
-                Who's this playdate for?
-              </p>
+        <v-row>
+          <v-col>
+            <p class="text-md-left text-sm-center font-weight-bold">
+              Who's this playdate for?
+            </p>
 
-              <child-select v-model="draft.childrenIds" hide-details multiple />
-            </v-col>
-          </v-row>
+            <child-select v-model="draft.childrenIds" hide-details multiple />
+          </v-col>
+        </v-row>
 
-          <v-row>
-            <v-col>
-              <p class="text-md-left text-sm-center font-weight-bold">
-                Choose the day that best suits your child
-              </p>
+        <v-row>
+          <v-col>
+            <p class="text-md-left text-sm-center font-weight-bold">
+              Choose the day that best suits your child
+            </p>
 
-              <pg-select
-                v-model="day"
-                :disabled="loading"
-                :items="week"
-                label="Day"
-                :loading="loading"
-                solo
-                @change="onWeekdayChange"
-              />
-            </v-col>
-          </v-row>
+            <pg-select
+              v-model="day"
+              :disabled="loading"
+              :items="week"
+              label="Day"
+              :loading="loading"
+              solo
+              @change="onWeekdayChange"
+            />
+          </v-col>
+        </v-row>
 
-          <v-row>
-            <v-col>
-              <p class="text-md-left text-sm-center font-weight-bold">
-                Choose the time that best suits your child
-              </p>
+        <v-row>
+          <v-col>
+            <p class="text-md-left text-sm-center font-weight-bold">
+              Choose the time that best suits your child
+            </p>
 
-              <pg-select
-                v-model="playdateSelected"
-                :disabled="loading"
-                :items="times"
-                label="Time"
-                :loading="loading"
-                solo
-              >
-                <template v-slot:selection="{ item }">
-                  <span v-html="item.text" />
-                </template>
+            <pg-select
+              v-model="playdateSelected"
+              :disabled="loading"
+              :items="times"
+              label="Time"
+              :loading="loading"
+              solo
+            >
+              <template v-slot:selection="{ item }">
+                <span v-html="item.text" />
+              </template>
 
-                <template v-slot:item="{ item, on, attrs }">
-                  <span v-bind="attrs" v-on="on" v-html="item.text" />
-                </template>
-              </pg-select>
-            </v-col>
-          </v-row>
+              <template v-slot:item="{ item, on, attrs }">
+                <span v-bind="attrs" v-on="on" v-html="item.text" />
+              </template>
+            </pg-select>
+          </v-col>
+        </v-row>
 
-          <v-row no-gutters justify="center" class="mb-8">
-            <v-col>
-              <p class="text-md-left text-sm-center font-weight-bold">
-                Invite friends
-              </p>
+        <v-row no-gutters justify="center" class="mb-8">
+          <v-col>
+            <p class="text-md-left text-sm-center font-weight-bold">
+              Invite friends
+            </p>
 
-              <pg-autocomplete
-                v-model="draft.invites"
-                addable
-                chips
-                clearable
-                :disabled="loading"
-                deletable-chips
-                hide-no-data
-                :loading="loading"
-                multiple
-                solo
-              />
-            </v-col>
-          </v-row>
+            <pg-autocomplete
+              v-model="draft.invites"
+              addable
+              chips
+              clearable
+              :disabled="loading"
+              deletable-chips
+              hide-no-data
+              :loading="loading"
+              multiple
+              solo
+            />
+          </v-col>
+        </v-row>
 
-          <v-row justify="center" no-gutters>
-            <v-col cols="12" class="mb-5">
-              <v-btn
-                block
-                class="white--text text-btn"
-                color="#C2DAA5"
-                :disabled="loading"
-                :loading="loading"
-                x-large
-                @click="onSubmit"
-              >
-                Create Playdate
-              </v-btn>
-            </v-col>
-          </v-row>
-        </v-col>
-      </v-row>
-    </v-col>
-  </v-main>
+        <v-row justify="center" no-gutters>
+          <v-col cols="12" class="mb-5">
+            <v-btn
+              block
+              class="white--text text-btn"
+              color="#C2DAA5"
+              :disabled="loading"
+              :loading="loading"
+              x-large
+              @click="onSubmit"
+            >
+              Create Playdate
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
+  </v-col>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
 import dayjs from 'dayjs'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
+import utc from 'dayjs/plugin/utc'
 
 import ChildSelect from '@/components/app/ChildSelect.vue'
 
 const resetDraft = () => ({ childrenIds: [], invites: [] })
+dayjs.extend(customParseFormat)
+dayjs.extend(utc)
 
 export default {
   name: 'Create',
@@ -149,8 +151,8 @@ export default {
   computed: {
     times () {
       return this.playdates.map(({ id, start, end }) => {
-        start = dayjs(`1970-01-01T${start}Z`)
-        end = dayjs(`1970-01-01T${end}Z`)
+        start = dayjs.utc(start, 'HH:mm:ss').local()
+        end = dayjs.utc(end, 'HH:mm:ss').local()
 
         const startTime = start.format('hh:mm')
         const startMeridian = start.format('a')

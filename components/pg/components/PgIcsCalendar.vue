@@ -1,5 +1,5 @@
 <template>
-  <v-list class="entry-card-calendar-links" dense mandatory>
+  <v-list class="entry-card-calendar-links" dense :disabled="isEmpty" mandatory>
     <v-list-group no-action>
       <template v-slot:prependIcon>
         <v-list-item-avatar size="25" tile>
@@ -73,6 +73,10 @@ export default {
   },
 
   computed: {
+    isEmpty () {
+      return !this.icsFile && !this.googleCalendarLink
+    },
+
     icsFile () {
       if (!this.entry) {
         return null
