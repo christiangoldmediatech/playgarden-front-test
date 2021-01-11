@@ -50,6 +50,7 @@
                 justify="center"
                 justify-md="start"
                 no-gutters
+                class="pt-2"
               >
                 <v-img
                   v-for="(bImage, indexBI) in backpackImages"
@@ -113,105 +114,116 @@
           </v-btn>
         </v-row>
 
-        <v-card
-          class="mx-5 mt-md-16 mt-sm-0 my-5"
-          max-width="700"
-          max-height="700"
-          elevation="2"
-        >
-          <div class="green-line green-line-1" />
-          <div class="green-line green-line-2" />
+        <v-row class="vh-row" align="center" justify="center" no-gutters>
+          <v-col class="px-3 px-lg-0" sm="12" lg="8" xl="10">
+            <v-card
+              class="mx-md-auto mx-sm-5 mt-md-16 mt-sm-0"
+              max-width="700"
+              max-height="700"
+              elevation="2"
+            >
+              <div class="green-line green-line-1" />
+              <div class="green-line green-line-2" />
 
-          <v-row justify="center" no-gutters>
-            <v-col md="5" cols="12" class="align-self-center">
               <v-row justify="center" no-gutters>
-                <v-col align-self="center">
-                  <v-row justify="center" class="mt-2">
-                    <v-avatar size="120">
-                      <v-img
-                        max-width="120"
-                        alt="Educational Playdates"
-                        :src="require('@/assets/png/playdates/playdate.png')"
-                        class="align-self-center"
-                      />
-                    </v-avatar>
-                  </v-row>
+                <v-col md="5" cols="12" class="align-self-center">
+                  <v-row justify="center" no-gutters>
+                    <v-col align-self="center">
+                      <v-row justify="center" class="mt-2">
+                        <v-avatar size="120">
+                          <v-img
+                            max-width="120"
+                            alt="Educational Playdates"
+                            :src="
+                              require('@/assets/png/playdates/playdate.png')
+                            "
+                            class="align-self-center"
+                          />
+                        </v-avatar>
+                      </v-row>
 
-                  <h6 class="text-capitalize text-center mt-2">
-                    {{ day }}: <span v-html="start" />
-                  </h6>
+                      <h6 class="text-capitalize text-center mt-2">
+                        {{ day }}: <span v-html="start" />
+                      </h6>
+                    </v-col>
+                  </v-row>
+                </v-col>
+
+                <v-col md="7" cols="12">
+                  <v-list-item three-line>
+                    <v-list-item-content>
+                      <div
+                        v-if="child.firstName && !finding"
+                        class="headline pb-2 font-weight-bold"
+                      >
+                        {{ child.firstName | belongsTo }} Playdate
+                      </div>
+
+                      <v-list-item-title class="overline pb-1">
+                        With {{ specialist.fullName }}
+                      </v-list-item-title>
+
+                      <v-list-item-subtitle class="pt-3">
+                        JOIN YOUR FRIENDS!
+                        <v-row
+                          v-if="!finding"
+                          justify-md="start"
+                          no-gutters
+                          class="pt-2"
+                        >
+                          <v-img
+                            v-for="(bImage, indexBI) in backpackImages"
+                            :key="indexBI"
+                            :class="{ 'ml-n3': indexBI }"
+                            max-width="25"
+                            :src="bImage"
+                          />
+
+                          <span class="ml-1">
+                            {{ backpackImages.length }}/{{ playdate.spots }}
+                          </span>
+                        </v-row>
+                      </v-list-item-subtitle>
+
+                      <v-list-item-subtitle v-if="playdate.ages" class="pt-3">
+                        Ages recommended:<b>{{ playdate.ages }}</b>
+                      </v-list-item-subtitle>
+
+                      <v-list-item-subtitle class="pt-3">
+                        Duration: <b>{{ duration }} minutes</b>
+                      </v-list-item-subtitle>
+
+                      <v-list-item-subtitle v-if="!finding" class="pt-5">
+                        <h5>who's going?</h5>
+
+                        <child-select :value="child.id" hide-details disabled />
+                      </v-list-item-subtitle>
+
+                      <v-list-item-subtitle />
+                    </v-list-item-content>
+                  </v-list-item>
                 </v-col>
               </v-row>
-            </v-col>
 
-            <v-col md="7" cols="12">
-              <v-list-item three-line>
-                <v-list-item-content>
-                  <div
-                    v-if="child.firstName && !finding"
-                    class="headline pb-2 font-weight-bold"
+              <v-row justify="center" no-gutters>
+                <v-col cols="8" class="mb-5">
+                  <v-btn
+                    class="white--text"
+                    color="#f89838"
+                    target="_blank"
+                    block
+                    x-large
+                    :href="playdate.link"
                   >
-                    {{ child.firstName | belongsTo }} Playdate
-                  </div>
+                    Join Playdate
+                  </v-btn>
 
-                  <v-list-item-title class="overline pb-1">
-                    With {{ specialist.fullName }}
-                  </v-list-item-title>
-
-                  <v-list-item-subtitle class="pt-3">
-                    <v-row v-if="!finding" justify-md="start" no-gutters>
-                      JOIN YOUR FRIENDS!
-                      <v-img
-                        v-for="(bImage, indexBI) in backpackImages"
-                        :key="indexBI"
-                        :class="{ 'ml-n3': indexBI }"
-                        max-width="25"
-                        :src="bImage"
-                      />
-
-                      <span class="ml-1">
-                        {{ backpackImages.length }}/{{ playdate.spots }}
-                      </span>
-                    </v-row>
-                  </v-list-item-subtitle>
-
-                  <v-list-item-subtitle v-if="playdate.ages" class="pt-3">
-                    Ages recommended:<b>{{ playdate.ages }}</b>
-                  </v-list-item-subtitle>
-
-                  <v-list-item-subtitle class="pt-3">
-                    Duration: <b>{{ duration }} minutes</b>
-                  </v-list-item-subtitle>
-
-                  <v-list-item-subtitle v-if="!finding" class="pt-5">
-                    <h5>who's going?</h5>
-
-                    <child-select :value="child.id" hide-details disabled />
-                  </v-list-item-subtitle>
-
-                  <v-list-item-subtitle />
-                </v-list-item-content>
-              </v-list-item>
-            </v-col>
-          </v-row>
-
-          <v-row justify="center" no-gutters>
-            <v-col cols="8" class="mb-5">
-              <v-btn
-                class="white--text"
-                color="#f89838"
-                target="_blank"
-                block
-                x-large
-                :href="playdate.link"
-              >
-                Join Playdate
-              </v-btn>
-
-              <pg-ics-calendar :entry="icsEntry" />
-            </v-col>
-          </v-row>
-        </v-card>
+                  <pg-ics-calendar :entry="icsEntry" />
+                </v-col>
+              </v-row>
+            </v-card>
+          </v-col>
+        </v-row>
       </v-container>
     </v-dialog>
   </v-card>
@@ -336,6 +348,9 @@ export default {
 
 .vh-container {
   min-height: 120vh;
+}
+.vh-row {
+  min-height: 90vh;
 }
 
 .overlay {
