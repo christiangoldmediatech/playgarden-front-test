@@ -6,12 +6,12 @@
 import { mapActions } from 'vuex'
 
 export default {
-  name: 'Caregiver',
+  name: 'Playdate',
 
   layout: 'loading',
 
   data: vm => ({
-    token: vm.$route.query.token
+    token: vm.$route.params.token || vm.$route.query.token
   }),
 
   created () {
@@ -21,11 +21,11 @@ export default {
   },
 
   methods: {
-    ...mapActions('caregiver', ['validateInvitation']),
+    ...mapActions('playdates', ['getPlaydateInvite']),
 
     async onToken () {
       try {
-        const { email, phone } = await this.validateInvitation(this.token)
+        const { email, phone } = await this.getPlaydateInvite(this.token)
 
         await this.$snotify.success(
           'Invitation has been verified successfully!'
@@ -35,7 +35,12 @@ export default {
           () =>
             this.$router.push({
               name: 'auth-signup',
-              query: { email, phone, process: 'invitation-caregiver', token: this.token }
+              query: {
+                email,
+                phone,
+                process: 'invitation-playdate',
+                token: this.token
+              }
             }),
           1000
         )

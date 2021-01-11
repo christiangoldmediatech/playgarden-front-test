@@ -38,7 +38,7 @@
             :dark="$vuetify.breakpoint.xs"
             :disabled="loading"
             width="120"
-            class="mr-5 white--text custom-text"
+            class="mr-5 white--text text-transform-none"
             @click="close"
           >
             Cancel
@@ -49,7 +49,7 @@
             :dark="$vuetify.breakpoint.xs"
             :loading="loading"
             width="120"
-            class="custom-text"
+            class="text-transform-none"
             @click="doAction"
           >
             Delete it!
@@ -135,9 +135,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.custom-text {
-  text-transform: none !important;
-}
-</style>

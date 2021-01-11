@@ -114,7 +114,7 @@
 
     <!-- PlatinumPlan Popup -->
     <v-dialog
-      :value="hasTrialOrPlatinumPlan"
+      :value="!hasTrialOrPlatinumPlan"
       content-class="elevation-0"
       max-width="700"
       persistent

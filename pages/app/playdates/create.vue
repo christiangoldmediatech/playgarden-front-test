@@ -96,7 +96,7 @@
           <v-col cols="12" class="mb-5">
             <v-btn
               block
-              class="white--text text-btn"
+              class="text-transform-none white--text"
               color="#C2DAA5"
               :disabled="loading"
               :loading="loading"
@@ -212,9 +212,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.text-btn {
-  text-transform: none !important;
-}
-</style>
