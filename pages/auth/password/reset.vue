@@ -32,7 +32,7 @@
 import ResetPasswordForm from '@/components/forms/password/ResetPasswordForm.vue'
 
 export default {
-  name: 'Index',
+  name: 'Reset',
 
   components: {
     ResetPasswordForm
@@ -49,6 +49,7 @@ export default {
   async beforeMount () {
     try {
       if (!this.$route.query || !this.$route.query.token) {
+        console.log('reset redirecting')
         this.$router.push('/')
       } else {
         this.token = this.$route.query.token
