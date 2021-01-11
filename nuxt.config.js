@@ -241,14 +241,6 @@ export default {
   },
   router: {
     base: process.env.TEST_ENV === 'production' ? '/app/' : '/',
-    extendRoutes (routes, resolve) {
-      // TODO: remove this route
-      routes.push({
-        name: 'playdates-accept-invite-token',
-        path: '/playdates/accept/invite/:token',
-        component: resolve(__dirname, 'pages/auth/verify/playdate.vue')
-      })
-    },
     middleware: [
       'auth',
       'fetchUserInfo',

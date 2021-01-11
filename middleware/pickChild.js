@@ -5,6 +5,7 @@ export default async function ({ redirect, route, store }) {
     const whiteList = {
       'auth-logout': 1,
       'auth-verify-email': 1,
+      'auth-verify-playdate': 1,
       'app-pick-child': 1,
       'app-account': 1,
       'app-children-register': 1,
