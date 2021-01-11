@@ -39,7 +39,7 @@ export default {
               childId: child.id,
               activity: {
                 id: currentVideo.activityId,
-                completed: duration - time < 3,
+                completed: duration - time <= 30,
                 time,
                 date
               }
