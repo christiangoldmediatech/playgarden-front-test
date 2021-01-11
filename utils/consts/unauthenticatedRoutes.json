@@ -8,7 +8,7 @@
   "index": 1,
   "jwt-recovery": 1,
   "privacy-policy": 1,
-  "reset-password": 1,
+  "auth-password-reset": 1,
   "shared-slug": 1,
   "terms-conditions": 1
 }
