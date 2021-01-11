@@ -150,37 +150,33 @@
                 />
 
                 <v-row justify="center" justify-md="start" no-gutters>
-                  <v-col sm="12">
+                  <v-col class="pt-8 px-5" cols="12">
                     <v-row no-gutters>
-                      <v-col
-                        class="text-md-left text-center mt-5 mr-md-5 ml-md-5"
-                      >
-                        A playdate is a place where your child can have fun with
-                        their friends while they have fun playing, all
-                        supervised by a specialist.
-                      </v-col>
+                      A playdate is a place where your child can have fun with
+                      their friends while they have fun playing, all supervised
+                      by a specialist.
                     </v-row>
 
-                    <v-row no-gutters>
-                      <v-col
-                        class="text-md-left text-center mt-5 font-weight-bold ml-md-5"
-                      >
-                        Get access to Educationals Playdates
-                      </v-col>
+                    <v-row class="pt-8 font-weight-bold" no-gutters>
+                      Get access to Educationals Playdates
                     </v-row>
 
-                    <v-row no-gutters>
-                      <v-col class="text-md-left text-center mt-5 ml-md-5">
+                    <v-row no-gutters class="pt-8">
+                      <v-col>
                         Upgraded your plan
                       </v-col>
                     </v-row>
 
-                    <v-row no-gutters>
-                      <v-col sm="12">
+                    <v-row
+                      justify="center"
+                      justify-md="start"
+                      class="pt-8"
+                      no-gutters
+                    >
+                      <v-col cols="12">
                         <v-btn
                           color="accent"
-                          class="hidden-md-and-up mb-5"
-                          tile
+                          class="hidden-md-and-up mb-5 text-transform-none"
                           large
                           nuxt
                           :to="{
@@ -189,14 +185,14 @@
                           }"
                         >
                           <!-- nuxt to app-account ?changeplan=1 -->
-                          COMPARE PLANS
+                          Compare Plans
                         </v-btn>
 
                         <v-btn
                           color="accent"
-                          class="hidden-sm-and-down ml-md-5"
-                          tile
-                          x-large
+                          class="hidden-sm-and-down text-transform-none"
+                          width="200"
+                          large
                           nuxt
                           :to="{
                             name: 'app-account',
@@ -204,7 +200,7 @@
                           }"
                         >
                           <!-- nuxt to app-account ?changeplan=1 -->
-                          COMPARE PLANS
+                          Compare Plans
                         </v-btn>
                       </v-col>
                     </v-row>

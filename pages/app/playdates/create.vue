@@ -17,96 +17,132 @@
         <underlined-title text="Create Playdate!" />
 
         <p>You just can create or join one playdate per week</p>
+        <validation-observer v-slot="{ invalid, passes }">
+          <v-form @submit.prevent="passes(onSubmit)">
+            <v-row>
+              <v-col>
+                <p class="text-md-left text-sm-center font-weight-bold">
+                  Who's this playdate for?
+                </p>
+                <!-- Child name -->
+                <validation-provider
+                  v-slot="{ errors }"
+                  name="Child Select"
+                  rules="required"
+                >
+                  <child-select
+                    v-model="draft.childrenIds"
+                    :error-messages="errors"
+                    hide-details
+                    multiple
+                  />
+                </validation-provider>
+              </v-col>
+            </v-row>
 
-        <v-row>
-          <v-col>
-            <p class="text-md-left text-sm-center font-weight-bold">
-              Who's this playdate for?
-            </p>
+            <v-row>
+              <v-col>
+                <p class="text-md-left text-sm-center font-weight-bold">
+                  Choose the day that best suits your child
+                </p>
+                <!-- Day -->
+                <validation-provider
+                  v-slot="{ errors }"
+                  name="Day"
+                  rules="required"
+                >
+                  <pg-select
+                    v-model="day"
+                    :disabled="loading"
+                    :items="week"
+                    :error-messages="errors"
+                    label="Day"
+                    :loading="loading"
+                    solo
+                    @change="onWeekdayChange"
+                  />
+                </validation-provider>
+              </v-col>
+            </v-row>
 
-            <child-select v-model="draft.childrenIds" hide-details multiple />
-          </v-col>
-        </v-row>
+            <v-row>
+              <v-col>
+                <p class="text-md-left text-sm-center font-weight-bold">
+                  Choose the time that best suits your child
+                </p>
+                <!-- Time -->
+                <validation-provider
+                  v-slot="{ errors }"
+                  name="Time"
+                  rules="required"
+                >
+                  <pg-select
+                    v-model="playdateSelected"
+                    :disabled="loading"
+                    :items="times"
+                    :error-messages="errors"
+                    label="Time"
+                    :loading="loading"
+                    solo
+                  >
+                    <template v-slot:selection="{ item }">
+                      <span v-html="item.text" />
+                    </template>
 
-        <v-row>
-          <v-col>
-            <p class="text-md-left text-sm-center font-weight-bold">
-              Choose the day that best suits your child
-            </p>
+                    <template v-slot:item="{ item, on, attrs }">
+                      <span v-bind="attrs" v-on="on" v-html="item.text" />
+                    </template>
+                  </pg-select>
+                </validation-provider>
+              </v-col>
+            </v-row>
 
-            <pg-select
-              v-model="day"
-              :disabled="loading"
-              :items="week"
-              label="Day"
-              :loading="loading"
-              solo
-              @change="onWeekdayChange"
-            />
-          </v-col>
-        </v-row>
+            <v-row no-gutters justify="center" class="mb-8">
+              <v-col>
+                <p class="text-md-left text-sm-center font-weight-bold">
+                  Invite friends
+                </p>
+                <!-- Invite Friends -->
+                <validation-provider
+                  v-slot="{ errors }"
+                  name="Invite Friends"
+                  rules="required"
+                >
+                  <pg-autocomplete
+                    v-model="draft.invites"
+                    addable
+                    chips
+                    clearable
+                    :error-messages="errors"
+                    :disabled="loading"
+                    deletable-chips
+                    hide-no-data
+                    :loading="loading"
+                    multiple
+                    solo
+                  />
+                </validation-provider>
+              </v-col>
+            </v-row>
 
-        <v-row>
-          <v-col>
-            <p class="text-md-left text-sm-center font-weight-bold">
-              Choose the time that best suits your child
-            </p>
-
-            <pg-select
-              v-model="playdateSelected"
-              :disabled="loading"
-              :items="times"
-              label="Time"
-              :loading="loading"
-              solo
-            >
-              <template v-slot:selection="{ item }">
-                <span v-html="item.text" />
-              </template>
-
-              <template v-slot:item="{ item, on, attrs }">
-                <span v-bind="attrs" v-on="on" v-html="item.text" />
-              </template>
-            </pg-select>
-          </v-col>
-        </v-row>
-
-        <v-row no-gutters justify="center" class="mb-8">
-          <v-col>
-            <p class="text-md-left text-sm-center font-weight-bold">
-              Invite friends
-            </p>
-
-            <pg-autocomplete
-              v-model="draft.invites"
-              addable
-              chips
-              clearable
-              :disabled="loading"
-              deletable-chips
-              hide-no-data
-              :loading="loading"
-              multiple
-              solo
-            />
-          </v-col>
-        </v-row>
-
-        <v-row justify="center" no-gutters>
-          <v-col cols="12" class="mb-5">
-            <v-btn
-              block
-              class="text-transform-none white--text"
-              color="#C2DAA5"
-              :disabled="loading"
-              :loading="loading"
-              x-large
-              @click="onSubmit"
-            >
-              Create Playdate
-            </v-btn>
-          </v-col>
-        </v-row>
+            <v-row justify="center" no-gutters>
+              <v-col cols="12" class="mb-5">
+                <v-btn
+                  block
+                  class="text-transform-none white--text"
+                  color="#C2DAA5"
+                  :disabled="invalid"
+                  :loading="loading"
+                  type="submit"
+                  x-large
+                  @click="onSubmit"
+                >
+                  Create Playdate
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-form>
+        </validation-observer>
       </v-col>
     </v-row>
   </v-col>

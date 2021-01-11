@@ -1,44 +1,52 @@
 <template>
   <v-card class="mx-auto" max-width="500" elevation="2" tile>
-    <v-row>
-      <v-col md="5" sm="12" class="align-self-center">
+    <v-row justify="center" no-gutters>
+      <v-col md="5" cols="12" class="align-self-center">
         <v-row justify="center" no-gutters>
-          <v-col cols="8">
-            <v-avatar size="120">
-              <v-img
-                max-width="120"
-                alt="Educational Playdates"
-                :src="require('@/assets/png/playdates/playdate.png')"
-                class="align-self-center"
-              />
-            </v-avatar>
-          </v-col>
+          <v-col align-self="center" class="py-2">
+            <v-row justify="center">
+              <v-avatar size="120">
+                <v-img
+                  max-width="120"
+                  alt="Educational Playdates"
+                  :src="require('@/assets/png/playdates/playdate.png')"
+                  class="align-self-center"
+                />
+              </v-avatar>
+            </v-row>
 
-          <v-col cols="12">
-            <h6 class="text-capitalize text-center">
+            <h6 class="text-capitalize text-center mt-2">
               {{ day }}: <span v-html="start" />
             </h6>
+          </v-col>
+          <v-col cols="6" class="hidden-md-and-up font-weight-bold">
+            <div v-if="child.firstName && !finding" class="headline pb-2 pt-5">
+              {{ child.firstName | belongsTo }} Playdate
+            </div>
           </v-col>
         </v-row>
       </v-col>
 
-      <v-col md="7" sm="12" class="ml-n5">
+      <v-col md="7" cols="12" class="pb-2 py-2 px-2">
         <v-list-item three-line>
           <v-list-item-content>
-            <div v-if="child.firstName && !finding" class="headline mb-2">
+            <div
+              v-if="child.firstName && !finding"
+              class="headline pb-2 hidden-sm-and-down font-weight-bold"
+            >
               {{ child.firstName | belongsTo }} Playdate
             </div>
 
-            <v-list-item-title class="overline mb-1">
+            <v-list-item-title class="overline pb-1">
               With {{ specialist.fullName }}
             </v-list-item-title>
 
-            <v-list-item-subtitle class="mt-3">
+            <v-list-item-subtitle class="pt-3">
               JOIN YOUR FRIENDS!
 
               <v-row
                 v-if="!finding"
-                align="center"
+                align-content="center"
                 justify="center"
                 justify-md="start"
                 no-gutters
@@ -57,147 +65,154 @@
               </v-row>
             </v-list-item-subtitle>
 
-            <v-list-item-subtitle v-if="playdate.ages" class="mt-3">
-              Ages recommended: {{ playdate.ages }}
+            <v-list-item-subtitle v-if="playdate.ages" class="py-1">
+              Ages recommended:<b> {{ playdate.ages }}</b>
             </v-list-item-subtitle>
 
-            <v-list-item-subtitle class="mt-3">
-              Duration: {{ duration }} minutes
+            <v-list-item-subtitle class="py-1">
+              Duration: <b>{{ duration }} minutes</b>
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
 
-        <v-btn class="white--text" color="#f89838" @click="dialog = true">
-          Open Playdate
-        </v-btn>
+        <v-row justify="center">
+          <v-btn
+            class="white--text text-transform-none"
+            color="#f89838"
+            width="250"
+            large
+            @click="dialog = true"
+          >
+            Open Playdate
+          </v-btn>
+        </v-row>
       </v-col>
     </v-row>
 
     <!-- CardPlaydatePopup -->
     <v-dialog
       v-model="dialog"
+      fullscreen
       content-class="elevation-0"
       width="100%"
+      height="100%"
       persistent
     >
-      <v-row no-gutters justify="start">
-        <v-btn
-          class="top-left text-none"
-          color="#f89838"
-          text
-          @click="dialog = false"
+      <v-container class="vh-container overlay fullscreen pa-0" fluid>
+        <v-row no-gutters justify="start">
+          <v-btn
+            class="top-left text-none text--white py-8"
+            color="white"
+            text
+            @click="dialog = false"
+          >
+            <v-icon class="mr-2" small left color="white">
+              mdi-less-than
+            </v-icon>
+            Back
+          </v-btn>
+        </v-row>
+
+        <v-card
+          class="mx-5 mt-md-16 mt-sm-0 my-5"
+          max-width="700"
+          max-height="700"
+          elevation="2"
         >
-          <v-icon class="mr-2" small left color="#f89838">
-            mdi-less-than
-          </v-icon>
-          Back
-        </v-btn>
-      </v-row>
+          <div class="green-line green-line-1" />
+          <div class="green-line green-line-2" />
 
-      <v-card
-        class="mx-auto mt-16"
-        max-width="700"
-        max-height="700"
-        elevation="2"
-        tile
-      >
-        <div class="green-line green-line-1" />
-        <div class="green-line green-line-2" />
-
-        <v-row>
-          <v-col md="5" sm="12" class="align-self-center">
-            <v-row justify="center" no-gutters>
-              <v-col align-self="center">
-                <v-row justify="center">
-                  <v-avatar size="120">
-                    <v-img
-                      max-width="120"
-                      alt="Educational Playdates"
-                      :src="require('@/assets/png/playdates/playdate.png')"
-                      class="align-self-center"
-                    />
-                  </v-avatar>
-                </v-row>
-
-                <h6 class="text-capitalize text-center">
-                  {{ day }}: <span v-html="start" />
-                </h6>
-              </v-col>
-            </v-row>
-          </v-col>
-
-          <v-col md="7" sm="12" class="ml-n5">
-            <v-list-item three-line>
-              <v-list-item-content>
-                <div v-if="child.firstName && !finding" class="headline mb-2">
-                  {{ child.firstName | belongsTo }} Playdate
-                </div>
-
-                <v-list-item-title class="overline mb-1">
-                  With {{ specialist.fullName }}
-                </v-list-item-title>
-
-                <v-list-item-subtitle class="mt-3">
-                  JOIN YOUR FRIENDS!
-
-                  <v-row
-                    v-if="!finding"
-                    align="center"
-                    justify="center"
-                    justify-md="start"
-                    no-gutters
-                  >
-                    <v-img
-                      v-for="(bImage, indexBI) in backpackImages"
-                      :key="indexBI"
-                      :class="{ 'ml-n3': indexBI }"
-                      max-width="25"
-                      :src="bImage"
-                    />
-
-                    <span class="ml-1">
-                      {{ backpackImages.length }}/{{ playdate.spots }}
-                    </span>
+          <v-row justify="center" no-gutters>
+            <v-col md="5" cols="12" class="align-self-center">
+              <v-row justify="center" no-gutters>
+                <v-col align-self="center">
+                  <v-row justify="center" class="mt-2">
+                    <v-avatar size="120">
+                      <v-img
+                        max-width="120"
+                        alt="Educational Playdates"
+                        :src="require('@/assets/png/playdates/playdate.png')"
+                        class="align-self-center"
+                      />
+                    </v-avatar>
                   </v-row>
-                </v-list-item-subtitle>
 
-                <v-list-item-subtitle v-if="playdate.ages" class="mt-3">
-                  Ages recommended: {{ playdate.ages }}
-                </v-list-item-subtitle>
+                  <h6 class="text-capitalize text-center mt-2">
+                    {{ day }}: <span v-html="start" />
+                  </h6>
+                </v-col>
+              </v-row>
+            </v-col>
 
-                <v-list-item-subtitle class="mt-3">
-                  Duration: {{ duration }} minutes
-                </v-list-item-subtitle>
+            <v-col md="7" cols="12">
+              <v-list-item three-line>
+                <v-list-item-content>
+                  <div
+                    v-if="child.firstName && !finding"
+                    class="headline pb-2 font-weight-bold"
+                  >
+                    {{ child.firstName | belongsTo }} Playdate
+                  </div>
 
-                <v-list-item-subtitle v-if="!finding" class="mt-5">
-                  <h5>who's going?</h5>
+                  <v-list-item-title class="overline pb-1">
+                    With {{ specialist.fullName }}
+                  </v-list-item-title>
 
-                  <child-select :value="child.id" hide-details disabled />
-                </v-list-item-subtitle>
+                  <v-list-item-subtitle class="pt-3">
+                    <v-row v-if="!finding" justify-md="start" no-gutters>
+                      JOIN YOUR FRIENDS!
+                      <v-img
+                        v-for="(bImage, indexBI) in backpackImages"
+                        :key="indexBI"
+                        :class="{ 'ml-n3': indexBI }"
+                        max-width="25"
+                        :src="bImage"
+                      />
 
-                <v-list-item-subtitle />
-              </v-list-item-content>
-            </v-list-item>
-          </v-col>
-        </v-row>
+                      <span class="ml-1">
+                        {{ backpackImages.length }}/{{ playdate.spots }}
+                      </span>
+                    </v-row>
+                  </v-list-item-subtitle>
 
-        <v-row justify="center" no-gutters>
-          <v-col cols="8" class="mb-5">
-            <v-btn
-              class="white--text"
-              color="#f89838"
-              target="_blank"
-              block
-              x-large
-              :href="playdate.link"
-            >
-              Join Playdate
-            </v-btn>
+                  <v-list-item-subtitle v-if="playdate.ages" class="pt-3">
+                    Ages recommended:<b>{{ playdate.ages }}</b>
+                  </v-list-item-subtitle>
 
-            <pg-ics-calendar :entry="icsEntry" />
-          </v-col>
-        </v-row>
-      </v-card>
+                  <v-list-item-subtitle class="pt-3">
+                    Duration: <b>{{ duration }} minutes</b>
+                  </v-list-item-subtitle>
+
+                  <v-list-item-subtitle v-if="!finding" class="pt-5">
+                    <h5>who's going?</h5>
+
+                    <child-select :value="child.id" hide-details disabled />
+                  </v-list-item-subtitle>
+
+                  <v-list-item-subtitle />
+                </v-list-item-content>
+              </v-list-item>
+            </v-col>
+          </v-row>
+
+          <v-row justify="center" no-gutters>
+            <v-col cols="8" class="mb-5">
+              <v-btn
+                class="white--text"
+                color="#f89838"
+                target="_blank"
+                block
+                x-large
+                :href="playdate.link"
+              >
+                Join Playdate
+              </v-btn>
+
+              <pg-ics-calendar :entry="icsEntry" />
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-container>
     </v-dialog>
   </v-card>
 </template>
@@ -312,3 +327,18 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.fullscreen {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.vh-container {
+  min-height: 120vh;
+}
+
+.overlay {
+  background-color: rgba(0, 0, 0, 0.68) !important;
+}
+</style>
