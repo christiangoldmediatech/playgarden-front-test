@@ -5,7 +5,7 @@ export default async function ({ store, redirect, route }) {
     const isLoggedIn = await store.dispatch('auth/checkAuth')
     if (!isLoggedIn) {
       if (unauthenticatedRoutes[route.name]) {
-      // route is an expected unauthorized path don't redirect
+        // route is an expected unauthorized path don't redirect
         return store.dispatch('auth/logout')
       }
       return store.dispatch('auth/logout', redirect)
