@@ -36,7 +36,7 @@ export default {
         const promises = []
         const time = this.player.currentTime()
         const duration = this.player.duration()
-        const didFinish = ((duration - time) < 3)
+        const didFinish = ((duration - time) < 30)
 
         if (this.analyticsLoading || !currentVideo.activityId) {
           resolve(false)
