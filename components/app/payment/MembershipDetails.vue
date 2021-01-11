@@ -289,7 +289,7 @@
     >
       <v-col cols="12">
         <v-row class="pr-3" justify="end">
-          <v-btn icon @click.stop="changePlanModal = false">
+          <v-btn icon @click.stop="closeChangePlanModal">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-row>
@@ -299,7 +299,7 @@
           no-address
           no-payment
           updating
-          @click:cancel="changePlanModal = false"
+          @click:cancel="closeChangePlanModal"
           @click:submit="onSuccessChangePlan"
         />
       </v-col>
@@ -449,8 +449,14 @@ export default {
       this.getBillingDetails()
     },
     onSuccessChangePlan () {
-      this.changePlanModal = false
       this.getBillingDetails()
+      this.closeChangePlanModal()
+    },
+    closeChangePlanModal () {
+      this.changePlanModal = false
+      if (this.$route.params.planRedirect) {
+        this.$router.push({ name: this.$route.params.planRedirect })
+      }
     }
   }
 }

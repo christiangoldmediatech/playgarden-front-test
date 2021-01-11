@@ -9,6 +9,7 @@
       fontSize: _fontSize,
       fontWeight: _fontWeight,
       paddingBottom: _paddingBottom,
+      lineHeight
     }"
     v-on="$listeners"
     v-html="text"
@@ -36,6 +37,12 @@ export default {
     fontWeight: {
       type: [Number, String],
       default: 'bold'
+    },
+
+    lineHeight: {
+      type: String,
+      required: false,
+      default: '1.2'
     },
 
     lineColor: {
@@ -126,7 +133,6 @@ export default {
   position: relative;
   z-index: 1;
   color: var(--v-black-base);
-
   background: linear-gradient(
     180deg,
     transparent var(--ut-background-from),

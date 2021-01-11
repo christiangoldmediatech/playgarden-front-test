@@ -32,7 +32,7 @@
 import ResetPasswordForm from '@/components/forms/password/ResetPasswordForm.vue'
 
 export default {
-  name: 'Index',
+  name: 'Reset',
 
   components: {
     ResetPasswordForm
