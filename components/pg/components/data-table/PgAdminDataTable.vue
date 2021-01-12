@@ -60,7 +60,7 @@
       <component
         :is="$options.components.VIcon"
         v-if="props.action"
-        color="#f89838"
+        color="accent"
         dense
         @click.stop="$options.doEvent('action-item', item, listeners)"
       >

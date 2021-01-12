@@ -5,7 +5,7 @@
       :class="{ mobile: $vuetify.breakpoint.smAndDown }"
       no-gutters
     >
-      <v-col cols="12" md="6" sm="12">
+      <v-col cols="12" md="6">
         <v-img
           alt="Educational Playdates"
           :src="require('@/assets/png/playdates/playdate.png')"
@@ -13,18 +13,19 @@
         />
       </v-col>
 
-      <v-col cols="12" md="6" sm="12">
+      <v-col cols="12" md="6">
         <underlined-title text="Create Playdate!" />
 
         <p>You just can create or join one playdate per week</p>
 
-        <validation-observer v-slot="{ invalid, passes }">
-          <v-form @submit.prevent="passes(onSubmit)">
+        <validation-observer v-slot="{ invalid, passes, reset }">
+          <v-form @submit.prevent="passes(onSubmit(reset))">
             <v-row>
               <v-col>
                 <p class="text-md-left text-sm-center font-weight-bold">
                   Who's this playdate for?
                 </p>
+
                 <!-- Child name -->
                 <validation-provider
                   v-slot="{ errors }"
@@ -46,6 +47,7 @@
                 <p class="text-md-left text-sm-center font-weight-bold">
                   Choose the day that best suits your child
                 </p>
+
                 <!-- Day -->
                 <validation-provider
                   v-slot="{ errors }"
@@ -71,6 +73,7 @@
                 <p class="text-md-left text-sm-center font-weight-bold">
                   Choose the time that best suits your child
                 </p>
+
                 <!-- Time -->
                 <validation-provider
                   v-slot="{ errors }"
@@ -103,6 +106,7 @@
                 <p class="text-md-left text-sm-center font-weight-bold">
                   Invite friends
                 </p>
+
                 <!-- Invite Friends -->
                 <validation-provider
                   v-slot="{ errors }"
@@ -136,7 +140,6 @@
                   :loading="loading"
                   type="submit"
                   x-large
-                  @click="onSubmit"
                 >
                   Create Playdate
                 </v-btn>
@@ -222,7 +225,7 @@ export default {
       }
     },
 
-    async onSubmit () {
+    async onSubmit (reset) {
       this.loading = true
 
       try {
@@ -231,7 +234,7 @@ export default {
           data: this.draft
         })
 
-        this.reset()
+        this.resetForm(reset)
 
         this.$snotify.success('Your Playdate has been stored successfully!.')
       } catch (e) {
@@ -240,11 +243,12 @@ export default {
       }
     },
 
-    reset () {
+    resetForm (reset) {
       this.draft = resetDraft()
       this.day = null
       this.playdates = []
       this.playdateSelected = null
+      reset()
     }
   }
 }

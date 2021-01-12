@@ -58,7 +58,7 @@
             <div v-if="isRecorded" class="pb-3">
               <v-btn
                 class="white--text text-none"
-                color="#f89838"
+                color="accent"
                 x-large
                 block
                 @click.stop="openVideo"
@@ -70,7 +70,7 @@
             <div v-if="!past" class="pb-3">
               <v-btn
                 class="white--text"
-                color="#f89838"
+                color="accent"
                 x-large
                 :href="entry.link"
                 :disabled="!isLive"

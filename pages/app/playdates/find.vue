@@ -3,13 +3,13 @@
     <v-row>
       <v-btn
         class="top-left text-none"
-        color="#f89838"
+        color="accent"
         nuxt
         :to="{ name: 'app-playdates' }"
         text
         exact
       >
-        <v-icon class="mr-2" small left color="#f89838">
+        <v-icon class="mr-2" small left color="accent">
           mdi-less-than
         </v-icon>
         Back

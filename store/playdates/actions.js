@@ -8,7 +8,7 @@ export default {
   },
 
   deletePlaydateInvitation (_, token) {
-    return this.$axios.$get(`/playdates/invite/${token}`)
+    return this.$axios.$delete(`/playdates/invite/${token}`)
   },
 
   getPlaydateInvite (_, token) {

@@ -1,6 +1,6 @@
 <template>
   <v-col class="fill-height">
-    <v-row class="pt-3" no-gutters>
+    <v-row no-gutters>
       <v-col cols="12" sm="">
         <underlined-title text="Educational Playdates" />
       </v-col>
@@ -59,13 +59,14 @@
       </v-col>
     </v-row>
 
-    <v-row v-else class="mt-6 mt-md-0" no-gutters>
-      <v-col cols="12" md="6" sm="12">
+    <v-row v-else class="mt-6 mt-md-0">
+      <v-col cols="12" md="6">
         <v-img
-          contain
           alt="Educational Playdates"
-          :src="require('@/assets/png/playdates/playdate.png')"
           class="align-center mr-md-15"
+          contain
+          max-height="500"
+          :src="require('@/assets/png/playdates/playdate.png')"
         />
       </v-col>
 
@@ -141,7 +142,7 @@
             </v-row>
           </v-col>
 
-          <v-col cols="12" md="7" sm="12">
+          <v-col cols="12" md="7">
             <v-row align-content="center" class="fill-height" no-gutters>
               <v-col cols="12" class="text-md-left text-center">
                 <underlined-title

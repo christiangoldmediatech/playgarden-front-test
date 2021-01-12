@@ -1,91 +1,109 @@
 <template>
-  <v-card class="mx-auto" max-width="500" elevation="2" tile>
+  <v-card
+    class="mx-auto"
+    :elevation="joining ? 0 : 2"
+    :max-width="joining ? '100%' : 500"
+    tile
+  >
     <v-row justify="center" no-gutters>
       <v-col md="5" cols="12" class="align-self-center">
         <v-row justify="center" no-gutters>
-          <v-col align-self="center" class="py-2">
-            <v-row justify="center">
-              <v-avatar size="120">
-                <v-img
-                  max-width="120"
-                  alt="Educational Playdates"
-                  :src="require('@/assets/png/playdates/playdate.png')"
-                  class="align-self-center"
-                />
-              </v-avatar>
-            </v-row>
+          <v-col class="py-2">
+            <div no-gutters>
+              <v-img
+                alt="Educational Playdates"
+                contain
+                :max-height="joining ? 500 : 120"
+                :src="require('@/assets/png/playdates/playdate.png')"
+              />
+            </div>
 
-            <h6 class="text-capitalize text-center mt-2">
+            <h6 v-if="!joining" class="text-capitalize text-center mt-2">
               {{ day }} <span v-html="start" />
             </h6>
-          </v-col>
-          <v-col cols="6" class="hidden-md-and-up font-weight-bold">
-            <div v-if="child.firstName && !finding" class="headline pb-2 pt-5">
-              {{ child.firstName | belongsTo }} Playdate
-            </div>
           </v-col>
         </v-row>
       </v-col>
 
-      <v-col md="7" cols="12" class="pb-2 py-2 px-2">
-        <v-list-item three-line>
-          <v-list-item-content>
-            <div
-              v-if="child.firstName && !finding"
-              class="headline pb-2 hidden-sm-and-down font-weight-bold"
-            >
-              {{ child.firstName | belongsTo }} Playdate
-            </div>
+      <v-col class="py-3" md="7" cols="12">
+        <v-row align-content="center" class="fill-height" no-gutters>
+          <v-col>
+            <v-list-item three-line>
+              <v-list-item-content>
+                <div
+                  v-if="child.firstName && !finding"
+                  class="headline pb-2 font-weight-bold"
+                >
+                  <template v-if="!joining">
+                    {{ child.firstName | belongsTo }}
+                  </template>
 
-            <v-list-item-title class="overline pb-1">
-              With {{ specialist.fullName }}
-            </v-list-item-title>
+                  <template v-else>
+                    {{ child.firstName }}
+                  </template>
 
-            <v-list-item-subtitle class="pt-3">
-              JOIN YOUR FRIENDS!
+                  {{ joining ? "has invited you to a playdate!" : "Playdate" }}
+                </div>
 
-              <v-row
-                v-if="!finding"
-                align-content="center"
-                justify="center"
-                justify-md="start"
-                no-gutters
-                class="pt-2"
-              >
-                <v-img
-                  v-for="(bImage, indexBI) in backpackImages"
-                  :key="indexBI"
-                  :class="{ 'ml-n3': indexBI }"
-                  max-width="25"
-                  :src="bImage"
-                />
+                <v-list-item-title class="overline pb-1">
+                  <template v-if="specialist">
+                    With {{ specialist.fullName }}
+                  </template>
 
-                <span class="ml-1">
-                  {{ backpackImages.length }}/{{ playdate.spots }}
-                </span>
+                  <span v-if="joining" class="text-capitalize">
+                    {{ day }} <span v-html="start" />
+                  </span>
+                </v-list-item-title>
+
+                <v-list-item-subtitle v-if="!joining" class="pt-3">
+                  JOIN YOUR FRIENDS!
+
+                  <v-row
+                    v-if="!finding"
+                    align-content="center"
+                    justify="center"
+                    justify-md="start"
+                    no-gutters
+                    class="pt-2"
+                  >
+                    <v-img
+                      v-for="(bImage, indexBI) in backpackImages"
+                      :key="indexBI"
+                      :class="{ 'ml-n3': indexBI }"
+                      max-width="25"
+                      :src="bImage"
+                    />
+
+                    <span class="ml-1">
+                      {{ backpackImages.length }}/{{ playdate.spots }}
+                    </span>
+                  </v-row>
+                </v-list-item-subtitle>
+
+                <v-list-item-subtitle v-if="playdate.ages" class="py-1">
+                  Ages recommended:<b> {{ playdate.ages }}</b>
+                </v-list-item-subtitle>
+
+                <v-list-item-subtitle v-if="duration" class="py-1">
+                  Duration: <b>{{ duration }} minutes</b>
+                </v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+
+            <slot name="button">
+              <v-row justify="center" no-gutters>
+                <v-btn
+                  class="white--text text-transform-none"
+                  color="accent"
+                  width="250"
+                  large
+                  @click="dialog = true"
+                >
+                  Open Playdate
+                </v-btn>
               </v-row>
-            </v-list-item-subtitle>
-
-            <v-list-item-subtitle v-if="playdate.ages" class="py-1">
-              Ages recommended:<b> {{ playdate.ages }}</b>
-            </v-list-item-subtitle>
-
-            <v-list-item-subtitle v-if="duration" class="py-1">
-              Duration: <b>{{ duration }} minutes</b>
-            </v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
-
-        <v-row justify="center">
-          <v-btn
-            class="white--text text-transform-none"
-            color="#f89838"
-            width="250"
-            large
-            @click="dialog = true"
-          >
-            Open Playdate
-          </v-btn>
+            </slot>
+          </v-col>
         </v-row>
       </v-col>
     </v-row>
@@ -159,12 +177,16 @@
                         {{ child.firstName | belongsTo }} Playdate
                       </div>
 
-                      <v-list-item-title class="overline pb-1">
+                      <v-list-item-title
+                        v-if="specialist"
+                        class="overline pb-1"
+                      >
                         With {{ specialist.fullName }}
                       </v-list-item-title>
 
                       <v-list-item-subtitle class="pt-3">
                         JOIN YOUR FRIENDS!
+
                         <v-row
                           v-if="!finding"
                           justify-md="start"
@@ -198,8 +220,6 @@
 
                         <child-select :value="child.id" hide-details disabled />
                       </v-list-item-subtitle>
-
-                      <v-list-item-subtitle />
                     </v-list-item-content>
                   </v-list-item>
                 </v-col>
@@ -209,7 +229,7 @@
                 <v-col cols="8" class="mb-5">
                   <v-btn
                     class="white--text"
-                    color="#f89838"
+                    color="accent"
                     target="_blank"
                     block
                     x-large
@@ -249,6 +269,8 @@ export default {
 
   props: {
     finding: Boolean,
+
+    joining: Boolean,
 
     playdate: {
       type: Object,
@@ -304,6 +326,10 @@ export default {
       return this.times.end.diff(this.times.start, 'm')
     },
 
+    hasBackpackImages () {
+      return Boolean(this.playdate.backpackChildrenImages)
+    },
+
     hasChild () {
       return Boolean(this.child.id)
     },
@@ -327,7 +353,7 @@ export default {
     },
 
     specialist () {
-      return get(this.playdate, 'specialistUser.user', {})
+      return get(this.playdate, 'specialistUser.user')
     },
 
     start () {

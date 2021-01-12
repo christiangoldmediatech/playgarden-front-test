@@ -5,36 +5,90 @@
       :class="{ mobile: $vuetify.breakpoint.smAndDown }"
       no-gutters
     >
-      <v-col cols="12" md="6" sm="12">
-        <v-img
-          alt="Educational Playdates"
-          :src="require('@/assets/png/playdates/playdate.png')"
-          class="align-center mr-md-15"
-        />
-      </v-col>
+      <underlined-title text="Educational Playdates!" />
+    </v-row>
 
-      <v-col cols="12" md="6" sm="12">
-        <underlined-title text="Educational Playdates!" />
+    <v-row>
+      <card-playdate joining :playdate="playdateComputed">
+        <template v-slot:button>
+          <v-row no-gutters>
+            <v-col class="pl-4">
+              <v-row justify="center" justify-md="start" no-gutters>
+                <v-col>
+                  <span class="font-weight-bold text--h6">
+                    What's a Playdate?
+                  </span>
 
-        <p>You just can create or join one playdate per week</p>
-      </v-col>
+                  <p>
+                    A playdate is a place where uoyr child can have fun with
+                    their friends while they have fun playing, all supervised by
+                    a specialist.
+                  </p>
+                </v-col>
+              </v-row>
+
+              <v-row class="my-3" justify="center">
+                <v-btn
+                  class="white--text text-transform-none"
+                  color="accent"
+                  width="250"
+                  large
+                  @click="onAccept"
+                >
+                  Join this playdate!
+                </v-btn>
+              </v-row>
+
+              <v-row justify="center">
+                <v-btn
+                  class="text-transform-none"
+                  color="accent"
+                  width="250"
+                  large
+                  text
+                  @click="onCancel"
+                >
+                  Cancel this invitation
+                </v-btn>
+              </v-row>
+            </v-col>
+          </v-row>
+        </template>
+      </card-playdate>
     </v-row>
   </v-col>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { get } from 'lodash'
+import { mapActions, mapGetters } from 'vuex'
+
+import CardPlaydate from '@/components/app/playdates/CardPlaydate'
 
 export default {
   name: 'Join',
 
+  components: { CardPlaydate },
+
   data: vm => ({
-    issuer: {},
+    inviteId: null,
+    playdate: {},
 
     loading: false,
 
     token: vm.$route.query.token
   }),
+
+  computed: {
+    ...mapGetters('auth', ['getUserInfo']),
+
+    playdateComputed () {
+      return {
+        ...this.playdate,
+        children: get(this.playdate, 'playdatesChildrens.0.children')
+      }
+    }
+  },
 
   created () {
     if (this.token) {
@@ -56,11 +110,11 @@ export default {
     cleanToken () {
       this.setPlaydateInvitationToken()
 
-      this.$router.push('app-playdates')
+      this.$router.push({ name: 'app-playdates' })
     },
 
-    async onAction (message, action) {
-      await action(this.token)
+    async onAction (message, action, token) {
+      await action(token)
 
       this.$snotify.success(
         `Your Playdate invitation has been ${message} successfully!.`
@@ -73,7 +127,7 @@ export default {
       this.loading = true
 
       try {
-        await this.onAction('stored', this.acceptInvitePlaydate)
+        await this.onAction('stored', this.acceptInvitePlaydate, this.token)
       } catch (e) {
       } finally {
         this.loading = false
@@ -84,7 +138,11 @@ export default {
       this.loading = true
 
       try {
-        await this.onAction('deleted', this.deletePlaydateInvitation)
+        await this.onAction(
+          'deleted',
+          this.deletePlaydateInvitation,
+          this.inviteId
+        )
       } catch (e) {
       } finally {
         this.loading = false
@@ -95,13 +153,28 @@ export default {
       this.loading = true
 
       try {
-        const { user = {} } = await this.getPlaydateInvite(this.token)
+        const {
+          id,
+          email,
+          phone,
+          playdate = {},
+          user = {}
+        } = await this.getPlaydateInvite(this.token)
 
-        this.issuer = user
+        this.inviteId = id
+        this.playdate = playdate
+
+        if (
+          user.email === this.getUserInfo.email ||
+          (this.getUserInfo.email !== email &&
+            this.getUserInfo.phoneNumber !== phone)
+        ) {
+          return this.$router.push({ name: 'app-playdates' })
+        }
       } catch (e) {
         this.cleanToken()
 
-        await this.$router.push('app-playdates')
+        await this.$router.push({ name: 'app-playdates' })
       } finally {
         this.loading = false
       }
