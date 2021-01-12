@@ -139,6 +139,7 @@ export default {
   buildModules: [
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
+    '@nuxtjs/gtm',
     '@nuxtjs/vuetify'
   ],
   /**
@@ -161,7 +162,6 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/style-resources',
-    '@nuxtjs/gtm',
     'vue-scrollto/nuxt',
     'vue-social-sharing/nuxt',
     [
@@ -201,7 +201,13 @@ export default {
   // https://www.npmjs.com/package/@nuxtjs/google-tag-manager
   gtm: {
     id: process.env.GTM_ID,
-    pageTracking: true // dev test
+    pageTracking: true, // dev test,
+    enabled: true
+  },
+  publicRuntimeConfig: {
+    gtm: {
+      id: process.env.GTM_ID
+    }
   },
   sentry: {
     dsn:
@@ -237,7 +243,8 @@ export default {
     testEnv: process.env.TEST_ENV || 'LOCAL',
     stripePublicKey:
       process.env.STRIPE_PUBLIC ||
-      'pk_test_51HKUavFlV2s2JR4RIPnTwt7laAa7Q5T3CXKL5xhGReFmtvcbi2YQDJBz8JnAHw5STCGxNmoWUDlZUnxzCE9imzxF00J5yVNU5Z'
+      'pk_test_51HKUavFlV2s2JR4RIPnTwt7laAa7Q5T3CXKL5xhGReFmtvcbi2YQDJBz8JnAHw5STCGxNmoWUDlZUnxzCE9imzxF00J5yVNU5Z',
+    gtm: process.env.GTM_ID
   },
   router: {
     base: process.env.TEST_ENV === 'production' ? '/app/' : '/',
