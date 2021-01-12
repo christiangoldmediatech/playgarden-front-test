@@ -6,7 +6,7 @@
       <v-col cols="12" md="2" lg="2" xl="1">
         <v-card class="content-report">
           <v-list three-line class="pt-9">
-            <v-list-item-group>
+            <v-list-item-group v-model="optionDefault">
               <template v-for="(item, index) in getMenu">
                 <v-list-item
                   :key="index"
@@ -109,6 +109,7 @@ export default {
     previewMode: false,
     general: true,
     reportCardTypeSelected: null,
+    optionDefault: 0,
     letterStats: {
       name: '',
       reports: []
