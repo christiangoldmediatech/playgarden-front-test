@@ -1,5 +1,5 @@
 <template>
-  <v-row class="pt-8">
+  <v-row class="pt-12 pb-16">
     <v-col cols="3">
       <center>
         <v-img :src="getDataCurrent.icon" />
