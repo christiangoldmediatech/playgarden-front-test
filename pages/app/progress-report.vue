@@ -4,13 +4,13 @@
   >
     <v-row>
       <v-col cols="12" md="2" lg="2" xl="1">
-        <v-card class="content-report">
+        <v-card class="content-report ml-n3">
           <v-list three-line class="pt-9">
             <v-list-item-group v-model="optionDefault">
               <template v-for="(item, index) in getMenu">
                 <v-list-item
                   :key="index"
-                  class="mt-4 mb-4"
+                  class="pt-4 pb-4"
                   active-class="active-css"
                   @click="loadDetailReport(item.name)"
                 >
