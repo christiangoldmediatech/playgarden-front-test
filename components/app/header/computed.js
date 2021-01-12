@@ -10,7 +10,7 @@ export default {
           { title: 'Daily Lessons', to: { name: 'app-dashboard' }, exact: false },
           { title: 'Live Classes', to: { name: 'app-live-classes' }, exact: false },
           { title: 'Activities', to: { name: 'app-activities' }, exact: false },
-          { title: 'Play dates', to: { name: 'app-playdates' }, exact: false },
+          { title: 'Playdates', to: { name: 'app-playdates' }, exact: false },
           {
             title: 'Student Cubby',
             to: { name: 'app-student-cubby' },
