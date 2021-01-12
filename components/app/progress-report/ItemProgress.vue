@@ -12,15 +12,15 @@
           <span class="stats">{{ `${item.done}/${item.total}` }}</span>
         </v-progress-circular>
       </v-col>
-      <v-col class="ml-2">
+      <v-col class="ml-2 mt-6">
         <p class="text-stats">
           <span class="font-weight-bold text-stats">
             {{ item.title }}
           </span>
         </p>
-        <p class="text-stats">
+        <!-- <p class="text-stats">
           {{ item.description }}
-        </p>
+        </p> -->
       </v-col>
     </v-row>
     <v-divider v-if="!getShowDivider" class="ml-8 mr-8" />

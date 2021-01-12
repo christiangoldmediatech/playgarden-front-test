@@ -1,6 +1,6 @@
 <template>
-  <div v-if="getSeries.length > 0" class="report-children">
-    <highchart :options="chartOptions" :update-args="updateArgs" ref="chart" />
+  <div v-if="getSeries.length > 0" class="content-report-highchart">
+    <highchart class="content-report" :options="chartOptions" :update-args="updateArgs" ref="chart" />
   </div>
 </template>
 

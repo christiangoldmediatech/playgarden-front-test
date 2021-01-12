@@ -52,11 +52,13 @@
           <v-col v-if="general === true" cols="12" md="12" lg="12" xl="12">
             <v-card class="content-report">
               <v-row class="ml-2 mr-2">
-                <v-col cols="12" md="7" lg="7" xl="10">
+                <v-col cols="12" md="7" lg="7" xl="10" class="content-report">
                   <div class="pt-4 mb-4">
                     <underlined-title class="text-h6 text-md-h5" text="General Progress Report" />
                   </div>
-                  <chart-report v-if="report" :report="report" />
+                  <div>
+                    <chart-report v-if="report" :report="report" />
+                  </div>
                 </v-col>
                 <v-col cols="12" md="5" lg="5" xl="2">
                   <v-card>
