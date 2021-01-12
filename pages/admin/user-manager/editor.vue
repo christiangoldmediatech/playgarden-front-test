@@ -14,7 +14,7 @@
               depressed
               nuxt
               small
-              :to="{ name: 'admin-user-manager' }"
+              @click.stop="goBack"
             >
               Back
             </v-btn>
@@ -241,6 +241,10 @@ export default {
       } finally {
         this.$router.push({ name: 'admin-users' })
       }
+    },
+
+    goBack () {
+      this.$router.go(-1)
     }
   }
 }

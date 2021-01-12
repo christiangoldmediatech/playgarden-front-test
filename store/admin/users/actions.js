@@ -14,6 +14,11 @@ export default {
     return data
   },
 
+  async getChildren (ctx, id) {
+    const data = await this.$axios.$get(`/user/${id}/children`)
+    return data
+  },
+
   async create (ctx, data) {
     await this.$axios.$post('/users', data)
   },
