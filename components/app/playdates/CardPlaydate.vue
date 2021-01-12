@@ -16,7 +16,7 @@
             </v-row>
 
             <h6 class="text-capitalize text-center mt-2">
-              {{ day }}: <span v-html="start" />
+              {{ day }} <span v-html="start" />
             </h6>
           </v-col>
           <v-col cols="6" class="hidden-md-and-up font-weight-bold">
@@ -70,7 +70,7 @@
               Ages recommended:<b> {{ playdate.ages }}</b>
             </v-list-item-subtitle>
 
-            <v-list-item-subtitle class="py-1">
+            <v-list-item-subtitle v-if="duration" class="py-1">
               Duration: <b>{{ duration }} minutes</b>
             </v-list-item-subtitle>
           </v-list-item-content>
@@ -143,7 +143,7 @@
                       </v-row>
 
                       <h6 class="text-capitalize text-center mt-2">
-                        {{ day }}: <span v-html="start" />
+                        {{ day }} <span v-html="start" />
                       </h6>
                     </v-col>
                   </v-row>
@@ -189,7 +189,7 @@
                         Ages recommended:<b>{{ playdate.ages }}</b>
                       </v-list-item-subtitle>
 
-                      <v-list-item-subtitle class="pt-3">
+                      <v-list-item-subtitle v-if="duration" class="pt-3">
                         Duration: <b>{{ duration }} minutes</b>
                       </v-list-item-subtitle>
 
@@ -282,17 +282,25 @@ export default {
     },
 
     day () {
+      if (!this.hasDay) {
+        return null
+      }
+
       if (
         this.today === this.week[this.playdate.day] &&
         this.times.end.isAfter(new Date())
       ) {
-        return 'Today'
+        return 'Today: '
       }
 
-      return `Next ${this.playdate.day.toLowerCase()}`
+      return `Next ${this.playdate.day.toLowerCase()}: `
     },
 
     duration () {
+      if (!this.hasDay) {
+        return null
+      }
+
       return this.times.end.diff(this.times.start, 'm')
     },
 
@@ -300,7 +308,15 @@ export default {
       return Boolean(this.child.id)
     },
 
+    hasDay () {
+      return Boolean(this.playdate.day)
+    },
+
     icsEntry () {
+      if (!this.hasDay) {
+        return null
+      }
+
       return {
         title: this.playdate.name,
         description: this.playdate.description,
@@ -315,6 +331,10 @@ export default {
     },
 
     start () {
+      if (!this.hasDay) {
+        return null
+      }
+
       const startTime = this.times.start.format('hh:mm')
       const startMeridian = this.times.start.format('a')
 
@@ -322,6 +342,10 @@ export default {
     },
 
     times () {
+      if (!this.hasDay) {
+        return null
+      }
+
       const start = dayjs
         .utc(this.playdate.start, 'HH:mm:ss')
         .add((this.week[this.playdate.day] || 6) - this.today, 'days')

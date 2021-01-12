@@ -170,6 +170,10 @@ export default {
       }
 
       return 'PARENT'
+    },
+
+    signupProcessCaregiver () {
+      return this.signupProcess === 'CAREGIVER'
     }
   },
 
@@ -188,17 +192,25 @@ export default {
 
     ...mapActions('caregiver', { newCaregiver: 'signup' }),
 
+    ...mapActions('auth', ['setPlaydateInvitationToken']),
+
     async onSubmit (data) {
       try {
         this.loading = true
 
         await this.registerProcess(
-          this.inInvitationProcess ? { data, token: this.token } : data
+          this.signupProcessCaregiver ? { data, token: this.token } : data
         )
 
-        if (this.inInvitationProcess) {
-          await this.$router.push({ name: 'app-dashboard' })
-        } else if (this.isUserLoggedIn) {
+        if (this.signupProcessCaregiver) {
+          await this.$router.push({
+            name: 'app-dashboard'
+          })
+        } else if (this.isUserLoggedIn || this.inInvitationProcess) {
+          if (this.inInvitationProcess) {
+            this.setPlaydateInvitationToken(this.token)
+          }
+
           await this.$router.push({
             name: 'app-children-register',
             query: { process: 'signup', step: '2' }
@@ -225,9 +237,13 @@ export default {
         return await this.newParent(data)
       }
 
-      return this.inInvitationProcess
-        ? await this.newCaregiver(data)
-        : await this.validateEmail(data)
+      if (this.inInvitationProcess && this.signupProcessCaregiver) {
+        await this.newCaregiver(data)
+      } else if (this.inInvitationProcess) {
+        return await this.newParent(data)
+      }
+
+      return await this.validateEmail(data)
     }
   }
 }

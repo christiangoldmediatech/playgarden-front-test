@@ -53,7 +53,7 @@
             :disabled="loading"
             width="120"
             class="mr-5 white--text text-transform-none"
-            @click="doAction(onAction)"
+            @click="doAction(onClose)"
           >
             {{ closeText }}
           </v-btn>
@@ -64,7 +64,7 @@
             :loading="loading"
             width="120"
             class="text-transform-none"
-            @click="doAction(onClose)"
+            @click="doAction(onAction)"
           >
             {{ actionText }}
           </v-btn>

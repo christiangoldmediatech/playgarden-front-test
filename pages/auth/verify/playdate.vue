@@ -54,7 +54,6 @@ export default {
             close: () => {
               this.goTo('auth-login', email, phone)
             },
-            closeButton: true,
             closeText: 'Log In',
             color: 'primary darken-1',
             contentClasses: '',

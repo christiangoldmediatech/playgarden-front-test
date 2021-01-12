@@ -1,7 +1,10 @@
 <template>
   <v-row align="center" justify="center" no-gutters class="py-0 py-md-16">
     <v-col cols="11" md="6">
-      <div class="image mt-6 mt-md-0" :class="{mobile: $vuetify.breakpoint.smAndDown}">
+      <div
+        class="image mt-6 mt-md-0"
+        :class="{ mobile: $vuetify.breakpoint.smAndDown }"
+      >
         <img alt="Smiling Girl Picture" src="@/assets/svg/girl-smiling.svg">
       </div>
     </v-col>
@@ -81,6 +84,18 @@ export default {
     }
   },
 
+  computed: {
+    inInvitationProcess () {
+      const { query } = this.$route
+
+      return Boolean(
+        query.process === 'invitation-playdate' &&
+          (query.email || query.phone) &&
+          query.token
+      )
+    }
+  },
+
   methods: {
     ...mapActions(['disableAxiosGlobal', 'enableAxiosGlobal']),
 
@@ -99,7 +114,14 @@ export default {
 
         await this.login(data)
 
-        await this.$router.push({ name: 'app-dashboard' })
+        if (this.inInvitationProcess) {
+          await this.$router.push({
+            name: 'app-playdates-join',
+            query: this.$route.query
+          })
+        } else {
+          await this.$router.push({ name: 'app-dashboard' })
+        }
       } catch (error) {
         this.errorMessage = 'Sorry! Wrong email or password'
       } finally {

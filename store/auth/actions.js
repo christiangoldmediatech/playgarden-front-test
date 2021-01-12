@@ -27,6 +27,10 @@ export default {
     }
   },
 
+  setPlaydateInvitationToken ({ commit }, token = null) {
+    commit('SET_PLAYDATE_INVITATION_TOKEN', token)
+  },
+
   logout ({ commit, rootGetters }, redirect) {
     commit('LOGOUT')
 

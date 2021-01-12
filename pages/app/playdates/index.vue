@@ -237,15 +237,21 @@ export default {
     ...mapGetters('auth', ['hasTrialOrPlatinumPlan']),
 
     playdatesComputed () {
-      return this.playdates.flatMap(
-        ({ backpackChildrenImages = [], children, playdates }) => {
-          return playdates.map(({ playdate } = {}, indexP) => ({
-            backpackChildrenImages: backpackChildrenImages[indexP] || [],
-            children,
-            ...playdate
-          }))
-        }
-      )
+      return this.playdates
+        .flatMap(({ backpackChildrenImages = [], children, playdates }) => {
+          return playdates.map(({ playdate }, indexP) => {
+            if (!playdate) {
+              return null
+            }
+
+            return {
+              backpackChildrenImages: backpackChildrenImages[indexP] || [],
+              children,
+              ...playdate
+            }
+          })
+        })
+        .filter(item => item)
     },
 
     hasPlaydates () {

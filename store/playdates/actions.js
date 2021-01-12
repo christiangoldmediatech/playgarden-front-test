@@ -7,6 +7,10 @@ export default {
     return this.$axios.$post(`/playdates/${id}`, data)
   },
 
+  deletePlaydateInvitation (_, token) {
+    return this.$axios.$get(`/playdates/invite/${token}`)
+  },
+
   getPlaydateInvite (_, token) {
     return this.$axios.$get(`/playdates/invite/${token}`)
   },

@@ -17,9 +17,11 @@
     </v-row>
 
     <v-row class="mt-md-5" no-gutters>
-      <underlined-title text="Find the playdate that best suits your child" />
+      <p>
+        <underlined-title text="Find the playdate that best suits your child" />
+      </p>
 
-      <p class="mt-5">
+      <p>
         Here you will find playdates from other playgardenprep partners with
         available places!
       </p>

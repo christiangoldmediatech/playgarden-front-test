@@ -17,6 +17,7 @@
         <underlined-title text="Create Playdate!" />
 
         <p>You just can create or join one playdate per week</p>
+
         <validation-observer v-slot="{ invalid, passes }">
           <v-form @submit.prevent="passes(onSubmit)">
             <v-row>
