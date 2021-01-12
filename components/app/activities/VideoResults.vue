@@ -5,6 +5,7 @@
         <child-select
           :value="value"
           hide-details
+          management-button
           @input="$emit('input', $event)"
         />
       </div>
