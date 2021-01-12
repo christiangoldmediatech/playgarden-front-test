@@ -1,6 +1,6 @@
 <template>
-  <div v-if="getSeries.length > 0" class="content-report-highchart">
-    <highchart class="content-report" :options="chartOptions" :update-args="updateArgs" ref="chart" />
+  <div v-if="getSeries.length > 0">
+    <highchart class="content-report chart-style" :options="chartOptions" :update-args="updateArgs" ref="chart" />
   </div>
 </template>
 
@@ -38,23 +38,14 @@ export default {
       return {
         chart: {
           type: 'scatter',
-          /* backgroundColor: {
-            linearGradient: [0, 0, 0, '100%'],
-            stops: [
-              [0, 'rgba(196, 217, 171, 0.5)'],
-              [0.2, 'rgba(196, 217, 171, 0.5)'],
-              [0.4, 'rgba(220, 231, 181, 0.25)'],
-              [0.6, 'rgba(220, 231, 181, 0.25)'],
-              [0.8, 'rgba(248, 152, 56, 0.25)'],
-              [1, 'rgba(248, 152, 56, 0.25)']
-            ]
-          }, */
+          height: '530px',
           events: {
             load () {
               const chart = this
               const data = chart.series[0].data
+              const textX = (chart.plotWidth * 0.5) - 100
               // start text
-              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.9">Area of Strenght</span>', 200, 100)
+              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.9">Area of Strenght</span>', (textX + 20), 110)
                 .css({
                   fontSize: '34px',
                   fontFamily: 'Poppins-SemiBold, Poppins',
@@ -62,14 +53,14 @@ export default {
                 })
                 .add()
 
-              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.9">Age Appropiate</span>', 210, 216)
+              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.9">Age Appropiate</span>', (textX + 40), 306)
                 .css({
                   fontSize: '34px',
                   color: '#DADADA',
                   fontFamily: 'Poppins-SemiBold, Poppins'
                 })
                 .add()
-              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.9">Progressing</span>', 225, 340)
+              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.9">Progressing</span>', (textX + 50), 460)
                 .css({
                   fontSize: '34px',
                   color: '#DADADA',
@@ -133,7 +124,15 @@ export default {
         },
         tooltip: {
           formatter () {
-            return `Data: <b> ${this.point.y} </b> <br /> Progressing: ${this.point.progressing} <br />Strenght: ${this.point.areaStrenght} <br /> Appropiate: ${this.point.ageAppropiate}`
+            let text = `Data: <b> ${this.point.y} </b> <br />`
+            if (this.point.y <= 20) {
+              text += `Progressing: ${this.point.progressing} <br />`
+            } else if (this.point.y > 20 && this.point.y <= 80) {
+              text += `Age Appropiate: ${this.point.ageAppropiate} <br />`
+            } else {
+              text += `Area of Strenght: ${this.point.areaStrenght}`
+            }
+            return text
           }
         },
         plotOptions: {
@@ -167,3 +166,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.chart-style {
+  max-height: 900px !important;
+}
+</style>
