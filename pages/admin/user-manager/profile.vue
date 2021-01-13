@@ -82,36 +82,74 @@
                 </div>
               </div>
 
-              <div class="user-general-table-row">
-                <div class="user-general-field">
-                  Plan
+              <template v-if="role === 'parent'">
+                <div class="user-general-table-row">
+                  <div class="user-general-field">
+                    Plan
+                  </div>
+                  <div class="user-general-value text-capitalize">
+                    {{ plan.name }}
+                  </div>
                 </div>
-                <div class="user-general-value text-capitalize">
-                  {{ plan.name }}
-                </div>
-              </div>
 
-              <div class="user-general-table-row">
-                <div class="user-general-field">
-                  Membership fee
+                <div class="user-general-table-row">
+                  <div class="user-general-field">
+                    Membership fee
+                  </div>
+                  <div class="user-general-value">
+                    {{ plan.fee }}
+                  </div>
                 </div>
-                <div class="user-general-value">
-                  {{ plan.fee }}
-                </div>
-              </div>
 
-              <div class="user-general-table-row">
-                <div class="user-general-field">
-                  Billing date
+                <div class="user-general-table-row">
+                  <div class="user-general-field">
+                    Billing date
+                  </div>
+                  <div class="user-general-value">
+                    {{ plan.billingDate }}
+                  </div>
                 </div>
-                <div class="user-general-value">
-                  {{ plan.billingDate }}
+
+                <div class="user-general-table-row">
+                  <div class="user-general-field">
+                    Workbook Sent
+                  </div>
+                  <div class="user-general-value">
+                    {{ workbookSent }}
+                  </div>
                 </div>
-              </div>
+
+                <div class="user-general-table-row">
+                  <div class="user-general-field">
+                    Backpack Sent
+                  </div>
+                  <div class="user-general-value">
+                    {{ backpackSent }}
+                  </div>
+                </div>
+
+                <div class="user-general-table-row">
+                  <div class="user-general-field">
+                    Shipping address
+                  </div>
+                  <div class="user-general-value">
+                    <template v-if="shippingAddress">
+                      {{ shippingAddress.address1 }}<br>
+                      <template v-if="shippingAddress.address2.length">
+                        {{ shippingAddress.address2 }}<br>
+                      </template>
+                      {{ shippingAddress.city }}, {{ shippingAddress.state }}, {{ shippingAddress.zipCode }}
+                    </template>
+                    <template v-else>
+                      Unknown
+                    </template>
+                  </div>
+                </div>
+              </template>
             </div>
           </v-card>
 
-          <v-card class="user-child" width="100%">
+          <v-card v-if="role === 'parent'" class="user-child" width="100%">
             <div class="user-child-title">
               Children's Information
             </div>
@@ -163,7 +201,7 @@
                       Current letter
                     </div>
                     <div class="user-child-table-value">
-                      N/A
+                      {{ getLessonStatus(i).letter }}
                     </div>
                   </div>
 
@@ -172,7 +210,7 @@
                       Current day
                     </div>
                     <div class="user-child-table-value">
-                      N/A
+                      {{ getLessonStatus(i).day }}
                     </div>
                   </div>
                 </div>
@@ -198,7 +236,7 @@ export default {
     return {
       user: null,
       children: [],
-      childrenStatus: null
+      childrenStatus: []
     }
   },
 
@@ -249,7 +287,7 @@ export default {
 
         if (this.billing.subscriptionData) {
           // Membership fee
-          const amount = this.billing.subscriptionData.plan.amount
+          const amount = this.billing.subscriptionData.plan.amount / 100
 
           plan.fee = amount.toLocaleString('en-US', {
             style: 'currency',
@@ -267,6 +305,13 @@ export default {
       }
 
       return plan
+    },
+
+    shippingAddress () {
+      if (this.user && this.user.shippingAddress && this.user.shippingAddress.length) {
+        return this.user.shippingAddress[0]
+      }
+      return null
     }
   },
 
@@ -277,14 +322,16 @@ export default {
 
         const children = await this.getChildren(this.id)
 
-        // const childrenIds = children.map(({ id }) => id)
-        // const childrenStatus = await this.getLessonChildrenStatus(childrenIds)
+        if (children.length) {
+          const childrenIds = children.map(({ id }) => id)
+          const childrenStatus = await this.getLessonChildrenStatus(childrenIds)
+          this.childrenStatus = childrenStatus
+        }
 
         this.children = children
-        // this.childrenStatus = childrenStatus
         this.user = user
       } catch (err) {
-        console.log(err)
+        return Promise.reject(err)
       }
     } else {
       this.$router.push({ name: 'admin-user-manager' })
@@ -310,6 +357,37 @@ export default {
         return 'Girl'
       }
       return 'Boy'
+    },
+
+    getLessonStatus (index) {
+      const result = {
+        letter: 'N/A',
+        day: 'N/A'
+      }
+
+      const status = this.childrenStatus[index]
+
+      if (this.childrenStatus[index]) {
+        if (status.day) {
+          result.day = status.day
+        }
+
+        if (status.curriculumType) {
+          result.letter = status.curriculumType.letter.substr(0, 1)
+        }
+      }
+
+      return result
+    },
+
+    workbookSent () {
+      const result = this.user && this.user.shipments && this.user.shipments.workbook
+      return result ? 'Yes' : 'No'
+    },
+
+    backpackSent () {
+      const result = this.user && this.user.shipments && this.user.shipments.backpack
+      return result ? 'Yes' : 'No'
     }
   }
 }
