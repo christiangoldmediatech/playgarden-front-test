@@ -312,6 +312,16 @@ export default {
         return this.user.shippingAddress[0]
       }
       return null
+    },
+
+    workbookSent () {
+      const result = this.user && this.user.shipments && this.user.shipments.workbook
+      return result ? 'Yes' : 'No'
+    },
+
+    backpackSent () {
+      const result = this.user && this.user.shipments && this.user.shipments.backpack
+      return result ? 'Yes' : 'No'
     }
   },
 
@@ -378,16 +388,6 @@ export default {
       }
 
       return result
-    },
-
-    workbookSent () {
-      const result = this.user && this.user.shipments && this.user.shipments.workbook
-      return result ? 'Yes' : 'No'
-    },
-
-    backpackSent () {
-      const result = this.user && this.user.shipments && this.user.shipments.backpack
-      return result ? 'Yes' : 'No'
     }
   }
 }
