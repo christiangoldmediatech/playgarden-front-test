@@ -7,10 +7,18 @@ export default {
     items () {
       if (!this.isUserInSignupProcess && this.isUserLoggedIn) {
         const list = [
-          { title: 'Daily Lessons', to: { name: 'app-dashboard' }, exact: false },
-          { title: 'Live Classes', to: { name: 'app-live-classes' }, exact: false },
+          {
+            title: 'Daily Lessons',
+            to: { name: 'app-dashboard' },
+            exact: false
+          },
+          {
+            title: 'Live Classes',
+            to: { name: 'app-live-classes' },
+            exact: false
+          },
           { title: 'Activities', to: { name: 'app-activities' }, exact: false },
-          { title: 'Playdates', to: { name: 'app-playdates' }, exact: false },
+          // { title: 'Playdates', to: { name: 'app-playdates' }, exact: false },
           {
             title: 'Student Cubby',
             to: { name: 'app-student-cubby' },
@@ -28,7 +36,16 @@ export default {
         // }
 
         if (!['production', 'staging'].includes(process.env.testEnv)) {
-          list.push({ title: 'Parent Corner', to: { name: 'app-parent-corner' }, exact: false })
+          list.push({
+            title: 'Parent Corner',
+            to: { name: 'app-parent-corner' },
+            exact: false
+          })
+          list.push({
+            title: 'Playdates',
+            to: { name: 'app-playdates' },
+            exact: false
+          })
         }
 
         return list

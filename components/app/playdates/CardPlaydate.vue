@@ -216,7 +216,7 @@
                       </v-list-item-subtitle>
 
                       <v-list-item-subtitle v-if="!finding" class="pt-5">
-                        <h5>who's going?</h5>
+                        <h5>Who is going?</h5>
 
                         <child-select :value="child.id" hide-details disabled />
                       </v-list-item-subtitle>
