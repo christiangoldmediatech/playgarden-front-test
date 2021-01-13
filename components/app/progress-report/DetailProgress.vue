@@ -13,8 +13,8 @@
       <div class="pt-4 mb-4 mr-6">
         <underlined-title class="text-h6 text-md-h3" :text="reportCardType" />
 
-        <p class="text-progress mt-4">
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+        <p class="text-progress mt-4 pb-10">
+          {{ dataReportCardType.description }}
         </p>
 
         <p>
