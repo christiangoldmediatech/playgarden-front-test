@@ -75,7 +75,7 @@
             <v-card>
               <v-row>
                 <v-col cols="12">
-                  <detail-progress :report-card-type="reportCardTypeSelected" :report="report" />
+                  <detail-progress :report-card-type="reportCardTypeSelected" :report="report" :data-report-card-type="dataReportCard" />
                 </v-col>
               </v-row>
             </v-card>
@@ -109,6 +109,7 @@ export default {
     previewMode: false,
     general: true,
     reportCardTypeSelected: null,
+    dataReportCard: null,
     optionDefault: 0,
     letterStats: {
       name: '',
@@ -197,6 +198,7 @@ export default {
         this.general = true
       } else {
         this.general = false
+        this.dataReportCard = this.getMenu.find(menu => menu.name === reportCardType)
       }
     }
   }

@@ -33,8 +33,8 @@
           <underlined-title class="text-h6 text-md-h7" text="What is this?" />
         </p>
 
-        <p class="text-progress">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Amet elementum gravida viverra lorem volutpat in. Malesuada accumsan, habitasse suspendisse dignissim massa sit. Adipiscing cursus at augue in. Pellentesque rhoncus tellus turpis integer velit. Et vitae malesuada bibendum quis dui. Mauris pretium ridiculus vitae non pellentesque urna. Accumsan morbi eu eu gravida magnis vitae. Et vitae malesuada bibendum quis dui. Mauris pretium ridiculus vitae non pellentesque urna. Accumsan morbi eu eu gravida magnis vitae.
+        <p class="text-progress pb-16 pt-8">
+          {{ getTextWhatIsThis }}
         </p>
       </div>
     </v-col>
@@ -57,6 +57,11 @@ export default {
       type: Object,
       required: true,
       default: () => {}
+    },
+    dataReportCardType: {
+      type: Object,
+      required: true,
+      default: () => {}
     }
   },
 
@@ -64,6 +69,18 @@ export default {
     getDataCurrent () {
       const index = this.report.categories.indexOf(this.reportCardType)
       return this.report.dataSerie[index]
+    },
+
+    getTextWhatIsThis () {
+      let text = ''
+      if (this.getDataCurrent.y <= 20) {
+        text = this.dataReportCardType.descriptionProgress.progressing
+      } else if (this.getDataCurrent.y > 20 && this.getDataCurrent.y <= 80) {
+        text = this.dataReportCardType.descriptionProgress.ageAppropiate
+      } else {
+        text = this.dataReportCardType.descriptionProgress.areaStrenght
+      }
+      return text
     },
 
     getScale () {
