@@ -1,5 +1,6 @@
 // import path from 'path'
 // import fs from 'fs'
+import webpack from 'webpack'
 const googleTagManagerNoScript =
   '<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M57SKCV" height="0" width="0" style="display:none;visibility:hidden"></iframe>'
 
@@ -164,6 +165,7 @@ export default {
     '@nuxtjs/style-resources',
     'vue-scrollto/nuxt',
     'vue-social-sharing/nuxt',
+    'nuxt-highcharts',
     [
       'storyblok-nuxt',
       {
@@ -233,7 +235,12 @@ export default {
    ** See https://nuxtjs.org/api/configuration-build/
    */
   build: {
-    transpile: ['vuetify/lib', 'vee-validate/dist/rules', 'tiptap-vuetify']
+    transpile: ['vuetify/lib', 'vee-validate/dist/rules', 'tiptap-vuetify'],
+    plugins: [
+      new webpack.IgnorePlugin({
+        resourceRegExp: /\@highcharts\/map\-collection/
+      })
+    ]
   },
   env: {
     apiBaseUrl:
