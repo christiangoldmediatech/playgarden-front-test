@@ -54,13 +54,23 @@
             <div class="user-general-title">
               General Information
             </div>
+
             <div class="user-general-table">
               <div class="user-general-table-row">
                 <div class="user-general-field">
-                  Role
+                  Address
                 </div>
-                <div class="user-general-value text-capitalize">
-                  {{ role }}
+                <div class="user-general-value">
+                  <template v-if="shippingAddress">
+                    {{ shippingAddress.address1 }},
+                    <template v-if="shippingAddress.address2.length">
+                      {{ shippingAddress.address2 }},
+                    </template>
+                    {{ shippingAddress.city }}, {{ shippingAddress.state }}, {{ shippingAddress.zipCode }}
+                  </template>
+                  <template v-else>
+                    Unknown
+                  </template>
                 </div>
               </div>
 
@@ -74,30 +84,64 @@
               </div>
 
               <div class="user-general-table-row">
-                <div class="user-general-field">
-                  Phone Number
+                <div class="user-general-table-row-divider">
+                  <div class="user-general-field">
+                    Phone Number
+                  </div>
+                  <div class="user-general-value">
+                    {{ user.phoneNumber }}
+                  </div>
                 </div>
-                <div class="user-general-value">
-                  {{ user.phoneNumber }}
+                <div class="user-general-field">
+                  Role
+                </div>
+                <div class="user-general-value text-capitalize">
+                  {{ role }}
                 </div>
               </div>
 
               <template v-if="role === 'parent'">
                 <div class="user-general-table-row">
-                  <div class="user-general-field">
-                    Plan
+                  <div class="user-general-table-row-divider">
+                    <div class="user-general-field">
+                      Plan
+                    </div>
+                    <div class="user-general-value text-capitalize">
+                      {{ plan.name }}
+                    </div>
                   </div>
-                  <div class="user-general-value text-capitalize">
-                    {{ plan.name }}
+                  <div class="user-general-field">
+                    Backpack
+                  </div>
+                  <div class="user-general-value">
+                    <template v-if="backpackSent">
+                      Sent <img class="user-sent-status" src="@/assets/svg/green-check.svg">
+                    </template>
+                    <template v-else>
+                      Pending <img class="user-sent-status" src="@/assets/svg/pending.svg">
+                    </template>
                   </div>
                 </div>
 
                 <div class="user-general-table-row">
+                  <div class="user-general-table-row-divider">
+                    <div class="user-general-field">
+                      Membership fee
+                    </div>
+                    <div class="user-general-value">
+                      {{ plan.fee }}
+                    </div>
+                  </div>
                   <div class="user-general-field">
-                    Membership fee
+                    Workbook
                   </div>
                   <div class="user-general-value">
-                    {{ plan.fee }}
+                    <template v-if="workbookSent">
+                      Sent <img class="user-sent-status" src="@/assets/svg/green-check.svg">
+                    </template>
+                    <template v-else>
+                      Pending <img class="user-sent-status" src="@/assets/svg/pending.svg">
+                    </template>
                   </div>
                 </div>
 
@@ -107,42 +151,6 @@
                   </div>
                   <div class="user-general-value">
                     {{ plan.billingDate }}
-                  </div>
-                </div>
-
-                <div class="user-general-table-row">
-                  <div class="user-general-field">
-                    Workbook Sent
-                  </div>
-                  <div class="user-general-value">
-                    {{ workbookSent }}
-                  </div>
-                </div>
-
-                <div class="user-general-table-row">
-                  <div class="user-general-field">
-                    Backpack Sent
-                  </div>
-                  <div class="user-general-value">
-                    {{ backpackSent }}
-                  </div>
-                </div>
-
-                <div class="user-general-table-row">
-                  <div class="user-general-field">
-                    Shipping address
-                  </div>
-                  <div class="user-general-value">
-                    <template v-if="shippingAddress">
-                      {{ shippingAddress.address1 }}<br>
-                      <template v-if="shippingAddress.address2.length">
-                        {{ shippingAddress.address2 }}<br>
-                      </template>
-                      {{ shippingAddress.city }}, {{ shippingAddress.state }}, {{ shippingAddress.zipCode }}
-                    </template>
-                    <template v-else>
-                      Unknown
-                    </template>
                   </div>
                 </div>
               </template>
@@ -201,7 +209,7 @@
                       Current letter
                     </div>
                     <div class="user-child-table-value">
-                      {{ getLessonStatus(i).letter }}
+                      {{ getLessonStatus(child.id).letter }}
                     </div>
                   </div>
 
@@ -210,7 +218,7 @@
                       Current day
                     </div>
                     <div class="user-child-table-value">
-                      {{ getLessonStatus(i).day }}
+                      {{ getLessonStatus(child.id).day }}
                     </div>
                   </div>
                 </div>
@@ -315,13 +323,11 @@ export default {
     },
 
     workbookSent () {
-      const result = this.user && this.user.shipments && this.user.shipments.workbook
-      return result ? 'Yes' : 'No'
+      return this.user && this.user.shipments && this.user.shipments.workbook
     },
 
     backpackSent () {
-      const result = this.user && this.user.shipments && this.user.shipments.backpack
-      return result ? 'Yes' : 'No'
+      return this.user && this.user.shipments && this.user.shipments.backpack
     }
   },
 
@@ -369,22 +375,19 @@ export default {
       return 'Boy'
     },
 
-    getLessonStatus (index) {
+    getLessonStatus (childId) {
       const result = {
         letter: 'N/A',
         day: 'N/A'
       }
 
-      const status = this.childrenStatus[index]
+      const status = this.childrenStatus.find((childStatus) => {
+        return childStatus.children.id === childId && childStatus.curriculumType && childStatus.day
+      })
 
-      if (this.childrenStatus[index]) {
-        if (status.day) {
-          result.day = status.day
-        }
-
-        if (status.curriculumType) {
-          result.letter = status.curriculumType.letter.substr(0, 1)
-        }
+      if (status) {
+        result.day = status.day
+        result.letter = status.curriculumType.letter.substr(0, 1)
       }
 
       return result
@@ -456,6 +459,10 @@ export default {
       &-row {
         display: flex;
         margin-bottom: 16px;
+        &-divider {
+          display: flex;
+          width: 50%;
+        }
       }
     }
     &-field {
@@ -524,6 +531,12 @@ export default {
         color: #484848;
       }
     }
+  }
+  &-sent-status {
+    vertical-align: middle;
+    margin-left: 12px;
+    width: 24px;
+    height: 24px;
   }
 }
 </style>
