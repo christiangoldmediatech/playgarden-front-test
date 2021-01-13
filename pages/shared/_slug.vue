@@ -509,12 +509,12 @@ export default {
         {
           hid: 'og:site_name',
           property: 'og:site_name',
-          content: process.env.apiBaseUrl
+          content: process.env.frontendUrl
         },
         {
           hid: 'og:url',
           property: 'og:url',
-          content: process.env.apiBaseUrl
+          content: process.env.frontendUrl
         },
         {
           hid: 'twitter:card',
@@ -524,7 +524,7 @@ export default {
         {
           hid: 'twitter:domain',
           name: 'twitter:domain',
-          content: process.env.apiBaseUrl
+          content: process.env.frontendUrl
         },
         {
           hid: 'twitter:image:alt',

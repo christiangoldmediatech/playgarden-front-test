@@ -73,7 +73,7 @@
               <child-select
                 :value="value"
                 hide-details
-                :preview-mode="previewMode"
+                :management-button="!previewMode"
                 @input="$emit('input', $event)"
               />
             </div>
