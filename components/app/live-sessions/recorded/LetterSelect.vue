@@ -12,7 +12,7 @@
     <template v-slot:selection="{ item }">
       <v-list-item class="w-100">
         <recorded-letter
-          v-bind="{ letter: item }"
+          v-bind="{ letter: item, small: smallLetter }"
           list-mode
         />
 
@@ -27,7 +27,7 @@
     <template v-slot:item="{ item, on, attrs }">
       <v-list-item v-bind="attrs" class="w-100" v-on="on">
         <recorded-letter
-          v-bind="{ letter: item }"
+          v-bind="{ letter: item, small: smallLetter }"
           list-mode
         />
 
@@ -58,6 +58,12 @@ export default {
         return val === null || typeof val === 'number'
       },
       required: true
+    },
+
+    smallLetter: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
 
