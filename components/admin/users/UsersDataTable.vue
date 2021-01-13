@@ -88,6 +88,10 @@
                   </v-row>
                 </v-col>
               </template>
+
+              <template v-slot:[`item.actions.prepend`]="{ item }">
+                <img class="clickable profile-icon" width="20px;" height="20px;" src="@/assets/svg/eye.svg" @click="goToProfile(item.id)">
+              </template>
             </pg-admin-data-table>
           </v-card-text>
         </v-card>
@@ -215,6 +219,10 @@ export default {
       deleteUser: 'delete'
     }),
 
+    goToProfile (id) {
+      this.$router.push({ name: 'admin-user-manager-profile', query: { id } })
+    },
+
     toggleAll () {
       this.allFilters = !this.allFilters
 
@@ -266,3 +274,10 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.profile-icon {
+  display: inline-flex;
+  vertical-align: middle;
+}
+</style>
