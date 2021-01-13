@@ -17,5 +17,6 @@ export default {
   },
   SET_EXPIRES_AT: set('expiresAt'),
   SET_ISSUED_AT: set('issuedAt'),
+  SET_PLAYDATE_INVITATION_TOKEN: set('playdateInvitationToken'),
   SET_USER_INFO: set('userInfo')
 }

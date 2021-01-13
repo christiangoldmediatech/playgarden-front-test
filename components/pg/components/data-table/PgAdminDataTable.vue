@@ -58,9 +58,9 @@
       <slot name="item.actions.prepend" v-bind="{ item }" />
 
       <component
-        v-if="props.action"
         :is="$options.components.VIcon"
-        color="#f89838"
+        v-if="props.action"
+        color="accent"
         dense
         @click.stop="$options.doEvent('action-item', item, listeners)"
       >

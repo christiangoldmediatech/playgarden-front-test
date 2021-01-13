@@ -26,14 +26,14 @@ export default {
 
   computed: {
     ...mapGetters({ currentChild: 'getCurrentChild' }),
+    ...mapGetters('auth', {
+      playdateInvitationToken: 'getPlaydateInvitationToken'
+    }),
     ...mapGetters('admin/curriculum', { lesson: 'getLesson' }),
     ...mapGetters('children', { allChildren: 'rows' }),
 
     overrideMode () {
-      if (this.overrides.childId && this.overrides.lessonId) {
-        return true
-      }
-      return false
+      return !!(this.overrides.childId && this.overrides.lessonId)
     },
 
     childrenIds () {
@@ -62,7 +62,15 @@ export default {
   },
 
   async created () {
-    // console.log('created')
+    if (this.playdateInvitationToken) {
+      return await this.$router.push({
+        name: 'app-playdates-join',
+        query: {
+          token: this.playdateInvitationToken
+        }
+      })
+    }
+
     if (this.overrideMode) {
       const currentChild = this.currentChild[0].id
       await this.getAllChildren()
@@ -70,11 +78,11 @@ export default {
         this.changeChild(this.overrides.childId, false)
       }
     } else {
-      this.getAllChildren()
+      await this.getAllChildren()
     }
 
     // Load current lesson
-    this.handleLesson(true)
+    await this.handleLesson(true)
 
     // Setup update listener
     this.$nuxt.$on('dashboard-panel-update', () => {
@@ -88,7 +96,11 @@ export default {
 
   methods: {
     ...mapActions('children', { getAllChildren: 'get' }),
-    ...mapActions('children/lesson', ['getCurrentLesson', 'getCurrentLessonByChildrenId', 'resetChild']),
+    ...mapActions('children/lesson', [
+      'getCurrentLesson',
+      'getCurrentLessonByChildrenId',
+      'resetChild'
+    ]),
     ...mapActions({ setChild: 'setChild' }),
 
     getNextId (items = []) {
@@ -123,7 +135,10 @@ export default {
 
     async handleLesson (redirect = false) {
       try {
-        if (this.overrideMode && this.childrenIds === parseInt(this.overrides.childId)) {
+        if (
+          this.overrideMode &&
+          this.childrenIds === parseInt(this.overrides.childId)
+        ) {
           await this.getCurrentLessonByChildrenId(this.overrides)
         } else {
           await this.getCurrentLesson({
@@ -143,30 +158,39 @@ export default {
       // console.log('redirect method called from', from)
       if (this.lesson) {
         if (this.videos.progress < 100 && this.videos.items.length) {
-          const route = this.generateNuxtRoute('lesson-videos', { id: this.getNextId(this.videos.items) })
+          const route = this.generateNuxtRoute('lesson-videos', {
+            id: this.getNextId(this.videos.items)
+          })
           this.$router.push(route)
-        } else if (
-          this.worksheets.progress < 100 &&
-          this.worksheets.ONLINE
-        ) {
-          const route = this.generateNuxtRoute('online-worksheet', { id: this.getNextId(this.worksheets.ONLINE) })
+        } else if (this.worksheets.progress < 100 && this.worksheets.ONLINE) {
+          const route = this.generateNuxtRoute('online-worksheet', {
+            id: this.getNextId(this.worksheets.ONLINE)
+          })
           this.$router.push(route)
         } else if (
           this.activities.progress < 100 &&
           this.activities.items.length
         ) {
-          const route = this.generateNuxtRoute('lesson-activities', { id: this.getNextId(this.activities.items) })
+          const route = this.generateNuxtRoute('lesson-activities', {
+            id: this.getNextId(this.activities.items)
+          })
           this.$router.push(route)
         } else {
           this.$router.push(this.generateNuxtRoute('lesson-completed'))
         }
-      } else if (this.lesson && this.$route.name === 'app-dashboard-lesson-completed') {
+      } else if (
+        this.lesson &&
+        this.$route.name === 'app-dashboard-lesson-completed'
+      ) {
         if (
           (this.videos.progress < 100 && this.videos.items.length) ||
           (this.worksheets.progress < 100 && this.worksheets.ONLINE) ||
           (this.activities.progress < 100 && this.activities.items.length)
         ) {
-          this.$router.push({ name: 'app-dashboard', query: { ...this.overrides } })
+          this.$router.push({
+            name: 'app-dashboard',
+            query: { ...this.overrides }
+          })
         }
       }
     }

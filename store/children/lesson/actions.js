@@ -80,5 +80,17 @@ export default {
 
     commit('admin/curriculum/SET_LESSON', lesson, { root: true })
     return lesson
+  },
+
+  async getLessonChildrenStatus (_, children) {
+    const data = await this.$axios.$get('/lessons/children/status', {
+      params: { children }
+    })
+    return data
+  },
+
+  async getLessonChildTimeline (_, childId) {
+    const data = await this.$axios.$get(`/lessons/children/${childId}/timeline`)
+    return data
   }
 }

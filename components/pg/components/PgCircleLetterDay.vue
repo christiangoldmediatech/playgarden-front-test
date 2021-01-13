@@ -27,7 +27,7 @@
           <span
             v-if="day"
             class="pg-letter-day-number"
-            :style="{ fontSize: `${size * 0.15}px` }"
+            :style="{ fontSize: `${size * 0.15}px`, marginBottom: `${size * 0.07}px`, letterSpacing }"
           >
             DAY {{ day }}
           </span>
@@ -57,6 +57,11 @@ export default {
     size: {
       type: [Number, String],
       default: 158
+    },
+
+    letterSpacing: {
+      type: [Number, String],
+      default: '1.2px'
     }
   }
 }

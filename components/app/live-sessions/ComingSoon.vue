@@ -101,7 +101,7 @@ export default {
     }
     &-title-2 {
       font-weight: bold;
-      color: #F89838;
+      color: var(--v-accent-base);
       font-size: 50px;
       line-height: 65px;
       text-align: center;

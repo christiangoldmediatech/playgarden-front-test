@@ -1,6 +1,6 @@
 <template>
   <pg-select
-    :value="value"
+    :value="internalValue"
     :items="childrenList"
     placeholder="Select a child"
     solo
@@ -23,20 +23,27 @@
 
     <template v-slot:item="{ item, on, attrs }">
       <v-list-item v-bind="attrs" class="w-100" v-on="on">
+        <v-simple-checkbox
+          v-if="multiple"
+          color="primary"
+          :ripple="false"
+          :value="attrs.inputValue"
+        />
+
         <v-list-item-avatar>
           <v-img :src="item.backpack.image" />
         </v-list-item-avatar>
 
         <v-list-item-content>
-          <v-list-item-title>
+          <v-list-item-title :class="{ 'pl-2': multiple }">
             {{ item.firstName }}
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </template>
 
-    <template v-slot:append-item>
-      <v-list-item v-if="!previewMode && !isUserCaregiver">
+    <template v-if="managementButton && !isUserCaregiver" v-slot:append-item>
+      <v-list-item>
         <v-list-item-content>
           <v-btn
             color="primary"
@@ -59,23 +66,30 @@ export default {
 
   props: {
     value: {
-      required: true,
-      validator: (val) => {
-        return val === null || typeof val === 'number'
-      }
+      type: [Array, Number, Object, String],
+      required: true
     },
 
-    previewMode: {
-      type: Boolean,
-      required: false,
-      default: false
-    }
+    managementButton: Boolean
   },
 
   computed: {
     ...mapGetters('auth', ['isUserCaregiver']),
 
     ...mapGetters('children', { children: 'rows' }),
+
+    internalValue () {
+      return this.multiple && !Array.isArray(this.value)
+        ? [this.value]
+        : this.value
+    },
+
+    multiple () {
+      return (
+        'multiple' in this.$attrs &&
+        (this.$attrs.multiple === '' || this.$attrs.multiple)
+      )
+    },
 
     childrenList () {
       return this.children.map((child) => {

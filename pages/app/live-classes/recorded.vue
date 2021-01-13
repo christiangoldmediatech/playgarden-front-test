@@ -56,44 +56,7 @@
 
         <!-- Bottom subtitle / dropdown -->
         <v-col v-if="$vuetify.breakpoint.mobile && mode === 'LETTER'" cols="11" sm="6" md="4">
-          <pg-select
-            v-model="selectedLetter"
-            :items="letters"
-            item-value="id"
-            hide-details
-            solo
-            placeholder="Browse by letter"
-          >
-            <template v-slot:selection="{ item }">
-              <v-list-item class="w-100">
-                <recorded-letter
-                  v-bind="{ letter: item }"
-                  list-mode
-                />
-
-                <v-list-item-content>
-                  <v-list-item-title class="font-weight-bold pl-4">
-                    Letter {{ item.name.substr(0, 1) }}
-                  </v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </template>
-
-            <template v-slot:item="{ item, on, attrs }">
-              <v-list-item v-bind="attrs" class="w-100" v-on="on">
-                <recorded-letter
-                  v-bind="{ letter: item }"
-                  list-mode
-                />
-
-                <v-list-item-content>
-                  <v-list-item-title class="pl-4">
-                    Letter {{ item.name.substr(0, 1) }}
-                  </v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </template>
-          </pg-select>
+          <letter-select v-model="selectedLetter" />
         </v-col>
 
         <!-- Desktop subtitle -->
@@ -169,6 +132,7 @@ import RecordedLetter from '@/components/app/live-sessions/recorded/RecordedLett
 import RecordedClassPlayer from '@/components/app/live-sessions/RecordedClassPlayer.vue'
 import RecordedCard from '@/components/app/live-sessions/recorded/RecordedCard.vue'
 import RecordedCarousel from '@/components/app/live-sessions/recorded/RecordedCarousel.vue'
+import LetterSelect from '@/components/app/live-sessions/recorded/LetterSelect.vue'
 
 export default {
   name: 'Recorded',
@@ -179,7 +143,8 @@ export default {
     RecordedClassPlayer,
     RecordedCard,
     RecordedCarousel,
-    CategoryHeader
+    CategoryHeader,
+    LetterSelect
   },
 
   data: () => {

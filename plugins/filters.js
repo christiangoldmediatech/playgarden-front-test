@@ -12,3 +12,11 @@ Vue.filter('shorten', (value) => {
   }
   return value
 })
+
+Vue.filter('belongsTo', (name) => {
+  if (name.charAt(name.length - 1).toLowerCase() === 's') {
+    return `${name}'`
+  }
+
+  return `${name}'s`
+})
