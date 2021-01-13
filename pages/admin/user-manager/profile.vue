@@ -171,7 +171,7 @@
                 <div class="user-child-backpack">
                   <img class="mb-3" width="100%" :src="child.backpack.image">
 
-                  <v-btn class="text-none" color="accent" block>
+                  <v-btn class="text-none" color="accent" block @click.stop="openTimeline(child)">
                     Progress
                   </v-btn>
                 </div>
@@ -229,16 +229,22 @@
         </v-card>
       </v-col>
     </v-row>
+    <user-child-timeline-dialog />
   </v-container>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
+import UserChildTimelineDialog from '@/components/admin/users/UserChildTimelineDialog.vue'
 
 export default {
   name: 'Profile',
 
   layout: 'admin',
+
+  components: {
+    UserChildTimelineDialog
+  },
 
   data: () => {
     return {
@@ -394,6 +400,10 @@ export default {
       }
 
       return result
+    },
+
+    openTimeline (child) {
+      this.$nuxt.$emit('open-timeline', child)
     }
   }
 }

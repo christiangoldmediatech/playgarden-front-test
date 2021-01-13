@@ -87,5 +87,10 @@ export default {
       params: { children }
     })
     return data
+  },
+
+  async getLessonChildTimeline (_, childId) {
+    const data = await this.$axios.$get(`/lessons/children/${childId}/timeline`)
+    return data
   }
 }

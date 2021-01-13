@@ -31,6 +31,12 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+
+    small: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
 
@@ -46,7 +52,8 @@ export default {
         clickable: !this.listMode,
         'recorded-letter-shadow': this.selectedLetter !== this.letter.id,
         'recorded-letter-vowel': this.vowels.includes(this.letter.name.substr(0, 1)),
-        'recorded-letter-active': this.selectedLetter === this.letter.id && !this.listMode
+        'recorded-letter-active': this.selectedLetter === this.letter.id && !this.listMode,
+        'recorded-letter-small': this.small
       }
 
       return (hover) => {
@@ -98,6 +105,15 @@ export default {
   &-scaled {
     // There is a problem with the shadows when scaling.
     transform: scale(1.125);
+  }
+  &-small {
+    width: 40px;
+    height: 40px;
+    max-width: 40px;
+    max-height: 40px;
+    font-size: 26px;
+    margin: 12px;
+    border-radius: 4px;
   }
 }
 </style>
