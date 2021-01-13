@@ -7,6 +7,7 @@ export default function ({ redirect, route, store }) {
     const ignoreRoute = {
       'auth-logout': 1,
       'auth-verify-email': 1,
+      'auth-verify-playdate': 1,
       'app-account': 1,
       'app-children-register': 1,
       'app-onboarding': 1,

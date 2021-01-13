@@ -1,6 +1,10 @@
 /* VENDOR */
 /* import them directly into nuxt.config.js */
 
+.text-transform-none {
+  text-transform: none !important;
+}
+
 .clickable {
   cursor: pointer;
 }
@@ -160,5 +164,5 @@
 }
 
 .pos-right-0 {
-  right:  0;
+  right: 0;
 }

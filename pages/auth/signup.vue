@@ -31,7 +31,7 @@
         <v-col class="px-12" cols="12" md="8">
           <p class="text-center text-md-left">
             <span class="font-weight-bold text-h5 pg-letter-spacing">
-              {{ inInvitationProcess ? 'CAREGIVER' : 'PARENT' }} INFORMATION
+              {{ signupProcess }} INFORMATION
             </span>
           </p>
 
@@ -53,15 +53,14 @@
 
           <p class="mt-6 mb-12 text-center text-md-left">
             <small>
-              Complete the registration and choose the plan that best suits your family's needs!
+              Complete the registration and choose the plan that best suits your
+              family's needs!
             </small>
           </p>
 
           <template v-if="!inInvitationProcess">
             <p class="text-center text-md-left mt-6">
-              <v-row
-                no-gutters
-              >
+              <v-row no-gutters>
                 <v-col cols="1">
                   <v-img
                     :src="require('@/assets/png/gift-icon.png')"
@@ -70,7 +69,9 @@
                   />
                 </v-col>
                 <v-col>
-                  <span class="font-weight-bold text-uppercase pg-letter-spacing-subtitle">
+                  <span
+                    class="font-weight-bold text-uppercase pg-letter-spacing-subtitle"
+                  >
                     ENJOY 30 DAYS OF FREE TRIAL
                   </span>
                 </v-col>
@@ -78,7 +79,8 @@
             </p>
 
             <p class="text-center text-md-left mt-10">
-              <small>*You can cancel your membership any time from the account settings.</small>
+              <small>*You can cancel your membership any time from the account
+                settings.</small>
             </p>
           </template>
         </v-col>
@@ -88,7 +90,10 @@
 
   <v-row v-else align="center" justify="center" no-gutters>
     <v-col cols="11" md="6">
-      <div class="image mt-4" :class="{mobile: $vuetify.breakpoint.smAndDown}">
+      <div
+        class="image mt-4"
+        :class="{ mobile: $vuetify.breakpoint.smAndDown }"
+      >
         <img alt="Smiling Girl Picture" src="@/assets/svg/girl-smiling.svg">
       </div>
     </v-col>
@@ -128,16 +133,6 @@ export default {
     loading: false,
     emailValidated: null,
 
-    inInvitationProcess: (() => {
-      const { query } = vm.$route
-
-      return Boolean(
-        query.process === 'invitation' &&
-          (query.email || query.phone) &&
-          query.token
-      )
-    })(),
-
     userSocialData: (() => {
       const { query } = vm.$route
       if (query.process === 'social-signup' && query._u) {
@@ -152,7 +147,35 @@ export default {
     token: vm.$route.query.token
   }),
 
-  computed: mapGetters('auth', ['getUserInfo', 'isUserLoggedIn']),
+  computed: {
+    ...mapGetters('auth', ['getUserInfo', 'isUserLoggedIn']),
+
+    inInvitationProcess () {
+      const { query } = this.$route
+
+      return Boolean(
+        (query.process === 'invitation-caregiver' ||
+          query.process === 'invitation-playdate') &&
+          (query.email || query.phone) &&
+          query.token
+      )
+    },
+
+    signupProcess () {
+      if (
+        this.inInvitationProcess &&
+        this.$route.query.process === 'invitation-caregiver'
+      ) {
+        return 'CAREGIVER'
+      }
+
+      return 'PARENT'
+    },
+
+    signupProcessCaregiver () {
+      return this.signupProcess === 'CAREGIVER'
+    }
+  },
 
   beforeMount () {
     if (this.userSocialData) {
@@ -169,17 +192,25 @@ export default {
 
     ...mapActions('caregiver', { newCaregiver: 'signup' }),
 
+    ...mapActions('auth', ['setPlaydateInvitationToken']),
+
     async onSubmit (data) {
       try {
         this.loading = true
 
         await this.registerProcess(
-          this.inInvitationProcess ? { data, token: this.token } : data
+          this.signupProcessCaregiver ? { data, token: this.token } : data
         )
 
-        if (this.inInvitationProcess) {
-          await this.$router.push({ name: 'app-dashboard' })
-        } else if (this.isUserLoggedIn) {
+        if (this.signupProcessCaregiver) {
+          await this.$router.push({
+            name: 'app-dashboard'
+          })
+        } else if (this.isUserLoggedIn || this.inInvitationProcess) {
+          if (this.inInvitationProcess) {
+            this.setPlaydateInvitationToken(this.token)
+          }
+
           await this.$router.push({
             name: 'app-children-register',
             query: { process: 'signup', step: '2' }
@@ -206,9 +237,13 @@ export default {
         return await this.newParent(data)
       }
 
-      return this.inInvitationProcess
-        ? await this.newCaregiver(data)
-        : await this.validateEmail(data)
+      if (this.inInvitationProcess && this.signupProcessCaregiver) {
+        await this.newCaregiver(data)
+      } else if (this.inInvitationProcess) {
+        return await this.newParent(data)
+      }
+
+      return await this.validateEmail(data)
     }
   }
 }
@@ -248,6 +283,6 @@ export default {
 }
 
 .text-orange-info::v-deep.v-chip--label {
-    border-radius: 0px !important;
+  border-radius: 0px !important;
 }
 </style>

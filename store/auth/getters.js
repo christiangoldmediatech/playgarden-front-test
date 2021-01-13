@@ -16,5 +16,7 @@ export default {
   isUserLoggedIn: (_, getters) => Boolean(getters.getUserInfo.id),
   hasTrialOrPlatinumPlan: (_, getters) =>
     getL(getters, 'getUserInfo.planSelected.id') === 3 ||
-    getL(getters, 'getUserInfo.trial')
+    getL(getters, 'getUserInfo.trial') ||
+    true, // TODO: remove in February
+  getPlaydateInvitationToken: get('playdateInvitationToken')
 }

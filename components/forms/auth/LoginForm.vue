@@ -40,10 +40,7 @@
 
     <p class="forgot-password mt-6 mt-md-4 text-center text-md-right">
       <nuxt-link class="black--text" :to="{ name: 'auth-forgot-password' }">
-        <underlined-title
-          subtitle
-          text="Forgot password?"
-        />
+        <underlined-title subtitle text="Forgot password?" />
       </nuxt-link>
     </p>
 
@@ -84,7 +81,7 @@ export default {
       isValidPassword,
       isValidForm: true,
       user: {
-        email: '',
+        email: this.$route.query.email || '',
         password: ''
       }
     }
