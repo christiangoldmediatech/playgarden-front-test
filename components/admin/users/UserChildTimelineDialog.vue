@@ -1,0 +1,301 @@
+<template>
+  <v-overlay
+    v-model="dialog"
+    z-index="10"
+    :dark="false"
+  >
+    <v-btn
+      class="timeline-close-btn"
+      color="white"
+      icon
+      @click.stop="dialog = false"
+    >
+      <v-icon>
+        mdi-close
+      </v-icon>
+    </v-btn>
+    <v-card class="timeline-card mt-9" width="800" height="600">
+      <template v-if="child">
+        <div class="timeline-header">
+          <span class="timeline-name">
+            {{ child.firstName }}'s timeline
+          </span>
+
+          <div class="timeline-letter-selector">
+            <letter-select
+              v-model="selectedLetter"
+              clearable
+              small-letter
+            />
+          </div>
+        </div>
+
+        <div v-if="loading" class="timeline-loading">
+          <v-progress-circular
+            width="12"
+            size="128"
+            color="accent"
+            indeterminate
+          />
+        </div>
+        <div v-else-if="entries.length === 0" class="timeline-loading">
+          <div class="timeline-content-title">
+            {{ `${child.firstName} has not yet started${selectedLetter ? ' on this letter' : ''}.` }}
+          </div>
+        </div>
+        <perfect-scrollbar v-else>
+          <div class="timeline-content">
+            <div class="timeline-content-line" />
+            <div
+              v-for="(entry, i) in entries"
+              :key="`timeline-entry-${i}`"
+              class="timeline-content-row"
+            >
+              <div class="timeline-content-circle">
+                <pg-circle-letter-day
+                  :day="entry.day"
+                  :letter="entry.curriculumType.name"
+                  :size="64"
+                  no-auto-position
+                />
+              </div>
+              <div>
+                <div class="timeline-content-title">
+                  {{ entry.description }}
+                </div>
+                <div class="timeline-content-status">
+                  {{ getStatus(entry) }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </perfect-scrollbar>
+      </template>
+    </v-card>
+  </v-overlay>
+</template>
+
+<script>
+import { mapActions } from 'vuex'
+import LetterSelect from '@/components/app/live-sessions/recorded/LetterSelect.vue'
+import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
+
+export default {
+  name: 'UserChildTimelineDialog',
+
+  components: {
+    LetterSelect,
+    PerfectScrollbar
+  },
+
+  data: () => {
+    return {
+      dialog: false,
+      loading: false,
+      child: null,
+      selectedLetter: null,
+      timeline: []
+    }
+  },
+
+  computed: {
+    entries () {
+      if (this.selectedLetter) {
+        return this.timeline.filter((entry) => {
+          return entry.curriculumType.id === this.selectedLetter
+        })
+      }
+      return this.timeline
+    }
+  },
+
+  watch: {
+    dialog (val) {
+      if (val) {
+        document.querySelector('html').style.overflowY = 'hidden'
+      } else {
+        document.querySelector('html').style.overflowY = 'scroll'
+      }
+    }
+  },
+
+  created () {
+    this.$nuxt.$on('open-timeline', (child) => {
+      this.timeline = []
+      this.selectedLetter = null
+      this.child = child
+      this.loading = true
+      this.getLessonChildTimeline(child.id).then((data) => {
+        this.timeline = data
+        this.loading = false
+      })
+      this.dialog = true
+    })
+  },
+
+  methods: {
+    ...mapActions('children/lesson', ['getLessonChildTimeline']),
+
+    getStatus (entry) {
+      if (entry.dateFinished) {
+        const date = new Date(entry.dateFinished)
+        const month = date.toLocaleString('default', { month: 'long' })
+
+        return `Done on ${month} ${date.getDate().toString().padStart(2, '0')}, ${date.getFullYear()}`
+      } else if (entry.dateStarted) {
+        const date = new Date(entry.dateFinished)
+        const month = date.toLocaleString('default', { month: 'long' })
+
+        return `Started on ${month} ${date.getDate().toString().padStart(2, '0')}, ${date.getFullYear()}`
+      }
+      return 'Not started.'
+    }
+  }
+}
+</script>
+
+<style lang="scss">
+.timeline {
+  &-close-btn {
+    position: absolute;
+    right: -10px;
+  }
+  &-card {
+    padding-left: 48px;
+    padding-right: 16px;
+    padding-top: 34px;
+    padding-bottom: 12px;
+  }
+  &-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 12px;
+    padding-right: 32px;
+  }
+  &-name {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.5;
+    color: #484848;
+  }
+  &-letter-selector {
+    max-width: 256px;
+  }
+  &-loading {
+    height: calc(100% - 72px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-right: 32px;
+    padding-bottom: 32px;
+    & svg circle {
+      color: #F89838 !important;
+    }
+  }
+  &-content {
+    position: relative;
+    &-line {
+      position: absolute;
+      width: 2px;
+      height: 100%;
+      left: 110px;
+      background-color: #DBDBDB;
+    }
+    &-row {
+      position: relative;
+      padding-top: 20px;
+      padding-bottom: 20px;
+      margin-bottom: 27px;
+      padding-left: 78px;
+      display: flex;
+      align-items: center;
+      z-index: 10;
+      &:last-of-type {
+        margin-bottom: 0px;
+      }
+    }
+    &-circle {
+      margin-right: 16px;
+    }
+    &-title {
+      font-size: 16px;
+      line-height: 1.5;
+      font-weight: 600;
+      color: #484848;
+    }
+    &-status {
+      font-size: 12px;
+      line-height: 1.5;
+      font-weight: 300;
+      color: #484848;
+    }
+  }
+}
+</style>
+
+<style lang="scss" scoped>
+::v-deep {
+  .ps {
+    position: relative;
+    width: 100%;
+    height: calc(100% - 72px);
+    max-height: calc(100% - 72px);
+    overflow: hidden !important;
+    overflow-anchor: none;
+    -ms-overflow-style: none;
+    touch-action: auto;
+    -ms-touch-action: auto;
+  }
+
+  .ps__rail-y {
+    display: block;
+    opacity: 1;
+    background-color: #f2f2f2;
+    transition: none;
+    width: 9px;
+    border-radius: 9px;
+    margin: 0px 0px;
+    /* there must be 'right' or 'left' for ps__rail-y */
+    right: 0;
+    /* please don't change 'position' */
+    position: absolute;
+  }
+
+  .ps:hover > .ps__rail-x,
+  .ps:hover > .ps__rail-y,
+  .ps--focus > .ps__rail-x,
+  .ps--focus > .ps__rail-y,
+  .ps--scrolling-x > .ps__rail-x,
+  .ps--scrolling-y > .ps__rail-y {
+    opacity: 1;
+  }
+
+  .ps .ps__rail-x:hover,
+  .ps .ps__rail-y:hover,
+  .ps .ps__rail-x:focus,
+  .ps .ps__rail-y:focus,
+  .ps .ps__rail-x.ps--clicking,
+  .ps .ps__rail-y.ps--clicking {
+    opacity: 1;
+  }
+
+  .ps__thumb-y {
+    background-color: #dce7b5;
+    border-radius: 14px;
+    transition: none;
+    width: 9px;
+    /* there must be 'right' for ps__thumb-y */
+    right: 1px;
+    /* please don't change 'position' */
+    position: absolute;
+  }
+
+  .ps__rail-y:hover > .ps__thumb-y,
+  .ps__rail-y:focus > .ps__thumb-y,
+  .ps__rail-y.ps--clicking .ps__thumb-y {
+    background-color: #dce7b5;
+    width: 9px;
+  }
+}
+</style>
