@@ -35,7 +35,7 @@ export default {
           () =>
             this.$router.push({
               name: 'auth-signup',
-              query: { email, phone, process: 'invitation', token: this.token }
+              query: { email, phone, process: 'invitation-caregiver', token: this.token }
             }),
           1000
         )

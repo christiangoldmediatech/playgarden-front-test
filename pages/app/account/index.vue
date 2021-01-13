@@ -133,7 +133,7 @@
                 src="@/assets/svg/facebook_icon.svg"
               >
 
-              <span class="text-sync">Sync your Facebook Account</span>
+              <span class="text-transform-none">Sync your Facebook Account</span>
             </v-btn>
           </v-col>
 
@@ -146,7 +146,7 @@
                 src="@/assets/svg/google_icon.svg"
               >
 
-              <span class="text-sync">Sync your Google Account</span>
+              <span class="text-transform-none">Sync your Google Account</span>
             </v-btn>
           </v-col>
         </v-row>
@@ -159,7 +159,7 @@
               src="@/assets/svg/facebook_icon.svg"
             >
 
-            <span class="text-sync">Your account is synced with Facebook</span>
+            <span class="text-transform-none">Your account is synced with Facebook</span>
           </v-btn>
           <!-- GOOGLE -->
           <v-btn v-if="userInfo.socialNetwork === 'GOOGLE'" block height="45" class="social-sync" text>
@@ -169,7 +169,7 @@
               src="@/assets/svg/google_icon.svg"
             >
 
-            <span class="text-sync">Your account is synced with Google</span>
+            <span class="text-transform-none">Your account is synced with Google</span>
           </v-btn>
         </v-row>
 
@@ -341,9 +341,6 @@ export default {
 .messages-info-sync {
   font-size: 14px !important;
   font-weight: 500;
-}
-.text-sync {
-  text-transform: none !important;
 }
 
 .show-setting-select {

@@ -17,5 +17,6 @@ export default {
   hasTrialOrPlatinumPlan: (_, getters) =>
     getL(getters, 'getUserInfo.planSelected.id') === 3 ||
     getL(getters, 'getUserInfo.trial') ||
-    true // TODO: remove in Fabruary
+    true, // TODO: remove in February
+  getPlaydateInvitationToken: get('playdateInvitationToken')
 }

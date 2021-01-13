@@ -1,10 +1,5 @@
 <template>
-  <v-overlay
-    v-model="dialog"
-    class="entry-overlay"
-    :dark="false"
-    :light="true"
-  >
+  <v-overlay v-model="dialog" class="entry-overlay" :dark="false" light>
     <div class="entry-container">
       <v-card class="entry-card">
         <template v-if="entry">
@@ -17,7 +12,10 @@
           <v-container class="entry-card-content">
             <v-row>
               <div v-if="$vuetify.breakpoint.mdAndUp" class="entry-card-elipse">
-                <img class="entry-card-elipse-img" :src="entry.activityType.icon">
+                <img
+                  class="entry-card-elipse-img"
+                  :src="entry.activityType.icon"
+                >
               </div>
               <v-col>
                 <div class="entry-card-title">
@@ -44,8 +42,15 @@
                   {{ entry.ages }}
                 </div>
 
-                <div v-if="entry.inCollaborationWith" class="entry-card-description-title pb-6 d-flex align-start">
-                  By: <img class="entry-card-collaborator ml-6" :src="entry.inCollaborationWith">
+                <div
+                  v-if="entry.inCollaborationWith"
+                  class="entry-card-description-title pb-6 d-flex align-start"
+                >
+                  By:
+                  <img
+                    class="entry-card-collaborator ml-6"
+                    :src="entry.inCollaborationWith"
+                  >
                 </div>
               </v-col>
             </v-row>
@@ -53,19 +58,19 @@
             <div v-if="isRecorded" class="pb-3">
               <v-btn
                 class="white--text text-none"
-                color="#f89838"
+                color="accent"
                 x-large
                 block
                 @click.stop="openVideo"
               >
-                Watch recorded video
+                Watch recorded class
               </v-btn>
             </div>
 
             <div v-if="!past" class="pb-3">
               <v-btn
                 class="white--text"
-                color="#f89838"
+                color="accent"
                 x-large
                 :href="entry.link"
                 :disabled="!isLive"
@@ -76,57 +81,7 @@
               </v-btn>
             </div>
 
-            <v-list v-if="!past" class="entry-card-calendar-links" dense mandatory>
-              <v-list-group no-action>
-                <template v-slot:prependIcon>
-                  <img class="calendar-links-logo" src="@/assets/svg/sessions-camera.svg">
-                </template>
-
-                <template v-slot:activator>
-                  <v-list-item-content>
-                    <v-list-item-title>
-                      ADD TO CALENDAR
-                    </v-list-item-title>
-                  </v-list-item-content>
-                </template>
-
-                <v-list-item :href="googleCalendarLink" target="_blank">
-                  <v-list-item-icon>
-                    <img class="entry-card-calendar-links-logo" src="@/assets/svg/google-calendar.png">
-                  </v-list-item-icon>
-
-                  <v-list-item-content>
-                    <v-list-item-title>
-                      Google Calendar
-                    </v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-
-                <v-list-item @click="downloadIcs">
-                  <v-list-item-icon>
-                    <img class="entry-card-calendar-links-logo" src="@/assets/svg/apple-calendar.png">
-                  </v-list-item-icon>
-
-                  <v-list-item-content>
-                    <v-list-item-title>
-                      Apple Calendar
-                    </v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-
-                <v-list-item @click="downloadIcs">
-                  <v-list-item-icon>
-                    <img class="entry-card-calendar-links-logo" src="@/assets/svg/outlook-calendar.png">
-                  </v-list-item-icon>
-
-                  <v-list-item-content>
-                    <v-list-item-title>
-                      Outlook Calendar
-                    </v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list-group>
-            </v-list>
+            <pg-ics-calendar v-if="!past" :entry="entry" />
 
             <v-btn block text @click.stop="dialog = false">
               Close
@@ -140,7 +95,6 @@
 
 <script>
 import { getNumberOrder, hours24ToHours12 } from '@/utils/dateTools'
-import dayjs from 'dayjs'
 
 export default {
   name: 'EntryDialog',
@@ -149,7 +103,20 @@ export default {
     return {
       dialog: false,
       entry: null,
-      months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+      months: [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December'
+      ]
     }
   },
 
@@ -159,7 +126,9 @@ export default {
       const start = new Date(this.entry.dateStart)
       const end = new Date(this.entry.dateEnd)
 
-      return today.getTime() >= start.getTime() && today.getTime() <= end.getTime()
+      return (
+        today.getTime() >= start.getTime() && today.getTime() <= end.getTime()
+      )
     },
 
     past () {
@@ -170,9 +139,11 @@ export default {
     },
 
     isRecorded () {
-      return this.entry.videos &&
-            this.entry.videos.videoUrl &&
-            this.entry.videos.videoUrl.HLS
+      return (
+        this.entry.videos &&
+        this.entry.videos.videoUrl &&
+        this.entry.videos.videoUrl.HLS
+      )
     },
 
     ages () {
@@ -186,35 +157,20 @@ export default {
       if (this.entry) {
         const date = new Date(this.entry.dateStart)
         const endDate = new Date(this.entry.dateEnd)
-        const monthAndDay = `${this.months[date.getMonth()]} ${getNumberOrder(date.getDate())}`
-        const startTime = `${hours24ToHours12(date.getHours(), date.getMinutes())}`
-        const endTime = `${hours24ToHours12(endDate.getHours(), endDate.getMinutes())}`
+        const monthAndDay = `${this.months[date.getMonth()]} ${getNumberOrder(
+          date.getDate()
+        )}`
+        const startTime = `${hours24ToHours12(
+          date.getHours(),
+          date.getMinutes()
+        )}`
+        const endTime = `${hours24ToHours12(
+          endDate.getHours(),
+          endDate.getMinutes()
+        )}`
         return `${monthAndDay},  ${startTime} - ${endTime}`
       }
       return ''
-    },
-
-    googleCalendarLink () {
-      if (this.entry) {
-        const link = new URL('/calendar/render', 'https://calendar.google.com')
-        link.searchParams.set('action', 'TEMPLATE')
-        link.searchParams.set('text', this.entry.title)
-        link.searchParams.set('location', this.entry.link)
-        link.searchParams.set('dates', `${dayjs(this.entry.dateStart).format('YYYYMMDDTHHmmssZ')}/${dayjs(this.entry.dateEnd).format('YYYYMMDDTHHmmssZ')}`)
-        link.searchParams.set('details', this.entry.description)
-        return link.toString()
-      }
-      return ''
-    },
-
-    icsFile () {
-      if (this.entry) {
-        /* eslint-disable-next-line */
-        const cal = new ics()
-        cal.addEvent(this.entry.title, this.entry.description, this.entry.link, this.entry.dateStart, this.entry.dateEnd)
-        return cal
-      }
-      return null
     }
   },
 
@@ -236,12 +192,6 @@ export default {
   },
 
   methods: {
-    downloadIcs () {
-      if (this.icsFile) {
-        this.icsFile.download()
-      }
-    },
-
     openVideo () {
       this.$nuxt.$emit('open-recorded-class-player', {
         playlist: [
@@ -283,7 +233,7 @@ export default {
     position: relative;
     overflow-y: visible;
     max-height: 100%;
-    &-elipse{
+    &-elipse {
       position: absolute;
       width: 156px;
       height: 156px;
@@ -307,14 +257,6 @@ export default {
         z-index: auto;
         margin: 12px;
         border: solid 5px #c2daa5;
-      }
-      &-img {
-        width: 70px;
-        height: 70px;
-        max-width: 70px;
-        max-height: 70px;
-        object-fit: contain;
-        object-position: center center;
       }
     }
     &-content {
@@ -354,14 +296,6 @@ export default {
       font-size: 30px;
       font-weight: bold;
       line-height: 1.87;
-    }
-    &-calendar-links {
-      margin: 0 auto;
-      &-logo {
-        max-width: 32px;
-        object-fit: contain;
-        object-position: center;
-      }
     }
     &-collaborator {
       width: 100%;
