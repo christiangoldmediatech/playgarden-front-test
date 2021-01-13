@@ -31,19 +31,14 @@ export default {
           // }
         ]
 
-        // if (!['production'].includes(process.env.testEnv)) {
-        //   list.unshift({ title: 'Live Sessions', to: { name: 'app-live-sessions' }, exact: false })
-        // }
+        if (!['production'].includes(process.env.testEnv)) {
+          list.splice(3, 0, { title: 'Playdates', to: { name: 'app-playdates' }, exact: false })
+        }
 
         if (!['production', 'staging'].includes(process.env.testEnv)) {
           list.push({
             title: 'Parent Corner',
             to: { name: 'app-parent-corner' },
-            exact: false
-          })
-          list.push({
-            title: 'Playdates',
-            to: { name: 'app-playdates' },
             exact: false
           })
         }
