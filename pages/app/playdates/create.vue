@@ -1,19 +1,38 @@
 <template>
   <v-col class="fill-height">
+    <v-row>
+      <v-btn
+        class="top-left text-none"
+        color="#f89838"
+        nuxt
+        :to="{ name: 'app-playdates' }"
+        text
+        exact
+      >
+        <v-icon class="mr-2" small left color="#f89838">
+          mdi-less-than
+        </v-icon>
+        Back
+      </v-btn>
+    </v-row>
+
     <v-row
-      class="mt-0 mt-md-0"
+      class="mt-0 mt-md-5"
       :class="{ mobile: $vuetify.breakpoint.smAndDown }"
-      no-gutters
     >
       <v-col cols="12" md="6">
-        <v-img
-          alt="Educational Playdates"
-          :src="require('@/assets/png/playdates/playdate.png')"
-          class="align-center mr-md-15"
-        />
+        <v-row>
+          <v-img
+            alt="Educational Playdates"
+            width="100%"
+            height="90%"
+            :src="require('@/assets/png/playdates/playdate.png')"
+            class="align-center mr-md-15 mt-md-15 "
+          />
+        </v-row>
       </v-col>
 
-      <v-col cols="12" md="6">
+      <v-col cols="12" md="6" class="pl-md-15">
         <underlined-title text="Create Playdate!" />
 
         <p>You just can create or join one playdate per week</p>
@@ -35,7 +54,6 @@
                   <child-select
                     v-model="draft.childrenIds"
                     :error-messages="errors"
-                    hide-details
                     multiple
                   />
                 </validation-provider>
@@ -101,7 +119,7 @@
               </v-col>
             </v-row>
 
-            <v-row no-gutters justify="center" class="mb-8">
+            <v-row no-gutters justify="center" class="mt-3">
               <v-col>
                 <p class="text-md-left text-sm-center font-weight-bold">
                   Invite friends

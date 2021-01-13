@@ -20,7 +20,7 @@
 
             <h6 v-if="!joining" class="text-capitalize text-center mt-2">
               {{ day }} <span v-html="start" />
-            </h6>
+            </h5>
           </v-col>
         </v-row>
       </v-col>
@@ -160,9 +160,9 @@
                         </v-avatar>
                       </v-row>
 
-                      <h6 class="text-capitalize text-center mt-2">
+                      <h5 class="text-capitalize text-center mt-2">
                         {{ day }} <span v-html="start" />
-                      </h6>
+                      </h5>
                     </v-col>
                   </v-row>
                 </v-col>
@@ -226,7 +226,7 @@
               </v-row>
 
               <v-row justify="center" no-gutters>
-                <v-col cols="8" class="mb-5">
+                <v-col cols="8" class="mb-5 mt-3">
                   <v-btn
                     class="white--text"
                     color="accent"
