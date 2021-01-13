@@ -122,6 +122,36 @@
                       />
                     </validation-provider>
                   </v-col>
+
+                  <v-col cols="12" lg="4" md="6">
+                    <validation-provider
+                      v-slot="{ errors }"
+                      name="Workbook"
+                    >
+                      <pg-select
+                        v-model="user.workbookSent"
+                        :error-messages="errors"
+                        :items="sentOptions"
+                        label="Workbook"
+                        solo-labeled
+                      />
+                    </validation-provider>
+                  </v-col>
+
+                  <v-col cols="12" lg="4" md="6">
+                    <validation-provider
+                      v-slot="{ errors }"
+                      name="Backpack"
+                    >
+                      <pg-select
+                        v-model="user.backpackSent"
+                        :error-messages="errors"
+                        :items="sentOptions"
+                        label="Backpack"
+                        solo-labeled
+                      />
+                    </validation-provider>
+                  </v-col>
                 </v-row>
               </v-form>
             </v-card-text>
@@ -164,8 +194,20 @@ export default {
         email: '',
         phoneNumber: '',
         roleId: null,
-        password: null
-      }
+        password: null,
+        workbookSent: false,
+        backpackSent: false
+      },
+      sentOptions: [
+        {
+          text: 'Sent',
+          value: true
+        },
+        {
+          text: 'Pending',
+          value: false
+        }
+      ]
     }
   },
 
@@ -209,6 +251,12 @@ export default {
       this.user.email = data.email
       this.user.phoneNumber = data.phoneNumber
       this.user.roleId = data.role.id
+      this.user.workbookSent = false
+      this.user.backpackSent = false
+      if (data.shipments) {
+        this.user.workbookSent = data.shipments.workbook
+        this.user.backpackSent = data.shipments.backpack
+      }
     }
 
     this.loading = false
@@ -239,7 +287,7 @@ export default {
         this.loading = false
         return
       } finally {
-        this.$router.push({ name: 'admin-users' })
+        this.$router.push({ name: 'admin-user-manager' })
       }
     },
 

@@ -334,9 +334,12 @@ export default {
   async created () {
     if (this.id) {
       try {
-        const user = await this.getById(this.id)
-
-        const children = await this.getChildren(this.id)
+        const promises = await Promise.all([
+          this.getById(this.id),
+          this.getChildren(this.id)
+        ])
+        const user = promises[0]
+        const children = promises[1]
 
         if (children.length) {
           const childrenIds = children.map(({ id }) => id)
