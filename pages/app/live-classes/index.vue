@@ -11,7 +11,7 @@
         color="accent"
         @click.stop="goToRecordings"
       >
-        Watch recorded videos
+        Watch recorded classes
       </v-btn>
     </div>
     <v-container

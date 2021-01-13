@@ -63,7 +63,7 @@
                 block
                 @click.stop="openVideo"
               >
-                Watch recorded video
+                Watch recorded class
               </v-btn>
             </div>
 
