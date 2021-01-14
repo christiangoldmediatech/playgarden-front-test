@@ -35,7 +35,7 @@
         <v-card-text>
           <v-row no-gutters>
             <v-col class="mt-10">
-              <underlined-title class="text-h6 text-md-h4" text="Student progress report" />
+              <underlined-title class="text-h6 text-md-h4" text="Student Progress Report" />
             </v-col>
 
             <v-col cols="2" class="text-center text-sm-right pt-7">
