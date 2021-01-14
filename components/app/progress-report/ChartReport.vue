@@ -37,7 +37,11 @@ export default {
     getFontSize () {
       return (this.$vuetify.breakpoint.xs) ? '32px' : '34px'
     },
+    getIconSize () {
+      return (this.$vuetify.breakpoint.xs) ? '45' : '60'
+    },
     chartOptions () {
+      const that = this
       return {
         chart: {
           type: 'scatter',
@@ -45,6 +49,7 @@ export default {
           events: {
             load () {
               const chart = this
+              // console.log('icon si', this.getIconSize())
               const data = chart.series[0].data
               const textX = (chart.plotWidth * 0.5) - 100
               const textY = (chart.plotHeight * 0.5) - 100
@@ -77,8 +82,8 @@ export default {
                   color: '#F89838',
                   marker: {
                     symbol: `url(${element.icon})`,
-                    width: 60,
-                    height: 60
+                    width: that.getIconSize,
+                    height: that.getIconSize
                   }
                 })
               })
