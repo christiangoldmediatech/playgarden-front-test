@@ -1,15 +1,15 @@
 <template>
   <v-row class="pt-12 pb-16">
-    <v-col cols="3">
+    <v-col cols="4">
       <center>
-        <v-img :src="getDataCurrent.icon" />
+        <v-img :src="getDataCurrent.icon" class="ml-4 mt-4" />
         <div class="ml-7">
           <v-progress-linear class="mb-3" :value="getDataCurrent.y" height="15" rounded color="accent" />
           <span class="text-progress">{{ `${getDataCurrent.y}/100` }}</span>
         </div>
       </center>
     </v-col>
-    <v-col cols="9">
+    <v-col cols="8" class="pl-3">
       <div class="pt-4 mb-4 mr-6">
         <underlined-title class="text-h6 text-md-h3" :text="reportCardType" />
 
