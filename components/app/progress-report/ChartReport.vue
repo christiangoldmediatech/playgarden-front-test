@@ -34,6 +34,9 @@ export default {
     getSeries () {
       return (this.report.dataSerie) ? this.report.dataSerie : []
     },
+    getFontSize () {
+      return (this.$vuetify.breakpoint.xs) ? '32px' : '34px'
+    },
     chartOptions () {
       return {
         chart: {
@@ -44,25 +47,26 @@ export default {
               const chart = this
               const data = chart.series[0].data
               const textX = (chart.plotWidth * 0.5) - 100
+              const textY = (chart.plotHeight * 0.5) - 100
               // start text
-              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.9">Area of Strenght</span>', (textX + 20), 110)
+              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.9">Area of Strenght</span>', (textX + 20), (textY + 7))
                 .css({
-                  fontSize: '34px',
+                  fontSize: '32px',
                   fontFamily: 'Poppins-SemiBold, Poppins',
                   color: '#DADADA'
                 })
                 .add()
 
-              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.9">Age Appropiate</span>', (textX + 40), 306)
+              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.9">Age Appropiate</span>', (textX + 40), ((textY + 160)))
                 .css({
-                  fontSize: '34px',
+                  fontSize: '31px',
                   color: '#DADADA',
                   fontFamily: 'Poppins-SemiBold, Poppins'
                 })
                 .add()
-              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.9">Progressing</span>', (textX + 50), 460)
+              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.9">Progressing</span>', (textX + 50), ((textY + 315)))
                 .css({
-                  fontSize: '34px',
+                  fontSize: '32px',
                   color: '#DADADA',
                   fontFamily: 'Poppins-SemiBold, Poppins'
                 })
