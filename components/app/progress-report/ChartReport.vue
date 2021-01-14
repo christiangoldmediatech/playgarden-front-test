@@ -45,7 +45,7 @@ export default {
               const data = chart.series[0].data
               const textX = (chart.plotWidth * 0.5) - 100
               // start text
-              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.9">Area of Strenght</span>', (textX + 20), 110)
+              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.9">Area of Strength</span>', (textX + 20), 110)
                 .css({
                   fontSize: '34px',
                   fontFamily: 'Poppins-SemiBold, Poppins',
@@ -53,7 +53,7 @@ export default {
                 })
                 .add()
 
-              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.9">Age Appropiate</span>', (textX + 40), 306)
+              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.9">Age Appropriate</span>', (textX + 40), 306)
                 .css({
                   fontSize: '34px',
                   color: '#DADADA',
@@ -128,9 +128,9 @@ export default {
             if (this.point.y <= 20) {
               text += `Progressing: ${this.point.progressing} <br />`
             } else if (this.point.y > 20 && this.point.y <= 80) {
-              text += `Age Appropiate: ${this.point.ageAppropiate} <br />`
+              text += `Age Appropriate: ${this.point.ageAppropiate} <br />`
             } else {
-              text += `Area of Strenght: ${this.point.areaStrenght}`
+              text += `Area of Strength: ${this.point.areaStrenght}`
             }
             return text
           }

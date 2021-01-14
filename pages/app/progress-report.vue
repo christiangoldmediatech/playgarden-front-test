@@ -3,7 +3,7 @@
     fluid
   >
     <v-row>
-      <v-col cols="12" md="2" lg="2" xl="1">
+      <v-col cols="12" md="2" lg="2" xl="2">
         <v-card class="content-report ml-n3">
           <v-list three-line class="pt-9">
             <v-list-item-group v-model="optionDefault">
@@ -31,11 +31,11 @@
         </v-card>
       </v-col>
 
-      <v-col cols="12" md="10" lg="10" xl="11" class="pt-7">
+      <v-col cols="12" md="10" lg="10" class="pt-7">
         <v-card-text>
           <v-row no-gutters>
             <v-col class="mt-10">
-              <underlined-title class="text-h6 text-md-h4" text="Student progress report" />
+              <underlined-title class="text-h6 text-md-h4" text="Student Progress Report" />
             </v-col>
 
             <v-col cols="2" class="text-center text-sm-right pt-7">
@@ -49,10 +49,10 @@
           </v-row>
         </v-card-text>
         <v-row class="mr-3" no-gutters>
-          <v-col v-if="general === true" cols="12" md="12" lg="12" xl="12">
+          <v-col v-if="general === true" cols="12" md="12" lg="12">
             <v-card class="content-report">
               <v-row class="ml-2 mr-2">
-                <v-col cols="12" md="7" lg="7" xl="10">
+                <v-col cols="12" md="7" lg="7">
                   <div class="pt-4 mb-4">
                     <underlined-title class="text-h6 text-md-h5" text="General Progress Report" />
                   </div>
@@ -60,7 +60,7 @@
                     <chart-report v-if="report" :report="report" />
                   </div>
                 </v-col>
-                <v-col cols="12" md="5" lg="5" xl="2">
+                <v-col cols="12" md="5" lg="5" xl="5">
                   <v-card>
                     <div class="pt-4 ml-4 mb-4">
                       <underlined-title class="text-h6 text-md-h5 mt-4 mr-4" :text="letterStats.name" />
@@ -71,7 +71,7 @@
               </v-row>
             </v-card>
           </v-col>
-          <v-col v-else cols="12" md="12" lg="12" xl="12">
+          <v-col v-else cols="12" md="12" lg="12">
             <v-card>
               <v-row>
                 <v-col cols="12">
