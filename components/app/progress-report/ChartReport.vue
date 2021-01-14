@@ -137,9 +137,9 @@ export default {
             if (this.point.y <= 20) {
               text += `Progressing: ${this.point.progressing} <br />`
             } else if (this.point.y > 20 && this.point.y <= 80) {
-              text += `Age Appropiate: ${this.point.ageAppropiate} <br />`
+              text += `Age Appropriate: ${this.point.ageAppropiate} <br />`
             } else {
-              text += `Area of Strenght: ${this.point.areaStrenght}`
+              text += `Area of Strength: ${this.point.areaStrenght}`
             }
             return text
           }
