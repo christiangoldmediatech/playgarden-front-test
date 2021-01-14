@@ -88,9 +88,9 @@ export default {
       if (this.getDataCurrent.y <= 20) {
         position = 'Progressing'
       } else if (this.getDataCurrent.y > 20 && this.getDataCurrent.y <= 80) {
-        position = 'Age Appropiate'
+        position = 'Age Appropriate'
       } else {
-        position = 'Area of Strenght'
+        position = 'Area of Strength'
       }
       return position
     },
