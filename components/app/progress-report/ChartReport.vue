@@ -54,7 +54,7 @@ export default {
               const textX = (chart.plotWidth * 0.5) - 100
               const textY = (chart.plotHeight * 0.5) - 100
               // start text
-              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.9">Area of Strenght</span>', (textX + 20), (textY + 7))
+              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.9">Area of Strength</span>', (textX + 20), (textY + 7))
                 .css({
                   fontSize: '32px',
                   fontFamily: 'Poppins-SemiBold, Poppins',
@@ -62,7 +62,7 @@ export default {
                 })
                 .add()
 
-              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.9">Age Appropiate</span>', (textX + 40), ((textY + 160)))
+              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.9">Age Appropriate</span>', (textX + 40), ((textY + 160)))
                 .css({
                   fontSize: '31px',
                   color: '#DADADA',
