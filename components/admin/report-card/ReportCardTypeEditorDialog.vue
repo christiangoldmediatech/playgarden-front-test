@@ -96,26 +96,26 @@
 
               <validation-provider
                 v-slot="{ errors }"
-                name="Area Strenght"
+                name="Area Strength"
                 rules="required"
               >
                 <pg-textarea
                   v-model="item.areaStrenght"
                   :error-messages="errors"
-                  label="Area Strenght"
+                  label="Area Strength"
                   solo-labeled
                 />
               </validation-provider>
 
               <validation-provider
                 v-slot="{ errors }"
-                name="Age Appropiate"
+                name="Age Appropriate"
                 rules="required"
               >
                 <pg-text-field
                   v-model="item.ageAppropiate"
                   :error-messages="errors"
-                  label="Age Appropiate"
+                  label="Age Appropriate"
                   solo-labeled
                 />
               </validation-provider>
