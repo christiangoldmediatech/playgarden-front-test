@@ -1,5 +1,5 @@
 <template>
-  <dashboard-layout v-model="selectedChild" v-bind="{ lesson, loading }">
+  <dashboard-layout v-model="selectedChild" v-bind="{ lesson, loading, childId: childrenIds }">
     <nuxt-child />
   </dashboard-layout>
 </template>
@@ -124,17 +124,16 @@ export default {
       const child = this.allChildren.find(({ id }) => id === parseInt(newId))
       this.setChild({ value: [child], save: true })
       if (redirect) {
-        this.loading = true
         this.handleLesson(true).then(() => {
           // this.$router.push({ name: 'app-dashboard' })
           // this.redirectDashboard()
-          this.loading = false
         })
       }
     },
 
     async handleLesson (redirect = false) {
       try {
+        this.loading = true
         if (
           this.overrideMode &&
           this.childrenIds === parseInt(this.overrides.childId)
@@ -147,10 +146,13 @@ export default {
         }
         if (redirect || (this.lessonCompleted && !this.overrideMode)) {
           this.redirectDashboard('handleLesson')
+          this.loading = false
           return
         }
       } catch (e) {
         return Promise.reject(e)
+      } finally {
+        this.loading = false
       }
     },
 
