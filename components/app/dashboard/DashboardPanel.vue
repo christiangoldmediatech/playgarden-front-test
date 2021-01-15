@@ -288,9 +288,15 @@ export default {
     height: 100%;
     max-height: 100%;
     overflow-y: auto;
+    padding: 12px;
     &-extra-padding {
-      height: calc(100% - 97px);
-      max-height: calc(100% - 97px);
+      @media screen and (max-width: 959px) {
+        padding-bottom: 97px !important;
+      }
+      @media screen and (min-width: 960px) {
+        height: calc(100% - 97px);
+        max-height: calc(100% - 97px);
+      }
     }
   }
 
@@ -314,7 +320,7 @@ export default {
     width: 100%;
     height: 93px;
     background-color: var(--v-accent-base);
-    font-size: 25px;
+    font-size: 18px;
     font-weight: 700;
     color: white;
     position: absolute;
@@ -323,6 +329,9 @@ export default {
     justify-content: center;
     align-items: center;
     user-select: none;
+    @media screen and (min-width: 600px) {
+      font-size: 24px;
+    }
     &-arrow {
       margin-left: 8px;
       width: 27px;
