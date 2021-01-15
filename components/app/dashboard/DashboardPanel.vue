@@ -10,7 +10,7 @@
         @click.native="openCourseProgress"
       />
 
-      <div class="dashboard-panel-content pa-3">
+      <div class="dashboard-panel-content pa-3" :class="{ 'dashboard-panel-content-extra-padding': nextButton }">
         <content-section
           number="1"
           title="Video Lessons"
@@ -140,13 +140,22 @@
           <content-list :items="activities.items" />
         </content-section>
       </div>
-      <!-- </pgcircleletterday> -->
+
+      <div
+        v-if="nextButton"
+        class="dashboard-panel-next"
+        :class="{'clickable': !loadingNext, 'dashboard-panel-next-disabled': loadingNext || loading }"
+        @click.stop="advance"
+      >
+        GO TO NEXT LESSON <img class="dashboard-panel-next-arrow" src="@/assets/svg/next-arrow.svg">
+      </div>
     </v-card>
     <upload-offline-worksheet v-if="!displayMode" v-model="uploadDialog" />
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import DashboardMixin from '@/mixins/DashboardMixin'
 // import PgCircleLetterDay from '@/components/pg/components/PgCircleLetterDay'
 import UploadOfflineWorksheet from './worksheets/UploadOfflineWorksheet'
@@ -184,12 +193,33 @@ export default {
       type: Object,
       required: false,
       default: () => {}
+    },
+
+    nextButton: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
+    loading: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
+    childId: {
+      validator: (val) => {
+        return val === null || typeof val === 'number'
+      },
+      required: false,
+      default: null
     }
   },
 
   data: () => {
     return {
-      uploadDialog: false
+      uploadDialog: false,
+      loadingNext: false
     }
   },
 
@@ -203,6 +233,8 @@ export default {
   },
 
   methods: {
+    ...mapActions('children/lesson', ['getAdvanceLessonChildren']),
+
     openPdf () {
       if (this.offlineWorksheet) {
         window.open(this.offlineWorksheet.pdfUrl, '_blank')
@@ -212,6 +244,16 @@ export default {
     openCourseProgress () {
       if (!this.displayMode) {
         this.$nuxt.$emit('show-curriculum-progress', this.lesson.curriculumType.id)
+      }
+    },
+
+    advance () {
+      if (!this.loadingNext) {
+        this.loadingNext = true
+        this.getAdvanceLessonChildren(this.childId).then(() => {
+          this.$nuxt.$emit('dashboard-panel-update')
+          this.loadingNext = false
+        })
       }
     }
   }
@@ -246,6 +288,10 @@ export default {
     height: 100%;
     max-height: 100%;
     overflow-y: auto;
+    &-extra-padding {
+      height: calc(100% - 97px);
+      max-height: calc(100% - 97px);
+    }
   }
 
   &-worksheet {
@@ -262,6 +308,31 @@ export default {
   &-disabled {
     -webkit-filter: opacity(40%); /* Chrome, Safari, Opera */
     filter: opacity(40%);
+  }
+
+  &-next {
+    width: 100%;
+    height: 93px;
+    background-color: var(--v-accent-base);
+    font-size: 25px;
+    font-weight: 700;
+    color: white;
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    &-arrow {
+      margin-left: 8px;
+      width: 27px;
+      height: 22px;
+      vertical-align: middle;
+    }
+    &-disabled {
+      background-color: #bbbbbb;
+      cursor: wait;
+    }
   }
 }
 

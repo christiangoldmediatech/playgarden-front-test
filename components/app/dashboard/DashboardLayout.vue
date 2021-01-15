@@ -51,7 +51,7 @@
           lg="4"
           xl="3"
         >
-          <dashboard-panel v-bind="{ lesson }" />
+          <dashboard-panel v-bind="{ lesson, childId, loading }" :next-button="canAdvance" />
         </v-col>
         <v-col
           class="dashboard-column d-flex flex-column"
@@ -110,11 +110,11 @@
 
 <script>
 import DashboardPanel from '@/components/app/dashboard/DashboardPanel.vue'
-// import DashboardMixin from '@/mixins/DashboardMixin.js'
 import LessonActivityPlayer from '@/components/app/dashboard/LessonActivityPlayer.vue'
 import LessonTeacherVideo from '@/components/app/dashboard/LessonTeacherVideo.vue'
 import ChildSelect from '@/components/app/ChildSelect.vue'
 import CourseProgressOverlay from '@/components/app/student-cubby/CourseProgressOverlay.vue'
+import DashboardOverrides from '~/mixins/DashboardOverridesMixin'
 
 export default {
   name: 'DashboardLayout',
@@ -127,7 +127,7 @@ export default {
     CourseProgressOverlay
   },
 
-  // mixins: [DashboardMixin],
+  mixins: [DashboardOverrides],
 
   props: {
     value: {
@@ -154,6 +154,14 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+
+    childId: {
+      validator: (val) => {
+        return val === null || typeof val === 'number'
+      },
+      required: false,
+      default: null
     }
   },
 
@@ -163,13 +171,21 @@ export default {
         return true
       }
       return false
-    }
-
+    },
     // showScreen () {
     //   const today = new Date().getTime()
     //   const monday = Date.parse('2020-12-21T08:00:00.000-05:00')
     //   return !this.overrideMode && (this.lesson && this.lesson.curriculumType.id > 1) && (today < monday)
     // }
+    canAdvance () {
+      if (this.lesson && this.childId && !this.previewMode && !this.overrideMode) {
+        const completedCount = this.lesson.videos.map(({ viewed }) => Number(viewed && viewed.completed ? 1 : 0)).reduce((a, b) => a + b)
+
+        const progress = (completedCount / this.lesson.videos.length) * 100
+        return progress === 100
+      }
+      return false
+    }
   },
 
   methods: {
