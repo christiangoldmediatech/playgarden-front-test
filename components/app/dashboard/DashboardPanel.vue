@@ -318,7 +318,7 @@ export default {
 
   &-next {
     width: 100%;
-    height: 93px;
+    height: 63px;
     background-color: var(--v-accent-base);
     font-size: 18px;
     font-weight: 700;
@@ -330,7 +330,7 @@ export default {
     align-items: center;
     user-select: none;
     @media screen and (min-width: 600px) {
-      font-size: 24px;
+      font-size: 22px;
     }
     &-arrow {
       margin-left: 8px;
