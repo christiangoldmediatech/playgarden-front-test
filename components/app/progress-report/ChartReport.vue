@@ -34,7 +34,14 @@ export default {
     getSeries () {
       return (this.report.dataSerie) ? this.report.dataSerie : []
     },
+    getFontSize () {
+      return (this.$vuetify.breakpoint.xs) ? '32px' : '34px'
+    },
+    getIconSize () {
+      return (this.$vuetify.breakpoint.xs) ? '45' : '60'
+    },
     chartOptions () {
+      const that = this
       return {
         chart: {
           type: 'scatter',
@@ -42,27 +49,29 @@ export default {
           events: {
             load () {
               const chart = this
+              // console.log('icon si', this.getIconSize())
               const data = chart.series[0].data
               const textX = (chart.plotWidth * 0.5) - 100
+              const textY = (chart.plotHeight * 0.5) - 100
               // start text
-              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.9">Area of Strenght</span>', (textX + 20), 110)
+              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.9">Area of Strength</span>', (textX + 20), (textY + 7))
                 .css({
-                  fontSize: '34px',
+                  fontSize: '32px',
                   fontFamily: 'Poppins-SemiBold, Poppins',
                   color: '#DADADA'
                 })
                 .add()
 
-              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.9">Age Appropiate</span>', (textX + 40), 306)
+              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.9">Age Appropriate</span>', (textX + 40), ((textY + 160)))
                 .css({
-                  fontSize: '34px',
+                  fontSize: '31px',
                   color: '#DADADA',
                   fontFamily: 'Poppins-SemiBold, Poppins'
                 })
                 .add()
-              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.9">Progressing</span>', (textX + 50), 460)
+              chart.renderer.text('<span style="color: #DADADA; font-weight:bold; opacity:0.9">Progressing</span>', (textX + 50), ((textY + 315)))
                 .css({
-                  fontSize: '34px',
+                  fontSize: '32px',
                   color: '#DADADA',
                   fontFamily: 'Poppins-SemiBold, Poppins'
                 })
@@ -73,8 +82,8 @@ export default {
                   color: '#F89838',
                   marker: {
                     symbol: `url(${element.icon})`,
-                    width: 60,
-                    height: 60
+                    width: that.getIconSize,
+                    height: that.getIconSize
                   }
                 })
               })
@@ -128,9 +137,9 @@ export default {
             if (this.point.y <= 20) {
               text += `Progressing: ${this.point.progressing} <br />`
             } else if (this.point.y > 20 && this.point.y <= 80) {
-              text += `Age Appropiate: ${this.point.ageAppropiate} <br />`
+              text += `Age Appropriate: ${this.point.ageAppropiate} <br />`
             } else {
-              text += `Area of Strenght: ${this.point.areaStrenght}`
+              text += `Area of Strength: ${this.point.areaStrenght}`
             }
             return text
           }
