@@ -179,10 +179,11 @@ export default {
     // }
     canAdvance () {
       if (this.lesson && this.childId && !this.previewMode && !this.overrideMode) {
-        const completedCount = this.lesson.videos.map(({ viewed }) => Number(viewed && viewed.completed ? 1 : 0)).reduce((a, b) => a + b)
+        return true
+        // const completedCount = this.lesson.videos.map(({ viewed }) => Number(viewed && viewed.completed ? 1 : 0)).reduce((a, b) => a + b)
 
-        const progress = (completedCount / this.lesson.videos.length) * 100
-        return progress === 100
+        // const progress = (completedCount / this.lesson.videos.length) * 100
+        // return progress === 100
       }
       return false
     }
