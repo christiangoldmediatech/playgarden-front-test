@@ -28,6 +28,32 @@
         <v-col
           v-for="(link, i) in links"
           :key="`link-route-${link.route}`"
+          cols="12"
+        >
+          <v-hover v-slot="{ hover }">
+            <v-card
+              class="clickable cubby-card"
+              :class="{ primary: i === selected }"
+              :disabled="!selectedChildId"
+              :elevation="hover || i === selected ? 9 : 3"
+              nuxt
+              :to="{
+                name: link.route,
+                query: { id: selectedChildId }
+              }"
+            >
+              <div class="cubby-item">
+                <img class="cubby-icon" :src="require(`@/assets/png/student-cubby/${link.img}`)">
+                <span class="cubby-text">
+                  {{ link.text }}
+                </span>
+              </div>
+            </v-card>
+          </v-hover>
+        </v-col>
+        <!-- <v-col
+          v-for="(link, i) in links"
+          :key="`link-route-${link.route}`"
           cols="3"
           md="6"
         >
@@ -64,7 +90,7 @@
               </div>
             </v-card>
           </v-hover>
-        </v-col>
+        </v-col> -->
       </v-row>
     </v-card-text>
   </v-card>
@@ -88,22 +114,27 @@ export default {
         {
           text: 'PUZZLE',
           img: 'puzzle-piece.png',
-          route: 'puzzle'
-        },
-        {
-          text: 'PROGRESS',
-          img: 'abc.png',
-          route: 'course-progress'
-        },
-        {
-          text: 'PORTFOLIO',
-          img: 'group.png',
-          route: 'student-portfolio'
+          route: 'app-student-cubby-puzzle'
         },
         {
           text: 'PATCHES',
           img: 'patches.svg',
-          route: 'patches'
+          route: 'app-student-cubby-patches'
+        },
+        {
+          text: 'CURRICULUM',
+          img: 'abc.png',
+          route: 'app-student-cubby-course-progress'
+        },
+        {
+          text: 'PORTFOLIO',
+          img: 'group.png',
+          route: 'app-student-cubby-student-portfolio'
+        },
+        {
+          text: 'PROGRESS REPORT',
+          img: 'progress.png',
+          route: 'app-progress-report'
         }
       ]
     }
@@ -120,7 +151,7 @@ export default {
 
     selected () {
       const routes = this.links.map(({ route }) =>
-        RegExp(`app-student-cubby-${route}*`)
+        RegExp(`${route}*`)
       )
       return routes.findIndex(route => route.test(this.$route.name))
     },
@@ -160,33 +191,58 @@ export default {
   top: 75px;
 }
 
-.text-kerning {
-  letter-spacing: 1.5px !important;
-}
-
-.square {
-  padding: 5%;
-  position: relative;
-  width: 100%;
-}
-
-.square:after {
-  content: "";
-  display: block;
-  padding-bottom: 100%;
-}
-
-.content {
-  background-color: #ffffff;
-  height: 90%;
-  padding: 5%;
-  position: absolute;
-  width: 90%;
-}
-
-.menu-link {
-  &.mobile {
-    display: none !important;
+.cubby {
+  &-card {
+    padding: 6px;
+  }
+  &-item {
+    padding: 14px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+  }
+  &-icon {
+    max-height: 60px;
+    max-width: 80px;
+    object-fit: contain;
+    object-position: center;
+  }
+  &-text {
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    margin-left: 24px;
   }
 }
+
+// .text-kerning {
+//   letter-spacing: 1.5px !important;
+// }
+
+// .square {
+//   padding: 5%;
+//   position: relative;
+//   width: 100%;
+// }
+
+// .square:after {
+//   content: "";
+//   display: block;
+//   padding-bottom: 100%;
+// }
+
+// .content {
+//   background-color: #ffffff;
+//   height: 90%;
+//   padding: 5%;
+//   position: absolute;
+//   width: 90%;
+// }
+
+// .menu-link {
+//   &.mobile {
+//     display: none !important;
+//   }
+// }
 </style>
