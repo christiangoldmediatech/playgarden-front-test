@@ -107,20 +107,23 @@
 
         <!-- MOBILE ICONS -->
         <div class="hidden-xs-only pg-app-bar-buttons mobile-icons">
+          <img v-if="isUserLoggedIn && !isUserInSignupProcess" class="clickable account-btn" src="@/assets/svg/account.svg" @click="goToAccount">
+
           <v-btn
-            v-if="isUserLoggedIn && !isUserInSignupProcess"
+            v-if="!isUserLoggedIn"
+            :color="accent"
             active-class="transparent--text"
             icon
             nuxt
             small
-            :to="{ name: 'app-account' }"
+            :to="{ name: 'auth-login' }"
           >
-            <v-icon color="accent">
-              mdi-cog
+            <v-icon color="primary">
+              mdi-login
             </v-icon>
           </v-btn>
 
-          <v-btn
+          <!-- <v-btn
             :color="isUserLoggedIn ? 'primary' : 'accent'"
             active-class="transparent--text"
             icon
@@ -135,7 +138,7 @@
             <v-icon v-else color="primary">
               mdi-login
             </v-icon>
-          </v-btn>
+          </v-btn> -->
         </div>
       </v-col>
     </v-row>
@@ -209,9 +212,14 @@ export default {
 }
 
 .account-btn {
-  width: 36px;
-  height: 36px;
-  margin-right: 12px;
+  width: 24px;
+  height: 24px;
+  margin-right: 6px;
+  @media screen and (min-width: 1264px) {
+    width: 36px;
+    height: 36px;
+    margin-right: 12px;
+  }
 }
 
 // .pg-app-bar-col {
@@ -253,6 +261,9 @@ export default {
   letter-spacing: normal;
   text-align: left;
   color: #606060 !important;
+  @media screen and (max-width: 1263px) {
+    font-size: 12px !important;
+  }
 }
 
 .pg-app-bar::v-deep.v-sheet.v-app-bar.v-toolbar:not(.v-sheet--outlined) {
