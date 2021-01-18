@@ -72,7 +72,9 @@
             REGISTER
           </v-btn>
 
-          <v-btn
+          <img class="clickable" src="@/assets/svg/account.svg" @click="goToAccount">
+
+          <!-- <v-btn
             v-if="isUserLoggedIn && !isUserInSignupProcess"
             class="px-13 ml-3"
             color="accent"
@@ -80,7 +82,7 @@
             :to="{ name: 'app-account' }"
           >
             ACCOUNT
-          </v-btn>
+          </v-btn> -->
 
           <v-btn
             v-if="previewMode"
@@ -173,6 +175,10 @@ export default {
   methods: {
     toggleDrawer () {
       this.$nuxt.$emit('toggle-nav-drawer')
+    },
+
+    goToAccount () {
+      this.$router.push({ name: 'app-account' })
     }
   }
 }
