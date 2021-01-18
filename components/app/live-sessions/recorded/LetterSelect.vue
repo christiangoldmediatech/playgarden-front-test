@@ -1,7 +1,7 @@
 <template>
   <pg-select
     :value="value"
-    :items="letters"
+    :items="actualLetters"
     item-value="id"
     hide-details
     solo
@@ -16,7 +16,7 @@
           list-mode
         />
 
-        <v-list-item-content>
+        <v-list-item-content v-if="!slimVersion">
           <v-list-item-title class="font-weight-bold pl-4">
             Letter {{ item.name.substr(0, 1) }}
           </v-list-item-title>
@@ -27,11 +27,11 @@
     <template v-slot:item="{ item, on, attrs }">
       <v-list-item v-bind="attrs" class="w-100" v-on="on">
         <recorded-letter
-          v-bind="{ letter: item, small: smallLetter }"
+          v-bind="{ letter: item, small: smallLetter, disabled: item.disabled }"
           list-mode
         />
 
-        <v-list-item-content>
+        <v-list-item-content v-if="!slimVersion">
           <v-list-item-title class="pl-4">
             Letter {{ item.name.substr(0, 1) }}
           </v-list-item-title>
@@ -64,11 +64,32 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+
+    disabledLetters: {
+      type: Array,
+      required: false,
+      default: () => []
+    },
+
+    slimVersion: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
 
   computed: {
-    ...mapGetters('admin/curriculum', { letters: 'types' })
+    ...mapGetters('admin/curriculum', { letters: 'types' }),
+
+    actualLetters () {
+      return this.letters.map((letter) => {
+        return {
+          ...letter,
+          disabled: this.disabledLetters.includes(letter.id)
+        }
+      })
+    }
   },
 
   created () {
