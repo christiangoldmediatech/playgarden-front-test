@@ -72,17 +72,7 @@
             REGISTER
           </v-btn>
 
-          <img class="clickable" src="@/assets/svg/account.svg" @click="goToAccount">
-
-          <!-- <v-btn
-            v-if="isUserLoggedIn && !isUserInSignupProcess"
-            class="px-13 ml-3"
-            color="accent"
-            nuxt
-            :to="{ name: 'app-account' }"
-          >
-            ACCOUNT
-          </v-btn> -->
+          <img class="clickable account-btn" src="@/assets/svg/account.svg" @click="goToAccount">
 
           <v-btn
             v-if="previewMode"
@@ -216,6 +206,12 @@ export default {
       display: block;
     }
   }
+}
+
+.account-btn {
+  width: 36px;
+  height: 36px;
+  margin-right: 12px;
 }
 
 // .pg-app-bar-col {
