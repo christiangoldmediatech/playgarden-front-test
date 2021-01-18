@@ -47,7 +47,7 @@
             <v-btn
               v-for="(item, index) in items"
               :key="`${_uid}-${index}`"
-              class="text-none link-text"
+              class="text-none link-text px-2 px-lg-4"
               active-class="custom-active"
               text
               :ripple="true"
@@ -110,15 +110,17 @@
           <img v-if="isUserLoggedIn && !isUserInSignupProcess" class="clickable account-btn" src="@/assets/svg/account.svg" @click="goToAccount">
 
           <v-btn
-            v-if="!isUserLoggedIn"
-            :color="accent"
+            :color="isUserLoggedIn ? 'primary' : 'accent'"
             active-class="transparent--text"
             icon
             nuxt
             small
-            :to="{ name: 'auth-login' }"
+            :to="{ name: isUserLoggedIn ? 'auth-logout' : 'auth-login' }"
           >
-            <v-icon color="primary">
+            <v-icon v-if="isUserLoggedIn" color="accent">
+              mdi-logout
+            </v-icon>
+            <v-icon v-else color="primary">
               mdi-login
             </v-icon>
           </v-btn>
@@ -212,9 +214,10 @@ export default {
 }
 
 .account-btn {
+  vertical-align: middle;
   width: 24px;
   height: 24px;
-  margin-right: 6px;
+  margin-right: 4px;
   @media screen and (min-width: 1264px) {
     width: 36px;
     height: 36px;
