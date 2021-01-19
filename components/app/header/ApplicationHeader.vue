@@ -72,7 +72,7 @@
             REGISTER
           </v-btn>
 
-          <img class="clickable account-btn" src="@/assets/svg/account.svg" @click="goToAccount">
+          <img v-if="isUserLoggedIn" class="clickable account-btn" src="@/assets/svg/account.svg" @click="goToAccount">
 
           <v-btn
             v-if="previewMode"
