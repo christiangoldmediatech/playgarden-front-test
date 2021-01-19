@@ -53,10 +53,12 @@
             >
               <div class="timeline-content-circle">
                 <pg-circle-letter-day
+                  class="clickable"
                   :day="entry.day"
                   :letter="entry.curriculumType.name"
                   :size="64"
                   no-auto-position
+                  @click.native="openLesson(entry.id)"
                 />
               </div>
               <div>
@@ -149,6 +151,10 @@ export default {
         return `Started on ${month} ${date.getDate().toString().padStart(2, '0')}, ${date.getFullYear()}`
       }
       return 'Not started.'
+    },
+
+    openLesson (lessonId) {
+      this.$nuxt.$emit('open-lesson-overlay', { childId: this.child.id, lessonId })
     }
   }
 }

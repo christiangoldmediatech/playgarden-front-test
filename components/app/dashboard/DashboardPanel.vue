@@ -18,7 +18,7 @@
           :progress-next="videos.progressNext"
           enabled
         >
-          <content-list :items="videos.items" />
+          <content-list :items="videos.items" v-bind="{ noLinkMode }" />
         </content-section>
 
         <content-section
@@ -44,14 +44,17 @@
               active-class="dashboard-item-active"
               exact-active-class="dashboard-item-exact"
               :disabled="videos.progress < 100"
-              nuxt
-              exact
-              :to="generateNuxtRoute('online-worksheet')"
+              :nuxt="!noLinkMode"
+              :exact="!noLinkMode"
+              :to="noLinkMode ? undefined : generateNuxtRoute('online-worksheet')"
             >
               <v-list-item-content>
                 <v-list-item-title :class="['dashboard-panel-worksheet-text', { 'dashboard-item-disabled': videos.progress < 100 }]">
                   ONLINE WORKSHEET
                 </v-list-item-title>
+                <v-list-item-subtitle v-if="noLinkMode">
+                  Completed: {{ completedOnlineWorksheets }}/{{ worksheets.ONLINE.length }}
+                </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
 
@@ -61,14 +64,17 @@
               active-class="dashboard-item-active"
               exact-active-class="dashboard-item-exact"
               :disabled="videos.progress < 100"
-              nuxt
-              exact
-              :to="generateNuxtRoute('offline-worksheet')"
+              :nuxt="!noLinkMode"
+              :exact="!noLinkMode"
+              :to="noLinkMode ? undefined : generateNuxtRoute('offline-worksheet')"
             >
               <v-list-item-content>
                 <v-list-item-title :class="['dashboard-panel-worksheet-text', { 'dashboard-item-disabled': videos.progress < 100 }]">
                   HANDS-ON LEARNING
                 </v-list-item-title>
+                <v-list-item-subtitle v-if="noLinkMode">
+                  Completed: {{ worksheets.OFFLINE.completed ? 'Yes' : 'No' }}
+                </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
 
@@ -82,7 +88,7 @@
                   id="download-worksheet-btn"
                   class="dashboard-panel-worksheet-btn white--text"
                   color="#dce7b5"
-                  :disabled="videos.progress < 100"
+                  :disabled="videos.progress < 100 || noLinkMode"
                   block
                   nuxt
                   exact
@@ -99,7 +105,7 @@
                   id="download-worksheet-btn"
                   class="dashboard-panel-worksheet-btn white--text mt-2"
                   color="#dce7b5"
-                  :disabled="videos.progress < 100"
+                  :disabled="videos.progress < 100 || noLinkMode"
                   block
                   @click.stop="openPdf"
                 >
@@ -137,7 +143,7 @@
           :progress-next="activities.progressNext"
           :enabled="videos.progress === 100"
         >
-          <content-list :items="activities.items" />
+          <content-list :items="activities.items" v-bind="{ noLinkMode }" />
         </content-section>
       </div>
 
@@ -189,6 +195,12 @@ export default {
       default: false
     },
 
+    noLinkMode: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
     customOverrides: {
       type: Object,
       required: false,
@@ -229,6 +241,16 @@ export default {
         return this.lesson.worksheets.find(({ type }) => type === 'OFFLINE')
       }
       return null
+    },
+
+    completedOnlineWorksheets () {
+      let completed = 0
+      this.worksheets.ONLINE.forEach((worksheet) => {
+        if (worksheet.completed) {
+          completed++
+        }
+      })
+      return completed
     }
   },
 
