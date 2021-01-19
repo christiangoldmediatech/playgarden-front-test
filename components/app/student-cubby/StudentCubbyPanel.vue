@@ -180,7 +180,6 @@ export default {
     letter-spacing: 3px;
     margin-left: 24px;
     color: #606060;
-;
   }
 }
 </style>
