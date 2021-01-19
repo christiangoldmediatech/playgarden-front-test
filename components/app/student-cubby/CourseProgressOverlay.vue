@@ -300,7 +300,7 @@ export default {
   @media screen and (max-width: 599px) {
     padding-top: 80px !important;
   }
-  @media screen and (max-width: 960px) {
+  @media screen and (max-width: 959px) {
     position: fixed;
     top: 0;
     left: 0;
@@ -312,6 +312,9 @@ export default {
     padding-bottom: 8px;
     z-index: 300;
     display: block;
+  }
+  @media screen and (min-width: 960px) {
+    padding-top: 38px;
   }
 }
 
