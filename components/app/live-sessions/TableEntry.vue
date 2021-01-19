@@ -37,7 +37,10 @@ export default {
       const start = new Date(this.entry.dateStart)
       const end = new Date(this.entry.dateEnd)
 
-      return today.getTime() >= start.getTime() && today.getTime() <= end.getTime()
+      return (
+        today.getTime() >= (start.getTime() - (5 * 60 * 1000)) &&
+        today.getTime() <= (end.getTime() + (5 * 60 * 1000))
+      )
     },
 
     isFuture () {
