@@ -33,7 +33,7 @@
           <v-hover v-slot="{ hover }">
             <v-card
               class="clickable cubby-card"
-              :class="{ primary: i === selected }"
+              :class="{ 'cubby-card-selected': i === selected }"
               :disabled="!selectedChildId"
               :elevation="hover || i === selected ? 9 : 3"
               nuxt
@@ -153,26 +153,34 @@ export default {
 
 .cubby {
   &-card {
-    padding: 6px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 24px;
+    &-selected {
+      border: 3px solid #DCE7B5;
+    }
   }
   &-item {
-    padding: 14px;
     background-color: white;
     display: flex;
     align-items: center;
   }
   &-icon {
-    max-height: 60px;
-    max-width: 80px;
+    width: 38px;
+    height: 38px;
+    max-width: 38px;
+    max-height: 38px;
     object-fit: contain;
     object-position: center;
   }
   &-text {
     font-size: 18px;
-    line-height: 24px;
+    line-height: 1.5;
     font-weight: 500;
     letter-spacing: 3px;
     margin-left: 24px;
+    color: #606060;
+;
   }
 }
 </style>
