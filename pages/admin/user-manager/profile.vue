@@ -230,11 +230,13 @@
       </v-col>
     </v-row>
     <user-child-timeline-dialog />
+    <user-child-lesson-overlay />
   </v-container>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
+import UserChildLessonOverlay from '@/components/admin/users/UserChildLessonOverlay.vue'
 import UserChildTimelineDialog from '@/components/admin/users/UserChildTimelineDialog.vue'
 
 export default {
@@ -243,7 +245,8 @@ export default {
   layout: 'admin',
 
   components: {
-    UserChildTimelineDialog
+    UserChildTimelineDialog,
+    UserChildLessonOverlay
   },
 
   data: () => {
