@@ -37,6 +37,12 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+
+    disabled: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
 
@@ -53,7 +59,8 @@ export default {
         'recorded-letter-shadow': this.selectedLetter !== this.letter.id,
         'recorded-letter-vowel': this.vowels.includes(this.letter.name.substr(0, 1)),
         'recorded-letter-active': this.selectedLetter === this.letter.id && !this.listMode,
-        'recorded-letter-small': this.small
+        'recorded-letter-small': this.small,
+        'recorded-letter-disabled': this.disabled
       }
 
       return (hover) => {
@@ -114,6 +121,9 @@ export default {
     font-size: 26px;
     margin: 12px;
     border-radius: 4px;
+  }
+  &-disabled {
+     filter: grayscale(1);
   }
 }
 </style>
