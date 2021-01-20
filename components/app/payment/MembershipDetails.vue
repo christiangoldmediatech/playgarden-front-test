@@ -385,6 +385,9 @@ export default {
     this.$nuxt.$off('children-changed')
   },
   methods: {
+    ...mapActions('auth', {
+      fetchUserInfoIntoStore: 'fetchUserInfo'
+    }),
     ...mapActions('payment', [
       'cancelSubscription',
       'fetchBillingCards',
@@ -443,6 +446,8 @@ export default {
         await this.cancelSubscription()
         this.$snotify.success('Subscription has been canceled successfully!')
         await this.getBillingDetails()
+        // update auser info on store
+        await this.fetchUserInfoIntoStore()
         this.removeSubscriptionModal = false
       } catch (e) {
       } finally {
