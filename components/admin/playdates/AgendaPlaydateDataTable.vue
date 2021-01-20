@@ -156,7 +156,7 @@ export default {
     ...mapGetters('auth', {
       userInfo: 'getUserInfo'
     }),
-    ...mapGetters('agendas-playdate', ['rows', 'total']),
+    ...mapGetters('playdate', ['rows', 'total']),
 
     filterList () {
       return this.types.map((type) => {
@@ -196,7 +196,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('agendas-playdate', [
+    ...mapActions('playdate', [
       'getPlaydates',
       'updatePlaydate',
       'deletePlaydate'

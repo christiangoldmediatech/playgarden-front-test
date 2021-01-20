@@ -143,6 +143,27 @@
                     </v-row>
                     <v-row>
                       <v-col class="text-md-right" cols="12" sm="3">
+                        <span class="subheader">Ages:</span>
+                      </v-col>
+
+                      <v-col>
+                        <validation-provider
+                          v-slot="{ errors }"
+                          name="Ages"
+                          rules="required"
+                        >
+                          <pg-select
+                            v-model="playdate.ages"
+                            :error-messages="errors"
+                            placeholder="Select ages"
+                            :items="ages"
+                            solo
+                          />
+                        </validation-provider>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col class="text-md-right" cols="12" sm="3">
                         <span class="subheader">Spots:</span>
                       </v-col>
 
@@ -281,6 +302,7 @@ function generatePlayDateTemplate () {
     description: '',
     duration: '',
     day: null,
+    ages: null,
     start: null,
     end: null,
     spots: null,
@@ -300,6 +322,7 @@ export default {
       : null,
     loading: true,
     time: null,
+    ages: ['1', '2', '3', '4'],
     menuStart: false,
     menuEnd: false,
     days: [
@@ -363,6 +386,7 @@ export default {
       const data = results[0]
       this.playdate.id = data.id
       this.playdate.name = data.name
+      this.playdate.ages = data.ages
       this.playdate.description = data.description
       this.playdate.duration = data.duration
       this.playdate.day = data.day
@@ -376,7 +400,11 @@ export default {
   },
 
   methods: {
-    ...mapActions('agendas-playdate', ['createPlaydate', 'updatePlaydate', 'getPlaydatesById']),
+    ...mapActions('playdate', [
+      'createPlaydate',
+      'updatePlaydate',
+      'getPlaydatesById'
+    ]),
 
     async save () {
       this.loading = true

@@ -1,4 +1,4 @@
-import { set } from '~/utils/vuex'
+import { set } from '@/utils/vuex'
 import { getDefaultState } from './state'
 
 const RESET_STATE = (state) => {

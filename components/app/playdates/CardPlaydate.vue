@@ -9,7 +9,7 @@
       <v-col md="5" cols="12" class="align-self-center">
         <v-row justify="center" no-gutters>
           <v-col class="py-2">
-            <div no-gutters>
+            <div>
               <v-img
                 alt="Educational Playdates"
                 contain
@@ -239,6 +239,17 @@
                   </v-btn>
 
                   <pg-ics-calendar :entry="icsEntry" />
+
+                  <v-btn
+                    v-if="!finding"
+                    color="red"
+                    block
+                    x-large
+                    text
+                    @click="remove"
+                  >
+                    DELETE PLAYDATE
+                  </v-btn>
                 </v-col>
               </v-row>
             </v-card>
@@ -253,6 +264,7 @@
 import dayjs from 'dayjs'
 import { get } from 'lodash'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
+import { mapActions } from 'vuex'
 import utc from 'dayjs/plugin/utc'
 
 import ChildSelect from '@/components/app/ChildSelect.vue'
@@ -280,6 +292,7 @@ export default {
 
   data: () => ({
     dialog: false,
+    name: null,
 
     today: new Date().getUTCDay(),
 
@@ -385,6 +398,25 @@ export default {
         start,
         end
       }
+    }
+  },
+
+  methods: {
+    ...mapActions('playdates', ['deleteChildren']),
+
+    remove () {
+      this.$nuxt.$emit('open-prompt', {
+        title: 'Delete Play date?',
+        message: `Are you sure you wish to delete '${this.child.firstName}' Play date?`,
+        action: async () => {
+          await this.deleteChildren({
+            playdateId: this.playdate.id,
+            childId: this.child.id
+          })
+
+          this.$emit('deleted')
+        }
+      })
     }
   }
 }

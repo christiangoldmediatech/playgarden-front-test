@@ -29,19 +29,12 @@
               <v-row align-content="center">
                 <!-- COL1-->
                 <v-col cols="12" md="6">
+                  <h4><b>General Information</b></h4>
                   <v-row>
                     <v-col cols="12">
                       <span
                         class="subheader"
-                      >Name: <b>{{ playdate.name }}</b></span>
-                    </v-col>
-                  </v-row>
-
-                  <v-row>
-                    <v-col cols="12">
-                      <span
-                        class="subheader"
-                      >Description: <b>{{ playdate.description }} </b></span>
+                      >Spots: <b>{{ playdate.spots }} </b></span>
                     </v-col>
                   </v-row>
 
@@ -61,18 +54,22 @@
                     </v-col>
                   </v-row>
 
-                  <v-card-actions>
-                    <v-spacer />
-                    <v-btn
-                      class="white--text"
-                      color="accent"
-                      x-large
-                      :href="playdate.link"
-                    >
-                      Join Play date
-                    </v-btn>
-                    <v-spacer />
-                  </v-card-actions>
+                  <v-row>
+                    <v-col cols="12">
+                      <span
+                        class="subheader"
+                      >Zoom Link:
+                        <v-btn
+                          class="white--text"
+                          color="accent"
+                          large
+                          :href="playdate.link"
+                        >
+                          Join Play date
+                        </v-btn>
+                      </span>
+                    </v-col>
+                  </v-row>
                 </v-col>
                 <!-- END COL1 -->
                 <!-- COL2-->
@@ -81,10 +78,25 @@
                     <v-col cols="12">
                       <span
                         class="subheader"
+                      >Name: <b>{{ playdate.name }}</b></span>
+                    </v-col>
+                  </v-row>
+
+                  <v-row>
+                    <v-col cols="12">
+                      <span
+                        class="subheader"
                       >Day: <b>{{ playdate.day }}</b></span>
                     </v-col>
                   </v-row>
 
+                  <v-row>
+                    <v-col cols="12">
+                      <span
+                        class="subheader"
+                      >Description: <b>{{ playdate.description }} </b></span>
+                    </v-col>
+                  </v-row>
                   <v-row>
                     <v-col cols="12">
                       <span
@@ -130,6 +142,7 @@ function generatePlaydateTemplate () {
     day: null,
     start: null,
     end: null,
+    ages: null,
     spots: null,
     link: null,
     specialistId: null,
@@ -148,6 +161,7 @@ export default {
       : null,
     loading: true,
     time: null,
+    ages: ['1', '2', '3', '4'],
     menuStart: false,
     specialistName: null,
     menuEnd: false,
@@ -203,6 +217,7 @@ export default {
       if (data) {
         this.playdate.id = data.id
         this.playdate.name = data.name
+        this.playdate.ages = data.ages
         this.playdate.description = data.description
         this.playdate.duration = data.duration
         this.playdate.day = data.day
@@ -218,30 +233,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('agendas-playdate', [
-      'createPlaydate',
-      'updatePlaydate',
-      'getPlaydatesById'
-    ]),
-
-    async save () {
-      this.loading = true
-      let id = this.id
-
-      try {
-        const playdate = this.playdate
-        if (id === null) {
-          const response = await this.createPlaydate(playdate)
-          id = response.id
-        } else {
-          await this.updatePlaydate({ id, data: playdate })
-        }
-      } catch (err) {
-        this.loading = false
-      } finally {
-        await this.$router.push(this.getUrlBack)
-      }
-    }
+    ...mapActions('playdate', ['getPlaydatesById'])
   }
 }
 </script>
