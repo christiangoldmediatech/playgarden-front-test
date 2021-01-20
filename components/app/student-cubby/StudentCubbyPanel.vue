@@ -24,7 +24,32 @@
         {{ selectedChildLevel }}
       </span>
 
-      <v-row dense>
+      <pg-select
+        v-if="$vuetify.breakpoint.mdAndDown"
+        v-model="selectedRoute"
+        :items="links"
+        item-value="route"
+        solo
+      >
+        <template v-slot:selection="{ item }">
+          <div class="cubby-item">
+            <img class="cubby-icon" :src="require(`@/assets/png/student-cubby/${item.img}`)">
+            <span class="cubby-text">
+              {{ item.text }}
+            </span>
+          </div>
+        </template>
+
+        <template v-slot:item="{ item }">
+          <div class="cubby-item">
+            <img class="cubby-icon" :src="require(`@/assets/png/student-cubby/${item.img}`)">
+            <span class="cubby-text">
+              {{ item.text }}
+            </span>
+          </div>
+        </template>
+      </pg-select>
+      <v-row v-else dense>
         <v-col
           v-for="(link, i) in links"
           :key="`link-route-${link.route}`"
@@ -70,6 +95,7 @@ export default {
   data () {
     return {
       selectedChildId: null,
+      selectedRoute: this.$route.name,
       links: [
         {
           text: 'PUZZLE',
@@ -127,6 +153,10 @@ export default {
       if (id) {
         this.$router.push({ name: this.$route.name, query: { id } })
       }
+    },
+
+    selectedRoute (val) {
+      this.$router.push({ name: val, query: { id: this.selectedChildId } })
     }
   },
 
@@ -166,20 +196,30 @@ export default {
     align-items: center;
   }
   &-icon {
-    width: 38px;
-    height: 38px;
-    max-width: 38px;
-    max-height: 38px;
+    width: 30px;
+    height: 30px;
+    max-width: 30px;
+    max-height: 30px;
     object-fit: contain;
     object-position: center;
+    @media screen and (min-width: 1264px) {
+      width: 38px;
+      height: 38px;
+      max-width: 38px;
+      max-height: 38px;
+    }
   }
   &-text {
-    font-size: 18px;
+    font-size: 14px;
     line-height: 1.5;
     font-weight: 500;
     letter-spacing: 3px;
-    margin-left: 24px;
+    margin-left: 16px;
     color: #606060;
+    @media screen and (min-width: 1264px) {
+      font-size: 18px;
+      margin-left: 24px;
+    }
   }
 }
 </style>
