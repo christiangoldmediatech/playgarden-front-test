@@ -95,7 +95,7 @@ export default {
   data () {
     return {
       selectedChildId: null,
-      selectedRoute: this.$route.name,
+      selectedRoute: this.$route.name === 'app-student-cubby' ? 'app-student-cubby-puzzle' : this.$route.name,
       links: [
         {
           text: 'PUZZLE',
@@ -163,8 +163,6 @@ export default {
         route: 'app-progress-report'
       })
     }
-
-    this.selectedRoute = this.$route.name
 
     if (this.id) {
       this.selectedChildId = parseInt(this.id)
