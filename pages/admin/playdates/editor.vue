@@ -44,6 +44,7 @@
                           <pg-text-field
                             v-model="playdate.name"
                             :error-messages="errors"
+                            placeholder="Name of the playdate"
                             solo
                           />
                         </validation-provider>
@@ -65,6 +66,7 @@
                             v-model="playdate.description"
                             rows="6"
                             :error-messages="errors"
+                            placeholder="Description of the playdate"
                             solo
                           />
                         </validation-provider>
@@ -99,6 +101,7 @@
                                 label="Time start"
                                 readonly
                                 :error-messages="errors"
+                                placeholder="Time playdate starts"
                                 v-bind="attrs"
                                 solo
                                 v-on="on"
@@ -112,6 +115,53 @@
                             format="24hr"
                             full-width
                             @click:minute="$refs.menu.save(playdate.start)"
+                          />
+                        </v-menu>
+                      </v-col>
+                    </v-row>
+
+                    <v-row>
+                      <v-col class="text-md-right" cols="12" sm="3">
+                        <span class="subheader">End:</span>
+                      </v-col>
+
+                      <v-col>
+                        <v-menu
+                          ref="menu2"
+                          v-model="menuEnd"
+                          :close-on-content-click="false"
+                          :nudge-right="40"
+                          :return-value.sync="playdate.end"
+                          transition="scale-transition"
+                          offset-y
+                          max-width="290px"
+                          min-width="290px"
+                        >
+                          <template v-slot:activator="{ on, attrs }">
+                            <validation-provider
+                              v-slot="{ errors }"
+                              name="Time start"
+                              rules="required"
+                            >
+                              <pg-text-field
+                                v-model="playdate.end"
+                                label="Time end"
+                                readonly
+                                :error-messages="errors"
+                                placeholder="Time end"
+                                v-bind="attrs"
+                                solo
+                                v-on="on"
+                              />
+                            </validation-provider>
+                          </template>
+                          <v-time-picker
+                            v-if="menuEnd"
+                            v-model="playdate.end"
+                            :min="playdate.start"
+                            format="24hr"
+                            full-width
+                            @click:minute="$refs.menu2.save(playdate.end)"
                           />
                         </v-menu>
                       </v-col>
@@ -152,11 +202,10 @@
                           name="Ages"
                           rules="required"
                         >
-                          <pg-select
+                          <pg-text-field
                             v-model="playdate.ages"
                             :error-messages="errors"
                             placeholder="Select ages"
-                            :items="ages"
                             solo
                           />
                         </validation-provider>
@@ -176,6 +225,7 @@
                           <pg-text-field
                             v-model="playdate.spots"
                             :error-messages="errors"
+                            placeholder="Number of sports available"
                             solo
                           />
                         </validation-provider>
@@ -195,6 +245,7 @@
                           <pg-text-field
                             v-model="playdate.duration"
                             :error-messages="errors"
+                            placeholder="Duration in minutes of the playdate"
                             solo
                           />
                         </validation-provider>
@@ -215,55 +266,10 @@
                           <pg-text-field
                             v-model="playdate.link"
                             :error-messages="errors"
+                            placeholder="Zoom link for the playdate"
                             solo
                           />
                         </validation-provider>
-                      </v-col>
-                    </v-row>
-
-                    <v-row>
-                      <v-col class="text-md-right" cols="12" sm="3">
-                        <span class="subheader">End:</span>
-                      </v-col>
-
-                      <v-col>
-                        <v-menu
-                          ref="menu2"
-                          v-model="menuEnd"
-                          :close-on-content-click="false"
-                          :nudge-right="40"
-                          :return-value.sync="playdate.end"
-                          transition="scale-transition"
-                          offset-y
-                          max-width="290px"
-                          min-width="290px"
-                        >
-                          <template v-slot:activator="{ on, attrs }">
-                            <validation-provider
-                              v-slot="{ errors }"
-                              name="Time start"
-                              rules="required"
-                            >
-                              <pg-text-field
-                                v-model="playdate.end"
-                                label="Time end"
-                                readonly
-                                :error-messages="errors"
-                                v-bind="attrs"
-                                solo
-                                v-on="on"
-                              />
-                            </validation-provider>
-                          </template>
-                          <v-time-picker
-                            v-if="menuEnd"
-                            v-model="playdate.end"
-                            :min="playdate.start"
-                            format="24hr"
-                            full-width
-                            @click:minute="$refs.menu2.save(playdate.end)"
-                          />
-                        </v-menu>
                       </v-col>
                     </v-row>
                   </v-col>
