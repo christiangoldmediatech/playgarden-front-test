@@ -100,6 +100,23 @@
                 </div>
               </div>
 
+              <div class="user-general-table-row">
+                <div class="user-general-table-row-divider">
+                  <div class="user-general-field">
+                    Status
+                  </div>
+                  <div class="user-general-value text-capitalize">
+                    {{ user.statusType.toLowerCase() }}
+                  </div>
+                </div>
+                <div class="user-general-field">
+                  Register Step
+                </div>
+                <div class="user-general-value text-capitalize">
+                  {{ user.registerStepType || 'N/A' }}
+                </div>
+              </div>
+
               <template v-if="role === 'parent'">
                 <div class="user-general-table-row">
                   <div class="user-general-table-row-divider">
@@ -142,6 +159,23 @@
                     <template v-else>
                       Pending <img class="user-sent-status" src="@/assets/svg/pending.svg">
                     </template>
+                  </div>
+                </div>
+
+                <div class="user-general-table-row">
+                  <div class="user-general-table-row-divider">
+                    <div class="user-general-field">
+                      Discount
+                    </div>
+                    <div class="user-general-value">
+                      {{ discount.percent }}
+                    </div>
+                  </div>
+                  <div class="user-general-field">
+                    Coupon code
+                  </div>
+                  <div class="user-general-value">
+                    {{ discount.code }}
                   </div>
                 </div>
 
@@ -289,6 +323,19 @@ export default {
         return this.user.billings[0]
       }
       return null
+    },
+
+    discount () {
+      const discount = {
+        percent: '0%',
+        code: 'N/A'
+      }
+      if (this.billing && this.billing.subscriptionData && this.billing.subscriptionData.discount && this.billing.subscriptionData.discount.coupon) {
+        const coupon = this.billing.subscriptionData.discount.coupon
+        discount.percent = `${coupon.percent_off} %`
+        discount.code = coupon.name
+      }
+      return discount
     },
 
     plan () {
