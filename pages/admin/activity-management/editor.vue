@@ -165,6 +165,10 @@
                 </v-row>
 
                 <v-row>
+                  <select-file />
+                </v-row>
+
+                <v-row>
                   <v-col class="text-md-right" cols="12" sm="3">
                     <span class="subheader">Video Thumbnail:</span>
                   </v-col>
@@ -228,15 +232,17 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 // import PgInlineVideoPlayer from '@/components/pg-video-js-player/PgInlineVideoPlayer.vue'
+import SelectFile from '@/components/dropbox/SelectFile.vue'
 
 export default {
   name: 'Editor',
 
   layout: 'admin',
 
-  // components: {
+  components: {
+    SelectFile
   //   PgInlineVideoPlayer
-  // },
+  },
 
   data () {
     return {
