@@ -24,41 +24,52 @@
         {{ selectedChildLevel }}
       </span>
 
-      <v-row dense>
+      <pg-select
+        v-if="$vuetify.breakpoint.mdAndDown"
+        v-model="selectedRoute"
+        :items="links"
+        item-value="route"
+        solo
+      >
+        <template v-slot:selection="{ item }">
+          <div class="cubby-item">
+            <img class="cubby-icon" :src="require(`@/assets/png/student-cubby/${item.img}`)">
+            <span class="cubby-text">
+              {{ item.text }}
+            </span>
+          </div>
+        </template>
+
+        <template v-slot:item="{ item }">
+          <div class="cubby-item">
+            <img class="cubby-icon" :src="require(`@/assets/png/student-cubby/${item.img}`)">
+            <span class="cubby-text">
+              {{ item.text }}
+            </span>
+          </div>
+        </template>
+      </pg-select>
+      <v-row v-else dense>
         <v-col
           v-for="(link, i) in links"
           :key="`link-route-${link.route}`"
-          cols="3"
-          md="6"
+          cols="12"
         >
           <v-hover v-slot="{ hover }">
             <v-card
-              class="clickable square"
-              :class="{ primary: i === selected }"
+              class="clickable cubby-card"
+              :class="{ 'cubby-card-selected': i === selected }"
               :disabled="!selectedChildId"
               :elevation="hover || i === selected ? 9 : 3"
               nuxt
               :to="{
-                name: `app-student-cubby-${link.route}`,
+                name: link.route,
                 query: { id: selectedChildId }
               }"
-              @click.native="$scrollTo('body')"
             >
-              <div
-                class="content align-center d-flex flex-column justify-center"
-              >
-                <v-img
-                  class="flex-shrink-1 flex-grow-0 pa-0"
-                  contain
-                  height="200"
-                  :src="require(`@/assets/png/student-cubby/${link.img}`)"
-                  width="200"
-                />
-
-                <span
-                  class="font-weight-bold d-block text-center text-body-2 text-md-subtitle-2 text-xl-h6 text-kerning menu-link"
-                  :class="{ mobile: $vuetify.breakpoint.xs }"
-                >
+              <div class="cubby-item">
+                <img class="cubby-icon" :src="require(`@/assets/png/student-cubby/${link.img}`)">
+                <span class="cubby-text">
                   {{ link.text }}
                 </span>
               </div>
@@ -84,26 +95,27 @@ export default {
   data () {
     return {
       selectedChildId: null,
+      selectedRoute: this.$route.name === 'app-student-cubby' ? 'app-student-cubby-puzzle' : this.$route.name,
       links: [
         {
           text: 'PUZZLE',
           img: 'puzzle-piece.png',
-          route: 'puzzle'
-        },
-        {
-          text: 'PROGRESS',
-          img: 'abc.png',
-          route: 'course-progress'
-        },
-        {
-          text: 'PORTFOLIO',
-          img: 'group.png',
-          route: 'student-portfolio'
+          route: 'app-student-cubby-puzzle'
         },
         {
           text: 'PATCHES',
           img: 'patches.svg',
-          route: 'patches'
+          route: 'app-student-cubby-patches'
+        },
+        {
+          text: 'CURRICULUM',
+          img: 'abc.png',
+          route: 'app-student-cubby-course-progress'
+        },
+        {
+          text: 'PORTFOLIO',
+          img: 'group.png',
+          route: 'app-student-cubby-student-portfolio'
         }
       ]
     }
@@ -120,7 +132,7 @@ export default {
 
     selected () {
       const routes = this.links.map(({ route }) =>
-        RegExp(`app-student-cubby-${route}*`)
+        RegExp(`${route}*`)
       )
       return routes.findIndex(route => route.test(this.$route.name))
     },
@@ -136,10 +148,22 @@ export default {
       if (id) {
         this.$router.push({ name: this.$route.name, query: { id } })
       }
+    },
+
+    selectedRoute (val) {
+      this.$router.push({ name: val, query: { id: this.selectedChildId } })
     }
   },
 
   created () {
+    if (!['production'].includes(process.env.testEnv)) {
+      this.links.push({
+        text: 'PROGRESS REPORT',
+        img: 'progress.png',
+        route: 'app-progress-report'
+      })
+    }
+
     if (this.id) {
       this.selectedChildId = parseInt(this.id)
     } else if (this.currentChild.length) {
@@ -160,33 +184,45 @@ export default {
   top: 75px;
 }
 
-.text-kerning {
-  letter-spacing: 1.5px !important;
-}
-
-.square {
-  padding: 5%;
-  position: relative;
-  width: 100%;
-}
-
-.square:after {
-  content: "";
-  display: block;
-  padding-bottom: 100%;
-}
-
-.content {
-  background-color: #ffffff;
-  height: 90%;
-  padding: 5%;
-  position: absolute;
-  width: 90%;
-}
-
-.menu-link {
-  &.mobile {
-    display: none !important;
+.cubby {
+  &-card {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 24px;
+    &-selected {
+      border: 3px solid #DCE7B5;
+    }
+  }
+  &-item {
+    background-color: white;
+    display: flex;
+    align-items: center;
+  }
+  &-icon {
+    width: 30px;
+    height: 30px;
+    max-width: 30px;
+    max-height: 30px;
+    object-fit: contain;
+    object-position: center;
+    @media screen and (min-width: 1264px) {
+      width: 38px;
+      height: 38px;
+      max-width: 38px;
+      max-height: 38px;
+    }
+  }
+  &-text {
+    font-size: 14px;
+    line-height: 1.5;
+    font-weight: 500;
+    letter-spacing: 3px;
+    margin-left: 16px;
+    color: #606060;
+    @media screen and (min-width: 1264px) {
+      font-size: 18px;
+      margin-left: 24px;
+    }
   }
 }
 </style>

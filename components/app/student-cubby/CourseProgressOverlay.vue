@@ -15,6 +15,17 @@
       </v-icon>
       Back
     </v-btn>
+
+    <div class="progress-letter-selector">
+      <letter-select
+        v-model="selectedLetter"
+        small-letter
+        dense
+        v-bind="{ disabledLetters }"
+        :slim-version="$vuetify.breakpoint.xs"
+      />
+    </div>
+
     <v-progress-circular
       v-if="loading"
       color="accent"
@@ -113,6 +124,7 @@
 <script>
 import DashboardPanel from '@/components/app/dashboard/DashboardPanel.vue'
 import BlankDashboardPanel from '@/components/app/dashboard/BlankDashboardPanel.vue'
+import LetterSelect from '@/components/app/live-sessions/recorded/LetterSelect.vue'
 import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
 import { mapGetters, mapActions } from 'vuex'
 
@@ -122,7 +134,8 @@ export default {
   components: {
     DashboardPanel,
     BlankDashboardPanel,
-    PerfectScrollbar
+    PerfectScrollbar,
+    LetterSelect
   },
 
   data: () => {
@@ -130,6 +143,8 @@ export default {
       show: false,
       selectedDay: 0,
       loading: false,
+      selectedLetter: null,
+      letters: [],
       lessons: []
     }
   },
@@ -164,6 +179,12 @@ export default {
         return total - offset
       }
       return null
+    },
+
+    disabledLetters () {
+      return this.letters.filter((letter) => {
+        return !letter.enabled
+      }).map(({ id }) => id)
     }
   },
 
@@ -190,6 +211,17 @@ export default {
           this.$refs.scrollbar.update()
         })
       }
+    },
+
+    selectedLetter (val) {
+      if (val) {
+        this.loading = true
+        this.fetchChildProgress()
+        this.getCourseProgressByChildId({ id: this.studentId, curriculumTypeId: val }).then((data) => {
+          this.lessons = data.map(({ lesson }) => lesson)
+          this.loading = false
+        })
+      }
     }
   },
 
@@ -197,17 +229,13 @@ export default {
     this.$nuxt.$on('show-curriculum-progress', (curriculumTypeId) => {
       if (this.studentId) {
         this.lessons = []
-        this.loading = true
-        this.getCourseProgressByChildId({ id: this.studentId, curriculumTypeId }).then((data) => {
-          this.lessons = data.map(({ lesson }) => lesson)
-          this.loading = false
-        })
+        this.selectedLetter = curriculumTypeId
         this.show = true
         document.querySelector('html').style.overflowY = 'hidden'
       }
     })
 
-    this.$nuxt.$on('close-curriculum-progress', (curriculumTypeId) => {
+    this.$nuxt.$on('close-curriculum-progress', () => {
       if (this.show) {
         this.close()
         this.$nuxt.$emit('dashboard-panel-update')
@@ -222,6 +250,13 @@ export default {
       this.show = false
       this.selectedDay = 0
       document.querySelector('html').style.overflowY = 'auto'
+    },
+
+    async fetchChildProgress () {
+      const data = await this.getCourseProgressByChildId({
+        id: this.studentId
+      })
+      this.letters = data
     }
   }
 }
@@ -238,6 +273,23 @@ export default {
 .panel-column {
   max-width: 471px;
 }
+
+.progress-letter-selector {
+  position: fixed;
+  width: 156px;
+  max-width: 156px;
+  z-index: 400;
+  margin: 0 auto;
+  top: 6px !important;
+  right: 6px !important;
+  @media screen and (min-width: 600px) {
+    left: auto;
+    top: 12px !important;
+    right: 12px !important;
+    width: 256px;
+    max-width: 256px;
+  }
+}
 </style>
 
 <style src="vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css"></style>
@@ -245,7 +297,10 @@ export default {
 <style lang="scss" scoped>
 .panel-container {
   overflow-x: visible;
-  @media screen and (max-width: 960px) {
+  @media screen and (max-width: 599px) {
+    padding-top: 80px !important;
+  }
+  @media screen and (max-width: 959px) {
     position: fixed;
     top: 0;
     left: 0;
@@ -257,6 +312,9 @@ export default {
     padding-bottom: 8px;
     z-index: 300;
     display: block;
+  }
+  @media screen and (min-width: 960px) {
+    padding-top: 38px;
   }
 }
 

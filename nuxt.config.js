@@ -263,7 +263,8 @@ export default {
       'redirectProperAuthenticatedSection',
       'redirectIfAuthenticated',
       'onboardingDone',
-      'pickChild'
+      'pickChild',
+      'redirectIfSubscriptionCancelled'
     ],
     scrollBehavior: () => ({ x: 0, y: 0 })
   }
