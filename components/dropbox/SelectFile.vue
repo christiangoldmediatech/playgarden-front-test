@@ -1,5 +1,5 @@
 <template>
-  <v-btn block height="45" class="btn-dropbox" text @click="openChooser">
+  <v-btn block height="45" class="btn-dropbox" text @click="dropboxIconClicked">
     <img
       alt="Dropbox"
       class="mr-1"
@@ -18,12 +18,7 @@ export default {
 
   data () {
     return {
-      apiKey: '6szr311owx7y96r',
-      scriptLoaded: true,
-      dropboxChooserIsSupported: false,
-      multiselect: false,
-      folderselect: false,
-      sizeLimit: 1024
+      apiKey: '6szr311owx7y96r'
     }
   },
 
@@ -43,8 +38,42 @@ export default {
   },
 
   methods: {
-    openChooser () {
-      console.log('aqui')
+    dropboxIconClicked () {
+      const options = {
+        success: (files) => {
+          const attachments = []
+          for (let i = 0; i < files.length; i++) {
+            const attachment = {}
+            attachment._id = files[i].id
+            attachment.title = files[i].name
+            attachment.size = files[i].bytes
+            attachment.iconURL = files[i].icon
+            attachment.link = files[i].link
+            attachment.extension = `. ${files[i].name.split('.')[1]}`
+            attachments.push(attachment)
+          }
+          this.tempAttachments = attachments
+          console.log(this.tempAttachments)
+        },
+
+        cancel: () => {},
+
+        linkType: 'preview',
+
+        multiselect: true,
+
+        extensions: [
+          '.pdf',
+          '.doc',
+          '.docx',
+          '.mp4'
+        ],
+
+        folderselect: false,
+
+        sizeLimit: 102400000
+      }
+      window.Dropbox.choose(options)
     }
   }
 
