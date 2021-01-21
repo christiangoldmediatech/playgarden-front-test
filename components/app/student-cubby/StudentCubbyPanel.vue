@@ -156,8 +156,6 @@ export default {
   },
 
   created () {
-    this.selectedRoute = this.$route.name
-
     if (!['production'].includes(process.env.testEnv)) {
       this.links.push({
         text: 'PROGRESS REPORT',
@@ -165,6 +163,8 @@ export default {
         route: 'app-progress-report'
       })
     }
+
+    this.selectedRoute = this.$route.name
 
     if (this.id) {
       this.selectedChildId = parseInt(this.id)
