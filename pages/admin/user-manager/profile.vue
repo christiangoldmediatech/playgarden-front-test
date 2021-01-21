@@ -113,7 +113,7 @@
                   Register Step
                 </div>
                 <div class="user-general-value text-capitalize">
-                  {{ user.registerStep || 'N/A' }}
+                  {{ user.registerStepType || 'N/A' }}
                 </div>
               </div>
 
