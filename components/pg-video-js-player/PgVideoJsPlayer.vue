@@ -308,7 +308,7 @@ export default {
 
       // Move onto next playlist item
       this.playerInstance.on('ended', () => {
-        this.playerInstance.currentTime(0)
+        // this.playerInstance.currentTime(0)
         this.playerInstance.hasStarted(false)
         this.playerInstance.trigger('ready')
         if (this.noAutoTrackChange) {
