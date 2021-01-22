@@ -80,12 +80,12 @@
                   </v-row>
                 </v-list-item-subtitle>
 
-                <v-list-item-subtitle v-if="playdate.ages" class="py-1">
-                  Ages recommended:<b> {{ playdate.ages }}</b>
+                <v-list-item-subtitle class="py-1">
+                  Ages recommended:<b> {{ playdate.ages || 'All ages' }}</b>
                 </v-list-item-subtitle>
 
-                <v-list-item-subtitle v-if="duration" class="py-1">
-                  Duration: <b>{{ duration }} minutes</b>
+                <v-list-item-subtitle class="py-1">
+                  Duration: <b>{{ duration || '30' }} minutes</b>
                 </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
@@ -202,7 +202,7 @@
                           />
 
                           <span class="ml-1">
-                            {{ backpackImages.length }}/{{ playdate.spots }}
+                            {{ playdate.backpackImages }}/{{ playdate.spots }}
                           </span>
                         </v-row>
                       </v-list-item-subtitle>
@@ -294,7 +294,7 @@ export default {
 
   computed: {
     backpackImages () {
-      return get(this.playdate, 'backpackChildrenImages', []).map(
+      return get(this.playdate, 'backpackImages', []).map(
         ({ image }) => image
       )
     },
