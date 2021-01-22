@@ -165,7 +165,13 @@
                 </v-row>
 
                 <v-row>
-                  <select-file />
+                  <select-file
+                    ref="fileUploaderDropBox"
+                    v-model="file"
+                    mode="video"
+                    multi-part
+                    path="activity-video"
+                    @sendFile="setFileDropBox" />
                 </v-row>
 
                 <v-row>
@@ -251,6 +257,8 @@ export default {
       thumbnail: null,
       video: null,
       player: null,
+      fileDropBox: null,
+      showSelected: true,
       activity: {
         featured: false,
         name: '',
@@ -387,6 +395,11 @@ export default {
       })
     },
 
+    setFileDropBox (file) {
+      this.file = file
+      this.fileDropBox = file
+    },
+
     async save () {
       this.loading = true
       let id = this.id
@@ -396,23 +409,30 @@ export default {
         if (thumbnail) {
           this.activity.thumbnail = thumbnail
         }
-
-        const data = await this.$refs.fileUploader.handleUpload()
+        let data = null
+        if (!this.fileDropBox) {
+          data = await this.$refs.fileUploader.handleUpload()
+        } else {
+          console.log('guardand archivo dropBox')
+          data = await this.$refs.fileUploaderDropBox.handleUpload()
+        }
         if (data) {
           this.activity.videoId = data.video.id
         }
         const activity = this.activity
         if (id === null) {
-          const response = await this.createActivity(activity)
-          id = response.id
+          // const response = await this.createActivity(activity)
+          // id = response.id
+          id = null
         } else {
-          await this.updateActivity({ id, data: activity })
+          console.log('activity', activity)
+          // await this.updateActivity({ id, data: activity })
         }
       } catch (err) {
         this.loading = false
-        return
+        // return
       } finally {
-        this.$router.push({ name: 'admin-activity-management' })
+        // this.$router.push({ name: 'admin-activity-management' })
       }
     }
   }

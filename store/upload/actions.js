@@ -14,6 +14,12 @@ export default {
 
   async doMultiPartBackgroundUpload ({ state, commit }, { type, mode, path, file, callback, meta }) {
     // Find number of file parts
+    console.log('******* data file')
+    console.dir(file)
+    console.log('******* data file')
+    console.log('******* data path')
+    console.log('path--', path)
+    console.log('******* data path')
     const FILE_CHUNK_SIZE = 10000000
     const FILE_SIZE = file.size
     const FILE_NAME = file.name
@@ -76,6 +82,9 @@ export default {
       try {
         for (const [partIndex, part] of parts.entries()) {
           commit('SET_UPLOAD_ACTIVE_PART_INDEX', { uploadId, partIndex })
+          console.log('*****antes del slice****')
+          console.dir(file)
+          console.log('*****despues del slice****')
           const chunk = file.slice(part.start, part.end)
           const response = await Axios.put(part.url, chunk, {
             onUploadProgress: (progressEvent) => {
