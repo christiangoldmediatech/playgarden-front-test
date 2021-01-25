@@ -241,11 +241,17 @@ export default {
       return this.playdates
         .filter(item => (item.playdates || []).length)
         .flatMap(({ backpackChildrenImages = [], children, playdates }) => {
-          return playdates.map(({ playdate }, indexP) => ({
-            backpackChildrenImages: backpackChildrenImages[indexP] || [],
-            children,
-            ...playdate
-          }))
+          return playdates.map(({ playdate, backpackImages }, indexP) => {
+            if (!playdate) {
+              return null
+            }
+
+            return {
+              backpackImages,
+              children,
+              ...playdate
+            }
+          })
         })
     },
 
