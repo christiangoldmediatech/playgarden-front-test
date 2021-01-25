@@ -34,7 +34,7 @@
         cols="12"
         md="6"
       >
-        <card-playdate finding :playdate="playdate" />
+        <card-playdate :playdate="playdate" />
       </v-col>
     </v-row>
   </v-col>
@@ -63,7 +63,7 @@ export default {
 
     async getActivePlaydates () {
       try {
-        this.playdates = await this.getAndFilterPlaydates()
+        this.playdates = await this.getAndFilterPlaydates({ showChildren: true })
       } catch (e) {}
     }
   }
