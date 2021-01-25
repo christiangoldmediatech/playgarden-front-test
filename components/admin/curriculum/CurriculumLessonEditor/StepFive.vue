@@ -46,7 +46,7 @@
             <v-card>
               <v-list-item class="activities-selected">
                 <v-list-item-avatar @click="loadDataSelected(data)">
-                  <v-img :src="data.activity.activityType.icon" height="200" />
+                  <v-img :src="data.activity.activityType.icon" />
                 </v-list-item-avatar>
 
                 <v-list-item-content @click="loadDataSelected(data)">
