@@ -26,15 +26,33 @@
         <v-card width="100%">
           <v-card-text>
             <v-col>
+              <v-row>
+                <v-col cols="12">
+                  <h2>
+                    <b>
+                      {{ playdate.day }},
+                      {{ times.start.format("HH:mm a") }}
+                      -
+                      {{ times.end.format("HH:mm a") }}
+                    </b>
+                  </h2>
+                </v-col>
+              </v-row>
               <v-row align-content="center">
                 <!-- COL1-->
                 <v-col cols="12" md="6">
-                  <h4><b>General Information</b></h4>
+                  <h3 class="mt-6">
+                    General Information
+                  </h3>
                   <v-row>
-                    <v-col cols="12">
+                    <v-col cols="12" class="mt-md-6 mt-sm-0">
                       <span
                         class="subheader"
-                      >Spots: <b>{{ playdate.spots }} </b></span>
+                      >Spots:
+                        <b
+                          class="pl-16"
+                        >{{ playdatesChildrens.length }}/{{ playdate.spots }}
+                        </b></span>
                     </v-col>
                   </v-row>
 
@@ -42,7 +60,8 @@
                     <v-col cols="12">
                       <span
                         class="subheader"
-                      >Ages Recommended: <b>{{ playdate.ages }} </b></span>
+                      >Ages Recommended:
+                        <b class="pl-16">{{ playdate.ages }} </b></span>
                     </v-col>
                   </v-row>
 
@@ -50,19 +69,41 @@
                     <v-col cols="12">
                       <span
                         class="subheader"
-                      >Start: <b>{{ playdate.start }} </b></span>
+                      >Duration:
+                        <b class="pl-9"> {{ duration }} minutes </b></span>
                     </v-col>
                   </v-row>
 
+                  <v-row>
+                    <v-col cols="12">
+                      <span
+                        class="subheader"
+                      >Date:
+                        <b class="pl-16">{{
+                          playdate.createdAt
+                            | formatDate({ format: "MMMM DD, YYYY" })
+                        }}</b></span>
+                    </v-col>
+                  </v-row>
+
+                  <v-row
+                    align-content="center"
+                    justify="center"
+                    justify-md="start"
+                    no-gutters
+                    class="pt-2"
+                  >
+                    <p />
+                  </v-row>
                   <v-row>
                     <v-col cols="12">
                       <span
                         class="subheader"
                       >Zoom Link:
                         <v-btn
-                          class="white--text"
+                          class="white--text ml-8"
                           color="accent"
-                          large
+                          medium
                           :href="playdate.link"
                         >
                           Join Play date
@@ -74,50 +115,31 @@
                 <!-- END COL1 -->
                 <!-- COL2-->
                 <v-col cols="12" md="6">
-                  <v-row>
-                    <v-col cols="12">
-                      <span
-                        class="subheader"
-                      >Name: <b>{{ playdate.name }}</b></span>
+                  <v-row gutters>
+                    <v-col cols="12" md="3" class="mr-md-n9 mt-md-3 mt-0 mr-0">
+                      <p>Who's going?</p>
                     </v-col>
-                  </v-row>
 
-                  <v-row>
-                    <v-col cols="12">
-                      <span
-                        class="subheader"
-                      >Day: <b>{{ playdate.day }}</b></span>
-                    </v-col>
-                  </v-row>
+                    <v-col cols="12" md="9">
+                      <v-row justify-md="start" no-gutters class="pt-2 pl-n3">
+                        <v-col
+                          v-for="(show, Index) in playdatesChildrens"
+                          :key="Index"
+                          :class="{ 'ml-n3': index }"
+                          cols="6"
+                        >
+                          <v-row no-gutters>
+                            <v-img
+                              max-width="30"
+                              :src="show.children.backpack.image"
+                            />
 
-                  <v-row>
-                    <v-col cols="12">
-                      <span
-                        class="subheader"
-                      >Description: <b>{{ playdate.description }} </b></span>
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col cols="12">
-                      <span
-                        class="subheader"
-                      >Spots: <b>{{ playdate.spots }} </b></span>
-                    </v-col>
-                  </v-row>
-
-                  <v-row>
-                    <v-col cols="12">
-                      <span
-                        class="subheader"
-                      >Duration:<b> {{ playdate.duration }} </b></span>
-                    </v-col>
-                  </v-row>
-
-                  <v-row>
-                    <v-col cols="12">
-                      <span
-                        class="subheader"
-                      >End: <b>{{ playdate.end }} </b></span>
+                            <span>
+                              <strong> {{ show.children.fullName }}</strong>
+                            </span>
+                          </v-row>
+                        </v-col>
+                      </v-row>
                     </v-col>
                   </v-row>
                 </v-col>
@@ -133,6 +155,8 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 
+import { formatDate } from '~/utils/dateTools'
+
 function generatePlaydateTemplate () {
   return {
     id: null,
@@ -146,7 +170,9 @@ function generatePlaydateTemplate () {
     spots: null,
     link: null,
     specialistId: null,
-    specialistName: null
+    specialistName: null,
+    createdAt: null,
+    firstName: null
   }
 }
 
@@ -161,19 +187,11 @@ export default {
       : null,
     loading: true,
     time: null,
-    ages: ['1', '2', '3', '4'],
+    ages: null,
     menuStart: false,
     specialistName: null,
+    playdatesChildrens: [],
     menuEnd: false,
-    days: [
-      'MONDAY',
-      'TUESDAY',
-      'WEDNESDAY',
-      'THURSDAY',
-      'FRIDAY',
-      'SATURDAY',
-      'SUNDAY'
-    ],
     playdate: generatePlaydateTemplate()
   }),
 
@@ -192,15 +210,28 @@ export default {
       return url
     },
 
-    id () {
-      return this.$route.query.id ? parseInt(this.$route.query.id) : null
+    duration () {
+      return this.times.end.diff(this.times.start, 'm')
     },
 
-    activityTypes () {
-      return this.types.map(type => ({
-        text: type.name,
-        value: type.id
-      }))
+    times () {
+      const start = formatDate(this.playdate.start, {
+        format: 'HH:mm a',
+        fromFormat: 'HH:mm:ss',
+        fromUtc: true,
+        returnObject: true
+      })
+      const end = formatDate(this.playdate.end, {
+        format: 'HH:mm a',
+        fromFormat: 'HH:mm:ss',
+        fromUtc: true,
+        returnObject: true
+      })
+
+      return {
+        start,
+        end
+      }
     }
   },
 
@@ -225,9 +256,11 @@ export default {
         this.playdate.end = data.end
         this.playdate.spots = data.spots
         this.playdate.link = data.link
+        this.playdate.createdAt = data.createdAt
         this.playdate.specialistId = data.specialistUser.id
         this.specialistId = data.specialistUser.id
         this.specialistName = data.specialistUser.user.firstName
+        this.playdatesChildrens = data.playdatesChildrens
       }
     }
   },

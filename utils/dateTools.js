@@ -1,8 +1,8 @@
 import dayjs from 'dayjs'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
 import utc from 'dayjs/plugin/utc'
 
-import pad from '@/utils/pad'
-
+dayjs.extend(customParseFormat)
 dayjs.extend(utc)
 
 export const translateUTC = (date) => {
@@ -21,33 +21,41 @@ export const translateUTC = (date) => {
   return newDate
 }
 
-export const formatDate = (value) => {
-  const date = new Date(value)
+export const formatDate = (
+  value,
+  {
+    format = 'MM-DD-YYYY HH:mm:ss',
+    fromFormat,
+    fromUtc = false,
+    toUtc = false,
+    returnObject = false
+  } = {}
+) => {
+  let date =
+    fromUtc || toUtc ? dayjs.utc(value, fromFormat) : dayjs(value, fromFormat)
 
-  const month = date.getMonth() + 1
-  const day = date.getDate()
-  const year = date.getFullYear()
-  const hours = date.getHours()
-  const minutes = date.getMinutes()
-  const seconds = date.getSeconds()
+  if (!toUtc) {
+    date = date.local()
+  }
 
-  return `${pad(month, 2)}-${pad(day, 2)}-${year} ${pad(hours, 2)}:${pad(
-    minutes,
-    2
-  )}:${pad(seconds, 2)}`
+  return returnObject ? date : date.format(format)
 }
 
 export const sameDay = (d1, d2) => {
-  return d1.getFullYear() === d2.getFullYear() &&
+  return (
+    d1.getFullYear() === d2.getFullYear() &&
     d1.getMonth() === d2.getMonth() &&
     d1.getDate() === d2.getDate()
+  )
 }
 
 export const isTomorrow = (date) => {
   const today = new Date()
-  return today.getFullYear() === date.getFullYear() &&
+  return (
+    today.getFullYear() === date.getFullYear() &&
     today.getMonth() === date.getMonth() &&
-    date.getDate() === (today.getDate() + 1)
+    date.getDate() === today.getDate() + 1
+  )
 }
 
 export const stringsToDate = (date, time) => {
