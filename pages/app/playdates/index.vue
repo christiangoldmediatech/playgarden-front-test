@@ -240,13 +240,13 @@ export default {
     playdatesComputed () {
       return this.playdates
         .flatMap(({ backpackChildrenImages = [], children, playdates }) => {
-          return playdates.map(({ playdate }, indexP) => {
+          return playdates.map(({ playdate, backpackImages }, indexP) => {
             if (!playdate) {
               return null
             }
 
             return {
-              backpackChildrenImages: backpackChildrenImages[indexP] || [],
+              backpackImages,
               children,
               ...playdate
             }
