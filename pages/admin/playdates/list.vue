@@ -121,21 +121,21 @@
                     </v-col>
 
                     <v-col cols="12" md="9">
-                      <v-row justify-md="start" no-gutters class="pt-2 pl-n3">
+                      <v-row justify-md="start" no-gutters class="pt-2 pl-n6">
                         <v-col
                           v-for="(show, Index) in playdatesChildrens"
                           :key="Index"
                           :class="{ 'ml-n3': index }"
                           cols="6"
                         >
-                          <v-row no-gutters>
+                          <v-row no-gutters class="pl-1" align-content="center">
                             <v-img
                               max-width="30"
                               :src="show.children.backpack.image"
                             />
 
-                            <span>
-                              <strong> {{ show.children.fullName }}</strong>
+                            <span class="pt-1">
+                              <strong class="pl-2"> {{ show.children.fullName }}</strong>
                             </span>
                           </v-row>
                         </v-col>
