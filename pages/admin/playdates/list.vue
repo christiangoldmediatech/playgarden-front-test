@@ -48,7 +48,7 @@
                     <v-col cols="6" class="mt-6">
                       <span class="subheader">Spots:</span>
                     </v-col>
-                    <v-col cols="6">
+                    <v-col cols="6" class="mt-6">
                       <b>{{ playdatesChildrens.length }}/{{ playdate.spots }}
                       </b>
                     </v-col>
@@ -115,11 +115,11 @@
                 <!-- COL2-->
                 <v-col cols="12" md="6">
                   <v-row gutters>
-                    <v-col cols="12" md="3" class="mr-md-n9 mt-md-3 mt-0 mr-0">
+                    <v-col cols="12" md="3" class="mr-md-n4 mt-md-3 mt-0 mr-0">
                       <p>Who's going?</p>
                     </v-col>
 
-                    <v-col cols="12" md="9">
+                    <v-col cols="12" md="9" class="mt-md-1 mt-0 mr-0">
                       <v-row justify-md="start" no-gutters class="pt-2 pl-n6">
                         <v-col
                           v-for="(show, Index) in playdatesChildrens"
