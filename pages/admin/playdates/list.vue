@@ -44,42 +44,41 @@
                   <h3 class="mt-6">
                     General Information
                   </h3>
-                  <v-row>
-                    <v-col cols="12" class="mt-md-6 mt-sm-0">
-                      <span
-                        class="subheader"
-                      >Spots:
-                        <b
-                          class="pl-16"
-                        >{{ playdatesChildrens.length }}/{{ playdate.spots }}
-                        </b></span>
+                  <v-row class="mt-5" no-gutters>
+                    <v-col cols="6" class="mt-6">
+                      <span class="subheader">Spots:</span>
+                    </v-col>
+                    <v-col cols="6">
+                      <b>{{ playdatesChildrens.length }}/{{ playdate.spots }}
+                      </b>
                     </v-col>
                   </v-row>
 
-                  <v-row>
-                    <v-col cols="12">
-                      <span
-                        class="subheader"
-                      >Ages Recommended:
-                        <b class="pl-16">{{ playdate.ages }} </b></span>
+                  <v-row class="mt-5" no-gutters>
+                    <v-col cols="6">
+                      <span class="subheader">Ages Recommended:</span>
+                    </v-col>
+                    <v-col cols="6">
+                      <b>{{ playdate.ages }} </b>
                     </v-col>
                   </v-row>
 
-                  <v-row>
-                    <v-col cols="12">
-                      <span
-                        class="subheader"
-                      >Duration:
-                        <b class="pl-9"> {{ duration }} minutes </b></span>
+                  <v-row class="mt-5" no-gutters>
+                    <v-col cols="6">
+                      <span class="subheader">Duration:</span>
+                    </v-col>
+                    <v-col cols="6">
+                      <b>{{ duration }} minutes </b>
                     </v-col>
                   </v-row>
 
-                  <v-row>
-                    <v-col cols="12">
-                      <span
-                        class="subheader"
-                      >Date:
-                        <b class="pl-16">{{
+                  <v-row class="mt-5" no-gutters>
+                    <v-col cols="6">
+                      <span class="subheader">Date:</span>
+                    </v-col>
+                    <v-col cols="6">
+                      <span>
+                        <b>{{
                           playdate.createdAt
                             | formatDate({ format: "MMMM DD, YYYY" })
                         }}</b></span>
@@ -95,20 +94,20 @@
                   >
                     <p />
                   </v-row>
-                  <v-row>
-                    <v-col cols="12">
-                      <span
-                        class="subheader"
-                      >Zoom Link:
-                        <v-btn
-                          class="white--text ml-8"
-                          color="accent"
-                          medium
-                          :href="playdate.link"
-                        >
-                          Join Play date
-                        </v-btn>
-                      </span>
+
+                  <v-row class="mt-5" no-gutters>
+                    <v-col cols="6">
+                      <span class="subheader">Zoom Link: </span>
+                    </v-col>
+                    <v-col cols="6">
+                      <v-btn
+                        class="white--text"
+                        color="accent"
+                        medium
+                        :href="playdate.link"
+                      >
+                        Join Play date
+                      </v-btn>
                     </v-col>
                   </v-row>
                 </v-col>
@@ -135,7 +134,8 @@
                             />
 
                             <span class="pt-1">
-                              <strong class="pl-2"> {{ show.children.fullName }}</strong>
+                              <strong class="pl-2">
+                                {{ show.children.fullName }}</strong>
                             </span>
                           </v-row>
                         </v-col>
@@ -190,6 +190,7 @@ export default {
     ages: null,
     menuStart: false,
     specialistName: null,
+    index: null,
     playdatesChildrens: [],
     menuEnd: false,
     playdate: generatePlaydateTemplate()
