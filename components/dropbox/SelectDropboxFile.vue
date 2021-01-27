@@ -14,7 +14,7 @@
 import { mapActions } from 'vuex'
 import props from '../../plugins/globalPartials/file-uploader/props'
 export default {
-  name: 'SelectFile',
+  name: 'SelectDropboxFile',
 
   mixins: [props],
 
@@ -83,7 +83,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('upload', ['doUpload', 'doMultiPartBackgroundUpload']),
+    ...mapActions('upload', ['doUpload', 'doMultiPartDropBoxUpload']),
 
     dropboxIconClicked () {
       const options = {
@@ -162,17 +162,15 @@ export default {
     },
 
     async handleMultiPartBackgroundFileUpload (meta = {}, callback = () => {}) {
-      console.log('aqui vide file--', this.file)
       if (this.file) {
-        const result = await this.doMultiPartBackgroundUpload({
-          type: `upload-${this.mode}`,
-          mode: this.mode,
+        const result = await this.doMultiPartDropBoxUpload({
+          name: this.file.name,
+          link: this.file.link,
+          size: this.file.size,
+          type: `upload-${this.mode}-dropbox`,
           path: this.path,
-          file: this.file,
-          callback,
-          meta
+          mode: this.mode
         })
-
         return result
       }
       return false

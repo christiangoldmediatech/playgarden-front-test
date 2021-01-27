@@ -118,7 +118,6 @@ export default {
     },
 
     async handleMultiPartBackgroundFileUpload (meta = {}, callback = () => {}) {
-      console.log('file--', this.file)
       if (this.file) {
         const result = await this.doMultiPartBackgroundUpload({
           type: `upload-${this.mode}`,

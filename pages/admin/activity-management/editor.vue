@@ -165,7 +165,7 @@
                 </v-row>
 
                 <v-row>
-                  <select-file
+                  <select-dropbox-file
                     ref="fileUploaderDropBox"
                     v-model="file"
                     mode="video"
@@ -238,7 +238,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 // import PgInlineVideoPlayer from '@/components/pg-video-js-player/PgInlineVideoPlayer.vue'
-import SelectFile from '@/components/dropbox/SelectFile.vue'
+import SelectDropboxFile from '@/components/dropbox/SelectDropboxFile.vue'
 
 export default {
   name: 'Editor',
@@ -246,7 +246,7 @@ export default {
   layout: 'admin',
 
   components: {
-    SelectFile
+    SelectDropboxFile
   //   PgInlineVideoPlayer
   },
 
@@ -413,7 +413,6 @@ export default {
         if (!this.fileDropBox) {
           data = await this.$refs.fileUploader.handleUpload()
         } else {
-          console.log('guardand archivo dropBox')
           data = await this.$refs.fileUploaderDropBox.handleUpload()
         }
         if (data) {
@@ -421,18 +420,16 @@ export default {
         }
         const activity = this.activity
         if (id === null) {
-          // const response = await this.createActivity(activity)
-          // id = response.id
-          id = null
+          const response = await this.createActivity(activity)
+          id = response.id
         } else {
-          console.log('activity', activity)
-          // await this.updateActivity({ id, data: activity })
+          await this.updateActivity({ id, data: activity })
         }
       } catch (err) {
         this.loading = false
-        // return
+        return
       } finally {
-        // this.$router.push({ name: 'admin-activity-management' })
+        this.$router.push({ name: 'admin-activity-management' })
       }
     }
   }
