@@ -7,6 +7,7 @@
             {{ title }}
             <v-spacer />
             <v-btn
+              v-if="!newLessonActivity"
               class="text-none"
               color="accent darken-1"
               depressed
@@ -232,6 +233,10 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'Editor',
 
+  props: {
+    newLessonActivity: Boolean
+  },
+
   layout: 'admin',
 
   // components: {
@@ -372,7 +377,7 @@ export default {
             resolve()
             return
           }
-          const elapsed = ((new Date().getTime()) - start)
+          const elapsed = new Date().getTime() - start
           if (elapsed > 30000) {
             window.clearInterval(interval)
             reject(new Error('Player loading timed out'))
@@ -400,13 +405,19 @@ export default {
           const response = await this.createActivity(activity)
           id = response.id
         } else {
-          await this.updateActivity({ id, data: activity })
+          await this.updateActivity({
+            id,
+            data: activity
+          })
         }
       } catch (err) {
         this.loading = false
-        return
       } finally {
-        this.$router.push({ name: 'admin-activity-management' })
+        if (this.newLessonActivity === true) {
+          this.$nuxt.$emit('lesson-step-five')
+        } else {
+          await this.$router.push({ name: 'admin-activity-management' })
+        }
       }
     }
   }

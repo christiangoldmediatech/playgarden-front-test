@@ -7,6 +7,28 @@
             <p class="primary--text text-h5">
               Lesson activities
             </p>
+
+            <v-spacer />
+
+            <v-btn
+              class="mr-2 text-none"
+              color="primary darken-1"
+              dark
+              :icon="$vuetify.breakpoint.xs"
+              @click="openModal({})"
+            >
+              <v-icon class="hidden-sm-and-up">
+                mdi-plus-circle
+              </v-icon>
+
+              <v-icon class="hidden-xs-only" small>
+                mdi-plus
+              </v-icon>
+
+              <span class="hidden-xs-only white--text">
+                Add new activity
+              </span>
+            </v-btn>
           </v-card-title>
         </v-card>
       </v-col>
@@ -24,7 +46,7 @@
             <v-card>
               <v-list-item class="activities-selected">
                 <v-list-item-avatar @click="loadDataSelected(data)">
-                  <v-img :src="data.activity.activityType.icon" height="200" />
+                  <v-img :src="data.activity.activityType.icon" />
                 </v-list-item-avatar>
 
                 <v-list-item-content @click="loadDataSelected(data)">
@@ -65,8 +87,19 @@
               @update:page="pagination.page = $event"
             >
               <template v-slot:item.actions="{ item }">
-                <grades-btn :data-item="item" :entity-type="entityType" :lesson-id="lessonId" />
-                <v-icon color="#81A1F7" dense @click="itemSelected=item; dialogAssociateActivity=true;">
+                <grades-btn
+                  :data-item="item"
+                  :entity-type="entityType"
+                  :lesson-id="lessonId"
+                />
+                <v-icon
+                  color="#81A1F7"
+                  dense
+                  @click="
+                    itemSelected = item;
+                    dialogAssociateActivity = true;
+                  "
+                >
                   mdi-content-save-outline
                 </v-icon>
               </template>
@@ -101,8 +134,8 @@
                           {
                             'accent--text text--darken-1':
                               props.pagination.page === i,
-                            clickable: props.pagination.page !== i,
-                          },
+                            clickable: props.pagination.page !== i
+                          }
                         ]"
                         @click.stop="pagination.page = i"
                       >
@@ -134,6 +167,28 @@
             </v-data-table>
           </v-card-text>
         </v-card>
+        <v-dialog
+          v-model="showModal"
+          content-class="white"
+          :fullscreen="$vuetify.breakpoint.smAndDown"
+          max-width="1000"
+          persistent
+        >
+          <v-col cols="12">
+            <v-row class="pr-3" justify="end">
+              <v-btn icon @click.stop="showModal = false">
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
+            </v-row>
+
+            <editor
+              v-if="showModal"
+              :new-lesson-activity="true"
+              :lesson-id="lessonId"
+              :resource="resourceSelected"
+            />
+          </v-col>
+        </v-dialog>
 
         <v-row class="mb-6" justify="center">
           <v-btn
@@ -145,8 +200,8 @@
               name: 'admin-curriculum-management-editor',
               query: {
                 step: 4,
-                lessonId,
-              },
+                lessonId
+              }
             }"
             x-large
           >
@@ -166,6 +221,7 @@
         </v-row>
       </v-col>
     </v-row>
+
     <validation-observer ref="obs" v-slot="{ invalid, passes }">
       <v-dialog
         v-model="dialogAssociateActivity"
@@ -175,14 +231,24 @@
         scrollable
       >
         <v-card v-if="dialogAssociateActivity">
-          <v-toolbar class="flex-grow-0" color="primary darken-1" dark dense flat>
+          <v-toolbar
+            class="flex-grow-0"
+            color="primary darken-1"
+            dark
+            dense
+            flat
+          >
             <v-toolbar-title class="white--text">
               {{ itemSelected.videos.name }}
             </v-toolbar-title>
 
             <v-spacer />
 
-            <v-btn :disabled="loading" icon @click.stop="dialogAssociateActivity = false">
+            <v-btn
+              :disabled="loading"
+              icon
+              @click.stop="dialogAssociateActivity = false"
+            >
               <v-icon>
                 mdi-close
               </v-icon>
@@ -191,7 +257,10 @@
 
           <v-card-text>
             <v-container>
-              <v-form ref="activityTypeForm" @submit.prevent="passes(associateActivity)">
+              <v-form
+                ref="activityTypeForm"
+                @submit.prevent="passes(associateActivity)"
+              >
                 <validation-provider
                   v-slot="{ errors }"
                   name="Order"
@@ -244,9 +313,16 @@
 import { mapActions } from 'vuex'
 
 import paginable from '@/utils/mixins/paginable'
+import GradesBtn from '@/components/admin/grades/GradesBtn.vue'
+import editor from '@/pages/admin/activity-management/editor.vue'
 
 export default {
   name: 'StepFive',
+
+  components: {
+    editor,
+    GradesBtn
+  },
 
   mixins: [paginable],
 
@@ -259,6 +335,8 @@ export default {
   },
 
   data: () => ({
+    showModal: false,
+    resourceSelected: {},
     lesson: {},
     loading: false,
     activities: [],
@@ -308,6 +386,10 @@ export default {
       await this.fetchActivities()
       await this.getActivitiesLesson()
     } catch (e) {}
+    this.$nuxt.$on('lesson-step-five', () => {
+      this.showModal = false
+      this.fetchActivities()
+    })
   },
 
   methods: {
@@ -321,7 +403,10 @@ export default {
       'deleteActivityByLessonId',
       'fetchActivitiesByLessonId'
     ]),
-
+    openModal (resource = {}) {
+      this.resourceSelected = resource
+      this.showModal = true
+    },
     onSubmit () {
       this.fetchActivities()
     },
