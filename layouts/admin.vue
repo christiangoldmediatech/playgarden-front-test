@@ -274,7 +274,7 @@ export default {
         {
           icon: 'mdi-television-play',
           title: 'Agenda and Playdates',
-          route: '/admin/agenda'
+          route: '/admin/play-dates'
         }
       ]
     }

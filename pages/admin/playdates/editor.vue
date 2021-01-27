@@ -42,8 +42,9 @@
                           rules="required"
                         >
                           <pg-text-field
-                            v-model="agenda.name"
+                            v-model="playdate.name"
                             :error-messages="errors"
+                            placeholder="Name of the playdate"
                             solo
                           />
                         </validation-provider>
@@ -62,9 +63,10 @@
                           rules="required"
                         >
                           <pg-textarea
-                            v-model="agenda.description"
+                            v-model="playdate.description"
                             rows="6"
                             :error-messages="errors"
+                            placeholder="Description of the playdate"
                             solo
                           />
                         </validation-provider>
@@ -82,7 +84,7 @@
                           v-model="menuStart"
                           :close-on-content-click="false"
                           :nudge-right="40"
-                          :return-value.sync="agenda.start"
+                          :return-value.sync="playdate.start"
                           transition="scale-transition"
                           offset-y
                           max-width="290px"
@@ -95,10 +97,11 @@
                               rules="required"
                             >
                               <pg-text-field
-                                v-model="agenda.start"
+                                v-model="playdate.start"
                                 label="Time start"
                                 readonly
                                 :error-messages="errors"
+                                placeholder="Time playdate starts"
                                 v-bind="attrs"
                                 solo
                                 v-on="on"
@@ -107,11 +110,58 @@
                           </template>
                           <v-time-picker
                             v-if="menuStart"
-                            v-model="agenda.start"
-                            :max="agenda.end"
+                            v-model="playdate.start"
+                            :max="playdate.end"
                             format="24hr"
                             full-width
-                            @click:minute="$refs.menu.save(agenda.start)"
+                            @click:minute="$refs.menu.save(playdate.start)"
+                          />
+                        </v-menu>
+                      </v-col>
+                    </v-row>
+
+                    <v-row>
+                      <v-col class="text-md-right" cols="12" sm="3">
+                        <span class="subheader">End:</span>
+                      </v-col>
+
+                      <v-col>
+                        <v-menu
+                          ref="menu2"
+                          v-model="menuEnd"
+                          :close-on-content-click="false"
+                          :nudge-right="40"
+                          :return-value.sync="playdate.end"
+                          transition="scale-transition"
+                          offset-y
+                          max-width="290px"
+                          min-width="290px"
+                        >
+                          <template v-slot:activator="{ on, attrs }">
+                            <validation-provider
+                              v-slot="{ errors }"
+                              name="Time start"
+                              rules="required"
+                            >
+                              <pg-text-field
+                                v-model="playdate.end"
+                                label="Time end"
+                                readonly
+                                :error-messages="errors"
+                                placeholder="Time end"
+                                v-bind="attrs"
+                                solo
+                                v-on="on"
+                              />
+                            </validation-provider>
+                          </template>
+                          <v-time-picker
+                            v-if="menuEnd"
+                            v-model="playdate.end"
+                            :min="playdate.start"
+                            format="24hr"
+                            full-width
+                            @click:minute="$refs.menu2.save(playdate.end)"
                           />
                         </v-menu>
                       </v-col>
@@ -132,10 +182,30 @@
                           rules="required"
                         >
                           <pg-select
-                            v-model="agenda.day"
+                            v-model="playdate.day"
                             :error-messages="errors"
                             placeholder="Select a Day"
                             :items="days"
+                            solo
+                          />
+                        </validation-provider>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col class="text-md-right" cols="12" sm="3">
+                        <span class="subheader">Ages:</span>
+                      </v-col>
+
+                      <v-col>
+                        <validation-provider
+                          v-slot="{ errors }"
+                          name="Ages"
+                          rules="required"
+                        >
+                          <pg-text-field
+                            v-model="playdate.ages"
+                            :error-messages="errors"
+                            placeholder="Select ages"
                             solo
                           />
                         </validation-provider>
@@ -153,8 +223,9 @@
                           rules="required"
                         >
                           <pg-text-field
-                            v-model="agenda.spots"
+                            v-model="playdate.spots"
                             :error-messages="errors"
+                            placeholder="Number of sports available"
                             solo
                           />
                         </validation-provider>
@@ -172,8 +243,9 @@
                           rules="required"
                         >
                           <pg-text-field
-                            v-model="agenda.duration"
+                            v-model="playdate.duration"
                             :error-messages="errors"
+                            placeholder="Duration in minutes of the playdate"
                             solo
                           />
                         </validation-provider>
@@ -182,47 +254,22 @@
 
                     <v-row>
                       <v-col class="text-md-right" cols="12" sm="3">
-                        <span class="subheader">End:</span>
+                        <span class="subheader">Link:</span>
                       </v-col>
 
                       <v-col>
-                        <v-menu
-                          ref="menu2"
-                          v-model="menuEnd"
-                          :close-on-content-click="false"
-                          :nudge-right="40"
-                          :return-value.sync="agenda.end"
-                          transition="scale-transition"
-                          offset-y
-                          max-width="290px"
-                          min-width="290px"
+                        <validation-provider
+                          v-slot="{ errors }"
+                          name="Link"
+                          rules="required"
                         >
-                          <template v-slot:activator="{ on, attrs }">
-                            <validation-provider
-                              v-slot="{ errors }"
-                              name="Time start"
-                              rules="required"
-                            >
-                              <pg-text-field
-                                v-model="agenda.end"
-                                label="Time end"
-                                readonly
-                                :error-messages="errors"
-                                v-bind="attrs"
-                                solo
-                                v-on="on"
-                              />
-                            </validation-provider>
-                          </template>
-                          <v-time-picker
-                            v-if="menuEnd"
-                            v-model="agenda.end"
-                            :min="agenda.start"
-                            format="24hr"
-                            full-width
-                            @click:minute="$refs.menu2.save(agenda.end)"
+                          <pg-text-field
+                            v-model="playdate.link"
+                            :error-messages="errors"
+                            placeholder="Zoom link for the playdate"
+                            solo
                           />
-                        </v-menu>
+                        </validation-provider>
                       </v-col>
                     </v-row>
                   </v-col>
@@ -254,16 +301,18 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 
-function generateAgendaTemplate () {
+function generatePlayDateTemplate () {
   return {
     id: null,
     name: '',
     description: '',
     duration: '',
     day: null,
+    ages: null,
     start: null,
     end: null,
     spots: null,
+    link: null,
     specialistId: null
   }
 }
@@ -273,19 +322,26 @@ export default {
 
   layout: 'admin',
 
-  data: vm => (
-    {
-      specialistId: vm.$route.query.specialistId
-        ? parseInt(vm.$route.query.specialistId)
-        : null,
-      loading: true,
-      time: null,
-      menuStart: false,
-      menuEnd: false,
-      days: ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'],
-      agenda: generateAgendaTemplate()
-    }
-  ),
+  data: vm => ({
+    specialistId: vm.$route.query.specialistId
+      ? parseInt(vm.$route.query.specialistId)
+      : null,
+    loading: true,
+    time: null,
+    ages: ['1', '2', '3', '4'],
+    menuStart: false,
+    menuEnd: false,
+    days: [
+      'MONDAY',
+      'TUESDAY',
+      'WEDNESDAY',
+      'THURSDAY',
+      'FRIDAY',
+      'SATURDAY',
+      'SUNDAY'
+    ],
+    playdate: generatePlayDateTemplate()
+  }),
 
   computed: {
     ...mapGetters('auth', {
@@ -294,7 +350,7 @@ export default {
 
     getUrlBack () {
       const url = {
-        name: 'admin-agenda'
+        name: 'admin-playdates'
       }
       if (this.userInfo.role.name === 'SUPER_ADMINISTRATORS') {
         url.query = { specialistId: this.specialistId }
@@ -307,7 +363,7 @@ export default {
     },
 
     title () {
-      return this.id ? 'Edit Agenda' : 'New Agenda'
+      return this.id ? 'Edit Play date' : 'New Play date'
     },
 
     activityTypes () {
@@ -323,32 +379,37 @@ export default {
   async created () {
     const promises = []
     this.loading = true
-    this.agenda.specialistId = (this.userInfo.role.name === 'SPECIALISTS') ? this.userInfo.specialists.id : this.specialistId
+    this.playdate.specialistId =
+      this.userInfo.role.name === 'SPECIALISTS'
+        ? this.userInfo.specialists.id
+        : this.specialistId
     if (this.id) {
-      promises.push(this.getAgendaById(this.id))
+      promises.push(this.getPlaydatesById(this.id))
     }
 
     const results = await Promise.all(promises)
     if (results[0]) {
       const data = results[0]
-      this.agenda.id = data.id
-      this.agenda.name = data.name
-      this.agenda.description = data.description
-      this.agenda.duration = data.duration
-      this.agenda.day = data.day
-      this.agenda.start = data.start
-      this.agenda.end = data.end
-      this.agenda.spots = data.spots
-      this.agenda.specialistId = data.specialistUser.id
+      this.playdate.id = data.id
+      this.playdate.name = data.name
+      this.playdate.ages = data.ages
+      this.playdate.description = data.description
+      this.playdate.duration = data.duration
+      this.playdate.day = data.day
+      this.playdate.start = data.start
+      this.playdate.end = data.end
+      this.playdate.spots = data.spots
+      this.playdate.link = data.link
+      this.playdate.specialistId = data.specialistUser.id
       this.specialistId = data.specialistUser.id
     }
   },
 
   methods: {
-    ...mapActions('agendas', [
-      'createAgenda',
-      'updateAgenda',
-      'getAgendaById'
+    ...mapActions('playdate', [
+      'createPlaydate',
+      'updatePlaydate',
+      'getPlaydatesById'
     ]),
 
     async save () {
@@ -356,18 +417,17 @@ export default {
       let id = this.id
 
       try {
-        const agenda = this.agenda
+        const playdate = this.playdate
         if (id === null) {
-          const response = await this.createAgenda(agenda)
+          const response = await this.createPlaydate(playdate)
           id = response.id
         } else {
-          await this.updateAgenda({ id, data: agenda })
+          await this.updatePlaydate({ id, data: playdate })
         }
       } catch (err) {
         this.loading = false
-        return
       } finally {
-        this.$router.push(this.getUrlBack)
+        await this.$router.push(this.getUrlBack)
       }
     }
   }
