@@ -50,12 +50,14 @@
               @refresh="refresh(true)"
               @update:items-per-page="setLimit"
               @update:page="page = $event"
-              @edit-item="$router.push({
-                name: 'admin-user-manager-specialists-editor',
-                query: { id: $event.id }
-              })"
+              @edit-item="
+                $router.push({
+                  name: 'admin-user-manager-specialists-editor',
+                  query: { id: $event.id }
+                })
+              "
               @remove-item="remove"
-              @action-item="agendas"
+              @action-item="playDates"
             >
               <template v-slot:[`top.prepend`]>
                 <v-col class="fkex-shrink-1 flex-grow-0">
@@ -264,9 +266,9 @@ export default {
       })
     },
 
-    agendas (item) {
+    playDates (item) {
       this.$router.push({
-        name: 'admin-agenda',
+        name: 'admin-playdates',
         query: { specialistId: item.id }
       })
     }

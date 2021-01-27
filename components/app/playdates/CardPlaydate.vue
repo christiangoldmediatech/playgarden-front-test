@@ -9,7 +9,7 @@
       <v-col md="5" cols="12" class="align-self-center">
         <v-row justify="center" no-gutters>
           <v-col class="py-2">
-            <div no-gutters>
+            <div>
               <v-img
                 alt="Educational Playdates"
                 contain
@@ -59,7 +59,6 @@
                   JOIN YOUR FRIENDS!
 
                   <v-row
-                    v-if="!finding"
                     align-content="center"
                     justify="center"
                     justify-md="start"
@@ -81,11 +80,11 @@
                 </v-list-item-subtitle>
 
                 <v-list-item-subtitle class="py-1">
-                  Ages recommended:<b> {{ playdate.ages || 'All ages' }}</b>
+                  Ages recommended:<b> {{ playdate.ages || "All ages" }}</b>
                 </v-list-item-subtitle>
 
                 <v-list-item-subtitle class="py-1">
-                  Duration: <b>{{ duration || '30' }} minutes</b>
+                  Duration: <b>{{ duration || "30" }} minutes</b>
                 </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
@@ -187,12 +186,7 @@
                       <v-list-item-subtitle class="pt-3">
                         JOIN YOUR FRIENDS!
 
-                        <v-row
-                          v-if="!finding"
-                          justify-md="start"
-                          no-gutters
-                          class="pt-2"
-                        >
+                        <v-row justify-md="start" no-gutters class="pt-2">
                           <v-img
                             v-for="(bImage, indexBI) in backpackImages"
                             :key="indexBI"
@@ -202,7 +196,7 @@
                           />
 
                           <span class="ml-1">
-                            {{ playdate.backpackImages }}/{{ playdate.spots }}
+                            {{ backpackImages.length }}/{{ playdate.spots }}
                           </span>
                         </v-row>
                       </v-list-item-subtitle>
@@ -217,7 +211,6 @@
 
                       <v-list-item-subtitle v-if="!finding" class="pt-5">
                         <h5>Who is going?</h5>
-
                         <child-select :value="child.id" hide-details disabled />
                       </v-list-item-subtitle>
                     </v-list-item-content>
@@ -239,6 +232,17 @@
                   </v-btn>
 
                   <pg-ics-calendar :entry="icsEntry" />
+
+                  <v-btn
+                    v-if="!finding"
+                    color="red"
+                    block
+                    x-large
+                    text
+                    @click="remove"
+                  >
+                    DELETE PLAYDATE
+                  </v-btn>
                 </v-col>
               </v-row>
             </v-card>
@@ -253,6 +257,7 @@
 import dayjs from 'dayjs'
 import { get } from 'lodash'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
+import { mapActions } from 'vuex'
 import utc from 'dayjs/plugin/utc'
 
 import ChildSelect from '@/components/app/ChildSelect.vue'
@@ -280,7 +285,8 @@ export default {
 
   data: () => ({
     dialog: false,
-
+    name: null,
+    backpack: null,
     today: new Date().getUTCDay(),
 
     week: {
@@ -294,9 +300,7 @@ export default {
 
   computed: {
     backpackImages () {
-      return get(this.playdate, 'backpackImages', []).map(
-        ({ image }) => image
-      )
+      return get(this.playdate, 'backpackImages', []).map(({ image }) => image)
     },
 
     child () {
@@ -327,7 +331,7 @@ export default {
     },
 
     hasBackpackImages () {
-      return Boolean(this.playdate.backpackChildrenImages)
+      return Boolean(this.playdate.children.backpack)
     },
 
     hasChild () {
@@ -385,6 +389,25 @@ export default {
         start,
         end
       }
+    }
+  },
+
+  methods: {
+    ...mapActions('playdates', ['deleteChildren']),
+
+    remove () {
+      this.$nuxt.$emit('open-prompt', {
+        title: 'Delete Play date?',
+        message: `Are you sure you wish to delete '${this.child.firstName}' Play date?`,
+        action: async () => {
+          await this.deleteChildren({
+            playdateId: this.playdate.id,
+            childId: this.child.id
+          })
+
+          this.$emit('deleted')
+        }
+      })
     }
   }
 }
