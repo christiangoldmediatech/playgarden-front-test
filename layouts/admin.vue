@@ -260,6 +260,10 @@ export default {
             {
               title: 'Specialists',
               route: 'specialists-management'
+            },
+            {
+              title: 'Parents',
+              route: 'parents-list'
             }
           ]
         },
