@@ -208,6 +208,7 @@ export default {
       release: process.env.SENTRY_RELEASE
     },
     publishRelease: true,
+    sourceMapStyle: 'hidden-source-map',
     tracing: true,
     integrations: [
       new Integrations.BrowserTracing()
