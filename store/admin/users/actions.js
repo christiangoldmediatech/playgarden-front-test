@@ -24,7 +24,7 @@ export default {
   },
 
   async exportParents (ctx) {
-    await this.$axios.$post('/users/export-parents')
+    await this.$axios.get('/billing/export')
   },
 
   async update (ctx, { id, data }) {

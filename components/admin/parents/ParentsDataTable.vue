@@ -23,7 +23,7 @@
                 mdi-plus
               </v-icon>
 
-              <span class="hidden-xs-only white--text">Export all parents</span>
+              <span class="hidden-xs-only white--text">Export</span>
             </v-btn>
           </v-card-title>
         </v-card>
@@ -234,8 +234,7 @@ export default {
     },
 
     async refresh (clear = false) {
-      await this.getRoles('PARENTS')
-      const id = this.roles[0].id
+      const id = 3
       this.loading = true
       const params = { limit: this.limit, page: this.page, roleId: id }
 
