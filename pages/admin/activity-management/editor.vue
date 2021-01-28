@@ -211,6 +211,15 @@
                     </validation-provider>
                   </v-col>
                 </v-row>
+                <v-row>
+                  <select-dropbox-file
+                    ref="fileImageUploaderDropBox"
+                    v-model="thumbnail"
+                    mode="image"
+                    multi-part
+                    path="activity-thumbnail"
+                    @sendFile="setFileImageDropBox" />
+                </v-row>
               </v-form>
             </v-card-text>
 
@@ -264,6 +273,7 @@ export default {
       video: null,
       player: null,
       fileDropBox: null,
+      fileImageDropBox: null,
       showSelected: true,
       activity: {
         featured: false,
@@ -406,12 +416,23 @@ export default {
       this.fileDropBox = file
     },
 
+    setFileImageDropBox (file) {
+      this.thumbnail = file
+      this.fileImageDropBox = file
+    },
+
     async save () {
       this.loading = true
       let id = this.id
 
       try {
-        const thumbnail = await this.$refs.fileUploader2.handleUpload()
+        let thumbnail
+        if (!this.fileImageDropBox) {
+          thumbnail = await this.$refs.fileUploader2.handleUpload()
+        } else {
+          const { filePath } = await this.$refs.fileImageUploaderDropBox.handleUpload()
+          thumbnail = filePath
+        }
         if (thumbnail) {
           this.activity.thumbnail = thumbnail
         }

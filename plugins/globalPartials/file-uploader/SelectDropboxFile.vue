@@ -6,7 +6,7 @@
       src="@/assets/svg/dropbox.svg"
       height="40"
     >
-    <span class="text-transform-none">Open dropbox</span>
+    <span class="text-transform-none">Open DropBox</span>
   </v-btn>
 </template>
 
