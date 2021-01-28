@@ -13,7 +13,7 @@
               dark
               :icon="$vuetify.breakpoint.xs"
               nuxt
-              :to="{ name: 'admin-user-manager-specialists-editor' }"
+              @click.stop="exportList"
             >
               <v-icon class="hidden-sm-and-up">
                 mdi-plus-circle
@@ -56,8 +56,6 @@
                   query: { id: $event.id }
                 })
               "
-              @remove-item="remove"
-              @action-item="selectedParent"
             >
               <template v-slot:[`top.prepend`]>
                 <v-col class="fkex-shrink-1 flex-grow-0">
@@ -254,18 +252,9 @@ export default {
       this.loading = false
     },
 
-    remove ({ id, user }) {
-      this.$nuxt.$emit('open-prompt', {
-        title: 'Delete user?',
-        message: `Are you sure you wish to delete user '${user.firstName} ${user.lastName}' (${user.email})?`,
-        action: async () => {
-          await this.deleteSpecialists(id)
-          this.refresh()
-        }
-      })
-    },
-
-    selectedParent (item) {}
+    exportList () {
+      console.log('clik--')
+    }
   }
 }
 </script>
