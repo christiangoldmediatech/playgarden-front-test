@@ -71,13 +71,13 @@ export default {
       let extensions = []
       switch (this.mode) {
         case 'document':
-          extensions = ['.pdf', '.doc', '.docx']
+          extensions = ['.pdf', '.doc', '.docx', '.xlsx', '.pptx']
           break
         case 'video':
           extensions = ['.mp4', '.mov']
           break
         case 'image':
-          extensions = ['.jpg', '.jpeg', '.png']
+          extensions = ['.jpg', '.jpeg', '.png', '.gif']
           break
       }
       return extensions
