@@ -55,7 +55,7 @@
         cols="12"
         md="6"
       >
-        <card-playdate :playdate="playdate" />
+        <card-playdate :playdate="playdate" @deleted="getActivePlaydates" />
       </v-col>
     </v-row>
 
@@ -239,20 +239,20 @@ export default {
 
     playdatesComputed () {
       return this.playdates
+        .filter(item => (item.playdates || []).length)
         .flatMap(({ backpackChildrenImages = [], children, playdates }) => {
-          return playdates.map(({ playdate }, indexP) => {
+          return playdates.map(({ playdate, backpackImages }, indexP) => {
             if (!playdate) {
               return null
             }
 
             return {
-              backpackChildrenImages: backpackChildrenImages[indexP] || [],
+              backpackImages,
               children,
               ...playdate
             }
           })
         })
-        .filter(item => item)
     },
 
     hasPlaydates () {

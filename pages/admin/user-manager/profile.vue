@@ -100,6 +100,23 @@
                 </div>
               </div>
 
+              <div class="user-general-table-row">
+                <div class="user-general-table-row-divider">
+                  <div class="user-general-field">
+                    Status
+                  </div>
+                  <div class="user-general-value text-capitalize">
+                    {{ user.statusType.toLowerCase() }}
+                  </div>
+                </div>
+                <div class="user-general-field">
+                  Register Step
+                </div>
+                <div class="user-general-value text-capitalize">
+                  {{ user.registerStepType || 'N/A' }}
+                </div>
+              </div>
+
               <template v-if="role === 'parent'">
                 <div class="user-general-table-row">
                   <div class="user-general-table-row-divider">
@@ -126,10 +143,10 @@
                 <div class="user-general-table-row">
                   <div class="user-general-table-row-divider">
                     <div class="user-general-field">
-                      Membership fee
+                      Stripe Status
                     </div>
-                    <div class="user-general-value">
-                      {{ plan.fee }}
+                    <div class="user-general-value text-capitalize">
+                      {{ billing.stripeStatus }}
                     </div>
                   </div>
                   <div class="user-general-field">
@@ -146,11 +163,46 @@
                 </div>
 
                 <div class="user-general-table-row">
+                  <div class="user-general-table-row-divider">
+                    <div class="user-general-field">
+                      Membership fee
+                    </div>
+                    <div class="user-general-value">
+                      {{ plan.fee }}
+                    </div>
+                  </div>
                   <div class="user-general-field">
-                    Billing date
+                    Coupon code
                   </div>
                   <div class="user-general-value">
-                    {{ plan.billingDate }}
+                    {{ discount.code }}
+                  </div>
+                </div>
+
+                <div class="user-general-table-row">
+                  <div class="user-general-table-row-divider">
+                    <div class="user-general-field">
+                      Billing date
+                    </div>
+                    <div class="user-general-value">
+                      {{ plan.billingDate }}
+                    </div>
+                  </div>
+                  <div class="user-general-field">
+                    Discount
+                  </div>
+                  <div class="user-general-value">
+                    {{ discount.percent }}
+                  </div>
+                </div>
+                <div class="user-general-table-row" v-if="billing.stripeStatus === 'trialing'">
+                  <div class="user-general-table-row-divider">
+                    <div class="user-general-field">
+                      Trial ends
+                    </div>
+                    <div class="user-general-value">
+                      {{ plan.trialEnd }}
+                    </div>
                   </div>
                 </div>
               </template>
@@ -291,11 +343,25 @@ export default {
       return null
     },
 
+    discount () {
+      const discount = {
+        percent: '0%',
+        code: 'N/A'
+      }
+      if (this.billing && this.billing.subscriptionData && this.billing.subscriptionData.discount && this.billing.subscriptionData.discount.coupon) {
+        const coupon = this.billing.subscriptionData.discount.coupon
+        discount.percent = `${coupon.percent_off} %`
+        discount.code = coupon.name
+      }
+      return discount
+    },
+
     plan () {
       const plan = {
         name: 'N/A',
         fee: 'N/A',
-        billingDate: 'N/A'
+        billingDate: 'N/A',
+        trialEnd: 'N/A'
       }
 
       if (this.user && this.user.planSelected && this.billing) {
@@ -318,6 +384,13 @@ export default {
           const month = nextBillingDate.toLocaleString('default', { month: 'long' })
 
           plan.billingDate = `${month} ${nextBillingDate.getDate()}, ${nextBillingDate.getFullYear()}`
+
+          if (this.billing.subscriptionData.status === 'trialing') {
+            const trialEndsDate = new Date(this.billing.subscriptionData.trial_end * 1000)
+            const monthTrial = trialEndsDate.toLocaleString('default', { month: 'long' })
+
+            plan.trialEnd = `${monthTrial} ${trialEndsDate.getDate()}, ${trialEndsDate.getFullYear()}`
+          }
         }
       }
 

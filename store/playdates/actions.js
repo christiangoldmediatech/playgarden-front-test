@@ -21,5 +21,9 @@ export default {
 
   getChildrenInfo () {
     return this.$axios.$get('/playdates/children')
+  },
+
+  deleteChildren (_, { playdateId, childId }) {
+    return this.$axios.$delete(`/playdates/${playdateId}/remove/children/${childId}`)
   }
 }

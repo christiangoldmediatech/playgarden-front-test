@@ -1,0 +1,39 @@
+on:
+  push:
+    branches:
+      - master
+      - staging
+      - develop
+  release:
+    types: [created, edited]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Set variables
+      id: variables
+      run: |
+        echo "::set-output name=tagname::$(date +'%Y%m%d-%H%M')"
+        BRANCH=$(echo ${GITHUB_REF#refs/heads/})
+        if [ "$BRANCH" = "master" ]
+        then
+          echo "::set-output name=env_name::production"
+        else
+          echo "::set-output name=env_name::$BRANCH"
+        fi
+      env:
+        SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+    - run: yarn
+    - run: yarn build
+    - name: Create Sentry release
+      uses: getsentry/action-release@v1
+      env:
+        SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+        SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+      with:
+        environment: ${{ steps.variables.outputs.env_name }}
+        sourcemaps: './.nuxt'
+        version: ${{ steps.variables.outputs.tagname }}

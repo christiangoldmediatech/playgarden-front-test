@@ -4,159 +4,159 @@
       <p class="font-weight-bold">
         MEMBERSHIP
       </p>
-
-      <v-row v-if="billing.status === 'trialing'" no-gutters class="mb-3">
-        <v-col cols="12" md="7" lg="7">
-          <span>
-            Free trial period ends
-          </span>
-        </v-col>
-
-        <v-col cols="12" md="5" lg="5" class="pr-3 text-left">
-          <b>{{ billing.trialEndDate }}</b>
-        </v-col>
-      </v-row>
-      <v-row v-else no-gutters class="mb-3">
-        <v-col cols="12" md="7" lg="7">
-          <span>
-            Your next billing date is
-          </span>
-        </v-col>
-
-        <v-col cols="12" md="5" lg="5" class="pr-3 text-left">
-          <div>
+      <div v-if="hasMembership">
+        <v-row v-if="billing.status === 'trialing'" no-gutters class="mb-3">
+          <v-col cols="12" md="7" lg="7">
             <span>
-              <b>{{ billing.nextBillingDate }}</b>
+              Free trial period ends
             </span>
-          </div>
-        </v-col>
-      </v-row>
+          </v-col>
 
-      <v-row no-gutters class="mb-3">
-        <v-col cols="12" md="7">
-          <span> Your {{ membershipInterval }} membership fee is </span>
-        </v-col>
-
-        <v-col cols="12" md="5" class="pr-3 text-left">
-          <div>
+          <v-col cols="12" md="5" lg="5" class="pr-3 text-left">
+            <b>{{ billing.trialEndDate }}</b>
+          </v-col>
+        </v-row>
+        <v-row v-else no-gutters class="mb-3">
+          <v-col cols="12" md="7" lg="7">
             <span>
-              <b>{{
-                billing.planAmount.toLocaleString("en-US", {
-                  style: "currency",
-                  currency: "USD",
-                })
-              }}</b>
+              Your next billing date is
             </span>
-          </div>
-        </v-col>
-      </v-row>
-      <v-row v-if="billing.planAmountDiscount" no-gutters>
-        <v-col
-          cols="12"
-          md="7"
-          :class="
-            !$vuetify.breakpoint.mobile ? 'text-right discount-label' : ''
-          "
-        >
-          <span>
-            Discount
-          </span>
-        </v-col>
+          </v-col>
 
-        <v-col cols="12" md="5" class="pr-3 text-left">
-          <div>
-            <span v-if="billing.percentOff">
-              <b>- {{ billing.percentOff }} %</b>
-            </span>
-            <span v-if="billing.amountOff">
-              <b>{{
-                billing.amountOff.toLocaleString("en-US", {
-                  style: "currency",
-                  currency: "USD",
-                })
-              }}</b>
-            </span>
-          </div>
-        </v-col>
-      </v-row>
+          <v-col cols="12" md="5" lg="5" class="pr-3 text-left">
+            <div>
+              <span>
+                <b>{{ billing.nextBillingDate }}</b>
+              </span>
+            </div>
+          </v-col>
+        </v-row>
 
-      <v-divider v-if="billing.planAmountDiscount" />
-
-      <v-row v-if="billing.planAmountDiscount" no-gutters class="mt-2">
-        <v-col cols="7">
-          <span />
-        </v-col>
-
-        <v-col cols="5" class="pr-3 text-left">
-          <div>
-            <span>
-              <b v-if="billing.planAmountDiscount">{{
-                billing.planAmountDiscount.toLocaleString("en-US", {
-                  style: "currency",
-                  currency: "USD",
-                })
-              }}</b>
-            </span>
-          </div>
-        </v-col>
-      </v-row>
-
-      <template>
-        <v-row align="center" class="mb-2" no-gutters>
+        <v-row no-gutters class="mb-3">
           <v-col cols="12" md="7">
-            Plan:
+            <span> Your {{ membershipInterval }} membership fee is </span>
           </v-col>
-          <v-col cols="12" md="5">
-            <b>{{ billing.planName }}</b>
-          </v-col>
-        </v-row>
-        <v-row align="center" class="mb-2" no-gutters>
-          <v-col cols="12" md="7" />
-          <v-col cols="12" md="5">
-            <v-btn
-              color="primary"
-              class="pa-md-4 ml-n4 md-n0"
-              text
-              @click="changePlanModal = true"
-            >
-              CHANGE PLAN
-            </v-btn>
-          </v-col>
-        </v-row>
-      </template>
 
-      <v-row
-        v-for="(card, indexUC) in userCards"
-        :key="indexUC"
-        align="center"
-        class="mb-2"
-        no-gutters
-      >
-        <v-col class="text-truncate" cols="12" md="7">
-          Card:
-        </v-col>
-        <v-col cols="12" md="5">
-          <span class="font-weight-bold">
-            {{ card.details.brand }} <br>.... .... ....
-            {{ card.details.last4 }}
-          </span>
-        </v-col>
-        <v-row align="center" class="mb-2" no-gutters>
-          <v-col cols="12" md="7" />
-          <v-col cols="12" md="5">
-            <v-btn
-              color="primary"
-              justify-md="end"
-              class="pa-md-4 ml-n4 md-n0"
-              text
-              @click="onUpdateCard(card)"
-            >
-              UPDATE PAYMENT
-            </v-btn>
+          <v-col cols="12" md="5" class="pr-3 text-left">
+            <div>
+              <span>
+                <b>{{
+                  billing.planAmount.toLocaleString("en-US", {
+                    style: "currency",
+                    currency: "USD",
+                  })
+                }}</b>
+              </span>
+            </div>
           </v-col>
         </v-row>
-      </v-row>
+        <v-row v-if="billing.planAmountDiscount" no-gutters>
+          <v-col
+            cols="12"
+            md="7"
+            :class="
+              !$vuetify.breakpoint.mobile ? 'text-right discount-label' : ''
+            "
+          >
+            <span>
+              Discount
+            </span>
+          </v-col>
 
+          <v-col cols="12" md="5" class="pr-3 text-left">
+            <div>
+              <span v-if="billing.percentOff">
+                <b>- {{ billing.percentOff }} %</b>
+              </span>
+              <span v-if="billing.amountOff">
+                <b>{{
+                  billing.amountOff.toLocaleString("en-US", {
+                    style: "currency",
+                    currency: "USD",
+                  })
+                }}</b>
+              </span>
+            </div>
+          </v-col>
+        </v-row>
+
+        <v-divider v-if="billing.planAmountDiscount" />
+
+        <v-row v-if="billing.planAmountDiscount" no-gutters class="mt-2">
+          <v-col cols="7">
+            <span />
+          </v-col>
+
+          <v-col cols="5" class="pr-3 text-left">
+            <div>
+              <span>
+                <b v-if="billing.planAmountDiscount">{{
+                  billing.planAmountDiscount.toLocaleString("en-US", {
+                    style: "currency",
+                    currency: "USD",
+                  })
+                }}</b>
+              </span>
+            </div>
+          </v-col>
+        </v-row>
+
+        <template>
+          <v-row align="center" class="mb-2" no-gutters>
+            <v-col cols="12" md="7">
+              Plan:
+            </v-col>
+            <v-col cols="12" md="5">
+              <b>{{ billing.planName }}</b>
+            </v-col>
+          </v-row>
+          <v-row align="center" class="mb-2" no-gutters>
+            <v-col cols="12" md="7" />
+            <v-col cols="12" md="5">
+              <v-btn
+                color="primary"
+                class="pa-md-4 ml-n4 md-n0"
+                text
+                @click="changePlanModal = true"
+              >
+                CHANGE PLAN
+              </v-btn>
+            </v-col>
+          </v-row>
+        </template>
+
+        <v-row
+          v-for="(card, indexUC) in userCards"
+          :key="indexUC"
+          align="center"
+          class="mb-2"
+          no-gutters
+        >
+          <v-col class="text-truncate" cols="12" md="7">
+            Card:
+          </v-col>
+          <v-col cols="12" md="5">
+            <span class="font-weight-bold">
+              {{ card.details.brand }} <br>.... .... ....
+              {{ card.details.last4 }}
+            </span>
+          </v-col>
+          <v-row align="center" class="mb-2" no-gutters>
+            <v-col cols="12" md="7" />
+            <v-col cols="12" md="5">
+              <v-btn
+                color="primary"
+                justify-md="end"
+                class="pa-md-4 ml-n4 md-n0"
+                text
+                @click="onUpdateCard(card)"
+              >
+                UPDATE PAYMENT
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-row>
+      </div>
       <v-row
         v-if="hasMembership"
         align="center"
@@ -172,9 +172,15 @@
       </v-row>
 
       <div v-else class="my-6 text-center">
-        <nuxt-link :to="{ name: 'app-payment-register' }">
+        <v-btn
+          block
+          class="mb-6"
+          color="primary"
+          x-large
+          @click="selectPlan"
+        >
           CREATE MEMBERSHIP
-        </nuxt-link>
+        </v-btn>
       </div>
     </v-col>
 
@@ -379,6 +385,9 @@ export default {
     this.$nuxt.$off('children-changed')
   },
   methods: {
+    ...mapActions('auth', {
+      fetchUserInfoIntoStore: 'fetchUserInfo'
+    }),
     ...mapActions('payment', [
       'cancelSubscription',
       'fetchBillingCards',
@@ -437,6 +446,8 @@ export default {
         await this.cancelSubscription()
         this.$snotify.success('Subscription has been canceled successfully!')
         await this.getBillingDetails()
+        // update auser info on store
+        await this.fetchUserInfoIntoStore()
         this.removeSubscriptionModal = false
       } catch (e) {
       } finally {
@@ -457,6 +468,12 @@ export default {
       if (this.$route.params.planRedirect) {
         this.$router.push({ name: this.$route.params.planRedirect })
       }
+    },
+    selectPlan () {
+      this.$router.push({
+        name: 'app-payment-plan',
+        query: { process: 'signup', step: '3' }
+      })
     }
   }
 }
