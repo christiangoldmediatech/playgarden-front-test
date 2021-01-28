@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row>
+    <v-row v-if="!loadingDropBox">
       <v-col cols="12">
         <v-card width="100%">
           <v-card-title>
@@ -21,7 +21,7 @@
       </v-col>
     </v-row>
 
-    <v-row>
+    <v-row v-if="!loadingDropBox">
       <v-col cols="12">
         <v-card width="100%">
           <validation-observer v-slot="{ invalid, passes }">
@@ -232,6 +232,13 @@
         </v-card>
       </v-col>
     </v-row>
+    <v-row v-else justify="center">
+      <v-col class="dashboard-content-column" cols="12">
+        <v-card>
+          <pg-loading />
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -253,6 +260,7 @@ export default {
   data () {
     return {
       loading: false,
+      loadingDropBox: false,
       file: null,
       thumbnail: null,
       video: null,
@@ -413,6 +421,7 @@ export default {
         if (!this.fileDropBox) {
           data = await this.$refs.fileUploader.handleUpload()
         } else {
+          this.loadingDropBox = true
           data = await this.$refs.fileUploaderDropBox.handleUpload()
         }
         if (data) {
@@ -427,6 +436,7 @@ export default {
         }
       } catch (err) {
         this.loading = false
+        this.loadingDropBox = false
         return
       } finally {
         this.$router.push({ name: 'admin-activity-management' })

@@ -22,7 +22,6 @@ export default {
 
   data () {
     return {
-      apiKey: '6szr311owx7y96r',
       file: null
     }
   },
@@ -78,7 +77,7 @@ export default {
       'https://www.dropbox.com/static/api/2/dropins.js'
     )
     dropBox.setAttribute('id', 'dropboxjs')
-    dropBox.setAttribute('data-app-key', this.apiKey)
+    dropBox.setAttribute('data-app-key', process.env.apiKeyAppDropBox)
     document.head.appendChild(dropBox)
   },
 
@@ -94,7 +93,7 @@ export default {
           attachment.size = files[0].bytes
           attachment.iconURL = files[0].icon
           attachment.link = files[0].link
-          attachment.extension = `. ${files[0].name.split('.')[1]}`
+          attachment.extension = `.${files[0].name.split('.')[1]}`
           this.file = attachment
           this.$emit('sendFile', this.file)
         },
@@ -169,7 +168,8 @@ export default {
           size: this.file.size,
           type: `upload-${this.mode}-dropbox`,
           path: this.path,
-          mode: this.mode
+          mode: this.mode,
+          extension: this.file.extension
         })
         return result
       }
