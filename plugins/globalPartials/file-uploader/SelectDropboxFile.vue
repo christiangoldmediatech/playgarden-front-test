@@ -65,6 +65,22 @@ export default {
       const finalList = compiledList.concat(this.mimeTypes)
 
       return finalList.join(',')
+    },
+
+    getExtensions () {
+      let extensions = []
+      switch (this.mode) {
+        case 'document':
+          extensions = ['.pdf', '.doc', '.docx']
+          break
+        case 'video':
+          extensions = ['.mp4', '.mov']
+          break
+        case 'image':
+          extensions = ['.jpg', '.jpeg', '.png']
+          break
+      }
+      return extensions
     }
   },
 
@@ -104,12 +120,7 @@ export default {
 
         multiselect: false,
 
-        extensions: [
-          '.pdf',
-          '.doc',
-          '.docx',
-          '.mp4'
-        ],
+        extensions: this.getExtensions,
 
         folderselect: false,
 
