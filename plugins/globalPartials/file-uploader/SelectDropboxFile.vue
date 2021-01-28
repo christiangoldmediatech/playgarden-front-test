@@ -12,7 +12,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import props from '../../plugins/globalPartials/file-uploader/props'
+import props from './props'
 export default {
   name: 'SelectDropboxFile',
 

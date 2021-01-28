@@ -245,7 +245,6 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 // import PgInlineVideoPlayer from '@/components/pg-video-js-player/PgInlineVideoPlayer.vue'
-import SelectDropboxFile from '@/components/dropbox/SelectDropboxFile.vue'
 
 export default {
   name: 'Editor',
@@ -253,7 +252,6 @@ export default {
   layout: 'admin',
 
   components: {
-    SelectDropboxFile
   //   PgInlineVideoPlayer
   },
 
@@ -435,6 +433,7 @@ export default {
           await this.updateActivity({ id, data: activity })
         }
       } catch (err) {
+        this.fileDropBox = null
         this.loading = false
         this.loadingDropBox = false
         return

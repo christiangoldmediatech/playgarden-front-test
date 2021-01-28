@@ -31,11 +31,13 @@ import PgDataTable from '@/components/pg/components/tables/PgDataTable.vue'
 
 // Other global components
 import FileUploader from './file-uploader/FileUploader'
+import SelectDropboxFile from './file-uploader/SelectDropboxFile.vue'
 import NotifyEvent from './NotifyEvent'
 import PromptDialog from './PromptDialog'
 import UnderlinedTitle from './UnderlinedTitle'
 
 Vue.component(FileUploader.name, FileUploader)
+Vue.component(SelectDropboxFile.name, SelectDropboxFile)
 Vue.component(NotifyEvent.name, NotifyEvent)
 Vue.component(PromptDialog.name, PromptDialog)
 Vue.component(UnderlinedTitle.name, UnderlinedTitle)
