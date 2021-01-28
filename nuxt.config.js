@@ -1,15 +1,7 @@
 // import path from 'path'
 // import fs from 'fs'
 import webpack from 'webpack'
-const googleTagManagerNoScript =
-  '<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M57SKCV" height="0" width="0" style="display:none;visibility:hidden"></iframe>'
-
-const getTagManagerText = () => {
-  if (process.env.TEST_ENV === 'production') {
-    return googleTagManagerNoScript
-  }
-  return ''
-}
+import { Integrations } from "@sentry/tracing";
 
 export default {
   /*
@@ -88,12 +80,6 @@ export default {
       },
       { src: 'https://widget.manychat.com/108368577679635.js', async: true },
       { src: 'https://js.stripe.com/v3/', async: true }
-    ],
-    noscript: [
-      {
-        body: true,
-        innerHTML: getTagManagerText()
-      }
     ],
     __dangerouslyDisableSanitizers: ['noscript']
   },
@@ -222,7 +208,10 @@ export default {
       release: process.env.SENTRY_RELEASE
     },
     publishRelease: true,
-    tracing: true
+    tracing: true,
+    integrations: [
+      new Integrations.BrowserTracing()
+    ]
   },
   styleResources: {
     scss: [
