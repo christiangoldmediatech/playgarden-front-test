@@ -26,10 +26,6 @@
               <span class="hidden-xs-only white--text">Export all parents</span>
             </v-btn>
           </v-card-title>
-
-          <v-card-text>
-            List
-          </v-card-text>
         </v-card>
       </v-col>
     </v-row>
@@ -208,6 +204,9 @@ export default {
     ...mapActions('admin/users', {
       getUsers: 'get'
     }),
+    ...mapActions('admin/users', {
+      exportParents: 'exportParents'
+    }),
     ...mapActions('admin/roles', {
       getRoles: 'get'
     }),
@@ -252,8 +251,11 @@ export default {
       this.loading = false
     },
 
-    exportList () {
-      console.log('clik--')
+    async exportList () {
+      await this.exportParents()
+      this.$snotify.success('Report created succesfully! Check your email to get it', {
+        timeout: 6000
+      })
     }
   }
 }
