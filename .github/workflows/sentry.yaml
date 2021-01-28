@@ -23,6 +23,7 @@ jobs:
         else
           echo "::set-output name=env_name::$BRANCH"
         fi
+    - run: yarn install
     - run: yarn build
     - name: Create Sentry release
       uses: getsentry/action-release@v1
