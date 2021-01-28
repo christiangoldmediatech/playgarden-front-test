@@ -82,7 +82,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('upload', ['doUpload', 'doMultiPartDropBoxUpload']),
+    ...mapActions('upload', ['doUploadDropBox', 'doMultiPartDropBoxUpload']),
 
     dropboxIconClicked () {
       const options = {
@@ -120,47 +120,18 @@ export default {
 
     async handleUpload (meta = {}, callback = () => {}) {
       let result
-
       try {
-        if (this.multiPart) {
-          result = await this.handleMultiPartBackgroundFileUpload(
-            meta,
-            callback
-          )
-        } else {
-          result = await this.handleFileUpload()
-        }
+        result = await this.handleDropBoxFileUpload(
+          meta,
+          callback
+        )
       } catch (error) {
         return Promise.reject(error)
       }
-
       return result
     },
 
-    async handleFileUpload () {
-      try {
-        if (this.file) {
-          const formData = new FormData()
-          formData.append('file', this.file)
-          if (this.fileName) {
-            formData.append('name', this.fileName)
-          }
-
-          const { filePath } = await this.doUpload({
-            type: `upload-${this.mode}`,
-            path: this.path,
-            formData
-          })
-
-          return filePath
-        }
-      } catch (error) {
-        return Promise.reject(error)
-      }
-      return false
-    },
-
-    async handleMultiPartBackgroundFileUpload (meta = {}, callback = () => {}) {
+    async handleDropBoxFileUpload (meta = {}, callback = () => {}) {
       if (this.file) {
         const result = await this.doMultiPartDropBoxUpload({
           name: this.file.name,

@@ -12,7 +12,6 @@ export default {
     }
   },
 
-  // (_, data) {
   async doMultiPartDropBoxUpload ({ state, commit }, dataFileDropBox) {
     const { data } = await this.$axios.post(`/files/${dataFileDropBox.type}/${dataFileDropBox.path}`, dataFileDropBox)
     return data
