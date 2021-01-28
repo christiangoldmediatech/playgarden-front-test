@@ -127,7 +127,10 @@ export default {
     '@/plugins/validate',
     '@/plugins/vueCtkDateTimePicker',
     { src: '@/plugins/tiptapVuetify', mode: 'client' },
-    { src: '@/plugins/firebase', mode: 'client' }
+    { src: '@/plugins/firebase', mode: 'client' },
+    {
+      src: '~/plugins/sentry'
+    }
   ],
   /*
    ** Auto import components
@@ -215,8 +218,11 @@ export default {
     dsn:
       'https://1ab1121d06eb4b3181d83b9da1d69489@o443725.ingest.sentry.io/5417852',
     config: {
-      environment: process.env.TEST_ENV || 'LOCAL'
-    }
+      environment: process.env.TEST_ENV || 'LOCAL',
+      release: process.env.SENTRY_RELEASE
+    },
+    publishRelease: true,
+    tracing: true
   },
   styleResources: {
     scss: [
