@@ -255,20 +255,15 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 // import PgInlineVideoPlayer from '@/components/pg-video-js-player/PgInlineVideoPlayer.vue'
-
 export default {
   name: 'Editor',
-
-  props: {
-    newLessonActivity: Boolean
-  },
-
-  layout: 'admin',
-
   components: {
   //   PgInlineVideoPlayer
   },
-
+  props: {
+    newLessonActivity: Boolean
+  },
+  layout: 'admin',
   data () {
     return {
       loading: false,
@@ -292,27 +287,22 @@ export default {
       }
     }
   },
-
   computed: {
     ...mapGetters('admin/curriculum', { curriculumTypeRows: 'types' }),
     ...mapGetters('admin/activity', ['rows', 'types']),
     ...mapGetters('upload', ['uploads']),
-
     id () {
       return this.$route.query.id ? parseInt(this.$route.query.id) : null
     },
-
     title () {
       return this.id ? 'Edit Activity' : 'New Activity'
     },
-
     activityTypes () {
       return this.types.map(type => ({
         text: type.name,
         value: type.id
       }))
     },
-
     curriculumTypes () {
       return [
         {
@@ -326,34 +316,26 @@ export default {
       ]
     }
   },
-
   watch: {
     file () {
       this.thumbnail = null
     }
   },
-
   async created () {
     this.loading = true
     const promises = []
-
     promises.push(this.getTypes(), this.getCurriculumTypes())
-
     if (this.id) {
       promises.push(this.getActivityById(this.id))
     }
-
     const results = await Promise.all(promises)
     const data = results[2]
-
     if (data) {
       this.activity.featured = data.featured
       this.activity.activityTypeId = data.activityType.id
-
       if (data.curriculumType) {
         this.activity.curriculumTypeId = data.curriculumType.id
       }
-
       if (data.videos) {
         this.activity.name = data.videos.name
         this.activity.description = data.videos.description
@@ -363,10 +345,8 @@ export default {
         this.waitAndLoad()
       }
     }
-
     this.loading = false
   },
-
   methods: {
     ...mapActions('admin/activity', [
       'getActivities',
@@ -375,17 +355,13 @@ export default {
       'updateActivity',
       'getTypes'
     ]),
-
     ...mapActions('admin/curriculum', { getCurriculumTypes: 'getTypes' }),
-
     onPlayerReady (player) {
       this.player = player
     },
-
     playVideo () {
       this.player.play()
     },
-
     waitAndLoad () {
       return new Promise((resolve, reject) => {
         const start = new Date().getTime()
@@ -415,21 +391,17 @@ export default {
         }, 50)
       })
     },
-
     setFileDropBox (file) {
       this.file = file
       this.fileDropBox = file
     },
-
     setFileImageDropBox (file) {
       this.thumbnail = file
       this.fileImageDropBox = file
     },
-
     async save () {
       this.loading = true
       let id = this.id
-
       try {
         let thumbnail
         if (!this.fileImageDropBox) {
