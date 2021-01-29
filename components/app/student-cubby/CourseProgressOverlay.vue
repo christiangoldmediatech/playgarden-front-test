@@ -227,7 +227,6 @@ export default {
 
   mounted () {
     this.$nuxt.$on('show-curriculum-progress', (curriculumTypeId) => {
-      console.log('aqui llegando mostrar', curriculumTypeId)
       if (this.studentId) {
         this.lessons = []
         this.selectedLetter = curriculumTypeId

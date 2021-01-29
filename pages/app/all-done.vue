@@ -9,7 +9,7 @@
     <v-col cols="8" class="pl-3">
       <underlined-title class="text-h6 text-md-h5" text="Congratulations! You have finished all the Daily Lessons!" />
 
-      <p class="text-progress mt-4 pb-3 font-weight-normal">
+      <p class="text-progress mt-4 pb-3 font-weight-bold">
         You are such a fast learner!
       </p>
 
