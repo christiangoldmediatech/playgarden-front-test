@@ -32,9 +32,7 @@ jobs:
         SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
         SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
     - run: yarn
-    - run: echo $SENTRY_ORG
-    - run: echo $SENTRY_PROJECT
-    - run: echo $SENTRY_PROJECT && yarn build
+    - run: yarn build
     - name: Create Sentry release
       uses: getsentry/action-release@v1
       env:
