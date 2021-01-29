@@ -11,9 +11,18 @@ export default {
   },
 
   async getCurrentLesson ({ commit }, params) {
-    const { lesson } = await this.$axios.$get('/lessons/childrens/current', { params })
-    commit('admin/curriculum/SET_LESSON', lesson, { root: true })
-    return lesson
+    try {
+      const response = await this.$axios.$get('/lessons/childrens/current', { params })
+      console.log('lesson aqui--', response)
+      const { lesson } = response
+      commit('admin/curriculum/SET_LESSON', lesson, { root: true })
+      return lesson
+    } catch (e) {
+      console.log('aqui prueba redirect', e)
+      /* this.$router.push({
+        name: 'app-all-done'
+      }) */
+    }
   },
 
   setCurrentLessonVideo ({ commit }, video) {
@@ -95,6 +104,6 @@ export default {
   },
 
   async getAdvanceLessonChildren (_, childId) {
-    await this.$axios.$get(`/lessons/children/${childId}/advance`)
+    return await this.$axios.$get(`/lessons/children/${childId}/advance`)
   }
 }

@@ -1,13 +1,16 @@
 <template>
   <v-row class="pt-12 pb-16">
     <course-progress-overlay />
-    <v-col cols="4">
+    <v-col cols="10" md="4">
       <center>
-        <v-img :src="require('@/assets/svg/all-done.svg')" class="ml-4 mt-4" />
+        <v-img :src="require('@/assets/svg/all-done.svg')" :class="($vuetify.breakpoint.xs) ? 'ml-13' : 'ml-4 mt-4'" />
       </center>
     </v-col>
-    <v-col cols="8" class="pl-3">
-      <underlined-title class="text-h6 text-md-h5" text="Congratulations! You have finished all the Daily Lessons!" />
+    <v-col cols="12" md="8" :class="($vuetify.breakpoint.xs) ? 'ml-4 mr-5' : 'pl-3'">
+      <center v-if="$vuetify.breakpoint.xs">
+        <underlined-title class="text-h6 text-md-h5" text="Congratulations! You have finished all the Daily Lessons!" />
+      </center>
+      <underlined-title v-else class="text-h6 text-md-h5" text="Congratulations! You have finished all the Daily Lessons!" />
 
       <p class="text-progress mt-4 pb-3 font-weight-bold">
         You are such a fast learner!

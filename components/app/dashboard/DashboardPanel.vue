@@ -273,7 +273,7 @@ export default {
       try {
         if (!this.loadingNext) {
           this.loadingNext = true
-          this.getAdvanceLessonChildren(this.childId).then(() => {
+          this.getAdvanceLessonChildren(this.childId).then((data) => {
             this.$nuxt.$emit('dashboard-panel-update')
             this.loadingNext = false
           })

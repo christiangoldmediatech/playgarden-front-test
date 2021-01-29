@@ -132,18 +132,21 @@ export default {
     },
 
     async handleLesson (redirect = false) {
+      let response
       try {
         this.loading = true
         if (
           this.overrideMode &&
           this.childrenIds === parseInt(this.overrides.childId)
         ) {
-          await this.getCurrentLessonByChildrenId(this.overrides)
+          response = await this.getCurrentLessonByChildrenId(this.overrides)
         } else {
-          await this.getCurrentLesson({
+          response = await this.getCurrentLesson({
             childrenIds: this.childrenIds
           })
         }
+
+        console.log('respuest--', response)
         if (redirect || (this.lessonCompleted && !this.overrideMode)) {
           this.redirectDashboard('handleLesson')
           this.loading = false
