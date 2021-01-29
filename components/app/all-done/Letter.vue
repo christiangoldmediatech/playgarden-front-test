@@ -42,8 +42,8 @@ export default {
   methods: {
     sendLetter () {
       if (!this.item.disabled) {
-        console.log('metoff--', this.index + 1)
-        this.$nuxt.$emit('show-curriculum-progress', this.index + 1)
+        console.log('metoff--', this.item.id)
+        this.$nuxt.$emit('show-curriculum-progress', this.item.id)
       }
     }
   }

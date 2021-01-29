@@ -1,5 +1,6 @@
 <template>
   <v-row class="pt-12 pb-16">
+    <course-progress-overlay />
     <v-col cols="4">
       <center>
         <v-img :src="require('@/assets/svg/all-done.svg')" class="ml-4 mt-4" />
@@ -47,11 +48,13 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import Letter from '@/components/app/all-done/Letter.vue'
+import CourseProgressOverlay from '@/components/app/student-cubby/CourseProgressOverlay.vue'
 export default {
   name: 'AllDone',
 
   components: {
-    Letter
+    Letter,
+    CourseProgressOverlay
   },
 
   props: {},
