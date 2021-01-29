@@ -23,10 +23,20 @@
       <p class="font-weight-bold">
         Choose a Letter to Rewatch:
       </p>
+
+      <v-row>
+        <template v-for="(item, index) in actualLetters">
+          <letter :key="index" :item="item" :index="index" />
+        </template>
+      </v-row>
+
+      <p class="mt-5">
+        Go to the Library to pick and rewatch your Favorite teachers and Lessons.
+      </p>
       <v-btn
         color="accent"
         :small="$vuetify.breakpoint.xs"
-        @click.stop="goToLessons"
+        :to="{ name: 'app-activities' }"
       >
         GO TO LIBRARY
       </v-btn>
@@ -35,27 +45,70 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
+import Letter from '@/components/app/all-done/Letter.vue'
 export default {
   name: 'AllDone',
 
-  components: {},
+  components: {
+    Letter
+  },
 
   props: {},
 
-  computed: {},
+  data: () => {
+    return {
+      lettersProgress: []
+    }
+  },
+
+  computed: {
+    ...mapGetters('admin/curriculum', { letters: 'types' }),
+
+    ...mapGetters({ currentChild: 'getCurrentChild' }),
+
+    actualLetters () {
+      return this.letters.map((letter) => {
+        const current = this.lettersProgress.find(l => l.id === letter.id)
+        return {
+          ...letter,
+          ...current
+        }
+      }).slice(0, 8)
+    },
+
+    studentId () {
+      return this.currentChild[0].id
+    }
+  },
 
   watch: {},
 
-  created () {},
+  async created () {
+    this.getLetters()
+    await this.fetchChildProgress()
+  },
 
-  methods: {}
+  methods: {
+    ...mapActions('admin/curriculum', {
+      getLetters: 'getTypes'
+    }),
+
+    ...mapActions('children/course-progress', ['getCourseProgressByChildId']),
+
+    async fetchChildProgress () {
+      let data = await this.getCourseProgressByChildId({
+        id: this.studentId
+      })
+      data = data.map((letter) => {
+        const disabled = (letter.enabled) ? !letter.enabled : true
+        return { ...letter, disabled }
+      })
+      this.lettersProgress = data
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-
-.progress-title {
-  color: var(--v-accent-base) !important;
-}
-
 </style>
