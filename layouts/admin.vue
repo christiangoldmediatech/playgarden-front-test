@@ -250,16 +250,20 @@ export default {
           rootPath: '/admin/user-manager',
           children: [
             {
-              title: 'Role Management',
-              route: 'role-management'
+              title: 'All Users',
+              route: ''
             },
             {
-              title: 'Users',
-              route: ''
+              title: 'Parents',
+              route: 'parents-list'
             },
             {
               title: 'Specialists',
               route: 'specialists-management'
+            },
+            {
+              title: 'Role Management',
+              route: 'role-management'
             }
           ]
         },
