@@ -143,10 +143,10 @@
                 <div class="user-general-table-row">
                   <div class="user-general-table-row-divider">
                     <div class="user-general-field">
-                      Membership fee
+                      Stripe Status
                     </div>
-                    <div class="user-general-value">
-                      {{ plan.fee }}
+                    <div class="user-general-value text-capitalize">
+                      {{ billing.stripeStatus }}
                     </div>
                   </div>
                   <div class="user-general-field">
@@ -165,10 +165,10 @@
                 <div class="user-general-table-row">
                   <div class="user-general-table-row-divider">
                     <div class="user-general-field">
-                      Discount
+                      Membership fee
                     </div>
                     <div class="user-general-value">
-                      {{ discount.percent }}
+                      {{ plan.fee }}
                     </div>
                   </div>
                   <div class="user-general-field">
@@ -180,11 +180,29 @@
                 </div>
 
                 <div class="user-general-table-row">
+                  <div class="user-general-table-row-divider">
+                    <div class="user-general-field">
+                      Billing date
+                    </div>
+                    <div class="user-general-value">
+                      {{ plan.billingDate }}
+                    </div>
+                  </div>
                   <div class="user-general-field">
-                    Billing date
+                    Discount
                   </div>
                   <div class="user-general-value">
-                    {{ plan.billingDate }}
+                    {{ discount.percent }}
+                  </div>
+                </div>
+                <div class="user-general-table-row" v-if="billing.stripeStatus === 'trialing'">
+                  <div class="user-general-table-row-divider">
+                    <div class="user-general-field">
+                      Trial ends
+                    </div>
+                    <div class="user-general-value">
+                      {{ plan.trialEnd }}
+                    </div>
                   </div>
                 </div>
               </template>
@@ -342,7 +360,8 @@ export default {
       const plan = {
         name: 'N/A',
         fee: 'N/A',
-        billingDate: 'N/A'
+        billingDate: 'N/A',
+        trialEnd: 'N/A'
       }
 
       if (this.user && this.user.planSelected && this.billing) {
@@ -365,6 +384,13 @@ export default {
           const month = nextBillingDate.toLocaleString('default', { month: 'long' })
 
           plan.billingDate = `${month} ${nextBillingDate.getDate()}, ${nextBillingDate.getFullYear()}`
+
+          if (this.billing.subscriptionData.status === 'trialing') {
+            const trialEndsDate = new Date(this.billing.subscriptionData.trial_end * 1000)
+            const monthTrial = trialEndsDate.toLocaleString('default', { month: 'long' })
+
+            plan.trialEnd = `${monthTrial} ${trialEndsDate.getDate()}, ${trialEndsDate.getFullYear()}`
+          }
         }
       }
 

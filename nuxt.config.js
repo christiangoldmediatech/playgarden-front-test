@@ -1,15 +1,7 @@
 // import path from 'path'
 // import fs from 'fs'
 import webpack from 'webpack'
-const googleTagManagerNoScript =
-  '<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M57SKCV" height="0" width="0" style="display:none;visibility:hidden"></iframe>'
-
-const getTagManagerText = () => {
-  if (process.env.TEST_ENV === 'production') {
-    return googleTagManagerNoScript
-  }
-  return ''
-}
+import { Integrations } from "@sentry/tracing";
 
 export default {
   /*
@@ -89,12 +81,6 @@ export default {
       { src: 'https://widget.manychat.com/108368577679635.js', async: true },
       { src: 'https://js.stripe.com/v3/', async: true }
     ],
-    noscript: [
-      {
-        body: true,
-        innerHTML: getTagManagerText()
-      }
-    ],
     __dangerouslyDisableSanitizers: ['noscript']
   },
   /*
@@ -127,7 +113,10 @@ export default {
     '@/plugins/validate',
     '@/plugins/vueCtkDateTimePicker',
     { src: '@/plugins/tiptapVuetify', mode: 'client' },
-    { src: '@/plugins/firebase', mode: 'client' }
+    { src: '@/plugins/firebase', mode: 'client' },
+    {
+      src: '~/plugins/sentry'
+    }
   ],
   /*
    ** Auto import components
@@ -215,8 +204,15 @@ export default {
     dsn:
       'https://1ab1121d06eb4b3181d83b9da1d69489@o443725.ingest.sentry.io/5417852',
     config: {
-      environment: process.env.TEST_ENV || 'LOCAL'
-    }
+      environment: process.env.TEST_ENV || 'LOCAL',
+      release: process.env.SENTRY_RELEASE
+    },
+    publishRelease: true,
+    sourceMapStyle: 'hidden-source-map',
+    tracing: true,
+    integrations: [
+      new Integrations.BrowserTracing()
+    ]
   },
   styleResources: {
     scss: [
