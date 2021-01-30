@@ -1,80 +1,95 @@
 <template>
-  <v-overlay
-    v-model="dialog"
-    z-index="10"
-    :dark="false"
-  >
-    <v-btn
-      class="timeline-close-btn"
-      color="white"
-      icon
-      @click.stop="dialog = false"
-    >
-      <v-icon>
-        mdi-close
-      </v-icon>
-    </v-btn>
-    <v-card class="timeline-card mt-9" width="800" height="600">
-      <template v-if="child">
-        <div class="timeline-header">
-          <span class="timeline-name">
-            {{ child.firstName }}'s timeline
-          </span>
-
-          <div class="timeline-letter-selector">
-            <letter-select
-              v-model="selectedLetter"
-              clearable
-              small-letter
-            />
-          </div>
-        </div>
-
-        <div v-if="loading" class="timeline-loading">
-          <v-progress-circular
-            width="12"
-            size="128"
-            color="accent"
-            indeterminate
-          />
-        </div>
-        <div v-else-if="entries.length === 0" class="timeline-loading">
-          <div class="timeline-content-title">
-            {{ `${child.firstName} has not yet started${selectedLetter ? ' on this letter' : ''}.` }}
-          </div>
-        </div>
-        <perfect-scrollbar v-else>
-          <div class="timeline-content">
-            <div class="timeline-content-line" />
-            <div
-              v-for="(entry, i) in entries"
-              :key="`timeline-entry-${i}`"
-              class="timeline-content-row"
+  <v-dialog v-model="dialog" content-class="elevation-0">
+    <v-col>
+      <v-row justify="center">
+        <v-card width="70vh" max-width="90%" elevation="0" color="transparent">
+          <v-row justify="end">
+            <v-btn
+              class="timeline-close-btn"
+              color="white"
+              icon
+              @click.stop="dialog = false"
             >
-              <div class="timeline-content-circle">
-                <pg-circle-letter-day
-                  class="clickable"
-                  :day="entry.day"
-                  :letter="entry.curriculumType.name"
-                  :size="64"
-                  no-auto-position
-                  @click.native="openLesson(entry.id)"
+              <v-icon>
+                mdi-close
+              </v-icon>
+            </v-btn>
+          </v-row>
+        </v-card>
+      </v-row>
+
+      <v-row justify="center">
+        <v-card width="70vh" height="60vh" max-width="90%">
+          <template v-if="child">
+            <div class="timeline-header pl-2 pl-md-9">
+              <span class="timeline-name">
+                {{ child.firstName }}'s timeline
+              </span>
+
+              <div class="timeline-letter-selector pr-2 pr-md-9 pt-2">
+                <letter-select
+                  v-model="selectedLetter"
+                  clearable
+                  small-letter
                 />
               </div>
-              <div>
-                <div class="timeline-content-title">
-                  {{ entry.description }}
-                </div>
-                <div class="timeline-content-status">
-                  {{ getStatus(entry) }}
-                </div>
+            </div>
+
+            <div v-if="loading" class="timeline-loading">
+              <v-progress-circular
+                width="12"
+                size="128"
+                color="accent"
+                indeterminate
+              />
+            </div>
+            <div v-else-if="entries.length === 0" class="timeline-loading">
+              <div class="timeline-content-title">
+                {{
+                  `${child.firstName} has not yet started${
+                    selectedLetter ? " on this letter" : ""
+                  }.`
+                }}
               </div>
             </div>
-          </div>
-        </perfect-scrollbar>
-      </template>
-    </v-card>
-  </v-overlay>
+
+            <perfect-scrollbar v-else>
+              <div class="timeline-content">
+                <div class="timeline-content-line" />
+
+                <div
+                  v-for="(entry, i) in entries"
+                  :key="`timeline-entry-${i}`"
+                  class="timeline-content-row"
+                >
+                  <div class="timeline-content-circle">
+                    <pg-circle-letter-day
+                      class="clickable"
+                      :day="entry.day"
+                      :letter="entry.curriculumType.name"
+                      :size="64"
+                      no-auto-position
+                      @click.native="openLesson(entry.id)"
+                    />
+                  </div>
+
+                  <div>
+                    <div class="timeline-content-title">
+                      {{ entry.description }}
+                    </div>
+
+                    <div class="timeline-content-status">
+                      {{ getStatus(entry) }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </perfect-scrollbar>
+          </template>
+        </v-card>
+      </v-row>
+    </v-col>
+  </v-dialog>
 </template>
 
 <script>
@@ -143,18 +158,27 @@ export default {
         const date = new Date(entry.dateFinished)
         const month = date.toLocaleString('default', { month: 'long' })
 
-        return `Done on ${month} ${date.getDate().toString().padStart(2, '0')}, ${date.getFullYear()}`
+        return `Done on ${month} ${date
+          .getDate()
+          .toString()
+          .padStart(2, '0')}, ${date.getFullYear()}`
       } else if (entry.dateStarted) {
         const date = new Date(entry.dateFinished)
         const month = date.toLocaleString('default', { month: 'long' })
 
-        return `Started on ${month} ${date.getDate().toString().padStart(2, '0')}, ${date.getFullYear()}`
+        return `Started on ${month} ${date
+          .getDate()
+          .toString()
+          .padStart(2, '0')}, ${date.getFullYear()}`
       }
       return 'Not started.'
     },
 
     openLesson (lessonId) {
-      this.$nuxt.$emit('open-lesson-overlay', { childId: this.child.id, lessonId })
+      this.$nuxt.$emit('open-lesson-overlay', {
+        childId: this.child.id,
+        lessonId
+      })
     }
   }
 }
@@ -162,22 +186,10 @@ export default {
 
 <style lang="scss">
 .timeline {
-  &-close-btn {
-    position: absolute;
-    right: -10px;
-  }
-  &-card {
-    padding-left: 48px;
-    padding-right: 16px;
-    padding-top: 34px;
-    padding-bottom: 12px;
-  }
   &-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-bottom: 12px;
-    padding-right: 32px;
   }
   &-name {
     font-size: 20px;
@@ -186,7 +198,7 @@ export default {
     color: #484848;
   }
   &-letter-selector {
-    max-width: 256px;
+    max-width: 240px;
   }
   &-loading {
     height: calc(100% - 72px);
@@ -196,7 +208,7 @@ export default {
     padding-right: 32px;
     padding-bottom: 32px;
     & svg circle {
-      color: #F89838 !important;
+      color: #f89838 !important;
     }
   }
   &-content {
@@ -205,20 +217,21 @@ export default {
       position: absolute;
       width: 2px;
       height: 100%;
-      left: 110px;
-      background-color: #DBDBDB;
+      left: 63px;
+      background-color: #dbdbdb;
     }
     &-row {
       position: relative;
       padding-top: 20px;
       padding-bottom: 20px;
       margin-bottom: 27px;
-      padding-left: 78px;
+      padding-left: 30px;
+      padding-right: 8px;
       display: flex;
       align-items: center;
       z-index: 10;
       &:last-of-type {
-        margin-bottom: 0px;
+        margin-bottom: 0;
       }
     }
     &-circle {
@@ -237,6 +250,22 @@ export default {
       color: #484848;
     }
   }
+}
+.fullscreen {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.vh-container {
+  min-height: 120vh;
+}
+.vh-row {
+  min-height: 96vh;
+  max-height: 180vh;
+}
+
+.overlay {
+  background-color: rgba(0, 0, 0, 0.68) !important;
 }
 </style>
 

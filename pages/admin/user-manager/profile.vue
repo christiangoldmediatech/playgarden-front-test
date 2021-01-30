@@ -2,11 +2,29 @@
   <v-container>
     <v-row>
       <v-col cols="12">
-        <v-card width="100%">
+        <v-card width="100%" class="mb-5">
           <v-card-title>
             User Profile
 
             <v-spacer />
+
+            <v-btn
+              class="text-none mr-1"
+              color="accent"
+              depressed
+              nuxt
+              small
+              :loading="exporting"
+              @click="requestExport"
+            >
+              <v-img
+                max-width="35"
+                max-height="35"
+                class="mr-1"
+                :src="require('@/assets/svg/export.svg')"
+              />
+              Export
+            </v-btn>
 
             <v-btn
               class="text-none"
@@ -23,246 +41,325 @@
       </v-col>
     </v-row>
 
-    <v-row v-if="user">
-      <v-col cols="12">
-        <v-card class="user-wrapper-card" width="100%">
-          <div class="user-header">
-            <img class="user-img" src="@/assets/svg/user.svg">
-            <div class="user-basic-info">
-              <div class="user-name">
-                {{ user.fullName }}
-              </div>
-              <div class="user-joined">
-                Joined {{ joined }}
-              </div>
-              <div class="user-edit">
-                <v-icon
-                  color="accent"
-                  dense
-                  @click="goToEdit(user.id)"
+    <v-card class="mx-auto my-1" elevation="4">
+      <v-row v-if="user" justify="center">
+        <v-col cols="12">
+          <v-row justify="center" align-content="center" no-gutters>
+            <v-col cols="12" md="3">
+              <v-row justify="center" class="mx-auto my-1" no-gutters>
+                <v-img
+                  max-width="157"
+                  :src="require('@/assets/svg/user.svg')"
+                />
+              </v-row>
+            </v-col>
+
+            <v-col cols="12" md="9">
+              <v-col>
+                <v-row justify="center" justify-md="start" no-gutters>
+                  <b>{{ user.fullName }}</b>
+                </v-row>
+              </v-col>
+
+              <v-col class="mt-n5">
+                <v-row justify="center" justify-md="start" no-gutters>
+                  Joined {{ joined }}
+                </v-row>
+              </v-col>
+
+              <v-col class="mt-n5">
+                <v-row
+                  justify="center"
+                  justify-md="start"
+                  class="user-edit"
+                  no-gutters
                 >
-                  mdi-pencil-outline
-                </v-icon>
-                <span class="clickable" @click="goToEdit(user.id)">
-                  EDIT
-                </span>
-              </div>
-            </div>
-          </div>
+                  <v-icon color="accent" dense @click="goToEdit(user.id)">
+                    mdi-pencil-outline
+                  </v-icon>
+                  <span class="clickable edit-color" @click="goToEdit(user.id)">
+                    EDIT
+                  </span>
+                </v-row>
+              </v-col>
+            </v-col>
+          </v-row>
 
-          <v-card class="user-general" width="100%">
-            <div class="user-general-title">
-              General Information
-            </div>
-
-            <div class="user-general-table">
-              <div class="user-general-table-row">
-                <div class="user-general-field">
-                  Address
-                </div>
-                <div class="user-general-value">
-                  <template v-if="shippingAddress">
-                    {{ shippingAddress.address1 }},
-                    <template v-if="shippingAddress.address2.length">
-                      {{ shippingAddress.address2 }},
-                    </template>
-                    {{ shippingAddress.city }}, {{ shippingAddress.state }}, {{ shippingAddress.zipCode }}
-                  </template>
-                  <template v-else>
-                    Unknown
-                  </template>
-                </div>
-              </div>
-
-              <div class="user-general-table-row">
-                <div class="user-general-field">
-                  E-mail
-                </div>
-                <div class="user-general-value">
-                  {{ user.email }}
-                </div>
-              </div>
-
-              <div class="user-general-table-row">
-                <div class="user-general-table-row-divider">
-                  <div class="user-general-field">
-                    Phone Number
-                  </div>
-                  <div class="user-general-value">
-                    {{ user.phoneNumber }}
-                  </div>
-                </div>
-                <div class="user-general-field">
-                  Role
-                </div>
-                <div class="user-general-value text-capitalize">
-                  {{ role }}
-                </div>
-              </div>
-
-              <div class="user-general-table-row">
-                <div class="user-general-table-row-divider">
-                  <div class="user-general-field">
-                    Status
-                  </div>
-                  <div class="user-general-value text-capitalize">
-                    {{ user.statusType.toLowerCase() }}
-                  </div>
-                </div>
-                <div class="user-general-field">
-                  Register Step
-                </div>
-                <div class="user-general-value text-capitalize">
-                  {{ user.registerStepType || 'N/A' }}
-                </div>
-              </div>
-
-              <template v-if="role === 'parent'">
-                <div class="user-general-table-row">
-                  <div class="user-general-table-row-divider">
-                    <div class="user-general-field">
-                      Plan
-                    </div>
-                    <div class="user-general-value text-capitalize">
-                      {{ plan.name }}
-                    </div>
-                  </div>
-                  <div class="user-general-field">
-                    Backpack
-                  </div>
-                  <div class="user-general-value">
-                    <template v-if="backpackSent">
-                      Sent <img class="user-sent-status" src="@/assets/svg/green-check.svg">
-                    </template>
-                    <template v-else>
-                      Pending <img class="user-sent-status" src="@/assets/svg/pending.svg">
-                    </template>
-                  </div>
-                </div>
-
-                <div class="user-general-table-row">
-                  <div class="user-general-table-row-divider">
-                    <div class="user-general-field">
-                      Membership fee
-                    </div>
-                    <div class="user-general-value">
-                      {{ plan.fee }}
-                    </div>
-                  </div>
-                  <div class="user-general-field">
-                    Workbook
-                  </div>
-                  <div class="user-general-value">
-                    <template v-if="workbookSent">
-                      Sent <img class="user-sent-status" src="@/assets/svg/green-check.svg">
-                    </template>
-                    <template v-else>
-                      Pending <img class="user-sent-status" src="@/assets/svg/pending.svg">
-                    </template>
-                  </div>
-                </div>
-
-                <div class="user-general-table-row">
-                  <div class="user-general-table-row-divider">
-                    <div class="user-general-field">
-                      Discount
-                    </div>
-                    <div class="user-general-value">
-                      {{ discount.percent }}
-                    </div>
-                  </div>
-                  <div class="user-general-field">
-                    Coupon code
-                  </div>
-                  <div class="user-general-value">
-                    {{ discount.code }}
-                  </div>
-                </div>
-
-                <div class="user-general-table-row">
-                  <div class="user-general-field">
-                    Billing date
-                  </div>
-                  <div class="user-general-value">
-                    {{ plan.billingDate }}
-                  </div>
-                </div>
-              </template>
-            </div>
-          </v-card>
-
-          <v-card v-if="role === 'parent'" class="user-child" width="100%">
-            <div class="user-child-title">
-              Children's Information
-            </div>
-
-            <div
-              v-for="(child, i) in children"
-              :key="`child-${child.id}`"
-              class="user-child-wrapper"
+          <v-card class="mx-auto my-12" width="95%" elevation="4">
+            <v-row
+              justify-md="start"
+              justify="center"
+              class="ml-md-5 ml-0 mt-md-2"
             >
-              <div class="user-child-row">
-                <div class="user-child-backpack">
-                  <img class="mb-3" width="100%" :src="child.backpack.image">
+              <v-card-title>
+                General Information
+              </v-card-title>
+            </v-row>
+            <v-card-text>
+              <v-row justify="center" class="px-md-5" no-gutters>
+                <v-col>
+                  <v-row align-content="center" no-gutters>
+                    <v-col cols="12">
+                      <v-row>
+                        <v-col cols="6" md="2" class="field">
+                          Address
+                        </v-col>
 
-                  <v-btn class="text-none" color="accent" block @click.stop="openTimeline(child)">
-                    Progress
-                  </v-btn>
-                </div>
+                        <v-col cols="6" md="10">
+                          <template v-if="shippingAddress">
+                            <b>{{ shippingAddress.address1 }},</b>
+                            <template v-if="shippingAddress.address2.length">
+                              <b> {{ shippingAddress.address2 }},</b>
+                            </template>
+                            <b>{{ shippingAddress.city }},
+                              {{ shippingAddress.state }},
+                              {{ shippingAddress.zipCode }}</b>
+                          </template>
 
-                <div class="user-child-table">
-                  <div class="user-child-table-row">
-                    <div class="user-child-table-field">
-                      Name
-                    </div>
-                    <div class="user-child-table-value">
-                      {{ child.firstName }} {{ child.lastName }}
-                    </div>
-                  </div>
+                          <template v-else>
+                            <b>Unknown</b>
+                          </template>
+                        </v-col>
+                      </v-row>
 
-                  <div class="user-child-table-row">
-                    <div class="user-child-table-field">
-                      Date of birth
-                    </div>
-                    <div class="user-child-table-value">
-                      {{ getDob(child.birthday) }}
-                    </div>
-                  </div>
+                      <v-row>
+                        <v-col cols="6" md="2" class="field">
+                          E-mail
+                        </v-col>
+                        <v-col cols="6" md="10">
+                          <b>{{ user.email }}</b>
+                        </v-col>
+                      </v-row>
+                    </v-col>
 
-                  <div class="user-child-table-row">
-                    <div class="user-child-table-field">
-                      Gender
-                    </div>
-                    <div class="user-child-table-value">
-                      {{ getGender(child.gender) }}
-                    </div>
-                  </div>
+                    <v-col cols="12" md="6">
+                      <v-row>
+                        <v-col cols="6" md="4" class="field">
+                          Phone Number
+                        </v-col>
+                        <v-col cols="6" md="8">
+                          <b>{{ user.phoneNumber }}</b>
+                        </v-col>
+                      </v-row>
 
-                  <div class="user-child-table-row">
-                    <div class="user-child-table-field">
-                      Current letter
-                    </div>
-                    <div class="user-child-table-value">
-                      {{ getLessonStatus(child.id).letter }}
-                    </div>
-                  </div>
+                      <v-row>
+                        <v-col cols="6" md="4" class="field">
+                          Plan
+                        </v-col>
+                        <v-col cols="6" md="8">
+                          <b>{{ plan.name }}</b>
+                        </v-col>
+                      </v-row>
 
-                  <div class="user-child-table-row">
-                    <div class="user-child-table-field">
-                      Current day
-                    </div>
-                    <div class="user-child-table-value">
-                      {{ getLessonStatus(child.id).day }}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <hr v-if="i < children.length - 1" class="user-child-separator">
-            </div>
+                      <v-row>
+                        <v-col cols="6" md="4" class="field">
+                          Membership fee
+                        </v-col>
+                        <v-col cols="6" md="8">
+                          <b>{{ plan.fee }} USD</b>
+                        </v-col>
+                      </v-row>
+
+                      <v-row>
+                        <v-col cols="6" md="4" class="field">
+                          Billing date
+                        </v-col>
+                        <v-col cols="6" md="8">
+                          <b>{{ plan.billingDate }}</b>
+                        </v-col>
+                      </v-row>
+                    </v-col>
+                    <!-- end col 1 -->
+                    <v-col cols="12" md="6">
+                      <v-row>
+                        <v-col cols="6" md="4" class="field">
+                          Role
+                        </v-col>
+                        <v-col cols="6" md="8" class="text-capitalize">
+                          <b>{{ role }}</b>
+                        </v-col>
+                      </v-row>
+
+                      <template v-if="role === 'parent'">
+                        <v-row>
+                          <v-col cols="6" md="4" class="field">
+                            Backpack
+                          </v-col>
+
+                          <v-col cols="6" md="8">
+                            <template v-if="backpackSent">
+                              <v-row no-gutters>
+                                <b>Sent</b>
+                                <v-img
+                                  class="ml-1"
+                                  max-height="25"
+                                  max-width="24"
+                                  src="@/assets/svg/green-check.svg"
+                                />
+                              </v-row>
+                            </template>
+
+                            <template v-else>
+                              <v-row no-gutters>
+                                <b>Pending</b>
+                                <v-img
+                                  class="ml-1"
+                                  max-height="25"
+                                  max-width="24"
+                                  :src="require('@/assets/svg/pending.svg')"
+                                />
+                              </v-row>
+                            </template>
+                          </v-col>
+                        </v-row>
+
+                        <v-row>
+                          <v-col cols="6" md="4" class="field">
+                            Workbook
+                          </v-col>
+
+                          <v-col cols="6" md="8" class="pl-md-3">
+                            <template v-if="workbookSent">
+                              <v-row no-gutters>
+                                <b>Sent</b>
+                                <v-img
+                                  class="ml-1"
+                                  max-height="25"
+                                  max-width="24"
+                                  :src="require('@/assets/svg/green-check.svg')"
+                                />
+                              </v-row>
+                            </template>
+
+                            <template v-else>
+                              <v-row no-gutters>
+                                <b>Pending</b>
+                                <v-img
+                                  class="ml-1"
+                                  max-height="25"
+                                  max-width="24"
+                                  :src="require('@/assets/svg/pending.svg')"
+                                />
+                              </v-row>
+                            </template>
+                          </v-col>
+                        </v-row>
+                      </template>
+                    </v-col>
+                  </v-row>
+                </v-col>
+              </v-row>
+            </v-card-text>
           </v-card>
-        </v-card>
-      </v-col>
-    </v-row>
+
+          <v-card
+            v-if="role === 'parent'"
+            class="mx-auto my-12"
+            width="95%"
+            elevation="4"
+          >
+            <v-row>
+              <v-row
+                justify-md="start"
+                justify="center"
+                class="ml-md-5 ml-0 mt-md-2"
+              >
+                <v-card-title>
+                  Children's Information
+                </v-card-title>
+              </v-row>
+
+              <v-card-text>
+                <v-row
+                  v-for="(child, i) in children"
+                  :key="`child-${child.id}`"
+                  justify="center"
+                  class="px-5"
+                  no-gutters
+                >
+                  <v-col cols="12">
+                    <v-row justify="center" align-content="center">
+                      <v-col cols="12" md="4" align-content="center">
+                        <v-row justify="center">
+                          <img
+                            class="center"
+                            width="150"
+                            :src="child.backpack.image"
+                            alt="backpack"
+                          >
+                        </v-row>
+
+                        <v-row justify="center">
+                          <v-btn
+                            class="text-none"
+                            color="accent"
+                            large
+                            @click.stop="openTimeline(child)"
+                          >
+                            Progress
+                          </v-btn>
+                        </v-row>
+                      </v-col>
+
+                      <v-col cols="12" md="8">
+                        <v-row>
+                          <v-col cols="6" md="3" class="field">
+                            Name
+                          </v-col>
+                          <v-col cols="6" md="9">
+                            <b>{{ child.firstName }} {{ child.lastName }}</b>
+                          </v-col>
+                        </v-row>
+
+                        <v-row>
+                          <v-col cols="6" md="3" class="field">
+                            Date of birth
+                          </v-col>
+                          <v-col cols="6" md="9">
+                            <b>{{ getDob(child.birthday) }}</b>
+                          </v-col>
+                        </v-row>
+
+                        <v-row>
+                          <v-col cols="6" md="3" class="field">
+                            Gender
+                          </v-col>
+                          <v-col cols="6" md="9">
+                            <b>{{ getGender(child.gender) }}</b>
+                          </v-col>
+                        </v-row>
+
+                        <v-row>
+                          <v-col cols="6" md="3" class="field">
+                            Current letter
+                          </v-col>
+                          <v-col cols="6" md="9">
+                            <b>
+                              Letter {{ getLessonStatus(child.id).letter }}</b>
+                          </v-col>
+                        </v-row>
+
+                        <v-row>
+                          <v-col cols="6" md="3" class="field">
+                            Current day
+                          </v-col>
+                          <v-col cols="6" md="9">
+                            <b>Day {{ getLessonStatus(child.id).day }}</b>
+                          </v-col>
+                        </v-row>
+                      </v-col>
+
+                      <div v-if="i < children.length - 1" class="gray-div" />
+                    </v-row>
+                  </v-col>
+                </v-row>
+              </v-card-text>
+            </v-row>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-card>
+
     <user-child-timeline-dialog />
     <user-child-lesson-overlay />
   </v-container>
@@ -272,6 +369,7 @@
 import { mapActions } from 'vuex'
 import UserChildLessonOverlay from '@/components/admin/users/UserChildLessonOverlay.vue'
 import UserChildTimelineDialog from '@/components/admin/users/UserChildTimelineDialog.vue'
+import { formatDate } from '~/utils/dateTools'
 
 export default {
   name: 'Profile',
@@ -283,13 +381,12 @@ export default {
     UserChildLessonOverlay
   },
 
-  data: () => {
-    return {
-      user: null,
-      children: [],
-      childrenStatus: []
-    }
-  },
+  data: () => ({
+    exporting: false,
+    user: null,
+    children: [],
+    childrenStatus: []
+  }),
 
   computed: {
     id () {
@@ -298,9 +395,9 @@ export default {
 
     joined () {
       if (this.user) {
-        const date = new Date(this.user.createdAt)
-        const month = date.toLocaleString('default', { month: 'long' })
-        return `${month}, ${date.getFullYear()}`
+        return formatDate(this.user.createdAt, {
+          format: 'MMMM, YYYY'
+        })
       }
       return ''
     },
@@ -330,7 +427,12 @@ export default {
         percent: '0%',
         code: 'N/A'
       }
-      if (this.billing && this.billing.subscriptionData && this.billing.subscriptionData.discount && this.billing.subscriptionData.discount.coupon) {
+      if (
+        this.billing &&
+        this.billing.subscriptionData &&
+        this.billing.subscriptionData.discount &&
+        this.billing.subscriptionData.discount.coupon
+      ) {
         const coupon = this.billing.subscriptionData.discount.coupon
         discount.percent = `${coupon.percent_off} %`
         discount.code = coupon.name
@@ -347,7 +449,10 @@ export default {
 
       if (this.user && this.user.planSelected && this.billing) {
         // Name and type of plan
-        plan.name = this.user.planSelected.planName.toLowerCase() + ' ' + this.billing.billingType.toLowerCase()
+        plan.name =
+          this.user.planSelected.planName.toLowerCase() +
+          ' ' +
+          this.billing.billingType.toLowerCase()
 
         if (this.billing.subscriptionData) {
           // Membership fee
@@ -360,11 +465,13 @@ export default {
 
           // Next billing date
           const nextBillingDate = new Date()
-          nextBillingDate.setTime(this.billing.subscriptionData.current_period_end * 1000)
+          nextBillingDate.setTime(
+            this.billing.subscriptionData.current_period_end * 1000
+          )
 
-          const month = nextBillingDate.toLocaleString('default', { month: 'long' })
-
-          plan.billingDate = `${month} ${nextBillingDate.getDate()}, ${nextBillingDate.getFullYear()}`
+          plan.billingDate = formatDate(nextBillingDate, {
+            format: 'MMMM DD, YYYY'
+          })
         }
       }
 
@@ -372,7 +479,11 @@ export default {
     },
 
     shippingAddress () {
-      if (this.user && this.user.shippingAddress && this.user.shippingAddress.length) {
+      if (
+        this.user &&
+        this.user.shippingAddress &&
+        this.user.shippingAddress.length
+      ) {
         return this.user.shippingAddress[0]
       }
       return null
@@ -399,7 +510,9 @@ export default {
 
         if (children.length) {
           const childrenIds = children.map(({ id }) => id)
-          const childrenStatus = await this.getLessonChildrenStatus(childrenIds)
+          const childrenStatus = await this.getLessonChildrenStatus(
+            childrenIds
+          )
           this.childrenStatus = childrenStatus
         }
 
@@ -409,16 +522,20 @@ export default {
         return Promise.reject(err)
       }
     } else {
-      this.$router.push({ name: 'admin-user-manager' })
+      await this.$router.push({ name: 'admin-user-manager' })
     }
   },
 
   methods: {
     ...mapActions('admin/users', ['getById', 'getChildren']),
     ...mapActions('children/lesson', ['getLessonChildrenStatus']),
+    ...mapActions('children/progress', ['getChildrenProgressExport']),
 
     goToEdit (id) {
-      this.$router.push({ name: 'admin-user-manager-editor', query: { id } })
+      this.$router.push({
+        name: 'admin-user-manager-editor',
+        query: { id }
+      })
     },
 
     getDob (timestamp) {
@@ -441,7 +558,11 @@ export default {
       }
 
       const status = this.childrenStatus.find((childStatus) => {
-        return childStatus.children.id === childId && childStatus.curriculumType && childStatus.day
+        return (
+          childStatus.children.id === childId &&
+          childStatus.curriculumType &&
+          childStatus.day
+        )
       })
 
       if (status) {
@@ -454,152 +575,48 @@ export default {
 
     openTimeline (child) {
       this.$nuxt.$emit('open-timeline', child)
+    },
+
+    async requestExport () {
+      this.exporting = true
+
+      try {
+        const { data } = await this.getChildrenProgressExport()
+
+        if (data.export) {
+          this.$snotify.success(
+            'Export is complete and will be sent to your email.'
+          )
+        }
+      } catch (e) {
+      } finally {
+        this.exporting = false
+      }
     }
   }
 }
 </script>
 
 <style lang="scss">
-.user {
-  &-wrapper-card {
-    padding-top: 65px;
-    padding-left: 76px;
-    padding-right: 76px;
-    padding-bottom: 47px;
-    &.v-card.v-sheet {
-      box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.25);
-    }
-  }
-  &-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 45px;
-  }
-  &-img {
-    width: 157px;
-    height: 157px;
-  }
-  &-basic-info {
-    padding-left: 29px;
-  }
-  &-name {
-    font-size: 20px;
-    line-height: 1.5;
-    font-weight: 600;
-  }
-  &-joined {
-    font-size: 18px;
-    line-height: 1.5;
-    font-weight: 400;
-  }
-  &-edit {
-    display: flex;
-    align-items: center;
-    span {
-      font-size: 16px;
-      line-height: 1.5;
-      font-weight: 500;
-      color: var(--v-accent-base);
-      text-decoration: underline;
-    }
-  }
-  &-general {
-    padding: 24px 32px;
-    padding-bottom: 8px;
-    margin-bottom: 40px;
-    &.v-card.v-sheet {
-      box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.25);
-    }
-    &-title {
-      font-size: 20px;
-      font-weight: 600;
-      line-height: 1.5;
-      margin-bottom: 24px;
-    }
-    &-table {
-      display: flex;
-      flex-direction: column;
-      &-row {
-        display: flex;
-        margin-bottom: 16px;
-        &-divider {
-          display: flex;
-          width: 50%;
-        }
-      }
-    }
-    &-field {
-      font-size: 16px;
-      font-weight: 500;
-      line-height: 1.5;
-      color:#9B9B9B;
-      width: 155px;
-    }
-    &-value {
-      font-size: 18px;
-      font-weight: 600;
-      line-height: 1.5;
-      display: inline;
-      color: #484848;
-    }
-  }
-  &-child {
-    padding: 28px 32px;
-    &.v-card.v-sheet {
-      box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.25);
-    }
-    &-title {
-      font-size: 20px;
-      font-weight: 600;
-      line-height: 1.5;
-      margin-bottom: 32px;
-    }
-    &-wrapper {
-      display: flex;
-      flex-direction: column;
-    }
-    &-row {
-      display: flex;
-    }
-    &-separator {
-      margin-top: 40px;
-      margin-bottom: 40px;
-      border-top: 1px solid #E2E2E2;
-    }
-    &-backpack {
-      width: 131px;
-      margin-right: 40px;
-      img {
-        filter: drop-shadow( 0px 3px 6px rgba(0, 0, 0, 0.203922));
-      }
-    }
-    &-table {
-      display: flex;
-      flex-direction: column;
-      &-row {
-        display: flex;
-        margin-bottom: 20px;
-      }
-      &-field {
-        width: 150px;
-        font-size: 16px;
-        font-weight: 500;
-        line-height: 1.5;
-        color: #9B9B9B;
-      }
-      &-value {
-        font-size: 18px;
-        font-weight: 600;
-        line-height: 1.5;
-        color: #484848;
-      }
-    }
-  }
-  &-sent-status {
-    vertical-align: middle;
-    margin-left: 12px;
-    width: 24px;
-    height: 24px;
-  }
+.field {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: #9b9b9b;
+  width: 155px;
+}
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.gray-div {
+  background: #cdcdcd;
+  border-bottom: solid 1px #cdcdcd;
+  width: 90%;
+  height: 1px;
+}
+.edit-color {
+  color: #f89838;
 }
 </style>
