@@ -444,7 +444,8 @@ export default {
       const plan = {
         name: 'N/A',
         fee: 'N/A',
-        billingDate: 'N/A'
+        billingDate: 'N/A',
+        trialEnd: 'N/A'
       }
 
       if (this.user && this.user.planSelected && this.billing) {

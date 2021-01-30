@@ -23,6 +23,10 @@ export default {
     await this.$axios.$post('/users', data)
   },
 
+  async exportParents (ctx) {
+    await this.$axios.get('/billing/export')
+  },
+
   async update (ctx, { id, data }) {
     await this.$axios.$patch(`/users/${id}`, data)
   },
