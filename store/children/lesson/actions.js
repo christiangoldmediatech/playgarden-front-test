@@ -113,6 +113,15 @@ export default {
   },
 
   async getAdvanceLessonChildren (_, childId) {
-    return await this.$axios.$get(`/lessons/children/${childId}/advance`)
+    try {
+      return await this.$axios.$get(`/lessons/children/${childId}/advance`)
+    } catch (e) {
+      const { data } = e.response
+      if (data.errorCode === 100) {
+        this.$router.push({
+          name: 'app-all-done'
+        })
+      }
+    }
   }
 }
