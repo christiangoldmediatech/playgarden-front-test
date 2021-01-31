@@ -93,7 +93,7 @@ export default {
       'https://www.dropbox.com/static/api/2/dropins.js'
     )
     dropBox.setAttribute('id', 'dropboxjs')
-    dropBox.setAttribute('data-app-key', process.env.apiKeyAppDropBox)
+    dropBox.setAttribute('data-app-key', process.env.dropBoxApiKey)
     document.head.appendChild(dropBox)
   },
 
