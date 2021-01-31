@@ -270,12 +270,21 @@ export default {
     },
 
     advance () {
-      if (!this.loadingNext) {
-        this.loadingNext = true
-        this.getAdvanceLessonChildren(this.childId).then(() => {
-          this.$nuxt.$emit('dashboard-panel-update')
+      try {
+        if (!this.loadingNext) {
+          this.loadingNext = true
+          this.getAdvanceLessonChildren(this.childId).then((data) => {
+            this.$nuxt.$emit('dashboard-panel-update')
+            this.loadingNext = false
+          })
+        }
+      } catch (e) {
+        if (e.errorCode === 100) {
           this.loadingNext = false
-        })
+          this.$router.push({
+            name: 'app-all-done'
+          })
+        }
       }
     }
   }
