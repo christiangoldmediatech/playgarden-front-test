@@ -105,6 +105,14 @@
         />
       </validation-provider>
 
+      <!-- dropBox-->
+      <select-dropbox-file
+        ref="fileUploaderDropBox"
+        v-model="file"
+        mode="video"
+        multi-part
+        path="lesson"
+        @sendFile="setFileDropBox" />
       <!-- Thumbnail -->
       <span class="v-label theme--light">Thumbnail</span>
 
@@ -207,7 +215,8 @@ export default {
   data: () => ({
     file: null,
     thumbnail: null,
-    loading: false
+    loading: false,
+    fileDropBox: null
   }),
 
   computed: {
@@ -240,14 +249,18 @@ export default {
       })
     },
 
+    setFileDropBox (file) {
+      this.file = file
+      this.fileDropBox = file
+    },
+
     async onSubmit () {
       this.loading = true
       let id = this.draft.id
 
       try {
         if (this.file) {
-          const { video } = await this.$refs.videoUploader.handleUpload()
-
+          const { video } = (!this.fileDropBox) ? await this.$refs.videoUploader.handleUpload() : await this.$refs.fileUploaderDropBox.handleUpload()
           id = video.id
         }
 
@@ -265,6 +278,7 @@ export default {
       } catch (e) {
       } finally {
         this.loading = false
+        this.fileDropBox = null
       }
     },
 

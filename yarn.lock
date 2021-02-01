@@ -1927,6 +1927,15 @@
     "@sentry/utils" "5.27.4"
     tslib "^1.9.3"
 
+"@sentry/hub@6.0.2":
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/@sentry/hub/-/hub-6.0.2.tgz#6bb33b072bef6bf9ad50599f19f9674438717cb8"
+  integrity sha512-/rByl+ak5Ni6xTSfzIcJqKaaErJbDw0kXgNlHGPRQ4bM5hjDDuKbdykMk4J6BfPWt2dfwe13P25bIjz9M3a7kw==
+  dependencies:
+    "@sentry/types" "6.0.2"
+    "@sentry/utils" "6.0.2"
+    tslib "^1.9.3"
+
 "@sentry/integrations@^5.27.3":
   version "5.27.4"
   resolved "https://registry.yarnpkg.com/@sentry/integrations/-/integrations-5.27.4.tgz#a048a2e9cbc65575a70a54dd0cae5bce2130d55e"
@@ -1944,6 +1953,15 @@
   dependencies:
     "@sentry/hub" "5.27.4"
     "@sentry/types" "5.27.4"
+    tslib "^1.9.3"
+
+"@sentry/minimal@6.0.2":
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/@sentry/minimal/-/minimal-6.0.2.tgz#09b3e9f67329090da713860e40560f77ad4afc48"
+  integrity sha512-wrSTTIvDsRCXbNcfha/fjkP7Mj1xzNHzGeBRMRlNg3T+nYZSrs5SihVTXT/gcABhO5PpWu8EXbMpv0bAahaEGw==
+  dependencies:
+    "@sentry/hub" "6.0.2"
+    "@sentry/types" "6.0.2"
     tslib "^1.9.3"
 
 "@sentry/node@^5.27.3":
@@ -1972,10 +1990,26 @@
     "@sentry/utils" "5.27.4"
     tslib "^1.9.3"
 
+"@sentry/tracing@^6.0.2":
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/@sentry/tracing/-/tracing-6.0.2.tgz#f89645159dcee8d9aedac2ee4481feb4dd231b76"
+  integrity sha512-e8u1pRcpJIoQY8mO9J1Yk0RPi/eEejQqagP888PHbmx2E9Tk7eiTW7TfHha2ECagOfMiCmKbcUUULmVeF1C58Q==
+  dependencies:
+    "@sentry/hub" "6.0.2"
+    "@sentry/minimal" "6.0.2"
+    "@sentry/types" "6.0.2"
+    "@sentry/utils" "6.0.2"
+    tslib "^1.9.3"
+
 "@sentry/types@5.27.4":
   version "5.27.4"
   resolved "https://registry.yarnpkg.com/@sentry/types/-/types-5.27.4.tgz#ba7cefae6f77bb39a0ac59aeba1bb23ce4ad5216"
   integrity sha512-41h3c7tgtSS8UBmfvEckSr+7V7/IVOjt/EiydyOd6s0N18zSFfGY5HdA6g+eFtIJK3DhWkUHCHZNanD5IY5YCQ==
+
+"@sentry/types@6.0.2":
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/@sentry/types/-/types-6.0.2.tgz#8c1f6b5bc41708b5d6133847988752d9d184b237"
+  integrity sha512-aDUJuOe0MsqjDzx6dUTS6xXe+gNjYuZTHUuUB7EpihzoHGre7gUN3/WCCghiR4OJ703fxyl24cex6vDboZJLvg==
 
 "@sentry/utils@5.27.4":
   version "5.27.4"
@@ -1983,6 +2017,14 @@
   integrity sha512-shV1I/q+Tob3hUxRj11DfMhe9PNDiv85hUUoRloZGGwu275dMwpswb2uwgSmjc2Ao4pnMKVx8TL1hC3kGLVHTQ==
   dependencies:
     "@sentry/types" "5.27.4"
+    tslib "^1.9.3"
+
+"@sentry/utils@6.0.2":
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/@sentry/utils/-/utils-6.0.2.tgz#ffa53e7f6873683a5aa8a50f5fcb391ca37ffab4"
+  integrity sha512-X2hAFMkfht4GzdtqrjuVJfK07af5r6h2BfYJGSS/XYa8KBVlDGAtvffP9uYuNWUoLxr+Vrc+ePrPoi4xCREcDQ==
+  dependencies:
+    "@sentry/types" "6.0.2"
     tslib "^1.9.3"
 
 "@sentry/webpack-plugin@^1.13.0":
@@ -7911,6 +7953,11 @@ load-json-file@^2.0.0:
     pify "^2.0.0"
     strip-bom "^3.0.0"
 
+load-script@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/load-script/-/load-script-1.0.0.tgz#0491939e0bee5643ee494a7e3da3d2bac70c6ca4"
+  integrity sha1-BJGTngvuVkPuSUp+PaPSuscMbKQ=
+
 loader-runner@^2.3.1, loader-runner@^2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/loader-runner/-/loader-runner-2.4.0.tgz#ed47066bfe534d7e84c4c7b9998c2a75607d9357"
@@ -12334,6 +12381,14 @@ vue-ctk-date-time-picker@^2.5.0:
     v-click-outside "^2.0.2"
     vue "^2.6.9"
 
+vue-dropbox-chooser@^0.1.13:
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/vue-dropbox-chooser/-/vue-dropbox-chooser-0.1.13.tgz#14368fba62c6ebfa83c90c32962a71567736c56c"
+  integrity sha512-MUjr0wip6fa9jrpAfhId7ZqrCQrVJ+c98HbsQu1eN4//P1eDP0iRitcMkUAk9Pq1Hj1VFO1NYpsMGFcj4gApvQ==
+  dependencies:
+    load-script "^1.0.0"
+    vue "^2.6.10"
+
 vue-eslint-parser@^7.0.0:
   version "7.1.0"
   resolved "https://registry.yarnpkg.com/vue-eslint-parser/-/vue-eslint-parser-7.1.0.tgz#9cdbcc823e656b087507a1911732b867ac101e83"
@@ -12457,15 +12512,15 @@ vue2-perfect-scrollbar@^1.5.0:
     perfect-scrollbar "^1.5.0"
     postcss-import "^12.0.0"
 
+vue@^2.6.10, vue@^2.6.9:
+  version "2.6.12"
+  resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.12.tgz#f5ebd4fa6bd2869403e29a896aed4904456c9123"
+  integrity sha512-uhmLFETqPPNyuLLbsKz6ioJ4q7AZHzD8ZVFNATNyICSZouqP2Sz0rotWQC8UNBF6VGSCs5abnKJoStA6JbCbfg==
+
 vue@^2.6.11:
   version "2.6.11"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.11.tgz#76594d877d4b12234406e84e35275c6d514125c5"
   integrity sha512-VfPwgcGABbGAue9+sfrD4PuwFar7gPb1yl1UK1MwXoQPAw0BKSqWfoYCT/ThFrdEVWoI51dBuyCoiNU9bZDZxQ==
-
-vue@^2.6.9:
-  version "2.6.12"
-  resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.12.tgz#f5ebd4fa6bd2869403e29a896aed4904456c9123"
-  integrity sha512-uhmLFETqPPNyuLLbsKz6ioJ4q7AZHzD8ZVFNATNyICSZouqP2Sz0rotWQC8UNBF6VGSCs5abnKJoStA6JbCbfg==
 
 vuetify-loader@^1.4.3:
   version "1.6.0"

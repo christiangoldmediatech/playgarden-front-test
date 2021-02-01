@@ -13,11 +13,20 @@ export default {
   },
 
   async getCurrentLesson ({ commit }, params) {
-    const data = await this.$axios.$get('/lessons/childrens/current', { params })
-    commit('admin/curriculum/SET_LESSON', data.lesson, { root: true })
-    commit('SET_NEXT_LESSON_ID', data.nextLessonId)
-    commit('SET_CURRENT_LESSON_ID', data.currentLessonId)
-    return data.lesson
+    try {
+      const data = await this.$axios.$get('/lessons/childrens/current', { params })
+      commit('admin/curriculum/SET_LESSON', data.lesson, { root: true })
+      commit('SET_NEXT_LESSON_ID', data.nextLessonId)
+      commit('SET_CURRENT_LESSON_ID', data.currentLessonId)
+      return data.lesson
+    } catch (e) {
+      const { data } = e.response
+      if (data.errorCode === 100) {
+        this.$router.push({
+          name: 'app-all-done'
+        })
+      }
+    }
   },
 
   setCurrentLessonVideo ({ commit }, video) {
@@ -99,7 +108,16 @@ export default {
   },
 
   async getAdvanceLessonChildren (_, childId) {
-    const data = await this.$axios.$get(`/lessons/children/${childId}/advance`)
-    return data
+    try {
+      const data = await this.$axios.$get(`/lessons/children/${childId}/advance`)
+      return data
+    } catch (e) {
+      const { data } = e.response
+      if (data.errorCode === 100) {
+        this.$router.push({
+          name: 'app-all-done'
+        })
+      }
+    }
   }
 }

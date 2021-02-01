@@ -272,31 +272,40 @@ export default {
     },
 
     advance () {
-      if (!this.loadingNext) {
-        this.loadingNext = true
-        if (this.currentLessonId === this.lesson.id) {
-          this.getAdvanceLessonChildren(this.childId).then(() => {
+      try {
+        if (!this.loadingNext) {
+          this.loadingNext = true
+          if (this.currentLessonId === this.lesson.id) {
+            this.getAdvanceLessonChildren(this.childId).then(() => {
+              this.$router.push({
+                name: 'app-dashboard'
+              },
+              () => {
+                this.$nuxt.$emit('dashboard-panel-update-redirect', () => {
+                  this.loadingNext = false
+                })
+              })
+            })
+          } else {
             this.$router.push({
-              name: 'app-dashboard'
+              name: 'app-dashboard',
+              query: {
+                childId: this.childId,
+                lessonId: this.nextLessonId
+              }
             },
             () => {
               this.$nuxt.$emit('dashboard-panel-update-redirect', () => {
                 this.loadingNext = false
               })
             })
-          })
-        } else {
+          }
+        }
+      } catch (e) {
+        if (e.errorCode === 100) {
+          this.loadingNext = false
           this.$router.push({
-            name: 'app-dashboard',
-            query: {
-              childId: this.childId,
-              lessonId: this.nextLessonId
-            }
-          },
-          () => {
-            this.$nuxt.$emit('dashboard-panel-update-redirect', () => {
-              this.loadingNext = false
-            })
+            name: 'app-all-done'
           })
         }
       }

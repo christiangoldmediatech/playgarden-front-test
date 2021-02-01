@@ -84,7 +84,7 @@
         </v-card-text>
         <v-row class="mr-3" no-gutters>
           <v-col v-if="general === true" cols="12" md="12" lg="12">
-            <v-card class="content-report" v-if="!$vuetify.breakpoint.xs">
+            <v-card v-if="!$vuetify.breakpoint.xs" class="content-report">
               <v-row class="ml-2 mr-2">
                 <v-col cols="12" md="7" lg="7">
                   <div class="pt-4 mb-4">

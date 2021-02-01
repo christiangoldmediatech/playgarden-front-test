@@ -12,6 +12,11 @@ export default {
     }
   },
 
+  async doMultiPartDropBoxUpload ({ state, commit }, dataFileDropBox) {
+    const { data } = await this.$axios.post(`/files/${dataFileDropBox.type}/${dataFileDropBox.path}`, dataFileDropBox)
+    return data
+  },
+
   async doMultiPartBackgroundUpload ({ state, commit }, { type, mode, path, file, callback, meta }) {
     // Find number of file parts
     const FILE_CHUNK_SIZE = 10000000
