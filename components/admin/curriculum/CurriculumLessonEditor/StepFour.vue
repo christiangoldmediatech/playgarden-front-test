@@ -77,6 +77,13 @@
         />
       </validation-provider>
 
+      <select-dropbox-file
+        ref="fileUploaderDropBox"
+        v-model="file"
+        mode="document"
+        path="lesson"
+        @sendFile="setFileDropBox" />
+
       <validation-provider
         v-slot="{ errors }"
         name="Video"
@@ -98,6 +105,13 @@
           webm
         />
       </validation-provider>
+
+      <select-dropbox-file
+        ref="videoUploaderDropBox"
+        v-model="videoFile"
+        mode="video"
+        path="lesson"
+        @sendFile="setVideoFileDropBox" />
 
       <v-row class="mb-6" justify="center">
         <v-btn
@@ -155,7 +169,9 @@ export default {
     file: null,
     fileName: null,
     videoFile: null,
-    loading: false
+    loading: false,
+    fileDropBox: null,
+    videoFileDropBox: null
   }),
 
   computed: {
@@ -201,22 +217,38 @@ export default {
       }
     },
 
+    setFileDropBox (file) {
+      this.file = file
+      this.fileDropBox = file
+    },
+
+    setVideoFileDropBox (file) {
+      this.videoFile = file
+      this.videoFileDropBox = file
+    },
+
     async onSubmit () {
       this.loading = true
 
       try {
         if (this.file) {
-          this.draft.pdfUrl = await this.$refs.fileUploader.handleUpload()
+          if (!this.fileDropBox) {
+            this.draft.pdfUrl = await this.$refs.fileUploader.handleUpload()
+          } else {
+            const { filePath } = await this.$refs.fileUploaderDropBox.handleUpload()
+            this.draft.pdfUrl = filePath
+          }
         }
 
         if (this.videoFile) {
-          const { video } = await this.$refs.videoUploader.handleUpload()
+          const { video } = (!this.videoFileDropBox) ? await this.$refs.videoUploader.handleUpload() : await this.$refs.videoUploaderDropBox.handleUpload()
           this.draft.videoId = video.id
         }
         const data = await this.submitMethod(this.getSubmittableData())
         this.$emit('click:submit', data)
       } catch (e) {
       } finally {
+        this.fileDropBox = null
         this.loading = false
       }
     },
