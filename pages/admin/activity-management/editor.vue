@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row>
+    <v-row v-if="!loadingDropBox">
       <v-col cols="12">
         <v-card width="100%">
           <v-card-title>
@@ -22,7 +22,7 @@
       </v-col>
     </v-row>
 
-    <v-row>
+    <v-row v-if="!loadingDropBox">
       <v-col cols="12">
         <v-card width="100%">
           <validation-observer v-slot="{ invalid, passes }">
@@ -166,6 +166,16 @@
                 </v-row>
 
                 <v-row>
+                  <select-dropbox-file
+                    ref="fileUploaderDropBox"
+                    v-model="file"
+                    mode="video"
+                    multi-part
+                    path="activity-video"
+                    @sendFile="setFileDropBox" />
+                </v-row>
+
+                <v-row>
                   <v-col class="text-md-right" cols="12" sm="3">
                     <span class="subheader">Video Thumbnail:</span>
                   </v-col>
@@ -202,6 +212,15 @@
                     </validation-provider>
                   </v-col>
                 </v-row>
+                <v-row>
+                  <select-dropbox-file
+                    ref="fileImageUploaderDropBox"
+                    v-model="thumbnail"
+                    mode="image"
+                    multi-part
+                    path="activity-thumbnail"
+                    @sendFile="setFileImageDropBox" />
+                </v-row>
               </v-form>
             </v-card-text>
 
@@ -223,33 +242,39 @@
         </v-card>
       </v-col>
     </v-row>
+    <v-row v-else justify="center">
+      <v-col class="dashboard-content-column" cols="12">
+        <v-card>
+          <pg-loading />
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
 // import PgInlineVideoPlayer from '@/components/pg-video-js-player/PgInlineVideoPlayer.vue'
-
 export default {
   name: 'Editor',
-
+  components: {
+  //   PgInlineVideoPlayer
+  },
   props: {
     newLessonActivity: Boolean
   },
-
   layout: 'admin',
-
-  // components: {
-  //   PgInlineVideoPlayer
-  // },
-
   data () {
     return {
       loading: false,
+      loadingDropBox: false,
       file: null,
       thumbnail: null,
       video: null,
       player: null,
+      fileDropBox: null,
+      fileImageDropBox: null,
+      showSelected: true,
       activity: {
         featured: false,
         name: '',
@@ -262,27 +287,22 @@ export default {
       }
     }
   },
-
   computed: {
     ...mapGetters('admin/curriculum', { curriculumTypeRows: 'types' }),
     ...mapGetters('admin/activity', ['rows', 'types']),
     ...mapGetters('upload', ['uploads']),
-
     id () {
       return this.$route.query.id ? parseInt(this.$route.query.id) : null
     },
-
     title () {
       return this.id ? 'Edit Activity' : 'New Activity'
     },
-
     activityTypes () {
       return this.types.map(type => ({
         text: type.name,
         value: type.id
       }))
     },
-
     curriculumTypes () {
       return [
         {
@@ -296,34 +316,26 @@ export default {
       ]
     }
   },
-
   watch: {
     file () {
       this.thumbnail = null
     }
   },
-
   async created () {
     this.loading = true
     const promises = []
-
     promises.push(this.getTypes(), this.getCurriculumTypes())
-
     if (this.id) {
       promises.push(this.getActivityById(this.id))
     }
-
     const results = await Promise.all(promises)
     const data = results[2]
-
     if (data) {
       this.activity.featured = data.featured
       this.activity.activityTypeId = data.activityType.id
-
       if (data.curriculumType) {
         this.activity.curriculumTypeId = data.curriculumType.id
       }
-
       if (data.videos) {
         this.activity.name = data.videos.name
         this.activity.description = data.videos.description
@@ -333,10 +345,8 @@ export default {
         this.waitAndLoad()
       }
     }
-
     this.loading = false
   },
-
   methods: {
     ...mapActions('admin/activity', [
       'getActivities',
@@ -345,17 +355,13 @@ export default {
       'updateActivity',
       'getTypes'
     ]),
-
     ...mapActions('admin/curriculum', { getCurriculumTypes: 'getTypes' }),
-
     onPlayerReady (player) {
       this.player = player
     },
-
     playVideo () {
       this.player.play()
     },
-
     waitAndLoad () {
       return new Promise((resolve, reject) => {
         const start = new Date().getTime()
@@ -385,18 +391,35 @@ export default {
         }, 50)
       })
     },
-
+    setFileDropBox (file) {
+      this.file = file
+      this.fileDropBox = file
+    },
+    setFileImageDropBox (file) {
+      this.thumbnail = file
+      this.fileImageDropBox = file
+    },
     async save () {
       this.loading = true
       let id = this.id
-
       try {
-        const thumbnail = await this.$refs.fileUploader2.handleUpload()
+        let thumbnail
+        if (!this.fileImageDropBox) {
+          thumbnail = await this.$refs.fileUploader2.handleUpload()
+        } else {
+          const { filePath } = await this.$refs.fileImageUploaderDropBox.handleUpload()
+          thumbnail = filePath
+        }
         if (thumbnail) {
           this.activity.thumbnail = thumbnail
         }
-
-        const data = await this.$refs.fileUploader.handleUpload()
+        let data = null
+        if (!this.fileDropBox) {
+          data = await this.$refs.fileUploader.handleUpload()
+        } else {
+          this.loadingDropBox = true
+          data = await this.$refs.fileUploaderDropBox.handleUpload()
+        }
         if (data) {
           this.activity.videoId = data.video.id
         }
@@ -411,6 +434,8 @@ export default {
           })
         }
       } catch (err) {
+        this.fileDropBox = null
+        this.loadingDropBox = false
         this.loading = false
       } finally {
         if (this.newLessonActivity === true) {
