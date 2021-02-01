@@ -50,8 +50,8 @@ export default {
     this.$nuxt.$on('open-lesson-overlay', ({ childId, lessonId }) => {
       this.lesson = null
       this.loading = true
-      this.getCurrentLessonByChildrenId({ lessonId, childId }).then((data) => {
-        this.lesson = data
+      this.getCurrentLessonByChildrenId({ lessonId, childId }).then(({ lesson }) => {
+        this.lesson = lesson
         this.loading = false
       })
       this.dialog = true

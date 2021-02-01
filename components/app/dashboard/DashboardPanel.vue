@@ -161,7 +161,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import DashboardMixin from '@/mixins/DashboardMixin'
 // import PgCircleLetterDay from '@/components/pg/components/PgCircleLetterDay'
 import UploadOfflineWorksheet from './worksheets/UploadOfflineWorksheet'
@@ -236,6 +236,8 @@ export default {
   },
 
   computed: {
+    ...mapGetters('children/lesson', { nextLessonId: 'getNextLessonId', currentLessonId: 'getCurrentLessonId' }),
+
     offlineWorksheet () {
       if (this.lesson) {
         return this.lesson.worksheets.find(({ type }) => type === 'OFFLINE')
@@ -272,10 +274,31 @@ export default {
     advance () {
       if (!this.loadingNext) {
         this.loadingNext = true
-        this.getAdvanceLessonChildren(this.childId).then(() => {
-          this.$nuxt.$emit('dashboard-panel-update')
-          this.loadingNext = false
-        })
+        if (this.currentLessonId === this.lesson.id) {
+          this.getAdvanceLessonChildren(this.childId).then(() => {
+            this.$router.push({
+              name: 'app-dashboard'
+            },
+            () => {
+              this.$nuxt.$emit('dashboard-panel-update-redirect', () => {
+                this.loadingNext = false
+              })
+            })
+          })
+        } else {
+          this.$router.push({
+            name: 'app-dashboard',
+            query: {
+              childId: this.childId,
+              lessonId: this.nextLessonId
+            }
+          },
+          () => {
+            this.$nuxt.$emit('dashboard-panel-update-redirect', () => {
+              this.loadingNext = false
+            })
+          })
+        }
       }
     }
   }

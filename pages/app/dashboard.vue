@@ -88,10 +88,18 @@ export default {
     this.$nuxt.$on('dashboard-panel-update', () => {
       this.handleLesson()
     })
+
+    // Setup update listener
+    this.$nuxt.$on('dashboard-panel-update-redirect', (callback = () => {}) => {
+      this.handleLesson(true).then(() => {
+        callback()
+      })
+    })
   },
 
   beforeDestroy () {
     this.$nuxt.$off('dashboard-panel-update')
+    this.$nuxt.$off('dashboard-panel-update-redirect')
   },
 
   methods: {
@@ -145,7 +153,7 @@ export default {
           })
         }
         if (redirect || (this.lessonCompleted && !this.overrideMode)) {
-          this.redirectDashboard('handleLesson')
+          this.redirectDashboard()
           this.loading = false
           return
         }
