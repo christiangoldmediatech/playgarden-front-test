@@ -62,7 +62,7 @@
                         Activities
                       </template>
                       <template v-else>
-                        Go to activites
+                        Go to Library
                       </template>
                     </v-btn>
                   </v-col>

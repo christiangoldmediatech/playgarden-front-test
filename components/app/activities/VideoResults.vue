@@ -51,7 +51,7 @@
           x-large
           @click.stop="$router.push({ name: 'app-activities' })"
         >
-          Return to activities
+          Return to Library
         </v-btn>
       </v-col>
     </v-row>
