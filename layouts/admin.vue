@@ -264,6 +264,10 @@ export default {
             {
               title: 'Role Management',
               route: 'role-management'
+            },
+            {
+              title: 'Children',
+              route: 'children-list'
             }
           ]
         },
