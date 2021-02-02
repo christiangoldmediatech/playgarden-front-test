@@ -4,7 +4,7 @@
       <v-col cols="12">
         <v-card width="100%">
           <v-card-title>
-            Coupons
+            Coupon - {{ couponName }}
 
             <v-spacer />
 
@@ -25,10 +25,6 @@
               <span class="hidden-xs-only white--text">Add new coupon</span>
             </v-btn>
           </v-card-title>
-
-          <v-card-text>
-            View, create, update, or delete coupons.
-          </v-card-text>
         </v-card>
       </v-col>
     </v-row>
@@ -37,11 +33,9 @@
       <v-col cols="12">
         <v-card width="100%">
           <v-card-text>
-            <coupon-editor-dialog ref="editor" @saved="refresh(false)" />
-
             <pg-admin-data-table
               :headers="headers"
-              :items="coupons"
+              :items="users"
               :loading="loading"
               :page.sync="page"
               @update:page="page = $event"
@@ -57,18 +51,18 @@
                   N/A
                 </span>
               </template>
-              <template v-slot:[`item.actions.prepend`]="{ item }">
+              <!-- <template v-slot:[`item.actions.prepend`]="{ item }">
                 <nuxt-link
                   :to="{
-                    name: 'admin-user-manager-coupon-users',
-                    query: { couponName: item.name }
+                    name: 'admin-user-manager-users',
+                    params: { name: item.id }
                   }"
                 >
                   <v-icon color="accent" dense>
-                    mdi-account
+                    mdi-play
                   </v-icon>
                 </nuxt-link>
-              </template>
+              </template> -->
             </pg-admin-data-table>
           </v-card-text>
         </v-card>
@@ -80,42 +74,41 @@
 <script>
 import { mapActions } from 'vuex'
 import onSearch from '@/mixins/OnSearchMixin.js'
-import CouponEditorDialog from './CouponEditorDialog'
 
 export default {
-  name: 'CouponDataTable',
+  name: 'CouponUsers',
 
-  components: {
-    CouponEditorDialog
-  },
+  layout: 'admin',
+
+  components: {},
 
   mixins: [onSearch],
 
   data () {
     return {
-      coupons: [],
+      users: [],
       loading: false,
       search: null,
       page: 1,
       query: null,
       headers: [
         {
-          text: 'Code Promotion',
+          text: 'First Name',
           align: 'start',
           sortable: true,
-          value: 'promotion_code'
+          value: 'firstName'
         },
         {
-          text: 'Name',
+          text: 'Last Name',
           align: 'start',
           sortable: true,
-          value: 'name'
+          value: 'lastName'
         },
         {
-          text: 'Duration',
+          text: 'E-mail',
           align: 'start',
           sortable: true,
-          value: 'duration'
+          value: 'email'
         },
         {
           align: 'right',
@@ -127,34 +120,45 @@ export default {
     }
   },
 
+  computed: {
+    couponName () {
+      return this.$route.query.couponName
+    }
+  },
+
+  watch: {
+    couponName () {
+      if (!this.loading) {
+        this.refresh()
+      }
+    }
+  },
+
+  created () {
+    this.refresh()
+  },
+
   methods: {
-    ...mapActions('coupons', ['getCoupons', 'deleteCoupon']),
+    ...mapActions('coupons', ['getCouponsWithUsers', 'deleteCouponSubscription']),
 
     async refresh (clear = false) {
       this.loading = true
-      this.query = { active: true, code: this.search }
-      if (clear) {
-        this.search = null
-      }
-
-      if (!this.search) {
-        delete this.query.code
-      }
+      this.query = { name: this.couponName }
 
       try {
-        this.coupons = await this.getCoupons(this.query)
+        this.users = await this.getCouponsWithUsers(this.query)
       } catch (e) {
       } finally {
         this.loading = false
       }
     },
 
-    remove ({ id, name }) {
+    remove ({ id, firstName, lastName }) {
       this.$nuxt.$emit('open-prompt', {
-        title: 'Delete coupon?',
-        message: `Are you sure you want to delete <b>${name}</b>?`,
+        title: 'Delete coupon on client?',
+        message: `Are you sure you want to delete coupon on <b>${firstName} ${lastName}</b>?`,
         action: async () => {
-          await this.deleteCoupon(id)
+          await this.deleteCouponSubscription(id)
           await this.refresh()
         }
       })
