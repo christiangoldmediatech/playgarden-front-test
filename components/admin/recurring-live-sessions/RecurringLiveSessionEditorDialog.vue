@@ -361,10 +361,9 @@ export default {
       })
 
       if (item.dateStart) {
-        const dateStart = item.dateStart.replace(':00.000Z', '').split('T')
-
-        this.dateStart = dateStart[0]
-        this.timeStart = dateStart[1]
+        const dateStart = new Date(item.dateStart)
+        this.dateStart = `${dateStart.getFullYear()}-${(dateStart.getMonth() + 1).toString().padStart(2, '0')}-${dateStart.getDate().toString().padStart(2, '0')}`
+        this.timeStart = `${dateStart.getHours().toString().padStart(2, '0')}:${dateStart.getMinutes().toString().padStart(2, '0')}`
       }
 
       if (item.dateEnd) {
