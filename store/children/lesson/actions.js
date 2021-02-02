@@ -5,25 +5,20 @@ export default {
   },
 
   async getCurrentLessonByChildrenId ({ commit }, { lessonId, childId }) {
-    try {
-      const { lesson } = await this.$axios.$get(`/lessons/${lessonId}/children/${childId}`)
-      commit('admin/curriculum/SET_LESSON', lesson, { root: true })
-      return lesson
-    } catch (e) {
-      const { data } = e.response
-      if (data.errorCode === 100) {
-        this.$router.push({
-          name: 'app-all-done'
-        })
-      }
-    }
+    const data = await this.$axios.$get(`/lessons/${lessonId}/children/${childId}`)
+    commit('admin/curriculum/SET_LESSON', data.lesson, { root: true })
+    commit('SET_NEXT_LESSON_ID', data.nextLessonId)
+    commit('SET_CURRENT_LESSON_ID', data.currentLessonId)
+    return data
   },
 
   async getCurrentLesson ({ commit }, params) {
     try {
-      const { lesson } = await this.$axios.$get('/lessons/childrens/current', { params })
-      commit('admin/curriculum/SET_LESSON', lesson, { root: true })
-      return lesson
+      const data = await this.$axios.$get('/lessons/childrens/current', { params })
+      commit('admin/curriculum/SET_LESSON', data.lesson, { root: true })
+      commit('SET_NEXT_LESSON_ID', data.nextLessonId)
+      commit('SET_CURRENT_LESSON_ID', data.currentLessonId)
+      return data.lesson
     } catch (e) {
       const { data } = e.response
       if (data.errorCode === 100) {
@@ -114,7 +109,8 @@ export default {
 
   async getAdvanceLessonChildren (_, childId) {
     try {
-      return await this.$axios.$get(`/lessons/children/${childId}/advance`)
+      const data = await this.$axios.$get(`/lessons/children/${childId}/advance`)
+      return data
     } catch (e) {
       const { data } = e.response
       if (data.errorCode === 100) {
