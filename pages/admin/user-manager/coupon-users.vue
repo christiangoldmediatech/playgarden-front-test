@@ -16,25 +16,6 @@
       <v-col cols="12">
         <v-card width="100%">
           <v-card-text>
-            <!-- <pg-admin-data-table
-              :headers="headers"
-              :items="users"
-              :loading="loading"
-              :page.sync="page"
-              @update:page="page = $event"
-              @search="onSearch"
-              @refresh="refresh(true)"
-              @edit-item="$refs.editor.open(null, $event)"
-              @remove-item="remove"
-            >
-              <template v-slot:[`item.image`]="{ item }">
-                <img v-if="item.image" :src="item.image" width="32px">
-
-                <span v-else>
-                  N/A
-                </span>
-              </template>
-            </pg-admin-data-table> -->
             <v-data-table
               :headers="headers"
               hide-default-footer
@@ -136,7 +117,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('coupons', ['getCouponsWithUsers', 'deleteCouponSubscription']),
+    ...mapActions('coupons', ['getCouponsWithUsers']),
 
     goToProfile (id) {
       this.$router.push({ name: 'admin-user-manager-profile', query: { id } })
@@ -152,17 +133,6 @@ export default {
       } finally {
         this.loading = false
       }
-    },
-
-    remove ({ id, firstName, lastName }) {
-      this.$nuxt.$emit('open-prompt', {
-        title: 'Delete coupon on client?',
-        message: `Are you sure you want to delete coupon on <b>${firstName} ${lastName}</b>?`,
-        action: async () => {
-          await this.deleteCouponSubscription(id)
-          await this.refresh()
-        }
-      })
     }
   }
 }

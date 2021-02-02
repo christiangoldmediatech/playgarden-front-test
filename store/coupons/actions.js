@@ -19,7 +19,7 @@ export default {
 
   async getCouponsWithUsers ({ commit }, params) {
     try {
-      return await this.$axios.$get(`/billing/coupons/users/${params.name}`)
+      return await this.$axios.$get(`/billing/coupons/${params.name}/users/`)
     } catch (error) {
       snotifyError(commit, {
         body: 'Sorry! There was an error while getting coupons'
@@ -34,10 +34,6 @@ export default {
 
   updateCoupon (_, { id, data }) {
     return this.$axios.$patch(`/coupons/${id}`, data)
-  },
-
-  deleteCouponSubscription (_, id) {
-    return this.$axios.$patch(`/billing/subscription/coupon/${id}`)
   },
 
   deleteCoupon (_, id) {
