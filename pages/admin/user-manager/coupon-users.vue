@@ -7,23 +7,6 @@
             Coupon - {{ couponName }}
 
             <v-spacer />
-
-            <v-btn
-              class="mr-2 text-none"
-              color="primary darken-1"
-              dark
-              :icon="$vuetify.breakpoint.xs"
-              @click.stop="$refs.editor.open"
-            >
-              <v-icon class="hidden-sm-and-up">
-                mdi-plus-circle
-              </v-icon>
-
-              <v-icon class="hidden-xs-only" small>
-                mdi-plus
-              </v-icon>
-              <span class="hidden-xs-only white--text">Add new coupon</span>
-            </v-btn>
           </v-card-title>
         </v-card>
       </v-col>
@@ -33,7 +16,7 @@
       <v-col cols="12">
         <v-card width="100%">
           <v-card-text>
-            <pg-admin-data-table
+            <!-- <pg-admin-data-table
               :headers="headers"
               :items="users"
               :loading="loading"
@@ -51,19 +34,33 @@
                   N/A
                 </span>
               </template>
-              <!-- <template v-slot:[`item.actions.prepend`]="{ item }">
-                <nuxt-link
-                  :to="{
-                    name: 'admin-user-manager-users',
-                    params: { name: item.id }
-                  }"
-                >
+            </pg-admin-data-table> -->
+            <v-data-table
+              :headers="headers"
+              hide-default-footer
+              :items="users"
+              :loading="loading"
+              :page.sync="page"
+              @update:page="page = $event"
+            >
+              <template v-slot:item.actions="{ item }">
+                <v-btn icon @click="goToProfile(item.id)">
                   <v-icon color="accent" dense>
-                    mdi-play
+                    mdi-eye
                   </v-icon>
-                </nuxt-link>
-              </template> -->
-            </pg-admin-data-table>
+                </v-btn>
+              </template>
+
+              <template v-slot:no-data>
+                <v-btn color="primary" text @click="refresh">
+                  Refresh
+                </v-btn>
+              </template>
+
+              <template v-slot:loading>
+                <v-skeleton-loader class="mx-auto" type="table-row-divider@3" />
+              </template>
+            </v-data-table>
           </v-card-text>
         </v-card>
       </v-col>
@@ -140,6 +137,10 @@ export default {
 
   methods: {
     ...mapActions('coupons', ['getCouponsWithUsers', 'deleteCouponSubscription']),
+
+    goToProfile (id) {
+      this.$router.push({ name: 'admin-user-manager-profile', query: { id } })
+    },
 
     async refresh (clear = false) {
       this.loading = true
