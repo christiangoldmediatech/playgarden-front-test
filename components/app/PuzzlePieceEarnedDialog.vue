@@ -59,7 +59,7 @@
                     >
                       <img class="piece-earned-play-btn-icon" height="30px;" src="@/assets/svg/play-button.svg">
                       <template v-if="$vuetify.breakpoint.xsOnly">
-                        Activities
+                        Library
                       </template>
                       <template v-else>
                         Go to Library
