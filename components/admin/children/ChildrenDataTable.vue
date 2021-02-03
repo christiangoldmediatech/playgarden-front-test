@@ -103,6 +103,7 @@
                         name: 'admin-user-manager-profile',
                         query: { id: item.user.id }
                       }"
+                      title="Go to Parent"
                     >
                       <v-img
                         width="20"
@@ -117,6 +118,7 @@
                       icon
                       width="16"
                       height="16"
+                      title="Show Progress"
                       @click.stop="openTimeline(item)"
                     >
                       <v-img :src="require('@/assets/png/progress.png')" />
