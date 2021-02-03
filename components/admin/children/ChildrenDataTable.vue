@@ -140,7 +140,7 @@
                       title="Show Progress"
                       @click.stop="openTimeline(item)"
                     >
-                      <v-img :src="require('@/assets/png/progress.png')" />
+                      <v-img :src="require('@/assets/png/progress-1.png')" height="20" width="20" />
                     </v-btn>
                   </div>
                 </v-row>
