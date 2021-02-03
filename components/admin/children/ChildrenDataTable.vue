@@ -6,6 +6,25 @@
           <v-card-title>
             Children
             <v-spacer />
+
+            <v-btn
+              class="mr-2 text-none"
+              color="primary darken-1"
+              dark
+              :icon="$vuetify.breakpoint.xs"
+              nuxt
+              @click.stop="childrenExport"
+            >
+              <v-icon class="hidden-sm-and-up">
+                mdi-plus-circle
+              </v-icon>
+
+              <v-icon class="hidden-xs-only" small>
+                mdi-plus
+              </v-icon>
+
+              <span class="hidden-xs-only white--text">Export</span>
+            </v-btn>
           </v-card-title>
         </v-card>
       </v-col>
@@ -226,6 +245,7 @@ export default {
 
   methods: {
     ...mapActions('admin/children', ['getChildrensProgress']),
+    ...mapActions('children/progress', ['getChildrenProgressExport']),
 
     openTimeline (child) {
       this.$nuxt.$emit('open-timeline', child)
@@ -265,6 +285,23 @@ export default {
       } catch (e) {
       } finally {
         this.loading = false
+      }
+    },
+
+    async childrenExport () {
+      this.exporting = true
+
+      try {
+        const { data } = await this.getChildrenProgressExport()
+
+        if (data.export) {
+          this.$snotify.success(
+            'Export is complete and will be sent to your email.'
+          )
+        }
+      } catch (e) {
+      } finally {
+        this.exporting = false
       }
     }
   }
