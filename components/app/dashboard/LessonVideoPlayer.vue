@@ -72,7 +72,7 @@ export default {
           }
         },
         {
-          text: 'SKIP TO ACTIVITIES',
+          text: 'SKIP TO LIBRARY',
           color: '#FEC572',
           iconLeft: 'pg-icon-play',
           action: () => {

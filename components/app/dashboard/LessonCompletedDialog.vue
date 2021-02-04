@@ -41,7 +41,7 @@
                   <v-icon class="lesson-completed-icon">
                     pg-icon-play
                   </v-icon>
-                  SKIP TO ACTIVITIES
+                  SKIP TO LIBRARY
                 </v-btn>
               </div>
 

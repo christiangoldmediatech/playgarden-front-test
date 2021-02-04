@@ -215,12 +215,7 @@ export default {
 
     selectedLetter (val) {
       if (val) {
-        this.loading = true
-        this.fetchChildProgress()
-        this.getCourseProgressByChildId({ id: this.studentId, curriculumTypeId: val }).then((data) => {
-          this.lessons = data.map(({ lesson }) => lesson)
-          this.loading = false
-        })
+        this.getAll()
       }
     }
   },
@@ -228,8 +223,12 @@ export default {
   mounted () {
     this.$nuxt.$on('show-curriculum-progress', (curriculumTypeId) => {
       if (this.studentId) {
-        this.lessons = []
-        this.selectedLetter = curriculumTypeId
+        if (this.selectedLetter !== curriculumTypeId) {
+          this.lessons = []
+          this.selectedLetter = curriculumTypeId
+        } else {
+          this.getAll()
+        }
         this.show = true
         document.querySelector('html').style.overflowY = 'hidden'
       }
@@ -257,6 +256,15 @@ export default {
         id: this.studentId
       })
       this.letters = data
+    },
+
+    getAll () {
+      this.loading = true
+      this.fetchChildProgress()
+      this.getCourseProgressByChildId({ id: this.studentId, curriculumTypeId: this.selectedLetter }).then((data) => {
+        this.lessons = data.map(({ lesson }) => lesson)
+        this.loading = false
+      })
     }
   }
 }
