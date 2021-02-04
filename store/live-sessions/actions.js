@@ -9,6 +9,18 @@ export default {
     return this.$axios.$delete(`/live-sessions/${id}`)
   },
 
+  async getParticipants (_, id, { commit }) {
+    try {
+      return await this.$axios.$get(`/live-sessions/${id}/assistant`)
+    } catch (error) {
+      snotifyError(commit, {
+        body: 'Sorry! There was an error while getting participants'
+      })
+
+      throw error
+    }
+  },
+
   getLiveSessions ({ commit }, params) {
     return new Promise((resolve, reject) =>
       this.$axios
