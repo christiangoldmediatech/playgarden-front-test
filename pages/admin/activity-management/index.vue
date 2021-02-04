@@ -22,7 +22,7 @@ export default {
   },
 
   created () {
-    this.getTypes()
+    this.getTypes({ activity: true })
   },
 
   mounted () {

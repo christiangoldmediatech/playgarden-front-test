@@ -28,9 +28,9 @@ export default {
     await this.$axios.$delete(`/activities/${id}`)
   },
 
-  async getTypes ({ commit }, name = null) {
+  async getTypes ({ commit }, params) {
     const { data } = await this.$axios.get('/activity-types', {
-      params: { name }
+      params
     })
     commit('SET_TYPES', data)
     return data

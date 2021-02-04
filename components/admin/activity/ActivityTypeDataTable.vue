@@ -175,7 +175,9 @@ export default {
       if (clear) {
         this.search = ''
       }
-      await this.getTypes(this.search)
+      await this.getTypes({
+        name: this.search
+      })
       this.loading = false
     },
 
