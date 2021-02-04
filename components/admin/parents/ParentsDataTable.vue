@@ -40,18 +40,16 @@
               :loading="loading"
               :page.sync="page"
               :server-items-length="total"
-              :action="action"
               top-justify="space-between"
               @search="onSearch"
               @refresh="refresh(true)"
               @update:items-per-page="setLimit"
               @update:page="page = $event"
-              @edit-item="
-                $router.push({
-                  name: 'admin-user-manager-specialists-editor',
-                  query: { id: $event.id }
-                })
-              "
+              @edit-item="$router.push({
+                name: 'admin-user-manager-editor',
+                query: { id: $event.id }
+              })"
+              @remove-item="remove"
             >
               <template v-slot:[`top.prepend`]>
                 <v-col class="fkex-shrink-1 flex-grow-0">
@@ -84,6 +82,10 @@
                     />
                   </v-row>
                 </v-col>
+              </template>
+
+              <template v-slot:[`item.actions.prepend`]="{ item }">
+                <img class="clickable profile-icon" width="20px;" height="20px;" src="@/assets/svg/eye.svg" @click="goToProfile(item.id)">
               </template>
             </pg-admin-data-table>
           </v-card-text>
@@ -165,6 +167,12 @@ export default {
           align: 'start',
           sortable: false,
           value: 'updatedAt'
+        },
+        {
+          align: 'right',
+          sortable: false,
+          value: 'actions',
+          width: 100
         }
       ]
     }
@@ -202,7 +210,8 @@ export default {
 
   methods: {
     ...mapActions('admin/users', {
-      getUsers: 'get'
+      getUsers: 'get',
+      deleteUser: 'delete'
     }),
     ...mapActions('admin/users', {
       exportParents: 'exportParents'
@@ -210,6 +219,21 @@ export default {
     ...mapActions('admin/roles', {
       getRoles: 'get'
     }),
+
+    goToProfile (id) {
+      this.$router.push({ name: 'admin-user-manager-profile', query: { id } })
+    },
+
+    remove ({ id, firstName, lastName, email }) {
+      this.$nuxt.$emit('open-prompt', {
+        title: 'Delete user?',
+        message: `Are you sure you want to delete <b>${firstName} ${lastName}' (${email})</b>?`,
+        action: async () => {
+          await this.deleteUser(id)
+          this.refresh()
+        }
+      })
+    },
 
     toggleAll () {
       this.allFilters = !this.allFilters
