@@ -422,10 +422,11 @@ export default {
         }
         const nextTime = currentTime + 15
         const duration = this.playerInstance.duration()
-        const mediaObj = this.playerInstance.getMediaObject()
-        const availTime = (mediaObj.viewed && mediaObj.viewed.time) ? mediaObj.viewed.time : currentTime
+        // const mediaObj = this.playerInstance.getMediaObject()
+        // const availTime = (mediaObj.viewed && mediaObj.viewed.time) ? mediaObj.viewed.time : currentTime
 
-        if (nextTime < (duration - 1) && nextTime < availTime) {
+        // if (nextTime < (duration - 1) && nextTime < availTime) {
+        if (nextTime < (duration - 1)) {
           if (this.isCasting) {
             window.remotePlayer.currentTime = nextTime
             window.remotePlayerController.seek()

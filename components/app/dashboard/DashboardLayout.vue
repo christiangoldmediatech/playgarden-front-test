@@ -178,7 +178,7 @@ export default {
     //   return !this.overrideMode && (this.lesson && this.lesson.curriculumType.id > 1) && (today < monday)
     // }
     canAdvance () {
-      if (this.lesson && this.childId && !this.previewMode && !this.overrideMode) {
+      if (this.lesson && this.childId && !this.previewMode) {
         return true
         // const completedCount = this.lesson.videos.map(({ viewed }) => Number(viewed && viewed.completed ? 1 : 0)).reduce((a, b) => a + b)
 

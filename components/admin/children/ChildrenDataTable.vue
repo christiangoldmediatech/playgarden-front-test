@@ -4,7 +4,7 @@
       <v-col cols="12">
         <v-card width="100%">
           <v-card-title>
-            Parents
+            Children
             <v-spacer />
 
             <v-btn
@@ -13,7 +13,7 @@
               dark
               :icon="$vuetify.breakpoint.xs"
               nuxt
-              @click.stop="exportList"
+              @click.stop="childrenExport"
             >
               <v-icon class="hidden-sm-and-up">
                 mdi-plus-circle
@@ -36,20 +36,19 @@
           <v-card-text>
             <pg-admin-data-table
               :headers="headers"
-              :items="types"
+              :items="children"
               :loading="loading"
               :page.sync="page"
-              :server-items-length="total"
+              :action="action"
               top-justify="space-between"
               @search="onSearch"
               @refresh="refresh(true)"
-              @update:items-per-page="setLimit"
-              @update:page="page = $event"
-              @edit-item="$router.push({
-                name: 'admin-user-manager-editor',
-                query: { id: $event.id }
-              })"
-              @remove-item="remove"
+              @edit-item="
+                $router.push({
+                  name: 'admin-user-manager-specialists-editor',
+                  query: { id: $event.id }
+                })
+              "
             >
               <template v-slot:[`top.prepend`]>
                 <v-col class="fkex-shrink-1 flex-grow-0">
@@ -84,23 +83,91 @@
                 </v-col>
               </template>
 
-              <template v-slot:[`item.actions.prepend`]="{ item }">
-                <img class="clickable profile-icon" width="20px;" height="20px;" src="@/assets/svg/eye.svg" @click="goToProfile(item.id)">
+              <template v-slot:[`item.backpack.image`]="{ item }">
+                <img
+                  v-if="item.backpack && item.backpack.image"
+                  :src="item.backpack.image"
+                  width="32px"
+                >
+                <span v-else>
+                  N/A
+                </span>
+              </template>
+
+              <template v-slot:[`item.lesson.curriculumType.letter`]="{ item }">
+                <span
+                  v-if="item.lesson && item.lesson.curriculumType.letter"
+                >{{ item.lesson.curriculumType.letter }}
+                </span>
+                <span v-else>
+                  N/A
+                </span>
+              </template>
+
+              <template v-slot:[`item.lesson.day`]="{ item }">
+                <span
+                  v-if="item.lesson && item.lesson.day"
+                >{{ item.lesson.day }}
+                </span>
+                <span v-else>
+                  N/A
+                </span>
+              </template>
+
+              <template v-slot:[`item.actions`]="{ item }">
+                <v-row>
+                  <div class="pl-1">
+                    <nuxt-link
+                      :to="{
+                        name: 'admin-user-manager-profile',
+                        query: { id: item.user.id }
+                      }"
+                      title="Go to Parent"
+                    >
+                      <v-img
+                        width="20"
+                        height="20"
+                        :src="require('@/assets/png/Parent.png')"
+                      />
+                    </nuxt-link>
+                  </div>
+
+                  <div :key="`child-${item.id}`" class="pl-4">
+                    <v-btn
+                      icon
+                      width="16"
+                      height="16"
+                      title="Show Progress"
+                      @click.stop="openTimeline(item)"
+                    >
+                      <v-img :src="require('@/assets/png/progress-1.png')" height="20" width="20" />
+                    </v-btn>
+                  </div>
+                </v-row>
               </template>
             </pg-admin-data-table>
           </v-card-text>
         </v-card>
       </v-col>
     </v-row>
+    <user-child-timeline-dialog />
+    <user-child-lesson-overlay />
   </v-container>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import onSearch from '@/mixins/OnSearchMixin.js'
+import UserChildLessonOverlay from '@/components/admin/users/UserChildLessonOverlay.vue'
+import UserChildTimelineDialog from '@/components/admin/users/UserChildTimelineDialog.vue'
 
 export default {
-  name: 'ParentsDataTable',
+  name: 'ChildrenDataTable',
+
+  components: {
+    UserChildTimelineDialog,
+    UserChildLessonOverlay
+  },
 
   mixins: [onSearch],
 
@@ -112,80 +179,50 @@ export default {
       limit: 10,
       page: 1,
       allFilters: false,
-      activeFilters: ['firstName', 'lastName'],
+      children: [],
+      activeFilters: ['firstName'],
       filterList: [
         {
           text: 'First Name',
-          value: 'user.firstName'
-        },
-        {
-          text: 'Last Name',
-          value: 'user.lastName'
-        },
-        {
-          text: 'E-mail',
-          value: 'user.email'
-        },
-        {
-          text: 'Phone Number',
-          value: 'user.phoneNumber'
+          value: 'firstName'
         }
       ],
       headers: [
         {
-          text: 'Name',
+          text: 'Image',
           align: 'start',
           sortable: false,
-          value: 'fullName'
+          value: 'backpack.image'
         },
         {
-          text: 'E-mail',
+          text: 'Children name',
           align: 'start',
           sortable: false,
-          value: 'email'
+          value: 'firstName'
         },
         {
-          text: 'Phone',
+          text: 'Current Letter',
           align: 'start',
           sortable: false,
-          value: 'phoneNumber'
+          value: 'lesson.curriculumType.letter'
         },
         {
-          text: 'Role',
+          text: 'Current Day',
           align: 'start',
           sortable: false,
-          value: 'role.name'
-        },
-        {
-          text: 'Created',
-          align: 'start',
-          sortable: false,
-          value: 'createdAt'
-        },
-        {
-          text: 'Last Updated',
-          align: 'start',
-          sortable: false,
-          value: 'updatedAt'
+          value: 'lesson.day'
         },
         {
           align: 'right',
           sortable: false,
           value: 'actions',
-          width: 100
+          width: 120
         }
       ]
     }
   },
-
   computed: {
-    ...mapGetters('admin/users', {
-      types: 'rows',
-      total: 'total'
-    }),
-    ...mapGetters('admin/roles', {
-      roles: 'rows'
-    })
+    ...mapGetters('children', ['rows'])
   },
 
   watch: {
@@ -209,30 +246,11 @@ export default {
   },
 
   methods: {
-    ...mapActions('admin/users', {
-      getUsers: 'get',
-      deleteUser: 'delete'
-    }),
-    ...mapActions('admin/users', {
-      exportParents: 'exportParents'
-    }),
-    ...mapActions('admin/roles', {
-      getRoles: 'get'
-    }),
+    ...mapActions('admin/children', ['getChildrensProgress']),
+    ...mapActions('children/progress', ['getChildrenProgressExport']),
 
-    goToProfile (id) {
-      this.$router.push({ name: 'admin-user-manager-profile', query: { id } })
-    },
-
-    remove ({ id, firstName, lastName, email }) {
-      this.$nuxt.$emit('open-prompt', {
-        title: 'Delete user?',
-        message: `Are you sure you want to delete <b>${firstName} ${lastName}' (${email})</b>?`,
-        action: async () => {
-          await this.deleteUser(id)
-          this.refresh()
-        }
-      })
+    openTimeline (child) {
+      this.$nuxt.$emit('open-timeline', child)
     },
 
     toggleAll () {
@@ -258,27 +276,35 @@ export default {
     },
 
     async refresh (clear = false) {
-      const id = 3
       this.loading = true
-      const params = { limit: this.limit, page: this.page, roleId: id }
-
       if (clear) {
         this.search = ''
-      } else {
-        this.activeFilters.forEach((filter) => {
-          params[filter] = this.search
-        })
       }
-
-      await this.getUsers(params)
-      this.loading = false
+      try {
+        this.children = await this.getChildrensProgress({
+          firstName: this.search
+        })
+      } catch (e) {
+      } finally {
+        this.loading = false
+      }
     },
 
-    async exportList () {
-      await this.exportParents()
-      this.$snotify.success('Report created succesfully! Check your email to get it', {
-        timeout: 6000
-      })
+    async childrenExport () {
+      this.exporting = true
+
+      try {
+        const { data } = await this.getChildrenProgressExport()
+
+        if (data.export) {
+          this.$snotify.success(
+            'Export is complete and will be sent to your email.'
+          )
+        }
+      } catch (e) {
+      } finally {
+        this.exporting = false
+      }
     }
   }
 }

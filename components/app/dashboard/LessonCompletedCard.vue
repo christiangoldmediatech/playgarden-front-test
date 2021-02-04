@@ -30,7 +30,7 @@
           <v-icon large left>
             mdi-play
           </v-icon>
-          Go to activities
+          Go to Library
         </v-btn>
       </v-row>
     </v-img>

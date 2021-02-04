@@ -137,7 +137,7 @@ export default {
   computed: {
     returnText () {
       if (this.$route.name === 'app-activities') {
-        return 'Return to Activities'
+        return 'Return to Library'
       }
       return 'Return to Dashboard'
     }

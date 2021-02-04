@@ -1,3 +1,5 @@
 export default () => ({
-  currentLessonVideo: null
+  currentLessonVideo: null,
+  currentLessonId: null,
+  nextLessonId: null
 })
