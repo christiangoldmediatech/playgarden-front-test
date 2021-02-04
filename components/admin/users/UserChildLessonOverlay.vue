@@ -1,30 +1,47 @@
 <template>
-  <v-overlay
-    v-model="dialog"
-    z-index="20"
-    :dark="false"
-  >
-    <v-progress-circular
-      v-if="loading"
-      color="accent"
-      indeterminate
-      size="128"
-      width="8"
-    />
-    <div v-else class="cl-overlay">
-      <v-btn
-        class="cl-overlay-close-btn"
-        color="white"
-        icon
-        @click.stop="dialog = false"
-      >
-        <v-icon>
-          mdi-close
-        </v-icon>
-      </v-btn>
-      <dashboard-panel no-link-mode display-mode v-bind="{ lesson }" />
-    </div>
-  </v-overlay>
+  <v-dialog v-model="dialog" content-class="elevation-0">
+    <v-col>
+      <v-row justify="center">
+        <v-card width="70vh" max-width="90%" elevation="0" color="transparent">
+          <v-row justify="end">
+            <v-btn
+              class="timeline-close-btn"
+              color="white"
+              icon
+              @click.stop="dialog = false"
+            >
+              <v-icon>
+                mdi-close
+              </v-icon>
+            </v-btn>
+          </v-row>
+        </v-card>
+      </v-row>
+
+      <v-row justify="center">
+        <v-card width="70vh" height="120vh" max-width="90%" color="transparent">
+          <v-row justify="center" align-content="center">
+            <v-progress-circular
+              v-if="loading"
+              color="accent"
+              indeterminate
+              size="128"
+              width="8"
+            />
+
+            <v-row v-else justify="center" class="cl-overlay" no-gutters>
+              <dashboard-panel
+                no-link-mode
+                display-mode
+                v-bind="{ lesson }"
+                z-index="10"
+              />
+            </v-row>
+          </v-row>
+        </v-card>
+      </v-row>
+    </v-col>
+  </v-dialog>
 </template>
 
 <script>
