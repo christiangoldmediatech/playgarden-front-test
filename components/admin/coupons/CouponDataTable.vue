@@ -57,6 +57,18 @@
                   N/A
                 </span>
               </template>
+              <template v-slot:[`item.actions.prepend`]="{ item }">
+                <nuxt-link
+                  :to="{
+                    name: 'admin-user-manager-coupon-users',
+                    query: { couponName: item.name }
+                  }"
+                >
+                  <v-icon color="accent" dense>
+                    mdi-account
+                  </v-icon>
+                </nuxt-link>
+              </template>
             </pg-admin-data-table>
           </v-card-text>
         </v-card>
