@@ -22,7 +22,7 @@ export default {
   },
 
   created () {
-    this.getTypes()
+    this.getTypes({ extra: true })
   },
 
   mounted () {
