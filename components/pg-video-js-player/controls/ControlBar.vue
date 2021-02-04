@@ -127,6 +127,22 @@
                 </v-icon> -->
                 <img class="control-bar-svg-icon" src="@/assets/player/forward15sec.svg" width="100%">
               </v-btn>
+
+              <!-- Next Video -->
+              <v-btn
+                v-if="showVideoSkip"
+                class="mx-1"
+                color="#D2D2D2"
+                icon
+                :x-large="!mobile"
+                :disabled="status === 'LOADING'"
+                @click.stop="player.skipVideo"
+              >
+                <!-- <v-icon small>
+                  pg-icon-forward-15-sec
+                </v-icon> -->
+                <img class="control-bar-svg-icon control-bar-svg-icon-padded" src="@/assets/player/next.svg" width="100%">
+              </v-btn>
             </div>
 
             <div>
@@ -313,6 +329,9 @@ export default {
     @media screen and (max-width: 599px) {
       max-width: 24px !important;
       max-height: 24px !important;
+    }
+    &-padded {
+      padding: 6px;
     }
   }
 }
