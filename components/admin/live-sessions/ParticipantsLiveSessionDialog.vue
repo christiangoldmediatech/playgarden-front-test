@@ -8,10 +8,12 @@
   >
     <v-card>
       <h4 class="mt-10 ml-6">
-        List of Participants {{ getTopicMeeting }}
+        List of participants - {{ getTopicMeeting }}
       </h4>
-      <pg-admin-data-table
+      <v-data-table
+        class="mt-4"
         :headers="headers"
+        hide-default-footer
         :items="participants"
         :loading="loading"
         @refresh="refresh(true)"
@@ -47,37 +49,37 @@ export default {
         text: 'Name',
         align: 'start',
         sortable: false,
-        value: 'fullName'
+        value: 'user.fullName'
       },
       {
         text: 'E-mail',
         align: 'start',
         sortable: false,
-        value: 'email'
+        value: 'user.email'
       },
       {
         text: 'Phone',
         align: 'start',
         sortable: false,
-        value: 'phoneNumber'
+        value: 'user.phoneNumber'
       },
       {
         text: 'Role',
         align: 'start',
         sortable: false,
-        value: 'role.name'
+        value: 'user.role.name'
       }
     ]
   }),
 
   computed: {
     getTopicMeeting () {
-      return (this.currentMeeting.title) ? this.currentMeeting.title : ''
+      return (this.currentMeeting && this.currentMeeting.title) ? this.currentMeeting.title : ''
     }
   },
 
   methods: {
-    ...mapActions('coupons', ['getParticipants']),
+    ...mapActions('live-sessions', ['getParticipants']),
 
     async refresh (clear = false) {
       this.loading = true
@@ -98,6 +100,7 @@ export default {
 
     open (evt, item = null) {
       this.currentMeeting = item
+      this.refresh()
       this.$nextTick(() => {
         this.dialog = true
       })
