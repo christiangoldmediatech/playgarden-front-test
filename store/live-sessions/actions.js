@@ -62,5 +62,9 @@ export default {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+
+  async saveAttendance (_, id) {
+    await this.$axios.post(`/live-sessions/${id}/assistant`)
   }
 }

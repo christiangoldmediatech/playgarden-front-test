@@ -76,6 +76,7 @@
                 :disabled="!isLive"
                 target="_blank"
                 block
+                @click="doSaveAttendance"
               >
                 OPEN ZOOM LINK
               </v-btn>
@@ -94,6 +95,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import { getNumberOrder, hours24ToHours12 } from '@/utils/dateTools'
 
 export default {
@@ -193,6 +195,12 @@ export default {
   },
 
   methods: {
+    ...mapActions('live-sessions', ['saveAttendance']),
+
+    doSaveAttendance () {
+      this.saveAttendance(this.entry.id)
+    },
+
     openVideo () {
       this.$nuxt.$emit('open-recorded-class-player', {
         playlist: [
