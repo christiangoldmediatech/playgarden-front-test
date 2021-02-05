@@ -99,7 +99,7 @@
                 <grades-btn :data-item="item" :entity-type="entityType" />
 
                 <v-icon
-                  color="accent"
+                  color="#5B5B59"
                   dense
                   @click="$refs.table.open(null, item)"
                 >
