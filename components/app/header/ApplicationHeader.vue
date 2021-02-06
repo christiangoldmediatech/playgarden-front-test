@@ -58,7 +58,12 @@
             />
           </v-toolbar-items>
         </div>
-
+        <v-divider
+          v-if="isUserLoggedIn && !isUserInSignupProcess"
+          class="mr-1"
+          inset
+          vertical
+        />
         <!-- AUTH BUTTONS -->
         <div class="pg-app-bar-buttons auth-buttons">
           <v-btn
@@ -72,8 +77,12 @@
             REGISTER
           </v-btn>
 
-          <img v-if="isUserLoggedIn && !isUserInSignupProcess" class="clickable account-btn" src="@/assets/svg/account.svg" @click="goToAccount">
-
+          <v-img
+            v-if="isUserLoggedIn && !isUserInSignupProcess"
+            class="clickable account-btn"
+            :src="require('@/assets/png/Profile.png')"
+            @click="goToAccount"
+          />
           <v-btn
             v-if="previewMode"
             class="px-13 ml-3"
@@ -105,9 +114,72 @@
           </v-btn>
         </div>
 
+        <!--Profile/help/Tutorial Menu-->
+        <div v-if="isUserLoggedIn && !isUserInSignupProcess">
+          <v-menu open-on-hover offset-y>
+            <template v-slot:activator="{ on }">
+              <v-img
+                class="clickable account-btn"
+                :src="require('@/assets/png/Help.png')"
+                v-on="on"
+              />
+            </template>
+
+            <v-card>
+              <v-list dense>
+                <v-list-item>
+                  <v-btn
+                    class="btn-register text--disabled"
+                    :ripple="false"
+                    x-small
+                    text
+                    v-bind="
+                      !previewMode
+                        ? { nuxt: true, to: { name: 'app-onboarding' } }
+                        : {}
+                    "
+                  >
+                    <v-img
+                      class="clickable account-btn"
+                      :src="require('@/assets/png/Tutorial-icon.png')"
+                    />
+                    Tutorial
+                  </v-btn>
+                </v-list-item>
+
+                <div class="px-2 py-3">
+                  <v-divider />
+                </div>
+                <v-list-item>
+                  <v-btn
+                    class="btn-register text--disabled"
+                    :ripple="false"
+                    x-small
+                    text
+                    nuxt
+                    :to="{ name: 'help' }"
+                  >
+                    <v-img
+                      class="clickable account-btn"
+                      :src="require('@/assets/png/FAQ.png')"
+                    />
+                    FAQ
+                  </v-btn>
+                </v-list-item>
+              </v-list>
+            </v-card>
+          </v-menu>
+        </div>
+        <!-- Profile/help/Tutorial Menu end-->
+
         <!-- MOBILE ICONS -->
         <div class="hidden-xs-only pg-app-bar-buttons mobile-icons">
-          <img v-if="isUserLoggedIn && !isUserInSignupProcess" class="clickable account-btn" src="@/assets/svg/account.svg" @click="goToAccount">
+          <img
+            v-if="isUserLoggedIn && !isUserInSignupProcess"
+            class="clickable account-btn"
+            src="@/assets/svg/account.svg"
+            @click="goToAccount"
+          >
 
           <v-btn
             :color="isUserLoggedIn ? 'primary' : 'accent'"

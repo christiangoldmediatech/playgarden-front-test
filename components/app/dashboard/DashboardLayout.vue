@@ -41,7 +41,10 @@
         </v-col>
       </v-row>
     </v-container> -->
-    <v-container :class="{ 'dashboard-container': !$vuetify.breakpoint.smAndDown }" fluid>
+    <v-container
+      :class="{ 'dashboard-container': !$vuetify.breakpoint.smAndDown }"
+      fluid
+    >
       <v-row class="fill-height" justify="center">
         <v-col
           class="dashboard-column order-last order-md-first d-flex justify-center justify-md-start"
@@ -51,7 +54,10 @@
           lg="4"
           xl="3"
         >
-          <dashboard-panel v-bind="{ lesson, childId, loading }" :next-button="canAdvance" />
+          <dashboard-panel
+            v-bind="{ lesson, childId, loading }"
+            :next-button="canAdvance"
+          />
         </v-col>
         <v-col
           class="dashboard-column d-flex flex-column"
@@ -69,27 +75,50 @@
             align="center"
             :no-gutters="$vuetify.breakpoint.smAndUp"
           >
-            <div class="dashboard-child-pick-container">
+            <v-col cols="3">
               <child-select
                 :value="value"
                 hide-details
                 :management-button="!previewMode"
                 @input="$emit('input', $event)"
               />
-            </div>
-
-            <v-col class="text-center text-sm-right">
-              <span class="font-weight-medium">
-                First time using Playgarden?
-              </span>
-
-              <v-btn color="primary" text v-bind="!previewMode ? { nuxt: true, to: { name: 'app-onboarding' } } : {}">
-                WATCH TUTORIAL HERE
-              </v-btn>
+            </v-col>
+            <!--carousel letter-->
+            <v-col cols="9">
+              <v-row justify="start">
+                <template>
+                  <v-sheet max-width="500">
+                    <v-slide-group
+                      multiple
+                      show-arrows
+                      prev-icon="mdi-chevron-left accent--text"
+                      next-icon="mdi-chevron-right accent--text"
+                    >
+                      <v-slide-item
+                        v-for="(item, index) in actualLetters"
+                        :key="index"
+                        :item="item"
+                        :index="index"
+                      >
+                        <letter :key="index" :item="item" :index="index" />
+                      </v-slide-item>
+                    </v-slide-group>
+                  </v-sheet>
+                </template>
+              </v-row>
             </v-col>
           </v-row>
 
-          <v-row :class="['dashboard-content', { 'dashboard-mobile-content': $vuetify.breakpoint.sm, 'dashboard-xs-content': $vuetify.breakpoint.xs }]" no-gutters>
+          <v-row
+            :class="[
+              'dashboard-content',
+              {
+                'dashboard-mobile-content': $vuetify.breakpoint.sm,
+                'dashboard-xs-content': $vuetify.breakpoint.xs
+              }
+            ]"
+            no-gutters
+          >
             <v-col class="dashboard-content-column" cols="12">
               <template v-if="$route.name === 'app-dashboard' || loading">
                 <pg-loading />
@@ -109,6 +138,8 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
+import Letter from '@/components/app/all-done/Letter.vue'
 import DashboardPanel from '@/components/app/dashboard/DashboardPanel.vue'
 import LessonActivityPlayer from '@/components/app/dashboard/LessonActivityPlayer.vue'
 import LessonTeacherVideo from '@/components/app/dashboard/LessonTeacherVideo.vue'
@@ -124,7 +155,8 @@ export default {
     LessonActivityPlayer,
     LessonTeacherVideo,
     ChildSelect,
-    CourseProgressOverlay
+    CourseProgressOverlay,
+    Letter
   },
 
   mixins: [DashboardOverrides],
@@ -165,7 +197,32 @@ export default {
     }
   },
 
+  data: () => {
+    return {
+      lettersProgress: []
+    }
+  },
+
   computed: {
+    ...mapGetters('admin/curriculum', { letters: 'types' }),
+
+    ...mapGetters({ currentChild: 'getCurrentChild' }),
+
+    actualLetters () {
+      return this.letters
+        .map((letter) => {
+          const current = this.lettersProgress.find(l => l.id === letter.id)
+          return {
+            ...letter,
+            ...current
+          }
+        })
+        .slice(0, 8)
+    },
+
+    studentId () {
+      return this.currentChild[0].id
+    },
     overrideMode () {
       if (this.overrides.childId && this.overrides.lessonId) {
         return true
@@ -188,8 +245,30 @@ export default {
       return false
     }
   },
+  watch: {},
+
+  async created () {
+    this.getLetters()
+    await this.fetchChildProgress()
+  },
 
   methods: {
+    ...mapActions('admin/curriculum', {
+      getLetters: 'getTypes'
+    }),
+
+    ...mapActions('children/course-progress', ['getCourseProgressByChildId']),
+
+    async fetchChildProgress () {
+      let data = await this.getCourseProgressByChildId({
+        id: this.studentId
+      })
+      data = data.map((letter) => {
+        const disabled = letter.enabled ? !letter.enabled : true
+        return { ...letter, disabled }
+      })
+      this.lettersProgress = data
+    },
     openCourseProgress () {
       this.$nuxt.$emit('show-curriculum-progress', 1)
     }
@@ -264,7 +343,7 @@ export default {
       height: 100%;
       padding: 7%;
       border-radius: 50%;
-      background: #C2DAA5;
+      background: #c2daa5;
       box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.184314);
     }
     &-circle-2 {
@@ -272,7 +351,7 @@ export default {
       height: 100%;
       padding: 7%;
       border-radius: 50%;
-      background: #DCE7B5;
+      background: #dce7b5;
       box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.184314);
     }
     &-img {
