@@ -218,7 +218,7 @@ export default {
 
   created () {
     this.getLetters()
-    this.getCategories()
+    this.getCategories({ extra: true })
   },
 
   methods: {
