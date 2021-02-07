@@ -294,6 +294,16 @@
               />
             </validation-provider>
 
+            <v-row>
+              <select-dropbox-file
+                ref="fileImageUploaderDropBox"
+                v-model="image"
+                mode="image"
+                multi-part
+                path="live-session-collaborator"
+                @sendFile="setFileImageDropBox" />
+            </v-row>
+
             <!-- Video -->
             <validation-provider
               v-slot="{ errors }"
@@ -316,6 +326,15 @@
                 webm
               />
             </validation-provider>
+            <v-row>
+              <select-dropbox-file
+                ref="fileUploaderDropBox"
+                v-model="file"
+                mode="video"
+                multi-part
+                path="live-session-video"
+                @sendFile="setFileDropBox" />
+            </v-row>
           </v-container>
         </v-card-text>
 
@@ -386,6 +405,8 @@ export default {
     menuTimeEnd: false,
     dialog: false,
     loading: false,
+    fileImageDropBox: null,
+    fileDropBox: null,
     id: null,
     video: null,
     player: null,
@@ -416,6 +437,16 @@ export default {
 
     onPlayerReady (player) {
       this.player = player
+    },
+
+    setFileDropBox (file) {
+      this.file = file
+      this.fileDropBox = file
+    },
+
+    setFileImageDropBox (file) {
+      this.image = file
+      this.fileImageDropBox = file
     },
 
     async refresh (clear = false) {
@@ -455,12 +486,24 @@ export default {
     async save () {
       this.loading = true
 
-      const imageData = await this.$refs.imageUploader.handleUpload()
+      let imageData
+      if (!this.fileImageDropBox) {
+        imageData = await this.$refs.imageUploader.handleUpload()
+      } else {
+        const { filePath } = await this.$refs.fileImageUploaderDropBox.handleUpload()
+        imageData = filePath
+      }
       if (imageData) {
         this.item.inCollaborationWith = imageData
       }
 
-      const data = await this.$refs.fileUploader.handleUpload()
+      let data
+      if (!this.fileDropBox) {
+        data = await this.$refs.fileUploader.handleUpload()
+      } else {
+        data = await this.$refs.fileUploaderDropBox.handleUpload()
+      }
+
       if (data) {
         this.item.videoId = data.video.id
       }
