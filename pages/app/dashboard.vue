@@ -85,13 +85,13 @@ export default {
     await this.handleLesson(true)
 
     // Setup update listener
-    this.$nuxt.$on('dashboard-panel-update', () => {
-      this.handleLesson()
+    this.$nuxt.$on('dashboard-panel-update', (quietMode = false) => {
+      this.handleLesson(false, quietMode)
     })
 
     // Setup update listener
     this.$nuxt.$on('dashboard-panel-update-redirect', (callback = () => {}) => {
-      this.handleLesson(true).then(() => {
+      this.handleLesson(true, true).then(() => {
         callback()
       })
     })
@@ -139,9 +139,9 @@ export default {
       }
     },
 
-    async handleLesson (redirect = false) {
+    async handleLesson (redirect = false, quietMode = true) {
       try {
-        this.loading = true
+        this.loading = quietMode
         if (
           this.overrideMode &&
           this.childrenIds === parseInt(this.overrides.childId)
