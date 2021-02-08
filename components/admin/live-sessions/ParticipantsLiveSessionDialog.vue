@@ -7,7 +7,7 @@
     scrollable
   >
     <v-card>
-      <h4 class="mt-10 ml-6">
+      <h4 class="text-uppercase mt-10 ml-6">
         List of assistants - {{ getTopicMeeting }}
       </h4>
       <v-data-table
