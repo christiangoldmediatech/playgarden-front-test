@@ -13,6 +13,7 @@
       show-steps
       show-favorite
       show-cast
+      :show-video-skip="index < (playlist.length - 1)"
       use-standard-poster
       :no-seek="noSeek"
       :fullscreen-override="handleFullscreen"
@@ -20,6 +21,7 @@
       @ready="onReady"
       @playlist-index-change="updateIndex"
       @last-playlist-item="findNextActivity"
+      @video-skipped="skipActivityVideo"
     />
     <patch-earned-dialog v-model="patchEarnedDialog" v-bind="{ player, ...patchData }" @return="handleClose" />
   </video-player-dialog>
@@ -79,6 +81,19 @@ export default {
       player.on('dispose', () => {
         this.player = null
       })
+    },
+
+    skipActivityVideo () {
+      if (this.analyticsLoading === false) {
+        this.player.showLoading()
+        this.doAnalytics(false, true).then(() => {
+          this.player.hideLoading()
+          if (!this.patchEarnedDialog) {
+            this.player.nextVideo()
+          }
+        })
+        this.player.pause()
+      }
     },
 
     updateIndex (index) {

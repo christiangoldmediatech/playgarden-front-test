@@ -13,12 +13,14 @@
       show-steps
       :show-favorite="lesson && !lesson.previewMode"
       show-cast
+      :show-video-skip="index < (playlist.length - 1)"
       use-standard-poster
       :no-seek="noSeek"
       :fullscreen-override="handleFullscreen"
       @ready="onReady"
       @playlist-index-change="updateIndex"
       @playlist-complete="showCompletedDialog"
+      @video-skipped="skipLessonVideo"
     />
     <!-- Lesson Completed dialog -->
     <lesson-completed-dialog v-model="completed" @close="close" />
@@ -141,6 +143,21 @@ export default {
       player.on('dispose', () => {
         this.player = null
       })
+    },
+
+    skipLessonVideo () {
+      if (this.lesson.previewMode) {
+        this.nextVideo()
+        return
+      }
+
+      this.player.showLoading()
+      this.completeVideoProgress().then(() => {
+        this.$nuxt.$emit('dashboard-panel-update')
+        this.savingProgress = false
+        this.player.nextVideo()
+      })
+      this.player.pause()
     },
 
     updateIndex (index) {

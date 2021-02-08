@@ -51,6 +51,12 @@ export default {
       default: false
     },
 
+    showVideoSkip: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
     showSteps: {
       type: Boolean,
       required: false,
