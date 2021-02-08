@@ -47,14 +47,12 @@ module.exports = {
     'prefer-const': 2,
     'prefer-object-spread': 2,
     'vue/attribute-hyphenation': 2,
-    /*
     'vue/attributes-order': [
       'error',
       {
         alphabetical: true
       }
     ],
-    */
     'vue/camelcase': 2,
     'vue/component-name-in-template-casing': ['error', 'kebab-case'],
     'vue/component-tags-order': [
@@ -120,7 +118,7 @@ module.exports = {
     'vue/require-prop-types': 2,
     'vue/require-valid-default-prop': 2,
     'vue/return-in-computed-property': 2,
-    /* 'vue/static-class-names-order': 2, */
+    'vue/static-class-names-order': 2,
     'vue/singleline-html-element-content-newline': 2,
     'vue/this-in-template': ['error', 'never'],
     'vue/v-on-function-call': 2,
