@@ -15,7 +15,7 @@
         </v-list-item-content>
       </template>
 
-      <v-list-item :href="googleCalendarLink" target="_blank">
+      <v-list-item :href="googleCalendarLink" target="_blank" @click="doSaveAttendance">
         <v-list-item-avatar size="25" tile>
           <v-img contain :src="require('@/assets/svg/google-calendar.png')" />
         </v-list-item-avatar>
@@ -55,6 +55,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import dayjs from 'dayjs'
 
 export default {
@@ -119,9 +120,16 @@ export default {
   },
 
   methods: {
+    ...mapActions('live-sessions', ['saveAttendance']),
+
+    doSaveAttendance () {
+      this.saveAttendance(this.entry.id)
+    },
+
     downloadIcs () {
       if (this.icsFile) {
         this.icsFile.download()
+        this.doSaveAttendance()
       }
     }
   }
