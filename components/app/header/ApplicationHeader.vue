@@ -58,12 +58,15 @@
             />
           </v-toolbar-items>
         </div>
+        <!--divider icon profile and help-->
         <v-divider
           v-if="isUserLoggedIn && !isUserInSignupProcess"
-          class="mr-1"
+          class="mr-1 pg-app-bar-buttons hidden-sm-and-down auth-buttons"
           inset
           vertical
         />
+        <!--divider icon profile and help-->
+
         <!-- AUTH BUTTONS -->
         <div class="pg-app-bar-buttons auth-buttons">
           <v-btn
@@ -79,7 +82,7 @@
 
           <v-img
             v-if="isUserLoggedIn && !isUserInSignupProcess"
-            class="clickable account-btn"
+            class="clickable account-btn mx-2"
             :src="require('@/assets/png/Profile.png')"
             @click="goToAccount"
           />
@@ -119,7 +122,7 @@
           <v-menu open-on-hover offset-y>
             <template v-slot:activator="{ on }">
               <v-img
-                class="clickable account-btn"
+                class="clickable account-btn mx-2 pg-app-bar-buttons hidden-sm-and-down auth-buttons"
                 :src="require('@/assets/png/Help.png')"
                 v-on="on"
               />

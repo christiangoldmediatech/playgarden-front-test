@@ -84,29 +84,8 @@
               />
             </v-col>
             <!--carousel letter-->
-            <v-col cols="9">
-              <v-row justify="start">
-                <template>
-                  <v-sheet max-width="500">
-                    <v-slide-group
-                      multiple
-                      show-arrows
-                      prev-icon="mdi-chevron-left accent--text"
-                      next-icon="mdi-chevron-right accent--text"
-                    >
-                      <v-slide-item
-                        v-for="(item, index) in actualLetters"
-                        :key="index"
-                        :item="item"
-                        :index="index"
-                      >
-                        <letter :key="index" :item="item" :index="index" />
-                      </v-slide-item>
-                    </v-slide-group>
-                  </v-sheet>
-                </template>
-              </v-row>
-            </v-col>
+            <carousel-letter />
+            <!--carousel letter-->
           </v-row>
 
           <v-row
@@ -138,13 +117,12 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
-import Letter from '@/components/app/all-done/Letter.vue'
 import DashboardPanel from '@/components/app/dashboard/DashboardPanel.vue'
 import LessonActivityPlayer from '@/components/app/dashboard/LessonActivityPlayer.vue'
 import LessonTeacherVideo from '@/components/app/dashboard/LessonTeacherVideo.vue'
 import ChildSelect from '@/components/app/ChildSelect.vue'
 import CourseProgressOverlay from '@/components/app/student-cubby/CourseProgressOverlay.vue'
+import CarouselLetter from '~/components/app/all-done/CarouselLetter'
 import DashboardOverrides from '~/mixins/DashboardOverridesMixin'
 
 export default {
@@ -156,7 +134,7 @@ export default {
     LessonTeacherVideo,
     ChildSelect,
     CourseProgressOverlay,
-    Letter
+    CarouselLetter
   },
 
   mixins: [DashboardOverrides],
@@ -197,32 +175,7 @@ export default {
     }
   },
 
-  data: () => {
-    return {
-      lettersProgress: []
-    }
-  },
-
   computed: {
-    ...mapGetters('admin/curriculum', { letters: 'types' }),
-
-    ...mapGetters({ currentChild: 'getCurrentChild' }),
-
-    actualLetters () {
-      return this.letters
-        .map((letter) => {
-          const current = this.lettersProgress.find(l => l.id === letter.id)
-          return {
-            ...letter,
-            ...current
-          }
-        })
-        .slice(0, 8)
-    },
-
-    studentId () {
-      return this.currentChild[0].id
-    },
     overrideMode () {
       if (this.overrides.childId && this.overrides.lessonId) {
         return true
@@ -245,30 +198,8 @@ export default {
       return false
     }
   },
-  watch: {},
-
-  async created () {
-    this.getLetters()
-    await this.fetchChildProgress()
-  },
 
   methods: {
-    ...mapActions('admin/curriculum', {
-      getLetters: 'getTypes'
-    }),
-
-    ...mapActions('children/course-progress', ['getCourseProgressByChildId']),
-
-    async fetchChildProgress () {
-      let data = await this.getCourseProgressByChildId({
-        id: this.studentId
-      })
-      data = data.map((letter) => {
-        const disabled = letter.enabled ? !letter.enabled : true
-        return { ...letter, disabled }
-      })
-      this.lettersProgress = data
-    },
     openCourseProgress () {
       this.$nuxt.$emit('show-curriculum-progress', 1)
     }
