@@ -124,7 +124,7 @@ export default {
 
         folderselect: false,
 
-        sizeLimit: 409600000
+        sizeLimit: 3221225472
       }
       window.Dropbox.choose(options)
     },
