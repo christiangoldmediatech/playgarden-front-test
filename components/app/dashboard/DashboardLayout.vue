@@ -41,7 +41,10 @@
         </v-col>
       </v-row>
     </v-container> -->
-    <v-container :class="{ 'dashboard-container': !$vuetify.breakpoint.smAndDown }" fluid>
+    <v-container
+      :class="{ 'dashboard-container': !$vuetify.breakpoint.smAndDown }"
+      fluid
+    >
       <v-row class="fill-height" justify="center">
         <v-col
           class="dashboard-column order-last order-md-first d-flex justify-center justify-md-start"
@@ -51,7 +54,10 @@
           lg="4"
           xl="3"
         >
-          <dashboard-panel v-bind="{ lesson, childId, loading }" :next-button="canAdvance" />
+          <dashboard-panel
+            v-bind="{ lesson, childId, loading }"
+            :next-button="canAdvance"
+          />
         </v-col>
         <v-col
           class="dashboard-column d-flex flex-column"
@@ -69,27 +75,29 @@
             align="center"
             :no-gutters="$vuetify.breakpoint.smAndUp"
           >
-            <div class="dashboard-child-pick-container">
+            <v-col cols="3">
               <child-select
                 :value="value"
                 hide-details
                 :management-button="!previewMode"
                 @input="$emit('input', $event)"
               />
-            </div>
-
-            <v-col class="text-center text-sm-right">
-              <span class="font-weight-medium">
-                First time using Playgarden?
-              </span>
-
-              <v-btn color="primary" text v-bind="!previewMode ? { nuxt: true, to: { name: 'app-onboarding' } } : {}">
-                WATCH TUTORIAL HERE
-              </v-btn>
             </v-col>
+            <!--carousel letter-->
+            <carousel-letter />
+            <!--carousel letter-->
           </v-row>
 
-          <v-row :class="['dashboard-content', { 'dashboard-mobile-content': $vuetify.breakpoint.sm, 'dashboard-xs-content': $vuetify.breakpoint.xs }]" no-gutters>
+          <v-row
+            :class="[
+              'dashboard-content',
+              {
+                'dashboard-mobile-content': $vuetify.breakpoint.sm,
+                'dashboard-xs-content': $vuetify.breakpoint.xs
+              }
+            ]"
+            no-gutters
+          >
             <v-col class="dashboard-content-column" cols="12">
               <template v-if="$route.name === 'app-dashboard' || loading">
                 <pg-loading />
@@ -114,6 +122,7 @@ import LessonActivityPlayer from '@/components/app/dashboard/LessonActivityPlaye
 import LessonTeacherVideo from '@/components/app/dashboard/LessonTeacherVideo.vue'
 import ChildSelect from '@/components/app/ChildSelect.vue'
 import CourseProgressOverlay from '@/components/app/student-cubby/CourseProgressOverlay.vue'
+import CarouselLetter from '~/components/app/all-done/CarouselLetter'
 import DashboardOverrides from '~/mixins/DashboardOverridesMixin'
 
 export default {
@@ -124,7 +133,8 @@ export default {
     LessonActivityPlayer,
     LessonTeacherVideo,
     ChildSelect,
-    CourseProgressOverlay
+    CourseProgressOverlay,
+    CarouselLetter
   },
 
   mixins: [DashboardOverrides],
@@ -264,7 +274,7 @@ export default {
       height: 100%;
       padding: 7%;
       border-radius: 50%;
-      background: #C2DAA5;
+      background: #c2daa5;
       box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.184314);
     }
     &-circle-2 {
@@ -272,7 +282,7 @@ export default {
       height: 100%;
       padding: 7%;
       border-radius: 50%;
-      background: #DCE7B5;
+      background: #dce7b5;
       box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.184314);
     }
     &-img {

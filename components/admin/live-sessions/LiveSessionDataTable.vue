@@ -54,6 +54,9 @@
                   ref="editor"
                   @saved="refresh(false)"
                 />
+                <participants-live-session-dialog
+                  ref="table"
+                />
 
                 <v-toolbar color="white" flat>
                   <v-spacer />
@@ -94,6 +97,14 @@
                 <video-preview-btn v-if="item.videos" :video="item.videos" />
 
                 <grades-btn :data-item="item" :entity-type="entityType" />
+
+                <v-icon
+                  color="#5B5B59"
+                  dense
+                  @click="$refs.table.open(null, item)"
+                >
+                  mdi-account-check
+                </v-icon>
 
                 <v-icon
                   color="#81A1F7"
@@ -183,12 +194,14 @@ import VideoPreviewBtn from '@/components/admin/video-preview/VideoPreviewBtn.vu
 import paginable from '@/utils/mixins/paginable'
 import GradesBtn from '@/components/admin/grades/GradesBtn.vue'
 import LiveSessionEditorDialog from './LiveSessionEditorDialog'
+import ParticipantsLiveSessionDialog from './ParticipantsLiveSessionDialog'
 
 export default {
   name: 'LiveSessionDataTable',
 
   components: {
     LiveSessionEditorDialog,
+    ParticipantsLiveSessionDialog,
     VideoPreviewBtn,
     GradesBtn
   },
@@ -238,7 +251,7 @@ export default {
         align: 'right',
         sortable: false,
         value: 'actions',
-        width: 120
+        width: 180
       }
     ]
   }),
@@ -256,7 +269,7 @@ export default {
   },
 
   created () {
-    this.getTypes()
+    this.getTypes({ extra: true })
     this.getCurriculumTypes()
   },
 

@@ -13,6 +13,7 @@
       show-steps
       :show-favorite="lesson && !lesson.previewMode"
       show-cast
+      :show-video-skip="index < (playlist.length - 1)"
       use-standard-poster
       :no-seek="noSeek"
       :fullscreen-override="handleFullscreen"
@@ -20,6 +21,7 @@
       @ready="onReady"
       @playlist-index-change="updateIndex"
       @last-playlist-item="findNextActivity"
+      @video-skipped="skipLessonActivity"
     />
     <patch-earned-dialog v-model="patchEarnedDialog" v-bind="{ player, ...patchData }" @return="handleClose" />
     <puzzle-piece-earned-dialog v-model="pieceEarnedDialog" v-bind="{ letter, puzzleImg }" @return="handleClose" />
@@ -91,6 +93,28 @@ export default {
       player.on('dispose', () => {
         this.player = null
       })
+    },
+
+    skipLessonActivity () {
+      if (this.lesson.previewMode) {
+        this.nextVideo()
+        return
+      }
+
+      this.player.showLoading()
+      if (!this.currentVideo.ignoreVideoProgress) {
+        this.completeActivityProgress().then(() => {
+          this.$nuxt.$emit('dashboard-panel-update')
+          this.savingActivityProgress = false
+        })
+      }
+      if (this.analyticsLoading === false) {
+        this.doAnalytics(false, true).then(() => {
+          this.player.nextVideo()
+          this.player.hideLoading()
+        })
+      }
+      this.player.pause()
     },
 
     nextVideo () {

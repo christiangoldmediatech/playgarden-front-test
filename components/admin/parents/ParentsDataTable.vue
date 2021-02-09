@@ -116,19 +116,23 @@ export default {
       filterList: [
         {
           text: 'First Name',
-          value: 'user.firstName'
+          value: 'firstName'
         },
         {
           text: 'Last Name',
-          value: 'user.lastName'
+          value: 'lastName'
         },
         {
           text: 'E-mail',
-          value: 'user.email'
+          value: 'email'
         },
         {
           text: 'Phone Number',
-          value: 'user.phoneNumber'
+          value: 'phoneNumber'
+        },
+        {
+          text: 'Role',
+          value: 'role'
         }
       ],
       headers: [
