@@ -1,10 +1,7 @@
 <template>
   <v-hover v-slot="{ hover }">
-    <div
-      class="recorded-letter"
-      :class="classes(hover)"
-    >
-      {{ letter.name.substr(0,1) }}
+    <div class="recorded-letter" :class="classes(hover)">
+      {{ letter.name.substr(0, 1) }}
     </div>
   </v-hover>
 </template>
@@ -56,9 +53,11 @@ export default {
     classes () {
       const result = {
         clickable: !this.listMode,
-        'recorded-letter-shadow': this.selectedLetter !== this.letter.id,
-        'recorded-letter-vowel': this.vowels.includes(this.letter.name.substr(0, 1)),
-        'recorded-letter-active': this.selectedLetter === this.letter.id && !this.listMode,
+        'recorded-letter-vowel': this.vowels.includes(
+          this.letter.name.substr(0, 1)
+        ),
+        'recorded-letter-active':
+          this.selectedLetter === this.letter.id && !this.listMode,
         'recorded-letter-small': this.small,
         'recorded-letter-disabled': this.disabled
       }
@@ -105,10 +104,6 @@ export default {
   &-active {
     box-shadow: inset 10px 32px 34px rgba(0, 0, 0, 0.25);
   }
-  &-shadow {
-    // box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15);
-    filter: drop-shadow(0px 8px 24px rgba(0, 0, 0, 0.15));
-  }
   &-scaled {
     // There is a problem with the shadows when scaling.
     transform: scale(1.125);
@@ -123,7 +118,7 @@ export default {
     border-radius: 4px;
   }
   &-disabled {
-     filter: grayscale(1);
+    filter: grayscale(1);
   }
 }
 </style>
