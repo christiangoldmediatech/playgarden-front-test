@@ -162,6 +162,7 @@ export default {
         nextUp: this.nextUp,
         noSeek: this.noSeek,
         showRestart: this.showRestart,
+        showVideoSkip: this.showVideoSkip,
         showSteps: this.showSteps,
         inline: this.inline
       }
@@ -227,7 +228,7 @@ export default {
       if (this.playlist[index]) {
         const mediaObject = jsonCopy(this.playlist[index])
         if (this.useStandardPoster || !mediaObject.poster) {
-          mediaObject.poster = './standard-video-poster.jpg'
+          mediaObject.poster = process.env.testEnv === 'production' ? '/app/standard-video-poster.svg' : '/standard-video-poster.svg'
         }
         this.mediaObject = mediaObject
         this.playerInstance.loadMedia(mediaObject)
@@ -324,6 +325,11 @@ export default {
         this.playerInstance.on(key, this.$listeners[key].fns)
       })
 
+      // Check if lastPlaylistItem
+      this.$set(this.playerInstance, 'lastPlaylistItem', () => {
+        return this.lastPlaylistItem
+      })
+
       // Custom player functions
       this.$set(this.playerInstance, 'loadPlaylist', this.loadPlaylist)
       // this.playerInstance.loadPlaylist = this.loadPlaylist
@@ -346,6 +352,10 @@ export default {
         } else {
           this.$emit('playlist-complete')
         }
+      })
+
+      this.$set(this.playerInstance, 'skipVideo', () => {
+        this.$emit('video-skipped')
       })
 
       this.$set(this.playerInstance, 'stopCasting', () => {

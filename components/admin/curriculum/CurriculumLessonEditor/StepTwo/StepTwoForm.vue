@@ -228,7 +228,7 @@ export default {
   },
 
   created () {
-    this.getTypes()
+    this.getTypes({ lesson: true })
   },
 
   methods: {

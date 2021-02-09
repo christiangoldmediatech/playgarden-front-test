@@ -1,17 +1,40 @@
 <template>
   <v-hover v-slot="{ hover }">
-    <v-card class="lsess-table-entry clickable" :class="{ 'lsess-table-entry-active': isLive, 'lsess-table-entry-scaled': hover }" @click.stop="openLink">
+    <v-card
+      class="lsess-table-entry clickable"
+      :class="{
+        'lsess-table-entry-active': isLive,
+        'lsess-table-entry-scaled': hover
+      }"
+      @click.stop="openLink"
+    >
       <div class="lsess-table-entry-live">
         <span v-if="isLive">Live</span>
-        <img v-if="isLive" class="lsess-table-entry-live-icon mt-2 mr-2" src="@/assets/svg/sessions-active-camera.svg">
-        <img v-if="isFuture" class="lsess-table-entry-live-icon mt-2 mr-2" src="@/assets/svg/sessions-camera.svg">
+        <img
+          v-if="isLive"
+          class="lsess-table-entry-live-icon mt-2 mr-2"
+          src="@/assets/svg/sessions-active-camera.svg"
+        >
+        <img
+          v-if="isFuture"
+          class="lsess-table-entry-live-icon mt-2 mr-2"
+          src="@/assets/svg/sessions-camera.svg"
+        >
       </div>
-      <div class="d-flex align-end mb-2">
-        <img class="lsess-table-entry-type" :src="entry.activityType.icon">
-        <div class="lsess-table-entry-title">
-          {{ entry.activityType.name }}
-        </div>
-      </div>
+
+      <v-row class="px-2" :title="entry.activityType.name">
+        <v-col cols="12" md="4">
+          <v-row align="center" class="fill-height">
+            <v-img :src="entry.activityType.icon" />
+          </v-row>
+        </v-col>
+
+        <v-col cols="12" md="8" class="shrink">
+          <v-row align="center" class="fill-height overflow-hidden">
+            <b>{{ entry.activityType.name }}</b>
+          </v-row>
+        </v-col>
+      </v-row>
 
       <div>
         {{ title }}
@@ -38,8 +61,8 @@ export default {
       const end = new Date(this.entry.dateEnd)
 
       return (
-        today.getTime() >= (start.getTime() - (5 * 60 * 1000)) &&
-        today.getTime() <= (end.getTime() + (5 * 60 * 1000))
+        today.getTime() >= start.getTime() - 5 * 60 * 1000 &&
+        today.getTime() <= end.getTime() + 5 * 60 * 1000
       )
     },
 
@@ -79,7 +102,7 @@ export default {
         box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.160784);
       }
       &-active {
-        border: solid 3px #F89838;
+        border: solid 3px #f89838;
       }
       &-live {
         position: absolute;
@@ -92,7 +115,7 @@ export default {
           height: 24px;
         }
       }
-      &-type{
+      &-type {
         width: 60px;
         height: 60px;
         border-radius: 8px;
@@ -102,12 +125,12 @@ export default {
         object-position: center center;
       }
       &-title {
-        font-size: 1.10rem;
+        font-size: 1.1rem;
         line-height: 1.25;
         font-weight: bold;
       }
       &-scaled {
-        transform: scale(1.10);
+        transform: scale(1.1);
         z-index: 1;
       }
     }

@@ -30,13 +30,13 @@ export default {
       updateAnalytic: 'update'
     }),
 
-    doAnalytics (startCheck = false) {
+    doAnalytics (startCheck = false, overrideComplete = false) {
       return new Promise((resolve) => {
         const currentVideo = jsonCopy(this.currentVideo)
         const promises = []
         const time = this.player.currentTime()
         const duration = this.player.duration()
-        const didFinish = ((duration - time) <= 30)
+        const didFinish = ((duration - time) <= 30) || overrideComplete
 
         if (this.analyticsLoading || !currentVideo.activityId) {
           resolve(false)

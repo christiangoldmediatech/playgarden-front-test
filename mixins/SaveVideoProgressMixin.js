@@ -52,6 +52,38 @@ export default {
           this.savingProgress = false
         })
       }
+    },
+
+    completeVideoProgress () {
+      // Save it before we have moved on
+      const currentVideo = jsonCopy(this.currentVideo)
+      if (!currentVideo || currentVideo.ignoreVideoProgress || this.savingProgress) { return }
+      const date = new Date().toISOString().substr(0, 19)
+      const time = this.player.currentTime()
+      const promises = []
+
+      // Only save progress if the video hasn't been completed and we are ahead of where we last left off
+      if (
+        !currentVideo.viewed ||
+        (!currentVideo.viewed.completed && currentVideo.viewed.time < time)
+      ) {
+        this.savingProgress = true
+        this.children.forEach((child) => {
+          promises.push(
+            this.sendVideoProgress({
+              lessonId: this.lesson.id,
+              childId: child.id,
+              video: {
+                id: currentVideo.videoId,
+                completed: true,
+                time,
+                date
+              }
+            })
+          )
+        })
+      }
+      return Promise.all(promises)
     }
   }
 }

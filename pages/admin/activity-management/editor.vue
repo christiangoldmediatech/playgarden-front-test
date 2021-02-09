@@ -324,7 +324,7 @@ export default {
   async created () {
     this.loading = true
     const promises = []
-    promises.push(this.getTypes(), this.getCurriculumTypes())
+    promises.push(this.getTypes({ activity: true }), this.getCurriculumTypes())
     if (this.id) {
       promises.push(this.getActivityById(this.id))
     }

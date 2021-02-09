@@ -9,6 +9,16 @@ export default {
     return this.$axios.$delete(`/live-sessions/${id}`)
   },
 
+  async getParticipants (_, id) {
+    const participants = await this.$axios.$get(`/live-sessions/${id}/assistant`)
+    return participants.map((data) => {
+      const { user } = data
+      user.fullName = `${user.firstName} ${user.lastName}`
+      data.user = user
+      return data
+    })
+  },
+
   getLiveSessions ({ commit }, params) {
     return new Promise((resolve, reject) =>
       this.$axios
@@ -62,5 +72,9 @@ export default {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+
+  async saveAttendance (_, id) {
+    await this.$axios.post(`/live-sessions/${id}/assistant`)
   }
 }
