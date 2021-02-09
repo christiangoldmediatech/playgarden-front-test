@@ -51,6 +51,12 @@ export default {
     entry: {
       type: Object,
       required: true
+    },
+
+    editMode: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
 
@@ -83,7 +89,11 @@ export default {
 
   methods: {
     openLink () {
-      this.$nuxt.$emit('open-entry-dialog', this.entry)
+      if (this.editMode) {
+        this.$nuxt.$emit('open-entry-editor-dialog', this.entry)
+      } else {
+        this.$nuxt.$emit('open-entry-dialog', this.entry)
+      }
     }
   }
 }
@@ -98,6 +108,9 @@ export default {
       padding: 8px;
       width: 100%;
       height: 100%;
+      max-width: 100%;
+      max-height: 100%;
+      overflow: hidden;
       &.v-card.v-sheet {
         box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.160784);
       }

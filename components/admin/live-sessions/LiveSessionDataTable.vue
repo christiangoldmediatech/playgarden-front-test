@@ -35,155 +35,195 @@
       </v-col>
     </v-row>
 
-    <v-row>
-      <v-col cols="12">
-        <v-card width="100%">
-          <v-card-text>
-            <v-data-table
-              :headers="headers"
-              hide-default-footer
-              :items="liveSessions"
-              :loading="loading"
-              :page.sync="pagination.page"
-              :server-items-length="pagination.total"
-              @update:page="pagination.page = $event"
-              @refresh="refresh(true)"
-            >
-              <template v-slot:top>
-                <live-session-editor-dialog
-                  ref="editor"
-                  @saved="refresh(false)"
-                />
-                <participants-live-session-dialog
-                  ref="table"
-                />
+    <v-card width="100%">
+      <v-card-text>
+        <v-row>
+          <v-col cols="12">
+            <live-session-editor-dialog
+              ref="editor"
+              @saved="refresh(false)"
+            />
+            <participants-live-session-dialog
+              ref="table"
+            />
 
-                <v-toolbar color="white" flat>
-                  <v-spacer />
-
-                  <pg-text-field
-                    v-model="search"
-                    append-icon="mdi-magnify"
-                    class="shrink"
-                    clearable
-                    hide-details
-                    label="Search"
-                    solo-labeled
-                    @keydown.enter="refresh(false)"
-                  />
-                </v-toolbar>
-                <v-toolbar color="white" flat>
-                  <v-spacer />
-                </v-toolbar>
-              </template>
-
-              <template v-slot:[`item.dateStart`]="{ item }">
-                {{ item.dateStart | formatDate }}
-              </template>
-
-              <template v-slot:[`item.dateEnd`]="{ item }">
-                {{ item.dateEnd | formatDate }}
-              </template>
-
-              <template v-slot:[`item.createdAt`]="{ item }">
-                {{ item.createdAt | formatDate }}
-              </template>
-
-              <template v-slot:[`item.updatedAt`]="{ item }">
-                {{ item.updatedAt | formatDate }}
-              </template>
-
-              <template v-slot:[`item.actions`]="{ item }">
-                <video-preview-btn v-if="item.videos" :video="item.videos" />
-
-                <grades-btn :data-item="item" :entity-type="entityType" />
-
-                <v-icon
-                  color="#5B5B59"
-                  dense
-                  @click="$refs.table.open(null, item)"
+            <v-toolbar color="white" flat>
+              <v-btn-toggle v-model="viewModeVal" class="pos-absolute pos-left-0">
+                <v-btn
+                  :color="viewMode === 'CALENDAR' ? 'accent' : 'white'"
+                  class="text-none font-weight-light"
+                  :class="{
+                    'white--text': viewMode === 'CALENDAR'
+                  }"
                 >
-                  mdi-account-check
-                </v-icon>
-
-                <v-icon
-                  color="#81A1F7"
-                  dense
-                  @click="$refs.editor.open(null, item)"
-                >
-                  mdi-pencil-outline
-                </v-icon>
-
-                <v-icon color="#d30909" dense @click="remove(item)">
-                  mdi-delete-outline
-                </v-icon>
-              </template>
-
-              <template v-slot:no-data>
-                <v-btn color="primary" text @click="refresh(true)">
-                  Refresh
+                  <v-icon left :color="viewMode === 'CALENDAR' ? 'white' : 'accent'">
+                    mdi-apps
+                  </v-icon>
+                  Calendar
                 </v-btn>
+                <v-btn
+                  :color="viewMode === 'LIST' ? 'accent' : 'white'"
+                  class="text-none font-weight-light"
+                  :class="{
+                    'white--text': viewMode === 'LIST'
+                  }"
+                >
+                  <v-icon left :color="viewMode === 'LIST' ? 'white' : 'accent'">
+                    mdi-view-list
+                  </v-icon>
+                  List
+                </v-btn>
+              </v-btn-toggle>
+
+              <v-spacer />
+
+              <template v-if="viewMode === 'CALENDAR'">
+                <week-selector :day="day" :loading="loading" @prev-week="removeWeek" @next-week="addWeek" />
+                <v-spacer />
               </template>
 
-              <template v-slot:loading>
-                <v-skeleton-loader class="mx-auto" type="table-row-divider@3" />
-              </template>
+              <pg-text-field
+                v-if="viewMode === 'LIST'"
+                v-model="search"
+                append-icon="mdi-magnify"
+                class="shrink"
+                clearable
+                hide-details
+                label="Search"
+                solo-labeled
+                @keydown.enter="refresh(false)"
+              />
+            </v-toolbar>
+          </v-col>
+          <template v-if="viewMode === 'CALENDAR'">
+            <calendar-view :day="day" @loading="onLoading" />
+          </template>
+          <template v-else-if="viewMode === 'LIST'">
+            <v-col cols="12">
+              <v-data-table
+                :headers="headers"
+                hide-default-footer
+                :items="liveSessions"
+                :loading="loading"
+                :page.sync="pagination.page"
+                :server-items-length="pagination.total"
+                @update:page="pagination.page = $event"
+                @refresh="refresh(true)"
+              >
+                <!-- <template v-slot:top>
+                  <v-toolbar color="white" flat>
+                    <v-spacer />
+                  </v-toolbar>
+                </template> -->
 
-              <template v-slot:footer="{ props }">
-                <v-container fluid>
-                  <v-row align="center" justify="end">
-                    <v-icon
-                      class="clickable mr-2"
-                      color="green"
-                      :disabled="props.pagination.page === 1 || loading"
-                      x-small
-                      @click.stop="pagination.page--"
-                      v-text="'mdi-less-than'"
-                    />
+                <template v-slot:[`item.dateStart`]="{ item }">
+                  {{ item.dateStart | formatDate }}
+                </template>
 
-                    <template v-for="i in props.pagination.pageCount">
-                      <span
-                        :key="`footer-page-number-${i}`"
-                        :class="[
-                          'font-weight-normal',
-                          {
-                            'accent--text text--darken-1':
-                              props.pagination.page === i,
-                            clickable: props.pagination.page !== i,
-                          },
-                        ]"
-                        @click.stop="pagination.page = i"
-                      >
-                        {{ i }}
-                      </span>
-                      <span
-                        v-if="i !== props.pagination.pageCount"
-                        :key="`footer-page-dot-${i}`"
-                        class="font-weight-normal mx-1"
-                      >
-                        &centerdot;
-                      </span>
-                    </template>
+                <template v-slot:[`item.dateEnd`]="{ item }">
+                  {{ item.dateEnd | formatDate }}
+                </template>
 
-                    <v-icon
-                      class="clickable ml-2"
-                      color="green"
-                      :disabled="
-                        props.pagination.page === props.pagination.pageCount ||
-                          loading
-                      "
-                      x-small
-                      @click.stop="pagination.page++"
-                      v-text="'mdi-greater-than'"
-                    />
-                  </v-row>
-                </v-container>
-              </template>
-            </v-data-table>
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
+                <template v-slot:[`item.createdAt`]="{ item }">
+                  {{ item.createdAt | formatDate }}
+                </template>
+
+                <template v-slot:[`item.updatedAt`]="{ item }">
+                  {{ item.updatedAt | formatDate }}
+                </template>
+
+                <template v-slot:[`item.actions`]="{ item }">
+                  <video-preview-btn v-if="item.videos" :video="item.videos" />
+
+                  <grades-btn :data-item="item" :entity-type="entityType" />
+
+                  <v-icon
+                    color="#5B5B59"
+                    dense
+                    @click="$refs.table.open(null, item)"
+                  >
+                    mdi-account-check
+                  </v-icon>
+
+                  <v-icon
+                    color="#81A1F7"
+                    dense
+                    @click="$refs.editor.open(null, item)"
+                  >
+                    mdi-pencil-outline
+                  </v-icon>
+
+                  <v-icon color="#d30909" dense @click="remove(item)">
+                    mdi-delete-outline
+                  </v-icon>
+                </template>
+
+                <template v-slot:no-data>
+                  <v-btn color="primary" text @click="refresh(true)">
+                    Refresh
+                  </v-btn>
+                </template>
+
+                <template v-slot:loading>
+                  <v-skeleton-loader class="mx-auto" type="table-row-divider@3" />
+                </template>
+
+                <template v-slot:footer="{ props }">
+                  <v-container fluid>
+                    <v-row align="center" justify="end">
+                      <v-icon
+                        class="clickable mr-2"
+                        color="green"
+                        :disabled="props.pagination.page === 1 || loading"
+                        x-small
+                        @click.stop="pagination.page--"
+                        v-text="'mdi-less-than'"
+                      />
+
+                      <template v-for="i in props.pagination.pageCount">
+                        <span
+                          :key="`footer-page-number-${i}`"
+                          :class="[
+                            'font-weight-normal',
+                            {
+                              'accent--text text--darken-1':
+                                props.pagination.page === i,
+                              clickable: props.pagination.page !== i,
+                            },
+                          ]"
+                          @click.stop="pagination.page = i"
+                        >
+                          {{ i }}
+                        </span>
+                        <span
+                          v-if="i !== props.pagination.pageCount"
+                          :key="`footer-page-dot-${i}`"
+                          class="font-weight-normal mx-1"
+                        >
+                          &centerdot;
+                        </span>
+                      </template>
+
+                      <v-icon
+                        class="clickable ml-2"
+                        color="green"
+                        :disabled="
+                          props.pagination.page === props.pagination.pageCount ||
+                            loading
+                        "
+                        x-small
+                        @click.stop="pagination.page++"
+                        v-text="'mdi-greater-than'"
+                      />
+                    </v-row>
+                  </v-container>
+                </template>
+              </v-data-table>
+            </v-col>
+          </template>
+        </v-row>
+      </v-card-text>
+    </v-card>
   </v-container>
 </template>
 
@@ -195,6 +235,8 @@ import paginable from '@/utils/mixins/paginable'
 import GradesBtn from '@/components/admin/grades/GradesBtn.vue'
 import LiveSessionEditorDialog from './LiveSessionEditorDialog'
 import ParticipantsLiveSessionDialog from './ParticipantsLiveSessionDialog'
+import CalendarView from './CalendarView.vue'
+import WeekSelector from './WeekSelector.vue'
 
 export default {
   name: 'LiveSessionDataTable',
@@ -203,7 +245,9 @@ export default {
     LiveSessionEditorDialog,
     ParticipantsLiveSessionDialog,
     VideoPreviewBtn,
-    GradesBtn
+    GradesBtn,
+    CalendarView,
+    WeekSelector
   },
 
   mixins: [paginable],
@@ -253,11 +297,19 @@ export default {
         value: 'actions',
         width: 180
       }
-    ]
+    ],
+    viewModeVal: 0,
+    day: new Date()
   }),
 
   computed: {
-    ...mapGetters('admin/curriculum', ['types'])
+    ...mapGetters('admin/curriculum', ['types']),
+    viewMode () {
+      if (this.viewModeVal === 0) {
+        return 'CALENDAR'
+      }
+      return 'LIST'
+    }
   },
 
   watch: {
@@ -265,12 +317,19 @@ export default {
       if (!this.loading) {
         this.refresh()
       }
+    },
+
+    viewMode () {
+      this.refresh(false)
     }
   },
 
   created () {
     this.getTypes({ extra: true })
     this.getCurriculumTypes()
+    this.$nuxt.$on('open-entry-editor-dialog', (entry) => {
+      this.$refs.editor.open(null, entry)
+    })
   },
 
   beforeDestroy () {
@@ -286,28 +345,32 @@ export default {
     ...mapActions('live-sessions', ['getLiveSessions', 'deleteLiveSession']),
 
     async refresh (clear = false) {
-      this.loading = true
+      if (this.viewMode === 'CALENDAR') {
+        this.$nuxt.$emit('calendar-update')
+      } else {
+        this.loading = true
 
-      if (clear) {
-        this.search = null
-      }
+        if (clear) {
+          this.search = null
+        }
 
-      try {
-        const { page, liveSessions, total } = await this.getLiveSessions({
-          name: this.search,
-          activityTypeId: this.filters.activityTypeId || null,
-          level: this.filters.level || null,
-          page: this.pagination.page,
-          limit: this.pagination.limit
-        })
-        this.checkStatus()
-        this.stopInterval()
+        try {
+          const { page, liveSessions, total } = await this.getLiveSessions({
+            name: this.search,
+            activityTypeId: this.filters.activityTypeId || null,
+            level: this.filters.level || null,
+            page: this.pagination.page,
+            limit: this.pagination.limit
+          })
+          this.checkStatus()
+          this.stopInterval()
 
-        this.liveSessions = liveSessions
-        this.setPagination({ page, total })
-      } catch (e) {
-      } finally {
-        this.loading = false
+          this.liveSessions = liveSessions
+          this.setPagination({ page, total })
+        } catch (e) {
+        } finally {
+          this.loading = false
+        }
       }
     },
 
@@ -334,6 +397,20 @@ export default {
       if (this.liveSessions.filter(data => data.videos && data.videos.status !== 'COMPLETED').length === 0) {
         clearInterval(this.checkStatusInterval)
       }
+    },
+
+    onLoading (val) {
+      this.loading = val
+    },
+
+    addWeek () {
+      this.day.setDate(this.day.getDate() + 7)
+      this.day = new Date(this.day)
+    },
+
+    removeWeek () {
+      this.day.setDate(this.day.getDate() - 7)
+      this.day = new Date(this.day)
     }
   }
 }

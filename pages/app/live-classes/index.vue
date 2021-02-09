@@ -106,6 +106,7 @@
 
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
+import { getMondayFriday } from '@/utils/dateTools'
 import TodayCardsPanel from '@/components/app/live-sessions/TodayCardsPanel.vue'
 import CalendarPanel from '@/components/app/live-sessions/CalendarPanel.vue'
 import EntryDialog from '@/components/app/live-sessions/EntryDialog.vue'
@@ -141,27 +142,7 @@ export default {
 
     days () {
       if (this.today) {
-        const today = new Date(this.today)
-        const monday = new Date(this.today)
-        const friday = new Date(this.today)
-
-        if (today.getDay() === 6 || today.getDay() === 0) {
-          // Get next week
-          monday.setDate(today.getDate() + ((7 - today.getDay()) % 7) + 1)
-          friday.setDate(today.getDate() + ((7 - today.getDay()) % 7) + 5)
-        } else {
-          // Get current week
-          monday.setDate(today.getDate() - (today.getDay() - 1))
-          friday.setDate(today.getDate() - (today.getDay() - 5))
-        }
-
-        monday.setHours(0, 0, 0, 0)
-        friday.setHours(23, 59, 59, 999)
-
-        return {
-          monday,
-          friday
-        }
+        return getMondayFriday(new Date(this.today))
       }
       return null
     }
