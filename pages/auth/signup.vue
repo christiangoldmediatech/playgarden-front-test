@@ -71,7 +71,7 @@
                     <span class="font-weight-bold mt-3">That includes:</span>
                   </v-row>
                   <v-row>
-                    <ul class="plan-detail">
+                    <ul>
                       <li
                         class="register-item"
                       >
