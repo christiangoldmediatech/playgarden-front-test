@@ -14,7 +14,10 @@
     "serve": "nuxt serve",
     "lint:js": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "lint": "yarn lint:js",
-    "test": "jest"
+    "test": "jest",
+    "eslint": "eslint '*/**/*.{js,jsx,ts,tsx,vue}' --fix",
+    "prettier": "prettier --config .prettierrc.js '**/*.{json,js,jsx,ts,tsx,css,scss,md,vue}' --write",
+    "js-beautify": "js-beautify --config ./.jsbeautifyrc --html --replace **/*.vue"
   },
   "resolutions": {
     "prosemirror-model": "1.8.2"
@@ -61,7 +64,38 @@
     "babel-jest": "^26.0.1",
     "eslint": "^7.2.0",
     "eslint-plugin-nuxt": "^1.0.0",
+    "husky": "^4.3.8",
     "jest": "^26.0.1",
+    "js-beautify": "^1.13.5",
+    "lint-staged": "^10.5.4",
+    "prettier": "^2.2.1",
+    "sass": "^1.32.6",
+    "sass-loader": "^11.0.0",
+    "stylelint": "^13.9.0",
+    "stylelint-config-standard": "^20.0.0",
+    "stylelint-scss": "^3.18.0",
     "vue-jest": "^3.0.4"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{css,sass,scss}": [
+      "stylelint --fix",
+      "js-beautify --css -r",
+      "prettier --write"
+    ],
+    "*.vue": [
+      "js-beautify --config ./.jsbeautifyrc.json --html -r",
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.{js,jsx,ts,tsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.json": "prettier --write"
   }
 }

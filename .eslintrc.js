@@ -11,17 +11,14 @@ module.exports = {
   parserOptions: {
     parser: 'babel-eslint'
   },
-  extends: [
-    '@nuxtjs',
-    'plugin:nuxt/recommended'
-  ],
-  plugins: [
-  ],
+  extends: ['@nuxtjs', 'plugin:nuxt/recommended'],
+  plugins: [],
   // add your custom rules here
   rules: {
     'block-spacing': ['error', 'always'],
     'comma-dangle': ['error', 'never'],
     'dot-location': ['error', 'property'],
+    'jsx-quotes': ['error', 'prefer-double'],
     'key-spacing': 2,
     'keyword-spacing': 2,
     'lines-between-class-members': ['error', 'always'],
@@ -34,23 +31,28 @@ module.exports = {
     'no-eq-null': 2,
     'no-irregular-whitespace': 2,
     'no-mixed-operators': 2,
+    'no-multiple-empty-lines': ['error', { max: 1, maxEOF: 1 }],
     'no-trailing-spaces': 2,
     'no-unreachable': 2,
     'no-unused-vars': 2,
     'no-var': 2,
     'padded-blocks': ['error', 'never'],
-    'padding-line-between-statements': 2,
+    'padding-line-between-statements': [
+      'error',
+      { blankLine: 'always', prev: '*', next: 'return' },
+      { blankLine: 'always', prev: ['const', 'let', 'var'], next: '*' },
+      { blankLine: 'any', prev: ['const', 'let', 'var'], next: ['const', 'let', 'var'] },
+      { blankLine: 'always', prev: ['case', 'default'], next: '*' }
+    ],
     'prefer-const': 2,
     'prefer-object-spread': 2,
     'vue/attribute-hyphenation': 2,
-    /*
     'vue/attributes-order': [
       'error',
       {
         alphabetical: true
       }
     ],
-    */
     'vue/camelcase': 2,
     'vue/component-name-in-template-casing': ['error', 'kebab-case'],
     'vue/component-tags-order': [
@@ -95,8 +97,8 @@ module.exports = {
         groups: []
       }
     ],
-    'vue/no-side-effects-in-computed-properties': 2,
     'vue/no-shared-component-data': 2,
+    'vue/no-side-effects-in-computed-properties': 2,
     'vue/no-spaces-around-equal-signs-in-attribute': ['error'],
     'vue/no-static-inline-styles': 2,
     'vue/no-template-key': 2,
@@ -116,7 +118,7 @@ module.exports = {
     'vue/require-prop-types': 2,
     'vue/require-valid-default-prop': 2,
     'vue/return-in-computed-property': 2,
-    /* 'vue/static-class-names-order': 2, */
+    'vue/static-class-names-order': 2,
     'vue/singleline-html-element-content-newline': 2,
     'vue/this-in-template': ['error', 'never'],
     'vue/v-on-function-call': 2,

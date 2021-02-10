@@ -1,1 +1,8 @@
-/**/*.d.ts
+/build/
+/config/
+/dist/
+/node_modules/*
+/static/
+/*.js
+/*.json
+/*.lock
