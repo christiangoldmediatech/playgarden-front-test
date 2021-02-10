@@ -29,7 +29,7 @@
         <v-col class="px-12" cols="12" md="4">
           <p class="mt-6 mb-12 text-center text-md-left">
             <small>
-              Complete the registration and choose the plan that best suits you, to start your learning experience!
+              Complete the registration and choose the plan that best suits your family's needs!
             </small>
           </p>
 
