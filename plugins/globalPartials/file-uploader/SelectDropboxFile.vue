@@ -122,9 +122,7 @@ export default {
 
         extensions: this.getExtensions,
 
-        folderselect: false,
-
-        sizeLimit: 102400000
+        folderselect: false
       }
       window.Dropbox.choose(options)
     },
