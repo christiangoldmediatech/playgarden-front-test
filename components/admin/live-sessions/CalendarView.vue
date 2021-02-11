@@ -190,7 +190,8 @@ export default {
     &-day {
       width: 20%;
       max-width: 20%;
-      padding: 4px;
+      padding: 8px;
+      height: 100%;
     }
   }
 }

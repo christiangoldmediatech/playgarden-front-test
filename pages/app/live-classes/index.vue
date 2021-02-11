@@ -5,15 +5,24 @@
         <span class="text-h7 text-md-h5 font-weight-bold white--text pt-5">Live Classes will start January 11th, 2021</span>
       </p>
     </div> -->
-    <div class="text-right pt-4 px-4">
+    <v-row class="pos-relative pt-2" justify="center" align="center">
+      <v-col cols="12">
+        <week-selector
+          v-if="today"
+          :day="new Date(today)"
+          @prev-week="removeWeek"
+          @next-week="addWeek"
+        />
+      </v-col>
       <v-btn
-        class="text-none"
+        class="text-none mr-md-4"
+        :class="{ 'pos-absolute pos-right-0': $vuetify.breakpoint.mdAndUp }"
         color="accent"
         @click.stop="goToRecordings"
       >
         Watch recorded classes
       </v-btn>
-    </div>
+    </v-row>
     <v-container
       :class="{ 'lsess-container': !$vuetify.breakpoint.smAndDown }"
       fluid
@@ -112,6 +121,7 @@ import CalendarPanel from '@/components/app/live-sessions/CalendarPanel.vue'
 import EntryDialog from '@/components/app/live-sessions/EntryDialog.vue'
 import SessionsTable from '@/components/app/live-sessions/SessionsTable.vue'
 import RecordedClassPlayer from '@/components/app/live-sessions/RecordedClassPlayer.vue'
+import WeekSelector from '@/components/admin/live-sessions/WeekSelector.vue'
 
 export default {
   name: 'Index',
@@ -121,7 +131,8 @@ export default {
     CalendarPanel,
     EntryDialog,
     SessionsTable,
-    RecordedClassPlayer
+    RecordedClassPlayer,
+    WeekSelector
   },
 
   data: () => {
@@ -142,7 +153,7 @@ export default {
 
     days () {
       if (this.today) {
-        return getMondayFriday(new Date(this.today))
+        return getMondayFriday(this.getDateObj())
       }
       return null
     }
@@ -155,10 +166,7 @@ export default {
   },
 
   created () {
-    const today = new Date()
-    this.today = `${today.getFullYear()}-${(today.getMonth() + 1)
-      .toString()
-      .padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`
+    this.setToday(new Date())
     this.getUserLiveSessions(this.days)
   },
 
@@ -170,8 +178,32 @@ export default {
         this.loading = false
       })
     },
+
     goToRecordings () {
       this.$router.push({ name: 'app-live-classes-recorded' })
+    },
+
+    getDateObj () {
+      const parts = this.today.split('-')
+      return new Date(parts[0], parts[1] - 1, parts[2])
+    },
+
+    setToday (date) {
+      this.today = `${date.getFullYear()}-${(date.getMonth() + 1)
+      .toString()
+      .padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`
+    },
+
+    addWeek () {
+      const date = this.getDateObj()
+      date.setDate(date.getDate() + 7)
+      this.setToday(date)
+    },
+
+    removeWeek () {
+      const date = this.getDateObj()
+      date.setDate(date.getDate() - 7)
+      this.setToday(date)
     }
   }
 }
