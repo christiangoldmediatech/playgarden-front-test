@@ -59,14 +59,19 @@
           </template>
 
           <template v-slot:item="{ item, on, attrs }">
-            <v-img
-              v-if="item.asImage"
-              width="70"
-              height="70"
-              contain
-              :src="item.icon"
-              @click.stop=""
-            />
+            <v-list-item v-if="item.asImage" @click.stop="">
+              <v-btn text disabled>
+                <v-img
+                  width="70"
+                  height="70"
+                  contain
+                  class="ml-n4"
+                  :src="item.icon"
+                  @click.stop=""
+                />
+                Nature
+              </v-btn>
+            </v-list-item>
 
             <v-list-item v-else v-bind="attrs" class="w-100" v-on="on">
               <recorded-letter
