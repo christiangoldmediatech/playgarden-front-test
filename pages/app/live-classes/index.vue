@@ -9,7 +9,7 @@
       <v-col cols="12">
         <week-selector
           v-if="today"
-          :day="new Date(today)"
+          :day="getDateObj()"
           @prev-week="removeWeek"
           @next-week="addWeek"
         />
