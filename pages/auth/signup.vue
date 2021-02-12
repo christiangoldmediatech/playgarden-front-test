@@ -125,7 +125,7 @@
           <underlined-title text="Sign Up now!" />
         </div>
 
-        <p>
+        <p class="mt-3">
           Ready to start learning at home? Enter your email to create your
           account and start your membership today.
         </p>

@@ -21,28 +21,45 @@
       </v-row>
 
       <v-row
-        class="flex-column flex-md-row"
+        class="flex-column flex-md-row mt-sm-6"
         justify="center"
         no-gutters
       >
-        <v-col cols="12" class="px-12">
+        <v-col cols="12" class="px-12" order="first">
           <p class="text-center text-md-left">
             <span class="font-weight-bold text-h5">
               Why do we need a credit card?
             </span>
           </p>
           <p class="text-center text-md-left">
-            Playgarden Prep Online is currently <span class="font-weight-bold">FREE</span> for you for the next 30 days. We need your credit card information to complete the registration process, but you will <span class="font-weight-bold">NOT</span> be charged.
+            Playgarden Prep Online is currently <span class="font-weight-bold primary--text">FREE</span> for you for the next 30 days. We need your credit card information to complete the registration process, but you will <span class="font-weight-bold">NOT</span> be charged.
           </p>
         </v-col>
-        <v-col class="px-12 mt-12" cols="12" lg="6" md="8" xl="6">
+
+        <v-col
+          class="px-12 mt-1 mt-md-12"
+          cols="12"
+          md="8"
+          lg="6"
+          xl="6"
+          order="3"
+          order-md="2"
+        >
           <stripe-form :loading="loading" @click:submit="onSubmit" />
         </v-col>
 
-        <v-col class="px-12 mt-12 mb-12" cols="12" lg="6" md="4" xl="6">
+        <v-col
+          class="px-12 mt-1 mt-md-12 mb-6 mb-md-12"
+          cols="12"
+          md="4"
+          lg="6"
+          xl="6"
+          order="2"
+          order-md="3"
+        >
           <p class="text-center text-md-left">
             <span class="font-weight-bold text-h5 pg-letter-spacing">
-              MEMBERSHIP REVIEW
+              PROGRAM
             </span>
           </p>
 
@@ -60,13 +77,7 @@
 
             <v-col cols="4" class="pr-3">
               <div class="product-description">
-                <span class="product-price">
-                  {{ productValue(item) }}
-                </span>
-
-                <span class="product-info">
-                  / month
-                </span>
+                {{ productValue(item) }} / {{ item.recurring.interval }}
               </div>
             </v-col>
           </v-row>
@@ -101,14 +112,22 @@
               </span>
             </v-col>
 
-            <v-col cols="4">
+            <v-col cols="4" class="text-right">
               <span v-if="!coupon" class="total-cost"> {{ (cost.total || 0).toLocaleString('en-US', {style: 'currency', currency: 'USD'}) }} </span>
               <span v-else class="total-cost"> {{ (getTotal || 0 ).toLocaleString('en-US', {style: 'currency', currency: 'USD'}) }} </span>
             </v-col>
           </v-row>
 
           <v-row no-gutters>
-            <v-col>
+            <div class="due-today mt-2">
+              <div>
+                DUE TODAY
+              </div>
+              <div class="text-right">
+                $0
+              </div>
+            </div>
+            <!-- <v-col>
               <span class="due-today">
                 <b>DUE TODAY</b>
               </span>
@@ -118,8 +137,12 @@
               <span class="due-today-total">
                 <b>$0</b>
               </span>
-            </v-col>
+            </v-col> -->
           </v-row>
+
+          <div class="text-center">
+            <img class="mt-4" width="65%" src="@/assets/svg/pci-dss.svg">
+          </div>
         </v-col>
       </v-row>
     </v-col>
@@ -225,27 +248,45 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.product-info {
-  font-size: 14px !important;
-}
-
 .discount-label {
   margin-right: 17%;
 }
 
-.product-info-1 {
-  font-size: 9px !important;
+.product-name {
+  color: #606060;
+  line-height: 1.5;
+  font-size: 16px;
+  letter-spacing: 1.8px;
+  font-weight: 400;
 }
 
 .product-description {
-  line-height: 1.1 !important;
+  color: #606060;
+  line-height: 1.5;
+  font-size: 16px;
+  text-align: right;
+  font-weight: 500;
 }
 
-.due-today,
-.due-today-total,
-.product-price,
-.total,
-.total-cost {
-  font-size: 20px !important;
+.total, .total-cost {
+  color: #606060;
+  line-height: 1.5;
+  font-size: 22px;
+  letter-spacing: 1.8px;
+  font-weight: 400;
+}
+
+.due-today {
+  background-color: var(--v-accent-base);
+  border-radius: 8px;
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  line-height: 1.5;
+  width: 100%;
+  color: white;
 }
 </style>

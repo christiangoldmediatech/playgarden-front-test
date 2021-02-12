@@ -4,98 +4,77 @@
       <validation-observer v-slot="{ invalid, passes }">
         <v-form @submit.prevent="passes(onSubmit)">
           <!-- Plan -->
-          <validation-provider v-slot="{ errors }" name="Plan" rules="required">
-            <v-radio-group
-              v-model="radioGroup"
-              class="ma-0 pa-0"
-              :disabled="loading"
-              :error-messages="errors"
-              :loading="loading"
-            >
-              <v-row justify="start" class="update-plan-margin">
-                <v-col>
-                  <p
-                    class="font-weight-bold mb-6 text-center text-h5 text-md-left"
-                  >
-                    {{ updating ? "UPDATE" : "CHOOSE YOUR" }} PLAN
-                  </p>
-                  <p class="product-info">
-                    *Pricing is per child
-                  </p>
-                </v-col>
-              </v-row>
-              <v-row
-                v-if="$vuetify.breakpoint.mdAndUp"
-                class="mx-n3"
-                justify="center"
-                no-gutters
+          <v-row justify="center">
+            <div>
+              <p
+                class="font-weight-bold mb-6 text-center text-h5 text-md-left"
               >
-                <v-col
-                  v-for="(plan, indexP) in plans"
-                  :key="indexP"
+                {{ updating ? "UPDATE" : "CHOOSE YOUR" }} PLAN
+              </p>
+
+              <p class="product-info px-2">
+                *You will not be charged until the end of the 30 DAY TRIAL period and you can cancel anytime.<br>
+                *Pricing is per child
+              </p>
+
+              <p class="plan-announcement px-2">
+                <img src="@/assets/svg/confetti.svg" width="24px" height="24px"> Live Enrichment Classes and Playdates included with <span class="highlight">Standard</span> and <span class="highlight">Premium</span> Plans FOR A LIMITED TIME <img class="flip-image" src="@/assets/svg/confetti.svg" width="24px" height="24px">
+              </p>
+            </div>
+          </v-row>
+
+          <v-row
+            v-if="$vuetify.breakpoint.mdAndUp"
+            class="mx-n3"
+            justify="center"
+            no-gutters
+          >
+            <v-col
+              v-for="(plan, indexP) in plans"
+              :key="indexP"
+              :class="`${
+                indexP === 1
+                  ? 'c-col elevation-3 mx-md-3 card-plan'
+                  : 'c-col elevation-3 mx-md-3 pa-3 card-plan mt-10'
+              }`"
+            >
+              <div v-show="indexP === 1" class="text-right">
+                <v-chip class="most-popular" label>
+                  Most Popular
+                </v-chip>
+              </div>
+              <div>
+                <p
                   :class="`${
                     indexP === 1
-                      ? 'c-col elevation-3 mx-md-3 card-plan'
-                      : 'c-col elevation-3 mx-md-3 pa-3 card-plan mt-10'
+                      ? 'plan-name text-center mt-10'
+                      : 'plan-name text-center mt-5'
                   }`"
                 >
-                  <div v-show="indexP === 1" class="text-right">
-                    <v-chip class="most-popular" label>
-                      Most Popular
-                    </v-chip>
-                  </div>
-                  <div>
-                    <p
-                      :class="`${
-                        indexP === 1
-                          ? 'plan-name text-center mt-10'
-                          : 'plan-name text-center mt-5'
-                      }`"
-                    >
-                      <v-chip
-                        color="orange"
-                        class="text-orange-info mb-8"
-                        label
-                      >
-                        {{ getTypePlan(indexP) }}
-                      </v-chip>
-                      <br>
-                      <underlined-title
-                        font-size="30px"
-                        :line-from="65"
-                        :text="plan.name"
-                      />
-                    </p>
+                  <v-chip
+                    color="orange"
+                    class="text-orange-info mb-8 py-4"
+                    label
+                  >
+                    {{ getTypePlan(indexP) }}
+                  </v-chip>
+                  <br>
+                  <underlined-title
+                    font-size="30px"
+                    :line-from="65"
+                    :text="plan.name"
+                  />
+                </p>
 
-                    <p class="text-center">
-                      <span class="product-price">
-                        ${{ (plan.priceAnnual / 12).toFixed(2) }}
-                      </span>
-                      <span class="product-month">/Month</span>
-                      <br>
-                      <span
-                        v-if="indexP === 0"
-                        class="info-prodcut-detail"
-                      >Billed Annually (Save ~$170)</span>
-                      <span
-                        v-if="indexP === 1"
-                        class="info-prodcut-detail"
-                      >Billed Annually (Save ~$300)</span>
-                      <span
-                        v-if="indexP === 2"
-                        class="info-prodcut-detail"
-                      >Billed Annually (Save ~$1,200)</span>
-                    </p>
-
-                    <p
-                      :class="`${
-                        indexP === 1
-                          ? 'text-center mt-10 plan-included'
-                          : 'text-center mt-12 plan-included'
-                      }`"
-                    >
-                      <label class="font-weight-bold">What's included</label>
-                      <br>
+                <p
+                  :class="`${
+                    indexP === 1
+                      ? 'text-center mt-5 plan-included'
+                      : 'text-center mt-6 plan-included'
+                  }`"
+                >
+                  <label class="font-weight-bold">What's included</label>
+                  <!-- <br>
                       <span
                         v-if="indexP === 1"
                         class="info-prodcut-detail"
@@ -105,68 +84,129 @@
                         v-if="indexP === 2"
                         class="info-prodcut-detail"
                       >Everything in the GOLD Plan,
-                        <span class="font-weight-bold">plus extra!</span></span>
-                    </p>
+                        <span class="font-weight-bold">plus extra!</span></span> -->
+                </p>
 
-                    <plan-description
-                      :plan="plan"
-                      :index-plan="indexP"
-                      class="ml-8 mr-8"
-                    />
-                  </div>
+                <plan-description
+                  :plan="plan"
+                  :index-plan="indexP"
+                  class="ml-8 mr-8"
+                />
 
+                <p class="text-center">
+                  <span class="product-price">
+                    ${{ (plan.priceAnnual / 12).toFixed(2) }}
+                  </span>
+                  <span class="product-month">/Month</span>
+                  <br>
+                  <span
+                    v-if="indexP === 0"
+                    class="info-prodcut-detail"
+                  >Billed Annually (Save ~$170)</span>
+                  <span
+                    v-if="indexP === 1"
+                    class="info-prodcut-detail"
+                  >Billed Annually (Save ~$300)</span>
+                  <span
+                    v-if="indexP === 2"
+                    class="info-prodcut-detail"
+                  >Billed Annually (Save ~$1,200)</span>
+                </p>
+              </div>
+
+              <div v-if="indexP === 2" class="mb-6">
+                <div class="enroll-text">
+                  Call us to enroll
+                </div>
+                <div class="limited-text">
+                  Limited Availability
+                </div>
+              </div>
+              <validation-provider v-else v-slot="{ errors }" name="Plan" rules="required">
+                <v-radio-group
+                  v-model="radioGroup"
+                  class="ma-0 pa-0"
+                  :disabled="loading"
+                  :error-messages="errors"
+                  :loading="loading"
+                >
                   <radio-selectors
                     v-model="draft"
                     :plan="plan"
                     :index-plan="indexP"
                     :class="`${indexP === 1 ? 'mb-9 px-6' : 'mb-6 px-6'}`"
                   />
-                </v-col>
-              </v-row>
+                </v-radio-group>
+              </validation-provider>
+            </v-col>
+          </v-row>
 
-              <v-row v-else no-gutters>
-                <v-col
-                  v-for="(plan, indexP) in plans"
-                  :key="indexP"
-                  class="my-3"
-                  cols="12"
-                >
-                  <v-expansion-panels>
-                    <v-expansion-panel>
-                      <v-expansion-panel-header>
-                        <div class="text-center">
-                          <underlined-title
-                            font-size="20px"
-                            :line-from="65"
-                            :text="plan.name"
-                          />
-                        </div>
-                      </v-expansion-panel-header>
+          <v-row v-else no-gutters>
+            <v-col
+              v-for="(plan, indexP) in plans"
+              :key="indexP"
+              class="my-3"
+              cols="12"
+            >
+              <v-expansion-panels :value="0">
+                <v-expansion-panel>
+                  <v-expansion-panel-header>
+                    <div class="text-center">
+                      <v-chip
+                        color="orange"
+                        class="text-orange-info mb-3 py-4"
+                        label
+                      >
+                        {{ getTypePlan(indexP) }}
+                      </v-chip>
 
-                      <v-expansion-panel-content class="pa-0 ma-0">
-                        <plan-description :plan="plan" :index-plan="indexP" />
-                      </v-expansion-panel-content>
+                      <underlined-title
+                        font-size="18px"
+                        :line-from="65"
+                        :text="plan.name"
+                      />
+                    </div>
+                  </v-expansion-panel-header>
 
+                  <v-expansion-panel-content class="pa-0 ma-0">
+                    <plan-description :plan="plan" :index-plan="indexP" />
+                  </v-expansion-panel-content>
+                  <div v-if="indexP === 2" class="mb-6">
+                    <div class="enroll-text">
+                      Call us to enroll
+                    </div>
+                    <div class="limited-text">
+                      Limited Availability
+                    </div>
+                  </div>
+                  <validation-provider v-else v-slot="{ errors }" name="Plan" rules="required">
+                    <v-radio-group
+                      v-model="radioGroup"
+                      class="ma-0 pa-0"
+                      :disabled="loading"
+                      :error-messages="errors"
+                      :loading="loading"
+                    >
                       <radio-selectors
                         v-model="draft"
                         class="mb-6 px-6"
                         :plan="plan"
                         :index-plan="indexP"
                       />
-                    </v-expansion-panel>
-                  </v-expansion-panels>
-                </v-col>
-              </v-row>
-            </v-radio-group>
-          </validation-provider>
+                    </v-radio-group>
+                  </validation-provider>
+                </v-expansion-panel>
+              </v-expansion-panels>
+            </v-col>
+          </v-row>
 
           <v-row
             v-if="!noAddress"
-            class="flex-md-row"
+            class="shipping flex-md-row mt-8"
             justify="center"
             no-gutters
           >
-            <v-col class="px-6">
+            <v-col class="px-md-6">
               <p class="text-center text-md-justify">
                 <span
                   class="font-weight-bold text-h5 pg-letter-spacing text-center text-md-justify"
@@ -175,9 +215,7 @@
                 </span>
                 <br>
                 <span class="text-h8">
-                  GOLD and PLATINUM Plans require a shipping address so we can
-                  send you the Playgarden Prep Workbooks, Backpacks and
-                  Materials. Enhance your child's learning experience at home!
+                  For our PREMIUM and PREMIUM PLUS plans, we require a shipping address in order to send the Welcome Kit with Backpack, workbooks, and additional materials so you can easily receive them at the comfort of your home.
                 </span>
               </p>
 
@@ -278,7 +316,7 @@
                 type="submit"
                 large
               >
-                {{ noPayment ? "SAVE" : "CONTINUE TO PAYMENT" }}
+                {{ noPayment ? "SAVE" : "NEXT" }}
               </v-btn>
 
               <v-btn
@@ -375,13 +413,13 @@ export default {
       let plan = ''
       switch (index) {
         case 0:
-          plan = 'SILVER'
+          plan = 'STANDARD'
           break
         case 1:
-          plan = 'GOLD'
+          plan = 'PREMIUM'
           break
         case 2:
-          plan = 'PLATINUM'
+          plan = 'PREMIUM PLUS'
           break
       }
       return plan
@@ -516,7 +554,13 @@ export default {
 }
 
 .card-plan {
-  max-width: 350px !important;
+  max-width: 350px;
+  @media screen and (min-width: 1264px) {
+    max-width: 426px;
+  }
+  @media screen and (min-width: 1904px) {
+    max-width: 526px;
+  }
 }
 
 .text-orange-info::v-deep.v-chip--label {
@@ -530,7 +574,7 @@ export default {
   font-weight: bold;
   color: var(--v-white-base) !important;
   border-radius: 0px !important;
-  background-color: rgba(255, 163, 72, 0.647059) !important;
+  background: rgba(255, 163, 72, 0.35);
 }
 .product-price {
   font-size: 38px !important;
@@ -548,9 +592,47 @@ export default {
   min-height: 125px;
 }
 .plan-included {
-  min-height: 50px;
+  min-height: 25px;
 }
-.update-plan-margin {
-  margin-left: 8%;
+// .update-plan-margin {
+//   margin-left: 8%;
+// }
+.plan-announcement {
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0px;
+  text-align: center;
+  .highlight {
+    color: var(--v-accent-base);
+    font-weight: 600;
+  }
+  .flip-image {
+    transform: scaleX(-1);
+  }
+}
+.shipping {
+  max-width: 830px;
+  margin: 0 auto;
+}
+.enroll-text {
+  font-size: 24px;
+  line-height: 1.5;
+  font-weight: 700;
+  text-align: center;
+  color: var(--v-accent-base);
+  @media screen and (min-width: 960px) {
+    font-size: 40px;
+  }
+}
+.limited-text {
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 400;
+  text-align: center;
+  @media screen and (min-width: 960px) {
+    font-size: 24px;
+  }
 }
 </style>
