@@ -4,17 +4,19 @@
       class="player-dialog-container"
       :style="dimensions"
     >
+      <div class="player-dialog-close-btn">
+        <v-btn
+          icon
+          @click.stop="close"
+        >
+          <v-icon color="#D2D2D2">
+            mdi-close
+          </v-icon>
+        </v-btn>
+      </div>
+
+      <!--
       <template v-if="smallScreen">
-        <div class="player-dialog-close-btn">
-          <v-btn
-            icon
-            @click.stop="close"
-          >
-            <v-icon color="#D2D2D2">
-              mdi-close
-            </v-icon>
-          </v-btn>
-        </div>
       </template>
 
       <template v-else>
@@ -22,6 +24,7 @@
           Press CTRL + SHIFT + E to EXIT
         </p>
       </template>
+      -->
 
       <div v-if="overlayTimer" class="player-dialog-mobile-portrait-overlay">
         <div>
