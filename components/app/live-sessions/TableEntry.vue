@@ -23,13 +23,9 @@
       </div>
 
       <v-row class="px-2" :title="entry.activityType.name">
-        <v-col cols="12" md="4">
-          <v-row align="center" class="fill-height">
-            <v-img :src="entry.activityType.icon" />
-          </v-row>
-        </v-col>
+        <img class="lsess-table-entry-type ml-1 mt-1" :src="entry.activityType.icon">
 
-        <v-col cols="12" md="8" class="shrink">
+        <v-col>
           <v-row align="center" class="fill-height overflow-hidden">
             <b>{{ entry.activityType.name }}</b>
           </v-row>
@@ -51,6 +47,12 @@ export default {
     entry: {
       type: Object,
       required: true
+    },
+
+    editMode: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
 
@@ -83,7 +85,11 @@ export default {
 
   methods: {
     openLink () {
-      this.$nuxt.$emit('open-entry-dialog', this.entry)
+      if (this.editMode) {
+        this.$nuxt.$emit('open-entry-editor-dialog', this.entry)
+      } else {
+        this.$nuxt.$emit('open-entry-dialog', this.entry)
+      }
     }
   }
 }
@@ -98,6 +104,9 @@ export default {
       padding: 8px;
       width: 100%;
       height: 100%;
+      max-width: 100%;
+      max-height: 100%;
+      overflow: hidden;
       &.v-card.v-sheet {
         box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.160784);
       }
