@@ -95,3 +95,37 @@ export const hours24ToHours12 = (hours, minutes, am = 'am', pm = 'pm') => {
   }
   return `${hours}:${minutes.toString().padStart(2, '0')}${am}`
 }
+
+export const getMondayFriday = (today) => {
+  const monday = new Date(today)
+  const friday = new Date(today)
+  const isSaturday = today.getDay() === 6
+  const isSunday = today.getDay() === 0
+  let offset = 0
+
+  if (isSaturday) {
+    offset = 2
+  } else if (isSunday) {
+    offset = 1
+  }
+
+  monday.setDate(today.getDate() + offset)
+  friday.setDate(today.getDate() + offset)
+  monday.setDate(today.getDate() + (1 - today.getDay()))
+  friday.setDate(today.getDate() + (5 - today.getDay()))
+
+  monday.setHours(0, 0, 0, 0)
+  friday.setHours(23, 59, 59, 999)
+
+  return {
+    monday,
+    friday
+  }
+}
+
+export const isTodayInThisWeek = (today, days) => {
+  const mondayMs = days.monday.getTime()
+  const fridayMs = days.friday.getTime()
+  const todayMs = today.getTime()
+  return todayMs >= mondayMs && todayMs <= fridayMs
+}
