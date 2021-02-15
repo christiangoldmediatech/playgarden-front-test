@@ -21,7 +21,9 @@
                 width="70"
                 height="70"
                 contain
+                class="clickable"
                 :src="item.icon"
+                @click="$nuxt.$emit('show-curriculum-progress', item.id)"
               />
 
               <letter v-else :key="index" :item="item" :index="index" />
@@ -59,15 +61,14 @@
           </template>
 
           <template v-slot:item="{ item, on, attrs }">
-            <v-list-item v-if="item.asImage" @click.stop="">
-              <v-btn text disabled>
+            <v-list-item v-if="item.asImage" v-bind="attrs" v-on="on">
+              <v-btn text>
                 <v-img
                   width="70"
                   height="70"
                   contain
                   class="ml-n4"
                   :src="item.icon"
-                  @click.stop=""
                 />
                 Nature
               </v-btn>
@@ -186,6 +187,7 @@ export default {
         asImage: true,
         icon: require('@/assets/svg/carousel-letters/nature.svg'),
         letter: '',
+        id: 27,
         name: '',
         disabled: false
       })
