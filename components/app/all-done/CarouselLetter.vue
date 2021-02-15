@@ -186,9 +186,9 @@ export default {
       letters.splice(4, 0, {
         asImage: true,
         icon: require('@/assets/svg/carousel-letters/nature.svg'),
-        letter: '',
+        letter: 'Nature',
         id: 27,
-        name: '',
+        name: 'Nature',
         disabled: false
       })
 

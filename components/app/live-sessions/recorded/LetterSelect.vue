@@ -10,7 +10,21 @@
     @input="$emit('input', $event)"
   >
     <template v-slot:selection="{ item }">
-      <v-list-item class="w-100">
+      <v-list-item v-if="item.asImage">
+        <v-btn text>
+          <v-img
+            width="70"
+            height="70"
+            contain
+            class="ml-n4"
+            :src="item.icon"
+          />
+          <span class="hidden-sm-and-down">
+            Nature
+          </span>
+        </v-btn>
+      </v-list-item>
+      <v-list-item v-else class="w-100">
         <recorded-letter
           v-bind="{ letter: item, small: smallLetter }"
           list-mode
@@ -25,7 +39,21 @@
     </template>
 
     <template v-slot:item="{ item, on, attrs }">
-      <v-list-item v-bind="attrs" class="w-100" v-on="on">
+      <v-list-item v-if="item.asImage" v-bind="attrs" v-on="on">
+        <v-btn text>
+          <v-img
+            width="70"
+            height="70"
+            contain
+            class="ml-n4"
+            :src="item.icon"
+          />
+          <span class="hidden-sm-and-down">
+            Nature
+          </span>
+        </v-btn>
+      </v-list-item>
+      <v-list-item v-else v-bind="attrs" class="w-100" v-on="on">
         <recorded-letter
           v-bind="{ letter: item, small: smallLetter, disabled: item.disabled }"
           list-mode
@@ -83,12 +111,23 @@ export default {
     ...mapGetters('admin/curriculum', { letters: 'types' }),
 
     actualLetters () {
-      return this.letters.map((letter) => {
+      const letters = this.letters.map((letter) => {
         return {
           ...letter,
           disabled: this.disabledLetters.includes(letter.id)
         }
       })
+
+      letters.splice(4, 0, {
+        asImage: true,
+        icon: require('@/assets/svg/carousel-letters/nature.svg'),
+        letter: 'Nature',
+        id: 27,
+        name: 'Nature',
+        disabled: false
+      })
+
+      return letters
     }
   },
 
