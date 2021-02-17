@@ -93,10 +93,10 @@ export default {
           value: 'name'
         },
         {
-          text: 'Created',
+          text: 'Order',
           align: 'start',
           sortable: false,
-          value: 'createdAt'
+          value: 'order'
         },
         {
           text: 'Last Updated',
