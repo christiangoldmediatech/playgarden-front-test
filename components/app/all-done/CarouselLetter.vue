@@ -186,15 +186,6 @@ export default {
         }
       })
 
-      // letters.splice(4, 0, {
-      //   asImage: true,
-      //   icon: require('@/assets/svg/carousel-letters/nature.svg'),
-      //   letter: 'Nature',
-      //   id: 27,
-      //   name: 'Nature',
-      //   disabled: false
-      // })
-
       return letters
     },
 
