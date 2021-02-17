@@ -1,6 +1,7 @@
 <template>
   <div>
-    <v-divider class="mb-3" />
+    <div class="my-3" />
+    <!-- <v-divider class="mb-3" /> -->
 
     <v-radio
       :label="`$${plan.priceMonthly.toFixed(2).toLocaleString('en-US')} a month/child`"
