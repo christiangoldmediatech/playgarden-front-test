@@ -30,7 +30,17 @@
 
       <v-row>
         <template v-for="(item, index) in actualLetters">
-          <letter :key="index" :item="item" :index="index" />
+          <v-img
+            v-if="item.picture"
+            :key="index"
+            width="70"
+            height="70"
+            contain
+            class="letter-lesson-img clickable"
+            :src="item.picture"
+            @click="$nuxt.$emit('show-curriculum-progress', item.id)"
+          />
+          <letter v-else :key="index" :item="item" :index="index" />
         </template>
       </v-row>
 
@@ -90,7 +100,7 @@ export default {
           ...letter,
           ...current
         }
-      }).slice(0, 8)
+      }).slice(0, 9)
     },
 
     studentId () {
@@ -127,4 +137,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.letter-lesson-img{
+  width: 70px;
+  height: 70px;
+  max-width: 70px;
+  max-height: 70px;
+}
 </style>
