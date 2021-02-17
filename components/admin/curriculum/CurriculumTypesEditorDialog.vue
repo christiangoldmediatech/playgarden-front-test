@@ -53,6 +53,20 @@
                 />
               </validation-provider>
 
+              <!-- Order -->
+              <validation-provider
+                v-slot="{ errors }"
+                name="Curriculum Type Order"
+                rules="required"
+              >
+                <pg-text-field
+                  v-model="item.order"
+                  :error-messages="errors"
+                  label="Order"
+                  solo-labeled
+                />
+              </validation-provider>
+
               <!-- Icon -->
               <span class="v-label theme--light">Icon</span>
 
@@ -89,6 +103,50 @@
                   mode="image"
                   path="curriculum-type"
                   placeholder="Select a icon for this Curriculum Type"
+                  prepend-icon="mdi-camera"
+                  solo-labeled
+                  jpg
+                  png
+                  svg
+                />
+              </validation-provider>
+
+              <!-- Picture -->
+              <span class="v-label theme--light">Letter Picture</span>
+
+              <template v-if="item.picture">
+                <div class="mb-6 mt-3">
+                  <v-badge avatar color="white" overlap>
+                    <template v-slot:badge>
+                      <v-avatar
+                        class="clickable"
+                        @click.native="item.picture = null"
+                      >
+                        <v-icon color="#757575" size="20">
+                          mdi-close
+                        </v-icon>
+                      </v-avatar>
+                    </template>
+
+                    <v-img width="250" :src="item.picture" />
+                  </v-badge>
+                </div>
+              </template>
+
+              <validation-provider
+                v-else
+                v-slot="{ errors }"
+                name="Picture"
+                rules="size:10000"
+              >
+                <file-uploader
+                  ref="pictureUploader"
+                  v-model="picture"
+                  :error-messages="errors"
+                  label="Upload Picture"
+                  mode="image"
+                  path="curriculum-type"
+                  placeholder="Select a picture for this Curriculum Type"
                   prepend-icon="mdi-camera"
                   solo-labeled
                   jpg
@@ -158,12 +216,15 @@ export default {
       loading: false,
       valid: true,
       icon: null,
+      picture: null,
       id: null,
       item: {
         name: '',
         description: '',
         icon: '',
-        letter: ''
+        letter: '',
+        order: '0',
+        picture: ''
       },
       letters: [
         'Aa',
@@ -208,6 +269,7 @@ export default {
     close () {
       this.$nextTick(() => {
         this.icon = null
+        this.picture = null
         this.dialog = false
         this.loading = false
         this.$refs.obs.reset()
@@ -219,6 +281,10 @@ export default {
       try {
         if (this.icon) {
           this.item.icon = await this.$refs.iconUploader.handleUpload()
+        }
+
+        if (this.picture) {
+          this.item.picture = await this.$refs.pictureUploader.handleUpload()
         }
 
         if (this.id === null) {
@@ -241,13 +307,17 @@ export default {
       name = '',
       description = '',
       icon = '',
-      letter = ''
+      letter = '',
+      order = 0,
+      picture = ''
     } = {}) {
       this.id = id
       this.item.name = name
       this.item.description = description
       this.item.icon = icon
       this.item.letter = letter
+      this.item.order = order
+      this.item.picture = picture
 
       this.$nextTick(() => {
         this.dialog = true
