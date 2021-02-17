@@ -410,8 +410,8 @@ export default {
           currentTime = this.position
         }
         let newTime = 0
-        if (currentTime - 15 > 0) {
-          newTime = currentTime - 15
+        if (currentTime - 10 > 0) {
+          newTime = currentTime - 10
         }
 
         if (this.isCasting) {
@@ -430,7 +430,7 @@ export default {
         if (this.isCasting) {
           currentTime = this.position
         }
-        const nextTime = currentTime + 15
+        const nextTime = currentTime + 10
         const duration = this.playerInstance.duration()
         // const mediaObj = this.playerInstance.getMediaObject()
         // const availTime = (mediaObj.viewed && mediaObj.viewed.time) ? mediaObj.viewed.time : currentTime
