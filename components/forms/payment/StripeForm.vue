@@ -66,7 +66,7 @@
         :disabled="invalid"
         :loading="loading"
         type="submit"
-        x-large
+        :x-large="!$vuetify.breakpoint.smAndDown"
       >
         {{ buttonText }}
       </v-btn>

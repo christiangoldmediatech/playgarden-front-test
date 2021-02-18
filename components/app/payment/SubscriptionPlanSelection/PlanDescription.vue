@@ -12,9 +12,9 @@
       </li>
     </ul>
     <template v-if="plan.homeDeliveryBenefits && indexPlan === 1">
-      <section class="font-weight-bold">
+      <!-- <section class="font-weight-bold">
         Home Delivery of:
-      </section>
+      </section> -->
 
       <ul class="plan-detail">
         <li
@@ -30,9 +30,9 @@
     </template>
 
     <template v-if="plan.plusBenefits">
-      <section class="font-weight-bold">
+      <!-- <section class="font-weight-bold">
         Plus:
-      </section>
+      </section> -->
 
       <ul class="plan-detail">
         <li
@@ -72,7 +72,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 ul {
   list-style: none; /* Remove default bullets */
 }
@@ -87,7 +87,7 @@ ul li::before {
 }
 
 .plan-detail li {
-  width: 230px;
+  width: 100%;
   line-height: 5px;
   /*border: 1px blue solid; */
 }
@@ -103,5 +103,16 @@ ul li::before {
 } /* haslayout for IE6/7 */
 .plan-description {
   min-height: 155px !important;
+}
+.plan-item {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  margin-bottom: 12px;
+  position: relative;
+  span {
+    position: relative;
+    top: 4px;
+  }
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
-  <v-container fluid>
-    <v-col class="hidden-sm-and-down">
+  <v-container fluid class="ma-0 pa-0">
+    <v-col class="hidden-sm-and-down ma-0 pa-0">
       <v-row justify="start" no-gutters>
         <v-sheet class="mx-auto" max-width="100%" min-width="100">
           <v-slide-group
@@ -16,13 +16,13 @@
               :index="index"
             >
               <v-img
-                v-if="item.asImage"
+                v-if="item.picture"
                 :key="index"
                 width="70"
                 height="70"
                 contain
                 class="clickable"
-                :src="item.icon"
+                :src="item.picture"
                 @click="$nuxt.$emit('show-curriculum-progress', item.id)"
               />
 
@@ -53,7 +53,10 @@
               />
 
               <v-list-item-content>
-                <v-list-item-title class="font-weight-bold pl-4">
+                <v-list-item-title v-if="item.picture" class="font-weight-bold pl-4">
+                  Letter {{ item.name }}
+                </v-list-item-title>
+                <v-list-item-title v-else class="font-weight-bold pl-4">
                   Letter {{ item.name.substr(0, 1) }}
                 </v-list-item-title>
               </v-list-item-content>
@@ -61,16 +64,16 @@
           </template>
 
           <template v-slot:item="{ item, on, attrs }">
-            <v-list-item v-if="item.asImage" v-bind="attrs" v-on="on">
+            <v-list-item v-if="item.picture" v-bind="attrs" v-on="on">
               <v-btn text>
                 <v-img
                   width="70"
                   height="70"
                   contain
                   class="ml-n4"
-                  :src="item.icon"
+                  :src="item.picture"
                 />
-                Nature
+                <span class="pl-3">{{ item.name }}</span>
               </v-btn>
             </v-list-item>
 
@@ -181,15 +184,6 @@ export default {
           ...letter,
           ...current
         }
-      })
-
-      letters.splice(4, 0, {
-        asImage: true,
-        icon: require('@/assets/svg/carousel-letters/nature.svg'),
-        letter: 'Nature',
-        id: 27,
-        name: 'Nature',
-        disabled: false
       })
 
       return letters
