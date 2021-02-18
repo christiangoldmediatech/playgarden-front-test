@@ -72,21 +72,21 @@
                   <v-row>
                     <ul>
                       <li
-                        class="register-item"
+                        class="register-item text-left"
                       >
                         <small class="text-trial">
                           A Daily Learning Schedule
                         </small>
                       </li>
                       <li
-                        class="register-item"
+                        class="register-item text-left"
                       >
                         <small class="text-trial">
                           Access to over 1,200 lessons
                         </small>
                       </li>
                       <li
-                        class="register-item"
+                        class="register-item text-left"
                       >
                         <small class="text-trial">
                           Live Classes with Playgarden Prep Teachers
