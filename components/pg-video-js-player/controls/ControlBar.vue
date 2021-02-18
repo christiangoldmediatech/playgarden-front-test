@@ -305,9 +305,7 @@ export default {
       opacity: 1.0;
     }
     @media screen and (max-width: 599px) and (orientation:portrait) {
-      &-mobile-portrait {
-        opacity: 1 !important;
-      }
+      opacity: 1 !important;
     }
   }
 
