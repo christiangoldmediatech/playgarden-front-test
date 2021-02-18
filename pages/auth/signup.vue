@@ -54,14 +54,13 @@
           <template v-if="!inInvitationProcess">
             <p class="text-center text-md-left mt-6">
               <v-row no-gutters>
-                <v-col cols="1">
-                  <v-img
-                    :src="require('@/assets/png/gift-icon.png')"
-                    class="clickable close-btn-playgarden"
-                    width="18px"
-                  />
-                </v-col>
                 <v-col>
+                  <img
+                    src="@/assets/png/gift-icon.png"
+                    class="clickable mr-2"
+                    width="18px"
+                  >
+
                   <span
                     class="font-weight-bold text-uppercase pg-letter-spacing-subtitle"
                   >
