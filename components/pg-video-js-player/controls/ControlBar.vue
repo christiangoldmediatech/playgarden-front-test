@@ -1,197 +1,150 @@
 <template>
-  <div class="control-bar" :class="{ 'control-bar-mobile-portrait': !inline }">
+  <div class="control-bar-container">
     <!-- Next Up Component -->
     <next-up :params="nextUp" />
     <v-hover v-slot="{ hover }" close-delay="500">
-      <v-row class="mx-0" justify="center">
-        <v-sheet
-          :id="controlBarId"
-          :class="['control-bar-sheet-container py-2 px-4 mx-4', { 'control-bar-sheet-show': hover || visible }, { 'control-bar-sheet-container-mobile-portrait': !inline }]"
-          color="rgba(0, 0, 0, 0.74)"
-          max-width="656"
-          min-width="290"
-          width="100%"
-          rounded
+      <div
+        class="control-bar-sheet"
+        :class="{ 'control-bar-mobile-portrait': !inline, 'control-bar-sheet-show': hover || visible }"
+      >
+        <!-- Progress -->
+        <input
+          id="range"
+          type="range"
+          class="control-bar-progress-slider"
+          :min="0"
+          :max="duration"
+          :value="position"
+          @input="player.seek($event.target.value)"
         >
-          <div class="d-flex justify-space-between">
-            <!-- `${noSmallscreen ? 'justify-space-between' : 'justify-center justify-md-space-between'}` -->
-            <!-- Volume Menu -->
-            <div>
-              <v-menu
-                v-if="!smallScreen"
-                v-model="visible"
-                dark
-                offset-y
-                top
-                open-on-hover
-                open-on-focus
-                open-on-click
-                close-on-click
-                close-on-content-click
-                rounded
-                :attach="`#${controlBarId}`"
+
+        <!-- Buttons -->
+        <div class="d-flex align-center justify-space-between">
+          <div class="d-flex align-center">
+            <!-- Previous video Button -->
+            <v-btn
+              v-if="showVideoSkip"
+              class="mx-2"
+              small
+              icon
+              @click.stop="player.prevVideo"
+            >
+              <img class="control-bar-button control-bar-button-small" src="@/assets/player/controls/prev-video.svg">
+            </v-btn>
+
+            <!-- Skip backward 10 secs Button -->
+            <v-btn
+              v-if="showSteps"
+              class="mx-2"
+              icon
+              :small="$vuetify.breakpoint.xs"
+              :disabled="status === 'LOADING'"
+              @click.stop="player.stepBack"
+            >
+              <img class="control-bar-button" src="@/assets/player/controls/go-back.svg">
+            </v-btn>
+
+            <!-- Play / Pause Button -->
+            <v-btn
+              icon
+              class="mx-2"
+              :small="$vuetify.breakpoint.xs"
+              :disabled="status === 'LOADING'"
+              @click.stop="player.togglePlay"
+            >
+              <img
+                v-if="status === 'PLAYING'"
+                class="control-bar-button control-bar-button-small"
+                src="@/assets/player/controls/pause.svg"
               >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn
-                    color="#D2D2D2"
-                    icon
-                    :x-large="!mobile"
-                    v-bind="attrs"
-                    v-on="on"
-                    @click.stop="player.toggleMute"
-                  >
-                    <v-icon :small="$vuetify.breakpoint.xsOnly">
-                      {{ speakerIcon }}
-                    </v-icon>
-                  </v-btn>
-                </template>
-                <v-list
-                  color="rgba(0, 0, 0, 0.74)"
-                  dense
+              <img
+                v-else
+                class="control-bar-button control-bar-button-small"
+                src="@/assets/player/controls/play.svg"
+              >
+            </v-btn>
+
+            <!-- Skip forward 10 secs Button -->
+            <v-btn
+              v-if="showSteps"
+              class="mx-2"
+              icon
+              :small="$vuetify.breakpoint.xs"
+              :disabled="status === 'LOADING'"
+              @click.stop="player.stepForward"
+            >
+              <img class="control-bar-button" src="@/assets/player/controls/go-forward.svg">
+            </v-btn>
+
+            <!-- Next video Button -->
+            <v-btn
+              v-if="showVideoSkip"
+              class="mx-2"
+              icon
+              :small="$vuetify.breakpoint.xs"
+              :disabled="status === 'LOADING'"
+              @click.stop="player.skipVideo"
+            >
+              <img class="control-bar-button control-bar-button-small control-bar-button-mirrored" src="@/assets/player/controls/prev-video.svg">
+            </v-btn>
+
+            <!-- Audio Level Button -->
+            <div v-if="!smallScreen" class="d-flex align-center">
+              <v-btn
+                class="ml-4 mr-2"
+                small
+                icon
+                @click.stop="player.toggleMute"
+              >
+                <img
+                  v-if="muted || volume === 0"
+                  class="control-bar-button"
+                  src="@/assets/player/controls/audio-muted.svg"
                 >
-                  <v-list-item>
-                    <v-slider
-                      v-model="volumeVal"
-                      class="py-2"
-                      thumb-size="8"
-                      color="#D2D2D2"
-                      dark
-                      hide-details
-                      vertical
-                      :min="0"
-                      :max="100"
-                    />
-                  </v-list-item>
-                </v-list>
-              </v-menu>
-            </div>
-
-            <div>
-              <v-btn
-                v-if="showRestart"
-                class="mx-1"
-                color="#D2D2D2"
-                icon
-                :x-large="!mobile"
-                :disabled="status === 'LOADING'"
-                @click.stop="player.restart"
-              >
-                <v-icon small>
-                  pg-icon-previous
-                </v-icon>
-                <!-- <img class="control-bar-svg-icon" src="@/assets/player/previous.svg" width="100%"> -->
+                <img
+                  v-else-if="volume < 0.33"
+                  class="control-bar-button"
+                  src="@/assets/player/controls/audio-low.svg"
+                >
+                <img
+                  v-else-if="volume < 0.66"
+                  class="control-bar-button"
+                  src="@/assets/player/controls/audio-mid.svg"
+                >
+                <img
+                  v-else
+                  class="control-bar-button"
+                  src="@/assets/player/controls/audio-high.svg"
+                >
               </v-btn>
 
-              <!-- Step backward 15 sec -->
-              <v-btn
-                v-if="showSteps"
-                class="mx-1"
-                color="#D2D2D2"
-                icon
-                :x-large="!mobile"
-                :disabled="status === 'LOADING'"
-                @click.stop="player.stepBack"
-              >
-                <!-- <v-icon small>
-                  pg-icon-backward-15-sec
-                </v-icon> -->
-                <img class="control-bar-svg-icon" src="@/assets/player/back15sec.svg" width="100%">
-              </v-btn>
-
-              <!-- Play Button -->
-              <v-btn
-                color="#D2D2D2"
-                class="mx-1"
-                icon
-                :x-large="!mobile"
-                :disabled="status === 'LOADING'"
-                @click.stop="player.togglePlay"
-              >
-                <v-icon :large="$vuetify.breakpoint.smAndUp">
-                  {{ playIcon }}
-                </v-icon>
-              </v-btn>
-
-              <!-- Step forward 15 sec -->
-              <v-btn
-                v-if="showSteps"
-                class="mx-1"
-                color="#D2D2D2"
-                icon
-                :x-large="!mobile"
-                :disabled="status === 'LOADING'"
-                @click.stop="player.stepForward"
-              >
-                <!-- <v-icon small>
-                  pg-icon-forward-15-sec
-                </v-icon> -->
-                <img class="control-bar-svg-icon" src="@/assets/player/forward15sec.svg" width="100%">
-              </v-btn>
-
-              <!-- Next Video -->
-              <v-btn
-                v-if="showVideoSkip"
-                class="mx-1"
-                color="#D2D2D2"
-                icon
-                :x-large="!mobile"
-                :disabled="status === 'LOADING'"
-                @click.stop="player.skipVideo"
-              >
-                <!-- <v-icon small>
-                  pg-icon-forward-15-sec
-                </v-icon> -->
-                <img class="control-bar-svg-icon control-bar-svg-icon-padded" src="@/assets/player/next.svg" width="100%">
-              </v-btn>
-            </div>
-
-            <div>
-              <!-- Fullscreen Button -->
-              <v-btn
-                v-if="!smallScreen"
-                color="#D2D2D2"
-                icon
-                :x-large="!mobile"
-                @click.stop="$emit('fullscreen')"
-              >
-                <v-icon :small="$vuetify.breakpoint.xsOnly">
-                  {{ fullscreenIcon }}
-                </v-icon>
-              </v-btn>
-            </div>
-          </div>
-
-          <!-- Timeline -->
-          <div class="d-flex align-center justify-space-between">
-            <span class="control-bar-text">
-              {{ position | convertToMMSS }}
-            </span>
-            <div class="flex-grow-1 flex-shrink-0">
-              <v-slider
-                class="no-transition control-bar-progress-slider"
-                color="accent"
-                track-color="#D2D2D2"
-                :value="Math.round(position)"
-                :max="Math.round(duration)"
+              <input
+                v-model="volumeVal"
+                type="range"
+                class="control-bar-audio-slider"
                 :min="0"
-                thumb-color="accent"
-                :readonly="noSeek"
-                hide-details
-                @input="player.seek"
+                :max="100"
               >
-                <template v-slot:thumb-label="{ value }">
-                  <span class="control-bar-text">
-                    {{ value | convertToMMSS }}
-                  </span>
-                </template>
-              </v-slider>
             </div>
-            <span class="control-bar-text">
-              {{ duration | convertToMMSS }}
-            </span>
           </div>
-        </v-sheet>
-      </v-row>
+
+          <div class="d-flex align-center">
+            <!-- Time section -->
+            <div class="control-bar-time mr-md-8">
+              {{ position | convertToMMSS }} / {{ duration | convertToMMSS }}
+            </div>
+            <!-- Fullscreen Button -->
+            <v-btn
+              v-if="!smallScreen"
+              icon
+              :small="$vuetify.breakpoint.xs"
+              @click.stop="$emit('fullscreen')"
+            >
+              <img class="control-bar-button control-bar-button-mirrored" src="@/assets/player/controls/full-screen.svg">
+            </v-btn>
+          </div>
+        </div>
+      </div>
     </v-hover>
   </div>
 </template>
@@ -226,28 +179,15 @@ export default {
   },
 
   computed: {
+    progress () {
+      if (this.duration > 0) {
+        return (this.position / this.duration) * 100
+      }
+      return 0
+    },
+
     controlBarId () {
       return `control-bar-${this._uid}`
-    },
-
-    speakerIcon () {
-      if (this.muted || this.volume === 0) {
-        return 'mdi-volume-off'
-      }
-      if (this.volume < 0.33) {
-        return 'mdi-volume-low'
-      }
-      if (this.volume < 0.66) {
-        return 'mdi-volume-medium'
-      }
-      return 'mdi-volume-high'
-    },
-
-    playIcon () {
-      if (this.status === 'PLAYING') {
-        return 'mdi-pause'
-      }
-      return 'mdi-play'
     },
 
     fullscreenIcon () {
@@ -272,67 +212,137 @@ export default {
 
 <style lang="scss">
 .control-bar {
-  position: absolute;
-  width: 100%;
-  bottom: 16px;
-  user-select: none;
-  pointer-events: auto;
-  @media screen and (max-width: 599px) {
-    bottom: 4px;
+  &-container {
+    position: absolute;
+    width: 100%;
+    bottom: 0px;
+    user-select: none;
+    pointer-events: auto;
+    color: white;
+    max-height: 100%;
   }
-  @media screen and (max-width: 599px) and (orientation:portrait) {
-    &-mobile-portrait {
-      bottom: -84px !important;
+
+  &-progress-slider {
+    // -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    position: absolute;
+    top: -4px;
+    left: 0px;
+    background-color: rgba($color: #FFFFFF, $alpha: 0.5);
+    outline: none;
+    overflow: hidden;
+
+    &::-webkit-slider-thumb {
+      // -webkit-appearance: none;
+      appearance: none;
+      width: 1px;
+      height: 4px;
+      background-color: var(--v-accent-base);
+      box-shadow: -8000px 0 0 8000px var(--v-accent-base);
+    }
+
+    /** FF*/
+    &::-moz-range-progress {
+      background-color: var(--v-accent-base);
+    }
+
+    &::-moz-range-track {
+      background-color: rgba($color: #FFFFFF, $alpha: 0.5);
+    }
+
+    /* IE*/
+    &::-ms-fill-lower {
+      background-color: var(--v-accent-base);
+    }
+
+    &::-ms-fill-upper {
+      background-color: rgba($color: #FFFFFF, $alpha: 0.5);
     }
   }
-  &-area {
-    width: calc(50% - 52px);
+
+  &-audio-slider {
+    appearance: none;
+    width: 75px;
+    height: 4px;
+    background-color: #FFFFFF;
+    outline: none;
+    margin: 0px 4px;
+
+    &::-webkit-slider-thumb {
+      appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 6px;
+      background-color: #FFFFFF;
+    }
+
+    // /** FF*/
+    &::-moz-range-progress {
+      background-color: #FFFFFF;
+    }
+
+    &::-moz-range-track {
+      background-color: #3a3a3a;
+      height: 100%;
+    }
+
+    // /* IE*/
+    &::-ms-fill-lower {
+      background-color: #FFFFFF;
+    }
+
+    &::-ms-fill-upper {
+      background-color: #3a3a3a;
+      height: 100%;
+    }
   }
+
   &-sheet {
-    &-container {
-      opacity: 0;
-      transition: opacity 500ms ease-in-out;
-      -moz-transition: opacity 500ms ease-in-out;
-      -webkit-transition: opacity 500ms ease-in-out;
-      @media screen and (max-width: 599px) and (orientation:portrait) {
-        &-mobile-portrait {
-          opacity: 1 !important;
-        }
-      }
-    }
+    width: 100%;
+    background-color: rgba($color: #000000, $alpha: 0.4);
+    padding: 4px;
+    position: relative;
+    opacity: 0;
+    transition: opacity 500ms ease-in-out;
     &-show{
       opacity: 1.0;
     }
+    @media screen and (max-width: 599px) and (orientation:portrait) {
+      opacity: 1 !important;
+    }
   }
-  &-text {
-    color: #D2D2D2;
+
+  @media screen and (max-width: 599px) and (orientation:portrait) {
+    &-mobile-portrait {
+      position:  absolute;
+      // bottom: -24px;
+      bottom: -36px;
+    }
+  }
+
+  &-button {
+    // margin: 0 4px;
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    object-position: center;
+    &-small {
+      width: 15px;
+      height: 15px;
+    }
+    &-mirrored {
+      transform: scaleX(-1);
+    }
+  }
+
+  &-time {
+    width: 80px;
     text-align: center;
-    width: 60px;
-  }
-  &-progress-slider {
-    .v-slider__thumb-label.accent {
-      background-color: transparent !important;
-      @media screen and (max-width: 599px) {
-        display: none;
-      }
-    }
-    @media screen and (max-width: 599px) {
-      .v-input__control,.v-input__control > div.v-input__slot {
-        min-height: 32px;
-        max-height: 32px;
-      }
-    }
-  }
-  &-svg-icon {
-    max-width: 32px !important;
-    max-height: 32px !important;
-    @media screen and (max-width: 599px) {
-      max-width: 24px !important;
-      max-height: 24px !important;
-    }
-    &-padded {
-      padding: 6px;
-    }
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.5;
   }
 }
 </style>
