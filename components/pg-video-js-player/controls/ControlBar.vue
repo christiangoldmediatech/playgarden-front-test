@@ -24,6 +24,7 @@
             <!-- Previous video Button -->
             <v-btn
               v-if="showVideoSkip"
+              class="mx-2"
               small
               icon
               @click.stop="player.prevVideo"
@@ -34,6 +35,7 @@
             <!-- Skip backward 10 secs Button -->
             <v-btn
               v-if="showSteps"
+              class="mx-2"
               icon
               :small="$vuetify.breakpoint.xs"
               :disabled="status === 'LOADING'"
@@ -45,6 +47,7 @@
             <!-- Play / Pause Button -->
             <v-btn
               icon
+              class="mx-2"
               :small="$vuetify.breakpoint.xs"
               :disabled="status === 'LOADING'"
               @click.stop="player.togglePlay"
@@ -64,6 +67,7 @@
             <!-- Skip forward 10 secs Button -->
             <v-btn
               v-if="showSteps"
+              class="mx-2"
               icon
               :small="$vuetify.breakpoint.xs"
               :disabled="status === 'LOADING'"
@@ -75,6 +79,7 @@
             <!-- Next video Button -->
             <v-btn
               v-if="showVideoSkip"
+              class="mx-2"
               icon
               :small="$vuetify.breakpoint.xs"
               :disabled="status === 'LOADING'"
@@ -86,6 +91,7 @@
             <!-- Audio Level Button -->
             <div v-if="!smallScreen" class="d-flex align-center">
               <v-btn
+                class="ml-4 mr-2"
                 small
                 icon
                 @click.stop="player.toggleMute"
@@ -120,14 +126,13 @@
                 :max="100"
               >
             </div>
-
-            <!-- Time section -->
-            <div class="control-bar-time">
-              {{ position | convertToMMSS }} / {{ duration | convertToMMSS }}
-            </div>
           </div>
 
-          <div>
+          <div class="d-flex align-center">
+            <!-- Time section -->
+            <div class="control-bar-time mr-md-8">
+              {{ position | convertToMMSS }} / {{ duration | convertToMMSS }}
+            </div>
             <!-- Fullscreen Button -->
             <v-btn
               v-if="!smallScreen"
