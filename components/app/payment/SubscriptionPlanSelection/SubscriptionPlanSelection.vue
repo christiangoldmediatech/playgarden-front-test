@@ -14,7 +14,6 @@
 
               <p class="product-info px-2">
                 *You will not be charged until the end of the 30 DAY TRIAL period and you can cancel anytime.<br>
-                *Pricing is per child
               </p>
 
               <p class="plan-announcement px-2">
@@ -159,6 +158,8 @@
                       >
                         {{ getTypePlan(indexP) }}
                       </v-chip>
+
+                      <br>
 
                       <underlined-title
                         font-size="18px"
