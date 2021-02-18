@@ -12,7 +12,7 @@
         @click.stop="onCastBtn"
       >
         <v-icon color="#D2D2D2">
-          mdi-cast-education
+          mdi-cast
         </v-icon>
       </v-btn>
 
@@ -354,6 +354,16 @@ export default {
         }
       })
 
+      this.$set(this.playerInstance, 'prevVideo', () => {
+        if (this.position > 5) {
+          this.playerInstance.seek(0)
+        } else if (this.playlistItemIndex > 0) {
+          this.loadMediaObject(this.playlistItemIndex - 1)
+        } else if (this.playlist.length > 0) {
+          this.loadMediaObject(this.playlist.length - 1)
+        }
+      })
+
       this.$set(this.playerInstance, 'skipVideo', () => {
         this.$emit('video-skipped')
       })
@@ -387,6 +397,7 @@ export default {
             window.remotePlayer.currentTime = position
             window.remotePlayerController.seek()
           } else {
+            this.position = parseInt(position)
             this.playerInstance.currentTime(position)
           }
         }
@@ -403,15 +414,15 @@ export default {
         this.position = 0
       })
 
-      // Step back 15 seconds
+      // Step back 10 seconds
       this.$set(this.playerInstance, 'stepBack', () => {
         let currentTime = this.playerInstance.currentTime()
         if (this.isCasting) {
           currentTime = this.position
         }
         let newTime = 0
-        if (currentTime - 15 > 0) {
-          newTime = currentTime - 15
+        if (currentTime - 10 > 0) {
+          newTime = currentTime - 10
         }
 
         if (this.isCasting) {
@@ -424,13 +435,13 @@ export default {
         this.position = newTime
       })
 
-      // Step forward 15 seconds
+      // Step forward 10 seconds
       this.$set(this.playerInstance, 'stepForward', () => {
         let currentTime = this.playerInstance.currentTime()
         if (this.isCasting) {
           currentTime = this.position
         }
-        const nextTime = currentTime + 15
+        const nextTime = currentTime + 10
         const duration = this.playerInstance.duration()
         // const mediaObj = this.playerInstance.getMediaObject()
         // const availTime = (mediaObj.viewed && mediaObj.viewed.time) ? mediaObj.viewed.time : currentTime
