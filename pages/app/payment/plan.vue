@@ -1,32 +1,35 @@
 <template>
-  <v-row no-gutters>
-    <v-col>
+  <v-main>
+    <v-container fluid>
       <v-row class="mb-6" no-gutters>
-        <v-btn
-          v-if="initialized && inSignUpProcess"
-          color="accent"
-          nuxt
-          text
-          :to="{
-            name: 'app-children-register',
-            query: { process: 'signup', step: '2' }
-          }"
-        >
-          <v-icon left>
-            mdi-less-than
-          </v-icon>
+        <v-col cols="12">
+          <v-btn
+            v-if="initialized && inSignUpProcess"
+            color="accent"
+            nuxt
+            text
+            :to="{
+              name: 'app-children-register',
+              query: { process: 'signup', step: '2' }
+            }"
+          >
+            <v-icon left>
+              mdi-less-than
+            </v-icon>
 
-          Back
-        </v-btn>
+            Back
+          </v-btn>
+        </v-col>
+        <v-col cols="12">
+          <subscription-plan-selection
+            class="mt-md-n6"
+            @click:submit="onSubmit"
+            @initialized="initialized = true"
+          />
+        </v-col>
       </v-row>
-
-      <subscription-plan-selection
-        class="mt-n6"
-        @click:submit="onSubmit"
-        @initialized="initialized = true"
-      />
-    </v-col>
-  </v-row>
+    </v-container>
+  </v-main>
 </template>
 
 <script>

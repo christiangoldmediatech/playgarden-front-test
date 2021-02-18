@@ -75,16 +75,23 @@
             align="center"
             :no-gutters="$vuetify.breakpoint.smAndUp"
           >
-            <v-col cols="3">
-              <child-select
-                :value="value"
-                hide-details
-                :management-button="!previewMode"
-                @input="$emit('input', $event)"
-              />
+            <v-col cols="12" md="3" sm="6">
+              <v-row>
+                <child-select
+                  class="mx-3"
+                  :value="value"
+                  hide-details
+                  :management-button="!previewMode"
+                  @input="$emit('input', $event)"
+                />
+              </v-row>
             </v-col>
             <!--carousel letter-->
-            <carousel-letter />
+            <v-col cols="12" md="9" sm="6">
+              <v-row class="mx-md-2 my-md-0 mx-sm-4 my-sm-2 mx-xs-4 my-xs-2" justify="center">
+                <carousel-letter :value="value" />
+              </v-row>
+            </v-col>
             <!--carousel letter-->
           </v-row>
 
@@ -144,7 +151,7 @@ export default {
       validator: (val) => {
         return typeof val === 'number' || val === null
       },
-      default: null
+      required: true
     },
 
     lesson: {

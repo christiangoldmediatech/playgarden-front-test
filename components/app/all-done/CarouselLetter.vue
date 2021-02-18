@@ -1,36 +1,116 @@
 <template>
-  <v-col cols="8" md="9">
-    <v-row justify="start" no-gutters>
-      <v-sheet class="mx-auto" max-width="100%" min-width="100">
-        <v-slide-group
-          multiple
-          show-arrows
-          prev-icon="mdi-chevron-left accent--text"
-          next-icon="mdi-chevron-right accent--text"
-        >
-          <v-slide-item
-            v-for="(item, index) in actualLetters"
-            :key="index"
-            :item="item"
-            :index="index"
+  <v-container fluid class="ma-0 pa-0">
+    <v-col class="hidden-sm-and-down ma-0 pa-0">
+      <v-row justify="start" no-gutters>
+        <v-sheet class="mx-auto" max-width="100%" min-width="100">
+          <v-slide-group
+            multiple
+            show-arrows
+            prev-icon="mdi-chevron-left accent--text"
+            next-icon="mdi-chevron-right accent--text"
           >
-            <letter :key="index" :item="item" :index="index" />
-          </v-slide-item>
-        </v-slide-group>
-      </v-sheet>
-    </v-row>
-  </v-col>
+            <v-slide-item
+              v-for="(item, index) in actualLetters"
+              :key="index"
+              :item="item"
+              :index="index"
+            >
+              <v-img
+                v-if="item.picture"
+                :key="index"
+                width="70"
+                height="70"
+                contain
+                class="clickable"
+                :src="item.picture"
+                @click="$nuxt.$emit('show-curriculum-progress', item.id)"
+              />
+
+              <letter v-else :key="index" :item="item" :index="index" />
+            </v-slide-item>
+          </v-slide-group>
+        </v-sheet>
+      </v-row>
+    </v-col>
+
+    <v-col cols="12" class="hidden-md-and-up">
+      <v-row>
+        <pg-select
+          :value="value"
+          :items="actualLetters"
+          item-value="id"
+          hide-details
+          solo
+          placeholder="Browse by letter"
+          v-bind="{ ...$attrs }"
+          @input="$nuxt.$emit('show-curriculum-progress', $event)"
+        >
+          <template v-slot:selection="{ item }">
+            <v-list-item>
+              <recorded-letter
+                v-bind="{ letter: item, small: smallLetter }"
+                list-mode
+              />
+
+              <v-list-item-content>
+                <v-list-item-title v-if="item.picture" class="font-weight-bold pl-4">
+                  Letter {{ item.name }}
+                </v-list-item-title>
+                <v-list-item-title v-else class="font-weight-bold pl-4">
+                  Letter {{ item.name.substr(0, 1) }}
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </template>
+
+          <template v-slot:item="{ item, on, attrs }">
+            <v-list-item v-if="item.picture" v-bind="attrs" v-on="on">
+              <v-btn text>
+                <v-img
+                  width="70"
+                  height="70"
+                  contain
+                  class="ml-n4"
+                  :src="item.picture"
+                />
+                <span class="pl-3">{{ item.name }}</span>
+              </v-btn>
+            </v-list-item>
+
+            <v-list-item v-else v-bind="attrs" class="w-100" v-on="on">
+              <recorded-letter
+                v-bind="{
+                  letter: item,
+                  small: smallLetter,
+                  disabled: item.disabled
+                }"
+                list-mode
+              />
+
+              <v-list-item-content>
+                <v-list-item-title class="pl-4">
+                  Letter {{ item.name.substr(0, 1) }}
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </template>
+        </pg-select>
+      </v-row>
+    </v-col>
+  </v-container>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import Letter from '@/components/app/all-done/Letter.vue'
+import RecordedLetter from '@/components/app/live-sessions/recorded/RecordedLetter.vue'
 
 export default {
   name: 'CarouselLetter',
 
   components: {
-    Letter
+    Letter,
+    RecordedLetter
   },
 
   props: {
@@ -38,7 +118,7 @@ export default {
       validator: (val) => {
         return typeof val === 'number' || val === null
       },
-      default: null
+      required: true
     },
 
     lesson: {
@@ -72,6 +152,17 @@ export default {
       },
       required: false,
       default: null
+    },
+    slimVersion: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
+    smallLetter: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
 
@@ -87,13 +178,15 @@ export default {
     ...mapGetters({ currentChild: 'getCurrentChild' }),
 
     actualLetters () {
-      return this.letters.map((letter) => {
+      const letters = this.letters.map((letter) => {
         const current = this.lettersProgress.find(l => l.id === letter.id)
         return {
           ...letter,
           ...current
         }
       })
+
+      return letters
     },
 
     studentId () {
@@ -110,7 +203,6 @@ export default {
     ...mapActions('admin/curriculum', {
       getLetters: 'getTypes'
     }),
-
     ...mapActions('children/course-progress', ['getCourseProgressByChildId']),
 
     async fetchChildProgress () {
