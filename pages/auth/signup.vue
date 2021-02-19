@@ -45,35 +45,55 @@
         </v-col>
 
         <v-col class="px-12" cols="12" md="4">
-          <p
-            class="font-weight-bold text-h5 pg-letter-spacing text-center text-md-left"
-          >
-            MEMBERSHIP
-          </p>
-
           <p class="mt-6 mb-12 text-center text-md-left">
             <small>
-              Complete the registration and choose the plan that best suits your
-              family's needs!
+              Complete the registration and choose the plan that best suits your family's needs!
             </small>
           </p>
 
           <template v-if="!inInvitationProcess">
             <p class="text-center text-md-left mt-6">
               <v-row no-gutters>
-                <v-col cols="1">
-                  <v-img
-                    :src="require('@/assets/png/gift-icon.png')"
-                    class="clickable close-btn-playgarden"
-                    width="18px"
-                  />
-                </v-col>
                 <v-col>
+                  <img
+                    src="@/assets/png/gift-icon.png"
+                    class="clickable mr-2"
+                    width="18px"
+                  >
+
                   <span
                     class="font-weight-bold text-uppercase pg-letter-spacing-subtitle"
                   >
-                    ENJOY 30 DAYS OF FREE TRIAL
+                    GET 30 DAYS OF FREE TRIAL
                   </span>
+                  <v-row no-gutters>
+                    <span class="font-weight-bold mt-3">That includes:</span>
+                  </v-row>
+                  <v-row>
+                    <ul>
+                      <li
+                        class="register-item text-left"
+                      >
+                        <small class="text-trial">
+                          A Daily Learning Schedule
+                        </small>
+                      </li>
+                      <li
+                        class="register-item text-left"
+                      >
+                        <small class="text-trial">
+                          Access to over 1,200 lessons
+                        </small>
+                      </li>
+                      <li
+                        class="register-item text-left"
+                      >
+                        <small class="text-trial">
+                          Live Classes with Playgarden Prep Teachers
+                        </small>
+                      </li>
+                    </ul>
+                  </v-row>
                 </v-col>
               </v-row>
             </p>
@@ -104,7 +124,7 @@
           <underlined-title text="Sign Up now!" />
         </div>
 
-        <p>
+        <p class="mt-3">
           Ready to start learning at home? Enter your email to create your
           account and start your membership today.
         </p>
@@ -284,5 +304,24 @@ export default {
 
 .text-orange-info::v-deep.v-chip--label {
   border-radius: 0px !important;
+}
+
+ul {
+  list-style: none; /* Remove default bullets */
+}
+
+ul li::before {
+  content: "●";
+  font-size: 28px;
+  color: var(--v-accent-base); /* Change the color */
+  font-weight: bold; /* If you want it to be bold */
+  display: inline-block; /* Needed to add space between the bullet and the text */
+  width: 0.7em; /* Also needed for space (tweak if needed) */
+  margin-left: -1rem; /* Also needed for space (tweak if needed) */
+}
+
+.text-trial {
+  margin-top: 11px;
+  position: absolute;
 }
 </style>

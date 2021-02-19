@@ -46,11 +46,13 @@ export default {
 }
 
 .coming-up-next {
-  transition: transform 1s;
+  transition: transform ease 1s, opacity ease 1s;
   transform: translate(0%);
+  opacity: 0;
 }
 
 .shown {
   transform: translate(-100%);
+  opacity: 1;
 }
 </style>
