@@ -2,7 +2,10 @@
   <v-col class="fill-height">
     <v-row no-gutters>
       <v-col cols="12" sm="">
-        <underlined-title text="Educational Playdates" />
+        <center v-if="$vuetify.breakpoint.smAndDown">
+          <underlined-title class="text-h5" text="Educational Playdates" />
+        </center>
+        <underlined-title v-else text="Educational Playdates" />
       </v-col>
 
       <v-col cols="12" sm="auto" class="mt-3 mt-sm-0">
@@ -65,20 +68,37 @@
           alt="Educational Playdates"
           class="align-center mr-md-15"
           contain
-          max-height="500"
+          :max-height="($vuetify.breakpoint.smAndDown) ? 200 : 500"
           :src="require('@/assets/png/playdates/playdate.png')"
         />
       </v-col>
 
       <v-col cols="12" md="6">
         <v-row align-content="center" class="fill-height">
-          <v-col cols="12" class="text-md-left text-center font-weight-bold">
+          <v-col cols="12" class="text-md-left text-md-h5 text-center font-weight-bold">
             What's a Playdates?
           </v-col>
 
           <v-col cols="12" class="text-md-left text-center">
-            A playdate is a place where your child can have fun with their
-            friends while they have fun playing, all supervised by a specialist.
+            <p class="text-justify">
+              Playgarden Prep has created custom virtual Playdates to provide important social opportunities for children to interact with their friends and family during this time of isolation.
+            </p>
+
+            <p class="text-justify">
+              Our <span class="font-weight-bold">Educational Playdates</span> are moderated by a specialist in speech and occupational therapy, to ensure children engage and enjoy social interactions with other little ones. We will limit the number of children in each playdate to allow everyone to participate and benefit from these structured playtimes.
+            </p>
+
+            <p class="text-justify">
+              Our <span class="font-weight-bold">Musical Playdates</span> are structured around music and engage little ones through a Mommy and Me class experience. Led by our Coaches, these playdates are a natural way for children to get together with their friends to sing, dance and have fun together!
+            </p>
+
+            <p class="text-justify">
+              Families can also choose to create <span class="font-weight-bold">Private Playdates</span> with their friends and family, which allows private time to connect and share.
+            </p>
+
+            <p class="text-justify">
+              Whether you choose to book a Private Playdate or join a recurring Educational or Musical Playdate to make new friends, we are committed to keeping children connected!
+            </p>
           </v-col>
 
           <v-col cols="12">
