@@ -22,8 +22,7 @@
       </p>
 
       <p>
-        Here you will find playdates from other playgardenprep partners with
-        available places!
+        Playgarden Prep has created custom virtual Playdates to provide important social opportunities for children to interact with their friends and family during this time of isolation.
       </p>
     </v-row>
 
