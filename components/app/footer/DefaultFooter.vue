@@ -20,7 +20,7 @@
                 alt="Playgarden Prep's Logo"
                 class="mb-3"
                 contain
-                :max-width="$vuetify.breakpoint.smAndUp ? '400' : null"
+                :max-width="$vuetify.breakpoint.smAndUp ? '400' : '100%'"
                 :src="require('~/assets/svg/logo.svg')"
               />
             </nuxt-link>

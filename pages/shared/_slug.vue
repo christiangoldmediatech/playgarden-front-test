@@ -415,8 +415,7 @@ export default {
 
       return {
         imageShared: imageUrl || require('assets/svg/shared/parent-rating.svg'),
-        pageImage:
-          (process.env.frontendUrl + require(`assets/png/shared/${slug}.png`)).replace('//', '/'),
+        pageImage: require(`assets/png/shared/${slug}.png`),
         pageTitle: text,
         pageDescription: description
       }
@@ -428,7 +427,8 @@ export default {
   data: () => ({
     childName: 'Sophie',
     dialog: false,
-    loading: false
+    loading: false,
+    frontendUrl: process.env.frontendUrl.slice(0, -1)
   }),
 
   async created () {
@@ -484,7 +484,7 @@ export default {
         {
           hid: 'og:image',
           property: 'og:image',
-          content: this.pageImage
+          content: this.frontendUrl + this.pageImage
         },
         {
           hid: 'og:image:alt',
@@ -494,7 +494,7 @@ export default {
         {
           hid: 'og:image:secure_url',
           property: 'og:image:secure_url',
-          content: this.pageImage
+          content: this.frontendUrl + this.pageImage
         },
         {
           hid: 'og:title',
@@ -509,12 +509,12 @@ export default {
         {
           hid: 'og:site_name',
           property: 'og:site_name',
-          content: process.env.frontendUrl
+          content: this.frontendUrl
         },
         {
           hid: 'og:url',
           property: 'og:url',
-          content: process.env.frontendUrl
+          content: this.frontendUrl
         },
         {
           hid: 'twitter:card',
@@ -524,7 +524,7 @@ export default {
         {
           hid: 'twitter:domain',
           name: 'twitter:domain',
-          content: process.env.frontendUrl
+          content: this.frontendUrl
         },
         {
           hid: 'twitter:image:alt',
