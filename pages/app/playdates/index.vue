@@ -43,7 +43,7 @@
               color="primary"
               class="text-transform-none"
             >
-              Find Playdate
+              Find Playdates
             </v-btn>
           </div>
         </v-row>
