@@ -1,12 +1,7 @@
 <template>
   <v-main>
-    <!-- <div class="startLiveClass">
-      <p class="text-center pt-3">
-        <span class="text-h7 text-md-h5 font-weight-bold white--text pt-5">Live Classes will start January 11th, 2021</span>
-      </p>
-    </div> -->
-    <v-row class="pos-relative pt-2" justify="center" align="center">
-      <v-col cols="12">
+    <v-row class="pos-relative pt-md-2" justify="center" align="center">
+      <v-col class="hidden-sm-and-down" cols="12">
         <week-selector
           v-if="today"
           :day="getDateObj()"
@@ -15,16 +10,18 @@
         />
       </v-col>
       <v-btn
-        class="text-none mr-md-4"
+        class="text-none mr-md-4 mt-6 mt-md-0"
         :class="{ 'pos-absolute pos-right-0': $vuetify.breakpoint.mdAndUp }"
         color="accent"
+        :large="$vuetify.breakpoint.smAndDown"
         @click.stop="goToRecordings"
       >
         Watch recorded classes
       </v-btn>
     </v-row>
     <v-container
-      :class="{ 'lsess-container': !$vuetify.breakpoint.smAndDown }"
+      v-if="$vuetify.breakpoint.mdAndUp"
+      class="lsess-container"
       fluid
     >
       <v-row class="fill-height">
@@ -42,6 +39,40 @@
 
         <v-col class="lsess-schedule" cols="12" md="8" lg="9" xl="10">
           <sessions-table :today="today" />
+        </v-col>
+      </v-row>
+    </v-container>
+
+    <v-container v-else class="lclass-mobile">
+      <div class="header">
+        <img class="camera-icon" src="@/assets/svg/sessions-camera.svg">
+        Live Classes Schedule
+      </div>
+
+      <week-selector
+        v-if="today"
+        :day="getDateObj()"
+        @prev-week="removeWeek"
+        @next-week="addWeek"
+      />
+
+      <v-row class="mt-4" justify="space-around">
+        <today-card
+          v-for="entry in orderedSessions"
+          :key="`lclass-entry-${entry.id}`"
+          v-bind="{ entry }"
+          mobile
+        />
+
+        <v-col
+          v-if="orderedSessions.length === 0"
+          cols="12"
+        >
+          <v-card>
+            <v-card-text class="text-h6 text-center">
+              There are no live classes programmed for this week. Check back later.
+            </v-card-text>
+          </v-card>
         </v-col>
       </v-row>
     </v-container>
@@ -117,17 +148,20 @@
 import { mapActions, mapState, mapGetters } from 'vuex'
 import { getMondayFriday } from '@/utils/dateTools'
 import TodayCardsPanel from '@/components/app/live-sessions/TodayCardsPanel.vue'
+import TodayCard from '@/components/app/live-sessions/TodayCard.vue'
 import CalendarPanel from '@/components/app/live-sessions/CalendarPanel.vue'
 import EntryDialog from '@/components/app/live-sessions/EntryDialog.vue'
 import SessionsTable from '@/components/app/live-sessions/SessionsTable.vue'
 import RecordedClassPlayer from '@/components/app/live-sessions/RecordedClassPlayer.vue'
 import WeekSelector from '@/components/admin/live-sessions/WeekSelector.vue'
+import { jsonCopy } from '~/utils/objectTools'
 
 export default {
   name: 'Index',
 
   components: {
     TodayCardsPanel,
+    TodayCard,
     CalendarPanel,
     EntryDialog,
     SessionsTable,
@@ -156,6 +190,16 @@ export default {
         return getMondayFriday(this.getDateObj())
       }
       return null
+    },
+
+    orderedSessions () {
+      const sessions = jsonCopy(this.sessions)
+      return sessions.sort((sessionA, sessionB) => {
+        const start = new Date(sessionA.dateStart)
+        const end = new Date(sessionB.dateEnd)
+
+        return start.getTime() - end.getTime()
+      })
     }
   },
 
@@ -210,6 +254,27 @@ export default {
 </script>
 
 <style lang="scss">
+.lclass-mobile {
+  margin-top: 12px;
+
+  & div.header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.5;
+    color: #606060;
+    margin-bottom: 12px;
+
+    & img.camera-icon {
+      width: 24px;
+      height: 24px;
+      margin-right: 8px;
+    }
+  }
+}
+
 .lsess {
   &-container {
     height: calc(100vh - 64px);
