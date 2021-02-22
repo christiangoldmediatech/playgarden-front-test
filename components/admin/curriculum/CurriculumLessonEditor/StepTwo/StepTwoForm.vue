@@ -157,6 +157,14 @@
         />
       </validation-provider>
 
+      <select-dropbox-file
+        ref="thumbnailUploaderDropBox"
+        v-model="thumbnail"
+        mode="image"
+        multi-part
+        path="curriculum-thumbnail"
+        @sendFile="setFileImageDropBox" />
+
       <v-row class="mb-6" justify="center">
         <v-btn
           class="ma-3"
@@ -216,7 +224,8 @@ export default {
     file: null,
     thumbnail: null,
     loading: false,
-    fileDropBox: null
+    fileDropBox: null,
+    fileImageDropBox: null
   }),
 
   computed: {
@@ -254,18 +263,25 @@ export default {
       this.fileDropBox = file
     },
 
+    setFileImageDropBox (file) {
+      this.thumbnail = file
+      this.fileImageDropBox = file
+    },
+
     async onSubmit () {
       this.loading = true
       let id = this.draft.id
-
       try {
         if (this.file) {
           const { video } = (!this.fileDropBox) ? await this.$refs.videoUploader.handleUpload() : await this.$refs.fileUploaderDropBox.handleUpload()
           id = video.id
         }
 
-        if (this.thumbnail) {
+        if (!this.fileImageDropBox) {
           this.draft.thumbnail = await this.$refs.thumbnailUploader.handleUpload()
+        } else {
+          const { filePath } = await this.$refs.thumbnailUploaderDropBox.handleUpload()
+          this.draft.thumbnail = filePath
         }
 
         const data = await this.updateVideoByLessonId({
