@@ -172,7 +172,8 @@
                     mode="video"
                     multi-part
                     path="activity-video"
-                    @sendFile="setFileDropBox" />
+                    @sendFile="setFileDropBox"
+                  />
                 </v-row>
 
                 <v-row>
@@ -195,7 +196,7 @@
                         size: 10000
                       }"
                     >
-                      <file-uploader
+                      <!-- <file-uploader
                         ref="fileUploader2"
                         v-model="thumbnail"
                         append-icon="mdi-camera"
@@ -208,11 +209,27 @@
                         jpg
                         png
                         svg
+                      /> -->
+                      <pg-file-uploader
+                        ref="fileImageUploaderDropBox"
+                        v-model="thumbnail"
+                        append-icon="mdi-camera"
+                        label="Upload Thumbnail"
+                        placeholder="Select a thumbnail for this activity video"
+                        solo-labeled
+                        mode="image"
+                        multi-part
+                        api="dropbox"
+                        path="activity-thumbnail"
+                        jpg
+                        png
+                        svg
+                        :error-messages="errors"
                       />
                     </validation-provider>
                   </v-col>
                 </v-row>
-                <v-row>
+                <!-- <v-row>
                   <select-dropbox-file
                     ref="fileImageUploaderDropBox"
                     v-model="thumbnail"
@@ -220,7 +237,7 @@
                     multi-part
                     path="activity-thumbnail"
                     @sendFile="setFileImageDropBox" />
-                </v-row>
+                </v-row> -->
               </v-form>
             </v-card-text>
 
