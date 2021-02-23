@@ -1,8 +1,23 @@
 <template>
   <v-row align="center" justify="center" no-gutters class="py-0 py-md-16">
     <v-col cols="11" md="6">
+      <v-row>
+        <v-btn
+          class="text-none mt-n10 pl-md-n16 go-back"
+          color="accent"
+          href="https://playgardenonline.com/"
+          text
+          exact
+          :absolute="$vuetify.breakpoint.mdAndUp"
+        >
+          <v-icon class="mr-2" small left color="accent">
+            mdi-less-than
+          </v-icon>
+          Go Back To Homepage
+        </v-btn>
+      </v-row>
       <div
-        class="image mt-6 mt-md-0"
+        class="image mt-14 mt-md-0"
         :class="{ mobile: $vuetify.breakpoint.smAndDown }"
       >
         <img alt="Smiling Girl Picture" src="@/assets/svg/girl-smiling.svg">
@@ -97,6 +112,45 @@ export default {
   },
 
   methods: {
+    facebookSignIn () {
+      this.socialSignIn(
+        'FACEBOOK',
+        new this.$fireAuthObj.FacebookAuthProvider()
+      )
+    },
+
+    googleSignIn () {
+      this.socialSignIn('GOOGLE', new this.$fireAuthObj.GoogleAuthProvider())
+    },
+
+    async loginWithSocialNetwork (user) {
+      try {
+        this.disableAxiosGlobal()
+
+        await this.authLoginSocial(user)
+
+        this.enableAxiosGlobal()
+
+        await this.$router.push({ name: 'app-dashboard' })
+      } catch (e) {
+        await this.onFailLoginSocial(user)
+      }
+    },
+
+    async onFailLoginSocial (user) {
+      try {
+        this.validateEmail(user)
+
+        await this.$router.push({
+          name: 'auth-signup',
+          query: { process: 'social-signup', _u: btoa(JSON.stringify(user)) }
+        })
+      } catch (e) {
+        this.$snotify.error('This email is already on used!')
+      } finally {
+        this.enableAxiosGlobal()
+      }
+    },
     ...mapActions(['disableAxiosGlobal', 'enableAxiosGlobal']),
 
     ...mapActions('auth/login', ['login']),
@@ -129,17 +183,6 @@ export default {
       }
     },
 
-    googleSignIn () {
-      this.socialSignIn('GOOGLE', new this.$fireAuthObj.GoogleAuthProvider())
-    },
-
-    facebookSignIn () {
-      this.socialSignIn(
-        'FACEBOOK',
-        new this.$fireAuthObj.FacebookAuthProvider()
-      )
-    },
-
     socialSignIn (nameSocialNetwork, provider) {
       const fireAuthObj = this.$fireAuthObj()
 
@@ -160,35 +203,6 @@ export default {
           this.$snotify.error(e.message)
         })
         .finally(() => fireAuthObj.signOut())
-    },
-
-    async loginWithSocialNetwork (user) {
-      try {
-        this.disableAxiosGlobal()
-
-        await this.authLoginSocial(user)
-
-        this.enableAxiosGlobal()
-
-        await this.$router.push({ name: 'app-dashboard' })
-      } catch (e) {
-        await this.onFailLoginSocial(user)
-      }
-    },
-
-    async onFailLoginSocial (user) {
-      try {
-        this.validateEmail(user)
-
-        await this.$router.push({
-          name: 'auth-signup',
-          query: { process: 'social-signup', _u: btoa(JSON.stringify(user)) }
-        })
-      } catch (e) {
-        this.$snotify.error('This email is already on used!')
-      } finally {
-        this.enableAxiosGlobal()
-      }
     }
   }
 }
@@ -218,5 +232,9 @@ export default {
 }
 .error-message {
   color: var(--v-error-base);
+}
+.go-back {
+  top: 60px;
+  left: 10px;
 }
 </style>
