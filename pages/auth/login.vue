@@ -3,25 +3,12 @@
     <v-col cols="11" md="6">
       <v-row>
         <v-btn
-          class="text-none mt-8 mt-md-n10 pl-md-n16 go-back hidden-sm-and-down"
+          class="text-none mt-8 mt-md-n10 pl-md-n16"
           color="accent"
           href="https://playgardenonline.com/"
           text
           exact
-          absolute
-        >
-          <v-icon class="mr-2" small left color="accent">
-            mdi-less-than
-          </v-icon>
-          Go Back To Homepage
-        </v-btn>
-
-        <v-btn
-          class="text-none mt-5 mt-md-n14 pl-md-16 hidden-md-and-up"
-          color="accent"
-          href="https://playgardenonline.com/"
-          text
-          exact
+          :absolute="$vuetify.breakpoint.mdAndUp"
         >
           <v-icon class="mr-2" small left color="accent">
             mdi-less-than
