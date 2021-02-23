@@ -413,10 +413,16 @@ export default {
         `/social-sharings/${query.link}`
       )
 
+      let pageImage = require(`assets/png/shared/${slug}.png`)
+
+      if (process.env.testEnv === 'production') {
+        pageImage = pageImage.substr(4) // removes '/app' from the url
+      }
+
       return {
         pageFullRoutePath: process.env.frontendUrl.slice(0, -1) + route.fullPath,
         imageShared: imageUrl || require('assets/svg/shared/parent-rating.svg'),
-        pageImage: require(`assets/png/shared/${slug}.png`),
+        pageImage,
         pageTitle: text,
         pageDescription: description
       }
