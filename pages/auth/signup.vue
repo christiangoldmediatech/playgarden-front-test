@@ -258,7 +258,7 @@ export default {
       }
 
       if (this.inInvitationProcess && this.signupProcessCaregiver) {
-        await this.newCaregiver(data)
+        return await this.newCaregiver(data)
       } else if (this.inInvitationProcess) {
         return await this.newParent(data)
       }

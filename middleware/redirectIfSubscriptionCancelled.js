@@ -15,7 +15,7 @@ export default function ({ redirect, route, store }) {
     }
     const userInfo = store.getters['auth/getUserInfo']
 
-    if (!whiteList[route.name] && get(userInfo, 'role.section') === 'USERS') {
+    if (!whiteList[route.name] && get(userInfo, 'role.id') === 3) {
       // user doesn't has a subscription
       if (!userInfo || !userInfo.subscription) {
         redirect('/app/account')
