@@ -145,23 +145,7 @@
                       name="Video"
                       :rules="{ required: Boolean(!id && !file) }"
                     >
-                      <file-uploader
-                        ref="fileUploader"
-                        v-model="file"
-                        :error-messages="errors"
-                        append-icon="mdi-video"
-                        label="Upload Video"
-                        mode="video"
-                        multi-part
-                        path="activity-video"
-                        placeholder="Select a video for this activity"
-                        solo-labeled
-                        mp4
-                        mov
-                        mpeg
-                        webm
-                      />
-                      <!-- <pg-file-uploader
+                      <pg-file-uploader
                         ref="videoFileUploaderDropBox"
                         v-model="file"
                         :error-messages="errors"
@@ -178,21 +162,10 @@
                         mpeg
                         webm
                         @sendFile="setVideoFile"
-                      /> -->
+                      />
                     </validation-provider>
                   </v-col>
                 </v-row>
-
-                <!-- <v-row>
-                  <select-dropbox-file
-                    ref="fileUploaderDropBox"
-                    v-model="file"
-                    mode="video"
-                    multi-part
-                    path="activity-video"
-                    @sendFile="setFileDropBox"
-                  />
-                </v-row> -->
 
                 <v-row>
                   <v-col class="text-md-right" cols="12" sm="3">
@@ -214,49 +187,25 @@
                         size: 10000
                       }"
                     >
-                      <!-- <file-uploader
-                        ref="fileUploader2"
-                        v-model="thumbnail"
-                        append-icon="mdi-camera"
-                        :error-messages="errors"
-                        label="Upload Thumbnail"
-                        mode="image"
-                        path="activity-thumbnail"
-                        placeholder="Select a thumbnail for this activity video"
-                        solo-labeled
-                        jpg
-                        png
-                        svg
-                      /> -->
                       <pg-file-uploader
                         ref="imageFileUploaderDropBox"
                         v-model="thumbnail"
                         append-icon="mdi-camera"
+                        :error-messages="errors"
                         label="Upload Thumbnail"
+                        mode="image"
+                        path="activity-thumbnail"
                         placeholder="Select a thumbnail for this activity video"
                         solo-labeled
-                        mode="image"
-                        multi-part
                         api="dropbox"
-                        path="activity-thumbnail"
                         jpg
                         png
                         svg
-                        :error-messages="errors"
                         @sendFile="setImageFile"
                       />
                     </validation-provider>
                   </v-col>
                 </v-row>
-                <!-- <v-row>
-                  <select-dropbox-file
-                    ref="imageFileUploaderDropBox"
-                    v-model="thumbnail"
-                    mode="image"
-                    multi-part
-                    path="activity-thumbnail"
-                    @sendFile="setFileImageDropBox" />
-                </v-row> -->
               </v-form>
             </v-card-text>
 
@@ -435,14 +384,6 @@ export default {
     setVideoFile (type) {
       this.typeSelectVideoFile = type
     },
-    /* setFileDropBox (file) {
-      this.file = file
-      this.fileDropBox = file
-    }, */
-    /* setFileImageDropBox (file) {
-      this.thumbnail = file
-      this.fileImageDropBox = file
-    }, */
     async save () {
       this.loading = true
       let id = this.id

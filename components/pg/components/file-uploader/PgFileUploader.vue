@@ -1,6 +1,6 @@
 <template>
   <v-row no-gutters>
-    <v-col cols="10">
+    <v-col cols="12">
       <pg-file-input
         v-model="file"
         v-bind="$attrs"
@@ -10,32 +10,16 @@
         :show-size="showSize"
         class="clickable"
       />
-      <!-- <v-btn
-        v-if="api === 'dropbox'"
-        block
-        height="45"
-        class="btn-dropbox"
-        x-large
-        @click="dropboxIconClicked"
-      >
-        <img
-          alt="Dropbox"
-          class="mr-1"
-          src="@/assets/svg/dropbox.svg"
-          height="40"
-        >
-        <span class="text-transform-none">Open DropBox</span>
-      </v-btn>  -->
     </v-col>
-    <v-col v-if="api === 'dropbox'" cols="2" class="">
-      <v-btn block height="45" class="btn-dropbox" x-large @click="dropboxIconClicked">
+    <v-col v-if="api === 'dropbox'" cols="12" class="">
+      <v-btn block text height="45" class="btn-dropbox" @click="dropboxIconClicked">
         <img
           alt="Dropbox"
           class="mr-1"
           src="@/assets/svg/dropbox.svg"
-          height="40"
+          height="38"
         >
-        <!-- <span class="text-transform-none">Open DropBox</span> -->
+        <span class="text-transform-none">Upload from <span class="dropBox-text">Dropbox</span></span>
       </v-btn>
     </v-col>
   </v-row>
@@ -119,6 +103,17 @@ export default {
     }
   },
 
+  mounted () {
+    const dropBox = document.createElement('script')
+    dropBox.setAttribute(
+      'src',
+      'https://www.dropbox.com/static/api/2/dropins.js'
+    )
+    dropBox.setAttribute('id', 'dropboxjs')
+    dropBox.setAttribute('data-app-key', process.env.dropBoxApiKey)
+    document.head.appendChild(dropBox)
+  },
+
   methods: {
     ...mapActions('upload', ['doUpload', 'doMultiPartBackgroundUpload', 'doMultiPartDropBoxUpload']),
 
@@ -135,6 +130,7 @@ export default {
           result = await this.handleFileUpload()
         }
       } catch (error) {
+        console.log(error)
         return Promise.reject(error)
       }
 
@@ -144,6 +140,7 @@ export default {
     async handleFileUpload () {
       try {
         if (this.file) {
+          console.log('file--', this.file)
           const formData = new FormData()
           formData.append('file', this.file)
           if (this.fileName) {
@@ -155,10 +152,11 @@ export default {
             path: this.path,
             formData
           })
-
+          this.$emit('sendFile', '')
           return filePath
         }
       } catch (error) {
+        console.log(error)
         return Promise.reject(error)
       }
       return false
@@ -231,5 +229,10 @@ export default {
   text-transform: capitalize !important;
   font-size: 14px !important;
   height: 60px !important;
+}
+
+.dropBox-text {
+  color: #3d9ae8 !important;
+  text-decoration: underline;
 }
 </style>
