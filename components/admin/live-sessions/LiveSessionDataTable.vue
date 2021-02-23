@@ -331,9 +331,8 @@ export default {
 
   mounted () {
     this.$nuxt.$on('open-entry-editor-dialog', (entry) => {
-      const refs = this.$refs
-      if (refs.editor) {
-        refs.editor.open(null, entry)
+      if (this.$refs && this.$refs.editor) {
+        this.$refs.editor.open(null, entry)
       }
     })
   },
