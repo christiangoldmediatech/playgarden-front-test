@@ -161,11 +161,29 @@
                         mpeg
                         webm
                       />
+                      <!-- <pg-file-uploader
+                        ref="videoFileUploaderDropBox"
+                        v-model="file"
+                        :error-messages="errors"
+                        append-icon="mdi-video"
+                        label="Upload Video"
+                        mode="video"
+                        multi-part
+                        api="dropbox"
+                        path="activity-video"
+                        placeholder="Select a video for this activity"
+                        solo-labeled
+                        mp4
+                        mov
+                        mpeg
+                        webm
+                        @sendFile="setVideoFile"
+                      /> -->
                     </validation-provider>
                   </v-col>
                 </v-row>
 
-                <v-row>
+                <!-- <v-row>
                   <select-dropbox-file
                     ref="fileUploaderDropBox"
                     v-model="file"
@@ -174,7 +192,7 @@
                     path="activity-video"
                     @sendFile="setFileDropBox"
                   />
-                </v-row>
+                </v-row> -->
 
                 <v-row>
                   <v-col class="text-md-right" cols="12" sm="3">
@@ -211,7 +229,7 @@
                         svg
                       /> -->
                       <pg-file-uploader
-                        ref="fileImageUploaderDropBox"
+                        ref="imageFileUploaderDropBox"
                         v-model="thumbnail"
                         append-icon="mdi-camera"
                         label="Upload Thumbnail"
@@ -225,13 +243,14 @@
                         png
                         svg
                         :error-messages="errors"
+                        @sendFile="setImageFile"
                       />
                     </validation-provider>
                   </v-col>
                 </v-row>
                 <!-- <v-row>
                   <select-dropbox-file
-                    ref="fileImageUploaderDropBox"
+                    ref="imageFileUploaderDropBox"
                     v-model="thumbnail"
                     mode="image"
                     multi-part
@@ -290,6 +309,8 @@ export default {
       video: null,
       player: null,
       fileDropBox: null,
+      typeSelectImageFile: null,
+      typeSelectVideoFile: null,
       fileImageDropBox: null,
       showSelected: true,
       activity: {
@@ -408,34 +429,40 @@ export default {
         }, 50)
       })
     },
-    setFileDropBox (file) {
+    setImageFile (type) {
+      this.typeSelectImageFile = type
+    },
+    setVideoFile (type) {
+      this.typeSelectVideoFile = type
+    },
+    /* setFileDropBox (file) {
       this.file = file
       this.fileDropBox = file
-    },
-    setFileImageDropBox (file) {
+    }, */
+    /* setFileImageDropBox (file) {
       this.thumbnail = file
       this.fileImageDropBox = file
-    },
+    }, */
     async save () {
       this.loading = true
       let id = this.id
       try {
         let thumbnail
-        if (!this.fileImageDropBox) {
-          thumbnail = await this.$refs.fileUploader2.handleUpload()
+        if (this.typeSelectImageFile !== 'dropBox') {
+          thumbnail = await this.$refs.imageFileUploaderDropBox.handleUpload()
         } else {
-          const { filePath } = await this.$refs.fileImageUploaderDropBox.handleUpload()
+          const { filePath } = await this.$refs.imageFileUploaderDropBox.handleDropBoxFileUpload()
           thumbnail = filePath
         }
         if (thumbnail) {
           this.activity.thumbnail = thumbnail
         }
         let data = null
-        if (!this.fileDropBox) {
-          data = await this.$refs.fileUploader.handleUpload()
+        if (this.typeSelectVideoFile !== 'dropBox') {
+          data = await this.$refs.videoFileUploaderDropBox.handleUpload()
         } else {
           this.loadingDropBox = true
-          data = await this.$refs.fileUploaderDropBox.handleUpload()
+          data = await this.$refs.videoFileUploaderDropBox.handleDropBoxFileUpload()
         }
         if (data) {
           this.activity.videoId = data.video.id

@@ -1,5 +1,5 @@
 <template>
-  <v-row>
+  <v-row no-gutters>
     <v-col cols="10">
       <pg-file-input
         v-model="file"
@@ -10,9 +10,14 @@
         :show-size="showSize"
         class="clickable"
       />
-    </v-col>
-    <v-col v-if="api === 'dropbox'" cols="2" class="mt-2">
-      <v-btn block height="45" class="btn-dropbox" text @click="dropboxIconClicked">
+      <!-- <v-btn
+        v-if="api === 'dropbox'"
+        block
+        height="45"
+        class="btn-dropbox"
+        x-large
+        @click="dropboxIconClicked"
+      >
         <img
           alt="Dropbox"
           class="mr-1"
@@ -20,6 +25,17 @@
           height="40"
         >
         <span class="text-transform-none">Open DropBox</span>
+      </v-btn>  -->
+    </v-col>
+    <v-col v-if="api === 'dropbox'" cols="2" class="">
+      <v-btn block height="45" class="btn-dropbox" x-large @click="dropboxIconClicked">
+        <img
+          alt="Dropbox"
+          class="mr-1"
+          src="@/assets/svg/dropbox.svg"
+          height="40"
+        >
+        <!-- <span class="text-transform-none">Open DropBox</span> -->
       </v-btn>
     </v-col>
   </v-row>
@@ -159,6 +175,7 @@ export default {
           attachment.link = files[0].link
           attachment.extension = `.${files[0].name.split('.')[1]}`
           this.file = attachment
+          this.$emit('sendFile', 'dropBox')
         },
 
         cancel: () => {},
@@ -184,7 +201,7 @@ export default {
           callback,
           meta
         })
-
+        this.$emit('sendFile', '')
         return result
       }
       return false
@@ -213,5 +230,6 @@ export default {
 .btn-dropbox {
   text-transform: capitalize !important;
   font-size: 14px !important;
+  height: 60px !important;
 }
 </style>
