@@ -3,7 +3,7 @@
     <v-col cols="11" md="6">
       <v-row>
         <v-btn
-          class="text-none mt-8 mt-md-n10 pl-md-n16"
+          class="text-none mt-n10 pl-md-n16 go-back"
           color="accent"
           href="https://playgardenonline.com/"
           text
@@ -17,7 +17,7 @@
         </v-btn>
       </v-row>
       <div
-        class="image mt-6 mt-md-0"
+        class="image mt-14 mt-md-0"
         :class="{ mobile: $vuetify.breakpoint.smAndDown }"
       >
         <img alt="Smiling Girl Picture" src="@/assets/svg/girl-smiling.svg">
