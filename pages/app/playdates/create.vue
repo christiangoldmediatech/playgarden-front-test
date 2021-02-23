@@ -35,7 +35,9 @@
       <v-col cols="12" md="6" class="pl-md-15">
         <underlined-title text="Create Playdate!" />
 
-        <p>You just can create or join one playdate per week</p>
+        <p>
+          Families can also choose to create <span class="font-weight-bold">Private Playdates</span> with their friends and family, which allows private time to connect and share.
+        </p>
 
         <validation-observer v-slot="{ invalid, passes, reset }">
           <v-form @submit.prevent="passes(onSubmit(reset))">

@@ -390,7 +390,7 @@ export default {
   // eslint-disable-next-line vue/match-component-file-name
   name: 'Slug',
 
-  async asyncData ({ redirect, query, $axios, params }) {
+  async asyncData ({ redirect, query, $axios, params, route }) {
     const slug = (() => {
       switch ((params.slug || '').toLowerCase()) {
         case 'puzzle':
@@ -414,6 +414,7 @@ export default {
       )
 
       return {
+        pageFullRoutePath: process.env.frontendUrl.slice(0, -1) + route.fullPath,
         imageShared: imageUrl || require('assets/svg/shared/parent-rating.svg'),
         pageImage: require(`assets/png/shared/${slug}.png`),
         pageTitle: text,
@@ -514,7 +515,7 @@ export default {
         {
           hid: 'og:url',
           property: 'og:url',
-          content: this.frontendUrl
+          content: this.pageFullRoutePath
         },
         {
           hid: 'twitter:card',
