@@ -1,6 +1,6 @@
 <template>
   <v-row no-gutters>
-    <v-col cols="12">
+    <v-col cols="10">
       <pg-file-input
         v-model="file"
         v-bind="$attrs"
@@ -11,15 +11,14 @@
         class="clickable"
       />
     </v-col>
-    <v-col v-if="api === 'dropbox'" cols="12" class="mt-n3">
-      <v-btn block text height="45" class="btn-dropbox" @click="dropboxIconClicked">
+    <v-col v-if="api === 'dropbox'" cols="2">
+      <v-btn block height="45" class="btn-dropbox" title="Upload from Dropbox" @click="dropboxIconClicked">
         <img
           alt="Dropbox"
           class="mr-1"
           src="@/assets/svg/dropbox.svg"
           height="38"
-        >
-        <span class="text-transform-none">Upload from <span class="dropBox-text">Dropbox</span></span>
+        />
       </v-btn>
     </v-col>
   </v-row>
