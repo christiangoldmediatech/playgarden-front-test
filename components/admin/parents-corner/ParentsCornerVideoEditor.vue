@@ -140,8 +140,8 @@
                   size: 10000
                 }"
               >
-                <file-uploader
-                  ref="fileUploader2"
+                <pg-file-uploader
+                  ref="imageFileUploaderDropBox"
                   v-model="thumbnail"
                   append-icon="mdi-camera"
                   :error-messages="errors"
@@ -150,9 +150,11 @@
                   path="parents-corner-thumbnail"
                   placeholder="Select a thumbnail for this video"
                   solo-labeled
+                  api="dropbox"
                   jpg
                   png
                   svg
+                  @sendFile="setImageFile"
                 />
               </validation-provider>
             </v-form>
@@ -310,9 +312,13 @@ export default {
           this.item.videoId = data.video.id
         }
 
-        const thumbnail = await this.$refs.fileUploader2.handleUpload()
-        if (thumbnail) {
-          this.item.thumbnail = thumbnail
+        if (this.thumbnail) {
+          if (this.typeSelectImageFile !== 'dropBox') {
+            this.item.thumbnail = await this.$refs.imageFileUploaderDropBox.handleUpload()
+          } else {
+            const { filePath } = await this.$refs.imageFileUploaderDropBox.handleDropBoxFileUpload()
+            this.item.thumbnail = filePath
+          }
         }
 
         if (this.id) {
