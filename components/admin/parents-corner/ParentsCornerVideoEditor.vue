@@ -104,14 +104,15 @@
                 name="Video"
                 :rules="{ required: Boolean(!id && !file) }"
               >
-                <file-uploader
-                  ref="fileUploader"
+                <pg-file-uploader
+                  ref="videoFileUploaderDropBox"
                   v-model="file"
                   :error-messages="errors"
                   append-icon="mdi-video"
                   label="Upload Video"
                   mode="video"
                   multi-part
+                  api="dropbox"
                   path="activity-video"
                   placeholder="Select a file for this video"
                   solo-labeled
@@ -119,6 +120,7 @@
                   mov
                   mpeg
                   webm
+                  @sendFile="setVideoFile"
                 />
               </validation-provider>
 
@@ -211,6 +213,8 @@ export default {
       file: null,
       video: null,
       thumbnail: null,
+      typeSelectImageFile: null,
+      typeSelectVideoFile: null,
       item: JSON.parse(JSON.stringify(itemTemplate))
     }
   },
@@ -282,11 +286,26 @@ export default {
       this.dialog = false
     },
 
+    setImageFile (type) {
+      this.typeSelectImageFile = type
+    },
+
+    setVideoFile (type) {
+      this.typeSelectVideoFile = type
+    },
+
     async save () {
       try {
         this.loading = true
 
-        const data = await this.$refs.fileUploader.handleUpload()
+        let data
+        if (this.typeSelectVideoFile !== 'dropBox') {
+          data = await this.$refs.videoFileUploaderDropBox.handleUpload()
+        } else {
+          this.loadingDropBox = true
+          data = await this.$refs.videoFileUploaderDropBox.handleDropBoxFileUpload()
+        }
+
         if (data) {
           this.item.videoId = data.video.id
         }

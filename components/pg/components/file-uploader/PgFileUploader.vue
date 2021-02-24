@@ -11,7 +11,7 @@
         class="clickable"
       />
     </v-col>
-    <v-col v-if="api === 'dropbox'" cols="12" class="">
+    <v-col v-if="api === 'dropbox'" cols="12" class="mt-n3">
       <v-btn block text height="45" class="btn-dropbox" @click="dropboxIconClicked">
         <img
           alt="Dropbox"
@@ -93,7 +93,7 @@ export default {
           extensions = ['.pdf', '.doc', '.docx', '.xlsx', '.pptx']
           break
         case 'video':
-          extensions = ['.mp4', '.mov']
+          extensions = ['.mp4', '.mov', '.mpeg', '.webm']
           break
         case 'image':
           extensions = ['.jpg', '.jpeg', '.png', '.gif']
@@ -140,7 +140,6 @@ export default {
     async handleFileUpload () {
       try {
         if (this.file) {
-          console.log('file--', this.file)
           const formData = new FormData()
           formData.append('file', this.file)
           if (this.fileName) {

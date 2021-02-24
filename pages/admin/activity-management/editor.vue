@@ -257,7 +257,6 @@ export default {
       thumbnail: null,
       video: null,
       player: null,
-      fileDropBox: null,
       typeSelectImageFile: null,
       typeSelectVideoFile: null,
       fileImageDropBox: null,
@@ -419,7 +418,6 @@ export default {
           })
         }
       } catch (err) {
-        this.fileDropBox = null
         this.loadingDropBox = false
         this.loading = false
       } finally {
