@@ -327,8 +327,13 @@ export default {
   created () {
     this.getTypes({ extra: true })
     this.getCurriculumTypes()
+  },
+
+  mounted () {
     this.$nuxt.$on('open-entry-editor-dialog', (entry) => {
-      this.$refs.editor.open(null, entry)
+      if (this.$refs && this.$refs.editor) {
+        this.$refs.editor.open(null, entry)
+      }
     })
   },
 

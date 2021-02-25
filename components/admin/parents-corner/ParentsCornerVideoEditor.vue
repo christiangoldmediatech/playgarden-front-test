@@ -104,14 +104,15 @@
                 name="Video"
                 :rules="{ required: Boolean(!id && !file) }"
               >
-                <file-uploader
-                  ref="fileUploader"
+                <pg-file-uploader
+                  ref="videoFileUploaderDropBox"
                   v-model="file"
                   :error-messages="errors"
                   append-icon="mdi-video"
                   label="Upload Video"
                   mode="video"
                   multi-part
+                  api="dropbox"
                   path="activity-video"
                   placeholder="Select a file for this video"
                   solo-labeled
@@ -119,6 +120,7 @@
                   mov
                   mpeg
                   webm
+                  @sendFile="setVideoFile"
                 />
               </validation-provider>
 
@@ -138,8 +140,8 @@
                   size: 10000
                 }"
               >
-                <file-uploader
-                  ref="fileUploader2"
+                <pg-file-uploader
+                  ref="imageFileUploaderDropBox"
                   v-model="thumbnail"
                   append-icon="mdi-camera"
                   :error-messages="errors"
@@ -148,9 +150,11 @@
                   path="parents-corner-thumbnail"
                   placeholder="Select a thumbnail for this video"
                   solo-labeled
+                  api="dropbox"
                   jpg
                   png
                   svg
+                  @sendFile="setImageFile"
                 />
               </validation-provider>
             </v-form>
@@ -211,6 +215,8 @@ export default {
       file: null,
       video: null,
       thumbnail: null,
+      typeSelectImageFile: null,
+      typeSelectVideoFile: null,
       item: JSON.parse(JSON.stringify(itemTemplate))
     }
   },
@@ -282,18 +288,37 @@ export default {
       this.dialog = false
     },
 
+    setImageFile (type) {
+      this.typeSelectImageFile = type
+    },
+
+    setVideoFile (type) {
+      this.typeSelectVideoFile = type
+    },
+
     async save () {
       try {
         this.loading = true
 
-        const data = await this.$refs.fileUploader.handleUpload()
+        let data
+        if (this.typeSelectVideoFile !== 'dropBox') {
+          data = await this.$refs.videoFileUploaderDropBox.handleUpload()
+        } else {
+          this.loadingDropBox = true
+          data = await this.$refs.videoFileUploaderDropBox.handleDropBoxFileUpload()
+        }
+
         if (data) {
           this.item.videoId = data.video.id
         }
 
-        const thumbnail = await this.$refs.fileUploader2.handleUpload()
-        if (thumbnail) {
-          this.item.thumbnail = thumbnail
+        if (this.thumbnail) {
+          if (this.typeSelectImageFile !== 'dropBox') {
+            this.item.thumbnail = await this.$refs.imageFileUploaderDropBox.handleUpload()
+          } else {
+            const { filePath } = await this.$refs.imageFileUploaderDropBox.handleDropBoxFileUpload()
+            this.item.thumbnail = filePath
+          }
         }
 
         if (this.id) {

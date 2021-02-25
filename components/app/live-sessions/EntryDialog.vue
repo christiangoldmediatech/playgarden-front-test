@@ -258,14 +258,24 @@ export default {
       justify-content: center;
       z-index: 300;
       @media screen and (min-width: 960px) {
-        width: 111px;
-        height: 111px;
+        width: 110px;
+        height: 110px;
         position: static;
         top: auto;
         left: auto;
         z-index: auto;
         margin: 12px;
         border: solid 5px #c2daa5;
+      }
+      &-img {
+        width: 90px;
+        height: 90px;
+        object-fit: contain;
+        object-position: center;
+        @media screen and (min-width: 960px) {
+          width: 70px;
+          height: 70px;
+        }
       }
     }
     &-content {

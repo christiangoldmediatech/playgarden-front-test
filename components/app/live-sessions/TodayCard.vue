@@ -1,5 +1,8 @@
 <template>
-  <div class="lsess-daily-entry-container py-3 pl-2">
+  <div
+    class="lsess-daily-entry-container py-3 pl-2"
+    :class="{ 'lsess-daily-entry-container-mobile': mobile }"
+  >
     <div class="lsess-date">
       {{ time }}
     </div>
@@ -50,6 +53,12 @@ export default {
     entry: {
       type: Object,
       required: true
+    },
+
+    mobile: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
 
@@ -102,6 +111,13 @@ export default {
   &-daily-entry-container {
     width: calc(100% - 24px);
     max-width: calc(100% - 24px);
+    &-mobile {
+      width: 100%;
+      height: 100%;
+      max-width: 300px;
+      padding: 4px;
+      margin: 0px;
+    }
   }
   &-date {
     text-align: right;

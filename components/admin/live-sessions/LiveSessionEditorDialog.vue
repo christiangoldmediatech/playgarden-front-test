@@ -278,63 +278,48 @@
               name="Icon"
               rules="size:10000"
             >
-              <file-uploader
-                ref="imageUploader"
+              <pg-file-uploader
+                ref="imageFileUploaderDropBox"
                 v-model="image"
+                prepend-icon="mdi-camera"
                 :error-messages="errors"
                 label="Upload Image"
                 mode="image"
                 path="live-session-collaborator"
                 placeholder="Select an image for collaborator"
-                prepend-icon="mdi-camera"
-                solo
+                solo-labeled
+                api="dropbox"
                 jpg
                 png
                 svg
+                @sendFile="setImageFile"
               />
             </validation-provider>
-
-            <v-row>
-              <select-dropbox-file
-                ref="fileImageUploaderDropBox"
-                v-model="image"
-                mode="image"
-                multi-part
-                path="live-session-collaborator"
-                @sendFile="setFileImageDropBox" />
-            </v-row>
 
             <!-- Video -->
             <validation-provider
               v-slot="{ errors }"
               name="Video"
             >
-              <file-uploader
-                ref="fileUploader"
+              <pg-file-uploader
+                ref="videoFileUploaderDropBox"
                 v-model="file"
                 :error-messages="errors"
                 append-icon="mdi-video"
                 label="Upload Video"
                 mode="video"
                 multi-part
+                api="dropbox"
                 path="live-session-video"
                 placeholder="Select a file for this video"
-                solo
+                solo-labeled
                 mp4
                 mov
                 mpeg
                 webm
+                @sendFile="setVideoFile"
               />
             </validation-provider>
-            <v-row>
-              <select-dropbox-file
-                ref="fileUploaderDropBox"
-                v-model="file"
-                mode="video"
-                multi-part
-                path="live-session-video"
-                @sendFile="setFileDropBox" />
-            </v-row>
           </v-container>
         </v-card-text>
 
@@ -405,8 +390,8 @@ export default {
     menuTimeEnd: false,
     dialog: false,
     loading: false,
-    fileImageDropBox: null,
-    fileDropBox: null,
+    typeSelectImageFile: null,
+    typeSelectVideoFile: null,
     id: null,
     video: null,
     player: null,
@@ -439,14 +424,12 @@ export default {
       this.player = player
     },
 
-    setFileDropBox (file) {
-      this.file = file
-      this.fileDropBox = file
+    setVideoFile (type) {
+      this.typeSelectVideoFile = type
     },
 
-    setFileImageDropBox (file) {
-      this.image = file
-      this.fileImageDropBox = file
+    setImageFile (type) {
+      this.typeSelectImageFile = type
     },
 
     async refresh (clear = false) {
@@ -487,25 +470,24 @@ export default {
       this.loading = true
 
       let imageData
-      if (!this.fileImageDropBox) {
-        imageData = await this.$refs.imageUploader.handleUpload()
-      } else {
-        const { filePath } = await this.$refs.fileImageUploaderDropBox.handleUpload()
-        imageData = filePath
+      if (this.image) {
+        if (this.typeSelectImageFile !== 'dropBox') {
+          imageData = await this.$refs.imageFileUploaderDropBox.handleUpload()
+        } else {
+          const { filePath } = await this.$refs.imageFileUploaderDropBox.handleDropBoxFileUpload()
+          imageData = filePath
+        }
       }
+
       if (imageData) {
         this.item.inCollaborationWith = imageData
       }
 
-      let data
-      if (!this.fileDropBox) {
-        data = await this.$refs.fileUploader.handleUpload()
-      } else {
-        data = await this.$refs.fileUploaderDropBox.handleUpload()
-      }
+      const { video } = (this.typeSelectVideoFile !== 'dropBox') ? await this.$refs.videoFileUploaderDropBox.handleUpload() : await this.$refs.videoFileUploaderDropBox.handleDropBoxFileUpload()
+      const data = video.id
 
       if (data) {
-        this.item.videoId = data.video.id
+        this.item.videoId = data
       }
 
       const start = stringsToDate(this.dateStart, this.timeStart)

@@ -26,6 +26,10 @@ export default {
       required: false,
       default: () => []
     },
+    api: {
+      type: String,
+      required: false
+    },
     mode: {
       type: String,
       required: true,
