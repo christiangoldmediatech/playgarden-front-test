@@ -8,6 +8,7 @@ import VideoPlayerDialog from '@/components/pg-video-js-player/VideoPlayerDialog
 
 // Global PG Components
 import PgCircleLetterDay from '@/components/pg/components/PgCircleLetterDay.vue'
+import PgFileUploader from '@/components/pg/components/file-uploader/PgFileUploader.vue'
 import PgIcsCalendar from '@/components/pg/components/PgIcsCalendar.vue'
 import PgLoading from '@/components/pg/components/PgLoading.vue'
 import PgSocialButtons from '@/components/pg/components/PgSocialButtons.vue'
@@ -48,6 +49,7 @@ Vue.component(PgOnboardingVideoPlayer.name, PgOnboardingVideoPlayer)
 Vue.component(VideoPlayerDialog.name, VideoPlayerDialog)
 
 Vue.component(PgCircleLetterDay.name, PgCircleLetterDay)
+Vue.component(PgFileUploader.name, PgFileUploader)
 Vue.component(PgIcsCalendar.name, PgIcsCalendar)
 Vue.component(PgLoading.name, PgLoading)
 Vue.component(PgSocialButtons.name, PgSocialButtons)
