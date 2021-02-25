@@ -87,32 +87,26 @@
         name="Video"
         rules="required"
       >
-        <file-uploader
-          ref="videoUploader"
+        <pg-file-uploader
+          ref="videoFileUploaderDropBox"
           v-model="file"
           :error-messages="errors"
+          append-icon="mdi-video"
           label="Upload Video"
           mode="video"
           multi-part
+          api="dropbox"
           path="lesson"
           placeholder="Select a video for this lesson"
-          prepend-icon="mdi-video"
           solo-labeled
-          mov
           mp4
+          mov
           mpeg
           webm
+          @sendFile="setVideoFile"
         />
       </validation-provider>
 
-      <!-- dropBox-->
-      <select-dropbox-file
-        ref="fileUploaderDropBox"
-        v-model="file"
-        mode="video"
-        multi-part
-        path="lesson"
-        @sendFile="setFileDropBox" />
       <!-- Thumbnail -->
       <span class="v-label theme--light">Thumbnail</span>
 
@@ -141,19 +135,21 @@
         name="Thumbnail"
         rules="required|size:10000"
       >
-        <file-uploader
-          ref="thumbnailUploader"
+        <pg-file-uploader
+          ref="imageFileUploaderDropBox"
           v-model="thumbnail"
+          append-icon="mdi-camera"
           :error-messages="errors"
           label="Upload Thumbnail"
           mode="image"
           path="curriculum-thumbnail"
           placeholder="Select a thumbnail for this lesson's video"
-          prepend-icon="mdi-camera"
           solo-labeled
+          api="dropbox"
           jpg
           png
           svg
+          @sendFile="setImageFile"
         />
       </validation-provider>
 
@@ -216,7 +212,8 @@ export default {
     file: null,
     thumbnail: null,
     loading: false,
-    fileDropBox: null
+    typeSelectImageFile: null,
+    typeSelectVideoFile: null
   }),
 
   computed: {
@@ -249,23 +246,30 @@ export default {
       })
     },
 
-    setFileDropBox (file) {
-      this.file = file
-      this.fileDropBox = file
+    setVideoFile (type) {
+      this.typeSelectVideoFile = type
+    },
+
+    setImageFile (type) {
+      this.typeSelectImageFile = type
     },
 
     async onSubmit () {
       this.loading = true
       let id = this.draft.id
-
       try {
         if (this.file) {
-          const { video } = (!this.fileDropBox) ? await this.$refs.videoUploader.handleUpload() : await this.$refs.fileUploaderDropBox.handleUpload()
+          const { video } = (this.typeSelectVideoFile !== 'dropBox') ? await this.$refs.videoFileUploaderDropBox.handleUpload() : await this.$refs.videoFileUploaderDropBox.handleDropBoxFileUpload()
           id = video.id
         }
 
         if (this.thumbnail) {
-          this.draft.thumbnail = await this.$refs.thumbnailUploader.handleUpload()
+          if (this.typeSelectImageFile !== 'dropBox') {
+            this.draft.thumbnail = await this.$refs.imageFileUploaderDropBox.handleUpload()
+          } else {
+            const { filePath } = await this.$refs.imageFileUploaderDropBox.handleDropBoxFileUpload()
+            this.draft.thumbnail = filePath
+          }
         }
 
         const data = await this.updateVideoByLessonId({
@@ -278,7 +282,6 @@ export default {
       } catch (e) {
       } finally {
         this.loading = false
-        this.fileDropBox = null
       }
     },
 
