@@ -62,56 +62,46 @@
         name="File"
         rules="required"
       >
-        <file-uploader
-          ref="fileUploader"
+        <pg-file-uploader
+          ref="documentFileUploaderDropBox"
           v-model="file"
+          prepend-icon="mdi-file"
+          :file-name="fileName"
           :error-messages="errors"
           label="Upload File"
           mode="document"
           path="lesson"
-          :file-name="fileName"
           placeholder="Select a pdf for this lesson"
-          prepend-icon="mdi-file"
           solo-labeled
+          api="dropbox"
           pdf
+          @sendFile="setDocumentFile"
         />
       </validation-provider>
-
-      <select-dropbox-file
-        ref="fileUploaderDropBox"
-        v-model="file"
-        mode="document"
-        path="lesson"
-        @sendFile="setFileDropBox" />
 
       <validation-provider
         v-slot="{ errors }"
         name="Video"
       >
-        <file-uploader
-          ref="videoUploader"
+        <pg-file-uploader
+          ref="videoFileUploaderDropBox"
           v-model="videoFile"
           :error-messages="errors"
+          prepend-icon="mdi-video"
           label="Upload Video"
           mode="video"
           multi-part
+          api="dropbox"
           path="lesson"
           placeholder="Select a video for this lesson"
-          prepend-icon="mdi-video"
           solo-labeled
-          mov
           mp4
+          mov
           mpeg
           webm
+          @sendFile="setVideoFile"
         />
       </validation-provider>
-
-      <select-dropbox-file
-        ref="videoUploaderDropBox"
-        v-model="videoFile"
-        mode="video"
-        path="lesson"
-        @sendFile="setVideoFileDropBox" />
 
       <v-row class="mb-6" justify="center">
         <v-btn
@@ -170,8 +160,8 @@ export default {
     fileName: null,
     videoFile: null,
     loading: false,
-    fileDropBox: null,
-    videoFileDropBox: null
+    typeSelectDocumentFile: null,
+    typeSelectVideoFile: null
   }),
 
   computed: {
@@ -217,14 +207,17 @@ export default {
       }
     },
 
-    setFileDropBox (file) {
-      this.file = file
-      this.fileDropBox = file
-    },
-
     setVideoFileDropBox (file) {
       this.videoFile = file
       this.videoFileDropBox = file
+    },
+
+    setVideoFile (type) {
+      this.typeSelectVideoFile = type
+    },
+
+    setDocumentFile (type) {
+      this.typeSelectDocumentFile = type
     },
 
     async onSubmit () {
@@ -232,17 +225,19 @@ export default {
 
       try {
         if (this.file) {
-          if (!this.fileDropBox) {
-            this.draft.pdfUrl = await this.$refs.fileUploader.handleUpload()
+          if (this.typeSelectDocumentFile !== 'dropBox') {
+            this.draft.pdfUrl = await this.$refs.documentFileUploaderDropBox.handleUpload()
           } else {
-            const { filePath } = await this.$refs.fileUploaderDropBox.handleUpload()
+            const { filePath } = await this.$refs.documentFileUploaderDropBox.handleDropBoxFileUpload()
             this.draft.pdfUrl = filePath
           }
         }
 
         if (this.videoFile) {
-          const { video } = (!this.videoFileDropBox) ? await this.$refs.videoUploader.handleUpload() : await this.$refs.videoUploaderDropBox.handleUpload()
-          this.draft.videoId = video.id
+          if (this.file) {
+            const { video } = (this.typeSelectVideoFile !== 'dropBox') ? await this.$refs.videoFileUploaderDropBox.handleUpload() : await this.$refs.videoFileUploaderDropBox.handleDropBoxFileUpload()
+            this.draft.videoId = video.id
+          }
         }
         const data = await this.submitMethod(this.getSubmittableData())
         this.$emit('click:submit', data)
