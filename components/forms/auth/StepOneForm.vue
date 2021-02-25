@@ -267,7 +267,11 @@ export default {
           ...this.draft
         })
       )
-    }
+    },
+
+    facebookSignIn () {},
+
+    googleSignIn () {}
   }
 }
 </script>

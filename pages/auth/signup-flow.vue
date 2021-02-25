@@ -19,7 +19,7 @@
       </v-row>
 
       <v-row
-        class="flex-column-reverse flex-md-row"
+        class="flex-column flex-md-row"
         justify="center"
         no-gutters
       >
@@ -46,49 +46,71 @@
             </small>
           </p>
 
-          <template v-if="!inInvitationProcess">
+          <template>
+            <v-btn
+              block
+              v-if="!$vuetify.breakpoint.smAndUp"
+              @click="showDetailFreeTrial = !showDetailFreeTrial"
+            >
+              <img
+                src="@/assets/png/gift-icon.png"
+                class="clickable mr-2"
+                width="18px"
+              >
+              GET 30 DAYS OF FREE TRIAL
+              <v-icon v-if="showDetailFreeTrial" class="ml-2">
+                mdi-chevron-down
+              </v-icon>
+              <v-icon v-else class="ml-2">
+                mdi-chevron-up
+              </v-icon>
+            </v-btn>
             <p class="text-center text-md-left mt-6">
               <v-row no-gutters>
                 <v-col>
                   <img
+                    v-if="$vuetify.breakpoint.smAndUp"
                     src="@/assets/png/gift-icon.png"
                     class="clickable mr-2"
                     width="18px"
                   >
 
                   <span
+                    v-if="$vuetify.breakpoint.smAndUp"
                     class="font-weight-bold text-uppercase pg-letter-spacing-subtitle"
                   >
                     GET 30 DAYS OF FREE TRIAL
                   </span>
-                  <v-row no-gutters>
-                    <span class="font-weight-bold mt-3">That includes:</span>
-                  </v-row>
-                  <v-row>
-                    <ul>
-                      <li
-                        class="register-item text-left"
-                      >
-                        <small class="text-trial">
-                          A Daily Learning Schedule
-                        </small>
-                      </li>
-                      <li
-                        class="register-item text-left"
-                      >
-                        <small class="text-trial">
-                          Access to over 1,200 lessons
-                        </small>
-                      </li>
-                      <li
-                        class="register-item text-left"
-                      >
-                        <small class="text-trial">
-                          Live Classes with Playgarden Prep Teachers
-                        </small>
-                      </li>
-                    </ul>
-                  </v-row>
+                  <div v-if="!showDetailFreeTrial">
+                    <v-row no-gutters>
+                      <span class="font-weight-bold mt-3">That includes:</span>
+                    </v-row>
+                    <v-row>
+                      <ul>
+                        <li
+                          class="register-item text-left"
+                        >
+                          <small class="text-trial">
+                            A Daily Learning Schedule
+                          </small>
+                        </li>
+                        <li
+                          class="register-item text-left"
+                        >
+                          <small class="text-trial">
+                            Access to over 1,200 lessons
+                          </small>
+                        </li>
+                        <li
+                          class="register-item text-left"
+                        >
+                          <small class="text-trial">
+                            Live Classes with Playgarden Prep Teachers
+                          </small>
+                        </li>
+                      </ul>
+                    </v-row>
+                  </div>
                 </v-col>
               </v-row>
             </p>
@@ -119,6 +141,7 @@ export default {
   data: vm => ({
     loading: false,
     emailValidated: null,
+    showDetailFreeTrial: false,
 
     userSocialData: (() => {
       const { query } = vm.$route
