@@ -37,7 +37,6 @@
 
       <!-- File -->
       <span class="v-label theme--light">File</span>
-
       <template v-if="draft.pdfUrl">
         <div class="mb-6 mt-3">
           <v-badge avatar color="white" overlap>
@@ -55,29 +54,7 @@
           </v-badge>
         </div>
       </template>
-
-      <validation-provider
-        v-else
-        v-slot="{ errors }"
-        name="File"
-        rules="required"
-      >
-        <pg-file-uploader
-          ref="documentFileUploaderDropBox"
-          v-model="file"
-          prepend-icon="mdi-file"
-          :file-name="fileName"
-          :error-messages="errors"
-          label="Upload File"
-          mode="document"
-          path="lesson"
-          placeholder="Select a pdf for this lesson"
-          solo-labeled
-          api="dropbox"
-          pdf
-          @sendFile="setDocumentFile"
-        />
-      </validation-provider>
+      <upload-multiple-files v-else />
 
       <validation-provider
         v-slot="{ errors }"
@@ -141,9 +118,14 @@
 import { mapActions, mapGetters } from 'vuex'
 
 import submittable from '@/utils/mixins/submittable'
+import UploadMultipleFiles from './UploadMultipleFiles'
 
 export default {
   name: 'StepFour',
+
+  components: {
+    UploadMultipleFiles
+  },
 
   mixins: [submittable],
 
