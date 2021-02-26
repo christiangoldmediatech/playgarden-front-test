@@ -15,18 +15,7 @@
               :item="item"
               :index="index"
             >
-              <v-img
-                v-if="item.picture"
-                :key="index"
-                width="70"
-                height="70"
-                contain
-                class="clickable"
-                :src="item.picture"
-                @click="$nuxt.$emit('show-curriculum-progress', item.id)"
-              />
-
-              <letter v-else :key="index" :item="item" :index="index" />
+              <letter :key="index" :item="item" :index="index" />
             </v-slide-item>
           </v-slide-group>
         </v-sheet>

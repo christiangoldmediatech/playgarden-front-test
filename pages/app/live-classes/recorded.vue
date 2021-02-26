@@ -89,20 +89,27 @@
             font-size="40px"
             font-size-moible="20px"
             line-height="1.5"
-            :text="`Recorded Classes of Letter ${letterObject.name.substr(0, 1)}`"
+            :text="selectedLetterTitle"
           />
         </v-col>
-        <v-col
-          v-for="recording in recorded"
-          :key="`recording-${recording.id}`"
-          class="px-lg-8"
-          cols="12"
-          sm="8"
-          md="6"
-          lg="4"
-        >
-          <recorded-card :entry="recording" />
-        </v-col>
+        <v-row v-if="recorded.length > 0">
+          <v-col
+            v-for="recording in recorded"
+            :key="`recording-${recording.id}`"
+            class="px-lg-8"
+            cols="12"
+            sm="8"
+            md="6"
+            lg="4"
+          >
+            <recorded-card :entry="recording" />
+          </v-col>
+        </v-row>
+        <v-row v-else>
+          <v-col cols="12" class="ml-8">
+            <p>No recorded classes for {{ letterObject.description }}</p>
+          </v-col>
+        </v-row>
       </v-row>
     </v-container>
 
@@ -152,6 +159,7 @@ export default {
       modeValue: 0,
       selectedLetter: null,
       selectedCategory: null,
+      selectedLetterTitle: '',
       recorded: []
     }
   },
@@ -213,6 +221,10 @@ export default {
           this.recorded = liveSessions
         })
       }
+    },
+
+    letterObject (val) {
+      this.selectedLetterTitle = (val.picture) ? `Recorded Classes of ${val.description}` : `Recorded Classes of Letter ${val.name.substr(0, 1)}`
     }
   },
 
