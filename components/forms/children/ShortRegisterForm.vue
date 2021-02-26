@@ -9,7 +9,7 @@
           >
             CHILD INFORMATION
           </p>
-          <children-form :date="item._birthdayPicker" :item="item" :position="index" :draft="draft" :loading="loading" />
+          <short-children-form :date="item._birthdayPicker" :item="item" :position="index" :draft="draft" :loading="loading" />
         </v-col>
       </v-row>
 
@@ -40,15 +40,12 @@
           >
             {{
               $vuetify.breakpoint.mdAndUp
-                ? "CONTINUE TO CHOOSE PLAN"
+                ? "START LEARNING"
                 : "CONTINUE"
             }}
           </v-btn>
         </v-col>
       </v-row>
-      <p class="text-center messages-info-register">
-        You will only be billed after your 30-day FREE trial is complete!
-      </p>
     </v-form>
   </validation-observer>
 </template>
@@ -60,13 +57,13 @@ import { get } from 'lodash'
 import { mapActions, mapGetters } from 'vuex'
 
 import { jsonCopy } from '@/utils/objectTools'
-import ChildrenForm from '@/components/forms/children/ChildrenForm.vue'
+import ShortChildrenForm from '@/components/forms/children/ShortChildrenForm.vue'
 
 export default {
   name: 'ShortRegisterForm',
 
   components: {
-    ChildrenForm
+    ShortChildrenForm
   },
 
   props: {

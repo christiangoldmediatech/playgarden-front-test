@@ -117,6 +117,24 @@
                     </span>
                     <br>
                   </v-tooltip>
+
+                  <!-- Password confirmation -->
+                  <validation-provider
+                    v-slot="{ errors }"
+                    name="Password"
+                    rules="required|confirmed:password_field"
+                  >
+                    <pg-password-field
+                      v-model="draft.passwordConfirmation"
+                      clearable
+                      :disabled="loading"
+                      :error-messages="errors"
+                      label="Confirm password"
+                      :loading="loading"
+                      maxlength="20"
+                      solo
+                    />
+                  </validation-provider>
                 </template>
 
                 <v-btn

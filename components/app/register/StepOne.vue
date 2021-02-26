@@ -3,21 +3,6 @@
     no-gutters
   >
     <v-col>
-      <v-row no-gutters>
-        <v-btn
-          color="accent"
-          nuxt
-          text
-          :to="{ name: 'auth-login' }"
-        >
-          <v-icon left>
-            mdi-less-than
-          </v-icon>
-
-          Back
-        </v-btn>
-      </v-row>
-
       <v-row
         class="flex-column flex-md-row"
         justify="center"
@@ -192,42 +177,25 @@ export default {
         await this.registerProcess(
           this.signupProcessCaregiver ? { data, token: this.token } : data
         )
-        if (this.signupProcessCaregiver) {
-          await this.$router.push({
-            name: 'app-dashboard'
-          })
-        } else if (this.isUserLoggedIn || this.inInvitationProcess) {
-          if (this.inInvitationProcess) {
-            this.setPlaydateInvitationToken(this.token)
-          }
-          await this.$router.push({
-            name: 'app-children-register',
-            query: { process: 'signup', step: '2' }
-          })
-        } else {
-          this.emailValidated = data.email
-        }
-        if (!this.emailValidated) {
-          this.$snotify.success('Welcome to Playgarden Prep!')
-        }
+
+        this.$snotify.success('Welcome to Playgarden Prep!')
+        this.goToStepTwo()
       } catch (e) {
       } finally {
         this.loading = false
       }
     },
     async registerProcess (data) {
-      if (this.isUserLoggedIn) {
-        return await this.updateParentRegister(data)
-      }
-      if (this.emailValidated) {
-        return await this.newParent(data)
-      }
-      if (this.inInvitationProcess && this.signupProcessCaregiver) {
-        return await this.newCaregiver(data)
-      } else if (this.inInvitationProcess) {
-        return await this.newParent(data)
-      }
-      return await this.validateEmail(data)
+      return await this.newParent(data)
+      // return await this.validateEmail(data)
+    },
+    goToStepTwo () {
+      this.$router.push({
+        name: 'auth-signup-flow',
+        query: {
+          step: 2
+        }
+      })
     }
   }
 }

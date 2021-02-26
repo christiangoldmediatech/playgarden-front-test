@@ -29,9 +29,9 @@ export default function ({ redirect, route, store }) {
       route.query.process !== 'signup' &&
       !ignoreRoute[route.name]
     ) {
-      let name
+      // const name = 'auth-signup-flow'
 
-      switch (step) {
+      /* switch (step) {
         case 1:
           name = 'auth-signup'
           break
@@ -47,10 +47,10 @@ export default function ({ redirect, route, store }) {
         case 4:
           name = 'app-payment-register'
           break
-      }
+      } */
 
       redirect({
-        name,
+        name: 'auth-signup-flow',
         query: {
           process: 'signup',
           step,
