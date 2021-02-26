@@ -190,7 +190,7 @@ import { mapGetters } from 'vuex'
 import { jsonCopy } from '@/utils/objectTools'
 
 export default {
-  name: 'StepOneForm',
+  name: 'RegisterForm',
 
   props: {
     emailValidated: {
