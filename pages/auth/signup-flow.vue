@@ -17,11 +17,14 @@
         Back
       </v-btn>
     </v-row>
-    <v-col cols="12">
-      <step-one v-if="getStep === '1'" />
+    <v-col v-if="getStep === '1'" cols="12">
+      <step-one />
     </v-col>
-    <v-col cols="12">
-      <step-two v-if="getStep === '2'" />
+    <v-col v-if="getStep === '2'" cols="12">
+      <step-two />
+    </v-col>
+    <v-col v-if="getStep === '3'" cols="12">
+      <step-three />
     </v-col>
   </v-row>
 </template>
@@ -30,13 +33,15 @@
 
 import StepOne from '@/components/app/register/StepOne'
 import StepTwo from '@/components/app/register/StepTwo'
+import StepThree from '@/components/app/register/StepThree'
 
 export default {
   name: 'SignupFlow',
 
   components: {
     StepOne,
-    StepTwo
+    StepTwo,
+    StepThree
   },
 
   data: vm => ({
@@ -45,6 +50,7 @@ export default {
 
   computed: {
     getStep () {
+      // this.currentStep = (this.$route.query.step) ? this.$route.query.step : 1
       return this.currentStep
     }
   },
