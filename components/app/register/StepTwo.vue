@@ -5,14 +5,29 @@
         no-gutters
       >
         <v-col cols="12">
-          <p class="text-center text-md-left">
+          <v-btn
+            v-if="!$vuetify.breakpoint.smAndUp"
+            block
+            text
+            @click="showWhyDo = !showWhyDo"
+          >
+            Why do we need a credit card?
+            <v-icon v-if="showWhyDo" class="ml-2">
+              mdi-chevron-down
+            </v-icon>
+            <v-icon v-else class="ml-2">
+              mdi-chevron-up
+            </v-icon>
+          </v-btn>
+          <p v-else class="text-center text-md-left">
             <span class="font-weight-bold text-h5">
               Why do we need a credit card?
             </span>
           </p>
-          <p class="text-center text-md-left">
+          <p v-if="!showWhyDo" class="text-center text-md-left">
             Playgarden Prep Online is currently <span class="font-weight-bold primary--text">FREE</span> for you for the next 30 days. We need your credit card information to complete the registration process, but you will <span class="font-weight-bold">NOT</span> be charged.
           </p>
+          <v-divider v-if="!$vuetify.breakpoint.smAndUp" class="ml-3 mr-3" />
         </v-col>
 
         <v-col
@@ -32,6 +47,7 @@
           <template>
             <v-btn
               block
+              text
               v-if="!$vuetify.breakpoint.smAndUp"
               @click="showDetailFreeTrial = !showDetailFreeTrial"
             >
@@ -67,15 +83,18 @@
                   </v-col>
                 </v-row>
                 <underlined-title
+                  v-if="$vuetify.breakpoint.smAndUp"
                   class="text-h6 text-md-h5 mt-4"
                   text="Home School"
                 />
               </v-col>
-              <v-col cols="12">
+              <v-col cols="12" :class="(!$vuetify.breakpoint.smAndUp) ? 'ml-10' : ''">
                 <v-row>
                   <v-col
                     cols="12"
                     md="6"
+                    sm="12"
+                    xs="12"
                   >
                     <div v-if="!showDetailFreeTrial">
                       <v-row no-gutters>
@@ -146,8 +165,10 @@
                   <v-col
                     cols="12"
                     md="6"
+                    sm="12"
+                    xs="12"
                   >
-                    <div v-if="!showDetailFreeTrial" class="mt-8">
+                    <div v-if="!showDetailFreeTrial" :class="(!$vuetify.breakpoint.smAndUp) ? 'mt-n8' : 'mt-8'">
                       <v-row>
                         <ul>
                           <li
@@ -203,7 +224,7 @@
                       </v-row>
                     </div>
                   </v-col>
-                  <v-col cols="12">
+                  <v-col v-if="$vuetify.breakpoint.smAndUp" cols="12">
                     <center>
                       <h6
                         class="font-weight-bold
@@ -238,6 +259,8 @@ export default {
   data: () => ({
     cost: {},
     loading: false,
+    showDetailFreeTrial: false,
+    showWhyDo: false,
     coupon: null
   }),
 
@@ -259,7 +282,10 @@ export default {
     }
   },
 
-  created () {},
+  created () {
+    this.showWhyDo = (!this.$vuetify.breakpoint.smAndUp)
+    this.showDetailFreeTrial = (!this.$vuetify.breakpoint.smAndUp)
+  },
 
   methods: {
     ...mapActions('auth', ['fetchUserInfo']),

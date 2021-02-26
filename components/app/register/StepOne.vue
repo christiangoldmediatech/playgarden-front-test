@@ -33,8 +33,9 @@
 
           <template>
             <v-btn
-              block
               v-if="!$vuetify.breakpoint.smAndUp"
+              block
+              text
               @click="showDetailFreeTrial = !showDetailFreeTrial"
             >
               <img
