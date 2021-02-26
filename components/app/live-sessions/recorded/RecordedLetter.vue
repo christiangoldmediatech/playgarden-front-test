@@ -1,6 +1,14 @@
 <template>
   <v-hover v-slot="{ hover }">
-    <div class="recorded-letter" :class="classes(hover)">
+    <v-img
+      v-if="letter.picture"
+      :key="index"
+      contain
+      class="recorded-letter"
+      :class="classes(hover)"
+      :src="letter.picture"
+    />
+    <div v-else class="recorded-letter" :class="classes(hover)">
       {{ letter.name.substr(0, 1) }}
     </div>
   </v-hover>
@@ -59,7 +67,9 @@ export default {
         'recorded-letter-active':
           this.selectedLetter === this.letter.id && !this.listMode,
         'recorded-letter-small': this.small,
-        'recorded-letter-disabled': this.disabled
+        'recorded-letter-disabled': this.disabled,
+        'recorded-letter-picture': this.letter.picture !== null,
+        'recorded-letter-picture-small': this.small
       }
 
       return (hover) => {
@@ -119,6 +129,24 @@ export default {
   }
   &-disabled {
     filter: grayscale(1);
+  }
+  &-picture {
+    background-image: none;
+    @media screen and(min-width: 1264px) {
+      width: 78px;
+      height: 78px;
+      max-width: 78px;
+      max-height: 78px;
+    }
+    &-small {
+      width: 40px;
+      height: 40px;
+      max-width: 40px;
+      max-height: 40px;
+      font-size: 26px;
+      margin: 12px;
+      border-radius: 4px;
+    }
   }
 }
 </style>
