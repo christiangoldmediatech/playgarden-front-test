@@ -71,12 +71,6 @@
         {{ buttonText }}
       </v-btn>
 
-      <p v-if="!noTrial" class="mb-15 text-body-2 text-center messages-info-register">
-        <span>
-          You will only be billed after your 30-day FREE trial is complete!
-        </span>
-      </p>
-
       <v-btn
         v-if="cancelable"
         block
@@ -91,6 +85,11 @@
         CLOSE
       </v-btn>
     </v-form>
+    <p v-if="!noTrial" class="text-justify">
+      <span class="info-pay">
+        Once your Free Trial ends, we will put you on the <span class="option-standar">Standard</span> Plan and you can change it at any time from your profile.
+      </span>
+    </p>
   </validation-observer>
 </template>
 
@@ -173,6 +172,13 @@ export default {
 .accept-terms ::v-deep .v-label {
   color: var(--v-black-base) !important;
   opacity: 2.49 !important;
+}
+.info-pay {
+  font-size: 14px;
+  font-weight: 500;
+}
+.option-standar {
+  color: var(--v-accent-base) !important;
 }
 .terms-conditions {
   text-decoration: underline !important;

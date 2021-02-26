@@ -203,6 +203,16 @@
                       </v-row>
                     </div>
                   </v-col>
+                  <v-col cols="12">
+                    <center>
+                      <h6
+                        class="font-weight-bold
+                        mt-3"
+                      >
+                        *You can cancel you membership any time from the account settings.
+                      </h6>
+                    </center>
+                  </v-col>
                 </v-row>
               </v-col>
             </v-row>
