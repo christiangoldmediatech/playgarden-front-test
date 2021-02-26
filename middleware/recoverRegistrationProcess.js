@@ -6,6 +6,7 @@ export default function ({ redirect, route, store }) {
       'auth-logout': 1,
       help: 1,
       'jwt-recovery': 1,
+      'auth-singup-social-network': 1,
       'privacy-policy': 1,
       'terms-conditions': 1,
       'shared-slug': 1

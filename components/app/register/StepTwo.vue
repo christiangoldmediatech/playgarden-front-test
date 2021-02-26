@@ -283,8 +283,8 @@ export default {
   },
 
   created () {
-    this.showWhyDo = (!this.$vuetify.breakpoint.smAndUp)
-    this.showDetailFreeTrial = (!this.$vuetify.breakpoint.smAndUp)
+    /* this.showWhyDo = (!this.$vuetify.breakpoint.smAndUp)
+    this.showDetailFreeTrial = (!this.$vuetify.breakpoint.smAndUp) */
   },
 
   methods: {
