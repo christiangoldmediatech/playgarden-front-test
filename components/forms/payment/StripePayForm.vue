@@ -9,7 +9,7 @@
       </span>
     </p>
     <p>
-      <span class="">
+      <span class="text-header-info ">
         We need your credit card information to confirm who you are, but you will NOT be charged.
       </span>
     </p>
@@ -98,10 +98,12 @@
       </center>
     </p>
     <v-divider></v-divider>
-    <p v-if="!noTrial" class="text-center">
-      <span class="info-pay">
-        You can cancel your trial and membership anytime from the account settings. Once your free trial ends you will be placed on the <span class="option-standar">Standard</span> monthly plan, you can change plans at any time in your profile page.
-      </span>
+    <p v-if="!noTrial">
+      <center class="ml-2">
+        <span class="info-pay">
+          You can cancel your trial and membership anytime from the account settings.<br /> Once your free trial ends you will be placed on the <span class="option-standar">Standard</span> monthly plan, you can change plans at any time in your profile page.
+        </span>
+      </center>
     </p>
   </validation-observer>
 </template>
@@ -187,14 +189,18 @@ export default {
   opacity: 2.49 !important;
 }
 .info-pay {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 500;
+  text-align: center;
 }
 .option-standar {
   color: var(--v-accent-base) !important;
 }
 .text-completely {
   font-size: 12px !important;
+}
+.text-header-info {
+  font-size: 12px;
 }
 .terms-conditions {
   text-decoration: underline !important;

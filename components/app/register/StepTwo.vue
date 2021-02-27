@@ -87,10 +87,12 @@
                 >
                   <img
                     src="@/assets/png/gift-icon.png"
-                    class="clickable mr-2"
+                    class="mr-2"
                     width="18px"
                   >
-                  GET 30 DAYS OF FREE TRIAL
+                  <span class="free-trial">
+                    GET 30 DAYS OF FREE TRIAL
+                  </span>
                   <v-icon v-if="showDetailFreeTrial" class="ml-2">
                     mdi-chevron-down
                   </v-icon>
@@ -276,7 +278,12 @@ ul li::before {
   position: absolute;
 }
 
+.free-trial {
+  font-size: 22px !important;
+}
+
 .text-pay-information {
-  font-size: 14px;
+  font-size: 12px;
+  font-style: italic;
 }
 </style>
