@@ -75,7 +75,7 @@
                     </validation-provider>
                   </v-col>
 
-                  <v-col cols="12" lg="4" md="6">
+                  <v-col cols="12" md="6">
                     <validation-provider
                       v-slot="{ errors }"
                       name="Phone Number"
@@ -90,7 +90,7 @@
                     </validation-provider>
                   </v-col>
 
-                  <v-col cols="12" lg="4" md="6">
+                  <v-col cols="12" md="6">
                     <validation-provider
                       v-slot="{ errors }"
                       name="Role"
@@ -106,7 +106,7 @@
                     </validation-provider>
                   </v-col>
 
-                  <v-col v-if="!id" cols="12" lg="4" md="6">
+                  <v-col v-if="!id" cols="12" md="6">
                     <validation-provider
                       v-slot="{ errors }"
                       name="Password"
@@ -123,11 +123,8 @@
                     </validation-provider>
                   </v-col>
 
-                  <v-col cols="12" lg="4" md="6">
-                    <validation-provider
-                      v-slot="{ errors }"
-                      name="Workbook"
-                    >
+                  <v-col cols="12" md="6">
+                    <validation-provider v-slot="{ errors }" name="Workbook">
                       <pg-select
                         v-model="user.workbookSent"
                         :error-messages="errors"
@@ -138,11 +135,39 @@
                     </validation-provider>
                   </v-col>
 
-                  <v-col cols="12" lg="4" md="6">
-                    <validation-provider
-                      v-slot="{ errors }"
-                      name="Backpack"
+                  <v-col cols="12" md="6">
+                    <v-menu
+                      v-model="workbookSentDate"
+                      :close-on-content-click="false"
+                      min-width="290px"
+                      offset-y
+                      transition="scale-transition"
                     >
+                      <template v-slot:activator="{ on, attrs }">
+                        <validation-provider
+                          v-slot="{ errors }"
+                          name="Backpack Sent Date"
+                          rules="required"
+                        >
+                          <pg-text-field
+                            :disabled="loading"
+                            :error-message="errors"
+                            label="Backpack Sent Date"
+                            readonly
+                            solo-labeled
+                            :value="dataWorkbookDate"
+                            v-bind="attrs"
+                            v-on="on"
+                          />
+                        </validation-provider>
+                      </template>
+
+                      <v-date-picker v-model="workbookDate" />
+                    </v-menu>
+                  </v-col>
+
+                  <v-col cols="12" md="6">
+                    <validation-provider v-slot="{ errors }" name="Backpack">
                       <pg-select
                         v-model="user.backpackSent"
                         :error-messages="errors"
@@ -151,6 +176,37 @@
                         solo-labeled
                       />
                     </validation-provider>
+                  </v-col>
+
+                  <v-col cols="12" md="6">
+                    <v-menu
+                      v-model="backpackSentDate"
+                      :close-on-content-click="false"
+                      min-width="290px"
+                      offset-y
+                      transition="scale-transition"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <validation-provider
+                          v-slot="{ errors }"
+                          name="Backpack Sent Date"
+                          rules="required"
+                        >
+                          <pg-text-field
+                            :disabled="loading"
+                            :error-message="errors"
+                            label="Backpack Sent Date"
+                            readonly
+                            solo-labeled
+                            :value="dataBackpackDate"
+                            v-bind="attrs"
+                            v-on="on"
+                          />
+                        </validation-provider>
+                      </template>
+
+                      <v-date-picker v-model="backpackDate" />
+                    </v-menu>
                   </v-col>
                 </v-row>
               </v-form>
@@ -179,6 +235,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import dayjs from 'dayjs'
 
 export default {
   name: 'Editor',
@@ -188,6 +245,10 @@ export default {
   data () {
     return {
       loading: false,
+      workbookSentDate: false,
+      backpackSentDate: false,
+      workbookDate: null,
+      backpackDate: null,
       user: {
         firstName: '',
         lastName: '',
@@ -229,6 +290,18 @@ export default {
         text: role.name,
         value: role.id
       }))
+    },
+
+    dataWorkbookDate () {
+      return this.workbookDate
+        ? dayjs(this.workbookDate).format('MM/DD/YYYY')
+        : null
+    },
+
+    dataBackpackDate () {
+      return this.backpackDate
+        ? dayjs(this.backpackDate).format('MM/DD/YYYY')
+        : null
     }
   },
 
@@ -253,6 +326,7 @@ export default {
       this.user.roleId = data.role.id
       this.user.workbookSent = false
       this.user.backpackSent = false
+      this.user.dateWorkbookSent = null
       if (data.shipments) {
         this.user.workbookSent = data.shipments.workbook
         this.user.backpackSent = data.shipments.backpack
