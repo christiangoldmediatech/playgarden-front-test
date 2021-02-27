@@ -11,6 +11,8 @@
       autoplay
       use-standard-poster
       show-cast
+      show-restart
+      show-steps
       :fullscreen-override="handleFullscreen"
       :show-next-up="false"
       no-auto-track-change
