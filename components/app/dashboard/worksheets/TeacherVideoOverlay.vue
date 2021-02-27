@@ -6,7 +6,11 @@
           mdi-close
         </v-icon>
       </v-btn>
-      <pg-video-js-player @ready="onPlayerReady" @ended="close" />
+      <pg-video-js-player
+        show-restart
+        show-steps
+        @ready="onPlayerReady"
+        @ended="close" />
     </div>
   </v-overlay>
 </template>
