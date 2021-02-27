@@ -4,32 +4,6 @@
       <v-row
         no-gutters
       >
-        <v-col cols="12">
-          <v-btn
-            v-if="!$vuetify.breakpoint.smAndUp"
-            block
-            text
-            @click="showWhyDo = !showWhyDo"
-          >
-            Why do we need a credit card?
-            <v-icon v-if="showWhyDo" class="ml-2">
-              mdi-chevron-down
-            </v-icon>
-            <v-icon v-else class="ml-2">
-              mdi-chevron-up
-            </v-icon>
-          </v-btn>
-          <p v-else class="text-center text-md-left">
-            <span class="font-weight-bold text-h5">
-              Why do we need a credit card?
-            </span>
-          </p>
-          <p v-if="!showWhyDo" class="text-center text-md-left">
-            Playgarden Prep Online is currently <span class="font-weight-bold primary--text">FREE</span> for you for the next 30 days. We need your credit card information to complete the registration process, but you will <span class="font-weight-bold">NOT</span> be charged.
-          </p>
-          <v-divider v-if="!$vuetify.breakpoint.smAndUp" class="ml-3 mr-3" />
-        </v-col>
-
         <v-col
           class="px-12 mt-1 mt-md-12"
           cols="12"
@@ -92,7 +66,7 @@
                                 class="font-weight-bold
                                 mt-3"
                               >
-                                *You can cancel you membership any time from the account settings.
+                                - Mother of 3 year old Liam
                               </h6>
                             </center>
                           </div>

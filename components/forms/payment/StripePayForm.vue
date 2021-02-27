@@ -5,7 +5,12 @@
       :class="{ 'mt-8': $vuetify.breakpoint.smAndDown }"
     >
       <span class="font-weight-bold text-h5 pg-letter-spacing">
-        PAYMENT INFORMATION
+        CREDIT CARD INFORMATION
+      </span>
+    </p>
+    <p>
+      <span class="">
+        We need your credit card information to confirm who you are, but you will NOT be charged.
       </span>
     </p>
 
@@ -85,9 +90,17 @@
         CLOSE
       </v-btn>
     </v-form>
-    <p v-if="!noTrial" class="text-justify">
+    <p>
+      <center>
+        <span class="font-weight-bold text-completely">
+          Playgarden Prep Online is COMPLETELY FREE for the next 30 days.
+        </span>
+      </center>
+    </p>
+    <v-divider></v-divider>
+    <p v-if="!noTrial" class="text-center">
       <span class="info-pay">
-        Once your Free Trial ends, we will put you on the <span class="option-standar">Standard</span> Plan and you can change it at any time from your profile.
+        You can cancel your trial and membership anytime from the account settings. Once your free trial ends you will be placed on the <span class="option-standar">Standard</span> monthly plan, you can change plans at any time in your profile page.
       </span>
     </p>
   </validation-observer>
@@ -179,6 +192,9 @@ export default {
 }
 .option-standar {
   color: var(--v-accent-base) !important;
+}
+.text-completely {
+  font-size: 12px !important;
 }
 .terms-conditions {
   text-decoration: underline !important;
