@@ -45,196 +45,85 @@
           lg="6"
         >
           <template>
-            <v-btn
-              block
-              text
-              v-if="!$vuetify.breakpoint.smAndUp"
-              @click="showDetailFreeTrial = !showDetailFreeTrial"
-            >
-              <img
-                src="@/assets/png/gift-icon.png"
-                class="clickable mr-2"
-                width="18px"
-              >
-              GET 30 DAYS OF FREE TRIAL
-              <v-icon v-if="showDetailFreeTrial" class="ml-2">
-                mdi-chevron-down
-              </v-icon>
-              <v-icon v-else class="ml-2">
-                mdi-chevron-up
-              </v-icon>
-            </v-btn>
-            <v-row no-gutters>
-              <v-col cols="12">
-                <v-row>
-                  <v-col>
-                    <img
-                      v-if="$vuetify.breakpoint.smAndUp"
-                      src="@/assets/png/gift-icon.png"
-                      class="clickable mr-2"
-                      width="18px"
-                    >
-                    <span
-                      v-if="$vuetify.breakpoint.smAndUp"
-                      class="font-weight-bold text-uppercase pg-letter-spacing-subtitle"
-                    >
-                      GET 30 DAYS OF FREE TRIAL
-                    </span>
-                  </v-col>
-                </v-row>
-                <underlined-title
-                  v-if="$vuetify.breakpoint.smAndUp"
-                  class="text-h6 text-md-h5 mt-4"
-                  text="Home School"
-                />
+            <v-row class="background-card">
+              <v-col cols="12" :class="(!$vuetify.breakpoint.smAndUp) ? 'ml-10' : 'mt-14 mb-8'">
+                <v-layout row wrap align-center justify-center>
+                  <v-card class="elevation-0">
+                    <v-container>
+                      <v-layout column align-center justify-center>
+                        <v-card-title primary-title>
+                          <h4>Our family loves Playgarden Prep Online!</h4>
+                        </v-card-title>
+                        <v-card-text>
+                          <div class="text-mdi-monitor">
+                            <center class="text-pay-information">
+                              “We have seen Liam learn a lot through the platform <br />
+                              and appreciate your team creating it during this time. <br />
+                              Features we love:
+
+                              <div v-if="!showDetailFreeTrial">
+                                <v-row>
+                                  <ul>
+                                    <li
+                                      class="register-item text-left"
+                                    >
+                                      <small class="text-trial">
+                                        Workbook exercises
+                                      </small>
+                                    </li>
+                                    <li
+                                      class="register-item text-left"
+                                    >
+                                      <small class="text-trial">
+                                        Library (Liam has many favorites)
+                                      </small>
+                                    </li>
+                                    <li
+                                      class="register-item text-left"
+                                    >
+                                      <small class="text-trial">
+                                        Liam looks forward to cooking and reading with Miss Lucy so much”
+                                      </small>
+                                    </li>
+                                  </ul>
+                                </v-row>
+                              </div>
+                              <h6
+                                class="font-weight-bold
+                                mt-3"
+                              >
+                                *You can cancel you membership any time from the account settings.
+                              </h6>
+                            </center>
+                          </div>
+                        </v-card-text>
+                      </v-layout>
+                    </v-container>
+                  </v-card>
+                </v-layout>
               </v-col>
-              <v-col cols="12" :class="(!$vuetify.breakpoint.smAndUp) ? 'ml-10' : ''">
-                <v-row>
-                  <v-col
-                    cols="12"
-                    md="6"
-                    sm="12"
-                    xs="12"
+            </v-row>
+            <v-row>
+              <v-col cols="12">
+                <v-btn
+                  v-if="$vuetify.breakpoint.smAndUp"
+                  block
+                  text
+                  @click="showDetailFreeTrial = !showDetailFreeTrial"
+                >
+                  <img
+                    src="@/assets/png/gift-icon.png"
+                    class="clickable mr-2"
+                    width="18px"
                   >
-                    <div v-if="!showDetailFreeTrial">
-                      <v-row no-gutters>
-                        <span class="font-weight-bold mt-3">That includes:</span>
-                      </v-row>
-                      <v-row>
-                        <ul>
-                          <li
-                            class="register-item text-left"
-                          >
-                            <small class="text-trial">
-                              Over 1,200 Lessons
-                            </small>
-                          </li>
-                          <li
-                            class="register-item text-left"
-                          >
-                            <small class="text-trial">
-                              A Library with Hours of Educational Content
-                            </small>
-                          </li>
-                          <li
-                            class="register-item text-left"
-                          >
-                            <small class="text-trial">
-                              Daily and Weekly Lesson Plans
-                            </small>
-                          </li>
-                          <li
-                            class="register-item text-left"
-                          >
-                            <small class="text-trial">
-                              Live Zoom Enrichment Classes
-                            </small>
-                          </li>
-                          <li
-                            class="register-item text-left"
-                          >
-                            <small class="text-trial">
-                              A Complete School Year of Preschool
-                            </small>
-                          </li>
-                          <li
-                            class="register-item text-left"
-                          >
-                            <small class="text-trial">
-                              Virtual Graduation
-                            </small>
-                          </li>
-                          <li
-                            class="register-item text-left"
-                          >
-                            <small class="text-trial">
-                              Parent Progress Report
-                            </small>
-                          </li>
-                          <li
-                            class="register-item text-left"
-                          >
-                            <small class="text-trial">
-                              Multiple Student Users
-                            </small>
-                          </li>
-                        </ul>
-                      </v-row>
-                    </div>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    md="6"
-                    sm="12"
-                    xs="12"
-                  >
-                    <div v-if="!showDetailFreeTrial" :class="(!$vuetify.breakpoint.smAndUp) ? 'mt-n8' : 'mt-8'">
-                      <v-row>
-                        <ul>
-                          <li
-                            class="register-item text-left"
-                          >
-                            <small class="text-trial">
-                              Workbooks Shipped to Home
-                            </small>
-                          </li>
-                          <li
-                            class="register-item text-left"
-                          >
-                            <small class="text-trial">
-                              DIY Educational Materials
-                            </small>
-                          </li>
-                          <li
-                            class="register-item text-left"
-                          >
-                            <small class="text-trial">
-                              Age-appropriate Pencils
-                            </small>
-                          </li>
-                          <li
-                            class="register-item text-left"
-                          >
-                            <small class="text-trial">
-                              Graduation Diplomas
-                            </small>
-                          </li>
-                          <li
-                            class="register-item text-left"
-                          >
-                            <small class="text-trial">
-                              Playdates for Socialization with Friends
-                            </small>
-                          </li>
-                          <li
-                            class="register-item text-left"
-                          >
-                            <small class="text-trial">
-                              Playgarden Prep Backpack
-                            </small>
-                          </li>
-                          <li
-                            class="register-item text-left"
-                          >
-                            <small class="text-trial">
-                              Monthly Parent Consultation with Playgarden Prep NYC Teachers
-                            </small>
-                          </li>
-                        </ul>
-                      </v-row>
-                    </div>
-                  </v-col>
-                  <v-col v-if="$vuetify.breakpoint.smAndUp" cols="12">
-                    <center>
-                      <h6
-                        class="font-weight-bold
-                        mt-3"
-                      >
-                        *You can cancel you membership any time from the account settings.
-                      </h6>
-                    </center>
-                  </v-col>
-                </v-row>
+                  GET 30 DAYS OF FREE TRIAL
+                  <v-icon v-if="showDetailFreeTrial" class="ml-2">
+                    mdi-chevron-down
+                  </v-icon>
+                  <v-icon v-else class="ml-2">
+                    mdi-chevron-up
+                  </v-icon>
+                </v-btn>
               </v-col>
             </v-row>
           </template>
@@ -400,15 +289,20 @@ ul {
 }
 ul li::before {
   content: "●";
-  font-size: 24px;
+  font-size: 24px !important;
   color: var(--v-accent-base); /* Change the color */
   font-weight: bold; /* If you want it to be bold */
   display: inline-block; /* Needed to add space between the bullet and the text */
   width: 0.7em; /* Also needed for space (tweak if needed) */
   margin-left: -1rem; /* Also needed for space (tweak if needed) */
+  margin-top: 10px;
 }
 .text-trial {
   margin-top: 11px;
   position: absolute;
+}
+
+.text-pay-information {
+  font-size: 14px;
 }
 </style>
