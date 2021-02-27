@@ -25,9 +25,25 @@
               />
             </v-col>
           </v-row>
+
+          <v-row v-if="inputTextToConfirm" justify="center">
+            <v-col class="text-center" cols="9">
+              <p class="text-center">
+                To delete, write the word "Confirm"
+              </p>
+              <validation-provider v-slot="{ errors }" name="Confirmation Word">
+                <pg-text-field
+                  v-model="wordConfirm"
+                  :error-messages="errors"
+                  label="Confirmation Word"
+                  solo-labeled
+                />
+              </validation-provider>
+            </v-col>
+          </v-row>
         </v-container>
 
-        <p class="text-center" v-html="warning" />
+        <p v-if="!inputTextToConfirm" class="text-center" v-html="warning" />
       </v-card-text>
 
       <v-card-actions>
@@ -59,11 +75,11 @@
           </v-btn>
 
           <v-btn
-            color="accent"
+            :color="inputTextToConfirm ? 'red' : 'accent'"
             :dark="$vuetify.breakpoint.xs"
             :loading="loading"
             width="120"
-            class="text-transform-none"
+            class="text-transform-none  white--text "
             @click="doAction(onAction)"
           >
             {{ actionText }}
@@ -105,10 +121,12 @@ export default {
       dialog: false,
       dark: true,
       image: 'delete',
+      wordConfirm: '',
       images: {
         correct: require('@/assets/svg/correct.svg'),
         delete: require('@/assets/svg/delete.svg')
       },
+      inputTextToConfirm: '',
       loading: false,
       message: 'Are you sure you wish to proceed with this action?',
       warning:
@@ -133,6 +151,7 @@ export default {
       close = this.closeDialog,
       closeButton = false,
       closeText = 'Close',
+      inputTextToConfirm = '',
       color = 'primary darken-1',
       contentClasses = '',
       dark = true,
@@ -151,6 +170,7 @@ export default {
       this.image = image
       this.message = message
       this.warning = warning
+      this.inputTextToConfirm = inputTextToConfirm
 
       this.$nextTick(() => {
         this.dialog = true

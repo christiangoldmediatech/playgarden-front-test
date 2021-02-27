@@ -82,6 +82,21 @@
                   </span>
                 </v-row>
               </v-col>
+
+              <v-col class="mt-5">
+                <v-row
+                  justify="center"
+                  justify-md="end"
+                  class="user-edit pr-md-5"
+                  no-gutters
+                >
+                  <div class="text-center">
+                    <v-btn color="#FF0000" dark @click="remove">
+                      Cancel Membership
+                    </v-btn>
+                  </div>
+                </v-row>
+              </v-col>
             </v-col>
           </v-row>
 
@@ -194,7 +209,7 @@
                                   class="ml-1"
                                   max-height="25"
                                   max-width="24"
-                                  src="@/assets/svg/green-check.svg"
+                                  :src="require('@/assets/svg/green-check.svg')"
                                 />
                               </v-row>
                             </template>
@@ -383,6 +398,7 @@ export default {
 
   data: () => ({
     exporting: false,
+    dialog: false,
     user: null,
     children: [],
     childrenStatus: []
@@ -529,6 +545,7 @@ export default {
 
   methods: {
     ...mapActions('admin/users', ['getById', 'getChildren']),
+    ...mapActions('payment', ['cancelSubscription']),
     ...mapActions('children/lesson', ['getLessonChildrenStatus']),
     ...mapActions('children/progress', ['getChildrenProgressExport']),
 
@@ -576,6 +593,21 @@ export default {
 
     openTimeline (child) {
       this.$nuxt.$emit('open-timeline', child)
+    },
+
+    remove ({ billing }) {
+      this.$nuxt.$emit('open-prompt', {
+        inputTextToConfirm: true,
+        image: 'delete',
+        wordConfirm: '',
+        message: `Are you sure you want to delete <b>${billing}</b>?`,
+        action: async (wordConfirm) => {
+          if (wordConfirm === 'Confirm') {
+            await this.cancelSubscription()
+            this.refresh()
+          }
+        }
+      })
     },
 
     async requestExport () {
