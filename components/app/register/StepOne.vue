@@ -8,7 +8,13 @@
         justify="center"
         no-gutters
       >
-        <v-col class="px-12" cols="12" md="8">
+        <v-col
+          class="px-12 mt-1 mt-md-12"
+          cols="12"
+          md="5"
+          lg="6"
+          xl="6"
+        >
           <p class="text-center text-md-left">
             <span class="font-weight-bold text-h5 pg-letter-spacing">
               JOIN FOR FREE!
@@ -24,87 +30,83 @@
           />
         </v-col>
 
-        <v-col class="px-12" cols="12" md="4">
-          <p class="mt-6 mb-12 text-center text-md-left">
-            <small>
-              Complete the registration and choose the plan that best suits you, to start your learning experience!
-            </small>
-          </p>
-
+        <v-col
+          cols="12"
+          md="8"
+          lg="6"
+        >
           <template>
-            <v-btn
-              v-if="!$vuetify.breakpoint.smAndUp"
-              block
-              text
-              @click="showDetailFreeTrial = !showDetailFreeTrial"
-            >
-              <img
-                src="@/assets/png/gift-icon.png"
-                class="clickable mr-2"
-                width="18px"
-              >
-              GET 30 DAYS OF FREE TRIAL
-              <v-icon v-if="showDetailFreeTrial" class="ml-2">
-                mdi-chevron-down
-              </v-icon>
-              <v-icon v-else class="ml-2">
-                mdi-chevron-up
-              </v-icon>
-            </v-btn>
-            <p class="text-center text-md-left mt-6">
-              <v-row no-gutters>
-                <v-col>
-                  <img
-                    v-if="$vuetify.breakpoint.smAndUp"
-                    src="@/assets/png/gift-icon.png"
-                    class="clickable mr-2"
-                    width="18px"
-                  >
-
-                  <span
-                    v-if="$vuetify.breakpoint.smAndUp"
-                    class="font-weight-bold text-uppercase pg-letter-spacing-subtitle"
-                  >
-                    GET 30 DAYS OF FREE TRIAL
-                  </span>
-                  <div v-if="!showDetailFreeTrial">
-                    <v-row no-gutters>
-                      <span class="font-weight-bold mt-3">That includes:</span>
-                    </v-row>
-                    <v-row>
-                      <ul>
-                        <li
-                          class="register-item text-left"
-                        >
-                          <small class="text-trial">
-                            A Daily Learning Schedule
-                          </small>
-                        </li>
-                        <li
-                          class="register-item text-left"
-                        >
-                          <small class="text-trial">
-                            Access to over 1,200 lessons
-                          </small>
-                        </li>
-                        <li
-                          class="register-item text-left"
-                        >
-                          <small class="text-trial">
-                            Live Classes with Playgarden Prep Teachers
-                          </small>
-                        </li>
-                      </ul>
-                    </v-row>
-                  </div>
-                </v-col>
-              </v-row>
-            </p>
-
-            <p class="text-center text-md-left mt-10">
-              <small>*You can cancel your membership any time from the account
-                settings.</small>
-            </p>
+            <v-row class="background-card">
+              <v-col cols="12" :class="(!$vuetify.breakpoint.smAndUp) ? 'ml-10' : 'mt-14 mb-8'">
+                <v-layout row wrap align-center justify-center>
+                  <v-card class="elevation-0">
+                    <v-container>
+                      <v-layout column align-center justify-center>
+                        <v-card-title primary-title>
+                          <v-btn
+                            v-if="$vuetify.breakpoint.smAndUp"
+                            block
+                            text
+                            @click="showDetailFreeTrial = !showDetailFreeTrial"
+                          >
+                            <img
+                              src="@/assets/png/gift-icon.png"
+                              class="mr-2"
+                              width="18px"
+                            >
+                            <span class="free-trial-info">
+                              GET 30 DAYS OF FREE TRIAL
+                            </span>
+                          </v-btn>
+                        </v-card-title>
+                        <v-card-text>
+                          <div class="text-mdi-monitor">
+                            <center class="text-pay-information">
+                              <div v-if="!showDetailFreeTrial">
+                                <v-row class="ml-4">
+                                  <span class="font-weight-bold">That includes:</span>
+                                </v-row>
+                                <v-row>
+                                  <ul>
+                                    <li
+                                      class="register-item text-left"
+                                    >
+                                      <small class="text-trial">
+                                        A Daily Learning Schedule
+                                      </small>
+                                    </li>
+                                    <li
+                                      class="register-item text-left"
+                                    >
+                                      <small class="text-trial">
+                                        Access to over 1,200 lessons
+                                      </small>
+                                    </li>
+                                    <li
+                                      class="register-item text-left"
+                                    >
+                                      <small class="text-trial">
+                                        Live Classes with Playgarden Prep Teachers
+                                      </small>
+                                    </li>
+                                  </ul>
+                                </v-row>
+                              </div>
+                              <h6
+                                class="font-weight-bold
+                                mt-3"
+                              >
+                                - Mother of 3 year old Liam
+                              </h6>
+                            </center>
+                          </div>
+                        </v-card-text>
+                      </v-layout>
+                    </v-container>
+                  </v-card>
+                </v-layout>
+              </v-col>
+            </v-row>
           </template>
         </v-col>
       </v-row>
@@ -241,12 +243,16 @@ ul {
 }
 ul li::before {
   content: "●";
-  font-size: 28px;
+  font-size: 24px !important;
   color: var(--v-accent-base); /* Change the color */
   font-weight: bold; /* If you want it to be bold */
   display: inline-block; /* Needed to add space between the bullet and the text */
   width: 0.7em; /* Also needed for space (tweak if needed) */
   margin-left: -1rem; /* Also needed for space (tweak if needed) */
+  margin-top: 10px;
+}
+.free-trial-info {
+  font-size: 18px;
 }
 .text-trial {
   margin-top: 11px;
