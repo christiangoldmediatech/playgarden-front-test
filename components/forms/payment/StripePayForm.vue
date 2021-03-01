@@ -197,6 +197,9 @@ export default {
 .text-completely {
   font-size: 12px !important;
 }
+.text-header-info {
+  font-size: 14px !important;
+}
 .terms-conditions {
   text-decoration: underline !important;
   color: var(--v-black-base);

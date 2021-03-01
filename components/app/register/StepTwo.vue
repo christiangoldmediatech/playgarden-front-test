@@ -282,7 +282,12 @@ ul li::before {
 }
 .text-trial {
   margin-top: 11px;
+  font-size: 14px !important;
   position: absolute;
+}
+
+.text-pay-information {
+  font-size: 14px !important;
 }
 
 .free-trial {
