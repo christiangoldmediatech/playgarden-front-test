@@ -20,22 +20,40 @@
         >
           <template>
             <v-row class="background-card">
-              <v-col cols="12" :class="(!$vuetify.breakpoint.smAndUp) ? 'ml-10' : 'mt-14 mb-8'">
+              <v-col cols="12" :class="(!$vuetify.breakpoint.smAndUp) ? 'text-center' : 'mt-14 mb-8'">
                 <v-layout row wrap align-center justify-center>
                   <v-card class="elevation-0">
                     <v-container>
                       <v-layout column align-center justify-center>
                         <v-card-title primary-title>
-                          <h4>Our family loves Playgarden Prep Online!</h4>
+                          <h4 v-if="$vuetify.breakpoint.smAndUp">
+                            Our family loves Playgarden Prep Online!
+                          </h4>
+                          <v-btn
+                            v-else
+                            block
+                            text
+                            @click="changeShowDetail"
+                          >
+                            <span class="free-trial-info">
+                              Our family loves Playgarden <br /> Prep Online!
+                            </span>
+                            <v-icon v-if="showDetailFreeTrial" class="hidden-md-only hidden-lg-only">
+                              mdi-menu-down
+                            </v-icon>
+                            <v-icon v-else class="hidden-md-only hidden-lg-only">
+                              mdi-menu-up
+                            </v-icon>
+                          </v-btn>
                         </v-card-title>
-                        <v-card-text>
+                        <v-card-text v-if="!showDetailFreeTrial">
                           <div class="text-mdi-monitor">
                             <center class="text-pay-information">
                               “We have seen Liam learn a lot through the platform <br />
                               and appreciate your team creating it during this time. <br />
                               Features we love:
 
-                              <div v-if="!showDetailFreeTrial">
+                              <div>
                                 <v-row>
                                   <ul>
                                     <li
@@ -83,7 +101,6 @@
                   v-if="$vuetify.breakpoint.smAndUp"
                   block
                   text
-                  @click="showDetailFreeTrial = !showDetailFreeTrial"
                 >
                   <img
                     src="@/assets/png/gift-icon.png"
@@ -138,6 +155,12 @@ export default {
       'payShorterSubscription',
       'validateCard'
     ]),
+
+    changeShowDetail () {
+      if (!this.$vuetify.breakpoint.smAndUp) {
+        this.showDetailFreeTrial = !this.showDetailFreeTrial
+      }
+    },
 
     goToStepThree () {
       this.$router.push({

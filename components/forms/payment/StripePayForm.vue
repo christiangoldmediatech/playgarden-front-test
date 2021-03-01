@@ -1,12 +1,10 @@
 <template>
   <validation-observer v-slot="{ invalid, passes, reset }">
     <p
-      class="text-center text-md-left"
+      class="text-left"
       :class="{ 'mt-8': $vuetify.breakpoint.smAndDown }"
     >
-      <span class="font-weight-bold text-h5 pg-letter-spacing">
-        CREDIT CARD INFORMATION
-      </span>
+      <underlined-title class="text-h6 text-md-h5" text="CREDIT CARD INFORMATION" />
     </p>
     <p>
       <span class="text-header-info">
