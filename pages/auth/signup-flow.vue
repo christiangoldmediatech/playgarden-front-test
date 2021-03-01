@@ -34,32 +34,11 @@ export default {
     StepOne
   },
 
-  data: vm => ({
-    currentStep: 1
-  }),
+  data: vm => ({}),
 
-  computed: {
-    getStep () {
-      return this.currentStep
-    }
-  },
+  computed: {},
 
-  created () {
-    this.currentStep = (this.$route.query.step) ? Number(this.$route.query.step) : 1
-  },
-
-  mounted () {
-    this.$nuxt.$on('set-current-step', (step) => {
-      console.log('step--', step)
-      if (step) {
-        this.currentStep = step
-      }
-    })
-  },
-
-  beforeDestroy () {
-    this.$nuxt.$off('set-current-step')
-  },
+  created () {},
 
   methods: {}
 }

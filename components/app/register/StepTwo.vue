@@ -124,17 +124,10 @@ export default {
   data: () => ({
     loading: false,
     showDetailFreeTrial: false,
-    coupon: null,
-    step: 2
+    coupon: null
   }),
 
-  computed: {
-    /* inSignUpProcess () {
-      const { query } = this.$route
-
-      return query.process === 'signup' && query.step === '4'
-    }, */
-  },
+  computed: {},
 
   created () {},
 
@@ -148,12 +141,12 @@ export default {
 
     goToStepThree () {
       this.$router.push({
-        name: 'auth-signup-flow',
+        name: 'app-children-shorter',
         query: {
-          step: (this.step + 1)
+          step: 3,
+          process: 'signup'
         }
       })
-      this.$nuxt.$emit('set-current-step', (this.step + 1))
     },
 
     async onSubmit (cardData) {

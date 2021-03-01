@@ -6,7 +6,7 @@
         nuxt
         text
         :to="{
-          name: 'app-signup-flow',
+          name: 'auth-signup-flow',
           query: { process: 'signup', step: '1' }
         }"
       >

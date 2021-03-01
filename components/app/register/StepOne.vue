@@ -139,7 +139,6 @@ export default {
     loading: false,
     emailValidated: null,
     showDetailFreeTrial: false,
-    step: 1,
     userSocialData: (() => {
       const { query } = vm.$route
       if (query.process === 'social-signup' && query._u) {
@@ -191,11 +190,12 @@ export default {
     async onSubmit (data) {
       try {
         this.loading = true
-        await this.registerProcess(
-          this.signupProcessCaregiver ? { data, token: this.token } : data
-        )
-
-        this.$snotify.success('Welcome to Playgarden Prep!')
+        if (!this.isUserLoggedIn) {
+          await this.registerProcess(
+            this.signupProcessCaregiver ? { data, token: this.token } : data
+          )
+          this.$snotify.success('Welcome to Playgarden Prep!')
+        }
         this.goToStepTwo()
       } catch (e) {
       } finally {
@@ -204,16 +204,15 @@ export default {
     },
     async registerProcess (data) {
       return await this.newParent(data)
-      // return await this.validateEmail(data)
     },
     goToStepTwo () {
       this.$router.push({
-        name: 'auth-signup-flow',
+        name: 'app-payment-shorter',
         query: {
-          step: (this.step + 1)
+          step: 2,
+          process: 'signup'
         }
       })
-      this.$nuxt.$emit('set-current-step', (this.step + 1))
     }
   }
 }

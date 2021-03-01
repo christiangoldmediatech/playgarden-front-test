@@ -6,8 +6,8 @@
         nuxt
         text
         :to="{
-          name: 'app-payment-plan',
-          query: { process: 'signup', step: '3' }
+          name: 'app-payment-shorter',
+          query: { process: 'signup', step: '2' }
         }"
       >
         <v-icon left>

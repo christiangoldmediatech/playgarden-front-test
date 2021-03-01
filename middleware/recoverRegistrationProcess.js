@@ -23,8 +23,6 @@ export default function ({ redirect, route, store }) {
     // VERIFICATION=5 -> Enter email verifciation page <- covered by "emailVerified" middleware
     // COMPLETED=6 -> Completed <- no action
 
-    console.log('user--', user, 'step--', step)
-
     if (
       user.id &&
       (step === 1 || step === 2 || step === 3 || step === 4) &&
@@ -32,8 +30,6 @@ export default function ({ redirect, route, store }) {
       route.query.process !== 'signup' &&
       !ignoreRoute[route.name]
     ) {
-      // const name = 'auth-signup-flow'
-
       /* switch (step) {
         case 1:
           name = 'auth-signup'
@@ -51,6 +47,7 @@ export default function ({ redirect, route, store }) {
           name = 'app-payment-register'
           break
       } */
+
       let name = ''
 
       switch (step) {
@@ -66,7 +63,6 @@ export default function ({ redirect, route, store }) {
           name = 'app-children-shorter'
           break
       }
-      console.log('name---', name)
       redirect({
         name,
         query: {
