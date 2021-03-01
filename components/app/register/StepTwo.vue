@@ -20,7 +20,7 @@
         >
           <template>
             <v-row :class="($vuetify.breakpoint.smAndUp) ? 'background-card' : 'background-card-mobile pt-14'">
-              <v-col cols="12" :class="(!$vuetify.breakpoint.smAndUp) ? 'text-center' : 'mt-14 mb-8'">
+              <v-col v-if="!showDetailThatIncludes" cols="12" :class="(!$vuetify.breakpoint.smAndUp) ? 'text-center' : 'mt-14 mb-8'">
                 <v-layout row wrap align-center justify-center>
                   <v-card class="elevation-0">
                     <v-container>
@@ -136,7 +136,7 @@
                             <span class="free-trial">
                               GET 30 DAYS OF FREE TRIAL
                             </span>
-                            <v-icon class="hidden-md-only hidden-lg-only">
+                            <v-icon>
                               mdi-menu-up
                             </v-icon>
                           </v-btn>
