@@ -224,21 +224,16 @@ export default {
       this.loading = true
 
       try {
-        if (this.file) {
-          if (this.typeSelectDocumentFile !== 'dropBox') {
-            this.draft.pdfUrl = await this.$refs.documentFileUploaderDropBox.handleUpload()
-          } else {
-            const { filePath } = await this.$refs.documentFileUploaderDropBox.handleDropBoxFileUpload()
-            this.draft.pdfUrl = filePath
-          }
+        if (this.typeSelectDocumentFile !== 'dropBox') {
+          this.draft.pdfUrl = await this.$refs.documentFileUploaderDropBox.handleUpload()
+        } else {
+          const { filePath } = await this.$refs.documentFileUploaderDropBox.handleDropBoxFileUpload()
+          this.draft.pdfUrl = filePath
         }
 
-        if (this.videoFile) {
-          if (this.file) {
-            const { video } = (this.typeSelectVideoFile !== 'dropBox') ? await this.$refs.videoFileUploaderDropBox.handleUpload() : await this.$refs.videoFileUploaderDropBox.handleDropBoxFileUpload()
-            this.draft.videoId = video.id
-          }
-        }
+        const { video } = (this.typeSelectVideoFile !== 'dropBox') ? await this.$refs.videoFileUploaderDropBox.handleUpload() : await this.$refs.videoFileUploaderDropBox.handleDropBoxFileUpload()
+        this.draft.videoId = video.id
+
         const data = await this.submitMethod(this.getSubmittableData())
         this.$emit('click:submit', data)
       } catch (e) {
