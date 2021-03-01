@@ -277,6 +277,16 @@ export default {
     }
   },
 
+  created () {
+    this.$nuxt.$on('singup-social-network', (dataUser) => {
+      this.draft = { ...dataUser }
+    })
+  },
+
+  beforeDestroy () {
+    this.$nuxt.$off('singup-social-network')
+  },
+
   methods: {
     onSubmit () {
       this.$emit(

@@ -183,11 +183,13 @@ export default {
       return this.signupProcess === 'CAREGIVER'
     }
   },
+
   beforeMount () {
     if (this.userSocialData) {
       this.emailValidated = this.userSocialData.email
     }
   },
+
   methods: {
     ...mapActions('auth/signup', {
       newParent: 'signup',
