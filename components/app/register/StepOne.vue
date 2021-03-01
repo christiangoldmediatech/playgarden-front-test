@@ -75,8 +75,8 @@
                           <div v-if="!showDetailFreeTrial" class="text-mdi-monitor">
                             <center class="text-pay-information">
                               <div>
-                                <v-row class="ml-4">
-                                  <span class="font-weight-bold">That includes:</span>
+                                <v-row>
+                                  <span class="font-weight-bold ml-2">That includes:</span>
                                 </v-row>
                                 <v-row>
                                   <ul>
@@ -149,15 +149,7 @@ export default {
     loading: false,
     emailValidated: null,
     showDetailFreeTrial: false,
-    userSocialData: (() => {
-      const { query } = vm.$route
-      if (query.process === 'social-signup' && query._u) {
-        try {
-          return JSON.parse(atob(query._u))
-        } catch (e) {}
-      }
-      return null
-    })(),
+    userSocialData: null,
     token: vm.$route.query.token
   }),
   computed: {

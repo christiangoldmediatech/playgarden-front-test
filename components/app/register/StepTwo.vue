@@ -82,7 +82,7 @@
                               </div>
                               <span
                                 class="info-mother
-                                mt-3"
+                                mt-8"
                               >
                                 - Mother of 3 year old Liam
                               </span>
