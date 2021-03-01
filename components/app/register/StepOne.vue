@@ -9,11 +9,13 @@
         no-gutters
       >
         <v-col cols="12" class="ml-14">
-          <underlined-title class="text-h4 ml-4" text="PLAYGARDEN PREP ONLINE IS COMPLETELY FREE!" />
+          <underlined-title :class="(!$vuetify.breakpoint.smAndUp) ? 'text-h6 text-md-h4' : 'text-h6 text-md-h4 ml-4'" text="PLAYGARDEN PREP ONLINE IS COMPLETELY FREE!" />
         </v-col>
         <v-col
           class="px-12 mt-1 mt-md-12"
           cols="12"
+          sm="12"
+          xs="12"
           md="5"
           lg="6"
           xl="6"
@@ -35,22 +37,23 @@
 
         <v-col
           cols="12"
+          sm="12"
+          xs="12"
           md="8"
           lg="6"
         >
           <template>
             <v-row class="background-card">
-              <v-col cols="12" :class="(!$vuetify.breakpoint.smAndUp) ? 'ml-10' : 'mt-14 mb-8'">
+              <v-col cols="12" :class="(!$vuetify.breakpoint.smAndUp) ? '' : 'mt-14 mb-8'">
                 <v-layout row wrap align-center justify-center>
                   <v-card class="elevation-0">
                     <v-container>
                       <v-layout column align-center justify-center>
                         <v-card-title primary-title>
                           <v-btn
-                            v-if="$vuetify.breakpoint.smAndUp"
                             block
                             text
-                            @click="showDetailFreeTrial = !showDetailFreeTrial"
+                            @click="changeShowDetail"
                           >
                             <img
                               src="@/assets/png/gift-icon.png"
@@ -60,12 +63,18 @@
                             <span class="free-trial-info">
                               GET 30 DAYS OF FREE TRIAL
                             </span>
+                            <v-icon v-if="showDetailFreeTrial" class="hidden-md-only hidden-lg-only">
+                              mdi-menu-down
+                            </v-icon>
+                            <v-icon v-else class="hidden-md-only hidden-lg-only">
+                              mdi-menu-up
+                            </v-icon>
                           </v-btn>
                         </v-card-title>
                         <v-card-text>
-                          <div class="text-mdi-monitor">
+                          <div v-if="!showDetailFreeTrial" class="text-mdi-monitor">
                             <center class="text-pay-information">
-                              <div v-if="!showDetailFreeTrial">
+                              <div>
                                 <v-row class="ml-4">
                                   <span class="font-weight-bold">That includes:</span>
                                 </v-row>
@@ -187,6 +196,13 @@ export default {
     }),
     ...mapActions('caregiver', { newCaregiver: 'signup' }),
     ...mapActions('auth', ['setPlaydateInvitationToken']),
+
+    changeShowDetail () {
+      if (!this.$vuetify.breakpoint.smAndUp) {
+        this.showDetailFreeTrial = !this.showDetailFreeTrial
+      }
+    },
+
     async onSubmit (data) {
       try {
         this.loading = true
