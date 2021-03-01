@@ -107,6 +107,18 @@ export default {
     }
   },
 
+  async payShorterSubscription ({ commit }, data) {
+    try {
+      return await this.$axios.$post('/billing/payment', data)
+    } catch (error) {
+      snotifyError(commit, {
+        body: 'Sorry! There was an error while paying your Subscription!'
+      })
+
+      throw error
+    }
+  },
+
   /*
    * SUBSCRIPTIONS PLAN
    */

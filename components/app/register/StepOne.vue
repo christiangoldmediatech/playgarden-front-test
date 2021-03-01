@@ -8,6 +8,9 @@
         justify="center"
         no-gutters
       >
+        <v-col cols="12" class="ml-14">
+          <underlined-title class="text-h4 ml-4" text="PLAYGARDEN PREP ONLINE IS COMPLETELY FREE!" />
+        </v-col>
         <v-col
           class="px-12 mt-1 mt-md-12"
           cols="12"
@@ -16,8 +19,8 @@
           xl="6"
         >
           <p class="text-center text-md-left">
-            <span class="font-weight-bold text-h5 pg-letter-spacing">
-              JOIN FOR FREE!
+            <span class="text-header-info">
+              You will only be billed after 30 days of FREE trial is completed
             </span>
           </p>
 
@@ -92,12 +95,22 @@
                                   </ul>
                                 </v-row>
                               </div>
-                              <h6
-                                class="font-weight-bold
-                                mt-3"
-                              >
-                                - Mother of 3 year old Liam
-                              </h6>
+                              <div class="text-mdi-monitor">
+                                <v-btn
+                                  block
+                                  class="info-much-more"
+                                >
+                                  <span class="much-info">
+                                    AND MUCH MORE!!
+                                  </span>
+                                </v-btn>
+                                <h6
+                                  class="font-weight-bold
+                                  mt-3"
+                                >
+                                  *You can cancel you membership any time from the account settings.
+                                </h6>
+                              </div>
                             </center>
                           </div>
                         </v-card-text>
@@ -126,6 +139,7 @@ export default {
     loading: false,
     emailValidated: null,
     showDetailFreeTrial: false,
+    step: 1,
     userSocialData: (() => {
       const { query } = vm.$route
       if (query.process === 'social-signup' && query._u) {
@@ -196,9 +210,10 @@ export default {
       this.$router.push({
         name: 'auth-signup-flow',
         query: {
-          step: 2
+          step: (this.step + 1)
         }
       })
+      this.$nuxt.$emit('set-current-step', (this.step + 1))
     }
   }
 }
@@ -257,5 +272,11 @@ ul li::before {
 .text-trial {
   margin-top: 11px;
   position: absolute;
+}
+.much-info {
+  color: var(--v-accent-base);
+}
+.info-much-more {
+  background-color: rgba(248, 152, 56, 0.3) !important;
 }
 </style>

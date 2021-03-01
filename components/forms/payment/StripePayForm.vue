@@ -9,7 +9,7 @@
       </span>
     </p>
     <p>
-      <span class="text-header-info ">
+      <span class="text-header-info">
         We need your credit card information to confirm who you are, but you will NOT be charged.
       </span>
     </p>
@@ -198,9 +198,6 @@ export default {
 }
 .text-completely {
   font-size: 12px !important;
-}
-.text-header-info {
-  font-size: 12px;
 }
 .terms-conditions {
   text-decoration: underline !important;

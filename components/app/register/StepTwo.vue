@@ -122,11 +122,10 @@ export default {
   },
 
   data: () => ({
-    cost: {},
     loading: false,
     showDetailFreeTrial: false,
-    showWhyDo: false,
-    coupon: null
+    coupon: null,
+    step: 2
   }),
 
   computed: {
@@ -135,35 +134,26 @@ export default {
 
       return query.process === 'signup' && query.step === '4'
     }, */
-    getTotal () {
-      let discount = 0
-      if (this.coupon.amount_off) {
-        discount = this.cost.total - this.coupon.amount_off
-      } else {
-        discount = ((this.cost.total * this.coupon.percent_off) / 100)
-        discount = this.cost.total - discount
-      }
-      return discount
-    }
   },
 
-  created () {
-    /* this.showWhyDo = (!this.$vuetify.breakpoint.smAndUp)
-    this.showDetailFreeTrial = (!this.$vuetify.breakpoint.smAndUp) */
-  },
+  created () {},
 
   methods: {
     ...mapActions('auth', ['fetchUserInfo']),
 
     ...mapActions('payment', [
-      'fetchSubscriptionCost',
-      'paySubscription',
+      'payShorterSubscription',
       'validateCard'
     ]),
 
-    productValue (value) {
-      const monthlyCost = /month.*$/.test(value.recurring.interval.toLowerCase()) ? value.unit_amount / 100 : value.unit_amount / 12 / 100
-      return monthlyCost.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+    goToStepThree () {
+      this.$router.push({
+        name: 'auth-signup-flow',
+        query: {
+          step: (this.step + 1)
+        }
+      })
+      this.$nuxt.$emit('set-current-step', (this.step + 1))
     },
 
     async onSubmit (cardData) {
@@ -177,7 +167,8 @@ export default {
         if (cardData.promotion_id) {
           dataSubscrition.promotion_id = cardData.promotion_id
         }
-        await this.paySubscription(dataSubscrition)
+        await this.payShorterSubscription(dataSubscrition)
+        this.goToStepThree()
       } catch (e) {
       } finally {
         this.loading = false

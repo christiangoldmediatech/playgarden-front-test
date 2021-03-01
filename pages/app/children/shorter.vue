@@ -18,20 +18,20 @@
       </v-btn>
     </v-row>
     <v-col cols="12">
-      <step-one />
+      <step-three />
     </v-col>
   </v-row>
 </template>
 
 <script>
 
-import StepOne from '@/components/app/register/StepOne'
+import StepThree from '@/components/app/register/StepThree'
 
 export default {
-  name: 'SignupFlow',
+  name: 'Shorter',
 
   components: {
-    StepOne
+    StepThree
   },
 
   data: vm => ({
