@@ -75,7 +75,7 @@
           solo-labeled
           api="dropbox"
           pdf
-          @sendFile="setDocumentFile"
+            @sendFile="setDocumentFile"
         />
       </validation-provider>
 
@@ -207,16 +207,12 @@ export default {
       }
     },
 
-    setVideoFileDropBox (file) {
-      this.videoFile = file
-      this.videoFileDropBox = file
-    },
-
     setVideoFile (type) {
       this.typeSelectVideoFile = type
+      console.log('type--', this.typeSelectVideoFile)
     },
 
-    setDocumentFile (type) {
+      setDocumentFile (type) {
       this.typeSelectDocumentFile = type
     },
 
