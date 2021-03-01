@@ -53,7 +53,7 @@
                               and appreciate your team creating it during this time. <br />
                               Features we love:
 
-                              <div>
+                              <div class="pb-10">
                                 <v-row>
                                   <ul>
                                     <li
