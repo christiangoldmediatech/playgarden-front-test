@@ -80,12 +80,12 @@
                                   </ul>
                                 </v-row>
                               </div>
-                              <h6
-                                class="font-weight-bold
+                              <span
+                                class="info-mother
                                 mt-3"
                               >
                                 - Mother of 3 year old Liam
-                              </h6>
+                              </span>
                             </center>
                           </div>
                         </v-card-text>
@@ -292,6 +292,10 @@ ul li::before {
 
 .free-trial {
   font-size: 22px !important;
+}
+
+.info-mother {
+  color: #A6A6A6 !important;
 }
 
 .text-pay-information {

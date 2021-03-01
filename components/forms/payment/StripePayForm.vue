@@ -189,6 +189,7 @@ export default {
 .info-pay {
   font-size: 12px;
   font-weight: 500;
+  color: rgba(96, 96, 96, 0.8) !important;
   text-align: center;
 }
 .option-standar {
@@ -196,6 +197,7 @@ export default {
 }
 .text-completely {
   font-size: 12px !important;
+  color: rgba(96, 96, 96, 0.8) !important;
 }
 .text-header-info {
   font-size: 14px !important;
