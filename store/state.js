@@ -7,6 +7,7 @@ export default () => ({
     'app-live-classes': 1,
     'app-live-classes-recorded': 1,
     'app-pick-child': 1,
+    'app-library': 1,
     'app-activities': 1,
     'app-activities-favorites': 1,
     'app-activities-search': 1,

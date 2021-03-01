@@ -17,7 +17,7 @@ export default {
             to: { name: 'app-live-classes' },
             exact: false
           },
-          { title: 'Library', to: { name: 'app-activities' }, exact: false },
+          { title: 'Library', to: { name: 'app-library' }, exact: false },
           // { title: 'Playdates', to: { name: 'app-playdates' }, exact: false },
           {
             title: 'Student Cubby',

@@ -43,7 +43,7 @@
             </v-list-item-avatar>
             <v-list-item-content class="data-video">
               <v-list-item-title class="font-weight-bold text-uppercase">
-                {{ categoryName }} <span class="with-activity-card">with</span> <span class="subtitle-activity-card">{{ activity.name }}</span>
+                {{ categoryName }} <span class="with-activity-card text-lowercase">with</span> <span class="subtitle-activity-card text-capitalize">{{ activity.name }}</span>
               </v-list-item-title>
 
               <v-list-item-subtitle>
