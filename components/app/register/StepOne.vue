@@ -43,8 +43,8 @@
           lg="6"
         >
           <template>
-            <v-row class="background-card">
-              <v-col cols="12" :class="(!$vuetify.breakpoint.smAndUp) ? '' : 'mt-14 mb-8'">
+            <v-row :class="($vuetify.breakpoint.smAndUp) ? 'mt-4 background-card' : 'background-card-mobile pt-14'">
+              <v-col cols="12" :class="(!$vuetify.breakpoint.smAndUp) ? '' : 'mt-14 mb-8 pl-4 mr-4'">
                 <v-layout row wrap align-center justify-center>
                   <v-card class="elevation-0">
                     <v-container>

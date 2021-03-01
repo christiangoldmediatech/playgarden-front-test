@@ -19,7 +19,7 @@
           lg="6"
         >
           <template>
-            <v-row class="background-card">
+            <v-row :class="($vuetify.breakpoint.smAndUp) ? 'background-card' : 'background-card-mobile pt-14'">
               <v-col cols="12" :class="(!$vuetify.breakpoint.smAndUp) ? 'text-center' : 'mt-14 mb-8'">
                 <v-layout row wrap align-center justify-center>
                   <v-card class="elevation-0">

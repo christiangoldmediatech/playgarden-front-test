@@ -49,7 +49,7 @@
 
       <br class="hidden-md-and-up">
 
-      <nuxt-link :to="{ name: 'auth-signup' }">
+      <nuxt-link :to="{ name: 'auth-signup-flow' }">
         <span>SIGN UP NOW!</span>
       </nuxt-link>
     </p>

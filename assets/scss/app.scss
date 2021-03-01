@@ -186,4 +186,15 @@
 
 .background-card {
   background-image: url("~@/assets/svg/shorter-register.svg") !important;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  max-height: 420px !important;
+}
+.background-card-mobile {
+  background-image: url("~@/assets/svg/shorter-register.svg") !important;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  min-height: calc(100vh - 305px);
 }
