@@ -21,7 +21,7 @@
           xl="6"
         >
           <p class="text-center text-md-left">
-            <span class="text-header-info">
+            <span class="text-header-info info-color-signup">
               You will only be billed after 30 days of FREE trial is completed
             </span>
           </p>
@@ -44,7 +44,7 @@
         >
           <template>
             <v-row :class="($vuetify.breakpoint.smAndUp) ? 'mt-4 background-card' : 'background-card-mobile pt-14'">
-              <v-col cols="12" :class="(!$vuetify.breakpoint.smAndUp) ? '' : 'mt-14 mb-8 pl-4 mr-4'">
+              <v-col cols="12" :class="(!$vuetify.breakpoint.smAndUp) ? '' : 'mt-10 mb-10 pl-8 pr-8'">
                 <v-layout row wrap align-center justify-center>
                   <v-card class="elevation-0">
                     <v-container>
@@ -104,22 +104,23 @@
                                   </ul>
                                 </v-row>
                               </div>
-                              <div class="text-mdi-monitor">
-                                <v-btn
-                                  block
-                                  class="info-much-more"
-                                >
-                                  <span class="much-info">
-                                    AND MUCH MORE!!
-                                  </span>
-                                </v-btn>
-                                <h6
-                                  class="font-weight-bold
-                                  mt-3"
+                              <v-row justify="center">
+                                <v-col cols="3">
+                                  <v-btn
+                                    block
+                                    class="mt-4 info-much-more"
+                                  >
+                                    <span class="much-info">
+                                      AND MUCH MORE!!
+                                    </span>
+                                  </v-btn>
+                                </v-col>
+                                <span
+                                  class="mt-2 text-header-info"
                                 >
                                   *You can cancel you membership any time from the account settings.
-                                </h6>
-                              </div>
+                                </span>
+                              </v-row>
                             </center>
                           </div>
                         </v-card-text>
@@ -287,12 +288,17 @@ ul li::before {
   font-size: 18px;
 }
 .text-trial {
-  margin-top: 11px;
+  margin-top: 14px;
+  font-size: 14px !important;
   position: absolute;
 }
 .much-info {
   color: var(--v-accent-base);
 }
+.text-header-info {
+  font-size: 14px !important;
+}
+
 .info-much-more {
   background-color: rgba(248, 152, 56, 0.3) !important;
 }
