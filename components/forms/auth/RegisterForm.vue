@@ -218,16 +218,12 @@ export default {
 
     inInvitationProcess: Boolean,
 
-    loading: Boolean,
-
-    userSocialData: {
-      type: Object,
-      default: undefined
-    }
+    loading: Boolean
   },
 
   data: () => ({
     draft: {},
+    userSocialData: false,
     show: true
   }),
 
@@ -243,43 +239,15 @@ export default {
 
     hasInvitationPhone () {
       return Boolean(this.inInvitationProcess && this.$route.query.phone)
-    },
-
-    hasUserSocialData () {
-      return Boolean(this.userSocialData)
     }
   },
 
-  mounted () {
-    this.draft = {
-      firstName: this.hasUserSocialData
-        ? this.userSocialData.firstName
-        : this.getUserInfo.firstName || null,
-      lastName: this.hasUserSocialData
-        ? this.userSocialData.lastName
-        : this.getUserInfo.lastName || null,
-      phoneNumber:
-        this.$route.query.phone || this.getUserInfo.phoneNumber || null,
-      email: this.hasUserSocialData
-        ? this.userSocialData.email
-        : this.$route.query.email ||
-          this.getUserInfo.email ||
-          this.emailValidated ||
-          null,
-      password: null,
-      passwordConfirmation: null,
-      socialNetwork: this.hasUserSocialData
-        ? this.userSocialData.socialNetwork
-        : null,
-      socialNetworkId: this.hasUserSocialData
-        ? this.userSocialData.socialNetworkId
-        : null
-    }
-  },
+  mounted () {},
 
   created () {
     this.$nuxt.$on('singup-social-network', (dataUser) => {
       this.draft = { ...dataUser }
+      this.userSocialData = true
     })
   },
 
