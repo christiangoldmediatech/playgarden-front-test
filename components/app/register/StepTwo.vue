@@ -96,11 +96,11 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col cols="12">
+              <v-col v-if="!showDetailThatIncludes" cols="12">
                 <v-btn
-                  v-if="$vuetify.breakpoint.smAndUp"
                   block
                   text
+                  @click="showDetailThatIncludes = !showDetailThatIncludes"
                 >
                   <img
                     src="@/assets/png/gift-icon.png"
@@ -110,13 +110,94 @@
                   <span class="free-trial">
                     GET 30 DAYS OF FREE TRIAL
                   </span>
-                  <v-icon v-if="showDetailFreeTrial" class="ml-2">
+                  <v-icon class="ml-2">
                     mdi-chevron-down
                   </v-icon>
-                  <v-icon v-else class="ml-2">
-                    mdi-chevron-up
-                  </v-icon>
                 </v-btn>
+              </v-col>
+            </v-row>
+            <v-row v-if="showDetailThatIncludes" :class="($vuetify.breakpoint.smAndUp) ? 'mt-4 background-card' : 'background-card-mobile pt-14'">
+              <v-col cols="12" :class="(!$vuetify.breakpoint.smAndUp) ? '' : 'mt-10 mb-10 pl-8 pr-8'">
+                <v-layout row wrap align-center justify-center>
+                  <v-card class="elevation-0">
+                    <v-container>
+                      <v-layout column align-center justify-center>
+                        <v-card-title primary-title>
+                          <v-btn
+                            block
+                            text
+                            @click="showDetailThatIncludes = !showDetailThatIncludes"
+                          >
+                            <img
+                              src="@/assets/png/gift-icon.png"
+                              class="mr-2"
+                              width="18px"
+                            >
+                            <span class="free-trial">
+                              GET 30 DAYS OF FREE TRIAL
+                            </span>
+                            <v-icon class="hidden-md-only hidden-lg-only">
+                              mdi-menu-up
+                            </v-icon>
+                          </v-btn>
+                        </v-card-title>
+                        <v-card-text>
+                          <div class="text-mdi-monitor">
+                            <center class="text-pay-get">
+                              <div>
+                                <v-row>
+                                  <span class="font-weight-bold ml-2">That includes:</span>
+                                </v-row>
+                                <v-row>
+                                  <ul>
+                                    <li
+                                      class="register-item text-left"
+                                    >
+                                      <small class="text-trial">
+                                        A Daily Learning Schedule
+                                      </small>
+                                    </li>
+                                    <li
+                                      class="register-item text-left"
+                                    >
+                                      <small class="text-trial">
+                                        Access to over 1,200 lessons
+                                      </small>
+                                    </li>
+                                    <li
+                                      class="register-item text-left"
+                                    >
+                                      <small class="text-trial">
+                                        Live Classes with Playgarden Prep Teachers
+                                      </small>
+                                    </li>
+                                  </ul>
+                                </v-row>
+                              </div>
+                              <v-row justify="center">
+                                <v-col cols="3">
+                                  <v-btn
+                                    block
+                                    class="mt-4 info-much-more"
+                                  >
+                                    <span class="much-info">
+                                      AND MUCH MORE!!
+                                    </span>
+                                  </v-btn>
+                                </v-col>
+                                <span
+                                  class="mt-2 text-header-info"
+                                >
+                                  *You can cancel you membership any time from the account settings.
+                                </span>
+                              </v-row>
+                            </center>
+                          </div>
+                        </v-card-text>
+                      </v-layout>
+                    </v-container>
+                  </v-card>
+                </v-layout>
               </v-col>
             </v-row>
           </template>
@@ -141,6 +222,7 @@ export default {
   data: () => ({
     loading: false,
     showDetailFreeTrial: false,
+    showDetailThatIncludes: false,
     coupon: null
   }),
 
@@ -298,8 +380,20 @@ ul li::before {
   color: #A6A6A6 !important;
 }
 
+.much-info {
+  color: var(--v-accent-base);
+}
+
+.info-much-more {
+  background-color: rgba(248, 152, 56, 0.3) !important;
+}
+
 .text-pay-information {
   font-size: 12px;
   font-style: italic;
+}
+
+.text-pay-get {
+  font-size: 12px;
 }
 </style>
