@@ -19,10 +19,10 @@
         </div>
       </v-img>
       <v-list class="py-0" dense>
-        <v-list-item>
+        <v-list-item three-line>
           <v-list-item-content>
             <v-list-item-title class="font-weight-bold text-uppercase">
-              <span class="activity-card-description">{{ title }}</span>
+              <span class="activity-card-description title-pre">{{ title }}</span>
             </v-list-item-title>
             <v-list-item-subtitle>
               <span class="activity-card-with text-none">With</span> <span class="activity-card-subtitle">{{ teacher.toLowerCase() }}</span>
@@ -83,3 +83,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.title-pre {
+  white-space: pre-wrap;
+}
+</style>

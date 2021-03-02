@@ -19,7 +19,7 @@
         </div>
       </v-img>
       <v-list class="py-0" dense>
-        <v-list-item>
+        <v-list-item three-line>
           <v-list-item-avatar tile>
             <v-img
               :src="activityTypeIcon"
@@ -29,9 +29,10 @@
 
           <v-list-item-content>
             <v-list-item-title class="font-weight-bold text-uppercase">
-              {{ category }} <span class="activity-card-with">with</span> <span class="activity-card-subtitle">{{ teacher.toLowerCase() }}</span>
+              {{ category }}<br>
+              <span class="activity-card-with">with</span> <span class="activity-card-subtitle">{{ teacher.toLowerCase() }}</span>
             </v-list-item-title>
-            <v-list-item-subtitle>
+            <v-list-item-subtitle class="activity-card-sub">
               <span class="activity-card-description">{{ title }}</span>
             </v-list-item-subtitle>
           </v-list-item-content>
@@ -134,6 +135,10 @@ export default {
       font-weight: 400 !important;
       color: var(--v-black-base) !important;
       text-transform: capitalize !important;
+    }
+
+    &-sub {
+      min-height: 32px;
     }
   }
 }
