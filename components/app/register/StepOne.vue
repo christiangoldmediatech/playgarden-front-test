@@ -8,8 +8,10 @@
         justify="center"
         no-gutters
       >
-        <v-col cols="12" class="ml-14">
-          <underlined-title :class="(!$vuetify.breakpoint.smAndUp) ? 'text-h6 text-md-h4' : 'text-h6 text-md-h4 ml-4'" text="PLAYGARDEN PREP ONLINE IS COMPLETELY FREE!" />
+        <v-col cols="12" :class="{ 'ml-14': $vuetify.breakpoint.mdAndUp }">
+          <p class="text-center text-md-left">
+            <underlined-title :class="(!$vuetify.breakpoint.smAndUp) ? 'text-h6 text-md-h4' : 'text-h6 text-md-h4 ml-4'" text="PLAYGARDEN PREP ONLINE IS COMPLETELY FREE!" />
+          </p>
         </v-col>
         <v-col
           class="px-12 mt-1 mt-md-12"
@@ -20,7 +22,7 @@
           lg="6"
           xl="6"
         >
-          <p class="text-center text-md-left">
+          <p class="text-center text-md-left" :class="{ 'mt-n8': $vuetify.breakpoint.mdAndUp }">
             <span class="text-header-info info-color-signup">
               You will only be billed after 30 days of FREE trial is completed
             </span>
@@ -46,7 +48,7 @@
             <v-row :class="($vuetify.breakpoint.smAndUp) ? 'mt-4 background-card' : 'background-card-mobile pt-14'">
               <v-col cols="12" :class="(!$vuetify.breakpoint.smAndUp) ? '' : 'mt-10 mb-10 pl-8 pr-8'">
                 <v-layout row wrap align-center justify-center>
-                  <v-card class="elevation-0">
+                  <v-card class="elevation-0 ml-10 mr-10">
                     <v-container>
                       <v-layout column align-center justify-center>
                         <v-card-title primary-title>
@@ -105,7 +107,7 @@
                                 </v-row>
                               </div>
                               <v-row justify="center">
-                                <v-col cols="3">
+                                <v-col v-if="$vuetify.breakpoint.smAndUp" cols="3">
                                   <v-btn
                                     block
                                     class="mt-4 info-much-more"
@@ -115,6 +117,15 @@
                                     </span>
                                   </v-btn>
                                 </v-col>
+                                <v-btn
+                                  v-else
+                                  block
+                                  class="mt-4 info-much-more pl-8 pr-8"
+                                >
+                                  <span class="much-info">
+                                    AND MUCH MORE!!
+                                  </span>
+                                </v-btn>
                                 <span
                                   class="mt-2 text-header-info"
                                 >
@@ -218,7 +229,7 @@ export default {
     },
     goToStepTwo () {
       this.$router.push({
-        name: 'app-payment-shorter',
+        name: 'app-payment',
         query: {
           step: 2,
           process: 'signup'

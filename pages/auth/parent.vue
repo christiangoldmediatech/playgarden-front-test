@@ -28,7 +28,7 @@
 import StepOne from '@/components/app/register/StepOne'
 
 export default {
-  name: 'SignupFlow',
+  name: 'Parent',
 
   components: {
     StepOne

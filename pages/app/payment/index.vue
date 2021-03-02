@@ -6,8 +6,8 @@
         nuxt
         text
         :to="{
-          name: 'app-payment-shorter',
-          query: { process: 'signup', step: '2' }
+          name: 'auth-parent',
+          query: { process: 'signup', step: '1' }
         }"
       >
         <v-icon left>
@@ -18,24 +18,24 @@
       </v-btn>
     </v-row>
     <v-col cols="12">
-      <step-three />
+      <step-two />
     </v-col>
   </v-row>
 </template>
 
 <script>
 
-import StepThree from '@/components/app/register/StepThree'
+import StepTwo from '@/components/app/register/StepTwo'
 
 export default {
-  name: 'Shorter',
+  name: 'Index',
 
   components: {
-    StepThree
+    StepTwo
   },
 
   data: vm => ({
-    currentStep: 1
+    currentStep: 2
   }),
 
   computed: {

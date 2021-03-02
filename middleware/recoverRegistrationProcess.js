@@ -52,15 +52,15 @@ export default function ({ redirect, route, store }) {
 
       switch (step) {
         case 1:
-          name = 'auth-signup-flow'
+          name = 'auth-parent'
           break
 
         case 2:
-          name = 'app-payment-shorter'
+          name = 'app-payment'
           break
 
         case 3:
-          name = 'app-children-shorter'
+          name = 'app-children'
           break
       }
       redirect({

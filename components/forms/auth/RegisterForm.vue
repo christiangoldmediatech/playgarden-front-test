@@ -4,8 +4,7 @@
       <v-container class="px-0">
         <v-row no-gutters>
           <v-col
-            :class="{ 'pr-2': $vuetify.breakpoint.mdAndUp }"
-            :cols="$vuetify.breakpoint.mdAndUp ? '6' : '6'"
+            cols="12"
           >
             <!-- First name -->
             <validation-provider
@@ -25,8 +24,7 @@
             </validation-provider>
           </v-col>
           <v-col
-            :class="{ 'pl-2': $vuetify.breakpoint.mdAndUp }"
-            :cols="$vuetify.breakpoint.mdAndUp ? '6' : '6'"
+            cols="12"
           >
             <!-- Last name -->
             <validation-provider
@@ -117,24 +115,6 @@
                     </span>
                     <br>
                   </v-tooltip>
-
-                  <!-- Password confirmation -->
-                  <validation-provider
-                    v-slot="{ errors }"
-                    name="Password"
-                    rules="required|confirmed:password_field"
-                  >
-                    <pg-password-field
-                      v-model="draft.passwordConfirmation"
-                      clearable
-                      :disabled="loading"
-                      :error-messages="errors"
-                      label="Confirm password"
-                      :loading="loading"
-                      maxlength="20"
-                      solo
-                    />
-                  </validation-provider>
                 </template>
 
                 <v-btn
@@ -239,6 +219,9 @@ export default {
 
     hasInvitationPhone () {
       return Boolean(this.inInvitationProcess && this.$route.query.phone)
+    },
+    hasUserSocialData () {
+      return Boolean(this.userSocialData)
     }
   },
 

@@ -246,7 +246,7 @@ export default {
 
     goToStepThree () {
       this.$router.push({
-        name: 'app-children-shorter',
+        name: 'app-children',
         query: {
           step: 3,
           process: 'signup'

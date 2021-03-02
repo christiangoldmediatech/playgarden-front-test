@@ -1,12 +1,11 @@
 <template>
   <validation-observer v-slot="{ invalid, passes, reset }">
     <p
-      class="text-left"
-      :class="{ 'mt-8': $vuetify.breakpoint.smAndDown }"
+      class="text-center text-md-left"
     >
       <underlined-title class="text-h6 text-md-h5" text="CREDIT CARD INFORMATION" />
     </p>
-    <p>
+    <p class="text-center text-md-left">
       <span class="text-header-info">
         We need your credit card information to confirm who you are, but you will NOT be charged.
       </span>
@@ -63,7 +62,7 @@
 
       <v-btn
         block
-        class="mb-4 mt-4 main-btn ml-n4 ml-md-0"
+        class="mb-4 mt-4 main-btn ml-md-0"
         min-height="60"
         color="primary"
         :disabled="invalid"
