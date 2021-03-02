@@ -2,6 +2,7 @@
   <validation-observer v-slot="{ invalid, passes, reset }">
     <p
       class="text-center text-md-left"
+      :class="{ 'mt-n10': $vuetify.breakpoint.smAndUp }"
     >
       <underlined-title class="text-h6 text-md-h5" text="CREDIT CARD INFORMATION" />
     </p>

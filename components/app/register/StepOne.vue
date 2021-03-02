@@ -107,7 +107,7 @@
                                 </v-row>
                               </div>
                               <v-row justify="center">
-                                <v-col v-if="$vuetify.breakpoint.smAndUp" cols="3">
+                                <center v-if="$vuetify.breakpoint.smAndUp">
                                   <v-btn
                                     block
                                     class="mt-4 info-much-more"
@@ -116,7 +116,7 @@
                                       AND MUCH MORE!!
                                     </span>
                                   </v-btn>
-                                </v-col>
+                                </center>
                                 <v-btn
                                   v-else
                                   block
