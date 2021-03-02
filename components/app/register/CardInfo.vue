@@ -4,7 +4,6 @@
       <v-btn
         block
         text
-        @click="changeShowDetail"
       >
         <img
           src="@/assets/png/gift-icon.png"
@@ -14,18 +13,12 @@
         <span class="free-trial-info">
           GET 30 DAYS OF FREE TRIAL
         </span>
-        <v-icon v-if="showDetailFreeTrial" class="hidden-md-only hidden-lg-only">
-          mdi-menu-down
-        </v-icon>
-        <v-icon v-else class="hidden-md-only hidden-lg-only">
-          mdi-menu-up
-        </v-icon>
       </v-btn>
     </v-card-title>
     <v-card-text>
-      <div v-if="!showDetailFreeTrial" class="text-mdi-monitor">
+      <div class="text-mdi-monitor">
         <center class="text-pay-information">
-          <div>
+          <div :class="{ 'ml-4': !$vuetify.breakpoint.smAndUp }">
             <v-row>
               <span class="font-weight-bold ml-2">That includes:</span>
             </v-row>
@@ -66,20 +59,23 @@
                 </span>
               </v-btn>
             </center>
-            <v-btn
-              v-else
-              block
-              class="mt-8 info-much-more px-8"
-            >
-              <span class="much-info">
-                AND MUCH MORE!!
+            <div v-else class="justify-center" :class="{ 'mx-4': !$vuetify.breakpoint.smAndUp }">
+              <v-btn
+                block
+                class="mt-8 info-much-more px-8"
+              >
+                <span class="much-info">
+                  AND MUCH MORE!!
+                </span>
+              </v-btn>
+            </div>
+            <div class="mt-2">
+              <span
+                class="text-header-info"
+              >
+                *You can cancel you membership any <br v-if="!$vuetify.breakpoint.smAndUp" />time from the account settings.
               </span>
-            </v-btn>
-            <span
-              class="mt-2 text-header-info"
-            >
-              *You can cancel you membership any time from the account settings.
-            </span>
+            </div>
           </v-row>
         </center>
       </div>
@@ -92,7 +88,10 @@
 export default {
   name: 'CardInfo',
 
-  data: vm => ({})
+  data: vm => ({}),
+
+  methods: {
+  }
 }
 </script>
 

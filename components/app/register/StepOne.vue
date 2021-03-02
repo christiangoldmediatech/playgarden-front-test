@@ -119,12 +119,6 @@ export default {
     ...mapActions('caregiver', { newCaregiver: 'signup' }),
     ...mapActions('auth', ['setPlaydateInvitationToken']),
 
-    changeShowDetail () {
-      if (!this.$vuetify.breakpoint.smAndUp) {
-        this.showDetailFreeTrial = !this.showDetailFreeTrial
-      }
-    },
-
     async onSubmit (data) {
       try {
         this.loading = true

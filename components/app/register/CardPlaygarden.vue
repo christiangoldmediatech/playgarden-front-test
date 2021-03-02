@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-row>
     <v-card-title primary-title>
       <h4 v-if="$vuetify.breakpoint.smAndUp">
         Our family loves Playgarden Prep Online!
@@ -8,20 +8,14 @@
         v-else
         block
         text
-        @click="changeShowDetail"
       >
-        <p class="text-center free-trial-info">
-          Our family loves Playgarden <br /> Prep Online!
+        <p :class="($vuetify.breakpoint.smAndUp) ? 'text-center free-trial-info' : 'text-center free-trial-info-mobile'">
+          <span>Our family loves </span> Playgarden <br />
+          <span>Prep Online!</span>
         </p>
-        <v-icon v-if="showDetailFreeTrial" class="hidden-md-only hidden-lg-only">
-          mdi-menu-down
-        </v-icon>
-        <v-icon v-else class="hidden-md-only hidden-lg-only">
-          mdi-menu-up
-        </v-icon>
       </v-btn>
     </v-card-title>
-    <v-card-text v-if="!showDetailFreeTrial">
+    <v-card-text>
       <div class="text-mdi-monitor">
         <center class="text-pay-information">
           “We have seen Liam learn a lot through the platform <br />
@@ -64,7 +58,7 @@
         </center>
       </div>
     </v-card-text>
-  </div>
+  </v-row>
 </template>
 
 <script>
@@ -92,6 +86,9 @@ ul li::before {
 }
 .free-trial-info {
   font-size: 18px;
+}
+.free-trial-info-mobile {
+  font-size: 16px;
 }
 .text-trial {
   margin-top: 14px;

@@ -27,17 +27,17 @@
                   text
                   @click="showCardPlaygarden = !showCardPlaygarden"
                 >
-                  <span class="free-trial">
-                    Our family loves Playgarden Prep Online!
+                  <span :class="($vuetify.breakpoint.smAndUp) ? 'free-trial' : 'free-trial-mobile'">
+                    Our family loves Playgarden <br />Prep Online!
                   </span>
                   <v-icon class="ml-2">
                     mdi-chevron-down
                   </v-icon>
                 </v-btn>
-                <v-divider></v-divider>
+                <v-divider class="mt-4 mb-4"></v-divider>
               </v-col>
             </v-row>
-            <v-row v-if="!showDetailThatIncludes" :class="($vuetify.breakpoint.smAndUp) ? 'background-card' : 'background-card-mobile pt-14 px-8'">
+            <v-row :class="($vuetify.breakpoint.smAndUp) ? 'background-card' : 'background-card-mobile pt-14 px-8'">
               <v-col cols="12" :class="(!$vuetify.breakpoint.smAndUp) ? 'text-center' : 'mt-14 mb-8 px-10'">
                 <v-layout row wrap align-center justify-center>
                   <v-card class="elevation-0 mx-10">
@@ -51,7 +51,7 @@
                 </v-layout>
               </v-col>
             </v-row>
-            <v-row v-if="!showDetailThatIncludes">
+            <v-row>
               <v-col cols="12">
                 <v-btn
                   block
@@ -63,10 +63,13 @@
                     class="mr-2"
                     width="18px"
                   >
-                  <span class="free-trial">
+                  <span :class="($vuetify.breakpoint.smAndUp) ? 'free-trial' : 'free-trial-mobile'">
                     GET 30 DAYS OF FREE TRIAL
                   </span>
-                  <v-icon class="ml-2">
+                  <v-icon v-if="showCardPlaygarden" class="ml-2">
+                    mdi-chevron-up
+                  </v-icon>
+                  <v-icon v-else class="ml-2">
                     mdi-chevron-down
                   </v-icon>
                 </v-btn>
@@ -111,12 +114,6 @@ export default {
       'payShorterSubscription',
       'validateCard'
     ]),
-
-    changeShowDetail () {
-      if (!this.$vuetify.breakpoint.smAndUp) {
-        this.showDetailFreeTrial = !this.showDetailFreeTrial
-      }
-    },
 
     goToStepThree () {
       this.$router.push({
@@ -227,6 +224,6 @@ export default {
   font-size: 22px !important;
 }
 .free-trial-mobile {
-  font-size: 18px !important;
+  font-size: 14px !important;
 }
 </style>
