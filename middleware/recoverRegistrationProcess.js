@@ -6,6 +6,7 @@ export default function ({ redirect, route, store }) {
       'auth-logout': 1,
       help: 1,
       'jwt-recovery': 1,
+      'auth-singup-social-network': 1,
       'privacy-policy': 1,
       'terms-conditions': 1,
       'shared-slug': 1
@@ -29,9 +30,7 @@ export default function ({ redirect, route, store }) {
       route.query.process !== 'signup' &&
       !ignoreRoute[route.name]
     ) {
-      let name
-
-      switch (step) {
+      /* switch (step) {
         case 1:
           name = 'auth-signup'
           break
@@ -47,8 +46,23 @@ export default function ({ redirect, route, store }) {
         case 4:
           name = 'app-payment-register'
           break
-      }
+      } */
 
+      let name = ''
+
+      switch (step) {
+        case 1:
+          name = 'auth-parent'
+          break
+
+        case 2:
+          name = 'app-payment'
+          break
+
+        case 3:
+          name = 'app-children'
+          break
+      }
       redirect({
         name,
         query: {
