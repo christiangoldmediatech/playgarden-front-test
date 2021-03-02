@@ -1,0 +1,106 @@
+<template>
+  <v-main>
+    <featured-video
+      v-if="featuredVideo"
+      :video="featuredVideo"
+      @play="playFeaturedVideo"
+    />
+
+    <library-categories
+      v-model="selectedActivity"
+      v-bind="{ categories: activityTypeData }"
+      :favorites="favorites.length > 0"
+    />
+
+    <v-container class="text-center pt-12 pb-8" fluid>
+      <underlined-title
+        font-size="40px"
+        text="Master subjects to collect  patches for your Student Cubby!"
+      />
+    </v-container>
+
+    <favorites-container
+      v-if="($vuetify.breakpoint.mdAndDown && selectedActivity === 'favorites') || ($vuetify.breakpoint.lgAndUp && favorites.length)"
+      v-bind="{ favorites }"
+    />
+
+    <activity-type-container
+      v-for="activityType in activityTypes"
+      :key="`activity-type-${activityType.id}`"
+      :total="activityType.activities.length"
+      v-bind="{ activityType }"
+    />
+
+    <activity-player />
+  </v-main>
+</template>
+
+<script>
+import { mapActions } from 'vuex'
+import FeaturedVideo from '@/components/app/library/FeaturedVideo.vue'
+import ActivityTypeContainer from '@/components/app/library/ActivityTypeContainer.vue'
+import FavoritesContainer from '@/components/app/library/FavoritesContainer.vue'
+import LibraryCategories from '@/components/app/library/LibraryCategories.vue'
+import ActivityPlayer from '@/components/app/activities/ActivityPlayer.vue'
+import { shuffle } from '@/utils/arrayTools'
+import LibraryFunctions from '@/mixins/LibraryFunctions'
+
+export default {
+  name: 'Index',
+
+  components: {
+    FeaturedVideo,
+    LibraryCategories,
+    ActivityTypeContainer,
+    FavoritesContainer,
+    ActivityPlayer
+  },
+
+  mixins: [LibraryFunctions],
+
+  computed: {
+    activityTypes () {
+      if (this.$vuetify.breakpoint.mdAndDown) {
+        if (this.selectedActivity) {
+          return this.activityTypeData.filter(activityType => activityType.id === this.selectedActivity)
+        }
+        return []
+      }
+      return this.activityTypeData
+    }
+  },
+
+  async created () {
+    this.getAllFavorites()
+    const data = await this.$axios.$get('/activities')
+
+    this.featuredVideo = data.featured
+    this.activityTypeData = data.activities.filter((activityType) => {
+      return activityType.activities.length > 0
+    }).map((activityType) => {
+      // Filter out invalid activities
+      const activities = shuffle(this.getValidActivities(activityType.activities))
+
+      const activityTypeObj = {
+        ...activityType,
+        activities
+      }
+
+      activityTypeObj.playlist = this.makePlaylist(activityTypeObj)
+
+      return activityTypeObj
+    })
+
+    // const favorites = data.favorites.filter((favorite) => {
+    //   return favorite && favorite.video && favorite.video.activityType && favorite.video.videoUrl
+    // })
+
+    this.favorites = data.favorites.length ? shuffle(data.favorites) : []
+    this.selectedActivity = this.activityTypeData[0].id
+  },
+
+  methods: {
+    ...mapActions('video', ['getAllFavorites'])
+  }
+}
+</script>

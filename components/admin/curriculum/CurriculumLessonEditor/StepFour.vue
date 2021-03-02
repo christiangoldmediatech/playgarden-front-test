@@ -79,6 +79,24 @@
         />
       </validation-provider>
 
+      <!-- Video -->
+      <span class="v-label theme--light">Video</span>
+
+      <template v-if="draft.videoDetail && draft.videoDetail.videoUrl && draft.videoDetail.videoUrl.HLS">
+        <div class="mb-6 mt-3">
+          <v-badge avatar class="video-badge" color="error" overlap>
+            <template v-slot:badge>
+              <v-avatar class="clickable" @click.native="draft.videoDetail.videoUrl = null">
+                <v-icon>
+                  mdi-close
+                </v-icon>
+              </v-avatar>
+            </template>
+            <pg-inline-video-player @ready="onPlayerReady({ player: $event, video: draft.videoDetail })" />
+          </v-badge>
+        </div>
+      </template>
+
       <validation-provider
         v-slot="{ errors }"
         name="Video"
@@ -258,7 +276,26 @@ export default {
           data
         })
         : this.createWorksheetByLessonId({ lessonId: this.lessonId, data })
+    },
+
+    onPlayerReady ({ player, video }) {
+      player.loadMedia({
+        title: video.name,
+        poster: require('assets/jpg/abacus_counting_lesson.jpg'),
+        src: [
+          {
+            src: video.videoUrl.HLS,
+            type: 'application/x-mpegURL'
+          }
+        ]
+      })
     }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.video-badge {
+  width: 90%;
+}
+</style>
