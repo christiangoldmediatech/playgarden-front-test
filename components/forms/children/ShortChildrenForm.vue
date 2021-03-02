@@ -135,6 +135,12 @@ export default {
   watch: {
     menu (val) {
       val && setTimeout(() => (this.$refs.picker.activePicker = 'YEAR'))
+    },
+    backpacks (val) {
+      if (val.length > 0) {
+        this.itemCurrent.backpackId = val[0].id
+        this.itemCurrent.gender = 'MALE'
+      }
     }
   },
   created () {

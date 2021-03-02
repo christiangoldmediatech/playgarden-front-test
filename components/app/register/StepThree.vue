@@ -20,7 +20,7 @@
           md="6"
           sm="12"
           xs="12"
-          :class="{ 'mt-n8': !$vuetify.breakpoint.smAndUp }"
+          :class="{ 'mt-n14': !$vuetify.breakpoint.smAndUp }"
         >
           <short-register-form :class="{ 'pl-2 pr-2': !$vuetify.breakpoint.smAndUp }" :loading="loading" @click:submit="onSubmit" />
         </v-col>
