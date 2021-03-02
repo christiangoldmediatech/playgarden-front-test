@@ -20,6 +20,23 @@
           xl="6"
         >
           <template>
+            <v-row v-if="!showCardPlaygarden">
+              <v-col cols="12">
+                <v-btn
+                  block
+                  text
+                  @click="showCardPlaygarden = !showCardPlaygarden"
+                >
+                  <span class="free-trial">
+                    Our family loves Playgarden Prep Online!
+                  </span>
+                  <v-icon class="ml-2">
+                    mdi-chevron-down
+                  </v-icon>
+                </v-btn>
+                <v-divider></v-divider>
+              </v-col>
+            </v-row>
             <v-row v-if="!showDetailThatIncludes" :class="($vuetify.breakpoint.smAndUp) ? 'background-card' : 'background-card-mobile pt-14 px-8'">
               <v-col cols="12" :class="(!$vuetify.breakpoint.smAndUp) ? 'text-center' : 'mt-14 mb-8 px-10'">
                 <v-layout row wrap align-center justify-center>
@@ -39,7 +56,7 @@
                 <v-btn
                   block
                   text
-                  @click="showDetailThatIncludes = !showDetailThatIncludes"
+                  @click="showCardPlaygarden = !showCardPlaygarden"
                 >
                   <img
                     src="@/assets/png/gift-icon.png"
@@ -205,5 +222,11 @@ export default {
 }
 .text-orange-info::v-deep.v-chip--label {
   border-radius: 0px !important;
+}
+.free-trial {
+  font-size: 22px !important;
+}
+.free-trial-mobile {
+  font-size: 18px !important;
 }
 </style>

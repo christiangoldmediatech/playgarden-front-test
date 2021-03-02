@@ -10,9 +10,9 @@
         text
         @click="changeShowDetail"
       >
-        <span class="free-trial-info">
+        <p class="text-center free-trial-info">
           Our family loves Playgarden <br /> Prep Online!
-        </span>
+        </p>
         <v-icon v-if="showDetailFreeTrial" class="hidden-md-only hidden-lg-only">
           mdi-menu-down
         </v-icon>
