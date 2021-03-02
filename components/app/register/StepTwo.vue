@@ -74,6 +74,25 @@
                   </v-icon>
                 </v-btn>
               </v-col>
+              <v-col v-if="!$vuetify.breakpoint.smAndUp" cols="12">
+                <div>
+                  <p>
+                    <center>
+                      <span class="font-weight-bold text-completely">
+                        Playgarden Prep Online is COMPLETELY FREE for the next 30 days.
+                      </span>
+                    </center>
+                  </p>
+                  <v-divider></v-divider>
+                  <p v-if="!noTrial">
+                    <center class="ml-2">
+                      <span class="info-pay">
+                        You can cancel your trial and membership anytime from the account settings.<br /> Once your free trial ends you will be placed on the <span class="option-standar">Standard</span> monthly plan, you can change plans at any time in your profile page.
+                      </span>
+                    </center>
+                  </p>
+                </div>
+              </v-col>
             </v-row>
           </template>
         </v-col>
@@ -225,5 +244,15 @@ export default {
 }
 .free-trial-mobile {
   font-size: 14px !important;
+}
+.text-completely {
+  font-size: 12px !important;
+  color: rgba(96, 96, 96, 0.8) !important;
+}
+.info-pay {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(96, 96, 96, 0.8) !important;
+  text-align: center;
 }
 </style>
