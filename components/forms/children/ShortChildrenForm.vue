@@ -60,7 +60,7 @@
         <v-col
           v-for="(backpack, indexB) in backpacks"
           :key="indexB"
-          class="image"
+          :class="($vuetify.breakpoint.smAndUp) ? 'image': 'image-mobile'"
           cols="4"
           md="2"
         >
@@ -69,7 +69,7 @@
             class="clickable"
             :class="{ active: itemCurrent.backpackId === backpack.id }"
             :src="backpack.image"
-            height="100px"
+            :height="($vuetify.breakpoint.smAndUp) ? '100px' : '60px'"
             @click="itemCurrent.backpackId = backpack.id"
           >
         </v-col>
@@ -245,6 +245,27 @@ export default {
     }
   }
 }
+
+.image-mobile {
+  height: 50px;
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+
+  img {
+    max-height: 50px;
+    max-width: 50px;
+    width: 100%;
+
+    &.active {
+      background-color: var(--v-secondary-base);
+      border-radius: 50%;
+      padding: 5px;
+    }
+  }
+}
+
 .grey {
   color: var(--v-black-base);
 }

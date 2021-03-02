@@ -7,7 +7,7 @@
         <v-col
           class="px-12 mt-1 mt-md-12"
           cols="12"
-          md="5"
+          md="6"
           lg="6"
           xl="6"
         >
@@ -15,14 +15,19 @@
         </v-col>
         <v-col
           cols="12"
-          md="8"
+          sm="8"
+          offset-sm="2"
+          xs="8"
+          offset-xs="2"
+          md="6"
           lg="6"
+          xl="6"
         >
           <template>
-            <v-row :class="($vuetify.breakpoint.smAndUp) ? 'background-card' : 'background-card-mobile pt-14'">
-              <v-col v-if="!showDetailThatIncludes" cols="12" :class="(!$vuetify.breakpoint.smAndUp) ? 'text-center' : 'mt-14 mb-8'">
+            <v-row v-if="!showDetailThatIncludes" :class="($vuetify.breakpoint.smAndUp) ? 'background-card' : 'background-card-mobile pt-14 px-8'">
+              <v-col cols="12" :class="(!$vuetify.breakpoint.smAndUp) ? 'text-center' : 'mt-14 mb-8 px-10'">
                 <v-layout row wrap align-center justify-center>
-                  <v-card class="elevation-0">
+                  <v-card class="elevation-0 mx-10">
                     <v-container>
                       <v-layout column align-center justify-center>
                         <v-card-title primary-title>
@@ -95,8 +100,8 @@
                 </v-layout>
               </v-col>
             </v-row>
-            <v-row>
-              <v-col v-if="!showDetailThatIncludes" cols="12">
+            <v-row v-if="!showDetailThatIncludes">
+              <v-col cols="12">
                 <v-btn
                   block
                   text
@@ -116,10 +121,10 @@
                 </v-btn>
               </v-col>
             </v-row>
-            <v-row v-if="showDetailThatIncludes" :class="($vuetify.breakpoint.smAndUp) ? 'mt-4 background-card' : 'background-card-mobile pt-14'">
-              <v-col cols="12" :class="(!$vuetify.breakpoint.smAndUp) ? '' : 'mt-10 mb-10 pl-8 pr-8'">
+            <v-row v-if="showDetailThatIncludes" :class="($vuetify.breakpoint.smAndUp) ? 'mt-4 background-card' : 'background-card-mobile pt-14 px-8'">
+              <v-col cols="12" :class="(!$vuetify.breakpoint.smAndUp) ? '' : 'mt-10 mb-10 px-10'">
                 <v-layout row wrap align-center justify-center>
-                  <v-card class="elevation-0">
+                  <v-card class="elevation-0 mx-10">
                     <v-container>
                       <v-layout column align-center justify-center>
                         <v-card-title primary-title>
@@ -133,7 +138,7 @@
                               class="mr-2"
                               width="18px"
                             >
-                            <span class="free-trial">
+                            <span :class="($vuetify.breakpoint.smAndUp) ?'free-trial':'free-trial-mobile'">
                               GET 30 DAYS OF FREE TRIAL
                             </span>
                             <v-icon>
@@ -175,7 +180,7 @@
                                 </v-row>
                               </div>
                               <v-row justify="center">
-                                <v-col cols="3">
+                                <center v-if="$vuetify.breakpoint.smAndUp">
                                   <v-btn
                                     block
                                     class="mt-4 info-much-more"
@@ -184,7 +189,16 @@
                                       AND MUCH MORE!!
                                     </span>
                                   </v-btn>
-                                </v-col>
+                                </center>
+                                <v-btn
+                                  v-else
+                                  block
+                                  class="mt-8 info-much-more px-8"
+                                >
+                                  <span class="much-info">
+                                    AND MUCH MORE!!
+                                  </span>
+                                </v-btn>
                                 <span
                                   class="mt-2 text-header-info"
                                 >
@@ -374,6 +388,9 @@ ul li::before {
 
 .free-trial {
   font-size: 22px !important;
+}
+.free-trial-mobile {
+  font-size: 18px !important;
 }
 
 .info-mother {

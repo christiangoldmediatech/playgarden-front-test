@@ -34,7 +34,7 @@
         />
       </validation-provider>
 
-      <v-row v-if="!noTerms" class="mb-6">
+      <v-row v-if="!noTerms" class="mb-0">
         <validation-provider v-slot="{ errors }" name="Terms" rules="required">
           <v-checkbox
             v-model="draft.acceptTerms"
@@ -63,7 +63,7 @@
 
       <v-btn
         block
-        class="mb-4 mt-4 main-btn ml-md-0"
+        class="mb-4 mt-0 main-btn ml-md-0"
         min-height="60"
         color="primary"
         :disabled="invalid"
@@ -201,6 +201,7 @@ export default {
 }
 .text-header-info {
   font-size: 14px !important;
+  color: rgba(96, 96, 96, 0.8) !important;
 }
 .terms-conditions {
   text-decoration: underline !important;

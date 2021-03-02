@@ -14,11 +14,11 @@
           </p>
         </v-col>
         <v-col
-          class="px-12 mt-1 mt-md-12"
+          class="px-sm-12 px-6 mt-1 mt-md-12"
           cols="12"
           sm="12"
           xs="12"
-          md="5"
+          md="6"
           lg="6"
           xl="6"
         >
@@ -38,16 +38,18 @@
 
         <v-col
           cols="12"
-          sm="12"
-          xs="12"
-          md="8"
+          sm="8"
+          offset-sm="2"
+          xs="8"
+          offset-xs="2"
+          md="6"
           lg="6"
         >
           <template>
-            <v-row :class="($vuetify.breakpoint.smAndUp) ? 'mt-4 background-card' : 'background-card-mobile pt-14'">
-              <v-col cols="12" :class="(!$vuetify.breakpoint.smAndUp) ? '' : 'mt-10 mb-10 pl-8 pr-8'">
+            <v-row :class="($vuetify.breakpoint.smAndUp) ? 'mt-4 background-card' : 'background-card-mobile pt-14 px-8'">
+              <v-col cols="12" :class="(!$vuetify.breakpoint.smAndUp) ? '' : 'mt-10 mb-10 px-10'">
                 <v-layout row wrap align-center justify-center>
-                  <v-card class="elevation-0 ml-10 mr-10">
+                  <v-card class="elevation-0 mx-10">
                     <v-container>
                       <v-layout column align-center justify-center>
                         <v-card-title primary-title>
@@ -119,7 +121,7 @@
                                 <v-btn
                                   v-else
                                   block
-                                  class="mt-4 info-much-more pl-8 pr-8"
+                                  class="mt-8 info-much-more px-8"
                                 >
                                   <span class="much-info">
                                     AND MUCH MORE!!

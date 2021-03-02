@@ -38,11 +38,7 @@
             type="submit"
             x-large
           >
-            {{
-              $vuetify.breakpoint.mdAndUp
-                ? "START LEARNING"
-                : "CONTINUE"
-            }}
+            START LEARNING
           </v-btn>
         </v-col>
       </v-row>

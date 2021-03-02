@@ -2,9 +2,9 @@
   <validation-observer v-slot="{ invalid, passes }">
     <v-form @submit.prevent="passes(onSubmit)">
       <v-container class="px-0">
-        <v-row no-gutters>
+        <v-row no-gutters class="some">
           <v-col
-            cols="12"
+            cols="6"
           >
             <!-- First name -->
             <validation-provider
@@ -24,7 +24,7 @@
             </validation-provider>
           </v-col>
           <v-col
-            cols="12"
+            cols="6"
           >
             <!-- Last name -->
             <validation-provider
@@ -73,7 +73,7 @@
                 >
                   <!-- Password -->
                   <v-tooltip
-                    :bottom="$vuetify.breakpoint.xs"
+                    :top="$vuetify.breakpoint.xs"
                     :right="$vuetify.breakpoint.smAndUp"
                   >
                     <template v-slot:activator="{ on, attrs }">
@@ -133,7 +133,7 @@
             </v-row>
 
             <!-- or -->
-            <v-row no-gutters class="my-6">
+            <v-row no-gutters class="my-6 d-none d-sm-flex">
               <v-col class="hr-line">
                 <v-divider />
               </v-col>
