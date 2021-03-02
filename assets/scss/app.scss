@@ -66,6 +66,10 @@
   }
 }
 
+.text-header-info {
+  font-size: 12px;
+}
+
 .subtitle-text {
   font-size: 1rem !important;
   position: relative;
@@ -91,6 +95,10 @@
 }
 .social-btn {
   background-color: white !important;
+}
+
+.info-color-signup {
+  color: var(--v-black-base) !important;
 }
 
 .carousel-text {
@@ -178,4 +186,19 @@
   &-hidden {
     overflow: hidden;
   }
+}
+
+.background-card {
+  background-image: url("~@/assets/svg/shorter-register.svg") !important;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  max-height: 470px !important;
+}
+.background-card-mobile {
+  background-image: url("~@/assets/svg/shorter-register.svg") !important;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  min-height: calc(100vh - 305px);
 }

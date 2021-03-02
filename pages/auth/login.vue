@@ -142,7 +142,7 @@ export default {
         this.validateEmail(user)
 
         await this.$router.push({
-          name: 'auth-signup',
+          name: 'auth-parent',
           query: { process: 'social-signup', _u: btoa(JSON.stringify(user)) }
         })
       } catch (e) {
