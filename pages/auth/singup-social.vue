@@ -6,22 +6,22 @@
 import { mapActions } from 'vuex'
 
 export default {
-  name: 'SingupSocialNetwork',
+  name: 'SingupSocial',
 
   layout: 'loading',
 
   data: vm => ({
-    socialNetwork: null
+    network: null
   }),
 
   mounted () {
-    this.socialNetwork = this.$route.query.socialNetwork
+    this.network = this.$route.query.network
     this.setSocialNetwork()
   },
 
   methods: {
     setSocialNetwork () {
-      switch (this.socialNetwork) {
+      switch (this.network) {
         case 'facebook':
           this.facebookSignIn()
           break
