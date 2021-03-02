@@ -293,3 +293,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.video-badge {
+  width: 90%;
+}
+</style>
