@@ -38,12 +38,9 @@
 
         <v-col
           cols="12"
-          sm="8"
-          offset-sm="2"
-          xs="8"
-          offset-xs="2"
           md="6"
           lg="6"
+          xl="6"
         >
           <template>
             <v-row :class="($vuetify.breakpoint.smAndUp) ? 'mt-4 background-card' : 'background-card-mobile pt-14 px-8'">
