@@ -4,6 +4,7 @@
       <v-container class="px-0">
         <v-row no-gutters class="some">
           <v-col
+            class="pr-2"
             cols="6"
           >
             <!-- First name -->
@@ -183,7 +184,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 import { jsonCopy } from '@/utils/objectTools'
 
@@ -234,44 +235,36 @@ export default {
   },
 
   mounted () {
-    this.draft = {
-      firstName: this.hasUserSocialData
-        ? this.userSocialData.firstName
-        : this.getUserInfo.firstName || null,
-      lastName: this.hasUserSocialData
-        ? this.userSocialData.lastName
-        : this.getUserInfo.lastName || null,
-      phoneNumber:
-        this.$route.query.phone || this.getUserInfo.phoneNumber || null,
-      email: this.hasUserSocialData
-        ? this.userSocialData.email
-        : this.$route.query.email ||
-          this.getUserInfo.email ||
-          this.emailValidated ||
-          null,
-      password: null,
-      passwordConfirmation: null,
-      socialNetwork: this.hasUserSocialData
-        ? this.userSocialData.socialNetwork
-        : null,
-      socialNetworkId: this.hasUserSocialData
-        ? this.userSocialData.socialNetworkId
-        : null
-    }
-  },
-
-  created () {
-    /* this.$nuxt.$on('singup-social-network', (dataUser) => {
-      this.draft = { ...dataUser }
-      this.userSocialData = true
-    }) */
-  },
-
-  beforeDestroy () {
-    // this.$nuxt.$off('singup-social-network')
+    this.setDraft()
   },
 
   methods: {
+    setDraft () {
+      this.draft = {
+        firstName: this.hasUserSocialData
+          ? this.userSocialData.firstName
+          : this.getUserInfo.firstName || null,
+        lastName: this.hasUserSocialData
+          ? this.userSocialData.lastName
+          : this.getUserInfo.lastName || null,
+        phoneNumber:
+          this.$route.query.phone || this.getUserInfo.phoneNumber || null,
+        email: this.hasUserSocialData
+          ? this.userSocialData.email
+          : this.$route.query.email ||
+            this.getUserInfo.email ||
+            this.emailValidated ||
+            null,
+        password: null,
+        passwordConfirmation: null,
+        socialNetwork: this.hasUserSocialData
+          ? this.userSocialData.socialNetwork
+          : null,
+        socialNetworkId: this.hasUserSocialData
+          ? this.userSocialData.socialNetworkId
+          : null
+      }
+    },
     onSubmit () {
       this.$emit(
         'click:submit',
@@ -281,9 +274,73 @@ export default {
       )
     },
 
-    facebookSignIn () {},
+    facebookSignIn () {
+      this.socialSignIn(
+        'FACEBOOK',
+        new this.$fireAuthObj.FacebookAuthProvider()
+      )
+    },
 
-    googleSignIn () {}
+    googleSignIn () {
+      this.socialSignIn('GOOGLE', new this.$fireAuthObj.GoogleAuthProvider())
+    },
+
+    async loginWithSocialNetwork (user) {
+      try {
+        this.disableAxiosGlobal()
+
+        await this.authLoginSocial(user)
+
+        this.enableAxiosGlobal()
+
+        await this.$router.push({ name: 'app-dashboard' })
+      } catch (e) {
+        this.onFailLoginSocial(user)
+      }
+    },
+
+    onFailLoginSocial (user) {
+      try {
+        this.validateEmail(user)
+        this.userSocialData = { ...user }
+        this.setDraft()
+      } catch (e) {
+        this.$snotify.error('This email is already on used!')
+      } finally {
+        this.enableAxiosGlobal()
+      }
+    },
+    ...mapActions(['disableAxiosGlobal', 'enableAxiosGlobal']),
+
+    ...mapActions('auth/login', ['login']),
+
+    ...mapActions('auth/signup', {
+      validateEmail: 'signupEmail'
+    }),
+
+    ...mapActions('auth/socialUser', ['authLoginSocial']),
+
+    socialSignIn (nameSocialNetwork, provider) {
+      const fireAuthObj = this.$fireAuthObj()
+
+      fireAuthObj
+        .signInWithPopup(provider)
+        .then((result) => {
+          const profile = { ...result.additionalUserInfo.profile }
+
+          this.loginWithSocialNetwork({
+            firstName: profile.given_name || profile.first_name || '',
+            lastName: profile.family_name || profile.last_name || '',
+            email: profile.email,
+            socialNetwork: nameSocialNetwork,
+            socialNetworkId: profile.id
+          })
+        })
+        .catch((e) => {
+          this.$snotify.error(e.message)
+        })
+        .finally(() => fireAuthObj.signOut())
+    }
   }
 }
 </script>

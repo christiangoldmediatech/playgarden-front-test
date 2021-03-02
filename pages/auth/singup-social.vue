@@ -41,12 +41,22 @@ export default {
       this.socialSignIn('GOOGLE', new this.$fireAuthObj.GoogleAuthProvider())
     },
 
+    async loginWithSocialNetwork (user) {
+      try {
+        this.disableAxiosGlobal()
+        await this.authLoginSocial(user)
+        this.enableAxiosGlobal()
+        await this.$router.push({ name: 'app-dashboard' })
+      } catch (e) {
+        await this.onFailLoginSocial(user)
+      }
+    },
+
     async onFailLoginSocial (user) {
       try {
         this.validateEmail(user)
-
         await this.$router.push({
-          name: 'auth-signup',
+          name: 'auth-parent',
           query: { process: 'social-signup', _u: btoa(JSON.stringify(user)) }
         })
       } catch (e) {
@@ -94,7 +104,7 @@ export default {
         .signInWithPopup(provider)
         .then((result) => {
           const profile = { ...result.additionalUserInfo.profile }
-          this.$nuxt.$emit('singup-social-network', {
+          this.loginWithSocialNetwork({
             firstName: profile.given_name || profile.first_name || '',
             lastName: profile.family_name || profile.last_name || '',
             email: profile.email,
