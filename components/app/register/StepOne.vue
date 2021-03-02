@@ -32,7 +32,6 @@
             :email-validated="emailValidated"
             :in-invitation-process="inInvitationProcess"
             :loading="loading"
-            :user-social-data="userSocialData"
             @click:submit="onSubmit"
           />
         </v-col>
@@ -160,7 +159,6 @@ export default {
     loading: false,
     emailValidated: null,
     showDetailFreeTrial: false,
-    userSocialData: null,
     token: vm.$route.query.token
   }),
   computed: {

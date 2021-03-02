@@ -201,9 +201,17 @@ export default {
     loading: Boolean
   },
 
-  data: () => ({
+  data: vm => ({
     draft: {},
-    userSocialData: false,
+    userSocialData: (() => {
+      const { query } = vm.$route
+      if (query.process === 'social-signup' && query._u) {
+        try {
+          return JSON.parse(atob(query._u))
+        } catch (e) {}
+      }
+      return null
+    })(),
     show: true
   }),
 
