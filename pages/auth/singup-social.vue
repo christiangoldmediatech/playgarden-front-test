@@ -113,6 +113,7 @@ export default {
           })
         })
         .catch((e) => {
+          this.$router.push({ name: 'auth-parent' })
           this.$snotify.error(e.message)
         })
         .finally(() => fireAuthObj.signOut())
