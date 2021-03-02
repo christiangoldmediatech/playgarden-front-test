@@ -1,18 +1,17 @@
 <template>
   <div>
     <v-card-title primary-title>
+      <h4 v-if="$vuetify.breakpoint.smAndUp">
+        Our family loves Playgarden Prep Online!
+      </h4>
       <v-btn
+        v-else
         block
         text
         @click="changeShowDetail"
       >
-        <img
-          src="@/assets/png/gift-icon.png"
-          class="mr-2"
-          width="18px"
-        >
         <span class="free-trial-info">
-          GET 30 DAYS OF FREE TRIAL
+          Our family loves Playgarden <br /> Prep Online!
         </span>
         <v-icon v-if="showDetailFreeTrial" class="hidden-md-only hidden-lg-only">
           mdi-menu-down
@@ -22,65 +21,46 @@
         </v-icon>
       </v-btn>
     </v-card-title>
-    <v-card-text>
-      <div v-if="!showDetailFreeTrial" class="text-mdi-monitor">
+    <v-card-text v-if="!showDetailFreeTrial">
+      <div class="text-mdi-monitor">
         <center class="text-pay-information">
-          <div>
-            <v-row>
-              <span class="font-weight-bold ml-2">That includes:</span>
-            </v-row>
+          “We have seen Liam learn a lot through the platform <br />
+          and appreciate your team creating it during this time. <br />
+          Features we love:
+
+          <div class="pb-10">
             <v-row>
               <ul>
                 <li
                   class="register-item text-left"
                 >
                   <small class="text-trial">
-                    A Daily Learning Schedule
+                    Workbook exercises
                   </small>
                 </li>
                 <li
                   class="register-item text-left"
                 >
                   <small class="text-trial">
-                    Access to over 1,200 lessons
+                    Library (Liam has many favorites)
                   </small>
                 </li>
                 <li
                   class="register-item text-left"
                 >
                   <small class="text-trial">
-                    Live Classes with Playgarden Prep Teachers
+                    Liam looks forward to cooking and reading with Miss Lucy so much”
                   </small>
                 </li>
               </ul>
             </v-row>
           </div>
-          <v-row justify="center">
-            <center v-if="$vuetify.breakpoint.smAndUp">
-              <v-btn
-                block
-                class="mt-4 info-much-more"
-              >
-                <span class="much-info">
-                  AND MUCH MORE!!
-                </span>
-              </v-btn>
-            </center>
-            <v-btn
-              v-else
-              block
-              class="mt-8 info-much-more px-8"
-            >
-              <span class="much-info">
-                AND MUCH MORE!!
-              </span>
-            </v-btn>
-            <span
-              class="mt-2 text-header-info"
-            >
-              *You can cancel you membership any time from the account settings.
-            </span>
-          </v-row>
+          <span
+            class="info-mother
+            mt-8"
+          >
+            - Mother of 3 year old Liam
+          </span>
         </center>
       </div>
     </v-card-text>
@@ -90,7 +70,7 @@
 <script>
 
 export default {
-  name: 'CardInfo',
+  name: 'CardPlaygarden',
 
   data: vm => ({})
 }
@@ -124,7 +104,28 @@ ul li::before {
 .text-header-info {
   font-size: 14px !important;
 }
+
+.free-trial {
+  font-size: 22px !important;
+}
+.free-trial-mobile {
+  font-size: 18px !important;
+}
+
+.info-mother {
+  color: #A6A6A6 !important;
+}
+
 .info-much-more {
   background-color: rgba(248, 152, 56, 0.3) !important;
+}
+
+.text-pay-information {
+  font-size: 12px;
+  font-style: italic;
+}
+
+.text-pay-get {
+  font-size: 12px;
 }
 </style>

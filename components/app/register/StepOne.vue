@@ -190,35 +190,4 @@ export default {
 .text-orange-info::v-deep.v-chip--label {
   border-radius: 0px !important;
 }
-ul {
-  list-style: none; /* Remove default bullets */
-}
-ul li::before {
-  content: "●";
-  font-size: 24px !important;
-  color: var(--v-accent-base); /* Change the color */
-  font-weight: bold; /* If you want it to be bold */
-  display: inline-block; /* Needed to add space between the bullet and the text */
-  width: 0.7em; /* Also needed for space (tweak if needed) */
-  margin-left: -1rem; /* Also needed for space (tweak if needed) */
-  margin-top: 10px;
-}
-.free-trial-info {
-  font-size: 18px;
-}
-.text-trial {
-  margin-top: 14px;
-  font-size: 14px !important;
-  position: absolute;
-}
-.much-info {
-  color: var(--v-accent-base);
-}
-.text-header-info {
-  font-size: 14px !important;
-}
-
-.info-much-more {
-  background-color: rgba(248, 152, 56, 0.3) !important;
-}
 </style>
