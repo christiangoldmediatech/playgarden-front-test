@@ -7,7 +7,7 @@
             class="font-weight-bold mb-6 pg-letter-spacing text-center text-h5 text-md-left"
             :class="{ 'mt-3': index !== 0 }"
           >
-            CHILD INFORMATION
+            <underlined-title class="text-h6 text-md-h4" text="CHILD INFORMATION" />
           </p>
           <short-children-form :date="item._birthdayPicker" :item="item" :position="index" :draft="draft" :loading="loading" />
         </v-col>

@@ -1,10 +1,10 @@
 <template>
   <div class="">
-    <div class="mb-4">
+    <p class="mb-4 text-center text-md-left">
       <small>
         Tell us a little about your little one
       </small>
-    </div>
+    </p>
     <!-- Name -->
     <validation-provider
       v-slot="{ errors }"

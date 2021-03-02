@@ -1,16 +1,16 @@
 <template>
-  <v-row no-gutters>
+  <v-row>
     <v-col>
       <v-row
         class="flex-column flex-md-row"
         justify="center"
-        no-gutters
       >
         <v-col
           cols="12"
           md="6"
         >
           <v-img
+            v-if="$vuetify.breakpoint.smAndUp"
             max-width="550"
             :src="require('@/assets/svg/child-information.svg')"
           />
@@ -18,8 +18,11 @@
         <v-col
           cols="12"
           md="6"
+          sm="12"
+          xs="12"
+          :class="{ 'mt-n8': !$vuetify.breakpoint.smAndUp }"
         >
-          <short-register-form :loading="loading" @click:submit="onSubmit" />
+          <short-register-form :class="{ 'pl-2 pr-2': !$vuetify.breakpoint.smAndUp }" :loading="loading" @click:submit="onSubmit" />
         </v-col>
       </v-row>
     </v-col>
