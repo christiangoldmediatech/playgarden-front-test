@@ -20,19 +20,12 @@
       </v-img>
       <v-list class="py-0" dense>
         <v-list-item>
-          <v-list-item-avatar tile>
-            <v-img
-              :src="activityTypeIcon"
-              contain
-            />
-          </v-list-item-avatar>
-
           <v-list-item-content>
             <v-list-item-title class="font-weight-bold text-uppercase">
-              {{ category }} <span class="activity-card-with">with</span> <span class="activity-card-subtitle">{{ teacher.toLowerCase() }}</span>
+              <span class="activity-card-description">{{ title }}</span>
             </v-list-item-title>
             <v-list-item-subtitle>
-              <span class="activity-card-description">{{ title }}</span>
+              <span class="activity-card-with text-none">With</span> <span class="activity-card-subtitle">{{ teacher.toLowerCase() }}</span>
             </v-list-item-subtitle>
           </v-list-item-content>
 
@@ -63,7 +56,7 @@
 import FavoritesMixin from '@/mixins/FavoritesMixin.js'
 
 export default {
-  name: 'ActivityCard',
+  name: 'FavoriteCard',
 
   mixins: [FavoritesMixin],
 
@@ -74,16 +67,6 @@ export default {
     },
 
     thumbnail: {
-      type: String,
-      required: true
-    },
-
-    activityTypeIcon: {
-      type: String,
-      required: true
-    },
-
-    category: {
       type: String,
       required: true
     },
@@ -100,41 +83,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-.activity {
-  &-card {
-    user-select: none;
-    &-thumbnail {
-      border-bottom-left-radius: 5%;
-      border-bottom-right-radius: 5%;
-      &-play {
-        width: 33%;
-        min-width: 64px;
-        transition: opacity .2s ease-in-out;
-        opacity: 0;
-
-        &-show {
-          opacity: 1;
-        }
-      }
-    }
-
-    &-with {
-      font-weight: 400 !important;
-      color: var(--v-black-base) !important;
-      text-transform: lowercase !important;
-    }
-
-    &-description {
-      font-weight: 500;
-    }
-
-    &-subtitle {
-      font-weight: 400 !important;
-      color: var(--v-black-base) !important;
-      text-transform: capitalize !important;
-    }
-  }
-}
-</style>

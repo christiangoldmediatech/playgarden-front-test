@@ -1,8 +1,16 @@
 <template>
   <v-main>
-    <featured-video v-if="featuredVideo" :video="featuredVideo" @play="playFeaturedVideo" />
+    <featured-video
+      v-if="featuredVideo"
+      :video="featuredVideo"
+      @play="playFeaturedVideo"
+    />
 
-    <library-categories v-model="selectedActivity" v-bind="{ categories: activityTypeData }" />
+    <library-categories
+      v-model="selectedActivity"
+      v-bind="{ categories: activityTypeData }"
+      :favorites="favorites.length > 0"
+    />
 
     <v-container class="text-center pt-12 pb-8" fluid>
       <underlined-title
@@ -11,9 +19,15 @@
       />
     </v-container>
 
+    <favorites-container
+      v-if="($vuetify.breakpoint.mdAndDown && selectedActivity === 'favorites') || ($vuetify.breakpoint.lgAndUp && favorites.length)"
+      v-bind="{ favorites }"
+    />
+
     <activity-type-container
       v-for="activityType in activityTypes"
       :key="`activity-type-${activityType.id}`"
+      :total="activityType.activities.length"
       v-bind="{ activityType }"
     />
 
@@ -22,11 +36,14 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import FeaturedVideo from '@/components/app/library/FeaturedVideo.vue'
 import ActivityTypeContainer from '@/components/app/library/ActivityTypeContainer.vue'
+import FavoritesContainer from '@/components/app/library/FavoritesContainer.vue'
 import LibraryCategories from '@/components/app/library/LibraryCategories.vue'
 import ActivityPlayer from '@/components/app/activities/ActivityPlayer.vue'
 import { shuffle } from '@/utils/arrayTools'
+import LibraryFunctions from '@/mixins/LibraryFunctions'
 
 export default {
   name: 'Index',
@@ -35,16 +52,11 @@ export default {
     FeaturedVideo,
     LibraryCategories,
     ActivityTypeContainer,
+    FavoritesContainer,
     ActivityPlayer
   },
 
-  data: () => {
-    return {
-      featuredVideo: null,
-      activityTypeData: [],
-      selectedActivity: null
-    }
-  },
+  mixins: [LibraryFunctions],
 
   computed: {
     activityTypes () {
@@ -59,6 +71,7 @@ export default {
   },
 
   async created () {
+    this.getAllFavorites()
     const data = await this.$axios.$get('/activities')
 
     this.featuredVideo = data.featured
@@ -66,63 +79,28 @@ export default {
       return activityType.activities.length > 0
     }).map((activityType) => {
       // Filter out invalid activities
-      const activities = shuffle(activityType.activities).filter((activity) => {
-        return activity.videos.videoUrl
-      })
+      const activities = shuffle(this.getValidActivities(activityType.activities))
 
-      // Carousel activities
-      let publicActivities = activities
-      let hasMore = false
-
-      if (publicActivities.length > 8) {
-        hasMore = true
-        publicActivities = activityType.activities.slice(0, 8)
-      }
-
-      return {
+      const activityTypeObj = {
         ...activityType,
-        activities,
-        publicActivities,
-        hasMore,
-        playlist: this.makePlaylist(activities)
+        activities
       }
+
+      activityTypeObj.playlist = this.makePlaylist(activityTypeObj)
+
+      return activityTypeObj
     })
 
+    // const favorites = data.favorites.filter((favorite) => {
+    //   return favorite && favorite.video && favorite.video.activityType && favorite.video.videoUrl
+    // })
+
+    this.favorites = data.favorites.length ? shuffle(data.favorites) : []
     this.selectedActivity = this.activityTypeData[0].id
   },
 
   methods: {
-    makePlaylist (activities) {
-      return activities.map((activity, playlistIndex) => {
-        return {
-          playlistIndex,
-          title: activity.videos.name,
-          description: activity.videos.description,
-          activityType: this.activityType,
-          curriculumType: activity.curriculumType,
-          src: {
-            src: activity.videos.videoUrl.HLS,
-            type: 'application/x-mpegURL'
-          },
-          poster: activity.videos.thumbnail,
-          activityId: activity.id,
-          videoId: activity.videos.id,
-          viewed: {
-            completed: false
-          }
-        }
-      })
-    },
-
-    playFeaturedVideo () {
-      const featuredId = this.featuredVideo.id
-      const featuredActTypeId = this.featuredVideo.activityType.id
-
-      const playlist = this.activityTypeData.find(actType => actType.id === featuredActTypeId).playlist
-      const index = playlist.findIndex(playItem => playItem.activityId === featuredId)
-
-      this.$nuxt.$emit('open-activity-player', { playlist, index })
-    }
+    ...mapActions('video', ['getAllFavorites'])
   }
 }
 </script>

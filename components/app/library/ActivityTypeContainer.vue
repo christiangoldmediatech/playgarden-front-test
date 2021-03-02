@@ -1,6 +1,6 @@
 <template>
   <div :id="`activity-type-${activityType.id}-container`">
-    <v-container class="hidden-xs-only px-0" fluid>
+    <v-container v-if="!noHeader" class="hidden-xs-only px-0" fluid>
       <div class="pos-relative d-flex align-end px-3">
         <div
           class="act-type-color"
@@ -30,13 +30,13 @@
     <v-container>
       <div class="d-flex flex-wrap justify-md-center justify-lg-start">
         <div
-          v-for="(activity, index) in activityType.publicActivities"
+          v-for="(activity, index) in shownActivities"
           :key="`activity-type-${activityType.id}-activity-${activity.id}`"
           class="act-type-activity"
           @click="handlePlay(index)"
         >
           <activity-card
-            :video-id="activity.id"
+            :video-id="activity.videos.id"
             :thumbnail="activity.videos.thumbnail"
             :activity-type-icon="activityType.icon"
             :category="activityType.name"
@@ -46,11 +46,13 @@
         </div>
       </div>
 
-      <div v-if="activityType.hasMore" class="text-center mt-3">
+      <div v-if="total > shownActivities.length" class="text-center mt-3">
         <v-btn
           color="accent"
           class="text-none white--text"
           large
+          v-bind="{ loading }"
+          @click="handleViewMore"
         >
           <v-icon left>
             mdi-eye
@@ -64,6 +66,7 @@
 
 <script>
 import { hexToRgb } from '@/utils/colorTools'
+import { jsonCopy } from '@/utils/objectTools.js'
 import ActivityCard from './ActivityCard.vue'
 
 export default {
@@ -77,18 +80,73 @@ export default {
     activityType: {
       type: Object,
       required: true
+    },
+
+    expandable: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
+    loading: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
+    noHeader: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
+    total: {
+      type: Number,
+      required: true
+    },
+
+    limit: {
+      type: Number,
+      required: false,
+      default: 8
+    },
+
+    page: {
+      type: Number,
+      required: false,
+      default: 1
     }
   },
 
   computed: {
     bkgColor () {
       return hexToRgb(this.activityType.color.substring(1))
+    },
+
+    end () {
+      const end = this.limit * this.page
+      if (end > this.total) {
+        return this.total
+      }
+      return end
+    },
+
+    shownActivities () {
+      return jsonCopy(this.activityType.activities).slice(0, this.end)
     }
   },
 
   methods: {
     handlePlay (index) {
       this.$nuxt.$emit('open-activity-player', { playlist: this.activityType.playlist, index })
+    },
+
+    handleViewMore () {
+      if (this.expandable) {
+        this.$emit('next-page')
+      } else {
+        this.$router.push({ name: 'app-library-activityTypeId', params: { activityTypeId: this.activityType.id } })
+      }
     }
   }
 }

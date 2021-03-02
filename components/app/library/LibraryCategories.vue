@@ -5,7 +5,7 @@
         class="flex-shrink-1 flex-grow-0"
         label="Browse by Category"
         solo
-        :items="categories"
+        :items="compCategories"
         :value="value"
         item-value="id"
         hide-details
@@ -67,6 +67,25 @@
       </div>
 
       <div class="d-flex flex-wrap justify-center">
+        <div v-if="favorites" class="lib-cats-entry text-center mx-3">
+          <div
+            class="lib-cats-circle"
+            :style="{
+              '--category-color': `${'#ff051e'}`
+            }"
+            @click="scrollTo('activity-type-favorites-container')"
+          >
+            <img
+              class="lib-cats-icon"
+              src="@/assets/svg/library/favorites.svg"
+            >
+          </div>
+
+          <span class="lib-cats-name" :style="{ '--cat-bkg-color': bkgColor('#ff051e') }">
+            Favorites
+          </span>
+        </div>
+
         <div
           v-for="category in categories"
           :key="`category-${category.id}`"
@@ -108,9 +127,34 @@ export default {
 
     value: {
       validator: (val) => {
-        return typeof val === 'number' || val === null
+        return typeof val === 'number' || val === null || val === 'favorites'
       },
       required: true
+    },
+
+    favorites: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
+
+  computed: {
+    compCategories () {
+      if (this.favorites) {
+        return [
+          {
+            id: 'favorites',
+            color: '#ff051e',
+            name: 'Favorites',
+            icon: require('@/assets/svg/library/favorites.svg')
+          },
+          ...this.categories
+        ]
+      }
+      return [
+        ...this.categories
+      ]
     }
   },
 
@@ -209,7 +253,7 @@ export default {
       content: '';
       position: absolute;
       left: -3px;
-      bottom: 0;
+      bottom: 2px;
       width: calc(100% + 6px);
       height: 8px;
       border-radius: 4px;
@@ -219,6 +263,7 @@ export default {
         left: -6px;
         width: calc(100% + 12px);
         height: 14px;
+        bottom: 0;
       }
     }
   }
