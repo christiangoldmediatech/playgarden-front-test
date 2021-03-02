@@ -77,7 +77,7 @@
             color="accent"
             nuxt
             text
-            :to="{ name: 'auth-signup' }"
+            :to="{ name: 'auth-parent' }"
           >
             REGISTER
           </v-btn>
