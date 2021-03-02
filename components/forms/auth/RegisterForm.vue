@@ -4,7 +4,8 @@
       <v-container class="px-0">
         <v-row no-gutters class="some">
           <v-col
-            cols="6"
+            :class="{ 'pr-2': $vuetify.breakpoint.mdAndUp }"
+            :cols="$vuetify.breakpoint.mdAndUp ? '6' : '12'"
           >
             <!-- First name -->
             <validation-provider
