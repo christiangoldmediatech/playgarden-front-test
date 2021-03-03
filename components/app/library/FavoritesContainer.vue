@@ -1,0 +1,172 @@
+<template>
+  <div id="activity-type-favorites-container">
+    <v-container v-if="!noHeader" class="hidden-xs-only px-0" fluid>
+      <div class="pos-relative d-flex align-end px-3">
+        <div
+          class="act-type-color"
+          :style="{ '--act-type-bkg-color': bkgColor }"
+        />
+
+        <img class="act-type-icon" src="@/assets/svg/library/favorites.svg">
+
+        <div class="act-type-title">
+          Favorites
+
+          <v-btn
+            class="ml-6"
+            color="primary"
+            x-large
+            @click="handlePlay(0)"
+          >
+            <v-icon left>
+              mdi-play
+            </v-icon>
+            Play All
+          </v-btn>
+        </div>
+      </div>
+    </v-container>
+
+    <v-container>
+      <div class="d-flex flex-wrap justify-md-center justify-lg-start">
+        <div
+          v-for="(activity, index) in shownFavorites"
+          :key="`activity-type-favorite-activity-${activity.id}`"
+          class="act-type-activity"
+          @click="handlePlay(index)"
+        >
+          <favorite-card
+            :video-id="activity.video.id"
+            :thumbnail="activity.video.thumbnail"
+            :title="activity.video.description"
+            :teacher="activity.video.name"
+          />
+        </div>
+      </div>
+
+      <div v-if="total > shownFavorites.length" class="text-center mt-3">
+        <v-btn
+          color="accent"
+          class="text-none white--text"
+          large
+          v-bind="{ loading }"
+          @click="handleViewMore"
+        >
+          <v-icon left>
+            mdi-eye
+          </v-icon>
+          View more
+        </v-btn>
+      </div>
+    </v-container>
+  </div>
+</template>
+
+<script>
+import { hexToRgb } from '@/utils/colorTools'
+import { jsonCopy } from '@/utils/objectTools.js'
+import FavoriteCard from './FavoriteCard.vue'
+
+export default {
+  name: 'FavoritesContainer',
+
+  components: {
+    FavoriteCard
+  },
+
+  props: {
+    favorites: {
+      type: Array,
+      required: true
+    },
+
+    expandable: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
+    loading: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
+    noHeader: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
+
+  data: () => {
+    return {
+      color: '#ff051e',
+      limit: 8,
+      page: 1
+    }
+  },
+
+  computed: {
+    bkgColor () {
+      return hexToRgb(this.color.substring(1))
+    },
+
+    total () {
+      return this.favorites.length
+    },
+
+    end () {
+      const end = this.limit * this.page
+      if (end > this.total) {
+        return this.total
+      }
+      return end
+    },
+
+    shownFavorites () {
+      return jsonCopy(this.favorites).slice(0, this.end)
+    },
+
+    playlist () {
+      const playlist = []
+
+      this.favorites.forEach((activity, playlistIndex) => {
+        playlist.push({
+          playlistIndex,
+          title: activity.video.description,
+          description: 'With ' + activity.video.name,
+          activityType: activity.video.activityType,
+          curriculumType: activity.curriculumType,
+          src: {
+            src: activity.video.videoUrl.HLS,
+            type: 'application/x-mpegURL'
+          },
+          poster: activity.video.thumbnail,
+          activityId: activity.id,
+          videoId: activity.video.id,
+          viewed: {
+            completed: false
+          }
+        })
+      })
+
+      return playlist
+    }
+  },
+
+  methods: {
+    handlePlay (index) {
+      this.$nuxt.$emit('open-activity-player', { playlist: this.playlist, index })
+    },
+
+    handleViewMore () {
+      if (this.expandable) {
+        this.page++
+      } else {
+        this.$router.push({ name: 'app-library-favorites' })
+      }
+    }
+  }
+}
+</script>
