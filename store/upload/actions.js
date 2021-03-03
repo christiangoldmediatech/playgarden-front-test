@@ -25,6 +25,16 @@ export default {
     }
   },
 
+  async doUploadJoinMultilpeDropBox (ctx, { type, path, files }) {
+    try {
+      const { data } = await this.$axios.post(`/files/${type}/${path}/multiple`, { files }, {
+      })
+      return data
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+
   async doMultiPartDropBoxUpload ({ state, commit }, dataFileDropBox) {
     const { data } = await this.$axios.post(`/files/${dataFileDropBox.type}/${dataFileDropBox.path}`, dataFileDropBox)
     return data

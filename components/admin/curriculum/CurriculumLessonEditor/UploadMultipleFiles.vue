@@ -1,6 +1,7 @@
 <template>
   <div class="">
     <v-row justify="end">
+      <label class="mt-3 mr-3">TOTAL: {{ getTotalSize }} MB</label>
       <v-btn
         class="text-h7 text-md-h6 mb-3 mr-4"
         color="primary"
@@ -31,6 +32,7 @@
               solo-labeled
               api="dropbox"
               pdf
+              @sendFile="setSourceFile"
             />
           </validation-provider>
         </v-col>
@@ -61,7 +63,8 @@ export default {
     componentsNumber: 1,
     componentList: [],
     fileName: 'file',
-    file: null
+    file: null,
+    typeSelectDocumentFile: null
   }),
 
   computed: {
@@ -70,6 +73,12 @@ export default {
     },
     getTotalComponents () {
       return this.componentsNumber
+    },
+    getTotalSize () {
+      /* const totalSize = (this.componentList.length > 0) ? this.componentList.map((component) => {
+        return (this.$refs[`${component.ref}`]) ? this.$refs[`${component.ref}`][0].file.size : 0
+      }).reduce((a, b) => a + b) : 0 */
+      return 0
     }
   },
 
@@ -78,6 +87,9 @@ export default {
   },
 
   methods: {
+    setSourceFile () {
+      this.$emit('sendFile', 'dropBox')
+    },
     addComponent () {
       this.componentsNumber += 1
       this.componentList.push({ ref: `documentFileUploaderDropBox-${this.componentsNumber}`, value: null, number: this.componentsNumber })

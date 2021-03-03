@@ -54,7 +54,7 @@
           </v-badge>
         </div>
       </template>
-      <upload-multiple-files v-else ref="multiDocsLoad" />
+      <upload-multiple-files v-else ref="multiDocsLoad" @sendFile="setDocumentFile" />
 
       <!-- Video -->
       <span class="v-label theme--light">Video</span>
@@ -160,6 +160,7 @@ export default {
     fileName: null,
     videoFile: null,
     loading: false,
+    path: 'lesson',
     typeSelectDocumentFile: null,
     typeSelectVideoFile: null
   }),
@@ -187,7 +188,7 @@ export default {
       'fetchWorksheetsByLessonId',
       'updateWorksheetByLessonId'
     ]),
-    ...mapActions('upload', ['doUploadJoinMultilpe']),
+    ...mapActions('upload', ['doUploadJoinMultilpe', 'doUploadJoinMultilpeDropBox']),
     ...mapActions('admin/curriculum', [
       'getLessonById'
     ]),
@@ -234,19 +235,27 @@ export default {
       }
     },
 
+    async handleMultiFileUploadDropBox (files) {
+      const listFiles = files.map((file) => {
+        return { ...file, mode: 'document', type: 'upload-document-dropbox', path: this.path }
+      })
+      const { filePath } = await this.doUploadJoinMultilpeDropBox({
+        type: 'upload-document-dropbox',
+        path: this.path,
+        files: listFiles
+      })
+      return filePath
+    },
+
     async onSubmit () {
       this.loading = true
       try {
-        const files = await this.$refs.multiDocsLoad.joinFiles()
-        if (files) {
-          const path = await this.handleMultiFileUpload(files)
-          this.draft.pdfUrl = path
-          /* if (this.typeSelectDocumentFile !== 'dropBox') {
-            this.draft.pdfUrl = await this.$refs.imageFileUploaderDropBox.handleUpload()
-          } else {
-            const { filePath } = await this.$refs.imageFileUploaderDropBox.handleDropBoxFileUpload()
-            this.draft.pdfUrl = filePath
-          } */
+        if (this.$refs.multiDocsLoad) {
+          const files = await this.$refs.multiDocsLoad.joinFiles()
+          if (files) {
+            const path = (this.typeSelectDocumentFile !== 'dropBox') ? await this.handleMultiFileUpload(files) : await this.handleMultiFileUploadDropBox(files)
+            this.draft.pdfUrl = path
+          }
         }
 
         if (this.videoFile) {
@@ -257,6 +266,7 @@ export default {
         const data = await this.submitMethod(this.getSubmittableData())
         this.$emit('click:submit', data)
       } catch (e) {
+        console.log(e)
       } finally {
         this.fileDropBox = null
         this.loading = false
