@@ -149,7 +149,7 @@
                             <validation-provider
                               v-slot="{ errors }"
                               name="Workbook Sent Date"
-                              rules="required"
+                              :rules="{required: user.workbookSent}"
                             >
                               <pg-text-field
                                 :disabled="loading"
@@ -196,7 +196,7 @@
                             <validation-provider
                               v-slot="{ errors }"
                               name="Backpack Sent Date"
-                              rules="required"
+                              :rules="{required: user.backpackSent}"
                             >
                               <pg-text-field
                                 :disabled="loading"
@@ -244,6 +244,8 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import dayjs from 'dayjs'
+
+import { jsonCopy } from '@/utils/objectTools.js'
 
 export default {
   name: 'Editor',
@@ -365,10 +367,15 @@ export default {
         if (this.id === null) {
           await this.createUser(this.user)
         } else {
-          this.user.workbookSentDate = dayjs(this.workbookDate).toISOString()
-          this.user.backpackSentDate = dayjs(this.backpackDate).toISOString()
-          this.user.password = undefined
-          await this.updateUser({ id: this.id, data: this.user })
+          const user = jsonCopy(this.user)
+          if (this.user.workbookSent) {
+            user.workbookSentDate = dayjs(this.workbookDate).toISOString()
+          }
+          if (this.user.backpackSent) {
+            user.backpackSentDate = dayjs(this.backpackDate).toISOString()
+          }
+          user.password = undefined
+          await this.updateUser({ id: this.id, data: user })
         }
         this.$router.push({ name: 'admin-user-manager' })
       } catch (err) {
