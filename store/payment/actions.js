@@ -71,6 +71,18 @@ export default {
     }
   },
 
+  async cancelSubscriptionById ({ commit }, id) {
+    try {
+      return await this.$axios.$delete(`/billing/subscription/${id}/cancel`)
+    } catch (error) {
+      snotifyError(commit, {
+        body: 'Sorry! There was an error while canceling the Subscription!'
+      })
+
+      throw error
+    }
+  },
+
   async fetchBillingDetails ({ commit }) {
     try {
       return await this.$axios.$get('/billing')
