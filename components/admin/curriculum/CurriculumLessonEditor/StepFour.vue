@@ -230,7 +230,6 @@ export default {
         })
         return filePath
       } catch (error) {
-        console.log(error)
         return Promise.reject(error)
       }
     },
@@ -247,12 +246,19 @@ export default {
       return filePath
     },
 
+    validateSize (files) {
+      const total = files.map(file => file.size).reduce((a, b) => a + b)
+      return total / 1000000
+    },
+
     async onSubmit () {
       this.loading = true
+      let size = 0
       try {
         if (this.$refs.multiDocsLoad) {
           const files = await this.$refs.multiDocsLoad.joinFiles()
           if (files) {
+            size = this.validateSize(files)
             const path = (this.typeSelectDocumentFile !== 'dropBox') ? await this.handleMultiFileUpload(files) : await this.handleMultiFileUploadDropBox(files)
             this.draft.pdfUrl = path
           }
@@ -263,10 +269,13 @@ export default {
           this.draft.videoId = video.id
         }
 
-        const data = await this.submitMethod(this.getSubmittableData())
-        this.$emit('click:submit', data)
+        if (size <= 1000000) {
+          const data = await this.submitMethod(this.getSubmittableData())
+          this.$emit('click:submit', data)
+        } else {
+          this.$snotify.warning('The size of the documents cannot be larger than 10MB', 'Warning', {})
+        }
       } catch (e) {
-        console.log(e)
       } finally {
         this.fileDropBox = null
         this.loading = false
