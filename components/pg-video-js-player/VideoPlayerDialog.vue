@@ -193,9 +193,13 @@ export default {
   }
   &-close-btn {
     position: absolute;
-    top: 4px;
-    left: 4px;
+    top: 0px;
+    left: 0px;
     z-index: 515;
+    min-height: 40px;
+    min-width: 40px;
+    background-color: #000;
+    border-bottom-right-radius: 20px;
   }
   &-close-tip {
     position: absolute;
