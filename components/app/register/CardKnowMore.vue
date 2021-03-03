@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-divider></v-divider>
+    <v-divider class="mb-4"></v-divider>
     <v-card-title primary-title>
       <v-btn
         block
