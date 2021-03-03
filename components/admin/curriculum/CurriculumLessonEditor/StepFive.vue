@@ -43,24 +43,24 @@
             sm="6"
             xl="3"
           >
-            <v-card>
+            <v-card @click="loadDataSelected(data)">
               <v-list-item class="activities-selected">
-                <v-list-item-avatar @click="loadDataSelected(data)">
+                <v-list-item-avatar>
                   <v-img :src="data.activity.activityType.icon" />
                 </v-list-item-avatar>
 
-                <v-list-item-content @click="loadDataSelected(data)">
+                <v-list-item-content>
                   <v-list-item-title class="headline">
                     {{ data.activity.videos.name }}
                   </v-list-item-title>
 
-                  <v-list-item-subtitle @click="loadDataSelected(data)">
+                  <v-list-item-subtitle>
                     {{ data.activity.videos.description }}
                   </v-list-item-subtitle>
                 </v-list-item-content>
 
                 <v-list-item-action>
-                  <v-btn icon @click="remove(data.activity)">
+                  <v-btn icon @click.stop="remove(data.activity)">
                     <v-icon color="grey lighten-1">
                       mdi-close
                     </v-icon>
