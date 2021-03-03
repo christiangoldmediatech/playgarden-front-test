@@ -251,7 +251,10 @@
                           <v-col cols="6" md="8">
                             <template v-if="backpackSent">
                               <v-row no-gutters>
-                                <b>Sent</b>
+                                <b v-if="!workbookDateSent">Sent</b>
+                                <b v-else>
+                                  Sent on: {{ dateWorkbook() }}
+                                </b>
                                 <v-img
                                   class="ml-1"
                                   max-height="25"
@@ -284,7 +287,10 @@
                           <v-col cols="6" md="8" class="pl-md-3">
                             <template v-if="workbookSent">
                               <v-row no-gutters>
-                                <b>Sent</b>
+                                <b v-if="!backpackDateSent">Sent</b>
+                                <b v-else>
+                                  Sent on: {{ dateBackpack() }}
+                                </b>
                                 <v-img
                                   class="ml-1"
                                   max-height="25"
@@ -562,6 +568,14 @@ export default {
 
     backpackSent () {
       return this.user && this.user.shipments && this.user.shipments.backpack
+    },
+
+    workbookDateSent () {
+      return this.user && this.user.shipments && this.user.shipments.workbookDate
+    },
+
+    backpackDateSent () {
+      return this.user && this.user.shipments && this.user.shipments.backpackDate
     }
 
     // isCancelConfirmationBtnDisabled () {
@@ -577,6 +591,18 @@ export default {
     ...mapActions('admin/users', ['getById', 'getChildren']),
     ...mapActions('payment', ['cancelSubscriptionById']),
     ...mapActions('children/lesson', ['getLessonChildrenStatus']),
+
+    dateWorkbook () {
+      return formatDate(this.user.shipments.workbookDate, {
+        format: 'MMMM DD, YYYY'
+      })
+    },
+
+    dateBackpack () {
+      return formatDate(this.user.shipments.backpackDate, {
+        format: 'MMMM DD, YYYY'
+      })
+    },
 
     async getUserDetails () {
       if (this.id) {
