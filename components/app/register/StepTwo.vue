@@ -53,15 +53,20 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col v-if="showCardPlaygarden" cols="12">
+              <v-col v-if="showCardPlaygarden" cols="12" class="mt-4">
                 <v-btn
                   block
                   text
                   @click="showCardPlaygarden = !showCardPlaygarden"
                 >
-                  <span :class="($vuetify.breakpoint.smAndUp) ? 'free-trial' : 'free-trial-mobile'">
-                    WANT TO KNOW MORE ABOUT YOUR FREE TRIAL
-                  </span>
+                  <p>
+                    <span :class="($vuetify.breakpoint.smAndUp) ? 'free-trial' : 'free-trial-mobile'">
+                      WANT TO KNOW MORE ABOUT
+                    </span> <br />
+                    <span :class="($vuetify.breakpoint.smAndUp) ? 'free-trial' : 'free-trial-mobile'">
+                      YOUR FREE TRIAL ?
+                    </span>
+                  </p>
                   <v-icon v-if="showCardPlaygarden" class="ml-2">
                     mdi-chevron-up
                   </v-icon>
