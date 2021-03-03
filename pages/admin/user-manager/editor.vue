@@ -123,90 +123,98 @@
                     </validation-provider>
                   </v-col>
 
-                  <v-col cols="12" md="6">
-                    <validation-provider v-slot="{ errors }" name="Workbook">
-                      <pg-select
-                        v-model="user.workbookSent"
-                        :error-messages="errors"
-                        :items="sentOptions"
-                        label="Workbook"
-                        solo-labeled
-                      />
-                    </validation-provider>
-                  </v-col>
-
-                  <v-col cols="12" md="6">
-                    <v-menu
-                      v-model="workbookSentDate"
-                      :close-on-content-click="false"
-                      min-width="290px"
-                      offset-y
-                      transition="scale-transition"
-                    >
-                      <template v-slot:activator="{ on, attrs }">
-                        <validation-provider
-                          v-slot="{ errors }"
-                          name="Backpack Sent Date"
-                          rules="required"
-                        >
-                          <pg-text-field
-                            :disabled="loading"
-                            :error-message="errors"
-                            label="Backpack Sent Date"
-                            readonly
+                  <v-col cols="12">
+                    <v-row>
+                      <v-col cols="12" md="6">
+                        <validation-provider v-slot="{ errors }" name="Workbook">
+                          <pg-select
+                            v-model="user.workbookSent"
+                            :error-messages="errors"
+                            :items="sentOptions"
+                            label="Workbook"
                             solo-labeled
-                            :value="dataWorkbookDate"
-                            v-bind="attrs"
-                            v-on="on"
                           />
                         </validation-provider>
-                      </template>
+                      </v-col>
 
-                      <v-date-picker v-model="workbookDate" />
-                    </v-menu>
-                  </v-col>
-
-                  <v-col cols="12" md="6">
-                    <validation-provider v-slot="{ errors }" name="Backpack">
-                      <pg-select
-                        v-model="user.backpackSent"
-                        :error-messages="errors"
-                        :items="sentOptions"
-                        label="Backpack"
-                        solo-labeled
-                      />
-                    </validation-provider>
-                  </v-col>
-
-                  <v-col cols="12" md="6">
-                    <v-menu
-                      v-model="backpackSentDate"
-                      :close-on-content-click="false"
-                      min-width="290px"
-                      offset-y
-                      transition="scale-transition"
-                    >
-                      <template v-slot:activator="{ on, attrs }">
-                        <validation-provider
-                          v-slot="{ errors }"
-                          name="Backpack Sent Date"
-                          rules="required"
+                      <v-col v-if="user.workbookSent" cols="12" md="6">
+                        <v-menu
+                          v-model="workbookSentDate"
+                          :close-on-content-click="false"
+                          min-width="290px"
+                          offset-y
+                          transition="scale-transition"
                         >
-                          <pg-text-field
-                            :disabled="loading"
-                            :error-message="errors"
-                            label="Backpack Sent Date"
-                            readonly
+                          <template v-slot:activator="{ on, attrs }">
+                            <validation-provider
+                              v-slot="{ errors }"
+                              name="Workbook Sent Date"
+                              rules="required"
+                            >
+                              <pg-text-field
+                                :disabled="loading"
+                                :error-message="errors"
+                                label="Workbook Sent Date"
+                                readonly
+                                solo-labeled
+                                :value="dataWorkbookDate"
+                                v-bind="attrs"
+                                v-on="on"
+                              />
+                            </validation-provider>
+                          </template>
+
+                          <v-date-picker v-model="workbookDate" />
+                        </v-menu>
+                      </v-col>
+                    </v-row>
+                  </v-col>
+
+                  <v-col cols="12">
+                    <v-row>
+                      <v-col cols="12" md="6">
+                        <validation-provider v-slot="{ errors }" name="Backpack">
+                          <pg-select
+                            v-model="user.backpackSent"
+                            :error-messages="errors"
+                            :items="sentOptions"
+                            label="Backpack"
                             solo-labeled
-                            :value="dataBackpackDate"
-                            v-bind="attrs"
-                            v-on="on"
                           />
                         </validation-provider>
-                      </template>
+                      </v-col>
 
-                      <v-date-picker v-model="backpackDate" />
-                    </v-menu>
+                      <v-col v-if="user.backpackSent" cols="12" md="6">
+                        <v-menu
+                          v-model="backpackSentDate"
+                          :close-on-content-click="false"
+                          min-width="290px"
+                          offset-y
+                          transition="scale-transition"
+                        >
+                          <template v-slot:activator="{ on, attrs }">
+                            <validation-provider
+                              v-slot="{ errors }"
+                              name="Backpack Sent Date"
+                              rules="required"
+                            >
+                              <pg-text-field
+                                :disabled="loading"
+                                :error-message="errors"
+                                label="Backpack Sent Date"
+                                readonly
+                                solo-labeled
+                                :value="dataBackpackDate"
+                                v-bind="attrs"
+                                v-on="on"
+                              />
+                            </validation-provider>
+                          </template>
+
+                          <v-date-picker v-model="backpackDate" />
+                        </v-menu>
+                      </v-col>
+                    </v-row>
                   </v-col>
                 </v-row>
               </v-form>
@@ -326,10 +334,13 @@ export default {
       this.user.roleId = data.role.id
       this.user.workbookSent = false
       this.user.backpackSent = false
-      this.user.dateWorkbookSent = null
+      this.user.workbookSentDate = null
+      this.user.backpackSentDate = null
       if (data.shipments) {
         this.user.workbookSent = data.shipments.workbook
         this.user.backpackSent = data.shipments.backpack
+        this.backpackDate = data.shipments.backpackDate
+        this.workbookDate = data.shipments.workbookDate
       }
     }
 
@@ -354,14 +365,14 @@ export default {
         if (this.id === null) {
           await this.createUser(this.user)
         } else {
+          this.user.workbookSentDate = dayjs(this.workbookDate).toISOString()
+          this.user.backpackSentDate = dayjs(this.backpackDate).toISOString()
           this.user.password = undefined
           await this.updateUser({ id: this.id, data: this.user })
         }
+        this.$router.push({ name: 'admin-user-manager' })
       } catch (err) {
         this.loading = false
-        return
-      } finally {
-        this.$router.push({ name: 'admin-user-manager' })
       }
     },
 
