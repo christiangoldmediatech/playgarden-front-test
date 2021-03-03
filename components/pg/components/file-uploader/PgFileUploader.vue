@@ -217,10 +217,6 @@ export default {
         return result
       }
       return false
-    },
-
-    getFile () {
-      return this.file
     }
   }
 }

@@ -54,7 +54,7 @@
           </v-badge>
         </div>
       </template>
-      <upload-multiple-files v-else />
+      <upload-multiple-files v-else ref="multiDocsLoad" />
 
       <!-- Video -->
       <span class="v-label theme--light">Video</span>
@@ -187,6 +187,7 @@ export default {
       'fetchWorksheetsByLessonId',
       'updateWorksheetByLessonId'
     ]),
+    ...mapActions('upload', ['doUploadJoinMultilpe']),
     ...mapActions('admin/curriculum', [
       'getLessonById'
     ]),
@@ -215,16 +216,37 @@ export default {
       this.typeSelectDocumentFile = type
     },
 
+    async handleMultiFileUpload (files) {
+      try {
+        const formData = new FormData()
+        files.map((file) => {
+          formData.append('file', file)
+        })
+        const { filePath } = await this.doUploadJoinMultilpe({
+          type: 'upload-document',
+          path: this.path,
+          formData
+        })
+        return filePath
+      } catch (error) {
+        console.log(error)
+        return Promise.reject(error)
+      }
+    },
+
     async onSubmit () {
       this.loading = true
       try {
-        if (this.file) {
-          if (this.typeSelectDocumentFile !== 'dropBox') {
+        const files = await this.$refs.multiDocsLoad.joinFiles()
+        if (files) {
+          const path = await this.handleMultiFileUpload(files)
+          this.draft.pdfUrl = path
+          /* if (this.typeSelectDocumentFile !== 'dropBox') {
             this.draft.pdfUrl = await this.$refs.imageFileUploaderDropBox.handleUpload()
           } else {
             const { filePath } = await this.$refs.imageFileUploaderDropBox.handleDropBoxFileUpload()
             this.draft.pdfUrl = filePath
-          }
+          } */
         }
 
         if (this.videoFile) {
