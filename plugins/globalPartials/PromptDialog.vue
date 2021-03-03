@@ -25,9 +25,25 @@
               />
             </v-col>
           </v-row>
+
+          <v-row v-if="isInputTextToConfirm" justify="center">
+            <v-col class="text-center" cols="9">
+              <p class="text-center">
+                {{ confirmationText }}
+              </p>
+              <validation-provider v-slot="{ errors }" name="Confirmation Word">
+                <pg-text-field
+                  v-model="wordConfirm"
+                  :error-messages="errors"
+                  label="Confirmation Word"
+                  solo-labeled
+                />
+              </validation-provider>
+            </v-col>
+          </v-row>
         </v-container>
 
-        <p class="text-center" v-html="warning" />
+        <p v-if="!isInputTextToConfirm" class="text-center" v-html="warning" />
       </v-card-text>
 
       <v-card-actions>
@@ -59,11 +75,12 @@
           </v-btn>
 
           <v-btn
-            color="accent"
+            :color="isInputTextToConfirm ? 'red' : 'accent'"
             :dark="$vuetify.breakpoint.xs"
             :loading="loading"
+            :disabled="isConfirmationBtnDisabled"
             width="120"
-            class="text-transform-none"
+            class="text-transform-none  white--text "
             @click="doAction(onAction)"
           >
             {{ actionText }}
@@ -105,14 +122,28 @@ export default {
       dialog: false,
       dark: true,
       image: 'delete',
+      wordConfirm: '',
       images: {
         correct: require('@/assets/svg/correct.svg'),
         delete: require('@/assets/svg/delete.svg')
       },
+      isInputTextToConfirm: false,
       loading: false,
       message: 'Are you sure you wish to proceed with this action?',
       warning:
-        'This item will be deleted immediately.<br>You can\'t undo this action!'
+        'This item will be deleted immediately.<br>You can\'t undo this action!',
+      confirmationText: 'To delete, write the word "Confirm"',
+      confirmationWord: 'Confirm'
+    }
+  },
+
+  computed: {
+    isConfirmationValid () {
+      return (this.isInputTextToConfirm && this.wordConfirm.toLowerCase() === this.confirmationWord.toLowerCase())
+    },
+
+    isConfirmationBtnDisabled () {
+      return this.isInputTextToConfirm && !this.isConfirmationValid
     }
   },
 
@@ -133,12 +164,15 @@ export default {
       close = this.closeDialog,
       closeButton = false,
       closeText = 'Close',
+      isInputTextToConfirm = false,
       color = 'primary darken-1',
       contentClasses = '',
       dark = true,
       image = '@/assets/svg/delete.svg',
       message = 'Are you sure you wish to proceed with this action?',
-      warning = 'This item will be deleted immediately.<br>You can\'t undo this action!'
+      warning = 'This item will be deleted immediately.<br>You can\'t undo this action!',
+      confirmationText = 'To delete, write the word "Confirm"',
+      confirmationWord = 'Confirm'
     } = {}) {
       this.onAction = action
       this.actionText = actionText
@@ -151,6 +185,9 @@ export default {
       this.image = image
       this.message = message
       this.warning = warning
+      this.isInputTextToConfirm = isInputTextToConfirm
+      this.confirmationText = confirmationText
+      this.confirmationWord = confirmationWord
 
       this.$nextTick(() => {
         this.dialog = true
