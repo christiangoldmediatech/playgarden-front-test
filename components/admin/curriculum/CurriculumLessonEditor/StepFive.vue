@@ -96,6 +96,15 @@
                   :entity-type="entityType"
                   :lesson-id="lessonId"
                 />
+
+                <v-icon
+                  color="#81A1F7"
+                  dense
+                  @click="editActivity(item)"
+                >
+                  mdi-pencil-outline
+                </v-icon>
+
                 <v-icon
                   color="#81A1F7"
                   dense
@@ -491,6 +500,10 @@ export default {
             lessonId: this.lessonId
           }).then(this.getActivitiesLesson)
       })
+    },
+
+    editActivity (item) {
+      this.$router.push(`/admin/activity-management/editor?id=${item.id}&from=admin-curriculum-management-editor&lessonId=${this.lesson.id}`)
     }
   }
 }
