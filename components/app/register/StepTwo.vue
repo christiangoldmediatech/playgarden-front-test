@@ -15,6 +15,7 @@
         </v-col>
         <v-col
           cols="12"
+          class="list-scroll"
           md="6"
           lg="6"
           xl="6"
@@ -43,8 +44,8 @@
                   <v-card class="elevation-0 mx-10">
                     <v-container>
                       <v-layout column align-center justify-center>
-                        <card-playgarden v-if="showCardPlaygarden" />
-                        <card-know-more v-else />
+                        <card-playgarden />
+                        <card-know-more v-if="!showCardPlaygarden" />
                       </v-layout>
                     </v-container>
                   </v-card>
@@ -59,7 +60,7 @@
                   @click="showCardPlaygarden = !showCardPlaygarden"
                 >
                   <span :class="($vuetify.breakpoint.smAndUp) ? 'free-trial' : 'free-trial-mobile'">
-                    WANT TO KNOW MORE ABOUT YOUR FREE TRIAL?
+                    WANT TO KNOW MORE ABOUT YOUR FREE TRIAL
                   </span>
                   <v-icon v-if="showCardPlaygarden" class="ml-2">
                     mdi-chevron-up
@@ -243,6 +244,10 @@ export default {
 .text-completely {
   font-size: 12px !important;
   color: rgba(96, 96, 96, 0.8) !important;
+}
+.list-scroll {
+  max-height: 500px;
+  overflow-y: auto !important;
 }
 .info-pay {
   font-size: 12px;

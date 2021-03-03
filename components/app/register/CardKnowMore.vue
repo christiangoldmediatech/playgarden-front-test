@@ -28,7 +28,7 @@
             <v-row>
               <span class="font-weight-bold ml-2">That includes:</span>
             </v-row>
-            <v-row class="mx-1 list-know">
+            <v-row class="mx-1">
               <ul>
                 <li
                   class="register-item text-left"
