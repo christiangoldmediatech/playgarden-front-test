@@ -57,6 +57,10 @@
                   <v-list-item-subtitle>
                     {{ data.activity.videos.description }}
                   </v-list-item-subtitle>
+
+                  <v-list-item-subtitle>
+                    Order: {{ data.order }}
+                  </v-list-item-subtitle>
                 </v-list-item-content>
 
                 <v-list-item-action>
