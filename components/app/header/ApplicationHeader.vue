@@ -77,7 +77,7 @@
             color="accent"
             nuxt
             text
-            :to="{ name: 'auth-signup' }"
+            :to="{ name: 'auth-parent' }"
           >
             REGISTER
           </v-btn>
@@ -257,6 +257,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.pg-app-bar.v-app-bar.v-app-bar--fixed {
+  z-index: 6 !important;
+}
+
 .pg-app-bar::v-deep .v-toolbar__content {
   padding-left: 0;
   padding-right: 0;

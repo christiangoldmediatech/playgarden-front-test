@@ -153,7 +153,7 @@
         :class="{'clickable': !loadingNext, 'dashboard-panel-next-disabled': loadingNext || loading }"
         @click.stop="advance"
       >
-        GO TO NEXT LESSON <img class="dashboard-panel-next-arrow" src="@/assets/svg/next-arrow.svg">
+        GO TO NEXT DAY <img class="dashboard-panel-next-arrow" src="@/assets/svg/next-arrow.svg">
       </div>
     </v-card>
     <upload-offline-worksheet v-if="!displayMode" v-model="uploadDialog" />

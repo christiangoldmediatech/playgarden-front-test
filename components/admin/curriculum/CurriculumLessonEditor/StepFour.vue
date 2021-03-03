@@ -56,6 +56,24 @@
       </template>
       <upload-multiple-files v-else />
 
+      <!-- Video -->
+      <span class="v-label theme--light">Video</span>
+
+      <template v-if="draft.videoDetail && draft.videoDetail.videoUrl && draft.videoDetail.videoUrl.HLS">
+        <div class="mb-6 mt-3">
+          <v-badge avatar class="video-badge" color="error" overlap>
+            <template v-slot:badge>
+              <v-avatar class="clickable" @click.native="draft.videoDetail.videoUrl = null">
+                <v-icon>
+                  mdi-close
+                </v-icon>
+              </v-avatar>
+            </template>
+            <pg-inline-video-player @ready="onPlayerReady({ player: $event, video: draft.videoDetail })" />
+          </v-badge>
+        </div>
+      </template>
+
       <validation-provider
         v-slot="{ errors }"
         name="Video"
@@ -189,11 +207,6 @@ export default {
       }
     },
 
-    setVideoFileDropBox (file) {
-      this.videoFile = file
-      this.videoFileDropBox = file
-    },
-
     setVideoFile (type) {
       this.typeSelectVideoFile = type
     },
@@ -204,23 +217,21 @@ export default {
 
     async onSubmit () {
       this.loading = true
-
       try {
         if (this.file) {
           if (this.typeSelectDocumentFile !== 'dropBox') {
-            this.draft.pdfUrl = await this.$refs.documentFileUploaderDropBox.handleUpload()
+            this.draft.pdfUrl = await this.$refs.imageFileUploaderDropBox.handleUpload()
           } else {
-            const { filePath } = await this.$refs.documentFileUploaderDropBox.handleDropBoxFileUpload()
+            const { filePath } = await this.$refs.imageFileUploaderDropBox.handleDropBoxFileUpload()
             this.draft.pdfUrl = filePath
           }
         }
 
         if (this.videoFile) {
-          if (this.file) {
-            const { video } = (this.typeSelectVideoFile !== 'dropBox') ? await this.$refs.videoFileUploaderDropBox.handleUpload() : await this.$refs.videoFileUploaderDropBox.handleDropBoxFileUpload()
-            this.draft.videoId = video.id
-          }
+          const { video } = (this.typeSelectVideoFile !== 'dropBox') ? await this.$refs.videoFileUploaderDropBox.handleUpload() : await this.$refs.videoFileUploaderDropBox.handleDropBoxFileUpload()
+          this.draft.videoId = video.id
         }
+
         const data = await this.submitMethod(this.getSubmittableData())
         this.$emit('click:submit', data)
       } catch (e) {
@@ -247,7 +258,26 @@ export default {
           data
         })
         : this.createWorksheetByLessonId({ lessonId: this.lessonId, data })
+    },
+
+    onPlayerReady ({ player, video }) {
+      player.loadMedia({
+        title: video.name,
+        poster: require('assets/jpg/abacus_counting_lesson.jpg'),
+        src: [
+          {
+            src: video.videoUrl.HLS,
+            type: 'application/x-mpegURL'
+          }
+        ]
+      })
     }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.video-badge {
+  width: 90%;
+}
+</style>

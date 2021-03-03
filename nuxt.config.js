@@ -259,7 +259,6 @@ export default {
       'emailVerified',
       'redirectProperAuthenticatedSection',
       'redirectIfAuthenticated',
-      'onboardingDone',
       'pickChild',
       'redirectIfSubscriptionCancelled'
     ],
