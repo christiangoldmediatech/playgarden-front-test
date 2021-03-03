@@ -18,7 +18,7 @@ export default {
             exact: false
           },
           { title: 'Library', to: { name: 'app-library' }, exact: false },
-          // { title: 'Playdates', to: { name: 'app-playdates' }, exact: false },
+          { title: 'Playdates', to: { name: 'app-playdates' }, exact: false },
           {
             title: 'Student Cubby',
             to: { name: 'app-student-cubby' },
@@ -30,10 +30,6 @@ export default {
           //   exact: false
           // }
         ]
-
-        if (!['production'].includes(process.env.testEnv)) {
-          list.splice(3, 0, { title: 'Playdates', to: { name: 'app-playdates' }, exact: false })
-        }
 
         if (!['production', 'staging'].includes(process.env.testEnv)) {
           list.push({
