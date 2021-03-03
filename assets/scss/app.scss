@@ -193,12 +193,12 @@
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  max-height: 470px !important;
+  max-height: 510px !important;
 }
 .background-card-mobile {
   background-image: url("~@/assets/svg/shorter-register.svg") !important;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  min-height: calc(100vh - 305px);
+  min-height: calc(100vh - 255px);
 }

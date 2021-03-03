@@ -10,7 +10,7 @@
       >
         <v-col cols="12" :class="{ 'ml-14': $vuetify.breakpoint.mdAndUp }">
           <p class="text-center text-md-left">
-            <underlined-title :class="(!$vuetify.breakpoint.smAndUp) ? 'text-h6 text-md-h4' : 'text-h6 text-md-h4 ml-4'" text="PLAYGARDEN PREP ONLINE IS COMPLETELY FREE!" />
+            <underlined-title :class="(!$vuetify.breakpoint.smAndUp) ? 'text-h6 text-md-h4' : 'text-h6 text-md-h4 ml-4'" text="PLAYGARDEN PREP ONLINE IS COMPLETELY FREE FOR 30 DAYS!" />
           </p>
         </v-col>
         <v-col
@@ -23,8 +23,8 @@
           xl="6"
         >
           <p class="text-center text-md-left" :class="{ 'mt-n8': $vuetify.breakpoint.mdAndUp }">
-            <span class="text-header-info info-color-signup">
-              You will only be billed after 30 days of FREE trial is completed
+            <span class="subtitle-text info-color-signup">
+              Create an account to start learning
             </span>
           </p>
 
@@ -49,90 +49,7 @@
                   <v-card class="elevation-0 mx-10">
                     <v-container>
                       <v-layout column align-center justify-center>
-                        <v-card-title primary-title>
-                          <v-btn
-                            block
-                            text
-                            @click="changeShowDetail"
-                          >
-                            <img
-                              src="@/assets/png/gift-icon.png"
-                              class="mr-2"
-                              width="18px"
-                            >
-                            <span class="free-trial-info">
-                              GET 30 DAYS OF FREE TRIAL
-                            </span>
-                            <v-icon v-if="showDetailFreeTrial" class="hidden-md-only hidden-lg-only">
-                              mdi-menu-down
-                            </v-icon>
-                            <v-icon v-else class="hidden-md-only hidden-lg-only">
-                              mdi-menu-up
-                            </v-icon>
-                          </v-btn>
-                        </v-card-title>
-                        <v-card-text>
-                          <div v-if="!showDetailFreeTrial" class="text-mdi-monitor">
-                            <center class="text-pay-information">
-                              <div>
-                                <v-row>
-                                  <span class="font-weight-bold ml-2">That includes:</span>
-                                </v-row>
-                                <v-row>
-                                  <ul>
-                                    <li
-                                      class="register-item text-left"
-                                    >
-                                      <small class="text-trial">
-                                        A Daily Learning Schedule
-                                      </small>
-                                    </li>
-                                    <li
-                                      class="register-item text-left"
-                                    >
-                                      <small class="text-trial">
-                                        Access to over 1,200 lessons
-                                      </small>
-                                    </li>
-                                    <li
-                                      class="register-item text-left"
-                                    >
-                                      <small class="text-trial">
-                                        Live Classes with Playgarden Prep Teachers
-                                      </small>
-                                    </li>
-                                  </ul>
-                                </v-row>
-                              </div>
-                              <v-row justify="center">
-                                <center v-if="$vuetify.breakpoint.smAndUp">
-                                  <v-btn
-                                    block
-                                    class="mt-4 info-much-more"
-                                  >
-                                    <span class="much-info">
-                                      AND MUCH MORE!!
-                                    </span>
-                                  </v-btn>
-                                </center>
-                                <v-btn
-                                  v-else
-                                  block
-                                  class="mt-8 info-much-more px-8"
-                                >
-                                  <span class="much-info">
-                                    AND MUCH MORE!!
-                                  </span>
-                                </v-btn>
-                                <span
-                                  class="mt-2 text-header-info"
-                                >
-                                  *You can cancel you membership any time from the account settings.
-                                </span>
-                              </v-row>
-                            </center>
-                          </div>
-                        </v-card-text>
+                        <card-info />
                       </v-layout>
                     </v-container>
                   </v-card>
@@ -149,10 +66,12 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import RegisterForm from '@/components/forms/auth/RegisterForm'
+import CardInfo from './CardInfo'
 export default {
   name: 'StepOne',
   components: {
-    RegisterForm
+    RegisterForm,
+    CardInfo
   },
   data: vm => ({
     loading: false,
@@ -199,12 +118,6 @@ export default {
     }),
     ...mapActions('caregiver', { newCaregiver: 'signup' }),
     ...mapActions('auth', ['setPlaydateInvitationToken']),
-
-    changeShowDetail () {
-      if (!this.$vuetify.breakpoint.smAndUp) {
-        this.showDetailFreeTrial = !this.showDetailFreeTrial
-      }
-    },
 
     async onSubmit (data) {
       try {
@@ -270,36 +183,5 @@ export default {
 }
 .text-orange-info::v-deep.v-chip--label {
   border-radius: 0px !important;
-}
-ul {
-  list-style: none; /* Remove default bullets */
-}
-ul li::before {
-  content: "●";
-  font-size: 24px !important;
-  color: var(--v-accent-base); /* Change the color */
-  font-weight: bold; /* If you want it to be bold */
-  display: inline-block; /* Needed to add space between the bullet and the text */
-  width: 0.7em; /* Also needed for space (tweak if needed) */
-  margin-left: -1rem; /* Also needed for space (tweak if needed) */
-  margin-top: 10px;
-}
-.free-trial-info {
-  font-size: 18px;
-}
-.text-trial {
-  margin-top: 14px;
-  font-size: 14px !important;
-  position: absolute;
-}
-.much-info {
-  color: var(--v-accent-base);
-}
-.text-header-info {
-  font-size: 14px !important;
-}
-
-.info-much-more {
-  background-color: rgba(248, 152, 56, 0.3) !important;
 }
 </style>
