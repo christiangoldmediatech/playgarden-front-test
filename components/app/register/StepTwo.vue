@@ -44,7 +44,7 @@
                     <v-container>
                       <v-layout column align-center justify-center>
                         <card-playgarden v-if="showCardPlaygarden" />
-                        <card-info v-else />
+                        <card-know-more v-else />
                       </v-layout>
                     </v-container>
                   </v-card>
@@ -58,13 +58,8 @@
                   text
                   @click="showCardPlaygarden = !showCardPlaygarden"
                 >
-                  <img
-                    src="@/assets/png/gift-icon.png"
-                    class="mr-2"
-                    width="18px"
-                  >
                   <span :class="($vuetify.breakpoint.smAndUp) ? 'free-trial' : 'free-trial-mobile'">
-                    GET 30 DAYS OF FREE TRIAL
+                    WANT TO KNOW MORE ABOUT YOUR FREE TRIAL?
                   </span>
                   <v-icon v-if="showCardPlaygarden" class="ml-2">
                     mdi-chevron-up
@@ -106,14 +101,14 @@ import { mapActions } from 'vuex'
 
 import StripePayForm from '@/components/forms/payment/StripePayForm'
 import CardPlaygarden from './CardPlaygarden'
-import CardInfo from './CardInfo'
+import CardKnowMore from './CardKnowMore'
 export default {
   name: 'StepTwo',
 
   components: {
     StripePayForm,
     CardPlaygarden,
-    CardInfo
+    CardKnowMore
   },
 
   data: () => ({

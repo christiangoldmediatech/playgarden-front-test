@@ -10,7 +10,7 @@
       >
         <v-col cols="12" :class="{ 'ml-14': $vuetify.breakpoint.mdAndUp }">
           <p class="text-center text-md-left">
-            <underlined-title :class="(!$vuetify.breakpoint.smAndUp) ? 'text-h6 text-md-h4' : 'text-h6 text-md-h4 ml-4'" text="PLAYGARDEN PREP ONLINE IS COMPLETELY FREE!" />
+            <underlined-title :class="(!$vuetify.breakpoint.smAndUp) ? 'text-h6 text-md-h4' : 'text-h6 text-md-h4 ml-4'" text="PLAYGARDEN PREP ONLINE IS COMPLETELY FREE FOR 30 DAYS!" />
           </p>
         </v-col>
         <v-col
@@ -24,7 +24,7 @@
         >
           <p class="text-center text-md-left" :class="{ 'mt-n8': $vuetify.breakpoint.mdAndUp }">
             <span class="text-header-info info-color-signup">
-              You will only be billed after 30 days of FREE trial is completed
+              Create an account to start learning
             </span>
           </p>
 

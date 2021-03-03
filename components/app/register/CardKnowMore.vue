@@ -22,47 +22,82 @@
       </v-btn>
     </v-card-title>
     <v-card-text>
-      <div class="text-mdi-monitor">
+      <div>
         <center class="text-pay-information">
           <div :class="{ 'ml-4': !$vuetify.breakpoint.smAndUp }">
             <v-row>
               <span class="font-weight-bold ml-2">That includes:</span>
             </v-row>
-            <v-row>
+            <v-row class="mx-1 list-know">
               <ul>
                 <li
                   class="register-item text-left"
                 >
                   <small class="text-trial">
-                    A Daily Learning Schedule
+                    Individualized Daily Lessons plan
                   </small>
                 </li>
                 <li
                   class="register-item text-left"
                 >
                   <small class="text-trial">
-                    Access to over 1,200 lessons
+                    26 Weeks of 1 hour of video-based preschool per day
                   </small>
                 </li>
                 <li
                   class="register-item text-left"
                 >
                   <small class="text-trial">
-                    Live Classes with Playgarden Prep Teachers
+                    Hands-on worksheets taught by Certified Teachers
                   </small>
                 </li>
                 <li
                   class="register-item text-left"
                 >
                   <small class="text-trial">
-                    Workbooks delivered to your home
+                    Access to a Library with over 1,200 lessons for hour of Eduatainment
                   </small>
                 </li>
                 <li
                   class="register-item text-left"
                 >
                   <small class="text-trial">
-                    Educational Playdates
+                    Progress Reports sent to parents
+                  </small>
+                </li>
+                <li
+                  class="register-item text-left"
+                >
+                  <small class="text-trial">
+                    Familiy Membership for multiple students
+                  </small>
+                </li>
+                <li
+                  class="register-item text-left"
+                >
+                  <small class="text-trial">
+                    Home deliver of school materials: Backpack, specialized pencils, Workbooks
+                  </small>
+                </li>
+                <li
+                  class="register-item text-left"
+                >
+                  <small class="text-trial">
+                    Daily Live Classes with Playgarden Prep teachers
+                  </small>
+                </li>
+                <li
+                  class="register-item text-left"
+                >
+                  <small class="text-trial">
+                    Access to special events, such as weekly Cooking Classes
+                  </small>
+                </li>
+                <li
+                  class="register-item text-left"
+                >
+                  <small class="text-trial">
+                    Playdates with friends, moderated by our specialist to promote Social Interaction
                   </small>
                 </li>
               </ul>
@@ -106,7 +141,7 @@
 <script>
 
 export default {
-  name: 'CardInfo',
+  name: 'CardKnowMore',
 
   data: vm => ({}),
 
@@ -125,7 +160,7 @@ ul li::before {
   color: var(--v-accent-base); /* Change the color */
   font-weight: bold; /* If you want it to be bold */
   display: inline-block; /* Needed to add space between the bullet and the text */
-  width: 0.7em; /* Also needed for space (tweak if needed) */
+  width: 0.6em; /* Also needed for space (tweak if needed) */
   margin-left: -1rem; /* Also needed for space (tweak if needed) */
   margin-top: 10px;
 }
@@ -134,11 +169,15 @@ ul li::before {
 }
 .text-trial {
   margin-top: 14px;
+  padding-right: 10px;
   font-size: 14px !important;
-  position: absolute;
 }
 .much-info {
   color: var(--v-accent-base);
+}
+.list-know {
+  height: 100px;
+  overflow-y: scroll;
 }
 .text-header-info {
   font-size: 14px !important;
