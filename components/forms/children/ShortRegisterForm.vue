@@ -16,6 +16,7 @@
       <v-row>
         <v-col>
           <v-btn
+            v-show="false"
             block
             class="mb-4 mt-4 main-btn"
             min-height="60"
