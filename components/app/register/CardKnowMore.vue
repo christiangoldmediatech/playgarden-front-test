@@ -1,5 +1,6 @@
 <template>
   <div>
+    <v-divider class="mb-4"></v-divider>
     <v-card-title primary-title>
       <v-btn
         block
@@ -20,6 +21,9 @@
             INCLUDES THE PREMIUM + PLAN
           </span>
         </div>
+        <v-icon class="ml-2">
+          mdi-chevron-up
+        </v-icon>
       </v-btn>
     </v-card-title>
     <v-card-text>
