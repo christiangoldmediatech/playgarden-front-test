@@ -6,10 +6,13 @@
     >
       <div class="player-dialog-close-btn">
         <v-btn
+          color="rgb(64, 64, 64)"
           icon
+          text
+          to="#"
           @click.stop="close"
         >
-          <v-icon color="#D2D2D2">
+          <v-icon color="white">
             mdi-close
           </v-icon>
         </v-btn>
