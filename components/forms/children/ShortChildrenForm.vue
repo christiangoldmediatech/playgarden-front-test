@@ -1,9 +1,9 @@
 <template>
   <div class="">
     <p class="mb-4 text-center text-md-left">
-      <small>
+      <span>
         Tell us a little about your little one
-      </small>
+      </span>
     </p>
     <!-- Name -->
     <validation-provider

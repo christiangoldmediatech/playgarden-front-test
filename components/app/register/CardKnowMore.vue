@@ -4,6 +4,7 @@
       <v-btn
         block
         text
+        @click="toggleCard"
       >
         <div>
           <img
@@ -128,7 +129,7 @@
               <span
                 class="text-header-info"
               >
-                * your can cancel you membership any <br v-if="!$vuetify.breakpoint.smAndUp" />time from the account settings.
+                * You can cancel your membership any <br v-if="!$vuetify.breakpoint.smAndUp" />time from the account settings.
               </span>
             </div>
           </v-row>
@@ -146,6 +147,9 @@ export default {
   data: vm => ({}),
 
   methods: {
+    toggleCard () {
+      this.$emit('toggleCard')
+    }
   }
 }
 </script>

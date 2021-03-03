@@ -15,37 +15,19 @@
         </v-col>
         <v-col
           cols="12"
-          class="list-scroll"
           md="6"
           lg="6"
           xl="6"
         >
           <template>
-            <v-row v-if="!showCardPlaygarden">
-              <v-col cols="12">
-                <v-btn
-                  block
-                  text
-                  @click="showCardPlaygarden = !showCardPlaygarden"
-                >
-                  <span :class="($vuetify.breakpoint.smAndUp) ? 'free-trial' : 'free-trial-mobile'">
-                    Our family loves Playgarden <br />Prep Online!
-                  </span>
-                  <v-icon class="ml-2">
-                    mdi-chevron-down
-                  </v-icon>
-                </v-btn>
-                <v-divider class="mt-4 mb-4"></v-divider>
-              </v-col>
-            </v-row>
-            <v-row :class="($vuetify.breakpoint.smAndUp) ? 'background-card' : 'background-card-mobile pt-14 px-8'">
-              <v-col cols="12" :class="(!$vuetify.breakpoint.smAndUp) ? 'text-center' : 'mt-14 mb-8 px-10'">
+            <v-row :class="($vuetify.breakpoint.smAndUp) ? '' : 'pt-1 px-8'">
+              <v-col cols="12" :class="(!$vuetify.breakpoint.smAndUp) ? 'text-center' : 'mt-1 mb-8 px-10'">
                 <v-layout row wrap align-center justify-center>
-                  <v-card class="elevation-0 mx-10">
+                  <v-card class="elevation-2 mx-10">
                     <v-container>
                       <v-layout column align-center justify-center>
                         <card-playgarden />
-                        <card-know-more v-if="!showCardPlaygarden" />
+                        <card-know-more v-if="!showCardPlaygarden" @toggleCard="showCardPlaygarden = !showCardPlaygarden" />
                       </v-layout>
                     </v-container>
                   </v-card>

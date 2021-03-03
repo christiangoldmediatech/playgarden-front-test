@@ -23,7 +23,7 @@
           xl="6"
         >
           <p class="text-center text-md-left" :class="{ 'mt-n8': $vuetify.breakpoint.mdAndUp }">
-            <span class="text-header-info info-color-signup">
+            <span class="subtitle-text info-color-signup">
               Create an account to start learning
             </span>
           </p>

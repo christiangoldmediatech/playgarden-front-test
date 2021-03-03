@@ -118,11 +118,11 @@ ul li::before {
 }
 
 .text-pay-information {
-  font-size: 12px;
+  font-size: 14px;
   font-style: italic;
 }
 
 .text-pay-get {
-  font-size: 12px;
+  font-size: 14px;
 }
 </style>
