@@ -49,10 +49,7 @@
                       YOUR FREE TRIAL ?
                     </span>
                   </p>
-                  <v-icon v-if="showCardPlaygarden" class="ml-2">
-                    mdi-chevron-up
-                  </v-icon>
-                  <v-icon v-else class="ml-2">
+                  <v-icon class="ml-2">
                     mdi-chevron-down
                   </v-icon>
                 </v-btn>
