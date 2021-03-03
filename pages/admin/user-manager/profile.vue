@@ -386,6 +386,8 @@ import UserChildLessonOverlay from '@/components/admin/users/UserChildLessonOver
 import UserChildTimelineDialog from '@/components/admin/users/UserChildTimelineDialog.vue'
 import { formatDate } from '~/utils/dateTools'
 
+const CANCELATION_CONFIRMATION_WORD = 'confirm'
+
 export default {
   name: 'Profile',
 
@@ -513,6 +515,10 @@ export default {
     backpackSent () {
       return this.user && this.user.shipments && this.user.shipments.backpack
     }
+
+    // isCancelConfirmationBtnDisabled () {
+    //   return
+    // }
   },
 
   async created () {
@@ -545,7 +551,7 @@ export default {
 
   methods: {
     ...mapActions('admin/users', ['getById', 'getChildren']),
-    ...mapActions('payment', ['cancelSubscription']),
+    ...mapActions('payment', ['cancelSubscriptionById']),
     ...mapActions('children/lesson', ['getLessonChildrenStatus']),
     ...mapActions('children/progress', ['getChildrenProgressExport']),
 
@@ -595,17 +601,15 @@ export default {
       this.$nuxt.$emit('open-timeline', child)
     },
 
-    remove ({ billing }) {
+    remove () {
       this.$nuxt.$emit('open-prompt', {
-        inputTextToConfirm: true,
+        isInputTextToConfirm: true,
+        confirmationWord: CANCELATION_CONFIRMATION_WORD,
         image: 'delete',
-        wordConfirm: '',
-        message: `Are you sure you want to delete <b>${billing}</b>?`,
-        action: async (wordConfirm) => {
-          if (wordConfirm === 'Confirm') {
-            await this.cancelSubscription()
-            this.refresh()
-          }
+        message: `Are you sure you want to cancel this <b>${this.plan.name || ''}</b> plan?`,
+        action: async () => {
+          await this.cancelSubscriptionById(this.billing.id)
+          this.refresh()
         }
       })
     },
