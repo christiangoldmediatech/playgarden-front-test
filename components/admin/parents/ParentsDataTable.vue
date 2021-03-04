@@ -41,10 +41,9 @@
               :page.sync="page"
               :server-items-length="total"
               top-justify="space-between"
-              :items-per-page="limit"
+              :items-per-page="paginationLimit"
               @search="onSearch"
               @refresh="refresh(true)"
-              @update:items-per-page="setLimit"
               @update:page="page = $event"
               @edit-item="$router.push({
                 name: 'admin-user-manager-editor',
@@ -97,7 +96,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapState } from 'vuex'
 import onSearch from '@/mixins/OnSearchMixin.js'
 
 export default {
@@ -184,6 +183,7 @@ export default {
   },
 
   computed: {
+    ...mapState(['paginationLimit']),
     ...mapGetters('admin/users', {
       types: 'rows',
       total: 'total'
@@ -265,7 +265,7 @@ export default {
     async refresh (clear = false) {
       const id = 3
       this.loading = true
-      const params = { limit: this.limit, page: this.page, roleId: id }
+      const params = { limit: this.paginationLimit, page: this.page, roleId: id }
 
       if (clear) {
         this.search = ''
