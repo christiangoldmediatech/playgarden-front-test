@@ -17,6 +17,11 @@
             src="@/assets/svg/logo.svg"
           >
         </v-row>
+        <v-row justify="center">
+          <span class="black--text mr-2 text--lighten-1">
+            {{ userInfo.fullName }}
+          </span>
+        </v-row>
       </v-container>
 
       <v-divider />
@@ -56,10 +61,31 @@
       </v-toolbar-title>
 
       <v-spacer />
-
-      <span class="black--text mr-2 text--lighten-1">
-        {{ userInfo.fullName }}
-      </span>
+      <v-menu>
+        <template v-slot:activator="{ on: menu, attrs }">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on: tooltip }">
+              <v-btn
+                color="primary"
+                dark
+                v-bind="attrs"
+                v-on="{ ...tooltip, ...menu }"
+              >
+                Dropdown w/ Tooltip
+              </v-btn>
+            </template>
+            <span>Im A ToolTip</span>
+          </v-tooltip>
+        </template>
+        <v-list>
+          <v-list-item
+            v-for="(item, index) in notifications"
+            :key="index"
+          >
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
 
       <v-btn class="hidden-md-and-up" icon nuxt :to="{ name: 'auth-logout' }">
         <v-icon>
@@ -116,6 +142,13 @@ export default {
   data () {
     return {
       appDrawer: false,
+
+      notifications: [
+        { id: 1, title: 'Click Me' },
+        { id: 2, title: 'Click Me' },
+        { id: 3, title: 'Click Me' },
+        { id: 4, title: 'Click Me 2' }
+      ],
 
       menuItems: [
         {
