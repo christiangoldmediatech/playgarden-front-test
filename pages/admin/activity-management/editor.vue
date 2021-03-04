@@ -109,6 +109,16 @@
 
                 <v-row>
                   <v-col class="text-md-right" cols="12" sm="3">
+                    <span class="subheader">Featured:</span>
+                  </v-col>
+
+                  <v-col cols="12" sm="9" lg="6">
+                    <v-switch v-model="activity.featured" class="mt-n6"></v-switch>
+                  </v-col>
+                </v-row>
+
+                <v-row>
+                  <v-col class="text-md-right" cols="12" sm="3">
                     <span class="subheader">Video:</span>
                   </v-col>
 
