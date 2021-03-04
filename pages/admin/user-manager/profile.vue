@@ -9,24 +9,6 @@
             <v-spacer />
 
             <v-btn
-              class="text-none mr-1"
-              color="accent"
-              depressed
-              nuxt
-              small
-              :loading="exporting"
-              @click="requestExport"
-            >
-              <v-img
-                max-width="35"
-                max-height="35"
-                class="mr-1"
-                :src="require('@/assets/svg/export.svg')"
-              />
-              Export
-            </v-btn>
-
-            <v-btn
               class="text-none"
               color="accent darken-1"
               depressed
@@ -68,6 +50,15 @@
               </v-col>
 
               <v-col class="mt-n5">
+                <v-chip
+                  color="green"
+                  text-color="white"
+                >
+                  <a :href="`https://dashboard.stripe.com/customers/${billing.customerId}`" target="_blank">View on Stripe</a>
+                </v-chip>
+              </v-col>
+
+              <v-col class="mt-n5">
                 <v-row
                   justify="center"
                   justify-md="start"
@@ -80,6 +71,21 @@
                   <span class="clickable edit-color" @click="goToEdit(user.id)">
                     EDIT
                   </span>
+                </v-row>
+              </v-col>
+
+              <v-col v-if="billing.stripeStatus !== 'canceled'" class="mt-5">
+                <v-row
+                  justify="center"
+                  justify-md="end"
+                  class="user-edit pr-md-5"
+                  no-gutters
+                >
+                  <div class="text-center">
+                    <v-btn color="#FF0000" dark @click="remove">
+                      Cancel Membership
+                    </v-btn>
+                  </div>
                 </v-row>
               </v-col>
             </v-col>
@@ -132,7 +138,7 @@
                       </v-row>
                     </v-col>
 
-                    <v-col cols="12" md="6">
+                    <v-col cols="6">
                       <v-row>
                         <v-col cols="6" md="4" class="field">
                           Phone Number
@@ -141,36 +147,8 @@
                           <b>{{ user.phoneNumber }}</b>
                         </v-col>
                       </v-row>
-
-                      <v-row>
-                        <v-col cols="6" md="4" class="field">
-                          Plan
-                        </v-col>
-                        <v-col cols="6" md="8">
-                          <b>{{ plan.name }}</b>
-                        </v-col>
-                      </v-row>
-
-                      <v-row>
-                        <v-col cols="6" md="4" class="field">
-                          Membership fee
-                        </v-col>
-                        <v-col cols="6" md="8">
-                          <b>{{ plan.fee }} USD</b>
-                        </v-col>
-                      </v-row>
-
-                      <v-row>
-                        <v-col cols="6" md="4" class="field">
-                          Billing date
-                        </v-col>
-                        <v-col cols="6" md="8">
-                          <b>{{ plan.billingDate }}</b>
-                        </v-col>
-                      </v-row>
                     </v-col>
-                    <!-- end col 1 -->
-                    <v-col cols="12" md="6">
+                    <v-col cols="6">
                       <v-row>
                         <v-col cols="6" md="4" class="field">
                           Role
@@ -179,8 +157,92 @@
                           <b>{{ role }}</b>
                         </v-col>
                       </v-row>
-
-                      <template v-if="role === 'parent'">
+                    </v-col>
+                    <template v-if="role === 'parent'">
+                      <v-col cols="6">
+                        <v-row>
+                          <v-col cols="6" md="4" class="field">
+                            Register Step
+                          </v-col>
+                          <v-col cols="6" md="8" class="text-capitalize">
+                            <b>{{ user.registerStepType.toLowerCase() || 'N/A' }}</b>
+                          </v-col>
+                        </v-row>
+                      </v-col>
+                      <v-col cols="6">
+                        <v-row>
+                          <v-col cols="6" md="4" class="field">
+                            Status
+                          </v-col>
+                          <v-col cols="6" md="8" class="text-capitalize">
+                            <b>{{ user.statusType.toLowerCase() }}</b>
+                          </v-col>
+                        </v-row>
+                      </v-col>
+                      <v-col cols="6">
+                        <v-row>
+                          <v-col cols="6" md="4" class="field">
+                            Plan
+                          </v-col>
+                          <v-col cols="6" md="8" class="text-capitalize">
+                            <b>{{ plan.name.toLowerCase() }}</b>
+                          </v-col>
+                        </v-row>
+                      </v-col>
+                      <v-col cols="6">
+                        <v-row>
+                          <v-col cols="6" md="4" class="field">
+                            Membership fee
+                          </v-col>
+                          <v-col cols="6" md="8">
+                            <b>{{ plan.fee }} USD</b>
+                          </v-col>
+                        </v-row>
+                      </v-col>
+                      <v-col cols="6">
+                        <v-row>
+                          <v-col cols="6" md="4" class="field">
+                            Billing date
+                          </v-col>
+                          <v-col cols="6" md="8">
+                            <b>{{ plan.billingDate }}</b>
+                          </v-col>
+                        </v-row>
+                      </v-col>
+                      <v-col cols="6">
+                        <v-row>
+                          <v-col cols="6" md="4" class="field">
+                            Status Stripe
+                          </v-col>
+                          <v-col cols="6" md="8" class="text-capitalize">
+                            <b>{{ billing.stripeStatus.toLowerCase() }}</b>
+                          </v-col>
+                        </v-row>
+                      </v-col>
+                      <template v-if="discount.code !== 'N/A'">
+                        <v-col cols="6">
+                          <v-row>
+                            <v-col cols="6" md="4" class="field">
+                              Discount
+                            </v-col>
+                            <v-col cols="6" md="8" class="text-capitalize">
+                              <b>{{ discount.percent }}</b>
+                            </v-col>
+                          </v-row>
+                        </v-col>
+                        <v-col cols="6">
+                          <v-row>
+                            <v-col cols="6" md="4" class="field">
+                              Coupon code
+                            </v-col>
+                            <v-col cols="6" md="8" class="text-capitalize">
+                              <b>{{ discount.code }}</b>
+                            </v-col>
+                          </v-row>
+                        </v-col>
+                      </template>
+                      <v-divider />
+                      <v-col cols="6">
                         <v-row>
                           <v-col cols="6" md="4" class="field">
                             Backpack
@@ -189,39 +251,10 @@
                           <v-col cols="6" md="8">
                             <template v-if="backpackSent">
                               <v-row no-gutters>
-                                <b>Sent</b>
-                                <v-img
-                                  class="ml-1"
-                                  max-height="25"
-                                  max-width="24"
-                                  src="@/assets/svg/green-check.svg"
-                                />
-                              </v-row>
-                            </template>
-
-                            <template v-else>
-                              <v-row no-gutters>
-                                <b>Pending</b>
-                                <v-img
-                                  class="ml-1"
-                                  max-height="25"
-                                  max-width="24"
-                                  :src="require('@/assets/svg/pending.svg')"
-                                />
-                              </v-row>
-                            </template>
-                          </v-col>
-                        </v-row>
-
-                        <v-row>
-                          <v-col cols="6" md="4" class="field">
-                            Workbook
-                          </v-col>
-
-                          <v-col cols="6" md="8" class="pl-md-3">
-                            <template v-if="workbookSent">
-                              <v-row no-gutters>
-                                <b>Sent</b>
+                                <b v-if="!workbookDateSent">Sent</b>
+                                <b v-else>
+                                  Sent on: {{ dateWorkbook() }}
+                                </b>
                                 <v-img
                                   class="ml-1"
                                   max-height="25"
@@ -244,8 +277,44 @@
                             </template>
                           </v-col>
                         </v-row>
-                      </template>
-                    </v-col>
+                      </v-col>
+                      <v-col cols="6">
+                        <v-row>
+                          <v-col cols="6" md="4" class="field">
+                            Workbook
+                          </v-col>
+
+                          <v-col cols="6" md="8" class="pl-md-3">
+                            <template v-if="workbookSent">
+                              <v-row no-gutters>
+                                <b v-if="!backpackDateSent">Sent</b>
+                                <b v-else>
+                                  Sent on: {{ dateBackpack() }}
+                                </b>
+                                <v-img
+                                  class="ml-1"
+                                  max-height="25"
+                                  max-width="24"
+                                  :src="require('@/assets/svg/green-check.svg')"
+                                />
+                              </v-row>
+                            </template>
+
+                            <template v-else>
+                              <v-row no-gutters>
+                                <b>Pending</b>
+                                <v-img
+                                  class="ml-1"
+                                  max-height="25"
+                                  max-width="24"
+                                  :src="require('@/assets/svg/pending.svg')"
+                                />
+                              </v-row>
+                            </template>
+                          </v-col>
+                        </v-row>
+                      </v-col>
+                    </template>
                   </v-row>
                 </v-col>
               </v-row>
@@ -371,6 +440,8 @@ import UserChildLessonOverlay from '@/components/admin/users/UserChildLessonOver
 import UserChildTimelineDialog from '@/components/admin/users/UserChildTimelineDialog.vue'
 import { formatDate } from '~/utils/dateTools'
 
+const CANCELATION_CONFIRMATION_WORD = 'confirm'
+
 export default {
   name: 'Profile',
 
@@ -383,6 +454,7 @@ export default {
 
   data: () => ({
     exporting: false,
+    dialog: false,
     user: null,
     children: [],
     childrenStatus: []
@@ -496,41 +568,69 @@ export default {
 
     backpackSent () {
       return this.user && this.user.shipments && this.user.shipments.backpack
+    },
+
+    workbookDateSent () {
+      return this.user && this.user.shipments && this.user.shipments.workbookDate
+    },
+
+    backpackDateSent () {
+      return this.user && this.user.shipments && this.user.shipments.backpackDate
     }
+
+    // isCancelConfirmationBtnDisabled () {
+    //   return
+    // }
   },
 
   async created () {
-    if (this.id) {
-      try {
-        const promises = await Promise.all([
-          this.getById(this.id),
-          this.getChildren(this.id)
-        ])
-        const user = promises[0]
-        const children = promises[1]
-
-        if (children.length) {
-          const childrenIds = children.map(({ id }) => id)
-          const childrenStatus = await this.getLessonChildrenStatus(
-            childrenIds
-          )
-          this.childrenStatus = childrenStatus
-        }
-
-        this.children = children
-        this.user = user
-      } catch (err) {
-        return Promise.reject(err)
-      }
-    } else {
-      await this.$router.push({ name: 'admin-user-manager' })
-    }
+    await this.getUserDetails()
   },
 
   methods: {
     ...mapActions('admin/users', ['getById', 'getChildren']),
+    ...mapActions('payment', ['cancelSubscriptionById']),
     ...mapActions('children/lesson', ['getLessonChildrenStatus']),
-    ...mapActions('children/progress', ['getChildrenProgressExport']),
+
+    dateWorkbook () {
+      return formatDate(this.user.shipments.workbookDate, {
+        format: 'MMMM DD, YYYY'
+      })
+    },
+
+    dateBackpack () {
+      return formatDate(this.user.shipments.backpackDate, {
+        format: 'MMMM DD, YYYY'
+      })
+    },
+
+    async getUserDetails () {
+      if (this.id) {
+        try {
+          const promises = await Promise.all([
+            this.getById(this.id),
+            this.getChildren(this.id)
+          ])
+          const user = promises[0]
+          const children = promises[1]
+
+          if (children.length) {
+            const childrenIds = children.map(({ id }) => id)
+            const childrenStatus = await this.getLessonChildrenStatus(
+              childrenIds
+            )
+            this.childrenStatus = childrenStatus
+          }
+
+          this.children = children
+          this.user = user
+        } catch (err) {
+          return Promise.reject(err)
+        }
+      } else {
+        await this.$router.push({ name: 'admin-user-manager' })
+      }
+    },
 
     goToEdit (id) {
       this.$router.push({
@@ -578,21 +678,17 @@ export default {
       this.$nuxt.$emit('open-timeline', child)
     },
 
-    async requestExport () {
-      this.exporting = true
-
-      try {
-        const { data } = await this.getChildrenProgressExport()
-
-        if (data.export) {
-          this.$snotify.success(
-            'Export is complete and will be sent to your email.'
-          )
+    remove () {
+      this.$nuxt.$emit('open-prompt', {
+        isInputTextToConfirm: true,
+        confirmationWord: CANCELATION_CONFIRMATION_WORD,
+        image: 'delete',
+        message: `Are you sure you want to cancel this <b>${this.plan.name || ''}</b> plan?`,
+        action: async () => {
+          await this.cancelSubscriptionById(this.billing.id)
+          await this.getUserDetails()
         }
-      } catch (e) {
-      } finally {
-        this.exporting = false
-      }
+      })
     }
   }
 }

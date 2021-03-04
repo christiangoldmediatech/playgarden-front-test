@@ -41,6 +41,7 @@
               :page.sync="page"
               :server-items-length="total"
               top-justify="space-between"
+              :items-per-page="limit"
               @search="onSearch"
               @refresh="refresh(true)"
               @update:items-per-page="setLimit"
@@ -109,10 +110,10 @@ export default {
       loading: false,
       action: true,
       search: '',
-      limit: 10,
+      limit: 50,
       page: 1,
       allFilters: false,
-      activeFilters: ['firstName', 'lastName'],
+      activeFilters: ['firstName'],
       filterList: [
         {
           text: 'First Name',
@@ -161,16 +162,16 @@ export default {
           value: 'role.name'
         },
         {
-          text: 'Created',
+          text: 'Status',
           align: 'start',
           sortable: false,
-          value: 'createdAt'
+          value: 'statusType'
         },
         {
-          text: 'Last Updated',
+          text: 'Step',
           align: 'start',
           sortable: false,
-          value: 'updatedAt'
+          value: 'registerStepType'
         },
         {
           align: 'right',

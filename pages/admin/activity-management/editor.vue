@@ -13,7 +13,7 @@
               depressed
               nuxt
               small
-              :to="{ name: 'admin-activity-management' }"
+              :to="backRoute"
             >
               Back
             </v-btn>
@@ -104,6 +104,16 @@
                       label="Curriculum"
                       solo-labeled
                     />
+                  </v-col>
+                </v-row>
+
+                <v-row>
+                  <v-col class="text-md-right" cols="12" sm="3">
+                    <span class="subheader">Featured:</span>
+                  </v-col>
+
+                  <v-col cols="12" sm="9" lg="6">
+                    <v-switch v-model="activity.featured" class="mt-n6"></v-switch>
                   </v-col>
                 </v-row>
 
@@ -300,6 +310,17 @@ export default {
           value: type.id
         }))
       ]
+    },
+    backRoute () {
+      const from = this.$route.query.from
+      const lessonId = this.$route.query.lessonId
+
+      switch (from) {
+        case 'admin-curriculum-management-editor':
+          return { name: from, query: { lessonId, step: 5 } }
+        default:
+          return { name: 'admin-activity-management' }
+      }
     }
   },
   watch: {
@@ -424,7 +445,7 @@ export default {
         if (this.newLessonActivity === true) {
           this.$nuxt.$emit('lesson-step-five')
         } else {
-          await this.$router.push({ name: 'admin-activity-management' })
+          await this.$router.push(this.backRoute)
         }
       }
     }
