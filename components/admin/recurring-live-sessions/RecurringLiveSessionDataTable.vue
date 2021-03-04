@@ -236,7 +236,7 @@ export default {
 
   computed: {
     ...mapGetters('admin/curriculum', ['types']),
-    ...mapState(['paginationLimit'])
+    ...mapState('admin', ['paginationLimit'])
   },
 
   watch: {

@@ -183,7 +183,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['paginationLimit']),
+    ...mapState('admin', ['paginationLimit']),
     ...mapGetters('admin/users', {
       types: 'rows',
       total: 'total'

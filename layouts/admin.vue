@@ -61,37 +61,45 @@
       </v-toolbar-title>
 
       <v-spacer />
-      <v-menu>
-        <template v-slot:activator="{ on: menu, attrs }">
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on: tooltip }">
-              <v-btn
-                color="primary"
-                dark
-                v-bind="attrs"
-                v-on="{ ...tooltip, ...menu }"
-              >
-                Dropdown w/ Tooltip
-              </v-btn>
-            </template>
-            <span>Im A ToolTip</span>
-          </v-tooltip>
-        </template>
-        <v-list>
-          <v-list-item
-            v-for="(item, index) in notifications"
-            :key="index"
-          >
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
 
       <v-btn class="hidden-md-and-up" icon nuxt :to="{ name: 'auth-logout' }">
         <v-icon>
           mdi-logout
         </v-icon>
       </v-btn>
+
+      <v-menu class="mr-4">
+        <template v-slot:activator="{ on: menu, attrs }">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on: tooltip }">
+              <v-btn
+                text
+                color="font-weight-medium white primary--text text--darken-2 text-none"
+                dark
+                v-bind="attrs"
+                v-on="{ ...tooltip, ...menu }"
+              >
+                <v-icon>
+                  mdi-bell
+                </v-icon>
+              </v-btn>
+            </template>
+            <span>Status Videos</span>
+          </v-tooltip>
+        </template>
+        <v-list dense>
+          <v-subheader>Notifications</v-subheader>
+          <v-divider></v-divider>
+          <v-list>
+            <v-list-item
+              v-for="(item, index) in notifications"
+              :key="index"
+            >
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-list>
+      </v-menu>
 
       <v-btn
         class="hidden-sm-and-down"

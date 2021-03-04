@@ -184,7 +184,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['paginationLimit']),
+    ...mapState('admin', ['paginationLimit']),
     ...mapGetters('admin/activity', ['rows', 'total', 'types']),
 
     filterList () {
