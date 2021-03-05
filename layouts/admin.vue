@@ -79,6 +79,7 @@
                 v-bind="attrs"
                 v-on="{ ...tooltip, ...menu }"
               >
+                {{ uploadingVideos.length }}
                 <v-icon>
                   mdi-bell
                 </v-icon>
@@ -129,7 +130,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapState } from 'vuex'
 import VideoPreview from '@/components/admin/video-preview/VideoPreview.vue'
 import AdminSnackBar from '@/components/admin/AdminSnackBar.vue'
 import GradesEditorDialog from '@/components/admin/grades/GradesEditorDialog.vue'
@@ -332,6 +333,21 @@ export default {
   computed: {
     ...mapGetters('auth', {
       userInfo: 'getUserInfo'
+    }),
+    ...mapState('admin', ['uploadingVideos'])
+  },
+
+  async created () {
+    try {
+      await this.getVideos()
+    } catch (e) {
+
+    }
+  },
+
+  methods: {
+    ...mapActions('videos', {
+      getVideos: 'getVideosUploading'
     })
   }
 }
