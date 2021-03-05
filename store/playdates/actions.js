@@ -23,6 +23,10 @@ export default {
     return this.$axios.$get('/playdates/children')
   },
 
+  getPlaydateDays () {
+    return this.$axios.$get('/playdates/days/available')
+  },
+
   deleteChildren (_, { playdateId, childId }) {
     return this.$axios.$delete(`/playdates/${playdateId}/remove/children/${childId}`)
   }

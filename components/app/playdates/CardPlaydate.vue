@@ -46,6 +46,12 @@
                 </div>
 
                 <v-list-item-title class="overline pb-1">
+                  <b>
+                    {{ playdate.name }}
+                  </b>
+                </v-list-item-title>
+
+                <v-list-item-title class="overline pb-1">
                   <template v-if="specialist">
                     With {{ specialist.fullName }}
                   </template>
@@ -176,6 +182,10 @@
                         {{ child.firstName | belongsTo }} Playdate
                       </div>
 
+                      <v-list-item-title>
+                        <b>{{ playdate.name }}</b>
+                      </v-list-item-title>
+
                       <v-list-item-title
                         v-if="specialist"
                         class="overline pb-1"
@@ -183,7 +193,11 @@
                         With {{ specialist.fullName }}
                       </v-list-item-title>
 
-                      <v-list-item-subtitle class="pt-3">
+                      <div class="pt-1 text-justify pr-3 description-text">
+                        <p>{{ playdate.description }}</p>
+                      </div>
+
+                      <v-list-item-subtitle class="pt-1">
                         JOIN YOUR FRIENDS!
 
                         <v-row justify-md="start" no-gutters class="pt-2">
@@ -428,5 +442,13 @@ export default {
 
 .overlay {
   background-color: rgba(0, 0, 0, 0.68) !important;
+}
+
+.description-text {
+  line-clamp: none !important;
+  -webkit-line-clamp: none;
+  color: rgba(0, 0, 0, 0.6);
+  line-height: 1.2;
+  font-size: 0.875rem;
 }
 </style>
