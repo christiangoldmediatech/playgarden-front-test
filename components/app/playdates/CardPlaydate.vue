@@ -231,16 +231,34 @@
                   </v-list-item>
                 </v-col>
               </v-row>
-
               <v-row justify="center" no-gutters>
-                <v-col cols="8" class="mb-5 mt-3">
+                <v-col cols="8" class="mb-0 mt-3">
+                  <h5>Select children for Playdate?</h5>
+                  <child-select v-model="childId" />
+                </v-col>
+              </v-row>
+              <v-row justify="center" no-gutters>
+                <v-col cols="8" class="mb-5 mt-0">
                   <v-btn
+                    v-if="!finding"
                     class="white--text"
                     color="accent"
                     target="_blank"
                     block
                     x-large
                     :href="playdate.link"
+                  >
+                    Open Zoom Playdate
+                  </v-btn>
+
+                  <v-btn
+                    v-else
+                    class="white--text"
+                    color="accent"
+                    target="_blank"
+                    block
+                    x-large
+                    @click="joinPlaydateChildren"
                   >
                     Join Playdate
                   </v-btn>
@@ -302,6 +320,7 @@ export default {
     name: null,
     backpack: null,
     today: new Date().getUTCDay(),
+    childId: null,
 
     week: {
       MONDAY: 1,
@@ -407,7 +426,20 @@ export default {
   },
 
   methods: {
-    ...mapActions('playdates', ['deleteChildren']),
+    ...mapActions('playdates', ['deleteChildren', 'joinPlaydate']),
+
+    async joinPlaydateChildren () {
+      try {
+        await this.joinPlaydate({
+          playdateId: this.playdate.id,
+          childId: this.childId
+        })
+        this.$snotify.success('Children have been stored successfully!')
+        this.$router.push({ name: 'app-playdates' })
+      } catch (error) {
+        this.$snotify.error('We could not add your child to the Playdate')
+      }
+    },
 
     remove () {
       this.$nuxt.$emit('open-prompt', {

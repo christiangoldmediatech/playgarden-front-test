@@ -27,6 +27,10 @@ export default {
     return this.$axios.$get('/playdates/days/available')
   },
 
+  joinPlaydate (_, { playdateId, childId }) {
+    return this.$axios.$post(`/playdates/${playdateId}/add/children/${childId}`)
+  },
+
   deleteChildren (_, { playdateId, childId }) {
     return this.$axios.$delete(`/playdates/${playdateId}/remove/children/${childId}`)
   }
