@@ -108,12 +108,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.v-application {
-  @media screen and (max-width: 1263px) {
-    overflow-x: hidden !important;
-    overflow-y: auto;
-  }
-}
 .v-application ::v-deep {
   .container:not(.container--fluid) {
     max-width: 1200px;
