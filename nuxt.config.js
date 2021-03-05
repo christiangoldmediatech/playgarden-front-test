@@ -78,7 +78,6 @@ export default {
             ? '/app/js/ics.min.js'
             : '/js/ics.min.js'
       },
-      { src: 'https://widget.manychat.com/108368577679635.js', async: true },
       { src: 'https://js.stripe.com/v3/', async: true }
     ],
     __dangerouslyDisableSanitizers: ['noscript']
