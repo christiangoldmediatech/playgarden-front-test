@@ -4,6 +4,11 @@ export default () => ({
   currentChildExpires: null,
 
   fullWidthPages: {
+    'app-account-index': 1,
+    'app-account-index-caregiver': 1,
+    'app-account-index-student-profile': 1,
+    'app-account-index-membership': 1,
+    'app-account-index-notification': 1,
     'app-live-classes': 1,
     'app-live-classes-recorded': 1,
     'app-pick-child': 1,
