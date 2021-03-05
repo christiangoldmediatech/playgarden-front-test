@@ -1,359 +1,104 @@
 <template>
-  <v-row class="mt-md-6 mt-0" no-gutters>
-    <v-col cols="12" md="6">
-      <v-row class="flex-column-reverse flex-md-column sticky" no-gutters>
-        <div class="mb-3 mt-6 mt-md-0 mx-12 text-center text-md-left">
-          <underlined-title text="Account" />
+  <v-main>
+    <v-row no-gutters class="fill-height">
+      <v-col v-if="isMobile" cols="12" md="2">
+        <v-card class="text-center fill-height" flat>
+          <div class="text-h6 grey--text py-12 mx-2">
+            <div class="pb-2">
+              Account page
+            </div>
 
-          <p>
-            Welcome back {{ userInfo.fullName }}! Here you can manage everything
-            related to your account.
-          </p>
+            <underlined-title :text="fullName" font-size="32px" />
+          </div>
+          <pg-select
+            solo
+            class="px-8"
+            :value="selectedHref"
+            :items="btns"
+            item-value="href"
+            @input="navigateToPage($event)"
+          >
+            <template v-slot:selection="{ item }">
+              <div class="font-weight-medium text-uppercase">
+                {{ item.text }}
+              </div>
+            </template>
+          </pg-select>
+        </v-card>
+      </v-col>
+      <v-col v-if="!isMobile" cols="12" md="2" class="fill-height">
+        <v-card class="text-center fill-height" elevation="12">
+          <div class="text-h6 grey--text py-12">
+            <div class="pb-2">
+              Account page
+            </div>
+
+            <underlined-title :text="fullName" font-size="32px" />
+          </div>
+          <v-card
+            v-for="btn in btns"
+            :key="btn.text"
+            elevation="3"
+            :class="btnClasses(btn.href)"
+            @click="navigateToPage(btn.href)"
+          >
+            {{ btn.text }}
+          </v-card>
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="10">
+        <div class="pa-8 pa-sm-12">
+          <nuxt-child />
         </div>
-
-        <v-col class="pb-md-10">
-          <v-row
-            class="image"
-            :class="{ 'image-bar': $vuetify.breakpoint.mdAndUp }"
-            no-gutters
-          >
-            <img
-              alt="Montessori Nutrition Lesson"
-              class="pr-md-6"
-              :src="
-                showSetting
-                  ? require('@/assets/jpg/Montessori_Nutrition_Lesson.jpg')
-                  : require('@/assets/jpg/Test_tube_lesson.jpg')
-              "
-            >
-
-            <pg-select
-              v-if="!isUserCaregiver"
-              v-model="showSetting"
-              class="hidden-md-and-up show-setting-select white"
-              hide-details
-              :items="showSettings"
-              solo
-            />
-          </v-row>
-        </v-col>
-
-        <div class="hidden-sm-and-down mb-12 mt-6 text-right">
-          <v-btn
-            color="accent"
-            nuxt
-            :to="{ name: 'auth-logout' }"
-            width="200"
-            x-large
-          >
-            LOG OUT
-          </v-btn>
-        </div>
-      </v-row>
-    </v-col>
-
-    <v-col class="px-12" cols="12" md="6">
-      <v-row v-if="!isUserCaregiver" class="hidden-sm-and-down">
-        <v-col
-          v-for="({ text, value }, indexSS) in showSettings"
-          :key="indexSS"
-          cols="12"
-          md="6"
-        >
-          <v-btn
-            block
-            :color="showSetting === value ? 'primary' : 'grey lighten-5'"
-            :disabled="loading"
-            x-large
-            @click="showSetting = value"
-          >
-            {{ text }}
-          </v-btn>
-        </v-col>
-      </v-row>
-
-      <div v-show="showSetting" class="mt-6">
-        <v-row no-gutters>
-          <v-col>
-            <pg-text-field
-              disabled
-              label="Email"
-              solo
-              :value="userInfo.email"
-            />
-
-            <pg-text-field
-              disabled
-              hide-details
-              label="Password"
-              solo
-              suffix="••••••••••"
-            />
-          </v-col>
-        </v-row>
-
-        <v-dialog
-          v-model="passwordModal"
-          content-class="white"
-          :fullscreen="$vuetify.breakpoint.smAndDown"
-          max-width="1000"
-          persistent
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-row class="mb-6" justify="end" no-gutters>
-              <v-btn v-bind="attrs" color="primary" text v-on="on">
-                CHANGE PASSWORD
-              </v-btn>
-            </v-row>
-          </template>
-
-          <v-col cols="12">
-            <v-row class="pr-3" justify="end">
-              <v-btn icon @click.stop="passwordModal = false">
-                <v-icon>mdi-close</v-icon>
-              </v-btn>
-            </v-row>
-
-            <update-password
-              v-if="passwordModal"
-              @click:cancel="passwordModal = false"
-              @update:success="passwordModal = false"
-            />
-          </v-col>
-        </v-dialog>
-
-        <!-- Social buttons -->
-        <v-row v-if="!userInfo.socialNetwork && !userInfo.socialNetworkId" class="mb-10">
-          <!-- FACEBOOK -->
-          <v-col class="mb-4 mb-md-0 pr-md-4" cols="12" md="12">
-            <v-btn block height="45" class="social-sync" @click="facebookSignIn">
-              <img
-                alt="Facebook"
-                class="mr-1"
-                src="@/assets/svg/facebook_icon.svg"
-              >
-
-              <span class="text-transform-none">Sync your Facebook Account</span>
-            </v-btn>
-          </v-col>
-
-          <!-- GOOGLE -->
-          <v-col class="mb-6 mb-md-0 pl-md-4" cols="12" md="12">
-            <v-btn block height="45" class="social-sync" @click="googleSignIn">
-              <img
-                alt="Google"
-                class="mr-1"
-                src="@/assets/svg/google_icon.svg"
-              >
-
-              <span class="text-transform-none">Sync your Google Account</span>
-            </v-btn>
-          </v-col>
-        </v-row>
-        <v-row v-else justify="center" class="mb-8">
-          <!-- FACEBOOK -->
-          <v-btn v-if="userInfo.socialNetwork === 'FACEBOOK'" block height="45" class="social-sync" text>
-            <img
-              alt="Facebook"
-              class="mr-1"
-              src="@/assets/svg/facebook_icon.svg"
-            >
-
-            <span class="text-transform-none">Your account is synced with Facebook</span>
-          </v-btn>
-          <!-- GOOGLE -->
-          <v-btn v-if="userInfo.socialNetwork === 'GOOGLE'" block height="45" class="social-sync" text>
-            <img
-              alt="Google"
-              class="mr-1"
-              src="@/assets/svg/google_icon.svg"
-            >
-
-            <span class="text-transform-none">Your account is synced with Google</span>
-          </v-btn>
-        </v-row>
-
-        <template v-if="!isUserCaregiver">
-          <membership-details :loading="loading" />
-
-          <shipping-address-details :loading="loading" />
-
-          <caregiver-list :loading="loading" manageable />
-
-          <manage-caregivers class="my-6" />
-
-          <notification-list :loading="loading" />
-        </template>
-      </div>
-
-      <child-form v-show="!showSetting" />
-
-      <v-btn
-        block
-        class="hidden-md-and-up my-6"
-        color="accent"
-        nuxt
-        :to="{ name: 'auth-logout' }"
-        x-large
-      >
-        LOG OUT
-      </v-btn>
-    </v-col>
-  </v-row>
+      </v-col>
+    </v-row>
+  </v-main>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
-
-import CaregiverList from '@/components/app/caregiver/CaregiverList'
-import ChildForm from '@/components/forms/profile/ChildForm.vue'
-import ManageCaregivers from '@/components/app/caregiver/ManageCaregivers'
-import MembershipDetails from '@/components/app/payment/MembershipDetails'
-import NotificationList from '@/components/app/notifications/NotificationUserList'
-import ShippingAddressDetails from '@/components/app/payment/ShippingAddressDetails'
-import UpdatePassword from '@/components/app/password/UpdatePassword'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Index',
 
-  components: {
-    CaregiverList,
-    ChildForm,
-    ManageCaregivers,
-    MembershipDetails,
-    NotificationList,
-    ShippingAddressDetails,
-    UpdatePassword
+  data: () => ({
+    btns: [
+      { text: 'General', href: '/app/account/' },
+      { text: 'Student Profile', href: '/app/account/student-profile' },
+      { text: 'Membership', href: '/app/account/membership' },
+      { text: 'Caregivers', href: '/app/account/caregiver' },
+      { text: 'Notification', href: '/app/account/notification' }
+    ],
+    selectedHref: ''
+  }),
+
+  computed: {
+    ...mapGetters('auth', {
+      userInfo: 'getUserInfo'
+    }),
+    fullName () {
+      return `${this.userInfo.firstName ?? ''} ${this.userInfo.lastName ?? ''}`.trim()
+    },
+    isMobile () {
+      return this.$vuetify.breakpoint.smAndDown
+    }
   },
 
-  data: () => ({
-    loading: false,
-    passwordModal: false,
-    showSetting: true,
-    showSettings: [
-      { text: 'ACCOUNT SETTINGS', value: true },
-      { text: 'STUDENT PROFILES', value: false }
-    ]
-  }),
-
-  computed: mapGetters('auth', {
-    userInfo: 'getUserInfo',
-    isUserCaregiver: 'isUserCaregiver'
-  }),
-
-  created () {
-    this.showSetting =
-      Number(this.$route.query.tab) !== 2 || this.isUserCaregiver
+  mounted () {
+    this.selectedHref = this.$route.path
   },
 
   methods: {
-    ...mapActions('auth', ['fetchUserInfo']),
-
-    ...mapActions(['disableAxiosGlobal', 'enableAxiosGlobal']),
-
-    ...mapActions('auth/socialUser', ['authSyncSocial']),
-
-    facebookSignIn () {
-      this.syncAccount(
-        'FACEBOOK',
-        new this.$fireAuthObj.FacebookAuthProvider()
-      )
+    navigateToPage (href) {
+      this.selectedHref = href
+      this.$router.push(href)
     },
-
-    googleSignIn () {
-      this.syncAccount('GOOGLE', new this.$fireAuthObj.GoogleAuthProvider())
-    },
-
-    syncAccount (nameSocialNetwork, provider) {
-      const fireAuthObj = this.$fireAuthObj()
-
-      fireAuthObj
-        .signInWithPopup(provider)
-        .then((result) => {
-          const profile = { ...result.additionalUserInfo.profile }
-          this.syncWithSocialNetwork({
-            firstName: profile.given_name || profile.first_name || '',
-            lastName: profile.family_name || profile.last_name || '',
-            email: profile.email,
-            socialNetwork: nameSocialNetwork,
-            socialNetworkId: profile.id
-          })
-        })
-        .catch((e) => {
-          this.$snotify.error(e.message)
-        })
-        .finally(() => fireAuthObj.signOut())
-    },
-
-    async syncWithSocialNetwork (user) {
-      try {
-        this.disableAxiosGlobal()
-        await this.authSyncSocial(user)
-        this.enableAxiosGlobal()
-        if (this.userInfo.email === user.email) {
-          await this.fetchUserInfo()
-          this.$snotify.success('The account has been successfully synchronized with the social network.')
-        }
-      } catch (e) {
-        this.$snotify.error(e.message)
+    btnClasses (href) {
+      return {
+        'py-4 mb-6 text-uppercase font-weight-medium': true,
+        'primary white--text': this.selectedHref === href
       }
     }
-
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.image {
-  align-content: center;
-  display: flex;
-  justify-content: center;
-  max-height: 500px;
-  min-height: 100px;
-  width: 100%;
-
-  img {
-    max-width: 100%;
-    height: 250px;
-  }
-}
-
-.image-bar {
-  position: relative;
-  z-index: 1;
-
-  &::after {
-    border-bottom: 32px solid var(--v-primary-base);
-    bottom: -16px;
-    content: "";
-    position: absolute;
-    right: 0;
-    width: 1000%;
-    z-index: -1;
-  }
-}
-
-.social-sync {
-  text-transform: capitalize !important;
-  font-size: 14px !important;
-}
-
-.messages-info-sync {
-  font-size: 14px !important;
-  font-weight: 500;
-}
-
-.show-setting-select {
-  max-width: 225px;
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  width: 100%;
-}
-
-.sticky {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 100px;
-}
-</style>
