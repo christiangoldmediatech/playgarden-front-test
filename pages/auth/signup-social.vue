@@ -6,7 +6,7 @@
 import { mapActions } from 'vuex'
 
 export default {
-  name: 'SingupSocial',
+  name: 'SignupSocial',
 
   layout: 'loading',
 
