@@ -124,8 +124,10 @@
             <v-row no-gutters justify="center" class="mt-3">
               <v-col>
                 <p class="text-md-left text-sm-center font-weight-bold">
-                  Invite friends
+                  Want to invite your friends?
                 </p>
+
+                <small class="mb-2">Enter their email addresses or phone numbers to send them an invite.</small>
 
                 <!-- Invite Friends -->
                 <validation-provider
@@ -199,13 +201,7 @@ export default {
 
     loading: false,
 
-    week: [
-      { text: 'Monday', value: 'MONDAY' },
-      { text: 'Tuesday', value: 'TUESDAY' },
-      { text: 'Wednesday', value: 'WEDNESDAY' },
-      { text: 'Thursday', value: 'THURSDAY' },
-      { text: 'Friday', value: 'FRIDAY' }
-    ]
+    week: []
   }),
 
   computed: {
@@ -227,8 +223,15 @@ export default {
     }
   },
 
+  async created () {
+    const days = await this.getPlaydateDays()
+    this.week = days.days.map((day) => {
+      return { text: day, value: day }
+    })
+  },
+
   methods: {
-    ...mapActions('playdates', ['addChildren', 'getAndFilterPlaydates']),
+    ...mapActions('playdates', ['addChildren', 'getAndFilterPlaydates', 'getPlaydateDays']),
 
     async onWeekdayChange () {
       this.loading = true
@@ -257,6 +260,7 @@ export default {
         this.resetForm(reset)
 
         this.$snotify.success('Your Playdate has been stored successfully!.')
+        this.$router.push({ name: 'app-playdates' })
       } catch (e) {
       } finally {
         this.loading = false

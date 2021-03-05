@@ -114,7 +114,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('upload', ['doUpload', 'doMultiPartBackgroundUpload', 'doMultiPartDropBoxUpload']),
+    ...mapActions('upload', ['doUpload', 'doMultiPartBackgroundUpload', 'doMultiPartDropBoxUpload', 'doUploadJoinMultilpe']),
 
     async handleUpload (meta = {}, callback = () => {}) {
       let result
