@@ -12,6 +12,29 @@ export default {
     }
   },
 
+  async doUploadJoinMultilpe (ctx, { type, path, formData }) {
+    try {
+      const { data } = await this.$axios.post(`/files/${type}/${path}/multiple`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      return data
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+
+  async doUploadJoinMultilpeDropBox (ctx, { type, path, files }) {
+    try {
+      const { data } = await this.$axios.post(`/files/${type}/${path}/multiple`, { files }, {
+      })
+      return data
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+
   async doMultiPartDropBoxUpload ({ state, commit }, dataFileDropBox) {
     const { data } = await this.$axios.post(`/files/${dataFileDropBox.type}/${dataFileDropBox.path}`, dataFileDropBox)
     return data
