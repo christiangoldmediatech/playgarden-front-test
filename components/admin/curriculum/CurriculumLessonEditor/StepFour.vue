@@ -37,7 +37,6 @@
 
       <!-- File -->
       <span class="v-label theme--light">File</span>
-
       <template v-if="draft.pdfUrl">
         <div class="mb-6 mt-3">
           <v-badge avatar color="white" overlap>
@@ -55,29 +54,7 @@
           </v-badge>
         </div>
       </template>
-
-      <validation-provider
-        v-else
-        v-slot="{ errors }"
-        name="File"
-        rules="required"
-      >
-        <pg-file-uploader
-          ref="documentFileUploaderDropBox"
-          v-model="file"
-          prepend-icon="mdi-file"
-          :file-name="fileName"
-          :error-messages="errors"
-          label="Upload File"
-          mode="document"
-          path="lesson"
-          placeholder="Select a pdf for this lesson"
-          solo-labeled
-          api="dropbox"
-          pdf
-          @sendFile="setDocumentFile"
-        />
-      </validation-provider>
+      <upload-multiple-files v-else ref="multiDocsLoad" @sendFile="setDocumentFile" />
 
       <!-- Video -->
       <span class="v-label theme--light">Video</span>
@@ -159,9 +136,14 @@
 import { mapActions, mapGetters } from 'vuex'
 
 import submittable from '@/utils/mixins/submittable'
+import UploadMultipleFiles from './UploadMultipleFiles'
 
 export default {
   name: 'StepFour',
+
+  components: {
+    UploadMultipleFiles
+  },
 
   mixins: [submittable],
 
@@ -178,6 +160,7 @@ export default {
     fileName: null,
     videoFile: null,
     loading: false,
+    path: 'lesson',
     typeSelectDocumentFile: null,
     typeSelectVideoFile: null
   }),
@@ -205,6 +188,7 @@ export default {
       'fetchWorksheetsByLessonId',
       'updateWorksheetByLessonId'
     ]),
+    ...mapActions('upload', ['doUploadJoinMultilpe', 'doUploadJoinMultilpeDropBox']),
     ...mapActions('admin/curriculum', [
       'getLessonById'
     ]),
@@ -233,15 +217,50 @@ export default {
       this.typeSelectDocumentFile = type
     },
 
+    async handleMultiFileUpload (files) {
+      try {
+        const formData = new FormData()
+        files.map((file) => {
+          formData.append('file', file)
+        })
+        const { filePath } = await this.doUploadJoinMultilpe({
+          type: 'upload-document',
+          path: this.path,
+          formData
+        })
+        return filePath
+      } catch (error) {
+        return Promise.reject(error)
+      }
+    },
+
+    async handleMultiFileUploadDropBox (files) {
+      const listFiles = files.map((file) => {
+        return { ...file, mode: 'document', type: 'upload-document-dropbox', path: this.path }
+      })
+      const { filePath } = await this.doUploadJoinMultilpeDropBox({
+        type: 'upload-document-dropbox',
+        path: this.path,
+        files: listFiles
+      })
+      return filePath
+    },
+
+    validateSize (files) {
+      const total = files.map(file => file.size).reduce((a, b) => a + b)
+      return total / 1000000
+    },
+
     async onSubmit () {
       this.loading = true
+      let size = 0
       try {
-        if (this.file) {
-          if (this.typeSelectDocumentFile !== 'dropBox') {
-            this.draft.pdfUrl = await this.$refs.imageFileUploaderDropBox.handleUpload()
-          } else {
-            const { filePath } = await this.$refs.imageFileUploaderDropBox.handleDropBoxFileUpload()
-            this.draft.pdfUrl = filePath
+        if (this.$refs.multiDocsLoad) {
+          const files = await this.$refs.multiDocsLoad.joinFiles()
+          if (files) {
+            size = this.validateSize(files)
+            const path = (this.typeSelectDocumentFile !== 'dropBox') ? await this.handleMultiFileUpload(files) : await this.handleMultiFileUploadDropBox(files)
+            this.draft.pdfUrl = path
           }
         }
 
@@ -250,8 +269,12 @@ export default {
           this.draft.videoId = video.id
         }
 
-        const data = await this.submitMethod(this.getSubmittableData())
-        this.$emit('click:submit', data)
+        if (size <= 1000000) {
+          const data = await this.submitMethod(this.getSubmittableData())
+          this.$emit('click:submit', data)
+        } else {
+          this.$snotify.warning('The size of the documents cannot be larger than 10MB', 'Warning', {})
+        }
       } catch (e) {
       } finally {
         this.fileDropBox = null
