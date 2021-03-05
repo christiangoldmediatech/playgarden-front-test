@@ -93,7 +93,7 @@
             <span>Status Videos</span>
           </v-tooltip>
         </template>
-        <v-list dense>
+        <v-list dense class="mt-8">
           <v-subheader>Notifications</v-subheader>
           <v-divider></v-divider>
           <v-list class="content-notification">
@@ -163,12 +163,7 @@ export default {
     return {
       appDrawer: false,
 
-      notifications: [
-        { id: 1, title: 'Click Me' },
-        { id: 2, title: 'Click Me' },
-        { id: 3, title: 'Click Me' },
-        { id: 4, title: 'Click Me 2' }
-      ],
+      checkStatusInterval: null,
 
       menuItems: [
         {
@@ -348,18 +343,31 @@ export default {
     ...mapState('admin', ['uploadingVideos'])
   },
 
-  async created () {
-    try {
-      await this.getVideos({ status: 'UPLOADING' })
-    } catch (e) {
+  created () {
+    this.getVideos({ status: 'UPLOADING' })
+    this.checkStatus()
+  },
 
-    }
+  beforeDestroy () {
+    clearInterval(this.checkStatusInterval)
   },
 
   methods: {
     ...mapActions('admin', {
       getVideos: 'getVideosUploading'
-    })
+    }),
+
+    checkStatus () {
+      this.checkStatusInterval = setInterval(() => {
+        this.getVideos({ status: 'UPLOADING' })
+      }, 120000)
+    },
+
+    stopInterval () {
+      if (this.resources.filter(data => data.status !== 'COMPLETED').length === 0) {
+        clearInterval(this.checkStatusInterval)
+      }
+    }
   }
 }
 </script>
