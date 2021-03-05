@@ -48,6 +48,7 @@ export default {
       }
 
       Promise.all(stack).then(() => {
+        this.$nuxt.$emit('library-update-favorites')
         this.getAllFavorites().then(() => {
           this.favoritesLoading = false
         })
