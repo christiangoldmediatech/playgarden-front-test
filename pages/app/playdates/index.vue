@@ -201,11 +201,11 @@
                           large
                           nuxt
                           :to="{
-                            name: 'app-account',
+                            name: 'app-account-index',
                             params: { changeplan: 1 }
                           }"
                         >
-                          <!-- nuxt to app-account ?changeplan=1 -->
+                          <!-- nuxt to app-account-index ?changeplan=1 -->
                           Compare Plans
                         </v-btn>
 
@@ -216,11 +216,11 @@
                           large
                           nuxt
                           :to="{
-                            name: 'app-account',
+                            name: 'app-account-index',
                             params: { changeplan: 1 }
                           }"
                         >
-                          <!-- nuxt to app-account ?changeplan=1 -->
+                          <!-- nuxt to app-account-index ?changeplan=1 -->
                           Compare Plans
                         </v-btn>
                       </v-col>

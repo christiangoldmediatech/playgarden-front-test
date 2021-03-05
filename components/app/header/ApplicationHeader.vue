@@ -250,7 +250,7 @@ export default {
     },
 
     goToAccount () {
-      this.$router.push({ name: 'app-account' })
+      this.$router.push({ name: 'app-account-index' })
     }
   }
 }

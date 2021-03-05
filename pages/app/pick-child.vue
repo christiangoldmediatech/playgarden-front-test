@@ -49,7 +49,7 @@
                 text
                 block
                 x-large
-                :to="{ name: 'app-account' }"
+                :to="{ name: 'app-account-index' }"
               >
                 MANAGE STUDENT PROFILES
               </v-btn>
