@@ -79,7 +79,12 @@
                 v-bind="attrs"
                 v-on="{ ...tooltip, ...menu }"
               >
-                {{ uploadingVideos.length }}
+                <v-progress-circular
+                  v-if="uploadingVideos.length > 0"
+                  indeterminate
+                  color="amber"
+                ></v-progress-circular>
+                <span class="notification-videos">{{ uploadingVideos.length }}</span>
                 <v-icon>
                   mdi-bell
                 </v-icon>
@@ -91,12 +96,18 @@
         <v-list dense>
           <v-subheader>Notifications</v-subheader>
           <v-divider></v-divider>
-          <v-list>
+          <v-list class="content-notification">
             <v-list-item
-              v-for="(item, index) in notifications"
+              v-for="(item, index) in uploadingVideos"
               :key="index"
             >
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
+              <v-list-item-title>
+                <v-icon>
+                  mdi-video
+                </v-icon>
+                {{ item.name }}
+                <v-divider></v-divider>
+              </v-list-item-title>
             </v-list-item>
           </v-list>
         </v-list>
@@ -339,14 +350,14 @@ export default {
 
   async created () {
     try {
-      await this.getVideos()
+      await this.getVideos({ status: 'UPLOADING' })
     } catch (e) {
 
     }
   },
 
   methods: {
-    ...mapActions('videos', {
+    ...mapActions('admin', {
       getVideos: 'getVideosUploading'
     })
   }
@@ -409,6 +420,13 @@ export default {
   }
   .v-text-field .v-input__control .v-input__slot {
     box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.16) !important;
+  }
+  .notification-videos {
+    color: var(--v-black-base) !important;
+  }
+  .content-notification {
+    max-height: 400px;
+    overflow-y: auto;
   }
 }
 </style>
