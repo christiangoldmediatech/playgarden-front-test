@@ -109,8 +109,10 @@ export default {
 
 <style lang="scss" scoped>
 .v-application {
-  overflow-x: hidden !important;
-  overflow-y: auto;
+  @media screen and (max-width: 1263px) {
+    overflow-x: hidden !important;
+    overflow-y: auto;
+  }
 }
 .v-application ::v-deep {
   .container:not(.container--fluid) {
