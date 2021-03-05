@@ -434,7 +434,7 @@ export default {
           playdateId: this.playdate.id,
           childId: this.childId
         })
-        this.$snotify.success('Successfully added to the playdate!')
+        this.$snotify.success('Children have been successfully added to the playdate!')
         this.$router.push({ name: 'app-playdates' })
       } catch (error) {
         this.$snotify.error('We could not add your child to the Playdate')
