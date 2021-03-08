@@ -71,6 +71,9 @@ export default {
   },
 
   async created () {
+    // Setup favorites callback
+    this.$nuxt.$on('library-update-favorites', this.handleLibraryFavorites)
+
     this.getAllFavorites()
     const data = await this.$axios.$get('/activities')
 
@@ -100,7 +103,40 @@ export default {
   },
 
   methods: {
-    ...mapActions('video', ['getAllFavorites'])
+    ...mapActions('video', ['getAllFavorites']),
+
+    async handleLibraryFavorites () {
+      // Get the ids of our current favorites
+      let favoriteIds = this.favorites.map(favorite => favorite.id)
+
+      // Get the new favorite data
+      const data = await this.$axios.$get('/activities?favorites=1')
+      const newIds = data.favorites.map(favorite => favorite.id)
+
+      // Check if any old ids are missing in order to remove them
+      const missing = []
+      favoriteIds.forEach((favoriteId) => {
+        if (!newIds.includes(favoriteId)) {
+          missing.push(favoriteId)
+        }
+      })
+
+      // remove missing ids
+      missing.forEach((missingId) => {
+        const index = this.favorites.findIndex(favorite => favorite.id === missingId)
+        if (index >= 0) {
+          this.favorites.splice(index, 1)
+        }
+      })
+
+      // handle new favorites
+      favoriteIds = this.favorites.map(favorite => favorite.id)
+      data.favorites.forEach((favorite) => {
+        if (!favoriteIds.includes(favorite.id)) {
+          this.favorites.push(favorite)
+        }
+      })
+    }
   }
 }
 </script>
