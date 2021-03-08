@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import FavoritesContainer from '@/components/app/library/FavoritesContainer.vue'
 import ActivityTypeHeader from '@/components/app/library/ActivityTypeHeader.vue'
 import ActivityPlayer from '@/components/app/activities/ActivityPlayer.vue'
@@ -57,23 +57,29 @@ export default {
     }
   },
 
+  computed: {
+    ...mapGetters('children', {
+      allChildren: 'rows'
+    })
+  },
+
   created () {
+    this.setChild({
+      value: this.allChildren
+    })
     this.fetchFavorites()
     this.getAllFavorites()
   },
 
   methods: {
     ...mapActions('video', ['getAllFavorites']),
+    ...mapActions(['setChild']),
 
     async fetchFavorites () {
       try {
         const data = await this.$axios.$get('/activities')
 
         if (data.favorites && data.favorites.length) {
-          // const favorites = data.favorites.filter((favorite) => {
-          //   return favorite && favorite.video && favorite.video.activityType && favorite.video.videoUrl
-          // })
-
           this.favorites = data.favorites.length ? shuffle(data.favorites) : []
         }
       } catch (error) {
