@@ -344,7 +344,7 @@ export default {
   },
 
   created () {
-    this.getVideos({ status: 'UPLOADING' })
+    this.getVideos()
     this.checkStatus()
   },
 
@@ -359,7 +359,7 @@ export default {
 
     checkStatus () {
       this.checkStatusInterval = setInterval(() => {
-        this.getVideos({ status: 'UPLOADING' })
+        this.getVideos()
       }, 120000)
     },
 
