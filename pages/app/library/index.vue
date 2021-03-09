@@ -9,7 +9,7 @@
     <library-categories
       v-model="selectedActivity"
       v-bind="{ categories: activityTypeData }"
-      :favorites="favorites.length > 0"
+      :favorites="true"
     />
 
     <v-container class="text-center pt-12 pb-8" fluid>
@@ -20,8 +20,8 @@
     </v-container>
 
     <favorites-container
-      v-if="($vuetify.breakpoint.mdAndDown && selectedActivity === 'favorites') || ($vuetify.breakpoint.lgAndUp && favorites.length)"
-      v-bind="{ favorites }"
+      v-if="($vuetify.breakpoint.mdAndDown && selectedActivity === 'favorites') || ($vuetify.breakpoint.lgAndUp)"
+      v-bind="{ favorites, initialFavoritesLoading }"
     />
 
     <activity-type-container
@@ -58,6 +58,12 @@ export default {
 
   mixins: [LibraryFunctions],
 
+  data: () => {
+    return {
+      initialFavoritesLoading: true
+    }
+  },
+
   computed: {
     activityTypes () {
       if (this.$vuetify.breakpoint.mdAndDown) {
@@ -74,7 +80,10 @@ export default {
     // Setup favorites callback
     this.$nuxt.$on('library-update-favorites', this.handleLibraryFavorites)
 
+    // Get favorites
     this.getAllFavorites()
+
+    // Get activities
     const data = await this.$axios.$get('/activities')
 
     this.featuredVideo = data.featured
@@ -100,6 +109,7 @@ export default {
 
     this.favorites = data.favorites.length ? shuffle(data.favorites) : []
     this.selectedActivity = this.activityTypeData[0].id
+    this.initialFavoritesLoading = false
   },
 
   methods: {
