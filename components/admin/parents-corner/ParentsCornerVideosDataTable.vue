@@ -103,6 +103,12 @@ export default {
     })
   },
 
+  watch: {
+    items () {
+      this.checkStatus()
+    }
+  },
+
   created () {
     this.getCategories()
     this.refresh()
@@ -128,8 +134,6 @@ export default {
         }
 
         await this.getVideos({ name: this.search, categoryId: this.categoryId })
-        this.checkStatus()
-        this.stopInterval()
       } catch (e) {
         Promise.reject(e)
       } finally {
@@ -153,11 +157,7 @@ export default {
         this.checkStatusInterval = setInterval(() => {
           this.refresh()
         }, 120000)
-      }
-    },
-
-    stopInterval () {
-      if (this.items.filter(data => data.video.status !== 'COMPLETED').length === 0) {
+      } else {
         clearInterval(this.checkStatusInterval)
       }
     }

@@ -321,6 +321,10 @@ export default {
 
     viewMode () {
       this.refresh(false)
+    },
+
+    liveSessions () {
+      this.checkStatus()
     }
   },
 
@@ -367,9 +371,6 @@ export default {
             page: this.pagination.page,
             limit: this.pagination.limit
           })
-          this.checkStatus()
-          this.stopInterval()
-
           this.liveSessions = liveSessions
           this.setPagination({ page, total })
         } catch (e) {
@@ -395,11 +396,7 @@ export default {
         this.checkStatusInterval = setInterval(() => {
           this.refresh()
         }, 120000)
-      }
-    },
-
-    stopInterval () {
-      if (this.liveSessions.filter(data => data.videos && data.videos.status !== 'COMPLETED').length === 0) {
+      } else {
         clearInterval(this.checkStatusInterval)
       }
     },
