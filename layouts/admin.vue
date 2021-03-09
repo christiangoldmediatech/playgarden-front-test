@@ -101,13 +101,23 @@
               v-for="(item, index) in uploadingVideos"
               :key="index"
             >
-              <v-list-item-title>
+              <v-list-item-avatar>
                 <v-icon>
                   mdi-video
                 </v-icon>
-                {{ item.name }}
+              </v-list-item-avatar>
+              <v-list-item-content>
+                <v-list-item-title>
+                  {{ item.name }}
+                </v-list-item-title>
+                <v-list-item-subtitle>
+                  {{ item.description }}
+                </v-list-item-subtitle>
+                <v-list-item-subtitle>
+                  Status: {{ item.status }}
+                </v-list-item-subtitle>
                 <v-divider></v-divider>
-              </v-list-item-title>
+              </v-list-item-content>
             </v-list-item>
           </v-list>
         </v-list>
@@ -360,13 +370,7 @@ export default {
     checkStatus () {
       this.checkStatusInterval = setInterval(() => {
         this.getVideos()
-      }, 120000)
-    },
-
-    stopInterval () {
-      if (this.resources.filter(data => data.status !== 'COMPLETED').length === 0) {
-        clearInterval(this.checkStatusInterval)
-      }
+      }, 60000)
     }
   }
 }
