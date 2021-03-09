@@ -1,12 +1,38 @@
 <template>
-  <v-col>
-    <validation-observer
+  <v-row no-gutters>
+    <!-- Desktop Title -->
+    <v-col cols="6" class="d-none d-sm-block">
+      <div class="pg-title--uppercase pb-12">
+        Student Profile
+      </div>
+    </v-col>
+    <v-col cols="12" sm="6" class="d-sm-flex justify-sm-end pb-12">
+      <!-- Add new child profile button -->
+      <v-btn
+        color="primary"
+        :disabled="loading"
+        x-large
+        :block="isMobile"
+        @click="addRow"
+      >
+        Add New Child Profile
+      </v-btn>
+    </v-col>
+
+    <v-col
       v-for="(item, indexD) in items"
       :key="indexD"
-      v-slot="{ invalid, passes }"
+      cols="12"
+      sm="6"
     >
-      <v-row>
-        <v-col>
+      <v-card
+        :class="[
+          'pa-4 pa-sm-8 detail-card mb-16',
+          { 'mr-sm-8': indexD % 2 === 0 },
+          { 'ml-sm-8': indexD % 2 === 1 }
+        ]"
+      >
+        <validation-observer v-if="isEditing[indexD]" v-slot="{ passes }">
           <v-form
             :readonly="loading"
             @submit.prevent="passes().then(onSubmit(item, indexD))"
@@ -18,13 +44,26 @@
               "
               rules="required"
             >
-              <v-row class="mb-6" justify="center">
-                <img
-                  v-if="firstBackpack"
-                  :alt="childBackpack(item.backpackId).name"
-                  class="backpack-active"
-                  :src="childBackpack(item.backpackId).image"
-                >
+              <v-row no-gutters class="mb-6">
+                <v-col cols="12" class="d-flex justify-end">
+                  <v-btn
+                    v-if="removable(item)"
+                    text
+                    color="error"
+                    class="text-decoration-underline"
+                    @click.stop="removeChild(item, indexD)"
+                  >
+                    DELETE CHILD
+                  </v-btn>
+                </v-col>
+                <v-col cols="12" class="d-flex justify-center mt-sm-n9">
+                  <img
+                    v-if="firstBackpack"
+                    :alt="childBackpack(item.backpackId).name"
+                    class="backpack-active"
+                    :src="childBackpack(item.backpackId).image"
+                  >
+                </v-col>
               </v-row>
 
               <v-row justify="center" no-gutters>
@@ -147,50 +186,82 @@
               <input v-model="item.gender" type="hidden">
             </validation-provider>
 
-            <v-row v-if="isChildChanged(item)" class="mb-6" justify="center">
-              <v-btn
-                class="px-8"
-                color="primary"
-                :disabled="invalid"
-                :loading="loading"
-                type="submit"
-                x-large
-              >
-                SAVE
-              </v-btn>
-            </v-row>
-
             <v-btn
-              v-if="removable(item)"
+              v-if="isChildChanged(item)"
               block
-              text
-              color="primary"
-              @click.stop="removeChild(item, indexD)"
+              color="warning"
+              :loading="loading"
+              type="submit"
+              x-large
             >
-              DELETE CHILD PROFILE
+              SAVE
             </v-btn>
-
-            <v-divider v-if="removable(item)" class="mt-6" />
           </v-form>
-        </v-col>
-      </v-row>
-    </validation-observer>
+        </validation-observer>
 
-    <v-row>
-      <v-col>
-        <v-btn
-          block
-          class="mb-12 mt-6"
-          color="primary"
-          :disabled="loading"
-          x-large
-          @click="addRow"
-        >
-          ADD <span class="d-none d-sm-flex white--text">NEW</span> CHILD
-        </v-btn>
-      </v-col>
-    </v-row>
-  </v-col>
+        <!-- Readonly child info -->
+        <v-row v-if="!isEditing[indexD]" no-gutters>
+          <v-col cols="12" class="d-flex justify-center">
+            <img
+              v-if="firstBackpack"
+              :alt="childBackpack(item.backpackId).name"
+              class="backpack-active"
+              :src="childBackpack(item.backpackId).image"
+            >
+          </v-col>
+
+          <v-col cols="12" class="d-flex justify-center">
+            <v-btn class="warning">
+              View Progress
+            </v-btn>
+          </v-col>
+
+          <v-col cols="12" class="d-flex justify-center">
+            <v-btn class="primary--text" x-large text @click="editChild(indexD)">
+              Edit Child
+            </v-btn>
+          </v-col>
+        </v-row>
+
+        <v-row v-if="!isEditing[indexD]">
+          <v-col cols="6" class="grey-property">
+            Name
+          </v-col>
+          <v-col cols="6" class="grey-property-value">
+            {{ item.firstName }}
+          </v-col>
+
+          <v-col cols="6" class="grey-property">
+            Date of birth
+          </v-col>
+          <v-col cols="6" class="grey-property-value">
+            ...
+          </v-col>
+
+          <v-col cols="6" class="grey-property">
+            Gender
+          </v-col>
+          <v-col cols="6" class="grey-property-value">
+            {{ item.gender }}
+          </v-col>
+
+          <v-col cols="6" class="grey-property">
+            Current letter
+          </v-col>
+          <v-col cols="6" class="grey-property-value">
+            ...
+          </v-col>
+
+          <v-col cols="6" class="grey-property">
+            Current day
+          </v-col>
+          <v-col cols="6" class="grey-property-value">
+            ...
+          </v-col>
+        </v-row>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -204,6 +275,7 @@ export default {
     loading: false,
     backpacks: [],
     items: [],
+    isEditing: [],
     genders: ['MALE', 'FEMALE']
   }),
 
@@ -233,6 +305,10 @@ export default {
         return this.backpacks[0].id
       }
       return null
+    },
+
+    isMobile () {
+      return this.$vuetify.breakpoint.smAndDown
     }
   },
 
@@ -269,6 +345,8 @@ export default {
         rows.forEach((row) => {
           this.loadChild(row)
         })
+        // create an isEditing boolean for each row
+        this.isEditing = rows.map(_ => false)
       } catch (error) {
         return Promise.reject(error)
       } finally {
@@ -321,7 +399,7 @@ export default {
 
       _data._original = this.getOriginalChild(_data)
 
-      this.items.push(_data)
+      this.items.unshift(_data)
     },
 
     fetchBackpacks () {
@@ -387,6 +465,10 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+
+    editChild (index) {
+      this.$set(this.isEditing, index, true)
     }
   }
 }
@@ -426,5 +508,27 @@ export default {
 
 .custom-btn::v-deep.v-btn {
   text-transform: capitalize !important;
+}
+
+.grey-title {
+  color: #606060;
+}
+
+.grey-property {
+  color: #9B9B9B;
+}
+
+.grey-property-value {
+  font-weight: 600;
+  color: #484848;
+}
+
+.detail-card {
+  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.25) !important;
+  border-radius: 8px !important;
+}
+
+.v-btn:not(.v-btn--text) {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
 }
 </style>
