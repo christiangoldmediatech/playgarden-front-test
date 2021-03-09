@@ -1,93 +1,77 @@
 <template>
-  <validation-observer v-if="showAddress" v-slot="{ invalid, passes, reset }">
-    <v-form id="shipping-address-form" @submit.prevent="passes(onSubmit)">
-      <p>
-        <span class="font-weight-bold">
-          SHIPPING ADDRESS
-        </span>
-      </p>
+  <div>
+    <!-- Editable user shipping address -->
+    <validation-observer v-if="isEditing && showAddress" v-slot="{ invalid, passes, reset }">
+      <v-form id="shipping-address-form" @submit.prevent="passes(onSubmit)">
+        <!-- Street 1 -->
+        <validation-provider v-slot="{ errors }" name="Street 1" rules="required">
+          <pg-text-field
+            v-model="draft.address1"
+            clearable
+            :error-messages="errors"
+            :loading="loading"
+            placeholder="Street 1"
+            solo
+          />
+        </validation-provider>
 
-      <!-- Street 1 -->
-      <validation-provider v-slot="{ errors }" name="Street 1" rules="required">
+        <!-- Street 2 -->
         <pg-text-field
-          v-model="draft.address1"
+          v-model="draft.address2"
           clearable
-          :disabled="!editing || loading"
-          :error-messages="errors"
           :loading="loading"
-          placeholder="Street 1"
+          placeholder="Street 2 (optional)"
           solo
         />
-      </validation-provider>
 
-      <!-- Street 2 -->
-      <pg-text-field
-        v-model="draft.address2"
-        clearable
-        :disabled="!editing || loading"
-        :loading="loading"
-        placeholder="Street 2 (optional)"
-        solo
-      />
+        <!-- City -->
+        <validation-provider v-slot="{ errors }" name="City" rules="required">
+          <pg-text-field
+            v-model="draft.city"
+            clearable
+            :error-messages="errors"
+            :loading="loading"
+            placeholder="City"
+            solo
+          />
+        </validation-provider>
 
-      <!-- City -->
-      <validation-provider v-slot="{ errors }" name="City" rules="required">
-        <pg-text-field
-          v-model="draft.city"
-          clearable
-          :disabled="!editing || loading"
-          :error-messages="errors"
-          :loading="loading"
-          placeholder="City"
-          solo
-        />
-      </validation-provider>
+        <!-- State -->
+        <validation-provider
+          v-slot="{ errors }"
+          name="State"
+          rules="required"
+        >
+          <pg-text-field
+            v-model="draft.state"
+            clearable
+            :error-messages="errors"
+            :loading="loading"
+            placeholder="State"
+            solo
+          />
+        </validation-provider>
 
-      <v-row>
-        <v-col cols="6">
-          <!-- State -->
-          <validation-provider
-            v-slot="{ errors }"
-            name="State"
-            rules="required"
-          >
-            <pg-text-field
-              v-model="draft.state"
-              clearable
-              :disabled="!editing || loading"
-              :error-messages="errors"
-              :loading="loading"
-              placeholder="State"
-              solo
-            />
-          </validation-provider>
-        </v-col>
+        <!-- Zipcode -->
+        <validation-provider
+          v-slot="{ errors }"
+          name="Zipcode"
+          rules="required"
+        >
+          <pg-text-field
+            v-model="draft.zipCode"
+            clearable
+            :error-messages="errors"
+            :loading="loading"
+            placeholder="Zip code"
+            solo
+          />
+        </validation-provider>
 
-        <v-col cols="6">
-          <!-- Zipcode -->
-          <validation-provider
-            v-slot="{ errors }"
-            name="Zipcode"
-            rules="required"
-          >
-            <pg-text-field
-              v-model="draft.zipCode"
-              clearable
-              :disabled="!editing || loading"
-              :error-messages="errors"
-              :loading="loading"
-              placeholder="Zip code"
-              solo
-            />
-          </validation-provider>
-        </v-col>
-      </v-row>
-
-      <template v-if="editing">
         <v-btn
           block
           class="mb-6"
-          color="primary"
+          color="warning"
           :disabled="invalid"
           :loading="loading"
           type="submit"
@@ -98,7 +82,6 @@
 
         <v-btn
           block
-          class="mb-6"
           color="primary"
           :loading="loading"
           text
@@ -107,23 +90,57 @@
         >
           CANCEL
         </v-btn>
-      </template>
+      </v-form>
+    </validation-observer>
 
-      <v-btn
-        v-else
-        :key="`${_uid}-change`"
-        block
-        class="mb-6"
-        color="primary"
-        :loading="loading"
-        type="submit"
-        x-large
-        @click="editing = true"
-      >
-        CHANGE ADDRESS
-      </v-btn>
-    </v-form>
-  </validation-observer>
+    <!-- Readonly user shipping address -->
+    <v-row v-else class="shipping-info-text">
+      <v-col cols="6">
+        Street 1
+      </v-col>
+      <v-col cols="6" class="text-right">
+        {{ draft.address1 }}
+      </v-col>
+
+      <v-col cols="6">
+        Street 2
+      </v-col>
+      <v-col cols="6" class="text-right">
+        {{ draft.address2 }}
+      </v-col>
+
+      <v-col cols="6">
+        City
+      </v-col>
+      <v-col cols="6" class="text-right">
+        {{ draft.city }}
+      </v-col>
+
+      <v-col cols="6">
+        State
+      </v-col>
+      <v-col cols="6" class="text-right">
+        {{ draft.state }}
+      </v-col>
+
+      <v-col cols="6">
+        Zip Code
+      </v-col>
+      <v-col cols="6" class="text-right">
+        {{ draft.zipCode }}
+      </v-col>
+    </v-row>
+
+    <v-btn
+      v-if="!isEditing && showAddress"
+      x-large
+      class="primary mt-8"
+      block
+      @click="isEditing = true"
+    >
+      Change Address
+    </v-btn>
+  </div>
 </template>
 
 <script>
@@ -137,9 +154,9 @@ export default {
   mixins: [submittable],
 
   data: () => ({
+    isEditing: false,
     showAddress: false,
-    editing: false,
-    loading: true
+    loading: false
   }),
 
   created () {
@@ -183,7 +200,7 @@ export default {
             {
               text: 'Edit',
               action: () => {
-                this.editing = true
+                this.isEditing = true
                 this.$scrollTo('#shipping-address-form', { offset: -65 })
               }
             }
@@ -216,7 +233,7 @@ export default {
         reset()
       }
 
-      this.editing = false
+      this.isEditing = false
 
       this.$emit('click:cancel')
 
@@ -256,3 +273,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.shipping-info-text {
+  color: #B7B7B7;
+}
+</style>
