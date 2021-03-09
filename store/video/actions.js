@@ -20,17 +20,7 @@ export default {
     if (state.loading) { return }
     try {
       commit('SET_LOADING', true)
-      const results = []
-      const promises = []
-      rootGetters.getCurrentChild.forEach((child) => {
-        promises.push(dispatch('getFavorites', child.id))
-      })
-      const response = await Promise.all(promises)
-      response.forEach((resultSet) => {
-        resultSet.forEach((video) => {
-          results.push(video)
-        })
-      })
+      const results = await this.$axios.$get('/videos-favorites/children')
       commit('SET_ROWS', results)
     } catch (error) {
       return Promise.reject(error)
