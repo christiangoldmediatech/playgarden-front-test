@@ -44,6 +44,17 @@
         </div>
       </div>
 
+      <div
+        v-if="shownFavorites.length === 0 && !initialFavoritesLoading"
+        class="d-flex align-center justify-center flex-column"
+      >
+        <img src="@/assets/svg/library/favorites.svg" width="128px">
+
+        <div class="no-favorites mt-6">
+          Add your favorite videos here, by clicking on their Heart icons.
+        </div>
+      </div>
+
       <div v-if="total > shownFavorites.length" class="text-center mt-3">
         <v-btn
           color="accent"
@@ -93,6 +104,12 @@ export default {
     },
 
     noHeader: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
+    initialFavoritesLoading: {
       type: Boolean,
       required: false,
       default: false
@@ -170,3 +187,16 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.no-favorites {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.25;
+  text-align: center;
+  color: #606060;
+  @media screen and (min-width: 1264px) {
+    font-size: 30px;
+  }
+}
+</style>

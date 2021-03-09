@@ -55,7 +55,7 @@
                       color="accent"
                       block
                       nuxt
-                      :to="{ name: 'app-activities' }"
+                      :to="{ name: 'app-library' }"
                     >
                       <img class="piece-earned-play-btn-icon" height="30px;" src="@/assets/svg/play-button.svg">
                       <template v-if="$vuetify.breakpoint.xsOnly">
