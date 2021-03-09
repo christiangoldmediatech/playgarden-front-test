@@ -1,20 +1,30 @@
 <template>
   <v-main>
     <v-row no-gutters class="fill-height">
-      <v-col v-if="isMobile" cols="12" md="2">
-        <v-card class="text-center fill-height" flat>
-          <div class="text-h6 grey--text py-12 mx-2">
-            <div class="pb-2">
+      <v-col cols="12" md="2" :class="{ 'fill-height': !isMobile }">
+        <v-card
+          :flat="isMobile"
+          :class="['text-center fill-height', { 'mobile-card': isMobile }]"
+        >
+          <div class="py-12 mx-2">
+            <img
+              class="d-none d-sm-inline"
+              height="161px"
+              src="@/assets/svg/account-profile.svg"
+            >
+
+            <div class="text-h6 grey--text py-2">
               Account page
             </div>
 
             <underlined-title :text="fullName" font-size="32px" />
           </div>
           <pg-select
+            v-if="isMobile"
             solo
-            class="px-8"
+            class="px-2"
             :value="selectedHref"
-            :items="btns"
+            :items="sections"
             item-value="href"
             @input="navigateToPage($event)"
           >
@@ -24,30 +34,21 @@
               </div>
             </template>
           </pg-select>
-        </v-card>
-      </v-col>
-      <v-col v-if="!isMobile" cols="12" md="2" class="fill-height">
-        <v-card class="text-center fill-height" elevation="12">
-          <div class="text-h6 grey--text py-12">
-            <div class="pb-2">
-              Account page
-            </div>
 
-            <underlined-title :text="fullName" font-size="32px" />
-          </div>
           <v-card
-            v-for="btn in btns"
-            :key="btn.text"
-            elevation="3"
-            :class="btnClasses(btn.href)"
-            @click="navigateToPage(btn.href)"
+            v-for="section in sections"
+            v-else
+            :key="section.text"
+            elevation="2"
+            :class="btnClasses(section.href)"
+            @click="navigateToPage(section.href)"
           >
-            {{ btn.text }}
+            {{ section.text }}
           </v-card>
         </v-card>
       </v-col>
       <v-col cols="12" md="10">
-        <div class="pa-8 pa-sm-12">
+        <div class="pa-2 px-sm-8 mx-sm-16 my-sm-8">
           <nuxt-child />
         </div>
       </v-col>
@@ -62,7 +63,7 @@ export default {
   name: 'Index',
 
   data: () => ({
-    btns: [
+    sections: [
       { text: 'General', href: '/app/account/' },
       { text: 'Student Profile', href: '/app/account/student-profile' },
       { text: 'Membership', href: '/app/account/membership' },
@@ -94,11 +95,22 @@ export default {
       this.$router.push(href)
     },
     btnClasses (href) {
-      return {
-        'py-4 mb-6 text-uppercase font-weight-medium': true,
-        'primary white--text': this.selectedHref === href
-      }
+      return [
+        'py-6 mb-3 text-uppercase font-weight-bold account-section',
+        { 'primary white--text': this.selectedHref === href }
+      ]
     }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.v-sheet.v-card:not(.mobile-card) {
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16) !important;
+}
+.account-section {
+  color: #606060;
+  letter-spacing: 0.96px;
+  line-height: 30px;
+}
+</style>
