@@ -19,13 +19,14 @@
 
             <underlined-title :text="fullName" font-size="32px" />
           </div>
+
           <pg-select
             v-if="isMobile"
             solo
             class="px-2"
-            :value="selectedHref"
+            :value="selectedRouteName"
             :items="sections"
-            item-value="href"
+            item-value="routeName"
             @input="navigateToPage($event)"
           >
             <template v-slot:selection="{ item }">
@@ -40,15 +41,15 @@
             v-else
             :key="section.text"
             elevation="2"
-            :class="btnClasses(section.href)"
-            @click="navigateToPage(section.href)"
+            :class="btnClasses(section.routeName)"
+            @click="navigateToPage(section.routeName)"
           >
             {{ section.text }}
           </v-card>
         </v-card>
       </v-col>
       <v-col cols="12" md="10">
-        <div class="pa-2 px-sm-8 mx-sm-16 my-sm-8">
+        <div class="pa-2 mx-md-12 my-md-8 px-lg-8 mx-lg-16">
           <nuxt-child />
         </div>
       </v-col>
@@ -64,13 +65,14 @@ export default {
 
   data: () => ({
     sections: [
-      { text: 'General', href: '/app/account/' },
-      { text: 'Student Profile', href: '/app/account/student-profile' },
-      { text: 'Membership', href: '/app/account/membership' },
-      { text: 'Caregivers', href: '/app/account/caregiver' },
-      { text: 'Notification', href: '/app/account/notification' }
+      { text: 'General', routeName: 'app-account-index' },
+      { text: 'Student Profile', routeName: 'app-account-index-student-profile' },
+      { text: 'Membership', routeName: 'app-account-index-membership' },
+      { text: 'Caregivers', routeName: 'app-account-index-caregiver' },
+      { text: 'Notification', routeName: 'app-account-index-notification' },
+      { text: 'Logout', routeName: 'auth-logout' }
     ],
-    selectedHref: ''
+    selectedRouteName: ''
   }),
 
   computed: {
@@ -86,18 +88,19 @@ export default {
   },
 
   mounted () {
-    this.selectedHref = this.$route.path
+    this.selectedRouteName = this.$route.name
   },
 
   methods: {
-    navigateToPage (href) {
-      this.selectedHref = href
-      this.$router.push(href)
+    navigateToPage (routeName) {
+      this.selectedRouteName = routeName
+      this.$router.push({ name: routeName })
     },
-    btnClasses (href) {
+    btnClasses (routeName) {
       return [
         'py-6 mb-3 text-uppercase font-weight-bold account-section',
-        { 'primary white--text': this.selectedHref === href }
+        { 'primary white--text': this.selectedRouteName === routeName },
+        { 'orange--text': routeName === 'auth-logout' }
       ]
     }
   }
