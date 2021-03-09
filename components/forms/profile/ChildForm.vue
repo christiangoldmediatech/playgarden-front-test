@@ -2,12 +2,12 @@
   <v-row no-gutters>
     <!-- Desktop Title -->
     <v-col cols="6" class="d-none d-sm-block">
-      <div class="pg-title--uppercase pb-12">
+      <div class="text-uppercase text-h4 font-weight-bold grey--text text--darken-2 pb-12">
         Student Profile
       </div>
     </v-col>
-    <v-col cols="12" sm="6" class="d-sm-flex justify-sm-end pb-12">
-      <!-- Add new child profile button -->
+    <v-col cols="12" sm="6" class="d-sm-flex justify-sm-end pb-12 pb-sm-0">
+      <!-- Add New Child Profile Button -->
       <v-btn
         color="primary"
         :disabled="loading"
@@ -27,7 +27,7 @@
     >
       <v-card
         :class="[
-          'pa-4 pa-sm-8 detail-card mb-16',
+          'pa-4 pa-sm-8 custom-card-border mb-16',
           { 'mr-sm-8': indexD % 2 === 0 },
           { 'ml-sm-8': indexD % 2 === 1 }
         ]"
@@ -224,38 +224,38 @@
         </v-row>
 
         <v-row v-if="!isEditing[indexD]">
-          <v-col cols="6" class="grey-property">
+          <v-col cols="6" class="grey--text">
             Name
           </v-col>
-          <v-col cols="6" class="grey-property-value">
+          <v-col cols="6" class="font-weight-bold grey--text text--darken-2">
             {{ item.firstName }}
           </v-col>
 
-          <v-col cols="6" class="grey-property">
+          <v-col cols="6" class="grey--text">
             Date of birth
           </v-col>
-          <v-col cols="6" class="grey-property-value">
+          <v-col cols="6" class="font-weight-bold grey--text text--darken-2">
             ...
           </v-col>
 
-          <v-col cols="6" class="grey-property">
+          <v-col cols="6" class="grey--text">
             Gender
           </v-col>
-          <v-col cols="6" class="grey-property-value">
-            {{ item.gender }}
+          <v-col cols="6" class="font-weight-bold grey--text text--darken-2">
+            {{ item.gender === "FEMALE" ? "Girl" : "Boy" }}
           </v-col>
 
-          <v-col cols="6" class="grey-property">
+          <v-col cols="6" class="grey--text">
             Current letter
           </v-col>
-          <v-col cols="6" class="grey-property-value">
+          <v-col cols="6" class="font-weight-bold grey--text text--darken-2">
             ...
           </v-col>
 
-          <v-col cols="6" class="grey-property">
+          <v-col cols="6" class="grey--text">
             Current day
           </v-col>
-          <v-col cols="6" class="grey-property-value">
+          <v-col cols="6" class="font-weight-bold grey--text text--darken-2">
             ...
           </v-col>
         </v-row>
@@ -510,20 +510,7 @@ export default {
   text-transform: capitalize !important;
 }
 
-.grey-title {
-  color: #606060;
-}
-
-.grey-property {
-  color: #9B9B9B;
-}
-
-.grey-property-value {
-  font-weight: 600;
-  color: #484848;
-}
-
-.detail-card {
+.custom-card-border {
   box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.25) !important;
   border-radius: 8px !important;
 }
