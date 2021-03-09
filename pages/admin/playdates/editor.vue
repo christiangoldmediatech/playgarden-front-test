@@ -299,7 +299,9 @@
 </template>
 
 <script>
+import dayjs from 'dayjs'
 import { mapActions, mapGetters } from 'vuex'
+import { stringsToDate } from '@/utils/dateTools'
 
 function generatePlayDateTemplate () {
   return {
@@ -329,6 +331,7 @@ export default {
     loading: true,
     time: null,
     ages: ['1', '2', '3', '4'],
+    today: dayjs(new Date()).format('YYYY-MM-DD'),
     menuStart: false,
     menuEnd: false,
     days: [
@@ -412,12 +415,23 @@ export default {
       'getPlaydatesById'
     ]),
 
+    getHourUTC (dateSelected) {
+      const dateParts = dateSelected.toString().split(' ')
+      return dateParts[4]
+    },
+
     async save () {
       this.loading = true
       let id = this.id
 
       try {
+        const start = stringsToDate(this.today, this.playdate.start)
+        this.playdate.start = this.getHourUTC(start)
+        const end = stringsToDate(this.today, this.playdate.end)
+        this.playdate.end = this.getHourUTC(end)
+
         const playdate = this.playdate
+
         if (id === null) {
           const response = await this.createPlaydate(playdate)
           id = response.id
