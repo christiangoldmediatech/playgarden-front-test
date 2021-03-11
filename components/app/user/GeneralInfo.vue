@@ -3,27 +3,21 @@
     <!-- Editable user info -->
     <div v-if="isEditing">
       <pg-text-field
-        label="Name"
+        v-model="form.firstName"
+        label="First Name"
         solo
-        :value="userInfo.name"
       />
 
       <pg-text-field
-        label="Email"
+        v-model="form.lastName"
+        label="Last Name"
         solo
-        :value="userInfo.email"
       />
 
       <pg-text-field
-        label="Password"
-        solo
-        suffix="••••••••••"
-      />
-
-      <pg-text-field
+        v-model="form.phoneNumber"
         label="Phone number"
         solo
-        :value="userInfo.phoneNumber"
       />
     </div>
 
@@ -58,7 +52,14 @@
       </v-col>
     </v-row>
 
-    <v-btn v-if="isEditing" x-large block class="warning">
+    <v-btn
+      v-if="isEditing"
+      x-large
+      block
+      class="warning"
+      :loading="loading"
+      @click="saveUserInfo"
+    >
       Save
     </v-btn>
 
@@ -170,8 +171,10 @@ export default {
   },
 
   data: () => ({
+    form: {},
     isEditing: false,
-    passwordModal: false
+    passwordModal: false,
+    loading: false
   }),
 
   computed: {
@@ -184,8 +187,18 @@ export default {
     }
   },
 
+  watch: {
+    userInfo: {
+      immediate: true,
+      deep: true,
+      handler () {
+        this.form = { ...this.userInfo }
+      }
+    }
+  },
+
   methods: {
-    ...mapActions('auth', ['fetchUserInfo']),
+    ...mapActions('auth', ['fetchUserInfo', 'updateUserInfo']),
 
     ...mapActions(['disableAxiosGlobal', 'enableAxiosGlobal']),
 
@@ -235,8 +248,22 @@ export default {
       } catch (e) {
         this.$snotify.error(e.message)
       }
-    }
+    },
 
+    async saveUserInfo () {
+      try {
+        this.loading = true
+
+        await this.updateUserInfo({
+          firstName: this.form.firstName,
+          lastName: this.form.lastName,
+          phoneNumber: this.form.phoneNumber
+        })
+      } finally {
+        this.loading = false
+        this.isEditing = false
+      }
+    }
   }
 }
 </script>
