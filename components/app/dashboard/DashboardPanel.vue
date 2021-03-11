@@ -4,8 +4,7 @@
       <div class="dashboard-panel-card-border-top">
         <v-row v-if="!displayMode" justify="space-between">
           <v-col class="btnLesson">
-            {{ currentLessonId }}
-            <v-btn class="ml-3" icon @click.stop="previusLesson">
+            <v-btn class="ml-3" icon @click.stop="previousLesson">
               <img src="@/assets/svg/back-arrow.svg">
             </v-btn>
           </v-col>
@@ -243,7 +242,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters('children/lesson', { nextLessonId: 'getNextLessonId', currentLessonId: 'getCurrentLessonId' }),
+    ...mapGetters('children/lesson', { nextLessonId: 'getNextLessonId', currentLessonId: 'getCurrentLessonId', previousLessonId: 'getPreviousLessonId' }),
 
     offlineWorksheet () {
       if (this.lesson) {
@@ -264,24 +263,22 @@ export default {
   },
 
   methods: {
-    ...mapActions('children/lesson', ['getAdvanceLessonChildren', 'getBackLessonChildren']),
+    ...mapActions('children/lesson', ['getAdvanceLessonChildren']),
 
-    previusLesson () {
+    previousLesson () {
       console.log('back currentLessonId', this.currentLessonId)
       try {
         if (this.lesson.id !== 1) {
-          this.getBackLessonChildren({ childId: this.childId, lessonId: this.currentLessonId }).then((response) => {
-            this.$router.push({
-              name: 'app-dashboard',
-              query: {
-                childId: this.childId,
-                lessonId: response.lesson.id
-              }
-            },
-            () => {
-              this.$nuxt.$emit('dashboard-panel-update-back', () => {
-                this.loadingNext = false
-              })
+          this.$router.push({
+            name: 'app-dashboard',
+            query: {
+              childId: this.childId,
+              lessonId: this.previousLessonId
+            }
+          },
+          () => {
+            this.$nuxt.$emit('dashboard-panel-update-redirect', () => {
+              this.loadingNext = false
             })
           })
         }
