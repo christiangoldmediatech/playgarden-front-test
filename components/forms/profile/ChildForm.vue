@@ -211,7 +211,7 @@
           </v-col>
 
           <v-col cols="12" class="d-flex justify-center">
-            <v-btn class="warning">
+            <v-btn class="warning" @click="openTimeline(item)">
               View Progress
             </v-btn>
           </v-col>
@@ -235,7 +235,7 @@
             Date of birth
           </v-col>
           <v-col cols="6" class="font-weight-bold grey--text text--darken-2">
-            ...
+            {{ getChildBirthday(item.birthday) }}
           </v-col>
 
           <v-col cols="6" class="grey--text">
@@ -249,31 +249,39 @@
             Current letter
           </v-col>
           <v-col cols="6" class="font-weight-bold grey--text text--darken-2">
-            ...
+            {{ item.progress.curriculumType.letter ? `Letter ${item.progress.curriculumType.letter}` : undefined }}
           </v-col>
 
           <v-col cols="6" class="grey--text">
             Current day
           </v-col>
           <v-col cols="6" class="font-weight-bold grey--text text--darken-2">
-            ...
+            {{ item.progress.day ? `Day ${item.progress.day}` : undefined }}
           </v-col>
         </v-row>
       </v-card>
     </v-col>
+
+    <user-child-timeline-dialog />
   </v-row>
 </template>
 
 <script>
 import dayjs from 'dayjs'
 import { mapActions } from 'vuex'
+import UserChildTimelineDialog from '@/components/admin/users/UserChildTimelineDialog.vue'
 
 export default {
   name: 'ChildForm',
 
+  components: {
+    UserChildTimelineDialog
+  },
+
   data: () => ({
     loading: false,
     backpacks: [],
+    childrenProgress: [],
     items: [],
     isEditing: [],
     genders: ['MALE', 'FEMALE']
@@ -327,6 +335,8 @@ export default {
       deleteChild: 'delete'
     }),
 
+    ...mapActions('children/progress', ['getUserChildrenProgress']),
+
     getOriginalChild ({ backpackId, birthday, firstName, level, gender } = {}) {
       return JSON.stringify({
         backpackId,
@@ -341,6 +351,7 @@ export default {
       try {
         this.loading = true
         await this.fetchBackpacks()
+        this.childrenProgress = await this.getUserChildrenProgress()
         const rows = await this.getChildren()
         rows.forEach((row) => {
           this.loadChild(row)
@@ -360,6 +371,8 @@ export default {
     ) {
       const _birthdayPicker = new Date(birthday).toISOString().substr(0, 10)
 
+      const progress = this.childrenProgress.find(progress => progress.children?.id === id)
+
       const item = {
         _birthdayPicker,
         _birthdayFormatted: '',
@@ -369,7 +382,13 @@ export default {
         birthday,
         firstName,
         gender,
-        level
+        level,
+        progress: {
+          curriculumType: {
+            letter: progress?.curriculumType?.letter
+          },
+          day: progress?.day
+        }
       }
 
       this.onInputBirthday(item)
@@ -469,6 +488,14 @@ export default {
 
     editChild (index) {
       this.$set(this.isEditing, index, true)
+    },
+
+    openTimeline (child) {
+      this.$nuxt.$emit('open-timeline', child)
+    },
+
+    getChildBirthday (date) {
+      return dayjs(date).format('MMMM DD, YYYY')
     }
   }
 }
