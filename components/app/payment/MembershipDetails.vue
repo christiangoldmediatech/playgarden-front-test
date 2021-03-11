@@ -29,7 +29,7 @@
           </span>
         </div>
 
-        <div class="text-center body-1 font-weight-medium grey--text text--darken-2 mt-2 mb-8">
+        <div class="text-center body-1 text-md-h6 font-weight-medium grey--text text--darken-2 mt-2 mb-8">
           Here is a brief description about membership
         </div>
 
@@ -118,105 +118,99 @@
 
     <!-- Plan Information -->
     <v-col cols="12" md="6" class="pl-md-8 mb-12 mb-md-0">
-      <v-row no-gutters>
-        <v-col cols="12" class="mb-12">
-          <v-card class="pa-4 px-md-10 py-md-6 card-custom-border">
-            <v-row no-gutters>
-              <!-- Plan Name-->
-              <v-col cols="12" class="text-center">
-                <div class="text-uppercase font-weight-bold text-h5 grey--text text--darken-2 mb-6">
-                  Your Plan
-                </div>
+      <v-card class="pa-4 px-md-10 py-md-6 mb-12 card-custom-border">
+        <v-row no-gutters>
+          <!-- Plan Name-->
+          <v-col cols="12" class="text-center">
+            <div class="text-uppercase font-weight-bold text-h5 grey--text text--darken-2 mb-6">
+              Your Plan
+            </div>
 
-                <v-btn class="warning mb-8" depressed width="160px">
-                  {{ billing.planName }}
-                </v-btn>
-              </v-col>
+            <v-btn class="warning mb-8" depressed width="160px">
+              {{ billing.planName }}
+            </v-btn>
+          </v-col>
 
-              <!-- Plan Name -->
-              <v-col cols="12" class="mb-4 text-center">
-                <underlined-title :text="plan.name" font-size="32px" />
-              </v-col>
+          <!-- Plan Name -->
+          <v-col cols="12" class="mb-4 text-center">
+            <underlined-title :text="plan.name" font-size="32px" />
+          </v-col>
 
-              <!-- Plan Description -->
-              <v-col cols="12" class="mb-10 mx-0 mx-lg-12">
-                <plan-description
-                  v-if="Object.keys(plan).length"
-                  :plan="plan"
-                  :index-plan="plan.id - 1"
-                />
-              </v-col>
+          <!-- Plan Description -->
+          <v-col cols="12" class="mb-10 mx-0 mx-lg-12">
+            <plan-description
+              v-if="Object.keys(plan).length"
+              :plan="plan"
+              :index-plan="plan.id - 1"
+            />
+          </v-col>
 
-              <!-- Change Plan Button -->
-              <v-col cols="12" class="d-flex justify-center">
-                <v-btn
-                  color="primary mb-3"
-                  x-large
-                  block
-                  @click="changePlanModal = true"
-                >
-                  CHANGE PLAN
-                </v-btn>
-              </v-col>
-
-              <v-col cols="12" class="d-flex justify-center">
-                <!-- Cancel Subscription -->
-                <v-btn
-                  v-if="hasMembership"
-                  block
-                  color="error"
-                  x-large
-                  @click="removeSubscriptionModal = true"
-                >
-                  CANCEL MEMBERSHIP
-                </v-btn>
-                <!-- Create Subscription -->
-                <v-btn
-                  v-else
-                  block
-                  color="primary"
-                  x-large
-                  @click="selectPlan"
-                >
-                  CREATE MEMBERSHIP
-                </v-btn>
-              </v-col>
-            </v-row>
-          </v-card>
-        </v-col>
-
-        <!-- Payment Method -->
-        <v-col cols="12">
-          <v-card class="pa-4 px-md-10 py-md-6 card-custom-border">
-            <v-row no-gutters class="text-uppercase font-weight-bold text-h5 grey--text text--darken-2" justify="center">
-              Payment Method
-            </v-row>
-            <v-row
-              v-for="(card, indexUC) in userCards"
-              :key="indexUC"
-              align="center"
-              no-gutters
+          <!-- Change Plan Button -->
+          <v-col cols="12" class="d-flex justify-center">
+            <v-btn
+              color="primary mb-3"
+              x-large
+              block
+              @click="changePlanModal = true"
             >
-              <v-col cols="4" class="text-center text-h6 grey--text font-weight-bold mt-8">
-                {{ card.details.brand }}
-              </v-col>
-              <v-col cols="8" class="text-center text-h6 grey--text font-weight-bold mt-8">
-                •••• •••• •••• {{ card.details.last4 }}
-              </v-col>
-              <v-col cols="12" class="d-flex justify-center mt-8">
-                <v-btn
-                  color="primary"
-                  text
-                  x-large
-                  @click="onUpdateCard(card)"
-                >
-                  Change Payment Method
-                </v-btn>
-              </v-col>
-            </v-row>
-          </v-card>
-        </v-col>
-      </v-row>
+              CHANGE PLAN
+            </v-btn>
+          </v-col>
+
+          <v-col cols="12" class="d-flex justify-center">
+            <!-- Cancel Subscription -->
+            <v-btn
+              v-if="hasMembership"
+              block
+              color="error"
+              x-large
+              @click="removeSubscriptionModal = true"
+            >
+              CANCEL MEMBERSHIP
+            </v-btn>
+            <!-- Create Subscription -->
+            <v-btn
+              v-else
+              block
+              color="primary"
+              x-large
+              @click="selectPlan"
+            >
+              CREATE MEMBERSHIP
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-card>
+
+      <!-- Payment Method -->
+      <v-card class="pa-4 px-md-10 py-md-6 card-custom-border">
+        <v-row no-gutters class="text-uppercase font-weight-bold text-h5 grey--text text--darken-2" justify="center">
+          Payment Method
+        </v-row>
+        <v-row
+          v-for="(card, indexUC) in userCards"
+          :key="indexUC"
+          align="center"
+          no-gutters
+        >
+          <v-col cols="4" class="text-center text-h6 grey--text font-weight-bold mt-8">
+            {{ card.details.brand }}
+          </v-col>
+          <v-col cols="8" class="text-center text-h6 grey--text font-weight-bold mt-8">
+            •••• •••• •••• {{ card.details.last4 }}
+          </v-col>
+          <v-col cols="12" class="d-flex justify-center mt-8">
+            <v-btn
+              color="primary"
+              text
+              x-large
+              @click="onUpdateCard(card)"
+            >
+              Change Payment Method
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-card>
     </v-col>
 
     <!-- Cancel suscription modal -->
@@ -409,7 +403,7 @@ export default {
       return null
     },
     isMobile () {
-      return this.$vuetify.breakpoint.mdAndDown
+      return this.$vuetify.breakpoint.mobile
     }
   },
   created () {
