@@ -11,7 +11,7 @@
           <v-spacer></v-spacer>
           <v-col class="btnLesson">
             <p class="text-right mr-3">
-              <v-btn class="text-right" icon @click.stop="nextLesson">
+              <v-btn class="text-right" icon @click.stop="advance">
                 <img src="@/assets/svg/next-arrow.svg">
               </v-btn>
             </p>
@@ -161,15 +161,6 @@
           <content-list :items="activities.items" v-bind="{ noLinkMode }" />
         </content-section>
       </div>
-
-      <div
-        v-if="nextButton"
-        class="dashboard-panel-next"
-        :class="{'clickable': !loadingNext, 'dashboard-panel-next-disabled': loadingNext || loading }"
-        @click.stop="advance"
-      >
-        GO TO NEXT DAY <img class="dashboard-panel-next-arrow" src="@/assets/svg/next-arrow.svg">
-      </div>
     </v-card>
     <upload-offline-worksheet v-if="!displayMode" v-model="uploadDialog" />
   </div>
@@ -276,10 +267,6 @@ export default {
 
     backLesson () {
       console.log('back')
-    },
-
-    nextLesson () {
-      console.log('next')
     },
 
     openPdf () {
