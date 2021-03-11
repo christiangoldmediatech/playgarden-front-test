@@ -41,13 +41,13 @@
             <pg-admin-data-table
               :headers="headers"
               :items="rows"
+              :items-per-page="paginationLimit"
               :loading="loading"
               :page.sync="page"
               :server-items-length="total"
               top-justify="space-between"
               @search="onSearch"
               @refresh="refresh(true)"
-              @update:items-per-page="setLimit"
               @update:page="page = $event"
               @edit-item="
                 $router.push({
@@ -118,7 +118,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapState } from 'vuex'
 import onSearch from '@/mixins/OnSearchMixin.js'
 import VideoPreviewBtn from '@/components/admin/video-preview/VideoPreviewBtn.vue'
 import GradesBtn from '@/components/admin/grades/GradesBtn.vue'
@@ -137,7 +137,6 @@ export default {
     return {
       loading: false,
       search: '',
-      limit: 10,
       page: 1,
       allFilters: false,
       activeFilters: [],
@@ -185,6 +184,7 @@ export default {
   },
 
   computed: {
+    ...mapState('admin', ['paginationLimit']),
     ...mapGetters('admin/activity', ['rows', 'total', 'types']),
 
     filterList () {
@@ -264,14 +264,6 @@ export default {
       }
     },
 
-    setLimit (limit) {
-      if (limit > 0) {
-        this.limit = limit
-      } else {
-        this.limit = 0
-      }
-    },
-
     async refresh (clear = false) {
       this.loading = true
 
@@ -280,7 +272,7 @@ export default {
       }
 
       const params = {
-        limit: this.limit,
+        limit: this.paginationLimit,
         page: this.page,
         type: 'VIDEO',
         name: this.search
