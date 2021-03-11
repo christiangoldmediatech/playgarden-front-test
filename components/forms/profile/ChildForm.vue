@@ -10,7 +10,7 @@
       <!-- Add New Child Profile Button -->
       <v-btn
         color="primary"
-        :disabled="loading"
+        :loading="loading"
         x-large
         :block="isMobile"
         @click="addRow"
