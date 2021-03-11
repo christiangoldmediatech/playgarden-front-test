@@ -4,6 +4,7 @@
       <div class="dashboard-panel-card-border-top">
         <v-row v-if="!displayMode" justify="space-between">
           <v-col class="btnLesson">
+            {{ currentLessonId }}
             <v-btn class="ml-3" icon @click.stop="backLesson">
               <img src="@/assets/svg/back-arrow.svg">
             </v-btn>
@@ -263,10 +264,32 @@ export default {
   },
 
   methods: {
-    ...mapActions('children/lesson', ['getAdvanceLessonChildren']),
+    ...mapActions('children/lesson', ['getAdvanceLessonChildren', 'getBackLessonChildren']),
 
     backLesson () {
-      console.log('back')
+      console.log('back currentLessonId', this.currentLessonId)
+      try {
+        if (this.lesson.id !== 1) {
+          this.getBackLessonChildren({ childId: this.childId, lessonId: this.currentLessonId }).then((response) => {
+            this.$router.push({
+              name: 'app-dashboard',
+              query: {
+                childId: this.childId,
+                lessonId: response.lesson.id
+              }
+            },
+            () => {
+              this.$nuxt.$emit('dashboard-panel-update-back', () => {
+                this.loadingNext = false
+              })
+            })
+          })
+        }
+      } catch (e) {
+
+      } finally {
+
+      }
     },
 
     openPdf () {

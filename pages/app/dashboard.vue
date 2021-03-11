@@ -90,6 +90,11 @@ export default {
     })
 
     // Setup update listener
+    this.$nuxt.$on('dashboard-panel-update-back', (quietMode = false) => {
+      this.handleLesson(true, true, true)
+    })
+
+    // Setup update listener
     this.$nuxt.$on('dashboard-panel-update-redirect', (callback = () => {}) => {
       this.handleLesson(true, true).then(() => {
         callback()
@@ -100,6 +105,7 @@ export default {
   beforeDestroy () {
     this.$nuxt.$off('dashboard-panel-update')
     this.$nuxt.$off('dashboard-panel-update-redirect')
+    this.$nuxt.$off('dashboard-panel-update-back')
   },
 
   methods: {
@@ -139,15 +145,18 @@ export default {
       }
     },
 
-    async handleLesson (redirect = false, quietMode = true) {
+    async handleLesson (redirect = false, quietMode = true, back = false) {
       try {
         this.loading = quietMode
         if (
           this.overrideMode &&
           this.childrenIds === parseInt(this.overrides.childId)
         ) {
+          console.log('handel 1')
+          this.overrides.back = back
           await this.getCurrentLessonByChildrenId(this.overrides)
         } else {
+          console.log('handel 2')
           await this.getCurrentLesson({
             childrenIds: this.childrenIds
           })

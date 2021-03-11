@@ -4,11 +4,15 @@ export default {
     return data
   },
 
-  async getCurrentLessonByChildrenId ({ commit }, { lessonId, childId }) {
+  async getCurrentLessonByChildrenId ({ commit }, { lessonId, childId, back }) {
+    console.log('aqui next')
     const data = await this.$axios.$get(`/lessons/${lessonId}/children/${childId}`)
     commit('admin/curriculum/SET_LESSON', data.lesson, { root: true })
-    commit('SET_NEXT_LESSON_ID', data.nextLessonId)
-    commit('SET_CURRENT_LESSON_ID', data.currentLessonId)
+    console.log('back--', back)
+    if (!back) {
+      commit('SET_NEXT_LESSON_ID', data.nextLessonId)
+      commit('SET_CURRENT_LESSON_ID', data.currentLessonId)
+    }
     return data
   },
 
@@ -105,6 +109,18 @@ export default {
   async getLessonChildTimeline (_, childId) {
     const data = await this.$axios.$get(`/lessons/children/${childId}/timeline`)
     return data
+  },
+
+  async getBackLessonChildren ({ commit }, params) {
+    const { childId, lessonId } = params
+    try {
+      const data = await this.$axios.$get(`/lessons/children/${childId}/back/${lessonId}`)
+      commit('SET_NEXT_LESSON_ID', lessonId)
+      commit('SET_CURRENT_LESSON_ID', data.lesson.id)
+      return data
+    } catch (error) {
+      return Promise.reject(error)
+    }
   },
 
   async getAdvanceLessonChildren (_, childId) {
