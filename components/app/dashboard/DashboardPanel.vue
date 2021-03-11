@@ -4,16 +4,37 @@
       <div class="dashboard-panel-card-border-top">
         <v-row v-if="!displayMode" justify="space-between">
           <v-col class="btnLesson">
-            <v-btn class="ml-3" icon @click.stop="previousLesson">
-              <img src="@/assets/svg/back-arrow.svg">
-            </v-btn>
+            <v-tooltip top>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  class="ml-3"
+                  icon
+                  v-bind="attrs"
+                  v-on="on"
+                  @click.stop="previousLesson"
+                >
+                  <img src="@/assets/svg/back-arrow.svg">
+                </v-btn>
+              </template>
+              <span>GO TO PREVIOUS DAY</span>
+            </v-tooltip>
           </v-col>
           <v-spacer></v-spacer>
           <v-col class="btnLesson">
             <p class="text-right mr-3">
-              <v-btn class="text-right" icon @click.stop="advance">
-                <img src="@/assets/svg/next-arrow.svg">
-              </v-btn>
+              <v-tooltip top>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    icon
+                    v-bind="attrs"
+                    v-on="on"
+                    @click.stop="advance"
+                  >
+                    <img src="@/assets/svg/next-arrow.svg">
+                  </v-btn>
+                </template>
+                <span>GO TO NEXT DAY</span>
+              </v-tooltip>
             </p>
           </v-col>
         </v-row>
