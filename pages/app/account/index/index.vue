@@ -25,6 +25,10 @@
           </span>
         </div>
 
+        <div class="text-center body-1 text-md-h6 font-weight-medium grey--text text--darken-2 mt-2 mb-8">
+          Here is a brief description about general info
+        </div>
+
         <general-info />
       </v-card>
     </v-col>
@@ -52,6 +56,10 @@
           <span class="text-uppercase font-weight-bold text-h5 mt-1 ml-2 grey-title">
             Shipping Address
           </span>
+        </div>
+
+        <div class="text-center body-1 text-md-h6 font-weight-medium grey--text text--darken-2 mt-2 mb-8">
+          Here is a brief description about general info
         </div>
 
         <shipping-address-details />
