@@ -204,6 +204,7 @@ export default {
       if (val.length === this.filterList.length) {
         this.allFilters = true
       }
+      this.onSearch()
     },
 
     rows () {
