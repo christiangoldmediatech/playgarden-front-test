@@ -132,7 +132,7 @@
           </v-col>
 
           <!-- Plan Name -->
-          <v-col cols="12" class="mb-4 text-center">
+          <v-col v-if="plan.name" cols="12" class="mb-4 text-center">
             <underlined-title :text="plan.name" font-size="32px" />
           </v-col>
 
