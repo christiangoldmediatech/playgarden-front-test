@@ -58,6 +58,14 @@
               "
               @remove-item="remove"
             >
+              <template v-slot:[`item.start`]="{ item }">
+                {{ getHourUTC(item.start) }}
+              </template>
+
+              <template v-slot:[`item.end`]="{ item }">
+                {{ getHourUTC(item.end) }}
+              </template>
+
               <template v-slot:[`top.prepend`]>
                 <v-col class="flex-shrink-1 flex-grow-0">
                   <v-icon class="my-4 mx-0" color="accent">
@@ -84,7 +92,9 @@
 </template>
 
 <script>
+import dayjs from 'dayjs'
 import { mapActions, mapGetters } from 'vuex'
+import { stringsToDate } from '@/utils/dateTools'
 import onSearch from '@/mixins/OnSearchMixin.js'
 
 export default {
@@ -105,6 +115,7 @@ export default {
     page: 1,
     action: true,
     allFilters: false,
+    today: dayjs(new Date()).format('YYYY-MM-DD'),
     activeFilters: [],
     headers: [
       {
@@ -208,6 +219,12 @@ export default {
       } else {
         this.limit = 0
       }
+    },
+
+    getHourUTC (dataDate) {
+      const dateFormat = stringsToDate(this.today, dataDate)
+      const dateParts = dateFormat.toString().split(' ')
+      return dateParts[4]
     },
 
     async refresh (clear = false) {
