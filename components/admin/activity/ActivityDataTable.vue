@@ -66,25 +66,15 @@
 
                 <v-col cols="12" md="7" class="flex-shrink-0 flex-grow-1">
                   <v-row no-gutters>
-                    <v-checkbox
-                      class="mx-1 my-1 pa-0"
-                      color="primary darken-2"
-                      hide-details
-                      :input-value="allFilters"
-                      label="All"
-                      @click.stop="toggleAll"
-                    />
-
-                    <v-checkbox
-                      v-for="(item, i) in filterList"
-                      :key="`filter-item-${i}`"
+                    <pg-select
                       v-model="activeFilters"
-                      class="mx-1 my-1 pa-0"
-                      color="primary darken-2"
-                      hide-details
-                      :label="item.text"
+                      clearable
+                      :items="filterList"
+                      item-text="text"
+                      item-value="value"
+                      label="Filter"
+                      solo-labeled
                       multiple
-                      :value="item.value"
                     />
                   </v-row>
                 </v-col>
@@ -214,6 +204,7 @@ export default {
       if (val.length === this.filterList.length) {
         this.allFilters = true
       }
+      this.onSearch()
     },
 
     rows () {
