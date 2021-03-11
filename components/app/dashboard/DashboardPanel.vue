@@ -1,8 +1,23 @@
 <template>
   <div class="dashboard-panel-container">
     <v-card class="dashboard-panel-card" height="100%">
-      <div class="dashboard-panel-card-border-top" />
-
+      <div class="dashboard-panel-card-border-top">
+        <v-row v-if="!displayMode" justify="space-between">
+          <v-col class="btnLesson">
+            <v-btn class="ml-3" icon @click.stop="backLesson">
+              <img src="@/assets/svg/back-arrow.svg">
+            </v-btn>
+          </v-col>
+          <v-spacer></v-spacer>
+          <v-col class="btnLesson">
+            <p class="text-right mr-3">
+              <v-btn class="text-right" icon @click.stop="nextLesson">
+                <img src="@/assets/svg/next-arrow.svg">
+              </v-btn>
+            </p>
+          </v-col>
+        </v-row>
+      </div>
       <pg-circle-letter-day
         :class="{ 'clickable': !displayMode }"
         :day="lesson ? lesson.day : null"
@@ -259,6 +274,14 @@ export default {
   methods: {
     ...mapActions('children/lesson', ['getAdvanceLessonChildren']),
 
+    backLesson () {
+      console.log('back')
+    },
+
+    nextLesson () {
+      console.log('next')
+    },
+
     openPdf () {
       if (this.offlineWorksheet) {
         window.open(this.offlineWorksheet.pdfUrl, '_blank')
@@ -330,7 +353,7 @@ export default {
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16) !important;
     &-border-top {
       width: 100%;
-      height: 18px;
+      height: 58px;
       position: absolute;
       top: 0;
       background-color: var(--v-primary-base);
@@ -404,5 +427,9 @@ export default {
   font-size: 18px !important;
   font-weight: bold !important;
   letter-spacing: 0.04em !important;
+}
+
+.btnLesson {
+  z-index: 1 !important;
 }
 </style>
