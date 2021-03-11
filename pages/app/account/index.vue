@@ -25,7 +25,7 @@
             solo
             class="px-2"
             :value="selectedRouteName"
-            :items="sections"
+            :items="filteredSections"
             item-value="routeName"
             @input="navigateToPage($event)"
           >
@@ -37,7 +37,7 @@
           </pg-select>
 
           <v-card
-            v-for="section in sections"
+            v-for="section in filteredSections"
             v-else
             :key="section.text"
             elevation="2"
@@ -64,14 +64,6 @@ export default {
   name: 'Index',
 
   data: () => ({
-    sections: [
-      { text: 'General', routeName: 'app-account-index' },
-      { text: 'Student Profile', routeName: 'app-account-index-student-profile' },
-      { text: 'Membership', routeName: 'app-account-index-membership' },
-      { text: 'Caregivers', routeName: 'app-account-index-caregiver' },
-      { text: 'Notification', routeName: 'app-account-index-notification' },
-      { text: 'Logout', routeName: 'auth-logout' }
-    ],
     selectedRouteName: ''
   }),
 
@@ -79,11 +71,30 @@ export default {
     ...mapGetters('auth', {
       userInfo: 'getUserInfo'
     }),
+
+    ...mapGetters('auth', ['isUserCaregiver']),
+
     fullName () {
       return `${this.userInfo.firstName ?? ''} ${this.userInfo.lastName ?? ''}`.trim()
     },
+
     isMobile () {
       return this.$vuetify.breakpoint.smAndDown
+    },
+
+    sections () {
+      return [
+        { text: 'General', routeName: 'app-account-index', show: true },
+        { text: 'Student Profile', routeName: 'app-account-index-student-profile', show: true },
+        { text: 'Membership', routeName: 'app-account-index-membership', show: !this.isUserCaregiver },
+        { text: 'Caregivers', routeName: 'app-account-index-caregiver', show: !this.isUserCaregiver },
+        { text: 'Notification', routeName: 'app-account-index-notification', show: !this.isUserCaregiver },
+        { text: 'Logout', routeName: 'auth-logout', show: true }
+      ]
+    },
+
+    filteredSections () {
+      return this.sections.filter(section => section.show)
     }
   },
 
