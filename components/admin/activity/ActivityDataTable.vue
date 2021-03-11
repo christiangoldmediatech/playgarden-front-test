@@ -212,10 +212,6 @@ export default {
     }
   },
 
-  created () {
-    this.checkStatus()
-  },
-
   beforeDestroy () {
     clearInterval(this.checkStatusInterval)
   },
@@ -276,7 +272,6 @@ export default {
       }
 
       await this.getActivities(params)
-      this.stopInterval()
       this.loading = false
     },
 
@@ -292,21 +287,13 @@ export default {
     },
 
     checkStatus () {
-      if (
-        this.rows.filter(data => data.videos.status !== 'COMPLETED').length >
-        0
-      ) {
-        this.checkStatusInterval = setInterval(() => {
-          this.refresh()
-        }, 120000)
-      }
-    },
-
-    stopInterval () {
-      if (
-        this.rows.filter(data => data.videos.status !== 'COMPLETED')
-          .length === 0
-      ) {
+      if (this.rows.filter(data => data.videos.status !== 'COMPLETED').length > 0) {
+        if (this.checkStatusInterval === null) {
+          this.checkStatusInterval = setInterval(() => {
+            this.refresh()
+          }, 120000)
+        }
+      } else {
         clearInterval(this.checkStatusInterval)
       }
     }
