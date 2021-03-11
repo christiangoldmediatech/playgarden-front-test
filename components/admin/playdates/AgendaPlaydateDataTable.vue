@@ -59,11 +59,11 @@
               @remove-item="remove"
             >
               <template v-slot:[`item.start`]="{ item }">
-                {{ getHourUTC(item.start) }}
+                {{ getHourUtcToLocal(item.start) }}
               </template>
 
               <template v-slot:[`item.end`]="{ item }">
-                {{ getHourUTC(item.end) }}
+                {{ getHourUtcToLocal(item.end) }}
               </template>
 
               <template v-slot:[`top.prepend`]>
@@ -221,7 +221,12 @@ export default {
       }
     },
 
-    getHourUTC (dataDate) {
+    getHourUtcToLocal (dataDate) {
+      console.log('************************')
+      const dataDateFormat = stringsToDate(this.today, dataDate)
+      console.log('data--', dataDate)
+      console.log('tranfrom--', dayjs(dataDateFormat).format())
+      console.log('************************')
       const dateFormat = stringsToDate(this.today, dataDate)
       const dateParts = dateFormat.toString().split(' ')
       return dateParts[4]

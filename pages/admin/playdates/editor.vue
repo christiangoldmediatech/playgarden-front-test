@@ -415,20 +415,16 @@ export default {
       'getPlaydatesById'
     ]),
 
-    getHourUTC (dateSelected) {
-      const dateParts = dateSelected.toString().split(' ')
-      return dateParts[4]
-    },
-
     async save () {
       this.loading = true
       let id = this.id
 
       try {
         const start = stringsToDate(this.today, this.playdate.start)
-        this.playdate.start = this.getHourUTC(start)
+        this.playdate.start = dayjs(start).utc().format()
+
         const end = stringsToDate(this.today, this.playdate.end)
-        this.playdate.end = this.getHourUTC(end)
+        this.playdate.end = dayjs(end).utc().format()
 
         const playdate = this.playdate
 
