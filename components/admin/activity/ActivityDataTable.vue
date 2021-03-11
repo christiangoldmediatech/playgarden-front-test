@@ -308,7 +308,7 @@ export default {
         if (this.checkStatusInterval === null) {
           this.checkStatusInterval = setInterval(() => {
             this.refresh()
-          }, 20000)
+          }, 120000)
         }
       } else {
         clearInterval(this.checkStatusInterval)
