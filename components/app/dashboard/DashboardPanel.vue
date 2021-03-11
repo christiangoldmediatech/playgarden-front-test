@@ -5,7 +5,7 @@
         <v-row v-if="!displayMode" justify="space-between">
           <v-col class="btnLesson">
             {{ currentLessonId }}
-            <v-btn class="ml-3" icon @click.stop="backLesson">
+            <v-btn class="ml-3" icon @click.stop="previusLesson">
               <img src="@/assets/svg/back-arrow.svg">
             </v-btn>
           </v-col>
@@ -266,7 +266,7 @@ export default {
   methods: {
     ...mapActions('children/lesson', ['getAdvanceLessonChildren', 'getBackLessonChildren']),
 
-    backLesson () {
+    previusLesson () {
       console.log('back currentLessonId', this.currentLessonId)
       try {
         if (this.lesson.id !== 1) {
