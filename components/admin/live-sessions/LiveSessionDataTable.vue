@@ -393,9 +393,11 @@ export default {
 
     checkStatus () {
       if (this.liveSessions.filter(data => data.videos && data.videos.status !== 'COMPLETED').length > 0) {
-        this.checkStatusInterval = setInterval(() => {
-          this.refresh()
-        }, 120000)
+        if (this.checkStatusInterval === null) {
+          this.checkStatusInterval = setInterval(() => {
+            this.refresh()
+          }, 120000)
+        }
       } else {
         clearInterval(this.checkStatusInterval)
       }
