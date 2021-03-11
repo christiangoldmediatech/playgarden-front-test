@@ -22,7 +22,7 @@
           <v-spacer></v-spacer>
           <v-col class="btnLesson">
             <p class="text-right mr-3">
-              <v-tooltip top>
+              <v-tooltip top class="arrow-lesson">
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
                     icon
@@ -455,6 +455,14 @@ export default {
   font-size: 18px !important;
   font-weight: bold !important;
   letter-spacing: 0.04em !important;
+}
+
+.v-tooltip__content {
+  background-color: var(--v-primary-base) !important;
+  color: white !important;
+  font-weight: bold !important;
+  border-radius: 6px !important;
+  z-index: 2 !important;
 }
 
 .btnLesson {
