@@ -2,10 +2,10 @@
   <v-row no-gutters>
     <v-col cols="12" md="6" class="pr-sm-8 mb-10 mb-sm-0">
       <!-- Desktop Title -->
-      <div class="pg-title--uppercase pb-12 d-none d-sm-block">
+      <div class="d-none d-md-block text-uppercase font-weight-bold text-h4 grey--text text--darken-2 pb-12">
         General Info
       </div>
-      <v-card class="pa-4 pa-sm-8 detail-card">
+      <v-card class="pa-4 pa-sm-8 card-custom-border">
         <!-- Desktop SVG -->
         <div class="justify-center pb-8 d-none d-sm-flex">
           <img
@@ -20,7 +20,7 @@
             height="44px"
             src="@/assets/svg/general-info.svg"
           >
-          <span class="text-uppercase font-weight-bold text-h5 mt-1 ml-2 grey-title">
+          <span class="text-uppercase font-weight-bold text-h5 grey--text text--darken-2 mt-1 ml-2">
             General Info
           </span>
         </div>
@@ -35,10 +35,10 @@
 
     <v-col v-if="!isUserCaregiver" cols="12" md="6" class="pl-sm-8 mb-12 mb-sm-0">
       <!-- Desktop Title -->
-      <div class="pg-title--uppercase pb-12 d-none d-sm-flex">
+      <div class="d-none d-md-block text-uppercase font-weight-bold text-h4 grey--text text--darken-2 pb-12">
         Shipping Address
       </div>
-      <v-card class="pa-4 pa-sm-8 detail-card">
+      <v-card class="pa-4 pa-sm-8 card-custom-border">
         <!-- Desktop SVG -->
         <div class="justify-center pb-8 d-none d-sm-flex">
           <img
@@ -53,7 +53,7 @@
             height="44px"
             src="@/assets/svg/shipping-address.svg"
           >
-          <span class="text-uppercase font-weight-bold text-h5 mt-1 ml-2 grey-title">
+          <span class="text-uppercase font-weight-bold text-h5 grey--text text--darken-2 mt-1 ml-2">
             Shipping Address
           </span>
         </div>
@@ -89,11 +89,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.grey-title {
-  color: #606060;
-}
-
-.detail-card {
+.card-custom-border {
   box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.25) !important;
   border-radius: 8px !important;
 }
