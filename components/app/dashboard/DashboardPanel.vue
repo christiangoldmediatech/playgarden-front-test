@@ -4,7 +4,7 @@
       <div class="dashboard-panel-card-border-top">
         <v-row v-if="!displayMode" justify="space-between">
           <v-col class="btnLesson">
-            <v-tooltip top>
+            <v-tooltip top class="pb-6">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                   class="ml-3"
@@ -287,7 +287,6 @@ export default {
     ...mapActions('children/lesson', ['getAdvanceLessonChildren']),
 
     previousLesson () {
-      console.log('back currentLessonId', this.currentLessonId)
       try {
         if (this.lesson.id !== 1) {
           this.$router.push({
@@ -458,7 +457,7 @@ export default {
 }
 
 .v-tooltip__content {
-  background-color: var(--v-primary-base) !important;
+  background-color: var(--v-accent-base) !important;
   color: white !important;
   font-weight: bold !important;
   border-radius: 6px !important;
