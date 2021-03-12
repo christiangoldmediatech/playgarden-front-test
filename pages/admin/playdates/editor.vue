@@ -377,7 +377,9 @@ export default {
     }
   },
 
-  watch: {},
+  watch: {
+    'playdate.start' (val) {}
+  },
 
   async created () {
     const promises = []
@@ -415,17 +417,19 @@ export default {
       'getPlaydatesById'
     ]),
 
+    formatUtc (val) {
+      const dataDate = stringsToDate(this.today, val)
+      const fomartUtc = dayjs(dataDate).utc().format()
+      return fomartUtc.split(/[TZ]/)[1]
+    },
+
     async save () {
       this.loading = true
       let id = this.id
 
       try {
-        const start = stringsToDate(this.today, this.playdate.start)
-        this.playdate.start = dayjs(start).utc().format()
-
-        const end = stringsToDate(this.today, this.playdate.end)
-        this.playdate.end = dayjs(end).utc().format()
-
+        this.playdate.start = this.formatUtc(this.playdate.start)
+        this.playdate.end = this.formatUtc(this.playdate.end)
         const playdate = this.playdate
 
         if (id === null) {
