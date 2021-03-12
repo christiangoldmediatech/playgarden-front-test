@@ -200,6 +200,17 @@
             >
               SAVE
             </v-btn>
+
+            <v-btn
+              block
+              text
+              color="grey"
+              :disabled="loading"
+              x-large
+              @click="editChild(indexD, false)"
+            >
+              Cancel
+            </v-btn>
           </v-form>
         </validation-observer>
 
@@ -396,8 +407,9 @@ export default {
 
       this.onInputBirthday(item)
 
-      if (index) {
+      if (typeof index === 'number' && index >= 0) {
         this.$set(this.items, index, { ...this.items[index], ...item })
+        this.editChild(index, false)
       } else {
         this.addRow(item)
       }
@@ -429,7 +441,7 @@ export default {
 
       this.items.unshift(_data)
 
-      this.setIsEditingList()
+      this.isEditing.unshift(true)
     },
 
     fetchBackpacks () {
@@ -482,6 +494,8 @@ export default {
 
           await this.updateChild({ id: item.id, params })
           item._original = this.getOriginalChild(item)
+
+          this.editChild(index, false)
         } else {
           const data = await this.createChild(item)
 
@@ -498,8 +512,8 @@ export default {
       }
     },
 
-    editChild (index) {
-      this.$set(this.isEditing, index, true)
+    editChild (index, state = true) {
+      this.$set(this.isEditing, index, state)
     },
 
     openTimeline (child) {
