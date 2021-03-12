@@ -16,7 +16,6 @@ export default function ({ redirect, route, store }) {
   }
 
   if (
-    process.client &&
     store.getters['auth/getAccessToken'] &&
     unauthenticatedRoutes[route.name] &&
     !ignoreRoute[route.name] &&

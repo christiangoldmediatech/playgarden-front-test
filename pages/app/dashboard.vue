@@ -8,22 +8,17 @@
 import { mapGetters, mapActions } from 'vuex'
 import DashboardLayout from '@/components/app/dashboard/DashboardLayout.vue'
 import DashboardMixin from '@/mixins/DashboardMixin.js'
-
 export default {
   name: 'Dashboard',
-
   components: {
     DashboardLayout
   },
-
   mixins: [DashboardMixin],
-
   data: () => {
     return {
       loading: false
     }
   },
-
   computed: {
     ...mapGetters({ currentChild: 'getCurrentChild' }),
     ...mapGetters('auth', {
@@ -31,15 +26,12 @@ export default {
     }),
     ...mapGetters('admin/curriculum', { lesson: 'getLesson' }),
     ...mapGetters('children', { allChildren: 'rows' }),
-
     overrideMode () {
       return !!(this.overrides.childId && this.overrides.lessonId)
     },
-
     childrenIds () {
-      return this.currentChild[0].id
+      return (this.currentChild && this.currentChild.length) ? this.currentChild[0].id : 0
     },
-
     selectedChild: {
       get () {
         return this.currentChild[0].id
@@ -51,7 +43,6 @@ export default {
       }
     }
   },
-
   watch: {
     '$route.name' () {
       this.$nuxt.$emit('close-curriculum-progress')
@@ -60,7 +51,6 @@ export default {
       this.$nuxt.$emit('close-curriculum-progress')
     }
   },
-
   async created () {
     if (this.playdateInvitationToken) {
       return await this.$router.push({
@@ -70,7 +60,6 @@ export default {
         }
       })
     }
-
     if (this.overrideMode) {
       const currentChild = this.currentChild[0].id
       await this.getAllChildren()
@@ -80,15 +69,12 @@ export default {
     } else {
       await this.getAllChildren()
     }
-
     // Load current lesson
     await this.handleLesson(true)
-
     // Setup update listener
     this.$nuxt.$on('dashboard-panel-update', (quietMode = false) => {
       this.handleLesson(false, quietMode)
     })
-
     // Setup update listener
     this.$nuxt.$on('dashboard-panel-update-redirect', (callback = () => {}) => {
       this.handleLesson(true, true).then(() => {
@@ -96,12 +82,10 @@ export default {
       })
     })
   },
-
   beforeDestroy () {
     this.$nuxt.$off('dashboard-panel-update')
     this.$nuxt.$off('dashboard-panel-update-redirect')
   },
-
   methods: {
     ...mapActions('children', { getAllChildren: 'get' }),
     ...mapActions('children/lesson', [
@@ -110,7 +94,6 @@ export default {
       'resetChild'
     ]),
     ...mapActions({ setChild: 'setChild' }),
-
     getNextId (items = []) {
       const item = items.find(({ viewed, completed }) => {
         if (completed === false || completed === null) {
@@ -118,7 +101,6 @@ export default {
         }
         return !viewed || (viewed && !viewed.completed)
       })
-
       if (item) {
         return item.id
       }
@@ -127,7 +109,6 @@ export default {
       }
       return undefined
     },
-
     changeChild (newId, redirect = true) {
       const child = this.allChildren.find(({ id }) => id === parseInt(newId))
       this.setChild({ value: [child], save: true })
@@ -138,7 +119,6 @@ export default {
         })
       }
     },
-
     async handleLesson (redirect = false, quietMode = true) {
       try {
         this.loading = quietMode
@@ -168,7 +148,6 @@ export default {
         this.loading = false
       }
     },
-
     redirectDashboard () {
       // console.log('redirect method called from', from)
       if (this.lesson) {

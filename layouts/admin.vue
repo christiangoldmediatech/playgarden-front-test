@@ -17,6 +17,11 @@
             src="@/assets/svg/logo.svg"
           >
         </v-row>
+        <v-row justify="center">
+          <span class="black--text mr-2 text--lighten-1">
+            {{ userInfo.fullName }}
+          </span>
+        </v-row>
       </v-container>
 
       <v-divider />
@@ -57,15 +62,66 @@
 
       <v-spacer />
 
-      <span class="black--text mr-2 text--lighten-1">
-        {{ userInfo.fullName }}
-      </span>
-
       <v-btn class="hidden-md-and-up" icon nuxt :to="{ name: 'auth-logout' }">
         <v-icon>
           mdi-logout
         </v-icon>
       </v-btn>
+
+      <v-menu class="mr-4">
+        <template v-slot:activator="{ on: menu, attrs }">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on: tooltip }">
+              <v-btn
+                text
+                color="font-weight-medium white primary--text text--darken-2 text-none"
+                dark
+                v-bind="attrs"
+                v-on="{ ...tooltip, ...menu }"
+              >
+                <v-progress-circular
+                  v-if="uploadingVideos.length > 0"
+                  indeterminate
+                  color="amber"
+                ></v-progress-circular>
+                <span class="notification-videos">{{ uploadingVideos.length }}</span>
+                <v-icon>
+                  mdi-bell
+                </v-icon>
+              </v-btn>
+            </template>
+            <span>Status Videos</span>
+          </v-tooltip>
+        </template>
+        <v-list dense class="mt-8">
+          <v-subheader>Notifications</v-subheader>
+          <v-divider></v-divider>
+          <v-list class="content-notification">
+            <v-list-item
+              v-for="(item, index) in uploadingVideos"
+              :key="index"
+            >
+              <v-list-item-avatar>
+                <v-icon>
+                  mdi-video
+                </v-icon>
+              </v-list-item-avatar>
+              <v-list-item-content>
+                <v-list-item-title>
+                  {{ item.name }}
+                </v-list-item-title>
+                <v-list-item-subtitle>
+                  {{ item.description }}
+                </v-list-item-subtitle>
+                <v-list-item-subtitle>
+                  Status: {{ item.status }}
+                </v-list-item-subtitle>
+                <v-divider></v-divider>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-list>
+      </v-menu>
 
       <v-btn
         class="hidden-sm-and-down"
@@ -95,7 +151,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapState } from 'vuex'
 import VideoPreview from '@/components/admin/video-preview/VideoPreview.vue'
 import AdminSnackBar from '@/components/admin/AdminSnackBar.vue'
 import GradesEditorDialog from '@/components/admin/grades/GradesEditorDialog.vue'
@@ -116,6 +172,8 @@ export default {
   data () {
     return {
       appDrawer: false,
+
+      checkStatusInterval: null,
 
       menuItems: [
         {
@@ -291,7 +349,29 @@ export default {
   computed: {
     ...mapGetters('auth', {
       userInfo: 'getUserInfo'
-    })
+    }),
+    ...mapState('admin', ['uploadingVideos'])
+  },
+
+  created () {
+    this.getVideos()
+    this.checkStatus()
+  },
+
+  beforeDestroy () {
+    clearInterval(this.checkStatusInterval)
+  },
+
+  methods: {
+    ...mapActions('admin', {
+      getVideos: 'getVideosUploading'
+    }),
+
+    checkStatus () {
+      this.checkStatusInterval = setInterval(() => {
+        this.getVideos()
+      }, 60000)
+    }
   }
 }
 </script>
@@ -352,6 +432,13 @@ export default {
   }
   .v-text-field .v-input__control .v-input__slot {
     box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.16) !important;
+  }
+  .notification-videos {
+    color: var(--v-black-base) !important;
+  }
+  .content-notification {
+    max-height: 400px;
+    overflow-y: auto;
   }
 }
 </style>

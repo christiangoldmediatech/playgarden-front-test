@@ -2,6 +2,7 @@ export default () => ({
   axiosGlobalErrorHandler: false,
   currentChild: null,
   currentChildExpires: null,
+  paginationLimit: 50,
 
   fullWidthPages: {
     'app-live-classes': 1,

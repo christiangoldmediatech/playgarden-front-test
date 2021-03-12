@@ -20,9 +20,10 @@ export default {
     //   cert: fs.readFileSync(path.resolve(__dirname, 'keys/server.crt'))
     //  } : undefined
   },
-  serverMiddleware: {
-    '/healthcheck': '@/middleware/healthCheck'
-  },
+  serverMiddleware: [
+    '~/middleware/serverAuthByCookie',
+    { path: '/healthcheck', handler: '~/middleware/healthCheck.js' },
+  ],
   /*
    ** Nuxt target
    ** See https://nuxtjs.org/api/configuration-target
@@ -115,6 +116,9 @@ export default {
     { src: '@/plugins/firebase', mode: 'client' },
     {
       src: '~/plugins/sentry'
+    },
+    {
+      src: '~/plugins/cookies'
     }
   ],
   /*

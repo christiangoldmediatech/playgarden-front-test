@@ -41,13 +41,13 @@
             <pg-admin-data-table
               :headers="headers"
               :items="rows"
+              :items-per-page="paginationLimit"
               :loading="loading"
               :page.sync="page"
               :server-items-length="total"
               top-justify="space-between"
               @search="onSearch"
               @refresh="refresh(true)"
-              @update:items-per-page="setLimit"
               @update:page="page = $event"
               @edit-item="
                 $router.push({
@@ -66,25 +66,15 @@
 
                 <v-col cols="12" md="7" class="flex-shrink-0 flex-grow-1">
                   <v-row no-gutters>
-                    <v-checkbox
-                      class="mx-1 my-1 pa-0"
-                      color="primary darken-2"
-                      hide-details
-                      :input-value="allFilters"
-                      label="All"
-                      @click.stop="toggleAll"
-                    />
-
-                    <v-checkbox
-                      v-for="(item, i) in filterList"
-                      :key="`filter-item-${i}`"
+                    <pg-select
                       v-model="activeFilters"
-                      class="mx-1 my-1 pa-0"
-                      color="primary darken-2"
-                      hide-details
-                      :label="item.text"
+                      clearable
+                      :items="filterList"
+                      item-text="text"
+                      item-value="value"
+                      label="Filter"
+                      solo-labeled
                       multiple
-                      :value="item.value"
                     />
                   </v-row>
                 </v-col>
@@ -118,7 +108,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapState } from 'vuex'
 import onSearch from '@/mixins/OnSearchMixin.js'
 import VideoPreviewBtn from '@/components/admin/video-preview/VideoPreviewBtn.vue'
 import GradesBtn from '@/components/admin/grades/GradesBtn.vue'
@@ -137,7 +127,6 @@ export default {
     return {
       loading: false,
       search: '',
-      limit: 10,
       page: 1,
       allFilters: false,
       activeFilters: [],
@@ -185,6 +174,7 @@ export default {
   },
 
   computed: {
+    ...mapState('admin', ['paginationLimit']),
     ...mapGetters('admin/activity', ['rows', 'total', 'types']),
 
     filterList () {
@@ -214,15 +204,12 @@ export default {
       if (val.length === this.filterList.length) {
         this.allFilters = true
       }
+      this.onSearch()
     },
 
     rows () {
       this.checkStatus()
     }
-  },
-
-  created () {
-    this.checkStatus()
   },
 
   beforeDestroy () {
@@ -264,14 +251,6 @@ export default {
       }
     },
 
-    setLimit (limit) {
-      if (limit > 0) {
-        this.limit = limit
-      } else {
-        this.limit = 0
-      }
-    },
-
     async refresh (clear = false) {
       this.loading = true
 
@@ -280,7 +259,7 @@ export default {
       }
 
       const params = {
-        limit: this.limit,
+        limit: this.paginationLimit,
         page: this.page,
         type: 'VIDEO',
         name: this.search
@@ -293,7 +272,6 @@ export default {
       }
 
       await this.getActivities(params)
-      this.stopInterval()
       this.loading = false
     },
 
@@ -309,21 +287,13 @@ export default {
     },
 
     checkStatus () {
-      if (
-        this.rows.filter(data => data.videos.status !== 'COMPLETED').length >
-        0
-      ) {
-        this.checkStatusInterval = setInterval(() => {
-          this.refresh()
-        }, 120000)
-      }
-    },
-
-    stopInterval () {
-      if (
-        this.rows.filter(data => data.videos.status !== 'COMPLETED')
-          .length === 0
-      ) {
+      if (this.rows.filter(data => data.videos.status !== 'COMPLETED').length > 0) {
+        if (this.checkStatusInterval === null) {
+          this.checkStatusInterval = setInterval(() => {
+            this.refresh()
+          }, 120000)
+        }
+      } else {
         clearInterval(this.checkStatusInterval)
       }
     }
