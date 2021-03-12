@@ -512,8 +512,17 @@ export default {
       }
     },
 
-    editChild (index, state = true) {
-      this.$set(this.isEditing, index, state)
+    editChild (index, shouldEdit = true) {
+      // remove the child if the user is clicking Cancel (shouldEdit = false)
+      // and the child has not been saved yet
+      const child = this.items?.[index]
+
+      if (!shouldEdit && !child?.id) {
+        this.removeChild(child, index)
+        return
+      }
+
+      this.$set(this.isEditing, index, shouldEdit)
     },
 
     openTimeline (child) {
