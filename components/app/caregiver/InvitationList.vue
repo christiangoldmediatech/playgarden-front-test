@@ -1,10 +1,6 @@
 <template>
   <v-row>
     <v-col cols="12">
-      <p class="font-weight-bold">
-        PENDING INVITATIONS SENT
-      </p>
-
       <v-row
         v-for="({ id, email, phone }, indexIS) in invitationSent"
         :key="indexIS"
@@ -12,7 +8,7 @@
         class="my-1 px-md-6"
         no-gutters
       >
-        <v-col class="text-truncate">
+        <v-col class="text-truncate grey--text">
           {{ email || phone }}
         </v-col>
 
