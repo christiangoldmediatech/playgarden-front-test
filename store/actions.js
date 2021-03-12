@@ -44,11 +44,34 @@ export default {
         })
       )
     }
+
+    if (process.client && save) {
+      let data
+      if (Array.isArray(value)) {
+        data = value.map(({ id }) => id)
+      } else {
+        data = value.id
+      }
+
+      this.$cookies.remove('selectedChild')
+      this.$cookies.add({
+        _key: 'selectedChild',
+        _data: encodeURIComponent(JSON.stringify({
+          value: data,
+          expires
+        })),
+        _expireDate: new Date(expires).toISOString()
+      })
+    }
   },
 
   resetCurrentChild ({ commit }) {
     commit('SET_CURRENT_CHILD', null)
     commit('SET_CURRENT_CHILD_EXPIRES', null)
+
+    if (process.client) {
+      this.$cookies.remove('selectedChild')
+    }
 
     if (hasLocalStorage() && window.localStorage.getItem('selectedChild')) {
       window.localStorage.removeItem('selectedChild')

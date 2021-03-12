@@ -37,7 +37,7 @@ export default {
     },
 
     childrenIds () {
-      return this.currentChild[0].id
+      return (this.currentChild && this.currentChild.length) ? this.currentChild[0].id : 0
     },
 
     selectedChild: {
