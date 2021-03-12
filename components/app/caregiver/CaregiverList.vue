@@ -60,10 +60,23 @@
           v-if="!isEditing"
           x-large
           block
-          color="primary mt-6"
+          class="mt-6"
+          color="primary"
           @click="isEditing = true"
         >
           Edit
+        </v-btn>
+
+        <v-btn
+          v-if="isEditing"
+          x-large
+          block
+          text
+          class="mt-6"
+          color="grey"
+          @click="isEditing = false"
+        >
+          Cancel
         </v-btn>
       </v-card>
     </v-col>

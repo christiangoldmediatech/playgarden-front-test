@@ -52,16 +52,28 @@
       </v-col>
     </v-row>
 
-    <v-btn
-      v-if="isEditing"
-      x-large
-      block
-      class="warning"
-      :loading="loading"
-      @click="saveUserInfo"
-    >
-      Save
-    </v-btn>
+    <template v-if="isEditing">
+      <v-btn
+        v-if="isEditing"
+        x-large
+        block
+        color="warning"
+        :loading="loading"
+        @click="saveUserInfo"
+      >
+        Save
+      </v-btn>
+
+      <v-btn
+        x-large
+        block
+        text
+        color="grey"
+        @click="isEditing = false"
+      >
+        Cancel
+      </v-btn>
+    </template>
 
     <v-btn v-else x-large block class="primary" @click="isEditing = true">
       Edit

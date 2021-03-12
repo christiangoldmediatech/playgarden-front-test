@@ -70,7 +70,6 @@
 
         <v-btn
           block
-          class="mb-6"
           color="warning"
           :disabled="invalid"
           :loading="loading"
@@ -82,7 +81,7 @@
 
         <v-btn
           block
-          color="primary"
+          color="grey"
           :loading="loading"
           text
           x-large
