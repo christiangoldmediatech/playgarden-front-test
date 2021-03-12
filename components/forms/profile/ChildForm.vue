@@ -46,7 +46,7 @@
             >
               <!-- Delete Child Profile Button -->
               <v-row no-gutters class="mb-6">
-                <v-col cols="12" class="d-flex justify-end">
+                <v-col v-if="item.id" cols="12" class="d-flex justify-end">
                   <v-btn
                     v-if="removable(item)"
                     text
@@ -59,7 +59,13 @@
                 </v-col>
 
                 <!-- Child Profile Backpack -->
-                <v-col cols="12" class="d-flex justify-center mt-sm-n9">
+                <v-col
+                  cols="12"
+                  :class="[
+                    'd-flex justify-center',
+                    { 'mt-sm-n9': !!item.id }
+                  ]"
+                >
                   <img
                     v-if="firstBackpack"
                     :alt="childBackpack(item.backpackId).name"
@@ -513,12 +519,15 @@ export default {
     },
 
     editChild (index, shouldEdit = true) {
+      const child = this.items[index]
+
       // remove the child if the user is clicking Cancel (shouldEdit = false)
       // and the child has not been saved yet
-      const child = this.items?.[index]
+      if (!shouldEdit && !child.id) {
+        this.items.splice(index, 1)
+        this.$nuxt.$emit('children-changed')
+        this.setIsEditingList()
 
-      if (!shouldEdit && !child?.id) {
-        this.removeChild(child, index)
         return
       }
 
