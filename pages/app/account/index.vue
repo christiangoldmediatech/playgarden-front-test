@@ -108,11 +108,15 @@ export default {
       this.$router.push({ name: routeName })
     },
     btnClasses (routeName) {
-      return [
-        'py-6 mb-3 text-uppercase font-weight-bold account-section',
-        { 'primary white--text': this.selectedRouteName === routeName },
-        { 'orange--text': routeName === 'auth-logout' }
-      ]
+      const isSelectedRoute = this.selectedRouteName === routeName
+      const isLogoutBtn = routeName === 'auth-logout'
+
+      return {
+        'py-7 mb-3 text-uppercase font-weight-bold text-letter-spacing-1': true,
+        'grey--text text--darken-2': !isSelectedRoute && !isLogoutBtn,
+        'primary white--text': isSelectedRoute,
+        'orange--text': isLogoutBtn
+      }
     }
   }
 }
@@ -122,9 +126,7 @@ export default {
 .v-sheet.v-card:not(.mobile-card) {
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16) !important;
 }
-.account-section {
-  color: #606060;
-  letter-spacing: 0.96px;
-  line-height: 30px;
+.text-letter-spacing-1 {
+  letter-spacing: 1px;
 }
 </style>
