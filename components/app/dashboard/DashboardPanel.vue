@@ -4,10 +4,9 @@
       <div class="dashboard-panel-card-border-top">
         <v-row v-if="!displayMode" justify="space-between">
           <v-col class="btnLesson">
-            <v-tooltip top class="pb-6">
+            <v-tooltip v-if="previousLessonId" top class="pb-6">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
-                  v-if="getDataPreviousLessonId"
                   class="ml-3"
                   icon
                   v-bind="attrs"
@@ -271,10 +270,6 @@ export default {
         return this.lesson.worksheets.find(({ type }) => type === 'OFFLINE')
       }
       return null
-    },
-
-    getDataPreviousLessonId () {
-      return this.previousLessonId
     },
 
     completedOnlineWorksheets () {
