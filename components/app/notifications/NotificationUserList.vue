@@ -35,32 +35,60 @@
 
         <!-- Notification Preference Header -->
         <v-row class="mb-3" no-gutters>
-          <v-col class="font-weight-bold grey--text text--darken-2 body-1 text-md-h5">
+          <v-col cols="8" lg="10" class="font-weight-bold grey--text text--darken-2 body-1 text-md-h5">
             Send to:
+          </v-col>
+
+          <v-col cols="2" lg="1" class="font-weight-bold grey--text text--darken-2 body-1 text-right pr-3">
+            Email
+          </v-col>
+
+          <v-col cols="2" lg="1" class="font-weight-bold grey--text text--darken-2 body-1 text-right pr-5">
+            SMS
           </v-col>
         </v-row>
 
-        <!-- Notification Preference Header -->
+        <!-- Notification Preference Toggles -->
         <v-row
           v-for="notification in notifications"
           :key="notification.id"
           class="mb-6"
           no-gutters
         >
-          <v-col cols="10" md="11" :class="['grey--text text--darken-2 body-1 text-md-h5', { 'text--disabled': !notification.enabled }]">
+          <v-col
+            cols="8"
+            lg="10"
+            :class="[
+              'grey--text text--darken-2 body-1 text-md-h5',
+              { 'text--disabled': !notification.enabled.sms && !notification.enabled.email }
+            ]"
+          >
             {{ notification.name }}
           </v-col>
 
-          <v-col cols="2" md="1" class="d-flex justify-end">
+          <v-col cols="2" lg="1" class="d-flex justify-end">
             <v-switch
-              v-model="notification.enabled"
+              v-model="notification.enabled.email"
               class="ma-0 pa-0 mt-n4"
               dense
               hide-details
               inset
               :loading="loading"
               :readonly="loading"
-              @change="toggleNotification(notification)"
+              @change="toggleNotificationEmail(notification)"
+            />
+          </v-col>
+
+          <v-col cols="2" lg="1" class="d-flex justify-end">
+            <v-switch
+              v-model="notification.enabled.sms"
+              class="ma-0 pa-0 mt-n4"
+              dense
+              hide-details
+              inset
+              :loading="loading"
+              :readonly="loading"
+              @change="toggleNotificationSMS(notification)"
             />
           </v-col>
         </v-row>
@@ -89,18 +117,33 @@ export default {
   methods: {
     ...mapActions('notifications/users', [
       'getNotificationUsers',
-      'updateNotificationUser'
+      'updateNotificationUser',
+      'updateNotificationSMS',
+      'updateNotificationEmail'
     ]),
 
     async getNotificationsUsersData () {
       try {
         this.loading = true
 
-        this.notifications = await this.getNotificationUsers()
+        const notifications = await this.getNotificationUsers()
+
+        this.notifications = this.parseNotifications(notifications)
       } catch (e) {
       } finally {
         this.loading = false
       }
+    },
+
+    parseNotifications (notifications) {
+      if (!Array.isArray(notifications)) {
+        return []
+      }
+
+      return notifications.map(notification => ({
+        ...notification,
+        enabled: notification.enabled || {}
+      }))
     },
 
     async toggleNotification ({ id }) {
@@ -108,6 +151,28 @@ export default {
         this.loading = true
 
         await this.updateNotificationUser(id)
+      } catch (e) {
+      } finally {
+        this.loading = false
+      }
+    },
+
+    async toggleNotificationSMS ({ id }) {
+      try {
+        this.loading = true
+
+        await this.updateNotificationSMS(id)
+      } catch (e) {
+      } finally {
+        this.loading = false
+      }
+    },
+
+    async toggleNotificationEmail ({ id }) {
+      try {
+        this.loading = true
+
+        await this.updateNotificationEmail(id)
       } catch (e) {
       } finally {
         this.loading = false
