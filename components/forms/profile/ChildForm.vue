@@ -525,8 +525,8 @@ export default {
       // and the child has not been saved yet
       if (!shouldEdit && !child.id) {
         this.items.splice(index, 1)
+        this.isEditing.splice(index, 1)
         this.$nuxt.$emit('children-changed')
-        this.setIsEditingList()
 
         return
       }
