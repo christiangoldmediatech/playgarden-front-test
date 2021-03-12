@@ -261,7 +261,6 @@ export default {
   },
 
   created () {
-    this.checkStatus()
     this.refresh()
   },
 
@@ -278,7 +277,6 @@ export default {
     onSubmit () {
       this.showModal = false
       this.refresh()
-      this.checkStatus()
     },
 
     openModal (resource = {}) {
@@ -288,26 +286,22 @@ export default {
 
     checkStatus () {
       if (this.resources.filter(data => data.status !== 'COMPLETED').length > 0) {
-        this.checkStatusInterval = setInterval(() => {
-          this.refresh()
-        }, 120000)
-      }
-    },
-
-    stopInterval () {
-      if (this.resources.filter(data => data.status !== 'COMPLETED').length === 0) {
+        if (this.checkStatusInterval === null) {
+          this.checkStatusInterval = setInterval(() => {
+            this.refresh()
+          }, 120000)
+        }
+      } else {
         clearInterval(this.checkStatusInterval)
       }
     },
 
     async refresh () {
       this.loading = true
-
       try {
         this.resources = await this.fetchVideosByLessonId({
           lessonId: this.lessonId
         })
-        this.stopInterval()
       } catch (e) {
       } finally {
         this.loading = false

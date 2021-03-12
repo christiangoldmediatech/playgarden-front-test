@@ -29,15 +29,13 @@
               name: 'app-dashboard',
             }"
           > -->
-          <a href="https://playgardenonline.com/">
-            <v-img
-              alt="Playarden Prep Online Logo"
-              contain
-              max-height="50"
-              :max-width="$vuetify.breakpoint.mdAndUp ? 290 : 200"
-              :src="require('@/assets/svg/logo.svg')"
-            />
-          </a>
+          <v-img
+            alt="Playarden Prep Online Logo"
+            contain
+            max-height="50"
+            :max-width="$vuetify.breakpoint.mdAndUp ? 290 : 200"
+            :src="require('@/assets/svg/logo.svg')"
+          />
           <!-- </nuxt-link> -->
         </v-toolbar-title>
       </v-col>

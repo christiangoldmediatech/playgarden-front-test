@@ -9,7 +9,7 @@
     <library-categories
       v-model="selectedActivity"
       v-bind="{ categories: activityTypeData }"
-      :favorites="favorites.length > 0"
+      :favorites="true"
     />
 
     <v-container class="text-center pt-12 pb-8" fluid>
@@ -20,8 +20,8 @@
     </v-container>
 
     <favorites-container
-      v-if="($vuetify.breakpoint.mdAndDown && selectedActivity === 'favorites') || ($vuetify.breakpoint.lgAndUp && favorites.length)"
-      v-bind="{ favorites }"
+      v-if="($vuetify.breakpoint.mdAndDown && selectedActivity === 'favorites') || ($vuetify.breakpoint.lgAndUp)"
+      v-bind="{ favorites, initialFavoritesLoading }"
     />
 
     <activity-type-container
@@ -58,6 +58,12 @@ export default {
 
   mixins: [LibraryFunctions],
 
+  data: () => {
+    return {
+      initialFavoritesLoading: true
+    }
+  },
+
   computed: {
     activityTypes () {
       if (this.$vuetify.breakpoint.mdAndDown) {
@@ -71,7 +77,13 @@ export default {
   },
 
   async created () {
+    // Setup favorites callback
+    this.$nuxt.$on('library-update-favorites', this.handleLibraryFavorites)
+
+    // Get favorites
     this.getAllFavorites()
+
+    // Get activities
     const data = await this.$axios.$get('/activities')
 
     this.featuredVideo = data.featured
@@ -97,10 +109,44 @@ export default {
 
     this.favorites = data.favorites.length ? shuffle(data.favorites) : []
     this.selectedActivity = this.activityTypeData[0].id
+    this.initialFavoritesLoading = false
   },
 
   methods: {
-    ...mapActions('video', ['getAllFavorites'])
+    ...mapActions('video', ['getAllFavorites']),
+
+    async handleLibraryFavorites () {
+      // Get the ids of our current favorites
+      let favoriteIds = this.favorites.map(favorite => favorite.id)
+
+      // Get the new favorite data
+      const data = await this.$axios.$get('/activities?favorites=1')
+      const newIds = data.favorites.map(favorite => favorite.id)
+
+      // Check if any old ids are missing in order to remove them
+      const missing = []
+      favoriteIds.forEach((favoriteId) => {
+        if (!newIds.includes(favoriteId)) {
+          missing.push(favoriteId)
+        }
+      })
+
+      // remove missing ids
+      missing.forEach((missingId) => {
+        const index = this.favorites.findIndex(favorite => favorite.id === missingId)
+        if (index >= 0) {
+          this.favorites.splice(index, 1)
+        }
+      })
+
+      // handle new favorites
+      favoriteIds = this.favorites.map(favorite => favorite.id)
+      data.favorites.forEach((favorite) => {
+        if (!favoriteIds.includes(favorite.id)) {
+          this.favorites.push(favorite)
+        }
+      })
+    }
   }
 }
 </script>

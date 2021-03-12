@@ -41,7 +41,7 @@
         <v-btn
           color="accent"
           :small="$vuetify.breakpoint.xs"
-          :to="{ name: 'app-activities' }"
+          :to="{ name: 'app-library' }"
         >
           GO TO LIBRARY
         </v-btn>
@@ -50,7 +50,7 @@
         v-else
         color="accent"
         :small="$vuetify.breakpoint.xs"
-        :to="{ name: 'app-activities' }"
+        :to="{ name: 'app-library' }"
       >
         GO TO LIBRARY
       </v-btn>

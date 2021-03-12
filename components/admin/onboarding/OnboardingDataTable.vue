@@ -130,10 +130,6 @@ export default {
     }
   },
 
-  created () {
-    this.checkStatus()
-  },
-
   beforeDestroy () {
     clearInterval(this.checkStatusInterval)
   },
@@ -149,7 +145,6 @@ export default {
 
       try {
         this.onboardings = await this.getOnboardings({ name: this.search })
-        this.stopInterval()
       } catch (e) {
       } finally {
         this.loading = false
@@ -169,19 +164,16 @@ export default {
 
     updateListTable () {
       this.refresh()
-      this.checkStatus()
     },
 
     checkStatus () {
       if (this.onboardings.filter(data => data.videos.status !== 'COMPLETED').length > 0) {
-        this.checkStatusInterval = setInterval(() => {
-          this.refresh()
-        }, 120000)
-      }
-    },
-
-    stopInterval () {
-      if (this.onboardings.filter(data => data.videos.status !== 'COMPLETED').length === 0) {
+        if (this.checkStatusInterval === null) {
+          this.checkStatusInterval = setInterval(() => {
+            this.refresh()
+          }, 120000)
+        }
+      } else {
         clearInterval(this.checkStatusInterval)
       }
     }

@@ -2,6 +2,7 @@ export default () => ({
   axiosGlobalErrorHandler: false,
   currentChild: null,
   currentChildExpires: null,
+  paginationLimit: 50,
 
   fullWidthPages: {
     'app-account-index': 1,
@@ -15,9 +16,6 @@ export default () => ({
     'app-library': 1,
     'app-library-activityTypeId': 1,
     'app-library-favorites': 1,
-    'app-activities': 1,
-    'app-activities-favorites': 1,
-    'app-activities-search': 1,
     'app-dashboard': 1,
     'app-dashboard-online-worksheet': 1,
     'app-dashboard-offline-worksheet': 1,

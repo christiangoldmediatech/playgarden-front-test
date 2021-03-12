@@ -1,138 +1,145 @@
 <template>
   <v-col class="fill-height">
-    <v-row no-gutters>
-      <v-col cols="12" sm="">
-        <center v-if="$vuetify.breakpoint.smAndDown">
-          <underlined-title class="text-h5" text="Educational Playdates" />
-        </center>
-        <underlined-title v-else text="Educational Playdates" />
-      </v-col>
+    <v-container v-if="loading" fill-height fluid>
+      <pg-loading />
+    </v-container>
 
-      <v-col cols="12" sm="auto" class="mt-3 mt-sm-0">
-        <v-row
-          class="fill-height"
-          align-content="center"
-          justify="end"
-          no-gutters
-        >
-          <div :class="{ 'hidden-sm-and-down': !hasPlaydates }">
-            <v-btn
-              v-if="hasPlaydates"
-              class="text-transform-none mr-3"
-              color="accent"
-              dark
-              :fab="$vuetify.breakpoint.smAndDown"
-              :large="$vuetify.breakpoint.mdAndUp"
-              nuxt
-              :to="{ name: 'app-playdates-create' }"
-              :small="$vuetify.breakpoint.smAndDown"
-            >
-              <template v-if="$vuetify.breakpoint.mdAndUp">
-                Create Playdate
-              </template>
+    <v-container v-else>
+      <v-row no-gutters>
+        <v-col cols="12" sm="">
+          <center v-if="$vuetify.breakpoint.smAndDown">
+            <underlined-title class="text-h5" text="Educational Playdates" />
+          </center>
+          <underlined-title v-else text="Educational Playdates" />
+        </v-col>
 
-              <v-icon v-else>
-                mdi-plus
-              </v-icon>
-            </v-btn>
-
-            <v-btn
-              large
-              nuxt
-              :to="{ name: 'app-playdates-find' }"
-              color="primary"
-              class="text-transform-none"
-            >
-              Find Playdates
-            </v-btn>
-          </div>
-        </v-row>
-      </v-col>
-    </v-row>
-
-    <v-row v-if="hasPlaydates" class="mt-6" dense>
-      <v-col
-        v-for="(playdate, indexP) in playdatesComputed"
-        :key="indexP"
-        class="mb-3"
-        cols="12"
-        md="6"
-      >
-        <card-playdate :playdate="playdate" @deleted="getActivePlaydates" />
-      </v-col>
-    </v-row>
-
-    <v-row v-else class="mt-6 mt-md-0">
-      <v-col cols="12" md="6">
-        <v-img
-          alt="Educational Playdates"
-          class="align-center mr-md-15"
-          contain
-          :max-height="($vuetify.breakpoint.smAndDown) ? 200 : 500"
-          :src="require('@/assets/png/playdates/playdate.png')"
-        />
-      </v-col>
-
-      <v-col cols="12" md="6">
-        <v-row align-content="center" class="fill-height">
-          <v-col cols="12" class="text-md-left text-md-h5 text-center font-weight-bold">
-            What's a Playdates?
-          </v-col>
-
-          <v-col cols="12" class="text-md-left text-center">
-            <p class="text-justify">
-              Playgarden Prep has created custom virtual Playdates to provide important social opportunities for children to interact with their friends and family during this time of isolation.
-            </p>
-
-            <p class="text-justify">
-              Our <span class="font-weight-bold">Educational Playdates</span> are moderated by a specialist in speech and occupational therapy, to ensure children engage and enjoy social interactions with other little ones. We will limit the number of children in each playdate to allow everyone to participate and benefit from these structured playtimes.
-            </p>
-
-            <p class="text-justify">
-              Our <span class="font-weight-bold">Musical Playdates</span> are structured around music and engage little ones through a Mommy and Me class experience. Led by our Coaches, these playdates are a natural way for children to get together with their friends to sing, dance and have fun together!
-            </p>
-
-            <p class="text-justify">
-              Families can also choose to create <span class="font-weight-bold">Private Playdates</span> with their friends and family, which allows private time to connect and share.
-            </p>
-
-            <p class="text-justify">
-              Whether you choose to book a Private Playdate or join a recurring Educational or Musical Playdate to make new friends, we are committed to keeping children connected!
-            </p>
-          </v-col>
-
-          <v-col cols="12">
-            <v-row justify="center" justify-md="start" no-gutters>
+        <v-col cols="12" sm="auto" class="mt-3 mt-sm-0">
+          <v-row
+            class="fill-height"
+            align-content="center"
+            justify="end"
+            no-gutters
+          >
+            <div :class="{ 'hidden-sm-and-down': !hasPlaydates }">
               <v-btn
+                v-if="hasPlaydates"
+                class="text-transform-none mr-3"
+                color="accent"
+                dark
+                :fab="$vuetify.breakpoint.smAndDown"
+                :large="$vuetify.breakpoint.mdAndUp"
                 nuxt
                 :to="{ name: 'app-playdates-create' }"
-                width="200"
-                large
-                :loading="loading"
-                color="accent"
-                class="text-transform-none"
+                :small="$vuetify.breakpoint.smAndDown"
               >
-                Create Playdate
-              </v-btn>
-            </v-row>
+                <template v-if="$vuetify.breakpoint.mdAndUp">
+                  Create Playdate
+                </template>
 
-            <v-row class="hidden-md-and-up" justify="center" no-gutters>
+                <v-icon v-else>
+                  mdi-plus
+                </v-icon>
+              </v-btn>
+
               <v-btn
+                v-if="hasPlaydates"
+                large
                 nuxt
                 :to="{ name: 'app-playdates-find' }"
-                width="200"
-                large
                 color="primary"
-                class="my-5 text-transform-none"
+                class="text-transform-none"
               >
-                Find Playdate
+                Find Playdates
               </v-btn>
-            </v-row>
-          </v-col>
-        </v-row>
-      </v-col>
-    </v-row>
+            </div>
+          </v-row>
+        </v-col>
+      </v-row>
 
+      <v-row v-if="hasPlaydates" class="mt-6" dense>
+        <v-col
+          v-for="(playdate, indexP) in playdatesComputed"
+          :key="indexP"
+          class="mb-3"
+          cols="12"
+          md="6"
+        >
+          <card-playdate :playdate="playdate" @deleted="getActivePlaydates" />
+        </v-col>
+      </v-row>
+
+      <v-row v-else class="mt-6 mt-md-0">
+        <v-col cols="12" md="6">
+          <v-img
+            alt="Educational Playdates"
+            class="align-center mr-md-15"
+            contain
+            :max-height="($vuetify.breakpoint.smAndDown) ? 200 : 500"
+            :src="require('@/assets/png/playdates/playdate.png')"
+          />
+        </v-col>
+
+        <v-col cols="12" md="6">
+          <v-row align-content="center" class="fill-height">
+            <v-col cols="12" class="text-md-left text-md-h5 text-center font-weight-bold">
+              What's a Playdates?
+            </v-col>
+
+            <v-col cols="12" class="text-md-left text-center">
+              <p class="text-justify">
+                Playgarden Prep has created custom virtual Playdates to provide important social opportunities for children to interact with their friends and family during this time of isolation.
+              </p>
+
+              <p class="text-justify">
+                Our <span class="font-weight-bold">Educational Playdates</span> are moderated by a specialist in speech and occupational therapy, to ensure children engage and enjoy social interactions with other little ones. We will limit the number of children in each playdate to allow everyone to participate and benefit from these structured playtimes.
+              </p>
+
+              <p class="text-justify">
+                Our <span class="font-weight-bold">Musical Playdates</span> are structured around music and engage little ones through a Mommy and Me class experience. Led by our Coaches, these playdates are a natural way for children to get together with their friends to sing, dance and have fun together!
+              </p>
+
+              <p class="text-justify">
+                Families can also choose to create <span class="font-weight-bold">Private Playdates</span> with their friends and family, which allows private time to connect and share.
+              </p>
+
+              <p class="text-justify">
+                Whether you choose to book a Private Playdate or join a recurring Educational or Musical Playdate to make new friends, we are committed to keeping children connected!
+              </p>
+            </v-col>
+
+            <v-col cols="10" offset="1">
+              <v-row justify="center" justify-md="start" no-gutters>
+                <v-col cols="12" md="6">
+                  <v-btn
+                    nuxt
+                    :to="{ name: 'app-playdates-create' }"
+                    width="200"
+                    large
+                    :loading="loading"
+                    color="accent"
+                    class="text-transform-none"
+                  >
+                    Create a Playdate
+                  </v-btn>
+                </v-col>
+                <v-col cols="12" md="6">
+                  <v-btn
+                    nuxt
+                    :to="{ name: 'app-playdates-find' }"
+                    width="200"
+                    large
+                    color="primary"
+                    class="my-md-0 my-5 text-transform-none"
+                  >
+                    Find a Playdate
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
+    </v-container>
     <!-- PlatinumPlan Popup -->
     <v-dialog
       :value="!hasTrialOrPlatinumPlan"
@@ -280,7 +287,7 @@ export default {
     }
   },
 
-  mounted () {
+  created () {
     if (this.hasTrialOrPlatinumPlan) {
       this.getActivePlaydates()
     } else {
