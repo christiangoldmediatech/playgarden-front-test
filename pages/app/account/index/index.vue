@@ -9,7 +9,7 @@
         <!-- Desktop SVG -->
         <div class="justify-center pb-8 d-none d-sm-flex">
           <img
-            height="154px"
+            height="100px"
             src="@/assets/svg/general-info.svg"
           >
         </div>
@@ -17,7 +17,7 @@
         <!-- Mobile SVG and Title= -->
         <div class="d-flex d-sm-none justify-center py-4">
           <img
-            height="44px"
+            height="45px"
             src="@/assets/svg/general-info.svg"
           >
           <span class="text-uppercase font-weight-bold text-h5 grey--text text--darken-2 mt-1 ml-2">
@@ -42,7 +42,7 @@
         <!-- Desktop SVG -->
         <div class="justify-center pb-8 d-none d-sm-flex">
           <img
-            height="154px"
+            height="100px"
             src="@/assets/svg/shipping-address.svg"
           >
         </div>
@@ -50,7 +50,7 @@
         <!-- Mobile SVG and Title -->
         <div class="d-flex d-sm-none justify-center py-4">
           <img
-            height="44px"
+            height="45px"
             src="@/assets/svg/shipping-address.svg"
           >
           <span class="text-uppercase font-weight-bold text-h5 grey--text text--darken-2 mt-1 ml-2">

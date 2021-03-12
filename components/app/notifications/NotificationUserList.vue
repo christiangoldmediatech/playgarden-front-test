@@ -13,7 +13,7 @@
         <!-- Desktop SVG -->
         <div class="justify-center pb-8 d-none d-md-flex">
           <img
-            height="154px"
+            height="100px"
             src="@/assets/svg/notifications.svg"
           >
         </div>
@@ -21,7 +21,7 @@
         <!-- Mobile SVG and Title= -->
         <div class="d-flex d-md-none justify-center py-4">
           <img
-            height="44px"
+            height="45px"
             src="@/assets/svg/notifications.svg"
           >
           <span class="text-uppercase font-weight-bold text-h5 grey--text text--darken-2 mt-1 ml-2">

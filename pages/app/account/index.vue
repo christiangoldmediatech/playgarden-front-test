@@ -9,7 +9,7 @@
           <div class="py-12 mx-2">
             <img
               class="d-none d-sm-inline"
-              height="161px"
+              height="100px"
               src="@/assets/svg/account-profile.svg"
             >
 

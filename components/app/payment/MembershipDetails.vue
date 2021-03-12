@@ -13,7 +13,7 @@
         <!-- Desktop SVG -->
         <div class="justify-center pb-8 d-none d-md-flex">
           <img
-            height="154px"
+            height="100px"
             src="@/assets/svg/membership.svg"
           >
         </div>
@@ -21,7 +21,7 @@
         <!-- Mobile SVG and Title= -->
         <div class="d-flex d-md-none justify-center py-4">
           <img
-            height="44px"
+            height="45px"
             src="@/assets/svg/membership.svg"
           >
           <span class="text-uppercase font-weight-bold text-h5 grey--text text--darken-2 mt-1 ml-2">
@@ -137,6 +137,11 @@
           </v-col>
 
           <!-- Plan Description -->
+          <!-- TODO: The plan-description component expects an index that is not available
+               when using the component separately, here we are using the (plan.id - 1) that
+               returns an equivalent number, but we should update this component to accept
+               maybe an id instead.[ch1440]
+          -->
           <v-col cols="12" class="mb-10 mx-0 mx-lg-12">
             <plan-description
               v-if="Object.keys(plan).length"
