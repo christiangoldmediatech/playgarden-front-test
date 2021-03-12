@@ -31,8 +31,12 @@ export const formatDate = (
     returnObject = false
   } = {}
 ) => {
-  let date =
-    fromUtc || toUtc ? dayjs.utc(value, fromFormat) : dayjs(value, fromFormat)
+  let date = dayjs(value, fromFormat)
+  if (fromUtc) {
+    date = dayjs.utc(value, fromFormat)
+  } else if (toUtc) {
+    date = dayjs(value, fromFormat).utc()
+  }
 
   if (!toUtc) {
     date = date.local()
