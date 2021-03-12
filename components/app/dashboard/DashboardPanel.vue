@@ -7,6 +7,7 @@
             <v-tooltip top class="pb-6">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
+                  v-if="getDataPreviousLessonId"
                   class="ml-3"
                   icon
                   v-bind="attrs"
@@ -272,6 +273,10 @@ export default {
       return null
     },
 
+    getDataPreviousLessonId () {
+      return this.previousLessonId
+    },
+
     completedOnlineWorksheets () {
       let completed = 0
       this.worksheets.ONLINE.forEach((worksheet) => {
@@ -288,25 +293,19 @@ export default {
 
     previousLesson () {
       try {
-        if (this.lesson.id !== 1) {
-          this.$router.push({
-            name: 'app-dashboard',
-            query: {
-              childId: this.childId,
-              lessonId: this.previousLessonId
-            }
-          },
-          () => {
-            this.$nuxt.$emit('dashboard-panel-update-redirect', () => {
-              this.loadingNext = false
-            })
+        this.$router.push({
+          name: 'app-dashboard',
+          query: {
+            childId: this.childId,
+            lessonId: this.previousLessonId
+          }
+        },
+        () => {
+          this.$nuxt.$emit('dashboard-panel-update-redirect', () => {
+            this.loadingNext = false
           })
-        }
-      } catch (e) {
-
-      } finally {
-
-      }
+        })
+      } catch (e) {}
     },
 
     openPdf () {
