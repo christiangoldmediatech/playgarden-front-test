@@ -69,6 +69,7 @@
     </v-col>
 
     <v-col cols="12" md="6" class="pl-md-8 mb-12 mb-md-0">
+      <!-- Pending Invites List -->
       <v-card class="pa-4 px-md-10 py-md-6 mb-12 card-custom-border">
         <v-row no-gutters>
           <!-- Plan Name-->
@@ -84,6 +85,7 @@
         </v-row>
       </v-card>
 
+      <!-- Add Caregiver Button -->
       <v-row no-gutters justify="center">
         <v-col cols="12" class="max-width-400">
           <add-caregiver />

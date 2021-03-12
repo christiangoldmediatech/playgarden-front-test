@@ -44,6 +44,7 @@
               "
               rules="required"
             >
+              <!-- Delete Child Profile Button -->
               <v-row no-gutters class="mb-6">
                 <v-col cols="12" class="d-flex justify-end">
                   <v-btn
@@ -56,6 +57,8 @@
                     DELETE CHILD
                   </v-btn>
                 </v-col>
+
+                <!-- Child Profile Backpack -->
                 <v-col cols="12" class="d-flex justify-center mt-sm-n9">
                   <img
                     v-if="firstBackpack"
@@ -66,6 +69,7 @@
                 </v-col>
               </v-row>
 
+              <!-- Backpack Picker -->
               <v-row justify="center" no-gutters>
                 <v-col cols="12" md="10" lg="12">
                   <v-row no-gutters>
