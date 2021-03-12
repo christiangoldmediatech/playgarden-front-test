@@ -1,8 +1,44 @@
 <template>
   <div class="dashboard-panel-container">
     <v-card class="dashboard-panel-card" height="100%">
-      <div class="dashboard-panel-card-border-top" />
-
+      <div class="dashboard-panel-card-border-top">
+        <v-row v-if="!displayMode" justify="space-between">
+          <v-col class="btnLesson">
+            <v-tooltip v-if="previousLessonId" top class="pb-6">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  class="ml-3"
+                  icon
+                  v-bind="attrs"
+                  v-on="on"
+                  @click.stop="previousLesson"
+                >
+                  <img src="@/assets/svg/back-arrow.svg">
+                </v-btn>
+              </template>
+              <span>GO TO PREVIOUS DAY</span>
+            </v-tooltip>
+          </v-col>
+          <v-spacer></v-spacer>
+          <v-col class="btnLesson">
+            <p class="text-right mr-3">
+              <v-tooltip top>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    icon
+                    v-bind="attrs"
+                    v-on="on"
+                    @click.stop="advance"
+                  >
+                    <img src="@/assets/svg/next-arrow.svg">
+                  </v-btn>
+                </template>
+                <span>GO TO NEXT DAY</span>
+              </v-tooltip>
+            </p>
+          </v-col>
+        </v-row>
+      </div>
       <pg-circle-letter-day
         :class="{ 'clickable': !displayMode }"
         :day="lesson ? lesson.day : null"
@@ -146,15 +182,6 @@
           <content-list :items="activities.items" v-bind="{ noLinkMode }" />
         </content-section>
       </div>
-
-      <div
-        v-if="nextButton"
-        class="dashboard-panel-next"
-        :class="{'clickable': !loadingNext, 'dashboard-panel-next-disabled': loadingNext || loading }"
-        @click.stop="advance"
-      >
-        GO TO NEXT DAY <img class="dashboard-panel-next-arrow" src="@/assets/svg/next-arrow.svg">
-      </div>
     </v-card>
     <upload-offline-worksheet v-if="!displayMode" v-model="uploadDialog" />
   </div>
@@ -236,7 +263,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters('children/lesson', { nextLessonId: 'getNextLessonId', currentLessonId: 'getCurrentLessonId' }),
+    ...mapGetters('children/lesson', { nextLessonId: 'getNextLessonId', currentLessonId: 'getCurrentLessonId', previousLessonId: 'getPreviousLessonId' }),
 
     offlineWorksheet () {
       if (this.lesson) {
@@ -258,6 +285,23 @@ export default {
 
   methods: {
     ...mapActions('children/lesson', ['getAdvanceLessonChildren']),
+
+    previousLesson () {
+      try {
+        this.$router.push({
+          name: 'app-dashboard',
+          query: {
+            childId: this.childId,
+            lessonId: this.previousLessonId
+          }
+        },
+        () => {
+          this.$nuxt.$emit('dashboard-panel-update-redirect', () => {
+            this.loadingNext = false
+          })
+        })
+      } catch (e) {}
+    },
 
     openPdf () {
       if (this.offlineWorksheet) {
@@ -330,7 +374,7 @@ export default {
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16) !important;
     &-border-top {
       width: 100%;
-      height: 18px;
+      height: 58px;
       position: absolute;
       top: 0;
       background-color: var(--v-primary-base);
@@ -404,5 +448,28 @@ export default {
   font-size: 18px !important;
   font-weight: bold !important;
   letter-spacing: 0.04em !important;
+}
+
+.v-tooltip__content {
+  background-color: var(--v-accent-base) !important;
+  color: white !important;
+  font-weight: bold !important;
+  border-radius: 6px !important;
+  z-index: 2 !important;
+}
+
+.v-tooltip__content ::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 35%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: var(--v-accent-base) transparent transparent transparent;
+}
+
+.btnLesson {
+  z-index: 1 !important;
 }
 </style>
