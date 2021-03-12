@@ -40,6 +40,14 @@
           </div>
         </v-col>
       </v-row>
+      <v-row
+        v-if="!hasSentInvites && !loading"
+        no-gutters
+        justify="center"
+        class="my-1 px-md-6 grey--text"
+      >
+        You don't have any pending sent invites
+      </v-row>
     </v-col>
   </v-row>
 </template>
@@ -55,6 +63,12 @@ export default {
     loading: false
   }),
 
+  computed: {
+    hasSentInvites () {
+      return this.invitationSent.length > 0
+    }
+  },
+
   created () {
     this.getInvitationList()
   },
@@ -67,7 +81,9 @@ export default {
     ]),
 
     async getInvitationList () {
+      this.loading = true
       this.invitationSent = await this.fetchCaregiverInvitationList()
+      this.loading = false
     },
 
     onDelete ({ id, email, phone }) {
