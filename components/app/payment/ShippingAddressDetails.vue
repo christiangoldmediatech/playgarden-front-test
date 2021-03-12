@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Editable user shipping address -->
-    <validation-observer v-if="isEditing && showAddress" v-slot="{ invalid, passes, reset }">
+    <validation-observer v-if="isEditing" v-slot="{ invalid, passes, reset }">
       <v-form id="shipping-address-form" @submit.prevent="passes(onSubmit)">
         <!-- Street 1 -->
         <validation-provider v-slot="{ errors }" name="Street 1" rules="required">
@@ -132,7 +132,7 @@
     </v-row>
 
     <v-btn
-      v-if="!isEditing && showAddress"
+      v-if="!isEditing"
       x-large
       class="primary mt-8"
       block
@@ -155,7 +155,6 @@ export default {
 
   data: () => ({
     isEditing: false,
-    showAddress: false,
     loading: false
   }),
 
@@ -181,11 +180,7 @@ export default {
     ...mapActions('payment', ['getSelectedSubscriptionPlan']),
 
     async init () {
-      await this.getPlan()
-
-      if (this.showAddress) {
-        await this.fetchAddress()
-      }
+      await this.fetchAddress()
     },
 
     async fetchAddress () {
@@ -210,20 +205,6 @@ export default {
         })
       } finally {
         this.loading = false
-        this.enableAxiosGlobal()
-      }
-    },
-
-    async getPlan () {
-      try {
-        this.disableAxiosGlobal()
-        const { plan } = await this.getSelectedSubscriptionPlan()
-
-        this.showAddress = Boolean(
-          plan.homeDeliveryBenefits || plan.plusBenefits
-        )
-      } catch (e) {
-      } finally {
         this.enableAxiosGlobal()
       }
     },
