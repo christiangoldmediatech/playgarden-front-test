@@ -210,7 +210,7 @@
             >
           </v-col>
 
-          <v-col cols="12" class="d-flex justify-center">
+          <v-col v-if="item.id" cols="12" class="d-flex justify-center">
             <v-btn class="warning" @click="openTimeline(item)">
               View Progress
             </v-btn>
@@ -242,7 +242,7 @@
             Gender
           </v-col>
           <v-col cols="6" class="font-weight-bold grey--text text--darken-2">
-            {{ item.gender === "FEMALE" ? "Girl" : "Boy" }}
+            {{ item.gender === 'FEMALE' ? 'Girl' : item.gender === 'MALE' ? 'Boy' : '' }}
           </v-col>
 
           <v-col cols="6" class="grey--text">
@@ -356,8 +356,7 @@ export default {
         rows.forEach((row) => {
           this.loadChild(row)
         })
-        // create an isEditing boolean for each row
-        this.isEditing = rows.map(_ => false)
+        this.setIsEditingList()
       } catch (error) {
         return Promise.reject(error)
       } finally {
@@ -413,12 +412,20 @@ export default {
         firstName: '',
         level: 'BEGINNER',
         gender: '',
+        progress: {
+          curriculumType: {
+            letter: undefined
+          },
+          day: undefined
+        },
         ...data
       }
 
       _data._original = this.getOriginalChild(_data)
 
       this.items.unshift(_data)
+
+      this.setIsEditingList()
     },
 
     fetchBackpacks () {
@@ -446,6 +453,7 @@ export default {
             this.items.splice(index, 1)
 
             this.$nuxt.$emit('children-changed')
+            this.setIsEditingList()
           } catch (e) {
           } finally {
             this.loading = false
@@ -495,7 +503,15 @@ export default {
     },
 
     getChildBirthday (date) {
+      if (!date) {
+        return
+      }
+
       return dayjs(date).format('MMMM DD, YYYY')
+    },
+
+    setIsEditingList () {
+      this.isEditing = this.items.map(_ => false)
     }
   }
 }
