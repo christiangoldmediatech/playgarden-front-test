@@ -84,7 +84,7 @@
                           v-model="menuStart"
                           :close-on-content-click="false"
                           :nudge-right="40"
-                          :return-value.sync="playdate.start"
+                          :return-value.sync="timeStart"
                           transition="scale-transition"
                           offset-y
                           max-width="290px"
@@ -97,7 +97,7 @@
                               rules="required"
                             >
                               <pg-text-field
-                                v-model="playdate.start"
+                                v-model="timeStart"
                                 label="Time start"
                                 readonly
                                 :error-messages="errors"
@@ -110,11 +110,11 @@
                           </template>
                           <v-time-picker
                             v-if="menuStart"
-                            v-model="playdate.start"
-                            :max="playdate.end"
+                            v-model="timeStart"
+                            :max="timeEnd"
                             format="24hr"
                             full-width
-                            @click:minute="$refs.menu.save(playdate.start)"
+                            @click:minute="$refs.menu.save(timeStart)"
                           />
                         </v-menu>
                       </v-col>
@@ -131,7 +131,7 @@
                           v-model="menuEnd"
                           :close-on-content-click="false"
                           :nudge-right="40"
-                          :return-value.sync="playdate.end"
+                          :return-value.sync="timeEnd"
                           transition="scale-transition"
                           offset-y
                           max-width="290px"
@@ -144,7 +144,7 @@
                               rules="required"
                             >
                               <pg-text-field
-                                v-model="playdate.end"
+                                v-model="timeEnd"
                                 label="Time end"
                                 readonly
                                 :error-messages="errors"
@@ -157,11 +157,11 @@
                           </template>
                           <v-time-picker
                             v-if="menuEnd"
-                            v-model="playdate.end"
-                            :min="playdate.start"
+                            v-model="timeEnd"
+                            :min="timeStart"
                             format="24hr"
                             full-width
-                            @click:minute="$refs.menu2.save(playdate.end)"
+                            @click:minute="$refs.menu2.save(timeEnd)"
                           />
                         </v-menu>
                       </v-col>
@@ -301,7 +301,7 @@
 <script>
 import dayjs from 'dayjs'
 import { mapActions, mapGetters } from 'vuex'
-import { stringsToDate } from '@/utils/dateTools'
+import { formatDate } from '@/utils/dateTools'
 
 function generatePlayDateTemplate () {
   return {
@@ -334,6 +334,8 @@ export default {
     today: dayjs(new Date()).format('YYYY-MM-DD'),
     menuStart: false,
     menuEnd: false,
+    timeStart: null,
+    timeEnd: null,
     days: [
       'MONDAY',
       'TUESDAY',
@@ -378,7 +380,12 @@ export default {
   },
 
   watch: {
-    'playdate.start' (val) {}
+    'playdate.start' (val) {
+      this.timeStart = this.toLocalTime(val)
+    },
+    'playdate.end' (val) {
+      this.timeEnd = this.toLocalTime(val)
+    }
   },
 
   async created () {
@@ -417,10 +424,13 @@ export default {
       'getPlaydatesById'
     ]),
 
-    formatUtc (val) {
-      const dataDate = stringsToDate(this.today, val)
-      const fomartUtc = dayjs(dataDate).utc().format()
-      return fomartUtc.split(/[TZ]/)[1]
+    toLocalTime (time) {
+      return formatDate(time, {
+        format: 'HH:mm:ss',
+        fromFormat: 'HH:mm:ss',
+        fromUtc: true,
+        returnObject: false
+      })
     },
 
     async save () {
@@ -428,9 +438,19 @@ export default {
       let id = this.id
 
       try {
-        this.playdate.start = this.formatUtc(this.playdate.start)
-        this.playdate.end = this.formatUtc(this.playdate.end)
         const playdate = this.playdate
+        playdate.start = formatDate(this.timeStart, {
+          format: 'HH:mm:ss',
+          fromFormat: 'HH:mm',
+          toUtc: true,
+          returnObject: false
+        })
+        playdate.end = formatDate(this.timeEnd, {
+          format: 'HH:mm:ss',
+          fromFormat: 'HH:mm',
+          toUtc: true,
+          returnObject: false
+        })
 
         if (id === null) {
           const response = await this.createPlaydate(playdate)
@@ -438,10 +458,9 @@ export default {
         } else {
           await this.updatePlaydate({ id, data: playdate })
         }
+        await this.$router.push(this.getUrlBack)
       } catch (err) {
         this.loading = false
-      } finally {
-        await this.$router.push(this.getUrlBack)
       }
     }
   }

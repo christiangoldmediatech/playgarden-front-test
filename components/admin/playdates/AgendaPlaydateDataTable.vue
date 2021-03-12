@@ -94,7 +94,7 @@
 <script>
 import dayjs from 'dayjs'
 import { mapActions, mapGetters } from 'vuex'
-import { stringsToDate } from '@/utils/dateTools'
+import { formatDate } from '@/utils/dateTools'
 import onSearch from '@/mixins/OnSearchMixin.js'
 
 export default {
@@ -222,14 +222,12 @@ export default {
     },
 
     getHourUtcToLocal (dataDate) {
-      console.log('************************')
-      const dataDateFormat = stringsToDate(this.today, dataDate)
-      console.log('data--', dataDate)
-      console.log('tranfrom--', dayjs(dataDateFormat).format())
-      console.log('************************')
-      const dateFormat = stringsToDate(this.today, dataDate)
-      const dateParts = dateFormat.toString().split(' ')
-      return dateParts[4]
+      return formatDate(dataDate, {
+        format: 'HH:mm a',
+        fromFormat: 'HH:mm:ss',
+        fromUtc: true,
+        returnObject: false
+      })
     },
 
     async refresh (clear = false) {
