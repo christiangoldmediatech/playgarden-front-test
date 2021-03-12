@@ -174,7 +174,7 @@ export default {
             ...notification,
             enabled: {
               ...notification.enabled,
-              sms: !notification.enabled
+              sms: !notification.enabled.sms
             }
           }
         )
@@ -197,7 +197,7 @@ export default {
             ...notification,
             enabled: {
               ...notification.enabled,
-              email: !notification.enabled
+              email: !notification.enabled.email
             }
           }
         )
