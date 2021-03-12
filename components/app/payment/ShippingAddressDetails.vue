@@ -94,7 +94,7 @@
     </validation-observer>
 
     <!-- Readonly user shipping address -->
-    <v-row v-else class="shipping-info-text">
+    <v-row v-else class="grey--text">
       <v-col cols="6">
         Street 1
       </v-col>

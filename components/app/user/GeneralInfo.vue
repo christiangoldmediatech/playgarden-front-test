@@ -22,7 +22,7 @@
     </div>
 
     <!-- Readonly user info -->
-    <v-row v-else class="general-info-text pb-8">
+    <v-row v-else class="grey--text pb-8">
       <v-col cols="6">
         Name
       </v-col>
@@ -269,16 +269,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.general-info-text {
-  color: #B7B7B7;
-}
-.general-text {
-  color: #606060;
-}
-.general-info-card {
-  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.25) !important;
-  border-radius: 8px !important;
-}
 .social-sync {
   text-transform: capitalize !important;
   font-size: 14px !important;
