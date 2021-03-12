@@ -95,3 +95,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.v-btn:not(.v-btn--text) {
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16) !important;
+}
+</style>
