@@ -50,7 +50,7 @@
 
         <!-- Notification Preference Toggles -->
         <v-row
-          v-for="notification in notifications"
+          v-for="(notification, notificationIndex) in notifications"
           :key="notification.id"
           class="mb-6"
           no-gutters
@@ -75,7 +75,7 @@
               inset
               :loading="loading"
               :readonly="loading"
-              @change="toggleNotificationEmail(notification)"
+              @change="toggleNotificationEmail(notification, notificationIndex)"
             />
           </v-col>
 
@@ -88,7 +88,7 @@
               inset
               :loading="loading"
               :readonly="loading"
-              @change="toggleNotificationSMS(notification)"
+              @change="toggleNotificationSMS(notification, notificationIndex)"
             />
           </v-col>
         </v-row>
@@ -142,7 +142,10 @@ export default {
 
       return notifications.map(notification => ({
         ...notification,
-        enabled: notification.enabled || {}
+        enabled: notification.enabled || {
+          sms: false,
+          email: false
+        }
       }))
     },
 
@@ -157,23 +160,47 @@ export default {
       }
     },
 
-    async toggleNotificationSMS ({ id }) {
+    async toggleNotificationSMS (notification, index) {
       try {
         this.loading = true
 
-        await this.updateNotificationSMS(id)
+        await this.updateNotificationSMS(notification.id)
       } catch (e) {
+        // rollback toggle state
+        this.$set(
+          this.notifications,
+          index,
+          {
+            ...notification,
+            enabled: {
+              ...notification.enabled,
+              sms: !notification.enabled
+            }
+          }
+        )
       } finally {
         this.loading = false
       }
     },
 
-    async toggleNotificationEmail ({ id }) {
+    async toggleNotificationEmail (notification, index) {
       try {
         this.loading = true
 
-        await this.updateNotificationEmail(id)
+        await this.updateNotificationEmail(notification.id)
       } catch (e) {
+        // rollback toggle state
+        this.$set(
+          this.notifications,
+          index,
+          {
+            ...notification,
+            enabled: {
+              ...notification.enabled,
+              email: !notification.enabled
+            }
+          }
+        )
       } finally {
         this.loading = false
       }
