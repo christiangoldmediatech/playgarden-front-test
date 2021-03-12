@@ -84,7 +84,11 @@
         </v-row>
       </v-card>
 
-      <add-caregiver />
+      <v-row no-gutters justify="center">
+        <v-col cols="12" class="max-width-400">
+          <add-caregiver />
+        </v-col>
+      </v-row>
     </v-col>
   </v-row>
 </template>
@@ -147,5 +151,9 @@ export default {
 
 .v-btn:not(.v-btn--text) {
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16) !important;
+}
+
+.max-width-400 {
+  max-width: 400px;
 }
 </style>
