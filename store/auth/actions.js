@@ -17,6 +17,11 @@ export default {
   setToken ({ commit }, token) {
     const auth = jwtDecode(token)
 
+    if (process.client) {
+      this.$cookies.remove('atoken')
+      this.$cookies.add({ _key: 'atoken', _data: token, _maxAge: auth.exp })
+    }
+
     commit('SET_ACCESS_TOKEN', token)
     commit('SET_AXIOS_TOKEN', token)
     commit('SET_ISSUED_AT', auth.iat)
@@ -33,6 +38,10 @@ export default {
 
   logout ({ commit, rootGetters }, redirect) {
     commit('LOGOUT')
+
+    if (process.client) {
+      this.$cookies.remove('atoken')
+    }
 
     if (hasLocalStorage()) {
       window.localStorage.removeItem('authToken')

@@ -42,6 +42,7 @@
             <pg-admin-data-table
               :headers="headers"
               :items="resources"
+              :items-per-page="paginationLimit"
               :loading="loading"
               :page.sync="pagination.page"
               :server-items-length="pagination.total"
@@ -126,7 +127,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapState } from 'vuex'
 import onSearch from '@/mixins/OnSearchMixin.js'
 import paginable from '@/utils/mixins/paginable'
 
@@ -186,7 +187,8 @@ export default {
   }),
 
   computed: {
-    ...mapGetters('admin/curriculum', ['types'])
+    ...mapGetters('admin/curriculum', ['types']),
+    ...mapState('admin', ['paginationLimit'])
   },
 
   watch: {
@@ -228,7 +230,8 @@ export default {
           name: this.search || null,
           curriculumTypeId: this.filters.curriculumTypeId || null,
           level: this.filters.level || null,
-          page: this.pagination.page
+          page: this.pagination.page,
+          limit: this.paginationLimit
         })
 
         this.resources = lessons

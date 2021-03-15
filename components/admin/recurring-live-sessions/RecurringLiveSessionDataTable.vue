@@ -43,6 +43,7 @@
               :headers="headers"
               hide-default-footer
               :items="recurringLiveSessions"
+              :items-per-page="paginationLimit"
               :loading="loading"
               :page.sync="pagination.page"
               :server-items-length="pagination.total"
@@ -173,7 +174,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapState } from 'vuex'
 
 import paginable from '@/utils/mixins/paginable'
 import RecurringLiveSessionEditorDialog from './RecurringLiveSessionEditorDialog'
@@ -234,7 +235,8 @@ export default {
   }),
 
   computed: {
-    ...mapGetters('admin/curriculum', ['types'])
+    ...mapGetters('admin/curriculum', ['types']),
+    ...mapState('admin', ['paginationLimit'])
   },
 
   watch: {
@@ -267,7 +269,7 @@ export default {
           activityTypeId: this.filters.activityTypeId || null,
           level: this.filters.level || null,
           page: this.pagination.page,
-          limit: this.pagination.limit
+          limit: this.paginationLimit
         })
 
         this.recurringLiveSessions = recurringLiveSessions

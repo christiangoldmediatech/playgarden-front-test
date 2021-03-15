@@ -146,7 +146,6 @@
 
 <script>
 import { doEvent } from '@/utils/events.js'
-
 import { VDataTable } from 'vuetify/lib/components/VDataTable'
 import { VContainer, VRow, VCol, VSpacer } from 'vuetify/lib/components/VGrid'
 import { VIcon } from 'vuetify/lib/components/VIcon'

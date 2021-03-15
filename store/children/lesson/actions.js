@@ -8,6 +8,7 @@ export default {
     const data = await this.$axios.$get(`/lessons/${lessonId}/children/${childId}`)
     commit('admin/curriculum/SET_LESSON', data.lesson, { root: true })
     commit('SET_NEXT_LESSON_ID', data.nextLessonId)
+    commit('SET_PREVIOUS_LESSON_ID', data.previousLessonId)
     commit('SET_CURRENT_LESSON_ID', data.currentLessonId)
     return data
   },
@@ -17,6 +18,7 @@ export default {
       const data = await this.$axios.$get('/lessons/childrens/current', { params })
       commit('admin/curriculum/SET_LESSON', data.lesson, { root: true })
       commit('SET_NEXT_LESSON_ID', data.nextLessonId)
+      commit('SET_PREVIOUS_LESSON_ID', data.previousLessonId)
       commit('SET_CURRENT_LESSON_ID', data.currentLessonId)
       return data.lesson
     } catch (e) {
