@@ -483,11 +483,12 @@ export default {
         this.item.inCollaborationWith = imageData
       }
 
-      const { video } = (this.typeSelectVideoFile !== 'dropBox') ? await this.$refs.videoFileUploaderDropBox.handleUpload() : await this.$refs.videoFileUploaderDropBox.handleDropBoxFileUpload()
-      const data = video.id
-
-      if (data) {
-        this.item.videoId = data
+      if (this.file) {
+        const { video } = (this.typeSelectVideoFile !== 'dropBox') ? await this.$refs.videoFileUploaderDropBox.handleUpload() : await this.$refs.videoFileUploaderDropBox.handleDropBoxFileUpload()
+        const data = video.id
+        if (data) {
+          this.item.videoId = data
+        }
       }
 
       const start = stringsToDate(this.dateStart, this.timeStart)
