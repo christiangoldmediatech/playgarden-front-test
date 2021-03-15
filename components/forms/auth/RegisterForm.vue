@@ -4,8 +4,8 @@
       <v-container class="px-0">
         <v-row no-gutters class="some">
           <v-col
-            class="pr-2"
-            cols="6"
+            :class="{ 'pr-2': $vuetify.breakpoint.smAndUp }"
+            :cols="(!$vuetify.breakpoint.smAndUp) ? 12 : 6"
           >
             <!-- First name -->
             <validation-provider
@@ -25,7 +25,7 @@
             </validation-provider>
           </v-col>
           <v-col
-            cols="6"
+            :cols="(!$vuetify.breakpoint.smAndUp) ? 12 : 6"
           >
             <!-- Last name -->
             <validation-provider
@@ -134,9 +134,9 @@
             </v-row>
 
             <!-- or -->
-            <v-row no-gutters class="my-6 d-none d-sm-flex">
-              <v-col class="hr-line">
-                <v-divider />
+            <v-row no-gutters class="my-6 d-sm-flex">
+              <v-col>
+                <v-divider class="hr-line outlined" width="100" />
               </v-col>
 
               <v-col class="text-center">
@@ -144,7 +144,7 @@
               </v-col>
 
               <v-col class="hr-line">
-                <v-divider />
+                <v-divider width="100" />
               </v-col>
             </v-row>
 

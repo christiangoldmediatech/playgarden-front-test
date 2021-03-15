@@ -4,6 +4,7 @@
       <v-btn
         block
         text
+        @click="toggleCard"
       >
         <div>
           <img
@@ -15,9 +16,24 @@
             YOUR 30 DAY FREE TRIAL
           </span>
           <br />
-          <span class="free-trial-info">
-            INCLUDES THE PREMIUM + PLAN
-          </span>
+          <template v-if="!$vuetify.breakpoint.smAndUp">
+            <span class="free-trial-info">
+              INCLUDES
+            </span>
+            <v-icon
+              class="ml-4">
+              mdi-chevron-up
+            </v-icon>
+            <br />
+            <span class="free-trial-info">
+              THE PREMIUM + PLAN
+            </span>
+          </template>
+          <template v-else>
+            <span class="free-trial-info">
+              INCLUDES THE PREMIUM + PLAN
+            </span>
+          </template>
         </div>
       </v-btn>
     </v-card-title>
@@ -26,7 +42,7 @@
         <center class="text-pay-information">
           <div :class="{ 'ml-4': !$vuetify.breakpoint.smAndUp }">
             <v-row>
-              <span class="font-weight-bold ml-2">That includes:</span>
+              <span class="font-weight-bold ml-2 mt-2">That includes:</span>
             </v-row>
             <v-row>
               <ul>
@@ -111,6 +127,11 @@ export default {
   data: vm => ({}),
 
   methods: {
+    toggleCard () {
+      if (!this.$vuetify.breakpoint.smAndUp) {
+        this.$emit('toggleCard')
+      }
+    }
   }
 }
 </script>

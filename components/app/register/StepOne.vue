@@ -43,13 +43,42 @@
           xl="6"
         >
           <template>
-            <v-row :class="($vuetify.breakpoint.smAndUp) ? 'mt-4 background-card' : 'background-card-mobile pt-14 px-8'">
+            <v-row>
+              <v-col v-if="!showDetailFreeTrial" cols="12" class="mt-4">
+                <v-btn
+                  block
+                  text
+                  @click="showDetailFreeTrial = !showDetailFreeTrial"
+                >
+                  <p>
+                    <img
+                      src="@/assets/png/gift-icon.png"
+                      class="mr-2"
+                      width="18px"
+                    >
+                    <span :class="($vuetify.breakpoint.smAndUp) ? 'free-trial' : 'free-trial-mobile'">
+                      YOUR 30 DAY FREE TRIAL
+                    </span> <br />
+                    <span :class="($vuetify.breakpoint.smAndUp) ? 'free-trial' : 'free-trial-mobile'">
+                      INCLUDES THE PREMIUM + PLAN
+                    </span>
+                  </p>
+                  <v-icon class="ml-2">
+                    mdi-chevron-down
+                  </v-icon>
+                </v-btn>
+              </v-col>
+              <v-col class="hr-line">
+                <v-divider />
+              </v-col>
+            </v-row>
+            <v-row v-if="showDetailFreeTrial" :class="($vuetify.breakpoint.smAndUp) ? 'mt-4 background-card' : 'background-card-mobile pt-14 px-8'">
               <v-col cols="12" :class="(!$vuetify.breakpoint.smAndUp) ? '' : 'mt-10 mb-10 px-10'">
                 <v-layout row wrap align-center justify-center>
                   <v-card class="elevation-0 mx-10">
                     <v-container>
                       <v-layout column align-center justify-center>
-                        <card-info />
+                        <card-info @toggleCard="showDetailFreeTrial = !showDetailFreeTrial" />
                       </v-layout>
                     </v-container>
                   </v-card>
@@ -76,7 +105,7 @@ export default {
   data: vm => ({
     loading: false,
     emailValidated: null,
-    showDetailFreeTrial: false,
+    showDetailFreeTrial: true,
     token: vm.$route.query.token
   }),
   computed: {
