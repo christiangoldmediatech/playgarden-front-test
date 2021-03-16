@@ -87,6 +87,7 @@ export default {
         this.modal = false
 
         this.$snotify.success('Invitation has been sent successfully!')
+        this.$nuxt.$emit('caregiver-added')
       } catch (e) {
       } finally {
         this.loading = false

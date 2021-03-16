@@ -71,6 +71,10 @@ export default {
 
   created () {
     this.getInvitationList()
+
+    this.$nuxt.$on('caregiver-added', () => {
+      this.getInvitationList()
+    })
   },
 
   methods: {
