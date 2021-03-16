@@ -1,6 +1,6 @@
 <template>
   <div class="plan-description">
-    <ul v-if="indexPlan === 0" class="plan-detail">
+    <ul class="plan-detail">
       <li
         v-for="(benefit, indexPCB) in plan.commonBenefits.benefits"
         :key="indexPCB"
@@ -11,7 +11,7 @@
         </span>
       </li>
     </ul>
-    <template v-if="plan.homeDeliveryBenefits && indexPlan === 1">
+    <template v-if="plan.homeDeliveryBenefits">
       <!-- <section class="font-weight-bold">
         Home Delivery of:
       </section> -->
@@ -56,10 +56,6 @@ export default {
   props: {
     plan: {
       type: Object,
-      required: true
-    },
-    indexPlan: {
-      type: Number,
       required: true
     }
   },

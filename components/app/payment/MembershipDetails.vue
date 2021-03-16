@@ -9,7 +9,7 @@
 
     <!-- Membership Billing Information -->
     <v-col cols="12" md="6" class="pr-md-8 mb-6 mb-md-0">
-      <v-card class="pa-4 px-md-10 py-md-6 card-custom-border">
+      <v-card class="pa-4 px-md-10 py-md-6 mb-6 card-custom-border">
         <!-- Desktop SVG -->
         <div class="justify-center pb-4 d-none d-md-flex">
           <img
@@ -36,33 +36,33 @@
         <div v-if="hasMembership">
           <!-- Trial Period Description -->
           <v-row v-if="billing.status === 'trialing'" no-gutters>
-            <v-col cols="12" class="text-h6 text-md-h5 grey--text mb-1">
+            <v-col cols="12" class="text-h6 grey--text mb-1">
               <small>Free trial period ends</small>
             </v-col>
 
-            <v-col cols="12" class="text-h6 text-md-h5 grey--text font-weight-bold mb-1">
+            <v-col cols="12" class="text-h6 grey--text font-weight-bold mb-1">
               {{ billing.trialEndDate }}
             </v-col>
           </v-row>
 
           <!-- Next Billing Date -->
           <v-row v-else no-gutters class="mb-3">
-            <v-col cols="12" class="text-h6 text-md-h5 grey--text mb-1">
+            <v-col cols="12" class="text-h6 grey--text mb-1">
               <small>Your next billing date is:</small>
             </v-col>
 
-            <v-col cols="12" class="text-h6 text-md-h5 grey--text font-weight-bold mb-1">
+            <v-col cols="12" class="text-h6 grey--text font-weight-bold mb-1">
               {{ billing.nextBillingDate }}
             </v-col>
           </v-row>
 
           <!-- Monthly Membership Fee -->
           <v-row no-gutters class="mb-3">
-            <v-col cols="12" class="text-h6 text-md-h5 grey--text mb-1">
+            <v-col cols="12" class="text-h6 grey--text mb-1">
               <small>Your {{ membershipInterval }} membership fee is:</small>
             </v-col>
 
-            <v-col cols="12" class="text-h6 text-md-h5 grey--text font-weight-bold mb-1">
+            <v-col cols="12" class="text-h6 grey--text font-weight-bold mb-1">
               <div>
                 <span>{{
                   billing.planAmount.toLocaleString("en-US", {
@@ -76,21 +76,21 @@
 
           <!-- Discount -->
           <v-row v-if="billing.planAmountDiscount" no-gutters>
-            <v-col cols="12" class="text-h6 text-md-h5 grey--text mb-1">
+            <v-col cols="12" class="text-h6 grey--text mb-1">
               <small>Discount</small>
             </v-col>
 
             <v-col cols="12" md="6">
               <small class="grey--text font-weight-bold">Code:</small>
-              <span class="text-h6 text-md-h5 grey--text font-weight-bold mb-3 ml-2">{{ billing.discountCode }}</span>
+              <span class="text-h6 grey--text font-weight-bold mb-3 ml-2">{{ billing.discountCode }}</span>
             </v-col>
 
             <v-col cols="12" md="6" class="mb-3">
               <small class="grey--text font-weight-bold">Amount:</small>
-              <span v-if="billing.percentOff" class="text-h6 text-md-h5 grey--text font-weight-bold mb-3 ml-2">
+              <span v-if="billing.percentOff" class="text-h6 grey--text font-weight-bold mb-3 ml-2">
                 {{ billing.percentOff }} %
               </span>
-              <span v-if="billing.amountOff" class="text-h6 text-md-h5 grey--text font-weight-bold mb-3 ml-2">
+              <span v-if="billing.amountOff" class="text-h6 grey--text font-weight-bold mb-3 ml-2">
                 {{
                   billing.amountOff.toLocaleString("en-US", {
                     style: "currency",
@@ -120,11 +120,40 @@
           </v-row>
         </div>
       </v-card>
+      <!-- Payment Method -->
+      <v-card class="pa-4 px-md-10 py-md-6 card-custom-border">
+        <v-row no-gutters class="text-uppercase font-weight-bold text-h5 grey--text text--darken-2" justify="center">
+          Payment Method
+        </v-row>
+        <v-row
+          v-for="(card, indexUC) in userCards"
+          :key="indexUC"
+          align="center"
+          no-gutters
+        >
+          <v-col cols="4" class="text-center text-h6 grey--text font-weight-bold mt-8">
+            {{ card.details.brand }}
+          </v-col>
+          <v-col cols="8" class="text-center text-h6 grey--text font-weight-bold mt-8">
+            •••• •••• •••• {{ card.details.last4 }}
+          </v-col>
+          <v-col cols="12" class="d-flex justify-center mt-8">
+            <v-btn
+              color="primary"
+              text
+              x-large
+              @click="onUpdateCard(card)"
+            >
+              Change Payment Method
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-card>
     </v-col>
 
     <!-- Plan Information -->
-    <v-col cols="12" md="6" class="pl-md-8 mb-12 mb-md-0">
-      <v-card class="pa-4 px-md-10 py-md-6 mb-12 card-custom-border">
+    <v-col cols="12" md="6" class="pl-md-8 mb-6 mb-md-0">
+      <v-card class="pa-4 px-md-10 py-md-6 card-custom-border">
         <v-row no-gutters>
           <!-- Plan Name-->
           <v-col cols="12" class="text-center">
@@ -133,7 +162,7 @@
             </div>
 
             <v-btn class="warning mb-8" depressed width="160px">
-              {{ billing.planName }}
+              {{ plan.planName }}
             </v-btn>
           </v-col>
 
@@ -152,7 +181,6 @@
             <plan-description
               v-if="Object.keys(plan).length"
               :plan="plan"
-              :index-plan="plan.id - 1"
             />
           </v-col>
 
@@ -188,36 +216,6 @@
               @click="selectPlan"
             >
               CREATE MEMBERSHIP
-            </v-btn>
-          </v-col>
-        </v-row>
-      </v-card>
-
-      <!-- Payment Method -->
-      <v-card class="pa-4 px-md-10 py-md-6 card-custom-border">
-        <v-row no-gutters class="text-uppercase font-weight-bold text-h5 grey--text text--darken-2" justify="center">
-          Payment Method
-        </v-row>
-        <v-row
-          v-for="(card, indexUC) in userCards"
-          :key="indexUC"
-          align="center"
-          no-gutters
-        >
-          <v-col cols="4" class="text-center text-h6 grey--text font-weight-bold mt-8">
-            {{ card.details.brand }}
-          </v-col>
-          <v-col cols="8" class="text-center text-h6 grey--text font-weight-bold mt-8">
-            •••• •••• •••• {{ card.details.last4 }}
-          </v-col>
-          <v-col cols="12" class="d-flex justify-center mt-8">
-            <v-btn
-              color="primary"
-              text
-              x-large
-              @click="onUpdateCard(card)"
-            >
-              Change Payment Method
             </v-btn>
           </v-col>
         </v-row>
