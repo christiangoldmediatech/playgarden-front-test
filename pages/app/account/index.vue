@@ -176,6 +176,9 @@
         <template v-if="!isUserCaregiver">
           <membership-details :loading="loading" />
 
+          <div class="text-uppercase font-weight-bold mt-6 mb-2">
+            Shipping Address
+          </div>
           <shipping-address-details :loading="loading" />
 
           <caregiver-list :loading="loading" manageable />
