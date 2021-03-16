@@ -76,6 +76,7 @@
                   <v-tooltip
                     :top="$vuetify.breakpoint.xs"
                     :right="$vuetify.breakpoint.smAndUp"
+                    class="flow-lessons"
                   >
                     <template v-slot:activator="{ on, attrs }">
                       <validation-provider

@@ -13,17 +13,32 @@
             class="mr-2"
             width="18px"
           >
-          <span class="free-trial-info">
-            YOUR 30 DAY FREE TRIAL
-          </span>
-          <br />
-          <span class="free-trial-info">
-            INCLUDES THE PREMIUM + PLAN
-          </span>
+          <template v-if="!$vuetify.breakpoint.smAndUp">
+            <span class="free-trial-info">
+              YOUR 30 DAY FREE TRIAL
+            </span>
+            <v-icon
+              class="ml-4">
+              mdi-chevron-up
+            </v-icon>
+            <br />
+            <span class="free-trial-info">
+              INCLUDES THE PREMIUM + PLAN
+            </span>
+          </template>
+          <template v-else>
+            <span class="free-trial-info">
+              YOUR 30 DAY FREE TRIAL
+            </span>
+            <br />
+            <span class="free-trial-info">
+              INCLUDES THE PREMIUM + PLAN
+            </span>
+            <v-icon class="ml-2">
+              mdi-chevron-up
+            </v-icon>
+          </template>
         </div>
-        <v-icon class="ml-2">
-          mdi-chevron-up
-        </v-icon>
       </v-btn>
     </v-card-title>
     <v-card-text>
