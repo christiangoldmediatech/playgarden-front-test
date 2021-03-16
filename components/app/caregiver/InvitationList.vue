@@ -77,6 +77,10 @@ export default {
     })
   },
 
+  beforeDestroy () {
+    this.$nuxt.$off('caregiver-added')
+  },
+
   methods: {
     ...mapActions('caregiver', [
       'fetchCaregiverInvitationList',
