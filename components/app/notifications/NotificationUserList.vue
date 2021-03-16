@@ -2,16 +2,16 @@
   <v-row no-gutters>
     <!-- Desktop Title -->
     <v-col cols="12" class="d-none d-md-block">
-      <div class="text-uppercase font-weight-bold text-h4 grey--text text--darken-2 pb-12">
+      <div class="text-uppercase font-weight-bold text-h4 grey--text text--darken-2 pb-6">
         Notifications
       </div>
     </v-col>
 
     <!-- Caregivers List Information -->
     <v-col cols="12" class="mb-12 mb-md-0">
-      <v-card class="pa-4 px-md-10 py-md-6 card-custom-border">
+      <v-card class="pa-4 px-md-10 py-md-3 card-custom-border">
         <!-- Desktop SVG -->
-        <div class="justify-center pb-8 d-none d-md-flex">
+        <div class="justify-center pb-4 d-none d-md-flex">
           <img
             height="100px"
             src="@/assets/svg/notifications.svg"
@@ -19,7 +19,7 @@
         </div>
 
         <!-- Mobile SVG and Title= -->
-        <div class="d-flex d-md-none justify-center py-4">
+        <div class="d-flex d-md-none justify-center py-2">
           <img
             height="45px"
             src="@/assets/svg/notifications.svg"
@@ -29,8 +29,8 @@
           </span>
         </div>
 
-        <div class="text-center body-1 text-md-h6 font-weight-medium grey--text text--darken-2 mt-2 mb-8">
-          Here is a brief description about notifications
+        <div class="text-center body-1 text-md-h6 font-weight-medium grey--text text--darken-2 my-2">
+          <small>Manage the notifications you want to receive!</small>
         </div>
 
         <!-- Notification Preference Header -->
