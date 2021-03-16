@@ -7,7 +7,7 @@ export default async function ({ redirect, route, store, req, app }) {
       'auth-verify-email': 1,
       'auth-verify-playdate': 1,
       'app-pick-child': 1,
-      'app-account': 1,
+      'app-account-index': 1,
       'app-children-register': 1,
       'app-children': 1,
       'app-payment': 1,

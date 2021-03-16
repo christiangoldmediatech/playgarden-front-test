@@ -236,7 +236,7 @@ export default {
           await this.$router.push({ name: 'auth-verify-email' })
         } else {
           this.$snotify.success('Plan change has been processed successfully!')
-          await this.$router.push({ name: 'app-account' })
+          await this.$router.push({ name: 'app-account-index' })
         }
       } catch (e) {
       } finally {

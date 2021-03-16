@@ -18,5 +18,13 @@ export default {
 
   updateNotificationUser (_, id) {
     return this.$axios.$post(`notifications/users/${id}/toggle`)
+  },
+
+  updateNotificationSMS (_, id) {
+    return this.$axios.$post(`notifications/users/${id}/sms/toggle`)
+  },
+
+  updateNotificationEmail (_, id) {
+    return this.$axios.$post(`notifications/users/${id}/email/toggle`)
   }
 }
