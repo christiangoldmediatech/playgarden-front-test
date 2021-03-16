@@ -9,7 +9,8 @@
       fontSize: _fontSize,
       fontWeight: _fontWeight,
       paddingBottom: _paddingBottom,
-      lineHeight
+      lineHeight,
+      letterSpacing
     }"
     v-on="$listeners"
     v-html="text"
@@ -75,6 +76,11 @@ export default {
     text: {
       type: String,
       required: true
+    },
+
+    letterSpacing: {
+      type: String,
+      default: '0px'
     }
   },
 
