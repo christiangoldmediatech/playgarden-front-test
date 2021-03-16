@@ -8,10 +8,10 @@
     </v-col>
 
     <!-- Caregivers List Information -->
-    <v-col cols="12" md="6" class="pr-md-8 mb-12 mb-md-0">
+    <v-col cols="12" md="6" class="pr-md-8 mb-6 mb-md-0">
       <v-card class="pa-4 px-md-10 py-md-6 card-custom-border">
         <!-- Desktop SVG -->
-        <div class="justify-center pb-8 d-none d-md-flex">
+        <div class="justify-center pb-4 d-none d-md-flex">
           <img
             height="100px"
             src="@/assets/svg/caregivers.svg"
@@ -19,7 +19,7 @@
         </div>
 
         <!-- Mobile SVG and Title= -->
-        <div class="d-flex d-md-none justify-center py-4">
+        <div class="d-flex d-md-none justify-center py-2">
           <img
             height="45px"
             src="@/assets/svg/caregivers.svg"
@@ -29,8 +29,8 @@
           </span>
         </div>
 
-        <div class="text-center body-1 text-md-h6 font-weight-medium grey--text text--darken-2 mt-2 mb-8">
-          Here is a brief description about caregivers
+        <div class="text-center body-1 text-md-h6 font-weight-medium grey--text text--darken-2 my-2">
+          <small>Give access to your child caregiver.</small>
         </div>
 
         <!-- List -->
@@ -40,11 +40,11 @@
           no-gutters
         >
           <v-col cols="12" class="text-h6 text-md-h5 grey--text mb-3">
-            Caregiver {{ caregiverIndex + 1 }}
+            <small>Caregiver {{ caregiverIndex + 1 }}</small>
           </v-col>
 
           <v-col cols="11" class="text-h6 text-md-h5 grey--text font-weight-bold text-truncate">
-            {{ caregiver.firstName }}
+            {{ caregiver.fullName }}
           </v-col>
 
           <v-col v-if="isEditing" cols="1" class="d-flex justify-end">
@@ -57,7 +57,7 @@
         </v-row>
 
         <v-btn
-          v-if="!isEditing"
+          v-if="caregivers.length > 0 && !isEditing"
           x-large
           block
           class="mt-6"

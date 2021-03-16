@@ -46,7 +46,7 @@
         justify="center"
         class="my-1 px-md-6 grey--text"
       >
-        You don't have any pending sent invites
+        You don't have any pending invites
       </v-row>
     </v-col>
   </v-row>
