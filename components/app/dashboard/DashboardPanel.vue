@@ -46,7 +46,7 @@
         @click.native="openCourseProgress"
       />
 
-      <div class="dashboard-panel-content pa-3" :class="{ 'dashboard-panel-content-extra-padding': nextButton }">
+      <div class="dashboard-panel-content pa-3">
         <content-section
           number="1"
           title="Video Lessons"
