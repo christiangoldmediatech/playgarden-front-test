@@ -89,24 +89,26 @@
           </div>
           <v-row justify="center">
             <center v-if="$vuetify.breakpoint.smAndUp">
-              <v-btn
-                block
+              <v-alert
                 class="mt-4 info-much-more"
+                color="red orange"
+                dark
               >
-                <span class="much-info">
+                <span class="mp-2 much-info">
                   AND MUCH MORE!!
                 </span>
-              </v-btn>
+              </v-alert>
             </center>
             <div v-else class="justify-center" :class="{ 'mx-4': !$vuetify.breakpoint.smAndUp }">
-              <v-btn
-                block
+              <v-alert
                 class="mt-8 info-much-more px-8"
+                color="red orange"
+                dark
               >
-                <span class="much-info">
+                <span class="mp-2 much-info">
                   AND MUCH MORE!!
                 </span>
-              </v-btn>
+              </v-alert>
             </div>
             <div class="mt-2">
               <span
@@ -163,11 +165,14 @@ ul li::before {
 }
 .much-info {
   color: var(--v-accent-base);
+  font-size: 17px !important;;
+  font-weight: bold !important;;
 }
 .text-header-info {
   font-size: 14px !important;
 }
 .info-much-more {
   background-color: rgba(248, 152, 56, 0.3) !important;
+  min-height: 32px !important;
 }
 </style>
