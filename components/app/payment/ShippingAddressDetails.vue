@@ -11,7 +11,8 @@
             :error-messages="errors"
             :loading="loading"
             placeholder="Street 1"
-            solo
+            label="Street"
+            solo-labeled
           />
         </validation-provider>
 
@@ -21,7 +22,8 @@
           clearable
           :loading="loading"
           placeholder="Street 2 (optional)"
-          solo
+          label="Street 2 (optional)"
+          solo-labeled
         />
 
         <!-- City -->
@@ -32,7 +34,8 @@
             :error-messages="errors"
             :loading="loading"
             placeholder="City"
-            solo
+            label="City"
+            solo-labeled
           />
         </validation-provider>
 
@@ -48,7 +51,8 @@
             :error-messages="errors"
             :loading="loading"
             placeholder="State"
-            solo
+            label="State"
+            solo-labeled
           />
         </validation-provider>
 
@@ -64,7 +68,8 @@
             :error-messages="errors"
             :loading="loading"
             placeholder="Zip code"
-            solo
+            label="Zip code"
+            solo-labeled
           />
         </validation-provider>
 
@@ -94,38 +99,31 @@
 
     <!-- Readonly user shipping address -->
     <v-row v-else class="grey--text">
-      <v-col cols="6">
-        Street 1
+      <v-col cols="4">
+        Street
       </v-col>
-      <v-col cols="6" class="text-right">
-        {{ draft.address1 }}
-      </v-col>
-
-      <v-col cols="6">
-        Street 2
-      </v-col>
-      <v-col cols="6" class="text-right">
-        {{ draft.address2 }}
+      <v-col cols="8" class="text-right">
+        {{ draft.address1 }} {{ (draft.address2 ? `, ${draft.address2}` : '') }}
       </v-col>
 
-      <v-col cols="6">
+      <v-col cols="4">
         City
       </v-col>
-      <v-col cols="6" class="text-right">
+      <v-col cols="8" class="text-right">
         {{ draft.city }}
       </v-col>
 
-      <v-col cols="6">
+      <v-col cols="4">
         State
       </v-col>
-      <v-col cols="6" class="text-right">
+      <v-col cols="8" class="text-right">
         {{ draft.state }}
       </v-col>
 
-      <v-col cols="6">
+      <v-col cols="4">
         Zip Code
       </v-col>
-      <v-col cols="6" class="text-right">
+      <v-col cols="8" class="text-right">
         {{ draft.zipCode }}
       </v-col>
     </v-row>

@@ -5,49 +5,49 @@
       <pg-text-field
         v-model="form.firstName"
         label="First Name"
-        solo
+        solo-labeled
       />
 
       <pg-text-field
         v-model="form.lastName"
         label="Last Name"
-        solo
+        solo-labeled
       />
 
       <pg-text-field
         v-model="form.phoneNumber"
         label="Phone number"
-        solo
+        solo-labeled
       />
     </div>
 
     <!-- Readonly user info -->
     <v-row v-else class="grey--text pb-8">
-      <v-col cols="6">
+      <v-col cols="4">
         Name
       </v-col>
-      <v-col cols="6" class="text-right">
+      <v-col cols="8" class="text-right">
         {{ fullName }}
       </v-col>
 
-      <v-col cols="6">
+      <v-col cols="4">
         Email
       </v-col>
-      <v-col cols="6" class="text-right">
+      <v-col cols="8" class="text-right">
         {{ userInfo.email }}
       </v-col>
 
-      <v-col cols="6">
+      <v-col cols="4">
         Password
       </v-col>
-      <v-col cols="6" class="text-right">
+      <v-col cols="8" class="text-right">
         ••••••••••
       </v-col>
 
-      <v-col cols="6">
-        Phone number
+      <v-col cols="4">
+        Phone
       </v-col>
-      <v-col cols="6" class="text-right">
+      <v-col cols="8" class="text-right">
         {{ userInfo.phoneNumber }}
       </v-col>
     </v-row>
@@ -145,9 +145,9 @@
     </v-row>
 
     <!-- Social buttons after sync -->
-    <v-row v-else justify="center" class="mb-8">
+    <v-row v-else justify="center" class="my-2">
       <!-- FACEBOOK -->
-      <v-btn v-if="userInfo.socialNetwork === 'FACEBOOK'" block height="45" class="social-sync" text>
+      <div v-if="userInfo.socialNetwork === 'FACEBOOK'" class="social-sync" text>
         <img
           alt="Facebook"
           class="mr-1"
@@ -155,17 +155,17 @@
         >
 
         <span class="text-transform-none">Your account is synced with Facebook</span>
-      </v-btn>
+      </div>
       <!-- GOOGLE -->
-      <v-btn v-if="userInfo.socialNetwork === 'GOOGLE'" block height="45" class="social-sync" text>
+      <div v-if="userInfo.socialNetwork === 'GOOGLE'" class="social-sync" text>
         <img
           alt="Google"
-          class="mr-1"
+          class="mr-1 mt-1"
           src="@/assets/svg/google_icon.svg"
         >
 
         <span class="text-transform-none">Your account is synced with Google</span>
-      </v-btn>
+      </div>
     </v-row>
   </div>
 </template>
