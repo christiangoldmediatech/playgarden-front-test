@@ -63,7 +63,7 @@
                   cols="12"
                   :class="[
                     'd-flex justify-center',
-                    { 'mt-sm-n9': !!item.id }
+                    { 'mt-sm-n0': !!item.id }
                   ]"
                 >
                   <img
@@ -121,7 +121,7 @@
                 :disabled="loading"
                 :error-messages="errors"
                 label="Name"
-                solo
+                solo-labeled
               />
             </validation-provider>
 
@@ -148,7 +148,7 @@
                     :error-messages="errors"
                     label="Birthday date"
                     readonly
-                    solo
+                    solo-labeled
                     :suffix="item._birthdayFormatted ? '' : 'MM/DD/YYYY'"
                     validate-on-blur
                     :value="item._birthdayFormatted"
