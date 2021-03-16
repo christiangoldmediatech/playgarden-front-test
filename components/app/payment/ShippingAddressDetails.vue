@@ -1,105 +1,102 @@
 <template>
-  <validation-observer v-if="showAddress" v-slot="{ invalid, passes, reset }">
-    <v-form id="shipping-address-form" @submit.prevent="passes(onSubmit)">
-      <p>
-        <span class="font-weight-bold">
-          SHIPPING ADDRESS
-        </span>
-      </p>
+  <div>
+    <!-- Editable user shipping address -->
+    <validation-observer v-if="isEditing" v-slot="{ invalid, passes, reset }">
+      <v-form id="shipping-address-form" @submit.prevent="passes(onSubmit)">
+        <v-row no-gutters>
+          <v-col cols="12">
+            <!-- Street 1 -->
+            <validation-provider v-slot="{ errors }" name="Street 1" rules="required">
+              <pg-text-field
+                v-model="draft.address1"
+                clearable
+                :error-messages="errors"
+                :loading="loading"
+                placeholder="Street 1"
+                solo
+              />
+            </validation-provider>
+          </v-col>
 
-      <!-- Street 1 -->
-      <validation-provider v-slot="{ errors }" name="Street 1" rules="required">
-        <pg-text-field
-          v-model="draft.address1"
-          clearable
-          :disabled="!editing || loading"
-          :error-messages="errors"
-          :loading="loading"
-          placeholder="Street 1"
-          solo
-        />
-      </validation-provider>
-
-      <!-- Street 2 -->
-      <pg-text-field
-        v-model="draft.address2"
-        clearable
-        :disabled="!editing || loading"
-        :loading="loading"
-        placeholder="Street 2 (optional)"
-        solo
-      />
-
-      <!-- City -->
-      <validation-provider v-slot="{ errors }" name="City" rules="required">
-        <pg-text-field
-          v-model="draft.city"
-          clearable
-          :disabled="!editing || loading"
-          :error-messages="errors"
-          :loading="loading"
-          placeholder="City"
-          solo
-        />
-      </validation-provider>
-
-      <v-row>
-        <v-col cols="6">
-          <!-- State -->
-          <validation-provider
-            v-slot="{ errors }"
-            name="State"
-            rules="required"
-          >
+          <v-col cols="12">
+            <!-- Street 2 -->
             <pg-text-field
-              v-model="draft.state"
+              v-model="draft.address2"
               clearable
-              :disabled="!editing || loading"
-              :error-messages="errors"
               :loading="loading"
-              placeholder="State"
+              placeholder="Street 2 (optional)"
               solo
             />
-          </validation-provider>
-        </v-col>
+          </v-col>
 
-        <v-col cols="6">
-          <!-- Zipcode -->
-          <validation-provider
-            v-slot="{ errors }"
-            name="Zipcode"
-            rules="required"
-          >
-            <pg-text-field
-              v-model="draft.zipCode"
-              clearable
-              :disabled="!editing || loading"
-              :error-messages="errors"
-              :loading="loading"
-              placeholder="Zip code"
-              solo
-            />
-          </validation-provider>
-        </v-col>
-      </v-row>
+          <v-col cols="12">
+            <!-- City -->
+            <validation-provider v-slot="{ errors }" name="City" rules="required">
+              <pg-text-field
+                v-model="draft.city"
+                clearable
+                :error-messages="errors"
+                :loading="loading"
+                placeholder="City"
+                solo
+              />
+            </validation-provider>
+          </v-col>
 
-      <template v-if="editing">
+          <v-col cols="6">
+            <!-- State -->
+            <validation-provider
+              v-slot="{ errors }"
+              name="State"
+              rules="required"
+            >
+              <pg-text-field
+                v-model="draft.state"
+                clearable
+                :error-messages="errors"
+                :loading="loading"
+                placeholder="State"
+                class="pr-4"
+                solo
+              />
+            </validation-provider>
+          </v-col>
+
+          <v-col cols="6">
+            <!-- Zipcode -->
+            <validation-provider
+              v-slot="{ errors }"
+              name="Zipcode"
+              rules="required"
+            >
+              <pg-text-field
+                v-model="draft.zipCode"
+                clearable
+                :error-messages="errors"
+                :loading="loading"
+                placeholder="Zip code"
+                class="pl-4"
+                solo
+              />
+            </validation-provider>
+          </v-col>
+        </v-row>
+
         <v-btn
           block
-          class="mb-6"
-          color="primary"
+          :color="saveButtonColor"
           :disabled="invalid"
           :loading="loading"
           type="submit"
           x-large
         >
-          SAVE
+          {{ saveButtonText }}
         </v-btn>
 
         <v-btn
+          v-if="!hideCancelButton"
           block
-          class="mb-6"
-          color="primary"
+          color="grey"
           :loading="loading"
           text
           x-large
@@ -107,23 +104,57 @@
         >
           CANCEL
         </v-btn>
-      </template>
+      </v-form>
+    </validation-observer>
 
-      <v-btn
-        v-else
-        :key="`${_uid}-change`"
-        block
-        class="mb-6"
-        color="primary"
-        :loading="loading"
-        type="submit"
-        x-large
-        @click="editing = true"
-      >
-        CHANGE ADDRESS
-      </v-btn>
-    </v-form>
-  </validation-observer>
+    <!-- Readonly user shipping address -->
+    <v-row v-else class="grey--text">
+      <v-col cols="6">
+        Street 1
+      </v-col>
+      <v-col cols="6" class="text-right">
+        {{ draft.address1 }}
+      </v-col>
+
+      <v-col cols="6">
+        Street 2
+      </v-col>
+      <v-col cols="6" class="text-right">
+        {{ draft.address2 }}
+      </v-col>
+
+      <v-col cols="6">
+        City
+      </v-col>
+      <v-col cols="6" class="text-right">
+        {{ draft.city }}
+      </v-col>
+
+      <v-col cols="6">
+        State
+      </v-col>
+      <v-col cols="6" class="text-right">
+        {{ draft.state }}
+      </v-col>
+
+      <v-col cols="6">
+        Zip Code
+      </v-col>
+      <v-col cols="6" class="text-right">
+        {{ draft.zipCode }}
+      </v-col>
+    </v-row>
+
+    <v-btn
+      v-if="!isEditing"
+      x-large
+      class="primary mt-8"
+      block
+      @click="isEditing = true"
+    >
+      Change Address
+    </v-btn>
+  </div>
 </template>
 
 <script>
@@ -136,16 +167,36 @@ export default {
 
   mixins: [submittable],
 
+  props: {
+    editByDefault: {
+      type: Boolean,
+      default: false
+    },
+    saveButtonText: {
+      type: String,
+      default: 'Save'
+    },
+    hideCancelButton: {
+      type: Boolean,
+      default: false
+    },
+    saveButtonColor: {
+      type: String,
+      default: 'warning'
+    }
+  },
+
   data: () => ({
-    showAddress: false,
-    editing: false,
-    loading: true
+    isEditing: false,
+    loading: false
   }),
 
   created () {
     this.init()
 
     this.$nuxt.$on('plan-membership-changed', () => this.init())
+
+    this.isEditing = this.editByDefault
   },
 
   beforeDestroy () {
@@ -164,11 +215,7 @@ export default {
     ...mapActions('payment', ['getSelectedSubscriptionPlan']),
 
     async init () {
-      await this.getPlan()
-
-      if (this.showAddress) {
-        await this.fetchAddress()
-      }
+      await this.fetchAddress()
     },
 
     async fetchAddress () {
@@ -183,7 +230,7 @@ export default {
             {
               text: 'Edit',
               action: () => {
-                this.editing = true
+                this.isEditing = true
                 this.$scrollTo('#shipping-address-form', { offset: -65 })
               }
             }
@@ -197,26 +244,12 @@ export default {
       }
     },
 
-    async getPlan () {
-      try {
-        this.disableAxiosGlobal()
-        const { plan } = await this.getSelectedSubscriptionPlan()
-
-        this.showAddress = Boolean(
-          plan.homeDeliveryBenefits || plan.plusBenefits
-        )
-      } catch (e) {
-      } finally {
-        this.enableAxiosGlobal()
-      }
-    },
-
     onCancel (reset) {
       if (reset) {
         reset()
       }
 
-      this.editing = false
+      this.isEditing = false
 
       this.$emit('click:cancel')
 
@@ -230,6 +263,7 @@ export default {
         await this.submitMethod(this.getSubmittableData())
 
         this.$snotify.success('Shipping address has been saved successfully!')
+        this.$emit('shipping-address-saved')
 
         this.onCancel()
       } catch (e) {
@@ -256,3 +290,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.shipping-info-text {
+  color: #B7B7B7;
+}
+</style>
