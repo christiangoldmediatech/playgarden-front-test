@@ -2,16 +2,16 @@
   <v-row no-gutters>
     <!-- Desktop Title -->
     <v-col cols="12" class="d-none d-md-block">
-      <div class="text-uppercase font-weight-bold text-h4 grey--text text--darken-2 pb-12">
+      <div class="text-uppercase font-weight-bold text-h4 grey--text text--darken-2 pb-6">
         Membership
       </div>
     </v-col>
 
     <!-- Membership Billing Information -->
-    <v-col cols="12" md="6" class="pr-md-8 mb-12 mb-md-0">
+    <v-col cols="12" md="6" class="pr-md-8 mb-6 mb-md-0">
       <v-card class="pa-4 px-md-10 py-md-6 card-custom-border">
         <!-- Desktop SVG -->
-        <div class="justify-center pb-8 d-none d-md-flex">
+        <div class="justify-center pb-4 d-none d-md-flex">
           <img
             height="100px"
             src="@/assets/svg/membership.svg"
@@ -19,7 +19,7 @@
         </div>
 
         <!-- Mobile SVG and Title= -->
-        <div class="d-flex d-md-none justify-center py-4">
+        <div class="d-flex d-md-none justify-center py-2">
           <img
             height="45px"
             src="@/assets/svg/membership.svg"
@@ -29,40 +29,40 @@
           </span>
         </div>
 
-        <div class="text-center body-1 text-md-h6 font-weight-medium grey--text text--darken-2 mt-2 mb-8">
-          Here is a brief description about membership
+        <div class="text-center body-1 text-md-h6 font-weight-medium grey--text text--darken-2 my-2">
+          <small>Information about your membership</small>
         </div>
 
         <div v-if="hasMembership">
           <!-- Trial Period Description -->
           <v-row v-if="billing.status === 'trialing'" no-gutters>
-            <v-col cols="12" class="text-h6 text-md-h5 grey--text mb-3">
-              Free trial period ends
+            <v-col cols="12" class="text-h6 text-md-h5 grey--text mb-1">
+              <small>Free trial period ends</small>
             </v-col>
 
-            <v-col cols="12" class="text-h6 text-md-h5 grey--text font-weight-bold mb-3">
+            <v-col cols="12" class="text-h6 text-md-h5 grey--text font-weight-bold mb-1">
               {{ billing.trialEndDate }}
             </v-col>
           </v-row>
 
           <!-- Next Billing Date -->
           <v-row v-else no-gutters class="mb-3">
-            <v-col cols="12" class="text-h6 text-md-h5 grey--text mb-3">
-              Your next billing date is
+            <v-col cols="12" class="text-h6 text-md-h5 grey--text mb-1">
+              <small>Your next billing date is:</small>
             </v-col>
 
-            <v-col cols="12" class="text-h6 text-md-h5 grey--text font-weight-bold mb-3">
+            <v-col cols="12" class="text-h6 text-md-h5 grey--text font-weight-bold mb-1">
               {{ billing.nextBillingDate }}
             </v-col>
           </v-row>
 
           <!-- Monthly Membership Fee -->
           <v-row no-gutters class="mb-3">
-            <v-col cols="12" class="text-h6 text-md-h5 grey--text mb-3">
-              Your {{ membershipInterval }} membership fee is
+            <v-col cols="12" class="text-h6 text-md-h5 grey--text mb-1">
+              <small>Your {{ membershipInterval }} membership fee is:</small>
             </v-col>
 
-            <v-col cols="12" class="text-h6 text-md-h5 grey--text font-weight-bold mb-3">
+            <v-col cols="12" class="text-h6 text-md-h5 grey--text font-weight-bold mb-1">
               <div>
                 <span>{{
                   billing.planAmount.toLocaleString("en-US", {
@@ -76,15 +76,21 @@
 
           <!-- Discount -->
           <v-row v-if="billing.planAmountDiscount" no-gutters>
-            <v-col cols="12" class="text-h6 text-md-h5 grey--text mb-3">
-              Discount
+            <v-col cols="12" class="text-h6 text-md-h5 grey--text mb-1">
+              <small>Discount</small>
             </v-col>
 
-            <v-col cols="12" class="text-h6 text-md-h5 grey--text font-weight-bold mb-3">
-              <span v-if="billing.percentOff">
+            <v-col cols="12" md="6">
+              <small class="grey--text font-weight-bold">Code:</small>
+              <span class="text-h6 text-md-h5 grey--text font-weight-bold mb-3 ml-2">{{ billing.discountCode }}</span>
+            </v-col>
+
+            <v-col cols="12" md="6" class="mb-3">
+              <small class="grey--text font-weight-bold">Amount:</small>
+              <span v-if="billing.percentOff" class="text-h6 text-md-h5 grey--text font-weight-bold mb-3 ml-2">
                 {{ billing.percentOff }} %
               </span>
-              <span v-if="billing.amountOff">
+              <span v-if="billing.amountOff" class="text-h6 text-md-h5 grey--text font-weight-bold mb-3 ml-2">
                 {{
                   billing.amountOff.toLocaleString("en-US", {
                     style: "currency",
@@ -375,7 +381,8 @@ export default {
         planName: null,
         trialEndDate: null,
         subscriptionId: null,
-        status: null
+        status: null,
+        discountCode: null
       },
       cardToUpate: null,
       stripeCardModal: false,
@@ -468,6 +475,11 @@ export default {
           this.billing.nextBillingDate = dayjs(
             data.subscriptionData.current_period_end * 1000
           ).format('MMMM D, YYYY')
+          this.billing.discountCode = get(
+            data,
+            'subscriptionData.discount.coupon.name',
+            null
+          )
         }
       } finally {
         this.loading = false
