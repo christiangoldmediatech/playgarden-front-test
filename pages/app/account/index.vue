@@ -6,7 +6,7 @@
           :flat="isMobile"
           :class="['text-center fill-height', { 'mobile-card': isMobile }]"
         >
-          <div class="py-12 mx-2">
+          <div class="py-md-12 py-2 mx-2">
             <img
               class="d-none d-sm-inline"
               height="100px"
