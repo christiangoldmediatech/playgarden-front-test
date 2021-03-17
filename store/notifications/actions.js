@@ -44,9 +44,10 @@ export default {
       } catch (error) {
         if (error?.response?.status === 404) {
           const createdAt = userInfo.createdAt
+          const roleId = userInfo.role?.id
           const daysDifference = dayjs(new Date()).diff(dayjs(createdAt), 'days')
 
-          if (daysDifference >= 2) {
+          if (daysDifference >= 2 && roleId === 3) {
             commit('notifications/SET_NOTIFICATION_CARD', {
               title: 'WE WANT TO SEND YOU A WELCOME KIT!',
               description: 'We require a shipping address in order to send the Welcome Kit with Backpack, workbooks, and additional materials.',
