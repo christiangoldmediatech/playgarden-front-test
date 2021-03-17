@@ -38,23 +38,20 @@ export default {
     const isUserLoggedIn = rootGetters['auth/isUserLoggedIn']
     const userInfo = rootGetters['auth/getUserInfo']
 
-    if (isUserLoggedIn) {
-      try {
-        await dispatch('shipping-address/getShippingAddress', undefined, { root: true })
-      } catch (error) {
-        if (error?.response?.status === 404) {
-          const createdAt = userInfo.createdAt
-          const roleId = userInfo.role?.id
-          const daysDifference = dayjs(new Date()).diff(dayjs(createdAt), 'days')
+    if (isUserLoggedIn && userInfo.role?.id === 3) {
+      const shippingAddress = await dispatch('shipping-address/getShippingAddress', undefined, { root: true })
 
-          if (daysDifference >= 2 && roleId === 3) {
-            commit('notifications/SET_NOTIFICATION_CARD', {
-              title: 'WE WANT TO SEND YOU A WELCOME KIT!',
-              description: 'We require a shipping address in order to send the Welcome Kit with Backpack, workbooks, and additional materials.',
-              action: () => commit('notifications/SET_IS_SHIPPING_MODAL_VISIBLE', true, { root: true }),
-              image: require('@/assets/png/megaphone.png')
-            }, { root: true })
-          }
+      if (!shippingAddress) {
+        const createdAt = userInfo.createdAt
+        const daysPastSinceCreation = dayjs(new Date()).diff(dayjs(createdAt), 'days')
+
+        if (daysPastSinceCreation >= 2) {
+          commit('notifications/SET_NOTIFICATION_CARD', {
+            title: 'WE WANT TO SEND YOU A WELCOME KIT!',
+            description: 'We require a shipping address in order to send the Welcome Kit with Backpack, workbooks, and additional materials.',
+            action: () => commit('notifications/SET_IS_SHIPPING_MODAL_VISIBLE', true, { root: true }),
+            image: require('@/assets/png/megaphone.png')
+          }, { root: true })
         }
       }
     }
