@@ -187,7 +187,7 @@ export default {
       const fireAuthObj = this.$fireAuthObj()
 
       fireAuthObj
-        .signInWithPopup(provider)
+        .signInWithRedirect(provider)
         .then((result) => {
           const profile = { ...result.additionalUserInfo.profile }
 
