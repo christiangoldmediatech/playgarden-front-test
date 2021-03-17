@@ -256,6 +256,7 @@ export default {
   router: {
     base: process.env.TEST_ENV === 'production' ? '/app/' : '/',
     middleware: [
+      'checkJWT',
       'auth',
       'fetchUserInfo',
       'recoverRegistrationProcess',
