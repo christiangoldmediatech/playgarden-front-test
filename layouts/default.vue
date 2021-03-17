@@ -6,6 +6,11 @@
 
     <application-header />
 
+    <!-- NOTIFICATION CARD -->
+    <notification-card />
+    <!-- SHIPPING NOTIFICATION MODAL -->
+    <shipping-address-modal />
+
     <!-- CONTENT -->
     <v-main v-if="!fullWidth">
       <v-container class="pa-md-3 pa-0" fill-height>
@@ -27,12 +32,15 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex'
-import AppNavigation from '@/components/app/header/AppNavigation'
+import { mapGetters, mapState, mapActions } from 'vuex'
+
 import ApplicationHeader from '@/components/app/header/ApplicationHeader'
-import DefaultFooter from '@/components/app/footer/DefaultFooter'
+import AppNavigation from '@/components/app/header/AppNavigation'
 import ComingSoonDialog from '@/components/app/ComingSoonDialog'
 import ComingSoonPlayer from '@/components/app/ComingSoonPlayer.vue'
+import DefaultFooter from '@/components/app/footer/DefaultFooter'
+import NotificationCard from '@/components/app/notifications/NotificationCard'
+import ShippingAddressModal from '~/components/app/payment/ShippingAddressModal.vue'
 
 export default {
   name: 'Default',
@@ -40,9 +48,11 @@ export default {
   components: {
     ApplicationHeader,
     AppNavigation,
-    DefaultFooter,
     ComingSoonDialog,
-    ComingSoonPlayer
+    ComingSoonPlayer,
+    DefaultFooter,
+    NotificationCard,
+    ShippingAddressModal
   },
 
   data: () => ({
@@ -63,6 +73,11 @@ export default {
   },
 
   watch: {
+    async isUserLoggedIn (v) {
+      if (v === true) {
+        await this.checkUserShippingAddressAndNotify()
+      }
+    },
     '$route.name' (v) {
       if (v === 'auth-verify-email' && this.verifyEmailToast) {
         this.$snotify.remove(this.verifyEmailToast.id)
@@ -80,6 +95,8 @@ export default {
   },
 
   methods: {
+    ...mapActions('notifications', ['checkUserShippingAddressAndNotify']),
+
     showVerifyEmailToast () {
       if (
         this.isUserEmailUnverified &&
