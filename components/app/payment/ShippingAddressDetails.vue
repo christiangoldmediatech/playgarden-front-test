@@ -3,84 +3,75 @@
     <!-- Editable user shipping address -->
     <validation-observer v-if="isEditing" v-slot="{ invalid, passes, reset }">
       <v-form id="shipping-address-form" @submit.prevent="passes(onSubmit)">
-        <v-row no-gutters>
-          <v-col cols="12">
-            <!-- Street 1 -->
-            <validation-provider v-slot="{ errors }" name="Street 1" rules="required">
-              <pg-text-field
-                v-model="draft.address1"
-                clearable
-                :error-messages="errors"
-                :loading="loading"
-                placeholder="Street 1"
-                solo
-              />
-            </validation-provider>
-          </v-col>
+        <!-- Street 1 -->
+        <validation-provider v-slot="{ errors }" name="Street 1" rules="required">
+          <pg-text-field
+            v-model="draft.address1"
+            clearable
+            :error-messages="errors"
+            :loading="loading"
+            placeholder="Street 1"
+            label="Street"
+            solo-labeled
+          />
+        </validation-provider>
 
-          <v-col cols="12">
-            <!-- Street 2 -->
-            <pg-text-field
-              v-model="draft.address2"
-              clearable
-              :loading="loading"
-              placeholder="Street 2 (optional)"
-              solo
-            />
-          </v-col>
+        <!-- Street 2 -->
+        <pg-text-field
+          v-model="draft.address2"
+          clearable
+          :loading="loading"
+          placeholder="Street 2 (optional)"
+          label="Street 2 (optional)"
+          solo-labeled
+        />
 
-          <v-col cols="12">
-            <!-- City -->
-            <validation-provider v-slot="{ errors }" name="City" rules="required">
-              <pg-text-field
-                v-model="draft.city"
-                clearable
-                :error-messages="errors"
-                :loading="loading"
-                placeholder="City"
-                solo
-              />
-            </validation-provider>
-          </v-col>
+        <!-- City -->
+        <validation-provider v-slot="{ errors }" name="City" rules="required">
+          <pg-text-field
+            v-model="draft.city"
+            clearable
+            :error-messages="errors"
+            :loading="loading"
+            placeholder="City"
+            label="City"
+            solo-labeled
+          />
+        </validation-provider>
 
-          <v-col cols="6">
-            <!-- State -->
-            <validation-provider
-              v-slot="{ errors }"
-              name="State"
-              rules="required"
-            >
-              <pg-text-field
-                v-model="draft.state"
-                clearable
-                :error-messages="errors"
-                :loading="loading"
-                placeholder="State"
-                class="pr-4"
-                solo
-              />
-            </validation-provider>
-          </v-col>
+        <!-- State -->
+        <validation-provider
+          v-slot="{ errors }"
+          name="State"
+          rules="required"
+        >
+          <pg-text-field
+            v-model="draft.state"
+            clearable
+            :error-messages="errors"
+            :loading="loading"
+            placeholder="State"
+            label="State"
+            solo-labeled
+          />
+        </validation-provider>
 
-          <v-col cols="6">
-            <!-- Zipcode -->
-            <validation-provider
-              v-slot="{ errors }"
-              name="Zipcode"
-              rules="required"
-            >
-              <pg-text-field
-                v-model="draft.zipCode"
-                clearable
-                :error-messages="errors"
-                :loading="loading"
-                placeholder="Zip code"
-                class="pl-4"
-                solo
-              />
-            </validation-provider>
-          </v-col>
-        </v-row>
+        <!-- Zipcode -->
+        <validation-provider
+          v-slot="{ errors }"
+          name="Zipcode"
+          rules="required"
+        >
+          <pg-text-field
+            v-model="draft.zipCode"
+            clearable
+            :error-messages="errors"
+            :loading="loading"
+            placeholder="Zip code"
+            label="Zip code"
+            solo-labeled
+          />
+        </validation-provider>
 
         <v-btn
           block
@@ -109,38 +100,31 @@
 
     <!-- Readonly user shipping address -->
     <v-row v-else class="grey--text">
-      <v-col cols="6">
-        Street 1
+      <v-col cols="4">
+        Street
       </v-col>
-      <v-col cols="6" class="text-right">
-        {{ draft.address1 }}
-      </v-col>
-
-      <v-col cols="6">
-        Street 2
-      </v-col>
-      <v-col cols="6" class="text-right">
-        {{ draft.address2 }}
+      <v-col cols="8" class="text-right">
+        {{ draft.address1 }} {{ (draft.address2 ? `, ${draft.address2}` : '') }}
       </v-col>
 
-      <v-col cols="6">
+      <v-col cols="4">
         City
       </v-col>
-      <v-col cols="6" class="text-right">
+      <v-col cols="8" class="text-right">
         {{ draft.city }}
       </v-col>
 
-      <v-col cols="6">
+      <v-col cols="4">
         State
       </v-col>
-      <v-col cols="6" class="text-right">
+      <v-col cols="8" class="text-right">
         {{ draft.state }}
       </v-col>
 
-      <v-col cols="6">
+      <v-col cols="4">
         Zip Code
       </v-col>
-      <v-col cols="6" class="text-right">
+      <v-col cols="8" class="text-right">
         {{ draft.zipCode }}
       </v-col>
     </v-row>

@@ -48,7 +48,7 @@
           <v-btn
             color="primary"
             nuxt
-            :to="{ name: 'app-account', query: { tab: 2 } }"
+            :to="{ name: 'app-account-index', query: { tab: 2 } }"
           >
             Manage Student Profiles
           </v-btn>

@@ -310,12 +310,12 @@
             <v-col cols="12" sm="6">
               <v-btn
                 block
-                color="primary"
-                class="mb-6 main-btn"
+                color="warning"
+                class="my-6 main-btn"
                 :disabled="invalid"
                 :loading="loading"
                 type="submit"
-                large
+                x-large
               >
                 {{ noPayment ? "SAVE" : "NEXT" }}
               </v-btn>
@@ -324,11 +324,11 @@
                 v-if="updating"
                 block
                 class="mb-6 main-btn"
-                color="accent"
+                color="primary"
                 :disabled="invalid"
                 :loading="loading"
                 text
-                large
+                x-large
                 @click="$emit('click:cancel')"
               >
                 CLOSE

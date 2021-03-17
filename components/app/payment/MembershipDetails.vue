@@ -1,194 +1,232 @@
 <template>
   <v-row no-gutters>
-    <v-col cols="12">
-      <p class="font-weight-bold">
-        MEMBERSHIP
-      </p>
-      <div v-if="hasMembership">
-        <v-row v-if="billing.status === 'trialing'" no-gutters class="mb-3">
-          <v-col cols="12" md="7" lg="7">
-            <span>
-              Free trial period ends
-            </span>
-          </v-col>
+    <!-- Desktop Title -->
+    <v-col cols="12" class="d-none d-md-block">
+      <div class="text-uppercase font-weight-bold text-h4 grey--text text--darken-2 pb-6">
+        Membership
+      </div>
+    </v-col>
 
-          <v-col cols="12" md="5" lg="5" class="pr-3 text-left">
-            <b>{{ billing.trialEndDate }}</b>
-          </v-col>
-        </v-row>
-        <v-row v-else no-gutters class="mb-3">
-          <v-col cols="12" md="7" lg="7">
-            <span>
-              Your next billing date is
-            </span>
-          </v-col>
+    <!-- Membership Billing Information -->
+    <v-col cols="12" md="6" class="pr-md-8 mb-6 mb-md-0">
+      <v-card class="pa-4 px-md-10 py-md-6 mb-6 card-custom-border">
+        <!-- Desktop SVG -->
+        <div class="justify-center pb-4 d-none d-md-flex">
+          <img
+            height="100px"
+            src="@/assets/svg/membership.svg"
+          >
+        </div>
 
-          <v-col cols="12" md="5" lg="5" class="pr-3 text-left">
-            <div>
-              <span>
-                <b>{{ billing.nextBillingDate }}</b>
-              </span>
-            </div>
-          </v-col>
-        </v-row>
+        <!-- Mobile SVG and Title= -->
+        <div class="d-flex d-md-none justify-center py-2">
+          <img
+            height="45px"
+            src="@/assets/svg/membership.svg"
+          >
+          <span class="text-uppercase font-weight-bold text-h5 grey--text text--darken-2 mt-1 ml-2">
+            Membership
+          </span>
+        </div>
 
-        <v-row no-gutters class="mb-3">
-          <v-col cols="12" md="7">
-            <span> Your {{ membershipInterval }} membership fee is </span>
-          </v-col>
+        <div class="text-center body-1 text-md-h6 font-weight-medium grey--text text--darken-2 my-2">
+          <small>Information about your membership</small>
+        </div>
 
-          <v-col cols="12" md="5" class="pr-3 text-left">
-            <div>
-              <span>
-                <b>{{
+        <div v-if="hasMembership">
+          <!-- Trial Period Description -->
+          <v-row v-if="billing.status === 'trialing'" no-gutters>
+            <v-col cols="12" class="text-h6 grey--text mb-1">
+              <small>Free trial period ends</small>
+            </v-col>
+
+            <v-col cols="12" class="text-h6 grey--text font-weight-bold mb-1">
+              {{ billing.trialEndDate }}
+            </v-col>
+          </v-row>
+
+          <!-- Next Billing Date -->
+          <v-row v-else no-gutters class="mb-3">
+            <v-col cols="12" class="text-h6 grey--text mb-1">
+              <small>Your next billing date is:</small>
+            </v-col>
+
+            <v-col cols="12" class="text-h6 grey--text font-weight-bold mb-1">
+              {{ billing.nextBillingDate }}
+            </v-col>
+          </v-row>
+
+          <!-- Monthly Membership Fee -->
+          <v-row no-gutters class="mb-3">
+            <v-col cols="12" class="text-h6 grey--text mb-1">
+              <small>Your {{ membershipInterval }} membership fee is:</small>
+            </v-col>
+
+            <v-col cols="12" class="text-h6 grey--text font-weight-bold mb-1">
+              <div>
+                <span>{{
                   billing.planAmount.toLocaleString("en-US", {
                     style: "currency",
                     currency: "USD",
                   })
-                }}</b>
-              </span>
-            </div>
-          </v-col>
-        </v-row>
-        <v-row v-if="billing.planAmountDiscount" no-gutters>
-          <v-col
-            cols="12"
-            md="7"
-            :class="
-              !$vuetify.breakpoint.mobile ? 'text-right discount-label' : ''
-            "
-          >
-            <span>
-              Discount
-            </span>
-          </v-col>
+                }}</span>
+              </div>
+            </v-col>
+          </v-row>
 
-          <v-col cols="12" md="5" class="pr-3 text-left">
-            <div>
-              <span v-if="billing.percentOff">
-                <b>- {{ billing.percentOff }} %</b>
+          <!-- Discount -->
+          <v-row v-if="billing.planAmountDiscount" no-gutters>
+            <v-col cols="12" class="text-h6 grey--text mb-1">
+              <small>Discount</small>
+            </v-col>
+
+            <v-col cols="12" md="6">
+              <small class="grey--text font-weight-bold">Code:</small>
+              <span class="text-h6 grey--text font-weight-bold mb-3 ml-2">{{ billing.discountCode }}</span>
+            </v-col>
+
+            <v-col cols="12" md="6" class="mb-3">
+              <small class="grey--text font-weight-bold">Amount:</small>
+              <span v-if="billing.percentOff" class="text-h6 grey--text font-weight-bold mb-3 ml-2">
+                {{ billing.percentOff }} %
               </span>
-              <span v-if="billing.amountOff">
-                <b>{{
+              <span v-if="billing.amountOff" class="text-h6 grey--text font-weight-bold mb-3 ml-2">
+                {{
                   billing.amountOff.toLocaleString("en-US", {
                     style: "currency",
                     currency: "USD",
                   })
-                }}</b>
+                }}
               </span>
-            </div>
-          </v-col>
-        </v-row>
-
-        <v-divider v-if="billing.planAmountDiscount" />
-
-        <v-row v-if="billing.planAmountDiscount" no-gutters class="mt-2">
-          <v-col cols="7">
-            <span />
-          </v-col>
-
-          <v-col cols="5" class="pr-3 text-left">
-            <div>
-              <span>
-                <b v-if="billing.planAmountDiscount">{{
-                  billing.planAmountDiscount.toLocaleString("en-US", {
-                    style: "currency",
-                    currency: "USD",
-                  })
-                }}</b>
-              </span>
-            </div>
-          </v-col>
-        </v-row>
-
-        <template>
-          <v-row align="center" class="mb-2" no-gutters>
-            <v-col cols="12" md="7">
-              Plan:
-            </v-col>
-            <v-col cols="12" md="5">
-              <b>{{ billing.planName }}</b>
             </v-col>
           </v-row>
-          <v-row align="center" class="mb-2" no-gutters>
-            <v-col cols="12" md="7" />
-            <v-col cols="12" md="5">
-              <v-btn
-                color="primary"
-                class="pa-md-4 ml-n4 md-n0"
-                text
-                @click="changePlanModal = true"
-              >
-                CHANGE PLAN
-              </v-btn>
+
+          <v-divider v-if="billing.planAmountDiscount" />
+
+          <!-- Total Amount -->
+          <v-row v-if="billing.planAmountDiscount" no-gutters class="mt-3">
+            <v-col cols="6" class="text-h5 text-md-h4 grey--text">
+              Total
+            </v-col>
+
+            <v-col cols="6" class="text-h5 text-md-h4 grey--text font-weight-bold text-right">
+              <span v-if="billing.planAmountDiscount">{{
+                billing.planAmountDiscount.toLocaleString("en-US", {
+                  style: "currency",
+                  currency: "USD",
+                })
+              }}</span>
             </v-col>
           </v-row>
-        </template>
-
+        </div>
+      </v-card>
+      <!-- Payment Method -->
+      <v-card class="pa-4 px-md-10 py-md-6 card-custom-border">
+        <v-row no-gutters class="text-uppercase font-weight-bold text-h5 grey--text text--darken-2" justify="center">
+          Payment Method
+        </v-row>
         <v-row
           v-for="(card, indexUC) in userCards"
           :key="indexUC"
           align="center"
-          class="mb-2"
           no-gutters
         >
-          <v-col class="text-truncate" cols="12" md="7">
-            Card:
+          <v-col cols="4" class="text-center text-h6 grey--text font-weight-bold mt-8">
+            {{ card.details.brand }}
           </v-col>
-          <v-col cols="12" md="5">
-            <span class="font-weight-bold">
-              {{ card.details.brand }} <br>.... .... ....
-              {{ card.details.last4 }}
-            </span>
+          <v-col cols="8" class="text-center text-h6 grey--text font-weight-bold mt-8">
+            •••• •••• •••• {{ card.details.last4 }}
           </v-col>
-          <v-row align="center" class="mb-2" no-gutters>
-            <v-col cols="12" md="7" />
-            <v-col cols="12" md="5">
-              <v-btn
-                color="primary"
-                justify-md="end"
-                class="pa-md-4 ml-n4 md-n0"
-                text
-                @click="onUpdateCard(card)"
-              >
-                UPDATE PAYMENT
-              </v-btn>
-            </v-col>
-          </v-row>
+          <v-col cols="12" class="d-flex justify-center mt-8">
+            <v-btn
+              color="primary"
+              text
+              x-large
+              @click="onUpdateCard(card)"
+            >
+              Change Payment Method
+            </v-btn>
+          </v-col>
         </v-row>
-      </div>
-      <v-row
-        v-if="hasMembership"
-        align="center"
-        class="my-1"
-        justify="center"
-        justify-md="center"
-        no-gutters
-      >
-        <!-- Cancel suscription -->
-        <v-btn color="accent" text @click="removeSubscriptionModal = true">
-          CANCEL MEMBERSHIP
-        </v-btn>
-      </v-row>
+      </v-card>
+    </v-col>
 
-      <div v-else class="my-6 text-center">
-        <v-btn
-          block
-          class="mb-6"
-          color="primary"
-          x-large
-          @click="selectPlan"
-        >
-          CREATE MEMBERSHIP
-        </v-btn>
-      </div>
+    <!-- Plan Information -->
+    <v-col cols="12" md="6" class="pl-md-8 mb-6 mb-md-0">
+      <v-card class="pa-4 px-md-10 py-md-6 card-custom-border">
+        <v-row no-gutters>
+          <!-- Plan Name-->
+          <v-col cols="12" class="text-center">
+            <div class="text-uppercase font-weight-bold text-h5 grey--text text--darken-2 mb-6">
+              Your Plan
+            </div>
+
+            <v-btn class="warning mb-8" depressed width="160px">
+              {{ plan.planName }}
+            </v-btn>
+          </v-col>
+
+          <!-- Plan Name -->
+          <v-col v-if="plan.name" cols="12" class="mb-4 text-center">
+            <underlined-title :text="plan.name" font-size="32px" />
+          </v-col>
+
+          <!-- Plan Description -->
+          <!-- TODO: The plan-description component expects an index that is not available
+               when using the component separately, here we are using the (plan.id - 1) that
+               returns an equivalent number, but we should update this component to accept
+               maybe an id instead.[ch1440]
+          -->
+          <v-col cols="12" class="mb-10 mx-0 mx-lg-12">
+            <plan-description
+              v-if="Object.keys(plan).length"
+              :plan="plan"
+            />
+          </v-col>
+
+          <!-- Change Plan Button -->
+          <v-col cols="12" class="d-flex justify-center">
+            <v-btn
+              color="primary mb-3"
+              x-large
+              block
+              @click="changePlanModal = true"
+            >
+              CHANGE PLAN
+            </v-btn>
+          </v-col>
+
+          <v-col cols="12" class="d-flex justify-center">
+            <!-- Cancel Subscription -->
+            <v-btn
+              v-if="hasMembership"
+              block
+              color="error"
+              x-large
+              @click="removeSubscriptionModal = true"
+            >
+              CANCEL MEMBERSHIP
+            </v-btn>
+            <!-- Create Subscription -->
+            <v-btn
+              v-else
+              block
+              color="primary"
+              x-large
+              @click="selectPlan"
+            >
+              CREATE MEMBERSHIP
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-card>
     </v-col>
 
     <!-- Cancel suscription modal -->
     <v-dialog
       v-model="removeSubscriptionModal"
       content-class="white"
-      :fullscreen="$vuetify.breakpoint.smAndDown"
+      :fullscreen="isMobile"
       max-width="1000"
     >
       <v-col cols="12">
@@ -259,7 +297,7 @@
     <v-dialog
       v-model="stripeCardModal"
       content-class="white"
-      :fullscreen="$vuetify.breakpoint.smAndDown"
+      :fullscreen="isMobile"
       max-width="1000"
       persistent
     >
@@ -289,7 +327,7 @@
     <v-dialog
       v-model="changePlanModal"
       content-class="white"
-      :fullscreen="$vuetify.breakpoint.smAndDown"
+      :fullscreen="isMobile"
       max-width="80%"
       persistent
     >
@@ -319,11 +357,14 @@ import { get } from 'lodash'
 import { mapActions } from 'vuex'
 import UpdateBillingMethod from '@/components/app/payment/UpdateBillingMethod'
 import SubscriptionPlanSelection from '@/components/app/payment/SubscriptionPlanSelection'
+import PlanDescription from '@/components/app/payment/SubscriptionPlanSelection/PlanDescription'
+
 export default {
   name: 'MembershipDetails',
   components: {
     UpdateBillingMethod,
-    SubscriptionPlanSelection
+    SubscriptionPlanSelection,
+    PlanDescription
   },
   data () {
     return {
@@ -338,13 +379,15 @@ export default {
         planName: null,
         trialEndDate: null,
         subscriptionId: null,
-        status: null
+        status: null,
+        discountCode: null
       },
       cardToUpate: null,
       stripeCardModal: false,
       changePlanModal: false,
       removeSubscriptionModal: false,
-      userCards: []
+      userCards: [],
+      plan: {}
     }
   },
   computed: {
@@ -368,11 +411,15 @@ export default {
           return 'yearly'
       }
       return null
+    },
+    isMobile () {
+      return this.$vuetify.breakpoint.mobile
     }
   },
   created () {
     this.getBillingDetails()
     this.getBillingCards()
+    this.getPlan()
     this.$nuxt.$on('children-changed', this.getBillingDetails)
   },
   mounted () {
@@ -385,10 +432,13 @@ export default {
     this.$nuxt.$off('children-changed')
   },
   methods: {
+    ...mapActions(['disableAxiosGlobal', 'enableAxiosGlobal']),
+
     ...mapActions('auth', {
       fetchUserInfoIntoStore: 'fetchUserInfo'
     }),
     ...mapActions('payment', [
+      'getSelectedSubscriptionPlan',
       'cancelSubscription',
       'fetchBillingCards',
       'fetchBillingDetails',
@@ -423,6 +473,11 @@ export default {
           this.billing.nextBillingDate = dayjs(
             data.subscriptionData.current_period_end * 1000
           ).format('MMMM D, YYYY')
+          this.billing.discountCode = get(
+            data,
+            'subscriptionData.discount.coupon.name',
+            null
+          )
         }
       } finally {
         this.loading = false
@@ -474,13 +529,28 @@ export default {
         name: 'app-payment-plan',
         query: { process: 'signup', step: '3' }
       })
+    },
+    async getPlan () {
+      try {
+        this.disableAxiosGlobal()
+        const response = await this.getSelectedSubscriptionPlan()
+        this.plan = response.plan
+      } catch (e) {
+      } finally {
+        this.enableAxiosGlobal()
+      }
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.discount-label {
-  padding-right: 17%;
+.card-custom-border {
+  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.25) !important;
+  border-radius: 8px !important;
+}
+
+.v-btn:not(.v-btn--text) {
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16) !important;
 }
 </style>
