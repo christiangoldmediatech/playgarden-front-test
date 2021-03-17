@@ -1,6 +1,7 @@
 <template>
   <validation-observer v-slot="{ invalid, passes }">
-    <v-form @submit.prevent="passes(onSubmit)">
+    <pg-loading v-if="loadingDataSocial" />
+    <v-form v-else @submit.prevent="passes(onSubmit)">
       <v-container class="px-0">
         <v-row no-gutters class="some">
           <v-col
@@ -205,6 +206,7 @@ export default {
 
   data: vm => ({
     draft: {},
+    loadingDataSocial: false,
     userSocialData: (() => {
       const { query } = vm.$route
       if (query.process === 'social-signup' && query._u) {
@@ -244,21 +246,32 @@ export default {
   },
 
   methods: {
+    getProviderSignIn (provider) {
+      let nameProvider = ''
+      switch (provider) {
+        case 'google.com':
+          nameProvider = 'GOOGLE'
+          break
+        case 'facebook.com':
+          nameProvider = 'FACEBOOK'
+          break
+      }
+      return nameProvider
+    },
     getDataFirebase () {
-      console.log('lmando a firebase')
+      this.loadingDataSocial = true
       const fireAuthObj = this.$fireAuthObj()
       fireAuthObj
         .getRedirectResult()
         .then((result) => {
           if (result) {
-            console.log('resukt ---', result)
             if (result.additionalUserInfo) {
               const profile = { ...result.additionalUserInfo.profile }
               this.loginWithSocialNetwork({
                 firstName: profile.given_name || profile.first_name || '',
                 lastName: profile.family_name || profile.last_name || '',
                 email: profile.email,
-                // socialNetwork: nameSocialNetwork,
+                socialNetwork: this.getProviderSignIn(result.additionalUserInfo.providerId),
                 socialNetworkId: profile.id
               })
             }
@@ -267,7 +280,10 @@ export default {
         .catch((e) => {
           this.$snotify.error(e.message)
         })
-        .finally(() => fireAuthObj.signOut())
+        .finally(() => {
+          fireAuthObj.signOut()
+          this.loadingDataSocial = false
+        })
     },
     setDraft () {
       this.draft = {
@@ -317,12 +333,10 @@ export default {
 
     async loginWithSocialNetwork (user) {
       try {
+        this.loadingDataSocial = true
         this.disableAxiosGlobal()
-
         await this.authLoginSocial(user)
-
         this.enableAxiosGlobal()
-
         await this.$router.push({ name: 'app-dashboard' })
       } catch (e) {
         this.onFailLoginSocial(user)
@@ -338,6 +352,7 @@ export default {
         this.$snotify.error('This email is already on used!')
       } finally {
         this.enableAxiosGlobal()
+        this.loadingDataSocial = false
       }
     },
     ...mapActions(['disableAxiosGlobal', 'enableAxiosGlobal']),
