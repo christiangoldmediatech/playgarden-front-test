@@ -1,19 +1,17 @@
 export default function ({ redirect, route, store }) {
-  if (process.client) {
-    const user = store.getters['auth/getUserInfo']
+  const user = store.getters['auth/getUserInfo']
 
-    const ignoreRoute = {
-      'auth-logout': 1,
-      'jwt-recovery': 1
-    }
+  const ignoreRoute = {
+    'auth-logout': 1,
+    'jwt-recovery': 1
+  }
 
-    if (
-      user.id &&
-      user.validatedDate &&
-      route.name === 'auth-verify-email' &&
-      !ignoreRoute[route.name]
-    ) {
-      redirect({ name: 'app-dashboard' })
-    }
+  if (
+    user.id &&
+    user.validatedDate &&
+    route.name === 'auth-verify-email' &&
+    !ignoreRoute[route.name]
+  ) {
+    redirect({ name: 'app-dashboard' })
   }
 }

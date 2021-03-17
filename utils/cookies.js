@@ -212,11 +212,11 @@ export class CookieHandlerUI {
   }
 
   static remove (name) {
-    const cookie = new Cookie({
+    const cookie = {
       _key: name,
       _data: 'removed',
       _expireDate: '1970-01-01T00:00:00.000Z'
-    })
+    }
 
     /**
      * Cookies can only be removed by setting their expiration time to
