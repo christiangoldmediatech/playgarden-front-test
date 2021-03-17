@@ -33,7 +33,7 @@
         <login-form v-else :loading="loading" @click:submit="onSubmit" />
 
         <!-- or -->
-        <v-row v-if="$vuetify.breakpoint.smAndUp" no-gutters class="my-6 mx-12 d-sm-flex">
+        <v-row no-gutters class="my-6">
           <v-col class="hr-line">
             <v-divider />
           </v-col>
@@ -48,7 +48,7 @@
         </v-row>
 
         <!-- Social buttons -->
-        <v-row no-gutters class="mb-4">
+        <v-row no-gutters>
           <!-- FACEBOOK -->
           <v-col class="mb-4 mb-md-0 pr-md-4" cols="12" md="6">
             <v-btn block height="45" class="social-btn" @click="facebookSignIn">
@@ -63,7 +63,7 @@
           </v-col>
 
           <!-- GOOGLE -->
-          <v-col cols="12" md="6">
+          <v-col class="mb-6 mb-md-0 pl-md-4" cols="12" md="6">
             <v-btn block height="45" class="social-btn" @click="googleSignIn">
               <img
                 alt="Google"
