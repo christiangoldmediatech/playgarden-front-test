@@ -48,7 +48,7 @@
         </v-row>
 
         <!-- Social buttons -->
-        <v-row no-gutters>
+        <v-row no-gutters class="mb-4">
           <!-- FACEBOOK -->
           <!-- <v-col class="mb-4 mb-md-0 pr-md-4" cols="12" md="6">
             <v-btn block height="45" class="social-btn" @click="facebookSignIn">
@@ -63,7 +63,7 @@
           </v-col> -->
 
           <!-- GOOGLE -->
-          <v-col v-if="$vuetify.breakpoint.smAndUp" cols="12" md="12">
+          <v-col cols="12" md="12">
             <v-btn block height="45" class="social-btn" @click="googleSignIn">
               <img
                 alt="Google"
@@ -187,7 +187,7 @@ export default {
       const fireAuthObj = this.$fireAuthObj()
 
       fireAuthObj
-        .signInWithPopup(provider)
+        .signInWithRedirect(provider)
         .then((result) => {
           const profile = { ...result.additionalUserInfo.profile }
 
