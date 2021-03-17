@@ -136,7 +136,7 @@
             </v-row>
 
             <!-- or -->
-            <v-row v-if="$vuetify.breakpoint.smAndUp" no-gutters class="my-6 mx-12 d-sm-flex">
+            <v-row v-if="$vuetify.breakpoint.smAndUp" no-gutters class="my-6 d-sm-flex">
               <v-col>
                 <v-divider class="hr-line outlined" width="100" />
               </v-col>
