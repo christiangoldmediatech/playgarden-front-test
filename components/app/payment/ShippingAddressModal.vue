@@ -43,6 +43,7 @@
             save-button-text="Send"
             save-button-color="primary"
             hide-cancel-button
+            wrap-state-and-zip-code-fields
             @shipping-address-saved="closeModal"
           />
         </v-col>
