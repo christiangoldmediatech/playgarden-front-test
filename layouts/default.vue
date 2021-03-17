@@ -33,7 +33,6 @@
 
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex'
-import dayjs from 'dayjs'
 
 import ApplicationHeader from '@/components/app/header/ApplicationHeader'
 import AppNavigation from '@/components/app/header/AppNavigation'
@@ -64,7 +63,7 @@ export default {
   middleware: ['checkJWT'],
 
   computed: {
-    ...mapGetters('auth', ['isUserLoggedIn', 'getUserInfo', 'isUserEmailUnverified']),
+    ...mapGetters('auth', ['isUserLoggedIn', 'isUserEmailUnverified']),
 
     ...mapState(['fullWidthPages']),
 
@@ -74,6 +73,11 @@ export default {
   },
 
   watch: {
+    async isUserLoggedIn (v) {
+      if (v === true) {
+        await this.checkUserShippingAddressAndNotify()
+      }
+    },
     '$route.name' (v) {
       if (v === 'auth-verify-email' && this.verifyEmailToast) {
         this.$snotify.remove(this.verifyEmailToast.id)
@@ -85,38 +89,13 @@ export default {
     }
   },
 
-  async mounted () {
+  mounted () {
     // Commented requested by Natalia
     // this.showVerifyEmailToast()
-
-    /**
-     * Show a notification prompting the user to update their shipping address if:
-     * - The user doesn't have the shipping address on file, and
-     * - 2 days or more have past.
-     */
-    if (this.isUserLoggedIn) {
-      try {
-        await this.getShippingAddress()
-      } catch (error) {
-        if (error?.response?.status === 404) {
-          const createdAt = this.getUserInfo.createdAt
-          const daysDifference = dayjs(new Date()).diff(dayjs(createdAt), 'days')
-
-          if (daysDifference >= 2) {
-            this.$store.commit('notifications/SET_NOTIFICATION_CARD', {
-              title: 'WE WANT TO SEND YOU A WELCOME KIT!',
-              description: 'We require a shipping address in order to send the Welcome Kit with Backpack, workbooks, and additional materials.',
-              action: () => this.$store.commit('notifications/SET_IS_SHIPPING_MODAL_VISIBLE', true),
-              image: require('@/assets/png/megaphone.png')
-            })
-          }
-        }
-      }
-    }
   },
 
   methods: {
-    ...mapActions('shipping-address', ['getShippingAddress']),
+    ...mapActions('notifications', ['checkUserShippingAddressAndNotify']),
 
     showVerifyEmailToast () {
       if (
