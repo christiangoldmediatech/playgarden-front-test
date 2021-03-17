@@ -358,7 +358,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .dashboard-panel {
   &-container {
     height: 100%;
@@ -458,7 +458,7 @@ export default {
   z-index: 2 !important;
 }
 
-.v-tooltip__content ::after {
+.v-tooltip__content::after {
   content: "";
   position: absolute;
   top: 100%;

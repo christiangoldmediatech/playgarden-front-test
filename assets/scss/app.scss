@@ -39,6 +39,10 @@
   background-color: #dce7b5;
 }
 
+.theme--light.v-divider {
+  border-color: rgba(0,0,0,0.12) !important;
+}
+
 .v-label {
   color: var(--v-black-base);
   opacity: 0.49;

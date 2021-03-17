@@ -13,17 +13,32 @@
             class="mr-2"
             width="18px"
           >
-          <span class="free-trial-info">
-            YOUR 30 DAY FREE TRIAL
-          </span>
-          <br />
-          <span class="free-trial-info">
-            INCLUDES THE PREMIUM + PLAN
-          </span>
+          <template v-if="!$vuetify.breakpoint.smAndUp">
+            <span class="free-trial-info">
+              YOUR 30 DAY FREE TRIAL
+            </span>
+            <v-icon
+              class="ml-4">
+              mdi-chevron-up
+            </v-icon>
+            <br />
+            <span class="free-trial-info">
+              INCLUDES THE PREMIUM + PLAN
+            </span>
+          </template>
+          <template v-else>
+            <span class="free-trial-info">
+              YOUR 30 DAY FREE TRIAL
+            </span>
+            <br />
+            <span class="free-trial-info">
+              INCLUDES THE PREMIUM + PLAN
+            </span>
+            <v-icon class="ml-2">
+              mdi-chevron-up
+            </v-icon>
+          </template>
         </div>
-        <v-icon class="ml-2">
-          mdi-chevron-up
-        </v-icon>
       </v-btn>
     </v-card-title>
     <v-card-text>
@@ -110,24 +125,26 @@
           </div>
           <v-row justify="center">
             <center v-if="$vuetify.breakpoint.smAndUp">
-              <v-btn
-                block
+              <v-alert
                 class="mt-4 info-much-more"
+                color="red orange"
+                dark
               >
                 <span class="much-info">
                   AND MUCH MORE!!
                 </span>
-              </v-btn>
+              </v-alert>
             </center>
             <div v-else class="justify-center" :class="{ 'mx-4': !$vuetify.breakpoint.smAndUp }">
-              <v-btn
-                block
+              <v-alert
                 class="mt-8 info-much-more px-8"
+                color="red orange"
+                dark
               >
                 <span class="much-info">
                   AND MUCH MORE!!
                 </span>
-              </v-btn>
+              </v-alert>
             </div>
             <div class="mt-2">
               <span
@@ -182,6 +199,8 @@ ul li::before {
 }
 .much-info {
   color: var(--v-accent-base);
+  font-size: 17px !important;
+  font-weight: bold !important;
 }
 .list-know {
   height: 100px;
@@ -192,5 +211,6 @@ ul li::before {
 }
 .info-much-more {
   background-color: rgba(248, 152, 56, 0.3) !important;
+  min-height: 32px !important;
 }
 </style>

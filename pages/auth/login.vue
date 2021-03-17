@@ -33,7 +33,7 @@
         <login-form :loading="loading" @click:submit="onSubmit" />
 
         <!-- or -->
-        <v-row no-gutters class="my-6">
+        <v-row v-if="$vuetify.breakpoint.smAndUp" no-gutters class="my-6 mx-12 d-sm-flex">
           <v-col class="hr-line">
             <v-divider />
           </v-col>
@@ -50,7 +50,7 @@
         <!-- Social buttons -->
         <v-row no-gutters>
           <!-- FACEBOOK -->
-          <v-col class="mb-4 mb-md-0 pr-md-4" cols="12" md="6">
+          <!-- <v-col class="mb-4 mb-md-0 pr-md-4" cols="12" md="6">
             <v-btn block height="45" class="social-btn" @click="facebookSignIn">
               <img
                 alt="Facebook"
@@ -60,10 +60,10 @@
 
               <span class="spanSocialNetwork">Login with Facebook</span>
             </v-btn>
-          </v-col>
+          </v-col> -->
 
           <!-- GOOGLE -->
-          <v-col class="mb-6 mb-md-0 pl-md-4" cols="12" md="6">
+          <v-col v-if="$vuetify.breakpoint.smAndUp" cols="12" md="12">
             <v-btn block height="45" class="social-btn" @click="googleSignIn">
               <img
                 alt="Google"
