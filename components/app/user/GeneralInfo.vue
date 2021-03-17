@@ -209,12 +209,53 @@ export default {
     }
   },
 
+  created () {
+    this.getDataFirebase()
+  },
+
   methods: {
     ...mapActions('auth', ['fetchUserInfo', 'updateUserInfo']),
 
     ...mapActions(['disableAxiosGlobal', 'enableAxiosGlobal']),
 
     ...mapActions('auth/socialUser', ['authSyncSocial']),
+
+    getProviderSignIn (provider) {
+      let nameProvider = ''
+      switch (provider) {
+        case 'google.com':
+          nameProvider = 'GOOGLE'
+          break
+        case 'facebook.com':
+          nameProvider = 'FACEBOOK'
+          break
+      }
+      return nameProvider
+    },
+
+    getDataFirebase () {
+      const fireAuthObj = this.$fireAuthObj()
+      fireAuthObj
+        .getRedirectResult()
+        .then((result) => {
+          if (result) {
+            if (result.additionalUserInfo) {
+              const profile = { ...result.additionalUserInfo.profile }
+              this.syncWithSocialNetwork({
+                firstName: profile.given_name || profile.first_name || '',
+                lastName: profile.family_name || profile.last_name || '',
+                email: profile.email,
+                socialNetwork: this.getProviderSignIn(result.additionalUserInfo.providerId),
+                socialNetworkId: profile.id
+              })
+            }
+          }
+        })
+        .catch((e) => {
+          this.$snotify.error(e.message)
+        })
+        .finally(() => fireAuthObj.signOut())
+    },
 
     facebookSignIn () {
       this.syncAccount(
@@ -229,23 +270,7 @@ export default {
 
     syncAccount (nameSocialNetwork, provider) {
       const fireAuthObj = this.$fireAuthObj()
-
-      fireAuthObj
-        .signInWithPopup(provider)
-        .then((result) => {
-          const profile = { ...result.additionalUserInfo.profile }
-          this.syncWithSocialNetwork({
-            firstName: profile.given_name || profile.first_name || '',
-            lastName: profile.family_name || profile.last_name || '',
-            email: profile.email,
-            socialNetwork: nameSocialNetwork,
-            socialNetworkId: profile.id
-          })
-        })
-        .catch((e) => {
-          this.$snotify.error(e.message)
-        })
-        .finally(() => fireAuthObj.signOut())
+      fireAuthObj.signInWithRedirect(provider)
     },
 
     async syncWithSocialNetwork (user) {
