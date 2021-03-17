@@ -235,11 +235,40 @@ export default {
     }
   },
 
+  created () {
+    this.getDataFirebase()
+  },
+
   mounted () {
     this.setDraft()
   },
 
   methods: {
+    getDataFirebase () {
+      console.log('lmando a firebase')
+      const fireAuthObj = this.$fireAuthObj()
+      fireAuthObj
+        .getRedirectResult()
+        .then((result) => {
+          if (result) {
+            console.log('resukt ---', result)
+            if (result.additionalUserInfo) {
+              const profile = { ...result.additionalUserInfo.profile }
+              this.loginWithSocialNetwork({
+                firstName: profile.given_name || profile.first_name || '',
+                lastName: profile.family_name || profile.last_name || '',
+                email: profile.email,
+                // socialNetwork: nameSocialNetwork,
+                socialNetworkId: profile.id
+              })
+            }
+          }
+        })
+        .catch((e) => {
+          this.$snotify.error(e.message)
+        })
+        .finally(() => fireAuthObj.signOut())
+    },
     setDraft () {
       this.draft = {
         firstName: this.hasUserSocialData
@@ -323,24 +352,7 @@ export default {
 
     socialSignIn (nameSocialNetwork, provider) {
       const fireAuthObj = this.$fireAuthObj()
-
-      fireAuthObj
-        .signInWithPopup(provider)
-        .then((result) => {
-          const profile = { ...result.additionalUserInfo.profile }
-
-          this.loginWithSocialNetwork({
-            firstName: profile.given_name || profile.first_name || '',
-            lastName: profile.family_name || profile.last_name || '',
-            email: profile.email,
-            socialNetwork: nameSocialNetwork,
-            socialNetworkId: profile.id
-          })
-        })
-        .catch((e) => {
-          this.$snotify.error(e.message)
-        })
-        .finally(() => fireAuthObj.signOut())
+      fireAuthObj.signInWithRedirect(provider)
     }
   }
 }
