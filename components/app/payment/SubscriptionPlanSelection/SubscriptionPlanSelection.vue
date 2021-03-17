@@ -46,8 +46,8 @@
                 <p
                   :class="`${
                     indexP === 1
-                      ? 'plan-name text-center mt-10'
-                      : 'plan-name text-center mt-5'
+                      ? 'plan-name text-center mt-0'
+                      : 'plan-name text-center mt-10'
                   }`"
                 >
                   <v-chip
