@@ -12,7 +12,7 @@
                 clearable
                 :error-messages="errors"
                 :loading="loading"
-                placeholder="Street 1"
+                placeholder="Street"
                 label="Street"
                 solo-labeled
               />
@@ -25,7 +25,7 @@
               v-model="draft.address2"
               clearable
               :loading="loading"
-              placeholder="Street 2 (optional)"
+              placeholder="Apt, Suite, PO BOX (optional)"
               label="Street 2 (optional)"
               solo-labeled
             />
