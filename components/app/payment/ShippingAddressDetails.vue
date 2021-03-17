@@ -3,88 +3,107 @@
     <!-- Editable user shipping address -->
     <validation-observer v-if="isEditing" v-slot="{ invalid, passes, reset }">
       <v-form id="shipping-address-form" @submit.prevent="passes(onSubmit)">
-        <!-- Street 1 -->
-        <validation-provider v-slot="{ errors }" name="Street 1" rules="required">
-          <pg-text-field
-            v-model="draft.address1"
-            clearable
-            :error-messages="errors"
-            :loading="loading"
-            placeholder="Street 1"
-            label="Street"
-            solo-labeled
-          />
-        </validation-provider>
+        <v-row no-gutters>
+          <v-col cols="12">
+            <!-- Street 1 -->
+            <validation-provider v-slot="{ errors }" name="Street 1" rules="required">
+              <pg-text-field
+                v-model="draft.address1"
+                clearable
+                :error-messages="errors"
+                :loading="loading"
+                placeholder="Street 1"
+                label="Street"
+                solo-labeled
+              />
+            </validation-provider>
+          </v-col>
 
-        <!-- Street 2 -->
-        <pg-text-field
-          v-model="draft.address2"
-          clearable
-          :loading="loading"
-          placeholder="Street 2 (optional)"
-          label="Street 2 (optional)"
-          solo-labeled
-        />
+          <v-col cols="12">
+            <!-- Street 2 -->
+            <pg-text-field
+              v-model="draft.address2"
+              clearable
+              :loading="loading"
+              placeholder="Street 2 (optional)"
+              label="Street 2 (optional)"
+              solo-labeled
+            />
+          </v-col>
 
-        <!-- City -->
-        <validation-provider v-slot="{ errors }" name="City" rules="required">
-          <pg-text-field
-            v-model="draft.city"
-            clearable
-            :error-messages="errors"
-            :loading="loading"
-            placeholder="City"
-            label="City"
-            solo-labeled
-          />
-        </validation-provider>
+          <v-col cols="12">
+            <!-- City -->
+            <validation-provider v-slot="{ errors }" name="City" rules="required">
+              <pg-text-field
+                v-model="draft.city"
+                clearable
+                :error-messages="errors"
+                :loading="loading"
+                placeholder="City"
+                label="City"
+                solo-labeled
+              />
+            </validation-provider>
+          </v-col>
 
-        <!-- State -->
-        <validation-provider
-          v-slot="{ errors }"
-          name="State"
-          rules="required"
-        >
-          <pg-text-field
-            v-model="draft.state"
-            clearable
-            :error-messages="errors"
-            :loading="loading"
-            placeholder="State"
-            label="State"
-            solo-labeled
-          />
-        </validation-provider>
+          <v-col
+            :cols="wrapStateAndZipCodeFields ? 6 : 12"
+            :class="{ 'pr-4': wrapStateAndZipCodeFields }"
+          >
+            <!-- State -->
+            <validation-provider
+              v-slot="{ errors }"
+              name="State"
+              rules="required"
+            >
+              <pg-text-field
+                v-model="draft.state"
+                clearable
+                :error-messages="errors"
+                :loading="loading"
+                placeholder="State"
+                label="State"
+                solo-labeled
+              />
+            </validation-provider>
+          </v-col>
 
-        <!-- Zipcode -->
-        <validation-provider
-          v-slot="{ errors }"
-          name="Zipcode"
-          rules="required"
-        >
-          <pg-text-field
-            v-model="draft.zipCode"
-            clearable
-            :error-messages="errors"
-            :loading="loading"
-            placeholder="Zip code"
-            label="Zip code"
-            solo-labeled
-          />
-        </validation-provider>
+          <v-col
+            :cols="wrapStateAndZipCodeFields ? 6 : 12"
+            :class="{ 'pl-4': wrapStateAndZipCodeFields }"
+          >
+            <!-- Zipcode -->
+            <validation-provider
+              v-slot="{ errors }"
+              name="Zipcode"
+              rules="required"
+            >
+              <pg-text-field
+                v-model="draft.zipCode"
+                clearable
+                :error-messages="errors"
+                :loading="loading"
+                placeholder="Zip code"
+                label="Zip code"
+                solo-labeled
+              />
+            </validation-provider>
+          </v-col>
+        </v-row>
 
         <v-btn
           block
-          color="warning"
+          :color="saveButtonColor"
           :disabled="invalid"
           :loading="loading"
           type="submit"
           x-large
         >
-          SAVE
+          {{ saveButtonText }}
         </v-btn>
 
         <v-btn
+          v-if="!hideCancelButton"
           block
           color="grey"
           :loading="loading"
@@ -150,6 +169,29 @@ export default {
 
   mixins: [submittable],
 
+  props: {
+    editByDefault: {
+      type: Boolean,
+      default: false
+    },
+    saveButtonText: {
+      type: String,
+      default: 'Save'
+    },
+    hideCancelButton: {
+      type: Boolean,
+      default: false
+    },
+    saveButtonColor: {
+      type: String,
+      default: 'warning'
+    },
+    wrapStateAndZipCodeFields: {
+      type: Boolean,
+      default: false
+    }
+  },
+
   data: () => ({
     isEditing: false,
     loading: false
@@ -159,6 +201,8 @@ export default {
     this.init()
 
     this.$nuxt.$on('plan-membership-changed', () => this.init())
+
+    this.isEditing = this.editByDefault
   },
 
   beforeDestroy () {
@@ -225,6 +269,7 @@ export default {
         await this.submitMethod(this.getSubmittableData())
 
         this.$snotify.success('Shipping address has been saved successfully!')
+        this.$emit('shipping-address-saved')
 
         this.onCancel()
       } catch (e) {
