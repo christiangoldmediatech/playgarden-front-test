@@ -153,7 +153,7 @@
             <!-- Social buttons -->
             <v-row no-gutters class="mb-4">
               <!-- FACEBOOK -->
-              <!-- <v-col class="mb-4 mb-md-0 pr-md-4" cols="12" md="6">
+              <v-col class="mb-4 mb-md-0 pr-md-4" cols="12" md="6">
                 <v-btn block height="45" class="social-btn" @click="facebookSignIn">
                   <img
                     alt="Facebook"
@@ -163,10 +163,10 @@
 
                   <span class="spanSocialNetwork">Login with Facebook</span>
                 </v-btn>
-              </v-col> -->
+              </v-col>
 
               <!-- GOOGLE -->
-              <v-col cols="12" md="12">
+              <v-col cols="12" md="6">
                 <v-btn block height="45" class="social-btn" @click="googleSignIn">
                   <img
                     alt="Google"
