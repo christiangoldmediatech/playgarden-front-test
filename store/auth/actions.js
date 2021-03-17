@@ -47,10 +47,13 @@ export default {
       window.localStorage.removeItem('authToken')
       // Resets child selection.
       if (rootGetters.getCurrentChild) {
-        commit('SET_CURRENT_CHILD', null, { root: true })
-        commit('SET_CURRENT_CHILD_EXPIRES', null, { root: true })
         window.localStorage.removeItem('selectedChild')
       }
+    }
+
+    if (rootGetters.getCurrentChild) {
+      commit('SET_CURRENT_CHILD', null, { root: true })
+      commit('SET_CURRENT_CHILD_EXPIRES', null, { root: true })
     }
 
     if (redirect) {
