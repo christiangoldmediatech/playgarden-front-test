@@ -226,21 +226,31 @@ export default {
 
     async fetchAddress () {
       this.loading = true
-
       try {
         this.disableAxiosGlobal()
-        this.draft = await this.getShippingAddress()
-      } catch (e) {
-        this.$snotify.warning('Please check your shipping address', 'Warning', {
-          buttons: [
-            {
-              text: 'Edit',
-              action: () => {
-                this.isEditing = true
-                this.$scrollTo('#shipping-address-form', { offset: -65 })
+        const draft = await this.getShippingAddress()
+
+        if (!draft && !this.editByDefault) {
+          this.$snotify.warning('Please check your shipping address', 'Warning', {
+            buttons: [
+              {
+                text: 'Edit',
+                action: () => {
+                  this.isEditing = true
+                  this.$scrollTo('#shipping-address-form', { offset: -65 })
+                }
               }
-            }
-          ],
+            ],
+            closeOnClick: true,
+            timeout: 6000
+          })
+
+          return
+        }
+
+        this.draft = draft
+      } catch (e) {
+        this.$snotify.warning('Could not fetch shipping address', 'Error', {
           closeOnClick: true,
           timeout: 6000
         })
