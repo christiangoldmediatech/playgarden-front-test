@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" content-class="elevation-0">
     <v-col>
       <v-row justify="center">
-        <v-card width="70vh" max-width="90%" elevation="0" color="transparent">
+        <v-card width="80vh" max-width="90%" elevation="0" color="transparent">
           <v-row justify="end">
             <v-btn
               class="timeline-close-btn"
@@ -19,7 +19,7 @@
       </v-row>
 
       <v-row justify="center">
-        <v-card width="70vh" height="60vh" max-width="90%">
+        <v-card width="80vh" height="60vh" max-width="90%" class="pt-3">
           <template v-if="child">
             <div class="timeline-header pl-2 pl-md-9">
               <span class="timeline-name">
@@ -66,7 +66,7 @@
                     <pg-circle-letter-day
                       class="clickable"
                       :day="entry.day"
-                      :letter="entry.curriculumType.name"
+                      :letter="entry.curriculumType.letter"
                       :size="64"
                       no-auto-position
                       @click.native="openLesson(entry.id)"

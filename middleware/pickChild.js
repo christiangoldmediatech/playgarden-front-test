@@ -7,7 +7,7 @@ export default async function ({ redirect, route, store, req, app }) {
       'auth-verify-email': 1,
       'auth-verify-playdate': 1,
       'app-pick-child': 1,
-      'app-account': 1,
+      'app-account-index': 1,
       'app-children-register': 1,
       'app-children': 1,
       'app-payment': 1,
@@ -23,7 +23,7 @@ export default async function ({ redirect, route, store, req, app }) {
 
       // try loading from cookie
       if (!child && process.server) {
-        let cookiesText = ' '
+        let cookiesText = ''
         if (req && req.headers && req.headers.cookie) {
           cookiesText = req.headers.cookie
         }
@@ -32,7 +32,6 @@ export default async function ({ redirect, route, store, req, app }) {
           const cookie = cookies[index]
           if (cookie.name === 'selectedChild') {
             const storedData = JSON.parse(decodeURIComponent(cookie.value))
-
             let result
             // If array, then we get everyone, else we get just the child
             if (
@@ -48,7 +47,7 @@ export default async function ({ redirect, route, store, req, app }) {
             }
 
             if (result.length) {
-              store.dispatch('setChild', {
+              await store.dispatch('setChild', {
                 value: result,
                 oldExp: storedData.expires
               })
@@ -61,7 +60,7 @@ export default async function ({ redirect, route, store, req, app }) {
         }
       }
       // Load child if stored and not expired
-      if (!child && hasLocalStorage()) {
+      if (!child && process.client && hasLocalStorage()) {
         let storedData = window.localStorage.getItem('selectedChild')
 
         if (storedData) {
@@ -102,7 +101,7 @@ export default async function ({ redirect, route, store, req, app }) {
 
       // If no child is selected
       if (!child || !childExpires || currentMoment >= childExpires) {
-        redirect(
+        return redirect(
           `/app/pick-child?_time=${currentMoment}&redirect=${encodeURIComponent(
             route.fullPath
           )}`

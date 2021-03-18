@@ -29,8 +29,8 @@
         <div class="my-5 mb-md-2 mt-md-0 text-center text-md-left">
           <underlined-title text="Welcome back!" />
         </div>
-
-        <login-form :loading="loading" @click:submit="onSubmit" />
+        <pg-loading v-if="loadingDataSocial" />
+        <login-form v-else :loading="loading" @click:submit="onSubmit" />
 
         <!-- or -->
         <v-row no-gutters class="my-6">
@@ -95,7 +95,8 @@ export default {
   data () {
     return {
       loading: false,
-      errorMessage: ''
+      errorMessage: '',
+      loadingDataSocial: false
     }
   },
 
@@ -111,7 +112,49 @@ export default {
     }
   },
 
+  created () {
+    this.getDataFirebase()
+  },
+
   methods: {
+    getProviderSignIn (provider) {
+      let nameProvider = ''
+      switch (provider) {
+        case 'google.com':
+          nameProvider = 'GOOGLE'
+          break
+        case 'facebook.com':
+          nameProvider = 'FACEBOOK'
+          break
+      }
+      return nameProvider
+    },
+    getDataFirebase () {
+      this.loadingDataSocial = true
+      const fireAuthObj = this.$fireAuthObj()
+      fireAuthObj
+        .getRedirectResult()
+        .then((result) => {
+          if (result) {
+            if (result.additionalUserInfo) {
+              const profile = { ...result.additionalUserInfo.profile }
+              this.loginWithSocialNetwork({
+                firstName: profile.given_name || profile.first_name || '',
+                lastName: profile.family_name || profile.last_name || '',
+                email: profile.email,
+                socialNetwork: this.getProviderSignIn(result.additionalUserInfo.providerId),
+                socialNetworkId: profile.id
+              })
+            } else {
+              this.loadingDataSocial = false
+            }
+          }
+        })
+        .catch((e) => {
+          this.loadingDataSocial = false
+        })
+        .finally(() => fireAuthObj.signOut())
+    },
     facebookSignIn () {
       this.socialSignIn(
         'FACEBOOK',
@@ -126,13 +169,12 @@ export default {
     async loginWithSocialNetwork (user) {
       try {
         this.disableAxiosGlobal()
-
         await this.authLoginSocial(user)
-
         this.enableAxiosGlobal()
-
+        this.loadingDataSocial = false
         await this.$router.push({ name: 'app-dashboard' })
       } catch (e) {
+        this.loadingDataSocial = false
         await this.onFailLoginSocial(user)
       }
     },
@@ -185,24 +227,7 @@ export default {
 
     socialSignIn (nameSocialNetwork, provider) {
       const fireAuthObj = this.$fireAuthObj()
-
-      fireAuthObj
-        .signInWithPopup(provider)
-        .then((result) => {
-          const profile = { ...result.additionalUserInfo.profile }
-
-          this.loginWithSocialNetwork({
-            firstName: profile.given_name || profile.first_name || '',
-            lastName: profile.family_name || profile.last_name || '',
-            email: profile.email,
-            socialNetwork: nameSocialNetwork,
-            socialNetworkId: profile.id
-          })
-        })
-        .catch((e) => {
-          this.$snotify.error(e.message)
-        })
-        .finally(() => fireAuthObj.signOut())
+      fireAuthObj.signInWithRedirect(provider)
     }
   }
 }

@@ -1,12 +1,38 @@
 <template>
-  <v-col>
-    <validation-observer
+  <v-row no-gutters>
+    <!-- Desktop Title -->
+    <v-col cols="6" class="d-none d-sm-block">
+      <div class="text-uppercase text-h4 font-weight-bold grey--text text--darken-2 pb-12">
+        Student Profile
+      </div>
+    </v-col>
+    <v-col cols="12" sm="6" class="d-sm-flex justify-sm-end pb-12 pb-sm-0">
+      <!-- Add New Child Profile Button -->
+      <v-btn
+        color="primary"
+        :loading="loading"
+        x-large
+        :block="isMobile"
+        @click="addRow"
+      >
+        Add New Child Profile
+      </v-btn>
+    </v-col>
+
+    <v-col
       v-for="(item, indexD) in items"
       :key="indexD"
-      v-slot="{ invalid, passes }"
+      cols="12"
+      sm="6"
     >
-      <v-row>
-        <v-col>
+      <v-card
+        :class="[
+          'pa-4 pa-sm-8 custom-card-border mb-16',
+          { 'mr-sm-8': indexD % 2 === 0 },
+          { 'ml-sm-8': indexD % 2 === 1 }
+        ]"
+      >
+        <validation-observer v-if="isEditing[indexD]" v-slot="{ passes }">
           <v-form
             :readonly="loading"
             @submit.prevent="passes().then(onSubmit(item, indexD))"
@@ -18,15 +44,38 @@
               "
               rules="required"
             >
-              <v-row class="mb-6" justify="center">
-                <img
-                  v-if="firstBackpack"
-                  :alt="childBackpack(item.backpackId).name"
-                  class="backpack-active"
-                  :src="childBackpack(item.backpackId).image"
+              <!-- Delete Child Profile Button -->
+              <v-row no-gutters class="mb-6">
+                <v-col v-if="item.id" cols="12" class="d-flex justify-end">
+                  <v-btn
+                    v-if="removable(item)"
+                    text
+                    color="error"
+                    class="text-decoration-underline"
+                    @click.stop="removeChild(item, indexD)"
+                  >
+                    DELETE CHILD
+                  </v-btn>
+                </v-col>
+
+                <!-- Child Profile Backpack -->
+                <v-col
+                  cols="12"
+                  :class="[
+                    'd-flex justify-center',
+                    { 'mt-sm-n0': !!item.id }
+                  ]"
                 >
+                  <img
+                    v-if="firstBackpack"
+                    :alt="childBackpack(item.backpackId).name"
+                    class="backpack-active"
+                    :src="childBackpack(item.backpackId).image"
+                  >
+                </v-col>
               </v-row>
 
+              <!-- Backpack Picker -->
               <v-row justify="center" no-gutters>
                 <v-col cols="12" md="10" lg="12">
                   <v-row no-gutters>
@@ -72,7 +121,7 @@
                 :disabled="loading"
                 :error-messages="errors"
                 label="Name"
-                solo
+                solo-labeled
               />
             </validation-provider>
 
@@ -99,7 +148,7 @@
                     :error-messages="errors"
                     label="Birthday date"
                     readonly
-                    solo
+                    solo-labeled
                     :suffix="item._birthdayFormatted ? '' : 'MM/DD/YYYY'"
                     validate-on-blur
                     :value="item._birthdayFormatted"
@@ -147,63 +196,115 @@
               <input v-model="item.gender" type="hidden">
             </validation-provider>
 
-            <v-row v-if="isChildChanged(item)" class="mb-6" justify="center">
-              <v-btn
-                class="px-8"
-                color="primary"
-                :disabled="invalid"
-                :loading="loading"
-                type="submit"
-                x-large
-              >
-                SAVE
-              </v-btn>
-            </v-row>
-
             <v-btn
-              v-if="removable(item)"
+              v-if="isChildChanged(item)"
               block
-              text
-              color="primary"
-              @click.stop="removeChild(item, indexD)"
+              color="warning"
+              :loading="loading"
+              type="submit"
+              x-large
             >
-              DELETE CHILD PROFILE
+              SAVE
             </v-btn>
 
-            <v-divider v-if="removable(item)" class="mt-6" />
+            <v-btn
+              block
+              text
+              color="grey"
+              :disabled="loading"
+              x-large
+              @click="editChild(indexD, false)"
+            >
+              Cancel
+            </v-btn>
           </v-form>
-        </v-col>
-      </v-row>
-    </validation-observer>
+        </validation-observer>
 
-    <v-row>
-      <v-col>
-        <v-btn
-          block
-          class="mb-12 mt-6"
-          color="primary"
-          :disabled="loading"
-          x-large
-          @click="addRow"
-        >
-          ADD <span class="d-none d-sm-flex white--text">NEW</span> CHILD
-        </v-btn>
-      </v-col>
-    </v-row>
-  </v-col>
+        <!-- Readonly child info -->
+        <v-row v-if="!isEditing[indexD]" no-gutters>
+          <v-col cols="12" class="d-flex justify-center">
+            <img
+              v-if="firstBackpack"
+              :alt="childBackpack(item.backpackId).name"
+              class="backpack-active"
+              :src="childBackpack(item.backpackId).image"
+            >
+          </v-col>
+
+          <v-col v-if="item.id" cols="12" class="d-flex justify-center">
+            <v-btn class="warning" @click="openTimeline(item)">
+              View Progress
+            </v-btn>
+          </v-col>
+
+          <v-col cols="12" class="d-flex justify-center">
+            <v-btn class="primary--text" x-large text @click="editChild(indexD)">
+              Edit Child
+            </v-btn>
+          </v-col>
+        </v-row>
+
+        <v-row v-if="!isEditing[indexD]">
+          <v-col cols="6" class="grey--text">
+            Name
+          </v-col>
+          <v-col cols="6" class="font-weight-bold grey--text text--darken-2">
+            {{ item.firstName }}
+          </v-col>
+
+          <v-col cols="6" class="grey--text">
+            Date of birth
+          </v-col>
+          <v-col cols="6" class="font-weight-bold grey--text text--darken-2">
+            {{ getChildBirthday(item.birthday) }}
+          </v-col>
+
+          <v-col cols="6" class="grey--text">
+            Gender
+          </v-col>
+          <v-col cols="6" class="font-weight-bold grey--text text--darken-2">
+            {{ item.gender === 'FEMALE' ? 'Girl' : item.gender === 'MALE' ? 'Boy' : '' }}
+          </v-col>
+
+          <v-col cols="6" class="grey--text">
+            Current letter
+          </v-col>
+          <v-col cols="6" class="font-weight-bold grey--text text--darken-2">
+            {{ item.progress.curriculumType.letter ? `Letter ${item.progress.curriculumType.letter}` : undefined }}
+          </v-col>
+
+          <v-col cols="6" class="grey--text">
+            Current day
+          </v-col>
+          <v-col cols="6" class="font-weight-bold grey--text text--darken-2">
+            {{ item.progress.day ? `Day ${item.progress.day}` : undefined }}
+          </v-col>
+        </v-row>
+      </v-card>
+    </v-col>
+
+    <user-child-timeline-dialog />
+  </v-row>
 </template>
 
 <script>
 import dayjs from 'dayjs'
 import { mapActions } from 'vuex'
+import UserChildTimelineDialog from '@/components/admin/users/UserChildTimelineDialog.vue'
 
 export default {
   name: 'ChildForm',
 
+  components: {
+    UserChildTimelineDialog
+  },
+
   data: () => ({
     loading: false,
     backpacks: [],
+    childrenProgress: [],
     items: [],
+    isEditing: [],
     genders: ['MALE', 'FEMALE']
   }),
 
@@ -233,6 +334,10 @@ export default {
         return this.backpacks[0].id
       }
       return null
+    },
+
+    isMobile () {
+      return this.$vuetify.breakpoint.smAndDown
     }
   },
 
@@ -251,6 +356,8 @@ export default {
       deleteChild: 'delete'
     }),
 
+    ...mapActions('children/progress', ['getUserChildrenProgress']),
+
     getOriginalChild ({ backpackId, birthday, firstName, level, gender } = {}) {
       return JSON.stringify({
         backpackId,
@@ -265,10 +372,12 @@ export default {
       try {
         this.loading = true
         await this.fetchBackpacks()
+        this.childrenProgress = await this.getUserChildrenProgress()
         const rows = await this.getChildren()
         rows.forEach((row) => {
           this.loadChild(row)
         })
+        this.setIsEditingList()
       } catch (error) {
         return Promise.reject(error)
       } finally {
@@ -282,6 +391,8 @@ export default {
     ) {
       const _birthdayPicker = new Date(birthday).toISOString().substr(0, 10)
 
+      const progress = this.childrenProgress.find(progress => progress.children?.id === id)
+
       const item = {
         _birthdayPicker,
         _birthdayFormatted: '',
@@ -291,13 +402,20 @@ export default {
         birthday,
         firstName,
         gender,
-        level
+        level,
+        progress: {
+          curriculumType: {
+            letter: progress?.curriculumType?.letter
+          },
+          day: progress?.day
+        }
       }
 
       this.onInputBirthday(item)
 
-      if (index) {
+      if (typeof index === 'number' && index >= 0) {
         this.$set(this.items, index, { ...this.items[index], ...item })
+        this.editChild(index, false)
       } else {
         this.addRow(item)
       }
@@ -316,12 +434,20 @@ export default {
         firstName: '',
         level: 'BEGINNER',
         gender: '',
+        progress: {
+          curriculumType: {
+            letter: undefined
+          },
+          day: undefined
+        },
         ...data
       }
 
       _data._original = this.getOriginalChild(_data)
 
-      this.items.push(_data)
+      this.items.unshift(_data)
+
+      this.isEditing.unshift(true)
     },
 
     fetchBackpacks () {
@@ -349,6 +475,7 @@ export default {
             this.items.splice(index, 1)
 
             this.$nuxt.$emit('children-changed')
+            this.setIsEditingList()
           } catch (e) {
           } finally {
             this.loading = false
@@ -373,6 +500,8 @@ export default {
 
           await this.updateChild({ id: item.id, params })
           item._original = this.getOriginalChild(item)
+
+          this.editChild(index, false)
         } else {
           const data = await this.createChild(item)
 
@@ -387,6 +516,38 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+
+    editChild (index, shouldEdit = true) {
+      const child = this.items[index]
+
+      // remove the child if the user is clicking Cancel (shouldEdit = false)
+      // and the child has not been saved yet
+      if (!shouldEdit && !child.id) {
+        this.items.splice(index, 1)
+        this.isEditing.splice(index, 1)
+        this.$nuxt.$emit('children-changed')
+
+        return
+      }
+
+      this.$set(this.isEditing, index, shouldEdit)
+    },
+
+    openTimeline (child) {
+      this.$nuxt.$emit('open-timeline', child)
+    },
+
+    getChildBirthday (date) {
+      if (!date) {
+        return
+      }
+
+      return dayjs(date).format('MMMM DD, YYYY')
+    },
+
+    setIsEditingList () {
+      this.isEditing = this.items.map(_ => false)
     }
   }
 }
@@ -426,5 +587,14 @@ export default {
 
 .custom-btn::v-deep.v-btn {
   text-transform: capitalize !important;
+}
+
+.custom-card-border {
+  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.25) !important;
+  border-radius: 8px !important;
+}
+
+.v-btn:not(.v-btn--text) {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
 }
 </style>

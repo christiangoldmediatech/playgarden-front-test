@@ -15,20 +15,21 @@ export default {
   },
 
   setToken ({ commit }, token) {
-    const auth = jwtDecode(token)
+    if (token && token !== 'removed') {
+      const auth = jwtDecode(token)
+      if (process.client && token) {
+        this.$cookies.remove('atoken')
+        this.$cookies.add({ _key: 'atoken', _data: token, _maxAge: auth.exp })
+      }
 
-    if (process.client) {
-      this.$cookies.remove('atoken')
-      this.$cookies.add({ _key: 'atoken', _data: token, _maxAge: auth.exp })
-    }
+      commit('SET_ACCESS_TOKEN', token)
+      commit('SET_AXIOS_TOKEN', token)
+      commit('SET_ISSUED_AT', auth.iat)
+      commit('SET_EXPIRES_AT', auth.exp * 1000)
 
-    commit('SET_ACCESS_TOKEN', token)
-    commit('SET_AXIOS_TOKEN', token)
-    commit('SET_ISSUED_AT', auth.iat)
-    commit('SET_EXPIRES_AT', auth.exp * 1000)
-
-    if (hasLocalStorage()) {
-      window.localStorage.setItem('authToken', JSON.stringify(token))
+      if (hasLocalStorage()) {
+        window.localStorage.setItem('authToken', JSON.stringify(token))
+      }
     }
   },
 
@@ -47,10 +48,13 @@ export default {
       window.localStorage.removeItem('authToken')
       // Resets child selection.
       if (rootGetters.getCurrentChild) {
-        commit('SET_CURRENT_CHILD', null, { root: true })
-        commit('SET_CURRENT_CHILD_EXPIRES', null, { root: true })
         window.localStorage.removeItem('selectedChild')
       }
+    }
+
+    if (rootGetters.getCurrentChild) {
+      commit('SET_CURRENT_CHILD', null, { root: true })
+      commit('SET_CURRENT_CHILD_EXPIRES', null, { root: true })
     }
 
     if (redirect) {

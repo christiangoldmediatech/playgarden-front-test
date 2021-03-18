@@ -37,7 +37,7 @@
           </v-col>
 
           <v-col v-if="isUserLoggedIn && !isUserInSignupProcess" cols="12">
-            <v-btn block color="primary" nuxt :to="{ name: 'app-account' }">
+            <v-btn block color="primary" nuxt :to="{ name: 'app-account-index' }">
               ACCOUNT SETTINGS
             </v-btn>
           </v-col>

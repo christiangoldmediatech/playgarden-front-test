@@ -143,7 +143,7 @@ export default {
             query: { process: 'signup', step: '3' }
           })
         } else {
-          await this.$router.push({ name: 'app-account' })
+          await this.$router.push({ name: 'app-account-index' })
         }
       } catch (e) {
       } finally {

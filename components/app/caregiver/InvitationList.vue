@@ -1,10 +1,6 @@
 <template>
   <v-row>
     <v-col cols="12">
-      <p class="font-weight-bold">
-        PENDING INVITATIONS SENT
-      </p>
-
       <v-row
         v-for="({ id, email, phone }, indexIS) in invitationSent"
         :key="indexIS"
@@ -12,7 +8,7 @@
         class="my-1 px-md-6"
         no-gutters
       >
-        <v-col class="text-truncate">
+        <v-col class="text-truncate grey--text">
           {{ email || phone }}
         </v-col>
 
@@ -44,6 +40,14 @@
           </div>
         </v-col>
       </v-row>
+      <v-row
+        v-if="!hasSentInvites && !loading"
+        no-gutters
+        justify="center"
+        class="my-1 px-md-6 grey--text"
+      >
+        You don't have any pending invites
+      </v-row>
     </v-col>
   </v-row>
 </template>
@@ -59,8 +63,22 @@ export default {
     loading: false
   }),
 
+  computed: {
+    hasSentInvites () {
+      return this.invitationSent.length > 0
+    }
+  },
+
   created () {
     this.getInvitationList()
+
+    this.$nuxt.$on('caregiver-added', () => {
+      this.getInvitationList()
+    })
+  },
+
+  beforeDestroy () {
+    this.$nuxt.$off('caregiver-added')
   },
 
   methods: {
@@ -71,7 +89,9 @@ export default {
     ]),
 
     async getInvitationList () {
+      this.loading = true
       this.invitationSent = await this.fetchCaregiverInvitationList()
+      this.loading = false
     },
 
     onDelete ({ id, email, phone }) {

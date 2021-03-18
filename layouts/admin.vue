@@ -70,7 +70,7 @@
 
       <v-menu class="mr-4">
         <template v-slot:activator="{ on: menu, attrs }">
-          <v-tooltip bottom>
+          <v-tooltip top>
             <template v-slot:activator="{ on: tooltip }">
               <v-btn
                 text
@@ -96,7 +96,7 @@
         <v-list dense class="mt-8">
           <v-subheader>Notifications</v-subheader>
           <v-divider></v-divider>
-          <v-list class="content-notification">
+          <v-list v-if="uploadingVideos.length > 0" class="content-notification">
             <v-list-item
               v-for="(item, index) in uploadingVideos"
               :key="index"

@@ -10,6 +10,7 @@ const resetState = (state) => {
 export default {
   LOGOUT (state) {
     resetState(state)
+    this.$axios.setToken('', 'Bearer')
   },
   SET_ACCESS_TOKEN: set('accessToken'),
   SET_AXIOS_TOKEN (_, token) {
