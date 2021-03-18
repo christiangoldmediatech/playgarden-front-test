@@ -540,7 +540,7 @@ export default {
 
     getChildBirthday (date) {
       if (!date) {
-        return
+        return 'Add child birthday'
       }
 
       return dayjs(date).format('MMMM DD, YYYY')
