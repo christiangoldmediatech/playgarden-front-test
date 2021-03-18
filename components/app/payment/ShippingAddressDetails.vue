@@ -242,7 +242,7 @@ export default {
             }
           ],
           closeOnClick: true,
-          timeout: 30 * 1000
+          timeout: 6000
         })
       } finally {
         this.loading = false
