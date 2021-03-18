@@ -122,28 +122,28 @@
         Street
       </v-col>
       <v-col cols="8" class="text-right">
-        {{ draft.address1 }} {{ (draft.address2 ? `, ${draft.address2}` : '') }}
+        <b>{{ draft.address1 }} {{ (draft.address2 ? `, ${draft.address2}` : '') }}</b>
       </v-col>
 
       <v-col cols="4">
         City
       </v-col>
       <v-col cols="8" class="text-right">
-        {{ draft.city }}
+        <b>{{ draft.city }}</b>
       </v-col>
 
       <v-col cols="4">
         State
       </v-col>
       <v-col cols="8" class="text-right">
-        {{ draft.state }}
+        <b>{{ draft.state }}</b>
       </v-col>
 
       <v-col cols="4">
         Zip Code
       </v-col>
       <v-col cols="8" class="text-right">
-        {{ draft.zipCode }}
+        <b>{{ draft.zipCode }}</b>
       </v-col>
     </v-row>
 

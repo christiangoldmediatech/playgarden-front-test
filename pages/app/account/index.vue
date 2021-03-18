@@ -81,7 +81,7 @@ export default {
     ...mapGetters('auth', ['isUserCaregiver']),
 
     fullName () {
-      return `${this.userInfo.firstName ?? ''} ${this.userInfo.lastName ?? ''}`.trim()
+      return this.userInfo.fullName // `${this.userInfo.firstName ?? ''} ${this.userInfo.lastName ?? ''}`.trim()
     },
 
     isMobile () {
