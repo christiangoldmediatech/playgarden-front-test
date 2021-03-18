@@ -1,6 +1,14 @@
 export default function ({ $axios, redirect, store, app }) {
   $axios.setBaseURL(process.env.apiBaseUrl)
 
+  $axios.onRequest((config) => {
+    // Check and set token if we have one on the store
+    if (store.state.auth.accessToken) {
+      config.headers.Authorization = `Bearer ${store.state.auth.accessToken}`
+      $axios.setToken(store.state.auth.accessToken, 'Bearer')
+    }
+  })
+
   $axios.onError((error) => {
     app.$sentry.captureException(error)
     if (

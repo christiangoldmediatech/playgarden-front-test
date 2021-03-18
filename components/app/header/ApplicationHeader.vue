@@ -83,7 +83,7 @@
           <v-img
             v-if="isUserLoggedIn && !isUserInSignupProcess"
             class="clickable account-btn mx-2"
-            :src="require('@/assets/png/Profile.png')"
+            :src="require('@/assets/svg/account-profile.svg')"
             @click="goToAccount"
           />
           <v-btn
@@ -248,7 +248,7 @@ export default {
     },
 
     goToAccount () {
-      this.$router.push({ name: 'app-account' })
+      this.$router.push({ name: 'app-account-index' })
     }
   }
 }

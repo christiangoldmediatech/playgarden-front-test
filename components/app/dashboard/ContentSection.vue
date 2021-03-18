@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-6">
+  <div :class=" number === '1' ? 'mt-0' : 'mt-6' ">
     <!-- Circle and title -->
     <v-row class="flex-nowrap" align="center" justify="start">
       <v-col class="flex-shrink-1 flex-grow-0 py-0">

@@ -212,12 +212,13 @@ export class CookieHandlerUI {
   }
 
   static remove (name) {
-    const cookie = new Cookie({
+    const cookie = {
       _key: name,
+      path: '/',
       _data: 'removed',
-      _expireDate: '1970-01-01T00:00:00.000Z'
-    })
-
+      _expireDate: '1970-01-01T00:00:00.000Z',
+      _maxAge: 0
+    }
     /**
      * Cookies can only be removed by setting their expiration time to
      * some date that has already past. Thats why we are 'adding' a new expired
@@ -234,28 +235,31 @@ export class CookieHandlerUI {
       }
     }
     const cookies = selectedText
-    return cookies
-      .split(';')
-      .map((ck) => {
-        const cookie = ck.trim()
-        const data = cookie.split('=')
-        const name = data[0]
-        const value = cookie.substring(data[0].length + 1)
-        if (name && value) {
-          return new Cookie({
-            _key: name,
-            _data: value
-          })
-        }
-        return undefined
-      })
-      .filter((ck) => {
-        /**
-         * The addded type on the filter function is to let the ts static parser
-         * that we are removing undefined values in here and we are not returning
-         * a (Cookie|undefined)[] type
-         */
-        return typeof ck !== 'undefined'
-      })
+    if (cookies) {
+      return cookies
+        .split(';')
+        .map((ck) => {
+          const cookie = ck.trim()
+          const data = cookie.split('=')
+          const name = data[0]
+          const value = cookie.substring(data[0].length + 1)
+          if (name && value) {
+            return new Cookie({
+              _key: name,
+              _data: value
+            })
+          }
+          return undefined
+        })
+        .filter((ck) => {
+          /**
+           * The addded type on the filter function is to let the ts static parser
+           * that we are removing undefined values in here and we are not returning
+           * a (Cookie|undefined)[] type
+           */
+          return typeof ck !== 'undefined'
+        })
+    }
+    return []
   }
 }

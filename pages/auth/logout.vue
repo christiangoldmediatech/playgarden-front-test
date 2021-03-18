@@ -10,8 +10,8 @@ export default {
 
   layout: 'loading',
 
-  mounted () {
-    this.logout()
+  async mounted () {
+    await this.logout()
 
     this.$router.push({ name: 'index' })
   },
