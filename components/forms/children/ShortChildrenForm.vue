@@ -149,8 +149,7 @@ export default {
     this.itemCurrent._birthdayFormatted = dayjs(this.itemCurrent._birthdayPicker).format(
       'MM/DD/YYYY'
     )
-    // console.log('this.itemCurrent._birthdayFormatted--', this.itemCurrent._birthdayFormatted)
-    this.itemCurrent.birthday = `${this.itemCurrent._birthdayPicker}T00:00:00.000`
+    this.itemCurrent.birthday = null // `${this.itemCurrent._birthdayPicker}T00:00:00.000`
     this.fetchBackpacks()
     if (this.isUserLoggedIn) {
       this.loadChildren()

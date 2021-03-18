@@ -95,11 +95,6 @@ export default {
   },
 
   created () {
-    /* if (this.isUserLoggedIn) {
-      this.loadChildren()
-    } else {
-      this.addRow()
-    } */
     this.addRow()
   },
 
