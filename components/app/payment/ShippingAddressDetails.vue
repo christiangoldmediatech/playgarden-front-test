@@ -244,7 +244,11 @@ export default {
             closeOnClick: true,
             timeout: 6000
           })
+
+          return
         }
+
+        this.draft = draft
       } catch (e) {
         this.$snotify.warning('Could not fetch shipping address', 'Error', {
           closeOnClick: true,
