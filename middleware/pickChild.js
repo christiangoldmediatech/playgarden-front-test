@@ -101,11 +101,15 @@ export default async function ({ redirect, route, store, req, app }) {
 
       // If no child is selected
       if (!child || !childExpires || currentMoment >= childExpires) {
-        return redirect(
-          `/app/pick-child?_time=${currentMoment}&redirect=${encodeURIComponent(
-            route.fullPath
-          )}`
-        )
+        return redirect({
+          name: 'app-pick-child',
+          query: {
+            _time: currentMoment,
+            redirect: encodeURIComponent(
+              route.fullPath
+            )
+          }
+        })
       }
     }
   }
