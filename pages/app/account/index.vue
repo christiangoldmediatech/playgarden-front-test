@@ -29,8 +29,14 @@
             item-value="routeName"
             @input="navigateToPage($event)"
           >
-            <template v-slot:selection="{ item }">
-              <div class="font-weight-medium text-uppercase">
+            <template #selection="{ item }">
+              <div :class="mobileDrowpdownClasses(item.routeName)">
+                {{ item.text }}
+              </div>
+            </template>
+
+            <template #item="{ item }">
+              <div :class="mobileDrowpdownClasses(item.routeName)">
                 {{ item.text }}
               </div>
             </template>
@@ -115,6 +121,15 @@ export default {
         'py-7 mb-3 text-uppercase font-weight-bold text-letter-spacing-1': true,
         'grey--text text--darken-2': !isSelectedRoute && !isLogoutBtn,
         'primary white--text': isSelectedRoute,
+        'orange--text': isLogoutBtn
+      }
+    },
+    mobileDrowpdownClasses (routeName) {
+      const isLogoutBtn = routeName === 'auth-logout'
+
+      return {
+        'font-weight-bold text-uppercase': true,
+        'grey--text text--darken-2': !isLogoutBtn,
         'orange--text': isLogoutBtn
       }
     }

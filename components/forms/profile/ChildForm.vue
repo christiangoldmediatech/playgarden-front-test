@@ -389,7 +389,7 @@ export default {
       { _original, id, backpack, birthday, firstName, gender, level },
       index = null
     ) {
-      const _birthdayPicker = new Date(birthday).toISOString().substr(0, 10)
+      const _birthdayPicker = (birthday) ? new Date(birthday).toISOString().substr(0, 10) : dayjs(`${new Date().getFullYear() - 2}-01-01`).format('YYYY-MM-DD')
 
       const progress = this.childrenProgress.find(progress => progress.children?.id === id)
 
@@ -459,7 +459,7 @@ export default {
         item._birthdayFormatted = dayjs(item._birthdayPicker).format(
           'MM/DD/YYYY'
         )
-        item.birthday = `${item._birthdayPicker}T00:00:00.000`
+        item.birthday = (item.birthday) ? `${item._birthdayPicker}T00:00:00.000` : null
       }
     },
 
@@ -540,7 +540,7 @@ export default {
 
     getChildBirthday (date) {
       if (!date) {
-        return
+        return 'Add child birthday'
       }
 
       return dayjs(date).format('MMMM DD, YYYY')

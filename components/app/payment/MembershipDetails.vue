@@ -421,6 +421,7 @@ export default {
     this.getBillingCards()
     this.getPlan()
     this.$nuxt.$on('children-changed', this.getBillingDetails)
+    this.$nuxt.$on('plan-membership-changed', this.getPlan)
   },
   mounted () {
     const val = this.$route.params.changeplan
@@ -430,6 +431,7 @@ export default {
   },
   beforeDestroy () {
     this.$nuxt.$off('children-changed')
+    this.$nuxt.$off('plan-membership-changed')
   },
   methods: {
     ...mapActions(['disableAxiosGlobal', 'enableAxiosGlobal']),
