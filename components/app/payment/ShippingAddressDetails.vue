@@ -122,28 +122,28 @@
         Street
       </v-col>
       <v-col cols="8" class="text-right">
-        {{ draft.address1 }} {{ (draft.address2 ? `, ${draft.address2}` : '') }}
+        <b>{{ draft.address1 }} {{ (draft.address2 ? `, ${draft.address2}` : '') }}</b>
       </v-col>
 
       <v-col cols="4">
         City
       </v-col>
       <v-col cols="8" class="text-right">
-        {{ draft.city }}
+        <b>{{ draft.city }}</b>
       </v-col>
 
       <v-col cols="4">
         State
       </v-col>
       <v-col cols="8" class="text-right">
-        {{ draft.state }}
+        <b>{{ draft.state }}</b>
       </v-col>
 
       <v-col cols="4">
         Zip Code
       </v-col>
       <v-col cols="8" class="text-right">
-        {{ draft.zipCode }}
+        <b>{{ draft.zipCode }}</b>
       </v-col>
     </v-row>
 
@@ -226,21 +226,31 @@ export default {
 
     async fetchAddress () {
       this.loading = true
-
       try {
         this.disableAxiosGlobal()
-        this.draft = await this.getShippingAddress()
-      } catch (e) {
-        this.$snotify.warning('Please check your shipping address', 'Warning', {
-          buttons: [
-            {
-              text: 'Edit',
-              action: () => {
-                this.isEditing = true
-                this.$scrollTo('#shipping-address-form', { offset: -65 })
+        const draft = await this.getShippingAddress()
+
+        if (!draft && !this.editByDefault) {
+          this.$snotify.warning('Please check your shipping address', 'Warning', {
+            buttons: [
+              {
+                text: 'Edit',
+                action: () => {
+                  this.isEditing = true
+                  this.$scrollTo('#shipping-address-form', { offset: -65 })
+                }
               }
-            }
-          ],
+            ],
+            closeOnClick: true,
+            timeout: 6000
+          })
+
+          return
+        }
+
+        this.draft = draft
+      } catch (e) {
+        this.$snotify.warning('Could not fetch shipping address', 'Error', {
           closeOnClick: true,
           timeout: 6000
         })

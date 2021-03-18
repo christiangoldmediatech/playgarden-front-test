@@ -27,28 +27,31 @@
         Name
       </v-col>
       <v-col cols="8" class="text-right">
-        {{ fullName }}
+        <b>{{ fullName }}</b>
       </v-col>
 
       <v-col cols="4">
         Email
       </v-col>
       <v-col cols="8" class="text-right">
-        {{ userInfo.email }}
+        <b>{{ userInfo.email }}</b>
       </v-col>
 
       <v-col cols="4">
         Password
       </v-col>
       <v-col cols="8" class="text-right">
-        ••••••••••
+        <b>••••••••••</b>
       </v-col>
 
       <v-col cols="4">
         Phone
       </v-col>
-      <v-col cols="8" class="text-right">
-        {{ userInfo.phoneNumber }}
+      <v-col v-if="userInfo.phoneNumber" cols="8" class="text-right">
+        <b>{{ userInfo.phoneNumber }}</b>
+      </v-col>
+      <v-col v-else cols="8" class="text-right">
+        <small>Insert your phone number to receive SMS notifications.</small>
       </v-col>
     </v-row>
 
@@ -195,7 +198,7 @@ export default {
       isUserCaregiver: 'isUserCaregiver'
     }),
     fullName () {
-      return `${this.userInfo.firstName ?? ''} ${this.userInfo.lastName ?? ''}`.trim()
+      return this.userInfo.fullName // `${this.userInfo.firstName ?? ''} ${this.userInfo.lastName ?? ''}`.trim()
     }
   },
 
