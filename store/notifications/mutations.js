@@ -8,7 +8,7 @@ export default {
       title: '',
       description: '',
       image: '',
-      action: () => null
+      action: null
     }
     payload = { ...defaultPayload, ...payload }
 
