@@ -3,6 +3,8 @@
 import webpack from 'webpack'
 import { Integrations } from "@sentry/tracing";
 
+const baseRouteProd = '/school/'
+
 export default {
   /*
    ** Nuxt rendering mode
@@ -50,7 +52,7 @@ export default {
         type: 'image/x-icon',
         href:
           process.env.TEST_ENV === 'production'
-            ? '/app/favicon.ico'
+            ? `${baseRouteProd}favicon.ico`
             : '/favicon.ico'
       },
       {
@@ -70,13 +72,13 @@ export default {
       {
         src:
           process.env.TEST_ENV === 'production'
-            ? '/app/js/filesaver.min.js'
+            ? `${baseRouteProd}js/filesaver.min.js`
             : '/js/filesaver.min.js'
       },
       {
         src:
           process.env.TEST_ENV === 'production'
-            ? '/app/js/ics.min.js'
+            ? `${baseRouteProd}js/ics.min.js`
             : '/js/ics.min.js'
       },
       { src: 'https://js.stripe.com/v3/', async: true }
@@ -254,7 +256,7 @@ export default {
     dropBoxApiKey: process.env.DROPBOX_API_KEY || ''
   },
   router: {
-    base: process.env.TEST_ENV === 'production' ? '/app/' : '/',
+    base: process.env.TEST_ENV === 'production' ? baseRouteProd : '/',
     middleware: [
       'checkJWT',
       'auth',
