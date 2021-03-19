@@ -228,7 +228,7 @@ export default {
       if (this.playlist[index]) {
         const mediaObject = jsonCopy(this.playlist[index])
         if (this.useStandardPoster || !mediaObject.poster) {
-          mediaObject.poster = process.env.testEnv === 'production' ? '/app/standard-video-poster.svg' : '/standard-video-poster.svg'
+          mediaObject.poster = process.env.testEnv === 'production' ? `${process.env.baseRouteProd}standard-video-poster.svg` : '/standard-video-poster.svg'
         }
         this.mediaObject = mediaObject
         this.playerInstance.loadMedia(mediaObject)
