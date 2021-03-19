@@ -48,7 +48,6 @@ export default function ({ redirect, route, store }) {
     } */
 
     let name = ''
-
     switch (step) {
       case 1:
         name = 'auth-parent'
