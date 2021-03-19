@@ -261,10 +261,11 @@ export default {
       'fetchUserInfo',
       'recoverRegistrationProcess',
       'emailVerified',
-      'redirectProperAuthenticatedSection',
-      'redirectIfAuthenticated',
-      'pickChild',
-      'redirectIfSubscriptionCancelled'
+      'routeHandler',
+      // 'redirectProperAuthenticatedSection',
+      // 'redirectIfAuthenticated',
+      'pickChild'
+      // 'redirectIfSubscriptionCancelled'
     ],
     scrollBehavior: () => ({ x: 0, y: 0 })
   }
