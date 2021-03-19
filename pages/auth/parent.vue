@@ -5,13 +5,14 @@
         color="accent"
         nuxt
         text
-        @click="backLogin"
       >
         <v-icon left>
           mdi-less-than
         </v-icon>
-
-        Back
+        <a
+          class="d-block back mb-1 mt-1"
+          href="https://playgardenonline.com/"
+        >Back</a>
       </v-btn>
     </v-row>
     <v-col cols="12">
@@ -21,7 +22,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 import StepOne from '@/components/app/register/StepOne'
 
 export default {
@@ -37,13 +37,12 @@ export default {
 
   created () {},
 
-  methods: {
-    ...mapActions('auth', ['logout']),
-
-    async backLogin () {
-      await this.logout()
-      this.$router.push({ name: 'index' })
-    }
-  }
+  methods: {}
 }
 </script>
+
+<style lang="scss" scoped>
+.back {
+  color: var(--v-accent-base) !important;
+}
+</style>
