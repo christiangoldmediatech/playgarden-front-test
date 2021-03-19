@@ -18,5 +18,15 @@ export default {
     getL(getters, 'getUserInfo.planSelected.id') === 3 ||
     getL(getters, 'getUserInfo.trial') ||
     true, // TODO: remove in February
-  getPlaydateInvitationToken: get('playdateInvitationToken')
+  getPlaydateInvitationToken: get('playdateInvitationToken'),
+  checkAuth (_, getters) {
+    let isLoggedIn = false
+    if (getters.getAccessToken && getters.getExpiresAt) {
+      if (new Date().getTime() < getters.getExpiresAt) {
+        isLoggedIn = true
+      }
+    }
+
+    return isLoggedIn
+  }
 }
