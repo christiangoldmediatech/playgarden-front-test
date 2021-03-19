@@ -19,7 +19,7 @@
               <span>GO TO PREVIOUS DAY</span>
             </v-tooltip>
           </v-col>
-          <v-spacer></v-spacer>
+          <v-spacer />
           <v-col class="btnLesson">
             <p class="text-right mr-3">
               <v-tooltip top>
@@ -358,7 +358,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .dashboard-panel {
   &-container {
     height: 100%;

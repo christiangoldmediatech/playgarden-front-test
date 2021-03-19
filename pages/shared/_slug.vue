@@ -416,7 +416,7 @@ export default {
       let pageImage = require(`assets/png/shared/${slug}.png`)
 
       if (process.env.testEnv === 'production') {
-        pageImage = pageImage.substr(4) // removes '/app' from the url
+        pageImage = pageImage.substr(7) // removes '/school' from the url
       }
 
       return {
