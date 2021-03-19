@@ -173,7 +173,7 @@ export default {
             process.env.FIRE_API_KEY ||
             'AIzaSyC4eRWANSBArXz29BDqIVrnj5uitK7gRkU',
           authDomain:
-            process.env.FIRE_AUTH_DOMAIN || 'playgarden-96da1.firebaseapp.com',
+            process.env.FIRE_AUTH_DOMAIN || 'sso.playgardenonline.com',
           databaseURL:
             process.env.FIRE_DATABASE_URL ||
             'https://playgarden-96da1.firebaseio.com',
