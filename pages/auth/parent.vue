@@ -5,10 +5,7 @@
         color="accent"
         nuxt
         text
-        :to="{
-          name: 'app-payment-plan',
-          query: { process: 'signup', step: '3' }
-        }"
+        @click="backLogin"
       >
         <v-icon left>
           mdi-less-than
@@ -24,7 +21,7 @@
 </template>
 
 <script>
-
+import { mapActions } from 'vuex'
 import StepOne from '@/components/app/register/StepOne'
 
 export default {
@@ -40,6 +37,13 @@ export default {
 
   created () {},
 
-  methods: {}
+  methods: {
+    ...mapActions('auth', ['logout']),
+
+    async backLogin () {
+      await this.logout()
+      this.$router.push({ name: 'index' })
+    }
+  }
 }
 </script>
