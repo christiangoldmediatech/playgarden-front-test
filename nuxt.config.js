@@ -3,6 +3,8 @@
 import webpack from 'webpack'
 import { Integrations } from "@sentry/tracing";
 
+const baseRouteProd = '/school/'
+
 export default {
   /*
    ** Nuxt rendering mode
@@ -50,7 +52,7 @@ export default {
         type: 'image/x-icon',
         href:
           process.env.TEST_ENV === 'production'
-            ? '/app/favicon.ico'
+            ? `${baseRouteProd}favicon.ico`
             : '/favicon.ico'
       },
       {
@@ -70,13 +72,13 @@ export default {
       {
         src:
           process.env.TEST_ENV === 'production'
-            ? '/app/js/filesaver.min.js'
+            ? `${baseRouteProd}js/filesaver.min.js`
             : '/js/filesaver.min.js'
       },
       {
         src:
           process.env.TEST_ENV === 'production'
-            ? '/app/js/ics.min.js'
+            ? `${baseRouteProd}js/ics.min.js`
             : '/js/ics.min.js'
       },
       { src: 'https://js.stripe.com/v3/', async: true }
@@ -173,7 +175,7 @@ export default {
             process.env.FIRE_API_KEY ||
             'AIzaSyC4eRWANSBArXz29BDqIVrnj5uitK7gRkU',
           authDomain:
-            process.env.FIRE_AUTH_DOMAIN || 'playgarden-96da1.firebaseapp.com',
+            process.env.FIRE_AUTH_DOMAIN || 'sso.playgardenonline.com',
           databaseURL:
             process.env.FIRE_DATABASE_URL ||
             'https://playgarden-96da1.firebaseio.com',
@@ -251,10 +253,11 @@ export default {
       process.env.STRIPE_PUBLIC ||
       'pk_test_51HKUavFlV2s2JR4RIPnTwt7laAa7Q5T3CXKL5xhGReFmtvcbi2YQDJBz8JnAHw5STCGxNmoWUDlZUnxzCE9imzxF00J5yVNU5Z',
     gtm: process.env.GTM_ID,
-    dropBoxApiKey: process.env.DROPBOX_API_KEY || ''
+    dropBoxApiKey: process.env.DROPBOX_API_KEY || '',
+    baseRouteProd: baseRouteProd
   },
   router: {
-    base: process.env.TEST_ENV === 'production' ? '/app/' : '/',
+    base: process.env.TEST_ENV === 'production' ? baseRouteProd : '/',
     middleware: [
       'checkJWT',
       'auth',

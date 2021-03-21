@@ -5,16 +5,14 @@
         color="accent"
         nuxt
         text
-        :to="{
-          name: 'app-payment-plan',
-          query: { process: 'signup', step: '3' }
-        }"
       >
         <v-icon left>
           mdi-less-than
         </v-icon>
-
-        Back
+        <a
+          class="d-block back mb-1 mt-1"
+          href="https://playgardenonline.com/"
+        >Back</a>
       </v-btn>
     </v-row>
     <v-col cols="12">
@@ -24,7 +22,6 @@
 </template>
 
 <script>
-
 import StepOne from '@/components/app/register/StepOne'
 
 export default {
@@ -43,3 +40,9 @@ export default {
   methods: {}
 }
 </script>
+
+<style lang="scss" scoped>
+.back {
+  color: var(--v-accent-base) !important;
+}
+</style>

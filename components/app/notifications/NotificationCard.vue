@@ -21,7 +21,7 @@
             {{ notificationCard.description }}
           </div>
 
-          <div class="font-weight-bold grey--text body-2 mt-4">
+          <div v-if="hasAction" class="font-weight-bold grey--text body-2 mt-4">
             To learn more <span class="warning--text text-decoration-underline learn-more-text" @click="learnMore">
               click here
             </span>
@@ -45,6 +45,10 @@ export default {
   computed: {
     ...mapState('notifications', ['notificationCard']),
 
+    hasAction () {
+      return typeof this.notificationCard.action === 'function'
+    },
+
     cardStyles () {
       return {
         position: 'fixed',
@@ -62,7 +66,9 @@ export default {
   methods: {
     learnMore () {
       try {
-        this.notificationCard.action()
+        if (this.hasAction) {
+          this.notificationCard.action()
+        }
       } finally {
         this.closeNotificationCard()
       }
