@@ -65,6 +65,6 @@ export default async function ({ app, redirect, route, store, req }) {
     !['auth-logout', 'jwt-recovery'].includes(route.name)
 
   if (shouldRedirectToDashboard) {
-    return redirect({ name: 'app=dashboard' })
+    return redirect({ name: 'app-dashboard' })
   }
 }
