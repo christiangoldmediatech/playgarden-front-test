@@ -184,6 +184,22 @@
                         </validation-provider>
                       </v-col>
 
+                      <v-col cols="12" md="6">
+                        <validation-provider
+                          v-slot="{ errors }"
+                          name="Plan"
+                          rules="required"
+                        >
+                          <pg-select
+                            v-model="user.planId"
+                            :error-messages="errors"
+                            :items="getPlans"
+                            label="Plan"
+                            solo-labeled
+                          />
+                        </validation-provider>
+                      </v-col>
+
                       <v-col v-if="user.backpackSent" cols="12" md="6">
                         <v-menu
                           v-model="backpackSentDate"
@@ -259,12 +275,14 @@ export default {
       backpackSentDate: false,
       workbookDate: null,
       backpackDate: null,
+      plans: [],
       user: {
         firstName: '',
         lastName: '',
         email: '',
         phoneNumber: '',
         roleId: null,
+        planId: null,
         password: null,
         workbookSent: false,
         backpackSent: false
@@ -302,6 +320,13 @@ export default {
       }))
     },
 
+    getPlans () {
+      return this.plans.map(plan => ({
+        text: plan.name,
+        value: plan.id
+      }))
+    },
+
     dataWorkbookDate () {
       return this.workbookDate
         ? dayjs(this.workbookDate).format('MM/DD/YYYY')
@@ -325,6 +350,8 @@ export default {
       promises.push(this.getUserById(this.id))
     }
 
+    this.plans = await this.fetchSubscriptionPlan()
+
     const results = await Promise.all(promises)
 
     if (results[1]) {
@@ -334,6 +361,7 @@ export default {
       this.user.email = data.email
       this.user.phoneNumber = data.phoneNumber
       this.user.roleId = data.role.id
+      this.user.planId = data.planSelected.id
       this.user.workbookSent = false
       this.user.backpackSent = false
       this.user.workbookSentDate = null
@@ -356,6 +384,10 @@ export default {
       createUser: 'create',
       updateUser: 'update'
     }),
+
+    ...mapActions('payment', [
+      'fetchSubscriptionPlan'
+    ]),
 
     ...mapActions('admin/roles', {
       getRoles: 'get'
