@@ -48,7 +48,6 @@ export default async function ({ redirect, route, store, req, app }) {
   /** SERVER SIDE */
   if (process.server) {
     let cookiesText = req.headers.cookie
-    
     if (!cookiesText) {
       cookiesText = ''
     }

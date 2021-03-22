@@ -392,7 +392,7 @@ export default {
       const _birthdayPicker = (birthday) ? new Date(birthday).toISOString().substr(0, 10) : dayjs(`${new Date().getFullYear() - 2}-01-01`).format('YYYY-MM-DD')
 
       const progress = this.childrenProgress.find((progress) => {
-        if (progress && progress.children && progress.children.id) {
+        if (progress && progress.children && progress.children.id) {
           return progress.children.id === id
         }
         return false
