@@ -5,6 +5,7 @@ export default async function ({ store, route, req, app }) {
 
   /** SERVER SIDE */
   if (process.server) {
+    /*
     const cookie = app.$cookies.getAll(req.headers.cookie)
       .find(record => record.name === 'atoken')
 
@@ -13,6 +14,7 @@ export default async function ({ store, route, req, app }) {
     }
     // try to do auth
     await store.dispatch('auth/setToken', cookie.value)
+    */
 
   /** CLIENT SIDE */
   } else {

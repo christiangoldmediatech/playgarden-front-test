@@ -12,7 +12,7 @@ export default {
 
           const receivers = {
             production: 'CB5042D0',
-            development: 'B3A826A2',
+            develop: 'B3A826A2',
             staging: 'F3EB0665',
             LOCAL: '3BF50408'
           }
