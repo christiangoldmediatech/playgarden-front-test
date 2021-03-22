@@ -38,7 +38,7 @@ export default {
     const isUserLoggedIn = rootGetters['auth/isUserLoggedIn']
     const userInfo = rootGetters['auth/getUserInfo']
 
-    if (isUserLoggedIn && userInfo.role?.id === 3) {
+    if (isUserLoggedIn && userInfo.role.id === 3) {
       const shippingAddress = await dispatch('shipping-address/getShippingAddress', undefined, { root: true })
 
       if (!shippingAddress) {
