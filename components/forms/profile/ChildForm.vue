@@ -391,7 +391,12 @@ export default {
     ) {
       const _birthdayPicker = (birthday) ? new Date(birthday).toISOString().substr(0, 10) : dayjs(`${new Date().getFullYear() - 2}-01-01`).format('YYYY-MM-DD')
 
-      const progress = this.childrenProgress.find(progress => progress.children?.id === id)
+      const progress = this.childrenProgress.find((progress) => {
+        if (progress && progress.children && progress.children.id) {
+          return progress.children.id === id
+        }
+        return false
+      })
 
       const item = {
         _birthdayPicker,
@@ -405,9 +410,9 @@ export default {
         level,
         progress: {
           curriculumType: {
-            letter: progress?.curriculumType?.letter
+            letter: progress.curriculumType.letter
           },
-          day: progress?.day
+          day: progress.day
         }
       }
 

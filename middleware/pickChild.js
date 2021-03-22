@@ -19,9 +19,12 @@ export default async function ({ redirect, route, store, req, app }) {
   const setChildren = async (storedData) => {
     try {
       // if array, then we get everyone, else we get just the child
-      const result = storedData?.value?.length === 1
-        ? [await store.dispatch('children/getById', storedData.value[0])]
-        : await store.dispatch('children/get')
+      let result
+      if (storedData && storedData.value && storedData.value.length === 1) {
+        result = [await store.dispatch('children/getById', storedData.value[0])]
+      } else {
+        result = await store.dispatch('children/get')
+      }
 
       if (!result.length) {
         return
@@ -44,7 +47,12 @@ export default async function ({ redirect, route, store, req, app }) {
 
   /** SERVER SIDE */
   if (process.server) {
-    const cookiesText = req?.headers?.cookie ?? ''
+    let cookiesText = req.headers.cookie
+    
+    if (!cookiesText) {
+      cookiesText = ''
+    }
+
     const cookie = app.$cookies.getAll(cookiesText)
       .find(record => record.name === 'selectedChild')
 
