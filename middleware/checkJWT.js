@@ -1,29 +1,26 @@
-export default async function ({ store, redirect, route, req, app }) {
-  const ignore = {
-    'shared-slug': 1
+export default async function ({ store, route, req, app }) {
+  if (route.name === 'shared-slug') {
+    return
   }
 
-  if (!ignore[route.name]) {
-    if (process.server) {
-      const cookies = app.$cookies.getAll(req.headers.cookie)
+  /** SERVER SIDE */
+  if (process.server) {
+    const cookie = app.$cookies.getAll(req.headers.cookie)
+      .find(record => record.name === 'atoken')
 
-      for (let index = 0; index < cookies.length; index++) {
-        const cookie = cookies[index]
-        if (cookie.name === 'atoken') {
-          // Try doing auth
-          await store.dispatch('auth/setToken', cookie.value)
-        }
-      }
-    } else {
-      const isLoggedIn = await store.dispatch('auth/checkAuth')
-      // If the user is not authenticated check if we can restore his session
-      if (!isLoggedIn) {
-        await store.dispatch('auth/restoreAuthFromSessionStorage')
-      }
+    if (!cookie) {
+      return
+    }
+    // try to do auth
+    await store.dispatch('auth/setToken', cookie.value)
 
-      // if (route.query.redirect) {
-      //   redirect(decodeURIComponent(route.query.redirect))
-      // }
+  /** CLIENT SIDE */
+  } else {
+    const isLoggedIn = await store.dispatch('auth/checkAuth')
+
+    // If the user is not authenticated check if we can restore his session
+    if (!isLoggedIn) {
+      await store.dispatch('auth/restoreAuthFromSessionStorage')
     }
   }
 }
