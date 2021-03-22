@@ -261,13 +261,14 @@ export default {
     middleware: [
       'checkJWT',
       'auth',
-      'fetchUserInfo',
       'recoverRegistrationProcess',
-      'emailVerified',
-      'redirectProperAuthenticatedSection',
-      'redirectIfAuthenticated',
-      'pickChild',
-      'redirectIfSubscriptionCancelled'
+      'routeHandler',
+      'pickChild'
+      // 'fetchUserInfo',
+      // 'emailVerified',
+      // 'redirectProperAuthenticatedSection',
+      // 'redirectIfAuthenticated',
+      // 'redirectIfSubscriptionCancelled',
     ],
     scrollBehavior: () => ({ x: 0, y: 0 })
   }
