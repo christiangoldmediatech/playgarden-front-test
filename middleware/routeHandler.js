@@ -13,12 +13,14 @@ export default async function ({ app, redirect, route, store, req }) {
   const isLoggedIn = await store.dispatch('auth/checkAuth')
   const isUnauthenticatedRoute = !!unauthenticatedRoutes[route.name]
   const user = store.getters['auth/getUserInfo']
+  const token = store.getters['auth/getAccessToken']
 
   /**
    * ROLE
    */
 
   const shouldRedirectUser =
+    token &&
     isLoggedIn &&
     !!user.id &&
     !!user.role &&
