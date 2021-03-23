@@ -86,6 +86,12 @@
 
               <template v-slot:[`item.actions.prepend`]="{ item }">
                 <img class="clickable profile-icon" width="20px;" height="20px;" src="@/assets/svg/eye.svg" @click="goToProfile(item.id)">
+
+                <v-btn icon>
+                  <v-icon color="accent" dense>
+                    mdi-map-marker-circle
+                  </v-icon>
+                </v-btn>
               </template>
             </pg-admin-data-table>
           </v-card-text>
@@ -176,7 +182,7 @@ export default {
           align: 'right',
           sortable: false,
           value: 'actions',
-          width: 100
+          width: 150
         }
       ]
     }

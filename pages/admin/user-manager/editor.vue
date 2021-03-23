@@ -361,7 +361,7 @@ export default {
       this.user.email = data.email
       this.user.phoneNumber = data.phoneNumber
       this.user.roleId = data.role.id
-      this.user.planId = data.planSelected.id
+      this.user.planId = (data.planSelected) ? data.planSelected.id : null
       this.user.workbookSent = false
       this.user.backpackSent = false
       this.user.workbookSentDate = null

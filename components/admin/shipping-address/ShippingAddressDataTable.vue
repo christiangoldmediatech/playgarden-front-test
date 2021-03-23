@@ -1,0 +1,201 @@
+ShippingAddres
+<template>
+  <v-container>
+    <v-row>
+      <v-col cols="12">
+        <v-card width="100%">
+          <v-card-title>
+            Patches
+
+            <v-spacer />
+
+            <v-btn
+              class="mr-2 text-none"
+              color="primary darken-1"
+              dark
+              :icon="$vuetify.breakpoint.xs"
+              @click.stop="$refs.editor.open"
+            >
+              <v-icon class="hidden-sm-and-up">
+                mdi-plus-circle
+              </v-icon>
+
+              <v-icon class="hidden-xs-only" small>
+                mdi-plus
+              </v-icon>
+              <span class="hidden-xs-only white--text">
+                Add new patch
+              </span>
+            </v-btn>
+          </v-card-title>
+
+          <v-card-text>
+            View, create, update, or delete patches.
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+
+    <v-row>
+      <v-col cols="12">
+        <v-card width="100%">
+          <v-card-text>
+            <shipping-address-editor-dialog ref="editor" @saved="refresh(false)" />
+
+            <pg-admin-data-table
+              :headers="headers"
+              :items="patches"
+              :loading="loading"
+              :page.sync="page"
+              @update:page="page = $event"
+              @refresh="refresh(true)"
+              @search="onSearch"
+              @edit-item="$refs.editor.open(null, $event)"
+              @remove-item="remove"
+            >
+              <template v-slot:[`top.prepend`]>
+                <v-col cols="12" md="4">
+                  <pg-select
+                    v-model="filters.activityTypeId"
+                    class="shrink"
+                    clearable
+                    hide-details
+                    :disabled="loading"
+                    :items="types"
+                    item-text="name"
+                    item-value="id"
+                    label="Activity"
+                    solo-labeled
+                    @change="refresh(false)"
+                  />
+                </v-col>
+
+                <v-spacer />
+              </template>
+
+              <template v-slot:[`item.image`]="{ item }">
+                <img v-if="item.image" :src="item.image" width="32px">
+
+                <span v-else>
+                  N/A
+                </span>
+              </template>
+            </pg-admin-data-table>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
+</template>
+
+<script>
+import { mapActions, mapGetters } from 'vuex'
+import onSearch from '@/mixins/OnSearchMixin.js'
+import ShippingAddressEditorDialog from './ShippingAddressEditorDialog'
+
+export default {
+  name: 'ShippingAddressDataTable',
+
+  components: {
+    ShippingAddressEditorDialog
+  },
+
+  mixins: [onSearch],
+
+  data: () => ({
+    filters: {
+      activityTypeId: null
+    },
+    patches: [],
+    loading: false,
+    search: null,
+    page: 1,
+    headers: [
+      {
+        text: 'Image',
+        sortable: true,
+        value: 'image'
+      },
+      {
+        text: 'Name',
+        sortable: true,
+        value: 'name'
+      },
+      {
+        text: 'Number',
+        sortable: true,
+        value: 'number'
+      },
+      {
+        text: 'Type',
+        sortable: true,
+        value: 'patchType'
+      },
+      {
+        text: 'Activity',
+        sortable: true,
+        value: 'activityType.name'
+      },
+      {
+        text: 'Created',
+        sortable: false,
+        value: 'createdAt'
+      },
+      {
+        text: 'Last Updated',
+        sortable: false,
+        value: 'updatedAt'
+      },
+      {
+        align: 'right',
+        sortable: false,
+        value: 'actions',
+        width: 100
+      }
+    ]
+  }),
+
+  computed: {
+    ...mapGetters('admin/activity', ['types'])
+  },
+
+  created () {
+    this.getTypes({ activity: true })
+  },
+
+  methods: {
+    ...mapActions('admin/activity', ['getTypes']),
+
+    ...mapActions('patches', ['getPatches', 'deletePatch']),
+
+    async refresh (clear = false) {
+      this.loading = true
+
+      if (clear) {
+        this.search = null
+      }
+
+      try {
+        this.patches = await this.getPatches({
+          ...this.filters,
+          name: this.search
+        })
+      } catch (e) {
+      } finally {
+        this.loading = false
+      }
+    },
+
+    remove ({ id, name }) {
+      this.$nuxt.$emit('open-prompt', {
+        title: 'Delete patch?',
+        message: `Are you sure you want to delete <b>${name}</b>?`,
+        action: async () => {
+          await this.deletePatch(id)
+          await this.refresh()
+        }
+      })
+    }
+  }
+}
+</script>
