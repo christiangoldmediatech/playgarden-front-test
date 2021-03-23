@@ -17,10 +17,12 @@ export default {
   setToken ({ commit }, token) {
     if (token && token !== 'removed') {
       const auth = jwtDecode(token)
+      /*
       if (process.client && token) {
         this.$cookies.remove('atoken')
         this.$cookies.add({ _key: 'atoken', _data: token, _maxAge: auth.exp })
       }
+      */
 
       commit('SET_ACCESS_TOKEN', token)
       commit('SET_AXIOS_TOKEN', token)
