@@ -1,11 +1,10 @@
-ShippingAddres
 <template>
   <v-container>
     <v-row>
       <v-col cols="12">
         <v-card width="100%">
           <v-card-title>
-            Patches
+            Shipping Address
 
             <v-spacer />
 
@@ -24,13 +23,13 @@ ShippingAddres
                 mdi-plus
               </v-icon>
               <span class="hidden-xs-only white--text">
-                Add new patch
+                Add new address
               </span>
             </v-btn>
           </v-card-title>
 
           <v-card-text>
-            View, create, update, or delete patches.
+            View, create, update, or delete shippingAddress.
           </v-card-text>
         </v-card>
       </v-col>
@@ -44,43 +43,16 @@ ShippingAddres
 
             <pg-admin-data-table
               :headers="headers"
-              :items="patches"
+              :items="shippingAddress"
               :loading="loading"
               :page.sync="page"
+              :no-searchable="false"
               @update:page="page = $event"
               @refresh="refresh(true)"
               @search="onSearch"
               @edit-item="$refs.editor.open(null, $event)"
               @remove-item="remove"
-            >
-              <template v-slot:[`top.prepend`]>
-                <v-col cols="12" md="4">
-                  <pg-select
-                    v-model="filters.activityTypeId"
-                    class="shrink"
-                    clearable
-                    hide-details
-                    :disabled="loading"
-                    :items="types"
-                    item-text="name"
-                    item-value="id"
-                    label="Activity"
-                    solo-labeled
-                    @change="refresh(false)"
-                  />
-                </v-col>
-
-                <v-spacer />
-              </template>
-
-              <template v-slot:[`item.image`]="{ item }">
-                <img v-if="item.image" :src="item.image" width="32px">
-
-                <span v-else>
-                  N/A
-                </span>
-              </template>
-            </pg-admin-data-table>
+            />
           </v-card-text>
         </v-card>
       </v-col>
@@ -89,7 +61,7 @@ ShippingAddres
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 import onSearch from '@/mixins/OnSearchMixin.js'
 import ShippingAddressEditorDialog from './ShippingAddressEditorDialog'
 
@@ -102,49 +74,42 @@ export default {
 
   mixins: [onSearch],
 
-  data: () => ({
+  data: vm => ({
+    parentId: vm.$route.query.id
+      ? parseInt(vm.$route.query.id)
+      : null,
     filters: {
       activityTypeId: null
     },
-    patches: [],
+    shippingAddress: [],
     loading: false,
     search: null,
     page: 1,
     headers: [
       {
-        text: 'Image',
+        text: 'State',
         sortable: true,
-        value: 'image'
+        value: 'state'
       },
       {
-        text: 'Name',
+        text: 'City',
         sortable: true,
-        value: 'name'
+        value: 'city'
       },
       {
-        text: 'Number',
+        text: 'Address 1',
         sortable: true,
-        value: 'number'
+        value: 'address1'
       },
       {
-        text: 'Type',
+        text: 'Address 2',
         sortable: true,
-        value: 'patchType'
+        value: 'address2'
       },
       {
-        text: 'Activity',
+        text: 'Zip Code',
         sortable: true,
-        value: 'activityType.name'
-      },
-      {
-        text: 'Created',
-        sortable: false,
-        value: 'createdAt'
-      },
-      {
-        text: 'Last Updated',
-        sortable: false,
-        value: 'updatedAt'
+        value: 'zipCode'
       },
       {
         align: 'right',
@@ -155,18 +120,15 @@ export default {
     ]
   }),
 
-  computed: {
-    ...mapGetters('admin/activity', ['types'])
-  },
+  computed: {},
 
   created () {
-    this.getTypes({ activity: true })
+    this.refresh()
   },
 
   methods: {
-    ...mapActions('admin/activity', ['getTypes']),
 
-    ...mapActions('patches', ['getPatches', 'deletePatch']),
+    ...mapActions('shipping-address', ['getShippingAddressByUserId']),
 
     async refresh (clear = false) {
       this.loading = true
@@ -176,9 +138,9 @@ export default {
       }
 
       try {
-        this.patches = await this.getPatches({
-          ...this.filters,
-          name: this.search
+        this.shippingAddress = await this.getShippingAddressByUserId({
+          // name: this.search
+          id: this.parentId
         })
       } catch (e) {
       } finally {

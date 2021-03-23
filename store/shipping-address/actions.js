@@ -13,6 +13,10 @@ export default {
     return this.$axios.$get('/shipping-address')
   },
 
+  getShippingAddressByUserId (_, { id }) {
+    return this.$axios.$get(`/shipping-address/${id}`)
+  },
+
   updateShippingAddress (_, { id, data }) {
     const address = { ...data }
 
