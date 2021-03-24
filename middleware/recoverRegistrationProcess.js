@@ -48,7 +48,6 @@ export default function ({ redirect, route, store }) {
     } */
 
     let name = ''
-
     switch (step) {
       case 1:
         name = 'auth-parent'
@@ -66,8 +65,8 @@ export default function ({ redirect, route, store }) {
       name,
       query: {
         process: 'signup',
-        step,
-        _time: new Date().getTime() // <- just in order to avoid infinite loading bar
+        step
+        // _time: new Date().getTime() // <- just in order to avoid infinite loading bar
       }
     })
   }

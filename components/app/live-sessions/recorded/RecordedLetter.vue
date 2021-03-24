@@ -2,7 +2,6 @@
   <v-hover v-slot="{ hover }">
     <v-img
       v-if="letter.picture"
-      :key="index"
       contain
       class="recorded-letter"
       :class="classes(hover)"

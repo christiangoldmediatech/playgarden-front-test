@@ -33,7 +33,7 @@
           {{ selectedImage.word }} is the correct answer!
         </template>
         <template v-else>
-          {{ selectedImage.word }} is not the correct answer!
+          {{ selectedImage.errorMessage }}
         </template>
       </template>
 

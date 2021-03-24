@@ -1,112 +1,92 @@
 import { hasLocalStorage } from '@/utils/window'
+import parentSubscriptionWhitelistedRoutes from '~/utils/consts/parentSubscriptionWhitelistedRoutes.json'
 
 export default async function ({ redirect, route, store, req, app }) {
-  if (/^app-.*$/.test(route.name)) {
-    const whiteList = {
-      'auth-logout': 1,
-      'auth-verify-email': 1,
-      'auth-verify-playdate': 1,
-      'app-pick-child': 1,
-      'app-account-index': 1,
-      'app-children-register': 1,
-      'app-children': 1,
-      'app-payment': 1,
-      'app-onboarding': 1,
-      'app-payment-plan': 1,
-      'app-payment-register': 1
+  const isAppRoute = /^app-.*$/.test(route.name)
+
+  let child = store.getters.getCurrentChild
+  let childExpires = store.getters.getCurrentChildExpires
+
+  const shouldRedirectToPickChild =
+    !parentSubscriptionWhitelistedRoutes[route.name] &&
+    !child &&
+    isAppRoute
+
+  if (!shouldRedirectToPickChild) {
+    return
+  }
+
+  const setChildren = async (storedData) => {
+    try {
+      // if array, then we get everyone, else we get just the child
+      let result
+      if (storedData && storedData.value && storedData.value.length === 1) {
+        result = [await store.dispatch('children/getById', storedData.value[0])]
+      } else {
+        result = await store.dispatch('children/get')
+      }
+
+      if (!result.length) {
+        return
+      }
+
+      await store.dispatch('setChild', {
+        value: result,
+        oldExp: storedData.expires
+      })
+
+      // update local value
+      child = store.getters.getCurrentChild
+      childExpires = store.getters.getCurrentChildExpires
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
+
+  let storedData
+
+  /** SERVER SIDE */
+  if (process.server) {
+    let cookiesText = req.headers.cookie
+    if (!cookiesText) {
+      cookiesText = ''
     }
 
-    if (!whiteList[route.name]) {
-      let child = store.getters.getCurrentChild
-      let childExpires = store.getters.getCurrentChildExpires
-      const currentMoment = new Date().getTime()
+    const cookie = app.$cookies.getAll(cookiesText)
+      .find(record => record.name === 'selectedChild')
 
-      // try loading from cookie
-      if (!child && process.server) {
-        let cookiesText = ''
-        if (req && req.headers && req.headers.cookie) {
-          cookiesText = req.headers.cookie
-        }
-        const cookies = app.$cookies.getAll(cookiesText)
-        for (let index = 0; index < cookies.length; index++) {
-          const cookie = cookies[index]
-          if (cookie.name === 'selectedChild') {
-            const storedData = JSON.parse(decodeURIComponent(cookie.value))
-            let result
-            // If array, then we get everyone, else we get just the child
-            if (
-              Array.isArray(storedData.value) &&
-              storedData.value.length &&
-              storedData.value.length === 1
-            ) {
-              result = [
-                await store.dispatch('children/getById', storedData.value[0])
-              ]
-            } else {
-              result = await store.dispatch('children/get')
-            }
+    if (cookie) {
+      storedData = JSON.parse(decodeURIComponent(cookie.value))
 
-            if (result.length) {
-              await store.dispatch('setChild', {
-                value: result,
-                oldExp: storedData.expires
-              })
+      await setChildren(storedData)
+    }
+  }
 
-              // Update local value
-              child = store.getters.getCurrentChild
-              childExpires = store.getters.getCurrentChildExpires
-            }
-          }
-        }
+  const now = new Date().getTime()
+
+  /** CLIENT SIDE */
+  if (process.client && hasLocalStorage()) {
+    let storedData = window.localStorage.getItem('selectedChild')
+
+    if (storedData) {
+      storedData = JSON.parse(storedData)
+
+      if (now < storedData.expires) {
+        await setChildren(storedData)
       }
-      // Load child if stored and not expired
-      if (!child && process.client && hasLocalStorage()) {
-        let storedData = window.localStorage.getItem('selectedChild')
+    }
+  }
 
-        if (storedData) {
-          storedData = JSON.parse(storedData)
-
-          if (currentMoment < storedData.expires) {
-            try {
-              let result
-              // If array, then we get everyone, else we get just the child
-              if (
-                Array.isArray(storedData.value) &&
-                storedData.value.length &&
-                storedData.value.length === 1
-              ) {
-                result = [
-                  await store.dispatch('children/getById', storedData.value[0])
-                ]
-              } else {
-                result = await store.dispatch('children/get')
-              }
-
-              if (result.length) {
-                store.dispatch('setChild', {
-                  value: result,
-                  oldExp: storedData.expires
-                })
-
-                // Update local value
-                child = store.getters.getCurrentChild
-                childExpires = store.getters.getCurrentChildExpires
-              }
-            } catch (error) {
-              return Promise.reject(error)
-            }
-          }
-        }
-      }
-
-      // If no child is selected
-      if (!child || !childExpires || currentMoment >= childExpires) {
-        return redirect(
-          `/app/pick-child?_time=${currentMoment}&redirect=${encodeURIComponent(
-            route.fullPath
-          )}`
+  // if no child is selected in server or client
+  if (!child || !childExpires || now >= childExpires) {
+    return redirect({
+      name: 'app-pick-child',
+      query: {
+        _time: now,
+        redirect: encodeURIComponent(
+          route.fullPath
         )
       }
-    }
+    })
   }
 }
