@@ -176,7 +176,7 @@ export default {
           align: 'right',
           sortable: false,
           value: 'actions',
-          width: 150
+          width: 100
         }
       ]
     }
