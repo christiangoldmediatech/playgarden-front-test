@@ -27,116 +27,65 @@
             <v-form ref="activityTypeForm" @submit.prevent="passes(save)">
               <validation-provider
                 v-slot="{ errors }"
-                name="Activity"
-                rules="required"
-              >
-                <pg-select
-                  v-model="item.activityTypeId"
-                  clearable
-                  :disabled="loading"
-                  :error-messages="errors"
-                  :items="types"
-                  item-text="name"
-                  item-value="id"
-                  label="Activity"
-                  solo-labeled
-                />
-              </validation-provider>
-
-              <validation-provider
-                v-slot="{ errors }"
-                name="Name"
+                name="Adreess 1"
                 rules="required"
               >
                 <pg-text-field
-                  v-model="item.name"
+                  v-model="item.address1"
                   :error-messages="errors"
-                  label="Name"
+                  label="Adreess 1"
                   solo-labeled
                 />
               </validation-provider>
 
               <validation-provider
                 v-slot="{ errors }"
-                name="Description"
-                rules="required"
-              >
-                <pg-textarea
-                  v-model="item.description"
-                  :error-messages="errors"
-                  label="Description"
-                  solo-labeled
-                />
-              </validation-provider>
-
-              <validation-provider
-                v-slot="{ errors }"
-                name="Number"
-                rules="required|integer|min_value:1"
+                name="Adreess 2"
               >
                 <pg-text-field
-                  v-model="item.number"
+                  v-model="item.address2"
                   :error-messages="errors"
-                  label="Number"
-                  min="1"
-                  type="number"
+                  label="Adreess 2"
                   solo-labeled
                 />
               </validation-provider>
 
-              <validation-provider name="Matching type" rules="required">
-                <v-row class="mb-6">
-                  <v-col
-                    v-for="(type, indexPT) in patchTypes"
-                    :key="indexPT"
-                    cols="6"
-                  >
-                    <v-btn
-                      block
-                      :color="
-                        item.patchType === type.value
-                          ? 'primary'
-                          : 'grey lighten-5'
-                      "
-                      :disabled="loading"
-                      @click="item.patchType = type.value"
-                    >
-                      {{ type.label }}
-                    </v-btn>
-                  </v-col>
-                </v-row>
-
-                <input v-model="item.patchType" type="hidden">
+              <validation-provider
+                v-slot="{ errors }"
+                name="State"
+                rules="required"
+              >
+                <pg-text-field
+                  v-model="item.state"
+                  :error-messages="errors"
+                  label="State"
+                  solo-labeled
+                />
               </validation-provider>
-
-              <p class="mb-5 subtitle-2">
-                Image:
-              </p>
-
-              <v-row v-if="item.image" class="mb-5" justify="center">
-                <v-col cols="5" sm="3">
-                  <v-img contain :src="item.image" />
-                </v-col>
-              </v-row>
 
               <validation-provider
                 v-slot="{ errors }"
-                name="Image"
-                rules="size:10000"
+                name="City"
+                rules="required"
               >
-                <file-uploader
-                  ref="fileUploader"
-                  v-model="file"
+                <pg-text-field
+                  v-model="item.city"
                   :error-messages="errors"
-                  label="Upload Image"
-                  mode="image"
-                  path="patch"
-                  placeholder="Select an image for this patch"
-                  prepend-icon="mdi-camera"
+                  label="City"
                   solo-labeled
-                  jpg
-                  png
-                  svg
+                />
+              </validation-provider>
+
+              <validation-provider
+                v-slot="{ errors }"
+                name="Zip Code"
+                rules="required"
+              >
+                <pg-text-field
+                  v-model="item.zipCode"
+                  :error-messages="errors"
+                  label="Zip Code"
+                  solo-labeled
                 />
               </validation-provider>
             </v-form>
@@ -175,44 +124,42 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 
 function generateItemTemplate () {
   return {
-    activityTypeId: null,
-    name: null,
-    number: null,
-    patchType: null,
-    description: null,
-    image: null
+    userId: null,
+    address1: null,
+    address2: null,
+    city: null,
+    state: null,
+    zipCode: null,
+    countryId: null
   }
 }
 
 export default {
   name: 'ShippingAddressEditorDialog',
 
-  data: () => ({
-    file: null,
+  data: vm => ({
+    userId: vm.$route.query.id
+      ? parseInt(vm.$route.query.id)
+      : null,
     dialog: false,
     loading: false,
+    shippingAddress: null,
     id: null,
-    item: generateItemTemplate(),
-    patchTypes: [
-      { label: 'ONLINE', value: 'ONLINE' },
-      { label: 'OFFLINE', value: 'OFFLINE' }
-    ]
+    item: generateItemTemplate()
   }),
 
   computed: {
-    ...mapGetters('admin/activity', ['types']),
-
     title () {
-      return this.id === null ? 'New Patch' : 'Edit Patch'
+      return this.id === null ? 'New Shipping Address' : 'Edit Shipping Address'
     }
   },
 
   methods: {
-    ...mapActions('patches', ['createPatch', 'updatePatch']),
+    ...mapActions('shipping-address', ['createShippingAddressByAdministrator', 'updateShippingAddressByAdministrator', 'getShippingAddressByUserId']),
 
     close () {
       this.$nextTick(() => {
@@ -224,19 +171,14 @@ export default {
 
     async save () {
       this.loading = true
+      this.item.userId = this.userId
       try {
-        if (this.file) {
-          this.item.image = await this.$refs.fileUploader.handleUpload()
-        }
-
         if (this.id === null) {
-          await this.createPatch(this.item)
+          await this.createShippingAddressByAdministrator(this.item)
         } else {
-          await this.updatePatch({ id: this.id, data: this.item })
+          await this.updateShippingAddressByAdministrator({ id: this.id, data: this.item })
         }
-
         this.$emit('saved')
-
         this.close()
       } catch (err) {
       } finally {
@@ -247,12 +189,10 @@ export default {
     resetItem () {
       this.id = null
       this.item = generateItemTemplate()
-      this.file = null
     },
 
     loadItem (item) {
       this.id = item.id
-
       // Handle keys
       Object.keys(item).forEach((key) => {
         if (Object.prototype.hasOwnProperty.call(this.item, key)) {
@@ -260,16 +200,24 @@ export default {
         }
       })
 
-      if (item.activityType) {
-        this.item.activityTypeId = item.activityType.id
+      if (this.userId) {
+        this.item.userId = this.userId
+      }
+
+      if (item.country) {
+        this.item.countryId = item.country.id
       }
     },
 
-    open (evt, item = null) {
+    async open (evt, item = null) {
+      this.userId = item
+      this.shippingAddress = await this.getShippingAddressByUserId({
+        id: item
+      })
       this.resetItem()
 
-      if (item) {
-        this.loadItem(item)
+      if (this.shippingAddress) {
+        this.loadItem(this.shippingAddress)
       }
 
       this.$nextTick(() => {

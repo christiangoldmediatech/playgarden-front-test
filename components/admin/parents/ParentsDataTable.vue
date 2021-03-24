@@ -86,12 +86,6 @@
 
               <template v-slot:[`item.actions.prepend`]="{ item }">
                 <img class="clickable profile-icon" width="20px;" height="20px;" src="@/assets/svg/eye.svg" @click="goToProfile(item.id)">
-
-                <v-btn icon @click="goToShippingAddress(item.id)">
-                  <v-icon color="accent" dense>
-                    mdi-map-marker-circle
-                  </v-icon>
-                </v-btn>
               </template>
             </pg-admin-data-table>
           </v-card-text>
@@ -233,10 +227,6 @@ export default {
 
     goToProfile (id) {
       this.$router.push({ name: 'admin-user-manager-profile', query: { id } })
-    },
-
-    goToShippingAddress (id) {
-      this.$router.push({ name: 'admin-shipping-address', query: { id } })
     },
 
     remove ({ id, firstName, lastName, email }) {

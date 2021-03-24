@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <shipping-address-editor-dialog ref="shippingAddress" @saved="refresh(false)" />
     <v-row>
       <v-col cols="12">
         <v-card width="100%">
@@ -8,8 +9,15 @@
 
             <v-spacer />
 
+            <v-btn color="primary darken-1" nuxt small @click="$refs.shippingAddress.open($event, id)">
+              <v-icon dense>
+                mdi-map-marker-circle {{ user }}
+              </v-icon>
+              Shipping Address
+            </v-btn>
+
             <v-btn
-              class="text-none"
+              class="text-none ml-3"
               color="accent darken-1"
               depressed
               nuxt
@@ -106,7 +114,7 @@
                     </validation-provider>
                   </v-col>
 
-                  <v-col v-if="!id" cols="12" md="6">
+                  <v-col cols="12" md="6">
                     <validation-provider
                       v-slot="{ errors }"
                       name="Password"
@@ -118,6 +126,22 @@
                         :error-messages="errors"
                         hint="At least 8 characters"
                         label="Password"
+                        solo-labeled
+                      />
+                    </validation-provider>
+                  </v-col>
+
+                  <v-col cols="12" md="6">
+                    <validation-provider
+                      v-slot="{ errors }"
+                      name="Plan"
+                      rules="required"
+                    >
+                      <pg-select
+                        v-model="user.planId"
+                        :error-messages="errors"
+                        :items="getPlans"
+                        label="Plan"
                         solo-labeled
                       />
                     </validation-provider>
@@ -179,22 +203,6 @@
                             :error-messages="errors"
                             :items="sentOptions"
                             label="Backpack"
-                            solo-labeled
-                          />
-                        </validation-provider>
-                      </v-col>
-
-                      <v-col cols="12" md="6">
-                        <validation-provider
-                          v-slot="{ errors }"
-                          name="Plan"
-                          rules="required"
-                        >
-                          <pg-select
-                            v-model="user.planId"
-                            :error-messages="errors"
-                            :items="getPlans"
-                            label="Plan"
                             solo-labeled
                           />
                         </validation-provider>
@@ -262,11 +270,16 @@ import { mapActions, mapGetters } from 'vuex'
 import dayjs from 'dayjs'
 
 import { jsonCopy } from '@/utils/objectTools.js'
+import ShippingAddressEditorDialog from '~/components/admin/shipping-address/ShippingAddressEditorDialog.vue'
 
 export default {
   name: 'Editor',
 
   layout: 'admin',
+
+  components: {
+    ShippingAddressEditorDialog
+  },
 
   data () {
     return {

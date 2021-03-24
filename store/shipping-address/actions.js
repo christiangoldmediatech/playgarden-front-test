@@ -9,6 +9,16 @@ export default {
     return this.$axios.$post('/shipping-address', address)
   },
 
+  createShippingAddressByAdministrator (_, data) {
+    const address = { ...data }
+
+    if (!address.address2) {
+      delete address.address2
+    }
+
+    return this.$axios.$post(`/shipping-address/user/${data.userId}`, address)
+  },
+
   getShippingAddress () {
     return this.$axios.$get('/shipping-address')
   },
@@ -25,5 +35,15 @@ export default {
     }
 
     return this.$axios.$patch(`/shipping-address/${id}`, address)
+  },
+
+  updateShippingAddressByAdministrator (_, { id, data }) {
+    const address = { ...data }
+
+    return this.$axios.$patch(`/shipping-address/${id}/user/${data.userId}`, address)
+  },
+
+  deleteShippingAddress (_, id) {
+    return this.$axios.$delete(`/shipping-address/${id}`)
   }
 }
