@@ -48,7 +48,7 @@ export default {
         if (daysPastSinceCreation >= 2) {
           commit('notifications/SET_NOTIFICATION_CARD', {
             title: 'WE WANT TO SEND YOU A WELCOME KIT!',
-            description: 'We require a shipping address in order to send the Welcome Kit with Backpack, workbooks, and additional materials.',
+            description: 'We require a shipping address in order to send the Welcome Kit with our first Workbook.',
             action: () => commit('notifications/SET_IS_SHIPPING_MODAL_VISIBLE', true, { root: true }),
             image: require('@/assets/png/megaphone.png')
           }, { root: true })

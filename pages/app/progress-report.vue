@@ -68,8 +68,9 @@
       <v-col cols="12" md="10" lg="10" class="pt-7">
         <v-card-text>
           <v-row v-if="!$vuetify.breakpoint.xs" no-gutters>
-            <v-col class="mt-10">
-              <underlined-title class="text-h6 text-md-h4" text="Student Progress Report" />
+            <v-col class="mt-10" cols="10">
+              <underlined-title class="text-h6 text-md-h4" text="Student Progress Report" /><br>
+              <span>Playgarden Prep Online Lessons have been developed to support one or more of the core areas of development. After watching a video, doing the worksheet together with an adult, or actively participating in a Live Class, parents will be helping in the development of their child in each of the specific areas.</span>
             </v-col>
 
             <v-col cols="2" class="text-center text-sm-right pt-7">
