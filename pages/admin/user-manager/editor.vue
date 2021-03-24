@@ -9,11 +9,25 @@
 
             <v-spacer />
 
-            <v-btn color="primary darken-1" nuxt small @click="$refs.shippingAddress.open($event, id)">
+            <v-btn v-if="user.roleId === 3" color="primary darken-1" nuxt small @click="$refs.shippingAddress.open($event, id)">
               <v-icon dense>
                 mdi-map-marker-circle {{ user }}
               </v-icon>
               Shipping Address
+            </v-btn>
+
+            <v-btn
+              v-if="id"
+              class="ml-3"
+              color="darken-1"
+              nuxt
+              small
+              @click="changePassword = !changePassword"
+            >
+              <v-icon dense>
+                mdi-map-marker-circle {{ user }}
+              </v-icon>
+              {{ getTitlleChange }}
             </v-btn>
 
             <v-btn
@@ -114,7 +128,7 @@
                     </validation-provider>
                   </v-col>
 
-                  <v-col cols="12" md="6">
+                  <v-col v-if="changePassword" cols="12" md="6">
                     <validation-provider
                       v-slot="{ errors }"
                       name="Password"
@@ -131,7 +145,7 @@
                     </validation-provider>
                   </v-col>
 
-                  <v-col cols="12" md="6">
+                  <v-col v-if="user.roleId === 3" cols="12" md="6">
                     <validation-provider
                       v-slot="{ errors }"
                       name="Plan"
@@ -286,6 +300,7 @@ export default {
       loading: false,
       workbookSentDate: false,
       backpackSentDate: false,
+      changePassword: false,
       workbookDate: null,
       backpackDate: null,
       plans: [],
@@ -317,6 +332,10 @@ export default {
     ...mapGetters('admin/roles', {
       roleRows: 'rows'
     }),
+
+    getTitlleChange () {
+      return (this.changePassword) ? 'NO CHANGE PASSWORD' : 'CHANGE PASSWORD'
+    },
 
     id () {
       return this.$route.query.id ? parseInt(this.$route.query.id) : null
@@ -350,6 +369,14 @@ export default {
       return this.backpackDate
         ? dayjs(this.backpackDate).format('MM/DD/YYYY')
         : null
+    }
+  },
+
+  watch: {
+    changePassword (val) {
+      if (!val) {
+        this.user.password = undefined
+      }
     }
   },
 
@@ -419,7 +446,6 @@ export default {
           if (this.user.backpackSent) {
             user.backpackSentDate = dayjs(this.backpackDate).toISOString()
           }
-          user.password = undefined
           await this.updateUser({ id: this.id, data: user })
         }
         this.$router.push({ name: 'admin-user-manager' })
