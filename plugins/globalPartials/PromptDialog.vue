@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" max-width="500px" persistent scrollable>
+  <pg-dialog v-model="dialog" max-width="500px" persistent scrollable>
     <v-card>
       <div class="green-line green-line-1" />
       <div class="green-line green-line-2" />
@@ -91,7 +91,7 @@
       <div class="green-line green-line-2" />
       <div class="green-line green-line-1" />
     </v-card>
-  </v-dialog>
+  </pg-dialog>
 </template>
 
 <script>

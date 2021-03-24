@@ -95,7 +95,7 @@
       </v-row>
     </v-card-text>
 
-    <v-dialog content-class="elevation-0" :value="dialog" persistent>
+    <pg-dialog content-class="elevation-0" :value="dialog" persistent>
       <v-container class="justify-center fill-height" fluid>
         <v-col class="px-3 px-lg-0" sm="12" lg="8" xl="10">
           <v-img max-height="80vh" :src="toShow.src">
@@ -140,7 +140,7 @@
           </v-img>
         </v-col>
       </v-container>
-    </v-dialog>
+    </pg-dialog>
   </v-card>
 </template>
 

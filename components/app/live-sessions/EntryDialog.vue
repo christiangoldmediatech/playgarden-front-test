@@ -1,5 +1,5 @@
 <template>
-  <v-overlay v-model="dialog" class="entry-overlay" :dark="false" light>
+  <v-overlay v-model="dialog" class="entry-overlay" :dark="false" light z-index="2000">
     <div class="entry-container">
       <v-card class="entry-card">
         <template v-if="entry">
