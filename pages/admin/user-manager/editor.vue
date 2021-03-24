@@ -8,8 +8,7 @@
             {{ title }}
 
             <v-spacer />
-
-            <v-btn v-if="user.roleId === 3" color="primary darken-1" nuxt small @click="$refs.shippingAddress.open($event, id)">
+            <v-btn v-if="(user.roleId === 3 && id)" color="primary darken-1" nuxt small @click="$refs.shippingAddress.open($event, id)">
               <v-icon dense>
                 mdi-map-marker-circle {{ user }}
               </v-icon>
@@ -128,7 +127,7 @@
                     </validation-provider>
                   </v-col>
 
-                  <v-col v-if="changePassword" cols="12" md="6">
+                  <v-col v-if="changePassword || !id" cols="12" md="6">
                     <validation-provider
                       v-slot="{ errors }"
                       name="Password"
