@@ -35,13 +35,6 @@
 
             <v-spacer />
 
-            <v-btn class="ml-3" color="primary darken-1" @click="changePlanModal = true" nuxt small>
-              <v-icon dense>
-                mdi-receipt
-              </v-icon>
-              Change plan
-            </v-btn>
-
             <v-btn
               class="ml-3 text-none"
               color="accent darken-1"
@@ -109,17 +102,33 @@
               </v-col>
 
               <v-col v-if="billing.stripeStatus !== 'canceled'" class="mt-5">
-                <v-row
-                  justify="center"
-                  justify-md="end"
-                  class="user-edit pr-md-5"
-                  no-gutters
-                >
-                  <div class="text-center">
-                    <v-btn color="#FF0000" dark @click="remove">
-                      Cancel Membership
-                    </v-btn>
-                  </div>
+                <v-row>
+                  <v-col>
+                    <v-row>
+                      <v-col>
+                        <v-btn class="mt-n6" color="primary darken-1" @click="changePlanModal = true" nuxt>
+                          <v-icon dense>
+                            mdi-receipt
+                          </v-icon>
+                          Change plan
+                        </v-btn>
+                      </v-col>
+                    </v-row>
+                  </v-col>
+                  <v-col>
+                    <v-row
+                      justify="center"
+                      justify-md="end"
+                      class="user-edit pr-md-5"
+                      no-gutters
+                    >
+                      <div class="text-center">
+                        <v-btn color="#FF0000" dark @click="remove">
+                          Cancel Membership
+                        </v-btn>
+                      </div>
+                    </v-row>
+                  </v-col>
                 </v-row>
               </v-col>
             </v-col>
