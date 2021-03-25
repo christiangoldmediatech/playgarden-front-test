@@ -19,6 +19,7 @@
           <subscription-plan-selection
             v-if="changePlanModal"
             :administrator="true"
+            :user-load-plan="user.id"
             no-address
             no-payment
             updating
