@@ -1,6 +1,7 @@
 <template>
   <error-page
-    :title="title"
+    pre-text="OOPS!"
+    :text="text"
     :description="description"
     :img="img"
   />
@@ -24,7 +25,7 @@ export default {
   data () {
     return {
       sadBoySpiral: require('@/assets/png/sad-boy-spiral.png'),
-      title: '',
+      text: '',
       description: '',
       img: ''
     }
@@ -40,12 +41,12 @@ export default {
 
       switch (statusCode) {
         case 404:
-          this.title = 'PAGE NOT FOUND'
+          this.text = 'PAGE NOT FOUND'
           this.description = 'The page you request could not be found!'
           this.img = this.sadBoySpiral
           break
         default:
-          this.title = 'UNKNOWN ERROR'
+          this.text = 'UNKNOWN ERROR'
           this.description = 'An unknown error ocurred.'
           this.img = this.sadBoySpiral
       }

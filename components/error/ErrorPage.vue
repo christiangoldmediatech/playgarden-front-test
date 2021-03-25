@@ -12,8 +12,16 @@
           <img src="@/assets/png/error-window.png" height="50px" class="mb-2 pr-3">
           <img src="@/assets/svg/logo.svg" height="50px">
         </div>
+        <div v-if="preText">
+          <underlined-title
+            :text="preText"
+            font-size="48px"
+            font-size-mobile="32px"
+            letter-spacing="10px"
+          />
+        </div>
         <underlined-title
-          :text="title"
+          :text="text"
           font-size="48px"
           font-size-mobile="32px"
           letter-spacing="10px"
@@ -59,7 +67,11 @@ export default {
   name: 'ErrorPage',
 
   props: {
-    title: {
+    preText: {
+      type: String,
+      default: ''
+    },
+    text: {
       type: String,
       default: ''
     },
