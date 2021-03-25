@@ -369,6 +369,8 @@ export default {
 
     noPayment: Boolean,
 
+    administrator: Boolean,
+
     updating: Boolean
   },
 
@@ -475,7 +477,17 @@ export default {
       } catch (e) {}
     },
 
-    async onSubmit () {
+    onSubmit () {
+      if (this.administrator) {
+        this.$emit('click:administrator', {
+          planSelected: this.getSubmittableData()
+        })
+      } else {
+        this.dataSubmitDialog()
+      }
+    },
+
+    async dataSubmitDialog () {
       this.loading = true
 
       try {

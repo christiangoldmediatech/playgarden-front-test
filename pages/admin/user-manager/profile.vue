@@ -1,6 +1,32 @@
 <template>
   <v-container>
     <v-row>
+      <!-- Change Plan modal -->
+      <v-dialog
+        v-model="changePlanModal"
+        content-class="white"
+        :fullscreen="isMobile"
+        max-width="80%"
+        persistent
+      >
+        <v-col cols="12">
+          <v-row class="pr-3" justify="end">
+            <v-btn icon @click.stop="closeChangePlanModal">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </v-row>
+
+          <subscription-plan-selection
+            v-if="changePlanModal"
+            :administrator="true"
+            no-address
+            no-payment
+            updating
+            @click:cancel="closeChangePlanModal"
+            @click:administrator="onSuccessChangePlan"
+          />
+        </v-col>
+      </v-dialog>
       <v-col cols="12">
         <v-card width="100%" class="mb-5">
           <v-card-title>
@@ -8,8 +34,15 @@
 
             <v-spacer />
 
+            <v-btn class="ml-3" color="primary darken-1" @click="changePlanModal = true" nuxt small>
+              <v-icon dense>
+                mdi-receipt
+              </v-icon>
+              Change plan
+            </v-btn>
+
             <v-btn
-              class="text-none"
+              class="ml-3 text-none"
               color="accent darken-1"
               depressed
               nuxt
@@ -436,6 +469,7 @@
 
 <script>
 import { mapActions } from 'vuex'
+import SubscriptionPlanSelection from '@/components/app/payment/SubscriptionPlanSelection'
 import UserChildLessonOverlay from '@/components/admin/users/UserChildLessonOverlay.vue'
 import UserChildTimelineDialog from '@/components/admin/users/UserChildTimelineDialog.vue'
 import { formatDate } from '~/utils/dateTools'
@@ -448,6 +482,7 @@ export default {
   layout: 'admin',
 
   components: {
+    SubscriptionPlanSelection,
     UserChildTimelineDialog,
     UserChildLessonOverlay
   },
@@ -455,6 +490,7 @@ export default {
   data: () => ({
     exporting: false,
     dialog: false,
+    changePlanModal: false,
     user: null,
     children: [],
     childrenStatus: []
@@ -463,6 +499,10 @@ export default {
   computed: {
     id () {
       return this.$route.query.id
+    },
+
+    isMobile () {
+      return this.$vuetify.breakpoint.mobile
     },
 
     joined () {
@@ -588,9 +628,31 @@ export default {
   },
 
   methods: {
-    ...mapActions('admin/users', ['getById', 'getChildren']),
+    ...mapActions('admin/users', ['getById', 'getChildren', 'updateUserPlanByAdmin']),
     ...mapActions('payment', ['cancelSubscriptionById']),
     ...mapActions('children/lesson', ['getLessonChildrenStatus']),
+
+    closeChangePlanModal () {
+      this.changePlanModal = false
+      /* if (this.$route.params.planRedirect) {
+        this.$router.push({ name: this.$route.params.planRedirect })
+      } */
+    },
+
+    async onSuccessChangePlan (val) {
+      try {
+        const plan = {
+          planId: val.planSelected.id,
+          invoiceType: val.planSelected.type,
+          userId: this.user.id
+        }
+        await this.updateUserPlanByAdmin(plan)
+      } catch (e) {
+      } finally {
+        await this.getUserDetails()
+        this.closeChangePlanModal()
+      }
+    },
 
     dateWorkbook () {
       return formatDate(this.user.shipments.workbookDate, {
