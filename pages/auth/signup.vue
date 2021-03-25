@@ -34,7 +34,11 @@
               {{ signupProcess }} INFORMATION
             </span>
           </p>
-
+          <p v-if="inInvitationProcess" class="my-2 text-center text-md-left">
+            <small>
+              Complete the registration form with your personal information to become a Caregiver!
+            </small>
+          </p>
           <signup-form
             :email-validated="emailValidated"
             :in-invitation-process="inInvitationProcess"
@@ -44,14 +48,14 @@
           />
         </v-col>
 
-        <v-col class="px-12" cols="12" md="4">
+        <v-col v-if="!inInvitationProcess" class="px-12" cols="12" md="4">
           <p class="mt-6 mb-12 text-center text-md-left">
             <small>
               Complete the registration and choose the plan that best suits your family's needs!
             </small>
           </p>
 
-          <template v-if="!inInvitationProcess">
+          <template>
             <p class="text-center text-md-left mt-6">
               <v-row no-gutters>
                 <v-col>
@@ -98,7 +102,7 @@
               </v-row>
             </p>
 
-            <p class="text-center text-md-left mt-10">
+            <p v-if="!inInvitationProcess" class="text-center text-md-left mt-10">
               <small>*You can cancel your membership any time from the account
                 settings.</small>
             </p>
