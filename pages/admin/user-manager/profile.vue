@@ -112,7 +112,7 @@
                   <div>
                     <v-btn class="mt-n2 ml-2" nuxt @click="$refs.userPassword.open($event, user.id)">
                       <v-icon dense>
-                        mdi-receipt
+                        mdi-account-key
                       </v-icon>
                       Password
                     </v-btn>
