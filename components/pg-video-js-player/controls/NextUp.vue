@@ -1,5 +1,8 @@
 <template>
-  <div class="next-up-container">
+  <div
+    class="next-up-container"
+    :style="{ '--bottom-offset': `${(nextPatch) ? 32 : 16}px` }"
+  >
     <v-sheet
       :class="['coming-up-next rounded-l pa-1', { 'shown': params.show }]"
       color="rgba(0, 0, 0, 0.74)"
@@ -33,6 +36,12 @@ export default {
     params: {
       type: Object,
       required: true
+    },
+
+    nextPatch: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   }
 }
@@ -42,7 +51,7 @@ export default {
 .next-up-container {
   position: relative;
   left: 100%;
-  bottom: 32px;
+  bottom: var(--bottom-offset);
 }
 
 .coming-up-next {
