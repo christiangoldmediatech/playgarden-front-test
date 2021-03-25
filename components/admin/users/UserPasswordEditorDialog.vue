@@ -167,12 +167,10 @@ export default {
     },
 
     resetItem () {
-      this.id = null
       this.item = generateItemTemplate()
     },
 
     loadItem (item) {
-      this.id = item.id
       Object.keys(item).forEach((key) => {
         if (Object.prototype.hasOwnProperty.call(this.item, key)) {
           this.item[key] = item[key]
@@ -182,7 +180,6 @@ export default {
 
     open (evt, item = null) {
       this.id = item
-      console.log('this--id--'. this.id)
       this.resetItem()
       this.$nextTick(() => {
         this.dialog = true

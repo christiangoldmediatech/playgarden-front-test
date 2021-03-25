@@ -28,7 +28,7 @@ export default {
   },
 
   async updateUserPasswordByAdmin (ctx, data) {
-    await this.$axios.$patch(`/users/${data.userId}/password`, data)
+    await this.$axios.$patch(`/users/${data.id}/password`, data.data)
   },
 
   async exportParents (ctx) {

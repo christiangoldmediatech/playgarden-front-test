@@ -2,9 +2,9 @@
   <v-container>
     <v-row>
       <!-- Change Plan modal -->
-      <shipping-address-editor-dialog ref="shippingAddress" @saved="refresh(false)" />
+      <shipping-address-editor-dialog ref="shippingAddress" @saved="getUserDetails" />
       <!-- Change Password-->
-      <user-password-editor-dialog ref="userPassword" @saved="refresh(false)" />
+      <user-password-editor-dialog ref="userPassword" />
       <v-dialog
         v-model="changePlanModal"
         content-class="white"
@@ -110,19 +110,19 @@
               <v-row>
                 <v-col>
                   <div>
-                    <v-btn class="mt-n2 ml-2" @click="$refs.userPassword.open($event, user.id)" nuxt>
+                    <v-btn class="mt-n2 ml-2" nuxt @click="$refs.userPassword.open($event, user.id)">
                       <v-icon dense>
                         mdi-receipt
                       </v-icon>
                       Password
                     </v-btn>
-                    <v-btn class="mt-n2 ml-2" color="accent darken-1" @click="changePlanModal = true" nuxt>
+                    <v-btn class="mt-n2 ml-2" color="accent darken-1" nuxt @click="changePlanModal = true">
                       <v-icon dense>
                         mdi-receipt
                       </v-icon>
                       Plan
                     </v-btn>
-                    <v-btn class="mt-n2" color="primary darken-1" nuxt @click="$refs.shippingAddress.open($event, id)">
+                    <v-btn class="mt-n2" color="primary darken-1" nuxt @click="$refs.shippingAddress.open($event, user.id)">
                       <v-icon dense>
                         mdi-map-marker-circle
                       </v-icon>
