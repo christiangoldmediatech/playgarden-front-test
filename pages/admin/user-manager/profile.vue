@@ -2,6 +2,9 @@
   <v-container>
     <v-row>
       <!-- Change Plan modal -->
+      <shipping-address-editor-dialog ref="shippingAddress" @saved="refresh(false)" />
+      <!-- Change Password-->
+      <user-password-editor-dialog ref="userPassword" @saved="refresh(false)" />
       <v-dialog
         v-model="changePlanModal"
         content-class="white"
@@ -100,37 +103,48 @@
                   </span>
                 </v-row>
               </v-col>
-
-              <v-col v-if="billing.stripeStatus !== 'canceled'" class="mt-5">
-                <v-row>
-                  <v-col>
-                    <v-row>
-                      <v-col>
-                        <v-btn class="mt-n6" color="primary darken-1" @click="changePlanModal = true" nuxt>
-                          <v-icon dense>
-                            mdi-receipt
-                          </v-icon>
-                          Change plan
-                        </v-btn>
-                      </v-col>
-                    </v-row>
-                  </v-col>
-                  <v-col>
-                    <v-row
-                      justify="center"
-                      justify-md="end"
-                      class="user-edit pr-md-5"
-                      no-gutters
-                    >
-                      <div class="text-center">
-                        <v-btn color="#FF0000" dark @click="remove">
-                          Cancel Membership
-                        </v-btn>
-                      </div>
-                    </v-row>
-                  </v-col>
-                </v-row>
-              </v-col>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col v-if="billing.stripeStatus !== 'canceled'">
+              <v-row>
+                <v-col>
+                  <div>
+                    <v-btn class="mt-n2 ml-2" @click="$refs.userPassword.open($event, user.id)" nuxt>
+                      <v-icon dense>
+                        mdi-receipt
+                      </v-icon>
+                      Password
+                    </v-btn>
+                    <v-btn class="mt-n2 ml-2" color="accent darken-1" @click="changePlanModal = true" nuxt>
+                      <v-icon dense>
+                        mdi-receipt
+                      </v-icon>
+                      Plan
+                    </v-btn>
+                    <v-btn class="mt-n2" color="primary darken-1" nuxt @click="$refs.shippingAddress.open($event, id)">
+                      <v-icon dense>
+                        mdi-map-marker-circle
+                      </v-icon>
+                      Shipping Address
+                    </v-btn>
+                  </div>
+                </v-col>
+                <v-col>
+                  <v-row
+                    justify="center"
+                    justify-md="end"
+                    class="user-edit pr-md-5"
+                    no-gutters
+                  >
+                    <div class="text-center">
+                      <v-btn color="#FF0000" dark @click="remove">
+                        Cancel Membership
+                      </v-btn>
+                    </div>
+                  </v-row>
+                </v-col>
+              </v-row>
             </v-col>
           </v-row>
 
@@ -480,6 +494,8 @@
 <script>
 import { mapActions } from 'vuex'
 import SubscriptionPlanSelection from '@/components/app/payment/SubscriptionPlanSelection'
+import UserPasswordEditorDialog from '@/components/admin/users/UserPasswordEditorDialog'
+import ShippingAddressEditorDialog from '@/components/admin/shipping-address/ShippingAddressEditorDialog.vue'
 import UserChildLessonOverlay from '@/components/admin/users/UserChildLessonOverlay.vue'
 import UserChildTimelineDialog from '@/components/admin/users/UserChildTimelineDialog.vue'
 import { formatDate } from '~/utils/dateTools'
@@ -493,6 +509,8 @@ export default {
 
   components: {
     SubscriptionPlanSelection,
+    UserPasswordEditorDialog,
+    ShippingAddressEditorDialog,
     UserChildTimelineDialog,
     UserChildLessonOverlay
   },

@@ -1,6 +1,5 @@
 <template>
   <v-container>
-    <shipping-address-editor-dialog ref="shippingAddress" @saved="refresh(false)" />
     <v-row>
       <v-col cols="12">
         <v-card width="100%">
@@ -8,12 +7,6 @@
             {{ title }}
 
             <v-spacer />
-            <v-btn v-if="(user.roleId === 3 && id)" color="primary darken-1" nuxt small @click="$refs.shippingAddress.open($event, id)">
-              <v-icon dense>
-                mdi-map-marker-circle {{ user }}
-              </v-icon>
-              Shipping Address
-            </v-btn>
 
             <v-btn
               v-if="id"
@@ -283,16 +276,11 @@ import { mapActions, mapGetters } from 'vuex'
 import dayjs from 'dayjs'
 
 import { jsonCopy } from '@/utils/objectTools.js'
-import ShippingAddressEditorDialog from '~/components/admin/shipping-address/ShippingAddressEditorDialog.vue'
 
 export default {
   name: 'Editor',
 
   layout: 'admin',
-
-  components: {
-    ShippingAddressEditorDialog
-  },
 
   data () {
     return {

@@ -27,6 +27,10 @@ export default {
     await this.$axios.$patch(`/users/${data.userId}/plan`, data)
   },
 
+  async updateUserPasswordByAdmin (ctx, data) {
+    await this.$axios.$patch(`/users/${data.userId}/password`, data)
+  },
+
   async exportParents (ctx) {
     await this.$axios.get('/billing/export')
   },
