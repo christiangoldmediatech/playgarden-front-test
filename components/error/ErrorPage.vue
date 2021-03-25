@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid :class="{ 'fill-height': !isMobile, 'mt-12 mt-md-0': true }">
+  <v-container fluid :class="containerClasses">
     <v-row align="center" justify="center" no-gutters>
       <v-col
         cols="12"
@@ -53,6 +53,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'ErrorPage',
 
@@ -72,6 +74,24 @@ export default {
   },
 
   computed: {
+    ...mapState(['fullWidthPages']),
+
+    fullWidth () {
+      return this.fullWidthPages[this.$route.name]
+    },
+
+    containerClasses () {
+      /**
+       * Error pages use the 'default' layout by default, meaning that, for error pages thrown inside unknown routes,
+       * they will not span full width, therefore, they will not need any margin to overflow the toolbar.
+       */
+      return {
+        'fill-height': !this.isMobile,
+        'mt-12': this.fullWidth,
+        'my-md-0': true
+      }
+    },
+
     isMobile () {
       return this.$vuetify.breakpoint.mobile
     }
