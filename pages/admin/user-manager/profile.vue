@@ -87,34 +87,24 @@
                   <a :href="`https://dashboard.stripe.com/customers/${billing.customerId}`" target="_blank">View on Stripe</a>
                 </v-chip>
               </v-col>
-
-              <v-col class="mt-n5">
-                <v-row
-                  justify="center"
-                  justify-md="start"
-                  class="user-edit"
-                  no-gutters
-                >
-                  <v-btn class="mr-2" nuxt @click="goToEdit(user.id)">
-                    <v-icon color="accent" dense>
-                      mdi-pencil-outline
-                    </v-icon>
-                    <span class="clickable">
-                      EDIT
-                    </span>
-                  </v-btn>
-                </v-row>
-              </v-col>
             </v-col>
           </v-row>
           <v-row>
             <v-col v-if="billing.stripeStatus !== 'canceled'">
               <v-row>
-                <v-col cols="8">
+                <v-col cols="9">
                   <v-row
-                    class="user-edit pl-md-5"
+                    class="user-edit pl-md-8"
                     no-gutters
                   >
+                    <v-btn class="mr-2" nuxt @click="goToEdit(user.id)">
+                      <v-icon color="accent" dense>
+                        mdi-pencil-outline
+                      </v-icon>
+                      <span class="clickable">
+                        EDIT
+                      </span>
+                    </v-btn>
                     <v-btn class="mr-2" nuxt @click="$refs.userPassword.open($event, user.id)">
                       <v-icon dense>
                         mdi-account-key
@@ -135,7 +125,7 @@
                     </v-btn>
                   </v-row>
                 </v-col>
-                <v-col cols="4">
+                <v-col cols="3">
                   <v-row
                     justify="center"
                     justify-md="end"
