@@ -6,12 +6,12 @@
         :text="`PUZZLE LETTER ${letter}`"
       />
       <v-row no-gutters>
-        <v-col cols="8">
+        <v-col :cols="($vuetify.breakpoint.smAndDown) ? '12' : '8'">
           <p class="mt-2">
             Look at all the pieces you have got!
           </p>
         </v-col>
-        <v-col>
+        <v-col v-if="!$vuetify.breakpoint.smAndDown">
           <div>
             <span class="font-weight-black">
               PROGRESS
@@ -25,7 +25,7 @@
                   :value="puzzle.percentageCompleted"
                 />
               </v-col>
-              <v-col class="mt-n2">
+              <v-col v-if="!$vuetify.breakpoint.smAndDown" class="mt-n2">
                 <span class="ml-2 font-weight-black">
                   {{ puzzle.piecesUnclocked * 4 }}/{{ puzzle.pieces * 4 }}
                 </span>
@@ -39,7 +39,7 @@
       <v-col>
         <puzzle-cover
           v-if="backgroundImage"
-          class="ml-6"
+          :class="(!$vuetify.breakpoint.smAndDown) ? 'ml-6' : ''"
           :background-image="backgroundImage"
           :columns="columns"
           :rows="rows"
@@ -47,7 +47,7 @@
           :student-id="studentId"
         />
       </v-col>
-      <v-col class="mt-12" cols="2">
+      <v-col v-if="!$vuetify.breakpoint.smAndDown" class="mt-12" cols="2">
         <v-row justify="end" no-gutters>
           <pg-social-buttons
             class="mr-3"
@@ -58,6 +58,26 @@
             :url="puzzle.src"
           />
         </v-row>
+      </v-col>
+      <v-col v-if="$vuetify.breakpoint.smAndDown" cols="12">
+        <div class="mx-3">
+          <center>
+            <span class="font-weight-black">
+              PROGRESS
+            </span>
+            <v-row justify="center" no-gutters>
+              <span class="ml-2 font-weight-black">
+                {{ puzzle.piecesUnclocked * 4 }}/{{ puzzle.pieces * 4 }}
+              </span>
+              <v-progress-linear
+                class="white"
+                color="accent"
+                height="10"
+                :value="puzzle.percentageCompleted"
+              />
+            </v-row>
+          </center>
+        </div>
       </v-col>
     </v-row>
   </v-card>
