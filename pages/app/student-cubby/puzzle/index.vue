@@ -104,45 +104,45 @@
             </v-btn>
           </v-row>
           <pieces :puzzle="toShow" />
+          <!-- <v-row class="fill-height" no-gutters>
+            <v-col cols="12">
+              <v-row justify="end" no-gutters>
+                <v-btn
+                  class="bg-black mb-3 mt-3 mr-5"
+                  color="white"
+                  icon
+                  @click.stop="dialog = false"
+                >
+                  <v-icon>
+                    mdi-close
+                  </v-icon>
+                </v-btn>
+              </v-row>
+
+              <v-row justify="end" no-gutters>
+                <pg-social-buttons
+                  v-if="dialog"
+                  class="mr-3"
+                  entity-auto-resolve
+                  :entity-id="toShow.puzzleChildrenId"
+                  entity-type="PUZZLE"
+                  mini-variant
+                  :url="toShow.src"
+                />
+              </v-row>
+            </v-col>
+
+            <v-col align-self="end" cols="12">
+              <v-row no-gutters>
+                <span
+                  class="accent--text-fl bg-black font-weight-bold mb-3 mx-3 pa-3 rounded-pill text-h6 text-sm-h3 text-truncate white--text"
+                >
+                  {{ toShow.name }}
+                </span>
+              </v-row>
+            </v-col>
+          </v-row> -->
           <!-- <v-img max-height="80vh" :src="toShow.src">
-            <v-row class="fill-height" no-gutters>
-              <v-col cols="12">
-                <v-row justify="end" no-gutters>
-                  <v-btn
-                    class="bg-black mb-3 mt-3 mr-5"
-                    color="white"
-                    icon
-                    @click.stop="dialog = false"
-                  >
-                    <v-icon>
-                      mdi-close
-                    </v-icon>
-                  </v-btn>
-                </v-row>
-
-                <v-row justify="end" no-gutters>
-                  <pg-social-buttons
-                    v-if="dialog"
-                    class="mr-3"
-                    entity-auto-resolve
-                    :entity-id="toShow.puzzleChildrenId"
-                    entity-type="PUZZLE"
-                    mini-variant
-                    :url="toShow.src"
-                  />
-                </v-row>
-              </v-col>
-
-              <v-col align-self="end" cols="12">
-                <v-row no-gutters>
-                  <span
-                    class="accent--text-fl bg-black font-weight-bold mb-3 mx-3 pa-3 rounded-pill text-h6 text-sm-h3 text-truncate white--text"
-                  >
-                    {{ toShow.name }}
-                  </span>
-                </v-row>
-              </v-col>
-            </v-row>
           </v-img> -->
         </v-col>
       </v-container>

@@ -34,20 +34,32 @@
           </div>
         </v-col>
       </v-row>
-
-      <v-row justify="center">
-        <v-col>
-          <puzzle-cover
-            v-if="backgroundImage"
-            :background-image="backgroundImage"
-            :columns="columns"
-            :rows="rows"
-            :uncover="uncover"
-            :student-id="studentId"
-          />
-        </v-col>
-      </v-row>
     </v-card-text>
+    <v-row justify="center">
+      <v-col>
+        <puzzle-cover
+          v-if="backgroundImage"
+          class="ml-6"
+          :background-image="backgroundImage"
+          :columns="columns"
+          :rows="rows"
+          :uncover="uncover"
+          :student-id="studentId"
+        />
+      </v-col>
+      <v-col class="mt-12" cols="2">
+        <v-row justify="end" no-gutters>
+          <pg-social-buttons
+            class="mr-3"
+            entity-auto-resolve
+            :entity-id="puzzle.puzzleChildrenId"
+            entity-type="PUZZLE"
+            mini-variant
+            :url="puzzle.src"
+          />
+        </v-row>
+      </v-col>
+    </v-row>
   </v-card>
 </template>
 
@@ -74,6 +86,7 @@ export default {
   data: () => ({
     backgroundImage: null,
     columns: 5,
+    dialog: false,
     rows: 1,
     uncover: 0,
     letter: ''
