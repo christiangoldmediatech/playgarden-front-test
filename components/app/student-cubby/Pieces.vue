@@ -62,7 +62,7 @@
       <v-col v-if="$vuetify.breakpoint.smAndDown" cols="12">
         <div class="mx-3">
           <center>
-            <span class="font-weight-black">
+            <span class="text-progress">
               PROGRESS
             </span>
             <v-row justify="center" no-gutters>
@@ -148,3 +148,15 @@ export default {
   }
 }
 </script>
+
+<style>
+.text-progress {
+  font-family: Poppins !important;
+  font-style: normal !important;
+  font-weight: bold !important;
+  font-size: 20px !important;
+  line-height: 30px !important;
+  letter-spacing: 6px !important;
+  text-transform: uppercase !important;
+}
+</style>
