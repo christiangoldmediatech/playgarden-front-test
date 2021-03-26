@@ -8,12 +8,14 @@
       <v-row no-gutters>
         <v-col :cols="($vuetify.breakpoint.smAndDown) ? '12' : '8'">
           <p class="mt-2">
-            Look at all the pieces you have got!
+            <span :class="($vuetify.breakpoint.smAndDown) ? 'text-pieces' : ''">
+              Look at all the pieces you have got!
+            </span>
           </p>
         </v-col>
         <v-col v-if="!$vuetify.breakpoint.smAndDown">
           <div>
-            <span class="font-weight-black">
+            <span class="font-weight-black text-progress">
               PROGRESS
             </span>
             <v-row no-gutters>
@@ -26,7 +28,7 @@
                 />
               </v-col>
               <v-col v-if="!$vuetify.breakpoint.smAndDown" class="mt-n2">
-                <span class="ml-2 font-weight-black">
+                <span class="ml-2 font-weight-black text-progress-puzzle ">
                   {{ puzzle.piecesUnclocked * 4 }}/{{ puzzle.pieces * 4 }}
                 </span>
               </v-col>
@@ -66,7 +68,7 @@
               PROGRESS
             </span>
             <v-row justify="center" no-gutters>
-              <span class="ml-2 font-weight-black">
+              <span class="ml-2 text-pieces">
                 {{ puzzle.piecesUnclocked * 4 }}/{{ puzzle.pieces * 4 }}
               </span>
               <v-progress-linear
@@ -158,5 +160,19 @@ export default {
   line-height: 30px !important;
   letter-spacing: 6px !important;
   text-transform: uppercase !important;
+}
+
+.text-progress-puzzle {
+  font-family: Poppins !important;
+  font-style: normal !important;
+  font-weight: bold !important;
+  color: #A7A7A7 !important;
+}
+
+.text-pieces {
+  font-size: 13px !important;
+  color: #A7A7A7 !important;
+  font-weight: bold !important;
+  font-family: Poppins !important;
 }
 </style>
