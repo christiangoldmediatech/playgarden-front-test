@@ -67,6 +67,17 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+
+    nextPatch: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
+    nextPatchData: {
+      type: Object,
+      required: true
     }
   }
 }

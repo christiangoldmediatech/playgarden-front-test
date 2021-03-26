@@ -176,7 +176,7 @@
             </v-row>
           </v-col>
         </v-row>
-        <p class="text-center messages-info-register">
+        <p v-if="!inInvitationProcess" class="text-center messages-info-register">
           You will only be billed after your 30-day FREE trial is complete!
         </p>
       </v-container>

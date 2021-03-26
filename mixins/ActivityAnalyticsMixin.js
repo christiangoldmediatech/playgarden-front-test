@@ -15,7 +15,9 @@ export default {
         category: '',
         number: 0,
         icon: null
-      }
+      },
+      patchImg: null,
+      toUnlock: null
     }
   },
 
@@ -100,6 +102,11 @@ export default {
                   }
                   this.patchEarnedDialog = true
                 }
+
+                // Get patchImg and toUnlock
+                this.patchImg = result.patchImg || null
+                this.toUnlock = result.toUnlock || null
+
                 resolve(result)
               })
               .catch((err) => {

@@ -1,7 +1,8 @@
 <template>
   <div class="control-bar-container">
     <!-- Next Up Component -->
-    <next-up :params="nextUp" />
+    <next-up :params="nextUp" v-bind="{ nextPatch }" />
+    <next-patch v-if="nextPatch" v-bind="{ params: nextPatchData }" />
     <v-hover v-slot="{ hover }" close-delay="500">
       <div
         class="control-bar-sheet"
@@ -153,12 +154,14 @@
 import SmallScreen from '@/mixins/SmallScreenMixin.js'
 import ControlBarProps from './mixins/ControlBarPropsMixin.js'
 import NextUp from './NextUp.vue'
+import NextPatch from './NextPatch.vue'
 
 export default {
   name: 'ControlBar',
 
   components: {
-    NextUp
+    NextUp,
+    NextPatch
   },
 
   filters: {

@@ -104,6 +104,11 @@ export default {
         description: '',
         show: false
       },
+      nextPatchData: {
+        image: require('@/assets/png/test-patch.png'),
+        number: 0,
+        show: false
+      },
       isCasting: false,
       castLoading: false,
       MEDIA_NAMESPACE: 'urn:x-cast:com.google.cast.media'
@@ -164,7 +169,9 @@ export default {
         showRestart: this.showRestart,
         showVideoSkip: this.showVideoSkip,
         showSteps: this.showSteps,
-        inline: this.inline
+        inline: this.inline,
+        nextPatch: this.nextPatch,
+        nextPatchData: this.nextPatchData
       }
     },
 
@@ -268,18 +275,34 @@ export default {
         this.status = 'PLAYING'
         this.position = this.playerInstance.currentTime()
 
-        if (this.showNextUp && this.duration > 0) {
+        // nextUp && nextPatch
+        if ((this.showNextUp || this.nextPatch) && this.duration > 0) {
           const elapsed = this.duration - this.position
-          if (elapsed <= 6 && !this.lastPlaylistItem && !this.nextUp.show) {
-            const { title, description, poster } = this.playlist[this.playlistItemIndex + 1]
-            this.nextUp = {
-              image: poster,
-              title,
-              description,
-              show: true
+          if (elapsed <= 6 && !this.lastPlaylistItem && !this.nextUp.show && !this.nextPatchData.show) {
+            // Handle nextUp
+            if (this.showNextUp && !this.nextUp.show) {
+              const { title, description, poster } = this.playlist[this.playlistItemIndex + 1]
+              this.nextUp = {
+                image: poster,
+                title,
+                description,
+                show: true
+              }
             }
+
+            // Handle nextPatch
+            if (this.nextPatch && !this.nextPatchData.show) {
+              this.nextPatchData = {
+                image: this.nextPatchImage,
+                number: this.nextPatchNumber,
+                show: (this.nextPatchImage && this.nextPatchNumber)
+              }
+            }
+
+            // Timeout
             const timeOut = window.setTimeout(() => {
               this.$set(this.nextUp, 'show', false)
+              this.$set(this.nextPatchData, 'show', false)
               window.clearTimeout(timeOut)
             }, 7500)
           }
