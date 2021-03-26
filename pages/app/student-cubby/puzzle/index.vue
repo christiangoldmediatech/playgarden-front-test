@@ -13,9 +13,8 @@
           v-for="(puzzle, indexP) in puzzles"
           :key="indexP"
           class="my-3"
-          :disabled="!puzzle.completed"
+          :disabled="!puzzle.piecesUnclocked > 0"
           width="340"
-          @click="puzzle.completed ? showOverlay(puzzle) : null"
         >
           <v-img
             aspect-ratio="1.7"
@@ -47,11 +46,21 @@
                       </span>
 
                       <v-progress-linear
+                        v-if="puzzle.piecesUnclocked !== puzzle.pieces"
                         class="mt-2 white"
                         color="accent"
                         height="15"
                         :value="puzzle.percentageCompleted"
                       />
+                      <v-btn
+                        nuxt
+                        small
+                        color="accent"
+                        class="mt-3 text-transform-none"
+                        @click="showOverlay(puzzle)"
+                      >
+                        {{ (puzzle.piecesUnclocked !== puzzle.pieces) ? 'View Progress' : 'View puzzle' }}
+                      </v-btn>
                     </v-row>
                   </v-card>
 
