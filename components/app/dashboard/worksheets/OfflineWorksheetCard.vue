@@ -18,7 +18,7 @@
             class="white--text"
             font-size="56px"
             font-weight="bold"
-            text="Worksheet Videos"
+            text="Watch the Worksheet Video"
           />
           <p class="white--text text-center">
             Complete your hands-on worksheets with a Playgarden Prep teacher!

@@ -13,9 +13,7 @@
       <div class="pt-4 mb-4 mr-6">
         <underlined-title class="text-h6 text-md-h3" :text="reportCardType" />
 
-        <p class="text-progress mt-4 pb-10">
-          {{ dataReportCardType.description }}
-        </p>
+        <p class="text-progress mt-4 pb-10" v-html="dataReportCardType.description" />
 
         <p>
           <v-row no-gutters>
@@ -33,9 +31,7 @@
           <underlined-title class="text-h6 text-md-h7" text="What is this?" />
         </p>
 
-        <p class="text-progress pb-16 pt-8">
-          {{ getTextWhatIsThis }}
-        </p>
+        <p class="text-progress pb-16 pt-8" v-html="getTextWhatIsThis" />
       </div>
     </v-col>
   </v-row>

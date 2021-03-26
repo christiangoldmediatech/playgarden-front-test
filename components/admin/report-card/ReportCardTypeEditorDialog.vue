@@ -43,11 +43,11 @@
                 name="Report Card Type Description"
                 rules="required"
               >
-                <pg-textarea
+                <pg-tiptap-field
                   v-model="item.description"
+                  :disabled="loading"
                   :error-messages="errors"
                   label="Description"
-                  solo-labeled
                 />
               </validation-provider>
 
@@ -86,24 +86,11 @@
                 name="Progressing"
                 rules="required"
               >
-                <pg-textarea
+                <pg-tiptap-field
                   v-model="item.progressing"
+                  :disabled="loading"
                   :error-messages="errors"
                   label="Progressing"
-                  solo-labeled
-                />
-              </validation-provider>
-
-              <validation-provider
-                v-slot="{ errors }"
-                name="Area Strength"
-                rules="required"
-              >
-                <pg-textarea
-                  v-model="item.areaStrenght"
-                  :error-messages="errors"
-                  label="Area Strength"
-                  solo-labeled
                 />
               </validation-provider>
 
@@ -112,11 +99,24 @@
                 name="Age Appropriate"
                 rules="required"
               >
-                <pg-text-field
+                <pg-tiptap-field
                   v-model="item.ageAppropiate"
+                  :disabled="loading"
                   :error-messages="errors"
                   label="Age Appropriate"
-                  solo-labeled
+                />
+              </validation-provider>
+
+              <validation-provider
+                v-slot="{ errors }"
+                name="Area Strength"
+                rules="required"
+              >
+                <pg-tiptap-field
+                  v-model="item.areaStrenght"
+                  :disabled="loading"
+                  :error-messages="errors"
+                  label="Area of Strength"
                 />
               </validation-provider>
             </v-form>
