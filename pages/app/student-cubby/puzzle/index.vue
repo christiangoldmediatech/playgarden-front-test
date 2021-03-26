@@ -91,6 +91,18 @@
     <v-dialog content-class="elevation-0" :value="dialog" persistent>
       <v-container class="justify-center fill-height" fluid>
         <v-col class="px-3 px-lg-0" sm="12" lg="8" xl="10">
+          <v-row justify="end" no-gutters>
+            <v-btn
+              class="bg-black mb-3 mt-3 mr-5"
+              color="white"
+              icon
+              @click.stop="dialog = false"
+            >
+              <v-icon>
+                mdi-close
+              </v-icon>
+            </v-btn>
+          </v-row>
           <pieces :puzzle="toShow" />
           <!-- <v-img max-height="80vh" :src="toShow.src">
             <v-row class="fill-height" no-gutters>
