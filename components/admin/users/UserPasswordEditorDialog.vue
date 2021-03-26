@@ -27,6 +27,7 @@
             <v-form ref="activityTypeForm" @submit.prevent="passes(save)">
               <!-- Password -->
               <v-tooltip
+                class="tooltip-password"
                 :bottom="$vuetify.breakpoint.xs"
                 :right="$vuetify.breakpoint.smAndUp"
               >
@@ -188,3 +189,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.v-tooltip__content {
+  z-index: 2999 !important;
+}
+</style>
