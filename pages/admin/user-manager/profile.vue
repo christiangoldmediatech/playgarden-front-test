@@ -95,12 +95,14 @@
                   class="user-edit"
                   no-gutters
                 >
-                  <v-icon color="accent" dense @click="goToEdit(user.id)">
-                    mdi-pencil-outline
-                  </v-icon>
-                  <span class="clickable edit-color" @click="goToEdit(user.id)">
-                    EDIT
-                  </span>
+                  <v-btn class="mr-2" nuxt @click="goToEdit(user.id)">
+                    <v-icon color="accent" dense>
+                      mdi-pencil-outline
+                    </v-icon>
+                    <span class="clickable">
+                      EDIT
+                    </span>
+                  </v-btn>
                 </v-row>
               </v-col>
             </v-col>
@@ -108,29 +110,32 @@
           <v-row>
             <v-col v-if="billing.stripeStatus !== 'canceled'">
               <v-row>
-                <v-col>
-                  <div>
-                    <v-btn class="mt-n2 ml-2" nuxt @click="$refs.userPassword.open($event, user.id)">
+                <v-col cols="8">
+                  <v-row
+                    class="user-edit pl-md-5"
+                    no-gutters
+                  >
+                    <v-btn class="mr-2" nuxt @click="$refs.userPassword.open($event, user.id)">
                       <v-icon dense>
                         mdi-account-key
                       </v-icon>
-                      Password
+                      Change Password
                     </v-btn>
-                    <v-btn class="mt-n2 ml-2" color="accent darken-1" nuxt @click="changePlanModal = true">
+                    <v-btn class="mr-2" color="accent darken-1" nuxt @click="changePlanModal = true">
                       <v-icon dense>
                         mdi-receipt
                       </v-icon>
-                      Plan
+                      Change Plan
                     </v-btn>
-                    <v-btn class="mt-n2" color="primary darken-1" nuxt @click="$refs.shippingAddress.open($event, user.id)">
+                    <v-btn class="" color="primary darken-1" nuxt @click="$refs.shippingAddress.open($event, user.id)">
                       <v-icon dense>
                         mdi-map-marker-circle
                       </v-icon>
-                      Shipping Address
+                      Edit Shipping Address
                     </v-btn>
-                  </div>
+                  </v-row>
                 </v-col>
-                <v-col>
+                <v-col cols="4">
                   <v-row
                     justify="center"
                     justify-md="end"
