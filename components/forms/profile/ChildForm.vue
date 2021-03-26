@@ -410,7 +410,7 @@ export default {
         level,
         progress: {
           curriculumType: {
-            letter: progress.curriculumType.letter
+            letter: progress && progress.curriculumType ? progress.curriculumType.letter : undefined
           },
           day: progress.day
         }
