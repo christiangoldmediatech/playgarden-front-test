@@ -111,7 +111,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .fill-height {
   height: 100vh !important;
 }
