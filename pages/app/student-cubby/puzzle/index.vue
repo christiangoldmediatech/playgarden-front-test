@@ -91,7 +91,8 @@
     <v-dialog content-class="elevation-0" :value="dialog" persistent>
       <v-container class="justify-center fill-height" fluid>
         <v-col class="px-3 px-lg-0" sm="12" lg="8" xl="10">
-          <v-img max-height="80vh" :src="toShow.src">
+          <pieces :puzzle="toShow" />
+          <!-- <v-img max-height="80vh" :src="toShow.src">
             <v-row class="fill-height" no-gutters>
               <v-col cols="12">
                 <v-row justify="end" no-gutters>
@@ -130,7 +131,7 @@
                 </v-row>
               </v-col>
             </v-row>
-          </v-img>
+          </v-img> -->
         </v-col>
       </v-container>
     </v-dialog>
@@ -140,9 +141,14 @@
 <script>
 import { get } from 'lodash'
 import { mapActions, mapGetters } from 'vuex'
+import Pieces from '@/components/app/student-cubby/Pieces'
 
 export default {
   name: 'Index',
+
+  components: {
+    Pieces
+  },
 
   data: () => ({
     dialog: false,
