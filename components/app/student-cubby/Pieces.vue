@@ -77,6 +77,12 @@
                 height="10"
                 :value="puzzle.percentageCompleted"
               />
+              <pg-social-buttons
+                class="mt-6"
+                :entity-id="puzzle.puzzleChildrenId"
+                entity-type="PUZZLE"
+                :url="puzzle.src"
+              />
             </v-row>
           </center>
         </div>
