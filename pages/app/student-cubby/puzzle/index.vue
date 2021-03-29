@@ -41,7 +41,7 @@
                     width="300"
                   >
                     <v-row justify="center" no-gutters>
-                      <span class="font-weight-black white--text">
+                      <span v-if="puzzle.piecesUnclocked !== puzzle.pieces" class="font-weight-black white--text">
                         {{ puzzle.piecesUnclocked }}/{{ puzzle.pieces }}
                       </span>
 

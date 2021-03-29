@@ -13,7 +13,7 @@
             </span>
           </p>
         </v-col>
-        <v-col v-if="!$vuetify.breakpoint.smAndDown">
+        <v-col v-if="!$vuetify.breakpoint.smAndDown && puzzle.piecesUnclocked !== puzzle.pieces">
           <div>
             <span class="font-weight-black text-progress">
               PROGRESS
@@ -41,7 +41,7 @@
       <v-col>
         <puzzle-cover
           v-if="backgroundImage"
-          :class="(!$vuetify.breakpoint.smAndDown) ? 'ml-6' : ''"
+          :class="(!$vuetify.breakpoint.smAndDown) ? 'mx-6' : ''"
           :background-image="backgroundImage"
           :columns="columns"
           :rows="rows"
@@ -50,7 +50,7 @@
         />
       </v-col>
       <v-col v-if="!$vuetify.breakpoint.smAndDown" class="mt-12" cols="2">
-        <v-row justify="end" no-gutters>
+        <v-row v-if="puzzle.piecesUnclocked === puzzle.pieces" justify="end" no-gutters>
           <pg-social-buttons
             class="mr-3"
             entity-auto-resolve
@@ -64,20 +64,23 @@
       <v-col v-if="$vuetify.breakpoint.smAndDown" cols="12">
         <div class="mx-3">
           <center>
-            <span class="text-progress">
+            <span v-if="puzzle.piecesUnclocked !== puzzle.pieces" class="text-progress">
               PROGRESS
             </span>
             <v-row justify="center" no-gutters>
-              <span class="ml-2 text-pieces">
-                {{ puzzle.piecesUnclocked }}/{{ puzzle.pieces }}
-              </span>
-              <v-progress-linear
-                class="white"
-                color="accent"
-                height="10"
-                :value="puzzle.percentageCompleted"
-              />
+              <div v-if="puzzle.piecesUnclocked !== puzzle.pieces">
+                <span class="ml-2 text-pieces">
+                  {{ puzzle.piecesUnclocked }}/{{ puzzle.pieces }}
+                </span>
+                <v-progress-linear
+                  class="white"
+                  color="accent"
+                  height="10"
+                  :value="puzzle.percentageCompleted"
+                />
+              </div>
               <pg-social-buttons
+                v-else
                 class="mt-6"
                 :entity-id="puzzle.puzzleChildrenId"
                 entity-type="PUZZLE"
