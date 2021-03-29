@@ -38,10 +38,9 @@
       </v-row>
     </v-card-text>
     <v-row justify="center">
-      <v-col>
+      <v-col class="mx-4">
         <puzzle-cover
           v-if="backgroundImage"
-          :class="(!$vuetify.breakpoint.smAndDown) ? 'mx-6' : ''"
           :background-image="backgroundImage"
           :columns="columns"
           :rows="rows"
@@ -49,8 +48,8 @@
           :student-id="studentId"
         />
       </v-col>
-      <v-col v-if="!$vuetify.breakpoint.smAndDown" class="mt-12" cols="2">
-        <v-row v-if="puzzle.piecesUnclocked === puzzle.pieces" justify="end" no-gutters>
+      <v-col v-if="(!$vuetify.breakpoint.smAndDown && puzzle.piecesUnclocked === puzzle.pieces)" class="mt-12" cols="2">
+        <v-row justify="end" no-gutters>
           <pg-social-buttons
             class="mr-3"
             entity-auto-resolve
