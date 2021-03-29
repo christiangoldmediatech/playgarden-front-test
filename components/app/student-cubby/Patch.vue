@@ -24,32 +24,21 @@
             />
           </template>
 
-          <v-responsive
-            class="rounded-circle"
-            aspect-ratio="1"
+          <badge
+            :patch="patch"
             :max-width="!displayMode ? 200 : undefined"
-          >
-            <v-img
-              :class="{ grayscale: !patch.unblocked }"
-              :src="patch.image"
-              aspect-ratio="1"
-            />
-          </v-responsive>
+            :to-unlock="toUnlock"
+            :should-show-progress="shouldShowProgress"
+          />
         </div>
 
-        <v-responsive
+        <badge
           v-else
-          class="rounded-circle"
-          aspect-ratio="1"
+          :patch="patch"
           :max-width="!displayMode ? 200 : undefined"
-        >
-          <v-img
-            :class="{ grayscale: !patch.unblocked }"
-            :src="patch.image"
-            aspect-ratio="1"
-            @click.stop="displayBadge"
-          />
-        </v-responsive>
+          :to-unlock="toUnlock"
+          :should-show-progress="shouldShowProgress"
+        />
       </v-row>
 
       <span
@@ -67,14 +56,11 @@
 
   <v-col v-else cols="5" class="px-6">
     <v-row justify="center" align="center">
-      <v-responsive class="rounded-circle" aspect-ratio="1">
-        <v-img
-          :class="{ grayscale: !patch.unblocked }"
-          :src="patch.image"
-          aspect-ratio="1"
-          @click.stop="displayBadge"
-        />
-      </v-responsive>
+      <badge
+        :patch="patch"
+        :to-unlock="toUnlock"
+        :should-show-progress="shouldShowProgress"
+      />
     </v-row>
 
     <span class="d-block text-center font-weight-bold">
@@ -88,18 +74,31 @@
 </template>
 
 <script>
+import Badge from '@/components/app/student-cubby/Badge'
+
 export default {
   name: 'Patch',
+
+  components: {
+    Badge
+  },
 
   props: {
     patch: {
       type: Object,
       required: true
     },
-
     displayMode: {
       type: Boolean,
       required: false,
+      default: false
+    },
+    toUnlock: {
+      type: Number,
+      default: 0
+    },
+    shouldShowProgress: {
+      type: Boolean,
       default: false
     }
   },
