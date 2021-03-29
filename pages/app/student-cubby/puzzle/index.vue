@@ -40,13 +40,12 @@
                     elevation="0"
                     width="300"
                   >
-                    <v-row justify="center" no-gutters>
-                      <span v-if="puzzle.piecesUnclocked !== puzzle.pieces" class="font-weight-black white--text">
+                    <v-row v-if="puzzle.piecesUnclocked !== puzzle.pieces" justify="center" no-gutters>
+                      <span class="font-weight-black white--text">
                         {{ puzzle.piecesUnclocked }}/{{ puzzle.pieces }}
                       </span>
 
                       <v-progress-linear
-                        v-if="puzzle.piecesUnclocked !== puzzle.pieces"
                         class="mt-2 white"
                         color="accent"
                         height="15"
@@ -59,8 +58,25 @@
                         class="mt-3 text-transform-none"
                         @click="showOverlay(puzzle)"
                       >
-                        {{ (puzzle.piecesUnclocked !== puzzle.pieces) ? 'View Progress' : 'View puzzle' }}
+                        View Progress
                       </v-btn>
+                    </v-row>
+                    <v-row v-else justify="center" no-gutters>
+                      <v-overlay
+                        absolute="true"
+                        opacity="1"
+                        :value="puzzle.piecesUnclocked !== puzzle.pieces"
+                      >
+                        <v-btn
+                          nuxt
+                          small
+                          color="accent"
+                          class="mt-3 text-transform-none"
+                          @click="showOverlay(puzzle)"
+                        >
+                          View puzzle
+                        </v-btn>
+                      </v-overlay>
                     </v-row>
                   </v-card>
 
