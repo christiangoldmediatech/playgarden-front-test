@@ -68,7 +68,7 @@
               PROGRESS
             </span>
             <v-row justify="center" no-gutters>
-              <div v-if="puzzle.piecesUnclocked !== puzzle.pieces">
+              <v-col v-if="puzzle.piecesUnclocked !== puzzle.pieces" cols="12">
                 <span class="ml-2 text-pieces">
                   {{ puzzle.piecesUnclocked }}/{{ puzzle.pieces }}
                 </span>
@@ -78,14 +78,15 @@
                   height="10"
                   :value="puzzle.percentageCompleted"
                 />
-              </div>
-              <pg-social-buttons
-                v-else
-                class="mt-6"
-                :entity-id="puzzle.puzzleChildrenId"
-                entity-type="PUZZLE"
-                :url="puzzle.src"
-              />
+              </v-col>
+              <v-col v-else cols="12">
+                <pg-social-buttons
+                  class="mt-6"
+                  :entity-id="puzzle.puzzleChildrenId"
+                  entity-type="PUZZLE"
+                  :url="puzzle.src"
+                />
+              </v-col>
             </v-row>
           </center>
         </div>
