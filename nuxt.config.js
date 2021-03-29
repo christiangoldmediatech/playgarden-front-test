@@ -241,7 +241,14 @@ export default {
       new webpack.IgnorePlugin({
         resourceRegExp: /\@highcharts\/map\-collection/
       })
-    ]
+    ],
+    build: {
+      extend (config, ctx) {
+        if (ctx.isDev) {
+          config.devtool = ctx.isClient ? 'source-map' : 'inline-source-map'
+        }
+      }
+    }
   },
   env: {
     apiBaseUrl:

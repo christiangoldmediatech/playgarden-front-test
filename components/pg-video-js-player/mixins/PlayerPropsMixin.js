@@ -78,6 +78,28 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+
+    nextPatch: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
+    nextPatchImage: {
+      validator: (val) => {
+        return val === null || typeof val === 'string'
+      },
+      required: false,
+      default: null
+    },
+
+    nextPatchNumber: {
+      validator: (val) => {
+        return val === null || typeof val === 'number'
+      },
+      required: false,
+      default: null
     }
   }
 }
