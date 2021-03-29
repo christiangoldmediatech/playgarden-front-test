@@ -166,7 +166,7 @@
                       />
 
                       <p class="mt-2">
-                        Contact us an we will get back to you personally.
+                        Contact us and we will get back to you personally.
                       </p>
                     </div>
 
@@ -293,11 +293,12 @@ import { mapActions } from 'vuex'
 
 const EMAIL_TOPICS = {
   ACCOUNT: 'ACCOUNT',
-  ACTIVITIES: 'ACTIVITIES',
-  LESSONS: 'LESSONS',
+  LIBRARY: 'LIBRARY',
+  DAILY_LESSONS: 'DAILY LESSONS',
   LIVE_SESSIONS: 'LIVE SESSIONS',
   PARENT_CORNER: 'PARENT CORNER',
-  STUDENT_CUBBY: 'STUDENT CUBBY'
+  STUDENT_CUBBY: 'STUDENT CUBBY',
+  OTHER: 'OTHER'
 }
 
 export default {
