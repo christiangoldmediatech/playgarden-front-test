@@ -114,6 +114,7 @@ export default {
     '@/plugins/snotify',
     '@/plugins/validate',
     '@/plugins/vueCtkDateTimePicker',
+    '~/plugins/echarts',
     { src: '@/plugins/tiptapVuetify', mode: 'client' },
     { src: '@/plugins/firebase', mode: 'client' },
     {
@@ -236,7 +237,7 @@ export default {
    ** See https://nuxtjs.org/api/configuration-build/
    */
   build: {
-    transpile: ['vuetify/lib', 'vee-validate/dist/rules', 'tiptap-vuetify'],
+    transpile: ['vuetify/lib', 'vee-validate/dist/rules', 'tiptap-vuetify', 'vue-echarts', 'resize-detector'],
     plugins: [
       new webpack.IgnorePlugin({
         resourceRegExp: /\@highcharts\/map\-collection/
