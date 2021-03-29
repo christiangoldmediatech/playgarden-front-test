@@ -22,7 +22,7 @@ import { line, curveBasis } from 'd3-shape'
 import { colorValidator } from '@/components/pg/utils/validators'
 import { colorMaker } from '@/components/pg/utils/colorable'
 
-const MIN_ROW_COUNT = 4
+const MIN_ROW_COUNT = 3
 const MIN_COL_COUNT = 5
 // You can find more about theory in these links
 // http://dev.inventables.com/2016/02/26/generating-svg-jigsaw-puzzles.html

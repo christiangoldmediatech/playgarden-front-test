@@ -29,7 +29,7 @@
               </v-col>
               <v-col v-if="!$vuetify.breakpoint.smAndDown" class="mt-n2">
                 <span class="ml-2 font-weight-black text-progress-puzzle ">
-                  {{ puzzle.piecesUnclocked * 4 }}/{{ puzzle.pieces * 4 }}
+                  {{ puzzle.piecesUnclocked }}/{{ puzzle.pieces }}
                 </span>
               </v-col>
             </v-row>
@@ -69,7 +69,7 @@
             </span>
             <v-row justify="center" no-gutters>
               <span class="ml-2 text-pieces">
-                {{ puzzle.piecesUnclocked * 4 }}/{{ puzzle.pieces * 4 }}
+                {{ puzzle.piecesUnclocked }}/{{ puzzle.pieces }}
               </span>
               <v-progress-linear
                 class="white"
