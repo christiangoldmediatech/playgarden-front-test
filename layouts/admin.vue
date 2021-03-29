@@ -312,6 +312,10 @@ export default {
               route: ''
             },
             {
+              title: 'Dashboard',
+              route: 'dashboard'
+            },
+            {
               title: 'Parents',
               route: 'parents-list'
             },
