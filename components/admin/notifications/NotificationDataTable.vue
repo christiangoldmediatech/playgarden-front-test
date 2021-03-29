@@ -55,7 +55,19 @@
               @search="onSearch"
               @edit-item="$refs.editor.open(null, $event)"
               @remove-item="remove"
-            />
+            >
+              <template v-slot:[`item.deletedAt`]="{ item }">
+                <span v-if="item.deletedAt === null">
+                  ACTIVE
+                </span>
+                <span v-else>
+                  INACTIVE
+                </span>
+              </template>
+              <template v-slot:[`item.actions.prepend`]="{ item }">
+                <img class="clickable profile-icon" width="20px;" height="20px;" src="@/assets/svg/eye.svg" @click="goToProfile(item.id)">
+              </template>
+            </pg-admin-data-table>
           </v-card-text>
         </v-card>
       </v-col>
@@ -95,9 +107,9 @@ export default {
           value: 'description'
         },
         {
-          text: 'Created',
+          text: 'Active',
           sortable: false,
-          value: 'createdAt'
+          value: 'deletedAt'
         },
         {
           text: 'Last Updated',
@@ -125,7 +137,7 @@ export default {
       }
 
       try {
-        this.notifications = await this.getNotifications({ name: this.search })
+        this.notifications = await this.getNotifications({ name: this.search, deleted: true })
       } catch (e) {
       } finally {
         this.loading = false
