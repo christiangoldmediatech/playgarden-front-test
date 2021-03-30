@@ -27,12 +27,12 @@
           <v-row>
             <v-col cols="12" lg="6">
               <v-card class="mx-3">
-                graph 1
+                <funnel-chart :funnel-data="funnel" />
               </v-card>
             </v-col>
             <v-col cols="12" lg="6">
               <v-card class="mx-3">
-                total users
+                <pie-chart :funnel-data="funnel" />
               </v-card>
             </v-col>
           </v-row>
@@ -43,12 +43,19 @@
 </template>
 
 <script>
-
+import FunnelChart from './FunnelChart.vue'
+import PieChart from './PieChart.vue'
 export default {
   name: 'MainPanel',
 
+  components: {
+    FunnelChart,
+    PieChart
+  },
+
   data: () => ({
-    loading: false
+    loading: false,
+    funnel: {}
   }),
 
   computed: {},
