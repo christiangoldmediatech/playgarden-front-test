@@ -19,7 +19,7 @@
               PROGRESS
             </span>
             <v-row no-gutters>
-              <v-col cols="10">
+              <v-col cols="9">
                 <v-progress-linear
                   class="white"
                   color="accent"
