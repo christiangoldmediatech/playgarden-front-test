@@ -151,8 +151,6 @@ export default {
     ]),
 
     getPuzzle () {
-      const { puzzle } = await this.getPuzzleActiveByChildId({ id: this.studentId })
-
       if (this.puzzle) {
         this.backgroundImage = this.puzzle.src
         this.columns = 5
