@@ -1,6 +1,36 @@
 <template>
   <v-container>
     <v-row>
+      <!-- Change Plan modal -->
+      <shipping-address-editor-dialog ref="shippingAddress" @saved="getUserDetails" />
+      <!-- Change Password-->
+      <user-password-editor-dialog ref="userPassword" />
+      <v-dialog
+        v-model="changePlanModal"
+        content-class="white"
+        :fullscreen="isMobile"
+        max-width="80%"
+        persistent
+      >
+        <v-col cols="12">
+          <v-row class="pr-3" justify="end">
+            <v-btn icon @click.stop="closeChangePlanModal">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </v-row>
+
+          <subscription-plan-selection
+            v-if="changePlanModal"
+            :administrator="true"
+            :user-load-plan="user.id"
+            no-address
+            no-payment
+            updating
+            @click:cancel="closeChangePlanModal"
+            @click:administrator="onSuccessChangePlan"
+          />
+        </v-col>
+      </v-dialog>
       <v-col cols="12">
         <v-card width="100%" class="mb-5">
           <v-card-title>
@@ -9,7 +39,7 @@
             <v-spacer />
 
             <v-btn
-              class="text-none"
+              class="ml-3 text-none"
               color="accent darken-1"
               depressed
               nuxt
@@ -57,37 +87,59 @@
                   <a :href="`https://dashboard.stripe.com/customers/${billing.customerId}`" target="_blank">View on Stripe</a>
                 </v-chip>
               </v-col>
-
-              <v-col class="mt-n5">
-                <v-row
-                  justify="center"
-                  justify-md="start"
-                  class="user-edit"
-                  no-gutters
-                >
-                  <v-icon color="accent" dense @click="goToEdit(user.id)">
-                    mdi-pencil-outline
-                  </v-icon>
-                  <span class="clickable edit-color" @click="goToEdit(user.id)">
-                    EDIT
-                  </span>
-                </v-row>
-              </v-col>
-
-              <v-col v-if="billing.stripeStatus !== 'canceled'" class="mt-5">
-                <v-row
-                  justify="center"
-                  justify-md="end"
-                  class="user-edit pr-md-5"
-                  no-gutters
-                >
-                  <div class="text-center">
-                    <v-btn color="#FF0000" dark @click="remove">
-                      Cancel Membership
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col v-if="billing.stripeStatus !== 'canceled'">
+              <v-row>
+                <v-col cols="9">
+                  <v-row
+                    class="user-edit pl-md-8"
+                    no-gutters
+                  >
+                    <v-btn class="mr-2" nuxt @click="goToEdit(user.id)">
+                      <v-icon color="accent" dense>
+                        mdi-pencil-outline
+                      </v-icon>
+                      <span class="clickable">
+                        EDIT
+                      </span>
                     </v-btn>
-                  </div>
-                </v-row>
-              </v-col>
+                    <v-btn class="mr-2" nuxt @click="$refs.userPassword.open($event, user.id)">
+                      <v-icon dense>
+                        mdi-account-key
+                      </v-icon>
+                      Change Password
+                    </v-btn>
+                    <v-btn class="mr-2" color="accent darken-1" nuxt @click="changePlanModal = true">
+                      <v-icon dense>
+                        mdi-receipt
+                      </v-icon>
+                      Change Plan
+                    </v-btn>
+                    <v-btn class="" color="primary darken-1" nuxt @click="$refs.shippingAddress.open($event, user.id)">
+                      <v-icon dense>
+                        mdi-map-marker-circle
+                      </v-icon>
+                      Edit Shipping Address
+                    </v-btn>
+                  </v-row>
+                </v-col>
+                <v-col cols="3">
+                  <v-row
+                    justify="center"
+                    justify-md="end"
+                    class="user-edit pr-md-5"
+                    no-gutters
+                  >
+                    <div class="text-center">
+                      <v-btn color="#FF0000" dark @click="remove">
+                        Cancel Membership
+                      </v-btn>
+                    </div>
+                  </v-row>
+                </v-col>
+              </v-row>
             </v-col>
           </v-row>
 
@@ -436,6 +488,9 @@
 
 <script>
 import { mapActions } from 'vuex'
+import SubscriptionPlanSelection from '@/components/app/payment/SubscriptionPlanSelection'
+import UserPasswordEditorDialog from '@/components/admin/users/UserPasswordEditorDialog'
+import ShippingAddressEditorDialog from '@/components/admin/shipping-address/ShippingAddressEditorDialog.vue'
 import UserChildLessonOverlay from '@/components/admin/users/UserChildLessonOverlay.vue'
 import UserChildTimelineDialog from '@/components/admin/users/UserChildTimelineDialog.vue'
 import { formatDate } from '~/utils/dateTools'
@@ -448,6 +503,9 @@ export default {
   layout: 'admin',
 
   components: {
+    SubscriptionPlanSelection,
+    UserPasswordEditorDialog,
+    ShippingAddressEditorDialog,
     UserChildTimelineDialog,
     UserChildLessonOverlay
   },
@@ -455,6 +513,7 @@ export default {
   data: () => ({
     exporting: false,
     dialog: false,
+    changePlanModal: false,
     user: null,
     children: [],
     childrenStatus: []
@@ -463,6 +522,10 @@ export default {
   computed: {
     id () {
       return this.$route.query.id
+    },
+
+    isMobile () {
+      return this.$vuetify.breakpoint.mobile
     },
 
     joined () {
@@ -588,9 +651,31 @@ export default {
   },
 
   methods: {
-    ...mapActions('admin/users', ['getById', 'getChildren']),
+    ...mapActions('admin/users', ['getById', 'getChildren', 'updateUserPlanByAdmin']),
     ...mapActions('payment', ['cancelSubscriptionById']),
     ...mapActions('children/lesson', ['getLessonChildrenStatus']),
+
+    closeChangePlanModal () {
+      this.changePlanModal = false
+      /* if (this.$route.params.planRedirect) {
+        this.$router.push({ name: this.$route.params.planRedirect })
+      } */
+    },
+
+    async onSuccessChangePlan (val) {
+      try {
+        const plan = {
+          planId: val.planSelected.id,
+          invoiceType: val.planSelected.type,
+          userId: this.user.id
+        }
+        await this.updateUserPlanByAdmin(plan)
+      } catch (e) {
+      } finally {
+        await this.getUserDetails()
+        this.closeChangePlanModal()
+      }
+    },
 
     dateWorkbook () {
       return formatDate(this.user.shipments.workbookDate, {

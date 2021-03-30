@@ -23,7 +23,6 @@
       @last-playlist-item="findNextActivity"
       @video-skipped="skipLessonActivity"
     />
-    <patch-earned-dialog v-model="patchEarnedDialog" v-bind="{ player, ...patchData }" @return="handleClose" />
     <puzzle-piece-earned-dialog v-model="pieceEarnedDialog" v-bind="{ letter, puzzleImg }" @return="handleClose" />
   </video-player-dialog>
 </template>
@@ -32,23 +31,20 @@
 import VideoPlayerDialogMixin from '@/mixins/VideoPlayerDialogMixin.js'
 import DashboardMixin from '@/mixins/DashboardMixin'
 import SaveActivityProgress from '@/mixins/SaveActivityProgressMixin.js'
-import ActivityAnalytics from '@/mixins/ActivityAnalyticsMixin.js'
 import FindNextActivity from '@/mixins/FindNextActivityMixin.js'
 import Fullscreen from '@/mixins/FullscreenMixin.js'
 import { jsonCopy } from '@/utils/objectTools'
 
-import PatchEarnedDialog from '@/components/app/PatchEarnedDialog.vue'
 import PuzzlePieceEarnedDialog from '@/components/app/PuzzlePieceEarnedDialog.vue'
 
 export default {
   name: 'LessonActivityPlayer',
 
   components: {
-    PatchEarnedDialog,
     PuzzlePieceEarnedDialog
   },
 
-  mixins: [VideoPlayerDialogMixin, DashboardMixin, SaveActivityProgress, ActivityAnalytics, FindNextActivity, Fullscreen],
+  mixins: [VideoPlayerDialogMixin, DashboardMixin, SaveActivityProgress, FindNextActivity, Fullscreen],
 
   data: () => {
     return {}
@@ -82,13 +78,9 @@ export default {
         }
 
         this.saveActivityProgress()
-        if (this.analyticsLoading === false) {
-          this.player.showLoading()
-          this.doAnalytics().then(() => {
-            this.player.hideLoading()
-            this.nextVideo()
-          })
-        }
+        this.player.showLoading()
+        this.nextVideo()
+        this.player.hideLoading()
       })
       player.on('dispose', () => {
         this.player = null
@@ -108,17 +100,13 @@ export default {
           this.savingActivityProgress = false
         })
       }
-      if (this.analyticsLoading === false) {
-        this.doAnalytics(false, true).then(() => {
-          this.player.nextVideo()
-          this.player.hideLoading()
-        })
-      }
+      this.player.nextVideo()
+      this.player.hideLoading()
       this.player.pause()
     },
 
     nextVideo () {
-      if (this.player.currentTime() === this.player.duration() && !this.patchEarnedDialog && !this.pieceEarnedDialog) {
+      if (this.player.currentTime() === this.player.duration() && !this.pieceEarnedDialog) {
         this.player.nextVideo()
       }
     },
@@ -132,9 +120,6 @@ export default {
         this.$router.push(completedRoute)
       }
       this.index = index
-      if (!this.lesson.previewMode) {
-        this.doAnalytics(true)
-      }
     }
   }
 }
