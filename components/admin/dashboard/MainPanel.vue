@@ -45,10 +45,11 @@
                         </v-col>
                         <v-col>
                           <p>
-                            <v-icon color="green lighten-1">
+                            <v-icon x-large color="green lighten-1">
                               mdi-menu-up
                             </v-icon>
-                            <span>+18 New users this week</span>
+                            <span>+{{ usersTotal.increment }} New users this week</span> <br />
+                            <span>Users using our platform</span>
                           </p>
                         </v-col>
                       </v-row>
@@ -84,7 +85,10 @@ export default {
   data: () => ({
     loading: false,
     funnel: [],
-    usersTotal: {},
+    usersTotal: {
+      totalUsers: 0,
+      increment: 0
+    },
     totalUsersPie: {}
   }),
 

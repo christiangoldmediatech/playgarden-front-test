@@ -11,13 +11,9 @@ export default {
   },
   props: {
     funnelData: {
-      type: Object,
+      type: Array,
       required: true,
-      default: () => ({
-        xAxis: {},
-        yAxis: {},
-        series: []
-      })
+      default: () => ({})
     }
   },
   data () {
@@ -39,7 +35,7 @@ export default {
         legend: {
           orient: 'vertical',
           right: 'right',
-          data: this.funnelData.map(data => data.name)
+          data: (this.funnelData) ? this.funnelData.map(data => data.name) : []
         },
         series: [
           {
@@ -77,7 +73,7 @@ export default {
                 fontSize: 20
               }
             },
-            data: this.funnelData
+            data: (this.funnelData) ? this.funnelData : []
           }
         ]
       }

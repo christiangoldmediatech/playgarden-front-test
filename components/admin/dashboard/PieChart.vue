@@ -11,13 +11,9 @@ export default {
   },
   props: {
     pieData: {
-      type: Object,
+      type: Array,
       required: true,
-      default: () => ({
-        xAxis: {},
-        yAxis: {},
-        series: []
-      })
+      default: () => ({})
     }
   },
   data () {
