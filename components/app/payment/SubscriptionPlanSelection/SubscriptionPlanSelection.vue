@@ -363,11 +363,18 @@ export default {
   mixins: [submittable],
 
   props: {
+    userLoadPlan: {
+      type: Number,
+      default: undefined
+    },
+
     inSignUpProcess: Boolean,
 
     noAddress: Boolean,
 
     noPayment: Boolean,
+
+    administrator: Boolean,
 
     updating: Boolean
   },
@@ -393,6 +400,10 @@ export default {
       await this.getPlan()
       await this.fetchAddress()
     }
+
+    if (this.loadPlan) {
+      console.log('readPlan --', this.loadPlan)
+    }
   },
 
   methods: {
@@ -406,6 +417,7 @@ export default {
 
     ...mapActions('payment', [
       'getSelectedSubscriptionPlan',
+      'getSelectedSubscriptionPlanByUser',
       'fetchSubscriptionPlan',
       'selectSubscriptionPlan'
     ]),
@@ -439,8 +451,7 @@ export default {
     async getPlan () {
       try {
         this.disableAxiosGlobal()
-        const plan = await this.getSelectedSubscriptionPlan()
-
+        const plan = (this.userLoadPlan) ? await this.getSelectedSubscriptionPlanByUser(this.userLoadPlan) : await this.getSelectedSubscriptionPlan()
         this.radioGroup = get(plan, 'planSelected')
 
         this.plans.forEach(
@@ -475,7 +486,17 @@ export default {
       } catch (e) {}
     },
 
-    async onSubmit () {
+    onSubmit () {
+      if (this.administrator) {
+        this.$emit('click:administrator', {
+          planSelected: this.getSubmittableData()
+        })
+      } else {
+        this.dataSubmitDialog()
+      }
+    },
+
+    async dataSubmitDialog () {
       this.loading = true
 
       try {

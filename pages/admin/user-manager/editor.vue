@@ -9,7 +9,21 @@
             <v-spacer />
 
             <v-btn
-              class="text-none"
+              v-if="id"
+              class="ml-3"
+              color="darken-1"
+              nuxt
+              small
+              @click="changePassword = !changePassword"
+            >
+              <v-icon dense>
+                mdi-map-marker-circle {{ user }}
+              </v-icon>
+              {{ getTitlleChange }}
+            </v-btn>
+
+            <v-btn
+              class="text-none ml-3"
               color="accent darken-1"
               depressed
               nuxt
@@ -106,7 +120,7 @@
                     </validation-provider>
                   </v-col>
 
-                  <v-col v-if="!id" cols="12" md="6">
+                  <v-col v-if="changePassword || !id" cols="12" md="6">
                     <validation-provider
                       v-slot="{ errors }"
                       name="Password"
@@ -118,6 +132,22 @@
                         :error-messages="errors"
                         hint="At least 8 characters"
                         label="Password"
+                        solo-labeled
+                      />
+                    </validation-provider>
+                  </v-col>
+
+                  <v-col v-if="user.roleId === 3" cols="12" md="6">
+                    <validation-provider
+                      v-slot="{ errors }"
+                      name="Plan"
+                      rules="required"
+                    >
+                      <pg-select
+                        v-model="user.planId"
+                        :error-messages="errors"
+                        :items="getPlans"
+                        label="Plan"
                         solo-labeled
                       />
                     </validation-provider>
@@ -257,14 +287,17 @@ export default {
       loading: false,
       workbookSentDate: false,
       backpackSentDate: false,
+      changePassword: false,
       workbookDate: null,
       backpackDate: null,
+      plans: [],
       user: {
         firstName: '',
         lastName: '',
         email: '',
         phoneNumber: '',
         roleId: null,
+        planId: null,
         password: null,
         workbookSent: false,
         backpackSent: false
@@ -287,6 +320,10 @@ export default {
       roleRows: 'rows'
     }),
 
+    getTitlleChange () {
+      return (this.changePassword) ? 'NO CHANGE PASSWORD' : 'CHANGE PASSWORD'
+    },
+
     id () {
       return this.$route.query.id ? parseInt(this.$route.query.id) : null
     },
@@ -299,6 +336,13 @@ export default {
       return this.roleRows.map(role => ({
         text: role.name,
         value: role.id
+      }))
+    },
+
+    getPlans () {
+      return this.plans.map(plan => ({
+        text: plan.name,
+        value: plan.id
       }))
     },
 
@@ -315,6 +359,14 @@ export default {
     }
   },
 
+  watch: {
+    changePassword (val) {
+      if (!val) {
+        this.user.password = undefined
+      }
+    }
+  },
+
   async created () {
     this.loading = true
     const promises = []
@@ -325,6 +377,8 @@ export default {
       promises.push(this.getUserById(this.id))
     }
 
+    this.plans = await this.fetchSubscriptionPlan()
+
     const results = await Promise.all(promises)
 
     if (results[1]) {
@@ -334,6 +388,7 @@ export default {
       this.user.email = data.email
       this.user.phoneNumber = data.phoneNumber
       this.user.roleId = data.role.id
+      this.user.planId = (data.planSelected) ? data.planSelected.id : null
       this.user.workbookSent = false
       this.user.backpackSent = false
       this.user.workbookSentDate = null
@@ -357,6 +412,10 @@ export default {
       updateUser: 'update'
     }),
 
+    ...mapActions('payment', [
+      'fetchSubscriptionPlan'
+    ]),
+
     ...mapActions('admin/roles', {
       getRoles: 'get'
     }),
@@ -374,7 +433,6 @@ export default {
           if (this.user.backpackSent) {
             user.backpackSentDate = dayjs(this.backpackDate).toISOString()
           }
-          user.password = undefined
           await this.updateUser({ id: this.id, data: user })
         }
         this.$router.push({ name: 'admin-user-manager' })
