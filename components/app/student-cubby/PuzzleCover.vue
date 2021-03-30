@@ -231,7 +231,7 @@ export default {
       this.calculateMaxPiezesCount()
       this.paths = this.buildPiecePaths(
         this.buildPieces(parseInt(this.rowCount, 10), parseInt(this.colCount, 10))
-      )
+      ).sort()
     },
 
     // Builds an m + 1 x n matrix of edge shapes. The first and last rows
