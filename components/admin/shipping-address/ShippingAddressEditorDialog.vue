@@ -1,0 +1,229 @@
+<template>
+  <validation-observer ref="obs" v-slot="{ invalid, passes }">
+    <v-dialog
+      v-model="dialog"
+      :fullscreen="$vuetify.breakpoint.xs"
+      max-width="500px"
+      persistent
+      scrollable
+    >
+      <v-card>
+        <v-toolbar class="flex-grow-0" color="primary darken-1" dark dense flat>
+          <v-toolbar-title class="white--text">
+            {{ title }}
+          </v-toolbar-title>
+
+          <v-spacer />
+
+          <v-btn :disabled="loading" icon @click.stop="close">
+            <v-icon>
+              mdi-close
+            </v-icon>
+          </v-btn>
+        </v-toolbar>
+
+        <v-card-text>
+          <v-container>
+            <v-form ref="activityTypeForm" @submit.prevent="passes(save)">
+              <validation-provider
+                v-slot="{ errors }"
+                name="Adreess 1"
+                rules="required"
+              >
+                <pg-text-field
+                  v-model="item.address1"
+                  :error-messages="errors"
+                  label="Adreess 1"
+                  solo-labeled
+                />
+              </validation-provider>
+
+              <validation-provider
+                v-slot="{ errors }"
+                name="Adreess 2"
+              >
+                <pg-text-field
+                  v-model="item.address2"
+                  :error-messages="errors"
+                  label="Adreess 2"
+                  solo-labeled
+                />
+              </validation-provider>
+
+              <validation-provider
+                v-slot="{ errors }"
+                name="State"
+                rules="required"
+              >
+                <pg-text-field
+                  v-model="item.state"
+                  :error-messages="errors"
+                  label="State"
+                  solo-labeled
+                />
+              </validation-provider>
+
+              <validation-provider
+                v-slot="{ errors }"
+                name="City"
+                rules="required"
+              >
+                <pg-text-field
+                  v-model="item.city"
+                  :error-messages="errors"
+                  label="City"
+                  solo-labeled
+                />
+              </validation-provider>
+
+              <validation-provider
+                v-slot="{ errors }"
+                name="Zip Code"
+                rules="required"
+              >
+                <pg-text-field
+                  v-model="item.zipCode"
+                  :error-messages="errors"
+                  label="Zip Code"
+                  solo-labeled
+                />
+              </validation-provider>
+            </v-form>
+          </v-container>
+        </v-card-text>
+
+        <v-divider />
+
+        <v-card-actions>
+          <v-spacer />
+
+          <v-btn
+            class="white--text"
+            color="green"
+            :disabled="invalid"
+            :loading="loading"
+            :text="$vuetify.breakpoint.smAndUp"
+            @click.stop="passes(save)"
+          >
+            Save
+          </v-btn>
+
+          <v-btn
+            class="white--text"
+            color="red"
+            :disabled="loading"
+            :text="$vuetify.breakpoint.smAndUp"
+            @click.stop="close"
+          >
+            Cancel
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </validation-observer>
+</template>
+
+<script>
+import { mapActions } from 'vuex'
+
+function generateItemTemplate () {
+  return {
+    userId: null,
+    address1: null,
+    address2: null,
+    city: null,
+    state: null,
+    zipCode: null,
+    countryId: null
+  }
+}
+
+export default {
+  name: 'ShippingAddressEditorDialog',
+
+  data: vm => ({
+    userId: vm.$route.query.id
+      ? parseInt(vm.$route.query.id)
+      : null,
+    dialog: false,
+    loading: false,
+    shippingAddress: null,
+    id: null,
+    item: generateItemTemplate()
+  }),
+
+  computed: {
+    title () {
+      return this.id === null ? 'New Shipping Address' : 'Edit Shipping Address'
+    }
+  },
+
+  methods: {
+    ...mapActions('shipping-address', ['createShippingAddressByAdministrator', 'updateShippingAddressByAdministrator', 'getShippingAddressByUserId']),
+
+    close () {
+      this.$nextTick(() => {
+        this.dialog = false
+        this.loading = false
+        this.$refs.obs.reset()
+      })
+    },
+
+    async save () {
+      this.loading = true
+      this.item.userId = this.userId
+      try {
+        if (this.id === null) {
+          await this.createShippingAddressByAdministrator(this.item)
+        } else {
+          await this.updateShippingAddressByAdministrator({ id: this.id, data: this.item })
+        }
+        this.$emit('saved')
+        this.close()
+      } catch (err) {
+      } finally {
+        this.loading = false
+      }
+    },
+
+    resetItem () {
+      this.id = null
+      this.item = generateItemTemplate()
+    },
+
+    loadItem (item) {
+      this.id = item.id
+      // Handle keys
+      Object.keys(item).forEach((key) => {
+        if (Object.prototype.hasOwnProperty.call(this.item, key)) {
+          this.item[key] = item[key]
+        }
+      })
+
+      if (this.userId) {
+        this.item.userId = this.userId
+      }
+
+      if (item.country) {
+        this.item.countryId = item.country.id
+      }
+    },
+
+    async open (evt, item = null) {
+      this.userId = item
+      this.shippingAddress = await this.getShippingAddressByUserId({
+        id: item
+      })
+      this.resetItem()
+
+      if (this.shippingAddress) {
+        this.loadItem(this.shippingAddress)
+      }
+
+      this.$nextTick(() => {
+        this.dialog = true
+      })
+    }
+  }
+}
+</script>
