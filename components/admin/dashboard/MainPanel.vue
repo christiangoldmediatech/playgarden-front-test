@@ -25,13 +25,13 @@
       <v-col cols="12">
         <v-card>
           <v-row>
-            <v-col cols="12" lg="6">
+            <v-col cols="12" md="6">
               <v-card class="mx-3">
-                <funnel-chart :funnel-data="funnel" />
+                <funnel-chart :funnel-data="funnel" title="Conversions funnel" subtitle="The conversions will be shown here" />
               </v-card>
             </v-col>
-            <v-col cols="12" lg="6">
-              <v-row class="mx-3">
+            <v-col cols="12" md="6">
+              <v-row no-gutters class="mx-3">
                 <v-col cols="12">
                   <v-card>
                     <v-card-text>
@@ -55,13 +55,48 @@
                       </v-row>
                     </v-card-text>
                   </v-card>
-                </v-col>
-                <v-col cols="12">
-                  <v-card>
-                    <pie-chart :pie-data="funnel" />
+                  <v-card class="mt-4">
+                    <pie-chart :pie-data="usersPerPlan" title="Total Users Per Plan" />
                   </v-card>
                 </v-col>
               </v-row>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12" md="8">
+              <v-card>
+                <pie-chart :pie-data="stripeStatus" title="Users per status" />
+              </v-card>
+            </v-col>
+            <v-col cols="12" md="4">
+              <v-card>
+                <v-card-text>
+                  <label class="font-weight-bold">Churn Rate</label>
+                  <v-row align="center">
+                    <v-col cols="12">
+                      <p>
+                        <v-icon x-large color="red lighten-1">
+                          mdi-menu-up
+                        </v-icon>
+                        <span>{{ activeUsers.last7Days }} % More than last two weeks</span>
+                      </p>
+                    </v-col>
+                    <v-col
+                      class="display-3"
+                      cols="12"
+                    >
+                      <center>
+                        <label class="font-weight-bold total-users">{{ activeUsers.today }}</label>
+                      </center>
+                    </v-col>
+                    <v-col cols="12">
+                      <p class="text-center">
+                        <span>This percentage will change every two weeks</span>
+                      </p>
+                    </v-col>
+                  </v-row>
+                </v-card-text>
+              </v-card>
             </v-col>
           </v-row>
         </v-card>
@@ -89,6 +124,12 @@ export default {
       totalUsers: 0,
       increment: 0
     },
+    activeUsers: {
+      today: 0,
+      last7Days: 0
+    },
+    usersPerPlan: [],
+    stripeStatus: [],
     totalUsersPie: {}
   }),
 
@@ -109,9 +150,12 @@ export default {
         this.search = ''
       }
       try {
-        const { dataFunnel, usersTotal } = await this.getDashboard({})
+        const { dataFunnel, usersTotal, usersPerPlan, stripeStatus, activeUsers } = await this.getDashboard({})
         this.funnel = dataFunnel
         this.usersTotal = usersTotal
+        this.usersPerPlan = usersPerPlan
+        this.stripeStatus = stripeStatus
+        this.activeUsers = activeUsers
       } catch (e) {
       } finally {
         this.loading = false
@@ -122,6 +166,10 @@ export default {
 </script>
 
 <style>
+.header-dashboard {
+  max-height: 500px !important;
+}
+
 .total-users {
   color: var(--v-accent-base) !important;
 }

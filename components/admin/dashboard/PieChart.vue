@@ -1,5 +1,5 @@
 <template>
-  <chart ref="pie-chart" :graph="getFormatGraph" />
+  <chart ref="pie-chart" :graph="getFormatGraph" :autoresize="resize" />
 </template>
 
 <script>
@@ -14,6 +14,11 @@ export default {
       type: Array,
       required: true,
       default: () => ({})
+    },
+    title: {
+      type: String,
+      required: true,
+      default: ''
     }
   },
   data () {
@@ -25,7 +30,7 @@ export default {
     getFormatGraph () {
       return {
         title: {
-          text: 'Traffic Sources',
+          text: this.title,
           left: 'center'
         },
         tooltip: {
@@ -33,29 +38,18 @@ export default {
           formatter: '{a} <br/>{b} : {c} ({d}%)'
         },
         legend: {
+          bottom: 10,
           orient: 'vertical',
           left: 'left',
-          data: [
-            'Direct',
-            'Email',
-            'Ad Networks',
-            'Video Ads',
-            'Search Engines'
-          ]
+          data: (this.pieData) ? this.pieData.map(data => data.name) : []
         },
         series: [
           {
             name: 'Traffic Sources',
             type: 'pie',
-            radius: '55%',
-            center: ['50%', '60%'],
-            data: [
-              { value: 335, name: 'Direct' },
-              { value: 310, name: 'Email' },
-              { value: 234, name: 'Ad Networks' },
-              { value: 135, name: 'Video Ads' },
-              { value: 1548, name: 'Search Engines' }
-            ],
+            center: ['50%', '50%'],
+            radius: '50%',
+            data: (this.pieData) ? this.pieData : [],
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
@@ -79,6 +73,6 @@ export default {
  */
 .echarts {
   width: 100%;
-  height: 700px;
+  max-width: 500px !important;
 }
 </style>

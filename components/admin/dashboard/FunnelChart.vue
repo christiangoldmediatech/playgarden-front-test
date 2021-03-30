@@ -14,6 +14,16 @@ export default {
       type: Array,
       required: true,
       default: () => ({})
+    },
+    title: {
+      type: String,
+      required: true,
+      default: ''
+    },
+    subtitle: {
+      type: String,
+      required: true,
+      default: ''
     }
   },
   data () {
@@ -25,8 +35,8 @@ export default {
     getFormatGraph () {
       return {
         title: {
-          text: 'Conversions funnel',
-          subtext: 'The conversions will be shown here'
+          text: this.title,
+          subtext: this.subtitle
         },
         tooltip: {
           trigger: 'item',
