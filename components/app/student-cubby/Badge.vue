@@ -49,15 +49,12 @@ export default {
     }
   },
 
-  data () {
-    return {
-      total: 5
-    }
-  },
-
   computed: {
+    total () {
+      return (Math.floor(this.toUnlock / 5) + 1) * 5
+    },
     progressPercentage () {
-      return this.toUnlock * 20
+      return this.toUnlock / this.total * 100
     }
   }
 }
