@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import MainPanel from '@/components/admin/dashboard-admin/MainPanel.vue'
+import MainPanel from '@/components/admin/dashboard/MainPanel.vue'
 
 export default {
   name: 'Dashboard',

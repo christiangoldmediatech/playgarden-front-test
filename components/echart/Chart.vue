@@ -12,7 +12,7 @@ import {
   TooltipComponent,
   LegendComponent
 } from 'echarts/components'
-import VChart, { THEME_KEY } from 'vue-echarts'
+import VChart /* { THEME_KEY } */ from 'vue-echarts'
 
 use([
   CanvasRenderer,
@@ -36,7 +36,7 @@ export default {
     }
   },
   provide: {
-    [THEME_KEY]: 'dark'
+    // [THEME_KEY]: 'dark'
   }
 }
 </script>

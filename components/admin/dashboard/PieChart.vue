@@ -10,7 +10,7 @@ export default {
     Chart
   },
   props: {
-    funnelData: {
+    pieData: {
       type: Object,
       required: true,
       default: () => ({
