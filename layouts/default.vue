@@ -12,13 +12,15 @@
     <shipping-address-modal />
 
     <!-- CONTENT -->
-    <v-main v-if="!fullWidth">
-      <v-container class="pa-md-3 pa-0" fill-height>
-        <nuxt />
-      </v-container>
-    </v-main>
+    <template v-if="showContent">
+      <v-main v-if="!fullWidth">
+        <v-container class="pa-md-3 pa-0" fill-height>
+          <nuxt />
+        </v-container>
+      </v-main>
 
-    <nuxt v-else />
+      <nuxt v-else />
+    </template>
 
     <!-- FOOTER -->
     <default-footer />
@@ -41,6 +43,7 @@ import ComingSoonPlayer from '@/components/app/ComingSoonPlayer.vue'
 import DefaultFooter from '@/components/app/footer/DefaultFooter'
 import NotificationCard from '@/components/app/notifications/NotificationCard'
 import ShippingAddressModal from '~/components/app/payment/ShippingAddressModal.vue'
+import unauthenticatedRoutes from '~/utils/consts/unauthenticatedRoutes.json'
 
 export default {
   name: 'Default',
@@ -57,10 +60,9 @@ export default {
 
   data: () => ({
     isComingSoonDialogOpen: false,
-    verifyEmailToast: null
+    verifyEmailToast: null,
+    showContent: false
   }),
-
-  middleware: ['checkJWT'],
 
   computed: {
     ...mapGetters('auth', ['isUserLoggedIn', 'isUserEmailUnverified']),
@@ -89,13 +91,39 @@ export default {
     }
   },
 
-  mounted () {
+  async mounted () {
     // Commented requested by Natalia
     // this.showVerifyEmailToast()
+
+    await this.initAuth()
   },
 
   methods: {
     ...mapActions('notifications', ['checkUserShippingAddressAndNotify']),
+
+    async initAuth () {
+      try {
+        this.showContent = false
+
+        const isUnauthenticatedRoute = !!unauthenticatedRoutes[this.$route.name]
+        let isLoggedIn = await this.$store.dispatch('auth/checkAuth')
+
+        if (!isLoggedIn) {
+          await this.$store.dispatch('auth/restoreAuthFromSessionStorage')
+        }
+
+        isLoggedIn = await this.$store.dispatch('auth/checkAuth')
+
+        if (isLoggedIn) {
+          await this.$store.dispatch('auth/fetchUserInfo', undefined, { root: true })
+          await this.$store.dispatch('pickChild', this, { root: true })
+        } else if (isUnauthenticatedRoute) {
+          await this.$store.dispatch('auth/logout', undefined, { root: true })
+        }
+      } finally {
+        this.showContent = true
+      }
+    },
 
     showVerifyEmailToast () {
       if (
