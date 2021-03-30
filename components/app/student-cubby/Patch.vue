@@ -29,6 +29,7 @@
             :max-width="!displayMode ? 200 : undefined"
             :to-unlock="toUnlock"
             :should-show-progress="shouldShowProgress"
+            @display-badge="displayBadge"
           />
         </div>
 
@@ -38,6 +39,7 @@
           :max-width="!displayMode ? 200 : undefined"
           :to-unlock="toUnlock"
           :should-show-progress="shouldShowProgress"
+          @display-badge="displayBadge"
         />
       </v-row>
 
@@ -60,6 +62,7 @@
         :patch="patch"
         :to-unlock="toUnlock"
         :should-show-progress="shouldShowProgress"
+        @display-badge="displayBadge"
       />
     </v-row>
 
