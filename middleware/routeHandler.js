@@ -3,17 +3,29 @@ import unauthenticatedRoutes from '~/utils/consts/unauthenticatedRoutes.json'
 import parentSubscriptionWhitelistedRoutes from '~/utils/consts/parentSubscriptionWhitelistedRoutes.json'
 import routeHandlerIgnoredRoutes from '~/utils/consts/routeHandlerIgnoredRoutes.json'
 
-export default async function ({ app, redirect, route, store, req }) {
+export default async function ({ redirect, route, store }) {
   const isIgnoredRoute = !!routeHandlerIgnoredRoutes[route.name]
 
   if (isIgnoredRoute) {
     return
   }
 
-  const isLoggedIn = await store.dispatch('auth/checkAuth')
+  const token = store.getters['auth/getAccessToken']
+  const isLoggedIn = await store.dispatch('auth/checkAuth', undefined, { root: true })
   const isUnauthenticatedRoute = !!unauthenticatedRoutes[route.name]
   const user = store.getters['auth/getUserInfo']
-  const token = store.getters['auth/getAccessToken']
+
+  /**
+   * PICK CHILD
+   */
+  if (process.client && isLoggedIn) {
+    await store.dispatch('auth/fetchUserInfo', undefined, { root: true })
+    const shouldPickChild = await store.dispatch('pickChild', { $router: { push: redirect }, $route: route }, { root: true })
+
+    if (shouldPickChild) {
+      return
+    }
+  }
 
   /**
    * ROLE
