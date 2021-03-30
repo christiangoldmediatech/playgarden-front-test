@@ -132,6 +132,9 @@ export default {
   watch: {
     studentId () {
       this.getPuzzle()
+    },
+    puzzle () {
+      this.getPuzzle()
     }
   },
 
