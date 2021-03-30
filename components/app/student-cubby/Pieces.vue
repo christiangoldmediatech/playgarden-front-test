@@ -150,8 +150,8 @@ export default {
     getPuzzle () {
       if (this.puzzle) {
         this.backgroundImage = this.puzzle.src
-        this.columns = 5
-        this.rows = 1
+        this.columns = this.puzzle.columns || 5
+        this.rows = this.puzzle.rows || 3
         this.uncover = this.puzzle.piecesUnclocked
         this.letter = this.puzzle.letter
       }
