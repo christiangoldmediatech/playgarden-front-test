@@ -224,7 +224,7 @@ export default {
     },
 
     showOverlay (puzzle) {
-      this.toShow = puzzle
+      this.toShow = { ...puzzle }
       this.dialog = true
     }
   }

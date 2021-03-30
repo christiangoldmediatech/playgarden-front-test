@@ -132,6 +132,9 @@ export default {
   watch: {
     studentId () {
       this.getPuzzle()
+    },
+    puzzle () {
+      this.getPuzzle()
     }
   },
 
@@ -148,10 +151,12 @@ export default {
     ]),
 
     getPuzzle () {
+      const { puzzle } = await this.getPuzzleActiveByChildId({ id: this.studentId })
+
       if (this.puzzle) {
         this.backgroundImage = this.puzzle.src
         this.columns = 5
-        this.rows = 1
+        this.rows = 3
         this.uncover = this.puzzle.piecesUnclocked
         this.letter = this.puzzle.letter
       }

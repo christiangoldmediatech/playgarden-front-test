@@ -151,6 +151,7 @@ export default {
           for (let j = 0; j < uncoveredPieces; j++) {
             uncover.push(j)
           }
+          console.log('listt--', uncover)
 
           if (spacesOfNpiecesToFill) {
             let nSpaceRandomOffset, nSpaceIndexOffset
