@@ -9,98 +9,101 @@
       </p>
 
       <v-row class="mt-6" no-gutters justify="space-around">
-        <v-card
-          v-for="(puzzle, indexP) in puzzles"
-          :key="indexP"
-          class="my-3"
-          :disabled="!puzzle.piecesUnclocked > 0"
-          width="340"
-        >
-          <v-img
-            aspect-ratio="1.7"
-            :contain="!puzzle.lazy"
-            :[puzzle.srcType]="
-              puzzle.lazy
-                ? puzzle.src
-                : require('@/assets/png/student-cubby/puzzle-piece.png')
-            "
-          >
-            <template v-slot:placeholder>
-              <v-overlay absolute :value="true">
-                <v-lazy
-                  v-model="puzzle.lazy"
-                  :options="{
-                    threshold: 0.5,
-                  }"
-                  transition="scroll-y-transition"
+        <div v-for="(puzzle, indexP) in puzzles" :key="indexP">
+          <v-hover>
+            <template v-slot:default="{ hover }">
+              <v-card
+                class="my-3"
+                :disabled="!puzzle.piecesUnclocked > 0"
+                width="340"
+              >
+                <v-img
+                  aspect-ratio="1.7"
+                  :src="(puzzle.piecesUnclocked === puzzle.pieces) ? puzzle.src : ''"
+                  :[puzzle.srcType]="
+                    puzzle.lazy
+                      ? puzzle.src
+                      : require('@/assets/png/student-cubby/puzzle-piece.png')
+                  "
                 >
-                  <v-card
-                    v-if="puzzle.active"
-                    color="transparent"
-                    elevation="0"
-                    width="300"
-                  >
-                    <v-row v-if="puzzle.piecesUnclocked !== puzzle.pieces" justify="center" no-gutters>
-                      <span class="font-weight-black white--text">
-                        {{ puzzle.piecesUnclocked }}/{{ puzzle.pieces }}
-                      </span>
-
-                      <v-progress-linear
-                        class="mt-2 white"
-                        color="accent"
-                        height="15"
-                        :value="puzzle.percentageCompleted"
-                      />
-                      <v-btn
-                        nuxt
-                        small
-                        color="accent"
-                        class="mt-3 text-transform-none"
-                        @click="showOverlay(puzzle)"
+                  <template v-slot:placeholder>
+                    <v-overlay absolute :value="true">
+                      <v-lazy
+                        v-model="puzzle.lazy"
+                        :options="{
+                          threshold: 0.5,
+                        }"
+                        transition="scroll-y-transition"
                       >
-                        View Progress
-                      </v-btn>
-                    </v-row>
-                    <v-row v-else justify="center" no-gutters>
-                      <v-overlay
-                        absolute="true"
-                        opacity="1"
-                        :value="puzzle.piecesUnclocked !== puzzle.pieces"
-                      >
-                        <v-btn
-                          nuxt
-                          small
-                          color="accent"
-                          class="mt-3 text-transform-none"
-                          @click="showOverlay(puzzle)"
+                        <v-card
+                          v-if="puzzle.active"
+                          color="transparent"
+                          elevation="0"
+                          width="300"
                         >
-                          View puzzle
-                        </v-btn>
-                      </v-overlay>
-                    </v-row>
-                  </v-card>
+                          <v-row v-if="puzzle.piecesUnclocked !== puzzle.pieces" justify="center" no-gutters>
+                            <span class="font-weight-black white--text">
+                              {{ puzzle.piecesUnclocked }}/{{ puzzle.pieces }}
+                            </span>
 
-                  <v-icon v-else color="grey" size="100">
-                    mdi-lock-outline
-                  </v-icon>
-                </v-lazy>
-              </v-overlay>
+                            <v-progress-linear
+                              class="mt-2 white"
+                              color="accent"
+                              height="15"
+                              :value="puzzle.percentageCompleted"
+                            />
+                            <v-btn
+                              nuxt
+                              small
+                              color="accent"
+                              class="mt-3 text-transform-none"
+                              @click="showOverlay(puzzle)"
+                            >
+                              View Progress
+                            </v-btn>
+                          </v-row>
+                        </v-card>
+
+                        <v-icon v-else color="grey" size="100">
+                          mdi-lock-outline
+                        </v-icon>
+                      </v-lazy>
+                    </v-overlay>
+                  </template>
+
+                  <v-row class="fill-height" no-gutters>
+                    <v-col align-self="end">
+                      <v-row justify="end" no-gutters>
+                        <pg-circle-letter-day
+                          class="mb-3 mr-3"
+                          :letter="puzzle.letter"
+                          no-auto-position
+                          size="50"
+                        />
+                      </v-row>
+                    </v-col>
+                  </v-row>
+                </v-img>
+                <v-fade-transition v-if="puzzle.piecesUnclocked === puzzle.pieces">
+                  <v-overlay
+                    v-if="hover"
+                    absolute
+                  >
+                    <v-btn
+                      nuxt
+                      small
+                      color="accent"
+                      class="mt-3 text-transform-none"
+                      @click="showOverlay(puzzle)"
+                    >
+                      View puzzle
+                    </v-btn>
+                  </v-overlay>
+                </v-fade-transition>
+              </v-card>
             </template>
-
-            <v-row class="fill-height" no-gutters>
-              <v-col align-self="end">
-                <v-row justify="end" no-gutters>
-                  <pg-circle-letter-day
-                    class="mb-3 mr-3"
-                    :letter="puzzle.letter"
-                    no-auto-position
-                    size="50"
-                  />
-                </v-row>
-              </v-col>
-            </v-row>
-          </v-img>
-        </v-card>
+          </v-hover>
+        </div>
       </v-row>
     </v-card-text>
 
