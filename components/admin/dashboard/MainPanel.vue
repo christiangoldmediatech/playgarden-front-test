@@ -101,7 +101,7 @@
           </v-row>
           <v-row>
             <v-col cols="12">
-              <time-line-chart />
+              <time-line-chart :time-line-data="dailyUsers" title="Active Users Time Line" />
             </v-col>
           </v-row>
         </v-card>
@@ -136,6 +136,10 @@ export default {
       last7Days: 0
     },
     usersPerPlan: [],
+    dailyUsers: {
+      date: [],
+      users: []
+    },
     stripeStatus: [],
     totalUsersPie: {}
   }),
@@ -157,12 +161,13 @@ export default {
         this.search = ''
       }
       try {
-        const { dataFunnel, usersTotal, usersPerPlan, stripeStatus, activeUsers } = await this.getDashboard({})
+        const { dataFunnel, usersTotal, usersPerPlan, stripeStatus, activeUsers, dailyUsers } = await this.getDashboard({})
         this.funnel = dataFunnel
         this.usersTotal = usersTotal
         this.usersPerPlan = usersPerPlan
         this.stripeStatus = stripeStatus
         this.activeUsers = activeUsers
+        this.dailyUsers = dailyUsers
       } catch (e) {
       } finally {
         this.loading = false

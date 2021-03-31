@@ -10,8 +10,8 @@ export default {
     Chart
   },
   props: {
-    pieData: {
-      type: Array,
+    timeLineData: {
+      type: Object,
       required: true,
       default: () => ({})
     },
@@ -30,7 +30,7 @@ export default {
     getFormatGraph () {
       return {
         title: {
-          text: '堆叠区域图'
+          text: this.title
         },
         tooltip: {
           trigger: 'axis',
@@ -39,14 +39,6 @@ export default {
             label: {
               backgroundColor: '#6a7985'
             }
-          }
-        },
-        legend: {
-          data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
-        },
-        toolbox: {
-          feature: {
-            saveAsImage: {}
           }
         },
         grid: {
@@ -59,7 +51,7 @@ export default {
           {
             type: 'category',
             boundaryGap: false,
-            data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+            data: this.timeLineData.date
           }
         ],
         yAxis: [
@@ -69,14 +61,14 @@ export default {
         ],
         series: [
           {
-            name: '邮件营销',
+            name: 'Users',
             type: 'line',
-            stack: '总量',
+            stack: 'Users',
             areaStyle: {},
             emphasis: {
               focus: 'series'
             },
-            data: [120, 132, 101, 134, 90, 230, 210]
+            data: this.timeLineData.users
           }
         ]
       }
