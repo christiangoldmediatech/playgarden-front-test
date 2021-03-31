@@ -11,7 +11,7 @@ export default {
     ...mapActions('admin/activity', ['getNextActivity']),
 
     findNextActivity () {
-      if (this.findingNext || !this.currentVideo || !this.currentVideo.activityId) { return }
+      if (this.findingNext || !this.currentVideo || !this.currentVideo.activityId || this.currentVideo.favorites) { return }
       // Find random video
       this.findingNext = true
       const curriculumTypeId = this.currentVideo.curriculumType ? this.currentVideo.curriculumType.id : undefined

@@ -13,7 +13,7 @@
       show-steps
       :show-favorite="lesson && !lesson.previewMode"
       show-cast
-      :show-video-skip="index < (playlist.length - 1)"
+      show-video-skip
       use-standard-poster
       :no-seek="noSeek"
       :fullscreen-override="handleFullscreen"
@@ -145,19 +145,24 @@ export default {
       })
     },
 
-    skipLessonVideo () {
-      if (this.lesson.previewMode) {
-        this.nextVideo()
-        return
-      }
-
+    async skipLessonVideo () {
+      this.player.pause()
       this.player.showLoading()
-      this.completeVideoProgress().then(() => {
+
+      if (!this.lesson.previewMode) {
+        await this.completeVideoProgress()
         this.$nuxt.$emit('dashboard-panel-update')
         this.savingProgress = false
+      }
+
+      this.player.hideLoading()
+
+      if (this.lastVideo) {
+        this.player.seek(this.player.duration() - 1)
+        this.player.play()
+      } else {
         this.player.nextVideo()
-      })
-      this.player.pause()
+      }
     },
 
     updateIndex (index) {
