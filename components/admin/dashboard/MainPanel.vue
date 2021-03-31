@@ -71,7 +71,7 @@
               </v-card>
             </v-col>
             <v-col cols="12" md="4">
-              <v-card>
+              <v-card class="mx-3">
                 <v-card-text>
                   <label class="font-weight-bold">Churn Rate</label>
                   <v-row align="center">
@@ -109,9 +109,9 @@
             </v-col>
             <v-col cols="12" md="4">
               <v-row>
-                <v-col cols="12" class="mx-3">
+                <v-col cols="12">
                   <v-row align="center">
-                    <v-card>
+                    <v-card class="mx-3">
                       <v-card-text>
                         <label class="font-weight-bold">Active Users Today</label>
                         <v-col
