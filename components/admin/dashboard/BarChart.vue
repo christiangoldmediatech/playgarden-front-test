@@ -49,7 +49,6 @@ export default {
  * don't forget to provide a size for the container).
  */
 .echarts {
-  width: 100%;
-  max-width: 500px !important;
+  width: 100% !important;
 }
 </style>

@@ -6,7 +6,7 @@
           <v-card-title>
             General Dashboard
             <v-spacer />
-            <v-btn
+            <!-- <v-btn
               class="mr-2 text-none"
               color="accent darken-1"
               dark
@@ -15,7 +15,7 @@
               :to="{ name: 'admin-curriculum-management-editor' }"
             >
               <span class="hidden-xs-only white--text">Back</span>
-            </v-btn>
+            </v-btn> -->
           </v-card-title>
         </v-card>
       </v-col>
@@ -26,6 +26,7 @@
         <v-card>
           <v-row class="fill-height">
             <v-col cols="12" md="6">
+              <!-- Conversions funnel -->
               <v-card class="mx-3 content-dashboard">
                 <v-card-text class="pt-10">
                   <label class="font-weight-bold">Conversions funnel</label> <br />
@@ -33,6 +34,7 @@
                   <funnel-chart class="pt-10" :funnel-data="funnel" />
                 </v-card-text>
               </v-card>
+              <!-- End Conversions funnel -->
             </v-col>
             <v-col cols="12" md="6">
               <v-row no-gutters class="mx-3">
@@ -59,18 +61,23 @@
                       </v-row>
                     </v-card-text>
                   </v-card>
+
+                  <!-- Total Users Per Plan -->
                   <v-card class="mt-4">
                     <pie-chart :pie-data="usersPerPlan" />
                   </v-card>
+                  <!-- End Total Users Per Plan -->
                 </v-col>
               </v-row>
             </v-col>
           </v-row>
           <v-row>
             <v-col cols="12" md="8">
+              <!-- Users per status -->
               <v-card class="mx-3">
                 <pie-chart :pie-data="stripeStatus" />
               </v-card>
+              <!-- End Users per status -->
             </v-col>
             <v-col cols="12" md="4">
               <v-card class="mx-3">
@@ -105,9 +112,11 @@
           </v-row>
           <v-row>
             <v-col cols="12" md="8">
+              <!-- Active Users Time Line -->
               <v-card class="mx-3">
                 <time-line-chart :time-line-data="dailyUsers" />
               </v-card>
+              <!-- End Active Users Time Line -->
             </v-col>
             <v-col cols="12" md="4">
               <v-row class="content-dashboard mx-3" align="center">
@@ -131,6 +140,9 @@
           <v-row>
             <v-col cols="12">
               <v-card class="mx-3">
+                <v-row class="ml-4 pt-4">
+                  <label class="font-weight-bold text-h5">Student Progress</label> <br />
+                </v-row>
                 <v-row justify="end" class="mx-3">
                   <v-col cols="5">
                     <v-card>
@@ -141,7 +153,11 @@
                     </v-card>
                   </v-col>
                 </v-row>
-                <bar-chart :bar-data="childsByLetter" />
+                <!-- Student progress -->
+                <div width="100%">
+                  <bar-chart :bar-data="childsByLetter" />
+                </div>
+                <!-- End Student progress -->
               </v-card>
             </v-col>
           </v-row>
