@@ -170,8 +170,6 @@ import MenuItem from '@/components/admin/MenuItem'
 export default {
   name: 'Admin',
 
-  middleware: ['checkJWT'],
-
   components: {
     AdminSnackBar,
     GradesEditorDialog,
