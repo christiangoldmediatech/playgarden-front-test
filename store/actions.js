@@ -80,8 +80,8 @@ export default {
     }
   },
 
-  async initAuth ({ dispatch }, context) {
-    const isUnauthenticatedRoute = !!unauthenticatedRoutes[context.$route.name]
+  async initApp ({ dispatch }, { $route, $router }) {
+    const isUnauthenticatedRoute = !!unauthenticatedRoutes[$route.name]
     let isLoggedIn = await dispatch('auth/checkAuth', undefined, { root: true })
 
     if (!isLoggedIn) {
@@ -92,19 +92,19 @@ export default {
 
     if (isLoggedIn) {
       await dispatch('auth/fetchUserInfo', undefined, { root: true })
-      await dispatch('pickChild', context, { root: true })
+      await dispatch('pickChild', { $route, $router }, { root: true })
     } else if (isUnauthenticatedRoute) {
       await dispatch('auth/logout', undefined, { root: true })
     }
   },
 
-  async pickChild ({ dispatch, getters }, context) {
-    const isAppRoute = /^app-.*$/.test(context.$route.name)
+  async pickChild ({ dispatch, getters }, { $router, $route }) {
+    const isAppRoute = /^app-.*$/.test($route.name)
     let child = getters.getCurrentChild
     let childExpires = getters.getCurrentChildExpires
 
     const shouldRedirectToPickChild =
-      !parentSubscriptionWhitelistedRoutes[context.$route.name] &&
+      !parentSubscriptionWhitelistedRoutes[$route.name] &&
       !child &&
       isAppRoute
 
@@ -153,12 +153,12 @@ export default {
 
     // if no child is selected in server or client
     if (!child || !childExpires || now >= childExpires) {
-      context.$router.push({
+      $router.push({
         name: 'app-pick-child',
         query: {
           _time: now,
           redirect: encodeURIComponent(
-            context.$route.fullPath
+            $route.fullPath
           )
         }
       })
