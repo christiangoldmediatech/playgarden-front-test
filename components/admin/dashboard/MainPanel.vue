@@ -245,7 +245,7 @@ export default {
 
         this.childsByLetter = {
           xAxios: childsByLetter.letters,
-          data: childsByLetter.childs.map(data => Number(data))
+          data: childsByLetter.childs
         }
         this.childrenTotal = childrenTotal
       } catch (e) {
