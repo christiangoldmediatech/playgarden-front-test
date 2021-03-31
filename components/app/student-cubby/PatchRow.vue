@@ -18,7 +18,9 @@
         <patch
           v-for="patch in activityType.patches"
           :key="`activityType-${activityType.id}-patch-${patch.id}`"
-          v-bind="{ patch }"
+          :patch="patch"
+          :to-unlock="activityType.toUnlock"
+          :should-show-progress="isNextPatchToUnlock(patch.id)"
           class="mb-6"
         />
       </template>
@@ -28,7 +30,9 @@
           <patch
             v-for="patch in activityType.patches"
             :key="`activityType-${activityType.id}-patch-${patch.id}`"
-            v-bind="{ patch }"
+            :patch="patch"
+            :to-unlock="activityType.toUnlock"
+            :should-show-progress="isNextPatchToUnlock(patch.id)"
             class="mb-6"
           />
         </v-row>
@@ -53,6 +57,18 @@ export default {
     activityType: {
       type: Object,
       required: true
+    }
+  },
+
+  computed: {
+    nextPatchToUnlock () {
+      return this.activityType.patches.find(patch => patch.unblocked === false) ?? {}
+    }
+  },
+
+  methods: {
+    isNextPatchToUnlock (id) {
+      return id === this.nextPatchToUnlock.id
     }
   }
 }
