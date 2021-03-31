@@ -1,18 +1,18 @@
 <template>
   <v-app>
-    <coming-soon-player />
-    <!-- APP MAV & BAR -->
-    <app-navigation />
-
-    <application-header />
-
-    <!-- NOTIFICATION CARD -->
-    <notification-card />
-    <!-- SHIPPING NOTIFICATION MODAL -->
-    <shipping-address-modal />
-
-    <!-- CONTENT -->
     <template v-if="showContent">
+      <coming-soon-player />
+      <!-- APP MAV & BAR -->
+      <app-navigation />
+
+      <application-header />
+
+      <!-- NOTIFICATION CARD -->
+      <notification-card />
+      <!-- SHIPPING NOTIFICATION MODAL -->
+      <shipping-address-modal />
+
+      <!-- CONTENT -->
       <v-main v-if="!fullWidth">
         <v-container class="pa-md-3 pa-0" fill-height>
           <nuxt />
@@ -20,16 +20,24 @@
       </v-main>
 
       <nuxt v-else />
+
+      <!-- FOOTER -->
+      <default-footer />
+
+      <notify-event />
+
+      <prompt-dialog />
+
+      <coming-soon-dialog :showing="isComingSoonDialogOpen" />
     </template>
 
-    <!-- FOOTER -->
-    <default-footer />
-
-    <notify-event />
-
-    <prompt-dialog />
-
-    <coming-soon-dialog :showing="isComingSoonDialogOpen" />
+    <template v-else>
+      <v-main>
+        <v-container fill-height fluid>
+          <pg-loading />
+        </v-container>
+      </v-main>
+    </template>
   </v-app>
 </template>
 
@@ -43,7 +51,6 @@ import ComingSoonPlayer from '@/components/app/ComingSoonPlayer.vue'
 import DefaultFooter from '@/components/app/footer/DefaultFooter'
 import NotificationCard from '@/components/app/notifications/NotificationCard'
 import ShippingAddressModal from '~/components/app/payment/ShippingAddressModal.vue'
-import unauthenticatedRoutes from '~/utils/consts/unauthenticatedRoutes.json'
 
 export default {
   name: 'Default',
@@ -95,35 +102,12 @@ export default {
     // Commented requested by Natalia
     // this.showVerifyEmailToast()
 
-    await this.initAuth()
+    await this.$store.dispatch('initAuth', this)
+    this.showContent = true
   },
 
   methods: {
     ...mapActions('notifications', ['checkUserShippingAddressAndNotify']),
-
-    async initAuth () {
-      try {
-        this.showContent = false
-
-        const isUnauthenticatedRoute = !!unauthenticatedRoutes[this.$route.name]
-        let isLoggedIn = await this.$store.dispatch('auth/checkAuth')
-
-        if (!isLoggedIn) {
-          await this.$store.dispatch('auth/restoreAuthFromSessionStorage')
-        }
-
-        isLoggedIn = await this.$store.dispatch('auth/checkAuth')
-
-        if (isLoggedIn) {
-          await this.$store.dispatch('auth/fetchUserInfo', undefined, { root: true })
-          await this.$store.dispatch('pickChild', this, { root: true })
-        } else if (isUnauthenticatedRoute) {
-          await this.$store.dispatch('auth/logout', undefined, { root: true })
-        }
-      } finally {
-        this.showContent = true
-      }
-    },
 
     showVerifyEmailToast () {
       if (
