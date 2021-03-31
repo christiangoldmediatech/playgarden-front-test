@@ -161,8 +161,11 @@ export default {
     },
 
     updateIndex (index) {
-      this.index = index
-      this.$router.push(this.generateNuxtRoute('lesson-videos', { id: this.playlist[index].videoId }))
+      if (this.index !== index) {
+        this.index = index
+        const route = this.generateNuxtRoute('lesson-videos', { id: this.playlist[index].videoId })
+        this.$router.push(route)
+      }
     },
 
     showCompletedDialog () {

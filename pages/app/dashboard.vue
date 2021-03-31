@@ -143,7 +143,6 @@ export default {
             name: 'app-all-done'
           })
         }
-        return Promise.reject(e)
       } finally {
         this.loading = false
       }

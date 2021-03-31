@@ -265,10 +265,6 @@ export default {
   computed: {
     ...mapGetters('children/lesson', { nextLessonId: 'getNextLessonId', currentLessonId: 'getCurrentLessonId', previousLessonId: 'getPreviousLessonId' }),
 
-    overrideMode () {
-      return !!(this.customOverrides.childId && this.customOverrides.lessonId)
-    },
-
     offlineWorksheet () {
       if (this.lesson) {
         return this.lesson.worksheets.find(({ type }) => type === 'OFFLINE')
@@ -319,19 +315,17 @@ export default {
       }
     },
 
-    advance () {
+    async advance () {
       try {
         if (!this.loadingNext) {
-          this.loadingNext = true
           if (this.currentLessonId === this.lesson.id) {
-            this.getAdvanceLessonChildren(this.childId).then(() => {
-              this.$router.push({
-                name: 'app-dashboard'
-              },
-              () => {
-                this.$nuxt.$emit('dashboard-panel-update-redirect', () => {
-                  this.loadingNext = false
-                })
+            await this.getAdvanceLessonChildren(this.childId)
+            this.$router.push({
+              name: 'app-dashboard'
+            },
+            () => {
+              this.$nuxt.$emit('dashboard-panel-update-redirect', () => {
+                this.loadingNext = false
               })
             })
           } else {
@@ -350,7 +344,7 @@ export default {
           }
         }
       } catch (e) {
-        if (e && e.errorCode === 100 && !this.overrideMode) {
+        if (e && e.errorCode === 100) {
           this.$router.push({
             name: 'app-all-done'
           })
