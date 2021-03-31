@@ -100,8 +100,35 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col cols="12">
+            <v-col cols="12" md="8">
               <time-line-chart :time-line-data="dailyUsers" title="Active Users Time Line" />
+            </v-col>
+            <v-col cols="12" md="4">
+              <v-row>
+                <v-col cols="12" class="mx-3">
+                  <v-row align="center">
+                    <v-card>
+                      <v-card-text>
+                        <label class="font-weight-bold">Active Users Today</label>
+                        <v-col
+                          class="display-3"
+                          cols="12"
+                        >
+                          <center>
+                            <label class="font-weight-bold total-users">{{ activeUsers.today }}</label> <br />
+                            <span class="text-h5"> Users </span>
+                          </center>
+                        </v-col>
+                      </v-card-text>
+                    </v-card>
+                  </v-row>
+                </v-col>
+              </v-row>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12">
+              <bar-chart :bar-data="childsByLetter" />
             </v-col>
           </v-row>
         </v-card>
@@ -115,13 +142,15 @@ import { mapActions } from 'vuex'
 import FunnelChart from './FunnelChart.vue'
 import PieChart from './PieChart.vue'
 import TimeLineChart from './TimeLineChart.vue'
+import BarChart from './BarChart.vue'
 export default {
   name: 'MainPanel',
 
   components: {
     FunnelChart,
     PieChart,
-    TimeLineChart
+    TimeLineChart,
+    BarChart
   },
 
   data: () => ({
@@ -141,7 +170,11 @@ export default {
       users: []
     },
     stripeStatus: [],
-    totalUsersPie: {}
+    totalUsersPie: {},
+    childsByLetter: {
+      letters: [],
+      childs: []
+    }
   }),
 
   computed: {},
@@ -161,13 +194,14 @@ export default {
         this.search = ''
       }
       try {
-        const { dataFunnel, usersTotal, usersPerPlan, stripeStatus, activeUsers, dailyUsers } = await this.getDashboard({})
+        const { dataFunnel, usersTotal, usersPerPlan, stripeStatus, activeUsers, dailyUsers, childsByLetter } = await this.getDashboard({})
         this.funnel = dataFunnel
         this.usersTotal = usersTotal
         this.usersPerPlan = usersPerPlan
         this.stripeStatus = stripeStatus
         this.activeUsers = activeUsers
         this.dailyUsers = dailyUsers
+        this.childsByLetter = childsByLetter
       } catch (e) {
       } finally {
         this.loading = false
