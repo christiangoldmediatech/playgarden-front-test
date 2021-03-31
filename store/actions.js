@@ -1,5 +1,6 @@
 import { hasLocalStorage } from '@/utils/window'
 import parentSubscriptionWhitelistedRoutes from '~/utils/consts/parentSubscriptionWhitelistedRoutes.json'
+import unauthenticatedRoutes from '~/utils/consts/unauthenticatedRoutes.json'
 
 export default {
   disableAxiosGlobal: ({ commit }, { autoEnableIn = 30 } = {}) => {
@@ -79,6 +80,24 @@ export default {
     }
   },
 
+  async initAuth ({ dispatch }, context) {
+    const isUnauthenticatedRoute = !!unauthenticatedRoutes[context.$route.name]
+    let isLoggedIn = await dispatch('auth/checkAuth', undefined, { root: true })
+
+    if (!isLoggedIn) {
+      await dispatch('auth/restoreAuthFromSessionStorage', undefined, { root: true })
+    }
+
+    isLoggedIn = await dispatch('auth/checkAuth', undefined, { root: true })
+
+    if (isLoggedIn) {
+      await dispatch('auth/fetchUserInfo', undefined, { root: true })
+      await dispatch('pickChild', context, { root: true })
+    } else if (isUnauthenticatedRoute) {
+      await dispatch('auth/logout', undefined, { root: true })
+    }
+  },
+
   async pickChild ({ dispatch, getters }, context) {
     const isAppRoute = /^app-.*$/.test(context.$route.name)
     let child = getters.getCurrentChild
@@ -122,7 +141,6 @@ export default {
 
     const now = new Date().getTime()
 
-    /** CLIENT SIDE */
     let storedData = window.localStorage.getItem('selectedChild')
 
     if (storedData) {
