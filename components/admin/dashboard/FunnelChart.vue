@@ -1,5 +1,5 @@
 <template>
-  <chart ref="funnel-chart" :graph="getFormatGraph" />
+  <chart ref="funnel-chart" :graph="getFormatGraph" :autoresize="resize" />
 </template>
 
 <script>
@@ -42,9 +42,9 @@ export default {
             name: 'Conversions funnel',
             type: 'funnel',
             left: '10%',
-            top: 60,
+            top: 70,
             // x2: 80,
-            bottom: 60,
+            bottom: 50,
             width: '80%',
             // height: {totalHeight} - y - y2,
             min: 0,
@@ -90,6 +90,6 @@ export default {
  */
 .echarts {
   width: 100%;
-  height: 700px;
+  /* height: 700px !important; */
 }
 </style>

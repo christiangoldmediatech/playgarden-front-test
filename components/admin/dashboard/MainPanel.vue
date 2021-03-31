@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="12">
+      <v-col cols="12" class="content-dashboard">
         <v-card width="100%">
           <v-card-title>
             General Dashboard
@@ -21,13 +21,15 @@
       </v-col>
     </v-row>
 
-    <v-row>
+    <v-row no-gutters>
       <v-col cols="12">
         <v-card>
-          <v-row>
+          <v-row class="fill-height">
             <v-col cols="12" md="6">
               <v-card class="mx-3">
-                <funnel-chart :funnel-data="funnel" />
+                <v-card-text class="pt-10">
+                  <funnel-chart :funnel-data="funnel" />
+                </v-card-text>
               </v-card>
             </v-col>
             <v-col cols="12" md="6">
@@ -64,7 +66,7 @@
           </v-row>
           <v-row>
             <v-col cols="12" md="8">
-              <v-card>
+              <v-card class="mx-3">
                 <pie-chart :pie-data="stripeStatus" />
               </v-card>
             </v-col>
@@ -101,7 +103,9 @@
           </v-row>
           <v-row>
             <v-col cols="12" md="8">
-              <time-line-chart :time-line-data="dailyUsers" />
+              <v-card class="mx-3">
+                <time-line-chart :time-line-data="dailyUsers" />
+              </v-card>
             </v-col>
             <v-col cols="12" md="4">
               <v-row>
@@ -128,7 +132,9 @@
           </v-row>
           <v-row>
             <v-col cols="12">
-              <bar-chart :bar-data="childsByLetter" />
+              <v-card class="mx-3">
+                <bar-chart :bar-data="childsByLetter" />
+              </v-card>
             </v-col>
           </v-row>
         </v-card>
@@ -244,6 +250,10 @@ export default {
 <style>
 .header-dashboard {
   max-height: 500px !important;
+}
+
+.content-dashboard {
+  height: 100% !important;
 }
 
 .total-users {

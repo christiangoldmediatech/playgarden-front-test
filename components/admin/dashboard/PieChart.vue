@@ -68,6 +68,6 @@ export default {
  */
 .echarts {
   width: 100%;
-  max-width: 500px !important;
+  height: 300px !important;
 }
 </style>
