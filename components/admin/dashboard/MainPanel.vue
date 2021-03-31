@@ -135,6 +135,16 @@
           <v-row>
             <v-col cols="12">
               <v-card class="mx-3">
+                <v-row justify="end" class="mx-3">
+                  <v-col cols="5">
+                    <v-card>
+                      <center class="py-4">
+                        <label class="font-weight-bold text-h5">Total Students:</label>
+                        <span class="font-weight-bold total-users text-h5">{{ childrenTotal }}</span>
+                      </center>
+                    </v-card>
+                  </v-col>
+                </v-row>
                 <bar-chart :bar-data="childsByLetter" />
               </v-card>
             </v-col>
@@ -189,6 +199,7 @@ export default {
       data: []
     },
     totalUsersPie: {},
+    childrenTotal: 0,
     childsByLetter: {
       xAxios: [],
       data: []
@@ -212,7 +223,7 @@ export default {
         this.search = ''
       }
       try {
-        const { dataFunnel, usersTotal, usersPerPlan, stripeStatus, activeUsers, dailyUsers, childsByLetter } = await this.getDashboard({})
+        const { dataFunnel, usersTotal, usersPerPlan, stripeStatus, activeUsers, dailyUsers, childsByLetter, childrenTotal } = await this.getDashboard({})
         this.funnel = {
           title: 'Conversions funnel',
           subtitle: 'The conversions will be shown here',
@@ -240,6 +251,7 @@ export default {
           xAxios: childsByLetter.letters,
           data: childsByLetter.childs.map(data => Number(data))
         }
+        this.childrenTotal = childrenTotal
       } catch (e) {
       } finally {
         this.loading = false
