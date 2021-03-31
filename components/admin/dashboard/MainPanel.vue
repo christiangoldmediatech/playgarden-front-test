@@ -26,9 +26,11 @@
         <v-card>
           <v-row class="fill-height">
             <v-col cols="12" md="6">
-              <v-card class="mx-3">
+              <v-card class="mx-3 content-dashboard">
                 <v-card-text class="pt-10">
-                  <funnel-chart :funnel-data="funnel" />
+                  <label class="font-weight-bold">Conversions funnel</label> <br />
+                  <span>The conversions will be shown here.</span>
+                  <funnel-chart class="pt-10" :funnel-data="funnel" />
                 </v-card-text>
               </v-card>
             </v-col>
