@@ -110,25 +110,21 @@
               </v-card>
             </v-col>
             <v-col cols="12" md="4">
-              <v-row>
-                <v-col cols="12">
-                  <v-row align="center">
-                    <v-card class="mx-3">
-                      <v-card-text>
-                        <label class="font-weight-bold">Active Users Today</label>
-                        <v-col
-                          class="display-3"
-                          cols="12"
-                        >
-                          <center>
-                            <label class="font-weight-bold total-users">{{ activeUsers.today }}</label> <br />
-                            <span class="text-h5"> Users </span>
-                          </center>
-                        </v-col>
-                      </v-card-text>
-                    </v-card>
-                  </v-row>
-                </v-col>
+              <v-row class="content-dashboard mx-3" align="center">
+                <v-card width="100%" height="100%">
+                  <v-card-text class="py-14">
+                    <label class="font-weight-bold">Active Users Today</label>
+                    <v-col
+                      class="display-3"
+                      cols="12"
+                    >
+                      <center class="mt-3">
+                        <label class="font-weight-bold total-users">{{ activeUsers.today }}</label> <br />
+                        <span class="text-h5"> Users </span>
+                      </center>
+                    </v-col>
+                  </v-card-text>
+                </v-card>
               </v-row>
             </v-col>
           </v-row>
