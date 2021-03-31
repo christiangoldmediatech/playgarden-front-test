@@ -87,7 +87,7 @@
               <!-- End Users per status -->
             </v-col>
             <v-col cols="12" md="5">
-              <v-card class="mx-3">
+              <v-card class="mx-3 content-dashboard">
                 <v-card-text>
                   <label class="font-weight-bold">Churn Rate</label>
                   <v-row align="center">
