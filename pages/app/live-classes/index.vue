@@ -81,7 +81,7 @@
 
     <recorded-class-player />
 
-    <v-dialog
+    <pg-dialog
       :value="!hasTrialOrPlatinumPlan"
       content-class="elevation-0"
       :fullscreen="fullscreen"
@@ -140,7 +140,7 @@
           </v-row>
         </v-col>
       </v-card>
-    </v-dialog>
+    </pg-dialog>
   </v-main>
 </template>
 

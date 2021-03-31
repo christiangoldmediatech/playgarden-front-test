@@ -1,5 +1,5 @@
 <template>
-  <v-overlay :dark="false" :value="value" z-index="800">
+  <v-overlay :dark="false" :value="value" z-index="4000">
     <v-card class="piece-earned-card" max-width="1124px">
       <div class="green-line-bigger green-line-1" />
       <div class="green-line-bigger green-line-2" />

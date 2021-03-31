@@ -1,5 +1,5 @@
 <template>
-  <v-dialog
+  <pg-dialog
     v-model="dialog"
     width="auto"
     max-width="784"
@@ -70,7 +70,7 @@
         </div>
       </v-card-text>
     </v-card>
-  </v-dialog>
+  </pg-dialog>
 </template>
 
 <script>

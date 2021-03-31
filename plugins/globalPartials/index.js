@@ -30,6 +30,10 @@ import PgDataFooter from '@/components/pg/components/tables/PgDataFooter.vue'
 import PgDataIterator from '@/components/pg/components/tables/PgDataIterator.vue'
 import PgDataTable from '@/components/pg/components/tables/PgDataTable.vue'
 
+// Pg Dialogs
+import PgDialog from '@/components/pg/components/dialogs/PgDialog.vue'
+import PgVideoDialog from '@/components/pg/components/dialogs/PgVideoDialog.vue'
+
 // Other global components
 import FileUploader from './file-uploader/FileUploader'
 import SelectDropboxFile from './file-uploader/SelectDropboxFile.vue'
@@ -64,6 +68,10 @@ Vue.component(PgSelect.name, PgSelect)
 Vue.component(PgTextarea.name, PgTextarea)
 Vue.component(PgTextField.name, PgTextField)
 Vue.component(PgTiptapField.name, PgTiptapField)
+
+// PG Dialogs
+Vue.component(PgDialog.name, PgDialog)
+Vue.component(PgVideoDialog.name, PgVideoDialog)
 
 // PG Tables
 Vue.component(PgDataFooter.name, PgDataFooter)

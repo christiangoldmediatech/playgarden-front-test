@@ -82,7 +82,7 @@
       Edit
     </v-btn>
 
-    <v-dialog
+    <pg-dialog
       v-if="isEditing"
       v-model="passwordModal"
       content-class="white"
@@ -116,7 +116,7 @@
           @update:success="passwordModal = false"
         />
       </v-col>
-    </v-dialog>
+    </pg-dialog>
 
     <!-- Social buttons before sync -->
     <v-row v-if="!userInfo.socialNetwork && !userInfo.socialNetworkId" no-gutters>

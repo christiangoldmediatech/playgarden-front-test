@@ -3,7 +3,7 @@
     :class="`${loading ? 'align-center justify-center' : 'align-start justify-start'}`"
     :dark="false"
     :value="show"
-    z-index="7"
+    z-index="2000"
   >
     <v-btn
       class="top-left text-none white--text px-4"
