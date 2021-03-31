@@ -177,6 +177,11 @@ export default {
 
       menuItems: [
         {
+          icon: 'mdi-chart-bar',
+          title: 'Dashboard',
+          route: '/admin/dashboard'
+        },
+        {
           icon: 'mdi-television-play',
           title: 'Activities management',
           route: '/admin/activity-management'
