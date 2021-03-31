@@ -11,14 +11,9 @@ export default {
   },
   props: {
     pieData: {
-      type: Array,
+      type: Object,
       required: true,
       default: () => ({})
-    },
-    title: {
-      type: String,
-      required: true,
-      default: ''
     }
   },
   data () {
@@ -30,7 +25,7 @@ export default {
     getFormatGraph () {
       return {
         title: {
-          text: this.title,
+          text: this.pieData.title,
           left: 'center'
         },
         tooltip: {
@@ -41,7 +36,7 @@ export default {
           bottom: 10,
           orient: 'vertical',
           left: 'left',
-          data: (this.pieData) ? this.pieData.map(data => data.name) : []
+          data: (this.pieData.data) ? this.pieData.data.map(data => data.name) : []
         },
         series: [
           {
@@ -49,7 +44,7 @@ export default {
             type: 'pie',
             center: ['50%', '50%'],
             radius: '50%',
-            data: (this.pieData) ? this.pieData : [],
+            data: (this.pieData.data) ? this.pieData.data : [],
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,

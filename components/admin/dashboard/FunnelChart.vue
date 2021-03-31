@@ -11,19 +11,9 @@ export default {
   },
   props: {
     funnelData: {
-      type: Array,
+      type: Object,
       required: true,
       default: () => ({})
-    },
-    title: {
-      type: String,
-      required: true,
-      default: ''
-    },
-    subtitle: {
-      type: String,
-      required: true,
-      default: ''
     }
   },
   data () {
@@ -35,8 +25,8 @@ export default {
     getFormatGraph () {
       return {
         title: {
-          text: this.title,
-          subtext: this.subtitle
+          text: this.funnelData.title,
+          subtext: this.funnelData.subtitle
         },
         tooltip: {
           trigger: 'item',
@@ -45,7 +35,7 @@ export default {
         legend: {
           orient: 'vertical',
           right: 'right',
-          data: (this.funnelData) ? this.funnelData.map(data => data.name) : []
+          data: (this.funnelData.data) ? this.funnelData.data.map(data => data.name) : []
         },
         series: [
           {
@@ -83,7 +73,7 @@ export default {
                 fontSize: 20
               }
             },
-            data: (this.funnelData) ? this.funnelData : []
+            data: (this.funnelData.data) ? this.funnelData.data : []
           }
         ]
       }

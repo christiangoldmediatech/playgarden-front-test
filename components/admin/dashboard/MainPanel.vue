@@ -27,7 +27,7 @@
           <v-row>
             <v-col cols="12" md="6">
               <v-card class="mx-3">
-                <funnel-chart :funnel-data="funnel" title="Conversions funnel" subtitle="The conversions will be shown here" />
+                <funnel-chart :funnel-data="funnel" />
               </v-card>
             </v-col>
             <v-col cols="12" md="6">
@@ -56,7 +56,7 @@
                     </v-card-text>
                   </v-card>
                   <v-card class="mt-4">
-                    <pie-chart :pie-data="usersPerPlan" title="Total Users Per Plan" />
+                    <pie-chart :pie-data="usersPerPlan" />
                   </v-card>
                 </v-col>
               </v-row>
@@ -65,7 +65,7 @@
           <v-row>
             <v-col cols="12" md="8">
               <v-card>
-                <pie-chart :pie-data="stripeStatus" title="Users per status" />
+                <pie-chart :pie-data="stripeStatus" />
               </v-card>
             </v-col>
             <v-col cols="12" md="4">
@@ -101,7 +101,7 @@
           </v-row>
           <v-row>
             <v-col cols="12" md="8">
-              <time-line-chart :time-line-data="dailyUsers" title="Active Users Time Line" />
+              <time-line-chart :time-line-data="dailyUsers" />
             </v-col>
             <v-col cols="12" md="4">
               <v-row>
@@ -155,7 +155,11 @@ export default {
 
   data: () => ({
     loading: false,
-    funnel: [],
+    funnel: {
+      title: '',
+      subtitle: '',
+      data: []
+    },
     usersTotal: {
       totalUsers: 0,
       increment: 0
@@ -164,16 +168,22 @@ export default {
       today: 0,
       last7Days: 0
     },
-    usersPerPlan: [],
-    dailyUsers: {
-      date: [],
-      users: []
+    usersPerPlan: {
+      title: '',
+      data: []
     },
-    stripeStatus: [],
+    dailyUsers: {
+      xAxios: [],
+      data: []
+    },
+    stripeStatus: {
+      title: '',
+      data: []
+    },
     totalUsersPie: {},
     childsByLetter: {
-      letters: [],
-      childs: []
+      xAxios: [],
+      data: []
     }
   }),
 
@@ -195,13 +205,33 @@ export default {
       }
       try {
         const { dataFunnel, usersTotal, usersPerPlan, stripeStatus, activeUsers, dailyUsers, childsByLetter } = await this.getDashboard({})
-        this.funnel = dataFunnel
+        this.funnel = {
+          title: 'Conversions funnel',
+          subtitle: 'The conversions will be shown here',
+          data: dataFunnel
+        }
+
         this.usersTotal = usersTotal
-        this.usersPerPlan = usersPerPlan
-        this.stripeStatus = stripeStatus
+        this.usersPerPlan = {
+          title: 'Total Users Per Plan',
+          data: usersPerPlan
+        }
+        this.stripeStatus = {
+          title: 'Users per status',
+          data: stripeStatus
+        }
         this.activeUsers = activeUsers
-        this.dailyUsers = dailyUsers
-        this.childsByLetter = childsByLetter
+
+        this.dailyUsers = {
+          title: 'Active Users Time Line',
+          xAxios: dailyUsers.date,
+          data: dailyUsers.users
+        }
+
+        this.childsByLetter = {
+          xAxios: childsByLetter.letters,
+          data: childsByLetter.childs.map(data => Number(data))
+        }
       } catch (e) {
       } finally {
         this.loading = false

@@ -14,11 +14,6 @@ export default {
       type: Object,
       required: true,
       default: () => ({})
-    },
-    title: {
-      type: String,
-      required: true,
-      default: ''
     }
   },
   data () {
@@ -30,7 +25,7 @@ export default {
     getFormatGraph () {
       return {
         title: {
-          text: this.title
+          text: this.timeLineData.title
         },
         tooltip: {
           trigger: 'axis',
@@ -51,7 +46,7 @@ export default {
           {
             type: 'category',
             boundaryGap: false,
-            data: this.timeLineData.date
+            data: this.timeLineData.xAxios
           }
         ],
         yAxis: [
@@ -68,7 +63,7 @@ export default {
             emphasis: {
               focus: 'series'
             },
-            data: this.timeLineData.users
+            data: this.timeLineData.data
           }
         ]
       }

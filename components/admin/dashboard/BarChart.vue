@@ -26,13 +26,13 @@ export default {
       return {
         xAxis: {
           type: 'category',
-          data: (this.barData.letters) ? this.barData.letters : []
+          data: (this.barData.xAxios) ? this.barData.xAxios : []
         },
         yAxis: {
           type: 'value'
         },
         series: [{
-          data: (this.barData.childs) ? this.barData.childs.map(data => Number(data)) : [],
+          data: (this.barData.data) ? this.barData.data : [],
           type: 'bar'
         }]
       }
