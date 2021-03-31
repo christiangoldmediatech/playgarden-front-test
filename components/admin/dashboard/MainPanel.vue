@@ -99,6 +99,11 @@
               </v-card>
             </v-col>
           </v-row>
+          <v-row>
+            <v-col cols="12">
+              <time-line-chart />
+            </v-col>
+          </v-row>
         </v-card>
       </v-col>
     </v-row>
@@ -109,12 +114,14 @@
 import { mapActions } from 'vuex'
 import FunnelChart from './FunnelChart.vue'
 import PieChart from './PieChart.vue'
+import TimeLineChart from './TimeLineChart.vue'
 export default {
   name: 'MainPanel',
 
   components: {
     FunnelChart,
-    PieChart
+    PieChart,
+    TimeLineChart
   },
 
   data: () => ({
