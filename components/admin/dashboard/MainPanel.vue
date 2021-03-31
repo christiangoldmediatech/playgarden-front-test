@@ -71,6 +71,21 @@
               </v-row>
             </v-col>
           </v-row>
+          <v-row class="mx-1">
+            <!-- Plans-->
+            <v-col
+              cols="12"
+              v-for="(plan, i) in planActiveInactive"
+              :key="`plan-item-${i}`"
+              md="3"
+            >
+              <v-card class="content-dashboard">
+                <label class="font-weight-bold ml-3 mt-3 text-h7">{{ plan.name }}</label>
+                <pie-chart :pie-data="plan" />
+              </v-card>
+            </v-col>
+            <!-- End Plans-->
+          </v-row>
           <v-row>
             <v-col cols="12" md="8">
               <!-- Users per status -->
@@ -210,6 +225,7 @@ export default {
       title: '',
       data: []
     },
+    planActiveInactive: [],
     totalUsersPie: {},
     childrenTotal: 0,
     childsByLetter: {
@@ -235,7 +251,7 @@ export default {
         this.search = ''
       }
       try {
-        const { dataFunnel, usersTotal, usersPerPlan, stripeStatus, activeUsers, dailyUsers, childsByLetter, childrenTotal } = await this.getDashboard({})
+        const { dataFunnel, usersTotal, usersPerPlan, stripeStatus, activeUsers, dailyUsers, childsByLetter, childrenTotal, planActiveInactive } = await this.getDashboard({})
         this.funnel = {
           title: 'Conversions funnel',
           subtitle: 'The conversions will be shown here',
@@ -252,6 +268,7 @@ export default {
           data: stripeStatus
         }
         this.activeUsers = activeUsers
+        this.planActiveInactive = planActiveInactive
 
         this.dailyUsers = {
           title: 'Active Users Time Line',
