@@ -112,14 +112,16 @@ export default {
     },
 
     updateIndex (index) {
-      const nextVideo = jsonCopy(this.playlist[index])
-      const completedRoute = this.generateNuxtRoute('lesson-completed')
-      if (!nextVideo.ignoreVideoProgress || nextVideo.ignoreVideoProgress === false) {
-        this.$router.push(this.generateNuxtRoute('lesson-activities', { id: this.playlist[index].activityId }))
-      } else if (this.$route.name !== completedRoute.name && this.lessonCompleted) {
-        this.$router.push(completedRoute)
+      if (this.index !== index) {
+        const nextVideo = jsonCopy(this.playlist[index])
+        const completedRoute = this.generateNuxtRoute('lesson-completed')
+        if (!nextVideo.ignoreVideoProgress || nextVideo.ignoreVideoProgress === false) {
+          this.$router.push(this.generateNuxtRoute('lesson-activities', { id: this.playlist[index].activityId }))
+        } else if (this.$route.name !== completedRoute.name && this.lessonCompleted) {
+          this.$router.push(completedRoute)
+        }
+        this.index = index
       }
-      this.index = index
     }
   }
 }
