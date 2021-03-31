@@ -24,6 +24,10 @@ export default {
   computed: {
     getFormatGraph () {
       return {
+        tooltip: {
+          trigger: 'item',
+          formatter: 'Letter <br/>{b} : {c}'
+        },
         xAxis: {
           type: 'category',
           data: (this.barData.xAxios) ? this.barData.xAxios : []

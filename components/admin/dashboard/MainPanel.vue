@@ -79,14 +79,14 @@
             <!-- End Plans-->
           </v-row>
           <v-row>
-            <v-col cols="12" md="8">
+            <v-col cols="12" md="7">
               <!-- Users per status -->
               <v-card class="mx-3">
                 <pie-chart :pie-data="stripeStatus" />
               </v-card>
               <!-- End Users per status -->
             </v-col>
-            <v-col cols="12" md="4">
+            <v-col cols="12" md="5">
               <v-card class="mx-3">
                 <v-card-text>
                   <label class="font-weight-bold">Churn Rate</label>
@@ -96,7 +96,7 @@
                         <v-icon x-large color="red lighten-1">
                           mdi-menu-up
                         </v-icon>
-                        <span>{{ activeUsers.last7Days }} % More than last two weeks</span>
+                        <span>0 % More than last two weeks</span>
                       </p>
                     </v-col>
                     <v-col
@@ -104,7 +104,7 @@
                       cols="12"
                     >
                       <center>
-                        <label class="font-weight-bold total-users">{{ activeUsers.today }}</label>
+                        <label class="font-weight-bold total-users">0</label>
                       </center>
                     </v-col>
                     <v-col cols="12">
@@ -127,16 +127,29 @@
             </v-col>
             <v-col cols="12" md="4">
               <v-row class="content-dashboard mx-3" align="center">
-                <v-card width="100%" height="100%">
-                  <v-card-text class="py-14">
+                <v-card width="100%" class="users-today-data">
+                  <v-card-text>
                     <label class="font-weight-bold title-dashboard">Active Users Today</label>
                     <v-col
-                      class="display-3"
                       cols="12"
                     >
-                      <center class="mt-3">
-                        <label class="font-weight-bold total-users">{{ activeUsers.today }}</label> <br />
-                        <span class="text-h5"> Users </span>
+                      <center>
+                        <label class="font-weight-bold display-3 total-users">{{ activeUsers.today }}</label> <br />
+                        <span class="text-dashboard"> Users </span>
+                      </center>
+                    </v-col>
+                  </v-card-text>
+                </v-card>
+
+                <v-card width="100%" class="users-today-data">
+                  <v-card-text>
+                    <label class="font-weight-bold title-dashboard">Active Users Per Week</label>
+                    <v-col
+                      cols="12"
+                    >
+                      <center>
+                        <label class="font-weight-bold display-3 total-users">{{ activeUsers.last7Days }}</label> <br />
+                        <span class="text-dashboard"> Users </span>
                       </center>
                     </v-col>
                   </v-card-text>
@@ -293,6 +306,14 @@ export default {
 
 .title-dashboard {
   color: #484848 !important;
+}
+
+.users-today-data {
+  max-height: 145px !important;
+}
+
+.text-dashboard {
+  font-size: 12px !important;
 }
 
 .total-users {
