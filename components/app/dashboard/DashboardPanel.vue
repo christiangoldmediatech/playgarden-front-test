@@ -265,6 +265,10 @@ export default {
   computed: {
     ...mapGetters('children/lesson', { nextLessonId: 'getNextLessonId', currentLessonId: 'getCurrentLessonId', previousLessonId: 'getPreviousLessonId' }),
 
+    overrideMode () {
+      return !!(this.customOverrides.childId && this.customOverrides.lessonId)
+    },
+
     offlineWorksheet () {
       if (this.lesson) {
         return this.lesson.worksheets.find(({ type }) => type === 'OFFLINE')
@@ -346,12 +350,13 @@ export default {
           }
         }
       } catch (e) {
-        if (e.errorCode === 100) {
-          this.loadingNext = false
+        if (e && e.errorCode === 100 && !this.overrideMode) {
           this.$router.push({
             name: 'app-all-done'
           })
         }
+      } finally {
+        this.loadingNext = false
       }
     }
   }
