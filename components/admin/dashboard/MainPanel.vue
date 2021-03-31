@@ -6,16 +6,6 @@
           <v-card-title>
             General Dashboard
             <v-spacer />
-            <!-- <v-btn
-              class="mr-2 text-none"
-              color="accent darken-1"
-              dark
-              :icon="$vuetify.breakpoint.xs"
-              nuxt
-              :to="{ name: 'admin-curriculum-management-editor' }"
-            >
-              <span class="hidden-xs-only white--text">Back</span>
-            </v-btn> -->
           </v-card-title>
         </v-card>
       </v-col>
@@ -80,8 +70,10 @@
               md="3"
             >
               <v-card class="content-dashboard">
-                <label class="font-weight-bold ml-3 mt-3 text-h7">{{ plan.name }}</label>
-                <pie-chart :pie-data="plan" />
+                <v-card-text>
+                  <label class="font-weight-bold">{{ plan.name }}</label>
+                  <pie-chart :pie-data="plan" />
+                </v-card-text>
               </v-card>
             </v-col>
             <!-- End Plans-->
@@ -137,7 +129,7 @@
               <v-row class="content-dashboard mx-3" align="center">
                 <v-card width="100%" height="100%">
                   <v-card-text class="py-14">
-                    <label class="font-weight-bold">Active Users Today</label>
+                    <label class="font-weight-bold title-dashboard">Active Users Today</label>
                     <v-col
                       class="display-3"
                       cols="12"
@@ -156,13 +148,13 @@
             <v-col cols="12">
               <v-card class="mx-3">
                 <v-row class="ml-4 pt-4">
-                  <label class="font-weight-bold text-h5">Student Progress</label> <br />
+                  <label class="font-weight-bold text-h5 title-dashboard">Student Progress</label>
                 </v-row>
                 <v-row justify="end" class="mx-3">
                   <v-col cols="5">
                     <v-card>
                       <center class="py-4">
-                        <label class="font-weight-bold text-h5">Total Students:</label>
+                        <label class="font-weight-bold text-h5 title-dashboard">Total Students:</label>
                         <span class="font-weight-bold total-users text-h5">{{ childrenTotal }}</span>
                       </center>
                     </v-card>
@@ -297,6 +289,10 @@ export default {
 
 .content-dashboard {
   height: 100% !important;
+}
+
+.title-dashboard {
+  color: #484848 !important;
 }
 
 .total-users {
