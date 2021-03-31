@@ -13,6 +13,9 @@
       show-steps
       show-favorite
       show-cast
+      next-patch
+      :next-patch-image="patchImg"
+      :next-patch-number="toUnlock"
       :show-video-skip="index < (playlist.length - 1)"
       use-standard-poster
       :no-seek="noSeek"
@@ -23,7 +26,7 @@
       @last-playlist-item="findNextActivity"
       @video-skipped="skipActivityVideo"
     />
-    <patch-earned-dialog v-model="patchEarnedDialog" v-bind="{ player, ...patchData }" @return="handleClose" />
+    <patch-earned-dialog v-model="patchEarnedDialog" v-bind="{ player, ...patchData }" @return="handleClose; dialog = false" />
   </video-player-dialog>
 </template>
 
@@ -33,18 +36,15 @@ import ActivityAnalytics from '@/mixins/ActivityAnalyticsMixin.js'
 import FindNextActivity from '@/mixins/FindNextActivityMixin.js'
 import Fullscreen from '@/mixins/FullscreenMixin.js'
 import DashboardOverrides from '@/mixins/DashboardOverridesMixin.js'
-// import VideoPlayerDialog from '@/components/pg-video-js-player/VideoPlayerDialog.vue'
-// import PgVideoJsPlayer from '@/components/pg-video-js-player/PgVideoJsPlayer.vue'
 
 export default {
   name: 'ActivityPlayer',
 
-  // components: {
-  //   VideoPlayerDialog,
-  //   PgVideoJsPlayer
-  // },
-
   mixins: [VideoPlayerDialogMixin, ActivityAnalytics, FindNextActivity, DashboardOverrides, Fullscreen],
+
+  data: () => ({
+    timeTriggeredAnalyticsBlock: false
+  }),
 
   computed: {
     noSeek () {
@@ -60,6 +60,9 @@ export default {
 
   created () {
     this.$nuxt.$on('open-activity-player', (params) => {
+      this.timeTriggeredAnalyticsBlock = false
+      this.patchImg = null
+      this.toUnlock = null
       this.open(params)
     })
   },
@@ -78,6 +81,14 @@ export default {
           })
         }
       })
+
+      player.on('timeupdate', () => {
+        if ((player.duration() - player.currentTime()) < 30 && !this.timeTriggeredAnalyticsBlock) {
+          this.timeTriggeredAnalyticsBlock = true
+          this.doAnalytics()
+        }
+      })
+
       player.on('dispose', () => {
         this.player = null
       })
@@ -98,6 +109,7 @@ export default {
 
     updateIndex (index) {
       this.index = index
+      this.timeTriggeredAnalyticsBlock = false
       this.doAnalytics(true)
     }
   }
