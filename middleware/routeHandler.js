@@ -20,9 +20,9 @@ export default async function ({ redirect, route, store }) {
    */
   if (process.client && isLoggedIn) {
     await store.dispatch('auth/fetchUserInfo', undefined, { root: true })
-    const shouldPickChild = await store.dispatch('pickChild', { $router: { push: redirect }, $route: route }, { root: true })
+    const didPickChildRedirect = await store.dispatch('pickChild', { $router: { push: redirect }, $route: route }, { root: true })
 
-    if (shouldPickChild) {
+    if (didPickChildRedirect) {
       return
     }
   }
