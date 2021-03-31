@@ -6,13 +6,15 @@
         nuxt
         text
       >
-        <v-icon left>
-          mdi-less-than
-        </v-icon>
         <a
           class="d-block back mb-1 mt-1"
           href="https://playgardenonline.com/"
-        >Back</a>
+        >
+          <v-icon left>
+            mdi-less-than
+          </v-icon>
+          Back
+        </a>
       </v-btn>
     </v-row>
     <v-col cols="12">
