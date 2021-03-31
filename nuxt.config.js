@@ -11,7 +11,6 @@ export default {
    ** See https://nuxtjs.org/api/configuration-mode
    */
   mode: 'universal',
-  ssr: false,
   paralell: true,
   cache: true,
   server: {
@@ -115,7 +114,7 @@ export default {
     '@/plugins/snotify',
     '@/plugins/validate',
     '@/plugins/vueCtkDateTimePicker',
-    '@/plugins/echarts',
+    { src: '@/plugins/echarts', mode: 'client'},
     { src: '@/plugins/tiptapVuetify', mode: 'client' },
     { src: '@/plugins/firebase', mode: 'client' },
     {
