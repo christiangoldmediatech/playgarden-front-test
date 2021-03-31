@@ -16,7 +16,7 @@ export default async function ({ redirect, route, store }) {
   const user = store.getters['auth/getUserInfo']
 
   /**
-   * PICK CHILD
+   * FETCH AUTH AND PICK CHILD IF MISSING
    */
   if (process.client && isLoggedIn) {
     await store.dispatch('auth/fetchUserInfo', undefined, { root: true })
@@ -28,7 +28,7 @@ export default async function ({ redirect, route, store }) {
   }
 
   /**
-   * ROLE
+   * ROLE REDIRECT
    */
 
   const shouldRedirectUser =
@@ -56,7 +56,7 @@ export default async function ({ redirect, route, store }) {
   }
 
   /**
-   * CANCELED SUBSCRIPTION
+   * CANCELED SUBSCRIPTION REDIRECT
    */
 
   const shouldRedirectToAccount =
@@ -69,7 +69,7 @@ export default async function ({ redirect, route, store }) {
   }
 
   /**
-   * EMAIL VERIFIED
+   * EMAIL VERIFIED REDIRECT
    */
 
   const shouldRedirectToDashboard =

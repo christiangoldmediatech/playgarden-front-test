@@ -366,7 +366,7 @@ export default {
   },
 
   async mounted () {
-    await this.$store.dispatch('initAuth', this)
+    await this.$store.dispatch('initApp', { $route: this.$route, $router: this.$router })
     this.showContent = true
 
     this.getVideos()

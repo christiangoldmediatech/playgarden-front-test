@@ -102,7 +102,7 @@ export default {
     // Commented requested by Natalia
     // this.showVerifyEmailToast()
 
-    await this.$store.dispatch('initAuth', this)
+    await this.$store.dispatch('initApp', { $route: this.$route, $router: this.$router })
     this.showContent = true
   },
 
