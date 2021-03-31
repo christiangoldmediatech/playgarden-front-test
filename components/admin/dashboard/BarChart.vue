@@ -34,7 +34,8 @@ export default {
         series: [{
           data: (this.barData.data) ? this.barData.data : [],
           type: 'bar'
-        }]
+        }],
+        color: ['#F89838', '#925A22', '#fc8452', '#C2DAA5', '#78C383', '#9a60b4', '#ee6666', '#3ba272', '#ea7ccc']
       }
     }
   }
