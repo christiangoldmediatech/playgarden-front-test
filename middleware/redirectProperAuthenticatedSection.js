@@ -17,7 +17,7 @@ export default function ({ redirect, route, store }) {
     if (get(user, 'role.name') === 'SPECIALISTS') {
       redirect({ name: 'admin-agenda' })
     } else {
-      redirect({ name: 'admin-curriculum-management' })
+      redirect({ name: 'admin-dashboard' })
     }
   }
 }
