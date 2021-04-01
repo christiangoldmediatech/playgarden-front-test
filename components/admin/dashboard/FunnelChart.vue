@@ -25,8 +25,8 @@ export default {
     getFormatGraph () {
       return {
         title: {
-          text: '',
-          subtext: ''
+          text: (this.funnelData.title) ? this.funnelData.title : '',
+          subtext: (this.funnelData.subtitle) ? this.funnelData.subtitle : ''
         },
         tooltip: {
           trigger: 'item',

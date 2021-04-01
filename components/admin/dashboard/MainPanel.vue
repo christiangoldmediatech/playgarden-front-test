@@ -18,8 +18,8 @@
             <v-col cols="12" md="6">
               <!-- Conversions funnel -->
               <v-card class="mx-3 content-dashboard">
-                <v-card-text class="pt-10">
-                  <label class="font-weight-bold">Conversions funnel</label> <br />
+                <v-card-text class="pt-8">
+                  <label class="title-dashboard font-weight-bold">Conversions funnel</label> <br />
                   <span>The conversions will be shown here.</span>
                   <funnel-chart class="pt-10" :funnel-data="funnel" />
                 </v-card-text>
@@ -31,7 +31,7 @@
                 <v-col cols="12">
                   <v-card>
                     <v-card-text>
-                      <label class="font-weight-bold">Total users</label>
+                      <label class="title-dashboard font-weight-bold">Total users</label>
                       <v-row align="center">
                         <v-col
                           class="display-3"
@@ -54,6 +54,9 @@
 
                   <!-- Total Users Per Plan -->
                   <v-card class="mt-4">
+                    <p class="pt-8 text-center">
+                      <label class="title-dashboard font-weight-bold">Total Users Per Plan</label>
+                    </p>
                     <pie-chart :pie-data="usersPerPlan" />
                   </v-card>
                   <!-- End Total Users Per Plan -->
@@ -71,7 +74,7 @@
             >
               <v-card class="content-dashboard">
                 <v-card-text>
-                  <label class="font-weight-bold">{{ plan.name }}</label>
+                  <label class="plan-title-dashboard font-weight-bold">{{ plan.name }}</label>
                   <pie-chart :pie-data="plan" />
                 </v-card-text>
               </v-card>
@@ -82,6 +85,9 @@
             <v-col cols="12" md="7">
               <!-- Users per status -->
               <v-card class="mx-3">
+                <p class="pt-8 text-center">
+                  <label class="title-dashboard font-weight-bold">Users per status</label>
+                </p>
                 <pie-chart :pie-data="stripeStatus" />
               </v-card>
               <!-- End Users per status -->
@@ -89,7 +95,9 @@
             <v-col cols="12" md="5">
               <v-card class="mx-3 content-dashboard">
                 <v-card-text>
-                  <label class="font-weight-bold">Churn Rate</label>
+                  <p class="mt-5">
+                    <label class="title-dashboard font-weight-bold">Churn Rate</label>
+                  </p>
                   <v-row align="center">
                     <v-col cols="12">
                       <p>
@@ -121,6 +129,9 @@
             <v-col cols="12" md="8">
               <!-- Active Users Time Line -->
               <v-card class="mx-3">
+                <v-row class="ml-4 pt-4">
+                  <label class="font-weight-bold title-dashboard">Active Users Time Line</label>
+                </v-row>
                 <time-line-chart :time-line-data="dailyUsers" />
               </v-card>
               <!-- End Active Users Time Line -->
@@ -258,25 +269,20 @@ export default {
       try {
         const { dataFunnel, usersTotal, usersPerPlan, stripeStatus, activeUsers, dailyUsers, childsByLetter, childrenTotal, planActiveInactive } = await this.getDashboard({})
         this.funnel = {
-          title: 'Conversions funnel',
-          subtitle: 'The conversions will be shown here',
           data: dataFunnel
         }
 
         this.usersTotal = usersTotal
         this.usersPerPlan = {
-          title: 'Total Users Per Plan',
           data: usersPerPlan
         }
         this.stripeStatus = {
-          title: 'Users per status',
           data: stripeStatus
         }
         this.activeUsers = activeUsers
         this.planActiveInactive = planActiveInactive
 
         this.dailyUsers = {
-          title: 'Active Users Time Line',
           xAxios: dailyUsers.date,
           data: dailyUsers.users
         }
@@ -305,7 +311,13 @@ export default {
 }
 
 .title-dashboard {
-  color: #484848 !important;
+  color: #606060 !important;
+  font-size: 21px !important;
+}
+
+.plan-title-dashboard {
+  color: #606060 !important;
+  font-size: 17px !important;
 }
 
 .users-today-data {

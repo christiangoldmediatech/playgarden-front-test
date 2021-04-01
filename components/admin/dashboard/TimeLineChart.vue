@@ -25,7 +25,7 @@ export default {
     getFormatGraph () {
       return {
         title: {
-          text: this.timeLineData.title
+          text: (this.timeLineData.title) ? this.timeLineData.title : ''
         },
         tooltip: {
           trigger: 'axis',

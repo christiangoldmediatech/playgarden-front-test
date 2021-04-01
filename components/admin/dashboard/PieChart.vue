@@ -25,7 +25,7 @@ export default {
     getFormatGraph () {
       return {
         title: {
-          text: this.pieData.title,
+          text: (this.pieData.title) ? this.pieData.title : '',
           left: 'center'
         },
         tooltip: {
@@ -40,7 +40,7 @@ export default {
         },
         series: [
           {
-            name: 'Traffic Sources',
+            name: (this.pieData.name) ? this.pieData.name : '',
             type: 'pie',
             center: ['50%', '50%'],
             radius: '50%',
