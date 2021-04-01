@@ -22,6 +22,10 @@ export default {
     //   cert: fs.readFileSync(path.resolve(__dirname, 'keys/server.crt'))
     //  } : undefined
   },
+  generate: {
+    // choose to suit your project
+    interval: 2000
+ },
   serverMiddleware: [
     '~/middleware/serverAuthByCookie',
     { path: '/healthcheck', handler: '~/middleware/healthCheck.js' },
@@ -136,7 +140,8 @@ export default {
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
     '@nuxtjs/gtm',
-    '@nuxtjs/vuetify'
+    '@nuxtjs/vuetify',
+    '@nuxtjs/composition-api'
   ],
   /**
    * Vuetify Options

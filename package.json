@@ -22,6 +22,7 @@
   "dependencies": {
     "@mdi/font": "^5.3.45",
     "@nuxtjs/axios": "^5.12.0",
+    "@nuxtjs/composition-api": "^0.22.4",
     "@nuxtjs/firebase": "^6.1.1",
     "@nuxtjs/gtm": "^2.4.0",
     "@nuxtjs/sentry": "^4.5.0",
