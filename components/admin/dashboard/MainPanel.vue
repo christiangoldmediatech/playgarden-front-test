@@ -18,7 +18,7 @@
             <v-col cols="12" md="6">
               <!-- Conversions funnel -->
               <v-card class="mx-3 content-dashboard">
-                <v-card-text class="pt-8">
+                <v-card-text class="pt-3">
                   <label class="title-dashboard font-weight-bold">Conversions funnel</label> <br />
                   <span>The conversions will be shown here.</span>
                   <funnel-chart class="pt-10" :funnel-data="funnel" />
@@ -74,7 +74,9 @@
             >
               <v-card class="content-dashboard">
                 <v-card-text>
-                  <label class="plan-title-dashboard font-weight-bold">{{ plan.name }}</label>
+                  <div class="name-plan-content">
+                    <label class="plan-title-dashboard font-weight-bold">{{ plan.name }}</label>
+                  </div>
                   <pie-chart :pie-data="plan" />
                 </v-card-text>
               </v-card>
@@ -137,8 +139,8 @@
               <!-- End Active Users Time Line -->
             </v-col>
             <v-col cols="12" md="4">
-              <v-row class="content-dashboard mx-3" align="center">
-                <v-card width="100%" class="users-today-data">
+              <v-row class="content-dashboard mx-3" no-glutters align="center">
+                <v-card width="100%" class="users-today-data mt-n6">
                   <v-card-text>
                     <label class="font-weight-bold title-dashboard">Active Users Today</label>
                     <v-col
@@ -152,7 +154,7 @@
                   </v-card-text>
                 </v-card>
 
-                <v-card width="100%" class="users-today-data">
+                <v-card width="100%" class="users-today-data mb-n6">
                   <v-card-text>
                     <label class="font-weight-bold title-dashboard">Active Users Per Week</label>
                     <v-col
@@ -326,6 +328,10 @@ export default {
 
 .text-dashboard {
   font-size: 12px !important;
+}
+
+.name-plan-content {
+  min-height: 40px !important;
 }
 
 .total-users {
