@@ -98,7 +98,7 @@ export default {
     }
   },
 
-  async pickChild ({ dispatch, getters }, { $router, $route }) {
+  async pickChild ({ dispatch, getters }, { $router, $route, $cookies, req }) {
     const isAppRoute = /^app-.*$/.test($route.name)
     let child = getters.getCurrentChild
     let childExpires = getters.getCurrentChildExpires
@@ -139,15 +139,37 @@ export default {
       }
     }
 
+    let storedData
+
+    /** SERVER SIDE */
+    if (process.server) {
+      let cookiesText = req.headers.cookie
+      if (!cookiesText) {
+        cookiesText = ''
+      }
+
+      const cookie = $cookies.getAll(cookiesText)
+        .find(record => record.name === 'selectedChild')
+
+      if (cookie) {
+        storedData = JSON.parse(decodeURIComponent(cookie.value))
+
+        await setChildren(storedData)
+      }
+    }
+
     const now = new Date().getTime()
 
-    let storedData = window.localStorage.getItem('selectedChild')
+    /** CLIENT SIDE */
+    if (process.client && hasLocalStorage()) {
+      let storedData = window.localStorage.getItem('selectedChild')
 
-    if (storedData) {
-      storedData = JSON.parse(storedData)
+      if (storedData) {
+        storedData = JSON.parse(storedData)
 
-      if (now < storedData.expires) {
-        await setChildren(storedData)
+        if (now < storedData.expires) {
+          await setChildren(storedData)
+        }
       }
     }
 
