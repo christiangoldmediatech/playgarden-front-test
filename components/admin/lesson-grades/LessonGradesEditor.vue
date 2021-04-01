@@ -41,12 +41,25 @@
             <v-card-text>
               <label>WorkSheet</label>
               <div v-for="(worksheet, i) in worksheetOffLine" :key="`worksheet-offline-grade-${i}`">
-                <item-grade v-if="worksheet.videoDetail" :data-grade="worksheet.videoDetail" :entity-type="worksheet.entity" />
+                <item-grade :data-grade="worksheet" :entity-type="worksheet.entity" />
               </div>
             </v-card-text>
           </v-card>
         </v-row>
       </v-col>
+      <v-card-actions>
+        <v-spacer />
+
+        <v-btn
+          class="white--text"
+          color="green"
+          :loading="loading"
+          :text="$vuetify.breakpoint.smAndUp"
+          @click.stop="save"
+        >
+          Save
+        </v-btn>
+      </v-card-actions>
     </v-card>
   </v-row>
 </template>
@@ -108,7 +121,11 @@ export default {
   methods: {
     ...mapActions('admin/curriculum', [
       'getLessonById'
-    ])
+    ]),
+
+    save () {
+      console.log('save..!')
+    }
   }
 }
 </script>
