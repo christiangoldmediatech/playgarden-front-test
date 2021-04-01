@@ -6,6 +6,8 @@
       :currentSongIndex="currentSongIndex"
       :currentSongDuration="currentSongDuration"
       :currentSongPlayedTime="currentSongPlayedTime"
+      :currentSongPlayedPercentage="currentSongPlayedPercentage"
+      :currentSongMissingTime="currentSongMissingTime"
       :volume="volume"
       :isLoading="isLoading"
       :isPlaying="isPlaying"
@@ -38,12 +40,14 @@
       :play="play"
       :pause="pause"
       :stop="stop"
+      :next="next"
+      :previous="previous"
     />
   </div>
 </template>
 
 <script>
-// import { DemoPlaylist } from './demo-playlist'
+import { DemoPlaylist } from './demo-playlist'
 export default {
   name: 'PgAudioPlayer',
   data () {
@@ -60,6 +64,8 @@ export default {
       currentSong: {},
       currentSongIndex: null,
       currentSongPlayedTime: 0,
+      currentSongMissingTime: 0,
+      currentSongPlayedPercentage: 0,
       currentSongDuration: 0
     }
   },
@@ -73,12 +79,13 @@ export default {
     if (Audio) {
       this.player = new Audio()
       this.$emit('success:MountingPlayer')
+      this.addPlayingListeners()
     } else {
       this.$emit('error:AudioNotDefined')
     }
     this.isLoading = false
     // Set demo playlist
-    // this.setPlaylist(DemoPlaylist)
+    this.setPlaylist(DemoPlaylist)
   },
   methods: {
     setPlaylist (songsArray = []) {
@@ -116,10 +123,33 @@ export default {
         this.isStopped = false
       }
     },
-    selectSongByIndex (songIndex) {
+    next () {
+      this.pause()
+      this.isLoading = true
+      this.isPlaying = false
+      this.isPaused = false
+      this.isPlaying = false
+      this.selectSongByIndex(this.currentSongIndex + 1)
+      this.play()
+    },
+    previous () {
+      this.pause()
+      this.isLoading = true
+      this.isPlaying = false
+      this.isPaused = false
+      this.isPlaying = false
+      this.selectSongByIndex(this.currentSongIndex - 1)
+      this.isLoading = false
+      this.play()
+    },
+    selectSongByIndex (index) {
+      let songIndex = index
       // Is this a valid index?
-      if (songIndex < 0 || songIndex > this.playlistSongCount) {
-        return
+      if (songIndex < 0) {
+        songIndex = this.playlistSongCount - 1
+      }
+      if (songIndex >= this.playlistSongCount) {
+        songIndex = 0
       }
       this.isLoading = true
       const selectingSong = this.currentPlaylist[songIndex]
@@ -129,9 +159,36 @@ export default {
       this.currentSong = selectingSong
       this.currentSongIndex = songIndex
       this.currentSongPlayedTime = 0
-      this.player.src = selectingSong.src
-      // TODO: add song duration
+      // const song = await this.$axios.get(selectingSong.songUrl)
+      // console.log(song)
+      this.player.src = selectingSong.songUrl
+      this.player.addEventListener('loadedmetadata', () => {
+        this.currentSongDuration = Math.ceil(this.player.duration)
+      })
       this.isLoading = false
+    },
+    addPlayingListeners () {
+      this.player.addEventListener('timeupdate', () => {
+        const playerTimer = this.player.currentTime
+        this.currentSongPlayedTime = this.formatTimer(playerTimer)
+        this.currentSongMissingTime = `-${this.formatTimer(this.currentSongDuration - playerTimer)}`
+        this.currentSongPlayedPercentage = Math.ceil((playerTimer * 100) / this.currentSongDuration)
+      })
+      this.player.addEventListener(
+        'ended',
+        () => {
+          console.log('ended')
+        }
+      )
+    },
+    formatTimer (timeInSecs) {
+      const minutes = parseInt(timeInSecs / 60).toString()
+      const seconds = parseInt(timeInSecs % 60).toString()
+
+      let output = minutes >= 10 ? `${minutes}` : `0${minutes}`
+      output += seconds >= 10 ? `:${seconds}` : `:0${seconds}`
+
+      return output
     }
   }
 }
