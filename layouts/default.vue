@@ -67,14 +67,13 @@ export default {
 
   data: () => ({
     isComingSoonDialogOpen: false,
-    verifyEmailToast: null,
-    showContent: false
+    verifyEmailToast: null
   }),
 
   computed: {
     ...mapGetters('auth', ['isUserLoggedIn', 'isUserEmailUnverified']),
 
-    ...mapState(['fullWidthPages']),
+    ...mapState(['fullWidthPages', 'showContent']),
 
     fullWidth () {
       return this.fullWidthPages[this.$route.name]
@@ -98,12 +97,11 @@ export default {
     }
   },
 
-  async mounted () {
+  mounted () {
     // Commented requested by Natalia
     // this.showVerifyEmailToast()
 
-    await this.$store.dispatch('initApp', { $route: this.$route, $router: this.$router })
-    this.showContent = true
+    this.$store.commit('SET_SHOW_CONTENT', true)
   },
 
   methods: {

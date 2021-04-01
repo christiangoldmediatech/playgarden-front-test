@@ -9,5 +9,6 @@ export default {
   },
   SET_CURRENT_CHILD: set('currentChild'),
   SET_CURRENT_CHILD_EXPIRES: set('currentChildExpires'),
-  SET_NOTIFICATION_MESSAGE: set('globalNotificationMessage')
+  SET_NOTIFICATION_MESSAGE: set('globalNotificationMessage'),
+  SET_SHOW_CONTENT: set('showContent')
 }

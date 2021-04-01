@@ -179,8 +179,6 @@ export default {
 
   data () {
     return {
-      showContent: false,
-
       appDrawer: false,
 
       checkStatusInterval: null,
@@ -360,15 +358,15 @@ export default {
     ...mapGetters('auth', {
       userInfo: 'getUserInfo'
     }),
-    ...mapState('admin', ['uploadingVideos'])
+    ...mapState('admin', ['uploadingVideos']),
+    ...mapState(['showContent'])
   },
 
-  async mounted () {
-    await this.$store.dispatch('initApp', { $route: this.$route, $router: this.$router })
-    this.showContent = true
-
+  mounted () {
     this.getVideos()
     this.checkStatus()
+
+    this.$store.commit('SET_SHOW_CONTENT', true)
   },
 
   beforeDestroy () {

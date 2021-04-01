@@ -3,6 +3,7 @@ export default () => ({
   currentChild: null,
   currentChildExpires: null,
   paginationLimit: 50,
+  showContent: false,
 
   fullWidthPages: {
     'app-account-index': 1,
