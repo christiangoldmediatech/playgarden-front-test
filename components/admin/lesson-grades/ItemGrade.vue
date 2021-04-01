@@ -1,7 +1,7 @@
 <template>
-  <v-row>
-    <v-col cols="2" class="mt-10">
-      {{ dataGrade.code }}
+  <v-row justify="center">
+    <v-col cols="3" class="mt-8">
+      {{ dataGrade.code }} - {{ dataGrade.name }}
     </v-col>
     <v-col
       v-for="(cardType, i) in reportCardTypes"

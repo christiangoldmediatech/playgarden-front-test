@@ -4,10 +4,21 @@
       <v-col cols="12">
         <v-row class="mt-8">
           <v-card width="100%">
+            <v-card-title>Activities</v-card-title>
+            <v-card-text>
+              <label>Activities</label>
+              <item-grade v-for="(activity, i) in lesson.lessonsActivities" :key="`activity-grade-${i}`" :data-grade="activity" entity-type="Activities" />
+            </v-card-text>
+          </v-card>
+        </v-row>
+      </v-col>
+      <v-col cols="12">
+        <v-row class="mt-8">
+          <v-card width="100%">
             <v-card-title>Videos</v-card-title>
             <v-card-text>
               <label>Videos</label>
-              <item-grade v-for="(video, i) in lesson.videos" :key="`video-grade-${i}`" :data-grade="video" :entity-type="Videos" />
+              <item-grade v-for="(video, i) in lesson.videos" :key="`video-grade-${i}`" :data-grade="video" entity-type="Videos" />
             </v-card-text>
           </v-card>
         </v-row>
@@ -18,7 +29,7 @@
             <v-card-title>WorkSheets</v-card-title>
             <v-card-text>
               <label>WorkSheet</label>
-              <item-grade v-for="(worksheet, i) in lesson.worksheets" :key="`video-grade-${i}`" :data-grade="worksheet" :entity-type="Videos" />
+              <item-grade v-for="(worksheet, i) in lesson.worksheets" :key="`video-grade-${i}`" :data-grade="worksheet" entity-type="Worksheets" />
             </v-card-text>
           </v-card>
         </v-row>
@@ -40,6 +51,7 @@ export default {
   data: vm => ({
     loading: false,
     lesson: {
+      lessonsActivities: [],
       videos: [],
       worksheets: []
     },
