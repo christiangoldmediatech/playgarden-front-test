@@ -14,7 +14,7 @@
             <template v-slot:default="{ hover }">
               <v-card
                 class="my-3"
-                :disabled="!puzzle.piecesUnclocked > 0"
+                :disabled="!puzzle.active"
                 width="340"
               >
                 <v-img
