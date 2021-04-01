@@ -3,7 +3,7 @@ import unauthenticatedRoutes from '~/utils/consts/unauthenticatedRoutes.json'
 import parentSubscriptionWhitelistedRoutes from '~/utils/consts/parentSubscriptionWhitelistedRoutes.json'
 import routeHandlerIgnoredRoutes from '~/utils/consts/routeHandlerIgnoredRoutes.json'
 
-export default async function ({ redirect, route, store }) {
+export default async function ({ redirect, route, store, app, req }) {
   const isIgnoredRoute = !!routeHandlerIgnoredRoutes[route.name]
 
   if (isIgnoredRoute) {
@@ -11,20 +11,50 @@ export default async function ({ redirect, route, store }) {
   }
 
   const token = store.getters['auth/getAccessToken']
-  const isLoggedIn = await store.dispatch('auth/checkAuth', undefined, { root: true })
   const isUnauthenticatedRoute = !!unauthenticatedRoutes[route.name]
   const user = store.getters['auth/getUserInfo']
+  const isUserInStore = store.getters['auth/isUserLoggedIn']
+
+  let isLoggedIn = await store.dispatch('auth/checkAuth', undefined, { root: true })
 
   /**
    * FETCH AUTH AND PICK CHILD IF MISSING
    */
-  if (process.client && isLoggedIn) {
-    await store.dispatch('auth/fetchUserInfo', undefined, { root: true })
-    const didPickChildRedirect = await store.dispatch('pickChild', { $router: { push: redirect }, $route: route }, { root: true })
 
-    if (didPickChildRedirect) {
+  /** SERVER SIDE */
+  if (process.server && !isLoggedIn) {
+    const cookie = app.$cookies.getAll(req.headers.cookie)
+      .find(record => record.name === 'atoken')
+
+    if (cookie) {
+      await store.dispatch('auth/setToken', cookie.value)
+    }
+  }
+
+  /** CLIENT SIDE */
+  if (process.client && !isLoggedIn) {
+    await store.dispatch('auth/restoreAuthFromSessionStorage', undefined, { root: true })
+  }
+
+  isLoggedIn = await store.dispatch('auth/checkAuth', undefined, { root: true })
+
+  if (isLoggedIn) {
+    if (!isUserInStore) {
+      await store.dispatch('auth/fetchUserInfo', undefined, { root: true })
+    }
+
+    const didRedirect = await store.dispatch('pickChild', {
+      $router: { push: redirect },
+      $route: route,
+      req,
+      $cookies: app.$cookies
+    }, { root: true })
+
+    if (didRedirect) {
       return
     }
+  } else {
+    await store.dispatch('auth/logout', undefined, { root: true })
   }
 
   /**
