@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="12" class="content-dashboard">
         <v-card width="100%">
-          <v-card-title>
+          <v-card-title class="font-weight-bold">
             General Dashboard
             <v-spacer />
           </v-card-title>
