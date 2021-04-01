@@ -28,8 +28,21 @@
           <v-card width="100%">
             <v-card-title>WorkSheets</v-card-title>
             <v-card-text>
+              <label>WorkSheet - ONLINE</label>
+              <item-grade v-for="(worksheet, i) in lesson.worksheets.filter(data => data.type === 'ONLINE')" :key="`video-grade-${i}`" :data-grade="worksheet" entity-type="Worksheets" />
+            </v-card-text>
+          </v-card>
+        </v-row>
+      </v-col>
+      <v-col cols="12">
+        <v-row class="pt-8">
+          <v-card width="100%">
+            <v-card-title>WorkSheets - OFFLINE</v-card-title>
+            <v-card-text>
               <label>WorkSheet</label>
-              <item-grade v-for="(worksheet, i) in lesson.worksheets" :key="`video-grade-${i}`" :data-grade="worksheet" entity-type="Worksheets" />
+              <div v-for="(worksheet, i) in worksheetOffLine" :key="`worksheet-offline-grade-${i}`">
+                <item-grade v-if="worksheet.videoDetail" :data-grade="worksheet.videoDetail" :entity-type="worksheet.entity" />
+              </div>
             </v-card-text>
           </v-card>
         </v-row>
@@ -55,6 +68,7 @@ export default {
       videos: [],
       worksheets: []
     },
+    worksheetOffLine: [],
     lessonId: vm.$route.query.lessonId
       ? parseInt(vm.$route.query.lessonId)
       : null
@@ -67,6 +81,26 @@ export default {
       this.loading = true
       this.lesson = await this.getLessonById(this.lessonId)
       this.loading = false
+      this.lesson.worksheets.filter(data => data.type === 'OFFLINE').map((worksheet) => {
+        if (worksheet.videoDetail) {
+          const worksheeVideo = {
+            code: worksheet.code,
+            name: worksheet.name,
+            entity: 'Videos',
+            id: worksheet.videoDetail.id
+          }
+          this.worksheetOffLine.push(worksheeVideo)
+        }
+
+        /* if (worksheet.videoDetail) {
+          const worksheeVideo = {
+            code: worksheet.code
+            name: worksheet.name
+            id: worksheet.videoDetail.id
+          }
+          this.worksheetOffLine.push(worksheeVideo)
+        } */
+      })
       console.log('lesson--', this.lesson)
     }
   },
