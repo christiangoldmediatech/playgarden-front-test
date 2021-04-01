@@ -8,7 +8,7 @@
         them on social media!
       </p>
 
-      <v-row class="mt-6" no-gutters justify="space-around">
+      <v-row class="mt-6" justify="space-around">
         <div v-for="(puzzle, indexP) in puzzles" :key="indexP">
           <v-hover>
             <template v-slot:default="{ hover }">
