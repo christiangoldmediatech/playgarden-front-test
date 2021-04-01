@@ -117,6 +117,16 @@
                     mdi-play
                   </v-icon>
                 </nuxt-link>
+                <nuxt-link
+                  :to="{
+                    name: 'admin-lesson-grades-editor',
+                    query: { lessonId: item.id }
+                  }"
+                >
+                  <v-icon color="#c2daa5" dense>
+                    mdi-view-list
+                  </v-icon>
+                </nuxt-link>
               </template>
             </pg-admin-data-table>
           </v-card-text>
@@ -175,7 +185,7 @@ export default {
         align: 'right',
         sortable: false,
         value: 'actions',
-        width: 100
+        width: 130
       }
     ],
     levels: [
