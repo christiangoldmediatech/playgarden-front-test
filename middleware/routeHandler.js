@@ -49,12 +49,14 @@ export default async function ({ redirect, route, store, app, req }) {
       req,
       $cookies: app.$cookies
     }, { root: true })
-
+    // if a redirect to pick child is done, we want to stop the middleware here
     if (didRedirect) {
       return
     }
-  } else {
+  } else if (isUnauthenticatedRoute) {
     await store.dispatch('auth/logout', undefined, { root: true })
+  } else {
+    await store.dispatch('auth/logout', redirect, { root: true })
   }
 
   /**
