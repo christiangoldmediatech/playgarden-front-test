@@ -278,6 +278,10 @@ export default {
   computed: {
     ...mapGetters('auth', ['hasTrialOrPlatinumPlan']),
 
+    ...mapGetters('children', {
+      children: 'rows'
+    }),
+
     playdatesComputed () {
       return this.playdates
         .filter(item => (item.playdates || []).length)
@@ -301,7 +305,11 @@ export default {
     },
 
     allChildrenHavePlaydates () {
-      return this.playdates.every(playdate => Array.isArray(playdate.playdates) && playdate.playdates.length > 0)
+      return this.children.every((child) => {
+        const childPlayDate = this.playdates.find(playdate => playdate && playdate.children && playdate.children.id === child.id)
+
+        return childPlayDate && Array.isArray(childPlayDate.playdates) && childPlayDate.playdates.length > 0
+      })
     }
   },
 
