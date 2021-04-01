@@ -21,19 +21,21 @@ export default async function ({ redirect, route, store, app, req }) {
    * FETCH AUTH AND PICK CHILD IF MISSING
    */
 
-  /** SERVER SIDE */
-  if (process.server && !isLoggedIn) {
-    const cookie = app.$cookies.getAll(req.headers.cookie)
-      .find(record => record.name === 'atoken')
+  if (route.name !== 'shared-slug') {
+    /** SERVER SIDE */
+    if (process.server && !isLoggedIn) {
+      const cookie = app.$cookies.getAll(req.headers.cookie)
+        .find(record => record.name === 'atoken')
 
-    if (cookie) {
-      await store.dispatch('auth/setToken', cookie.value)
+      if (cookie) {
+        await store.dispatch('auth/setToken', cookie.value)
+      }
     }
-  }
 
-  /** CLIENT SIDE */
-  if (process.client && !isLoggedIn) {
-    await store.dispatch('auth/restoreAuthFromSessionStorage', undefined, { root: true })
+    /** CLIENT SIDE */
+    if (process.client && !isLoggedIn) {
+      await store.dispatch('auth/restoreAuthFromSessionStorage', undefined, { root: true })
+    }
   }
 
   isLoggedIn = await store.dispatch('auth/checkAuth', undefined, { root: true })
@@ -68,7 +70,16 @@ export default async function ({ redirect, route, store, app, req }) {
     isLoggedIn &&
     !!user.id &&
     !!user.role &&
-    route.query.process !== 'signup'
+    route.query.process !== 'signup' &&
+    ![
+      'auth-verify-email',
+      'auth-verify-playdate',
+      'help',
+      'jwt-recovery',
+      'privacy-policy',
+      'terms-conditions',
+      'shared-slug'
+    ].includes(route.name)
 
   if (!shouldRedirectUser) {
     return
