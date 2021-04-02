@@ -36,7 +36,7 @@ export default async function ({ app, redirect, route, store, req }) {
   if ((isUnauthenticatedRoute || isAppRoute) && isAdminRole) {
     return get(user, 'role.name') === 'SPECIALISTS'
       ? redirect({ name: 'admin-agenda' })
-      : redirect({ name: 'admin-curriculum-management' })
+      : redirect({ name: 'admin-dashboard' })
   } else if ((isUnauthenticatedRoute || isAdminRoute) && isUserRole) {
     return redirect({ name: 'app-dashboard' })
   }
