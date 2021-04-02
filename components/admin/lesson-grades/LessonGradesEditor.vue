@@ -160,15 +160,17 @@ export default {
       })
     },
 
-    async save () {
-      try {
+    save () {
+      /* try {
         this.loading = true
         console.log('save..!', this.grades)
         await this.createArrayGrade(this.grades)
       } catch (e) {
       } finally {
         this.loading = false
-      }
+      } */
+      this.buildData()
+      console.log('save---', this.grades)
     }
   }
 }
