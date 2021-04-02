@@ -124,7 +124,7 @@
                   :block="isMobile"
                   @click="dialog = true"
                 >
-                  Open Zoom Link
+                  Open Playdate
                 </v-btn>
               </v-row>
             </slot>
