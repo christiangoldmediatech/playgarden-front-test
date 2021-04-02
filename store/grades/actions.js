@@ -5,6 +5,10 @@ export default {
     return this.$axios.$post('/grades', data)
   },
 
+  createArrayGrade (_, data) {
+    return this.$axios.$post('/grades/bulk', data)
+  },
+
   deleteGrade (_, id) {
     return this.$axios.$delete(`/grades/${id}`)
   },

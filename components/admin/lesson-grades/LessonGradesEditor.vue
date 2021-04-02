@@ -81,6 +81,7 @@ export default {
       videos: [],
       worksheets: []
     },
+    grades: [],
     worksheetOffLine: [],
     lessonId: vm.$route.query.lessonId
       ? parseInt(vm.$route.query.lessonId)
@@ -123,8 +124,51 @@ export default {
       'getLessonById'
     ]),
 
-    save () {
-      console.log('save..!')
+    ...mapActions('grades', [
+      'createArrayGrade'
+    ]),
+
+    buildData () {
+      this.lesson.lessonsActivities.map((lessonActivity) => {
+        const activityData = {
+          entityType: 'Activities',
+          entityId: lessonActivity.activity.id,
+          lessonId: this.lessonId,
+          grades: lessonActivity.grades
+        }
+        this.grades.push(activityData)
+      })
+
+      this.lesson.videos.map((video) => {
+        const activityData = {
+          entityType: 'Videos',
+          // entityId: lessonActivity.activityType.id,
+          lessonId: this.lessonId,
+          grades: video.grades
+        }
+        this.grades.push(activityData)
+      })
+
+      this.lesson.worksheets.filter(data => data.type === 'ONLINE').map((worksheet) => {
+        const worksheetData = {
+          entityType: 'Worksheets',
+          entityId: worksheet.worksheetId,
+          lessonId: this.lessonId,
+          grades: worksheet.grades
+        }
+        this.grades.push(worksheetData)
+      })
+    },
+
+    async save () {
+      try {
+        this.loading = true
+        console.log('save..!', this.grades)
+        await this.createArrayGrade(this.grades)
+      } catch (e) {
+      } finally {
+        this.loading = false
+      }
     }
   }
 }

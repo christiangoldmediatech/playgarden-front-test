@@ -83,6 +83,7 @@ export default {
 
   async created () {
     await this.getTypes()
+    this.dataGrade.grades = this.reportCardTypes
   },
 
   methods: {
