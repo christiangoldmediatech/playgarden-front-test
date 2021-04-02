@@ -107,38 +107,20 @@
       </v-row>
     </v-card-text>
 
-    <pg-dialog content-class="elevation-0" :value="dialog" persistent>
-      <v-container class="justify-center fill-height" fluid>
-        <v-col class="px-3 px-lg-0" sm="12" lg="8" xl="10">
-          <v-row justify="end" no-gutters>
-            <v-btn
-              class="bg-black mb-3 mt-3 mr-5"
-              color="white"
-              icon
-              @click.stop="dialog = false"
-            >
-              <v-icon>
-                mdi-close
-              </v-icon>
-            </v-btn>
-          </v-row>
-          <pieces :puzzle="toShow" />
-        </v-col>
-      </v-container>
-    </pg-dialog>
+    <puzzle-pieces-dialog v-model="dialog" v-bind="{ toShow }" />
   </v-card>
 </template>
 
 <script>
 import { get } from 'lodash'
 import { mapActions, mapGetters } from 'vuex'
-import Pieces from '@/components/app/student-cubby/Pieces'
+import PuzzlePiecesDialog from '@/components/app/student-cubby/PuzzlePiecesDialog.vue'
 
 export default {
   name: 'Index',
 
   components: {
-    Pieces
+    PuzzlePiecesDialog
   },
 
   data: () => ({

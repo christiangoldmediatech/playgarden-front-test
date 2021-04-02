@@ -1,0 +1,13 @@
+.lesson-video-card {
+  @media screen and (min-width: 960px){
+    padding: 0px;
+    .v-list-item {
+      padding-right: 0px;
+
+      .v-list-item__action {
+        margin-top: 0px;
+        margin-bottom: 0px;
+      }
+    }
+  }
+}

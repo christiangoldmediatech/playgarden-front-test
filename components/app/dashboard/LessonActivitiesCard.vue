@@ -38,23 +38,7 @@
             </v-list-item-subtitle>
           </v-list-item-content>
 
-          <v-list-item-action v-if="showFavorites">
-            <v-btn
-              icon
-              large
-              :loading="favoritesLoading"
-              @click.stop="setFavorite"
-            >
-              <v-icon color="#F5737F">
-                <template v-if="isFavorite">
-                  mdi-heart
-                </template>
-                <template v-else>
-                  mdi-heart-outline
-                </template>
-              </v-icon>
-            </v-btn>
-          </v-list-item-action>
+          <slot />
         </v-list-item>
       </v-list>
     </template>
@@ -63,20 +47,9 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import FavoritesMixin from '@/mixins/FavoritesMixin.js'
 
 export default {
   name: 'LessonActivitiesCard',
-
-  mixins: [FavoritesMixin],
-
-  props: {
-    showFavorites: {
-      type: Boolean,
-      required: false,
-      default: false
-    }
-  },
 
   computed: {
     ...mapGetters('admin/curriculum', ['getLesson']),
