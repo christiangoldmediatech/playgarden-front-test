@@ -111,7 +111,6 @@ export default {
     if (this.lessonId) {
       this.loading = true
       this.lesson = await this.getLessonById(this.lessonId)
-      console.log('lesson--', this.lesson)
       this.loading = false
       this.lesson.worksheets.filter(data => data.type === 'OFFLINE').map((worksheet) => {
         if (worksheet.videoDetail) {
