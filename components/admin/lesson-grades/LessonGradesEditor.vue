@@ -111,11 +111,12 @@ export default {
     if (this.lessonId) {
       this.loading = true
       this.lesson = await this.getLessonById(this.lessonId)
+      console.log('lesson--', this.lesson)
       this.loading = false
       this.lesson.worksheets.filter(data => data.type === 'OFFLINE').map((worksheet) => {
         if (worksheet.videoDetail) {
           const worksheeVideo = {
-            code: worksheet.code,
+            code: `${this.lesson.code}V1`,
             name: worksheet.name,
             entityType: 'Videos',
             entityId: worksheet.videoDetail.id
@@ -124,13 +125,13 @@ export default {
         }
 
         if (worksheet.pdfUrl) {
-          const worksheeVideo = {
+          const worksheetFile = {
             code: worksheet.code,
             name: worksheet.name,
             entityType: 'Worksheets',
             entityId: worksheet.id
           }
-          this.worksheetOffLine.push(worksheeVideo)
+          this.worksheetOffLine.push(worksheetFile)
         }
       })
     }
