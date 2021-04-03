@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'ItemGrade',
 
@@ -47,7 +47,7 @@ export default {
 
   data () {
     return {
-      file: null,
+      entityId: null,
       dialog: false,
       loading: false,
       gradesList: [],
@@ -81,8 +81,30 @@ export default {
     }
   },
 
-  created () {
+  async created () {
     this.dataGrade.grades = this.reportCardTypes
+
+    if (this.entityType === 'Activities') {
+      this.entityId = this.dataGrade.activity.id
+    }
+
+    if (this.entityType === 'Videos') {
+      this.entityId = this.dataGrade.id
+    }
+
+    if (this.entityType === 'Worksheets') {
+      this.entityId = this.dataGrade.worksheetId
+    }
+
+    const { grades } = await this.getGrades({
+      entityId: this.entityId,
+      entityType: this.entityType
+    })
+    this.gradesList = grades
+  },
+
+  methods: {
+    ...mapActions('grades', ['getGrades'])
   }
 }
 </script>
