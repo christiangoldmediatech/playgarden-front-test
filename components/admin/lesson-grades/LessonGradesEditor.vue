@@ -99,10 +99,8 @@ export default {
         return {
           text: type.name,
           value: type.id,
-          // id: grade ? grade.id : null,
           reportCardTypeId: type.id,
           points: grade ? grade.points : 0
-          // total: grade ? grade.total : null
         }
       })
     }
@@ -135,7 +133,6 @@ export default {
           this.worksheetOffLine.push(worksheeVideo)
         }
       })
-      console.log('lesson--', this.lesson)
     }
   },
 
@@ -154,9 +151,9 @@ export default {
       this.grades = [...this.worksheetOffLine]
       this.lesson.lessonsActivities.map((lessonActivity) => {
         const activityData = {
-          entityType: 'LessonsActivities',
+          entityType: 'Activities',
           entityId: lessonActivity.activity.id,
-          lessonId: this.lessonActivity.id,
+          lessonId: this.lesson.id,
           grades: lessonActivity.grades
         }
         this.grades.push(activityData)
@@ -186,7 +183,7 @@ export default {
         const worksheetData = {
           entityType: 'Worksheets',
           entityId: worksheet.worksheetId,
-          lessonId: this.worksheet.id,
+          lessonId: this.lesson.id,
           grades: worksheet.grades
         }
         this.grades.push(worksheetData)
@@ -196,7 +193,7 @@ export default {
         const worksheetData = {
           entityType: 'Worksheets',
           entityId: worksheet.worksheetId,
-          lessonId: this.worksheet.id,
+          lessonId: this.lesson.id,
           grades: worksheet.grades
         }
         this.grades.push(worksheetData)
@@ -208,7 +205,9 @@ export default {
         this.loading = true
         this.buildData()
         await this.createArrayGrade(this.grades)
-        console.log('save..!', this.grades)
+        this.$snotify.success('Data save succesfully!', {
+          timeout: 6000
+        })
       } catch (e) {
       } finally {
         this.loading = false
