@@ -117,6 +117,7 @@ export default {
           const worksheeVideo = {
             code: `${this.lesson.code}V1`,
             name: worksheet.name,
+            lessonId: this.lesson.id,
             entityType: 'Videos',
             entityId: worksheet.videoDetail.id
           }
@@ -127,6 +128,7 @@ export default {
           const worksheetFile = {
             code: worksheet.code,
             name: worksheet.name,
+            lessonId: this.lesson.id,
             entityType: 'Worksheets',
             entityId: worksheet.id
           }
