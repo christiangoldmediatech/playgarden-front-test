@@ -4,7 +4,7 @@
       {{ dataGrade.code }} - {{ dataGrade.name }}
     </v-col>
     <v-col
-      v-for="(cardType, i) in reportCardTypes"
+      v-for="(cardType, i) in dataGrade.grades"
       :key="`report-cardType-${i}`"
     >
       <label>{{ cardType.text }}</label>
@@ -14,7 +14,7 @@
         rules="required"
       >
         <pg-text-field
-          v-model="cardType.total"
+          v-model="cardType.points"
           :error-messages="errors"
           label="Points"
           solo-labeled
@@ -28,8 +28,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
-
+import { mapGetters } from 'vuex'
 export default {
   name: 'ItemGrade',
 
@@ -51,19 +50,20 @@ export default {
       file: null,
       dialog: false,
       loading: false,
-      id: null,
       gradesList: [],
+      grades: [],
+      item: {
+        code: '',
+        name: '',
+        grades: []
+      },
+      id: null,
       entityTypeList: ['Activities', 'Worksheets', 'Videos', 'LiveSessions']
     }
   },
 
   computed: {
     ...mapGetters('admin/report-card', ['types']),
-    title () {
-      return this.id === null
-        ? 'Config Progress Report'
-        : 'Config Progress Report'
-    },
     reportCardTypes () {
       return this.types.map((type) => {
         const grade = this.gradesList.find(
@@ -81,15 +81,8 @@ export default {
     }
   },
 
-  async created () {
-    await this.getTypes()
+  created () {
     this.dataGrade.grades = this.reportCardTypes
-  },
-
-  methods: {
-    ...mapActions('grades', ['createGrade', 'updateGrades', 'getGrades']),
-
-    ...mapActions('admin/report-card', ['getTypes'])
   }
 }
 </script>

@@ -82,15 +82,34 @@ export default {
       worksheets: []
     },
     grades: [],
+    reportCards: [],
+    gradesList: [],
     worksheetOffLine: [],
     lessonId: vm.$route.query.lessonId
       ? parseInt(vm.$route.query.lessonId)
       : null
   }),
 
-  computed: {},
+  computed: {
+    reportCardTypes () {
+      return this.reportCards.map((type) => {
+        const grade = this.gradesList.find(
+          data => type.id === data.reportCardType.id
+        )
+        return {
+          text: type.name,
+          value: type.id,
+          // id: grade ? grade.id : null,
+          reportCardTypeId: type.id,
+          points: grade ? grade.points : 0
+          // total: grade ? grade.total : null
+        }
+      })
+    }
+  },
 
   async created () {
+    this.reportCards = await this.getTypes()
     if (this.lessonId) {
       this.loading = true
       this.lesson = await this.getLessonById(this.lessonId)
@@ -100,20 +119,21 @@ export default {
           const worksheeVideo = {
             code: worksheet.code,
             name: worksheet.name,
-            entity: 'Videos',
-            id: worksheet.videoDetail.id
+            entityType: 'Videos',
+            entityId: worksheet.videoDetail.id
           }
           this.worksheetOffLine.push(worksheeVideo)
         }
 
-        /* if (worksheet.videoDetail) {
+        if (worksheet.pdfUrl) {
           const worksheeVideo = {
-            code: worksheet.code
-            name: worksheet.name
-            id: worksheet.videoDetail.id
+            code: worksheet.code,
+            name: worksheet.name,
+            entityType: 'Worksheets',
+            entityId: worksheet.id
           }
           this.worksheetOffLine.push(worksheeVideo)
-        } */
+        }
       })
       console.log('lesson--', this.lesson)
     }
@@ -124,16 +144,19 @@ export default {
       'getLessonById'
     ]),
 
+    ...mapActions('admin/report-card', ['getTypes']),
+
     ...mapActions('grades', [
       'createArrayGrade'
     ]),
 
     buildData () {
+      this.grades = [...this.worksheetOffLine]
       this.lesson.lessonsActivities.map((lessonActivity) => {
         const activityData = {
-          entityType: 'Activities',
+          entityType: 'LessonsActivities',
           entityId: lessonActivity.activity.id,
-          lessonId: this.lessonId,
+          lessonId: this.lessonActivity.id,
           grades: lessonActivity.grades
         }
         this.grades.push(activityData)
@@ -142,7 +165,7 @@ export default {
       this.lesson.videos.map((video) => {
         const activityData = {
           entityType: 'Videos',
-          // entityId: lessonActivity.activityType.id,
+          entityId: video.id,
           lessonId: this.lessonId,
           grades: video.grades
         }
@@ -158,19 +181,38 @@ export default {
         }
         this.grades.push(worksheetData)
       })
+
+      this.lesson.worksheets.filter(data => data.type === 'ONLINE').map((worksheet) => {
+        const worksheetData = {
+          entityType: 'Worksheets',
+          entityId: worksheet.worksheetId,
+          lessonId: this.worksheet.id,
+          grades: worksheet.grades
+        }
+        this.grades.push(worksheetData)
+      })
+
+      this.lesson.worksheets.filter(data => data.type === 'ONLINE').map((worksheet) => {
+        const worksheetData = {
+          entityType: 'Worksheets',
+          entityId: worksheet.worksheetId,
+          lessonId: this.worksheet.id,
+          grades: worksheet.grades
+        }
+        this.grades.push(worksheetData)
+      })
     },
 
-    save () {
-      /* try {
+    async save () {
+      try {
         this.loading = true
-        console.log('save..!', this.grades)
+        this.buildData()
         await this.createArrayGrade(this.grades)
+        console.log('save..!', this.grades)
       } catch (e) {
       } finally {
         this.loading = false
-      } */
-      this.buildData()
-      console.log('save---', this.grades)
+      }
     }
   }
 }
