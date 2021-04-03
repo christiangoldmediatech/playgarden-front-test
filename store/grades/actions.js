@@ -6,7 +6,6 @@ export default {
   },
 
   createArrayGrade (_, data) {
-    console.log('data--', data)
     return this.$axios.$post('/grades/bulk', data)
   },
 
