@@ -75,7 +75,7 @@ export default {
           id: grade ? grade.id : null,
           reportCardTypeId: type.id,
           points: grade ? grade.points : 0,
-          total: grade ? grade.total : null
+          total: grade ? grade.total : 0
         }
       })
     }
