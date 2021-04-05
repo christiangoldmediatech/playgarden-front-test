@@ -43,22 +43,22 @@ export default {
         grades: []
       })
     },
-    typesReportCards: {
-      type: Array,
-      required: true,
-      default: () => ([])
-    },
     entityType: {
       type: String,
       required: true,
       default: ''
+    },
+    listReportCards: {
+      type: Array,
+      required: true,
+      default: () => ([])
     }
   },
   data () {
     return {
       entityId: null,
       loading: false,
-      listReportCards: [],
+      // listReportCards: [],
       reportCards: [],
       point: null,
       gradesList: [],
@@ -86,9 +86,9 @@ export default {
   },
 
   async created () {
-    const dataList = await this.getTypes()
+    // const dataList = await this.getTypes()
     this.lessonId = this.$route.query.lessonId
-    this.listReportCards = [...dataList]
+    // this.listReportCards = [...dataList]
     if (this.entityType === 'Activities') {
       this.entityId = this.dataGrade.activity.id
       this.dataGrade.name = this.dataGrade.activity.videos.name
@@ -109,8 +109,6 @@ export default {
   },
   methods: {
     ...mapActions('grades', ['getGrades']),
-
-    ...mapActions('admin/report-card', ['getTypes']),
 
     setDataGrades (val) {
       this.dataGrade.grades = val

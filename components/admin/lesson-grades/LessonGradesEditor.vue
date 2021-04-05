@@ -8,7 +8,7 @@
             <v-card-text>
               <label>Activities</label>
               <template v-for="(activity, i) in lesson.lessonsActivities">
-                <item-grade :key="`activity-grade-${i}`" :data-grade="activity" :types-report-cards="reportCards" entity-type="Activities" />
+                <item-grade :key="`activity-grade-${i}`" :data-grade="activity" :list-report-cards="reportCards" entity-type="Activities" />
               </template>
             </v-card-text>
           </v-card>
@@ -20,7 +20,7 @@
             <v-card-title>Videos</v-card-title>
             <v-card-text>
               <label>Videos</label>
-              <item-grade v-for="(video, i) in lesson.videos" :key="`video-grade-${i}`" :types-report-cards="reportCards" :data-grade="video" entity-type="Videos" />
+              <item-grade v-for="(video, i) in lesson.videos" :key="`video-grade-${i}`" :list-report-cards="reportCards" :data-grade="video" entity-type="Videos" />
             </v-card-text>
           </v-card>
         </v-row>
@@ -31,7 +31,7 @@
             <v-card-title>WorkSheets</v-card-title>
             <v-card-text>
               <label>WorkSheet - ONLINE</label>
-              <item-grade v-for="(worksheet, i) in lesson.worksheets.filter(data => data.type === 'ONLINE')" :key="`video-grade-${i}`" :data-grade="worksheet" :types-report-cards="reportCards" entity-type="Worksheets" />
+              <item-grade v-for="(worksheet, i) in lesson.worksheets.filter(data => data.type === 'ONLINE')" :key="`video-grade-${i}`" :data-grade="worksheet" :list-report-cards="reportCards" entity-type="Worksheets" />
             </v-card-text>
           </v-card>
         </v-row>
@@ -43,7 +43,7 @@
             <v-card-text>
               <label>WorkSheet</label>
               <div v-for="(worksheet, i) in worksheetOffLine" :key="`worksheet-offline-grade-${i}`">
-                <item-grade :data-grade="worksheet" :types-report-cards="reportCards" :entity-type="worksheet.entityType" />
+                <item-grade :data-grade="worksheet" :list-report-cards="reportCards" :entity-type="worksheet.entityType" />
               </div>
             </v-card-text>
           </v-card>
