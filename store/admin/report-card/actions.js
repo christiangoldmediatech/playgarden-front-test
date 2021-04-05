@@ -2,7 +2,7 @@ export default {
 
   async getTypes ({ commit }, name = null) {
     const data = await this.$axios.$get('/report-card-types', { params: { name } })
-    commit('SET_TYPES', data)
+    // commit('SET_TYPES', data)
     return data
   },
 

@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 export default {
   name: 'ItemGrade',
   props: {
@@ -62,11 +62,10 @@ export default {
       id: null
     }
   },
-  computed: {
-    ...mapGetters('admin/report-card', ['types'])
-  },
+  computed: {},
 
   async created () {
+    this.reportCards = await this.getTypes()
     this.lessonId = this.$route.query.lessonId
     this.listReportCards = this.typesReportCards
     if (this.entityType === 'Activities') {
