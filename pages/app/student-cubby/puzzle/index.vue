@@ -55,7 +55,7 @@
                             </span>
 
                             <v-progress-linear
-                              class="mt-2 white"
+                              class="mt-2 mx-4 white"
                               color="accent"
                               height="15"
                               :value="puzzle.percentageCompleted"
