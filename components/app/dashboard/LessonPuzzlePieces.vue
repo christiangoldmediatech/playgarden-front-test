@@ -2,17 +2,28 @@
   <div class="lesson-puzzle-pieces">
     <div class="pieces-content">
       <div class="pieces-image">
-        <img :src="puzzlePiece.puzzle.image">
+        <img class="pieces-img" :src="puzzlePiece.puzzle.image">
+        <img v-if="won" class="pieces-medal" src="@/assets/svg/puzzle-medal.svg">
         <puzzle-clip-path />
       </div>
 
       <div class="pieces-data">
         <div class="remaining-title">
-          GET A PUZZLE PIECE!
+          <template v-if="won">
+            CONGRATULATIONS!
+          </template>
+          <template v-else>
+            GET A PUZZLE PIECE!
+          </template>
         </div>
 
         <div class="remaining-text">
-          Watch {{ completeTotal }} in a row
+          <template v-if="won">
+            You won a puzzle piece.
+          </template>
+          <template v-else>
+            Watch {{ completeTotal }} in a row
+          </template>
         </div>
 
         <div class="percentage">
@@ -68,6 +79,10 @@ export default {
     completeTotal () {
       const extra = this.activities ? 'activities' : 'video lessons'
       return `${this.total} ${extra}`
+    },
+
+    won () {
+      return this.finished / this.total === 1
     },
 
     finished () {
@@ -132,7 +147,8 @@ export default {
 
     .pieces-image {
       margin-right: 12px;
-      img {
+      position: relative;
+      img.pieces-img  {
         width: 40px;
         height: 40px;
         object-fit: none;
@@ -142,6 +158,19 @@ export default {
         @media screen and (min-width: 960px){
           width: 55px;
           height: 55px;
+        }
+      }
+      img.pieces-medal {
+        position: absolute;
+        bottom: -4px;
+        right: -4px;
+        width: 30px;
+        height: 30px;
+        object-fit: cover;
+        object-position: center;
+        @media screen and (min-width: 960px){
+          width: 40px;
+          height: 40px;
         }
       }
     }
