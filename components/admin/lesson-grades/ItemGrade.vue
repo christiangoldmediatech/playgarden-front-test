@@ -4,7 +4,7 @@
       {{ dataGrade.code }} - {{ dataGrade.name }}
     </v-col>
     <v-col
-      v-for="(cardType, i) in reportCards"
+      v-for="(cardType, i) in getReports"
       :key="`report-cardType-${i}-${entityType}-${dataGrade.code}`"
     >
       <label>{{ cardType.text }}</label>
@@ -58,16 +58,36 @@ export default {
       loading: false,
       listReportCards: [],
       reportCards: [],
+      point: null,
       gradesList: [],
       id: null
     }
   },
-  computed: {},
+  computed: {
+    getReports () {
+      const list = this.listReportCards.map((type) => {
+        const grade = this.gradesList.find(
+          data => type.id === data.reportCardType.id
+        )
+        return {
+          text: type.name,
+          value: type.id,
+          id: grade ? grade.id : null,
+          reportCardTypeId: type.id,
+          points: grade ? grade.points : 0,
+          total: grade ? grade.total : 0
+        }
+      })
+      this.setDataGrades(list)
+      // this.dataGrade.grades = list
+      return list
+    }
+  },
 
   async created () {
-    this.reportCards = await this.getTypes()
+    const dataList = await this.getTypes()
     this.lessonId = this.$route.query.lessonId
-    this.listReportCards = this.typesReportCards
+    this.listReportCards = [...dataList]
     if (this.entityType === 'Activities') {
       this.entityId = this.dataGrade.activity.id
     }
@@ -83,12 +103,16 @@ export default {
       lessonId: this.lessonId
     })
     this.gradesList = grades
-    this.getReportCardTypes()
+    // this.getReportCardTypes()
   },
   methods: {
     ...mapActions('grades', ['getGrades']),
 
     ...mapActions('admin/report-card', ['getTypes']),
+
+    setDataGrades (val) {
+      this.dataGrade.grades = val
+    },
 
     getReportCardTypes () {
       this.reportCards = this.listReportCards.map((type) => {
