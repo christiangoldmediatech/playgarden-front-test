@@ -18,22 +18,53 @@
         <div class="ow-progress-bar" :style="{ '--progress': progress }" />
       </div>
       <div class="ow-progress-steps">
-        <div
-          v-for="(sheet, sheetIndex) in worksheets"
-          :key="`question-${sheet.worksheetId}`"
-          class="ow-progress-number"
-          :class="{ 'ow-progress-number-active': sheetIndex <= index }"
+        <template v-if="worksheets.length > 1">
+          <div
+            v-for="sheetIndex in (worksheets.length - 1)"
+            :key="`question-${worksheets[sheetIndex - 1].id}`"
+            class="ow-progress-number"
+            :class="{ 'ow-progress-number-active': (sheetIndex - 1) <= index }"
+          >
+            {{ sheetIndex }}
+          </div>
+        </template>
+
+        <v-tooltip
+          top
+          color="accent"
+          :close-delay="$vuetify.breakpoint.smAndDown ? 5000 : 0"
+          open-on-click
+          open-on-hover
+          dark
         >
-          {{ sheetIndex + 1 }}
-        </div>
+          <template v-slot:activator="{ on, attrs }">
+            <img
+              :src="puzzlePiece.puzzle.image"
+              class="ow-progress-img"
+              v-bind="attrs"
+              v-on="on"
+            >
+          </template>
+          <span>
+            Complete the Online Worksheets, and get a new Puzzle Piece!
+          </span>
+        </v-tooltip>
       </div>
+      <puzzle-clip-path />
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import PuzzleClipPath from '@/components/PuzzleClipPath.vue'
+
 export default {
   name: 'OwHeader',
+
+  components: {
+    PuzzleClipPath
+  },
 
   props: {
     day: {
@@ -55,6 +86,8 @@ export default {
   },
 
   computed: {
+    ...mapState('children/lesson', ['puzzlePiece']),
+
     progress () {
       if (this.worksheets.length) {
         return `${((this.index + 1) / this.worksheets.length) * 100}%`
@@ -108,6 +141,7 @@ export default {
     &-steps {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       width: 47%;
       padding: 0 2%;
       margin-top: 10px;
@@ -121,6 +155,14 @@ export default {
       &-active {
         color: rgba(194, 218, 165, 1);
       }
+    }
+    &-img {
+      width: 20px;
+      height: 20px;
+      object-fit: none;
+      object-position: center;
+      vertical-align: middle;
+      clip-path: url(#myClip);
     }
   }
 }

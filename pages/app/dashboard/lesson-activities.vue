@@ -1,11 +1,12 @@
 <template>
   <lesson-activities-card>
-    <v-list-item-action v-if="showFavorites">
+    <v-list-item-action>
       <v-btn
+        v-if="$vuetify.breakpoint.smAndDown || !puzzlePiece"
         icon
         large
         :loading="favoritesLoading"
-        @click.stop="setFavorite"
+        @click.stop="handleFavorites"
       >
         <v-icon color="#F5737F">
           <template v-if="isFavorite">
@@ -16,8 +17,8 @@
           </template>
         </v-icon>
       </v-btn>
+      <lesson-puzzle-pieces v-else v-bind="{ puzzlePiece }" activities />
     </v-list-item-action>
-    <lesson-puzzle-pieces v-else v-bind="{ puzzlePiece }" />
   </lesson-activities-card>
 </template>
 

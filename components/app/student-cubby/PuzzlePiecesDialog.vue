@@ -1,22 +1,22 @@
 <template>
-  <pg-dialog content-class="elevation-0" :value="actualValue" persistent>
-    <v-container class="justify-center fill-height" fluid>
-      <v-col class="px-3 px-lg-0" sm="12" lg="8" xl="10">
-        <v-row justify="end" no-gutters>
-          <v-btn
-            class="bg-black mb-3 mt-3 mr-5"
-            color="white"
-            icon
-            @click.stop="close"
-          >
-            <v-icon>
-              mdi-close
-            </v-icon>
-          </v-btn>
-        </v-row>
-        <pieces :puzzle="actualShow" />
-      </v-col>
-    </v-container>
+  <pg-dialog
+    class="pos-relative"
+    content-class="elevation-0 mt-10"
+    :value="actualValue"
+    persistent
+    max-width="1264px"
+  >
+    <v-btn
+      class="bg-black pos-absolute pos-right-0 pos-top-0 close-btn"
+      color="white"
+      icon
+      @click.stop="close"
+    >
+      <v-icon>
+        mdi-close
+      </v-icon>
+    </v-btn>
+    <pieces v-if="actualShow" :puzzle="actualShow" />
   </pg-dialog>
 </template>
 
@@ -33,12 +33,16 @@ export default {
   props: {
     value: {
       type: Boolean,
-      required: true
+      required: false,
+      default: false
     },
 
     toShow: {
       type: Object,
-      required: true
+      validator: (val) => {
+        return val === null || typeof val === 'object'
+      },
+      default: null
     }
   },
 
@@ -60,14 +64,16 @@ export default {
     actualShow () {
       if (this.localToShow) {
         return this.localToShow
+      } else if (this.toShow) {
+        return this.toShow
       }
-      return this.toShow
+      return null
     }
   },
 
   watch: {
     value (val) {
-      if (val) {
+      if (!val) {
         this.close()
       }
     }
@@ -89,3 +95,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.close-btn {
+  @media screen and (min-width: 1264px) {
+    right: calc(((100vw - 1264px) / 2) - 16px);
+  }
+}
+</style>

@@ -123,11 +123,13 @@ export default {
     PuzzlePiecesDialog
   },
 
-  data: () => ({
-    dialog: false,
-    puzzles: [],
-    toShow: {}
-  }),
+  data: () => {
+    return {
+      dialog: false,
+      puzzles: [],
+      toShow: {}
+    }
+  },
 
   computed: {
     ...mapGetters('children', { children: 'rows' }),

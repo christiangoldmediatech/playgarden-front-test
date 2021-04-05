@@ -12,19 +12,19 @@
         </div>
 
         <div class="remaining-text">
-          Watch {{ puzzlePiece.piecesUnlock }} videos in a row
+          Watch {{ completeTotal }} in a row
         </div>
 
         <div class="percentage">
           <div class="remaining-bar">
             <div
               class="remaining-progress"
-              :style="{ '--completed': `${(finished/puzzlePiece.piecesUnlock) * 100}%` }"
+              :style="{ '--completed': `${(finished/total) * 100}%` }"
             />
           </div>
 
           <div class="remaining-number">
-            {{ finished }}/{{ puzzlePiece.piecesUnlock }}
+            {{ finished }}/{{ total }}
           </div>
         </div>
       </div>
@@ -49,9 +49,10 @@ export default {
   },
 
   props: {
-    puzzlePiece: {
-      type: Object,
-      required: true
+    activities: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
 
@@ -59,10 +60,22 @@ export default {
     ...mapState('children/lesson', ['puzzlePiece']),
     ...mapGetters('admin/curriculum', { lesson: 'getLesson' }),
 
+    total () {
+      const videos = this.activities ? this.lesson.lessonsActivities : this.lesson.videos
+      return videos.length
+    },
+
+    completeTotal () {
+      const extra = this.activities ? 'activities' : 'video lessons'
+      return `${this.total} ${extra}`
+    },
+
     finished () {
       let count = 0
-      this.lesson.videos.forEach((video) => {
-        count += Number(Boolean(video && video.viewed && video.viewed.completed))
+      const videos = this.activities ? this.lesson.lessonsActivities : this.lesson.videos
+      videos.forEach((video) => {
+        const source = this.activities ? video.activity : video
+        count += Number(Boolean(source && source.viewed && source.viewed.completed))
       })
       return count
     }
@@ -122,7 +135,7 @@ export default {
       img {
         width: 40px;
         height: 40px;
-        object-fit: cover;
+        object-fit: none;
         object-position: center;
         vertical-align: middle;
         clip-path: url(#myClip);
