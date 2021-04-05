@@ -15,7 +15,7 @@
         rules="required"
       >
         <pg-text-field
-          v-model="cardType.points"
+          v-model="cardType.total"
           :error-messages="errors"
           label="Points"
           solo-labeled
