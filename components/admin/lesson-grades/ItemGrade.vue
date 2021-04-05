@@ -1,7 +1,8 @@
 <template>
   <v-row justify="center">
     <v-col cols="3" class="mt-8">
-      {{ dataGrade.code }} - {{ dataGrade.name }}
+      <span class="font-weight-bold">{{ dataGrade.code }} - {{ dataGrade.name }}</span> <br />
+      {{ dataGrade.description }}
     </v-col>
     <v-col
       v-for="(cardType, i) in getReports"
@@ -38,6 +39,7 @@ export default {
       default: () => ({
         code: '',
         name: '',
+        description: '',
         grades: []
       })
     },
@@ -90,6 +92,7 @@ export default {
     if (this.entityType === 'Activities') {
       this.entityId = this.dataGrade.activity.id
       this.dataGrade.name = this.dataGrade.activity.videos.name
+      this.dataGrade.description = this.dataGrade.activity.videos.description
     }
     if (this.entityType === 'Videos') {
       this.entityId = (this.dataGrade.type === 'OFFLINE') ? this.dataGrade.entityId : this.dataGrade.id
