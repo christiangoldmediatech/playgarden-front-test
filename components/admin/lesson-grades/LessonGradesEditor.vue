@@ -170,26 +170,6 @@ export default {
         }
         this.grades.push(worksheetData)
       })
-
-      this.lesson.worksheets.filter(data => data.type === 'ONLINE').map((worksheet) => {
-        const worksheetData = {
-          entityType: 'Worksheets',
-          entityId: worksheet.worksheetId,
-          lessonId: this.lesson.id,
-          grades: worksheet.grades
-        }
-        this.grades.push(worksheetData)
-      })
-
-      this.lesson.worksheets.filter(data => data.type === 'ONLINE').map((worksheet) => {
-        const worksheetData = {
-          entityType: 'Worksheets',
-          entityId: worksheet.worksheetId,
-          lessonId: this.lesson.id,
-          grades: worksheet.grades
-        }
-        this.grades.push(worksheetData)
-      })
     },
 
     async save () {
