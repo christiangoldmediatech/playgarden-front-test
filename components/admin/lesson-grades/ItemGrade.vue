@@ -79,7 +79,6 @@ export default {
         }
       })
       this.setDataGrades(list)
-      // this.dataGrade.grades = list
       return list
     }
   },
@@ -92,10 +91,10 @@ export default {
       this.entityId = this.dataGrade.activity.id
     }
     if (this.entityType === 'Videos') {
-      this.entityId = this.dataGrade.id
+      this.entityId = (this.dataGrade.type === 'OFFLINE') ? this.dataGrade.entityId : this.dataGrade.id
     }
     if (this.entityType === 'Worksheets') {
-      this.entityId = this.dataGrade.worksheetId
+      this.entityId = (this.dataGrade.type === 'OFFLINE') ? this.dataGrade.entityId : this.dataGrade.worksheetId
     }
     const { grades } = await this.getGrades({
       entityId: this.entityId,

@@ -43,7 +43,7 @@
             <v-card-text>
               <label>WorkSheet</label>
               <div v-for="(worksheet, i) in worksheetOffLine" :key="`worksheet-offline-grade-${i}`">
-                <item-grade :data-grade="worksheet" :types-report-cards="reportCards" :entity-type="worksheet.entity" />
+                <item-grade :data-grade="worksheet" :types-report-cards="reportCards" :entity-type="worksheet.entityType" />
               </div>
             </v-card-text>
           </v-card>
@@ -106,6 +106,7 @@ export default {
             code: `${this.lesson.code}V1`,
             name: worksheet.name,
             lessonId: this.lesson.id,
+            type: 'OFFLINE',
             entityType: 'Videos',
             entityId: worksheet.videoDetail.id
           }
@@ -117,6 +118,7 @@ export default {
             code: worksheet.code,
             name: worksheet.name,
             lessonId: this.lesson.id,
+            type: 'OFFLINE',
             entityType: 'Worksheets',
             entityId: worksheet.id
           }
