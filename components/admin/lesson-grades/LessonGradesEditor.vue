@@ -7,7 +7,9 @@
             <v-card-title>Activities</v-card-title>
             <v-card-text>
               <label>Activities</label>
-              <item-grade v-for="(activity, i) in lesson.lessonsActivities" :key="`activity-grade-${i}`" :data-grade="activity" entity-type="Activities" />
+              <template v-for="(activity, i) in lesson.lessonsActivities">
+                <item-grade :key="`activity-grade-${i}`" :data-grade="activity" :types-report-cards="reportCards" entity-type="Activities" />
+              </template>
             </v-card-text>
           </v-card>
         </v-row>
@@ -18,7 +20,7 @@
             <v-card-title>Videos</v-card-title>
             <v-card-text>
               <label>Videos</label>
-              <item-grade v-for="(video, i) in lesson.videos" :key="`video-grade-${i}`" :data-grade="video" entity-type="Videos" />
+              <item-grade v-for="(video, i) in lesson.videos" :key="`video-grade-${i}`" :types-report-cards="reportCards" :data-grade="video" entity-type="Videos" />
             </v-card-text>
           </v-card>
         </v-row>
@@ -29,7 +31,7 @@
             <v-card-title>WorkSheets</v-card-title>
             <v-card-text>
               <label>WorkSheet - ONLINE</label>
-              <item-grade v-for="(worksheet, i) in lesson.worksheets.filter(data => data.type === 'ONLINE')" :key="`video-grade-${i}`" :data-grade="worksheet" entity-type="Worksheets" />
+              <item-grade v-for="(worksheet, i) in lesson.worksheets.filter(data => data.type === 'ONLINE')" :key="`video-grade-${i}`" :data-grade="worksheet" :types-report-cards="reportCards" entity-type="Worksheets" />
             </v-card-text>
           </v-card>
         </v-row>
@@ -41,7 +43,7 @@
             <v-card-text>
               <label>WorkSheet</label>
               <div v-for="(worksheet, i) in worksheetOffLine" :key="`worksheet-offline-grade-${i}`">
-                <item-grade :data-grade="worksheet" :entity-type="worksheet.entity" />
+                <item-grade :data-grade="worksheet" :types-report-cards="reportCards" :entity-type="worksheet.entity" />
               </div>
             </v-card-text>
           </v-card>
@@ -90,21 +92,7 @@ export default {
       : null
   }),
 
-  computed: {
-    reportCardTypes () {
-      return this.reportCards.map((type) => {
-        const grade = this.gradesList.find(
-          data => type.id === data.reportCardType.id
-        )
-        return {
-          text: type.name,
-          value: type.id,
-          reportCardTypeId: type.id,
-          points: grade ? grade.points : 0
-        }
-      })
-    }
-  },
+  computed: {},
 
   async created () {
     this.reportCards = await this.getTypes()

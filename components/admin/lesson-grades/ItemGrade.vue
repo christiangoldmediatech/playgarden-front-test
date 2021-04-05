@@ -4,8 +4,8 @@
       {{ dataGrade.code }} - {{ dataGrade.name }}
     </v-col>
     <v-col
-      v-for="(cardType, i) in dataGrade.grades"
-      :key="`report-cardType-${i}`"
+      v-for="(cardType, i) in reportCards"
+      :key="`report-cardType-${i}-${entityType}-${dataGrade.code}`"
     >
       <label>{{ cardType.text }}</label>
       <validation-provider
@@ -31,12 +31,20 @@
 import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'ItemGrade',
-
   props: {
     dataGrade: {
       type: Object,
       required: true,
-      default: () => ({})
+      default: () => ({
+        code: '',
+        name: '',
+        grades: []
+      })
+    },
+    typesReportCards: {
+      type: Array,
+      required: true,
+      default: () => ([])
     },
     entityType: {
       type: String,
@@ -44,28 +52,47 @@ export default {
       default: ''
     }
   },
-
   data () {
     return {
       entityId: null,
-      dialog: false,
       loading: false,
+      listReportCards: [],
+      reportCards: [],
       gradesList: [],
-      grades: [],
-      item: {
-        code: '',
-        name: '',
-        grades: []
-      },
-      id: null,
-      entityTypeList: ['Activities', 'Worksheets', 'Videos', 'LiveSessions']
+      id: null
     }
   },
-
   computed: {
-    ...mapGetters('admin/report-card', ['types']),
-    reportCardTypes () {
-      return this.types.map((type) => {
+    ...mapGetters('admin/report-card', ['types'])
+  },
+
+  async created () {
+    this.lessonId = this.$route.query.lessonId
+    this.listReportCards = this.typesReportCards
+    if (this.entityType === 'Activities') {
+      this.entityId = this.dataGrade.activity.id
+    }
+    if (this.entityType === 'Videos') {
+      this.entityId = this.dataGrade.id
+    }
+    if (this.entityType === 'Worksheets') {
+      this.entityId = this.dataGrade.worksheetId
+    }
+    const { grades } = await this.getGrades({
+      entityId: this.entityId,
+      entityType: this.entityType,
+      lessonId: this.lessonId
+    })
+    this.gradesList = grades
+    this.getReportCardTypes()
+  },
+  methods: {
+    ...mapActions('grades', ['getGrades']),
+
+    ...mapActions('admin/report-card', ['getTypes']),
+
+    getReportCardTypes () {
+      this.reportCards = this.listReportCards.map((type) => {
         const grade = this.gradesList.find(
           data => type.id === data.reportCardType.id
         )
@@ -78,33 +105,8 @@ export default {
           total: grade ? grade.total : 0
         }
       })
+      this.dataGrade.grades = this.reportCards
     }
-  },
-
-  async created () {
-    this.dataGrade.grades = this.reportCardTypes
-
-    if (this.entityType === 'Activities') {
-      this.entityId = this.dataGrade.activity.id
-    }
-
-    if (this.entityType === 'Videos') {
-      this.entityId = this.dataGrade.id
-    }
-
-    if (this.entityType === 'Worksheets') {
-      this.entityId = this.dataGrade.worksheetId
-    }
-
-    const { grades } = await this.getGrades({
-      entityId: this.entityId,
-      entityType: this.entityType
-    })
-    this.gradesList = grades
-  },
-
-  methods: {
-    ...mapActions('grades', ['getGrades'])
   }
 }
 </script>
