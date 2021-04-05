@@ -62,7 +62,7 @@ export default {
         message += ' VIDEO '
       }
 
-      message += 'AND WIN A PATCH!'
+      message += 'AND WIN A PUZZLE PIECE!'
 
       return message
     }

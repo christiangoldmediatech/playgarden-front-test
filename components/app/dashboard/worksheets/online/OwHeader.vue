@@ -18,16 +18,14 @@
         <div class="ow-progress-bar" :style="{ '--progress': progress }" />
       </div>
       <div class="ow-progress-steps">
-        <template v-if="worksheets.length > 1">
-          <div
-            v-for="sheetIndex in (worksheets.length - 1)"
-            :key="`question-${worksheets[sheetIndex - 1].id}`"
-            class="ow-progress-number"
-            :class="{ 'ow-progress-number-active': (sheetIndex - 1) <= index }"
-          >
-            {{ sheetIndex }}
-          </div>
-        </template>
+        <div
+          v-for="sheetIndex in (worksheets.length)"
+          :key="`question-${worksheets[sheetIndex - 1].id}`"
+          class="ow-progress-number"
+          :class="{ 'ow-progress-number-active': (sheetIndex - 1) <= index }"
+        >
+          {{ sheetIndex }}
+        </div>
 
         <v-tooltip
           top
