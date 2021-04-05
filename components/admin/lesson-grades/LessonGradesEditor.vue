@@ -4,12 +4,10 @@
       <v-col cols="12">
         <v-row class="mt-8">
           <v-card width="100%">
-            <v-card-title>Activities</v-card-title>
+            <v-card-title>Videos</v-card-title>
             <v-card-text>
-              <label>Activities</label>
-              <template v-for="(activity, i) in lesson.lessonsActivities">
-                <item-grade :key="`activity-grade-${i}`" :data-grade="activity" :list-report-cards="reportCards" entity-type="Activities" />
-              </template>
+              <label>Videos</label>
+              <item-grade v-for="(video, i) in lesson.videos" :key="`video-grade-${i}`" :list-report-cards="reportCards" :data-grade="video" entity-type="Videos" />
             </v-card-text>
           </v-card>
         </v-row>
@@ -17,10 +15,12 @@
       <v-col cols="12">
         <v-row class="mt-8">
           <v-card width="100%">
-            <v-card-title>Videos</v-card-title>
+            <v-card-title>Activities</v-card-title>
             <v-card-text>
-              <label>Videos</label>
-              <item-grade v-for="(video, i) in lesson.videos" :key="`video-grade-${i}`" :list-report-cards="reportCards" :data-grade="video" entity-type="Videos" />
+              <label>Activities</label>
+              <template v-for="(activity, i) in lesson.lessonsActivities">
+                <item-grade :key="`activity-grade-${i}`" :data-grade="activity" :list-report-cards="reportCards" entity-type="Activities" />
+              </template>
             </v-card-text>
           </v-card>
         </v-row>

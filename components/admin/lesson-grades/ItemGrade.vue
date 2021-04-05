@@ -58,7 +58,6 @@ export default {
     return {
       entityId: null,
       loading: false,
-      // listReportCards: [],
       reportCards: [],
       point: null,
       gradesList: [],
@@ -86,9 +85,7 @@ export default {
   },
 
   async created () {
-    // const dataList = await this.getTypes()
     this.lessonId = this.$route.query.lessonId
-    // this.listReportCards = [...dataList]
     if (this.entityType === 'Activities') {
       this.entityId = this.dataGrade.activity.id
       this.dataGrade.name = this.dataGrade.activity.videos.name
