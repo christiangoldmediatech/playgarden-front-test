@@ -9,7 +9,15 @@
       </p>
 
       <v-row class="mt-6" justify="space-around">
-        <div v-for="(puzzle, indexP) in puzzles" :key="indexP">
+        <v-col
+          v-for="(puzzle, indexP) in puzzles"
+          :key="indexP"
+          cols="12"
+          xs="12"
+          sm="6"
+          md="6"
+          lg="4"
+        >
           <v-hover>
             <template v-slot:default="{ hover }">
               <v-card
@@ -103,7 +111,7 @@
               </v-card>
             </template>
           </v-hover>
-        </div>
+        </v-col>
       </v-row>
     </v-card-text>
 
