@@ -103,7 +103,6 @@ export default {
       lessonId: this.lessonId
     })
     this.gradesList = grades
-    // this.getReportCardTypes()
   },
   methods: {
     ...mapActions('grades', ['getGrades']),
