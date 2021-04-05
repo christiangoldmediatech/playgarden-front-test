@@ -180,6 +180,9 @@ export default {
         this.$snotify.success('Data save succesfully!', {
           timeout: 6000
         })
+        this.$router.push({
+          name: 'admin-curriculum-management'
+        })
       } catch (e) {
       } finally {
         this.loading = false
