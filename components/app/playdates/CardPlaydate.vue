@@ -254,7 +254,7 @@
               <v-row v-if="finding" justify="center" no-gutters>
                 <v-col cols="8" class="mb-0 mt-3">
                   <h5>Select children for Playdate?</h5>
-                  <child-select v-model="childId" />
+                  <child-select v-model="childId" :playdates="playdates" />
                 </v-col>
               </v-row>
               <v-row justify="center" no-gutters>
@@ -332,6 +332,11 @@ export default {
     playdate: {
       type: Object,
       required: true
+    },
+
+    playdates: {
+      type: Array,
+      default: () => []
     }
   },
 
