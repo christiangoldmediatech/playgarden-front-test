@@ -28,6 +28,7 @@
         </div>
 
         <v-tooltip
+          v-if="puzzlePiece"
           top
           color="accent"
           :close-delay="$vuetify.breakpoint.smAndDown ? 5000 : 0"
