@@ -23,11 +23,10 @@ export default {
       return data.lesson
     } catch (e) {
       const { data } = e.response
-      if (data.errorCode === 100) {
-        this.$router.push({
-          name: 'app-all-done'
-        })
+      if (data && data.errorCode === 100) {
+        return Promise.reject(data)
       }
+      return Promise.reject(e)
     }
   },
 
@@ -115,11 +114,10 @@ export default {
       return data
     } catch (e) {
       const { data } = e.response
-      if (data.errorCode === 100) {
-        this.$router.push({
-          name: 'app-all-done'
-        })
+      if (data && data.errorCode === 100) {
+        return Promise.reject(data)
       }
+      return Promise.reject(e)
     }
   }
 }

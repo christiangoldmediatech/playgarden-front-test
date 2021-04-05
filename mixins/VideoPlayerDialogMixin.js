@@ -17,6 +17,10 @@ export default {
 
     dialogContainerId () {
       return `video-player-dialog-${this._uid}`
+    },
+
+    lastVideo () {
+      return this.index === (this.playlist.length - 1)
     }
   },
 

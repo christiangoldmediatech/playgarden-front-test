@@ -138,12 +138,11 @@ export default {
           return
         }
       } catch (e) {
-        if (e.errorCode === 100) {
+        if (e && e.errorCode === 100 && !this.overrideMode) {
           this.$router.push({
             name: 'app-all-done'
           })
         }
-        return Promise.reject(e)
       } finally {
         this.loading = false
       }

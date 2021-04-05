@@ -36,7 +36,7 @@ export default {
    ** See https://nuxtjs.org/api/configuration-head
    */
   head: {
-    title: process.env.npm_package_name || '',
+    title: 'Playgarden Prep Online',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -114,6 +114,7 @@ export default {
     '@/plugins/snotify',
     '@/plugins/validate',
     '@/plugins/vueCtkDateTimePicker',
+    { src: '@/plugins/echarts', mode: 'client'},
     { src: '@/plugins/tiptapVuetify', mode: 'client' },
     { src: '@/plugins/firebase', mode: 'client' },
     {
@@ -135,7 +136,8 @@ export default {
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
     '@nuxtjs/gtm',
-    '@nuxtjs/vuetify'
+    '@nuxtjs/vuetify',
+    '@nuxtjs/composition-api'
   ],
   /**
    * Vuetify Options
@@ -236,7 +238,7 @@ export default {
    ** See https://nuxtjs.org/api/configuration-build/
    */
   build: {
-    transpile: ['vuetify/lib', 'vee-validate/dist/rules', 'tiptap-vuetify'],
+    transpile: ['vuetify/lib', 'vee-validate/dist/rules', 'tiptap-vuetify', 'vue-echarts', 'resize-detector'],
     plugins: [
       new webpack.IgnorePlugin({
         resourceRegExp: /\@highcharts\/map\-collection/

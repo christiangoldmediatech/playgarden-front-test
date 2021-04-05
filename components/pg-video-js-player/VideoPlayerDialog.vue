@@ -9,7 +9,6 @@
           color="rgb(64, 64, 64)"
           icon
           text
-          to="#"
           @click.stop="close"
         >
           <v-icon color="white">
