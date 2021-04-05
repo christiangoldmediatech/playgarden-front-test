@@ -200,7 +200,8 @@ export default {
   gtm: {
     id: process.env.GTM_ID,
     pageTracking: true, // dev test,
-    enabled: true
+    enabled: true,
+    debug: true
   },
   publicRuntimeConfig: {
     gtm: {
