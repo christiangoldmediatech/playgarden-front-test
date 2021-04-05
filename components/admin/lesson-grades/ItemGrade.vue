@@ -89,6 +89,7 @@ export default {
     this.listReportCards = [...dataList]
     if (this.entityType === 'Activities') {
       this.entityId = this.dataGrade.activity.id
+      this.dataGrade.name = this.dataGrade.activity.videos.name
     }
     if (this.entityType === 'Videos') {
       this.entityId = (this.dataGrade.type === 'OFFLINE') ? this.dataGrade.entityId : this.dataGrade.id
