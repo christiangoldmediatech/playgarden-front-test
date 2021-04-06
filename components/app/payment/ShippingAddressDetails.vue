@@ -47,7 +47,7 @@
           </v-col>
 
           <v-col
-            :cols="wrapStateAndZipCodeFields ? 6 : 12"
+            :cols="wrapStateAndZipCodeFields ? 4 : 12"
             :class="{ 'pr-4': wrapStateAndZipCodeFields }"
           >
             <!-- State -->
@@ -69,8 +69,8 @@
           </v-col>
 
           <v-col
-            :cols="wrapStateAndZipCodeFields ? 6 : 12"
-            :class="{ 'pl-4': wrapStateAndZipCodeFields }"
+            :cols="wrapStateAndZipCodeFields ? 4 : 12"
+            :class="{ 'px-4': wrapStateAndZipCodeFields }"
           >
             <!-- Zipcode -->
             <validation-provider
@@ -85,6 +85,28 @@
                 :loading="loading"
                 placeholder="Zip code"
                 label="Zip code"
+                solo-labeled
+              />
+            </validation-provider>
+          </v-col>
+
+          <v-col
+            :cols="wrapStateAndZipCodeFields ? 4 : 12"
+            :class="{ 'pl-4': wrapStateAndZipCodeFields }"
+          >
+            <!-- Phone Number -->
+            <validation-provider
+              v-slot="{ errors }"
+              name="Phone"
+              rules="required"
+            >
+              <pg-text-field
+                v-model="draft.phoneNumber"
+                clearable
+                :error-messages="errors"
+                :loading="loading"
+                placeholder="Phone number"
+                label="Phone number"
                 solo-labeled
               />
             </validation-provider>
@@ -144,6 +166,13 @@
       </v-col>
       <v-col cols="8" class="text-right">
         <b>{{ draft.zipCode }}</b>
+      </v-col>
+
+      <v-col cols="4">
+        Phone number
+      </v-col>
+      <v-col cols="8" class="text-right">
+        <b>{{ draft.phoneNumber }}</b>
       </v-col>
     </v-row>
 
@@ -294,7 +323,8 @@ export default {
         address2: null,
         city: null,
         state: null,
-        zipCode: null
+        zipCode: null,
+        phoneNumber: null
       }
     },
 
