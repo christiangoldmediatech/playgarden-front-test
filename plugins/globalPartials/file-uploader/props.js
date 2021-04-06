@@ -33,7 +33,7 @@ export default {
     mode: {
       type: String,
       required: true,
-      validator: value => ['image', 'document', 'video', 'file'].includes(value)
+      validator: value => ['image', 'document', 'video', 'file', 'song'].includes(value)
     },
     multiPart: {
       type: Boolean,
@@ -91,6 +91,18 @@ export default {
 
     // FILES
     zip: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
+    // SONGS
+    mp3: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    wav: {
       type: Boolean,
       required: false,
       default: false

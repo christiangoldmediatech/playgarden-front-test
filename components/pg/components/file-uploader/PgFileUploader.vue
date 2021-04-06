@@ -56,6 +56,7 @@ export default {
         { 'application/zip': this.zip },
         { 'video/mpeg': this.mpeg },
         { 'video/mp4': this.mp4 },
+        { 'audio/mp3': this.mp3 },
         { '.mov,video/quicktime': this.mov },
         { 'video/webm': this.webm }
       ]
@@ -96,6 +97,9 @@ export default {
           break
         case 'image':
           extensions = ['.jpg', '.jpeg', '.png', '.gif']
+          break
+        case 'song':
+          extensions = ['.mp3', '.mp4', '.wav']
           break
       }
       return extensions

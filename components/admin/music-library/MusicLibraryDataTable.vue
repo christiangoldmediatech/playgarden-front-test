@@ -5,7 +5,6 @@
         <v-card width="100%">
           <v-card-title>
             Music Library
-
             <v-spacer />
 
             <v-btn
@@ -13,6 +12,7 @@
               color="primary darken-1"
               dark
               :icon="$vuetify.breakpoint.xs"
+              nuxt
               @click.stop="$refs.editor.open"
             >
               <v-icon class="hidden-sm-and-up">
@@ -22,7 +22,8 @@
               <v-icon class="hidden-xs-only" small>
                 mdi-plus
               </v-icon>
-              <span class="hidden-xs-only white--text">Add new music library</span>
+
+              <span class="hidden-xs-only white--text">Add music library</span>
             </v-btn>
           </v-card-title>
 
@@ -36,39 +37,22 @@
     <v-row>
       <v-col cols="12">
         <v-card width="100%">
+          <music-library-editor-dialog ref="editor" @saved="refresh(false)" />
           <v-card-text>
-            <!-- <coupon-editor-dialog ref="editor" @saved="refresh(false)" /> -->
-
             <pg-admin-data-table
               :headers="headers"
-              :items="coupons"
+              :items="types"
               :loading="loading"
               :page.sync="page"
-              @update:page="page = $event"
+              :server-items-length="total"
+              top-justify="space-between"
               @search="onSearch"
               @refresh="refresh(true)"
+              @update:items-per-page="setLimit"
+              @update:page="page = $event"
               @edit-item="$refs.editor.open(null, $event)"
               @remove-item="remove"
             >
-              <template v-slot:[`item.image`]="{ item }">
-                <img v-if="item.image" :src="item.image" width="32px">
-
-                <span v-else>
-                  N/A
-                </span>
-              </template>
-              <template v-slot:[`item.actions.prepend`]="{ item }">
-                <nuxt-link
-                  :to="{
-                    name: 'admin-user-manager-coupon-users',
-                    query: { couponName: item.name }
-                  }"
-                >
-                  <v-icon color="accent" dense>
-                    mdi-account
-                  </v-icon>
-                </nuxt-link>
-              </template>
             </pg-admin-data-table>
           </v-card-text>
         </v-card>
@@ -78,37 +62,37 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import onSearch from '@/mixins/OnSearchMixin.js'
-// import CouponEditorDialog from './CouponEditorDialog'
+import MusicLibraryEditorDialog from './MusicLibraryEditorDialog'
 
 export default {
   name: 'MusicLibraryDataTable',
 
   components: {
-    // CouponEditorDialog
+    MusicLibraryEditorDialog
   },
 
   mixins: [onSearch],
 
   data () {
     return {
-      coupons: [],
       loading: false,
-      search: null,
+      action: true,
+      search: '',
+      limit: 10,
       page: 1,
-      query: null,
       headers: [
         {
           text: 'Name',
           align: 'start',
-          sortable: true,
+          sortable: false,
           value: 'name'
         },
         {
           text: 'Description',
           align: 'start',
-          sortable: true,
+          sortable: false,
           value: 'description'
         },
         {
@@ -121,36 +105,60 @@ export default {
     }
   },
 
+  computed: {
+    ...mapGetters('admin/music-library', {
+      types: 'rows',
+      total: 'total'
+    })
+  },
+
+  watch: {
+    page () {
+      this.refresh()
+    },
+
+    limit () {
+      this.refresh()
+    }
+  },
+
   methods: {
-    ...mapActions('coupons', ['getCoupons', 'deleteCoupon']),
+    ...mapActions('admin/music-library', {
+      getMusicLibraries: 'get',
+      deleteMusicLibraries: 'delete'
+    }),
 
-    async refresh (clear = false) {
-      this.loading = true
-      this.query = { active: true, code: this.search }
-      if (clear) {
-        this.search = null
-      }
-
-      if (!this.search) {
-        delete this.query.code
-      }
-
-      try {
-        this.coupons = await this.getCoupons(this.query)
-      } catch (e) {
-      } finally {
-        this.loading = false
+    setLimit (limit) {
+      if (limit > 0) {
+        this.limit = limit
+      } else {
+        this.limit = 0
       }
     },
 
-    remove ({ id, name }) {
+    async refresh (clear = false) {
+      this.loading = true
+      const params = { limit: this.limit, page: this.page }
+
+      await this.getMusicLibraries(params)
+      this.loading = false
+    },
+
+    remove ({ id, item }) {
       this.$nuxt.$emit('open-prompt', {
-        title: 'Delete coupon?',
-        message: `Are you sure you want to delete <b>${name}</b>?`,
+        title: 'Delete music library?',
+        message: `Are you sure you wish to delete '${item.name}?`,
         action: async () => {
-          await this.deleteCoupon(id)
-          await this.refresh()
+          await this.deleteMusicLibrariess(id)
+          this.refresh()
         }
+      })
+    },
+
+    playDates (item) {
+      this.$router.push({
+        name: 'admin-playdates',
+        query: { specialistId: item.id }
       })
     }
   }

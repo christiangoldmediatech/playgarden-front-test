@@ -48,6 +48,7 @@ export default {
         { 'application/zip': this.zip },
         { 'video/mpeg': this.mpeg },
         { 'video/mp4': this.mp4 },
+        { 'audio/mp3': this.mp3 },
         { '.mov,video/quicktime': this.mov },
         { 'video/webm': this.webm }
       ]
