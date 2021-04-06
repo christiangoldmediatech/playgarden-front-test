@@ -120,6 +120,7 @@
     <lesson-activity-player />
     <lesson-teacher-video />
     <course-progress-overlay />
+    <puzzle-pieces-dialog />
   </v-main>
 </template>
 
@@ -127,6 +128,7 @@
 import DashboardPanel from '@/components/app/dashboard/DashboardPanel.vue'
 import LessonActivityPlayer from '@/components/app/dashboard/LessonActivityPlayer.vue'
 import LessonTeacherVideo from '@/components/app/dashboard/LessonTeacherVideo.vue'
+import PuzzlePiecesDialog from '@/components/app/student-cubby/PuzzlePiecesDialog.vue'
 import ChildSelect from '@/components/app/ChildSelect.vue'
 import CourseProgressOverlay from '@/components/app/student-cubby/CourseProgressOverlay.vue'
 import CarouselLetter from '~/components/app/all-done/CarouselLetter'
@@ -139,6 +141,7 @@ export default {
     DashboardPanel,
     LessonActivityPlayer,
     LessonTeacherVideo,
+    PuzzlePiecesDialog,
     ChildSelect,
     CourseProgressOverlay,
     CarouselLetter
@@ -238,7 +241,12 @@ export default {
     width: 225px;
   }
   &-content {
-    height: calc(100% - 70px);
+    height: 100%;
+
+    @media screen and (min-width: 960px){
+      height: calc(100% - 70px);
+    }
+
     &-column {
       max-height: 100%;
     }

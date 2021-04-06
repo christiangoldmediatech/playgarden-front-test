@@ -27,6 +27,7 @@
           v-if="multiple"
           color="primary"
           :ripple="false"
+          :disabled="item.disabled"
           :value="attrs.inputValue"
         />
 
@@ -38,6 +39,12 @@
           <v-list-item-title :class="{ 'pl-2': multiple }">
             {{ item.firstName }}
           </v-list-item-title>
+          <v-list-item-subtitle
+            v-if="item.disabled"
+            :class="{ 'pl-2': multiple, 'grey--text': true }"
+          >
+            Already on a Playdate
+          </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
     </template>
@@ -70,6 +77,11 @@ export default {
       required: true
     },
 
+    playdates: {
+      type: Array,
+      default: () => []
+    },
+
     managementButton: Boolean
   },
 
@@ -96,9 +108,18 @@ export default {
         return {
           value: child.id,
           text: child.firstName,
+          disabled: this.childrenIdWithPlaydates.includes(child.id),
           ...child
         }
       })
+    },
+
+    childrenIdWithPlaydates () {
+      return this.playdates
+        // filter children that have playdates
+        .filter(playdate => playdate && Array.isArray(playdate.playdates) && playdate.playdates.length > 0)
+        // map those children id
+        .map(playdate => playdate && playdate.children ? playdate.children.id : undefined)
     }
   },
 

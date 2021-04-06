@@ -104,7 +104,7 @@ export default {
         description: '',
         show: false
       },
-      nextPatchData: {
+      nextUnlockData: {
         image: require('@/assets/png/test-patch.png'),
         number: 0,
         show: false
@@ -171,7 +171,8 @@ export default {
         showSteps: this.showSteps,
         inline: this.inline,
         nextPatch: this.nextPatch,
-        nextPatchData: this.nextPatchData
+        nextPuzzle: this.nextPuzzle,
+        nextUnlockData: this.nextUnlockData
       }
     },
 
@@ -275,10 +276,10 @@ export default {
         this.status = 'PLAYING'
         this.position = this.playerInstance.currentTime()
 
-        // nextUp && nextPatch
-        if ((this.showNextUp || this.nextPatch) && this.duration > 0) {
+        // nextUp && nextPatch && nextPuzzle
+        if ((this.showNextUp || this.nextPatch || this.nextPuzzle) && this.duration > 0) {
           const elapsed = this.duration - this.position
-          if (elapsed <= 6 && !this.lastPlaylistItem && !this.nextUp.show && !this.nextPatchData.show) {
+          if (elapsed <= 6 && !this.lastPlaylistItem && !this.nextUp.show && !this.nextUnlockData.show) {
             // Handle nextUp
             if (this.showNextUp && !this.nextUp.show) {
               const { title, description, poster } = this.playlist[this.playlistItemIndex + 1]
@@ -290,19 +291,19 @@ export default {
               }
             }
 
-            // Handle nextPatch
-            if (this.nextPatch && !this.nextPatchData.show) {
-              this.nextPatchData = {
-                image: this.nextPatchImage,
-                number: this.nextPatchNumber,
-                show: (this.nextPatchImage && this.nextPatchNumber)
+            // Handle nextPatch or nextPuzzle
+            if ((this.nextPatch || this.nextPuzzle) && !this.nextUnlockData.show) {
+              this.nextUnlockData = {
+                image: this.nextUnlockImage,
+                number: this.nextUnlockNumber,
+                show: (this.nextUnlockImage && this.nextUnlockNumber && this.nextUnlockNumber > 0)
               }
             }
 
             // Timeout
             const timeOut = window.setTimeout(() => {
               this.$set(this.nextUp, 'show', false)
-              this.$set(this.nextPatchData, 'show', false)
+              this.$set(this.nextUnlockData, 'show', false)
               window.clearTimeout(timeOut)
             }, 7500)
           }

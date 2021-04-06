@@ -1,38 +1,60 @@
 <template>
   <v-card
-    class="mx-auto"
+    class="mx-auto custom-card-border"
     :elevation="joining ? 0 : 2"
-    :max-width="joining ? '100%' : 500"
+    :max-width="joining ? '100%' : 600"
+    height="100%"
     tile
   >
-    <v-row justify="center" no-gutters>
-      <v-col md="5" cols="12" class="align-self-center">
-        <v-row justify="center" no-gutters>
-          <v-col class="py-2">
-            <div>
-              <v-img
-                alt="Educational Playdates"
-                contain
-                :max-height="joining ? 500 : 120"
-                :src="require('@/assets/png/playdates/playdate.png')"
-              />
+    <!-- CARD IMAGE AND TIME -->
+    <v-row justify="center" class="py-6 px-3 px-md-2" no-gutters>
+      <v-col md="4" cols="12" class="align-self-start">
+        <v-row no-gutters>
+          <v-col cols="4" md="12">
+            <v-img
+              alt="Educational Playdates"
+              contain
+              :max-height="joining ? 500 : 150"
+              :src="require('@/assets/png/playdates/playdate.png')"
+            />
+
+            <div v-if="!joining" class="text-capitalize grey--text text--darken-2 text-caption mt-2 d-none d-md-flex justify-center">
+              {{ day }} <span v-html="start" />
+            </div>
+          </v-col>
+
+          <v-col class="d-flex flex-column d-md-none align-self-center pl-2">
+            <div
+              v-if="child.firstName && !finding"
+              class="text-h5 font-weight-bold grey--text text--darken-2"
+            >
+              <template v-if="!joining">
+                {{ child.firstName | belongsTo }}
+              </template>
+
+              <template v-else>
+                {{ child.firstName }}
+              </template>
+
+              {{ joining ? "has invited you to a playdate!" : "Playdate" }}
             </div>
 
-            <h5 v-if="!joining" class="text-capitalize text-center mt-2">
+            <div v-if="!joining" class="text-capitalize grey--text text--darken-2 text-caption mt-2">
               {{ day }} <span v-html="start" />
-            </h5>
+            </div>
           </v-col>
         </v-row>
       </v-col>
 
-      <v-col class="py-3" md="7" cols="12">
+      <!-- PLAYDATE INFO -->
+      <v-col md="8" cols="12">
         <v-row align-content="center" class="fill-height" no-gutters>
           <v-col>
             <v-list-item three-line>
               <v-list-item-content>
                 <div
                   v-if="child.firstName && !finding"
-                  class="headline pb-2 font-weight-bold"
+                  class="text-h4 pb-2 font-weight-bold grey--text text--darken-2 d-none d-md-flex flex-column"
                 >
                   <template v-if="!joining">
                     {{ child.firstName | belongsTo }}
@@ -44,14 +66,14 @@
 
                   {{ joining ? "has invited you to a playdate!" : "Playdate" }}
                 </div>
-
+                <!--
                 <v-list-item-title class="overline pb-1">
                   <b>
                     {{ playdate.name }}
                   </b>
                 </v-list-item-title>
-
-                <v-list-item-title class="overline pb-1">
+                -->
+                <v-list-item-title class="grey--text text--darken-2 font-weight-medium pb-1">
                   <template v-if="specialist">
                     With {{ specialist.fullName }}
                   </template>
@@ -61,13 +83,11 @@
                   </span>
                 </v-list-item-title>
 
-                <v-list-item-subtitle v-if="!joining" class="pt-3">
+                <v-list-item-subtitle v-if="!joining" class="caption pt-3">
                   JOIN YOUR FRIENDS!
 
                   <v-row
-                    align-content="center"
-                    justify="center"
-                    justify-md="start"
+                    justify="start"
                     no-gutters
                     class="pt-2"
                   >
@@ -75,33 +95,33 @@
                       v-for="(bImage, indexBI) in backpackImages"
                       :key="indexBI"
                       :class="{ 'ml-n3': indexBI }"
-                      max-width="25"
+                      max-width="36"
                       :src="bImage"
                     />
 
-                    <span class="ml-1">
+                    <span class="ml-1 mt-2">
                       {{ backpackImages.length }}/{{ playdate.spots }}
                     </span>
                   </v-row>
                 </v-list-item-subtitle>
 
-                <v-list-item-subtitle class="py-1">
-                  Ages recommended:<b> {{ playdate.ages || "All ages" }}</b>
+                <v-list-item-subtitle class="mt-3">
+                  Ages recommended:<span class="text-subtitle-1 font-weight-medium"> {{ playdate.ages || "All ages" }}</span>
                 </v-list-item-subtitle>
 
-                <v-list-item-subtitle class="py-1">
-                  Duration: <b>{{ duration || "30" }} minutes</b>
+                <v-list-item-subtitle class="mt-2">
+                  Duration: <span class="text-subtitle-1 font-weight-medium">{{ duration || "30" }} minutes</span>
                 </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
 
             <slot name="button">
-              <v-row justify="center" no-gutters>
+              <v-row no-gutters class="px-4">
                 <v-btn
                   class="white--text text-transform-none"
                   color="accent"
                   width="250"
-                  large
+                  :block="isMobile"
                   @click="dialog = true"
                 >
                   Open Playdate
@@ -234,7 +254,7 @@
               <v-row v-if="finding" justify="center" no-gutters>
                 <v-col cols="8" class="mb-0 mt-3">
                   <h5>Select children for Playdate?</h5>
-                  <child-select v-model="childId" />
+                  <child-select v-model="childId" :playdates="playdates" />
                 </v-col>
               </v-row>
               <v-row justify="center" no-gutters>
@@ -312,6 +332,11 @@ export default {
     playdate: {
       type: Object,
       required: true
+    },
+
+    playdates: {
+      type: Array,
+      default: () => []
     }
   },
 
@@ -422,6 +447,10 @@ export default {
         start,
         end
       }
+    },
+
+    isMobile () {
+      return this.$vuetify.breakpoint.smAndDown
     }
   },
 
@@ -482,5 +511,10 @@ export default {
   color: rgba(0, 0, 0, 0.6);
   line-height: 1.2;
   font-size: 0.875rem;
+}
+
+.custom-card-border {
+  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.25) !important;
+  border-radius: 8px !important;
 }
 </style>

@@ -116,6 +116,7 @@ export default {
       file: null,
       dialog: false,
       loading: false,
+      reportCards: [],
       id: null,
       gradesList: [],
       item: generateItemTemplate(),
@@ -131,7 +132,7 @@ export default {
         : 'Config Progress Report'
     },
     reportCardTypes () {
-      return this.types.map((type) => {
+      return this.reportCards.map((type) => {
         const grade = this.gradesList.find(
           data => type.id === data.reportCardType.id
         )
@@ -203,7 +204,7 @@ export default {
 
     async open (item) {
       this.resetItem()
-      await this.getTypes()
+      this.reportCards = await this.getTypes()
       const { grades } = await this.getGrades({
         entityId: item.id,
         entityType: item.entityType

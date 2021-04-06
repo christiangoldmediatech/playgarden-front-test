@@ -1,59 +1,64 @@
 <template>
-  <v-card class="d-flex flex-column dashboard-content-card" height="100%">
-    <template v-if="currentVideoLesson">
-      <div
-        class="d-flex justify-center align-center clickable dashboard-video-thumbnail flex-grow-1 flex-shrink-0"
-        :style="{ '--videoThumbnailUrl': `url(${currentVideoLesson.poster})` }"
-        @click.stop="playVideo"
-      >
-        <v-hover v-slot="{ hover }">
-          <img
-            :class="['play-icon no-background', { 'scaled-play-icon': hover }]"
-            src="@/assets/svg/play-button-icon.svg"
-            width="100%"
-          >
-        </v-hover>
-      </div>
-      <v-list>
-        <v-list-item>
-          <v-list-item-avatar tile>
-            <v-img
-              :src="currentVideoLesson.activityType.icon"
-              contain
-            />
-          </v-list-item-avatar>
+  <div :class="{ 'dashboard-content-card': $vuetify.breakpoint.mdAndUp }">
+    <v-card class="d-flex flex-column dashboard-content-card" height="100%">
+      <template v-if="currentVideoLesson">
+        <div
+          class="d-flex justify-center align-center clickable dashboard-video-thumbnail flex-grow-1 flex-shrink-0"
+          :style="{ '--videoThumbnailUrl': `url(${currentVideoLesson.poster})` }"
+          @click.stop="playVideo"
+        >
+          <v-hover v-slot="{ hover }">
+            <img
+              :class="['play-icon no-background', { 'scaled-play-icon': hover }]"
+              src="@/assets/svg/play-button-icon.svg"
+              width="100%"
+            >
+          </v-hover>
+        </div>
+        <v-list class="lesson-video-card">
+          <v-list-item>
+            <v-list-item-avatar tile>
+              <v-img
+                :src="currentVideoLesson.activityType.icon"
+                contain
+              />
+            </v-list-item-avatar>
 
-          <v-list-item-content>
-            <v-list-item-title>
-              <span class="dashboard-item-activity-type">
-                {{ currentVideoLesson.activityType.name }}
-              </span>
-              <span class="dashboard-item-name">
-                with {{ currentVideoLesson.title }}
-              </span>
-            </v-list-item-title>
-            <v-list-item-subtitle>
-              {{ currentVideoLesson.description }}
-            </v-list-item-subtitle>
-          </v-list-item-content>
+            <v-list-item-content>
+              <v-list-item-title>
+                <span class="dashboard-item-activity-type">
+                  {{ currentVideoLesson.activityType.name }}
+                </span>
+                <span class="dashboard-item-name">
+                  with {{ currentVideoLesson.title }}
+                </span>
+              </v-list-item-title>
+              <v-list-item-subtitle>
+                {{ currentVideoLesson.description }}
+              </v-list-item-subtitle>
+            </v-list-item-content>
 
-          <slot />
-        </v-list-item>
-      </v-list>
-    </template>
+            <slot />
+          </v-list-item>
+        </v-list>
+      </template>
+    </v-card>
+    <lesson-puzzle-pieces v-if="$vuetify.breakpoint.smAndDown" />
     <lesson-video-player />
-  </v-card>
+  </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import LessonVideoPlayer from '@/components/app/dashboard/LessonVideoPlayer.vue'
+import LessonPuzzlePieces from '@/components/app/dashboard/LessonPuzzlePieces.vue'
 
 export default {
   name: 'LessonVideosCard',
 
   components: {
-    LessonVideoPlayer
+    LessonVideoPlayer,
+    LessonPuzzlePieces
   },
 
   computed: {
@@ -105,3 +110,7 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+@import '~assets/scss/lesson-video-card.scss';
+</style>
