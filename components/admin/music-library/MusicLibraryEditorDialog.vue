@@ -266,7 +266,7 @@ export default {
         }
 
         if (this.id) {
-          await this.update({ id: this.id, payload: this.item })
+          await this.update({ id: this.id, data: this.item })
         } else {
           await this.create(this.item)
         }
