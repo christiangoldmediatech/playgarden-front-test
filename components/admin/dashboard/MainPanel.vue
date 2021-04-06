@@ -45,7 +45,7 @@
                               mdi-menu-up
                             </v-icon>
                             <span>+{{ usersTotal.increment }} New users this week</span> <br />
-                            <span>Users using our platform</span>
+                            <span class="ml-3">Users using our platform</span>
                           </p>
                         </v-col>
                       </v-row>
@@ -98,7 +98,7 @@
               <v-card class="mx-3 content-dashboard">
                 <v-card-text>
                   <label class="title-dashboard font-weight-bold">Churn Rate</label>
-                  <v-row align="center">
+                  <v-row class="mt-n4" align="center">
                     <v-col cols="12">
                       <p>
                         <v-icon x-large color="red lighten-1">
