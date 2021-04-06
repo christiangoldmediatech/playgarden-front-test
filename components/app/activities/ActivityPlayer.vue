@@ -14,8 +14,8 @@
       show-favorite
       show-cast
       next-patch
-      :next-patch-image="patchImg"
-      :next-patch-number="toUnlock"
+      :next-unlock-image="patchImg"
+      :next-unlock-number="toUnlock"
       show-video-skip
       use-standard-poster
       :no-seek="noSeek"

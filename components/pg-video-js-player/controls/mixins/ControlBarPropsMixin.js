@@ -75,7 +75,13 @@ export default {
       default: false
     },
 
-    nextPatchData: {
+    nextPuzzle: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
+    nextUnlockData: {
       type: Object,
       required: true
     }

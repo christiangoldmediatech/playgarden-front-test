@@ -110,7 +110,7 @@ module.exports = {
     'vue/prop-name-casing': ['error', 'camelCase'],
     'vue/require-component-is': 2,
     'vue/require-default-prop': 2,
-    'vue/require-direct-export': 2,
+    // 'vue/require-direct-export': 2,
     'vue/require-name-property': 2,
     'vue/require-prop-type-constructor': 2,
     'vue/require-prop-types': 2,

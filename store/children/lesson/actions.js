@@ -10,6 +10,7 @@ export default {
     commit('SET_NEXT_LESSON_ID', data.nextLessonId)
     commit('SET_PREVIOUS_LESSON_ID', data.previousLessonId)
     commit('SET_CURRENT_LESSON_ID', data.currentLessonId)
+    commit('SET_PUZZLE_PIECE', data.puzzleChildren)
     return data
   },
 
@@ -20,6 +21,7 @@ export default {
       commit('SET_NEXT_LESSON_ID', data.nextLessonId)
       commit('SET_PREVIOUS_LESSON_ID', data.previousLessonId)
       commit('SET_CURRENT_LESSON_ID', data.currentLessonId)
+      commit('SET_PUZZLE_PIECE', data.puzzleChildren)
       return data.lesson
     } catch (e) {
       const { data } = e.response
@@ -106,18 +108,5 @@ export default {
   async getLessonChildTimeline (_, childId) {
     const data = await this.$axios.$get(`/lessons/children/${childId}/timeline`)
     return data
-  },
-
-  async getAdvanceLessonChildren (_, childId) {
-    try {
-      const data = await this.$axios.$get(`/lessons/children/${childId}/advance`)
-      return data
-    } catch (e) {
-      const { data } = e.response
-      if (data && data.errorCode === 100) {
-        return Promise.reject(data)
-      }
-      return Promise.reject(e)
-    }
   }
 }

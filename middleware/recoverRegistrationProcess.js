@@ -14,17 +14,15 @@ export default function ({ redirect, route, store }) {
   const user = store.getters['auth/getUserInfo']
   const step = Number(user.registerStep)
 
-  // EMAIL_ENTERED=0 -> Enter email page <- sign up
-  // REGISTER_PARENT=1 -> Enter parent info page <- sign up
-  // REGISTER_CHILDREN=2 -> Enter children information page
-  // PLAN_SELECTION=3 -> Enter plan selection page
-  // PAYMENT=4 -> Enter payment page
+  // PARENT_INFORMATION=1 -> Enter parent info page <- sign up
+  // PAYMENT_INFORMATION=2 -> Enter children information page
+  // CHILDREN_INFORMATION=3 -> Enter plan selection page
   // VERIFICATION=5 -> Enter email verifciation page <- covered by "emailVerified" middleware
   // COMPLETED=6 -> Completed <- no action
 
   if (
     user.id &&
-    (step === 1 || step === 2 || step === 3 || step === 4) &&
+    (step === 1 || step === 2 || step === 3) &&
     (!user.role || get(user, 'role.section') === 'USERS') &&
     route.query.process !== 'signup' &&
     !ignoreRoute[route.name]

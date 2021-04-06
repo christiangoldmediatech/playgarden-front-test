@@ -1,6 +1,6 @@
 <template>
   <div :id="`activity-type-${activityType.id}-container`">
-    <v-container v-if="!noHeader" class="hidden-xs-only px-0" fluid>
+    <v-container v-if="!noHeader" class="px-0" fluid>
       <div class="pos-relative d-flex align-end px-3">
         <div
           class="act-type-color"
@@ -15,13 +15,17 @@
           <v-btn
             class="ml-6"
             color="primary"
-            x-large
+            :small="$vuetify.breakpoint.xsOnly"
+            :x-large="$vuetify.breakpoint.mdAndUp"
             @click="handlePlay(0)"
           >
             <v-icon left>
               mdi-play
             </v-icon>
-            Play All
+            <template v-if="$vuetify.breakpoint.smAndUp">
+              Play
+            </template>
+            All
           </v-btn>
         </div>
       </div>
@@ -157,33 +161,54 @@ export default {
    &-color {
     position: absolute;
     width: 100%;
-    height: 32px;
+    height: 14px;
     left: 0;
-    bottom: 12px;
+    bottom: 8px;
     background-color: rgba(var(--act-type-bkg-color), 0.3);
     z-index: 1;
+    @media screen and (min-width: 600px) {
+      height: 18px;
+      bottom: 10px;
+    }
+    @media screen and (min-width: 960px) {
+      height: 32px;
+      bottom: 12px;
+    }
   }
 
   &-icon {
-    width: 64px;
-    height: 64px;
-    margin: 0 16px;
+    width: 40px;
+    height: 40px;
+    margin: 0 12px;
     object-fit: contain;
     object-position: center;
     position: relative;
     z-index: 2;
+    @media screen and (min-width: 960px) {
+      width: 64px;
+      height: 64px;
+      margin: 0 16px;
+    }
   }
 
   &-title {
-    font-size: 44px;
+    font-size: 18px;
     font-weight: 700;
     line-height: 1.25;
-    letter-spacing: 6px;
+    letter-spacing: 2px;
     text-align: left;
     color: #606060;
     position: relative;
     z-index: 3;
     text-transform: uppercase;
+    @media screen and (min-width: 600px) {
+      font-size: 24px;
+      letter-spacing: 3px;
+    }
+    @media screen and (min-width: 960px) {
+      font-size: 44px;
+      letter-spacing: 6px;
+    }
   }
 
   &-activity {
