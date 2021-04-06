@@ -112,7 +112,7 @@
                       cols="12"
                     >
                       <center>
-                        <label class="font-weight-bold total-users">0</label>
+                        <label class="font-weight-bold total-users">0 %</label>
                       </center>
                     </v-col>
                     <v-col cols="12">
@@ -308,7 +308,7 @@ export default {
         }
 
         this.childsByLetter = {
-          xAxios: childsByLetter.letters,
+          letters: childsByLetter.letters.map(letter => letter.substring(0, 2)),
           data: childsByLetter.childs
         }
         this.childrenTotal = childrenTotal
