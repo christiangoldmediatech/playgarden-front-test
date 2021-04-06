@@ -140,6 +140,14 @@ export default {
       this.loading = true
       const params = { limit: this.limit, page: this.page }
 
+      if (clear) {
+        this.search = ''
+      }
+      
+      if (this.search) {
+        params.name = this.search
+      }
+
       await this.getMusicLibraries(params)
       this.loading = false
     },
