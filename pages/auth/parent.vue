@@ -37,7 +37,13 @@ export default {
 
   computed: {},
 
-  created () {},
+  created () {
+    this.$gtm.push({
+      event: 'parent_page',
+      conversionID: '959213252',
+      conversionLabel: 'QAn5COr85PoBEMTdsckD'
+    })
+  },
 
   methods: {}
 }

@@ -46,11 +46,15 @@ export default {
 
   created () {
     this.currentStep = (this.$route.query.step) ? Number(this.$route.query.step) : 1
+    this.$gtm.push({
+      event: 'payment_children_page',
+      conversionID: '959213252',
+      conversionLabel: 'q4IlCNbg0voBEMTdsckD'
+    })
   },
 
   mounted () {
     this.$nuxt.$on('set-current-step', (step) => {
-      console.log('step--', step)
       if (step) {
         this.currentStep = step
       }

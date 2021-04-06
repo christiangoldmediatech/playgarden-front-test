@@ -46,6 +46,11 @@ export default {
 
   created () {
     this.currentStep = (this.$route.query.step) ? Number(this.$route.query.step) : 1
+    this.$gtm.push({
+      event: 'payment_page',
+      conversionID: '959213252',
+      conversionLabel: 'SvccCMTX0voBEMTdsckD'
+    })
   },
 
   mounted () {
