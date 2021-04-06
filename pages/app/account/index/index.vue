@@ -59,7 +59,7 @@
         </div>
 
         <div class="text-center body-1 text-md-h6 font-weight-medium grey--text text--darken-2 my-2">
-          <small>We use this information to send you goods.</small>
+          <small>We use this information to send you Playgarden Prep educational materials.</small>
         </div>
 
         <shipping-address-details />
