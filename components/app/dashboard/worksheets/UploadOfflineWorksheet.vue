@@ -1,5 +1,5 @@
 <template>
-  <v-overlay :value="value" :z-index="700">
+  <v-overlay :value="value" :z-index="4000">
     <v-card class="upload-dialog-container" light>
       <div class="green-line-bigger green-line-1" />
       <div class="green-line-bigger green-line-2" />
@@ -87,7 +87,7 @@
         absolute
         :value="loading"
         :opacity="0.13"
-        :z-index="1000"
+        :z-index="2000"
         :dark="false"
         light
       >

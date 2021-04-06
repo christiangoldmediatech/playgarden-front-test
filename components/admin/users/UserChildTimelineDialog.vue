@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" content-class="elevation-0">
+  <pg-dialog v-model="dialog" content-class="elevation-0">
     <v-col>
       <v-row justify="center">
         <v-card width="80vh" max-width="90%" elevation="0" color="transparent">
@@ -89,7 +89,7 @@
         </v-card>
       </v-row>
     </v-col>
-  </v-dialog>
+  </pg-dialog>
 </template>
 
 <script>

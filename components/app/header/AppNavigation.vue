@@ -112,6 +112,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.v-navigation-drawer--temporary {
+  z-index: 1500;
+}
+
 .active-menu-item {
   background-color: #f39b44 !important;
 }

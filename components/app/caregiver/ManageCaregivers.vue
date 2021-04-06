@@ -1,5 +1,5 @@
 <template>
-  <v-dialog
+  <pg-dialog
     v-model="modal"
     content-class="white"
     :fullscreen="$vuetify.breakpoint.smAndDown"
@@ -48,7 +48,7 @@
         </v-col>
       </v-row>
     </v-col>
-  </v-dialog>
+  </pg-dialog>
 </template>
 
 <script>

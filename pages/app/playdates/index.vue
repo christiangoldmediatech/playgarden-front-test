@@ -141,7 +141,7 @@
       </v-row>
     </v-container>
     <!-- PlatinumPlan Popup -->
-    <v-dialog
+    <pg-dialog
       :value="!hasTrialOrPlatinumPlan"
       content-class="elevation-0"
       max-width="700"
@@ -239,7 +239,7 @@
           </v-col>
         </v-row>
       </v-card>
-    </v-dialog>
+    </pg-dialog>
   </v-col>
 </template>
 

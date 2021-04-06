@@ -1,5 +1,5 @@
 <template>
-  <v-dialog :value="overlay" fullscreen>
+  <pg-dialog :value="overlay" fullscreen>
     <v-card class="dialog-portfolio-overlay">
       <v-container class="vh-container pa-0" fluid>
         <v-btn
@@ -34,7 +34,7 @@
         </v-row>
       </v-container>
     </v-card>
-  </v-dialog>
+  </pg-dialog>
 </template>
 
 <script>

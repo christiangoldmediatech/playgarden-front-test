@@ -1,5 +1,5 @@
 <template>
-  <v-dialog
+  <pg-dialog
     :value="overlay"
     persistent
     fullscreen
@@ -40,7 +40,7 @@
         />
       </v-row>
     </v-container>
-  </v-dialog>
+  </pg-dialog>
 </template>
 
 <script>

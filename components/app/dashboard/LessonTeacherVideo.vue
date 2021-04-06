@@ -3,7 +3,7 @@
     :id="dialogContainerId"
     ref="videoPlayerDialog"
     v-model="dialog"
-    :z-index="900"
+    :z-index="3500"
     @close="handleClose"
   >
     <pg-video-js-player

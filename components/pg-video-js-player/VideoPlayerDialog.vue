@@ -9,7 +9,6 @@
           color="rgb(64, 64, 64)"
           icon
           text
-          to="#"
           @click.stop="close"
         >
           <v-icon color="white">
@@ -63,7 +62,7 @@ export default {
     zIndex: {
       type: Number,
       required: false,
-      default: 500
+      default: 3000
     }
   },
 

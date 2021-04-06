@@ -1,5 +1,5 @@
 <template>
-  <v-dialog persistent :fullscreen="isMobile" :value="isShippingModalVisible" max-width="1400px">
+  <pg-dialog persistent :fullscreen="isMobile" :value="isShippingModalVisible" max-width="1400px">
     <v-card :class="{ 'border-16': !isMobile }">
       <v-row no-gutters>
         <v-col cols="4" class="d-none d-md-block">
@@ -49,7 +49,7 @@
         </v-col>
       </v-row>
     </v-card>
-  </v-dialog>
+  </pg-dialog>
 </template>
 
 <script>
