@@ -190,7 +190,16 @@
                 </v-row>
                 <!-- Student progress -->
                 <div width="100%">
-                  <bar-chart :bar-data="childsByLetter" />
+                  <ul class="ml-3">
+                    <li
+                      class="register-item text-left"
+                    >
+                      <small class="text-trial">
+                        Progress Per Letter
+                      </small>
+                    </li>
+                  </ul>
+                  <bar-chart class="mt-n8" :bar-data="childsByLetter" />
                 </div>
                 <!-- End Student progress -->
               </v-card>
@@ -313,6 +322,20 @@ export default {
 </script>
 
 <style>
+ul {
+  list-style: none; /* Remove default bullets */
+}
+ul li::before {
+  content: "●";
+  font-size: 22px !important;
+  color: var(--v-accent-base); /* Change the color */
+  font-weight: bold; /* If you want it to be bold */
+  display: inline-block; /* Needed to add space between the bullet and the text */
+  width: 0.7em; /* Also needed for space (tweak if needed) */
+  margin-left: -1rem; /* Also needed for space (tweak if needed) */
+  margin-top: 10px;
+}
+
 .header-dashboard {
   max-height: 500px !important;
 }
