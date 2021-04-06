@@ -102,6 +102,12 @@ export default {
           value: 'description'
         },
         {
+          text: 'Curriculum',
+          align: 'start',
+          sortable: false,
+          value: 'curriculumType.name'
+        },
+        {
           text: 'Song',
           align: 'start',
           sortable: false,
