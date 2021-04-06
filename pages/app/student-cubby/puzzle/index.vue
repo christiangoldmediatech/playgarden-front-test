@@ -13,9 +13,7 @@
           v-for="(puzzle, indexP) in puzzles"
           :key="indexP"
           cols="12"
-          xs="12"
           sm="6"
-          md="6"
           lg="4"
         >
           <v-hover>
