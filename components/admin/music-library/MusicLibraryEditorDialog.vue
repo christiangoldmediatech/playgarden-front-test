@@ -246,14 +246,14 @@ export default {
     async save () {
       try {
         this.loading = true
-        if (this.audio) {
+        /* if (this.audio) {
           if (this.typeSelectAudioFile !== 'dropBox') {
             this.item.songUrl = await this.$refs.audioFileUploaderDropBox.handleUpload()
           } else {
             this.loadingDropBox = true
             this.item.songUrl = await this.$refs.audioFileUploaderDropBox.handleDropBoxFileUpload()
           }
-        }
+        } */
 
         if (this.thumbnail) {
           if (this.typeSelectImageFile !== 'dropBox') {
