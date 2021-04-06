@@ -80,7 +80,7 @@
                   mode="song"
                   multi-part
                   api="dropbox"
-                  path="song-file"
+                  path="parents-corner-thumbnail"
                   placeholder="Select a song"
                   solo-labeled
                   mp3
@@ -111,7 +111,7 @@
                   :error-messages="errors"
                   label="Song Thumbnail"
                   mode="image"
-                  path="song-thumbnail"
+                  path="parents-corner-thumbnail"
                   placeholder="Select a thumbnail for this song"
                   solo-labeled
                   api="dropbox"
