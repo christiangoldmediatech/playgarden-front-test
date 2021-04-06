@@ -78,9 +78,8 @@
                   append-icon="mdi-volume-high"
                   label="Upload Song"
                   mode="song"
-                  multi-part
                   api="dropbox"
-                  path="parents-corner-thumbnail"
+                  path="song-audio"
                   placeholder="Select a song"
                   solo-labeled
                   mp3
@@ -111,7 +110,7 @@
                   :error-messages="errors"
                   label="Song Thumbnail"
                   mode="image"
-                  path="parents-corner-thumbnail"
+                  path="song-thumbnail"
                   placeholder="Select a thumbnail for this song"
                   solo-labeled
                   api="dropbox"
@@ -192,8 +191,8 @@ export default {
   methods: {
 
     ...mapActions('admin/music-library', {
-      createMusicLibrary: 'create',
-      updateMusicLibrary: 'update'
+      create: 'createMusicLibrary',
+      update: 'updateMusicLibrary'
     }),
 
     ...mapActions('admin/curriculum', [
@@ -246,14 +245,16 @@ export default {
     async save () {
       try {
         this.loading = true
-        /* if (this.audio) {
+        if (this.audio) {
           if (this.typeSelectAudioFile !== 'dropBox') {
-            this.item.songUrl = await this.$refs.audioFileUploaderDropBox.handleUpload()
+            const { filePath } = await this.$refs.audioFileUploaderDropBox.handleUpload()
+            this.item.songUrl = filePath
           } else {
             this.loadingDropBox = true
-            this.item.songUrl = await this.$refs.audioFileUploaderDropBox.handleDropBoxFileUpload()
+            const { filePath } = await this.$refs.audioFileUploaderDropBox.handleDropBoxFileUpload()
+            this.item.songUrl = filePath
           }
-        } */
+        }
 
         if (this.thumbnail) {
           if (this.typeSelectImageFile !== 'dropBox') {
