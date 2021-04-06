@@ -1,6 +1,6 @@
 <template>
   <v-card flat class="pt-0 pt-md-3">
-    <v-card-text class="pt-0 pt-md-3">
+    <v-card-text class="pt-4 pt-md-3">
       <underlined-title
         class="text-h5 text-md-h3"
         :text="`PUZZLE LETTER ${letter}`"
