@@ -58,7 +58,6 @@
                   <source :src="item.songUrl" type="audio/mpeg">
                   Your browser does not support the audio element.
                 </audio>
-                url {{ item.songUrl }}
               </template>
             </pg-admin-data-table>
           </v-card-text>
@@ -166,7 +165,6 @@ export default {
     },
 
     remove ({ id, item }) {
-      console.log('id--', id)
       this.$nuxt.$emit('open-prompt', {
         title: 'Delete music library?',
         message: 'Are you sure you wish to delete ?',
