@@ -80,7 +80,7 @@
                   mode="song"
                   multi-part
                   api="dropbox"
-                  path="activity-song"
+                  path="song-file"
                   placeholder="Select a song"
                   solo-labeled
                   mp3
@@ -111,7 +111,7 @@
                   :error-messages="errors"
                   label="Song Thumbnail"
                   mode="image"
-                  path="activity-song-thumbnail"
+                  path="song-thumbnail"
                   placeholder="Select a thumbnail for this song"
                   solo-labeled
                   api="dropbox"
@@ -191,6 +191,11 @@ export default {
 
   methods: {
 
+    ...mapActions('admin/music-library', {
+      createMusicLibrary: 'create',
+      updateMusicLibrary: 'update'
+    }),
+
     ...mapActions('admin/curriculum', [
       'getTypes'
     ]),
@@ -241,16 +246,14 @@ export default {
     async save () {
       try {
         this.loading = true
-
-        let data
-        if (this.typeSelectAudioFile !== 'dropBox') {
-          data = await this.$refs.audioFileUploaderDropBox.handleUpload()
-        } else {
-          this.loadingDropBox = true
-          data = await this.$refs.audioFileUploaderDropBox.handleDropBoxFileUpload()
+        if (this.audio) {
+          if (this.typeSelectAudioFile !== 'dropBox') {
+            this.item.songUrl = await this.$refs.audioFileUploaderDropBox.handleUpload()
+          } else {
+            this.loadingDropBox = true
+            this.item.songUrl = await this.$refs.audioFileUploaderDropBox.handleDropBoxFileUpload()
+          }
         }
-
-        console.log('data---', data)
 
         if (this.thumbnail) {
           if (this.typeSelectImageFile !== 'dropBox') {
