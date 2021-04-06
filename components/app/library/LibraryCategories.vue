@@ -2,18 +2,17 @@
   <div id="library-categories" class="lib-cats">
     <div class="d-lg-none d-flex justify-center">
       <pg-select
+        v-model="selectedActivity"
         class="flex-shrink-1 flex-grow-0"
         label="Browse by Category"
         solo
         :items="compCategories"
-        :value="value"
         item-value="id"
         hide-details
-        @input="$emit('input', $event)"
       >
         <template #selection="{ item, on, attrs }">
           <v-list-item v-bind="attrs" class="w-100" v-on="on">
-            <v-list-item-avatar tile>
+            <v-list-item-avatar v-if="item.icon" tile>
               <div
                 class="lib-cats-circular-icon"
                 :style="{'--category-color': item.color}"
@@ -125,19 +124,16 @@ export default {
       required: true
     },
 
-    value: {
-      validator: (val) => {
-        return typeof val === 'number' || val === null || val === 'favorites'
-      },
-      required: true
-    },
-
     favorites: {
       type: Boolean,
       required: false,
       default: false
     }
   },
+
+  data: () => ({
+    selectedActivity: null
+  }),
 
   computed: {
     compCategories () {
@@ -158,6 +154,14 @@ export default {
     }
   },
 
+  watch: {
+    selectedActivity (id) {
+      if (id) {
+        this.scrollTo(`activity-type-${id}-container`)
+      }
+    }
+  },
+
   methods: {
     bkgColor (color) {
       return hexToRgb(color.substring(1))
@@ -166,14 +170,17 @@ export default {
     scrollTo (id) {
       const elem = document.getElementById(id)
       const categories = document.getElementById('library-categories')
-      const headerOffset = categories.offsetHeight - 36
-      const elementPosition = elem.getBoundingClientRect().top + window.pageYOffset
-      const offsetPosition = elementPosition - headerOffset
+      if (elem && categories) {
+        const viewOffset = this.$vuetify.breakpoint.smAndDown ? -16 : 36
+        const headerOffset = categories.offsetHeight - viewOffset
+        const elementPosition = elem.getBoundingClientRect().top + window.pageYOffset
+        const offsetPosition = elementPosition - headerOffset
 
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      })
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        })
+      }
     }
   }
 }

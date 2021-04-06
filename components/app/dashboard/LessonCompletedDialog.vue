@@ -2,7 +2,7 @@
   <v-overlay
     class="lesson-completed"
     :value="value"
-    :z-index="600"
+    :z-index="4000"
   >
     <v-card class="lesson-completed-container" light>
       <div class="pos-absolute pos-top-0 pos-left-0 w-100">

@@ -1,5 +1,5 @@
 <template>
-  <v-overlay :value="value" z-index="700">
+  <v-overlay :value="value" z-index="4000">
     <div class="teacher-video-content" :style="dimensions">
       <v-btn class="teacher-video-close-btn" icon @click.stop="close">
         <v-icon color="#D2D2D2">

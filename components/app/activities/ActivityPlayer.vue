@@ -14,9 +14,9 @@
       show-favorite
       show-cast
       next-patch
-      :next-patch-image="patchImg"
-      :next-patch-number="toUnlock"
-      :show-video-skip="index < (playlist.length - 1)"
+      :next-unlock-image="patchImg"
+      :next-unlock-number="toUnlock"
+      show-video-skip
       use-standard-poster
       :no-seek="noSeek"
       :fullscreen-override="handleFullscreen"
@@ -100,7 +100,11 @@ export default {
         this.doAnalytics(false, true).then(() => {
           this.player.hideLoading()
           if (!this.patchEarnedDialog) {
-            this.player.nextVideo()
+            if (this.lastVideo) {
+              this.player.loadPlaylist(this.playlist, 0)
+            } else {
+              this.player.nextVideo()
+            }
           }
         })
         this.player.pause()

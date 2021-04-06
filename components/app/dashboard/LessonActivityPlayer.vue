@@ -13,8 +13,11 @@
       show-steps
       :show-favorite="lesson && !lesson.previewMode"
       show-cast
-      :show-video-skip="index < (playlist.length - 1)"
+      show-video-skip
       use-standard-poster
+      next-puzzle
+      :next-unlock-image="puzzlePiece ? puzzlePiece.puzzle.image : null"
+      :next-unlock-number="remaining"
       :no-seek="noSeek"
       :fullscreen-override="handleFullscreen"
       no-auto-track-change
@@ -28,6 +31,7 @@
 </template>
 
 <script>
+import { mapGetters, mapState } from 'vuex'
 import VideoPlayerDialogMixin from '@/mixins/VideoPlayerDialogMixin.js'
 import DashboardMixin from '@/mixins/DashboardMixin'
 import SaveActivityProgress from '@/mixins/SaveActivityProgressMixin.js'
@@ -51,6 +55,20 @@ export default {
   },
 
   computed: {
+    ...mapGetters('admin/curriculum', { lesson: 'getLesson' }),
+    ...mapState('children/lesson', ['puzzlePiece']),
+
+    remaining () {
+      if (this.lesson) {
+        let count = 0
+        this.lesson.lessonsActivities.forEach((lessonActivity) => {
+          count += Number(Boolean(lessonActivity.activity && lessonActivity.activity.viewed && lessonActivity.activity.viewed.completed))
+        })
+        return this.lesson.lessonsActivities.length - count
+      }
+      return 0
+    },
+
     noSeek () {
       // if (!['production', 'staging'].includes(process.env.testEnv)) {
       //   return false
@@ -87,22 +105,26 @@ export default {
       })
     },
 
-    skipLessonActivity () {
-      if (this.lesson.previewMode) {
-        this.nextVideo()
-        return
-      }
-
+    async skipLessonActivity () {
+      this.player.pause()
       this.player.showLoading()
-      if (!this.currentVideo.ignoreVideoProgress) {
-        this.completeActivityProgress().then(() => {
+
+      if (!this.lesson.previewMode) {
+        if (!this.currentVideo.ignoreVideoProgress) {
+          await this.completeActivityProgress()
           this.$nuxt.$emit('dashboard-panel-update')
           this.savingActivityProgress = false
-        })
+        }
       }
-      this.player.nextVideo()
+
       this.player.hideLoading()
-      this.player.pause()
+
+      if (this.lastVideo) {
+        this.player.seek(this.player.duration() - 1)
+        this.player.play()
+      } else {
+        this.player.nextVideo()
+      }
     },
 
     nextVideo () {
@@ -112,14 +134,16 @@ export default {
     },
 
     updateIndex (index) {
-      const nextVideo = jsonCopy(this.playlist[index])
-      const completedRoute = this.generateNuxtRoute('lesson-completed')
-      if (!nextVideo.ignoreVideoProgress || nextVideo.ignoreVideoProgress === false) {
-        this.$router.push(this.generateNuxtRoute('lesson-activities', { id: this.playlist[index].activityId }))
-      } else if (this.$route.name !== completedRoute.name && this.lessonCompleted) {
-        this.$router.push(completedRoute)
+      if (this.index !== index) {
+        const nextVideo = jsonCopy(this.playlist[index])
+        const completedRoute = this.generateNuxtRoute('lesson-completed')
+        if (!nextVideo.ignoreVideoProgress || nextVideo.ignoreVideoProgress === false) {
+          this.$router.push(this.generateNuxtRoute('lesson-activities', { id: this.playlist[index].activityId }))
+        } else if (this.$route.name !== completedRoute.name && this.lessonCompleted) {
+          this.$router.push(completedRoute)
+        }
+        this.index = index
       }
-      this.index = index
     }
   }
 }

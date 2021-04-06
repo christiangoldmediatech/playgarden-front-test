@@ -6,23 +6,23 @@
 
     <v-container v-else>
       <v-row no-gutters>
-        <v-col cols="12" sm="">
+        <v-col cols="12" md="">
           <center v-if="$vuetify.breakpoint.smAndDown">
             <underlined-title class="text-h5" text="Educational Playdates" />
           </center>
           <underlined-title v-else text="Educational Playdates" />
         </v-col>
 
-        <v-col cols="12" sm="auto" class="mt-3 mt-sm-0">
+        <v-col cols="12" md="auto" class="mt-3">
           <v-row
             class="fill-height"
             align-content="center"
-            justify="end"
+            justify-md="end"
+            justify="center"
             no-gutters
           >
-            <div :class="{ 'hidden-sm-and-down': !hasPlaydates }">
+            <template v-if="!allChildrenHavePlaydates">
               <v-btn
-                v-if="hasPlaydates"
                 class="text-transform-none mr-3"
                 color="accent"
                 dark
@@ -42,7 +42,6 @@
               </v-btn>
 
               <v-btn
-                v-if="hasPlaydates"
                 large
                 nuxt
                 :to="{ name: 'app-playdates-find' }"
@@ -51,16 +50,31 @@
               >
                 Find Playdates
               </v-btn>
-            </div>
+            </template>
+
+            <template v-else>
+              <div class="grey--text text--darken-2">
+                * You can only have one playdate per week per child.
+              </div>
+            </template>
           </v-row>
         </v-col>
       </v-row>
 
       <v-row v-if="hasPlaydates" class="mt-6" dense>
+        <v-col cols="12" class="mb-6">
+          Our <span class="grey--text text--darken-2 font-weight-bold">Educational Playdates</span> are moderated by a specialist in speech and occupational therapy, to
+          ensure children engage and enjoy social interactions with others little ones. We will limit the number of children in each playdate to allow everyone to
+          participate and benefit from these structured playtimes.
+        </v-col>
         <v-col
           v-for="(playdate, indexP) in playdatesComputed"
           :key="indexP"
-          class="mb-3"
+          :class="{
+            'pb-6': true,
+            'pr-md-3': indexP % 2 === 0,
+            'pl-md-3': indexP % 1 === 0
+          }"
           cols="12"
           md="6"
         >
@@ -141,7 +155,7 @@
       </v-row>
     </v-container>
     <!-- PlatinumPlan Popup -->
-    <v-dialog
+    <pg-dialog
       :value="!hasTrialOrPlatinumPlan"
       content-class="elevation-0"
       max-width="700"
@@ -239,7 +253,7 @@
           </v-col>
         </v-row>
       </v-card>
-    </v-dialog>
+    </pg-dialog>
   </v-col>
 </template>
 
@@ -284,6 +298,10 @@ export default {
 
     hasPlaydates () {
       return Boolean(this.playdatesComputed.length)
+    },
+
+    allChildrenHavePlaydates () {
+      return this.playdates.every(playdate => Array.isArray(playdate.playdates) && playdate.playdates.length > 0)
     }
   },
 

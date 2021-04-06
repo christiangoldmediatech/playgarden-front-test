@@ -13,8 +13,11 @@
       show-steps
       :show-favorite="lesson && !lesson.previewMode"
       show-cast
-      :show-video-skip="index < (playlist.length - 1)"
+      show-video-skip
       use-standard-poster
+      next-puzzle
+      :next-unlock-image="puzzlePiece ? puzzlePiece.puzzle.image : null"
+      :next-unlock-number="remaining"
       :no-seek="noSeek"
       :fullscreen-override="handleFullscreen"
       @ready="onReady"
@@ -28,7 +31,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import VideoPlayerDialogMixin from '@/mixins/VideoPlayerDialogMixin.js'
 import DashboardLink from '@/mixins/DashboardLinkMixin.js'
 import SaveVideoProgress from '@/mixins/SaveVideoProgressMixin.js'
@@ -52,6 +55,18 @@ export default {
 
   computed: {
     ...mapGetters('admin/curriculum', { lesson: 'getLesson' }),
+    ...mapState('children/lesson', ['puzzlePiece']),
+
+    remaining () {
+      if (this.lesson) {
+        let count = 0
+        this.lesson.videos.forEach((video) => {
+          count += Number(Boolean(video && video.viewed && video.viewed.completed))
+        })
+        return this.lesson.videos.length - count
+      }
+      return 0
+    },
 
     noSeek () {
       // if (!['production', 'staging'].includes(process.env.testEnv)) {
@@ -145,24 +160,32 @@ export default {
       })
     },
 
-    skipLessonVideo () {
-      if (this.lesson.previewMode) {
-        this.nextVideo()
-        return
-      }
-
+    async skipLessonVideo () {
+      this.player.pause()
       this.player.showLoading()
-      this.completeVideoProgress().then(() => {
+
+      if (!this.lesson.previewMode) {
+        await this.completeVideoProgress()
         this.$nuxt.$emit('dashboard-panel-update')
         this.savingProgress = false
+      }
+
+      this.player.hideLoading()
+
+      if (this.lastVideo) {
+        this.player.seek(this.player.duration() - 1)
+        this.player.play()
+      } else {
         this.player.nextVideo()
-      })
-      this.player.pause()
+      }
     },
 
     updateIndex (index) {
-      this.index = index
-      this.$router.push(this.generateNuxtRoute('lesson-videos', { id: this.playlist[index].videoId }))
+      if (this.index !== index) {
+        this.index = index
+        const route = this.generateNuxtRoute('lesson-videos', { id: this.playlist[index].videoId })
+        this.$router.push(route)
+      }
     },
 
     showCompletedDialog () {

@@ -3,7 +3,7 @@
     :class="`${loading ? 'align-center justify-center' : 'align-start justify-start'}`"
     :dark="false"
     :value="show"
-    z-index="7"
+    z-index="2000"
   >
     <v-btn
       class="top-left text-none white--text px-4"
@@ -276,7 +276,7 @@ export default {
   position: fixed;
   top: 6px !important;
   left: 6px !important;
-  z-index: 400;
+  z-index: 2400;
 }
 
 .panel-column {
@@ -287,7 +287,7 @@ export default {
   position: fixed;
   width: 156px;
   max-width: 156px;
-  z-index: 400;
+  z-index: 2400;
   margin: 0 auto;
   top: 6px !important;
   right: 6px !important;
@@ -319,7 +319,7 @@ export default {
     max-width: 100vw;
     padding-top: 32px;
     padding-bottom: 8px;
-    z-index: 300;
+    z-index: 2300;
     display: block;
   }
   @media screen and (min-width: 960px) {
@@ -347,7 +347,7 @@ export default {
     padding-top: 32px;
     padding-bottom: 16px;
     overflow: auto;
-    z-index: 300;
+    z-index: 2300;
   }
 
   .ps__rail-x {

@@ -86,7 +86,13 @@ export default {
       default: false
     },
 
-    nextPatchImage: {
+    nextPuzzle: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
+    nextUnlockImage: {
       validator: (val) => {
         return val === null || typeof val === 'string'
       },
@@ -94,7 +100,7 @@ export default {
       default: null
     },
 
-    nextPatchNumber: {
+    nextUnlockNumber: {
       validator: (val) => {
         return val === null || typeof val === 'number'
       },

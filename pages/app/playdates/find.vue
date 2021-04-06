@@ -33,7 +33,7 @@
         cols="12"
         md="6"
       >
-        <card-playdate :playdate="playdate" finding />
+        <card-playdate :playdates="activePlaydates" :playdate="playdate" finding />
       </v-col>
     </v-row>
   </v-col>
@@ -50,7 +50,8 @@ export default {
   components: { CardPlaydate },
 
   data: () => ({
-    playdates: []
+    playdates: [],
+    activePlaydates: []
   }),
 
   mounted () {
@@ -58,13 +59,14 @@ export default {
   },
 
   methods: {
-    ...mapActions('playdates', ['getAndFilterPlaydates']),
+    ...mapActions('playdates', ['getAndFilterPlaydates', 'getChildrenInfo']),
 
     async getActivePlaydates () {
       try {
         this.playdates = await this.getAndFilterPlaydates({
           showChildren: true
         })
+        this.activePlaydates = await this.getChildrenInfo()
       } catch (e) {}
     }
   }
