@@ -15,6 +15,9 @@
       show-cast
       show-video-skip
       use-standard-poster
+      next-puzzle
+      :next-unlock-image="puzzlePiece ? puzzlePiece.puzzle.image : null"
+      :next-unlock-number="remaining"
       :no-seek="noSeek"
       :fullscreen-override="handleFullscreen"
       no-auto-track-change
@@ -28,6 +31,7 @@
 </template>
 
 <script>
+import { mapGetters, mapState } from 'vuex'
 import VideoPlayerDialogMixin from '@/mixins/VideoPlayerDialogMixin.js'
 import DashboardMixin from '@/mixins/DashboardMixin'
 import SaveActivityProgress from '@/mixins/SaveActivityProgressMixin.js'
@@ -51,6 +55,20 @@ export default {
   },
 
   computed: {
+    ...mapGetters('admin/curriculum', { lesson: 'getLesson' }),
+    ...mapState('children/lesson', ['puzzlePiece']),
+
+    remaining () {
+      if (this.lesson) {
+        let count = 0
+        this.lesson.lessonsActivities.forEach((lessonActivity) => {
+          count += Number(Boolean(lessonActivity.activity && lessonActivity.activity.viewed && lessonActivity.activity.viewed.completed))
+        })
+        return this.lesson.lessonsActivities.length - count
+      }
+      return 0
+    },
+
     noSeek () {
       // if (!['production', 'staging'].includes(process.env.testEnv)) {
       //   return false

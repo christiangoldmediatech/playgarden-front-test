@@ -55,6 +55,7 @@
                 >
                   <child-select
                     v-model="draft.childrenIds"
+                    :playdates="activePlaydates"
                     :error-messages="errors"
                     multiple
                   />
@@ -197,6 +198,8 @@ export default {
     draft: resetDraft(),
     day: null,
     playdates: [],
+    activePlaydates: [],
+    childrenPlaydates: [],
     playdateSelected: null,
 
     loading: false,
@@ -228,10 +231,12 @@ export default {
     this.week = days.days.map((day) => {
       return { text: day, value: day }
     })
+
+    await this.getActivePlaydates()
   },
 
   methods: {
-    ...mapActions('playdates', ['addChildren', 'getAndFilterPlaydates', 'getPlaydateDays']),
+    ...mapActions('playdates', ['addChildren', 'getAndFilterPlaydates', 'getPlaydateDays', 'getChildrenInfo']),
 
     async onWeekdayChange () {
       this.loading = true
@@ -273,6 +278,17 @@ export default {
       this.playdates = []
       this.playdateSelected = null
       reset()
+    },
+
+    async getActivePlaydates () {
+      this.loading = true
+
+      try {
+        this.activePlaydates = await this.getChildrenInfo()
+      } catch (e) {
+      } finally {
+        this.loading = false
+      }
     }
   }
 }
