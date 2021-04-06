@@ -33,8 +33,9 @@ export default {
           formatter: '{a} <br/>{b} : {c} ({d}%)'
         },
         legend: {
+          bottom: 10,
           orient: 'vertical',
-          right: 'right',
+          left: 'left',
           data: (this.funnelData.data) ? this.funnelData.data.map(data => data.name) : []
         },
         series: [

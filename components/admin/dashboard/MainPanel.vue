@@ -54,10 +54,10 @@
 
                   <!-- Total Users Per Plan -->
                   <v-card class="mt-4">
-                    <p class="pt-8 text-center">
+                    <v-card-text>
                       <label class="title-dashboard font-weight-bold">Total Users Per Plan</label>
-                    </p>
-                    <pie-chart :pie-data="usersPerPlan" />
+                      <pie-chart :pie-data="usersPerPlan" />
+                    </v-card-text>
                   </v-card>
                   <!-- End Total Users Per Plan -->
                 </v-col>
@@ -67,9 +67,9 @@
           <v-row class="mx-1">
             <!-- Plans-->
             <v-col
-              cols="12"
               v-for="(plan, i) in planActiveInactive"
               :key="`plan-item-${i}`"
+              cols="12"
               md="3"
             >
               <v-card class="content-dashboard">
@@ -77,7 +77,7 @@
                   <div class="name-plan-content">
                     <label class="plan-title-dashboard font-weight-bold">{{ plan.name }}</label>
                   </div>
-                  <pie-chart :pie-data="plan" />
+                  <pie-chart :pie-data="plan" class="mt-n14" />
                 </v-card-text>
               </v-card>
             </v-col>
@@ -87,19 +87,17 @@
             <v-col cols="12" md="7">
               <!-- Users per status -->
               <v-card class="mx-3">
-                <p class="pt-8 text-center">
+                <v-card-text>
                   <label class="title-dashboard font-weight-bold">Users per status</label>
-                </p>
-                <pie-chart :pie-data="stripeStatus" />
+                  <pie-chart :pie-data="stripeStatus" />
+                </v-card-text>
               </v-card>
               <!-- End Users per status -->
             </v-col>
             <v-col cols="12" md="5">
               <v-card class="mx-3 content-dashboard">
                 <v-card-text>
-                  <p class="mt-5">
-                    <label class="title-dashboard font-weight-bold">Churn Rate</label>
-                  </p>
+                  <label class="title-dashboard font-weight-bold">Churn Rate</label>
                   <v-row align="center">
                     <v-col cols="12">
                       <p>
@@ -156,9 +154,13 @@
 
                 <v-card width="100%" class="users-today-data mb-n6">
                   <v-card-text>
-                    <label class="font-weight-bold title-dashboard">Active Users Per Week</label>
+                    <label class="font-weight-bold title-dashboard">Active Users Per Week</label> <br />
+                    <center>
+                      <span>{{ getFormatDate }}</span>
+                    </center>
                     <v-col
                       cols="12"
+                      class="mt-n4"
                     >
                       <center>
                         <label class="font-weight-bold display-3 total-users">{{ activeUsers.last7Days }}</label> <br />
@@ -201,6 +203,7 @@
 </template>
 
 <script>
+import dayjs from 'dayjs'
 import { mapActions } from 'vuex'
 import FunnelChart from './FunnelChart.vue'
 import PieChart from './PieChart.vue'
@@ -252,7 +255,13 @@ export default {
     }
   }),
 
-  computed: {},
+  computed: {
+    getFormatDate () {
+      const from = dayjs(this.activeUsers.from).format('MMM-DD')
+      const to = dayjs(this.activeUsers.to).format('MMM-DD')
+      return `Week: ${from} to ${to}`
+    }
+  },
 
   watch: {},
 
@@ -331,7 +340,7 @@ export default {
 }
 
 .name-plan-content {
-  min-height: 40px !important;
+  min-height: 38px !important;
 }
 
 .total-users {
