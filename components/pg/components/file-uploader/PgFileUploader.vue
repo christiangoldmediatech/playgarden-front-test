@@ -99,7 +99,7 @@ export default {
           extensions = ['.jpg', '.jpeg', '.png', '.gif']
           break
         case 'song':
-          extensions = ['.mp3', '.mp4', '.wav']
+          extensions = ['.mp3', '.wav']
           break
       }
       return extensions
