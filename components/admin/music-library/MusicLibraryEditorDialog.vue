@@ -247,8 +247,9 @@ export default {
         this.loading = true
         if (this.audio) {
           if (this.typeSelectAudioFile !== 'dropBox') {
-            const { filePath } = await this.$refs.audioFileUploaderDropBox.handleUpload()
-            this.item.songUrl = filePath
+            const res = await this.$refs.audioFileUploaderDropBox.handleUpload()
+            console.log('res--', res)
+            this.item.songUrl = res.filePath
           } else {
             this.loadingDropBox = true
             const { filePath } = await this.$refs.audioFileUploaderDropBox.handleDropBoxFileUpload()

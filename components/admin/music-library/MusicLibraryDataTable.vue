@@ -53,6 +53,13 @@
               @edit-item="$refs.editor.open(null, $event)"
               @remove-item="remove"
             >
+              <template v-slot:item.songUrl="{ item }">
+                <audio controls>
+                  <source :src="item.songUrl" type="audio/mpeg">
+                  Your browser does not support the audio element.
+                </audio>
+                url {{ item.songUrl }}
+              </template>
             </pg-admin-data-table>
           </v-card-text>
         </v-card>
@@ -94,6 +101,12 @@ export default {
           align: 'start',
           sortable: false,
           value: 'description'
+        },
+        {
+          text: 'Song',
+          align: 'start',
+          sortable: false,
+          value: 'songUrl'
         },
         {
           align: 'right',
@@ -143,7 +156,7 @@ export default {
       if (clear) {
         this.search = ''
       }
-      
+
       if (this.search) {
         params.name = this.search
       }
@@ -153,11 +166,12 @@ export default {
     },
 
     remove ({ id, item }) {
+      console.log('id--', id)
       this.$nuxt.$emit('open-prompt', {
         title: 'Delete music library?',
-        message: `Are you sure you wish to delete '${item.name}?`,
+        message: 'Are you sure you wish to delete ?',
         action: async () => {
-          await this.deleteMusicLibrariess(id)
+          await this.deleteMusicLibraries(id)
           this.refresh()
         }
       })
