@@ -81,9 +81,12 @@ export default {
   },
 
   watch: {
-    async isUserLoggedIn (v) {
-      if (v === true) {
-        await this.checkUserShippingAddressAndNotify()
+    isUserLoggedIn: {
+      immediate: true,
+      async handler (v) {
+        if (v === true && this.$route.name !== 'shared-slug') {
+          await this.checkUserShippingAddressAndNotify()
+        }
       }
     },
     '$route.name' (v) {
