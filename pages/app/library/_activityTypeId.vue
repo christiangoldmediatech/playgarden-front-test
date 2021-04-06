@@ -29,7 +29,7 @@
 
     <activity-type-container
       v-if="activityTypeData"
-      v-bind="{ activityType: activityTypeData, total, limit, page, loading }"
+      v-bind="{ activityType: activityTypeData, total, limit: total, page, loading }"
       expandable
       no-header
       @next-page="fetchNext"
@@ -86,8 +86,8 @@ export default {
         const id = parseInt(this.$route.params.activityTypeId)
 
         const params = this.activityTypeData ? {} : {
-          limit: this.activityTypeData ? this.limit : 32,
-          page: this.page
+          limit: 0,
+          page: 0
         }
 
         const data = await this.$axios.$get(`/activities/${id}/filter`, {
