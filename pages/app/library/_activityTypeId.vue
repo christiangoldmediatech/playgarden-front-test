@@ -85,11 +85,13 @@ export default {
         this.loading = true
         const id = parseInt(this.$route.params.activityTypeId)
 
+        const params = this.activityTypeData ? {} : {
+          limit: this.activityTypeData ? this.limit : 32,
+          page: this.page
+        }
+
         const data = await this.$axios.$get(`/activities/${id}/filter`, {
-          params: {
-            limit: this.activityTypeData ? this.limit : 32,
-            page: this.page
-          }
+          params
         })
 
         this.total = data.total
