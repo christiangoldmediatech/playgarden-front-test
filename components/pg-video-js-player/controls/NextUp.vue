@@ -1,7 +1,7 @@
 <template>
   <div
     class="next-up-container"
-    :style="{ '--bottom-offset': `${(nextPatch) ? 32 : 16}px` }"
+    :style="{ '--bottom-offset': `${(nextPatch) ? 32 : nextPuzzle ? 48 : 16}px` }"
   >
     <v-sheet
       :class="['coming-up-next rounded-l pa-1', { 'shown': params.show }]"
@@ -39,6 +39,12 @@ export default {
     },
 
     nextPatch: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
+    nextPuzzle: {
       type: Boolean,
       required: false,
       default: false

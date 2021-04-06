@@ -132,6 +132,7 @@ export default {
             childrenIds: this.childrenIds
           })
         }
+
         if (redirect || (this.lessonCompleted && !this.overrideMode)) {
           this.redirectDashboard()
           this.loading = false
