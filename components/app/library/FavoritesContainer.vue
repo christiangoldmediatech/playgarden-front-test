@@ -1,6 +1,6 @@
 <template>
   <div id="activity-type-favorites-container">
-    <v-container v-if="!noHeader" class="hidden-xs-only px-0" fluid>
+    <v-container v-if="!noHeader" class="px-0" fluid>
       <div class="pos-relative d-flex align-end px-3">
         <div
           class="act-type-color"
@@ -15,13 +15,17 @@
           <v-btn
             class="ml-6"
             color="primary"
-            x-large
+            :small="$vuetify.breakpoint.xsOnly"
+            :x-large="$vuetify.breakpoint.mdAndUp"
             @click="handlePlay(0)"
           >
             <v-icon left>
               mdi-play
             </v-icon>
-            Play All
+            <template v-if="$vuetify.breakpoint.smAndUp">
+              Play
+            </template>
+            All
           </v-btn>
         </div>
       </div>
