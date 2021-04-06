@@ -223,7 +223,7 @@
     </v-col>
 
     <!-- Cancel suscription modal -->
-    <v-dialog
+    <pg-dialog
       v-model="removeSubscriptionModal"
       content-class="white"
       :fullscreen="isMobile"
@@ -292,9 +292,9 @@
           GO BACK
         </v-btn>
       </v-col>
-    </v-dialog>
+    </pg-dialog>
 
-    <v-dialog
+    <pg-dialog
       v-model="stripeCardModal"
       content-class="white"
       :fullscreen="isMobile"
@@ -321,10 +321,10 @@
           </v-col>
         </v-row>
       </v-col>
-    </v-dialog>
+    </pg-dialog>
 
     <!-- Chance Plan modal -->
-    <v-dialog
+    <pg-dialog
       v-model="changePlanModal"
       content-class="white"
       :fullscreen="isMobile"
@@ -347,7 +347,7 @@
           @click:submit="onSuccessChangePlan"
         />
       </v-col>
-    </v-dialog>
+    </pg-dialog>
   </v-row>
 </template>
 

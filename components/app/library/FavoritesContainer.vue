@@ -164,7 +164,8 @@ export default {
           videoId: activity.video.id,
           viewed: {
             completed: false
-          }
+          },
+          favorites: true
         })
       })
 

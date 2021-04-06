@@ -114,7 +114,7 @@
     </v-row>
 
     <!-- CardPlaydatePopup -->
-    <v-dialog
+    <pg-dialog
       v-model="dialog"
       fullscreen
       content-class="elevation-0"
@@ -281,7 +281,7 @@
           </v-col>
         </v-row>
       </v-container>
-    </v-dialog>
+    </pg-dialog>
   </v-card>
 </template>
 

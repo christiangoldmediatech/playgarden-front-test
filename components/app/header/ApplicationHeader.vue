@@ -4,7 +4,6 @@
     class="pg-app-bar"
     color="white"
     elevation="1"
-    :class="{ overrideDialog: overrideDialogs }"
   >
     <v-row
       class="flex-nowrap"
@@ -238,10 +237,6 @@ export default {
     }
   },
 
-  data: () => ({
-    overrideDialogs: false
-  }),
-
   methods: {
     toggleDrawer () {
       this.$nuxt.$emit('toggle-nav-drawer')
@@ -256,7 +251,7 @@ export default {
 
 <style lang="scss" scoped>
 .pg-app-bar.v-app-bar.v-app-bar--fixed {
-  z-index: 6 !important;
+  z-index: 1000 !important;
 }
 
 .pg-app-bar::v-deep .v-toolbar__content {
