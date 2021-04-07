@@ -1,94 +1,101 @@
 <template>
   <div class="music-player">
-    <div class="child-selector ml-auto">
-      <child-select v-model="selectedChildId" hide-details />
-    </div>
-    <div class="player-wrapper pt-6 px-4">
-      <pg-audio-player>
-        <template
-          v-slot:current="{
-            currentSong,
-            isLoading,
-            currentSongPlayedTime,
-            currentSongPlayedPercentage,
-            currentSongMissingTime,
-          }"
-        >
-          <figure class="song-thumbnail mx-auto">
-            <v-overlay
-              absolute
-              :value="isLoading"
+    <v-row no-gutters class="flex-column fill-height">
+      <v-col cols="auto">
+        <div class="child-selector ml-auto">
+          <child-select v-model="selectedChildId" hide-details />
+        </div>
+      </v-col>
+      <v-spacer />
+      <v-col>
+        <div class="player-wrapper pt-6 px-4">
+          <pg-audio-player>
+            <template
+              v-slot:current="{
+                currentSong,
+                isLoading,
+                currentSongPlayedTime,
+                currentSongPlayedPercentage,
+                currentSongMissingTime,
+              }"
             >
-              <v-progress-circular indeterminate />
-            </v-overlay>
-            <img :src="currentSong.thumbnail" :alt="currentSong.description">
-          </figure>
-          <div class="song-details text-center pt-4">
-            <p class="song-title mb-2 text-truncate">
-              {{ currentSong.description }}
-            </p>
-            <p class="song-author mb-2 text-truncate">
-              {{ currentSong.name }}
-            </p>
-          </div>
-          <div class="song-percentage">
-            <v-slider
-              readonly
-              height="20"
-              :min="0"
-              track-color="#EBEBEB"
-              :max="100"
-              class="slider"
-              :value="currentSongPlayedPercentage"
-            ></v-slider>
-            <span class="played-time pl-1">
-              {{ currentSongPlayedTime }}
-            </span>
-            <span class="missing-time pr-1">
-              {{ currentSongMissingTime }}
-            </span>
-          </div>
-        </template>
-        <template
-          v-slot:actions="{
-            isPlaying,
-            play,
-            pause,
-            next,
-            previous
-          }">
-          <v-row no-gutters>
-            <v-col cols="3"></v-col>
-            <!-- CENTER BTNS -->
-            <v-col cols="6" class="text-center">
-              <!-- PREVIOUS -->
-              <v-btn icon height="32" width="32" @click="previous">
-                <v-icon size="32">
-                  mdi-skip-backward
-                </v-icon>
-              </v-btn>
-              <v-btn v-if="!isPlaying" icon height="50" width="50" @click="play">
-                <v-icon size="50">
-                  mdi-play
-                </v-icon>
-              </v-btn>
-              <v-btn v-else icon height="50" width="50" @click="pause">
-                <v-icon size="50">
-                  mdi-pause-circle-outline
-                </v-icon>
-              </v-btn>
-              <!-- NEXT -->
-              <v-btn icon height="32" width="32" @click="next">
-                <v-icon size="32">
-                  mdi-skip-forward
-                </v-icon>
-              </v-btn>
-            </v-col>
-            <v-col cols="3"></v-col>
-          </v-row>
-        </template>
-      </pg-audio-player>
-    </div>
+              <figure class="song-thumbnail mx-auto">
+                <v-overlay
+                  absolute
+                  :value="isLoading"
+                >
+                  <v-progress-circular indeterminate />
+                </v-overlay>
+                <img :src="currentSong.thumbnail" :alt="currentSong.description">
+              </figure>
+              <div class="song-details text-center pt-4">
+                <p class="song-title mb-2 text-truncate">
+                  {{ currentSong.description }}
+                </p>
+                <p class="song-author mb-2 text-truncate">
+                  {{ currentSong.name }}
+                </p>
+              </div>
+              <div class="song-percentage">
+                <v-slider
+                  readonly
+                  height="20"
+                  :min="0"
+                  track-color="#EBEBEB"
+                  :max="100"
+                  class="slider"
+                  :value="currentSongPlayedPercentage"
+                ></v-slider>
+                <span class="played-time pl-1">
+                  {{ currentSongPlayedTime }}
+                </span>
+                <span class="missing-time pr-1">
+                  {{ currentSongMissingTime }}
+                </span>
+              </div>
+            </template>
+            <template
+              v-slot:actions="{
+                isPlaying,
+                play,
+                pause,
+                next,
+                previous
+              }">
+              <v-row no-gutters>
+                <v-col cols="3"></v-col>
+                <!-- CENTER BTNS -->
+                <v-col cols="6" class="text-center">
+                  <!-- PREVIOUS -->
+                  <v-btn icon height="32" width="32" @click="previous">
+                    <v-icon size="32">
+                      mdi-skip-backward
+                    </v-icon>
+                  </v-btn>
+                  <v-btn v-if="!isPlaying" icon height="50" width="50" @click="play">
+                    <v-icon size="50">
+                      mdi-play
+                    </v-icon>
+                  </v-btn>
+                  <v-btn v-else icon height="50" width="50" @click="pause">
+                    <v-icon size="50">
+                      mdi-pause-circle-outline
+                    </v-icon>
+                  </v-btn>
+                  <!-- NEXT -->
+                  <v-btn icon height="32" width="32" @click="next">
+                    <v-icon size="32">
+                      mdi-skip-forward
+                    </v-icon>
+                  </v-btn>
+                </v-col>
+                <v-col cols="3"></v-col>
+              </v-row>
+            </template>
+          </pg-audio-player>
+        </div>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
