@@ -4,13 +4,13 @@
       <v-card class="player-card" :width="playerWidth" :height="playerHeight" :class="{ 'mobile': isMobile, 'pa-4': isPlayerShowing }">
         <music-player v-show="isPlayerShowing" />
       </v-card>
-      <music-song-list />
+      <music-song-list :all-songs="allSongs" :songs-by-curriculum-type="songsByCurriculumType" />
     </v-container>
   </v-main>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions, mapState } from 'vuex'
 
 import MusicPlayer from '@/components/app/music/MusicPlayer.vue'
 import MusicSongList from '@/components/app/music/MusicSongList.vue'
@@ -31,7 +31,13 @@ export default {
     }
   },
   computed: {
+    ...mapState('music', {
+      songsByCurriculumType: state => state.musicLibraries.filter(curriculumType => curriculumType.musicLibrary.length > 0)
+    }),
     ...mapGetters({ currentChild: 'getCurrentChild' }),
+    ...mapGetters('music', {
+      allSongs: 'musicLibrariesByCurriculumType'
+    }),
     isMobile () {
       return this.$vuetify.breakpoint.width <= this.mobileBreakpoint
     },
@@ -64,12 +70,16 @@ export default {
       }
     }
   },
-  created () {
+  async created () {
     if (this.id) {
       this.selectedChildId = parseInt(this.id)
     } else if (this.currentChild.length) {
       this.selectedChildId = this.currentChild[0].id
     }
+    await this.getMusicLibrariesByCurriculumType()
+  },
+  methods: {
+    ...mapActions('music', ['getMusicLibrariesByCurriculumType'])
   }
 }
 </script>

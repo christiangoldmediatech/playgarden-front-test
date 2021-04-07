@@ -1,5 +1,6 @@
 <template>
   <div class="fill-height pa-4">
+    <!-- Filters -->
     <v-row no-gutters>
       <v-col cols="12" md="8">
         <music-carousel-letter :value="null" />
@@ -37,9 +38,13 @@
         </v-row>
       </v-col>
     </v-row>
-    <div>
-      MSUCISS
-    </div>
+    <!-- Songs -->
+    <template v-if="selectedFilter === 'list'">
+      {{ allSongs }}
+    </template>
+    <template v-if="selectedFilter === 'letter'">
+      {{ songsByCurriculumType }}
+    </template>
   </div>
 </template>
 
@@ -51,6 +56,20 @@ export default {
 
   components: {
     MusicCarouselLetter
+  },
+
+  props: {
+    allSongs: {
+      type: Array,
+      required: false,
+      default: () => []
+    },
+
+    songsByCurriculumType: {
+      type: Array,
+      required: false,
+      default: () => []
+    }
   },
 
   data () {
