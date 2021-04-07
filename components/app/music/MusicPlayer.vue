@@ -95,6 +95,7 @@
           </pg-audio-player>
         </div>
       </v-col>
+      <v-spacer />
     </v-row>
   </div>
 </template>
