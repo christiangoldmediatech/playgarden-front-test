@@ -81,6 +81,9 @@ export default {
         case 'image':
           extensions = ['.jpg', '.jpeg', '.png', '.gif']
           break
+          case 'song':
+          extensions = ['.mp3', '.wav', '.m4a']
+          break
       }
       return extensions
     }
