@@ -22,7 +22,7 @@
 
             <template v-if="categorySelect">
               <v-row
-                v-if="$vuetify.breakpoint.mobile"
+                v-if="isMobile"
                 class="mt-n8"
                 justify="center"
               >
@@ -263,14 +263,15 @@
                       />
                     </validation-provider>
 
-                    <v-row justify="center">
+                    <v-row justify="center" class="px-2 px-md-0">
                       <v-btn
                         class="mb-6"
                         color="primary"
                         :disabled="invalid"
                         :loading="sending"
                         type="submit"
-                        width="400"
+                        :width="isMobile ? undefined : 400"
+                        :block="isMobile"
                         x-large
                       >
                         Submit
@@ -322,6 +323,9 @@ export default {
   computed: {
     emailTopics () {
       return Object.values(EMAIL_TOPICS)
+    },
+    isMobile () {
+      return this.$vuetify.breakpoint.mobile
     }
   },
 
