@@ -36,7 +36,7 @@ export default {
     }),
     ...mapGetters({ currentChild: 'getCurrentChild' }),
     ...mapGetters('music', {
-      allSongs: 'musicLibrariesByCurriculumType'
+      allSongs: 'allSongsWithCurriculumType'
     }),
     isMobile () {
       return this.$vuetify.breakpoint.width <= this.mobileBreakpoint
@@ -96,6 +96,7 @@ export default {
     }
   }
 }
+
 .player-card {
   transition: 0.1s ease;
   position: absolute;
@@ -105,8 +106,5 @@ export default {
     bottom: 0;
     top: unset;
   }
-}
-.bg-red {
-  background-color: rebeccapurple;
 }
 </style>

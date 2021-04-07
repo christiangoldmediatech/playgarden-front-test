@@ -1,12 +1,14 @@
 export default {
-  musicLibrariesByCurriculumType (state) {
-    return state.musicLibraries.map((curriculumType) => {
-      return {
-        curriculumTypeId: curriculumType.id,
-        musicLibrary: curriculumType.musicLibrary
+  allSongsWithCurriculumType (state) {
+    const songs = []
+    state.musicLibraries.forEach((curriculumType) => {
+      if (curriculumType.musicLibrary.length > 0) {
+        curriculumType.musicLibrary.forEach(song => songs.push({
+          curriculumTypeId: curriculumType.id,
+          ...song
+        }))
       }
-    }).filter((library) => {
-      return library.musicLibrary.length > 0
     })
+    return songs
   }
 }

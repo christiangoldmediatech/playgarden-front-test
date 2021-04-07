@@ -40,7 +40,14 @@
     </v-row>
     <!-- Songs -->
     <template v-if="selectedFilter === 'list'">
-      {{ allSongs }}
+      <song-card
+        v-for="song in allSongs"
+        :key="song.id"
+        :thumbnail="song.thumbnail"
+        :name="song.name"
+        :description="song.description"
+        class="my-4"
+      />
     </template>
     <template v-if="selectedFilter === 'letter'">
       {{ songsByCurriculumType }}
@@ -50,12 +57,14 @@
 
 <script>
 import MusicCarouselLetter from '@/components/app/music/MusicLetterCarousel.vue'
+import SongCard from '@/components/app/music/SongCard.vue'
 
 export default {
   name: 'MusicSongList',
 
   components: {
-    MusicCarouselLetter
+    MusicCarouselLetter,
+    SongCard
   },
 
   props: {
