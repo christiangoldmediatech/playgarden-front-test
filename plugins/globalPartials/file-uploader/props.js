@@ -102,6 +102,11 @@ export default {
       required: false,
       default: false
     },
+    m4a: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     wav: {
       type: Boolean,
       required: false,

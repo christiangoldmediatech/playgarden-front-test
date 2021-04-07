@@ -83,6 +83,7 @@
                   placeholder="Select a song"
                   solo-labeled
                   mp3
+                  m4a
                   @sendFile="setAudioFile"
                 />
               </validation-provider>
