@@ -63,7 +63,7 @@
                                 <v-icon x-large color="red lighten-1">
                                   mdi-menu-up
                                 </v-icon>
-                                <span>0 % More than last two weeks</span>
+                                <span>0 More than last weeks</span>
                               </p>
                             </v-col>
                             <v-col
@@ -143,7 +143,7 @@
               <!-- Total Users Per Plan -->
               <v-card>
                 <v-card-text>
-                  <label class="title-dashboard font-weight-bold">Total Users per Plan</label>
+                  <label class="title-dashboard font-weight-bold">Users per Plan</label>
                   <pie-chart :pie-data="usersPerPlan" />
                 </v-card-text>
               </v-card>
