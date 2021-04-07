@@ -43,7 +43,7 @@ export default {
         { 'video/mpeg': this.mpeg },
         { 'video/mp4': this.mp4 },
         { 'audio/mp3': this.mp3 },
-        { 'audio/mp4': this.m4a },
+        { 'audio/x-m4a': this.m4a },
         { '.mov,video/quicktime': this.mov },
         { 'video/webm': this.webm }
       ]

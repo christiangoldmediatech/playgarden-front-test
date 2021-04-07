@@ -56,6 +56,7 @@
               <template v-slot:item.songUrl="{ item }">
                 <audio controls>
                   <source :src="item.songUrl" type="audio/mpeg">
+                  <source :src="item.songUrl" type="audio/x-m4a">
                   Your browser does not support the audio element.
                 </audio>
               </template>
