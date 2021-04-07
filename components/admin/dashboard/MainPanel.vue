@@ -31,11 +31,11 @@
                 <v-col cols="12">
                   <v-card>
                     <v-card-text>
-                      <label class="title-dashboard font-weight-bold">Total users</label>
+                      <label class="title-dashboard font-weight-bold">Total Subscriptions</label>
                       <v-row align="center">
                         <v-col
                           class="display-3"
-                          cols="3"
+                          cols="5"
                         >
                           <label class="font-weight-bold total-users">{{ usersTotal.totalUsers }}</label>
                         </v-col>
@@ -51,15 +51,60 @@
                       </v-row>
                     </v-card-text>
                   </v-card>
-
-                  <!-- Total Users Per Plan -->
-                  <v-card class="mt-4">
-                    <v-card-text>
-                      <label class="title-dashboard font-weight-bold">Total Users Per Plan</label>
-                      <pie-chart :pie-data="usersPerPlan" />
-                    </v-card-text>
-                  </v-card>
-                  <!-- End Total Users Per Plan -->
+                  <!-- CHURN RATE-->
+                  <v-row>
+                    <v-col cols="6">
+                      <v-card>
+                        <v-card-text>
+                          <label class="title-dashboard font-weight-bold">Churn Rate</label>
+                          <v-row class="mt-n4" align="center">
+                            <v-col cols="12">
+                              <p class="text-center">
+                                <v-icon x-large color="red lighten-1">
+                                  mdi-menu-up
+                                </v-icon>
+                                <span>0 % More than last two weeks</span>
+                              </p>
+                            </v-col>
+                            <v-col
+                              class="display-3"
+                              cols="12"
+                            >
+                              <center>
+                                <label class="font-weight-bold total-users">0 %</label>
+                              </center>
+                            </v-col>
+                          </v-row>
+                        </v-card-text>
+                      </v-card>
+                    </v-col>
+                    <v-col cols="6">
+                      <v-card>
+                        <v-card-text>
+                          <label class="title-dashboard font-weight-bold">Canceled</label>
+                          <v-row class="mt-n4" align="center">
+                            <v-col cols="12">
+                              <p class="text-center">
+                                <v-icon x-large color="red lighten-1">
+                                  mdi-menu-up
+                                </v-icon>
+                                <span>0 % More than last two weeks</span>
+                              </p>
+                            </v-col>
+                            <v-col
+                              class="display-3"
+                              cols="12"
+                            >
+                              <center>
+                                <label class="font-weight-bold total-users">0 %</label>
+                              </center>
+                            </v-col>
+                          </v-row>
+                        </v-card-text>
+                      </v-card>
+                    </v-col>
+                  </v-row>
+                  <!-- END CHURN RATE-->
                 </v-col>
               </v-row>
             </v-col>
@@ -84,45 +129,25 @@
             <!-- End Plans-->
           </v-row>
           <v-row>
-            <v-col cols="12" md="7">
+            <v-col cols="12" md="6">
               <!-- Users per status -->
               <v-card class="mx-3">
                 <v-card-text>
-                  <label class="title-dashboard font-weight-bold">Users per status</label>
+                  <label class="title-dashboard font-weight-bold">Users per Status</label>
                   <pie-chart :pie-data="stripeStatus" />
                 </v-card-text>
               </v-card>
               <!-- End Users per status -->
             </v-col>
-            <v-col cols="12" md="5">
-              <v-card class="mx-3 content-dashboard">
+            <v-col cols="12" md="6">
+              <!-- Total Users Per Plan -->
+              <v-card>
                 <v-card-text>
-                  <label class="title-dashboard font-weight-bold">Churn Rate</label>
-                  <v-row class="mt-n4" align="center">
-                    <v-col cols="12">
-                      <p>
-                        <v-icon x-large color="red lighten-1">
-                          mdi-menu-up
-                        </v-icon>
-                        <span>0 % More than last two weeks</span>
-                      </p>
-                    </v-col>
-                    <v-col
-                      class="display-3"
-                      cols="12"
-                    >
-                      <center>
-                        <label class="font-weight-bold total-users">0 %</label>
-                      </center>
-                    </v-col>
-                    <v-col cols="12">
-                      <p class="text-center">
-                        <span>This percentage will change every two weeks</span>
-                      </p>
-                    </v-col>
-                  </v-row>
+                  <label class="title-dashboard font-weight-bold">Total Users per Plan</label>
+                  <pie-chart :pie-data="usersPerPlan" />
                 </v-card-text>
               </v-card>
+              <!-- End Total Users Per Plan -->
             </v-col>
           </v-row>
           <v-row>
@@ -308,7 +333,7 @@ export default {
         }
 
         this.childsByLetter = {
-          letters: childsByLetter.letters.map(letter => letter.substring(0, 2)),
+          letters: childsByLetter.letters,
           data: childsByLetter.childs
         }
         this.childrenTotal = childrenTotal
