@@ -42,7 +42,6 @@
                           class="rounded-circle"
                           max-width="50"
                           :src="item.icon"
-                          :style="{ backgroundColor: item.color }"
                         />
                       </v-list-item-avatar>
 
@@ -61,7 +60,6 @@
                           class="rounded-circle"
                           max-width="50"
                           :src="item.icon"
-                          :style="{ backgroundColor: item.color }"
                         />
                       </v-list-item-avatar>
 
