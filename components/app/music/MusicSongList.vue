@@ -1,5 +1,5 @@
 <template>
-  <div class="fill-height pa-4">
+  <div class="pa-4" v-bind="$attrs">
     <!-- Filters -->
     <v-row no-gutters>
       <v-col cols="12" md="8">

@@ -1,12 +1,16 @@
 <template>
   <div class="music-player">
     <v-row no-gutters class="flex-column fill-height">
-      <v-col cols="auto">
+      <!-- Child Selector -->
+      <v-col cols="auto" v-if="!mobile">
         <div class="child-selector ml-auto">
           <child-select v-model="selectedChildId" hide-details />
         </div>
       </v-col>
-      <v-spacer />
+
+      <v-spacer v-if="!mobile" />
+
+      <!-- Player -->
       <v-col>
         <div class="player-wrapper pt-6 px-4">
           <pg-audio-player>
@@ -19,7 +23,7 @@
                 currentSongMissingTime,
               }"
             >
-              <figure class="song-thumbnail mx-auto">
+              <figure v-if="!mobile" class="song-thumbnail mx-auto">
                 <v-overlay
                   absolute
                   :value="isLoading"
@@ -45,7 +49,7 @@
                   :max="100"
                   class="slider"
                   :value="currentSongPlayedPercentage"
-                ></v-slider>
+                />
                 <span class="played-time pl-1">
                   {{ currentSongPlayedTime }}
                 </span>
@@ -61,9 +65,10 @@
                 pause,
                 next,
                 previous
-              }">
+              }"
+            >
               <v-row no-gutters>
-                <v-col cols="3"></v-col>
+                <v-col cols="3" />
                 <!-- CENTER BTNS -->
                 <v-col cols="6" class="text-center">
                   <!-- PREVIOUS -->
@@ -89,13 +94,14 @@
                     </v-icon>
                   </v-btn>
                 </v-col>
-                <v-col cols="3"></v-col>
+                <v-col cols="3" />
               </v-row>
             </template>
           </pg-audio-player>
         </div>
       </v-col>
-      <v-spacer />
+
+      <v-spacer v-if="!mobile" />
     </v-row>
   </div>
 </template>
@@ -107,19 +113,32 @@ import ChildSelect from '@/components/app/ChildSelect.vue'
 
 export default {
   name: 'MusicPlayer',
+
   components: {
     ChildSelect
   },
+
+  props: {
+    mobile: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
+
   data () {
     return {
       selectedChildId: null
     }
   },
+
   computed: {
     ...mapGetters({ currentChild: 'getCurrentChild' }),
+
     id () {
       return this.$route.query.id ? parseInt(this.$route.query.id) : null
     },
+
     playerWidth () {
       if (this.playerShowing) {
         return '450'
@@ -128,6 +147,7 @@ export default {
       }
     }
   },
+
   watch: {
     selectedChildId (id) {
       if (id) {
@@ -135,6 +155,7 @@ export default {
       }
     }
   },
+
   created () {
     if (this.id) {
       this.selectedChildId = parseInt(this.id)
