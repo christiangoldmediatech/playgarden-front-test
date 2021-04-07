@@ -37,14 +37,14 @@
                           class="display-3"
                           cols="5"
                         >
-                          <label class="font-weight-bold total-users">{{ usersTotal.totalUsers }}</label>
+                          <label class="font-weight-bold total-users">{{ totalSubscriptions.total }}</label>
                         </v-col>
                         <v-col>
                           <p>
                             <v-icon x-large color="green lighten-1">
                               mdi-menu-up
                             </v-icon>
-                            <span>+{{ usersTotal.increment }} New users this week</span> <br />
+                            <span>+{{ totalSubscriptions.increment }} New users this week</span> <br />
                             <span class="ml-3">Users using our platform</span>
                           </p>
                         </v-col>
@@ -88,7 +88,7 @@
                                 <v-icon x-large color="red lighten-1">
                                   mdi-menu-up
                                 </v-icon>
-                                <span>0 % More than last two weeks</span>
+                                <span>{{ canceledUsers.increment }} More than last week</span>
                               </p>
                             </v-col>
                             <v-col
@@ -96,7 +96,7 @@
                               cols="12"
                             >
                               <center>
-                                <label class="font-weight-bold total-users">0 %</label>
+                                <label class="font-weight-bold total-users">{{ canceledUsers.total }}</label>
                               </center>
                             </v-col>
                           </v-row>
@@ -260,8 +260,12 @@ export default {
       subtitle: '',
       data: []
     },
-    usersTotal: {
-      totalUsers: 0,
+    totalSubscriptions: {
+      total: 0,
+      increment: 0
+    },
+    canceledUsers: {
+      total: 0,
       increment: 0
     },
     activeUsers: {
@@ -312,12 +316,13 @@ export default {
         this.search = ''
       }
       try {
-        const { dataFunnel, usersTotal, usersPerPlan, stripeStatus, activeUsers, dailyUsers, childsByLetter, childrenTotal, planActiveInactive } = await this.getDashboard({})
+        const { dataFunnel, totalSubscriptions, canceledUsers, usersPerPlan, stripeStatus, activeUsers, dailyUsers, childsByLetter, childrenTotal, planActiveInactive } = await this.getDashboard({})
         this.funnel = {
           data: dataFunnel
         }
 
-        this.usersTotal = usersTotal
+        this.totalSubscriptions = totalSubscriptions
+        this.canceledUsers = canceledUsers
         this.usersPerPlan = {
           data: usersPerPlan
         }
