@@ -1,10 +1,14 @@
 <template>
-  <v-main class="fill-height">
+  <v-main class="main-music-wrapper">
     <v-container fluid class="music-page-container pa-0" :class="{ 'mobile': isMobile, 'playing': isPlayerShowing }">
       <v-card class="player-card" :width="playerWidth" :height="playerHeight" :class="{ 'mobile': isMobile, 'pa-4': isPlayerShowing }">
-        <music-player v-show="isPlayerShowing" />
+        <music-player v-show="isPlayerShowing" :mobile="isMobile" />
       </v-card>
-      <music-song-list :all-songs="allSongs" :songs-by-curriculum-type="songsByCurriculumType" />
+      <music-song-list
+        :all-songs="allSongs"
+        :songs-by-curriculum-type="songsByCurriculumType"
+        :class="{ 'fill-height': !isMobile }"
+      />
     </v-container>
   </v-main>
 </template>
@@ -19,10 +23,12 @@ const PAGE_MOBILE_BREAKPOINT = 1264
 
 export default {
   name: 'Index',
+
   components: {
     MusicPlayer,
     MusicSongList
   },
+
   data () {
     return {
       mobileBreakpoint: PAGE_MOBILE_BREAKPOINT,
@@ -30,20 +36,26 @@ export default {
       isPlayerShowing: true
     }
   },
+
   computed: {
     ...mapState('music', {
       songsByCurriculumType: state => state.musicLibraries.filter(curriculumType => curriculumType.musicLibrary.length > 0)
     }),
+
     ...mapGetters({ currentChild: 'getCurrentChild' }),
+
     ...mapGetters('music', {
       allSongs: 'allSongsWithCurriculumType'
     }),
+
     isMobile () {
       return this.$vuetify.breakpoint.width <= this.mobileBreakpoint
     },
+
     id () {
       return this.$route.query.id ? parseInt(this.$route.query.id) : null
     },
+
     playerWidth () {
       if (this.isMobile) {
         return '100%'
@@ -53,6 +65,7 @@ export default {
         return 0
       }
     },
+
     playerHeight () {
       if (!this.isMobile) {
         return '100%'
@@ -63,6 +76,7 @@ export default {
       }
     }
   },
+
   watch: {
     selectedChildId (id) {
       if (id) {
@@ -70,6 +84,7 @@ export default {
       }
     }
   },
+
   async created () {
     if (this.id) {
       this.selectedChildId = parseInt(this.id)
@@ -78,6 +93,7 @@ export default {
     }
     await this.getMusicLibrariesByCurriculumType()
   },
+
   methods: {
     ...mapActions('music', ['getMusicLibrariesByCurriculumType'])
   }
@@ -85,6 +101,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.main-music-wrapper {
+  max-height: 100vh;
+  height: 100%;
+}
+
 .music-page-container {
   height: 100%;
   position: relative;
