@@ -11,7 +11,7 @@
                 max-height="500"
                 :src="require('@/assets/jpg/help-banner.jpg')"
               >
-                <v-overlay absolute>
+                <v-overlay absolute class="text-center">
                   <underlined-title
                     class="text-h5 text-md-h3 white--text"
                     text="Hello, how can we help?"
@@ -106,7 +106,7 @@
                 </v-col>
               </v-row>
 
-              <v-row class="mt-12 px-6 px-md-12" justify="center">
+              <v-row class="mt-4 mt-md-12 px-4 px-md-12" justify="center">
                 <underlined-title
                   class="text-h5 text-md-h3"
                   :text="categorySelect.name"
@@ -116,7 +116,7 @@
                   v-if="faqs[categorySelect.id]"
                   :key="categorySelect.id"
                   accordion
-                  class="mt-6"
+                  class="mt-2 mt-md-6"
                 >
                   <v-expansion-panel
                     v-for="(faq, indexF) in faqs[categorySelect.id]"
