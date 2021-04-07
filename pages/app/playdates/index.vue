@@ -15,7 +15,7 @@
 
         <v-col cols="12" md="auto" class="mt-3">
           <v-row
-            v-if="hasPlaydates"
+            v-if="playdatesComputed.length > 0"
             class="fill-height"
             align-content="center"
             justify-md="end"
