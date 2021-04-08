@@ -1,6 +1,6 @@
 <template>
   <v-row no-gutters>
-    <v-col cols="12" md="6" class="pr-sm-8 mb-10 mb-sm-0">
+    <v-col cols="12" md="6" class="pr-md-8 mb-10 mb-md-0">
       <!-- Desktop Title -->
       <div class="d-none d-md-block text-uppercase font-weight-bold text-h4 grey--text text--darken-2 pb-6">
         General Info
@@ -33,7 +33,7 @@
       </v-card>
     </v-col>
 
-    <v-col v-if="!isUserCaregiver" cols="12" md="6" class="pl-sm-8 mb-12 mb-sm-0">
+    <v-col v-if="!isUserCaregiver" cols="12" md="6" class="pl-md-8 mb-12 mb-sm-0">
       <!-- Desktop Title -->
       <div class="d-none d-md-block text-uppercase font-weight-bold text-h4 grey--text text--darken-2 pb-6">
         Shipping Address
@@ -59,7 +59,7 @@
         </div>
 
         <div class="text-center body-1 text-md-h6 font-weight-medium grey--text text--darken-2 my-2">
-          <small>We use this information to send you goods.</small>
+          <small>We use this information to send you Playgarden Prep educational materials.</small>
         </div>
 
         <shipping-address-details />

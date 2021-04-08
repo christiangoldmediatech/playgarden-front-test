@@ -1,5 +1,5 @@
 <template>
-  <chart ref="funnel-chart" :graph="getFormatGraph" :autoresize="resize" />
+  <chart class="echarts" ref="funnel-chart" :graph="getFormatGraph" :autoresize="resize" />
 </template>
 
 <script>
@@ -33,8 +33,9 @@ export default {
           formatter: '{a} <br/>{b} : {c} ({d}%)'
         },
         legend: {
+          bottom: 10,
           orient: 'vertical',
-          right: 'right',
+          left: 'left',
           data: (this.funnelData.data) ? this.funnelData.data.map(data => data.name) : []
         },
         series: [
@@ -91,5 +92,6 @@ export default {
  */
 .echarts {
   width: 100% !important;
+  height: 500px !important;
 }
 </style>
