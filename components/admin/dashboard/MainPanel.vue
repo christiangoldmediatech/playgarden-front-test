@@ -38,7 +38,7 @@
                             <v-icon x-large color="green lighten-1">
                               mdi-menu-up
                             </v-icon>
-                            <span>+{{ totalSubscriptions.increment }} New this week</span> <br />
+                            <span>+{{ totalTrialing.increment }} New this week</span> <br />
                           </p>
                         </v-col>
                         <v-col
@@ -46,7 +46,7 @@
                           cols="12"
                         >
                           <center>
-                            <label class="font-weight-bold total-users">{{ totalSubscriptions.trialing }}</label>
+                            <label class="font-weight-bold total-users">{{ totalTrialing.total }}</label>
                           </center>
                         </v-col>
                       </v-row>
@@ -63,7 +63,7 @@
                             <v-icon x-large color="green lighten-1">
                               mdi-menu-up
                             </v-icon>
-                            <span>+{{ totalSubscriptions.increment }} New this week</span> <br />
+                            <span>+{{ totalActive.increment }} New this week</span> <br />
                           </p>
                         </v-col>
                         <v-col
@@ -71,7 +71,7 @@
                           cols="12"
                         >
                           <center>
-                            <label class="font-weight-bold total-users">{{ canceledUsers.total }}</label>
+                            <label class="font-weight-bold total-users">{{ totalActive.total }}</label>
                           </center>
                         </v-col>
                       </v-row>
@@ -96,7 +96,7 @@
                           cols="12"
                         >
                           <center>
-                            <label class="font-weight-bold total-users">{{ canceledUsers.active }}</label>
+                            <label class="font-weight-bold total-users">{{ canceledUsers.total }}</label>
                           </center>
                         </v-col>
                       </v-row>
@@ -286,6 +286,14 @@ export default {
       total: 0,
       increment: 0
     },
+    totalActive: {
+      total: 0,
+      increment: 0
+    },
+    totalTrialing: {
+      total: 0,
+      increment: 0
+    },
     canceledUsers: {
       total: 0,
       increment: 0
@@ -338,7 +346,7 @@ export default {
         this.search = ''
       }
       try {
-        const { dataFunnel, totalSubscriptions, canceledUsers, usersPerPlan, stripeStatus, activeUsers, dailyUsers, childsByLetter, childrenTotal, planActiveInactive } = await this.getDashboard({})
+        const { dataFunnel, totalSubscriptions, totalTrialing, totalActive, canceledUsers, usersPerPlan, stripeStatus, activeUsers, dailyUsers, childsByLetter, childrenTotal, planActiveInactive } = await this.getDashboard({})
         this.funnel = {
           data: dataFunnel
         }
@@ -358,6 +366,9 @@ export default {
           xAxios: dailyUsers.date,
           data: dailyUsers.users
         }
+
+        this.totalTrialing = totalTrialing
+        this.totalActive = totalActive
 
         this.childsByLetter = {
           letters: childsByLetter.letters,
