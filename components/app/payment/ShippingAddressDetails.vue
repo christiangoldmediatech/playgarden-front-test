@@ -260,7 +260,7 @@ export default {
         const draft = await this.getShippingAddress()
 
         if (!draft && !this.editByDefault) {
-          this.$snotify.warning('Please check your shipping address', 'Warning', {
+          this.$snotify.warning('Please check your shipping address', 'Attention', {
             buttons: [
               {
                 text: 'Edit',

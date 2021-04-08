@@ -7,7 +7,6 @@
     />
 
     <library-categories
-      v-model="selectedActivity"
       v-bind="{ categories: activityTypeData }"
       :favorites="true"
     />
@@ -19,10 +18,7 @@
       />
     </v-container>
 
-    <favorites-container
-      v-if="($vuetify.breakpoint.mdAndDown && selectedActivity === 'favorites') || ($vuetify.breakpoint.lgAndUp)"
-      v-bind="{ favorites, initialFavoritesLoading }"
-    />
+    <favorites-container v-bind="{ favorites, initialFavoritesLoading }" />
 
     <activity-type-container
       v-for="activityType in activityTypes"
@@ -66,12 +62,11 @@ export default {
 
   computed: {
     activityTypes () {
-      if (this.$vuetify.breakpoint.mdAndDown) {
-        if (this.selectedActivity) {
-          return this.activityTypeData.filter(activityType => activityType.id === this.selectedActivity)
-        }
-        return []
-      }
+      // if (this.$vuetify.breakpoint.mdAndDown) {
+      //   if (this.selectedActivity) {
+      //     return this.activityTypeData.filter(activityType => activityType.id === this.selectedActivity)
+      //   }
+      // }
       return this.activityTypeData
     }
   },
@@ -108,7 +103,7 @@ export default {
     // })
 
     this.favorites = data.favorites.length ? shuffle(data.favorites) : []
-    this.selectedActivity = this.activityTypeData[0].id
+    // this.selectedActivity = null
     this.initialFavoritesLoading = false
   },
 
