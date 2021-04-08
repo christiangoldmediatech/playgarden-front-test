@@ -127,18 +127,20 @@
                       disable-icon-rotate
                       expand-icon=""
                     >
-                      <v-row align="center">
-                        <v-icon color="accent">
-                          mdi-checkbox-blank-circle
-                        </v-icon>
-
-                        <span class="ml-3 text-h6">{{ faq.question }}</span>
-
-                        <v-spacer />
-
-                        <v-icon color="accent">
-                          {{ open ? "mdi-minus" : "mdi-plus" }}
-                        </v-icon>
+                      <v-row align="center" no-gutters>
+                        <v-col cols="2" sm="1">
+                          <v-icon color="accent">
+                            mdi-checkbox-blank-circle
+                          </v-icon>
+                        </v-col>
+                        <v-col>
+                          <span class="text-subtitle-1 text-md-h6">{{ faq.question }}</span>
+                        </v-col>
+                        <v-col cols="1">
+                          <v-icon color="accent">
+                            {{ open ? "mdi-minus" : "mdi-plus" }}
+                          </v-icon>
+                        </v-col>
                       </v-row>
                     </v-expansion-panel-header>
 
