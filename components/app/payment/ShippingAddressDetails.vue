@@ -91,6 +91,7 @@
           </v-col>
 
           <v-col
+            v-if="showPhoneNumberField"
             :cols="wrapStateAndZipCodeFields ? 4 : 12"
             :class="{ 'pl-4': wrapStateAndZipCodeFields }"
           >
@@ -167,13 +168,6 @@
       <v-col cols="8" class="text-right">
         <b>{{ draft.zipCode }}</b>
       </v-col>
-
-      <v-col cols="4">
-        Phone number
-      </v-col>
-      <v-col cols="8" class="text-right">
-        <b>{{ draft.phoneNumber }}</b>
-      </v-col>
     </v-row>
 
     <v-btn
@@ -216,6 +210,10 @@ export default {
       default: 'warning'
     },
     wrapStateAndZipCodeFields: {
+      type: Boolean,
+      default: false
+    },
+    showPhoneNumberField: {
       type: Boolean,
       default: false
     }
