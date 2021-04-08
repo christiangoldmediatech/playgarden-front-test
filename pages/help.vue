@@ -11,7 +11,7 @@
                 max-height="500"
                 :src="require('@/assets/jpg/help-banner.jpg')"
               >
-                <v-overlay absolute>
+                <v-overlay absolute class="text-center">
                   <underlined-title
                     class="text-h5 text-md-h3 white--text"
                     text="Hello, how can we help?"
@@ -22,7 +22,7 @@
 
             <template v-if="categorySelect">
               <v-row
-                v-if="$vuetify.breakpoint.mobile"
+                v-if="isMobile"
                 class="mt-n8"
                 justify="center"
               >
@@ -42,7 +42,6 @@
                           class="rounded-circle"
                           max-width="50"
                           :src="item.icon"
-                          :style="{ backgroundColor: item.color }"
                         />
                       </v-list-item-avatar>
 
@@ -61,7 +60,6 @@
                           class="rounded-circle"
                           max-width="50"
                           :src="item.icon"
-                          :style="{ backgroundColor: item.color }"
                         />
                       </v-list-item-avatar>
 
@@ -108,7 +106,7 @@
                 </v-col>
               </v-row>
 
-              <v-row class="mt-12 px-6 px-md-12" justify="center">
+              <v-row class="mt-4 mt-md-12 px-4 px-md-12" justify="center">
                 <underlined-title
                   class="text-h5 text-md-h3"
                   :text="categorySelect.name"
@@ -118,7 +116,7 @@
                   v-if="faqs[categorySelect.id]"
                   :key="categorySelect.id"
                   accordion
-                  class="mt-6"
+                  class="mt-2 mt-md-6"
                 >
                   <v-expansion-panel
                     v-for="(faq, indexF) in faqs[categorySelect.id]"
@@ -129,18 +127,20 @@
                       disable-icon-rotate
                       expand-icon=""
                     >
-                      <v-row align="center">
-                        <v-icon color="accent">
-                          mdi-checkbox-blank-circle
-                        </v-icon>
-
-                        <span class="ml-3 text-h6">{{ faq.question }}</span>
-
-                        <v-spacer />
-
-                        <v-icon color="accent">
-                          {{ open ? "mdi-minus" : "mdi-plus" }}
-                        </v-icon>
+                      <v-row align="center" no-gutters>
+                        <v-col cols="2" sm="1">
+                          <v-icon color="accent">
+                            mdi-checkbox-blank-circle
+                          </v-icon>
+                        </v-col>
+                        <v-col>
+                          <span class="text-subtitle-1 text-md-h6">{{ faq.question }}</span>
+                        </v-col>
+                        <v-col cols="1">
+                          <v-icon color="accent">
+                            {{ open ? "mdi-minus" : "mdi-plus" }}
+                          </v-icon>
+                        </v-col>
                       </v-row>
                     </v-expansion-panel-header>
 
@@ -263,14 +263,15 @@
                       />
                     </validation-provider>
 
-                    <v-row justify="center">
+                    <v-row justify="center" class="px-2 px-md-0">
                       <v-btn
                         class="mb-6"
                         color="primary"
                         :disabled="invalid"
                         :loading="sending"
                         type="submit"
-                        width="400"
+                        :width="isMobile ? undefined : 400"
+                        :block="isMobile"
                         x-large
                       >
                         Submit
@@ -322,6 +323,9 @@ export default {
   computed: {
     emailTopics () {
       return Object.values(EMAIL_TOPICS)
+    },
+    isMobile () {
+      return this.$vuetify.breakpoint.mobile
     }
   },
 
