@@ -66,7 +66,7 @@
             {{ notification.name }}
           </v-col>
 
-          <v-col cols="2" lg="1" class="d-flex justify-center justify-sm-end">
+          <v-col cols="2" lg="1" class="d-flex justify-sm-end">
             <v-switch
               v-model="notification.enabled.email"
               class="ma-0 pa-0 mt-n4"
@@ -79,7 +79,7 @@
             />
           </v-col>
 
-          <v-col cols="2" lg="1" class="d-flex justify-center justify-sm-end">
+          <v-col cols="2" lg="1" class="d-flex justify-sm-end">
             <v-switch
               v-model="notification.enabled.sms"
               class="ma-0 pa-0 mt-n4"
