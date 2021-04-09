@@ -1,92 +1,66 @@
 <template>
   <div>
-    <v-card-title primary-title>
-      <v-btn
-        block
-        text
-        @click="toggleCard"
+    <div class="text-center text-button font-weight-bold mb-n4">
+      <img
+        src="@/assets/png/gift-icon.png"
+        class="mr-2"
+        width="18px"
       >
-        <div>
-          <img
-            src="@/assets/png/gift-icon.png"
-            class="mr-2"
-            width="18px"
-          >
-          <template v-if="!$vuetify.breakpoint.smAndUp">
-            <span class="free-trial-info">
-              YOUR 30 DAY FREE TRIAL
-            </span>
-            <v-icon
-              class="ml-4">
-              mdi-chevron-up
-            </v-icon>
-            <br />
-            <span class="free-trial-info">
-              INCLUDES THE PREMIUM + PLAN
-            </span>
-          </template>
-          <template v-else>
-            <span class="free-trial-info">
-              YOUR 30 DAY FREE TRIAL
-            </span>
-            <br />
-            <span class="free-trial-info">
-              INCLUDES THE PREMIUM + PLAN
-            </span>
-            <v-icon class="ml-2">
-              mdi-chevron-up
-            </v-icon>
-          </template>
-        </div>
-      </v-btn>
-    </v-card-title>
+      <template>
+        <span class="free-trial-info">
+          YOUR 30 DAY FREE TRIAL
+        </span>
+        <br>
+        <span class="free-trial-info">
+          INCLUDES THE PREMIUM + PLAN
+        </span>
+      </template>
+    </div>
     <v-card-text>
-      <div class="text-mdi-monitor">
-        <center class="text-pay-information">
-          <div :class="{ 'ml-4': !$vuetify.breakpoint.smAndUp }">
-            <v-row>
-              <span class="font-weight-bold ml-2 mt-2">That includes:</span>
-            </v-row>
-            <v-row>
-              <ul>
-                <li
-                  class="register-item text-left"
-                >
-                  <small class="text-trial">
-                    A Daily Learning Schedule
-                  </small>
-                </li>
-                <li
-                  class="register-item text-left"
-                >
-                  <small class="text-trial">
-                    Access to over 1,200 lessons
-                  </small>
-                </li>
-                <li
-                  class="register-item text-left"
-                >
-                  <small class="text-trial">
-                    Live Classes with Playgarden Prep Teachers
-                  </small>
-                </li>
-                <li
-                  class="register-item text-left"
-                >
-                  <small class="text-trial">
-                    Workbooks delivered to your home
-                  </small>
-                </li>
-                <li
-                  class="register-item text-left"
-                >
-                  <small class="text-trial">
-                    Educational Playdates
-                  </small>
-                </li>
-              </ul>
-            </v-row>
-          </div>
+      <div>
+        <center>
+          <v-row>
+            <span class="font-weight-bold ml-2 mt-2">That includes:</span>
+          </v-row>
+          <v-row>
+            <ul>
+              <li
+                class="register-item text-left"
+              >
+                <small class="text-trial">
+                  A Daily Learning Schedule
+                </small>
+              </li>
+              <li
+                class="register-item text-left"
+              >
+                <small class="text-trial">
+                  Access to over 1,200 lessons
+                </small>
+              </li>
+              <li
+                class="register-item text-left"
+              >
+                <small class="text-trial">
+                  Live Classes with Playgarden Prep Teachers
+                </small>
+              </li>
+              <li
+                class="register-item text-left"
+              >
+                <small class="text-trial">
+                  Workbooks delivered to your home
+                </small>
+              </li>
+              <li
+                class="register-item text-left"
+              >
+                <small class="text-trial">
+                  Educational Playdates
+                </small>
+              </li>
+            </ul>
+          </v-row>
           <v-row justify="center">
             <center v-if="$vuetify.breakpoint.smAndUp">
               <v-alert
@@ -99,7 +73,7 @@
                 </span>
               </v-alert>
             </center>
-            <div v-else class="justify-center" :class="{ 'mx-4': !$vuetify.breakpoint.smAndUp }">
+            <div v-else class="justify-center mx-4 mx-sm-0">
               <v-alert
                 class="mt-8 info-much-more px-8"
                 color="red orange"
@@ -114,7 +88,7 @@
               <span
                 class="text-header-info"
               >
-                * You can cancel your membership any <br v-if="!$vuetify.breakpoint.smAndUp" />time from the account settings.
+                * You can cancel your membership any <br class="d-block d-sm-none">time from the account settings.
               </span>
             </div>
           </v-row>
@@ -127,17 +101,7 @@
 <script>
 
 export default {
-  name: 'CardInfo',
-
-  data: vm => ({}),
-
-  methods: {
-    toggleCard () {
-      if (!this.$vuetify.breakpoint.smAndUp) {
-        this.$emit('toggleCard')
-      }
-    }
-  }
+  name: 'CardInfo'
 }
 </script>
 
@@ -157,6 +121,7 @@ ul li::before {
 }
 .free-trial-info {
   font-size: 18px;
+  color: #606060;
 }
 .text-trial {
   margin-top: 14px;
