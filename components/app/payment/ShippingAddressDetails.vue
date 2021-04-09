@@ -47,8 +47,8 @@
           </v-col>
 
           <v-col
-            :cols="wrapStateAndZipCodeFields ? 4 : 12"
-            :class="{ 'pr-4': wrapStateAndZipCodeFields }"
+            :cols="shouldWrapOnDesktop ? 4 : 12"
+            :class="{ 'pr-4': shouldWrapOnDesktop }"
           >
             <!-- State -->
             <validation-provider
@@ -69,8 +69,8 @@
           </v-col>
 
           <v-col
-            :cols="wrapStateAndZipCodeFields ? 4 : 12"
-            :class="{ 'px-4': wrapStateAndZipCodeFields }"
+            :cols="shouldWrapOnDesktop ? 4 : 12"
+            :class="{ 'px-4': shouldWrapOnDesktop }"
           >
             <!-- Zipcode -->
             <validation-provider
@@ -92,8 +92,8 @@
 
           <v-col
             v-if="showPhoneNumberField"
-            :cols="wrapStateAndZipCodeFields ? 4 : 12"
-            :class="{ 'pl-4': wrapStateAndZipCodeFields }"
+            :cols="shouldWrapOnDesktop ? 4 : 12"
+            :class="{ 'pl-4': shouldWrapOnDesktop }"
           >
             <!-- Phone Number -->
             <validation-provider
@@ -223,6 +223,15 @@ export default {
     isEditing: false,
     loading: false
   }),
+
+  computed: {
+    isMobile () {
+      return this.$vuetify.breakpoint.mobile
+    },
+    shouldWrapOnDesktop () {
+      return this.wrapStateAndZipCodeFields && !this.isMobile
+    }
+  },
 
   created () {
     this.init()
