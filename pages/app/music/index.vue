@@ -8,7 +8,7 @@
         :mobile="isMobile"
         :all-songs="allSongs"
         :songs-by-curriculum-type="songsByCurriculumType"
-        :class="{ 'fill-height': !isMobile }"
+        class="music-song-list fill-height"
         @addSong="addSongToPlaylist"
         @newPlayList="createNewPlaylist"
       />
@@ -146,5 +146,9 @@ export default {
     bottom: 0;
     top: unset;
   }
+}
+
+.music-song-list {
+  overflow: scroll;
 }
 </style>
