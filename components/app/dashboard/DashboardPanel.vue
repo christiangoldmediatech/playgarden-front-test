@@ -444,9 +444,15 @@ export default {
 
 #download-worksheet-btn.v-btn--disabled, #download-worksheet-btn.v-btn--disabled i.v-icon, #upload-worksheet-btn.v-btn--disabled, #upload-worksheet-btn.v-btn--disabled i.v-icon {
   color: white !important;
-  font-size: 18px !important;
+  font-size: 12px !important;
   font-weight: bold !important;
   letter-spacing: 0.04em !important;
+  @media screen and (min-width: 350px) {
+    font-size: 15px !important;
+  }
+  @media screen and (min-width: 600px) {
+    font-size: 18px !important;
+  }
 }
 
 .v-tooltip__content {

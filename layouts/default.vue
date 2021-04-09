@@ -75,7 +75,7 @@ export default {
   watch: {
     async isUserLoggedIn (v) {
       if (v === true) {
-        await this.checkUserShippingAddressAndNotify()
+        await this.checkIfShouldSendShippingAddressNotification()
       }
     },
     '$route.name' (v) {
@@ -95,7 +95,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('notifications', ['checkUserShippingAddressAndNotify']),
+    ...mapActions('notifications', ['checkIfShouldSendShippingAddressNotification']),
 
     showVerifyEmailToast () {
       if (

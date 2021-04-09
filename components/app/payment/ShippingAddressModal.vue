@@ -42,6 +42,7 @@
             edit-by-default
             save-button-text="Send"
             save-button-color="primary"
+            show-phone-number-field
             hide-cancel-button
             wrap-state-and-zip-code-fields
             @shipping-address-saved="closeModal"
