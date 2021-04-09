@@ -36,7 +36,7 @@
       <v-col cols="1">
         <v-row no-gutters class="fill-height" justify="end" align="center">
           <v-col cols="auto">
-            <v-btn text>
+            <v-btn text @click.stop="$emit('add')">
               <v-icon>
                 mdi-playlist-music
               </v-icon>

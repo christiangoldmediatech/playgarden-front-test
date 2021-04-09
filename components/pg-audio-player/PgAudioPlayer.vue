@@ -47,6 +47,8 @@
 </template>
 
 <script>
+import { jsonCopy } from '@/utils/objectTools.js'
+
 export default {
   name: 'PgAudioPlayer',
 
@@ -62,6 +64,8 @@ export default {
       player: null,
       currentPlaylist: [],
       volume: 0.5,
+      // Modifiers
+      isLooping: false,
       // States
       isLoading: false,
       isPlaying: false,
@@ -83,12 +87,6 @@ export default {
     }
   },
 
-  watch: {
-    playList (newPlayList) {
-      this.setPlaylist(newPlayList)
-    }
-  },
-
   mounted () {
     this.isLoading = true
     if (Audio) {
@@ -100,17 +98,27 @@ export default {
     }
     this.isLoading = false
     // Set demo playlist
-    this.setPlaylist(this.playList)
+    this.setPlaylist(jsonCopy(this.playList))
+  },
+
+  beforeDestroy () {
+    this.stop()
   },
 
   methods: {
     setPlaylist (songsArray = []) {
       this.isLoading = true
-      this.currentPlaylist = songsArray
+      this.currentPlaylist = jsonCopy(songsArray)
       if (songsArray.length > 0) {
         this.selectSongByIndex(0)
       }
       this.isLoading = false
+    },
+    addSong (song) {
+      this.currentPlaylist.push(song)
+      if (this.currentPlaylist.length === 1) {
+        this.selectSongByIndex(0)
+      }
     },
     pause () {
       this.player.pause()
@@ -145,8 +153,19 @@ export default {
       this.isPlaying = false
       this.isPaused = false
       this.isPlaying = false
-      this.selectSongByIndex(this.currentSongIndex + 1)
-      this.play()
+      const isLastSong = this.currentSongIndex === this.playlistSongCount - 1
+      if (isLastSong) {
+        if (this.isLooping) {
+          this.selectSongByIndex(this.currentSongIndex + 1)
+          this.play()
+        } else {
+          this.stop()
+        }
+      } else {
+        this.selectSongByIndex(this.currentSongIndex + 1)
+        this.play()
+      }
+      this.isLoading = false
     },
     previous () {
       this.pause()
@@ -154,9 +173,19 @@ export default {
       this.isPlaying = false
       this.isPaused = false
       this.isPlaying = false
-      this.selectSongByIndex(this.currentSongIndex - 1)
+      const isFirstSong = this.currentSongIndex === 0
+      if (isFirstSong) {
+        if (this.isLooping) {
+          this.selectSongByIndex(this.currentSongIndex - 1)
+          this.play()
+        } else {
+          this.stop()
+        }
+      } else {
+        this.selectSongByIndex(this.currentSongIndex - 1)
+        this.play()
+      }
       this.isLoading = false
-      this.play()
     },
     selectSongByIndex (index) {
       let songIndex = index
@@ -175,8 +204,6 @@ export default {
       this.currentSong = selectingSong
       this.currentSongIndex = songIndex
       this.currentSongPlayedTime = 0
-      // const song = await this.$axios.get(selectingSong.songUrl)
-      // console.log(song)
       this.player.src = selectingSong.songUrl
       this.player.addEventListener('loadedmetadata', () => {
         this.currentSongDuration = Math.ceil(this.player.duration)
@@ -193,7 +220,8 @@ export default {
       this.player.addEventListener(
         'ended',
         () => {
-          console.log('ended')
+          this.$emit('ended', this.currentSong.id)
+          this.next()
         }
       )
     },

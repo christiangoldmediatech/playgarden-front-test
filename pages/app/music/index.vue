@@ -2,12 +2,14 @@
   <v-main class="main-music-wrapper">
     <v-container fluid class="music-page-container pa-0" :class="{ 'mobile': isMobile, 'playing': isPlayerShowing }">
       <v-card class="player-card" :width="playerWidth" :height="playerHeight" :class="{ 'mobile': isMobile, 'pa-4': isPlayerShowing }">
-        <music-player v-show="isPlayerShowing" :mobile="isMobile" :play-list="playList" />
+        <music-player ref="musicPlayer" v-show="isPlayerShowing" :mobile="isMobile" />
       </v-card>
       <music-song-list
         :all-songs="allSongs"
         :songs-by-curriculum-type="songsByCurriculumType"
         :class="{ 'fill-height': !isMobile }"
+        @addSong="addSongToPlaylist"
+        @newPlayList="createNewPlaylist"
       />
     </v-container>
   </v-main>
@@ -99,7 +101,19 @@ export default {
   },
 
   methods: {
-    ...mapActions('music', ['getMusicLibrariesByCurriculumType'])
+    ...mapActions('music', ['getMusicLibrariesByCurriculumType']),
+
+    addSongToPlaylist (song) {
+      if (this.$refs.musicPlayer) {
+        this.$refs.musicPlayer.addSongToPlaylist(song)
+        this.playList.push(song)
+      }
+    },
+
+    createNewPlaylist (playList) {
+      this.$refs.musicPlayer.createNewPlaylist(playList)
+      this.playList = playList
+    }
   }
 }
 </script>

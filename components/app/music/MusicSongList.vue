@@ -45,12 +45,14 @@
     <!-- Songs -->
     <template v-if="selectedFilter === 'list'">
       <song-card
-        v-for="song in filteredSongsByLetterId"
+        v-for="(song, index) in filteredSongsByLetterId"
         :key="song.id"
         :thumbnail="song.thumbnail"
         :name="song.name"
         :description="song.description"
         class="my-4"
+        @add="addSongToPlayList(song)"
+        @click="createPlayListFromIndex(index)"
       />
     </template>
     <template v-if="selectedFilter === 'letter'">
@@ -65,6 +67,8 @@ import { mapGetters, mapActions } from 'vuex'
 import MusicCarouselLetter from '@/components/app/music/MusicLetterCarousel.vue'
 import SongCard from '@/components/app/music/SongCard.vue'
 
+import { jsonCopy } from '@/utils/objectTools.js'
+
 export default {
   name: 'MusicSongList',
 
@@ -72,6 +76,8 @@ export default {
     MusicCarouselLetter,
     SongCard
   },
+
+  emits: ['addSong', 'newPlayList'],
 
   props: {
     allSongs: {
@@ -135,6 +141,15 @@ export default {
         // select
         this.selectedLetterId = letterId
       }
+    },
+
+    createPlayListFromIndex (index) {
+      const playlist = jsonCopy(this.filteredSongsByLetterId.slice(index))
+      this.$emit('newPlayList', playlist)
+    },
+
+    addSongToPlayList (song) {
+      this.$emit('addSong', song)
     }
   }
 }

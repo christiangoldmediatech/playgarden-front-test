@@ -2,7 +2,7 @@
   <div class="music-player">
     <v-row no-gutters class="flex-column fill-height">
       <!-- Child Selector -->
-      <v-col cols="auto" v-if="!mobile">
+      <v-col v-if="!mobile" cols="auto">
         <div class="child-selector ml-auto">
           <child-select v-model="selectedChildId" hide-details />
         </div>
@@ -13,7 +13,7 @@
       <!-- Player -->
       <v-col>
         <div class="player-wrapper pt-6 px-4">
-          <pg-audio-player :play-list="playList">
+          <pg-audio-player ref="audioPlayer" :play-list="playList">
             <template
               v-slot:current="{
                 currentSong,
@@ -23,40 +23,44 @@
                 currentSongMissingTime,
               }"
             >
-              <figure v-if="!mobile" class="song-thumbnail mx-auto">
-                <v-overlay
-                  absolute
-                  :value="isLoading"
+              <template v-if="!mobile">
+                <figure
+                  class="song-thumbnail mx-auto"
+                  :style="{ 'background-image': `url(${currentSong.thumbnail})` }"
                 >
-                  <v-progress-circular indeterminate />
-                </v-overlay>
-                <img :src="currentSong.thumbnail" :alt="currentSong.description">
-              </figure>
-              <div class="song-details text-center pt-4">
-                <p class="song-title mb-2 text-truncate">
-                  {{ currentSong.description }}
-                </p>
-                <p class="song-author mb-2 text-truncate">
-                  {{ currentSong.name }}
-                </p>
-              </div>
-              <div class="song-percentage">
-                <v-slider
-                  readonly
-                  height="20"
-                  :min="0"
-                  track-color="#EBEBEB"
-                  :max="100"
-                  class="slider"
-                  :value="currentSongPlayedPercentage"
-                />
-                <span class="played-time pl-1">
-                  {{ currentSongPlayedTime }}
-                </span>
-                <span class="missing-time pr-1">
-                  {{ currentSongMissingTime }}
-                </span>
-              </div>
+                  <v-overlay
+                    absolute
+                    :value="isLoading"
+                  >
+                    <v-progress-circular indeterminate />
+                  </v-overlay>
+                </figure>
+                <div class="song-details text-center pt-4">
+                  <p class="song-title mb-2 text-truncate">
+                    {{ currentSong.description }}
+                  </p>
+                  <p class="song-author mb-2 text-truncate">
+                    {{ currentSong.name }}
+                  </p>
+                </div>
+                <div class="song-percentage">
+                  <v-slider
+                    readonly
+                    height="20"
+                    :min="0"
+                    track-color="#EBEBEB"
+                    :max="100"
+                    class="slider"
+                    :value="currentSongPlayedPercentage"
+                  />
+                  <span class="played-time pl-1">
+                    {{ currentSongPlayedTime }}
+                  </span>
+                  <span class="missing-time pr-1">
+                    {{ currentSongMissingTime }}
+                  </span>
+                </div>
+              </template>
             </template>
             <template
               v-slot:actions="{
@@ -111,6 +115,8 @@ import { mapGetters } from 'vuex'
 
 import ChildSelect from '@/components/app/ChildSelect.vue'
 
+import { jsonCopy } from '@/utils/objectTools.js'
+
 export default {
   name: 'MusicPlayer',
 
@@ -119,12 +125,6 @@ export default {
   },
 
   props: {
-    playList: {
-      type: Array,
-      required: false,
-      default: () => []
-    },
-
     mobile: {
       type: Boolean,
       required: false,
@@ -134,7 +134,8 @@ export default {
 
   data () {
     return {
-      selectedChildId: null
+      selectedChildId: null,
+      playList: []
     }
   },
 
@@ -168,6 +169,32 @@ export default {
     } else if (this.currentChild.length) {
       this.selectedChildId = this.currentChild[0].id
     }
+  },
+
+  beforeDestroy () {
+    if (this.$refs.musicPlayer) {
+      this.$refs.musicPlayer.stop()
+    }
+  },
+
+  methods: {
+    addSongToPlaylist (song) {
+      this.playList.push(song)
+      if (this.$refs.audioPlayer) {
+        this.$refs.audioPlayer.addSong(song)
+      }
+    },
+
+    createNewPlaylist (playlist) {
+      this.playList = jsonCopy(playlist)
+      if (this.$refs.audioPlayer) {
+        this.$refs.audioPlayer.pause()
+        this.$refs.audioPlayer.setPlaylist(playlist)
+        this.$nextTick(() => {
+          this.$refs.audioPlayer.play()
+        })
+      }
+    }
   }
 }
 </script>
@@ -182,12 +209,10 @@ export default {
 .song {
   &-thumbnail {
     position: relative;
-    width: 95%;
-    max-height: 350px;
-    img {
-      height: 100%;
-      width: 100%;
-    }
+    width: 300px;
+    height: 300px;
+    background-size: contain;
+    background-position: center center;
   }
   &-details {
     & .song-title {
