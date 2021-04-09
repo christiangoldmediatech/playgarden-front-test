@@ -2,7 +2,7 @@
   <v-main class="main-music-wrapper">
     <v-container fluid class="music-page-container pa-0" :class="{ 'mobile': isMobile, 'playing': isPlayerShowing }">
       <v-card class="player-card" :width="playerWidth" :height="playerHeight" :class="{ 'mobile': isMobile, 'pa-4': isPlayerShowing }">
-        <music-player v-show="isPlayerShowing" :mobile="isMobile" />
+        <music-player v-show="isPlayerShowing" :mobile="isMobile" :play-list="playList" />
       </v-card>
       <music-song-list
         :all-songs="allSongs"
@@ -33,7 +33,7 @@ export default {
     return {
       mobileBreakpoint: PAGE_MOBILE_BREAKPOINT,
       selectedChildId: null,
-      isPlayerShowing: true
+      playList: []
     }
   },
 
@@ -47,6 +47,10 @@ export default {
     ...mapGetters('music', {
       allSongs: 'allSongsWithCurriculumType'
     }),
+
+    isPlayerShowing () {
+      return this.playList.length > 0
+    },
 
     isMobile () {
       return this.$vuetify.breakpoint.width <= this.mobileBreakpoint

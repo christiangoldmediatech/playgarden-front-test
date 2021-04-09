@@ -11,19 +11,21 @@
       <v-col cols="auto">
         <v-row no-gutters class="fill-height" justify="start" align="center">
           <v-col cols="auto">
-            <figure class="song-thumbnail">
-              <img :src="thumbnail" :alt="description">
-            </figure>
-          </v-col>
-          <v-col cols="auto">
-            <span class="ml-6 song-description font-weight-bold">{{ description }}</span>
+            <figure class="song-thumbnail" :style="{ 'background-image': `url(${thumbnail}` }"></figure>
           </v-col>
         </v-row>
       </v-col>
 
       <!-- Song author/name -->
-      <v-col cols="auto">
-        <v-row no-gutters class="fill-height" justify="center" align="center">
+      <v-col cols="5">
+        <v-row no-gutters class="fill-height" justify="start" align="center">
+          <v-col cols="auto">
+            <span class="ml-6 song-description">{{ description }}</span>
+          </v-col>
+        </v-row>
+      </v-col>
+      <v-col cols="4">
+        <v-row no-gutters class="fill-height" justify="start" align="center">
           <v-col cols="auto">
             <span class="ml-6 song-name">{{ name }}</span>
           </v-col>
@@ -31,12 +33,12 @@
       </v-col>
 
       <!-- Actions -->
-      <v-col cols="auto">
+      <v-col cols="1">
         <v-row no-gutters class="fill-height" justify="end" align="center">
           <v-col cols="auto">
             <v-btn text>
               <v-icon>
-                mdi-dots-horizontal
+                mdi-playlist-music
               </v-icon>
             </v-btn>
           </v-col>
@@ -75,11 +77,9 @@ export default {
 .song {
   &-thumbnail {
     height: 60px;
-    width: 80px;
-    & img {
-      height: 100%;
-      width: 100%;
-    }
+    width: 60px;
+    background-size: contain;
+    background-position: center center;
   }
 
   &-description {

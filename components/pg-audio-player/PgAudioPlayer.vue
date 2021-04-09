@@ -47,9 +47,16 @@
 </template>
 
 <script>
-import { DemoPlaylist } from './demo-playlist'
 export default {
   name: 'PgAudioPlayer',
+
+  props: {
+    playList: {
+      type: Array,
+      required: true
+    }
+  },
+
   data () {
     return {
       player: null,
@@ -69,11 +76,19 @@ export default {
       currentSongDuration: 0
     }
   },
+
   computed: {
     playlistSongCount () {
       return this.currentPlaylist.length
     }
   },
+
+  watch: {
+    playList (newPlayList) {
+      this.setPlaylist(newPlayList)
+    }
+  },
+
   mounted () {
     this.isLoading = true
     if (Audio) {
@@ -85,8 +100,9 @@ export default {
     }
     this.isLoading = false
     // Set demo playlist
-    this.setPlaylist(DemoPlaylist)
+    this.setPlaylist(this.playList)
   },
+
   methods: {
     setPlaylist (songsArray = []) {
       this.isLoading = true

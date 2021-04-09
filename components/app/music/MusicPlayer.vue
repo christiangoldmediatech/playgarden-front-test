@@ -8,12 +8,12 @@
         </div>
       </v-col>
 
-      <v-spacer v-if="!mobile" />
+      <!-- <v-spacer v-if="!mobile" /> -->
 
       <!-- Player -->
       <v-col>
         <div class="player-wrapper pt-6 px-4">
-          <pg-audio-player>
+          <pg-audio-player :play-list="playList">
             <template
               v-slot:current="{
                 currentSong,
@@ -119,6 +119,12 @@ export default {
   },
 
   props: {
+    playList: {
+      type: Array,
+      required: false,
+      default: () => []
+    },
+
     mobile: {
       type: Boolean,
       required: false,

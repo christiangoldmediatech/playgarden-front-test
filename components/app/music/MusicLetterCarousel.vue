@@ -12,10 +12,15 @@
           <v-slide-item
             v-for="(letter, index) in displayLetters"
             :key="index"
-            :item="letter"
             :index="index"
           >
-            <carousel-letter :name="letter.name" :picture="letter.picture" :selected="letter.id === 1" />
+            <carousel-letter
+              :disabled="letter.disabled"
+              :name="letter.name"
+              :picture="letter.picture"
+              :selected="letter.id === value"
+              @click="selectLetter(letter)"
+            />
           </v-slide-item>
         </v-slide-group>
       </v-col>
@@ -91,14 +96,12 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import CarouselLetter from '@/components/app/music/CarouselLetter.vue'
-// import RecordedLetter from '@/components/app/live-sessions/recorded/RecordedLetter.vue'
 
 export default {
   name: 'MusicLetterCarousel',
 
   components: {
     CarouselLetter
-    // RecordedLetter
   },
 
   props: {
@@ -127,7 +130,12 @@ export default {
 
     displayLetters () {
       if (Array.isArray(this.letters)) {
-        return this.letters
+        return this.letters.map((letter) => {
+          return {
+            ...letter,
+            disabled: this.disabledLetters.includes(letter.id)
+          }
+        })
       } else {
         return []
       }
@@ -141,7 +149,14 @@ export default {
   methods: {
     ...mapActions('admin/curriculum', {
       getLetters: 'getTypes'
-    })
+    }),
+
+    selectLetter (letter) {
+      if (letter.disabled) {
+        return
+      }
+      this.$emit('select', letter.id)
+    }
   }
 }
 </script>

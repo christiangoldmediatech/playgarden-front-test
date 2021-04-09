@@ -3,7 +3,11 @@
     <!-- Filters -->
     <v-row no-gutters>
       <v-col cols="12" md="8">
-        <music-carousel-letter :value="null" />
+        <music-carousel-letter
+          :value="selectedLetterId"
+          :disabled-letters="disabledLetters"
+          @select="selectLetter"
+        />
       </v-col>
       <v-col cols="12" md="">
         <v-row no-gutters justify="start" align="center" class="fill-height pl-4">
@@ -41,7 +45,7 @@
     <!-- Songs -->
     <template v-if="selectedFilter === 'list'">
       <song-card
-        v-for="song in allSongs"
+        v-for="song in filteredSongsByLetterId"
         :key="song.id"
         :thumbnail="song.thumbnail"
         :name="song.name"
@@ -56,6 +60,8 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
+
 import MusicCarouselLetter from '@/components/app/music/MusicLetterCarousel.vue'
 import SongCard from '@/components/app/music/SongCard.vue'
 
@@ -83,7 +89,52 @@ export default {
 
   data () {
     return {
-      selectedFilter: 'list'
+      selectedFilter: 'list',
+      selectedLetterId: null
+    }
+  },
+
+  computed: {
+    ...mapGetters('admin/curriculum', { letters: 'types' }),
+
+    availableLettersWithSongsIds () {
+      const availableIds = new Set()
+      this.songsByCurriculumType.forEach(letter => availableIds.add(letter.id))
+
+      return Array.from(availableIds)
+    },
+
+    disabledLetters () {
+      return this.letters.filter((letter) => {
+        return !this.availableLettersWithSongsIds.includes(letter.id)
+      }).map(letter => letter.id)
+    },
+
+    filteredSongsByLetterId () {
+      if (!this.selectedLetterId) {
+        return this.allSongs
+      }
+      return this.allSongs.filter(letter => letter.curriculumTypeId === this.selectedLetterId)
+    }
+  },
+
+  async created () {
+    await this.getLetters()
+  },
+
+  methods: {
+    ...mapActions('admin/curriculum', {
+      getLetters: 'getTypes'
+    }),
+
+    selectLetter (letterId) {
+      if (this.selectedLetterId === letterId) {
+        // deselect
+        this.selectedLetterId = null
+      } else {
+        // select
+        this.selectedLetterId = letterId
+      }
     }
   }
 }

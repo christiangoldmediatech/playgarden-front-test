@@ -6,8 +6,14 @@
       class="letter letter-picture"
       :class="letterClasses(hover)"
       :src="picture"
+      v-on="$listeners"
     />
-    <div v-else class="letter" :class="letterClasses(hover)">
+    <div
+      v-else
+      class="letter"
+      :class="letterClasses(hover)"
+      v-on="$listeners"
+    >
       {{ letterText }}
     </div>
   </v-hover>
@@ -71,7 +77,7 @@ export default {
 
     letterClasses () {
       const classes = {
-        clickable: this.clickable,
+        clickable: this.clickable && !this.disabled,
         'letter-vowel': this.vowels.includes(this.letterText),
         'letter-active': this.selected,
         'letter-disabled': this.disabled,
