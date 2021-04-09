@@ -39,11 +39,11 @@
             Send to:
           </v-col>
 
-          <v-col cols="2" lg="1" class="font-weight-bold grey--text text--darken-2 body-1 text-right pr-3">
+          <v-col cols="2" lg="1" class="font-weight-bold grey--text text--darken-2 text-caption text-sm-body-1 text-sm-right pr-sm-3">
             Email
           </v-col>
 
-          <v-col cols="2" lg="1" class="font-weight-bold grey--text text--darken-2 body-1 text-right pr-5">
+          <v-col cols="2" lg="1" class="font-weight-bold grey--text text--darken-2 text-caption text-sm-body-1 text-sm-right pl-1 pr-sm-5">
             SMS
           </v-col>
         </v-row>
@@ -66,7 +66,7 @@
             {{ notification.name }}
           </v-col>
 
-          <v-col cols="2" lg="1" class="d-flex justify-end">
+          <v-col cols="2" lg="1" class="d-flex justify-center justify-sm-end">
             <v-switch
               v-model="notification.enabled.email"
               class="ma-0 pa-0 mt-n4"
@@ -79,7 +79,7 @@
             />
           </v-col>
 
-          <v-col cols="2" lg="1" class="d-flex justify-end">
+          <v-col cols="2" lg="1" class="d-flex justify-center justify-sm-end">
             <v-switch
               v-model="notification.enabled.sms"
               class="ma-0 pa-0 mt-n4"
