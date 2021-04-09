@@ -56,7 +56,14 @@
       />
     </template>
     <template v-if="selectedFilter === 'letter'">
-      {{ songsByCurriculumType }}
+      <letter-songs
+        v-for="letter in filteredLettersByLetterId"
+        :key="letter.id"
+        :letter="letter"
+        :songs="letter.musicLibrary"
+        class="mt-4 mb-8"
+        @createPlayList="emitPlayList"
+      />
     </template>
   </div>
 </template>
@@ -66,6 +73,7 @@ import { mapGetters, mapActions } from 'vuex'
 
 import MusicCarouselLetter from '@/components/app/music/MusicLetterCarousel.vue'
 import SongCard from '@/components/app/music/SongCard.vue'
+import LetterSongs from '@/components/app/music/LetterSongs.vue'
 
 import { jsonCopy } from '@/utils/objectTools.js'
 
@@ -74,7 +82,8 @@ export default {
 
   components: {
     MusicCarouselLetter,
-    SongCard
+    SongCard,
+    LetterSongs
   },
 
   emits: ['addSong', 'newPlayList'],
@@ -121,6 +130,14 @@ export default {
         return this.allSongs
       }
       return this.allSongs.filter(letter => letter.curriculumTypeId === this.selectedLetterId)
+    },
+
+    filteredLettersByLetterId () {
+      if (!this.selectedLetterId) {
+        return this.songsByCurriculumType
+      } else {
+        return this.songsByCurriculumType.filter(letter => letter.id === this.selectedLetterId)
+      }
     }
   },
 
@@ -145,6 +162,10 @@ export default {
 
     createPlayListFromIndex (index) {
       const playlist = jsonCopy(this.filteredSongsByLetterId.slice(index))
+      this.$emit('newPlayList', playlist)
+    },
+
+    emitPlayList (playlist) {
       this.$emit('newPlayList', playlist)
     },
 

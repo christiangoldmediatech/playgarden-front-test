@@ -52,6 +52,8 @@
 export default {
   name: 'SongCard',
 
+  emits: ['add'],
+
   props: {
     thumbnail: {
       type: String,
