@@ -75,7 +75,7 @@
                   class="register-item text-left"
                 >
                   <small class="text-trial">
-                    Access to a Library with over 1,200 lessons for hour of Eduatainment
+                    Access to a Library with over 1,200 lessons for hour of Edutainment
                   </small>
                 </li>
                 <li

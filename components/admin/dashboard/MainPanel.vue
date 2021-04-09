@@ -31,35 +31,80 @@
                 <v-col cols="12">
                   <v-card>
                     <v-card-text>
-                      <label class="title-dashboard font-weight-bold">Total users</label>
+                      <label class="title-dashboard font-weight-bold">Total Subscriptions</label>
                       <v-row align="center">
                         <v-col
                           class="display-3"
-                          cols="3"
+                          cols="5"
                         >
-                          <label class="font-weight-bold total-users">{{ usersTotal.totalUsers }}</label>
+                          <label class="font-weight-bold total-users">{{ totalSubscriptions.total }}</label>
                         </v-col>
                         <v-col>
                           <p>
                             <v-icon x-large color="green lighten-1">
                               mdi-menu-up
                             </v-icon>
-                            <span>+{{ usersTotal.increment }} New users this week</span> <br />
-                            <span>Users using our platform</span>
+                            <span>+{{ totalSubscriptions.increment }} New users this week</span> <br />
+                            <span class="ml-3">Users using our platform</span>
                           </p>
                         </v-col>
                       </v-row>
                     </v-card-text>
                   </v-card>
-
-                  <!-- Total Users Per Plan -->
-                  <v-card class="mt-4">
-                    <p class="pt-8 text-center">
-                      <label class="title-dashboard font-weight-bold">Total Users Per Plan</label>
-                    </p>
-                    <pie-chart :pie-data="usersPerPlan" />
-                  </v-card>
-                  <!-- End Total Users Per Plan -->
+                  <!-- CHURN RATE-->
+                  <v-row>
+                    <v-col cols="6">
+                      <v-card>
+                        <v-card-text>
+                          <label class="title-dashboard font-weight-bold">Churn Rate</label>
+                          <v-row class="mt-n4" align="center">
+                            <v-col cols="12">
+                              <p class="text-center">
+                                <v-icon x-large color="red lighten-1">
+                                  mdi-menu-up
+                                </v-icon>
+                                <span>0 More than last weeks</span>
+                              </p>
+                            </v-col>
+                            <v-col
+                              class="display-3"
+                              cols="12"
+                            >
+                              <center>
+                                <label class="font-weight-bold total-users">0 %</label>
+                              </center>
+                            </v-col>
+                          </v-row>
+                        </v-card-text>
+                      </v-card>
+                    </v-col>
+                    <v-col cols="6">
+                      <v-card>
+                        <v-card-text>
+                          <label class="title-dashboard font-weight-bold">Canceled</label>
+                          <v-row class="mt-n4" align="center">
+                            <v-col cols="12">
+                              <p class="text-center">
+                                <v-icon x-large color="red lighten-1">
+                                  mdi-menu-up
+                                </v-icon>
+                                <span>{{ canceledUsers.increment }} More than last week</span>
+                              </p>
+                            </v-col>
+                            <v-col
+                              class="display-3"
+                              cols="12"
+                            >
+                              <center>
+                                <label class="font-weight-bold total-users">{{ canceledUsers.total }}</label>
+                              </center>
+                            </v-col>
+                          </v-row>
+                        </v-card-text>
+                      </v-card>
+                    </v-col>
+                  </v-row>
+                  <!-- END CHURN RATE-->
                 </v-col>
               </v-row>
             </v-col>
@@ -67,9 +112,9 @@
           <v-row class="mx-1">
             <!-- Plans-->
             <v-col
-              cols="12"
               v-for="(plan, i) in planActiveInactive"
               :key="`plan-item-${i}`"
+              cols="12"
               md="3"
             >
               <v-card class="content-dashboard">
@@ -77,54 +122,32 @@
                   <div class="name-plan-content">
                     <label class="plan-title-dashboard font-weight-bold">{{ plan.name }}</label>
                   </div>
-                  <pie-chart :pie-data="plan" />
+                  <pie-chart :pie-data="plan" class="mt-n14" />
                 </v-card-text>
               </v-card>
             </v-col>
             <!-- End Plans-->
           </v-row>
           <v-row>
-            <v-col cols="12" md="7">
+            <v-col cols="12" md="6">
               <!-- Users per status -->
               <v-card class="mx-3">
-                <p class="pt-8 text-center">
-                  <label class="title-dashboard font-weight-bold">Users per status</label>
-                </p>
-                <pie-chart :pie-data="stripeStatus" />
+                <v-card-text>
+                  <label class="title-dashboard font-weight-bold">Users per Status</label>
+                  <pie-chart :pie-data="stripeStatus" />
+                </v-card-text>
               </v-card>
               <!-- End Users per status -->
             </v-col>
-            <v-col cols="12" md="5">
-              <v-card class="mx-3 content-dashboard">
+            <v-col cols="12" md="6">
+              <!-- Total Users Per Plan -->
+              <v-card>
                 <v-card-text>
-                  <p class="mt-5">
-                    <label class="title-dashboard font-weight-bold">Churn Rate</label>
-                  </p>
-                  <v-row align="center">
-                    <v-col cols="12">
-                      <p>
-                        <v-icon x-large color="red lighten-1">
-                          mdi-menu-up
-                        </v-icon>
-                        <span>0 % More than last two weeks</span>
-                      </p>
-                    </v-col>
-                    <v-col
-                      class="display-3"
-                      cols="12"
-                    >
-                      <center>
-                        <label class="font-weight-bold total-users">0</label>
-                      </center>
-                    </v-col>
-                    <v-col cols="12">
-                      <p class="text-center">
-                        <span>This percentage will change every two weeks</span>
-                      </p>
-                    </v-col>
-                  </v-row>
+                  <label class="title-dashboard font-weight-bold">Users per Plan</label>
+                  <pie-chart :pie-data="usersPerPlan" />
                 </v-card-text>
               </v-card>
+              <!-- End Total Users Per Plan -->
             </v-col>
           </v-row>
           <v-row>
@@ -156,9 +179,13 @@
 
                 <v-card width="100%" class="users-today-data mb-n6">
                   <v-card-text>
-                    <label class="font-weight-bold title-dashboard">Active Users Per Week</label>
+                    <label class="font-weight-bold title-dashboard">Active Users Per Week</label> <br />
+                    <center>
+                      <span>{{ getFormatDate }}</span>
+                    </center>
                     <v-col
                       cols="12"
+                      class="mt-n4"
                     >
                       <center>
                         <label class="font-weight-bold display-3 total-users">{{ activeUsers.last7Days }}</label> <br />
@@ -188,7 +215,16 @@
                 </v-row>
                 <!-- Student progress -->
                 <div width="100%">
-                  <bar-chart :bar-data="childsByLetter" />
+                  <ul class="ml-3">
+                    <li
+                      class="register-item text-left"
+                    >
+                      <small class="text-trial">
+                        Progress Per Letter
+                      </small>
+                    </li>
+                  </ul>
+                  <bar-chart class="mt-n8" :bar-data="childsByLetter" />
                 </div>
                 <!-- End Student progress -->
               </v-card>
@@ -201,6 +237,7 @@
 </template>
 
 <script>
+import dayjs from 'dayjs'
 import { mapActions } from 'vuex'
 import FunnelChart from './FunnelChart.vue'
 import PieChart from './PieChart.vue'
@@ -223,8 +260,12 @@ export default {
       subtitle: '',
       data: []
     },
-    usersTotal: {
-      totalUsers: 0,
+    totalSubscriptions: {
+      total: 0,
+      increment: 0
+    },
+    canceledUsers: {
+      total: 0,
       increment: 0
     },
     activeUsers: {
@@ -252,7 +293,13 @@ export default {
     }
   }),
 
-  computed: {},
+  computed: {
+    getFormatDate () {
+      const from = dayjs(this.activeUsers.from).format('MMM-DD')
+      const to = dayjs(this.activeUsers.to).format('MMM-DD')
+      return `Week: ${from} to ${to}`
+    }
+  },
 
   watch: {},
 
@@ -269,12 +316,13 @@ export default {
         this.search = ''
       }
       try {
-        const { dataFunnel, usersTotal, usersPerPlan, stripeStatus, activeUsers, dailyUsers, childsByLetter, childrenTotal, planActiveInactive } = await this.getDashboard({})
+        const { dataFunnel, totalSubscriptions, canceledUsers, usersPerPlan, stripeStatus, activeUsers, dailyUsers, childsByLetter, childrenTotal, planActiveInactive } = await this.getDashboard({})
         this.funnel = {
           data: dataFunnel
         }
 
-        this.usersTotal = usersTotal
+        this.totalSubscriptions = totalSubscriptions
+        this.canceledUsers = canceledUsers
         this.usersPerPlan = {
           data: usersPerPlan
         }
@@ -290,7 +338,7 @@ export default {
         }
 
         this.childsByLetter = {
-          xAxios: childsByLetter.letters,
+          letters: childsByLetter.letters,
           data: childsByLetter.childs
         }
         this.childrenTotal = childrenTotal
@@ -304,6 +352,20 @@ export default {
 </script>
 
 <style>
+ul {
+  list-style: none; /* Remove default bullets */
+}
+ul li::before {
+  content: "●";
+  font-size: 22px !important;
+  color: var(--v-accent-base); /* Change the color */
+  font-weight: bold; /* If you want it to be bold */
+  display: inline-block; /* Needed to add space between the bullet and the text */
+  width: 0.7em; /* Also needed for space (tweak if needed) */
+  margin-left: -1rem; /* Also needed for space (tweak if needed) */
+  margin-top: 10px;
+}
+
 .header-dashboard {
   max-height: 500px !important;
 }
@@ -331,7 +393,7 @@ export default {
 }
 
 .name-plan-content {
-  min-height: 40px !important;
+  min-height: 38px !important;
 }
 
 .total-users {

@@ -100,7 +100,7 @@
               'dashboard-content',
               {
                 'dashboard-mobile-content': $vuetify.breakpoint.sm,
-                'dashboard-xs-content': $vuetify.breakpoint.xs
+                // 'dashboard-xs-content': $vuetify.breakpoint.xsOnly
               }
             ]"
             no-gutters
