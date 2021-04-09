@@ -10,7 +10,7 @@
         />
       </v-col>
       <v-col cols="12" md="">
-        <v-row no-gutters justify="start" align="center" class="fill-height pl-4">
+        <v-row no-gutters justify="center" justify-md="start" align="center" class="fill-height pl-4">
           <v-col cols="auto">
             <v-card
               tile
@@ -99,6 +99,12 @@ export default {
       type: Array,
       required: false,
       default: () => []
+    },
+
+    mobile: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
 

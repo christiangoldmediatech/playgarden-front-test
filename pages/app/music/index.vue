@@ -5,6 +5,7 @@
         <music-player ref="musicPlayer" v-show="isPlayerShowing" :mobile="isMobile" />
       </v-card>
       <music-song-list
+        :mobile="isMobile"
         :all-songs="allSongs"
         :songs-by-curriculum-type="songsByCurriculumType"
         :class="{ 'fill-height': !isMobile }"
