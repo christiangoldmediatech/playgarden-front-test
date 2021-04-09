@@ -61,7 +61,7 @@
         :key="letter.id"
         :letter="letter"
         :songs="letter.musicLibrary"
-        class="mt-4 mb-8"
+        class="my-2 mt-md-4 mb-md-8"
         @createPlayList="emitPlayList"
       />
     </template>

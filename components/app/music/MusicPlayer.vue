@@ -12,8 +12,9 @@
 
       <!-- Player -->
       <v-col>
-        <div class="player-wrapper pt-6 px-4">
+        <div class="player-wrapper px-4" :class="{ 'pt-6': !mobile }">
           <pg-audio-player ref="audioPlayer" :play-list="playList">
+            <!-- Current Song -->
             <template
               v-slot:current="{
                 currentSong,
@@ -21,6 +22,11 @@
                 currentSongPlayedTime,
                 currentSongPlayedPercentage,
                 currentSongMissingTime,
+                isPlaying,
+                play,
+                pause,
+                next,
+                previous
               }"
             >
               <template v-if="!mobile">
@@ -61,7 +67,55 @@
                   </span>
                 </div>
               </template>
+              <template v-else>
+                <v-row no-gutters align="center">
+                  <v-col cols="auto">
+                    <figure
+                      class="song-thumbnail mobile"
+                      :style="{ 'background-image': `url(${currentSong.thumbnail})` }"
+                    >
+                      <v-overlay
+                        absolute
+                        :value="isLoading"
+                      >
+                        <v-progress-circular indeterminate />
+                      </v-overlay>
+                    </figure>
+                  </v-col>
+                  <v-col>
+                    <v-row no-gutters>
+                      <!-- CENTER BTNS -->
+                      <v-col cols="12" class="text-center">
+                        <!-- PREVIOUS -->
+                        <v-btn icon height="32" width="32" @click="previous">
+                          <v-icon size="32">
+                            mdi-skip-backward
+                          </v-icon>
+                        </v-btn>
+                        <v-btn v-if="!isPlaying" icon height="50" width="50" @click="play">
+                          <v-icon size="50">
+                            mdi-play
+                          </v-icon>
+                        </v-btn>
+                        <v-btn v-else icon height="50" width="50" @click="pause">
+                          <v-icon size="50">
+                            mdi-pause-circle-outline
+                          </v-icon>
+                        </v-btn>
+                        <!-- NEXT -->
+                        <v-btn icon height="32" width="32" @click="next">
+                          <v-icon size="32">
+                            mdi-skip-forward
+                          </v-icon>
+                        </v-btn>
+                      </v-col>
+                    </v-row>
+                  </v-col>
+                </v-row>
+              </template>
             </template>
+
+            <!-- ACTIONS -->
             <template
               v-slot:actions="{
                 isPlaying,
@@ -71,7 +125,7 @@
                 previous
               }"
             >
-              <v-row no-gutters>
+              <v-row v-show="!mobile" no-gutters>
                 <v-col cols="3" />
                 <!-- CENTER BTNS -->
                 <v-col cols="6" class="text-center">
@@ -213,6 +267,11 @@ export default {
     height: 300px;
     background-size: contain;
     background-position: center center;
+    &.mobile {
+      margin-top: 14px;
+      width: 100px;
+      height: 100px;
+    }
   }
   &-details {
     & .song-title {

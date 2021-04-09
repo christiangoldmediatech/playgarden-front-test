@@ -16,6 +16,8 @@
       :pause="pause"
       :play="play"
       :stop="stop"
+      :next="next"
+      :previous="previous"
     />
     <slot
       name="playlist"
