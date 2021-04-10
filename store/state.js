@@ -11,6 +11,7 @@ export default () => ({
     'app-account-index-student-profile': 1,
     'app-account-index-membership': 1,
     'app-account-index-notification': 1,
+    'app-music': 1,
     'app-live-classes': 1,
     'app-live-classes-recorded': 1,
     'app-pick-child': 1,

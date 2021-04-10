@@ -85,7 +85,7 @@ export default {
       immediate: true,
       async handler (v) {
         if (v === true && this.$route.name !== 'shared-slug') {
-          await this.checkUserShippingAddressAndNotify()
+          await this.checkIfShouldSendShippingAddressNotification()
         }
       }
     },
@@ -108,7 +108,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('notifications', ['checkUserShippingAddressAndNotify']),
+    ...mapActions('notifications', ['checkIfShouldSendShippingAddressNotification']),
 
     showVerifyEmailToast () {
       if (

@@ -131,10 +131,10 @@
           align="center"
           no-gutters
         >
-          <v-col cols="4" class="text-center text-h6 grey--text font-weight-bold mt-8">
+          <v-col cols="4" class="text-center text-subtitle-2 text-sm-h6 grey--text font-weight-bold mt-8">
             {{ card.details.brand }}
           </v-col>
-          <v-col cols="8" class="text-center text-h6 grey--text font-weight-bold mt-8">
+          <v-col cols="8" class="text-center text-subtitle-2 text-sm-h6 grey--text font-weight-bold mt-8">
             •••• •••• •••• {{ card.details.last4 }}
           </v-col>
           <v-col cols="12" class="d-flex justify-center mt-8">

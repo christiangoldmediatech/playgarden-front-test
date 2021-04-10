@@ -30,7 +30,7 @@ export default {
         },
         xAxis: {
           type: 'category',
-          data: (this.barData.xAxios) ? this.barData.xAxios : []
+          data: (this.barData.letters) ? this.barData.letters : []
         },
         yAxis: {
           type: 'value'
