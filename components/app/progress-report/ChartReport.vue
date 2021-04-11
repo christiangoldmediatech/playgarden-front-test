@@ -91,11 +91,13 @@ export default {
       return (this.$vuetify.breakpoint.xs) ? '45' : '60'
     },
     chartOptions () {
-      // const that = this
       return {
         yAxis: {
           min: 0,
-          max: 100
+          max: 100,
+          axisLabel: {
+            formatter: '{value} %'
+          }
         },
         xAxis: {
           type: 'category',
