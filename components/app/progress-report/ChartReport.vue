@@ -63,7 +63,10 @@ export default {
         },
         xAxis: {
           type: 'category',
-          data: this.getCategories
+          data: this.getCategories,
+          axisLabel: {
+            interval: -1
+          }
         },
         yAxis: {
           min: 0,

@@ -1,5 +1,5 @@
 <template>
-  <v-chart class="chart-re" :option="graph" auto-resize />
+  <v-chart class="chart-report-children" :option="graph" auto-resize />
 </template>
 
 <script>
@@ -18,7 +18,7 @@ export default defineComponent({
 </script>
 
 <style>
-.chart-re {
+.chart-report-children {
   width: 100% !important;
   min-height: 500px !important;
 }
