@@ -188,9 +188,9 @@
                 >
                   <v-row
                     v-for="(song, songIndex) in currentPlaylist"
-                    :key="song.id"
+                    :key="songIndex"
                     no-gutters
-                    class="playlist-song py-2"
+                    class="playlist-song py-2 pl-1"
                     :class="{ selected: currentSongIndex === songIndex }"
                   >
                     <v-col cols="auto">
