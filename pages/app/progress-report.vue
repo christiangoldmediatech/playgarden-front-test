@@ -106,7 +106,7 @@
               </v-row>
             </v-card>
             <v-row v-else class="mt-n14">
-              <v-col cols="12">
+              <v-col cols="12" class="mx-4">
                 <chart-report v-if="report" :report="report" />
               </v-col>
               <v-col cols="12">

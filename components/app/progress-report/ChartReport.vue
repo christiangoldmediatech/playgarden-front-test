@@ -56,7 +56,7 @@ export default {
               }
             }
             return text
-          } // 'Category <br/>{b} : {c}'
+          }
         },
         grid: {
           show: false
