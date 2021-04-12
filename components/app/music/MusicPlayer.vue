@@ -111,6 +111,25 @@
                       </v-col>
                     </v-row>
                   </v-col>
+                  <v-col cols="12">
+                    <div class="song-percentage mobile">
+                      <v-slider
+                        readonly
+                        height="10"
+                        :min="0"
+                        track-color="#EBEBEB"
+                        :max="100"
+                        class="slider"
+                        :value="currentSongPlayedPercentage"
+                      />
+                      <span class="played-time pl-1">
+                        {{ currentSongPlayedTime }}
+                      </span>
+                      <span class="missing-time pr-1">
+                        {{ currentSongMissingTime }}
+                      </span>
+                    </div>
+                  </v-col>
                 </v-row>
               </template>
             </template>
@@ -268,7 +287,6 @@ export default {
     background-size: contain;
     background-position: center center;
     &.mobile {
-      margin-top: 14px;
       width: 100px;
       height: 100px;
     }
@@ -305,6 +323,14 @@ export default {
       right: 0;
       bottom: 0;
       font-size: 14px;
+    }
+
+    &.mobile {
+      height: 20px;
+      & .slider {
+        height: 10px;
+        min-height: 10px;
+      }
     }
   }
 }
