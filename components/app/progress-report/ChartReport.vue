@@ -1,5 +1,5 @@
 <template>
-  <div class="chart-style">
+  <div>
     <report-chart ref="progress-chart" :graph="chartOptions" />
   </div>
 </template>
@@ -202,10 +202,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.chart-style {
-  width: 100% !important;
-  min-height: 400px !important;
-}
-</style>

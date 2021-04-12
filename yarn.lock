@@ -6530,7 +6530,7 @@ hex-color-regex@^1.1.0:
   resolved "https://registry.yarnpkg.com/hex-color-regex/-/hex-color-regex-1.1.0.tgz#4c06fccb4602fe2602b3c93df82d7e7dbf1a8a8e"
   integrity sha512-l9sfDFsuqtOqKDsQdqrMRk0U85RZc0RtOR9yPI7mRVOa4FsR/BVnZ0shmQRM96Ji99kYZP/7hn1cedc1+ApsTQ==
 
-highcharts@^8.1.0:
+highcharts@^8.2.2:
   version "8.2.2"
   resolved "https://registry.yarnpkg.com/highcharts/-/highcharts-8.2.2.tgz#3eb1a694cff013d3385c3ca8e58e69a27be52cab"
   integrity sha512-F63TXO7RxsvTcpO/KOubQZWualYpCMyCTuKtoWbt7KCsfQ3Kl7Fr6HEyyJdjkYl+XlnmnKlSRi9d3HjLK9Q0wg==
@@ -8872,11 +8872,11 @@ num2fraction@^1.2.2:
   integrity sha1-b2gragJ6Tp3fpFZM0lidHU5mnt4=
 
 nuxt-highcharts@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/nuxt-highcharts/-/nuxt-highcharts-1.0.5.tgz#052ccc93bde2abca1acf60e74c1cdc43cdc4e29d"
-  integrity sha512-HSByt6Q7Ww3X0pRs4XLbtDBXwE55zBFK0KcPoUc58xF/n+sVNP9UMpTeNd2iJcd1dJqvq2vKB5PhySLpAq9bfg==
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/nuxt-highcharts/-/nuxt-highcharts-1.0.7.tgz#45bde0ff3989321fb4f0da6dadecd1959c1de88d"
+  integrity sha512-LJ3PrjnGwS0nAQ8vQYFncsRWQVL1D3QKadbSbruks+8U5uLk5deAcNF4+WNlUfCAXkVk+TKhI2J+MTZ+7ouPZw==
   dependencies:
-    highcharts "^8.1.0"
+    highcharts "^8.2.2"
   optionalDependencies:
     "@highcharts/map-collection" "^1.1.3"
 
