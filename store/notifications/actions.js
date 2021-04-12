@@ -30,9 +30,40 @@ export default {
   },
 
   /**
+   * When should we send the user the missing shipping address notification?
+   * - The user logged in before or,
+   * - the onboarding was completed or,
+   * - twenty minutes has passed.
+   */
+  checkIfShouldSendShippingAddressNotification ({ dispatch, rootGetters }) {
+    const isUserLoggedIn = rootGetters['auth/isUserLoggedIn']
+    const userInfo = rootGetters['auth/getUserInfo']
+
+    // we'll consider it a user that logged in before if the created date is greater than a day
+    const didLoginBefore = dayjs(new Date()).diff(userInfo.createdAt, 'days') >= 1
+
+    if (isUserLoggedIn && didLoginBefore) {
+      dispatch('checkUserShippingAddressAndNotify')
+      return
+    }
+
+    const onboardingDone = !!userInfo.onboardingDone
+
+    if (isUserLoggedIn && onboardingDone) {
+      dispatch('checkUserShippingAddressAndNotify')
+      return
+    }
+
+    const twentyMinutes = 1000 * 60 * 20
+
+    setTimeout(() => {
+      dispatch('checkUserShippingAddressAndNotify')
+    }, twentyMinutes)
+  },
+
+  /**
    * Show a notification prompting the user to update their shipping address if:
-   * - The user doesn't have the shipping address on file, and
-   * - 2 days or more have past.
+   * - The user doesn't have the shipping address on file and is a parent.
    */
   async checkUserShippingAddressAndNotify ({ commit, dispatch, rootGetters }) {
     const isUserLoggedIn = rootGetters['auth/isUserLoggedIn']
@@ -42,17 +73,12 @@ export default {
       const shippingAddress = await dispatch('shipping-address/getShippingAddress', undefined, { root: true })
 
       if (!shippingAddress) {
-        const createdAt = userInfo.createdAt
-        const daysPastSinceCreation = dayjs(new Date()).diff(dayjs(createdAt), 'days')
-
-        if (daysPastSinceCreation >= 2) {
-          commit('notifications/SET_NOTIFICATION_CARD', {
-            title: 'WE WANT TO SEND YOU A WELCOME KIT!',
-            description: 'We require a shipping address in order to send the Welcome Kit with our first Workbook.',
-            action: () => commit('notifications/SET_IS_SHIPPING_MODAL_VISIBLE', true, { root: true }),
-            image: require('@/assets/png/megaphone.png')
-          }, { root: true })
-        }
+        commit('notifications/SET_NOTIFICATION_CARD', {
+          title: 'WE WANT TO SEND YOU A WELCOME KIT!',
+          description: 'We require a shipping address in order to send the Welcome Kit with our first Workbook.',
+          action: () => commit('notifications/SET_IS_SHIPPING_MODAL_VISIBLE', true, { root: true }),
+          image: require('@/assets/png/megaphone.png')
+        }, { root: true })
       }
     }
   }

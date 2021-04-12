@@ -51,7 +51,7 @@
         <b>{{ userInfo.phoneNumber }}</b>
       </v-col>
       <v-col v-else cols="8" class="text-right">
-        <small>Insert your phone number to receive SMS notifications.</small>
+        <small>Add your phone number to receive SMS notifications.</small>
       </v-col>
     </v-row>
 
@@ -122,27 +122,27 @@
     <v-row v-if="!userInfo.socialNetwork && !userInfo.socialNetworkId" no-gutters>
       <!-- FACEBOOK -->
       <v-col cols="12" class="py-4">
-        <v-btn block x-large class="social-sync" @click="facebookSignIn">
+        <v-btn block x-large @click="facebookSignIn">
           <img
             alt="Facebook"
             class="mr-1"
             src="@/assets/svg/facebook_icon.svg"
           >
 
-          <span class="text-transform-none">Sync your Facebook Account</span>
+          <span class="text-none font-weight-bold text-caption text-sm-body-2">Sync your Facebook Account</span>
         </v-btn>
       </v-col>
 
       <!-- GOOGLE -->
       <v-col cols="12">
-        <v-btn block x-large class="social-sync" @click="googleSignIn">
+        <v-btn block x-large @click="googleSignIn">
           <img
             alt="Google"
             class="mr-1"
             src="@/assets/svg/google_icon.svg"
           >
 
-          <span class="text-transform-none">Sync your Google Account</span>
+          <span class="text-none font-weight-bold text-caption text-sm-body-2">Sync your Google Account</span>
         </v-btn>
       </v-col>
     </v-row>
@@ -150,24 +150,24 @@
     <!-- Social buttons after sync -->
     <v-row v-else justify="center" class="my-2">
       <!-- FACEBOOK -->
-      <div v-if="userInfo.socialNetwork === 'FACEBOOK'" class="social-sync" text>
+      <div v-if="userInfo.socialNetwork === 'FACEBOOK'" class="my-2" text>
         <img
           alt="Facebook"
-          class="mr-1"
+          class="mr-1 mb-n2"
           src="@/assets/svg/facebook_icon.svg"
         >
 
-        <span class="text-transform-none">Your account is synced with Facebook</span>
+        <span class="text-none font-weight-bold text-caption text-sm-body-2">Your account is synced with Facebook</span>
       </div>
       <!-- GOOGLE -->
-      <div v-if="userInfo.socialNetwork === 'GOOGLE'" class="social-sync" text>
+      <div v-if="userInfo.socialNetwork === 'GOOGLE'" class="my-2" text>
         <img
           alt="Google"
-          class="mr-1 mt-1"
+          class="mr-1 mb-n2"
           src="@/assets/svg/google_icon.svg"
         >
 
-        <span class="text-transform-none">Your account is synced with Google</span>
+        <span class="text-none font-weight-bold text-caption text-sm-body-2">Your account is synced with Google</span>
       </div>
     </v-row>
   </div>
@@ -307,10 +307,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.social-sync {
-  text-transform: capitalize !important;
-  font-size: 14px !important;
-}
-</style>

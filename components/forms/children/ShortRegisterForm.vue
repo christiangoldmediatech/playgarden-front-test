@@ -9,7 +9,7 @@
           >
             <underlined-title class="text-h6 text-md-h4" text="CHILD INFORMATION" />
           </p>
-          <short-children-form :date="item._birthdayPicker" :item="item" :position="index" :draft="draft" :loading="loading" />
+          <children-form :date="item._birthdayPicker" :item="item" :position="index" :draft="draft" :loading="loading" />
         </v-col>
       </v-row>
 
@@ -54,13 +54,14 @@ import { get } from 'lodash'
 import { mapActions, mapGetters } from 'vuex'
 
 import { jsonCopy } from '@/utils/objectTools'
-import ShortChildrenForm from '@/components/forms/children/ShortChildrenForm.vue'
+
+import ChildrenForm from '@/components/forms/children/ChildrenForm.vue'
 
 export default {
   name: 'ShortRegisterForm',
 
   components: {
-    ShortChildrenForm
+    ChildrenForm
   },
 
   props: {

@@ -55,7 +55,7 @@
         </v-card>
       </v-col>
       <v-col cols="12" md="10">
-        <div class="pa-2 mx-md-12 my-md-8 px-lg-8 mx-lg-16">
+        <div class="pa-2 mx-md-10 mx-lg-16 my-md-8 px-lg-8">
           <nuxt-child />
         </div>
       </v-col>

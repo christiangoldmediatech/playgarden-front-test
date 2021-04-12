@@ -152,6 +152,7 @@ export default {
   methods: {
     ...mapActions('auth', ['updateAuthOnboarding']),
     ...mapActions('onboarding', ['getOnboardings']),
+    ...mapActions('notifications', ['checkIfShouldSendShippingAddressNotification']),
 
     onPlayerReady ({ player, videos }) {
       this.player = player
@@ -187,6 +188,7 @@ export default {
 
       try {
         await this.updateAuthOnboarding()
+        await this.checkIfShouldSendShippingAddressNotification()
 
         this.$router.push({ name: 'app-dashboard' })
       } catch (e) {

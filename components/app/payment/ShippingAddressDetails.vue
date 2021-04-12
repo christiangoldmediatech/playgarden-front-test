@@ -47,8 +47,8 @@
           </v-col>
 
           <v-col
-            :cols="wrapStateAndZipCodeFields ? 6 : 12"
-            :class="{ 'pr-4': wrapStateAndZipCodeFields }"
+            :cols="shouldWrapOnDesktop ? 4 : 12"
+            :class="{ 'pr-4': shouldWrapOnDesktop }"
           >
             <!-- State -->
             <validation-provider
@@ -69,8 +69,8 @@
           </v-col>
 
           <v-col
-            :cols="wrapStateAndZipCodeFields ? 6 : 12"
-            :class="{ 'pl-4': wrapStateAndZipCodeFields }"
+            :cols="shouldWrapOnDesktop ? 4 : 12"
+            :class="{ 'px-4': shouldWrapOnDesktop }"
           >
             <!-- Zipcode -->
             <validation-provider
@@ -85,6 +85,29 @@
                 :loading="loading"
                 placeholder="Zip code"
                 label="Zip code"
+                solo-labeled
+              />
+            </validation-provider>
+          </v-col>
+
+          <v-col
+            v-if="showPhoneNumberField"
+            :cols="shouldWrapOnDesktop ? 4 : 12"
+            :class="{ 'pl-4': shouldWrapOnDesktop }"
+          >
+            <!-- Phone Number -->
+            <validation-provider
+              v-slot="{ errors }"
+              name="Phone"
+              rules="required"
+            >
+              <pg-text-field
+                v-model="draft.phoneNumber"
+                clearable
+                :error-messages="errors"
+                :loading="loading"
+                placeholder="Phone number"
+                label="Phone number"
                 solo-labeled
               />
             </validation-provider>
@@ -189,6 +212,10 @@ export default {
     wrapStateAndZipCodeFields: {
       type: Boolean,
       default: false
+    },
+    showPhoneNumberField: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -196,6 +223,15 @@ export default {
     isEditing: false,
     loading: false
   }),
+
+  computed: {
+    isMobile () {
+      return this.$vuetify.breakpoint.mobile
+    },
+    shouldWrapOnDesktop () {
+      return this.wrapStateAndZipCodeFields && !this.isMobile
+    }
+  },
 
   created () {
     this.init()
@@ -231,7 +267,7 @@ export default {
         const draft = await this.getShippingAddress()
 
         if (!draft && !this.editByDefault) {
-          this.$snotify.warning('Please check your shipping address', 'Warning', {
+          this.$snotify.warning('Please check your shipping address', 'Attention', {
             buttons: [
               {
                 text: 'Edit',
@@ -294,7 +330,8 @@ export default {
         address2: null,
         city: null,
         state: null,
-        zipCode: null
+        zipCode: null,
+        phoneNumber: null
       }
     },
 
