@@ -1,15 +1,15 @@
 <template>
   <div>
-    <chart ref="progress-chart" :graph="chartOptions" />
+    <report-chart ref="progress-chart" :graph="chartOptions" />
   </div>
 </template>
 
 <script>
-import Chart from '@/components/echart/Chart.vue'
+import ReportChart from '@/components/echart/ReportChart.vue'
 export default {
   name: 'ChartReport',
   components: {
-    Chart
+    ReportChart
   },
   props: {
     report: {
@@ -42,6 +42,10 @@ export default {
     },
     chartOptions () {
       return {
+        tooltip: {
+          trigger: 'item',
+          formatter: 'Category <br/>{b} : {c}'
+        },
         grid: {
           show: false
         },
@@ -111,6 +115,7 @@ export default {
               show: true,
               color: '#DADADA',
               fontSize: '31px',
+              fontWeight: 'bold',
               verticalAlign: 'middle',
               fontFamily: 'Poppins-SemiBold, Poppins',
               opacity: 1
@@ -132,6 +137,7 @@ export default {
               show: true,
               color: '#DADADA',
               fontSize: '31px',
+              fontWeight: 'bold',
               verticalAlign: 'middle',
               fontFamily: 'Poppins-SemiBold, Poppins',
               opacity: 1
@@ -153,6 +159,7 @@ export default {
               show: true,
               color: '#DADADA',
               fontSize: '31px',
+              fontWeight: 'bold',
               verticalAlign: 'middle',
               fontFamily: 'Poppins-SemiBold, Poppins',
               opacity: 1
