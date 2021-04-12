@@ -1,5 +1,5 @@
 <template>
-  <v-chart class="chart-report-children" :option="graph" auto-resize />
+  <v-chart class="chart-report-children" :option="graph" autoresize />
 </template>
 
 <script>
