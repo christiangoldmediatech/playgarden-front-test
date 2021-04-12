@@ -147,7 +147,7 @@ export default {
               borderWidth: 0,
               borderType: 'none'
             },
-            data: [[{ name: 'Age Appropriate', yAxis: 55 }, { yAxis: 55 }]]
+            data: [[{ name: 'Age Appropriate', yAxis: 48 }, { yAxis: 48 }]]
           }
         },
         {
