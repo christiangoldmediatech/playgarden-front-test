@@ -17,7 +17,7 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
+<style>
 .chart {
   height: 400px;
 }

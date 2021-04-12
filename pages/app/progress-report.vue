@@ -86,7 +86,7 @@
         <v-row class="mr-3" no-gutters>
           <v-col v-if="general === true" cols="12" md="12" lg="12">
             <v-card v-if="!$vuetify.breakpoint.xs" class="content-report">
-              <v-row class="ml-2 mr-2">
+              <v-row no-gutters class="ml-2 mr-2">
                 <v-col cols="12" md="7" lg="7">
                   <div class="pt-4 mb-4">
                     <underlined-title class="text-h6 text-md-h5" text="General Progress Report" />

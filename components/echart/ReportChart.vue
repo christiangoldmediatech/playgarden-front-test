@@ -6,7 +6,7 @@
 import { defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
-  name: 'Chart',
+  name: 'ReportChart',
   props: {
     graph: {
       type: Object,
@@ -17,7 +17,7 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
+<style>
 .chart {
   height: 500px;
 }
