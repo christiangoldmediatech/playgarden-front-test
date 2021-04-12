@@ -1,5 +1,5 @@
 <template>
-  <v-chart class="chart" :option="graph" />
+  <v-chart class="chart-re" :option="graph" />
 </template>
 
 <script>
@@ -18,7 +18,8 @@ export default defineComponent({
 </script>
 
 <style>
-.chart {
-  height: 500px;
+.chart-re {
+  width: 100% !important;
+  min-height: 500px !important;
 }
 </style>
