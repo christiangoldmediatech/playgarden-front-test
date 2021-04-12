@@ -1,5 +1,5 @@
 <template>
-  <v-chart class="chart-re" :option="graph" />
+  <v-chart class="chart-re" :option="graph" auto-resize />
 </template>
 
 <script>

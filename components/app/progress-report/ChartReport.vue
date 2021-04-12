@@ -44,7 +44,19 @@ export default {
       return {
         tooltip: {
           trigger: 'item',
-          formatter: 'Category <br/>{b} : {c}'
+          formatter (params) {
+            let text = (params.data.value !== undefined) ? `Data: <b> ${params.data.value} </b> <br />` : 'Progress Report'
+            if (params.data.value !== undefined) {
+              if (params.data.value <= 20) {
+                text += `Progressing: ${params.data.progressing} <br />`
+              } else if (params.data.value > 20 && params.data.value <= 80) {
+                text += `Age Appropriate: ${params.data.ageAppropiate} <br />`
+              } else {
+                text += `Area of Strength: ${params.data.areaStrenght}`
+              }
+            }
+            return text
+          } // 'Category <br/>{b} : {c}'
         },
         grid: {
           show: false
