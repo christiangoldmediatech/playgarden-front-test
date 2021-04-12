@@ -1,6 +1,6 @@
 <template>
   <div class="music-player">
-    <v-row no-gutters class="flex-column fill-height">
+    <v-row no-gutters class="flex-column fill-height flex-nowrap">
       <!-- Child Selector -->
       <v-col v-if="!mobile" cols="auto">
         <div class="child-selector ml-auto">
@@ -174,11 +174,49 @@
                 <v-col cols="3" />
               </v-row>
             </template>
+
+            <!-- Playlist -->
+            <template
+              v-slot:playlist="{
+                currentPlaylist,
+                currentSongIndex
+              }"
+            >
+              <template v-if="!mobile">
+                <div
+                  class=" mt-4 pt-2 playlist"
+                >
+                  <v-row
+                    v-for="(song, songIndex) in currentPlaylist"
+                    :key="song.id"
+                    no-gutters
+                    class="playlist-song py-2"
+                    :class="{ selected: currentSongIndex === songIndex }"
+                  >
+                    <v-col cols="auto">
+                      <figure
+                        class="playlist-song-thumbnail"
+                        :style="{ 'background-image': `url(${song.thumbnail})` }"
+                      >
+                      </figure>
+                    </v-col>
+                    <v-col cols="10">
+                      <div class="text-center">
+                        <p class="playlist-song-title mb-2 text-truncate">
+                          {{ song.description }}
+                        </p>
+                        <p class="playlist-song-author mb-2 text-truncate">
+                          {{ song.name }}
+                        </p>
+                      </div>
+                    </v-col>
+                  </v-row>
+                </div>
+              </template>
+            </template>
           </pg-audio-player>
         </div>
       </v-col>
-
-      <v-spacer v-if="!mobile" />
     </v-row>
   </div>
 </template>
@@ -331,6 +369,32 @@ export default {
         height: 10px;
         min-height: 10px;
       }
+    }
+  }
+}
+.playlist {
+  border-top: 1px solid lightgrey;
+  max-height: 250px;
+  overflow: scroll;
+  &-song {
+    &-thumbnail {
+      width: 50px;
+      height: 50px;
+      background-size: contain;
+      background-position: center center;
+    }
+    &-title {
+      color: var(--v-accent-base);
+      font-size: 16px;
+      line-height: 16px;
+    }
+    &-author {
+      color: var(--v-black-base);
+      font-size: 14px;
+      line-height: 14px;
+    }
+    &.selected {
+      background-color: rgba(lightgrey, 0.2);
     }
   }
 }
