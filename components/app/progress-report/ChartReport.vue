@@ -81,25 +81,7 @@ export default {
         },
         series: [{
           symbolSize: 50,
-          data: [
-            {
-              value: 70,
-              symbol: 'image://https://img.playgardenonline.com/images/report-card-icon/e145b9f9-22af-446b-bb48-a35ce1e2f902.png'
-            },
-            {
-              value: 20,
-              symbol: 'image://https://img.playgardenonline.com/images/report-card-icon/b083c2e6-0036-44b2-95f2-e19fa3c9b422.png'
-            },
-            {
-              value: 67,
-              ageAppropiate: 5,
-              symbol: 'image://https://img.playgardenonline.com/images/report-card-icon/4afe0455-bbdb-4791-8b92-5bf3d28bcb6e.png'
-            },
-            {
-              value: 16,
-              symbol: 'image://https://img.playgardenonline.com/images/report-card-icon/a91c42d5-589f-4dca-a44c-5a7fcd826bf7.png'
-            }
-          ], // this.report.dataSerie,
+          data: this.report.dataSerie,
           type: 'scatter',
           markArea: {
             label: {
