@@ -34,6 +34,12 @@ export default {
         type: 'scatter'
       } : {}
     },
+    getRotate () {
+      return (this.$vuetify.breakpoint.xs) ? 30 : 0
+    },
+    getRotateYaxios () {
+      return (this.$vuetify.breakpoint.xs) ? 45 : 0
+    },
     getFontSize () {
       return (this.$vuetify.breakpoint.xs) ? '32px' : '34px'
     },
@@ -65,7 +71,8 @@ export default {
           type: 'category',
           data: this.getCategories,
           axisLabel: {
-            interval: -1
+            interval: -1,
+            rotate: this.getRotate
           }
         },
         yAxis: {
@@ -75,7 +82,8 @@ export default {
             show: false
           },
           axisLabel: {
-            formatter: '{value} %'
+            formatter: '{value} %',
+            rotate: this.getRotateYaxios
           }
         },
         series: [{
