@@ -4,8 +4,8 @@
       <center>
         <v-img :src="getIcon" class="ml-4 mt-4" />
         <div class="ml-7">
-          <v-progress-linear class="mb-3" :value="(getDataCurrent.y === undefined) ? 0 : getDataCurrent.y" height="15" rounded color="accent" />
-          <span class="text-progress">{{ `${(getDataCurrent.y === undefined) ? 0 : getDataCurrent.y}/100` }}</span>
+          <v-progress-linear class="mb-3" :value="(getDataCurrent.value === undefined) ? 0 : getDataCurrent.value" height="15" rounded color="accent" />
+          <span class="text-progress">{{ `${(getDataCurrent.value === undefined) ? 0 : getDataCurrent.value}/100` }}</span>
         </div>
       </center>
     </v-col>
@@ -21,7 +21,7 @@
             </v-col>
 
             <v-col cols="2" class="text-center text-sm-right pt-12">
-              <span class="font-weight-bold text-h6 text-md-h5">{{ `${(getDataCurrent.y === undefined) ? 0 : getDataCurrent.y}%` }}</span>
+              <span class="font-weight-bold text-h6 text-md-h5">{{ `${(getDataCurrent.value === undefined) ? 0 : getDataCurrent.value}%` }}</span>
             </v-col>
           </v-row>
         </p>

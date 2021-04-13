@@ -47,11 +47,11 @@ export default {
             let text = (params.data.value !== undefined) ? `Percentage: <b> ${params.data.value} %</b> <br />` : 'Progress Report'
             if (params.data.value !== undefined) {
               if (params.data.value <= 20) {
-                text += `Progressing: ${params.data.progressing} <br />`
+                text += 'Progressing'
               } else if (params.data.value > 20 && params.data.value <= 80) {
-                text += `Age Appropriate: ${params.data.ageAppropiate} <br />`
+                text += 'Age Appropriate'
               } else {
-                text += `Area of Strength: ${params.data.areaStrenght}`
+                text += 'Area of Strength'
               }
             }
             return text
