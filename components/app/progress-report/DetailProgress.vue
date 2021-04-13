@@ -13,7 +13,7 @@
       <div class="pt-4 mb-4 mr-6">
         <underlined-title class="text-h6 text-md-h3" :text="reportCardType" />
 
-        <p class="text-progress mt-4 pb-10" v-html="dataReportCardType.description" />
+        <p class="text-body-1 text-md-body-1 text-progress mt-4 pb-10" v-html="dataReportCardType.description" />
 
         <p>
           <v-row no-gutters>
@@ -123,7 +123,6 @@ export default {
   font-family: Poppins !important;
   font-style: normal !important;
   font-weight: normal !important;
-  font-size: 18px !important;
   line-height: 28px !important;
   text-transform: none !important;
 }
