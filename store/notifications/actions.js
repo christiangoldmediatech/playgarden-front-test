@@ -10,6 +10,10 @@ export default {
     return this.$axios.$delete(`/notifications/${id}`)
   },
 
+  restoreNotification (_, id) {
+    return this.$axios.$patch(`/notifications/${id}/recover`)
+  },
+
   getNotifications ({ commit }, params) {
     return new Promise((resolve, reject) =>
       this.$axios
