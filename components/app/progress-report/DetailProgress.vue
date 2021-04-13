@@ -123,7 +123,7 @@ export default {
   font-family: Poppins !important;
   font-style: normal !important;
   font-weight: normal !important;
-  font-size: 20px !important;
+  font-size: 18px !important;
   line-height: 28px !important;
   text-transform: none !important;
 }
