@@ -1,93 +1,58 @@
 <template>
   <v-row
+    class="flex-column flex-md-row"
+    justify="center"
     no-gutters
   >
-    <v-col>
-      <v-row
-        class="flex-column flex-md-row"
-        justify="center"
-        no-gutters
-      >
-        <v-col cols="12" :class="{ 'ml-14': $vuetify.breakpoint.mdAndUp }">
-          <p class="text-center text-md-left">
-            <underlined-title :class="(!$vuetify.breakpoint.smAndUp) ? 'text-h6 text-md-h4' : 'text-h6 text-md-h4 ml-4'" text="PLAYGARDEN PREP ONLINE IS COMPLETELY FREE FOR 30 DAYS!" />
-          </p>
-        </v-col>
-        <v-col
-          class="px-sm-12 px-6 mt-1 mt-md-12"
-          cols="12"
-          sm="12"
-          xs="12"
-          md="6"
-          lg="6"
-          xl="6"
-        >
-          <p class="text-center text-md-left" :class="{ 'mt-n8': $vuetify.breakpoint.mdAndUp }">
-            <span class="subtitle-text info-color-signup">
-              Create an account to start learning
-            </span>
-          </p>
+    <v-col cols="12" class="ml-md-14">
+      <p class="text-center text-md-left">
+        <underlined-title class="text-h6 text-md-h4 ml-sm-4" text="PLAYGARDEN PREP ONLINE IS COMPLETELY FREE FOR 30 DAYS!" />
+      </p>
+    </v-col>
+    <v-col
+      class="px-sm-12 px-6 mt-1 mt-md-12"
+      cols="12"
+      sm="12"
+      xs="12"
+      md="6"
+      lg="6"
+      xl="6"
+    >
+      <p class="text-center text-md-left mt-md-n8">
+        <span class="subtitle-text info-color-signup">
+          Create an account to start learning
+        </span>
+      </p>
 
-          <register-form
-            :email-validated="emailValidated"
-            :in-invitation-process="inInvitationProcess"
-            :loading="loading"
-            @click:submit="onSubmit"
-          />
-        </v-col>
+      <register-form
+        :email-validated="emailValidated"
+        :in-invitation-process="inInvitationProcess"
+        :loading="loading"
+        @click:submit="onSubmit"
+      />
+    </v-col>
 
-        <v-col
-          cols="12"
-          md="6"
-          lg="6"
-          xl="6"
-        >
-          <template>
-            <v-row>
-              <v-col v-if="!showDetailFreeTrial" cols="12" class="mt-4">
-                <v-btn
-                  block
-                  text
-                  @click="showDetailFreeTrial = !showDetailFreeTrial"
-                >
-                  <p>
-                    <img
-                      src="@/assets/png/gift-icon.png"
-                      class="mr-2"
-                      width="18px"
-                    >
-                    <span :class="($vuetify.breakpoint.smAndUp) ? 'free-trial' : 'free-trial-mobile'">
-                      YOUR 30 DAY FREE TRIAL
-                    </span> <br />
-                    <span :class="($vuetify.breakpoint.smAndUp) ? 'free-trial' : 'free-trial-mobile'">
-                      INCLUDES THE PREMIUM + PLAN
-                    </span>
-                  </p>
-                  <v-icon class="ml-2">
-                    mdi-chevron-down
-                  </v-icon>
-                </v-btn>
-              </v-col>
-              <v-col class="hr-line">
-                <v-divider />
-              </v-col>
-            </v-row>
-            <v-row v-if="showDetailFreeTrial" :class="($vuetify.breakpoint.smAndUp) ? 'mt-4 background-card' : 'background-card-mobile pt-14 px-8'">
-              <v-col cols="12" :class="(!$vuetify.breakpoint.smAndUp) ? '' : 'mt-10 mb-10 px-10'">
-                <v-layout row wrap align-center justify-center>
-                  <v-card class="elevation-0 mx-10">
-                    <v-container>
-                      <v-layout column align-center justify-center>
-                        <card-info @toggleCard="showDetailFreeTrial = !showDetailFreeTrial" />
-                      </v-layout>
-                    </v-container>
-                  </v-card>
-                </v-layout>
-              </v-col>
-            </v-row>
-          </template>
-        </v-col>
-      </v-row>
+    <v-col
+      cols="12"
+      md="6"
+      lg="6"
+      xl="6"
+    >
+      <template>
+        <v-row :class="($vuetify.breakpoint.smAndUp) ? 'mt-4 background-card' : 'background-card-mobile pt-14 px-8'">
+          <v-col cols="12" class="my-sm-6 px-sm-10">
+            <v-layout row wrap align-center justify-center>
+              <v-card class="custom-shadow mx-0 mx-md-10">
+                <v-container>
+                  <v-layout column align-center justify-center>
+                    <card-info />
+                  </v-layout>
+                </v-container>
+              </v-card>
+            </v-layout>
+          </v-col>
+        </v-row>
+      </template>
     </v-col>
   </v-row>
 </template>
@@ -105,7 +70,6 @@ export default {
   data: vm => ({
     loading: false,
     emailValidated: null,
-    showDetailFreeTrial: true,
     token: vm.$route.query.token
   }),
   computed: {
@@ -212,5 +176,8 @@ export default {
 }
 .text-orange-info::v-deep.v-chip--label {
   border-radius: 0px !important;
+}
+.custom-shadow {
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16) !important;
 }
 </style>

@@ -14,7 +14,7 @@
     <v-row no-gutters>
       <v-col cols="12">
         <v-card>
-          <v-row class="fill-height">
+          <v-row>
             <v-col cols="12" md="6">
               <!-- Conversions funnel -->
               <v-card class="mx-3 content-dashboard">
@@ -27,84 +27,106 @@
               <!-- End Conversions funnel -->
             </v-col>
             <v-col cols="12" md="6">
-              <v-row no-gutters class="mx-3">
-                <v-col cols="12">
+              <v-row class="mx-3 mt-n3 mb-n4">
+                <v-col cols="6">
                   <v-card>
                     <v-card-text>
-                      <label class="title-dashboard font-weight-bold">Total Subscriptions</label>
-                      <v-row align="center">
-                        <v-col
-                          class="display-3"
-                          cols="5"
-                        >
-                          <label class="font-weight-bold total-users">{{ totalSubscriptions.total }}</label>
-                        </v-col>
-                        <v-col>
-                          <p>
+                      <label class="title-dashboard font-weight-bold">Trialing</label>
+                      <v-row class="mt-n4" align="center">
+                        <v-col cols="12">
+                          <p class="text-center">
                             <v-icon x-large color="green lighten-1">
                               mdi-menu-up
                             </v-icon>
-                            <span>+{{ totalSubscriptions.increment }} New users this week</span> <br />
-                            <span class="ml-3">Users using our platform</span>
+                            <span>+{{ totalTrialing.increment }} New this week</span> <br />
                           </p>
+                        </v-col>
+                        <v-col
+                          class="display-3"
+                          cols="12"
+                        >
+                          <center>
+                            <label class="font-weight-bold total-users">{{ totalTrialing.total }}</label>
+                          </center>
                         </v-col>
                       </v-row>
                     </v-card-text>
                   </v-card>
-                  <!-- CHURN RATE-->
-                  <v-row>
-                    <v-col cols="6">
-                      <v-card>
-                        <v-card-text>
-                          <label class="title-dashboard font-weight-bold">Churn Rate</label>
-                          <v-row class="mt-n4" align="center">
-                            <v-col cols="12">
-                              <p class="text-center">
-                                <v-icon x-large color="red lighten-1">
-                                  mdi-menu-up
-                                </v-icon>
-                                <span>0 More than last weeks</span>
-                              </p>
-                            </v-col>
-                            <v-col
-                              class="display-3"
-                              cols="12"
-                            >
-                              <center>
-                                <label class="font-weight-bold total-users">0 %</label>
-                              </center>
-                            </v-col>
-                          </v-row>
-                        </v-card-text>
-                      </v-card>
-                    </v-col>
-                    <v-col cols="6">
-                      <v-card>
-                        <v-card-text>
-                          <label class="title-dashboard font-weight-bold">Canceled</label>
-                          <v-row class="mt-n4" align="center">
-                            <v-col cols="12">
-                              <p class="text-center">
-                                <v-icon x-large color="red lighten-1">
-                                  mdi-menu-up
-                                </v-icon>
-                                <span>{{ canceledUsers.increment }} More than last week</span>
-                              </p>
-                            </v-col>
-                            <v-col
-                              class="display-3"
-                              cols="12"
-                            >
-                              <center>
-                                <label class="font-weight-bold total-users">{{ canceledUsers.total }}</label>
-                              </center>
-                            </v-col>
-                          </v-row>
-                        </v-card-text>
-                      </v-card>
-                    </v-col>
-                  </v-row>
-                  <!-- END CHURN RATE-->
+                </v-col>
+                <v-col cols="6">
+                  <v-card>
+                    <v-card-text>
+                      <label class="title-dashboard font-weight-bold">Active</label>
+                      <v-row class="mt-n4" align="center">
+                        <v-col cols="12">
+                          <p class="text-center">
+                            <v-icon x-large color="green lighten-1">
+                              mdi-menu-up
+                            </v-icon>
+                            <span>+{{ totalActive.increment }} New this week</span> <br />
+                          </p>
+                        </v-col>
+                        <v-col
+                          class="display-3"
+                          cols="12"
+                        >
+                          <center>
+                            <label class="font-weight-bold total-users">{{ totalActive.total }}</label>
+                          </center>
+                        </v-col>
+                      </v-row>
+                    </v-card-text>
+                  </v-card>
+                </v-col>
+                <v-col cols="6">
+                  <v-card>
+                    <v-card-text>
+                      <label class="title-dashboard font-weight-bold">Canceled</label>
+                      <v-row class="mt-n4" align="center">
+                        <v-col cols="12">
+                          <p class="text-center">
+                            <v-icon x-large color="red lighten-1">
+                              mdi-menu-up
+                            </v-icon>
+                            <span>{{ canceledUsers.increment }} This week</span>
+                          </p>
+                        </v-col>
+                        <v-col
+                          class="display-3"
+                          cols="12"
+                        >
+                          <center>
+                            <label class="font-weight-bold total-users">{{ canceledUsers.total }}</label>
+                          </center>
+                        </v-col>
+                      </v-row>
+                    </v-card-text>
+                  </v-card>
+                </v-col>
+                <v-col cols="6">
+                  <v-card>
+                    <v-card-text>
+                      <label class="title-dashboard font-weight-bold">Churn Rate</label>
+                      <v-row class="mt-n4" align="center">
+                        <v-col cols="12">
+                          <p class="text-center">
+                            <v-icon x-large color="red lighten-1">
+                              mdi-menu-up
+                            </v-icon>
+                            <span>0 More than last week</span>
+                          </p>
+                        </v-col>
+                        <v-col
+                          class="display-3"
+                          cols="12"
+                        >
+                          <center>
+                            <label class="font-weight-bold total-users">0 %</label>
+                          </center>
+                        </v-col>
+                      </v-row>
+                    </v-card-text>
+                  </v-card>
                 </v-col>
               </v-row>
             </v-col>
@@ -264,6 +286,14 @@ export default {
       total: 0,
       increment: 0
     },
+    totalActive: {
+      total: 0,
+      increment: 0
+    },
+    totalTrialing: {
+      total: 0,
+      increment: 0
+    },
     canceledUsers: {
       total: 0,
       increment: 0
@@ -316,7 +346,7 @@ export default {
         this.search = ''
       }
       try {
-        const { dataFunnel, totalSubscriptions, canceledUsers, usersPerPlan, stripeStatus, activeUsers, dailyUsers, childsByLetter, childrenTotal, planActiveInactive } = await this.getDashboard({})
+        const { dataFunnel, totalSubscriptions, totalTrialing, totalActive, canceledUsers, usersPerPlan, stripeStatus, activeUsers, dailyUsers, childsByLetter, childrenTotal, planActiveInactive } = await this.getDashboard({})
         this.funnel = {
           data: dataFunnel
         }
@@ -336,6 +366,9 @@ export default {
           xAxios: dailyUsers.date,
           data: dailyUsers.users
         }
+
+        this.totalTrialing = totalTrialing
+        this.totalActive = totalActive
 
         this.childsByLetter = {
           letters: childsByLetter.letters,

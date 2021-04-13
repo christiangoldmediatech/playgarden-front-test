@@ -18,6 +18,7 @@ export default {
             exact: false
           },
           { title: 'Library', to: { name: 'app-library' }, exact: false },
+          { title: 'Music', to: { name: 'app-music' }, exact: false },
           { title: 'Playdates', to: { name: 'app-playdates' }, exact: false },
           {
             title: 'Student Cubby',
