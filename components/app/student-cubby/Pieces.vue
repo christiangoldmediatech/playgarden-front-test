@@ -1,6 +1,6 @@
 <template>
-  <v-card flat class="pt-0 pt-md-3">
-    <v-card-text class="pt-4 pt-md-3">
+  <v-card flat class="pieces">
+    <v-card-text class="content pt-4 pt-md-3">
       <underlined-title
         class="text-h5 text-md-h3"
         :text="`PUZZLE LETTER ${letter}`"
@@ -164,7 +164,13 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+.pieces {
+  max-width: 1264px;
+  max-height: 90vh;
+  overflow-y: scroll;
+}
+
 .text-progress {
   font-family: Poppins !important;
   font-style: normal !important;
