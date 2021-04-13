@@ -5,10 +5,11 @@
         <music-player ref="musicPlayer" v-show="isPlayerShowing" :mobile="isMobile" />
       </v-card>
       <music-song-list
+        :is-player-showing="isPlayerShowing"
         :mobile="isMobile"
         :all-songs="allSongs"
         :songs-by-curriculum-type="songsByCurriculumType"
-        class="music-song-list fill-height"
+        class="music-song-list fill-height mx-auto"
         @addSong="addSongToPlaylist"
         @newPlayList="createNewPlaylist"
       />
@@ -150,5 +151,6 @@ export default {
 
 .music-song-list {
   overflow: scroll;
+  max-width: 1200px;
 }
 </style>

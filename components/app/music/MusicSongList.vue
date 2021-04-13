@@ -2,13 +2,21 @@
   <div class="pa-4" v-bind="$attrs">
     <!-- Filters -->
     <v-row no-gutters>
-      <v-col cols="12" md="8">
+      <!-- Child Selector -->
+      <v-col v-if="!isPlayerShowing || mobile" cols="12" md="">
+        <div class="child-selector ml-auto">
+          <child-select v-model="selectedChildId" hide-details />
+        </div>
+      </v-col>
+
+      <v-col cols="12" :md="isPlayerShowing? 8 : 7">
         <music-carousel-letter
           :value="selectedLetterId"
           :disabled-letters="disabledLetters"
           @select="selectLetter"
         />
       </v-col>
+
       <v-col cols="12" md="">
         <v-row no-gutters justify="center" justify-md="start" align="center" class="fill-height pl-4">
           <v-col cols="auto">
@@ -74,6 +82,7 @@ import { mapGetters, mapActions } from 'vuex'
 import MusicCarouselLetter from '@/components/app/music/MusicLetterCarousel.vue'
 import SongCard from '@/components/app/music/SongCard.vue'
 import LetterSongs from '@/components/app/music/LetterSongs.vue'
+import ChildSelect from '@/components/app/ChildSelect.vue'
 
 import { jsonCopy } from '@/utils/objectTools.js'
 
@@ -83,7 +92,8 @@ export default {
   components: {
     MusicCarouselLetter,
     SongCard,
-    LetterSongs
+    LetterSongs,
+    ChildSelect
   },
 
   emits: ['addSong', 'newPlayList'],
@@ -105,18 +115,30 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+
+    isPlayerShowing: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
 
   data () {
     return {
       selectedFilter: 'list',
-      selectedLetterId: null
+      selectedLetterId: null,
+      selectedChildId: null
     }
   },
 
   computed: {
+    ...mapGetters({ currentChild: 'getCurrentChild' }),
     ...mapGetters('admin/curriculum', { letters: 'types' }),
+
+    id () {
+      return this.$route.query.id ? parseInt(this.$route.query.id) : null
+    },
 
     availableLettersWithSongsIds () {
       const availableIds = new Set()
@@ -147,7 +169,20 @@ export default {
     }
   },
 
+  watch: {
+    selectedChildId (id) {
+      if (id) {
+        this.$router.push({ name: this.$route.name, query: { id } })
+      }
+    }
+  },
+
   async created () {
+    if (this.id) {
+      this.selectedChildId = parseInt(this.id)
+    } else if (this.currentChild.length) {
+      this.selectedChildId = this.currentChild[0].id
+    }
     await this.getLetters()
   },
 

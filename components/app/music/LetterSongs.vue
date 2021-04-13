@@ -21,7 +21,7 @@
       >
         <div class="song-wrapper mx-auto">
           <v-icon
-            size="180"
+            size="120"
             class="play-btn"
             color="white"
             @click.stop="createPlayListFromIndex(index)"
@@ -108,8 +108,8 @@ export default {
     width: 250px;
     & .play-btn {
       position: absolute;
-      top: 35px;
-      left: 35px;
+      top: 65px;
+      left: 65px;
       color: transparent !important;
       &:hover {
         cursor: pointer;
