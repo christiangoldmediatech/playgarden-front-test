@@ -44,7 +44,7 @@ export default {
         tooltip: {
           trigger: 'item',
           formatter (params) {
-            let text = (params.data.value !== undefined) ? `Data: <b> ${params.data.value} </b> <br />` : 'Progress Report'
+            let text = (params.data.value !== undefined) ? `Percentage: <b> ${params.data.value} %</b> <br />` : 'Progress Report'
             if (params.data.value !== undefined) {
               if (params.data.value <= 20) {
                 text += `Progressing: ${params.data.progressing} <br />`
