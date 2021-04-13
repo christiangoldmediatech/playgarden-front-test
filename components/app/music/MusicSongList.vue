@@ -4,7 +4,7 @@
     <v-row no-gutters>
       <!-- Child Selector -->
       <v-col v-if="!isPlayerShowing || mobile" cols="12" md="">
-        <div class="child-selector ml-auto">
+        <div class="child-selector mx-auto">
           <child-select v-model="selectedChildId" hide-details />
         </div>
       </v-col>
@@ -224,5 +224,8 @@ export default {
     background-color: var(--v-accent-base);
     box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
   }
+}
+.child-selector {
+  max-width: 300px;
 }
 </style>
