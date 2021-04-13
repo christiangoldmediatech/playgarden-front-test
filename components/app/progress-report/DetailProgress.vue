@@ -9,10 +9,9 @@
         </div>
       </center>
     </v-col>
-    <v-col cols="8" class="pl-3">
-      <div class="pt-4 mb-4 mr-6">
-        <underlined-title class="text-h6 text-md-h3" :text="reportCardType" />
-
+    <v-col cols="8" class="pl-3 mt-n12">
+      <underlined-title class="text-h6 text-md-h3" :text="reportCardType" />
+      <div class="mb-6 mr-6 mt-8">
         <p class="text-body-1 text-md-body-1 text-progress mt-4 pb-10" v-html="dataReportCardType.description" />
 
         <p>
