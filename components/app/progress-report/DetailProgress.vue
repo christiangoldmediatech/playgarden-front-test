@@ -72,9 +72,9 @@ export default {
 
     getTextWhatIsThis () {
       let text = ''
-      if (this.getDataCurrent.y <= 20) {
+      if (this.getDataCurrent.value <= 20) {
         text = this.dataReportCardType.descriptionProgress.progressing
-      } else if (this.getDataCurrent.y > 20 && this.getDataCurrent.y <= 80) {
+      } else if (this.getDataCurrent.value > 20 && this.getDataCurrent.value <= 80) {
         text = this.dataReportCardType.descriptionProgress.ageAppropiate
       } else {
         text = this.dataReportCardType.descriptionProgress.areaStrenght
