@@ -84,9 +84,9 @@ export default {
 
     getScale () {
       let position = ''
-      if (this.getDataCurrent.y <= 20) {
+      if (this.getDataCurrent.value <= 20) {
         position = 'Progressing'
-      } else if (this.getDataCurrent.y > 20 && this.getDataCurrent.y <= 80) {
+      } else if (this.getDataCurrent.value > 20 && this.getDataCurrent.value <= 80) {
         position = 'Age Appropriate'
       } else {
         position = 'Area of Strength'
@@ -96,9 +96,9 @@ export default {
 
     getClassColor () {
       let colorClass = 'font-weight-bold text-h6 text-md-h5'
-      if (this.getDataCurrent.y <= 20) {
+      if (this.getDataCurrent.value <= 20) {
         colorClass = `progress-title ${colorClass}`
-      } else if (this.getDataCurrent.y > 20 && this.getDataCurrent.y <= 80) {
+      } else if (this.getDataCurrent.value > 20 && this.getDataCurrent.value <= 80) {
         colorClass = `age-title ${colorClass}`
       } else {
         colorClass = `area-title ${colorClass}`
