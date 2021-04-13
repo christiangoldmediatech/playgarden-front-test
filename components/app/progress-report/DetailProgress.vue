@@ -119,7 +119,13 @@ export default {
 <style lang="scss" scoped>
 .text-progress {
   color: var(--v-black-base) !important;
-  text-align: justify;
+  text-align: justify !important;
+  font-family: Poppins !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-size: 20px !important;
+  line-height: 28px !important;
+  text-transform: none !important;
 }
 
 .progress-title {
