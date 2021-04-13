@@ -31,7 +31,7 @@
           <underlined-title class="text-h6 text-md-h7" text="What is this?" />
         </p>
 
-        <p class="text-progress pb-16 pt-8" v-html="getTextWhatIsThis" />
+        <p class="text-body-1 text-md-body-1 text-progress pb-16 pt-8" v-html="getTextWhatIsThis" />
       </div>
     </v-col>
   </v-row>
