@@ -57,7 +57,7 @@
               @remove-item="remove"
             >
               <template v-slot:[`item.deletedAt`]="{ item }">
-                <span v-if="item.deletedAt === null">
+                <span v-if="isNotificationActive(item)">
                   ACTIVE
                 </span>
                 <span v-else>
@@ -65,7 +65,12 @@
                 </span>
               </template>
               <template v-slot:[`item.actions.prepend`]="{ item }">
-                <img class="clickable profile-icon" width="20px;" height="20px;" src="@/assets/svg/eye.svg" @click="goToProfile(item.id)">
+                <v-icon v-if="isNotificationActive(item)" size="20" @click="goToProfile(item.id)">
+                  mdi-eye
+                </v-icon>
+                <v-icon v-else size="20" @click="restore(item)">
+                  mdi-history
+                </v-icon>
               </template>
             </pg-admin-data-table>
           </v-card-text>
@@ -127,7 +132,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('notifications', ['getNotifications', 'deleteNotification']),
+    ...mapActions('notifications', ['getNotifications', 'deleteNotification', 'restoreNotification']),
 
     async refresh (clear = false) {
       this.loading = true
@@ -153,6 +158,25 @@ export default {
           await this.refresh()
         }
       })
+    },
+
+    restore ({ id, name }) {
+      this.$nuxt.$emit('open-prompt', {
+        title: 'Restore notification?',
+        message: `Are you sure you want to restore <b>${name}</b>?`,
+        warning: 'This will change the notification status to ACTIVE.',
+        actionText: 'Restore',
+        action: async () => {
+          await this.restoreNotification(id)
+          await this.refresh()
+        }
+      })
+    },
+
+    goToProfile () {},
+
+    isNotificationActive (notification) {
+      return notification && notification.deletedAt === null
     }
   }
 }
