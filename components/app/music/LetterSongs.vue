@@ -1,6 +1,6 @@
 <template>
   <div class="letter-song-wrapper">
-    <div class="letter-song-title-border"></div>
+    <div class="letter-song-title-border" :class="{ vowel: isVowel }"></div>
     <div class="letter-song-title">
       <v-row no-gutters justify="center" align="center">
         <span class="letter-text">LETTER</span>
@@ -65,6 +65,18 @@ export default {
     }
   },
 
+  data () {
+    return {
+      vowels: ['A', 'E', 'I', 'O', 'U']
+    }
+  },
+
+  computed: {
+    isVowel () {
+      return this.vowels.includes(this.letter.name.substr(0, 1).toUpperCase())
+    }
+  },
+
   methods: {
     createPlayListFromIndex (index) {
       const playlist = jsonCopy(this.songs.slice(index))
@@ -96,7 +108,10 @@ export default {
       left: 0;
       width: 100%;
       height: 16px;
-      background-color: var(--v-accent-base);
+      background-color: #dce7b5;
+      &.vowel {
+        background-color: var(--v-accent-base);
+      }
     }
   }
 }
