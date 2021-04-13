@@ -1,26 +1,10 @@
 <template>
   <v-row>
-    <v-row no-gutters>
-      <v-btn
-        color="accent"
-        nuxt
-        text
-        :to="{
-          name: 'app-payment',
-          query: { process: 'signup', step: '2' }
-        }"
-      >
-        <v-icon left>
-          mdi-less-than
-        </v-icon>
-
-        Back
-      </v-btn>
-    </v-row>
     <v-col cols="12">
       <v-row>
         <v-col>
           <v-row
+            no-glutters
             class="flex-column flex-md-row"
             justify="center"
           >
@@ -30,18 +14,59 @@
             >
               <v-img
                 v-if="$vuetify.breakpoint.smAndUp"
-                max-width="550"
-                :src="require('@/assets/svg/child-information.svg')"
+                max-width="650"
+                :src="require('@/assets/svg/child-inactive.svg')"
               />
             </v-col>
             <v-col
               cols="12"
               md="6"
-              sm="12"
               xs="12"
-              :class="{ 'mt-n14 px-8': !$vuetify.breakpoint.smAndUp }"
+              class="my-4 pr-5"
             >
-              aqui
+              <v-card
+                class="full-height pt-12"
+              >
+                <v-card-text class="pt-12">
+                  <p
+                    class="font-weight-bold mb-6 pg-letter-spacing text-center text-h5 text-md-left"
+                  >
+                    <underlined-title class="text-h6 text-md-h4" text="IT SEEMS THAT YOUR ACCOUNT IS INACTIVE" />
+                  </p>
+
+                  <p class="text-justify">
+                    The account linked to this email <b>user@mail.com</b> seems to be deactivated, this may be due to non-payment, or its cancellation previously.
+                    You can activate your account again by clicking on the following button
+                  </p>
+
+                  <v-row>
+                    <v-col cols="4">
+                      <v-btn
+                        class="text-transform-none mr-3"
+                        color="accent"
+                        dark
+                        :fab="$vuetify.breakpoint.smAndDown"
+                        :large="$vuetify.breakpoint.mdAndUp"
+                        nuxt
+                        :small="$vuetify.breakpoint.smAndDown"
+                      >
+                        <template v-if="$vuetify.breakpoint.mdAndUp">
+                          Activate account
+                        </template>
+
+                        <v-icon v-else>
+                          mdi-plus
+                        </v-icon>
+                      </v-btn>
+                    </v-col>
+                    <v-col class="ml-4">
+                      <label>
+                        It is a mistake? <span class="contact">Contact Us</span>
+                      </label>
+                    </v-col>
+                  </v-row>
+                </v-card-text>
+              </v-card>
             </v-col>
           </v-row>
         </v-col>
@@ -66,3 +91,10 @@ export default {
   methods: {}
 }
 </script>
+
+<style>
+.contact {
+  color: var(--v-accent-base) !important;
+  text-decoration: underline !important;
+}
+</style>

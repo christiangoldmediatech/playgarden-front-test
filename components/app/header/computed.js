@@ -35,7 +35,8 @@ export default {
         if (!['production', 'staging'].includes(process.env.testEnv)) {
           list.push({
             title: 'Parent Corner',
-            to: { name: 'app-parent-corner' },
+            // to: { name: 'app-parent-corner' },
+            to: { name: 'app-inactive-subscription' },
             exact: false
           })
         }
