@@ -2,7 +2,7 @@
   <v-row class="pt-12 pb-16">
     <v-col cols="4">
       <center>
-        <v-img :src="getDataCurrent.icon" class="ml-4 mt-4" />
+        <v-img :src="getIcon" class="ml-4 mt-4" />
         <div class="ml-7">
           <v-progress-linear class="mb-3" :value="(getDataCurrent.y === undefined) ? 0 : getDataCurrent.y" height="15" rounded color="accent" />
           <span class="text-progress">{{ `${(getDataCurrent.y === undefined) ? 0 : getDataCurrent.y}/100` }}</span>
@@ -65,6 +65,10 @@ export default {
     getDataCurrent () {
       const index = this.report.categories.indexOf(this.reportCardType)
       return this.report.dataSerie[index]
+    },
+
+    getIcon () {
+      return this.getDataCurrent.symbol.replace('image://', '')
     },
 
     getTextWhatIsThis () {
