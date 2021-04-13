@@ -65,10 +65,12 @@
                 </span>
               </template>
               <template v-slot:[`item.actions.prepend`]="{ item }">
+                <!--
                 <v-icon v-if="isNotificationActive(item)" size="20" @click="goToProfile(item.id)">
                   mdi-eye
                 </v-icon>
-                <v-icon v-else size="20" @click="restore(item)">
+                -->
+                <v-icon v-if="!isNotificationActive(item)" size="20" @click="restore(item)">
                   mdi-history
                 </v-icon>
               </template>
@@ -173,7 +175,7 @@ export default {
       })
     },
 
-    goToProfile () {},
+    /* goToProfile () {}, */
 
     isNotificationActive (notification) {
       return notification && notification.deletedAt === null
