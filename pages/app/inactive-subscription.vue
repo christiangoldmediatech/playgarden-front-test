@@ -34,7 +34,7 @@
                     <underlined-title class="text-h6 text-md-h4" text="IT SEEMS THAT YOUR ACCOUNT IS INACTIVE" />
                   </p>
 
-                  <p class="text-justify mt-12">
+                  <p class="text-justify text-h6 mt-12">
                     The account linked to this email <b>user@mail.com</b> seems to be deactivated, this may be due to non-payment, or its cancellation previously.
                     You can activate your account again by clicking on the following button
                   </p>
@@ -60,7 +60,7 @@
                       </v-btn>
                     </v-col>
                     <v-col class="ml-4">
-                      <p class="mt-3">
+                      <p class="mt-2 text-h6">
                         It is a mistake? <span color="accent" class="contact">Contact Us</span>
                       </p>
                     </v-col>
@@ -96,5 +96,6 @@ export default {
 .contact {
   color: var(--v-accent-base) !important;
   text-decoration: underline !important;
+  font-weight: bold !important;
 }
 </style>
