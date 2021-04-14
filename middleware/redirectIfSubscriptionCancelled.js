@@ -8,6 +8,7 @@ export default function ({ redirect, route, store }) {
       'auth-verify-playdate': 1,
       'app-pick-child': 1,
       'app-account-index': 1,
+      'app-inactive-subscription': 1,
       'app-children-register': 1,
       'app-children': 1,
       'app-payment': 1,
@@ -21,10 +22,10 @@ export default function ({ redirect, route, store }) {
     if (!whiteList[route.name] && get(userInfo, 'role.id') === 3) {
       // user doesn't has a subscription
       if (!userInfo || !userInfo.subscription) {
-        redirect('/app/account')
+        redirect('/app/inactive-subscription')
       } else if (userInfo.subscription.status === 'canceled') {
         // check if subscription is cancelled, if so redirect
-        redirect('/app/account')
+        redirect('/app/inactive-subscription')
       }
     }
   }

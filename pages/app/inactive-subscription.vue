@@ -49,6 +49,7 @@
                         :large="$vuetify.breakpoint.mdAndUp"
                         nuxt
                         :small="$vuetify.breakpoint.smAndDown"
+                        @click="selectPlan"
                       >
                         <template v-if="$vuetify.breakpoint.mdAndUp">
                           Activate account
@@ -88,7 +89,14 @@ export default {
 
   created () {},
 
-  methods: {}
+  methods: {
+    selectPlan () {
+      this.$router.push({
+        name: 'app-payment-plan',
+        query: { process: 'signup', step: '3' }
+      })
+    }
+  }
 }
 </script>
 
