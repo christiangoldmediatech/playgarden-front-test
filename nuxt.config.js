@@ -161,7 +161,6 @@ export default {
     '@nuxtjs/style-resources',
     'vue-scrollto/nuxt',
     'vue-social-sharing/nuxt',
-    'nuxt-highcharts',
     [
       'storyblok-nuxt',
       {
@@ -240,11 +239,6 @@ export default {
    */
   build: {
     transpile: ['vuetify/lib', 'vee-validate/dist/rules', 'tiptap-vuetify', 'vue-echarts', 'resize-detector'],
-    plugins: [
-      new webpack.IgnorePlugin({
-        resourceRegExp: /\@highcharts\/map\-collection/
-      })
-    ],
     build: {
       extend (config, ctx) {
         if (ctx.isDev) {

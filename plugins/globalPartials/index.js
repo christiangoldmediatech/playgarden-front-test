@@ -6,6 +6,9 @@ import PgInlineVideoPlayer from '@/components/pg-video-js-player/PgInlineVideoPl
 import PgOnboardingVideoPlayer from '@/components/pg-video-js-player/PgOnboardingVideoPlayer.vue'
 import VideoPlayerDialog from '@/components/pg-video-js-player/VideoPlayerDialog.vue'
 
+// Audio Players
+import PgAudioPlayer from '@/components/pg-audio-player/PgAudioPlayer.vue'
+
 // Global PG Components
 import PgCircleLetterDay from '@/components/pg/components/PgCircleLetterDay.vue'
 import PgFileUploader from '@/components/pg/components/file-uploader/PgFileUploader.vue'
@@ -51,6 +54,8 @@ Vue.component(PgVideoJsPlayer.name, PgVideoJsPlayer)
 Vue.component(PgInlineVideoPlayer.name, PgInlineVideoPlayer)
 Vue.component(PgOnboardingVideoPlayer.name, PgOnboardingVideoPlayer)
 Vue.component(VideoPlayerDialog.name, VideoPlayerDialog)
+
+Vue.component(PgAudioPlayer.name, PgAudioPlayer)
 
 Vue.component(PgCircleLetterDay.name, PgCircleLetterDay)
 Vue.component(PgFileUploader.name, PgFileUploader)

@@ -84,6 +84,7 @@
           <v-spacer />
 
           <v-btn
+            v-if="isNotificationActive(item)"
             class="white--text"
             color="green"
             :disabled="invalid"
@@ -92,6 +93,13 @@
             @click.stop="passes(save)"
           >
             Save
+          </v-btn>
+          <v-btn
+            v-else
+            text
+            disabled
+          >
+            Restore to save
           </v-btn>
 
           <v-btn
@@ -160,6 +168,7 @@ function generateItemTemplate () {
   return {
     name: null,
     description: null,
+    deletedAt: null,
     template: {}
   }
 }
@@ -240,6 +249,10 @@ export default {
       this.$nextTick(() => {
         this.dialog = true
       })
+    },
+
+    isNotificationActive (notification) {
+      return notification && notification.deletedAt === null
     }
   }
 }
