@@ -96,10 +96,13 @@ export default {
     CardKnowMore
   },
 
-  data: () => ({
+  data: vm => ({
     loading: false,
     showCardPlaygarden: true,
-    coupon: null
+    coupon: null,
+    mode: vm.$route.params.mode
+      ? vm.$route.params.mode
+      : ''
   }),
 
   computed: {},
@@ -115,13 +118,21 @@ export default {
     ]),
 
     goToStepThree () {
-      this.$router.push({
-        name: 'app-children',
-        query: {
-          step: 3,
-          process: 'signup'
+      let page = {}
+      if (this.mode === 'activate-user') {
+        page = {
+          name: 'app-account-index'
         }
-      })
+      } else {
+        page = {
+          name: 'app-children',
+          query: {
+            step: 3,
+            process: 'signup'
+          }
+        }
+      }
+      this.$router.push(page)
     },
 
     async onSubmit (cardData) {
