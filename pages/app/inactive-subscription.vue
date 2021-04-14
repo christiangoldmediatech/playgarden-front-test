@@ -17,7 +17,7 @@
       cols="12"
       md="6"
       xs="12"
-      class="my-3"
+      class="my-3 mb-6"
     >
       <v-card
         class="full-height pt-12"
