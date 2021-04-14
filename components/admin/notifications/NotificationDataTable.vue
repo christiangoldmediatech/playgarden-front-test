@@ -65,11 +65,6 @@
                 </span>
               </template>
               <template v-slot:[`item.actions.prepend`]="{ item }">
-                <!--
-                <v-icon v-if="isNotificationActive(item)" size="20" @click="goToProfile(item.id)">
-                  mdi-eye
-                </v-icon>
-                -->
                 <v-icon v-if="!isNotificationActive(item)" size="20" @click="restore(item)">
                   mdi-history
                 </v-icon>
@@ -151,20 +146,26 @@ export default {
       }
     },
 
-    remove ({ id, name }) {
-      this.$nuxt.$emit('open-prompt', {
-        title: 'Delete notification?',
-        message: `Are you sure you want to delete <b>${name}</b>?`,
-        action: async () => {
-          await this.deleteNotification(id)
-          await this.refresh()
-        }
-      })
+    remove ({ id, name, deletedAt }) {
+      if (this.isNotificationActive({ deletedAt })) {
+        this.$nuxt.$emit('open-prompt', {
+          message: `Are you sure you want to delete <b>${name}</b>?`,
+          action: async () => {
+            await this.deleteNotification(id)
+            await this.refresh()
+          }
+        })
+      } else {
+        this.$nuxt.$emit('open-prompt', {
+          message: 'Please, restore the notification first',
+          warning: 'This will allow you to edit and save changes',
+          actionText: 'Ok'
+        })
+      }
     },
 
     restore ({ id, name }) {
       this.$nuxt.$emit('open-prompt', {
-        title: 'Restore notification?',
         message: `Are you sure you want to restore <b>${name}</b>?`,
         warning: 'This will change the notification status to ACTIVE.',
         actionText: 'Restore',
