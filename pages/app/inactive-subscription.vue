@@ -51,14 +51,14 @@
               </v-btn>
             </v-col>
             <v-col class="text-center">
-              <v-row :class="{ 'ml-4 mt-n2': !$vuetify.breakpoint.smAndDown }">
+              <v-row :class="(!$vuetify.breakpoint.smAndDown) ? 'ml-4 mt-n2' : 'no-gutters'">
                 <v-col cols="12" sm="12" md="6" class="text-center">
                   <p class="text-h6">
                     It is a mistake?
                   </p>
                 </v-col>
                 <v-col cols="12" sm="12" md="6" class="text-center">
-                  <p class="text-h6">
+                  <p class="text-h6" :class="(!$vuetify.breakpoint.smAndDown) ? 'ml-n14' : ''">
                     <nuxt-link
                       class="d-block link-text contact"
                       :to="{ name: 'help' }"
