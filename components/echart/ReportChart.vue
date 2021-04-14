@@ -1,12 +1,12 @@
 <template>
-  <v-chart class="chart" :option="graph" />
+  <v-chart class="chart-report-children" :option="graph" autoresize />
 </template>
 
 <script>
 import { defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
-  name: 'Chart',
+  name: 'ReportChart',
   props: {
     graph: {
       type: Object,
@@ -18,7 +18,8 @@ export default defineComponent({
 </script>
 
 <style>
-.chart {
-  height: 400px;
+.chart-report-children {
+  width: 100% !important;
+  min-height: 500px !important;
 }
 </style>
