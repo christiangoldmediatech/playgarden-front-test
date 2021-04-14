@@ -34,31 +34,39 @@
             You can activate your account again by clicking on the following button
           </p>
 
-          <v-row class="mt-8">
-            <v-col cols="4">
+          <v-row class="mt-8" justify="center">
+            <v-col class="text-center" cols="12" xs="12" md="4">
               <v-btn
                 class="text-transform-none mr-3"
                 color="accent"
                 dark
-                :fab="$vuetify.breakpoint.smAndDown"
                 :large="$vuetify.breakpoint.mdAndUp"
                 nuxt
                 :small="$vuetify.breakpoint.smAndDown"
                 @click="selectPlan"
               >
-                <template v-if="$vuetify.breakpoint.mdAndUp">
+                <template>
                   Activate account
                 </template>
-
-                <v-icon v-else>
-                  mdi-plus
-                </v-icon>
               </v-btn>
             </v-col>
-            <v-col class="ml-4">
-              <p class="mt-2 text-h6">
-                It is a mistake? <span color="accent" class="contact">Contact Us</span>
-              </p>
+            <v-col class="text-center" :class="{ 'ml-4 mt-n4': !$vuetify.breakpoint.smAndDown" }>
+              <v-row no-gutters>
+                <v-col cols="12" sm="12" md="6" class="text-center">
+                  <p class="text-h6">
+                    It is a mistake?
+                  </p>
+                </v-col>
+                <v-col cols="12" sm="12" md="6" class="text-center">
+                  <p class="text-h6">
+                    <nuxt-link
+                      class="d-block link-text contact"
+                      :to="{ name: 'help' }"
+                      v-text="'Contact Us'"
+                    />
+                  </p>
+                </v-col>
+              </v-row>
             </v-col>
           </v-row>
         </v-card-text>
@@ -84,7 +92,12 @@ export default {
     selectPlan () {
       this.$router.push({
         name: 'app-payment-plan',
-        query: { process: 'signup', step: '3' }
+        query: { process: 'signup', step: '2' }
+      })
+    },
+    goHelp () {
+      this.$router.push({
+        name: 'help'
       })
     }
   }
