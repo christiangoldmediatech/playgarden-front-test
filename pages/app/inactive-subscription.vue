@@ -91,7 +91,7 @@ export default {
   methods: {
     selectPlan () {
       this.$router.push({
-        name: 'app-payment-plan',
+        name: 'app-payment',
         query: { process: 'signup', step: '2' }
       })
     },
