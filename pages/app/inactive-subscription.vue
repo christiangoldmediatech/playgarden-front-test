@@ -50,8 +50,8 @@
                 </template>
               </v-btn>
             </v-col>
-            <v-col class="text-center" :class="{ 'ml-4 mt-n4': !$vuetify.breakpoint.smAndDown" }>
-              <v-row no-gutters>
+            <v-col class="text-center">
+              <v-row :class="{ 'ml-4 mt-n2': !$vuetify.breakpoint.smAndDown }">
                 <v-col cols="12" sm="12" md="6" class="text-center">
                   <p class="text-h6">
                     It is a mistake?
