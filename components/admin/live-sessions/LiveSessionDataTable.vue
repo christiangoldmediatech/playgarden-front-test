@@ -4,7 +4,7 @@
       <v-col cols="12">
         <v-card width="100%">
           <v-card-title>
-            Live Sessions Management
+            Live Class Management
 
             <v-spacer />
 
@@ -23,13 +23,13 @@
                 mdi-plus
               </v-icon>
               <span class="hidden-xs-only white--text">
-                Add new live session
+                Add new live class
               </span>
             </v-btn>
           </v-card-title>
 
           <v-card-text>
-            View, create, update, or delete live sessions.
+            View, create, update, or delete live classes.
           </v-card-text>
         </v-card>
       </v-col>
@@ -382,7 +382,7 @@ export default {
 
     remove ({ id, name }) {
       this.$nuxt.$emit('open-prompt', {
-        title: 'Delete Live Session?',
+        title: 'Delete Live Class?',
         message: `Are you sure you want to delete <b>${name}</b>?`,
         action: async () => {
           await this.deleteLiveSession(id)
