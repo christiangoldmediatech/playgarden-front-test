@@ -60,9 +60,9 @@
                       </v-btn>
                     </v-col>
                     <v-col class="ml-4">
-                      <label>
-                        It is a mistake? <span class="contact">Contact Us</span>
-                      </label>
+                      <p class="mt-3">
+                        It is a mistake? <span color="accent" class="contact">Contact Us</span>
+                      </p>
                     </v-col>
                   </v-row>
                 </v-card-text>
