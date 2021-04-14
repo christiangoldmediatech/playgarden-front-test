@@ -34,12 +34,12 @@
                     <underlined-title class="text-h6 text-md-h4" text="IT SEEMS THAT YOUR ACCOUNT IS INACTIVE" />
                   </p>
 
-                  <p class="text-justify">
+                  <p class="text-justify mt-12">
                     The account linked to this email <b>user@mail.com</b> seems to be deactivated, this may be due to non-payment, or its cancellation previously.
                     You can activate your account again by clicking on the following button
                   </p>
 
-                  <v-row>
+                  <v-row class="mt-8">
                     <v-col cols="4">
                       <v-btn
                         class="text-transform-none mr-3"
