@@ -9,8 +9,8 @@
     >
       <v-card class="pt-4">
         <v-card-text class="mt-4">
-          <label>Curriculum: {{ itemSelected.curriculumType.name }}</label> <br />
-          <label>Name: {{ itemSelected.name }}</label> <br />
+          <label>Curriculum: {{ itemSelected.curriculumType.name }}</label> <br>
+          <label>Name: {{ itemSelected.name }}</label> <br>
           <label>Description: {{ itemSelected.description }}</label>
           <center>
             <audio controls class="mt-4">

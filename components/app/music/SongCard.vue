@@ -11,7 +11,7 @@
       <v-col cols="auto">
         <v-row no-gutters class="fill-height" justify="start" align="center">
           <v-col cols="auto">
-            <figure class="song-thumbnail" :style="{ 'background-image': `url(${thumbnail}` }"></figure>
+            <figure class="song-thumbnail" :style="{ 'background-image': `url(${thumbnail}` }" />
           </v-col>
         </v-row>
       </v-col>

@@ -1,6 +1,6 @@
 <template>
   <div class="letter-song-wrapper">
-    <div class="letter-song-title-border" :class="{ vowel: isVowel }"></div>
+    <div class="letter-song-title-border" :class="{ vowel: isVowel }" />
     <div class="letter-song-title">
       <v-row no-gutters justify="center" align="center">
         <span class="letter-text">LETTER</span>
@@ -28,7 +28,7 @@
           >
             mdi-play-circle-outline
           </v-icon>
-          <figure class="song-image" :style="{ 'background-image': `url(${song.thumbnail})` }"></figure>
+          <figure class="song-image" :style="{ 'background-image': `url(${song.thumbnail})` }" />
           <p class="song-description mb-0">
             {{ song.description }}
           </p>
