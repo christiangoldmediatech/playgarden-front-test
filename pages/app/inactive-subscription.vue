@@ -22,7 +22,7 @@
               cols="12"
               md="6"
               xs="12"
-              class="my-4 pr-5"
+              class="my-4 pl-5"
             >
               <v-card
                 class="full-height pt-12"
