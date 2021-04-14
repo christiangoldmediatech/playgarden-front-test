@@ -113,7 +113,7 @@
                   </v-col>
 
                   <v-col cols="12" sm="9" lg="6">
-                    <v-switch v-model="activity.featured" class="mt-n6"></v-switch>
+                    <v-switch v-model="activity.featured" class="mt-n6" />
                   </v-col>
                 </v-row>
 

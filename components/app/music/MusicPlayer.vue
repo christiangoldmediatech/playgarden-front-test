@@ -197,8 +197,7 @@
                       <figure
                         class="playlist-song-thumbnail"
                         :style="{ 'background-image': `url(${song.thumbnail})` }"
-                      >
-                      </figure>
+                      />
                     </v-col>
                     <v-col cols="10">
                       <div class="text-center">

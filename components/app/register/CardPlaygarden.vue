@@ -10,7 +10,7 @@
         text
       >
         <p :class="($vuetify.breakpoint.smAndUp) ? 'text-center free-trial-info' : 'text-center free-trial-info-mobile'">
-          <span>Our family loves </span> Playgarden <br />
+          <span>Our family loves </span> Playgarden <br>
           <span>Prep Online!</span>
         </p>
       </v-btn>
@@ -18,8 +18,8 @@
     <v-card-text>
       <div class="text-mdi-monitor">
         <center class="text-pay-information">
-          “We have seen Liam learn a lot through the platform <br />
-          and appreciate your team creating it during this time. <br />
+          “We have seen Liam learn a lot through the platform <br>
+          and appreciate your team creating it during this time. <br>
           Features we love:
 
           <div class="pb-10">

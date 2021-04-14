@@ -1,7 +1,7 @@
 <template>
   <v-row justify="center">
     <v-col cols="3" class="mt-8">
-      <span class="font-weight-bold">{{ dataGrade.code }} - {{ dataGrade.name }}</span> <br />
+      <span class="font-weight-bold">{{ dataGrade.code }} - {{ dataGrade.name }}</span> <br>
       {{ dataGrade.description }}
     </v-col>
     <v-col
@@ -23,7 +23,7 @@
       </validation-provider>
     </v-col>
     <v-col cols="12">
-      <v-divider></v-divider>
+      <v-divider />
     </v-col>
   </v-row>
 </template>

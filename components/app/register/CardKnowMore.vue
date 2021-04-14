@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-divider class="mb-4"></v-divider>
+    <v-divider class="mb-4" />
     <v-card-title primary-title>
       <v-btn
         block
@@ -18,10 +18,11 @@
               YOUR 30 DAY FREE TRIAL
             </span>
             <v-icon
-              class="ml-4">
+              class="ml-4"
+            >
               mdi-chevron-up
             </v-icon>
-            <br />
+            <br>
             <span class="free-trial-info">
               INCLUDES THE PREMIUM + PLAN
             </span>
@@ -30,7 +31,7 @@
             <span class="free-trial-info">
               YOUR 30 DAY FREE TRIAL
             </span>
-            <br />
+            <br>
             <span class="free-trial-info">
               INCLUDES THE PREMIUM + PLAN
             </span>
@@ -150,7 +151,7 @@
               <span
                 class="text-header-info"
               >
-                * You can cancel your membership any <br v-if="!$vuetify.breakpoint.smAndUp" />time from the account settings.
+                * You can cancel your membership any <br v-if="!$vuetify.breakpoint.smAndUp">time from the account settings.
               </span>
             </div>
           </v-row>

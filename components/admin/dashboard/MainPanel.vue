@@ -19,7 +19,7 @@
               <!-- Conversions funnel -->
               <v-card class="mx-3 content-dashboard">
                 <v-card-text class="pt-3">
-                  <label class="title-dashboard font-weight-bold">Conversions funnel</label> <br />
+                  <label class="title-dashboard font-weight-bold">Conversions funnel</label> <br>
                   <span>The conversions will be shown here.</span>
                   <funnel-chart class="pt-10" :funnel-data="funnel" />
                 </v-card-text>
@@ -38,7 +38,7 @@
                             <v-icon x-large color="green lighten-1">
                               mdi-menu-up
                             </v-icon>
-                            <span>+{{ totalTrialing.increment }} New this week</span> <br />
+                            <span>+{{ totalTrialing.increment }} New this week</span> <br>
                           </p>
                         </v-col>
                         <v-col
@@ -63,7 +63,7 @@
                             <v-icon x-large color="green lighten-1">
                               mdi-menu-up
                             </v-icon>
-                            <span>+{{ totalActive.increment }} New this week</span> <br />
+                            <span>+{{ totalActive.increment }} New this week</span> <br>
                           </p>
                         </v-col>
                         <v-col
@@ -192,7 +192,7 @@
                       cols="12"
                     >
                       <center>
-                        <label class="font-weight-bold display-3 total-users">{{ activeUsers.today }}</label> <br />
+                        <label class="font-weight-bold display-3 total-users">{{ activeUsers.today }}</label> <br>
                         <span class="text-dashboard"> Users </span>
                       </center>
                     </v-col>
@@ -201,7 +201,7 @@
 
                 <v-card width="100%" class="users-today-data mb-n6">
                   <v-card-text>
-                    <label class="font-weight-bold title-dashboard">Active Users Per Week</label> <br />
+                    <label class="font-weight-bold title-dashboard">Active Users Per Week</label> <br>
                     <center>
                       <span>{{ getFormatDate }}</span>
                     </center>
@@ -210,7 +210,7 @@
                       class="mt-n4"
                     >
                       <center>
-                        <label class="font-weight-bold display-3 total-users">{{ activeUsers.last7Days }}</label> <br />
+                        <label class="font-weight-bold display-3 total-users">{{ activeUsers.last7Days }}</label> <br>
                         <span class="text-dashboard"> Users </span>
                       </center>
                     </v-col>

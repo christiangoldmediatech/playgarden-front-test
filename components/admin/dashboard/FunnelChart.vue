@@ -1,5 +1,5 @@
 <template>
-  <chart class="echarts" ref="funnel-chart" :graph="getFormatGraph" :autoresize="resize" />
+  <chart ref="funnel-chart" class="echarts" :graph="getFormatGraph" :autoresize="resize" />
 </template>
 
 <script>

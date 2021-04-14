@@ -83,7 +83,7 @@
                   v-if="uploadingVideos.length > 0"
                   indeterminate
                   color="amber"
-                ></v-progress-circular>
+                />
                 <span class="notification-videos">{{ uploadingVideos.length }}</span>
                 <v-icon>
                   mdi-bell
@@ -95,7 +95,7 @@
         </template>
         <v-list dense class="mt-8">
           <v-subheader>Notifications</v-subheader>
-          <v-divider></v-divider>
+          <v-divider />
           <v-list v-if="uploadingVideos.length > 0" class="content-notification">
             <v-list-item
               v-for="(item, index) in uploadingVideos"
@@ -116,7 +116,7 @@
                 <v-list-item-subtitle>
                   Status: {{ item.status }}
                 </v-list-item-subtitle>
-                <v-divider></v-divider>
+                <v-divider />
               </v-list-item-content>
             </v-list-item>
           </v-list>

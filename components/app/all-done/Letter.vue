@@ -1,5 +1,5 @@
 <template>
-  <div class="letter-lesson" v-on:click="sendLetter">
+  <div class="letter-lesson" @click="sendLetter">
     <recorded-letter
       v-bind="{ letter: item, small: smallLetter, disabled: item.disabled }"
       list-mode
