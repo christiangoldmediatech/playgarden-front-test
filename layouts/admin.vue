@@ -193,18 +193,18 @@ export default {
         },
         {
           icon: 'mdi-phone',
-          title: 'Live Session Management',
+          title: 'Live Classes Management',
           route: '/admin/live-session-management'
+        },
+        {
+          icon: 'mdi-google-circles-extended',
+          title: 'Recurring Live Classes',
+          route: '/admin/recurring-live-sessions-management'
         },
         {
           icon: 'mdi-volume-high',
           title: 'Music Library',
           route: '/admin/music-library'
-        },
-        {
-          icon: 'mdi-google-circles-extended',
-          title: 'Recurring Live Session',
-          route: '/admin/recurring-live-sessions-management'
         },
         {
           icon: 'mdi-account-supervisor',
