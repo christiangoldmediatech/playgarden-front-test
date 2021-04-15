@@ -117,9 +117,10 @@ export default {
       'validateCard'
     ]),
 
-    goToStepThree () {
+    async goToStepThree () {
       let page = {}
       if (this.mode === 'activate-user') {
+        await this.fetchUserInfo()
         page = {
           name: 'app-account-index'
         }
@@ -145,6 +146,10 @@ export default {
 
         if (cardData.promotion_id) {
           dataSubscrition.promotion_id = cardData.promotion_id
+        }
+
+        if (this.mode === 'activate-user') {
+          dataSubscrition.acive_user = true
         }
         await this.payShorterSubscription(dataSubscrition)
         this.goToStepThree()
