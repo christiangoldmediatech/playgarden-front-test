@@ -148,9 +148,6 @@ export default {
           dataSubscrition.promotion_id = cardData.promotion_id
         }
 
-        if (this.mode === 'activate-user') {
-          dataSubscrition.acive_user = true
-        }
         await this.payShorterSubscription(dataSubscrition)
         this.goToStepThree()
       } catch (e) {
