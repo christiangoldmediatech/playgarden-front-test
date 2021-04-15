@@ -4,11 +4,12 @@
       cols="12"
       md="6"
       xs="12"
+      class="d-flex flex-row-reverse"
     >
       <div class="mr-n5">
         <v-img
           v-if="$vuetify.breakpoint.smAndUp"
-          max-width="650"
+          max-width="450"
           :src="require('@/assets/svg/child-inactive.svg')"
         />
       </div>
@@ -17,12 +18,12 @@
       cols="12"
       md="6"
       xs="12"
-      class="my-3 mb-6"
+      class="my-2 mb-5"
     >
       <v-card
-        class="full-height pt-12"
+        class="full-height pt-6"
       >
-        <v-card-text class="pt-12">
+        <v-card-text class="pt-4">
           <p
             class="font-weight-bold mb-6 pg-letter-spacing text-center text-h5 text-md-left"
           >
