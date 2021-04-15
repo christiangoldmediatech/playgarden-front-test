@@ -2,7 +2,7 @@
   <v-main class="main-music-wrapper">
     <v-container fluid class="music-page-container pa-0" :class="{ 'mobile': isMobile, 'playing': isPlayerShowing }">
       <v-card class="player-card" :width="playerWidth" :height="playerHeight" :class="{ 'mobile': isMobile, 'pa-4': isPlayerShowing }">
-        <music-player ref="musicPlayer" v-show="isPlayerShowing" :mobile="isMobile" />
+        <music-player v-show="isPlayerShowing" ref="musicPlayer" :mobile="isMobile" />
       </v-card>
       <music-song-list
         :is-player-showing="isPlayerShowing"

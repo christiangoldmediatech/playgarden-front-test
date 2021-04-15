@@ -18,7 +18,7 @@
           class="mr-1"
           src="@/assets/svg/dropbox.svg"
           height="38"
-        />
+        >
       </v-btn>
     </v-col>
   </v-row>

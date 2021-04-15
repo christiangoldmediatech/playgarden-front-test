@@ -116,6 +116,11 @@ export default {
           text: 'PORTFOLIO',
           img: 'group.png',
           route: 'app-student-cubby-student-portfolio'
+        },
+        {
+          text: 'PROGRESS REPORT',
+          img: 'progress.png',
+          route: 'app-progress-report'
         }
       ]
     }
@@ -156,14 +161,6 @@ export default {
   },
 
   created () {
-    if (!['production'].includes(process.env.testEnv)) {
-      this.links.push({
-        text: 'PROGRESS REPORT',
-        img: 'progress.png',
-        route: 'app-progress-report'
-      })
-    }
-
     if (this.id) {
       this.selectedChildId = parseInt(this.id)
     } else if (this.currentChild.length) {
