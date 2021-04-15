@@ -45,7 +45,7 @@
                 :large="$vuetify.breakpoint.mdAndUp"
                 nuxt
                 :small="$vuetify.breakpoint.smAndDown"
-                @click="selectPlan"
+                @click="createMembership"
               >
                 <template>
                   Activate account
@@ -91,7 +91,7 @@ export default {
   created () {},
 
   methods: {
-    selectPlan () {
+    createMembership () {
       this.$router.push({
         name: 'app-payment',
         query: { process: 'signup', step: '2' },
