@@ -96,11 +96,11 @@
           </span>
         </center>
       </p>
-      <v-divider></v-divider>
+      <v-divider />
       <p v-if="!noTrial">
         <center class="ml-2">
           <span class="info-pay">
-            You can cancel your trial and membership anytime from the account settings.<br /> Once your free trial ends you will be placed on the <span class="option-standar">Standard</span> monthly plan, you can change plans at any time in your profile page.
+            You can cancel your trial and membership anytime from the account settings.<br> Once your free trial ends you will be placed on the <span class="option-standar">Standard</span> monthly plan, you can change plans at any time in your profile page.
           </span>
         </center>
       </p>

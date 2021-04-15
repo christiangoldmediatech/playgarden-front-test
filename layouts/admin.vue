@@ -83,7 +83,7 @@
                   v-if="uploadingVideos.length > 0"
                   indeterminate
                   color="amber"
-                ></v-progress-circular>
+                />
                 <span class="notification-videos">{{ uploadingVideos.length }}</span>
                 <v-icon>
                   mdi-bell
@@ -95,7 +95,7 @@
         </template>
         <v-list dense class="mt-8">
           <v-subheader>Notifications</v-subheader>
-          <v-divider></v-divider>
+          <v-divider />
           <v-list v-if="uploadingVideos.length > 0" class="content-notification">
             <v-list-item
               v-for="(item, index) in uploadingVideos"
@@ -116,7 +116,7 @@
                 <v-list-item-subtitle>
                   Status: {{ item.status }}
                 </v-list-item-subtitle>
-                <v-divider></v-divider>
+                <v-divider />
               </v-list-item-content>
             </v-list-item>
           </v-list>
@@ -193,18 +193,18 @@ export default {
         },
         {
           icon: 'mdi-phone',
-          title: 'Live Session Management',
+          title: 'Live Classes Management',
           route: '/admin/live-session-management'
+        },
+        {
+          icon: 'mdi-google-circles-extended',
+          title: 'Recurring Live Classes',
+          route: '/admin/recurring-live-sessions-management'
         },
         {
           icon: 'mdi-volume-high',
           title: 'Music Library',
           route: '/admin/music-library'
-        },
-        {
-          icon: 'mdi-google-circles-extended',
-          title: 'Recurring Live Session',
-          route: '/admin/recurring-live-sessions-management'
         },
         {
           icon: 'mdi-account-supervisor',
@@ -320,10 +320,6 @@ export default {
             {
               title: 'All Users',
               route: ''
-            },
-            {
-              title: 'Dashboard',
-              route: 'dashboard'
             },
             {
               title: 'Parents',

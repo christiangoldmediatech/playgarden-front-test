@@ -29,12 +29,13 @@
 
         <v-tooltip
           v-if="puzzlePiece"
+          content-class="ow-tooltip"
           top
-          color="accent"
           :close-delay="$vuetify.breakpoint.smAndDown ? 5000 : 0"
           open-on-click
           open-on-hover
           dark
+          internal-activator
         >
           <template v-slot:activator="{ on, attrs }">
             <img
@@ -164,5 +165,11 @@ export default {
       clip-path: url(#myClip);
     }
   }
+}
+</style>
+
+<style lang="scss" scoped>
+.ow-tooltip.v-tooltip__content::after {
+  content: none !important;
 }
 </style>
