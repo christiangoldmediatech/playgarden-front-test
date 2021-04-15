@@ -21,9 +21,10 @@
       class="my-2 mb-5"
     >
       <v-card
-        class="full-height pt-6"
+        class="full-height"
+        :class="{ 'pt-6': $vuetify.breakpoint.smAndUp }"
       >
-        <v-card-text class="pt-4">
+        <v-card-text>
           <p
             class="font-weight-bold mb-6 pg-letter-spacing text-center text-h5 text-md-left"
           >
