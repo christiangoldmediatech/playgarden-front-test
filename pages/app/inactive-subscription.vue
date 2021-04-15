@@ -32,7 +32,11 @@
           </p>
 
           <p class="text-justify text-h6 mt-12">
-            The account linked to this email <b>user@mail.com</b> seems to be deactivated, this may be due to non-payment, or its cancellation previously.
+            Hi, <b>{{ fullName }}</b>
+          </p>
+
+          <p class="text-justify text-h6 mt-12">
+            The account linked to this email <b>{{ getEmail }}</b> seems to be deactivated, this may be due to non-payment, or its cancellation previously.
             You can activate your account again by clicking on the following button
           </p>
 
@@ -78,7 +82,7 @@
 </template>
 
 <script>
-
+import { mapGetters } from 'vuex'
 export default {
   name: 'InactiveSubscription',
 
@@ -86,7 +90,19 @@ export default {
 
   data: vm => ({}),
 
-  computed: {},
+  computed: {
+    ...mapGetters('auth', {
+      userInfo: 'getUserInfo'
+    }),
+
+    fullName () {
+      return this.userInfo.fullName // `${this.userInfo.firstName ?? ''} ${this.userInfo.lastName ?? ''}`.trim()
+    },
+
+    getEmail () {
+      return this.userInfo.email // `${this.userInfo.firstName ?? ''} ${this.userInfo.lastName ?? ''}`.trim()
+    }
+  },
 
   created () {},
 
