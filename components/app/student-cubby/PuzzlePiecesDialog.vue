@@ -1,13 +1,12 @@
 <template>
   <pg-dialog
-    class="pos-relative"
-    content-class="elevation-0 mt-10"
+    content-class="no-overflow pos-relative"
     :value="actualValue"
     persistent
     max-width="1264px"
   >
     <v-btn
-      class="bg-black pos-absolute pos-right-0 pos-top-0 close-btn"
+      class="pieces-close-btn"
       color="white"
       icon
       @click.stop="close"
@@ -16,6 +15,7 @@
         mdi-close
       </v-icon>
     </v-btn>
+
     <pieces v-if="actualShow" :puzzle="actualShow" />
   </pg-dialog>
 </template>
@@ -96,10 +96,15 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.close-btn {
-  @media screen and (min-width: 1264px) {
-    right: calc(((100vw - 1264px) / 2) - 16px);
-  }
+<style lang="scss">
+.no-overflow {
+  overflow-y: visible !important;
+}
+
+.pieces-close-btn {
+  position: absolute;
+  top: -34px;
+  right: -8px;
+  z-index: 2500;
 }
 </style>

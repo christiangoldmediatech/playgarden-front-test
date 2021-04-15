@@ -97,7 +97,7 @@
         <v-col cols="12" md="6">
           <v-row align-content="center" class="fill-height">
             <v-col cols="12" class="text-md-left text-md-h5 text-center font-weight-bold">
-              What's a Playdates?
+              What are Playdates?
             </v-col>
 
             <v-col cols="12" class="text-md-left text-center">

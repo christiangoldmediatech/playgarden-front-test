@@ -725,6 +725,10 @@ export default {
     },
 
     getDob (timestamp) {
+      if (!timestamp) {
+        return 'Missing information'
+      }
+
       const birthday = new Date(timestamp)
       const month = birthday.toLocaleString('default', { month: 'long' })
       return `${month} ${birthday.getDate()}, ${birthday.getFullYear()}`
