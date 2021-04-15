@@ -32,7 +32,7 @@
           </p>
 
           <p class="text-justify text-h6 mt-12">
-            Hi, <b>{{ fullName }}</b>
+            Hi <b>{{ fullName }}</b>,
           </p>
 
           <p class="text-justify text-h6 mt-12">
