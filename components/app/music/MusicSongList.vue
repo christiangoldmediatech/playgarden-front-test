@@ -58,8 +58,10 @@
         :thumbnail="song.thumbnail"
         :name="song.name"
         :description="song.description"
+        :is-favorite="song.isFavorite"
         class="my-4"
         @add="addSongToPlayList(song)"
+        @favorite="handleFavorite(song)"
         @click="createPlayListFromIndex(index)"
       />
     </template>
@@ -187,6 +189,8 @@ export default {
   },
 
   methods: {
+    ...mapActions('music', ['setFavoriteMusicForChild', 'removeFavoriteMusic']),
+
     ...mapActions('admin/curriculum', {
       getLetters: 'getTypes'
     }),
@@ -212,6 +216,21 @@ export default {
 
     addSongToPlayList (song) {
       this.$emit('addSong', song)
+    },
+
+    async handleFavorite (song) {
+      try {
+        if (song.isFavorite) {
+          await this.removeFavoriteMusic(song.id)
+          this.$snotify.success('Song removed from favorites')
+        } else {
+          await this.setFavoriteMusicForChild({ childId: this.selectedChildId, musicId: song.id })
+          this.$snotify.success('Song added to favorites')
+        }
+        this.$emit('favoritesUpdated')
+      } catch (error) {
+        this.$snotify.error(error.message)
+      }
     }
   }
 }
@@ -227,5 +246,8 @@ export default {
 }
 .child-selector {
   max-width: 300px;
+}
+.favorite-button {
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16) !important;
 }
 </style>
