@@ -39,6 +39,11 @@
       <v-col cols="1">
         <v-row no-gutters class="fill-height" justify="end" align="center">
           <v-col cols="auto">
+            <v-btn text icon class="pa-0" :class="isFavorite ? 'pink--text' : 'grey--text'" @click.stop="$emit('favorite')">
+              <v-icon>
+                mdi-heart
+              </v-icon>
+            </v-btn>
             <v-btn text icon class="pa-0" @click.stop="$emit('add')">
               <v-icon>
                 mdi-playlist-music
@@ -73,6 +78,11 @@ export default {
       type: String,
       required: false,
       default: ''
+    },
+
+    isFavorite: {
+      type: Boolean,
+      default: false
     }
   }
 }
