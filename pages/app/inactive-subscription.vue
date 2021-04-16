@@ -9,7 +9,7 @@
       <div class="mr-n5">
         <v-img
           v-if="$vuetify.breakpoint.smAndUp"
-          max-width="450"
+          max-width="455"
           :src="require('@/assets/svg/child-inactive.svg')"
         />
       </div>
@@ -31,19 +31,19 @@
             <underlined-title class="text-h6 text-md-h4" text="IT SEEMS THAT YOUR ACCOUNT IS INACTIVE" />
           </p>
 
-          <p class="text-justify text-h6 mt-12">
+          <p class="text-justify mt-12">
             Hi <b>{{ fullName }}</b>,
           </p>
 
-          <p class="text-justify text-h6">
+          <p class="text-justify">
             The account linked to this email <b>{{ getEmail }}</b> seems to be deactivated, this may be due to non-payment, or its cancellation previously.
             You can activate your account again by clicking on the following button
           </p>
 
-          <v-row class="mt-8" justify="center">
-            <v-col class="text-center" cols="12" xs="12" md="3">
+          <v-row no-gutters class="mt-8" justify="center">
+            <v-col class="text-center" cols="12" md="12">
               <v-btn
-                class="white--text text-transform-none"
+                class="white--text text-transform-none mb-4"
                 color="accent"
                 :block="isMobile"
                 @click="createMembership"
@@ -53,20 +53,21 @@
                 </template>
               </v-btn>
             </v-col>
-            <v-col class="text-center">
-              <v-row :class="(!$vuetify.breakpoint.smAndDown) ? 'ml-10 mt-n2' : 'no-gutters'">
-                <v-col cols="12" sm="12" md="7" class="text-center">
-                  <p class="text-h6">
+            <v-col class="text-center pb-4 mt-6" cols="12" md="12">
+              <v-divider></v-divider>
+            </v-col>
+            <v-col class="text-center mt-8">
+              <v-row :class="(!$vuetify.breakpoint.smAndDown) ? '' : 'no-gutters'">
+                <v-col class="text-center">
+                  <p>
                     It this is a mistake?
-                  </p>
-                </v-col>
-                <v-col cols="12" sm="12" md="5" class="text-center">
-                  <p class="text-h6" :class="(!$vuetify.breakpoint.smAndDown) ? 'ml-n14' : ''">
-                    <nuxt-link
-                      class="d-block link-text contact"
-                      :to="{ name: 'help' }"
-                      v-text="'Contact Us'"
-                    />
+                    <span>
+                      <nuxt-link
+                        class="d-block link-text contact"
+                        :to="{ name: 'help' }"
+                        v-text="'Contact Us'"
+                      />
+                    </span>
                   </p>
                 </v-col>
               </v-row>
