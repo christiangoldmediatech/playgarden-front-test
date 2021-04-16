@@ -72,6 +72,7 @@
         :letter="letter"
         :songs="letter.musicLibrary"
         class="my-2 mt-md-4 mb-md-8"
+        @favorite="handleFavorite"
         @createPlayList="emitPlayList"
       />
     </template>
