@@ -8,7 +8,7 @@
         :is-player-showing="isPlayerShowing"
         :mobile="isMobile"
         :all-songs="allSongsWithFavorites"
-        :songs-by-curriculum-type="songsByCurriculumType"
+        :songs-by-curriculum-type="songsByCurriculumTypeWithFavorites"
         class="music-song-list fill-height mx-auto"
         @addSong="addSongToPlaylist"
         @newPlayList="createNewPlaylist"
@@ -58,6 +58,16 @@ export default {
       return this.allSongs.map(song => ({
         ...song,
         isFavorite: this.favoriteSongsIds.includes(song.id)
+      }))
+    },
+
+    songsByCurriculumTypeWithFavorites () {
+      return this.songsByCurriculumType.map(curriculumType => ({
+        ...curriculumType,
+        musicLibrary: curriculumType.musicLibrary.map(song => ({
+          ...song,
+          isFavorite: this.favoriteSongsIds.includes(song.id)
+        }))
       }))
     },
 
