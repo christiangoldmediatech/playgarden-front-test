@@ -29,6 +29,13 @@
             mdi-play-circle-outline
           </v-icon>
           <figure class="song-image" :style="{ 'background-image': `url(${song.thumbnail})` }" />
+          <v-icon
+            class="favorite-btn"
+            :class="song.isFavorite? 'pink--text' : 'grey--text text--lighten-2'"
+            @click="$emit('favorite', song)"
+          >
+            mdi-heart
+          </v-icon>
           <p class="song-description mb-0">
             {{ song.description }}
           </p>
@@ -131,11 +138,16 @@ export default {
         color: white !important;
       }
     }
+    & .favorite-btn {
+      position: absolute;
+      top: 35px;
+      right: 35px;
+    }
   }
   &-image {
     height: 200px;
     width: 200px;
-    background-size: contain;
+    background-size: cover;
     background-position: center center;
   }
   &-description {
