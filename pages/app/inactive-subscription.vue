@@ -35,20 +35,17 @@
             Hi <b>{{ fullName }}</b>,
           </p>
 
-          <p class="text-justify text-h6 mt-12">
+          <p class="text-justify text-h6">
             The account linked to this email <b>{{ getEmail }}</b> seems to be deactivated, this may be due to non-payment, or its cancellation previously.
             You can activate your account again by clicking on the following button
           </p>
 
           <v-row class="mt-8" justify="center">
-            <v-col class="text-center" cols="12" xs="12" md="4">
+            <v-col class="text-center" cols="12" xs="12" md="3">
               <v-btn
-                class="text-transform-none mr-3"
+                class="white--text text-transform-none"
                 color="accent"
-                dark
-                :large="$vuetify.breakpoint.mdAndUp"
-                nuxt
-                :small="$vuetify.breakpoint.smAndDown"
+                :block="isMobile"
                 @click="createMembership"
               >
                 <template>
@@ -57,13 +54,13 @@
               </v-btn>
             </v-col>
             <v-col class="text-center">
-              <v-row :class="(!$vuetify.breakpoint.smAndDown) ? 'ml-4 mt-n2' : 'no-gutters'">
-                <v-col cols="12" sm="12" md="6" class="text-center">
+              <v-row :class="(!$vuetify.breakpoint.smAndDown) ? 'ml-10 mt-n2' : 'no-gutters'">
+                <v-col cols="12" sm="12" md="7" class="text-center">
                   <p class="text-h6">
-                    It is a mistake?
+                    It this is a mistake?
                   </p>
                 </v-col>
-                <v-col cols="12" sm="12" md="6" class="text-center">
+                <v-col cols="12" sm="12" md="5" class="text-center">
                   <p class="text-h6" :class="(!$vuetify.breakpoint.smAndDown) ? 'ml-n14' : ''">
                     <nuxt-link
                       class="d-block link-text contact"
