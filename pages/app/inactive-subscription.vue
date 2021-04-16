@@ -56,7 +56,7 @@
             <v-col class="text-center pb-4 mt-6" cols="12" md="12">
               <v-divider></v-divider>
             </v-col>
-            <v-col class="text-center mt-8">
+            <v-col class="text-center mt-7">
               <v-row :class="(!$vuetify.breakpoint.smAndDown) ? '' : 'no-gutters'">
                 <v-col class="text-center">
                   <p>
