@@ -7,11 +7,12 @@
       <music-song-list
         :is-player-showing="isPlayerShowing"
         :mobile="isMobile"
-        :all-songs="allSongs"
+        :all-songs="allSongsWithFavorites"
         :songs-by-curriculum-type="songsByCurriculumType"
         class="music-song-list fill-height mx-auto"
         @addSong="addSongToPlaylist"
         @newPlayList="createNewPlaylist"
+        @favoritesUpdated="getAndSetFavorites"
       />
     </v-container>
   </v-main>
@@ -37,7 +38,8 @@ export default {
     return {
       mobileBreakpoint: PAGE_MOBILE_BREAKPOINT,
       selectedChildId: null,
-      playList: []
+      playList: [],
+      favoriteSongsIds: []
     }
   },
 
@@ -51,6 +53,13 @@ export default {
     ...mapGetters('music', {
       allSongs: 'allSongsWithCurriculumType'
     }),
+
+    allSongsWithFavorites () {
+      return this.allSongs.map(song => ({
+        ...song,
+        isFavorite: this.favoriteSongsIds.includes(song.id)
+      }))
+    },
 
     isPlayerShowing () {
       return this.playList.length > 0
@@ -86,24 +95,29 @@ export default {
   },
 
   watch: {
-    selectedChildId (id) {
-      if (id) {
-        this.$router.push({ name: this.$route.name, query: { id } })
+    id (val) {
+      if (val) {
+        this.getAndSetFavorites()
       }
     }
   },
 
   async created () {
-    if (this.id) {
-      this.selectedChildId = parseInt(this.id)
-    } else if (this.currentChild.length) {
-      this.selectedChildId = this.currentChild[0].id
+    if (!this.id && this.currentChild.length) {
+      this.$router.push({ name: this.$route.name, query: { id: this.currentChild[0].id } })
     }
+
     await this.getMusicLibrariesByCurriculumType()
+    await this.getAndSetFavorites()
   },
 
   methods: {
-    ...mapActions('music', ['getMusicLibrariesByCurriculumType']),
+    ...mapActions('music', ['getMusicLibrariesByCurriculumType', 'getFavoriteMusicForChild']),
+
+    async getAndSetFavorites () {
+      const favorites = await this.getFavoriteMusicForChild(this.id)
+      this.favoriteSongsIds = favorites.map(fav => fav ? fav.music.id : undefined)
+    },
 
     addSongToPlaylist (song) {
       if (this.$refs.musicPlayer) {
@@ -151,6 +165,5 @@ export default {
 
 .music-song-list {
   overflow: scroll;
-  max-width: 1200px;
 }
 </style>
