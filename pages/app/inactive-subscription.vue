@@ -9,7 +9,7 @@
       <div class="mr-n5">
         <v-img
           v-if="$vuetify.breakpoint.smAndUp"
-          max-width="455"
+          max-width="410"
           :src="require('@/assets/svg/child-inactive.svg')"
         />
       </div>
@@ -18,7 +18,7 @@
       cols="12"
       md="6"
       xs="12"
-      class="my-2 mb-5"
+      class="my-2 mb-4"
     >
       <v-card
         class="full-height"
@@ -40,10 +40,10 @@
             You can activate your account again by clicking on the following button
           </p>
 
-          <v-row no-gutters class="mt-8" justify="center">
+          <v-row no-gutters class="mt-7" justify="center">
             <v-col class="text-center" cols="12" md="12">
               <v-btn
-                class="white--text text-transform-none mb-4"
+                class="white--text text-transform-none mb-3"
                 color="accent"
                 :block="isMobile"
                 @click="createMembership"
@@ -53,10 +53,10 @@
                 </template>
               </v-btn>
             </v-col>
-            <v-col class="text-center pb-4 mt-6" cols="12" md="12">
+            <v-col class="text-center pb-5 mt-6" cols="12" md="12">
               <v-divider></v-divider>
             </v-col>
-            <v-col class="text-center mt-7">
+            <v-col class="text-center">
               <v-row :class="(!$vuetify.breakpoint.smAndDown) ? '' : 'no-gutters'">
                 <v-col class="text-center">
                   <p>
