@@ -233,11 +233,13 @@ export default {
       }
 
       const favorite = this.favoritesDictionary[resolvedCurrentSong.id]
-      this.$refs.musicPlayer.refreshSongData({
-        ...resolvedCurrentSong,
-        isFavorite: !!favorite,
-        favoriteId: favorite ? favorite.id : undefined
-      })
+      if (this.$refs.musicPlayer) {
+        this.$refs.musicPlayer.refreshSongData({
+          ...resolvedCurrentSong,
+          isFavorite: !!favorite,
+          favoriteId: favorite ? favorite.id : undefined
+        })
+      }
     }
   }
 }
