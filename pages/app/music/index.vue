@@ -5,6 +5,7 @@
         <music-player v-show="isPlayerShowing" ref="musicPlayer" :mobile="isMobile" />
       </v-card>
       <music-song-list
+        :show-only-favorites="showOnlyFavorites"
         :is-player-showing="isPlayerShowing"
         :mobile="isMobile"
         :all-songs="allSongsWithFavorites"
@@ -13,6 +14,7 @@
         @addSong="addSongToPlaylist"
         @newPlayList="createNewPlaylist"
         @favoritesUpdated="getAndSetFavorites"
+        @showFavorites="showOnlyFavorites = !showOnlyFavorites"
       />
     </v-container>
   </v-main>
@@ -39,7 +41,8 @@ export default {
       mobileBreakpoint: PAGE_MOBILE_BREAKPOINT,
       selectedChildId: null,
       playList: [],
-      favoritesDictionary: {}
+      favoritesDictionary: {},
+      showOnlyFavorites: false
     }
   },
 
@@ -54,40 +57,62 @@ export default {
       allSongs: 'allSongsWithCurriculumType'
     }),
 
+    /**
+     * Return 'allSongs' with props `isFavorite` and `favoriteId` that can be used
+     * to show if the song is favorite or not and to update its status in child components.
+     *
+     * This computed property also filters out non favorite songs when `showOnlyFavorites` is true
+     */
     allSongsWithFavorites () {
-      return this.allSongs.map((song) => {
+      return this.allSongs.reduce((prev, song) => {
         const favorite = this.favoritesDictionary[song.id]
 
-        if (!favorite) {
-          return song
+        if (this.showOnlyFavorites && !favorite) {
+          return prev
+        } else if (!favorite) {
+          return [...prev, song]
         }
 
-        return {
-          ...song,
-          // custom properties
-          isFavorite: true,
-          favoriteId: favorite.id
-        }
-      })
-    },
-
-    songsByCurriculumTypeWithFavorites () {
-      return this.songsByCurriculumType.map(curriculumType => ({
-        ...curriculumType,
-        musicLibrary: curriculumType.musicLibrary.map((song) => {
-          const favorite = this.favoritesDictionary[song.id]
-
-          if (!favorite) {
-            return song
-          }
-
-          return {
+        return [
+          ...prev,
+          {
             ...song,
             // custom properties
             isFavorite: true,
             favoriteId: favorite.id
           }
-        })
+        ]
+      }, [])
+    },
+
+    /**
+     * Return 'songsByCurriculumType' with props `isFavorite` and `favoriteId` that can be used
+     * to show if the song is favorite or not and to update its status in child components.
+     *
+     * This computed property also filters out non favorite songs when `showOnlyFavorites` is true
+     */
+    songsByCurriculumTypeWithFavorites () {
+      return this.songsByCurriculumType.map(curriculumType => ({
+        ...curriculumType,
+        musicLibrary: curriculumType.musicLibrary.reduce((prev, song) => {
+          const favorite = this.favoritesDictionary[song.id]
+
+          if (this.showOnlyFavorites && !favorite) {
+            return prev
+          } else if (!favorite) {
+            return [...prev, song]
+          }
+
+          return [
+            ...prev,
+            {
+              ...song,
+              // custom properties
+              isFavorite: true,
+              favoriteId: favorite.id
+            }
+          ]
+        }, [])
       }))
     },
 
