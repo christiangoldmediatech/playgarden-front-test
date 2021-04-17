@@ -9,7 +9,7 @@
         </div>
       </v-col>
 
-      <v-col cols="12" :md="isPlayerShowing? 8 : 7">
+      <v-col cols="12" :md="isPlayerShowing ? 8 : 6">
         <music-carousel-letter
           :value="selectedLetterId"
           :disabled-letters="disabledLetters"
@@ -17,8 +17,17 @@
         />
       </v-col>
 
+      <v-col cols="12" md="" class="d-flex justify-center">
+        <v-btn large class="white my-4 mt-md-2 mb-md-0" @click="$emit('showFavorites')">
+          <v-icon left :color="showOnlyFavorites ? 'pink' : 'grey'">
+            mdi-heart
+          </v-icon>
+          Favorites
+        </v-btn>
+      </v-col>
+
       <v-col cols="12" md="">
-        <v-row no-gutters justify="center" justify-md="start" align="center" class="fill-height pl-4">
+        <v-row no-gutters justify="center" justify-md="start" align="center" class="fill-height pl-4 pl-md-0">
           <v-col cols="auto">
             <v-card
               tile
@@ -123,6 +132,11 @@ export default {
     isPlayerShowing: {
       type: Boolean,
       required: false,
+      default: false
+    },
+
+    showOnlyFavorites: {
+      type: Boolean,
       default: false
     }
   },
