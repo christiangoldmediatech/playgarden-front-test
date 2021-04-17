@@ -222,7 +222,7 @@ export default {
     async handleFavorite (song) {
       try {
         if (song.isFavorite) {
-          await this.removeFavoriteMusic(song.id)
+          await this.removeFavoriteMusic(song.favoriteId)
           this.$snotify.success('Song removed from favorites')
         } else {
           await this.setFavoriteMusicForChild({ childId: this.selectedChildId, musicId: song.id })

@@ -39,7 +39,7 @@ export default {
       mobileBreakpoint: PAGE_MOBILE_BREAKPOINT,
       selectedChildId: null,
       playList: [],
-      favoriteSongsIds: []
+      favoritesDictionary: {}
     }
   },
 
@@ -55,19 +55,39 @@ export default {
     }),
 
     allSongsWithFavorites () {
-      return this.allSongs.map(song => ({
-        ...song,
-        isFavorite: this.favoriteSongsIds.includes(song.id)
-      }))
+      return this.allSongs.map((song) => {
+        const favorite = this.favoritesDictionary[song.id]
+
+        if (!favorite) {
+          return song
+        }
+
+        return {
+          ...song,
+          // custom properties
+          isFavorite: true,
+          favoriteId: favorite.id
+        }
+      })
     },
 
     songsByCurriculumTypeWithFavorites () {
       return this.songsByCurriculumType.map(curriculumType => ({
         ...curriculumType,
-        musicLibrary: curriculumType.musicLibrary.map(song => ({
-          ...song,
-          isFavorite: this.favoriteSongsIds.includes(song.id)
-        }))
+        musicLibrary: curriculumType.musicLibrary.map((song) => {
+          const favorite = this.favoritesDictionary[song.id]
+
+          if (!favorite) {
+            return song
+          }
+
+          return {
+            ...song,
+            // custom properties
+            isFavorite: true,
+            favoriteId: favorite.id
+          }
+        })
       }))
     },
 
@@ -126,7 +146,19 @@ export default {
 
     async getAndSetFavorites () {
       const favorites = await this.getFavoriteMusicForChild(this.id)
-      this.favoriteSongsIds = favorites.map(fav => fav ? fav.music.id : undefined)
+
+      const favoritesDictionary = {}
+      for (const favorite of favorites) {
+        const songId = favorite && favorite.music ? favorite.music.id : undefined
+
+        if (!songId) {
+          return
+        }
+
+        favoritesDictionary[songId] = { songId, id: favorite.id }
+      }
+
+      this.favoritesDictionary = { ...favoritesDictionary }
     },
 
     addSongToPlaylist (song) {
