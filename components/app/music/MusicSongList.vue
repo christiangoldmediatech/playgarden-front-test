@@ -18,7 +18,7 @@
       </v-col>
 
       <v-col cols="12" md="" class="d-flex justify-center">
-        <v-btn large class="white my-4 mt-md-2 mb-md-0" @click="$emit('showFavorites')">
+        <v-btn large class="favorite-button white my-4 mt-md-2 mb-md-0" @click="$emit('showFavorites')">
           <v-icon left :color="showOnlyFavorites ? 'pink' : 'grey'">
             mdi-heart
           </v-icon>
