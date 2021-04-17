@@ -70,7 +70,7 @@
         :is-favorite="song.isFavorite"
         class="my-4"
         @add="addSongToPlayList(song)"
-        @favorite="handleFavorite(song)"
+        @favorite="$emit('favorite', song)"
         @click="createPlayListFromIndex(index)"
       />
     </template>
@@ -81,7 +81,7 @@
         :letter="letter"
         :songs="letter.musicLibrary"
         class="my-2 mt-md-4 mb-md-8"
-        @favorite="handleFavorite"
+        @favorite="$emit('favorite', $event)"
         @createPlayList="emitPlayList"
       />
     </template>
@@ -204,8 +204,6 @@ export default {
   },
 
   methods: {
-    ...mapActions('music', ['setFavoriteMusicForChild', 'removeFavoriteMusic']),
-
     ...mapActions('admin/curriculum', {
       getLetters: 'getTypes'
     }),
@@ -231,21 +229,6 @@ export default {
 
     addSongToPlayList (song) {
       this.$emit('addSong', song)
-    },
-
-    async handleFavorite (song) {
-      try {
-        if (song.isFavorite) {
-          await this.removeFavoriteMusic(song.favoriteId)
-          this.$snotify.success('Song removed from favorites')
-        } else {
-          await this.setFavoriteMusicForChild({ childId: this.selectedChildId, musicId: song.id })
-          this.$snotify.success('Song added to favorites')
-        }
-        this.$emit('favoritesUpdated')
-      } catch (error) {
-        this.$snotify.error(error.message)
-      }
     }
   }
 }
