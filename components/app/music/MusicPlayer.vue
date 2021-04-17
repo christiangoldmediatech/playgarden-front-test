@@ -13,7 +13,7 @@
       <!-- Player -->
       <v-col>
         <div class="player-wrapper px-4" :class="{ 'pt-6': !mobile }">
-          <pg-audio-player ref="audioPlayer" :play-list="playList">
+          <pg-audio-player ref="audioPlayer" :play-list="playList" @currentSong="$emit('currentSong', $event)">
             <!-- Current Song -->
             <template
               v-slot:current="{

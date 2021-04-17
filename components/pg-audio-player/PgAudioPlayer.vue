@@ -88,6 +88,12 @@ export default {
     }
   },
 
+  watch: {
+    currentSong () {
+      this.$emit('currentSong', this.currentSong)
+    }
+  },
+
   mounted () {
     this.isLoading = true
     if (Audio) {
