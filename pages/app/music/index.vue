@@ -7,6 +7,7 @@
           ref="musicPlayer"
           :mobile="isMobile"
           @favorite="handleFavorite"
+          @currentSong="currentSong = $event"
         />
       </v-card>
       <music-song-list
@@ -46,6 +47,7 @@ export default {
       mobileBreakpoint: PAGE_MOBILE_BREAKPOINT,
       selectedChildId: null,
       playList: [],
+      currentSong: {},
       favoritesDictionary: {},
       showOnlyFavorites: false
     }
@@ -189,6 +191,8 @@ export default {
       }
 
       this.favoritesDictionary = { ...favoritesDictionary }
+
+      this.updateCurrentSongData()
     },
 
     addSongToPlaylist (song) {
@@ -214,17 +218,26 @@ export default {
         }
 
         await this.getAndSetFavorites()
-
-        // update currently playing song favorite status
-        const favorite = this.favoritesDictionary[song.id]
-        this.$refs.musicPlayer.refreshSongData({
-          ...song,
-          isFavorite: !!favorite,
-          favoriteId: favorite ? favorite.id : undefined
-        })
       } catch (error) {
         this.$snotify.error(error.message)
       }
+    },
+
+    updateCurrentSongData () {
+      const resolvedCurrentSong = Object.keys(this.currentSong || {}).length
+        ? { ...this.currentSong }
+        : undefined
+
+      if (!resolvedCurrentSong) {
+        return
+      }
+
+      const favorite = this.favoritesDictionary[resolvedCurrentSong.id]
+      this.$refs.musicPlayer.refreshSongData({
+        ...resolvedCurrentSong,
+        isFavorite: !!favorite,
+        favoriteId: favorite ? favorite.id : undefined
+      })
     }
   }
 }
