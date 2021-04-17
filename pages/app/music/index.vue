@@ -2,7 +2,12 @@
   <v-main class="main-music-wrapper">
     <v-container fluid class="music-page-container pa-0" :class="{ 'mobile': isMobile, 'playing': isPlayerShowing }">
       <v-card class="player-card" :width="playerWidth" :height="playerHeight" :class="{ 'mobile': isMobile, 'pa-4': isPlayerShowing }">
-        <music-player v-show="isPlayerShowing" ref="musicPlayer" :mobile="isMobile" />
+        <music-player
+          v-show="isPlayerShowing"
+          ref="musicPlayer"
+          :mobile="isMobile"
+          @favorite="handleFavorite"
+        />
       </v-card>
       <music-song-list
         :show-only-favorites="showOnlyFavorites"
@@ -13,7 +18,7 @@
         class="music-song-list fill-height mx-auto"
         @addSong="addSongToPlaylist"
         @newPlayList="createNewPlaylist"
-        @favoritesUpdated="getAndSetFavorites"
+        @favorite="handleFavorite"
         @showFavorites="showOnlyFavorites = !showOnlyFavorites"
       />
     </v-container>
@@ -167,7 +172,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('music', ['getMusicLibrariesByCurriculumType', 'getFavoriteMusicForChild']),
+    ...mapActions('music', ['getMusicLibrariesByCurriculumType', 'getFavoriteMusicForChild', 'setFavoriteMusicForChild', 'removeFavoriteMusic']),
 
     async getAndSetFavorites () {
       const favorites = await this.getFavoriteMusicForChild(this.id)
@@ -196,6 +201,30 @@ export default {
     createNewPlaylist (playList) {
       this.$refs.musicPlayer.createNewPlaylist(playList)
       this.playList = playList
+    },
+
+    async handleFavorite (song) {
+      try {
+        if (song.isFavorite) {
+          await this.removeFavoriteMusic(song.favoriteId)
+          this.$snotify.success('Song removed from favorites')
+        } else {
+          await this.setFavoriteMusicForChild({ childId: this.id, musicId: song.id })
+          this.$snotify.success('Song added to favorites')
+        }
+
+        await this.getAndSetFavorites()
+
+        // update currently playing song favorite status
+        const favorite = this.favoritesDictionary[song.id]
+        this.$refs.musicPlayer.refreshSongData({
+          ...song,
+          isFavorite: !!favorite,
+          favoriteId: favorite ? favorite.id : undefined
+        })
+      } catch (error) {
+        this.$snotify.error(error.message)
+      }
     }
   }
 }
