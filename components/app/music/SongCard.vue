@@ -39,7 +39,13 @@
       <v-col cols="1">
         <v-row no-gutters class="fill-height" justify="end" align="center">
           <v-col cols="auto">
-            <v-btn text icon class="pa-0" :class="isFavorite ? 'pink--text' : 'grey--text'" @click.stop="$emit('favorite')">
+            <v-btn
+              text
+              icon
+              class="pa-0"
+              :class="isFavorite ? 'pink--text text--lighten-2' : 'grey--text'"
+              @click.stop="$emit('favorite')"
+            >
               <v-icon>
                 mdi-heart
               </v-icon>

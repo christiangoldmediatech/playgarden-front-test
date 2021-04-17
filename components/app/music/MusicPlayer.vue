@@ -44,7 +44,8 @@
                   </figure>
                   <v-icon
                     class="favorite-btn"
-                    :class="currentSong.isFavorite ? 'pink--text' : 'grey--text text--lighten-2'"
+                    size="32"
+                    :class="currentSong.isFavorite ? 'pink--text text--lighten-2' : 'grey--text text--lighten-2'"
                     @click="$emit('favorite', currentSong)"
                   >
                     mdi-heart
@@ -417,7 +418,7 @@ export default {
 
   & .favorite-btn {
       position: absolute;
-      top: 15px;
+      bottom: 15px;
       right: 55px;
   }
 }

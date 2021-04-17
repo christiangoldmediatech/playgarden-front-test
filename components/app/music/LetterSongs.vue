@@ -31,7 +31,7 @@
           <figure class="song-image" :style="{ 'background-image': `url(${song.thumbnail})` }" />
           <v-icon
             class="favorite-btn"
-            :class="song.isFavorite? 'pink--text' : 'grey--text text--lighten-2'"
+            :class="song.isFavorite? 'pink--text text--lighten-2' : 'grey--text text--lighten-2'"
             @click="$emit('favorite', song)"
           >
             mdi-heart
