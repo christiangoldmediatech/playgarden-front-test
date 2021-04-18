@@ -45,6 +45,7 @@ export default {
         params: {
           limit: 100,
           page: 1,
+          active: true,
           startDate: monday,
           endDate: friday
         }

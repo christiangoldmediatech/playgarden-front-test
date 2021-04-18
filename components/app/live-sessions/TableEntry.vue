@@ -28,7 +28,6 @@
 
         <v-col>
           <v-row align="center" class="fill-height overflow-hidden">
-            {{ entry.active }}
             <b>{{ entry.activityType.name }}</b>
           </v-row>
         </v-col>
