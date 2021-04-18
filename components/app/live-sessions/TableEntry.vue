@@ -4,7 +4,8 @@
       class="lsess-table-entry clickable"
       :class="{
         'lsess-table-entry-active': isLive,
-        'lsess-table-entry-scaled': hover
+        'lsess-table-entry-scaled': hover,
+        'opacity': !entry.active,
       }"
       @click.stop="openLink"
     >
@@ -27,6 +28,7 @@
 
         <v-col>
           <v-row align="center" class="fill-height overflow-hidden">
+            {{ entry.active }}
             <b>{{ entry.activityType.name }}</b>
           </v-row>
         </v-col>
@@ -144,5 +146,9 @@ export default {
       }
     }
   }
+}
+
+.opacity {
+  opacity: 0.6 !important;
 }
 </style>
