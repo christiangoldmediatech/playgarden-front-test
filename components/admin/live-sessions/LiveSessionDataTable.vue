@@ -82,6 +82,16 @@
                 <v-spacer />
               </template>
 
+              <v-checkbox
+                v-if="viewMode === 'LIST'"
+                v-model="filterDeleted"
+                class="mx-1 my-1 pa-0 mr-4"
+                color="primary darken-2"
+                hide-details
+                label="Deleted"
+                @change="refresh(false)"
+              />
+
               <pg-text-field
                 v-if="viewMode === 'LIST'"
                 v-model="search"
@@ -256,6 +266,7 @@ export default {
     filters: {
       activityTypeId: null
     },
+    filterDeleted: false,
     checkStatusInterval: null,
     liveSessions: [],
     entityType: 'LiveSessions',
@@ -369,7 +380,8 @@ export default {
             activityTypeId: this.filters.activityTypeId || null,
             level: this.filters.level || null,
             page: this.pagination.page,
-            limit: this.pagination.limit
+            limit: this.pagination.limit,
+            deleted: (this.filterDeleted) ? 'true' : null
           })
           this.liveSessions = liveSessions
           this.setPagination({ page, total })
