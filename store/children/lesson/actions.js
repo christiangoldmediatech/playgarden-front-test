@@ -108,5 +108,19 @@ export default {
   async getLessonChildTimeline (_, childId) {
     const data = await this.$axios.$get(`/lessons/children/${childId}/timeline`)
     return data
+  },
+
+  async getAdvanceLessonChildren ({ commit }, childId) {
+    try {
+      const data = await this.$axios.$get(`/lessons/children/${childId}/advance`)
+      commit('SET_PUZZLE_PIECE', data.puzzleChildren)
+      return data
+    } catch (e) {
+      const { data } = e.response
+      if (data && data.errorCode === 100) {
+        return Promise.reject(data)
+      }
+      return Promise.reject(e)
+    }
   }
 }

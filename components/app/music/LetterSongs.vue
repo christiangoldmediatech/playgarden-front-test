@@ -1,6 +1,6 @@
 <template>
   <div class="letter-song-wrapper">
-    <div class="letter-song-title-border"></div>
+    <div class="letter-song-title-border" :class="{ vowel: isVowel }" />
     <div class="letter-song-title">
       <v-row no-gutters justify="center" align="center">
         <span class="letter-text">LETTER</span>
@@ -21,14 +21,14 @@
       >
         <div class="song-wrapper mx-auto">
           <v-icon
-            size="180"
+            size="120"
             class="play-btn"
             color="white"
             @click.stop="createPlayListFromIndex(index)"
           >
             mdi-play-circle-outline
           </v-icon>
-          <figure class="song-image" :style="{ 'background-image': `url(${song.thumbnail})` }"></figure>
+          <figure class="song-image" :style="{ 'background-image': `url(${song.thumbnail})` }" />
           <p class="song-description mb-0">
             {{ song.description }}
           </p>
@@ -65,6 +65,18 @@ export default {
     }
   },
 
+  data () {
+    return {
+      vowels: ['A', 'E', 'I', 'O', 'U']
+    }
+  },
+
+  computed: {
+    isVowel () {
+      return this.vowels.includes(this.letter.name.substr(0, 1).toUpperCase())
+    }
+  },
+
   methods: {
     createPlayListFromIndex (index) {
       const playlist = jsonCopy(this.songs.slice(index))
@@ -96,7 +108,10 @@ export default {
       left: 0;
       width: 100%;
       height: 16px;
-      background-color: var(--v-accent-base);
+      background-color: #dce7b5;
+      &.vowel {
+        background-color: var(--v-accent-base);
+      }
     }
   }
 }
@@ -108,8 +123,8 @@ export default {
     width: 250px;
     & .play-btn {
       position: absolute;
-      top: 35px;
-      left: 35px;
+      top: 65px;
+      left: 65px;
       color: transparent !important;
       &:hover {
         cursor: pointer;

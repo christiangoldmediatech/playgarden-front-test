@@ -26,30 +26,30 @@
       </v-col>
     </v-row>
 
-    <!-- <v-col cols="12" class="hidden-md-and-up">
+    <v-col cols="12" class="hidden-md-and-up letter-selector mx-auto">
       <v-row>
         <pg-select
           :value="value"
-          :items="actualLetters"
+          :items="displayLetters"
           item-value="id"
           hide-details
           solo
           placeholder="Browse by letter"
-          v-bind="{ ...$attrs }"
-          @input="$nuxt.$emit('show-curriculum-progress', $event)"
+          @input="selectLetterById"
         >
           <template v-slot:selection="{ item }">
             <v-list-item>
-              <recorded-letter
-                v-bind="{ letter: item, small: smallLetter }"
-                list-mode
+              <carousel-letter
+                :disabled="item.disabled"
+                :name="item.name"
+                :picture="item.picture"
               />
 
               <v-list-item-content>
-                <v-list-item-title v-if="item.picture" class="font-weight-bold pl-4">
+                <v-list-item-title v-if="item.picture" class="pl-4">
                   Letter {{ item.name }}
                 </v-list-item-title>
-                <v-list-item-title v-else class="font-weight-bold pl-4">
+                <v-list-item-title v-else class="pl-4">
                   Letter {{ item.name.substr(0, 1) }}
                 </v-list-item-title>
               </v-list-item-content>
@@ -57,31 +57,18 @@
           </template>
 
           <template v-slot:item="{ item, on, attrs }">
-            <v-list-item v-if="item.picture" v-bind="attrs" v-on="on">
-              <v-btn text>
-                <v-img
-                  width="70"
-                  height="70"
-                  contain
-                  class="ml-n4"
-                  :src="item.picture"
-                />
-                <span class="pl-3">{{ item.name }}</span>
-              </v-btn>
-            </v-list-item>
-
-            <v-list-item v-else v-bind="attrs" class="w-100" v-on="on">
-              <recorded-letter
-                v-bind="{
-                  letter: item,
-                  small: smallLetter,
-                  disabled: item.disabled
-                }"
-                list-mode
+            <v-list-item v-bind="attrs" v-on="on">
+              <carousel-letter
+                :disabled="item.disabled"
+                :name="item.name"
+                :picture="item.picture"
               />
 
               <v-list-item-content>
-                <v-list-item-title class="pl-4">
+                <v-list-item-title v-if="item.picture" class="pl-4">
+                  Letter {{ item.name }}
+                </v-list-item-title>
+                <v-list-item-title v-else class="pl-4">
                   Letter {{ item.name.substr(0, 1) }}
                 </v-list-item-title>
               </v-list-item-content>
@@ -89,7 +76,7 @@
           </template>
         </pg-select>
       </v-row>
-    </v-col> -->
+    </v-col>
   </div>
 </template>
 
@@ -151,6 +138,10 @@ export default {
       getLetters: 'getTypes'
     }),
 
+    selectLetterById (letterId) {
+      this.$emit('select', letterId)
+    },
+
     selectLetter (letter) {
       if (letter.disabled) {
         return
@@ -162,4 +153,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.letter-selector {
+  max-width: 300px;
+}
 </style>

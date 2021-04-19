@@ -1,5 +1,40 @@
 <template>
   <v-container>
+    <v-dialog
+      v-if="dialog"
+      v-model="dialog"
+      :fullscreen="$vuetify.breakpoint.xs"
+      max-width="400px"
+      persistent
+    >
+      <v-card class="pt-4">
+        <v-card-text class="mt-4">
+          <label>Curriculum: {{ itemSelected.curriculumType.name }}</label> <br>
+          <label>Name: {{ itemSelected.name }}</label> <br>
+          <label>Description: {{ itemSelected.description }}</label>
+          <center>
+            <audio controls class="mt-4">
+              <source :src="itemSelected.songUrl" type="audio/mpeg">
+              <source :src="itemSelected.songUrl" type="audio/x-m4a">
+              Your browser does not support the audio element.
+            </audio>
+          </center>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+
+          <v-btn
+            color="red"
+            :dark="$vuetify.breakpoint.xs"
+            :disabled="loading"
+            :text="$vuetify.breakpoint.smAndUp"
+            @click.stop="dialog = false"
+          >
+            Close
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-row>
       <v-col cols="12">
         <v-card width="100%">
@@ -53,12 +88,31 @@
               @edit-item="$refs.editor.open(null, $event)"
               @remove-item="remove"
             >
-              <template v-slot:item.songUrl="{ item }">
-                <audio controls>
-                  <source :src="item.songUrl" type="audio/mpeg">
-                  <source :src="item.songUrl" type="audio/x-m4a">
-                  Your browser does not support the audio element.
-                </audio>
+              <template v-slot:[`top.prepend`]>
+                <v-col cols="11" md="2">
+                  <pg-select
+                    v-model="filters.curriculumTypeId"
+                    clearable
+                    hide-details
+                    :items="letters"
+                    item-text="name"
+                    item-value="id"
+                    label="Letter"
+                    solo-labeled
+                    @change="refresh(false)"
+                  />
+                </v-col>
+              </template>
+              <template v-slot:[`item.actions.prepend`]="{ item }">
+                <v-btn
+                  color="accent"
+                  icon
+                  :disabled="disabled"
+                  :loading="loading"
+                  @click.stop="onPlaySong(item)"
+                >
+                  <v-icon v-text="'mdi-play'" />
+                </v-btn>
               </template>
             </pg-admin-data-table>
           </v-card-text>
@@ -86,6 +140,18 @@ export default {
     return {
       loading: false,
       action: true,
+      dialog: false,
+      filters: {
+        curriculumTypeId: null
+      },
+      itemSelected: {
+        name: '',
+        description: '',
+        curriculumType: {
+          name: ''
+        },
+        songUrl: ''
+      },
       search: '',
       limit: 10,
       page: 1,
@@ -109,16 +175,10 @@ export default {
           value: 'curriculumType.name'
         },
         {
-          text: 'Song',
-          align: 'start',
-          sortable: false,
-          value: 'songUrl'
-        },
-        {
           align: 'right',
           sortable: false,
           value: 'actions',
-          width: 100
+          width: 120
         }
       ]
     }
@@ -128,6 +188,9 @@ export default {
     ...mapGetters('admin/music-library', {
       types: 'rows',
       total: 'total'
+    }),
+    ...mapGetters('admin/curriculum', {
+      letters: 'types'
     })
   },
 
@@ -141,11 +204,24 @@ export default {
     }
   },
 
+  created () {
+    this.getTypes()
+  },
+
   methods: {
     ...mapActions('admin/music-library', {
       getMusicLibraries: 'get',
       deleteMusicLibraries: 'delete'
     }),
+
+    ...mapActions('admin/curriculum', [
+      'getTypes'
+    ]),
+
+    onPlaySong (item) {
+      this.dialog = true
+      this.itemSelected = item
+    },
 
     setLimit (limit) {
       if (limit > 0) {
@@ -157,7 +233,7 @@ export default {
 
     async refresh (clear = false) {
       this.loading = true
-      const params = { limit: this.limit, page: this.page }
+      const params = { limit: this.limit, page: this.page, curriculumTypeId: this.filters.curriculumTypeId || null }
 
       if (clear) {
         this.search = ''

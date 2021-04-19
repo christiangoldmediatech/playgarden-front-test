@@ -27,25 +27,25 @@
             <v-form ref="activityTypeForm" @submit.prevent="passes(save)">
               <validation-provider
                 v-slot="{ errors }"
-                name="Adreess 1"
+                name="Address 1"
                 rules="required"
               >
                 <pg-text-field
                   v-model="item.address1"
                   :error-messages="errors"
-                  label="Adreess 1"
+                  label="Address 1"
                   solo-labeled
                 />
               </validation-provider>
 
               <validation-provider
                 v-slot="{ errors }"
-                name="Adreess 2"
+                name="Address 2"
               >
                 <pg-text-field
                   v-model="item.address2"
                   :error-messages="errors"
-                  label="Adreess 2"
+                  label="Address 2"
                   solo-labeled
                 />
               </validation-provider>

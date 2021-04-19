@@ -413,7 +413,7 @@ export default {
     },
 
     title () {
-      return this.id === null ? 'New LiveSession' : 'Edit LiveSession'
+      return this.id === null ? 'New Live Class' : 'Edit Live Class'
     }
   },
 

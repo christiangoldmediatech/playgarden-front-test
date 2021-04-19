@@ -1,16 +1,15 @@
 <template>
   <div>
-    <!-- <highchart class="content-report chart-style" :options="chartOptions" ref="chart" :update-args="updateArgs" /> -->
-    <chart ref="progress-chart" :graph="chartOptions" :autoresize="resize" />
+    <report-chart ref="progress-chart" :graph="chartOptions" />
   </div>
 </template>
 
 <script>
-import Chart from '@/components/echart/Chart.vue'
+import ReportChart from '@/components/echart/ReportChart.vue'
 export default {
   name: 'ChartReport',
   components: {
-    Chart
+    ReportChart
   },
   props: {
     report: {
@@ -21,68 +20,18 @@ export default {
   },
 
   data: () => ({
-    colorSeries: [
-      {
-        data: [],
-        type: 'scatter',
-        markArea: {
-          itemStyle: {
-            normal: {
-              color: 'rgba(248, 152, 56, 0.25)'
-            }
-          },
-          data: [
-            [{ yAxis: 0 }, { yAxis: 20 }]
-          ]
-        }
-      },
-      {
-        data: [],
-        type: 'scatter',
-        markArea: {
-          itemStyle: {
-            normal: {
-              color: 'rgba(220, 231, 181, 0.25)'
-            }
-          },
-          data: [
-            [{ yAxis: 20 }, { yAxis: 80 }]
-          ]
-        }
-      },
-      {
-        data: [],
-        type: 'scatter',
-        markArea: {
-          itemStyle: {
-            normal: {
-              color: 'rgba(196, 217, 171, 0.5)'
-            }
-          },
-          data: [
-            [{ yAxis: 80 }, { yAxis: 100 }]
-          ]
-        }
-      }
-    ]
+    load: false
   }),
 
   computed: {
-    updateArgs () {
-      return [true, true, { duration: 1000 }]
-    },
-    getDataImage () {
-      return (this.report.dataImage) ? this.report.dataImage : []
-    },
     getCategories () {
       return (this.report.categories) ? this.report.categories : []
     },
-    getSeries () {
-      return (this.report.dataSerie) ? {
-        symbolSize: 50,
-        data: this.report.dataSerie,
-        type: 'scatter'
-      } : {}
+    getRotate () {
+      return (this.$vuetify.breakpoint.xs) ? 30 : 0
+    },
+    getRotateYaxios () {
+      return (this.$vuetify.breakpoint.xs) ? 45 : 0
     },
     getFontSize () {
       return (this.$vuetify.breakpoint.xs) ? '32px' : '34px'
@@ -91,14 +40,154 @@ export default {
       return (this.$vuetify.breakpoint.xs) ? '45' : '60'
     },
     chartOptions () {
-      // const that = this
       return {
-        yAxis: {},
+        tooltip: {
+          trigger: 'item',
+          formatter (params) {
+            let text = (params.data.value !== undefined) ? `Percentage: <b> ${params.data.value} %</b> <br />` : 'Progress Report'
+            if (params.data.value !== undefined) {
+              if (params.data.value <= 20) {
+                text += 'Progressing'
+              } else if (params.data.value > 20 && params.data.value <= 80) {
+                text += 'Age Appropriate'
+              } else {
+                text += 'Area of Strength'
+              }
+            }
+            return text
+          }
+        },
+        grid: {
+          show: false
+        },
         xAxis: {
           type: 'category',
-          data: this.getCategories
+          data: this.getCategories,
+          axisLabel: {
+            interval: -1,
+            rotate: this.getRotate
+          }
         },
-        series: [this.getSeries, ...this.colorSeries]
+        yAxis: {
+          min: 0,
+          max: 100,
+          splitLine: {
+            show: false
+          },
+          axisLabel: {
+            formatter: '{value} %',
+            rotate: this.getRotateYaxios
+          }
+        },
+        series: [{
+          symbolSize: 50,
+          data: this.report.dataSerie,
+          type: 'scatter',
+          markArea: {
+            label: {
+              show: true
+            },
+            itemStyle: {
+              normal: {
+                color: 'rgba(248, 152, 56, 0.25)'
+              }
+            },
+            data: [[{ yAxis: 0 }, { yAxis: 20 }]]
+          }
+        },
+        {
+          symbolSize: 20,
+          data: [],
+          type: 'scatter',
+          markArea: {
+            itemStyle: {
+              normal: {
+                color: 'rgba(220, 231, 181, 0.25)'
+              }
+            },
+            data: [[{ yAxis: 20 }, { yAxis: 80 }]]
+          }
+        },
+        {
+          symbolSize: 20,
+          data: [],
+          type: 'scatter',
+          markArea: {
+            itemStyle: {
+              color: '#68d2e0',
+              normal: {
+                color: 'rgba(196, 217, 171, 0.5)'
+              }
+            },
+            data: [[{ yAxis: 80 }, { yAxis: 100 }]]
+          }
+        },
+        {
+          symbolSize: 20,
+          data: [],
+          type: 'scatter',
+          markArea: {
+            label: {
+              show: true,
+              color: '#DADADA',
+              fontSize: '31px',
+              fontWeight: 'bold',
+              verticalAlign: 'middle',
+              fontFamily: 'Poppins-SemiBold, Poppins',
+              opacity: 1
+            },
+            itemStyle: {
+              color: 'transparent',
+              borderWidth: 0,
+              borderType: 'none'
+            },
+            data: [[{ name: 'Area of Strength', yAxis: 85 }, { yAxis: 85 }]]
+          }
+        },
+        {
+          symbolSize: 20,
+          data: [],
+          type: 'scatter',
+          markArea: {
+            label: {
+              show: true,
+              color: '#DADADA',
+              fontSize: '31px',
+              fontWeight: 'bold',
+              verticalAlign: 'middle',
+              fontFamily: 'Poppins-SemiBold, Poppins',
+              opacity: 1
+            },
+            itemStyle: {
+              color: 'transparent',
+              borderWidth: 0,
+              borderType: 'none'
+            },
+            data: [[{ name: 'Age Appropriate', yAxis: 48 }, { yAxis: 48 }]]
+          }
+        },
+        {
+          symbolSize: 20,
+          data: [],
+          type: 'scatter',
+          markArea: {
+            label: {
+              show: true,
+              color: '#DADADA',
+              fontSize: '31px',
+              fontWeight: 'bold',
+              verticalAlign: 'middle',
+              fontFamily: 'Poppins-SemiBold, Poppins',
+              opacity: 1
+            },
+            itemStyle: {
+              color: 'transparent',
+              borderWidth: 0,
+              borderType: 'none'
+            },
+            data: [[{ name: 'Progressing', yAxis: 10 }, { yAxis: 10 }]]
+          }
+        }]
       }
     }
   },
@@ -114,9 +203,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.chart-style {
-  max-height: 900px !important;
-}
-</style>

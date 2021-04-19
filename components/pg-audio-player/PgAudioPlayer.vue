@@ -20,6 +20,18 @@
       :previous="previous"
     />
     <slot
+      name="actions"
+      :isLoading="isLoading"
+      :isPlaying="isPlaying"
+      :isPaused="isPaused"
+      :isStopped="isStopped"
+      :play="play"
+      :pause="pause"
+      :stop="stop"
+      :next="next"
+      :previous="previous"
+    />
+    <slot
       name="playlist"
       :currentPlaylist="currentPlaylist"
       :isLoading="isLoading"
@@ -31,19 +43,6 @@
       :pause="pause"
       :play="play"
       :stop="stop"
-    />
-
-    <slot
-      name="actions"
-      :isLoading="isLoading"
-      :isPlaying="isPlaying"
-      :isPaused="isPaused"
-      :isStopped="isStopped"
-      :play="play"
-      :pause="pause"
-      :stop="stop"
-      :next="next"
-      :previous="previous"
     />
   </div>
 </template>
