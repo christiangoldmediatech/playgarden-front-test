@@ -156,6 +156,15 @@
                   </v-icon>
 
                   <v-icon
+                    v-if="item.deletedAt"
+                    color="#E8B927"
+                    dense
+                    @click="recover(item)"
+                  >
+                    mdi-backup-restore
+                  </v-icon>
+
+                  <v-icon
                     color="#81A1F7"
                     dense
                     @click="$refs.editor.open(null, item)"
@@ -306,7 +315,7 @@ export default {
         align: 'right',
         sortable: false,
         value: 'actions',
-        width: 180
+        width: 190
       }
     ],
     viewModeVal: 0,
@@ -362,7 +371,7 @@ export default {
       getCurriculumTypes: 'getTypes'
     }),
 
-    ...mapActions('live-sessions', ['getLiveSessions', 'deleteLiveSession']),
+    ...mapActions('live-sessions', ['getLiveSessions', 'deleteLiveSession', 'recoverLiveSession']),
 
     async refresh (clear = false) {
       if (this.viewMode === 'CALENDAR') {
@@ -392,12 +401,23 @@ export default {
       }
     },
 
-    remove ({ id, name }) {
+    remove ({ id, title }) {
       this.$nuxt.$emit('open-prompt', {
         title: 'Delete Live Class?',
-        message: `Are you sure you want to delete <b>${name}</b>?`,
+        message: `Are you sure you want to delete <b>${title}</b>?`,
         action: async () => {
           await this.deleteLiveSession(id)
+          await this.refresh()
+        }
+      })
+    },
+
+    recover ({ id, title }) {
+      this.$nuxt.$emit('open-prompt', {
+        title: 'Recover Live Class?',
+        message: `Are you sure you want to recover <b>${title}</b>?`,
+        action: async () => {
+          await this.recoverLiveSession(id)
           await this.refresh()
         }
       })
