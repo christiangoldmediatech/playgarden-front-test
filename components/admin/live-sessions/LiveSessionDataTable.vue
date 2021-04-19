@@ -315,7 +315,7 @@ export default {
         align: 'right',
         sortable: false,
         value: 'actions',
-        width: 190
+        width: 205
       }
     ],
     viewModeVal: 0,
@@ -416,6 +416,7 @@ export default {
       this.$nuxt.$emit('open-prompt', {
         title: 'Recover Live Class?',
         message: `Are you sure you want to recover <b>${title}</b>?`,
+        actionText: 'Recover it!',
         action: async () => {
           await this.recoverLiveSession(id)
           await this.refresh()

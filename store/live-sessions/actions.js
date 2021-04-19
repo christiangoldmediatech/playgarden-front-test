@@ -39,7 +39,7 @@ export default {
   },
 
   recoverLiveSession (_, id) {
-    return this.$axios.$patch(`/live-sessions/recover/${id}`)
+    return this.$axios.$patch(`/live-sessions/${id}/recover`)
   },
 
   async getUserLiveSessions ({ commit }, { monday, friday }) {
