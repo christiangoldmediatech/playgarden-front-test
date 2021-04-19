@@ -341,12 +341,23 @@
 
           <v-btn
             class="white--text"
-            color="red"
+            color="orange"
             :disabled="loading"
             :text="$vuetify.breakpoint.smAndUp"
             @click.stop="close"
           >
             Cancel
+          </v-btn>
+
+          <v-btn
+            v-if="id"
+            class="white--text"
+            color="red"
+            :disabled="loading"
+            :text="$vuetify.breakpoint.smAndUp"
+            @click="remove(item.title)"
+          >
+            Delete
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -418,7 +429,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('live-sessions', ['createLiveSession', 'updateLiveSession']),
+    ...mapActions('live-sessions', ['createLiveSession', 'updateLiveSession', 'deleteLiveSession']),
 
     onPlayerReady (player) {
       this.player = player
@@ -453,6 +464,18 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+
+    remove (title) {
+      this.$nuxt.$emit('open-prompt', {
+        title: 'Delete Live Class?',
+        message: `Are you sure you want to delete <b>${title}</b>?`,
+        action: async () => {
+          await this.deleteLiveSession(this.id)
+          this.$emit('saved')
+          await this.close()
+        }
+      })
     },
 
     close () {
