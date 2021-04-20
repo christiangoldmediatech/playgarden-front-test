@@ -43,7 +43,7 @@
           </p>
           <div class="d-flex justify-space-between song-name pa-2">
             <span>{{ song.name }}</span>
-            <v-tooltip top>
+            <v-tooltip :top="!isMobile" :bottom="isMobile">
               <template #activator="{ on, attrs }">
                 <v-icon
                   size="36"
@@ -55,7 +55,7 @@
                   mdi-playlist-music-outline
                 </v-icon>
               </template>
-              Add to queue
+              {{ isMobile ? 'Added to queue' : 'Add to queue' }}
             </v-tooltip>
           </div>
         </v-card>
@@ -97,6 +97,10 @@ export default {
   computed: {
     isVowel () {
       return this.vowels.includes(this.letter.name.substr(0, 1).toUpperCase())
+    },
+
+    isMobile () {
+      return this.$vuetify.breakpoint.mobile
     }
   },
 
