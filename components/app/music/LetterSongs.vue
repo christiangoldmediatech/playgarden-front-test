@@ -183,4 +183,15 @@ export default {
   box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15) !important;
   border-radius: 8px !important;
 }
+.v-tooltip__content {
+  background-color: var(--v-black-base) !important;
+  font-weight: 500 !important;
+  color: white !important;
+}
+
+.v-tooltip__content::after {
+  content: "";
+  position: absolute;
+  border-color: transparent transparent transparent transparent;
+}
 </style>
