@@ -194,13 +194,13 @@
             >
               <template v-if="!mobile">
                 <div
-                  class=" mt-4 pt-2 playlist"
+                  class="playlist mt-4"
                 >
                   <v-row
                     v-for="(song, songIndex) in currentPlaylist"
                     :key="songIndex"
                     no-gutters
-                    class="playlist-song py-2 pl-1"
+                    class="playlist-song py-2"
                     :class="{ selected: currentSongIndex === songIndex }"
                   >
                     <v-col cols="auto">
@@ -211,10 +211,10 @@
                     </v-col>
                     <v-col cols="10">
                       <div class="text-center">
-                        <p class="playlist-song-title mb-2 text-truncate">
+                        <p class="playlist-song-title my-2 text-truncate">
                           {{ song.description }}
                         </p>
-                        <p class="playlist-song-author mb-2 text-truncate">
+                        <p class="playlist-song-author my-2 text-truncate">
                           {{ song.name }}
                         </p>
                       </div>
@@ -349,6 +349,7 @@ export default {
       color: var(--v-accent-base);
       font-size: 24px;
       line-height: 24px;
+      font-weight: 700;
     }
     & .song-author {
       color: var(--v-black-base);
@@ -388,20 +389,21 @@ export default {
   }
 }
 .playlist {
-  border-top: 1px solid lightgrey;
+  border-top: 1px solid rgb(228, 228, 228);
   max-height: 250px;
   overflow: scroll;
   &-song {
     &-thumbnail {
       width: 50px;
       height: 50px;
-      background-size: contain;
+      background-size: cover;
       background-position: center center;
     }
     &-title {
       color: var(--v-accent-base);
       font-size: 16px;
       line-height: 16px;
+      font-weight: 700;
     }
     &-author {
       color: var(--v-black-base);
