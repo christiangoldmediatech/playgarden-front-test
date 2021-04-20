@@ -81,6 +81,7 @@
         :letter="letter"
         :songs="letter.musicLibrary"
         class="my-2 mt-md-4 mb-md-8"
+        @add="addSongToPlayList"
         @favorite="$emit('favorite', $event)"
         @createPlayList="emitPlayList"
       />
