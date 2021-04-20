@@ -14,7 +14,7 @@
     </div>
     <v-row no-gutters justify="center" justify-md="start">
       <v-col
-        v-for="(song, index) in [...songs, ...songs]"
+        v-for="(song, index) in songs"
         :key="song.id"
         cols="auto"
       >
