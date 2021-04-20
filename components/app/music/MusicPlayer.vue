@@ -64,7 +64,8 @@
                     readonly
                     height="20"
                     :min="0"
-                    track-color="#EBEBEB"
+                    color="warning lighten-1"
+                    track-color="grey lighten-2"
                     :max="100"
                     class="slider"
                     :value="currentSongPlayedPercentage"
@@ -127,7 +128,8 @@
                         readonly
                         height="10"
                         :min="0"
-                        track-color="#EBEBEB"
+                        color="warning lighten-1"
+                        track-color="grey lighten-2"
                         :max="100"
                         class="slider"
                         :value="currentSongPlayedPercentage"
@@ -335,10 +337,12 @@ export default {
 .song {
   &-thumbnail {
     position: relative;
-    width: 300px;
+    width: 100%;
     height: 300px;
     background-size: cover;
     background-position: center center;
+    border-radius: 8px;
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15);
     &.mobile {
       width: 100px;
       height: 100px;
@@ -421,7 +425,7 @@ export default {
   & .favorite-btn {
       position: absolute;
       bottom: 15px;
-      right: 55px;
+      right: 20px;
   }
 }
 </style>
