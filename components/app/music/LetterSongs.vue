@@ -12,37 +12,53 @@
         />
       </v-row>
     </div>
-    <v-row no-gutters>
+    <v-row no-gutters justify="center" justify-md="start">
       <v-col
-        v-for="(song, index) in songs"
+        v-for="(song, index) in [...songs, ...songs]"
         :key="song.id"
-        cols="12"
-        md="auto"
+        cols="auto"
       >
-        <div class="song-wrapper mx-auto">
-          <v-icon
-            size="120"
-            class="play-btn"
-            color="white"
-            @click.stop="createPlayListFromIndex(index)"
-          >
-            mdi-play-circle-outline
-          </v-icon>
-          <figure class="song-image" :style="{ 'background-image': `url(${song.thumbnail})` }" />
-          <v-icon
-            class="favorite-btn"
-            :class="song.isFavorite? 'pink--text text--lighten-2' : 'grey--text text--lighten-2'"
-            @click="$emit('favorite', song)"
-          >
-            mdi-heart
-          </v-icon>
-          <p class="song-description mb-0">
+        <v-card class="custom-shadow ma-6 pb-4">
+          <div class="song-wrapper">
+            <v-icon
+              size="120"
+              class="play-btn"
+              color="white"
+              @click.stop="createPlayListFromIndex(index)"
+            >
+              mdi-play-circle-outline
+            </v-icon>
+            <figure class="song-image" :style="{ 'background-image': `url(${song.thumbnail})` }" />
+            <v-icon
+              class="favorite-btn"
+              size="28"
+              :class="song.isFavorite? 'pink--text text--lighten-2' : 'grey--text text--lighten-2'"
+              @click="$emit('favorite', song)"
+            >
+              mdi-heart
+            </v-icon>
+          </div>
+          <p class="song-description mb-0 pa-2">
             {{ song.description }}
           </p>
-          <p class="song-name mb-0">
-            {{ song.name }}
-          </p>
-        </div>
+          <div class="d-flex justify-space-between song-name pa-2">
+            <span>{{ song.name }}</span>
+            <v-tooltip top>
+              <template #activator="{ on, attrs }">
+                <v-icon
+                  size="36"
+                  class="mt-n2"
+                  v-bind="attrs"
+                  v-on="on"
+                  @click.stop="$emit('add', song)"
+                >
+                  mdi-playlist-music-outline
+                </v-icon>
+              </template>
+              Add to queue
+            </v-tooltip>
+          </div>
+        </v-card>
       </v-col>
     </v-row>
   </div>
@@ -125,13 +141,10 @@ export default {
 .song {
   &-wrapper {
     position: relative;
-    padding: 25px;
-    height: 300px;
-    width: 250px;
     & .play-btn {
       position: absolute;
-      top: 65px;
-      left: 65px;
+      top: 40px;
+      left: 40px;
       color: transparent !important;
       &:hover {
         cursor: pointer;
@@ -140,8 +153,8 @@ export default {
     }
     & .favorite-btn {
       position: absolute;
-      top: 35px;
-      right: 35px;
+      top: 10px;
+      right: 10px;
     }
   }
   &-image {
@@ -149,6 +162,8 @@ export default {
     width: 200px;
     background-size: cover;
     background-position: center center;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
   }
   &-description {
     font-size: 18px;
@@ -159,5 +174,9 @@ export default {
     font-size: 16px;
     color: var(--v-black-base);
   }
+}
+.custom-shadow {
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15) !important;
+  border-radius: 8px !important;
 }
 </style>
