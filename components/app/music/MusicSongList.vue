@@ -9,7 +9,12 @@
         </div>
       </v-col>
 
-      <v-col cols="12" :md="isPlayerShowing ? 8 : 6">
+      <v-col
+        cols="12"
+        :md="isPlayerShowing ? 5 : 6"
+        :lg="isPlayerShowing ? 6 : 7"
+        xl="7"
+      >
         <music-carousel-letter
           :value="selectedLetterId"
           :disabled-letters="disabledLetters"
