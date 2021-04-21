@@ -32,7 +32,7 @@ export default {
           // }
         ]
 
-        if (!['production', 'staging'].includes(process.env.testEnv)) {
+        if (!['production'].includes(process.env.testEnv)) {
           list.push({
             title: 'Parent Corner',
             to: { name: 'app-parent-corner' },
