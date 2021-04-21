@@ -1,6 +1,8 @@
 <template>
   <v-container>
     <v-row>
+      <!-- Workbook modal -->
+      <workbook-send-dates-editor-dialog ref="workbookSendDates" @saved="getUserDetails" />
       <!-- Change Plan modal -->
       <shipping-address-editor-dialog ref="shippingAddress" @saved="getUserDetails" />
       <!-- Change Password-->
@@ -302,7 +304,7 @@
 
                           <v-col cols="6" md="8">
                             <template v-if="backpackSent">
-                              <v-row no-gutters>
+                              <v-row no-gutters @click="$refs.workbookSendDates.open($event, user)">
                                 <b v-if="!workbookDateSent">Sent</b>
                                 <b v-else>
                                   Sent on: {{ dateWorkbook() }}
@@ -338,7 +340,7 @@
 
                           <v-col cols="6" md="8" class="pl-md-3">
                             <template v-if="workbookSent">
-                              <v-row no-gutters>
+                              <v-row no-gutters @click="$refs.workbookSendDates.open($event, user)">
                                 <b v-if="!backpackDateSent">Sent</b>
                                 <b v-else>
                                   Sent on: {{ dateBackpack() }}
@@ -353,7 +355,7 @@
                             </template>
 
                             <template v-else>
-                              <v-row no-gutters>
+                              <v-row no-gutters @click="$refs.workbookSendDates.open($event, user)">
                                 <b>Pending</b>
                                 <v-img
                                   class="ml-1"
@@ -491,6 +493,7 @@ import { mapActions } from 'vuex'
 import SubscriptionPlanSelection from '@/components/app/payment/SubscriptionPlanSelection'
 import UserPasswordEditorDialog from '@/components/admin/users/UserPasswordEditorDialog'
 import ShippingAddressEditorDialog from '@/components/admin/shipping-address/ShippingAddressEditorDialog.vue'
+import WorkbookSendDatesEditorDialog from '@/components/admin/users/WorkbookSendDatesEditorDialog.vue'
 import UserChildLessonOverlay from '@/components/admin/users/UserChildLessonOverlay.vue'
 import UserChildTimelineDialog from '@/components/admin/users/UserChildTimelineDialog.vue'
 import { formatDate } from '~/utils/dateTools'
@@ -506,6 +509,7 @@ export default {
     SubscriptionPlanSelection,
     UserPasswordEditorDialog,
     ShippingAddressEditorDialog,
+    WorkbookSendDatesEditorDialog,
     UserChildTimelineDialog,
     UserChildLessonOverlay
   },
