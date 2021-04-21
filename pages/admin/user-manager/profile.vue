@@ -341,16 +341,17 @@
                           <v-col cols="6" md="8" class="pl-md-3">
                             <template v-if="workbookSent">
                               <v-row no-gutters @click="$refs.workbookSendDates.open($event, user)">
-                                <b v-if="!backpackDateSent">Sent</b>
+                                <b v-if="!backpackDateSent">{{ getNumberWorkbook }} Sent</b>
                                 <b v-else>
                                   Sent on: {{ dateBackpack() }}
                                 </b>
-                                <v-img
+                                <v-icon
+                                  color="primary"
                                   class="ml-1"
-                                  max-height="25"
-                                  max-width="24"
-                                  :src="require('@/assets/svg/green-check.svg')"
-                                />
+                                  @click="$emit('prev-week')"
+                                >
+                                  mdi-eye
+                                </v-icon>
                               </v-row>
                             </template>
 
@@ -539,6 +540,17 @@ export default {
         })
       }
       return ''
+    },
+
+    getNumberWorkbook () {
+      let total = 0
+      if (this.user && this.user.shipments && this.user.shipments.workbookDate) {
+        const that = this
+        Object.keys(this.user.shipments.workbookDate).forEach(function (key) {
+          total = (that.user.shipments.workbookDate[key]) ? total + 1 : total
+        })
+      }
+      return total
     },
 
     role () {

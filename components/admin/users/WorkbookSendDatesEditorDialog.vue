@@ -24,7 +24,7 @@
 
         <v-card-text>
           <v-container>
-            <v-row v-if="!showDataTable">
+            <v-row>
               <v-col
                 v-for="(item, i) in dateField"
                 :key="`filter-item-${i}`"
@@ -59,15 +59,6 @@
                 </v-menu>
               </v-col>
             </v-row>
-            <v-row v-else>
-              <v-col cols="12">
-                <v-data-table
-                  :headers="headers"
-                  :items="getData"
-                  :hide-default-footer="true"
-                />
-              </v-col>
-            </v-row>
           </v-container>
         </v-card-text>
 
@@ -77,18 +68,6 @@
           <v-spacer />
 
           <v-btn
-            v-if="showDataTable"
-            class="white--text"
-            color="green"
-            :disabled="invalid"
-            :text="$vuetify.breakpoint.smAndUp"
-            @click.stop="showDataTable = !showDataTable"
-          >
-            Edit
-          </v-btn>
-
-          <v-btn
-            v-else
             class="white--text"
             color="green"
             :disabled="invalid"
@@ -144,7 +123,6 @@ export default {
       ? parseInt(vm.$route.query.id)
       : null,
     dialog: false,
-    showDataTable: false,
     headers: [
       {
         text: 'Description',
@@ -231,7 +209,6 @@ export default {
       if (item.shipments.workbookDate) {
         this.dateField.map((data) => {
           data.value = item.shipments.workbookDate[data.name]
-          this.showDataTable = (!this.showDataTable && data.value !== null) ? true : this.showDataTable
         })
       }
     },
