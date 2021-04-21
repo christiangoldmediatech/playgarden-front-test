@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <!-- Add New User Card -->
     <v-row>
       <v-col cols="12">
         <v-card width="100%">
@@ -35,6 +36,63 @@
       </v-col>
     </v-row>
 
+    <!-- Charts -->
+    <v-row no-gutters>
+      <v-col cols="12" md="4">
+        <!-- Total Users -->
+        <v-card height="350px" class="mx-0 my-1 mr-md-1">
+          <v-card-text class="full-height">
+            <label class="title-dashboard font-weight-bold">Total Users</label>
+            <v-row class="mt-n4 full-height align-content-space-around">
+              <v-col cols="12">
+                <p class="text-center my-0">
+                  <v-icon x-large color="green lighten-1">
+                    mdi-menu-up
+                  </v-icon>
+                  <span class="grey--text">+{{ totalActive.increment }} New users this week</span> <br>
+                </p>
+              </v-col>
+              <v-col
+                class="text-h1"
+                cols="12"
+              >
+                <center>
+                  <label class="font-weight-bold total-users">{{ totalActive.total }}</label>
+                </center>
+              </v-col>
+              <v-col
+                class="text-h6"
+                cols="12"
+              >
+                <center>
+                  <label class="grey--text">Users using our platform</label>
+                </center>
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="4">
+        <!-- Total Users Per Plan -->
+        <v-card class="mx-0 my-1 mx-md-1" height="350px">
+          <v-card-text>
+            <label class="title-dashboard font-weight-bold">Total Users per Plan</label>
+            <pie-chart :pie-data="usersPerPlan" />
+          </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="4">
+        <!-- Users per status -->
+        <v-card class="mx-0 my-1 ml-md-1" height="350px">
+          <v-card-text>
+            <label class="title-dashboard font-weight-bold">Users per status</label>
+            <pie-chart :pie-data="stripeStatus" />
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+
+    <!-- Users Table -->
     <v-row>
       <v-col cols="12">
         <v-card width="100%">
@@ -102,10 +160,15 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import PieChart from '@/components/admin/dashboard/PieChart.vue'
 import onSearch from '@/mixins/OnSearchMixin.js'
 
 export default {
   name: 'UsersDataTable',
+
+  components: {
+    PieChart
+  },
 
   mixins: [onSearch],
 
@@ -182,7 +245,19 @@ export default {
           value: 'actions',
           width: 100
         }
-      ]
+      ],
+      stripeStatus: {
+        title: '',
+        data: []
+      },
+      usersPerPlan: {
+        title: '',
+        data: []
+      },
+      totalActive: {
+        total: 0,
+        increment: 0
+      }
     }
   },
 
@@ -213,11 +288,17 @@ export default {
     }
   },
 
+  async created () {
+    await this.fetchChartsData()
+  },
+
   methods: {
     ...mapActions('admin/users', {
       getUsers: 'get',
       deleteUser: 'delete'
     }),
+
+    ...mapActions('admin/dashboard', ['getDashboard']),
 
     goToProfile (id) {
       this.$router.push({ name: 'admin-user-manager-profile', query: { id } })
@@ -270,6 +351,23 @@ export default {
           this.refresh()
         }
       })
+    },
+
+    async fetchChartsData () {
+      try {
+        this.loading = true
+        const { usersPerPlan, stripeStatus, totalActive } = await this.getDashboard({})
+        this.usersPerPlan = {
+          data: usersPerPlan
+        }
+        this.stripeStatus = {
+          data: stripeStatus
+        }
+        this.totalActive = totalActive
+      } catch (e) {
+      } finally {
+        this.loading = false
+      }
     }
   }
 }
@@ -279,5 +377,8 @@ export default {
 .profile-icon {
   display: inline-flex;
   vertical-align: middle;
+}
+.full-height {
+  height: 100% !important;
 }
 </style>
