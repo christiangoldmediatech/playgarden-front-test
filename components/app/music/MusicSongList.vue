@@ -9,7 +9,7 @@
         </div>
       </v-col>
 
-      <v-col cols="12" :md="isPlayerShowing? 8 : 7">
+      <v-col cols="12" :md="isPlayerShowing ? 7 : 6">
         <music-carousel-letter
           :value="selectedLetterId"
           :disabled-letters="disabledLetters"
@@ -17,8 +17,17 @@
         />
       </v-col>
 
+      <v-col cols="12" md="" class="d-flex justify-center">
+        <v-btn large class="favorite-button white my-4 mt-md-2 mb-md-0" @click="$emit('showFavorites')">
+          <v-icon left :class="showOnlyFavorites ? 'pink--text text--lighten-2' : 'grey--text'">
+            mdi-heart
+          </v-icon>
+          Favorites
+        </v-btn>
+      </v-col>
+
       <v-col cols="12" md="">
-        <v-row no-gutters justify="center" justify-md="start" align="center" class="fill-height pl-4">
+        <v-row no-gutters justify="center" justify-md="start" align="center" class="fill-height pl-4 pl-md-0">
           <v-col cols="auto">
             <v-card
               tile
@@ -58,8 +67,10 @@
         :thumbnail="song.thumbnail"
         :name="song.name"
         :description="song.description"
+        :is-favorite="song.isFavorite"
         class="my-4"
         @add="addSongToPlayList(song)"
+        @favorite="$emit('favorite', song)"
         @click="createPlayListFromIndex(index)"
       />
     </template>
@@ -70,6 +81,7 @@
         :letter="letter"
         :songs="letter.musicLibrary"
         class="my-2 mt-md-4 mb-md-8"
+        @favorite="$emit('favorite', $event)"
         @createPlayList="emitPlayList"
       />
     </template>
@@ -120,6 +132,11 @@ export default {
     isPlayerShowing: {
       type: Boolean,
       required: false,
+      default: false
+    },
+
+    showOnlyFavorites: {
+      type: Boolean,
       default: false
     }
   },
@@ -227,5 +244,8 @@ export default {
 }
 .child-selector {
   max-width: 300px;
+}
+.favorite-button {
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16) !important;
 }
 </style>

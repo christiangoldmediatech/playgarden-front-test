@@ -10,5 +10,19 @@ export default {
         body: 'Sorry! There was an error while getting the music library.'
       })
     }
+  },
+
+  setFavoriteMusicForChild (_, { childId, musicId }) {
+    return this.$axios.$post('/music-favorites', { childrenId: childId, musicId })
+  },
+
+  removeFavoriteMusic (_, musicId) {
+    return this.$axios.$delete(`/music-favorites/${musicId}`)
+  },
+
+  async getFavoriteMusicForChild (_, childId) {
+    const favorites = await this.$axios.$get(`/music-favorites/children/${childId}`)
+
+    return favorites
   }
 }

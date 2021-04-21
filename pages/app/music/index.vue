@@ -2,16 +2,25 @@
   <v-main class="main-music-wrapper">
     <v-container fluid class="music-page-container pa-0" :class="{ 'mobile': isMobile, 'playing': isPlayerShowing }">
       <v-card class="player-card" :width="playerWidth" :height="playerHeight" :class="{ 'mobile': isMobile, 'pa-4': isPlayerShowing }">
-        <music-player v-show="isPlayerShowing" ref="musicPlayer" :mobile="isMobile" />
+        <music-player
+          v-show="isPlayerShowing"
+          ref="musicPlayer"
+          :mobile="isMobile"
+          @favorite="handleFavorite"
+          @currentSong="currentSong = $event"
+        />
       </v-card>
       <music-song-list
+        :show-only-favorites="showOnlyFavorites"
         :is-player-showing="isPlayerShowing"
         :mobile="isMobile"
-        :all-songs="allSongs"
-        :songs-by-curriculum-type="songsByCurriculumType"
+        :all-songs="allSongsWithFavorites"
+        :songs-by-curriculum-type="songsByCurriculumTypeWithFavorites"
         class="music-song-list fill-height mx-auto"
         @addSong="addSongToPlaylist"
         @newPlayList="createNewPlaylist"
+        @favorite="handleFavorite"
+        @showFavorites="showOnlyFavorites = !showOnlyFavorites"
       />
     </v-container>
   </v-main>
@@ -37,7 +46,10 @@ export default {
     return {
       mobileBreakpoint: PAGE_MOBILE_BREAKPOINT,
       selectedChildId: null,
-      playList: []
+      playList: [],
+      currentSong: {},
+      favoritesDictionary: {},
+      showOnlyFavorites: false
     }
   },
 
@@ -51,6 +63,65 @@ export default {
     ...mapGetters('music', {
       allSongs: 'allSongsWithCurriculumType'
     }),
+
+    /**
+     * Return 'allSongs' with props `isFavorite` and `favoriteId` that can be used
+     * to show if the song is favorite or not and to update its status in child components.
+     *
+     * This computed property also filters out non favorite songs when `showOnlyFavorites` is true
+     */
+    allSongsWithFavorites () {
+      return this.allSongs.reduce((prev, song) => {
+        const favorite = this.favoritesDictionary[song.id]
+
+        if (this.showOnlyFavorites && !favorite) {
+          return prev
+        } else if (!favorite) {
+          return [...prev, song]
+        }
+
+        return [
+          ...prev,
+          {
+            ...song,
+            // custom properties
+            isFavorite: true,
+            favoriteId: favorite.id
+          }
+        ]
+      }, [])
+    },
+
+    /**
+     * Return 'songsByCurriculumType' with props `isFavorite` and `favoriteId` that can be used
+     * to show if the song is favorite or not and to update its status in child components.
+     *
+     * This computed property also filters out non favorite songs when `showOnlyFavorites` is true
+     */
+    songsByCurriculumTypeWithFavorites () {
+      return this.songsByCurriculumType.map(curriculumType => ({
+        ...curriculumType,
+        musicLibrary: curriculumType.musicLibrary.reduce((prev, song) => {
+          const favorite = this.favoritesDictionary[song.id]
+
+          if (this.showOnlyFavorites && !favorite) {
+            return prev
+          } else if (!favorite) {
+            return [...prev, song]
+          }
+
+          return [
+            ...prev,
+            {
+              ...song,
+              // custom properties
+              isFavorite: true,
+              favoriteId: favorite.id
+            }
+          ]
+        }, [])
+      }))
+    },
 
     isPlayerShowing () {
       return this.playList.length > 0
@@ -86,24 +157,43 @@ export default {
   },
 
   watch: {
-    selectedChildId (id) {
-      if (id) {
-        this.$router.push({ name: this.$route.name, query: { id } })
+    id (val) {
+      if (val) {
+        this.getAndSetFavorites()
       }
     }
   },
 
   async created () {
-    if (this.id) {
-      this.selectedChildId = parseInt(this.id)
-    } else if (this.currentChild.length) {
-      this.selectedChildId = this.currentChild[0].id
+    if (!this.id && this.currentChild.length) {
+      this.$router.push({ name: this.$route.name, query: { id: this.currentChild[0].id } })
     }
+
     await this.getMusicLibrariesByCurriculumType()
+    await this.getAndSetFavorites()
   },
 
   methods: {
-    ...mapActions('music', ['getMusicLibrariesByCurriculumType']),
+    ...mapActions('music', ['getMusicLibrariesByCurriculumType', 'getFavoriteMusicForChild', 'setFavoriteMusicForChild', 'removeFavoriteMusic']),
+
+    async getAndSetFavorites () {
+      const favorites = await this.getFavoriteMusicForChild(this.id)
+
+      const favoritesDictionary = {}
+      for (const favorite of favorites) {
+        const songId = favorite && favorite.music ? favorite.music.id : undefined
+
+        if (!songId) {
+          return
+        }
+
+        favoritesDictionary[songId] = { songId, id: favorite.id }
+      }
+
+      this.favoritesDictionary = { ...favoritesDictionary }
+
+      this.updateCurrentSongData()
+    },
 
     addSongToPlaylist (song) {
       if (this.$refs.musicPlayer) {
@@ -115,6 +205,41 @@ export default {
     createNewPlaylist (playList) {
       this.$refs.musicPlayer.createNewPlaylist(playList)
       this.playList = playList
+    },
+
+    async handleFavorite (song) {
+      try {
+        if (song.isFavorite) {
+          await this.removeFavoriteMusic(song.favoriteId)
+          this.$snotify.success('Song removed from favorites')
+        } else {
+          await this.setFavoriteMusicForChild({ childId: this.id, musicId: song.id })
+          this.$snotify.success('Song added to favorites')
+        }
+
+        await this.getAndSetFavorites()
+      } catch (error) {
+        this.$snotify.error(error.message)
+      }
+    },
+
+    updateCurrentSongData () {
+      const resolvedCurrentSong = Object.keys(this.currentSong || {}).length
+        ? { ...this.currentSong }
+        : undefined
+
+      if (!resolvedCurrentSong) {
+        return
+      }
+
+      const favorite = this.favoritesDictionary[resolvedCurrentSong.id]
+      if (this.$refs.musicPlayer) {
+        this.$refs.musicPlayer.refreshSongData({
+          ...resolvedCurrentSong,
+          isFavorite: !!favorite,
+          favoriteId: favorite ? favorite.id : undefined
+        })
+      }
     }
   }
 }
@@ -151,6 +276,5 @@ export default {
 
 .music-song-list {
   overflow: scroll;
-  max-width: 1200px;
 }
 </style>

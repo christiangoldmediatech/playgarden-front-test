@@ -13,7 +13,7 @@
       <!-- Player -->
       <v-col>
         <div class="player-wrapper px-4" :class="{ 'pt-6': !mobile }">
-          <pg-audio-player ref="audioPlayer" :play-list="playList">
+          <pg-audio-player ref="audioPlayer" :play-list="playList" @currentSong="$emit('currentSong', $event)">
             <!-- Current Song -->
             <template
               v-slot:current="{
@@ -30,17 +30,27 @@
               }"
             >
               <template v-if="!mobile">
-                <figure
-                  class="song-thumbnail mx-auto"
-                  :style="{ 'background-image': `url(${currentSong.thumbnail})` }"
-                >
-                  <v-overlay
-                    absolute
-                    :value="isLoading"
+                <div class="thumbnail-wrapper">
+                  <figure
+                    class="song-thumbnail mx-auto"
+                    :style="{ 'background-image': `url(${currentSong.thumbnail})` }"
                   >
-                    <v-progress-circular indeterminate />
-                  </v-overlay>
-                </figure>
+                    <v-overlay
+                      absolute
+                      :value="isLoading"
+                    >
+                      <v-progress-circular indeterminate />
+                    </v-overlay>
+                  </figure>
+                  <v-icon
+                    class="favorite-btn"
+                    size="32"
+                    :class="currentSong.isFavorite ? 'pink--text text--lighten-2' : 'grey--text text--lighten-2'"
+                    @click="$emit('favorite', currentSong)"
+                  >
+                    mdi-heart
+                  </v-icon>
+                </div>
                 <div class="song-details text-center pt-4">
                   <p class="song-title mb-2 text-truncate">
                     {{ currentSong.description }}
@@ -288,6 +298,12 @@ export default {
   },
 
   methods: {
+    refreshSongData (song) {
+      if (this.$refs.audioPlayer) {
+        this.$refs.audioPlayer.refreshSongData(song)
+      }
+    },
+
     addSongToPlaylist (song) {
       this.playList.push(song)
       if (this.$refs.audioPlayer) {
@@ -321,7 +337,7 @@ export default {
     position: relative;
     width: 300px;
     height: 300px;
-    background-size: contain;
+    background-size: cover;
     background-position: center center;
     &.mobile {
       width: 100px;
@@ -395,6 +411,15 @@ export default {
     &.selected {
       background-color: rgba(lightgrey, 0.2);
     }
+  }
+}
+.thumbnail-wrapper {
+  position: relative;
+
+  & .favorite-btn {
+      position: absolute;
+      bottom: 15px;
+      right: 55px;
   }
 }
 </style>
