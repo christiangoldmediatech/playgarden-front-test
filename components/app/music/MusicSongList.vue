@@ -9,7 +9,12 @@
         </div>
       </v-col>
 
-      <v-col cols="12" :md="isPlayerShowing ? 7 : 6">
+      <v-col
+        cols="12"
+        :md="isPlayerShowing ? 5 : 6"
+        :lg="isPlayerShowing ? 6 : 7"
+        xl="7"
+      >
         <music-carousel-letter
           :value="selectedLetterId"
           :disabled-letters="disabledLetters"
@@ -81,6 +86,7 @@
         :letter="letter"
         :songs="letter.musicLibrary"
         class="my-2 mt-md-4 mb-md-8"
+        @add="addSongToPlayList"
         @favorite="$emit('favorite', $event)"
         @createPlayList="emitPlayList"
       />
