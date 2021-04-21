@@ -205,8 +205,7 @@ export default {
       this.item.phoneNumber = item.phoneNumber
       this.item.roleId = item.role.id
       this.item.workbookSent = true
-
-      if (item.shipments.workbookDate) {
+      if (item.shipments && item.shipments.workbookDate) {
         this.dateField.map((data) => {
           data.value = item.shipments.workbookDate[data.name]
         })
