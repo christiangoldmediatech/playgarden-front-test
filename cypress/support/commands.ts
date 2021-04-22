@@ -47,7 +47,7 @@ Cypress.Commands.add('headlessLoginAs', (user: 'parent' | 'admin') => {
       break
   }
 
-  cy.request({
+  return cy.request({
     method: 'POST',
     url: 'https://apidev.playgardenonline.com/auth/login',
     body: {
@@ -57,4 +57,26 @@ Cypress.Commands.add('headlessLoginAs', (user: 'parent' | 'admin') => {
   }).its('body').then(body => {
     window.localStorage.setItem('authToken', JSON.stringify(body.accessToken))
   })
+})
+
+const tomorrow = Date.now() + 8.6e7
+
+Cypress.Commands.add('headlessChildrenFetch', () => {
+  const token = JSON.parse(window.localStorage.getItem('authToken'))
+
+  return cy.request({
+    method: 'GET',
+    url: 'https://apidev.playgardenonline.com/children',
+    headers: {
+      authorization: `Bearer ${token}`
+    }
+  })
+    .its('body')
+})
+
+Cypress.Commands.add('headlessChildSelect', (childId: number, expires: number = tomorrow) => {
+  window.localStorage.setItem('selectedChild', JSON.stringify({
+    value: [childId], // Ana
+    expires: expires
+  }))
 })
