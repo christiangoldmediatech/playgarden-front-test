@@ -1,8 +1,7 @@
 <template>
-  <v-row no-gutters>
+  <v-row no-gutters justify="center">
     <v-col
-      cols="12"
-      md="6"
+      md="4"
       xs="12"
       class="d-flex flex-row-reverse"
     >
@@ -16,7 +15,7 @@
     </v-col>
     <v-col
       cols="12"
-      md="6"
+      md="4"
       xs="12"
       class="my-2 mb-4"
     >
@@ -28,10 +27,10 @@
           <p
             class="font-weight-bold mb-6 pg-letter-spacing text-center text-h5 text-md-left"
           >
-            <underlined-title class="text-h6 text-md-h4" text="IT SEEMS THAT YOUR ACCOUNT IS INACTIVE" />
+            <underlined-title class="text-h6 text-md-h5" text="IT SEEMS THAT YOUR ACCOUNT IS INACTIVE" />
           </p>
 
-          <p class="text-justify mt-12">
+          <p class="text-justify mt-6">
             Hi <b>{{ fullName }}</b>,
           </p>
 
