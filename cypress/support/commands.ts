@@ -7,19 +7,23 @@
 // commands please read more here:
 // https://on.cypress.io/custom-commands
 // ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('uiLoginAsAdmin', () => {
+  cy.visit('/auth/logout')
+
+  cy.get('[data-test-id=email-field]').type(Cypress.env('adminEmail'))
+  cy.get('[data-test-id=password-field]').type(Cypress.env('adminPassword'))
+  cy.get('[data-test-id=login-button]').click()
+
+  cy.url().should('include', '/admin/dashboard')
+})
+
+Cypress.Commands.add('uiLoginAsParent', () => {
+  cy.visit('/auth/logout')
+
+  cy.get('[data-test-id=email-field]').type(Cypress.env('parentEmail'))
+  cy.get('[data-test-id=password-field]').type(Cypress.env('parentPassword'))
+  cy.get('[data-test-id=login-button]').click()
+
+  cy.url().should('include', '/app/pick-child')
+})
