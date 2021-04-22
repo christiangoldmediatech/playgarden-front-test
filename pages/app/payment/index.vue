@@ -5,10 +5,7 @@
         color="accent"
         nuxt
         text
-        :to="{
-          name: 'auth-parent',
-          query: { process: 'signup', step: '1' }
-        }"
+        @click="goBack"
       >
         <v-icon left>
           mdi-less-than
@@ -35,7 +32,10 @@ export default {
   },
 
   data: vm => ({
-    currentStep: 2
+    currentStep: 2,
+    mode: vm.$route.params.mode
+      ? vm.$route.params.mode
+      : ''
   }),
 
   computed: {
@@ -66,6 +66,21 @@ export default {
     this.$nuxt.$off('set-current-step')
   },
 
-  methods: {}
+  methods: {
+    goBack () {
+      let page = {}
+      if (this.mode === 'activate-user') {
+        page = {
+          name: 'app-inactive-subscription'
+        }
+      } else {
+        page = {
+          name: 'auth-parent',
+          query: { process: 'signup', step: '1' }
+        }
+      }
+      this.$router.push(page)
+    }
+  }
 }
 </script>
