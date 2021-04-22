@@ -9,7 +9,7 @@ describe('/auth/login', () => {
     cy.visit('/auth/logout')
   })
 
-  it.only('logs in as a parent', () => {
+  it('logs in as a parent', () => {
     cy.uiLoginAs('parent')
     cy.uiChildSelect(1)
   })
