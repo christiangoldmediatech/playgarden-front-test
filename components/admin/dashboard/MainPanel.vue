@@ -156,7 +156,7 @@
               <v-card class="mx-3">
                 <v-card-text>
                   <label class="title-dashboard font-weight-bold">Users per Status</label>
-                  <pie-chart :pie-data="stripeStatus" />
+                  <pie-chart :pie-data="usersPerStatus" />
                 </v-card-text>
               </v-card>
               <!-- End Users per status -->
@@ -310,7 +310,7 @@ export default {
       xAxios: [],
       data: []
     },
-    stripeStatus: {
+    usersPerStatus: {
       title: '',
       data: []
     },
@@ -346,7 +346,7 @@ export default {
         this.search = ''
       }
       try {
-        const { dataFunnel, totalSubscriptions, totalTrialing, totalActive, canceledUsers, usersPerPlan, stripeStatus, activeUsers, dailyUsers, childsByLetter, childrenTotal, planActiveInactive } = await this.getDashboard({})
+        const { dataFunnel, totalSubscriptions, totalTrialing, totalActive, canceledUsers, usersPerPlan, usersPerStatus, activeUsers, dailyUsers, childsByLetter, childrenTotal, planActiveInactive } = await this.getDashboard({})
         this.funnel = {
           data: dataFunnel
         }
@@ -356,8 +356,8 @@ export default {
         this.usersPerPlan = {
           data: usersPerPlan
         }
-        this.stripeStatus = {
-          data: stripeStatus
+        this.usersPerStatus = {
+          data: usersPerStatus
         }
         this.activeUsers = activeUsers
         this.planActiveInactive = planActiveInactive
