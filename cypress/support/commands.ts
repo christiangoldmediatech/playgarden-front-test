@@ -8,22 +8,53 @@
 // https://on.cypress.io/custom-commands
 // ***********************************************
 
-Cypress.Commands.add('uiLoginAsAdmin', () => {
+Cypress.Commands.add('uiLoginAs', (user: 'parent' | 'admin') => {
+  const payload = { email: '', password: '', url: '' }
+
+  switch (user) {
+    case 'parent':
+      payload.email = Cypress.env('parentEmail'),
+      payload.password = Cypress.env('parentPassword')
+      payload.url = '/app/pick-child'
+      break
+    case 'admin':
+      payload.email = Cypress.env('adminEmail'),
+      payload.password = Cypress.env('adminPassword')
+      payload.url = '/admin/dashboard'
+      break
+  }
+
   cy.visit('/auth/logout')
 
-  cy.get('[data-test-id=email-field]').type(Cypress.env('adminEmail'))
-  cy.get('[data-test-id=password-field]').type(Cypress.env('adminPassword'))
+  cy.get('[data-test-id=email-field]').type(payload.email)
+  cy.get('[data-test-id=password-field]').type(payload.password)
   cy.get('[data-test-id=login-button]').click()
 
-  cy.url().should('include', '/admin/dashboard')
+  cy.url().should('include', payload.url)
 })
 
-Cypress.Commands.add('uiLoginAsParent', () => {
-  cy.visit('/auth/logout')
+Cypress.Commands.add('headlessLoginAs', (user: 'parent' | 'admin') => {
+  const payload = { email: '', password: '' }
 
-  cy.get('[data-test-id=email-field]').type(Cypress.env('parentEmail'))
-  cy.get('[data-test-id=password-field]').type(Cypress.env('parentPassword'))
-  cy.get('[data-test-id=login-button]').click()
+  switch (user) {
+    case 'parent':
+      payload.email = Cypress.env('parentEmail'),
+      payload.password = Cypress.env('parentPassword')
+      break
+    case 'admin':
+      payload.email = Cypress.env('adminEmail'),
+      payload.password = Cypress.env('adminPassword')
+      break
+  }
 
-  cy.url().should('include', '/app/pick-child')
+  cy.request({
+    method: 'POST',
+    url: 'https://apidev.playgardenonline.com/auth/login',
+    body: {
+      email: payload.email,
+      password: payload.password
+    }
+  }).its('body').then(body => {
+    window.localStorage.setItem('authToken', JSON.stringify(body.accessToken))
+  })
 })

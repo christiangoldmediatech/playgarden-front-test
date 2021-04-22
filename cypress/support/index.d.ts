@@ -3,10 +3,15 @@
 declare namespace Cypress {
   interface Chainable {
     /**
-     * Custom command to log in as an admin using the UI
-     * @example cy.uiLoginAsAdmin()
+     * Custom command to login using the UI
+     * @example cy.uiLoginAs('parent')
      */
-    uiLoginAsAdmin(): Chainable<Element>,
-    uiLoginAsParent(): Chainable<Element>
+    uiLoginAs(user: 'parent' | 'admin'): Chainable<Element>,
+    /**
+     * 
+     * @param user Custom command to login using requests
+     * @example cy.headlessLoginAs('admin')
+     */
+    headlessLoginAs(user: 'parent' | 'admin'): Chainable<Element>
   }
 }

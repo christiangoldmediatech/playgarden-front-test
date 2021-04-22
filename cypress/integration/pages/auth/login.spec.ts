@@ -11,10 +11,10 @@ describe('/auth/login', () => {
   })
 
   it('logs in as an admin', () => {
-    cy.uiLoginAsAdmin()
+    cy.uiLoginAs('admin')
   })
 
   it('logs in as a parent', () => {
-    cy.uiLoginAsParent()
+    cy.uiLoginAs('parent')
   })
 })
