@@ -76,7 +76,7 @@ Cypress.Commands.add('headlessChildrenFetch', () => {
 
 Cypress.Commands.add('headlessChildSelect', (childId: number, expires: number = tomorrow) => {
   window.localStorage.setItem('selectedChild', JSON.stringify({
-    value: [childId], // Ana
+    value: [childId],
     expires: expires
   }))
 })
