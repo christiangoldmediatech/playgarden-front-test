@@ -23,6 +23,12 @@ declare namespace Cypress {
      * Custom command that returns a list of children
      * @example headlessChildrenFetch().then(children => ...)
      */
-    headlessChildrenFetch(): Chainable<any[]>
+    headlessChildrenFetch(): Chainable<any[]>,
+    /**
+     * Custom command to select a child using the UI
+     * @param childIndex Index of child to select -- 0 by default
+     * @example uiChildSelect(2)
+     */
+    uiChildSelect(childIndex: number): Chainable<void>
   }
 }

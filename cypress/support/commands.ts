@@ -74,6 +74,14 @@ Cypress.Commands.add('headlessChildrenFetch', () => {
     .its('body')
 })
 
+Cypress.Commands.add('uiChildSelect', (childIndex: number = 0) => {
+  cy.intercept('https://apidev.playgardenonline.com/children').as('childrenFetch')
+
+  cy.wait('@childrenFetch').then(() => {
+    cy.get(`[data-test-id=pick-child-${childIndex}]`).click()
+  })
+})
+
 Cypress.Commands.add('headlessChildSelect', (childId: number, expires: number = tomorrow) => {
   window.localStorage.setItem('selectedChild', JSON.stringify({
     value: [childId],
