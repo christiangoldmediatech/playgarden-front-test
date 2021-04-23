@@ -252,12 +252,13 @@
               />
             </validation-provider>
 
-            <v-checkbox
+            <v-switch
               v-model="item.active"
               class="mx-1 my-1 pa-0"
-              color="primary darken-2"
+              dense
               hide-details
-              label="Status"
+              inset
+              label="Activate"
             />
 
             <validation-provider

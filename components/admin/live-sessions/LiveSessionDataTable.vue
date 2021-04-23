@@ -96,7 +96,7 @@
             </v-toolbar>
           </v-col>
           <template v-if="viewMode === 'CALENDAR'">
-            <calendar-view :day="day" @loading="onLoading" />
+            <calendar-view :day="day" @loading="onLoading" @saved="refresh(false)" />
           </template>
           <template v-else-if="viewMode === 'LIST'">
             <v-col cols="12">
