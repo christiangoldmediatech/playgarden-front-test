@@ -148,6 +148,6 @@ export default {
 }
 
 .opacity {
-  opacity: 0.6 !important;
+  opacity: 0.5 !important;
 }
 </style>

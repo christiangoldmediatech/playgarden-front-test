@@ -252,13 +252,14 @@
               />
             </validation-provider>
 
+            <span>Status:</span>
             <v-switch
               v-model="item.active"
               class="mx-1 my-1 pa-0"
               dense
               hide-details
               inset
-              label="Activate"
+              :label="item.active ? 'Active' : 'Inactive'"
             />
 
             <validation-provider
