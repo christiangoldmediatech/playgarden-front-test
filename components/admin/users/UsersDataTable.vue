@@ -86,7 +86,7 @@
         <v-card class="mx-0 my-1 ml-md-1" height="350px">
           <v-card-text>
             <label class="title-dashboard font-weight-bold">Users per status</label>
-            <pie-chart :pie-data="stripeStatus" />
+            <pie-chart :pie-data="usersPerStatus" />
           </v-card-text>
         </v-card>
       </v-col>
@@ -246,7 +246,7 @@ export default {
           width: 100
         }
       ],
-      stripeStatus: {
+      usersPerStatus: {
         title: '',
         data: []
       },
@@ -356,12 +356,12 @@ export default {
     async fetchChartsData () {
       try {
         this.loading = true
-        const { usersPerPlan, stripeStatus, totalActive } = await this.getDashboard({})
+        const { usersPerPlan, usersPerStatus, totalActive } = await this.getDashboard({})
         this.usersPerPlan = {
           data: usersPerPlan
         }
-        this.stripeStatus = {
-          data: stripeStatus
+        this.usersPerStatus = {
+          data: usersPerStatus
         }
         this.totalActive = totalActive
       } catch (e) {
