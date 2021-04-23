@@ -516,6 +516,7 @@ export default {
         }
 
         this.$emit('saved')
+        this.$nuxt.$emit('update-calendar')
 
         this.close()
       } catch (err) {
