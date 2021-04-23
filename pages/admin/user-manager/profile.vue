@@ -89,59 +89,80 @@
                   <a :href="`https://dashboard.stripe.com/customers/${billing.customerId}`" target="_blank">View on Stripe</a>
                 </v-chip>
               </v-col>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col v-if="billing.stripeStatus !== 'canceled'">
-              <v-row>
-                <v-col cols="9">
-                  <v-row
-                    class="user-edit pl-md-8"
-                    no-gutters
-                  >
-                    <v-btn class="mr-2" nuxt @click="goToEdit(user.id)">
-                      <v-icon color="accent" dense>
-                        mdi-pencil-outline
-                      </v-icon>
-                      <span class="clickable">
-                        EDIT
-                      </span>
-                    </v-btn>
-                    <v-btn class="mr-2" nuxt @click="$refs.userPassword.open($event, user.id)">
-                      <v-icon dense>
-                        mdi-account-key
-                      </v-icon>
-                      Change Password
-                    </v-btn>
-                    <v-btn class="mr-2" color="accent darken-1" nuxt @click="changePlanModal = true">
-                      <v-icon dense>
-                        mdi-receipt
-                      </v-icon>
-                      Change Plan
-                    </v-btn>
-                    <v-btn class="" color="primary darken-1" nuxt @click="$refs.shippingAddress.open($event, user.id)">
-                      <v-icon dense>
-                        mdi-map-marker-circle
-                      </v-icon>
-                      Edit Shipping Address
-                    </v-btn>
-                  </v-row>
-                </v-col>
-                <v-col cols="3">
-                  <v-row
-                    justify="center"
-                    justify-md="end"
-                    class="user-edit pr-md-5"
-                    no-gutters
-                  >
-                    <div class="text-center">
-                      <v-btn color="#FF0000" dark @click="remove">
-                        Cancel Membership
-                      </v-btn>
-                    </div>
-                  </v-row>
-                </v-col>
-              </v-row>
+              <v-col class="mt-n12">
+                <v-row class="mt-n6">
+                  <v-col cols="12">
+                    <v-row
+                      justify="center"
+                      justify-md="end"
+                      class="user-edit pr-md-5 mt-n10"
+                      no-gutters
+                    >
+                      <div class="text-center">
+                        <v-menu offset-y>
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-btn
+                              color="primary"
+                              dark
+                              v-bind="attrs"
+                              v-on="on"
+                            >
+                              Actions
+                              <v-icon dense>
+                                mdi-chevron-down
+                              </v-icon>
+                            </v-btn>
+                          </template>
+                          <v-list>
+                            <v-list-item class="clickable">
+                              <v-list-item-title @click="goToEdit(user.id)">
+                                <v-icon color="accent" dense>
+                                  mdi-pencil-outline
+                                </v-icon>
+                                <span>
+                                  Edit
+                                </span>
+                              </v-list-item-title>
+                            </v-list-item>
+                            <v-list-item class="clickable">
+                              <v-list-item-title @click="$refs.userPassword.open($event, user.id)">
+                                <v-icon color="accent" dense>
+                                  mdi-account-key
+                                </v-icon>
+                                Change Password
+                              </v-list-item-title>
+                            </v-list-item>
+                            <v-list-item class="clickable">
+                              <v-list-item-title @click="changePlanModal = true">
+                                <v-icon color="accent" dense>
+                                  mdi-receipt
+                                </v-icon>
+                                Change Plan
+                              </v-list-item-title>
+                            </v-list-item>
+                            <v-list-item class="clickable">
+                              <v-list-item-title @click="$refs.shippingAddress.open($event, user.id)">
+                                <v-icon color="accent" dense>
+                                  mdi-map-marker-circle
+                                </v-icon>
+                                Edit Shipping Address
+                              </v-list-item-title>
+                            </v-list-item>
+                            <v-list-item v-if="billing.stripeStatus !== 'canceled'" class="clickable">
+                              <v-list-item-title @click="remove">
+                                <v-icon color="accent" dense>
+                                  mdi-account-remove
+                                </v-icon>
+                                Cancel Membership
+                              </v-list-item-title>
+                            </v-list-item>
+                          </v-list>
+                        </v-menu>
+                      </div>
+                    </v-row>
+                  </v-col>
+                </v-row>
+              </v-col>
             </v-col>
           </v-row>
 
