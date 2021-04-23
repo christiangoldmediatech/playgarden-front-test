@@ -473,6 +473,7 @@ export default {
         action: async () => {
           await this.deleteLiveSession(this.id)
           this.$emit('saved')
+          this.$nuxt.$emit('update-calendar')
           await this.close()
         }
       })
