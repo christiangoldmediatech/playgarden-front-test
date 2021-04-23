@@ -45,6 +45,7 @@
                   <v-icon
                     class="favorite-btn"
                     size="32"
+                    data-test-id="music-player-favorite-button"
                     :class="currentSong.isFavorite ? 'pink--text text--lighten-2' : 'grey--text text--lighten-2'"
                     @click="$emit('favorite', currentSong)"
                   >
@@ -108,7 +109,13 @@
                             mdi-play
                           </v-icon>
                         </v-btn>
-                        <v-btn v-else icon height="50" width="50" @click="pause">
+                        <v-btn
+                          v-else
+                          icon
+                          height="50"
+                          width="50"
+                          @click="pause"
+                        >
                           <v-icon size="50">
                             mdi-pause-circle-outline
                           </v-icon>
@@ -171,7 +178,14 @@
                       mdi-play
                     </v-icon>
                   </v-btn>
-                  <v-btn v-else icon height="50" width="50" @click="pause">
+                  <v-btn
+                    v-else
+                    icon
+                    height="50"
+                    width="50"
+                    data-test-id="music-player-pause-button"
+                    @click="pause"
+                  >
                     <v-icon size="50">
                       mdi-pause-circle-outline
                     </v-icon>

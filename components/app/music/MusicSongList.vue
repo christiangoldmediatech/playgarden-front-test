@@ -23,7 +23,12 @@
       </v-col>
 
       <v-col cols="12" md="" class="d-flex justify-center">
-        <v-btn large class="favorite-button white my-4 mt-md-2 mb-md-0" @click="$emit('showFavorites')">
+        <v-btn
+          large
+          class="favorite-button white my-4 mt-md-2 mb-md-0"
+          data-test-id="favorite-toggle"
+          @click="$emit('showFavorites')"
+        >
           <v-icon left :class="showOnlyFavorites ? 'pink--text text--lighten-2' : 'grey--text'">
             mdi-heart
           </v-icon>
@@ -39,6 +44,7 @@
               width="110"
               class="py-2 filter text-center"
               :class="{ selected: selectedFilter === 'list' }"
+              data-test-id="list-view-button"
               @click="selectedFilter = 'list'"
             >
               <v-icon :color="selectedFilter === 'list' ? 'white' : 'primary'">
@@ -53,6 +59,7 @@
               width="110"
               class="py-2 filter text-center"
               :class="{ selected: selectedFilter === 'letter' }"
+              data-test-id="letter-view-button"
               @click="selectedFilter = 'letter'"
             >
               <v-icon :color="selectedFilter === 'letter' ? 'white' : 'primary'">
@@ -66,30 +73,34 @@
     </v-row>
     <!-- Songs -->
     <template v-if="selectedFilter === 'list'">
-      <song-card
-        v-for="(song, index) in filteredSongsByLetterId"
-        :key="song.id"
-        :thumbnail="song.thumbnail"
-        :name="song.name"
-        :description="song.description"
-        :is-favorite="song.isFavorite"
-        class="my-4"
-        @add="addSongToPlayList(song)"
-        @favorite="$emit('favorite', song)"
-        @click="createPlayListFromIndex(index)"
-      />
+      <div data-test-id="song-card-list">
+        <song-card
+          v-for="(song, index) in filteredSongsByLetterId"
+          :key="song.id"
+          :thumbnail="song.thumbnail"
+          :name="song.name"
+          :description="song.description"
+          :is-favorite="song.isFavorite"
+          class="my-4"
+          @add="addSongToPlayList(song)"
+          @favorite="$emit('favorite', song)"
+          @click="createPlayListFromIndex(index)"
+        />
+      </div>
     </template>
     <template v-if="selectedFilter === 'letter'">
-      <letter-songs
-        v-for="letter in filteredLettersByLetterId"
-        :key="letter.id"
-        :letter="letter"
-        :songs="letter.musicLibrary"
-        class="my-2 mt-md-4 mb-md-8"
-        @add="addSongToPlayList"
-        @favorite="$emit('favorite', $event)"
-        @createPlayList="emitPlayList"
-      />
+      <div data-test-id="letter-songs-list">
+        <letter-songs
+          v-for="letter in filteredLettersByLetterId"
+          :key="letter.id"
+          :letter="letter"
+          :songs="letter.musicLibrary"
+          class="my-2 mt-md-4 mb-md-8"
+          @add="addSongToPlayList"
+          @favorite="$emit('favorite', $event)"
+          @createPlayList="emitPlayList"
+        />
+      </div>
     </template>
   </div>
 </template>

@@ -32,6 +32,7 @@
             <v-icon
               class="favorite-btn"
               size="28"
+              data-test-id="letter-song-favorite-button"
               :class="song.isFavorite? 'pink--text text--lighten-2' : 'grey--text text--lighten-2'"
               @click="$emit('favorite', song)"
             >
