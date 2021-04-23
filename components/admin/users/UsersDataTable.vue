@@ -3,7 +3,7 @@
     <!-- Add New User Card -->
     <v-row>
       <v-col cols="12">
-        <v-card width="100%">
+        <v-card width="100%" class="custom-shadow">
           <v-card-title>
             Users
 
@@ -40,9 +40,9 @@
     <v-row no-gutters>
       <v-col cols="12" md="4">
         <!-- Total Users -->
-        <v-card height="350px" class="mx-0 my-1 mr-md-1">
+        <v-card height="350px" class="mx-0 my-2 mr-md-2 custom-shadow">
           <v-card-text class="full-height">
-            <label class="title-dashboard font-weight-bold">Total Users</label>
+            <label class="text-h5 font-weight-bold">Total Users</label>
             <v-row class="mt-n4 full-height align-content-space-around">
               <v-col cols="12">
                 <p class="text-center my-0">
@@ -74,18 +74,18 @@
       </v-col>
       <v-col cols="12" md="4">
         <!-- Total Users Per Plan -->
-        <v-card class="mx-0 my-1 mx-md-1" height="350px">
+        <v-card class="mx-0 my-2 mx-md-2 custom-shadow" height="350px">
           <v-card-text>
-            <label class="title-dashboard font-weight-bold">Total Users per Plan</label>
+            <label class="text-h5 font-weight-bold">Total Users per Plan</label>
             <pie-chart :pie-data="usersPerPlan" />
           </v-card-text>
         </v-card>
       </v-col>
       <v-col cols="12" md="4">
         <!-- Users per status -->
-        <v-card class="mx-0 my-1 ml-md-1" height="350px">
+        <v-card class="mx-0 my-2 ml-md-2 custom-shadow" height="350px">
           <v-card-text>
-            <label class="title-dashboard font-weight-bold">Users per status</label>
+            <label class="text-h5 font-weight-bold">Users per status</label>
             <pie-chart :pie-data="usersPerStatus" />
           </v-card-text>
         </v-card>
@@ -373,12 +373,16 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .profile-icon {
   display: inline-flex;
   vertical-align: middle;
 }
 .full-height {
   height: 100% !important;
+}
+.custom-shadow {
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15) !important;
+  border-radius: 8px !important;
 }
 </style>
