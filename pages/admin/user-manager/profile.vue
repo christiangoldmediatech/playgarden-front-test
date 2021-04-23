@@ -148,12 +148,13 @@
                                 Edit Shipping Address
                               </v-list-item-title>
                             </v-list-item>
+                            <v-divider v-if="billing.stripeStatus !== 'canceled'"></v-divider>
                             <v-list-item v-if="billing.stripeStatus !== 'canceled'" class="clickable">
                               <v-list-item-title @click="remove">
-                                <v-icon color="accent" dense>
+                                <v-icon color="red" dense>
                                   mdi-account-remove
                                 </v-icon>
-                                Cancel Membership
+                                <span class="red--text">Cancel Membership</span>
                               </v-list-item-title>
                             </v-list-item>
                           </v-list>
