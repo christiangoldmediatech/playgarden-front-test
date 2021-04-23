@@ -35,8 +35,8 @@
           </p>
 
           <p class="text-justify">
-            The account linked to this email <b>{{ getEmail }}</b> seems to be deactivated, this may be due to non-payment, or its cancellation previously.
-            You can activate your account again by clicking on the following button
+            The account linked to this email <b>{{ getEmail }}</b> seems to be deactivated, this may be due to non-payment, or because it was cancelled previously.
+            You can activate your account again by clicking on the following button.
           </p>
 
           <v-row no-gutters class="mt-7" justify="center">
