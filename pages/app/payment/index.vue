@@ -57,7 +57,6 @@ export default {
 
   mounted () {
     this.$nuxt.$on('set-current-step', (step) => {
-      console.log('step--', step)
       if (step) {
         this.currentStep = step
       }
