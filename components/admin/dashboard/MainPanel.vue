@@ -21,7 +21,7 @@
                 <v-card-text class="pt-3">
                   <label class="title-dashboard font-weight-bold">Conversions funnel</label> <br>
                   <span>The conversions will be shown here.</span>
-                  <funnel-chart class="pt-10" :funnel-data="funnel" />
+                  <funnel-chart :funnel-data="funnel" />
                 </v-card-text>
               </v-card>
               <!-- End Conversions funnel -->
