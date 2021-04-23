@@ -107,7 +107,6 @@ export default {
     createMembership () {
       this.$router.push({
         name: 'app-payment',
-        query: { process: 'signup', step: '2' },
         params: { mode: 'activate-user' }
       })
     },
