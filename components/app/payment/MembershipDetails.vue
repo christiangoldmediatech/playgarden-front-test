@@ -185,7 +185,7 @@
           </v-col>
 
           <!-- Change Plan Button -->
-          <!-- <v-col cols="12" class="d-flex justify-center">
+          <v-col v-if="billing.subscriptionId" cols="12" class="d-flex justify-center">
             <v-btn
               color="primary mb-3"
               x-large
@@ -194,7 +194,7 @@
             >
               CHANGE PLAN
             </v-btn>
-          </v-col> -->
+          </v-col>
 
           <v-col cols="12" class="d-flex justify-center">
             <!-- Cancel Subscription -->
@@ -213,7 +213,7 @@
               block
               color="primary"
               x-large
-              @click="createMembership"
+              @click="selectPlan"
             >
               CREATE MEMBERSHIP
             </v-btn>
@@ -526,10 +526,9 @@ export default {
         this.$router.push({ name: this.$route.params.planRedirect })
       }
     },
-    createMembership () {
+    selectPlan () {
       this.$router.push({
         name: 'app-payment',
-        query: { process: 'signup', step: '2' },
         params: { mode: 'activate-user' }
       })
     },
