@@ -81,6 +81,9 @@ export default {
     border-radius: 0 0 3% 3% / 0 0 6% 6%;
     padding-bottom: 36px;
   }
+  @media screen and (max-width: 599px) and (orientation: portrait) {
+    min-height: calc(100vh - 256px);
+  }
 
   // Container row
   &-row.row {
