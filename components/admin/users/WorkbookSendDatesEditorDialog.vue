@@ -47,6 +47,7 @@
                         :error-message="errors"
                         :label="item.name"
                         readonly
+                        clearable
                         solo-labeled
                         :value="dateFormat(item.value)"
                         v-bind="attrs"
