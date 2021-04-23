@@ -389,4 +389,7 @@ export default {
   box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15) !important;
   border-radius: 8px !important;
 }
+.full-height {
+  height: 100% !important;
+}
 </style>
