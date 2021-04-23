@@ -1,33 +1,42 @@
 <template>
-  <v-main>
-    <featured-video
-      v-if="featuredVideo"
-      :video="featuredVideo"
-      @play="playFeaturedVideo"
-    />
-
-    <library-categories
-      v-bind="{ categories: activityTypeData }"
-      :favorites="true"
-    />
-
-    <v-container class="text-center pt-12 pb-8" fluid>
-      <underlined-title
-        font-size="40px"
-        text="Master subjects to collect  patches for your Student Cubby!"
+  <v-main :class="{ 'fill-height': pageLoading }">
+    <v-row v-if="pageLoading" no-gutters class="fill-height" justify="center" align="center">
+      <v-col>
+        <v-container fill-height fluid>
+          <pg-loading />
+        </v-container>
+      </v-col>
+    </v-row>
+    <template v-else>
+      <featured-video
+        v-if="featuredVideo"
+        :video="featuredVideo"
+        @play="playFeaturedVideo"
       />
-    </v-container>
 
-    <favorites-container v-bind="{ favorites, initialFavoritesLoading }" />
+      <library-categories
+        v-bind="{ categories: activityTypeData }"
+        :favorites="true"
+      />
 
-    <activity-type-container
-      v-for="activityType in activityTypes"
-      :key="`activity-type-${activityType.id}`"
-      :total="activityType.activities.length"
-      v-bind="{ activityType }"
-    />
+      <v-container class="text-center pt-12 pb-8" fluid>
+        <underlined-title
+          font-size="40px"
+          text="Master subjects to collect  patches for your Student Cubby!"
+        />
+      </v-container>
 
-    <activity-player />
+      <favorites-container v-bind="{ favorites, initialFavoritesLoading }" />
+
+      <activity-type-container
+        v-for="activityType in activityTypes"
+        :key="`activity-type-${activityType.id}`"
+        :total="activityType.activities.length"
+        v-bind="{ activityType }"
+      />
+
+      <activity-player />
+    </template>
   </v-main>
 </template>
 
@@ -56,6 +65,7 @@ export default {
 
   data: () => {
     return {
+      pageLoading: true,
       initialFavoritesLoading: true
     }
   },
@@ -105,6 +115,7 @@ export default {
     this.favorites = data.favorites.length ? shuffle(data.favorites) : []
     // this.selectedActivity = null
     this.initialFavoritesLoading = false
+    this.pageLoading = false
   },
 
   methods: {
