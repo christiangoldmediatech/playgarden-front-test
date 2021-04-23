@@ -82,7 +82,7 @@
                 <v-spacer />
               </template>
 
-              <v-checkbox
+              <v-switch
                 v-if="viewMode === 'LIST'"
                 v-model="filterDeleted"
                 class="mx-1 my-1 pa-0 mr-4"
