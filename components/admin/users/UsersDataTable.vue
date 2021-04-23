@@ -49,7 +49,7 @@
                   <v-icon x-large color="green lighten-1">
                     mdi-menu-up
                   </v-icon>
-                  <span class="grey--text">+{{ totalActive.increment }} New users this week</span> <br>
+                  <span class="grey--text">+{{ totalSubscriptions.increment }} New users this week</span> <br>
                 </p>
               </v-col>
               <v-col
@@ -57,7 +57,7 @@
                 cols="12"
               >
                 <center>
-                  <label class="font-weight-bold total-users">{{ totalActive.total }}</label>
+                  <label class="font-weight-bold total-users">{{ totalSubscriptions.total }}</label>
                 </center>
               </v-col>
               <v-col
@@ -254,7 +254,7 @@ export default {
         title: '',
         data: []
       },
-      totalActive: {
+      totalSubscriptions: {
         total: 0,
         increment: 0
       }
@@ -298,7 +298,7 @@ export default {
       deleteUser: 'delete'
     }),
 
-    ...mapActions('admin/dashboard', ['getDashboard']),
+    ...mapActions('admin/dashboard', ['getUserCharts']),
 
     goToProfile (id) {
       this.$router.push({ name: 'admin-user-manager-profile', query: { id } })
@@ -356,14 +356,14 @@ export default {
     async fetchChartsData () {
       try {
         this.loading = true
-        const { usersPerPlan, usersPerStatus, totalActive } = await this.getDashboard({})
+        const { usersPerPlan, usersPerStatus, totalSubscriptions } = await this.getUserCharts({})
         this.usersPerPlan = {
           data: usersPerPlan
         }
         this.usersPerStatus = {
           data: usersPerStatus
         }
-        this.totalActive = totalActive
+        this.totalSubscriptions = totalSubscriptions
       } catch (e) {
       } finally {
         this.loading = false
