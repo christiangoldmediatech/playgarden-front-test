@@ -43,6 +43,7 @@
                       :name="item.name"
                     >
                       <pg-text-field
+                        v-model="item.value"
                         :disabled="loading"
                         :error-message="errors"
                         :label="item.name"
