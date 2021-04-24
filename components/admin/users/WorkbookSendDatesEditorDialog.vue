@@ -174,6 +174,12 @@ export default {
       })
     },
 
+    clearDataWorkbooksent () {
+      this.dateField.map((data) => {
+        this.item.workbookSentDate[data.name] = null
+      })
+    },
+
     close () {
       this.$nextTick(() => {
         this.dialog = false
@@ -187,6 +193,7 @@ export default {
       this.buildDataWorkbooksent()
       try {
         await this.update({ id: this.id, data: this.item })
+        this.clearDataWorkbooksent()
         this.$emit('saved')
         this.close()
       } catch (err) {
