@@ -43,7 +43,7 @@
           <validation-observer v-slot="{ invalid, passes }">
             <v-card-text>
               <v-form>
-                <v-row justify="end">
+                <v-row class="mt-n4" justify="end">
                   <v-switch v-model="user.testUser" label="Test user" class="mr-4" />
                 </v-row>
                 <v-row>
@@ -96,7 +96,7 @@
                     <validation-provider
                       v-slot="{ errors }"
                       name="Phone Number"
-                      rules="required|phone"
+                      rules="phone"
                     >
                       <pg-text-field
                         v-model="user.phoneNumber"
