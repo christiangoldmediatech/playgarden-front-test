@@ -17,6 +17,7 @@ export default {
   setToken ({ commit }, token) {
     if (token && token !== 'removed') {
       const auth = jwtDecode(token)
+
       if (process.client && token) {
         this.$cookies.remove('atoken')
         this.$cookies.add({ _key: 'atoken', _data: token, _maxAge: auth.exp })
@@ -75,7 +76,6 @@ export default {
   async fetchUserInfo ({ commit, rootGetters }) {
     try {
       const { data } = await this.$axios.get('/auth/me')
-
       commit('SET_USER_INFO', data)
 
       return data

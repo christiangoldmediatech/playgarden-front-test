@@ -52,6 +52,7 @@
               :ripple="true"
               :exact="item.exact"
               nuxt
+              :data-test-id="item.to.name"
               :to="item.to"
               v-text="item.title"
             />
@@ -74,6 +75,7 @@
             color="accent"
             nuxt
             text
+            data-test-id="register-button"
             :to="{ name: 'auth-parent' }"
           >
             REGISTER

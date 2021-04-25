@@ -252,6 +252,16 @@
               />
             </validation-provider>
 
+            <span>Status:</span>
+            <v-switch
+              v-model="item.active"
+              class="mx-1 my-1 pa-0"
+              dense
+              hide-details
+              inset
+              :label="item.active ? 'Active' : 'Inactive'"
+            />
+
             <validation-provider
               v-slot="{ errors }"
               name="Duration"
@@ -380,6 +390,7 @@ function generateItemTemplate () {
     videos: null,
     teacher: null,
     ages: null,
+    active: false,
     duration: null,
     dateStart: null,
     dateEnd: null,
@@ -520,6 +531,7 @@ export default {
 
       this.item.dateStart = start
       this.item.dateEnd = end
+      this.item.active = (this.item.active) ? 'true' : 'false'
 
       try {
         if (this.id === null) {
@@ -529,6 +541,7 @@ export default {
         }
 
         this.$emit('saved')
+        this.$nuxt.$emit('update-calendar')
 
         this.close()
       } catch (err) {

@@ -11,6 +11,7 @@
       solo
       type="email"
       class="custom-text-field"
+      data-test-id="email-field"
     />
 
     <!-- Password -->
@@ -23,6 +24,7 @@
       :rules="[required, ...isValidPassword]"
       solo
       class="custom-text-field"
+      data-test-id="password-field"
     />
 
     <v-btn
@@ -34,6 +36,7 @@
       :loading="loading"
       type="submit"
       x-large
+      data-test-id="login-button"
     >
       LOGIN
     </v-btn>

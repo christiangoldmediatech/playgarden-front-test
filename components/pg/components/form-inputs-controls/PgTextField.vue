@@ -8,6 +8,8 @@ import validatable from '@/components/pg/mixins/validatable'
 export default {
   name: 'PgTextField',
 
-  mixins: [VTextField, noTabindex, soloLabeled, validatable]
+  mixins: [VTextField, noTabindex, soloLabeled, validatable],
+
+  inheritAttrs: false
 }
 </script>

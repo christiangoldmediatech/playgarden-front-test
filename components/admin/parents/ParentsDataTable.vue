@@ -2,7 +2,7 @@
   <v-container>
     <v-row>
       <v-col cols="12">
-        <v-card width="100%">
+        <v-card width="100%" class="custom-shadow">
           <v-card-title>
             Parents
             <v-spacer />
@@ -26,6 +26,62 @@
               <span class="hidden-xs-only white--text">Export</span>
             </v-btn>
           </v-card-title>
+        </v-card>
+      </v-col>
+    </v-row>
+
+    <!-- Charts -->
+    <v-row no-gutters>
+      <v-col cols="12" md="4">
+        <!-- Total Users -->
+        <v-card height="350px" class="mx-0 my-2 mr-md-2 custom-shadow">
+          <v-card-text class="full-height">
+            <label class="text-h5 font-weight-bold">Total Users</label>
+            <v-row class="mt-n4 full-height align-content-space-around">
+              <v-col cols="12">
+                <p class="text-center my-0">
+                  <v-icon x-large color="green lighten-1">
+                    mdi-menu-up
+                  </v-icon>
+                  <span class="grey--text">+{{ totalSubscriptions.increment }} New users this week</span> <br>
+                </p>
+              </v-col>
+              <v-col
+                class="text-h1"
+                cols="12"
+              >
+                <center>
+                  <label class="font-weight-bold total-users">{{ totalSubscriptions.total }}</label>
+                </center>
+              </v-col>
+              <v-col
+                class="text-h6"
+                cols="12"
+              >
+                <center>
+                  <label class="grey--text">Users using our platform</label>
+                </center>
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="4">
+        <!-- Total Users Per Plan -->
+        <v-card class="mx-0 my-2 mx-md-2 custom-shadow" height="350px">
+          <v-card-text>
+            <label class="text-h5 font-weight-bold">Total Users per Plan</label>
+            <pie-chart :pie-data="usersPerPlan" />
+          </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="4">
+        <!-- Users per status -->
+        <v-card class="mx-0 my-2 ml-md-2 custom-shadow" height="350px">
+          <v-card-text>
+            <label class="text-h5 font-weight-bold">Users per status</label>
+            <pie-chart :pie-data="usersPerStatus" />
+          </v-card-text>
         </v-card>
       </v-col>
     </v-row>
@@ -97,10 +153,15 @@
 
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex'
+import PieChart from '@/components/admin/dashboard/PieChart.vue'
 import onSearch from '@/mixins/OnSearchMixin.js'
 
 export default {
   name: 'ParentsDataTable',
+
+  components: {
+    PieChart
+  },
 
   mixins: [onSearch],
 
@@ -178,7 +239,19 @@ export default {
           value: 'actions',
           width: 100
         }
-      ]
+      ],
+      usersPerStatus: {
+        title: '',
+        data: []
+      },
+      usersPerPlan: {
+        title: '',
+        data: []
+      },
+      totalSubscriptions: {
+        total: 0,
+        increment: 0
+      }
     }
   },
 
@@ -213,6 +286,10 @@ export default {
     }
   },
 
+  async created () {
+    await this.fetchChartsData()
+  },
+
   methods: {
     ...mapActions('admin/users', {
       getUsers: 'get',
@@ -224,6 +301,7 @@ export default {
     ...mapActions('admin/roles', {
       getRoles: 'get'
     }),
+    ...mapActions('admin/dashboard', ['getUserCharts']),
 
     goToProfile (id) {
       this.$router.push({ name: 'admin-user-manager-profile', query: { id } })
@@ -284,7 +362,34 @@ export default {
       this.$snotify.success('Report created succesfully! Check your email to get it', {
         timeout: 6000
       })
+    },
+
+    async fetchChartsData () {
+      try {
+        this.loading = true
+        const { usersPerPlan, usersPerStatus, totalSubscriptions } = await this.getUserCharts({})
+        this.usersPerPlan = {
+          data: usersPerPlan
+        }
+        this.usersPerStatus = {
+          data: usersPerStatus
+        }
+        this.totalSubscriptions = totalSubscriptions
+      } catch (e) {
+      } finally {
+        this.loading = false
+      }
     }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.custom-shadow {
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15) !important;
+  border-radius: 8px !important;
+}
+.full-height {
+  height: 100% !important;
+}
+</style>

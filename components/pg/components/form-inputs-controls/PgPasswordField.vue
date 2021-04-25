@@ -13,6 +13,8 @@
 export default {
   name: 'PgPasswordField',
 
+  inheritAttrs: false,
+
   props: {
     value: {
       type: [String, Number],

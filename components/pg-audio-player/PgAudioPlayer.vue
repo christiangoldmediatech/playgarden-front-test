@@ -88,6 +88,12 @@ export default {
     }
   },
 
+  watch: {
+    currentSong () {
+      this.$emit('currentSong', this.currentSong)
+    }
+  },
+
   mounted () {
     this.isLoading = true
     if (Audio) {
@@ -234,6 +240,14 @@ export default {
       output += seconds >= 10 ? `:${seconds}` : `:0${seconds}`
 
       return output
+    },
+    refreshSongData (song) {
+      const currentSongIndex = this.currentPlaylist.findIndex(playListSong => playListSong.id === song.id)
+
+      if (currentSongIndex > -1) {
+        this.$set(this.currentPlaylist, currentSongIndex, song)
+        this.currentSong = { ...song }
+      }
     }
   }
 }
