@@ -108,7 +108,7 @@ export default async function ({ redirect, route, store, app, req }) {
     (!user.subscription || user.subscription.status === 'canceled')
 
   if (shouldRedirectToAccount) {
-    return redirect({ name: 'app-account-index' })
+    return redirect({ name: 'app-inactive-subscription' })
   }
 
   /**
