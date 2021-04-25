@@ -116,6 +116,10 @@
                   </v-toolbar>
                 </template> -->
 
+                <template v-slot:[`item.active`]="{ item }">
+                  {{ (item.active) ? 'ACTIVE' : 'INACTIVE' }}
+                </template>
+
                 <template v-slot:[`item.dateStart`]="{ item }">
                   {{ item.dateStart | formatDate }}
                 </template>
@@ -290,6 +294,10 @@ export default {
       {
         text: 'Duration',
         value: 'duration'
+      },
+      {
+        text: 'Status',
+        value: 'active'
       },
       {
         align: 'right',
