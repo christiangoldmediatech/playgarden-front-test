@@ -43,6 +43,9 @@
           <validation-observer v-slot="{ invalid, passes }">
             <v-card-text>
               <v-form>
+                <v-row justify="end">
+                  <v-switch v-model="user.testUser" label="test-user" class="mr-4" />
+                </v-row>
                 <v-row>
                   <v-col cols="12" lg="4" md="6">
                     <validation-provider
@@ -298,6 +301,7 @@ export default {
         phoneNumber: '',
         roleId: null,
         planId: null,
+        testUser: null,
         password: null,
         workbookSent: false,
         backpackSent: false
@@ -387,6 +391,7 @@ export default {
       this.user.lastName = data.lastName
       this.user.email = data.email
       this.user.phoneNumber = data.phoneNumber
+      this.user.testUser = data.testUser
       this.user.roleId = data.role.id
       this.user.planId = (data.planSelected) ? data.planSelected.id : null
       this.user.workbookSent = false
