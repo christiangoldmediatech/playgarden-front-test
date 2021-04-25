@@ -44,7 +44,7 @@
             <v-card-text>
               <v-form>
                 <v-row justify="end">
-                  <v-switch v-model="user.testUser" label="test-user" class="mr-4" />
+                  <v-switch v-model="user.testUser" label="Test user" class="mr-4" />
                 </v-row>
                 <v-row>
                   <v-col cols="12" lg="4" md="6">
