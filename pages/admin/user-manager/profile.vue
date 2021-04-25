@@ -580,9 +580,8 @@ export default {
     getNumberWorkbook () {
       let total = 0
       if (this.user && this.user.shipments && this.user.shipments.workbookDate) {
-        const that = this
-        Object.keys(this.user.shipments.workbookDate).forEach(function (key) {
-          total = (that.user.shipments.workbookDate[key]) ? total + 1 : total
+        Object.keys(this.user.shipments.workbookDate).forEach((key) => {
+          total = (this.user.shipments.workbookDate[key]) ? total + 1 : total
         })
       }
       return total
