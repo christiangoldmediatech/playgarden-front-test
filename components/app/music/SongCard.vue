@@ -3,6 +3,7 @@
     v-bind="$attrs"
     min-height="70"
     class="custom-shadow py-1"
+    data-test-id="song-card"
     v-on="$listeners"
   >
     <v-row no-gutters class="fill-height px-3" justify="space-between" align="center">
@@ -41,6 +42,7 @@
             text
             icon
             class="pa-0"
+            data-test-id="song-card-favorite-button"
             :class="isFavorite ? 'pink--text text--lighten-2' : 'grey--text'"
             @click.stop="$emit('favorite')"
           >
