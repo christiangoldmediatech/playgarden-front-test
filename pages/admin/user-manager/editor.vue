@@ -44,7 +44,8 @@
             <v-card-text>
               <v-form>
                 <v-row class="mt-n4" justify="end">
-                  <v-switch v-model="user.testUser" label="Test user" class="mr-4" />
+                  <b class="pt-9 mr-2">Is test user ?</b>
+                  <v-switch v-model="user.testUser" :label="getTestUser" class="mr-4" />
                 </v-row>
                 <v-row>
                   <v-col cols="12" lg="4" md="6">
@@ -323,6 +324,10 @@ export default {
     ...mapGetters('admin/roles', {
       roleRows: 'rows'
     }),
+
+    getTestUser () {
+      return (this.user.testUser) ? 'Yes' : 'No'
+    },
 
     getTitlleChange () {
       return (this.changePassword) ? 'NO CHANGE PASSWORD' : 'CHANGE PASSWORD'
