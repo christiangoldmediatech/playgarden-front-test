@@ -38,16 +38,25 @@ export default {
     return this.$axios.$patch(`/live-sessions/${id}`, data)
   },
 
-  async getUserLiveSessions ({ commit }, { monday, friday }) {
+  recoverLiveSession (_, id) {
+    return this.$axios.$patch(`/live-sessions/${id}/recover`)
+  },
+
+  async getUserLiveSessions ({ commit }, { monday, friday, admin }) {
     try {
       let data
+      const params = {
+        limit: 100,
+        page: 1,
+        startDate: monday,
+        endDate: friday
+      }
+
+      if (!admin) {
+        params.active = true
+      }
       const { total, liveSessions } = data = await this.$axios.$get('/live-sessions', {
-        params: {
-          limit: 100,
-          page: 1,
-          startDate: monday,
-          endDate: friday
-        }
+        params
       })
       commit('SET_SESSIONS', liveSessions)
       commit('SET_TOTAL', total)

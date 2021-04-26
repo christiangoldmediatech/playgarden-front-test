@@ -82,6 +82,16 @@
                 <v-spacer />
               </template>
 
+              <v-switch
+                v-if="viewMode === 'LIST'"
+                v-model="filterDeleted"
+                class="mx-1 my-1 pa-0 mr-4"
+                color="primary darken-2"
+                hide-details
+                label="Deleted"
+                @change="refresh(false)"
+              />
+
               <pg-text-field
                 v-if="viewMode === 'LIST'"
                 v-model="search"
@@ -116,6 +126,10 @@
                   </v-toolbar>
                 </template> -->
 
+                <template v-slot:[`item.active`]="{ item }">
+                  {{ (item.active) ? 'ACTIVE' : 'INACTIVE' }}
+                </template>
+
                 <template v-slot:[`item.dateStart`]="{ item }">
                   {{ item.dateStart | formatDate }}
                 </template>
@@ -143,6 +157,15 @@
                     @click="$refs.table.open(null, item)"
                   >
                     mdi-account-check
+                  </v-icon>
+
+                  <v-icon
+                    v-if="item.deletedAt"
+                    color="#E8B927"
+                    dense
+                    @click="recover(item)"
+                  >
+                    mdi-backup-restore
                   </v-icon>
 
                   <v-icon
@@ -256,6 +279,7 @@ export default {
     filters: {
       activityTypeId: null
     },
+    filterDeleted: false,
     checkStatusInterval: null,
     liveSessions: [],
     entityType: 'LiveSessions',
@@ -292,10 +316,14 @@ export default {
         value: 'duration'
       },
       {
+        text: 'Status',
+        value: 'active'
+      },
+      {
         align: 'right',
         sortable: false,
         value: 'actions',
-        width: 180
+        width: 205
       }
     ],
     viewModeVal: 0,
@@ -351,7 +379,7 @@ export default {
       getCurriculumTypes: 'getTypes'
     }),
 
-    ...mapActions('live-sessions', ['getLiveSessions', 'deleteLiveSession']),
+    ...mapActions('live-sessions', ['getLiveSessions', 'deleteLiveSession', 'recoverLiveSession']),
 
     async refresh (clear = false) {
       if (this.viewMode === 'CALENDAR') {
@@ -369,7 +397,8 @@ export default {
             activityTypeId: this.filters.activityTypeId || null,
             level: this.filters.level || null,
             page: this.pagination.page,
-            limit: this.pagination.limit
+            limit: this.pagination.limit,
+            deleted: (this.filterDeleted) ? 'true' : null
           })
           this.liveSessions = liveSessions
           this.setPagination({ page, total })
@@ -380,12 +409,24 @@ export default {
       }
     },
 
-    remove ({ id, name }) {
+    remove ({ id, title }) {
       this.$nuxt.$emit('open-prompt', {
         title: 'Delete Live Class?',
-        message: `Are you sure you want to delete <b>${name}</b>?`,
+        message: `Are you sure you want to delete <b>${title}</b>?`,
         action: async () => {
           await this.deleteLiveSession(id)
+          await this.refresh()
+        }
+      })
+    },
+
+    recover ({ id, title }) {
+      this.$nuxt.$emit('open-prompt', {
+        title: 'Recover Live Class?',
+        message: `Are you sure you want to recover <b>${title}</b>?`,
+        actionText: 'Recover it!',
+        action: async () => {
+          await this.recoverLiveSession(id)
           await this.refresh()
         }
       })

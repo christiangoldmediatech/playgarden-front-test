@@ -13,7 +13,7 @@
       <!-- Player -->
       <v-col>
         <div class="player-wrapper px-4" :class="{ 'pt-6': !mobile }">
-          <pg-audio-player ref="audioPlayer" :play-list="playList">
+          <pg-audio-player ref="audioPlayer" :play-list="playList" @currentSong="$emit('currentSong', $event)">
             <!-- Current Song -->
             <template
               v-slot:current="{
@@ -30,17 +30,28 @@
               }"
             >
               <template v-if="!mobile">
-                <figure
-                  class="song-thumbnail mx-auto"
-                  :style="{ 'background-image': `url(${currentSong.thumbnail})` }"
-                >
-                  <v-overlay
-                    absolute
-                    :value="isLoading"
+                <div class="thumbnail-wrapper">
+                  <figure
+                    class="song-thumbnail mx-auto"
+                    :style="{ 'background-image': `url(${currentSong.thumbnail})` }"
                   >
-                    <v-progress-circular indeterminate />
-                  </v-overlay>
-                </figure>
+                    <v-overlay
+                      absolute
+                      :value="isLoading"
+                    >
+                      <v-progress-circular indeterminate />
+                    </v-overlay>
+                  </figure>
+                  <v-icon
+                    class="favorite-btn"
+                    size="32"
+                    data-test-id="music-player-favorite-button"
+                    :class="currentSong.isFavorite ? 'pink--text text--lighten-2' : 'grey--text text--lighten-2'"
+                    @click="$emit('favorite', currentSong)"
+                  >
+                    mdi-heart
+                  </v-icon>
+                </div>
                 <div class="song-details text-center pt-4">
                   <p class="song-title mb-2 text-truncate">
                     {{ currentSong.description }}
@@ -54,7 +65,8 @@
                     readonly
                     height="20"
                     :min="0"
-                    track-color="#EBEBEB"
+                    color="warning lighten-1"
+                    track-color="grey lighten-2"
                     :max="100"
                     class="slider"
                     :value="currentSongPlayedPercentage"
@@ -97,7 +109,13 @@
                             mdi-play
                           </v-icon>
                         </v-btn>
-                        <v-btn v-else icon height="50" width="50" @click="pause">
+                        <v-btn
+                          v-else
+                          icon
+                          height="50"
+                          width="50"
+                          @click="pause"
+                        >
                           <v-icon size="50">
                             mdi-pause-circle-outline
                           </v-icon>
@@ -117,7 +135,8 @@
                         readonly
                         height="10"
                         :min="0"
-                        track-color="#EBEBEB"
+                        color="warning lighten-1"
+                        track-color="grey lighten-2"
                         :max="100"
                         class="slider"
                         :value="currentSongPlayedPercentage"
@@ -159,7 +178,14 @@
                       mdi-play
                     </v-icon>
                   </v-btn>
-                  <v-btn v-else icon height="50" width="50" @click="pause">
+                  <v-btn
+                    v-else
+                    icon
+                    height="50"
+                    width="50"
+                    data-test-id="music-player-pause-button"
+                    @click="pause"
+                  >
                     <v-icon size="50">
                       mdi-pause-circle-outline
                     </v-icon>
@@ -184,13 +210,13 @@
             >
               <template v-if="!mobile">
                 <div
-                  class=" mt-4 pt-2 playlist"
+                  class="playlist mt-4"
                 >
                   <v-row
                     v-for="(song, songIndex) in currentPlaylist"
                     :key="songIndex"
                     no-gutters
-                    class="playlist-song py-2 pl-1"
+                    class="playlist-song py-2"
                     :class="{ selected: currentSongIndex === songIndex }"
                   >
                     <v-col cols="auto">
@@ -201,10 +227,10 @@
                     </v-col>
                     <v-col cols="10">
                       <div class="text-center">
-                        <p class="playlist-song-title mb-2 text-truncate">
+                        <p class="playlist-song-title my-2 text-truncate">
                           {{ song.description }}
                         </p>
-                        <p class="playlist-song-author mb-2 text-truncate">
+                        <p class="playlist-song-author my-2 text-truncate">
                           {{ song.name }}
                         </p>
                       </div>
@@ -288,6 +314,12 @@ export default {
   },
 
   methods: {
+    refreshSongData (song) {
+      if (this.$refs.audioPlayer) {
+        this.$refs.audioPlayer.refreshSongData(song)
+      }
+    },
+
     addSongToPlaylist (song) {
       this.playList.push(song)
       if (this.$refs.audioPlayer) {
@@ -319,10 +351,12 @@ export default {
 .song {
   &-thumbnail {
     position: relative;
-    width: 300px;
+    width: 100%;
     height: 300px;
-    background-size: contain;
+    background-size: cover;
     background-position: center center;
+    border-radius: 8px;
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15);
     &.mobile {
       width: 100px;
       height: 100px;
@@ -333,6 +367,7 @@ export default {
       color: var(--v-accent-base);
       font-size: 24px;
       line-height: 24px;
+      font-weight: 700;
     }
     & .song-author {
       color: var(--v-black-base);
@@ -372,20 +407,21 @@ export default {
   }
 }
 .playlist {
-  border-top: 1px solid lightgrey;
+  border-top: 1px solid rgb(228, 228, 228);
   max-height: 250px;
   overflow: scroll;
   &-song {
     &-thumbnail {
       width: 50px;
       height: 50px;
-      background-size: contain;
+      background-size: cover;
       background-position: center center;
     }
     &-title {
       color: var(--v-accent-base);
       font-size: 16px;
       line-height: 16px;
+      font-weight: 700;
     }
     &-author {
       color: var(--v-black-base);
@@ -395,6 +431,15 @@ export default {
     &.selected {
       background-color: rgba(lightgrey, 0.2);
     }
+  }
+}
+.thumbnail-wrapper {
+  position: relative;
+
+  & .favorite-btn {
+      position: absolute;
+      bottom: 15px;
+      right: 20px;
   }
 }
 </style>

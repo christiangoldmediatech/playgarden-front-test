@@ -5,10 +5,7 @@
         color="accent"
         nuxt
         text
-        :to="{
-          name: 'auth-parent',
-          query: { process: 'signup', step: '1' }
-        }"
+        @click="goBack"
       >
         <v-icon left>
           mdi-less-than
@@ -35,7 +32,10 @@ export default {
   },
 
   data: vm => ({
-    currentStep: 2
+    currentStep: 2,
+    mode: vm.$route.params.mode
+      ? vm.$route.params.mode
+      : ''
   }),
 
   computed: {
@@ -46,16 +46,17 @@ export default {
 
   created () {
     this.currentStep = (this.$route.query.step) ? Number(this.$route.query.step) : 1
-    this.$gtm.push({
-      event: 'payment_page',
-      conversionID: '959213252',
-      conversionLabel: 'SvccCMTX0voBEMTdsckD'
-    })
+    if (this.mode !== 'activate-user') {
+      this.$gtm.push({
+        event: 'payment_page',
+        conversionID: '959213252',
+        conversionLabel: 'SvccCMTX0voBEMTdsckD'
+      })
+    }
   },
 
   mounted () {
     this.$nuxt.$on('set-current-step', (step) => {
-      console.log('step--', step)
       if (step) {
         this.currentStep = step
       }
@@ -66,6 +67,21 @@ export default {
     this.$nuxt.$off('set-current-step')
   },
 
-  methods: {}
+  methods: {
+    goBack () {
+      let page = {}
+      if (this.mode === 'activate-user') {
+        page = {
+          name: 'app-inactive-subscription'
+        }
+      } else {
+        page = {
+          name: 'auth-parent',
+          query: { process: 'signup', step: '1' }
+        }
+      }
+      this.$router.push(page)
+    }
+  }
 }
 </script>

@@ -133,7 +133,7 @@ export default {
 
     getSessions () {
       this.$emit('loading', true)
-      this.getUserLiveSessions(this.days).then(() => {
+      this.getUserLiveSessions({ ...this.days, admin: true }).then(() => {
         this.$emit('loading', false)
       })
     }

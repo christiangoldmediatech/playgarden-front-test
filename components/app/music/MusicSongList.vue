@@ -9,7 +9,12 @@
         </div>
       </v-col>
 
-      <v-col cols="12" :md="isPlayerShowing? 8 : 7">
+      <v-col
+        cols="12"
+        :md="isPlayerShowing ? 5 : 6"
+        :lg="isPlayerShowing ? 6 : 7"
+        xl="7"
+      >
         <music-carousel-letter
           :value="selectedLetterId"
           :disabled-letters="disabledLetters"
@@ -17,14 +22,29 @@
         />
       </v-col>
 
+      <v-col cols="12" md="" class="d-flex justify-center">
+        <v-btn
+          large
+          class="favorite-button white my-4 mt-md-2 mb-md-0"
+          data-test-id="favorite-toggle"
+          @click="$emit('showFavorites')"
+        >
+          <v-icon left :class="showOnlyFavorites ? 'pink--text text--lighten-2' : 'grey--text'">
+            mdi-heart
+          </v-icon>
+          Favorites
+        </v-btn>
+      </v-col>
+
       <v-col cols="12" md="">
-        <v-row no-gutters justify="center" justify-md="start" align="center" class="fill-height pl-4">
+        <v-row no-gutters justify="center" justify-md="start" align="center" class="fill-height pl-4 pl-md-0">
           <v-col cols="auto">
             <v-card
               tile
               width="110"
               class="py-2 filter text-center"
               :class="{ selected: selectedFilter === 'list' }"
+              data-test-id="list-view-button"
               @click="selectedFilter = 'list'"
             >
               <v-icon :color="selectedFilter === 'list' ? 'white' : 'primary'">
@@ -39,6 +59,7 @@
               width="110"
               class="py-2 filter text-center"
               :class="{ selected: selectedFilter === 'letter' }"
+              data-test-id="letter-view-button"
               @click="selectedFilter = 'letter'"
             >
               <v-icon :color="selectedFilter === 'letter' ? 'white' : 'primary'">
@@ -52,26 +73,34 @@
     </v-row>
     <!-- Songs -->
     <template v-if="selectedFilter === 'list'">
-      <song-card
-        v-for="(song, index) in filteredSongsByLetterId"
-        :key="song.id"
-        :thumbnail="song.thumbnail"
-        :name="song.name"
-        :description="song.description"
-        class="my-4"
-        @add="addSongToPlayList(song)"
-        @click="createPlayListFromIndex(index)"
-      />
+      <div data-test-id="song-card-list">
+        <song-card
+          v-for="(song, index) in filteredSongsByLetterId"
+          :key="song.id"
+          :thumbnail="song.thumbnail"
+          :name="song.name"
+          :description="song.description"
+          :is-favorite="song.isFavorite"
+          class="my-4"
+          @add="addSongToPlayList(song)"
+          @favorite="$emit('favorite', song)"
+          @click="createPlayListFromIndex(index)"
+        />
+      </div>
     </template>
     <template v-if="selectedFilter === 'letter'">
-      <letter-songs
-        v-for="letter in filteredLettersByLetterId"
-        :key="letter.id"
-        :letter="letter"
-        :songs="letter.musicLibrary"
-        class="my-2 mt-md-4 mb-md-8"
-        @createPlayList="emitPlayList"
-      />
+      <div data-test-id="letter-songs-list">
+        <letter-songs
+          v-for="letter in filteredLettersByLetterId"
+          :key="letter.id"
+          :letter="letter"
+          :songs="letter.musicLibrary"
+          class="my-2 mt-md-4 mb-md-8"
+          @add="addSongToPlayList"
+          @favorite="$emit('favorite', $event)"
+          @createPlayList="emitPlayList"
+        />
+      </div>
     </template>
   </div>
 </template>
@@ -120,6 +149,11 @@ export default {
     isPlayerShowing: {
       type: Boolean,
       required: false,
+      default: false
+    },
+
+    showOnlyFavorites: {
+      type: Boolean,
       default: false
     }
   },
@@ -227,5 +261,8 @@ export default {
 }
 .child-selector {
   max-width: 300px;
+}
+.favorite-button {
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16) !important;
 }
 </style>

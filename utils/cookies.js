@@ -195,9 +195,18 @@ export class CookieHandlerUI {
     let cookieString = `${cookie.name}=${cookie.value}`
     cookieString += cookie.expires
 
+    // set the root path for cookies so setting cookies with the same name overrides previous ones
+    cookieString += ';path=/'
+
+    /*
+    COMMENTED: Setting a dynamic 'path' in the app causes multiple tokens with the same
+               name to be set in the storage. This may make the app load a different session
+               on reload or not totally remove existing tokens on logout.
+
     if (cookie.path) {
       cookieString += `;path=${encodeURIComponent(cookie.path)}`
     }
+    */
 
     if (cookie.sameSite) {
       cookieString += `;samesite=${cookie.sameSite}`
