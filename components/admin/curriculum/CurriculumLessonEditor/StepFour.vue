@@ -35,6 +35,43 @@
         />
       </validation-provider>
 
+      <!-- Categories -->
+      <template>
+        <v-row>
+          <pg-select
+            v-model="categoriesSelected"
+            :error-messages="errors"
+            label="Categories"
+            :items="categories"
+            item-text="category"
+            item-value="id"
+            solo-labeled
+            return-object
+            multiple
+          />
+        </v-row>
+        <v-row>
+          <v-col
+            v-for="(categorySelected, indexCategory) in categoriesSelected"
+            :key="indexCategory"
+            cols="2"
+          >
+            <validation-provider v-slot="{ errors }" :name="Name" rules="required">
+              <pg-text-field
+                clearable
+                :disabled="loading"
+                :error-messages="errors"
+                :label="categorySelected.category"
+                :loading="loading"
+                type="number"
+                solo-labeled
+              />
+            </validation-provider>
+          </v-col>
+        </v-row>
+      </template>
+      <!-- end Categories -->
+
       <!-- File -->
       <span class="v-label theme--light">File</span>
       <template v-if="draft.pdfUrl">
@@ -158,6 +195,8 @@ export default {
   data: () => ({
     file: null,
     fileName: null,
+    categoriesSelected: null,
+    categories: null,
     videoFile: null,
     loading: false,
     path: 'lesson',
@@ -180,9 +219,15 @@ export default {
       this.fileName = data.name.replace(/ /g, '-')
       this.loading = false
     })
+    this.getOfflineWorksheetCategories().then((data) => {
+      this.categories = data
+    })
   },
 
   methods: {
+    ...mapActions('offline-worksheet-categories', [
+      'getOfflineWorksheetCategories'
+    ]),
     ...mapActions('admin/curriculum/worksheet', [
       'createWorksheetByLessonId',
       'fetchWorksheetsByLessonId',
