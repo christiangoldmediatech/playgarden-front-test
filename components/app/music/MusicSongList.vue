@@ -71,6 +71,20 @@
         </v-row>
       </v-col>
     </v-row>
+    <v-expand-transition>
+      <v-row v-if="showOnlyFavorites" no-gutters>
+        <v-col cols="12" class="py-6">
+          <img height="36px" src="@/assets/svg/library/favorites.svg">
+          <underlined-title
+            font-size="48px"
+            font-size-mobile="1.5rem"
+            font-weight="bold"
+            text="Favorites"
+            line-color="pink"
+          />
+        </v-col>
+      </v-row>
+    </v-expand-transition>
     <!-- Songs -->
     <template v-if="selectedFilter === 'list'">
       <div data-test-id="song-card-list">
