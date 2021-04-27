@@ -1,12 +1,21 @@
 <template>
   <v-main class="main-music-wrapper">
     <v-container fluid class="music-page-container pa-0" :class="{ 'mobile': isMobile, 'playing': isPlayerShowing }">
-      <v-card class="player-card" :width="playerWidth" :height="playerHeight" :class="{ 'mobile': isMobile, 'pa-4': isPlayerShowing }">
+      <v-card
+        class="player-card"
+        :width="playerWidth"
+        :height="playerHeight"
+        :class="{ 'mobile': isMobile, 'pa-4': isPlayerShowing }"
+        :ripple="false"
+        v-on="isMobile ? { click: handlePlayerClick } : {}"
+      >
         <music-player
           v-show="isPlayerShowing"
           ref="musicPlayer"
           :mobile="isMobile"
+          :is-player-maximized-on-mobile="isPlayerMaximizedOnMobile"
           @favorite="handleFavorite"
+          @minimize="handlePlayerMinimize"
           @currentSong="currentSong = $event"
         />
       </v-card>
@@ -49,7 +58,8 @@ export default {
       playList: [],
       currentSong: {},
       favoritesDictionary: {},
-      showOnlyFavorites: false
+      showOnlyFavorites: false,
+      isPlayerMaximizedOnMobile: false
     }
   },
 
@@ -146,9 +156,9 @@ export default {
     },
 
     playerHeight () {
-      if (!this.isMobile) {
+      if (!this.isMobile || this.isPlayerMaximizedOnMobile) {
         return '100%'
-      } else if (this.isPlayerShowing) {
+      } else if (this.isPlayerShowing && !this.isPlayerMaximizedOnMobile) {
         return '160'
       } else {
         return 0
@@ -240,6 +250,18 @@ export default {
           favoriteId: favorite ? favorite.id : undefined
         })
       }
+    },
+
+    handlePlayerClick ($event) {
+      if (!this.isMobile || this.isPlayerMaximizedOnMobile) {
+        return
+      }
+
+      this.isPlayerMaximizedOnMobile = true
+    },
+
+    handlePlayerMinimize () {
+      this.isPlayerMaximizedOnMobile = false
     }
   }
 }
@@ -268,6 +290,7 @@ export default {
   position: absolute;
   left: 0;
   top: 0;
+  z-index: 99;
   &.mobile {
     bottom: 0;
     top: unset;
