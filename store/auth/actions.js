@@ -38,7 +38,7 @@ export default {
     commit('SET_PLAYDATE_INVITATION_TOKEN', token)
   },
 
-  logout ({ commit, rootGetters }, redirect) {
+  logout ({ commit, rootGetters, rootState }, redirect) {
     commit('LOGOUT')
 
     if (process.client) {
@@ -56,6 +56,12 @@ export default {
     if (rootGetters.getCurrentChild) {
       commit('SET_CURRENT_CHILD', null, { root: true })
       commit('SET_CURRENT_CHILD_EXPIRES', null, { root: true })
+    }
+
+    if (rootState.notifications.notificationCard.isVisible) {
+      commit('notifications/SET_NOTIFICATION_CARD', {
+        isVisible: false
+      }, { root: true })
     }
 
     if (redirect) {
