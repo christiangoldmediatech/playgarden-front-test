@@ -197,7 +197,6 @@ export default {
   font-weight: 500 !important;
   color: white !important;
 }
-
 .v-tooltip__content::after {
   content: "";
   position: absolute;
