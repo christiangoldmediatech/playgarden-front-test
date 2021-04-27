@@ -29,7 +29,8 @@
                 previous
               }"
             >
-              <template v-if="!mobile">
+              <!-- Desktop or Mobile Maximized -->
+              <template v-if="!mobile || isPlayerMaximizedOnMobile">
                 <div class="thumbnail-wrapper">
                   <figure
                     class="song-thumbnail mx-auto"
@@ -42,12 +43,23 @@
                       <v-progress-circular indeterminate />
                     </v-overlay>
                   </figure>
+                  <!-- Mobile Minimize Icon -->
+                  <v-icon
+                    v-if="isPlayerMaximizedOnMobile"
+                    class="minimize-btn orange lighten-2 white--text"
+                    size="32"
+                    data-test-id="music-player-minimize-button"
+                    @click.stop="$emit('minimize', currentSong)"
+                  >
+                    mdi-chevron-down
+                  </v-icon>
+                  <!-- Fav Icon -->
                   <v-icon
                     class="favorite-btn"
                     size="32"
                     data-test-id="music-player-favorite-button"
                     :class="currentSong.isFavorite ? 'pink--text text--lighten-2' : 'grey--text text--lighten-2'"
-                    @click="$emit('favorite', currentSong)"
+                    @click.stop="$emit('favorite', currentSong)"
                   >
                     mdi-heart
                   </v-icon>
@@ -79,6 +91,7 @@
                   </span>
                 </div>
               </template>
+              <!-- Mobile -->
               <template v-else>
                 <v-row no-gutters align="center">
                   <v-col cols="auto">
@@ -99,14 +112,14 @@
                       <!-- CENTER BTNS -->
                       <v-col cols="12" class="text-center">
                         <!-- PREVIOUS -->
-                        <v-btn icon height="32" width="32" @click="previous">
+                        <v-btn icon height="32" width="32" @click.stop="previous">
                           <v-icon size="32">
                             mdi-skip-backward
                           </v-icon>
                         </v-btn>
-                        <v-btn v-if="!isPlaying" icon height="50" width="50" @click="play">
+                        <v-btn v-if="!isPlaying" icon height="50" width="50" @click.stop="play">
                           <v-icon size="50">
-                            mdi-play
+                            mdi-play-circle-outline
                           </v-icon>
                         </v-btn>
                         <v-btn
@@ -114,14 +127,14 @@
                           icon
                           height="50"
                           width="50"
-                          @click="pause"
+                          @click.stop="pause"
                         >
                           <v-icon size="50">
                             mdi-pause-circle-outline
                           </v-icon>
                         </v-btn>
                         <!-- NEXT -->
-                        <v-btn icon height="32" width="32" @click="next">
+                        <v-btn icon height="32" width="32" @click.stop="next">
                           <v-icon size="32">
                             mdi-skip-forward
                           </v-icon>
@@ -163,19 +176,20 @@
                 previous
               }"
             >
-              <v-row v-show="!mobile" no-gutters>
+              <!-- Desktop or Mobile Maximized -->
+              <v-row v-show="!mobile || isPlayerMaximizedOnMobile" no-gutters>
                 <v-col cols="3" />
                 <!-- CENTER BTNS -->
                 <v-col cols="6" class="text-center">
                   <!-- PREVIOUS -->
-                  <v-btn icon height="32" width="32" @click="previous">
+                  <v-btn icon height="32" width="32" @click.stop="previous">
                     <v-icon size="32">
                       mdi-skip-backward
                     </v-icon>
                   </v-btn>
-                  <v-btn v-if="!isPlaying" icon height="50" width="50" @click="play">
+                  <v-btn v-if="!isPlaying" icon height="50" width="50" @click.stop="play">
                     <v-icon size="50">
-                      mdi-play
+                      mdi-play-circle-outline
                     </v-icon>
                   </v-btn>
                   <v-btn
@@ -184,14 +198,14 @@
                     height="50"
                     width="50"
                     data-test-id="music-player-pause-button"
-                    @click="pause"
+                    @click.stop="pause"
                   >
                     <v-icon size="50">
                       mdi-pause-circle-outline
                     </v-icon>
                   </v-btn>
                   <!-- NEXT -->
-                  <v-btn icon height="32" width="32" @click="next">
+                  <v-btn icon height="32" width="32" @click.stop="next">
                     <v-icon size="32">
                       mdi-skip-forward
                     </v-icon>
@@ -208,6 +222,7 @@
                 currentSongIndex
               }"
             >
+              <!-- Desktop -->
               <template v-if="!mobile">
                 <div
                   class="playlist mt-4"
@@ -264,6 +279,10 @@ export default {
     mobile: {
       type: Boolean,
       required: false,
+      default: false
+    },
+    isPlayerMaximizedOnMobile: {
+      type: Boolean,
       default: false
     }
   },
@@ -440,6 +459,12 @@ export default {
       position: absolute;
       bottom: 15px;
       right: 20px;
+  }
+
+  & .minimize-btn {
+    position: absolute;
+    left: 20px;
+    top: 15px;
   }
 }
 </style>
