@@ -187,6 +187,15 @@ import { mapActions } from 'vuex'
 
 import submittable from '@/utils/mixins/submittable'
 
+const draftDefault = {
+  address1: null,
+  address2: null,
+  city: null,
+  state: null,
+  zipCode: null,
+  phoneNumber: null
+}
+
 export default {
   name: 'ShippingAddressDetails',
 
@@ -221,7 +230,8 @@ export default {
 
   data: () => ({
     isEditing: false,
-    loading: false
+    loading: false,
+    draft: { ...draftDefault }
   }),
 
   computed: {
@@ -284,7 +294,7 @@ export default {
           return
         }
 
-        this.draft = draft
+        this.draft = draft || { ...draftDefault }
       } catch (e) {
         this.$snotify.warning('Could not fetch shipping address', 'Error', {
           closeOnClick: true,
@@ -325,14 +335,7 @@ export default {
     },
 
     resetDraft () {
-      this.draft = {
-        address1: null,
-        address2: null,
-        city: null,
-        state: null,
-        zipCode: null,
-        phoneNumber: null
-      }
+      this.draft = { ...draftDefault }
     },
 
     submitMethod (data) {
