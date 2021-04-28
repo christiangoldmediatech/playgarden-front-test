@@ -22,7 +22,7 @@
               </v-col>
 
               <v-col cols="2" class="text-center text-sm-right pt-3">
-                <span class="font-weight-bold text-h6 text-md-h5">{{ `${(getDataCurrent.value === undefined) ? 0 : getDataCurrent.value}%` }}</span>
+                <span class="font-weight-bold text-h6 text-md-h4">{{ `${(getDataCurrent.value === undefined) ? 0 : getDataCurrent.value}%` }}</span>
               </v-col>
             </v-row>
           </p>
