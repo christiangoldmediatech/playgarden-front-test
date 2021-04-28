@@ -9,8 +9,12 @@
 
       <!-- NOTIFICATION CARD -->
       <notification-card />
+
       <!-- SHIPPING NOTIFICATION MODAL -->
       <shipping-address-modal />
+
+      <!-- TRIAL EXPIRED MODAL -->
+      <trial-expired-modal />
 
       <!-- CONTENT -->
       <v-main v-if="!fullWidth">
@@ -51,6 +55,7 @@ import ComingSoonPlayer from '@/components/app/ComingSoonPlayer.vue'
 import DefaultFooter from '@/components/app/footer/DefaultFooter'
 import NotificationCard from '@/components/app/notifications/NotificationCard'
 import ShippingAddressModal from '~/components/app/payment/ShippingAddressModal.vue'
+import TrialExpiredModal from '~/components/app/payment/TrialExpiredModal.vue'
 
 export default {
   name: 'Default',
@@ -62,7 +67,8 @@ export default {
     ComingSoonPlayer,
     DefaultFooter,
     NotificationCard,
-    ShippingAddressModal
+    ShippingAddressModal,
+    TrialExpiredModal
   },
 
   data: () => ({
@@ -86,6 +92,7 @@ export default {
       async handler (v) {
         if (v === true && this.$route.name !== 'shared-slug') {
           await this.checkIfShouldSendShippingAddressNotification()
+          await this.checkIfShouldShowTrialExpiredModal()
         }
       }
     },
@@ -108,7 +115,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('notifications', ['checkIfShouldSendShippingAddressNotification']),
+    ...mapActions('notifications', ['checkIfShouldSendShippingAddressNotification', 'checkIfShouldShowTrialExpiredModal']),
 
     showVerifyEmailToast () {
       if (
