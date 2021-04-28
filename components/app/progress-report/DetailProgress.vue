@@ -1,7 +1,7 @@
 <template>
   <v-row class="pb-16">
     <div class="container">
-      <div class="container__image pt-10">
+      <div v-if="!$vuetify.breakpoint.xs" class="container__image pt-10">
         <center>
           <v-img :src="getIcon" class="ml-4 mt-4" />
           <div class="ml-7">
