@@ -81,7 +81,7 @@
           </v-col>
 
           <v-col cols="12">
-            <p class="text-body-1 text-lg-h6 text-justify mt-8">
+            <p class="text-body-1 text-lg-h6 text-justify mt-8 text-report">
               Playgarden Prep Online Lessons have been developed to support one or more of the core areas of development. After watching a video, doing the worksheet together with an adult, or actively participating in a Live Class, parents will be helping in the development of their child in each of the specific areas.
             </p>
           </v-col>
@@ -95,7 +95,9 @@
                     <underlined-title class="text-h6 text-md-h5" text="General Progress Report" />
                   </div>
                   <div>
-                    <chart-report v-if="report" :report="report" />
+                    <center>
+                      <chart-report v-if="report" :report="report" />
+                    </center>
                   </div>
                 </v-col>
                 <v-col cols="12" md="5" lg="5" xl="5">
@@ -294,6 +296,10 @@ export default {
 <style>
 .report-card-type {
   color: var(--v-black-base) !important;
+}
+
+.text-report {
+  font-weight: normal !important;
 }
 
 .content-report {

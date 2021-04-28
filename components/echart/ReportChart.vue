@@ -20,6 +20,7 @@ export default defineComponent({
 <style>
 .chart-report-children {
   width: 100% !important;
+  max-width: 900px !important;
   min-height: 500px !important;
 }
 </style>
