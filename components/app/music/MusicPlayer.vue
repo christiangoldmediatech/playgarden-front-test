@@ -485,6 +485,7 @@ export default {
 
   & .minimize-btn {
     position: absolute;
+    opacity: 0.75;
     left: 20px;
     top: 15px;
   }
