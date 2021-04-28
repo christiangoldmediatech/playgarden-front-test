@@ -7,7 +7,7 @@
         :height="playerHeight"
         :class="{ 'mobile': isMobile, 'pa-4': isPlayerShowing }"
         :ripple="false"
-        v-on="isMobile ? { click: handlePlayerClick } : {}"
+        v-on="isMobile && !isPlayerMaximizedOnMobile ? { click: handlePlayerClick } : {}"
       >
         <music-player
           v-show="isPlayerShowing"
@@ -286,7 +286,7 @@ export default {
 }
 
 .player-card {
-  transition: 0.1s ease;
+  transition: 0.3s ease;
   position: absolute;
   left: 0;
   top: 0;
