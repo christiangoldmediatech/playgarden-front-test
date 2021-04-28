@@ -1,11 +1,11 @@
 <template>
   <v-main class="main-music-wrapper">
-    <v-container fluid class="music-page-container pa-0" :class="{ 'mobile': isMobile, 'playing': isPlayerShowing }">
+    <v-container fluid class="music-page-container pa-0" :class="pageContainerClasses">
       <v-card
         class="player-card"
         :width="playerWidth"
         :height="playerHeight"
-        :class="{ 'mobile': isMobile, 'pa-4': isPlayerShowing }"
+        :class="playerCardClases"
         :ripple="false"
         v-on="isMobile && !isPlayerMaximizedOnMobile ? { click: handlePlayerClick } : {}"
       >
@@ -162,6 +162,17 @@ export default {
         return '160'
       } else {
         return 0
+      }
+    },
+
+    pageContainerClasses () {
+      return { mobile: this.isMobile, playing: this.isPlayerShowing }
+    },
+
+    playerCardClases () {
+      return {
+        mobile: this.isMobile,
+        'pa-4': !(this.isPlayerMaximizedOnMobile && this.isMobile)
       }
     }
   },

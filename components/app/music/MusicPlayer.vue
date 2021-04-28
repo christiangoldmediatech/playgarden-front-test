@@ -12,7 +12,7 @@
 
       <!-- Player -->
       <v-col>
-        <div class="player-wrapper px-4" :class="{ 'pt-6': !mobile }">
+        <div :class="playerWrapperClasses">
           <pg-audio-player ref="audioPlayer" :play-list="playList" @currentSong="$emit('currentSong', $event)">
             <!-- Current Song -->
             <template
@@ -306,6 +306,14 @@ export default {
         return '450'
       } else {
         return 0
+      }
+    },
+
+    playerWrapperClasses () {
+      return {
+        'player-wrapper': true,
+        'pt-6': !this.mobile,
+        'px-4': !this.isPlayerMaximizedOnMobile
       }
     }
   },
