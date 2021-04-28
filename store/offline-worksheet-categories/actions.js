@@ -9,6 +9,10 @@ export default {
     return this.$axios.$delete(`/offline-worksheets-cats/${id}`)
   },
 
+  getCategoriesWorksheetsOfflineByWorksheet (_, id) {
+    return this.$axios.$get(`/categories-worksheets-offline/worksheet/${id}`)
+  },
+
   getOfflineWorksheetCategories ({ commit }, params) {
     return new Promise((resolve, reject) =>
       this.$axios
