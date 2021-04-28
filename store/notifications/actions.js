@@ -106,6 +106,7 @@ export default {
     const didLoginBefore = dayjs(now).diff(userInfo.createdAt, 'days') >= oneDay
 
     // TODO: add `const didShowModalBefore` using some db property.
+    // TODO: add `const isSubscribedUser` so we do not show this to subscribed users.
 
     if (isUserLoggedIn && didTrialEnd && didLoginBefore) {
       commit('notifications/SET_TRIAL_EXPIRED_MODAL_VISIBLE', true, { root: true })
