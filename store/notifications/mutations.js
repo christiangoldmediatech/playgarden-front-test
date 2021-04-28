@@ -1,4 +1,7 @@
 export default {
+  SET_TRIAL_EXPIRED_MODAL_VISIBLE (state, bool) {
+    state.isTrialExpiredModalVisible = bool
+  },
   SET_IS_SHIPPING_MODAL_VISIBLE (state, bool) {
     state.isShippingModalVisible = bool
   },
