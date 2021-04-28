@@ -27,9 +27,11 @@
           large
           class="favorite-button white my-4 mt-md-2 mb-md-0"
           data-test-id="favorite-toggle"
+          :class="{ 'selected': showOnlyFavorites }"
+          :ripple="false"
           @click="$emit('showFavorites')"
         >
-          <v-icon left :class="showOnlyFavorites ? 'pink--text text--lighten-2' : 'grey--text'">
+          <v-icon left class="pink--text text--lighten-2">
             mdi-heart
           </v-icon>
           Favorites
@@ -71,6 +73,7 @@
         </v-row>
       </v-col>
     </v-row>
+    <!-- Favorites Title -->
     <v-expand-transition>
       <v-row v-if="showOnlyFavorites" no-gutters>
         <v-col cols="12" class="py-6">
@@ -276,7 +279,12 @@ export default {
 .child-selector {
   max-width: 300px;
 }
+
 .favorite-button {
-  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16) !important;
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15) !important;
+
+  &.selected {
+    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25) !important;
+  }
 }
 </style>
