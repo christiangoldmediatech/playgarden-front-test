@@ -77,14 +77,16 @@
     <v-expand-transition>
       <v-row v-if="showOnlyFavorites" no-gutters>
         <v-col cols="12" class="py-6">
-          <img :height="mobile ? '24px' : '36px'" src="@/assets/svg/library/favorites.svg">
           <underlined-title
             font-size="48px"
             font-size-mobile="32px"
             font-weight="bold"
-            text="Favorites"
             line-color="pink"
-          />
+            line-padding-right="30%"
+          >
+            <img :height="mobile ? '24px' : '36px'" src="@/assets/svg/library/favorites.svg">
+            Favorites
+          </underlined-title>
         </v-col>
       </v-row>
     </v-expand-transition>
