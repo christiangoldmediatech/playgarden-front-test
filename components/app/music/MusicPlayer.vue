@@ -115,12 +115,12 @@
                       <v-col cols="12" class="text-center">
                         <!-- PREVIOUS -->
                         <v-btn icon height="32" width="32" @click.stop="previous">
-                          <v-icon size="32">
+                          <v-icon color="grey" size="32">
                             mdi-skip-backward
                           </v-icon>
                         </v-btn>
                         <v-btn v-if="!isPlaying" icon height="50" width="50" @click.stop="play">
-                          <v-icon size="50">
+                          <v-icon color="grey" size="50">
                             mdi-play-circle-outline
                           </v-icon>
                         </v-btn>
@@ -131,13 +131,13 @@
                           width="50"
                           @click.stop="pause"
                         >
-                          <v-icon size="50">
+                          <v-icon color="grey" size="50">
                             mdi-pause-circle-outline
                           </v-icon>
                         </v-btn>
                         <!-- NEXT -->
                         <v-btn icon height="32" width="32" @click.stop="next">
-                          <v-icon size="32">
+                          <v-icon color="grey" size="32">
                             mdi-skip-forward
                           </v-icon>
                         </v-btn>
@@ -186,12 +186,12 @@
                 <v-col cols="6" class="text-center">
                   <!-- PREVIOUS -->
                   <v-btn icon height="32" width="32" @click.stop="previous">
-                    <v-icon size="32">
+                    <v-icon color="grey" size="32">
                       mdi-skip-backward
                     </v-icon>
                   </v-btn>
                   <v-btn v-if="!isPlaying" icon height="50" width="50" @click.stop="play">
-                    <v-icon size="50">
+                    <v-icon color="grey" size="50">
                       mdi-play-circle-outline
                     </v-icon>
                   </v-btn>
@@ -203,13 +203,13 @@
                     data-test-id="music-player-pause-button"
                     @click.stop="pause"
                   >
-                    <v-icon size="50">
+                    <v-icon color="grey" size="50">
                       mdi-pause-circle-outline
                     </v-icon>
                   </v-btn>
                   <!-- NEXT -->
                   <v-btn icon height="32" width="32" @click.stop="next">
-                    <v-icon size="32">
+                    <v-icon color="grey" size="32">
                       mdi-skip-forward
                     </v-icon>
                   </v-btn>
