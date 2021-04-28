@@ -172,7 +172,7 @@ export default {
     playerCardClases () {
       return {
         mobile: this.isMobile,
-        'pa-4': !(this.isPlayerMaximizedOnMobile && this.isMobile)
+        'pa-4': this.isPlayerShowing && !(this.isPlayerMaximizedOnMobile && this.isMobile)
       }
     }
   },
