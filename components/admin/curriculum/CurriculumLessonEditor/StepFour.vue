@@ -40,7 +40,6 @@
         <v-row>
           <pg-select
             v-model="categoriesSelected"
-            :error-messages="errors"
             label="Categories"
             :items="categories"
             item-text="category"
@@ -56,8 +55,9 @@
             :key="indexCategory"
             cols="2"
           >
-            <validation-provider v-slot="{ errors }" :name="Name" rules="required">
+            <validation-provider v-slot="{ errors }" :name="categorySelected.category" rules="required">
               <pg-text-field
+                v-model="categorySelected.number"
                 clearable
                 :disabled="loading"
                 :error-messages="errors"
@@ -195,7 +195,7 @@ export default {
   data: () => ({
     file: null,
     fileName: null,
-    categoriesSelected: null,
+    categoriesSelected: [],
     categories: null,
     videoFile: null,
     loading: false,
@@ -220,7 +220,9 @@ export default {
       this.loading = false
     })
     this.getOfflineWorksheetCategories().then((data) => {
-      this.categories = data
+      this.categories = data.map((category) => {
+        return { category: category.category, id: category.id, number: 0 }
+      })
     })
   },
 
@@ -337,6 +339,7 @@ export default {
     },
 
     submitMethod (data) {
+      data.categoriesWorksheetsOffline = this.categoriesSelected
       return this.editing
         ? this.updateWorksheetByLessonId({
           id: this.draft.id,
