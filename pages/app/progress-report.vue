@@ -70,7 +70,9 @@
           <v-row v-if="!$vuetify.breakpoint.xs" no-gutters>
             <v-col class="mt-10" cols="10">
               <underlined-title class="text-h6 text-md-h4" text="Student Progress Report" /><br>
-              <span>Playgarden Prep Online Lessons have been developed to support one or more of the core areas of development. After watching a video, doing the worksheet together with an adult, or actively participating in a Live Class, parents will be helping in the development of their child in each of the specific areas.</span>
+              <p class="text-justify mt-8">
+                <span>Playgarden Prep Online Lessons have been developed to support one or more of the core areas of development. After watching a video, doing the worksheet together with an adult, or actively participating in a Live Class, parents will be helping in the development of their child in each of the specific areas.</span>
+              </p>
             </v-col>
 
             <v-col cols="2" class="text-center text-sm-right pt-7">
