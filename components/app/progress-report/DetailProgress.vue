@@ -17,11 +17,11 @@
 
           <p>
             <v-row no-gutters>
-              <v-col class="mt-10">
+              <v-col>
                 <span :class="getClassColor">{{ getScale }}</span>
               </v-col>
 
-              <v-col cols="2" class="text-center text-sm-right pt-12">
+              <v-col cols="2" class="text-center text-sm-right pt-3">
                 <span class="font-weight-bold text-h6 text-md-h5">{{ `${(getDataCurrent.value === undefined) ? 0 : getDataCurrent.value}%` }}</span>
               </v-col>
             </v-row>
@@ -146,9 +146,9 @@ export default {
 
 .container {
   padding: 20px 40px 40px;
-  max-width: 600px;
+  max-width: 100%;
   &__image {
-    width: 318px;
+    width: 35%;
     margin: 30px 30px 30px 0;
     float: left;
   }
