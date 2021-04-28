@@ -66,28 +66,26 @@
       </v-col>
 
       <v-col cols="12" md="10" lg="10" class="pt-7">
-        <v-card-text>
-          <v-row v-if="!$vuetify.breakpoint.xs" no-gutters>
-            <v-col class="mt-10" cols="10">
-              <underlined-title class="text-h6 text-md-h4" text="Student Progress Report" /><br>
-            </v-col>
+        <v-row v-if="!$vuetify.breakpoint.xs" no-gutters>
+          <v-col class="mt-10" cols="10">
+            <underlined-title class="text-h6 text-md-h4" text="Student Progress Report" /><br>
+          </v-col>
 
-            <v-col cols="2" class="text-center text-sm-right pt-7">
-              <child-select
-                v-model="selectedChild"
-                hide-details
-                :preview-mode="previewMode"
-                @input="$emit('input', getDataGraphic())"
-              />
-            </v-col>
+          <v-col cols="2" class="text-center text-sm-right pt-7">
+            <child-select
+              v-model="selectedChild"
+              hide-details
+              :preview-mode="previewMode"
+              @input="$emit('input', getDataGraphic())"
+            />
+          </v-col>
 
-            <v-col cols="12">
-              <p class="text-body-1 text-lg-h6 text-justify mt-8">
-                Playgarden Prep Online Lessons have been developed to support one or more of the core areas of development. After watching a video, doing the worksheet together with an adult, or actively participating in a Live Class, parents will be helping in the development of their child in each of the specific areas.
-              </p>
-            </v-col>
-          </v-row>
-        </v-card-text>
+          <v-col cols="12">
+            <p class="text-body-1 text-lg-h6 text-justify mt-8">
+              Playgarden Prep Online Lessons have been developed to support one or more of the core areas of development. After watching a video, doing the worksheet together with an adult, or actively participating in a Live Class, parents will be helping in the development of their child in each of the specific areas.
+            </p>
+          </v-col>
+        </v-row>
         <v-row class="mr-3" no-gutters>
           <v-col v-if="general === true" cols="12" md="12" lg="12">
             <v-card v-if="!$vuetify.breakpoint.xs" class="content-report">
