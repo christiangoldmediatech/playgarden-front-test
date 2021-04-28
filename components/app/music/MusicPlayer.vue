@@ -34,7 +34,7 @@
                 <div class="thumbnail-wrapper">
                   <figure
                     class="song-thumbnail mx-auto"
-                    :style="{ 'background-image': `url(${currentSong.thumbnail})` }"
+                    :style="songThumbnailCss(currentSong.thumbnail)"
                   >
                     <v-overlay
                       absolute
@@ -99,7 +99,7 @@
                   <v-col cols="auto">
                     <figure
                       class="song-thumbnail mobile"
-                      :style="{ 'background-image': `url(${currentSong.thumbnail})` }"
+                      :style="songThumbnailCss(currentSong.thumbnail)"
                     >
                       <v-overlay
                         absolute
@@ -366,6 +366,19 @@ export default {
           this.$refs.audioPlayer.play()
         })
       }
+    },
+
+    songThumbnailCss (imageUrl = '') {
+      const styles = {
+        'background-image': `url(${imageUrl})`,
+        'box-shadow': '0px 8px 24px rgba(0, 0, 0, 0.15)'
+      }
+
+      if (!this.isPlayerMaximizedOnMobile) {
+        styles['border-radius'] = '8px'
+      }
+
+      return styles
     }
   }
 }
@@ -385,8 +398,6 @@ export default {
     height: 300px;
     background-size: cover;
     background-position: center center;
-    border-radius: 8px;
-    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15);
     &.mobile {
       width: 100px;
       height: 75px;
