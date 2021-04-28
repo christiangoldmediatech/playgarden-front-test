@@ -159,7 +159,7 @@ export default {
       if (!this.isMobile || this.isPlayerMaximizedOnMobile) {
         return '100%'
       } else if (this.isPlayerShowing && !this.isPlayerMaximizedOnMobile) {
-        return '160'
+        return '135'
       } else {
         return 0
       }

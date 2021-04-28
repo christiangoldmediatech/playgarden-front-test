@@ -64,7 +64,8 @@
                     mdi-heart
                   </v-icon>
                 </div>
-                <div class="song-details text-center pt-4">
+                <!-- Song Name And Description -->
+                <div class="song-details text-center pt-4 px-4">
                   <p class="song-title mb-2 text-truncate">
                     {{ currentSong.description }}
                   </p>
@@ -72,7 +73,8 @@
                     {{ currentSong.name }}
                   </p>
                 </div>
-                <div class="song-percentage">
+                <!-- Song Progress -->
+                <div class="song-percentage" :class="{ 'mx-4': isPlayerMaximizedOnMobile }">
                   <v-slider
                     readonly
                     height="20"
@@ -83,10 +85,10 @@
                     class="slider"
                     :value="currentSongPlayedPercentage"
                   />
-                  <span class="played-time pl-1">
+                  <span class="played-time pl-2">
                     {{ currentSongPlayedTime }}
                   </span>
-                  <span class="missing-time pr-1">
+                  <span class="missing-time pr-2">
                     {{ currentSongMissingTime }}
                   </span>
                 </div>
@@ -142,6 +144,7 @@
                       </v-col>
                     </v-row>
                   </v-col>
+                  <!-- Song Progress -->
                   <v-col cols="12">
                     <div class="song-percentage mobile">
                       <v-slider
@@ -154,10 +157,10 @@
                         class="slider"
                         :value="currentSongPlayedPercentage"
                       />
-                      <span class="played-time pl-1">
+                      <span class="played-time">
                         {{ currentSongPlayedTime }}
                       </span>
-                      <span class="missing-time pr-1">
+                      <span class="missing-time">
                         {{ currentSongMissingTime }}
                       </span>
                     </div>
@@ -386,7 +389,7 @@ export default {
     box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15);
     &.mobile {
       width: 100px;
-      height: 100px;
+      height: 75px;
     }
   }
   &-details {
