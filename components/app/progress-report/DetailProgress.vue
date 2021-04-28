@@ -13,7 +13,7 @@
       <div class="container__text">
         <underlined-title class="text-h6 text-md-h3" :text="reportCardType" />
         <div class="mb-6 mr-6 mt-8">
-          <p class="text-body-1 text-md-body-1 text-progress mt-4 pb-10" v-html="dataReportCardType.description" />
+          <p class="text-body-1 text-lg-h6 text-progress mt-4 pb-10" v-html="dataReportCardType.description" />
 
           <p>
             <v-row no-gutters>
@@ -31,7 +31,7 @@
             <underlined-title class="text-h6 text-md-h7" text="What is this?" />
           </p>
 
-          <p class="text-body-1 text-md-body-1 text-progress pb-16 pt-8" v-html="getTextWhatIsThis" />
+          <p class="text-body-1 text-lg-h6 text-progress pb-16 pt-8" v-html="getTextWhatIsThis" />
         </div>
       </div>
     </div>
@@ -146,7 +146,7 @@ export default {
 
 .container {
   padding: 20px 40px 40px;
-  max-width: 100%;
+  width: 100%;
   &__image {
     width: 35%;
     margin: 30px 30px 30px 0;

@@ -82,7 +82,7 @@
             </v-col>
 
             <v-col cols="12">
-              <p class="text-body-1 text-md-body-1 text-justify mt-8">
+              <p class="text-body-1 text-lg-h6 text-justify mt-8">
                 Playgarden Prep Online Lessons have been developed to support one or more of the core areas of development. After watching a video, doing the worksheet together with an adult, or actively participating in a Live Class, parents will be helping in the development of their child in each of the specific areas.
               </p>
             </v-col>
