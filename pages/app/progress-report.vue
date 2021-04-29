@@ -3,7 +3,7 @@
     fluid
   >
     <v-row>
-      <v-col v-if="!$vuetify.breakpoint.xs" cols="12" md="4" lg="2" xl="2">
+      <v-col v-if="!$vuetify.breakpoint.xs" cols="12" md="3" lg="2" xl="2">
         <v-card class="content-report ml-n3">
           <v-list three-line class="pt-9">
             <v-list-item-group v-model="optionDefault">
@@ -65,7 +65,7 @@
         />
       </v-col>
 
-      <v-col cols="12" md="4" lg="10" class="pt-12">
+      <v-col cols="12" md="9" lg="10" class="pt-12">
         <v-row v-if="!$vuetify.breakpoint.xs" no-gutters>
           <v-col class="mt-10" cols="9">
             <underlined-title class="text-h6 text-md-h4" text="Student Progress Report" /><br>
