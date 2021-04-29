@@ -3,7 +3,7 @@
     fluid
   >
     <v-row>
-      <v-col v-if="!$vuetify.breakpoint.xs" cols="12" md="2" lg="2" xl="2">
+      <v-col v-if="!$vuetify.breakpoint.xs" cols="12" md="4" lg="2" xl="2">
         <v-card class="content-report ml-n3">
           <v-list three-line class="pt-9">
             <v-list-item-group v-model="optionDefault">
@@ -20,7 +20,7 @@
                   </v-list-item-avatar>
 
                   <v-list-item-content class="report-card-type">
-                    <span>
+                    <span class="text-body-1 text-lg-h7 text-xl-h6">
                       {{ item.name }}
                     </span>
                   </v-list-item-content>
@@ -65,13 +65,13 @@
         />
       </v-col>
 
-      <v-col cols="12" md="10" lg="10" class="pt-7">
+      <v-col cols="12" md="4" lg="10" class="pt-12">
         <v-row v-if="!$vuetify.breakpoint.xs" no-gutters>
-          <v-col class="mt-10" cols="10">
+          <v-col class="mt-10" cols="9">
             <underlined-title class="text-h6 text-md-h4" text="Student Progress Report" /><br>
           </v-col>
 
-          <v-col cols="2" class="text-center text-sm-right pt-7">
+          <v-col cols="3" class="text-center text-sm-right pt-7">
             <child-select
               v-model="selectedChild"
               hide-details
@@ -81,7 +81,7 @@
           </v-col>
 
           <v-col cols="12">
-            <p class="text-body-1 text-lg-h6 text-justify mt-8 text-report">
+            <p class="text-body-1 text-lg-h7 text-xl-h6 text-justify mt-8 text-report">
               Playgarden Prep Online Lessons have been developed to support one or more of the core areas of development. After watching a video, doing the worksheet together with an adult, or actively participating in a Live Class, parents will be helping in the development of their child in each of the specific areas.
             </p>
           </v-col>
@@ -300,6 +300,7 @@ export default {
 
 .text-report {
   font-weight: normal !important;
+  color: var(--v-black-base) !important;
 }
 
 .content-report {

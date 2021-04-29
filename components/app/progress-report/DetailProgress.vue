@@ -13,7 +13,7 @@
       <div class="container__text">
         <underlined-title class="text-h6 text-md-h3" :text="reportCardType" />
         <div class="mb-6 mr-6 mt-8">
-          <p class="text-body-1 text-lg-h6 text-progress mt-4 pb-10" v-html="dataReportCardType.description" />
+          <p class="text-body-1 text-lg-h7 text-xl-h6 text-progress mt-4 pb-10" v-html="dataReportCardType.description" />
 
           <p>
             <v-row no-gutters>
@@ -28,10 +28,10 @@
           </p>
 
           <p>
-            <underlined-title class="text-h6 text-md-h7" text="What is this?" />
+            <underlined-title class="text-h6 text-md-h7 text-xl-h6" text="What is this?" />
           </p>
 
-          <p class="text-body-1 text-lg-h6 text-progress pb-16 pt-8" v-html="getTextWhatIsThis" />
+          <p class="text-body-1 text-lg-h7 text-progress pb-16 pt-8" v-html="getTextWhatIsThis" />
         </div>
       </div>
     </div>
