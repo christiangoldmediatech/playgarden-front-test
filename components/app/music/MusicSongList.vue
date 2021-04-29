@@ -90,36 +90,49 @@
         </v-col>
       </v-row>
     </v-expand-transition>
+    <!-- No Favorite Songs -->
+    <div
+      v-if="showNoFavoriteSongsAdded"
+      class="d-flex align-center justify-center flex-column my-md-12"
+    >
+      <img src="@/assets/svg/library/favorites.svg" :width="mobile ? '72px' : '128px'">
+
+      <div class="text-h6 text-md-h4 font-weight-medium text-center grey--text text--darken-2 mt-6">
+        Add your favorite songs here, by clicking on their Heart icons.
+      </div>
+    </div>
     <!-- Songs -->
-    <template v-if="selectedFilter === 'list'">
-      <div data-test-id="song-card-list">
-        <song-card
-          v-for="(song, index) in filteredSongsByLetterId"
-          :key="song.id"
-          :thumbnail="song.thumbnail"
-          :name="song.name"
-          :description="song.description"
-          :is-favorite="song.isFavorite"
-          class="my-4"
-          @add="addSongToPlayList(song)"
-          @favorite="$emit('favorite', song)"
-          @click="createPlayListFromIndex(index)"
-        />
-      </div>
-    </template>
-    <template v-if="selectedFilter === 'letter'">
-      <div data-test-id="letter-songs-list">
-        <letter-songs
-          v-for="letter in filteredLettersByLetterId"
-          :key="letter.id"
-          :letter="letter"
-          :songs="letter.musicLibrary"
-          class="my-2 mt-md-4 mb-md-8"
-          @add="addSongToPlayList"
-          @favorite="$emit('favorite', $event)"
-          @createPlayList="emitPlayList"
-        />
-      </div>
+    <template v-else>
+      <template v-if="selectedFilter === 'list'">
+        <div data-test-id="song-card-list">
+          <song-card
+            v-for="(song, index) in filteredSongsByLetterId"
+            :key="song.id"
+            :thumbnail="song.thumbnail"
+            :name="song.name"
+            :description="song.description"
+            :is-favorite="song.isFavorite"
+            class="my-4"
+            @add="addSongToPlayList(song)"
+            @favorite="$emit('favorite', song)"
+            @click="createPlayListFromIndex(index)"
+          />
+        </div>
+      </template>
+      <template v-if="selectedFilter === 'letter'">
+        <div data-test-id="letter-songs-list">
+          <letter-songs
+            v-for="letter in filteredLettersByLetterId"
+            :key="letter.id"
+            :letter="letter"
+            :songs="letter.musicLibrary"
+            class="my-2 mt-md-4 mb-md-8"
+            @add="addSongToPlayList"
+            @favorite="$emit('favorite', $event)"
+            @createPlayList="emitPlayList"
+          />
+        </div>
+      </template>
     </template>
   </div>
 </template>
@@ -219,6 +232,15 @@ export default {
       } else {
         return this.songsByCurriculumType.filter(letter => letter.id === this.selectedLetterId)
       }
+    },
+
+    showNoFavoriteSongsAdded () {
+      // when `showOnlyFavorites` = true, the favorite songs are filtered in the parent component
+      if (this.showOnlyFavorites) {
+        return !this.filteredSongsByLetterId.length
+      }
+
+      return false
     }
   },
 
