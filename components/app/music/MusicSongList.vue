@@ -92,7 +92,7 @@
     </v-expand-transition>
     <!-- No Favorite Songs -->
     <div
-      v-if="showNoFavoriteSongsAdded"
+      v-if="shouldShowNoFavoriteSongsAdded"
       class="d-flex align-center justify-center flex-column my-md-12"
     >
       <img src="@/assets/svg/library/favorites.svg" :width="mobile ? '72px' : '128px'">
@@ -234,10 +234,11 @@ export default {
       }
     },
 
-    showNoFavoriteSongsAdded () {
+    shouldShowNoFavoriteSongsAdded () {
       // when `showOnlyFavorites` = true, the favorite songs are filtered in the parent component
       if (this.showOnlyFavorites) {
-        return !this.filteredSongsByLetterId.length
+        const hasSongs = this.filteredSongsByLetterId.length
+        return !hasSongs
       }
 
       return false
