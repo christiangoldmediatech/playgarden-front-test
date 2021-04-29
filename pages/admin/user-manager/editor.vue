@@ -43,6 +43,10 @@
           <validation-observer v-slot="{ invalid, passes }">
             <v-card-text>
               <v-form>
+                <v-row class="mt-n4" justify="end">
+                  <b class="pt-9 mr-2">Is test user ?</b>
+                  <v-switch v-model="user.testUser" :label="getTestUser" class="mr-4" />
+                </v-row>
                 <v-row>
                   <v-col cols="12" lg="4" md="6">
                     <validation-provider
@@ -93,7 +97,7 @@
                     <validation-provider
                       v-slot="{ errors }"
                       name="Phone Number"
-                      rules="required|phone"
+                      rules="phone"
                     >
                       <pg-text-field
                         v-model="user.phoneNumber"
@@ -298,6 +302,7 @@ export default {
         phoneNumber: '',
         roleId: null,
         planId: null,
+        testUser: null,
         password: null,
         workbookSent: false,
         backpackSent: false
@@ -319,6 +324,10 @@ export default {
     ...mapGetters('admin/roles', {
       roleRows: 'rows'
     }),
+
+    getTestUser () {
+      return (this.user.testUser) ? 'Yes' : 'No'
+    },
 
     getTitlleChange () {
       return (this.changePassword) ? 'NO CHANGE PASSWORD' : 'CHANGE PASSWORD'
@@ -387,6 +396,7 @@ export default {
       this.user.lastName = data.lastName
       this.user.email = data.email
       this.user.phoneNumber = data.phoneNumber
+      this.user.testUser = data.testUser
       this.user.roleId = data.role.id
       this.user.planId = (data.planSelected) ? data.planSelected.id : null
       this.user.workbookSent = false
