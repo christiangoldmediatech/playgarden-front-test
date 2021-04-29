@@ -19,7 +19,7 @@
                     <v-img v-else :src="item.icon" min-width="38px" />
                   </v-list-item-avatar>
 
-                  <v-list-item-content class="report-card-type">
+                  <v-list-item-content class="text-center report-card-type">
                     <span class="text-body-1 text-lg-h7 text-xl-h6">
                       {{ item.name }}
                     </span>
