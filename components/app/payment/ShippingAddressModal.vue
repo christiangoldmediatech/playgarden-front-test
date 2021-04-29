@@ -2,7 +2,7 @@
   <large-image-content-dialog :value="isShippingModalVisible" :img="girlFamilyTreeImg" @close="closeModal">
     <div>
       <underlined-title
-        text="WE WANT TO SEND YOU A WELCOME KIT!"
+        text="Do you want to receive the  Playgarden Prep workbook at home, for FREE?"
         font-size="46px"
         font-size-mobile="22px"
         letter-spacing="4.8px"
@@ -14,17 +14,18 @@
     </div>
 
     <div class="grey--text text--darken-2 caption text-md-body-2 my-3 my-md-6">
-      For our PREMIUM and PREMIUM PLUS plans, we require a shipping address in order to send the Welcome Kit with our first Workbook. Fill out the information below so you can start learning from the comfort of your home.
+      We want to send you our school materials, for FREE, so your little one gets the most out learning with us in this TRIAL period. Enter your address below and you should receive the Playgarden Prep workbook and specialized pencils in a couple of days!
     </div>
 
     <shipping-address-details
       edit-by-default
       save-button-text="Send"
       save-button-color="primary"
+      hide-cancel-button-text="REMIND ME LATER"
       show-phone-number-field
-      hide-cancel-button
       wrap-state-and-zip-code-fields
       @shipping-address-saved="closeModal"
+      @shipping-address-cancel="closeModal"
     />
   </large-image-content-dialog>
 </template>
