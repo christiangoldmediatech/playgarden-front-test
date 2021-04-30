@@ -4,6 +4,7 @@
       <validation-observer v-slot="{ invalid, passes }">
         <v-form @submit.prevent="passes(onSubmit)">
           <!-- Plan -->
+          <!--
           <v-row justify="center">
             <div>
               <p
@@ -21,58 +22,46 @@
               </p>
             </div>
           </v-row>
-
+          -->
+          <!-- Desktop Plan Selection -->
           <v-row
             v-if="$vuetify.breakpoint.mdAndUp"
             class="mx-n3"
             justify="center"
+            align="start"
             no-gutters
           >
             <v-col
               v-for="(plan, indexP) in plans"
               :key="indexP"
-              :class="`${
-                indexP === 1
-                  ? 'c-col elevation-3 mx-md-3 card-plan'
-                  : 'c-col elevation-3 mx-md-3 pa-3 card-plan mt-10'
-              }`"
+              :class="planCardClasses(indexP)"
             >
+              <!-- Most Popular Chip -->
               <div v-show="indexP === 1" class="text-right">
                 <v-chip class="most-popular" label>
                   Most Popular
                 </v-chip>
               </div>
-              <div>
-                <p
-                  :class="`${
-                    indexP === 1
-                      ? 'plan-name text-center mt-0'
-                      : 'plan-name text-center mt-10'
-                  }`"
-                >
+              <div class="px-8">
+                <!-- Plan Name -->
+                <p :class="planNameClasses(indexP)">
                   <v-chip
                     color="orange"
-                    class="text-orange-info mb-8 py-4"
+                    class="text-orange-info mb-8 py-4 px-3"
                     label
                   >
                     {{ getTypePlan(indexP) }}
                   </v-chip>
                   <br>
                   <underlined-title
-                    font-size="30px"
-                    :line-from="65"
+                    font-size="32px"
+                    :line-from="45"
                     :text="plan.name"
                   />
                 </p>
-
-                <p
-                  :class="`${
-                    indexP === 1
-                      ? 'text-center mt-5 plan-included'
-                      : 'text-center mt-6 plan-included'
-                  }`"
-                >
-                  <label class="font-weight-bold">What's included</label>
+                <!-- What's Included -->
+                <p class="text-left mt-6 plan-included">
+                  <label class="grey--text text--darken-2 font-weight-bold">What's included</label>
                   <!-- <br>
                       <span
                         v-if="indexP === 1"
@@ -89,10 +78,9 @@
                 <plan-description
                   :plan="plan"
                   :index-plan="indexP"
-                  class="ml-8 mr-8"
                 />
-
-                <p class="text-center">
+                <!-- Price -->
+                <p class="text-center mt-8">
                   <span class="product-price">
                     ${{ (plan.priceAnnual / 12).toFixed(2) }}
                   </span>
@@ -112,7 +100,7 @@
                   >Billed Annually (Save ~$1,200)</span>
                 </p>
               </div>
-
+              <!-- Call Us To Enroll Text -->
               <div v-if="indexP === 2" class="mb-6">
                 <div class="enroll-text">
                   Call us to enroll
@@ -121,25 +109,42 @@
                   Limited Availability
                 </div>
               </div>
-              <validation-provider v-else v-slot="{ errors }" name="Plan" rules="required">
-                <v-radio-group
-                  v-model="radioGroup"
-                  class="ma-0 pa-0"
-                  :disabled="loading"
-                  :error-messages="errors"
-                  :loading="loading"
-                >
-                  <radio-selectors
-                    v-model="draft"
-                    :plan="plan"
-                    :index-plan="indexP"
-                    :class="`${indexP === 1 ? 'mb-9 px-6' : 'mb-6 px-6'}`"
-                  />
-                </v-radio-group>
-              </validation-provider>
+
+              <template v-else>
+                <!-- Radio Button Selection -->
+                <div class="d-flex justify-center">
+                  <validation-provider v-slot="{ errors }" name="Plan" rules="required">
+                    <v-radio-group
+                      v-model="radioGroup"
+                      :disabled="loading"
+                      :error-messages="errors"
+                      :loading="loading"
+                    >
+                      <radio-selectors
+                        v-model="draft"
+                        :plan="plan"
+                        :index-plan="indexP"
+                        :class="`${indexP === 1 ? 'mb-9 px-6' : 'mb-6 px-6'}`"
+                      />
+                    </v-radio-group>
+                  </validation-provider>
+                </div>
+                <!-- Choose Plan Button -->
+                <div class="d-flex justify-center mb-8">
+                  <v-btn
+                    large
+                    class="text-none"
+                    color="accent"
+                    width="250px"
+                    type="submit"
+                  >
+                    Choose Plan
+                  </v-btn>
+                </div>
+              </template>
             </v-col>
           </v-row>
-
+          <!-- Mobile Plan Selection -->
           <v-row v-else no-gutters>
             <v-col
               v-for="(plan, indexP) in plans"
@@ -200,141 +205,6 @@
               </v-expansion-panels>
             </v-col>
           </v-row>
-
-          <v-row
-            v-if="!noAddress"
-            class="shipping flex-md-row mt-8"
-            justify="center"
-            no-gutters
-          >
-            <v-col class="px-md-6">
-              <p class="text-center text-md-justify">
-                <span
-                  class="font-weight-bold text-h5 pg-letter-spacing text-center text-md-justify"
-                >
-                  SHIPPING ADDRESS
-                </span>
-                <br>
-                <span class="text-h8">
-                  For our PREMIUM and PREMIUM PLUS plans, we require a shipping address in order to send the Welcome Kit with Backpack, workbooks, and additional materials so you can easily receive them at the comfort of your home.
-                </span>
-              </p>
-
-              <!-- Street 1 -->
-              <validation-provider
-                v-slot="{ errors }"
-                name="Street 1"
-                rules="required"
-              >
-                <pg-text-field
-                  v-model="draftAddress.address1"
-                  clearable
-                  :disabled="loading"
-                  :error-messages="errors"
-                  :loading="loading"
-                  placeholder="Street 1"
-                  solo
-                />
-              </validation-provider>
-
-              <!-- Street 2 -->
-              <pg-text-field
-                v-model="draftAddress.address2"
-                clearable
-                :disabled="loading"
-                :loading="loading"
-                placeholder="Street 2 (optional)"
-                solo
-              />
-
-              <!-- City -->
-              <validation-provider
-                v-slot="{ errors }"
-                name="City"
-                rules="required"
-              >
-                <pg-text-field
-                  v-model="draftAddress.city"
-                  clearable
-                  :disabled="loading"
-                  :error-messages="errors"
-                  :loading="loading"
-                  placeholder="City"
-                  solo
-                />
-              </validation-provider>
-
-              <v-row no-gutters>
-                <v-col class="pr-3" cols="6">
-                  <!-- State -->
-                  <validation-provider
-                    v-slot="{ errors }"
-                    name="State"
-                    rules="required"
-                  >
-                    <pg-text-field
-                      v-model="draftAddress.state"
-                      clearable
-                      :disabled="loading"
-                      :error-messages="errors"
-                      :loading="loading"
-                      placeholder="State"
-                      solo
-                    />
-                  </validation-provider>
-                </v-col>
-
-                <v-col class="pl-3" cols="6">
-                  <!-- Zip code -->
-                  <validation-provider
-                    v-slot="{ errors }"
-                    name="Zip code"
-                    rules="required"
-                  >
-                    <pg-text-field
-                      v-model="draftAddress.zipCode"
-                      clearable
-                      :disabled="loading"
-                      :error-messages="errors"
-                      :loading="loading"
-                      placeholder="Zip code"
-                      solo
-                    />
-                  </validation-provider>
-                </v-col>
-              </v-row>
-            </v-col>
-          </v-row>
-
-          <v-row justify="center" no-gutters>
-            <v-col cols="12" sm="6">
-              <v-btn
-                block
-                color="warning"
-                class="my-6 main-btn"
-                :disabled="invalid"
-                :loading="loading"
-                type="submit"
-                x-large
-              >
-                {{ noPayment ? "SAVE" : "NEXT" }}
-              </v-btn>
-
-              <v-btn
-                v-if="updating"
-                block
-                class="mb-6 main-btn"
-                color="primary"
-                :disabled="invalid"
-                :loading="loading"
-                text
-                x-large
-                @click="$emit('click:cancel')"
-              >
-                CLOSE
-              </v-btn>
-            </v-col>
-          </v-row>.
         </v-form>
       </validation-observer>
     </v-col>
@@ -540,6 +410,21 @@ export default {
         state: null,
         zipCode: null
       }
+    },
+
+    planCardClasses (index) {
+      return {
+        'c-col elevation-3 mx-md-3 card-plan': true,
+        'pa-3 mt-10': index !== 1
+      }
+    },
+
+    planNameClasses (index) {
+      return {
+        'plan-name text-center': true,
+        'pt-8': index !== 1,
+        'mt-13': index === 1
+      }
     }
   }
 }
@@ -548,7 +433,6 @@ export default {
 <style lang="scss" scoped>
 .c-col {
   align-content: space-between;
-  display: grid;
 }
 
 .plan-item {
@@ -576,6 +460,8 @@ export default {
 }
 
 .card-plan {
+  box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.27) !important;
+  border-radius: 5px !important;
   max-width: 350px;
   @media screen and (min-width: 1264px) {
     max-width: 426px;
@@ -594,21 +480,24 @@ export default {
 }
 .most-popular::v-deep.v-chip--label {
   font-weight: bold;
+  font-size: 16px;
+  padding: 15px 30px;
   color: var(--v-white-base) !important;
   border-radius: 0px !important;
   background: rgba(255, 163, 72, 0.35);
 }
 .product-price {
-  font-size: 38px !important;
+  font-size: 40px !important;
   color: var(--v-black-base) !important;
   font-weight: bold;
 }
 .info-prodcut-detail {
-  font-size: 11px;
+  font-size: 12px;
 }
 .product-month {
+  color: var(--v-black-base) !important;
   font-weight: bold;
-  font-size: 28px !important;
+  font-size: 30px !important;
 }
 .plan-name {
   min-height: 125px;
@@ -645,7 +534,7 @@ export default {
   text-align: center;
   color: var(--v-accent-base);
   @media screen and (min-width: 960px) {
-    font-size: 40px;
+    font-size: 32px;
   }
 }
 .limited-text {
@@ -654,7 +543,7 @@ export default {
   font-weight: 400;
   text-align: center;
   @media screen and (min-width: 960px) {
-    font-size: 24px;
+    font-size: 20px;
   }
 }
 </style>
