@@ -1,7 +1,8 @@
 <template>
   <v-container
     fluid
-    class=" container ma-5"
+    class=" container"
+    :class="{ 'ma-5': !$vuetify.breakpoint.xs }"
   >
     <div v-if="!$vuetify.breakpoint.xs" class="container__image pt-10">
       <center>
@@ -12,12 +13,25 @@
         </div>
       </center>
     </div>
+    <v-row v-else no-gutters>
+      <v-list-item>
+        <v-list-item-avatar class="mt-n8" size="66">
+          <v-img :src="getIcon" />
+        </v-list-item-avatar>
+        <v-list-item-content class="text-center report-card-type">
+          <div class="ml-7">
+            <v-progress-linear class="mb-3" :value="(getDataCurrent.value === undefined) ? 0 : getDataCurrent.value" height="15" rounded color="accent" />
+            <span class="text-progress">{{ `${(getDataCurrent.value === undefined) ? 0 : getDataCurrent.value}/100` }}</span>
+          </div>
+        </v-list-item-content>
+      </v-list-item>
+    </v-row>
     <div class="container__text">
       <underlined-title class="text-h6 text-md-h3" :text="reportCardType" />
       <row class="mb-6 mr-6 mt-8">
         <p class="text-body-1 text-lg-h7 text-xl-h6 text-progress mt-4 pb-10" v-html="dataReportCardType.description" />
 
-        <p>
+        <p class="mt-n8">
           <v-row no-gutters>
             <v-col>
               <span :class="getClassColor">{{ getScale }}</span>
