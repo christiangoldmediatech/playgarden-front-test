@@ -56,12 +56,12 @@
               padding-bottom="30px"
             />
           </div>
-          <div class="mt-8 mb-14 text-body-1 text-md-h5 custom-max-width">
+          <div class="mt-8 mb-4 text-body-1 text-md-h5 custom-max-width">
             During your trial period, which ended on {{ lastDayOfTrial }}, you were able to experience all the features of the <span class="accent--text font-weight-bold">HOMESCHOOL</span> plan. After the trial period, you were automatically placed in the <span class="accent--text font-weight-bold">PREMIUM EDUCATION</span> monthly plan. You can stay in that plan, or you can choose now in which plan you want your little one to learn going forward.
             As always, you can cancel your enrollment anytime by going to your Accounts Page.
           </div>
         </v-col>
-        <v-col cols="12">
+        <v-col cols="12" class="mt-8">
           <subscription-plan-selection
             class="mt-md-n6"
             @click:submit="onSubmit"
