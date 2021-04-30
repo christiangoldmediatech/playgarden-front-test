@@ -59,17 +59,6 @@
                 <!-- What's Included -->
                 <p class="text-left mt-6 plan-included">
                   <label class="grey--text text--darken-2 font-weight-bold">What's included</label>
-                  <!-- <br>
-                      <span
-                        v-if="indexP === 1"
-                        class="info-prodcut-detail"
-                      >Everything in the SILVER Plan,
-                        <span class="font-weight-bold">plus extra!</span></span>
-                      <span
-                        v-if="indexP === 2"
-                        class="info-prodcut-detail"
-                      >Everything in the GOLD Plan,
-                        <span class="font-weight-bold">plus extra!</span></span> -->
                 </p>
 
                 <plan-description
