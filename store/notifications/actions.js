@@ -90,7 +90,9 @@ export default {
   /**
    * When should we show the user the trial expired modal?
    * - The user `trial_end` is lower than the current day,
-   * - only one time, the next time they enter to the platform.
+   * - only one time, the next time they enter the platform,
+   * - they are not a subscribed user and,
+   * - they did not select a plan before
    */
   checkIfShouldShowTrialExpiredModal ({ commit, rootGetters }) {
     const isUserLoggedIn = rootGetters['auth/isUserLoggedIn']
@@ -105,13 +107,20 @@ export default {
     // we'll consider it a user that logged in before if the created date is greater than a day
     const didLoginBefore = dayjs(now).diff(userInfo.createdAt, 'days') >= oneDay
 
-    // TODO: add `const didShowModalBefore` using some db property.
-    // TODO: add `const isSubscribedUser` so we do not show this to subscribed users.
+    const didChoosePlan = !!userInfo.planChoosen
 
-    if (isUserLoggedIn && didTrialEnd && didLoginBefore) {
+    const subscription = userInfo.subscription
+    const isSubscribedUser = subscription && subscription.status === 'active'
+
+    const shouldShowExpiredModal =
+      isUserLoggedIn &&
+      didTrialEnd &&
+      didLoginBefore &&
+      !isSubscribedUser &&
+      !didChoosePlan
+
+    if (shouldShowExpiredModal) {
       commit('notifications/SET_TRIAL_EXPIRED_MODAL_VISIBLE', true, { root: true })
-
-      // TODO: mark the user so it we don't show the notification again next time.
     }
   }
 }
