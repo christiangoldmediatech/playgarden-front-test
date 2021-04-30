@@ -54,11 +54,19 @@
       </v-col>
       <v-col cols="1">
         <v-row no-gutters class="fill-height" justify="center" align="center">
-          <v-btn text icon class="pa-0" @click.stop="$emit('add')">
-            <v-icon size="28">
-              mdi-playlist-music
-            </v-icon>
-          </v-btn>
+          <v-tooltip :top="!isMobile" :bottom="isMobile">
+            <template #activator="{ on, attrs }">
+              <v-icon
+                size="28"
+                v-bind="attrs"
+                v-on="on"
+                @click.stop="handleSongAddition"
+              >
+                mdi-playlist-music-outline
+              </v-icon>
+            </template>
+            {{ isMobile ? 'Added to queue' : 'Add to queue' }}
+          </v-tooltip>
         </v-row>
       </v-col>
     </v-row>
@@ -93,6 +101,23 @@ export default {
       type: Boolean,
       default: false
     }
+  },
+
+  computed: {
+    isMobile () {
+      return this.$vuetify.breakpoint.mobile
+    }
+  },
+
+  methods: {
+    handleSongAddition ($event) {
+      this.$emit('add')
+
+      // blur element after 2 seg so the tooltip can go away
+      if ($event && $event.target) {
+        setTimeout(() => $event.target.blur(), 2000)
+      }
+    }
   }
 }
 </script>
@@ -119,5 +144,15 @@ export default {
 .custom-shadow {
   box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15) !important;
   border-radius: 8px !important;
+}
+.v-tooltip__content {
+  background-color: var(--v-black-base) !important;
+  font-weight: 500 !important;
+  color: white !important;
+}
+.v-tooltip__content::after {
+  content: "";
+  position: absolute;
+  border-color: transparent transparent transparent transparent;
 }
 </style>

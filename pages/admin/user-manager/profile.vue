@@ -89,6 +89,9 @@
                   <a :href="`https://dashboard.stripe.com/customers/${billing.customerId}`" target="_blank">View on Stripe</a>
                 </v-chip>
               </v-col>
+              <v-col v-if="user.testUser" class="mt-n5">
+                <b class="mt-2">Test user</b>
+              </v-col>
               <v-col class="mt-n12">
                 <v-row class="mt-n6">
                   <v-col cols="12">

@@ -12,7 +12,7 @@
 
       <!-- Player -->
       <v-col>
-        <div class="player-wrapper px-4" :class="{ 'pt-6': !mobile }">
+        <div :class="playerWrapperClasses">
           <pg-audio-player ref="audioPlayer" :play-list="playList" @currentSong="$emit('currentSong', $event)">
             <!-- Current Song -->
             <template
@@ -29,11 +29,12 @@
                 previous
               }"
             >
-              <template v-if="!mobile">
+              <!-- Desktop or Mobile Maximized -->
+              <template v-if="!mobile || isPlayerMaximizedOnMobile">
                 <div class="thumbnail-wrapper">
                   <figure
                     class="song-thumbnail mx-auto"
-                    :style="{ 'background-image': `url(${currentSong.thumbnail})` }"
+                    :style="songThumbnailCss(currentSong.thumbnail)"
                   >
                     <v-overlay
                       absolute
@@ -42,17 +43,29 @@
                       <v-progress-circular indeterminate />
                     </v-overlay>
                   </figure>
+                  <!-- Mobile Minimize Icon -->
+                  <v-icon
+                    v-if="isPlayerMaximizedOnMobile"
+                    class="minimize-btn orange lighten-2 white--text"
+                    size="32"
+                    data-test-id="music-player-minimize-button"
+                    @click.stop="$emit('minimize', currentSong)"
+                  >
+                    mdi-chevron-down
+                  </v-icon>
+                  <!-- Fav Icon -->
                   <v-icon
                     class="favorite-btn"
                     size="32"
                     data-test-id="music-player-favorite-button"
                     :class="currentSong.isFavorite ? 'pink--text text--lighten-2' : 'grey--text text--lighten-2'"
-                    @click="$emit('favorite', currentSong)"
+                    @click.stop="$emit('favorite', currentSong)"
                   >
                     mdi-heart
                   </v-icon>
                 </div>
-                <div class="song-details text-center pt-4">
+                <!-- Song Name And Description -->
+                <div class="song-details text-center pt-4 px-4">
                   <p class="song-title mb-2 text-truncate">
                     {{ currentSong.description }}
                   </p>
@@ -60,7 +73,8 @@
                     {{ currentSong.name }}
                   </p>
                 </div>
-                <div class="song-percentage">
+                <!-- Song Progress -->
+                <div class="song-percentage" :class="{ 'mx-4': isPlayerMaximizedOnMobile }">
                   <v-slider
                     readonly
                     height="20"
@@ -71,20 +85,21 @@
                     class="slider"
                     :value="currentSongPlayedPercentage"
                   />
-                  <span class="played-time pl-1">
+                  <span class="played-time pl-2">
                     {{ currentSongPlayedTime }}
                   </span>
-                  <span class="missing-time pr-1">
+                  <span class="missing-time pr-2">
                     {{ currentSongMissingTime }}
                   </span>
                 </div>
               </template>
+              <!-- Mobile -->
               <template v-else>
                 <v-row no-gutters align="center">
                   <v-col cols="auto">
                     <figure
                       class="song-thumbnail mobile"
-                      :style="{ 'background-image': `url(${currentSong.thumbnail})` }"
+                      :style="songThumbnailCss(currentSong.thumbnail)"
                     >
                       <v-overlay
                         absolute
@@ -99,14 +114,14 @@
                       <!-- CENTER BTNS -->
                       <v-col cols="12" class="text-center">
                         <!-- PREVIOUS -->
-                        <v-btn icon height="32" width="32" @click="previous">
-                          <v-icon size="32">
+                        <v-btn icon height="32" width="32" @click.stop="previous">
+                          <v-icon color="grey" size="32">
                             mdi-skip-backward
                           </v-icon>
                         </v-btn>
-                        <v-btn v-if="!isPlaying" icon height="50" width="50" @click="play">
-                          <v-icon size="50">
-                            mdi-play
+                        <v-btn v-if="!isPlaying" icon height="50" width="50" @click.stop="play">
+                          <v-icon color="grey" size="50">
+                            mdi-play-circle-outline
                           </v-icon>
                         </v-btn>
                         <v-btn
@@ -114,21 +129,22 @@
                           icon
                           height="50"
                           width="50"
-                          @click="pause"
+                          @click.stop="pause"
                         >
-                          <v-icon size="50">
+                          <v-icon color="grey" size="50">
                             mdi-pause-circle-outline
                           </v-icon>
                         </v-btn>
                         <!-- NEXT -->
-                        <v-btn icon height="32" width="32" @click="next">
-                          <v-icon size="32">
+                        <v-btn icon height="32" width="32" @click.stop="next">
+                          <v-icon color="grey" size="32">
                             mdi-skip-forward
                           </v-icon>
                         </v-btn>
                       </v-col>
                     </v-row>
                   </v-col>
+                  <!-- Song Progress -->
                   <v-col cols="12">
                     <div class="song-percentage mobile">
                       <v-slider
@@ -141,10 +157,10 @@
                         class="slider"
                         :value="currentSongPlayedPercentage"
                       />
-                      <span class="played-time pl-1">
+                      <span class="played-time">
                         {{ currentSongPlayedTime }}
                       </span>
-                      <span class="missing-time pr-1">
+                      <span class="missing-time">
                         {{ currentSongMissingTime }}
                       </span>
                     </div>
@@ -163,19 +179,20 @@
                 previous
               }"
             >
-              <v-row v-show="!mobile" no-gutters>
+              <!-- Desktop or Mobile Maximized -->
+              <v-row v-show="!mobile || isPlayerMaximizedOnMobile" no-gutters>
                 <v-col cols="3" />
                 <!-- CENTER BTNS -->
                 <v-col cols="6" class="text-center">
                   <!-- PREVIOUS -->
-                  <v-btn icon height="32" width="32" @click="previous">
-                    <v-icon size="32">
+                  <v-btn icon height="32" width="32" @click.stop="previous">
+                    <v-icon color="grey" size="32">
                       mdi-skip-backward
                     </v-icon>
                   </v-btn>
-                  <v-btn v-if="!isPlaying" icon height="50" width="50" @click="play">
-                    <v-icon size="50">
-                      mdi-play
+                  <v-btn v-if="!isPlaying" icon height="50" width="50" @click.stop="play">
+                    <v-icon color="grey" size="50">
+                      mdi-play-circle-outline
                     </v-icon>
                   </v-btn>
                   <v-btn
@@ -184,15 +201,15 @@
                     height="50"
                     width="50"
                     data-test-id="music-player-pause-button"
-                    @click="pause"
+                    @click.stop="pause"
                   >
-                    <v-icon size="50">
+                    <v-icon color="grey" size="50">
                       mdi-pause-circle-outline
                     </v-icon>
                   </v-btn>
                   <!-- NEXT -->
-                  <v-btn icon height="32" width="32" @click="next">
-                    <v-icon size="32">
+                  <v-btn icon height="32" width="32" @click.stop="next">
+                    <v-icon color="grey" size="32">
                       mdi-skip-forward
                     </v-icon>
                   </v-btn>
@@ -208,6 +225,7 @@
                 currentSongIndex
               }"
             >
+              <!-- Desktop -->
               <template v-if="!mobile">
                 <div
                   class="playlist mt-4"
@@ -265,6 +283,10 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    isPlayerMaximizedOnMobile: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -287,6 +309,14 @@ export default {
         return '450'
       } else {
         return 0
+      }
+    },
+
+    playerWrapperClasses () {
+      return {
+        'player-wrapper': true,
+        'pt-6': !this.mobile,
+        'px-4': !this.isPlayerMaximizedOnMobile
       }
     }
   },
@@ -336,6 +366,19 @@ export default {
           this.$refs.audioPlayer.play()
         })
       }
+    },
+
+    songThumbnailCss (imageUrl = '') {
+      const styles = {
+        'background-image': `url(${imageUrl})`,
+        'box-shadow': '0px 8px 24px rgba(0, 0, 0, 0.15)'
+      }
+
+      if (!this.isPlayerMaximizedOnMobile) {
+        styles['border-radius'] = '8px'
+      }
+
+      return styles
     }
   }
 }
@@ -355,11 +398,9 @@ export default {
     height: 300px;
     background-size: cover;
     background-position: center center;
-    border-radius: 8px;
-    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15);
     &.mobile {
       width: 100px;
-      height: 100px;
+      height: 75px;
     }
   }
   &-details {
@@ -440,6 +481,13 @@ export default {
       position: absolute;
       bottom: 15px;
       right: 20px;
+  }
+
+  & .minimize-btn {
+    position: absolute;
+    opacity: 0.80;
+    left: 20px;
+    top: 15px;
   }
 }
 </style>
