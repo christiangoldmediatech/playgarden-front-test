@@ -3,26 +3,6 @@
     <v-col cols="12">
       <validation-observer v-slot="{ invalid, passes }">
         <v-form @submit.prevent="passes(onSubmit)">
-          <!-- Plan -->
-          <!--
-          <v-row justify="center">
-            <div>
-              <p
-                class="font-weight-bold mb-6 text-center text-h5 text-md-left"
-              >
-                {{ updating ? "UPDATE" : "CHOOSE YOUR" }} PLAN
-              </p>
-
-              <p class="product-info px-2">
-                *You will not be charged until the end of the 30 DAY TRIAL period and you can cancel anytime.<br>
-              </p>
-
-              <p class="plan-announcement px-2">
-                <img src="@/assets/svg/confetti.svg" width="24px" height="24px"> Live Enrichment Classes and Playdates included with <span class="highlight">Standard</span> and <span class="highlight">Premium</span> Plans FOR A LIMITED TIME <img class="flip-image" src="@/assets/svg/confetti.svg" width="24px" height="24px">
-              </p>
-            </div>
-          </v-row>
-          -->
           <!-- Green Background Ribbon -->
           <div class="d-md-block d-none primary py-16 mx-n3" />
           <!-- Desktop Plan Selection -->
@@ -153,6 +133,7 @@
                     class="text-none"
                     color="accent"
                     width="250px"
+                    :disabled="invalid"
                     type="submit"
                   >
                     Choose Plan
@@ -237,7 +218,6 @@ export default {
 
     if (this.isUserLoggedIn) {
       await this.getPlan()
-      await this.fetchAddress()
     }
 
     if (this.loadPlan) {
@@ -247,12 +227,6 @@ export default {
 
   methods: {
     ...mapActions(['disableAxiosGlobal', 'enableAxiosGlobal']),
-
-    ...mapActions('shipping-address', [
-      'createShippingAddress',
-      'getShippingAddress',
-      'updateShippingAddress'
-    ]),
 
     ...mapActions('payment', [
       'getSelectedSubscriptionPlan',
@@ -275,16 +249,6 @@ export default {
           break
       }
       return plan
-    },
-
-    async fetchAddress () {
-      try {
-        this.disableAxiosGlobal()
-        this.draftAddress = await this.getShippingAddress()
-      } catch (e) {
-      } finally {
-        this.enableAxiosGlobal()
-      }
     },
 
     async getPlan () {
@@ -339,10 +303,6 @@ export default {
       this.loading = true
 
       try {
-        if (!this.noAddress) {
-          await this.submitMethodShippingAddress(this.draftAddress)
-        }
-
         await this.selectSubscriptionPlan(this.getSubmittableData())
 
         this.$snotify.success('Payment plan has been selected successfully!')
@@ -357,12 +317,6 @@ export default {
       } finally {
         this.loading = false
       }
-    },
-
-    submitMethodShippingAddress (data) {
-      return this.draftAddress.id
-        ? this.updateShippingAddress({ id: this.draftAddress.id, data })
-        : this.createShippingAddress(data)
     },
 
     resetDraft () {
@@ -496,10 +450,6 @@ export default {
   .flip-image {
     transform: scaleX(-1);
   }
-}
-.shipping {
-  max-width: 830px;
-  margin: 0 auto;
 }
 .enroll-text {
   font-size: 24px;
