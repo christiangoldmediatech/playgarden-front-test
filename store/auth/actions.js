@@ -17,6 +17,7 @@ export default {
   setToken ({ commit }, token) {
     if (token && token !== 'removed') {
       const auth = jwtDecode(token)
+
       if (process.client && token) {
         this.$cookies.remove('atoken')
         this.$cookies.add({ _key: 'atoken', _data: token, _maxAge: auth.exp })
@@ -37,7 +38,7 @@ export default {
     commit('SET_PLAYDATE_INVITATION_TOKEN', token)
   },
 
-  logout ({ commit, rootGetters }, redirect) {
+  logout ({ commit, rootGetters, rootState }, redirect) {
     commit('LOGOUT')
 
     if (process.client) {
@@ -55,6 +56,12 @@ export default {
     if (rootGetters.getCurrentChild) {
       commit('SET_CURRENT_CHILD', null, { root: true })
       commit('SET_CURRENT_CHILD_EXPIRES', null, { root: true })
+    }
+
+    if (rootState.notifications.notificationCard.isVisible) {
+      commit('notifications/SET_NOTIFICATION_CARD', {
+        isVisible: false
+      }, { root: true })
     }
 
     if (redirect) {
@@ -75,7 +82,6 @@ export default {
   async fetchUserInfo ({ commit, rootGetters }) {
     try {
       const { data } = await this.$axios.get('/auth/me')
-
       commit('SET_USER_INFO', data)
 
       return data

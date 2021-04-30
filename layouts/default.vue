@@ -1,33 +1,43 @@
 <template>
   <v-app>
-    <coming-soon-player />
-    <!-- APP MAV & BAR -->
-    <app-navigation />
+    <template v-if="showContent">
+      <coming-soon-player />
+      <!-- APP MAV & BAR -->
+      <app-navigation />
 
-    <application-header />
+      <application-header />
 
-    <!-- NOTIFICATION CARD -->
-    <notification-card />
-    <!-- SHIPPING NOTIFICATION MODAL -->
-    <shipping-address-modal />
+      <!-- NOTIFICATION CARD -->
+      <notification-card />
+      <!-- SHIPPING NOTIFICATION MODAL -->
+      <shipping-address-modal />
 
-    <!-- CONTENT -->
-    <v-main v-if="!fullWidth">
-      <v-container class="pa-md-3 pa-0" fill-height>
-        <nuxt />
-      </v-container>
-    </v-main>
+      <!-- CONTENT -->
+      <v-main v-if="!fullWidth">
+        <v-container class="pa-md-3 pa-0" fill-height>
+          <nuxt />
+        </v-container>
+      </v-main>
 
-    <nuxt v-else />
+      <nuxt v-else />
 
-    <!-- FOOTER -->
-    <default-footer />
+      <!-- FOOTER -->
+      <default-footer />
 
-    <notify-event />
+      <notify-event />
 
-    <prompt-dialog />
+      <prompt-dialog />
 
-    <coming-soon-dialog :showing="isComingSoonDialogOpen" />
+      <coming-soon-dialog :showing="isComingSoonDialogOpen" />
+    </template>
+
+    <template v-else>
+      <v-main>
+        <v-container fill-height fluid>
+          <pg-loading />
+        </v-container>
+      </v-main>
+    </template>
   </v-app>
 </template>
 
@@ -60,12 +70,10 @@ export default {
     verifyEmailToast: null
   }),
 
-  middleware: ['checkJWT'],
-
   computed: {
     ...mapGetters('auth', ['isUserLoggedIn', 'isUserEmailUnverified']),
 
-    ...mapState(['fullWidthPages']),
+    ...mapState(['fullWidthPages', 'showContent']),
 
     fullWidth () {
       return this.fullWidthPages[this.$route.name]
@@ -73,9 +81,12 @@ export default {
   },
 
   watch: {
-    async isUserLoggedIn (v) {
-      if (v === true) {
-        await this.checkIfShouldSendShippingAddressNotification()
+    isUserLoggedIn: {
+      immediate: true,
+      async handler (v) {
+        if (v === true && this.$route.name !== 'shared-slug') {
+          await this.checkIfShouldSendShippingAddressNotification()
+        }
       }
     },
     '$route.name' (v) {
@@ -92,6 +103,8 @@ export default {
   mounted () {
     // Commented requested by Natalia
     // this.showVerifyEmailToast()
+
+    this.$store.commit('SET_SHOW_CONTENT', true)
   },
 
   methods: {

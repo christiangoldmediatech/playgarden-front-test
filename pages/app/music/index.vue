@@ -1,17 +1,35 @@
 <template>
   <v-main class="main-music-wrapper">
-    <v-container fluid class="music-page-container pa-0" :class="{ 'mobile': isMobile, 'playing': isPlayerShowing }">
-      <v-card class="player-card" :width="playerWidth" :height="playerHeight" :class="{ 'mobile': isMobile, 'pa-4': isPlayerShowing }">
-        <music-player v-show="isPlayerShowing" ref="musicPlayer" :mobile="isMobile" />
+    <v-container fluid class="music-page-container pa-0" :class="pageContainerClasses">
+      <v-card
+        class="player-card"
+        :width="playerWidth"
+        :height="playerHeight"
+        :class="playerCardClases"
+        :ripple="false"
+        v-on="isMobile && !isPlayerMaximizedOnMobile ? { click: handlePlayerClick } : {}"
+      >
+        <music-player
+          v-show="isPlayerShowing"
+          ref="musicPlayer"
+          :mobile="isMobile"
+          :is-player-maximized-on-mobile="isPlayerMaximizedOnMobile"
+          @favorite="handleFavorite"
+          @minimize="handlePlayerMinimize"
+          @currentSong="currentSong = $event"
+        />
       </v-card>
       <music-song-list
+        :show-only-favorites="showOnlyFavorites"
         :is-player-showing="isPlayerShowing"
         :mobile="isMobile"
-        :all-songs="allSongs"
-        :songs-by-curriculum-type="songsByCurriculumType"
+        :all-songs="allSongsWithFavorites"
+        :songs-by-curriculum-type="songsByCurriculumTypeWithFavorites"
         class="music-song-list fill-height mx-auto"
         @addSong="addSongToPlaylist"
         @newPlayList="createNewPlaylist"
+        @favorite="handleFavorite"
+        @showFavorites="showOnlyFavorites = !showOnlyFavorites"
       />
     </v-container>
   </v-main>
@@ -37,7 +55,11 @@ export default {
     return {
       mobileBreakpoint: PAGE_MOBILE_BREAKPOINT,
       selectedChildId: null,
-      playList: []
+      playList: [],
+      currentSong: {},
+      favoritesDictionary: {},
+      showOnlyFavorites: false,
+      isPlayerMaximizedOnMobile: false
     }
   },
 
@@ -51,6 +73,65 @@ export default {
     ...mapGetters('music', {
       allSongs: 'allSongsWithCurriculumType'
     }),
+
+    /**
+     * Return 'allSongs' with props `isFavorite` and `favoriteId` that can be used
+     * to show if the song is favorite or not and to update its status in child components.
+     *
+     * This computed property also filters out non favorite songs when `showOnlyFavorites` is true
+     */
+    allSongsWithFavorites () {
+      return this.allSongs.reduce((prev, song) => {
+        const favorite = this.favoritesDictionary[song.id]
+
+        if (this.showOnlyFavorites && !favorite) {
+          return prev
+        } else if (!favorite) {
+          return [...prev, song]
+        }
+
+        return [
+          ...prev,
+          {
+            ...song,
+            // custom properties
+            isFavorite: true,
+            favoriteId: favorite.id
+          }
+        ]
+      }, [])
+    },
+
+    /**
+     * Return 'songsByCurriculumType' with props `isFavorite` and `favoriteId` that can be used
+     * to show if the song is favorite or not and to update its status in child components.
+     *
+     * This computed property also filters out non favorite songs when `showOnlyFavorites` is true
+     */
+    songsByCurriculumTypeWithFavorites () {
+      return this.songsByCurriculumType.map(curriculumType => ({
+        ...curriculumType,
+        musicLibrary: curriculumType.musicLibrary.reduce((prev, song) => {
+          const favorite = this.favoritesDictionary[song.id]
+
+          if (this.showOnlyFavorites && !favorite) {
+            return prev
+          } else if (!favorite) {
+            return [...prev, song]
+          }
+
+          return [
+            ...prev,
+            {
+              ...song,
+              // custom properties
+              isFavorite: true,
+              favoriteId: favorite.id
+            }
+          ]
+        }, [])
+      }))
+    },
 
     isPlayerShowing () {
       return this.playList.length > 0
@@ -75,35 +156,65 @@ export default {
     },
 
     playerHeight () {
-      if (!this.isMobile) {
+      if (!this.isMobile || this.isPlayerMaximizedOnMobile) {
         return '100%'
-      } else if (this.isPlayerShowing) {
-        return '160'
+      } else if (this.isPlayerShowing && !this.isPlayerMaximizedOnMobile) {
+        return '135'
       } else {
         return 0
+      }
+    },
+
+    pageContainerClasses () {
+      return { mobile: this.isMobile, playing: this.isPlayerShowing }
+    },
+
+    playerCardClases () {
+      return {
+        mobile: this.isMobile,
+        'pa-4': this.isPlayerShowing && !(this.isPlayerMaximizedOnMobile && this.isMobile)
       }
     }
   },
 
   watch: {
-    selectedChildId (id) {
-      if (id) {
-        this.$router.push({ name: this.$route.name, query: { id } })
+    id (val) {
+      if (val) {
+        this.getAndSetFavorites()
       }
     }
   },
 
   async created () {
-    if (this.id) {
-      this.selectedChildId = parseInt(this.id)
-    } else if (this.currentChild.length) {
-      this.selectedChildId = this.currentChild[0].id
+    if (!this.id && this.currentChild.length) {
+      this.$router.push({ name: this.$route.name, query: { id: this.currentChild[0].id } })
     }
+
     await this.getMusicLibrariesByCurriculumType()
+    await this.getAndSetFavorites()
   },
 
   methods: {
-    ...mapActions('music', ['getMusicLibrariesByCurriculumType']),
+    ...mapActions('music', ['getMusicLibrariesByCurriculumType', 'getFavoriteMusicForChild', 'setFavoriteMusicForChild', 'removeFavoriteMusic']),
+
+    async getAndSetFavorites () {
+      const favorites = await this.getFavoriteMusicForChild(this.id)
+
+      const favoritesDictionary = {}
+      for (const favorite of favorites) {
+        const songId = favorite && favorite.music ? favorite.music.id : undefined
+
+        if (!songId) {
+          return
+        }
+
+        favoritesDictionary[songId] = { songId, id: favorite.id }
+      }
+
+      this.favoritesDictionary = { ...favoritesDictionary }
+
+      this.updateCurrentSongData()
+    },
 
     addSongToPlaylist (song) {
       if (this.$refs.musicPlayer) {
@@ -115,6 +226,53 @@ export default {
     createNewPlaylist (playList) {
       this.$refs.musicPlayer.createNewPlaylist(playList)
       this.playList = playList
+    },
+
+    async handleFavorite (song) {
+      try {
+        if (song.isFavorite) {
+          await this.removeFavoriteMusic(song.favoriteId)
+          this.$snotify.success('Song removed from favorites')
+        } else {
+          await this.setFavoriteMusicForChild({ childId: this.id, musicId: song.id })
+          this.$snotify.success('Song added to favorites')
+        }
+
+        await this.getAndSetFavorites()
+      } catch (error) {
+        this.$snotify.error(error.message)
+      }
+    },
+
+    updateCurrentSongData () {
+      const resolvedCurrentSong = Object.keys(this.currentSong || {}).length
+        ? { ...this.currentSong }
+        : undefined
+
+      if (!resolvedCurrentSong) {
+        return
+      }
+
+      const favorite = this.favoritesDictionary[resolvedCurrentSong.id]
+      if (this.$refs.musicPlayer) {
+        this.$refs.musicPlayer.refreshSongData({
+          ...resolvedCurrentSong,
+          isFavorite: !!favorite,
+          favoriteId: favorite ? favorite.id : undefined
+        })
+      }
+    },
+
+    handlePlayerClick ($event) {
+      if (!this.isMobile || this.isPlayerMaximizedOnMobile) {
+        return
+      }
+
+      this.isPlayerMaximizedOnMobile = true
+    },
+
+    handlePlayerMinimize () {
+      this.isPlayerMaximizedOnMobile = false
     }
   }
 }
@@ -139,10 +297,11 @@ export default {
 }
 
 .player-card {
-  transition: 0.1s ease;
+  transition: 0.3s ease;
   position: absolute;
   left: 0;
   top: 0;
+  z-index: 99;
   &.mobile {
     bottom: 0;
     top: unset;
@@ -151,6 +310,5 @@ export default {
 
 .music-song-list {
   overflow: scroll;
-  max-width: 1200px;
 }
 </style>

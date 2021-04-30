@@ -4,7 +4,8 @@
     class="text-none underlined-title"
     :style="{
       '--ut-line-color': _lineColor,
-      '--ut-line-x-size': lineXSize,
+      '--ut-line-padding-right': linePaddingRight,
+      '--ut-line-padding-left': linePaddingLeft,
       '--ut-background-from': _lineFrom,
       fontSize: _fontSize,
       fontWeight: _fontWeight,
@@ -13,8 +14,11 @@
       letterSpacing
     }"
     v-on="$listeners"
-    v-html="text"
-  />
+  >
+    <slot name="default">
+      <span v-html="text" />
+    </slot>
+  </span>
 </template>
 
 <script>
@@ -57,7 +61,12 @@ export default {
       default: 55
     },
 
-    lineXSize: {
+    linePaddingLeft: {
+      type: String,
+      default: '1%'
+    },
+
+    linePaddingRight: {
       type: String,
       default: '1%'
     },
@@ -75,7 +84,7 @@ export default {
 
     text: {
       type: String,
-      required: true
+      default: ''
     },
 
     letterSpacing: {
@@ -146,7 +155,10 @@ export default {
     var(--ut-line-color) 80%,
     transparent 80%
   );
-  padding: 0 var(--ut-line-x-size);
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: var(--ut-line-padding-left);
+  padding-right: var(--ut-line-padding-right);
   border-radius: 0;
 }
 </style>

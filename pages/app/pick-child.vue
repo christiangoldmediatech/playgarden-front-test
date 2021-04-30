@@ -17,11 +17,12 @@
 
               <v-row justify="center">
                 <v-col
-                  v-for="child in children"
+                  v-for="(child, childIndex) in children"
                   :key="`child-${child.id}`"
                   class="selected-child text-center"
                   cols="4"
                   lg="3"
+                  :data-test-id="`pick-child-${childIndex}`"
                   @click.stop="selectChild(child)"
                 >
                   <v-hover v-slot:default="{ hover }">

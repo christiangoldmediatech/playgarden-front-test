@@ -9,6 +9,7 @@ export default function ({ redirect, route, store }) {
       'auth-verify-email': 1,
       'auth-verify-playdate': 1,
       'app-account-index': 1,
+      'app-inactive-subscription': 1,
       'app-children-register': 1,
       'app-children': 1,
       'app-payment': 1,

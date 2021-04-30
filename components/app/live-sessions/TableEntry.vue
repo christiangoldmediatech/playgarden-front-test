@@ -4,7 +4,8 @@
       class="lsess-table-entry clickable"
       :class="{
         'lsess-table-entry-active': isLive,
-        'lsess-table-entry-scaled': hover
+        'lsess-table-entry-scaled': hover,
+        'opacity': !entry.active,
       }"
       @click.stop="openLink"
     >
@@ -144,5 +145,9 @@ export default {
       }
     }
   }
+}
+
+.opacity {
+  opacity: 0.5 !important;
 }
 </style>

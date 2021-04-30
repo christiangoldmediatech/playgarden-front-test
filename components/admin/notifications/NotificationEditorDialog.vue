@@ -40,28 +40,40 @@
 
               <validation-provider
                 v-slot="{ errors }"
-                name="Description"
+                name="Subject"
                 rules="required"
               >
-                <pg-textarea
+                <pg-text-field
                   v-model="item.description"
                   :error-messages="errors"
-                  label="Description"
+                  label="Subject"
                   solo-labeled
                 />
               </validation-provider>
 
               <validation-provider
                 v-slot="{ errors }"
-                name="Message"
+                name="Email Message"
                 rules="required"
               >
                 <pg-tiptap-field
-                  v-model="item.template"
+                  v-model="item.template.email"
                   :disabled="loading"
                   :error-messages="errors"
-                  label="Message"
-                  output-format="json"
+                  label="Email Message"
+                />
+              </validation-provider>
+
+              <validation-provider
+                v-slot="{ errors }"
+                name="SMS Message"
+                rules="required"
+              >
+                <pg-textarea
+                  v-model="item.template.sms"
+                  :disabled="loading"
+                  :error-messages="errors"
+                  label="SMS Message"
                 />
               </validation-provider>
             </v-form>

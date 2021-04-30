@@ -185,7 +185,7 @@
           </v-col>
 
           <!-- Change Plan Button -->
-          <v-col cols="12" class="d-flex justify-center">
+          <v-col v-if="billing.stripeStatus !== 'canceled'" cols="12" class="d-flex justify-center">
             <v-btn
               color="primary mb-3"
               x-large
@@ -380,7 +380,8 @@ export default {
         trialEndDate: null,
         subscriptionId: null,
         status: null,
-        discountCode: null
+        discountCode: null,
+        stripeStatus: ''
       },
       cardToUpate: null,
       stripeCardModal: false,
@@ -456,6 +457,7 @@ export default {
         this.billing.planAmountDiscount = data.planAmountDiscount || null
         this.billing.amountOff = data.amountOff || null
         this.billing.percentOff = data.percentOff || null
+        this.billing.stripeStatus = data.stripeStatus || ''
 
         if (data.subscriptionData) {
           this.billing.membershipInterval = get(
@@ -528,8 +530,8 @@ export default {
     },
     selectPlan () {
       this.$router.push({
-        name: 'app-payment-plan',
-        query: { process: 'signup', step: '3' }
+        name: 'app-payment',
+        params: { mode: 'activate-user' }
       })
     },
     async getPlan () {

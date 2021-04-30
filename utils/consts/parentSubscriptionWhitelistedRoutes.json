@@ -3,6 +3,7 @@
     "auth-verify-email": 1,
     "auth-verify-playdate": 1,
     "app-pick-child": 1,
+    "app-inactive-subscription": 1,
     "app-account-index": 1,
     "app-account-index-student-profile": 1,
     "app-account-index-membership": 1,

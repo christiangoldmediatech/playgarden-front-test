@@ -12,30 +12,54 @@
         />
       </v-row>
     </div>
-    <v-row no-gutters>
+    <v-row no-gutters justify="center" justify-md="start">
       <v-col
         v-for="(song, index) in songs"
         :key="song.id"
-        cols="12"
-        md="auto"
+        cols="auto"
       >
-        <div class="song-wrapper mx-auto">
-          <v-icon
-            size="120"
-            class="play-btn"
-            color="white"
-            @click.stop="createPlayListFromIndex(index)"
-          >
-            mdi-play-circle-outline
-          </v-icon>
-          <figure class="song-image" :style="{ 'background-image': `url(${song.thumbnail})` }" />
-          <p class="song-description mb-0">
+        <v-card class="custom-shadow ma-6 pb-4">
+          <div class="song-wrapper">
+            <v-icon
+              size="120"
+              class="play-btn"
+              color="white"
+              @click.stop="createPlayListFromIndex(index)"
+            >
+              mdi-play-circle-outline
+            </v-icon>
+            <figure class="song-image" :style="{ 'background-image': `url(${song.thumbnail})` }" />
+            <v-icon
+              class="favorite-btn"
+              size="28"
+              data-test-id="letter-song-favorite-button"
+              :class="song.isFavorite? 'pink--text text--lighten-2' : 'grey--text text--lighten-2'"
+              @click="$emit('favorite', song)"
+            >
+              mdi-heart
+            </v-icon>
+          </div>
+          <p class="song-description mb-0 pa-2">
             {{ song.description }}
           </p>
-          <p class="song-name mb-0">
-            {{ song.name }}
-          </p>
-        </div>
+          <div class="d-flex justify-space-between song-name pa-2">
+            <span>{{ song.name }}</span>
+            <v-tooltip :top="!isMobile" :bottom="isMobile">
+              <template #activator="{ on, attrs }">
+                <v-icon
+                  size="36"
+                  class="mt-n2"
+                  v-bind="attrs"
+                  v-on="on"
+                  @click.stop="handleSongAddition($event, song)"
+                >
+                  mdi-playlist-music-outline
+                </v-icon>
+              </template>
+              {{ isMobile ? 'Added to queue' : 'Add to queue' }}
+            </v-tooltip>
+          </div>
+        </v-card>
       </v-col>
     </v-row>
   </div>
@@ -74,6 +98,10 @@ export default {
   computed: {
     isVowel () {
       return this.vowels.includes(this.letter.name.substr(0, 1).toUpperCase())
+    },
+
+    isMobile () {
+      return this.$vuetify.breakpoint.mobile
     }
   },
 
@@ -81,6 +109,14 @@ export default {
     createPlayListFromIndex (index) {
       const playlist = jsonCopy(this.songs.slice(index))
       this.$emit('createPlayList', playlist)
+    },
+    handleSongAddition ($event, song) {
+      this.$emit('add', song)
+
+      // blur element after 2 seg so the tooltip can go away
+      if ($event && $event.target) {
+        setTimeout(() => $event.target.blur(), 2000)
+      }
     }
   }
 }
@@ -118,25 +154,29 @@ export default {
 .song {
   &-wrapper {
     position: relative;
-    padding: 25px;
-    height: 300px;
-    width: 250px;
     & .play-btn {
       position: absolute;
-      top: 65px;
-      left: 65px;
+      top: 40px;
+      left: 40px;
       color: transparent !important;
       &:hover {
         cursor: pointer;
         color: white !important;
       }
     }
+    & .favorite-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
   }
   &-image {
     height: 200px;
     width: 200px;
-    background-size: contain;
+    background-size: cover;
     background-position: center center;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
   }
   &-description {
     font-size: 18px;
@@ -147,5 +187,19 @@ export default {
     font-size: 16px;
     color: var(--v-black-base);
   }
+}
+.custom-shadow {
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15) !important;
+  border-radius: 8px !important;
+}
+.v-tooltip__content {
+  background-color: var(--v-black-base) !important;
+  font-weight: 500 !important;
+  color: white !important;
+}
+.v-tooltip__content::after {
+  content: "";
+  position: absolute;
+  border-color: transparent transparent transparent transparent;
 }
 </style>

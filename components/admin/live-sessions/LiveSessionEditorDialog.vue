@@ -252,6 +252,16 @@
               />
             </validation-provider>
 
+            <span>Status:</span>
+            <v-switch
+              v-model="item.active"
+              class="mx-1 my-1 pa-0"
+              dense
+              hide-details
+              inset
+              :label="item.active ? 'Active' : 'Inactive'"
+            />
+
             <validation-provider
               v-slot="{ errors }"
               name="Duration"
@@ -341,12 +351,23 @@
 
           <v-btn
             class="white--text"
-            color="red"
+            color="orange"
             :disabled="loading"
             :text="$vuetify.breakpoint.smAndUp"
             @click.stop="close"
           >
             Cancel
+          </v-btn>
+
+          <v-btn
+            v-if="id"
+            class="white--text"
+            color="red"
+            :disabled="loading"
+            :text="$vuetify.breakpoint.smAndUp"
+            @click="remove(item.title)"
+          >
+            Delete
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -369,6 +390,7 @@ function generateItemTemplate () {
     videos: null,
     teacher: null,
     ages: null,
+    active: false,
     duration: null,
     dateStart: null,
     dateEnd: null,
@@ -418,7 +440,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('live-sessions', ['createLiveSession', 'updateLiveSession']),
+    ...mapActions('live-sessions', ['createLiveSession', 'updateLiveSession', 'deleteLiveSession']),
 
     onPlayerReady (player) {
       this.player = player
@@ -453,6 +475,19 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+
+    remove (title) {
+      this.$nuxt.$emit('open-prompt', {
+        title: 'Delete Live Class?',
+        message: `Are you sure you want to delete <b>${title}</b>?`,
+        action: async () => {
+          await this.deleteLiveSession(this.id)
+          this.$emit('saved')
+          this.$nuxt.$emit('update-calendar')
+          await this.close()
+        }
+      })
     },
 
     close () {
@@ -496,6 +531,7 @@ export default {
 
       this.item.dateStart = start
       this.item.dateEnd = end
+      this.item.active = (this.item.active) ? 'true' : 'false'
 
       try {
         if (this.id === null) {
@@ -505,6 +541,7 @@ export default {
         }
 
         this.$emit('saved')
+        this.$nuxt.$emit('update-calendar')
 
         this.close()
       } catch (err) {
