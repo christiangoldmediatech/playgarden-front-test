@@ -30,10 +30,24 @@
             align="start"
             no-gutters
           >
+            <!-- Contact Us Text -->
+            <v-col
+              cols="12"
+              class="mx-0 mx-md-4 mb-8 my-md-8 text-center text-h6 font-weight-bold"
+              order="0"
+              order-md="4"
+            >
+              <span class="grey--text">Need help? </span>
+              <span class="text-decoration-underline" @click="handleContactUs">
+                <a class="accent--text">Contact us</a>
+              </span>
+            </v-col>
+            <!-- Plan Card -->
             <v-col
               v-for="(plan, indexP) in plans"
               :key="indexP"
               :class="planCardClasses(indexP)"
+              :order="indexP + 1"
             >
               <!-- Most Popular Chip -->
               <div v-show="indexP === 1" class="text-right">
@@ -371,6 +385,10 @@ export default {
         'pt-8': index !== 1,
         'mt-13': index === 1
       }
+    },
+
+    handleContactUs () {
+      window.open('https://playgardenonline.com/#contact-us', '_self')
     }
   }
 }
