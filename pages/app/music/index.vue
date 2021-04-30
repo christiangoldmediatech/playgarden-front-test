@@ -1,12 +1,21 @@
 <template>
   <v-main class="main-music-wrapper">
-    <v-container fluid class="music-page-container pa-0" :class="{ 'mobile': isMobile, 'playing': isPlayerShowing }">
-      <v-card class="player-card" :width="playerWidth" :height="playerHeight" :class="{ 'mobile': isMobile, 'pa-4': isPlayerShowing }">
+    <v-container fluid class="music-page-container pa-0" :class="pageContainerClasses">
+      <v-card
+        class="player-card"
+        :width="playerWidth"
+        :height="playerHeight"
+        :class="playerCardClases"
+        :ripple="false"
+        v-on="isMobile && !isPlayerMaximizedOnMobile ? { click: handlePlayerClick } : {}"
+      >
         <music-player
           v-show="isPlayerShowing"
           ref="musicPlayer"
           :mobile="isMobile"
+          :is-player-maximized-on-mobile="isPlayerMaximizedOnMobile"
           @favorite="handleFavorite"
+          @minimize="handlePlayerMinimize"
           @currentSong="currentSong = $event"
         />
       </v-card>
@@ -49,7 +58,8 @@ export default {
       playList: [],
       currentSong: {},
       favoritesDictionary: {},
-      showOnlyFavorites: false
+      showOnlyFavorites: false,
+      isPlayerMaximizedOnMobile: false
     }
   },
 
@@ -146,12 +156,23 @@ export default {
     },
 
     playerHeight () {
-      if (!this.isMobile) {
+      if (!this.isMobile || this.isPlayerMaximizedOnMobile) {
         return '100%'
-      } else if (this.isPlayerShowing) {
-        return '160'
+      } else if (this.isPlayerShowing && !this.isPlayerMaximizedOnMobile) {
+        return '135'
       } else {
         return 0
+      }
+    },
+
+    pageContainerClasses () {
+      return { mobile: this.isMobile, playing: this.isPlayerShowing }
+    },
+
+    playerCardClases () {
+      return {
+        mobile: this.isMobile,
+        'pa-4': this.isPlayerShowing && !(this.isPlayerMaximizedOnMobile && this.isMobile)
       }
     }
   },
@@ -240,6 +261,18 @@ export default {
           favoriteId: favorite ? favorite.id : undefined
         })
       }
+    },
+
+    handlePlayerClick ($event) {
+      if (!this.isMobile || this.isPlayerMaximizedOnMobile) {
+        return
+      }
+
+      this.isPlayerMaximizedOnMobile = true
+    },
+
+    handlePlayerMinimize () {
+      this.isPlayerMaximizedOnMobile = false
     }
   }
 }
@@ -264,10 +297,11 @@ export default {
 }
 
 .player-card {
-  transition: 0.1s ease;
+  transition: 0.3s ease;
   position: absolute;
   left: 0;
   top: 0;
+  z-index: 99;
   &.mobile {
     bottom: 0;
     top: unset;
