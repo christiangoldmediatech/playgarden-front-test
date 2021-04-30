@@ -23,12 +23,15 @@
             </div>
           </v-row>
           -->
+          <!-- Green Background Ribbon -->
+          <div class="d-md-block d-none primary py-16 mx-n3" />
           <!-- Desktop Plan Selection -->
           <v-row
             class="mx-n3"
             justify="center"
             align="start"
             no-gutters
+            :style="plansStyle"
           >
             <!-- Contact Us Text -->
             <v-col
@@ -208,7 +211,8 @@ export default {
     productPrice: 324,
     loading: false,
     initialized: false,
-    radioGroup: null
+    radioGroup: null,
+    bkgColor: '#BDDA9F'
   }),
 
   computed: {
@@ -216,6 +220,12 @@ export default {
 
     isMobile () {
       return this.$vuetify.breakpoint.mobile
+    },
+
+    plansStyle () {
+      return {
+        'margin-top': this.isMobile ? '0px' : '-90px !important'
+      }
     }
   },
 
@@ -373,7 +383,7 @@ export default {
 
     planCardClasses (index) {
       return {
-        'c-col elevation-3 mx-md-3 card-plan': true,
+        'c-col mx-md-3 card-plan white': true,
         'pa-3 mt-md-10': index !== 1,
         'mx-2 my-4': this.isMobile
       }
@@ -509,5 +519,9 @@ export default {
   @media screen and (min-width: 960px) {
     font-size: 20px;
   }
+}
+.v-btn:not(.v-btn--text) {
+  font-size: 18px;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16) !important;
 }
 </style>
