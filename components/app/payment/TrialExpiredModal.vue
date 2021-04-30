@@ -95,13 +95,13 @@ export default {
     },
 
     handleComparePlans () {
-      // TODO: redirect
       this.closeModal()
+      this.$router.push({ name: 'app-payment-plan' })
     },
 
     handleContactUs () {
-      // TODO: redirect
       this.closeModal()
+      window.open('https://playgardenonline.com/#contact-us', '_self')
     }
   }
 }
