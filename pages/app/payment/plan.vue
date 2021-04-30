@@ -41,7 +41,7 @@
             <underlined-title
               text="YOUR TRIAL PERIOD HAS EXPIRED."
               font-size="38px"
-              font-size-mobile="22px"
+              font-size-mobile="28px"
             />
           </div>
           <div class="py-3">
@@ -56,7 +56,7 @@
               padding-bottom="30px"
             />
           </div>
-          <div class="mt-8 mb-14 text-body-2 text-md-h5 custom-max-width">
+          <div class="mt-8 mb-14 text-body-1 text-md-h5 custom-max-width">
             During your trial period, which ended on {{ lastDayOfTrial }}, you were able to experience all the features of the <span class="accent--text font-weight-bold">HOMESCHOOL</span> plan. After the trial period, you were automatically placed in the <span class="accent--text font-weight-bold">PREMIUM EDUCATION</span> monthly plan. You can stay in that plan, or you can choose now in which plan you want your little one to learn going forward.
             As always, you can cancel your enrollment anytime by going to your Accounts Page.
           </div>
@@ -121,6 +121,8 @@ export default {
             query: { process: 'signup', step: '4' }
           })
         }
+
+        await this.$store.dispatch('admin/users/setPlanChoosen')
       } catch (e) {
       } finally {
       }
