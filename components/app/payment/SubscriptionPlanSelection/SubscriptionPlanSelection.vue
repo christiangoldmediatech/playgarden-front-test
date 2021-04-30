@@ -25,7 +25,6 @@
           -->
           <!-- Desktop Plan Selection -->
           <v-row
-            v-if="$vuetify.breakpoint.mdAndUp"
             class="mx-n3"
             justify="center"
             align="start"
@@ -42,12 +41,12 @@
                   Most Popular
                 </v-chip>
               </div>
-              <div class="px-8">
+              <div class="px-4 px-md-8">
                 <!-- Plan Name -->
                 <p :class="planNameClasses(indexP)">
                   <v-chip
                     color="orange"
-                    class="text-orange-info mb-8 py-4 px-3"
+                    class="text-orange-info mb-8 pa-5"
                     label
                   >
                     {{ getTypePlan(indexP) }}
@@ -55,6 +54,7 @@
                   <br>
                   <underlined-title
                     font-size="32px"
+                    font-size-mobile="28px"
                     :line-from="45"
                     :text="plan.name"
                   />
@@ -144,67 +144,6 @@
               </template>
             </v-col>
           </v-row>
-          <!-- Mobile Plan Selection -->
-          <v-row v-else no-gutters>
-            <v-col
-              v-for="(plan, indexP) in plans"
-              :key="indexP"
-              class="my-3"
-              cols="12"
-            >
-              <v-expansion-panels :value="0">
-                <v-expansion-panel>
-                  <v-expansion-panel-header>
-                    <div class="text-center">
-                      <v-chip
-                        color="orange"
-                        class="text-orange-info mb-3 py-4"
-                        label
-                      >
-                        {{ getTypePlan(indexP) }}
-                      </v-chip>
-
-                      <br>
-
-                      <underlined-title
-                        font-size="18px"
-                        :line-from="65"
-                        :text="plan.name"
-                      />
-                    </div>
-                  </v-expansion-panel-header>
-
-                  <v-expansion-panel-content class="pa-0 ma-0">
-                    <plan-description :plan="plan" :index-plan="indexP" />
-                  </v-expansion-panel-content>
-                  <div v-if="indexP === 2" class="mb-6">
-                    <div class="enroll-text">
-                      Call us to enroll
-                    </div>
-                    <div class="limited-text">
-                      Limited Availability
-                    </div>
-                  </div>
-                  <validation-provider v-else v-slot="{ errors }" name="Plan" rules="required">
-                    <v-radio-group
-                      v-model="radioGroup"
-                      class="ma-0 pa-0"
-                      :disabled="loading"
-                      :error-messages="errors"
-                      :loading="loading"
-                    >
-                      <radio-selectors
-                        v-model="draft"
-                        class="mb-6 px-6"
-                        :plan="plan"
-                        :index-plan="indexP"
-                      />
-                    </v-radio-group>
-                  </validation-provider>
-                </v-expansion-panel>
-              </v-expansion-panels>
-            </v-col>
-          </v-row>
         </v-form>
       </validation-observer>
     </v-col>
@@ -258,7 +197,13 @@ export default {
     radioGroup: null
   }),
 
-  computed: mapGetters('auth', ['isUserLoggedIn']),
+  computed: {
+    ...mapGetters('auth', ['isUserLoggedIn']),
+
+    isMobile () {
+      return this.$vuetify.breakpoint.mobile
+    }
+  },
 
   async created () {
     await this.fetchPlans()
@@ -415,7 +360,8 @@ export default {
     planCardClasses (index) {
       return {
         'c-col elevation-3 mx-md-3 card-plan': true,
-        'pa-3 mt-10': index !== 1
+        'pa-3 mt-md-10': index !== 1,
+        'mx-2 my-4': this.isMobile
       }
     },
 
@@ -472,7 +418,7 @@ export default {
 }
 
 .text-orange-info::v-deep.v-chip--label {
-  border-radius: 0px !important;
+  border-radius: 3px !important;
 }
 .most-popular::v-deep.v-chip .v-chip__content {
   color: #ff8000 !important;
