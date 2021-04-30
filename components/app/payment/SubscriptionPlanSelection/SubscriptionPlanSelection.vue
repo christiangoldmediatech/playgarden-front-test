@@ -327,7 +327,7 @@ export default {
     planCardClasses (index) {
       return {
         'c-col mx-md-3 card-plan white': true,
-        'pa-3 mt-md-10': index !== 1,
+        'mt-md-10': index !== 1,
         'mx-2 my-4': this.isMobile
       }
     },
