@@ -79,7 +79,8 @@ ul li::before {
   font-weight: bold; /* If you want it to be bold */
   display: inline-block; /* Needed to add space between the bullet and the text */
   width: 1em; /* Also needed for space (tweak if needed) */
-  margin-left: -1rem; /* Also needed for space (tweak if needed) */
+  margin-left: -1.4rem; /* Also needed for space (tweak if needed) */
+  margin-right: 0.5rem;
 }
 
 .plan-detail li {
