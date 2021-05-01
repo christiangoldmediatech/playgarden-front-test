@@ -1,7 +1,6 @@
 // import path from 'path'
 // import fs from 'fs'
-import webpack from 'webpack'
-import { Integrations } from "@sentry/tracing";
+import { Integrations } from '@sentry/tracing'
 
 const baseRouteProd = '/school/'
 
@@ -24,7 +23,7 @@ export default {
   },
   serverMiddleware: [
     '~/middleware/serverAuthByCookie',
-    { path: '/healthcheck', handler: '~/middleware/healthCheck.js' },
+    { path: '/healthcheck', handler: '~/middleware/healthCheck.js' }
   ],
   /*
    ** Nuxt target
@@ -114,7 +113,7 @@ export default {
     '@/plugins/snotify',
     '@/plugins/validate',
     '@/plugins/vueCtkDateTimePicker',
-    { src: '@/plugins/echarts', mode: 'client'},
+    { src: '@/plugins/echarts', mode: 'client' },
     { src: '@/plugins/tiptapVuetify', mode: 'client' },
     { src: '@/plugins/firebase', mode: 'client' },
     {
@@ -135,6 +134,7 @@ export default {
   buildModules: [
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
+    '@nuxt/typescript-build',
     '@nuxtjs/gtm',
     '@nuxtjs/vuetify',
     '@nuxtjs/composition-api'
