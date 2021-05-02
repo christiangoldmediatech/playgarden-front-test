@@ -128,7 +128,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .inline-video {
   &-container {
     position: relative;
