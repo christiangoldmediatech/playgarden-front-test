@@ -32,13 +32,13 @@ describe('/app/music', () => {
   })
 
   describe('favorites', () => {
-    const addSongToFavorite = ($button) => {
+    const addSongToFavorite = ($button: JQuery<HTMLElement>) => {
       $button.trigger('click')
 
       cy.get('.snotifyToast__body').should('have.text', 'Song added to favorites')
     }
 
-    const removeSongFromFavorite = ($button) => {
+    const removeSongFromFavorite = ($button: JQuery<HTMLElement>) => {
       $button.trigger('click')
 
       cy.get('.snotifyToast__body').should('have.text', 'Song removed from favorites')
