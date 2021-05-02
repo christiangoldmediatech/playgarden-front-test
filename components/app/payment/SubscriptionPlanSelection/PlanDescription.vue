@@ -1,5 +1,6 @@
 <template>
   <div class="plan-description">
+    <!-- Common Benefits -->
     <ul class="plan-detail">
       <li
         v-for="(benefit, indexPCB) in plan.commonBenefits.benefits"
@@ -11,11 +12,9 @@
         </span>
       </li>
     </ul>
-    <template v-if="plan.homeDeliveryBenefits">
-      <!-- <section class="font-weight-bold">
-        Home Delivery of:
-      </section> -->
 
+    <!-- Home Delivery Benefits -->
+    <template v-if="plan.homeDeliveryBenefits">
       <ul class="plan-detail">
         <li
           v-for="(benefit, indexHDB) in plan.homeDeliveryBenefits.benefits"
@@ -29,15 +28,30 @@
       </ul>
     </template>
 
+    <!-- Plus Benefits -->
     <template v-if="plan.plusBenefits">
-      <!-- <section class="font-weight-bold">
-        Plus:
-      </section> -->
-
       <ul class="plan-detail">
         <li
-          v-for="(benefit, indexPB) in plan.plusBenefits.benefits"
-          :key="indexPB"
+          v-for="(benefit, indexHDB) in plan.plusBenefits.benefits"
+          :key="indexHDB"
+          class="plan-item"
+        >
+          <span>
+            {{ benefit }}
+          </span>
+        </li>
+      </ul>
+    </template>
+
+    <!-- Promotions Benefits -->
+    <template v-if="plan.promotions">
+      <div class="promotion-ribbon pa-3 mx-n4 mx-md-n8 my-6 text-center">
+        <span class="font-weight-bold body-2 accent--text">* Join now and you will get this benefits:</span>
+      </div>
+      <ul class="plan-detail">
+        <li
+          v-for="(benefit, indexPCB) in plan.promotions.benefits"
+          :key="indexPCB"
           class="plan-item"
         >
           <span>
@@ -111,5 +125,8 @@ ul li::before {
     position: relative;
     top: 4px;
   }
+}
+.promotion-ribbon {
+  background: rgba(248, 152, 56, 0.3);
 }
 </style>

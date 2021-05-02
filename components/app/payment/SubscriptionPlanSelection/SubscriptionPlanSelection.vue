@@ -129,6 +129,11 @@
                   </v-btn>
                 </div>
               </template>
+              <div v-if="planHasPromotions(plan)" class="text-center px-2 mb-12">
+                <span class="body-2 accent--text font-weight-bold">
+                  *Activities unlocked for current promotion period, normally available for Homeschool Plan only
+                </span>
+              </div>
             </v-col>
           </v-row>
         </v-form>
@@ -335,13 +340,22 @@ export default {
     planNameClasses (index) {
       return {
         'plan-name text-center': true,
-        'pt-8': index !== 1,
+        'mt-11': index !== 1,
         'mt-13': index === 1
       }
     },
 
     handleContactUs () {
       window.open('https://playgardenonline.com/#contact-us', '_self')
+    },
+
+    planHasPromotions (plan) {
+      return (
+        plan &&
+        plan.promotions &&
+        Array.isArray(plan.promotions.benefits) &&
+        !!plan.promotions.benefits.length
+      )
     }
   }
 }
