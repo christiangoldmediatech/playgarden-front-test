@@ -1,0 +1,56 @@
+<template>
+  <div class="ribbon text-center d-flex align-center justify-center py-2">
+    <span class="white--text font-weight-bold mx-2">YOUR FREE TRIAL IS ABOUT TO EXPIRE: </span>
+    <underlined-title
+      class="mx-2 white--text"
+      :text="countdownTime"
+      font-size="32px"
+      line-color="rgba(255,255,255,0.15)"
+      :line-from="30"
+    />
+    <v-btn small class="text-none accent--text mx-2" router :to="{ name: 'app-payment-plan' }">
+      Compare plans now
+    </v-btn>
+  </div>
+</template>
+
+<script>
+import { mapGetters } from 'vuex'
+import { getCountdownToDate } from '@/utils/dateTools'
+
+export default {
+  name: 'TrialIsExpiring',
+
+  data () {
+    return {
+      intervalId: undefined,
+      countdownTime: ''
+    }
+  },
+
+  computed: {
+    ...mapGetters('auth', ['getUserInfo'])
+  },
+
+  mounted () {
+    const trialExpiresDate = this.getUserInfo.trialEnd
+
+    this.intervalId = setInterval(() => {
+      this.countdownTime = getCountdownToDate(trialExpiresDate)
+    }, 1000)
+  },
+
+  beforeDestroy () {
+    clearInterval(this.intervalId)
+  }
+}
+</script>
+
+<style lang="scss" scope>
+.ribbon {
+  background-color: #F89838;
+}
+.v-btn:not(.v-btn--text) {
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15) !important;
+}
+</style>
