@@ -1,6 +1,6 @@
 export default {
-  SET_TRIAL_EXPIRED_RIBBON_VISIBLE (state, bool) {
-    state.isTrialExpiredRibbonVisible = bool
+  SET_TRIAL_EXPIRING_RIBBON_VISIBLE (state, bool) {
+    state.isTrialExpiringRibbonVisible = bool
   },
   SET_TRIAL_EXPIRED_MODAL_VISIBLE (state, bool) {
     state.isTrialExpiredModalVisible = bool

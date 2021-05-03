@@ -103,7 +103,7 @@ export default {
     const daysLeft = dayjs(userInfo.trialEnd).diff(now, 'days')
 
     if (daysLeft > 0 && daysLeft <= 3) {
-      commit('notifications/SET_TRIAL_EXPIRED_RIBBON_VISIBLE', true, { root: true })
+      commit('notifications/SET_TRIAL_EXPIRING_RIBBON_VISIBLE', true, { root: true })
     }
   },
 

@@ -64,8 +64,8 @@ export default {
       }, { root: true })
     }
 
-    if (rootState.notifications.isTrialExpiredRibbonVisible) {
-      commit('notifications/SET_TRIAL_EXPIRED_RIBBON_VISIBLE', false, { root: true })
+    if (rootState.notifications.isTrialExpiringRibbonVisible) {
+      commit('notifications/SET_TRIAL_EXPIRING_RIBBON_VISIBLE', false, { root: true })
     }
 
     if (redirect) {

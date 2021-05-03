@@ -1,5 +1,5 @@
 export default () => ({
-  isTrialExpiredRibbonVisible: false,
+  isTrialExpiringRibbonVisible: false,
   isTrialExpiredModalVisible: false,
   isShippingModalVisible: false,
   notificationCard: {

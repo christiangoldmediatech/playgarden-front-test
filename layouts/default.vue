@@ -2,7 +2,7 @@
   <v-app>
     <template v-if="showContent">
       <!-- TRIAL EXPIRING RIBBON -->
-      <trial-is-expiring v-if="isTrialExpiredRibbonVisible" @expired="handleExpiredTrialCoundown" />
+      <trial-is-expiring v-if="isTrialExpiringRibbonVisible" @expired="handleExpiredTrialCoundown" />
 
       <coming-soon-player />
 
@@ -87,7 +87,7 @@ export default {
 
     ...mapState(['fullWidthPages', 'showContent']),
 
-    ...mapState('notifications', ['isTrialExpiredRibbonVisible']),
+    ...mapState('notifications', ['isTrialExpiringRibbonVisible']),
 
     fullWidth () {
       return this.fullWidthPages[this.$route.name]
@@ -100,14 +100,14 @@ export default {
     toolbarStyle () {
       const pixels = `${this.isMobile ? '104' : '57'}px !important`
       return {
-        top: this.isTrialExpiredRibbonVisible ? pixels : '0px'
+        top: this.isTrialExpiringRibbonVisible ? pixels : '0px'
       }
     },
 
     contentStyle () {
       const pixels = `${this.isMobile ? '104' : '57'}px !important`
       return {
-        'margin-top': this.isTrialExpiredRibbonVisible ? pixels : '0px'
+        'margin-top': this.isTrialExpiringRibbonVisible ? pixels : '0px'
       }
     }
   },
