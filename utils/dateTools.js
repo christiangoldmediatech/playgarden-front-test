@@ -134,7 +134,7 @@ export const isTodayInThisWeek = (today, days) => {
   return todayMs >= mondayMs && todayMs <= fridayMs
 }
 
-export const getCountdownToDate = (date) => {
+export const getCountdownToDate = (date, defaultExpiredString = '0:00:00') => {
   const time = new Date(date).getTime()
 
   // get today's date and time
@@ -151,7 +151,7 @@ export const getCountdownToDate = (date) => {
 
   // display the result in the element with id="demo"
   if (distance < 0) {
-    return '0:00:00'
+    return defaultExpiredString
   }
 
   return `${days}:${hours}:${minutes}`

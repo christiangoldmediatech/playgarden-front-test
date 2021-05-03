@@ -18,6 +18,8 @@
 import { mapGetters } from 'vuex'
 import { getCountdownToDate } from '@/utils/dateTools'
 
+const EXPIRED_TIME_STRING = '0:00:00'
+
 export default {
   name: 'TrialIsExpiring',
 
@@ -32,11 +34,22 @@ export default {
     ...mapGetters('auth', ['getUserInfo'])
   },
 
+  watch: {
+    countdownTime: {
+      immediate: true,
+      handler (value) {
+        if (value === EXPIRED_TIME_STRING) {
+          this.$emit('expired')
+        }
+      }
+    }
+  },
+
   mounted () {
     const trialExpiresDate = this.getUserInfo.trialEnd
 
     this.intervalId = setInterval(() => {
-      this.countdownTime = getCountdownToDate(trialExpiresDate)
+      this.countdownTime = getCountdownToDate(trialExpiresDate, EXPIRED_TIME_STRING)
     }, 1000)
   },
 
