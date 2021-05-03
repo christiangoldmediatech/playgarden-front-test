@@ -7,7 +7,7 @@
       <coming-soon-player />
 
       <!-- APP MAV & BAR -->
-      <app-navigation :style="toolbarStyle" />
+      <app-navigation />
 
       <application-header :style="toolbarStyle" />
 
