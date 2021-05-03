@@ -71,7 +71,7 @@
             <underlined-title class="text-h6 text-md-h4" text="Student Progress Report" /><br>
           </v-col>
 
-          <v-col cols="3" class="text-center text-sm-right pt-7">
+          <v-col cols="3" class="text-center text-sm-right pt-7 pr-3">
             <child-select
               v-model="selectedChild"
               hide-details
@@ -80,13 +80,13 @@
             />
           </v-col>
 
-          <v-col cols="12">
-            <p class="text-body-1 text-lg-h7 text-xl-h6 text-justify mt-8 text-report">
+          <v-col v-if="reportCardTypeSelected === 'General'" cols="12">
+            <p class="text-body-1 text-lg-h7 text-xl-h6 text-justify mt-8 mr-3 text-report">
               Playgarden Prep Online Lessons have been developed to support one or more of the core areas of development. After watching a video, doing the worksheet together with an adult, or actively participating in a Live Class, parents will be helping in the development of their child in each of the specific areas.
             </p>
           </v-col>
         </v-row>
-        <v-row class="mr-3" no-gutters>
+        <v-row class="mr-3 mt-5" no-gutters>
           <v-col v-if="general === true" cols="12" md="12" lg="12">
             <v-card v-if="!$vuetify.breakpoint.xs" class="content-report">
               <v-row class="ml-2 mr-2">
