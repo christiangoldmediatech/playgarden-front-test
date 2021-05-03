@@ -26,6 +26,24 @@
           </span>
         </li>
       </ul>
+
+      <!-- Promotions -->
+      <template v-if="hasPromotions(plan.homeDeliveryBenefits.promotions)">
+        <div class="promotion-ribbon pa-3 mx-n4 mx-md-n8 my-6 text-center">
+          <span class="font-weight-bold body-2 accent--text">* Join now and you will get this benefits:</span>
+        </div>
+        <ul class="plan-detail">
+          <li
+            v-for="(benefit, indexHDBP) in plan.homeDeliveryBenefits.promotions"
+            :key="indexHDBP"
+            class="plan-item"
+          >
+            <span>
+              {{ benefit }}
+            </span>
+          </li>
+        </ul>
+      </template>
     </template>
 
     <!-- Plus Benefits -->
@@ -34,24 +52,6 @@
         <li
           v-for="(benefit, indexHDB) in plan.plusBenefits.benefits"
           :key="indexHDB"
-          class="plan-item"
-        >
-          <span>
-            {{ benefit }}
-          </span>
-        </li>
-      </ul>
-    </template>
-
-    <!-- Promotions Benefits -->
-    <template v-if="plan.promotions">
-      <div class="promotion-ribbon pa-3 mx-n4 mx-md-n8 my-6 text-center">
-        <span class="font-weight-bold body-2 accent--text">* Join now and you will get this benefits:</span>
-      </div>
-      <ul class="plan-detail">
-        <li
-          v-for="(benefit, indexPCB) in plan.promotions.benefits"
-          :key="indexPCB"
           class="plan-item"
         >
           <span>
@@ -77,6 +77,12 @@ export default {
   computed: {
     getCommonBenefits () {
       return this.plan.commonBenefits.benefits.slice(0, 1)
+    }
+  },
+
+  methods: {
+    hasPromotions (promotions) {
+      return Array.isArray(promotions) && promotions.length > 0
     }
   }
 }
@@ -107,6 +113,7 @@ ul li::before {
   display: inline-block;     /* FF3, Opera, Safari */
   line-height: 1;
   vertical-align: text-top;
+  color: var(--v-black-base);
 }
 
 .plan-detail li span{

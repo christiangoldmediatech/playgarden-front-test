@@ -352,9 +352,9 @@ export default {
     planHasPromotions (plan) {
       return (
         plan &&
-        plan.promotions &&
-        Array.isArray(plan.promotions.benefits) &&
-        !!plan.promotions.benefits.length
+        plan.homeDeliveryBenefits &&
+        Array.isArray(plan.homeDeliveryBenefits.promotions) &&
+        plan.homeDeliveryBenefits.promotions.length > 0
       )
     }
   }
