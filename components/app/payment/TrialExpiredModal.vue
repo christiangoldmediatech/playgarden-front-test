@@ -78,17 +78,6 @@ export default {
     }
   },
 
-  watch: {
-    isTrialExpiredModalVisible: {
-      immediate: true,
-      handler (v) {
-        if (v === true) {
-          // TODO: mark the modal as seen
-        }
-      }
-    }
-  },
-
   methods: {
     closeModal () {
       this.$store.commit('notifications/SET_TRIAL_EXPIRED_MODAL_VISIBLE', false)
