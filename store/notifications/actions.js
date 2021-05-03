@@ -100,9 +100,11 @@ export default {
 
     const userInfo = rootGetters['auth/getUserInfo']
     const now = new Date()
-    const daysLeft = dayjs(userInfo.trialEnd).diff(now, 'days')
+    const dayInMinutes = 1440
+    const threeDays = dayInMinutes * 3
+    const timeLeft = dayjs(userInfo.trialEnd).diff(now, 'minute')
 
-    if (daysLeft > 0 && daysLeft <= 3) {
+    if (timeLeft > 0 && timeLeft <= threeDays) {
       commit('notifications/SET_TRIAL_EXPIRING_RIBBON_VISIBLE', true, { root: true })
     }
   },
