@@ -73,7 +73,7 @@ export default {
       allSongs: 'allSongsWithCurriculumType'
     }),
 
-    ...mapState('notifications', ['isTrialExpiringRibbonVisible']),
+    ...mapState('notifications', ['isTrialExpiringRibbonVisible', 'expiringRibbonHeightMobile']),
 
     /**
      * Return 'allSongs' with props `isFavorite` and `favoriteId` that can be used
@@ -179,7 +179,7 @@ export default {
         top: this.isMobile ? 'unset' : 0,
         'z-index': 99,
         bottom: this.isMobile && this.isTrialExpiringRibbonVisible && !this.isPlayerMaximizedOnMobile
-          ? '107px'
+          ? `${this.expiringRibbonHeightMobile}px`
           : this.isMobile
             ? '0px'
             : undefined

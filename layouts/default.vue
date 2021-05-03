@@ -87,7 +87,7 @@ export default {
 
     ...mapState(['fullWidthPages', 'showContent']),
 
-    ...mapState('notifications', ['isTrialExpiringRibbonVisible']),
+    ...mapState('notifications', ['isTrialExpiringRibbonVisible', 'expiringRibbonHeightDesktop', 'expiringRibbonHeightMobile']),
 
     fullWidth () {
       return this.fullWidthPages[this.$route.name]
@@ -97,17 +97,19 @@ export default {
       return this.$vuetify.breakpoint.mobile
     },
 
+    topDistanceInPixels () {
+      return this.isMobile ? this.expiringRibbonHeightMobile : this.expiringRibbonHeightDesktop
+    },
+
     toolbarStyle () {
-      const pixels = `${this.isMobile ? '104' : '57'}px !important`
       return {
-        top: this.isTrialExpiringRibbonVisible ? pixels : '0px'
+        top: this.isTrialExpiringRibbonVisible ? `${this.topDistanceInPixels}px !important` : '0px'
       }
     },
 
     contentStyle () {
-      const pixels = `${this.isMobile ? '104' : '57'}px !important`
       return {
-        'margin-top': this.isTrialExpiringRibbonVisible ? pixels : '0px'
+        'margin-top': this.isTrialExpiringRibbonVisible ? `${this.topDistanceInPixels}px !important` : '0px'
       }
     }
   },
