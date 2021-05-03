@@ -89,7 +89,7 @@ export default {
 
   /**
    * When should we show the user the trial expiring ribbon?
-   * - draft_condition: There are 3 or less days of trial available
+   * - There are 3 or less days of trial available
    */
   checkIfShouldShowTrialExpiringRibbon ({ commit, rootGetters }) {
     const isUserLoggedIn = rootGetters['auth/isUserLoggedIn']
