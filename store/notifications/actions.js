@@ -88,6 +88,26 @@ export default {
   },
 
   /**
+   * When should we show the user the trial expiring ribbon?
+   * - draft_condition: There are 3 or less days of trial available
+   */
+  checkIfShouldShowTrialExpiringRibbon ({ commit, rootGetters }) {
+    const isUserLoggedIn = rootGetters['auth/isUserLoggedIn']
+
+    if (!isUserLoggedIn) {
+      return
+    }
+
+    const userInfo = rootGetters['auth/getUserInfo']
+    const now = new Date()
+    const daysLeft = dayjs(userInfo.trialEnd).diff(now, 'days')
+
+    if (daysLeft > 0 && daysLeft <= 3) {
+      commit('notifications/SET_TRIAL_EXPIRED_RIBBON_VISIBLE', true, { root: true })
+    }
+  },
+
+  /**
    * When should we show the user the trial expired modal?
    * - The user `trial_end` is lower than the current day,
    * - only one time, the next time they enter the platform,
@@ -96,6 +116,11 @@ export default {
    */
   checkIfShouldShowTrialExpiredModal ({ commit, rootGetters }) {
     const isUserLoggedIn = rootGetters['auth/isUserLoggedIn']
+
+    if (!isUserLoggedIn) {
+      return
+    }
+
     const userInfo = rootGetters['auth/getUserInfo']
 
     const oneDay = 1
@@ -113,7 +138,6 @@ export default {
     const isSubscribedUser = subscription && subscription.status === 'active'
 
     const shouldShowExpiredModal =
-      isUserLoggedIn &&
       didTrialEnd &&
       didLoginBefore &&
       !isSubscribedUser &&

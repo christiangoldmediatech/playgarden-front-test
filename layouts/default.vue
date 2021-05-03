@@ -1,11 +1,15 @@
 <template>
   <v-app>
     <template v-if="showContent">
-      <coming-soon-player />
-      <!-- APP MAV & BAR -->
-      <app-navigation />
+      <!-- TRIAL EXPIRING RIBBON -->
+      <trial-is-expiring v-if="isTrialExpiredRibbonVisible" @expired="handleExpiredTrialCoundown" />
 
-      <application-header />
+      <coming-soon-player />
+
+      <!-- APP MAV & BAR -->
+      <app-navigation :style="toolbarStyle" />
+
+      <application-header :style="toolbarStyle" />
 
       <!-- NOTIFICATION CARD -->
       <notification-card />
@@ -18,12 +22,12 @@
 
       <!-- CONTENT -->
       <v-main v-if="!fullWidth">
-        <v-container class="pa-md-3 pa-0" fill-height>
+        <v-container class="pa-md-3 pa-0" fill-height :style="contentStyle">
           <nuxt />
         </v-container>
       </v-main>
 
-      <nuxt v-else />
+      <nuxt v-else :style="contentStyle" />
 
       <!-- FOOTER -->
       <default-footer />
@@ -56,6 +60,7 @@ import DefaultFooter from '@/components/app/footer/DefaultFooter'
 import NotificationCard from '@/components/app/notifications/NotificationCard'
 import ShippingAddressModal from '~/components/app/payment/ShippingAddressModal.vue'
 import TrialExpiredModal from '~/components/app/payment/TrialExpiredModal.vue'
+import TrialIsExpiring from '~/components/app/header/TrialIsExpiring.vue'
 
 export default {
   name: 'Default',
@@ -68,7 +73,8 @@ export default {
     DefaultFooter,
     NotificationCard,
     ShippingAddressModal,
-    TrialExpiredModal
+    TrialExpiredModal,
+    TrialIsExpiring
   },
 
   data: () => ({
@@ -81,8 +87,28 @@ export default {
 
     ...mapState(['fullWidthPages', 'showContent']),
 
+    ...mapState('notifications', ['isTrialExpiredRibbonVisible']),
+
     fullWidth () {
       return this.fullWidthPages[this.$route.name]
+    },
+
+    isMobile () {
+      return this.$vuetify.breakpoint.mobile
+    },
+
+    toolbarStyle () {
+      const pixels = `${this.isMobile ? '104' : '57'}px !important`
+      return {
+        top: this.isTrialExpiredRibbonVisible ? pixels : '0px'
+      }
+    },
+
+    contentStyle () {
+      const pixels = `${this.isMobile ? '104' : '57'}px !important`
+      return {
+        'margin-top': this.isTrialExpiredRibbonVisible ? pixels : '0px'
+      }
     }
   },
 
@@ -93,6 +119,7 @@ export default {
         if (v === true && this.$route.name !== 'shared-slug') {
           await this.checkIfShouldSendShippingAddressNotification()
           await this.checkIfShouldShowTrialExpiredModal()
+          await this.checkIfShouldShowTrialExpiringRibbon()
         }
       }
     },
@@ -115,7 +142,11 @@ export default {
   },
 
   methods: {
-    ...mapActions('notifications', ['checkIfShouldSendShippingAddressNotification', 'checkIfShouldShowTrialExpiredModal']),
+    ...mapActions('notifications', [
+      'checkIfShouldSendShippingAddressNotification',
+      'checkIfShouldShowTrialExpiredModal',
+      'checkIfShouldShowTrialExpiringRibbon'
+    ]),
 
     showVerifyEmailToast () {
       if (
@@ -139,6 +170,10 @@ export default {
           }
         )
       }
+    },
+
+    handleExpiredTrialCoundown () {
+      // TODO: handle time expiration
     }
   }
 }
