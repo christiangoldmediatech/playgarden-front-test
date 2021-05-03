@@ -51,7 +51,7 @@
                   class="mt-n2"
                   v-bind="attrs"
                   v-on="on"
-                  @click.stop="$emit('add', song)"
+                  @click.stop="handleSongAddition($event, song)"
                 >
                   mdi-playlist-music-outline
                 </v-icon>
@@ -109,6 +109,14 @@ export default {
     createPlayListFromIndex (index) {
       const playlist = jsonCopy(this.songs.slice(index))
       this.$emit('createPlayList', playlist)
+    },
+    handleSongAddition ($event, song) {
+      this.$emit('add', song)
+
+      // blur element after 2 seg so the tooltip can go away
+      if ($event && $event.target) {
+        setTimeout(() => $event.target.blur(), 2000)
+      }
     }
   }
 }
@@ -189,7 +197,6 @@ export default {
   font-weight: 500 !important;
   color: white !important;
 }
-
 .v-tooltip__content::after {
   content: "";
   position: absolute;

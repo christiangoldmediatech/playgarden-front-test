@@ -27,9 +27,11 @@
           large
           class="favorite-button white my-4 mt-md-2 mb-md-0"
           data-test-id="favorite-toggle"
+          :class="{ 'selected': showOnlyFavorites }"
+          :ripple="false"
           @click="$emit('showFavorites')"
         >
-          <v-icon left :class="showOnlyFavorites ? 'pink--text text--lighten-2' : 'grey--text'">
+          <v-icon left class="pink--text text--lighten-2">
             mdi-heart
           </v-icon>
           Favorites
@@ -71,36 +73,66 @@
         </v-row>
       </v-col>
     </v-row>
+    <!-- Favorites Title -->
+    <v-expand-transition>
+      <v-row v-if="showOnlyFavorites" no-gutters>
+        <v-col cols="12" class="py-6">
+          <underlined-title
+            font-size="48px"
+            font-size-mobile="32px"
+            font-weight="bold"
+            line-color="pink"
+            line-padding-right="30%"
+          >
+            <img :height="mobile ? '24px' : '36px'" src="@/assets/svg/library/favorites.svg">
+            Favorites
+          </underlined-title>
+        </v-col>
+      </v-row>
+    </v-expand-transition>
+    <!-- No Favorite Songs -->
+    <div
+      v-if="shouldShowNoFavoriteSongsAdded"
+      class="d-flex align-center justify-center flex-column my-md-12"
+    >
+      <img src="@/assets/svg/library/favorites.svg" :width="mobile ? '72px' : '128px'">
+
+      <div class="text-h6 text-md-h4 font-weight-medium text-center grey--text text--darken-2 mt-6">
+        Add your favorite songs here, by clicking on their Heart icons.
+      </div>
+    </div>
     <!-- Songs -->
-    <template v-if="selectedFilter === 'list'">
-      <div data-test-id="song-card-list">
-        <song-card
-          v-for="(song, index) in filteredSongsByLetterId"
-          :key="song.id"
-          :thumbnail="song.thumbnail"
-          :name="song.name"
-          :description="song.description"
-          :is-favorite="song.isFavorite"
-          class="my-4"
-          @add="addSongToPlayList(song)"
-          @favorite="$emit('favorite', song)"
-          @click="createPlayListFromIndex(index)"
-        />
-      </div>
-    </template>
-    <template v-if="selectedFilter === 'letter'">
-      <div data-test-id="letter-songs-list">
-        <letter-songs
-          v-for="letter in filteredLettersByLetterId"
-          :key="letter.id"
-          :letter="letter"
-          :songs="letter.musicLibrary"
-          class="my-2 mt-md-4 mb-md-8"
-          @add="addSongToPlayList"
-          @favorite="$emit('favorite', $event)"
-          @createPlayList="emitPlayList"
-        />
-      </div>
+    <template v-else>
+      <template v-if="selectedFilter === 'list'">
+        <div data-test-id="song-card-list">
+          <song-card
+            v-for="(song, index) in filteredSongsByLetterId"
+            :key="song.id"
+            :thumbnail="song.thumbnail"
+            :name="song.name"
+            :description="song.description"
+            :is-favorite="song.isFavorite"
+            class="my-4"
+            @add="addSongToPlayList(song)"
+            @favorite="$emit('favorite', song)"
+            @click="createPlayListFromIndex(index)"
+          />
+        </div>
+      </template>
+      <template v-if="selectedFilter === 'letter'">
+        <div data-test-id="letter-songs-list">
+          <letter-songs
+            v-for="letter in filteredLettersByLetterId"
+            :key="letter.id"
+            :letter="letter"
+            :songs="letter.musicLibrary"
+            class="my-2 mt-md-4 mb-md-8"
+            @add="addSongToPlayList"
+            @favorite="$emit('favorite', $event)"
+            @createPlayList="emitPlayList"
+          />
+        </div>
+      </template>
     </template>
   </div>
 </template>
@@ -200,6 +232,16 @@ export default {
       } else {
         return this.songsByCurriculumType.filter(letter => letter.id === this.selectedLetterId)
       }
+    },
+
+    shouldShowNoFavoriteSongsAdded () {
+      // when `showOnlyFavorites` = true, the favorite songs are filtered in the parent component
+      if (this.showOnlyFavorites) {
+        const hasSongs = this.filteredSongsByLetterId.length
+        return !hasSongs
+      }
+
+      return false
     }
   },
 
@@ -262,7 +304,12 @@ export default {
 .child-selector {
   max-width: 300px;
 }
+
 .favorite-button {
-  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16) !important;
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15) !important;
+
+  &.selected {
+    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25) !important;
+  }
 }
 </style>
