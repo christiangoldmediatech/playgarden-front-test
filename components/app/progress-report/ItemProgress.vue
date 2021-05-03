@@ -18,12 +18,9 @@
             {{ item.title }}
           </span>
         </p>
-        <!-- <p class="text-stats">
-          {{ item.description }}
-        </p> -->
       </v-col>
     </v-row>
-    <v-divider v-if="!getShowDivider" class="ml-8 mr-8" />
+    <v-divider v-if="!getShowDivider" class="mx-8 my-3" />
   </div>
 </template>
 
