@@ -36,7 +36,7 @@
             Go Back to lessons
           </v-btn>
         </v-col>
-        <v-col v-if="lastDayOfTrial" cols="12" class="text-center mt-4">
+        <v-col v-if="isTrialExpired" cols="12" class="text-center mt-4">
           <div>
             <underlined-title
               text="YOUR TRIAL PERIOD HAS EXPIRED."
@@ -99,6 +99,10 @@ export default {
       return query.process === 'signup' && query.step === '3'
     },
 
+    isTrialExpired () {
+      return dayjs().isAfter(this.getUserInfo.trialEnd)
+    },
+
     lastDayOfTrial () {
       if (!this.getUserInfo.trialEnd) {
         return ''
@@ -123,7 +127,7 @@ export default {
         }
 
         await this.$store.dispatch('admin/users/setPlanChoosen')
-        // TODO: hide trial expiring ribbon?
+        await this.$store.commit('notifications/SET_TRIAL_EXPIRING_RIBBON_VISIBLE', false)
       } catch (e) {
       } finally {
       }
