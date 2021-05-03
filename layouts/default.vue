@@ -175,7 +175,7 @@ export default {
     },
 
     handleExpiredTrialCoundown () {
-      // TODO: handle time expiration
+      this.$router.push({ name: 'app-payment-plan' })
     }
   }
 }
