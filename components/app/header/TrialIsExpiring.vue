@@ -1,13 +1,16 @@
 <template>
   <div class="ribbon text-center d-flex flex-column flex-md-row align-center justify-center py-2">
     <span class="white--text font-weight-bold mx-2">YOUR FREE TRIAL IS ABOUT TO EXPIRE: </span>
-    <underlined-title
-      class="mx-2 white--text"
-      :text="countdownTime"
-      font-size="32px"
-      line-color="rgba(255,255,255,0.15)"
-      :line-from="30"
-    />
+    <span class="time">
+      <underlined-title
+        class="white--text"
+        :text="countdownTime"
+        font-size="32px"
+        line-color="rgba(255,255,255,0.15)"
+        :line-from="30"
+      />
+      <span class="white--text">Days left</span>
+    </span>
     <v-btn small class="text-none accent--text mx-2" router :to="{ name: 'app-payment-plan' }">
       Compare plans now
     </v-btn>
@@ -49,9 +52,10 @@ export default {
     const trialExpiresDate = this.getUserInfo.trialEnd
     this.countdownTime = getCountdownToDate(trialExpiresDate, EXPIRED_TIME_STRING)
 
+    const oneMinute = 1000 * 60
     this.intervalId = setInterval(() => {
       this.countdownTime = getCountdownToDate(trialExpiresDate, EXPIRED_TIME_STRING)
-    }, 1000)
+    }, oneMinute)
   },
 
   beforeDestroy () {
@@ -68,6 +72,9 @@ export default {
   right: 0;
   background-color: #F89838;
   z-index: 999;
+}
+.time {
+  width: 215px !important;
 }
 .v-btn:not(.v-btn--text) {
   box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15) !important;
