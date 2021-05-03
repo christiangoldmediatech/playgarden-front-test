@@ -135,6 +135,10 @@ export const isTodayInThisWeek = (today, days) => {
 }
 
 export const getCountdownToDate = (date, defaultExpiredString = '0:00:00') => {
+  if (!date) {
+    return defaultExpiredString
+  }
+
   const time = new Date(date).getTime()
 
   // get today's date and time
