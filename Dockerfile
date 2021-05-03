@@ -40,8 +40,6 @@ ENV API_BASE_URL="${API_BASE_URL}" \
   DROPBOX_API_KEY="${DROPBOX_API_KEY}" \
   GMT_NPM_TOKEN="${GMT_NPM_TOKEN}"
 
-RUN echo ${GMT_NPM_TOKEN}
-
 # Install production dependencies.
 RUN GMT_NPM_TOKEN=${GMT_NPM_TOKEN} yarn
 
