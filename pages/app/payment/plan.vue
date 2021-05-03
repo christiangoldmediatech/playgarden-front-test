@@ -123,6 +123,7 @@ export default {
         }
 
         await this.$store.dispatch('admin/users/setPlanChoosen')
+        // TODO: hide trial expiring ribbon?
       } catch (e) {
       } finally {
       }
