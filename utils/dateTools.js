@@ -153,7 +153,6 @@ export const getCountdownToDate = (date, defaultExpiredString = '0:00:00') => {
   const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
   // const seconds = Math.floor((distance % (1000 * 60)) / 1000)
 
-  // display the result in the element with id="demo"
   if (distance < 0) {
     return defaultExpiredString
   }
