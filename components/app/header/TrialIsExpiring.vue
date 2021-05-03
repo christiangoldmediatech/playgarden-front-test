@@ -1,5 +1,5 @@
 <template>
-  <div class="ribbon text-center d-flex align-center justify-center py-2">
+  <div class="ribbon text-center d-flex flex-column flex-md-row align-center justify-center py-2">
     <span class="white--text font-weight-bold mx-2">YOUR FREE TRIAL IS ABOUT TO EXPIRE: </span>
     <underlined-title
       class="mx-2 white--text"
@@ -47,6 +47,7 @@ export default {
 
   mounted () {
     const trialExpiresDate = this.getUserInfo.trialEnd
+    this.countdownTime = getCountdownToDate(trialExpiresDate, EXPIRED_TIME_STRING)
 
     this.intervalId = setInterval(() => {
       this.countdownTime = getCountdownToDate(trialExpiresDate, EXPIRED_TIME_STRING)
@@ -61,7 +62,12 @@ export default {
 
 <style lang="scss" scope>
 .ribbon {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   background-color: #F89838;
+  z-index: 999;
 }
 .v-btn:not(.v-btn--text) {
   box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15) !important;
