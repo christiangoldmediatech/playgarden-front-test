@@ -1,5 +1,5 @@
 <template>
-  <plan-data-table ref="PlanDataTable" />
+  <plan-data-table ref="planDataTableRef" />
 </template>
 
 <script>
@@ -19,7 +19,7 @@ export default {
   },
 
   mounted () {
-    this.$refs.PlanDataTable.refresh()
+    this.$refs.planDataTableRef.refresh()
   }
 }
 </script>

@@ -24,7 +24,7 @@
 
         <v-card-text>
           <v-container>
-            <v-form ref="activityTypeForm" @submit.prevent="passes(save)">
+            <v-form ref="activityTypeFormRef" @submit.prevent="passes(save)">
               <v-row>
                 <v-col cols="12" sm="12" md="6">
                   <validation-provider
@@ -41,7 +41,7 @@
                   </validation-provider>
 
                   <label class="mb-3">Benefits:</label>
-                  <features-edit-plan ref="benefits" :list="plansFeatures.benefits" mode="benefits" />
+                  <features-edit-plan ref="benefitsRef" :list="plansFeatures.benefits" mode="benefits" />
                 </v-col>
                 <v-col cols="12" sm="12" md="6">
                   <validation-provider
@@ -66,7 +66,7 @@
                   <div v-if="item.id !== 1">
                     <label class="mb-3">Promotions:</label>
 
-                    <features-edit-plan ref="promotions" :list="plansFeatures.promotions" mode="promotions" />
+                    <features-edit-plan ref="promotionsRef" :list="plansFeatures.promotions" mode="promotions" />
                   </div>
                 </v-col>
               </v-row>
@@ -107,7 +107,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import FeaturesEditPlan from './FeaturesEditPlan'
+import FeaturesEditPlan from '@/components/admin/plans/FeaturesEditPlan'
 
 function generateItemTemplate () {
   return {
@@ -171,8 +171,6 @@ export default {
     }
   },
 
-  watch: {},
-
   methods: {
     ...mapActions('plans', ['updatePlan']),
 
@@ -202,17 +200,17 @@ export default {
     async save () {
       this.loading = true
       if (this.item.id === 1) {
-        this.item.commonBenefits.benefits = this.formatFeactures(this.$refs.benefits.componentList)
+        this.item.commonBenefits.benefits = this.formatFeactures(this.$refs.benefitsRef.componentList)
       }
 
       if (this.item.id === 2) {
-        this.item.homeDeliveryBenefits.benefits = this.formatFeactures(this.$refs.benefits.componentList)
-        this.item.homeDeliveryBenefits.promotions = this.formatFeactures(this.$refs.promotions.componentList)
+        this.item.homeDeliveryBenefits.benefits = this.formatFeactures(this.$refs.benefitsRef.componentList)
+        this.item.homeDeliveryBenefits.promotions = this.formatFeactures(this.$refs.promotionsRef.componentList)
       }
 
       if (this.item.id === 3) {
-        this.item.plusBenefits.benefits = this.formatFeactures(this.$refs.benefits.componentList)
-        this.item.plusBenefits.promotions = this.formatFeactures(this.$refs.promotions.componentList)
+        this.item.plusBenefits.benefits = this.formatFeactures(this.$refs.benefitsRef.componentList)
+        this.item.plusBenefits.promotions = this.formatFeactures(this.$refs.promotionsRef.componentList)
       }
       try {
         this.item = this.cleanFields(this.item)

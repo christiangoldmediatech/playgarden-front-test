@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div>
     <v-row justify="end" class="mb-4">
       <v-btn
         class="text-h7 text-md-h7 mb-3 mr-4"
@@ -7,11 +7,6 @@
         small
         @click="addComponent"
       >
-        <!-- <v-icon
-          dense
-        >
-          mdi-comment-multiple-outline
-        </v-icon> -->
         + Add {{ mode }}
       </v-btn>
     </v-row>
