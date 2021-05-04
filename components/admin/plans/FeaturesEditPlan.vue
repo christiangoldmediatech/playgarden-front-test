@@ -12,7 +12,7 @@
         >
           mdi-comment-multiple-outline
         </v-icon> -->
-        Add benefit
+        + Add {{ mode }}
       </v-btn>
     </v-row>
     <template v-for="(feature, i) in componentList">
@@ -57,6 +57,10 @@ export default {
   props: {
     list: {
       type: Array,
+      required: true
+    },
+    mode: {
+      type: String,
       required: true
     }
   },

@@ -41,7 +41,7 @@
                   </validation-provider>
 
                   <label class="mb-3">Benefits:</label>
-                  <features-edit-plan ref="benefits" :list="item.plansFeatures.benefits" />
+                  <features-edit-plan ref="benefits" :list="plansFeatures.benefits" mode="benefits" />
                 </v-col>
                 <v-col cols="12" sm="12" md="6">
                   <validation-provider
@@ -66,7 +66,7 @@
                   <div v-if="item.id !== 1">
                     <label class="mb-3">Promotions:</label>
 
-                    <features-edit-plan ref="promotions" :list="item.plansFeatures.promotions" />
+                    <features-edit-plan ref="promotions" :list="plansFeatures.promotions" mode="promotions" />
                   </div>
                 </v-col>
               </v-row>
@@ -120,7 +120,7 @@ function generateItemTemplate () {
       benefits: [],
       promotions: []
     },
-    plansFeatures: {
+    plusBenefits: {
       benefits: [],
       promotions: []
     }
@@ -138,6 +138,10 @@ export default {
     return {
       dialog: false,
       loading: false,
+      plansFeatures: {
+        benefits: [],
+        promotions: []
+      },
       plamNameList: [
         {
           value: 'SILVER',
@@ -200,11 +204,21 @@ export default {
       if (this.item.id === 1) {
         this.item.commonBenefits.benefits = this.formatFeactures(this.$refs.benefits.componentList)
       }
+
+      if (this.item.id === 2) {
+        this.item.homeDeliveryBenefits.benefits = this.formatFeactures(this.$refs.benefits.componentList)
+        this.item.homeDeliveryBenefits.promotions = this.formatFeactures(this.$refs.promotions.componentList)
+      }
+
+      if (this.item.id === 3) {
+        this.item.plusBenefits.benefits = this.formatFeactures(this.$refs.benefits.componentList)
+        this.item.plusBenefits.promotions = this.formatFeactures(this.$refs.promotions.componentList)
+      }
       try {
         this.item = this.cleanFields(this.item)
         await this.updatePlan({ id: this.item.id, data: this.item })
         this.$emit('saved')
-        this.item.plansFeatures = {
+        this.plansFeatures = {
           benefits: [],
           promotions: []
         }
@@ -220,18 +234,22 @@ export default {
     },
 
     loadItem (item) {
-      console.log('data selected--', item)
       this.item.id = item.id
       this.item.name = item.name
       this.item.planName = item.planName
 
       if (this.item.id === 1) {
-        this.item.plansFeatures.benefits = (item.commonBenefits.benefits) ? item.commonBenefits.benefits : []
+        this.plansFeatures.benefits = (item.commonBenefits.benefits) ? item.commonBenefits.benefits : []
       }
 
       if (this.item.id === 2) {
-        this.item.plansFeatures.benefits = (item.homeDeliveryBenefits.benefits) ? item.homeDeliveryBenefits.benefits : []
-        this.item.plansFeatures.promotions = (item.homeDeliveryBenefits.promotions) ? item.homeDeliveryBenefits.promotions : []
+        this.plansFeatures.benefits = (item.homeDeliveryBenefits.benefits) ? item.homeDeliveryBenefits.benefits : []
+        this.plansFeatures.promotions = (item.homeDeliveryBenefits.promotions) ? item.homeDeliveryBenefits.promotions : []
+      }
+
+      if (this.item.id === 3) {
+        this.plansFeatures.benefits = (item.plusBenefits.benefits) ? item.plusBenefits.benefits : []
+        this.plansFeatures.promotions = (item.plusBenefits.promotions) ? item.plusBenefits.promotions : []
       }
     },
 
