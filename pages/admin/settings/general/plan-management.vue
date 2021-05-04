@@ -14,10 +14,6 @@ export default {
     PlanDataTable
   },
 
-  data () {
-    return {}
-  },
-
   mounted () {
     this.$refs.planDataTableRef.refresh()
   }
