@@ -113,7 +113,9 @@
             </validation-provider>
           </v-col>
         </v-row>
-
+        <div class="grey--text text--darken-2 text-center caption text-md-body-2 my-3 my-md-6">
+          *Limited to 1 introductory learning package per family, in the territorial US and Canada only.
+        </div>
         <v-btn
           block
           :color="saveButtonColor"
@@ -134,7 +136,7 @@
           x-large
           @click="onCancel(reset)"
         >
-          CANCEL
+          {{ hideCancelButtonText }}
         </v-btn>
       </v-form>
     </validation-observer>
@@ -187,6 +189,15 @@ import { mapActions } from 'vuex'
 
 import submittable from '@/utils/mixins/submittable'
 
+const draftDefault = {
+  address1: null,
+  address2: null,
+  city: null,
+  state: null,
+  zipCode: null,
+  phoneNumber: null
+}
+
 export default {
   name: 'ShippingAddressDetails',
 
@@ -205,6 +216,10 @@ export default {
       type: Boolean,
       default: false
     },
+    hideCancelButtonText: {
+      type: String,
+      default: 'Cancel'
+    },
     saveButtonColor: {
       type: String,
       default: 'warning'
@@ -221,7 +236,8 @@ export default {
 
   data: () => ({
     isEditing: false,
-    loading: false
+    loading: false,
+    draft: { ...draftDefault }
   }),
 
   computed: {
@@ -284,7 +300,7 @@ export default {
           return
         }
 
-        this.draft = draft
+        this.draft = draft || { ...draftDefault }
       } catch (e) {
         this.$snotify.warning('Could not fetch shipping address', 'Error', {
           closeOnClick: true,
@@ -304,6 +320,7 @@ export default {
       this.isEditing = false
 
       this.$emit('click:cancel')
+      this.$emit('shipping-address-cancel')
 
       this.fetchAddress()
     },
@@ -325,14 +342,7 @@ export default {
     },
 
     resetDraft () {
-      this.draft = {
-        address1: null,
-        address2: null,
-        city: null,
-        state: null,
-        zipCode: null,
-        phoneNumber: null
-      }
+      this.draft = { ...draftDefault }
     },
 
     submitMethod (data) {

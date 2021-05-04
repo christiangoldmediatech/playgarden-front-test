@@ -22,6 +22,7 @@
     "prosemirror-model": "1.8.2"
   },
   "dependencies": {
+    "@gold-media-tech/pg-video-player": "^0.0.15",
     "@mdi/font": "^5.3.45",
     "@nuxtjs/axios": "^5.12.0",
     "@nuxtjs/composition-api": "^0.22.4",
@@ -56,10 +57,12 @@
     "vuex": "^3.5.1"
   },
   "devDependencies": {
+    "@nuxt/types": "^2.15.4",
+    "@nuxt/typescript-build": "^2.1.0",
     "@nuxtjs/eslint-config": "^3.0.0",
     "@nuxtjs/eslint-module": "^2.0.0",
     "@nuxtjs/style-resources": "^1.0.0",
-    "@nuxtjs/vuetify": "^1.11.2",
+    "@nuxtjs/vuetify": "^1.11.3",
     "@types/node": "^14.14.41",
     "@vue/composition-api": "^1.0.0-rc.6",
     "@vue/test-utils": "^1.0.3",

@@ -3,7 +3,7 @@
     fluid
   >
     <v-row>
-      <v-col v-if="!$vuetify.breakpoint.xs" cols="12" md="2" lg="2" xl="2">
+      <v-col v-if="!$vuetify.breakpoint.xs" cols="12" md="3" lg="2" xl="2">
         <v-card class="content-report ml-n3">
           <v-list three-line class="pt-9">
             <v-list-item-group v-model="optionDefault">
@@ -19,8 +19,8 @@
                     <v-img v-else :src="item.icon" min-width="38px" />
                   </v-list-item-avatar>
 
-                  <v-list-item-content class="report-card-type">
-                    <span>
+                  <v-list-item-content class="text-center report-card-type">
+                    <span class="text-body-1 text-lg-h7 text-xl-h6">
                       {{ item.name }}
                     </span>
                   </v-list-item-content>
@@ -65,25 +65,28 @@
         />
       </v-col>
 
-      <v-col cols="12" md="10" lg="10" class="pt-7">
-        <v-card-text>
-          <v-row v-if="!$vuetify.breakpoint.xs" no-gutters>
-            <v-col class="mt-10" cols="10">
-              <underlined-title class="text-h6 text-md-h4" text="Student Progress Report" /><br>
-              <span>Playgarden Prep Online Lessons have been developed to support one or more of the core areas of development. After watching a video, doing the worksheet together with an adult, or actively participating in a Live Class, parents will be helping in the development of their child in each of the specific areas.</span>
-            </v-col>
+      <v-col cols="12" md="9" lg="10" class="pt-12">
+        <v-row v-if="!$vuetify.breakpoint.xs" no-gutters>
+          <v-col class="mt-10" cols="9">
+            <underlined-title class="text-h6 text-md-h4" text="Student Progress Report" /><br>
+          </v-col>
 
-            <v-col cols="2" class="text-center text-sm-right pt-7">
-              <child-select
-                v-model="selectedChild"
-                hide-details
-                :preview-mode="previewMode"
-                @input="$emit('input', getDataGraphic())"
-              />
-            </v-col>
-          </v-row>
-        </v-card-text>
-        <v-row class="mr-3" no-gutters>
+          <v-col cols="3" class="text-center text-sm-right pt-7 pr-3">
+            <child-select
+              v-model="selectedChild"
+              hide-details
+              :preview-mode="previewMode"
+              @input="$emit('input', getDataGraphic())"
+            />
+          </v-col>
+
+          <v-col v-if="reportCardTypeSelected === 'General'" cols="12">
+            <p class="text-body-1 text-lg-h7 text-xl-h6 text-justify mt-8 mr-3 text-report">
+              Playgarden Prep Online Lessons have been developed to support one or more of the core areas of development. After watching a video, doing the worksheet together with an adult, or actively participating in a Live Class, parents will be helping in the development of their child in each of the specific areas.
+            </p>
+          </v-col>
+        </v-row>
+        <v-row class="mr-3 mt-5" no-gutters>
           <v-col v-if="general === true" cols="12" md="12" lg="12">
             <v-card v-if="!$vuetify.breakpoint.xs" class="content-report">
               <v-row class="ml-2 mr-2">
@@ -92,7 +95,9 @@
                     <underlined-title class="text-h6 text-md-h5" text="General Progress Report" />
                   </div>
                   <div>
-                    <chart-report v-if="report" :report="report" />
+                    <center>
+                      <chart-report v-if="report" :report="report" />
+                    </center>
                   </div>
                 </v-col>
                 <v-col cols="12" md="5" lg="5" xl="5">
@@ -290,6 +295,11 @@ export default {
 
 <style>
 .report-card-type {
+  color: var(--v-black-base) !important;
+}
+
+.text-report {
+  font-weight: normal !important;
   color: var(--v-black-base) !important;
 }
 
