@@ -166,7 +166,7 @@ export default {
   data: () => ({
     previewMode: false,
     general: true,
-    reportCardTypeSelected: null,
+    reportCardTypeSelected: 'General',
     dataReportCard: null,
     optionDefault: 0,
     childMobile: '',
