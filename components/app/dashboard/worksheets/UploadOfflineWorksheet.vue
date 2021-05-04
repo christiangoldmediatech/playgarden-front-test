@@ -143,10 +143,8 @@ export default {
     }
   },
 
-  created () {
-    this.getOfflineWorksheetCategories().then((data) => {
-      this.categories = data
-    })
+  async created () {
+    this.categories = await this.getOfflineWorksheetCategories()
   },
 
   methods: {

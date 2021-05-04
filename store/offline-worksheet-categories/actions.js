@@ -1,5 +1,3 @@
-import { snotifyError } from '@/utils/vuex'
-
 export default {
   createOfflineWorksheetCategory (_, data) {
     return this.$axios.$post('/offline-worksheets-cats', data)
@@ -13,19 +11,9 @@ export default {
     return this.$axios.$get(`/categories-worksheets-offline/worksheet/${id}`)
   },
 
-  getOfflineWorksheetCategories ({ commit }, params) {
-    return new Promise((resolve, reject) =>
-      this.$axios
-        .$get('/offline-worksheets-cats', { params })
-        .then(resolve)
-        .catch((error) => {
-          snotifyError(commit, {
-            body: 'Sorry! There was an error while getting offline worksheets categories.'
-          })
-          // TO DO async away
-          reject(error)
-        })
-    )
+  async getOfflineWorksheetCategories ({ commit }, params) {
+    const data = await this.$axios.$get('/offline-worksheets-cats', { params })
+    return data
   },
 
   updateOfflineWorksheetCategory (_, { id, data }) {

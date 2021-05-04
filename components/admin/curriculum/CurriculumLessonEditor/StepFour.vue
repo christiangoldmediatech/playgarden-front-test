@@ -213,16 +213,16 @@ export default {
     ])
   },
 
-  created () {
+  async created () {
     this.refresh()
     this.getLessonById(this.lessonId).then((data) => {
       this.fileName = data.name.replace(/ /g, '-')
       this.loading = false
     })
-    this.getOfflineWorksheetCategories().then((data) => {
-      this.categories = data.map((category) => {
-        return { category: category.category, id: category.id, number: 0 }
-      })
+
+    const data = await this.getOfflineWorksheetCategories()
+    this.categories = data.map((category) => {
+      return { category: category.category, id: category.id, number: 0 }
     })
   },
 
