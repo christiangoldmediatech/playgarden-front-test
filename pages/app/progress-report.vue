@@ -103,9 +103,9 @@
                 <v-col cols="12" md="5" lg="5" xl="5">
                   <v-card>
                     <div class="pt-4 ml-4 mb-4">
-                      <underlined-title class="text-h6 text-md-h5 mt-4 mr-4" :text="letterStats.name" />
+                      <underlined-title class="text-h6 text-md-h5 mt-4 mr-4" :text="letterStatsData.name" />
                     </div>
-                    <letter-stats :letter-stats="letterStats" />
+                    <letter-stats :letter-stats="letterStatsData" />
                   </v-card>
                 </v-col>
               </v-row>
@@ -117,9 +117,9 @@
               <v-col cols="12">
                 <div>
                   <div class="pt-4 ml-4 mb-4">
-                    <underlined-title class="text-h6 text-md-h5 mt-4 mr-4" :text="letterStats.name" />
+                    <underlined-title class="text-h6 text-md-h5 mt-4 mr-4" :text="letterStatsData.name" />
                   </div>
-                  <letter-stats :letter-stats="letterStats" />
+                  <letter-stats :letter-stats="letterStatsData" />
                 </div>
               </v-col>
             </v-row>
@@ -172,7 +172,7 @@ export default {
     childMobile: '',
     selectedReportCard: 'General',
     optionDefaultMobile: 'General',
-    letterStats: {
+    letterStatsData: {
       name: '',
       reports: []
     }
@@ -253,12 +253,9 @@ export default {
       this.setChild({ value: [child], save: true })
     },
 
-    getDataReport () {
+    async getDataReport () {
       if (this.selectedChild) {
-        this.getLastLessonChildren({ childId: this.selectedChild })
-          .then((result) => {
-            this.letterStats = result
-          })
+        this.letterStatsData = await this.getLastLessonChildren({ childId: this.selectedChild })
       }
     },
 
