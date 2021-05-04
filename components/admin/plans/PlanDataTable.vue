@@ -43,6 +43,7 @@
               :headers="headers"
               :items="plans"
               :loading="loading"
+              :no-show-delete="noShowDelete"
               :page.sync="page"
               @update:page="page = $event"
               @search="onSearch"
@@ -84,6 +85,7 @@ export default {
       plans: [],
       loading: false,
       search: null,
+      noShowDelete: true,
       page: 1,
       query: null,
       headers: [
