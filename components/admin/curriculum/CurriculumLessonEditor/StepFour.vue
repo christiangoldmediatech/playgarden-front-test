@@ -229,7 +229,7 @@ export default {
   methods: {
     ...mapActions('offline-worksheet-categories', [
       'getOfflineWorksheetCategories',
-      'getCategoriesWorksheetsOfflineByWorksheet'
+      'getCategoriesWorksheetsOfflineByWorksheetId'
     ]),
     ...mapActions('admin/curriculum/worksheet', [
       'createWorksheetByLessonId',
@@ -250,7 +250,7 @@ export default {
         })
         if (data.length) {
           this.draft = data[0]
-          this.categoriesSelected = await this.getCategoriesWorksheetsOfflineByWorksheet(this.draft.id)
+          this.categoriesSelected = await this.getCategoriesWorksheetsOfflineByWorksheetId(this.draft.id)
         }
       } catch (e) {
       } finally {
