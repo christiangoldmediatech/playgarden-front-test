@@ -1,5 +1,5 @@
 <template>
-  <v-card class="sticky" min-width="275">
+  <v-card min-width="275">
     <div class="green-line green-line-1" />
     <div class="green-line green-line-2" />
 
@@ -108,6 +108,11 @@ export default {
           route: 'app-student-cubby-patches'
         },
         {
+          text: 'PROGRESS REPORT',
+          img: 'progress.png',
+          route: 'app-progress-report'
+        },
+        {
           text: 'CURRICULUM',
           img: 'abc.png',
           route: 'app-student-cubby-course-progress'
@@ -116,11 +121,6 @@ export default {
           text: 'PORTFOLIO',
           img: 'group.png',
           route: 'app-student-cubby-student-portfolio'
-        },
-        {
-          text: 'PROGRESS REPORT',
-          img: 'progress.png',
-          route: 'app-progress-report'
         }
       ]
     }
