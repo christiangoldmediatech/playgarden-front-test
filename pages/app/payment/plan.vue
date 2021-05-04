@@ -33,20 +33,20 @@
               mdi-less-than
             </v-icon>
 
-            Go Back to lessons
+            Go Back to Lessons
           </v-btn>
         </v-col>
-        <v-col v-if="isTrialExpired" cols="12" class="text-center mt-4">
+        <v-col cols="12" class="text-center mt-4">
           <div>
             <underlined-title
-              text="YOUR TRIAL PERIOD HAS EXPIRED."
+              :text="isTrialExpired ? 'YOUR TRIAL PERIOD HAS EXPIRED.':'YOUR TRIAL PERIOD IS EXPIRING.'"
               font-size="38px"
               font-size-mobile="28px"
             />
           </div>
           <div class="py-3">
             <div class="text-h5 grey--text text--darken-2 font-weight-bold my-4">
-              Your last day was:
+              {{ isTrialExpired ? 'Your last day was:':'Your last day is:' }}
             </div>
             <underlined-title
               :text="lastDayOfTrial"
@@ -57,9 +57,17 @@
             />
           </div>
           <div class="mt-8 mb-4 text-body-1 text-md-h5 custom-max-width">
-            During your trial period, which ended on {{ lastDayOfTrial }}, you were able to experience all the features of the <span class="accent--text font-weight-bold">HOMESCHOOL</span> plan. After the trial period, you were automatically placed in the <span class="accent--text font-weight-bold">PREMIUM EDUCATION</span> monthly plan. You can stay in that plan, or you can choose now in which plan you want your little one to learn going forward.
+            During your trial period, which {{ isTrialExpired ? 'ended':'will end' }} on {{ lastDayOfTrial }}, you were able to experience all the features of the <span class="accent--text font-weight-bold">HOMESCHOOL</span> plan. After the trial period, you {{ isTrialExpired ? 'were':'will be' }} automatically placed in the <span class="accent--text font-weight-bold">PREMIUM EDUCATION</span> monthly plan. You can stay in that plan, or you can choose now in which plan you want your little one to learn going forward.
             As always, you can cancel your enrollment anytime by going to your Accounts Page.
           </div>
+          <v-btn
+            large
+            color="accent"
+            nuxt
+            :to="{ name: 'app-dashboard' }"
+          >
+            REMIND ME LATER
+          </v-btn>
         </v-col>
         <v-col cols="12" class="mt-8">
           <subscription-plan-selection
@@ -128,6 +136,9 @@ export default {
 
         await this.$store.dispatch('admin/users/setPlanChoosen')
         await this.$store.commit('notifications/SET_TRIAL_EXPIRING_RIBBON_VISIBLE', false)
+        await this.$router.push({
+          name: 'app-dashboard'
+        })
       } catch (e) {
       } finally {
       }

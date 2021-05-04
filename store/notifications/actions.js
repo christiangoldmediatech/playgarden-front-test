@@ -129,12 +129,12 @@ export default {
     const now = new Date()
 
     // user `trialEnd` is lower than the current day
-    const didTrialEnd = dayjs(now).diff(userInfo.trialEnd, 'days') >= oneDay
+    const didTrialEnd = dayjs(now).diff(userInfo.trialEnd, 'minutes') >= oneDay
 
     // we'll consider it a user that logged in before if the created date is greater than a day
-    const didLoginBefore = dayjs(now).diff(userInfo.createdAt, 'days') >= oneDay
+    const didLoginBefore = dayjs(now).diff(userInfo.createdAt, 'minutes') >= oneDay
 
-    const didChoosePlan = !!userInfo.planChoosen
+    const didChoosePlan = userInfo.planChoosen
 
     const subscription = userInfo.subscription
     const isSubscribedUser = subscription && subscription.status === 'active'
@@ -142,7 +142,7 @@ export default {
     const shouldShowExpiredModal =
       didTrialEnd &&
       didLoginBefore &&
-      !isSubscribedUser &&
+      isSubscribedUser &&
       !didChoosePlan
 
     if (shouldShowExpiredModal) {
