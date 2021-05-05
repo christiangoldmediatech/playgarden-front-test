@@ -54,6 +54,7 @@ export default {
   methods: {
     closeModal () {
       this.$store.commit('notifications/SET_IS_SHIPPING_MODAL_VISIBLE', false)
+      this.$store.dispatch('notifications/markShippingAddressModalAsSeen')
     }
   }
 }
