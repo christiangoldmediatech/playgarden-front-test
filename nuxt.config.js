@@ -1,6 +1,6 @@
 // import path from 'path'
 // import fs from 'fs'
-import { Integrations } from '@sentry/tracing'
+import { Integrations } from "@sentry/tracing"
 
 const baseRouteProd = '/school/'
 
