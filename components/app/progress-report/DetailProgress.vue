@@ -4,8 +4,8 @@
     class=" container"
     :class="{ 'ma-5': !$vuetify.breakpoint.xs }"
   >
-    <div v-if="!$vuetify.breakpoint.xs" class="container__image pt-10">
-      <center>
+    <div v-if="!$vuetify.breakpoint.xs" class="container__image">
+      <center class="mt-n12">
         <v-img :src="getIcon" class="ml-4 mt-4" />
         <div class="ml-7">
           <v-progress-linear class="mb-3" :value="(getDataCurrent.value === undefined) ? 0 : getDataCurrent.value" height="15" rounded color="accent" />
@@ -14,7 +14,7 @@
       </center>
     </div>
     <v-row v-else no-gutters>
-      <v-list-item>
+      <v-list-item class="mt-n6">
         <v-list-item-avatar class="mt-n8" size="66">
           <v-img :src="getIcon" />
         </v-list-item-avatar>

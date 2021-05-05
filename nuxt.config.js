@@ -245,6 +245,11 @@ export default {
           config.devtool = ctx.isClient ? 'source-map' : 'inline-source-map'
         }
       }
+    },
+    babel:{
+      plugins: [
+        ['@babel/plugin-proposal-private-methods', { loose: true }]
+      ]
     }
   },
   env: {
