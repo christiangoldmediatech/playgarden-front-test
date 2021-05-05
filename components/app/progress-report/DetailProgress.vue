@@ -160,15 +160,15 @@ export default {
 }
 
 .container {
-  padding: 20px 40px 40px;
+  padding: 20px 40px 40px !important;
   width: 100%;
   &__image {
-    width: 35%;
-    margin: 30px 30px 30px 0;
-    float: left;
+    width: 35% !important;
+    margin: 30px 30px 30px 0 !important;
+    float: left !important;
   }
   &__text {
-    display: inline;
+    display: inline !important;
   }
 }
 </style>
