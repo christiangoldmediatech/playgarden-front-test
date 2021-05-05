@@ -62,7 +62,8 @@ Cypress.Commands.add('headlessLoginAs', (user: 'parent' | 'admin') => {
 const tomorrow = Date.now() + 8.6e7
 
 Cypress.Commands.add('headlessChildrenFetch', () => {
-  const token = JSON.parse(window.localStorage.getItem('authToken'))
+  const tokenString = window.localStorage.getItem('authToken') || ''
+  const token = JSON.parse(tokenString)
 
   return cy.request({
     method: 'GET',
