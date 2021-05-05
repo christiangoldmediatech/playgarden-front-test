@@ -102,10 +102,16 @@
                 </v-col>
                 <v-col cols="12" md="5" lg="5" xl="5">
                   <v-card>
-                    <div class="pt-4 ml-4 mb-4">
-                      <underlined-title class="text-h6 text-md-h5 mt-4 mr-4" :text="letterStatsData.name" />
+                    <div v-if="loadLetterStatsData">
+                      <v-skeleton-loader v-bind="attrs" type="card-heading" />
+                      <v-skeleton-loader v-for="n in 5" :key="n" v-bind="attrs" type="list-item-avatar-three-line, list-item-one-line, divider" />
                     </div>
-                    <letter-stats :letter-stats="letterStatsData" />
+                    <template v-else>
+                      <div class="pt-4 ml-4 mb-4">
+                        <underlined-title class="text-h6 text-md-h5 mt-4 mr-4" :text="letterStatsData.name" />
+                      </div>
+                      <letter-stats :letter-stats="letterStatsData" />
+                    </template>
                   </v-card>
                 </v-col>
               </v-row>
@@ -172,6 +178,7 @@ export default {
     childMobile: '',
     selectedReportCard: 'General',
     optionDefaultMobile: 'General',
+    loadLetterStatsData: true,
     letterStatsData: {
       name: '',
       reports: []
@@ -256,6 +263,7 @@ export default {
     async getDataReport () {
       if (this.selectedChild) {
         this.letterStatsData = await this.getLastLessonChildren({ childId: this.selectedChild })
+        this.loadLetterStatsData = false
       }
     },
 
