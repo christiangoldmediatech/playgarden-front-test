@@ -121,7 +121,11 @@
                 <chart-report v-if="report" :report="report" />
               </v-col>
               <v-col cols="12">
-                <div>
+                <div v-if="loadLetterStatsData">
+                  <v-skeleton-loader v-bind="attrs" type="card-heading" />
+                  <v-skeleton-loader v-for="n in 5" :key="n" v-bind="attrs" type="list-item-avatar-three-line, list-item-one-line, divider" />
+                </div>
+                <div v-else>
                   <div class="pt-4 ml-4 mb-4">
                     <underlined-title class="text-h6 text-md-h5 mt-4 mr-4" :text="letterStatsData.name" />
                   </div>
@@ -227,8 +231,9 @@ export default {
   },
 
   watch: {
-    selectedChild (val, oldVal) {
-      this.getDataReport()
+    async selectedChild (val, oldVal) {
+      this.loadLetterStatsData = true
+      await this.getDataReport()
       this.childMobile = this.childrenList.find(child => child.id === val).firstName
     }
   },
@@ -273,9 +278,9 @@ export default {
       this.getDataGraphic()
     },
 
-    getDataGraphic () {
+    async getDataGraphic () {
       if (this.selectedChild) {
-        this.getGraphicByChildrenId({ childId: this.selectedChild })
+        await this.getGraphicByChildrenId({ childId: this.selectedChild })
       }
     },
 
