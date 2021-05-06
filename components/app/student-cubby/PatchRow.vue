@@ -62,7 +62,7 @@ export default {
 
   computed: {
     nextPatchToUnlock () {
-      return this.activityType.patches.find(patch => patch.unblocked === false) ?? {}
+      return this.activityType.patches.find(patch => patch.unblocked === false) || {}
     }
   },
 
