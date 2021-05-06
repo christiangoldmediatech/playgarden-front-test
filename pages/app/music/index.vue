@@ -1,5 +1,5 @@
 <template>
-  <v-main class="main-music-wrapper">
+  <v-main :style="mainWrapperStyle">
     <v-container fluid class="music-page-container pa-0" :class="pageContainerClasses">
       <v-card
         :style="playerCardStyle"
@@ -184,6 +184,13 @@ export default {
             ? '0px'
             : undefined
       }
+    },
+
+    mainWrapperStyle () {
+      return {
+        height: '100%',
+        'max-height': this.isMobile ? '100vh' : '1000px'
+      }
     }
   },
 
@@ -289,11 +296,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.main-music-wrapper {
-  max-height: 100vh;
-  height: 100%;
-}
-
 .music-page-container {
   height: 100%;
   position: relative;
