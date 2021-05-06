@@ -13,7 +13,7 @@ export const checkKeys = (obj, keys) => {
   }
 
   return keys.every((key) => {
-    return obj.hasOwnProperty(key)
+    return Object.prototype.hasOwnProperty.call(obj, key)
   })
 }
 
