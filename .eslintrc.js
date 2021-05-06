@@ -32,7 +32,6 @@ module.exports = {
     'no-mixed-operators': 2,
     'no-trailing-spaces': 2,
     'no-unreachable': 2,
-    'no-unused-vars': 2,
     'no-var': 2,
     'padded-blocks': ['error', 'never'],
     'padding-line-between-statements': 2,
@@ -134,6 +133,7 @@ module.exports = {
     eqeqeq: ['error', 'always'],
     quotes: ['error', 'single'],
     semi: ['error', 'never'],
+    'array-callback-return': 'off',
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': 'off'
   }
