@@ -1,7 +1,7 @@
 <template>
   <v-container
     fluid
-    class=" container"
+    class="container ml-n1"
     :class="{ 'ma-5': !$vuetify.breakpoint.xs }"
   >
     <div v-if="!$vuetify.breakpoint.xs" class="container__image">
@@ -26,7 +26,7 @@
         </v-list-item-content>
       </v-list-item>
     </v-row>
-    <div class="container__text">
+    <div class="container">
       <underlined-title class="text-h6 text-md-h3" :text="reportCardType" />
       <row class="mb-6 mr-6 mt-8">
         <p class="text-body-1 text-lg-h7 text-xl-h6 text-progress mt-4 pb-10" v-html="dataReportCardType.description" />
@@ -37,7 +37,7 @@
               <span :class="getClassColor">{{ getScale }}</span>
             </v-col>
 
-            <v-col cols="2" class="text-center text-sm-right pt-3">
+            <v-col cols="4" class="text-center text-sm-right pt-3">
               <span class="font-weight-bold text-h6 text-md-h4">{{ `${(getDataCurrent.value === undefined) ? 0 : getDataCurrent.value}%` }}</span>
             </v-col>
           </v-row>
@@ -160,15 +160,15 @@ export default {
 }
 
 .container {
-  padding: 20px 40px 40px;
+  padding: 20px 30px 40px !important;
   width: 100%;
   &__image {
-    width: 35%;
-    margin: 30px 30px 30px 0;
-    float: left;
+    width: 35% !important;
+    margin: 30px 30px 30px 0 !important;
+    float: left !important;
   }
   &__text {
-    display: inline;
+    display: inline !important;
   }
 }
 </style>

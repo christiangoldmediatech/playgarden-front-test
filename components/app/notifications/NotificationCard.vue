@@ -43,16 +43,32 @@ export default {
   },
 
   computed: {
-    ...mapState('notifications', ['notificationCard']),
+    ...mapState('notifications', [
+      'notificationCard',
+      'isTrialExpiringRibbonVisible',
+      'expiringRibbonHeightDesktop',
+      'expiringRibbonHeightMobile'
+    ]),
 
     hasAction () {
       return typeof this.notificationCard.action === 'function'
     },
 
+    topDistanceInPixels () {
+      const defaultTopValue = this.isMobile ? 56 : 100
+      const expiringRibbonHeight = this.isTrialExpiringRibbonVisible
+        ? this.isMobile
+          ? this.expiringRibbonHeightMobile
+          : this.expiringRibbonHeightDesktop
+        : 0
+
+      return defaultTopValue + expiringRibbonHeight
+    },
+
     cardStyles () {
       return {
         position: 'fixed',
-        top: this.isMobile ? '56px' : '100px',
+        top: `${this.topDistanceInPixels}px`,
         right: '0px',
         'z-index': 99
       }

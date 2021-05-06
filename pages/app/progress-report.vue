@@ -102,10 +102,16 @@
                 </v-col>
                 <v-col cols="12" md="5" lg="5" xl="5">
                   <v-card>
-                    <div class="pt-4 ml-4 mb-4">
-                      <underlined-title class="text-h6 text-md-h5 mt-4 mr-4" :text="letterStats.name" />
+                    <div v-if="loadLetterStatsData">
+                      <v-skeleton-loader v-bind="attrs" type="card-heading" />
+                      <v-skeleton-loader v-for="n in 5" :key="n" v-bind="attrs" type="list-item-avatar-three-line, list-item-one-line, divider" />
                     </div>
-                    <letter-stats :letter-stats="letterStats" />
+                    <template v-else>
+                      <div class="pt-4 ml-4 mb-4">
+                        <underlined-title class="text-h6 text-md-h5 mt-4 mr-4" :text="letterStatsData.name" />
+                      </div>
+                      <letter-stats :letter-stats="letterStatsData" />
+                    </template>
                   </v-card>
                 </v-col>
               </v-row>
@@ -115,11 +121,15 @@
                 <chart-report v-if="report" :report="report" />
               </v-col>
               <v-col cols="12">
-                <div>
+                <div v-if="loadLetterStatsData">
+                  <v-skeleton-loader v-bind="attrs" type="card-heading" />
+                  <v-skeleton-loader v-for="n in 5" :key="n" v-bind="attrs" type="list-item-avatar-three-line, list-item-one-line, divider" />
+                </div>
+                <div v-else>
                   <div class="pt-4 ml-4 mb-4">
-                    <underlined-title class="text-h6 text-md-h5 mt-4 mr-4" :text="letterStats.name" />
+                    <underlined-title class="text-h6 text-md-h5 mt-4 mr-4" :text="letterStatsData.name" />
                   </div>
-                  <letter-stats :letter-stats="letterStats" />
+                  <letter-stats :letter-stats="letterStatsData" />
                 </div>
               </v-col>
             </v-row>
@@ -172,7 +182,8 @@ export default {
     childMobile: '',
     selectedReportCard: 'General',
     optionDefaultMobile: 'General',
-    letterStats: {
+    loadLetterStatsData: true,
+    letterStatsData: {
       name: '',
       reports: []
     }
@@ -220,8 +231,9 @@ export default {
   },
 
   watch: {
-    selectedChild (val, oldVal) {
-      this.getDataReport()
+    async selectedChild (val, oldVal) {
+      this.loadLetterStatsData = true
+      await this.getDataReport()
       this.childMobile = this.childrenList.find(child => child.id === val).firstName
     }
   },
@@ -253,12 +265,10 @@ export default {
       this.setChild({ value: [child], save: true })
     },
 
-    getDataReport () {
+    async getDataReport () {
       if (this.selectedChild) {
-        this.getLastLessonChildren({ childId: this.selectedChild })
-          .then((result) => {
-            this.letterStats = result
-          })
+        this.letterStatsData = await this.getLastLessonChildren({ childId: this.selectedChild })
+        this.loadLetterStatsData = false
       }
     },
 
@@ -268,9 +278,9 @@ export default {
       this.getDataGraphic()
     },
 
-    getDataGraphic () {
+    async getDataGraphic () {
       if (this.selectedChild) {
-        this.getGraphicByChildrenId({ childId: this.selectedChild })
+        await this.getGraphicByChildrenId({ childId: this.selectedChild })
       }
     },
 
