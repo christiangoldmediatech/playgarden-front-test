@@ -85,5 +85,68 @@ export default {
         }, { root: true })
       }
     }
+  },
+
+  /**
+   * When should we show the user the trial expiring ribbon?
+   * - There are 3 or less days of trial available
+   */
+  checkIfShouldShowTrialExpiringRibbon ({ commit, rootGetters }) {
+    const isUserLoggedIn = rootGetters['auth/isUserLoggedIn']
+
+    if (!isUserLoggedIn) {
+      return
+    }
+
+    const userInfo = rootGetters['auth/getUserInfo']
+    const now = new Date()
+    const dayInMinutes = 1440
+    const threeDays = dayInMinutes * 3
+    const timeLeft = dayjs(userInfo.trialEnd).diff(now, 'minute')
+
+    if (timeLeft > 0 && timeLeft <= threeDays) {
+      commit('notifications/SET_TRIAL_EXPIRING_RIBBON_VISIBLE', true, { root: true })
+    }
+  },
+
+  /**
+   * When should we show the user the trial expired modal?
+   * - The user `trial_end` is lower than the current day,
+   * - only one time, the next time they enter the platform,
+   * - they are not a subscribed user and,
+   * - they did not select a plan before
+   */
+  checkIfShouldShowTrialExpiredModal ({ commit, rootGetters }) {
+    const isUserLoggedIn = rootGetters['auth/isUserLoggedIn']
+
+    if (!isUserLoggedIn) {
+      return
+    }
+
+    const userInfo = rootGetters['auth/getUserInfo']
+
+    const oneDay = 1
+    const now = new Date()
+
+    // user `trialEnd` is lower than the current day
+    const didTrialEnd = dayjs(now).diff(userInfo.trialEnd, 'minutes') >= oneDay
+
+    // we'll consider it a user that logged in before if the created date is greater than a day
+    const didLoginBefore = dayjs(now).diff(userInfo.createdAt, 'minutes') >= oneDay
+
+    const didChoosePlan = userInfo.planChoosen
+
+    const subscription = userInfo.subscription
+    const isSubscribedUser = subscription && subscription.status === 'active'
+
+    const shouldShowExpiredModal =
+      didTrialEnd &&
+      didLoginBefore &&
+      isSubscribedUser &&
+      !didChoosePlan
+
+    if (shouldShowExpiredModal) {
+      commit('notifications/SET_TRIAL_EXPIRED_MODAL_VISIBLE', true, { root: true })
+    }
   }
 }

@@ -1,25 +1,33 @@
 <template>
   <v-app>
     <template v-if="showContent">
+      <!-- TRIAL EXPIRING RIBBON -->
+      <trial-is-expiring v-if="isTrialExpiringRibbonVisible" @expired="handleExpiredTrialCoundown" />
+
       <coming-soon-player />
+
       <!-- APP MAV & BAR -->
       <app-navigation />
 
-      <application-header />
+      <application-header :style="toolbarStyle" />
 
       <!-- NOTIFICATION CARD -->
       <notification-card />
+
       <!-- SHIPPING NOTIFICATION MODAL -->
       <shipping-address-modal />
 
+      <!-- TRIAL EXPIRED MODAL -->
+      <trial-expired-modal />
+
       <!-- CONTENT -->
       <v-main v-if="!fullWidth">
-        <v-container class="pa-md-3 pa-0" fill-height>
+        <v-container class="pa-md-3 pa-0" fill-height :style="contentStyle">
           <nuxt />
         </v-container>
       </v-main>
 
-      <nuxt v-else />
+      <nuxt v-else :style="contentStyle" />
 
       <!-- FOOTER -->
       <default-footer />
@@ -51,6 +59,8 @@ import ComingSoonPlayer from '@/components/app/ComingSoonPlayer.vue'
 import DefaultFooter from '@/components/app/footer/DefaultFooter'
 import NotificationCard from '@/components/app/notifications/NotificationCard'
 import ShippingAddressModal from '~/components/app/payment/ShippingAddressModal.vue'
+import TrialExpiredModal from '~/components/app/payment/TrialExpiredModal.vue'
+import TrialIsExpiring from '~/components/app/header/TrialIsExpiring.vue'
 
 export default {
   name: 'Default',
@@ -62,7 +72,9 @@ export default {
     ComingSoonPlayer,
     DefaultFooter,
     NotificationCard,
-    ShippingAddressModal
+    ShippingAddressModal,
+    TrialExpiredModal,
+    TrialIsExpiring
   },
 
   data: () => ({
@@ -75,8 +87,30 @@ export default {
 
     ...mapState(['fullWidthPages', 'showContent']),
 
+    ...mapState('notifications', ['isTrialExpiringRibbonVisible', 'expiringRibbonHeightDesktop', 'expiringRibbonHeightMobile']),
+
     fullWidth () {
       return this.fullWidthPages[this.$route.name]
+    },
+
+    isMobile () {
+      return this.$vuetify.breakpoint.mobile
+    },
+
+    topDistanceInPixels () {
+      return this.isMobile ? this.expiringRibbonHeightMobile : this.expiringRibbonHeightDesktop
+    },
+
+    toolbarStyle () {
+      return {
+        top: this.isTrialExpiringRibbonVisible ? `${this.topDistanceInPixels}px !important` : '0px'
+      }
+    },
+
+    contentStyle () {
+      return {
+        'margin-top': this.isTrialExpiringRibbonVisible ? `${this.topDistanceInPixels}px !important` : '0px'
+      }
     }
   },
 
@@ -86,6 +120,8 @@ export default {
       async handler (v) {
         if (v === true && this.$route.name !== 'shared-slug') {
           await this.checkIfShouldSendShippingAddressNotification()
+          await this.checkIfShouldShowTrialExpiredModal()
+          await this.checkIfShouldShowTrialExpiringRibbon()
         }
       }
     },
@@ -108,7 +144,11 @@ export default {
   },
 
   methods: {
-    ...mapActions('notifications', ['checkIfShouldSendShippingAddressNotification']),
+    ...mapActions('notifications', [
+      'checkIfShouldSendShippingAddressNotification',
+      'checkIfShouldShowTrialExpiredModal',
+      'checkIfShouldShowTrialExpiringRibbon'
+    ]),
 
     showVerifyEmailToast () {
       if (
@@ -132,6 +172,10 @@ export default {
           }
         )
       }
+    },
+
+    handleExpiredTrialCoundown () {
+      this.$router.push({ name: 'app-payment-plan' })
     }
   }
 }

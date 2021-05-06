@@ -3,96 +3,70 @@
     <v-col cols="12">
       <validation-observer v-slot="{ invalid, passes }">
         <v-form @submit.prevent="passes(onSubmit)">
-          <!-- Plan -->
-          <v-row justify="center">
-            <div>
-              <p
-                class="font-weight-bold mb-6 text-center text-h5 text-md-left"
-              >
-                {{ updating ? "UPDATE" : "CHOOSE YOUR" }} PLAN
-              </p>
-
-              <p class="product-info px-2">
-                *You will not be charged until the end of the 30 DAY TRIAL period and you can cancel anytime.<br>
-              </p>
-
-              <p class="plan-announcement px-2">
-                <img src="@/assets/svg/confetti.svg" width="24px" height="24px"> Live Enrichment Classes and Playdates included with <span class="highlight">Standard</span> and <span class="highlight">Premium</span> Plans FOR A LIMITED TIME <img class="flip-image" src="@/assets/svg/confetti.svg" width="24px" height="24px">
-              </p>
-            </div>
-          </v-row>
-
+          <!-- Green Background Ribbon -->
+          <div class="d-md-block d-none primary py-16 mx-n3" />
+          <!-- Desktop Plan Selection -->
           <v-row
-            v-if="$vuetify.breakpoint.mdAndUp"
             class="mx-n3"
             justify="center"
+            align="start"
             no-gutters
+            :style="plansStyle"
           >
+            <!-- Contact Us Text -->
+            <v-col
+              cols="12"
+              class="mx-0 mx-md-4 mb-8 my-md-8 text-center text-h6 font-weight-bold"
+              order="0"
+              order-md="4"
+            >
+              <span class="grey--text">Need help? </span>
+              <span class="text-decoration-underline" @click="handleContactUs">
+                <a class="accent--text">Contact us</a>
+              </span>
+            </v-col>
+            <!-- Plan Card -->
             <v-col
               v-for="(plan, indexP) in plans"
               :key="indexP"
-              :class="`${
-                indexP === 1
-                  ? 'c-col elevation-3 mx-md-3 card-plan'
-                  : 'c-col elevation-3 mx-md-3 pa-3 card-plan mt-10'
-              }`"
+              :class="planCardClasses(indexP)"
+              :order="indexP + 1"
             >
+              <!-- Most Popular Chip -->
               <div v-show="indexP === 1" class="text-right">
                 <v-chip class="most-popular" label>
                   Most Popular
                 </v-chip>
               </div>
-              <div>
-                <p
-                  :class="`${
-                    indexP === 1
-                      ? 'plan-name text-center mt-0'
-                      : 'plan-name text-center mt-10'
-                  }`"
-                >
+              <div class="px-4 px-md-8">
+                <!-- Plan Name -->
+                <p :class="planNameClasses(indexP)">
                   <v-chip
                     color="orange"
-                    class="text-orange-info mb-8 py-4"
+                    class="text-orange-info mb-8 pa-5"
                     label
                   >
                     {{ getTypePlan(indexP) }}
                   </v-chip>
                   <br>
                   <underlined-title
-                    font-size="30px"
-                    :line-from="65"
+                    font-size="32px"
+                    font-size-mobile="28px"
+                    :line-from="45"
                     :text="plan.name"
                   />
                 </p>
-
-                <p
-                  :class="`${
-                    indexP === 1
-                      ? 'text-center mt-5 plan-included'
-                      : 'text-center mt-6 plan-included'
-                  }`"
-                >
-                  <label class="font-weight-bold">What's included</label>
-                  <!-- <br>
-                      <span
-                        v-if="indexP === 1"
-                        class="info-prodcut-detail"
-                      >Everything in the SILVER Plan,
-                        <span class="font-weight-bold">plus extra!</span></span>
-                      <span
-                        v-if="indexP === 2"
-                        class="info-prodcut-detail"
-                      >Everything in the GOLD Plan,
-                        <span class="font-weight-bold">plus extra!</span></span> -->
+                <!-- What's Included -->
+                <p class="text-left mt-6 plan-included">
+                  <label class="grey--text text--darken-2 font-weight-bold">What's included</label>
                 </p>
 
                 <plan-description
                   :plan="plan"
                   :index-plan="indexP"
-                  class="ml-8 mr-8"
                 />
-
-                <p class="text-center">
+                <!-- Price -->
+                <p class="text-center mt-8">
                   <span class="product-price">
                     ${{ (plan.priceAnnual / 12).toFixed(2) }}
                   </span>
@@ -112,7 +86,7 @@
                   >Billed Annually (Save ~$1,200)</span>
                 </p>
               </div>
-
+              <!-- Call Us To Enroll Text -->
               <div v-if="indexP === 2" class="mb-6">
                 <div class="enroll-text">
                   Call us to enroll
@@ -121,220 +95,47 @@
                   Limited Availability
                 </div>
               </div>
-              <validation-provider v-else v-slot="{ errors }" name="Plan" rules="required">
-                <v-radio-group
-                  v-model="radioGroup"
-                  class="ma-0 pa-0"
-                  :disabled="loading"
-                  :error-messages="errors"
-                  :loading="loading"
-                >
-                  <radio-selectors
-                    v-model="draft"
-                    :plan="plan"
-                    :index-plan="indexP"
-                    :class="`${indexP === 1 ? 'mb-9 px-6' : 'mb-6 px-6'}`"
-                  />
-                </v-radio-group>
-              </validation-provider>
-            </v-col>
-          </v-row>
 
-          <v-row v-else no-gutters>
-            <v-col
-              v-for="(plan, indexP) in plans"
-              :key="indexP"
-              class="my-3"
-              cols="12"
-            >
-              <v-expansion-panels :value="0">
-                <v-expansion-panel>
-                  <v-expansion-panel-header>
-                    <div class="text-center">
-                      <v-chip
-                        color="orange"
-                        class="text-orange-info mb-3 py-4"
-                        label
-                      >
-                        {{ getTypePlan(indexP) }}
-                      </v-chip>
-
-                      <br>
-
-                      <underlined-title
-                        font-size="18px"
-                        :line-from="65"
-                        :text="plan.name"
-                      />
-                    </div>
-                  </v-expansion-panel-header>
-
-                  <v-expansion-panel-content class="pa-0 ma-0">
-                    <plan-description :plan="plan" :index-plan="indexP" />
-                  </v-expansion-panel-content>
-                  <div v-if="indexP === 2" class="mb-6">
-                    <div class="enroll-text">
-                      Call us to enroll
-                    </div>
-                    <div class="limited-text">
-                      Limited Availability
-                    </div>
-                  </div>
-                  <validation-provider v-else v-slot="{ errors }" name="Plan" rules="required">
+              <template v-else>
+                <!-- Radio Button Selection -->
+                <div class="d-flex justify-center">
+                  <validation-provider v-slot="{ errors }" name="Plan" rules="required">
                     <v-radio-group
                       v-model="radioGroup"
-                      class="ma-0 pa-0"
                       :disabled="loading"
                       :error-messages="errors"
                       :loading="loading"
                     >
                       <radio-selectors
                         v-model="draft"
-                        class="mb-6 px-6"
                         :plan="plan"
                         :index-plan="indexP"
+                        :class="`${indexP === 1 ? 'mb-9 px-6' : 'mb-6 px-6'}`"
                       />
                     </v-radio-group>
                   </validation-provider>
-                </v-expansion-panel>
-              </v-expansion-panels>
+                </div>
+                <!-- Choose Plan Button -->
+                <div class="d-flex justify-center mb-8">
+                  <v-btn
+                    large
+                    class="text-none"
+                    color="accent"
+                    width="250px"
+                    :disabled="invalid"
+                    type="submit"
+                  >
+                    Choose Plan
+                  </v-btn>
+                </div>
+              </template>
+              <div v-if="planHasPromotions(plan)" class="text-center px-2 mb-12">
+                <span class="body-2 accent--text font-weight-bold">
+                  *Activities unlocked for current promotion period, normally available for Homeschool Plan only
+                </span>
+              </div>
             </v-col>
           </v-row>
-
-          <v-row
-            v-if="!noAddress"
-            class="shipping flex-md-row mt-8"
-            justify="center"
-            no-gutters
-          >
-            <v-col class="px-md-6">
-              <p class="text-center text-md-justify">
-                <span
-                  class="font-weight-bold text-h5 pg-letter-spacing text-center text-md-justify"
-                >
-                  SHIPPING ADDRESS
-                </span>
-                <br>
-                <span class="text-h8">
-                  For our PREMIUM and PREMIUM PLUS plans, we require a shipping address in order to send the Welcome Kit with Backpack, workbooks, and additional materials so you can easily receive them at the comfort of your home.
-                </span>
-              </p>
-
-              <!-- Street 1 -->
-              <validation-provider
-                v-slot="{ errors }"
-                name="Street 1"
-                rules="required"
-              >
-                <pg-text-field
-                  v-model="draftAddress.address1"
-                  clearable
-                  :disabled="loading"
-                  :error-messages="errors"
-                  :loading="loading"
-                  placeholder="Street 1"
-                  solo
-                />
-              </validation-provider>
-
-              <!-- Street 2 -->
-              <pg-text-field
-                v-model="draftAddress.address2"
-                clearable
-                :disabled="loading"
-                :loading="loading"
-                placeholder="Street 2 (optional)"
-                solo
-              />
-
-              <!-- City -->
-              <validation-provider
-                v-slot="{ errors }"
-                name="City"
-                rules="required"
-              >
-                <pg-text-field
-                  v-model="draftAddress.city"
-                  clearable
-                  :disabled="loading"
-                  :error-messages="errors"
-                  :loading="loading"
-                  placeholder="City"
-                  solo
-                />
-              </validation-provider>
-
-              <v-row no-gutters>
-                <v-col class="pr-3" cols="6">
-                  <!-- State -->
-                  <validation-provider
-                    v-slot="{ errors }"
-                    name="State"
-                    rules="required"
-                  >
-                    <pg-text-field
-                      v-model="draftAddress.state"
-                      clearable
-                      :disabled="loading"
-                      :error-messages="errors"
-                      :loading="loading"
-                      placeholder="State"
-                      solo
-                    />
-                  </validation-provider>
-                </v-col>
-
-                <v-col class="pl-3" cols="6">
-                  <!-- Zip code -->
-                  <validation-provider
-                    v-slot="{ errors }"
-                    name="Zip code"
-                    rules="required"
-                  >
-                    <pg-text-field
-                      v-model="draftAddress.zipCode"
-                      clearable
-                      :disabled="loading"
-                      :error-messages="errors"
-                      :loading="loading"
-                      placeholder="Zip code"
-                      solo
-                    />
-                  </validation-provider>
-                </v-col>
-              </v-row>
-            </v-col>
-          </v-row>
-
-          <v-row justify="center" no-gutters>
-            <v-col cols="12" sm="6">
-              <v-btn
-                block
-                color="warning"
-                class="my-6 main-btn"
-                :disabled="invalid"
-                :loading="loading"
-                type="submit"
-                x-large
-              >
-                {{ noPayment ? "SAVE" : "NEXT" }}
-              </v-btn>
-
-              <v-btn
-                v-if="updating"
-                block
-                class="mb-6 main-btn"
-                color="primary"
-                :disabled="invalid"
-                :loading="loading"
-                text
-                x-large
-                @click="$emit('click:cancel')"
-              >
-                CLOSE
-              </v-btn>
-            </v-col>
-          </v-row>.
         </v-form>
       </validation-observer>
     </v-col>
@@ -385,10 +186,23 @@ export default {
     productPrice: 324,
     loading: false,
     initialized: false,
-    radioGroup: null
+    radioGroup: null,
+    bkgColor: '#BDDA9F'
   }),
 
-  computed: mapGetters('auth', ['isUserLoggedIn']),
+  computed: {
+    ...mapGetters('auth', ['isUserLoggedIn']),
+
+    isMobile () {
+      return this.$vuetify.breakpoint.mobile
+    },
+
+    plansStyle () {
+      return {
+        'margin-top': this.isMobile ? '0px' : '-90px !important'
+      }
+    }
+  },
 
   async created () {
     await this.fetchPlans()
@@ -398,7 +212,6 @@ export default {
 
     if (this.isUserLoggedIn) {
       await this.getPlan()
-      await this.fetchAddress()
     }
 
     if (this.loadPlan) {
@@ -408,12 +221,6 @@ export default {
 
   methods: {
     ...mapActions(['disableAxiosGlobal', 'enableAxiosGlobal']),
-
-    ...mapActions('shipping-address', [
-      'createShippingAddress',
-      'getShippingAddress',
-      'updateShippingAddress'
-    ]),
 
     ...mapActions('payment', [
       'getSelectedSubscriptionPlan',
@@ -436,16 +243,6 @@ export default {
           break
       }
       return plan
-    },
-
-    async fetchAddress () {
-      try {
-        this.disableAxiosGlobal()
-        this.draftAddress = await this.getShippingAddress()
-      } catch (e) {
-      } finally {
-        this.enableAxiosGlobal()
-      }
     },
 
     async getPlan () {
@@ -500,10 +297,6 @@ export default {
       this.loading = true
 
       try {
-        if (!this.noAddress) {
-          await this.submitMethodShippingAddress(this.draftAddress)
-        }
-
         await this.selectSubscriptionPlan(this.getSubmittableData())
 
         this.$snotify.success('Payment plan has been selected successfully!')
@@ -520,12 +313,6 @@ export default {
       }
     },
 
-    submitMethodShippingAddress (data) {
-      return this.draftAddress.id
-        ? this.updateShippingAddress({ id: this.draftAddress.id, data })
-        : this.createShippingAddress(data)
-    },
-
     resetDraft () {
       this.draft = {
         id: null,
@@ -540,6 +327,35 @@ export default {
         state: null,
         zipCode: null
       }
+    },
+
+    planCardClasses (index) {
+      return {
+        'c-col mx-md-3 card-plan white': true,
+        'mt-md-10': index !== 1,
+        'mx-2 my-4': this.isMobile
+      }
+    },
+
+    planNameClasses (index) {
+      return {
+        'plan-name text-center': true,
+        'mt-11': index !== 1,
+        'mt-13': index === 1
+      }
+    },
+
+    handleContactUs () {
+      window.open('https://playgardenonline.com/#contact-us', '_self')
+    },
+
+    planHasPromotions (plan) {
+      return (
+        plan &&
+        plan.homeDeliveryBenefits &&
+        Array.isArray(plan.homeDeliveryBenefits.promotions) &&
+        plan.homeDeliveryBenefits.promotions.length > 0
+      )
     }
   }
 }
@@ -548,7 +364,6 @@ export default {
 <style lang="scss" scoped>
 .c-col {
   align-content: space-between;
-  display: grid;
 }
 
 .plan-item {
@@ -576,6 +391,8 @@ export default {
 }
 
 .card-plan {
+  box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.27) !important;
+  border-radius: 5px !important;
   max-width: 350px;
   @media screen and (min-width: 1264px) {
     max-width: 426px;
@@ -586,7 +403,7 @@ export default {
 }
 
 .text-orange-info::v-deep.v-chip--label {
-  border-radius: 0px !important;
+  border-radius: 3px !important;
 }
 .most-popular::v-deep.v-chip .v-chip__content {
   color: #ff8000 !important;
@@ -594,21 +411,24 @@ export default {
 }
 .most-popular::v-deep.v-chip--label {
   font-weight: bold;
+  font-size: 16px;
+  padding: 15px 30px;
   color: var(--v-white-base) !important;
   border-radius: 0px !important;
   background: rgba(255, 163, 72, 0.35);
 }
 .product-price {
-  font-size: 38px !important;
+  font-size: 40px !important;
   color: var(--v-black-base) !important;
   font-weight: bold;
 }
 .info-prodcut-detail {
-  font-size: 11px;
+  font-size: 12px;
 }
 .product-month {
+  color: var(--v-black-base) !important;
   font-weight: bold;
-  font-size: 28px !important;
+  font-size: 30px !important;
 }
 .plan-name {
   min-height: 125px;
@@ -634,10 +454,6 @@ export default {
     transform: scaleX(-1);
   }
 }
-.shipping {
-  max-width: 830px;
-  margin: 0 auto;
-}
 .enroll-text {
   font-size: 24px;
   line-height: 1.5;
@@ -645,7 +461,7 @@ export default {
   text-align: center;
   color: var(--v-accent-base);
   @media screen and (min-width: 960px) {
-    font-size: 40px;
+    font-size: 32px;
   }
 }
 .limited-text {
@@ -654,7 +470,11 @@ export default {
   font-weight: 400;
   text-align: center;
   @media screen and (min-width: 960px) {
-    font-size: 24px;
+    font-size: 20px;
   }
+}
+.v-btn:not(.v-btn--text) {
+  font-size: 18px;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16) !important;
 }
 </style>
