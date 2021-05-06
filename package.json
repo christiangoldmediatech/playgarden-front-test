@@ -12,7 +12,7 @@
     "start": "nuxt start",
     "export": "nuxt export",
     "serve": "nuxt serve",
-    "lint:js": "eslint --ext .js,.ts,.vue --ignore-path .gitignore .",
+    "lint:js": "eslint --ext .js,.ts,.vue --ignore-path .eslintignore .",
     "lint": "yarn lint:js",
     "test": "jest",
     "cy:open": "cypress open",
