@@ -8,12 +8,8 @@ module.exports = {
     chrome: true,
     cast: true
   },
-  parserOptions: {
-    parser: 'babel-eslint'
-  },
   extends: [
-    '@nuxtjs',
-    'plugin:nuxt/recommended'
+    '@nuxtjs/eslint-config-typescript'
   ],
   plugins: [
   ],
@@ -137,6 +133,8 @@ module.exports = {
     camelcase: 2,
     eqeqeq: ['error', 'always'],
     quotes: ['error', 'single'],
-    semi: ['error', 'never']
+    semi: ['error', 'never'],
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': 'off'
   }
 }
