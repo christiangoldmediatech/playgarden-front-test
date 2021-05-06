@@ -151,7 +151,7 @@
                                 Edit Shipping Address
                               </v-list-item-title>
                             </v-list-item>
-                            <v-divider v-if="billing.stripeStatus !== 'canceled'"></v-divider>
+                            <v-divider v-if="billing.stripeStatus !== 'canceled'" />
                             <v-list-item v-if="billing.stripeStatus !== 'canceled'" class="clickable">
                               <v-list-item-title @click="remove">
                                 <v-icon color="red" dense>

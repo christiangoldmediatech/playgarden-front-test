@@ -23,5 +23,5 @@ export const checkKeys = (obj, keys) => {
  * @param {*} b
  */
 export const deepEqual = (a, b) => {
-  return JSON.stringify(a) === JSON.stringify(b);
+  return JSON.stringify(a) === JSON.stringify(b)
 }

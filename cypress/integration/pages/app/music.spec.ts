@@ -2,7 +2,7 @@ describe('/app/music', () => {
   before(() => {
     cy.headlessLoginAs('parent')
 
-    cy.headlessChildrenFetch().then(children => {
+    cy.headlessChildrenFetch().then((children) => {
       cy.headlessChildSelect(children[0].id)
 
       cy.visit('/app/dashboard')
@@ -43,11 +43,11 @@ describe('/app/music', () => {
 
       cy.get('.snotifyToast__body').should('have.text', 'Song removed from favorites')
     }
-    
+
     describe('favorite button', () => {
       it('only shows favorite songs when toggled', () => {
         // remove all songs from favorites
-        cy.get('[data-test-id=song-card-favorite-button]').each($button => {
+        cy.get('[data-test-id=song-card-favorite-button]').each(($button) => {
           if ($button.hasClass('pink--text')) {
             removeSongFromFavorite($button)
           }
@@ -60,7 +60,7 @@ describe('/app/music', () => {
 
       it('shows all songs when toggled', () => {
         // add all songs to favorites
-        cy.get('[data-test-id=song-card-favorite-button]').each($button => {
+        cy.get('[data-test-id=song-card-favorite-button]').each(($button) => {
           if (!$button.hasClass('pink--text')) {
             addSongToFavorite($button)
           }
@@ -77,7 +77,7 @@ describe('/app/music', () => {
         // clicks on List View toggle
         cy.get('[data-test-id=list-view-button]').click({ force: true })
 
-        cy.get('[data-test-id=song-card-favorite-button]').first().then($button => {
+        cy.get('[data-test-id=song-card-favorite-button]').first().then(($button) => {
           if ($button.hasClass('pink--text')) {
             removeSongFromFavorite($button)
             cy.wait(2000).then(() => {
@@ -98,7 +98,7 @@ describe('/app/music', () => {
         // clicks on Letter View toggle
         cy.get('[data-test-id=letter-view-button]').click({ force: true })
 
-        cy.get('[data-test-id=letter-song-favorite-button]').first().then($button => {
+        cy.get('[data-test-id=letter-song-favorite-button]').first().then(($button) => {
           if ($button.hasClass('pink--text')) {
             removeSongFromFavorite($button)
             cy.wait(2000).then(() => {
@@ -125,7 +125,7 @@ describe('/app/music', () => {
         // starts playing a song to show the music player
         cy.get('[data-test-id=song-card]').first().click({ force: true })
 
-        cy.get('[data-test-id=music-player-favorite-button').then($button => {
+        cy.get('[data-test-id=music-player-favorite-button').then(($button) => {
           if ($button.hasClass('pink--text')) {
             removeSongFromFavorite($button)
             cy.wait(2000).then(() => {
