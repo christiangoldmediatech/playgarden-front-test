@@ -39,7 +39,7 @@
               mdi-heart
             </v-icon>
           </div>
-          <p class="song-description mb-0 pa-2">
+          <p class="song-description mb-0 pa-2 d-flex align-center">
             {{ song.description }}
           </p>
           <div class="d-flex justify-space-between song-name pa-2">
@@ -187,6 +187,7 @@ export default {
     font-size: 18px;
     font-weight: 700;
     color: #606060 !important;
+    height: 60px;
   }
   &-name {
     font-size: 16px;
