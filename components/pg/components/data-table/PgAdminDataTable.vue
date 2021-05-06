@@ -77,6 +77,7 @@
       </component>
 
       <component
+        v-if="!props.noShowDelete"
         :is="$options.components.VIcon"
         color="#d30909"
         dense
