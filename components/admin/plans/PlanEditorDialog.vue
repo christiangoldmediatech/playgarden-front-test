@@ -55,8 +55,6 @@
                       clearable
                       hide-details
                       :items="plamNameList"
-                      item-text="name"
-                      item-value="value"
                       label="Plan Name"
                       :error-messages="errors"
                       solo-labeled
@@ -142,20 +140,7 @@ export default {
         benefits: [],
         promotions: []
       },
-      plamNameList: [
-        {
-          value: 'SILVER',
-          name: 'SILVER'
-        },
-        {
-          value: 'GOLD',
-          name: 'GOLD'
-        },
-        {
-          value: 'PLATINUM',
-          name: 'PLATINUM'
-        }
-      ],
+      plamNameList: ['SILVER', 'GOLD', 'PLATINUM'],
       id: null,
       item: generateItemTemplate()
     }

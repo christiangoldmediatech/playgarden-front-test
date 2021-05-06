@@ -5,29 +5,11 @@
         <v-card width="100%">
           <v-card-title>
             Plans
-
             <v-spacer />
-
-            <v-btn
-              class="mr-2 text-none"
-              color="primary darken-1"
-              dark
-              :icon="$vuetify.breakpoint.xs"
-              @click.stop="$refs.editor.open"
-            >
-              <v-icon class="hidden-sm-and-up">
-                mdi-plus-circle
-              </v-icon>
-
-              <v-icon class="hidden-xs-only" small>
-                mdi-plus
-              </v-icon>
-              <span class="hidden-xs-only white--text">Add new plan</span>
-            </v-btn>
           </v-card-title>
 
           <v-card-text>
-            View, create, update, or delete coupons.
+            Update plans.
           </v-card-text>
         </v-card>
       </v-col>

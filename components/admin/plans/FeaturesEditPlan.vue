@@ -18,10 +18,9 @@
             name="Value"
             rules="required"
           >
-            <pg-textarea
+            <pg-text-field
               v-model="feature.value"
               :error-messages="errors"
-              rows="2"
               label="Value"
               solo-labeled
             />
