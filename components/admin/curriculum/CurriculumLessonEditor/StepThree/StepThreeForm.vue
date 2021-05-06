@@ -350,12 +350,16 @@ export default {
     },
 
     submitMatchingMethod (data) {
-      return this.editing
-        ? this.updateMatchingImage({
-          id: this.resource.worksheetId,
-          data
-        })
-        : this.createMatchingImage(data)
+      try {
+        return this.editing
+          ? this.updateMatchingImage({
+            id: this.resource.worksheetId,
+            data
+          })
+          : this.createMatchingImage(data)
+      } catch (e) {
+        this.$snotify.error('Error on your card information.')
+      }
     }
   }
 }

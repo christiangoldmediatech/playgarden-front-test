@@ -134,7 +134,7 @@ export default {
           result = await this.handleFileUpload()
         }
       } catch (error) {
-        console.log(error)
+        this.$snotify.error('Error on your card information.')
         return Promise.reject(error)
       }
 

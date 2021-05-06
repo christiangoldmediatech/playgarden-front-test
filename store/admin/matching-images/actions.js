@@ -1,6 +1,10 @@
 export default {
   createMatchingImage (_, data) {
-    return this.$axios.$post('/matching-images', data)
+    try {
+      return this.$axios.$post('/matching-images', data)
+    } catch (e) {
+      return Promise.reject(e)
+    }
   },
 
   deleteMatchingImage (_, id) {
@@ -16,6 +20,10 @@ export default {
   },
 
   updateMatchingImage (_, { id, data }) {
-    return this.$axios.$patch(`/matching-images/${id}`, data)
+    try {
+      return this.$axios.$patch(`/matching-images/${id}`, data)
+    } catch (e) {
+      return Promise.reject(e)
+    }
   }
 }
