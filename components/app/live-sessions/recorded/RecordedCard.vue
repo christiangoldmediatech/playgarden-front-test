@@ -1,6 +1,6 @@
 <template>
   <v-hover v-slot="{ hover }">
-    <v-card class="recorded-card clickable" :class="{ 'recorded-card-scaled': hover }" @click="openLink">
+    <v-card class="recorded-card clickable mx-4 mx-md-0" :class="{ 'recorded-card-scaled': hover }" @click="openLink">
       <img
         v-if="entry.inCollaborationWith"
         class="recorded-card-sponsor"
@@ -67,7 +67,6 @@ export default {
 
 <style lang="scss">
 .recorded-card {
-  width: 100%;
   height: 260px;
   max-height: 260px;
   overflow: hidden;
