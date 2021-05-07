@@ -20,7 +20,7 @@
           <v-img
             alt="Changing password"
             max-width="100%"
-            :src="require('@/assets/svg/art-activity-photo.svg')"
+            :src="require('@/assets/jpg/art-activity-photo.jpg')"
           />
         </v-col>
       </v-row>
