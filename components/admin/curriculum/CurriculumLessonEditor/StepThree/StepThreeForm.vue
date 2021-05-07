@@ -367,7 +367,7 @@ export default {
           })
           : this.createMatchingImage(data)
       } catch (e) {
-        this.$snotify.error('Error on your card information.')
+        this.$snotify.error('Error loading images.')
       }
     }
   }
