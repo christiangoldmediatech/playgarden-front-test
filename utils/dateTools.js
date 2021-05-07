@@ -133,3 +133,29 @@ export const isTodayInThisWeek = (today, days) => {
   const todayMs = today.getTime()
   return todayMs >= mondayMs && todayMs <= fridayMs
 }
+
+export const getCountdownToDate = (date, defaultExpiredString = '0:00:00') => {
+  if (!date) {
+    return defaultExpiredString
+  }
+
+  const time = new Date(date).getTime()
+
+  // get today's date and time
+  const now = new Date().getTime()
+
+  // find the distance between now and the count down date
+  const distance = time - now
+
+  // time calculations for days, hours, minutes and seconds
+  const days = Math.floor(distance / (1000 * 60 * 60 * 24))
+  const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+  const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
+  // const seconds = Math.floor((distance % (1000 * 60)) / 1000)
+
+  if (distance < 0) {
+    return defaultExpiredString
+  }
+
+  return `${days}:${hours}:${minutes}`
+}

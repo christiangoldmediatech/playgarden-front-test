@@ -71,7 +71,7 @@
             <underlined-title class="text-h6 text-md-h4" text="Student Progress Report" /><br>
           </v-col>
 
-          <v-col cols="3" class="text-center text-sm-right pt-7">
+          <v-col cols="3" class="text-center text-sm-right pt-7 pr-3">
             <child-select
               v-model="selectedChild"
               hide-details
@@ -80,13 +80,13 @@
             />
           </v-col>
 
-          <v-col cols="12">
-            <p class="text-body-1 text-lg-h7 text-xl-h6 text-justify mt-8 text-report">
+          <v-col v-if="reportCardTypeSelected === 'General'" cols="12">
+            <p class="text-body-1 text-lg-h7 text-xl-h6 text-justify mt-8 mr-3 text-report">
               Playgarden Prep Online Lessons have been developed to support one or more of the core areas of development. After watching a video, doing the worksheet together with an adult, or actively participating in a Live Class, parents will be helping in the development of their child in each of the specific areas.
             </p>
           </v-col>
         </v-row>
-        <v-row class="mr-3" no-gutters>
+        <v-row class="mr-3 mt-5" no-gutters>
           <v-col v-if="general === true" cols="12" md="12" lg="12">
             <v-card v-if="!$vuetify.breakpoint.xs" class="content-report">
               <v-row class="ml-2 mr-2">
@@ -102,10 +102,16 @@
                 </v-col>
                 <v-col cols="12" md="5" lg="5" xl="5">
                   <v-card>
-                    <div class="pt-4 ml-4 mb-4">
-                      <underlined-title class="text-h6 text-md-h5 mt-4 mr-4" :text="letterStats.name" />
+                    <div v-if="loadLetterStatsData">
+                      <v-skeleton-loader v-bind="attrs" type="card-heading" />
+                      <v-skeleton-loader v-for="n in 5" :key="n" v-bind="attrs" type="list-item-avatar-three-line, list-item-one-line, divider" />
                     </div>
-                    <letter-stats :letter-stats="letterStats" />
+                    <template v-else>
+                      <div class="pt-4 ml-4 mb-4">
+                        <underlined-title class="text-h6 text-md-h5 mt-4 mr-4" :text="letterStatsData.name" />
+                      </div>
+                      <letter-stats :letter-stats="letterStatsData" />
+                    </template>
                   </v-card>
                 </v-col>
               </v-row>
@@ -115,11 +121,15 @@
                 <chart-report v-if="report" :report="report" />
               </v-col>
               <v-col cols="12">
-                <div>
+                <div v-if="loadLetterStatsData">
+                  <v-skeleton-loader v-bind="attrs" type="card-heading" />
+                  <v-skeleton-loader v-for="n in 5" :key="n" v-bind="attrs" type="list-item-avatar-three-line, list-item-one-line, divider" />
+                </div>
+                <div v-else>
                   <div class="pt-4 ml-4 mb-4">
-                    <underlined-title class="text-h6 text-md-h5 mt-4 mr-4" :text="letterStats.name" />
+                    <underlined-title class="text-h6 text-md-h5 mt-4 mr-4" :text="letterStatsData.name" />
                   </div>
-                  <letter-stats :letter-stats="letterStats" />
+                  <letter-stats :letter-stats="letterStatsData" />
                 </div>
               </v-col>
             </v-row>
@@ -166,13 +176,14 @@ export default {
   data: () => ({
     previewMode: false,
     general: true,
-    reportCardTypeSelected: null,
+    reportCardTypeSelected: 'General',
     dataReportCard: null,
     optionDefault: 0,
     childMobile: '',
     selectedReportCard: 'General',
     optionDefaultMobile: 'General',
-    letterStats: {
+    loadLetterStatsData: true,
+    letterStatsData: {
       name: '',
       reports: []
     }
@@ -220,8 +231,9 @@ export default {
   },
 
   watch: {
-    selectedChild (val, oldVal) {
-      this.getDataReport()
+    async selectedChild (val, oldVal) {
+      this.loadLetterStatsData = true
+      await this.getDataReport()
       this.childMobile = this.childrenList.find(child => child.id === val).firstName
     }
   },
@@ -253,12 +265,10 @@ export default {
       this.setChild({ value: [child], save: true })
     },
 
-    getDataReport () {
+    async getDataReport () {
       if (this.selectedChild) {
-        this.getLastLessonChildren({ childId: this.selectedChild })
-          .then((result) => {
-            this.letterStats = result
-          })
+        this.letterStatsData = await this.getLastLessonChildren({ childId: this.selectedChild })
+        this.loadLetterStatsData = false
       }
     },
 
@@ -268,9 +278,9 @@ export default {
       this.getDataGraphic()
     },
 
-    getDataGraphic () {
+    async getDataGraphic () {
       if (this.selectedChild) {
-        this.getGraphicByChildrenId({ childId: this.selectedChild })
+        await this.getGraphicByChildrenId({ childId: this.selectedChild })
       }
     },
 

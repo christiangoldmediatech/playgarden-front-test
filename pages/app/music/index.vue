@@ -1,11 +1,10 @@
 <template>
-  <v-main class="main-music-wrapper">
+  <v-main :style="mainWrapperStyle">
     <v-container fluid class="music-page-container pa-0" :class="pageContainerClasses">
       <v-card
-        class="player-card"
+        :style="playerCardStyle"
         :width="playerWidth"
         :height="playerHeight"
-        :class="playerCardClases"
         :ripple="false"
         v-on="isMobile && !isPlayerMaximizedOnMobile ? { click: handlePlayerClick } : {}"
       >
@@ -73,6 +72,8 @@ export default {
     ...mapGetters('music', {
       allSongs: 'allSongsWithCurriculumType'
     }),
+
+    ...mapState('notifications', ['isTrialExpiringRibbonVisible', 'expiringRibbonHeightMobile']),
 
     /**
      * Return 'allSongs' with props `isFavorite` and `favoriteId` that can be used
@@ -169,10 +170,26 @@ export default {
       return { mobile: this.isMobile, playing: this.isPlayerShowing }
     },
 
-    playerCardClases () {
+    playerCardStyle () {
       return {
-        mobile: this.isMobile,
-        'pa-4': this.isPlayerShowing && !(this.isPlayerMaximizedOnMobile && this.isMobile)
+        padding: this.isPlayerShowing && !(this.isPlayerMaximizedOnMobile && this.isMobile) ? '16px' : '0px',
+        transition: '0.3s ease',
+        position: 'absolute',
+        left: 0,
+        top: this.isMobile ? 'unset' : 0,
+        'z-index': 99,
+        bottom: this.isMobile && this.isTrialExpiringRibbonVisible && !this.isPlayerMaximizedOnMobile
+          ? `${this.expiringRibbonHeightMobile}px`
+          : this.isMobile
+            ? '0px'
+            : undefined
+      }
+    },
+
+    mainWrapperStyle () {
+      return {
+        height: '100%',
+        'max-height': this.isMobile ? '100vh' : '1000px'
       }
     }
   },
@@ -279,11 +296,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.main-music-wrapper {
-  max-height: 100vh;
-  height: 100%;
-}
-
 .music-page-container {
   height: 100%;
   position: relative;
@@ -293,18 +305,6 @@ export default {
       padding-left: 0 !important;
       padding-bottom: 160px !important;
     }
-  }
-}
-
-.player-card {
-  transition: 0.3s ease;
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 99;
-  &.mobile {
-    bottom: 0;
-    top: unset;
   }
 }
 

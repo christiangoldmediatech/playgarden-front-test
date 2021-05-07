@@ -15,8 +15,8 @@
         persistent
       >
         <v-col cols="12">
-          <v-row class="pr-3" justify="end">
-            <v-btn icon @click.stop="closeChangePlanModal">
+          <v-row class="pr-3 mb-md-n12" justify="end">
+            <v-btn class="white" icon @click.stop="closeChangePlanModal">
               <v-icon>mdi-close</v-icon>
             </v-btn>
           </v-row>

@@ -18,7 +18,7 @@
         :key="song.id"
         cols="auto"
       >
-        <v-card class="custom-shadow ma-6 pb-4">
+        <v-card class="song-card ma-6 pb-4">
           <div class="song-wrapper">
             <v-icon
               size="120"
@@ -39,7 +39,7 @@
               mdi-heart
             </v-icon>
           </div>
-          <p class="song-description mb-0 pa-2">
+          <p class="song-description mb-0 pa-2 d-flex align-center">
             {{ song.description }}
           </p>
           <div class="d-flex justify-space-between song-name pa-2">
@@ -152,6 +152,11 @@ export default {
   }
 }
 .song {
+  &-card {
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15) !important;
+    border-radius: 8px !important;
+    width: 225px;
+  }
   &-wrapper {
     position: relative;
     & .play-btn {
@@ -171,8 +176,8 @@ export default {
     }
   }
   &-image {
-    height: 200px;
-    width: 200px;
+    height: 225px;
+    width: 225px;
     background-size: cover;
     background-position: center center;
     border-top-left-radius: 8px;
@@ -182,15 +187,12 @@ export default {
     font-size: 18px;
     font-weight: 700;
     color: #606060 !important;
+    height: 60px;
   }
   &-name {
     font-size: 16px;
     color: var(--v-black-base);
   }
-}
-.custom-shadow {
-  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15) !important;
-  border-radius: 8px !important;
 }
 .v-tooltip__content {
   background-color: var(--v-black-base) !important;

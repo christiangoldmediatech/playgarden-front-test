@@ -23,7 +23,7 @@
             <span class="font-weight-bold ml-2 mt-2">That includes:</span>
           </v-row>
           <v-row>
-            <ul>
+            <ul class="info-card">
               <li
                 class="register-item text-left"
               >
@@ -106,10 +106,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-ul {
+ul.info-card {
   list-style: none; /* Remove default bullets */
 }
-ul li::before {
+ul.info-card li::before {
   content: "●";
   font-size: 24px !important;
   color: var(--v-accent-base); /* Change the color */

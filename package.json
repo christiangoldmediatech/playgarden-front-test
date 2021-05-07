@@ -22,7 +22,10 @@
     "prosemirror-model": "1.8.2"
   },
   "dependencies": {
+    "@gold-media-tech/pg-video-player": "^0.0.15",
     "@mdi/font": "^5.3.45",
+    "@nuxt/types": "2.13.3",
+    "@nuxt/typescript-build": "^2.1.0",
     "@nuxtjs/axios": "^5.12.0",
     "@nuxtjs/composition-api": "^0.22.4",
     "@nuxtjs/firebase": "^6.1.1",

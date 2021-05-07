@@ -41,5 +41,9 @@ export default {
 
   async delete (ctx, id) {
     await this.$axios.$delete(`/users/${id}`)
+  },
+
+  async setPlanChoosen () {
+    await this.$axios.$get('/users/plan/choosen')
   }
 }
