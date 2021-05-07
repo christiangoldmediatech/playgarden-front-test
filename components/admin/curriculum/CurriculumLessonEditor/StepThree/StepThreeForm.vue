@@ -260,6 +260,10 @@ export default {
       'updateMatchingImage'
     ]),
 
+    setImageFile (type) {
+      console.log('type--', type)
+    },
+
     async getMatchingDraft () {
       try {
         const data = await this.getMatchingImageById(this.resource.worksheetId)
@@ -303,8 +307,8 @@ export default {
       this.matchingDraft.images = await Promise.all(
         this.matchingDraft.images.map(async (item, index) => {
           if (item.file) {
-            const { filePath } = await this.$refs[`fileUploader${index}`][0].handleDropBoxFileUpload()
-            if (filePath) {
+            if (this.$refs[`fileUploader${index}`][0].type === 'dropbox') {
+              const { filePath } = await this.$refs[`fileUploader${index}`][0].handleDropBoxFileUpload()
               item.image = filePath
             } else {
               item.image = await this.$refs[
