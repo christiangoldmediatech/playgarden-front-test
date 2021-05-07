@@ -95,7 +95,7 @@
           </v-col>
           <v-col
             cols="6"
-            :lg="item.image ? '1' : '4'"
+            :lg="item.image ? '1' : '5'"
           >
             <!-- Matching image -->
             <template v-if="item.image">
@@ -120,20 +120,6 @@
               :name="`Image ${indexMT + 1}`"
               rules="required|size:10000"
             >
-              <!-- <file-uploader
-                :ref="`fileUploader${indexMT}`"
-                v-model="item.file"
-                :error-messages="errors"
-                :label="`Image ${indexMT + 1}`"
-                mode="image"
-                path="lesson"
-                :placeholder="`Select image ${indexMT + 1}`"
-                prepend-icon="mdi-camera"
-                solo-labeled
-                jpg
-                png
-                svg
-              /> -->
               <pg-file-uploader
                 :ref="`fileUploader${indexMT}`"
                 v-model="item.file"
@@ -148,13 +134,12 @@
                 jpg
                 png
                 svg
-                @sendFile="setImageFile"
               />
             </validation-provider>
           </v-col>
           <v-col
             cols="12"
-            lg="4"
+            lg="3"
           >
             <!-- Matching word -->
             <validation-provider
