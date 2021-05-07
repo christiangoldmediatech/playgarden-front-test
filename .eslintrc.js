@@ -8,11 +8,8 @@ module.exports = {
     chrome: true,
     cast: true
   },
-  extends: [
-    '@nuxtjs/eslint-config-typescript'
-  ],
-  plugins: [
-  ],
+  extends: ['@nuxtjs/eslint-config-typescript'],
+  plugins: ['prettier'],
   // add your custom rules here
   rules: {
     'block-spacing': ['error', 'always'],
