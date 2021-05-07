@@ -59,9 +59,8 @@
                 color="transparent"
                 tile
               >
-                <v-row
+                <div
                   class="fill-height mb-3"
-                  align="center"
                   justify="center"
                 >
                   <recorded-card
@@ -69,7 +68,7 @@
                     :entry="recording"
                     show-letter
                   />
-                </v-row>
+                </div>
               </v-sheet>
             </v-carousel-item>
           </v-carousel>
