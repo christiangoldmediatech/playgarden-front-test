@@ -120,7 +120,7 @@
               :name="`Image ${indexMT + 1}`"
               rules="required|size:10000"
             >
-              <file-uploader
+              <!-- <file-uploader
                 :ref="`fileUploader${indexMT}`"
                 v-model="item.file"
                 :error-messages="errors"
@@ -133,6 +133,22 @@
                 jpg
                 png
                 svg
+              /> -->
+              <pg-file-uploader
+                :ref="`fileUploader${indexMT}`"
+                v-model="item.file"
+                prepend-icon="mdi-camera"
+                :error-messages="errors"
+                :label="`Image ${indexMT + 1}`"
+                mode="image"
+                path="lesson"
+                :placeholder="`Select image ${indexMT + 1}`"
+                solo-labeled
+                api="dropbox"
+                jpg
+                png
+                svg
+                @sendFile="setImageFile"
               />
             </validation-provider>
           </v-col>
@@ -302,11 +318,15 @@ export default {
       this.matchingDraft.images = await Promise.all(
         this.matchingDraft.images.map(async (item, index) => {
           if (item.file) {
-            item.image = await this.$refs[
-              `fileUploader${index}`
-            ][0].handleUpload()
+            const { filePath } = await this.$refs[`fileUploader${index}`][0].handleDropBoxFileUpload()
+            if (filePath) {
+              item.image = filePath
+            } else {
+              item.image = await this.$refs[
+                `fileUploader${index}`
+              ][0].handleUpload()
+            }
           }
-
           return item
         })
       )

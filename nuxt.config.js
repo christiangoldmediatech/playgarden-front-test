@@ -262,7 +262,7 @@ export default {
       process.env.STRIPE_PUBLIC ||
       'pk_test_51HKUavFlV2s2JR4RIPnTwt7laAa7Q5T3CXKL5xhGReFmtvcbi2YQDJBz8JnAHw5STCGxNmoWUDlZUnxzCE9imzxF00J5yVNU5Z',
     gtm: process.env.GTM_ID,
-    dropBoxApiKey: process.env.DROPBOX_API_KEY || '',
+    dropBoxApiKey: process.env.DROPBOX_API_KEY || '6szr311owx7y96r',
     baseRouteProd
   },
   router: {
