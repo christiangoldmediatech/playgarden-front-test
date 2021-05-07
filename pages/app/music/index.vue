@@ -39,6 +39,8 @@ import { mapGetters, mapActions, mapState } from 'vuex'
 
 import MusicPlayer from '@/components/app/music/MusicPlayer.vue'
 import MusicSongList from '@/components/app/music/MusicSongList.vue'
+import { useMusic } from '@/composables'
+import { onMounted, ref, computed, useRoute, watch } from '@nuxtjs/composition-api'
 
 const PAGE_MOBILE_BREAKPOINT = 1264
 
@@ -50,125 +52,162 @@ export default {
     MusicSongList
   },
 
-  data () {
-    return {
-      mobileBreakpoint: PAGE_MOBILE_BREAKPOINT,
-      selectedChildId: null,
-      playList: [],
-      currentSong: {},
-      favoritesDictionary: {},
-      showOnlyFavorites: false,
-      isPlayerMaximizedOnMobile: false
-    }
-  },
+  setup (_, ctx) {
+    const route = useRoute()
+    const musicPlayer = ref(null)
+    const {
+      allSongsWithFavorites,
+      songsByCurriculumTypeWithFavorites,
+      showOnlyFavorites,
+      playlist,
+      currentSong,
+      favoritesDictionary,
+      getMusicLibrariesByCurriculumType,
+      getFavoriteMusicForChild,
+      removeFavoriteMusic,
+      setFavoriteMusicForChild
+    } = useMusic()
 
-  computed: {
-    ...mapState('music', {
-      songsByCurriculumType: state => state.musicLibraries.filter(curriculumType => curriculumType.musicLibrary.length > 0)
-    }),
+    const isMobile = computed(() => ctx.root.$vuetify.breakpoint.width <= PAGE_MOBILE_BREAKPOINT)
+    const isPlayerMaximizedOnMobile = ref(false)
+    const isPlayerShowing = computed(() => playlist.value.length > 0)
 
-    ...mapGetters({ currentChild: 'getCurrentChild' }),
-
-    ...mapGetters('music', {
-      allSongs: 'allSongsWithCurriculumType'
-    }),
-
-    ...mapState('notifications', ['isTrialExpiringRibbonVisible', 'expiringRibbonHeightMobile']),
-
-    /**
-     * Return 'allSongs' with props `isFavorite` and `favoriteId` that can be used
-     * to show if the song is favorite or not and to update its status in child components.
-     *
-     * This computed property also filters out non favorite songs when `showOnlyFavorites` is true
-     */
-    allSongsWithFavorites () {
-      return this.allSongs.reduce((prev, song) => {
-        const favorite = this.favoritesDictionary[song.id]
-
-        if (this.showOnlyFavorites && !favorite) {
-          return prev
-        } else if (!favorite) {
-          return [...prev, song]
-        }
-
-        return [
-          ...prev,
-          {
-            ...song,
-            // custom properties
-            isFavorite: true,
-            favoriteId: favorite.id
-          }
-        ]
-      }, [])
-    },
-
-    /**
-     * Return 'songsByCurriculumType' with props `isFavorite` and `favoriteId` that can be used
-     * to show if the song is favorite or not and to update its status in child components.
-     *
-     * This computed property also filters out non favorite songs when `showOnlyFavorites` is true
-     */
-    songsByCurriculumTypeWithFavorites () {
-      return this.songsByCurriculumType.map(curriculumType => ({
-        ...curriculumType,
-        musicLibrary: curriculumType.musicLibrary.reduce((prev, song) => {
-          const favorite = this.favoritesDictionary[song.id]
-
-          if (this.showOnlyFavorites && !favorite) {
-            return prev
-          } else if (!favorite) {
-            return [...prev, song]
-          }
-
-          return [
-            ...prev,
-            {
-              ...song,
-              // custom properties
-              isFavorite: true,
-              favoriteId: favorite.id
-            }
-          ]
-        }, [])
-      }))
-    },
-
-    isPlayerShowing () {
-      return this.playList.length > 0
-    },
-
-    isMobile () {
-      return this.$vuetify.breakpoint.width <= this.mobileBreakpoint
-    },
-
-    id () {
-      return this.$route.query.id ? parseInt(this.$route.query.id) : null
-    },
-
-    playerWidth () {
-      if (this.isMobile) {
+    const playerWidth = computed(() => {
+      if (isMobile.value) {
         return '100%'
-      } else if (this.isPlayerShowing) {
+      } else if (isPlayerShowing.value) {
         return '450'
       } else {
         return 0
       }
-    },
+    })
 
-    playerHeight () {
-      if (!this.isMobile || this.isPlayerMaximizedOnMobile) {
+    const playerHeight = computed(() => {
+      if (!isMobile.value || isPlayerMaximizedOnMobile.value) {
         return '100%'
-      } else if (this.isPlayerShowing && !this.isPlayerMaximizedOnMobile) {
+      } else if (isPlayerShowing.value && !isPlayerMaximizedOnMobile.value) {
         return '135'
       } else {
         return 0
       }
-    },
+    })
 
-    pageContainerClasses () {
-      return { mobile: this.isMobile, playing: this.isPlayerShowing }
-    },
+    const pageContainerClasses = computed(() => {
+      return { mobile: isMobile.value, playing: isPlayerShowing.value }
+    })
+
+    const selectedChildId = ref(undefined)
+
+    const id = computed(() => route.value.query.id
+      ? parseInt(route.value.query.id)
+      : null
+    )
+    watch(id, async (val) => {
+      if (val) {
+        await getAndSetFavorites()
+      }
+    })
+
+    onMounted(async () => {
+      await getMusicLibrariesByCurriculumType()
+      await getAndSetFavorites()
+    })
+
+    const updateCurrentSongData = () => {
+      const resolvedCurrentSong = Object.keys(currentSong.value || {}).length
+        ? { ...currentSong.value }
+        : undefined
+
+      if (!resolvedCurrentSong) {
+        return
+      }
+
+      const favorite = favoritesDictionary.value[resolvedCurrentSong.id]
+
+      if (musicPlayer.value) {
+        musicPlayer.value.refreshSongData({
+          ...resolvedCurrentSong,
+          isFavorite: !!favorite,
+          favoriteId: favorite ? favorite.id : undefined
+        })
+      }
+    }
+
+    const getAndSetFavorites = async () => {
+      await getFavoriteMusicForChild(id.value)
+      updateCurrentSongData()
+    }
+
+    const addSongToPlaylist = (song) => {
+      if (musicPlayer.value) {
+        musicPlayer.value.addSongToPlaylist(song)
+        playlist.value.push(song)
+      }
+    }
+
+    const createNewPlaylist = (playList) => {
+      if (musicPlayer.value) {
+        musicPlayer.value.createNewPlaylist(playList)
+        playlist.value = playList
+      }
+    }
+
+    const handleFavorite = async (song) => {
+      try {
+        if (song.isFavorite) {
+          await removeFavoriteMusic(song.favoriteId)
+          ctx.root.$snotify.success('Song removed from favorites')
+        } else {
+          await setFavoriteMusicForChild({ childId: id.value, musicId: song.id })
+          ctx.root.$snotify.success('Song added to favorites')
+        }
+
+        await getAndSetFavorites()
+      } catch (error) {
+        ctx.root.$snotify.error(error.message)
+      }
+    }
+
+    const handlePlayerClick = ($event) => {
+      if (!isMobile.value || isPlayerMaximizedOnMobile.value) {
+        return
+      }
+
+      isPlayerMaximizedOnMobile.value = true
+    }
+
+    const handlePlayerMinimize = () => {
+      isPlayerMaximizedOnMobile.value = false
+    }
+
+    return {
+      id,
+      allSongsWithFavorites,
+      songsByCurriculumTypeWithFavorites,
+      showOnlyFavorites,
+      playlist,
+      currentSong,
+      getAndSetFavorites,
+      selectedChildId,
+      isPlayerMaximizedOnMobile,
+      isPlayerShowing,
+      musicPlayer,
+      isMobile,
+      playerWidth,
+      playerHeight,
+      pageContainerClasses,
+      handlePlayerClick,
+      handlePlayerMinimize,
+      addSongToPlaylist,
+      createNewPlaylist,
+      handleFavorite
+    }
+  },
+
+  computed: {
+    ...mapGetters({ currentChild: 'getCurrentChild' }),
+
+    ...mapState('notifications', ['isTrialExpiringRibbonVisible', 'expiringRibbonHeightMobile']),
 
     playerCardStyle () {
       return {
@@ -187,102 +226,9 @@ export default {
     }
   },
 
-  watch: {
-    id (val) {
-      if (val) {
-        this.getAndSetFavorites()
-      }
-    }
-  },
-
-  async created () {
+  created () {
     if (!this.id && this.currentChild.length) {
       this.$router.push({ name: this.$route.name, query: { id: this.currentChild[0].id } })
-    }
-
-    await this.getMusicLibrariesByCurriculumType()
-    await this.getAndSetFavorites()
-  },
-
-  methods: {
-    ...mapActions('music', ['getMusicLibrariesByCurriculumType', 'getFavoriteMusicForChild', 'setFavoriteMusicForChild', 'removeFavoriteMusic']),
-
-    async getAndSetFavorites () {
-      const favorites = await this.getFavoriteMusicForChild(this.id)
-
-      const favoritesDictionary = {}
-      for (const favorite of favorites) {
-        const songId = favorite && favorite.music ? favorite.music.id : undefined
-
-        if (!songId) {
-          return
-        }
-
-        favoritesDictionary[songId] = { songId, id: favorite.id }
-      }
-
-      this.favoritesDictionary = { ...favoritesDictionary }
-
-      this.updateCurrentSongData()
-    },
-
-    addSongToPlaylist (song) {
-      if (this.$refs.musicPlayer) {
-        this.$refs.musicPlayer.addSongToPlaylist(song)
-        this.playList.push(song)
-      }
-    },
-
-    createNewPlaylist (playList) {
-      this.$refs.musicPlayer.createNewPlaylist(playList)
-      this.playList = playList
-    },
-
-    async handleFavorite (song) {
-      try {
-        if (song.isFavorite) {
-          await this.removeFavoriteMusic(song.favoriteId)
-          this.$snotify.success('Song removed from favorites')
-        } else {
-          await this.setFavoriteMusicForChild({ childId: this.id, musicId: song.id })
-          this.$snotify.success('Song added to favorites')
-        }
-
-        await this.getAndSetFavorites()
-      } catch (error) {
-        this.$snotify.error(error.message)
-      }
-    },
-
-    updateCurrentSongData () {
-      const resolvedCurrentSong = Object.keys(this.currentSong || {}).length
-        ? { ...this.currentSong }
-        : undefined
-
-      if (!resolvedCurrentSong) {
-        return
-      }
-
-      const favorite = this.favoritesDictionary[resolvedCurrentSong.id]
-      if (this.$refs.musicPlayer) {
-        this.$refs.musicPlayer.refreshSongData({
-          ...resolvedCurrentSong,
-          isFavorite: !!favorite,
-          favoriteId: favorite ? favorite.id : undefined
-        })
-      }
-    },
-
-    handlePlayerClick ($event) {
-      if (!this.isMobile || this.isPlayerMaximizedOnMobile) {
-        return
-      }
-
-      this.isPlayerMaximizedOnMobile = true
-    },
-
-    handlePlayerMinimize () {
-      this.isPlayerMaximizedOnMobile = false
     }
   }
 }
