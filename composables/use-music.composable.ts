@@ -4,16 +4,15 @@ import { ChildrenMusicFavorite, CurriculumTypeWithMusicLibrary, MusicLibrary } f
 
 const playlist = ref([])
 const currentSong = ref<MusicLibrary | undefined>(undefined)
-const showOnlyFavorites = ref(false)
-
 const musicLibraries = ref<CurriculumTypeWithMusicLibrary[]>([])
+
+const showOnlyFavorites = ref(false)
 const favorites = ref<ChildrenMusicFavorite[]>([])
 const favoritesDictionary = ref<Record<string, ChildrenMusicFavorite>>({})
 
 export const useMusic = () => {
-  // computed
-  const allSongs = computed(() => {
-    const songs: Array<MusicLibrary> = []
+  const allSongs = computed<MusicLibrary[]>(() => {
+    const songs: MusicLibrary[] = []
     musicLibraries.value.forEach((curriculumType) => {
       if (curriculumType.musicLibrary.length > 0) {
         curriculumType.musicLibrary.forEach(song => songs.push({
@@ -26,17 +25,17 @@ export const useMusic = () => {
     return songs
   })
 
-  const songsByCurriculumType = computed(() => {
+  const songsByCurriculumType = computed<CurriculumTypeWithMusicLibrary[]>(() => {
     return musicLibraries.value.filter(curriculumType => curriculumType.musicLibrary.length > 0)
   })
 
   /**
-   * Return 'allSongs' with props `isFavorite` and `favoriteId` that can be used
+   * Returns 'allSongs' with props `isFavorite` and `favoriteId` that can be used
    * to show if the song is favorite or not and to update its status in child components.
    *
    * This computed property also filters out non favorite songs when `showOnlyFavorites` is true
    */
-  const allSongsWithFavorites = computed(() => {
+  const allSongsWithFavorites = computed<MusicLibrary[]>(() => {
     return allSongs.value.reduce((prev, song) => {
       const favorite = favoritesDictionary.value[song.id]
 
@@ -50,20 +49,19 @@ export const useMusic = () => {
         ...prev,
         {
           ...song,
-          // custom properties
           isFavorite: true,
           favoriteId: favorite.id
         }
       ]
-    }, [] as Array<MusicLibrary>)
+    }, [] as MusicLibrary[])
   })
   /**
-   * Return 'songsByCurriculumType' with props `isFavorite` and `favoriteId` that can be used
+   * Returns 'songsByCurriculumType' with props `isFavorite` and `favoriteId` that can be used
    * to show if the song is favorite or not and to update its status in child components.
    *
    * This computed property also filters out non favorite songs when `showOnlyFavorites` is true
    */
-  const songsByCurriculumTypeWithFavorites = computed(() => {
+  const songsByCurriculumTypeWithFavorites = computed<CurriculumTypeWithMusicLibrary[]>(() => {
     return songsByCurriculumType.value.map(curriculumType => ({
       ...curriculumType,
       musicLibrary: curriculumType.musicLibrary.reduce((prev, song) => {
@@ -79,16 +77,17 @@ export const useMusic = () => {
           ...prev,
           {
             ...song,
-            // custom properties
             isFavorite: true,
             favoriteId: favorite.id
           }
         ]
-      }, [] as Array<MusicLibrary>)
+      }, [] as MusicLibrary[])
     }))
   })
 
-  // api requests
+  /**
+   * HTTP Requests
+   */
   const getMusicLibrariesByCurriculumType = async () => {
     musicLibraries.value = await axios.$get('/music-library/by/curriculum')
   }
