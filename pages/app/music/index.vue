@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapState } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 
 import MusicPlayer from '@/components/app/music/MusicPlayer.vue'
 import MusicSongList from '@/components/app/music/MusicSongList.vue'
@@ -54,42 +54,40 @@ export default {
 
   setup (_, ctx) {
     const route = useRoute()
+    // this references `ref="musicPlayer"` when the component is mounted
     const musicPlayer = ref(null)
     const {
       allSongsWithFavorites,
-      songsByCurriculumTypeWithFavorites,
-      showOnlyFavorites,
-      playlist,
       currentSong,
       favoritesDictionary,
-      getMusicLibrariesByCurriculumType,
       getFavoriteMusicForChild,
+      getMusicLibrariesByCurriculumType,
+      playlist,
       removeFavoriteMusic,
-      setFavoriteMusicForChild
+      setFavoriteMusicForChild,
+      showOnlyFavorites,
+      songsByCurriculumTypeWithFavorites
     } = useMusic()
 
-    const isMobile = computed(() => ctx.root.$vuetify.breakpoint.width <= PAGE_MOBILE_BREAKPOINT)
     const isPlayerMaximizedOnMobile = ref(false)
+
+    const isMobile = computed(() => ctx.root.$vuetify.breakpoint.width <= PAGE_MOBILE_BREAKPOINT)
     const isPlayerShowing = computed(() => playlist.value.length > 0)
 
     const playerWidth = computed(() => {
-      if (isMobile.value) {
-        return '100%'
-      } else if (isPlayerShowing.value) {
-        return '450'
-      } else {
-        return 0
-      }
+      return isMobile.value
+        ? '100%'
+        : isPlayerShowing.value
+          ? '450'
+          : 0
     })
 
     const playerHeight = computed(() => {
-      if (!isMobile.value || isPlayerMaximizedOnMobile.value) {
-        return '100%'
-      } else if (isPlayerShowing.value && !isPlayerMaximizedOnMobile.value) {
-        return '135'
-      } else {
-        return 0
-      }
+      return !isMobile.value || isPlayerMaximizedOnMobile.value
+        ? '100%'
+        : isPlayerShowing.value && !isPlayerMaximizedOnMobile.value
+          ? '135'
+          : 0
     })
 
     const pageContainerClasses = computed(() => {
@@ -102,8 +100,6 @@ export default {
         'max-height': isMobile.value ? '100vh' : '1000px'
       }
     })
-
-    const selectedChildId = ref(undefined)
 
     const id = computed(() => route.value.query.id
       ? parseInt(route.value.query.id)
@@ -188,27 +184,26 @@ export default {
     }
 
     return {
-      id,
+      addSongToPlaylist,
       allSongsWithFavorites,
-      songsByCurriculumTypeWithFavorites,
-      showOnlyFavorites,
-      playlist,
+      createNewPlaylist,
       currentSong,
       getAndSetFavorites,
-      selectedChildId,
-      isPlayerMaximizedOnMobile,
-      isPlayerShowing,
-      musicPlayer,
-      isMobile,
-      playerWidth,
-      playerHeight,
-      pageContainerClasses,
+      handleFavorite,
       handlePlayerClick,
       handlePlayerMinimize,
-      addSongToPlaylist,
-      createNewPlaylist,
-      handleFavorite,
-      mainWrapperStyle
+      id,
+      isMobile,
+      isPlayerMaximizedOnMobile,
+      isPlayerShowing,
+      mainWrapperStyle,
+      musicPlayer,
+      pageContainerClasses,
+      playerHeight,
+      playerWidth,
+      playlist,
+      showOnlyFavorites,
+      songsByCurriculumTypeWithFavorites
     }
   },
 
