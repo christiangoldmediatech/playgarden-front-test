@@ -1,5 +1,5 @@
 <template>
-  <v-main class="main-music-wrapper">
+  <v-main :style="mainWrapperStyle">
     <v-container fluid class="music-page-container pa-0" :class="pageContainerClasses">
       <v-card
         :style="playerCardStyle"
@@ -94,6 +94,13 @@ export default {
 
     const pageContainerClasses = computed(() => {
       return { mobile: isMobile.value, playing: isPlayerShowing.value }
+    })
+
+    const mainWrapperStyle = computed(() => {
+      return {
+        height: '100%',
+        'max-height': isMobile.value ? '100vh' : '1000px'
+      }
     })
 
     const selectedChildId = ref(undefined)
@@ -200,7 +207,8 @@ export default {
       handlePlayerMinimize,
       addSongToPlaylist,
       createNewPlaylist,
-      handleFavorite
+      handleFavorite,
+      mainWrapperStyle
     }
   },
 
@@ -235,11 +243,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.main-music-wrapper {
-  max-height: 100vh;
-  height: 100%;
-}
-
 .music-page-container {
   height: 100%;
   position: relative;

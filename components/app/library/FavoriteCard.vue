@@ -21,12 +21,12 @@
       <v-list class="py-0" dense>
         <v-list-item three-line>
           <v-list-item-content>
-            <v-list-item-title class="font-weight-bold text-uppercase">
+            <v-list-item-subtitle class="activity-card-sub text-uppercase">
               <span class="activity-card-description title-pre">{{ title }}</span>
-            </v-list-item-title>
-            <v-list-item-subtitle>
-              <span class="activity-card-with text-none">With</span> <span class="activity-card-subtitle">{{ teacher.toLowerCase() }}</span>
             </v-list-item-subtitle>
+            <v-list-item-title>
+              <span class="activity-card-with text-none">with</span> <span class="activity-card-subtitle">{{ teacher }}</span>
+            </v-list-item-title>
           </v-list-item-content>
 
           <v-list-item-action>

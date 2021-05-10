@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 import { snotifyError } from '@/utils/vuex'
+import { hasLocalStorage } from '@/utils/window'
 
 export default {
   createNotification (_, data) {
@@ -67,24 +68,42 @@ export default {
 
   /**
    * Show a notification prompting the user to update their shipping address if:
-   * - The user doesn't have the shipping address on file and is a parent.
+   * - The user doesn't have the shipping address on file and it is a parent.
    */
   async checkUserShippingAddressAndNotify ({ commit, dispatch, rootGetters }) {
     const isUserLoggedIn = rootGetters['auth/isUserLoggedIn']
     const userInfo = rootGetters['auth/getUserInfo']
 
-    if (isUserLoggedIn && userInfo.role.id === 3) {
-      const shippingAddress = await dispatch('shipping-address/getShippingAddress', undefined, { root: true })
-
-      if (!shippingAddress) {
-        commit('notifications/SET_NOTIFICATION_CARD', {
-          title: 'WE WANT TO SEND YOU A WELCOME KIT!',
-          description: 'We require a shipping address in order to send the Welcome Kit with our first Workbook.',
-          action: () => commit('notifications/SET_IS_SHIPPING_MODAL_VISIBLE', true, { root: true }),
-          image: require('@/assets/png/megaphone.png')
-        }, { root: true })
-      }
+    if (!isUserLoggedIn && userInfo.role.id !== 3) {
+      return
     }
+
+    const shippingAddress = await dispatch('shipping-address/getShippingAddress', undefined, { root: true })
+
+    if (shippingAddress) {
+      return
+    }
+
+    const didShowModalBefore = hasLocalStorage()
+      ? JSON.parse(window.localStorage.getItem('seen:shipping-address-modal'))
+      : false
+
+    if (didShowModalBefore) {
+      commit('notifications/SET_NOTIFICATION_CARD', {
+        title: 'WE WANT TO SEND YOU A WELCOME KIT!',
+        description: 'We require a shipping address in order to send the Welcome Kit with our first Workbook.',
+        action: () => commit('notifications/SET_IS_SHIPPING_MODAL_VISIBLE', true, { root: true }),
+        image: require('@/assets/png/megaphone.png')
+      }, { root: true })
+    } else {
+      commit('notifications/SET_IS_SHIPPING_MODAL_VISIBLE', true, { root: true })
+    }
+  },
+
+  markShippingAddressModalAsSeen () {
+    return hasLocalStorage()
+      ? window.localStorage.setItem('seen:shipping-address-modal', JSON.stringify(true))
+      : undefined
   },
 
   /**
