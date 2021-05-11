@@ -131,6 +131,6 @@ export const useMusic = () => {
     getMusicLibrariesByCurriculumType,
     removeFavoriteMusic,
     setFavoriteMusicForChild,
-    sendCurrentPlayingMusic,
+    sendCurrentPlayingMusic
   }
 }
