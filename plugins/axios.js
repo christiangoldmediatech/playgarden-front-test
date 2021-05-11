@@ -1,3 +1,5 @@
+import { setAxios } from '@/utils'
+
 export default function ({ $axios, redirect, store, app }) {
   $axios.setBaseURL(process.env.apiBaseUrl)
 
@@ -36,4 +38,6 @@ export default function ({ $axios, redirect, store, app }) {
 
     store.commit('SET_NOTIFICATION_MESSAGE', { body, type: 'error' })
   })
+
+  setAxios($axios)
 }

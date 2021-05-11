@@ -32,24 +32,12 @@ describe('/app/music', () => {
   })
 
   describe('favorites', () => {
-    const addSongToFavorite = ($button: JQuery<HTMLElement>) => {
-      $button.trigger('click')
-
-      cy.get('.snotifyToast__body').should('have.text', 'Song added to favorites')
-    }
-
-    const removeSongFromFavorite = ($button: JQuery<HTMLElement>) => {
-      $button.trigger('click')
-
-      cy.get('.snotifyToast__body').should('have.text', 'Song removed from favorites')
-    }
-
     describe('favorite button', () => {
       it('only shows favorite songs when toggled', () => {
         // remove all songs from favorites
-        cy.get('[data-test-id=song-card-favorite-button]').each(($button) => {
+        cy.get('[data-test-id=song-card-favorite-button]').each(($button, index) => {
           if ($button.hasClass('pink--text')) {
-            removeSongFromFavorite($button)
+            $button.trigger('click')
           }
         })
 
@@ -60,14 +48,14 @@ describe('/app/music', () => {
 
       it('shows all songs when toggled', () => {
         // add all songs to favorites
-        cy.get('[data-test-id=song-card-favorite-button]').each(($button) => {
+        cy.get('[data-test-id=song-card-favorite-button]').each(($button, index) => {
           if (!$button.hasClass('pink--text')) {
-            addSongToFavorite($button)
+            $button.trigger('click')
           }
         })
 
         cy.get('[data-test-id=favorite-toggle]').click({ force: true }) // toggle button on
-        cy.get('[data-test-id=song-card]').should('have.length', 4)
+        cy.get('[data-test-id=song-card]').should('have.length.greaterThan', 1)
         cy.get('[data-test-id=favorite-toggle]').click({ force: true }) // toggle button off
       })
     })
@@ -79,14 +67,14 @@ describe('/app/music', () => {
 
         cy.get('[data-test-id=song-card-favorite-button]').first().then(($button) => {
           if ($button.hasClass('pink--text')) {
-            removeSongFromFavorite($button)
+            $button.trigger('click')
             cy.wait(2000).then(() => {
-              addSongToFavorite($button)
+              $button.trigger('click')
             })
           } else {
-            addSongToFavorite($button)
+            $button.trigger('click')
             cy.wait(2000).then(() => {
-              removeSongFromFavorite($button)
+              $button.trigger('click')
             })
           }
         })
@@ -100,14 +88,14 @@ describe('/app/music', () => {
 
         cy.get('[data-test-id=letter-song-favorite-button]').first().then(($button) => {
           if ($button.hasClass('pink--text')) {
-            removeSongFromFavorite($button)
+            $button.trigger('click')
             cy.wait(2000).then(() => {
-              addSongToFavorite($button)
+              $button.trigger('click')
             })
           } else {
-            addSongToFavorite($button)
+            $button.trigger('click')
             cy.wait(2000).then(() => {
-              removeSongFromFavorite($button)
+              $button.trigger('click')
             })
           }
         })
@@ -127,14 +115,14 @@ describe('/app/music', () => {
 
         cy.get('[data-test-id=music-player-favorite-button').then(($button) => {
           if ($button.hasClass('pink--text')) {
-            removeSongFromFavorite($button)
+            $button.trigger('click')
             cy.wait(2000).then(() => {
-              addSongToFavorite($button)
+              $button.trigger('click')
             })
           } else {
-            addSongToFavorite($button)
+            $button.trigger('click')
             cy.wait(2000).then(() => {
-              removeSongFromFavorite($button)
+              $button.trigger('click')
             })
           }
         })
