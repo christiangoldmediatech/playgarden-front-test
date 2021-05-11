@@ -251,10 +251,11 @@
             </v-col>
 
             <v-card-text class="text-justify">
-              Early child development is super important, and consistency is key
-              to ensure early learning!<br>
+              Early education and stimulation to
+              generate development is key in the first 3 years of a child's life.<br>
               <br>
-              Are you sure you want to cancel your membership?
+              Playgarden Prep Online was created to help with that. Won't
+              you reconsider? Do you still want to cancel your subscription?
             </v-card-text>
           </v-col>
 
