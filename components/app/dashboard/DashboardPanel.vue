@@ -22,13 +22,14 @@
           <v-spacer />
           <v-col class="btnLesson">
             <p class="text-right mr-3">
-              <v-tooltip top>
+              <v-tooltip top :open-on-focus="true">
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
                     icon
                     v-bind="attrs"
                     v-on="on"
                     @click.stop="advance"
+                    @blur="on.blur"
                   >
                     <img src="@/assets/svg/next-arrow.svg">
                   </v-btn>
@@ -285,6 +286,10 @@ export default {
 
   methods: {
     ...mapActions('children/lesson', ['getAdvanceLessonChildren']),
+
+    callTest () {
+      console.log('testt')
+    },
 
     previousLesson () {
       try {
