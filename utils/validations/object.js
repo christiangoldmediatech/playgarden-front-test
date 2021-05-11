@@ -13,7 +13,7 @@ export const checkKeys = (obj, keys) => {
   }
 
   return keys.every((key) => {
-    return obj.hasOwnProperty(key)
+    return Object.prototype.hasOwnProperty.call(obj, key)
   })
 }
 
@@ -23,5 +23,5 @@ export const checkKeys = (obj, keys) => {
  * @param {*} b
  */
 export const deepEqual = (a, b) => {
-  return JSON.stringify(a) === JSON.stringify(b);
+  return JSON.stringify(a) === JSON.stringify(b)
 }

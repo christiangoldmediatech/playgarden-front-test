@@ -4,7 +4,7 @@
       <div class="dashboard-panel-card-border-top">
         <v-row v-if="!displayMode" justify="space-between">
           <v-col class="btnLesson">
-            <v-tooltip v-if="previousLessonId" top class="pb-6">
+            <v-tooltip v-if="previousLessonId && !$vuetify.breakpoint.smAndDown" top class="pb-6">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                   class="ml-3"
@@ -12,29 +12,51 @@
                   v-bind="attrs"
                   v-on="on"
                   @click.stop="previousLesson"
+                  @blur="on.blur"
+                  :retain-focus-on-click="false"
                 >
                   <img src="@/assets/svg/back-arrow.svg">
                 </v-btn>
               </template>
               <span>GO TO PREVIOUS DAY</span>
             </v-tooltip>
+            <template v-else>
+              <v-btn
+                v-if="previousLessonId"
+                class="ml-3"
+                icon
+                @click.stop="previousLesson"
+              >
+                <img src="@/assets/svg/back-arrow.svg">
+              </v-btn>
+            </template>
           </v-col>
           <v-spacer />
           <v-col class="btnLesson">
             <p class="text-right mr-3">
-              <v-tooltip top>
+              <v-tooltip v-if="!$vuetify.breakpoint.smAndDown" top :open-on-focus="true">
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
                     icon
                     v-bind="attrs"
                     v-on="on"
                     @click.stop="advance"
+                    @blur="on.blur"
+                    :retain-focus-on-click="false"
                   >
                     <img src="@/assets/svg/next-arrow.svg">
                   </v-btn>
                 </template>
                 <span>GO TO NEXT DAY</span>
               </v-tooltip>
+              <template v-else>
+                <v-btn
+                  icon
+                  @click.stop="advance"
+                >
+                  <img src="@/assets/svg/next-arrow.svg">
+                </v-btn>
+              </template>
             </p>
           </v-col>
         </v-row>
