@@ -260,10 +260,6 @@ export default {
       'updateMatchingImage'
     ]),
 
-    setImageFile (type) {
-      console.log('type--', type)
-    },
-
     async getMatchingDraft () {
       try {
         const data = await this.getMatchingImageById(this.resource.worksheetId)

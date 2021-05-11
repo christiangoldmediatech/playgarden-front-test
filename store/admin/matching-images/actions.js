@@ -2,8 +2,8 @@ export default {
   createMatchingImage (_, data) {
     try {
       return this.$axios.$post('/matching-images', data)
-    } catch (e) {
-      return Promise.reject(e)
+    } catch (error) {
+      throw new Error(error)
     }
   },
 
@@ -22,8 +22,8 @@ export default {
   updateMatchingImage (_, { id, data }) {
     try {
       return this.$axios.$patch(`/matching-images/${id}`, data)
-    } catch (e) {
-      return Promise.reject(e)
+    } catch (error) {
+      throw new Error(error)
     }
   }
 }
