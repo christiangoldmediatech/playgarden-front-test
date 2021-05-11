@@ -24,5 +24,9 @@ export default {
     const favorites = await this.$axios.$get(`/music-favorites/children/${childId}`)
 
     return favorites
+  },
+
+  sendCurrentPlayingMusic (_, { musicId, childId }) {
+    return this.$axios.post(`/music-library/${musicId}/children/${childId}`)
   }
 }
