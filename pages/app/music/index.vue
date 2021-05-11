@@ -166,7 +166,7 @@ export default {
           await removeFavoriteMusic(song.favoriteId)
           ctx.root.$snotify.success('Song removed from favorites')
         } else {
-          await setFavoriteMusicForChild({ childId: id.value, musicId: song.id })
+          await setFavoriteMusicForChild(id.value, song.id)
           ctx.root.$snotify.success('Song added to favorites')
         }
 
