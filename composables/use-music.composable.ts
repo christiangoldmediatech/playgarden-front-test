@@ -92,7 +92,7 @@ export const useMusic = () => {
     musicLibraries.value = await axios.$get('/music-library/by/curriculum')
   }
 
-  const setFavoriteMusicForChild = async ({ childId, musicId }: { childId: number, musicId: number }) => {
+  const setFavoriteMusicForChild = async (childId: number, musicId: number) => {
     await axios.$post('/music-favorites', { childrenId: childId, musicId })
   }
 
@@ -116,16 +116,21 @@ export const useMusic = () => {
     }
   }
 
+  const sendCurrentPlayingMusic = async (musicId: number, childId: number) => {
+    await axios.$post(`/music-library/${musicId}/children/${childId}`)
+  }
+
   return {
-    showOnlyFavorites,
-    playlist,
-    currentSong,
     allSongsWithFavorites,
+    currentSong,
     favoritesDictionary,
+    playlist,
+    showOnlyFavorites,
     songsByCurriculumTypeWithFavorites,
+    getFavoriteMusicForChild,
     getMusicLibrariesByCurriculumType,
-    setFavoriteMusicForChild,
     removeFavoriteMusic,
-    getFavoriteMusicForChild
+    setFavoriteMusicForChild,
+    sendCurrentPlayingMusic,
   }
 }
