@@ -323,25 +323,25 @@ export default {
       this.draft = this.editing
         ? this.$jsonCopy(this.resource)
         : {
-          name: null,
-          description: null,
-          type: 'ONLINE',
-          worksheetId: null
-        }
+            name: null,
+            description: null,
+            type: 'ONLINE',
+            worksheetId: null
+          }
 
       this.matchingDraft = this.editing
         ? await this.getMatchingDraft()
         : {
-          name: null,
-          images: [
-            { file: null, image: null, word: null },
-            { file: null, image: null, word: null },
-            { file: null, image: null, word: null },
-            { file: null, image: null, word: null }
-          ],
-          question: null,
-          type: null
-        }
+            name: null,
+            images: [
+              { file: null, image: null, word: null },
+              { file: null, image: null, word: null },
+              { file: null, image: null, word: null },
+              { file: null, image: null, word: null }
+            ],
+            question: null,
+            type: null
+          }
     },
 
     submitMethod (data) {

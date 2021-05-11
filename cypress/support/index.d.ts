@@ -8,14 +8,14 @@ declare namespace Cypress {
      */
     uiLoginAs(user: 'parent' | 'admin'): Chainable<void>,
     /**
-     * 
+     *
      * @param user Custom command to login using requests
      * @example cy.headlessLoginAs('admin')
      */
     headlessLoginAs(user: 'parent' | 'admin'): Chainable<void>,
     /**
      * Custom command to select set a child in the localStorage
-     * @param childId 
+     * @param childId
      * @param expires Defaults to tomorrow if not specified
      */
     headlessChildSelect(childId: number, expires?: number): Chainable<void>,

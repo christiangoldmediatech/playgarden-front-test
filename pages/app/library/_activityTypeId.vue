@@ -85,10 +85,12 @@ export default {
         this.loading = true
         const id = parseInt(this.$route.params.activityTypeId)
 
-        const params = this.activityTypeData ? {} : {
-          limit: 0,
-          page: 0
-        }
+        const params = this.activityTypeData
+          ? {}
+          : {
+              limit: 0,
+              page: 0
+            }
 
         const data = await this.$axios.$get(`/activities/${id}/filter`, {
           params
