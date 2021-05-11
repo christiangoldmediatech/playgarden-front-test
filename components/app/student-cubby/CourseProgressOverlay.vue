@@ -110,7 +110,7 @@
             <blank-dashboard-panel
               v-else
               :letter="(lessons[0]) ? lessons[0].curriculumType.letter : ''"
-              :day="selectedDay"
+              :day="selectedDayIndex + 1"
             >
               <!-- Previous Day And Next Day Icon -->
               <template #panel-toolbar>
@@ -164,7 +164,7 @@ export default {
   data: () => {
     return {
       show: false,
-      selectedDay: 0,
+      selectedDayIndex: 0,
       loading: false,
       selectedLetter: null,
       letters: [],
@@ -190,7 +190,7 @@ export default {
     },
 
     currentMobileLesson () {
-      const index = this.selectedDay
+      const index = this.selectedDayIndex
       const total = 5
 
       if (this.lessons[index]) {
@@ -211,11 +211,11 @@ export default {
     },
 
     shouldShowPreviousDayButton () {
-      return this.selectedDay > 0
+      return this.selectedDayIndex > 0
     },
 
     shouldShowNextDayButton () {
-      return this.selectedDay < 5
+      return this.selectedDayIndex < 4
     }
   },
 
@@ -278,7 +278,7 @@ export default {
 
     close () {
       this.show = false
-      this.selectedDay = 0
+      this.selectedDayIndex = 0
       document.querySelector('html').style.overflowY = 'auto'
     },
 
@@ -299,18 +299,18 @@ export default {
     },
 
     nextDay () {
-      if (this.selectedDay <= 4) {
-        this.selectedDay += 1
+      if (this.selectedDayIndex <= 3) {
+        this.selectedDayIndex += 1
       } else {
-        this.selectedDay = 0
+        this.selectedDayIndex = 0
       }
     },
 
     previousDay () {
-      if (this.selectedDay <= 0) {
-        this.selectedDay = 5
+      if (this.selectedDayIndex <= 0) {
+        this.selectedDayIndex = 3
       } else {
-        this.selectedDay -= 1
+        this.selectedDayIndex -= 1
       }
     }
   }
