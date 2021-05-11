@@ -199,6 +199,9 @@ export default {
       if (val) {
         this.getAndSetFavorites()
       }
+    },
+    currentSong (val) {
+      this.sendCurrentPlayingMusic({ musicId: val.id, childId: this.id })
     }
   },
 
@@ -212,7 +215,13 @@ export default {
   },
 
   methods: {
-    ...mapActions('music', ['getMusicLibrariesByCurriculumType', 'getFavoriteMusicForChild', 'setFavoriteMusicForChild', 'removeFavoriteMusic']),
+    ...mapActions('music', [
+      'getMusicLibrariesByCurriculumType',
+      'getFavoriteMusicForChild',
+      'setFavoriteMusicForChild',
+      'removeFavoriteMusic',
+      'sendCurrentPlayingMusic'
+    ]),
 
     async getAndSetFavorites () {
       const favorites = await this.getFavoriteMusicForChild(this.id)
