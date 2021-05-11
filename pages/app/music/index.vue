@@ -66,6 +66,7 @@ export default {
       removeFavoriteMusic,
       setFavoriteMusicForChild,
       showOnlyFavorites,
+      sendCurrentPlayingMusic,
       songsByCurriculumTypeWithFavorites
     } = useMusic()
 
@@ -109,6 +110,10 @@ export default {
       if (val) {
         await getAndSetFavorites()
       }
+    })
+
+    watch(currentSong, async (val) => {
+      await sendCurrentPlayingMusic(val.id, id.value)
     })
 
     onMounted(async () => {

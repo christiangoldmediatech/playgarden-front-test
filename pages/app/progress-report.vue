@@ -33,28 +33,12 @@
 
       <v-col v-else cols="12" class="mt-16">
         <div class="text-center mb-4">
-          <v-menu offset-y>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                color="white"
-                block
-                v-bind="attrs"
-                v-on="on"
-              >
-                <v-icon>mdi-menu-down</v-icon>
-                <span>{{ `${childMobile}'s progress report` }}</span>
-              </v-btn>
-            </template>
-            <v-list>
-              <v-list-item
-                v-for="(item, index) in childrenList"
-                :key="index"
-                @click="selectChildrenMobile(item)"
-              >
-                <v-list-item-title>{{ item.firstName }}</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
+          <child-select
+            v-model="selectedChild"
+            hide-details
+            :preview-mode="previewMode"
+            @input="$emit('input', getDataGraphic())"
+          />
         </div>
 
         <report-card-type-select
@@ -270,12 +254,6 @@ export default {
         this.letterStatsData = await this.getLastLessonChildren({ childId: this.selectedChild })
         this.loadLetterStatsData = false
       }
-    },
-
-    selectChildrenMobile (item) {
-      this.childMobile = item.name
-      this.selectedChild = item.id
-      this.getDataGraphic()
     },
 
     async getDataGraphic () {
