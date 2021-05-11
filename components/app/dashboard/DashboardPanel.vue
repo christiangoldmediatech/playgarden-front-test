@@ -22,6 +22,7 @@
             </v-tooltip>
             <template v-else>
               <v-btn
+                v-if="previousLessonId"
                 class="ml-3"
                 icon
                 @click.stop="previousLesson"
