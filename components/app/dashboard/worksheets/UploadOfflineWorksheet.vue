@@ -119,6 +119,7 @@ export default {
     return {
       loading: false,
       categories: [],
+      categoriesWorksheet: [],
       images: {}
     }
   },
@@ -140,6 +141,9 @@ export default {
       if (val) {
         this.reset()
       }
+    },
+    offlineWorksheet () {
+      this.getCategoriesByWorksheet()
     }
   },
 
@@ -149,13 +153,18 @@ export default {
 
   methods: {
     ...mapActions('offline-worksheet-categories', [
-      'getOfflineWorksheetCategories'
+      'getOfflineWorksheetCategories',
+      'getCategoriesWorksheetsOfflineByWorksheetId'
     ]),
     ...mapActions('offline-worksheet', {
       uploadWorksheet: 'upload',
       getUploaded: 'getUploaded'
     }),
     ...mapActions('children/lesson', ['saveWorksheetProgress']),
+
+    async getCategoriesByWorksheet () {
+      this.categoriesWorksheet = await this.getCategoriesWorksheetsOfflineByWorksheetId(this.offlineWorksheet.id)
+    },
 
     async getUploadedWorksheets () {
       this.images = {}
