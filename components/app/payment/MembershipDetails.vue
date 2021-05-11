@@ -251,11 +251,17 @@
             </v-col>
 
             <v-card-text class="text-justify">
-              Early education and stimulation to
-              generate development is key in the first 3 years of a child's life.<br>
-              <br>
-              Playgarden Prep Online was created to help with that. Won't
-              you reconsider? Do you still want to cancel your subscription?
+              <p>
+                Early education and stimulation to
+                generate development is key in the first 3 years of a child's life.
+              </p>
+              <p>
+                Playgarden Prep Online was created to help with that. Won't
+                you reconsider?
+              </p>
+              <p>
+                Do you still want to cancel your subscription?
+              </p>
             </v-card-text>
           </v-col>
 
