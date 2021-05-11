@@ -307,10 +307,6 @@ export default {
   methods: {
     ...mapActions('children/lesson', ['getAdvanceLessonChildren']),
 
-    callTest () {
-      console.log('testt')
-    },
-
     previousLesson () {
       try {
         this.$router.push({
