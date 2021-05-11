@@ -32,8 +32,8 @@ export default {
             on: disabled
               ? {}
               : {
-                click: fn
-              }
+                  click: fn
+                }
           },
           [
             h(
@@ -87,15 +87,15 @@ export default {
           [
             isNaN(Number(i))
               ? [
-                h(
-                  'span',
-                  {
-                    class: 'v-pagination__more'
-                  },
-                  [i.toString()]
-                ),
-                '·'
-              ]
+                  h(
+                    'span',
+                    {
+                      class: 'v-pagination__more'
+                    },
+                    [i.toString()]
+                  ),
+                  '·'
+                ]
               : [this.genItem(h, i), i < this.length ? '·' : null]
           ]
         )
