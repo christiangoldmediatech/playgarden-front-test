@@ -140,7 +140,6 @@ export default {
           name: 'app-dashboard'
         })
       } catch (e) {
-      } finally {
       }
     }
   }

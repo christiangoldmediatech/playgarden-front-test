@@ -10,7 +10,8 @@
         show-restart
         show-steps
         @ready="onPlayerReady"
-        @ended="close" />
+        @ended="close"
+      />
     </div>
   </v-overlay>
 </template>
