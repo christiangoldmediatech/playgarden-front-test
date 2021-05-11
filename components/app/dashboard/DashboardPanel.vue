@@ -12,6 +12,7 @@
                   v-bind="attrs"
                   v-on="on"
                   @click.stop="previousLesson"
+                  @blur="on.blur"
                 >
                   <img src="@/assets/svg/back-arrow.svg">
                 </v-btn>
