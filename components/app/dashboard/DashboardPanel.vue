@@ -13,6 +13,7 @@
                   v-on="on"
                   @click.stop="previousLesson"
                   @blur="on.blur"
+                  :retain-focus-on-click="false"
                 >
                   <img src="@/assets/svg/back-arrow.svg">
                 </v-btn>
@@ -31,6 +32,7 @@
                     v-on="on"
                     @click.stop="advance"
                     @blur="on.blur"
+                    :retain-focus-on-click="false"
                   >
                     <img src="@/assets/svg/next-arrow.svg">
                   </v-btn>
