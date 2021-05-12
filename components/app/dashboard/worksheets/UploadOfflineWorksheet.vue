@@ -120,7 +120,6 @@ export default {
       loading: false,
       lessonCurrent: null,
       worksheetoffline: null,
-      categories: [],
       categoriesWorksheet: [],
       images: {}
     }
@@ -146,13 +145,11 @@ export default {
   },
 
   async created () {
-    this.categories = await this.getOfflineWorksheetCategories()
     this.lessonCurrent = this.getLesson
   },
 
   methods: {
     ...mapActions('offline-worksheet-categories', [
-      'getOfflineWorksheetCategories',
       'getCategoriesWorksheetsOfflineAppByWorksheetId'
     ]),
     ...mapActions('offline-worksheet', {
