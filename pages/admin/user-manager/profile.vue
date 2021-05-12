@@ -136,14 +136,6 @@
                               </v-list-item-title>
                             </v-list-item>
                             <v-list-item class="clickable">
-                              <v-list-item-title @click="goToProgressReport(user.id)">
-                                <v-icon color="accent" dense>
-                                  mdi-chart-line
-                                </v-icon>
-                                Go to Progress report
-                              </v-list-item-title>
-                            </v-list-item>
-                            <v-list-item class="clickable">
                               <v-list-item-title @click="changePlanModal = true">
                                 <v-icon color="accent" dense>
                                   mdi-receipt
@@ -467,6 +459,16 @@
                             @click.stop="openTimeline(child)"
                           >
                             Progress
+                          </v-btn>
+                        </v-row>
+                        <v-row class="mt-2" justify="center">
+                          <v-btn
+                            class="text-none"
+                            color="primary"
+                            large
+                            @click.stop="goToProgressReport(child.id)"
+                          >
+                            Go Progress report
                           </v-btn>
                         </v-row>
                       </v-col>
