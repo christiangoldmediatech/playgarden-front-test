@@ -145,7 +145,7 @@
                   </div>
 
                   <v-icon class="ml-3 mt-1" color="#27A8E8" dense @click="goToProgressReport(item.id)">
-                    mdi-chart-bar
+                    mdi-chart-line
                   </v-icon>
                 </v-row>
               </template>
