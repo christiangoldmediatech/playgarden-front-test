@@ -13,7 +13,6 @@
           <span>
             Keep track of your worksheets and progress!
           </span>
-          aqui --{{ categoriesWorksheet }}
         </div>
 
         <v-row class="mx-0" justify="center">
@@ -55,7 +54,7 @@
                   </p>
                 </div>
                 <input
-                  :id="`${category.category}-${category.id}-upload`"
+                  :id="`${category.category}-${indexCategory}-upload`"
                   class="d-none"
                   type="file"
                   accept="image/*"
@@ -189,7 +188,7 @@ export default {
     },
 
     openFileDialog (category, index) {
-      const uploader = document.getElementById(`${category.category}-${category.id}-upload`)
+      const uploader = document.getElementById(`${category.category}-${index}-upload`)
       uploader.click()
     },
 
