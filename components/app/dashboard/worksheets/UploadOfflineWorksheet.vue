@@ -144,7 +144,7 @@ export default {
     }
   },
 
-  async created () {
+  created () {
     this.lessonCurrent = this.getLesson
   },
 
