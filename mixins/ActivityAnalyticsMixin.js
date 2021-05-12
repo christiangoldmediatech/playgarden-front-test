@@ -61,9 +61,6 @@ export default {
                     didFinish,
                     time
                   })
-                } else if (result.didFinish) {
-                  // console.log('Video previously finished, doing nothing')
-                  return false
                 } else {
                   if (startCheck) {
                     return false

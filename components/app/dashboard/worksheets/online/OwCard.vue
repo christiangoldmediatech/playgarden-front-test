@@ -258,9 +258,7 @@ export default {
     },
 
     async onNextQuestion () {
-      if (!this.question.completed) {
-        await this.saveProgress()
-      }
+      await this.saveProgress()
       if (this.lastQuestion) {
         this.completed = true
       } else {
