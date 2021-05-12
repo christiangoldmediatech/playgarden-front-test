@@ -34,9 +34,9 @@
                   </p>
 
                   <v-img
-                    v-if="images[`image_${category.id}`]"
+                    v-if="images[`image_${category.id}_${indexCategory}`]"
                     class="flex-shrink-1 flex-grow-0"
-                    :src="images[`image_${category.id}`]"
+                    :src="images[`image_${category.id}_${indexCategory}`]"
                     max-width="128"
                     height="128"
                     contain
@@ -58,7 +58,7 @@
                   class="d-none"
                   type="file"
                   accept="image/*"
-                  @change="setFile($event, category.id)"
+                  @change="setFile($event, category.id, indexCategory)"
                 >
               </v-card-text>
             </v-card>
@@ -192,7 +192,7 @@ export default {
       uploader.click()
     },
 
-    setFile (e, categoryId) {
+    setFile (e, categoryId, index) {
       this.loading = true
 
       this.uploadWorksheet({
@@ -202,7 +202,7 @@ export default {
         File: e.target.files[0]
       })
         .then(({ url }) => {
-          this.images[`image_${categoryId}`] = url
+          this.images[`image_${categoryId}_${index}`] = url
           this.$snotify.success('Your worksheet has been uploaded!')
           const date = new Date().toISOString().substr(0, 19)
           return this.saveWorksheetProgress({
