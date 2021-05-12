@@ -66,7 +66,10 @@
                         </v-icon>
                       </v-avatar>
                     </template>
-                    <pg-inline-video-player @ready="onPlayerReady" />
+                    <pg-video-player
+                      inline
+                      @ready="onPlayerReady"
+                    />
                   </v-badge>
                 </div>
               </template>
@@ -174,7 +177,6 @@
 
 <script>
 import { mapActions } from 'vuex'
-// import PgInlineVideoPlayer from '@/components/pg-video-js-player/PgInlineVideoPlayer.vue'
 
 function generateItemTemplate () {
   return {
@@ -188,10 +190,6 @@ function generateItemTemplate () {
 
 export default {
   name: 'OnboardingEditorDialog',
-
-  // components: {
-  //   PgInlineVideoPlayer
-  // },
 
   data: () => ({
     dialog: false,
@@ -218,16 +216,16 @@ export default {
     waitAndLoad (video) {
       const interval = window.setInterval(() => {
         if (this.player) {
-          this.player.loadMedia({
-            title: video.name,
-            poster: video.thumbnail,
-            src: [
-              {
-                src: video.videoUrl.HLS,
+          this.player.loadPlaylist([
+            {
+              title: video.name,
+              poster: video.thumbnail,
+              src: {
+                url: video.videoUrl.HLS,
                 type: 'application/x-mpegURL'
               }
-            ]
-          })
+            }
+          ])
           window.clearInterval(interval)
         }
       }, 50)

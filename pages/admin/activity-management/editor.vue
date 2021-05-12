@@ -123,8 +123,9 @@
                   </v-col>
 
                   <v-col class="text-center" cols="12" sm="9" lg="6">
-                    <pg-inline-video-player
+                    <pg-video-player
                       v-if="video && video.videoUrl"
+                      inline
                       @ready="onPlayerReady"
                     />
 
@@ -249,16 +250,16 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-// import PgInlineVideoPlayer from '@/components/pg-video-js-player/PgInlineVideoPlayer.vue'
+
 export default {
   name: 'Editor',
-  components: {
-  //   PgInlineVideoPlayer
-  },
+
   props: {
     newLessonActivity: Boolean
   },
+
   layout: 'admin',
+
   data () {
     return {
       loading: false,
@@ -376,16 +377,15 @@ export default {
         const mediaObject = {
           title: name,
           poster: thumbnail,
-          src: [
-            {
-              src: videoUrl.HLS,
-              type: 'application/x-mpegURL'
-            }
-          ]
+          src: {
+            url: videoUrl.HLS,
+            type: 'application/x-mpegURL'
+          }
         }
+
         const interval = window.setInterval(() => {
           if (this.player) {
-            this.player.loadMedia(mediaObject)
+            this.player.loadPlaylist([mediaObject])
             window.clearInterval(interval)
             resolve()
             return

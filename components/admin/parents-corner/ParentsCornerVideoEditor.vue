@@ -67,9 +67,9 @@
               </validation-provider>
 
               <!-- Video -->
-              <pg-inline-video-player
+              <pg-video-player
                 v-if="video && video.videoUrl"
-                :show-next-up="false"
+                inline
                 @ready="onPlayerReady"
               />
 
