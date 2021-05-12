@@ -254,7 +254,7 @@ export default {
     ...mapActions('children/progress', ['getChildrenProgressExport']),
 
     goToProgressReport (id) {
-      this.$router.push({ name: 'app-progress-report', query: { id } })
+      this.$router.push({ name: 'admin-progress-report', query: { id } })
     },
 
     openTimeline (child) {
