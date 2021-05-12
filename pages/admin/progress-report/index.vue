@@ -38,7 +38,16 @@
             </v-col>
 
             <v-col cols="3" class="text-center text-sm-right pt-7 pr-3">
-              boton Regresas
+              <v-btn
+                class="text-none ml-3"
+                color="accent darken-1"
+                depressed
+                nuxt
+                small
+                @click.stop="goBack"
+              >
+                Back
+              </v-btn>
             </v-col>
 
             <v-col v-if="reportCardTypeSelected === 'General'" cols="12">
@@ -188,6 +197,10 @@ export default {
     ...mapActions('progress-report', ['getGraphicByChildrenId', 'getLastLessonChildren']),
     ...mapActions({ setChild: 'setChild' }),
 
+    goBack () {
+      this.$router.go(-1)
+    },
+
     async getDataReport () {
       if (this.selectedChild) {
         this.letterStatsData = await this.getLastLessonChildren({ childId: this.selectedChild })
@@ -240,6 +253,6 @@ export default {
 }
 
 .panel-item {
-  min-height: 145px !important; 
+  min-height: 145px !important;
 }
 </style>
