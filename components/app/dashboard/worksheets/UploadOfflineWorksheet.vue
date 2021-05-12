@@ -13,19 +13,20 @@
           <span>
             Keep track of your worksheets and progress!
           </span>
+          aqui --{{ categoriesWorksheet }}
         </div>
 
         <v-row class="mx-0" justify="center">
           <v-hover
-            v-for="category in categories"
-            :key="`category-${category.id}`"
+            v-for="(category, indexCategory) in categoriesWorksheet"
+            :key="`${category.category}-${indexCategory}`"
             v-slot="{ hover }"
           >
             <v-card
               :class="['ma-2 clickable category-card', { scaled: hover }]"
               :elevation="hover ? 12 : 2"
               :disabled="loading"
-              @click.stop="openFileDialog(category.id)"
+              @click.stop="openFileDialog(category, indexCategory)"
             >
               <v-card-text>
                 <div class="d-flex flex-column align-center">
@@ -54,7 +55,7 @@
                   </p>
                 </div>
                 <input
-                  :id="`category-${category.id}-upload`"
+                  :id="`${category.category}-${category.id}-upload`"
                   class="d-none"
                   type="file"
                   accept="image/*"
@@ -118,6 +119,8 @@ export default {
   data () {
     return {
       loading: false,
+      lessonCurrent: null,
+      worksheetoffline: null,
       categories: [],
       categoriesWorksheet: [],
       images: {}
@@ -126,14 +129,7 @@ export default {
 
   computed: {
     ...mapGetters({ currentChild: 'getCurrentChild' }),
-    ...mapGetters('admin/curriculum', ['getLesson']),
-
-    offlineWorksheet () {
-      if (this.getLesson) {
-        return this.getLesson.worksheets.find(({ type }) => type === 'OFFLINE')
-      }
-      return null
-    }
+    ...mapGetters('admin/curriculum', ['getLesson'])
   },
 
   watch: {
@@ -142,19 +138,23 @@ export default {
         this.reset()
       }
     },
-    offlineWorksheet () {
-      this.getCategoriesByWorksheet()
+    lessonCurrent (val) {
+      if (val) {
+        this.worksheetoffline = this.lessonCurrent.worksheets.find(({ type }) => type === 'OFFLINE')
+        this.getCategoriesByWorksheetId()
+      }
     }
   },
 
   async created () {
     this.categories = await this.getOfflineWorksheetCategories()
+    this.lessonCurrent = this.getLesson
   },
 
   methods: {
     ...mapActions('offline-worksheet-categories', [
       'getOfflineWorksheetCategories',
-      'getCategoriesWorksheetsOfflineByWorksheetId'
+      'getCategoriesWorksheetsOfflineAppByWorksheetId'
     ]),
     ...mapActions('offline-worksheet', {
       uploadWorksheet: 'upload',
@@ -162,8 +162,8 @@ export default {
     }),
     ...mapActions('children/lesson', ['saveWorksheetProgress']),
 
-    async getCategoriesByWorksheet () {
-      this.categoriesWorksheet = await this.getCategoriesWorksheetsOfflineByWorksheetId(this.offlineWorksheet.id)
+    async getCategoriesByWorksheetId () {
+      this.categoriesWorksheet = await this.getCategoriesWorksheetsOfflineAppByWorksheetId(this.worksheetoffline.id)
     },
 
     async getUploadedWorksheets () {
@@ -188,8 +188,8 @@ export default {
       this.$emit('input', false)
     },
 
-    openFileDialog (categoryId) {
-      const uploader = document.getElementById(`category-${categoryId}-upload`)
+    openFileDialog (category, index) {
+      const uploader = document.getElementById(`${category.category}-${category.id}-upload`)
       uploader.click()
     },
 
@@ -210,7 +210,7 @@ export default {
             lessonId: this.getLesson.id,
             childId: this.currentChild[0].id,
             worksheet: {
-              id: this.offlineWorksheet.id,
+              id: this.worksheetoffline.id,
               completed: true,
               date
             }

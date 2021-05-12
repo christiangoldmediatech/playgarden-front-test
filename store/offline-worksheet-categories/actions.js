@@ -11,6 +11,10 @@ export default {
     return this.$axios.$get(`/categories-worksheets-offline/worksheet/${id}`)
   },
 
+  getCategoriesWorksheetsOfflineAppByWorksheetId (_, id) {
+    return this.$axios.$get(`/categories-worksheets-offline/worksheet/${id}/app`)
+  },
+
   async getOfflineWorksheetCategories ({ commit }, params) {
     const data = await this.$axios.$get('/offline-worksheets-cats', { params })
     return data
