@@ -136,6 +136,14 @@
                               </v-list-item-title>
                             </v-list-item>
                             <v-list-item class="clickable">
+                              <v-list-item-title @click="goToProgressReport(user.id)">
+                                <v-icon color="accent" dense>
+                                  mdi-chart-line
+                                </v-icon>
+                                Go to Progress report
+                              </v-list-item-title>
+                            </v-list-item>
+                            <v-list-item class="clickable">
                               <v-list-item-title @click="changePlanModal = true">
                                 <v-icon color="accent" dense>
                                   mdi-receipt
@@ -707,6 +715,10 @@ export default {
     ...mapActions('admin/users', ['getById', 'getChildren', 'updateUserPlanByAdmin']),
     ...mapActions('payment', ['cancelSubscriptionById']),
     ...mapActions('children/lesson', ['getLessonChildrenStatus']),
+
+    goToProgressReport (id) {
+      this.$router.push({ name: 'admin-progress-report', query: { id } })
+    },
 
     closeChangePlanModal () {
       this.changePlanModal = false

@@ -143,10 +143,6 @@
                       <v-img :src="require('@/assets/png/progress-1.png')" height="20" width="20" />
                     </v-btn>
                   </div>
-
-                  <v-icon class="ml-3 mt-1" color="#27A8E8" dense @click="goToProgressReport(item.id)">
-                    mdi-chart-line
-                  </v-icon>
                 </v-row>
               </template>
             </pg-admin-data-table>
@@ -252,10 +248,6 @@ export default {
   methods: {
     ...mapActions('admin/children', ['getChildrensProgress']),
     ...mapActions('children/progress', ['getChildrenProgressExport']),
-
-    goToProgressReport (id) {
-      this.$router.push({ name: 'admin-progress-report', query: { id } })
-    },
 
     openTimeline (child) {
       this.$nuxt.$emit('open-timeline', child)
