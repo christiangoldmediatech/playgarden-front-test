@@ -50,6 +50,10 @@ export default {
         // console.log(`Starting video analytics for activity: ${currentVideo.activityId}, time: ${time}, didFinish: ${didFinish}`)
 
         this.children.forEach((child) => {
+          if (!currentVideo.activityId) {
+            return
+          }
+
           const analyticOperation = new Promise((resolve, reject) => {
             this.getAnalytics({ activityId: currentVideo.activityId, childId: child.id })
               .then((result) => {
