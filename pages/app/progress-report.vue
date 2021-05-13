@@ -52,7 +52,23 @@
       <v-col cols="12" md="9" lg="10" class="pt-12">
         <v-row v-if="!$vuetify.breakpoint.xs" no-gutters>
           <v-col class="mt-10" cols="9">
-            <underlined-title class="text-h6 text-md-h4" text="Student Progress Report" /><br>
+            <v-row class="mt-n4">
+              <v-btn
+                class="ml-n4"
+                color="accent"
+                nuxt
+                text
+                :to="{ name: 'app-student-cubby' }"
+              >
+                <v-icon left>
+                  mdi-less-than
+                </v-icon>
+                Go back to student cubby
+              </v-btn>
+            </v-row>
+            <v-row class="mt-3">
+              <underlined-title class="text-h6 text-md-h4" text="Student Progress Report" /><br>
+            </v-row>
           </v-col>
 
           <v-col cols="3" class="text-center text-sm-right pt-7 pr-3">
