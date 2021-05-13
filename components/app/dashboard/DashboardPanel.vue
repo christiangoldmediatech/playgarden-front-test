@@ -46,10 +46,10 @@
                       @click.stop="advance"
                       @blur="on.blur"
                     >
-                      <img src="@/assets/svg/back-arrow.svg">
+                      <img src="@/assets/svg/next-arrow.svg">
                     </v-btn>
                   </template>
-                  <span>GO TO PREVIOUS DAY</span>
+                  <span>GO TO NEXT DAY</span>
                 </v-tooltip>
                 <template v-else>
                   <v-btn
