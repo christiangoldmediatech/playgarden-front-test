@@ -127,13 +127,28 @@
           <v-col cols="12" md="5">
             <v-card :class="{ 'mx-4': $vuetify.breakpoint.xs }">
               <div v-if="loadLetterStatsData">
-                <v-skeleton-loader v-bind="attrs" type="card-heading" />
-                <v-skeleton-loader v-for="n in 5" :key="n" v-bind="attrs" type="list-item-avatar-three-line, list-item-one-line, divider" />
+                <v-skeleton-loader type="card-heading" />
+                <v-skeleton-loader v-for="n in 5" :key="n" type="list-item-avatar-three-line, list-item-one-line, divider" />
               </div>
               <template v-else>
-                <div class="pt-4 ml-4 mb-4">
-                  <underlined-title class="text-h6 text-md-h5 mt-4 mr-4" :text="letterStatsData.name" />
-                </div>
+                <v-row class="pt-3" no-gutters>
+                  <v-col cols="7">
+                    <div class="pt-4 ml-4 mb-4">
+                      <underlined-title class="text-h6 text-md-h5 mt-4 mr-4" :text="letterStatsData.name" />
+                    </div>
+                  </v-col>
+                  <v-col class="pr-3">
+                    <div class="progress-letter-selector">
+                      <letter-select
+                        v-model="selectedLetter"
+                        small-letter
+                        dense
+                        v-bind="{ disabledLetters }"
+                        :slim-version="$vuetify.breakpoint.xs"
+                      />
+                    </div>
+                  </v-col>
+                </v-row>
                 <letter-stats :letter-stats="letterStatsData" />
               </template>
             </v-card>
@@ -165,6 +180,7 @@ import ChildSelect from '@/components/app/ChildSelect.vue'
 import ReportCardTypeSelect from '@/components/app/progress-report/ReportCardTypeSelect.vue'
 import LetterStats from '@/components/app/progress-report/LetterStats.vue'
 import DetailProgress from '@/components/app/progress-report/DetailProgress.vue'
+import LetterSelect from '@/components/app/live-sessions/recorded/LetterSelect.vue'
 export default {
   name: 'ProgressReport',
 
@@ -173,7 +189,8 @@ export default {
     ChildSelect,
     ReportCardTypeSelect,
     LetterStats,
-    DetailProgress
+    DetailProgress,
+    LetterSelect
   },
 
   mixins: [FavoritesMixin],
@@ -184,6 +201,8 @@ export default {
     reportCardTypeSelected: 'General',
     dataReportCard: null,
     optionDefault: 0,
+    letters: [],
+    selectedLetter: null,
     childMobile: '',
     selectedReportCard: 'General',
     optionDefaultMobile: 'General',
@@ -200,6 +219,12 @@ export default {
     ...mapGetters('progress-report', ['report']),
     ...mapGetters('children', { allChildren: 'rows' }),
     ...mapGetters('children', { children: 'rows' }),
+
+    disabledLetters () {
+      return this.letters.filter((letter) => {
+        return !letter.enabled
+      }).map(({ id }) => id)
+    },
 
     childrenIds () {
       return this.currentChild[0].id
@@ -240,6 +265,11 @@ export default {
       this.loadLetterStatsData = true
       await this.getDataReport()
       this.childMobile = this.childrenList.find(child => child.id === val).firstName
+    },
+
+    async selectedLetter () {
+      // this.loadLetterStatsData = true
+      // await this.getDataReport()
     }
   },
 
@@ -260,10 +290,18 @@ export default {
   },
 
   methods: {
+    ...mapActions('children/course-progress', ['getCourseProgressByChildId']),
     ...mapActions('admin/report-card', ['getTypes']),
     ...mapActions('progress-report', ['getGraphicByChildrenId', 'getLastLessonChildren']),
     ...mapActions({ setChild: 'setChild' }),
     ...mapActions('children', { getChildren: 'get' }),
+
+    async fetchChildProgress () {
+      const data = await this.getCourseProgressByChildId({
+        id: this.selectedChild
+      })
+      this.letters = data
+    },
 
     changeChild (newId, redirect = true) {
       const child = this.allChildren.find(({ id }) => id === parseInt(newId))
@@ -272,7 +310,9 @@ export default {
 
     async getDataReport () {
       if (this.selectedChild) {
+        console.log('letter--', this.selectedLetter)
         this.letterStatsData = await this.getLastLessonChildren({ childId: this.selectedChild })
+        await this.fetchChildProgress()
         this.loadLetterStatsData = false
       }
     },
