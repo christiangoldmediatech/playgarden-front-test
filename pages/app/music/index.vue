@@ -1,6 +1,6 @@
 <template>
   <v-main :style="mainWrapperStyle">
-    <v-container fluid class="music-page-container pa-0" :class="pageContainerClasses">
+    <v-container fluid class="pa-0" :style="pageContainerStyle">
       <v-card
         :style="playerCardStyle"
         :width="playerWidth"
@@ -19,12 +19,12 @@
         />
       </v-card>
       <music-song-list
+        :style="musicSongListStyle"
         :show-only-favorites="showOnlyFavorites"
         :is-player-showing="isPlayerShowing"
         :mobile="isMobile"
         :all-songs="allSongsWithFavorites"
         :songs-by-curriculum-type="songsByCurriculumTypeWithFavorites"
-        class="music-song-list fill-height mx-auto"
         @addSong="addSongToPlaylist"
         @newPlayList="createNewPlaylist"
         @favorite="handleFavorite"
@@ -36,13 +36,15 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex'
+import debounce from 'lodash/debounce'
 
 import MusicPlayer from '@/components/app/music/MusicPlayer.vue'
 import MusicSongList from '@/components/app/music/MusicSongList.vue'
 import { useMusic } from '@/composables'
-import { onMounted, ref, computed, useRoute, watch } from '@nuxtjs/composition-api'
+import { onMounted, ref, computed, useRoute, watch, onUnmounted } from '@nuxtjs/composition-api'
 
 const PAGE_MOBILE_BREAKPOINT = 1264
+const MOBILE_PLAYER_HEIGHT = 135
 
 export default {
   name: 'Index',
@@ -74,6 +76,7 @@ export default {
 
     const isMobile = computed(() => ctx.root.$vuetify.breakpoint.width <= PAGE_MOBILE_BREAKPOINT)
     const isPlayerShowing = computed(() => playlist.value.length > 0)
+    const didScrollToBottom = ref(false)
 
     const playerWidth = computed(() => {
       return isMobile.value
@@ -87,12 +90,8 @@ export default {
       return !isMobile.value || isPlayerMaximizedOnMobile.value
         ? '100%'
         : isPlayerShowing.value && !isPlayerMaximizedOnMobile.value
-          ? '135'
+          ? MOBILE_PLAYER_HEIGHT
           : 0
-    })
-
-    const pageContainerClasses = computed(() => {
-      return { mobile: isMobile.value, playing: isPlayerShowing.value }
     })
 
     const mainWrapperStyle = computed(() => {
@@ -101,6 +100,37 @@ export default {
         'max-height': isMobile.value ? '100vh' : '1000px'
       }
     })
+
+    const pageContainerStyle = computed(() => {
+      const isDesktopPlayer = isPlayerShowing.value && !isMobile.value
+      const isMobilePlayer = isPlayerShowing.value && isMobile.value
+
+      return {
+        height: '100%',
+        position: 'relative',
+        'padding-left': isDesktopPlayer
+          ? '450px !important'
+          : isMobilePlayer
+            ? '0 !important'
+            : undefined
+      }
+    })
+
+    const musicSongListStyle = computed(() => {
+      return {
+        overflow: 'scroll',
+        height: '100%',
+        'padding-bottom': isMobile.value
+          ? `${MOBILE_PLAYER_HEIGHT * 2}px !important`
+          : undefined
+      }
+    })
+
+    const handleScroll = () => {
+      didScrollToBottom.value = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.scrollHeight - MOBILE_PLAYER_HEIGHT
+    }
+
+    const debouncedHandleScroll = debounce(handleScroll, 50)
 
     const id = computed(() => route.value.query.id
       ? parseInt(route.value.query.id)
@@ -119,6 +149,12 @@ export default {
     onMounted(async () => {
       await getMusicLibrariesByCurriculumType()
       await getAndSetFavorites()
+
+      window.addEventListener('scroll', debouncedHandleScroll)
+    })
+
+    onUnmounted(() => {
+      window.removeEventListener('scroll', debouncedHandleScroll)
     })
 
     const updateCurrentSongData = () => {
@@ -176,7 +212,7 @@ export default {
       }
     }
 
-    const handlePlayerClick = ($event) => {
+    const handlePlayerClick = () => {
       if (!isMobile.value || isPlayerMaximizedOnMobile.value) {
         return
       }
@@ -193,6 +229,7 @@ export default {
       allSongsWithFavorites,
       createNewPlaylist,
       currentSong,
+      didScrollToBottom,
       getAndSetFavorites,
       handleFavorite,
       handlePlayerClick,
@@ -203,7 +240,8 @@ export default {
       isPlayerShowing,
       mainWrapperStyle,
       musicPlayer,
-      pageContainerClasses,
+      musicSongListStyle,
+      pageContainerStyle,
       playerHeight,
       playerWidth,
       playlist,
@@ -215,21 +253,20 @@ export default {
   computed: {
     ...mapGetters({ currentChild: 'getCurrentChild' }),
 
-    ...mapState('notifications', ['isTrialExpiringRibbonVisible', 'expiringRibbonHeightMobile']),
+    ...mapState('notifications', ['isTrialExpiringRibbonVisible']),
 
     playerCardStyle () {
+      const canHidePlayer = this.isMobile && this.didScrollToBottom && !this.isPlayerMaximizedOnMobile
+
       return {
         padding: this.isPlayerShowing && !(this.isPlayerMaximizedOnMobile && this.isMobile) ? '16px' : '0px',
         transition: '0.3s ease',
-        position: 'absolute',
+        position: this.isMobile && !this.isPlayerMaximizedOnMobile ? 'fixed' : 'absolute',
         left: 0,
         top: this.isMobile ? 'unset' : 0,
         'z-index': 99,
-        bottom: this.isMobile && this.isTrialExpiringRibbonVisible && !this.isPlayerMaximizedOnMobile
-          ? `${this.expiringRibbonHeightMobile}px`
-          : this.isMobile
-            ? '0px'
-            : undefined
+        bottom: '0px',
+        visibility: canHidePlayer ? 'hidden' : 'visible'
       }
     }
   },
@@ -241,21 +278,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.music-page-container {
-  height: 100%;
-  position: relative;
-  &.playing {
-    padding-left: 450px !important;
-    &.mobile {
-      padding-left: 0 !important;
-      padding-bottom: 160px !important;
-    }
-  }
-}
-
-.music-song-list {
-  overflow: scroll;
-}
-</style>
