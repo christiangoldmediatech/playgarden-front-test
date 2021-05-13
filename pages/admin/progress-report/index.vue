@@ -171,7 +171,7 @@ export default {
     letters: [],
     selectedLetter: null,
     childMobile: '',
-    selectedChild: null, // aqui
+    selectedChild: null,
     selectedReportCard: 'General',
     optionDefaultMobile: 'General',
     loadLetterStatsData: true,
