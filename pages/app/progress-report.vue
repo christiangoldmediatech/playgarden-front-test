@@ -142,9 +142,8 @@
                       <letter-select
                         v-model="selectedLetter"
                         small-letter
-                        dense
                         v-bind="{ disabledLetters }"
-                        :slim-version="$vuetify.breakpoint.xs"
+                        slim-version
                       />
                     </div>
                   </v-col>
@@ -268,8 +267,8 @@ export default {
     },
 
     async selectedLetter () {
-      // this.loadLetterStatsData = true
-      // await this.getDataReport()
+      this.loadLetterStatsData = true
+      await this.getDataReport()
     }
   },
 
@@ -310,8 +309,11 @@ export default {
 
     async getDataReport () {
       if (this.selectedChild) {
-        console.log('letter--', this.selectedLetter)
-        this.letterStatsData = await this.getLastLessonChildren({ childId: this.selectedChild })
+        const params = {}
+        if (this.selectedLetter) {
+          params.curriculumTypeId = this.selectedLetter
+        }
+        this.letterStatsData = await this.getLastLessonChildren({ childId: this.selectedChild, params: params })
         await this.fetchChildProgress()
         this.loadLetterStatsData = false
       }
