@@ -253,8 +253,6 @@ export default {
   computed: {
     ...mapGetters({ currentChild: 'getCurrentChild' }),
 
-    ...mapState('notifications', ['isTrialExpiringRibbonVisible']),
-
     playerCardStyle () {
       const canHidePlayer = this.isMobile && this.didScrollToBottom && !this.isPlayerMaximizedOnMobile
 
