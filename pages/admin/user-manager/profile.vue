@@ -452,24 +452,24 @@
                         </v-row>
 
                         <v-row justify="center">
-                          <v-btn
-                            class="text-none"
-                            color="accent"
-                            large
-                            @click.stop="openTimeline(child)"
-                          >
-                            Progress
-                          </v-btn>
-                        </v-row>
-                        <v-row class="mt-2" justify="center">
-                          <v-btn
-                            class="text-none"
-                            color="primary"
-                            large
-                            @click.stop="goToProgressReport(child.id)"
-                          >
-                            Go Progress report
-                          </v-btn>
+                          <v-app class="children-actions">
+                            <v-btn
+                              class="text-none"
+                              color="accent"
+                              large
+                              @click.stop="openTimeline(child)"
+                            >
+                              Progress
+                            </v-btn>
+                            <v-btn
+                              class="mt-2 text-none"
+                              color="primary"
+                              large
+                              @click.stop="goToProgressReport(child.id)"
+                            >
+                              Go Progress report
+                            </v-btn>
+                          </v-app>
                         </v-row>
                       </v-col>
 
@@ -871,5 +871,8 @@ export default {
 }
 .edit-color {
   color: #f89838;
+}
+.children-actions {
+  max-height: 110px !important;
 }
 </style>
