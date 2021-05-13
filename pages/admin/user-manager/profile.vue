@@ -459,7 +459,7 @@
                               large
                               @click.stop="openTimeline(child)"
                             >
-                              Progress
+                              Go to Letter Progress
                             </v-btn>
                             <v-btn
                               class="mt-2 text-none"
@@ -467,7 +467,7 @@
                               large
                               @click.stop="goToProgressReport(child.id)"
                             >
-                              Go Progress report
+                              Go to Progress Report
                             </v-btn>
                           </v-app>
                         </v-row>

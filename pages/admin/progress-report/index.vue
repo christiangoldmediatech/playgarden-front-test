@@ -11,7 +11,7 @@
                 v-for="(item, index) in getMenu"
                 :key="index"
               >
-                <v-item v-slot="{ active, toggle }">
+                <v-item>
                   <v-card class="panel-item" @click="loadDetailReport(item.name)">
                     <v-list-item-avatar size="56">
                       <v-img v-if="item.name === 'General'" :src="require('@/assets/svg/general.svg')" />
@@ -145,8 +145,6 @@
 import { mapActions, mapGetters } from 'vuex'
 import FavoritesMixin from '@/mixins/FavoritesMixin.js'
 import ChartReport from '@/components/app/progress-report/ChartReport.vue'
-import ChildSelect from '@/components/app/ChildSelect.vue'
-import ReportCardTypeSelect from '@/components/app/progress-report/ReportCardTypeSelect.vue'
 import LetterStats from '@/components/app/progress-report/LetterStats.vue'
 import DetailProgress from '@/components/app/progress-report/DetailProgress.vue'
 import LetterSelect from '@/components/app/live-sessions/recorded/LetterSelect.vue'
@@ -157,8 +155,6 @@ export default {
 
   components: {
     ChartReport,
-    ChildSelect,
-    ReportCardTypeSelect,
     LetterStats,
     DetailProgress,
     LetterSelect

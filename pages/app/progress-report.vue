@@ -119,7 +119,7 @@
                     <span class="text-body-1 text-lg-h7 text-xl-h6 text-justify mt-8 mr-3 text-report">General progress statistics for all categories.</span>
                   </center>
                 </div>
-                <chart-report class="mt-n8" v-if="report" :report="report" />
+                <chart-report v-if="report" class="mt-n8" :report="report" />
               </v-col>
             </v-row>
             <!-- end mobile -->
@@ -313,7 +313,7 @@ export default {
         if (this.selectedLetter) {
           params.curriculumTypeId = this.selectedLetter
         }
-        this.letterStatsData = await this.getLastLessonChildren({ childId: this.selectedChild, params: params })
+        this.letterStatsData = await this.getLastLessonChildren({ childId: this.selectedChild, params })
         await this.fetchChildProgress()
         this.loadLetterStatsData = false
       }
