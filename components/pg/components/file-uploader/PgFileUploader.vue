@@ -134,7 +134,6 @@ export default {
           result = await this.handleFileUpload()
         }
       } catch (error) {
-        console.log(error)
         return Promise.reject(error)
       }
 
@@ -159,7 +158,6 @@ export default {
           return filePath
         }
       } catch (error) {
-        console.log(error)
         return Promise.reject(error)
       }
       return false
