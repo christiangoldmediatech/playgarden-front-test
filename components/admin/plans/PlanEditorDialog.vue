@@ -49,14 +49,10 @@
                     name="Plan Name"
                     rules="required"
                   >
-                    <pg-select
+                    <pg-text-field
                       v-model="item.planName"
-                      class="mb-6"
-                      clearable
-                      hide-details
-                      :items="plamNameList"
-                      label="Plan Name"
                       :error-messages="errors"
+                      label="Plan Name"
                       solo-labeled
                     />
                   </validation-provider>
@@ -140,7 +136,6 @@ export default {
         benefits: [],
         promotions: []
       },
-      plamNameList: ['SILVER', 'GOLD', 'PLATINUM'],
       id: null,
       item: generateItemTemplate()
     }
