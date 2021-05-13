@@ -144,6 +144,7 @@
                         small-letter
                         v-bind="{ disabledLetters }"
                         slim-version
+                        label-title="Choose letter"
                       />
                     </div>
                   </v-col>
