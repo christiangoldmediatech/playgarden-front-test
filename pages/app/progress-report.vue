@@ -95,6 +95,9 @@
                     <underlined-title class="text-h6 text-md-h5" text="General Progress Report" />
                   </div>
                   <div>
+                    <span class="text-body-1 text-lg-h7 text-xl-h6 text-justify mt-8 mr-3 text-report">General progress statistics for all categories.</span>
+                  </div>
+                  <div class="mt-n8">
                     <center>
                       <chart-report v-if="report" :report="report" />
                     </center>
