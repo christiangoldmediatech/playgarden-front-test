@@ -1,6 +1,12 @@
 <template>
   <v-hover v-slot="{ hover }">
-    <v-card class="activity-card" width="100%">
+    <v-card
+      class="activity-card"
+      :style="{
+        transform: !isMobile && hover ? 'scale(1.125)' : undefined
+      }"
+      width="100%"
+    >
       <v-img
         class="activity-card-thumbnail"
         content-class=""
@@ -79,6 +85,12 @@ export default {
     teacher: {
       type: String,
       required: true
+    }
+  },
+
+  computed: {
+    isMobile () {
+      return this.$vuetify.breakpoint.mobile
     }
   }
 }
