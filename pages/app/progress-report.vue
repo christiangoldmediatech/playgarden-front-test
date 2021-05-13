@@ -86,7 +86,7 @@
             </p>
           </v-col>
         </v-row>
-        <v-row class="mr-3 mt-5">
+        <v-row v-if="general === true" class="mr-3 mt-5">
           <!-- desktop -->
           <v-col cols="12" md="7" lg="7">
             <v-card v-if="!$vuetify.breakpoint.xs" class="content-report">
@@ -139,21 +139,18 @@
             </v-card>
           </v-col>
           <!-- end desktop -->
-          <v-col v-if="general === true" cols="12" md="12" lg="12">
-
-          </v-col>
-          <v-col v-else cols="12" md="12" lg="12">
-            <v-card v-if="!$vuetify.breakpoint.xs">
-              <v-row>
-                <v-col cols="12">
-                  <detail-progress :report-card-type="reportCardTypeSelected" :report="report" :data-report-card-type="dataReportCard" />
-                </v-col>
-              </v-row>
-            </v-card>
-            <v-row v-else>
-              <detail-progress :report-card-type="reportCardTypeSelected" :report="report" :data-report-card-type="dataReportCard" />
+        </v-row>
+        <v-row v-else cols="12" md="12" lg="12">
+          <v-card v-if="!$vuetify.breakpoint.xs">
+            <v-row>
+              <v-col cols="12">
+                <detail-progress :report-card-type="reportCardTypeSelected" :report="report" :data-report-card-type="dataReportCard" />
+              </v-col>
             </v-row>
-          </v-col>
+          </v-card>
+          <v-row v-else>
+            <detail-progress :report-card-type="reportCardTypeSelected" :report="report" :data-report-card-type="dataReportCard" />
+          </v-row>
         </v-row>
       </v-col>
     </v-row>
