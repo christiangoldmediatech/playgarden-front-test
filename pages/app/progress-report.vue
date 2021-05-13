@@ -86,11 +86,12 @@
             </p>
           </v-col>
         </v-row>
-        <v-row class="mr-3 mt-5" no-gutters>
-          <v-col v-if="general === true" cols="12" md="12" lg="12">
+        <v-row class="mr-3 mt-5">
+          <!-- desktop -->
+          <v-col cols="12" md="7" lg="7">
             <v-card v-if="!$vuetify.breakpoint.xs" class="content-report">
               <v-row class="ml-2 mr-2">
-                <v-col cols="12" md="7" lg="7">
+                <v-col cols="12">
                   <div class="pt-4 mb-4">
                     <underlined-title class="text-h6 text-md-h5" text="General Progress Report" />
                   </div>
@@ -103,39 +104,43 @@
                     </center>
                   </div>
                 </v-col>
-                <v-col cols="12" md="5" lg="5" xl="5">
-                  <v-card>
-                    <div v-if="loadLetterStatsData">
-                      <v-skeleton-loader v-bind="attrs" type="card-heading" />
-                      <v-skeleton-loader v-for="n in 5" :key="n" v-bind="attrs" type="list-item-avatar-three-line, list-item-one-line, divider" />
-                    </div>
-                    <template v-else>
-                      <div class="pt-4 ml-4 mb-4">
-                        <underlined-title class="text-h6 text-md-h5 mt-4 mr-4" :text="letterStatsData.name" />
-                      </div>
-                      <letter-stats :letter-stats="letterStatsData" />
-                    </template>
-                  </v-card>
-                </v-col>
               </v-row>
             </v-card>
+            <!-- mobile -->
             <v-row v-else class="mt-n14">
               <v-col cols="12" class="mx-4">
-                <chart-report v-if="report" :report="report" />
-              </v-col>
-              <v-col cols="12">
-                <div v-if="loadLetterStatsData">
-                  <v-skeleton-loader v-bind="attrs" type="card-heading" />
-                  <v-skeleton-loader v-for="n in 5" :key="n" v-bind="attrs" type="list-item-avatar-three-line, list-item-one-line, divider" />
+                <div class="pt-4 mb-4">
+                  <center>
+                    <underlined-title class="text-h6 text-md-h5" text="General Progress Report" />
+                  </center>
                 </div>
-                <div v-else>
-                  <div class="pt-4 ml-4 mb-4">
-                    <underlined-title class="text-h6 text-md-h5 mt-4 mr-4" :text="letterStatsData.name" />
-                  </div>
-                  <letter-stats :letter-stats="letterStatsData" />
+                <div>
+                  <center>
+                    <span class="text-body-1 text-lg-h7 text-xl-h6 text-justify mt-8 mr-3 text-report">General progress statistics for all categories.</span>
+                  </center>
                 </div>
+                <chart-report class="mt-n8" v-if="report" :report="report" />
               </v-col>
             </v-row>
+            <!-- end mobile -->
+          </v-col>
+          <v-col cols="12" md="5">
+            <v-card :class="{ 'mx-4': $vuetify.breakpoint.xs }">
+              <div v-if="loadLetterStatsData">
+                <v-skeleton-loader v-bind="attrs" type="card-heading" />
+                <v-skeleton-loader v-for="n in 5" :key="n" v-bind="attrs" type="list-item-avatar-three-line, list-item-one-line, divider" />
+              </div>
+              <template v-else>
+                <div class="pt-4 ml-4 mb-4">
+                  <underlined-title class="text-h6 text-md-h5 mt-4 mr-4" :text="letterStatsData.name" />
+                </div>
+                <letter-stats :letter-stats="letterStatsData" />
+              </template>
+            </v-card>
+          </v-col>
+          <!-- end desktop -->
+          <v-col v-if="general === true" cols="12" md="12" lg="12">
+
           </v-col>
           <v-col v-else cols="12" md="12" lg="12">
             <v-card v-if="!$vuetify.breakpoint.xs">
