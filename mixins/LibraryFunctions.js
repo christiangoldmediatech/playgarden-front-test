@@ -71,7 +71,7 @@ export default {
               type: 'application/x-mpegURL'
             },
             poster: video.thumbnail,
-            activityId: video.id,
+            activityId: undefined,
             videoId: video.id,
             viewed: {
               completed: false

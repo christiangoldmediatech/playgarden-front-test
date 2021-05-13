@@ -35,7 +35,7 @@
       <div class="d-flex flex-wrap justify-md-center justify-lg-start">
         <div
           v-for="(playlist, index) in shownPlaylist"
-          :key="`playlist-${playlist.activityId}`"
+          :key="`playlist-${playlist.videoId}`"
           class="act-type-activity"
           @click="handlePlay(index)"
         >
