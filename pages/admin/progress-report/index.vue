@@ -43,7 +43,6 @@
                 color="accent darken-1"
                 depressed
                 nuxt
-                small
                 @click.stop="goBack"
               >
                 Back
