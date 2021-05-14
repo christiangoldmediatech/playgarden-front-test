@@ -1,7 +1,9 @@
 <template>
   <div class="dashboard-panel-container">
     <v-card class="dashboard-panel-card pt-0" height="100%">
-      <div class="dashboard-panel-card-border-top" />
+      <div class="dashboard-panel-card-border-top">
+        <slot name="panel-toolbar" />
+      </div>
 
       <pg-circle-letter-day :day="day" :letter="letter" />
 
