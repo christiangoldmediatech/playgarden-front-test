@@ -36,7 +36,7 @@ export default {
 
   data: () => {
     return {
-      savingProgress: false
+      isSavingProgress: false
     }
   },
 
@@ -68,7 +68,7 @@ export default {
     async saveProgress () {
       try {
         // Skip if already saving
-        if (this.savingProgress) {
+        if (this.isSavingProgress) {
           return
         }
 
@@ -79,7 +79,7 @@ export default {
         const completed = (duration - time) <= 5
 
         // Start saving
-        this.savingProgress = true
+        this.isSavingProgress = true
 
         await this.saveWorksheetVideoProgress({
           videoId,
@@ -89,7 +89,7 @@ export default {
       } catch (error) {
         return Promise.reject(error)
       } finally {
-        this.savingProgress = false
+        this.isSavingProgress = false
       }
     }
   }
