@@ -180,6 +180,13 @@ import LetterSelect from '@/components/app/live-sessions/recorded/LetterSelect.v
 export default {
   name: 'Dashboard',
 
+  props: {
+    value: {
+      type: [Array, Number, Object, String],
+      required: true
+    }
+  },
+
   components: {
     ChartReport,
     ChildSelect,
@@ -199,7 +206,6 @@ export default {
     optionDefault: 0,
     letters: [],
     selectedLetter: null,
-    childMobile: '',
     selectedReportCard: 'General',
     optionDefaultMobile: 'General',
     loadLetterStatsData: true,
@@ -260,7 +266,6 @@ export default {
     async selectedChild (val, oldVal) {
       this.loadLetterStatsData = true
       await this.getDataReport()
-      this.childMobile = this.childrenList.find(child => child.id === val).firstName
     },
 
     async selectedLetter () {
@@ -278,7 +283,6 @@ export default {
     this.$nuxt.$on('detail-progress-report', (data) => {
       this.loadDetailReport(data.point.category)
     })
-    this.childMobile = this.childrenList.find(child => child.id === this.selectedChild).firstName
   },
 
   beforeDestroy () {

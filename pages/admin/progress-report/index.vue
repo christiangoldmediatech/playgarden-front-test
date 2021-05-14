@@ -4,49 +4,59 @@
   >
     <v-card class="px-2">
       <v-row>
-        <v-item-group>
-          <v-container>
+        <v-col cols="12">
+          <v-card>
             <v-row>
-              <v-col
-                v-for="(item, index) in getMenu"
-                :key="index"
-              >
-                <v-item>
-                  <v-card class="panel-item" @click="loadDetailReport(item.name)">
-                    <v-list-item-avatar size="56">
-                      <v-img v-if="item.name === 'General'" :src="require('@/assets/svg/general.svg')" />
-                      <v-img v-else :src="item.icon" min-width="38px" />
-                    </v-list-item-avatar>
+              <v-col class="mt-2 pl-4" cols="9">
+                <span class="text-body-1 text-lg-h7 text-xl-h6 text-justify mt-8 mr-3 text-report">
+                  progress report
+                </span>
+              </v-col>
 
-                    <v-list-item-content class="text-center report-card-type">
-                      <span class="text-body-1 text-lg-h7 text-xl-h6">
-                        {{ item.name }}
-                      </span>
-                    </v-list-item-content>
-                  </v-card>
-                </v-item>
+              <v-col cols="3" class="text-center text-sm-right pt-4 pr-6">
+                <v-btn
+                  class="text-none ml-3"
+                  color="accent darken-1"
+                  depressed
+                  nuxt
+                  @click.stop="goBack"
+                >
+                  Back
+                </v-btn>
               </v-col>
             </v-row>
-          </v-container>
-        </v-item-group>
+          </v-card>
+        </v-col>
+        <v-col
+          v-for="(item, index) in getMenu"
+          :key="index"
+        >
+          <v-item>
+            <v-card class="panel-item" @click="loadDetailReport(item.name)">
+              <v-row class="py-4 px-2">
+                <v-col cols="3">
+                  <v-list-item-avatar size="44">
+                    <v-img v-if="item.name === 'General'" :src="require('@/assets/svg/general.svg')" />
+                    <v-img v-else :src="item.icon" min-width="38px" />
+                  </v-list-item-avatar>
+                </v-col>
+                <v-col>
+                  <div class="mx-2 my-4">
+                    <span class="text-body-2 text-lg-h7 text-xl-h6">
+                      {{ item.name }}
+                    </span>
+                  </div>
+                </v-col>
+              </v-row>
+            </v-card>
+          </v-item>
+        </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" class="pt-4">
           <v-row v-if="!$vuetify.breakpoint.xs" no-gutters>
             <v-col class="mt-10" cols="9">
               <underlined-title class="text-h6 text-md-h4" text="Student Progress Report" /><br>
-            </v-col>
-
-            <v-col cols="3" class="text-center text-sm-right pt-7 pr-3">
-              <v-btn
-                class="text-none ml-3"
-                color="accent darken-1"
-                depressed
-                nuxt
-                @click.stop="goBack"
-              >
-                Back
-              </v-btn>
             </v-col>
 
             <v-col v-if="reportCardTypeSelected === 'General'" cols="12">
@@ -113,6 +123,7 @@
                           small-letter
                           v-bind="{ disabledLetters }"
                           slim-version
+                          label-title="Choose letter"
                         />
                       </div>
                     </v-col>
@@ -280,6 +291,6 @@ export default {
 }
 
 .panel-item {
-  min-height: 145px !important;
+  min-height: 130px !important;
 }
 </style>
