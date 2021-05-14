@@ -215,7 +215,6 @@ export default {
     width: 100%;
     max-width: 100%;
     padding: 8px;
-    transition: transform .15s ease-in-out;
     cursor: pointer;
 
     @media screen and (min-width: 600px) {
@@ -226,11 +225,6 @@ export default {
     }
     @media screen and (min-width: 1264px) {
       max-width: 25%;
-    }
-
-    &:hover {
-      transform: scale(1.125);
-      z-index: 1;
     }
   }
 }
