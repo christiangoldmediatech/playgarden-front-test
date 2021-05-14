@@ -176,7 +176,9 @@ export default {
   data: () => ({
     previewMode: false,
     general: true,
-    child: null,
+    child: {
+      firstName: ''
+    },
     reportCardTypeSelected: 'General',
     dataReportCard: null,
     optionDefault: 0,
