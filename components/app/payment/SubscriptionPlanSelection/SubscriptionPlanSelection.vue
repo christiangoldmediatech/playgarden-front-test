@@ -64,6 +64,7 @@
                 <plan-description
                   :plan="plan"
                   :index-plan="indexP"
+                  show-promotions
                 />
                 <!-- Price -->
                 <p class="text-center mt-8">
