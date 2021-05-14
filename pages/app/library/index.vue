@@ -31,7 +31,7 @@
       <activity-type-container
         v-for="activityType in activityTypes"
         :key="`activity-type-${activityType.id}`"
-        :total="activityType.activities.length"
+        :total="activityType.playlist.length"
         v-bind="{ activityType }"
       />
 
@@ -92,21 +92,25 @@ export default {
     const data = await this.$axios.$get('/activities')
 
     this.featuredVideo = data.featured
-    this.activityTypeData = data.activities.filter((activityType) => {
-      return activityType.activities.length > 0
-    }).map((activityType) => {
-      // Filter out invalid activities
-      const activities = shuffle(this.getValidActivities(activityType.activities))
+    this.activityTypeData = data.activities
+      .filter((activityType) => {
+        return activityType.activities.length > 0
+      })
+      .map((activityType) => {
+        // Filter out invalid activities
+        const activities = shuffle(this.getValidActivities(activityType.activities))
+        const videos = shuffle(this.getValidVideos(activityType.videos || []))
 
-      const activityTypeObj = {
-        ...activityType,
-        activities
-      }
+        const activityTypeObj = {
+          ...activityType,
+          activities,
+          videos
+        }
 
-      activityTypeObj.playlist = this.makePlaylist(activityTypeObj)
+        activityTypeObj.playlist = this.makePlaylist(activityTypeObj)
 
-      return activityTypeObj
-    })
+        return activityTypeObj
+      })
 
     // const favorites = data.favorites.filter((favorite) => {
     //   return favorite && favorite.video && favorite.video.activityType && favorite.video.videoUrl
