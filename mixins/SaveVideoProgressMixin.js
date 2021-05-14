@@ -25,7 +25,6 @@ export default {
       const duration = this.player.duration()
       const promises = []
 
-      // Only save progress if the video hasn't been completed and we are ahead of where we last left off
       this.savingProgress = true
       this.children.forEach((child) => {
         promises.push(
