@@ -286,8 +286,8 @@ export default {
     async onSubmit () {
       this.loading = true
 
-      const { id } = await this.processMatchingDraft()
       try {
+        const { id } = await this.processMatchingDraft()
         this.draft.worksheetId = id
 
         const data = await this.submitMethod(this.getSubmittableData())
