@@ -9,7 +9,7 @@
             <v-row>
               <v-col class="mt-2 pl-4" cols="9">
                 <span class="text-body-1 text-lg-h7 text-xl-h6 text-justify mt-8 mr-3 text-report">
-                  progress report
+                  {{ `${child.firstName}'s ` }}progress report
                 </span>
               </v-col>
 
@@ -176,6 +176,7 @@ export default {
   data: () => ({
     previewMode: false,
     general: true,
+    child: null,
     reportCardTypeSelected: 'General',
     dataReportCard: null,
     optionDefault: 0,
@@ -209,6 +210,7 @@ export default {
   async created () {
     this.selectedChild = this.$route.query.id
     this.general = true
+    this.child = await this.getChildren(this.selectedChild)
     await this.getTypes()
     await this.getDataGraphic()
     await this.getDataReport()
@@ -226,6 +228,7 @@ export default {
     ...mapActions('admin/report-card', ['getTypes']),
     ...mapActions('progress-report', ['getGraphicByChildrenId', 'getLastLessonChildren']),
     ...mapActions({ setChild: 'setChild' }),
+    ...mapActions('children', { getChildren: 'getById' }),
 
     goBack () {
       this.$router.go(-1)
