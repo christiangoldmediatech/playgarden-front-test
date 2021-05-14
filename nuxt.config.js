@@ -217,9 +217,7 @@ export default {
     publishRelease: true,
     sourceMapStyle: 'hidden-source-map',
     tracing: true,
-    integrations: [
-      new Integrations.BrowserTracing()
-    ]
+    integrations: [new Integrations.BrowserTracing()]
   },
   styleResources: {
     scss: [
@@ -238,7 +236,14 @@ export default {
    ** See https://nuxtjs.org/api/configuration-build/
    */
   build: {
-    transpile: ['vuetify/lib', 'vee-validate/dist/rules', 'tiptap-vuetify', 'vue-echarts', 'resize-detector'],
+    transpile: [
+      'vuetify/lib',
+      'vee-validate/dist/rules',
+      'tiptap-vuetify',
+      'vue-echarts',
+      'resize-detector',
+      '@gold-media-tech/pg-video-player'
+    ],
     build: {
       extend (config, ctx) {
         if (ctx.isDev) {
@@ -247,9 +252,7 @@ export default {
       }
     },
     babel: {
-      plugins: [
-        ['@babel/plugin-proposal-private-methods', { loose: true }]
-      ]
+      plugins: [['@babel/plugin-proposal-private-methods', { loose: true }]]
     }
   },
   env: {

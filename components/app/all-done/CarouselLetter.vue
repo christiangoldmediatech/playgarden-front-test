@@ -15,7 +15,11 @@
               :item="item"
               :index="index"
             >
-              <letter :key="index" :item="item" :index="index" />
+              <letter
+                :key="index"
+                :item="item"
+                :index="index"
+              />
             </v-slide-item>
           </v-slide-group>
         </v-sheet>
@@ -23,7 +27,7 @@
     </v-col>
 
     <v-col cols="12" class="hidden-md-and-up">
-      <v-row>
+      <v-row no-gutters>
         <pg-select
           :value="value"
           :items="actualLetters"
