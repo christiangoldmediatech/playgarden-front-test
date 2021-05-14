@@ -129,12 +129,12 @@
               </div>
               <template v-else>
                 <v-row class="pt-3" no-gutters>
-                  <v-col cols="7">
+                  <v-col cols="12" sm="12" md="7">
                     <div class="pt-4 ml-4 mb-4">
                       <underlined-title class="text-h6 text-md-h5 mt-4 mr-4" :text="letterStatsData.name" />
                     </div>
                   </v-col>
-                  <v-col class="pr-3">
+                  <v-col :class="(!$vuetify.breakpoint.xs) ? 'pr-3' : 'px-3'" sm="12" md="5">
                     <div class="progress-letter-selector">
                       <letter-select
                         v-model="selectedLetter"
