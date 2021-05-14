@@ -7,7 +7,7 @@ import PgOnboardingVideoPlayer from '@/components/pg-video-js-player/PgOnboardin
 import VideoPlayerDialog from '@/components/pg-video-js-player/VideoPlayerDialog.vue'
 
 // New video player
-import PgVideoPlayer from "@gold-media-tech/pg-video-player"
+import PgVideoPlayer from '@gold-media-tech/pg-video-player'
 
 // Audio Players
 import PgAudioPlayer from '@/components/pg-audio-player/PgAudioPlayer.vue'
