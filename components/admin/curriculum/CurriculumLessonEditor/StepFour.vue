@@ -69,7 +69,10 @@
                 </v-icon>
               </v-avatar>
             </template>
-            <pg-inline-video-player @ready="onPlayerReady({ player: $event, video: draft.videoDetail })" />
+            <pg-video-player
+              inline
+              @ready="onPlayerReady({ player: $event, video: draft.videoDetail })"
+            />
           </v-badge>
         </div>
       </template>
@@ -302,16 +305,16 @@ export default {
     },
 
     onPlayerReady ({ player, video }) {
-      player.loadMedia({
-        title: video.name,
-        poster: require('assets/jpg/abacus_counting_lesson.jpg'),
-        src: [
-          {
-            src: video.videoUrl.HLS,
+      player.loadPlaylist([
+        {
+          title: video.name,
+          poster: require('assets/jpg/abacus_counting_lesson.jpg'),
+          src: {
+            url: video.videoUrl.HLS,
             type: 'application/x-mpegURL'
           }
-        ]
-      })
+        }
+      ])
     }
   }
 }

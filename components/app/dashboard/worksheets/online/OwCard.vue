@@ -134,6 +134,7 @@ export default {
           const playlist = [
             {
               title: '',
+              videoId: this.offlineWorksheet.videoDetail.id,
               src: {
                 src: this.offlineWorksheet.videoDetail.videoUrl.HLS,
                 type: 'application/x-mpegURL'
@@ -258,9 +259,7 @@ export default {
     },
 
     async onNextQuestion () {
-      if (!this.question.completed) {
-        await this.saveProgress()
-      }
+      await this.saveProgress()
       if (this.lastQuestion) {
         this.completed = true
       } else {

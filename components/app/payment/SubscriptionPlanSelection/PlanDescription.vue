@@ -28,7 +28,7 @@
       </ul>
 
       <!-- Promotions -->
-      <template v-if="hasPromotions(plan.homeDeliveryBenefits.promotions)">
+      <template v-if="showPromotions && hasPromotions(plan.homeDeliveryBenefits.promotions)">
         <div class="promotion-ribbon pa-3 mx-n4 mx-md-n8 my-6 text-center">
           <span class="font-weight-bold body-2 accent--text">* Join now and you will get this benefits:</span>
         </div>
@@ -71,6 +71,10 @@ export default {
     plan: {
       type: Object,
       required: true
+    },
+    showPromotions: {
+      type: Boolean,
+      default: false
     }
   },
 

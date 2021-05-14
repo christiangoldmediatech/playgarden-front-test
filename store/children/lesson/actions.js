@@ -1,11 +1,15 @@
 export default {
   async resetChild (ctx, { lessonId, childId }) {
-    const { data } = await this.$axios.delete(`/lessons/${lessonId}/children/${childId}`)
+    const { data } = await this.$axios.delete(
+      `/lessons/${lessonId}/children/${childId}`
+    )
     return data
   },
 
   async getCurrentLessonByChildrenId ({ commit }, { lessonId, childId }) {
-    const data = await this.$axios.$get(`/lessons/${lessonId}/children/${childId}`)
+    const data = await this.$axios.$get(
+      `/lessons/${lessonId}/children/${childId}`
+    )
     commit('admin/curriculum/SET_LESSON', data.lesson, { root: true })
     commit('SET_NEXT_LESSON_ID', data.nextLessonId)
     commit('SET_PREVIOUS_LESSON_ID', data.previousLessonId)
@@ -16,7 +20,9 @@ export default {
 
   async getCurrentLesson ({ commit }, params) {
     try {
-      const data = await this.$axios.$get('/lessons/childrens/current', { params })
+      const data = await this.$axios.$get('/lessons/childrens/current', {
+        params
+      })
       commit('admin/curriculum/SET_LESSON', data.lesson, { root: true })
       commit('SET_NEXT_LESSON_ID', data.nextLessonId)
       commit('SET_PREVIOUS_LESSON_ID', data.previousLessonId)
@@ -38,7 +44,12 @@ export default {
 
   async saveVideoProgress (ctx, { lessonId, childId, video }) {
     try {
-      const { data } = await this.$axios.$post(`/lessons/${lessonId}/children/${childId}/video`, { video })
+      const {
+        data
+      } = await this.$axios.$post(
+        `/lessons/${lessonId}/children/${childId}/video`,
+        { video }
+      )
       return data
     } catch (error) {
       return Promise.reject(error)
@@ -47,7 +58,39 @@ export default {
 
   async saveWorksheetProgress (ctx, { lessonId, childId, worksheet }) {
     try {
-      const { data } = await this.$axios.$post(`/lessons/${lessonId}/children/${childId}/worksheet`, { worksheet })
+      const {
+        data
+      } = await this.$axios.$post(
+        `/lessons/${lessonId}/children/${childId}/worksheet`,
+        { worksheet }
+      )
+      return data
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+
+  async saveWorksheetVideoProgress (ctx, { videoId, time, completed }) {
+    try {
+      const children = ctx.rootGetters.getCurrentChild
+      const childId = children[0].id
+      const lesson = ctx.rootGetters['admin/curriculum/getLesson']
+      const lessonId = lesson.id
+
+      const {
+        data
+      } = await this.$axios.$post(
+        `/lessons/${lessonId}/children/${childId}/worksheet-video`,
+        {
+          video: {
+            id: videoId,
+            date: new Date().toISOString(),
+            time,
+            completed
+          }
+        }
+      )
+
       return data
     } catch (error) {
       return Promise.reject(error)
@@ -56,7 +99,10 @@ export default {
 
   async saveActivityProgress (ctx, { lessonId, childId, activity }) {
     try {
-      const data = await this.$axios.$post(`/lessons/${lessonId}/children/${childId}/activity`, { activity })
+      const data = await this.$axios.$post(
+        `/lessons/${lessonId}/children/${childId}/activity`,
+        { activity }
+      )
       return data
     } catch (error) {
       return Promise.reject(error)
@@ -78,21 +124,23 @@ export default {
     lesson.worksheets = lesson.worksheets.map((worksheet) => {
       return {
         ...worksheet,
-        completed: (worksheet.type !== 'OFFLINE')
+        completed: worksheet.type !== 'OFFLINE'
       }
     })
 
-    lesson.lessonsActivities = lesson.lessonsActivities.map(({ id, activity }) => {
-      return {
-        id,
-        activity: {
-          ...activity,
-          viewed: {
-            completed: true
+    lesson.lessonsActivities = lesson.lessonsActivities.map(
+      ({ id, activity }) => {
+        return {
+          id,
+          activity: {
+            ...activity,
+            viewed: {
+              completed: true
+            }
           }
         }
       }
-    })
+    )
 
     commit('admin/curriculum/SET_LESSON', lesson, { root: true })
     return lesson
@@ -106,13 +154,17 @@ export default {
   },
 
   async getLessonChildTimeline (_, childId) {
-    const data = await this.$axios.$get(`/lessons/children/${childId}/timeline`)
+    const data = await this.$axios.$get(
+      `/lessons/children/${childId}/timeline`
+    )
     return data
   },
 
   async getAdvanceLessonChildren ({ commit }, childId) {
     try {
-      const data = await this.$axios.$get(`/lessons/children/${childId}/advance`)
+      const data = await this.$axios.$get(
+        `/lessons/children/${childId}/advance`
+      )
       commit('SET_PUZZLE_PIECE', data.puzzleChildren)
       return data
     } catch (e) {
