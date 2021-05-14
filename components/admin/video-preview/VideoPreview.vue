@@ -13,10 +13,8 @@
         </v-btn>
       </v-card-title>
 
-      <pg-video-js-player
-        ref="videoPlayer"
-        no-smallscreen
-        autoplay
+      <pg-video-player
+        inline
         @ready="onPlayerReady"
       />
 
@@ -31,14 +29,9 @@
 </template>
 
 <script>
-// import PgVideoJsPlayer from '@/components/pg-video-js-player/PgVideoJsPlayer.vue'
 
 export default {
   name: 'VideoPreview',
-
-  // components: {
-  //   PgVideoJsPlayer
-  // },
 
   data: () => {
     return {
@@ -70,14 +63,14 @@ export default {
         title: video.name,
         poster: video.thumbnail,
         src: {
-          src: video.videoUrl.HLS,
+          url: video.videoUrl.HLS,
           type: 'application/x-mpegURL'
         }
       }
 
       const interval = window.setInterval(() => {
         if (this.player) {
-          this.player.loadMedia(mediaObject)
+          this.player.loadPlaylist([mediaObject])
           window.clearInterval(interval)
         }
       }, 50)

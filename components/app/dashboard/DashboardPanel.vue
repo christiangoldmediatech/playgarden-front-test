@@ -2,64 +2,67 @@
   <div class="dashboard-panel-container">
     <v-card class="dashboard-panel-card" height="100%">
       <div class="dashboard-panel-card-border-top">
-        <v-row v-if="!displayMode" justify="space-between">
-          <v-col class="btnLesson">
-            <v-tooltip v-if="previousLessonId && !$vuetify.breakpoint.smAndDown" top class="pb-6">
-              <template v-slot:activator="{ on, attrs }">
+        <slot name="panel-toolbar">
+          <v-row v-if="!displayMode" justify="space-between">
+            <v-col class="btnLesson">
+              <v-tooltip v-if="previousLessonId && !$vuetify.breakpoint.smAndDown" top class="pb-6">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    class="ml-3"
+                    icon
+                    v-bind="attrs"
+                    :retain-focus-on-click="false"
+                    v-on="on"
+                    @click.stop="previousLesson"
+                    @blur="on.blur"
+                  >
+                    <img src="@/assets/svg/back-arrow.svg">
+                  </v-btn>
+                </template>
+                <span>GO TO PREVIOUS DAY</span>
+              </v-tooltip>
+              <template v-else>
                 <v-btn
+                  v-if="previousLessonId"
                   class="ml-3"
                   icon
-                  v-bind="attrs"
-                  v-on="on"
                   @click.stop="previousLesson"
-                  @blur="on.blur"
-                  :retain-focus-on-click="false"
                 >
                   <img src="@/assets/svg/back-arrow.svg">
                 </v-btn>
               </template>
-              <span>GO TO PREVIOUS DAY</span>
-            </v-tooltip>
-            <template v-else>
-              <v-btn
-                v-if="previousLessonId"
-                class="ml-3"
-                icon
-                @click.stop="previousLesson"
-              >
-                <img src="@/assets/svg/back-arrow.svg">
-              </v-btn>
-            </template>
-          </v-col>
-          <v-spacer />
-          <v-col class="btnLesson">
-            <p class="text-right mr-3">
-              <v-tooltip v-if="!$vuetify.breakpoint.smAndDown" top :open-on-focus="true">
-                <template v-slot:activator="{ on, attrs }">
+            </v-col>
+            <v-spacer />
+            <v-col class="btnLesson">
+              <p class="text-right mr-3">
+                <v-tooltip v-if="!$vuetify.breakpoint.smAndDown" top :open-on-focus="true">
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      class="ml-3"
+                      icon
+                      :retain-focus-on-click="false"
+                      v-bind="attrs"
+                      v-on="on"
+                      @click.stop="advance"
+                      @blur="on.blur"
+                    >
+                      <img src="@/assets/svg/next-arrow.svg">
+                    </v-btn>
+                  </template>
+                  <span>GO TO NEXT DAY</span>
+                </v-tooltip>
+                <template v-else>
                   <v-btn
                     icon
-                    v-bind="attrs"
-                    v-on="on"
                     @click.stop="advance"
-                    @blur="on.blur"
-                    :retain-focus-on-click="false"
                   >
                     <img src="@/assets/svg/next-arrow.svg">
                   </v-btn>
                 </template>
-                <span>GO TO NEXT DAY</span>
-              </v-tooltip>
-              <template v-else>
-                <v-btn
-                  icon
-                  @click.stop="advance"
-                >
-                  <img src="@/assets/svg/next-arrow.svg">
-                </v-btn>
-              </template>
-            </p>
-          </v-col>
-        </v-row>
+              </p>
+            </v-col>
+          </v-row>
+        </slot>
       </div>
       <pg-circle-letter-day
         :class="{ 'clickable': !displayMode }"

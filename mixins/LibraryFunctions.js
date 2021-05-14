@@ -3,6 +3,7 @@ export default {
     return {
       featuredVideo: null,
       activityTypeData: [],
+      videoTypeData: [],
       favorites: [],
       selectedActivity: null
     }
@@ -15,6 +16,12 @@ export default {
       })
     },
 
+    getValidVideos (videos) {
+      return videos.filter((video) => {
+        return video && video.videoUrl
+      })
+    },
+
     makePlaylist (activityTypeData) {
       // Start playlist array
       const playlist = []
@@ -22,31 +29,56 @@ export default {
       // Create an activity type object for analytics
       const activityType = {}
       Object.keys(activityTypeData).forEach((key) => {
-        if (key !== 'activities') {
+        if (!['videos', 'activities'].includes(key)) {
           activityType[key] = activityTypeData[key]
         }
       })
 
       // Format activities for playlist
-      activityTypeData.activities.forEach((activity, playlistIndex) => {
-        playlist.push({
-          playlistIndex,
-          title: activity.videos.name,
-          description: activity.videos.description,
-          activityType,
-          curriculumType: activity.curriculumType,
-          src: {
-            src: activity.videos.videoUrl.HLS,
-            type: 'application/x-mpegURL'
-          },
-          poster: activity.videos.thumbnail,
-          activityId: activity.id,
-          videoId: activity.videos.id,
-          viewed: {
-            completed: false
-          }
+      if (activityTypeData.activities && activityTypeData.activities.length) {
+        activityTypeData.activities.forEach((activity, playlistIndex) => {
+          playlist.push({
+            playlistIndex,
+            title: activity.videos.name,
+            description: activity.videos.description,
+            activityType,
+            curriculumType: activity.curriculumType,
+            src: {
+              src: activity.videos.videoUrl.HLS,
+              type: 'application/x-mpegURL'
+            },
+            poster: activity.videos.thumbnail,
+            activityId: activity.id,
+            videoId: activity.videos.id,
+            viewed: {
+              completed: false
+            }
+          })
         })
-      })
+      }
+
+      // Format videos for playlist
+      if (activityTypeData.videos && activityTypeData.videos.length) {
+        activityTypeData.videos.forEach((video, playlistIndex) => {
+          playlist.push({
+            playlistIndex,
+            title: video.name,
+            description: video.description,
+            activityType,
+            curriculumType: video.curriculumType,
+            src: {
+              src: video.videoUrl.HLS,
+              type: 'application/x-mpegURL'
+            },
+            poster: video.thumbnail,
+            activityId: undefined,
+            videoId: video.id,
+            viewed: {
+              completed: false
+            }
+          })
+        })
+      }
 
       return playlist
     },
