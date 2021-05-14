@@ -40,7 +40,7 @@ export default {
         const duration = this.player.duration()
         const didFinish = ((duration - time) <= 30) || overrideComplete
 
-        if (this.analyticsLoading || !currentVideo.activityId) {
+        if (this.analyticsLoading) {
           resolve(false)
           return
         }
@@ -50,10 +50,6 @@ export default {
         // console.log(`Starting video analytics for activity: ${currentVideo.activityId}, time: ${time}, didFinish: ${didFinish}`)
 
         this.children.forEach((child) => {
-          if (!currentVideo.activityId) {
-            return
-          }
-
           const analyticOperation = new Promise((resolve, reject) => {
             this.getAnalytics({ activityId: currentVideo.activityId, childId: child.id })
               .then((result) => {
@@ -61,7 +57,8 @@ export default {
                   // console.log('Analytic record not found')
                   return this.createAnalytic({
                     childrenId: child.id,
-                    activityId: currentVideo.activityId,
+                    entityId: currentVideo.activityId,
+                    entityType: currentVideo.type,
                     didFinish,
                     time
                   })
@@ -83,7 +80,9 @@ export default {
                       analyticsId: result.id,
                       params: {
                         didFinish,
-                        time
+                        time,
+                        entityId: currentVideo.activityId,
+                        entityType: currentVideo.type
                       }
                     })
                   } else {
