@@ -25,6 +25,7 @@
 
 <script>
 import { mapActions } from 'vuex'
+import VideoAnalyticsMixin from '@/mixins/VideoAnalyticsMixin.js'
 import VideoPlayerDialogMixin from '@/mixins/VideoPlayerDialogMixin.js'
 import DashboardMixin from '@/mixins/DashboardMixin'
 import Fullscreen from '@/mixins/FullscreenMixin.js'
@@ -32,7 +33,7 @@ import Fullscreen from '@/mixins/FullscreenMixin.js'
 export default {
   name: 'LessonTeacherVideo',
 
-  mixins: [VideoPlayerDialogMixin, DashboardMixin, Fullscreen],
+  mixins: [VideoPlayerDialogMixin, DashboardMixin, Fullscreen, VideoAnalyticsMixin],
 
   data: () => {
     return {
@@ -54,6 +55,7 @@ export default {
 
     onReady (player) {
       this.player = player
+      this.setupVideoAnalytics(player)
       player.on('dispose', () => {
         this.player = null
       })
