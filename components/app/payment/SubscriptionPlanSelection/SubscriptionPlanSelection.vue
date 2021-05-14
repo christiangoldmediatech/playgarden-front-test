@@ -46,7 +46,7 @@
                     class="text-orange-info mb-8 pa-5"
                     label
                   >
-                    {{ getTypePlan(indexP) }}
+                    {{ plan.planName }}
                   </v-chip>
                   <br>
                   <underlined-title
@@ -214,10 +214,6 @@ export default {
     if (this.isUserLoggedIn) {
       await this.getPlan()
     }
-
-    if (this.loadPlan) {
-      console.log('readPlan --', this.loadPlan)
-    }
   },
 
   methods: {
@@ -229,22 +225,6 @@ export default {
       'fetchSubscriptionPlan',
       'selectSubscriptionPlan'
     ]),
-
-    getTypePlan (index) {
-      let plan = ''
-      switch (index) {
-        case 0:
-          plan = 'STANDARD'
-          break
-        case 1:
-          plan = 'PREMIUM'
-          break
-        case 2:
-          plan = 'PREMIUM PLUS'
-          break
-      }
-      return plan
-    },
 
     async getPlan () {
       try {
