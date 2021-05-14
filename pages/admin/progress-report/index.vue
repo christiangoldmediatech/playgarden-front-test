@@ -33,7 +33,7 @@
         >
           <v-item>
             <v-card class="panel-item" @click="loadDetailReport(item.name)">
-              <v-row class="py-4 px-2">
+              <v-row class="px-2">
                 <v-col cols="3">
                   <v-list-item-avatar size="44">
                     <v-img v-if="item.name === 'General'" :src="require('@/assets/svg/general.svg')" />
@@ -294,6 +294,6 @@ export default {
 }
 
 .panel-item {
-  min-height: 130px !important;
+  max-height: 80px !important;
 }
 </style>
