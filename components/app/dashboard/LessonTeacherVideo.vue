@@ -76,7 +76,7 @@ export default {
         const { videoId } = this.player.getMediaObject()
         const time = this.player.currentTime()
         const duration = this.player.duration()
-        const completed = (duration - time) <= 5
+        const completed = (duration - time) <= 15
 
         // Start saving
         this.isSavingProgress = true
