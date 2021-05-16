@@ -52,7 +52,8 @@ export default {
             videoId: activity.videos.id,
             viewed: {
               completed: false
-            }
+            },
+            type: 'Activities'
           })
         })
       }
@@ -71,11 +72,12 @@ export default {
               type: 'application/x-mpegURL'
             },
             poster: video.thumbnail,
-            activityId: undefined,
+            activityId: video.id,
             videoId: video.id,
             viewed: {
               completed: false
-            }
+            },
+            type: 'Videos'
           })
         })
       }
