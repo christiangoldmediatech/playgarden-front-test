@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { mapGetters, mapState, mapActions } from 'vuex'
+import { mapGetters, mapState, mapActions, mapMutations } from 'vuex'
 
 import ApplicationHeader from '@/components/app/header/ApplicationHeader'
 import AppNavigation from '@/components/app/header/AppNavigation'
@@ -141,6 +141,7 @@ export default {
     // this.showVerifyEmailToast()
 
     this.$store.commit('SET_SHOW_CONTENT', true)
+    this.setUtm(this.$route.query)
   },
 
   methods: {
@@ -149,6 +150,10 @@ export default {
       'checkIfShouldShowTrialExpiredModal',
       'checkIfShouldShowTrialExpiringRibbon'
     ]),
+
+    ...mapMutations('auth/signup', {
+      setUtm: 'SET_UTM'
+    }),
 
     showVerifyEmailToast () {
       if (
