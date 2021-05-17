@@ -1,7 +1,7 @@
 import { snotifyError } from '@/utils/vuex'
 
 export default {
-  async signup ({ commit, dispatch }, data) {
+  async signup ({ commit, dispatch, getters }, data) {
     try {
       const user = { ...data }
 
@@ -13,7 +13,9 @@ export default {
         delete user.passwordConfirmation
       }
 
-      const { accessToken } = await this.$axios.$post('/auth/signup', user)
+      const utm = getters.getUtm
+
+      const { accessToken } = await this.$axios.$post('/auth/signup', { ...user, ...utm })
 
       await dispatch('auth/setToken', accessToken, {
         root: true
