@@ -159,6 +159,7 @@ import ChartReport from '@/components/app/progress-report/ChartReport.vue'
 import LetterStats from '@/components/app/progress-report/LetterStats.vue'
 import DetailProgress from '@/components/app/progress-report/DetailProgress.vue'
 import LetterSelect from '@/components/app/live-sessions/recorded/LetterSelect.vue'
+import { data } from 'cypress/types/jquery'
 export default {
   name: 'Index',
 
@@ -221,6 +222,8 @@ export default {
     this.selectedChild = this.$route.query.id
     this.general = true
     this.child = await this.getChildren(this.selectedChild)
+    // const dataTest = await this.getCurrentLesson({ childrenIds: this.selectedChild })
+    // console.log('data test--', dataTest)
     await this.getTypes()
     await this.getDataGraphic()
     await this.getDataReport()
@@ -239,6 +242,7 @@ export default {
     ...mapActions('progress-report', ['getGraphicByChildrenId', 'getLastLessonChildren']),
     ...mapActions({ setChild: 'setChild' }),
     ...mapActions('children', { getChildren: 'getById' }),
+    // ...mapActions('children/lesson', ['getCurrentLesson']),
 
     goBack () {
       this.$router.go(-1)
@@ -254,7 +258,6 @@ export default {
     async getDataReport () {
       if (this.selectedChild) {
         this.letterStatsData = await this.getLastLessonChildren({ childId: this.selectedChild })
-        console.log('letter--', this.letterStatsData)
         await this.fetchChildProgress()
         this.loadLetterStatsData = false
       }
