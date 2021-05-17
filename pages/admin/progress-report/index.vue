@@ -117,7 +117,7 @@
                       </div>
                     </v-col>
                     <v-col class="pr-3">
-                      <div class="progress-letter-selector">
+                      <div class="letter-selector">
                         <letter-select
                           v-model="selectedLetter"
                           small-letter
@@ -221,8 +221,8 @@ export default {
     this.selectedChild = this.$route.query.id
     this.general = true
     this.child = await this.getChildren(this.selectedChild)
-    const { id } = await this.getCurrentLesson({ childrenIds: this.selectedChild })
-    this.selectedLetter = id
+    const { curriculumType } = await this.getCurrentLesson({ childrenIds: this.selectedChild })
+    this.selectedLetter = curriculumType.id
     await this.getTypes()
     await this.getDataGraphic()
     await this.getDataReport()
@@ -299,6 +299,10 @@ export default {
 
 .content-report {
   height: 100% !important;
+}
+
+.letter-selector {
+  max-width: 140px !important;
 }
 
 .active-css {
