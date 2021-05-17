@@ -1,10 +1,10 @@
 export default {
-  SET_UTM (state, query) {
-    state.utmSource = query.utmSource || ''
-    state.utmMedium = query.utmMedium || ''
-    state.utmCampaign = query.utmCampaign || ''
-    state.utmTerm = query.utmTerm || ''
-    state.utmName = query.utmName || ''
-    state.gc1Id = query.gc1Id || ''
+  SET_UTM (state, source = {}) {
+    state.utmSource = source.utm_source || ''
+    state.utmMedium = source.utm_medium || ''
+    state.utmCampaign = source.utm_campaign || ''
+    state.utmTerm = source.utm_term || ''
+    state.utmName = source.utm_name || ''
+    state.gc1Id = source.gc1Id || ''
   }
 }
