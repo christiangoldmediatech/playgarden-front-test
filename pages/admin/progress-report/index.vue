@@ -98,7 +98,7 @@
                       <span class="text-body-1 text-lg-h7 text-xl-h6 text-justify mt-8 mr-3 text-report">General progress statistics for all categories.</span>
                     </center>
                   </div>
-                  <chart-report class="mt-n8" v-if="report" :report="report" />
+                  <chart-report v-if="report" class="mt-n8" :report="report" />
                 </v-col>
               </v-row>
               <!-- end mobile -->
@@ -122,7 +122,7 @@
                           v-model="selectedLetter"
                           small-letter
                           v-bind="{ disabledLetters }"
-                          slim-version
+                          :slim-version="$vuetify.breakpoint.xs"
                           label-title="letter"
                         />
                       </div>
@@ -200,6 +200,14 @@ export default {
     ...mapGetters('admin/report-card', ['types']),
     ...mapGetters('progress-report', ['report']),
 
+    disabledLetters () {
+      return this.letters
+        .filter((letter) => {
+          return !letter.enabled
+        })
+        .map(({ id }) => id)
+    },
+
     getMenu () {
       const menuGeneral = {
         name: 'General',
@@ -246,6 +254,7 @@ export default {
     async getDataReport () {
       if (this.selectedChild) {
         this.letterStatsData = await this.getLastLessonChildren({ childId: this.selectedChild })
+        console.log('letter--', this.letterStatsData)
         await this.fetchChildProgress()
         this.loadLetterStatsData = false
       }
