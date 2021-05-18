@@ -54,7 +54,7 @@ Cypress.Commands.add('headlessLoginAs', (user: 'parent' | 'admin') => {
       email: payload.email,
       password: payload.password
     }
-  }).its('body').then(body => {
+  }).its('body').then((body) => {
     window.localStorage.setItem('authToken', JSON.stringify(body.accessToken))
   })
 })
@@ -86,6 +86,6 @@ Cypress.Commands.add('uiChildSelect', (childIndex: number = 0) => {
 Cypress.Commands.add('headlessChildSelect', (childId: number, expires: number = tomorrow) => {
   window.localStorage.setItem('selectedChild', JSON.stringify({
     value: [childId],
-    expires: expires
+    expires
   }))
 })

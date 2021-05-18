@@ -1,6 +1,12 @@
 <template>
   <v-hover v-slot="{ hover }">
-    <v-card class="activity-card" width="100%">
+    <v-card
+      class="activity-card"
+      :style="{
+        transform: !isMobile && hover ? 'scale(1.125)' : undefined
+      }"
+      width="100%"
+    >
       <v-img
         class="activity-card-thumbnail"
         content-class=""
@@ -13,7 +19,7 @@
         <div class="fill-height d-flex align-center justify-center">
           <img
             class="activity-card-thumbnail-play"
-            :class="{ 'activity-card-thumbnail-play-show': hover }"
+            :class="{ 'activity-card-thumbnail-play-show': hover || isMobile }"
             src="@/assets/svg/play-button-icon.svg"
           >
         </div>
@@ -21,12 +27,12 @@
       <v-list class="py-0" dense>
         <v-list-item three-line>
           <v-list-item-content>
-            <v-list-item-title class="font-weight-bold text-uppercase">
+            <v-list-item-subtitle class="activity-card-sub text-uppercase">
               <span class="activity-card-description title-pre">{{ title }}</span>
-            </v-list-item-title>
-            <v-list-item-subtitle>
-              <span class="activity-card-with text-none">With</span> <span class="activity-card-subtitle">{{ teacher.toLowerCase() }}</span>
             </v-list-item-subtitle>
+            <v-list-item-title>
+              <span class="activity-card-with text-none">with</span> <span class="activity-card-subtitle">{{ teacher }}</span>
+            </v-list-item-title>
           </v-list-item-content>
 
           <v-list-item-action>
@@ -79,6 +85,12 @@ export default {
     teacher: {
       type: String,
       required: true
+    }
+  },
+
+  computed: {
+    isMobile () {
+      return this.$vuetify.breakpoint.mobile
     }
   }
 }

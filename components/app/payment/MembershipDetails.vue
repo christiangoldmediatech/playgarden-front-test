@@ -251,10 +251,17 @@
             </v-col>
 
             <v-card-text class="text-justify">
-              Early child development is super important, and consistency is key
-              to ensure early learning!<br>
-              <br>
-              Are you sure you want to cancel your membership?
+              <p>
+                Early education and stimulation to
+                generate development is key in the first 3 years of a child's life.
+              </p>
+              <p>
+                Playgarden Prep Online was created to help with that. Won't
+                you reconsider?
+              </p>
+              <p>
+                Do you still want to cancel your subscription?
+              </p>
             </v-card-text>
           </v-col>
 
@@ -332,8 +339,8 @@
       persistent
     >
       <v-col cols="12">
-        <v-row class="pr-3" justify="end">
-          <v-btn icon @click.stop="closeChangePlanModal">
+        <v-row class="pr-3 mb-md-n12" justify="end">
+          <v-btn class="white" icon @click.stop="closeChangePlanModal">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-row>

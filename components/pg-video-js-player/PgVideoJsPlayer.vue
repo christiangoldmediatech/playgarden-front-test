@@ -389,6 +389,7 @@ export default {
       })
 
       this.$set(this.playerInstance, 'skipVideo', () => {
+        this.playerInstance.trigger('skipped')
         this.$emit('video-skipped')
       })
 

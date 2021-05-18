@@ -34,6 +34,10 @@ export default {
 
   mixins: [props],
 
+  data: () => ({
+    type: ''
+  }),
+
   computed: {
     accept () {
       const list = [
@@ -135,6 +139,7 @@ export default {
           result = await this.handleFileUpload()
         }
       } catch (error) {
+        this.$snotify.error('Error uploading your file! Please make sure file is correct.')
         return Promise.reject(error)
       }
 
@@ -155,6 +160,7 @@ export default {
             path: this.path,
             formData
           })
+          this.type = ''
           this.$emit('sendFile', '')
           return filePath
         }
@@ -175,6 +181,7 @@ export default {
           attachment.link = files[0].link
           attachment.extension = `.${files[0].name.split('.')[1]}`
           this.file = attachment
+          this.type = 'dropBox'
           this.$emit('sendFile', 'dropBox')
         },
 

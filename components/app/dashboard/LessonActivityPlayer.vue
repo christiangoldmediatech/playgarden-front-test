@@ -32,6 +32,7 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex'
+import VideoAnalyticsMixin from '@/mixins/VideoAnalyticsMixin.js'
 import VideoPlayerDialogMixin from '@/mixins/VideoPlayerDialogMixin.js'
 import DashboardMixin from '@/mixins/DashboardMixin'
 import SaveActivityProgress from '@/mixins/SaveActivityProgressMixin.js'
@@ -48,7 +49,7 @@ export default {
     PuzzlePieceEarnedDialog
   },
 
-  mixins: [VideoPlayerDialogMixin, DashboardMixin, SaveActivityProgress, FindNextActivity, Fullscreen],
+  mixins: [VideoPlayerDialogMixin, DashboardMixin, SaveActivityProgress, FindNextActivity, Fullscreen, VideoAnalyticsMixin],
 
   data: () => {
     return {}
@@ -89,6 +90,7 @@ export default {
   methods: {
     onReady (player) {
       this.player = player
+      this.setupVideoAnalytics(player)
       player.on('pause', () => {
         if (this.lesson.previewMode) {
           this.nextVideo()
