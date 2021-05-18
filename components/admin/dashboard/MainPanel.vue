@@ -3,8 +3,8 @@
     <v-row>
       <v-col cols="12" class="content-dashboard">
         <v-card width="100%">
-          <v-card-title class="font-weight-bold">
-            General Dashboard
+          <v-card-title>
+            <label class="title-dashboard font-weight-bold">General Dashboard</label>
             <v-spacer />
           </v-card-title>
         </v-card>
@@ -27,7 +27,30 @@
               <!-- End Conversions funnel -->
             </v-col>
             <v-col cols="12" md="6">
-              <v-row class="mx-3 mt-n3 mb-n4">
+              <v-row class="mx-1 mt-n3 mb-n4">
+                <v-col cols="12">
+                  <v-card>
+                    <v-card-text>
+                      <label class="title-dashboard font-weight-bold">Total Users</label>
+                      <v-row align="center">
+                        <v-col cols="6">
+                          <p class="text-center">
+                            <v-icon x-large color="green lighten-1">
+                              mdi-menu-up
+                            </v-icon>
+                            <span>+{{ totalTrialing.increment }} New this week</span> <br>
+                          </p>
+                        </v-col>
+                        <v-col cols="6">
+                          <center>
+                            <label class="display-3 font-weight-bold total-users">{{ getTotalUsers }}</label><br>
+                            <span>Users usign our platform</span> <br>
+                          </center>
+                        </v-col>
+                      </v-row>
+                    </v-card-text>
+                  </v-card>
+                </v-col>
                 <v-col cols="6">
                   <v-card>
                     <v-card-text>
@@ -40,13 +63,8 @@
                             </v-icon>
                             <span>+{{ totalTrialing.increment }} New this week</span> <br>
                           </p>
-                        </v-col>
-                        <v-col
-                          class="display-3"
-                          cols="12"
-                        >
                           <center>
-                            <label class="font-weight-bold total-users">{{ totalTrialing.total }}</label>
+                            <label class="display-3 font-weight-bold total-users">{{ totalTrialing.total }}</label>
                           </center>
                         </v-col>
                       </v-row>
@@ -65,13 +83,8 @@
                             </v-icon>
                             <span>+{{ totalActive.increment }} New this week</span> <br>
                           </p>
-                        </v-col>
-                        <v-col
-                          class="display-3"
-                          cols="12"
-                        >
                           <center>
-                            <label class="font-weight-bold total-users">{{ totalActive.total }}</label>
+                            <label class="display-3 font-weight-bold total-users">{{ totalActive.total }}</label>
                           </center>
                         </v-col>
                       </v-row>
@@ -90,13 +103,8 @@
                             </v-icon>
                             <span>{{ canceledUsers.increment }} This week</span>
                           </p>
-                        </v-col>
-                        <v-col
-                          class="display-3"
-                          cols="12"
-                        >
-                          <center>
-                            <label class="font-weight-bold total-users">{{ canceledUsers.total }}</label>
+                          <center :class="{ 'mt-10': $vuetify.breakpoint.lg }">
+                            <label class="display-3 font-weight-bold total-users">{{ canceledUsers.total }}</label>
                           </center>
                         </v-col>
                       </v-row>
@@ -115,13 +123,8 @@
                             </v-icon>
                             <span>0 More than last week</span>
                           </p>
-                        </v-col>
-                        <v-col
-                          class="display-3"
-                          cols="12"
-                        >
                           <center>
-                            <label class="font-weight-bold total-users">0 %</label>
+                            <label class="display-3 font-weight-bold total-users">0 %</label>
                           </center>
                         </v-col>
                       </v-row>
@@ -328,6 +331,10 @@ export default {
       const from = dayjs(this.activeUsers.from).format('MMM-DD')
       const to = dayjs(this.activeUsers.to).format('MMM-DD')
       return `Week: ${from} to ${to}`
+    },
+
+    getTotalUsers () {
+      return this.totalActive.total + this.totalTrialing.total
     }
   },
 
@@ -401,6 +408,11 @@ ul li::before {
 
 .header-dashboard {
   max-height: 500px !important;
+}
+
+.text-info-dashboard {
+  text-indent: 10px !important;
+  line-height: 0.8 !important;
 }
 
 .content-dashboard {
