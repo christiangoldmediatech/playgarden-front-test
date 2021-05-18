@@ -92,7 +92,7 @@
                   </v-card>
                 </v-col>
                 <v-col cols="6">
-                  <v-card>
+                  <v-card class="content-dashboard">
                     <v-card-text>
                       <label class="title-dashboard font-weight-bold">Canceled</label>
                       <v-row class="mt-n4" align="center">
@@ -103,7 +103,7 @@
                             </v-icon>
                             <span>{{ canceledUsers.increment }} This week</span>
                           </p>
-                          <center :class="{ 'mt-10': $vuetify.breakpoint.lg }">
+                          <center>
                             <label class="display-3 font-weight-bold total-users">{{ canceledUsers.total }}</label>
                           </center>
                         </v-col>
