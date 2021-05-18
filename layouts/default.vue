@@ -65,6 +65,8 @@ import TrialIsExpiring from '~/components/app/header/TrialIsExpiring.vue'
 export default {
   name: 'Default',
 
+  middleware: ['utmHandler'],
+
   components: {
     ApplicationHeader,
     AppNavigation,
