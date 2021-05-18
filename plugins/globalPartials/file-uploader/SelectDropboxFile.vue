@@ -62,7 +62,6 @@ export default {
         if (mimeType[key]) {
           compiledList.push(key)
         }
-        return mimeType
       })
 
       const finalList = compiledList.concat(this.mimeTypes)

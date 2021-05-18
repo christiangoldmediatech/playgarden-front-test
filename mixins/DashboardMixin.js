@@ -79,7 +79,6 @@ export default {
         } else if (i.type === 'OFFLINE') {
           result.OFFLINE = i
         }
-        return i
       })
 
       return result

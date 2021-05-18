@@ -228,7 +228,6 @@ export default {
         } else {
           result.share.push(item)
         }
-        return item
       })
 
       return result
