@@ -70,7 +70,6 @@ export default {
           })
         }
       } catch (e) {
-      } finally {
       }
     }
   }

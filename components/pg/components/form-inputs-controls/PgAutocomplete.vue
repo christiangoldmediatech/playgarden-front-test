@@ -68,8 +68,8 @@ export default {
       const scopeId = this.$vnode && this.$vnode.context.$options._scopeId
       const attrs = scopeId
         ? {
-          [scopeId]: true
-        }
+            [scopeId]: true
+          }
         : {}
       return {
         attrs: { ...attrs, id: this.computedOwns },
@@ -154,9 +154,9 @@ export default {
 
       const value = this.returnObject
         ? {
-          [this.itemText]: search,
-          [this.itemValue]: search
-        }
+            [this.itemText]: search,
+            [this.itemValue]: search
+          }
         : search
 
       this.addedItems.push(value)

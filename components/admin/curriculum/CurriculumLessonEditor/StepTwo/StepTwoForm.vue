@@ -292,11 +292,11 @@ export default {
           activityTypeId: this.resource.activityType.id
         })
         : {
-          activityTypeId: null,
-          name: null,
-          description: null,
-          thumbnail: null
-        }
+            activityTypeId: null,
+            name: null,
+            description: null,
+            thumbnail: null
+          }
     }
   }
 }
