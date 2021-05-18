@@ -215,11 +215,9 @@ export default {
 
   async created () {
     this.refresh()
-    this.getLessonById(this.lessonId).then((data) => {
-      this.fileName = data.name.replace(/ /g, '-')
-      this.loading = false
-    })
-
+    const lesson = await this.getLessonById(this.lessonId)
+    this.fileName = lesson.name.replace(/ /g, '-')
+    this.loading = false
     const data = await this.getOfflineWorksheetCategories()
     this.categories = data.map((category) => {
       return { category: category.category, id: category.id, number: 0 }
