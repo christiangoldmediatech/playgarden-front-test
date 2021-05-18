@@ -150,7 +150,8 @@ export default {
 
   methods: {
     ...mapActions('offline-worksheet-categories', [
-      'getCategoriesWorksheetsOfflineAppByWorksheetId'
+      'getCategoriesWorksheetsOfflineAppByWorksheetId',
+      'getOfflineWorksheetCategories'
     ]),
     ...mapActions('offline-worksheet', {
       uploadWorksheet: 'upload',
@@ -160,6 +161,16 @@ export default {
 
     async getCategoriesByWorksheetId () {
       this.categoriesWorksheet = await this.getCategoriesWorksheetsOfflineAppByWorksheetId(this.worksheetoffline.id)
+      if (this.categoriesWorksheet.length === 0) {
+        this.buildDataCategories()
+      }
+    },
+
+    async buildDataCategories () {
+      const categories = await this.getOfflineWorksheetCategories()
+      this.categoriesWorksheet = categories.map((category) => {
+        return { category: category.category, icon: category.icon, id: category.id }
+      })
     },
 
     async getUploadedWorksheets () {
