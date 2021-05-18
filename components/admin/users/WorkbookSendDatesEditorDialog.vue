@@ -169,15 +169,15 @@ export default {
     },
 
     buildDataWorkbooksent () {
-      this.dateField.map((data) => {
+      this.dateField.map(data => (
         this.item.workbookSentDate[data.name] = data.value
-      })
+      ))
     },
 
     clearDataWorkbooksent () {
-      this.dateField.map((data) => {
+      this.dateField.map(data => (
         this.item.workbookSentDate[data.name] = null
-      })
+      ))
     },
 
     close () {
@@ -215,9 +215,9 @@ export default {
       this.item.roleId = item.role.id
       this.item.workbookSent = true
       if (item.shipments && item.shipments.workbookDate) {
-        this.dateField.map((data) => {
+        this.dateField.map(data => (
           data.value = item.shipments.workbookDate[data.name]
-        })
+        ))
       }
     },
 

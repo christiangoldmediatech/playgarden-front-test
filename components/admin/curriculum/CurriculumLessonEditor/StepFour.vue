@@ -267,9 +267,9 @@ export default {
     async handleMultiFileUpload (files) {
       try {
         const formData = new FormData()
-        files.map((file) => {
+        files.map(file => (
           formData.append('file', file)
-        })
+        ))
         const { filePath } = await this.doUploadJoinMultilpe({
           type: 'upload-document',
           path: this.path,

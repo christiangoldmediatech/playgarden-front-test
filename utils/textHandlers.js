@@ -42,7 +42,7 @@ function breakTextIntoLines (containerElement, text, mode = 'word') {
 
     if (textArr.length - 1 === index) {
       textLines.push(prev)
-      return
+      return prev
     }
 
     if (textWidth < containerElement.clientWidth) {

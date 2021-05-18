@@ -124,6 +124,7 @@ export default {
           }
           this.worksheetOffLine.push(worksheetFile)
         }
+        return worksheet
       })
     }
   },
@@ -149,6 +150,7 @@ export default {
           grades: lessonActivity.grades
         }
         this.grades.push(activityData)
+        return lessonActivity
       })
 
       this.lesson.videos.map((video) => {
@@ -159,6 +161,7 @@ export default {
           grades: video.grades
         }
         this.grades.push(activityData)
+        return video
       })
 
       this.lesson.worksheets.filter(data => data.type === 'ONLINE').map((worksheet) => {
@@ -169,6 +172,7 @@ export default {
           grades: worksheet.grades
         }
         this.grades.push(worksheetData)
+        return worksheet
       })
     },
 

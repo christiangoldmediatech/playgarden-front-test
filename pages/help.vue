@@ -346,6 +346,7 @@ export default {
           }
           _faqs[id].push(faq)
         }
+        return faq
       })
 
       this.faqs = _faqs

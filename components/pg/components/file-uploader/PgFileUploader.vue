@@ -70,6 +70,7 @@ export default {
         if (mimeType[key]) {
           compiledList.push(key)
         }
+        return mimeType
       })
 
       const finalList = compiledList.concat(this.mimeTypes)
@@ -134,7 +135,6 @@ export default {
           result = await this.handleFileUpload()
         }
       } catch (error) {
-        console.log(error)
         return Promise.reject(error)
       }
 
@@ -159,7 +159,6 @@ export default {
           return filePath
         }
       } catch (error) {
-        console.log(error)
         return Promise.reject(error)
       }
       return false

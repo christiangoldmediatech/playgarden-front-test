@@ -400,10 +400,6 @@ export default {
       await this.getPlan()
       await this.fetchAddress()
     }
-
-    if (this.loadPlan) {
-      console.log('readPlan --', this.loadPlan)
-    }
   },
 
   methods: {
