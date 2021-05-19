@@ -40,6 +40,7 @@
           @click="handlePlay(index)"
         >
           <activity-card
+            :viewed="playlist.watched"
             :video-id="playlist.videoId"
             :thumbnail="playlist.poster"
             :activity-type-icon="activityType.icon"
