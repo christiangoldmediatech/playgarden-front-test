@@ -85,6 +85,11 @@ export default {
     teacher: {
       type: String,
       required: true
+    },
+
+    viewed: {
+      type: Boolean,
+      required: true
     }
   },
 

@@ -53,7 +53,9 @@ export default {
             viewed: {
               completed: false
             },
-            type: 'Activities'
+            type: 'Activities',
+            // `viewed` already in use, using `watched` instead
+            watched: activity.viewed
           })
         })
       }
@@ -77,12 +79,16 @@ export default {
             viewed: {
               completed: false
             },
-            type: 'Videos'
+            type: 'Videos',
+            // `viewed` already in use, using `watched` instead
+            watched: video.viewed
           })
         })
       }
 
-      return playlist
+      return playlist.sort((a, b) => {
+        return (a.watched > b.watched) ? 1 : -1
+      })
     },
 
     playFeaturedVideo () {

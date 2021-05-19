@@ -7,6 +7,7 @@
       }"
       width="100%"
     >
+      <card-ribbon v-if="viewed" text="Viewed" />
       <v-img
         class="activity-card-thumbnail"
         content-class=""
@@ -66,10 +67,15 @@
 </template>
 
 <script>
+import CardRibbon from '@/components/app/library/CardRibbon.vue'
 import FavoritesMixin from '@/mixins/FavoritesMixin.js'
 
 export default {
   name: 'ActivityCard',
+
+  components: {
+    CardRibbon
+  },
 
   mixins: [FavoritesMixin],
 
@@ -102,6 +108,11 @@ export default {
     teacher: {
       type: String,
       required: true
+    },
+
+    viewed: {
+      type: Boolean,
+      required: true
     }
   },
 
@@ -118,6 +129,7 @@ export default {
   &-card {
     user-select: none;
     transition: transform .15s ease-in-out;
+    position: relative;
     &-thumbnail {
       border-bottom-left-radius: 5%;
       border-bottom-right-radius: 5%;
