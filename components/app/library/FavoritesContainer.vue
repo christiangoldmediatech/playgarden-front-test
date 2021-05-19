@@ -40,6 +40,7 @@
           @click="handlePlay(index)"
         >
           <favorite-card
+            :viewed="activity.video.viewed"
             :video-id="activity.video.id"
             :thumbnail="activity.video.thumbnail"
             :title="activity.video.description"
