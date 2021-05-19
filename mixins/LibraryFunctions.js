@@ -86,7 +86,9 @@ export default {
         })
       }
 
-      return playlist
+      return playlist.sort((a, b) => {
+        return (a.watched > b.watched) ? 1 : -1
+      })
     },
 
     playFeaturedVideo () {
