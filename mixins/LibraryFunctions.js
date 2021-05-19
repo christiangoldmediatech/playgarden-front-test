@@ -53,7 +53,9 @@ export default {
             viewed: {
               completed: false
             },
-            type: 'Activities'
+            type: 'Activities',
+            // `viewed` already in use, using `watched` instead
+            watched: activity.viewed
           })
         })
       }
@@ -77,7 +79,9 @@ export default {
             viewed: {
               completed: false
             },
-            type: 'Videos'
+            type: 'Videos',
+            // `viewed` already in use, using `watched` instead
+            watched: video.viewed
           })
         })
       }
