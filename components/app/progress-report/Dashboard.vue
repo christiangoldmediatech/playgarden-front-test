@@ -1,5 +1,5 @@
 <template>
-  <v-card class="d-flex flex-column dashboard-content-card" height="100%">
+  <v-card class="dashboard-content-card" height="100%">
     <v-row>
       <v-col v-if="!$vuetify.breakpoint.xs" cols="12" md="3" lg="2" xl="2">
         <v-card class="content-report ml-n3">
@@ -32,7 +32,7 @@
         </v-card>
       </v-col>
 
-      <v-col v-else cols="12" class="mt-16">
+      <v-col v-else cols="12" class="mt-10">
         <v-row class="px-3">
           <v-col cols="12">
             <child-select
@@ -53,8 +53,8 @@
         </v-row>
       </v-col>
 
-      <v-col cols="12" md="9" lg="10" class="pt-12">
-        <v-row v-if="!$vuetify.breakpoint.xs" no-gutters>
+      <v-col cols="12" md="9" lg="10" class="pt-6 pt-md-12">
+        <v-row v-if="!$vuetify.breakpoint.xs">
           <v-col class="mt-10" cols="9">
             <v-row class="mt-n4">
               <v-btn
@@ -99,7 +99,7 @@
             </p>
           </v-col>
         </v-row>
-        <v-row v-if="general === true" class="mr-3 mt-5">
+        <v-row v-if="general === true" class="mt-5">
           <!-- desktop -->
           <v-col cols="12" md="7" lg="7">
             <v-card v-if="!$vuetify.breakpoint.xs" class="content-report">
@@ -126,31 +126,33 @@
               </v-row>
             </v-card>
             <!-- mobile -->
-            <v-row v-else class="mt-n14">
-              <v-col cols="12" class="mx-4">
-                <div class="pt-4 mb-4">
-                  <center>
-                    <underlined-title
-                      class="text-h6 text-md-h5"
-                      text="General Progress Report"
-                    />
-                  </center>
-                </div>
-                <div>
-                  <center>
-                    <span
-                      class="text-body-1 text-lg-h7 text-xl-h6 text-justify mt-8 mr-3 text-report"
-                    >
-                      General progress statistics for all categories.</span>
-                  </center>
-                </div>
-                <chart-report v-if="report" class="mt-n8" :report="report" />
-              </v-col>
-            </v-row>
+            <v-card v-else :class="{ 'mx-3': $vuetify.breakpoint.xs }">
+              <v-row class="mt-n14">
+                <v-col cols="12" class="mx-md-4">
+                  <div class="pt-4 mb-4">
+                    <center>
+                      <underlined-title
+                        class="text-h6 text-md-h5"
+                        text="General Progress Report"
+                      />
+                    </center>
+                  </div>
+                  <div>
+                    <center>
+                      <span
+                        class="text-body-1 text-lg-h7 text-xl-h6 text-justify mt-md-8 mr-md-3 text-report"
+                      >
+                        General progress statistics for all categories.</span>
+                    </center>
+                  </div>
+                  <chart-report v-if="report" class="mt-n8" :report="report" />
+                </v-col>
+              </v-row>
+            </v-card>
           <!-- end mobile -->
           </v-col>
-          <v-col cols="12" md="5">
-            <v-card :class="{ 'mx-4': $vuetify.breakpoint.xs }">
+          <v-col cols="12" md="5" lg="5">
+            <v-card :class="{ 'mx-3': $vuetify.breakpoint.xs }">
               <div v-if="loadLetterStatsData">
                 <v-skeleton-loader type="card-heading" />
                 <v-skeleton-loader

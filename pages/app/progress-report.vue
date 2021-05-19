@@ -3,7 +3,9 @@
     fluid
   >
     <v-row>
-      <dashboard />
+      <v-col cols="12">
+        <dashboard />
+      </v-col>
     </v-row>
   </v-container>
 </template>
