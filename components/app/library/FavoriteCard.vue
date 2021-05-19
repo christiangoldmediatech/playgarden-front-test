@@ -7,7 +7,6 @@
       }"
       width="100%"
     >
-      <card-ribbon v-if="viewed" text="Viewed" />
       <v-img
         class="activity-card-thumbnail"
         content-class=""
@@ -60,15 +59,10 @@
 </template>
 
 <script>
-import CardRibbon from '@/components/app/library/CardRibbon.vue'
 import FavoritesMixin from '@/mixins/FavoritesMixin.js'
 
 export default {
   name: 'FavoriteCard',
-
-  components: {
-    CardRibbon
-  },
 
   mixins: [FavoritesMixin],
 
