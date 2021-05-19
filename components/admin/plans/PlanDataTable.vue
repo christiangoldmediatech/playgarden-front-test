@@ -20,7 +20,7 @@
         <v-card width="100%">
           <v-card-text>
             <plan-editor-dialog ref="editor" @saved="refresh(false)" />
-            <plan-view-dialog ref="view" @saved="refresh(false)" />
+            <plan-view-dialog ref="view" />
 
             <pg-admin-data-table
               :headers="headers"
