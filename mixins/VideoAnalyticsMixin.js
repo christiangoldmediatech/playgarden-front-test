@@ -9,7 +9,7 @@ export default {
       player.on('play', () => {
         const { videoId } = player.getMediaObject()
         const time = player.currentTime()
-        const status = 'STARTED'
+        const status = player.currentTime() > 1 ? 'RESUMED' : 'STARTED'
 
         this.sendVideoAnalytics({ videoId, time, status })
       })
