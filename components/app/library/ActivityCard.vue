@@ -1,6 +1,13 @@
 <template>
   <v-hover v-slot="{ hover }">
-    <v-card class="activity-card" width="100%">
+    <v-card
+      class="activity-card"
+      :style="{
+        transform: !isMobile && hover ? 'scale(1.125)' : undefined
+      }"
+      width="100%"
+    >
+      <card-ribbon v-if="viewed" text="Viewed" />
       <v-img
         class="activity-card-thumbnail"
         content-class=""
@@ -13,7 +20,7 @@
         <div class="fill-height d-flex align-center justify-center">
           <img
             class="activity-card-thumbnail-play"
-            :class="{ 'activity-card-thumbnail-play-show': hover }"
+            :class="{ 'activity-card-thumbnail-play-show': hover || isMobile }"
             src="@/assets/svg/play-button-icon.svg"
           >
         </div>
@@ -60,10 +67,15 @@
 </template>
 
 <script>
+import CardRibbon from '@/components/app/library/CardRibbon.vue'
 import FavoritesMixin from '@/mixins/FavoritesMixin.js'
 
 export default {
   name: 'ActivityCard',
+
+  components: {
+    CardRibbon
+  },
 
   mixins: [FavoritesMixin],
 
@@ -96,6 +108,17 @@ export default {
     teacher: {
       type: String,
       required: true
+    },
+
+    viewed: {
+      type: Boolean,
+      required: true
+    }
+  },
+
+  computed: {
+    isMobile () {
+      return this.$vuetify.breakpoint.mobile
     }
   }
 }
@@ -105,6 +128,8 @@ export default {
 .activity {
   &-card {
     user-select: none;
+    transition: transform .15s ease-in-out;
+    position: relative;
     &-thumbnail {
       border-bottom-left-radius: 5%;
       border-bottom-right-radius: 5%;

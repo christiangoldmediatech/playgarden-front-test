@@ -34,23 +34,24 @@
     <v-container>
       <div class="d-flex flex-wrap justify-md-center justify-lg-start">
         <div
-          v-for="(activity, index) in shownActivities"
-          :key="`activity-type-${activityType.id}-activity-${activity.id}`"
+          v-for="(playlist, index) in shownPlaylist"
+          :key="`playlist-${playlist.videoId}`"
           class="act-type-activity"
           @click="handlePlay(index)"
         >
           <activity-card
-            :video-id="activity.videos.id"
-            :thumbnail="activity.videos.thumbnail"
+            :viewed="playlist.watched"
+            :video-id="playlist.videoId"
+            :thumbnail="playlist.poster"
             :activity-type-icon="activityType.icon"
             :category="activityType.name"
-            :title="activity.videos.description"
-            :teacher="activity.videos.name"
+            :title="playlist.description"
+            :teacher="playlist.title"
           />
         </div>
       </div>
 
-      <div v-if="total > shownActivities.length" class="text-center mt-3">
+      <div v-if="total > shownPlaylist.length" class="text-center mt-3">
         <v-btn
           color="accent"
           class="text-none white--text"
@@ -135,8 +136,8 @@ export default {
       return end
     },
 
-    shownActivities () {
-      return jsonCopy(this.activityType.activities).slice(0, this.end)
+    shownPlaylist () {
+      return jsonCopy(this.activityType.playlist).slice(0, this.end)
     }
   },
 
@@ -215,7 +216,6 @@ export default {
     width: 100%;
     max-width: 100%;
     padding: 8px;
-    transition: transform .15s ease-in-out;
     cursor: pointer;
 
     @media screen and (min-width: 600px) {
@@ -226,11 +226,6 @@ export default {
     }
     @media screen and (min-width: 1264px) {
       max-width: 25%;
-    }
-
-    &:hover {
-      transform: scale(1.125);
-      z-index: 1;
     }
   }
 }

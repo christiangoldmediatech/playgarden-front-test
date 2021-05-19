@@ -45,5 +45,23 @@ export default {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+
+  async sendVideoAnalytics (ctx, { videoId, time, status }) {
+    try {
+      const children = ctx.rootGetters.getCurrentChild
+      const child = children[0]
+
+      if (child) {
+        const data = await this.$axios.$post(
+          `/videos/${videoId}/children/${child.id}/${status}`,
+          { time }
+        )
+
+        return data
+      }
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }

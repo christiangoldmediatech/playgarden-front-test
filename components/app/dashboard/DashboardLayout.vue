@@ -89,7 +89,7 @@
             <!--carousel letter-->
             <v-col cols="12" md="9" sm="6">
               <v-row class="mx-md-2 my-md-0 mx-sm-4 my-sm-2 mx-xs-4 my-xs-2" justify="center">
-                <carousel-letter ref="CarouselLetter" :value="value" />
+                <carousel-letter ref="CarouselLetter" :value="curriculumTypeId" />
               </v-row>
             </v-col>
             <!--carousel letter-->
@@ -206,6 +206,10 @@ export default {
         // return progress === 100
       }
       return false
+    },
+
+    curriculumTypeId () {
+      return this.lesson && this.lesson.curriculumType ? this.lesson.curriculumType.id : undefined
     }
   },
 

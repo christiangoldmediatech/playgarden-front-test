@@ -32,6 +32,7 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex'
+import VideoAnalyticsMixin from '@/mixins/VideoAnalyticsMixin.js'
 import VideoPlayerDialogMixin from '@/mixins/VideoPlayerDialogMixin.js'
 import DashboardLink from '@/mixins/DashboardLinkMixin.js'
 import SaveVideoProgress from '@/mixins/SaveVideoProgressMixin.js'
@@ -45,7 +46,7 @@ export default {
     LessonCompletedDialog
   },
 
-  mixins: [VideoPlayerDialogMixin, SaveVideoProgress, DashboardLink, Fullscreen],
+  mixins: [VideoPlayerDialogMixin, SaveVideoProgress, DashboardLink, Fullscreen, VideoAnalyticsMixin],
 
   data: () => {
     return {
@@ -154,6 +155,7 @@ export default {
   methods: {
     onReady (player) {
       this.player = player
+      this.setupVideoAnalytics(player)
       player.on('pause', this.saveVideoProgress)
       player.on('dispose', () => {
         this.player = null

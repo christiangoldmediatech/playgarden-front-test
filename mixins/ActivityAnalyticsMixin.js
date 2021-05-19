@@ -40,7 +40,7 @@ export default {
         const duration = this.player.duration()
         const didFinish = ((duration - time) <= 30) || overrideComplete
 
-        if (this.analyticsLoading || !currentVideo.activityId) {
+        if (this.analyticsLoading) {
           resolve(false)
           return
         }
@@ -57,13 +57,11 @@ export default {
                   // console.log('Analytic record not found')
                   return this.createAnalytic({
                     childrenId: child.id,
-                    activityId: currentVideo.activityId,
+                    entityId: currentVideo.activityId,
+                    entityType: currentVideo.type,
                     didFinish,
                     time
                   })
-                } else if (result.didFinish) {
-                  // console.log('Video previously finished, doing nothing')
-                  return false
                 } else {
                   if (startCheck) {
                     return false
@@ -82,7 +80,9 @@ export default {
                       analyticsId: result.id,
                       params: {
                         didFinish,
-                        time
+                        time,
+                        entityId: currentVideo.activityId,
+                        entityType: currentVideo.type
                       }
                     })
                   } else {
