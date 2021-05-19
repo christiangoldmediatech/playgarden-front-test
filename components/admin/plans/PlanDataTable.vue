@@ -20,6 +20,7 @@
         <v-card width="100%">
           <v-card-text>
             <plan-editor-dialog ref="editor" @saved="refresh(false)" />
+            <plan-view-dialog ref="view" @saved="refresh(false)" />
 
             <pg-admin-data-table
               :headers="headers"
@@ -30,15 +31,14 @@
               @update:page="page = $event"
               @search="onSearch"
               @refresh="refresh(true)"
-              @edit-item="$refs.editor.open(null, $event)"
-              @remove-item="remove"
             >
-              <template v-slot:[`item.image`]="{ item }">
-                <img v-if="item.image" :src="item.image" width="32px">
-
-                <span v-else>
-                  N/A
-                </span>
+              <template v-slot:item.actions="{ item }">
+                <v-icon color="#81A1F7" dense @click="$refs.editor.open(null, item)">
+                  mdi-pencil-outline
+                </v-icon>
+                <v-icon color="accent" dense @click="$refs.view.open(null, item)">
+                  mdi-eye
+                </v-icon>
               </template>
             </pg-admin-data-table>
           </v-card-text>
@@ -52,12 +52,14 @@
 import { mapActions } from 'vuex'
 import onSearch from '@/mixins/OnSearchMixin.js'
 import PlanEditorDialog from './PlanEditorDialog'
+import PlanViewDialog from './PlanViewDialog'
 
 export default {
   name: 'PlanDataTable',
 
   components: {
-    PlanEditorDialog
+    PlanEditorDialog,
+    PlanViewDialog
   },
 
   mixins: [onSearch],
