@@ -17,15 +17,15 @@
 
         <v-row class="mx-0" justify="center">
           <v-hover
-            v-for="category in categories"
-            :key="`category-${category.id}`"
+            v-for="(category, indexCategory) in categoriesWorksheet"
+            :key="`${category.category}-${indexCategory}`"
             v-slot="{ hover }"
           >
             <v-card
               :class="['ma-2 clickable category-card', { scaled: hover }]"
               :elevation="hover ? 12 : 2"
               :disabled="loading"
-              @click.stop="openFileDialog(category.id)"
+              @click.stop="openFileDialog(category, indexCategory)"
             >
               <v-card-text>
                 <div class="d-flex flex-column align-center">
@@ -34,9 +34,9 @@
                   </p>
 
                   <v-img
-                    v-if="images[`image_${category.id}`]"
+                    v-if="images[`image_${category.id}_${indexCategory}`]"
                     class="flex-shrink-1 flex-grow-0"
-                    :src="images[`image_${category.id}`]"
+                    :src="images[`image_${category.id}_${indexCategory}`]"
                     max-width="128"
                     height="128"
                     contain
@@ -54,11 +54,11 @@
                   </p>
                 </div>
                 <input
-                  :id="`category-${category.id}-upload`"
+                  :id="`${category.category}-${indexCategory}-upload`"
                   class="d-none"
                   type="file"
                   accept="image/*"
-                  @change="setFile($event, category.id)"
+                  @change="setFile($event, category.id, indexCategory)"
                 >
               </v-card-text>
             </v-card>
@@ -118,21 +118,16 @@ export default {
   data () {
     return {
       loading: false,
-      categories: [],
+      lessonCurrent: null,
+      worksheetoffline: null,
+      categoriesWorksheet: [],
       images: {}
     }
   },
 
   computed: {
     ...mapGetters({ currentChild: 'getCurrentChild' }),
-    ...mapGetters('admin/curriculum', ['getLesson']),
-
-    offlineWorksheet () {
-      if (this.getLesson) {
-        return this.getLesson.worksheets.find(({ type }) => type === 'OFFLINE')
-      }
-      return null
-    }
+    ...mapGetters('admin/curriculum', ['getLesson'])
   },
 
   watch: {
@@ -140,17 +135,22 @@ export default {
       if (val) {
         this.reset()
       }
+    },
+    lessonCurrent (val) {
+      if (val) {
+        this.worksheetoffline = this.lessonCurrent.worksheets.find(({ type }) => type === 'OFFLINE')
+        this.getCategoriesByWorksheetId()
+      }
     }
   },
 
   created () {
-    this.getOfflineWorksheetCategories().then((data) => {
-      this.categories = data
-    })
+    this.lessonCurrent = this.getLesson
   },
 
   methods: {
     ...mapActions('offline-worksheet-categories', [
+      'getCategoriesWorksheetsOfflineAppByWorksheetId',
       'getOfflineWorksheetCategories'
     ]),
     ...mapActions('offline-worksheet', {
@@ -158,6 +158,20 @@ export default {
       getUploaded: 'getUploaded'
     }),
     ...mapActions('children/lesson', ['saveWorksheetProgress']),
+
+    async getCategoriesByWorksheetId () {
+      this.categoriesWorksheet = await this.getCategoriesWorksheetsOfflineAppByWorksheetId(this.worksheetoffline.id)
+      if (this.categoriesWorksheet.length === 0) {
+        this.buildDataCategories()
+      }
+    },
+
+    async buildDataCategories () {
+      const categories = await this.getOfflineWorksheetCategories()
+      this.categoriesWorksheet = categories.map((category) => {
+        return { category: category.category, icon: category.icon, id: category.id }
+      })
+    },
 
     async getUploadedWorksheets () {
       this.images = {}
@@ -181,12 +195,12 @@ export default {
       this.$emit('input', false)
     },
 
-    openFileDialog (categoryId) {
-      const uploader = document.getElementById(`category-${categoryId}-upload`)
+    openFileDialog (category, index) {
+      const uploader = document.getElementById(`${category.category}-${index}-upload`)
       uploader.click()
     },
 
-    setFile (e, categoryId) {
+    setFile (e, categoryId, index) {
       this.loading = true
 
       this.uploadWorksheet({
@@ -196,14 +210,14 @@ export default {
         File: e.target.files[0]
       })
         .then(({ url }) => {
-          this.images[`image_${categoryId}`] = url
+          this.images[`image_${categoryId}_${index}`] = url
           this.$snotify.success('Your worksheet has been uploaded!')
           const date = new Date().toISOString().substr(0, 19)
           return this.saveWorksheetProgress({
             lessonId: this.getLesson.id,
             childId: this.currentChild[0].id,
             worksheet: {
-              id: this.offlineWorksheet.id,
+              id: this.worksheetoffline.id,
               completed: true,
               date
             }

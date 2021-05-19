@@ -35,6 +35,43 @@
         />
       </validation-provider>
 
+      <!-- Categories -->
+      <template>
+        <v-row>
+          <pg-select
+            v-model="categoriesSelected"
+            label="Categories"
+            :items="categories"
+            item-text="category"
+            item-value="id"
+            solo-labeled
+            return-object
+            multiple
+          />
+        </v-row>
+        <v-row>
+          <v-col
+            v-for="(categorySelected, indexCategory) in categoriesSelected"
+            :key="indexCategory"
+            cols="2"
+          >
+            <validation-provider v-slot="{ errors }" :name="categorySelected.category" rules="required">
+              <pg-text-field
+                v-model="categorySelected.number"
+                clearable
+                :disabled="loading"
+                :error-messages="errors"
+                :label="categorySelected.category"
+                :loading="loading"
+                type="number"
+                solo-labeled
+              />
+            </validation-provider>
+          </v-col>
+        </v-row>
+      </template>
+      <!-- end Categories -->
+
       <!-- File -->
       <span class="v-label theme--light">File</span>
       <template v-if="draft.pdfUrl">
@@ -161,6 +198,8 @@ export default {
   data: () => ({
     file: null,
     fileName: null,
+    categoriesSelected: [],
+    categories: null,
     videoFile: null,
     loading: false,
     path: 'lesson',
@@ -177,15 +216,22 @@ export default {
     ])
   },
 
-  created () {
+  async created () {
     this.refresh()
-    this.getLessonById(this.lessonId).then((data) => {
-      this.fileName = data.name.replace(/ /g, '-')
-      this.loading = false
+    const lesson = await this.getLessonById(this.lessonId)
+    this.fileName = lesson.name.replace(/ /g, '-')
+    this.loading = false
+    const data = await this.getOfflineWorksheetCategories()
+    this.categories = data.map((category) => {
+      return { category: category.category, id: category.id, number: 0 }
     })
   },
 
   methods: {
+    ...mapActions('offline-worksheet-categories', [
+      'getOfflineWorksheetCategories',
+      'getCategoriesWorksheetsOfflineByWorksheetId'
+    ]),
     ...mapActions('admin/curriculum/worksheet', [
       'createWorksheetByLessonId',
       'fetchWorksheetsByLessonId',
@@ -205,6 +251,7 @@ export default {
         })
         if (data.length) {
           this.draft = data[0]
+          this.categoriesSelected = await this.getCategoriesWorksheetsOfflineByWorksheetId(this.draft.id)
         }
       } catch (e) {
       } finally {
@@ -223,9 +270,9 @@ export default {
     async handleMultiFileUpload (files) {
       try {
         const formData = new FormData()
-        files.map((file) => {
+        files.map(file => (
           formData.append('file', file)
-        })
+        ))
         const { filePath } = await this.doUploadJoinMultilpe({
           type: 'upload-document',
           path: this.path,
@@ -295,6 +342,7 @@ export default {
     },
 
     submitMethod (data) {
+      data.categoriesWorksheetsOffline = this.categoriesSelected
       return this.editing
         ? this.updateWorksheetByLessonId({
           id: this.draft.id,
