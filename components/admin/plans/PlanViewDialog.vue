@@ -57,19 +57,7 @@ import PlanDescription from '@/components/app/payment/SubscriptionPlanSelection/
 
 function generateItemTemplate () {
   return {
-    name: null,
-    planName: null,
-    commonBenefits: {
-      benefits: []
-    },
-    homeDeliveryBenefits: {
-      benefits: [],
-      promotions: []
-    },
-    plusBenefits: {
-      benefits: [],
-      promotions: []
-    }
+    name: ''
   }
 }
 
@@ -106,7 +94,7 @@ export default {
     },
 
     resetItem () {
-      this.item = generateItemTemplate()
+      this.plan = generateItemTemplate()
     },
 
     loadItem (item) {
