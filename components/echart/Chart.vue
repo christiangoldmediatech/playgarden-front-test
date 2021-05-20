@@ -1,5 +1,5 @@
 <template>
-  <v-chart class="chart" :option="graph" />
+  <v-chart class="chart" :option="graph" @click="sendData" />
 </template>
 
 <script>
@@ -12,6 +12,11 @@ export default defineComponent({
       type: Object,
       required: true,
       default: () => {}
+    }
+  },
+  methods: {
+    sendData (data) {
+      this.$nuxt.$emit('send-data-chart', data)
     }
   }
 })

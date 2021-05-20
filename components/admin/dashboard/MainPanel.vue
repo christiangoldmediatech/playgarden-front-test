@@ -342,6 +342,13 @@ export default {
 
   created () {
     this.getData()
+    this.$nuxt.$on('send-data-chart', (dataGraph) => {
+      console.log('data recived--', dataGraph)
+    })
+  },
+
+  beforeDestroy () {
+    this.$nuxt.$off('send-data-chart')
   },
 
   methods: {
