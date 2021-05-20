@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <users-list-dialog ref="listUsers" />
     <v-row>
       <v-col cols="12" class="content-dashboard">
         <v-card width="100%">
@@ -268,6 +269,7 @@ import FunnelChart from './FunnelChart.vue'
 import PieChart from './PieChart.vue'
 import TimeLineChart from './TimeLineChart.vue'
 import BarChart from './BarChart.vue'
+import UsersListDialog from './UsersListDialog.vue'
 export default {
   name: 'MainPanel',
 
@@ -275,7 +277,8 @@ export default {
     FunnelChart,
     PieChart,
     TimeLineChart,
-    BarChart
+    BarChart,
+    UsersListDialog
   },
 
   data: () => ({
@@ -344,6 +347,7 @@ export default {
     this.getData()
     this.$nuxt.$on('send-data-chart', (dataGraph) => {
       console.log('data recived--', dataGraph)
+      this.$refs.listUsers.open(null, dataGraph)
     })
   },
 
