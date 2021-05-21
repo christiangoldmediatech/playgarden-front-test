@@ -23,7 +23,7 @@
 
       <v-card-text>
         <v-container>
-          <users-data-table ref="UsersDataTable" :show-panel="showPanel" />
+          <users-data-table ref="UsersDataTable" :show-panel="showPanel" :params-send="params" />
         </v-container>
       </v-card-text>
 
@@ -61,6 +61,7 @@ export default {
       dialog: false,
       loading: false,
       showPanel: false,
+      params: null,
       item: null
     }
   },
@@ -93,6 +94,9 @@ export default {
         case 'Trialing':
           arrayParameter = [3, 5, 6]
           break
+      }
+      this.params = {
+        registerStep: arrayParameter
       }
     },
 

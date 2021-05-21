@@ -177,6 +177,11 @@ export default {
       type: Boolean,
       required: false,
       default: true
+    },
+    paramsSend: {
+      type: Object,
+      required: false,
+      default: () => {}
     }
   },
 
@@ -286,6 +291,10 @@ export default {
       this.refresh()
     },
 
+    paramsSend (val) {
+      this.refresh()
+    },
+
     activeFilters (val) {
       if (val.length === 0 || val.length !== this.filterList.length) {
         this.allFilters = false
@@ -299,6 +308,7 @@ export default {
 
   async created () {
     this.showGraphs = (!this.showPanel) ? this.showPanel : true
+    console.log('parametrs--', this.paramsSend)
     await this.fetchChartsData()
   },
 
@@ -342,7 +352,11 @@ export default {
 
     async refresh (clear = false) {
       this.loading = true
-      const params = { limit: this.limit, page: this.page }
+      let params = { limit: this.limit, page: this.page }
+
+      if (this.paramsSend) {
+        params = { ...params, ...this.paramsSend }
+      }
 
       if (clear) {
         this.search = ''
