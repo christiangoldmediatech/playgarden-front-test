@@ -1,15 +1,24 @@
 import { Activity, ActivityType, Entity, FeaturedActivity, Playlist, Video } from '@/models'
-import { axios } from '@/utils'
+import { arrayToRecord, axios } from '@/utils'
 import { ref } from '@nuxtjs/composition-api'
 import { shuffle } from '@/utils/arrayTools'
 
+type FavoriteListResponse = Entity & { video: Video }
+
 type ActivitiesResponse = {
   activities: ActivityType[]
-  favorites: Array<Entity & { video: Video }>
+  favorites: FavoriteListResponse[]
   featured: FeaturedActivity
 }
+type ActivitiesFavoriteResponse = {
+  activities: null
+  favorites: FavoriteListResponse[]
+  featured: null
+}
+
 const activities = ref<ActivityType[]>([])
-const favorites = ref<Array<Entity & { video: Video }>>([])
+const favorites = ref<FavoriteListResponse[]>([])
+const featured = ref({} as FeaturedActivity)
 
 export const useActivity = () => {
   const getActivities = async () => {
@@ -25,12 +34,42 @@ export const useActivity = () => {
       }))
 
     favorites.value = response.favorites.length ? shuffle(response.favorites) : []
+    featured.value = response.featured
+  }
+
+  /**
+   * Refresh favorites while keeping the existing sort order
+   */
+  const refreshFavoriteActivities = async () => {
+    const response = await axios.$get('/activities?favorites=1') as ActivitiesFavoriteResponse
+
+    const newFavoriteIds = response.favorites.map(favorite => favorite.id)
+    const removedFavoriteIds = favorites.value
+      .filter(favorite => !newFavoriteIds.includes(favorite.id))
+      .map(favorite => favorite.id)
+
+    // remove elements from current favorites not present in new favorites
+    favorites.value.filter(favorite => !removedFavoriteIds.includes(favorite.id))
+
+    const currentFavoriteIds = favorites.value.map(favorite => favorite.id)
+    const addedFavoriteIds = response.favorites
+      .filter(favorite => !currentFavoriteIds.includes(favorite.id))
+      .map(favorite => favorite.id)
+
+    const newFavoritesRecord = arrayToRecord<FavoriteListResponse>(response.favorites, 'id')
+
+    // add elements from new favorites not present in current favorites
+    addedFavoriteIds.forEach((id) => {
+      favorites.value.push(newFavoritesRecord[id])
+    })
   }
 
   return {
     activities,
     favorites,
-    getActivities
+    featured,
+    getActivities,
+    refreshFavoriteActivities
   }
 }
 
