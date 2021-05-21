@@ -346,7 +346,6 @@ export default {
   created () {
     this.getData()
     this.$nuxt.$on('send-data-chart', (dataGraph) => {
-      console.log('data recived--', dataGraph)
       this.$refs.listUsers.open(null, dataGraph)
     })
   },

@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <!-- Add New User Card -->
-    <v-row>
+    <v-row v-if="showGraphs">
       <v-col cols="12">
         <v-card width="100%" class="custom-shadow">
           <v-card-title>
@@ -37,7 +37,7 @@
     </v-row>
 
     <!-- Charts -->
-    <v-row no-gutters>
+    <v-row v-if="showGraphs" no-gutters>
       <v-col cols="12" md="4">
         <!-- Total Users -->
         <v-card height="350px" class="mx-0 my-2 mr-md-2 custom-shadow">
@@ -172,9 +172,18 @@ export default {
 
   mixins: [onSearch],
 
+  props: {
+    showPanel: {
+      type: Boolean,
+      required: false,
+      default: true
+    }
+  },
+
   data () {
     return {
       loading: false,
+      showGraphs: true,
       search: '',
       limit: 10,
       page: 1,
@@ -289,7 +298,12 @@ export default {
   },
 
   async created () {
+    this.showGraphs = (!this.showPanel) ? this.showPanel : true
     await this.fetchChartsData()
+  },
+
+  mounted () {
+    this.refresh()
   },
 
   methods: {

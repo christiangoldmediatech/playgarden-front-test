@@ -23,7 +23,7 @@
 
       <v-card-text>
         <v-container>
-          <label>List users</label>
+          <users-data-table ref="UsersDataTable" :show-panel="showPanel" />
         </v-container>
       </v-card-text>
 
@@ -47,17 +47,20 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import UsersDataTable from '@/components/admin/users/UsersDataTable.vue'
 
 export default {
   name: 'UsersListDialog',
 
-  components: {},
+  components: {
+    UsersDataTable
+  },
 
   data () {
     return {
       dialog: false,
       loading: false,
+      showPanel: false,
       item: null
     }
   },
@@ -69,8 +72,6 @@ export default {
   },
 
   methods: {
-    ...mapActions('plans', ['updatePlan']),
-
     close () {
       this.$nextTick(() => {
         this.dialog = false
@@ -78,13 +79,27 @@ export default {
       })
     },
 
-    loadItem (item) {
-      this.item = item
+    buildQueryParamsConversionTunne (name, seriesName) {
+      console.log('name --', name)
+      console.log('seriesName --', seriesName)
+      let arrayParameter = []
+      switch (name) {
+        case 'Register':
+          arrayParameter = [0, 1, 10, 11, 12, 13]
+          break
+        case 'Payments':
+          arrayParameter = [2, 14]
+          break
+        case 'Trialing':
+          arrayParameter = [3, 5, 6]
+          break
+      }
     },
 
     open (evt, item = null) {
-      if (item) {
-        this.loadItem(item)
+      const { name, seriesName } = item
+      if (name && seriesName === 'Conversions funnel') {
+        this.buildQueryParamsConversionTunne(name, seriesName)
       }
 
       this.$nextTick(() => {
