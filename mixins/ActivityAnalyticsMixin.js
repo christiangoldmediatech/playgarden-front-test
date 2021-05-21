@@ -10,6 +10,7 @@ export default {
   data: () => {
     return {
       analyticsLoading: false,
+      shouldShowPatchEarnedDialog: false,
       patchEarnedDialog: false,
       patchData: {
         category: '',
@@ -100,7 +101,11 @@ export default {
                     category: activityType.name,
                     icon: image
                   }
-                  this.patchEarnedDialog = true
+                  this.shouldShowPatchEarnedDialog = true
+                  if ((duration - time) <= 1) {
+                    this.patchEarnedDialog = true
+                    this.shouldShowPatchEarnedDialog = false
+                  }
                 }
 
                 // Get patchImg and toUnlock
