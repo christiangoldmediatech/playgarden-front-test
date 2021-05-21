@@ -61,6 +61,8 @@ export default {
       dialog: false,
       loading: false,
       showPanel: false,
+      name: null,
+      seriesName: null,
       params: null,
       item: null
     }
@@ -80,9 +82,9 @@ export default {
       })
     },
 
-    buildQueryParamsConversionTunne (name) {
+    buildQueryParamsConversionTunne () {
       let arrayParameter = []
-      switch (name) {
+      switch (this.name) {
         case 'Register':
           arrayParameter = [0, 1, 10, 11, 12, 13]
           break
@@ -98,26 +100,39 @@ export default {
       }
     },
 
-    buildQueryParamsTrialing (name) {
+    buildQueryParamsTrialing () {
       this.params = {
-        subscriptionId: 'not null',
-        registerStep: [3, 5, 6],
-        stripeStatus: name.toLowerCase()
+        status: (this.name === 'Active') ? 1 : 0,
+        stripeStatus: 'trialing',
+        planId: [1, 2, 3]
+      }
+    },
+
+    buildQueryParamsEarlyEducationOnline () {
+      this.params = {
+        planId: 1,
+        status: (this.name === 'Active') ? 1 : 0,
+        stripeStatus: ['active', 'past_due', 'unpaid', 'canceled', 'incomplete', 'incomplete_expired', 'all', 'ended']
       }
     },
 
     open (evt, item = null) {
       const { name, seriesName } = item
+      this.name = name
+      this.seriesName = seriesName
       console.log('name --', name)
       console.log('seriesName --', seriesName)
 
       if (name) {
         switch (seriesName) {
           case 'Conversions funnel':
-            this.buildQueryParamsConversionTunne(name)
+            this.buildQueryParamsConversionTunne()
             break
           case 'Trialing':
-            this.buildQueryParamsTrialing(name)
+            this.buildQueryParamsTrialing()
+            break
+          case 'Early Education Online':
+            this.buildQueryParamsEarlyEducationOnline()
             break
         }
       }

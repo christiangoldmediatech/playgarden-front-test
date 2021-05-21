@@ -292,6 +292,7 @@ export default {
     },
 
     paramsSend (val) {
+      this.page = 1
       this.refresh()
     },
 
@@ -308,7 +309,6 @@ export default {
 
   async created () {
     this.showGraphs = (!this.showPanel) ? this.showPanel : true
-    console.log('parametrs--', this.paramsSend)
     await this.fetchChartsData()
   },
 
