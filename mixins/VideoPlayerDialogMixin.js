@@ -55,7 +55,7 @@ export default {
       if (this.fullscreen) {
         this.toggleFullscreen(this.dialogContainerId)
       }
-      this.player.pause()
+      this.player.closePause()
       this.player.stopCasting()
     },
 

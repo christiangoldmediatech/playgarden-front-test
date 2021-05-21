@@ -6,40 +6,93 @@ export default {
 
     setupVideoAnalytics (player) {
       // Send started to analytics
-      player.on('play', () => {
-        const { videoId } = player.getMediaObject()
+      const onPlay = () => {
+        const {
+          videoId
+        } = player.getMediaObject()
         const time = player.currentTime()
-        const status = 'STARTED'
+        const status =
+                                       player.currentTime() > 1
+                                         ? 'RESUMED'
+                                         : 'STARTED'
 
-        this.sendVideoAnalytics({ videoId, time, status })
-      })
+        this.sendVideoAnalytics({
+          videoId,
+          time,
+          status
+        })
+      }
 
       // Send paused to analytics
-      player.on('pause', () => {
-        const { videoId } = player.getMediaObject()
+      const onPause = () => {
+        const {
+          videoId
+        } = player.getMediaObject()
         const time = player.currentTime()
-        const status = 'PAUSED'
+        const closePaused = player.getClosePaused()
+        const status = closePaused
+          ? 'CLOSED'
+          : 'PAUSED'
+        player.resetClosePaused()
 
-        this.sendVideoAnalytics({ videoId, time, status })
-      })
+        this.sendVideoAnalytics({
+          videoId,
+          time,
+          status
+        })
+      }
 
-      // Send completed to analytics
-      player.on('skipped', () => {
-        const { videoId } = player.getMediaObject()
+      // Send skipped to analytics
+      const onSkipped = () => {
+        const {
+          videoId
+        } = player.getMediaObject()
         const time = player.currentTime()
         const status = 'SKIPPED'
 
-        this.sendVideoAnalytics({ videoId, time, status })
-      })
+        this.sendVideoAnalytics({
+          videoId,
+          time,
+          status
+        })
+      }
 
       // Send completed to analytics
-      player.on('ended', () => {
-        const { videoId } = player.getMediaObject()
+      const onEnded = () => {
+        const {
+          videoId
+        } = player.getMediaObject()
         const time = player.currentTime()
         const status = 'COMPLETED'
 
-        this.sendVideoAnalytics({ videoId, time, status })
-      })
+        this.sendVideoAnalytics({
+          videoId,
+          time,
+          status
+        })
+      }
+
+      // Send completed to analytics
+      const onClosed = () => {
+        const {
+          videoId
+        } = player.getMediaObject()
+        const time = player.currentTime()
+        const status = 'CLOSED'
+
+        this.sendVideoAnalytics({
+          videoId,
+          time,
+          status
+        })
+      }
+
+      // Assign events
+      player.on('play', onPlay)
+      player.on('pause', onPause)
+      player.on('skipped', onSkipped)
+      player.on('ended', onEnded)
+      player.on('closed', onClosed)
     }
   }
 }
