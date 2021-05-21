@@ -41,6 +41,7 @@
                   <plan-description
                     v-if="Object.keys(plan).length"
                     :plan="plan"
+                    show-promotions
                   />
                 </v-col>
               </v-row>
