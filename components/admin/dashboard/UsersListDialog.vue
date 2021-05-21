@@ -2,7 +2,7 @@
   <v-dialog
     v-model="dialog"
     :fullscreen="$vuetify.breakpoint.xs"
-    max-width="900px"
+    max-width="1200px"
     persistent
     scrollable
   >
@@ -80,9 +80,7 @@ export default {
       })
     },
 
-    buildQueryParamsConversionTunne (name, seriesName) {
-      console.log('name --', name)
-      console.log('seriesName --', seriesName)
+    buildQueryParamsConversionTunne (name) {
       let arrayParameter = []
       switch (name) {
         case 'Register':
@@ -100,10 +98,28 @@ export default {
       }
     },
 
+    buildQueryParamsTrialing (name) {
+      this.params = {
+        subscriptionId: 'not null',
+        registerStep: [3, 5, 6],
+        stripeStatus: name.toLowerCase()
+      }
+    },
+
     open (evt, item = null) {
       const { name, seriesName } = item
-      if (name && seriesName === 'Conversions funnel') {
-        this.buildQueryParamsConversionTunne(name, seriesName)
+      console.log('name --', name)
+      console.log('seriesName --', seriesName)
+
+      if (name) {
+        switch (seriesName) {
+          case 'Conversions funnel':
+            this.buildQueryParamsConversionTunne(name)
+            break
+          case 'Trialing':
+            this.buildQueryParamsTrialing(name)
+            break
+        }
       }
 
       this.$nextTick(() => {
