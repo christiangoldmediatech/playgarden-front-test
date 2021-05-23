@@ -116,6 +116,22 @@ export default {
       }
     },
 
+    buildQueryParamsPremiumEarlyEducationOnline () {
+      this.params = {
+        planId: 2,
+        status: (this.name === 'Active') ? 1 : 0,
+        stripeStatus: ['active', 'past_due', 'unpaid', 'canceled', 'incomplete', 'incomplete_expired', 'all', 'ended']
+      }
+    },
+
+    buildQueryParamsHomeschool () {
+      this.params = {
+        planId: 3,
+        status: (this.name === 'Active') ? 1 : 0,
+        stripeStatus: ['active', 'past_due', 'unpaid', 'canceled', 'incomplete', 'incomplete_expired', 'all', 'ended']
+      }
+    },
+
     open (evt, item = null) {
       const { name, seriesName } = item
       this.name = name
@@ -133,6 +149,12 @@ export default {
             break
           case 'Early Education Online':
             this.buildQueryParamsEarlyEducationOnline()
+            break
+          case 'Premium Early Education Online':
+            this.buildQueryParamsPremiumEarlyEducationOnline()
+            break
+          case 'Homeschool':
+            this.buildQueryParamsHomeschool()
             break
         }
       }
