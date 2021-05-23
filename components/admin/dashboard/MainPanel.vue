@@ -310,6 +310,7 @@ export default {
     },
     usersPerPlan: {
       title: '',
+      name: '',
       data: []
     },
     dailyUsers: {
@@ -318,6 +319,7 @@ export default {
     },
     usersPerStatus: {
       title: '',
+      name: '',
       data: []
     },
     planActiveInactive: [],
@@ -371,10 +373,12 @@ export default {
         this.totalSubscriptions = totalSubscriptions
         this.canceledUsers = canceledUsers
         this.usersPerPlan = {
-          data: usersPerPlan
+          data: usersPerPlan,
+          name: 'Users per Plan'
         }
         this.usersPerStatus = {
-          data: usersPerStatus
+          data: usersPerStatus,
+          name: 'Users per status'
         }
         this.activeUsers = activeUsers
         this.planActiveInactive = planActiveInactive

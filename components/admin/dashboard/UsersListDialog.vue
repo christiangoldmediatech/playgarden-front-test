@@ -132,7 +132,20 @@ export default {
       }
     },
 
+    buildQueryParamsUsersPerStatus () {
+      this.params = {
+        stripeStatus: this.name.toLowerCase()
+      }
+    },
+
+    buildQueryParamsUsersPerPlan () {
+      this.params = {
+        stripeStatus: this.name.toLowerCase()
+      }
+    },
+
     open (evt, item = null) {
+      console.log(item)
       const { name, seriesName } = item
       this.name = name
       this.seriesName = seriesName
@@ -155,6 +168,12 @@ export default {
             break
           case 'Homeschool':
             this.buildQueryParamsHomeschool()
+            break
+          case 'Users per status':
+            this.buildQueryParamsUsersPerStatus()
+            break
+          case 'Users per Plan':
+            this.buildQueryParamsUsersPerPlan()
             break
         }
       }
