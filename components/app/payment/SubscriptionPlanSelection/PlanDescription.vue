@@ -29,7 +29,7 @@
 
       <!-- Promotions -->
       <template v-if="showPromotions && hasPromotions(plan.homeDeliveryBenefits.promotions)">
-        <div class="promotion-ribbon pa-3 mx-n4 mx-md-n8 my-6 text-center">
+        <div class="promotion-ribbon pa-3 ml-n14 ml-md-n8 mr-3 my-6 text-center">
           <span class="font-weight-bold body-2 accent--text">* Join now and you will get this benefits:</span>
         </div>
         <ul class="plan-detail">
@@ -108,13 +108,13 @@ ul li::before {
 }
 
 .plan-detail li {
-  width: 100%;
+  width: 97%;
   line-height: 5px;
   /*border: 1px blue solid; */
 }
 .plan-detail li span {
   display: -moz-inline-box;  /* FF2 or lower */
-  display: inline-block;     /* FF3, Opera, Safari */
+  display: initial;     /* FF3, Opera, Safari */
   line-height: 1;
   vertical-align: text-top;
   color: var(--v-black-base);
