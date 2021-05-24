@@ -140,6 +140,15 @@ export default {
     '@nuxtjs/composition-api'
   ],
   /**
+   * Vue Options
+   */
+  vue: {
+    config: {
+      productionTip: true,
+      devtools: process.env.TEST_ENV !== 'production'
+    }
+  },
+  /**
    * Vuetify Options
    */
   vuetify: {

@@ -10,6 +10,7 @@ export default {
   data: () => {
     return {
       analyticsLoading: false,
+      shouldShowPatchEarnedDialog: false,
       patchEarnedDialog: false,
       patchData: {
         category: '',
@@ -32,95 +33,103 @@ export default {
       updateAnalytic: 'update'
     }),
 
-    doAnalytics (startCheck = false, overrideComplete = false) {
-      return new Promise((resolve) => {
-        const currentVideo = jsonCopy(this.currentVideo)
+    async doAnalytics (startCheck = false, overrideComplete = false) {
+      try {
+        // Constants
         const promises = []
+        const currentVideo = jsonCopy(this.currentVideo)
         const time = this.player.currentTime()
-        const duration = this.player.duration()
-        const didFinish = ((duration - time) <= 30) || overrideComplete
+        const didFinish = this.player.duration() - time <= 30 || overrideComplete
 
+        // Skip if loading
         if (this.analyticsLoading) {
-          resolve(false)
-          return
+          return false
         }
 
+        // Set loading
         this.analyticsLoading = true
 
-        // console.log(`Starting video analytics for activity: ${currentVideo.activityId}, time: ${time}, didFinish: ${didFinish}`)
-
         this.children.forEach((child) => {
-          const analyticOperation = new Promise((resolve, reject) => {
-            this.getAnalytics({ activityId: currentVideo.activityId, childId: child.id })
-              .then((result) => {
-                if (typeof result === 'string' || Object.keys(result).length === 0) {
-                  // console.log('Analytic record not found')
-                  return this.createAnalytic({
-                    childrenId: child.id,
-                    entityId: currentVideo.activityId,
-                    entityType: currentVideo.type,
-                    didFinish,
-                    time
-                  })
-                } else {
-                  if (startCheck) {
-                    return false
-                  }
-                  // In all other cases, update
-                  let resultTime = null
-                  if (result.time) {
-                    const a = result.time.split(':')
-                    resultTime = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2])
-                    // console.log(time, resultTime)
-                  }
-
-                  if (resultTime === null || time > resultTime) {
-                    // console.log(`Record found, updating to: ${currentVideo.activityId}, time: ${time}, didFinish: ${didFinish}`)
-                    return this.updateAnalytic({
-                      analyticsId: result.id,
-                      params: {
-                        didFinish,
-                        time,
-                        entityId: currentVideo.activityId,
-                        entityType: currentVideo.type
-                      }
-                    })
-                  } else {
-                    // console.log('Analytic record found, but skipping due to time being lower than previously')
-                    return false
-                  }
-                }
-              })
-              .then((result) => {
-                // console.log(result)
-                if (!startCheck && result && result.patch && this.patchEarnedDialog === false) {
-                  const { activityType, number, image } = result.patch
-                  this.patchData = {
-                    number,
-                    category: activityType.name,
-                    icon: image
-                  }
-                  this.patchEarnedDialog = true
-                }
-
-                // Get patchImg and toUnlock
-                this.patchImg = result.patchImg || null
-                this.toUnlock = result.toUnlock || null
-
-                resolve(result)
-              })
-              .catch((err) => {
-                reject(err)
-              })
+          const promise = this.analyticOperation(child, {
+            currentVideo,
+            time,
+            didFinish,
+            startCheck,
+            overrideComplete
           })
-          promises.push(analyticOperation)
+          promises.push(promise)
         })
 
-        Promise.all(promises).then(() => {
-          this.analyticsLoading = false
-          resolve()
-        })
+        await Promise.all(promises)
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error(error)
+      } finally {
+        this.analyticsLoading = false
+      }
+    },
+
+    async analyticOperation (child, parameters) {
+      // Destructurer paremeters
+      const { currentVideo, time, didFinish, startCheck } = parameters
+
+      // Check if analytics already exists
+      let analytic = await this.getAnalytics({
+        activityId: currentVideo.activityId,
+        childId: child.id
       })
+
+      // Create analytic if does not exist
+      if (typeof analytic === 'string' || Object.keys(analytic).length === 0) {
+        // Create ana
+        analytic = await this.createAnalytic({
+          childrenId: child.id,
+          entityId: currentVideo.activityId,
+          entityType: currentVideo.type,
+          didFinish,
+          time
+        })
+      } else if (!startCheck) {
+        let analyticTime = null
+        if (analytic.time) {
+          const a = analytic.time.split(':')
+          analyticTime = +a[0] * 60 * 60 + +a[1] * 60 + +a[2]
+        }
+
+        if (analyticTime === null || time > analyticTime) {
+          analytic = await this.updateAnalytic({
+            analyticsId: analytic.id,
+            params: {
+              didFinish,
+              time,
+              entityId: currentVideo.activityId,
+              entityType: currentVideo.type
+            }
+          })
+        } else {
+          analytic = false
+        }
+      } else {
+        analytic = false
+      }
+
+      if (analytic) {
+        if (!startCheck && analytic.patch && this.patchEarnedDialog === false) {
+          const { activityType, number, image } = analytic.patch
+          this.patchData = {
+            number,
+            category: activityType.name,
+            icon: image
+          }
+          this.shouldShowPatchEarnedDialog = true
+        }
+
+        // Get patchImg and toUnlock
+        this.patchImg = analytic.patchImg || null
+        this.toUnlock = analytic.toUnlock || null
+      }
+
+      return analytic
     }
   }
 }
