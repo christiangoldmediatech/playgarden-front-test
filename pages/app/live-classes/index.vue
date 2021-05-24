@@ -1,6 +1,6 @@
 <template>
   <v-main>
-    <v-row class="pos-relative pt-md-2" justify="center" align="center">
+    <v-row class="pos-relative pt-md-2 my-0" justify="center" align="center">
       <v-col class="hidden-sm-and-down" cols="12">
         <week-selector
           v-if="today"

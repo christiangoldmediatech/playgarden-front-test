@@ -23,19 +23,19 @@
         >
       </div>
 
-      <v-row class="px-2" :title="entry.activityType.name">
+      <v-row class="px-2 my-0" :title="entry.activityType.name">
         <img class="lsess-table-entry-type ml-1 mt-1" :src="entry.activityType.icon">
 
         <v-col>
-          <v-row align="center" class="fill-height overflow-hidden">
+          <v-row align="center" class="fill-height overflow-hidden my-0">
             <b>{{ entry.activityType.name }}</b>
           </v-row>
         </v-col>
       </v-row>
 
-      <div>
+      <v-card-actions>
         {{ title }}
-      </div>
+      </v-card-actions>
     </v-card>
   </v-hover>
 </template>
