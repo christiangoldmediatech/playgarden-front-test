@@ -166,6 +166,7 @@ export default {
     line-height: 1.15;
     text-align: center;
     color: white;
+    margin-bottom: 16px;
     @media screen and (min-height: 375px) {
       line-height: 1.5;
     }
