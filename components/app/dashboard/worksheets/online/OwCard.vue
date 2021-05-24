@@ -18,6 +18,7 @@
       :buttons="buttons"
       :return-action="returnAction"
       :time-out="false"
+      :z-index="2000"
     >
       <template v-slot:title>
         <underlined-title

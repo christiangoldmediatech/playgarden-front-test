@@ -1,7 +1,7 @@
 <template>
   <v-overlay
     :value="value"
-    :z-index="4000"
+    :z-index="zIndex"
   >
     <dashboard-message ref="message" v-bind="{ ...$attrs, returnAction, light: true }">
       <template v-for="(_, slot) of $scopedSlots" v-slot:[slot]="scope">
@@ -25,6 +25,12 @@ export default {
     value: {
       type: Boolean,
       required: true
+    },
+
+    zIndex: {
+      type: Number,
+      required: false,
+      default: 4000
     }
   },
 
