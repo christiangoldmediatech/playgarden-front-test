@@ -17,12 +17,15 @@
       :show-next-up="false"
       no-auto-track-change
       @ready="onReady"
+      @pause="saveProgress"
       @ended="close"
     />
   </video-player-dialog>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+import VideoAnalyticsMixin from '@/mixins/VideoAnalyticsMixin.js'
 import VideoPlayerDialogMixin from '@/mixins/VideoPlayerDialogMixin.js'
 import DashboardMixin from '@/mixins/DashboardMixin'
 import Fullscreen from '@/mixins/FullscreenMixin.js'
@@ -30,10 +33,12 @@ import Fullscreen from '@/mixins/FullscreenMixin.js'
 export default {
   name: 'LessonTeacherVideo',
 
-  mixins: [VideoPlayerDialogMixin, DashboardMixin, Fullscreen],
+  mixins: [VideoPlayerDialogMixin, DashboardMixin, Fullscreen, VideoAnalyticsMixin],
 
   data: () => {
-    return {}
+    return {
+      isSavingProgress: false
+    }
   },
 
   computed: {
@@ -46,16 +51,48 @@ export default {
   },
 
   methods: {
+    ...mapActions('children/lesson', ['saveWorksheetVideoProgress']),
+
     onReady (player) {
       this.player = player
+      this.setupVideoAnalytics(player)
       player.on('dispose', () => {
         this.player = null
       })
     },
 
     close () {
+      this.saveProgress()
       this.handleClose()
       this.dialog = false
+    },
+
+    async saveProgress () {
+      try {
+        // Skip if already saving
+        if (this.isSavingProgress) {
+          return
+        }
+
+        // Get data
+        const { videoId } = this.player.getMediaObject()
+        const time = this.player.currentTime()
+        const duration = this.player.duration()
+        const completed = (duration - time) <= 15
+
+        // Start saving
+        this.isSavingProgress = true
+
+        await this.saveWorksheetVideoProgress({
+          videoId,
+          time,
+          completed
+        })
+      } catch (error) {
+        return Promise.reject(error)
+      } finally {
+        this.isSavingProgress = false
+      }
     }
   }
 }

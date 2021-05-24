@@ -1,6 +1,13 @@
 <template>
   <v-hover v-slot="{ hover }">
-    <v-card class="activity-card" width="100%">
+    <v-card
+      class="activity-card"
+      :style="{
+        transform: !isMobile && hover ? 'scale(1.125)' : undefined
+      }"
+      width="100%"
+    >
+      <card-ribbon v-if="viewed" text="Viewed" />
       <v-img
         class="activity-card-thumbnail"
         content-class=""
@@ -13,12 +20,12 @@
         <div class="fill-height d-flex align-center justify-center">
           <img
             class="activity-card-thumbnail-play"
-            :class="{ 'activity-card-thumbnail-play-show': hover }"
+            :class="{ 'activity-card-thumbnail-play-show': hover || isMobile }"
             src="@/assets/svg/play-button-icon.svg"
           >
         </div>
       </v-img>
-      <v-list class="py-0" dense>
+      <v-list class="activiti-card py-0" dense>
         <v-list-item three-line>
           <v-list-item-avatar tile>
             <v-img
@@ -28,13 +35,12 @@
           </v-list-item-avatar>
 
           <v-list-item-content>
-            <v-list-item-title class="font-weight-bold text-uppercase">
-              {{ category }}<br>
-              <span class="activity-card-with">with</span> <span class="activity-card-subtitle">{{ teacher.toLowerCase() }}</span>
-            </v-list-item-title>
-            <v-list-item-subtitle class="activity-card-sub">
+            <v-list-item-subtitle class="activity-card-sub text-uppercase">
               <span class="activity-card-description">{{ title }}</span>
             </v-list-item-subtitle>
+            <v-list-item-title class="font-weight-bold">
+              <span class="activity-card-with">with</span> <span class="activity-card-subtitle">{{ teacher }}</span>
+            </v-list-item-title>
           </v-list-item-content>
 
           <v-list-item-action>
@@ -61,10 +67,15 @@
 </template>
 
 <script>
+import CardRibbon from '@/components/app/library/CardRibbon.vue'
 import FavoritesMixin from '@/mixins/FavoritesMixin.js'
 
 export default {
   name: 'ActivityCard',
+
+  components: {
+    CardRibbon
+  },
 
   mixins: [FavoritesMixin],
 
@@ -97,6 +108,17 @@ export default {
     teacher: {
       type: String,
       required: true
+    },
+
+    viewed: {
+      type: Boolean,
+      required: true
+    }
+  },
+
+  computed: {
+    isMobile () {
+      return this.$vuetify.breakpoint.mobile
     }
   }
 }
@@ -106,6 +128,8 @@ export default {
 .activity {
   &-card {
     user-select: none;
+    transition: transform .15s ease-in-out;
+    position: relative;
     &-thumbnail {
       border-bottom-left-radius: 5%;
       border-bottom-right-radius: 5%;
@@ -120,7 +144,6 @@ export default {
         }
       }
     }
-
     &-with {
       font-weight: 400 !important;
       color: var(--v-black-base) !important;
@@ -128,7 +151,7 @@ export default {
     }
 
     &-description {
-      font-weight: 500;
+      font-weight: 600;
     }
 
     &-subtitle {
@@ -138,8 +161,12 @@ export default {
     }
 
     &-sub {
-      min-height: 32px;
+      min-height: 0px;
+      top: 0;
     }
   }
+}
+.title-pre {
+  white-space: pre-wrap;
 }
 </style>

@@ -20,7 +20,7 @@
         class="image mt-14 mt-md-0"
         :class="{ mobile: $vuetify.breakpoint.smAndDown }"
       >
-        <img alt="Smiling Girl Picture" src="@/assets/svg/girl-smiling.svg">
+        <img alt="Smiling Girl Picture" src="@/assets/jpg/girl-smiling.jpg">
       </div>
     </v-col>
 

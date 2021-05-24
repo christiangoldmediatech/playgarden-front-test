@@ -15,8 +15,8 @@
         persistent
       >
         <v-col cols="12">
-          <v-row class="pr-3" justify="end">
-            <v-btn icon @click.stop="closeChangePlanModal">
+          <v-row class="pr-3 mb-md-n12" justify="end">
+            <v-btn class="white" icon @click.stop="closeChangePlanModal">
               <v-icon>mdi-close</v-icon>
             </v-btn>
           </v-row>
@@ -151,7 +151,7 @@
                                 Edit Shipping Address
                               </v-list-item-title>
                             </v-list-item>
-                            <v-divider v-if="billing.stripeStatus !== 'canceled'"></v-divider>
+                            <v-divider v-if="billing.stripeStatus !== 'canceled'" />
                             <v-list-item v-if="billing.stripeStatus !== 'canceled'" class="clickable">
                               <v-list-item-title @click="remove">
                                 <v-icon color="red" dense>
@@ -452,14 +452,24 @@
                         </v-row>
 
                         <v-row justify="center">
-                          <v-btn
-                            class="text-none"
-                            color="accent"
-                            large
-                            @click.stop="openTimeline(child)"
-                          >
-                            Progress
-                          </v-btn>
+                          <v-app class="children-actions">
+                            <v-btn
+                              class="text-none"
+                              color="accent"
+                              large
+                              @click.stop="openTimeline(child)"
+                            >
+                              Go to Letter Progress
+                            </v-btn>
+                            <v-btn
+                              class="mt-2 text-none"
+                              color="primary"
+                              large
+                              @click.stop="goToProgressReport(child.id)"
+                            >
+                              Go to Progress Report
+                            </v-btn>
+                          </v-app>
                         </v-row>
                       </v-col>
 
@@ -708,6 +718,10 @@ export default {
     ...mapActions('payment', ['cancelSubscriptionById']),
     ...mapActions('children/lesson', ['getLessonChildrenStatus']),
 
+    goToProgressReport (id) {
+      this.$router.push({ name: 'admin-progress-report', query: { id } })
+    },
+
     closeChangePlanModal () {
       this.changePlanModal = false
       /* if (this.$route.params.planRedirect) {
@@ -857,5 +871,8 @@ export default {
 }
 .edit-color {
   color: #f89838;
+}
+.children-actions {
+  max-height: 110px !important;
 }
 </style>

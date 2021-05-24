@@ -88,20 +88,20 @@ export default {
             : this.pagination.pageStop
         children = this.$scopedSlots['page-text']
           ? [
-            this.$scopedSlots['page-text']({
-              pageStart,
-              pageStop,
-              itemsLength
-            })
-          ]
+              this.$scopedSlots['page-text']({
+                pageStart,
+                pageStop,
+                itemsLength
+              })
+            ]
           : [
-            this.$vuetify.lang.t(
-              this.pageText,
-              pageStart,
-              pageStop,
-              itemsLength
-            )
-          ]
+              this.$vuetify.lang.t(
+                this.pageText,
+                pageStart,
+                pageStop,
+                itemsLength
+              )
+            ]
       }
 
       return this.$createElement(

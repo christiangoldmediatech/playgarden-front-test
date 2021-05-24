@@ -25,33 +25,27 @@ export default {
       const duration = this.player.duration()
       const promises = []
 
-      // Only save progress if the video hasn't been completed and we are ahead of where we last left off
-      if (
-        !currentVideo.viewed ||
-        (!currentVideo.viewed.completed && currentVideo.viewed.time < time)
-      ) {
-        this.savingProgress = true
-        this.children.forEach((child) => {
-          promises.push(
-            this.sendVideoProgress({
-              lessonId: this.lesson.id,
-              childId: child.id,
-              video: {
-                id: currentVideo.videoId,
-                completed: duration - time <= 30,
-                time,
-                date
-              }
-            })
-          )
-        })
-        Promise.all(promises).then(() => {
-          if (promises.length) {
-            this.$nuxt.$emit('dashboard-panel-update')
-          }
-          this.savingProgress = false
-        })
-      }
+      this.savingProgress = true
+      this.children.forEach((child) => {
+        promises.push(
+          this.sendVideoProgress({
+            lessonId: this.lesson.id,
+            childId: child.id,
+            video: {
+              id: currentVideo.videoId,
+              completed: duration - time <= 30,
+              time,
+              date
+            }
+          })
+        )
+      })
+      Promise.all(promises).then(() => {
+        if (promises.length) {
+          this.$nuxt.$emit('dashboard-panel-update')
+        }
+        this.savingProgress = false
+      })
     },
 
     completeVideoProgress () {

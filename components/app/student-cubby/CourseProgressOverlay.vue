@@ -87,12 +87,49 @@
               v-if="currentMobileLesson && typeof currentMobileLesson === 'object'"
               v-bind="{ lesson: currentMobileLesson, customOverrides: { lessonId: currentMobileLesson.id, childId: studentId } }"
               display-mode
-            />
+            >
+              <!-- Previous Day And Next Day Icon -->
+              <template #panel-toolbar>
+                <v-row justify="space-between">
+                  <v-col v-if="shouldShowPreviousDayButton" class="btnLesson">
+                    <v-btn class="ml-3" icon @click.stop="previousDay">
+                      <img src="@/assets/svg/back-arrow.svg">
+                    </v-btn>
+                  </v-col>
+                  <v-spacer />
+                  <v-col v-if="shouldShowNextDayButton" class="btnLesson">
+                    <p class="text-right mr-3">
+                      <v-btn icon @click.stop="nextDay">
+                        <img src="@/assets/svg/next-arrow.svg">
+                      </v-btn>
+                    </p>
+                  </v-col>
+                </v-row>
+              </template>
+            </dashboard-panel>
             <blank-dashboard-panel
               v-else
               :letter="(lessons[0]) ? lessons[0].curriculumType.letter : ''"
-              :day="selectedDay"
+              :day="selectedDayIndex + 1"
             >
+              <!-- Previous Day And Next Day Icon -->
+              <template #panel-toolbar>
+                <v-row justify="space-between">
+                  <v-col v-if="shouldShowPreviousDayButton" class="btnLesson">
+                    <v-btn class="ml-3" icon @click.stop="previousDay">
+                      <img src="@/assets/svg/back-arrow.svg">
+                    </v-btn>
+                  </v-col>
+                  <v-spacer />
+                  <v-col v-if="shouldShowNextDayButton" class="btnLesson">
+                    <p class="text-right mr-3">
+                      <v-btn icon @click.stop="nextDay">
+                        <img src="@/assets/svg/next-arrow.svg">
+                      </v-btn>
+                    </p>
+                  </v-col>
+                </v-row>
+              </template>
               <template v-if="currentMobileLesson === -1">
                 COME BACK TOMORROW TO UNLOCK THIS DAY
               </template>
@@ -101,21 +138,6 @@
               </template>
             </blank-dashboard-panel>
           </div>
-          <v-carousel
-            v-model="selectedDay"
-            height="48px"
-            width="100%"
-            :hide-delimiter-background="true"
-            :hide-delimiters="true"
-          >
-            <v-carousel-item v-for="i in 5" :key="`day-${i}`">
-              <div class="d-flex align-center justify-center fill-height">
-                <span class="font-weight-bold white--text">
-                  Day {{ i }}
-                </span>
-              </div>
-            </v-carousel-item>
-          </v-carousel>
         </v-container>
       </template>
     </template>
@@ -142,7 +164,7 @@ export default {
   data: () => {
     return {
       show: false,
-      selectedDay: 0,
+      selectedDayIndex: 0,
       loading: false,
       selectedLetter: null,
       letters: [],
@@ -168,7 +190,7 @@ export default {
     },
 
     currentMobileLesson () {
-      const index = this.selectedDay
+      const index = this.selectedDayIndex
       const total = 5
 
       if (this.lessons[index]) {
@@ -186,6 +208,14 @@ export default {
       return this.letters.filter((letter) => {
         return !letter.enabled
       }).map(({ id }) => id)
+    },
+
+    shouldShowPreviousDayButton () {
+      return this.selectedDayIndex > 0
+    },
+
+    shouldShowNextDayButton () {
+      return this.selectedDayIndex < 4
     }
   },
 
@@ -248,7 +278,7 @@ export default {
 
     close () {
       this.show = false
-      this.selectedDay = 0
+      this.selectedDayIndex = 0
       document.querySelector('html').style.overflowY = 'auto'
     },
 
@@ -266,6 +296,22 @@ export default {
         this.lessons = data.map(({ lesson }) => lesson)
         this.loading = false
       })
+    },
+
+    nextDay () {
+      if (this.selectedDayIndex <= 3) {
+        this.selectedDayIndex += 1
+      } else {
+        this.selectedDayIndex = 0
+      }
+    },
+
+    previousDay () {
+      if (this.selectedDayIndex <= 0) {
+        this.selectedDayIndex = 3
+      } else {
+        this.selectedDayIndex -= 1
+      }
     }
   }
 }
@@ -403,5 +449,8 @@ export default {
     opacity: 1;
     height: 14px;
   }
+}
+.btnLesson {
+  z-index: 1 !important;
 }
 </style>

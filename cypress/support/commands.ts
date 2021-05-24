@@ -54,7 +54,7 @@ Cypress.Commands.add('headlessLoginAs', (user: 'parent' | 'admin') => {
       email: payload.email,
       password: payload.password
     }
-  }).its('body').then(body => {
+  }).its('body').then((body) => {
     window.localStorage.setItem('authToken', JSON.stringify(body.accessToken))
   })
 })
@@ -62,7 +62,8 @@ Cypress.Commands.add('headlessLoginAs', (user: 'parent' | 'admin') => {
 const tomorrow = Date.now() + 8.6e7
 
 Cypress.Commands.add('headlessChildrenFetch', () => {
-  const token = JSON.parse(window.localStorage.getItem('authToken'))
+  const tokenString = window.localStorage.getItem('authToken') || ''
+  const token = JSON.parse(tokenString)
 
   return cy.request({
     method: 'GET',
@@ -85,6 +86,6 @@ Cypress.Commands.add('uiChildSelect', (childIndex: number = 0) => {
 Cypress.Commands.add('headlessChildSelect', (childId: number, expires: number = tomorrow) => {
   window.localStorage.setItem('selectedChild', JSON.stringify({
     value: [childId],
-    expires: expires
+    expires
   }))
 })

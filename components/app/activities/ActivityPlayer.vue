@@ -75,10 +75,17 @@ export default {
           this.player.showLoading()
           this.doAnalytics().then(() => {
             this.player.hideLoading()
-            if (this.player.currentTime() === this.player.duration() && !this.patchEarnedDialog) {
+            if (this.player.currentTime() === this.player.duration() && (!this.patchEarnedDialog && !this.shouldShowPatchEarnedDialog)) {
               this.player.nextVideo()
             }
           })
+        }
+      })
+
+      player.on('ended', () => {
+        if (this.shouldShowPatchEarnedDialog) {
+          this.patchEarnedDialog = true
+          this.shouldShowPatchEarnedDialog = false
         }
       })
 

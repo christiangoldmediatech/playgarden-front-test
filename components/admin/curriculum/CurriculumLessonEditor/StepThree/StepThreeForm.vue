@@ -95,7 +95,7 @@
           </v-col>
           <v-col
             cols="6"
-            :lg="item.image ? '1' : '4'"
+            :lg="item.image ? '1' : '5'"
           >
             <!-- Matching image -->
             <template v-if="item.image">
@@ -120,16 +120,17 @@
               :name="`Image ${indexMT + 1}`"
               rules="required|size:10000"
             >
-              <file-uploader
+              <pg-file-uploader
                 :ref="`fileUploader${indexMT}`"
                 v-model="item.file"
+                prepend-icon="mdi-camera"
                 :error-messages="errors"
                 :label="`Image ${indexMT + 1}`"
                 mode="image"
                 path="lesson"
                 :placeholder="`Select image ${indexMT + 1}`"
-                prepend-icon="mdi-camera"
                 solo-labeled
+                api="dropbox"
                 jpg
                 png
                 svg
@@ -138,7 +139,7 @@
           </v-col>
           <v-col
             cols="12"
-            lg="4"
+            lg="3"
           >
             <!-- Matching word -->
             <validation-provider
@@ -285,8 +286,8 @@ export default {
     async onSubmit () {
       this.loading = true
 
-      const { id } = await this.processMatchingDraft()
       try {
+        const { id } = await this.processMatchingDraft()
         this.draft.worksheetId = id
 
         const data = await this.submitMethod(this.getSubmittableData())
@@ -302,11 +303,15 @@ export default {
       this.matchingDraft.images = await Promise.all(
         this.matchingDraft.images.map(async (item, index) => {
           if (item.file) {
-            item.image = await this.$refs[
-              `fileUploader${index}`
-            ][0].handleUpload()
+            if (this.$refs[`fileUploader${index}`][0].type === 'dropbox') {
+              const { filePath } = await this.$refs[`fileUploader${index}`][0].handleDropBoxFileUpload()
+              item.image = filePath
+            } else {
+              item.image = await this.$refs[
+                `fileUploader${index}`
+              ][0].handleUpload()
+            }
           }
-
           return item
         })
       )
@@ -318,25 +323,25 @@ export default {
       this.draft = this.editing
         ? this.$jsonCopy(this.resource)
         : {
-          name: null,
-          description: null,
-          type: 'ONLINE',
-          worksheetId: null
-        }
+            name: null,
+            description: null,
+            type: 'ONLINE',
+            worksheetId: null
+          }
 
       this.matchingDraft = this.editing
         ? await this.getMatchingDraft()
         : {
-          name: null,
-          images: [
-            { file: null, image: null, word: null },
-            { file: null, image: null, word: null },
-            { file: null, image: null, word: null },
-            { file: null, image: null, word: null }
-          ],
-          question: null,
-          type: null
-        }
+            name: null,
+            images: [
+              { file: null, image: null, word: null },
+              { file: null, image: null, word: null },
+              { file: null, image: null, word: null },
+              { file: null, image: null, word: null }
+            ],
+            question: null,
+            type: null
+          }
     },
 
     submitMethod (data) {
@@ -350,12 +355,16 @@ export default {
     },
 
     submitMatchingMethod (data) {
-      return this.editing
-        ? this.updateMatchingImage({
-          id: this.resource.worksheetId,
-          data
-        })
-        : this.createMatchingImage(data)
+      try {
+        return this.editing
+          ? this.updateMatchingImage({
+            id: this.resource.worksheetId,
+            data
+          })
+          : this.createMatchingImage(data)
+      } catch (e) {
+        this.$snotify.error('An error occurred while loading the images.')
+      }
     }
   }
 }

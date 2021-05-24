@@ -1,7 +1,6 @@
 // import path from 'path'
 // import fs from 'fs'
-import webpack from 'webpack'
-import { Integrations } from "@sentry/tracing";
+import { Integrations } from '@sentry/tracing'
 
 const baseRouteProd = '/school/'
 
@@ -24,7 +23,7 @@ export default {
   },
   serverMiddleware: [
     '~/middleware/serverAuthByCookie',
-    { path: '/healthcheck', handler: '~/middleware/healthCheck.js' },
+    { path: '/healthcheck', handler: '~/middleware/healthCheck.js' }
   ],
   /*
    ** Nuxt target
@@ -114,7 +113,7 @@ export default {
     '@/plugins/snotify',
     '@/plugins/validate',
     '@/plugins/vueCtkDateTimePicker',
-    { src: '@/plugins/echarts', mode: 'client'},
+    { src: '@/plugins/echarts', mode: 'client' },
     { src: '@/plugins/tiptapVuetify', mode: 'client' },
     { src: '@/plugins/firebase', mode: 'client' },
     {
@@ -135,10 +134,20 @@ export default {
   buildModules: [
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
+    '@nuxt/typescript-build',
     '@nuxtjs/gtm',
     '@nuxtjs/vuetify',
     '@nuxtjs/composition-api'
   ],
+  /**
+   * Vue Options
+   */
+  vue: {
+    config: {
+      productionTip: true,
+      devtools: process.env.TEST_ENV !== 'production'
+    }
+  },
   /**
    * Vuetify Options
    */
@@ -217,9 +226,7 @@ export default {
     publishRelease: true,
     sourceMapStyle: 'hidden-source-map',
     tracing: true,
-    integrations: [
-      new Integrations.BrowserTracing()
-    ]
+    integrations: [new Integrations.BrowserTracing()]
   },
   styleResources: {
     scss: [
@@ -238,13 +245,23 @@ export default {
    ** See https://nuxtjs.org/api/configuration-build/
    */
   build: {
-    transpile: ['vuetify/lib', 'vee-validate/dist/rules', 'tiptap-vuetify', 'vue-echarts', 'resize-detector'],
+    transpile: [
+      'vuetify/lib',
+      'vee-validate/dist/rules',
+      'tiptap-vuetify',
+      'vue-echarts',
+      'resize-detector',
+      '@gold-media-tech/pg-video-player'
+    ],
     build: {
       extend (config, ctx) {
         if (ctx.isDev) {
           config.devtool = ctx.isClient ? 'source-map' : 'inline-source-map'
         }
       }
+    },
+    babel: {
+      plugins: [['@babel/plugin-proposal-private-methods', { loose: true }]]
     }
   },
   env: {

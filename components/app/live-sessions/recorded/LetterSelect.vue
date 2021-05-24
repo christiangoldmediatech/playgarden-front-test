@@ -5,7 +5,7 @@
     item-value="id"
     hide-details
     solo
-    placeholder="Browse by letter"
+    :placeholder="(labelTitle) ? labelTitle : 'Browse by letter'"
     v-bind="{ ...$attrs }"
     @input="$emit('input', $event)"
   >
@@ -104,6 +104,12 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+
+    labelTitle: {
+      type: String,
+      required: false,
+      default: ''
     }
   },
 

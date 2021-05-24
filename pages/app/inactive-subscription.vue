@@ -53,7 +53,7 @@
               </v-btn>
             </v-col>
             <v-col class="text-center pb-5 mt-5" cols="12" md="12">
-              <v-divider></v-divider>
+              <v-divider />
             </v-col>
             <v-col class="text-center">
               <v-row :class="(!$vuetify.breakpoint.smAndDown) ? '' : 'no-gutters'">

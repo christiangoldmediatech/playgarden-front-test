@@ -2,7 +2,7 @@
   <div :id="containerId" class="inline-video-container">
     <div v-if="show" class="play-button-container">
       <img
-        src="@/assets/svg/play-image.svg"
+        src="@/assets/png/play-image.png"
         width="20%"
       >
       <p class="text-center pt-3">
@@ -24,7 +24,7 @@
     </div>
     <div v-if="showEnd" class="play-button-container background-video-end">
       <img
-        src="@/assets/svg/play-image.svg"
+        src="@/assets/png/play-image.png"
         width="20%"
       >
       <v-hover v-slot="{ hover }" :class="($vuetify.breakpoint.mobile) ? 'mt-2 mb-2' : 'mt-4 mb-4'">
@@ -128,7 +128,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .inline-video {
   &-container {
     position: relative;

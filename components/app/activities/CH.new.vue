@@ -124,6 +124,7 @@
 
 <script>
 export default {
+  // eslint-disable-next-line vue/match-component-file-name
   name: 'CategoryHeader',
 
   props: {

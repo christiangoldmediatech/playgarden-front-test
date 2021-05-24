@@ -85,33 +85,37 @@ export default {
         this.loading = true
         const id = parseInt(this.$route.params.activityTypeId)
 
-        const params = this.activityTypeData ? {} : {
-          limit: 0,
-          page: 0
-        }
+        const params = this.activityTypeData
+          ? {}
+          : {
+              limit: 0,
+              page: 0
+            }
 
         const data = await this.$axios.$get(`/activities/${id}/filter`, {
           params
         })
 
-        this.total = data.total
-
         if (data.featured) {
           this.featuredVideo = data.featured
         }
 
-        if (this.activityTypeData) {
-          // Fetching more activities
-          // Create a shuffled list of the newly loaded activities
-          let activities = shuffle(this.getValidActivities(data.activities.activities))
+        // create suffled list of activities
+        let activities = shuffle(this.getValidActivities(data.activities.activities))
+        // create shuffled list of videos
+        const videos = shuffle(this.getValidVideos(data.activities.videos || []))
+        // create total with activities total and videos length
+        this.total = data.total + videos.length
 
-          // Concatenate list to previous list
+        if (this.activityTypeData) {
+          // When fetching more activities, concatenate list to previous list
           activities = [...this.activityTypeData.activities, ...activities]
 
           // Generate a new activityTypeData object
           const activityTypeData = {
             ...data.activities,
-            activities
+            activities,
+            videos
           }
 
           // Generate a new list with the complete and correct order of activities
@@ -120,14 +124,11 @@ export default {
           // Assign object to component data to refresh DOM
           this.activityTypeData = activityTypeData
         } else {
-          // First time loading
-          // Create a shuffled list of initial activities
-          const activities = shuffle(this.getValidActivities(data.activities.activities))
-
-          // Create initial activityTypeData object
+          // On page load
           const activityTypeData = {
             ...data.activities,
-            activities
+            activities,
+            videos
           }
 
           // Use this initial object to update the playlist

@@ -8,15 +8,7 @@ module.exports = {
     chrome: true,
     cast: true
   },
-  parserOptions: {
-    parser: 'babel-eslint'
-  },
-  extends: [
-    '@nuxtjs',
-    'plugin:nuxt/recommended'
-  ],
-  plugins: [
-  ],
+  extends: ['plugin:nuxt/recommended', '@nuxtjs/eslint-config-typescript'],
   // add your custom rules here
   rules: {
     'block-spacing': ['error', 'always'],
@@ -36,7 +28,6 @@ module.exports = {
     'no-mixed-operators': 2,
     'no-trailing-spaces': 2,
     'no-unreachable': 2,
-    'no-unused-vars': 2,
     'no-var': 2,
     'padded-blocks': ['error', 'never'],
     'padding-line-between-statements': 2,
@@ -137,6 +128,9 @@ module.exports = {
     camelcase: 2,
     eqeqeq: ['error', 'always'],
     quotes: ['error', 'single'],
-    semi: ['error', 'never']
+    semi: ['error', 'never'],
+    'array-callback-return': 'off',
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': 'off'
   }
 }
