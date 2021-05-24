@@ -78,10 +78,7 @@
                     </v-col>
                     <v-col cols="6">
                       <span>
-                        <b>{{
-                          playdate.createdAt
-                            | formatDate({ format: "MMMM DD, YYYY" })
-                        }}</b></span>
+                        <b>{{ formatDate(playdate.createdAt, {format: 'MMMM DD, YYYY' }) }}</b></span>
                     </v-col>
                   </v-row>
 
@@ -267,7 +264,8 @@ export default {
   },
 
   methods: {
-    ...mapActions('playdate', ['getPlaydatesById'])
+    ...mapActions('playdate', ['getPlaydatesById']),
+    formatDate
   }
 }
 </script>
