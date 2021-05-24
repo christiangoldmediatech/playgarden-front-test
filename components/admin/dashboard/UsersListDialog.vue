@@ -156,11 +156,66 @@ export default {
       }
       return arrayParameter
     },
+
     buildQueryParamsUsersPerPlan () {
       this.params = {
         stripeStatus: (this.name === 'Trialing') ? this.name.toLowerCase() : 'active',
         planId: this.buildQueryParamsUsersPerStatusPlanIds()
       }
+    },
+
+    buildQueryParamsActiveUsersTimeLine () {
+      const dateParts = this.name.split(' ')
+      console.log('mont--', dateParts[1])
+      console.log('day--', dateParts[2])
+      this.params = {
+        stripeStatus: (this.name === 'Trialing') ? this.name.toLowerCase() : 'active',
+        planId: this.buildQueryParamsUsersPerStatusPlanIds()
+      }
+    },
+
+    getDateOnPoint (dateParts) {
+      let month = ''
+      const year = new Date().getFullYear()
+      switch (dateParts[1]) {
+        case 'Jan':
+          month = '01'
+          break
+        case 'Feb':
+          month = '02'
+          break
+        case 'Mar':
+          month = '03'
+          break
+        case 'Apr':
+          month = '04'
+          break
+        case 'May':
+          month = '05'
+          break
+        case 'Jun':
+          month = '06'
+          break
+        case 'Jul':
+          month = '07'
+          break
+        case 'Aug':
+          month = '08'
+          break
+        case 'Sep':
+          month = '09'
+          break
+        case 'Oct':
+          month = '10'
+          break
+        case 'Nov':
+          month = '11'
+          break
+        case 'Dec':
+          month = '12'
+          break
+      }
+      return `${year}-${month}-${dateParts[2]}`
     },
 
     open (evt, item = null) {
@@ -193,6 +248,9 @@ export default {
             break
           case 'Users per Plan':
             this.buildQueryParamsUsersPerPlan()
+            break
+          case 'Users':
+            this.buildQueryParamsActiveUsersTimeLine()
             break
         }
       }
