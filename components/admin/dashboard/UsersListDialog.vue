@@ -9,7 +9,7 @@
     <v-card>
       <v-toolbar class="flex-grow-0" color="primary darken-1" dark dense flat>
         <v-toolbar-title class="white--text">
-          {{ title }}
+          {{ `${seriesName} - ${name}` }}
         </v-toolbar-title>
 
         <v-spacer />
@@ -61,16 +61,10 @@ export default {
       dialog: false,
       loading: false,
       showPanel: false,
-      name: null,
-      seriesName: null,
+      name: '',
+      seriesName: '',
       params: null,
       item: null
-    }
-  },
-
-  computed: {
-    title () {
-      return 'List Users'
     }
   },
 
