@@ -24,7 +24,6 @@
       @ready="onReady"
       @playlist-index-change="updateIndex"
       @last-playlist-item="findNextActivity"
-      @video-skipped="skipLessonActivity"
     />
     <puzzle-piece-earned-dialog v-model="pieceEarnedDialog" v-bind="{ letter, puzzleImg }" @return="handleClose" />
   </video-player-dialog>
@@ -90,18 +89,20 @@ export default {
   methods: {
     onReady (player) {
       this.player = player
-      this.setupVideoAnalytics(player)
-      player.on('pause', () => {
-        if (this.lesson.previewMode) {
-          this.nextVideo()
-          return
-        }
 
-        this.saveActivityProgress()
-        this.player.showLoading()
-        this.nextVideo()
-        this.player.hideLoading()
-      })
+      const callbacks = {
+        onPause: async () => {
+          await this.saveActivityProgress()
+        },
+
+        onSkip: this.skipLessonActivity,
+
+        onEnded: () => {
+          this.nextVideo()
+        }
+      }
+      this.setupVideoAnalytics(player, callbacks)
+
       player.on('dispose', () => {
         this.player = null
       })
@@ -109,7 +110,6 @@ export default {
 
     async skipLessonActivity () {
       this.player.pause()
-      this.player.showLoading()
 
       if (!this.lesson.previewMode) {
         if (!this.currentVideo.ignoreVideoProgress) {
@@ -118,8 +118,6 @@ export default {
           this.savingActivityProgress = false
         }
       }
-
-      this.player.hideLoading()
 
       if (this.lastVideo) {
         this.player.seek(this.player.duration() - 1)
