@@ -166,11 +166,10 @@ export default {
 
     buildQueryParamsActiveUsersTimeLine () {
       const dateParts = this.name.split(' ')
-      console.log('mont--', dateParts[1])
-      console.log('day--', dateParts[2])
       this.params = {
-        stripeStatus: (this.name === 'Trialing') ? this.name.toLowerCase() : 'active',
-        planId: this.buildQueryParamsUsersPerStatusPlanIds()
+        assistances: 1,
+        dateStart: `${this.getDateOnPoint(dateParts)} 00:00:00`,
+        dateEnd: `${this.getDateOnPoint(dateParts)} 23:59:59`
       }
     },
 
@@ -219,12 +218,9 @@ export default {
     },
 
     open (evt, item = null) {
-      console.log(item)
       const { name, seriesName } = item
       this.name = name
       this.seriesName = seriesName
-      console.log('name --', name)
-      console.log('seriesName --', seriesName)
 
       if (name) {
         switch (seriesName) {
