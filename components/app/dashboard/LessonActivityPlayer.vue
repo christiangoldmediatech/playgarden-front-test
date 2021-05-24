@@ -91,15 +91,11 @@ export default {
       this.player = player
 
       const callbacks = {
-        onPause: async () => {
-          await this.saveActivityProgress()
-        },
+        onPause: this.pauseOrEnded,
 
         onSkip: this.skipLessonActivity,
 
-        onEnded: () => {
-          this.nextVideo()
-        }
+        onEnded: this.pauseOrEnded
       }
       this.setupVideoAnalytics(player, callbacks)
 
@@ -108,16 +104,26 @@ export default {
       })
     },
 
+    async pauseOrEnded () {
+      if (this.savingActivityProgress) {
+        return
+      }
+      await this.saveActivityProgress()
+      this.nextVideo()
+    },
+
     async skipLessonActivity () {
+      this.savingActivityProgress = true
       this.player.pause()
 
       if (!this.lesson.previewMode) {
         if (!this.currentVideo.ignoreVideoProgress) {
           await this.completeActivityProgress()
           this.$nuxt.$emit('dashboard-panel-update')
-          this.savingActivityProgress = false
         }
       }
+
+      this.savingActivityProgress = false
 
       if (this.lastVideo) {
         this.player.seek(this.player.duration() - 1)
