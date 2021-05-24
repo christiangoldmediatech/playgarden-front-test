@@ -138,9 +138,28 @@ export default {
       }
     },
 
+    buildQueryParamsUsersPerStatusPlanIds () {
+      let arrayParameter = []
+      switch (this.name) {
+        case 'Homeschool':
+          arrayParameter = [3]
+          break
+        case 'Premium Early Education Online':
+          arrayParameter = [2]
+          break
+        case 'Early Education Online':
+          arrayParameter = [1]
+          break
+        case 'Trialing':
+          arrayParameter = [1, 2, 3]
+          break
+      }
+      return arrayParameter
+    },
     buildQueryParamsUsersPerPlan () {
       this.params = {
-        stripeStatus: this.name.toLowerCase()
+        stripeStatus: (this.name === 'Trialing') ? this.name.toLowerCase() : 'active',
+        planId: this.buildQueryParamsUsersPerStatusPlanIds()
       }
     },
 
