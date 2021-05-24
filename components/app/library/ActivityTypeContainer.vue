@@ -1,7 +1,7 @@
 <template>
-  <div :id="`activity-type-${activityType.id}-container`">
+  <div :id="`activity-type-${activityType.id}-container`" :data-test-id="`lib-cat-container-${activityType.name}`">
     <v-container v-if="!noHeader" class="px-0" fluid>
-      <div class="pos-relative d-flex align-end px-3">
+      <div class="pos-relative d-flex align-end px-3" :data-test-id="`lib-cat-header-${activityType.name}`">
         <div
           class="act-type-color"
           :style="{ '--act-type-bkg-color': bkgColor }"
@@ -17,6 +17,7 @@
             color="primary"
             :small="$vuetify.breakpoint.xsOnly"
             :x-large="$vuetify.breakpoint.mdAndUp"
+            :data-test-id="`lib-cat-play-all-${activityType.name}`"
             @click="handlePlay(0)"
           >
             <v-icon left>
@@ -57,6 +58,7 @@
           class="text-none white--text"
           large
           v-bind="{ loading }"
+          :data-test-id="`lib-cat-view-more-${activityType.name}`"
           @click="handleViewMore"
         >
           <v-icon left>

@@ -4,6 +4,7 @@
       <img
         class="featured-video-play"
         src="@/assets/svg/play-button-icon.svg"
+        data-test-id="featured-video-play"
         @click="$emit('play')"
       >
 
