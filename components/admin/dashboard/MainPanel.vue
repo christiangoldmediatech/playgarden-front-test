@@ -189,7 +189,7 @@
             </v-col>
             <v-col cols="12" md="4">
               <v-row class="content-dashboard mx-3" no-glutters align="center">
-                <v-card width="100%" class="users-today-data mt-n6">
+                <v-card width="100%" class="users-today-data mt-n6" @click="usersFilters('today')">
                   <v-card-text>
                     <label class="font-weight-bold title-dashboard">Active Users Today</label>
                     <v-col
@@ -203,7 +203,7 @@
                   </v-card-text>
                 </v-card>
 
-                <v-card width="100%" class="users-today-data mb-n6">
+                <v-card width="100%" class="users-today-data mb-n6" @click="usersFilters('week')">
                   <v-card-text>
                     <label class="font-weight-bold title-dashboard">Active Users Per Week</label> <br>
                     <center>
@@ -343,8 +343,6 @@ export default {
     }
   },
 
-  watch: {},
-
   created () {
     this.getData()
     this.$nuxt.$on('send-data-chart', (dataGraph) => {
@@ -358,6 +356,10 @@ export default {
 
   methods: {
     ...mapActions('admin/dashboard', ['getDashboard']),
+
+    usersFilters (parameter) {
+      this.$refs.listUsers.open(null, { seriesName: parameter, name: 'active users' })
+    },
 
     async getData (clear = false) {
       this.loading = true

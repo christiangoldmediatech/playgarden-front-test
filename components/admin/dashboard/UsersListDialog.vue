@@ -217,6 +217,13 @@ export default {
       return `${year}-${month}-${dateParts[2]}`
     },
 
+    buildQueryParamsActiveUsersToday () {
+      this.params = {
+        assistances: 1,
+        dateStart: new Date().toISOString().slice(0, 10)
+      }
+    },
+
     open (evt, item = null) {
       const { name, seriesName } = item
       this.name = name
@@ -247,6 +254,12 @@ export default {
             break
           case 'Users':
             this.buildQueryParamsActiveUsersTimeLine()
+            break
+          case 'today':
+            this.buildQueryParamsActiveUsersToday()
+            break
+          case 'week':
+            this.buildQueryParamsActiveUsersToday()
             break
         }
       }
