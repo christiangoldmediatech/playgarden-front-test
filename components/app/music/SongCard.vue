@@ -1,5 +1,6 @@
 <template>
   <v-card
+    :id="`song-card-${songId}`"
     v-bind="$attrs"
     min-height="70"
     class="custom-shadow py-1"
@@ -80,6 +81,11 @@ export default {
   emits: ['add'],
 
   props: {
+    songId: {
+      type: Number,
+      required: true
+    },
+
     thumbnail: {
       type: String,
       required: false,
