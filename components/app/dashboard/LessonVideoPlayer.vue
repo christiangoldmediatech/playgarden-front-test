@@ -20,10 +20,10 @@
       :next-unlock-number="remaining"
       :no-seek="noSeek"
       :fullscreen-override="handleFullscreen"
+      no-auto-track-change
       @ready="onReady"
       @playlist-index-change="updateIndex"
       @playlist-complete="showCompletedDialog"
-      @video-skipped="skipLessonVideo"
     />
     <!-- Lesson Completed dialog -->
     <lesson-completed-dialog v-model="completed" @close="close" />
@@ -155,8 +155,17 @@ export default {
   methods: {
     onReady (player) {
       this.player = player
-      this.setupVideoAnalytics(player)
-      player.on('pause', this.saveVideoProgress)
+      const callbacks = {
+        onPause: this.saveVideoProgress,
+        onSkip: this.skipLessonVideo,
+        onEnded: async () => {
+          await this.saveVideoProgress
+          if (!this.lastVideo) {
+            this.player.nextVideo()
+          }
+        }
+      }
+      this.setupVideoAnalytics(player, callbacks)
       player.on('dispose', () => {
         this.player = null
       })
@@ -164,15 +173,12 @@ export default {
 
     async skipLessonVideo () {
       this.player.pause()
-      this.player.showLoading()
 
       if (!this.lesson.previewMode) {
         await this.completeVideoProgress()
         this.$nuxt.$emit('dashboard-panel-update')
         this.savingProgress = false
       }
-
-      this.player.hideLoading()
 
       if (this.lastVideo) {
         this.player.seek(this.player.duration() - 1)

@@ -336,7 +336,7 @@ export default {
       this.playerInstance.on('ended', () => {
         // this.playerInstance.currentTime(0)
         this.playerInstance.hasStarted(false)
-        this.playerInstance.trigger('ready')
+        // this.playerInstance.trigger('ready')
         if (this.noAutoTrackChange) {
           return
         }
