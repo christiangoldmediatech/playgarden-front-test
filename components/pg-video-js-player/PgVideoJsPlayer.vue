@@ -83,6 +83,7 @@ export default {
   data: () => {
     return {
       playerInstance: null,
+      closePaused: false,
       playlist: [],
       mediaObject: {},
       status: 'IDLE',
@@ -335,7 +336,7 @@ export default {
       this.playerInstance.on('ended', () => {
         // this.playerInstance.currentTime(0)
         this.playerInstance.hasStarted(false)
-        this.playerInstance.trigger('ready')
+        // this.playerInstance.trigger('ready')
         if (this.noAutoTrackChange) {
           return
         }
@@ -413,6 +414,23 @@ export default {
         } else {
           this.playerInstance.play()
         }
+      })
+
+      this.$set(this.playerInstance, 'closePause', () => {
+        this.closePaused = true
+        if (this.playerInstance.paused()) {
+          this.playerInstance.trigger('closed')
+        } else {
+          this.playerInstance.pause()
+        }
+      })
+
+      this.$set(this.playerInstance, 'getClosePaused', () => {
+        return this.closePaused
+      })
+
+      this.$set(this.playerInstance, 'resetClosePaused', () => {
+        this.closePaused = false
       })
 
       // Seek

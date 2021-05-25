@@ -64,7 +64,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scope>
+<style lang="scss" scoped>
 .ribbon {
   position: fixed;
   top: 0;

@@ -163,7 +163,7 @@ export default {
           .toString()
           .padStart(2, '0')}, ${date.getFullYear()}`
       } else if (entry.dateStarted) {
-        const date = new Date(entry.dateFinished)
+        const date = new Date(entry.dateStarted)
         const month = date.toLocaleString('default', { month: 'long' })
 
         return `Started on ${month} ${date

@@ -4,42 +4,117 @@ export default {
   methods: {
     ...mapActions('video', ['sendVideoAnalytics']),
 
-    setupVideoAnalytics (player) {
+    setupVideoAnalytics (player, callbacks = {
+      onPause: () => {},
+      onSkip: () => {},
+      onEnded: () => {}
+    }) {
       // Send started to analytics
-      player.on('play', () => {
+      const onPlay = () => {
         const { videoId } = player.getMediaObject()
         const time = player.currentTime()
-        const status = player.currentTime() > 1 ? 'RESUMED' : 'STARTED'
+        const status =
+          player.currentTime() > 1
+            ? 'RESUMED'
+            : 'STARTED'
 
-        this.sendVideoAnalytics({ videoId, time, status })
-      })
+        this.sendVideoAnalytics({
+          videoId,
+          time,
+          status
+        })
+      }
 
       // Send paused to analytics
-      player.on('pause', () => {
-        const { videoId } = player.getMediaObject()
-        const time = player.currentTime()
-        const status = 'PAUSED'
+      const onPause = async () => {
+        try {
+          player.showLoading()
+          const { videoId } = player.getMediaObject()
+          const time = player.currentTime()
+          const closePaused = player.getClosePaused()
+          const status = closePaused ? 'CLOSED' : 'PAUSED'
+          player.resetClosePaused()
 
-        this.sendVideoAnalytics({ videoId, time, status })
-      })
+          await this.sendVideoAnalytics({
+            videoId,
+            time,
+            status
+          })
+
+          await callbacks.onPause()
+        } catch (error) {
+          // eslint-disable-next-line no-console
+          console.error(error)
+        } finally {
+          player.hideLoading()
+        }
+      }
+
+      // Send skipped to analytics
+      const onSkipped = async () => {
+        try {
+          player.showLoading()
+          const { videoId } = player.getMediaObject()
+          const time = player.currentTime()
+          const status = 'SKIPPED'
+
+          await this.sendVideoAnalytics({
+            videoId,
+            time,
+            status
+          })
+
+          await callbacks.onSkip()
+        } catch (error) {
+          // eslint-disable-next-line no-console
+          console.error(error)
+        } finally {
+          player.hideLoading()
+        }
+      }
 
       // Send completed to analytics
-      player.on('skipped', () => {
-        const { videoId } = player.getMediaObject()
-        const time = player.currentTime()
-        const status = 'SKIPPED'
+      const onEnded = async () => {
+        try {
+          player.showLoading()
+          const { videoId } = player.getMediaObject()
+          const time = player.currentTime()
+          const status = 'COMPLETED'
 
-        this.sendVideoAnalytics({ videoId, time, status })
-      })
+          await this.sendVideoAnalytics({
+            videoId,
+            time,
+            status
+          })
+
+          await callbacks.onEnded()
+        } catch (error) {
+          // eslint-disable-next-line no-console
+          console.error(error)
+        } finally {
+          player.hideLoading()
+        }
+      }
 
       // Send completed to analytics
-      player.on('ended', () => {
+      const onClosed = () => {
         const { videoId } = player.getMediaObject()
         const time = player.currentTime()
-        const status = 'COMPLETED'
+        const status = 'CLOSED'
 
-        this.sendVideoAnalytics({ videoId, time, status })
-      })
+        this.sendVideoAnalytics({
+          videoId,
+          time,
+          status
+        })
+      }
+
+      // Assign events
+      player.on('play', onPlay)
+      player.on('pause', onPause)
+      player.on('skipped', onSkipped)
+      player.on('ended', onEnded)
+      player.on('closed', onClosed)
     }
   }
 }
