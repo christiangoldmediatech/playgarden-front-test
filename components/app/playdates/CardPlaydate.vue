@@ -155,6 +155,18 @@
             </v-icon>
             Back
           </v-btn>
+          <v-flex class="close-btn">
+            <v-btn
+              class="text-none text--white py-8"
+              color="white"
+              icon
+              @click="dialog = false"
+            >
+              <v-icon>
+                mdi-close
+              </v-icon>
+            </v-btn>
+          </v-flex>
         </v-row>
 
         <v-row class="vh-row" align="center" justify="center" no-gutters>
@@ -503,6 +515,13 @@ export default {
 
 .overlay {
   background-color: rgba(0, 0, 0, 0.68) !important;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2500;
 }
 
 .description-text {
