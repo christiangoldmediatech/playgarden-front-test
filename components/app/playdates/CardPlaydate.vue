@@ -197,7 +197,7 @@
                         </v-avatar>
                       </v-row>
 
-                      <h5 class="text-capitalize text-center mt-2">
+                      <h5 class="text-capitalize text-center mt-4">
                         {{ day }} <span v-html="start" />
                       </h5>
                     </v-col>
