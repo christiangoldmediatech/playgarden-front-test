@@ -19,6 +19,7 @@
         />
       </v-card>
       <music-song-list
+        id="music-song-list"
         :style="musicSongListStyle"
         :show-only-favorites="showOnlyFavorites"
         :is-player-showing="isPlayerShowing"
@@ -97,7 +98,7 @@ export default {
     const mainWrapperStyle = computed(() => {
       return {
         height: '100%',
-        'max-height': isMobile.value ? '100vh' : '1000px'
+        'max-height': isMobile.value ? '100vh' : '950px'
       }
     })
 
@@ -144,6 +145,7 @@ export default {
 
     watch(currentSong, async (val) => {
       await sendCurrentPlayingMusic(val.id, id.value)
+      scrollToSong(val.id)
     })
 
     onMounted(async () => {
@@ -222,6 +224,13 @@ export default {
 
     const handlePlayerMinimize = () => {
       isPlayerMaximizedOnMobile.value = false
+    }
+
+    const scrollToSong = (id) => {
+      ctx.root.$vuetify.goTo(`#song-card-${id}`, {
+        container: '#music-song-list',
+        offset: -45
+      })
     }
 
     return {
