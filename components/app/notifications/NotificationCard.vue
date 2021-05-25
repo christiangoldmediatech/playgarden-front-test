@@ -22,7 +22,7 @@
           </div>
 
           <div v-if="hasAction" class="font-weight-bold grey--text body-2 mt-4">
-            To learn more <span class="warning--text text-decoration-underline learn-more-text" @click="learnMore">
+            {{ notificationCard.actionText }} <span class="warning--text text-decoration-underline learn-more-text" @click="learnMore">
               click here
             </span>
           </div>
