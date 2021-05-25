@@ -143,6 +143,7 @@
                     clearable
                     :error-messages="errors"
                     :disabled="loading"
+                    :menu-props="feature"
                     deletable-chips
                     hide-no-data
                     :loading="loading"
@@ -164,7 +165,7 @@
                   type="submit"
                   x-large
                 >
-                  Create Playdate
+                  Invite a Friend to a Playdate
                 </v-btn>
               </v-col>
             </v-row>
@@ -201,9 +202,8 @@ export default {
     activePlaydates: [],
     childrenPlaydates: [],
     playdateSelected: null,
-
+    feature: { top: true, offsetY: true },
     loading: false,
-
     week: []
   }),
 
