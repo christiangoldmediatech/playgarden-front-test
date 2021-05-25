@@ -24,7 +24,6 @@
       @ready="onReady"
       @playlist-index-change="updateIndex"
       @last-playlist-item="findNextActivity"
-      @video-skipped="skipLessonActivity"
     />
     <puzzle-piece-earned-dialog v-model="pieceEarnedDialog" v-bind="{ letter, puzzleImg }" @return="handleClose" />
   </video-player-dialog>
@@ -90,36 +89,41 @@ export default {
   methods: {
     onReady (player) {
       this.player = player
-      this.setupVideoAnalytics(player)
-      player.on('pause', () => {
-        if (this.lesson.previewMode) {
-          this.nextVideo()
-          return
-        }
 
-        this.saveActivityProgress()
-        this.player.showLoading()
-        this.nextVideo()
-        this.player.hideLoading()
-      })
+      const callbacks = {
+        onPause: this.pauseOrEnded,
+
+        onSkip: this.skipLessonActivity,
+
+        onEnded: this.pauseOrEnded
+      }
+      this.setupVideoAnalytics(player, callbacks)
+
       player.on('dispose', () => {
         this.player = null
       })
     },
 
+    async pauseOrEnded () {
+      if (this.savingActivityProgress) {
+        return
+      }
+      await this.saveActivityProgress()
+      this.nextVideo()
+    },
+
     async skipLessonActivity () {
+      this.savingActivityProgress = true
       this.player.pause()
-      this.player.showLoading()
 
       if (!this.lesson.previewMode) {
         if (!this.currentVideo.ignoreVideoProgress) {
           await this.completeActivityProgress()
           this.$nuxt.$emit('dashboard-panel-update')
-          this.savingActivityProgress = false
         }
       }
 
-      this.player.hideLoading()
+      this.savingActivityProgress = false
 
       if (this.lastVideo) {
         this.player.seek(this.player.duration() - 1)
