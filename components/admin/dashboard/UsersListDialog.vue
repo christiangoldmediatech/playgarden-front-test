@@ -23,7 +23,7 @@
 
       <v-card-text>
         <v-container>
-          <users-data-table ref="UsersDataTable" :show-panel="showPanel" :params-send="params" />
+          <users-data-table ref="UsersDataTable" :show-panel="showPanel" :series-name="seriesName" :params-send="params" />
         </v-container>
       </v-card-text>
 
@@ -218,6 +218,15 @@ export default {
       }
     },
 
+    buildQueryParamsActiveUsersWeek () {
+      const lastWeek = new Date()
+      lastWeek.setDate(lastWeek.getDate() - 7)
+      this.params = {
+        assistances: 1,
+        dateStart: lastWeek.toISOString().slice(0, 10)
+      }
+    },
+
     open (evt, item = null) {
       const { name, seriesName } = item
       this.name = name
@@ -253,7 +262,7 @@ export default {
             this.buildQueryParamsActiveUsersToday()
             break
           case 'week':
-            this.buildQueryParamsActiveUsersToday()
+            this.buildQueryParamsActiveUsersWeek()
             break
         }
       }

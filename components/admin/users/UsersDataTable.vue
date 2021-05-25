@@ -96,6 +96,10 @@
     <v-row>
       <v-col cols="12">
         <v-card width="100%">
+          <v-card-title v-if="seriesName">
+            <label class="font-weight-bold">{{ seriesName }}</label>
+            <v-spacer />
+          </v-card-title>
           <v-card-text>
             <pg-admin-data-table
               :headers="headers"
@@ -177,6 +181,11 @@ export default {
       type: Boolean,
       required: false,
       default: true
+    },
+    seriesName: {
+      type: String,
+      required: false,
+      default: ''
     },
     paramsSend: {
       type: Object,
