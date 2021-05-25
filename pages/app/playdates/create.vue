@@ -55,7 +55,6 @@
                 >
                   <child-select
                     v-model="draft.childrenIds"
-                    :playdates="activePlaydates"
                     :error-messages="errors"
                     multiple
                   />
