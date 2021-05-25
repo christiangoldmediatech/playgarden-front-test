@@ -227,6 +227,16 @@ export default {
       }
     },
 
+    buildQueryParamsUsers (status, increment) {
+      this.params = {
+        subscriptionId: 'not null',
+        stripeStatus: status
+      }
+      if (increment) {
+        this.params.dateStart = new Date().toISOString().slice(0, 10)
+      }
+    },
+
     open (evt, item = null) {
       const { name, seriesName } = item
       this.name = name
@@ -263,6 +273,32 @@ export default {
             break
           case 'week':
             this.buildQueryParamsActiveUsersWeek()
+            break
+          case 'Total':
+            this.buildQueryParamsUsers(['trialing', 'active', 'past_due'], false)
+            break
+          case 'Total - increment':
+            this.buildQueryParamsUsers(['trialing', 'active', 'past_due'], true)
+            break
+          case 'onlyTrialing':
+            this.seriesName = 'Trialing'
+            this.buildQueryParamsUsers('trialing', false)
+            break
+          case 'onlyTrialingIncrement':
+            this.seriesName = 'Trialing - increment'
+            this.buildQueryParamsUsers('trialing', true)
+            break
+          case 'Active':
+            this.buildQueryParamsUsers('active', false)
+            break
+          case 'Active - increment':
+            this.buildQueryParamsUsers('active', true)
+            break
+          case 'Canceled':
+            this.buildQueryParamsUsers('canceled', false)
+            break
+          case 'Canceled - increment':
+            this.buildQueryParamsUsers('canceled', true)
             break
         }
       }

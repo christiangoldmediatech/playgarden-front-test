@@ -35,16 +35,16 @@
                       <label class="title-dashboard font-weight-bold">Total Users</label>
                       <v-row align="center">
                         <v-col cols="6">
-                          <p class="text-center">
+                          <p class="text-center cursor" @click="usersFilters('Total - increment')">
                             <v-icon x-large color="green lighten-1">
                               mdi-menu-up
                             </v-icon>
                             <span>+{{ totalTrialing.increment }} New this week</span> <br>
                           </p>
                         </v-col>
-                        <v-col cols="6">
+                        <v-col cols="6" @click="usersFilters('Total')">
                           <center>
-                            <label class="display-3 font-weight-bold total-users">{{ getTotalUsers }}</label><br>
+                            <label class="display-3 font-weight-bold total-users cursor">{{ getTotalUsers }}</label><br>
                             <span>Users usign our platform</span> <br>
                           </center>
                         </v-col>
@@ -58,15 +58,17 @@
                       <label class="title-dashboard font-weight-bold">Trialing</label>
                       <v-row class="mt-n4" align="center">
                         <v-col cols="12">
-                          <p class="text-center">
+                          <p class="text-center cursor" @click="usersFilters('onlyTrialingIncrement')">
                             <v-icon x-large color="green lighten-1">
                               mdi-menu-up
                             </v-icon>
                             <span>+{{ totalTrialing.increment }} New this week</span> <br>
                           </p>
-                          <center>
-                            <label class="display-3 font-weight-bold total-users">{{ totalTrialing.total }}</label>
-                          </center>
+                          <div @click="usersFilters('onlyTrialing')">
+                            <center>
+                              <label class="display-3 font-weight-bold total-users cursor">{{ totalTrialing.total }}</label>
+                            </center>
+                          </div>
                         </v-col>
                       </v-row>
                     </v-card-text>
@@ -78,15 +80,17 @@
                       <label class="title-dashboard font-weight-bold">Active</label>
                       <v-row class="mt-n4" align="center">
                         <v-col cols="12">
-                          <p class="text-center">
+                          <p class="text-center cursor" @click="usersFilters('Active - increment')">
                             <v-icon x-large color="green lighten-1">
                               mdi-menu-up
                             </v-icon>
                             <span>+{{ totalActive.increment }} New this week</span> <br>
                           </p>
-                          <center>
-                            <label class="display-3 font-weight-bold total-users">{{ totalActive.total }}</label>
-                          </center>
+                          <div @click="usersFilters('Active')">
+                            <center>
+                              <label class="display-3 font-weight-bold total-users cursor">{{ totalActive.total }}</label>
+                            </center>
+                          </div>
                         </v-col>
                       </v-row>
                     </v-card-text>
@@ -98,15 +102,17 @@
                       <label class="title-dashboard font-weight-bold">Canceled</label>
                       <v-row class="mt-n4" align="center">
                         <v-col cols="12">
-                          <p class="text-center">
+                          <p class="text-center cursor" @click="usersFilters('Canceled - increment')">
                             <v-icon x-large color="red lighten-1">
                               mdi-menu-up
                             </v-icon>
                             <span>{{ canceledUsers.increment }} This week</span>
                           </p>
-                          <center>
-                            <label class="display-3 font-weight-bold total-users">{{ canceledUsers.total }}</label>
-                          </center>
+                          <div @click="usersFilters('Canceled')">
+                            <center>
+                              <label class="display-3 font-weight-bold total-users cursor">{{ canceledUsers.total }}</label>
+                            </center>
+                          </div>
                         </v-col>
                       </v-row>
                     </v-card-text>
@@ -424,6 +430,10 @@ ul li::before {
 
 .header-dashboard {
   max-height: 500px !important;
+}
+
+.cursor {
+  cursor: pointer !important;
 }
 
 .text-info-dashboard {
