@@ -1,63 +1,74 @@
 <template>
-  <v-container
-    fluid
-    class="container ml-n1"
-    :class="{ 'ma-5': !$vuetify.breakpoint.xs }"
-  >
-    <div v-if="!$vuetify.breakpoint.xs" class="container__image">
-      <center class="mt-n12">
-        <v-img :src="getIcon" class="ml-4 mt-4" />
-        <div class="ml-7">
-          <v-progress-linear class="mb-3" :value="(getDataCurrent.value === undefined) ? 0 : getDataCurrent.value" height="15" rounded color="accent" />
-          <span class="text-progress">{{ `${(getDataCurrent.value === undefined) ? 0 : getDataCurrent.value}/100` }}</span>
-        </div>
-      </center>
+  <v-container fluid class="detail-progress-wrapper">
+    <!-- Image and Score: Desktop -->
+    <div v-if="$vuetify.breakpoint.mdAndUp" class="detail-progress-image mr-8 mb-2">
+      <img :src="getIcon">
+      <div class="text-center">
+        <v-progress-linear
+          class="pb-3"
+          height="15"
+          rounded
+          color="accent"
+          :value="(getDataCurrent.value === undefined) ? 0 : getDataCurrent.value"
+        />
+        <span class="progress-text">
+          {{ `${(getDataCurrent.value === undefined) ? 0 : getDataCurrent.value}/100` }}
+        </span>
+      </div>
     </div>
-    <v-row v-else no-gutters>
-      <v-list-item class="mt-n6">
-        <v-list-item-avatar class="mt-n8" size="66">
+    <!-- Image and Score: Mobile -->
+    <v-row v-else no-gutters class="py-6">
+      <v-list-item>
+        <v-list-item-avatar size="66">
           <v-img :src="getIcon" />
         </v-list-item-avatar>
-        <v-list-item-content class="text-center report-card-type">
-          <div class="ml-7">
-            <v-progress-linear class="mb-3" :value="(getDataCurrent.value === undefined) ? 0 : getDataCurrent.value" height="15" rounded color="accent" />
-            <span class="text-progress">{{ `${(getDataCurrent.value === undefined) ? 0 : getDataCurrent.value}/100` }}</span>
+        <v-list-item-content>
+          <div class="text-center">
+            <v-progress-linear
+              class="pb-3"
+              height="15"
+              rounded
+              color="accent"
+              :value="(getDataCurrent.value === undefined) ? 0 : getDataCurrent.value"
+            />
+            <span class="progress-text">
+              {{ `${(getDataCurrent.value === undefined) ? 0 : getDataCurrent.value}/100` }}
+            </span>
           </div>
         </v-list-item-content>
       </v-list-item>
     </v-row>
-    <div class="container">
-      <underlined-title class="text-h6 text-md-h3" :text="reportCardType" />
-      <row class="mb-6 mr-6 mt-8">
-        <p class="text-body-1 text-lg-h7 text-xl-h6 text-progress mt-4 pb-10" v-html="dataReportCardType.description" />
 
-        <p class="mt-n8">
-          <v-row no-gutters>
-            <v-col>
-              <span :class="getClassColor">{{ getScale }}</span>
-            </v-col>
-
-            <v-col cols="4" class="text-center text-sm-right pt-3">
-              <span class="font-weight-bold text-h6 text-md-h4">{{ `${(getDataCurrent.value === undefined) ? 0 : getDataCurrent.value}%` }}</span>
-            </v-col>
-          </v-row>
-        </p>
-
-        <p>
-          <underlined-title class="text-h6 text-md-h7 text-xl-h6" text="What is this?" />
-        </p>
-
-        <p class="text-body-1 text-lg-h7 text-progress pb-16 pt-8" v-html="getTextWhatIsThis" />
-      </row>
+    <!-- Details Text -->
+    <div class="text-left pb-4">
+      <underlined-title class="text-h4 text-md-h3" :text="reportCardType" />
     </div>
+    <p class="text-body-1 text-lg-h7 text-xl-h6 progress-text text-justify" v-html="dataReportCardType.description" />
+
+    <!-- Progress value -->
+    <v-row no-gutters class="py-4">
+      <v-col>
+        <span :class="getClassColor">{{ getScale }}</span>
+      </v-col>
+
+      <v-col cols="4" class="text-center text-md-right">
+        <span class="font-weight-bold text-h6 text-md-h4">
+          {{ `${(getDataCurrent.value === undefined) ? 0 : getDataCurrent.value}%` }}
+        </span>
+      </v-col>
+    </v-row>
+
+    <div class="pb-6">
+      <underlined-title class="text-h6" text="What is this?" />
+    </div>
+
+    <p class="text-body-1 text-lg-h7 progress-text text-justify" v-html="getTextWhatIsThis" />
   </v-container>
 </template>
 
 <script>
 export default {
   name: 'DetailProgress',
-
-  components: {},
 
   props: {
     reportCardType: {
@@ -122,25 +133,30 @@ export default {
       }
       return colorClass
     }
-  },
-
-  watch: {},
-
-  created () {},
-
-  methods: {}
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-.text-progress {
+.detail-progress {
+  &-wrapper {
+    width: 100%;
+  }
+  &-image {
+    width: 380px;
+    float: left;
+    img {
+      width: 380px;
+    }
+  }
+  &-text {
+    display: inline;
+  }
+}
+
+.progress-text {
   color: var(--v-black-base) !important;
-  text-align: justify !important;
-  font-family: Poppins !important;
-  font-style: normal !important;
-  font-weight: normal !important;
   line-height: 28px !important;
-  text-transform: none !important;
 }
 
 .progress-title {
@@ -157,18 +173,5 @@ export default {
 
 .progress-subtitle {
   color: var(--v-primary-base) !important;
-}
-
-.container {
-  padding: 20px 30px 40px !important;
-  width: 100%;
-  &__image {
-    width: 35% !important;
-    margin: 30px 30px 30px 0 !important;
-    float: left !important;
-  }
-  &__text {
-    display: inline !important;
-  }
 }
 </style>
