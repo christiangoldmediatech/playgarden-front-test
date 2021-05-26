@@ -227,9 +227,13 @@ export default {
     }
 
     const scrollToSong = (id) => {
-      ctx.root.$vuetify.goTo(`#song-card-${id}`, {
-        container: '#music-song-list',
-        offset: -45
+      if (isMobile.value) {
+        return
+      }
+
+      ctx.root.$vuetify.goTo(`#playlist-song-${id}`, {
+        container: '#playlist',
+        offset: -63
       })
     }
 
