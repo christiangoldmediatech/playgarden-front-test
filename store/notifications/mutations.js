@@ -14,7 +14,8 @@ export default {
       title: '',
       description: '',
       image: '',
-      action: null
+      action: null,
+      actionText: 'To learn more' // ...click here
     }
     payload = { ...defaultPayload, ...payload }
 

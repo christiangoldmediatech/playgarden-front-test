@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div id="shipping-address-form">
     <!-- Editable user shipping address -->
     <validation-observer v-if="isEditing" v-slot="{ invalid, passes, reset }">
-      <v-form id="shipping-address-form" @submit.prevent="passes(onSubmit)">
+      <v-form @submit.prevent="passes(onSubmit)">
         <v-row no-gutters>
           <v-col cols="12">
             <!-- Street 1 -->
@@ -283,18 +283,15 @@ export default {
         const draft = await this.getShippingAddress()
 
         if (!draft && !this.editByDefault) {
-          this.$snotify.warning('Please check your shipping address', 'Attention', {
-            buttons: [
-              {
-                text: 'Edit',
-                action: () => {
-                  this.isEditing = true
-                  this.$scrollTo('#shipping-address-form', { offset: -65 })
-                }
-              }
-            ],
-            closeOnClick: true,
-            timeout: 6000
+          this.$store.commit('notifications/SET_NOTIFICATION_CARD', {
+            title: 'WE WANT TO SEND YOU A WELCOME KIT!',
+            description: 'We require a shipping address in order to send the Welcome Kit with our first Workbook.',
+            action: () => {
+              this.isEditing = true
+              this.$scrollTo('#shipping-address-form', { offset: -100 })
+            },
+            image: require('@/assets/png/megaphone.png'),
+            actionText: 'To edit this information,' // ...click here
           })
 
           return
