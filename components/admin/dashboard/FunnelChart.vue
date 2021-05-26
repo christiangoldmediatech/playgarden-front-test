@@ -1,5 +1,5 @@
 <template>
-  <chart ref="funnel" :style="getChartDimensions" :graph="getFormatGraph" :autoresize="resize" />
+  <chart ref="funnelChartRef" :style="getChartDimensions" :graph="getFormatGraph" :autoresize="resize" />
 </template>
 
 <script>

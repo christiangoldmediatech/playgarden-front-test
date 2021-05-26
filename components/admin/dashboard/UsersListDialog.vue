@@ -23,7 +23,7 @@
 
       <v-card-text>
         <v-container>
-          <users-data-table ref="UsersDataTable" :show-panel="showPanel" :series-name="seriesName" :params-send="params" />
+          <users-data-table ref="UsersDataTableRef" :show-panel="showPanel" :series-name="seriesName" :params-send="params" />
         </v-container>
       </v-card-text>
 

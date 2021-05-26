@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <users-list-dialog ref="listUsers" />
+    <users-list-dialog ref="usersListRef" />
     <v-row>
       <v-col cols="12" class="content-dashboard">
         <v-card width="100%">
@@ -42,11 +42,9 @@
                             <span>+{{ totalTrialing.increment }} New this week</span> <br>
                           </p>
                         </v-col>
-                        <v-col cols="6" @click="usersFilters('Total')">
-                          <center>
-                            <label class="display-3 font-weight-bold total-users cursor">{{ getTotalUsers }}</label><br>
-                            <span>Users usign our platform</span> <br>
-                          </center>
+                        <v-col cols="6" class="text-center" @click="usersFilters('Total')">
+                          <label class="display-3 font-weight-bold total-users cursor">{{ getTotalUsers }}</label><br>
+                          <span>Users usign our platform</span> <br>
                         </v-col>
                       </v-row>
                     </v-card-text>
@@ -64,10 +62,8 @@
                             </v-icon>
                             <span>+{{ totalTrialing.increment }} New this week</span> <br>
                           </p>
-                          <div @click="usersFilters('onlyTrialing')">
-                            <center>
-                              <label class="display-3 font-weight-bold total-users cursor">{{ totalTrialing.total }}</label>
-                            </center>
+                          <div class="text-center" @click="usersFilters('onlyTrialing')">
+                            <label class="display-3 font-weight-bold total-users cursor">{{ totalTrialing.total }}</label>
                           </div>
                         </v-col>
                       </v-row>
@@ -87,9 +83,9 @@
                             <span>+{{ totalActive.increment }} New this week</span> <br>
                           </p>
                           <div @click="usersFilters('Active')">
-                            <center>
+                            <div class="text-center">
                               <label class="display-3 font-weight-bold total-users cursor">{{ totalActive.total }}</label>
-                            </center>
+                            </div>
                           </div>
                         </v-col>
                       </v-row>
@@ -109,9 +105,9 @@
                             <span>{{ canceledUsers.increment }} This week</span>
                           </p>
                           <div @click="usersFilters('Canceled')">
-                            <center>
+                            <div class="text-center">
                               <label class="display-3 font-weight-bold total-users cursor">{{ canceledUsers.total }}</label>
-                            </center>
+                            </div>
                           </div>
                         </v-col>
                       </v-row>
@@ -123,16 +119,14 @@
                     <v-card-text>
                       <label class="title-dashboard font-weight-bold">Churn Rate</label>
                       <v-row class="mt-n4" align="center">
-                        <v-col cols="12">
+                        <v-col cols="12" class="text-center">
                           <p class="text-center">
                             <v-icon x-large color="red lighten-1">
                               mdi-menu-up
                             </v-icon>
                             <span>0 More than last week</span>
                           </p>
-                          <center>
-                            <label class="display-3 font-weight-bold total-users">0 %</label>
-                          </center>
+                          <label class="display-3 font-weight-bold total-users">0 %</label>
                         </v-col>
                       </v-row>
                     </v-card-text>
@@ -200,11 +194,10 @@
                     <label class="font-weight-bold title-dashboard">Active Users Today</label>
                     <v-col
                       cols="12"
+                      class="text-center"
                     >
-                      <center>
-                        <label class="font-weight-bold display-3 total-users">{{ activeUsers.today }}</label> <br>
-                        <span class="text-dashboard"> Users </span>
-                      </center>
+                      <label class="font-weight-bold display-3 total-users">{{ activeUsers.today }}</label> <br>
+                      <span class="text-dashboard"> Users </span>
                     </v-col>
                   </v-card-text>
                 </v-card>
@@ -212,17 +205,15 @@
                 <v-card width="100%" class="users-today-data mb-n6" @click="usersFilters('week')">
                   <v-card-text>
                     <label class="font-weight-bold title-dashboard">Active Users Per Week</label> <br>
-                    <center>
+                    <div class="text-center">
                       <span>{{ getFormatDate }}</span>
-                    </center>
+                    </div>
                     <v-col
                       cols="12"
-                      class="mt-n4"
+                      class="mt-n4 text-center"
                     >
-                      <center>
-                        <label class="font-weight-bold display-3 total-users">{{ activeUsers.last7Days }}</label> <br>
-                        <span class="text-dashboard"> Users </span>
-                      </center>
+                      <label class="font-weight-bold display-3 total-users">{{ activeUsers.last7Days }}</label> <br>
+                      <span class="text-dashboard"> Users </span>
                     </v-col>
                   </v-card-text>
                 </v-card>
@@ -238,10 +229,10 @@
                 <v-row justify="end" class="mx-3">
                   <v-col cols="5">
                     <v-card>
-                      <center class="py-4">
+                      <div class="py-4 text-center">
                         <label class="font-weight-bold text-h5 title-dashboard">Total Students:</label>
                         <span class="font-weight-bold total-users text-h5">{{ childrenTotal }}</span>
-                      </center>
+                      </div>
                     </v-card>
                   </v-col>
                 </v-row>
@@ -352,7 +343,7 @@ export default {
   created () {
     this.getData()
     this.$nuxt.$on('send-data-chart', (dataGraph) => {
-      this.$refs.listUsers.open(null, dataGraph)
+      this.$refs.usersListRef.open(null, dataGraph)
     })
   },
 
@@ -364,7 +355,7 @@ export default {
     ...mapActions('admin/dashboard', ['getDashboard']),
 
     usersFilters (parameter) {
-      this.$refs.listUsers.open(null, { seriesName: parameter, name: 'active users' })
+      this.$refs.usersListRef.open(null, { seriesName: parameter, name: 'active users' })
     },
 
     async getData (clear = false) {
