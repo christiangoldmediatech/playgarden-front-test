@@ -6,6 +6,7 @@
         transform: !isMobile && hover ? 'scale(1.125)' : undefined
       }"
       width="100%"
+      data-test-id="activity-card"
     >
       <card-ribbon v-if="viewed" text="Viewed" />
       <v-img
@@ -45,9 +46,11 @@
 
           <v-list-item-action>
             <v-btn
+              :class="isFavorite ? 'is-favorite-video' : 'is-not-favorite-video'"
               icon
               large
               :loading="favoritesLoading"
+              data-test-id="activity-card-favorite-button"
               @click.stop="handleFavorites"
             >
               <v-icon color="#F5737F">
