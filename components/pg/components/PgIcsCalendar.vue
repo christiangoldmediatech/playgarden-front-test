@@ -123,7 +123,9 @@ export default {
     ...mapActions('live-sessions', ['saveAttendance']),
 
     doSaveAttendance () {
-      this.saveAttendance(this.entry.id)
+      if (this.entry.id) {
+        this.saveAttendance(this.entry.id)
+      }
     },
 
     downloadIcs () {
