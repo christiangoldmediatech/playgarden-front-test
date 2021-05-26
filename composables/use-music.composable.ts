@@ -120,6 +120,11 @@ export const useMusic = () => {
     await axios.$post(`/music-library/${musicId}/children/${childId}`)
   }
 
+  /**
+   * Methods
+   */
+  const isCurrentSong = (songId: number) => songId === currentSong.value?.id
+
   return {
     allSongsWithFavorites,
     currentSong,
@@ -131,6 +136,7 @@ export const useMusic = () => {
     getMusicLibrariesByCurriculumType,
     removeFavoriteMusic,
     setFavoriteMusicForChild,
-    sendCurrentPlayingMusic
+    sendCurrentPlayingMusic,
+    isCurrentSong
   }
 }

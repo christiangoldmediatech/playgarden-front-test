@@ -22,7 +22,7 @@
         <v-row no-gutters class="fill-height" justify="start" align="center">
           <v-col cols="12" md="auto">
             <span class="ml-0 ml-md-6 song-description">{{ description }}</span>
-            <div v-if="isSongPlaying(songId)" class="ml-0 ml-md-6 song-playing-tag">
+            <div v-if="isCurrentSong(songId)" class="ml-0 ml-md-6 song-playing-tag">
               PLAYING
             </div>
           </v-col>
@@ -116,13 +116,9 @@ export default defineComponent({
   },
 
   setup () {
-    const { currentSong } = useMusic()
+    const { isCurrentSong } = useMusic()
 
-    const isSongPlaying = (songId) => {
-      return songId === currentSong.value.id
-    }
-
-    return { isSongPlaying }
+    return { isCurrentSong }
   },
 
   computed: {

@@ -38,7 +38,7 @@
             >
               mdi-heart
             </v-icon>
-            <span v-if="isSongPlaying(song.id)" class="song-playing-tag">
+            <span v-if="isCurrentSong(song.id)" class="song-playing-tag">
               PLAYING
             </span>
           </div>
@@ -95,13 +95,9 @@ export default defineComponent({
   },
 
   setup () {
-    const { currentSong } = useMusic()
+    const { isCurrentSong } = useMusic()
 
-    const isSongPlaying = (songId) => {
-      return songId === currentSong.value.id
-    }
-
-    return { isSongPlaying }
+    return { isCurrentSong }
   },
 
   data () {
