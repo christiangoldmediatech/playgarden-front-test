@@ -1,7 +1,7 @@
 <template>
-  <v-container fluid class="detail-progress-wrapper">
+  <v-container fluid class="detail-progress-wrapper px-0 px-md-6">
     <!-- Image and Score: Desktop -->
-    <div v-if="$vuetify.breakpoint.mdAndUp" class="detail-progress-image mr-8 mb-2">
+    <div v-if="$vuetify.breakpoint.mdAndUp" class="detail-progress-image mr-10 mb-4">
       <img :src="getIcon">
       <div class="text-center">
         <v-progress-linear
@@ -23,24 +23,27 @@
           <v-img :src="getIcon" />
         </v-list-item-avatar>
         <v-list-item-content>
-          <div class="text-center">
-            <v-progress-linear
-              class="pb-3"
-              height="15"
-              rounded
-              color="accent"
-              :value="(getDataCurrent.value === undefined) ? 0 : getDataCurrent.value"
-            />
-            <span class="progress-text">
-              {{ `${(getDataCurrent.value === undefined) ? 0 : getDataCurrent.value}/100` }}
-            </span>
-          </div>
+          <underlined-title class="text-h4 text-md-h3" :text="reportCardType" />
         </v-list-item-content>
+      </v-list-item>
+      <v-list-item>
+        <div class="text-center progress-value-mobile">
+          <v-progress-linear
+            class="pb-3"
+            height="15"
+            rounded
+            color="accent"
+            :value="(getDataCurrent.value === undefined) ? 0 : getDataCurrent.value"
+          />
+          <span class="progress-text">
+            {{ `${(getDataCurrent.value === undefined) ? 0 : getDataCurrent.value}/100` }}
+          </span>
+        </div>
       </v-list-item>
     </v-row>
 
     <!-- Details Text -->
-    <div class="text-left pb-4">
+    <div class="text-left pb-4 hidden-sm-and-down">
       <underlined-title class="text-h4 text-md-h3" :text="reportCardType" />
     </div>
     <p class="text-body-1 text-lg-h7 text-xl-h6 progress-text text-justify" v-html="dataReportCardType.description" />
@@ -157,6 +160,10 @@ export default {
 .progress-text {
   color: var(--v-black-base) !important;
   line-height: 28px !important;
+}
+
+.progress-value-mobile {
+  width: 100%;
 }
 
 .progress-title {
