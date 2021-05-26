@@ -77,28 +77,30 @@ export default {
     },
 
     buildQueryParamsConversionTunne () {
+      this.params = {}
       let arrayParameter = []
       let stripeStatus = ''
       switch (this.name) {
         case 'Register':
           arrayParameter = [0, 1, 10, 11, 12, 13]
+          this.params.filterType = 'funnel-register'
           break
         case 'Payments':
           arrayParameter = [2, 14]
+          this.params.filterType = 'funnel-payment'
           break
         case 'Trialing':
           arrayParameter = [3, 5, 6]
           stripeStatus = 'trialing'
+          this.params.filterType = 'funnel-trialing'
           break
         case 'Active':
           arrayParameter = [3, 5, 6]
           stripeStatus = 'active'
+          this.params.filterType = 'funnel-active'
           break
       }
-      this.params = {
-        registerStep: arrayParameter
-      }
-
+      this.params.registerStep = arrayParameter
       if (this.name === 'Trialing' || this.name === 'Active') {
         this.params.subscriptionId = 'not null'
         this.params.stripeStatus = stripeStatus
