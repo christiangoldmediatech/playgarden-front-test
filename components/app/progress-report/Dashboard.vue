@@ -91,7 +91,7 @@
         <!-- Text for General report type -->
         <v-col v-if="reportCardTypeSelected === 'General'" cols="12">
           <p
-            class="text-body-1 text-lg-h7 text-xl-h6 text-justify pt-8 pr-3 mb-0 general-type-report-text"
+            class="text-body-1 text-lg-h7 text-xl-h6 text-justify pt-8 pr-3 mb-6 general-type-report-text"
           >
             Playgarden Prep Online Lessons have been developed to support one or
             more of the core areas of development. After watching a video, doing
@@ -101,16 +101,16 @@
           </p>
         </v-col>
       </v-row>
-      <!-- Report Body -->
-      <v-card class="px-2 my-4" width="100%">
-        <!-- Report Body: General -->
-        <v-row v-if="general === true" no-gutters>
-          <v-col cols="12" md="7" lg="7">
+      <!-- Report Body: General -->
+      <v-row v-if="general === true" no-gutters>
+        <!-- Chart -->
+        <v-col cols="12" md="7" lg="7" class="py-4 py-md-0 pr-0 pr-md-2">
+          <v-card width="100%" class="pa-2">
             <!-- Desktop -->
             <template v-if="$vuetify.breakpoint.mdAndUp">
               <v-row no-gutters>
                 <v-col cols="12">
-                  <div class="pt-4 mb-4">
+                  <div class="pt-4 mb-4 pl-0">
                     <underlined-title
                       class="text-h6 text-md-h5"
                       text="General Progress Report"
@@ -149,8 +149,11 @@
                 </v-col>
               </v-row>
             </template>
-          </v-col>
-          <v-col cols="12" md="5" lg="5">
+          </v-card>
+        </v-col>
+        <!-- Letters -->
+        <v-col cols="12" md="5" lg="5" class="py-4 py-md-0 pl-0 pl-md-2">
+          <v-card width="100%" class="pa-2">
             <div v-if="loadLetterStatsData">
               <v-skeleton-loader type="card-heading" />
               <v-skeleton-loader
@@ -187,10 +190,12 @@
               </v-row>
               <letter-stats :letter-stats="letterStatsData" />
             </template>
-          </v-col>
-        </v-row>
-        <!-- Report Body: Other types -->
-        <v-row v-else no-gutters>
+          </v-card>
+        </v-col>
+      </v-row>
+      <!-- Report Body: Other types -->
+      <v-card v-else class="px-2 my-4" width="100%">
+        <v-row no-gutters>
           <v-col cols="12">
             <detail-progress
               :report-card-type="reportCardTypeSelected"

@@ -19,7 +19,7 @@
     <!-- Image and Score: Mobile -->
     <v-row v-else no-gutters class="py-6">
       <v-list-item>
-        <v-list-item-avatar size="66">
+        <v-list-item-avatar size="70" class="mr-2">
           <v-img :src="getIcon" />
         </v-list-item-avatar>
         <v-list-item-content>
