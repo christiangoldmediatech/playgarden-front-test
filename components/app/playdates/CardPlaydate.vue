@@ -155,7 +155,7 @@
             </v-icon>
             Back
           </v-btn>
-          <v-flex class="close-btn">
+          <div class="close-btn">
             <v-btn
               class="text-none text--white py-8"
               color="white"
@@ -166,7 +166,7 @@
                 mdi-close
               </v-icon>
             </v-btn>
-          </v-flex>
+          </div>
         </v-row>
 
         <v-row class="vh-row" align="center" justify="center" no-gutters>
