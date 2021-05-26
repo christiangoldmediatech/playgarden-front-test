@@ -78,6 +78,7 @@ export default {
 
     buildQueryParamsConversionTunne () {
       let arrayParameter = []
+      let stripeStatus = ''
       switch (this.name) {
         case 'Register':
           arrayParameter = [0, 1, 10, 11, 12, 13]
@@ -87,10 +88,20 @@ export default {
           break
         case 'Trialing':
           arrayParameter = [3, 5, 6]
+          stripeStatus = 'trialing'
+          break
+        case 'Active':
+          arrayParameter = [3, 5, 6]
+          stripeStatus = 'active'
           break
       }
       this.params = {
         registerStep: arrayParameter
+      }
+
+      if (this.name === 'Trialing' || this.name === 'Active') {
+        this.params.subscriptionId = 'not null'
+        this.params.stripeStatus = stripeStatus
       }
     },
 
