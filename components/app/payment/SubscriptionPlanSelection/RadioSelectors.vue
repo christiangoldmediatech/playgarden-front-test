@@ -35,6 +35,8 @@
     <small v-if="indexPlan === 0" class="ml-8">Billed Annually (Save ~$170)</small>
     <small v-if="indexPlan === 1" class="ml-8">Billed Annually (Save ~$300)</small>
     <small v-if="indexPlan === 2" class="ml-8">Billed Annually (Save ~$1,200)</small>
+    <br>
+    <small class="ml-8">${{ plan.priceAnnual.toFixed(2).toLocaleString('en-US') }} / Year</small>
   </div>
 </template>
 

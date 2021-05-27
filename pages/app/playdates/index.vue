@@ -34,7 +34,7 @@
                 :small="$vuetify.breakpoint.smAndDown"
               >
                 <template v-if="$vuetify.breakpoint.mdAndUp">
-                  Create Playdate
+                  Invite a Friend to a Playdate
                 </template>
 
                 <v-icon v-else>

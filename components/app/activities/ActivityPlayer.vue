@@ -3,6 +3,7 @@
     :id="dialogContainerId"
     ref="videoPlayerDialog"
     v-model="dialog"
+    data-test-id="video-player-dialog"
     @close="handleClose"
   >
     <pg-video-js-player

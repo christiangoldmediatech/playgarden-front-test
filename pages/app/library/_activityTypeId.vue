@@ -24,6 +24,7 @@
       :icon="activityTypeData.icon"
       :name="activityTypeData.name"
       :color="activityTypeData.color"
+      :data-test-id="`activity-type-header-${activityTypeData.name}`"
       @play-all="handlePlayAll"
     />
 

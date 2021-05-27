@@ -4,6 +4,7 @@
       <img
         class="featured-video-play"
         src="@/assets/svg/play-button-icon.svg"
+        data-test-id="featured-video-play"
         @click="$emit('play')"
       >
 
@@ -165,6 +166,7 @@ export default {
     line-height: 1.15;
     text-align: center;
     color: white;
+    margin-bottom: 16px;
     @media screen and (min-height: 375px) {
       line-height: 1.5;
     }

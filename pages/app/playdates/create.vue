@@ -33,7 +33,7 @@
       </v-col>
 
       <v-col cols="12" md="6" class="pl-md-15">
-        <underlined-title text="Create Playdate!" />
+        <underlined-title text="Invite a Friend to a Playdate!" />
 
         <p>
           Families can also choose to create <span class="font-weight-bold">Private Playdates</span> with their friends and family, which allows private time to connect and share.
@@ -55,7 +55,6 @@
                 >
                   <child-select
                     v-model="draft.childrenIds"
-                    :playdates="activePlaydates"
                     :error-messages="errors"
                     multiple
                   />
@@ -143,6 +142,7 @@
                     clearable
                     :error-messages="errors"
                     :disabled="loading"
+                    :menu-props="feature"
                     deletable-chips
                     hide-no-data
                     :loading="loading"
@@ -164,7 +164,7 @@
                   type="submit"
                   x-large
                 >
-                  Create Playdate
+                  Invite a Friend to a Playdate
                 </v-btn>
               </v-col>
             </v-row>
@@ -201,9 +201,8 @@ export default {
     activePlaydates: [],
     childrenPlaydates: [],
     playdateSelected: null,
-
+    feature: { top: true, offsetY: true },
     loading: false,
-
     week: []
   }),
 

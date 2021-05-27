@@ -18,7 +18,7 @@
         :key="song.id"
         cols="auto"
       >
-        <v-card class="song-card ma-6 pb-4">
+        <v-card :id="`song-card-${song.id}`" class="song-card ma-6 pb-4">
           <div class="song-wrapper">
             <v-icon
               size="120"
@@ -38,6 +38,9 @@
             >
               mdi-heart
             </v-icon>
+            <span v-if="isCurrentSong(song.id)" class="song-playing-tag">
+              PLAYING
+            </span>
           </div>
           <p class="song-description mb-0 pa-2 d-flex align-center">
             {{ song.description }}
@@ -66,11 +69,13 @@
 </template>
 
 <script>
+import { defineComponent } from '@nuxtjs/composition-api'
+import { useMusic } from '@/composables'
 import CarouselLetter from '@/components/app/music/CarouselLetter.vue'
 
 import { jsonCopy } from '@/utils/objectTools.js'
 
-export default {
+export default defineComponent({
   name: 'LetterSongs',
 
   components: {
@@ -87,6 +92,12 @@ export default {
       type: Array,
       required: true
     }
+  },
+
+  setup () {
+    const { isCurrentSong } = useMusic()
+
+    return { isCurrentSong }
   },
 
   data () {
@@ -119,7 +130,7 @@ export default {
       }
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
@@ -192,6 +203,22 @@ export default {
   &-name {
     font-size: 16px;
     color: var(--v-black-base);
+  }
+  &-playing-tag {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background: white;
+    color: black;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    padding: 5px;
+    width: 75px;
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
   }
 }
 .v-tooltip__content {
