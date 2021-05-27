@@ -8,7 +8,7 @@
           <span class="ml-4 text-h4 text-md-h3">CURRICULUM</span>
         </div>
         <div class="my-6 text-md-h6 text-body-1">
-          Tap on a letter and scroll through to review all lessons & course work
+          Scroll through to review your lessons and worksheets!
         </div>
       </div>
 
