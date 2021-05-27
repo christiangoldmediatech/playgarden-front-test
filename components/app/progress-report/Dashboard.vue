@@ -103,7 +103,7 @@
           <!-- desktop -->
           <v-col cols="12" md="7" lg="7">
             <v-card v-if="!$vuetify.breakpoint.xs" class="content-report">
-              <v-row class="ml-2 mr-2">
+              <v-row class="mx-2">
                 <v-col cols="12">
                   <div class="pt-4 mb-4">
                     <underlined-title
@@ -152,7 +152,7 @@
           <!-- end mobile -->
           </v-col>
           <v-col cols="12" md="5" lg="5">
-            <v-card :class="{ 'mx-3': $vuetify.breakpoint.xs }">
+            <v-card class="content-report mt-n3" :class="{ 'mx-3': $vuetify.breakpoint.xs }">
               <div v-if="loadLetterStatsData">
                 <v-skeleton-loader type="card-heading" />
                 <v-skeleton-loader
@@ -244,7 +244,8 @@ export default {
   props: {
     value: {
       type: [Array, Number, Object, String],
-      required: true
+      required: false,
+      default: () => []
     }
   },
 
