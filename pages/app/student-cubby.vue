@@ -15,7 +15,7 @@
             <v-col cols="12" md="2" class="px-10">
               <child-select v-model="selectedChildId" />
             </v-col>
-            <v-col cols="12" md="auto">
+            <v-col cols="12" md="auto" class="px-10 px-md-0">
               <student-cubby-items
                 :items="studentCubbyItems"
                 :selected-child-id="selectedChildId"
