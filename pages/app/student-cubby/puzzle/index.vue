@@ -1,6 +1,6 @@
 <template>
-  <v-card flat class="pt-0 pt-md-3">
-    <v-card-text class="text-center pt-0 pt-md-3">
+  <v-card flat>
+    <v-card-text class="text-center">
       <!-- Section Title and Description -->
       <div class="d-flex align-center justify-center">
         <img height="80px" src="@/assets/png/student-cubby/puzzle-piece.png">

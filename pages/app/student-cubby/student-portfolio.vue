@@ -1,6 +1,6 @@
 <template>
-  <v-card flat class="pt-0 pt-md-3">
-    <v-card-text class="pt-0 pt-md-4">
+  <v-card flat>
+    <v-card-text>
       <div class="text-center">
         <!-- Section Title and Description -->
         <div class="d-flex align-center justify-center">
