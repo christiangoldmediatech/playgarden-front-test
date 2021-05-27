@@ -65,6 +65,7 @@
           class="text-none white--text"
           large
           v-bind="{ loading }"
+          data-test-id="favorite-container-view-more-button"
           @click="handleViewMore"
         >
           <v-icon left>

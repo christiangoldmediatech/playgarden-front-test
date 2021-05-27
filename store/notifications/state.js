@@ -9,6 +9,7 @@ export default () => ({
     title: '',
     description: '',
     image: '',
-    action: null
+    action: null,
+    actionText: ''
   }
 })

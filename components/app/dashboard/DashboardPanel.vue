@@ -3,7 +3,7 @@
     <v-card class="dashboard-panel-card" height="100%">
       <div class="dashboard-panel-card-border-top">
         <slot name="panel-toolbar">
-          <v-row v-if="!displayMode" justify="space-between">
+          <v-row v-if="!displayMode" class="my-0" justify="space-between" align="center" fill-height>
             <v-col class="btnLesson">
               <v-tooltip v-if="previousLessonId && !$vuetify.breakpoint.smAndDown" top class="pb-6">
                 <template v-slot:activator="{ on, attrs }">
@@ -34,7 +34,7 @@
             </v-col>
             <v-spacer />
             <v-col class="btnLesson">
-              <p class="text-right mr-3">
+              <p class="text-right my-0 mr-3">
                 <v-tooltip v-if="!$vuetify.breakpoint.smAndDown" top :open-on-focus="true">
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
@@ -387,8 +387,10 @@ export default {
   &-container {
     height: 100%;
     padding-top: 70px;
-    max-width: 471px;
-    @media screen and (max-width: 470px) {
+    max-width: 501px;
+    margin: 0 auto;
+    display: block;
+    @media screen and (max-width: 500px) {
       max-width: calc(100vw - 24px);
     }
   }

@@ -185,6 +185,10 @@ export default {
 
 <style lang="scss" scoped>
 .v-application ::v-deep {
+  .row {
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
   .container:not(.container--fluid) {
     max-width: 1200px;
   }
