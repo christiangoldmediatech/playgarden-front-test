@@ -182,7 +182,6 @@
                       v-model="selectedLetter"
                       small-letter
                       v-bind="{ disabledLetters }"
-                      slim-version
                       label-title="Choose letter"
                     />
                   </div>
@@ -297,6 +296,8 @@ export default {
   watch: {
     async selectedChild (val, oldVal) {
       this.loadLetterStatsData = true
+      const { curriculumType } = await this.getCurrentLesson({ childrenIds: val })
+      this.selectedLetter = curriculumType.id
       await this.getDataReport()
     },
 
@@ -310,6 +311,8 @@ export default {
     this.general = true
     await this.getChildren()
     await this.getTypes()
+    const { curriculumType } = await this.getCurrentLesson({ childrenIds: this.selectedChild })
+    this.selectedLetter = curriculumType.id
     await this.getDataGraphic()
     await this.getDataReport()
     this.$nuxt.$on('detail-progress-report', (data) => {
@@ -330,6 +333,7 @@ export default {
     ]),
     ...mapActions({ setChild: 'setChild' }),
     ...mapActions('children', { getChildren: 'get' }),
+    ...mapActions('children/lesson', ['getCurrentLesson']),
 
     async fetchChildProgress () {
       const data = await this.getCourseProgressByChildId({
