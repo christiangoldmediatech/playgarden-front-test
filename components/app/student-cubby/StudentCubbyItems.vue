@@ -1,34 +1,84 @@
 <template>
-  <v-card class="d-flex flex-direciton-row align-center justify-center cubby-items">
-    <div
-      v-for="(item, itemIndex) in items"
-      :key="item.routeName"
-      class="d-flex align-center justify-center"
-      @click="goToItem(item)"
+  <div>
+    <!-- Desktop Cubby Item Select -->
+    <v-card
+      v-if="!isMobile"
+      class="d-flex flex-direciton-row align-center justify-center cubby-items"
     >
       <div
-        class="d-flex align-center cubby-item"
-        :class="{
-          'cubby-item-selected': isSelectedItem(item)
-        }"
+        v-for="(item, itemIndex) in items"
+        :key="item.routeName"
+        class="d-flex align-center justify-center"
+        @click="goToItem(item)"
       >
-        <img
-          height="35px"
-          :src="require(`@/assets/png/student-cubby/${item.imgName}`)"
+        <div
+          class="d-flex align-center cubby-item"
+          :class="{
+            'cubby-item-selected': isSelectedItem(item)
+          }"
         >
-        <span class="cubby-item-text">{{ item.text }}</span>
+          <v-img
+            contain
+            height="40px"
+            width="40px"
+            :src="require(`@/assets/png/student-cubby/${item.imgName}`)"
+          />
+          <span class="cubby-item-text">{{ item.text }}</span>
+        </div>
+        <v-divider
+          v-if="itemIndex !== items.length - 1 && !isSelectedItem(item)"
+          vertical
+          class="cubby-item-divider"
+        />
       </div>
-      <v-divider
-        v-if="itemIndex !== items.length - 1 && !isSelectedItem(item)"
-        vertical
-        class="cubby-item-divider"
-      />
-    </div>
-  </v-card>
+    </v-card>
+
+    <!-- Mobile Cubby Item Select -->
+    <pg-select
+      v-else
+      :value="currentRouteName"
+      :items="items"
+      item-value="routeName"
+      solo
+      @input="goToRoute"
+    >
+      <template v-slot:selection="{ item }">
+        <v-row no-gutters>
+          <v-col cols="3">
+            <v-img
+              contain
+              height="40px"
+              width="40px"
+              :src="require(`@/assets/png/student-cubby/${item.imgName}`)"
+            />
+          </v-col>
+          <v-col cols="9" align-self="center">
+            <span class="ml-3">{{ item.text }}</span>
+          </v-col>
+        </v-row>
+      </template>
+
+      <template v-slot:item="{ item }">
+        <v-row no-gutters>
+          <v-col cols="3">
+            <v-img
+              contain
+              height="40px"
+              width="40px"
+              :src="require(`@/assets/png/student-cubby/${item.imgName}`)"
+            />
+          </v-col>
+          <v-col cols="9" align-self="center">
+            <span>{{ item.text }}</span>
+          </v-col>
+        </v-row>
+      </template>
+    </pg-select>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, useRoute, useRouter } from '@nuxtjs/composition-api'
+import { computed, defineComponent, PropType, useRoute, useRouter } from '@nuxtjs/composition-api'
 
 interface StudentCubbyItem {
   routeName: string
@@ -47,9 +97,11 @@ export default defineComponent({
       required: true
     }
   },
-  setup (props) {
+  setup (props, ctx) {
     const router = useRouter()
     const route = useRoute()
+
+    const isMobile = computed(() => ctx.root.$vuetify.breakpoint.mobile)
 
     const isSelectedItem = (item: StudentCubbyItem) => {
       return route.value.name?.includes(item.routeName)
@@ -59,7 +111,17 @@ export default defineComponent({
       router.push({ name: item.routeName, query: { id: `${props.selectedChildId}` } })
     }
 
-    return { isSelectedItem, goToItem }
+    const goToRoute = (routeName: string) => {
+      if (!routeName) {
+        return
+      }
+
+      router.push({ name: routeName, query: { id: `${props.selectedChildId}` } })
+    }
+
+    const currentRouteName = computed(() => route.value.name || '')
+
+    return { isSelectedItem, goToItem, currentRouteName, goToRoute, isMobile }
   }
 })
 </script>
