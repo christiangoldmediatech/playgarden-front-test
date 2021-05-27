@@ -228,10 +228,12 @@
               <!-- Desktop -->
               <template v-if="!mobile">
                 <div
+                  id="playlist"
                   class="playlist mt-4"
                 >
                   <v-row
                     v-for="(song, songIndex) in currentPlaylist"
+                    :id="`playlist-song-${song.id}`"
                     :key="songIndex"
                     no-gutters
                     class="playlist-song py-2"

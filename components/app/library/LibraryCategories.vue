@@ -89,6 +89,7 @@
           v-for="category in categories"
           :key="`category-${category.id}`"
           class="lib-cats-entry text-center mx-3"
+          :data-test-id="`lib-cat-entry-${category.name}`"
         >
           <div
             class="lib-cats-circle"

@@ -1,13 +1,9 @@
 <template>
-  <v-container
-    fluid
-  >
-    <v-row>
-      <v-col cols="12">
-        <dashboard />
-      </v-col>
-    </v-row>
-  </v-container>
+  <v-main :class="{ 'fill-height': $vuetify.breakpoint.mdAndUp }">
+    <v-container fluid class="progress-report-container ma-0 pa-0" :class="{ 'fill-height': $vuetify.breakpoint.mdAndUp }">
+      <dashboard />
+    </v-container>
+  </v-main>
 </template>
 
 <script>
@@ -20,3 +16,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.progress-report {
+  &-container {
+    width: 100%;
+  }
+}
+</style>

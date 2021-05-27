@@ -1,6 +1,12 @@
 <template>
-  <v-main :class="{ 'fill-height': pageLoading }">
-    <v-row v-if="pageLoading" no-gutters class="fill-height" justify="center" align="center">
+  <v-main :class="{ 'fill-height': isPageLoading }">
+    <v-row
+      v-if="isPageLoading"
+      no-gutters
+      class="fill-height"
+      justify="center"
+      align="center"
+    >
       <v-col>
         <v-container fill-height fluid>
           <pg-loading />
@@ -9,13 +15,13 @@
     </v-row>
     <template v-else>
       <featured-video
-        v-if="featuredVideo"
-        :video="featuredVideo"
+        v-if="featured"
+        :video="featured"
         @play="playFeaturedVideo"
       />
 
       <library-categories
-        v-bind="{ categories: activityTypeData }"
+        v-bind="{ categories: activities }"
         :favorites="true"
       />
 
@@ -26,10 +32,10 @@
         />
       </v-container>
 
-      <favorites-container v-bind="{ favorites, initialFavoritesLoading }" />
+      <favorites-container v-bind="{ favorites, initialFavoritesLoading: isFavoriteFirstLoad }" />
 
       <activity-type-container
-        v-for="activityType in activityTypes"
+        v-for="activityType in activities"
         :key="`activity-type-${activityType.id}`"
         :total="activityType.playlist.length"
         v-bind="{ activityType }"
@@ -40,17 +46,16 @@
   </v-main>
 </template>
 
-<script>
-import { mapActions } from 'vuex'
+<script lang="ts">
+import { defineComponent, onMounted, ref } from '@nuxtjs/composition-api'
 import FeaturedVideo from '@/components/app/library/FeaturedVideo.vue'
 import ActivityTypeContainer from '@/components/app/library/ActivityTypeContainer.vue'
 import FavoritesContainer from '@/components/app/library/FavoritesContainer.vue'
 import LibraryCategories from '@/components/app/library/LibraryCategories.vue'
 import ActivityPlayer from '@/components/app/activities/ActivityPlayer.vue'
-import { shuffle } from '@/utils/arrayTools'
-import LibraryFunctions from '@/mixins/LibraryFunctions'
+import { useActivity, useLibrary } from '@/composables'
 
-export default {
+export default defineComponent({
   name: 'Index',
 
   components: {
@@ -61,102 +66,52 @@ export default {
     ActivityPlayer
   },
 
-  mixins: [LibraryFunctions],
+  setup (_, ctx) {
+    const {
+      activities,
+      favorites,
+      featured,
+      getActivities,
+      refreshFavoriteActivities
+    } = useActivity()
+    const { getAllFavorites } = useLibrary()
 
-  data: () => {
+    const isPageLoading = ref(true)
+    const isFavoriteFirstLoad = ref(true)
+
+    // setup favorites callback
+    ctx.root.$nuxt.$on('library-update-favorites', refreshFavoriteActivities)
+
+    onMounted(async () => {
+      await getActivities()
+      await getAllFavorites()
+      isPageLoading.value = false
+      isFavoriteFirstLoad.value = false
+    })
+
+    const playFeaturedVideo = () => {
+      const featuredId = featured.value.id
+      const featuredActTypeId = featured.value.activityType?.id
+
+      const playlist = activities.value.find(actType => actType.id === featuredActTypeId)?.playlist
+
+      if (!playlist) {
+        return
+      }
+
+      const index = playlist.findIndex(playItem => playItem.activityId === featuredId)
+
+      ctx.root.$nuxt.$emit('open-activity-player', { playlist, index })
+    }
+
     return {
-      pageLoading: true,
-      initialFavoritesLoading: true
-    }
-  },
-
-  computed: {
-    activityTypes () {
-      // if (this.$vuetify.breakpoint.mdAndDown) {
-      //   if (this.selectedActivity) {
-      //     return this.activityTypeData.filter(activityType => activityType.id === this.selectedActivity)
-      //   }
-      // }
-      return this.activityTypeData
-    }
-  },
-
-  async created () {
-    // Setup favorites callback
-    this.$nuxt.$on('library-update-favorites', this.handleLibraryFavorites)
-
-    // Get favorites
-    this.getAllFavorites()
-
-    // Get activities
-    const data = await this.$axios.$get('/activities')
-
-    this.featuredVideo = data.featured
-    this.activityTypeData = data.activities
-      .filter((activityType) => {
-        return activityType.activities.length > 0
-      })
-      .map((activityType) => {
-        // Filter out invalid activities
-        const activities = shuffle(this.getValidActivities(activityType.activities))
-        const videos = shuffle(this.getValidVideos(activityType.videos || []))
-
-        const activityTypeObj = {
-          ...activityType,
-          activities,
-          videos
-        }
-
-        activityTypeObj.playlist = this.makePlaylist(activityTypeObj)
-
-        return activityTypeObj
-      })
-
-    // const favorites = data.favorites.filter((favorite) => {
-    //   return favorite && favorite.video && favorite.video.activityType && favorite.video.videoUrl
-    // })
-
-    this.favorites = data.favorites.length ? shuffle(data.favorites) : []
-    // this.selectedActivity = null
-    this.initialFavoritesLoading = false
-    this.pageLoading = false
-  },
-
-  methods: {
-    ...mapActions('video', ['getAllFavorites']),
-
-    async handleLibraryFavorites () {
-      // Get the ids of our current favorites
-      let favoriteIds = this.favorites.map(favorite => favorite.id)
-
-      // Get the new favorite data
-      const data = await this.$axios.$get('/activities?favorites=1')
-      const newIds = data.favorites.map(favorite => favorite.id)
-
-      // Check if any old ids are missing in order to remove them
-      const missing = []
-      favoriteIds.forEach((favoriteId) => {
-        if (!newIds.includes(favoriteId)) {
-          missing.push(favoriteId)
-        }
-      })
-
-      // remove missing ids
-      missing.forEach((missingId) => {
-        const index = this.favorites.findIndex(favorite => favorite.id === missingId)
-        if (index >= 0) {
-          this.favorites.splice(index, 1)
-        }
-      })
-
-      // handle new favorites
-      favoriteIds = this.favorites.map(favorite => favorite.id)
-      data.favorites.forEach((favorite) => {
-        if (!favoriteIds.includes(favorite.id)) {
-          this.favorites.push(favorite)
-        }
-      })
+      activities,
+      favorites,
+      featured,
+      isFavoriteFirstLoad,
+      isPageLoading,
+      playFeaturedVideo
     }
   }
-}
+})
 </script>

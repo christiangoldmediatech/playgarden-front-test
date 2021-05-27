@@ -49,7 +49,7 @@
       <v-row justify="center">
         <v-col cols="8">
           <p class="portfolio-no-uploads">
-            You have no worksheets uploaded yet
+            You do not have any worksheets uploaded at this time.
           </p>
         </v-col>
 
