@@ -1,5 +1,8 @@
 <template>
   <v-card flat>
+    <!-- TODO: changing the child id in the route refreshes the gallery
+         but keeps cards lazy, thus needing to scroll to show their new child content
+    -->
     <v-card-text class="text-center">
       <!-- Section Title and Description -->
       <div class="d-flex align-center justify-center">
