@@ -349,6 +349,7 @@ export default {
     ]),
     ...mapActions({ setChild: 'setChild' }),
     ...mapActions('children', { getChildren: 'get' }),
+    ...mapActions('children/lesson', ['getCurrentLesson']),
 
     async fetchChildProgress () {
       const data = await this.getCourseProgressByChildId({
@@ -364,6 +365,8 @@ export default {
 
     async getDataReport () {
       if (this.selectedChild) {
+        const { curriculumType } = await this.getCurrentLesson({ childrenIds: this.selectedChild })
+        this.selectedLetter = curriculumType.id
         const params = {}
         if (this.selectedLetter) {
           params.curriculumTypeId = this.selectedLetter
