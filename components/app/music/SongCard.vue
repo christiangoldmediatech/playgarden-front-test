@@ -1,5 +1,6 @@
 <template>
   <v-card
+    :id="`song-card-${songId}`"
     v-bind="$attrs"
     min-height="70"
     class="custom-shadow py-1"
@@ -21,6 +22,9 @@
         <v-row no-gutters class="fill-height" justify="start" align="center">
           <v-col cols="12" md="auto">
             <span class="ml-0 ml-md-6 song-description">{{ description }}</span>
+            <div v-if="isCurrentSong(songId)" class="ml-0 ml-md-6 song-playing-tag">
+              PLAYING
+            </div>
           </v-col>
           <v-col cols="12" class="hidden-md-and-up">
             <span class="song-name">{{ name }}</span>
@@ -74,12 +78,20 @@
 </template>
 
 <script>
-export default {
+import { useMusic } from '@/composables'
+import { defineComponent } from '@nuxtjs/composition-api'
+
+export default defineComponent({
   name: 'SongCard',
 
   emits: ['add'],
 
   props: {
+    songId: {
+      type: Number,
+      required: true
+    },
+
     thumbnail: {
       type: String,
       required: false,
@@ -103,6 +115,12 @@ export default {
     }
   },
 
+  setup () {
+    const { isCurrentSong } = useMusic()
+
+    return { isCurrentSong }
+  },
+
   computed: {
     isMobile () {
       return this.$vuetify.breakpoint.mobile
@@ -119,7 +137,7 @@ export default {
       }
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
@@ -139,6 +157,19 @@ export default {
 
   &-name {
     color: var(--v-black-base);
+  }
+
+  &-playing-tag {
+    background: rgba(248, 152, 56, 0.3);
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    padding: 5px;
+    width: 75px;
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
   }
 }
 .custom-shadow {

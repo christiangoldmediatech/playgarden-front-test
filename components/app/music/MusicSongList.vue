@@ -108,6 +108,7 @@
           <song-card
             v-for="(song, index) in filteredSongsByLetterId"
             :key="song.id"
+            :song-id="song.id"
             :thumbnail="song.thumbnail"
             :name="song.name"
             :description="song.description"

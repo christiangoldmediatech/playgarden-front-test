@@ -29,6 +29,10 @@ declare namespace Cypress {
      * @param childIndex Index of child to select -- 0 by default
      * @example uiChildSelect(2)
      */
-    uiChildSelect(childIndex: number): Chainable<void>
+    uiChildSelect(childIndex: number): Chainable<void>,
+    /**
+     * Custom command that asserts if previous element is within viewport
+     */
+    isInViewport(): Chainable<void>
   }
 }
