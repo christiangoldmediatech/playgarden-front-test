@@ -2,7 +2,7 @@
   <v-container
     fluid
   >
-    <v-card class="px-2">
+    <div class="px-2">
       <v-row>
         <v-col cols="12">
           <v-card>
@@ -148,7 +148,7 @@
           </v-row>
         </v-col>
       </v-row>
-    </v-card>
+    </div>
   </v-container>
 </template>
 
