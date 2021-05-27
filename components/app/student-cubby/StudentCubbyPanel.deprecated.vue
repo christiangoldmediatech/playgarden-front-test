@@ -86,6 +86,7 @@ import ChildSelect from '@/components/app/ChildSelect.vue'
 import { mapGetters } from 'vuex'
 
 export default {
+  // eslint-disable-next-line vue/match-component-file-name
   name: 'StudentCubbyPanel',
 
   components: {
