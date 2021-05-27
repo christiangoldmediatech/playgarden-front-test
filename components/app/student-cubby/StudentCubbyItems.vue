@@ -43,35 +43,27 @@
       @input="goToRoute"
     >
       <template v-slot:selection="{ item }">
-        <v-row no-gutters>
-          <v-col cols="3">
-            <v-img
-              contain
-              height="40px"
-              width="40px"
-              :src="require(`@/assets/png/student-cubby/${item.imgName}`)"
-            />
-          </v-col>
-          <v-col cols="9" align-self="center">
-            <span class="ml-3">{{ item.text }}</span>
-          </v-col>
-        </v-row>
+        <div class="d-flex align-center">
+          <v-img
+            contain
+            height="40px"
+            width="40px"
+            :src="require(`@/assets/png/student-cubby/${item.imgName}`)"
+          />
+          <span class="ml-4">{{ item.text }}</span>
+        </div>
       </template>
 
       <template v-slot:item="{ item }">
-        <v-row no-gutters>
-          <v-col cols="3">
-            <v-img
-              contain
-              height="40px"
-              width="40px"
-              :src="require(`@/assets/png/student-cubby/${item.imgName}`)"
-            />
-          </v-col>
-          <v-col cols="9" align-self="center">
-            <span>{{ item.text }}</span>
-          </v-col>
-        </v-row>
+        <div class="d-flex align-center">
+          <v-img
+            contain
+            height="40px"
+            width="40px"
+            :src="require(`@/assets/png/student-cubby/${item.imgName}`)"
+          />
+          <span class="ml-4">{{ item.text }}</span>
+        </div>
       </template>
     </pg-select>
   </div>
