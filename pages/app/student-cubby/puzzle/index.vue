@@ -1,12 +1,15 @@
 <template>
   <v-card flat class="pt-0 pt-md-3">
     <v-card-text class="text-center pt-0 pt-md-3">
-      <underlined-title class="text-h5 text-md-h3" text="Gallery" />
-
-      <p class="mt-2">
+      <!-- Section Title and Description -->
+      <div class="d-flex align-center justify-center">
+        <img height="80px" src="@/assets/png/student-cubby/puzzle-piece.png">
+        <span class="ml-4 text-h4 text-md-h3">PUZZLE</span>
+      </div>
+      <div class="my-6 text-md-h6 text-body-1">
         Find all of {{ child.firstName || "Child" }}’s completed puzzles. Share
         them on social media!
-      </p>
+      </div>
 
       <v-row class="mt-6" justify="space-around">
         <v-col

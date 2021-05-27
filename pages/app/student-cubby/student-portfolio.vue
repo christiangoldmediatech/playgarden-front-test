@@ -2,11 +2,14 @@
   <v-card flat class="pt-0 pt-md-3">
     <v-card-text class="pt-0 pt-md-4">
       <div class="text-center">
-        <underlined-title class="text-h5 text-md-h3" text="Student Portfolio" />
-
-        <p class="mt-2">
+        <!-- Section Title and Description -->
+        <div class="d-flex align-center justify-center">
+          <img height="80px" src="@/assets/png/student-cubby/group.png">
+          <span class="ml-4 text-h4 text-md-h3">PORTFOLIO</span>
+        </div>
+        <div class="my-6 text-md-h6 text-body-1">
           Keep track of your worksheets and progress!
-        </p>
+        </div>
       </div>
     </v-card-text>
 

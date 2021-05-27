@@ -5,16 +5,16 @@
     <v-card flat class="pt-0 pt-md-3">
       <v-card-text class="pt-0 pt-md-4">
         <div class="text-center">
-          <underlined-title
-            class="text-h5 text-md-h3"
-            text="Earn Activity Patches for learning!"
-          />
-
-          <p class="mt-2">
+          <!-- Section Title and Description -->
+          <div class="d-flex align-center justify-center">
+            <img height="80px" src="@/assets/png/student-cubby/patches.svg">
+            <span class="ml-4 text-h4 text-md-h3">PATCHES</span>
+          </div>
+          <div class="my-6 text-md-h6 text-body-1">
             Master subjects in the Activities section to collect patches for
             your Student Cubby! Collect all badges to receive a real patch for
             your backpack.
-          </p>
+          </div>
         </div>
 
         <patch-row
