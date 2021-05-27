@@ -387,8 +387,10 @@ export default {
   &-container {
     height: 100%;
     padding-top: 70px;
-    max-width: 471px;
-    @media screen and (max-width: 470px) {
+    max-width: 501px;
+    margin: 0 auto;
+    display: block;
+    @media screen and (max-width: 500px) {
       max-width: calc(100vw - 24px);
     }
   }
