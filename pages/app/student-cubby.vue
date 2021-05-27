@@ -5,12 +5,12 @@
         <!-- Page Title -->
         <v-col cols="12" class="text-center mt-16 mb-12">
           <underlined-title
-            text="STUDENTS CUBBY"
+            :text="selectedCubbyItem.title"
             font-size="65px"
           />
         </v-col>
         <!-- Child Select And Cubby Item Select -->
-        <v-col cols="12">
+        <v-col cols="12" class="mb-0 mb-md-8">
           <v-row no-gutters justify="center">
             <v-col cols="12" lg="3" xl="2" class="px-10">
               <child-select v-model="selectedChildId" />
@@ -73,30 +73,38 @@ export default defineComponent({
     const studentCubbyItems = [
       {
         text: 'PUZZLE',
+        title: 'STUDENTS CUBBY',
         imgName: 'puzzle-piece.png',
         routeName: 'app-student-cubby-puzzle'
       },
       {
         text: 'PATCHES',
+        title: 'Earn Activity Patches for learning',
         imgName: 'patches.svg',
         routeName: 'app-student-cubby-patches'
       },
       {
         text: 'CURRICULUM',
+        title: 'Review all Curriculum',
         imgName: 'abc.png',
         routeName: 'app-student-cubby-course-progress'
       },
       {
         text: 'PORTFOLIO',
+        title: 'PORTFOLIO',
         imgName: 'group.png',
         routeName: 'app-student-cubby-student-portfolio'
       },
       {
         text: 'PROGRESS REPORT',
+        title: 'PROGRESS REPORT',
         imgName: 'progress.png',
         routeName: 'app-progress-report'
       }
     ]
+    const selectedCubbyItem = computed(() => {
+      return studentCubbyItems.find(item => route.value.name?.includes(item.routeName)) || {}
+    })
 
     const routeChildId = computed<number | null>(() => {
       if (typeof route.value.query.id !== 'string') {
@@ -136,6 +144,7 @@ export default defineComponent({
 
     return {
       studentCubbyItems,
+      selectedCubbyItem,
       selectedChildId
     }
   }
