@@ -47,7 +47,7 @@
     >
       <v-row class="fill-height" justify="center">
         <v-col
-          class="dashboard-column order-last order-md-first d-flex justify-center justify-md-start"
+          class="dashboard-column order-last order-md-first d-flex justify-center justify-md-start flex-shrink-1 flex-grow-0"
           cols="12"
           sm="8"
           md="5"
@@ -59,8 +59,9 @@
             :next-button="canAdvance"
           />
         </v-col>
+
         <v-col
-          class="dashboard-column d-flex flex-column"
+          class="dashboard-column d-flex flex-column flex-xl-shrink-0 flex-xl-grow-1"
           cols="12"
           sm="12"
           md="7"
