@@ -181,7 +181,7 @@
                         v-model="selectedLetter"
                         small-letter
                         v-bind="{ disabledLetters }"
-                        slim-version
+                        :slim-version="$vuetify.breakpoint.xs"
                         label-title="Choose letter"
                       />
                     </div>
