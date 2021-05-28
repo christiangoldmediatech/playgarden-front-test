@@ -16,7 +16,6 @@
         <div
           v-for="letter in letters"
           :key="`recorded-letter-${letter.id}`"
-          class="letter-shadow"
           @click="showProgress(letter)"
         >
           <recorded-letter
@@ -92,10 +91,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-  .letter-shadow {
-    border-radius: 8px;
-    filter: drop-shadow(0px 8px 24px rgba(0, 0, 0, 0.15));
-  }
-</style>
