@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <users-list-dialog ref="usersListRef" />
     <v-row>
       <v-col cols="12" class="content-dashboard">
         <v-card width="100%">
@@ -34,18 +35,16 @@
                       <label class="title-dashboard font-weight-bold">Total Users</label>
                       <v-row align="center">
                         <v-col cols="6">
-                          <p class="text-center">
+                          <p class="text-center cursor" @click="usersFilters('Total - increment')">
                             <v-icon x-large color="green lighten-1">
                               mdi-menu-up
                             </v-icon>
                             <span>+{{ totalTrialing.increment }} New this week</span> <br>
                           </p>
                         </v-col>
-                        <v-col cols="6">
-                          <center>
-                            <label class="display-3 font-weight-bold total-users">{{ getTotalUsers }}</label><br>
-                            <span>Users usign our platform</span> <br>
-                          </center>
+                        <v-col cols="6" class="text-center" @click="usersFilters('Total')">
+                          <label class="display-3 font-weight-bold total-users cursor">{{ getTotalUsers }}</label><br>
+                          <span>Users usign our platform</span> <br>
                         </v-col>
                       </v-row>
                     </v-card-text>
@@ -57,15 +56,15 @@
                       <label class="title-dashboard font-weight-bold">Trialing</label>
                       <v-row class="mt-n4" align="center">
                         <v-col cols="12">
-                          <p class="text-center">
+                          <p class="text-center cursor" @click="usersFilters('onlyTrialingIncrement')">
                             <v-icon x-large color="green lighten-1">
                               mdi-menu-up
                             </v-icon>
                             <span>+{{ totalTrialing.increment }} New this week</span> <br>
                           </p>
-                          <center>
-                            <label class="display-3 font-weight-bold total-users">{{ totalTrialing.total }}</label>
-                          </center>
+                          <div class="text-center" @click="usersFilters('onlyTrialing')">
+                            <label class="display-3 font-weight-bold total-users cursor">{{ totalTrialing.total }}</label>
+                          </div>
                         </v-col>
                       </v-row>
                     </v-card-text>
@@ -77,15 +76,17 @@
                       <label class="title-dashboard font-weight-bold">Active</label>
                       <v-row class="mt-n4" align="center">
                         <v-col cols="12">
-                          <p class="text-center">
+                          <p class="text-center cursor" @click="usersFilters('Active - increment')">
                             <v-icon x-large color="green lighten-1">
                               mdi-menu-up
                             </v-icon>
                             <span>+{{ totalActive.increment }} New this week</span> <br>
                           </p>
-                          <center>
-                            <label class="display-3 font-weight-bold total-users">{{ totalActive.total }}</label>
-                          </center>
+                          <div @click="usersFilters('Active')">
+                            <div class="text-center">
+                              <label class="display-3 font-weight-bold total-users cursor">{{ totalActive.total }}</label>
+                            </div>
+                          </div>
                         </v-col>
                       </v-row>
                     </v-card-text>
@@ -97,15 +98,17 @@
                       <label class="title-dashboard font-weight-bold">Canceled</label>
                       <v-row class="mt-n4" align="center">
                         <v-col cols="12">
-                          <p class="text-center">
+                          <p class="text-center cursor" @click="usersFilters('Canceled - increment')">
                             <v-icon x-large color="red lighten-1">
                               mdi-menu-up
                             </v-icon>
                             <span>{{ canceledUsers.increment }} This week</span>
                           </p>
-                          <center>
-                            <label class="display-3 font-weight-bold total-users">{{ canceledUsers.total }}</label>
-                          </center>
+                          <div @click="usersFilters('Canceled')">
+                            <div class="text-center">
+                              <label class="display-3 font-weight-bold total-users cursor">{{ canceledUsers.total }}</label>
+                            </div>
+                          </div>
                         </v-col>
                       </v-row>
                     </v-card-text>
@@ -116,16 +119,14 @@
                     <v-card-text>
                       <label class="title-dashboard font-weight-bold">Churn Rate</label>
                       <v-row class="mt-n4" align="center">
-                        <v-col cols="12">
+                        <v-col cols="12" class="text-center">
                           <p class="text-center">
                             <v-icon x-large color="red lighten-1">
                               mdi-menu-up
                             </v-icon>
                             <span>0 More than last week</span>
                           </p>
-                          <center>
-                            <label class="display-3 font-weight-bold total-users">0 %</label>
-                          </center>
+                          <label class="display-3 font-weight-bold total-users">0 %</label>
                         </v-col>
                       </v-row>
                     </v-card-text>
@@ -188,34 +189,31 @@
             </v-col>
             <v-col cols="12" md="4">
               <v-row class="content-dashboard mx-3" no-glutters align="center">
-                <v-card width="100%" class="users-today-data mt-n6">
+                <v-card width="100%" class="users-today-data mt-n6" @click="usersFilters('today')">
                   <v-card-text>
                     <label class="font-weight-bold title-dashboard">Active Users Today</label>
                     <v-col
                       cols="12"
+                      class="text-center"
                     >
-                      <center>
-                        <label class="font-weight-bold display-3 total-users">{{ activeUsers.today }}</label> <br>
-                        <span class="text-dashboard"> Users </span>
-                      </center>
+                      <label class="font-weight-bold display-3 total-users">{{ activeUsers.today }}</label> <br>
+                      <span class="text-dashboard"> Users </span>
                     </v-col>
                   </v-card-text>
                 </v-card>
 
-                <v-card width="100%" class="users-today-data mb-n6">
+                <v-card width="100%" class="users-today-data mb-n6" @click="usersFilters('week')">
                   <v-card-text>
                     <label class="font-weight-bold title-dashboard">Active Users Per Week</label> <br>
-                    <center>
+                    <div class="text-center">
                       <span>{{ getFormatDate }}</span>
-                    </center>
+                    </div>
                     <v-col
                       cols="12"
-                      class="mt-n4"
+                      class="mt-n4 text-center"
                     >
-                      <center>
-                        <label class="font-weight-bold display-3 total-users">{{ activeUsers.last7Days }}</label> <br>
-                        <span class="text-dashboard"> Users </span>
-                      </center>
+                      <label class="font-weight-bold display-3 total-users">{{ activeUsers.last7Days }}</label> <br>
+                      <span class="text-dashboard"> Users </span>
                     </v-col>
                   </v-card-text>
                 </v-card>
@@ -231,10 +229,10 @@
                 <v-row justify="end" class="mx-3">
                   <v-col cols="5">
                     <v-card>
-                      <center class="py-4">
+                      <div class="py-4 text-center">
                         <label class="font-weight-bold text-h5 title-dashboard">Total Students:</label>
                         <span class="font-weight-bold total-users text-h5">{{ childrenTotal }}</span>
-                      </center>
+                      </div>
                     </v-card>
                   </v-col>
                 </v-row>
@@ -268,6 +266,7 @@ import FunnelChart from './FunnelChart.vue'
 import PieChart from './PieChart.vue'
 import TimeLineChart from './TimeLineChart.vue'
 import BarChart from './BarChart.vue'
+import UsersListDialog from './UsersListDialog.vue'
 export default {
   name: 'MainPanel',
 
@@ -275,7 +274,8 @@ export default {
     FunnelChart,
     PieChart,
     TimeLineChart,
-    BarChart
+    BarChart,
+    UsersListDialog
   },
 
   data: () => ({
@@ -307,6 +307,7 @@ export default {
     },
     usersPerPlan: {
       title: '',
+      name: '',
       data: []
     },
     dailyUsers: {
@@ -315,6 +316,7 @@ export default {
     },
     usersPerStatus: {
       title: '',
+      name: '',
       data: []
     },
     planActiveInactive: [],
@@ -338,14 +340,23 @@ export default {
     }
   },
 
-  watch: {},
-
   created () {
     this.getData()
+    this.$nuxt.$on('send-data-chart', (dataGraph) => {
+      this.$refs.usersListRef.open(null, dataGraph)
+    })
+  },
+
+  beforeDestroy () {
+    this.$nuxt.$off('send-data-chart')
   },
 
   methods: {
     ...mapActions('admin/dashboard', ['getDashboard']),
+
+    usersFilters (parameter) {
+      this.$refs.usersListRef.open(null, { seriesName: parameter, name: 'active users' })
+    },
 
     async getData (clear = false) {
       this.loading = true
@@ -361,10 +372,12 @@ export default {
         this.totalSubscriptions = totalSubscriptions
         this.canceledUsers = canceledUsers
         this.usersPerPlan = {
-          data: usersPerPlan
+          data: usersPerPlan,
+          name: 'Users per Plan'
         }
         this.usersPerStatus = {
-          data: usersPerStatus
+          data: usersPerStatus,
+          name: 'Users per status'
         }
         this.activeUsers = activeUsers
         this.planActiveInactive = planActiveInactive
@@ -408,6 +421,10 @@ ul li::before {
 
 .header-dashboard {
   max-height: 500px !important;
+}
+
+.cursor {
+  cursor: pointer !important;
 }
 
 .text-info-dashboard {

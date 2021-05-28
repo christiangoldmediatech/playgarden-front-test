@@ -37,7 +37,7 @@
     </v-row>
 
     <!-- Charts -->
-    <v-row no-gutters>
+    <v-row v-if="showGraphs" no-gutters>
       <v-col cols="12" md="4">
         <!-- Total Users -->
         <v-card height="350px" class="mx-0 my-2 mr-md-2 custom-shadow">
@@ -96,6 +96,10 @@
     <v-row>
       <v-col cols="12">
         <v-card width="100%">
+          <v-card-title v-if="seriesName">
+            <label class="font-weight-bold">{{ seriesName }}</label>
+            <v-spacer />
+          </v-card-title>
           <v-card-text>
             <pg-admin-data-table
               :headers="headers"
@@ -171,6 +175,24 @@ export default {
   },
 
   mixins: [onSearch],
+
+  props: {
+    showPanel: {
+      type: Boolean,
+      required: false,
+      default: true
+    },
+    seriesName: {
+      type: String,
+      required: false,
+      default: ''
+    },
+    paramsSend: {
+      type: Object,
+      required: false,
+      default: () => {}
+    }
+  },
 
   data () {
     return {
@@ -290,6 +312,10 @@ export default {
 
   async created () {
     await this.fetchChartsData()
+  },
+
+  mounted () {
+    this.refresh()
   },
 
   methods: {

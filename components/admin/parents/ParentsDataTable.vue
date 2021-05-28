@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row>
+    <v-row v-if="showGraphs">
       <v-col cols="12">
         <v-card width="100%" class="custom-shadow">
           <v-card-title>
@@ -31,7 +31,7 @@
     </v-row>
 
     <!-- Charts -->
-    <v-row no-gutters>
+    <v-row v-if="showGraphs" no-gutters>
       <v-col cols="12" md="4">
         <!-- Total Users -->
         <v-card height="350px" class="mx-0 my-2 mr-md-2 custom-shadow">
@@ -165,10 +165,29 @@ export default {
 
   mixins: [onSearch],
 
+  props: {
+    showPanel: {
+      type: Boolean,
+      required: false,
+      default: true
+    },
+    seriesName: {
+      type: String,
+      required: false,
+      default: ''
+    },
+    paramsSend: {
+      type: Object,
+      required: false,
+      default: () => {}
+    }
+  },
+
   data () {
     return {
       loading: false,
       action: true,
+      showGraphs: true,
       search: '',
       limit: 50,
       page: 1,
@@ -275,6 +294,10 @@ export default {
       this.refresh()
     },
 
+    paramsSend (val) {
+      this.refresh()
+    },
+
     activeFilters (val) {
       if (val.length === 0 || val.length !== this.filterList.length) {
         this.allFilters = false
@@ -287,7 +310,12 @@ export default {
   },
 
   async created () {
+    this.showGraphs = (!this.showPanel) ? this.showPanel : true
     await this.fetchChartsData()
+  },
+
+  mounted () {
+    this.refresh()
   },
 
   methods: {
@@ -343,7 +371,11 @@ export default {
     async refresh (clear = false) {
       const id = 3
       this.loading = true
-      const params = { limit: this.paginationLimit, page: this.page, roleId: id }
+      let params = { limit: this.paginationLimit, page: this.page, roleId: id }
+
+      if (this.paramsSend) {
+        params = { ...params, ...this.paramsSend }
+      }
 
       if (clear) {
         this.search = ''
