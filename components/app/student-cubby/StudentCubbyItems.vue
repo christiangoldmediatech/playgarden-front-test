@@ -3,6 +3,7 @@
     <!-- Desktop Cubby Item Select -->
     <v-card
       v-if="!isMobile"
+      data-test-id="student-cubby-bar"
       class="d-flex flex-direciton-row align-center justify-center cubby-items"
     >
       <div
@@ -22,7 +23,7 @@
             contain
             height="40px"
             width="40px"
-            :src="require(`@/assets/png/student-cubby/${item.imgName}`)"
+            :src="getImg(item.imgName)"
           />
           <span class="cubby-item-text">{{ item.text }}</span>
         </div>
@@ -41,6 +42,7 @@
       :items="items"
       item-value="routeName"
       solo
+      data-test-id="student-cubby-select"
       @input="goToRoute"
     >
       <template v-slot:selection="{ item }">
@@ -49,7 +51,7 @@
             contain
             height="40px"
             width="40px"
-            :src="require(`@/assets/png/student-cubby/${item.imgName}`)"
+            :src="getImg(item.imgName)"
           />
           <span class="ml-4">{{ item.text }}</span>
         </div>
@@ -61,7 +63,7 @@
             contain
             height="40px"
             width="40px"
-            :src="require(`@/assets/png/student-cubby/${item.imgName}`)"
+            :src="getImg(item.imgName)"
           />
           <span class="ml-4">{{ item.text }}</span>
         </div>
@@ -88,16 +90,24 @@ export default defineComponent({
     items: {
       type: Array as PropType<StudentCubbyItem[]>,
       required: true
+    },
+    mobile: {
+      type: Boolean,
+      required: false
     }
   },
   setup (props, ctx) {
     const router = useRouter()
     const route = useRoute()
 
-    const isMobile = computed(() => ctx.root.$vuetify.breakpoint.mobile)
+    const isMobile = computed(() => {
+      return Object.prototype.hasOwnProperty.call(props, 'mobile')
+        ? props.mobile
+        : ctx.root.$vuetify.breakpoint.mobile
+    })
 
     const isSelectedItem = (item: StudentCubbyItem) => {
-      return route.value.name?.includes(item.routeName)
+      return route.value?.name?.includes(item.routeName)
     }
 
     const goToItem = (item: StudentCubbyItem) => {
@@ -112,9 +122,17 @@ export default defineComponent({
       router.push({ name: routeName, query: { id: `${props.selectedChildId}` } })
     }
 
-    const currentRouteName = computed(() => route.value.name || '')
+    const currentRouteName = computed(() => route.value?.name || '')
 
-    return { isSelectedItem, goToItem, currentRouteName, goToRoute, isMobile }
+    const getImg = (imgName: string) => {
+      if (!imgName) {
+        return ''
+      }
+
+      return require(`@/assets/png/student-cubby/${imgName}`)
+    }
+
+    return { isSelectedItem, goToItem, currentRouteName, goToRoute, isMobile, getImg }
   }
 })
 </script>
