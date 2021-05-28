@@ -293,7 +293,7 @@ export default {
 
   watch: {
     page () {
-      this.page = 1
+      // this.page = 1
       this.refresh()
     },
 
