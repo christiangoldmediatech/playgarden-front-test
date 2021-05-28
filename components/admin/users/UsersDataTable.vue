@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <!-- Add New User Card -->
-    <v-row v-if="showGraphs">
+    <v-row>
       <v-col cols="12">
         <v-card width="100%" class="custom-shadow">
           <v-card-title>
@@ -197,7 +197,6 @@ export default {
   data () {
     return {
       loading: false,
-      showGraphs: true,
       search: '',
       limit: 10,
       page: 1,
@@ -300,10 +299,6 @@ export default {
       this.refresh()
     },
 
-    paramsSend (val) {
-      this.refresh()
-    },
-
     activeFilters (val) {
       if (val.length === 0 || val.length !== this.filterList.length) {
         this.allFilters = false
@@ -316,7 +311,6 @@ export default {
   },
 
   async created () {
-    this.showGraphs = (!this.showPanel) ? this.showPanel : true
     await this.fetchChartsData()
   },
 
@@ -360,11 +354,7 @@ export default {
 
     async refresh (clear = false) {
       this.loading = true
-      let params = { limit: this.limit, page: this.page }
-
-      if (this.paramsSend) {
-        params = { ...params, ...this.paramsSend }
-      }
+      const params = { limit: this.limit, page: this.page }
 
       if (clear) {
         this.search = ''

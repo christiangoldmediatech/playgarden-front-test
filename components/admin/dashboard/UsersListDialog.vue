@@ -24,7 +24,7 @@
 
       <v-card-text>
         <v-container>
-          <users-data-table ref="UsersDataTableRef" :show-panel="showPanel" :series-name="seriesName" :params-send="params" />
+          <parents-data-table ref="UsersDataTableRef" :show-panel="showPanel" :series-name="seriesName" :params-send="params" />
         </v-container>
       </v-card-text>
 
@@ -48,13 +48,13 @@
 </template>
 
 <script>
-import UsersDataTable from '@/components/admin/users/UsersDataTable.vue'
+import ParentsDataTable from '@/components/admin/parents/ParentsDataTable.vue'
 
 export default {
   name: 'UsersListDialog',
 
   components: {
-    UsersDataTable
+    ParentsDataTable
   },
 
   data () {
