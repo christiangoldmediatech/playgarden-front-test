@@ -1,5 +1,8 @@
 <template>
-  <lesson-completed-card />
+  <lesson-completed-card
+    class="d-flex flex-column dashboard-content-card"
+    height="100%"
+  />
 </template>
 
 <script>

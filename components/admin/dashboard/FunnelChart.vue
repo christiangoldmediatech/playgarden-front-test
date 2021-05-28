@@ -1,5 +1,5 @@
 <template>
-  <chart ref="funnel-chart" :style="getChartDimensions" :graph="getFormatGraph" :autoresize="resize" />
+  <chart ref="funnelChartRef" :style="getChartDimensions" :graph="getFormatGraph" :autoresize="resize" />
 </template>
 
 <script>
@@ -45,6 +45,9 @@ export default {
           orient: 'vertical',
           left: 'left',
           data: (this.funnelData.data) ? this.funnelData.data.map(data => data.name) : []
+        },
+        events: {
+          click: this.click
         },
         series: [
           {

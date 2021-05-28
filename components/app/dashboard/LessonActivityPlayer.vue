@@ -23,9 +23,8 @@
       no-auto-track-change
       @ready="onReady"
       @playlist-index-change="updateIndex"
-      @last-playlist-item="findNextActivity"
     />
-    <puzzle-piece-earned-dialog v-model="pieceEarnedDialog" v-bind="{ letter, puzzleImg }" @return="handleClose" />
+    <lesson-activities-finished-dialog v-model="showFinished" @next-finished="handleAdvanceClose" />
   </video-player-dialog>
 </template>
 
@@ -35,28 +34,33 @@ import VideoAnalyticsMixin from '@/mixins/VideoAnalyticsMixin.js'
 import VideoPlayerDialogMixin from '@/mixins/VideoPlayerDialogMixin.js'
 import DashboardMixin from '@/mixins/DashboardMixin'
 import SaveActivityProgress from '@/mixins/SaveActivityProgressMixin.js'
-import FindNextActivity from '@/mixins/FindNextActivityMixin.js'
 import Fullscreen from '@/mixins/FullscreenMixin.js'
 import { jsonCopy } from '@/utils/objectTools'
 
-import PuzzlePieceEarnedDialog from '@/components/app/PuzzlePieceEarnedDialog.vue'
+import LessonActivitiesFinishedDialog from '@/components/app/dashboard/LessonActivitiesFinishedDialog.vue'
 
 export default {
   name: 'LessonActivityPlayer',
 
   components: {
-    PuzzlePieceEarnedDialog
+    LessonActivitiesFinishedDialog
   },
 
-  mixins: [VideoPlayerDialogMixin, DashboardMixin, SaveActivityProgress, FindNextActivity, Fullscreen, VideoAnalyticsMixin],
+  mixins: [VideoPlayerDialogMixin, DashboardMixin, SaveActivityProgress, Fullscreen, VideoAnalyticsMixin],
 
   data: () => {
-    return {}
+    return {
+      showFinishedVal: false
+    }
   },
 
   computed: {
     ...mapGetters('admin/curriculum', { lesson: 'getLesson' }),
     ...mapState('children/lesson', ['puzzlePiece']),
+
+    showFinished () {
+      return this.dialog && this.showFinishedVal
+    },
 
     remaining () {
       if (this.lesson) {
@@ -134,8 +138,12 @@ export default {
     },
 
     nextVideo () {
-      if (this.player.currentTime() === this.player.duration() && !this.pieceEarnedDialog) {
-        this.player.nextVideo()
+      if (this.player.currentTime() === this.player.duration()) {
+        if (this.lastVideo) {
+          this.showFinishedVal = true
+        } else {
+          this.player.nextVideo()
+        }
       }
     },
 
@@ -150,6 +158,12 @@ export default {
         }
         this.index = index
       }
+    },
+
+    handleAdvanceClose () {
+      this.handleClose()
+      this.showFinishedVal = false
+      this.dialog = false
     }
   }
 }

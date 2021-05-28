@@ -44,7 +44,7 @@
       </v-row>
 
       <span
-        class="d-block text-center font-weight-bold"
+        class="d-block text-center font-weight-bold mt-4"
         :class="{ 'white--text': displayMode }"
       >
         {{ patch.name }}
@@ -66,7 +66,7 @@
       />
     </v-row>
 
-    <span class="d-block text-center font-weight-bold">
+    <span class="d-block text-center font-weight-bold mt-4">
       {{ patch.name }}
     </span>
 

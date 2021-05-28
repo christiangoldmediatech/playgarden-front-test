@@ -1,61 +1,81 @@
 <template>
-  <v-card class="d-flex flex-column dashboard-content-card" height="100%">
+  <v-card>
+    <slot />
+
     <v-img
       :src="require('@/assets/jpg/worksheets_completed_2.jpg')"
-      class="align-center white--text"
-      gradient="to top, rgba(39, 39, 39, 0.9), rgba(255, 255, 255, 0) 80%"
+      class="pa-3"
+      gradient="to bottom, #272727, rgba(255, 255, 255, 0) 78.73%"
+      height="100%"
     >
-      <v-row class="mx-0 content dashboard-message-padding mt-16 pt-16" justify="center">
-        <v-col class="text-center pb-0" cols="12">
+      <div class="d-flex flex-column fill-height justify-space-around align-center">
+        <div class="text-center">
           <underlined-title
             class="white--text"
-            font-size="56px"
-            font-weight="bold"
-            text="Congratulations!"
-          />
-        </v-col>
-        <v-col class="py-0" cols="12">
-          <p class="text-h5 text-center white--text font-weight-medium mb-0">
-            You have completed your learning for today!<br>See you tomorrow!
+          >
+            Congratulations!
+          </underlined-title>
+
+          <p class="white--text text-h5">
+            You have completed all the tasks for the day.<br>
+            Come back tomorrow for more.
           </p>
-        </v-col>
-        <v-btn
-          class="mt-8"
-          color="accent"
-          elevation="0"
-          :disabled="!disabled"
-          x-large
-          @click.stop="onClick"
-        >
-          <v-icon large left>
-            mdi-play
-          </v-icon>
-          Go to Library
-        </v-btn>
-      </v-row>
+        </div>
+
+        <div class="d-flex flex-column mb-8">
+          <v-btn
+            class="mb-5"
+            color="accent"
+            :loading="loadingNext"
+            x-large
+            @click="advance"
+          >
+            <v-icon large class="mr-3">
+              mdi-arrow-right
+            </v-icon>
+            GO TO NEXT DAY
+          </v-btn>
+
+          <v-btn
+            color="#FEC572"
+            dark
+            x-large
+            :disabled="loadingNext"
+            @click="goToLibrary"
+          >
+            <v-icon large class="mr-3">
+              mdi-play
+            </v-icon>
+            GO TO LIBRARY
+          </v-btn>
+        </div>
+      </div>
     </v-img>
   </v-card>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import LessonAdvanceMixin from '@/mixins/LessonAdvanceMixin'
 
 export default {
   name: 'LessonCompletedCard',
 
-  computed: {
-    ...mapGetters('admin/curriculum', ['getLesson']),
+  mixins: [LessonAdvanceMixin],
 
-    disabled () {
-      return (this.getLesson && this.getLesson.lessonsActivities.length)
+  computed: {
+    ...mapGetters('admin/curriculum', { lesson: 'getLesson' }),
+    ...mapGetters({ children: 'getCurrentChild' }),
+
+    childId () {
+      return this.children[0].id
     }
   },
 
   methods: {
-    onClick () {
+    goToLibrary () {
       this.$router.push({
-        name: 'app-dashboard-lesson-activities',
-        query: { id: this.getLesson.lessonsActivities[0].activity.id }
+        name: 'app-library'
       })
     }
   }
