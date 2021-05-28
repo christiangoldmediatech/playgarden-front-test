@@ -91,20 +91,14 @@ export default defineComponent({
       type: Array as PropType<StudentCubbyItem[]>,
       required: true
     },
-    mobile: {
+    isMobile: {
       type: Boolean,
-      required: false
+      required: true
     }
   },
-  setup (props, ctx) {
+  setup (props) {
     const router = useRouter()
     const route = useRoute()
-
-    const isMobile = computed(() => {
-      return Object.prototype.hasOwnProperty.call(props, 'mobile')
-        ? props.mobile
-        : ctx.root.$vuetify.breakpoint.mobile
-    })
 
     const isSelectedItem = (item: StudentCubbyItem) => {
       return route.value?.name?.includes(item.routeName)
@@ -132,7 +126,7 @@ export default defineComponent({
       return require(`@/assets/png/student-cubby/${imgName}`)
     }
 
-    return { isSelectedItem, goToItem, currentRouteName, goToRoute, isMobile, getImg }
+    return { isSelectedItem, goToItem, currentRouteName, goToRoute, getImg }
   }
 })
 </script>

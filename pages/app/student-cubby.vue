@@ -18,6 +18,7 @@
             </v-col>
             <v-col cols="12" lg="auto" class="px-10 px-lg-0">
               <student-cubby-items
+                :is-mobile="isMobile"
                 :items="studentCubbyItems"
                 :selected-child-id="selectedChildId"
               />
@@ -143,7 +144,10 @@ export default defineComponent({
       }
     })
 
+    const isMobile = computed(() => ctx.root.$vuetify.breakpoint.mobile)
+
     return {
+      isMobile,
       studentCubbyItems,
       selectedCubbyItem,
       selectedChildId

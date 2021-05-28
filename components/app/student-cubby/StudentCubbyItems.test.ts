@@ -20,6 +20,7 @@ describe('components/app/student-cubby/StudentCubbyItems.vue', () => {
       PgSelect: true
     },
     propsData: {
+      isMobile: false,
       selectedChildId: 0,
       items: JSON.parse(JSON.stringify(studentCubbyItemsList))
     }
@@ -35,7 +36,7 @@ describe('components/app/student-cubby/StudentCubbyItems.vue', () => {
     it('shows desktop navigation bar', () => {
       const wrapper = mountFunction({
         propsData: {
-          mobile: false
+          isMobile: false
         }
       })
 
@@ -47,7 +48,7 @@ describe('components/app/student-cubby/StudentCubbyItems.vue', () => {
     it('renders each item passed as prop', () => {
       const wrapper = mountFunction({
         propsData: {
-          mobile: false
+          isMobile: false
         }
       })
 
@@ -61,7 +62,7 @@ describe('components/app/student-cubby/StudentCubbyItems.vue', () => {
     it('shows mobile select list', () => {
       const wrapper = mountFunction({
         propsData: {
-          mobile: true
+          isMobile: true
         }
       })
 
