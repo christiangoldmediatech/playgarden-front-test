@@ -9,6 +9,7 @@
         v-for="(item, itemIndex) in items"
         :key="item.routeName"
         class="d-flex align-center justify-center"
+        :data-test-id="`student-cubby-item-${item.text}`"
         @click="goToItem(item)"
       >
         <div

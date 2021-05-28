@@ -5,6 +5,7 @@
         <!-- Page Title -->
         <v-col cols="12" class="text-center mt-16 mb-12">
           <underlined-title
+            data-test-id="student-cubby-title"
             :text="selectedCubbyItem.title"
             font-size="65px"
           />
