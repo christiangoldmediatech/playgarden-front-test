@@ -213,8 +213,9 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 import DashboardMixin from '@/mixins/DashboardMixin'
+import LessonAdvanceMixin from '@/mixins/LessonAdvanceMixin'
 // import PgCircleLetterDay from '@/components/pg/components/PgCircleLetterDay'
 import UploadOfflineWorksheet from './worksheets/UploadOfflineWorksheet'
 import ContentSection from './ContentSection.vue'
@@ -230,7 +231,7 @@ export default {
     ContentList
   },
 
-  mixins: [DashboardMixin],
+  mixins: [DashboardMixin, LessonAdvanceMixin],
 
   props: {
     lesson: {
@@ -282,13 +283,12 @@ export default {
 
   data: () => {
     return {
-      uploadDialog: false,
-      loadingNext: false
+      uploadDialog: false
     }
   },
 
   computed: {
-    ...mapGetters('children/lesson', { nextLessonId: 'getNextLessonId', currentLessonId: 'getCurrentLessonId', previousLessonId: 'getPreviousLessonId' }),
+    ...mapGetters('children/lesson', { previousLessonId: 'getPreviousLessonId' }),
 
     offlineWorksheet () {
       if (this.lesson) {
@@ -309,25 +309,6 @@ export default {
   },
 
   methods: {
-    ...mapActions('children/lesson', ['getAdvanceLessonChildren']),
-
-    previousLesson () {
-      try {
-        this.$router.push({
-          name: 'app-dashboard',
-          query: {
-            childId: this.childId,
-            lessonId: this.previousLessonId
-          }
-        },
-        () => {
-          this.$nuxt.$emit('dashboard-panel-update-redirect', () => {
-            this.loadingNext = false
-          })
-        })
-      } catch (e) {}
-    },
-
     openPdf () {
       if (this.offlineWorksheet) {
         window.open(this.offlineWorksheet.pdfUrl, '_blank')
@@ -337,45 +318,6 @@ export default {
     openCourseProgress () {
       if (!this.displayMode) {
         this.$nuxt.$emit('show-curriculum-progress', this.lesson.curriculumType.id)
-      }
-    },
-
-    async advance () {
-      try {
-        if (!this.loadingNext) {
-          if (this.currentLessonId === this.lesson.id) {
-            await this.getAdvanceLessonChildren(this.childId)
-            this.$router.push({
-              name: 'app-dashboard'
-            },
-            () => {
-              this.$nuxt.$emit('dashboard-panel-update-redirect', () => {
-                this.loadingNext = false
-              })
-            })
-          } else {
-            this.$router.push({
-              name: 'app-dashboard',
-              query: {
-                childId: this.childId,
-                lessonId: this.nextLessonId
-              }
-            },
-            () => {
-              this.$nuxt.$emit('dashboard-panel-update-redirect', () => {
-                this.loadingNext = false
-              })
-            })
-          }
-        }
-      } catch (e) {
-        if (e && e.errorCode === 100) {
-          this.$router.push({
-            name: 'app-all-done'
-          })
-        }
-      } finally {
-        this.loadingNext = false
       }
     }
   }
