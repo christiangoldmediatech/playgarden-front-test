@@ -67,11 +67,23 @@ export default {
 
       const worksheets = this.lesson ? this.lesson.worksheets || [] : []
 
-      const completedCount = worksheets.map(({ completed }) => Number(completed ? 1 : 0))
+      // TODO: Restore progress count to include offline worksheets
+      // Temporarily removed until we decide how to count offline worksheet progress
+
+      // const completedCount = worksheets.map(({ completed }) => Number(completed ? 1 : 0))
+      //  .reduce((a, b) => a + b)
+
+      const onlineWorksheets = worksheets.filter(worksheet => worksheet.type === 'ONLINE')
+      const worksheetCount = onlineWorksheets.length
+      const completedCount = onlineWorksheets
+        .map(({ completed }) => Number(completed ? 1 : 0))
         .reduce((a, b) => a + b)
 
-      result.progress = worksheets.length ? (completedCount / worksheets.length) * 100 : 0
-      result.progressNext = (worksheets.length && completedCount < worksheets.length) ? ((completedCount + 1) / worksheets.length) * 100 : 100
+      // result.progress = worksheets.length ? (completedCount / worksheets.length) * 100 : 0
+      // result.progressNext = (worksheets.length && completedCount < worksheets.length) ? ((completedCount + 1) / worksheets.length) * 100 : 100
+
+      result.progress = worksheetCount ? (completedCount / worksheetCount) * 100 : 0
+      result.progressNext = (worksheetCount && completedCount < worksheetCount) ? ((completedCount + 1) / worksheetCount) * 100 : 100
 
       worksheets.map((i) => {
         if (i.type === 'ONLINE') {
