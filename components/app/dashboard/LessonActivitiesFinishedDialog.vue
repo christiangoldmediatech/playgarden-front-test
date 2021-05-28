@@ -17,10 +17,11 @@
   </pg-video-dialog>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from '@nuxtjs/composition-api'
 import LessonCompletedCard from '@/components/app/dashboard/LessonCompletedCard.vue'
 
-export default {
+export default defineComponent({
   name: 'LessonActivitiesFinishedDialog',
 
   components: {
@@ -34,10 +35,14 @@ export default {
     }
   },
 
-  methods: {
-    handleNextFinished () {
-      this.$emit('next-finished')
+  setup (_, { emit }) {
+    const handleNextFinished = (): void => {
+      emit('next-finished')
+    }
+
+    return {
+      handleNextFinished
     }
   }
-}
+})
 </script>
