@@ -13,11 +13,18 @@
       </div>
 
       <v-row justify="center">
-        <letter-card
+        <div
           v-for="letter in letters"
-          :key="`letter-card-${letter.id}`"
-          v-bind="{ letter }"
-        />
+          :key="`recorded-letter-${letter.id}`"
+          class="letter-shadow"
+          @click="showProgress(letter)"
+        >
+          <recorded-letter
+            :letter="letter"
+            :disabled="!letter.enabled"
+            :list-mode="!letter.enabled"
+          />
+        </div>
       </v-row>
     </v-card-text>
 
@@ -28,15 +35,15 @@
 <script>
 import { mapActions } from 'vuex'
 
-import LetterCard from '@/components/app/student-cubby/LetterCard.vue'
+import RecordedLetter from '@/components/app/live-sessions/recorded/RecordedLetter.vue'
 import CourseProgressOverlay from '@/components/app/student-cubby/CourseProgressOverlay.vue'
 
 export default {
   name: 'CourseProgress',
 
   components: {
-    LetterCard,
-    CourseProgressOverlay
+    CourseProgressOverlay,
+    RecordedLetter
   },
 
   data: () => {
@@ -73,7 +80,22 @@ export default {
         id: this.studentId
       })
       this.letters = data
+    },
+
+    showProgress (letter) {
+      if (!letter.enabled) {
+        return
+      }
+
+      this.$nuxt.$emit('show-curriculum-progress', letter.id)
     }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+  .letter-shadow {
+    border-radius: 8px;
+    filter: drop-shadow(0px 8px 24px rgba(0, 0, 0, 0.15));
+  }
+</style>
