@@ -1,15 +1,15 @@
 <template>
-  <v-card flat class="pt-0 pt-md-3">
-    <v-card-text class="pt-0 pt-md-4">
+  <v-card flat>
+    <v-card-text>
       <div class="text-center">
-        <underlined-title
-          class="text-h5 text-md-h3"
-          text="Review all Curriculum"
-        />
-
-        <p class="mt-2">
-          Tap on a letter and scroll through to review all lessons & course work
-        </p>
+        <!-- Section Title and Description -->
+        <div class="d-flex align-center justify-center">
+          <img height="80px" src="@/assets/png/student-cubby/abc.png">
+          <span class="ml-4 text-h4 text-md-h3">CURRICULUM</span>
+        </div>
+        <div class="my-6 text-md-h6 text-body-1">
+          Scroll through to review your lessons and worksheets!
+        </div>
       </div>
 
       <v-row justify="center">
