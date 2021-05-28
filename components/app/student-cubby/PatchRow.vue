@@ -1,6 +1,6 @@
 <template>
   <div class="mt-2">
-    <v-row align="end" class="mb-2">
+    <v-row align="end" class="mb-4 mt-4">
       <img :src="activityType.icon" height="32" class="mr-2">
 
       <div class="mx-3">
@@ -21,19 +21,17 @@
           :patch="patch"
           :to-unlock="activityType.toUnlock"
           :should-show-progress="isNextPatchToUnlock(patch.id)"
-          class="mb-6"
         />
       </template>
 
       <perfect-scrollbar v-else>
-        <v-row class="flex-nowrap mobile-patch-container">
+        <v-row class="flex-nowrap mobile-patch-container my-6">
           <patch
             v-for="patch in activityType.patches"
             :key="`activityType-${activityType.id}-patch-${patch.id}`"
             :patch="patch"
             :to-unlock="activityType.toUnlock"
             :should-show-progress="isNextPatchToUnlock(patch.id)"
-            class="mb-6"
           />
         </v-row>
       </perfect-scrollbar>

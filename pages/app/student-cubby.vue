@@ -1,26 +1,39 @@
 <template>
   <v-main>
     <v-container fluid>
-      <v-row justify="center">
-        <v-col cols="12" md="4" lg="3">
-          <student-cubby-panel />
+      <v-row justify="center" no-gutters>
+        <!-- Page Title -->
+        <v-col cols="12" class="text-center mt-16 mb-12">
+          <underlined-title
+            data-test-id="student-cubby-title"
+            :text="selectedCubbyItem.title"
+            font-size="65px"
+          />
+        </v-col>
+        <!-- Child Select And Cubby Item Select -->
+        <v-col cols="12" class="mb-0 mb-md-8">
+          <v-row no-gutters justify="center">
+            <v-col cols="12" lg="3" xl="2" class="px-10">
+              <child-select v-model="selectedChildId" />
+            </v-col>
+            <v-col cols="12" lg="auto" class="px-10 px-lg-0">
+              <student-cubby-items
+                :is-mobile="isMobile"
+                :items="studentCubbyItems"
+                :selected-child-id="selectedChildId"
+              />
+            </v-col>
+          </v-row>
         </v-col>
 
-        <v-col cols="12" md="">
-          <!-- <v-row align="center" class="mr-3 hidden-sm-and-down" justify="end">
-            <span class="font-weight-medium">First time using Playgarden?</span>
-
-            <v-btn color="primary" nuxt text :to="{ name: 'app-onboarding' }">
-              WATCH TUTORIAL HERE
-            </v-btn>
-          </v-row> -->
-
-          <template v-if="studentId">
+        <v-col cols="12">
+          <!-- Student Cubby Content -->
+          <template v-if="selectedChildId">
             <v-container class="pt-0 pt-md-3">
               <nuxt-child />
             </v-container>
           </template>
-
+          <!-- Select Child Placeholder -->
           <template v-else>
             <v-container fill-height>
               <v-row align="center" justify="center">
@@ -42,32 +55,103 @@
   </v-main>
 </template>
 
-<script>
-import StudentCubbyPanel from '@/components/app/student-cubby/StudentCubbyPanel.vue'
+<script lang="ts">
+import { defineComponent, useRoute, computed, watch, useRouter, onMounted, ref } from '@nuxtjs/composition-api'
+import StudentCubbyItems from '@/components/app/student-cubby/StudentCubbyItems.vue'
+import ChildSelect from '@/components/app/ChildSelect.vue'
 
-export default {
+export default defineComponent({
   name: 'StudentCubby',
 
   components: {
-    StudentCubbyPanel
+    ChildSelect,
+    StudentCubbyItems
   },
 
-  computed: {
-    studentId () {
-      return this.$route.query.id
-    }
-  },
+  setup (_, ctx) {
+    const route = useRoute()
+    const router = useRouter()
 
-  watch: {
-    studentId () {
-      // Redirect to puzzle by default
-      if (this.$route.name === 'app-student-cubby') {
-        this.$router.push({
-          name: 'app-student-cubby-puzzle',
-          query: { id: this.studentId }
+    const studentCubbyItems = [
+      {
+        text: 'PUZZLE',
+        title: 'STUDENTS CUBBY',
+        imgName: 'puzzle-piece.png',
+        routeName: 'app-student-cubby-puzzle'
+      },
+      {
+        text: 'PATCHES',
+        title: 'Earn Activity Patches for learning',
+        imgName: 'patches.svg',
+        routeName: 'app-student-cubby-patches'
+      },
+      {
+        text: 'CURRICULUM',
+        title: 'Review all Curriculum',
+        imgName: 'abc.png',
+        routeName: 'app-student-cubby-course-progress'
+      },
+      {
+        text: 'PORTFOLIO',
+        title: 'PORTFOLIO',
+        imgName: 'group.png',
+        routeName: 'app-student-cubby-student-portfolio'
+      },
+      {
+        text: 'PROGRESS REPORT',
+        title: 'PROGRESS REPORT',
+        imgName: 'progress.png',
+        routeName: 'app-progress-report'
+      }
+    ]
+    const selectedCubbyItem = computed(() => {
+      return studentCubbyItems.find(item => route.value.name?.includes(item.routeName)) || {}
+    })
+
+    const routeChildId = computed<number | null>(() => {
+      if (typeof route.value.query.id !== 'string') {
+        return null
+      }
+
+      return parseInt(route.value.query.id)
+    })
+
+    watch(routeChildId, () => {
+      router.push({
+        name: 'app-student-cubby-puzzle',
+        query: { id: `${routeChildId.value}` }
+      })
+    })
+
+    const selectedChildId = ref<number>(routeChildId.value || 0)
+
+    watch(selectedChildId, (id) => {
+      if (id) {
+        router.push({
+          name: route.value.name || 'app-student-cubby-puzzle',
+          query: { id: `${id}` }
         })
       }
+    })
+
+    const currentChildren = ctx.root.$store.getters.getCurrentChild
+
+    onMounted(() => {
+      if (routeChildId.value) {
+        selectedChildId.value = routeChildId.value
+      } else if (currentChildren?.length) {
+        selectedChildId.value = currentChildren[0].id
+      }
+    })
+
+    const isMobile = computed(() => ctx.root.$vuetify.breakpoint.mobile)
+
+    return {
+      isMobile,
+      studentCubbyItems,
+      selectedCubbyItem,
+      selectedChildId
     }
   }
-}
+})
 </script>
