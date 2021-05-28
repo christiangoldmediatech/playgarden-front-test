@@ -143,6 +143,10 @@ export default defineComponent({
     padding-left: 28px;
     padding-right: 28px;
 
+    &:hover {
+      cursor: pointer;
+    }
+
     &-selected {
       height: 60px;
       margin: -6px;
