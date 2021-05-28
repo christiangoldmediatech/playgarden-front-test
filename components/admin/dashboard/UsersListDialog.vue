@@ -1,5 +1,6 @@
 <template>
   <v-dialog
+    v-if="dialog"
     v-model="dialog"
     :fullscreen="$vuetify.breakpoint.xs"
     max-width="1200px"

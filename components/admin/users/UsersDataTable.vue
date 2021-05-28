@@ -293,6 +293,7 @@ export default {
 
   watch: {
     page () {
+      this.page = 1
       this.refresh()
     },
 
@@ -301,7 +302,6 @@ export default {
     },
 
     paramsSend (val) {
-      this.page = 1
       this.refresh()
     },
 
