@@ -26,6 +26,9 @@ export default {
     }),
     ...mapGetters('admin/curriculum', { lesson: 'getLesson' }),
     ...mapGetters('children', { allChildren: 'rows' }),
+    ...mapGetters('children/lesson', {
+      currentLessonId: 'getCurrentLessonId'
+    }),
     overrideMode () {
       return !!(this.overrides.childId && this.overrides.lessonId)
     },
@@ -169,8 +172,13 @@ export default {
             id: this.getNextId(this.activities.items)
           })
           this.$router.push(route)
-        } else {
+        } else if (this.lesson.id === this.currentLessonId) {
           this.$router.push(this.generateNuxtRoute('lesson-completed'))
+        } else {
+          const route = this.generateNuxtRoute('lesson-videos', {
+            id: this.videos.items[0].id
+          })
+          this.$router.push(route)
         }
       } else if (
         this.lesson &&
