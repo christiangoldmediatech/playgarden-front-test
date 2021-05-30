@@ -32,16 +32,15 @@
 </template>
 
 <script>
+import { defineComponent, onMounted, ref } from '@nuxtjs/composition-api'
 import { mapActions, mapGetters } from 'vuex'
 import FavoritesContainer from '@/components/app/library/FavoritesContainer.vue'
 import ActivityTypeHeader from '@/components/app/library/ActivityTypeHeader.vue'
 import ActivityPlayer from '@/components/app/activities/ActivityPlayer.vue'
-import { shuffle } from '@/utils/arrayTools'
-import LibraryFunctions from '@/mixins/LibraryFunctions'
+import { useActivity } from '@/composables'
 
-export default {
-  // eslint-disable-next-line vue/match-component-file-name
-  name: 'ActivityTypeId',
+export default defineComponent({
+  name: 'Favorites',
 
   components: {
     FavoritesContainer,
@@ -49,11 +48,26 @@ export default {
     ActivityPlayer
   },
 
-  mixins: [LibraryFunctions],
+  setup () {
+    const { favorites, getActivities } = useActivity()
 
-  data: () => {
+    // this references `ref="container"` when the component is mounted
+    const container = ref(null)
+
+    const handlePlayAll = () => {
+      if (container.value) {
+        container.value.handlePlay(0)
+      }
+    }
+
+    onMounted(async () => {
+      await getActivities()
+    })
+
     return {
-      favorites: []
+      container,
+      favorites,
+      handlePlayAll
     }
   },
 
@@ -67,32 +81,14 @@ export default {
     this.setChild({
       value: this.allChildren
     })
-    this.fetchFavorites()
     this.getAllFavorites()
   },
 
   methods: {
     ...mapActions('video', ['getAllFavorites']),
-    ...mapActions(['setChild']),
-
-    async fetchFavorites () {
-      try {
-        const data = await this.$axios.$get('/activities')
-
-        if (data.favorites && data.favorites.length) {
-          this.favorites = data.favorites.length ? shuffle(data.favorites) : []
-        }
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error(error)
-      }
-    },
-
-    handlePlayAll () {
-      this.$refs.container.handlePlay(0)
-    }
+    ...mapActions(['setChild'])
   }
-}
+})
 </script>
 
 <style lang="scss">
