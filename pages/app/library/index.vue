@@ -53,7 +53,7 @@ import ActivityTypeContainer from '@/components/app/library/ActivityTypeContaine
 import FavoritesContainer from '@/components/app/library/FavoritesContainer.vue'
 import LibraryCategories from '@/components/app/library/LibraryCategories.vue'
 import ActivityPlayer from '@/components/app/activities/ActivityPlayer.vue'
-import { useActivity, useLibrary } from '@/composables'
+import { useActivity } from '@/composables'
 
 export default defineComponent({
   name: 'Index',
@@ -74,7 +74,6 @@ export default defineComponent({
       getActivities,
       refreshFavoriteActivities
     } = useActivity()
-    const { getAllFavorites } = useLibrary()
 
     const isPageLoading = ref(activities.value.length === 0)
     const isFavoriteFirstLoad = ref(true)
@@ -85,8 +84,6 @@ export default defineComponent({
     onMounted(async () => {
       await getActivities()
       isPageLoading.value = false
-
-      await getAllFavorites()
       isFavoriteFirstLoad.value = false
     })
 

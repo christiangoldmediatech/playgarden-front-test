@@ -31,9 +31,8 @@
   </v-main>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, onMounted, ref } from '@nuxtjs/composition-api'
-import { mapActions, mapGetters } from 'vuex'
 import FavoritesContainer from '@/components/app/library/FavoritesContainer.vue'
 import ActivityTypeHeader from '@/components/app/library/ActivityTypeHeader.vue'
 import ActivityPlayer from '@/components/app/activities/ActivityPlayer.vue'
@@ -52,11 +51,11 @@ export default defineComponent({
     const { favorites, getActivities } = useActivity()
 
     // this references `ref="container"` when the component is mounted
-    const container = ref(null)
+    const container = ref<any>(null)
 
     const handlePlayAll = () => {
       if (container.value) {
-        container.value.handlePlay(0)
+        container.value?.handlePlay(0)
       }
     }
 
@@ -69,24 +68,6 @@ export default defineComponent({
       favorites,
       handlePlayAll
     }
-  },
-
-  computed: {
-    ...mapGetters('children', {
-      allChildren: 'rows'
-    })
-  },
-
-  created () {
-    this.setChild({
-      value: this.allChildren
-    })
-    this.getAllFavorites()
-  },
-
-  methods: {
-    ...mapActions('video', ['getAllFavorites']),
-    ...mapActions(['setChild'])
   }
 })
 </script>
