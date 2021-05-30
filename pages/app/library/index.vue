@@ -76,7 +76,7 @@ export default defineComponent({
     } = useActivity()
     const { getAllFavorites } = useLibrary()
 
-    const isPageLoading = ref(true)
+    const isPageLoading = ref(activities.value.length === 0)
     const isFavoriteFirstLoad = ref(true)
 
     // setup favorites callback
@@ -84,8 +84,9 @@ export default defineComponent({
 
     onMounted(async () => {
       await getActivities()
-      await getAllFavorites()
       isPageLoading.value = false
+
+      await getAllFavorites()
       isFavoriteFirstLoad.value = false
     })
 
