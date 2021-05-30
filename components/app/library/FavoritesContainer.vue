@@ -36,6 +36,7 @@
         <div
           v-for="(activity, index) in shownFavorites"
           :key="`activity-type-favorite-activity-${activity.id}`"
+          data-test-id="favorite-card"
           class="act-type-activity"
           @click="handlePlay(index)"
         >
