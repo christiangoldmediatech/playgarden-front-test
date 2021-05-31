@@ -66,7 +66,10 @@ export default defineComponent({
     })
 
     onMounted(async () => {
-      await getActivities()
+      if (favorites.value.length === 0) {
+        await getActivities()
+      }
+
       ctx.root.$store.dispatch('video/getAllFavorites')
     })
 
