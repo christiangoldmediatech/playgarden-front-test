@@ -134,6 +134,13 @@
                 </v-col>
               </v-row>
             </v-col>
+            <v-col cols="12">
+              <v-card class="line-stack-chart">
+                <v-card-text>
+                  <line-stack-chart :line-stack-data="lineStack" />
+                </v-card-text>
+              </v-card>
+            </v-col>
           </v-row>
           <v-row class="mx-1">
             <!-- Plans-->
@@ -263,6 +270,7 @@
 import dayjs from 'dayjs'
 import { mapActions } from 'vuex'
 import FunnelChart from './FunnelChart.vue'
+import LineStackChart from './LineStackChart.vue'
 import PieChart from './PieChart.vue'
 import TimeLineChart from './TimeLineChart.vue'
 import BarChart from './BarChart.vue'
@@ -272,6 +280,7 @@ export default {
 
   components: {
     FunnelChart,
+    LineStackChart,
     PieChart,
     TimeLineChart,
     BarChart,
@@ -283,6 +292,12 @@ export default {
     funnel: {
       title: '',
       subtitle: '',
+      data: []
+    },
+    lineStack: {
+      title: '',
+      subtitle: '',
+      xAxis: [],
       data: []
     },
     totalSubscriptions: {
@@ -365,8 +380,39 @@ export default {
       }
       try {
         const { dataFunnel, totalSubscriptions, totalTrialing, totalActive, canceledUsers, usersPerPlan, usersPerStatus, activeUsers, dailyUsers, childsByLetter, childrenTotal, planActiveInactive } = await this.getDashboard({})
+        const { statusByMonth } = await this.getDashboard({ userPerPlan: true, statusByMonth: true })
         this.funnel = {
           data: dataFunnel
+        }
+
+        this.lineStack = {
+          xAxis: statusByMonth.months,
+          data: [
+            {
+              name: 'Trialing',
+              type: 'line',
+              stack: 'Trialing',
+              data: statusByMonth.trialing
+            },
+            {
+              name: 'Active',
+              type: 'line',
+              stack: 'Active',
+              data: statusByMonth.active
+            },
+            {
+              name: 'Canceled',
+              type: 'line',
+              stack: 'Canceled',
+              data: statusByMonth.canceled
+            },
+            {
+              name: 'Total',
+              type: 'line',
+              stack: 'Total',
+              data: statusByMonth.total
+            }
+          ]
         }
 
         this.totalSubscriptions = totalSubscriptions
@@ -460,5 +506,9 @@ ul li::before {
 
 .total-users {
   color: var(--v-accent-base) !important;
+}
+
+.line-stack-chart {
+  max-height: 550px;;
 }
 </style>
