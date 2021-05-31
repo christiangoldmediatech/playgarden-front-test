@@ -104,7 +104,7 @@
           </v-col>
           <!-- Letters -->
           <v-col cols="12" md="5" lg="5" class="py-4 py-md-0 pl-0 pl-md-2">
-            <v-card width="100%" class="pa-2">
+            <v-card width="100%" class="pa-3">
               <div v-if="loadLetterStatsData">
                 <v-skeleton-loader type="card-heading" />
                 <v-skeleton-loader
