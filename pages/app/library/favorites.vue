@@ -47,7 +47,7 @@ export default defineComponent({
     ActivityPlayer
   },
 
-  setup () {
+  setup (_, ctx) {
     const { favorites, getActivities } = useActivity()
 
     // this references `ref="container"` when the component is mounted
@@ -59,8 +59,15 @@ export default defineComponent({
       }
     }
 
+    ctx.root.$nuxt.$on('library-update-favorites', () => {
+      // TODO: Migrate FavoriteMixin to composable.
+      //       Each activity card uses the favorites store to know if it is favorite or not
+      ctx.root.$store.dispatch('video/getAllFavorites')
+    })
+
     onMounted(async () => {
       await getActivities()
+      ctx.root.$store.dispatch('video/getAllFavorites')
     })
 
     return {

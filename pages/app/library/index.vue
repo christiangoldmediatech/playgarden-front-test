@@ -79,12 +79,19 @@ export default defineComponent({
     const isFavoriteFirstLoad = ref(true)
 
     // setup favorites callback
-    ctx.root.$nuxt.$on('library-update-favorites', refreshFavoriteActivities)
+    ctx.root.$nuxt.$on('library-update-favorites', () => {
+      refreshFavoriteActivities()
+      // TODO: Migrate FavoriteMixin to composable.
+      //       Each activity card uses the favorites store to know if it is favorite or not
+      ctx.root.$store.dispatch('video/getAllFavorites')
+    })
 
     onMounted(async () => {
       await getActivities()
       isPageLoading.value = false
       isFavoriteFirstLoad.value = false
+
+      ctx.root.$store.dispatch('video/getAllFavorites')
     })
 
     const playFeaturedVideo = () => {
