@@ -137,6 +137,7 @@
             <v-col cols="12">
               <v-card class="line-stack-chart">
                 <v-card-text>
+                  <label class="title-dashboard font-weight-bold">Status by month</label>
                   <line-stack-chart :line-stack-data="lineStack" />
                 </v-card-text>
               </v-card>
