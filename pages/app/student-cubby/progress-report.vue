@@ -4,7 +4,7 @@
       <v-card-text>
         <div class="text-center">
           <!-- Section Title and Description -->
-          <div class="d-flex align-center justify-center">
+          <div v-if="!$vuetify.breakpoint.smAndDown" class="d-flex align-center justify-center">
             <img height="80px" src="@/assets/png/student-cubby/progress.png">
             <span class="ml-4 text-h4 text-md-h3">PROGRESS REPORT</span>
           </div>

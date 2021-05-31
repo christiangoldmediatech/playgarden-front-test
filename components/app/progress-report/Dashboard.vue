@@ -1,17 +1,9 @@
 <template>
   <v-row no-gutters :class="{ 'fill-height': $vuetify.breakpoint.mdAndUp }">
     <!-- Type Selector: Mobile -->
-    <v-col v-if="$vuetify.breakpoint.smAndDown" cols="12" class="pt-10">
+    <v-col v-if="$vuetify.breakpoint.smAndDown" cols="12" class="pt-2">
       <v-row no-gutters class="px-3">
         <v-col cols="12">
-          <child-select
-            v-model="selectedChild"
-            hide-details
-            :preview-mode="previewMode"
-            @input="$emit('input', getDataGraphic())"
-          />
-        </v-col>
-        <v-col cols="12" class="pt-4">
           <report-card-type-select
             v-model="selectedReportCard"
             hide-details
@@ -163,7 +155,6 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import ChartReport from '@/components/app/progress-report/ChartReport.vue'
-import ChildSelect from '@/components/app/ChildSelect.vue'
 import ReportCardTypeSelect from '@/components/app/progress-report/ReportCardTypeSelect.vue'
 import LetterStats from '@/components/app/progress-report/LetterStats.vue'
 import DetailProgress from '@/components/app/progress-report/DetailProgress.vue'
@@ -173,7 +164,6 @@ export default {
 
   components: {
     ChartReport,
-    ChildSelect,
     ReportCardTypeSelect,
     LetterStats,
     DetailProgress,
