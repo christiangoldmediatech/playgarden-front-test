@@ -140,7 +140,7 @@ describe('/app/library', () => {
   })
 })
 
-const clickAllVideosFavoriteBtnWithClass = (className: string) => {
+var clickAllVideosFavoriteBtnWithClass = (className: string) => {
   cy.get('[data-test-id=activity-card-favorite-button]').each($button => {
     return new Promise<void>(resolve => {
       if ($button.hasClass(className)) {
@@ -153,11 +153,11 @@ const clickAllVideosFavoriteBtnWithClass = (className: string) => {
   })
 }
 
-const assertDialogIsVisible = () => {
+var assertDialogIsVisible = () => {
   cy.get('[data-test-id=video-player-dialog]').should('be.visible')
 }
 
-const closeDialogAndAssertItIsNotVisible = () => {
+var closeDialogAndAssertItIsNotVisible = () => {
   cy.get('.player-dialog-container > .player-dialog-close-btn > .v-btn').click({ multiple: true, force: true })
   cy.get('[data-test-id=video-player-dialog]').should('not.be.visible')
 }
