@@ -241,9 +241,10 @@ export default {
     buildQueryParamsLineStack (dateSplit, seriesName) {
       const start = new Date(dateSplit[0], dateSplit[1], 1).toString().split(' ')
       const end = new Date(dateSplit[0], Number(dateSplit[1]) + 1, 0).toString().split(' ')
+      const listStatus = (seriesName.toLowerCase() === 'total') ? ['trialing', 'active', 'canceled'] : [seriesName.toLowerCase()]
       this.params = {
         subscriptionId: 'not null',
-        stripeStatus: seriesName.toLowerCase(),
+        stripeStatus: listStatus,
         dateStart: `${dateSplit[0]}-${dateSplit[1]}-${start[2]} 00:00:00`,
         dateEnd: `${dateSplit[0]}-${dateSplit[1]}-${end[2]} 23:59:59.999999`
       }
