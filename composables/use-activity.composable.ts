@@ -10,6 +10,14 @@ type ActivitiesResponse = {
   favorites: FavoriteListResponse[]
   featured: FeaturedActivity
 }
+type ActivitiesByIdResponse = {
+  activities: ActivityType
+  favorites: null
+  featured: FeaturedActivity
+  limit: string
+  page: string
+  total: number
+}
 type ActivitiesFavoriteResponse = {
   activities: null
   favorites: FavoriteListResponse[]
@@ -35,6 +43,24 @@ export const useActivity = () => {
 
     favorites.value = response.favorites.length ? shuffle(response.favorites) : []
     featured.value = response.featured
+  }
+
+  const activityById = ref<ActivityType>({} as ActivityType)
+  const featuredById = ref({} as FeaturedActivity)
+  const totalById = ref(0)
+
+  const getActivitiesById = async (id: number) => {
+    const response = await axios.$get(`/activities/${id}/filter`) as ActivitiesByIdResponse
+
+    activityById.value = {
+      ...response.activities,
+      activities: shuffle(getValidActivities(response.activities.activities || [])) as Activity[],
+      videos: shuffle(getValidVideos(response.activities.videos || [])) as Video[],
+      playlist: getPlaylistFromActivity(response.activities)
+    }
+
+    featuredById.value = response.featured
+    totalById.value = (activityById.value.videos?.length || 0) + response.total
   }
 
   /**
@@ -68,6 +94,10 @@ export const useActivity = () => {
     activities,
     favorites,
     featured,
+    activityById,
+    featuredById,
+    totalById,
+    getActivitiesById,
     getActivities,
     refreshFavoriteActivities
   }
