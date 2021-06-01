@@ -10,7 +10,7 @@ type ActivitiesResponse = {
   favorites: FavoriteListResponse[]
   featured: FeaturedActivity
 }
-type ActivitiesByIdResponse = {
+type ActivityByIdResponse = {
   activities: ActivityType
   favorites: null
   featured: FeaturedActivity
@@ -50,7 +50,7 @@ export const useActivity = () => {
   const totalById = ref(0)
 
   const getActivitiesById = async (id: number) => {
-    const response = await axios.$get(`/activities/${id}/filter`) as ActivitiesByIdResponse
+    const response = await axios.$get(`/activities/${id}/filter`) as ActivityByIdResponse
 
     activityById.value = {
       ...response.activities,
