@@ -59,12 +59,6 @@ export default defineComponent({
       }
     }
 
-    ctx.root.$nuxt.$on('library-update-favorites', () => {
-      // TODO: Migrate FavoriteMixin to composable.
-      //       Each activity card uses the favorites store to know if it is favorite or not
-      ctx.root.$store.dispatch('video/getAllFavorites')
-    })
-
     onMounted(async () => {
       if (favorites.value.length === 0) {
         await getActivities()
