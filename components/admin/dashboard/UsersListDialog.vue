@@ -251,12 +251,10 @@ export default {
 
     open (evt, item = null) {
       const { name, seriesName } = item
-      let month = ''
       this.name = name
       this.seriesName = seriesName
       if (name.split('-').length > 1) {
         this.name = seriesName
-        month = name
         this.seriesName = 'lineStack'
       }
 
