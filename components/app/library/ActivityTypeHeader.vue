@@ -16,6 +16,7 @@
 
     <v-btn
       class="activity-type-header-button"
+      data-test-id="activity-type-header-button"
       color="primary"
       large
       @click="$emit('play-all')"
