@@ -238,13 +238,30 @@ export default {
       }
     },
 
+    buildQueryParamsLineStack (dateSplit, seriesName) {
+      const start = new Date(dateSplit[0], dateSplit[1], 1).toString().split(' ')
+      const end = new Date(dateSplit[0], Number(dateSplit[1]) + 1, 0).toString().split(' ')
+      this.params = {
+        subscriptionId: 'not null',
+        stripeStatus: seriesName.toLowerCase(),
+        dateStart: `${dateSplit[0]}-${dateSplit[1]}-${start[2]} 00:00:00`,
+        dateEnd: `${dateSplit[0]}-${dateSplit[1]}-${end[2]} 23:59:59.999999`
+      }
+    },
+
     open (evt, item = null) {
       const { name, seriesName } = item
+      let month = ''
       this.name = name
       this.seriesName = seriesName
+      if (name.split('-').length > 1) {
+        this.name = seriesName
+        month = name
+        this.seriesName = 'lineStack'
+      }
 
       if (name) {
-        switch (seriesName) {
+        switch (this.seriesName) {
           case 'Conversions funnel':
             this.buildQueryParamsConversionTunne()
             break
@@ -300,6 +317,9 @@ export default {
             break
           case 'Canceled - increment':
             this.buildQueryParamsUsers('canceled', true)
+            break
+          case 'lineStack':
+            this.buildQueryParamsLineStack(name.split('-'), seriesName)
             break
         }
       }

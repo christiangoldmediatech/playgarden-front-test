@@ -21,7 +21,7 @@ export default {
     },
     height: {
       type: String,
-      default: '500px'
+      default: '300px'
     }
   },
   data () {
@@ -39,14 +39,14 @@ export default {
         tooltip: {
           trigger: 'axis'
         },
-        legend: {
-          data: ['Trialig', 'Active', 'Canceled', 'Total']
-        },
         grid: {
           left: '3%',
           right: '4%',
           bottom: '3%',
           containLabel: true
+        },
+        legend: {
+          data: ['Trialig', 'Active', 'Canceled', 'Total']
         },
         xAxis: {
           type: 'category',

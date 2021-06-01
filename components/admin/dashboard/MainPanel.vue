@@ -135,9 +135,9 @@
               </v-row>
             </v-col>
             <v-col cols="12">
-              <v-card class="line-stack-chart">
+              <v-card class="mx-3">
                 <v-card-text>
-                  <label class="title-dashboard font-weight-bold">Status by month</label>
+                  <label class="title-dashboard font-weight-bold">User Acquisition</label>
                   <line-stack-chart :line-stack-data="lineStack" />
                 </v-card-text>
               </v-card>
@@ -507,9 +507,5 @@ ul li::before {
 
 .total-users {
   color: var(--v-accent-base) !important;
-}
-
-.line-stack-chart {
-  max-height: 550px;;
 }
 </style>
