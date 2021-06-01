@@ -29,6 +29,7 @@
             :max-width="!displayMode ? 200 : undefined"
             :to-unlock="toUnlock"
             :should-show-progress="shouldShowProgress"
+            :activity-type-name="activityTypeName"
             @display-badge="displayBadge"
           />
         </div>
@@ -39,6 +40,7 @@
           :max-width="!displayMode ? 200 : undefined"
           :to-unlock="toUnlock"
           :should-show-progress="shouldShowProgress"
+          :activity-type-name="activityTypeName"
           @display-badge="displayBadge"
         />
       </v-row>
@@ -62,6 +64,7 @@
         :patch="patch"
         :to-unlock="toUnlock"
         :should-show-progress="shouldShowProgress"
+        :activity-type-name="activityTypeName"
         @display-badge="displayBadge"
       />
     </v-row>
@@ -103,6 +106,10 @@ export default {
     shouldShowProgress: {
       type: Boolean,
       default: false
+    },
+    activityTypeName: {
+      type: String,
+      default: ''
     }
   },
 

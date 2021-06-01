@@ -9,7 +9,7 @@
 
         <img class="act-type-icon" :src="activityType.icon">
 
-        <div class="act-type-title">
+        <div :id="activityType.name" class="act-type-title">
           {{ activityType.name }}
 
           <v-btn
