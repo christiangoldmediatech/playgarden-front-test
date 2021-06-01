@@ -47,7 +47,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, ref, useRoute } from '@nuxtjs/composition-api'
 import FeaturedVideo from '@/components/app/library/FeaturedVideo.vue'
 import ActivityTypeContainer from '@/components/app/library/ActivityTypeContainer.vue'
 import FavoritesContainer from '@/components/app/library/FavoritesContainer.vue'
@@ -74,6 +74,7 @@ export default defineComponent({
       getActivities,
       refreshFavoriteActivities
     } = useActivity()
+    const route = useRoute()
     const { getAllFavorites } = useLibrary()
 
     const isPageLoading = ref(true)
@@ -87,6 +88,8 @@ export default defineComponent({
       await getAllFavorites()
       isPageLoading.value = false
       isFavoriteFirstLoad.value = false
+
+      navigateToSection(route.value.hash)
     })
 
     const playFeaturedVideo = () => {
@@ -102,6 +105,18 @@ export default defineComponent({
       const index = playlist.findIndex(playItem => playItem.activityId === featuredId)
 
       ctx.root.$nuxt.$emit('open-activity-player', { playlist, index })
+    }
+
+    const navigateToSection = (hash: string) => {
+      if (!hash) {
+        return
+      }
+
+      try {
+        setTimeout(() => {
+          ctx.root.$vuetify.goTo(hash, { offset: 200 })
+        }, 1000)
+      } catch (err) {}
     }
 
     return {
