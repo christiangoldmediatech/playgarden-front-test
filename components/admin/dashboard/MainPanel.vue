@@ -388,6 +388,7 @@ export default {
 
         this.lineStack = {
           xAxis: statusByMonth.months,
+          legend: ['Trialig', 'Active', 'Canceled', 'Total'],
           data: [
             {
               name: 'Trialing',

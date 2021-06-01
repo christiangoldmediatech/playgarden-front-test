@@ -46,7 +46,7 @@ export default {
           containLabel: true
         },
         legend: {
-          data: ['Trialig', 'Active', 'Canceled', 'Total']
+          data: (this.lineStackData.legend) ? this.lineStackData.legend : []
         },
         xAxis: {
           type: 'category',
