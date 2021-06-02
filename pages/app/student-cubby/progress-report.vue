@@ -5,7 +5,7 @@
         <div class="text-center">
           <!-- Section Title and Description -->
           <div v-if="!$vuetify.breakpoint.smAndDown" class="d-flex align-center justify-center">
-            <img height="80px" src="@/assets/png/student-cubby/progress.png">
+            <img height="40px" src="@/assets/png/student-cubby/progress.png">
             <span class="ml-4 text-h4 text-md-h3">PROGRESS REPORT</span>
           </div>
           <div class="my-6 text-md-h6 text-body-1">
