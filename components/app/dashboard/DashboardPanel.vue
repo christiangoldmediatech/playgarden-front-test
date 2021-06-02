@@ -208,7 +208,8 @@
         </content-section>
       </div>
     </v-card>
-    <upload-offline-worksheet v-if="!displayMode" v-model="uploadDialog" />
+
+    <upload-offline-worksheet v-if="uploadDialog" v-model="uploadDialog" />
   </div>
 </template>
 
