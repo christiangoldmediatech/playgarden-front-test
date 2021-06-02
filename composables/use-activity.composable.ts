@@ -44,18 +44,12 @@ export const useActivity = () => {
     const response = await axios.$get('/activities?favorites=1') as ActivitiesFavoriteResponse
 
     const newFavoriteIds = response.favorites.map(favorite => favorite.id)
-    const removedFavoriteIds = favorites.value
-      .filter(favorite => !newFavoriteIds.includes(favorite.id))
-      .map(favorite => favorite.id)
 
     // remove elements from current favorites not present in new favorites
-    favorites.value.filter(favorite => !removedFavoriteIds.includes(favorite.id))
+    favorites.value = favorites.value.filter(favorite => newFavoriteIds.includes(favorite.id))
 
     const currentFavoriteIds = favorites.value.map(favorite => favorite.id)
-    const addedFavoriteIds = response.favorites
-      .filter(favorite => !currentFavoriteIds.includes(favorite.id))
-      .map(favorite => favorite.id)
-
+    const addedFavoriteIds = newFavoriteIds.filter(favoriteId => !currentFavoriteIds.includes(favoriteId))
     const newFavoritesRecord = arrayToRecord<FavoriteListResponse>(response.favorites, 'id')
 
     // add elements from new favorites not present in current favorites

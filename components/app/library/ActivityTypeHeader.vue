@@ -10,12 +10,16 @@
       <img :src="icon">
     </div>
 
-    <div class="activity-type-header-title">
+    <div
+      class="activity-type-header-title"
+      data-test-id="activity-type-header-title"
+    >
       ALL {{ name.toUpperCase() }}
     </div>
 
     <v-btn
       class="activity-type-header-button"
+      data-test-id="activity-type-header-button"
       color="primary"
       large
       @click="$emit('play-all')"

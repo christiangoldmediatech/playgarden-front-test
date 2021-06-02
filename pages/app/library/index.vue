@@ -53,7 +53,7 @@ import ActivityTypeContainer from '@/components/app/library/ActivityTypeContaine
 import FavoritesContainer from '@/components/app/library/FavoritesContainer.vue'
 import LibraryCategories from '@/components/app/library/LibraryCategories.vue'
 import ActivityPlayer from '@/components/app/activities/ActivityPlayer.vue'
-import { useActivity, useLibrary } from '@/composables'
+import { useActivity } from '@/composables'
 
 export default defineComponent({
   name: 'Index',
@@ -74,19 +74,21 @@ export default defineComponent({
       getActivities,
       refreshFavoriteActivities
     } = useActivity()
-    const { getAllFavorites } = useLibrary()
 
-    const isPageLoading = ref(true)
+    const isPageLoading = ref(activities.value.length === 0)
     const isFavoriteFirstLoad = ref(true)
 
     // setup favorites callback
-    ctx.root.$nuxt.$on('library-update-favorites', refreshFavoriteActivities)
+    ctx.root.$nuxt.$on('library-update-favorites', () => {
+      refreshFavoriteActivities()
+    })
 
     onMounted(async () => {
       await getActivities()
-      await getAllFavorites()
       isPageLoading.value = false
       isFavoriteFirstLoad.value = false
+
+      ctx.root.$store.dispatch('video/getAllFavorites')
     })
 
     const playFeaturedVideo = () => {

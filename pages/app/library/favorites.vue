@@ -31,17 +31,15 @@
   </v-main>
 </template>
 
-<script>
-import { mapActions, mapGetters } from 'vuex'
+<script lang="ts">
+import { defineComponent, onMounted, ref } from '@nuxtjs/composition-api'
 import FavoritesContainer from '@/components/app/library/FavoritesContainer.vue'
 import ActivityTypeHeader from '@/components/app/library/ActivityTypeHeader.vue'
 import ActivityPlayer from '@/components/app/activities/ActivityPlayer.vue'
-import { shuffle } from '@/utils/arrayTools'
-import LibraryFunctions from '@/mixins/LibraryFunctions'
+import { useActivity } from '@/composables'
 
-export default {
-  // eslint-disable-next-line vue/match-component-file-name
-  name: 'ActivityTypeId',
+export default defineComponent({
+  name: 'Favorites',
 
   components: {
     FavoritesContainer,
@@ -49,50 +47,33 @@ export default {
     ActivityPlayer
   },
 
-  mixins: [LibraryFunctions],
+  setup (_, ctx) {
+    const { favorites, getActivities } = useActivity()
 
-  data: () => {
-    return {
-      favorites: []
-    }
-  },
+    // this references `ref="container"` when the component is mounted
+    const container = ref<any>(null)
 
-  computed: {
-    ...mapGetters('children', {
-      allChildren: 'rows'
-    })
-  },
-
-  created () {
-    this.setChild({
-      value: this.allChildren
-    })
-    this.fetchFavorites()
-    this.getAllFavorites()
-  },
-
-  methods: {
-    ...mapActions('video', ['getAllFavorites']),
-    ...mapActions(['setChild']),
-
-    async fetchFavorites () {
-      try {
-        const data = await this.$axios.$get('/activities')
-
-        if (data.favorites && data.favorites.length) {
-          this.favorites = data.favorites.length ? shuffle(data.favorites) : []
-        }
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error(error)
+    const handlePlayAll = () => {
+      if (container.value) {
+        container.value?.handlePlay(0)
       }
-    },
+    }
 
-    handlePlayAll () {
-      this.$refs.container.handlePlay(0)
+    onMounted(async () => {
+      if (favorites.value.length === 0) {
+        await getActivities()
+      }
+
+      ctx.root.$store.dispatch('video/getAllFavorites')
+    })
+
+    return {
+      container,
+      favorites,
+      handlePlayAll
     }
   }
-}
+})
 </script>
 
 <style lang="scss">
