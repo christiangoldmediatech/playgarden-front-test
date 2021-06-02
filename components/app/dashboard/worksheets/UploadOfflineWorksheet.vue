@@ -63,7 +63,9 @@
                 >
               </v-card-text>
             </v-card>
-            <pg-loading v-else />
+            <v-card v-else>
+              <pg-loading />
+            </v-card>
           </v-hover>
         </v-row>
 
