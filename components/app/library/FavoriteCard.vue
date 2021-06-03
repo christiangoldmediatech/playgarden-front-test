@@ -3,7 +3,8 @@
     <v-card
       class="activity-card"
       :style="{
-        transform: !isMobile && hover ? 'scale(1.125)' : undefined
+        transform: !isMobile && hover ? 'scale(1.125)' : undefined,
+        'z-index': !isMobile && hover ? '1' : undefined
       }"
       width="100%"
     >
