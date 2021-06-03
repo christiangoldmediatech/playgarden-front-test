@@ -21,8 +21,11 @@
             :key="`${category.category}-${indexCategory}`"
             v-slot="{ hover }"
           >
+            <v-card v-if="loadingView">
+              <pg-loading />
+            </v-card>
             <v-card
-              v-if="!loadingView"
+              v-else
               :class="['ma-2 clickable category-card', { scaled: hover }]"
               :elevation="hover ? 12 : 2"
               :disabled="loading"
@@ -62,9 +65,6 @@
                   @change="setFile($event, category.id, indexCategory)"
                 >
               </v-card-text>
-            </v-card>
-            <v-card v-else>
-              <pg-loading />
             </v-card>
           </v-hover>
         </v-row>
@@ -119,7 +119,7 @@ export default {
     }
   },
 
-  data: () => {
+  data () {
     return {
       loading: false,
       loadingView: true,
@@ -165,12 +165,16 @@ export default {
     ...mapActions('children/lesson', ['saveWorksheetProgress']),
 
     async getCategoriesByWorksheetId () {
-      this.loadingView = true
-      this.categoriesWorksheet = await this.getCategoriesWorksheetsOfflineAppByWorksheetId(this.worksheetoffline.id)
-      if (this.categoriesWorksheet.length === 0) {
-        this.buildDataCategories()
+      try {
+        this.loadingView = true
+        this.categoriesWorksheet = await this.getCategoriesWorksheetsOfflineAppByWorksheetId(this.worksheetoffline.id)
+        if (this.categoriesWorksheet.length === 0) {
+          this.buildDataCategories()
+        }
+      } catch (err) {
+      } finally {
+        this.loadingView = false
       }
-      this.loadingView = false
     },
 
     async buildDataCategories () {
