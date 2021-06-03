@@ -48,11 +48,6 @@
         </v-col>
       </v-row>
     </large-image-content-dialog>
-
-    <contact-us-form
-      :value="isContactFormShowing"
-      @close-modal="hideContactFormModal"
-    />
   </div>
 </template>
 
@@ -60,14 +55,22 @@
 import dayjs from 'dayjs'
 import { mapState, mapGetters } from 'vuex'
 import LargeImageContentDialog from '@/components/ui/dialogs/LargeImageContentDialog/LargeImageContentDialog.vue'
-import ContactUsForm from '@/components/forms/contact/ContactUsForm.vue'
+import { defineComponent } from '@nuxtjs/composition-api'
+import { useGlobalModal } from '@/composables'
 
-export default {
+export default defineComponent({
   name: 'TrialExpiredModal',
 
   components: {
-    ContactUsForm,
     LargeImageContentDialog
+  },
+
+  setup () {
+    const { showContactUsModal } = useGlobalModal()
+
+    return {
+      showContactUsModal
+    }
   },
 
   data: () => ({
@@ -100,12 +103,8 @@ export default {
 
     handleContactUs () {
       this.closeModal()
-      this.isContactFormShowing = true
-    },
-
-    hideContactFormModal () {
-      this.isContactFormShowing = false
+      this.showContactUsModal()
     }
   }
-}
+})
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <large-image-content-dialog :value="value" :img="childFace" @close="$emit('close-modal')">
+  <large-image-content-dialog :value="isContactUsModalVisible" :img="childFace" @close="hideContactUsModal">
     <underlined-title
       text="Contact Us"
       font-size="46px"
@@ -87,24 +87,17 @@
 import { defineComponent, ref } from '@nuxtjs/composition-api'
 import LargeImageContentDialog from '@/components/ui/dialogs/LargeImageContentDialog/LargeImageContentDialog.vue'
 import { axios } from '@/utils'
+import { useGlobalModal } from '@/composables'
 
 export default defineComponent({
-  name: 'ContactUsForm',
+  name: 'ContactUsFormModal',
 
   components: {
     LargeImageContentDialog
   },
 
-  props: {
-    value: {
-      type: Boolean,
-      default: false
-    }
-  },
-
   setup (_, ctx) {
-    const childFace = require('@/assets/webp/child-face.webp')
-    const loading = ref(false)
+    const { hideContactUsModal, isContactUsModalVisible } = useGlobalModal()
 
     const form = ref({
       firstName: '',
@@ -112,6 +105,7 @@ export default defineComponent({
       email: '',
       help: ''
     })
+    const loading = ref(false)
 
     const handleSubmit = async () => {
       try {
@@ -137,7 +131,7 @@ export default defineComponent({
           'Export is complete and will be sent to your email.'
         )
 
-        ctx.emit('close-modal')
+        hideContactUsModal()
       } catch {
         // @ts-ignore
         ctx.root.$snotify.error(
@@ -148,11 +142,15 @@ export default defineComponent({
       }
     }
 
+    const childFace = require('@/assets/webp/child-face.webp')
+
     return {
       childFace,
       form,
       handleSubmit,
-      loading
+      loading,
+      hideContactUsModal,
+      isContactUsModalVisible
     }
   }
 })
