@@ -72,6 +72,7 @@
             width="200"
             large
             :disabled="invalid"
+            :loading="loading"
             @click.stop="passes(handleSubmit)"
           >
             Send
@@ -103,6 +104,7 @@ export default defineComponent({
 
   setup (_, ctx) {
     const childFace = require('@/assets/webp/child-face.webp')
+    const loading = ref(false)
 
     const form = ref({
       firstName: '',
@@ -112,27 +114,45 @@ export default defineComponent({
     })
 
     const handleSubmit = async () => {
-      const formData = new FormData()
-      formData.append('vbout_EmbedForm[field][224784]', form.value.firstName)
-      formData.append('vbout_EmbedForm[field][224785]', form.value.lastName)
-      formData.append('vbout_EmbedForm[field][224786]', form.value.email)
-      formData.append('vbout_EmbedForm[field][268014]', form.value.help)
+      try {
+        loading.value = true
 
-      await axios.post(
-        'https://www.vbt.io/embedcode/submit/32765/?_format=page',
-        formData
-      )
+        const formData = new FormData()
+        formData.append('vbout_EmbedForm[field][224784]', form.value.firstName)
+        formData.append('vbout_EmbedForm[field][224785]', form.value.lastName)
+        formData.append('vbout_EmbedForm[field][224786]', form.value.email)
+        formData.append('vbout_EmbedForm[field][268014]', form.value.help)
 
-      // @ts-ignore
-      ctx.root.$snotify.success(
-        'Export is complete and will be sent to your email.'
-      )
+        await axios({
+          method: 'post',
+          url: 'https://www.vbt.io/embedcode/submit/32765/?_format=page',
+          data: formData,
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+
+        // @ts-ignore
+        ctx.root.$snotify.success(
+          'Export is complete and will be sent to your email.'
+        )
+
+        ctx.emit('close-modal')
+      } catch {
+        // @ts-ignore
+        ctx.root.$snotify.error(
+          'Could not sent form information. Please, try again later.'
+        )
+      } finally {
+        loading.value = false
+      }
     }
 
     return {
       childFace,
       form,
-      handleSubmit
+      handleSubmit,
+      loading
     }
   }
 })
