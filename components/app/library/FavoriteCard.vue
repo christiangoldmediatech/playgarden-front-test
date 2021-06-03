@@ -64,8 +64,8 @@
 </template>
 
 <script>
-import { defineComponent, wrapProperty, computed } from '@nuxtjs/composition-api'
-import { useLibrary } from '@/composables'
+import { defineComponent, computed } from '@nuxtjs/composition-api'
+import { useLibrary, useVuetifyHelper } from '@/composables'
 
 export default defineComponent({
   name: 'FavoriteCard',
@@ -93,7 +93,7 @@ export default defineComponent({
   },
 
   setup (props) {
-    const vuetify = wrapProperty('$vuetify', false)()
+    const vuetify = useVuetifyHelper()
     const isMobile = computed(() => vuetify.breakpoint.mobile)
 
     const {

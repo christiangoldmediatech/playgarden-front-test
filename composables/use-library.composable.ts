@@ -1,13 +1,14 @@
-import { computed, ref, wrapProperty } from '@nuxtjs/composition-api'
+import { computed, ref } from '@nuxtjs/composition-api'
 import { Entity, Video } from '@/models'
 import { axios } from '@/utils'
+import { useNuxtHelper } from '@/composables'
 
 type VideosFavoritesChildrenResponse = Entity & { video: Video }
 
 const favoriteVideos = ref<VideosFavoritesChildrenResponse[]>([])
 
 export const useLibrary = (videoId?: number) => {
-  const nuxt = wrapProperty('$nuxt', false)()
+  const nuxt = useNuxtHelper()
   const isLoadingFavorites = ref(false)
 
   const favoriteVideo = computed(() => favoriteVideos.value.find(favorite => favorite.video.id === videoId))
