@@ -47,13 +47,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, useRoute } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, ref, useRoute, useStore } from '@nuxtjs/composition-api'
 import FeaturedVideo from '@/components/app/library/FeaturedVideo.vue'
 import ActivityTypeContainer from '@/components/app/library/ActivityTypeContainer.vue'
 import FavoritesContainer from '@/components/app/library/FavoritesContainer.vue'
 import LibraryCategories from '@/components/app/library/LibraryCategories.vue'
 import ActivityPlayer from '@/components/app/activities/ActivityPlayer.vue'
-import { useActivity, useLibrary } from '@/composables'
+import { useActivity, useNuxtHelper, useVuetifyHelper } from '@/composables'
 
 export default defineComponent({
   name: 'Index',
@@ -66,7 +66,11 @@ export default defineComponent({
     ActivityPlayer
   },
 
-  setup (_, ctx) {
+  setup () {
+    const nuxt = useNuxtHelper()
+    const vuetify = useVuetifyHelper()
+    const store = useStore()
+
     const {
       activities,
       favorites,
@@ -75,21 +79,20 @@ export default defineComponent({
       refreshFavoriteActivities
     } = useActivity()
     const route = useRoute()
-    const { getAllFavorites } = useLibrary()
 
-    const isPageLoading = ref(true)
+    const isPageLoading = ref(activities.value.length === 0)
     const isFavoriteFirstLoad = ref(true)
 
     // setup favorites callback
-    ctx.root.$nuxt.$on('library-update-favorites', refreshFavoriteActivities)
+    nuxt.$on('library-update-favorites', refreshFavoriteActivities)
 
     onMounted(async () => {
       await getActivities()
-      await getAllFavorites()
       isPageLoading.value = false
       isFavoriteFirstLoad.value = false
 
       navigateToSection(route.value.hash)
+      store.dispatch('video/getAllFavorites')
     })
 
     const playFeaturedVideo = () => {
@@ -104,7 +107,7 @@ export default defineComponent({
 
       const index = playlist.findIndex(playItem => playItem.activityId === featuredId)
 
-      ctx.root.$nuxt.$emit('open-activity-player', { playlist, index })
+      nuxt.$emit('open-activity-player', { playlist, index })
     }
 
     const navigateToSection = (hash: string) => {
@@ -114,7 +117,7 @@ export default defineComponent({
 
       try {
         setTimeout(() => {
-          ctx.root.$vuetify.goTo(hash, { offset: 200 })
+          vuetify.goTo(hash, { offset: 200 })
         }, 1000)
       } catch (err) {}
     }

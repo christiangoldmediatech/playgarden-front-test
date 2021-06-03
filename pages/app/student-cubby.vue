@@ -99,9 +99,9 @@ export default defineComponent({
       },
       {
         text: 'PROGRESS REPORT',
-        title: 'PROGRESS REPORT',
+        title: 'Student progress report',
         imgName: 'progress.png',
-        routeName: 'app-progress-report'
+        routeName: 'app-student-cubby-progress-report'
       }
     ]
     const selectedCubbyItem = computed(() => {
