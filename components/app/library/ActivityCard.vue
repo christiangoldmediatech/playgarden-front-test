@@ -82,9 +82,9 @@
 </template>
 
 <script>
+import { computed, defineComponent } from '@nuxtjs/composition-api'
+import { useLibrary, useVuetifyHelper } from '@/composables'
 import CardRibbon from '@/components/app/library/CardRibbon.vue'
-import { useLibrary } from '@/composables'
-import { computed, defineComponent, wrapProperty } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   name: 'ActivityCard',
@@ -131,7 +131,7 @@ export default defineComponent({
   },
 
   setup (props) {
-    const vuetify = wrapProperty('$vuetify', false)()
+    const vuetify = useVuetifyHelper()
     const isMobile = computed(() => vuetify.breakpoint.mobile)
 
     const {

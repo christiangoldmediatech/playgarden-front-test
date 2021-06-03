@@ -53,7 +53,7 @@ import ActivityTypeContainer from '@/components/app/library/ActivityTypeContaine
 import FavoritesContainer from '@/components/app/library/FavoritesContainer.vue'
 import LibraryCategories from '@/components/app/library/LibraryCategories.vue'
 import ActivityPlayer from '@/components/app/activities/ActivityPlayer.vue'
-import { useActivity, useLibrary } from '@/composables'
+import { useActivity, useLibrary, useNuxtHelper } from '@/composables'
 
 export default defineComponent({
   name: 'Index',
@@ -66,7 +66,9 @@ export default defineComponent({
     ActivityPlayer
   },
 
-  setup (_, ctx) {
+  setup () {
+    const nuxt = useNuxtHelper()
+
     const {
       activities,
       favorites,
@@ -80,9 +82,7 @@ export default defineComponent({
     const isFavoriteFirstLoad = ref(true)
 
     // setup favorites callback
-    ctx.root.$nuxt.$on('library-update-favorites', () => {
-      refreshFavoriteActivities()
-    })
+    nuxt.$on('library-update-favorites', refreshFavoriteActivities)
 
     onMounted(async () => {
       await getActivities()
@@ -93,7 +93,7 @@ export default defineComponent({
     })
 
     onBeforeUnmount(() => {
-      ctx.root.$nuxt.$off('library-update-favorites')
+      nuxt.$off('library-update-favorites')
     })
 
     const playFeaturedVideo = () => {
@@ -108,7 +108,7 @@ export default defineComponent({
 
       const index = playlist.findIndex(playItem => playItem.activityId === featuredId)
 
-      ctx.root.$nuxt.$emit('open-activity-player', { playlist, index })
+      nuxt.$emit('open-activity-player', { playlist, index })
     }
 
     return {
