@@ -53,7 +53,7 @@ import ActivityTypeContainer from '@/components/app/library/ActivityTypeContaine
 import FavoritesContainer from '@/components/app/library/FavoritesContainer.vue'
 import LibraryCategories from '@/components/app/library/LibraryCategories.vue'
 import ActivityPlayer from '@/components/app/activities/ActivityPlayer.vue'
-import { useActivity, useNuxt } from '@/composables'
+import { useActivity, useNuxtHelper } from '@/composables'
 
 export default defineComponent({
   name: 'Index',
@@ -67,7 +67,7 @@ export default defineComponent({
   },
 
   setup () {
-    const nuxt = useNuxt()
+    const nuxt = useNuxtHelper()
     const store = useStore()
 
     const {
