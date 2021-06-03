@@ -71,10 +71,12 @@
 </template>
 
 <script>
+import { computed, defineComponent } from '@nuxtjs/composition-api'
 import CardRibbon from '@/components/app/library/CardRibbon.vue'
 import FavoritesMixin from '@/mixins/FavoritesMixin.js'
+import { useVuetifyHelper } from '@/composables'
 
-export default {
+export default defineComponent({
   name: 'ActivityCard',
 
   components: {
@@ -120,12 +122,13 @@ export default {
     }
   },
 
-  computed: {
-    isMobile () {
-      return this.$vuetify.breakpoint.mobile
-    }
+  setup () {
+    const vuetify = useVuetifyHelper()
+    const isMobile = computed(() => vuetify.breakpoint.mobile)
+
+    return { isMobile }
   }
-}
+})
 </script>
 
 <style lang="scss">
