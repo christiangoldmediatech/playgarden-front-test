@@ -259,7 +259,7 @@ export default {
         this.seriesName = 'lineStack'
       }
 
-      if (name) {
+      if (this.name) {
         switch (this.seriesName) {
           case 'Conversions funnel':
             this.buildQueryParamsConversionTunne()
