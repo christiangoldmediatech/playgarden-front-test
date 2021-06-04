@@ -10,6 +10,14 @@ type ActivitiesResponse = {
   favorites: FavoriteListResponse[]
   featured: FeaturedActivity
 }
+type ActivityByIdResponse = {
+  activities: ActivityType
+  favorites: null
+  featured: FeaturedActivity
+  limit: string
+  page: string
+  total: number
+}
 type ActivitiesFavoriteResponse = {
   activities: null
   favorites: FavoriteListResponse[]
@@ -37,6 +45,24 @@ export const useActivity = () => {
     featured.value = response.featured
   }
 
+  const activityById = ref<ActivityType>({} as ActivityType)
+  const featuredById = ref({} as FeaturedActivity)
+  const totalById = ref(0)
+
+  const getActivitiesById = async (id: number) => {
+    const response = await axios.$get(`/activities/${id}/filter`) as ActivityByIdResponse
+
+    activityById.value = {
+      ...response.activities,
+      activities: shuffle(getValidActivities(response.activities.activities || [])) as Activity[],
+      videos: shuffle(getValidVideos(response.activities.videos || [])) as Video[],
+      playlist: getPlaylistFromActivity(response.activities)
+    }
+
+    featuredById.value = response.featured
+    totalById.value = (activityById.value.videos?.length || 0) + response.total
+  }
+
   /**
    * Refresh favorites while keeping the existing sort order
    */
@@ -44,18 +70,12 @@ export const useActivity = () => {
     const response = await axios.$get('/activities?favorites=1') as ActivitiesFavoriteResponse
 
     const newFavoriteIds = response.favorites.map(favorite => favorite.id)
-    const removedFavoriteIds = favorites.value
-      .filter(favorite => !newFavoriteIds.includes(favorite.id))
-      .map(favorite => favorite.id)
 
     // remove elements from current favorites not present in new favorites
-    favorites.value.filter(favorite => !removedFavoriteIds.includes(favorite.id))
+    favorites.value = favorites.value.filter(favorite => newFavoriteIds.includes(favorite.id))
 
     const currentFavoriteIds = favorites.value.map(favorite => favorite.id)
-    const addedFavoriteIds = response.favorites
-      .filter(favorite => !currentFavoriteIds.includes(favorite.id))
-      .map(favorite => favorite.id)
-
+    const addedFavoriteIds = newFavoriteIds.filter(favoriteId => !currentFavoriteIds.includes(favoriteId))
     const newFavoritesRecord = arrayToRecord<FavoriteListResponse>(response.favorites, 'id')
 
     // add elements from new favorites not present in current favorites
@@ -68,6 +88,10 @@ export const useActivity = () => {
     activities,
     favorites,
     featured,
+    activityById,
+    featuredById,
+    totalById,
+    getActivitiesById,
     getActivities,
     refreshFavoriteActivities
   }

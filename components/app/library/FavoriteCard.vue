@@ -3,11 +3,13 @@
     <v-card
       class="activity-card"
       :style="{
-        transform: !isMobile && hover ? 'scale(1.125)' : undefined
+        transform: !isMobile && hover ? 'scale(1.125)' : undefined,
+        'z-index': !isMobile && hover ? '1' : undefined
       }"
       width="100%"
     >
       <v-img
+        data-test-id="favorite-card-thumbnail"
         class="activity-card-thumbnail"
         content-class=""
         :src="thumbnail"
@@ -28,9 +30,12 @@
         <v-list-item three-line>
           <v-list-item-content>
             <v-list-item-subtitle class="activity-card-sub text-uppercase">
-              <span class="activity-card-description title-pre">{{ title }}</span>
+              <span
+                class="activity-card-description title-pre"
+                data-test-id="favorite-card-title"
+              >{{ title }}</span>
             </v-list-item-subtitle>
-            <v-list-item-title>
+            <v-list-item-title data-test-id="favorite-card-teacher">
               <span class="activity-card-with text-none">with</span> <span class="activity-card-subtitle">{{ teacher }}</span>
             </v-list-item-title>
           </v-list-item-content>
@@ -39,11 +44,11 @@
             <v-btn
               icon
               large
-              :loading="favoritesLoading"
-              @click.stop="handleFavorites"
+              :loading="isLoadingFavorites"
+              @click.stop="handleFavorite"
             >
               <v-icon color="#F5737F">
-                <template v-if="isFavorite">
+                <template v-if="isFavoriteVideo">
                   mdi-heart
                 </template>
                 <template v-else>
@@ -59,12 +64,11 @@
 </template>
 
 <script>
-import FavoritesMixin from '@/mixins/FavoritesMixin.js'
+import { defineComponent, computed } from '@nuxtjs/composition-api'
+import { useLibrary, useVuetifyHelper } from '@/composables'
 
-export default {
+export default defineComponent({
   name: 'FavoriteCard',
-
-  mixins: [FavoritesMixin],
 
   props: {
     videoId: {
@@ -88,12 +92,24 @@ export default {
     }
   },
 
-  computed: {
-    isMobile () {
-      return this.$vuetify.breakpoint.mobile
+  setup (props) {
+    const vuetify = useVuetifyHelper()
+    const isMobile = computed(() => vuetify.breakpoint.mobile)
+
+    const {
+      isLoadingFavorites,
+      handleFavorite,
+      isFavoriteVideo
+    } = useLibrary(props.videoId)
+
+    return {
+      isMobile,
+      isLoadingFavorites,
+      handleFavorite,
+      isFavoriteVideo
     }
   }
-}
+})
 </script>
 
 <style lang="scss">

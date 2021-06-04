@@ -76,7 +76,7 @@ describe('/app/student-cubby', () => {
     })
 
     it('navigates to /app/progress-report', () => {
-      cy.url().should('include', '/app/progress-report')
+      cy.url().should('include', '/app/student-cubby/progress-report')
     })
   })
 })

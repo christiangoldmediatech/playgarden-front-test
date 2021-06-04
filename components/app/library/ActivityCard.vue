@@ -3,16 +3,22 @@
     <v-card
       class="activity-card"
       :style="{
-        transform: !isMobile && hover ? 'scale(1.125)' : undefined
+        transform: !isMobile && hover ? 'scale(1.125)' : undefined,
+        'z-index': !isMobile && hover ? '1' : undefined
       }"
       width="100%"
       data-test-id="activity-card"
     >
-      <card-ribbon v-if="viewed" text="Viewed" />
+      <card-ribbon
+        v-if="viewed"
+        text="Viewed"
+        data-test-id="activity-card-ribbon"
+      />
       <v-img
         class="activity-card-thumbnail"
         content-class=""
         :src="thumbnail"
+        data-test-id="activity-card-thumbnail"
         cover
         position="center"
         max-width="100%"
@@ -30,6 +36,7 @@
         <v-list-item three-line>
           <v-list-item-avatar tile>
             <v-img
+              data-test-id="activity-card-activity-type-icon"
               :src="activityTypeIcon"
               contain
             />
@@ -37,24 +44,29 @@
 
           <v-list-item-content>
             <v-list-item-subtitle class="activity-card-sub text-uppercase">
-              <span class="activity-card-description">{{ title }}</span>
+              <span
+                data-test-id="activity-card-title"
+                class="activity-card-description"
+              >
+                {{ title }}
+              </span>
             </v-list-item-subtitle>
-            <v-list-item-title class="font-weight-bold">
+            <v-list-item-title data-test-id="activity-card-teacher" class="font-weight-bold">
               <span class="activity-card-with">with</span> <span class="activity-card-subtitle">{{ teacher }}</span>
             </v-list-item-title>
           </v-list-item-content>
 
           <v-list-item-action>
             <v-btn
-              :class="isFavorite ? 'is-favorite-video' : 'is-not-favorite-video'"
+              :class="isFavoriteVideo ? 'is-favorite-video' : 'is-not-favorite-video'"
               icon
               large
-              :loading="favoritesLoading"
+              :loading="isLoadingFavorites"
               data-test-id="activity-card-favorite-button"
-              @click.stop="handleFavorites"
+              @click.stop="handleFavorite"
             >
               <v-icon color="#F5737F">
-                <template v-if="isFavorite">
+                <template v-if="isFavoriteVideo">
                   mdi-heart
                 </template>
                 <template v-else>
@@ -70,17 +82,16 @@
 </template>
 
 <script>
+import { computed, defineComponent } from '@nuxtjs/composition-api'
+import { useLibrary, useVuetifyHelper } from '@/composables'
 import CardRibbon from '@/components/app/library/CardRibbon.vue'
-import FavoritesMixin from '@/mixins/FavoritesMixin.js'
 
-export default {
+export default defineComponent({
   name: 'ActivityCard',
 
   components: {
     CardRibbon
   },
-
-  mixins: [FavoritesMixin],
 
   props: {
     videoId: {
@@ -119,12 +130,24 @@ export default {
     }
   },
 
-  computed: {
-    isMobile () {
-      return this.$vuetify.breakpoint.mobile
+  setup (props) {
+    const vuetify = useVuetifyHelper()
+    const isMobile = computed(() => vuetify.breakpoint.mobile)
+
+    const {
+      isLoadingFavorites,
+      handleFavorite,
+      isFavoriteVideo
+    } = useLibrary(props.videoId)
+
+    return {
+      isMobile,
+      isLoadingFavorites,
+      handleFavorite,
+      isFavoriteVideo
     }
   }
-}
+})
 </script>
 
 <style lang="scss">

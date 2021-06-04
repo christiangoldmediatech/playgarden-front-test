@@ -86,7 +86,7 @@ describe('/app/library', () => {
   describe('favorites', () => {
     beforeEach(() => {
       cy.intercept({
-        url: '/videos-favorites'
+        url: '/videos-favorites*'
       }).as('videoFavorites')
     })
 
@@ -111,7 +111,7 @@ describe('/app/library', () => {
     describe('given `View more` is clicked', () => {
       beforeEach(() => {
         cy.intercept({
-          url: '/videos-favorites'
+          url: '/videos-favorites*'
         }).as('videoFavorites')
       })
 
@@ -140,24 +140,27 @@ describe('/app/library', () => {
   })
 })
 
-const clickAllVideosFavoriteBtnWithClass = (className: string) => {
+var clickAllVideosFavoriteBtnWithClass = (className: string) => {
   cy.get('[data-test-id=activity-card-favorite-button]').each($button => {
     return new Promise<void>(resolve => {
-      if ($button.hasClass(className)) {
-        $button.trigger('click')
-
-        cy.wait('@videoFavorites').then(() => resolve())
+      if (!$button.hasClass(className)) {
+        resolve()
+        
+        return
       }
-      resolve()
+
+      $button.trigger('click')
+
+      cy.wait('@videoFavorites').then(() => resolve())
     })
   })
 }
 
-const assertDialogIsVisible = () => {
+var assertDialogIsVisible = () => {
   cy.get('[data-test-id=video-player-dialog]').should('be.visible')
 }
 
-const closeDialogAndAssertItIsNotVisible = () => {
+var closeDialogAndAssertItIsNotVisible = () => {
   cy.get('.player-dialog-container > .player-dialog-close-btn > .v-btn').click({ multiple: true, force: true })
   cy.get('[data-test-id=video-player-dialog]').should('not.be.visible')
 }
