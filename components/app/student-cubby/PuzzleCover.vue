@@ -1,26 +1,52 @@
 <template>
-  <svg
-    :style="{
-      '--pc-stroke-color': _strokeColor,
-      '--pc-stroke-width': _strokeWidth,
-      backgroundImage: `url(${backgroundImage})`
-    }"
-    :viewBox="`0 0 ${width} ${height}`"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      v-for="(path, indexP) in paths"
-      :key="indexP"
-      :d="path"
-      :fill="uncovered.has(indexP) ? 'none' : '#ffffff'"
-    />
-  </svg>
+  <div>
+    <v-menu
+      :value="popup.show"
+      :position-x="popup.x"
+      :position-y="popup.y"
+      :close-on-click="false"
+      :close-on-content-click="false"
+      :min-width="popup.minWidth"
+      z-index="9999"
+    >
+      <div class="accent white--text px-4 py-2 text-center">
+        <div class="font-weight-bold my-1">
+          {{ popup.message }}
+        </div>
+        <div class="my-1" @click="handlePieceUnlock">
+          <a class="text-decoration-underline white--text">Unlock Piece</a>
+        </div>
+      </div>
+    </v-menu>
+
+    <svg
+      :style="{
+        '--pc-stroke-color': _strokeColor,
+        '--pc-stroke-width': _strokeWidth,
+        backgroundImage: `url(${backgroundImage})`
+      }"
+      :viewBox="`0 0 ${width} ${height}`"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        v-for="(path, indexP) in paths"
+        :id="`pc-path-${indexP}`"
+        :key="indexP"
+        :d="path"
+        :fill="uncovered.has(indexP) ? 'none' : '#ffffff'"
+        @mouseenter.stop="handleTooltip(indexP)"
+      />
+    </svg>
+  </div>
 </template>
 
 <script>
+import debounce from 'lodash/debounce'
 import { line, curveBasis } from 'd3-shape'
 import { colorValidator } from '@/components/pg/utils/validators'
 import { colorMaker } from '@/components/pg/utils/colorable'
+
+const POPUP_MIN_WITH = 350
 
 const MIN_ROW_COUNT = 3
 const MIN_COL_COUNT = 5
@@ -96,20 +122,34 @@ export default {
     width: {
       type: [Number, String],
       default: 160
+    },
+
+    letter: {
+      type: String,
+      required: true
     }
   },
 
-  data: () => ({
-    d3CurvedLine: line().curve(curveBasis),
+  data () {
+    return {
+      d3CurvedLine: line().curve(curveBasis),
 
-    paths: [],
+      paths: [],
 
-    maxPiecesCount: 0,
+      maxPiecesCount: 0,
 
-    rowCount: 0,
+      rowCount: 0,
 
-    colCount: 0
-  }),
+      colCount: 0,
+
+      popup: {
+        minWidth: POPUP_MIN_WITH,
+        show: false
+      },
+
+      handleTooltip: debounce(this._handleTooltip, 300)
+    }
+  },
 
   computed: {
     _edgesSeed () {
@@ -405,7 +445,79 @@ export default {
 
     transposePoint (point) {
       return [point[1], point[0]]
-    }
+    },
+
+    _handleTooltip (index) {
+      this.popup.show = false
+
+      const pathEl = document.querySelector(`#pc-path-${index}`)
+      const pathElBoundaries = pathEl.getBoundingClientRect()
+      const yPosition = pathElBoundaries.top + pathElBoundaries.height / 5
+      const xPosition =
+        pathElBoundaries.left + (pathElBoundaries.width / 2) - (POPUP_MIN_WITH / 2)
+
+      let message = 'Unlock This in '
+      switch (index) {
+        case 0:
+          message += `Video Letter ${this.letter} Day 1`
+          break
+        case 1:
+          message += `Worksheet Letter ${this.letter} Day 1`
+          break
+        case 2:
+          message += `Activities Letter ${this.letter} Day 1`
+          break
+        case 3:
+          message += `Video Letter ${this.letter} Day 2`
+          break
+        case 4:
+          message += `Worksheet Letter ${this.letter} Day 2`
+          break
+        case 5:
+          message += `Activities Letter ${this.letter} Day 2`
+          break
+        case 6:
+          message += `Video Letter ${this.letter} Day 3`
+          break
+        case 7:
+          message += `Worksheet Letter ${this.letter} Day 3`
+          break
+        case 8:
+          message += `Activities Letter ${this.letter} Day 3`
+          break
+        case 9:
+          message += `Video Letter ${this.letter} Day 4`
+          break
+        case 10:
+          message += `Worksheet Letter ${this.letter} Day 4`
+          break
+        case 11:
+          message += `Activities Letter ${this.letter} Day 4`
+          break
+        case 12:
+          message += `Video Letter ${this.letter} Day 5`
+          break
+        case 13:
+          message += `Worksheet Letter ${this.letter} Day 5`
+          break
+        case 14:
+          message += `Activities Letter ${this.letter} Day 5`
+          break
+      }
+
+      setTimeout(() => {
+        this.popup = {
+          ...this.popup,
+          show: true,
+          x: xPosition,
+          y: yPosition,
+          message
+        }
+      }, 300)
+    },
+
+    // TODO
+    handlePieceUnlock () {}
   }
 }
 </script>
@@ -427,5 +539,20 @@ path {
 circle {
   fill: #fff;
   fill-opacity: 0.2;
+}
+
+.v-menu__content {
+  box-shadow: none;
+  height: 85px;
+
+  &:after {
+    position: absolute;
+    left: 50%;
+    margin-left: -12px;
+    content: " ";
+    border-style: solid;
+    border-color: var(--v-accent-base) transparent transparent transparent;
+    border-width: 16px 16px 0px 16px;
+  }
 }
 </style>
