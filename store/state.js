@@ -30,7 +30,7 @@ export default () => ({
     'app-student-cubby-puzzle': 1,
     'app-student-cubby-puzzle-list': 1,
     'app-student-cubby-student-portfolio': 1,
-    'app-progress-report': 1,
+    'app-student-cubby-progress-report': 1,
     'app-payment-plan': 1,
     help: 1,
     'shared-slug': 1

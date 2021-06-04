@@ -162,6 +162,8 @@ export default {
           await this.saveVideoProgress
           if (!this.lastVideo) {
             this.player.nextVideo()
+          } else {
+            this.showCompletedDialog()
           }
         }
       }

@@ -34,7 +34,7 @@ export default {
       return (this.$vuetify.breakpoint.xs) ? 45 : 0
     },
     getFontSize () {
-      return (this.$vuetify.breakpoint.xs) ? '32px' : '34px'
+      return (this.$vuetify.breakpoint.xs) ? '22px' : '31px'
     },
     getIconSize () {
       return (this.$vuetify.breakpoint.xs) ? '45' : '60'
@@ -130,7 +130,7 @@ export default {
             label: {
               show: true,
               color: '#DADADA',
-              fontSize: '31px',
+              fontSize: this.getFontSize,
               fontWeight: 'bold',
               verticalAlign: 'middle',
               fontFamily: 'Poppins-SemiBold, Poppins',
@@ -152,7 +152,7 @@ export default {
             label: {
               show: true,
               color: '#DADADA',
-              fontSize: '31px',
+              fontSize: this.getFontSize,
               fontWeight: 'bold',
               verticalAlign: 'middle',
               fontFamily: 'Poppins-SemiBold, Poppins',
@@ -174,7 +174,7 @@ export default {
             label: {
               show: true,
               color: '#DADADA',
-              fontSize: '31px',
+              fontSize: this.getFontSize,
               fontWeight: 'bold',
               verticalAlign: 'middle',
               fontFamily: 'Poppins-SemiBold, Poppins',

@@ -21,7 +21,11 @@
             :key="`${category.category}-${indexCategory}`"
             v-slot="{ hover }"
           >
+            <v-card v-if="loadingView">
+              <pg-loading />
+            </v-card>
             <v-card
+              v-else
               :class="['ma-2 clickable category-card', { scaled: hover }]"
               :elevation="hover ? 12 : 2"
               :disabled="loading"
@@ -111,13 +115,14 @@ export default {
   props: {
     value: {
       type: Boolean,
-      required: true
+      required: false
     }
   },
 
   data () {
     return {
       loading: false,
+      loadingView: true,
       lessonCurrent: null,
       worksheetoffline: null,
       categoriesWorksheet: [],
@@ -160,9 +165,15 @@ export default {
     ...mapActions('children/lesson', ['saveWorksheetProgress']),
 
     async getCategoriesByWorksheetId () {
-      this.categoriesWorksheet = await this.getCategoriesWorksheetsOfflineAppByWorksheetId(this.worksheetoffline.id)
-      if (this.categoriesWorksheet.length === 0) {
-        this.buildDataCategories()
+      try {
+        this.loadingView = true
+        this.categoriesWorksheet = await this.getCategoriesWorksheetsOfflineAppByWorksheetId(this.worksheetoffline.id)
+        if (this.categoriesWorksheet.length === 0) {
+          this.buildDataCategories()
+        }
+      } catch (err) {
+      } finally {
+        this.loadingView = false
       }
     },
 
