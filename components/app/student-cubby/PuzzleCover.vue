@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-menu
-      :value="popup.show"
+      :value="popup.show && !isMobile"
       :position-x="popup.x"
       :position-y="popup.y"
       :close-on-click="false"
@@ -46,7 +46,7 @@ import { line, curveBasis } from 'd3-shape'
 import { colorValidator } from '@/components/pg/utils/validators'
 import { colorMaker } from '@/components/pg/utils/colorable'
 
-const POPUP_MIN_WITH = 350
+const POPUP_MIN_WITH = 370
 
 const MIN_ROW_COUNT = 3
 const MIN_COL_COUNT = 5
@@ -226,6 +226,10 @@ export default {
       }
 
       return new Set(uncover)
+    },
+
+    isMobile () {
+      return this.$vuetify.breakpoint.mobile
     }
   },
 
@@ -450,8 +454,7 @@ export default {
     _handleTooltip (index) {
       this.popup.show = false
 
-      const pathEl = document.querySelector(`#pc-path-${index}`)
-      const pathElBoundaries = pathEl.getBoundingClientRect()
+      const pathElBoundaries = document.querySelector(`#pc-path-${index}`).getBoundingClientRect()
       const yPosition = pathElBoundaries.top + pathElBoundaries.height / 5
       const xPosition =
         pathElBoundaries.left + (pathElBoundaries.width / 2) - (POPUP_MIN_WITH / 2)
@@ -544,11 +547,12 @@ circle {
 .v-menu__content {
   box-shadow: none;
   height: 85px;
+  width: 370px;
 
   &:after {
     position: absolute;
     left: 50%;
-    margin-left: -12px;
+    margin-left: -16px;
     content: " ";
     border-style: solid;
     border-color: var(--v-accent-base) transparent transparent transparent;
