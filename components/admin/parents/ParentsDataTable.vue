@@ -140,6 +140,10 @@
                 </v-col>
               </template>
 
+              <template v-slot:[`item.stripeStatus`]="{ item }">
+                {{ (item.billings && item.billings.length > 0) ? item.billings[0].stripeStatus.toUpperCase() : (item.stripeStatus) ? item.stripeStatus.toUpperCase() : '' }}
+              </template>
+
               <template v-slot:[`item.actions.prepend`]="{ item }">
                 <img class="clickable profile-icon" width="20px;" height="20px;" src="@/assets/svg/eye.svg" @click="goToProfile(item.id)">
               </template>
@@ -244,7 +248,7 @@ export default {
           text: 'Status',
           align: 'start',
           sortable: false,
-          value: 'statusType'
+          value: 'stripeStatus'
         },
         {
           text: 'Step',
