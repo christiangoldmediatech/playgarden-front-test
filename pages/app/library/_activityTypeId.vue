@@ -50,7 +50,7 @@ import FeaturedVideo from '@/components/app/library/FeaturedVideo.vue'
 import ActivityTypeContainer from '@/components/app/library/ActivityTypeContainer.vue'
 import ActivityTypeHeader from '@/components/app/library/ActivityTypeHeader.vue'
 import ActivityPlayer from '@/components/app/activities/ActivityPlayer.vue'
-import { useActivity } from '@/composables'
+import { useActivity, useLibrary } from '@/composables'
 
 export default defineComponent({
   name: 'ActivityTypeId',
@@ -67,6 +67,7 @@ export default defineComponent({
     const loading = ref(false)
 
     const { activityById, featuredById, totalById, getActivitiesById } = useActivity()
+    const { getAllFavorites } = useLibrary()
 
     const id = computed(() => parseInt(route.value.params.activityTypeId))
     const hasFeaturedVideo = computed(() => !!Object.keys(featuredById.value || {}).length)
@@ -77,9 +78,7 @@ export default defineComponent({
       await getActivitiesById(id.value)
       loading.value = false
 
-      // TODO: Migrate FavoriteMixin to composable.
-      //       Each activity card uses the favorites store to know if it is favorite or not
-      ctx.root.$store.dispatch('video/getAllFavorites')
+      getAllFavorites()
     })
 
     const handlePlayAll = () => {
