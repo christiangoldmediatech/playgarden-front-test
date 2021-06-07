@@ -238,13 +238,29 @@ export default {
       }
     },
 
+    buildQueryParamsLineStack (dateSplit, seriesName) {
+      const start = new Date(dateSplit[0], dateSplit[1], 1).toString().split(' ')
+      const end = new Date(dateSplit[0], Number(dateSplit[1]) + 1, 0).toString().split(' ')
+      const listStatus = (seriesName.toLowerCase() === 'total') ? ['trialing', 'active', 'canceled'] : [seriesName.toLowerCase()]
+      this.params = {
+        subscriptionId: 'not null',
+        stripeStatus: listStatus,
+        dateStart: `${dateSplit[0]}-${dateSplit[1]}-${start[2]} 00:00:00`,
+        dateEnd: `${dateSplit[0]}-${dateSplit[1]}-${end[2]} 23:59:59.999999`
+      }
+    },
+
     open (evt, item = null) {
       const { name, seriesName } = item
       this.name = name
       this.seriesName = seriesName
+      if (name.split('-').length > 1) {
+        this.name = seriesName
+        this.seriesName = 'lineStack'
+      }
 
-      if (name) {
-        switch (seriesName) {
+      if (this.name) {
+        switch (this.seriesName) {
           case 'Conversions funnel':
             this.buildQueryParamsConversionTunne()
             break
@@ -300,6 +316,9 @@ export default {
             break
           case 'Canceled - increment':
             this.buildQueryParamsUsers('canceled', true)
+            break
+          case 'lineStack':
+            this.buildQueryParamsLineStack(name.split('-'), seriesName)
             break
         }
       }

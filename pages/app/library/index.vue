@@ -47,13 +47,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, useStore } from '@nuxtjs/composition-api'
+import { defineComponent, onBeforeUnmount, onMounted, ref } from '@nuxtjs/composition-api'
 import FeaturedVideo from '@/components/app/library/FeaturedVideo.vue'
 import ActivityTypeContainer from '@/components/app/library/ActivityTypeContainer.vue'
 import FavoritesContainer from '@/components/app/library/FavoritesContainer.vue'
 import LibraryCategories from '@/components/app/library/LibraryCategories.vue'
 import ActivityPlayer from '@/components/app/activities/ActivityPlayer.vue'
-import { useActivity, useNuxtHelper } from '@/composables'
+import { useActivity, useLibrary, useNuxtHelper } from '@/composables'
 
 export default defineComponent({
   name: 'Index',
@@ -68,7 +68,6 @@ export default defineComponent({
 
   setup () {
     const nuxt = useNuxtHelper()
-    const store = useStore()
 
     const {
       activities,
@@ -77,6 +76,7 @@ export default defineComponent({
       getActivities,
       refreshFavoriteActivities
     } = useActivity()
+    const { getAllFavorites } = useLibrary()
 
     const isPageLoading = ref(activities.value.length === 0)
     const isFavoriteFirstLoad = ref(true)
@@ -89,7 +89,11 @@ export default defineComponent({
       isPageLoading.value = false
       isFavoriteFirstLoad.value = false
 
-      store.dispatch('video/getAllFavorites')
+      getAllFavorites()
+    })
+
+    onBeforeUnmount(() => {
+      nuxt.$off('library-update-favorites')
     })
 
     const playFeaturedVideo = () => {
