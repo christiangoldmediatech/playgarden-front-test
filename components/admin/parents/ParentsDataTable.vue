@@ -141,7 +141,7 @@
               </template>
 
               <template v-slot:[`item.stripeStatus`]="{ item }">
-                {{ (item.billings && item.billings.length > 0) ? item.billings[0].stripeStatus.toUpperCase() : (item.stripeStatus) ? item.stripeStatus.toUpperCase() : '' }}
+                {{ getDisplayingPaymentStatus(item) }}
               </template>
 
               <template v-slot:[`item.actions.prepend`]="{ item }">
@@ -337,6 +337,10 @@ export default {
 
     goToProfile (id) {
       this.$router.push({ name: 'admin-user-manager-profile', query: { id } })
+    },
+
+    getDisplayingPaymentStatus (item) {
+      return (item.billings && item.billings.length > 0) ? item.billings[0].stripeStatus.toUpperCase() : (item.stripeStatus) ? item.stripeStatus.toUpperCase() : ''
     },
 
     remove ({ id, firstName, lastName, email }) {
