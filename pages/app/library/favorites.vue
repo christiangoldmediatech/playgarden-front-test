@@ -36,7 +36,7 @@ import { defineComponent, onMounted, ref } from '@nuxtjs/composition-api'
 import FavoritesContainer from '@/components/app/library/FavoritesContainer.vue'
 import ActivityTypeHeader from '@/components/app/library/ActivityTypeHeader.vue'
 import ActivityPlayer from '@/components/app/activities/ActivityPlayer.vue'
-import { useActivity } from '@/composables'
+import { useActivity, useLibrary } from '@/composables'
 
 export default defineComponent({
   name: 'Favorites',
@@ -47,8 +47,9 @@ export default defineComponent({
     ActivityPlayer
   },
 
-  setup (_, ctx) {
+  setup () {
     const { favorites, getActivities } = useActivity()
+    const { getAllFavorites } = useLibrary()
 
     // this references `ref="container"` when the component is mounted
     const container = ref<any>(null)
@@ -64,7 +65,7 @@ export default defineComponent({
         await getActivities()
       }
 
-      ctx.root.$store.dispatch('video/getAllFavorites')
+      getAllFavorites()
     })
 
     return {
