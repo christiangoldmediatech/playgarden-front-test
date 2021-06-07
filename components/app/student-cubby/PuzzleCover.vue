@@ -13,9 +13,11 @@
         <div class="font-weight-bold my-1">
           {{ popup.message }}
         </div>
+        <!--
         <div class="my-1" @click="handlePieceUnlock">
           <a class="text-decoration-underline white--text">Unlock Piece</a>
         </div>
+        -->
       </div>
     </v-menu>
 
