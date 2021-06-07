@@ -77,7 +77,7 @@
         <v-row>
           <v-col cols="3">
             <v-row>
-              <v-card width="100%" class="analytics-card">
+              <v-card width="100%" class="analytics-card mx-2">
                 <v-card-text>
                   <label class="font-weight-bold title-dashboard">Percentage of Views - TBD</label>
                   <v-col
@@ -93,7 +93,7 @@
           </v-col>
           <v-col cols="3">
             <v-row>
-              <v-card width="100%" class="analytics-card">
+              <v-card width="100%" class="analytics-card mx-2">
                 <v-card-text>
                   <label class="font-weight-bold title-dashboard">Unique views</label>
                   <v-col
@@ -109,7 +109,7 @@
           </v-col>
           <v-col cols="3">
             <v-row>
-              <v-card width="100%" class="analytics-card">
+              <v-card width="100%" class="analytics-card mx-2">
                 <v-card-text>
                   <label class="font-weight-bold title-dashboard">Skipped</label>
                   <v-col
@@ -125,7 +125,7 @@
           </v-col>
           <v-col cols="3">
             <v-row>
-              <v-card width="100%" class="analytics-card">
+              <v-card width="100%" class="analytics-card mx-2">
                 <v-card-text>
                   <label class="font-weight-bold title-dashboard">Status</label>
                   <v-col
@@ -142,7 +142,7 @@
         <v-row>
           <v-col cols="4">
             <v-row>
-              <v-card width="100%" class="analytics-card">
+              <v-card width="100%" class="analytics-card mx-2">
                 <v-card-text>
                   <label class="font-weight-bold title-dashboard">Ages</label>
                   <v-col
@@ -157,7 +157,7 @@
           </v-col>
           <v-col cols="4">
             <v-row>
-              <v-card width="100%" class="analytics-card">
+              <v-card width="100%" class="analytics-card mx-2">
                 <v-card-text>
                   <label class="font-weight-bold title-dashboard">Gender</label>
                   <v-col
@@ -172,7 +172,7 @@
           </v-col>
           <v-col cols="4">
             <v-row>
-              <v-card width="100%" class="analytics-card">
+              <v-card width="100%" class="analytics-card mx-2">
                 <v-card-text>
                   <label class="font-weight-bold title-dashboard">Browser</label>
                   <v-col
