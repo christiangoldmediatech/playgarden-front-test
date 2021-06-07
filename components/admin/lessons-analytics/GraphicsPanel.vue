@@ -33,7 +33,7 @@
                         cols="12"
                         class="text-center"
                       >
-                        <label class="font-weight-bold display-3 total-users">33</label> <br>
+                        <label class="font-weight-bold display-3 total-users">{{ totalViews }}</label> <br>
                         <span class="text-dashboard"> Views </span>
                       </v-col>
                     </v-card-text>
@@ -49,7 +49,7 @@
                           class="text-center"
                         >
                           <p>
-                            <label class="font-weight-bold display-3 total-users">22</label> <br> <br>
+                            <label class="font-weight-bold display-3 total-users">{{ favorites }}</label> <br> <br>
                             <span class="text-dashboard pb-5"> Times </span>
                           </p>
                         </v-col>
@@ -100,7 +100,7 @@
                     cols="12"
                     class="text-center"
                   >
-                    <label class="font-weight-bold display-3 total-users">100</label> <br>
+                    <label class="font-weight-bold display-3 total-users">{{ uniqueViews }}</label> <br>
                     <span class="text-dashboard"> Times </span>
                   </v-col>
                 </v-card-text>
@@ -116,7 +116,7 @@
                     cols="12"
                     class="text-center"
                   >
-                    <label class="font-weight-bold display-3 total-users">15</label> <br>
+                    <label class="font-weight-bold display-3 total-users">{{ skippedViews }}</label> <br>
                     <span class="text-dashboard"> Times </span>
                   </v-col>
                 </v-card-text>
@@ -132,7 +132,7 @@
                     cols="12"
                     class="text-center"
                   >
-                    <pie-chart :pie-data="devices" :height="devices.height" />
+                    <pie-chart :pie-data="status" :height="status.height" />
                   </v-col>
                 </v-card-text>
               </v-card>
@@ -149,7 +149,7 @@
                     cols="12"
                     class="text-center"
                   >
-                    <pie-chart :pie-data="devices" :height="pieSize" />
+                    <pie-chart :pie-data="age" :height="pieSize" />
                   </v-col>
                 </v-card-text>
               </v-card>
@@ -164,7 +164,7 @@
                     cols="12"
                     class="text-center"
                   >
-                    <pie-chart :pie-data="devices" :height="pieSize" />
+                    <pie-chart :pie-data="gender" :height="pieSize" />
                   </v-col>
                 </v-card-text>
               </v-card>
@@ -179,7 +179,7 @@
                     cols="12"
                     class="text-center"
                   >
-                    <pie-chart :pie-data="devices" :height="pieSize" />
+                    <pie-chart :pie-data="browser" :height="pieSize" />
                   </v-col>
                 </v-card-text>
               </v-card>
@@ -192,6 +192,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import LineStackChart from '@/components/echart/LineStackChart.vue'
 import PieChart from '@/components/echart/PieChart.vue'
 export default {
@@ -202,7 +203,16 @@ export default {
     PieChart
   },
 
-  data: () => ({
+  data: vm => ({
+    lessonId: vm.$route.query.lessonId
+      ? parseInt(vm.$route.query.lessonId)
+      : null,
+    lesson: null,
+    entityId: 29,
+    totalViews: 0,
+    favorites: 0,
+    skippedViews: 0,
+    uniqueViews: 0,
     watchTime: {
       xAxios: [],
       data: []
@@ -213,49 +223,74 @@ export default {
       name: '',
       data: [],
       height: '100px'
+    },
+    status: {
+      title: '',
+      name: '',
+      data: [],
+      height: '100px'
+    },
+    age: {
+      title: '',
+      name: '',
+      data: [],
+      height: '100px'
+    },
+    gender: {
+      title: '',
+      name: '',
+      data: [],
+      height: '100px'
+    },
+    browser: {
+      title: '',
+      name: '',
+      data: [],
+      height: '100px'
     }
   }),
+
   created () {
-    this.watchTime = {
-      xAxis: ['Monday', 'Tuesday', 'Wednesday', 'Thuesday', 'Friday', 'Sunday'],
-      legend: ['Trialing', 'Active', 'Canceled', 'Total'],
-      data: [
-        {
-          name: 'Trialing',
-          type: 'line',
-          stack: 'Trialing',
-          data: ['1', '2', '4', '2', '3', '5', '1']
-        },
-        {
-          name: 'Active',
-          type: 'line',
-          stack: 'Active',
-          data: ['1', '2', '4', '2', '3', '5', '1']
-        },
-        {
-          name: 'Canceled',
-          type: 'line',
-          stack: 'Canceled',
-          data: ['1', '2', '4', '2', '3', '5', '1']
-        },
-        {
-          name: 'Total',
-          type: 'line',
-          stack: 'Total',
-          data: ['1', '2', '4', '2', '3', '5', '1']
-        }
-      ]
-    }
-    this.devices = {
-      name: '',
-      height: '120px',
-      data: [{
-        name: 'Android',
-        value: 40
-      }, {
-        name: 'Iphone',
-        value: 60
-      }]
+    this.getAnalytics()
+  },
+
+  methods: {
+    ...mapActions('admin/dashboard', ['getDashboardAnalytics']),
+
+    ...mapActions('admin/curriculum', ['getLessonById']),
+
+    async getAnalytics () {
+      this.lesson = await this.getLessonById(this.lessonId)
+      const { totalViews, favorites, device, browser, age, gender, skippedViews, uniqueViews, status, watchTime } = await this.getDashboardAnalytics({ lessonId: this.lessonId, entityId: this.entityId })
+
+      console.log('lesson--', this.lesson)
+      this.totalViews = totalViews
+      this.favorites = favorites
+      this.skippedViews = skippedViews
+      this.uniqueViews = uniqueViews
+      this.watchTime = {
+        xAxis: watchTime.time,
+        legend: ['Skipped', 'Closed'],
+        data: [
+          {
+            name: 'Skipped',
+            type: 'line',
+            stack: 'Skipped',
+            data: watchTime.skipped
+          },
+          {
+            name: 'Closed',
+            type: 'line',
+            stack: 'Closed',
+            data: watchTime.closed
+          }
+        ]
+      }
+      this.status.data = status
+      this.age.data = age
+      this.gender.data = gender
+      this.browser.data = browser
+      this.devices.data = device
     }
   }
 }
