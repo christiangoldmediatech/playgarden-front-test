@@ -59,7 +59,7 @@
                 </v-row>
               </v-col>
               <v-col cols="6">
-                <v-card>
+                <v-card class="content-dashboard">
                   <v-card-text>
                     <label class="font-weight-bold title-dashboard">Devices</label>
                     <v-col
@@ -140,7 +140,7 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="4">
+          <v-col cols="3">
             <v-row>
               <v-card width="100%" class="analytics-card mx-2">
                 <v-card-text>
@@ -155,7 +155,7 @@
               </v-card>
             </v-row>
           </v-col>
-          <v-col cols="4">
+          <v-col>
             <v-row>
               <v-card width="100%" class="analytics-card mx-2">
                 <v-card-text>
@@ -170,7 +170,7 @@
               </v-card>
             </v-row>
           </v-col>
-          <v-col cols="4">
+          <v-col>
             <v-row>
               <v-card width="100%" class="analytics-card mx-2">
                 <v-card-text>
@@ -353,7 +353,6 @@ ul li::before {
 }
 
 .analytics-card {
-  max-height: 185px !important;
   min-height: 185px !important;
 }
 
