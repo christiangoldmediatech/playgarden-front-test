@@ -6,13 +6,13 @@
           <v-list-item-avatar>
             <v-img
               class="clickable account-btn mx-2"
-              :src="require('@/assets/svg/account-profile.svg')"
+              :src="lesson.curriculumType.icon"
             />
           </v-list-item-avatar>
 
           <v-list-item-content>
             <v-list-item-title class="text-truncate">
-              Learn how to count on the Abacus
+              {{ lesson.curriculumType.description }}
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
@@ -207,8 +207,15 @@ export default {
     lessonId: vm.$route.query.lessonId
       ? parseInt(vm.$route.query.lessonId)
       : null,
-    lesson: null,
-    entityId: 29,
+    lesson: {
+      curriculumType: {
+        name: '',
+        description: '',
+        letter: '',
+        icon: ''
+      }
+    },
+    entityId: null,
     totalViews: 0,
     favorites: 0,
     skippedViews: 0,
@@ -250,8 +257,18 @@ export default {
     }
   }),
 
-  created () {
-    this.getAnalytics()
+  async created () {
+    this.$nuxt.$on('send-video', async (video) => {
+      this.entityId = video.id
+      await this.getAnalytics()
+    })
+    this.lesson = await this.getLessonById(this.lessonId)
+    this.entityId = this.lesson.videos[0].id
+    await this.getAnalytics()
+  },
+
+  beforeDestroy () {
+    this.$nuxt.$off('send-video')
   },
 
   methods: {
@@ -260,10 +277,7 @@ export default {
     ...mapActions('admin/curriculum', ['getLessonById']),
 
     async getAnalytics () {
-      this.lesson = await this.getLessonById(this.lessonId)
       const { totalViews, favorites, device, browser, age, gender, skippedViews, uniqueViews, status, watchTime } = await this.getDashboardAnalytics({ lessonId: this.lessonId, entityId: this.entityId })
-
-      console.log('lesson--', this.lesson)
       this.totalViews = totalViews
       this.favorites = favorites
       this.skippedViews = skippedViews
@@ -294,8 +308,6 @@ export default {
     }
   }
 }
-</script>
-
 </script>
 
 <style>
