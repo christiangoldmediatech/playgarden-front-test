@@ -111,24 +111,22 @@ export default defineComponent({
       try {
         loading.value = true
 
-        const formData = new FormData()
-        formData.append('vbout_EmbedForm[field][224784]', form.value.firstName)
-        formData.append('vbout_EmbedForm[field][224785]', form.value.lastName)
-        formData.append('vbout_EmbedForm[field][224786]', form.value.email)
-        formData.append('vbout_EmbedForm[field][268014]', form.value.help)
+        const formData = {
+          firstName: form.value.firstName,
+          lastName: form.value.lastName,
+          email: form.value.email,
+          message: form.value.help
+        }
 
         await axios({
           method: 'post',
-          url: 'https://www.vbt.io/embedcode/submit/32765/?_format=page',
-          data: formData,
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
+          url: '/vbout/contact-us',
+          data: formData
         })
 
         // @ts-ignore
         ctx.root.$snotify.success(
-          'Export is complete and will be sent to your email.'
+          'Information sent!'
         )
 
         hideContactUsModal()
