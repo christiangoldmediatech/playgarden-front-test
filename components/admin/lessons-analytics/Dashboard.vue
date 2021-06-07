@@ -3,15 +3,30 @@
     :class="{ 'dashboard-container': !$vuetify.breakpoint.smAndDown }"
     fluid
   >
-    <v-main>
-      <v-row class="fill-height" justify="center">
-        <v-col cols="3">
-          panel
-        </v-col>
-        <v-col>
-          cenetr
-        </v-col>
-      </v-row>
-    </v-main>
+    <v-row>
+      <v-col cols="2">
+        panel
+      </v-col>
+      <v-col cols="10">
+        <graphics-panel />
+      </v-col>
+    </v-row>
   </v-container>
 </template>
+
+<script>
+import GraphicsPanel from '@/components/admin/lessons-analytics/GraphicsPanel.vue'
+export default {
+  name: 'Dashboard',
+
+  components: {
+    GraphicsPanel
+  },
+
+  layout: 'admin',
+
+  data: () => ({
+    previewMode: false
+  })
+}
+</script>

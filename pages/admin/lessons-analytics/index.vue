@@ -1,9 +1,7 @@
 <template>
-  <v-main class="bkg">
-    <v-container fluid fill-height>
-      <dashboard />
-    </v-container>
-  </v-main>
+  <v-container>
+    <dashboard />
+  </v-container>
 </template>
 
 <script>
@@ -15,10 +13,6 @@ export default {
     Dashboard
   },
 
-  layout: 'admin',
-
-  data: () => ({
-    previewMode: false
-  })
+  layout: 'admin'
 }
 </script>
