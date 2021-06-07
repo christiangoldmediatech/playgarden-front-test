@@ -7,7 +7,7 @@
       <v-col cols="2">
         panel
       </v-col>
-      <v-col cols="10">
+      <v-col cols="12">
         <graphics-panel />
       </v-col>
     </v-row>
