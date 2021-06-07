@@ -20,7 +20,7 @@
       <v-card-text>
         <v-row>
           <v-col cols="12" md="7">
-            <time-line-chart :time-line-data="watchTime" />
+            <line-stack-chart :line-stack-data="watchTime" />
           </v-col>
           <v-col cols="12" md="5">
             <v-row>
@@ -192,13 +192,13 @@
 </template>
 
 <script>
-import TimeLineChart from '@/components/echart/TimeLineChart.vue'
+import LineStackChart from '@/components/echart/LineStackChart.vue'
 import PieChart from '@/components/echart/PieChart.vue'
 export default {
   name: 'GraphicsPanel',
 
   components: {
-    TimeLineChart,
+    LineStackChart,
     PieChart
   },
 
@@ -217,8 +217,34 @@ export default {
   }),
   created () {
     this.watchTime = {
-      xAxios: ['Monday', 'Tuesday', 'Wednesday', 'Thuesday', 'Friday', 'Sunday'],
-      data: ['1', '2', '4', '2', '3', '5', '1']
+      xAxis: ['Monday', 'Tuesday', 'Wednesday', 'Thuesday', 'Friday', 'Sunday'],
+      legend: ['Trialing', 'Active', 'Canceled', 'Total'],
+      data: [
+        {
+          name: 'Trialing',
+          type: 'line',
+          stack: 'Trialing',
+          data: ['1', '2', '4', '2', '3', '5', '1']
+        },
+        {
+          name: 'Active',
+          type: 'line',
+          stack: 'Active',
+          data: ['1', '2', '4', '2', '3', '5', '1']
+        },
+        {
+          name: 'Canceled',
+          type: 'line',
+          stack: 'Canceled',
+          data: ['1', '2', '4', '2', '3', '5', '1']
+        },
+        {
+          name: 'Total',
+          type: 'line',
+          stack: 'Total',
+          data: ['1', '2', '4', '2', '3', '5', '1']
+        }
+      ]
     }
     this.devices = {
       name: '',
