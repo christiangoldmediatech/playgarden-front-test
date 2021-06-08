@@ -297,12 +297,11 @@ export default {
   async created () {
     this.$nuxt.$on('send-video', async (video) => {
       this.video = video
-      console.log('set video--', this.video)
       await this.getAnalytics()
+      this.$refs.contentLessonRef.close()
     })
     this.lesson = await this.getLessonById(this.lessonId)
     this.video = this.lesson.videos[0]
-    console.log('set firts video--', this.video)
     await this.getAnalytics()
   },
 
@@ -316,39 +315,40 @@ export default {
     ...mapActions('admin/curriculum', ['getLessonById']),
 
     openContenLesson () {
-      console.log('open')
       this.$refs.contentLessonRef.open(null, this.lesson)
     },
 
     async getAnalytics () {
-      const { totalViews, favorites, device, browser, age, gender, skippedViews, uniqueViews, status, watchTime } = await this.getDashboardAnalytics({ lessonId: this.lessonId, entityId: this.video.id })
-      this.totalViews = totalViews
-      this.favorites = favorites
-      this.skippedViews = skippedViews
-      this.uniqueViews = uniqueViews
-      this.watchTime = {
-        xAxis: watchTime.time,
-        legend: ['Skipped', 'Closed'],
-        data: [
-          {
-            name: 'Skipped',
-            type: 'line',
-            stack: 'Skipped',
-            data: watchTime.skipped
-          },
-          {
-            name: 'Closed',
-            type: 'line',
-            stack: 'Closed',
-            data: watchTime.closed
-          }
-        ]
-      }
-      this.status.data = status
-      this.age.data = age
-      this.gender.data = gender
-      this.browser.data = browser
-      this.devices.data = device
+      try {
+        const { totalViews, favorites, device, browser, age, gender, skippedViews, uniqueViews, status, watchTime } = await this.getDashboardAnalytics({ lessonId: this.lessonId, entityId: this.video.id })
+        this.totalViews = totalViews
+        this.favorites = favorites
+        this.skippedViews = skippedViews
+        this.uniqueViews = uniqueViews
+        this.watchTime = {
+          xAxis: watchTime.time,
+          legend: ['Skipped', 'Closed'],
+          data: [
+            {
+              name: 'Skipped',
+              type: 'line',
+              stack: 'Skipped',
+              data: watchTime.skipped
+            },
+            {
+              name: 'Closed',
+              type: 'line',
+              stack: 'Closed',
+              data: watchTime.closed
+            }
+          ]
+        }
+        this.status.data = status
+        this.age.data = age
+        this.gender.data = gender
+        this.browser.data = browser
+        this.devices.data = device
+      } catch (e) {}
     }
   }
 }

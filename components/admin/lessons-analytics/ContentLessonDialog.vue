@@ -178,7 +178,6 @@ export default {
 
   methods: {
     open (evt, item = null) {
-      console.log('videos--', item)
       this.item = item
       this.$nextTick(() => {
         this.dialog = true
