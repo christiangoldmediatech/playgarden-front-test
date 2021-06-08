@@ -30,9 +30,11 @@
         </v-list>
       </v-card-title>
       <v-card-text>
-        <v-row>
-          <v-col cols="12" md="7">
-            <line-stack-chart :line-stack-data="watchTime" />
+        <v-row class="content-dashboard">
+          <v-col cols="12" md="7" class="px-2 my-4">
+            <v-card width="100%">
+              <line-stack-chart :line-stack-data="watchTime" />
+            </v-card>
           </v-col>
           <v-col cols="12" md="5">
             <v-row>
