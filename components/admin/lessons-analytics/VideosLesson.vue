@@ -10,16 +10,18 @@
           <v-card @click="loadDetailVideo(item)">
             <v-card-title>
               <v-list-item>
-                <v-list-item-avatar>
+                <v-list-item-avatar tile>
                   <v-img
                     class="clickable account-btn mx-2"
-                    :src="item.thumbnail"
+                    :src="item.activityType.icon"
                   />
                 </v-list-item-avatar>
 
                 <v-list-item-content>
-                  <v-list-item-title class="text-h7">
-                    {{ item.description }}
+                  <v-list-item-title>
+                    <p>
+                      {{ item.description }}
+                    </p>
                   </v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
@@ -68,7 +70,7 @@ export default {
 
     async getLesson () {
       this.lesson = await this.getLessonById(this.lessonId)
-      console.log('lesson--', this.lesson)
+      console.log(' aqui video lesson--', this.lesson)
     },
 
     loadDetailVideo (item) {
