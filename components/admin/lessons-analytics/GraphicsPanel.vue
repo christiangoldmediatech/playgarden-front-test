@@ -2,20 +2,32 @@
   <v-row>
     <v-card width="100%">
       <v-card-title>
-        <v-list-item>
-          <v-list-item-avatar>
-            <v-img
-              class="clickable account-btn mx-2"
-              :src="lesson.curriculumType.icon"
-            />
-          </v-list-item-avatar>
+        <v-list v-if="video.activityType" class="lesson-video-card">
+          <v-list-item>
+            <v-list-item-avatar tile>
+              <v-img
+                :src="video.activityType.icon"
+                contain
+              />
+            </v-list-item-avatar>
 
-          <v-list-item-content>
-            <v-list-item-title class="text-truncate">
-              {{ lesson.curriculumType.description }}
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>
+                <span class="dashboard-item-activity-type">
+                  {{ video.activityType.name }}
+                </span>
+                <span class="dashboard-item-name">
+                  with {{ video.name }}
+                </span>
+              </v-list-item-title>
+              <v-list-item-subtitle>
+                {{ video.description }}
+              </v-list-item-subtitle>
+            </v-list-item-content>
+
+            <slot />
+          </v-list-item>
+        </v-list>
       </v-card-title>
       <v-card-text>
         <v-row>
@@ -210,10 +222,13 @@ export default {
     lesson: {
       curriculumType: {
         name: '',
-        description: '',
+        title: '',
         letter: '',
         icon: ''
       }
+    },
+    video: {
+      activityType: null
     },
     entityId: null,
     totalViews: 0,
@@ -259,11 +274,13 @@ export default {
 
   async created () {
     this.$nuxt.$on('send-video', async (video) => {
-      this.entityId = video.id
+      this.video = video
+      console.log('set video--', this.video)
       await this.getAnalytics()
     })
     this.lesson = await this.getLessonById(this.lessonId)
-    this.entityId = this.lesson.videos[0].id
+    this.video = this.lesson.videos[0]
+    console.log('set firts video--', this.video)
     await this.getAnalytics()
   },
 
@@ -277,7 +294,7 @@ export default {
     ...mapActions('admin/curriculum', ['getLessonById']),
 
     async getAnalytics () {
-      const { totalViews, favorites, device, browser, age, gender, skippedViews, uniqueViews, status, watchTime } = await this.getDashboardAnalytics({ lessonId: this.lessonId, entityId: this.entityId })
+      const { totalViews, favorites, device, browser, age, gender, skippedViews, uniqueViews, status, watchTime } = await this.getDashboardAnalytics({ lessonId: this.lessonId, entityId: this.video.id })
       this.totalViews = totalViews
       this.favorites = favorites
       this.skippedViews = skippedViews
