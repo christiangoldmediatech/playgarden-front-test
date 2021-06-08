@@ -1,7 +1,13 @@
 <template>
   <v-row>
+    <v-row>
+      <content-lesson-dialog
+        ref="contentLessonRef"
+        @saved="refresh(false)"
+      />
+    </v-row>
     <v-card width="100%">
-      <v-card-title>
+      <v-card-title class="mb-8">
         <v-list v-if="video.activityType" class="lesson-video-card">
           <v-list-item>
             <v-list-item-avatar tile>
@@ -28,6 +34,17 @@
             <slot />
           </v-list-item>
         </v-list>
+        <v-row>
+          <v-col cols="12">
+            <pg-circle-letter-day
+              v-if="lesson"
+              class="pt-12 pr-12"
+              :day="lesson ? lesson.day : null"
+              :letter="lesson ? lesson.curriculumType.letter : null"
+              @click.native="openContenLesson"
+            />
+          </v-col>
+        </v-row>
       </v-card-title>
       <v-card-text>
         <v-row class="content-dashboard">
@@ -209,12 +226,14 @@
 import { mapActions } from 'vuex'
 import LineStackChart from '@/components/echart/LineStackChart.vue'
 import PieChart from '@/components/echart/PieChart.vue'
+import ContentLessonDialog from '@/components/admin/lessons-analytics/ContentLessonDialog.vue'
 export default {
   name: 'GraphicsPanel',
 
   components: {
     LineStackChart,
-    PieChart
+    PieChart,
+    ContentLessonDialog
   },
 
   data: vm => ({
@@ -295,6 +314,11 @@ export default {
     ...mapActions('admin/dashboard', ['getDashboardAnalytics']),
 
     ...mapActions('admin/curriculum', ['getLessonById']),
+
+    openContenLesson () {
+      console.log('open')
+      this.$refs.contentLessonRef.open(null, this.lesson)
+    },
 
     async getAnalytics () {
       const { totalViews, favorites, device, browser, age, gender, skippedViews, uniqueViews, status, watchTime } = await this.getDashboardAnalytics({ lessonId: this.lessonId, entityId: this.video.id })
