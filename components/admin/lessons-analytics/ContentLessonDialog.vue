@@ -39,77 +39,93 @@
               </v-col>
               <v-col cols="4">
                 <!-- start worsheets -->
-                <content-section
-                  v-if="item"
-                  number="2"
-                  title="Worksheets"
-                  :progress="item.worksheets.progress"
-                  :progress-next="item.worksheets.progressNext"
-                  :enabled="item.videos.progress === 100"
-                >
-                  <template v-slot:title-append>
-                    <v-img
-                      :class="['ml-2', { 'dashboard-panel-disabled': item.videos.progress < 100 }]"
-                      :src="require('@/assets/png/dashboard/worksheets.png')"
-                      max-width="32px"
-                      max-height="32px"
-                      contain
-                    />
-                  </template>
-                  <v-list class="py-0" dense>
-                    <v-list-item
-                      v-if="item.worksheets"
-                      class="dashboard-item"
-                      active-class="dashboard-item-active"
-                      exact-active-class="dashboard-item-exact"
-                      :disabled="item.videos.progress < 100"
-                      :nuxt="!noLinkMode"
-                      :exact="!noLinkMode"
-                    >
-                      <v-list-item-content>
-                        <v-list-item-title :class="['dashboard-panel-worksheet-text', { 'dashboard-item-disabled': item.videos.progress < 100 }]">
-                          ONLINE WORKSHEET
-                        </v-list-item-title>
-                        <v-list-item-subtitle v-if="noLinkMode">
-                          Completed: <!-- {{ completedOnlineWorksheets }}/{{ item.worksheets.ONLINE.length }} -->
-                        </v-list-item-subtitle>
-                      </v-list-item-content>
-                    </v-list-item>
-
-                    <v-list-item
-                      v-if="item.worksheets.OFFLINE"
-                      class="dashboard-item"
-                      active-class="dashboard-item-active"
-                      exact-active-class="dashboard-item-exact"
-                      :disabled="item.videos.progress < 100"
-                      :nuxt="!noLinkMode"
-                      :exact="!noLinkMode"
-                    >
-                      <v-list-item-content>
-                        <v-list-item-title :class="['dashboard-panel-worksheet-text', { 'dashboard-item-disabled': item.videos.progress < 100 }]">
-                          HANDS-ON LEARNING
-                        </v-list-item-title>
-                        <v-list-item-subtitle v-if="noLinkMode">
-                          Completed: <!-- {{ worksheets.OFFLINE.completed ? 'Yes' : 'No' }} -->
-                        </v-list-item-subtitle>
-                      </v-list-item-content>
-                    </v-list-item>
-
-                    <v-list-item
-                      v-if="item.worksheets.OFFLINE"
-                      class="dashboard-item"
-                      :disabled="item.videos.progress < 100"
-                    >
-                      <!-- <v-list-item-content>
-
-                      </v-list-item-content> -->
-                    </v-list-item>
-                  </v-list>
-                </content-section>
+                <div class="dashboard-panel-content mt-n3">
+                  <content-section
+                    v-if="item"
+                    number="2"
+                    title="Worksheets"
+                    :progress="item.worksheets.progress"
+                    :progress-next="item.worksheets.progressNext"
+                    :enabled="item.videos.progress === 100"
+                  >
+                    <template v-slot:title-append>
+                      <v-img
+                        :class="['ml-2', { 'dashboard-panel-disabled': item.videos.progress < 100 }]"
+                        :src="require('@/assets/png/dashboard/worksheets.png')"
+                        max-width="32px"
+                        max-height="32px"
+                        contain
+                      />
+                    </template>
+                    <v-list class="py-0" dense>
+                      <v-list-item
+                        v-if="item.worksheets"
+                        class="dashboard-item"
+                        active-class="dashboard-item-active"
+                        exact-active-class="dashboard-item-exact"
+                        :disabled="item.videos.progress < 100"
+                        :nuxt="!noLinkMode"
+                        :exact="!noLinkMode"
+                      >
+                        <v-list-item-content>
+                          <v-list-item-title :class="['dashboard-panel-worksheet-text', { 'dashboard-item-disabled': item.videos.progress < 100 }]">
+                            ONLINE WORKSHEET
+                          </v-list-item-title>
+                          <v-list-item-subtitle>
+                            <v-list class="py-0" dense>
+                              <v-list-item
+                                v-for="itemOnline in getOnlineWorksheets"
+                                :key="`list-${_uid}-item-${itemOnline.id}`"
+                                class="dashboard-item"
+                                active-class="dashboard-item-active"
+                                exact-active-class="dashboard-item-exact"
+                              >
+                                <v-list-item-content>
+                                  <v-list-item-subtitle :class="{ 'dashboard-item-disabled': itemOnline.disabled }">
+                                    <span :class="{ 'dashboard-item-disabled': item.disabled }">{{ itemOnline.name }}</span>
+                                  </v-list-item-subtitle>
+                                </v-list-item-content>
+                              </v-list-item>
+                            </v-list>
+                          </v-list-item-subtitle>
+                          <v-list-item-title :class="['dashboard-panel-worksheet-text', { 'dashboard-item-disabled': item.videos.progress < 100 }]">
+                            HANDS-ON LEARNING
+                          </v-list-item-title>
+                          <v-list-item-subtitle>
+                            <v-list class="py-0" dense>
+                              <v-list-item
+                                v-for="itemOnline in getOfflineWorksheet"
+                                :key="`list-${_uid}-item-${itemOnline.id}`"
+                                class="dashboard-item"
+                                active-class="dashboard-item-active"
+                                exact-active-class="dashboard-item-exact"
+                              >
+                                <v-list-item-content>
+                                  <v-list-item-subtitle :class="{ 'dashboard-item-disabled': itemOnline.disabled }">
+                                    <span :class="{ 'dashboard-item-disabled': item.disabled }">{{ itemOnline.name }}</span>
+                                  </v-list-item-subtitle>
+                                </v-list-item-content>
+                              </v-list-item>
+                            </v-list>
+                          </v-list-item-subtitle>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </v-list>
+                  </content-section>
+                </div>
                 <!-- end worsheets -->
               </v-col>
               <v-col cols="4">
-                activities
+                <!-- start activities -->
+                <content-section
+                  number="3"
+                  title="Activities"
+                  :progress="item.videos.progress"
+                  :enabled="item.videos.progress === 100"
+                >
+                  <content-list :items="getActivities" v-bind="{ noLinkMode }" />
+                </content-section>
+                <!-- end activities -->
               </v-col>
             </v-row>
           </v-container>
@@ -138,21 +154,25 @@ export default {
   }),
 
   computed: {
-    offlineWorksheet () {
+    getOfflineWorksheet () {
       if (this.item) {
-        return this.item.worksheets.find(({ type }) => type === 'OFFLINE')
+        return this.item.worksheets.filter(({ type }) => type === 'OFFLINE')
       }
-      return null
+      return []
     },
 
-    completedOnlineWorksheets () {
-      let completed = 0
-      this.item.worksheets.ONLINE.forEach((worksheet) => {
-        if (worksheet.completed) {
-          completed++
-        }
-      })
-      return completed
+    getOnlineWorksheets () {
+      if (this.item) {
+        return this.item.worksheets.filter(({ type }) => type === 'ONLINE')
+      }
+      return []
+    },
+
+    getActivities () {
+      if (this.item) {
+        return this.item.lessonsActivities.map(item => item.activity)
+      }
+      return []
     }
   },
 
