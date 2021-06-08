@@ -22,14 +22,15 @@
       <div class="font-weight-medium white--text text-center">
         {{ toUnlock }} / {{ total }}
       </div>
-      <v-btn
-        smal
-        width="130"
-        class="primary text-none text-caption font-weight-bold"
-        @click="goToVideos"
-      >
-        Unlock This Patch
-      </v-btn>
+      <div class="text-center">
+        <v-btn
+          small
+          class="primary text-none text-caption font-weight-bold"
+          @click="goToVideos"
+        >
+          {{ patchUnlockText }}
+        </v-btn>
+      </div>
     </div>
   </v-responsive>
 </template>
@@ -58,6 +59,10 @@ export default {
     activityTypeName: {
       type: String,
       default: ''
+    },
+    isMobile: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -67,6 +72,9 @@ export default {
     },
     progressPercentage () {
       return this.toUnlock / this.total * 100
+    },
+    patchUnlockText () {
+      return this.isMobile ? 'Unlock' : 'Unlock This Patch'
     }
   },
   methods: {
