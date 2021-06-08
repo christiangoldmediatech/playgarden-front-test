@@ -31,9 +31,9 @@
       </v-card-title>
       <v-card-text>
         <v-row class="content-dashboard">
-          <v-col cols="12" md="7" class="px-2 my-4">
-            <v-card width="100%">
-              <line-stack-chart :line-stack-data="watchTime" />
+          <v-col cols="12" md="7" class="px-2">
+            <v-card class="mt-3" width="100%">
+              <line-stack-chart :line-stack-data="watchTime" :height="lineStackHeight" />
             </v-card>
           </v-col>
           <v-col cols="12" md="5">
@@ -233,6 +233,7 @@ export default {
       activityType: null
     },
     entityId: null,
+    lineStackHeight: '418px',
     totalViews: 0,
     favorites: 0,
     skippedViews: 0,
