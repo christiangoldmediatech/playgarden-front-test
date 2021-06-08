@@ -26,9 +26,6 @@
           </v-card>
         </v-col>
       </v-row>
-      <!-- <v-col cols="12">
-        <videos-lesson />
-      </v-col> -->
       <v-col cols="12">
         <graphics-panel />
       </v-col>
@@ -38,13 +35,11 @@
 
 <script>
 import GraphicsPanel from '@/components/admin/lessons-analytics/GraphicsPanel.vue'
-// import VideosLesson from '@/components/admin/lessons-analytics/VideosLesson.vue'
 export default {
   name: 'Dashboard',
 
   components: {
     GraphicsPanel
-    // VideosLesson
   },
 
   layout: 'admin'

@@ -8,41 +8,49 @@
     </v-row>
     <v-card width="100%">
       <v-card-title class="mb-8">
-        <v-list v-if="video.activityType" class="lesson-video-card">
-          <v-list-item>
-            <v-list-item-avatar tile>
-              <v-img
-                :src="video.activityType.icon"
-                contain
-              />
-            </v-list-item-avatar>
-
-            <v-list-item-content>
-              <v-list-item-title>
-                <span class="dashboard-item-activity-type">
-                  {{ video.activityType.name }}
-                </span>
-                <span class="dashboard-item-name">
-                  with {{ video.name }}
-                </span>
-              </v-list-item-title>
-              <v-list-item-subtitle>
-                {{ video.description }}
-              </v-list-item-subtitle>
-            </v-list-item-content>
-
-            <slot />
-          </v-list-item>
-        </v-list>
         <v-row>
           <v-col cols="12">
-            <pg-circle-letter-day
-              v-if="lesson"
-              class="pt-12 pr-12"
-              :day="lesson ? lesson.day : null"
-              :letter="lesson ? lesson.curriculumType.letter : null"
-              @click.native="openContenLesson"
-            />
+            <v-card flat width="100%">
+              <v-card-title>
+                <v-list v-if="video.activityType" class="lesson-video-card">
+                  <v-list-item>
+                    <v-list-item-avatar tile>
+                      <v-img
+                        :src="video.activityType.icon"
+                        contain
+                      />
+                    </v-list-item-avatar>
+
+                    <v-list-item-content>
+                      <v-list-item-title>
+                        <span class="dashboard-item-activity-type">
+                          {{ video.activityType.name }}
+                        </span>
+                        <span class="dashboard-item-name">
+                          with {{ video.name }}
+                        </span>
+                      </v-list-item-title>
+                      <v-list-item-subtitle>
+                        {{ video.description }}
+                      </v-list-item-subtitle>
+                    </v-list-item-content>
+
+                    <slot />
+                  </v-list-item>
+                </v-list>
+
+                <v-spacer />
+
+                <pg-circle-letter-day
+                  v-if="lesson"
+                  :size="64"
+                  no-auto-position
+                  :day="lesson ? lesson.day : null"
+                  :letter="lesson ? lesson.curriculumType.letter : null"
+                  @click.native="openContenLesson"
+                />
+              </v-card-title>
+            </v-card>
           </v-col>
         </v-row>
       </v-card-title>
