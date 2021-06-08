@@ -1,16 +1,15 @@
 <template>
   <div>
     <v-menu
-      :value="popup.show && !isMobile"
+      :value="popup.show"
       :position-x="popup.x"
       :position-y="popup.y"
-      :close-on-click="false"
-      :close-on-content-click="false"
       :min-width="popup.minWidth"
+      :content-class="isMobile ? '' : 'v-menu__content_cone'"
       z-index="9999"
     >
       <div class="accent white--text px-4 py-2 text-center">
-        <div class="font-weight-bold my-1">
+        <div class="font-weight-bold text-caption text-sm-body-2 my-1">
           {{ popup.message }}
         </div>
         <!--
@@ -48,7 +47,8 @@ import { line, curveBasis } from 'd3-shape'
 import { colorValidator } from '@/components/pg/utils/validators'
 import { colorMaker } from '@/components/pg/utils/colorable'
 
-const POPUP_MIN_WITH = 370
+const POPUP_MIN_WIDTH_DESKTOP = 370
+const POPUP_MIN_WIDTH_MOBILE = 300
 
 const MIN_ROW_COUNT = 3
 const MIN_COL_COUNT = 5
@@ -145,7 +145,7 @@ export default {
       colCount: 0,
 
       popup: {
-        minWidth: POPUP_MIN_WITH,
+        minWidth: POPUP_MIN_WIDTH_DESKTOP,
         show: false
       },
 
@@ -456,10 +456,12 @@ export default {
     _handleTooltip (index) {
       this.popup.show = false
 
+      const menuWidth = this.isMobile ? POPUP_MIN_WIDTH_MOBILE : POPUP_MIN_WIDTH_DESKTOP
+
       const pathElBoundaries = document.querySelector(`#pc-path-${index}`).getBoundingClientRect()
       const yPosition = pathElBoundaries.top + pathElBoundaries.height / 5
       const xPosition =
-        pathElBoundaries.left + (pathElBoundaries.width / 2) - (POPUP_MIN_WITH / 2)
+        pathElBoundaries.left + (pathElBoundaries.width / 2) - (menuWidth / 2)
 
       let message = 'Unlock This in '
       switch (index) {
@@ -514,6 +516,7 @@ export default {
         this.popup = {
           ...this.popup,
           show: true,
+          minWidth: menuWidth,
           x: xPosition,
           y: yPosition,
           message
@@ -549,9 +552,8 @@ circle {
 .v-menu__content {
   box-shadow: none;
   height: 85px;
-  width: 370px;
 
-  &:after {
+  &_cone:after {
     position: absolute;
     left: 50%;
     margin-left: -16px;
