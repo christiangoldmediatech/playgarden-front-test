@@ -7,8 +7,8 @@
       />
     </v-row>
     <v-card width="100%">
-      <v-card-title class="mb-8">
-        <v-row>
+      <v-card-title>
+        <v-row no-gutters>
           <v-col cols="12">
             <v-card flat width="100%">
               <v-card-title>
