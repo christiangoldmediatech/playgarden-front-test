@@ -9,7 +9,7 @@
       z-index="9999"
     >
       <div class="accent white--text px-4 py-2 text-center">
-        <div class="font-weight-bold text-caption text-sm-body-2 my-1">
+        <div class="font-weight-bold text-caption text-sm-body-1 my-1">
           {{ popup.message }}
         </div>
         <!--
