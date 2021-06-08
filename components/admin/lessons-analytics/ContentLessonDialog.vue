@@ -7,9 +7,17 @@
       scrollable
     >
       <v-card>
-        <v-toolbar class="flex-grow-0" color="primary darken-1" dark dense flat>
+        <v-toolbar class="flex-grow-0 toolbar" color="primary darken-1" dark dense flat>
           <v-toolbar-title class="white--text">
-            Lesson
+            <pg-circle-letter-day
+              v-if="item"
+              class="mt-5 ml-4"
+              :size="64"
+              no-auto-position
+              :day="item ? item.day : null"
+              :letter="item ? item.curriculumType.letter : null"
+              @click.native="openContenLesson"
+            />
           </v-toolbar-title>
 
           <v-spacer />
@@ -117,14 +125,16 @@
               </v-col>
               <v-col cols="4">
                 <!-- start activities -->
-                <content-section
-                  number="3"
-                  title="Activities"
-                  :progress="item.videos.progress"
-                  :enabled="item.videos.progress === 100"
-                >
-                  <content-list :items="getActivities" v-bind="{ noLinkMode }" />
-                </content-section>
+                <div class="dashboard-panel-content mt-n3">
+                  <content-section
+                    number="3"
+                    title="Activities"
+                    :progress="item.videos.progress"
+                    :enabled="item.videos.progress === 100"
+                  >
+                    <content-list :items="getActivities" v-bind="{ noLinkMode }" />
+                  </content-section>
+                </div>
                 <!-- end activities -->
               </v-col>
             </v-row>
@@ -192,3 +202,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.toolbar {
+  min-height: 70px !important;
+}
+</style>

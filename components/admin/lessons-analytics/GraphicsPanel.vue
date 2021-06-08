@@ -43,6 +43,7 @@
 
                 <pg-circle-letter-day
                   v-if="lesson"
+                  class="cursor"
                   :size="64"
                   no-auto-position
                   :day="lesson ? lesson.day : null"
