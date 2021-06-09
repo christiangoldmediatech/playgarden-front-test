@@ -60,13 +60,12 @@
                 <v-col class="text-center">
                   <p>
                     It this is a mistake?
-                    <span>
-                      <nuxt-link
-                        class="d-block link-text contact"
-                        :to="{ name: 'help' }"
-                        v-text="'Contact Us'"
-                      />
-                    </span>
+                    <a
+                      class="d-block link-text contact accent--text"
+                      @click="showContactUsModal"
+                    >
+                      Contact Us
+                    </a>
                   </p>
                 </v-col>
               </v-row>
@@ -79,11 +78,22 @@
 </template>
 
 <script>
+import { useGlobalModal } from '@/composables'
+import { defineComponent } from '@nuxtjs/composition-api'
 import { mapGetters } from 'vuex'
-export default {
+
+export default defineComponent({
   name: 'InactiveSubscription',
 
   components: {},
+
+  setup () {
+    const { showContactUsModal } = useGlobalModal()
+
+    return {
+      showContactUsModal
+    }
+  },
 
   data: vm => ({}),
 
@@ -116,7 +126,7 @@ export default {
       })
     }
   }
-}
+})
 </script>
 
 <style>
