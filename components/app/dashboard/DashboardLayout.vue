@@ -108,7 +108,11 @@
           >
             <v-col class="dashboard-content-column" cols="12">
               <template v-if="$route.name === 'app-dashboard' || loading">
-                <pg-loading />
+                <v-card class="video-skeleton" width="100%">
+                  <v-skeleton-loader
+                    type="image, image, table-heading"
+                  />
+                </v-card>
               </template>
               <template v-else>
                 <slot />
@@ -345,5 +349,9 @@ export default {
       }
     }
   }
+}
+
+.video-skeleton {
+  height: 100% !important;
 }
 </style>
