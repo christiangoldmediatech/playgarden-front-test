@@ -50,10 +50,15 @@
                   :letter="lesson ? lesson.curriculumType.letter : null"
                   @click.native="openContenLesson"
                 />
-                <letter-select
-                  small-letter
-                  label-title="Choose letter"
-                />
+                <v-btn
+                  color="accent"
+                  icon
+                  @click="openContenLesson"
+                >
+                  <v-icon x-large>
+                    mdi-menu-down
+                  </v-icon>
+                </v-btn>
               </v-card-title>
             </v-card>
           </v-col>
@@ -240,15 +245,13 @@ import { mapActions } from 'vuex'
 import LineStackChart from '@/components/echart/LineStackChart.vue'
 import PieChart from '@/components/echart/PieChart.vue'
 import ContentLessonDialog from '@/components/admin/lessons-analytics/ContentLessonDialog.vue'
-import LetterSelect from '@/components/admin/lessons-analytics/LetterSelect.vue'
 export default {
   name: 'GraphicsPanel',
 
   components: {
     LineStackChart,
     PieChart,
-    ContentLessonDialog,
-    LetterSelect
+    ContentLessonDialog
   },
 
   data: vm => ({
