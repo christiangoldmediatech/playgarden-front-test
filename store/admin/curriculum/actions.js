@@ -33,6 +33,7 @@ export default {
     const data = await this.$axios.$get('/curriculum-types', {
       params: { name }
     })
+    console.log('data--', data)
     commit('SET_TYPES', data)
     return data
   },
