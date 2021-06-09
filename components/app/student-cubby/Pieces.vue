@@ -46,6 +46,7 @@
             :rows="rows"
             :uncover="uncover"
             :student-id="studentId"
+            :letter="letter"
           />
         </v-col>
         <v-col v-if="(!$vuetify.breakpoint.smAndDown && puzzle.piecesUnclocked === puzzle.pieces)" class="mt-12" cols="2">

@@ -142,7 +142,7 @@ export const getCountdownToDate = (date, defaultExpiredString = '0:00:00') => {
   const time = new Date(date).getTime()
 
   // get today's date and time
-  const now = new Date().getTime()
+  const now = Date.now()
 
   // find the distance between now and the count down date
   const distance = time - now
@@ -157,5 +157,8 @@ export const getCountdownToDate = (date, defaultExpiredString = '0:00:00') => {
     return defaultExpiredString
   }
 
-  return `${days}:${hours}:${minutes}`
+  const displayHours = hours < 10 ? `0${hours}` : hours
+  const displayMinutes = minutes < 10 ? `0${minutes}` : minutes
+
+  return `${days}:${displayHours}:${displayMinutes}`
 }

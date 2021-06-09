@@ -20,6 +20,9 @@
       <!-- TRIAL EXPIRED MODAL -->
       <trial-expired-modal />
 
+      <!-- CONTACT US FORM MODAL -->
+      <contact-us-form-modal />
+
       <!-- CONTENT -->
       <v-main v-if="!fullWidth">
         <v-container class="pa-md-3 pa-0" fill-height :style="contentStyle">
@@ -58,9 +61,10 @@ import ComingSoonDialog from '@/components/app/ComingSoonDialog'
 import ComingSoonPlayer from '@/components/app/ComingSoonPlayer.vue'
 import DefaultFooter from '@/components/app/footer/DefaultFooter'
 import NotificationCard from '@/components/app/notifications/NotificationCard'
-import ShippingAddressModal from '~/components/app/payment/ShippingAddressModal.vue'
-import TrialExpiredModal from '~/components/app/payment/TrialExpiredModal.vue'
-import TrialIsExpiring from '~/components/app/header/TrialIsExpiring.vue'
+import ShippingAddressModal from '@/components/app/payment/ShippingAddressModal.vue'
+import TrialExpiredModal from '@/components/app/payment/TrialExpiredModal.vue'
+import TrialIsExpiring from '@/components/app/header/TrialIsExpiring.vue'
+import ContactUsFormModal from '@/components/forms/contact/ContactUsFormModal.vue'
 
 export default {
   name: 'Default',
@@ -76,7 +80,8 @@ export default {
     NotificationCard,
     ShippingAddressModal,
     TrialExpiredModal,
-    TrialIsExpiring
+    TrialIsExpiring,
+    ContactUsFormModal
   },
 
   data: () => ({
