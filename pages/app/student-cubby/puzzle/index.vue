@@ -25,7 +25,7 @@
           <v-hover>
             <template v-slot:default="{ hover }">
               <v-card
-                class="my-3"
+                class="my-3 mx-auto"
                 :disabled="!puzzle.active"
                 width="340"
               >
