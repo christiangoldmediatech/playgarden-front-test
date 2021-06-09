@@ -25,8 +25,8 @@
 
 <script>
 import { defineComponent } from '@nuxtjs/composition-api'
-import StepOne from '@/components/app/register/StepOne'
 import { useGtmHelper } from '@/composables'
+import StepOne from '@/components/app/register/StepOne.vue'
 
 export default defineComponent({
   name: 'Parent',
