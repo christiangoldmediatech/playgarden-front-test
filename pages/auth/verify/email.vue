@@ -56,9 +56,9 @@
 
           <v-btn
             color="primary"
-            href="mailto:hello@playgardenprep.com"
             small
             text
+            @click="showContactUsModal"
           >
             CONTACT US
           </v-btn>
@@ -70,9 +70,19 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { defineComponent } from '@nuxtjs/composition-api'
+import { useGlobalModal } from '@/composables'
 
-export default {
+export default defineComponent({
   name: 'Email',
+
+  setup () {
+    const { showContactUsModal } = useGlobalModal()
+
+    return {
+      showContactUsModal
+    }
+  },
 
   data: vm => ({
     loading: false,
@@ -147,7 +157,7 @@ export default {
       }
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

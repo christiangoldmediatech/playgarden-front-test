@@ -21,7 +21,7 @@
               order-md="4"
             >
               <span class="grey--text">Need help? </span>
-              <span class="text-decoration-underline" @click="handleContactUs">
+              <span class="text-decoration-underline" @click="showContactUsModal">
                 <a class="accent--text">Contact us</a>
               </span>
             </v-col>
@@ -146,15 +146,17 @@
 </template>
 
 <script>
+import { defineComponent } from '@nuxtjs/composition-api'
 import { get } from 'lodash'
 import { mapActions, mapGetters } from 'vuex'
 
 import submittable from '@/utils/mixins/submittable'
 
+import { useGlobalModal } from '@/composables'
 import PlanDescription from './PlanDescription'
 import RadioSelectors from './RadioSelectors'
 
-export default {
+export default defineComponent({
   name: 'SubscriptionPlanSelection',
 
   components: {
@@ -179,6 +181,14 @@ export default {
     administrator: Boolean,
 
     updating: Boolean
+  },
+
+  setup () {
+    const { showContactUsModal } = useGlobalModal()
+
+    return {
+      showContactUsModal
+    }
   },
 
   data: () => ({
@@ -326,10 +336,6 @@ export default {
       }
     },
 
-    handleContactUs () {
-      window.open('https://playgardenonline.com/#contact-us', '_self')
-    },
-
     planHasPromotions (plan) {
       return (
         plan &&
@@ -339,7 +345,7 @@ export default {
       )
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

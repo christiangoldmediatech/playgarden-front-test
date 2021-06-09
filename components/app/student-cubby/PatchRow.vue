@@ -21,6 +21,7 @@
           :patch="patch"
           :to-unlock="activityType.toUnlock"
           :should-show-progress="isNextPatchToUnlock(patch.id)"
+          :activity-type-name="activityType.name"
         />
       </template>
 
@@ -32,6 +33,7 @@
             :patch="patch"
             :to-unlock="activityType.toUnlock"
             :should-show-progress="isNextPatchToUnlock(patch.id)"
+            :activity-type-name="activityType.name"
           />
         </v-row>
       </perfect-scrollbar>
