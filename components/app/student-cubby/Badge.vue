@@ -22,6 +22,15 @@
       <div class="font-weight-medium white--text text-center">
         {{ toUnlock }} / {{ total }}
       </div>
+      <div class="text-center">
+        <v-btn
+          small
+          class="primary text-none text-caption font-weight-bold"
+          @click="goToVideos"
+        >
+          {{ patchUnlockText }}
+        </v-btn>
+      </div>
     </div>
   </v-responsive>
 </template>
@@ -46,6 +55,14 @@ export default {
     shouldShowProgress: {
       type: Boolean,
       default: false
+    },
+    activityTypeName: {
+      type: String,
+      default: ''
+    },
+    isMobile: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -55,6 +72,17 @@ export default {
     },
     progressPercentage () {
       return this.toUnlock / this.total * 100
+    },
+    patchUnlockText () {
+      return this.isMobile ? 'Unlock' : 'Unlock This Patch'
+    }
+  },
+  methods: {
+    goToVideos () {
+      this.$router.push({
+        name: 'app-library',
+        hash: `#${this.activityTypeName}`
+      })
     }
   }
 }

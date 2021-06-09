@@ -47,13 +47,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeUnmount, onMounted, ref } from '@nuxtjs/composition-api'
+import { defineComponent, onBeforeUnmount, onMounted, ref, useRoute } from '@nuxtjs/composition-api'
 import FeaturedVideo from '@/components/app/library/FeaturedVideo.vue'
 import ActivityTypeContainer from '@/components/app/library/ActivityTypeContainer.vue'
 import FavoritesContainer from '@/components/app/library/FavoritesContainer.vue'
 import LibraryCategories from '@/components/app/library/LibraryCategories.vue'
 import ActivityPlayer from '@/components/app/activities/ActivityPlayer.vue'
-import { useActivity, useLibrary, useNuxtHelper } from '@/composables'
+import { useActivity, useLibrary, useNuxtHelper, useVuetifyHelper } from '@/composables'
 
 export default defineComponent({
   name: 'Index',
@@ -68,6 +68,8 @@ export default defineComponent({
 
   setup () {
     const nuxt = useNuxtHelper()
+    const vuetify = useVuetifyHelper()
+    const route = useRoute()
 
     const {
       activities,
@@ -81,16 +83,17 @@ export default defineComponent({
     const isPageLoading = ref(activities.value.length === 0)
     const isFavoriteFirstLoad = ref(true)
 
-    // setup favorites callback
-    nuxt.$on('library-update-favorites', refreshFavoriteActivities)
-
     onMounted(async () => {
       await getActivities()
       isPageLoading.value = false
       isFavoriteFirstLoad.value = false
 
       getAllFavorites()
+      navigateToSection(route.value.hash)
     })
+
+    // setup favorites callback
+    nuxt.$on('library-update-favorites', refreshFavoriteActivities)
 
     onBeforeUnmount(() => {
       nuxt.$off('library-update-favorites')
@@ -109,6 +112,18 @@ export default defineComponent({
       const index = playlist.findIndex(playItem => playItem.activityId === featuredId)
 
       nuxt.$emit('open-activity-player', { playlist, index })
+    }
+
+    const navigateToSection = (hash: string) => {
+      if (!hash) {
+        return
+      }
+
+      try {
+        setTimeout(() => {
+          vuetify.goTo(hash, { offset: 200 })
+        }, 1000)
+      } catch (err) {}
     }
 
     return {
