@@ -5,8 +5,13 @@
     </div>
 
     <div class="ow-tap-cqt-answers">
+      <v-skeleton-loader
+        v-if="images.length === 0"
+        type="image, image, table-heading"
+      />
       <ow-image
         v-for="image in images"
+        v-else
         :key="`image-${image.code}`"
         clickable
         :word="image.word"
