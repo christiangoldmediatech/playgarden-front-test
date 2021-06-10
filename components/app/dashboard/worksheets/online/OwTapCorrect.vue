@@ -1,52 +1,42 @@
 <template>
   <div>
-    <div v-if="images.length === 0">
+    <div class="ow-tap-cqt-question">
+      {{ question.description }}
+    </div>
+
+    <div class="ow-tap-cqt-answers">
       <v-skeleton-loader
-        class="ow-tap-cqt-question"
-        type="text"
+        v-if="images.length === 0"
+        type="image, image, table-heading"
       />
-      <v-row>
-        <v-col v-for="n in 4" :key="n">
-          <v-skeleton-loader
-            type="card"
-          />
-        </v-col>
-      </v-row>
-    </div>
-    <div v-else>
-      <div class="ow-tap-cqt-question">
-        {{ question.description }}
-      </div>
-
-      <div class="ow-tap-cqt-answers">
-        <ow-image
-          v-for="image in images"
-          :key="`image-${image.code}`"
-          clickable
-          :word="image.word"
-          v-bind="{ image, selected }"
-          @click="select(image.code)"
-        />
-      </div>
-
-      <ow-ctn-btn
-        :disabled="selected === null"
-        v-bind="{ loading }"
-        @click="openAnswerDialog"
+      <ow-image
+        v-for="image in images"
+        v-else
+        :key="`image-${image.code}`"
+        clickable
+        :word="image.word"
+        v-bind="{ image, selected }"
+        @click="select(image.code)"
       />
-
-      <ow-message
-        v-bind="{ correct, selectedImage }"
-        @next="onNext"
-      >
-        <template v-if="correct" v-slot:button>
-          Continue
-          <v-icon right small>
-            mdi-greater-than
-          </v-icon>
-        </template>
-      </ow-message>
     </div>
+
+    <ow-ctn-btn
+      :disabled="selected === null"
+      v-bind="{ loading }"
+      @click="openAnswerDialog"
+    />
+
+    <ow-message
+      v-bind="{ correct, selectedImage }"
+      @next="onNext"
+    >
+      <template v-if="correct" v-slot:button>
+        Continue
+        <v-icon right small>
+          mdi-greater-than
+        </v-icon>
+      </template>
+    </ow-message>
   </div>
 </template>
 

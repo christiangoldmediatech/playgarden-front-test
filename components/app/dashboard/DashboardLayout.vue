@@ -108,13 +108,35 @@
           >
             <v-col class="dashboard-content-column" cols="12">
               <template v-if="$route.name === 'app-dashboard' || loading">
-                <v-card class="video-skeleton" width="100%">
-                  <v-skeleton-loader
-                    type="image, image, table-heading"
-                  />
-                </v-card>
+                loading
+                <div v-if="$route.name === 'app-dashboard-lesson-videos' || $route.name === 'app-dashboard-lesson-activities'" class="video-lesson">
+                  <v-card class="video-skeleton" width="100%">
+                    <v-skeleton-loader
+                      type="image, image, table-heading"
+                    />
+                  </v-card>
+                </div>
+                <div v-if="$route.name === 'app-dashboard-online-worksheet'" class="video-lesson">
+                  <v-card class="video-skeleton" width="100%">
+                    <v-skeleton-loader
+                      class="pt-6"
+                      type="article"
+                    />
+                    <v-row class="mt-4">
+                      <v-col v-for="n in 4" :key="n">
+                        <v-skeleton-loader
+                          type="card"
+                        />
+                      </v-col>
+                    </v-row>
+                  </v-card>
+                </div>
+                <div v-if="$route.name === 'app-dashboard-offline-worksheet'">
+                  offolne
+                </div>
               </template>
               <template v-else>
+                {{ $route.name }}
                 <slot />
               </template>
             </v-col>
