@@ -25,7 +25,7 @@ export interface PlanSelected extends Entity {
 export interface User extends Entity {
   email: string
   firstName: string
-  flow: 'CREDITCARD'
+  flow: 'CREDITCARD' | 'NOCREDITCARD'
   fullName: string
   gclId?: string
   lastName: string
