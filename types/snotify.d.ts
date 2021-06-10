@@ -2,8 +2,6 @@
 import Vue from 'vue'
 
 interface SnotifyOptions {
-  message: string
-  title: string
   buttons: {
     text: string,
     action: () => any
@@ -13,9 +11,21 @@ interface SnotifyOptions {
 }
 
 interface Snotify {
-  success: (options: SnotifyOptions) => void
-  error: (options: SnotifyOptions) => void
-  warning: (options: SnotifyOptions) => void
+  success: (
+    message: string,
+    title: string,
+    options: SnotifyOptions
+  ) => void
+  error: (
+    message: string,
+    title: string,
+    options: SnotifyOptions
+  ) => void
+  warning: (
+    message: string,
+    title: string,
+    options: SnotifyOptions
+  ) => void
 }
 
 declare module 'vue/types/vue' {
