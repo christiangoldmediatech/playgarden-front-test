@@ -108,7 +108,6 @@
           >
             <v-col class="dashboard-content-column" cols="12">
               <template v-if="$route.name === 'app-dashboard' || loading">
-                loading
                 <div v-if="$route.name === 'app-dashboard-lesson-videos' || $route.name === 'app-dashboard-lesson-activities'" class="video-lesson">
                   <v-card class="video-skeleton" width="100%">
                     <v-skeleton-loader
@@ -132,11 +131,12 @@
                   </v-card>
                 </div>
                 <div v-if="$route.name === 'app-dashboard-offline-worksheet'">
-                  offolne
+                  <v-skeleton-loader
+                    type="image, image, article"
+                  />
                 </div>
               </template>
               <template v-else>
-                {{ $route.name }}
                 <slot />
               </template>
             </v-col>
