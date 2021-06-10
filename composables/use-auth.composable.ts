@@ -5,6 +5,7 @@ import { useCookiesHelper } from '@/composables'
 import { hasLocalStorage } from '@/utils/window'
 import { axios } from '@/utils'
 import { User } from '@/models'
+import { useNotification } from './use-notification.composable'
 
 const accessToken = ref<string | null>(null)
 const axiosToken = ref<string | null>(null)
@@ -16,6 +17,7 @@ const userInfo = ref({} as User)
 
 export const useAuth = () => {
   const cookies = useCookiesHelper()
+  const { notificationCard, isTrialExpiringRibbonVisible } = useNotification()
 
   const checkAuth = (): boolean => {
     return !!(accessToken.value && expiresAt.value) && (Date.now() < expiresAt.value)
@@ -53,6 +55,43 @@ export const useAuth = () => {
     setToken(token)
   }
 
+  const resetState = () => {
+    accessToken.value = null
+    expiresAt.value = null
+    issuedAt.value = null
+    userInfo.value = {} as User
+
+    axios.setToken('', 'Bearer')
+  }
+
+  const logout = () => {
+    resetState()
+
+    if (process.client) {
+      cookies.remove('atoken')
+    }
+
+    if (hasLocalStorage()) {
+      window.localStorage.removeItem('authToken')
+      // TODO: child composable
+    }
+
+    // TODO: child composable
+
+    if (notificationCard.value.isVisible) {
+      notificationCard.value = {
+        ...notificationCard.value,
+        isVisible: false
+      }
+    }
+
+    if (isTrialExpiringRibbonVisible.value) {
+      isTrialExpiringRibbonVisible.value = false
+    }
+
+    // TODO: if (redirect)
+  }
+
   const isUserLoggedIn = computed(() => Boolean(userInfo.value.id))
 
   const fetchUserInfo = async () => {
@@ -77,6 +116,7 @@ export const useAuth = () => {
     isUserLoggedIn,
     checkAuth,
     setToken,
+    logout,
     restoreAuthFromSessionStorage,
     fetchUserInfo,
     updateUserInfo,

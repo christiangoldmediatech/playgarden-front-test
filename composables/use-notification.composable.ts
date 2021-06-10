@@ -143,6 +143,8 @@ export const useNotification = () => {
   }
 
   return {
+    notificationCard,
+    isTrialExpiringRibbonVisible,
     expiringRibbonHeightDesktop,
     expiringRibbonHeightMobile,
     checkUserShippingAddressAndNotify,
