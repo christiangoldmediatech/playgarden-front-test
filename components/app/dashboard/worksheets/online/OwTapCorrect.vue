@@ -5,13 +5,8 @@
     </div>
 
     <div class="ow-tap-cqt-answers">
-      <v-skeleton-loader
-        v-if="images.length === 0"
-        type="image, image, table-heading"
-      />
       <ow-image
         v-for="image in images"
-        v-else
         :key="`image-${image.code}`"
         clickable
         :word="image.word"
@@ -41,6 +36,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { jsonCopy } from '@/utils/objectTools.js'
 import { shuffle } from '@/utils/arrayTools.js'
 
@@ -72,6 +68,7 @@ export default {
   },
 
   computed: {
+    ...mapGetters('admin/curriculum', { lesson: 'getLesson' }),
     selectedImage () {
       if (this.selected) {
         return this.question.worksheetTable.images.find(({ code }) => code === this.selected)
@@ -101,7 +98,11 @@ export default {
         this.selected = null
         return
       }
+      // aqui llamar service
       this.selected = code
+      const status = (this.correct) ? 'COMPLETED' : 'ERROR'
+      const dataWorksheetLog = { worksheetId: this.question.id, codeSelected: this.selected, status }
+      console.log('dataWork--', dataWorksheetLog)
       this.$nextTick(() => {
         this.openAnswerDialog()
       })
