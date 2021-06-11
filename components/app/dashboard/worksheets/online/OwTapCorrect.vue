@@ -101,7 +101,7 @@ export default {
       // aqui llamar service
       this.selected = code
       const status = (this.correct) ? 'COMPLETED' : 'ERROR'
-      const dataWorksheetLog = { worksheetId: this.question.id, codeSelected: this.selected, status }
+      const dataWorksheetLog = { lessonId: this.lesson.id, worksheetId: this.question.id, codeSelected: this.selected, status }
       console.log('dataWork--', dataWorksheetLog)
       this.$nextTick(() => {
         this.openAnswerDialog()
