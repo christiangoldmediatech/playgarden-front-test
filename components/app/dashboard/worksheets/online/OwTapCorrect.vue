@@ -104,7 +104,6 @@ export default {
         const status = (this.correct) ? 'COMPLETED' : 'ERROR'
         const dataWorksheetLog = { codeImage: this.selected, status }
         await this.createWorksheetLog({ lessonId: this.lesson.id, worksheetId: this.question.id, data: dataWorksheetLog })
-        console.log('dataWork--', dataWorksheetLog)
         this.$nextTick(() => {
           this.openAnswerDialog()
         })
