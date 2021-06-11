@@ -21,6 +21,7 @@
       <p class="text-center text-md-left mt-md-n8">
         <span class="subtitle-text info-color-signup">
           Create an account to start learning
+          <span v-if="shouldShowNoCreditCardRequired">. NO CREDIT CARD REQUIRED!</span>
         </span>
       </p>
 
@@ -58,20 +59,65 @@
 </template>
 
 <script>
+import { computed, defineComponent, onMounted, useRoute, useRouter } from '@nuxtjs/composition-api'
 import { mapActions, mapGetters } from 'vuex'
-import RegisterForm from '@/components/forms/auth/RegisterForm'
-import CardInfo from './CardInfo'
-export default {
+import { useSignup } from '@/composables/use-signup.composable'
+import RegisterForm from '@/components/forms/auth/RegisterForm.vue'
+import CardInfo from '@/components/app/register/CardInfo.vue'
+
+export default defineComponent({
   name: 'StepOne',
   components: {
     RegisterForm,
     CardInfo
   },
+  setup () {
+    const router = useRouter()
+    const route = useRoute()
+    const { abFlow, setupABFlow } = useSignup({ router, route })
+
+    const goToNextStep = () => {
+      switch (abFlow.value) {
+        case 'CREDITCARD':
+          router.push({
+            name: 'app-payment',
+            query: {
+              step: '2',
+              process: 'signup'
+            }
+          })
+          break
+        case 'NOCREDITCARD':
+          router.push({
+            name: 'app-children',
+            query: {
+              step: '3',
+              process: 'signup'
+            }
+          })
+          break
+      }
+    }
+
+    const shouldShowNoCreditCardRequired = computed(() => abFlow.value === 'NOCREDITCARD')
+
+    onMounted(async () => {
+      await setupABFlow()
+    })
+
+    return {
+      abFlow,
+      shouldShowNoCreditCardRequired,
+      goToNextStep
+    }
+  },
+
   data: vm => ({
     loading: false,
     emailValidated: null,
     token: vm.$route.query.token
   }),
+
   computed: {
     ...mapGetters('auth', ['getUserInfo', 'isUserLoggedIn']),
     inInvitationProcess () {
@@ -121,26 +167,17 @@ export default {
           )
           this.$snotify.success('Welcome to Playgarden Prep!')
         }
-        this.goToStepTwo()
+        this.goToNextStep()
       } catch (e) {
       } finally {
         this.loading = false
       }
     },
     async registerProcess (data) {
-      return await this.newParent(data)
-    },
-    goToStepTwo () {
-      this.$router.push({
-        name: 'app-payment',
-        query: {
-          step: 2,
-          process: 'signup'
-        }
-      })
+      return await this.newParent({ ...data, flow: this.abFlow })
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
