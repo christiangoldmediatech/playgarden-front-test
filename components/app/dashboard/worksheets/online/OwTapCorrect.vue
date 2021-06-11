@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { jsonCopy } from '@/utils/objectTools.js'
 import { shuffle } from '@/utils/arrayTools.js'
 
@@ -93,19 +93,22 @@ export default {
   },
 
   methods: {
-    select (code) {
-      if (this.selected === code) {
-        this.selected = null
-        return
-      }
-      // aqui llamar service
-      this.selected = code
-      const status = (this.correct) ? 'COMPLETED' : 'ERROR'
-      const dataWorksheetLog = { lessonId: this.lesson.id, worksheetId: this.question.id, codeSelected: this.selected, status }
-      console.log('dataWork--', dataWorksheetLog)
-      this.$nextTick(() => {
-        this.openAnswerDialog()
-      })
+    ...mapActions('admin/curriculum/worksheet', ['createWorksheetLog']),
+    async select (code) {
+      try {
+        if (this.selected === code) {
+          this.selected = null
+          return
+        }
+        this.selected = code
+        const status = (this.correct) ? 'COMPLETED' : 'ERROR'
+        const dataWorksheetLog = { codeImage: this.selected, status }
+        await this.deleteCaregiverInvitation({ lessonId: this.lesson.id, worksheetId: this.question.id, data: dataWorksheetLog })
+        console.log('dataWork--', dataWorksheetLog)
+        this.$nextTick(() => {
+          this.openAnswerDialog()
+        })
+      } catch (error) {}
     },
 
     openAnswerDialog () {
