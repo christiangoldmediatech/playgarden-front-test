@@ -103,7 +103,7 @@ export default {
         this.selected = code
         const status = (this.correct) ? 'COMPLETED' : 'ERROR'
         const dataWorksheetLog = { codeImage: this.selected, status }
-        await this.deleteCaregiverInvitation({ lessonId: this.lesson.id, worksheetId: this.question.id, data: dataWorksheetLog })
+        await this.createWorksheetLog({ lessonId: this.lesson.id, worksheetId: this.question.id, data: dataWorksheetLog })
         console.log('dataWork--', dataWorksheetLog)
         this.$nextTick(() => {
           this.openAnswerDialog()

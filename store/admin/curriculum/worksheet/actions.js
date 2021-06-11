@@ -18,6 +18,6 @@ export default {
   },
 
   createWorksheetLog (_, { lessonId, worksheetId, data }) {
-    return this.$axios.$post(`/lessons/${lessonId}/worksheets/${worksheetId}`, data)
+    return this.$axios.$post(`/lessons/${lessonId}/worksheets/${worksheetId}/logs`, data)
   }
 }
