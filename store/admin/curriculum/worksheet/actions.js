@@ -17,7 +17,7 @@ export default {
     return this.$axios.$patch(`/lessons/${lessonId}/worksheets/${id}`, data)
   },
 
-  createWorksheetLog (_, { lessonId, worksheetId, data }) {
-    return this.$axios.$post(`/lessons/${lessonId}/worksheets/${worksheetId}/logs`, data)
+  createWorksheetLog (_, { lessonId, worksheetId, childId, data }) {
+    return this.$axios.$post(`/lessons/${lessonId}/worksheets/${worksheetId}/child/${childId}/logs`, data)
   }
 }
