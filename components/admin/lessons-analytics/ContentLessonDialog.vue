@@ -37,8 +37,8 @@
                   <content-section
                     number="1"
                     title="Video Lessons"
-                    :progress="item.videos.progress"
-                    :progress-next="item.videos.progressNext"
+                    progress="100"
+                    progress-next="100"
                     enabled
                   >
                     <content-list :items="item.videos" v-bind="{ noLinkMode }" />
@@ -52,9 +52,9 @@
                     v-if="item"
                     number="2"
                     title="Worksheets"
-                    :progress="item.worksheets.progress"
-                    :progress-next="item.worksheets.progressNext"
-                    :enabled="item.videos.progress === 100"
+                    progress="100"
+                    progress-next="100"
+                    enabled="true"
                   >
                     <template v-slot:title-append>
                       <v-img
@@ -71,7 +71,7 @@
                         class="dashboard-item"
                         active-class="dashboard-item-active"
                         exact-active-class="dashboard-item-exact"
-                        :disabled="item.videos.progress < 100"
+                        disabled="false"
                         :nuxt="!noLinkMode"
                         :exact="!noLinkMode"
                       >
@@ -90,7 +90,7 @@
                               >
                                 <v-list-item-content>
                                   <v-list-item-subtitle :class="{ 'dashboard-item-disabled': itemOnline.disabled }">
-                                    <span :class="{ 'dashboard-item-disabled': item.disabled }">{{ itemOnline.name }}</span>
+                                    <span class="font-weight-bold">{{ itemOnline.name }}</span>
                                   </v-list-item-subtitle>
                                 </v-list-item-content>
                               </v-list-item>
@@ -110,7 +110,7 @@
                               >
                                 <v-list-item-content>
                                   <v-list-item-subtitle :class="{ 'dashboard-item-disabled': itemOnline.disabled }">
-                                    <span :class="{ 'dashboard-item-disabled': item.disabled }">{{ itemOnline.name }}</span>
+                                    <span class="font-weight-bold">{{ itemOnline.name }}</span>
                                   </v-list-item-subtitle>
                                 </v-list-item-content>
                               </v-list-item>
@@ -129,8 +129,8 @@
                   <content-section
                     number="3"
                     title="Activities"
-                    :progress="item.videos.progress"
-                    :enabled="item.videos.progress === 100"
+                    progress="100"
+                    enabled="true"
                   >
                     <content-list :items="getActivities" v-bind="{ noLinkMode }" />
                   </content-section>

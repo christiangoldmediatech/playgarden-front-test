@@ -128,7 +128,7 @@
             <v-row>
               <v-card width="100%" class="analytics-card mx-2">
                 <v-card-text>
-                  <label class="font-weight-bold title-dashboard">Percentage of Views - TBD</label>
+                  <label class="font-weight-bold title-dashboard">Percentage of Views</label>
                   <v-col
                     cols="12"
                     class="text-center"
@@ -198,7 +198,7 @@
                     cols="12"
                     class="text-center"
                   >
-                    <pie-chart :pie-data="age" :height="pieSize" />
+                    <pie-chart :pie-data="age" description-tool-tip="Years" :height="pieSize" />
                   </v-col>
                 </v-card-text>
               </v-card>
