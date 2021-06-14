@@ -5,13 +5,16 @@
         <v-row no-gutters>
           <p>
             <label class="subtitle-text">Online Worksheet:</label> <br>
-            <label>Online Worksheet</label>
+            <label>{{ (worksheet.name) ? worksheet.name : '' }}</label>
           </p>
         </v-row>
       </v-card-title>
       <v-card-text>
-        <v-row class="content-dashboard">
-          text
+        <v-row v-if="getImages" class="content-dashboard">
+          <v-col v-for="(image, index) in getImages" :key="`image-${index}`" cols="3">
+            {{ image }}
+            <ow-image />
+          </v-col>
         </v-row>
       </v-card-text>
     </v-card>
@@ -20,6 +23,7 @@
 
 <script>
 import { mapActions } from 'vuex'
+import OwImage from './OwImage.vue'
 /* import LineStackChart from '@/components/echart/LineStackChart.vue'
 import PieChart from '@/components/echart/PieChart.vue'
 import ContentLessonDialog from '@/components/admin/lessons-analytics/ContentLessonDialog.vue' */
@@ -27,12 +31,16 @@ export default {
   name: 'GraphicsPanel',
 
   components: {
+    OwImage
     // LineStackChart,
     // PieChart,
     // ContentLessonDialog
   },
 
   data: vm => ({
+    lessonId: vm.$route.query.worksheetId
+      ? parseInt(vm.$route.query.worksheetId)
+      : null,
     worksheetId: vm.$route.query.worksheetId
       ? parseInt(vm.$route.query.worksheetId)
       : null,
@@ -46,19 +54,26 @@ export default {
     }
   }),
 
-  async created () {
-    /* this.$nuxt.$on('send-video', async (video) => {
-      this.video = video
-      await this.getAnalytics()
-      this.$refs.contentLessonRef.close()
-    })
-    this.lesson = await this.getLessonById(this.lessonId)
-    this.video = this.lesson.videos[0]
-    await this.getAnalytics() */
+  computed: {
+    worksheet () {
+      if (this.lesson && this.lesson.worksheets) {
+        return this.lesson.worksheets.find(({ id }) => id === this.worksheetId)
+      }
+      return {}
+    },
+    getImages () {
+      if (this.worksheet && this.worksheet.worksheetTable) {
+        return this.worksheet.worksheetTable.images
+      }
+      return []
+    }
   },
 
-  beforeDestroy () {
-    this.$nuxt.$off('send-video')
+  async created () {
+    this.lesson = await this.getLessonById(this.lessonId)
+    console.log('lesson--', this.lesson)
+    /* this.video = this.lesson.videos[0]
+    await this.getAnalytics() */
   },
 
   methods: {

@@ -156,7 +156,10 @@ export default {
     ContentList
   },
 
-  data: () => ({
+  data: vm => ({
+    lessonId: vm.$route.query.lessonId
+      ? parseInt(vm.$route.query.lessonId)
+      : null,
     dialog: false,
     loading: false,
     noLinkMode: false,
@@ -190,9 +193,8 @@ export default {
     goToAnalytics (item) {
       this.$router.push({
         name: 'admin-worksheets-analytics',
-        query: { worksheetId: item.id }
+        query: { lessonId: this.lessonId, worksheetId: item.id }
       })
-      console.log('item--', item)
     },
     open (evt, item = null) {
       this.item = item
