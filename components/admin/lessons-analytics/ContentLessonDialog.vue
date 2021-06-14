@@ -88,7 +88,7 @@
                                 active-class="dashboard-item-active"
                                 exact-active-class="dashboard-item-exact"
                               >
-                                <v-list-item-content>
+                                <v-list-item-content class="select-cursor" @click="goToAnalytics(itemOnline)">
                                   <v-list-item-subtitle :class="{ 'dashboard-item-disabled': itemOnline.disabled }">
                                     <span :class="{ 'dashboard-item-disabled': item.disabled }">{{ itemOnline.name }}</span>
                                   </v-list-item-subtitle>
@@ -187,6 +187,13 @@ export default {
   },
 
   methods: {
+    goToAnalytics (item) {
+      this.$router.push({
+        name: 'admin-worksheets-analytics',
+        query: { worksheetId: item.id }
+      })
+      console.log('item--', item)
+    },
     open (evt, item = null) {
       this.item = item
       this.$nextTick(() => {
@@ -206,5 +213,8 @@ export default {
 <style scoped>
 .toolbar {
   min-height: 70px !important;
+}
+.select-cursor {
+  cursor: pointer !important;
 }
 </style>
