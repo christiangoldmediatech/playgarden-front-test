@@ -12,8 +12,7 @@
       <v-card-text>
         <v-row v-if="getImages" class="content-dashboard">
           <v-col v-for="(image, index) in getImages" :key="`image-${index}`" cols="3">
-            {{ image }}
-            <ow-image />
+            <ow-image :image="image" />
           </v-col>
         </v-row>
       </v-card-text>
