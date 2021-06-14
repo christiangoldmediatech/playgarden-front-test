@@ -64,6 +64,7 @@ import { mapActions, mapGetters } from 'vuex'
 import { useSignup } from '@/composables/use-signup.composable'
 import RegisterForm from '@/components/forms/auth/RegisterForm.vue'
 import CardInfo from '@/components/app/register/CardInfo.vue'
+import { UserFlow } from '@/models'
 
 export default defineComponent({
   name: 'StepOne',
@@ -78,7 +79,7 @@ export default defineComponent({
 
     const goToNextStep = () => {
       switch (abFlow.value) {
-        case 'CREDITCARD':
+        case UserFlow.CREDITCARD:
           router.push({
             name: 'app-payment',
             query: {
@@ -87,7 +88,7 @@ export default defineComponent({
             }
           })
           break
-        case 'NOCREDITCARD':
+        case UserFlow.NOCREDITCARD:
           router.push({
             name: 'app-children',
             query: {
@@ -99,7 +100,7 @@ export default defineComponent({
       }
     }
 
-    const shouldShowNoCreditCardRequired = computed(() => abFlow.value === 'NOCREDITCARD')
+    const shouldShowNoCreditCardRequired = computed(() => abFlow.value === UserFlow.NOCREDITCARD)
 
     onMounted(async () => {
       await setupABFlow()
