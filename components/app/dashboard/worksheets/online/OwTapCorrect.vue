@@ -68,6 +68,7 @@ export default {
   },
 
   computed: {
+    ...mapGetters({ children: 'getCurrentChild' }),
     ...mapGetters('admin/curriculum', { lesson: 'getLesson' }),
     selectedImage () {
       if (this.selected) {
@@ -102,7 +103,7 @@ export default {
         }
         this.selected = code
         const status = (this.correct) ? 'COMPLETED' : 'ERROR'
-        const dataWorksheetLog = { codeImage: this.selected, status, childId: this.selected }
+        const dataWorksheetLog = { codeImage: this.selected, status, childId: this.children.id }
         await this.createWorksheetLog({ lessonId: this.lesson.id, worksheetId: this.question.id, data: dataWorksheetLog })
         this.$nextTick(() => {
           this.openAnswerDialog()
