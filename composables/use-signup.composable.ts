@@ -1,15 +1,15 @@
 import { ref, useRoute, useRouter } from '@nuxtjs/composition-api'
-import { User } from '@/models'
+import { User, UserFlow } from '@/models'
 import { axios } from '@/utils'
 
-const abFlow = ref<User['flow']>('CREDITCARD')
+const abFlow = ref<User['flow']>(UserFlow.CREDITCARD)
 
 export const useSignup = ({ router, route }: { router: ReturnType<typeof useRouter>, route: ReturnType<typeof useRoute> }) => {
   const setupABFlow = async () => {
-    const routeABFlow = route.value.query.abf
+    const routeABFlow = route.value.query.abf as UserFlow
 
-    if (typeof routeABFlow === 'string' && ['NOCREDITCARD', 'CREDITCARD'].includes(routeABFlow)) {
-      abFlow.value = route.value.query.abf as User['flow']
+    if (typeof routeABFlow === 'string' && [UserFlow.NOCREDITCARD, UserFlow.CREDITCARD].includes(routeABFlow)) {
+      abFlow.value = routeABFlow
     } else {
       const response = await axios.$get('/auth/users/flow') as { flow: User['flow'] }
       abFlow.value = response.flow
