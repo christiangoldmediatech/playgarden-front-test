@@ -270,11 +270,11 @@
 <script>
 import dayjs from 'dayjs'
 import { mapActions } from 'vuex'
-import FunnelChart from './FunnelChart.vue'
-import LineStackChart from './LineStackChart.vue'
-import PieChart from './PieChart.vue'
-import TimeLineChart from './TimeLineChart.vue'
-import BarChart from './BarChart.vue'
+import FunnelChart from '@/components/echart/FunnelChart.vue'
+import LineStackChart from '@/components/echart/LineStackChart.vue'
+import PieChart from '@/components/echart/PieChart.vue'
+import TimeLineChart from '@/components/echart/TimeLineChart.vue'
+import BarChart from '@/components/echart/BarChart.vue'
 import UsersListDialog from './UsersListDialog.vue'
 export default {
   name: 'MainPanel',
