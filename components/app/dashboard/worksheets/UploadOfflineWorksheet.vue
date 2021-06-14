@@ -14,7 +14,6 @@
             Keep track of your worksheets and progress!
           </span>
         </div>
-
         <v-row class="mx-0" justify="center">
           <v-hover
             v-for="(category, indexCategory) in categoriesWorksheet"
