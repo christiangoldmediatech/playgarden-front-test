@@ -21,7 +21,7 @@
       <p class="text-center text-md-left mt-md-n8">
         <span class="subtitle-text info-color-signup">
           Create an account to start learning
-          <span v-if="shouldShowNoCreditCardRequired">. NO CREDIT CARD REQUIRED!</span>
+          <span v-if="!isCreditCardRequired">. NO CREDIT CARD REQUIRED!</span>
         </span>
       </p>
 
@@ -75,7 +75,7 @@ export default defineComponent({
   setup () {
     const router = useRouter()
     const route = useRoute()
-    const { abFlow, setupABFlow } = useSignup({ router, route })
+    const { abFlow, isCreditCardRequired, setupABFlow } = useSignup({ router, route })
 
     const goToNextStep = () => {
       switch (abFlow.value) {
@@ -100,15 +100,13 @@ export default defineComponent({
       }
     }
 
-    const shouldShowNoCreditCardRequired = computed(() => abFlow.value === UserFlow.NOCREDITCARD)
-
     onMounted(async () => {
       await setupABFlow()
     })
 
     return {
       abFlow,
-      shouldShowNoCreditCardRequired,
+      isCreditCardRequired,
       goToNextStep
     }
   },
