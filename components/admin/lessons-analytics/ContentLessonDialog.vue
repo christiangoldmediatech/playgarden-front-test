@@ -37,9 +37,9 @@
                   <content-section
                     number="1"
                     title="Video Lessons"
-                    progress="100"
-                    progress-next="100"
-                    enabled
+                    :progress="progress"
+                    :progress-next="progress"
+                    :enabled="enabled"
                   >
                     <content-list :items="item.videos" v-bind="{ noLinkMode }" />
                   </content-section>
@@ -52,9 +52,9 @@
                     v-if="item"
                     number="2"
                     title="Worksheets"
-                    progress="100"
-                    progress-next="100"
-                    enabled="true"
+                    :progress="progress"
+                    :progress-next="progress"
+                    :enabled="enabled"
                   >
                     <template v-slot:title-append>
                       <v-img
@@ -71,7 +71,7 @@
                         class="dashboard-item"
                         active-class="dashboard-item-active"
                         exact-active-class="dashboard-item-exact"
-                        disabled="false"
+                        :disabled="!enabled"
                         :nuxt="!noLinkMode"
                         :exact="!noLinkMode"
                       >
@@ -129,8 +129,8 @@
                   <content-section
                     number="3"
                     title="Activities"
-                    progress="100"
-                    enabled="true"
+                    :progress="progress"
+                    :enabled="enabled"
                   >
                     <content-list :items="getActivities" v-bind="{ noLinkMode }" />
                   </content-section>
@@ -159,6 +159,8 @@ export default {
   data: () => ({
     dialog: false,
     loading: false,
+    enabled: true,
+    progress: 100,
     noLinkMode: false,
     item: null
   }),
@@ -180,7 +182,15 @@ export default {
 
     getActivities () {
       if (this.item) {
-        return this.item.lessonsActivities.map(item => item.activity)
+        return this.item.lessonsActivities.map((item) => {
+          return {
+            activityType: item.activity.activityType,
+            name: item.activity.videos.name,
+            description: item.activity.videos.description,
+            icon: item.activity.icon,
+            id: item.activity.videos.id
+          }
+        })
       }
       return []
     }
