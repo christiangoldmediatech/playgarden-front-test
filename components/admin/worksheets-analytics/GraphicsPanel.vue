@@ -15,6 +15,58 @@
             <ow-image :image="image" />
           </v-col>
         </v-row>
+        <v-row>
+          <v-col cols="5">
+            <v-card>
+              <v-card-text>
+                <label class="font-weight-bold title-dashboard">Devices</label>
+                <v-col
+                  cols="12"
+                  class="text-center"
+                >
+                  <pie-chart :pie-data="devices" />
+                </v-col>
+              </v-card-text>
+            </v-card>
+          </v-col>
+          <v-col cols="5">
+            <v-card>
+              <v-card-text>
+                <label class="font-weight-bold title-dashboard">Times done</label>
+                <v-col
+                  cols="12"
+                  class="text-center"
+                >
+                  <pie-chart :pie-data="devices" />
+                </v-col>
+              </v-card-text>
+            </v-card>
+          </v-col>
+          <v-col class="content-dashboard" cols="2">
+            <v-row class="content-dashboard">
+              <v-col cols="12">
+                <v-card class="content-dashboard">
+                  <span class="font-weight-bold">Complete</span><br>
+                  <p class="text-center">
+                    <label class="display-3 font-weight-bold total-users">0</label>
+                    <br>
+                    <span>Times</span>
+                  </p>
+                </v-card>
+              </v-col>
+              <v-col cols="12">
+                <v-card class="content-dashboard">
+                  <span class="font-weight-bold">Incomplete</span><br>
+                  <p class="text-center">
+                    <label class="display-3 font-weight-bold total-users">0</label>
+                    <br>
+                    <span>Times</span>
+                  </p>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
       </v-card-text>
     </v-card>
   </v-row>
@@ -22,17 +74,17 @@
 
 <script>
 import { mapActions } from 'vuex'
+import PieChart from '@/components/echart/PieChart.vue'
 import OwImage from './OwImage.vue'
 /* import LineStackChart from '@/components/echart/LineStackChart.vue'
-import PieChart from '@/components/echart/PieChart.vue'
 import ContentLessonDialog from '@/components/admin/lessons-analytics/ContentLessonDialog.vue' */
 export default {
   name: 'GraphicsPanel',
 
   components: {
-    OwImage
+    OwImage,
     // LineStackChart,
-    // PieChart,
+    PieChart
     // ContentLessonDialog
   },
 
@@ -50,6 +102,12 @@ export default {
         letter: '',
         icon: ''
       }
+    },
+    devices: {
+      title: '',
+      name: '',
+      data: [],
+      height: '100px'
     }
   }),
 
@@ -71,6 +129,9 @@ export default {
   async created () {
     this.lesson = await this.getLessonById(this.lessonId)
     console.log('lesson--', this.lesson)
+    this.devices.data = [
+      { name: 'DESKTOP', value: 16 }
+    ]
     /* this.video = this.lesson.videos[0]
     await this.getAnalytics() */
   },
@@ -121,19 +182,6 @@ export default {
 </script>
 
 <style>
-ul {
-  list-style: none; /* Remove default bullets */
-}
-ul li::before {
-  content: "●";
-  font-size: 22px !important;
-  color: var(--v-accent-base); /* Change the color */
-  font-weight: bold; /* If you want it to be bold */
-  display: inline-block; /* Needed to add space between the bullet and the text */
-  width: 0.7em; /* Also needed for space (tweak if needed) */
-  margin-left: -1rem; /* Also needed for space (tweak if needed) */
-  margin-top: 10px;
-}
 
 .header-dashboard {
   max-height: 500px !important;
