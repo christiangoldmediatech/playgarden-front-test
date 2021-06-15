@@ -277,8 +277,8 @@ export default {
     percenatgeViews: 0,
     uniqueViews: 0,
     watchTime: {
-      xAxios: [],
-      data: []
+      xAxios: ['0'],
+      data: [0]
     },
     pieSize: '140px',
     devices: {
@@ -333,6 +333,62 @@ export default {
 
     ...mapActions('admin/curriculum', ['getLessonById']),
 
+    clearValues () {
+      this.totalViews = 0
+      this.favorites = 0
+      this.skippedViews = 0
+      this.percenatgeViews = 0
+      this.uniqueViews = 0
+      this.watchTime = {
+        xAxis: ['0'],
+        legend: ['Skipped', 'Closed'],
+        data: [
+          {
+            name: 'Skipped',
+            type: 'line',
+            stack: 'Skipped',
+            data: [0]
+          },
+          {
+            name: 'Closed',
+            type: 'line',
+            stack: 'Closed',
+            data: [0]
+          }
+        ]
+      }
+      this.devices = {
+        title: '',
+        name: '',
+        data: [],
+        height: '100px'
+      }
+      this.status = {
+        title: '',
+        name: '',
+        data: [],
+        height: '100px'
+      }
+      this.age = {
+        title: '',
+        name: '',
+        data: [],
+        height: '100px'
+      }
+      this.gender = {
+        title: '',
+        name: '',
+        data: [],
+        height: '100px'
+      }
+      this.browser = {
+        title: '',
+        name: '',
+        data: [],
+        height: '100px'
+      }
+    },
+
     openContenLesson () {
       this.$refs.contentLessonRef.open(null, this.lesson)
     },
@@ -342,8 +398,7 @@ export default {
       const complete = status.find(item => item.name === 'Complete')
       if (complete) {
         const total = status.map(item => item.value).reduce((a, b) => a + b)
-        percentage = ((complete.value * 100) / total)
-        percentage = (percentage < 100) ? percentage.toFixed(2) : percentage
+        percentage = ((complete.value * 100) / total).toFixed(0)
       }
       return percentage
     },
@@ -381,7 +436,9 @@ export default {
         this.gender.data = gender
         this.browser.data = browser
         this.devices.data = device
-      } catch (e) {}
+      } catch (e) {
+        this.clearValues()
+      }
     }
   }
 }
