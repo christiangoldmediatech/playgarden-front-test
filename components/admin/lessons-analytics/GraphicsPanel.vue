@@ -133,7 +133,7 @@
                     cols="12"
                     class="text-center"
                   >
-                    <label class="font-weight-bold display-3 total-users">80 %</label> <br>
+                    <label class="font-weight-bold display-3 total-users">{{ percenatgeViews }} %</label> <br>
                     <span class="text-dashboard"> Views </span>
                   </v-col>
                 </v-card-text>
@@ -274,6 +274,7 @@ export default {
     totalViews: 0,
     favorites: 0,
     skippedViews: 0,
+    percenatgeViews: 0,
     uniqueViews: 0,
     watchTime: {
       xAxios: [],
@@ -336,6 +337,16 @@ export default {
       this.$refs.contentLessonRef.open(null, this.lesson)
     },
 
+    getPercentageViews (status) {
+      let percentage = 0
+      const complete = status.find(item => item.name === 'Complete')
+      if (complete) {
+        const total = status.map(item => item.value).reduce((a, b) => a + b)
+        percentage = (complete.value * 100) / total
+      }
+      return percentage
+    },
+
     async getAnalytics () {
       try {
         const { totalViews, favorites, device, browser, age, gender, skippedViews, uniqueViews, status, watchTime } = await this.getDashboardAnalytics({ lessonId: this.lessonId, entityId: this.video.id })
@@ -362,6 +373,9 @@ export default {
           ]
         }
         this.status.data = status
+        if (status) {
+          this.percenatgeViews = this.getPercentageViews(status)
+        }
         this.age.data = age
         this.gender.data = gender
         this.browser.data = browser
