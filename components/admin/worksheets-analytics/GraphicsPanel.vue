@@ -15,7 +15,7 @@
             <ow-image :image="image" />
           </v-col>
         </v-row>
-        <v-row>
+        <v-row class="content-dashboard">
           <v-col cols="5">
             <v-card>
               <v-card-text>
@@ -24,7 +24,7 @@
                   cols="12"
                   class="text-center"
                 >
-                  <pie-chart :pie-data="devices" />
+                  <pie-chart :pie-data="devices" :height="height" />
                 </v-col>
               </v-card-text>
             </v-card>
@@ -37,34 +37,79 @@
                   cols="12"
                   class="text-center"
                 >
-                  <pie-chart :pie-data="devices" />
+                  <pie-chart :pie-data="devices" :height="height" />
                 </v-col>
               </v-card-text>
             </v-card>
           </v-col>
-          <v-col class="content-dashboard" cols="2">
+          <v-col cols="2">
             <v-row class="content-dashboard">
               <v-col cols="12">
                 <v-card class="content-dashboard">
-                  <span class="font-weight-bold">Complete</span><br>
-                  <p class="text-center">
-                    <label class="display-3 font-weight-bold total-users">0</label>
-                    <br>
-                    <span>Times</span>
-                  </p>
+                  <v-card-text>
+                    <span class="font-weight-bold">Complete</span><br>
+                    <p class="text-center">
+                      <label class="display-3 font-weight-bold total-users">0</label>
+                      <br>
+                      <span>Times</span>
+                    </p>
+                  </v-card-text>
                 </v-card>
               </v-col>
               <v-col cols="12">
                 <v-card class="content-dashboard">
-                  <span class="font-weight-bold">Incomplete</span><br>
-                  <p class="text-center">
-                    <label class="display-3 font-weight-bold total-users">0</label>
-                    <br>
-                    <span>Times</span>
-                  </p>
+                  <v-card-text>
+                    <span class="font-weight-bold">Incomplete</span><br>
+                    <p class="text-center">
+                      <label class="display-3 font-weight-bold total-users">0</label>
+                      <br>
+                      <span>Times</span>
+                    </p>
+                  </v-card-text>
                 </v-card>
               </v-col>
             </v-row>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="4">
+            <v-card>
+              <v-card-text>
+                <label class="font-weight-bold title-dashboard">Ages</label>
+                <v-col
+                  cols="12"
+                  class="text-center"
+                >
+                  <pie-chart :pie-data="devices" :height="height" />
+                </v-col>
+              </v-card-text>
+            </v-card>
+          </v-col>
+          <v-col cols="4">
+            <v-card>
+              <v-card-text>
+                <label class="font-weight-bold title-dashboard">Gender</label>
+                <v-col
+                  cols="12"
+                  class="text-center"
+                >
+                  <pie-chart :pie-data="devices" :height="height" />
+                </v-col>
+              </v-card-text>
+            </v-card>
+          </v-col>
+          <v-col cols="4">
+            <v-card>
+              <v-card-text>
+                <label class="font-weight-bold title-dashboard">Browser</label>
+                <v-col
+                  cols="12"
+                  class="text-center"
+                >
+                  <pie-chart :pie-data="devices" :height="height" />
+                </v-col>
+              </v-card-text>
+            </v-card>
           </v-col>
         </v-row>
       </v-card-text>
@@ -103,6 +148,7 @@ export default {
         icon: ''
       }
     },
+    height: '250px',
     devices: {
       title: '',
       name: '',
@@ -182,10 +228,6 @@ export default {
 </script>
 
 <style>
-
-.header-dashboard {
-  max-height: 500px !important;
-}
 
 .cursor {
   cursor: pointer !important;
