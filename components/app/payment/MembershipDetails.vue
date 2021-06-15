@@ -420,6 +420,7 @@ import SubscriptionPlanSelection from '@/components/app/payment/SubscriptionPlan
 import PlanDescription from '@/components/app/payment/SubscriptionPlanSelection/PlanDescription'
 import TrialIsExpiring from '@/components/app/header/TrialIsExpiring.vue'
 import StripePayForm from '@/components/forms/payment/StripePayForm.vue'
+import { UserFlow } from '@/models'
 
 export default {
   name: 'MembershipDetails',
@@ -604,7 +605,10 @@ export default {
     onSuccessChangePlan () {
       this.getBillingDetails()
       this.closeChangePlanModal()
-      this.setPaymentMethodModal = true
+
+      if (this.getUserInfo.flow === UserFlow.NOCREDITCARD) {
+        this.setPaymentMethodModal = true
+      }
     },
     closeChangePlanModal () {
       this.changePlanModal = false
