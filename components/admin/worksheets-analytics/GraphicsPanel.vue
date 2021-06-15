@@ -43,9 +43,9 @@
             </v-card>
           </v-col>
           <v-col cols="2">
-            <v-row class="content-dashboard">
+            <v-row no-gutters>
               <v-col cols="12">
-                <v-card class="content-dashboard">
+                <v-card>
                   <v-card-text>
                     <span class="font-weight-bold">Complete</span><br>
                     <p class="text-center">
@@ -56,8 +56,8 @@
                   </v-card-text>
                 </v-card>
               </v-col>
-              <v-col cols="12">
-                <v-card class="content-dashboard">
+              <v-col cols="12" class="mt-6">
+                <v-card>
                   <v-card-text>
                     <span class="font-weight-bold">Incomplete</span><br>
                     <p class="text-center">
