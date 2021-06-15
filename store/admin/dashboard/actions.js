@@ -9,5 +9,9 @@ export default {
 
   getDashboardAnalytics (_, data) {
     return this.$axios.$get(`/dashboard/lesson/${data.lessonId}/entityId/${data.entityId}`, { })
+  },
+
+  getWorksheetDashboardAnalytics (_, data) {
+    return this.$axios.$get(`/dashboard/lesson/${data.lessonId}/worksheet/${data.entityId}`, { })
   }
 }

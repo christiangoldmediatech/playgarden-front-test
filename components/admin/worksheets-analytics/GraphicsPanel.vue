@@ -37,7 +37,7 @@
                   cols="12"
                   class="text-center"
                 >
-                  <pie-chart :pie-data="devices" :height="height" />
+                  <pie-chart :pie-data="timesDone" :height="height" />
                 </v-col>
               </v-card-text>
             </v-card>
@@ -49,7 +49,7 @@
                   <v-card-text>
                     <span class="font-weight-bold">Complete</span><br>
                     <p class="text-center">
-                      <label class="display-3 font-weight-bold total-users">0</label>
+                      <label class="display-3 font-weight-bold total-users">{{ completes }}</label>
                       <br>
                       <span>Times</span>
                     </p>
@@ -61,7 +61,7 @@
                   <v-card-text>
                     <span class="font-weight-bold">Incomplete</span><br>
                     <p class="text-center">
-                      <label class="display-3 font-weight-bold total-users">0</label>
+                      <label class="display-3 font-weight-bold total-users">{{ incompletes }}</label>
                       <br>
                       <span>Times</span>
                     </p>
@@ -80,7 +80,7 @@
                   cols="12"
                   class="text-center"
                 >
-                  <pie-chart :pie-data="devices" :height="height" />
+                  <pie-chart :pie-data="age" :height="height" />
                 </v-col>
               </v-card-text>
             </v-card>
@@ -93,7 +93,7 @@
                   cols="12"
                   class="text-center"
                 >
-                  <pie-chart :pie-data="devices" :height="height" />
+                  <pie-chart :pie-data="gender" :height="height" />
                 </v-col>
               </v-card-text>
             </v-card>
@@ -106,7 +106,7 @@
                   cols="12"
                   class="text-center"
                 >
-                  <pie-chart :pie-data="devices" :height="height" />
+                  <pie-chart :pie-data="browser" :height="height" />
                 </v-col>
               </v-card-text>
             </v-card>
@@ -145,12 +145,39 @@ export default {
       }
     },
     height: '250px',
+    clickImages: [],
     devices: {
       title: '',
       name: '',
       data: [],
       height: '100px'
-    }
+    },
+    timesDone: {
+      title: '',
+      name: '',
+      data: [],
+      height: '100px'
+    },
+    age: {
+      title: '',
+      name: '',
+      data: [],
+      height: '100px'
+    },
+    browser: {
+      title: '',
+      name: '',
+      data: [],
+      height: '100px'
+    },
+    gender: {
+      title: '',
+      name: '',
+      data: [],
+      height: '100px'
+    },
+    completes: 0,
+    incompletes: 0
   }),
 
   computed: {
@@ -170,16 +197,11 @@ export default {
 
   async created () {
     this.lesson = await this.getLessonById(this.lessonId)
-    console.log('lesson--', this.lesson)
-    this.devices.data = [
-      { name: 'DESKTOP', value: 16 }
-    ]
-    /* this.video = this.lesson.videos[0]
-    await this.getAnalytics() */
+    await this.getAnalytics()
   },
 
   methods: {
-    ...mapActions('admin/dashboard', ['getDashboardAnalytics']),
+    ...mapActions('admin/dashboard', ['getWorksheetDashboardAnalytics']),
 
     ...mapActions('admin/curriculum', ['getLessonById']),
 
@@ -188,36 +210,17 @@ export default {
     },
 
     async getAnalytics () {
-      /* try {
-        const { totalViews, favorites, device, browser, age, gender, skippedViews, uniqueViews, status, watchTime } = await this.getDashboardAnalytics({ lessonId: this.lessonId, entityId: this.video.id })
-        this.totalViews = totalViews
-        this.favorites = favorites
-        this.skippedViews = skippedViews
-        this.uniqueViews = uniqueViews
-        this.watchTime = {
-          xAxis: watchTime.time,
-          legend: ['Skipped', 'Closed'],
-          data: [
-            {
-              name: 'Skipped',
-              type: 'line',
-              stack: 'Skipped',
-              data: watchTime.skipped
-            },
-            {
-              name: 'Closed',
-              type: 'line',
-              stack: 'Closed',
-              data: watchTime.closed
-            }
-          ]
-        }
-        this.status.data = status
+      try {
+        const { clickImages, devices, timesDone, completes, incompletes, browser, age, gender } = await this.getWorksheetDashboardAnalytics({ lessonId: this.lessonId, entityId: this.worksheetId })
+        this.clickImages = clickImages
+        this.devices.data = devices
+        this.timesDone.data = timesDone
+        this.completes = completes
+        this.incompletes = incompletes
         this.age.data = age
-        this.gender.data = gender
         this.browser.data = browser
-        this.devices.data = device
-      } catch (e) {} */
+        this.gender.data = gender
+      } catch (e) {}
     }
   }
 }
