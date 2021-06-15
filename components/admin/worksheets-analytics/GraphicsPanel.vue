@@ -205,6 +205,17 @@ export default {
 
     ...mapActions('admin/curriculum', ['getLessonById']),
 
+    cleanData () {
+      this.clickImages = []
+      this.devices.data = []
+      this.timesDone.data = []
+      this.age.data = []
+      this.browser.data = []
+      this.gender.data = []
+      this.completes = 0
+      this.incompletes = 0
+    },
+
     openContenLesson () {
       this.$refs.contentLessonRef.open(null, this.lesson)
     },
@@ -225,7 +236,9 @@ export default {
         this.age.data = age
         this.browser.data = browser
         this.gender.data = gender
-      } catch (e) {}
+      } catch (e) {
+        this.cleanData()
+      }
     }
   }
 }
