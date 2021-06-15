@@ -1,28 +1,23 @@
 <template>
-  <div>
-    <v-card>
-      <div>
-        <div>
-          <div>
-            <v-card class="image-worksheet">
-              <v-img
-                :src="image.image"
-              />
-            </v-card>
-          </div>
-        </div>
-        <p class="text-center">
-          <img v-if="image.is_correct" class="mt-3" height="30px;" src="@/assets/svg/ok.svg">
-          <img v-else class="mt-3" height="30px;" src="@/assets/svg/fail.svg">
-          <br>
-          <span class="font-weight-bold">User Answers</span><br>
-          <label class="display-3 font-weight-bold total-users">0</label>
-          <br>
-          <span>Clics</span>
-        </p>
-      </div>
-    </v-card>
-  </div>
+  <v-card class="content-dashboard">
+    <v-card-title>
+      <v-img
+        :src="image.image"
+        height="156"
+      />
+    </v-card-title>
+    <v-card-text>
+      <p class="text-center">
+        <img v-if="image.is_correct" height="30px;" src="@/assets/svg/ok.svg">
+        <img v-else height="30px;" src="@/assets/svg/fail.svg">
+        <br>
+        <span class="font-weight-bold">User Answers</span><br>
+        <label class="display-3 font-weight-bold total-users">0</label>
+        <br>
+        <span>Clics</span>
+      </p>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>

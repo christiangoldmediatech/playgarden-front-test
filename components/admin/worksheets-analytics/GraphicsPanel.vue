@@ -121,16 +121,12 @@
 import { mapActions } from 'vuex'
 import PieChart from '@/components/echart/PieChart.vue'
 import OwImage from './OwImage.vue'
-/* import LineStackChart from '@/components/echart/LineStackChart.vue'
-import ContentLessonDialog from '@/components/admin/lessons-analytics/ContentLessonDialog.vue' */
 export default {
   name: 'GraphicsPanel',
 
   components: {
     OwImage,
-    // LineStackChart,
     PieChart
-    // ContentLessonDialog
   },
 
   data: vm => ({
