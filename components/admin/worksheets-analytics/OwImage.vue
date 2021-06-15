@@ -12,6 +12,10 @@
           </div>
         </div>
         <p class="text-center">
+          {{ getImage }}
+          <img v-if="image.is_correct" class="mt-3" height="30px;" src="@/assets/svg/ok.svg">
+          <img v-else class="mt-3" height="30px;" src="@/assets/svg/fail.svg">
+          <br>
           <span class="font-weight-bold">User Answers</span><br>
           <label class="display-3 font-weight-bold total-users">0</label>
           <br>
