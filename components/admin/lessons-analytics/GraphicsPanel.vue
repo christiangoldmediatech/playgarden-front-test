@@ -342,7 +342,8 @@ export default {
       const complete = status.find(item => item.name === 'Complete')
       if (complete) {
         const total = status.map(item => item.value).reduce((a, b) => a + b)
-        percentage = (complete.value * 100) / total
+        percentage = ((complete.value * 100) / total)
+        percentage = (percentage < 100) ? percentage.toFixed(2) : percentage
       }
       return percentage
     },
