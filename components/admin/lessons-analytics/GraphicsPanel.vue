@@ -445,20 +445,6 @@ export default {
 </script>
 
 <style>
-ul {
-  list-style: none; /* Remove default bullets */
-}
-ul li::before {
-  content: "●";
-  font-size: 22px !important;
-  color: var(--v-accent-base); /* Change the color */
-  font-weight: bold; /* If you want it to be bold */
-  display: inline-block; /* Needed to add space between the bullet and the text */
-  width: 0.7em; /* Also needed for space (tweak if needed) */
-  margin-left: -1rem; /* Also needed for space (tweak if needed) */
-  margin-top: 10px;
-}
-
 .header-dashboard {
   max-height: 500px !important;
 }
