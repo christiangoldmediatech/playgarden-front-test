@@ -14,7 +14,7 @@
         <span class="font-weight-bold">User Answers</span><br>
         <label class="display-3 font-weight-bold total-users">0</label>
         <br>
-        <span>Clicks</span>
+        <span>Clicks {{ image.code }}</span>
       </p>
     </v-card-text>
   </v-card>
