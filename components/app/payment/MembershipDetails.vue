@@ -153,6 +153,12 @@
 
     <!-- Plan Information -->
     <v-col cols="12" md="6" class="pl-md-8 mb-6 mb-md-0">
+      <!-- TRIAL EXPIRING RIBBON -->
+      <trial-is-expiring
+        v-if="isTrialExpiringModalVisible"
+        :is-fixed-on-top="false"
+        :is-compare-plans-button-visible="false"
+      />
       <v-card class="pa-4 px-md-10 py-md-6 card-custom-border">
         <v-row no-gutters>
           <!-- Plan Name-->
@@ -361,17 +367,19 @@
 <script>
 import dayjs from 'dayjs'
 import { get } from 'lodash'
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import UpdateBillingMethod from '@/components/app/payment/UpdateBillingMethod'
 import SubscriptionPlanSelection from '@/components/app/payment/SubscriptionPlanSelection'
 import PlanDescription from '@/components/app/payment/SubscriptionPlanSelection/PlanDescription'
+import TrialIsExpiring from '@/components/app/header/TrialIsExpiring.vue'
 
 export default {
   name: 'MembershipDetails',
   components: {
     UpdateBillingMethod,
     SubscriptionPlanSelection,
-    PlanDescription
+    PlanDescription,
+    TrialIsExpiring
   },
   data () {
     return {
@@ -399,6 +407,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('auth', ['getUserInfo']),
     hasMembership () {
       const status = this.billing.status
       return (
@@ -422,6 +431,19 @@ export default {
     },
     isMobile () {
       return this.$vuetify.breakpoint.mobile
+    },
+    isTrialExpiringModalVisible () {
+      const userInfo = this.getUserInfo
+      const now = new Date()
+      const dayInMinutes = 1440
+      const threeDays = dayInMinutes * 3
+      const timeLeft = dayjs(userInfo.trialEnd).diff(now, 'minute')
+
+      if (timeLeft > threeDays) {
+        return true
+      }
+
+      return false
     }
   },
   created () {
