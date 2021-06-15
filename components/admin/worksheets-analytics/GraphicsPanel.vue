@@ -12,7 +12,7 @@
       <v-card-text>
         <v-row v-if="getImages" class="content-dashboard">
           <v-col v-for="(image, index) in getImages" :key="`image-${index}`" cols="3">
-            <ow-image :image="image" />
+            <ow-image :image="image" :clicks="getClicks(image)" />
           </v-col>
         </v-row>
         <v-row class="content-dashboard">
@@ -207,6 +207,11 @@ export default {
 
     openContenLesson () {
       this.$refs.contentLessonRef.open(null, this.lesson)
+    },
+
+    getClicks (image) {
+      const result = this.clickImages.find(item => item.image === image.code.toString())
+      return (result) ? result.value : 0
     },
 
     async getAnalytics () {

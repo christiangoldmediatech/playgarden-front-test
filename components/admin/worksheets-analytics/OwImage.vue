@@ -12,9 +12,9 @@
         <img v-else height="30px;" src="@/assets/svg/fail.svg">
         <br>
         <span class="font-weight-bold">User Answers</span><br>
-        <label class="display-3 font-weight-bold total-users">0</label>
+        <label class="display-3 font-weight-bold total-users"> {{ clicks }}</label>
         <br>
-        <span>Clicks {{ image.code }}</span>
+        <span>Clicks</span>
       </p>
     </v-card-text>
   </v-card>
@@ -27,6 +27,10 @@ export default {
   props: {
     image: {
       type: Object,
+      required: true
+    },
+    clicks: {
+      type: Number,
       required: true
     }
   }
