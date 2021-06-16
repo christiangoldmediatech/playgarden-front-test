@@ -5,7 +5,7 @@
         <v-row no-gutters>
           <p>
             <label class="subtitle-text">Online Worksheet:</label> <br>
-            <label class="font-weight-bold text-h5">{{ (worksheet.name) ? worksheet.name : '' }}</label>
+            <label class="font-weight-bold text-h5">{{ (worksheet && worksheet.name) ? worksheet.name : '' }}</label>
           </p>
         </v-row>
       </v-card-text>
