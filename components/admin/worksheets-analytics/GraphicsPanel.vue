@@ -130,8 +130,8 @@ export default {
   },
 
   data: vm => ({
-    lessonId: vm.$route.query.worksheetId
-      ? parseInt(vm.$route.query.worksheetId)
+    lessonId: vm.$route.query.lessonId
+      ? parseInt(vm.$route.query.lessonId)
       : null,
     worksheetId: vm.$route.query.worksheetId
       ? parseInt(vm.$route.query.worksheetId)
