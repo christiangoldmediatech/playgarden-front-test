@@ -4,26 +4,24 @@
     fluid
   >
     <v-row>
-      <v-row>
-        <v-col cols="12">
-          <v-card width="100%">
-            <v-card-title>
-              Lessons Analytics work
-              <v-spacer />
-              <v-btn
-                class="text-none"
-                color="accent darken-1"
-                depressed
-                nuxt
-                small
-                @click="goToBack"
-              >
-                Back
-              </v-btn>
-            </v-card-title>
-          </v-card>
-        </v-col>
-      </v-row>
+      <v-col cols="12">
+        <v-card>
+          <v-card-title>
+            Lessons Analytics work
+            <v-spacer />
+            <v-btn
+              class="text-none"
+              color="accent darken-1"
+              depressed
+              nuxt
+              small
+              @click="goToBack"
+            >
+              Back
+            </v-btn>
+          </v-card-title>
+        </v-card>
+      </v-col>
       <v-col cols="12">
         <graphics-panel />
       </v-col>

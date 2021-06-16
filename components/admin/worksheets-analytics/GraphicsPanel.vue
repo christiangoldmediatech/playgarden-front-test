@@ -1,6 +1,6 @@
 <template>
-  <v-row>
-    <v-card width="100%">
+  <div>
+    <v-card>
       <v-card-text>
         <v-row no-gutters>
           <p>
@@ -114,7 +114,7 @@
         </v-row>
       </v-card-text>
     </v-card>
-  </v-row>
+  </div>
 </template>
 
 <script>
@@ -244,7 +244,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 
 .cursor {
   cursor: pointer !important;

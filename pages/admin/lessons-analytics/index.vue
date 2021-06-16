@@ -4,9 +4,11 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from '@nuxtjs/composition-api'
 import Dashboard from '@/components/admin/lessons-analytics/Dashboard.vue'
-export default {
+
+export default defineComponent({
   name: 'Index',
 
   components: {
@@ -14,5 +16,5 @@ export default {
   },
 
   layout: 'admin'
-}
+})
 </script>

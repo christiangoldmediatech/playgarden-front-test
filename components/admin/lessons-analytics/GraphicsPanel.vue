@@ -1,5 +1,5 @@
 <template>
-  <v-row>
+  <div>
     <v-row>
       <content-lesson-dialog
         ref="contentLessonRef"
@@ -237,7 +237,7 @@
         </v-row>
       </v-card-text>
     </v-card>
-  </v-row>
+  </div>
 </template>
 
 <script>

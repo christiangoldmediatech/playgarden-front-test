@@ -22,8 +22,10 @@
   </v-card>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from '@nuxtjs/composition-api'
+
+export default defineComponent({
   name: 'OwImage',
 
   props: {
@@ -36,10 +38,10 @@ export default {
       required: true
     }
   }
-}
+})
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .total-users {
   color: var(--v-accent-base) !important;
 }
