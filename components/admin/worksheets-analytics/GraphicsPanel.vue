@@ -1,15 +1,15 @@
 <template>
   <v-row>
     <v-card width="100%">
-      <v-card-title>
+      <v-card-text>
         <v-row no-gutters>
           <p>
             <label class="subtitle-text">Online Worksheet:</label> <br>
-            <label>{{ (worksheet.name) ? worksheet.name : '' }}</label>
+            <label class="font-weight-bold text-h5">{{ (worksheet.name) ? worksheet.name : '' }}</label>
           </p>
         </v-row>
-      </v-card-title>
-      <v-card-text>
+      </v-card-text>
+      <v-card-text class="mt-10">
         <v-row v-if="getImages" class="content-dashboard">
           <v-col v-for="(image, index) in getImages" :key="`image-${index}`" cols="3">
             <ow-image :image="image" :clicks="getClicks(image)" />
@@ -185,7 +185,7 @@ export default {
       if (this.lesson && this.lesson.worksheets) {
         return this.lesson.worksheets.find(({ id }) => id === this.worksheetId)
       }
-      return {}
+      return { name: '' }
     },
     getImages () {
       if (this.worksheet && this.worksheet.worksheetTable) {
