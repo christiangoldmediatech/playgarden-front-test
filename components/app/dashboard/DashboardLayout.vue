@@ -108,7 +108,33 @@
           >
             <v-col class="dashboard-content-column" cols="12">
               <template v-if="$route.name === 'app-dashboard' || loading">
-                <pg-loading />
+                <div v-if="$route.name === 'app-dashboard-lesson-videos' || $route.name === 'app-dashboard-lesson-activities'" class="video-lesson">
+                  <v-card class="video-skeleton" width="100%">
+                    <v-skeleton-loader
+                      type="image, image, table-heading"
+                    />
+                  </v-card>
+                </div>
+                <div v-if="$route.name === 'app-dashboard-online-worksheet'" class="video-lesson">
+                  <v-card class="video-skeleton" width="100%">
+                    <v-skeleton-loader
+                      class="pt-6"
+                      type="article"
+                    />
+                    <v-row class="mt-4">
+                      <v-col v-for="n in 4" :key="n">
+                        <v-skeleton-loader
+                          type="card"
+                        />
+                      </v-col>
+                    </v-row>
+                  </v-card>
+                </div>
+                <div v-if="$route.name === 'app-dashboard-offline-worksheet'">
+                  <v-skeleton-loader
+                    type="image, image, article"
+                  />
+                </div>
               </template>
               <template v-else>
                 {{ $route.name }}
@@ -133,8 +159,8 @@ import LessonTeacherVideo from '@/components/app/dashboard/LessonTeacherVideo.vu
 import PuzzlePiecesDialog from '@/components/app/student-cubby/PuzzlePiecesDialog.vue'
 import ChildSelect from '@/components/app/ChildSelect.vue'
 import CourseProgressOverlay from '@/components/app/student-cubby/CourseProgressOverlay.vue'
-import CarouselLetter from '~/components/app/all-done/CarouselLetter'
-import DashboardOverrides from '~/mixins/DashboardOverridesMixin'
+import CarouselLetter from '@/components/app/all-done/CarouselLetter.vue'
+import DashboardOverrides from '@/mixins/DashboardOverridesMixin'
 
 export default {
   name: 'DashboardLayout',
@@ -211,7 +237,11 @@ export default {
     },
 
     curriculumTypeId () {
-      return this.lesson && this.lesson.curriculumType ? this.lesson.curriculumType.id : undefined
+      if (this.lesson && this.lesson.curriculumType) {
+        return this.lesson.curriculumType.id
+      } else {
+        return null
+      }
     }
   },
 
@@ -346,5 +376,9 @@ export default {
       }
     }
   }
+}
+
+.video-skeleton {
+  height: 100% !important;
 }
 </style>
