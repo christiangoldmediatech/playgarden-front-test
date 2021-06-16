@@ -487,10 +487,10 @@ export default {
       const userInfo = this.getUserInfo
       const now = new Date()
       const dayInMinutes = 1440
-      const threeDays = dayInMinutes * 3
-      const timeLeft = dayjs(userInfo.trialEnd).diff(now, 'minute')
+      const threeDaysInMinutes = dayInMinutes * 3
+      const timeLeftInMinutes = dayjs(userInfo.trialEnd).diff(now, 'minute')
 
-      if (timeLeft > threeDays) {
+      if (timeLeftInMinutes > threeDaysInMinutes) {
         return true
       }
 
