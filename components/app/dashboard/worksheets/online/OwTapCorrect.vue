@@ -36,6 +36,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 import { jsonCopy } from '@/utils/objectTools.js'
 import { shuffle } from '@/utils/arrayTools.js'
 
@@ -67,6 +68,8 @@ export default {
   },
 
   computed: {
+    ...mapGetters({ children: 'getCurrentChild' }),
+    ...mapGetters('admin/curriculum', { lesson: 'getLesson' }),
     selectedImage () {
       if (this.selected) {
         return this.question.worksheetTable.images.find(({ code }) => code === this.selected)
@@ -91,15 +94,22 @@ export default {
   },
 
   methods: {
-    select (code) {
-      if (this.selected === code) {
-        this.selected = null
-        return
-      }
-      this.selected = code
-      this.$nextTick(() => {
-        this.openAnswerDialog()
-      })
+    ...mapActions('admin/curriculum/worksheet', ['createWorksheetLog']),
+    async select (code) {
+      try {
+        if (this.selected === code) {
+          this.selected = null
+          return
+        }
+        this.selected = code
+        const status = (this.correct) ? 'COMPLETED' : 'ERROR'
+        const dataWorksheetLog = { codeImage: this.selected, status }
+
+        this.$nextTick(() => {
+          this.openAnswerDialog()
+        })
+        await this.createWorksheetLog({ lessonId: this.lesson.id, worksheetId: this.question.id, childId: this.children[0].id, data: dataWorksheetLog })
+      } catch (error) {}
     },
 
     openAnswerDialog () {

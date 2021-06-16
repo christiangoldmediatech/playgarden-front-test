@@ -61,10 +61,15 @@ export interface Subscription extends Entity {
   trial_start: number
 }
 
+export enum UserFlow {
+  CREDITCARD = 'CREDITCARD',
+  NOCREDITCARD = 'NOCREDITCARD'
+}
+
 export interface User extends Entity {
   email: string
   firstName: string
-  flow: 'CREDITCARD' | 'NOCREDITCARD'
+  flow: UserFlow
   fullName: string
   gclId?: string
   lastName: string

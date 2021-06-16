@@ -21,6 +21,7 @@
       <p class="text-center text-md-left mt-md-n8">
         <span class="subtitle-text info-color-signup">
           Create an account to start learning
+          <span v-if="!isCreditCardRequired">. NO CREDIT CARD REQUIRED!</span>
         </span>
       </p>
 
@@ -63,6 +64,7 @@ import { mapActions, mapGetters } from 'vuex'
 import { useSignup } from '@/composables/use-signup.composable'
 import RegisterForm from '@/components/forms/auth/RegisterForm.vue'
 import CardInfo from '@/components/app/register/CardInfo.vue'
+import { UserFlow } from '@/models'
 
 export default defineComponent({
   name: 'StepOne',
@@ -70,16 +72,14 @@ export default defineComponent({
     RegisterForm,
     CardInfo
   },
-
   setup () {
     const router = useRouter()
     const route = useRoute()
-
-    const { abFlow, setupABFlow } = useSignup({ router, route })
+    const { abFlow, isCreditCardRequired, setupABFlow } = useSignup({ router, route })
 
     const goToNextStep = () => {
       switch (abFlow.value) {
-        case 'CREDITCARD':
+        case UserFlow.CREDITCARD:
           router.push({
             name: 'app-payment',
             query: {
@@ -88,7 +88,7 @@ export default defineComponent({
             }
           })
           break
-        case 'NOCREDITCARD':
+        case UserFlow.NOCREDITCARD:
           router.push({
             name: 'app-children',
             query: {
@@ -100,12 +100,13 @@ export default defineComponent({
       }
     }
 
-    onMounted(() => {
-      setupABFlow()
+    onMounted(async () => {
+      await setupABFlow()
     })
 
     return {
       abFlow,
+      isCreditCardRequired,
       goToNextStep
     }
   },
@@ -115,6 +116,7 @@ export default defineComponent({
     emailValidated: null,
     token: vm.$route.query.token
   }),
+
   computed: {
     ...mapGetters('auth', ['getUserInfo', 'isUserLoggedIn']),
     inInvitationProcess () {
