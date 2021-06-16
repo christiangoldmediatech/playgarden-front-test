@@ -18,7 +18,7 @@
       v-if="isComparePlansButtonVisible"
       small
       class="text-none accent--text mx-2"
-      router
+      nuxt
       :to="{ name: 'app-payment-plan' }"
     >
       Compare plans now
