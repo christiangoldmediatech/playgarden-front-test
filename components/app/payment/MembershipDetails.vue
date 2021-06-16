@@ -364,7 +364,7 @@
 
     <!-- Set Payment Method modal -->
     <pg-dialog
-      v-model="setPaymentMethodModal"
+      v-model="isPaymentMethodModalVisible"
       content-class="white"
       :fullscreen="isMobile"
       max-width="700px"
@@ -382,7 +382,6 @@
 
         <v-card flat class="mx-4 mt-12 mb-4">
           <stripe-pay-form
-            description="We need your credit card information to confirm who you are."
             button-text="Start Learning"
             :cancelable="false"
             :is-free-for-days-text-visible="false"
@@ -451,7 +450,7 @@ export default {
       cardToUpate: null,
       stripeCardModal: false,
       changePlanModal: false,
-      setPaymentMethodModal: false,
+      isPaymentMethodModalVisible: false,
       isPaymentMethodModalLoading: false,
       removeSubscriptionModal: false,
       userCards: [],
@@ -607,7 +606,7 @@ export default {
       this.closeChangePlanModal()
 
       if (this.getUserInfo.flow === UserFlow.NOCREDITCARD && this.userCards && this.userCards.length === 0) {
-        this.setPaymentMethodModal = true
+        this.isPaymentMethodModalVisible = true
       }
     },
     closeChangePlanModal () {
@@ -633,7 +632,7 @@ export default {
       }
     },
     closePaymentMethodModal () {
-      this.setPaymentMethodModal = false
+      this.isPaymentMethodModalVisible = false
     },
     async handlePaymentFormSubmit (cardData) {
       this.isPaymentMethodModalLoading = true
@@ -649,7 +648,7 @@ export default {
 
         await this.addBillingCard(dataSubscrition)
 
-        this.$snotify.success('Payment method set!')
+        this.$snotify.success('Payment method added!')
 
         this.closePaymentMethodModal()
         this.getBillingCards()
