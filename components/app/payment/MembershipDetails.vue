@@ -155,7 +155,7 @@
     <v-col cols="12" md="6" class="pl-md-8 mb-6 mb-md-0">
       <!-- TRIAL EXPIRING RIBBON -->
       <trial-is-expiring
-        v-if="isTrialExpiringModalVisible"
+        v-if="isTrialExpiringRibbonVisible"
         :is-fixed-on-top="false"
         :is-compare-plans-button-visible="false"
       />
@@ -484,7 +484,7 @@ export default {
     isMobile () {
       return this.$vuetify.breakpoint.mobile
     },
-    isTrialExpiringModalVisible () {
+    isTrialExpiringRibbonVisible () {
       const userInfo = this.getUserInfo
       const now = new Date()
       const dayInMinutes = 1440
