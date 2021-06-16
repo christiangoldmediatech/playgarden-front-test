@@ -1,6 +1,6 @@
 <template>
-  <v-row>
-    <v-col cols="12">
+  <v-row no-gutters>
+    <v-col cols="12" class="mb-4">
       <v-btn
         color="accent"
         nuxt
@@ -23,7 +23,7 @@
   </v-row>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
 import { useGtmHelper } from '@/composables'
 import StepOne from '@/components/app/register/StepOne.vue'
