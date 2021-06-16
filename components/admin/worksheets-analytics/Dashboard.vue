@@ -16,9 +16,7 @@
                 depressed
                 nuxt
                 small
-                :to="{
-                  name: 'admin-curriculum-management'
-                }"
+                @click="goToBack"
               >
                 Back
               </v-btn>
@@ -42,6 +40,15 @@ export default {
     GraphicsPanel
   },
 
-  layout: 'admin'
+  layout: 'admin',
+
+  methods: {
+    goToBack () {
+      this.$router.push({
+        name: 'admin-lessons-analytics',
+        query: { lessonId: this.$route.query.worksheetId }
+      })
+    }
+  }
 }
 </script>
