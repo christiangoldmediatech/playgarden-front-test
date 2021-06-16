@@ -46,7 +46,7 @@ export default {
     goToBack () {
       this.$router.push({
         name: 'admin-lessons-analytics',
-        query: { lessonId: this.$route.query.worksheetId }
+        query: { lessonId: this.$route.query.lessonId }
       })
     }
   }
