@@ -97,10 +97,10 @@ export const useNotification = () => {
 
     const now = new Date()
     const dayInMinutes = 1440
-    const threeDays = dayInMinutes * 3
-    const timeLeft = dayjs(userInfo.value.trialEnd).diff(now, 'minute')
+    const threeDaysInMinutes = dayInMinutes * 3
+    const timeLeftInMinutes = dayjs(userInfo.value.trialEnd).diff(now, 'minute')
 
-    if (timeLeft > 0 && timeLeft <= threeDays) {
+    if (timeLeftInMinutes > 0 && timeLeftInMinutes <= threeDaysInMinutes) {
       isTrialExpiringRibbonVisible.value = true
     }
   }
