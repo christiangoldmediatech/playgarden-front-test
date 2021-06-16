@@ -80,7 +80,7 @@
                   cols="12"
                   class="text-center"
                 >
-                  <pie-chart :pie-data="age" :height="height" />
+                  <pie-chart :pie-data="age" description-tool-tip="Years" :height="height" />
                 </v-col>
               </v-card-text>
             </v-card>
