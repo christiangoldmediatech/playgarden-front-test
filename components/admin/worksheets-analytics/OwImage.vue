@@ -9,7 +9,7 @@
       </v-card>
     </v-card-title>
     <v-card-text class="mt-12">
-      <p class="text-center pt-5">
+      <div class="text-center pt-5">
         <img v-if="image.is_correct" height="30px;" src="@/assets/svg/ok.svg">
         <img v-else height="30px;" src="@/assets/svg/fail.svg">
         <br>
@@ -17,7 +17,7 @@
         <label class="display-3 font-weight-bold total-users"> {{ clicks }}</label>
         <br>
         <span>Clicks</span>
-      </p>
+      </div>
     </v-card-text>
   </v-card>
 </template>
