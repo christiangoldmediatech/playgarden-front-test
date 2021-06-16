@@ -128,12 +128,12 @@
             <v-row>
               <v-card width="100%" class="analytics-card mx-2">
                 <v-card-text>
-                  <label class="font-weight-bold title-dashboard">Percentage of Views - TBD</label>
+                  <label class="font-weight-bold title-dashboard">Percentage of Views</label>
                   <v-col
                     cols="12"
                     class="text-center"
                   >
-                    <label class="font-weight-bold display-3 total-users">80 %</label> <br>
+                    <label class="font-weight-bold display-3 total-users">{{ percenatgeViews }} %</label> <br>
                     <span class="text-dashboard"> Views </span>
                   </v-col>
                 </v-card-text>
@@ -198,7 +198,7 @@
                     cols="12"
                     class="text-center"
                   >
-                    <pie-chart :pie-data="age" :height="pieSize" />
+                    <pie-chart :pie-data="age" description-tool-tip="Years" :height="pieSize" />
                   </v-col>
                 </v-card-text>
               </v-card>
@@ -274,10 +274,11 @@ export default {
     totalViews: 0,
     favorites: 0,
     skippedViews: 0,
+    percenatgeViews: 0,
     uniqueViews: 0,
     watchTime: {
-      xAxios: [],
-      data: []
+      xAxios: ['0'],
+      data: [0]
     },
     pieSize: '140px',
     devices: {
@@ -332,8 +333,74 @@ export default {
 
     ...mapActions('admin/curriculum', ['getLessonById']),
 
+    clearValues () {
+      this.totalViews = 0
+      this.favorites = 0
+      this.skippedViews = 0
+      this.percenatgeViews = 0
+      this.uniqueViews = 0
+      this.watchTime = {
+        xAxis: ['0'],
+        legend: ['Skipped', 'Closed'],
+        data: [
+          {
+            name: 'Skipped',
+            type: 'line',
+            stack: 'Skipped',
+            data: [0]
+          },
+          {
+            name: 'Closed',
+            type: 'line',
+            stack: 'Closed',
+            data: [0]
+          }
+        ]
+      }
+      this.devices = {
+        title: '',
+        name: '',
+        data: [],
+        height: '100px'
+      }
+      this.status = {
+        title: '',
+        name: '',
+        data: [],
+        height: '100px'
+      }
+      this.age = {
+        title: '',
+        name: '',
+        data: [],
+        height: '100px'
+      }
+      this.gender = {
+        title: '',
+        name: '',
+        data: [],
+        height: '100px'
+      }
+      this.browser = {
+        title: '',
+        name: '',
+        data: [],
+        height: '100px'
+      }
+    },
+
     openContenLesson () {
       this.$refs.contentLessonRef.open(null, this.lesson)
+    },
+
+    getPercentageViews (status) {
+      let percentage = 0
+      const complete = status.find(item => item.name === 'Complete')
+      if (complete) {
+        const total = status.map(item => item.value).reduce((a, b) => a + b)
+        percentage = ((complete.value * 100) / total).toFixed(0)
+      }
+      return percentage
     },
 
     async getAnalytics () {
@@ -362,31 +429,22 @@ export default {
           ]
         }
         this.status.data = status
+        if (status) {
+          this.percenatgeViews = this.getPercentageViews(status)
+        }
         this.age.data = age
         this.gender.data = gender
         this.browser.data = browser
         this.devices.data = device
-      } catch (e) {}
+      } catch (e) {
+        this.clearValues()
+      }
     }
   }
 }
 </script>
 
 <style>
-ul {
-  list-style: none; /* Remove default bullets */
-}
-ul li::before {
-  content: "●";
-  font-size: 22px !important;
-  color: var(--v-accent-base); /* Change the color */
-  font-weight: bold; /* If you want it to be bold */
-  display: inline-block; /* Needed to add space between the bullet and the text */
-  width: 0.7em; /* Also needed for space (tweak if needed) */
-  margin-left: -1rem; /* Also needed for space (tweak if needed) */
-  margin-top: 10px;
-}
-
 .header-dashboard {
   max-height: 500px !important;
 }
