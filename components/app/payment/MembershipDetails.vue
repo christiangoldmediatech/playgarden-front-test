@@ -527,7 +527,7 @@ export default {
       'fetchBillingCards',
       'fetchBillingDetails',
       'removeBillingCard',
-      'payShorterSubscription',
+      'addBillingCard',
       'validateCard'
     ]),
 
@@ -606,7 +606,7 @@ export default {
       this.getBillingDetails()
       this.closeChangePlanModal()
 
-      if (this.getUserInfo.flow === UserFlow.NOCREDITCARD) {
+      if (this.getUserInfo.flow === UserFlow.NOCREDITCARD && this.userCards && this.userCards.length === 0) {
         this.setPaymentMethodModal = true
       }
     },
@@ -647,10 +647,12 @@ export default {
           dataSubscrition.promotion_id = cardData.promotion_id
         }
 
-        await this.payShorterSubscription(dataSubscrition)
+        await this.addBillingCard(dataSubscrition)
 
         this.$snotify.success('Payment method set!')
+
         this.closePaymentMethodModal()
+        this.getBillingCards()
       } catch (e) {
       } finally {
         this.isPaymentMethodModalLoading = false
