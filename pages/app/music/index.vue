@@ -1,26 +1,16 @@
 <template>
-  <v-main :style="mainWrapperStyle">
-    <v-container fluid class="pa-0" :style="pageContainerStyle">
-      <v-card
-        :style="playerCardStyle"
-        :width="playerWidth"
-        :height="playerHeight"
-        :ripple="false"
-        v-on="isMobile && !isPlayerMaximizedOnMobile ? { click: handlePlayerClick } : {}"
-      >
-        <music-player
+  <v-main>
+    <v-container fluid class="pa-0">
+      <v-expand-transition>
+        <new-music-player
           v-show="isPlayerShowing"
           ref="musicPlayer"
-          :mobile="isMobile"
-          :is-player-maximized-on-mobile="isPlayerMaximizedOnMobile"
-          @favorite="handleFavorite"
-          @minimize="handlePlayerMinimize"
           @currentSong="currentSong = $event"
+          @favorite="handleFavorite"
         />
-      </v-card>
+      </v-expand-transition>
       <music-song-list
         id="music-song-list"
-        :style="musicSongListStyle"
         :show-only-favorites="showOnlyFavorites"
         :is-player-showing="isPlayerShowing"
         :mobile="isMobile"
@@ -36,11 +26,11 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 import debounce from 'lodash/debounce'
 
-import MusicPlayer from '@/components/app/music/MusicPlayer.vue'
 import MusicSongList from '@/components/app/music/MusicSongList.vue'
+import NewMusicPlayer from '@/components/app/music/NewMusicPlayer.vue'
 import { useMusic } from '@/composables'
 import { onMounted, ref, computed, useRoute, watch, onUnmounted } from '@nuxtjs/composition-api'
 
@@ -51,8 +41,8 @@ export default {
   name: 'Index',
 
   components: {
-    MusicPlayer,
-    MusicSongList
+    MusicSongList,
+    NewMusicPlayer
   },
 
   setup (_, ctx) {
@@ -73,59 +63,9 @@ export default {
       songsByCurriculumTypeWithFavorites
     } = useMusic()
 
-    const isPlayerMaximizedOnMobile = ref(false)
-
     const isMobile = computed(() => ctx.root.$vuetify.breakpoint.width <= PAGE_MOBILE_BREAKPOINT)
     const isPlayerShowing = computed(() => playlist.value.length > 0)
     const didScrollToBottom = ref(false)
-
-    const playerWidth = computed(() => {
-      return isMobile.value
-        ? '100%'
-        : isPlayerShowing.value
-          ? '450'
-          : 0
-    })
-
-    const playerHeight = computed(() => {
-      return !isMobile.value || isPlayerMaximizedOnMobile.value
-        ? '100%'
-        : isPlayerShowing.value && !isPlayerMaximizedOnMobile.value
-          ? MOBILE_PLAYER_HEIGHT
-          : 0
-    })
-
-    const mainWrapperStyle = computed(() => {
-      return {
-        height: '100%',
-        'max-height': isMobile.value ? '100vh' : '950px'
-      }
-    })
-
-    const pageContainerStyle = computed(() => {
-      const isDesktopPlayer = isPlayerShowing.value && !isMobile.value
-      const isMobilePlayer = isPlayerShowing.value && isMobile.value
-
-      return {
-        height: '100%',
-        position: 'relative',
-        'padding-left': isDesktopPlayer
-          ? '450px !important'
-          : isMobilePlayer
-            ? '0 !important'
-            : undefined
-      }
-    })
-
-    const musicSongListStyle = computed(() => {
-      return {
-        overflow: 'scroll',
-        height: '100%',
-        'padding-bottom': isMobile.value
-          ? `${MOBILE_PLAYER_HEIGHT * 2}px !important`
-          : undefined
-      }
-    })
 
     const handleScroll = () => {
       didScrollToBottom.value = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.scrollHeight - MOBILE_PLAYER_HEIGHT
@@ -214,27 +154,17 @@ export default {
       }
     }
 
-    const handlePlayerClick = () => {
-      if (!isMobile.value || isPlayerMaximizedOnMobile.value) {
-        return
-      }
-
-      isPlayerMaximizedOnMobile.value = true
-    }
-
-    const handlePlayerMinimize = () => {
-      isPlayerMaximizedOnMobile.value = false
-    }
-
     const scrollToSong = (id) => {
       if (isMobile.value) {
         return
       }
 
-      ctx.root.$vuetify.goTo(`#playlist-song-${id}`, {
-        container: '#playlist',
-        offset: -63
-      })
+      try {
+        ctx.root.$vuetify.goTo(`#playlist-song-${id}`, {
+          container: '#playlist',
+          offset: -63
+        })
+      } catch (err) {}
     }
 
     return {
@@ -245,18 +175,10 @@ export default {
       didScrollToBottom,
       getAndSetFavorites,
       handleFavorite,
-      handlePlayerClick,
-      handlePlayerMinimize,
       id,
       isMobile,
-      isPlayerMaximizedOnMobile,
       isPlayerShowing,
-      mainWrapperStyle,
       musicPlayer,
-      musicSongListStyle,
-      pageContainerStyle,
-      playerHeight,
-      playerWidth,
       playlist,
       showOnlyFavorites,
       songsByCurriculumTypeWithFavorites
@@ -264,22 +186,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters({ currentChild: 'getCurrentChild' }),
-
-    playerCardStyle () {
-      const canHidePlayer = this.isMobile && this.didScrollToBottom && !this.isPlayerMaximizedOnMobile
-
-      return {
-        padding: this.isPlayerShowing && !(this.isPlayerMaximizedOnMobile && this.isMobile) ? '16px' : '0px',
-        transition: '0.3s ease',
-        position: this.isMobile && !this.isPlayerMaximizedOnMobile ? 'fixed' : 'absolute',
-        left: 0,
-        top: this.isMobile ? 'unset' : 0,
-        'z-index': 99,
-        bottom: '0px',
-        visibility: canHidePlayer ? 'hidden' : 'visible'
-      }
-    }
+    ...mapGetters({ currentChild: 'getCurrentChild' })
   },
 
   created () {
