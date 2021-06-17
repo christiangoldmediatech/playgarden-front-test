@@ -123,19 +123,25 @@
   </v-card>
 </template>
 
-<script>
-import { get } from 'lodash'
-import { mapActions, mapGetters } from 'vuex'
+<script lang="ts">
+import { defineComponent, computed, useRoute } from '@nuxtjs/composition-api'
+// import { get } from 'lodash'
+// import { mapActions, mapGetters } from 'vuex'
 import PuzzlePiecesDialog from '@/components/app/student-cubby/PuzzlePiecesDialog.vue'
 
-export default {
+export default defineComponent({
   name: 'Index',
 
   components: {
     PuzzlePiecesDialog
   },
 
-  data: () => {
+  setup () {
+    const route = useRoute()
+    const studentId = computed(() => route.value.params.id)
+  }
+
+  /* data: () => {
     return {
       dialog: false,
       puzzles: [],
@@ -223,8 +229,8 @@ export default {
       this.toShow = { ...puzzle }
       this.dialog = true
     }
-  }
-}
+  } */
+})
 </script>
 
 <style lang="scss" scoped>
