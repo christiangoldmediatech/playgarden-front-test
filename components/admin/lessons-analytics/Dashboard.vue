@@ -5,6 +5,12 @@
   >
     <v-row>
       <v-col cols="12">
+        <content-lesson-dialog
+          ref="contentLessonRef"
+          @worksheets="analyticsWorksheets"
+        />
+      </v-col>
+      <v-col cols="12">
         <v-card width="100%">
           <v-card-title>
             Lessons Analytics
@@ -25,7 +31,8 @@
         </v-card>
       </v-col>
       <v-col cols="12">
-        <graphics-panel />
+        <graphics-panel-videos v-if="analitycsVideo" ref="graphicsPanelVideosRef" :current-video="video" @open="openDialog" @close="closeDialog" />
+        <graphics-panel-worksheets v-else ref="graphicsPanelWorksheetsRef" :worksheet-id="idWorksheet" @open="openDialog" @close="closeDialog" />
       </v-col>
     </v-row>
   </v-container>
@@ -33,15 +40,54 @@
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
-import GraphicsPanel from '@/components/admin/lessons-analytics/GraphicsPanel.vue'
+import GraphicsPanelVideos from '@/components/admin/lessons-analytics/GraphicsPanel.vue'
+import GraphicsPanelWorksheets from '@/components/admin/lessons-analytics/worksheets/GraphicsPanel.vue'
+import ContentLessonDialog from '@/components/admin/lessons-analytics/ContentLessonDialog.vue'
 
 export default defineComponent({
   name: 'Dashboard',
 
-  components: {
-    GraphicsPanel
+  data () {
+    return {
+      analitycsVideo: true,
+      idWorksheet: null,
+      video: null
+    }
   },
 
-  layout: 'admin'
+  components: {
+    GraphicsPanelVideos,
+    GraphicsPanelWorksheets,
+    ContentLessonDialog
+  },
+
+  created () {
+    this.$nuxt.$on('send-video', (video) => {
+      this.analitycsVideo = true
+      this.video = video
+    })
+  },
+
+  beforeDestroy () {
+    this.$nuxt.$off('send-video')
+  },
+
+  methods: {
+    openDialog (lesson) {
+      this.$refs.contentLessonRef.open(null, lesson)
+    },
+
+    closeDialog () {
+      this.$refs.contentLessonRef.close()
+    },
+
+    loadInfoVideo () {},
+
+    analyticsWorksheets (idWorksheet) {
+      this.idWorksheet = idWorksheet
+      this.analitycsVideo = false
+      this.closeDialog()
+    }
+  }
 })
 </script>

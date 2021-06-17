@@ -1,11 +1,5 @@
 <template>
   <div>
-    <v-row>
-      <content-lesson-dialog
-        ref="contentLessonRef"
-        @saved="refresh(false)"
-      />
-    </v-row>
     <v-card width="100%">
       <v-card-title>
         <v-row no-gutters>
@@ -244,14 +238,19 @@
 import { mapActions } from 'vuex'
 import LineStackChart from '@/components/echart/LineStackChart.vue'
 import PieChart from '@/components/echart/PieChart.vue'
-import ContentLessonDialog from '@/components/admin/lessons-analytics/ContentLessonDialog.vue'
 export default {
   name: 'GraphicsPanel',
 
   components: {
     LineStackChart,
-    PieChart,
-    ContentLessonDialog
+    PieChart
+  },
+
+  props: {
+    currentVideo: {
+      type: Object,
+      required: true
+    }
   },
 
   data: vm => ({
@@ -313,19 +312,25 @@ export default {
     }
   }),
 
-  async created () {
-    this.$nuxt.$on('send-video', async (video) => {
-      this.video = video
-      await this.getAnalytics()
-      this.$refs.contentLessonRef.close()
-    })
-    this.lesson = await this.getLessonById(this.lessonId)
-    this.video = this.lesson.videos[0]
-    await this.getAnalytics()
+  watch: {
+    async currentVideo (val) {
+      if (val) {
+        this.video = val
+        await this.getAnalytics()
+        this.$emit('close')
+      }
+    }
   },
 
-  beforeDestroy () {
-    this.$nuxt.$off('send-video')
+  async created () {
+    this.lesson = await this.getLessonById(this.lessonId)
+    if (this.currentVideo) {
+      this.video = this.currentVideo
+    } else {
+      this.video = this.lesson.videos[0]
+    }
+    await this.getAnalytics()
+    this.$emit('close')
   },
 
   methods: {
@@ -390,7 +395,7 @@ export default {
     },
 
     openContenLesson () {
-      this.$refs.contentLessonRef.open(null, this.lesson)
+      this.$emit('open', this.lesson)
     },
 
     getPercentageViews (status) {

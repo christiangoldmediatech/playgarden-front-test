@@ -1,16 +1,34 @@
 <template>
   <div>
     <v-card>
+      <v-card-title>
+        <div>
+          <label class="subtitle-text">Online Worksheet:</label> <br>
+          <label class="font-weight-bold text-h5">{{ (worksheet && worksheet.name) ? worksheet.name : '' }}</label>
+        </div>
+        <v-spacer />
+
+        <pg-circle-letter-day
+          v-if="lesson"
+          class="cursor"
+          :size="64"
+          no-auto-position
+          :day="lesson ? lesson.day : null"
+          :letter="lesson ? lesson.curriculumType.letter : null"
+          @click.native="openContenLesson"
+        />
+        <v-btn
+          color="accent"
+          icon
+          @click="openContenLesson"
+        >
+          <v-icon x-large>
+            mdi-menu-down
+          </v-icon>
+        </v-btn>
+      </v-card-title>
       <v-card-text>
-        <v-row no-gutters>
-          <p>
-            <label class="subtitle-text">Online Worksheet:</label> <br>
-            <label class="font-weight-bold text-h5">{{ (worksheet && worksheet.name) ? worksheet.name : '' }}</label>
-          </p>
-        </v-row>
-      </v-card-text>
-      <v-card-text class="mt-10">
-        <v-row v-if="getImages" class="content-dashboard">
+        <v-row v-if="getImages" class="content-dashboard mt-15">
           <v-col v-for="(image, index) in getImages" :key="`image-${index}`" cols="3">
             <ow-image :image="image" :clicks="getClicks(image)" />
           </v-col>
@@ -129,12 +147,16 @@ export default {
     PieChart
   },
 
+  props: {
+    worksheetId: {
+      type: Number,
+      required: true
+    }
+  },
+
   data: vm => ({
     lessonId: vm.$route.query.lessonId
       ? parseInt(vm.$route.query.lessonId)
-      : null,
-    worksheetId: vm.$route.query.worksheetId
-      ? parseInt(vm.$route.query.worksheetId)
       : null,
     lesson: {
       curriculumType: {
@@ -217,7 +239,7 @@ export default {
     },
 
     openContenLesson () {
-      this.$refs.contentLessonRef.open(null, this.lesson)
+      this.$emit('open', this.lesson)
     },
 
     getClicks (image) {

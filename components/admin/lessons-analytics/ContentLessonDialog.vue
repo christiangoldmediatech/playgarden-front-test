@@ -201,10 +201,11 @@ export default {
 
   methods: {
     goToAnalytics (item) {
-      this.$router.push({
+      /* this.$router.push({
         name: 'admin-worksheets-analytics',
         query: { lessonId: this.lessonId, worksheetId: item.id }
-      })
+      }) */
+      this.$emit('worksheets', item.id)
     },
     open (evt, item = null) {
       this.item = item
