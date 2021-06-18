@@ -1,6 +1,14 @@
 <template>
   <v-main>
     <v-container fluid class="pa-0">
+      <horizontal-ribbon-card>
+        <child-select :value="id" hide-details />
+        <music-carousel-letter
+          :value="selectedLetterId"
+          :disabled-letters="disabledLetters"
+          @select="selectLetter"
+        />
+      </horizontal-ribbon-card>
       <v-expand-transition>
         <new-music-player
           v-show="isPlayerShowing"
@@ -25,14 +33,20 @@
   </v-main>
 </template>
 
-<script>
+<script lang="ts">
 import { mapGetters } from 'vuex'
+// @ts-ignore
 import debounce from 'lodash/debounce'
 
 import MusicSongList from '@/components/app/music/MusicSongList.vue'
 import NewMusicPlayer from '@/components/app/music/NewMusicPlayer.vue'
+import HorizontalRibbonCard from '@/components/ui/cards/HorizontalCardRibbon.vue'
+import ChildSelect from '@/components/app/ChildSelect.vue'
+import MusicCarouselLetter from '@/components/app/music/MusicLetterCarousel.vue'
+
 import { useMusic } from '@/composables'
 import { onMounted, ref, computed, useRoute, watch, onUnmounted } from '@nuxtjs/composition-api'
+import { MusicLibrary } from '@/models'
 
 const PAGE_MOBILE_BREAKPOINT = 1264
 const MOBILE_PLAYER_HEIGHT = 135
@@ -42,13 +56,16 @@ export default {
 
   components: {
     MusicSongList,
-    NewMusicPlayer
+    NewMusicPlayer,
+    HorizontalRibbonCard,
+    ChildSelect,
+    MusicCarouselLetter
   },
 
   setup (_, ctx) {
     const route = useRoute()
     // this references `ref="musicPlayer"` when the component is mounted
-    const musicPlayer = ref(null)
+    const musicPlayer = ref<any>(null)
     const {
       allSongsWithFavorites,
       currentSong,
@@ -73,7 +90,7 @@ export default {
 
     const debouncedHandleScroll = debounce(handleScroll, 50)
 
-    const id = computed(() => route.value.query.id
+    const id = computed(() => typeof route.value.query.id === 'string'
       ? parseInt(route.value.query.id)
       : null
     )
@@ -84,6 +101,10 @@ export default {
     })
 
     watch(currentSong, async (val) => {
+      if (!val || !id.value) {
+        return
+      }
+
       await sendCurrentPlayingMusic(val.id, id.value)
       scrollToSong(val.id)
     })
@@ -100,6 +121,10 @@ export default {
     })
 
     const updateCurrentSongData = () => {
+      if (!currentSong.value) {
+        return
+      }
+
       const resolvedCurrentSong = Object.keys(currentSong.value || {}).length
         ? { ...currentSong.value }
         : undefined
@@ -120,41 +145,48 @@ export default {
     }
 
     const getAndSetFavorites = async () => {
+      if (!id.value) {
+        return
+      }
+
       await getFavoriteMusicForChild(id.value)
       updateCurrentSongData()
     }
 
-    const addSongToPlaylist = (song) => {
+    const addSongToPlaylist = (song: MusicLibrary) => {
       if (musicPlayer.value) {
         musicPlayer.value.addSongToPlaylist(song)
         playlist.value.push(song)
       }
     }
 
-    const createNewPlaylist = (playList) => {
+    const createNewPlaylist = (playList: MusicLibrary[]) => {
       if (musicPlayer.value) {
         musicPlayer.value.createNewPlaylist(playList)
         playlist.value = playList
       }
     }
 
-    const handleFavorite = async (song) => {
+    const handleFavorite = async (song: MusicLibrary) => {
       try {
-        if (song.isFavorite) {
+        if (song.isFavorite && song.favoriteId) {
           await removeFavoriteMusic(song.favoriteId)
+          // @ts-ignore
           ctx.root.$snotify.success('Song removed from favorites')
-        } else {
+        } else if (id.value) {
           await setFavoriteMusicForChild(id.value, song.id)
+          // @ts-ignore
           ctx.root.$snotify.success('Song added to favorites')
         }
 
         await getAndSetFavorites()
       } catch (error) {
+        // @ts-ignore
         ctx.root.$snotify.error(error.message)
       }
     }
 
-    const scrollToSong = (id) => {
+    const scrollToSong = (id: number) => {
       if (isMobile.value) {
         return
       }
@@ -165,6 +197,12 @@ export default {
           offset: -63
         })
       } catch (err) {}
+    }
+
+    const selectedLetterId = ref<number | undefined>(undefined)
+
+    const selectedLetter = (letterId: number) => {
+      selectedLetterId.value = selectedLetterId.value === letterId ? undefined : letterId
     }
 
     return {
@@ -181,7 +219,8 @@ export default {
       musicPlayer,
       playlist,
       showOnlyFavorites,
-      songsByCurriculumTypeWithFavorites
+      songsByCurriculumTypeWithFavorites,
+      selectedLetter
     }
   },
 
@@ -190,8 +229,12 @@ export default {
   },
 
   created () {
-    if (!this.id && this.currentChild.length) {
-      this.$router.push({ name: this.$route.name, query: { id: this.currentChild[0].id } })
+    // @ts-ignore
+    if (!this.id && this.currentChild.length && this.$route.name) {
+      this.$router.push({
+        name: this.$route.name,
+        query: { id: this.currentChild[0].id }
+      })
     }
   }
 }
