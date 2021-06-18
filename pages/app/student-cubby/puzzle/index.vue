@@ -124,10 +124,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, useRoute } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, computed, useRoute } from '@nuxtjs/composition-api'
 // import { get } from 'lodash'
-// import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import PuzzlePiecesDialog from '@/components/app/student-cubby/PuzzlePiecesDialog.vue'
+import { usePuzzle } from '@/composables/puzzle'
 
 export default defineComponent({
   name: 'Index',
@@ -138,13 +139,21 @@ export default defineComponent({
 
   setup () {
     const route = useRoute()
-    const studentId = computed(() => route.value.params.id)
-  }
+    const studentId = computed(() => parseInt(route.value.query.id))
+    const { puzzles, getPuzzlesByChildId } = usePuzzle()
+    onMounted(async () => {
+      await getPuzzlesByChildId(studentId.value)
+    })
 
-  /* data: () => {
+    return {
+      puzzles
+    }
+  },
+
+  data: () => {
     return {
       dialog: false,
-      puzzles: [],
+      // puzzles: [],
       toShow: {}
     }
   },
@@ -164,21 +173,21 @@ export default defineComponent({
   },
 
   watch: {
-    studentId () {
+    /* studentId () {
       if (!this.loading) {
         this.fetchPuzzles()
       }
-    }
+    } */
   },
 
   created () {
-    this.fetchPuzzles()
+    // this.fetchPuzzles()
   },
 
   methods: {
     ...mapActions('children/puzzle', ['findPuzzlesByChildrenId']),
 
-    async fetchPuzzles (clear = false) {
+    /* async fetchPuzzles (clear = false) {
       this.loading = true
 
       if (clear) {
@@ -219,7 +228,7 @@ export default defineComponent({
       } finally {
         this.loading = false
       }
-    },
+    }, */
 
     getSrcType (completed) {
       return completed ? 'src' : 'lazy-src'
@@ -229,7 +238,7 @@ export default defineComponent({
       this.toShow = { ...puzzle }
       this.dialog = true
     }
-  } */
+  }
 })
 </script>
 
