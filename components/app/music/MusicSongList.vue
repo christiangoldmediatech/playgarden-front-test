@@ -2,27 +2,17 @@
   <div class="pa-4" v-bind="$attrs">
     <!-- Filters -->
     <v-row no-gutters>
-      <!-- Child Selector -->
-      <v-col v-if="!isPlayerShowing || mobile" cols="12" md="">
-        <div class="child-selector mx-auto">
-          <child-select v-model="selectedChildId" hide-details />
-        </div>
-      </v-col>
-
-      <v-col
-        cols="12"
-        :md="isPlayerShowing ? 5 : 6"
-        :lg="isPlayerShowing ? 6 : 7"
-        xl="7"
-      >
-        <music-carousel-letter
-          :value="selectedLetterId"
-          :disabled-letters="disabledLetters"
-          @select="selectLetter"
+      <v-col>
+        <underlined-title
+          font-size="48px"
+          font-size-mobile="32px"
+          text="Song List"
         />
       </v-col>
 
-      <v-col cols="12" md="" class="d-flex justify-center">
+      <v-spacer class="d-none d-md-flex" />
+
+      <v-col cols="12" md="" class="d-flex justify-center justify-md-end">
         <v-btn
           large
           class="favorite-button white my-4 mt-md-2 mb-md-0"
@@ -39,7 +29,7 @@
       </v-col>
 
       <v-col cols="12" md="">
-        <v-row no-gutters justify="center" justify-md="start" align="center" class="fill-height pl-4 pl-md-0">
+        <v-row no-gutters justify="center" justify-md="end" align="center" class="fill-height pl-4 pl-md-0">
           <v-col cols="auto">
             <v-card
               tile
@@ -141,10 +131,8 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 
-import MusicCarouselLetter from '@/components/app/music/MusicLetterCarousel.vue'
 import SongCard from '@/components/app/music/SongCard.vue'
 import LetterSongs from '@/components/app/music/LetterSongs.vue'
-import ChildSelect from '@/components/app/ChildSelect.vue'
 
 import { jsonCopy } from '@/utils/objectTools.js'
 
@@ -152,10 +140,8 @@ export default {
   name: 'MusicSongList',
 
   components: {
-    MusicCarouselLetter,
     SongCard,
-    LetterSongs,
-    ChildSelect
+    LetterSongs
   },
 
   emits: ['addSong', 'newPlayList'],
