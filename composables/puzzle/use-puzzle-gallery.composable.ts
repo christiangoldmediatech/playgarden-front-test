@@ -36,7 +36,6 @@ export const usePuzzle = () => {
         srcType: getSrcType(completed && !active)
       })
     )
-    console.log('get puzzle map--', puzzles)
   }
 
   return {

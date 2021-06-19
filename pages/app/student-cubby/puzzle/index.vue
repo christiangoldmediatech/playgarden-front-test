@@ -124,7 +124,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, computed, useRoute } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, computed, useRoute, useStore } from '@nuxtjs/composition-api'
 // import { get } from 'lodash'
 import { mapActions, mapGetters } from 'vuex'
 import PuzzlePiecesDialog from '@/components/app/student-cubby/PuzzlePiecesDialog.vue'
@@ -139,6 +139,7 @@ export default defineComponent({
 
   setup () {
     const route = useRoute()
+    const store = useStore()
     const studentId = computed(() => parseInt(route.value.query.id))
     const { puzzles, getPuzzlesByChildId } = usePuzzle()
     onMounted(async () => {
@@ -165,11 +166,11 @@ export default defineComponent({
       return (
         this.children.find(({ id }) => id === Number(this.studentId)) || {}
       )
-    },
-
-    studentId () {
-      return this.$route.query.id
     }
+
+    /* studentId () {
+      return this.$route.query.id
+    } */
   },
 
   watch: {
@@ -185,7 +186,7 @@ export default defineComponent({
   },
 
   methods: {
-    ...mapActions('children/puzzle', ['findPuzzlesByChildrenId']),
+    // ...mapActions('children/puzzle', ['findPuzzlesByChildrenId']),
 
     /* async fetchPuzzles (clear = false) {
       this.loading = true
@@ -230,9 +231,9 @@ export default defineComponent({
       }
     }, */
 
-    getSrcType (completed) {
+    /* getSrcType (completed) {
       return completed ? 'src' : 'lazy-src'
-    },
+    }, */
 
     showOverlay (puzzle) {
       this.toShow = { ...puzzle }
