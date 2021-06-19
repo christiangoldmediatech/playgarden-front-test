@@ -17,15 +17,7 @@
             currentSong,
             currentSongPlayedTime,
             currentSongPlayedPercentage,
-            currentSongMissingTime,
-            /*
-            isLoading,
-            isPlaying,
-            play,
-            pause,
-            next,
-            previous
-            */
+            currentSongMissingTime
           }"
         >
           <!-- Title And Favorite Icon -->
