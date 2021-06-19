@@ -1,17 +1,29 @@
 <template>
   <v-main>
     <v-container fluid class="pa-0">
-      <horizontal-ribbon-card>
-        <child-select :value="id" hide-details />
-        <music-carousel-letter
-          :value="selectedLetterId"
-          :disabled-letters="disabledLetters"
-          @select="selectLetter"
-        />
+      <horizontal-ribbon-card
+        :is-minimized.sync="isTopRibbonMinimized"
+      >
+        <v-row no-gutters class="ml-10 mr-6 mt-4">
+          <v-col cols="12" md="3" align-self="center">
+            <child-select
+              v-if="id"
+              hide-details
+              :value="id"
+              @input="id = $event"
+            />
+          </v-col>
+          <v-col cols="12" md="9" align-self="center" class="mt-2 mt-md-0">
+            <music-carousel-letter
+              :value="selectedLetterId"
+              :disabled-letters="disabledLetters"
+              @select="selectLetter"
+            />
+          </v-col>
+        </v-row>
       </horizontal-ribbon-card>
       <v-expand-transition>
         <new-music-player
-          v-show="isPlayerShowing"
           ref="musicPlayer"
           @currentSong="currentSong = $event"
           @favorite="handleFavorite"
@@ -34,7 +46,6 @@
 </template>
 
 <script lang="ts">
-import { mapGetters } from 'vuex'
 // @ts-ignore
 import debounce from 'lodash/debounce'
 
@@ -45,7 +56,7 @@ import ChildSelect from '@/components/app/ChildSelect.vue'
 import MusicCarouselLetter from '@/components/app/music/MusicLetterCarousel.vue'
 
 import { useMusic } from '@/composables'
-import { onMounted, ref, computed, useRoute, watch, onUnmounted } from '@nuxtjs/composition-api'
+import { onMounted, ref, computed, useRoute, watch, onUnmounted, useStore, useRouter } from '@nuxtjs/composition-api'
 import { MusicLibrary } from '@/models'
 
 const PAGE_MOBILE_BREAKPOINT = 1264
@@ -64,6 +75,8 @@ export default {
 
   setup (_, ctx) {
     const route = useRoute()
+    const router = useRouter()
+    const store = useStore()
     // this references `ref="musicPlayer"` when the component is mounted
     const musicPlayer = ref<any>(null)
     const {
@@ -90,13 +103,21 @@ export default {
 
     const debouncedHandleScroll = debounce(handleScroll, 50)
 
-    const id = computed(() => typeof route.value.query.id === 'string'
-      ? parseInt(route.value.query.id)
-      : null
-    )
+    const id = ref<number | null>(null)
+
+    const setId = () => {
+      if (typeof route.value.query.id !== 'string' && typeof route.value.query.id !== 'number') {
+        id.value = null
+        return
+      }
+
+      id.value = parseInt(route.value.query.id)
+    }
+
     watch(id, async (val) => {
       if (val) {
         await getAndSetFavorites()
+        setCurrentChildToRoute(val)
       }
     })
 
@@ -106,12 +127,13 @@ export default {
       }
 
       await sendCurrentPlayingMusic(val.id, id.value)
-      scrollToSong(val.id)
     })
 
     onMounted(async () => {
       await getMusicLibrariesByCurriculumType()
       await getAndSetFavorites()
+      handleCurrentChild()
+      setId()
 
       window.addEventListener('scroll', debouncedHandleScroll)
     })
@@ -119,6 +141,25 @@ export default {
     onUnmounted(() => {
       window.removeEventListener('scroll', debouncedHandleScroll)
     })
+
+    const handleCurrentChild = () => {
+      const currentChild = computed(() => store.getters.getCurrentChild)
+
+      if (!id.value && currentChild.value?.length) {
+        setCurrentChildToRoute(currentChild.value[0].id)
+      }
+    }
+
+    const setCurrentChildToRoute = (id: number) => {
+      if (id && route.value.name) {
+        router.push({
+          name: route.value.name,
+          query: {
+            id: `${id}`
+          }
+        })
+      }
+    }
 
     const updateCurrentSongData = () => {
       if (!currentSong.value) {
@@ -164,6 +205,8 @@ export default {
       if (musicPlayer.value) {
         musicPlayer.value.createNewPlaylist(playList)
         playlist.value = playList
+
+        isTopRibbonMinimized.value = true
       }
     }
 
@@ -186,24 +229,29 @@ export default {
       }
     }
 
-    const scrollToSong = (id: number) => {
-      if (isMobile.value) {
-        return
-      }
+    const selectedLetterId = ref<number | null>(null)
 
-      try {
-        ctx.root.$vuetify.goTo(`#playlist-song-${id}`, {
-          container: '#playlist',
-          offset: -63
-        })
-      } catch (err) {}
+    const selectLetter = (letterId: number) => {
+      selectedLetterId.value = selectedLetterId.value === letterId ? null : letterId
     }
 
-    const selectedLetterId = ref<number | undefined>(undefined)
+    const letters = computed(() => store.getters['admin/curriculum/types'])
 
-    const selectedLetter = (letterId: number) => {
-      selectedLetterId.value = selectedLetterId.value === letterId ? undefined : letterId
-    }
+    const availableLettersWithSongsIds = computed(() => {
+      const availableIds = new Set()
+      songsByCurriculumTypeWithFavorites.value.forEach(letter => availableIds.add(letter.id))
+      return Array.from(availableIds)
+    })
+
+    const disabledLetters = computed(() => {
+      const filteredLetters = letters.value?.filter((letter: any) => {
+        return availableLettersWithSongsIds.value.includes(letter.id)
+      }).map((letter: any) => letter.id)
+
+      return filteredLetters
+    })
+
+    const isTopRibbonMinimized = ref(false)
 
     return {
       addSongToPlaylist,
@@ -220,21 +268,10 @@ export default {
       playlist,
       showOnlyFavorites,
       songsByCurriculumTypeWithFavorites,
-      selectedLetter
-    }
-  },
-
-  computed: {
-    ...mapGetters({ currentChild: 'getCurrentChild' })
-  },
-
-  created () {
-    // @ts-ignore
-    if (!this.id && this.currentChild.length && this.$route.name) {
-      this.$router.push({
-        name: this.$route.name,
-        query: { id: this.currentChild[0].id }
-      })
+      selectLetter,
+      selectedLetterId,
+      isTopRibbonMinimized,
+      disabledLetters
     }
   }
 }
