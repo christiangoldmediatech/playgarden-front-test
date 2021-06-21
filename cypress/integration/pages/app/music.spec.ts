@@ -41,7 +41,7 @@ describe('/app/music', () => {
     cy.get('[data-test-id=hcr-content]').should('be.visible')
   })
 
-  it('hdies children and letter carrusel when a songs is selected', () => {
+  it('hides children and letter carrusel when a songs is selected', () => {
     // starts playing a song to show the music player
     cy.get('[data-test-id=song-card]').first().click({ force: true })
 
