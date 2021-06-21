@@ -21,7 +21,7 @@
           }"
         >
           <!-- Title And Favorite Icon -->
-          <div class="d-flex flex-column">
+          <div v-if="currentSong.description" class="d-flex flex-column">
             <div class="d-flex justify-center justify-md-start">
               <span
                 class="accent--text text-h5 text-md-h4 font-weight-black"
@@ -46,11 +46,12 @@
             <v-slider
               readonly
               height="20"
-              :min="0"
               color="warning lighten-1"
               track-color="grey lighten-2"
-              :max="100"
               class="slider"
+              :min="0"
+              :max="100"
+              :disabled="isPlayerDisabled"
               :value="currentSongPlayedPercentage"
             />
             <span class="played-time pl-2">
@@ -79,7 +80,13 @@
               class="text-center"
             >
               <!-- Previous Song Button -->
-              <v-btn icon height="32" width="32" @click.stop="previous">
+              <v-btn
+                icon
+                height="32"
+                width="32"
+                :disabled="isPlayerDisabled"
+                @click.stop="previous"
+              >
                 <v-icon color="white" size="32">
                   mdi-skip-backward
                 </v-icon>
@@ -97,6 +104,7 @@
                 icon
                 height="50"
                 width="50"
+                :disabled="isPlayerDisabled"
                 @click.stop="play"
               >
                 <v-icon color="white" size="50">
@@ -109,6 +117,7 @@
                 height="50"
                 width="50"
                 data-test-id="music-player-pause-button"
+                :disabled="isPlayerDisabled"
                 @click.stop="pause"
               >
                 <v-icon color="white" size="50">
@@ -123,7 +132,13 @@
               class="text-center"
             >
               <!-- Next Song Button -->
-              <v-btn icon height="32" width="32" @click.stop="next">
+              <v-btn
+                icon
+                height="32"
+                width="32"
+                :disabled="isPlayerDisabled"
+                @click.stop="next"
+              >
                 <v-icon color="white" size="32">
                   mdi-skip-forward
                 </v-icon>
@@ -139,7 +154,7 @@
 <script lang="ts">
 import { useMusic } from '@/composables'
 import { MusicLibrary } from '@/models'
-import { defineComponent, ref, nextTick } from '@nuxtjs/composition-api'
+import { defineComponent, ref, nextTick, computed } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   setup (_, { emit }) {
@@ -181,10 +196,13 @@ export default defineComponent({
       audioPlayer.value?.play()
     }
 
+    const isPlayerDisabled = computed(() => !currentSong.value || !currentSong.value.description)
+
     return {
       audioPlayer,
       currentSong,
       playlist,
+      isPlayerDisabled,
       handleCurrentSong,
       refreshSongData,
       addSongToPlaylist,
