@@ -4,12 +4,12 @@
       <v-card class="card-image">
         <v-img
           :src="image.image"
-          height="156"
+          height="180"
         />
       </v-card>
     </v-card-title>
     <v-card-text class="mt-12">
-      <div class="text-center pt-5">
+      <div class="text-center pt-10">
         <img v-if="image.is_correct" height="30px;" src="@/assets/svg/ok.svg">
         <img v-else height="30px;" src="@/assets/svg/fail.svg">
         <br>
