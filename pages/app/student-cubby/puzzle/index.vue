@@ -125,7 +125,6 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, computed, useRoute, useStore } from '@nuxtjs/composition-api'
-// import { get } from 'lodash'
 import { mapActions, mapGetters } from 'vuex'
 import PuzzlePiecesDialog from '@/components/app/student-cubby/PuzzlePiecesDialog.vue'
 import { usePuzzle } from '@/composables/puzzle'

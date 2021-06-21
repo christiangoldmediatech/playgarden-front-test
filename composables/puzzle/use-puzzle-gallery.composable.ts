@@ -1,7 +1,7 @@
 import { ref } from '@nuxtjs/composition-api'
 import { axios } from '@/utils'
-import { get } from 'lodash'
 import { Puzzle, PuzzleResponse } from '@/models'
+const { get } = require('lodash')
 
 export const usePuzzle = () => {
   /**
