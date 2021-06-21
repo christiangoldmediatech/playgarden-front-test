@@ -157,7 +157,7 @@
 
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex'
-import PieChart from '@/components/admin/dashboard/PieChart.vue'
+import PieChart from '@/components/echart/PieChart.vue'
 import onSearch from '@/mixins/OnSearchMixin.js'
 
 export default {

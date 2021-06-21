@@ -10,7 +10,8 @@
       :nuxt="item.nuxt"
       :link="item.link"
       :exact="item.exact"
-      :to="item.to"
+      :to="(item.to) ? item.to : ''"
+      @click="loadDetailVideo(item)"
     >
       <v-list-item-avatar tile>
         <v-img
@@ -95,6 +96,13 @@ export default {
           ...props
         }
       })
+    }
+  },
+  methods: {
+    loadDetailVideo (item) {
+      if (!item.to) {
+        this.$nuxt.$emit('send-video', item)
+      }
     }
   }
 }
