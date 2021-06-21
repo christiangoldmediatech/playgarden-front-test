@@ -165,22 +165,20 @@ export default {
       default: false
     },
 
-    isPlayerShowing: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-
     showOnlyFavorites: {
       type: Boolean,
       default: false
+    },
+
+    selectedLetterId: {
+      type: Number,
+      default: null
     }
   },
 
   data () {
     return {
       selectedFilter: 'list',
-      selectedLetterId: null,
       selectedChildId: null
     }
   },
@@ -253,16 +251,6 @@ export default {
     ...mapActions('admin/curriculum', {
       getLetters: 'getTypes'
     }),
-
-    selectLetter (letterId) {
-      if (this.selectedLetterId === letterId) {
-        // deselect
-        this.selectedLetterId = null
-      } else {
-        // select
-        this.selectedLetterId = letterId
-      }
-    },
 
     createPlayListFromIndex (index) {
       const playlist = jsonCopy(this.filteredSongsByLetterId.slice(index))
