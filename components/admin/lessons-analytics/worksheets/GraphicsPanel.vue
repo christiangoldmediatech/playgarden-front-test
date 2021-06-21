@@ -28,7 +28,7 @@
         </v-btn>
       </v-card-title>
       <v-card-text>
-        <v-row v-if="getImages" class="content-dashboard mt-15">
+        <v-row v-if="getImages" class="content-dashboard">
           <v-col v-for="(image, index) in getImages" :key="`image-${index}`" cols="3">
             <ow-image :image="image" :clicks="getClicks(image)" />
           </v-col>
