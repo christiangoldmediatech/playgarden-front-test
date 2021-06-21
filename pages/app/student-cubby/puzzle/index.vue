@@ -128,6 +128,7 @@ import { defineComponent, onMounted, computed, useRoute, useStore } from '@nuxtj
 import { mapActions, mapGetters } from 'vuex'
 import PuzzlePiecesDialog from '@/components/app/student-cubby/PuzzlePiecesDialog.vue'
 import { usePuzzle } from '@/composables/puzzle'
+import { PuzzleResponse } from '@/models'
 
 export default defineComponent({
   name: 'Index',
@@ -168,7 +169,7 @@ export default defineComponent({
   },
 
   methods: {
-    showOverlay (puzzle) {
+    showOverlay (puzzle: PuzzleResponse) {
       this.toShow = { ...puzzle }
       this.dialog = true
     }

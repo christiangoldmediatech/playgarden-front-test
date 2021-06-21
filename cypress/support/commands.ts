@@ -13,8 +13,8 @@ Cypress.Commands.add('uiLoginAs', (user: 'parent' | 'admin') => {
 
   switch (user) {
     case 'parent':
-      payload.email = Cypress.env('parentEmail'),
-      payload.password = Cypress.env('parentPassword')
+      payload.email = 'cborja@test8.com' // Cypress.env('parentEmail'),
+      payload.password = 'Alejandro.26' //Cypress.env('parentPassword')
       payload.url = '/app/pick-child'
       break
     case 'admin':
