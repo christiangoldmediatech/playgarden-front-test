@@ -3,7 +3,7 @@
     <v-row no-gutters>
       <v-col cols="12">
         <v-expand-transition class="elevation-0">
-          <div v-show="!isMinimized" data-test-id="content">
+          <div v-show="!isMinimized" data-test-id="hcr-content">
             <slot />
           </div>
         </v-expand-transition>
@@ -11,7 +11,7 @@
       <v-col
         cols="12"
         class="action text-center my-2"
-        data-test-id="minimize-button"
+        data-test-id="hcr-minimize-button"
         @click="$emit('update:isMinimized', !isMinimized)"
       >
         <v-icon>{{ isMinimized ? 'mdi-chevron-down' : 'mdi-chevron-up' }}</v-icon>

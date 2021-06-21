@@ -12,7 +12,7 @@ describe('components/ui/cards/HorizontalCardRibbon', () => {
 
   it('emits `isMinimized` on minimize button click', async () => {
     const wrapper = mountFunction()
-    const minimizeButtton = wrapper.find('[data-test-id=minimize-button]')
+    const minimizeButtton = wrapper.find('[data-test-id=hcr-minimize-button]')
     await minimizeButtton.trigger('click')
 
     expect(wrapper.emitted()['update:isMinimized']).toBeTruthy()
@@ -25,7 +25,7 @@ describe('components/ui/cards/HorizontalCardRibbon', () => {
       }
     })
 
-    const content = wrapper.find('[data-test-id=content]')
+    const content = wrapper.find('[data-test-id=hcr-content]')
     expect(content.exists()).toBe(true)
     expect(content.isVisible()).toBe(false)
   })
