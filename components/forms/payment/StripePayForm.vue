@@ -1,16 +1,18 @@
 <template>
   <validation-observer v-slot="{ invalid, passes, reset }">
-    <p
-      class="text-center text-md-left"
-      :class="{ 'mt-n10': $vuetify.breakpoint.smAndUp }"
-    >
-      <underlined-title class="text-h6 text-md-h5" text="CREDIT CARD INFORMATION" />
-    </p>
-    <p class="text-center text-md-left">
-      <span class="text-header-info">
-        We need your credit card information to confirm who you are, but you will NOT be charged.
-      </span>
-    </p>
+    <slot name="header">
+      <p
+        class="text-center text-md-left"
+        :class="{ 'mt-n10': $vuetify.breakpoint.smAndUp }"
+      >
+        <underlined-title class="text-h6 text-md-h5" text="CREDIT CARD INFORMATION" />
+      </p>
+      <p class="text-center text-md-left">
+        <span class="text-header-info">
+          We need your credit card information to confirm who you are, but you will NOT be charged.
+        </span>
+      </p>
+    </slot>
 
     <v-form class="mt-7" @submit.prevent="passes(onSubmit)">
       <!-- Card -->
@@ -89,7 +91,7 @@
       </v-btn>
     </v-form>
     <div v-if="$vuetify.breakpoint.smAndUp">
-      <p>
+      <p v-if="isFreeForDaysTextVisible">
         <center>
           <span class="font-weight-bold text-completely">
             Playgarden Prep Online is COMPLETELY FREE for the next 30 days.
@@ -97,13 +99,15 @@
         </center>
       </p>
       <v-divider />
-      <p v-if="!noTrial">
-        <center class="ml-2">
-          <span class="info-pay">
-            You can cancel your trial and membership anytime from the account settings.<br> Once your free trial ends you will be placed on the <span class="option-standar">Standard</span> monthly plan, you can change plans at any time in your profile page.
-          </span>
-        </center>
-      </p>
+      <slot name="footer">
+        <p v-if="isTrialTextVisible">
+          <center class="ml-2">
+            <span class="info-pay">
+              You can cancel your trial and membership anytime from the account settings.<br> Once your free trial ends you will be placed on the <span class="option-standar">Standard</span> monthly plan, you can change plans at any time in your profile page.
+            </span>
+          </center>
+        </p>
+      </slot>
     </div>
   </validation-observer>
 </template>
@@ -129,13 +133,21 @@ export default {
       default: 'START YOUR FREE TRIAL'
     },
 
+    isTrialTextVisible: {
+      type: Boolean,
+      default: true
+    },
+
+    isFreeForDaysTextVisible: {
+      type: Boolean,
+      default: true
+    },
+
     cancelable: Boolean,
 
     loading: Boolean,
 
-    noTerms: Boolean,
-
-    noTrial: Boolean
+    noTerms: Boolean
   },
 
   watch: {

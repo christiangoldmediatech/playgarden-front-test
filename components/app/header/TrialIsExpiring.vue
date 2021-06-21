@@ -1,5 +1,8 @@
 <template>
-  <div class="ribbon text-center d-flex flex-column flex-md-row align-center justify-center py-2">
+  <div
+    class="ribbon-color text-center d-flex flex-column flex-md-row align-center justify-center py-2"
+    :class="{ 'ribbon-fixed-top': isFixedOnTop }"
+  >
     <span class="white--text font-weight-bold mx-2">YOUR FREE TRIAL IS ABOUT TO EXPIRE: </span>
     <span class="time">
       <underlined-title
@@ -11,7 +14,13 @@
       />
       <span class="white--text">Days left</span>
     </span>
-    <v-btn small class="text-none accent--text mx-2" router :to="{ name: 'app-payment-plan' }">
+    <v-btn
+      v-if="isComparePlansButtonVisible"
+      small
+      class="text-none accent--text mx-2"
+      nuxt
+      :to="{ name: 'app-payment-plan' }"
+    >
       Compare plans now
     </v-btn>
   </div>
@@ -25,6 +34,17 @@ const EXPIRED_TIME_STRING = '0:00:00'
 
 export default {
   name: 'TrialIsExpiring',
+
+  props: {
+    isComparePlansButtonVisible: {
+      type: Boolean,
+      default: true
+    },
+    isFixedOnTop: {
+      type: Boolean,
+      default: true
+    }
+  },
 
   data () {
     return {
@@ -65,13 +85,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.ribbon {
+.ribbon-fixed-top {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  background-color: #F89838;
   z-index: 999;
+}
+.ribbon-color {
+  background-color: #F89838;
 }
 .time {
   width: 215px !important;
