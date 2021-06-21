@@ -154,7 +154,6 @@ export default defineComponent({
   data: () => {
     return {
       dialog: false,
-      // puzzles: [],
       toShow: {}
     }
   },
@@ -167,74 +166,9 @@ export default defineComponent({
         this.children.find(({ id }) => id === Number(this.studentId)) || {}
       )
     }
-
-    /* studentId () {
-      return this.$route.query.id
-    } */
-  },
-
-  watch: {
-    /* studentId () {
-      if (!this.loading) {
-        this.fetchPuzzles()
-      }
-    } */
-  },
-
-  created () {
-    // this.fetchPuzzles()
   },
 
   methods: {
-    // ...mapActions('children/puzzle', ['findPuzzlesByChildrenId']),
-
-    /* async fetchPuzzles (clear = false) {
-      this.loading = true
-
-      if (clear) {
-        this.search = null
-      }
-      try {
-        const puzzles = await this.findPuzzlesByChildrenId({
-          id: this.studentId
-        })
-
-        this.puzzles = puzzles.map(
-          ({
-            id,
-            active = false,
-            completed = false,
-            curriculumType,
-            image = '',
-            name = '',
-            pieces = 0,
-            piecesUnclocked = 0,
-            puzzleChildrenId
-          }) => ({
-            id,
-            active,
-            completed,
-            lazy: false,
-            letter: get(curriculumType, 'letter', ''),
-            name,
-            pieces,
-            piecesUnclocked,
-            percentageCompleted: (piecesUnclocked * 100) / pieces,
-            puzzleChildrenId,
-            src: image,
-            srcType: this.getSrcType(completed && !active)
-          })
-        )
-      } catch (e) {
-      } finally {
-        this.loading = false
-      }
-    }, */
-
-    /* getSrcType (completed) {
-      return completed ? 'src' : 'lazy-src'
-    }, */
-
     showOverlay (puzzle) {
       this.toShow = { ...puzzle }
       this.dialog = true
