@@ -1,4 +1,5 @@
 export * from './activity-type.model'
+export * from './child.model'
 export * from './entity.model'
 export * from './music.model'
 export * from './playlist.model'
