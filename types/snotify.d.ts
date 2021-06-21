@@ -2,29 +2,29 @@
 import Vue from 'vue'
 
 interface SnotifyOptions {
-  buttons: {
+  buttons?: {
     text: string,
     action: () => any
   }
-  closeOnClick: boolean
-  timeout: number
+  closeOnClick?: boolean
+  timeout?: number
 }
 
 interface Snotify {
   success: (
     message: string,
-    title: string,
-    options: SnotifyOptions
+    title?: string,
+    options?: SnotifyOptions
   ) => void
   error: (
     message: string,
-    title: string,
-    options: SnotifyOptions
+    title?: string,
+    options?: SnotifyOptions
   ) => void
   warning: (
     message: string,
-    title: string,
-    options: SnotifyOptions
+    title?: string,
+    options?: SnotifyOptions
   ) => void
 }
 

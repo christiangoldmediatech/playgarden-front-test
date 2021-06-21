@@ -2,7 +2,7 @@ import { computed, ref } from '@nuxtjs/composition-api'
 import { axios } from '@/utils'
 import { ChildrenMusicFavorite, CurriculumTypeWithMusicLibrary, MusicLibrary } from '@/models'
 
-const playlist = ref([])
+const playlist = ref<MusicLibrary[]>([])
 const currentSong = ref<MusicLibrary | undefined>(undefined)
 const musicLibraries = ref<CurriculumTypeWithMusicLibrary[]>([])
 
