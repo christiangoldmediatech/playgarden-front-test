@@ -31,6 +31,7 @@
               <v-icon
                 class="ml-3 align-self-center"
                 size="32"
+                data-test-id="music-player-favorite-button"
                 :class="currentSong.isFavorite ? 'pink--text text--lighten-2' : 'grey--text text--lighten-2'"
                 @click.stop="$emit('favorite', currentSong)"
               >
