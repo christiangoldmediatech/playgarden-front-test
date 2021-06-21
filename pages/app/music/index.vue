@@ -32,10 +32,10 @@
       <music-song-list
         id="music-song-list"
         :show-only-favorites="showOnlyFavorites"
-        :is-player-showing="isPlayerShowing"
         :mobile="isMobile"
         :all-songs="allSongsWithFavorites"
         :songs-by-curriculum-type="songsByCurriculumTypeWithFavorites"
+        :selected-letter-id="selectedLetterId"
         @addSong="addSongToPlaylist"
         @newPlayList="createNewPlaylist"
         @favorite="handleFavorite"
@@ -55,7 +55,7 @@ import HorizontalRibbonCard from '@/components/ui/cards/HorizontalCardRibbon.vue
 import ChildSelect from '@/components/app/ChildSelect.vue'
 import MusicCarouselLetter from '@/components/app/music/MusicLetterCarousel.vue'
 
-import { useMusic } from '@/composables'
+import { useMusic, useSnotifyHelper, useVuetifyHelper } from '@/composables'
 import { onMounted, ref, computed, useRoute, watch, onUnmounted, useStore, useRouter } from '@nuxtjs/composition-api'
 import { MusicLibrary } from '@/models'
 
@@ -73,7 +73,9 @@ export default {
     MusicCarouselLetter
   },
 
-  setup (_, ctx) {
+  setup () {
+    const vuetify = useVuetifyHelper()
+    const snotify = useSnotifyHelper()
     const route = useRoute()
     const router = useRouter()
     const store = useStore()
@@ -93,7 +95,7 @@ export default {
       songsByCurriculumTypeWithFavorites
     } = useMusic()
 
-    const isMobile = computed(() => ctx.root.$vuetify.breakpoint.width <= PAGE_MOBILE_BREAKPOINT)
+    const isMobile = computed(() => vuetify.breakpoint.width <= PAGE_MOBILE_BREAKPOINT)
     const isPlayerShowing = computed(() => playlist.value.length > 0)
     const didScrollToBottom = ref(false)
 
@@ -214,18 +216,15 @@ export default {
       try {
         if (song.isFavorite && song.favoriteId) {
           await removeFavoriteMusic(song.favoriteId)
-          // @ts-ignore
-          ctx.root.$snotify.success('Song removed from favorites')
+          snotify.success('Song removed from favorites')
         } else if (id.value) {
           await setFavoriteMusicForChild(id.value, song.id)
-          // @ts-ignore
-          ctx.root.$snotify.success('Song added to favorites')
+          snotify.success('Song added to favorites')
         }
 
         await getAndSetFavorites()
       } catch (error) {
-        // @ts-ignore
-        ctx.root.$snotify.error(error.message)
+        snotify.error(error.message)
       }
     }
 
@@ -245,7 +244,7 @@ export default {
 
     const disabledLetters = computed(() => {
       const filteredLetters = letters.value?.filter((letter: any) => {
-        return availableLettersWithSongsIds.value.includes(letter.id)
+        return !availableLettersWithSongsIds.value.includes(letter.id)
       }).map((letter: any) => letter.id)
 
       return filteredLetters
