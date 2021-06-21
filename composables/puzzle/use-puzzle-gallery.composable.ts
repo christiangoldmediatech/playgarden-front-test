@@ -1,16 +1,18 @@
 import { ref } from '@nuxtjs/composition-api'
 import { axios } from '@/utils'
 import { get } from 'lodash'
+import { Puzzle, PuzzleResponse } from '@/models'
 
 export const usePuzzle = () => {
   /**
    * HTTP Requests
    */
-  const puzzles = ref<any[]>([])
+  const puzzles = ref<Puzzle[]>([])
+  const puzzlesResponse = ref<PuzzleResponse[]>([])
 
   const getPuzzlesByChildId = async (childId: number) => {
     puzzles.value = await axios.$get(`/puzzle-children/children/${childId}`)
-    puzzles.value = puzzles.value.map(
+    puzzlesResponse.value = puzzles.value.map(
       ({
         id,
         active = false,
@@ -39,7 +41,7 @@ export const usePuzzle = () => {
   }
 
   return {
-    puzzles,
+    puzzlesResponse,
     getPuzzlesByChildId
   }
 }

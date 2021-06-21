@@ -16,7 +16,7 @@
 
       <v-row class="mt-6" justify="space-around">
         <v-col
-          v-for="(puzzle, indexP) in puzzles"
+          v-for="(puzzle, indexP) in puzzlesResponse"
           :key="indexP"
           cols="12"
           sm="6"
@@ -141,13 +141,13 @@ export default defineComponent({
     const route = useRoute()
     const store = useStore()
     const studentId = computed(() => parseInt(route.value.query.id))
-    const { puzzles, getPuzzlesByChildId } = usePuzzle()
+    const { puzzlesResponse, getPuzzlesByChildId } = usePuzzle()
     onMounted(async () => {
       await getPuzzlesByChildId(studentId.value)
     })
 
     return {
-      puzzles
+      puzzlesResponse
     }
   },
 
