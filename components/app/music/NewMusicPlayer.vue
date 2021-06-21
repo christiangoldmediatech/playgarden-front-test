@@ -255,7 +255,7 @@ export default defineComponent({
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: $breakpoint-xs) {
   .music-player {
     & .controls {
       width: 90%;
