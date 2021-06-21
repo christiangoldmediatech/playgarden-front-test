@@ -136,6 +136,7 @@ export default {
       await getAndSetFavorites()
       handleCurrentChild()
       setId()
+      handleEmptyMusicPlayer()
 
       window.addEventListener('scroll', debouncedHandleScroll)
     })
@@ -251,6 +252,16 @@ export default {
     })
 
     const isTopRibbonMinimized = ref(false)
+
+    /**
+     * The music player is always visible, so here we want to show a default
+     * song while there is no song selected.
+     */
+    const handleEmptyMusicPlayer = () => {
+      if (playlist.value.length === 0 && allSongsWithFavorites.value.length > 0) {
+        addSongToPlaylist(allSongsWithFavorites.value[0])
+      }
+    }
 
     return {
       addSongToPlaylist,
