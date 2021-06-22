@@ -15,6 +15,11 @@ export default {
       required: true,
       default: () => ({})
     },
+    descriptionToolTip: {
+      type: String,
+      required: false,
+      default: null
+    },
     width: {
       type: String,
       default: '100%'
@@ -38,7 +43,7 @@ export default {
         },
         tooltip: {
           trigger: 'item',
-          formatter: '{a} <br/>{b} : {c} ({d}%)'
+          formatter: (this.descriptionToolTip) ? '{a} <br/>{b} ' + this.descriptionToolTip + ': {c} ({d}%)' : '{a} <br/>{b} : {c} ({d}%)'
         },
         legend: {
           bottom: 10,

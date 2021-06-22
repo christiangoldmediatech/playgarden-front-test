@@ -137,6 +137,7 @@
                 </div>
               </template>
               <template v-else>
+                {{ $route.name }}
                 <slot />
               </template>
             </v-col>
@@ -158,8 +159,8 @@ import LessonTeacherVideo from '@/components/app/dashboard/LessonTeacherVideo.vu
 import PuzzlePiecesDialog from '@/components/app/student-cubby/PuzzlePiecesDialog.vue'
 import ChildSelect from '@/components/app/ChildSelect.vue'
 import CourseProgressOverlay from '@/components/app/student-cubby/CourseProgressOverlay.vue'
-import CarouselLetter from '~/components/app/all-done/CarouselLetter'
-import DashboardOverrides from '~/mixins/DashboardOverridesMixin'
+import CarouselLetter from '@/components/app/all-done/CarouselLetter.vue'
+import DashboardOverrides from '@/mixins/DashboardOverridesMixin'
 
 export default {
   name: 'DashboardLayout',
@@ -236,7 +237,11 @@ export default {
     },
 
     curriculumTypeId () {
-      return this.lesson && this.lesson.curriculumType ? this.lesson.curriculumType.id : undefined
+      if (this.lesson && this.lesson.curriculumType) {
+        return this.lesson.curriculumType.id
+      } else {
+        return null
+      }
     }
   },
 

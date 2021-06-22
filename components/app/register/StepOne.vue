@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { computed, defineComponent, onMounted, useRoute, useRouter } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, useRoute, useRouter } from '@nuxtjs/composition-api'
 import { mapActions, mapGetters } from 'vuex'
 import { useSignup } from '@/composables/use-signup.composable'
 import RegisterForm from '@/components/forms/auth/RegisterForm.vue'
