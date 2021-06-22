@@ -31,17 +31,17 @@ describe('/app/music', () => {
     cy.get('[data-test-id=letter-songs-list]').should('not.exist')
   })
 
-  it('can hide children and letter carrusel', () => {
+  it('can hide children and letter carousel', () => {
     cy.get('[data-test-id=hcr-minimize-button]').click()
     cy.get('[data-test-id=hcr-content]').should('not.be.visible')
   })
 
-  it('can show children and letter carrusel', () => {
+  it('can show children and letter carousel', () => {
     cy.get('[data-test-id=hcr-minimize-button]').click()
     cy.get('[data-test-id=hcr-content]').should('be.visible')
   })
 
-  it('hides children and letter carrusel when a songs is selected', () => {
+  it('hides children and letter carousel when a songs is selected', () => {
     // starts playing a song to show the music player
     cy.get('[data-test-id=song-card]').first().click({ force: true })
 
