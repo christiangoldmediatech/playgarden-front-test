@@ -1,31 +1,42 @@
 <template>
-  <v-main :style="mainWrapperStyle">
-    <v-container fluid class="pa-0" :style="pageContainerStyle">
-      <v-card
-        :style="playerCardStyle"
-        :width="playerWidth"
-        :height="playerHeight"
-        :ripple="false"
-        v-on="isMobile && !isPlayerMaximizedOnMobile ? { click: handlePlayerClick } : {}"
+  <v-main>
+    <v-container fluid class="pa-0">
+      <horizontal-ribbon-card
+        :is-minimized.sync="isTopRibbonMinimized"
       >
-        <music-player
-          v-show="isPlayerShowing"
+        <v-row no-gutters class="ml-10 mr-6 mt-4">
+          <v-col cols="12" md="3" align-self="center">
+            <child-select
+              v-if="id"
+              hide-details
+              :value="id"
+              @input="id = $event"
+            />
+          </v-col>
+          <v-col cols="12" md="9" align-self="center" class="mt-2 mt-md-0">
+            <music-carousel-letter
+              :is-full-width="true"
+              :value="selectedLetterId"
+              :disabled-letters="disabledLetters"
+              @select="selectLetter"
+            />
+          </v-col>
+        </v-row>
+      </horizontal-ribbon-card>
+      <v-expand-transition>
+        <new-music-player
           ref="musicPlayer"
-          :mobile="isMobile"
-          :is-player-maximized-on-mobile="isPlayerMaximizedOnMobile"
-          @favorite="handleFavorite"
-          @minimize="handlePlayerMinimize"
           @currentSong="currentSong = $event"
+          @favorite="handleFavorite"
         />
-      </v-card>
+      </v-expand-transition>
       <music-song-list
         id="music-song-list"
-        :style="musicSongListStyle"
         :show-only-favorites="showOnlyFavorites"
-        :is-player-showing="isPlayerShowing"
         :mobile="isMobile"
         :all-songs="allSongsWithFavorites"
         :songs-by-curriculum-type="songsByCurriculumTypeWithFavorites"
+        :selected-letter-id="selectedLetterId"
         @addSong="addSongToPlaylist"
         @newPlayList="createNewPlaylist"
         @favorite="handleFavorite"
@@ -35,14 +46,19 @@
   </v-main>
 </template>
 
-<script>
-import { mapGetters, mapState } from 'vuex'
+<script lang="ts">
+// @ts-ignore
 import debounce from 'lodash/debounce'
 
-import MusicPlayer from '@/components/app/music/MusicPlayer.vue'
 import MusicSongList from '@/components/app/music/MusicSongList.vue'
-import { useMusic } from '@/composables'
-import { onMounted, ref, computed, useRoute, watch, onUnmounted } from '@nuxtjs/composition-api'
+import NewMusicPlayer from '@/components/app/music/NewMusicPlayer.vue'
+import HorizontalRibbonCard from '@/components/ui/cards/HorizontalCardRibbon.vue'
+import ChildSelect from '@/components/app/ChildSelect.vue'
+import MusicCarouselLetter from '@/components/app/music/MusicLetterCarousel.vue'
+
+import { useMusic, useSnotifyHelper, useVuetifyHelper } from '@/composables'
+import { onMounted, ref, computed, useRoute, watch, onUnmounted, useStore, useRouter } from '@nuxtjs/composition-api'
+import { MusicLibrary } from '@/models'
 
 const PAGE_MOBILE_BREAKPOINT = 1264
 const MOBILE_PLAYER_HEIGHT = 135
@@ -51,14 +67,21 @@ export default {
   name: 'Index',
 
   components: {
-    MusicPlayer,
-    MusicSongList
+    MusicSongList,
+    NewMusicPlayer,
+    HorizontalRibbonCard,
+    ChildSelect,
+    MusicCarouselLetter
   },
 
-  setup (_, ctx) {
+  setup () {
+    const vuetify = useVuetifyHelper()
+    const snotify = useSnotifyHelper()
     const route = useRoute()
+    const router = useRouter()
+    const store = useStore()
     // this references `ref="musicPlayer"` when the component is mounted
-    const musicPlayer = ref(null)
+    const musicPlayer = ref<any>(null)
     const {
       allSongsWithFavorites,
       currentSong,
@@ -73,59 +96,9 @@ export default {
       songsByCurriculumTypeWithFavorites
     } = useMusic()
 
-    const isPlayerMaximizedOnMobile = ref(false)
-
-    const isMobile = computed(() => ctx.root.$vuetify.breakpoint.width <= PAGE_MOBILE_BREAKPOINT)
+    const isMobile = computed(() => vuetify.breakpoint.width <= PAGE_MOBILE_BREAKPOINT)
     const isPlayerShowing = computed(() => playlist.value.length > 0)
     const didScrollToBottom = ref(false)
-
-    const playerWidth = computed(() => {
-      return isMobile.value
-        ? '100%'
-        : isPlayerShowing.value
-          ? '450'
-          : 0
-    })
-
-    const playerHeight = computed(() => {
-      return !isMobile.value || isPlayerMaximizedOnMobile.value
-        ? '100%'
-        : isPlayerShowing.value && !isPlayerMaximizedOnMobile.value
-          ? MOBILE_PLAYER_HEIGHT
-          : 0
-    })
-
-    const mainWrapperStyle = computed(() => {
-      return {
-        height: '100%',
-        'max-height': isMobile.value ? '100vh' : '950px'
-      }
-    })
-
-    const pageContainerStyle = computed(() => {
-      const isDesktopPlayer = isPlayerShowing.value && !isMobile.value
-      const isMobilePlayer = isPlayerShowing.value && isMobile.value
-
-      return {
-        height: '100%',
-        position: 'relative',
-        'padding-left': isDesktopPlayer
-          ? '450px !important'
-          : isMobilePlayer
-            ? '0 !important'
-            : undefined
-      }
-    })
-
-    const musicSongListStyle = computed(() => {
-      return {
-        overflow: 'scroll',
-        height: '100%',
-        'padding-bottom': isMobile.value
-          ? `${MOBILE_PLAYER_HEIGHT * 2}px !important`
-          : undefined
-      }
-    })
 
     const handleScroll = () => {
       didScrollToBottom.value = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.scrollHeight - MOBILE_PLAYER_HEIGHT
@@ -133,24 +106,38 @@ export default {
 
     const debouncedHandleScroll = debounce(handleScroll, 50)
 
-    const id = computed(() => route.value.query.id
-      ? parseInt(route.value.query.id)
-      : null
-    )
+    const id = ref<number | null>(null)
+
+    const setId = () => {
+      if (typeof route.value.query.id !== 'string' && typeof route.value.query.id !== 'number') {
+        id.value = null
+        return
+      }
+
+      id.value = parseInt(route.value.query.id)
+    }
+
     watch(id, async (val) => {
       if (val) {
         await getAndSetFavorites()
+        setCurrentChildToRoute(val)
       }
     })
 
     watch(currentSong, async (val) => {
+      if (!val || !id.value) {
+        return
+      }
+
       await sendCurrentPlayingMusic(val.id, id.value)
-      scrollToSong(val.id)
     })
 
     onMounted(async () => {
       await getMusicLibrariesByCurriculumType()
       await getAndSetFavorites()
+      handleCurrentChild()
+      setId()
+      handleEmptyMusicPlayer()
 
       window.addEventListener('scroll', debouncedHandleScroll)
     })
@@ -159,7 +146,30 @@ export default {
       window.removeEventListener('scroll', debouncedHandleScroll)
     })
 
+    const handleCurrentChild = () => {
+      const currentChild = computed(() => store.getters.getCurrentChild)
+
+      if (!id.value && currentChild.value?.length) {
+        setCurrentChildToRoute(currentChild.value[0].id)
+      }
+    }
+
+    const setCurrentChildToRoute = (id: number) => {
+      if (id && route.value.name) {
+        router.push({
+          name: route.value.name,
+          query: {
+            id: `${id}`
+          }
+        })
+      }
+    }
+
     const updateCurrentSongData = () => {
+      if (!currentSong.value) {
+        return
+      }
+
       const resolvedCurrentSong = Object.keys(currentSong.value || {}).length
         ? { ...currentSong.value }
         : undefined
@@ -180,61 +190,78 @@ export default {
     }
 
     const getAndSetFavorites = async () => {
+      if (!id.value) {
+        return
+      }
+
       await getFavoriteMusicForChild(id.value)
       updateCurrentSongData()
     }
 
-    const addSongToPlaylist = (song) => {
+    const addSongToPlaylist = (song: MusicLibrary) => {
       if (musicPlayer.value) {
         musicPlayer.value.addSongToPlaylist(song)
         playlist.value.push(song)
       }
     }
 
-    const createNewPlaylist = (playList) => {
+    const createNewPlaylist = (playList: MusicLibrary[]) => {
       if (musicPlayer.value) {
         musicPlayer.value.createNewPlaylist(playList)
         playlist.value = playList
+
+        isTopRibbonMinimized.value = true
       }
     }
 
-    const handleFavorite = async (song) => {
+    const handleFavorite = async (song: MusicLibrary) => {
       try {
-        if (song.isFavorite) {
+        if (song.isFavorite && song.favoriteId) {
           await removeFavoriteMusic(song.favoriteId)
-          ctx.root.$snotify.success('Song removed from favorites')
-        } else {
+          snotify.success('Song removed from favorites')
+        } else if (id.value) {
           await setFavoriteMusicForChild(id.value, song.id)
-          ctx.root.$snotify.success('Song added to favorites')
+          snotify.success('Song added to favorites')
         }
 
         await getAndSetFavorites()
       } catch (error) {
-        ctx.root.$snotify.error(error.message)
+        snotify.error(error.message)
       }
     }
 
-    const handlePlayerClick = () => {
-      if (!isMobile.value || isPlayerMaximizedOnMobile.value) {
-        return
-      }
+    const selectedLetterId = ref<number | null>(null)
 
-      isPlayerMaximizedOnMobile.value = true
+    const selectLetter = (letterId: number) => {
+      selectedLetterId.value = selectedLetterId.value === letterId ? null : letterId
     }
 
-    const handlePlayerMinimize = () => {
-      isPlayerMaximizedOnMobile.value = false
-    }
+    const letters = computed(() => store.getters['admin/curriculum/types'])
 
-    const scrollToSong = (id) => {
-      if (isMobile.value) {
-        return
+    const availableLettersWithSongsIds = computed(() => {
+      const availableIds = new Set()
+      songsByCurriculumTypeWithFavorites.value.forEach(letter => availableIds.add(letter.id))
+      return Array.from(availableIds)
+    })
+
+    const disabledLetters = computed(() => {
+      const filteredLetters = letters.value?.filter((letter: any) => {
+        return !availableLettersWithSongsIds.value.includes(letter.id)
+      }).map((letter: any) => letter.id)
+
+      return filteredLetters
+    })
+
+    const isTopRibbonMinimized = ref(false)
+
+    /**
+     * The music player is always visible, so here we want to show a default
+     * song while there is no song selected.
+     */
+    const handleEmptyMusicPlayer = () => {
+      if (playlist.value.length === 0 && allSongsWithFavorites.value.length > 0) {
+        addSongToPlaylist(allSongsWithFavorites.value[0])
       }
-
-      ctx.root.$vuetify.goTo(`#playlist-song-${id}`, {
-        container: '#playlist',
-        offset: -63
-      })
     }
 
     return {
@@ -245,46 +272,17 @@ export default {
       didScrollToBottom,
       getAndSetFavorites,
       handleFavorite,
-      handlePlayerClick,
-      handlePlayerMinimize,
       id,
       isMobile,
-      isPlayerMaximizedOnMobile,
       isPlayerShowing,
-      mainWrapperStyle,
       musicPlayer,
-      musicSongListStyle,
-      pageContainerStyle,
-      playerHeight,
-      playerWidth,
       playlist,
       showOnlyFavorites,
-      songsByCurriculumTypeWithFavorites
-    }
-  },
-
-  computed: {
-    ...mapGetters({ currentChild: 'getCurrentChild' }),
-
-    playerCardStyle () {
-      const canHidePlayer = this.isMobile && this.didScrollToBottom && !this.isPlayerMaximizedOnMobile
-
-      return {
-        padding: this.isPlayerShowing && !(this.isPlayerMaximizedOnMobile && this.isMobile) ? '16px' : '0px',
-        transition: '0.3s ease',
-        position: this.isMobile && !this.isPlayerMaximizedOnMobile ? 'fixed' : 'absolute',
-        left: 0,
-        top: this.isMobile ? 'unset' : 0,
-        'z-index': 99,
-        bottom: '0px',
-        visibility: canHidePlayer ? 'hidden' : 'visible'
-      }
-    }
-  },
-
-  created () {
-    if (!this.id && this.currentChild.length) {
-      this.$router.push({ name: this.$route.name, query: { id: this.currentChild[0].id } })
+      songsByCurriculumTypeWithFavorites,
+      selectLetter,
+      selectedLetterId,
+      isTopRibbonMinimized,
+      disabledLetters
     }
   }
 }

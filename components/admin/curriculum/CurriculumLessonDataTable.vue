@@ -127,6 +127,16 @@
                     mdi-view-list
                   </v-icon>
                 </nuxt-link>
+                <nuxt-link
+                  :to="{
+                    name: 'admin-lessons-analytics',
+                    query: { lessonId: item.id }
+                  }"
+                >
+                  <v-icon color="#997c55" dense>
+                    mdi-chart-bar
+                  </v-icon>
+                </nuxt-link>
               </template>
             </pg-admin-data-table>
           </v-card-text>
@@ -185,7 +195,7 @@ export default {
         align: 'right',
         sortable: false,
         value: 'actions',
-        width: 130
+        width: 150
       }
     ],
     levels: [
