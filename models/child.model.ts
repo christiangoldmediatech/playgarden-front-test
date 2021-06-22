@@ -12,6 +12,16 @@ export interface ChildBackpack extends Entity {
   name: string
 }
 
+export interface ChildProgress extends Entity {
+  description: string
+  enabled: boolean
+  icon: string
+  letter: string
+  name: string
+  order: number
+  picture?: string
+}
+
 export interface Child extends Entity {
   age: ChildAge
   backpack: ChildBackpack
