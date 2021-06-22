@@ -69,6 +69,7 @@
                               small
                               color="accent"
                               class="mt-3 text-transform-none"
+                              data-test-id="progress-puzzle-gallery-button"
                               @click="showOverlay(puzzle)"
                             >
                               View Progress
@@ -106,6 +107,7 @@
                       small
                       color="accent"
                       class="mt-3 text-transform-none"
+                      data-test-id="view-puzzle-gallery-button"
                       @click="showOverlay(puzzle)"
                     >
                       View puzzle

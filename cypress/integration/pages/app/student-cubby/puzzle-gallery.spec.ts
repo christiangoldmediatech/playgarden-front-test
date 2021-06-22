@@ -20,9 +20,13 @@ describe('/app/student-cubby', () => {
       it('navigates to /app/student-cubby/puzzle', () => {
         cy.url().should('include', '/app/student-cubby/puzzle')
       })
-      it('sets custom title', () => {
-        cy.get('[data-test-id=student-cubby-title]').should('have.text', 'STUDENTS CUBBY')
+    })
+  })
+
+  var clickAllViewButtonPuzzles = (className: string) => {
+    cy.get('[data-test-id=progress-puzzle-gallery-button]').each($button => {
+      return new Promise<void>(resolve => {  
+        $button.trigger('click')
       })
     })
-
-  })
+  }
