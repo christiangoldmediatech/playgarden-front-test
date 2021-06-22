@@ -1,4 +1,4 @@
-import { Entity } from '@/models'
+import { Entity, Lesson, Puzzle } from '@/models'
 
 export interface ChildAge {
   years: number
@@ -35,4 +35,21 @@ export interface Child extends Entity {
   genderType: 'FEMALE' | 'MALE'
   lastName?: string
   level: 'BEGINNER'
+}
+
+export interface PuzzleChild extends Entity {
+  active: boolean
+  piecesUnlock: number
+  puzzle: Puzzle
+}
+
+export interface CurrentChild {
+  children: Child
+  currentLessonId: number
+  lesson: Lesson
+  nextLessonId: number
+  previousLessonId: number
+  puzzle: boolean
+  puzzleChildren: PuzzleChild
+  puzzleImg?: string
 }
