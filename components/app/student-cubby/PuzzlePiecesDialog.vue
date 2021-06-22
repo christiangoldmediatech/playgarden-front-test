@@ -9,6 +9,7 @@
       class="pieces-close-btn"
       color="white"
       icon
+      data-test-id="close-dialog-button"
       @click.stop="close"
     >
       <v-icon>

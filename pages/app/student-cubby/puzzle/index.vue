@@ -21,6 +21,7 @@
           cols="12"
           sm="6"
           lg="4"
+          data-test-id="gallery-puzzles"
         >
           <v-hover>
             <template v-slot:default="{ hover }">
@@ -69,7 +70,7 @@
                               small
                               color="accent"
                               class="mt-3 text-transform-none"
-                              data-test-id="progress-puzzle-gallery-button"
+                              :data-test-id="`gallery-puzzles-${indexP}`"
                               @click="showOverlay(puzzle)"
                             >
                               View Progress
