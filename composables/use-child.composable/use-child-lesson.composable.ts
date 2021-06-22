@@ -1,6 +1,7 @@
-import { computed, ref } from '@nuxtjs/composition-api'
+import { computed } from '@nuxtjs/composition-api'
 import { Store } from 'vuex/types/index'
 import { NuxtAxiosInstance } from '@nuxtjs/axios'
+import { useChild } from '@/composables'
 
 interface TypedStore {
   children: {
@@ -21,6 +22,8 @@ export const useChildLesson = ({
   store: Store<TypedStore>,
   axios: NuxtAxiosInstance
 }) => {
+  const { currentChildren } = useChild()
+
   const currentLessonVideo = computed(() => store.state.children.lesson.currentLessonVideo)
   const setCurrentLessonVideo = (currentLessonVideo: unknown) => {
     store.commit('children/lesson/SET_CURRENT_LESSON_VIDEO', currentLessonVideo)
@@ -91,6 +94,122 @@ export const useChildLesson = ({
       )
     } catch (error) {
       return Promise.reject(error)
+    }
+  }
+
+  const saveWorksheetProgress = (lessonId: number, childId: number, worksheet: unknown) => {
+    try {
+      return axios.$post(
+        `/lessons/${lessonId}/children/${childId}/worksheet`,
+        { worksheet }
+      )
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
+
+  const saveWorksheetVideoProgress = async (videoId: number, time: unknown, completed: unknown) => {
+    try {
+      const children = currentChildren.value
+      const childId = children?.[0].id
+      const lesson = store.getters['admin/curriculum/getLesson']
+      const lessonId = lesson.id
+
+      const {
+        data
+      } = await axios.$post(
+        `/lessons/${lessonId}/children/${childId}/worksheet-video`,
+        {
+          video: {
+            id: videoId,
+            date: new Date().toISOString(),
+            time,
+            completed
+          }
+        }
+      )
+
+      return data
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
+
+  const saveActivityProgress = (lessonId: number, childId: number, activity: number) => {
+    try {
+      return axios.$post(
+        `/lessons/${lessonId}/children/${childId}/activity`,
+        { activity }
+      )
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
+
+  const getLessonPreview = async (lessonId: number) => {
+    const lesson = await axios.$get(`/lessons/${lessonId}`)
+    lesson.previewMode = true
+    lesson.videos = lesson.videos.map((video: any) => {
+      return {
+        ...video,
+        viewed: {
+          completed: true
+        }
+      }
+    })
+
+    lesson.worksheets = lesson.worksheets.map((worksheet: any) => {
+      return {
+        ...worksheet,
+        completed: worksheet.type !== 'OFFLINE'
+      }
+    })
+
+    lesson.lessonsActivities = lesson.lessonsActivities.map(
+      ({ id, activity }: any) => {
+        return {
+          id,
+          activity: {
+            ...activity,
+            viewed: {
+              completed: true
+            }
+          }
+        }
+      }
+    )
+
+    store.commit('admin/curriculum/SET_LESSON', lesson)
+
+    return lesson
+  }
+
+  const getLessonChildrenStatus = (children: unknown) => {
+    return axios.$get('/lessons/children/status', {
+      params: { children }
+    })
+  }
+
+  const getLessonChildTimeline = (childId: number) => {
+    return axios.$get(
+      `/lessons/children/${childId}/timeline`
+    )
+  }
+
+  const getAdvanceLessonChildren = async (childId: number) => {
+    try {
+      const data = await axios.$get(
+        `/lessons/children/${childId}/advance`
+      )
+      setPuzzlePiece(data.puzzleChildren)
+
+      return data
+    } catch (e) {
+      const { data } = e.response
+      if (data && data.errorCode === 100) {
+        return Promise.reject(data)
+      }
+      return Promise.reject(e)
     }
   }
 
