@@ -15,6 +15,7 @@
           </v-col>
           <v-col cols="12" md="9" align-self="center" class="mt-2 mt-md-0">
             <music-carousel-letter
+              :is-full-width="true"
               :value="selectedLetterId"
               :disabled-letters="disabledLetters"
               @select="selectLetter"

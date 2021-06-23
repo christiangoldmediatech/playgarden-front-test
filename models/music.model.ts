@@ -1,3 +1,5 @@
+import { CurriculumType } from '@/models'
+
 export interface MusicLibrary {
   description: string
   id: number
@@ -7,16 +9,6 @@ export interface MusicLibrary {
   curriculumTypeId?: number
   isFavorite?: boolean
   favoriteId?: number
-}
-
-export interface CurriculumType {
-  description: string
-  icon: string
-  id: number
-  letter: string
-  name: string
-  order: number
-  picture?: string
 }
 
 export type CurriculumTypeWithMusicLibrary = CurriculumType & {

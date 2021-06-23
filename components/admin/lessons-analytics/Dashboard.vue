@@ -39,21 +39,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, ref, onBeforeUnmount } from '@nuxtjs/composition-api'
+
+import { useNuxtHelper } from '@/composables'
+
 import GraphicsPanelVideos from '@/components/admin/lessons-analytics/GraphicsPanel.vue'
 import GraphicsPanelWorksheets from '@/components/admin/lessons-analytics/worksheets/GraphicsPanel.vue'
 import ContentLessonDialog from '@/components/admin/lessons-analytics/ContentLessonDialog.vue'
 
+import { Video } from '@/models'
+
 export default defineComponent({
   name: 'Dashboard',
-
-  data () {
-    return {
-      analitycsVideo: true,
-      idWorksheet: null,
-      video: null
-    }
-  },
 
   components: {
     GraphicsPanelVideos,
@@ -61,32 +58,46 @@ export default defineComponent({
     ContentLessonDialog
   },
 
-  created () {
-    this.$nuxt.$on('send-video', (video) => {
-      this.analitycsVideo = true
-      this.video = video
+  setup () {
+    const nuxt = useNuxtHelper()
+
+    const analitycsVideo = ref(true)
+    const idWorksheet = ref<number | null>(null)
+    const video = ref<Video | null>(null)
+
+    nuxt.$on('send-video', (newVideo: Video | null) => {
+      analitycsVideo.value = true
+      video.value = newVideo
     })
-  },
 
-  beforeDestroy () {
-    this.$nuxt.$off('send-video')
-  },
+    onBeforeUnmount(() => {
+      nuxt.$off('send-video')
+    })
 
-  methods: {
-    openDialog (lesson) {
-      this.$refs.contentLessonRef.open(null, lesson)
-    },
+    // this references `ref="contentLessonRef"` when the component is mounted
+    const contentLessonRef = ref<any>(null)
 
-    closeDialog () {
-      this.$refs.contentLessonRef.close()
-    },
+    const openDialog = (lesson: unknown) => {
+      contentLessonRef.value.open(null, lesson)
+    }
 
-    loadInfoVideo () {},
+    const closeDialog = () => {
+      contentLessonRef.value.close()
+    }
 
-    analyticsWorksheets (idWorksheet) {
-      this.idWorksheet = idWorksheet
-      this.analitycsVideo = false
-      this.closeDialog()
+    const analyticsWorksheets = (worksheetId: number) => {
+      idWorksheet.value = worksheetId
+      analitycsVideo.value = false
+      closeDialog()
+    }
+
+    return {
+      analitycsVideo,
+      idWorksheet,
+      video,
+      openDialog,
+      closeDialog,
+      analyticsWorksheets
     }
   }
 })

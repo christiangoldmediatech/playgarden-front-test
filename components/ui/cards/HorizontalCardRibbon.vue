@@ -10,7 +10,7 @@
       </v-col>
       <v-col
         cols="12"
-        class="action text-center my-2"
+        class="action text-center my-3"
         data-test-id="hcr-minimize-button"
         @click="$emit('update:isMinimized', !isMinimized)"
       >
@@ -49,7 +49,7 @@ export default defineComponent({
   }
 }
 
-@media (max-width: $breakpoint-xs) {
+@media (max-width: $breakpoint-sm) {
   .horizontal-card {
     top: 54px;
   }
