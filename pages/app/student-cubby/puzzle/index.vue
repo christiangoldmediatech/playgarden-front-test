@@ -69,7 +69,8 @@
                               nuxt
                               small
                               color="accent"
-                              class="mt-3 text-transform-none"
+                              class="mt-3 text-transform-none btn-puzzle"
+                              data-test-id="btn-puzzle"
                               @click="showOverlay(puzzle)"
                             >
                               View Progress

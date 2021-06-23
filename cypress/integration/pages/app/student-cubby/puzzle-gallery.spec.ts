@@ -11,16 +11,10 @@ describe('/app/student-cubby', () => {
     describe('given PUZZLE is clicked', () => {
 
       it('View puzzles', () => {
+        cy.get('body')
         cy.get('[data-test-id=gallery-puzzles]').each(($el, $index, $list) => {
-            console.log('item--', $el)
-            console.log('index--', $index)
-            console.log('list--', $list)
-            // cy.get('[data-test-id=gallery-puzzles-0]').click()
+            cy.wrap($el).click()
         })
       })
     })
   })
-
-  var puzzleDialogIsVisible = () => {
-    cy.get('[data-test-id=video-player-dialog]').should('be.visible')
-  }
