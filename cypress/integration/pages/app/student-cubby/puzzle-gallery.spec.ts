@@ -13,7 +13,15 @@ describe('/app/student-cubby', () => {
       it('View puzzles', () => {
         cy.get('body')
         cy.get('[data-test-id=gallery-puzzles]').each(($el, $index, $list) => {
-            cy.wrap($el).click()
+            if ($index === 0) {
+                cy.wrap($el).click()
+            }
+            return new Promise<void>(resolve => {
+                if ($index === 0) {
+                    cy.wrap($el).click({ force: true })
+                }
+                resolve()
+            })
         })
       })
     })
