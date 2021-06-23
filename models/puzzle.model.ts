@@ -10,6 +10,7 @@ export interface Puzzle {
     level: string
     name: string
     pieces: number
+    studentId? : number
     piecesUnclocked: number
     puzzleChildrenId : number
     rows : number
@@ -23,9 +24,10 @@ export interface PuzzleResponse {
     letter?: string
     name: string
     pieces?: number
+    studentId?: number
     piecesUnclocked: number
     percentageCompleted: number
-    puzzleChildrenId : number,
+    puzzleChildrenId : number
     src: string
     srcType? : string
   }
