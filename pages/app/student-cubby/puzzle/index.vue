@@ -132,7 +132,6 @@ import { mapActions, mapGetters } from 'vuex'
 import PuzzlePiecesDialog from '@/components/app/student-cubby/PuzzlePiecesDialog.vue'
 import { usePuzzle } from '@/composables/puzzle'
 import { PuzzleResponse } from '@/models'
-import { number } from 'echarts'
 
 export default defineComponent({
   name: 'Index',
@@ -167,17 +166,9 @@ export default defineComponent({
     ...mapGetters('children', { children: 'rows' }),
 
     child () {
-      // this.children.find((child: any) => child.id === this.studentId)
       return (
         this.children.find((child: any) => child.id === this.studentId) || {}
       )
-      /* if (this.children.length > 0) {
-        return
-          this.children.find(({ id }) => id === this.studentId) || {}
-        )
-      } else {
-        return {}
-      } */
     }
   },
 
