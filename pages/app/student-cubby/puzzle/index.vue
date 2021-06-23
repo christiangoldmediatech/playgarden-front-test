@@ -70,7 +70,6 @@
                               small
                               color="accent"
                               class="mt-3 text-transform-none"
-                              :data-test-id="`gallery-puzzles-${indexP}`"
                               @click="showOverlay(puzzle)"
                             >
                               View Progress

@@ -9,23 +9,14 @@ describe('/app/student-cubby', () => {
     })
 
     describe('given PUZZLE is clicked', () => {
-      before(() => {
-        // cy.get('[data-test-id=student-cubby-item-PUZZLE]').click({ force: true })
-      })
 
       it('View puzzles', () => {
-        cy.get('body')
-        cy.get('[data-test-id=gallery-puzzles]').each((item, index) => {
-            // console.log('item--', item, 'idenx--', index)
-            cy.get('[data-test-id=gallery-puzzles-0]').click()
+        cy.get('[data-test-id=gallery-puzzles]').each(($el, $index, $list) => {
+            console.log('item--', $el)
+            console.log('index--', $index)
+            console.log('list--', $list)
+            // cy.get('[data-test-id=gallery-puzzles-0]').click()
         })
-        // cy.url().should('include', '/app/student-cubby/puzzle')
-        /* cy.get('[data-test-id=view-puzzle-gallery-button-0]').each(($button) => {
-            console.log('buton--', $button)
-            return new Promise<void>(resolve => {
-                $button.trigger('click')
-              })
-        }) */
       })
     })
   })
