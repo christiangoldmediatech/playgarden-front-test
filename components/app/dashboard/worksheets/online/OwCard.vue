@@ -264,7 +264,6 @@ export default {
     async onNextQuestion () {
       await this.saveProgress()
       if (this.lastQuestion) {
-        console.log('here')
         this.$nuxt.$emit(APP_EVENTS.DASHBOARD_ONLINE_WORKSHEET_COMPLETED)
         this.completed = true
       } else {
