@@ -336,7 +336,7 @@
       </v-col>
     </pg-dialog>
 
-    <!-- Chance Plan modal -->
+    <!-- Change Plan modal -->
     <pg-dialog
       v-model="changePlanModal"
       content-class="white"
@@ -505,10 +505,7 @@ export default {
     this.$nuxt.$on('plan-membership-changed', this.getPlan)
   },
   mounted () {
-    const val = this.$route.params.changeplan
-    if (val && Boolean(val)) {
-      this.changePlanModal = true
-    }
+    this.handleRouteAction()
   },
   beforeDestroy () {
     this.$nuxt.$off('children-changed')
@@ -529,6 +526,18 @@ export default {
       'addBillingCard',
       'validateCard'
     ]),
+
+    handleRouteAction () {
+      const action = this.$route.query.action
+
+      switch (action) {
+        case 'select-plan':
+          this.changePlanModal = true
+          break
+        default:
+          break
+      }
+    },
 
     async getBillingDetails () {
       try {
