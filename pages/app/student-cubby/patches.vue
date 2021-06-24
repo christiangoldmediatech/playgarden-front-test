@@ -21,6 +21,7 @@
           v-for="activityType in childrenPatchesActivity"
           :key="`activity-type-patch-row-${activityType.id}`"
           :activity-type="activityType"
+          data-test-id="patch-row"
         />
       </v-card-text>
     </v-card>
