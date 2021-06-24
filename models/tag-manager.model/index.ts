@@ -9,6 +9,19 @@ export enum TAG_MANAGER_EVENTS {
   DASHBOARD_WORKSHEET_VIDEOS_CLICKED = 'workSheetVideosClicked',
   DASHBOARD_WORKSHEET_DOWNLOAD = 'workSheetDownload',
   DASHBOARD_WORKSHEET_UPLOAD = 'workSheetUpload',
-  // Librry
+  // LIVE CLASSES
+  LIVE_CLASSES_ITEM_CLICKED = 'liveClassesItemClicked',
+  LIVE_CLASSES_ITEM_ZOOM_LINK_CLICKED = 'liveClassesItemZoomLinkClicked',
+  LIVE_CLASSES_WATCH_RECORDED_VIDEO = 'watchRecordedClassClicked',
+  // ACCOUNT
+  ACCOUNT_SYNC_FACEBOOK = 'accountSyncFacebook',
+  ACCOUNT_SYNC_GOOGLE = 'accountSyncGoogle',
+  ACCOUNT_ADD_CAREGIVER = 'addCareGiver',
+  // PLAYDATES
+  PLAYDATE_INVITE_FRIEND = 'inviteFriendToPlaydate',
+  PLAYDATE_JOIN = 'joinPlaydate',
+  PLAYDATE_OPEN_ZOOM = 'openZoomPlaydate',
+  PLAYDATE_DELETE = 'deletePlaydate',
+  // LIBRARY
   LIBRARY_ADD_VIDEO_TO_FAVORITES = 'videoItemAddToFavorites'
 }
