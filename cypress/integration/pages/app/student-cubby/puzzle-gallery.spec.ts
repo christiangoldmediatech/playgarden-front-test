@@ -11,10 +11,9 @@ describe('/app/student-cubby', () => {
     describe('given PUZZLE is clicked', () => {
 
       it('View progress puzzles', () => {
-        cy.get('body')
         cy.get('[data-test-id=gallery-puzzles]').each(($el, $index) => {
             if ($index === 0) {
-                cy.wrap($el).click({ force: true })
+              cy.wrap($el).click({ force: true })
             }
         })
       })
