@@ -21,11 +21,7 @@ describe('/app/student-cubby', () => {
       })
   
       it('Click on Unlock This Patch', () => {
-        cy.get('[data-test-id=patch-badge-row-btn]').each(($el, $index, $list) => {
-            if ($index === 0) {
-                cy.wrap($el).click({ force: true })
-            }
-        })
+        cy.get('[data-test-id=patch-badge-row-btn]').first().click({ force: true })
       })
     })
 
