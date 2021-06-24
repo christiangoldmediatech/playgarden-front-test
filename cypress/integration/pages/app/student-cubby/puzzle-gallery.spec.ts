@@ -10,18 +10,12 @@ describe('/app/student-cubby', () => {
 
     describe('given PUZZLE is clicked', () => {
 
-      it('View puzzles', () => {
+      it('View progress puzzles', () => {
         cy.get('body')
-        cy.get('[data-test-id=gallery-puzzles]').each(($el, $index, $list) => {
+        cy.get('[data-test-id=gallery-puzzles]').each(($el, $index) => {
             if ($index === 0) {
-                cy.wrap($el).click()
+                cy.wrap($el).click({ force: true })
             }
-            return new Promise<void>(resolve => {
-                if ($index === 0) {
-                    cy.wrap($el).click({ force: true })
-                }
-                resolve()
-            })
         })
       })
     })
