@@ -153,6 +153,9 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import { APP_EVENTS, TAG_MANAGER_EVENTS } from '@/models'
+
 import DashboardPanel from '@/components/app/dashboard/DashboardPanel.vue'
 import LessonActivityPlayer from '@/components/app/dashboard/LessonActivityPlayer.vue'
 import LessonTeacherVideo from '@/components/app/dashboard/LessonTeacherVideo.vue'
@@ -214,6 +217,7 @@ export default {
   },
 
   computed: {
+    ...mapGetters('auth', ['getUserInfo']),
     overrideMode () {
       if (this.overrides.childId && this.overrides.lessonId) {
         return true
@@ -253,6 +257,36 @@ export default {
     lesson () {
       this.$refs.CarouselLetter.fetchChildProgress()
     }
+  },
+
+  created () {
+    this.$nuxt.$on(APP_EVENTS.DASHBOARD_VIDEO_LESSON_VIDEO_CLICKED, (videoId) => {
+      const lessonData = this.lesson.videos.find(video => video.id === videoId)
+      this.$gtm.push({
+        event: TAG_MANAGER_EVENTS.DASHBOARD_VIDEO_LESSON_VIDEO_CLICKED,
+        userId: this.getUserInfo.id,
+        dayLetter: this.lesson.curriculumType.letter,
+        dayNumber: this.lesson.day,
+        topic: lessonData.activityType.name,
+        topicDescription: lessonData.description
+      })
+    })
+    this.$nuxt.$on(APP_EVENTS.DASHBOARD_ACTIVITY_VIDEO_CLICKED, (activityId) => {
+      const activityData = this.lesson.lessonsActivities.find(activity => activity.activity.id === activityId)
+      this.$gtm.push({
+        event: TAG_MANAGER_EVENTS.DASHBOARD_ACTIVITY_VIDEO_CLICKED,
+        userId: this.getUserInfo.id,
+        dayLetter: this.lesson.curriculumType.letter,
+        dayNumber: this.lesson.day,
+        topic: activityData.activity.activityType.name,
+        topicDescription: activityData.activity.videos.description
+      })
+    })
+  },
+
+  beforeDestroy () {
+    this.$nuxt.$off(APP_EVENTS.DASHBOARD_VIDEO_LESSON_VIDEO_CLICKED)
+    this.$nuxt.$off(APP_EVENTS.DASHBOARD_ACTIVITY_VIDEO_CLICKED)
   },
 
   methods: {
