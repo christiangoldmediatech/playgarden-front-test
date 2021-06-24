@@ -22,6 +22,10 @@ export enum TAG_MANAGER_EVENTS {
   PLAYDATE_JOIN = 'joinPlaydate',
   PLAYDATE_OPEN_ZOOM = 'openZoomPlaydate',
   PLAYDATE_DELETE = 'deletePlaydate',
+  // MUSIC
+  MUSIC_ITEM_CLICKED = 'musicItemClicked',
+  MUSIC_ITEM_ADD_TO_FAVORITES = 'musicItemAddToFavorites',
   // LIBRARY
-  LIBRARY_ADD_VIDEO_TO_FAVORITES = 'videoItemAddToFavorites'
+  LIBRARY_VIDEO_CLICKED = 'libraryVideoClicked',
+  LIBRARY_ADD_VIDEO_TO_FAVORITES = 'libraryItemAddToFavorites'
 }
