@@ -1,18 +1,21 @@
 import { ref } from '@nuxtjs/composition-api'
 import { axios } from '@/utils'
+import { ChildrenPatchesActivity } from '@/models'
+const { get } = require('lodash')
 
 export const usePatches = () => {
   /**
    * HTTP Requests
    */
-  const patches = ref<any[]>([])
+  const childrenPatchesActivity = ref<ChildrenPatchesActivity[]>([])
 
   const getPatchesByChildId = async (id: number) => {
-    patches.value = await axios.$get(`/children/${id}/patches`)
-    console.log('patces get--', patches.value)
+    childrenPatchesActivity.value = await axios.$get(`/children/${id}/patches`)
+    childrenPatchesActivity.value = childrenPatchesActivity.value.filter(item => get(item, 'patches', []).length)
   }
 
   return {
-    patches
+    childrenPatchesActivity,
+    getPatchesByChildId
   }
 }
