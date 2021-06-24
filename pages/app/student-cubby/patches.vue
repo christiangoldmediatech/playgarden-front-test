@@ -29,8 +29,6 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, computed, useRoute, useStore } from '@nuxtjs/composition-api'
-// import { mapActions } from 'vuex'
-
 import { usePatches } from '@/composables/patches'
 import PatchRow from '@/components/app/student-cubby/PatchRow.vue'
 import PatchOverlay from '@/components/app/student-cubby/PatchOverlay.vue'
@@ -57,39 +55,5 @@ export default {
       studentId
     }
   }
-
-  /* data () {
-    return {
-      items: []
-    }
-  },
-
-  computed: {
-    studentId () {
-      return this.$route.query.id
-    }
-  },
-
-  watch: {
-    studentId () {
-      this.refresh()
-    }
-  },
-
-  created () {
-    this.refresh()
-  },
-
-  methods: {
-    ...mapActions('children/patches', ['getPatchesByChildId']),
-
-    async refresh () {
-      if (this.studentId) {
-        this.items = (
-          await this.getPatchesByChildId({ id: this.studentId })
-        ).filter(item => get(item, 'patches', []).length)
-      }
-    }
-  } */
 }
 </script>
