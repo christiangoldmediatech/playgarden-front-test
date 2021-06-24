@@ -27,10 +27,12 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent, onMounted, computed, useRoute, useStore } from '@nuxtjs/composition-api'
 import { get } from 'lodash'
 import { mapActions } from 'vuex'
 
+import { usePatches } from '@/composables/patches'
 import PatchRow from '@/components/app/student-cubby/PatchRow.vue'
 import PatchOverlay from '@/components/app/student-cubby/PatchOverlay.vue'
 
@@ -40,6 +42,14 @@ export default {
   components: {
     PatchRow,
     PatchOverlay
+  },
+
+  setup () {
+    const route = useRoute()
+    const store = useStore()
+    const studentId = computed(() => Number(route.value.query.id))
+    const { patches } = usePatches()
+    console.log(' en la vista patches--', patches)
   },
 
   data () {
