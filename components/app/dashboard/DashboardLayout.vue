@@ -137,7 +137,6 @@
                 </div>
               </template>
               <template v-else>
-                {{ $route.name }}
                 <slot />
               </template>
             </v-col>
