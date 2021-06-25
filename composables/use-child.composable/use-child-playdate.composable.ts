@@ -1,10 +1,13 @@
 import { axios } from '@/utils'
 import { useSnotifyHelper } from '@/composables'
+import { Child, Playdates } from '@/models'
 
 export const useChildPlayDates = () => {
   const snotify = useSnotifyHelper()
 
-  const getChildrenInfo = (params: unknown) => {
+  const getChildrenInfo = (
+    params: unknown
+  ): Promise<{ children: Child; playdates: Playdates[] }> | void => {
     try {
       return axios.$get('/playdates/children/', { params })
     } catch (error) {
