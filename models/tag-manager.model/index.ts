@@ -1,4 +1,6 @@
 export enum TAG_MANAGER_EVENTS {
+  // VIDEO
+  VIDEO_EVENT = 'video',
   // DASHBOARD
   DASHBOARD_VIDEO_LESSON_CLICKED = 'videoLessonClicked',
   DASHBOARD_VIDEO_LESSON_VIDEO_CLICKED = 'videoLessonVideoClicked',
