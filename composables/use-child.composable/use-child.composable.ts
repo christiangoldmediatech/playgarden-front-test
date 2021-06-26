@@ -3,7 +3,7 @@ import { axios } from '@/utils'
 import { hasLocalStorage } from '@/utils/window'
 import { computed } from '@nuxtjs/composition-api'
 import { useCookiesHelper } from '@/composables'
-import { Store } from 'vuex/types/index'
+import { Store } from 'vuex/types'
 
 interface TypedStore {
   currentChild?: Child[]

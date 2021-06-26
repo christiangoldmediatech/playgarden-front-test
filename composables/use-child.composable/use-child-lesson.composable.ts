@@ -2,18 +2,7 @@ import { computed } from '@nuxtjs/composition-api'
 import { Store } from 'vuex/types/index'
 import { NuxtAxiosInstance } from '@nuxtjs/axios'
 import { useChild } from '@/composables'
-
-interface TypedStore {
-  children: {
-    lesson: {
-      currentLessonVideo: unknown | null
-      currentLessonId: number | null
-      nextLessonId: number | null
-      puzzlePiece: unknown | null
-      previousLessonId: number | null
-    }
-  }
-}
+import { TypedStore } from '@/models'
 
 export const useChildLesson = ({
   store,
@@ -22,7 +11,7 @@ export const useChildLesson = ({
   store: Store<TypedStore>,
   axios: NuxtAxiosInstance
 }) => {
-  const { currentChildren } = useChild()
+  const { currentChildren } = useChild({ store })
 
   const currentLessonVideo = computed(() => store.state.children.lesson.currentLessonVideo)
   const setCurrentLessonVideo = (currentLessonVideo: unknown) => {

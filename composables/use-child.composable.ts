@@ -3,18 +3,11 @@ import { axios } from '@/utils'
 import { hasLocalStorage } from '@/utils/window'
 import { computed, useStore } from '@nuxtjs/composition-api'
 import { useCookiesHelper } from '@/composables'
+import { Store } from 'vuex/types'
+import { TypedStore } from '@/models'
 
-interface Store {
-  currentChild?: Child[]
-  currentChildExpires?: number
-  children: {
-    rows: Child[]
-  }
-}
-
-export const useChild = () => {
+export const useChild = ({ store }: { store: Store<TypedStore> }) => {
   const cookies = useCookiesHelper()
-  const store = useStore<Store>()
 
   const children = computed(() => store.state.children.rows)
   const setChildren = (children: Child[]) => store.commit('children/SET_ROWS', children)
