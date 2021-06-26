@@ -78,13 +78,15 @@
   </v-card>
 </template>
 
-<script>
-import { mapActions, mapGetters } from 'vuex'
-
+<script lang="ts">
 import PortfolioCarousel from '@/components/app/student-cubby/PortfolioCarousel.vue'
 import PortfolioOverlay from '@/components/app/student-cubby/PortfolioOverlay.vue'
 
-export default {
+import { computed, defineComponent, onMounted, ref, useRoute, useStore, watch } from '@nuxtjs/composition-api'
+import { useChild, useOfflineWorksheet, useSnotifyHelper } from '@/composables'
+import { OfflineWorksheet, TypedStore } from '@/models'
+
+export default defineComponent({
   name: 'StudentPortfolio',
 
   components: {
@@ -92,59 +94,65 @@ export default {
     PortfolioOverlay
   },
 
-  data: () => {
-    return {
-      uploadedWorksheets: [],
-      loading: true
-    }
-  },
+  setup () {
+    const route = useRoute()
+    const store = useStore<TypedStore>()
+    const snotify = useSnotifyHelper()
+    const loading = ref(false)
 
-  computed: {
-    ...mapGetters('children', { children: 'rows' }),
+    const { children } = useChild({ store })
+    const { getUploaded } = useOfflineWorksheet({ store })
 
-    studentId () {
-      return this.$route.query.id
-    },
+    const uploadedWorksheets = ref<OfflineWorksheet[]>([])
+    const categories = computed(() => {
+      return uploadedWorksheets.value.filter(({ worksheetUploads }) => worksheetUploads.length > 0)
+    })
 
-    categories () {
-      return this.uploadedWorksheets
-        ? this.uploadedWorksheets.filter(
-          ({ worksheetUploads }) => worksheetUploads.length
-        )
-        : []
-    },
-
-    child () {
-      return this.children.find(({ id }) => id === Number(this.studentId)) || {}
-    }
-  },
-
-  watch: {
-    studentId (id) {
-      if (id) {
-        this.refresh()
+    const refresh = async () => {
+      if (!studentId.value) {
+        return
       }
-    }
-  },
 
-  created () {
-    this.refresh()
-  },
-
-  methods: {
-    ...mapActions('offline-worksheet', { getUploaded: 'getUploaded' }),
-
-    async refresh () {
       try {
-        this.uploadedWorksheets = await this.getUploaded(this.studentId)
+        loading.value = true
+        uploadedWorksheets.value = await getUploaded(studentId.value)
       } catch (error) {
-        this.$snotify.error('Sorry! There was an error loading your progress.')
+        snotify.error('Sorry! There was an error loading your progress.')
       } finally {
-        this.loading = false
+        loading.value = false
       }
+    }
+
+    const studentId = computed(() => {
+      const id = route.value.query.id
+
+      if (typeof id === 'string') {
+        return parseInt(id)
+      }
+    })
+    watch(studentId, (val) => {
+      if (val) {
+        refresh()
+      }
+    })
+
+    const child = computed(() => children.value.find(({ id }) => id === studentId.value))
+
+    onMounted(() => {
+      refresh()
+    })
+
+    return {
+      child,
+      children,
+      categories,
+      loading,
+      refresh,
+      studentId,
+      uploadedWorksheets
     }
   }
-}
+})
 </script>
 
 <style lang="scss">
