@@ -31,13 +31,15 @@
   </v-card>
 </template>
 
-<script>
-import { mapActions } from 'vuex'
-
+<script lang="ts">
 import RecordedLetter from '@/components/app/live-sessions/recorded/RecordedLetter.vue'
 import CourseProgressOverlay from '@/components/app/student-cubby/CourseProgressOverlay.vue'
 
-export default {
+import { computed, defineComponent, onBeforeUnmount, onMounted, ref, useRoute, watch } from '@nuxtjs/composition-api'
+import { useChildCourseProgress, useNuxtHelper } from '@/composables'
+import { ChildProgress } from '@/models'
+
+export default defineComponent({
   name: 'CourseProgress',
 
   components: {
@@ -45,49 +47,55 @@ export default {
     RecordedLetter
   },
 
-  data: () => {
-    return {
-      letters: []
+  setup () {
+    const nuxt = useNuxtHelper()
+    const route = useRoute()
+    const letters = ref<ChildProgress[]>([])
+    const { getCourseProgressByChildId } = useChildCourseProgress()
+
+    const studentId = computed(() => {
+      const id = route.value.query.id
+      if (typeof id === 'string') {
+        return parseInt(id)
+      }
+    })
+    watch(studentId, () => {
+      fetchChildProgress()
+    })
+
+    const fetchChildProgress = async () => {
+      if (!studentId.value) {
+        return
+      }
+
+      letters.value = await getCourseProgressByChildId(studentId.value)
     }
-  },
 
-  computed: {
-    studentId () {
-      return this.$route.query.id
-    }
-  },
-
-  watch: {
-    studentId () {
-      this.fetchChildProgress()
-    }
-  },
-
-  created () {
-    this.fetchChildProgress()
-  },
-
-  beforeDestroy () {
-    document.querySelector('html').style.overflowY = 'auto'
-  },
-
-  methods: {
-    ...mapActions('children/course-progress', ['getCourseProgressByChildId']),
-
-    async fetchChildProgress () {
-      const data = await this.getCourseProgressByChildId({
-        id: this.studentId
-      })
-      this.letters = data
-    },
-
-    showProgress (letter) {
+    const showProgress = (letter: ChildProgress) => {
       if (!letter.enabled) {
         return
       }
 
-      this.$nuxt.$emit('show-curriculum-progress', letter.id)
+      nuxt.$emit('show-curriculum-progress', letter.id)
+    }
+
+    onMounted(() => {
+      fetchChildProgress()
+    })
+
+    onBeforeUnmount(() => {
+      if (!document) {
+        return
+      }
+      // @ts-ignore
+      document.querySelector('html')?.style.overflowY = 'auto'
+    })
+
+    return {
+      letters,
+      studentId,
+      showProgress
     }
   }
-}
+})
 </script>
