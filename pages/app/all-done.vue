@@ -58,8 +58,11 @@
   </v-row>
 </template>
 
-<script>
+<script lang="ts">
 import { mapGetters, mapActions } from 'vuex'
+
+import { defineComponent, onMounted, computed, useRoute, useStore } from '@nuxtjs/composition-api'
+import { useLetters } from '@/composables/letters'
 import Letter from '@/components/app/all-done/Letter.vue'
 import CourseProgressOverlay from '@/components/app/student-cubby/CourseProgressOverlay.vue'
 export default {
@@ -71,6 +74,17 @@ export default {
   },
 
   props: {},
+
+  setup () {
+    const route = useRoute()
+    const store = useStore()
+    const { letters, getLeters } = useLetters()
+
+    onMounted(async () => {
+      await getLeters()
+    })
+    console.log('letters--', letters)
+  },
 
   data: () => {
     return {
