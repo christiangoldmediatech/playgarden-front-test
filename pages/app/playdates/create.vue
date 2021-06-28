@@ -176,7 +176,9 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
+import { TAG_MANAGER_EVENTS } from '@/models'
+
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import utc from 'dayjs/plugin/utc'
@@ -207,6 +209,9 @@ export default {
   }),
 
   computed: {
+    ...mapGetters('auth', {
+      userInfo: 'getUserInfo'
+    }),
     times () {
       return this.playdates.map(({ id, start, end }) => {
         start = dayjs.utc(start, 'HH:mm:ss').local()
@@ -262,6 +267,11 @@ export default {
         })
 
         this.resetForm(reset)
+
+        this.$gtm.push({
+          event: TAG_MANAGER_EVENTS.PLAYDATE_INVITE_FRIEND,
+          userId: this.userInfo.id
+        })
 
         this.$snotify.success('Your Playdate has been stored successfully!.')
         this.$router.push({ name: 'app-playdates' })

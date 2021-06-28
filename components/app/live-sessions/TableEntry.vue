@@ -41,6 +41,9 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import { TAG_MANAGER_EVENTS } from '@/models'
+
 export default {
   name: 'TableEntry',
 
@@ -58,6 +61,7 @@ export default {
   },
 
   computed: {
+    ...mapGetters('auth', ['getUserInfo']),
     isLive () {
       const today = new Date()
       const start = new Date(this.entry.dateStart)
@@ -90,6 +94,13 @@ export default {
         this.$nuxt.$emit('open-entry-editor-dialog', this.entry)
       } else {
         this.$nuxt.$emit('open-entry-dialog', this.entry)
+        this.$gtm.push({
+          event: TAG_MANAGER_EVENTS.LIVE_CLASSES_ITEM_CLICKED,
+          userId: this.getUserInfo.id,
+          topic: this.entry.activityType.name,
+          topicDescription: this.entry.title,
+          itemDateTime: this.entry.dateStart
+        })
       }
     }
   }

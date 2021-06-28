@@ -121,6 +121,9 @@ export default {
     },
     {
       src: '~/plugins/cookies'
+    },
+    {
+      src: '~/plugins/events/eventBus'
     }
   ],
   /*

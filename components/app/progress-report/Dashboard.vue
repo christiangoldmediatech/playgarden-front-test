@@ -254,9 +254,9 @@ export default {
     await this.getChildren()
     await this.getTypes()
     const { curriculumType } = await this.getCurrentLesson({ childrenIds: this.selectedChild })
+    // change in letter calls the this.getDataReport() method
     this.selectedLetter = curriculumType.id
     await this.getDataGraphic()
-    await this.getDataReport()
     this.$nuxt.$on('detail-progress-report', (data) => {
       this.loadDetailReport(data.point.category)
     })
