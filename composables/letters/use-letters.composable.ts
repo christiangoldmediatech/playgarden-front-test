@@ -19,7 +19,6 @@ export const useLetters = () => {
   const getProgress = async () => {
     if (currentChildren.value) {
       lettersProgress.value = await axios.$get(`/children/${currentChildren.value[0].id}/progress`)
-      lettersProgress.value = getLettersDisabled(lettersProgress.value)
       currentLetters.value = getCurrrentLetters(letters.value, lettersProgress.value)
     }
   }
@@ -30,13 +29,6 @@ export const useLetters = () => {
     getLeters,
     getProgress
   }
-}
-
-function getLettersDisabled (lettersProgres: CurriculumType[]) {
-  return lettersProgres.map((letter) => {
-    letter.disabled = (letter.enabled) ? !letter.enabled : true
-    return letter
-  })
 }
 
 function getCurrrentLetters (letters: CurriculumType[], lettersProgres: CurriculumType[]) {

@@ -9,5 +9,4 @@ export interface CurriculumType extends Entity {
   order: number
   picture?: string
   enabled?: boolean
-  disabled?: boolean
 }
