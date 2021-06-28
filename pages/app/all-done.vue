@@ -29,7 +29,7 @@
       </p>
 
       <v-row>
-        <template v-for="(item, index) in actualLetters">
+        <template v-for="(item, index) in currentLetters">
           <letter :key="index" :item="item" :index="index" />
         </template>
       </v-row>
@@ -63,6 +63,7 @@ import { mapGetters, mapActions } from 'vuex'
 
 import { defineComponent, onMounted, computed, useRoute, useStore } from '@nuxtjs/composition-api'
 import { useLetters } from '@/composables/letters'
+import { useChild } from '@/composables/use-child.composable'
 import Letter from '@/components/app/all-done/Letter.vue'
 import CourseProgressOverlay from '@/components/app/student-cubby/CourseProgressOverlay.vue'
 export default {
@@ -78,12 +79,21 @@ export default {
   setup () {
     const route = useRoute()
     const store = useStore()
-    const { letters, getLeters } = useLetters()
+    const { currentLetters, getLeters, getProgress } = useLetters()
+    // const { children, get } = useChild()
 
     onMounted(async () => {
       await getLeters()
+      await getProgress()
     })
-    console.log('letters--', letters)
+
+    // await getProgress(Number(studentId))
+
+    return {
+      currentLetters
+      // studentId
+      /* lettersProgress8 */
+    }
   },
 
   data: () => {
@@ -93,11 +103,11 @@ export default {
   },
 
   computed: {
-    ...mapGetters('admin/curriculum', { letters: 'types' }),
+    // ...mapGetters('admin/curriculum', { letters: 'types' }),
 
     ...mapGetters({ currentChild: 'getCurrentChild' }),
 
-    actualLetters () {
+    /* actualLetters () {
       return this.letters.map((letter) => {
         const current = this.lettersProgress.find(l => l.id === letter.id)
         return {
@@ -105,21 +115,21 @@ export default {
           ...current
         }
       }).slice(0, 9)
-    },
+    }, */
 
     studentId () {
       return this.currentChild[0].id
     }
   },
 
-  watch: {},
+  watch: {}
 
-  async created () {
+  /* async created () {
     this.getLetters()
     await this.fetchChildProgress()
-  },
+  }, */
 
-  methods: {
+  /* methods: {
     ...mapActions('admin/curriculum', {
       getLetters: 'getTypes'
     }),
@@ -136,6 +146,6 @@ export default {
       })
       this.lettersProgress = data
     }
-  }
+  } */
 }
 </script>
