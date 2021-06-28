@@ -8,4 +8,6 @@ export interface CurriculumType extends Entity {
   name: string
   order: number
   picture?: string
+  enabled?: boolean
+  disabled?: boolean
 }

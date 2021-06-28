@@ -80,72 +80,15 @@ export default {
     const route = useRoute()
     const store = useStore()
     const { currentLetters, getLeters, getProgress } = useLetters()
-    // const { children, get } = useChild()
 
     onMounted(async () => {
       await getLeters()
       await getProgress()
     })
 
-    // await getProgress(Number(studentId))
-
     return {
       currentLetters
-      // studentId
-      /* lettersProgress8 */
     }
-  },
-
-  data: () => {
-    return {
-      lettersProgress: []
-    }
-  },
-
-  computed: {
-    // ...mapGetters('admin/curriculum', { letters: 'types' }),
-
-    ...mapGetters({ currentChild: 'getCurrentChild' }),
-
-    /* actualLetters () {
-      return this.letters.map((letter) => {
-        const current = this.lettersProgress.find(l => l.id === letter.id)
-        return {
-          ...letter,
-          ...current
-        }
-      }).slice(0, 9)
-    }, */
-
-    studentId () {
-      return this.currentChild[0].id
-    }
-  },
-
-  watch: {}
-
-  /* async created () {
-    this.getLetters()
-    await this.fetchChildProgress()
-  }, */
-
-  /* methods: {
-    ...mapActions('admin/curriculum', {
-      getLetters: 'getTypes'
-    }),
-
-    ...mapActions('children/course-progress', ['getCourseProgressByChildId']),
-
-    async fetchChildProgress () {
-      let data = await this.getCourseProgressByChildId({
-        id: this.studentId
-      })
-      data = data.map((letter) => {
-        const disabled = (letter.enabled) ? !letter.enabled : true
-        return { ...letter, disabled }
-      })
-      this.lettersProgress = data
-    }
-  } */
+  }
 }
 </script>
