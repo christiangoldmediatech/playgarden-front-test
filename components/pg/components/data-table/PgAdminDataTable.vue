@@ -77,8 +77,8 @@
       </component>
 
       <component
-        v-if="!props.noShowDelete"
         :is="$options.components.VIcon"
+        v-if="!props.noShowDelete"
         color="#d30909"
         dense
         @click.stop="$options.doEvent('remove-item', item, listeners)"

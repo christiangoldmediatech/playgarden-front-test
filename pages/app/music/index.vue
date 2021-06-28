@@ -15,6 +15,7 @@
           </v-col>
           <v-col cols="12" md="9" align-self="center" class="mt-2 mt-md-0">
             <music-carousel-letter
+              :is-full-width="true"
               :value="selectedLetterId"
               :disabled-letters="disabledLetters"
               @select="selectLetter"
@@ -55,9 +56,9 @@ import HorizontalRibbonCard from '@/components/ui/cards/HorizontalCardRibbon.vue
 import ChildSelect from '@/components/app/ChildSelect.vue'
 import MusicCarouselLetter from '@/components/app/music/MusicLetterCarousel.vue'
 
-import { useMusic, useSnotifyHelper, useVuetifyHelper } from '@/composables'
-import { onMounted, ref, computed, useRoute, watch, onUnmounted, useStore, useRouter } from '@nuxtjs/composition-api'
-import { MusicLibrary } from '@/models'
+import { useMusic, useSnotifyHelper, useVuetifyHelper, useAppEventBusHelper, useGtmHelper } from '@/composables'
+import { onMounted, ref, computed, useRoute, watch, onUnmounted, useStore, useRouter, useContext } from '@nuxtjs/composition-api'
+import { MusicLibrary, APP_EVENTS, TAG_MANAGER_EVENTS } from '@/models'
 
 const PAGE_MOBILE_BREAKPOINT = 1264
 const MOBILE_PLAYER_HEIGHT = 135
@@ -79,6 +80,9 @@ export default {
     const route = useRoute()
     const router = useRouter()
     const store = useStore()
+    const eventBus = useAppEventBusHelper()
+    const gtm = useGtmHelper()
+
     // this references `ref="musicPlayer"` when the component is mounted
     const musicPlayer = ref<any>(null)
     const {
@@ -102,6 +106,10 @@ export default {
     const handleScroll = () => {
       didScrollToBottom.value = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.scrollHeight - MOBILE_PLAYER_HEIGHT
     }
+
+    const userInfo = computed(() => {
+      return store.getters['auth/getUserInfo']
+    })
 
     const debouncedHandleScroll = debounce(handleScroll, 50)
 
@@ -139,10 +147,22 @@ export default {
       handleEmptyMusicPlayer()
 
       window.addEventListener('scroll', debouncedHandleScroll)
+
+      // GTM EVENTS
+      eventBus.$on(APP_EVENTS.MUSIC_ITEM_CLICKED, (data: { event: string, topic: string, userId: string }) => {
+        gtm.push(data)
+      })
+      eventBus.$on(APP_EVENTS.MUSIC_ITEM_ADD_TO_FAVORITES, (data: { event: string, topic: string, userId: string }) => {
+        gtm.push(data)
+      })
     })
 
     onUnmounted(() => {
       window.removeEventListener('scroll', debouncedHandleScroll)
+
+      // GTM EVENTS
+      eventBus.$off(APP_EVENTS.MUSIC_ITEM_CLICKED)
+      eventBus.$off(APP_EVENTS.MUSIC_ITEM_ADD_TO_FAVORITES)
     })
 
     const handleCurrentChild = () => {
@@ -198,6 +218,11 @@ export default {
     }
 
     const addSongToPlaylist = (song: MusicLibrary) => {
+      eventBus.$emit(APP_EVENTS.MUSIC_ITEM_CLICKED, {
+        event: TAG_MANAGER_EVENTS.MUSIC_ITEM_CLICKED,
+        userId: userInfo.value.id,
+        topic: song.description
+      })
       if (musicPlayer.value) {
         musicPlayer.value.addSongToPlaylist(song)
         playlist.value.push(song)
@@ -211,6 +236,14 @@ export default {
 
         isTopRibbonMinimized.value = true
       }
+
+      if (playList.length > 1) {
+        eventBus.$emit(APP_EVENTS.MUSIC_ITEM_CLICKED, {
+          event: TAG_MANAGER_EVENTS.MUSIC_ITEM_CLICKED,
+          userId: userInfo.value.id,
+          topic: playList[0].description
+        })
+      }
     }
 
     const handleFavorite = async (song: MusicLibrary) => {
@@ -220,7 +253,14 @@ export default {
           snotify.success('Song removed from favorites')
         } else if (id.value) {
           await setFavoriteMusicForChild(id.value, song.id)
+          eventBus.$emit(APP_EVENTS.MUSIC_ITEM_ADD_TO_FAVORITES, {
+            event: TAG_MANAGER_EVENTS.MUSIC_ITEM_ADD_TO_FAVORITES,
+            userId: userInfo.value.id,
+            topic: song.description
+          })
           snotify.success('Song added to favorites')
+
+          // NOTIFY GTM : useGtmHelper()
         }
 
         await getAndSetFavorites()

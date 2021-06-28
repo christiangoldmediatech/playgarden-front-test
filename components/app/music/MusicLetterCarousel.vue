@@ -26,7 +26,7 @@
       </v-col>
     </v-row>
 
-    <v-col cols="12" class="hidden-md-and-up letter-selector mx-auto">
+    <v-col cols="12" :class="mobileSelectClasses">
       <v-row>
         <pg-select
           :value="value"
@@ -109,6 +109,11 @@ export default {
       type: Array,
       required: false,
       default: () => []
+    },
+
+    isFullWidth: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -125,6 +130,13 @@ export default {
         })
       } else {
         return []
+      }
+    },
+
+    mobileSelectClasses () {
+      return {
+        'letter-selector': !this.isFullWidth,
+        'hidden-md-and-up mx-auto': true
       }
     }
   },
