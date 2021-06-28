@@ -9,7 +9,7 @@
     </v-col>
     <v-col cols="12" md="8" :class="($vuetify.breakpoint.xs) ? 'ml-4 mr-5' : 'pl-3'">
       <center v-if="$vuetify.breakpoint.xs">
-        <underlined-title class="text-h6 text-md-h4" text="Congratulations! You have finished all the Daily Lessons!" />
+        <underlined-title data-test-id="all-done-title" class="text-h6 text-md-h4" text="Congratulations! You have finished all the Daily Lessons!" />
       </center>
       <underlined-title v-else class="text-h6 text-md-h5" text="Congratulations! You have finished all the Daily Lessons!" />
       <p :class="($vuetify.breakpoint.xs) ? 'text-center mt-4 pb-3 font-weight-bold' : 'mt-4 pb-3 font-weight-bold'">
