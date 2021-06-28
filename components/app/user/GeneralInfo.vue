@@ -175,6 +175,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import { TAG_MANAGER_EVENTS } from '@/models'
 
 import UpdatePassword from '@/components/app/password/UpdatePassword'
 
@@ -265,10 +266,18 @@ export default {
         'FACEBOOK',
         new this.$fireAuthObj.FacebookAuthProvider()
       )
+      this.$gtm.push({
+        event: TAG_MANAGER_EVENTS.ACCOUNT_SYNC_FACEBOOK,
+        userId: this.userInfo.id
+      })
     },
 
     googleSignIn () {
       this.syncAccount('GOOGLE', new this.$fireAuthObj.GoogleAuthProvider())
+      this.$gtm.push({
+        event: TAG_MANAGER_EVENTS.ACCOUNT_SYNC_GOOGLE,
+        userId: this.userInfo.id
+      })
     },
 
     syncAccount (nameSocialNetwork, provider) {

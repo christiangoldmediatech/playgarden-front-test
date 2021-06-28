@@ -38,7 +38,7 @@
           v-for="(playlist, index) in shownPlaylist"
           :key="`playlist-${playlist.videoId}`"
           class="act-type-activity"
-          @click="handlePlay(index)"
+          @click="handlePlay(index, playlist)"
         >
           <activity-card
             :viewed="playlist.watched"
@@ -72,6 +72,10 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
+import { TAG_MANAGER_EVENTS } from '@/models'
+
 import { hexToRgb } from '@/utils/colorTools'
 import { jsonCopy } from '@/utils/objectTools.js'
 import ActivityCard from './ActivityCard.vue'
@@ -126,6 +130,7 @@ export default {
   },
 
   computed: {
+    ...mapGetters('auth', ['getUserInfo']),
     bkgColor () {
       return hexToRgb(this.activityType.color.substring(1))
     },
@@ -144,8 +149,15 @@ export default {
   },
 
   methods: {
-    handlePlay (index) {
+    handlePlay (index, playlist) {
       this.$nuxt.$emit('open-activity-player', { playlist: this.activityType.playlist, index })
+
+      this.$gtm.push({
+        event: TAG_MANAGER_EVENTS.LIBRARY_VIDEO_CLICKED,
+        userId: this.getUserInfo.id,
+        category: playlist.activityType.name,
+        topic: playlist.description
+      })
     },
 
     handleViewMore () {

@@ -35,6 +35,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import { TAG_MANAGER_EVENTS } from '@/models'
 import { sameDay, isTomorrow } from '@/utils/dateTools.js'
 
 export default {
@@ -69,6 +71,7 @@ export default {
   },
 
   computed: {
+    ...mapGetters('auth', ['getUserInfo']),
     time () {
       const today = new Date()
       const date = new Date(this.entry.dateStart)
@@ -101,6 +104,13 @@ export default {
   methods: {
     openLink () {
       this.$nuxt.$emit('open-entry-dialog', this.entry)
+      this.$gtm.push({
+        event: TAG_MANAGER_EVENTS.LIVE_CLASSES_ITEM_CLICKED,
+        userId: this.getUserInfo.id,
+        topic: this.entry.activityType.name,
+        topicDescription: this.entry.title,
+        itemDateTime: this.entry.dateStart
+      })
     }
   }
 }
