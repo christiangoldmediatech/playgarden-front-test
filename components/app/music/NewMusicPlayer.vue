@@ -141,9 +141,8 @@
             <v-spacer />
             <v-col
               v-if="currentSong.description"
-              cols="2"
-              sm="1"
-              align-self="end"
+              cols="auto"
+              align-self="center"
               class="text-center"
             >
               <!-- Favorite Button -->
