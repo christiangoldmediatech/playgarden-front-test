@@ -1,7 +1,7 @@
 import { Child } from '@/models/child.model'
 import { axios } from '@/utils'
 import { hasLocalStorage } from '@/utils/window'
-import { computed, useStore } from '@nuxtjs/composition-api'
+import { computed } from '@nuxtjs/composition-api'
 import { useCookiesHelper } from '@/composables'
 import { Store } from 'vuex/types'
 import { TypedStore } from '@/models'
