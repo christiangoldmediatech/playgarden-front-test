@@ -11,7 +11,7 @@ export interface Puzzle extends Entity {
   name: string
   pieces: number
   studentId? : number
-  piecesUnlocked?: number
+  piecesUnlocked: number
   puzzleChildrenId: number
   rows: number
 }
@@ -25,7 +25,7 @@ export interface PuzzleResponse {
   name: string
   pieces?: number
   studentId?: number
-  piecesUnclocked?: number
+  piecesUnlocked: number
   percentageCompleted: number
   puzzleChildrenId : number
   src: string
