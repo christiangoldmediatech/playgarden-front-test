@@ -94,7 +94,7 @@ export default {
       await dispatch('auth/fetchUserInfo', undefined, { root: true })
       await dispatch('pickChild', { $route, $router }, { root: true })
     } else if (isUnauthenticatedRoute) {
-      await dispatch('auth/logout', undefined, { root: true })
+      await dispatch('auth/logout', {}, { root: true })
     }
   },
 

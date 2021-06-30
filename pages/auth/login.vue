@@ -215,6 +215,8 @@ export default {
             name: 'app-playdates-join',
             query: this.$route.query
           })
+        } else if (this.$route.query.redirect) {
+          await this.$router.push(decodeURIComponent(this.$route.query.redirect))
         } else {
           await this.$router.push({ name: 'app-dashboard' })
         }
