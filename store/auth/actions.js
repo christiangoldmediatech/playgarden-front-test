@@ -38,7 +38,11 @@ export default {
     commit('SET_PLAYDATE_INVITATION_TOKEN', token)
   },
 
-  logout ({ commit, rootGetters, rootState }, redirect) {
+  /**
+   *
+   * @param { Object }  - {redirect: Function, route: String}
+   */
+  logout ({ commit, rootGetters, rootState }, redirectOptions) {
     commit('LOGOUT')
 
     if (process.client) {
@@ -68,8 +72,15 @@ export default {
       commit('notifications/SET_TRIAL_EXPIRING_RIBBON_VISIBLE', false, { root: true })
     }
 
-    if (redirect) {
-      redirect({ name: 'index' })
+    if (redirectOptions &&
+        typeof redirectOptions === 'object' &&
+        Object.prototype.hasOwnProperty.call(redirectOptions, 'redirect')
+    ) {
+      if (Object.prototype.hasOwnProperty.call(redirectOptions, 'route')) {
+        redirectOptions.redirect({ name: 'index', query: { redirect: encodeURIComponent(redirectOptions.route) } })
+      } else {
+        redirectOptions.redirect({ name: 'index' })
+      }
     }
   },
 
