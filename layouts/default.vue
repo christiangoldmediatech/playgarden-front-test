@@ -23,6 +23,8 @@
       <!-- CONTACT US FORM MODAL -->
       <contact-us-form-modal />
 
+      <notification-signup-modal />
+
       <!-- CONTENT -->
       <v-main v-if="!fullWidth">
         <v-container class="pa-md-3 pa-0" fill-height :style="contentStyle">
@@ -65,6 +67,7 @@ import ShippingAddressModal from '@/components/app/payment/ShippingAddressModal.
 import TrialExpiredModal from '@/components/app/payment/TrialExpiredModal.vue'
 import TrialIsExpiring from '@/components/app/header/TrialIsExpiring.vue'
 import ContactUsFormModal from '@/components/forms/contact/ContactUsFormModal.vue'
+import NotificationSignupModal from '@/components/app/notifications/NotificationSignupModal'
 
 export default {
   name: 'Default',
@@ -81,7 +84,8 @@ export default {
     ShippingAddressModal,
     TrialExpiredModal,
     TrialIsExpiring,
-    ContactUsFormModal
+    ContactUsFormModal,
+    NotificationSignupModal
   },
 
   data: () => ({

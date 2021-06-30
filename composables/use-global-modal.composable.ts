@@ -1,6 +1,7 @@
 import { ref } from '@nuxtjs/composition-api'
 
 const isContactUsModalVisible = ref(false)
+const isNotificationSignupModalVisible = ref(true)
 
 export const useGlobalModal = () => {
   const showContactUsModal = () => {
@@ -10,9 +11,19 @@ export const useGlobalModal = () => {
     isContactUsModalVisible.value = false
   }
 
+  const showNotificationSignupModal = () => {
+    isNotificationSignupModalVisible.value = true
+  }
+  const hideNotificationSignuoModal = () => {
+    isNotificationSignupModalVisible.value = false
+  }
+
   return {
     isContactUsModalVisible,
+    isNotificationSignupModalVisible,
     showContactUsModal,
-    hideContactUsModal
+    hideContactUsModal,
+    showNotificationSignupModal,
+    hideNotificationSignuoModal
   }
 }
