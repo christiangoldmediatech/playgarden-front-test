@@ -29,7 +29,7 @@ export default function ({ $axios, redirect, store, app }) {
     }
 
     if (error.response.status === 401) {
-      store.dispatch('auth/logout', redirect)
+      store.dispatch('auth/logout', { redirect })
     }
 
     if (error.response.status === 409) {
