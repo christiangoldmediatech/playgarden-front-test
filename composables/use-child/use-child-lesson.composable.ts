@@ -2,23 +2,27 @@ import { computed } from '@nuxtjs/composition-api'
 import { Store } from 'vuex/types/index'
 import { NuxtAxiosInstance } from '@nuxtjs/axios'
 import { useChild } from '@/composables'
-import { TypedStore } from '@/models'
+import { CurrentChild, Lesson, TypedStore } from '@/models'
 
 export const useChildLesson = ({
   store,
   axios
 }: {
-  store: Store<TypedStore>,
+  store: Store<TypedStore>
   axios: NuxtAxiosInstance
 }) => {
   const { currentChildren } = useChild({ store })
 
-  const currentLessonVideo = computed(() => store.state.children.lesson.currentLessonVideo)
+  const currentLessonVideo = computed(
+    () => store.state.children.lesson.currentLessonVideo
+  )
   const setCurrentLessonVideo = (currentLessonVideo: unknown) => {
     store.commit('children/lesson/SET_CURRENT_LESSON_VIDEO', currentLessonVideo)
   }
 
-  const currentLessonId = computed(() => store.state.children.lesson.currentLessonId)
+  const currentLessonId = computed(
+    () => store.state.children.lesson.currentLessonId
+  )
   const setCurrentLessonId = (currentLessonId: number) => {
     store.commit('children/lesson/SET_CURRENT_LESSON_ID', currentLessonId)
   }
@@ -28,7 +32,9 @@ export const useChildLesson = ({
     store.commit('children/lesson/SET_NEXT_LESSON_ID', nextLessonId)
   }
 
-  const previousLessonId = computed(() => store.state.children.lesson.previousLessonId)
+  const previousLessonId = computed(
+    () => store.state.children.lesson.previousLessonId
+  )
   const setPreviousLessonId = (previousLessonId: number) => {
     store.commit('children/lesson/SET_PREVIOUS_LESSON_ID', previousLessonId)
   }
@@ -42,8 +48,13 @@ export const useChildLesson = ({
     return axios.$delete(`/lessons/${lessonId}/children/${childId}`)
   }
 
-  const getCurrentLessonByChildrenId = async (lessonId: number, childId: number) => {
-    const data = await axios.$get(`/lessons/${lessonId}/children/${childId}`)
+  const getCurrentLessonByChildrenId = async (
+    lessonId: number,
+    childId: number
+  ): Promise<CurrentChild> => {
+    const data = (await axios.$get(
+      `/lessons/${lessonId}/children/${childId}`
+    )) as CurrentChild
 
     store.commit('admin/curriculum/SET_LESSON', data.lesson, { root: true })
     setNextLessonId(data.nextLessonId)
@@ -54,11 +65,11 @@ export const useChildLesson = ({
     return data
   }
 
-  const getCurrentLesson = async (params: unknown) => {
+  const getCurrentLesson = async (params: unknown): Promise<Lesson> => {
     try {
       const data = await axios.$get('/lessons/childrens/current', {
         params
-      })
+      }) as CurrentChild
       store.commit('admin/curriculum/SET_LESSON', data.lesson, { root: true })
       setNextLessonId(data.nextLessonId)
       setPreviousLessonId(data.previousLessonId)
@@ -75,38 +86,46 @@ export const useChildLesson = ({
     }
   }
 
-  const saveVideoProgress = (lessonId: number, childId: number, video: unknown) => {
+  const saveVideoProgress = (
+    lessonId: number,
+    childId: number,
+    video: unknown
+  ) => {
     try {
-      return axios.$post(
-        `/lessons/${lessonId}/children/${childId}/video`,
-        { video }
-      )
+      return axios.$post(`/lessons/${lessonId}/children/${childId}/video`, {
+        video
+      })
     } catch (error) {
       return Promise.reject(error)
     }
   }
 
-  const saveWorksheetProgress = (lessonId: number, childId: number, worksheet: unknown) => {
+  const saveWorksheetProgress = (
+    lessonId: number,
+    childId: number,
+    worksheet: unknown
+  ) => {
     try {
-      return axios.$post(
-        `/lessons/${lessonId}/children/${childId}/worksheet`,
-        { worksheet }
-      )
+      return axios.$post(`/lessons/${lessonId}/children/${childId}/worksheet`, {
+        worksheet
+      })
     } catch (error) {
       return Promise.reject(error)
     }
   }
 
-  const saveWorksheetVideoProgress = async (videoId: number, time: unknown, completed: unknown) => {
+  const saveWorksheetVideoProgress = async (
+    videoId: number,
+    time: unknown,
+    completed: unknown
+  ) => {
     try {
       const children = currentChildren.value
       const childId = children?.[0].id
       const lesson = store.getters['admin/curriculum/getLesson']
       const lessonId = lesson.id
 
-      const {
-        data
-      } = await axios.$post(
+      const { data } = await axios.$post(
         `/lessons/${lessonId}/children/${childId}/worksheet-video`,
         {
           video: {
@@ -124,12 +143,15 @@ export const useChildLesson = ({
     }
   }
 
-  const saveActivityProgress = (lessonId: number, childId: number, activity: number) => {
+  const saveActivityProgress = (
+    lessonId: number,
+    childId: number,
+    activity: number
+  ) => {
     try {
-      return axios.$post(
-        `/lessons/${lessonId}/children/${childId}/activity`,
-        { activity }
-      )
+      return axios.$post(`/lessons/${lessonId}/children/${childId}/activity`, {
+        activity
+      })
     } catch (error) {
       return Promise.reject(error)
     }
@@ -180,16 +202,12 @@ export const useChildLesson = ({
   }
 
   const getLessonChildTimeline = (childId: number) => {
-    return axios.$get(
-      `/lessons/children/${childId}/timeline`
-    )
+    return axios.$get(`/lessons/children/${childId}/timeline`)
   }
 
   const getAdvanceLessonChildren = async (childId: number) => {
     try {
-      const data = await axios.$get(
-        `/lessons/children/${childId}/advance`
-      )
+      const data = await axios.$get(`/lessons/children/${childId}/advance`)
       setPuzzlePiece(data.puzzleChildren)
 
       return data
@@ -216,6 +234,13 @@ export const useChildLesson = ({
     resetChild,
     getCurrentLessonByChildrenId,
     getCurrentLesson,
-    saveVideoProgress
+    saveVideoProgress,
+    saveWorksheetProgress,
+    saveWorksheetVideoProgress,
+    saveActivityProgress,
+    getLessonPreview,
+    getLessonChildrenStatus,
+    getLessonChildTimeline,
+    getAdvanceLessonChildren
   }
 }

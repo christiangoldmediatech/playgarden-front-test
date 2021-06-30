@@ -49,6 +49,8 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import DashboardLink from '@/mixins/DashboardLinkMixin.js'
+import { APP_EVENTS } from '@/models'
+
 import CompletedDialog from '@/components/app/dashboard/CompletedDialog'
 import UploadOfflineWorksheet from '../UploadOfflineWorksheet.vue'
 import OwHeader from './OwHeader.vue'
@@ -262,6 +264,7 @@ export default {
     async onNextQuestion () {
       await this.saveProgress()
       if (this.lastQuestion) {
+        this.$nuxt.$emit(APP_EVENTS.DASHBOARD_ONLINE_WORKSHEET_COMPLETED)
         this.completed = true
       } else {
         this.index += 1

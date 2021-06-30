@@ -79,7 +79,7 @@
           :progress-next="videos.progressNext"
           enabled
         >
-          <content-list :items="videos.items" v-bind="{ noLinkMode }" />
+          <content-list :items="videos.items" v-bind="{ noLinkMode }" item-type="videoLesson" />
         </content-section>
 
         <content-section
@@ -110,7 +110,10 @@
               :to="noLinkMode ? undefined : generateNuxtRoute('online-worksheet')"
             >
               <v-list-item-content>
-                <v-list-item-title :class="['dashboard-panel-worksheet-text', { 'dashboard-item-disabled': videos.progress < 100 }]">
+                <v-list-item-title
+                  :class="['dashboard-panel-worksheet-text', { 'dashboard-item-disabled': videos.progress < 100 }]"
+                  @click="handleOnlineWorksheetClick"
+                >
                   ONLINE WORKSHEET
                 </v-list-item-title>
                 <v-list-item-subtitle v-if="noLinkMode">
@@ -154,6 +157,7 @@
                   nuxt
                   exact
                   :to="generateNuxtRoute('offline-worksheet')"
+                  @click="handleWorksheetVideos"
                 >
                   <v-icon color="white" left>
                     pg-icon-play
@@ -204,7 +208,7 @@
           :progress-next="activities.progressNext"
           :enabled="videos.progress === 100"
         >
-          <content-list :items="activities.items" v-bind="{ noLinkMode }" />
+          <content-list :items="activities.items" v-bind="{ noLinkMode }" item-type="activity" />
         </content-section>
       </div>
     </v-card>
@@ -218,6 +222,8 @@ import { mapGetters } from 'vuex'
 import DashboardMixin from '@/mixins/DashboardMixin'
 import LessonAdvanceMixin from '@/mixins/LessonAdvanceMixin'
 // import PgCircleLetterDay from '@/components/pg/components/PgCircleLetterDay'
+import { APP_EVENTS, TAG_MANAGER_EVENTS } from '@/models'
+
 import UploadOfflineWorksheet from './worksheets/UploadOfflineWorksheet'
 import ContentSection from './ContentSection.vue'
 import ContentList from './ContentList.vue'
@@ -289,6 +295,7 @@ export default {
   },
 
   computed: {
+    ...mapGetters('auth', ['getUserInfo']),
     ...mapGetters('children/lesson', { previousLessonId: 'getPreviousLessonId' }),
 
     offlineWorksheet () {
@@ -309,10 +316,74 @@ export default {
     }
   },
 
+  created () {
+    this.$nuxt.$on(APP_EVENTS.DASHBOARD_VIDEO_LESSON_CLICKED, (topicData) => {
+      this.$gtm.push({
+        event: TAG_MANAGER_EVENTS.DASHBOARD_VIDEO_LESSON_CLICKED,
+        userId: this.getUserInfo.id,
+        dayLetter: this.lesson.curriculumType.letter,
+        dayNumber: this.lesson.day,
+        topic: topicData.type,
+        topicDescription: topicData.description
+      })
+    })
+    this.$nuxt.$on(APP_EVENTS.DASHBOARD_ACTIVITY_CLICKED, (topicData) => {
+      this.$gtm.push({
+        event: TAG_MANAGER_EVENTS.DASHBOARD_ACTIVITY_CLICKED,
+        userId: this.getUserInfo.id,
+        dayLetter: this.lesson.curriculumType.letter,
+        dayNumber: this.lesson.day,
+        topic: topicData.type,
+        topicDescription: topicData.description
+      })
+    })
+    this.$nuxt.$on(APP_EVENTS.DASHBOARD_ONLINE_WORKSHEET_COMPLETED, () => {
+      this.$gtm.push({
+        event: TAG_MANAGER_EVENTS.DASHBOARD_ONLINE_WORKSHEET_COMPLETED,
+        userId: this.getUserInfo.id,
+        dayLetter: this.lesson.curriculumType.letter,
+        dayNumber: this.lesson.day
+      })
+    })
+    this.$nuxt.$on(APP_EVENTS.DASHBOARD_WORKSHEET_DOWNLOAD, (fileName) => {
+      this.$gtm.push({
+        event: TAG_MANAGER_EVENTS.DASHBOARD_WORKSHEET_DOWNLOAD,
+        userId: this.getUserInfo.id,
+        dayLetter: this.lesson.curriculumType.letter,
+        dayNumber: this.lesson.day,
+        fileName
+      })
+    })
+    this.$nuxt.$on(APP_EVENTS.DASHBOARD_WORKSHEET_UPLOAD, (category) => {
+      this.$gtm.push({
+        event: TAG_MANAGER_EVENTS.DASHBOARD_WORKSHEET_DOWNLOAD,
+        userId: this.getUserInfo.id,
+        dayLetter: this.lesson.curriculumType.letter,
+        dayNumber: this.lesson.day,
+        topic: category
+      })
+    })
+  },
+
+  beforeDestroy () {
+    this.$nuxt.$off(APP_EVENTS.DASHBOARD_VIDEO_LESSON_CLICKED)
+    this.$nuxt.$off(APP_EVENTS.DASHBOARD_ACTIVITY_CLICKED)
+    this.$nuxt.$off(APP_EVENTS.DASHBOARD_ONLINE_WORKSHEET_COMPLETED)
+    this.$nuxt.$off(APP_EVENTS.DASHBOARD_WORKSHEET_DOWNLOAD)
+    this.$nuxt.$off(APP_EVENTS.DASHBOARD_WORKSHEET_UPLOAD)
+  },
+
   methods: {
     openPdf () {
       if (this.offlineWorksheet) {
         window.open(this.offlineWorksheet.pdfUrl, '_blank')
+        this.$gtm.push({
+          event: TAG_MANAGER_EVENTS.DASHBOARD_WORKSHEET_DOWNLOAD,
+          userId: this.getUserInfo.id,
+          dayLetter: this.lesson.curriculumType.letter,
+          dayNumber: this.lesson.day,
+          fileName: this.offlineWorksheet.name
+        })
       }
     },
 
@@ -320,6 +391,24 @@ export default {
       if (!this.displayMode) {
         this.$nuxt.$emit('show-curriculum-progress', this.lesson.curriculumType.id)
       }
+    },
+
+    handleOnlineWorksheetClick () {
+      this.$gtm.push({
+        event: TAG_MANAGER_EVENTS.DASHBOARD_ONLINE_WORKSHEET_CLICKED,
+        userId: this.getUserInfo.id,
+        dayLetter: this.lesson.curriculumType.letter,
+        dayNumber: this.lesson.day
+      })
+    },
+
+    handleWorksheetVideos () {
+      this.$gtm.push({
+        event: TAG_MANAGER_EVENTS.DASHBOARD_WORKSHEET_VIDEOS_CLICKED,
+        userId: this.getUserInfo.id,
+        dayLetter: this.lesson.curriculumType.letter,
+        dayNumber: this.lesson.day
+      })
     }
   }
 }

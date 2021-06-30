@@ -46,7 +46,8 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
+import { TAG_MANAGER_EVENTS } from '@/models'
 
 import SendInvitationForm from '@/components/forms/caregiver/SendInvitationForm'
 
@@ -63,6 +64,9 @@ export default {
   }),
 
   computed: {
+    ...mapGetters('auth', {
+      userInfo: 'getUserInfo'
+    }),
     isMobile () {
       return this.$vuetify.breakpoint.mobile
     }
@@ -88,6 +92,10 @@ export default {
 
         this.$snotify.success('Invitation has been sent successfully!')
         this.$nuxt.$emit('caregiver-added')
+        this.$gtm.push({
+          event: TAG_MANAGER_EVENTS.ACCOUNT_ADD_CAREGIVER,
+          userId: this.userInfo.id
+        })
       } catch (e) {
       } finally {
         this.loading = false
