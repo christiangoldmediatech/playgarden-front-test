@@ -279,6 +279,7 @@
                     block
                     x-large
                     :href="playdate.link"
+                    @click="handleOpenZoom"
                   >
                     Open Zoom Playdate
                   </v-btn>
@@ -318,11 +319,13 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 import dayjs from 'dayjs'
 import { get } from 'lodash'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
-import { mapActions } from 'vuex'
 import utc from 'dayjs/plugin/utc'
+
+import { TAG_MANAGER_EVENTS } from '@/models'
 
 import ChildSelect from '@/components/app/ChildSelect.vue'
 
@@ -369,6 +372,7 @@ export default {
   }),
 
   computed: {
+    ...mapGetters('auth', ['getUserInfo']),
     backpackImages () {
       return get(this.playdate, 'backpackImages', []).map(({ image }) => image)
     },
@@ -469,6 +473,14 @@ export default {
   methods: {
     ...mapActions('playdates', ['deleteChildren', 'joinPlaydate']),
 
+    handleOpenZoom () {
+      this.$gtm.push({
+        event: TAG_MANAGER_EVENTS.PLAYDATE_OPEN_ZOOM,
+        userId: this.getUserInfo.id,
+        topic: this.playdate.playdateType
+      })
+    },
+
     async joinPlaydateChildren () {
       try {
         await this.joinPlaydate({
@@ -492,6 +504,11 @@ export default {
             childId: this.child.id
           })
 
+          this.$gtm.push({
+            event: TAG_MANAGER_EVENTS.PLAYDATE_DELETE,
+            userId: this.getUserInfo.id,
+            topic: this.playdate.playdateType
+          })
           this.$emit('deleted')
         }
       })

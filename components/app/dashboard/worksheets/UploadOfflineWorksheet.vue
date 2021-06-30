@@ -107,6 +107,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { APP_EVENTS } from '@/models'
 
 export default {
   name: 'UploadOfflineWorksheet',
@@ -206,6 +207,7 @@ export default {
     },
 
     openFileDialog (category, index) {
+      this.$nuxt.$emit(APP_EVENTS.DASHBOARD_WORKSHEET_UPLOAD, category.category)
       const uploader = document.getElementById(`${category.category}-${index}-upload`)
       uploader.click()
     },

@@ -63,6 +63,7 @@
 </template>
 
 <script>
+import { TAG_MANAGER_EVENTS } from '@/models'
 import { jsonCopy } from '@/utils/objectTools.js'
 import { mapState, mapGetters, mapActions } from 'vuex'
 import videojs from 'video.js'
@@ -119,6 +120,7 @@ export default {
   computed: {
     ...mapState('cast', ['castAvailable', 'castContext']),
     ...mapGetters('cast', ['getCasting', 'getStatus', 'getCurrentTime']),
+    ...mapGetters('auth', ['getUserInfo']),
 
     showControls () {
       return Boolean(this.playerInstance && this.playerContainerId && this.playerInstance.toggleMute)
@@ -269,7 +271,17 @@ export default {
         this.status = 'LOADING'
       })
 
-      this.playerInstance.on(['play', 'playing'], () => {
+      this.playerInstance.on(['play', 'playing'], (data) => {
+        if (this.playlistItemIndex >= 0) {
+          const item = this.playlist[this.playlistItemIndex]
+          this.$gtm.push({
+            event: TAG_MANAGER_EVENTS.VIDEO_EVENT,
+            videoStatus: data.type,
+            videoPercent: Math.round(this.position / this.duration * 100, 2),
+            videoTitle: item.description,
+            userId: this.getUserInfo.id
+          })
+        }
         this.status = 'PLAYING'
       })
 
@@ -328,7 +340,17 @@ export default {
         this.duration = this.playerInstance.duration()
       })
 
-      this.playerInstance.on(['abort', 'ended', 'pause', 'error', 'canplay', 'canplaythrough', 'stalled', 'suspend'], () => {
+      this.playerInstance.on(['abort', 'ended', 'pause', 'error', 'canplay', 'canplaythrough', 'stalled', 'suspend'], (data) => {
+        if (this.playlistItemIndex >= 0) {
+          const item = this.playlist[this.playlistItemIndex]
+          this.$gtm.push({
+            event: TAG_MANAGER_EVENTS.VIDEO_EVENT,
+            videoStatus: data.type,
+            videoPercent: Math.round(this.position / this.duration * 100, 2),
+            videoTitle: item.description,
+            userId: this.getUserInfo.id
+          })
+        }
         this.status = 'IDLE'
       })
 

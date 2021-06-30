@@ -62,6 +62,7 @@
 <script>
 import { get } from 'lodash'
 import { mapActions, mapGetters } from 'vuex'
+import { TAG_MANAGER_EVENTS } from '@/models'
 
 import CardPlaydate from '@/components/app/playdates/CardPlaydate'
 
@@ -128,6 +129,10 @@ export default {
 
       try {
         await this.onAction('stored', this.acceptInvitePlaydate, this.token)
+        this.$gtm.push({
+          event: TAG_MANAGER_EVENTS.PLAYDATE_JOIN,
+          userId: this.getUserInfo.id
+        })
       } catch (e) {
       } finally {
         this.loading = false

@@ -82,8 +82,9 @@
 </template>
 
 <script>
-import { computed, defineComponent } from '@nuxtjs/composition-api'
-import { useLibrary, useVuetifyHelper } from '@/composables'
+import { computed, defineComponent, onBeforeUnmount, useStore } from '@nuxtjs/composition-api'
+import { useLibrary, useVuetifyHelper, useAppEventBusHelper, useGtmHelper } from '@/composables'
+import { APP_EVENTS, TAG_MANAGER_EVENTS } from '@/models'
 import CardRibbon from '@/components/app/library/CardRibbon.vue'
 
 export default defineComponent({
@@ -132,13 +133,33 @@ export default defineComponent({
 
   setup (props) {
     const vuetify = useVuetifyHelper()
+    const eventBus = useAppEventBusHelper()
+    const gtm = useGtmHelper()
+    const store = useStore()
     const isMobile = computed(() => vuetify.breakpoint.mobile)
+
+    const userInfo = computed(() => {
+      return store.getters['auth/getUserInfo']
+    })
 
     const {
       isLoadingFavorites,
       handleFavorite,
       isFavoriteVideo
     } = useLibrary(props.videoId)
+
+    eventBus.$on(APP_EVENTS.MUSIC_ITEM_ADD_TO_FAVORITES, (videoId) => {
+      if (props.videoId === videoId) {
+        gtm.push({
+          event: TAG_MANAGER_EVENTS.MUSIC_ITEM_ADD_TO_FAVORITES,
+          userId: userInfo.value.id,
+          topic: props.title
+        })
+      }
+    })
+    onBeforeUnmount(() => {
+      eventBus.$off(APP_EVENTS.MUSIC_ITEM_ADD_TO_FAVORITES)
+    })
 
     return {
       isMobile,
