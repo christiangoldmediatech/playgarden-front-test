@@ -62,7 +62,9 @@
           <small>We use this information to send you Playgarden Prep educational materials.</small>
         </div>
 
-        <shipping-address-details />
+        <shipping-address-details
+          :edit-by-default="isEditingShippingAddress"
+        />
       </v-card>
     </v-col>
   </v-row>
@@ -73,8 +75,9 @@ import { mapGetters } from 'vuex'
 
 import GeneralInfo from '@/components/app/user/GeneralInfo'
 import ShippingAddressDetails from '@/components/app/payment/ShippingAddressDetails'
+import { computed, defineComponent, onMounted, ref, useRoute } from '@nuxtjs/composition-api'
 
-export default {
+export default defineComponent({
   name: 'Index',
 
   components: {
@@ -82,10 +85,36 @@ export default {
     ShippingAddressDetails
   },
 
+  setup () {
+    const route = useRoute()
+
+    onMounted(() => {
+      handleRouteAction()
+    })
+
+    const isEditingShippingAddress = ref(false)
+
+    const handleRouteAction = () => {
+      const action = route.value.query.action
+
+      switch (action) {
+        case 'edit-shipping':
+          isEditingShippingAddress.value = true
+          break
+        default:
+          break
+      }
+    }
+
+    return {
+      isEditingShippingAddress
+    }
+  },
+
   computed: {
     ...mapGetters('auth', ['isUserCaregiver'])
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

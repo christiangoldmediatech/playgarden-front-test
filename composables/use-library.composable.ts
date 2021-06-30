@@ -1,7 +1,7 @@
 import { computed, ref } from '@nuxtjs/composition-api'
-import { Entity, Video } from '@/models'
+import { Entity, Video, APP_EVENTS } from '@/models'
 import { axios } from '@/utils'
-import { useNuxtHelper } from '@/composables'
+import { useNuxtHelper, useAppEventBusHelper } from '@/composables'
 
 type VideosFavoritesChildrenResponse = Entity & { video: Video }
 
@@ -9,6 +9,8 @@ const favoriteVideos = ref<VideosFavoritesChildrenResponse[]>([])
 
 export const useLibrary = (videoId?: number) => {
   const nuxt = useNuxtHelper()
+  const eventBus = useAppEventBusHelper()
+
   const isLoadingFavorites = ref(false)
 
   const favoriteVideo = computed(() => favoriteVideos.value.find(favorite => favorite.video.id === videoId))
@@ -44,6 +46,7 @@ export const useLibrary = (videoId?: number) => {
         await deleteFavorite(favoriteVideo.value.id)
       } else {
         await addFavorite(videoId)
+        eventBus.$emit(APP_EVENTS.MUSIC_ITEM_ADD_TO_FAVORITES, videoId)
       }
 
       nuxt.$emit('library-update-favorites')

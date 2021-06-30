@@ -46,6 +46,8 @@
 </template>
 
 <script>
+import { APP_EVENTS } from '@/models'
+
 export default {
   name: 'ContentList',
 
@@ -72,6 +74,12 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+
+    itemType: {
+      type: String,
+      required: false,
+      default: ''
     }
   },
 
@@ -100,6 +108,14 @@ export default {
   },
   methods: {
     loadDetailVideo (item) {
+      switch (this.itemType) {
+        case 'videoLesson':
+          this.$nuxt.$emit(APP_EVENTS.DASHBOARD_VIDEO_LESSON_CLICKED, { type: item.activityType.name, description: item.description })
+          break
+        case 'activity':
+          this.$nuxt.$emit(APP_EVENTS.DASHBOARD_ACTIVITY_CLICKED, { type: item.activityType.name, description: item.description })
+          break
+      }
       if (!item.to) {
         this.$nuxt.$emit('send-video', item)
       }

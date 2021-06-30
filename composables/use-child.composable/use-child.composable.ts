@@ -1,9 +1,9 @@
+import { Store } from 'vuex/types'
 import { Child } from '@/models/child.model'
 import { axios } from '@/utils'
 import { hasLocalStorage } from '@/utils/window'
 import { computed } from '@nuxtjs/composition-api'
 import { useCookiesHelper } from '@/composables'
-import { Store } from 'vuex/types/index'
 
 interface TypedStore {
   currentChild?: Child[]
@@ -38,7 +38,7 @@ export const useChild = ({
     }
   }
 
-  const create = (data: Partial<Child>) => {
+  const create = (data: Partial<Child>): Promise<Child> => {
     return axios.$post('/children', data)
   }
 
@@ -47,11 +47,11 @@ export const useChild = ({
     setChildren(children)
   }
 
-  const getById = (id: number) => {
+  const getById = (id: number): Promise<Child> => {
     return axios.$get(`/children/${id}`)
   }
 
-  const update = (id: number, data: Partial<Child>) => {
+  const update = (id: number, data: Partial<Child>): Promise<Child> => {
     return axios.$patch(`/children/${id}`, data)
   }
 
@@ -70,6 +70,7 @@ export const useChild = ({
   return {
     children,
     setChildren,
+    setCurrentChildren,
     create,
     get,
     getById,
