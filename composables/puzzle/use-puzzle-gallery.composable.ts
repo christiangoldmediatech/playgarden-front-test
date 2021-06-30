@@ -21,7 +21,7 @@ export const usePuzzle = () => {
         image = '',
         name = '',
         pieces = 0,
-        piecesUnclocked = 0,
+        piecesUnlocked = 0,
         puzzleChildrenId
       }) => ({
         id,
@@ -31,8 +31,8 @@ export const usePuzzle = () => {
         letter: get(curriculumType, 'letter', ''),
         name,
         pieces,
-        piecesUnclocked,
-        percentageCompleted: (piecesUnclocked * 100) / pieces,
+        piecesUnlocked,
+        percentageCompleted: (piecesUnlocked * 100) / pieces,
         puzzleChildrenId,
         src: image,
         srcType: getSrcType(completed && !active)
