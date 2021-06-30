@@ -83,6 +83,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { APP_EVENTS } from '@/models'
+
 import UploadOfflineWorksheet from './UploadOfflineWorksheet.vue'
 
 export default {
@@ -121,6 +123,7 @@ export default {
           action: () => {
             if (this.offlineWorksheet) {
               window.open(this.offlineWorksheet.pdfUrl, '_blank')
+              this.$nuxt.$emit(APP_EVENTS.DASHBOARD_WORKSHEET_DOWNLOAD, this.offlineWorksheet.name)
             }
           }
         },
@@ -131,6 +134,7 @@ export default {
           disabled: (this.getLesson && this.getLesson.previewMode),
           action: () => {
             this.dialog = true
+            this.$nuxt.$emit(APP_EVENTS.DASHBOARD_WORKSHEET_UPLOAD)
           }
         }
       ]

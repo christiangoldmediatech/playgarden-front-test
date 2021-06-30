@@ -95,7 +95,9 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
+import { TAG_MANAGER_EVENTS } from '@/models'
+
 import { getNumberOrder, hours24ToHours12 } from '@/utils/dateTools'
 
 export default {
@@ -123,6 +125,7 @@ export default {
   },
 
   computed: {
+    ...mapGetters('auth', ['getUserInfo']),
     isLive () {
       const today = new Date()
       const start = new Date(this.entry.dateStart)
@@ -199,6 +202,13 @@ export default {
 
     doSaveAttendance () {
       this.saveAttendance(this.entry.id)
+      this.$gtm.push({
+        event: TAG_MANAGER_EVENTS.LIVE_CLASSES_ITEM_ZOOM_LINK_CLICKED,
+        userId: this.getUserInfo.id,
+        topic: this.entry.activityType.name,
+        topicDescription: this.entry.title,
+        itemDateTime: this.entry.dateStart
+      })
     },
 
     openVideo () {
@@ -216,6 +226,13 @@ export default {
           }
         ],
         index: 0
+      })
+      this.$gtm.push({
+        event: TAG_MANAGER_EVENTS.LIVE_CLASSES_WATCH_RECORDED_VIDEO,
+        userId: this.getUserInfo.id,
+        topic: this.entry.activityType.name,
+        topicDescription: this.entry.title,
+        itemDateTime: this.entry.dateStart
       })
     }
   }

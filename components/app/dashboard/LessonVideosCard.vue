@@ -50,6 +50,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { APP_EVENTS } from '@/models'
+
 import LessonVideoPlayer from '@/components/app/dashboard/LessonVideoPlayer.vue'
 import LessonPuzzlePieces from '@/components/app/dashboard/LessonPuzzlePieces.vue'
 
@@ -105,6 +107,7 @@ export default {
 
   methods: {
     playVideo () {
+      this.$nuxt.$emit(APP_EVENTS.DASHBOARD_VIDEO_LESSON_VIDEO_CLICKED, this.videoId)
       this.$nuxt.$emit('open-lesson-video-player', { playlist: this.playlist, index: this.currentVideoLessonIndex })
     }
   }
