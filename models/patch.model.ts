@@ -1,3 +1,5 @@
+import { Entity } from './entity.model'
+
 export interface Patch {
   childrenPatchId: number
   description: string
@@ -7,7 +9,7 @@ export interface Patch {
   unblocked: boolean
 }
 
-export interface Patches {
+export interface Patches extends Entity {
   color: string
   description: string
   icon: string
@@ -19,4 +21,18 @@ export interface Patches {
     extra: boolean
     lesson: boolean
   }
+}
+
+export interface ChildrenPatchesActivity extends Entity {
+  name: string
+  description: string
+  type: {
+      lesson: boolean
+      extra: boolean
+      activity: boolean
+  },
+  icon: string
+  color: string
+  toUnloock: number
+  patches: Array<Patches>
 }
