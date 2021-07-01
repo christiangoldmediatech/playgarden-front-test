@@ -1,6 +1,6 @@
 <template>
   <div>
-    <large-image-content-dialog :value="isTrialExpiredModalVisible" :img="imagePath" @close="closeModal">
+    <large-image-content-dialog :value="isNotificationInfo" :img="imagePath" @close="closeModal">
       <div>
         <underlined-title class="text-h6 text-md-h5" text="WE HOPE YOUR LITTLE ONE IS ENJOYING LEARNING WITH PLAYGARDEN PREP ONLINE!" />
       </div>
@@ -8,7 +8,7 @@
       <v-row class="mx-1 mt-3">
         <div>
           <p class="mt-4 text-justify">
-            Take advantage of the EARLY BIRD SPECIAL! Sign up now to receive:
+            Take advantage of the <span class="info-modal-notification">EARLY BIRD SPECIAL!</span> Sign up now to receive:
           </p>
 
           <p class="mt-4 text-justify">
@@ -48,7 +48,7 @@
             </v-col>
             <v-col cols="12">
               <span class="grey--text">Need help? </span>
-              <span class="text-decoration-underline" @click="showContactUsModal">
+              <span class="text-decoration-underline">
                 <a class="accent--text">Contact us</a>
               </span>
             </v-col>
@@ -60,21 +60,33 @@
 </template>
 
 <script lang="ts">
-import { mapState, mapGetters } from 'vuex'
 import LargeImageContentDialog from '@/components/ui/dialogs/LargeImageContentDialog/LargeImageContentDialog.vue'
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted } from '@nuxtjs/composition-api'
+import { useGlobalModal } from '@/composables'
 
 export default defineComponent({
-  name: 'InfoWeekThree',
+  name: 'InfoWeek',
+
+  props: {
+    isNotificationInfo: {
+      type: Boolean,
+      required: true
+    }
+  },
 
   components: {
     LargeImageContentDialog
   },
 
-  data: () => ({
-    isTrialExpiredModalVisible: true,
-    imagePath: require('@/assets/svg/children-play.svg')
-  }),
+  setup () {
+    const { imagePath, setImagePath } = useGlobalModal()
+
+    onMounted(() => {
+      setImagePath()
+    })
+
+    return { imagePath, setImagePath }
+  },
 
   methods: {
     closeModal () {
@@ -83,3 +95,10 @@ export default defineComponent({
   }
 })
 </script>
+
+<style lang="scss" scoped>
+.info-modal-notification {
+  font-weight: bold !important;
+  color: var(--v-primary-base) !important;
+}
+</style>
