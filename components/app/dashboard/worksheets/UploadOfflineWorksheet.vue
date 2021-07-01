@@ -68,10 +68,23 @@
           </v-hover>
         </v-row>
 
-        <v-row>
+        <v-row justify="center">
+          <v-btn
+            class="dashboard-message-btn mt-5 white--text"
+            color="#FEC572"
+            :disabled="loading"
+            x-large
+            @click.stop="goToFirstActivity"
+          >
+            <v-icon left>
+              pg-icon-play
+            </v-icon>
+            Go to Activities
+          </v-btn>
+
           <v-col cols="12">
             <v-btn
-              class="dashboard-message-btn mt-3"
+              class="dashboard-message-btn"
               color="primary"
               text
               block
@@ -132,7 +145,20 @@ export default {
 
   computed: {
     ...mapGetters({ currentChild: 'getCurrentChild' }),
-    ...mapGetters('admin/curriculum', ['getLesson'])
+    ...mapGetters('admin/curriculum', ['getLesson']),
+
+    firstActivity () {
+      if (this.getLesson && this.getLesson.lessonsActivities && this.getLesson.lessonsActivities.length) {
+        const firstActivity = this.getLesson.lessonsActivities[0]
+        return {
+          name: 'app-dashboard-lesson-activities',
+          query: {
+            id: firstActivity.activity.id
+          }
+        }
+      }
+      return null
+    }
   },
 
   watch: {
@@ -163,6 +189,11 @@ export default {
       getUploaded: 'getUploaded'
     }),
     ...mapActions('children/lesson', ['saveWorksheetProgress']),
+
+    goToFirstActivity () {
+      this.$router.push(this.firstActivity)
+      this.close()
+    },
 
     async getCategoriesByWorksheetId () {
       try {
