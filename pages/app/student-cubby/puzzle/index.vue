@@ -56,9 +56,8 @@
                         >
                           <v-row v-if="puzzle.piecesUnclocked !== puzzle.pieces" justify="center" no-gutters>
                             <span class="font-weight-black white--text">
-                              {{ puzzle.piecesUnclocked }}/{{ puzzle.pieces }}
+                              {{ (puzzle.piecesUnclocked) ? puzzle.piecesUnclocked : 0 }}/{{ puzzle.pieces }}
                             </span>
-
                             <v-progress-linear
                               class="mt-2 mx-4 white"
                               color="accent"
