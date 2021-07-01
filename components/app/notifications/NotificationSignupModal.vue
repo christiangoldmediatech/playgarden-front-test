@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <v-row>
+    <v-row no-gutters>
       <v-overlay
         :dark="false"
         :value="isNotificationSignupModalVisible"
@@ -11,12 +11,16 @@
             mdi-close
           </v-icon>
         </v-btn>
-        <v-row>
+        <v-row no-gutters>
           <v-card class="patch-earned">
             <v-card-text>
-              <v-row>
+              <v-row no-gutters>
                 <v-col cols="3">
-                  imagen
+                  <v-img
+                    v-if="$vuetify.breakpoint.smAndUp"
+                    max-width="550"
+                    :src="require('@/assets/svg/girl.svg')"
+                  />
                 </v-col>
                 <v-col cols="9">
                   <v-row class="mx-4">
