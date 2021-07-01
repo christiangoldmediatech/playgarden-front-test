@@ -22,6 +22,7 @@ describe('/app/student-cubby', () => {
   
       it('Click on Unlock This Patch', () => {
         cy.get('[data-test-id=patch-badge-row-btn]').first().click({ force: true })
+        cy.url().should('include', '/app/library')
       })
     })
 
