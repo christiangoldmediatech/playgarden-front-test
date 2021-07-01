@@ -11,7 +11,8 @@
             mdi-close
           </v-icon>
         </v-btn>
-        <info-week-four />
+        <!--  <info-week-four />  -->
+        <info-week-three />
       </v-overlay>
     </v-row>
   </v-container>
@@ -21,12 +22,14 @@
 import { defineComponent, ref } from '@nuxtjs/composition-api'
 import { useGlobalModal } from '@/composables'
 import InfoWeekFour from '@/components/app/notifications/InfoWeekFour.vue'
+import InfoWeekThree from '@/components/app/notifications/InfoWeekThree.vue'
 
 export default defineComponent({
   name: 'NotificationSignupModal',
 
   components: {
-    InfoWeekFour
+    InfoWeekFour,
+    InfoWeekThree
   },
 
   setup () {

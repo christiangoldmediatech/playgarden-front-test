@@ -7,7 +7,7 @@
             <v-img
               v-if="$vuetify.breakpoint.smAndUp"
               max-width="550"
-              :src="require('@/assets/svg/girl.svg')"
+              :src="require('@/assets/svg/children-play.svg')"
             />
           </v-col>
           <v-col cols="9">
@@ -15,41 +15,18 @@
               <div>
                 <underlined-title class="text-h6 text-md-h5" text="WE HOPE YOUR LITTLE ONE IS ENJOYING LEARNING WITH PLAYGARDEN PREP ONLINE!" />
                 <p class="mt-4 text-justify">
-                  Your FREE TRIAL period will end on [May 5, 2021]. We would hate to see you miss out on this early education and development opportunity! So we are extending our introductory promotion so you can continue to have access to all the features of the PREMIUM EARLY EDUCATION plan.
-                  Sign-up now and for $49.99 per month you will continue to have access to:
+                  Take advantage of the EARLY BIRD SPECIAL! Sign up now to receive:
                 </p>
-                <ul class="info-card">
-                  <li
-                    class="register-item text-left"
-                  >
-                    <small class="text-trial">
-                      1,000s of lessons
-                    </small>
-                  </li>
-                  <li
-                    class="register-item text-left"
-                  >
-                    <small class="text-trial">
-                      Hours of Live Classes each week
-                    </small>
-                  </li>
-                  <li
-                    class="register-item text-left"
-                  >
-                    <small class="text-trial">
-                      Special Events
-                    </small>
-                  </li>
-                  <li
-                    class="register-item text-left"
-                  >
-                    <small class="text-trial">
-                      Educational Playdates
-                    </small>
-                  </li>
-                </ul>
+
                 <p class="mt-4 text-justify">
-                  As always, you can cancel your enrollment anytime by going to your Accounts Page. We would love to hear from you if you have any questions, comments or concerns related to Playgarden Prep Online.
+                  1- A Playgarden Prep backpack <br>
+                  2- Specialized pencils <br>
+                  3- The new workbook
+                </p>
+
+                <p class="mt-4 text-justify">
+                  As always, you can cancel your enrollment anytime by going to your Accounts Page.
+                  Please contact us with any questions about the plans, your enrollment, or anything at all!
                 </p>
                 <p class="mt-4 text-justify">
                   With kind regards,<br>
@@ -66,7 +43,17 @@
                       Subscribe Now
                     </v-btn>
                   </v-col>
-                  <v-col>
+                  <v-col cols="2">
+                    <v-btn
+                      block
+                      color="white"
+                      small
+                      type="submit"
+                    >
+                      Remind me Later
+                    </v-btn>
+                  </v-col>
+                  <v-col cols="12">
                     <span class="grey--text">Need help? </span>
                     <span class="text-decoration-underline" @click="showContactUsModal">
                       <a class="accent--text">Contact us</a>
@@ -86,26 +73,11 @@
 import { defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
-  name: 'InfoWeekFour'
+  name: 'InfoWeekThree'
 })
 </script>
 
 <style lang="scss">
-ul.info-card {
-  list-style: none; /* Remove default bullets */
-  font-family: "Poppins" !important;
-}
-ul.info-card li::before {
-  content: "●";
-  font-size: 24px !important;
-  font-family: "Poppins" !important;
-  color: var(--v-accent-base); /* Change the color */
-  font-weight: bold; /* If you want it to be bold */
-  display: inline-block; /* Needed to add space between the bullet and the text */
-  width: 0.7em; /* Also needed for space (tweak if needed) */
-  margin-left: -1rem; /* Also needed for space (tweak if needed) */
-  margin-top: 10px;
-}
 .info-notification {
   &-card.v-sheet.v-card {
     margin: 0 16px;
