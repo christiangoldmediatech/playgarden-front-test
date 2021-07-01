@@ -23,7 +23,7 @@ export default {
       // Calculate progress
       let completedCount = 0
       for (let i = 0; i < this.lesson.videos.length; i++) {
-        const viewed = this.lesson.videos[i]
+        const viewed = this.lesson.videos[i].viewed
         if (viewed && viewed.completed) {
           completedCount++
         } else {
