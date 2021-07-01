@@ -9,7 +9,7 @@ export interface Patch {
   unblocked: boolean
 }
 
-export interface Patches extends Entity {
+export interface Patches {
   color: string
   description: string
   icon: string
@@ -23,7 +23,7 @@ export interface Patches extends Entity {
   }
 }
 
-export interface ChildrenPatchesActivity extends Entity {
+export interface ChildrenPatchesActivity {
   name: string
   description: string
   type: {
