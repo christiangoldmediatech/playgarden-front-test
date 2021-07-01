@@ -48,6 +48,7 @@
                 :to="{ name: 'app-playdates-find' }"
                 color="primary"
                 class="text-transform-none"
+                data-test-id="find-playdates"
               >
                 Find Playdates
               </v-btn>
