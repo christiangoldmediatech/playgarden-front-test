@@ -1,7 +1,7 @@
 <template>
   <div>
-    <large-image-content-dialog :value="isNotificationInfo" :img="imagePath" @close="closeModal">
-      <div>
+    <large-image-content-dialog :value="show" :img="imagePath" @close="closeModal">
+      <div class="mt-8">
         <underlined-title class="text-h6 text-md-h5" text="WE HOPE YOUR LITTLE ONE IS ENJOYING LEARNING WITH PLAYGARDEN PREP ONLINE!" />
       </div>
 
@@ -68,7 +68,11 @@ export default defineComponent({
   name: 'InfoWeek',
 
   props: {
-    isNotificationInfo: {
+    imagePath: {
+      type: String,
+      required: true
+    },
+    show: {
       type: Boolean,
       required: true
     }
@@ -79,13 +83,13 @@ export default defineComponent({
   },
 
   setup () {
-    const { imagePath, setImagePath } = useGlobalModal()
+    const { imagePath } = useGlobalModal()
 
     onMounted(() => {
-      setImagePath()
+      // setImagePath()
     })
 
-    return { imagePath, setImagePath }
+    return { imagePath }
   },
 
   methods: {

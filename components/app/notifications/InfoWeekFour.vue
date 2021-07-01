@@ -1,6 +1,6 @@
 <template>
   <div>
-    <large-image-content-dialog :value="isTrialExpiredModalVisible" :img="imagePath" @close="closeModal">
+    <large-image-content-dialog :value="true" :img="imagePath" @close="closeModal">
       <div>
         <underlined-title class="text-h6 text-md-h5" text="WE HOPE YOUR LITTLE ONE IS ENJOYING LEARNING WITH PLAYGARDEN PREP ONLINE!" />
       </div>
@@ -78,20 +78,18 @@ import { defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   name: 'InfoWeekFour',
-
+  props: {
+    imagePath: {
+      type: String,
+      required: true
+    },
+    show: {
+      type: Boolean,
+      required: true
+    }
+  },
   components: {
     LargeImageContentDialog
-  },
-
-  data: () => ({
-    isTrialExpiredModalVisible: true,
-    imagePath: require('@/assets/svg/girl.svg')
-  }),
-
-  methods: {
-    closeModal () {
-      this.$store.commit('notifications/SET_TRIAL_EXPIRED_MODAL_VISIBLE', false)
-    }
   }
 })
 </script>
