@@ -150,6 +150,10 @@ export default {
           })
 
           this.showTeachers = false
+
+          this.$nextTick(() => {
+            this.downloaded = true
+          })
         }
       }
 
