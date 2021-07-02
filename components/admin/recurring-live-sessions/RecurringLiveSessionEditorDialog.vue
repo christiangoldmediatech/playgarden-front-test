@@ -47,6 +47,7 @@
               name="Active"
               rules="required"
             >
+              <label>Status</label>
               <v-switch
                 v-model="item.active"
                 :label="getLabel"
