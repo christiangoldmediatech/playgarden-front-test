@@ -9,7 +9,7 @@ describe('All done', () => {
   
     it('loads the correct page', () => {
       cy.visit('/app/all-done')
-      // cy.url().should('include', '/app/all-done')
+      cy.url().should('include', '/app/all-done')
     })
   })
   
