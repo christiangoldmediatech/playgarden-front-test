@@ -1,7 +1,6 @@
 import { CurriculumType, Entity } from '@/models'
 
 export interface Puzzle extends Entity {
-  id: number
   active: boolean
   columns: number
   completed: boolean

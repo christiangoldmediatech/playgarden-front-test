@@ -130,6 +130,7 @@ import { defineComponent, onMounted, computed, useRoute, useStore } from '@nuxtj
 import { mapActions, mapGetters } from 'vuex'
 import PuzzlePiecesDialog from '@/components/app/student-cubby/PuzzlePiecesDialog.vue'
 import { usePuzzle } from '@/composables/puzzle'
+import { useChild } from '@/composables'
 import { PuzzleResponse } from '@/models'
 
 export default defineComponent({
