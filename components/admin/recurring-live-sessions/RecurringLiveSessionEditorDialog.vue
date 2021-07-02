@@ -44,6 +44,18 @@
 
             <validation-provider
               v-slot="{ errors }"
+              name="Active"
+              rules="required"
+            >
+              <v-switch
+                v-model="item.active"
+                label="Active"
+                :error-messages="errors"
+              />
+            </validation-provider>
+
+            <validation-provider
+              v-slot="{ errors }"
               name="Title"
               rules="required"
             >
@@ -244,6 +256,7 @@ function generateItemTemplate () {
   return {
     activityTypeId: null,
     title: null,
+    active: false,
     description: null,
     link: null,
     teacher: null,
