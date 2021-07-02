@@ -49,7 +49,7 @@
             >
               <v-switch
                 v-model="item.active"
-                label="Active"
+                :label="getLabel"
                 :error-messages="errors"
               />
             </validation-provider>
@@ -294,6 +294,10 @@ export default {
 
     title () {
       return this.id === null ? 'New Recurring LiveSession' : 'Edit Recurring LiveSession'
+    },
+
+    getLabel () {
+      return (this.item.active) ? 'Active' : 'Inactive'
     }
   },
 
