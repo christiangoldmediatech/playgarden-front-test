@@ -5,7 +5,7 @@ export const useChildCourseProgress = () => {
   const getCourseProgressByChildId = (
     id: number,
     curriculumTypeId: number | null = null
-  ): Promise<ChildProgress> => {
+  ): Promise<ChildProgress[]> => {
     let route = `/children/${id}/progress`
     route += curriculumTypeId ? `/${curriculumTypeId}` : ''
 
