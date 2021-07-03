@@ -63,7 +63,7 @@ describe('/app/playdates', () => {
   it('should be able to delete created invite', () => {
     // Open created playdate.
     cy.get('[data-test-id=playdate-card]').first().find('[data-test-id=card-playdate-title]').should('contain.text', 'Ana')
-    cy.get('[data-test-id=playdate-card]').first().find('[data-test-id=playdate-card-open-button]').click({ force: true })
+    cy.get('[data-test-id=playdate-card]').first().find('[data-test-id=card-playdate-open-button]').click({ force: true })
     cy.get('[data-test-id=playdate-modal').should('be.visible');
 
     // Delete playdate.

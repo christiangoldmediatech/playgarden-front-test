@@ -7,7 +7,7 @@
     tile
   >
     <!-- CARD IMAGE AND TIME -->
-    <v-row justify="center" class="py-6 px-3 px-md-2" no-gutters>
+    <v-row justify="center" class="py-6 px-3 px-md-2" no-gutters data-test-id="playdate-card">
       <v-col md="4" cols="12" class="align-self-start">
         <v-row no-gutters>
           <v-col cols="4" md="12">
@@ -123,6 +123,7 @@
                   class="white--text text-transform-none"
                   color="accent"
                   width="250"
+                  data-test-id="card-playdate-open-button"
                   :block="isMobile"
                   @click="dialog = true"
                 >
@@ -144,7 +145,7 @@
       height="100%"
       persistent
     >
-      <v-container class="vh-container overlay fullscreen pa-0" fluid>
+      <v-container class="vh-container overlay fullscreen pa-0" fluid data-test-id="playdate-modal">
         <v-row no-gutters justify="start">
           <v-btn
             class="top-left text-none text--white py-8"
@@ -280,6 +281,7 @@
                     target="_blank"
                     block
                     x-large
+                    data-test-id="card-playdate-open-button"
                     :href="playdate.link"
                     @click="handleOpenZoom"
                   >
