@@ -12,7 +12,7 @@ describe('/app/playdates', () => {
   })
 
   it('loads the page', () => {
-    cy.url().should('include', 'app/playdates')
+    cy.url().should('include', 'app/playdates/find')
   })
 
   it('should show list of playdates', () => {
