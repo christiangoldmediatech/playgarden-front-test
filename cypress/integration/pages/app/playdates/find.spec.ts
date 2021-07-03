@@ -42,9 +42,4 @@ describe('/app/playdates', () => {
 
     cy.get('[data-test-id=playdate-modal').should('not.be.visible');
   })
-
-  /**
-   * TODO:
-   * - DELETE A PLAYDATE
-   */
 })
