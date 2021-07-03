@@ -27,6 +27,7 @@
             <div
               v-if="child.firstName && !finding"
               class="text-h5 font-weight-bold grey--text text--darken-2"
+              data-test-id="card-playdate-title"
             >
               <template v-if="!joining">
                 {{ child.firstName | belongsTo }}
@@ -54,6 +55,7 @@
               <v-list-item-content>
                 <div
                   v-if="child.firstName && !finding"
+                  data-test-id="card-playdate-title"
                   class="text-h4 pb-2 font-weight-bold grey--text text--darken-2 d-none d-md-flex flex-column"
                 >
                   <template v-if="!joining">
@@ -304,6 +306,7 @@
                     block
                     x-large
                     text
+                    data-test-id="card-playdate-delete"
                     @click="remove"
                   >
                     DELETE PLAYDATE
