@@ -28,7 +28,6 @@
             height="90%"
             :src="require('@/assets/png/playdates/playdate.png')"
             class="align-center mr-md-15 mt-md-15 "
-            data-test-id="create-playdate-image"
           />
         </v-row>
       </v-col>
@@ -41,7 +40,7 @@
         </p>
 
         <validation-observer v-slot="{ invalid, passes, reset }">
-          <v-form @submit.prevent="passes(() => onSubmit(reset))">
+          <v-form @submit.prevent="passes(onSubmit(reset))">
             <v-row>
               <v-col>
                 <p class="text-md-left text-sm-center font-weight-bold">
@@ -83,7 +82,6 @@
                     label="Day"
                     :loading="loading"
                     solo
-                    data-test-id="day-select"
                     @change="onWeekdayChange"
                   />
                 </validation-provider>
@@ -108,7 +106,6 @@
                     :items="times"
                     :error-messages="errors"
                     label="Time"
-                    data-test-id="time-select"
                     :loading="loading"
                     solo
                   >
@@ -117,12 +114,7 @@
                     </template>
 
                     <template v-slot:item="{ item, on, attrs }">
-                      <span
-                        data-test-id="time-select-item"
-                        v-bind="attrs"
-                        v-on="on"
-                        v-html="item.text"
-                      />
+                      <span v-bind="attrs" v-on="on" v-html="item.text" />
                     </template>
                   </pg-select>
                 </validation-provider>
@@ -153,7 +145,6 @@
                     :menu-props="feature"
                     deletable-chips
                     hide-no-data
-                    data-test-id="invite-select"
                     :loading="loading"
                     multiple
                     solo
@@ -171,7 +162,6 @@
                   :disabled="invalid"
                   :loading="loading"
                   type="submit"
-                  data-test-id="create-playdate-submit"
                   x-large
                 >
                   Invite a Friend to a Playdate

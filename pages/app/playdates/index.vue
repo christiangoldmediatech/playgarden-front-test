@@ -32,7 +32,6 @@
                 nuxt
                 :to="{ name: 'app-playdates-create' }"
                 :small="$vuetify.breakpoint.smAndDown"
-                data-test-id="create-playdate"
               >
                 <template v-if="$vuetify.breakpoint.mdAndUp">
                   Invite a Friend to a Playdate
