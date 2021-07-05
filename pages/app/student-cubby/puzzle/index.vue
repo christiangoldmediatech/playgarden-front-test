@@ -151,6 +151,7 @@ export default defineComponent({
       await getPuzzlesByChildId(studentId.value)
       await get()
     })
+
     const child = computed(() => children.value.find((child: Child) => child.id === studentId.value)
     )
 
