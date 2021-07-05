@@ -9,7 +9,7 @@
         <img height="80px" src="@/assets/png/student-cubby/puzzle-piece.png">
         <span class="ml-4 text-h4 text-md-h3">PUZZLE</span>
       </div>
-      <div class="my-6 text-md-h6 text-body-1">
+      <div v-if="child" class="my-6 text-md-h6 text-body-1">
         Find all of {{ child.firstName || "Child" }}’s completed puzzles. Share
         them on social media!
       </div>
@@ -126,7 +126,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, computed, useRoute, useStore } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, watch, computed, useRoute, useStore } from '@nuxtjs/composition-api'
 import { mapActions, mapGetters } from 'vuex'
 import PuzzlePiecesDialog from '@/components/app/student-cubby/PuzzlePiecesDialog.vue'
 import { usePuzzle } from '@/composables/puzzle'
@@ -153,6 +153,10 @@ export default defineComponent({
     })
     const child = computed(() => children.value.find((child: Child) => child.id === studentId.value)
     )
+
+    watch(studentId, async (id) => {
+      await getPuzzlesByChildId(id)
+    })
 
     return {
       studentId,
