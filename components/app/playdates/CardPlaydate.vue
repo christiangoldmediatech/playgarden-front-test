@@ -4,6 +4,7 @@
     :elevation="joining ? 0 : 2"
     :max-width="joining ? '100%' : 600"
     height="100%"
+    data-test-id="playdate-card"
     tile
   >
     <!-- CARD IMAGE AND TIME -->
@@ -121,6 +122,7 @@
                   class="white--text text-transform-none"
                   color="accent"
                   width="250"
+                  data-test-id="playdate-card-open-button"
                   :block="isMobile"
                   @click="dialog = true"
                 >
@@ -142,12 +144,13 @@
       height="100%"
       persistent
     >
-      <v-container class="vh-container overlay fullscreen pa-0" fluid>
+      <v-container class="vh-container overlay fullscreen pa-0" fluid data-test-id="playdate-modal">
         <v-row no-gutters justify="start">
           <v-btn
             class="top-left text-none text--white py-8"
             color="white"
             text
+            data-test-id="playdate-modal-back-button"
             @click="dialog = false"
           >
             <v-icon class="mr-2" small left color="white">
@@ -160,6 +163,7 @@
               class="text-none text--white py-8"
               color="white"
               icon
+              data-test-id="playdate-modal-close-button"
               @click="dialog = false"
             >
               <v-icon>
@@ -278,6 +282,7 @@
                     target="_blank"
                     block
                     x-large
+                    data-test-id="playdate-zoom-button"
                     :href="playdate.link"
                     @click="handleOpenZoom"
                   >

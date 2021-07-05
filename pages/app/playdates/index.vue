@@ -48,6 +48,7 @@
                 :to="{ name: 'app-playdates-find' }"
                 color="primary"
                 class="text-transform-none"
+                data-test-id="find-playdates"
               >
                 Find Playdates
               </v-btn>
@@ -258,32 +259,44 @@
   </v-col>
 </template>
 
-<script>
-import { mapActions, mapGetters } from 'vuex'
+<script lang="ts">
+import { computed, defineComponent, onMounted, ref, useStore } from '@nuxtjs/composition-api'
+import { Child, Playdates } from '@/models'
 
-import CardPlaydate from '@/components/app/playdates/CardPlaydate'
+import CardPlaydate from '@/components/app/playdates/CardPlaydate.vue'
+import { usePlaydates } from '@/composables'
 
-export default {
+export default defineComponent({
   name: 'Index',
 
   components: {
     CardPlaydate
   },
 
-  data: () => ({
-    loading: false,
+  setup () {
+    const store = useStore()
 
-    playdates: []
-  }),
+    const { getChildrenInfo } = usePlaydates()
+    const loading = ref(false)
+    const playdates = ref<{ children: Child, playdates: Playdates[] }[]>([])
 
-  computed: {
-    ...mapGetters('auth', ['hasTrialOrPlatinumPlan']),
+    onMounted(() => {
+      if (hasTrialOrPlatinumPlan.value) {
+        getActivePlaydates()
+      } else {
+        setTimeout(() => {
+          getActivePlaydates()
+        }, 500)
+      }
+    })
 
-    playdatesComputed () {
-      return this.playdates
-        .filter(item => (item.playdates || []).length)
-        .flatMap(({ backpackChildrenImages = [], children, playdates }) => {
-          return playdates.map(({ playdate, backpackImages }, indexP) => {
+    const hasTrialOrPlatinumPlan = computed(() => store.getters['auth/hasTrialOrPlatinumPlan'])
+
+    const playdatesComputed = computed(() => {
+      return playdates.value
+        .filter(item => item.playdates?.length > 0)
+        .flatMap(({ children, playdates }) => {
+          return playdates.map(({ playdate, backpackImages }) => {
             if (!playdate) {
               return null
             }
@@ -295,38 +308,36 @@ export default {
             }
           })
         })
-    },
+    })
 
-    hasPlaydates () {
-      return Boolean(this.playdatesComputed.length)
-    },
+    const hasPlaydates = computed(() => playdatesComputed.value.length > 0)
 
-    allChildrenHavePlaydates () {
-      return this.playdates.every(playdate => Array.isArray(playdate.playdates) && playdate.playdates.length > 0)
-    }
-  },
+    const allChildrenHavePlaydates = computed(() => playdates.value.every(playdate => Array.isArray(playdate.playdates) && playdate.playdates.length > 0))
 
-  created () {
-    if (this.hasTrialOrPlatinumPlan) {
-      this.getActivePlaydates()
-    } else {
-      setTimeout(this.getActivePlaydates, 500)
-    }
-  },
-
-  methods: {
-    ...mapActions('playdates', ['getChildrenInfo']),
-
-    async getActivePlaydates () {
-      this.loading = true
-
+    const getActivePlaydates = async () => {
       try {
-        this.playdates = await this.getChildrenInfo()
-      } catch (e) {
+        loading.value = true
+        const response = await getChildrenInfo()
+
+        if (response) {
+          playdates.value = response
+        }
+      } catch (error) {
+
       } finally {
-        this.loading = false
+        loading.value = false
       }
     }
+
+    return {
+      loading,
+      playdates,
+      hasTrialOrPlatinumPlan,
+      allChildrenHavePlaydates,
+      hasPlaydates,
+      playdatesComputed,
+      getActivePlaydates
+    }
   }
-}
+})
 </script>
