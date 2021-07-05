@@ -132,6 +132,7 @@ import PuzzlePiecesDialog from '@/components/app/student-cubby/PuzzlePiecesDialo
 import { usePuzzle } from '@/composables/puzzle'
 import { useChild } from '@/composables'
 import { PuzzleResponse } from '@/models'
+import { Child } from '@/models/child.model'
 
 export default defineComponent({
   name: 'Index',
@@ -145,13 +146,18 @@ export default defineComponent({
     const store = useStore()
     const studentId = computed(() => Number(route.value.query.id))
     const { puzzlesResponse, getPuzzlesByChildId } = usePuzzle()
+    const { children, get } = useChild()
     onMounted(async () => {
       await getPuzzlesByChildId(studentId.value)
+      await get()
     })
+    const child = children.value.find((child: Child) => child.id === studentId.value)
 
     return {
       studentId,
-      puzzlesResponse
+      puzzlesResponse,
+      children,
+      child
     }
   },
 
@@ -159,16 +165,6 @@ export default defineComponent({
     return {
       dialog: false,
       toShow: {}
-    }
-  },
-
-  computed: {
-    ...mapGetters('children', { children: 'rows' }),
-
-    child () {
-      return (
-        this.children.find((child: any) => child.id === this.studentId) || {}
-      )
     }
   },
 
