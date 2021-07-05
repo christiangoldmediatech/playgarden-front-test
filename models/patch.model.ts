@@ -20,3 +20,18 @@ export interface Patches {
     lesson: boolean
   }
 }
+
+export interface ChildrenPatchesActivity {
+  id: number
+  name: string
+  description: string
+  type: {
+      lesson: boolean
+      extra: boolean
+      activity: boolean
+  },
+  icon: string
+  color: string
+  toUnloock: number
+  patches: Array<Patches>
+}
