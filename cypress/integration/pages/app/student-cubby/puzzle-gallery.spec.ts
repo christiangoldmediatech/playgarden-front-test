@@ -12,10 +12,17 @@ describe('/app/student-cubby', () => {
       cy.url().should('include', 'app/student-cubby/puzzle')
     })
 
-    describe('given PUZZLE is clicked', () => {
+    it('View progress puzzles', () => {
+      cy.get('[data-test-id=gallery-puzzles]').first().click({ force: true })
 
-      it('View progress puzzles', () => {
-        cy.get('[data-test-id=gallery-puzzles]').first().click({ force: true })
-      })
+      cy.get('[data-test-id=puzzle-modal').should('be.visible');
+    })
+
+    it('should close puzzle with X button', () => {
+      cy.get('[data-test-id=puzzle-modal').should('be.visible');
+  
+      cy.get('[data-test-id=puzzle-modal-close-button]').click({ force: true })
+  
+      cy.get('[data-test-id=puzzle-modal').should('not.be.visible');
     })
   })
