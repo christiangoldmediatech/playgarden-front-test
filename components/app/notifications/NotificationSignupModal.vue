@@ -1,7 +1,7 @@
 <template>
-  <v-row>
-    <info-week v-if="isWeekTwoAndThree" :show="isWeekTwoAndThree" />
-    <info-week-four v-if="isWeekFour" :show="isWeekFour" :image-path="imagePath" />
+  <v-row v-if="isNotificationSignupModalVisible">
+    <info-week v-if="isWeekTwoAndThree" :show="isNotificationSignupModalVisible" />
+    <info-week-four v-if="isWeekFour" :show="isNotificationSignupModalVisible" :image-path="imagePath" />
   </v-row>
 </template>
 
@@ -20,18 +20,22 @@ export default defineComponent({
   },
 
   setup () {
-    const { isWeekTwoAndThree, isWeekFour, imagePath, isNotificationSignupModalVisible, showNotificationSignupModal, hideNotificationSignuoModal, fetchUserInfo } = useGlobalModal()
+    const { isWeekTwoAndThree, isWeekFour, imagePath, isNotificationSignupModalVisible, showNotificationSignupModal, hideNotificationSignupModal, fetchUserInfo } = useGlobalModal()
 
     onMounted(() => {
       fetchUserInfo()
+      showNotificationSignupModal()
     })
+
+    const closeModal = () => {
+      hideNotificationSignupModal()
+    }
     return {
       isWeekTwoAndThree,
       isWeekFour,
       imagePath,
       isNotificationSignupModalVisible,
-      showNotificationSignupModal,
-      hideNotificationSignuoModal
+      showNotificationSignupModal
     }
   }
 })

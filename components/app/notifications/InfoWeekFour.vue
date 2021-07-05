@@ -1,6 +1,6 @@
 <template>
   <div>
-    <large-image-content-dialog :value="true" :img="imagePath" @close="closeModal">
+    <large-image-content-dialog :value="true" :img="imagePath" @close="hideNotificationSignupModal">
       <div>
         <underlined-title class="text-h6 text-md-h5" text="WE HOPE YOUR LITTLE ONE IS ENJOYING LEARNING WITH PLAYGARDEN PREP ONLINE!" />
       </div>
@@ -61,7 +61,7 @@
             </v-col>
             <v-col>
               <span class="grey--text">Need help? </span>
-              <span class="text-decoration-underline" @click="showContactUsModal">
+              <span class="text-decoration-underline">
                 <a class="accent--text">Contact us</a>
               </span>
             </v-col>
@@ -75,6 +75,7 @@
 <script lang="ts">
 import LargeImageContentDialog from '@/components/ui/dialogs/LargeImageContentDialog/LargeImageContentDialog.vue'
 import { defineComponent } from '@nuxtjs/composition-api'
+import { useGlobalModal } from '@/composables'
 
 export default defineComponent({
   name: 'InfoWeekFour',
@@ -90,7 +91,15 @@ export default defineComponent({
   },
   components: {
     LargeImageContentDialog
-  }
+  },
+  setup () {
+    const { hideNotificationSignupModal } = useGlobalModal()
+
+    return {
+      hideNotificationSignupModal
+    }
+  },
+  methods: {}
 })
 </script>
 

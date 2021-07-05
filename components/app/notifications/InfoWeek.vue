@@ -1,6 +1,6 @@
 <template>
   <div>
-    <large-image-content-dialog :value="show" :img="imagePath" @close="closeModal">
+    <large-image-content-dialog :value="show" :img="imagePath" @close="hideNotificationSignupModal">
       <div class="mt-8">
         <underlined-title class="text-h6 text-md-h5" text="WE HOPE YOUR LITTLE ONE IS ENJOYING LEARNING WITH PLAYGARDEN PREP ONLINE!" />
       </div>
@@ -83,20 +83,12 @@ export default defineComponent({
   },
 
   setup () {
-    const { imagePath } = useGlobalModal()
+    const { imagePath, hideNotificationSignupModal } = useGlobalModal()
 
-    onMounted(() => {
-      // setImagePath()
-    })
-
-    return { imagePath }
+    return { imagePath, hideNotificationSignupModal }
   },
 
-  methods: {
-    closeModal () {
-      this.$store.commit('notifications/SET_TRIAL_EXPIRED_MODAL_VISIBLE', false)
-    }
-  }
+  methods: {}
 })
 </script>
 

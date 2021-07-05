@@ -24,7 +24,7 @@ export const useGlobalModal = () => {
   const showNotificationSignupModal = () => {
     isNotificationSignupModalVisible.value = true
   }
-  const hideNotificationSignuoModal = () => {
+  const hideNotificationSignupModal = () => {
     isNotificationSignupModalVisible.value = false
   }
 
@@ -46,7 +46,7 @@ export const useGlobalModal = () => {
     showContactUsModal,
     hideContactUsModal,
     showNotificationSignupModal,
-    hideNotificationSignuoModal,
+    hideNotificationSignupModal,
     fetchUserInfo
   }
 }
