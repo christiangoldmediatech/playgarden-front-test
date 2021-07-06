@@ -23,6 +23,7 @@
       <!-- CONTACT US FORM MODAL -->
       <contact-us-form-modal />
 
+      <!-- NOTIFICATION SIGNUP -->
       <notification-signup-modal />
 
       <!-- CONTENT -->

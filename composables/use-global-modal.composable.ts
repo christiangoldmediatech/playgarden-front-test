@@ -1,9 +1,6 @@
 import { Console } from 'console'
 import dayjs from 'dayjs'
-import { computed, ref } from '@nuxtjs/composition-api'
-import { axios } from '@/utils'
-import { User } from '@/models'
-import { useAuth } from '@/composables'
+import { computed, ref, useStore } from '@nuxtjs/composition-api'
 
 const isContactUsModalVisible = ref(false)
 const isNotificationSignupModalVisible = ref(true)
@@ -12,17 +9,17 @@ const isWeekFour = ref(false)
 const imagePath = ref('')
 
 export const useGlobalModal = () => {
-  // const { userInfo } = useAuth()
-  // localStorage.setItem('notificationSignup', 'true')
+  const store = useStore()
+  const userInfo = store.getters['auth/getUserInfo']
   const isNotification = computed<any>(() => {
     const dataNotification: any = {}
-    // const { data } = await axios.get('/auth/me')
-
     const notificationShow = window.localStorage.getItem('notificationSignup')
     const lastDateNotification = window.localStorage.getItem('lastDateNotification')
-    const week = 1 // getWeek(data.createdAt)
+
+    const week = getWeek(userInfo.createdAt)
     const day = (lastDateNotification) ? getDays(new Date(lastDateNotification)) : 0
     const showNotification = (notificationShow) || 'false'
+
     isWeekTwoAndThree.value = (week <= 2)
     isWeekFour.value = (week >= 2)
 
