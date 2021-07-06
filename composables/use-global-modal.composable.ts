@@ -15,7 +15,7 @@ const isContactUsModalVisible = ref(false)
 const isNotificationSignupModalVisible = ref(true)
 const isWeekTwoAndThree = ref(false)
 const isWeekFour = ref(false)
-const isSubscriptionPlan = ref(true)
+const isSubscriptionPlan = ref(false)
 const imagePath = ref('')
 
 export const useGlobalModal = () => {
@@ -41,8 +41,14 @@ export const useGlobalModal = () => {
       const day = (lastDateNotification) ? getDays(new Date(lastDateNotification)) : 0
       const showNotification = (notificationShow) || 'false'
 
-      isWeekTwoAndThree.value = (week >= 2 && week <= 3)
-      isWeekFour.value = (week >= 4)
+      if (week >= 2 && week <= 3) {
+        isWeekTwoAndThree.value = true
+        localStorage.setItem('notificationSignup', 'false')
+      }
+      if (week >= 4) {
+        isWeekFour.value = true
+        localStorage.setItem('notificationSignup', 'false')
+      }
 
       if ((showNotification === 'true' && isWeekTwoAndThree.value) || (showNotification === 'true' && isWeekFour.value)) {
         hideNotificationSignupModal()
@@ -81,6 +87,7 @@ export const useGlobalModal = () => {
 
   const hideNotificationSignupModal = () => {
     isNotificationSignupModalVisible.value = false
+    isSubscriptionPlan.value = false
     saveDataNotification()
   }
 
@@ -98,7 +105,9 @@ export const useGlobalModal = () => {
     showContactUsModal,
     hideContactUsModal,
     showNotificationSignupModal,
-    hideNotificationSignupModal
+    hideNotificationSignupModal,
+    showSubscriptionPlanSelectionModal,
+    hideSubscriptionPlanSelectionModal
   }
 }
 

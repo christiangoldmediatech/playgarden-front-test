@@ -1,6 +1,6 @@
 <template>
   <div>
-    <large-image-content-dialog :value="true" :img="imagePath" @close="hideNotificationSignupModal">
+    <large-image-content-dialog :value="true" :img="imagePath" @close="hideNotificationSignupModal, showSubscriptionPlanSelectionModal">
       <div>
         <underlined-title class="text-h6 text-md-h5" text="WE HOPE YOUR LITTLE ONE IS ENJOYING LEARNING WITH PLAYGARDEN PREP ONLINE!" />
       </div>
@@ -55,6 +55,7 @@
                 color="accent"
                 small
                 type="submit"
+                @click="showSubscriptionPlanSelectionModal"
               >
                 Subscribe Now
               </v-btn>
@@ -93,10 +94,11 @@ export default defineComponent({
     LargeImageContentDialog
   },
   setup () {
-    const { hideNotificationSignupModal } = useGlobalModal()
+    const { hideNotificationSignupModal, showSubscriptionPlanSelectionModal } = useGlobalModal()
 
     return {
-      hideNotificationSignupModal
+      hideNotificationSignupModal,
+      showSubscriptionPlanSelectionModal
     }
   },
   methods: {}
