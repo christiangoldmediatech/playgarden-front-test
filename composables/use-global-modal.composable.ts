@@ -129,6 +129,9 @@ function getDays (lastDate: Date) {
 }
 
 function getImagePath (week: number) {
-  const path = (week <= 2) ? require('@/assets/svg/girl.svg') : require('@/assets/svg/girl.svg')
+  console.log('week--', week)
+  const path = require('@/assets/svg/girl.svg')
+
+  // (week <= 2) ? require('@/assets/svg/girl.svg') : require('@/assets/svg/girl.svg')
   return path
 }

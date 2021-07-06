@@ -1,9 +1,10 @@
 <template>
   <div>
     <v-row v-if="isNotification.isNotificationSignupModalVisible">
-      <info-week v-if="isNotification.isWeekTwoAndThree && !isNotification.isSubscriptionPlan" :show="isNotification.isWeekTwoAndThree" />
-      <info-week-four v-if="isNotification.isWeekFour && !isNotification.isSubscriptionPlan" :show="isNotification.isWeekFour" :image-path="isNotification.imagePath" />
-      <select-plan v-if="isNotification.isSubscriptionPlan" :show="isNotification.isSubscriptionPlan" />
+      <info-week v-if="isNotification.isWeekTwoAndThree && !isNotification.isSubscriptionPlan" :show="isNotification.isWeekTwoAndThree" :image-path="isNotification.imagePath" />
+      <info-week v-if="true" :show="true" />
+      <!-- <info-week-four v-if="isNotification.isWeekFour && !isNotification.isSubscriptionPlan" :show="isNotification.isWeekFour" :image-path="isNotification.imagePath" />
+      <select-plan v-if="isNotification.isSubscriptionPlan" :show="isNotification.isSubscriptionPlan" /> -->
     </v-row>
   </div>
 </template>

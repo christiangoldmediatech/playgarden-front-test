@@ -49,7 +49,7 @@
             Playgarden Prep Teachers.
           </p>
           <v-row>
-            <v-col cols="3">
+            <v-col cols="12" sm="12" md="3">
               <v-btn
                 block
                 color="accent"
@@ -60,7 +60,7 @@
                 Subscribe Now
               </v-btn>
             </v-col>
-            <v-col>
+            <v-col cols="12" sm="12" md="4">
               <span class="grey--text">Need help? </span>
               <span class="text-decoration-underline">
                 <a class="accent--text">Contact us</a>
