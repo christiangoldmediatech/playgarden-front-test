@@ -1,4 +1,3 @@
-import { Console } from 'console'
 import dayjs from 'dayjs'
 import { computed, ref, useStore } from '@nuxtjs/composition-api'
 
