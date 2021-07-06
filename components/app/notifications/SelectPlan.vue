@@ -19,6 +19,7 @@
           no-address
           no-payment
           updating
+          @click:submit="closeAll"
         />
       </v-col>
     </pg-dialog>
@@ -48,11 +49,18 @@ export default defineComponent({
 
   setup () {
     const vuetify = useVuetifyHelper()
-    const { hideSubscriptionPlanSelectionModal } = useGlobalModal()
+    const { hideSubscriptionPlanSelectionModal, hideNotificationSignupModal } = useGlobalModal()
     const isMobile = computed(() => vuetify.breakpoint.mobile)
     return {
+      isMobile,
       hideSubscriptionPlanSelectionModal,
-      isMobile
+      hideNotificationSignupModal
+    }
+  },
+  methods: {
+    closeAll () {
+      this.hideSubscriptionPlanSelectionModal()
+      this.hideNotificationSignupModal()
     }
   }
 })
