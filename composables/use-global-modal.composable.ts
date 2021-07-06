@@ -87,11 +87,11 @@ export const useGlobalModal = () => {
 
   const hideNotificationSignupModal = () => {
     isNotificationSignupModalVisible.value = false
-    isSubscriptionPlan.value = false
     saveDataNotification()
   }
 
   const showSubscriptionPlanSelectionModal = () => {
+    isNotificationSignupModalVisible.value = false
     isSubscriptionPlan.value = true
   }
 

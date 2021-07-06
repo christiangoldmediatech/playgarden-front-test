@@ -265,6 +265,7 @@ export default defineComponent({
       } catch (e) {
       } finally {
         this.enableAxiosGlobal()
+        this.$emit('closeSubscription')
       }
     },
 

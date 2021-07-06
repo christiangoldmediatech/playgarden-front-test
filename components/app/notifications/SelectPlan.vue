@@ -9,7 +9,7 @@
     >
       <v-col cols="12">
         <v-row class="pr-3 mb-md-n12" justify="end">
-          <v-btn class="white" icon @click.stop="closeChangePlanModal">
+          <v-btn class="white" icon @click.stop="hideSubscriptionPlanSelectionModal">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-row>
@@ -19,8 +19,6 @@
           no-address
           no-payment
           updating
-          @click:cancel="closeChangePlanModal"
-          @click:submit="onSuccessChangePlan"
         />
       </v-col>
     </pg-dialog>
@@ -30,8 +28,8 @@
 <script lang="ts">
 import LargeImageContentDialog from '@/components/ui/dialogs/LargeImageContentDialog/LargeImageContentDialog.vue'
 import SubscriptionPlanSelection from '@/components/app/payment/SubscriptionPlanSelection'
-import { defineComponent, onMounted } from '@nuxtjs/composition-api'
-import { useGlobalModal } from '@/composables'
+import { defineComponent, onMounted, computed } from '@nuxtjs/composition-api'
+import { useGlobalModal, useVuetifyHelper } from '@/composables'
 
 export default defineComponent({
   name: 'SelectPlan',
@@ -49,12 +47,14 @@ export default defineComponent({
   },
 
   setup () {
-    const { hideNotificationSignupModal } = useGlobalModal()
-
-    return { hideNotificationSignupModal }
-  },
-
-  methods: {}
+    const vuetify = useVuetifyHelper()
+    const { hideSubscriptionPlanSelectionModal } = useGlobalModal()
+    const isMobile = computed(() => vuetify.breakpoint.mobile)
+    return {
+      hideSubscriptionPlanSelectionModal,
+      isMobile
+    }
+  }
 })
 </script>
 
