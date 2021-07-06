@@ -1,19 +1,50 @@
 import { Console } from 'console'
 import dayjs from 'dayjs'
-import { ref } from '@nuxtjs/composition-api'
+import { computed, ref } from '@nuxtjs/composition-api'
 import { axios } from '@/utils'
 import { User } from '@/models'
-// import { useAuth } from '@/composables'
+import { useAuth } from '@/composables'
 
 const isContactUsModalVisible = ref(false)
 const isNotificationSignupModalVisible = ref(true)
 const isWeekTwoAndThree = ref(false)
 const isWeekFour = ref(false)
 const imagePath = ref('')
-const userInfo = ref({} as User)
 
 export const useGlobalModal = () => {
   // const { userInfo } = useAuth()
+  // localStorage.setItem('notificationSignup', 'true')
+  // saveDataNotification()
+
+  // const isNotification = computed(() => fetchUserInfo)
+  // const isNotification = computed(() => fetchUserInfo)
+  const isNotification = computed<any>(() => {
+    const dataNotification: any = {}
+    // const { data } = await axios.get('/auth/me')
+
+    const notificationShow = window.localStorage.getItem('notificationSignup')
+    const lastDateNotification = window.localStorage.getItem('lastDateNotification')
+    const week = 1 // getWeek(data.createdAt)
+    const day = (lastDateNotification) ? getDays(new Date(lastDateNotification)) : 0
+    const showNotification = (notificationShow) || 'false'
+    isWeekTwoAndThree.value = (week <= 2)
+    isWeekFour.value = true // (week >= 2)
+    isNotificationSignupModalVisible.value = true // aqui
+
+    if ((showNotification === 'true' && isWeekTwoAndThree.value) || (showNotification === 'true' && isWeekFour.value)) {
+      hideNotificationSignupModal()
+    } else {
+      showNotificationSignupModal()
+    }
+    imagePath.value = getImagePath(week)
+    dataNotification.imagePath = getImagePath(week)
+    dataNotification.isNotificationSignupModalVisible = isNotificationSignupModalVisible.value
+    dataNotification.isWeekTwoAndThree = isWeekTwoAndThree.value
+    dataNotification.isWeekFour = isWeekFour.value
+    dataNotification.imagePath = imagePath.value
+
+    return dataNotification
+  })
 
   const showContactUsModal = () => {
     isContactUsModalVisible.value = true
@@ -31,36 +62,13 @@ export const useGlobalModal = () => {
     saveDataNotification()
   }
 
-  const fetchUserInfo = () => {
-    const lastDateNotification = window.localStorage.getItem('lastDateNotification')
-    const notificationShow = window.localStorage.getItem('notificationSignup')
-    const week = (lastDateNotification) ? getWeek(new Date(lastDateNotification)) : 0
-    const day = (lastDateNotification) ? getDays(new Date(lastDateNotification)) : 0
-    const showNotification = (notificationShow) || 'false'
-    isWeekTwoAndThree.value = (day > 2)
-    isWeekFour.value = (day > 1)
-    console.log('notificationShow', notificationShow)
-    console.log('day', day)
-    console.log('week', week)
-    if ((showNotification === 'true' && isWeekTwoAndThree.value) || (showNotification === 'true' && isWeekFour.value)) {
-      hideNotificationSignupModal()
-    } else {
-      showNotificationSignupModal()
-    }
-    imagePath.value = getImagePath(week)
-  }
-
   return {
     isContactUsModalVisible,
-    isNotificationSignupModalVisible,
-    isWeekTwoAndThree,
-    isWeekFour,
-    imagePath,
+    isNotification,
     showContactUsModal,
     hideContactUsModal,
     showNotificationSignupModal,
-    hideNotificationSignupModal,
-    fetchUserInfo
+    hideNotificationSignupModal
   }
 }
 
@@ -70,12 +78,14 @@ function saveDataNotification () {
 }
 
 function getWeek (lastDate: Date) {
-  const week = dayjs(new Date()).diff(lastDate, 'week')
+  const now = new Date()
+  const week = dayjs(now).diff(lastDate, 'week')
   return week
 }
 
 function getDays (lastDate: Date) {
-  const days = dayjs(new Date()).diff(lastDate, 'day')
+  const now = new Date()
+  const days = dayjs(now).diff(lastDate, 'day')
   return days
 }
 

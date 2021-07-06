@@ -83,9 +83,9 @@ export default defineComponent({
   },
 
   setup () {
-    const { imagePath, hideNotificationSignupModal } = useGlobalModal()
+    const { hideNotificationSignupModal } = useGlobalModal()
 
-    return { imagePath, hideNotificationSignupModal }
+    return { hideNotificationSignupModal }
   },
 
   methods: {}
