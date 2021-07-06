@@ -7,13 +7,15 @@ type NotificationSign = {
   imagePath: String
   isNotificationSignupModalVisible: Boolean
   isWeekTwoAndThree: Boolean
-  isWeekFour: Boolean
+  isWeekFour: Boolean,
+  isSubscriptionPlan: Boolean
 }
 
 const isContactUsModalVisible = ref(false)
 const isNotificationSignupModalVisible = ref(true)
 const isWeekTwoAndThree = ref(false)
 const isWeekFour = ref(false)
+const isSubscriptionPlan = ref(true)
 const imagePath = ref('')
 
 export const useGlobalModal = () => {
@@ -28,9 +30,10 @@ export const useGlobalModal = () => {
       imagePath: '',
       isNotificationSignupModalVisible: false,
       isWeekTwoAndThree: false,
-      isWeekFour: false
+      isWeekFour: false,
+      isSubscriptionPlan: false
     }
-    if (abFlow.value === UserFlow.NOCREDITCARD) {
+    if (abFlow.value !== UserFlow.NOCREDITCARD) {
       const notificationShow = window.localStorage.getItem('notificationSignup')
       const lastDateNotification = window.localStorage.getItem('lastDateNotification')
 
@@ -60,6 +63,7 @@ export const useGlobalModal = () => {
       dataNotification.isWeekTwoAndThree = isWeekTwoAndThree.value
       dataNotification.isWeekFour = isWeekFour.value
       dataNotification.imagePath = imagePath.value
+      dataNotification.isSubscriptionPlan = isSubscriptionPlan.value
     }
     return dataNotification
   })
@@ -78,6 +82,14 @@ export const useGlobalModal = () => {
   const hideNotificationSignupModal = () => {
     isNotificationSignupModalVisible.value = false
     saveDataNotification()
+  }
+
+  const showSubscriptionPlanSelectionModal = () => {
+    isSubscriptionPlan.value = true
+  }
+
+  const hideSubscriptionPlanSelectionModal = () => {
+    isSubscriptionPlan.value = false
   }
 
   return {
