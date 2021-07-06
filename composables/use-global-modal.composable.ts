@@ -24,14 +24,22 @@ export const useGlobalModal = () => {
     const day = (lastDateNotification) ? getDays(new Date(lastDateNotification)) : 0
     const showNotification = (notificationShow) || 'false'
     isWeekTwoAndThree.value = (week <= 2)
-    isWeekFour.value = true // (week >= 2)
-    // isNotificationSignupModalVisible.value = true // aqui
+    isWeekFour.value = (week >= 2)
 
     if ((showNotification === 'true' && isWeekTwoAndThree.value) || (showNotification === 'true' && isWeekFour.value)) {
       hideNotificationSignupModal()
     } else {
       showNotificationSignupModal()
     }
+
+    if ((isWeekTwoAndThree.value && day > 14) || (isWeekTwoAndThree.value && day > 1)) {
+      showNotificationSignupModal()
+    }
+
+    if (!lastDateNotification) {
+      showNotificationSignupModal()
+    }
+
     imagePath.value = getImagePath(week)
     dataNotification.imagePath = getImagePath(week)
     dataNotification.isNotificationSignupModalVisible = isNotificationSignupModalVisible.value
