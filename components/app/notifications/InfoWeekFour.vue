@@ -1,6 +1,6 @@
 <template>
   <div>
-    <large-image-content-dialog :value="true" :img="imagePath" @close="hideNotificationSignupModal, showSubscriptionPlanSelectionModal">
+    <large-image-content-dialog :value="true" :img="imagePath" @close="hideNotificationSignupModal">
       <div>
         <underlined-title class="text-h6 text-md-h5" text="WE HOPE YOUR LITTLE ONE IS ENJOYING LEARNING WITH PLAYGARDEN PREP ONLINE!" />
       </div>
