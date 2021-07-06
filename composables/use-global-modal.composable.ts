@@ -1,6 +1,13 @@
 import dayjs from 'dayjs'
 import { computed, ref, useStore } from '@nuxtjs/composition-api'
 
+type NotificationSign = {
+  imagePath: String
+  isNotificationSignupModalVisible: Boolean
+  isWeekTwoAndThree: Boolean
+  isWeekFour: Boolean
+}
+
 const isContactUsModalVisible = ref(false)
 const isNotificationSignupModalVisible = ref(true)
 const isWeekTwoAndThree = ref(false)
@@ -10,8 +17,13 @@ const imagePath = ref('')
 export const useGlobalModal = () => {
   const store = useStore()
   const userInfo = store.getters['auth/getUserInfo']
-  const isNotification = computed<any>(() => {
-    const dataNotification: any = {}
+  const isNotification = computed<NotificationSign>(() => {
+    const dataNotification: NotificationSign = {
+      imagePath: '',
+      isNotificationSignupModalVisible: true,
+      isWeekTwoAndThree: true,
+      isWeekFour: false
+    }
     const notificationShow = window.localStorage.getItem('notificationSignup')
     const lastDateNotification = window.localStorage.getItem('lastDateNotification')
 
@@ -37,7 +49,6 @@ export const useGlobalModal = () => {
     }
 
     imagePath.value = getImagePath(week)
-    dataNotification.imagePath = getImagePath(week)
     dataNotification.isNotificationSignupModalVisible = isNotificationSignupModalVisible.value
     dataNotification.isWeekTwoAndThree = isWeekTwoAndThree.value
     dataNotification.isWeekFour = isWeekFour.value
