@@ -8,8 +8,11 @@
       <v-row class="mx-1 mt-3">
         <div>
           <p class="mt-4 text-justify">
-            Your FREE TRIAL period will end on [May 5, 2021]. We would hate to see you miss out on this early education and development opportunity! So we are extending our introductory promotion so you can continue to have access to all the features of the PREMIUM EARLY EDUCATION plan.
-            Sign-up now and for $49.99 per month you will continue to have access to:
+            Your <span class="info-modal-notification">FREE TRIAL</span> period will end on [May 5, 2021].
+            We would hate to see you miss out on this early education and development opportunity!
+            So we are extending our <span class="info-modal-notification">INTRODUCTORY PROMOTION</span> so you can continue to have access
+            to all the features of the <span class="font-weight-bold">PREMIUM EARLY EDUCATION</span> plan.
+            Sign-up now and for <span class="font-weight-bold">$49.99 per month</span> you will continue to have access to:
           </p>
           <ul class="info-card">
             <li
@@ -120,5 +123,10 @@ ul.info-card li::before {
   width: 0.7em; /* Also needed for space (tweak if needed) */
   margin-left: -1rem; /* Also needed for space (tweak if needed) */
   margin-top: 10px;
+}
+
+.info-modal-notification {
+  font-weight: bold !important;
+  color: var(--v-primary-base) !important;
 }
 </style>

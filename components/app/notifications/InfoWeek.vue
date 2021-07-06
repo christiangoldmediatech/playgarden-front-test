@@ -32,6 +32,7 @@
                 color="accent"
                 small
                 type="submit"
+                @click="showSubscriptionPlanSelectionModal"
               >
                 Subscribe Now
               </v-btn>
@@ -42,6 +43,7 @@
                 color="white"
                 small
                 type="submit"
+                @click="hideNotificationSignupModal"
               >
                 Remind me Later
               </v-btn>
@@ -83,12 +85,13 @@ export default defineComponent({
   },
 
   setup () {
-    const { hideNotificationSignupModal } = useGlobalModal()
+    const { hideNotificationSignupModal, showSubscriptionPlanSelectionModal } = useGlobalModal()
 
-    return { hideNotificationSignupModal }
-  },
-
-  methods: {}
+    return {
+      hideNotificationSignupModal,
+      showSubscriptionPlanSelectionModal
+    }
+  }
 })
 </script>
 

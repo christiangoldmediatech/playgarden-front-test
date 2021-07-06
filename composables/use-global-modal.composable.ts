@@ -33,7 +33,7 @@ export const useGlobalModal = () => {
       isWeekFour: false,
       isSubscriptionPlan: false
     }
-    if (abFlow.value !== UserFlow.NOCREDITCARD) {
+    if (abFlow.value === UserFlow.NOCREDITCARD) {
       const notificationShow = window.localStorage.getItem('notificationSignup')
       const lastDateNotification = window.localStorage.getItem('lastDateNotification')
 
@@ -129,9 +129,14 @@ function getDays (lastDate: Date) {
 }
 
 function getImagePath (week: number) {
-  console.log('week--', week)
-  const path = require('@/assets/svg/girl.svg')
+  let path = require('@/assets/svg/boy.svg')
 
-  // (week <= 2) ? require('@/assets/svg/girl.svg') : require('@/assets/svg/girl.svg')
+  if (week > 1 && week <= 3) {
+    path = require('@/assets/svg/children-play.svg')
+  }
+
+  if (week >= 4) {
+    path = require('@/assets/svg/girl.svg')
+  }
   return path
 }
