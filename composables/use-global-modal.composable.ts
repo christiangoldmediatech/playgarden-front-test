@@ -14,10 +14,6 @@ const imagePath = ref('')
 export const useGlobalModal = () => {
   // const { userInfo } = useAuth()
   // localStorage.setItem('notificationSignup', 'true')
-  // saveDataNotification()
-
-  // const isNotification = computed(() => fetchUserInfo)
-  // const isNotification = computed(() => fetchUserInfo)
   const isNotification = computed<any>(() => {
     const dataNotification: any = {}
     // const { data } = await axios.get('/auth/me')
@@ -29,7 +25,7 @@ export const useGlobalModal = () => {
     const showNotification = (notificationShow) || 'false'
     isWeekTwoAndThree.value = (week <= 2)
     isWeekFour.value = true // (week >= 2)
-    isNotificationSignupModalVisible.value = true // aqui
+    // isNotificationSignupModalVisible.value = true // aqui
 
     if ((showNotification === 'true' && isWeekTwoAndThree.value) || (showNotification === 'true' && isWeekFour.value)) {
       hideNotificationSignupModal()
