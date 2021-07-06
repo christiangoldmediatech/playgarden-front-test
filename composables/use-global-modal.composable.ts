@@ -38,8 +38,8 @@ export const useGlobalModal = () => {
       const day = (lastDateNotification) ? getDays(new Date(lastDateNotification)) : 0
       const showNotification = (notificationShow) || 'false'
 
-      isWeekTwoAndThree.value = (week <= 2)
-      isWeekFour.value = (week >= 2)
+      isWeekTwoAndThree.value = (week >= 2 && week <= 3)
+      isWeekFour.value = (week >= 4)
 
       if ((showNotification === 'true' && isWeekTwoAndThree.value) || (showNotification === 'true' && isWeekFour.value)) {
         hideNotificationSignupModal()
@@ -47,7 +47,7 @@ export const useGlobalModal = () => {
         showNotificationSignupModal()
       }
 
-      if ((isWeekTwoAndThree.value && day > 14) || (isWeekTwoAndThree.value && day > 1)) {
+      if ((isWeekTwoAndThree.value && day > 14) || (isWeekFour.value && day > 1)) {
         showNotificationSignupModal()
       }
 
