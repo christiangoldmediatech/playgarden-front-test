@@ -1,6 +1,6 @@
 <template>
   <v-row v-if="isNotificationSignupModalVisible">
-    <info-week v-if="isWeekTwoAndThree" :show="isNotificationSignupModalVisible" />
+    <!-- <info-week v-if="isWeekTwoAndThree" :show="isNotificationSignupModalVisible" /> -->
     <info-week-four v-if="isWeekFour" :show="isNotificationSignupModalVisible" :image-path="imagePath" />
   </v-row>
 </template>
