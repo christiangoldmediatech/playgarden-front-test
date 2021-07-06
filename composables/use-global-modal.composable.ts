@@ -1,5 +1,7 @@
 import dayjs from 'dayjs'
-import { computed, ref, useStore } from '@nuxtjs/composition-api'
+import { computed, ref, useStore, useRouter, useRoute } from '@nuxtjs/composition-api'
+import { UserFlow } from '@/models'
+import { useSignup } from './use-signup.composable'
 
 type NotificationSign = {
   imagePath: String
@@ -16,44 +18,49 @@ const imagePath = ref('')
 
 export const useGlobalModal = () => {
   const store = useStore()
+  const router = useRouter()
+  const route = useRoute()
+  const { abFlow } = useSignup({ router, route })
   const userInfo = store.getters['auth/getUserInfo']
+
   const isNotification = computed<NotificationSign>(() => {
     const dataNotification: NotificationSign = {
       imagePath: '',
-      isNotificationSignupModalVisible: true,
-      isWeekTwoAndThree: true,
+      isNotificationSignupModalVisible: false,
+      isWeekTwoAndThree: false,
       isWeekFour: false
     }
-    const notificationShow = window.localStorage.getItem('notificationSignup')
-    const lastDateNotification = window.localStorage.getItem('lastDateNotification')
+    if (abFlow.value === UserFlow.NOCREDITCARD) {
+      const notificationShow = window.localStorage.getItem('notificationSignup')
+      const lastDateNotification = window.localStorage.getItem('lastDateNotification')
 
-    const week = getWeek(userInfo.createdAt)
-    const day = (lastDateNotification) ? getDays(new Date(lastDateNotification)) : 0
-    const showNotification = (notificationShow) || 'false'
+      const week = getWeek(userInfo.createdAt)
+      const day = (lastDateNotification) ? getDays(new Date(lastDateNotification)) : 0
+      const showNotification = (notificationShow) || 'false'
 
-    isWeekTwoAndThree.value = (week <= 2)
-    isWeekFour.value = (week >= 2)
+      isWeekTwoAndThree.value = (week <= 2)
+      isWeekFour.value = (week >= 2)
 
-    if ((showNotification === 'true' && isWeekTwoAndThree.value) || (showNotification === 'true' && isWeekFour.value)) {
-      hideNotificationSignupModal()
-    } else {
-      showNotificationSignupModal()
+      if ((showNotification === 'true' && isWeekTwoAndThree.value) || (showNotification === 'true' && isWeekFour.value)) {
+        hideNotificationSignupModal()
+      } else {
+        showNotificationSignupModal()
+      }
+
+      if ((isWeekTwoAndThree.value && day > 14) || (isWeekTwoAndThree.value && day > 1)) {
+        showNotificationSignupModal()
+      }
+
+      if (!lastDateNotification) {
+        showNotificationSignupModal()
+      }
+
+      imagePath.value = getImagePath(week)
+      dataNotification.isNotificationSignupModalVisible = isNotificationSignupModalVisible.value
+      dataNotification.isWeekTwoAndThree = isWeekTwoAndThree.value
+      dataNotification.isWeekFour = isWeekFour.value
+      dataNotification.imagePath = imagePath.value
     }
-
-    if ((isWeekTwoAndThree.value && day > 14) || (isWeekTwoAndThree.value && day > 1)) {
-      showNotificationSignupModal()
-    }
-
-    if (!lastDateNotification) {
-      showNotificationSignupModal()
-    }
-
-    imagePath.value = getImagePath(week)
-    dataNotification.isNotificationSignupModalVisible = isNotificationSignupModalVisible.value
-    dataNotification.isWeekTwoAndThree = isWeekTwoAndThree.value
-    dataNotification.isWeekFour = isWeekFour.value
-    dataNotification.imagePath = imagePath.value
-
     return dataNotification
   })
 

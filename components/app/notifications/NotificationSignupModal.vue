@@ -8,7 +8,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from '@nuxtjs/composition-api'
+import { defineComponent, ref, onMounted, useRouter, useRoute } from '@nuxtjs/composition-api'
+import { useSignup } from '@/composables/use-signup.composable'
 import InfoWeek from '@/components/app/notifications/InfoWeek.vue'
 import InfoWeekFour from '@/components/app/notifications/InfoWeekFour.vue'
 import { useGlobalModal } from '@/composables'
@@ -25,13 +26,9 @@ export default defineComponent({
     const { isNotification, showNotificationSignupModal, hideNotificationSignupModal } = useGlobalModal()
 
     onMounted(() => {
-      // fetchUserInfo()
       showNotificationSignupModal()
     })
 
-    const closeModal = () => {
-      hideNotificationSignupModal()
-    }
     return {
       isNotification,
       showNotificationSignupModal
