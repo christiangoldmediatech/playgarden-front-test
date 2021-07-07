@@ -209,10 +209,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.collaborator-image {
-  width: 100%;
-  max-width: 100%;
-}
-</style>
