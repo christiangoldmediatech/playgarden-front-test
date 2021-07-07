@@ -9,13 +9,11 @@ import { TypedStore, User } from '@/models'
 import { useNotification } from './use-notification.composable'
 
 export const useAuth = ({
-  store,
-  cookies
+  store
 }: {
-  store: Store<TypedStore>,
-  cookies: ReturnType<typeof useCookiesHelper>
+  store: Store<TypedStore>
 }) => {
-  const { notificationCard, isTrialExpiringRibbonVisible } = useNotification()
+  const cookies = useCookiesHelper()
 
   const accessToken = computed(() => store.state.auth.accessToken)
   const setAccessToken = (val: string | null) => {
@@ -92,6 +90,7 @@ export const useAuth = ({
 
   const logout = (redirectOptions?: { route: string, redirect: (options: any) => void }) => {
     const { currentChildren, resetCurrentChildren } = useChild({ store })
+    const { notificationCard, isTrialExpiringRibbonVisible } = useNotification({ store })
 
     resetState()
 
