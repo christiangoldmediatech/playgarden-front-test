@@ -1,7 +1,7 @@
 <template>
   <div class="letter-lesson" @click="sendLetter">
     <recorded-letter
-      v-bind="{ letter: item, small: smallLetter, disabled: item.disabled }"
+      v-bind="{ letter: item, small: smallLetter, disabled: !item.enabled }"
       list-mode
     />
   </div>
