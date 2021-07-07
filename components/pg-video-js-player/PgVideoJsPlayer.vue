@@ -200,10 +200,6 @@ export default {
   },
 
   watch: {
-    nextUp (val) {
-      console.log('NextUp changed', val)
-    },
-
     getCurrentTime (val) {
       if (this.isCasting && this.getCasting) {
         this.position = val
@@ -333,7 +329,7 @@ export default {
         // nextUp && nextPatch && nextPuzzle
         if ((this.showNextUp || this.nextPatch || this.nextPuzzle) && this.duration > 0) {
           const elapsed = this.duration - this.position
-          if (elapsed <= 6 && !this.lastPlaylistItem && !this.nextUp.show && !this.nextUnlockData.show) {
+          if (window && elapsed <= 6 && !this.lastPlaylistItem && !this.nextUp.show && !this.nextUnlockData.show) {
             // Handle nextUp
             if (this.showNextUp && !this.nextUp.show && !this.nextUp.hasBeenSeen) {
               const { title, description, poster } = this.playlist[this.playlistItemIndex + 1]
