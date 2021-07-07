@@ -11,11 +11,15 @@
             Take advantage of the <span class="info-modal-notification">EARLY BIRD SPECIAL!</span> Sign up now to receive:
           </p>
 
-          <p class="mt-4 text-justify">
-            1- A Playgarden Prep backpack <br>
-            2- Specialized pencils <br>
-            3- The new workbook
-          </p>
+          <ol class="mt-4 text-justify">
+            <li value="1">
+              A Playgarden Prep backpack 1.
+            </li>
+
+            <li>Specialized pencils 2.</li>
+
+            <li> The new workbook 3.</li>
+          </ol>
 
           <p class="mt-4 text-justify">
             As always, you can cancel your enrollment anytime by going to your Accounts Page.
@@ -31,7 +35,6 @@
                 block
                 color="accent"
                 small
-                type="submit"
                 @click="showSubscriptionPlanSelectionModal"
               >
                 Subscribe Now
@@ -42,7 +45,6 @@
                 block
                 color="white"
                 small
-                type="submit"
                 @click="hideNotificationSignupModal"
               >
                 Remind me Later
