@@ -332,16 +332,17 @@
                           <v-col cols="6" md="8">
                             <template v-if="backpackSent">
                               <v-row class="clickable" no-gutters @click="$refs.backpackEditorDialogRef.open($event, user)">
-                                <b v-if="!workbookDateSent">Sent</b>
+                                <b v-if="!workbookDateSent">Sent {{ dateWorkbook() }}</b>
                                 <b v-else>
                                   Sent on: {{ dateWorkbook() }}
                                 </b>
-                                <v-img
+                                <v-icon
+                                  color="primary"
                                   class="ml-1"
-                                  max-height="25"
-                                  max-width="24"
-                                  :src="require('@/assets/svg/green-check.svg')"
-                                />
+                                  @click="$emit('prev-week')"
+                                >
+                                  mdi-eye
+                                </v-icon>
                               </v-row>
                             </template>
 
