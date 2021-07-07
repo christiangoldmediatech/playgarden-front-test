@@ -1,6 +1,6 @@
 <template>
   <div
-    class="next-up-container"
+    class="next-up-container clickable"
     :style="{ '--bottom-offset': `${(nextPatch) ? 32 : nextPuzzle ? 48 : 16}px` }"
   >
     <v-sheet

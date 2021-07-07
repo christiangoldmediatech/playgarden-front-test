@@ -106,6 +106,12 @@ export default {
       },
       required: false,
       default: null
+    },
+
+    onNextUpClick: {
+      type: Function,
+      required: false,
+      default: () => {}
     }
   }
 }

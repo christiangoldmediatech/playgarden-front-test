@@ -84,6 +84,12 @@ export default {
     nextUnlockData: {
       type: Object,
       required: true
+    },
+
+    onNextUpClick: {
+      type: Function,
+      required: false,
+      default: () => {}
     }
   }
 }

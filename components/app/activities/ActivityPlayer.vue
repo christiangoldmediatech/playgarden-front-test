@@ -22,6 +22,7 @@
       :no-seek="noSeek"
       :fullscreen-override="handleFullscreen"
       no-auto-track-change
+      :on-next-up-click="player ? player.skipVideo : undefined"
       @ready="onReady"
       @playlist-index-change="updateIndex"
       @last-playlist-item="findNextActivity"

@@ -176,7 +176,8 @@ export default {
         inline: this.inline,
         nextPatch: this.nextPatch,
         nextPuzzle: this.nextPuzzle,
-        nextUnlockData: this.nextUnlockData
+        nextUnlockData: this.nextUnlockData,
+        onNextUpClick: this.onNextUpClick
       }
     },
 
