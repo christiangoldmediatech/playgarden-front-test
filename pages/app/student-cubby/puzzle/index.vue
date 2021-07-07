@@ -131,7 +131,7 @@ import { mapActions, mapGetters } from 'vuex'
 import PuzzlePiecesDialog from '@/components/app/student-cubby/PuzzlePiecesDialog.vue'
 import { usePuzzle } from '@/composables/puzzle'
 import { useChild } from '@/composables'
-import { PuzzleResponse } from '@/models'
+import { PuzzleResponse, TypedStore } from '@/models'
 import { Child } from '@/models/child.model'
 
 export default defineComponent({
@@ -143,13 +143,13 @@ export default defineComponent({
 
   setup () {
     const route = useRoute()
-    const store = useStore()
+    const store = useStore<TypedStore>()
 
     const studentId = computed(() => Number(route.value.query.id))
     computed(async () => await getPuzzlesByChildId(studentId.value))
 
     const { puzzlesResponse, getPuzzlesByChildId } = usePuzzle()
-    const { children, get } = useChild()
+    const { children, get } = useChild({ store })
 
     onMounted(async () => {
       await getPuzzlesByChildId(studentId.value)
