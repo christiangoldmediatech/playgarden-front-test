@@ -331,7 +331,7 @@
 
                           <v-col cols="6" md="8">
                             <template v-if="backpackSent">
-                              <v-row no-gutters @click="$refs.backpackEditorDialogRef.open($event, user)">
+                              <v-row class="clickable" no-gutters @click="$refs.backpackEditorDialogRef.open($event, user)">
                                 <b v-if="!workbookDateSent">Sent</b>
                                 <b v-else>
                                   Sent on: {{ dateWorkbook() }}
@@ -346,7 +346,7 @@
                             </template>
 
                             <template v-else>
-                              <v-row no-gutters @click="$refs.backpackEditorDialogRef.open($event, user)">
+                              <v-row class="clickable" no-gutters @click="$refs.backpackEditorDialogRef.open($event, user)">
                                 <b>Pending</b>
                                 <v-img
                                   class="ml-1"
@@ -367,7 +367,7 @@
 
                           <v-col cols="6" md="8" class="pl-md-3">
                             <template v-if="workbookSent">
-                              <v-row no-gutters @click="$refs.workbookSendDatesRef.open($event, user)">
+                              <v-row no-gutters class="clickable" @click="$refs.workbookSendDatesRef.open($event, user)">
                                 <b v-if="!backpackDateSent">{{ getNumberWorkbook }} Sent</b>
                                 <b v-else>
                                   Sent on: {{ dateBackpack() }}
@@ -383,7 +383,7 @@
                             </template>
 
                             <template v-else>
-                              <v-row no-gutters @click="$refs.workbookSendDatesRef.open($event, user)">
+                              <v-row no-gutters class="clickable" @click="$refs.workbookSendDatesRef.open($event, user)">
                                 <b>Pending</b>
                                 <v-img
                                   class="ml-1"
