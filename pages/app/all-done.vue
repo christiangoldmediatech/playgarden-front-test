@@ -59,13 +59,11 @@
 </template>
 
 <script lang="ts">
-import { mapGetters, mapActions } from 'vuex'
-
-import { defineComponent, onMounted, computed, useRoute, useStore } from '@nuxtjs/composition-api'
+import { onMounted, useRoute, useStore } from '@nuxtjs/composition-api'
 import { useLetters } from '@/composables/letters'
-import { useChild } from '@/composables/use-child.composable'
 import Letter from '@/components/app/all-done/Letter.vue'
 import CourseProgressOverlay from '@/components/app/student-cubby/CourseProgressOverlay.vue'
+import { TypedStore } from '@/models'
 export default {
   name: 'AllDone',
 
@@ -77,9 +75,8 @@ export default {
   props: {},
 
   setup () {
-    const route = useRoute()
-    const store = useStore()
-    const { currentLetters, getLeters, getProgress } = useLetters()
+    const store = useStore<TypedStore>()
+    const { currentLetters, getLeters, getProgress } = useLetters({ store })
 
     onMounted(async () => {
       await getLeters()
