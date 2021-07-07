@@ -1,9 +1,10 @@
 import { ref } from '@nuxtjs/composition-api'
 import { axios } from '@/utils'
-import { CurriculumType } from '@/models'
+import { CurriculumType, TypedStore } from '@/models'
 import { useChild } from '@/composables'
+import { Store } from 'vuex/types/index'
 
-export const useLetters = () => {
+export const useLetters = ({ store }: { store: Store<TypedStore> }) => {
   /**
    * HTTP Requests
    */
@@ -11,7 +12,7 @@ export const useLetters = () => {
   const lettersProgress = ref<CurriculumType[]>([])
   const currentLetters = ref<CurriculumType[]>([])
 
-  const { currentChildren } = useChild()
+  const { currentChildren } = useChild({ store })
 
   const getLeters = async () => {
     letters.value = await axios.$get('/curriculum-types')
