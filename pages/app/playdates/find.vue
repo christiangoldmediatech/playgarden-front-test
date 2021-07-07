@@ -39,36 +39,44 @@
   </v-col>
 </template>
 
-<script>
-import { mapActions } from 'vuex'
+<script lang="ts">
+import { defineComponent, onMounted, ref } from '@nuxtjs/composition-api'
+import { Child, Playdate, Playdates } from '@/models'
+import { usePlaydates, useSnotifyHelper } from '@/composables'
 
-import CardPlaydate from '@/components/app/playdates/CardPlaydate'
+import CardPlaydate from '@/components/app/playdates/CardPlaydate.vue'
 
-export default {
+export default defineComponent({
   name: 'Find',
 
   components: { CardPlaydate },
 
-  data: () => ({
-    playdates: [],
-    activePlaydates: []
-  }),
+  setup () {
+    const snotify = useSnotifyHelper()
 
-  mounted () {
-    this.getActivePlaydates()
-  },
+    const { getAndFilterPlaydates, getChildrenInfo } = usePlaydates()
+    const playdates = ref<Playdate[]>([])
+    const activePlaydates = ref<{ children: Child, playdates: Playdates[] }[]>([])
 
-  methods: {
-    ...mapActions('playdates', ['getAndFilterPlaydates', 'getChildrenInfo']),
+    onMounted(() => {
+      getActivePlaydates()
+    })
 
-    async getActivePlaydates () {
+    const getActivePlaydates = async () => {
       try {
-        this.playdates = await this.getAndFilterPlaydates({
+        playdates.value = await getAndFilterPlaydates({
           showChildren: true
         })
-        this.activePlaydates = await this.getChildrenInfo()
-      } catch (e) {}
+        activePlaydates.value = await getChildrenInfo()
+      } catch (error) {
+        snotify.error('Something went wrong when fetching playdates information.')
+      }
+    }
+
+    return {
+      playdates,
+      activePlaydates
     }
   }
-}
+})
 </script>

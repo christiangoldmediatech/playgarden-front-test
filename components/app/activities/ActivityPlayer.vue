@@ -65,6 +65,11 @@ export default {
       this.patchImg = null
       this.toUnlock = null
       this.open(params)
+      this.$nextTick(() => {
+        if (this.$refs.videoPlayer) {
+          this.$refs.videoPlayer.popControls()
+        }
+      })
     })
   },
 

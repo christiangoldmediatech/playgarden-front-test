@@ -134,7 +134,6 @@ export default {
           disabled: (this.getLesson && this.getLesson.previewMode),
           action: () => {
             this.dialog = true
-            this.$nuxt.$emit(APP_EVENTS.DASHBOARD_WORKSHEET_UPLOAD)
           }
         }
       ]

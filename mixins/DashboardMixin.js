@@ -21,8 +21,15 @@ export default {
       }
 
       // Calculate progress
-      const completedCount = this.lesson.videos.map(({ viewed }) => Number(viewed && viewed.completed ? 1 : 0))
-        .reduce((a, b) => a + b)
+      let completedCount = 0
+      for (let i = 0; i < this.lesson.videos.length; i++) {
+        const viewed = this.lesson.videos[i].viewed
+        if (viewed && viewed.completed) {
+          completedCount++
+        } else {
+          break
+        }
+      }
 
       const progress = (completedCount / this.lesson.videos.length) * 100
       const progressNext = (completedCount < this.lesson.videos.length) ? ((completedCount + 1) / this.lesson.videos.length) * 100 : 100

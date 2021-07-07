@@ -1,25 +1,14 @@
-import { Store } from 'vuex/types'
 import { Child } from '@/models/child.model'
 import { axios } from '@/utils'
 import { hasLocalStorage } from '@/utils/window'
 import { computed } from '@nuxtjs/composition-api'
 import { useCookiesHelper } from '@/composables'
+import { Store } from 'vuex/types'
+import { TypedStore } from '@/models'
 
-interface TypedStore {
-  currentChild?: Child[]
-  currentChildExpires?: number
-  children: {
-    rows: Child[]
-  }
-}
+export const useChild = ({ store }: { store: Store<TypedStore> }) => {
+  const cookies = useCookiesHelper()
 
-export const useChild = ({
-  cookies,
-  store
-}: {
-  cookies: ReturnType<typeof useCookiesHelper>,
-  store: Store<TypedStore>
-}) => {
   const children = computed(() => store.state.children.rows)
   const setChildren = (children: Child[]) => store.commit('children/SET_ROWS', children)
 
@@ -38,7 +27,7 @@ export const useChild = ({
     }
   }
 
-  const create = (data: Partial<Child>): Promise<Child> => {
+  const create = (data: Partial<Child>) => {
     return axios.$post('/children', data)
   }
 
@@ -47,11 +36,11 @@ export const useChild = ({
     setChildren(children)
   }
 
-  const getById = (id: number): Promise<Child> => {
+  const getById = (id: number) => {
     return axios.$get(`/children/${id}`)
   }
 
-  const update = (id: number, data: Partial<Child>): Promise<Child> => {
+  const update = (id: number, data: Partial<Child>) => {
     return axios.$patch(`/children/${id}`, data)
   }
 
@@ -70,6 +59,7 @@ export const useChild = ({
   return {
     children,
     setChildren,
+    currentChildren,
     setCurrentChildren,
     create,
     get,

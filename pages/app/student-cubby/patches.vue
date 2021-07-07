@@ -18,19 +18,19 @@
         </div>
 
         <patch-row
-          v-for="activityType in items"
+          v-for="activityType in childrenPatchesActivity"
           :key="`activity-type-patch-row-${activityType.id}`"
           :activity-type="activityType"
+          data-test-id="patch-row"
         />
       </v-card-text>
     </v-card>
   </div>
 </template>
 
-<script>
-import { get } from 'lodash'
-import { mapActions } from 'vuex'
-
+<script lang="ts">
+import { defineComponent, onMounted, computed, useRoute, useStore } from '@nuxtjs/composition-api'
+import { usePatches } from '@/composables/patches'
 import PatchRow from '@/components/app/student-cubby/PatchRow.vue'
 import PatchOverlay from '@/components/app/student-cubby/PatchOverlay.vue'
 
@@ -42,37 +42,18 @@ export default {
     PatchOverlay
   },
 
-  data () {
+  setup () {
+    const route = useRoute()
+    const store = useStore()
+    const studentId = computed(() => Number(route.value.query.id))
+    const { childrenPatchesActivity, getPatchesByChildId } = usePatches()
+    onMounted(async () => {
+      await getPatchesByChildId(studentId.value)
+    })
+
     return {
-      items: []
-    }
-  },
-
-  computed: {
-    studentId () {
-      return this.$route.query.id
-    }
-  },
-
-  watch: {
-    studentId () {
-      this.refresh()
-    }
-  },
-
-  created () {
-    this.refresh()
-  },
-
-  methods: {
-    ...mapActions('children/patches', ['getPatchesByChildId']),
-
-    async refresh () {
-      if (this.studentId) {
-        this.items = (
-          await this.getPatchesByChildId({ id: this.studentId })
-        ).filter(item => get(item, 'patches', []).length)
-      }
+      childrenPatchesActivity,
+      studentId
     }
   }
 }
