@@ -64,8 +64,12 @@ export default {
       this.timeTriggeredAnalyticsBlock = false
       this.patchImg = null
       this.toUnlock = null
-      this.$refs.videoPlayer.popControls()
       this.open(params)
+      this.$nextTick(() => {
+        if (this.$refs.videoPlayer) {
+          this.$refs.videoPlayer.popControls()
+        }
+      })
     })
   },
 
