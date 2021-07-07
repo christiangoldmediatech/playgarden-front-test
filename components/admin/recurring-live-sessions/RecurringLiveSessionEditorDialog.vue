@@ -44,6 +44,19 @@
 
             <validation-provider
               v-slot="{ errors }"
+              name="Active"
+              rules="required"
+            >
+              <label>Status</label>
+              <v-switch
+                v-model="item.active"
+                :label="getActiveLabel"
+                :error-messages="errors"
+              />
+            </validation-provider>
+
+            <validation-provider
+              v-slot="{ errors }"
               name="Title"
               rules="required"
             >
@@ -244,6 +257,7 @@ function generateItemTemplate () {
   return {
     activityTypeId: null,
     title: null,
+    active: false,
     description: null,
     link: null,
     teacher: null,
@@ -281,6 +295,10 @@ export default {
 
     title () {
       return this.id === null ? 'New Recurring LiveSession' : 'Edit Recurring LiveSession'
+    },
+
+    getActiveLabel () {
+      return (this.item.active) ? 'Active' : 'Inactive'
     }
   },
 

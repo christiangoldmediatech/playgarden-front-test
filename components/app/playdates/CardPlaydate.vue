@@ -4,6 +4,7 @@
     :elevation="joining ? 0 : 2"
     :max-width="joining ? '100%' : 600"
     height="100%"
+    data-test-id="playdate-card"
     tile
   >
     <!-- CARD IMAGE AND TIME -->
@@ -151,6 +152,7 @@
             class="top-left text-none text--white py-8"
             color="white"
             text
+            data-test-id="playdate-modal-back-button"
             @click="dialog = false"
           >
             <v-icon class="mr-2" small left color="white">
@@ -163,6 +165,7 @@
               class="text-none text--white py-8"
               color="white"
               icon
+              data-test-id="playdate-modal-close-button"
               @click="dialog = false"
             >
               <v-icon>
