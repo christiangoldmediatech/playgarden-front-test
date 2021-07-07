@@ -88,7 +88,11 @@ export default {
   created () {
     this.$nuxt.$on('open-lesson-activity-player', (params) => {
       this.open(params)
-      this.$refs.videoPlayer.popControls()
+      this.$nextTick(() => {
+        if (this.$refs.videoPlayer) {
+          this.$refs.videoPlayer.popControls()
+        }
+      })
     })
   },
 

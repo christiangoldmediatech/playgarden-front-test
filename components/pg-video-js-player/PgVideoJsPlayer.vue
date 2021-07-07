@@ -177,7 +177,8 @@ export default {
         nextPatch: this.nextPatch,
         nextPuzzle: this.nextPuzzle,
         nextUnlockData: this.nextUnlockData,
-        onNextUpClick: this.onNextUpClick
+        onNextUpClick: this.beforeNextUpClick,
+        timeOut: null
       }
     },
 
@@ -228,6 +229,18 @@ export default {
 
     popControls () {
       this.$refs.controls.popControls()
+    },
+
+    beforeNextUpClick () {
+      if (this.onNextUpClick) {
+        this.onNextUpClick()
+        this.$set(this.nextUp, 'show', false)
+        this.$set(this.nextUnlockData, 'show', false)
+        if (this.timeOut) {
+          window.clearTimeout(this.timeOut)
+          this.timeOut = null
+        }
+      }
     },
 
     setup () {
@@ -320,10 +333,11 @@ export default {
             }
 
             // Timeout
-            const timeOut = window.setTimeout(() => {
+            this.timeOut = window.setTimeout(() => {
               this.$set(this.nextUp, 'show', false)
               this.$set(this.nextUnlockData, 'show', false)
-              window.clearTimeout(timeOut)
+              window.clearTimeout(this.timeOut)
+              this.timeOut = null
             }, 7500)
           }
         }

@@ -109,9 +109,11 @@ export default {
     },
 
     onNextUpClick: {
-      type: Function,
+      validator: (val) => {
+        return typeof val === 'function' || val === undefined
+      },
       required: false,
-      default: () => {}
+      default: undefined
     }
   }
 }
