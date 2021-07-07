@@ -18,7 +18,7 @@ export const usePlaydates = () => {
     return axios.$get(`/playdates/invite/${token}`)
   }
 
-  const getAndFilterPlaydates = (params: { showChildren: boolean }): Promise<Playdate[]> => {
+  const getAndFilterPlaydates = (params: { showChildren?: boolean, day?: string }): Promise<Playdate[]> => {
     return axios.$get('/playdates', { params })
   }
 
@@ -26,8 +26,8 @@ export const usePlaydates = () => {
     return axios.$get('/playdates/children')
   }
 
-  const getPlaydateDays = () => {
-    return axios.$get('/playdates/days/available')
+  const getPlaydateDays = async (): Promise<{ days: string[] }> => {
+    return await axios.$get('/playdates/days/available')
   }
 
   const joinPlaydate = ({ playdateId, childId }: { playdateId: number, childId: number }) => {

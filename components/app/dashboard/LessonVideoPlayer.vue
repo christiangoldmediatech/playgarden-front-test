@@ -40,6 +40,8 @@ import SaveVideoProgress from '@/mixins/SaveVideoProgressMixin.js'
 import Fullscreen from '@/mixins/FullscreenMixin.js'
 import LessonCompletedDialog from '@/components/app/dashboard/LessonCompletedDialog.vue'
 
+import { APP_EVENTS } from '@/models'
+
 export default {
   name: 'LessonVideoPlayer',
 
@@ -87,6 +89,7 @@ export default {
           color: 'accent',
           iconLeft: 'pg-icon-paper-pencil',
           action: () => {
+            this.$appEventBus.$emit(APP_EVENTS.DASHBOARD_ONLINE_WORKSHEET_CLICKED)
             this.$router.push(this.generateNuxtRoute('online-worksheet'))
           }
         },
