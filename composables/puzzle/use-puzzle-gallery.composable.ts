@@ -1,9 +1,10 @@
 import { ref } from '@nuxtjs/composition-api'
 import { axios } from '@/utils'
-import { Puzzle, PuzzleResponse } from '@/models'
+import { Puzzle, PuzzleResponse, TypedStore } from '@/models'
 import { get } from 'lodash'
+import { Store } from 'vuex/types/index'
 
-export const usePuzzle = () => {
+export const usePuzzle = ({ store }: { store: Store<TypedStore> }) => {
   /**
    * HTTP Requests
    */
