@@ -241,7 +241,9 @@ export default {
     ...mapActions('cast', ['init']),
 
     popControls () {
-      this.$refs.controls.popControls()
+      if (this.$refs.controls) {
+        this.$refs.controls.popControls()
+      }
     },
 
     hideNextUp () {

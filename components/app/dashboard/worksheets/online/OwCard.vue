@@ -195,7 +195,7 @@ export default {
       const result = [
         ...buttons,
         {
-          text: 'SKIP TO ACTIVITIES',
+          text: 'GO TO ACTIVITIES',
           color: '#FEC572',
           iconLeft: 'pg-icon-play',
           action: () => {

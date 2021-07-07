@@ -224,7 +224,9 @@ export default {
     },
 
     popControls () {
-      this.throttledActivator()
+      if (typeof this.throttledActivator === 'function') {
+        this.throttledActivator()
+      }
     }
   }
 }
