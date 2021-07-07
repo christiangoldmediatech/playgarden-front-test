@@ -105,15 +105,17 @@ export const useMusic = () => {
 
     favoritesDictionary.value = {}
 
-    for (const favorite of favorites.value) {
+    favorites.value.every((favorite) => {
       const songId = favorite && favorite.music ? favorite.music.id : undefined
 
       if (!songId) {
-        return
+        return true
       }
 
       favoritesDictionary.value[songId] = { songId, id: favorite.id }
-    }
+
+      return true
+    })
   }
 
   const sendCurrentPlayingMusic = async (musicId: number, childId: number) => {
