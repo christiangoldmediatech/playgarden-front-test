@@ -8,6 +8,8 @@
 import { mapGetters, mapActions } from 'vuex'
 import DashboardLayout from '@/components/app/dashboard/DashboardLayout.vue'
 import DashboardMixin from '@/mixins/DashboardMixin.js'
+import { APP_EVENTS, TAG_MANAGER_EVENTS } from '@/models'
+
 export default {
   name: 'Dashboard',
   components: {
@@ -22,7 +24,8 @@ export default {
   computed: {
     ...mapGetters({ currentChild: 'getCurrentChild' }),
     ...mapGetters('auth', {
-      playdateInvitationToken: 'getPlaydateInvitationToken'
+      playdateInvitationToken: 'getPlaydateInvitationToken',
+      getUserInfo: 'getUserInfo'
     }),
     ...mapGetters('admin/curriculum', { lesson: 'getLesson' }),
     ...mapGetters('children', { allChildren: 'rows' }),
@@ -85,9 +88,21 @@ export default {
       })
     })
   },
+  mounted () {
+    // GTM EVENTS
+    this.$appEventBus.$on(APP_EVENTS.DASHBOARD_ONLINE_WORKSHEET_CLICKED, () => {
+      this.$gtm.push({
+        event: TAG_MANAGER_EVENTS.DASHBOARD_ONLINE_WORKSHEET_CLICKED,
+        userId: this.getUserInfo.id,
+        dayLetter: this.lesson.curriculumType.letter,
+        dayNumber: this.lesson.day
+      })
+    })
+  },
   beforeDestroy () {
     this.$nuxt.$off('dashboard-panel-update')
     this.$nuxt.$off('dashboard-panel-update-redirect')
+    this.$appEventBus.$off(APP_EVENTS.DASHBOARD_ONLINE_WORKSHEET_CLICKED)
   },
   methods: {
     ...mapActions('children', { getAllChildren: 'get' }),
