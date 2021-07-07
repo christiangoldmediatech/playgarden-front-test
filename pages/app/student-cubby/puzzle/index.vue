@@ -9,18 +9,19 @@
         <img height="80px" src="@/assets/png/student-cubby/puzzle-piece.png">
         <span class="ml-4 text-h4 text-md-h3">PUZZLE</span>
       </div>
-      <div class="my-6 text-md-h6 text-body-1">
+      <div v-if="child" class="my-6 text-md-h6 text-body-1">
         Find all of {{ child.firstName || "Child" }}’s completed puzzles. Share
         them on social media!
       </div>
 
       <v-row class="mt-6" justify="space-around">
         <v-col
-          v-for="(puzzle, indexP) in puzzles"
+          v-for="(puzzle, indexP) in puzzlesResponse"
           :key="indexP"
           cols="12"
           sm="6"
           lg="4"
+          data-test-id="gallery-puzzles"
         >
           <v-hover>
             <template v-slot:default="{ hover }">
@@ -55,9 +56,8 @@
                         >
                           <v-row v-if="puzzle.piecesUnclocked !== puzzle.pieces" justify="center" no-gutters>
                             <span class="font-weight-black white--text">
-                              {{ puzzle.piecesUnclocked }}/{{ puzzle.pieces }}
+                              {{ (puzzle.piecesUnclocked) ? puzzle.piecesUnclocked : 0 }}/{{ puzzle.pieces }}
                             </span>
-
                             <v-progress-linear
                               class="mt-2 mx-4 white"
                               color="accent"
@@ -68,7 +68,8 @@
                               nuxt
                               small
                               color="accent"
-                              class="mt-3 text-transform-none"
+                              class="mt-3 text-transform-none btn-puzzle"
+                              data-test-id="btn-puzzle"
                               @click="showOverlay(puzzle)"
                             >
                               View Progress
@@ -106,6 +107,7 @@
                       small
                       color="accent"
                       class="mt-3 text-transform-none"
+                      data-test-id="view-puzzle-gallery-button"
                       @click="showOverlay(puzzle)"
                     >
                       View puzzle
@@ -123,108 +125,62 @@
   </v-card>
 </template>
 
-<script>
-import { get } from 'lodash'
+<script lang="ts">
+import { defineComponent, onMounted, watch, computed, useRoute, useStore } from '@nuxtjs/composition-api'
 import { mapActions, mapGetters } from 'vuex'
 import PuzzlePiecesDialog from '@/components/app/student-cubby/PuzzlePiecesDialog.vue'
+import { usePuzzle } from '@/composables/puzzle'
+import { useChild } from '@/composables'
+import { PuzzleResponse } from '@/models'
+import { Child } from '@/models/child.model'
 
-export default {
+export default defineComponent({
   name: 'Index',
 
   components: {
     PuzzlePiecesDialog
   },
 
+  setup () {
+    const route = useRoute()
+    const store = useStore()
+
+    const studentId = computed(() => Number(route.value.query.id))
+    computed(async () => await getPuzzlesByChildId(studentId.value))
+
+    const { puzzlesResponse, getPuzzlesByChildId } = usePuzzle()
+    const { children, get } = useChild()
+
+    onMounted(async () => {
+      await getPuzzlesByChildId(studentId.value)
+      await get()
+    })
+
+    const child = computed(() => children.value.find((child: Child) => child.id === studentId.value)
+    )
+
+    return {
+      studentId,
+      puzzlesResponse,
+      children,
+      child
+    }
+  },
+
   data: () => {
     return {
       dialog: false,
-      puzzles: [],
       toShow: {}
     }
   },
 
-  computed: {
-    ...mapGetters('children', { children: 'rows' }),
-
-    child () {
-      return (
-        this.children.find(({ id }) => id === Number(this.studentId)) || {}
-      )
-    },
-
-    studentId () {
-      return this.$route.query.id
-    }
-  },
-
-  watch: {
-    studentId () {
-      if (!this.loading) {
-        this.fetchPuzzles()
-      }
-    }
-  },
-
-  created () {
-    this.fetchPuzzles()
-  },
-
   methods: {
-    ...mapActions('children/puzzle', ['findPuzzlesByChildrenId']),
-
-    async fetchPuzzles (clear = false) {
-      this.loading = true
-
-      if (clear) {
-        this.search = null
-      }
-      try {
-        const puzzles = await this.findPuzzlesByChildrenId({
-          id: this.studentId
-        })
-
-        this.puzzles = puzzles.map(
-          ({
-            id,
-            active = false,
-            completed = false,
-            curriculumType,
-            image = '',
-            name = '',
-            pieces = 0,
-            piecesUnclocked = 0,
-            puzzleChildrenId
-          }) => ({
-            id,
-            active,
-            completed,
-            lazy: false,
-            letter: get(curriculumType, 'letter', ''),
-            name,
-            pieces,
-            piecesUnclocked,
-            percentageCompleted: (piecesUnclocked * 100) / pieces,
-            puzzleChildrenId,
-            src: image,
-            srcType: this.getSrcType(completed && !active)
-          })
-        )
-      } catch (e) {
-      } finally {
-        this.loading = false
-      }
-    },
-
-    getSrcType (completed) {
-      return completed ? 'src' : 'lazy-src'
-    },
-
-    showOverlay (puzzle) {
+    showOverlay (puzzle: PuzzleResponse) {
       this.toShow = { ...puzzle }
       this.dialog = true
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
