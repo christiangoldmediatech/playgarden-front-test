@@ -1,23 +1,50 @@
 import { computed, ref } from '@nuxtjs/composition-api'
+import { Store } from 'vuex/types'
 // @ts-ignore
 import jwtDecode from 'jwt-decode'
 import { useCookiesHelper } from '@/composables'
 import { hasLocalStorage } from '@/utils/window'
 import { axios } from '@/utils'
-import { User } from '@/models'
+import { TypedStore, User } from '@/models'
 import { useNotification } from './use-notification.composable'
 
-const accessToken = ref<string | null>(null)
-const axiosToken = ref<string | null>(null)
-const expiresAt = ref<number | null>(null)
-const issuedAt = ref<number | null>(null)
-const playdateInvitationToken = ref<string | null>(null)
-
-const userInfo = ref({} as User)
-
-export const useAuth = () => {
-  const cookies = useCookiesHelper()
+export const useAuth = ({
+  store,
+  cookies
+}: {
+  store: Store<TypedStore>,
+  cookies: ReturnType<typeof useCookiesHelper>
+}) => {
   const { notificationCard, isTrialExpiringRibbonVisible } = useNotification()
+
+  const accessToken = computed(() => store.state.auth.accessToken)
+  const setAccessToken = (val: string | null) => {
+    store.commit('auth/SET_ACCESS_TOKEN', val)
+  }
+
+  const expiresAt = computed(() => store.state.auth.expiresAt)
+  const setExpiresAt = (val: number | null) => {
+    store.commit('auth/SET_EXPIRES_AT', val)
+  }
+
+  const issuedAt = computed(() => store.state.auth.issuedAt)
+  const setIssuedAt = (val: number | null) => {
+    store.commit('auth/SET_ISSUED_AT', val)
+  }
+
+  const setAxiosToken = (val: string | null) => {
+    store.commit('auth/SET_AXIOS_TOKEN', val)
+  }
+
+  const playdateInvitationToken = computed(() => store.state.auth.playdateInvitationToken)
+  const setPlaydateInvitationToken = (val: string | null) => {
+    store.commit('auth/SET_PLAYDATE_INVITATION_TOKEN', val)
+  }
+
+  const userInfo = computed(() => store.state.auth.userInfo)
+  const setUserInfo = (val: User) => {
+    store.commit('auth/SET_USER_INFO', val)
+  }
 
   const checkAuth = (): boolean => {
     return !!(accessToken.value && expiresAt.value) && (Date.now() < expiresAt.value)
@@ -35,10 +62,10 @@ export const useAuth = () => {
       cookies.add({ _key: 'atoken', _data: token, _maxAge: auth.exp })
     }
 
-    accessToken.value = token
-    axiosToken.value = token
-    issuedAt.value = auth.iat
-    expiresAt.value = auth.exp * 1000
+    setAccessToken(token)
+    setAxiosToken(token)
+    setIssuedAt(auth.iat)
+    setExpiresAt(auth.exp * 1000)
 
     if (hasLocalStorage()) {
       window.localStorage.setItem('authToken', JSON.stringify(token))
@@ -56,12 +83,11 @@ export const useAuth = () => {
   }
 
   const resetState = () => {
-    accessToken.value = null
-    expiresAt.value = null
-    issuedAt.value = null
-    userInfo.value = {} as User
-
-    axios.setToken('', 'Bearer')
+    setAccessToken(null)
+    setExpiresAt(null)
+    setIssuedAt(null)
+    setUserInfo({} as User)
+    setAxiosToken('')
   }
 
   const logout = () => {
@@ -97,13 +123,13 @@ export const useAuth = () => {
   const fetchUserInfo = async () => {
     const { data } = await axios.get('/auth/me')
 
-    userInfo.value = data
+    setUserInfo(data)
   }
 
   const updateUserInfo = async (draft: Pick<User, 'firstName' | 'lastName' | 'phoneNumber'>) => {
     const { data } = await axios.patch('/auth/me/edit', draft)
 
-    userInfo.value = data
+    setUserInfo(data)
   }
 
   const updateAuthOnboarding = async () => {
