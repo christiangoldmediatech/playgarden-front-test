@@ -4,11 +4,11 @@
     :elevation="joining ? 0 : 2"
     :max-width="joining ? '100%' : 600"
     height="100%"
-    data-test-id="playdate-card"
+    data-test-id="card-playdate"
     tile
   >
     <!-- CARD IMAGE AND TIME -->
-    <v-row justify="center" class="py-6 px-3 px-md-2" no-gutters data-test-id="playdate-card">
+    <v-row justify="center" class="py-6 px-3 px-md-2" no-gutters>
       <v-col md="4" cols="12" class="align-self-start">
         <v-row no-gutters>
           <v-col cols="4" md="12">

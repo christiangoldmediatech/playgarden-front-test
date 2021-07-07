@@ -16,11 +16,11 @@ describe('/app/playdates', () => {
   })
 
   it('should show list of playdates', () => {
-    cy.get('[data-test-id=playdate-card]').should('have.length.at.least', 1);
+    cy.get('[data-test-id=card-playdate]').should('have.length.at.least', 1);
   })
 
   it('should open playdate', () => {
-    cy.get('[data-test-id=playdate-card]').first().find('[data-test-id=playdate-card-open-button]').click({ force: true })
+    cy.get('[data-test-id=card-playdate]').first().find('[data-test-id=card-playdate-open-button]').click({ force: true })
 
     cy.get('[data-test-id=playdate-modal').should('be.visible');
   })
@@ -34,7 +34,7 @@ describe('/app/playdates', () => {
   })
 
   it('should close playdate with back button', () => {
-    cy.get('[data-test-id=playdate-card]').first().find('[data-test-id=playdate-card-open-button]').click({ force: true })
+    cy.get('[data-test-id=card-playdate]').first().find('[data-test-id=card-playdate-open-button]').click({ force: true })
 
     cy.get('[data-test-id=playdate-modal').should('be.visible');
 
