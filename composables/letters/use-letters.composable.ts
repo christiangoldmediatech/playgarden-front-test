@@ -38,5 +38,5 @@ function getCurrrentLetters (letters: CurriculumType[], lettersProgres: Curricul
       ...letter,
       ...current
     }
-  }).slice(0, 9)
+  }).slice(0, 12)
 }
