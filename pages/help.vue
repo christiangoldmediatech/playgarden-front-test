@@ -288,7 +288,7 @@
   </v-main>
 </template>
 
-<script>
+<script lang="ts">
 import { computed, defineComponent, onMounted, ref, useRouter, useStore } from '@nuxtjs/composition-api'
 import { get } from 'lodash'
 import { mapActions } from 'vuex'
