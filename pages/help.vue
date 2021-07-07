@@ -106,7 +106,7 @@
                 </v-col>
               </v-row>
 
-              <v-row class="mt-4 mt-md-12 px-4 px-md-12" justify="center">
+              <v-row class="mt-4 mb-14 mt-md-12 px-4 px-md-12" justify="center">
                 <underlined-title
                   class="text-h5 text-md-h3"
                   :text="categorySelect.name"
@@ -152,7 +152,7 @@
               </v-row>
             </template>
 
-            <v-row v-if="isLogin" class="mt-12 px-6 px-md-0" justify="center">
+            <v-row v-if="isLogin" class="px-6 px-md-0" justify="center">
               <v-col cols="12" md="6">
                 <validation-observer v-slot="{ invalid, passes, reset }">
                   <v-form
