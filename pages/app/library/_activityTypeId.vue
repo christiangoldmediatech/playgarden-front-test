@@ -13,10 +13,7 @@
       nuxt
       :to="{ name: 'app-library' }"
     >
-      <v-icon left>
-        mdi-less-than
-      </v-icon>
-      Back
+      <span>Back</span>
     </v-btn>
 
     <activity-type-header
@@ -118,10 +115,15 @@ export default defineComponent({
 <style lang="scss">
 .activity-type-back {
   position: absolute;
-  top: 8px;
-  left: 8px;
-  color: white !important;
-  text-transform: none;
+  top: 18px;
+  left: 18px;
+  background: rgba(92, 92, 92, 0.25);
+  border-radius: 4px;
   z-index: 5;
+
+  & span {
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.10));
+    color: white !important;
+  }
 }
 </style>
