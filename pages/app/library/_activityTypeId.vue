@@ -38,6 +38,7 @@
       }"
       expandable
       no-header
+      @next-page="handleViewMore"
     />
 
     <activity-player />
@@ -66,7 +67,7 @@ export default defineComponent({
     const route = useRoute()
     const loading = ref(false)
 
-    const { activityById, featuredById, totalById, getActivitiesById } = useActivity()
+    const { activityById, featuredById, totalById, getActivitiesById, handleFetchMoreActivityById } = useActivity()
     const { getAllFavorites } = useLibrary()
 
     const id = computed(() => parseInt(route.value.params.activityTypeId))
@@ -101,6 +102,10 @@ export default defineComponent({
       ctx.root.$nuxt.$emit('open-activity-player', { playlist, index })
     }
 
+    const handleViewMore = () => {
+      handleFetchMoreActivityById(id.value)
+    }
+
     return {
       loading,
       activityById,
@@ -109,7 +114,8 @@ export default defineComponent({
       hasActivity,
       hasFeaturedVideo,
       handlePlayAll,
-      playFeaturedVideo
+      playFeaturedVideo,
+      handleViewMore
     }
   }
 })
