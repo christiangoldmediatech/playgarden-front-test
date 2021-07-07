@@ -2,7 +2,7 @@ import { computed, ref } from '@nuxtjs/composition-api'
 import { Store } from 'vuex/types'
 // @ts-ignore
 import jwtDecode from 'jwt-decode'
-import { useCookiesHelper } from '@/composables'
+import { useCookiesHelper, useChild } from '@/composables'
 import { hasLocalStorage } from '@/utils/window'
 import { axios } from '@/utils'
 import { TypedStore, User } from '@/models'
@@ -90,7 +90,9 @@ export const useAuth = ({
     setAxiosToken('')
   }
 
-  const logout = () => {
+  const logout = (redirectOptions?: { route: string, redirect: (options: any) => void }) => {
+    const { currentChildren, resetCurrentChildren } = useChild({ store })
+
     resetState()
 
     if (process.client) {
@@ -99,10 +101,11 @@ export const useAuth = ({
 
     if (hasLocalStorage()) {
       window.localStorage.removeItem('authToken')
-      // TODO: child composable
     }
 
-    // TODO: child composable
+    if (currentChildren.value?.length) {
+      resetCurrentChildren()
+    }
 
     if (notificationCard.value.isVisible) {
       notificationCard.value = {
@@ -115,7 +118,19 @@ export const useAuth = ({
       isTrialExpiringRibbonVisible.value = false
     }
 
-    // TODO: if (redirect)
+    if (redirectOptions &&
+      typeof redirectOptions === 'object' &&
+      Object.prototype.hasOwnProperty.call(redirectOptions, 'redirect')
+    ) {
+      if (Object.prototype.hasOwnProperty.call(redirectOptions, 'route')) {
+        redirectOptions.redirect({
+          name: 'index',
+          query: { redirect: encodeURIComponent(redirectOptions.route) }
+        })
+      } else {
+        redirectOptions.redirect({ name: 'index' })
+      }
+    }
   }
 
   const isUserLoggedIn = computed(() => Boolean(userInfo.value.id))
