@@ -46,7 +46,7 @@ export const useLibrary = (videoId?: number) => {
         await deleteFavorite(favoriteVideo.value.id)
       } else {
         await addFavorite(videoId)
-        eventBus.$emit(APP_EVENTS.MUSIC_ITEM_ADD_TO_FAVORITES, videoId)
+        eventBus.$emit(APP_EVENTS.LIBRARY_ADD_VIDEO_TO_FAVORITES, videoId)
       }
 
       nuxt.$emit('library-update-favorites')

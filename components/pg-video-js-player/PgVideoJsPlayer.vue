@@ -128,7 +128,13 @@ export default {
       isCasting: false,
       castLoading: false,
       MEDIA_NAMESPACE: 'urn:x-cast:com.google.cast.media',
-      timeOut: null
+      timeOut: null,
+      videoTagUpdates: {
+        id: 0,
+        quarter: false,
+        half: false,
+        seventyFive: false
+      }
     }
   },
 
@@ -200,10 +206,6 @@ export default {
   },
 
   watch: {
-    nextUp (val) {
-      console.log('NextUp changed', val)
-    },
-
     getCurrentTime (val) {
       if (this.isCasting && this.getCasting) {
         this.position = val
@@ -326,14 +328,74 @@ export default {
         this.status = 'PLAYING'
       })
 
-      this.playerInstance.on('timeupdate', () => {
+      this.playerInstance.on('timeupdate', (data) => {
         this.status = 'PLAYING'
         this.position = this.playerInstance.currentTime()
+
+        // GTM EVENT
+        const percentage = Math.round(this.position / this.duration * 100, 2)
+        const item = this.playlist[this.playlistItemIndex]
+        if ([25, 50, 75].includes(percentage)) {
+          // If we haven't already called this percentage on this video send the event
+          if (item.id !== this.videoTagUpdates.id) {
+            this.videoTagUpdates.id = item.id
+
+            // Update events on this video
+            switch (percentage) {
+              case 25:
+                this.videoTagUpdates.quarter = true
+                break
+              case 50:
+                this.videoTagUpdates.half = true
+                break
+              case 75:
+                this.videoTagUpdates.seventyFive = true
+                break
+            }
+            this.$gtm.push({
+              event: TAG_MANAGER_EVENTS.VIDEO_EVENT,
+              videoStatus: data.type,
+              videoPercent: percentage,
+              videoTitle: item.description,
+              userId: this.getUserInfo.id
+            })
+          } else {
+            // If we haven't sent it, sent it
+            let shouldSendEvent = false
+
+            switch (percentage) {
+              case 25:
+                if (!this.videoTagUpdates.quarter) {
+                  shouldSendEvent = true
+                }
+                break
+              case 50:
+                if (!this.videoTagUpdates.half) {
+                  shouldSendEvent = true
+                }
+                break
+              case 75:
+                if (!this.videoTagUpdates.seventyFive) {
+                  shouldSendEvent = true
+                }
+                break
+            }
+            if (shouldSendEvent) {
+              this.$gtm.push({
+                event: TAG_MANAGER_EVENTS.VIDEO_EVENT,
+                videoStatus: data.type,
+                videoPercent: percentage,
+                videoTitle: item.description,
+                userId: this.getUserInfo.id
+              })
+            }
+          }
+        }
 
         // nextUp && nextPatch && nextPuzzle
         if ((this.showNextUp || this.nextPatch || this.nextPuzzle) && this.duration > 0) {
           const elapsed = this.duration - this.position
-          if (elapsed <= 6 && !this.lastPlaylistItem && !this.nextUp.show && !this.nextUnlockData.show) {
+          if (window && elapsed <= 6 && !this.lastPlaylistItem && !this.nextUp.show && !this.nextUnlockData.show) {
             // Handle nextUp
             if (this.showNextUp && !this.nextUp.show && !this.nextUp.hasBeenSeen) {
               const { title, description, poster } = this.playlist[this.playlistItemIndex + 1]
