@@ -8,7 +8,7 @@
     />
 
     <v-btn
-      class="activity-type-back"
+      class="activity-type-back mt-md-4 ml-md-6"
       text
       nuxt
       :to="{ name: 'app-library' }"
