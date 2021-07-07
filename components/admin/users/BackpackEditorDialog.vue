@@ -143,27 +143,22 @@ export default {
     title () {
       return this.id === null ? 'New Backpack Sent Dates' : 'Edit Backpack Sent Dates'
     },
-    getData () {
-      return this.dateField.filter(data => data.value !== null)
-    },
     dataStartFormatted () {
       return this.backpackDate ? dayjs(this.backpackDate).format('MM/DD/YYYY') : null
     }
   },
 
   methods: {
-    ...mapActions('admin/users', ['update', 'getById']),
-
-    dateFormat (val) {
-      return val ? dayjs(val).format('MM/DD/YYYY') : null
-    },
+    ...mapActions('admin/users', ['update']),
 
     close () {
-      this.$nextTick(() => {
-        this.dialog = false
-        this.loading = false
-        this.$refs.obs.reset()
-      })
+      if (this.$refs.obs) {
+        this.$nextTick(() => {
+          this.dialog = false
+          this.loading = false
+          this.$refs.obs.reset()
+        })
+      }
     },
 
     async save () {
@@ -215,7 +210,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .collaborator-image {
   width: 100%;
   max-width: 100%;
