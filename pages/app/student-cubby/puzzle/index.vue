@@ -145,6 +145,7 @@ export default defineComponent({
     const route = useRoute()
     const store = useStore()
     const studentId = computed(() => Number(route.value.query.id))
+    computed(async () => await getPuzzlesByChildId(studentId.value))
     const { puzzlesResponse, getPuzzlesByChildId } = usePuzzle()
     const { children, get } = useChild()
     onMounted(async () => {
@@ -154,10 +155,6 @@ export default defineComponent({
 
     const child = computed(() => children.value.find((child: Child) => child.id === studentId.value)
     )
-
-    watch(studentId, async (id) => {
-      await getPuzzlesByChildId(id)
-    })
 
     return {
       studentId,
