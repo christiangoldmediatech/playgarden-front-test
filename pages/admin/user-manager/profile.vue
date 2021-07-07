@@ -332,9 +332,9 @@
                           <v-col cols="6" md="8">
                             <template v-if="backpackSent">
                               <v-row class="clickable" no-gutters @click="$refs.backpackEditorDialogRef.open($event, user)">
-                                <b v-if="!workbookDateSent">Sent {{ dateWorkbook() }}</b>
+                                <b v-if="!workbookDateSent">Sent {{ dateBackpack() }}</b>
                                 <b v-else>
-                                  Sent on: {{ dateWorkbook() }}
+                                  Sent on: {{ dateBackpack() }}
                                 </b>
                                 <v-icon
                                   color="primary"
