@@ -56,6 +56,7 @@
     <!-- Controls -->
     <control-bar
       v-if="showControls"
+      ref="controls"
       v-bind="{ ...controlBarProps, noSmallscreen }"
       @fullscreen="handleFullscreen"
     />
@@ -223,6 +224,10 @@ export default {
 
   methods: {
     ...mapActions('cast', ['init']),
+
+    popControls () {
+      this.$refs.controls.popControls()
+    },
 
     setup () {
       this.playerInstance = videojs(this.$refs.videoPlayer, this.options, this.onPlayerReady)
