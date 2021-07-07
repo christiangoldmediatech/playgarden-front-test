@@ -10,5 +10,7 @@ export enum APP_EVENTS {
   DASHBOARD_WORKSHEET_UPLOAD = 'dashboard-offline-worksheet-upload',
   // MUSIC
   MUSIC_ITEM_CLICKED = 'music-item-clicked',
-  MUSIC_ITEM_ADD_TO_FAVORITES = 'music-item-add-to-favorites'
+  MUSIC_ITEM_ADD_TO_FAVORITES = 'music-item-add-to-favorites',
+  // LIBRARY
+  LIBRARY_ADD_VIDEO_TO_FAVORITES = 'library-add-video-to-favorites'
 }
