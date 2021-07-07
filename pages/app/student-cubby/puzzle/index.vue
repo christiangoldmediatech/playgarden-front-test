@@ -144,10 +144,13 @@ export default defineComponent({
   setup () {
     const route = useRoute()
     const store = useStore()
+
     const studentId = computed(() => Number(route.value.query.id))
     computed(async () => await getPuzzlesByChildId(studentId.value))
+
     const { puzzlesResponse, getPuzzlesByChildId } = usePuzzle()
     const { children, get } = useChild()
+
     onMounted(async () => {
       await getPuzzlesByChildId(studentId.value)
       await get()
