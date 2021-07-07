@@ -117,12 +117,12 @@ export default defineComponent({
   position: absolute;
   top: 18px;
   left: 18px;
-  background: rgba(92, 92, 92, 0.25);
+  background: rgba(92, 92, 92, 0.10);
   border-radius: 4px;
   z-index: 5;
 
   & span {
-    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.10));
+    filter: drop-shadow(0px 4px 1px rgba(0, 0, 0, 0.10));
     color: white !important;
   }
 }
