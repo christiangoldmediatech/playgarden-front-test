@@ -194,7 +194,7 @@ export default {
       this.user.roleId = item.role.id
       if (item.shipments) {
         this.user.backpackSent = item.shipments.backpack
-        const dateStart = new Date(item.shipments.backpackDate)
+        const dateStart = (item.shipments.backpackDate) ? new Date(item.shipments.backpackDate) : new Date()
         this.backpackDate = `${dateStart.getFullYear()}-${(dateStart.getMonth() + 1).toString().padStart(2, '0')}-${dateStart.getDate().toString().padStart(2, '0')}`
       }
     },

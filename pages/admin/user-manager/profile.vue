@@ -354,6 +354,19 @@
                                   max-width="24"
                                   :src="require('@/assets/svg/pending.svg')"
                                 />
+                                <div class="">
+                                  <v-btn
+                                    class="ml-2 mt-n1"
+                                    small
+                                    block
+                                    @click="$refs.backpackEditorDialogRef.open($event, user)"
+                                  >
+                                    <v-icon color="accent" dense>
+                                      mdi-pencil-outline
+                                    </v-icon>
+                                    Edit
+                                  </v-btn>
+                                </div>
                               </v-row>
                             </template>
                           </v-col>
