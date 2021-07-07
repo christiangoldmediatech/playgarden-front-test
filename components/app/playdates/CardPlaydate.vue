@@ -4,7 +4,7 @@
     :elevation="joining ? 0 : 2"
     :max-width="joining ? '100%' : 600"
     height="100%"
-    data-test-id="playdate-card"
+    data-test-id="card-playdate"
     tile
   >
     <!-- CARD IMAGE AND TIME -->
@@ -28,6 +28,7 @@
             <div
               v-if="child.firstName && !finding"
               class="text-h5 font-weight-bold grey--text text--darken-2"
+              data-test-id="card-playdate-title"
             >
               <template v-if="!joining">
                 {{ child.firstName | belongsTo }}
@@ -55,6 +56,7 @@
               <v-list-item-content>
                 <div
                   v-if="child.firstName && !finding"
+                  data-test-id="card-playdate-title"
                   class="text-h4 pb-2 font-weight-bold grey--text text--darken-2 d-none d-md-flex flex-column"
                 >
                   <template v-if="!joining">
@@ -122,7 +124,7 @@
                   class="white--text text-transform-none"
                   color="accent"
                   width="250"
-                  data-test-id="playdate-card-open-button"
+                  data-test-id="card-playdate-open-button"
                   :block="isMobile"
                   @click="dialog = true"
                 >
@@ -282,7 +284,7 @@
                     target="_blank"
                     block
                     x-large
-                    data-test-id="playdate-zoom-button"
+                    data-test-id="card-playdate-open-button"
                     :href="playdate.link"
                     @click="handleOpenZoom"
                   >
@@ -296,6 +298,7 @@
                     target="_blank"
                     block
                     x-large
+                    data-test-id="card-playdate-join-button"
                     @click="joinPlaydateChildren"
                   >
                     Join Playdate
@@ -309,6 +312,7 @@
                     block
                     x-large
                     text
+                    data-test-id="card-playdate-delete"
                     @click="remove"
                   >
                     DELETE PLAYDATE

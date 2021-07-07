@@ -5,6 +5,7 @@
     placeholder="Select a child"
     solo
     v-bind="{ ...$attrs }"
+    data-test-id="child-select"
     @input="$emit('input', $event)"
   >
     <template v-slot:selection="{ item }">
