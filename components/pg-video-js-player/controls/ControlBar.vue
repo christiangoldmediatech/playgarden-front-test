@@ -232,6 +232,10 @@ export default {
         window.clearTimeout(this.showChecker)
         this.showChecker = null
       }, 3000)
+    },
+
+    popControls () {
+      this.throttledActivator()
     }
   }
 }
