@@ -27,41 +27,6 @@
           Favorites
         </v-btn>
       </v-col>
-
-      <v-col cols="12" md="">
-        <v-row no-gutters justify="center" justify-md="end" align="center" class="fill-height pl-4 pl-md-0">
-          <v-col cols="auto">
-            <v-card
-              tile
-              width="110"
-              class="py-2 filter text-center"
-              :class="{ selected: selectedFilter === 'list' }"
-              data-test-id="list-view-button"
-              @click="selectedFilter = 'list'"
-            >
-              <v-icon :color="selectedFilter === 'list' ? 'white' : 'primary'">
-                mdi-format-list-bulleted
-              </v-icon>
-              List
-            </v-card>
-          </v-col>
-          <v-col cols="auto">
-            <v-card
-              tile
-              width="110"
-              class="py-2 filter text-center"
-              :class="{ selected: selectedFilter === 'letter' }"
-              data-test-id="letter-view-button"
-              @click="selectedFilter = 'letter'"
-            >
-              <v-icon :color="selectedFilter === 'letter' ? 'white' : 'primary'">
-                mdi-sort-alphabetical-ascending
-              </v-icon>
-              Letter
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-col>
     </v-row>
     <!-- Favorites Title -->
     <v-expand-transition>
@@ -93,23 +58,6 @@
     </div>
     <!-- Songs -->
     <template v-else>
-      <template v-if="selectedFilter === 'list'">
-        <div data-test-id="song-card-list">
-          <song-card
-            v-for="(song, index) in filteredSongsByLetterId"
-            :key="song.id"
-            :song-id="song.id"
-            :thumbnail="song.thumbnail"
-            :name="song.name"
-            :description="song.description"
-            :is-favorite="song.isFavorite"
-            class="my-4"
-            @add="addSongToPlayList(song)"
-            @favorite="$emit('favorite', song)"
-            @click="createPlayListFromIndex(index)"
-          />
-        </div>
-      </template>
       <template v-if="selectedFilter === 'letter'">
         <div data-test-id="letter-songs-list">
           <letter-songs
@@ -131,7 +79,6 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 
-import SongCard from '@/components/app/music/SongCard.vue'
 import LetterSongs from '@/components/app/music/LetterSongs.vue'
 
 import { jsonCopy } from '@/utils/objectTools.js'
@@ -140,7 +87,6 @@ export default {
   name: 'MusicSongList',
 
   components: {
-    SongCard,
     LetterSongs
   },
 
@@ -178,7 +124,7 @@ export default {
 
   data () {
     return {
-      selectedFilter: 'list',
+      selectedFilter: 'letter',
       selectedChildId: null
     }
   },
