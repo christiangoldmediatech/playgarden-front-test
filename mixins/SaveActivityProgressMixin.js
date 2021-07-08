@@ -19,39 +19,50 @@ export default {
     ...mapActions('children/lesson', { sendActivityProgress: 'saveActivityProgress' }),
 
     async saveActivityProgress (completeOverride = false) {
-      const currentVideo = jsonCopy(this.currentVideo)
-      if (this.lesson.previewMode || !currentVideo || currentVideo.ignoreVideoProgress || this.savingActivityProgress) { return }
-      const date = new Date().toISOString().substr(0, 19)
-      const time = this.player.currentTime()
-      const duration = this.player.duration()
-      const promises = []
+      try {
+        const currentVideo = jsonCopy(this.currentVideo)
+        if (
+          this.lesson.previewMode ||
+          !currentVideo ||
+          currentVideo.ignoreVideoProgress ||
+          this.savingActivityProgress
+        ) {
+          return
+        }
+        const date = new Date().toISOString().substr(0, 19)
+        const time = this.player.currentTime()
+        const duration = this.player.duration()
+        const promises = []
 
-      this.savingActivityProgress = true
-      this.children.forEach((child) => {
-        promises.push(
-          this.sendActivityProgress({
-            lessonId: this.lesson.id,
-            childId: child.id,
-            activity: {
-              id: currentVideo.activityId,
-              completed: completeOverride || duration - time <= 30,
-              time,
-              date
-            }
-          }).then((result) => {
-            if (result.puzzle) {
-              this.player.pause()
-              this.pieceEarnedDialog = true
-              this.puzzleImg = result.puzzleImg
-            }
-          })
-        )
-      })
+        this.savingActivityProgress = true
+        this.children.forEach((child) => {
+          promises.push(
+            this.sendActivityProgress({
+              lessonId: this.lesson.id,
+              childId: child.id,
+              activity: {
+                id: currentVideo.activityId,
+                completed: completeOverride || duration - time <= 30,
+                time,
+                date
+              }
+            }).then((result) => {
+              if (result.puzzle) {
+                this.player.pause()
+                this.pieceEarnedDialog = true
+                this.puzzleImg = result.puzzleImg
+              }
+            })
+          )
+        })
 
-      await Promise.all(promises)
-
-      this.$nuxt.$emit('dashboard-panel-update')
-      this.savingActivityProgress = false
+        await Promise.allSettled(promises)
+      } catch (error) {
+        return Promise.reject(error)
+      } finally {
+        this.$nuxt.$emit('dashboard-panel-update')
+        this.savingActivityProgress = false
+      }
     }
   }
 }
