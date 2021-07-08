@@ -15,6 +15,12 @@
       />
 
       <pg-text-field
+        v-model="form.email"
+        label="Last Name"
+        solo-labeled
+      />
+
+      <pg-text-field
         v-model="form.phoneNumber"
         label="Phone number"
         solo-labeled
@@ -306,6 +312,7 @@ export default {
         await this.updateUserInfo({
           firstName: this.form.firstName,
           lastName: this.form.lastName,
+          email: this.form.email,
           phoneNumber: this.form.phoneNumber
         })
       } finally {
