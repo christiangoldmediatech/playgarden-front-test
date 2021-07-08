@@ -4,7 +4,7 @@
       v-model="show"
       content-class="white"
       :fullscreen="isMobile"
-      max-width="80%"
+      max-width="100%"
       persistent
     >
       <v-col cols="12">
