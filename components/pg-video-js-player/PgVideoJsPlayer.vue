@@ -59,7 +59,12 @@
       ref="controls"
       v-bind="{ ...controlBarProps, noSmallscreen }"
       @fullscreen="handleFullscreen"
-    />
+    >
+      <!-- Next Up Component -->
+      <next-up :class="{ 'clickable': Boolean(onNextUpClick) }" :params="nextUp" v-bind="{ nextPatch, nextPuzzle }" @click.native="beforeNextUpClick" />
+      <next-patch v-if="nextPatch" :params="nextUnlockData" />
+      <next-puzzle v-if="nextPuzzle" :params="nextUnlockData" />
+    </control-bar>
   </div>
 </template>
 
@@ -72,12 +77,18 @@ import Fullscreen from '@/mixins/FullscreenMixin.js'
 import Favorites from '@/mixins/FavoritesMixin.js'
 import PlayerProps from './mixins/PlayerPropsMixin.js'
 import ControlBar from './controls/ControlBar.vue'
+import NextUp from './controls/NextUp.vue'
+import NextPatch from './controls/NextPatch.vue'
+import NextPuzzle from './controls/NextPuzzle.vue'
 
 export default {
   name: 'PgVideoJsPlayer',
 
   components: {
-    ControlBar
+    ControlBar,
+    NextUp,
+    NextPatch,
+    NextPuzzle
   },
 
   mixins: [PlayerProps, Fullscreen, Favorites],
@@ -105,16 +116,19 @@ export default {
         image: null,
         title: '',
         description: '',
-        show: false
+        show: false,
+        hasBeenSeen: false
       },
       nextUnlockData: {
         image: require('@/assets/png/test-patch.png'),
         number: 0,
-        show: false
+        show: false,
+        hasBeenSeen: false
       },
       isCasting: false,
       castLoading: false,
       MEDIA_NAMESPACE: 'urn:x-cast:com.google.cast.media',
+      timeOut: null,
       videoTagUpdates: {
         id: 0,
         quarter: false,
@@ -179,10 +193,7 @@ export default {
         showRestart: this.showRestart,
         showVideoSkip: this.showVideoSkip,
         showSteps: this.showSteps,
-        inline: this.inline,
-        nextPatch: this.nextPatch,
-        nextPuzzle: this.nextPuzzle,
-        nextUnlockData: this.nextUnlockData
+        inline: this.inline
       }
     },
 
@@ -237,6 +248,20 @@ export default {
       }
     },
 
+    hideNextUp () {
+      this.$set(this.nextUp, 'show', false)
+      this.$set(this.nextUnlockData, 'show', false)
+    },
+
+    beforeNextUpClick () {
+      if (this.onNextUpClick) {
+        this.hideNextUp()
+        this.$nextTick(() => {
+          this.onNextUpClick()
+        })
+      }
+    },
+
     setup () {
       this.playerInstance = videojs(this.$refs.videoPlayer, this.options, this.onPlayerReady)
     },
@@ -271,6 +296,11 @@ export default {
           this.playerInstance.currentTime(this.mediaObject.viewed.time)
         }
         this.playerInstance.play()
+      }
+
+      if (!this.nextUp.show && this.nextUp.hasBeenSeen) {
+        this.$set(this.nextUp, 'hasBeenSeen', false)
+        this.$set(this.nextUnlockData, 'hasBeenSeen', false)
       }
     },
 
@@ -365,32 +395,36 @@ export default {
         // nextUp && nextPatch && nextPuzzle
         if ((this.showNextUp || this.nextPatch || this.nextPuzzle) && this.duration > 0) {
           const elapsed = this.duration - this.position
-          if (elapsed <= 6 && !this.lastPlaylistItem && !this.nextUp.show && !this.nextUnlockData.show) {
+          if (window && elapsed <= 6 && !this.lastPlaylistItem && !this.nextUp.show && !this.nextUnlockData.show) {
             // Handle nextUp
-            if (this.showNextUp && !this.nextUp.show) {
+            if (this.showNextUp && !this.nextUp.show && !this.nextUp.hasBeenSeen) {
               const { title, description, poster } = this.playlist[this.playlistItemIndex + 1]
               this.nextUp = {
                 image: poster,
                 title,
                 description,
-                show: true
+                show: true,
+                hasBeenSeen: true
               }
             }
 
             // Handle nextPatch or nextPuzzle
-            if ((this.nextPatch || this.nextPuzzle) && !this.nextUnlockData.show) {
+            if ((this.nextPatch || this.nextPuzzle) && !this.nextUnlockData.show && !this.nextUnlockData.hasBeenSeen) {
               this.nextUnlockData = {
                 image: this.nextUnlockImage,
                 number: this.nextUnlockNumber,
-                show: (this.nextUnlockImage && this.nextUnlockNumber && this.nextUnlockNumber > 0)
+                show: (this.nextUnlockImage && this.nextUnlockNumber && this.nextUnlockNumber > 0),
+                hasBeenSeen: true
               }
             }
 
             // Timeout
-            const timeOut = window.setTimeout(() => {
-              this.$set(this.nextUp, 'show', false)
-              this.$set(this.nextUnlockData, 'show', false)
-              window.clearTimeout(timeOut)
+            this.timeOut = window.setTimeout(() => {
+              this.hideNextUp()
+              this.$set(this.nextUp, 'hasBeenSeen', false)
+              this.$set(this.nextUnlockData, 'hasBeenSeen', false)
+              window.clearTimeout(this.timeOut)
+              this.timeOut = null
             }, 7500)
           }
         }
