@@ -43,6 +43,7 @@
             </v-col>
             <v-col cols="12" md="auto" class="my-4 ml-4">
               <v-btn
+                outline
                 x-large
                 color="white"
                 class="btn-accent text-none"
@@ -106,8 +107,9 @@ export default defineComponent({
   color: var(--v-primary-base) !important;
 }
 
-.btn-accent::v-deep.theme--light.v-btn {
+.btn-accent {
   color: var(--v-accent-base) !important;
-  border-color: var(--v-accent-base) !important;
+  border: 1px solid var(--v-accent-base) !important;
 }
+
 </style>
