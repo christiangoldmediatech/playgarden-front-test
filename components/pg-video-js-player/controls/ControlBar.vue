@@ -1,10 +1,8 @@
 <template>
   <div class="control-bar-activator" @click="throttledActivator" @mousemove="throttledActivator">
     <div class="control-bar-container">
-      <!-- Next Up Component -->
-      <next-up :params="nextUp" v-bind="{ nextPatch, nextPuzzle }" />
-      <next-patch v-if="nextPatch" v-bind="{ params: nextUnlockData }" />
-      <next-puzzle v-if="nextPuzzle" v-bind="{ params: nextUnlockData }" />
+      <slot />
+
       <div
         class="control-bar-sheet"
         :class="{ 'control-bar-mobile-portrait': !inline, 'control-bar-sheet-show': visible }"
@@ -155,18 +153,9 @@
 import SmallScreen from '@/mixins/SmallScreenMixin.js'
 import { throttle } from 'lodash'
 import ControlBarProps from './mixins/ControlBarPropsMixin.js'
-import NextUp from './NextUp.vue'
-import NextPatch from './NextPatch.vue'
-import NextPuzzle from './NextPuzzle.vue'
 
 export default {
   name: 'ControlBar',
-
-  components: {
-    NextUp,
-    NextPatch,
-    NextPuzzle
-  },
 
   filters: {
     convertToMMSS (value) {
