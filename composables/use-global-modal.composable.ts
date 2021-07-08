@@ -1,3 +1,4 @@
+
 import dayjs from 'dayjs'
 import { computed, ref, useStore, useRouter, useRoute } from '@nuxtjs/composition-api'
 import { UserFlow } from '@/models'
@@ -34,7 +35,6 @@ export const useGlobalModal = () => {
       isSubscriptionPlan: false
     }
     if (abFlow.value !== UserFlow.NOCREDITCARD) {
-      console.log('entro')
       const notificationShow = window.localStorage.getItem('notificationSignup')
       const lastDateNotification = window.localStorage.getItem('lastDateNotification')
 
@@ -61,7 +61,7 @@ export const useGlobalModal = () => {
         showNotificationSignupModal()
       }
 
-      if ((isWeekTwoAndThree.value && day > 2) || (isWeekFour.value && day > 1)) {
+      if ((isWeekTwoAndThree.value && day === 2) || (isWeekFour.value && day === 1)) {
         showNotificationSignupModal()
       }
 
@@ -130,8 +130,7 @@ function getWeek (lastDate: Date) {
 
 function getDays (lastDate: Date) {
   const now = new Date()
-  const days = dayjs(now).diff(lastDate, 'day')
-  return days
+  return (dayjs(now).diff(lastDate, 'days') + 1)
 }
 
 function getImagePath (week: number) {
