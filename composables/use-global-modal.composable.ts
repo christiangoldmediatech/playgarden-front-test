@@ -61,7 +61,13 @@ export const useGlobalModal = () => {
         showNotificationSignupModal()
       }
 
+      // Show on Week 2 per two days And Show Week 4 per day
       if ((isWeekTwoAndThree.value && day === 2) || (isWeekFour.value && day === 1)) {
+        showNotificationSignupModal()
+      }
+
+      // Show on Week 3 per day
+      if ((isWeekTwoAndThree.value && day === 1 && week === 3)) {
         showNotificationSignupModal()
       }
 
