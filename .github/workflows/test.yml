@@ -1,4 +1,4 @@
-name: Test
+name: Test - Jest
 
 on: pull_request
 
@@ -8,8 +8,11 @@ jobs:
     env:
       GMT_NPM_TOKEN: ${{ secrets.GMT_NPM_TOKEN }}
     steps:
-      # grab the code
-      - uses: actions/checkout@v2
-      # Run automated tests with docker-compose (included on github's ubuntu)!
-      - run: docker-compose -f docker-compose.test.yml build
-      - run: docker-compose -f docker-compose.test.yml run sut
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+    - run: yarn
+      env:
+        NPM_TOKEN: ${{ secrets.GMT_NPM_TOKEN }}
+    - run: yarn test
