@@ -45,7 +45,7 @@
               <v-btn
                 x-large
                 color="white"
-                class="btn-accent"
+                class="btn-accent text-none"
                 width="250"
                 @click="hideNotificationSignupModal"
               >
@@ -108,12 +108,6 @@ export default defineComponent({
 
 .btn-accent::v-deep.theme--light.v-btn {
   color: var(--v-accent-base) !important;
-  text-transform: capitalize !important;
   border-color: var(--v-accent-base) !important;
 }
-
-/* .btn-accent.v-btn--outlined {
-    border: thin solid orange !important;
-    color: var(--v-accent-base) !important;
-} */
 </style>
