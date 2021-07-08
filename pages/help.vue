@@ -288,10 +288,9 @@
   </v-main>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, onMounted, ref, useRouter, useStore } from '@nuxtjs/composition-api'
+<script>
 import { get } from 'lodash'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 const EMAIL_TOPICS = {
   ACCOUNT: 'ACCOUNT',
@@ -303,7 +302,7 @@ const EMAIL_TOPICS = {
   OTHER: 'OTHER'
 }
 
-export default defineComponent({
+export default {
   name: 'Help',
 
   data: () => ({
@@ -315,26 +314,32 @@ export default defineComponent({
     help: {
       name: null,
       email: null,
-      issueType: null,
+      issueType: '',
       subject: null,
       description: null
     }
   }),
 
-  setup () {
+  /* setup () {
     const store = useStore()
     const isLogin = computed(() => !!((store.getters['auth/getUserInfo'].id)))
     return {
       isLogin
     }
-  },
+  }, */
 
   computed: {
+    ...mapGetters('auth', {
+      getUserInfo: 'getUserInfo'
+    }),
     emailTopics () {
       return Object.values(EMAIL_TOPICS)
     },
     isMobile () {
       return this.$vuetify.breakpoint.mobile
+    },
+    isLogin () {
+      return !!((this.getUserInfo.id))
     }
   },
 
@@ -399,7 +404,7 @@ export default defineComponent({
   head: () => ({
     title: 'Help'
   })
-})
+}
 </script>
 
 <style lang="scss" scoped>
