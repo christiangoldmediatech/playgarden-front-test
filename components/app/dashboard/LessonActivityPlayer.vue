@@ -51,7 +51,8 @@ export default {
 
   data: () => {
     return {
-      showFinishedVal: false
+      showFinishedVal: false,
+      advanceClosing: false
     }
   },
 
@@ -128,7 +129,11 @@ export default {
           }
         },
         onBeforeClosed: () => {
-          this.saveActivityProgress()
+          if (this.advanceClosing) {
+            this.advanceClosing = false
+          } else {
+            this.saveActivityProgress()
+          }
         }
       }
       this.setupVideoAnalytics(player, callbacks)
@@ -152,6 +157,7 @@ export default {
     },
 
     handleAdvanceClose () {
+      this.advanceClosing = true
       this.handleClose()
       this.showFinishedVal = false
       this.dialog = false
