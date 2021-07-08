@@ -42,7 +42,13 @@
               </v-btn>
             </v-col>
             <v-col cols="12" md="auto" class="my-4 ml-4">
-              <v-btn x-large color="white" class="text-none btn-accent" width="250" @click="hideNotificationSignupModal">
+              <v-btn
+                x-large
+                color="white"
+                class="btn-accent"
+                width="250"
+                @click="hideNotificationSignupModal"
+              >
                 Remind me Later
               </v-btn>
             </v-col>
@@ -99,7 +105,15 @@ export default defineComponent({
   font-weight: bold !important;
   color: var(--v-primary-base) !important;
 }
-.btn-accent {
+
+.btn-accent::v-deep.theme--light.v-btn {
   color: var(--v-accent-base) !important;
+  text-transform: capitalize !important;
+  border-color: var(--v-accent-base) !important;
 }
+
+/* .btn-accent.v-btn--outlined {
+    border: thin solid orange !important;
+    color: var(--v-accent-base) !important;
+} */
 </style>
