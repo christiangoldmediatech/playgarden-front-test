@@ -34,17 +34,13 @@ export const useGlobalModal = () => {
       isWeekFour: false,
       isSubscriptionPlan: false
     }
-    if (abFlow.value !== UserFlow.NOCREDITCARD) {
+    if (abFlow.value === UserFlow.NOCREDITCARD) {
       const notificationShow = window.localStorage.getItem('notificationSignup')
       const lastDateNotification = window.localStorage.getItem('lastDateNotification')
 
       const week = getWeek(userInfo.createdAt)
       const day = (lastDateNotification) ? getDays(new Date(lastDateNotification)) : 0
       const showNotification = (notificationShow) || 'false'
-
-      console.log('week--', week)
-      console.log('day--', day)
-      console.log('showNotification--', showNotification)
 
       if (week >= 2 && week <= 3) {
         isWeekTwoAndThree.value = true
