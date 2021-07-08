@@ -34,7 +34,8 @@ export const useGlobalModal = () => {
       isWeekFour: false,
       isSubscriptionPlan: false
     }
-    if (abFlow.value === UserFlow.NOCREDITCARD) {
+
+    if (userInfo.flow !== UserFlow.NOCREDITCARD) {
       const notificationShow = window.localStorage.getItem('notificationSignup')
       const lastDateNotification = window.localStorage.getItem('lastDateNotification')
 
@@ -72,11 +73,13 @@ export const useGlobalModal = () => {
       }
 
       imagePath.value = getImagePath(week)
-      dataNotification.isNotificationSignupModalVisible = isNotificationSignupModalVisible.value
+      dataNotification.isNotificationSignupModalVisible = showModal(day, notificationShow)
       dataNotification.isWeekTwoAndThree = isWeekTwoAndThree.value
       dataNotification.isWeekFour = isWeekFour.value
       dataNotification.imagePath = imagePath.value
       dataNotification.isSubscriptionPlan = isSubscriptionPlan.value
+
+      console.log('aqui--', dataNotification.isNotificationSignupModalVisible)
     }
     return dataNotification
   })
@@ -133,6 +136,14 @@ function getWeek (lastDate: Date) {
 function getDays (lastDate: Date) {
   const now = new Date()
   return (dayjs(now).diff(lastDate, 'days') + 1)
+}
+
+function showModal (day: Number, notificationShow: String | null) {
+  let showModal = true
+  if (notificationShow === 'true' && day === 1) {
+    showModal = false
+  }
+  return showModal
 }
 
 function getImagePath (week: number) {

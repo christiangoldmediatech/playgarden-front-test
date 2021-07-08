@@ -2,19 +2,24 @@
   <div>
     <large-image-content-dialog :value="true" :img="imagePath" @close="hideNotificationSignupModal">
       <div>
-        <underlined-title class="text-h6 text-md-h5" text="WE HOPE YOUR LITTLE ONE IS ENJOYING LEARNING WITH PLAYGARDEN PREP ONLINE!" />
+        <underlined-title
+          text="WE HOPE YOUR LITTLE ONE IS ENJOYING LEARNING WITH PLAYGARDEN PREP ONLINE!"
+          font-size="32PX"
+          font-size-mobile="22px"
+          letter-spacing="4.8px"
+        />
       </div>
 
       <v-row class="mx-1 mt-3">
         <div>
-          <p class="mt-4 text-justify">
+          <p class="mt-4 text-justify grey--text text--darken-2 caption text-md-h6 font-weight-regular my-3 my-md-6">
             Your <span class="info-modal-notification">FREE TRIAL</span> period will end on [May 5, 2021].
             We would hate to see you miss out on this early education and development opportunity!
             So we are extending our <span class="info-modal-notification">INTRODUCTORY PROMOTION</span> so you can continue to have access
             to all the features of the <span class="font-weight-bold">PREMIUM EARLY EDUCATION</span> plan.
             Sign-up now and for <span class="font-weight-bold">$49.99 per month</span> you will continue to have access to:
           </p>
-          <ul class="info-card">
+          <ul class="info-card grey--text text--darken-2 caption text-md-h6 font-weight-regular my-3 my-md-6">
             <li
               class="register-item text-left"
             >
@@ -44,28 +49,22 @@
               </small>
             </li>
           </ul>
-          <p class="mt-4 text-justify">
+          <p class="mt-4 text-justify grey--text text--darken-2 caption text-md-h6 font-weight-regular my-3 my-md-6">
             As always, you can cancel your enrollment anytime by going to your Accounts Page. We would love to hear from you if you have any questions, comments or concerns related to Playgarden Prep Online.
           </p>
-          <p class="mt-4 text-justify">
+          <p class="mt-4 text-justify grey--text text--darken-2 caption text-md-h6 font-weight-regular my-3 my-md-6">
             With kind regards,<br>
             Playgarden Prep Teachers.
           </p>
-          <v-row>
-            <v-col cols="12" sm="12" md="3">
-              <v-btn
-                block
-                color="accent"
-                small
-                type="submit"
-                @click="showSubscriptionPlanSelectionModal"
-              >
+          <v-row no-gutters class="text-center text-md-left">
+            <v-col cols="12" md="auto" class="my-4">
+              <v-btn x-large color="accent" class="text-none" width="250" @click="showSubscriptionPlanSelectionModal">
                 Subscribe Now
               </v-btn>
             </v-col>
-            <v-col cols="12" sm="12" md="4">
+            <v-col cols="12" md="auto" class="mx-0 mx-md-4 align-self-center font-weight-bold">
               <span class="grey--text">Need help? </span>
-              <span class="text-decoration-underline">
+              <span class="text-decoration-underline" @click="handleContactUs">
                 <a class="accent--text">Contact us</a>
               </span>
             </v-col>
