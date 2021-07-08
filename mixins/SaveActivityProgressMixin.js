@@ -18,73 +18,51 @@ export default {
   methods: {
     ...mapActions('children/lesson', { sendActivityProgress: 'saveActivityProgress' }),
 
-    saveActivityProgress () {
-      const currentVideo = jsonCopy(this.currentVideo)
-      if (!currentVideo || currentVideo.ignoreVideoProgress || this.savingActivityProgress) { return }
-      const date = new Date().toISOString().substr(0, 19)
-      const time = this.player.currentTime()
-      const duration = this.player.duration()
-      const promises = []
-
-      this.savingActivityProgress = true
-      this.children.forEach((child) => {
-        promises.push(
-          this.sendActivityProgress({
-            lessonId: this.lesson.id,
-            childId: child.id,
-            activity: {
-              id: currentVideo.activityId,
-              completed: duration - time <= 30,
-              time,
-              date
-            }
-          }).then((result) => {
-            if (result.puzzle) {
-              this.player.pause()
-              this.pieceEarnedDialog = true
-              this.puzzleImg = result.puzzleImg
-            }
-          })
-        )
-      })
-      Promise.all(promises).then(() => {
-        if (promises.length) {
-          this.$nuxt.$emit('dashboard-panel-update')
+    async saveActivityProgress (completeOverride = false) {
+      try {
+        const currentVideo = jsonCopy(this.currentVideo)
+        if (
+          this.lesson.previewMode ||
+          !currentVideo ||
+          currentVideo.ignoreVideoProgress ||
+          this.savingActivityProgress
+        ) {
+          return
         }
+        const date = new Date().toISOString().substr(0, 19)
+        const time = this.player.currentTime()
+        const duration = this.player.duration()
+        const promises = []
+
+        this.savingActivityProgress = true
+        this.children.forEach((child) => {
+          promises.push(
+            this.sendActivityProgress({
+              lessonId: this.lesson.id,
+              childId: child.id,
+              activity: {
+                id: currentVideo.activityId,
+                completed: completeOverride || duration - time <= 30,
+                time,
+                date
+              }
+            }).then((result) => {
+              if (result.puzzle) {
+                this.player.pause()
+                this.pieceEarnedDialog = true
+                this.puzzleImg = result.puzzleImg
+              }
+            })
+          )
+        })
+
+        await Promise.allSettled(promises)
+      } catch (error) {
+        return Promise.reject(error)
+      } finally {
+        this.$nuxt.$emit('dashboard-panel-update')
         this.savingActivityProgress = false
-      })
-    },
-
-    completeActivityProgress () {
-      const currentVideo = jsonCopy(this.currentVideo)
-      if (!currentVideo || currentVideo.ignoreVideoProgress || this.savingActivityProgress) { return }
-      const date = new Date().toISOString().substr(0, 19)
-      const time = this.player.currentTime()
-      // const duration = this.player.duration()
-      const promises = []
-
-      this.savingActivityProgress = true
-      this.children.forEach((child) => {
-        promises.push(
-          this.sendActivityProgress({
-            lessonId: this.lesson.id,
-            childId: child.id,
-            activity: {
-              id: currentVideo.activityId,
-              completed: true,
-              time,
-              date
-            }
-          }).then((result) => {
-            if (result.puzzle) {
-              this.player.pause()
-              this.pieceEarnedDialog = true
-              this.puzzleImg = result.puzzleImg
-            }
-          })
-        )
-      })
-      return Promise.all(promises)
+      }
     }
   }
 }

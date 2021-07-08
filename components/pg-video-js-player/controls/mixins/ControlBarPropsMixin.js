@@ -35,11 +35,6 @@ export default {
       required: true
     },
 
-    nextUp: {
-      type: Object,
-      required: true
-    },
-
     noSeek: {
       type: Boolean,
       required: true
@@ -67,23 +62,6 @@ export default {
       type: Boolean,
       required: false,
       default: false
-    },
-
-    nextPatch: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-
-    nextPuzzle: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-
-    nextUnlockData: {
-      type: Object,
-      required: true
     }
   }
 }

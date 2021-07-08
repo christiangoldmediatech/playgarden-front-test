@@ -1,7 +1,6 @@
 export * from './use-child-course-progress.composable'
 export * from './use-child-lesson.composable'
 export * from './use-child-patch.composable'
-export * from './use-child-playdate.composable'
 export * from './use-child-progress.composable'
 export * from './use-child-puzzle.composable'
 export * from './use-child.composable'

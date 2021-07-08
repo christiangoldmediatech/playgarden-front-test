@@ -56,9 +56,15 @@
     <!-- Controls -->
     <control-bar
       v-if="showControls"
+      ref="controls"
       v-bind="{ ...controlBarProps, noSmallscreen }"
       @fullscreen="handleFullscreen"
-    />
+    >
+      <!-- Next Up Component -->
+      <next-up :class="{ 'clickable': Boolean(onNextUpClick) }" :params="nextUp" v-bind="{ nextPatch, nextPuzzle }" @click.native="beforeNextUpClick" />
+      <next-patch v-if="nextPatch" :params="nextUnlockData" />
+      <next-puzzle v-if="nextPuzzle" :params="nextUnlockData" />
+    </control-bar>
   </div>
 </template>
 
@@ -71,12 +77,18 @@ import Fullscreen from '@/mixins/FullscreenMixin.js'
 import Favorites from '@/mixins/FavoritesMixin.js'
 import PlayerProps from './mixins/PlayerPropsMixin.js'
 import ControlBar from './controls/ControlBar.vue'
+import NextUp from './controls/NextUp.vue'
+import NextPatch from './controls/NextPatch.vue'
+import NextPuzzle from './controls/NextPuzzle.vue'
 
 export default {
   name: 'PgVideoJsPlayer',
 
   components: {
-    ControlBar
+    ControlBar,
+    NextUp,
+    NextPatch,
+    NextPuzzle
   },
 
   mixins: [PlayerProps, Fullscreen, Favorites],
@@ -104,16 +116,25 @@ export default {
         image: null,
         title: '',
         description: '',
-        show: false
+        show: false,
+        hasBeenSeen: false
       },
       nextUnlockData: {
         image: require('@/assets/png/test-patch.png'),
         number: 0,
-        show: false
+        show: false,
+        hasBeenSeen: false
       },
       isCasting: false,
       castLoading: false,
-      MEDIA_NAMESPACE: 'urn:x-cast:com.google.cast.media'
+      MEDIA_NAMESPACE: 'urn:x-cast:com.google.cast.media',
+      timeOut: null,
+      videoTagUpdates: {
+        id: 0,
+        quarter: false,
+        half: false,
+        seventyFive: false
+      }
     }
   },
 
@@ -172,10 +193,7 @@ export default {
         showRestart: this.showRestart,
         showVideoSkip: this.showVideoSkip,
         showSteps: this.showSteps,
-        inline: this.inline,
-        nextPatch: this.nextPatch,
-        nextPuzzle: this.nextPuzzle,
-        nextUnlockData: this.nextUnlockData
+        inline: this.inline
       }
     },
 
@@ -224,6 +242,26 @@ export default {
   methods: {
     ...mapActions('cast', ['init']),
 
+    popControls () {
+      if (this.$refs.controls) {
+        this.$refs.controls.popControls()
+      }
+    },
+
+    hideNextUp () {
+      this.$set(this.nextUp, 'show', false)
+      this.$set(this.nextUnlockData, 'show', false)
+    },
+
+    beforeNextUpClick () {
+      if (this.onNextUpClick) {
+        this.hideNextUp()
+        this.$nextTick(() => {
+          this.onNextUpClick()
+        })
+      }
+    },
+
     setup () {
       this.playerInstance = videojs(this.$refs.videoPlayer, this.options, this.onPlayerReady)
     },
@@ -259,6 +297,11 @@ export default {
         }
         this.playerInstance.play()
       }
+
+      if (!this.nextUp.show && this.nextUp.hasBeenSeen) {
+        this.$set(this.nextUp, 'hasBeenSeen', false)
+        this.$set(this.nextUnlockData, 'hasBeenSeen', false)
+      }
     },
 
     pushPlaylistItem (mediaObject) {
@@ -285,39 +328,103 @@ export default {
         this.status = 'PLAYING'
       })
 
-      this.playerInstance.on('timeupdate', () => {
+      this.playerInstance.on('timeupdate', (data) => {
         this.status = 'PLAYING'
         this.position = this.playerInstance.currentTime()
+
+        // GTM EVENT
+        const percentage = Math.round(this.position / this.duration * 100, 2)
+        const item = this.playlist[this.playlistItemIndex]
+        if ([25, 50, 75].includes(percentage)) {
+          // If we haven't already called this percentage on this video send the event
+          if (item.id !== this.videoTagUpdates.id) {
+            this.videoTagUpdates.id = item.id
+
+            // Update events on this video
+            switch (percentage) {
+              case 25:
+                this.videoTagUpdates.quarter = true
+                break
+              case 50:
+                this.videoTagUpdates.half = true
+                break
+              case 75:
+                this.videoTagUpdates.seventyFive = true
+                break
+            }
+            this.$gtm.push({
+              event: TAG_MANAGER_EVENTS.VIDEO_EVENT,
+              videoStatus: data.type,
+              videoPercent: percentage,
+              videoTitle: item.description,
+              userId: this.getUserInfo.id
+            })
+          } else {
+            // If we haven't sent it, sent it
+            let shouldSendEvent = false
+
+            switch (percentage) {
+              case 25:
+                if (!this.videoTagUpdates.quarter) {
+                  shouldSendEvent = true
+                }
+                break
+              case 50:
+                if (!this.videoTagUpdates.half) {
+                  shouldSendEvent = true
+                }
+                break
+              case 75:
+                if (!this.videoTagUpdates.seventyFive) {
+                  shouldSendEvent = true
+                }
+                break
+            }
+            if (shouldSendEvent) {
+              this.$gtm.push({
+                event: TAG_MANAGER_EVENTS.VIDEO_EVENT,
+                videoStatus: data.type,
+                videoPercent: percentage,
+                videoTitle: item.description,
+                userId: this.getUserInfo.id
+              })
+            }
+          }
+        }
 
         // nextUp && nextPatch && nextPuzzle
         if ((this.showNextUp || this.nextPatch || this.nextPuzzle) && this.duration > 0) {
           const elapsed = this.duration - this.position
-          if (elapsed <= 6 && !this.lastPlaylistItem && !this.nextUp.show && !this.nextUnlockData.show) {
+          if (window && elapsed <= 6 && !this.lastPlaylistItem && !this.nextUp.show && !this.nextUnlockData.show) {
             // Handle nextUp
-            if (this.showNextUp && !this.nextUp.show) {
+            if (this.showNextUp && !this.nextUp.show && !this.nextUp.hasBeenSeen) {
               const { title, description, poster } = this.playlist[this.playlistItemIndex + 1]
               this.nextUp = {
                 image: poster,
                 title,
                 description,
-                show: true
+                show: true,
+                hasBeenSeen: true
               }
             }
 
             // Handle nextPatch or nextPuzzle
-            if ((this.nextPatch || this.nextPuzzle) && !this.nextUnlockData.show) {
+            if ((this.nextPatch || this.nextPuzzle) && !this.nextUnlockData.show && !this.nextUnlockData.hasBeenSeen) {
               this.nextUnlockData = {
                 image: this.nextUnlockImage,
                 number: this.nextUnlockNumber,
-                show: (this.nextUnlockImage && this.nextUnlockNumber && this.nextUnlockNumber > 0)
+                show: (this.nextUnlockImage && this.nextUnlockNumber && this.nextUnlockNumber > 0),
+                hasBeenSeen: true
               }
             }
 
             // Timeout
-            const timeOut = window.setTimeout(() => {
-              this.$set(this.nextUp, 'show', false)
-              this.$set(this.nextUnlockData, 'show', false)
-              window.clearTimeout(timeOut)
+            this.timeOut = window.setTimeout(() => {
+              this.hideNextUp()
+              this.$set(this.nextUp, 'hasBeenSeen', false)
+              this.$set(this.nextUnlockData, 'hasBeenSeen', false)
+              window.clearTimeout(this.timeOut)
+              this.timeOut = null
             }, 7500)
           }
         }

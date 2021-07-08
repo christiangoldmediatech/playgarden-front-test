@@ -4,14 +4,14 @@
     :style="{ '--header-bkg': bkgColor }"
   >
     <div
-      class="activity-type-header-icon"
+      class="activity-type-header-icon mt-md-16 mt-4"
       :style="{ '--circle-color': color }"
     >
       <img :src="icon">
     </div>
 
     <div
-      class="activity-type-header-title"
+      class="activity-type-header-title mb-md-6 mb-4"
       data-test-id="activity-type-header-title"
     >
       ALL {{ name.toUpperCase() }}
