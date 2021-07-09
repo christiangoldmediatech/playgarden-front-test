@@ -19,7 +19,6 @@ const isContactUsModalVisible = ref(false)
 const isNotificationSignupModalVisible = ref(true)
 const isWeekTwoAndThree = ref(false)
 const isWeekFour = ref(false)
-const isSubscriptionPlan = ref(false)
 const imagePath = ref('')
 
 export const useGlobalModal = ({ store }: { store: Store<TypedStore> }) => {
