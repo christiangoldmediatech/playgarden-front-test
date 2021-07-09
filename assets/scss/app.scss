@@ -49,7 +49,7 @@
 }
 
 .theme--light.v-divider {
-  border-color: rgba(0,0,0,0.12) !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
 }
 
 .v-label {
@@ -73,7 +73,7 @@
     position: absolute;
     bottom: 0;
     left: -7.5%;
-    content: "";
+    content: '';
     z-index: -1;
     border-bottom: 11px solid var(--bgColor);
   }
@@ -93,7 +93,7 @@
     position: absolute;
     bottom: 7px;
     left: -5.5%;
-    content: "";
+    content: '';
     z-index: -1;
     border-bottom: 11px solid var(--bgColor);
   }
@@ -121,6 +121,7 @@
 .custom-text-field::v-deep.v-input__control .v-input__slot {
   box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.16) !important;
 }
+
 .custom-text-field::v-deep.v-text-field.v-text-field--solo:not(.v-text-field--solo-flat)
   > .v-input__control
   > .v-input__slot {
@@ -202,14 +203,14 @@
 }
 
 .background-card {
-  background-image: url("~@/assets/png/green-whirl.png") !important;
+  background-image: url('~@/assets/png/green-whirl.png') !important;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
   max-height: 510px !important;
 }
 .background-card-mobile {
-  background-image: url("~@/assets/png/green-whirl.png") !important;
+  background-image: url('~@/assets/png/green-whirl.png') !important;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;

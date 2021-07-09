@@ -70,14 +70,15 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, useStore } from '@nuxtjs/composition-api'
 import { useGlobalModal } from '@/composables'
 
 export default defineComponent({
   name: 'Email',
 
   setup () {
-    const { showContactUsModal } = useGlobalModal()
+    const store = useStore()
+    const { showContactUsModal } = useGlobalModal({ store })
 
     return {
       showContactUsModal
