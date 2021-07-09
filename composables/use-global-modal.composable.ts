@@ -121,24 +121,24 @@ export const useGlobalModal = () => {
   }
 }
 
-function saveDataNotification () {
+const saveDataNotification = () => {
   localStorage.setItem('notificationSignup', 'true')
   localStorage.setItem('lastDateNotification', dayjs().format('YYYY-MM-DD'))
 }
 
-function getWeek (lastDate: Date) {
+const getWeek = (lastDate: Date) => {
   const dateSplit = lastDate.toString().split('T')
   const now = new Date()
   const week = dayjs(now).diff(dateSplit[0], 'week')
   return week
 }
 
-function getDays (lastDate: Date) {
+const getDays = (lastDate: Date) => {
   const now = new Date()
   return (dayjs(now).diff(lastDate, 'days') + 1)
 }
 
-function showModal (day: Number, notificationShow: String | null) {
+const showModal = (day: Number, notificationShow: String | null) => {
   let showModal = true
   if (notificationShow === 'true' && day === 1) {
     showModal = false
@@ -146,7 +146,7 @@ function showModal (day: Number, notificationShow: String | null) {
   return showModal
 }
 
-function getImagePath (week: number) {
+const getImagePath = (week: number) => {
   let path = require('@/assets/svg/boy.svg')
 
   if (week > 1 && week <= 3) {
