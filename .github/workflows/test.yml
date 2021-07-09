@@ -1,5 +1,7 @@
-on:
-  push
+name: Test - Jest/Build
+
+on: pull_request
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -13,4 +15,5 @@ jobs:
     - run: yarn
       env:
         NPM_TOKEN: ${{ secrets.GMT_NPM_TOKEN }}
+    - run: yarn test
     - run: yarn build
