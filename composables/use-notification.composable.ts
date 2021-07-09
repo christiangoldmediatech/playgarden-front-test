@@ -1,28 +1,37 @@
 import dayjs from 'dayjs'
-import { ref } from '@nuxtjs/composition-api'
+import { computed, ref } from '@nuxtjs/composition-api'
 import { useAuth } from '@/composables'
 import { hasLocalStorage } from '@/utils/window'
 import { Store } from 'vuex/types'
 import { TypedStore } from '@/models'
 import { useShippingAddress } from './use-shipping-address.composable'
 
-const expiringRibbonHeightDesktop = ref(54) // update if ribbon content is modified
-const expiringRibbonHeightMobile = ref(101) // update if ribbon content is modified
-const isTrialExpiringRibbonVisible = ref(false)
-const isTrialExpiredModalVisible = ref(false)
-const isShippingModalVisible = ref(false)
-const notificationCard = ref({
-  isVisible: false,
-  title: '',
-  description: '',
-  image: '',
-  action: null as (() => void) | null,
-  actionText: ''
-})
-
 export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
   const { userInfo, isUserLoggedIn } = useAuth({ store })
   const { getShippingAdress } = useShippingAddress()
+
+  const expiringRibbonHeightDesktop = computed(() => store.state.notifications.expiringRibbonHeightDesktop)
+  const expiringRibbonHeightMobile = computed(() => store.state.notifications.expiringRibbonHeightMobile)
+
+  const isTrialExpiringRibbonVisible = computed(() => store.state.notifications.isTrialExpiringRibbonVisible)
+  const setIsTrialExpiringRibbonVisible = (isVisible: boolean) => {
+    store.commit('notifications/SET_TRIAL_EXPIRING_RIBBON_VISIBLE', isVisible)
+  }
+
+  const isTrialExpiredModalVisible = computed(() => store.state.notifications.isTrialExpiredModalVisible)
+  const setIsTrialExpiredModalVisible = (isVisible: boolean) => {
+    store.commit('notifications/SET_TRIAL_EXPIRED_MODAL_VISIBLE', isVisible)
+  }
+
+  const isShippingModalVisible = computed(() => store.state.notifications.isShippingModalVisible)
+  const setIsShippingModalVisible = (isVisible: boolean) => {
+    store.commit('notifications/SET_IS_SHIPPING_MODAL_VISIBLE', isVisible)
+  }
+
+  const notificationCard = computed(() => store.state.notifications.notificationCard)
+  const setNotificationCard = (payload: Partial<typeof notificationCard.value>) => {
+    store.commit('notifications/SET_NOTIFICATION_CARD', payload)
+  }
 
   /**
    * Show a notification prompting the user to update their shipping address if:
@@ -44,18 +53,18 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
       : false
 
     if (didShowModalBefore) {
-      notificationCard.value = {
+      setNotificationCard({
         isVisible: true,
         title: 'WE WANT TO SEND YOU A WELCOME KIT!',
         description: 'We require a shipping address in order to send the Welcome Kit with our first Workbook.',
         action: () => {
-          isShippingModalVisible.value = true
+          setIsShippingModalVisible(true)
         },
         image: require('@/assets/png/megaphone.png'),
         actionText: 'To learn more'
-      }
+      })
     } else {
-      isShippingModalVisible.value = true
+      setIsShippingModalVisible(true)
     }
   }
 
@@ -103,7 +112,7 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
     const timeLeftInMinutes = dayjs(userInfo.value.trialEnd).diff(now, 'minute')
 
     if (timeLeftInMinutes > 0 && timeLeftInMinutes <= threeDaysInMinutes) {
-      isTrialExpiringRibbonVisible.value = true
+      setIsTrialExpiringRibbonVisible(true)
     }
   }
 
@@ -140,17 +149,20 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
       !didChoosePlan
 
     if (shouldShowExpiredModal) {
-      isTrialExpiredModalVisible.value = true
+      setIsTrialExpiredModalVisible(true)
     }
   }
 
   return {
     notificationCard,
+    isTrialExpiredModalVisible,
     isTrialExpiringRibbonVisible,
     expiringRibbonHeightDesktop,
     expiringRibbonHeightMobile,
+    isShippingModalVisible,
     checkUserShippingAddressAndNotify,
     checkIfShouldSendShippingAddressNotification,
-    checkIfShouldShowTrialExpiringRibbon
+    checkIfShouldShowTrialExpiringRibbon,
+    checkIfShouldShowTrialExpiredModal
   }
 }
