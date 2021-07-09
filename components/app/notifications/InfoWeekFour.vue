@@ -64,7 +64,10 @@
             </v-col>
             <v-col cols="12" md="auto" class="mx-0 mx-md-4 align-self-center font-weight-bold">
               <span class="grey--text">Need help? </span>
-              <span class="text-decoration-underline" @click="handleContactUs">
+              <span
+                class="text-decoration-underline"
+                @click="sendContacUs"
+              >
                 <a class="accent--text">Contact us</a>
               </span>
             </v-col>
@@ -118,6 +121,14 @@ export default defineComponent({
 
       // @ts-ignore
       return dayjs(this.getUserInfo.trialEnd).format('MMMM DD, YYYY')
+    }
+  },
+  methods: {
+    sendContacUs () {
+      this.hideNotificationSignupModal()
+      this.$router.push({
+        name: 'help'
+      })
     }
   }
 })
