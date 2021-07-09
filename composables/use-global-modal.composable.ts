@@ -82,7 +82,7 @@ export const useGlobalModal = ({ store }: { store: Store<TypedStore> }) => {
       }
 
       imagePath.value = getImagePath(week)
-      dataNotification.isNotificationSignupModalVisible = showModal(day, notificationShow)
+      dataNotification.isNotificationSignupModalVisible = showModal(day, userInfo.trialEnd, notificationShow)
       dataNotification.isWeekTwoAndThree = isWeekTwoAndThree.value
       dataNotification.isWeekFour = isWeekFour.value
       dataNotification.imagePath = imagePath.value
@@ -136,9 +136,17 @@ const saveDataNotification = () => {
 }
 
 const getWeek = (lastDate: Date) => {
-  const dateSplit = lastDate.toString().split('T')
   const now = new Date()
-  const week = dayjs(now).diff(dateSplit[0], 'week')
+  let week = dayjs(now).diff(lastDate, 'days')
+  if (week <= 7) {
+    week = 1
+  } else if (week > 7 && week <= 14) {
+    week = 2
+  } else if (week > 14 && week <= 20) {
+    week = 3
+  } else {
+    week = 4
+  }
   return week
 }
 
@@ -147,9 +155,14 @@ const getDays = (lastDate: Date) => {
   return (dayjs(now).diff(lastDate, 'days') + 1)
 }
 
-const showModal = (day: Number, notificationShow: String | null) => {
+const showModal = (day: Number, dateEnd: Date, notificationShow: String | null) => {
+  const now = new Date()
   let showModal = true
   if (notificationShow === 'true' && day === 1) {
+    showModal = false
+  }
+  const isTraial = now < dateEnd
+  if (now >= dateEnd) {
     showModal = false
   }
   return showModal
