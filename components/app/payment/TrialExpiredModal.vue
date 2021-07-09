@@ -84,7 +84,9 @@ export default defineComponent({
     ...mapState('notifications', ['isTrialExpiredModalVisible']),
     ...mapGetters('auth', ['getUserInfo']),
 
+    // @ts-ignore
     lastDayOfTrial () {
+      // @ts-ignore
       if (!this.getUserInfo.trialEnd) {
         return ''
       }
