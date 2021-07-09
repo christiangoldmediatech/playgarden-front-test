@@ -35,7 +35,7 @@ export const useGlobalModal = () => {
       isSubscriptionPlan: false
     }
 
-    if (userInfo.flow !== UserFlow.NOCREDITCARD) {
+    if (userInfo.flow === UserFlow.NOCREDITCARD) {
       const notificationShow = window.localStorage.getItem('notificationSignup')
       const lastDateNotification = window.localStorage.getItem('lastDateNotification')
 
