@@ -69,8 +69,9 @@
 
 <script lang="ts">
 import LargeImageContentDialog from '@/components/ui/dialogs/LargeImageContentDialog/LargeImageContentDialog.vue'
-import { defineComponent, onMounted } from '@nuxtjs/composition-api'
+import { defineComponent, useStore } from '@nuxtjs/composition-api'
 import { useGlobalModal } from '@/composables'
+import { TypedStore } from '@/models'
 
 export default defineComponent({
   name: 'InfoWeek',
@@ -91,7 +92,8 @@ export default defineComponent({
   },
 
   setup () {
-    const { hideNotificationSignupModal, showSubscriptionPlanSelectionModal } = useGlobalModal()
+    const store = useStore<TypedStore>()
+    const { hideNotificationSignupModal, showSubscriptionPlanSelectionModal } = useGlobalModal({ store })
 
     return {
       hideNotificationSignupModal,

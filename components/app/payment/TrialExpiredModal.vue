@@ -51,12 +51,13 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import dayjs from 'dayjs'
 import { mapState, mapGetters } from 'vuex'
 import LargeImageContentDialog from '@/components/ui/dialogs/LargeImageContentDialog/LargeImageContentDialog.vue'
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, useStore } from '@nuxtjs/composition-api'
 import { useGlobalModal } from '@/composables'
+import { TypedStore } from '@/models'
 
 export default defineComponent({
   name: 'TrialExpiredModal',
@@ -66,7 +67,8 @@ export default defineComponent({
   },
 
   setup () {
-    const { showContactUsModal } = useGlobalModal()
+    const store = useStore<TypedStore>()
+    const { showContactUsModal } = useGlobalModal({ store })
 
     return {
       showContactUsModal
@@ -87,6 +89,7 @@ export default defineComponent({
         return ''
       }
 
+      // @ts-ignore
       return dayjs(this.getUserInfo.trialEnd).format('MMMM DD, YYYY')
     }
   },
