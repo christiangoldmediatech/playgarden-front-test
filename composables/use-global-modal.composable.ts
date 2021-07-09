@@ -1,10 +1,12 @@
 
 import dayjs from 'dayjs'
-import { computed, ref, useStore, useRouter, useRoute } from '@nuxtjs/composition-api'
-import { UserFlow } from '@/models'
-import { useSignup } from './use-signup.composable'
+import { computed, ref } from '@nuxtjs/composition-api'
+import { Store } from 'vuex/types'
+import { UserFlow, TypedStore } from '@/models'
+import { hasLocalStorage } from '@/utils/window'
 
-type NotificationSign = {
+// Signup Notification for trialing users
+type TrialingUserSignupNotificationSign = {
   imagePath: String
   isNotificationSignupModalVisible: Boolean
   isWeekTwoAndThree: Boolean
@@ -13,21 +15,19 @@ type NotificationSign = {
 }
 
 const isContactUsModalVisible = ref(false)
+
+// Trialing User Signup Notification
 const isNotificationSignupModalVisible = ref(true)
 const isWeekTwoAndThree = ref(false)
 const isWeekFour = ref(false)
 const isSubscriptionPlan = ref(false)
 const imagePath = ref('')
 
-export const useGlobalModal = () => {
-  const store = useStore()
-  const router = useRouter()
-  const route = useRoute()
-  const { abFlow } = useSignup({ router, route })
+export const useGlobalModal = ({ store }: { store: Store<TypedStore> }) => {
   const userInfo = store.getters['auth/getUserInfo']
 
-  const isNotification = computed<NotificationSign>(() => {
-    const dataNotification: NotificationSign = {
+  const isNotification = computed<TrialingUserSignupNotificationSign>(() => {
+    const dataNotification: TrialingUserSignupNotificationSign = {
       imagePath: '',
       isNotificationSignupModalVisible: false,
       isWeekTwoAndThree: false,
@@ -36,8 +36,13 @@ export const useGlobalModal = () => {
     }
 
     if (userInfo.flow === UserFlow.NOCREDITCARD) {
-      const notificationShow = window.localStorage.getItem('notificationSignup')
-      const lastDateNotification = window.localStorage.getItem('lastDateNotification')
+      let notificationShow: string | null = null
+      let lastDateNotification: string | null = null
+
+      if (hasLocalStorage()) {
+        notificationShow = window.localStorage.getItem('notificationSignup')
+        lastDateNotification = window.localStorage.getItem('lastDateNotification')
+      }
 
       const week = getWeek(userInfo.createdAt)
       const day = (lastDateNotification) ? getDays(new Date(lastDateNotification)) : 0
@@ -78,8 +83,6 @@ export const useGlobalModal = () => {
       dataNotification.isWeekFour = isWeekFour.value
       dataNotification.imagePath = imagePath.value
       dataNotification.isSubscriptionPlan = isSubscriptionPlan.value
-
-      console.log('aqui--', dataNotification.isNotificationSignupModalVisible)
     }
     return dataNotification
   })
@@ -122,8 +125,10 @@ export const useGlobalModal = () => {
 }
 
 function saveDataNotification () {
-  localStorage.setItem('notificationSignup', 'true')
-  localStorage.setItem('lastDateNotification', dayjs().format('YYYY-MM-DD'))
+  if (hasLocalStorage()) {
+    localStorage.setItem('notificationSignup', 'true')
+    localStorage.setItem('lastDateNotification', dayjs().format('YYYY-MM-DD'))
+  }
 }
 
 function getWeek (lastDate: Date) {
