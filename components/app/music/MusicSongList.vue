@@ -159,7 +159,13 @@ export default {
 
     filteredLettersByLetterId () {
       if (!this.selectedLetterId) {
-        return this.songsByCurriculumType
+        return this.songsByCurriculumType.filter((letter) => {
+          // Don't show letters which don't have songs in it
+          if (Array.isArray(letter.musicLibrary) && letter.musicLibrary.length) {
+            return true
+          }
+          return false
+        })
       } else {
         return this.songsByCurriculumType.filter(letter => letter.id === this.selectedLetterId)
       }
