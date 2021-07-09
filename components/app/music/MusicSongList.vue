@@ -4,6 +4,7 @@
     <v-row no-gutters>
       <v-col>
         <underlined-title
+          v-if="!showOnlyFavorites"
           font-size="48px"
           font-size-mobile="32px"
           text="Song List"
