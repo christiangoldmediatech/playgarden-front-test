@@ -9,6 +9,7 @@
       class="pieces-close-btn"
       color="white"
       icon
+      data-test-id="puzzle-modal-close-button"
       @click.stop="close"
     >
       <v-icon>
@@ -16,7 +17,7 @@
       </v-icon>
     </v-btn>
 
-    <pieces v-if="actualShow" :puzzle="actualShow" />
+    <pieces v-if="actualShow" :puzzle="actualShow" data-test-id="puzzle-modal" />
   </pg-dialog>
 </template>
 

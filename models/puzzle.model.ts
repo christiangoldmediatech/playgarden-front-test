@@ -9,7 +9,24 @@ export interface Puzzle extends Entity {
   level: 'BEGINNER'
   name: string
   pieces: number
-  piecesUnlocked: number
+  studentId? : number
+  piecesUnclocked: number
   puzzleChildrenId: number
   rows: number
+}
+
+export interface PuzzleResponse {
+  id: number
+  active: boolean
+  completed: boolean
+  lazy?: boolean
+  letter?: string
+  name: string
+  pieces?: number
+  studentId?: number
+  piecesUnclocked: number
+  percentageCompleted: number
+  puzzleChildrenId : number
+  src: string
+  srcType? : string
 }

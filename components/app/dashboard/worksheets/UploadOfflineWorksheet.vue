@@ -61,7 +61,7 @@
                   class="d-none"
                   type="file"
                   accept="image/*"
-                  @change="setFile($event, category.id, indexCategory)"
+                  @change="setFile($event, category.id, indexCategory, category)"
                 >
               </v-card-text>
             </v-card>
@@ -238,12 +238,11 @@ export default {
     },
 
     openFileDialog (category, index) {
-      this.$nuxt.$emit(APP_EVENTS.DASHBOARD_WORKSHEET_UPLOAD, category.category)
       const uploader = document.getElementById(`${category.category}-${index}-upload`)
       uploader.click()
     },
 
-    setFile (e, categoryId, index) {
+    setFile (e, categoryId, index, category) {
       this.loading = true
 
       this.uploadWorksheet({
@@ -253,6 +252,7 @@ export default {
         File: e.target.files[0]
       })
         .then(({ url }) => {
+          this.$nuxt.$emit(APP_EVENTS.DASHBOARD_WORKSHEET_UPLOAD, category.category)
           this.images[`image_${categoryId}_${index}`] = url
           this.$snotify.success('Your worksheet has been uploaded!')
           const date = new Date().toISOString().substr(0, 19)
