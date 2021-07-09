@@ -33,7 +33,7 @@ export const useGlobalModal = ({ store }: { store: Store<TypedStore> }) => {
       isWeekFour: false
     }
 
-    if (userInfo.flow !== UserFlow.NOCREDITCARD) {
+    if (userInfo.flow === UserFlow.NOCREDITCARD) {
       let lastDateNotification: string | null = null
 
       if (hasLocalStorage()) {
