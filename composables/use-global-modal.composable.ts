@@ -33,54 +33,38 @@ export const useGlobalModal = ({ store }: { store: Store<TypedStore> }) => {
       isWeekFour: false
     }
 
-    if (userInfo.flow === UserFlow.NOCREDITCARD) {
-      let notificationShow: string | null = null
+    if (userInfo.flow !== UserFlow.NOCREDITCARD) {
       let lastDateNotification: string | null = null
 
       if (hasLocalStorage()) {
-        notificationShow = window.localStorage.getItem('notificationSignup')
         lastDateNotification = window.localStorage.getItem('lastDateNotification')
       }
 
       const week = getWeek(userInfo.createdAt)
       const day = (lastDateNotification) ? getDays(new Date(lastDateNotification)) : 0
-      const showNotification = (notificationShow) || 'false'
 
       if (week >= 2 && week <= 3) {
         isWeekTwoAndThree.value = true
-        if (hasLocalStorage()) {
-          localStorage.setItem('notificationSignup', 'false')
-        }
       }
       if (week >= 4) {
         isWeekFour.value = true
-        if (hasLocalStorage()) {
-          localStorage.setItem('notificationSignup', 'false')
-        }
       }
 
-      if ((showNotification === 'true' && isWeekTwoAndThree.value) || (showNotification === 'true' && isWeekFour.value)) {
-        hideNotificationSignupModal()
+      if ((isWeekTwoAndThree.value && week === 2 && day > 2) || (isWeekTwoAndThree.value && week === 2 && day === 0)) {
+        // week 2
+        showNotificationSignupModal()
+      } else if ((isWeekTwoAndThree.value && week === 3 && day > 1) || (isWeekTwoAndThree.value && week === 3 && day === 0)) {
+        // week 3
+        showNotificationSignupModal()
+      } else if ((isWeekFour.value && week === 4 && day > 1) || (isWeekFour.value && week === 4 && day === 0)) {
+        // week 4
+        showNotificationSignupModal()
       } else {
-        showNotificationSignupModal()
-      }
-
-      // Show on Week 2 per two days And Show Week 4 per day
-      if ((isWeekTwoAndThree.value && day === 2) || (isWeekFour.value && day === 1)) {
-        showNotificationSignupModal()
-      }
-
-      // Show on Week 3 per day
-      if ((isWeekTwoAndThree.value && day === 1 && week === 3)) {
-        showNotificationSignupModal()
-      }
-
-      if (!lastDateNotification) {
-        showNotificationSignupModal()
+        hideNotificationSignupModal()
       }
 
       imagePath.value = getImagePath(week)
-      dataNotification.isNotificationSignupModalVisible = showModal(day, userInfo.trialEnd, notificationShow)
+      dataNotification.isNotificationSignupModalVisible = (getTrial(userInfo.trialEnd) === false) ? false : isNotificationSignupModalVisible.value
       dataNotification.isWeekTwoAndThree = isWeekTwoAndThree.value
       dataNotification.isWeekFour = isWeekFour.value
       dataNotification.imagePath = imagePath.value
@@ -116,7 +100,6 @@ export const useGlobalModal = ({ store }: { store: Store<TypedStore> }) => {
 
 const saveDataNotification = () => {
   if (hasLocalStorage()) {
-    localStorage.setItem('notificationSignup', 'true')
     localStorage.setItem('lastDateNotification', dayjs().format('YYYY-MM-DD'))
   }
 }
@@ -141,17 +124,11 @@ const getDays = (lastDate: Date) => {
   return (dayjs(now).diff(lastDate, 'days') + 1)
 }
 
-const showModal = (day: Number, dateEnd: Date, notificationShow: String | null) => {
+// const showModal = (day: Number, dateEnd: Date, notificationShow: String | null) => {
+const getTrial = (dateEnd: Date) => {
   const now = new Date()
-  let showModal = true
-  if (notificationShow === 'true' && day === 1) {
-    showModal = false
-  }
   const isTrial = dayjs(dateEnd).isAfter(now)
-  if (isTrial === false) {
-    showModal = false
-  }
-  return showModal
+  return isTrial
 }
 
 const getImagePath = (week: number) => {
