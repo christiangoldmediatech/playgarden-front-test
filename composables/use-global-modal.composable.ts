@@ -50,11 +50,15 @@ export const useGlobalModal = ({ store }: { store: Store<TypedStore> }) => {
 
       if (week >= 2 && week <= 3) {
         isWeekTwoAndThree.value = true
-        localStorage.setItem('notificationSignup', 'false')
+        if (hasLocalStorage()) {
+          localStorage.setItem('notificationSignup', 'false')
+        }
       }
       if (week >= 4) {
         isWeekFour.value = true
-        localStorage.setItem('notificationSignup', 'false')
+        if (hasLocalStorage()) {
+          localStorage.setItem('notificationSignup', 'false')
+        }
       }
 
       if ((showNotification === 'true' && isWeekTwoAndThree.value) || (showNotification === 'true' && isWeekFour.value)) {
