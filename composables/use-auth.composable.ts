@@ -44,6 +44,8 @@ export const useAuth = ({
     store.commit('auth/SET_USER_INFO', val)
   }
 
+  const isUserEmailVerified = computed<boolean>(() => store.getters['auth/isUserEmailUnverified'])
+
   const checkAuth = (): boolean => {
     return !!(accessToken.value && expiresAt.value) && (Date.now() < expiresAt.value)
   }
@@ -154,6 +156,7 @@ export const useAuth = ({
   return {
     userInfo,
     isUserLoggedIn,
+    isUserEmailVerified,
     checkAuth,
     setToken,
     logout,
