@@ -10,8 +10,7 @@ type TrialingUserSignupNotificationSign = {
   imagePath: String
   isNotificationSignupModalVisible: Boolean
   isWeekTwoAndThree: Boolean
-  isWeekFour: Boolean,
-  isSubscriptionPlan: Boolean
+  isWeekFour: Boolean
 }
 
 const isContactUsModalVisible = ref(false)
@@ -31,8 +30,7 @@ export const useGlobalModal = ({ store }: { store: Store<TypedStore> }) => {
       imagePath: '',
       isNotificationSignupModalVisible: false,
       isWeekTwoAndThree: false,
-      isWeekFour: false,
-      isSubscriptionPlan: false
+      isWeekFour: false
     }
 
     if (userInfo.flow === UserFlow.NOCREDITCARD) {
@@ -86,7 +84,6 @@ export const useGlobalModal = ({ store }: { store: Store<TypedStore> }) => {
       dataNotification.isWeekTwoAndThree = isWeekTwoAndThree.value
       dataNotification.isWeekFour = isWeekFour.value
       dataNotification.imagePath = imagePath.value
-      dataNotification.isSubscriptionPlan = isSubscriptionPlan.value
     }
     return dataNotification
   })
@@ -107,24 +104,13 @@ export const useGlobalModal = ({ store }: { store: Store<TypedStore> }) => {
     saveDataNotification()
   }
 
-  const showSubscriptionPlanSelectionModal = () => {
-    isNotificationSignupModalVisible.value = false
-    isSubscriptionPlan.value = true
-  }
-
-  const hideSubscriptionPlanSelectionModal = () => {
-    isSubscriptionPlan.value = false
-  }
-
   return {
     isContactUsModalVisible,
     isNotification,
     showContactUsModal,
     hideContactUsModal,
     showNotificationSignupModal,
-    hideNotificationSignupModal,
-    showSubscriptionPlanSelectionModal,
-    hideSubscriptionPlanSelectionModal
+    hideNotificationSignupModal
   }
 }
 

@@ -58,7 +58,7 @@
           </p>
           <v-row no-gutters class="text-center text-md-left">
             <v-col cols="12" md="auto" class="my-4">
-              <v-btn x-large color="accent" class="text-none" width="250" @click="showSubscriptionPlanSelectionModal">
+              <v-btn x-large color="accent" class="text-none" width="250" @click="goPlan">
                 Subscribe Now
               </v-btn>
             </v-col>
@@ -66,7 +66,7 @@
               <span class="grey--text">Need help? </span>
               <span
                 class="text-decoration-underline"
-                @click="sendContacUs"
+                @click="goContacUs"
               >
                 <a class="accent--text">Contact us</a>
               </span>
@@ -103,11 +103,10 @@ export default defineComponent({
   },
   setup () {
     const store = useStore<TypedStore>()
-    const { hideNotificationSignupModal, showSubscriptionPlanSelectionModal } = useGlobalModal({ store })
+    const { hideNotificationSignupModal } = useGlobalModal({ store })
 
     return {
-      hideNotificationSignupModal,
-      showSubscriptionPlanSelectionModal
+      hideNotificationSignupModal
     }
   },
   computed: {
@@ -124,7 +123,13 @@ export default defineComponent({
     }
   },
   methods: {
-    sendContacUs () {
+    goPlan () {
+      this.hideNotificationSignupModal()
+      this.$router.push({
+        name: 'app-payment-plan'
+      })
+    },
+    goContacUs () {
       this.hideNotificationSignupModal()
       this.$router.push({
         name: 'help'
