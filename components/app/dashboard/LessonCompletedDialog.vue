@@ -71,6 +71,8 @@
 import { mapGetters } from 'vuex'
 import DashboardLink from '@/mixins/DashboardLinkMixin.js'
 
+import { APP_EVENTS } from '@/models'
+
 export default {
   name: 'LessonCompletedDialog',
 
@@ -119,6 +121,7 @@ export default {
     },
 
     goToWorksheets () {
+      this.$appEventBus.$emit(APP_EVENTS.DASHBOARD_ONLINE_WORKSHEET_CLICKED)
       this.$router.push(this.generateNuxtRoute('online-worksheet'))
     },
 

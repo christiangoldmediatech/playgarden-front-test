@@ -7,7 +7,11 @@ export default {
   name: 'Index',
 
   beforeCreate () {
-    this.$router.push({ name: 'auth-login' })
+    if (this.$route.query.redirect) {
+      this.$router.push({ name: 'auth-login', query: { redirect: this.$route.query.redirect } })
+    } else {
+      this.$router.push({ name: 'auth-login' })
+    }
   }
 }
 </script>

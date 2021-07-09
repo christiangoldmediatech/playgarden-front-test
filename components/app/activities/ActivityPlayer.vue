@@ -22,6 +22,7 @@
       :no-seek="noSeek"
       :fullscreen-override="handleFullscreen"
       no-auto-track-change
+      :on-next-up-click="player ? player.skipVideo : undefined"
       @ready="onReady"
       @playlist-index-change="updateIndex"
       @last-playlist-item="findNextActivity"
@@ -65,6 +66,11 @@ export default {
       this.patchImg = null
       this.toUnlock = null
       this.open(params)
+      this.$nextTick(() => {
+        if (this.$refs.videoPlayer) {
+          this.$refs.videoPlayer.popControls()
+        }
+      })
     })
   },
 

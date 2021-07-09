@@ -56,9 +56,9 @@ export default async function ({ redirect, route, store, app, req }) {
       return
     }
   } else if (isUnauthenticatedRoute) {
-    await store.dispatch('auth/logout', undefined, { root: true })
+    await store.dispatch('auth/logout', {}, { root: true })
   } else {
-    await store.dispatch('auth/logout', redirect, { root: true })
+    await store.dispatch('auth/logout', { redirect, route: route.fullPath }, { root: true })
   }
 
   /**

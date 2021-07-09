@@ -28,6 +28,7 @@
             height="90%"
             :src="require('@/assets/png/playdates/playdate.png')"
             class="align-center mr-md-15 mt-md-15 "
+            data-test-id="create-playdate-image"
           />
         </v-row>
       </v-col>
@@ -40,7 +41,7 @@
         </p>
 
         <validation-observer v-slot="{ invalid, passes, reset }">
-          <v-form @submit.prevent="passes(onSubmit(reset))">
+          <v-form @submit.prevent="passes(() => onSubmit(reset))">
             <v-row>
               <v-col>
                 <p class="text-md-left text-sm-center font-weight-bold">
@@ -82,6 +83,7 @@
                     label="Day"
                     :loading="loading"
                     solo
+                    data-test-id="day-select"
                     @change="onWeekdayChange"
                   />
                 </validation-provider>
@@ -106,6 +108,7 @@
                     :items="times"
                     :error-messages="errors"
                     label="Time"
+                    data-test-id="time-select"
                     :loading="loading"
                     solo
                   >
@@ -114,7 +117,12 @@
                     </template>
 
                     <template v-slot:item="{ item, on, attrs }">
-                      <span v-bind="attrs" v-on="on" v-html="item.text" />
+                      <span
+                        data-test-id="time-select-item"
+                        v-bind="attrs"
+                        v-on="on"
+                        v-html="item.text"
+                      />
                     </template>
                   </pg-select>
                 </validation-provider>
@@ -145,6 +153,7 @@
                     :menu-props="feature"
                     deletable-chips
                     hide-no-data
+                    data-test-id="invite-select"
                     :loading="loading"
                     multiple
                     solo
@@ -162,6 +171,7 @@
                   :disabled="invalid"
                   :loading="loading"
                   type="submit"
+                  data-test-id="create-playdate-submit"
                   x-large
                 >
                   Invite a Friend to a Playdate
@@ -175,13 +185,14 @@
   </v-col>
 </template>
 
-<script>
-import { mapActions, mapGetters } from 'vuex'
-import { TAG_MANAGER_EVENTS } from '@/models'
-
+<script lang="ts">
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import utc from 'dayjs/plugin/utc'
+
+import { Child, Playdate, Playdates, TAG_MANAGER_EVENTS } from '@/models'
+import { computed, defineComponent, onMounted, ref, useRouter, useStore } from '@nuxtjs/composition-api'
+import { useGtmHelper, usePlaydates, useSnotifyHelper } from '@/composables'
 
 import ChildSelect from '@/components/app/ChildSelect.vue'
 
@@ -189,116 +200,140 @@ const resetDraft = () => ({ childrenIds: [], invites: [] })
 dayjs.extend(customParseFormat)
 dayjs.extend(utc)
 
-export default {
+export default defineComponent({
   name: 'Create',
 
   components: {
     ChildSelect
   },
 
-  data: () => ({
-    draft: resetDraft(),
-    day: null,
-    playdates: [],
-    activePlaydates: [],
-    childrenPlaydates: [],
-    playdateSelected: null,
-    feature: { top: true, offsetY: true },
-    loading: false,
-    week: []
-  }),
+  setup () {
+    const gtm = useGtmHelper()
+    const snotify = useSnotifyHelper()
+    const store = useStore()
+    const router = useRouter()
 
-  computed: {
-    ...mapGetters('auth', {
-      userInfo: 'getUserInfo'
-    }),
-    times () {
-      return this.playdates.map(({ id, start, end }) => {
-        start = dayjs.utc(start, 'HH:mm:ss').local()
-        end = dayjs.utc(end, 'HH:mm:ss').local()
+    const { getPlaydateDays, getChildrenInfo, getAndFilterPlaydates, addChildren } = usePlaydates()
 
-        const startTime = start.format('hh:mm')
-        const startMeridian = start.format('a')
-        const endTime = end.format('hh:mm')
-        const endMeridian = end.format('a')
+    const loading = ref(false)
+    const feature = ref({ top: true, offsetY: true })
+    const draft = ref(resetDraft())
+    const playdateSelected = ref<number | null>(null)
+    const playdates = ref<Playdate[]>([])
+    const activePlaydates = ref<{ children: Child; playdates: Playdates[] }[]>([])
+    const week = ref<{ text: string, value: string }[]>([])
+    const day = ref<string | null>(null)
+
+    const userInfo = computed(() => store.getters['auth/getUserInfo'])
+
+    const times = computed(() => {
+      return playdates.value.map(({ id, start, end }) => {
+        const startDate = dayjs.utc(start, 'HH:mm:ss').local()
+        const endDate = dayjs.utc(end, 'HH:mm:ss').local()
+
+        const startTime = startDate.format('hh:mm')
+        const startMeridian = startDate.format('a')
+        const endTime = endDate.format('hh:mm')
+        const endMeridian = endDate.format('a')
 
         return {
           text: `${startTime} <small class="grey--text">${startMeridian}</small> - ${endTime} <small class="grey--text">${endMeridian}</small>`,
           value: id
         }
       })
-    }
-  },
-
-  async created () {
-    const days = await this.getPlaydateDays()
-    this.week = days.days.map((day) => {
-      return { text: day, value: day }
     })
 
-    await this.getActivePlaydates()
-  },
-
-  methods: {
-    ...mapActions('playdates', ['addChildren', 'getAndFilterPlaydates', 'getPlaydateDays', 'getChildrenInfo']),
-
-    async onWeekdayChange () {
-      this.loading = true
+    const onWeekdayChange = async () => {
+      loading.value = true
 
       try {
-        this.playdates = await this.getAndFilterPlaydates({
-          day: this.day
+        if (day.value === null) {
+          return
+        }
+
+        playdates.value = await getAndFilterPlaydates({
+          day: day.value
         })
 
-        this.playdateSelected = null
+        playdateSelected.value = null
       } catch (e) {
       } finally {
-        this.loading = false
-      }
-    },
-
-    async onSubmit (reset) {
-      this.loading = true
-
-      try {
-        this.playdates = await this.addChildren({
-          id: this.playdateSelected,
-          data: this.draft
-        })
-
-        this.resetForm(reset)
-
-        this.$gtm.push({
-          event: TAG_MANAGER_EVENTS.PLAYDATE_INVITE_FRIEND,
-          userId: this.userInfo.id
-        })
-
-        this.$snotify.success('Your Playdate has been stored successfully!.')
-        this.$router.push({ name: 'app-playdates' })
-      } catch (e) {
-      } finally {
-        this.loading = false
-      }
-    },
-
-    resetForm (reset) {
-      this.draft = resetDraft()
-      this.day = null
-      this.playdates = []
-      this.playdateSelected = null
-      reset()
-    },
-
-    async getActivePlaydates () {
-      this.loading = true
-
-      try {
-        this.activePlaydates = await this.getChildrenInfo()
-      } catch (e) {
-      } finally {
-        this.loading = false
+        loading.value = false
       }
     }
+
+    const resetForm = (reset: () => void) => {
+      draft.value = resetDraft()
+      day.value = null
+      playdates.value = []
+      playdateSelected.value = null
+      reset()
+    }
+
+    const onSubmit = async (reset: () => void) => {
+      loading.value = true
+
+      try {
+        if (playdateSelected.value === null) {
+          return
+        }
+
+        playdates.value = await addChildren({
+          id: playdateSelected.value,
+          data: draft.value
+        })
+
+        resetForm(reset)
+
+        gtm.push({
+          event: TAG_MANAGER_EVENTS.PLAYDATE_INVITE_FRIEND,
+          userId: userInfo.value.id
+        })
+
+        snotify.success('Your Playdate has been stored successfully!.')
+        router.push({ name: 'app-playdates' })
+      } catch (e) {
+      } finally {
+        loading.value = false
+      }
+    }
+
+    const getActivePlaydates = async () => {
+      try {
+        loading.value = true
+        activePlaydates.value = await getChildrenInfo()
+      } catch (error) {
+
+      } finally {
+        loading.value = false
+      }
+    }
+
+    onMounted(async () => {
+      const days = await getPlaydateDays()
+      week.value = days.days.map((day) => {
+        return { text: day, value: day }
+      })
+
+      await getActivePlaydates()
+    })
+
+    return {
+      feature,
+      loading,
+      draft,
+      week,
+      day,
+      playdates,
+      userInfo,
+      activePlaydates,
+      times,
+      playdateSelected,
+      resetForm,
+      getActivePlaydates,
+      onWeekdayChange,
+      onSubmit
+    }
   }
-}
+})
 </script>

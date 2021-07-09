@@ -150,6 +150,10 @@ export default {
           })
 
           this.showTeachers = false
+
+          this.$nextTick(() => {
+            this.downloaded = true
+          })
         }
       }
 
@@ -191,7 +195,7 @@ export default {
       const result = [
         ...buttons,
         {
-          text: 'SKIP TO ACTIVITIES',
+          text: 'GO TO ACTIVITIES',
           color: '#FEC572',
           iconLeft: 'pg-icon-play',
           action: () => {

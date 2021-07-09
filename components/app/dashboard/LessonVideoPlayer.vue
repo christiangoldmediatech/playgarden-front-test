@@ -21,6 +21,7 @@
       :no-seek="noSeek"
       :fullscreen-override="handleFullscreen"
       no-auto-track-change
+      :on-next-up-click="player ? player.skipVideo : undefined"
       @ready="onReady"
       @playlist-index-change="updateIndex"
       @playlist-complete="showCompletedDialog"
@@ -38,6 +39,8 @@ import DashboardLink from '@/mixins/DashboardLinkMixin.js'
 import SaveVideoProgress from '@/mixins/SaveVideoProgressMixin.js'
 import Fullscreen from '@/mixins/FullscreenMixin.js'
 import LessonCompletedDialog from '@/components/app/dashboard/LessonCompletedDialog.vue'
+
+import { APP_EVENTS } from '@/models'
 
 export default {
   name: 'LessonVideoPlayer',
@@ -86,6 +89,7 @@ export default {
           color: 'accent',
           iconLeft: 'pg-icon-paper-pencil',
           action: () => {
+            this.$appEventBus.$emit(APP_EVENTS.DASHBOARD_ONLINE_WORKSHEET_CLICKED)
             this.$router.push(this.generateNuxtRoute('online-worksheet'))
           }
         },
@@ -149,6 +153,11 @@ export default {
   created () {
     this.$nuxt.$on('open-lesson-video-player', (params) => {
       this.open(params)
+      this.$nextTick(() => {
+        if (this.$refs.videoPlayer) {
+          this.$refs.videoPlayer.popControls()
+        }
+      })
     })
   },
 
@@ -156,38 +165,39 @@ export default {
     onReady (player) {
       this.player = player
       const callbacks = {
-        onPause: this.saveVideoProgress,
-        onSkip: this.skipLessonVideo,
-        onEnded: async () => {
-          await this.saveVideoProgress
+        onBeforePause: () => {
+          this.saveVideoProgress()
+        },
+        onBeforeSkip: () => {
+          this.player.pause()
+          this.saveVideoProgress(true)
+        },
+        onSkip: () => {
+          if (this.lastVideo) {
+            this.player.seek(this.player.duration())
+            this.player.trigger('ended')
+          } else {
+            this.player.nextVideo()
+          }
+        },
+        onBeforeEnded: () => {
+          this.saveVideoProgress()
+        },
+        onEnded: () => {
           if (!this.lastVideo) {
             this.player.nextVideo()
           } else {
             this.showCompletedDialog()
           }
+        },
+        onBeforeClosed: () => {
+          this.saveVideoProgress()
         }
       }
       this.setupVideoAnalytics(player, callbacks)
       player.on('dispose', () => {
         this.player = null
       })
-    },
-
-    async skipLessonVideo () {
-      this.player.pause()
-
-      if (!this.lesson.previewMode) {
-        await this.completeVideoProgress()
-        this.$nuxt.$emit('dashboard-panel-update')
-        this.savingProgress = false
-      }
-
-      if (this.lastVideo) {
-        this.player.seek(this.player.duration() - 1)
-        this.player.play()
-      } else {
-        this.player.nextVideo()
-      }
     },
 
     updateIndex (index) {

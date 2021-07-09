@@ -26,6 +26,7 @@
         <v-btn
           small
           class="primary text-none text-caption font-weight-bold"
+          data-test-id="patch-badge-row-btn"
           @click="goToVideos"
         >
           {{ patchUnlockText }}

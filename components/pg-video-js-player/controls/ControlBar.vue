@@ -1,13 +1,11 @@
 <template>
-  <div class="control-bar-container">
-    <!-- Next Up Component -->
-    <next-up :params="nextUp" v-bind="{ nextPatch, nextPuzzle }" />
-    <next-patch v-if="nextPatch" v-bind="{ params: nextUnlockData }" />
-    <next-puzzle v-if="nextPuzzle" v-bind="{ params: nextUnlockData }" />
-    <v-hover v-slot="{ hover }" close-delay="500">
+  <div class="control-bar-activator" @click="throttledActivator" @mousemove="throttledActivator">
+    <div class="control-bar-container">
+      <slot />
+
       <div
         class="control-bar-sheet"
-        :class="{ 'control-bar-mobile-portrait': !inline, 'control-bar-sheet-show': hover || visible }"
+        :class="{ 'control-bar-mobile-portrait': !inline, 'control-bar-sheet-show': visible }"
       >
         <!-- Progress -->
         <input
@@ -147,25 +145,17 @@
           </div>
         </div>
       </div>
-    </v-hover>
+    </div>
   </div>
 </template>
 
 <script>
 import SmallScreen from '@/mixins/SmallScreenMixin.js'
+import { throttle } from 'lodash'
 import ControlBarProps from './mixins/ControlBarPropsMixin.js'
-import NextUp from './NextUp.vue'
-import NextPatch from './NextPatch.vue'
-import NextPuzzle from './NextPuzzle.vue'
 
 export default {
   name: 'ControlBar',
-
-  components: {
-    NextUp,
-    NextPatch,
-    NextPuzzle
-  },
 
   filters: {
     convertToMMSS (value) {
@@ -180,7 +170,9 @@ export default {
 
   data: () => {
     return {
-      visible: false
+      visible: false,
+      showChecker: null,
+      throttledActivator: null
     }
   },
 
@@ -212,12 +204,45 @@ export default {
         this.player.volume(volume / 100)
       }
     }
+  },
+
+  created () {
+    this.throttledActivator = throttle(this.makeVisible, 50)
+  },
+
+  methods: {
+    makeVisible () {
+      this.visible = true
+      if (this.showChecker) {
+        window.clearTimeout(this.showChecker)
+      }
+      this.showChecker = window.setTimeout(() => {
+        this.visible = false
+        window.clearTimeout(this.showChecker)
+        this.showChecker = null
+      }, 3000)
+    },
+
+    popControls () {
+      if (typeof this.throttledActivator === 'function') {
+        this.throttledActivator()
+      }
+    }
   }
 }
 </script>
 
 <style lang="scss">
 .control-bar {
+  &-activator {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    user-select: none;
+    pointer-events: auto;
+  }
   &-container {
     position: absolute;
     width: 100%;

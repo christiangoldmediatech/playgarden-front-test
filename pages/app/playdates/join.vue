@@ -128,11 +128,11 @@ export default {
       this.loading = true
 
       try {
-        await this.onAction('stored', this.acceptInvitePlaydate, this.token)
         this.$gtm.push({
           event: TAG_MANAGER_EVENTS.PLAYDATE_JOIN,
           userId: this.getUserInfo.id
         })
+        await this.onAction('stored', this.acceptInvitePlaydate, this.token)
       } catch (e) {
       } finally {
         this.loading = false

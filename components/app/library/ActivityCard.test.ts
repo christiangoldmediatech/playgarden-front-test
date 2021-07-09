@@ -1,6 +1,24 @@
 import ActivityCard from '@/components/app/library/ActivityCard.vue'
 import { setupComponent } from '@/utils'
 
+const $appEventBus = {
+  $on: () => {
+    return new Promise((resolve) => {
+      resolve({})
+    })
+  },
+  $off: () => {
+    return new Promise((resolve) => {
+      resolve({})
+    })
+  },
+  $emit: (data: unknown) => {
+    return new Promise((resolve) => {
+      resolve({ data })
+    })
+  }
+}
+
 describe('components/app/library/ActivityCard.vue', () => {
   const { mountFunction } = setupComponent(ActivityCard, {
     propsData: {
@@ -11,6 +29,9 @@ describe('components/app/library/ActivityCard.vue', () => {
       title: '',
       teacher: '',
       viewed: false
+    },
+    mocks: {
+      $appEventBus
     }
   })
 

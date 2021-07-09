@@ -356,7 +356,7 @@ export default {
     })
     this.$nuxt.$on(APP_EVENTS.DASHBOARD_WORKSHEET_UPLOAD, (category) => {
       this.$gtm.push({
-        event: TAG_MANAGER_EVENTS.DASHBOARD_WORKSHEET_DOWNLOAD,
+        event: TAG_MANAGER_EVENTS.DASHBOARD_WORKSHEET_UPLOAD,
         userId: this.getUserInfo.id,
         dayLetter: this.lesson.curriculumType.letter,
         dayNumber: this.lesson.day,

@@ -28,15 +28,6 @@
               >
                 {{ currentSong.description }}
               </span>
-              <v-icon
-                class="ml-3 align-self-center"
-                size="32"
-                data-test-id="music-player-favorite-button"
-                :class="currentSong.isFavorite ? 'pink--text text--lighten-2' : 'grey--text text--lighten-2'"
-                @click.stop="$emit('favorite', currentSong)"
-              >
-                mdi-heart
-              </v-icon>
             </div>
             <div class="white--text font-weight-bold text-body-1 text-md-h6 text-center text-md-left">
               {{ currentSong.name }}
@@ -66,6 +57,7 @@
         <!-- Music Player Actions -->
         <template
           v-slot:actions="{
+            currentSong,
             isPlaying,
             play,
             pause,
@@ -74,6 +66,7 @@
           }"
         >
           <v-row no-gutters justify="center">
+            <v-spacer />
             <v-col
               cols="2"
               sm="1"
@@ -144,6 +137,24 @@
                   mdi-skip-forward
                 </v-icon>
               </v-btn>
+            </v-col>
+            <v-spacer />
+            <v-col
+              v-if="currentSong.description"
+              cols="auto"
+              align-self="center"
+              class="text-center"
+            >
+              <!-- Favorite Button -->
+              <v-icon
+                class="ml-3 align-self-center"
+                size="32"
+                data-test-id="music-player-favorite-button"
+                :class="currentSong.isFavorite ? 'pink--text text--lighten-2' : 'grey--text text--lighten-2'"
+                @click.stop="$emit('favorite', currentSong)"
+              >
+                mdi-heart
+              </v-icon>
             </v-col>
           </v-row>
         </template>
