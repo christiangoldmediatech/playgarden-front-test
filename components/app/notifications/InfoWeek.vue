@@ -43,7 +43,6 @@
             </v-col>
             <v-col cols="12" md="auto" class="my-4 ml-4">
               <v-btn
-                outline
                 x-large
                 color="white"
                 class="btn-accent text-none"

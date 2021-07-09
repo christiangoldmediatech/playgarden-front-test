@@ -35,7 +35,7 @@ export const useGlobalModal = ({ store }: { store: Store<TypedStore> }) => {
       isSubscriptionPlan: false
     }
 
-    if (userInfo.flow === UserFlow.NOCREDITCARD) {
+    if (userInfo.flow !== UserFlow.NOCREDITCARD) {
       let notificationShow: string | null = null
       let lastDateNotification: string | null = null
 
@@ -45,6 +45,7 @@ export const useGlobalModal = ({ store }: { store: Store<TypedStore> }) => {
       }
 
       const week = getWeek(userInfo.createdAt)
+      console.log('week--', week)
       const day = (lastDateNotification) ? getDays(new Date(lastDateNotification)) : 0
       const showNotification = (notificationShow) || 'false'
 
