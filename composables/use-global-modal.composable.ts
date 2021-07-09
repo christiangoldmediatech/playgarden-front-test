@@ -138,11 +138,11 @@ const saveDataNotification = () => {
 const getWeek = (lastDate: Date) => {
   const now = new Date()
   let week = dayjs(now).diff(lastDate, 'days')
-  if (week <= 7) {
+  if (week < 7) {
     week = 1
-  } else if (week > 7 && week <= 14) {
+  } else if (week >= 7 && week < 14) {
     week = 2
-  } else if (week > 14 && week <= 20) {
+  } else if (week >= 14 && week < 21) {
     week = 3
   } else {
     week = 4
