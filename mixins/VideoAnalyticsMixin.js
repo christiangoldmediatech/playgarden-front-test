@@ -1,14 +1,26 @@
 import { mapActions } from 'vuex'
 
+const defaultCallbacks = {
+  onBeforePause: () => {},
+  onPause: () => {},
+  onBeforeSkip: () => {},
+  onSkip: () => {},
+  onBeforeEnded: () => {},
+  onEnded: () => {},
+  onBeforeClosed: () => {},
+  onClosed: () => {}
+}
+
 export default {
   methods: {
     ...mapActions('video', ['sendVideoAnalytics']),
 
-    setupVideoAnalytics (player, callbacks = {
-      onPause: () => {},
-      onSkip: () => {},
-      onEnded: () => {}
-    }) {
+    setupVideoAnalytics (player, suppliedCallbacks = {}) {
+      const callbacks = {
+        ...defaultCallbacks,
+        ...suppliedCallbacks
+      }
+
       // Send started to analytics
       const onPlay = () => {
         const { videoId } = player.getMediaObject()
@@ -29,6 +41,7 @@ export default {
       const onPause = async () => {
         try {
           player.showLoading()
+          await callbacks.onBeforePause()
           const { videoId } = player.getMediaObject()
           const time = player.currentTime()
           const closePaused = player.getClosePaused()
@@ -54,6 +67,7 @@ export default {
       const onSkipped = async () => {
         try {
           player.showLoading()
+          await callbacks.onBeforeSkip()
           const { videoId } = player.getMediaObject()
           const time = player.currentTime()
           const status = 'SKIPPED'
@@ -77,6 +91,7 @@ export default {
       const onEnded = async () => {
         try {
           player.showLoading()
+          await callbacks.onBeforeEnded()
           const { videoId } = player.getMediaObject()
           const time = player.currentTime()
           const status = 'COMPLETED'
@@ -97,16 +112,19 @@ export default {
       }
 
       // Send completed to analytics
-      const onClosed = () => {
+      const onClosed = async () => {
+        await callbacks.onBeforeClosed()
         const { videoId } = player.getMediaObject()
         const time = player.currentTime()
         const status = 'CLOSED'
 
-        this.sendVideoAnalytics({
+        await this.sendVideoAnalytics({
           videoId,
           time,
           status
         })
+
+        await callbacks.onClosed()
       }
 
       // Assign events

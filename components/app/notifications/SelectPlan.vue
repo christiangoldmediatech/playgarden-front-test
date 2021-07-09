@@ -29,8 +29,9 @@
 <script lang="ts">
 import LargeImageContentDialog from '@/components/ui/dialogs/LargeImageContentDialog/LargeImageContentDialog.vue'
 import SubscriptionPlanSelection from '@/components/app/payment/SubscriptionPlanSelection'
-import { defineComponent, onMounted, computed } from '@nuxtjs/composition-api'
+import { defineComponent, computed, useStore } from '@nuxtjs/composition-api'
 import { useGlobalModal, useVuetifyHelper } from '@/composables'
+import { TypedStore } from '@/models'
 
 export default defineComponent({
   name: 'SelectPlan',
@@ -48,8 +49,10 @@ export default defineComponent({
   },
 
   setup () {
+    const store = useStore<TypedStore>()
     const vuetify = useVuetifyHelper()
-    const { hideSubscriptionPlanSelectionModal, hideNotificationSignupModal } = useGlobalModal()
+
+    const { hideSubscriptionPlanSelectionModal, hideNotificationSignupModal } = useGlobalModal({ store })
     const isMobile = computed(() => vuetify.breakpoint.mobile)
     return {
       isMobile,

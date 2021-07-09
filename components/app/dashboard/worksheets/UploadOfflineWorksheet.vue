@@ -61,17 +61,30 @@
                   class="d-none"
                   type="file"
                   accept="image/*"
-                  @change="setFile($event, category.id, indexCategory)"
+                  @change="setFile($event, category.id, indexCategory, category)"
                 >
               </v-card-text>
             </v-card>
           </v-hover>
         </v-row>
 
-        <v-row>
+        <v-row justify="center">
+          <v-btn
+            class="dashboard-message-btn mt-5 white--text"
+            color="#FEC572"
+            :disabled="loading"
+            x-large
+            @click.stop="goToFirstActivity"
+          >
+            <v-icon left>
+              pg-icon-play
+            </v-icon>
+            Go to Activities
+          </v-btn>
+
           <v-col cols="12">
             <v-btn
-              class="dashboard-message-btn mt-3"
+              class="dashboard-message-btn"
               color="primary"
               text
               block
@@ -132,7 +145,20 @@ export default {
 
   computed: {
     ...mapGetters({ currentChild: 'getCurrentChild' }),
-    ...mapGetters('admin/curriculum', ['getLesson'])
+    ...mapGetters('admin/curriculum', ['getLesson']),
+
+    firstActivity () {
+      if (this.getLesson && this.getLesson.lessonsActivities && this.getLesson.lessonsActivities.length) {
+        const firstActivity = this.getLesson.lessonsActivities[0]
+        return {
+          name: 'app-dashboard-lesson-activities',
+          query: {
+            id: firstActivity.activity.id
+          }
+        }
+      }
+      return null
+    }
   },
 
   watch: {
@@ -163,6 +189,11 @@ export default {
       getUploaded: 'getUploaded'
     }),
     ...mapActions('children/lesson', ['saveWorksheetProgress']),
+
+    goToFirstActivity () {
+      this.$router.push(this.firstActivity)
+      this.close()
+    },
 
     async getCategoriesByWorksheetId () {
       try {
@@ -207,12 +238,11 @@ export default {
     },
 
     openFileDialog (category, index) {
-      this.$nuxt.$emit(APP_EVENTS.DASHBOARD_WORKSHEET_UPLOAD, category.category)
       const uploader = document.getElementById(`${category.category}-${index}-upload`)
       uploader.click()
     },
 
-    setFile (e, categoryId, index) {
+    setFile (e, categoryId, index, category) {
       this.loading = true
 
       this.uploadWorksheet({
@@ -222,6 +252,7 @@ export default {
         File: e.target.files[0]
       })
         .then(({ url }) => {
+          this.$nuxt.$emit(APP_EVENTS.DASHBOARD_WORKSHEET_UPLOAD, category.category)
           this.images[`image_${categoryId}_${index}`] = url
           this.$snotify.success('Your worksheet has been uploaded!')
           const date = new Date().toISOString().substr(0, 19)

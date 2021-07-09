@@ -16,51 +16,23 @@ export default {
   methods: {
     ...mapActions('children/lesson', { sendVideoProgress: 'saveVideoProgress' }),
 
-    saveVideoProgress () {
-      // Save it before we have moved on
-      const currentVideo = jsonCopy(this.currentVideo)
-      if (!currentVideo || currentVideo.ignoreVideoProgress || this.savingProgress) { return }
-      const date = new Date().toISOString().substr(0, 19)
-      const time = this.player.currentTime()
-      const duration = this.player.duration()
-      const promises = []
-
-      this.savingProgress = true
-      this.children.forEach((child) => {
-        promises.push(
-          this.sendVideoProgress({
-            lessonId: this.lesson.id,
-            childId: child.id,
-            video: {
-              id: currentVideo.videoId,
-              completed: duration - time <= 30,
-              time,
-              date
-            }
-          })
-        )
-      })
-      Promise.all(promises).then(() => {
-        if (promises.length) {
-          this.$nuxt.$emit('dashboard-panel-update')
+    async saveVideoProgress (completeOverride = false) {
+      try {
+        // Save it before we have moved on
+        const currentVideo = jsonCopy(this.currentVideo)
+        if (
+          this.lesson.previewMode ||
+              !currentVideo ||
+              currentVideo.ignoreVideoProgress ||
+              this.savingProgress
+        ) {
+          return
         }
-        this.savingProgress = false
-      })
-    },
+        const date = new Date().toISOString().substr(0, 19)
+        const time = this.player.currentTime()
+        const duration = this.player.duration()
+        const promises = []
 
-    completeVideoProgress () {
-      // Save it before we have moved on
-      const currentVideo = jsonCopy(this.currentVideo)
-      if (!currentVideo || currentVideo.ignoreVideoProgress || this.savingProgress) { return }
-      const date = new Date().toISOString().substr(0, 19)
-      const time = this.player.currentTime()
-      const promises = []
-
-      // Only save progress if the video hasn't been completed and we are ahead of where we last left off
-      if (
-        !currentVideo.viewed ||
-        (!currentVideo.viewed.completed && currentVideo.viewed.time < time)
-      ) {
         this.savingProgress = true
         this.children.forEach((child) => {
           promises.push(
@@ -69,15 +41,21 @@ export default {
               childId: child.id,
               video: {
                 id: currentVideo.videoId,
-                completed: true,
+                completed: completeOverride || duration - time <= 30,
                 time,
                 date
               }
             })
           )
         })
+
+        await Promise.allSettled(promises)
+      } catch (error) {
+        return Promise.reject(error)
+      } finally {
+        this.$nuxt.$emit('dashboard-panel-update')
+        this.savingProgress = false
       }
-      return Promise.all(promises)
     }
   }
 }

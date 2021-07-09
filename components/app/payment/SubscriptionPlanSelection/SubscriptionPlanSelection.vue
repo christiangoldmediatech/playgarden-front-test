@@ -146,15 +146,16 @@
 </template>
 
 <script>
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, useStore } from '@nuxtjs/composition-api'
 import { get } from 'lodash'
 import { mapActions, mapGetters } from 'vuex'
 
 import submittable from '@/utils/mixins/submittable'
 
 import { useGlobalModal } from '@/composables'
-import PlanDescription from './PlanDescription'
-import RadioSelectors from './RadioSelectors'
+
+import PlanDescription from './PlanDescription.vue'
+import RadioSelectors from './RadioSelectors.vue'
 
 export default defineComponent({
   name: 'SubscriptionPlanSelection',
@@ -184,7 +185,8 @@ export default defineComponent({
   },
 
   setup () {
-    const { showContactUsModal } = useGlobalModal()
+    const store = useStore()
+    const { showContactUsModal } = useGlobalModal({ store })
 
     return {
       showContactUsModal

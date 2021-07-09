@@ -18,7 +18,7 @@
         :key="song.id"
         cols="auto"
       >
-        <v-card :id="`song-card-${song.id}`" class="song-card ma-6 pb-4">
+        <v-card :id="`song-card-${song.id}`" class="song-card ma-6 pb-4" data-test-id="song-card">
           <div class="song-wrapper">
             <v-icon
               size="120"

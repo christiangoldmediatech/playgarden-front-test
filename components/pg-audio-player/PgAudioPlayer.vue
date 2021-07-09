@@ -21,6 +21,7 @@
     />
     <slot
       name="actions"
+      :currentSong="currentSong"
       :isLoading="isLoading"
       :isPlaying="isPlaying"
       :isPaused="isPaused"

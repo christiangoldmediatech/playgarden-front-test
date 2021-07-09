@@ -77,10 +77,11 @@
   </v-row>
 </template>
 
-<script>
+<script lang="ts">
 import { useGlobalModal } from '@/composables'
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, useStore } from '@nuxtjs/composition-api'
 import { mapGetters } from 'vuex'
+import { TypedStore } from '@/models'
 
 export default defineComponent({
   name: 'InactiveSubscription',
@@ -88,7 +89,8 @@ export default defineComponent({
   components: {},
 
   setup () {
-    const { showContactUsModal } = useGlobalModal()
+    const store = useStore<TypedStore>()
+    const { showContactUsModal } = useGlobalModal({ store })
 
     return {
       showContactUsModal
@@ -103,10 +105,12 @@ export default defineComponent({
     }),
 
     fullName () {
+      // @ts-ignore
       return this.userInfo.fullName // `${this.userInfo.firstName ?? ''} ${this.userInfo.lastName ?? ''}`.trim()
     },
 
     getEmail () {
+      // @ts-ignore
       return this.userInfo.email // `${this.userInfo.firstName ?? ''} ${this.userInfo.lastName ?? ''}`.trim()
     }
   },

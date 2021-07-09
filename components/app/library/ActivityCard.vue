@@ -148,17 +148,17 @@ export default defineComponent({
       isFavoriteVideo
     } = useLibrary(props.videoId)
 
-    eventBus.$on(APP_EVENTS.MUSIC_ITEM_ADD_TO_FAVORITES, (videoId) => {
+    eventBus.$on(APP_EVENTS.LIBRARY_ADD_VIDEO_TO_FAVORITES, (videoId) => {
       if (props.videoId === videoId) {
         gtm.push({
-          event: TAG_MANAGER_EVENTS.MUSIC_ITEM_ADD_TO_FAVORITES,
+          event: TAG_MANAGER_EVENTS.LIBRARY_ADD_VIDEO_TO_FAVORITES,
           userId: userInfo.value.id,
           topic: props.title
         })
       }
     })
     onBeforeUnmount(() => {
-      eventBus.$off(APP_EVENTS.MUSIC_ITEM_ADD_TO_FAVORITES)
+      eventBus.$off(APP_EVENTS.LIBRARY_ADD_VIDEO_TO_FAVORITES)
     })
 
     return {

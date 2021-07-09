@@ -9,12 +9,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, useRouter, useRoute } from '@nuxtjs/composition-api'
-import { useSignup } from '@/composables/use-signup.composable'
+import { defineComponent, onMounted, useStore } from '@nuxtjs/composition-api'
 import { useGlobalModal } from '@/composables'
 import InfoWeek from '@/components/app/notifications/InfoWeek.vue'
 import InfoWeekFour from '@/components/app/notifications/InfoWeekFour.vue'
 import SelectPlan from '@/components/app/notifications/SelectPlan.vue'
+import { TypedStore } from '@/models'
 
 export default defineComponent({
   name: 'NotificationSignupModal',
@@ -26,7 +26,8 @@ export default defineComponent({
   },
 
   setup () {
-    const { isNotification, showNotificationSignupModal, hideNotificationSignupModal } = useGlobalModal()
+    const store = useStore<TypedStore>()
+    const { isNotification, showNotificationSignupModal, hideNotificationSignupModal } = useGlobalModal({ store })
 
     onMounted(() => {
       showNotificationSignupModal()
