@@ -13,7 +13,7 @@
       <v-row class="mx-1 mt-3">
         <div>
           <p class="mt-4 text-justify grey--text text--darken-2 caption text-md-h6 font-weight-regular my-3 my-md-6">
-            Your <span class="info-modal-notification">FREE TRIAL</span> period will end on [May 5, 2021].
+            Your <span class="info-modal-notification">FREE TRIAL</span> period will end on [{{ lastDayOfTrial }}].
             We would hate to see you miss out on this early education and development opportunity!
             So we are extending our <span class="info-modal-notification">INTRODUCTORY PROMOTION</span> so you can continue to have access
             to all the features of the <span class="font-weight-bold">PREMIUM EARLY EDUCATION</span> plan.
@@ -76,6 +76,8 @@
 </template>
 
 <script lang="ts">
+import dayjs from 'dayjs'
+import { mapGetters } from 'vuex'
 import LargeImageContentDialog from '@/components/ui/dialogs/LargeImageContentDialog/LargeImageContentDialog.vue'
 import { defineComponent, useStore } from '@nuxtjs/composition-api'
 import { useGlobalModal } from '@/composables'
@@ -105,7 +107,19 @@ export default defineComponent({
       showSubscriptionPlanSelectionModal
     }
   },
-  methods: {}
+  computed: {
+    ...mapGetters('auth', ['getUserInfo']),
+    // @ts-ignore
+    lastDayOfTrial () {
+      // @ts-ignore
+      if (!this.getUserInfo.trialEnd) {
+        return ''
+      }
+
+      // @ts-ignore
+      return dayjs(this.getUserInfo.trialEnd).format('MMMM DD, YYYY')
+    }
+  }
 })
 </script>
 
@@ -123,7 +137,7 @@ ul.info-card li::before {
   display: inline-block; /* Needed to add space between the bullet and the text */
   width: 0.7em; /* Also needed for space (tweak if needed) */
   margin-left: -1rem; /* Also needed for space (tweak if needed) */
-  margin-top: 10px;
+  margin-top: 0px;
 }
 
 .info-modal-notification {

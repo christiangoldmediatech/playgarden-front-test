@@ -35,7 +35,7 @@ export const useGlobalModal = ({ store }: { store: Store<TypedStore> }) => {
       isSubscriptionPlan: false
     }
 
-    if (userInfo.flow === UserFlow.NOCREDITCARD) {
+    if (userInfo.flow !== UserFlow.NOCREDITCARD) {
       let notificationShow: string | null = null
       let lastDateNotification: string | null = null
 
