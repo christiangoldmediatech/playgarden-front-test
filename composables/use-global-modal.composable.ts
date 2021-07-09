@@ -123,7 +123,6 @@ const getDays = (lastDate: Date) => {
   return (dayjs(now).diff(lastDate, 'days') + 1)
 }
 
-// const showModal = (day: Number, dateEnd: Date, notificationShow: String | null) => {
 const getTrial = (dateEnd: Date) => {
   const now = new Date()
   const isTrial = dayjs(dateEnd).isAfter(now)
