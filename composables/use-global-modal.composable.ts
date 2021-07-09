@@ -161,10 +161,10 @@ const showModal = (day: Number, dateEnd: Date, notificationShow: String | null) 
   if (notificationShow === 'true' && day === 1) {
     showModal = false
   }
-  const isTraial = now < dateEnd
-  if (now >= dateEnd) {
+  /* const isTrial = now > dateEnd
+  if (isTrial === false) {
     showModal = false
-  }
+  } */
   return showModal
 }
 
