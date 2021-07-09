@@ -26,6 +26,7 @@ interface Snotify {
     title?: string,
     options?: SnotifyOptions
   ) => void
+  remove: (id: number) => void
 }
 
 declare module 'vue/types/vue' {
