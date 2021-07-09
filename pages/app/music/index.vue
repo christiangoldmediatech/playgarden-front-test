@@ -56,9 +56,9 @@ import HorizontalRibbonCard from '@/components/ui/cards/HorizontalCardRibbon.vue
 import ChildSelect from '@/components/app/ChildSelect.vue'
 import MusicCarouselLetter from '@/components/app/music/MusicLetterCarousel.vue'
 
-import { useMusic, useSnotifyHelper, useVuetifyHelper, useAppEventBusHelper, useGtmHelper } from '@/composables'
+import { useMusic, useSnotifyHelper, useVuetifyHelper, useAppEventBusHelper, useGtmHelper, useAuth } from '@/composables'
 import { onMounted, ref, computed, useRoute, watch, onUnmounted, useStore, useRouter, useContext } from '@nuxtjs/composition-api'
-import { MusicLibrary, APP_EVENTS, TAG_MANAGER_EVENTS } from '@/models'
+import { MusicLibrary, APP_EVENTS, TAG_MANAGER_EVENTS, TypedStore } from '@/models'
 
 const PAGE_MOBILE_BREAKPOINT = 1264
 const MOBILE_PLAYER_HEIGHT = 135
@@ -79,7 +79,7 @@ export default {
     const snotify = useSnotifyHelper()
     const route = useRoute()
     const router = useRouter()
-    const store = useStore()
+    const store = useStore<TypedStore>()
     const eventBus = useAppEventBusHelper()
     const gtm = useGtmHelper()
 
@@ -107,9 +107,7 @@ export default {
       didScrollToBottom.value = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.scrollHeight - MOBILE_PLAYER_HEIGHT
     }
 
-    const userInfo = computed(() => {
-      return store.getters['auth/getUserInfo']
-    })
+    const { userInfo } = useAuth({ store })
 
     const debouncedHandleScroll = debounce(handleScroll, 50)
 

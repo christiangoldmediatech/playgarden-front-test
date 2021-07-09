@@ -61,6 +61,7 @@ export const useChild = ({ store }: { store: Store<TypedStore> }) => {
     setChildren,
     currentChildren,
     setCurrentChildren,
+    resetCurrentChildren,
     create,
     get,
     getById,
