@@ -147,10 +147,10 @@ const showModal = (day: Number, dateEnd: Date, notificationShow: String | null) 
   if (notificationShow === 'true' && day === 1) {
     showModal = false
   }
-  /* const isTrial = now > dateEnd
+  const isTrial = dayjs(dateEnd).isAfter(now)
   if (isTrial === false) {
     showModal = false
-  } */
+  }
   return showModal
 }
 
