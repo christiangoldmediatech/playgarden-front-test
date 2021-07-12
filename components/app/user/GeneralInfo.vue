@@ -16,7 +16,7 @@
 
       <pg-text-field
         v-model="form.email"
-        label="Last Name"
+        label="Email"
         solo-labeled
       />
 
