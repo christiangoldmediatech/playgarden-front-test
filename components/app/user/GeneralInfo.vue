@@ -195,7 +195,6 @@ export default {
   data: () => ({
     form: {},
     isEditing: false,
-    oldEmail: '',
     passwordModal: false,
     loading: false
   }),
@@ -216,7 +215,6 @@ export default {
       deep: true,
       handler () {
         this.form = { ...this.userInfo }
-        this.oldEmail = this.userInfo.email
       }
     }
   },
@@ -317,9 +315,6 @@ export default {
           email: this.form.email,
           phoneNumber: this.form.phoneNumber
         })
-      } catch (error) {
-        console.log('this.olf--', this.oldEmail)
-        this.form.email = this.oldEmail
       } finally {
         this.loading = false
         this.isEditing = false
