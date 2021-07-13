@@ -17,33 +17,45 @@ export default {
     ...mapActions('children/lesson', { sendVideoProgress: 'saveVideoProgress' }),
 
     async saveVideoProgress (completeOverride = false) {
-      // Save it before we have moved on
-      const currentVideo = jsonCopy(this.currentVideo)
-      if (this.lesson.previewMode || !currentVideo || currentVideo.ignoreVideoProgress || this.savingProgress) { return }
-      const date = new Date().toISOString().substr(0, 19)
-      const time = this.player.currentTime()
-      const duration = this.player.duration()
-      const promises = []
+      try {
+        // Save it before we have moved on
+        const currentVideo = jsonCopy(this.currentVideo)
+        if (
+          this.lesson.previewMode ||
+              !currentVideo ||
+              currentVideo.ignoreVideoProgress ||
+              this.savingProgress
+        ) {
+          return
+        }
+        const date = new Date().toISOString().substr(0, 19)
+        const time = this.player.currentTime()
+        const duration = this.player.duration()
+        const promises = []
 
-      this.savingProgress = true
-      this.children.forEach((child) => {
-        promises.push(
-          this.sendVideoProgress({
-            lessonId: this.lesson.id,
-            childId: child.id,
-            video: {
-              id: currentVideo.videoId,
-              completed: completeOverride || duration - time <= 30,
-              time,
-              date
-            }
-          })
-        )
-      })
+        this.savingProgress = true
+        this.children.forEach((child) => {
+          promises.push(
+            this.sendVideoProgress({
+              lessonId: this.lesson.id,
+              childId: child.id,
+              video: {
+                id: currentVideo.videoId,
+                completed: completeOverride || duration - time <= 30,
+                time,
+                date
+              }
+            })
+          )
+        })
 
-      await Promise.all(promises)
-      this.$nuxt.$emit('dashboard-panel-update')
-      this.savingProgress = false
+        await Promise.allSettled(promises)
+      } catch (error) {
+        return Promise.reject(error)
+      } finally {
+        this.$nuxt.$emit('dashboard-panel-update')
+        this.savingProgress = false
+      }
     }
   }
 }

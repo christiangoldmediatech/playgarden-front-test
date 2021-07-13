@@ -9,7 +9,7 @@
     </v-col>
     <v-col cols="12" md="8" :class="($vuetify.breakpoint.xs) ? 'ml-4 mr-5' : 'pl-3'">
       <center v-if="$vuetify.breakpoint.xs">
-        <underlined-title class="text-h6 text-md-h4" text="Congratulations! You have finished all the Daily Lessons!" />
+        <underlined-title data-test-id="all-done-title" class="text-h6 text-md-h4" text="Congratulations! You have finished all the Daily Lessons!" />
       </center>
       <underlined-title v-else class="text-h6 text-md-h5" text="Congratulations! You have finished all the Daily Lessons!" />
       <p :class="($vuetify.breakpoint.xs) ? 'text-center mt-4 pb-3 font-weight-bold' : 'mt-4 pb-3 font-weight-bold'">
@@ -29,7 +29,7 @@
       </p>
 
       <v-row>
-        <template v-for="(item, index) in actualLetters">
+        <template v-for="(item, index) in currentLetters">
           <letter :key="index" :item="item" :index="index" />
         </template>
       </v-row>
@@ -58,10 +58,12 @@
   </v-row>
 </template>
 
-<script>
-import { mapGetters, mapActions } from 'vuex'
+<script lang="ts">
+import { onMounted, useRoute, useStore } from '@nuxtjs/composition-api'
+import { useLetters } from '@/composables/letters'
 import Letter from '@/components/app/all-done/Letter.vue'
 import CourseProgressOverlay from '@/components/app/student-cubby/CourseProgressOverlay.vue'
+import { TypedStore } from '@/models'
 export default {
   name: 'AllDone',
 
@@ -72,55 +74,17 @@ export default {
 
   props: {},
 
-  data: () => {
+  setup () {
+    const store = useStore<TypedStore>()
+    const { currentLetters, getLeters, getProgress } = useLetters({ store })
+
+    onMounted(async () => {
+      await getLeters()
+      await getProgress()
+    })
+
     return {
-      lettersProgress: []
-    }
-  },
-
-  computed: {
-    ...mapGetters('admin/curriculum', { letters: 'types' }),
-
-    ...mapGetters({ currentChild: 'getCurrentChild' }),
-
-    actualLetters () {
-      return this.letters.map((letter) => {
-        const current = this.lettersProgress.find(l => l.id === letter.id)
-        return {
-          ...letter,
-          ...current
-        }
-      }).slice(0, 9)
-    },
-
-    studentId () {
-      return this.currentChild[0].id
-    }
-  },
-
-  watch: {},
-
-  async created () {
-    this.getLetters()
-    await this.fetchChildProgress()
-  },
-
-  methods: {
-    ...mapActions('admin/curriculum', {
-      getLetters: 'getTypes'
-    }),
-
-    ...mapActions('children/course-progress', ['getCourseProgressByChildId']),
-
-    async fetchChildProgress () {
-      let data = await this.getCourseProgressByChildId({
-        id: this.studentId
-      })
-      data = data.map((letter) => {
-        const disabled = (letter.enabled) ? !letter.enabled : true
-        return { ...letter, disabled }
-      })
-      this.lettersProgress = data
+      currentLetters
     }
   }
 }

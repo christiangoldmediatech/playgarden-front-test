@@ -28,6 +28,8 @@ const activities = ref<ActivityType[]>([])
 const favorites = ref<FavoriteListResponse[]>([])
 const featured = ref({} as FeaturedActivity)
 
+const ACTIVITIES_LIMIT = 50
+
 export const useActivity = () => {
   const getActivities = async () => {
     const response = await axios.$get('/activities') as ActivitiesResponse
@@ -46,11 +48,13 @@ export const useActivity = () => {
   }
 
   const activityById = ref<ActivityType>({} as ActivityType)
+  const activitiesPage = ref(1)
+
   const featuredById = ref({} as FeaturedActivity)
   const totalById = ref(0)
 
   const getActivitiesById = async (id: number) => {
-    const response = await axios.$get(`/activities/${id}/filter`) as ActivityByIdResponse
+    const response = await axios.$get(`/activities/${id}/filter?limit=${ACTIVITIES_LIMIT}&page=${activitiesPage.value}`) as ActivityByIdResponse
 
     activityById.value = {
       ...response.activities,
@@ -61,6 +65,27 @@ export const useActivity = () => {
 
     featuredById.value = response.featured
     totalById.value = (activityById.value.videos?.length || 0) + response.total
+  }
+
+  const handleFetchMoreActivityById = async (id: number) => {
+    activitiesPage.value += 1
+
+    const response = await axios.$get(`/activities/${id}/filter?limit=${ACTIVITIES_LIMIT}&page=${activitiesPage.value}`) as ActivityByIdResponse
+
+    // The videos are not paginated so they do not change and do not need to be updated in the initial object.
+    delete response.activities.videos
+
+    // Add new activities to the activities property.
+    activityById.value.activities = [
+      ...activityById.value.activities || [],
+      ...getValidActivities(response.activities.activities || [])
+    ]
+
+    // Add new activities to the playlist property.
+    activityById.value.playlist = [
+      ...activityById.value.playlist || [],
+      ...getPlaylistFromActivity(response.activities)
+    ]
   }
 
   /**
@@ -92,6 +117,7 @@ export const useActivity = () => {
     featuredById,
     totalById,
     getActivitiesById,
+    handleFetchMoreActivityById,
     getActivities,
     refreshFavoriteActivities
   }

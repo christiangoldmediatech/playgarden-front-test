@@ -21,6 +21,7 @@
       :no-seek="noSeek"
       :fullscreen-override="handleFullscreen"
       no-auto-track-change
+      :on-next-up-click="player ? player.skipVideo : undefined"
       @ready="onReady"
       @playlist-index-change="updateIndex"
     />
@@ -50,7 +51,8 @@ export default {
 
   data: () => {
     return {
-      showFinishedVal: false
+      showFinishedVal: false,
+      advanceClosing: false
     }
   },
 
@@ -87,6 +89,11 @@ export default {
   created () {
     this.$nuxt.$on('open-lesson-activity-player', (params) => {
       this.open(params)
+      this.$nextTick(() => {
+        if (this.$refs.videoPlayer) {
+          this.$refs.videoPlayer.popControls()
+        }
+      })
     })
   },
 
@@ -95,56 +102,45 @@ export default {
       this.player = player
 
       const callbacks = {
-        onPause: this.pauseOrEnded,
-
-        onSkip: this.skipLessonActivity,
-
-        onEnded: this.pauseOrEnded
+        onBeforePause: () => {
+          this.saveActivityProgress()
+        },
+        onBeforeSkip: () => {
+          this.player.pause()
+          this.saveActivityProgress(true)
+        },
+        onSkip: () => {
+          if (this.lastVideo) {
+            this.player.seek(this.player.duration())
+            this.showFinishedVal = true
+            this.player.trigger('ended')
+          } else {
+            this.player.nextVideo()
+          }
+        },
+        onBeforeEnded: () => {
+          this.saveActivityProgress()
+        },
+        onEnded: () => {
+          if (!this.lastVideo) {
+            this.player.nextVideo()
+          } else {
+            this.showFinishedVal = true
+          }
+        },
+        onBeforeClosed: () => {
+          if (this.advanceClosing) {
+            this.advanceClosing = false
+          } else {
+            this.saveActivityProgress()
+          }
+        }
       }
       this.setupVideoAnalytics(player, callbacks)
 
       player.on('dispose', () => {
         this.player = null
       })
-    },
-
-    async pauseOrEnded () {
-      if (this.savingActivityProgress) {
-        return
-      }
-      await this.saveActivityProgress()
-      this.nextVideo()
-    },
-
-    async skipLessonActivity () {
-      this.savingActivityProgress = true
-      this.player.pause()
-
-      if (!this.lesson.previewMode) {
-        if (!this.currentVideo.ignoreVideoProgress) {
-          await this.completeActivityProgress()
-          this.$nuxt.$emit('dashboard-panel-update')
-        }
-      }
-
-      this.savingActivityProgress = false
-
-      if (this.lastVideo) {
-        this.player.seek(this.player.duration() - 1)
-        this.player.play()
-      } else {
-        this.player.nextVideo()
-      }
-    },
-
-    nextVideo () {
-      if (this.player.currentTime() === this.player.duration()) {
-        if (this.lastVideo) {
-          this.showFinishedVal = true
-        } else {
-          this.player.nextVideo()
-        }
-      }
     },
 
     updateIndex (index) {
@@ -161,6 +157,7 @@ export default {
     },
 
     handleAdvanceClose () {
+      this.advanceClosing = true
       this.handleClose()
       this.showFinishedVal = false
       this.dialog = false

@@ -21,6 +21,7 @@
       :no-seek="noSeek"
       :fullscreen-override="handleFullscreen"
       no-auto-track-change
+      :on-next-up-click="player ? player.skipVideo : undefined"
       @ready="onReady"
       @playlist-index-change="updateIndex"
       @playlist-complete="showCompletedDialog"
@@ -38,6 +39,8 @@ import DashboardLink from '@/mixins/DashboardLinkMixin.js'
 import SaveVideoProgress from '@/mixins/SaveVideoProgressMixin.js'
 import Fullscreen from '@/mixins/FullscreenMixin.js'
 import LessonCompletedDialog from '@/components/app/dashboard/LessonCompletedDialog.vue'
+
+import { APP_EVENTS } from '@/models'
 
 export default {
   name: 'LessonVideoPlayer',
@@ -86,6 +89,7 @@ export default {
           color: 'accent',
           iconLeft: 'pg-icon-paper-pencil',
           action: () => {
+            this.$appEventBus.$emit(APP_EVENTS.DASHBOARD_ONLINE_WORKSHEET_CLICKED)
             this.$router.push(this.generateNuxtRoute('online-worksheet'))
           }
         },
@@ -149,6 +153,11 @@ export default {
   created () {
     this.$nuxt.$on('open-lesson-video-player', (params) => {
       this.open(params)
+      this.$nextTick(() => {
+        if (this.$refs.videoPlayer) {
+          this.$refs.videoPlayer.popControls()
+        }
+      })
     })
   },
 

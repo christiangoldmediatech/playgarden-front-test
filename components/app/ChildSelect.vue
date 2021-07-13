@@ -4,6 +4,7 @@
     :items="childrenList"
     placeholder="Select a child"
     solo
+    data-test-id="child-select"
     v-bind="{ ...$attrs }"
     data-test-id="child-select"
     @input="$emit('input', $event)"
