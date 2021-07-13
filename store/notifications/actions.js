@@ -135,7 +135,7 @@ export default {
    * - they are not a subscribed user and,
    * - they did not select a plan before
    */
-  checkIfShouldShowTrialExpiredModal ({ commit, rootGetters }) {
+  async checkIfShouldShowTrialExpiredModal ({ commit, rootGetters }) {
     const isUserLoggedIn = rootGetters['auth/isUserLoggedIn']
 
     if (!isUserLoggedIn) {
@@ -143,6 +143,7 @@ export default {
     }
 
     const userInfo = rootGetters['auth/getUserInfo']
+    const { data } = await this.$axios.get('/billing/cards')
 
     const oneDay = 1
     const now = new Date()
@@ -153,20 +154,18 @@ export default {
     // we'll consider it a user that logged in before if the created date is greater than a day
     const didLoginBefore = dayjs(now).diff(userInfo.createdAt, 'minutes') >= oneDay
 
-    const didChoosePlan = userInfo.planChoosen
+    let didChoosePlan = false
+
+    if (userInfo.flow === 'NOCREDITCARD') {
+      didChoosePlan = (data.length > 0)
+    } else {
+      didChoosePlan = userInfo.planChoosen
+    }
+
+    console.log('didChoosePlan--', didChoosePlan)
 
     const subscription = userInfo.subscription
     const isSubscribedUser = subscription && subscription.status === 'active'
-
-    console.log('userInfo.subscription--', userInfo.subscription, 'status--', subscription.status)
-    console.log('userInfo.planChoosen---', userInfo.planChoosen)
-
-    console.log('userInfo.trialEnd', userInfo.trialEnd)
-    console.log('userInfo.createdAt', userInfo.createdAt)
-    console.log('didTrialEnd', didTrialEnd)
-    console.log('didLoginBefore', didLoginBefore)
-    console.log('isSubscribedUser', isSubscribedUser)
-    console.log('!didChoosePlan', !didChoosePlan)
 
     const shouldShowExpiredModal =
     didTrialEnd &&
