@@ -5,51 +5,27 @@
         <child-select v-if="childId" v-model="childId" />
       </v-col>
 
-      <v-col md="6" align-self="center" class="text-center">
+      <v-col md="6" class="d-flex flex-column justify-center align-center">
         <img
           alt="Playarden Prep Online Logo"
-          height="50"
+          height="45"
           :src="require('@/assets/svg/logo.svg')"
         >
+
+        <underlined-title text="Virtual Preschool" />
+
+        <div class="text-subtitle-1">
+          We are excited for a new day full of learning.
+        </div>
       </v-col>
 
-      <v-col md="3" align-self="center" class="d-flex justify-end">
-        <!-- AUTH BUTTONS -->
-        <v-btn
-          v-if="!isUserLoggedIn"
-          color="accent"
-          nuxt
-          text
-          data-test-id="register-button"
-          :to="{ name: 'auth-parent' }"
-        >
-          REGISTER
-        </v-btn>
-
+      <v-col md="3" class="d-flex justify-end align-center">
         <img
           v-if="isUserLoggedIn && !isUserInSignupProcess"
           height="50"
           :src="require('@/assets/svg/account-profile.svg')"
           @click="$router.push({ name: 'app-account-index' })"
         >
-
-        <v-btn
-          v-else-if="isUserLoggedIn && isUserInSignupProcess"
-          color="accent"
-          nuxt
-          :to="{ name: 'auth-logout' }"
-        >
-          LOG OUT
-        </v-btn>
-
-        <v-btn
-          v-else-if="!isUserLoggedIn"
-          color="accent"
-          nuxt
-          :to="{ name: 'auth-login' }"
-        >
-          LOGIN
-        </v-btn>
 
         <template v-if="isUserLoggedIn && !isUserInSignupProcess">
           <v-menu open-on-hover offset-y>
