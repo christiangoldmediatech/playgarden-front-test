@@ -162,8 +162,6 @@ export default {
       didChoosePlan = userInfo.planChoosen
     }
 
-    console.log('didChoosePlan--', didChoosePlan)
-
     const subscription = userInfo.subscription
     const isSubscribedUser = subscription && subscription.status === 'active'
 
