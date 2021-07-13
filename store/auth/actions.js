@@ -113,8 +113,8 @@ export default {
     try {
       const { data } = await this.$axios.patch('/auth/me/edit', draft)
       commit('SET_USER_INFO', data.user)
-      if (data.newToken) {
-        dispatch('auth/setToken', data.newToken.accessToken, { root: true })
+      if (data.accessToken) {
+        dispatch('auth/setToken', data.accessToken, { root: true })
       }
       return data.user
     } catch (error) {
