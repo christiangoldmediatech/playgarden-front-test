@@ -109,13 +109,14 @@ export default {
     }
   },
 
-  async updateUserInfo ({ commit }, draft) {
+  async updateUserInfo ({ commit, dispatch }, draft) {
     try {
       const { data } = await this.$axios.patch('/auth/me/edit', draft)
-
-      commit('SET_USER_INFO', data)
-
-      return data
+      commit('SET_USER_INFO', data.user)
+      if (data.accessToken) {
+        dispatch('auth/setToken', data.accessToken, { root: true })
+      }
+      return data.user
     } catch (error) {
       snotifyError(commit, {
         body: 'Sorry! There was an error while updating user info!'
