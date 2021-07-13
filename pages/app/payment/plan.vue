@@ -212,10 +212,6 @@ export default {
       this.isPaymentMethodModalVisible = false
     },
 
-    closePaymentMethodModal () {
-      this.isPaymentMethodModalVisible = false
-    },
-
     async handlePaymentFormSubmit (cardData) {
       this.isPaymentMethodModalLoading = true
 
