@@ -158,8 +158,18 @@ export default {
     const subscription = userInfo.subscription
     const isSubscribedUser = subscription && subscription.status === 'active'
 
+    console.log('userInfo.subscription--', userInfo.subscription, 'status--', subscription.status)
+    console.log('userInfo.planChoosen---', userInfo.planChoosen)
+
+    console.log('userInfo.trialEnd', userInfo.trialEnd)
+    console.log('userInfo.createdAt', userInfo.createdAt)
+    console.log('didTrialEnd', didTrialEnd)
+    console.log('didLoginBefore', didLoginBefore)
+    console.log('isSubscribedUser', isSubscribedUser)
+    console.log('!didChoosePlan', !didChoosePlan)
+
     const shouldShowExpiredModal =
-      didTrialEnd &&
+    didTrialEnd &&
       didLoginBefore &&
       isSubscribedUser &&
       !didChoosePlan
