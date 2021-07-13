@@ -44,6 +44,8 @@ export const useAuth = ({
     store.commit('auth/SET_USER_INFO', val)
   }
 
+  const isUserInSignupProcess = computed<boolean>(() => (userInfo.value.registerStep || 0) < 5)
+
   const isUserEmailVerified = computed<boolean>(() => store.getters['auth/isUserEmailUnverified'])
 
   const checkAuth = (): boolean => {
@@ -92,7 +94,7 @@ export const useAuth = ({
 
   const logout = (redirectOptions?: { route: string, redirect: (options: any) => void }) => {
     const { currentChildren, resetCurrentChildren } = useChild({ store })
-    const { notificationCard, isTrialExpiringRibbonVisible } = useNotification({ store })
+    const { notificationCard, setNotificationCard, isTrialExpiringRibbonVisible, setIsTrialExpiringRibbonVisible } = useNotification({ store })
 
     resetState()
 
@@ -109,14 +111,14 @@ export const useAuth = ({
     }
 
     if (notificationCard.value.isVisible) {
-      notificationCard.value = {
+      setNotificationCard({
         ...notificationCard.value,
         isVisible: false
-      }
+      })
     }
 
     if (isTrialExpiringRibbonVisible.value) {
-      isTrialExpiringRibbonVisible.value = false
+      setIsTrialExpiringRibbonVisible(false)
     }
 
     if (redirectOptions &&
@@ -157,6 +159,7 @@ export const useAuth = ({
     userInfo,
     isUserLoggedIn,
     isUserEmailVerified,
+    isUserInSignupProcess,
     checkAuth,
     setToken,
     logout,

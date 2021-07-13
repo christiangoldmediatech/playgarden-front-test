@@ -160,6 +160,8 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
     expiringRibbonHeightDesktop,
     expiringRibbonHeightMobile,
     isShippingModalVisible,
+    setNotificationCard,
+    setIsTrialExpiringRibbonVisible,
     checkUserShippingAddressAndNotify,
     checkIfShouldSendShippingAddressNotification,
     checkIfShouldShowTrialExpiringRibbon,

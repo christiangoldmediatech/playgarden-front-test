@@ -20,7 +20,7 @@ export const useLayout = ({ store, route, vuetify }: LayoutComposable) => {
   const isFullWidth = computed(() => route.value.name ? fullWidthPages.value[route.value.name] : false)
 
   const showContent = computed(() => store.state.fullWidthPages)
-  const setShowContent = (state: boolean) => store.commit('showContent', state)
+  const setShowContent = (state: boolean) => store.commit('SET_SHOW_CONTENT', state)
 
   const isMobile = computed(() => vuetify.breakpoint.mobile)
   const topDistanceInPixels = computed(() => isMobile.value ? expiringRibbonHeightMobile.value : expiringRibbonHeightDesktop.value)
