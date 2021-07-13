@@ -4,6 +4,9 @@
       <!-- TRIAL EXPIRING RIBBON -->
       <trial-is-expiring v-if="isTrialExpiringRibbonVisible" @expired="handleExpiredTrialCoundown" />
 
+      <!-- APP HEADER -->
+      <pg-header />
+
       <!-- APP MAV -->
       <app-navigation />
 
@@ -53,6 +56,7 @@ import { useRoute, useRouter, useStore } from '@nuxtjs/composition-api'
 import { computed, defineComponent, onMounted, watch } from '@vue/composition-api'
 
 import AppNavigation from '@/components/app/header/AppNavigation.vue'
+import PgHeader from '@/components/app/header/PgHeader.vue'
 import DefaultFooter from '@/components/app/footer/DefaultFooter.vue'
 
 export default defineComponent({
@@ -60,6 +64,7 @@ export default defineComponent({
 
   components: {
     AppNavigation,
+    PgHeader,
     DefaultFooter,
     TrialIsExpiring: () => import('@/components/app/header/TrialIsExpiring.vue'),
     NotificationCard: () => import('@/components/app/notifications/NotificationCard.vue'),
