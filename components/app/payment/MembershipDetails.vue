@@ -196,7 +196,7 @@
               color="primary mb-3"
               x-large
               block
-              @click="changePlanModal = true"
+              @click="handleChangePlan"
             >
               CHANGE PLAN
             </v-btn>
@@ -335,78 +335,6 @@
         </v-row>
       </v-col>
     </pg-dialog>
-
-    <!-- Change Plan modal -->
-    <pg-dialog
-      v-model="changePlanModal"
-      content-class="white"
-      :fullscreen="isMobile"
-      max-width="80%"
-      persistent
-    >
-      <v-col cols="12">
-        <v-row class="pr-3 mb-md-n12" justify="end">
-          <v-btn class="white" icon @click.stop="closeChangePlanModal">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </v-row>
-
-        <subscription-plan-selection
-          v-if="changePlanModal"
-          no-address
-          no-payment
-          updating
-          @click:cancel="closeChangePlanModal"
-          @click:submit="onSuccessChangePlan"
-        />
-      </v-col>
-    </pg-dialog>
-
-    <!-- Set Payment Method modal -->
-    <pg-dialog
-      v-model="isPaymentMethodModalVisible"
-      content-class="white"
-      :fullscreen="isMobile"
-      max-width="700px"
-      persistent
-    >
-      <v-col cols="12">
-        <v-row class="pr-3 mb-md-n12 mt-1" justify="start">
-          <v-btn text class="accent--text text-none" @click="handlePaymentModalBackButton">
-            <v-icon left>
-              mdi-chevron-left
-            </v-icon>
-            Back to choose plan
-          </v-btn>
-        </v-row>
-
-        <v-card flat class="mx-4 mt-12 mb-4">
-          <stripe-pay-form
-            button-text="Start Learning"
-            :cancelable="false"
-            :is-free-for-days-text-visible="false"
-            :loading="isPaymentMethodModalLoading"
-            @click:submit="handlePaymentFormSubmit"
-          >
-            <template #header>
-              <center class="pt-6">
-                <underlined-title class="text-h6 text-md-h5" text="CREDIT CARD INFORMATION" />
-              </center>
-              <center class="grey--text text--darken-1 my-6 text-body-2">
-                We need your credit card information to confirm who you are.
-              </center>
-            </template>
-            <template #footer>
-              <center>
-                <div class="font-weight-bold grey--text text--darken-1 mt-6 mb-2 text-body-2">
-                  You can cancel your trial and membership anytime from the account settings.
-                </div>
-              </center>
-            </template>
-          </stripe-pay-form>
-        </v-card>
-      </v-col>
-    </pg-dialog>
   </v-row>
 </template>
 
@@ -415,20 +343,15 @@ import dayjs from 'dayjs'
 import { get } from 'lodash'
 import { mapGetters, mapActions } from 'vuex'
 import UpdateBillingMethod from '@/components/app/payment/UpdateBillingMethod'
-import SubscriptionPlanSelection from '@/components/app/payment/SubscriptionPlanSelection'
 import PlanDescription from '@/components/app/payment/SubscriptionPlanSelection/PlanDescription'
 import TrialIsExpiring from '@/components/app/header/TrialIsExpiring.vue'
-import StripePayForm from '@/components/forms/payment/StripePayForm.vue'
-import { UserFlow } from '@/models'
 
 export default {
   name: 'MembershipDetails',
   components: {
     UpdateBillingMethod,
-    SubscriptionPlanSelection,
     PlanDescription,
-    TrialIsExpiring,
-    StripePayForm
+    TrialIsExpiring
   },
   data () {
     return {
@@ -449,9 +372,6 @@ export default {
       },
       cardToUpate: null,
       stripeCardModal: false,
-      changePlanModal: false,
-      isPaymentMethodModalVisible: false,
-      isPaymentMethodModalLoading: false,
       removeSubscriptionModal: false,
       userCards: [],
       plan: {}
@@ -521,10 +441,7 @@ export default {
       'getSelectedSubscriptionPlan',
       'cancelSubscription',
       'fetchBillingCards',
-      'fetchBillingDetails',
-      'removeBillingCard',
-      'addBillingCard',
-      'validateCard'
+      'fetchBillingDetails'
     ]),
 
     handleRouteAction () {
@@ -532,7 +449,7 @@ export default {
 
       switch (action) {
         case 'select-plan':
-          this.changePlanModal = true
+          this.handleChangePlan()
           break
         default:
           break
@@ -610,20 +527,6 @@ export default {
       this.getBillingCards()
       this.getBillingDetails()
     },
-    onSuccessChangePlan () {
-      this.getBillingDetails()
-      this.closeChangePlanModal()
-
-      if (this.getUserInfo.flow === UserFlow.NOCREDITCARD && this.userCards && this.userCards.length === 0) {
-        this.isPaymentMethodModalVisible = true
-      }
-    },
-    closeChangePlanModal () {
-      this.changePlanModal = false
-      if (this.$route.params.planRedirect) {
-        this.$router.push({ name: this.$route.params.planRedirect })
-      }
-    },
     selectPlan () {
       this.$router.push({
         name: 'app-payment',
@@ -640,35 +543,10 @@ export default {
         this.enableAxiosGlobal()
       }
     },
-    closePaymentMethodModal () {
-      this.isPaymentMethodModalVisible = false
-    },
-    async handlePaymentFormSubmit (cardData) {
-      this.isPaymentMethodModalLoading = true
-
-      try {
-        const dataSubscrition = {
-          token: cardData.token
-        }
-
-        if (cardData.promotion_id) {
-          dataSubscrition.promotion_id = cardData.promotion_id
-        }
-
-        await this.addBillingCard(dataSubscrition)
-
-        this.$snotify.success('Payment method added!')
-
-        this.closePaymentMethodModal()
-        this.getBillingCards()
-      } catch (e) {
-      } finally {
-        this.isPaymentMethodModalLoading = false
-      }
-    },
-    handlePaymentModalBackButton () {
-      this.closePaymentMethodModal()
-      this.changePlanModal = true
+    handleChangePlan () {
+      this.$router.push({
+        name: 'app-payment-plan'
+      })
     }
   }
 }
