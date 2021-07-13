@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
 import { snotifyError } from '@/utils/vuex'
 import { hasLocalStorage } from '@/utils/window'
+import { UserFlow } from '@/models'
 
 export default {
   createNotification (_, data) {
@@ -156,7 +157,7 @@ export default {
 
     let didChoosePlan = false
 
-    if (userInfo.flow === 'NOCREDITCARD') {
+    if (userInfo.flow === UserFlow.NOCREDITCARD) {
       didChoosePlan = (data.length > 0)
     } else {
       didChoosePlan = userInfo.planChoosen
