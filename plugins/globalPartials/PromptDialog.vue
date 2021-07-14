@@ -80,7 +80,7 @@
             :loading="loading"
             :disabled="isConfirmationBtnDisabled"
             width="120"
-            class="text-transform-none  white--text "
+            class="text-transform-none  white--text"
             data-test-id="prompt-dialog-action-button"
             @click="doAction(onAction)"
           >
