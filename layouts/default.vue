@@ -2,7 +2,7 @@
   <v-app>
     <template v-if="showContent">
       <!-- TRIAL EXPIRING RIBBON -->
-      <trial-is-expiring v-if="isTrialExpiringRibbonVisible" @expired="handleExpiredTrialCoundown" />
+      <trial-is-expiring v-if="getIsTrialPeriodEnd" @expired="handleExpiredTrialCoundown" />
 
       <coming-soon-player />
 
@@ -123,6 +123,14 @@ export default {
       return {
         'margin-top': this.isTrialExpiringRibbonVisible ? `${this.topDistanceInPixels}px !important` : '0px'
       }
+    },
+
+    getIsTrialPeriodEnd () {
+      let show = false
+      if (this.$route && this.$route.path !== '/app/payment/plan') {
+        show = this.checkIfShouldShowTrialExpiredModal()
+      }
+      return show
     }
   },
 
@@ -153,6 +161,8 @@ export default {
     // this.showVerifyEmailToast()
 
     this.$store.commit('SET_SHOW_CONTENT', true)
+
+    console.log('route--', this.$route.path)
   },
 
   methods: {

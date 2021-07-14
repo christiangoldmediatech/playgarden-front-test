@@ -176,5 +176,7 @@ export default {
     if (shouldShowExpiredModal) {
       commit('notifications/SET_TRIAL_EXPIRED_MODAL_VISIBLE', true, { root: true })
     }
+
+    return shouldShowExpiredModal
   }
 }
