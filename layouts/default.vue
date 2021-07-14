@@ -2,7 +2,7 @@
   <v-app>
     <template v-if="showContent">
       <!-- TRIAL EXPIRING RIBBON -->
-      <trial-is-expiring v-if="getIsTrialPeriodEnd" />
+      <trial-is-expiring v-if="getTrialPeriodEnd" />
 
       <coming-soon-player />
 
@@ -126,7 +126,7 @@ export default {
       }
     },
 
-    getIsTrialPeriodEnd () {
+    getTrialPeriodEnd () {
       let show = false
       const currentPath = this.$route.path
       if (currentPath !== '/app/payment/plan') {
