@@ -7,6 +7,7 @@
           gradient="rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)"
           class="section"
           contain
+          tile
         >
           <div class="section-content">
             <!-- Start Playing Button -->
