@@ -1,40 +1,56 @@
 <template>
-  <v-app-bar flat height="175" app>
+  <v-app-bar flat :height="appBarHeight" class="pg-header" app>
     <v-row no-gutters>
-      <v-col md="3" align-self="center">
-        <child-select v-if="childId" v-model="childId" />
+      <v-btn class="d-inline d-md-none pg-header-menu-btn" icon :ripple="false">
+        <v-icon large class="primary--text">
+          mdi-menu
+        </v-icon>
+      </v-btn>
+      <v-col cols="12" md="3" order="2" order-md="1" class="d-flex align-center justify-center">
+        <div class="child-select mt-2 mt-md-0">
+          <child-select v-if="childId" v-model="childId" class="mb-n4" />
+        </div>
       </v-col>
 
-      <v-col md="6" class="d-flex flex-column justify-center align-center">
+      <v-col cols="12" md="6" order="1" order-md="2" class="d-flex flex-column justify-center align-center">
         <img
           alt="Playarden Prep Online Logo"
-          height="45"
+          :height="appBarLogoSize"
           :src="require('@/assets/svg/logo.svg')"
         >
 
-        <underlined-title text="Virtual Preschool" />
+        <underlined-title text="Virtual Preschool!" :font-size="appBarTitleSize" />
 
-        <div class="text-subtitle-1">
+        <div class="text-body-1 text-md-h6">
           We are excited for a new day full of learning.
         </div>
       </v-col>
 
-      <v-col md="3" class="d-flex justify-end align-center">
-        <img
-          v-if="isUserLoggedIn && !isUserInSignupProcess"
-          height="50"
-          :src="require('@/assets/svg/account-profile.svg')"
-          @click="$router.push({ name: 'app-account-index' })"
-        >
+      <v-col md="3" order="3" class="d-none d-md-flex justify-end align-center">
+        <div class="text-center mx-4">
+          <img
+            v-if="isUserLoggedIn && !isUserInSignupProcess"
+            height="45"
+            :src="require('@/assets/png/Profile.png')"
+            @click="$router.push({ name: 'app-account-index' })"
+          >
+          <div class="text-caption">
+            Profile
+          </div>
+        </div>
 
         <template v-if="isUserLoggedIn && !isUserInSignupProcess">
           <v-menu open-on-hover offset-y>
             <template v-slot:activator="{ on }">
-              <img
-                :src="require('@/assets/png/Help.png')"
-                height="50"
-                v-on="on"
-              >
+              <div class="text-center mx-4" v-on="on">
+                <img
+                  :src="require('@/assets/png/Help.png')"
+                  height="45"
+                >
+                <div class="text-caption">
+                  Help
+                </div>
+              </div>
             </template>
 
             <v-card>
@@ -49,8 +65,8 @@
                     :to="{ name: 'app-onboarding' }"
                   >
                     <img
-                      class="clickable account-btn"
-                      height="50"
+                      class="mr-2"
+                      height="30"
                       :src="require('@/assets/png/Tutorial-icon.png')"
                     >
                     Tutorial
@@ -70,8 +86,8 @@
                     :to="{ name: 'help' }"
                   >
                     <img
-                      class="clickable account-btn"
-                      height="50"
+                      class="mr-2"
+                      height="30"
                       :src="require('@/assets/png/FAQ.png')"
                     >
                     FAQ
@@ -103,6 +119,10 @@ export default defineComponent({
     const vuetify = useVuetifyHelper()
     const isMobile = computed(() => vuetify.breakpoint.mobile)
 
+    const appBarHeight = computed(() => isMobile.value ? '200px' : '175px')
+    const appBarTitleSize = computed(() => isMobile.value ? '32px' : '60px')
+    const appBarLogoSize = computed(() => isMobile.value ? '25px' : '45px')
+
     const store = useStore<TypedStore>()
     const { isUserLoggedIn, isUserInSignupProcess } = useAuth({ store })
 
@@ -118,8 +138,29 @@ export default defineComponent({
       isMobile,
       isUserLoggedIn,
       isUserInSignupProcess,
-      childId
+      childId,
+      appBarTitleSize,
+      appBarLogoSize,
+      appBarHeight
     }
   }
 })
 </script>
+
+<style lang="scss" scoped>
+.child-select {
+  width: 250px;
+}
+.pg-header {
+  background: #FFFFFF !important;
+  box-shadow: 0px 3px 46px rgba(0, 0, 0, 0.160784) !important;
+  border-radius: 0px 0px 36px 36px !important;
+
+  &-menu-btn {
+    position: absolute;
+  }
+}
+.btn-register:before {
+  background-color: transparent !important;
+}
+</style>
