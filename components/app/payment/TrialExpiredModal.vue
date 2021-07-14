@@ -1,6 +1,6 @@
 <template>
   <div>
-    <large-image-content-dialog :value="isTrialExpiredModalVisible" :img="girlRedRibbon" @close="closeModal">
+    <large-image-content-dialog :value="isTrialExpiredModalVisible" :img="girlRedRibbon" :is-closeable="false" @close="closeModal">
       <div>
         <underlined-title
           text="YOUR TRIAL PERIOD HAS EXPIRED."
@@ -37,7 +37,7 @@
       <v-row no-gutters class="text-center text-md-left">
         <v-col cols="12" md="auto" class="my-4">
           <v-btn x-large color="accent" class="text-none" width="250" @click="handleComparePlans">
-            Compare plans
+            Subscribe now
           </v-btn>
         </v-col>
         <v-col cols="12" md="auto" class="mx-0 mx-md-4 align-self-center font-weight-bold">

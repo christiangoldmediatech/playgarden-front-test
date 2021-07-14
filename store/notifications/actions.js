@@ -155,19 +155,20 @@ export default {
     // we'll consider it a user that logged in before if the created date is greater than a day
     const didLoginBefore = dayjs(now).diff(userInfo.createdAt, 'minutes') >= oneDay
 
+    const subscription = userInfo.subscription
+    let isSubscribedUser = subscription && subscription.status === 'active'
+
     let didChoosePlan = false
 
     if (userInfo.flow === UserFlow.NOCREDITCARD) {
       didChoosePlan = (data.length > 0)
+      isSubscribedUser = subscription && subscription.status === 'past_due'
     } else {
       didChoosePlan = userInfo.planChoosen
     }
 
-    const subscription = userInfo.subscription
-    const isSubscribedUser = subscription && subscription.status === 'active'
-
     const shouldShowExpiredModal =
-    didTrialEnd &&
+      didTrialEnd &&
       didLoginBefore &&
       isSubscribedUser &&
       !didChoosePlan
