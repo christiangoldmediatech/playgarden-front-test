@@ -41,7 +41,7 @@
         </div>
 
         <template v-if="isUserLoggedIn && !isUserInSignupProcess">
-          <v-menu open-on-hover offset-y>
+          <v-menu open-on-hover offset-y offset-overflow>
             <template v-slot:activator="{ on }">
               <div class="text-center clickable mx-4" v-on="on">
                 <img
