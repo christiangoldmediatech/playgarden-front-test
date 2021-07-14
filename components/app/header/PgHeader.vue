@@ -1,7 +1,7 @@
 <template>
   <v-app-bar flat :height="appBarHeight" class="pg-header" app>
     <v-row no-gutters>
-      <v-btn class="d-inline d-md-none pg-header-menu-btn" icon :ripple="false">
+      <v-btn class="d-inline d-md-none pg-header-menu-btn" icon :ripple="false" @click="handleSidebarToggle">
         <v-icon large class="primary--text">
           mdi-menu
         </v-icon>
@@ -106,7 +106,7 @@
 import { defineComponent, computed, useStore, useRoute, useRouter } from '@nuxtjs/composition-api'
 
 import ChildSelect from '@/components/app/ChildSelect.vue'
-import { useAuth, useChildRoute, useVuetifyHelper } from '@/composables'
+import { useAuth, useChildRoute, useNuxtHelper, useVuetifyHelper } from '@/composables'
 import { TypedStore } from '@/models'
 import { onMounted } from '@vue/composition-api'
 
@@ -134,6 +134,11 @@ export default defineComponent({
       resolveChildId()
     })
 
+    const nuxt = useNuxtHelper()
+    const handleSidebarToggle = () => {
+      nuxt.$emit('toggle-nav-drawer')
+    }
+
     return {
       isMobile,
       isUserLoggedIn,
@@ -141,7 +146,8 @@ export default defineComponent({
       childId,
       appBarTitleSize,
       appBarLogoSize,
-      appBarHeight
+      appBarHeight,
+      handleSidebarToggle
     }
   }
 })
