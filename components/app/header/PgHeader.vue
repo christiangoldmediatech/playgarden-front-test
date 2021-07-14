@@ -31,6 +31,7 @@
           <img
             v-if="isUserLoggedIn && !isUserInSignupProcess"
             height="45"
+            class="clickable"
             :src="require('@/assets/png/Profile.png')"
             @click="$router.push({ name: 'app-account-index' })"
           >
@@ -42,7 +43,7 @@
         <template v-if="isUserLoggedIn && !isUserInSignupProcess">
           <v-menu open-on-hover offset-y>
             <template v-slot:activator="{ on }">
-              <div class="text-center mx-4" v-on="on">
+              <div class="text-center clickable mx-4" v-on="on">
                 <img
                   :src="require('@/assets/png/Help.png')"
                   height="45"
@@ -154,6 +155,9 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+.clickable {
+  cursor: pointer;
+}
 .child-select {
   width: 250px;
 }
