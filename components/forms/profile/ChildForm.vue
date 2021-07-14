@@ -234,7 +234,7 @@
           <v-col cols="12" class="d-flex justify-center mb-3">
             <v-btn
               color="primary"
-              @click="selectChild(item)"
+              @click="goToProgressReport(item)"
             >
               View progress report
             </v-btn>
@@ -370,7 +370,7 @@ export default {
 
     ...mapActions('children/progress', ['getUserChildrenProgress']),
 
-    selectChild (child) {
+    goToProgressReport (child) {
       if (child.id) {
         this.setChild({ value: [child], save: true })
         this.$router.push({
