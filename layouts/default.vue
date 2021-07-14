@@ -2,7 +2,7 @@
   <v-app>
     <template v-if="showContent">
       <!-- TRIAL EXPIRING RIBBON -->
-      <trial-is-expiring v-if="getIsTrialPeriodEnd" @expired="handleExpiredTrialCoundown" />
+      <trial-is-expiring v-if="getIsTrialPeriodEnd" />
 
       <coming-soon-player />
 
@@ -69,6 +69,7 @@ import TrialExpiredModal from '@/components/app/payment/TrialExpiredModal.vue'
 import TrialIsExpiring from '@/components/app/header/TrialIsExpiring.vue'
 import ContactUsFormModal from '@/components/forms/contact/ContactUsFormModal.vue'
 import NotificationSignupModal from '@/components/app/notifications/NotificationSignupModal'
+import { lte } from 'lodash'
 
 export default {
   name: 'Default',
@@ -127,7 +128,8 @@ export default {
 
     getIsTrialPeriodEnd () {
       let show = false
-      if (this.$route && this.$route.path !== '/app/payment/plan') {
+      const currentPath = this.$route.path
+      if (currentPath !== '/app/payment/plan') {
         show = this.checkIfShouldShowTrialExpiredModal()
       }
       return show
@@ -161,8 +163,6 @@ export default {
     // this.showVerifyEmailToast()
 
     this.$store.commit('SET_SHOW_CONTENT', true)
-
-    console.log('route--', this.$route.path)
   },
 
   methods: {
@@ -194,10 +194,6 @@ export default {
           }
         )
       }
-    },
-
-    handleExpiredTrialCoundown () {
-      this.$router.push({ name: 'app-payment-plan' })
     }
   }
 }
