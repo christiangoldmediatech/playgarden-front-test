@@ -34,6 +34,18 @@ export default {
     }
   },
 
+  async fetchCaregiversListByUserId ({ commit }, id) {
+    try {
+      const { data } = await this.$axios.get('/caregivers')
+
+      return data
+    } catch (error) {
+      snotifyError(commit, {
+        body: 'Sorry! There was an error while getting your Caregivers data!'
+      })
+    }
+  },
+
   async fetchCaregiverInvitationList ({ commit }) {
     try {
       const response = await this.$axios.get('/caregivers/invites/list')
