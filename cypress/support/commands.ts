@@ -24,8 +24,6 @@ Cypress.Commands.add('uiLoginAs', (user: 'parent' | 'admin') => {
       break
   }
 
-  cy.visit('/auth/logout')
-
   cy.get('[data-test-id=email-field]').type(payload.email)
   cy.get('[data-test-id=password-field]').type(payload.password)
   cy.get('[data-test-id=login-button]').click()
