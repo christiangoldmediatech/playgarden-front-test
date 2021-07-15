@@ -544,6 +544,17 @@
               </v-card-text>
             </v-row>
           </v-card>
+
+          <v-card
+            v-if="role === 'parent'"
+            class="mx-auto my-12"
+            width="95%"
+            elevation="4"
+          >
+            <v-card-title>
+              Caregivers
+            </v-card-title>
+          </v-card>
         </v-col>
       </v-row>
     </v-card>
