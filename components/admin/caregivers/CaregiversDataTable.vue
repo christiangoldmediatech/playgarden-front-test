@@ -1,36 +1,30 @@
 <template>
-  <v-container>
+  <div>
     <v-row>
       <v-col cols="12">
-        <v-card width="100%">
-          <v-card-title>
-            Caregivers
-          </v-card-title>
-        </v-card>
+        <v-card-title>
+          Caregivers
+        </v-card-title>
       </v-col>
     </v-row>
 
     <v-row>
       <v-col cols="12">
-        <v-card width="100%">
-          <v-card-text>
-            <pg-admin-data-table
-              :headers="headers"
-              :items="caregivers"
-              :loading="loading"
-              :page.sync="page"
-              :no-show-edit="true"
-              :no-show-search="true"
-              top-justify="space-between"
-              @update:page="page = $event"
-              @remove-item="remove"
-              @refresh="refresh(true)"
-            />
-          </v-card-text>
-        </v-card>
+        <pg-admin-data-table
+          :headers="headers"
+          :items="caregivers"
+          :loading="loading"
+          :page.sync="page"
+          :no-show-edit="true"
+          :no-show-search="true"
+          top-justify="space-between"
+          @update:page="page = $event"
+          @remove-item="remove"
+          @refresh="refresh(true)"
+        />
       </v-col>
     </v-row>
-  </v-container>
+  </div>
 </template>
 
 <script>
