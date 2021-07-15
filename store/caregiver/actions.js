@@ -35,7 +35,6 @@ export default {
   },
 
   async fetchCaregiversListByUserId ({ commit }, id) {
-    console.log('id--', id)
     try {
       const { data } = await this.$axios.get(`/caregivers/user/${id}`)
 

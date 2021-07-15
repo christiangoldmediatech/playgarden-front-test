@@ -551,7 +551,7 @@
             width="95%"
             elevation="4"
           >
-            <v-row>
+            <v-row class="mx-4">
               <caregivers-data-table :id="user.id" />
             </v-row>
           </v-card>
