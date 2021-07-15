@@ -1,11 +1,10 @@
 <template>
   <v-main>
-    <v-row align-content="center" justify="center" no-gutters class="virtual-preschool">
-      <v-col v-for="section in sections" :key="section.title" cols="12" md="4">
+    <v-row align-content="center" justify="center" class="virtual-preschool">
+      <v-col v-for="section in sections" :key="section.title" cols="12" md="4" class="section">
         <v-img
           :src="section.imageUrl"
           gradient="rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)"
-          class="section"
           contain
           tile
         >
@@ -18,7 +17,7 @@
             >
 
             <!-- Lady -->
-            <img class="section-lady" src="@/assets/png/virtual-preschool/LadyA.png">
+            <img class="section-lady" :src="section.teacherUrl">
 
             <!-- Bubble -->
             <img class="section-bubble" src="@/assets/png/virtual-preschool/Bubble.png">
@@ -53,6 +52,7 @@ export default defineComponent({
     const sections = [
       {
         imageUrl: require('@/assets/png/virtual-preschool/Daily lessons.png'),
+        teacherUrl: require('@/assets/png/virtual-preschool/LadyA.png'),
         title: 'Daily Lessons',
         routeName: 'app-dashboard',
         message: 'We can’t wait to learn with you every day!',
@@ -60,6 +60,7 @@ export default defineComponent({
       },
       {
         imageUrl: require('@/assets/png/virtual-preschool/playdates.png'),
+        teacherUrl: require('@/assets/png/virtual-preschool/LadyA.png'),
         title: 'Playdates',
         routeName: 'app-playdates',
         message: 'Join our teacher-led playdates for fun with friends!',
@@ -67,6 +68,7 @@ export default defineComponent({
       },
       {
         imageUrl: require('@/assets/png/virtual-preschool/live classes.png'),
+        teacherUrl: require('@/assets/png/virtual-preschool/LadyA.png'),
         title: 'Live Classes',
         routeName: 'app-live-classes',
         message: 'Enjoy cooking, music, movement zooms and more!',
@@ -74,6 +76,7 @@ export default defineComponent({
       },
       {
         imageUrl: require('@/assets/png/virtual-preschool/Cubby.png'),
+        teacherUrl: require('@/assets/png/virtual-preschool/LadyA.png'),
         title: 'Student Cubby',
         routeName: 'app-student-cubby',
         message: 'Store your work and track progress in your cubby!',
@@ -88,6 +91,7 @@ export default defineComponent({
       },
       {
         imageUrl: require('@/assets/png/virtual-preschool/Library.png'),
+        teacherUrl: require('@/assets/png/virtual-preschool/LadyA.png'),
         title: 'Library',
         routeName: 'app-library',
         message: 'Come read with us in the book nook!',
@@ -125,6 +129,8 @@ export default defineComponent({
 }
 
 .section {
+  padding: 0px;
+
   &-content {
     transition: 0.2s;
     width: 100%;
@@ -194,12 +200,14 @@ export default defineComponent({
       padding-right: 12px;
     }
   }
+}
 
-  @media (max-width: $breakpoint-sm) {
-    .section {
-      &-content {
-        opacity: 1;
-      }
+@media (max-width: $breakpoint-sm) {
+  .section {
+    padding: 12px;
+
+    &-content {
+      opacity: 1;
     }
   }
 }
