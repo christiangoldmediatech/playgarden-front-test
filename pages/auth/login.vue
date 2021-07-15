@@ -172,7 +172,11 @@ export default {
         await this.authLoginSocial(user)
         this.enableAxiosGlobal()
         this.loadingDataSocial = false
-        await this.$router.push({ name: 'app-dashboard' })
+        if (this.$route.query.redirect) {
+          await this.$router.push(decodeURIComponent(this.$route.query.redirect))
+        } else {
+          await this.$router.push({ name: 'app-dashboard' })
+        }
       } catch (e) {
         this.loadingDataSocial = false
         await this.onFailLoginSocial(user)

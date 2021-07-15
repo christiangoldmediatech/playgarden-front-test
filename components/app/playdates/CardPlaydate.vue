@@ -298,6 +298,7 @@
                     target="_blank"
                     block
                     x-large
+                    data-test-id="card-playdate-join-button"
                     @click="joinPlaydateChildren"
                   >
                     Join Playdate
