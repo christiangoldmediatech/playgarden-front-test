@@ -23,7 +23,6 @@
               :no-show-search="true"
               top-justify="space-between"
               @update:page="page = $event"
-              @search="onSearch"
               @remove-item="remove"
               @refresh="refresh(true)"
             />
@@ -36,13 +35,9 @@
 
 <script>
 import { mapActions } from 'vuex'
-import onSearch from '@/mixins/OnSearchMixin.js'
-import { number } from 'echarts'
 
 export default {
   name: 'CaregiversDataTable',
-
-  mixins: [onSearch],
 
   props: {
     id: {
@@ -55,7 +50,6 @@ export default {
     return {
       loading: false,
       action: true,
-      search: '',
       limit: 10,
       page: 1,
       caregivers: [],
@@ -111,19 +105,8 @@ export default {
   methods: {
     ...mapActions('caregiver', ['fetchCaregiversListByUserId', 'deleteCaregiver']),
 
-    setLimit (limit) {
-      if (limit > 0) {
-        this.limit = limit
-      } else {
-        this.limit = 0
-      }
-    },
-
     async refresh (clear = false) {
       this.loading = true
-      if (clear) {
-        this.search = ''
-      }
       try {
         const { users } = await this.fetchCaregiversListByUserId(this.id)
         this.caregivers = users
