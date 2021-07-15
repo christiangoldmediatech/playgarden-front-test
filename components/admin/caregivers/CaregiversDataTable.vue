@@ -19,9 +19,10 @@
               :items="caregivers"
               :loading="loading"
               :page.sync="page"
-              :action="action"
+              :no-show-edit="true"
               top-justify="space-between"
               @search="onSearch"
+              @remove-item="remove"
               @refresh="refresh(true)"
             />
           </v-card-text>
@@ -106,7 +107,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('caregiver', ['fetchCaregiversListByUserId']),
+    ...mapActions('caregiver', ['fetchCaregiversListByUserId', 'deleteCaregiver']),
 
     setLimit (limit) {
       if (limit > 0) {
@@ -128,6 +129,17 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+
+    remove ({ id, firstName, lastName }) {
+      this.$nuxt.$emit('open-prompt', {
+        title: 'Delete Caregiver?',
+        message: `Are you sure you want to delete <b>${firstName} ${lastName}</b>?`,
+        action: async () => {
+          await this.deleteCaregiver(id)
+          this.refresh()
+        }
+      })
     }
   }
 }
