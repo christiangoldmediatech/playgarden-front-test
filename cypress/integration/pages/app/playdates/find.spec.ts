@@ -42,4 +42,37 @@ describe('/app/playdates', () => {
 
     cy.get('[data-test-id=playdate-modal').should('not.be.visible');
   })
+
+  it('should be able to join a playdate', () => {
+    cy.get('[data-test-id=card-playdate]').first().find('[data-test-id=card-playdate-open-button]').click({ force: true })
+
+    cy.get('[data-test-id=playdate-modal').should('be.visible');
+
+    // Fill child select.
+    cy.get('[data-test-id=child-select]').click({ force: true })
+    cy.wait(500)
+    cy.get('.v-list-item__content > .v-list-item__title').contains('Ana').click({ force: true })
+
+    // Join the playdate.
+    cy.get('[data-test-id=card-playdate-join-button]').click({ force: true })
+
+    cy.url().should('include', 'app/playdates')
+    cy.url().should('not.include', 'find')
+  })
+
+  it('should be able to delete the created invite', () => {
+    // Open joined playdate.
+    cy.get('[data-test-id=card-playdate]').first().find('[data-test-id=card-playdate-title]').should('contain.text', 'Ana')
+    cy.get('[data-test-id=card-playdate]').first().find('[data-test-id=card-playdate-open-button]').click({ force: true })
+    cy.get('[data-test-id=playdate-modal').should('be.visible');
+
+    // Delete playdate.
+    cy.get('[data-test-id=card-playdate-delete]').click()
+    cy.get('[data-test-id=prompt-dialog-action-button]').click()
+
+    // Check first playdate is removed.
+    cy.get('[data-test-id=playdate-modal').should('not.be.visible');
+    cy.wait(1000)
+    cy.get('[data-test-id=card-playdate]').first().find('[data-test-id=card-playdate-title]').should('not.contain.text', 'Ana')
+  })
 })

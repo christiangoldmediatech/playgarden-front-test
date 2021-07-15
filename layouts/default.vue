@@ -2,7 +2,7 @@
   <v-app>
     <template v-if="showContent">
       <!-- TRIAL EXPIRING RIBBON -->
-      <trial-is-expiring v-if="isTrialExpiringRibbonVisible" @expired="handleExpiredTrialCoundown" />
+      <trial-is-expiring v-if="getTrialPeriodEnd" />
 
       <coming-soon-player />
 
@@ -22,6 +22,9 @@
 
       <!-- CONTACT US FORM MODAL -->
       <contact-us-form-modal />
+
+      <!-- NOTIFICATION SIGNUP -->
+      <notification-signup-modal />
 
       <!-- CONTENT -->
       <v-main v-if="!fullWidth">
@@ -65,6 +68,8 @@ import ShippingAddressModal from '@/components/app/payment/ShippingAddressModal.
 import TrialExpiredModal from '@/components/app/payment/TrialExpiredModal.vue'
 import TrialIsExpiring from '@/components/app/header/TrialIsExpiring.vue'
 import ContactUsFormModal from '@/components/forms/contact/ContactUsFormModal.vue'
+import NotificationSignupModal from '@/components/app/notifications/NotificationSignupModal'
+import { lte } from 'lodash'
 
 export default {
   name: 'Default',
@@ -81,7 +86,8 @@ export default {
     ShippingAddressModal,
     TrialExpiredModal,
     TrialIsExpiring,
-    ContactUsFormModal
+    ContactUsFormModal,
+    NotificationSignupModal
   },
 
   data: () => ({
@@ -118,6 +124,15 @@ export default {
       return {
         'margin-top': this.isTrialExpiringRibbonVisible ? `${this.topDistanceInPixels}px !important` : '0px'
       }
+    },
+
+    getTrialPeriodEnd () {
+      let show = false
+      const currentPath = this.$route.path
+      if (currentPath !== '/app/payment/plan') {
+        show = this.checkIfShouldShowTrialExpiredModal()
+      }
+      return show
     }
   },
 
@@ -179,10 +194,6 @@ export default {
           }
         )
       }
-    },
-
-    handleExpiredTrialCoundown () {
-      this.$router.push({ name: 'app-payment-plan' })
     }
   }
 }

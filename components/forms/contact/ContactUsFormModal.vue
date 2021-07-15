@@ -84,10 +84,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from '@nuxtjs/composition-api'
+import { defineComponent, ref, useStore } from '@nuxtjs/composition-api'
 import LargeImageContentDialog from '@/components/ui/dialogs/LargeImageContentDialog/LargeImageContentDialog.vue'
 import { axios } from '@/utils'
 import { useGlobalModal } from '@/composables'
+import { TypedStore } from '@/models'
 
 export default defineComponent({
   name: 'ContactUsFormModal',
@@ -97,7 +98,8 @@ export default defineComponent({
   },
 
   setup (_, ctx) {
-    const { hideContactUsModal, isContactUsModalVisible } = useGlobalModal()
+    const store = useStore<TypedStore>()
+    const { hideContactUsModal, isContactUsModalVisible } = useGlobalModal({ store })
 
     const form = ref({
       firstName: '',

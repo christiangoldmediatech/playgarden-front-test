@@ -2,6 +2,8 @@ import dayjs from 'dayjs'
 import { ref } from '@nuxtjs/composition-api'
 import { useAuth } from '@/composables'
 import { hasLocalStorage } from '@/utils/window'
+import { Store } from 'vuex/types'
+import { TypedStore } from '@/models'
 import { useShippingAddress } from './use-shipping-address.composable'
 
 const expiringRibbonHeightDesktop = ref(54) // update if ribbon content is modified
@@ -18,8 +20,8 @@ const notificationCard = ref({
   actionText: ''
 })
 
-export const useNotification = () => {
-  const { userInfo, isUserLoggedIn } = useAuth()
+export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
+  const { userInfo, isUserLoggedIn } = useAuth({ store })
   const { getShippingAdress } = useShippingAddress()
 
   /**
