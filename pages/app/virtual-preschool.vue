@@ -13,6 +13,7 @@
             <img
               class="section-start-playing"
               src="@/assets/png/virtual-preschool/Start Playing.png"
+              :data-test-id="`vp-section-${section.title}`"
               @click="$router.push({ name: section.routeName })"
             >
 
@@ -52,7 +53,7 @@ export default defineComponent({
     const sections = [
       {
         imageUrl: require('@/assets/png/virtual-preschool/Daily lessons.png'),
-        teacherUrl: require('@/assets/png/virtual-preschool/LadyA.png'),
+        teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Beth-daily lessons.png'),
         title: 'Daily Lessons',
         routeName: 'app-dashboard',
         message: 'We can’t wait to learn with you every day!',
@@ -60,7 +61,7 @@ export default defineComponent({
       },
       {
         imageUrl: require('@/assets/png/virtual-preschool/playdates.png'),
-        teacherUrl: require('@/assets/png/virtual-preschool/LadyA.png'),
+        teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Shyla_playdates.png'),
         title: 'Playdates',
         routeName: 'app-playdates',
         message: 'Join our teacher-led playdates for fun with friends!',
@@ -68,7 +69,7 @@ export default defineComponent({
       },
       {
         imageUrl: require('@/assets/png/virtual-preschool/live classes.png'),
-        teacherUrl: require('@/assets/png/virtual-preschool/LadyA.png'),
+        teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Lucy-Liveclasses.png'),
         title: 'Live Classes',
         routeName: 'app-live-classes',
         message: 'Enjoy cooking, music, movement zooms and more!',
@@ -76,7 +77,7 @@ export default defineComponent({
       },
       {
         imageUrl: require('@/assets/png/virtual-preschool/Cubby.png'),
-        teacherUrl: require('@/assets/png/virtual-preschool/LadyA.png'),
+        teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Ally_cubby.png'),
         title: 'Student Cubby',
         routeName: 'app-student-cubby',
         message: 'Store your work and track progress in your cubby!',
@@ -84,6 +85,7 @@ export default defineComponent({
       },
       {
         imageUrl: require('@/assets/png/virtual-preschool/Music.png'),
+        teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Emma_Music.png'),
         title: 'Music',
         routeName: 'app-music',
         message: 'Listen anytime to sing and learn!',
@@ -91,7 +93,7 @@ export default defineComponent({
       },
       {
         imageUrl: require('@/assets/png/virtual-preschool/Library.png'),
-        teacherUrl: require('@/assets/png/virtual-preschool/LadyA.png'),
+        teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Raulbel-Library.png'),
         title: 'Library',
         routeName: 'app-library',
         message: 'Come read with us in the book nook!',
@@ -162,7 +164,7 @@ export default defineComponent({
   }
 
   &-lady {
-    height: 55%;
+    height: 60%;
     position: absolute;
     right: 0;
     bottom: 0;
