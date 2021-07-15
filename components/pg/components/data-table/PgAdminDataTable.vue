@@ -11,7 +11,7 @@
       <component :is="$options.components.VRow" :align="props.topAlign || 'start'" :justify="props.topJustify || 'end'">
         <slot name="top.prepend" />
 
-        <component :is="$options.components.VCol" cols="12" md="4">
+        <component :is="$options.components.VCol" v-if="!props.noShowSearch" cols="12" md="4">
           <component
             :is="$options.components.PgTextField"
             append-icon="mdi-magnify"
@@ -69,6 +69,7 @@
 
       <component
         :is="$options.components.VIcon"
+        v-if="!props.noShowEdit"
         color="#81A1F7"
         dense
         @click.stop="$options.doEvent('edit-item', item, listeners)"

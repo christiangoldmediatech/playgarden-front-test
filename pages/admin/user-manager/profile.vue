@@ -544,6 +544,17 @@
               </v-card-text>
             </v-row>
           </v-card>
+
+          <v-card
+            v-if="role === 'parent'"
+            class="mx-auto my-12"
+            width="95%"
+            elevation="4"
+          >
+            <v-row class="mx-4">
+              <caregivers-data-table :id="user.id" />
+            </v-row>
+          </v-card>
         </v-col>
       </v-row>
     </v-card>
@@ -562,6 +573,7 @@ import WorkbookSendDatesEditorDialog from '@/components/admin/users/WorkbookSend
 import BackpackEditorDialog from '@/components/admin/users/BackpackEditorDialog.vue'
 import UserChildLessonOverlay from '@/components/admin/users/UserChildLessonOverlay.vue'
 import UserChildTimelineDialog from '@/components/admin/users/UserChildTimelineDialog.vue'
+import CaregiversDataTable from '@/components/admin/caregivers/CaregiversDataTable.vue'
 import { formatDate } from '~/utils/dateTools'
 
 const CANCELATION_CONFIRMATION_WORD = 'confirm'
@@ -578,7 +590,8 @@ export default {
     WorkbookSendDatesEditorDialog,
     BackpackEditorDialog,
     UserChildTimelineDialog,
-    UserChildLessonOverlay
+    UserChildLessonOverlay,
+    CaregiversDataTable
   },
 
   data: () => ({
