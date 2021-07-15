@@ -69,6 +69,7 @@
 
       <component
         :is="$options.components.VIcon"
+        v-if="!props.noShowEdit"
         color="#81A1F7"
         dense
         @click.stop="$options.doEvent('edit-item', item, listeners)"

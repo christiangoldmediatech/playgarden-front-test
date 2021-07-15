@@ -43,7 +43,7 @@ export default {
 
   props: {
     id: {
-      type: number,
+      type: Number,
       required: true
     }
   },
@@ -51,7 +51,7 @@ export default {
   data () {
     return {
       loading: false,
-      action: false,
+      action: true,
       search: '',
       limit: 10,
       page: 1,
