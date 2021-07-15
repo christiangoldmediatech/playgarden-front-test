@@ -120,7 +120,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .virtual-preschool {
-  max-width: 1300px;
+  max-width: 1500px;
   margin: auto;
 }
 
