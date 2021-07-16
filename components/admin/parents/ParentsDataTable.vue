@@ -9,6 +9,25 @@
 
             <v-btn
               class="mr-2 text-none"
+              color="accent darken-1"
+              dark
+              :icon="$vuetify.breakpoint.xs"
+              nuxt
+              @click.stop="exportList"
+            >
+              <v-icon class="hidden-sm-and-up">
+                mdi-plus-circle
+              </v-icon>
+
+              <v-icon class="hidden-xs-only" small>
+                mdi-plus
+              </v-icon>
+
+              <span class="hidden-xs-only white--text">New Parent</span>
+            </v-btn>
+
+            <v-btn
+              class="mr-2 text-none"
               color="primary darken-1"
               dark
               :icon="$vuetify.breakpoint.xs"
