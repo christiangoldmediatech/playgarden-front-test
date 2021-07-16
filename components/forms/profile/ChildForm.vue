@@ -231,9 +231,18 @@
             >
           </v-col>
 
+          <v-col cols="12" class="d-flex justify-center mb-3">
+            <v-btn
+              color="primary"
+              @click="goToProgressReport(item)"
+            >
+              View progress report
+            </v-btn>
+          </v-col>
+
           <v-col v-if="item.id" cols="12" class="d-flex justify-center">
             <v-btn class="warning" @click="openTimeline(item)">
-              View Progress
+              View letter progress
             </v-btn>
           </v-col>
 
@@ -290,6 +299,7 @@
 <script>
 import dayjs from 'dayjs'
 import { mapActions } from 'vuex'
+
 import UserChildTimelineDialog from '@/components/admin/users/UserChildTimelineDialog.vue'
 
 export default {
@@ -348,6 +358,8 @@ export default {
   methods: {
     ...mapActions('backpacks', ['getBackpacks']),
 
+    ...mapActions(['setChild']),
+
     ...mapActions('children', {
       createChild: 'store',
       getChildren: 'get',
@@ -357,6 +369,16 @@ export default {
     }),
 
     ...mapActions('children/progress', ['getUserChildrenProgress']),
+
+    goToProgressReport (child) {
+      if (child.id) {
+        this.setChild({ value: [child], save: true })
+        this.$router.push({
+          name: 'app-student-cubby-progress-report',
+          query: { id: child.id }
+        })
+      }
+    },
 
     getOriginalChild ({ backpackId, birthday, firstName, level, gender } = {}) {
       return JSON.stringify({

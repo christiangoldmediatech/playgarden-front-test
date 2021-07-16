@@ -1,6 +1,6 @@
 <template>
   <div>
-    <large-image-content-dialog :value="isTrialExpiredModalVisible" :img="girlRedRibbon" @close="closeModal">
+    <large-image-content-dialog :value="isTrialExpiredModalVisible" :img="girlRedRibbon" :is-closeable="false" @close="closeModal">
       <div>
         <underlined-title
           text="YOUR TRIAL PERIOD HAS EXPIRED."
@@ -37,7 +37,7 @@
       <v-row no-gutters class="text-center text-md-left">
         <v-col cols="12" md="auto" class="my-4">
           <v-btn x-large color="accent" class="text-none" width="250" @click="handleComparePlans">
-            Compare plans
+            Subscribe now
           </v-btn>
         </v-col>
         <v-col cols="12" md="auto" class="mx-0 mx-md-4 align-self-center font-weight-bold">
@@ -51,12 +51,13 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import dayjs from 'dayjs'
 import { mapState, mapGetters } from 'vuex'
 import LargeImageContentDialog from '@/components/ui/dialogs/LargeImageContentDialog/LargeImageContentDialog.vue'
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, useStore } from '@nuxtjs/composition-api'
 import { useGlobalModal } from '@/composables'
+import { TypedStore } from '@/models'
 
 export default defineComponent({
   name: 'TrialExpiredModal',
@@ -66,7 +67,8 @@ export default defineComponent({
   },
 
   setup () {
-    const { showContactUsModal } = useGlobalModal()
+    const store = useStore<TypedStore>()
+    const { showContactUsModal } = useGlobalModal({ store })
 
     return {
       showContactUsModal
@@ -82,11 +84,14 @@ export default defineComponent({
     ...mapState('notifications', ['isTrialExpiredModalVisible']),
     ...mapGetters('auth', ['getUserInfo']),
 
+    // @ts-ignore
     lastDayOfTrial () {
+      // @ts-ignore
       if (!this.getUserInfo.trialEnd) {
         return ''
       }
 
+      // @ts-ignore
       return dayjs(this.getUserInfo.trialEnd).format('MMMM DD, YYYY')
     }
   },

@@ -37,6 +37,7 @@
         :all-songs="allSongsWithFavorites"
         :songs-by-curriculum-type="songsByCurriculumTypeWithFavorites"
         :selected-letter-id="selectedLetterId"
+        class="music-song-list mx-auto"
         @addSong="addSongToPlaylist"
         @newPlayList="createNewPlaylist"
         @favorite="handleFavorite"
@@ -324,3 +325,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.music-song-list {
+  max-width: 1400px;
+}
+</style>
