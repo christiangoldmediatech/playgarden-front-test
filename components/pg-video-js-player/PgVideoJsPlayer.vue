@@ -337,8 +337,8 @@ export default {
         const item = this.playlist[this.playlistItemIndex]
         if ([25, 50, 75].includes(percentage)) {
           // If we haven't already called this percentage on this video send the event
-          if (item.id !== this.videoTagUpdates.id) {
-            this.videoTagUpdates.id = item.id
+          if (item.videoId !== this.videoTagUpdates.id) {
+            this.videoTagUpdates.id = item.videoId
 
             // Update events on this video
             switch (percentage) {
@@ -362,21 +362,23 @@ export default {
           } else {
             // If we haven't sent it, sent it
             let shouldSendEvent = false
-
             switch (percentage) {
               case 25:
                 if (!this.videoTagUpdates.quarter) {
                   shouldSendEvent = true
+                  this.videoTagUpdates.quarter = true
                 }
                 break
               case 50:
                 if (!this.videoTagUpdates.half) {
                   shouldSendEvent = true
+                  this.videoTagUpdates.half = true
                 }
                 break
               case 75:
                 if (!this.videoTagUpdates.seventyFive) {
                   shouldSendEvent = true
+                  this.videoTagUpdates.seventyFive = true
                 }
                 break
             }
