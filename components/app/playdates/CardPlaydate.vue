@@ -496,6 +496,10 @@ export default {
           playdateId: this.playdate.id,
           childId: this.childId
         })
+        this.$gtm.push({
+          event: TAG_MANAGER_EVENTS.PLAYDATE_JOIN,
+          userId: this.getUserInfo.id
+        })
         this.$snotify.success('Children have been successfully added to the playdate!')
         this.$router.push({ name: 'app-playdates' })
       } catch (error) {
