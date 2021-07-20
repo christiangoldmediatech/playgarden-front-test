@@ -120,7 +120,7 @@ export default {
           this.$router.push(decodeURIComponent(this.$route.query.redirect))
         } else {
           this.$router.push({
-            name: 'app-dashboard',
+            name: 'app-virtual-preschool',
             query: {
               _time: new Date().getTime() // <- just in order to avoid infinite loading bar
             }
