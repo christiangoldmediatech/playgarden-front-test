@@ -109,8 +109,8 @@
               <template v-slot:[`item.actions.prepend`]="{ item }">
                 <nuxt-link
                   :to="{
-                    name: 'admin-curriculum-management-worksheet',
-                    params: { lessonId: item.id }
+                    name: 'admin-curriculum-management-uploaded-worksheets',
+                    query: { lessonId: item.id }
                   }"
                 >
                   <v-icon color="#85929E" dense>

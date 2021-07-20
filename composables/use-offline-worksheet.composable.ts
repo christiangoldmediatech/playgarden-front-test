@@ -43,13 +43,8 @@ export const useOfflineWorksheet = ({
     return axios.$get(`/worksheets/children/${childId}`)
   }
 
-  const getUploadedByLesson = (lessonId: number): Promise<OfflineWorksheet[]> => {
-    return axios.$get(`/worksheets/children/${lessonId}`)
-  }
-
   return {
     upload,
-    getUploaded,
-    getUploadedByLesson
+    getUploaded
   }
 }
