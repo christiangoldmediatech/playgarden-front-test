@@ -13,17 +13,25 @@
       </v-col>
 
       <v-col cols="12" md="6" order="1" order-md="2" class="d-flex flex-column justify-center align-center">
-        <img
-          alt="Playarden Prep Online Logo"
-          :height="appBarLogoSize"
-          :src="require('@/assets/svg/logo.svg')"
-        >
+        <v-row no-gutters class="text-center">
+          <v-col cols="12">
+            <img
+              alt="Playarden Prep Online Logo"
+              :height="appBarLogoSize"
+              :src="require('@/assets/svg/logo.svg')"
+            >
+          </v-col>
 
-        <underlined-title text="Virtual Preschool!" :font-size="appBarTitleSize" />
+          <v-col cols="12" class="px-12 px-sm-0">
+            <underlined-title text="Virtual Preschool!" :font-size="appBarTitleSize" />
+          </v-col>
 
-        <div class="text-body-1 text-md-h6">
-          We are excited for a new day full of learning.
-        </div>
+          <v-col>
+            <div class="text-body-1 text-md-h6">
+              We are excited for a new day full of learning.
+            </div>
+          </v-col>
+        </v-row>
       </v-col>
 
       <v-col md="3" order="3" class="d-none d-md-flex justify-end align-center">
@@ -120,8 +128,8 @@ export default defineComponent({
     const vuetify = useVuetifyHelper()
     const isMobile = computed(() => vuetify.breakpoint.mobile)
 
-    const appBarHeight = computed(() => isMobile.value ? '200px' : '175px')
-    const appBarTitleSize = computed(() => isMobile.value ? '32px' : '60px')
+    const appBarHeight = computed(() => isMobile.value ? '250px' : '175px')
+    const appBarTitleSize = computed(() => isMobile.value ? '28px' : '60px')
     const appBarLogoSize = computed(() => isMobile.value ? '25px' : '45px')
 
     const store = useStore<TypedStore>()

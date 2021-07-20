@@ -1,11 +1,11 @@
 <template>
   <v-main>
     <v-row align-content="center" justify="center" class="virtual-preschool">
-      <v-col v-for="section in sections" :key="section.title" cols="12" md="4" class="section">
+      <v-col v-for="section in sections" :key="section.title" cols="12" lg="4" class="section">
         <v-img
           :src="section.imageUrl"
           gradient="rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)"
-          contain
+          cover
           tile
         >
           <div class="section-content">
@@ -25,10 +25,12 @@
 
             <!-- Bubble Text -->
             <div class="section-bubble-text">
-              {{ section.message }}
-              <v-icon class="white--text" size="20" @click.stop="handleAudioPlay(section.audio)">
-                mdi-volume-high
-              </v-icon>
+              <span>
+                {{ section.message }}
+                <v-icon class="white--text" size="22" @click.stop="handleAudioPlay(section.audio)">
+                  mdi-volume-high
+                </v-icon>
+              </span>
             </div>
           </div>
 
@@ -127,6 +129,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .virtual-preschool {
   max-width: 1500px;
+  margin-top: -30px !important;
   margin: auto;
 }
 
@@ -141,6 +144,7 @@ export default defineComponent({
 
     &:hover {
       opacity: 1;
+      background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25));
     }
   }
 
@@ -148,23 +152,25 @@ export default defineComponent({
     color: white;
     font-weight: bold;
     text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    font-size: 20px;
 
     height: 100px;
     width: 55%;
     position: absolute;
-    top: 10%;
+    top: 14%;
     left: 15%;
   }
 
   &-bubble {
     width: 75%;
     position: absolute;
-    top: 15px;
-    left: 30px;
+    height: 30%;
+    top: 10%;
+    left: 8%;
   }
 
   &-lady {
-    height: 60%;
+    height: 55%;
     position: absolute;
     right: 0;
     bottom: 0;
@@ -172,7 +178,7 @@ export default defineComponent({
 
   &-start-playing {
     cursor: pointer;
-    height: 35%;
+    height: 30%;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -204,12 +210,50 @@ export default defineComponent({
   }
 }
 
-@media (max-width: $breakpoint-sm) {
+@media (max-width: $breakpoint-md) {
+  .virtual-preschool {
+    margin-top: 0px !important;
+  }
+
   .section {
     padding: 12px;
 
     &-content {
       opacity: 1;
+    }
+
+    &-bubble-text {
+    }
+  }
+}
+
+@media (max-width: $breakpoint-md) {
+  .virtual-preschool {
+    margin-top: 0px !important;
+  }
+
+  .section {
+    padding: 12px;
+
+    &-content {
+      opacity: 1;
+    }
+  }
+}
+
+@media (min-width: $breakpoint-xs) and (max-width: $breakpoint-md) {
+  .section {
+    &-bubble-text {
+      font-size: 28px;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-xs) {
+  .section {
+    &-bubble-text {
+      top: 15%;
+      font-size: 14px;
     }
   }
 }
