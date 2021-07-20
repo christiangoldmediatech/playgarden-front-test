@@ -109,6 +109,16 @@
               <template v-slot:[`item.actions.prepend`]="{ item }">
                 <nuxt-link
                   :to="{
+                    name: 'admin-curriculum-management-worksheet',
+                    params: { lessonId: item.id }
+                  }"
+                >
+                  <v-icon color="#85929E" dense>
+                    mdi-file-image
+                  </v-icon>
+                </nuxt-link>
+                <nuxt-link
+                  :to="{
                     name: 'admin-curriculum-management-lessonId-preview',
                     params: { lessonId: item.id }
                   }"
@@ -195,7 +205,7 @@ export default {
         align: 'right',
         sortable: false,
         value: 'actions',
-        width: 150
+        width: 175
       }
     ],
     levels: [
