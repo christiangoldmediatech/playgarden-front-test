@@ -25,10 +25,12 @@
 
             <!-- Bubble Text -->
             <div class="section-bubble-text">
-              {{ section.message }}
-              <v-icon class="white--text" size="22" @click.stop="handleAudioPlay(section.audio)">
-                mdi-volume-high
-              </v-icon>
+              <span>
+                {{ section.message }}
+                <v-icon class="white--text" size="22" @click.stop="handleAudioPlay(section.audio)">
+                  mdi-volume-high
+                </v-icon>
+              </span>
             </div>
           </div>
 
@@ -250,6 +252,7 @@ export default defineComponent({
 @media (max-width: $breakpoint-xs) {
   .section {
     &-bubble-text {
+      top: 15%;
       font-size: 14px;
     }
   }
