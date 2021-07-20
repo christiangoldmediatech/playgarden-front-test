@@ -18,6 +18,8 @@ export const useWorksheetsCategories = () => {
     }
   }
 
+  console.log('lesson', lesson)
+
   return {
     lesson,
     categoriesWorksheet,

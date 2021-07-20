@@ -1,12 +1,18 @@
 <template>
   <v-container>
     <v-row>
-      upload worksheets
-      <portfolio-carousel
-        v-for="category in categoriesWorksheet"
-        :key="`portfolio-category-${category.id}`"
-        v-bind="{ category }"
-      />
+      <v-col cols="12">
+        <h3 v-if="lesson">
+          {{ `${lesson.name} - Day ${lesson.day}` }}
+        </h3>
+      </v-col>
+      <v-col cols="12">
+        <portfolio-carousel
+          v-for="category in categoriesWorksheet"
+          :key="`portfolio-category-${category.id}`"
+          v-bind="{ category }"
+        />
+      </v-col>
     </v-row>
   </v-container>
 </template>
@@ -36,6 +42,7 @@ export default defineComponent({
     })
 
     return {
+      lesson,
       categoriesWorksheet
     }
   }
