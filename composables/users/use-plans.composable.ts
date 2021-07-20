@@ -11,10 +11,14 @@ export const usePlans = () => {
   const getPlans = async () => {
     plans.value = await axios.$get('/plans')
   }
+
   plansResponse.value = plans.value.map(plan => ({
     text: plan.name,
     value: plan.id
   }))
+
+  console.log('plans--', plans)
+  console.log('plansResponse--', plansResponse)
 
   return {
     plans,

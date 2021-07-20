@@ -110,7 +110,7 @@
 <script lang="ts">
 
 import { defineComponent, computed, onMounted } from '@nuxtjs/composition-api'
-import { useUsers } from '@/composables/users'
+import { usePlans } from '@/composables/users'
 
 export default defineComponent({
   name: 'ParentEditForm',
@@ -135,7 +135,7 @@ export default defineComponent({
 
   setup () {
     computed(async () => await getPlans())
-    const { plansResponse, getPlans } = useUsers()
+    const { plansResponse, getPlans } = usePlans()
 
     onMounted(async () => {
       await getPlans()
