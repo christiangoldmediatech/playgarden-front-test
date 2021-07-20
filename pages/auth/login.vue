@@ -175,7 +175,7 @@ export default {
         if (this.$route.query.redirect) {
           await this.$router.push(decodeURIComponent(this.$route.query.redirect))
         } else {
-          await this.$router.push({ name: 'app-dashboard' })
+          await this.$router.push({ name: 'app-virtual-preschool' })
         }
       } catch (e) {
         this.loadingDataSocial = false
@@ -222,7 +222,7 @@ export default {
         } else if (this.$route.query.redirect) {
           await this.$router.push(decodeURIComponent(this.$route.query.redirect))
         } else {
-          await this.$router.push({ name: 'app-dashboard' })
+          await this.$router.push({ name: 'app-virtual-preschool' })
         }
       } catch (error) {
         this.errorMessage = 'Sorry! Wrong email or password'

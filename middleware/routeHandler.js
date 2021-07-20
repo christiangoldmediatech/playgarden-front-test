@@ -10,9 +10,10 @@ export default async function ({ redirect, route, store, app, req }) {
     return
   }
 
+  let user = store.getters['auth/getUserInfo']
+
   const token = store.getters['auth/getAccessToken']
   const isUnauthenticatedRoute = !!unauthenticatedRoutes[route.name]
-  const user = store.getters['auth/getUserInfo']
   const isUserInStore = store.getters['auth/isUserLoggedIn']
 
   let isLoggedIn = await store.dispatch('auth/checkAuth', undefined, { root: true })
@@ -61,9 +62,7 @@ export default async function ({ redirect, route, store, app, req }) {
     await store.dispatch('auth/logout', { redirect, route: route.fullPath }, { root: true })
   }
 
-  /**
-   * ROLE REDIRECT
-   */
+  user = store.getters['auth/getUserInfo']
 
   const shouldRedirectUser =
     token &&
@@ -85,6 +84,10 @@ export default async function ({ redirect, route, store, app, req }) {
     return
   }
 
+  /**
+   * ROLE REDIRECT
+   */
+
   const isAppRoute = /^app-.*$/.test(route.name)
   const isAdminRoute = /^admin.*$/.test(route.name)
   const isAdminRole = get(user, 'role.section') === 'ADMIN'
@@ -95,7 +98,7 @@ export default async function ({ redirect, route, store, app, req }) {
       ? redirect({ name: 'admin-agenda' })
       : redirect({ name: 'admin-dashboard' })
   } else if ((isUnauthenticatedRoute || isAdminRoute) && isUserRole) {
-    return redirect({ name: 'app-dashboard' })
+    return redirect({ name: 'app-virtual-preschool' })
   }
 
   /**
@@ -115,13 +118,13 @@ export default async function ({ redirect, route, store, app, req }) {
    * EMAIL VERIFIED REDIRECT
    */
 
-  const shouldRedirectToDashboard =
+  const shouldRedirectToVirtualPreschool =
     user.id &&
     user.validatedDate &&
     route.name === 'auth-verify-email' &&
     !['auth-logout', 'jwt-recovery'].includes(route.name)
 
-  if (shouldRedirectToDashboard) {
-    return redirect({ name: 'app-dashboard' })
+  if (shouldRedirectToVirtualPreschool) {
+    return redirect({ name: 'app-virtual-preschool' })
   }
 }
