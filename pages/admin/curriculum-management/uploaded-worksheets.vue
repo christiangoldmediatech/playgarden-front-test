@@ -8,7 +8,7 @@
       </v-col>
       <v-col cols="12">
         <portfolio-carousel
-          v-for="category in categoriesWorksheet"
+          v-for="category in categories"
           :key="`portfolio-category-${category.id}`"
           v-bind="{ category }"
         />
@@ -18,9 +18,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useRoute, computed, onMounted } from '@nuxtjs/composition-api'
+import { defineComponent, ref, useRoute, computed, onMounted, watch } from '@nuxtjs/composition-api'
 import PortfolioCarousel from '@/components/app/student-cubby/PortfolioCarousel.vue'
 import { useWorksheetsCategories } from '@/composables/worksheets'
+import { useSnotifyHelper } from '@/composables'
+import { OfflineWorksheet } from '@/models'
+
 export default defineComponent({
   name: 'UploadedWorksheets',
 
@@ -32,18 +35,42 @@ export default defineComponent({
 
   setup () {
     const route = useRoute()
+    const snotify = useSnotifyHelper()
     const lessonId = computed(() => Number(route.value.query.lessonId))
-    computed(async () => await getLessonById(lessonId.value))
+    const uploadedWorksheets = ref<OfflineWorksheet[]>([])
 
-    const { lesson, getLessonById, categoriesWorksheet } = useWorksheetsCategories()
+    const { lesson, getUploadedByLesson, getLessonById } = useWorksheetsCategories()
+
+    const categories = computed(() => {
+      return uploadedWorksheets.value.filter(({ worksheetUploads }) => worksheetUploads.length > 0)
+    })
+
+    watch(lessonId, (val) => {
+      if (val) {
+        refresh()
+      }
+    })
+
+    const refresh = async () => {
+      if (!lessonId.value) {
+        return
+      }
+
+      try {
+        uploadedWorksheets.value = await getUploadedByLesson(lessonId.value)
+      } catch (error) {
+        snotify.error('Sorry! There was an error loading your progress.')
+      }
+    }
 
     onMounted(async () => {
+      refresh()
       await getLessonById(lessonId.value)
     })
 
     return {
       lesson,
-      categoriesWorksheet
+      categories
     }
   }
 })
