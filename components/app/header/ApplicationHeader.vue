@@ -25,7 +25,7 @@
         <v-toolbar-title class="mx-3">
           <!-- <nuxt-link
             :to="{
-              name: 'app-dashboard',
+              name: 'app-virtual-preschool',
             }"
           > -->
           <v-img

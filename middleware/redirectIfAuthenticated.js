@@ -25,7 +25,7 @@ export default function ({ redirect, route, store }) {
     if (get(user, 'role.section') === 'ADMIN') {
       return (get(user, 'role.name') === 'SPECIALISTS') ? redirect({ name: 'admin-agenda' }) : redirect({ name: 'admin-dashboard' })
     } else {
-      return redirect({ name: 'app-dashboard' })
+      return redirect({ name: 'app-virtual-preschool' })
     }
   }
 }
