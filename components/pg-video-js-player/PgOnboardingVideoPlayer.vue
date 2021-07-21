@@ -32,9 +32,9 @@
           color="accent"
           :class="['play-button-icon', { 'play-button-icon-scaled': hover }]"
           :small="$vuetify.breakpoint.xs"
-          @click.stop="goToLessons"
+          @click.stop="goToVirtualPreschool"
         >
-          GO TO LESSONS
+          START LEARNING
         </v-btn>
       </v-hover>
 
@@ -110,11 +110,11 @@ export default {
       this.show = true
     },
 
-    async goToLessons () {
+    async goToVirtualPreschool () {
       try {
         await this.updateAuthOnboarding()
 
-        this.$router.push({ name: 'app-dashboard' })
+        this.$router.push({ name: 'app-virtual-preschool' })
       } catch (e) {
       } finally {
         this.finishing = false

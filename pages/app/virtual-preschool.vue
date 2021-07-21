@@ -252,7 +252,6 @@ export default defineComponent({
 @media (max-width: $breakpoint-xs) {
   .section {
     &-bubble-text {
-      top: 15%;
       font-size: 14px;
     }
   }
