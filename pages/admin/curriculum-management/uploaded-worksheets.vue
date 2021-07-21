@@ -1,18 +1,20 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="12">
-        <h3 v-if="lesson">
-          {{ `${lesson.name} - Day ${lesson.day}` }}
-        </h3>
-      </v-col>
-      <v-col cols="12">
-        <portfolio-carousel
-          v-for="category in categories"
-          :key="`portfolio-category-${category.id}`"
-          v-bind="{ category }"
-        />
-      </v-col>
+      <v-card width="100%">
+        <v-col cols="12">
+          <h3 v-if="lesson">
+            {{ `${lesson.name} - Day ${lesson.day}` }}
+          </h3>
+        </v-col>
+        <v-col cols="12">
+          <portfolio-carousel
+            v-for="category in categories"
+            :key="`portfolio-category-${category.id}`"
+            v-bind="{ category }"
+          />
+        </v-col>
+      </v-card>
     </v-row>
   </v-container>
 </template>
