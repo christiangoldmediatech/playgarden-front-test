@@ -8,6 +8,11 @@ export default {
       if (!this.isUserInSignupProcess && this.isUserLoggedIn) {
         const list = [
           {
+            title: 'Home',
+            to: { name: 'app-virtual-preschool' },
+            exact: true
+          },
+          {
             title: 'Daily Lessons',
             to: { name: 'app-dashboard' },
             exact: false
