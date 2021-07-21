@@ -2,7 +2,7 @@
   <v-app>
     <template v-if="showContent">
       <!-- TRIAL EXPIRING RIBBON -->
-      <trial-is-expiring v-if="getTrialPeriodEnd" />
+      <trial-is-expiring v-if="isTrialExpiringRibbonVisible" />
 
       <coming-soon-player />
 
@@ -27,7 +27,7 @@
       <notification-signup-modal />
 
       <!-- CONTENT -->
-      <v-main v-if="!fullWidth">
+      <v-main v-if="!isFullWidth">
         <v-container class="pa-md-3 pa-0" fill-height :style="contentStyle">
           <nuxt />
         </v-container>
@@ -56,7 +56,8 @@
 </template>
 
 <script>
-import { mapGetters, mapState, mapActions } from 'vuex'
+import { defineComponent, useRoute, useStore } from '@nuxtjs/composition-api'
+import { computed, onMounted, ref, watch } from '@vue/composition-api'
 
 import ApplicationHeader from '@/components/app/header/ApplicationHeader'
 import AppNavigation from '@/components/app/header/AppNavigation'
@@ -69,11 +70,10 @@ import TrialExpiredModal from '@/components/app/payment/TrialExpiredModal.vue'
 import TrialIsExpiring from '@/components/app/header/TrialIsExpiring.vue'
 import ContactUsFormModal from '@/components/forms/contact/ContactUsFormModal.vue'
 import NotificationSignupModal from '@/components/app/notifications/NotificationSignupModal'
-import { lte } from 'lodash'
 
-export default {
-  name: 'Default',
+import { useAuth, useLayout, useNotification, useVuetifyHelper } from '@/composables'
 
+export default defineComponent({
   middleware: ['utmHandler'],
 
   components: {
@@ -90,26 +90,63 @@ export default {
     NotificationSignupModal
   },
 
-  data: () => ({
-    isComingSoonDialogOpen: false,
-    verifyEmailToast: null
-  }),
+  setup () {
+    const isComingSoonDialogOpen = ref(false)
+
+    const store = useStore()
+    const route = useRoute()
+    const vuetify = useVuetifyHelper()
+
+    const {
+      isTrialExpiringRibbonVisible,
+      expiringRibbonHeightDesktop,
+      expiringRibbonHeightMobile,
+      checkIfShouldSendShippingAddressNotification,
+      checkIfShouldShowTrialExpiringRibbon,
+      checkIfShouldShowTrialExpiredModal
+    } = useNotification({ store })
+
+    const { showContent, setShowContent, isFullWidth } = useLayout({ store, route, vuetify })
+
+    const { isUserLoggedIn, isUserEmailVerified } = useAuth({ store })
+
+    const routeName = computed(() => route.value.name)
+
+    watch(isUserLoggedIn, async () => {
+      if (routeName.value !== 'shared-slug') {
+        await checkIfShouldSendShippingAddressNotification()
+        await checkIfShouldShowTrialExpiredModal()
+        await checkIfShouldShowTrialExpiringRibbon()
+      }
+    }, { immediate: true })
+
+    watch(routeName, async () => {
+      if (routeName.value !== 'app-payment-plan') {
+        await checkIfShouldShowTrialExpiredModal()
+      }
+    })
+
+    onMounted(() => {
+      setShowContent(true)
+    })
+
+    const isMobile = computed(() => vuetify.breakpoint.mobile)
+
+    return {
+      isComingSoonDialogOpen,
+      isTrialExpiringRibbonVisible,
+      expiringRibbonHeightDesktop,
+      expiringRibbonHeightMobile,
+      showContent,
+      setShowContent,
+      isUserLoggedIn,
+      isUserEmailVerified,
+      isFullWidth,
+      isMobile
+    }
+  },
 
   computed: {
-    ...mapGetters('auth', ['isUserLoggedIn', 'isUserEmailUnverified']),
-
-    ...mapState(['fullWidthPages', 'showContent']),
-
-    ...mapState('notifications', ['isTrialExpiringRibbonVisible', 'expiringRibbonHeightDesktop', 'expiringRibbonHeightMobile']),
-
-    fullWidth () {
-      return this.fullWidthPages[this.$route.name]
-    },
-
-    isMobile () {
-      return this.$vuetify.breakpoint.mobile
-    },
-
     topDistanceInPixels () {
       return this.isMobile ? this.expiringRibbonHeightMobile : this.expiringRibbonHeightDesktop
     },
@@ -124,79 +161,9 @@ export default {
       return {
         'margin-top': this.isTrialExpiringRibbonVisible ? `${this.topDistanceInPixels}px !important` : '0px'
       }
-    },
-
-    getTrialPeriodEnd () {
-      let show = false
-      const currentPath = this.$route.path
-      if (currentPath !== '/app/payment/plan') {
-        show = this.checkIfShouldShowTrialExpiredModal()
-      }
-      return show
-    }
-  },
-
-  watch: {
-    isUserLoggedIn: {
-      immediate: true,
-      async handler (v) {
-        if (v === true && this.$route.name !== 'shared-slug') {
-          await this.checkIfShouldSendShippingAddressNotification()
-          await this.checkIfShouldShowTrialExpiredModal()
-          await this.checkIfShouldShowTrialExpiringRibbon()
-        }
-      }
-    },
-    '$route.name' (v) {
-      if (v === 'auth-verify-email' && this.verifyEmailToast) {
-        this.$snotify.remove(this.verifyEmailToast.id)
-        this.verifyEmailToast = null
-      } else if (!this.verifyEmailToast) {
-        // Commented requested by Natalia
-        // this.showVerifyEmailToast()
-      }
-    }
-  },
-
-  mounted () {
-    // Commented requested by Natalia
-    // this.showVerifyEmailToast()
-
-    this.$store.commit('SET_SHOW_CONTENT', true)
-  },
-
-  methods: {
-    ...mapActions('notifications', [
-      'checkIfShouldSendShippingAddressNotification',
-      'checkIfShouldShowTrialExpiredModal',
-      'checkIfShouldShowTrialExpiringRibbon'
-    ]),
-
-    showVerifyEmailToast () {
-      if (
-        this.isUserEmailUnverified &&
-        this.isUserLoggedIn &&
-        this.$route.name !== 'auth-verify-email' &&
-        !this.verifyEmailToast
-      ) {
-        this.verifyEmailToast = this.$snotify.warning(
-          'Please verify your account',
-          'Warning',
-          {
-            buttons: [
-              {
-                text: 'Verify',
-                action: () => this.$router.push({ name: 'auth-verify-email' })
-              }
-            ],
-            closeOnClick: false,
-            timeout: 0
-          }
-        )
-      }
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
