@@ -112,14 +112,6 @@ export default defineComponent({
 
     const routeName = computed(() => route.value.name)
 
-    watch(isUserLoggedIn, async () => {
-      if (routeName.value !== 'shared-slug') {
-        await checkIfShouldSendShippingAddressNotification()
-        await checkIfShouldShowTrialExpiredModal()
-        await checkIfShouldShowTrialExpiringRibbon()
-      }
-    }, { immediate: true })
-
     watch(routeName, async () => {
       if (routeName.value !== 'app-payment-plan') {
         await checkIfShouldShowTrialExpiredModal()
@@ -127,6 +119,14 @@ export default defineComponent({
     })
 
     onMounted(() => {
+      watch(isUserLoggedIn, async () => {
+        if (routeName.value !== 'shared-slug') {
+          await checkIfShouldSendShippingAddressNotification()
+          await checkIfShouldShowTrialExpiredModal()
+          await checkIfShouldShowTrialExpiringRibbon()
+        }
+      }, { immediate: true })
+
       setShowContent(true)
     })
 
