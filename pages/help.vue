@@ -85,6 +85,7 @@
                     :color="
                       category.id === categorySelect.id ? 'primary' : 'white'
                     "
+                    :data-test-id="`help-section-${category.name}`"
                     @click="categorySelect = category"
                   >
                     <v-card-text class="pa-0 white">
@@ -109,6 +110,7 @@
               <v-row class="mt-4 mb-14 mt-md-12 px-4 px-md-12" justify="center">
                 <underlined-title
                   class="text-h5 text-md-h3"
+                  :data-test-id="`help-title-${categorySelect.name}`"
                   :text="categorySelect.name"
                 />
 
@@ -157,7 +159,7 @@
                 <validation-observer v-slot="{ invalid, passes, reset }">
                   <v-form
                     :readonly="sending"
-                    @submit.prevent="passes(onSubmit(reset))"
+                    @submit.prevent="passes(() => onSubmit(reset))"
                   >
                     <div class="text-center">
                       <underlined-title
@@ -186,6 +188,7 @@
                             label="Name"
                             :loading="sending"
                             solo
+                            data-test-id="help-form-name"
                           />
                         </validation-provider>
                       </v-col>
@@ -205,6 +208,7 @@
                             label="E-mail"
                             :loading="sending"
                             solo
+                            data-test-id="help-form-email"
                           />
                         </validation-provider>
                       </v-col>
@@ -225,6 +229,7 @@
                         label="How can we help you?"
                         :loading="sending"
                         solo
+                        data-test-id="help-form-select"
                       />
                     </validation-provider>
 
@@ -243,6 +248,7 @@
                         :loading="sending"
                         maxlength="20"
                         solo
+                        data-test-id="help-form-subject"
                       />
                     </validation-provider>
 
@@ -260,6 +266,7 @@
                         label="How can we help you?"
                         :loading="sending"
                         solo
+                        data-test-id="help-form-textarea"
                       />
                     </validation-provider>
 
@@ -273,6 +280,7 @@
                         :width="isMobile ? undefined : 400"
                         :block="isMobile"
                         x-large
+                        data-test-id="help-form-submit"
                       >
                         Submit
                       </v-btn>
