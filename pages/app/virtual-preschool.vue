@@ -8,14 +8,16 @@
           cover
           tile
         >
-          <div class="section-content">
+          <div class="section-content" @click="$router.push({ name: section.routeName })">
             <!-- Start Playing Button -->
-            <img
+            <v-img
               class="section-start-playing"
-              src="@/assets/png/virtual-preschool/Start Playing.png"
+              :src="require('@/assets/png/virtual-preschool/Button.png')"
+              contain
               :data-test-id="`vp-section-${section.title}`"
-              @click="$router.push({ name: section.routeName })"
             >
+              <span>Go to {{ section.title }}</span>
+            </v-img>
 
             <!-- Lady -->
             <img class="section-lady" :src="section.teacherUrl">
@@ -141,6 +143,7 @@ export default defineComponent({
     width: 100%;
     height: 100%;
     opacity: 0;
+    cursor: pointer;
 
     &:hover {
       opacity: 1;
@@ -177,12 +180,24 @@ export default defineComponent({
   }
 
   &-start-playing {
-    cursor: pointer;
     height: 30%;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+
+    & span {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 14px;
+      width: 75px;
+      color: white;
+      display: flex;
+      justify-content: center;
+      text-align: center;
+    }
   }
 
   &-btn {
@@ -198,7 +213,7 @@ export default defineComponent({
 
     & div {
       color: white;
-      font-size: 18px;
+      font-size: 24px;
       font-weight: bold;
       text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
@@ -220,9 +235,6 @@ export default defineComponent({
 
     &-content {
       opacity: 1;
-    }
-
-    &-bubble-text {
     }
   }
 }
@@ -246,6 +258,13 @@ export default defineComponent({
     &-bubble-text {
       font-size: 28px;
     }
+
+    &-start-playing {
+      & span {
+      font-size: 20px;
+      width: 75px;
+      }
+    }
   }
 }
 
@@ -253,6 +272,13 @@ export default defineComponent({
   .section {
     &-bubble-text {
       font-size: 14px;
+    }
+
+    &-start-playing {
+      & span {
+        font-size: 10px;
+        width: 55px;
+      }
     }
   }
 }
