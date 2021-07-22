@@ -11,6 +11,7 @@
           <portfolio-carousel
             v-for="category in categories"
             :key="`portfolio-category-${category.id}`"
+            :show-child="true"
             v-bind="{ category }"
           />
         </v-col>

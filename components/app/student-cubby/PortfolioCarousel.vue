@@ -26,6 +26,7 @@
             entity-type="WORKSHEET"
             :image="upload.url"
             :lesson="upload.lesson"
+            :child="getChild(upload)"
           />
         </v-col>
       </v-row>
@@ -118,6 +119,10 @@ export default {
   methods: {
     moveCarousel (direction) {
       this.page += direction
+    },
+
+    getChild (upload) {
+      return (upload.children) ? upload.children : null
     }
   }
 }

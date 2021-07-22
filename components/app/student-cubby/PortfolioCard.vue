@@ -36,6 +36,15 @@
                 {{ `Day ${lesson.day}` }}
               </span>
             </div>
+
+            <div v-if="child" class="subheading">
+              <span
+                class="d-block text-center"
+                :class="{ 'white--text': displayMode }"
+              >
+                {{ child.firstName }}
+              </span>
+            </div>
           </div>
         </v-col>
       </v-row>
