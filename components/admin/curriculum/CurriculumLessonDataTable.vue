@@ -108,6 +108,7 @@
 
               <template v-slot:[`item.actions.prepend`]="{ item }">
                 <nuxt-link
+                  title="Worksheets"
                   :to="{
                     name: 'admin-curriculum-management-uploaded-worksheets',
                     query: { lessonId: item.id }
@@ -128,6 +129,7 @@
                   </v-icon>
                 </nuxt-link>
                 <nuxt-link
+                  title="Grades"
                   :to="{
                     name: 'admin-lesson-grades-editor',
                     query: { lessonId: item.id }
@@ -138,6 +140,7 @@
                   </v-icon>
                 </nuxt-link>
                 <nuxt-link
+                  title="Analytics"
                   :to="{
                     name: 'admin-lessons-analytics',
                     query: { lessonId: item.id }
