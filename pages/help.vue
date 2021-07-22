@@ -288,9 +288,12 @@
   </v-main>
 </template>
 
-<script>
-import { get } from 'lodash'
-import { mapActions, mapGetters } from 'vuex'
+<script lang="ts">
+import { defineComponent, useMeta, useStore } from '@nuxtjs/composition-api'
+import { computed, onMounted, ref } from '@vue/composition-api'
+
+import { useAuth, useFAQ, useFAQCategories, useHelp, useSnotifyHelper, useVuetifyHelper } from '@/composables'
+import { FAQ, FAQCategory, TypedStore } from '@/models'
 
 const EMAIL_TOPICS = {
   ACCOUNT: 'ACCOUNT',
@@ -302,89 +305,78 @@ const EMAIL_TOPICS = {
   OTHER: 'OTHER'
 }
 
-export default {
+export default defineComponent({
   name: 'Help',
 
-  data: () => ({
-    loading: true,
-    sending: false,
-    categorySelect: null,
-    categories: [],
-    faqs: {},
-    help: {
+  setup () {
+    useMeta({ title: 'Help' })
+
+    const store = useStore<TypedStore>()
+    const vuetify = useVuetifyHelper()
+    const { isUserLoggedIn } = useAuth({ store })
+
+    const loading = ref(true)
+    const sending = ref(false)
+    const categorySelect = ref<FAQCategory | null>(null)
+    const categories = ref<FAQCategory[]>([])
+    const faqs = ref<Record<number, FAQ[]>>({})
+    const help = ref({
       name: null,
       email: null,
-      issueType: '',
+      issueType: null as string | null,
       subject: null,
       description: null
-    }
-  }),
+    })
 
-  /* setup () {
-    const store = useStore()
-    const isLogin = computed(() => !!((store.getters['auth/getUserInfo'].id)))
-    return {
-      isLogin
-    }
-  }, */
+    const emailTopics = computed(() => Object.values(EMAIL_TOPICS))
+    const isMobile = computed(() => vuetify.breakpoint.mobile)
 
-  computed: {
-    ...mapGetters('auth', {
-      getUserInfo: 'getUserInfo'
-    }),
-    emailTopics () {
-      return Object.values(EMAIL_TOPICS)
-    },
-    isMobile () {
-      return this.$vuetify.breakpoint.mobile
-    },
-    isLogin () {
-      return !!((this.getUserInfo.id))
-    }
-  },
+    const { getFAQs } = useFAQ()
+    const { getFAQsCategories } = useFAQCategories()
 
-  async created () {
-    try {
-      const categories = await this.getFAQsCategories()
-      this.categorySelect = get(categories, '0', null)
-
-      const _faqs = {}
-      const faqs = await this.getFAQs()
-
-      faqs.map((faq) => {
-        const id = get(faq, 'faqsCategory.id')
-
-        if (id) {
-          if (!_faqs[id]) {
-            _faqs[id] = []
-          }
-          _faqs[id].push(faq)
-        }
-      })
-
-      this.faqs = _faqs
-      this.categories = categories
-    } catch (e) {
-    } finally {
-      this.loading = false
-    }
-  },
-
-  methods: {
-    ...mapActions('faqs', ['getFAQs']),
-
-    ...mapActions('faqs-categories', ['getFAQsCategories']),
-    ...mapActions('help', ['sendHelpEmail']),
-
-    async onSubmit (reset) {
+    onMounted(async () => {
       try {
-        await this.sendHelpEmail({
-          ...this.help
+        loading.value = true
+
+        const cats = await getFAQsCategories()
+        categorySelect.value = cats?.[0] || null
+
+        const faqsList = await getFAQs()
+        const _faqs = {} as Record<number, FAQ[]>
+
+        faqsList.map((faq) => {
+          const id = faq.faqsCategory.id
+
+          if (id) {
+            if (!_faqs[id]) {
+              _faqs[id] = []
+            }
+            _faqs[id].push(faq)
+          }
         })
-        this.$snotify.success(
+
+        faqs.value = _faqs
+        categories.value = cats
+      } catch (error) {
+
+      } finally {
+        loading.value = false
+      }
+    })
+
+    const { sendHelpEmail } = useHelp()
+    const snotify = useSnotifyHelper()
+
+    const onSubmit = async (reset: () => void) => {
+      try {
+        await sendHelpEmail({
+          ...help.value
+        })
+
+        snotify.success(
           'Email sent! We will reach out to you as soon as we can!'
         )
-        this.help = {
+        help.value = {
           name: null,
           email: null,
           issueType: EMAIL_TOPICS.ACCOUNT,
@@ -392,19 +384,30 @@ export default {
           description: null
         }
       } catch (error) {
-        this.$snotify.error(
+        snotify.error(
           'There was a problem sending the email, please try again.'
         )
       } finally {
         reset()
       }
     }
+
+    return {
+      loading,
+      sending,
+      categorySelect,
+      categories,
+      faqs,
+      help,
+      emailTopics,
+      isMobile,
+      isLogin: isUserLoggedIn,
+      onSubmit
+    }
   },
 
-  head: () => ({
-    title: 'Help'
-  })
-}
+  head: {}
+})
 </script>
 
 <style lang="scss" scoped>
