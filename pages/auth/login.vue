@@ -262,6 +262,7 @@ export default {
   align-items: center;
 }
 .login-form {
+  margin: auto;
   max-width: 500px;
 }
 .error-message {
@@ -280,10 +281,6 @@ export default {
 @media (max-width: $breakpoint-sm) {
   .image {
     max-height: 250px;
-  }
-
-  .login-form {
-    margin: auto;
   }
 }
 </style>
