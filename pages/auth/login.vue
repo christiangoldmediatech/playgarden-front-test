@@ -1,89 +1,98 @@
 <template>
-  <v-row align="center" justify="center" no-gutters class="py-0 py-md-16">
-    <v-col cols="11" md="6">
-      <v-row>
-        <v-btn
-          class="text-none mt-n10 pl-md-n16 go-back"
-          color="accent"
-          href="https://playgardenonline.com/"
-          text
-          exact
-          :absolute="$vuetify.breakpoint.mdAndUp"
+  <v-container>
+    <v-row align="center" justify="center" no-gutters class="py-0 py-md-16">
+      <v-col cols="12" md="6">
+        <!-- BACK BUTTON -->
+        <v-row>
+          <v-btn
+            class="text-none mt-n10 pl-md-n16 go-back"
+            color="accent"
+            href="https://playgardenonline.com/"
+            text
+            exact
+            :absolute="$vuetify.breakpoint.mdAndUp"
+          >
+            <v-icon class="mr-2" small left color="accent">
+              mdi-less-than
+            </v-icon>
+            Go Back To Homepage
+          </v-btn>
+        </v-row>
+
+        <!-- CHILD IMAGE -->
+        <div
+          class="image"
         >
-          <v-icon class="mr-2" small left color="accent">
-            mdi-less-than
-          </v-icon>
-          Go Back To Homepage
-        </v-btn>
-      </v-row>
-      <div
-        class="image mt-14 mt-md-0"
-        :class="{ mobile: $vuetify.breakpoint.smAndDown }"
-      >
-        <img alt="Smiling Girl Picture" src="@/assets/jpg/girl-smiling.jpg">
-      </div>
-    </v-col>
-
-    <v-col cols="12" md="6">
-      <div class="form mx-auto px-4">
-        <div class="my-5 mb-md-2 mt-md-0 text-center text-md-left">
-          <underlined-title text="Welcome back!" />
+          <v-img contain alt="Smiling Girl Picture" :src="require('@/assets/jpg/girl-smiling.jpg')" />
         </div>
-        <pg-loading v-if="loadingDataSocial" />
-        <login-form v-else :loading="loading" @click:submit="onSubmit" />
+      </v-col>
 
-        <!-- or -->
-        <v-row no-gutters class="my-6">
-          <v-col class="hr-line">
-            <v-divider />
-          </v-col>
+      <v-col cols="12" md="6" class="px-0 px-md-4">
+        <div class="login-form">
+          <!-- FORM TITLE -->
+          <div class="my-5 mb-md-2 mt-md-0 text-center text-md-left">
+            <underlined-title text="Welcome back!" />
+          </div>
 
-          <v-col class="text-center">
-            or
-          </v-col>
+          <!-- FORM LOADING -->
+          <pg-loading v-if="loadingDataSocial" />
 
-          <v-col class="hr-line">
-            <v-divider />
-          </v-col>
-        </v-row>
+          <!-- LOGIN FORM -->
+          <login-form v-else :loading="loading" @click:submit="onSubmit" />
 
-        <!-- Social buttons -->
-        <v-row no-gutters>
-          <!-- FACEBOOK -->
-          <v-col class="mb-4 mb-md-0 pr-md-4" cols="12" md="6">
-            <v-btn block height="45" class="social-btn" @click="facebookSignIn">
-              <img
-                alt="Facebook"
-                class="mr-1"
-                src="@/assets/svg/facebook_icon.svg"
-              >
+          <!-- or -->
+          <v-row no-gutters class="my-6">
+            <v-col class="hr-line">
+              <v-divider />
+            </v-col>
 
-              <span class="spanSocialNetwork">Login with Facebook</span>
-            </v-btn>
-          </v-col>
+            <v-col class="text-center">
+              or
+            </v-col>
 
-          <!-- GOOGLE -->
-          <v-col class="mb-6 mb-md-0 pl-md-4" cols="12" md="6">
-            <v-btn block height="45" class="social-btn" @click="googleSignIn">
-              <img
-                alt="Google"
-                class="mr-1"
-                src="@/assets/svg/google_icon.svg"
-              >
+            <v-col class="hr-line">
+              <v-divider />
+            </v-col>
+          </v-row>
 
-              <span class="spanSocialNetwork">Login with Google</span>
-            </v-btn>
-          </v-col>
-        </v-row>
-      </div>
-    </v-col>
-  </v-row>
+          <!-- Social buttons -->
+          <v-row no-gutters>
+            <!-- FACEBOOK -->
+            <v-col class="mb-4 mb-md-0 pr-md-4" cols="12" md="6">
+              <v-btn block height="45" class="social-btn" @click="facebookSignIn">
+                <img
+                  alt="Facebook"
+                  class="mr-1"
+                  src="@/assets/svg/facebook_icon.svg"
+                >
+
+                <span class="spanSocialNetwork">Login with Facebook</span>
+              </v-btn>
+            </v-col>
+
+            <!-- GOOGLE -->
+            <v-col class="mb-6 mb-md-0 pl-md-4" cols="12" md="6">
+              <v-btn block height="45" class="social-btn" @click="googleSignIn">
+                <img
+                  alt="Google"
+                  class="mr-1"
+                  src="@/assets/svg/google_icon.svg"
+                >
+
+                <span class="spanSocialNetwork">Login with Google</span>
+              </v-btn>
+            </v-col>
+          </v-row>
+        </div>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
 
-import LoginForm from '@/components/forms/auth/LoginForm'
+import LoginForm from '@/components/forms/auth/LoginForm.vue'
 
 export default {
   name: 'Login',
@@ -241,24 +250,18 @@ export default {
 
 <style lang="scss" scoped>
 .image {
+  margin-top: 48px;
   max-height: 500px;
-  width: 100%;
   display: flex;
   justify-content: center;
   align-content: center;
-  img {
-    max-width: 90%;
-  }
-  &.mobile {
-    max-height: 250px;
-  }
 }
 .hr-line {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.form {
+.login-form {
   max-width: 500px;
 }
 .error-message {
@@ -267,5 +270,20 @@ export default {
 .go-back {
   top: 60px;
   left: 10px;
+}
+
+@media (max-width: $breakpoint-md) {
+  .image {
+    margin-top: 80px;
+  }
+}
+@media (max-width: $breakpoint-sm) {
+  .image {
+    max-height: 250px;
+  }
+
+  .login-form {
+    margin: auto;
+  }
 }
 </style>
