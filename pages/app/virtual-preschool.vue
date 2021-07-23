@@ -282,6 +282,12 @@ export default defineComponent({
         width: 55px;
       }
     }
+
+    &-btn {
+      & div {
+        font-size: 18px;
+      }
+    }
   }
 }
 </style>
