@@ -18,7 +18,7 @@
                 :loading="finishing"
                 @click="onFinish"
               >
-                GO TO LESSONS
+                START LEARNING
               </v-btn>
             </v-row>
           </v-row>
@@ -177,7 +177,7 @@ export default {
     },
 
     nextStep () {
-      this.$router.push({ name: 'app-dashboard' })
+      this.$router.push({ name: 'app-virtual-preschool' })
       // if (this.step < this.steps) {
       //   this.step++
       // }
@@ -190,7 +190,7 @@ export default {
         await this.updateAuthOnboarding()
         await this.checkIfShouldSendShippingAddressNotification()
 
-        this.$router.push({ name: 'app-dashboard' })
+        this.$router.push({ name: 'app-virtual-preschool' })
       } catch (e) {
       } finally {
         this.finishing = false

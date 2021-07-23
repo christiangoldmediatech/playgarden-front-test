@@ -12,6 +12,6 @@ export default function ({ redirect, route, store }) {
     route.name === 'auth-verify-email' &&
     !ignoreRoute[route.name]
   ) {
-    redirect({ name: 'app-dashboard' })
+    redirect({ name: 'app-virtual-preschool' })
   }
 }

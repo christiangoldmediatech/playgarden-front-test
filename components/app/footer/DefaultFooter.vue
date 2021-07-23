@@ -13,7 +13,7 @@
           <v-col cols="12" sm="6" md="4">
             <nuxt-link
               :to="{
-                name: 'app-dashboard',
+                name: 'app-virtual-preschool',
               }"
             >
               <v-img

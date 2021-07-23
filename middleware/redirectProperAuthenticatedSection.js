@@ -8,7 +8,7 @@ export default function ({ redirect, route, store }) {
     /^admin.*$/.test(route.name) &&
     get(user, 'role.section') === 'USERS'
   ) {
-    redirect({ name: 'app-dashboard' })
+    redirect({ name: 'app-virtual-preschool' })
   } else if (
     user.id &&
     /^app-.*$/.test(route.name) &&
@@ -17,7 +17,7 @@ export default function ({ redirect, route, store }) {
     if (get(user, 'role.name') === 'SPECIALISTS') {
       redirect({ name: 'admin-agenda' })
     } else {
-      redirect({ name: 'admin-dashboard' })
+      redirect({ name: 'admin-virtual-preschool' })
     }
   }
 }

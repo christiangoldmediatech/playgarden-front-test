@@ -98,7 +98,7 @@ export default {
       appendDrawer: [
         { title: 'Terms & Conditions', to: { name: 'terms-conditions' } },
         { title: 'Privacy Policy', to: { name: 'privacy-policy' } },
-        { title: 'Help', to: { name: 'app-dashboard' } }
+        { title: 'Help', to: { name: 'help' } }
       ]
     }
   },
