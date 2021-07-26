@@ -1,11 +1,44 @@
 <template>
   <v-container>
     <v-row>
-      <v-card width="100%">
+      <v-card v-if="categories.length === 0" width="100%">
+        <v-card-title>
+          <underlined-title class="text-h6 text-md-h5" text="There is not any uploaded worksheet" />
+
+          <v-spacer />
+
+          <v-btn
+            class="ml-3 text-none"
+            color="accent darken-1"
+            depressed
+            nuxt
+            small
+            @click="goToBack"
+          >
+            Back
+          </v-btn>
+        </v-card-title>
+      </v-card>
+      <v-row v-else class="mx-2" width="100%">
         <v-col cols="12">
-          <h3 v-if="lesson">
-            {{ `${lesson.name} - Day ${lesson.day}` }}
-          </h3>
+          <v-card v-if="lesson" width="100%">
+            <v-card-title>
+              <underlined-title class="text-h6 text-md-h5" :text="`${lesson.name} - Day ${lesson.day}`" />
+
+              <v-spacer />
+
+              <v-btn
+                class="ml-3 text-none"
+                color="accent darken-1"
+                depressed
+                nuxt
+                small
+                @click="goToBack"
+              >
+                Back
+              </v-btn>
+            </v-card-title>
+          </v-card>
         </v-col>
         <v-col v-if="loading" cols="12">
           <v-row v-for="n in 5" :key="n">
@@ -25,16 +58,18 @@
           </v-row>
         </v-col>
         <v-col v-else cols="12">
-          <portfolio-carousel
-            v-for="category in categories"
-            :key="`portfolio-category-${category.id}`"
-            :show-child="true"
-            v-bind="{ category }"
-          />
+          <v-card v-if="lesson" width="100%">
+            <portfolio-carousel
+              v-for="category in categories"
+              :key="`portfolio-category-${category.id}`"
+              :show-child="true"
+              v-bind="{ category }"
+            />
 
-          <portfolio-overlay :no-share="true" />
+            <portfolio-overlay :no-share="true" />
+          </v-card>
         </v-col>
-      </v-card>
+      </v-row>
     </v-row>
   </v-container>
 </template>
@@ -100,6 +135,11 @@ export default defineComponent({
       lesson,
       categories,
       loading
+    }
+  },
+  methods: {
+    goToBack () {
+      this.$router.go(-1)
     }
   }
 })
