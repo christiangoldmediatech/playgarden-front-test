@@ -277,6 +277,8 @@ export default defineComponent({
     }
 
     &-start-playing {
+      visibility: hidden;
+
       & span {
         font-size: 10px;
         width: 55px;
