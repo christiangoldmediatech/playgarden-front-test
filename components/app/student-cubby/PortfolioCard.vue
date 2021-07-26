@@ -55,7 +55,8 @@
         <img class="w-100" :src="image">
       </v-col>
 
-      <v-col class="shrink" cols="12" md="">
+      show: {{ noShare }}
+      <v-col v-if="!noShare" class="shrink" cols="12" md="">
         <pg-social-buttons
           class="mx-auto mx-md-0"
           entity-auto-resolve
@@ -90,6 +91,12 @@ export default {
     entityId: {
       type: [Number, String],
       default: ''
+    },
+
+    noShare: {
+      type: Boolean,
+      default: false,
+      required: false
     },
 
     entityType: {

@@ -14,6 +14,8 @@
             :show-child="true"
             v-bind="{ category }"
           />
+
+          <portfolio-overlay :no-share="true" />
         </v-col>
       </v-card>
     </v-row>
@@ -23,6 +25,7 @@
 <script lang="ts">
 import { defineComponent, ref, useRoute, computed, onMounted, watch } from '@nuxtjs/composition-api'
 import PortfolioCarousel from '@/components/app/student-cubby/PortfolioCarousel.vue'
+import PortfolioOverlay from '@/components/app/student-cubby/PortfolioOverlay.vue'
 import { useWorksheetsCategories } from '@/composables/worksheets'
 import { useSnotifyHelper } from '@/composables'
 import { OfflineWorksheet } from '@/models'
@@ -33,7 +36,8 @@ export default defineComponent({
   layout: 'admin',
 
   components: {
-    PortfolioCarousel
+    PortfolioCarousel,
+    PortfolioOverlay
   },
 
   setup () {
@@ -70,6 +74,7 @@ export default defineComponent({
       refresh()
       await getLessonById(lessonId.value)
     })
+    console.log('categories--', categories)
 
     return {
       lesson,

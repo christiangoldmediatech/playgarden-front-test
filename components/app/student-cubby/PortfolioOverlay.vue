@@ -27,7 +27,7 @@
 
             <portfolio-card
               v-if="overlay"
-              v-bind="{ child, entityId, entityType, image }"
+              v-bind="{ child, entityId, entityType, image, noShare }"
               display-mode
             />
           </v-col>
@@ -51,6 +51,11 @@ export default {
     child: {
       type: Object,
       default: () => {}
+    },
+    noShare: {
+      type: Boolean,
+      default: false,
+      required: false
     }
   },
 
