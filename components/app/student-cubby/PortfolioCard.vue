@@ -128,7 +128,7 @@ export default defineComponent({
 
     infoUser: {
       type: Boolean,
-      default: true,
+      default: false,
       required: false
     },
 

@@ -66,7 +66,7 @@
               v-bind="{ category }"
             />
 
-            <portfolio-overlay :no-share="true" />
+            <portfolio-overlay :no-share="true" :info-user="true" />
           </v-card>
         </v-col>
       </v-row>
