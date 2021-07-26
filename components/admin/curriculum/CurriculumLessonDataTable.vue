@@ -108,17 +108,6 @@
 
               <template v-slot:[`item.actions.prepend`]="{ item }">
                 <nuxt-link
-                  title="Worksheets"
-                  :to="{
-                    name: 'admin-curriculum-management-uploaded-worksheets',
-                    query: { lessonId: item.id }
-                  }"
-                >
-                  <v-icon color="#85929E" dense>
-                    mdi-file-image
-                  </v-icon>
-                </nuxt-link>
-                <nuxt-link
                   :to="{
                     name: 'admin-curriculum-management-lessonId-preview',
                     params: { lessonId: item.id }
@@ -148,6 +137,18 @@
                 >
                   <v-icon color="#997c55" dense>
                     mdi-chart-bar
+                  </v-icon>
+                </nuxt-link>
+
+                <nuxt-link
+                  title="Worksheets"
+                  :to="{
+                    name: 'admin-curriculum-management-uploaded-worksheets',
+                    query: { lessonId: item.id }
+                  }"
+                >
+                  <v-icon color="#85929E" dense>
+                    mdi-file-image
                   </v-icon>
                 </nuxt-link>
               </template>
