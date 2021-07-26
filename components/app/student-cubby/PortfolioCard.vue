@@ -77,17 +77,18 @@
             </span>
           </v-card-title>
           <v-card-text>
-            <nuxt-link
-              class="font-weight-normal"
+            <v-btn
+              color="primary"
+              small
               :to="{
                 name: 'admin-user-manager-profile',
                 query: {id: dataChild.user.id}
               }"
             >
               <span class="font-weight-normal">
-                Parent: {{ `${dataChild.user.firstName} ${dataChild.user.lastName}` }}
+                Profile: {{ `${dataChild.user.firstName} ${dataChild.user.lastName}` }}
               </span>
-            </nuxt-link>
+            </v-btn>
           </v-card-text>
         </v-card>
       </v-col>
