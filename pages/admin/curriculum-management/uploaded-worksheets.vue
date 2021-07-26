@@ -7,7 +7,24 @@
             {{ `${lesson.name} - Day ${lesson.day}` }}
           </h3>
         </v-col>
-        <v-col cols="12">
+        <v-col v-if="loading" cols="12">
+          <v-row v-for="n in 5" :key="n">
+            <v-col cols="12">
+              <v-skeleton-loader
+                v-bind="attrs"
+                type="list-item-avatar, divider"
+              />
+            </v-col>
+
+            <v-col v-for="i in 4" :key="i" cols="3">
+              <v-skeleton-loader
+                v-bind="attrs"
+                type="card"
+              />
+            </v-col>
+          </v-row>
+        </v-col>
+        <v-col v-else cols="12">
           <portfolio-carousel
             v-for="category in categories"
             :key="`portfolio-category-${category.id}`"
@@ -45,9 +62,10 @@ export default defineComponent({
     const snotify = useSnotifyHelper()
     const lessonId = computed(() => Number(route.value.query.lessonId))
     const uploadedWorksheets = ref<OfflineWorksheet[]>([])
+    const loading = ref<Boolean>()
 
     const { lesson, getUploadedByLesson, getLessonById } = useWorksheetsCategories()
-
+    loading.value = false
     const categories = computed(() => {
       return uploadedWorksheets.value.filter(({ worksheetUploads }) => worksheetUploads.length > 0)
     })
@@ -64,9 +82,11 @@ export default defineComponent({
       }
 
       try {
+        loading.value = true
         uploadedWorksheets.value = await getUploadedByLesson(lessonId.value)
+        loading.value = false
       } catch (error) {
-        snotify.error('Sorry! There was an error loading your progress.')
+        snotify.error('Sorry! There was an error loading the page.')
       }
     }
 
@@ -74,11 +94,11 @@ export default defineComponent({
       refresh()
       await getLessonById(lessonId.value)
     })
-    console.log('categories--', categories)
 
     return {
       lesson,
-      categories
+      categories,
+      loading
     }
   }
 })
