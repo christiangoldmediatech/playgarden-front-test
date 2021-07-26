@@ -7,22 +7,19 @@ export const usePlans = () => {
      * HTTP Request
      */
   const plans = ref<Plan[]>([])
-  const plansResponse = ref<PlanResponse[]>([])
+  const plansResponse = ref<PlanResponse[]>([]) // delete this line
+
   const getPlans = async () => {
     plans.value = await axios.$get('/plans')
   }
 
-  plansResponse.value = plans.value.map(plan => ({
-    text: plan.name,
-    value: plan.id
-  }))
-
-  console.log('plans--', plans)
-  console.log('plansResponse--', plansResponse)
+  const saveUser = async ({ data }: {data: unknown}) => {
+    plans.value = await axios.$post('/users/admin', data)
+  }
 
   return {
     plans,
-    plansResponse,
-    getPlans
+    getPlans,
+    saveUser
   }
 }

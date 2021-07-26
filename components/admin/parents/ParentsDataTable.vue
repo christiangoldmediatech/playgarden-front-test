@@ -13,7 +13,10 @@
               dark
               :icon="$vuetify.breakpoint.xs"
               nuxt
-              @click.stop="exportList"
+              @click.stop="$router.push({
+                name: 'admin-parents-editor',
+                query: { id: $event.id }
+              })"
             >
               <v-icon class="hidden-sm-and-up">
                 mdi-plus-circle
