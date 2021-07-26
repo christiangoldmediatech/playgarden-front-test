@@ -135,12 +135,7 @@ export default defineComponent({
 
     entityType: {
       type: String,
-      default: '',
-      validator: (val) => {
-        const values = { PATCH: 1, PUZZLE: 1, WORKSHEET: 1 }
-
-        return val === null || val === '' || Boolean(values[val])
-      }
+      default: ''
     },
 
     lesson: {
@@ -183,8 +178,8 @@ export default defineComponent({
   },
 
   computed: {
-    textShare () {
-      return `${this.child.firstName || 'Child'}'s awesome work!`
+    textShare (): String {
+      return (this.child) ? `${this.child.firstName || 'Child'}'s awesome work!` : ''
     }
   }
 })
