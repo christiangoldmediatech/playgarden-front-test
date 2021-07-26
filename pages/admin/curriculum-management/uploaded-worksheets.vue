@@ -84,9 +84,10 @@ export default defineComponent({
       try {
         loading.value = true
         uploadedWorksheets.value = await getUploadedByLesson(lessonId.value)
-        loading.value = false
       } catch (error) {
         snotify.error('Sorry! There was an error loading the page.')
+      } finally {
+        loading.value = false
       }
     }
 

@@ -120,9 +120,10 @@ export default defineComponent({
         loading.value = true
         uploadedWorksheets.value = await getUploaded(studentId.value)
         child.value = await getChild(studentId.value)
-        loading.value = false
       } catch (error) {
         snotify.error('Sorry! There was an error loading your progress.')
+      } finally {
+        loading.value = false
       }
     }
 
