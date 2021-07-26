@@ -7,8 +7,9 @@
           gradient="rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)"
           cover
           tile
+          @click="$router.push({ name: section.routeName })"
         >
-          <div class="section-content" @click="$router.push({ name: section.routeName })">
+          <div class="section-content">
             <!-- Start Playing Button -->
             <v-img
               class="section-start-playing"
