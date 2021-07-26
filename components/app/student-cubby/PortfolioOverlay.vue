@@ -71,7 +71,8 @@ export default {
   created () {
     this.$nuxt.$on(
       'open-portfolio-overlay',
-      ({ entityId, entityType, image }) => {
+      ({ child, entityId, entityType, image }) => {
+        this.child = child
         this.entityId = entityId
         this.entityType = entityType
         this.image = image

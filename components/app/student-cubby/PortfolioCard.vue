@@ -12,7 +12,7 @@
         no-gutters
         justify="space-around"
         @click.stop="
-          $nuxt.$emit('open-portfolio-overlay', { entityId, entityType, image })
+          $nuxt.$emit('open-portfolio-overlay', { child, entityId, entityType, image })
         "
       >
         <v-col cols="12">
@@ -55,7 +55,6 @@
         <img class="w-100" :src="image">
       </v-col>
 
-      show: {{ noShare }}
       <v-col v-if="!noShare" class="shrink" cols="12" md="">
         <pg-social-buttons
           class="mx-auto mx-md-0"
@@ -69,12 +68,39 @@
           :url="image"
         />
       </v-col>
+
+      <v-col v-if="infoUser && dataChild" class="shrink" cols="12" md="4">
+        <v-card class="mx-auto mx-md-0">
+          <v-card-title>
+            <span>
+              Student: {{ dataChild.firstName }}
+            </span>
+          </v-card-title>
+          <v-card-text>
+            <nuxt-link
+              class="font-weight-normal"
+              :to="{
+                name: 'admin-user-manager-profile',
+                query: {id: dataChild.user.id}
+              }"
+            >
+              <span class="font-weight-normal">
+                Parent: {{ `${dataChild.user.firstName} ${dataChild.user.lastName}` }}
+              </span>
+            </nuxt-link>
+          </v-card-text>
+        </v-card>
+      </v-col>
     </v-row>
   </v-hover>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent, ref, useRoute, computed, onMounted, watch } from '@nuxtjs/composition-api'
+import { useWorksheetsCategories } from '@/composables/worksheets'
+import { Child } from '@/models'
+import { useChildLesson } from '@/composables'
+export default defineComponent({
   name: 'PortfolioCard',
 
   props: {
@@ -96,6 +122,12 @@ export default {
     noShare: {
       type: Boolean,
       default: false,
+      required: false
+    },
+
+    infoUser: {
+      type: Boolean,
+      default: true,
       required: false
     },
 
@@ -122,12 +154,37 @@ export default {
     }
   },
 
+  setup (props) {
+    const dataChild = ref<Child>()
+    const { getChild } = useWorksheetsCategories()
+
+    const getData = async () => {
+      if (!props.child) {
+        return
+      }
+
+      try {
+        dataChild.value = await getChild(props.child.id)
+      } catch (error) {
+        console.log('error')
+      }
+    }
+
+    onMounted(() => {
+      getData()
+    })
+
+    return {
+      dataChild
+    }
+  },
+
   computed: {
     textShare () {
       return `${this.child.firstName || 'Child'}'s awesome work!`
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

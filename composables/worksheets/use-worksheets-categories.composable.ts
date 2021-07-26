@@ -1,6 +1,6 @@
 import { ref } from '@nuxtjs/composition-api'
 import { axios } from '@/utils'
-import { Lesson, OfflineWorksheet } from '@/models'
+import { Lesson, OfflineWorksheet, Child } from '@/models'
 export const useWorksheetsCategories = () => {
   /**
    * HTTP Requests
@@ -14,9 +14,14 @@ export const useWorksheetsCategories = () => {
     return axios.$get(`/worksheets/lesson/${lessonId}`)
   }
 
+  const getChild = (childId: number): Promise<Child> => {
+    return axios.$get(`/children/${childId}`)
+  }
+
   return {
     lesson,
     getUploadedByLesson,
-    getLessonById
+    getLessonById,
+    getChild
   }
 }
