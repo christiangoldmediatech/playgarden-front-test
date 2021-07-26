@@ -100,7 +100,8 @@
 import { defineComponent, ref, useRoute, computed, onMounted, watch } from '@nuxtjs/composition-api'
 import { useWorksheetsCategories } from '@/composables/worksheets'
 import { Child } from '@/models'
-import { useChildLesson } from '@/composables'
+import { useSnotifyHelper, useChildLesson } from '@/composables'
+
 export default defineComponent({
   name: 'PortfolioCard',
 
@@ -155,7 +156,8 @@ export default defineComponent({
     }
   },
 
-  setup (props) {
+  setup (props: any) {
+    const snotify = useSnotifyHelper()
     const dataChild = ref<Child>()
     const { getChild } = useWorksheetsCategories()
 
@@ -167,7 +169,7 @@ export default defineComponent({
       try {
         dataChild.value = await getChild(props.child.id)
       } catch (error) {
-        console.log('error')
+        snotify.error('Sorry! There was an error loading the page.')
       }
     }
 
