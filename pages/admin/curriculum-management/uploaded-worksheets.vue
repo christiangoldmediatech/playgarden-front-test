@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row>
-      <v-card v-if="categories.length === 0" width="100%">
+      <v-card v-if="categories.length === 0 && !loading" width="100%">
         <v-card-title>
           <underlined-title class="text-h6 text-md-h5" text="There is not any uploaded worksheet" />
 
