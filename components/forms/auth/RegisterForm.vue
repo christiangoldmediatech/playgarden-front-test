@@ -337,7 +337,7 @@ export default {
         this.disableAxiosGlobal()
         await this.authLoginSocial(user)
         this.enableAxiosGlobal()
-        await this.$router.push({ name: 'app-dashboard' })
+        await this.$router.push({ name: 'app-virtual-preschool' })
       } catch (e) {
         this.onFailLoginSocial(user)
       }

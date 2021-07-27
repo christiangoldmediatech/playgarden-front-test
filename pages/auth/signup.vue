@@ -228,7 +228,7 @@ export default {
 
         if (this.signupProcessCaregiver) {
           await this.$router.push({
-            name: 'app-dashboard'
+            name: 'app-virtual-preschool'
           })
         } else if (this.isUserLoggedIn || this.inInvitationProcess) {
           if (this.inInvitationProcess) {

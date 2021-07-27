@@ -34,6 +34,16 @@
           color="warning"
           large
           router
+          :to="{ name: 'app-virtual-preschool' }"
+        >
+          Go Back To Home
+        </v-btn><br>
+        <v-btn
+          class="my-3"
+          color="warning"
+          large
+          router
+          outlined
           :to="{ name: 'app-dashboard' }"
         >
           Go Back To Lessons
