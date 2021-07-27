@@ -145,7 +145,7 @@ export default {
 
     const userInfo = rootGetters['auth/getUserInfo']
     let cards = []
-    if (userInfo.role.id !== 1) {
+    if (userInfo.role.id === 3) {
       const { data } = await this.$axios.get('/billing/cards')
       cards = data
     }
