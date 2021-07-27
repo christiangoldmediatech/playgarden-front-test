@@ -100,7 +100,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, useRoute, computed, onMounted, watch } from '@nuxtjs/composition-api'
+import { defineComponent, ref, useRoute, computed, onMounted } from '@nuxtjs/composition-api'
 import { useWorksheetsCategories } from '@/composables/worksheets'
 import { Child } from '@/models'
 import { useSnotifyHelper, useChildLesson } from '@/composables'
