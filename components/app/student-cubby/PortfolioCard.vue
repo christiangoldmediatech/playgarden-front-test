@@ -78,7 +78,7 @@
           </v-card-title>
           <v-card-text>
             <v-btn
-              color="primary"
+              color="accent darken-1"
               small
               :to="{
                 name: 'admin-user-manager-profile',
