@@ -144,7 +144,11 @@ export default {
     }
 
     const userInfo = rootGetters['auth/getUserInfo']
-    const { data } = await this.$axios.get('/billing/cards')
+    let cards = []
+    if (userInfo.role.id !== 1) {
+      const { data } = await this.$axios.get('/billing/cards')
+      cards = data
+    }
 
     const oneDay = 1
     const now = new Date()
@@ -161,7 +165,7 @@ export default {
     let didChoosePlan = false
 
     if (userInfo.flow === UserFlow.NOCREDITCARD) {
-      didChoosePlan = (data.length > 0)
+      didChoosePlan = (cards.length > 0)
       isSubscribedUser = subscription && subscription.status === 'past_due'
     } else {
       didChoosePlan = userInfo.planChoosen
