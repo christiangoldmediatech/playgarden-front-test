@@ -62,6 +62,7 @@
             <portfolio-carousel
               v-for="category in categories"
               :key="`portfolio-category-${category.id}`"
+              class="mx-2 pt-3"
               :show-child="true"
               v-bind="{ category }"
             />
