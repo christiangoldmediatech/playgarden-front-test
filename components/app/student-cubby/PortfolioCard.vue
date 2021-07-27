@@ -155,9 +155,16 @@ export default defineComponent({
   },
 
   setup (props: any) {
+    const route = useRoute()
     const snotify = useSnotifyHelper()
     const dataChild = ref<Child>()
     const { getChild } = useWorksheetsCategories()
+
+    const studentId = computed(() => Number(route.value.query.id))
+
+    if (!props.child) {
+      props.child = { id: studentId.value }
+    }
 
     const getData = async () => {
       if (!props.child) {

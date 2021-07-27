@@ -25,14 +25,12 @@
           <v-row v-for="n in 5" :key="n">
             <v-col cols="12">
               <v-skeleton-loader
-                v-bind="attrs"
                 type="list-item-avatar, divider"
               />
             </v-col>
 
             <v-col v-for="i in 4" :key="i" cols="3">
               <v-skeleton-loader
-                v-bind="attrs"
                 type="card"
               />
             </v-col>
