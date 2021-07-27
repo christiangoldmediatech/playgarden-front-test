@@ -50,7 +50,7 @@
       </v-row>
     </v-container>
 
-    <v-row v-else align="center" class="portfolio-card">
+    <v-row v-else :align="!noShare ? 'center' : 'top'" class="portfolio-card">
       <v-col cols="12" md="">
         <img class="w-100" :src="image">
       </v-col>
@@ -74,6 +74,9 @@
           <v-card-title>
             <span>
               Student: {{ dataChild.firstName }}
+            </span><br>
+            <span>
+              Parent: {{ `${dataChild.user.firstName} ${dataChild.user.lastName}` }}
             </span>
           </v-card-title>
           <v-card-text>
@@ -86,7 +89,7 @@
               }"
             >
               <span class="font-weight-normal">
-                Profile: {{ `${dataChild.user.firstName} ${dataChild.user.lastName}` }}
+                Go to Profile
               </span>
             </v-btn>
           </v-card-text>

@@ -46,7 +46,7 @@
             class="mx-2 pt-2"
             v-bind="{ category }"
           />
-          <portfolio-overlay :child="child" :no-share="true" />
+          <portfolio-overlay :child="child" :no-share="true" :info-user="true" />
         </v-card>
       </v-col>
       <v-col v-else cols="12">
