@@ -59,7 +59,7 @@
         <template v-if="isUserLoggedIn && !isUserInSignupProcess">
           <v-menu open-on-hover offset-y offset-overflow>
             <template v-slot:activator="{ on }">
-              <div class="text-center clickable mx-4" v-on="on">
+              <div data-test-id="help-button" class="text-center clickable mx-4" v-on="on">
                 <img
                   :src="require('@/assets/png/Help.png')"
                   height="45"
@@ -101,6 +101,7 @@
                     text
                     nuxt
                     :to="{ name: 'help' }"
+                    data-test-id="faq-button"
                   >
                     <img
                       class="mr-2"
