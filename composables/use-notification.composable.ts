@@ -39,12 +39,14 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
    */
   const checkUserShippingAddressAndNotify = async () => {
     if (!isUserLoggedIn.value || userInfo.value.role.id !== 3) {
+      setIsShippingModalVisible(false)
       return
     }
 
     const shippingAddress = await getShippingAdress()
 
     if (shippingAddress) {
+      setIsShippingModalVisible(false)
       return
     }
 
@@ -103,6 +105,7 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
    */
   const checkIfShouldShowTrialExpiringRibbon = () => {
     if (!isUserLoggedIn.value) {
+      setIsTrialExpiringRibbonVisible(false)
       return
     }
 
@@ -125,6 +128,7 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
    */
   const checkIfShouldShowTrialExpiredModal = () => {
     if (!isUserLoggedIn.value) {
+      setIsTrialExpiredModalVisible(false)
       return
     }
 

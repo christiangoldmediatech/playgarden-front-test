@@ -86,7 +86,7 @@ export default {
         this.disableAxiosGlobal()
         await this.authLoginSocial(user)
         this.enableAxiosGlobal()
-        await this.$router.push({ name: 'app-dashboard' })
+        await this.$router.push({ name: 'app-virtual-preschool' })
       } catch (e) {
         await this.onFailLoginSocial(user)
       }
@@ -128,7 +128,7 @@ export default {
             query: this.$route.query
           })
         } else {
-          await this.$router.push({ name: 'app-dashboard' })
+          await this.$router.push({ name: 'app-virtual-preschool' })
         }
       } catch (error) {
         this.errorMessage = 'Sorry! Wrong email or password'

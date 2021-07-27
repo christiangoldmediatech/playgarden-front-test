@@ -1,11 +1,14 @@
 <template>
   <v-app-bar flat :height="appBarHeight" class="pg-header" app>
     <v-row no-gutters>
+      <!-- Hamburguer Menu -->
       <v-btn class="d-inline d-md-none pg-header-menu-btn" icon :ripple="false" @click="handleSidebarToggle">
         <v-icon large class="primary--text">
           mdi-menu
         </v-icon>
       </v-btn>
+
+      <!-- Children Select  -->
       <v-col cols="12" md="3" order="2" order-md="1" class="d-flex align-center justify-center">
         <div class="child-select mt-2 mt-md-0">
           <child-select v-if="childId" v-model="childId" class="mb-n4" />
@@ -13,20 +16,32 @@
       </v-col>
 
       <v-col cols="12" md="6" order="1" order-md="2" class="d-flex flex-column justify-center align-center">
-        <img
-          alt="Playarden Prep Online Logo"
-          :height="appBarLogoSize"
-          :src="require('@/assets/svg/logo.svg')"
-        >
+        <v-row no-gutters class="text-center">
+          <!-- PlaygardenPrep Logo -->
+          <v-col cols="12">
+            <img
+              alt="Playarden Prep Online Logo"
+              :height="appBarLogoSize"
+              :src="require('@/assets/svg/logo.svg')"
+            >
+          </v-col>
 
-        <underlined-title text="Virtual Preschool!" :font-size="appBarTitleSize" />
+          <!-- Toolbar Title -->
+          <v-col cols="12">
+            <underlined-title text="Virtual Preschool!" :font-size="appBarTitleSize" :font-size-mobile="appBarTitleSize" />
+          </v-col>
 
-        <div class="text-body-1 text-md-h6">
-          We are excited for a new day full of learning.
-        </div>
+          <!-- Toolbar Description -->
+          <v-col>
+            <div class="text-body-1 text-md-h6">
+              We are excited for a new day full of learning.
+            </div>
+          </v-col>
+        </v-row>
       </v-col>
 
       <v-col md="3" order="3" class="d-none d-md-flex justify-end align-center">
+        <!-- Profile Button -->
         <div class="text-center mx-4">
           <img
             v-if="isUserLoggedIn && !isUserInSignupProcess"
@@ -40,10 +55,11 @@
           </div>
         </div>
 
+        <!-- Help Button -->
         <template v-if="isUserLoggedIn && !isUserInSignupProcess">
           <v-menu open-on-hover offset-y offset-overflow>
             <template v-slot:activator="{ on }">
-              <div class="text-center clickable mx-4" v-on="on">
+              <div data-test-id="help-button" class="text-center clickable mx-4" v-on="on">
                 <img
                   :src="require('@/assets/png/Help.png')"
                   height="45"
@@ -85,6 +101,7 @@
                     text
                     nuxt
                     :to="{ name: 'help' }"
+                    data-test-id="faq-button"
                   >
                     <img
                       class="mr-2"
@@ -120,8 +137,8 @@ export default defineComponent({
     const vuetify = useVuetifyHelper()
     const isMobile = computed(() => vuetify.breakpoint.mobile)
 
-    const appBarHeight = computed(() => isMobile.value ? '200px' : '175px')
-    const appBarTitleSize = computed(() => isMobile.value ? '32px' : '60px')
+    const appBarHeight = computed(() => isMobile.value ? '220px' : '175px')
+    const appBarTitleSize = computed(() => isMobile.value ? '28px' : '60px')
     const appBarLogoSize = computed(() => isMobile.value ? '25px' : '45px')
 
     const store = useStore<TypedStore>()
@@ -168,6 +185,8 @@ export default defineComponent({
 
   &-menu-btn {
     position: absolute;
+    top: 5px;
+    left: 5px;
   }
 }
 .btn-register:before {

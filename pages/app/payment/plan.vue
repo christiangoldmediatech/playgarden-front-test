@@ -26,14 +26,14 @@
             color="accent"
             class="text-none"
             nuxt
-            :to="{ name: 'app-dashboard' }"
+            :to="{ name: 'app-virtual-preschool' }"
             text
           >
             <v-icon left>
               mdi-less-than
             </v-icon>
 
-            Go Back to Lessons
+            Go Back to Home
           </v-btn>
         </v-col>
         <v-col cols="12" class="text-center mt-4">
@@ -64,7 +64,7 @@
             large
             color="accent"
             nuxt
-            :to="{ name: 'app-dashboard' }"
+            :to="{ name: 'app-virtual-preschool' }"
           >
             REMIND ME LATER
           </v-btn>
@@ -229,7 +229,7 @@ export default {
         this.$snotify.success('Payment method added!')
 
         await this.$router.push({
-          name: 'app-dashboard'
+          name: 'app-virtual-preschool'
         })
       } catch (e) {
       } finally {

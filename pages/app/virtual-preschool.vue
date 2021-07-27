@@ -1,21 +1,24 @@
 <template>
   <v-main>
     <v-row align-content="center" justify="center" class="virtual-preschool">
-      <v-col v-for="section in sections" :key="section.title" cols="12" md="4" class="section">
+      <v-col v-for="section in sections" :key="section.title" cols="12" lg="4" class="section">
         <v-img
           :src="section.imageUrl"
           gradient="rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)"
-          contain
+          cover
           tile
+          @click="$router.push({ name: section.routeName })"
         >
           <div class="section-content">
             <!-- Start Playing Button -->
-            <img
+            <v-img
               class="section-start-playing"
-              src="@/assets/png/virtual-preschool/Start Playing.png"
+              :src="require('@/assets/png/virtual-preschool/Button.png')"
+              contain
               :data-test-id="`vp-section-${section.title}`"
-              @click="$router.push({ name: section.routeName })"
             >
+              <span>Go to {{ section.title }}</span>
+            </v-img>
 
             <!-- Lady -->
             <img class="section-lady" :src="section.teacherUrl">
@@ -25,10 +28,14 @@
 
             <!-- Bubble Text -->
             <div class="section-bubble-text">
-              {{ section.message }}
-              <v-icon class="white--text" size="20" @click.stop="handleAudioPlay(section.audio)">
-                mdi-volume-high
-              </v-icon>
+              <span>
+                {{ section.message }}
+                <v-btn icon class="my-n4 mx-n2">
+                  <v-icon class="white--text" size="22" @click.stop="handleAudioPlay(section.audio)">
+                    mdi-volume-high
+                  </v-icon>
+                </v-btn>
+              </span>
             </div>
           </div>
 
@@ -73,7 +80,7 @@ export default defineComponent({
         title: 'Live Classes',
         routeName: 'app-live-classes',
         message: 'Enjoy cooking, music, movement zooms and more!',
-        audio: '/audio/virtual-preschool/Live classes.m4a'
+        audio: '/audio/virtual-preschool/Live classes 2.m4a'
       },
       {
         imageUrl: require('@/assets/png/virtual-preschool/Cubby.png'),
@@ -127,6 +134,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .virtual-preschool {
   max-width: 1500px;
+  margin-top: -30px !important;
   margin: auto;
 }
 
@@ -138,9 +146,11 @@ export default defineComponent({
     width: 100%;
     height: 100%;
     opacity: 0;
+    cursor: pointer;
 
     &:hover {
       opacity: 1;
+      background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25));
     }
   }
 
@@ -148,35 +158,49 @@ export default defineComponent({
     color: white;
     font-weight: bold;
     text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    font-size: 20px;
 
     height: 100px;
-    width: 55%;
+    width: 60%;
     position: absolute;
-    top: 10%;
+    top: 14%;
     left: 15%;
   }
 
   &-bubble {
     width: 75%;
     position: absolute;
-    top: 15px;
-    left: 30px;
+    height: 30%;
+    top: 10%;
+    left: 8%;
   }
 
   &-lady {
-    height: 60%;
+    height: 55%;
     position: absolute;
     right: 0;
     bottom: 0;
   }
 
   &-start-playing {
-    cursor: pointer;
-    height: 35%;
+    height: 30%;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+
+    & span {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 14px;
+      width: 75px;
+      color: white;
+      display: flex;
+      justify-content: center;
+      text-align: center;
+    }
   }
 
   &-btn {
@@ -192,7 +216,7 @@ export default defineComponent({
 
     & div {
       color: white;
-      font-size: 18px;
+      font-size: 24px;
       font-weight: bold;
       text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
@@ -204,12 +228,68 @@ export default defineComponent({
   }
 }
 
-@media (max-width: $breakpoint-sm) {
+@media (max-width: $breakpoint-md) {
+  .virtual-preschool {
+    margin-top: 0px !important;
+  }
+
   .section {
     padding: 12px;
 
     &-content {
       opacity: 1;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-md) {
+  .virtual-preschool {
+    margin-top: 0px !important;
+  }
+
+  .section {
+    padding: 12px;
+
+    &-content {
+      opacity: 1;
+    }
+  }
+}
+
+@media (min-width: $breakpoint-xs) and (max-width: $breakpoint-md) {
+  .section {
+    &-bubble-text {
+      font-size: 28px;
+    }
+
+    &-start-playing {
+      & span {
+      font-size: 20px;
+      width: 75px;
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-xs) {
+  .section {
+    &-bubble-text {
+      font-size: 14px;
+    }
+
+    &-start-playing {
+      visibility: hidden;
+
+      & span {
+        font-size: 10px;
+        width: 55px;
+      }
+    }
+
+    &-btn {
+      & div {
+        font-size: 18px;
+      }
     }
   }
 }
