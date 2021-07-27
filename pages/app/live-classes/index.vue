@@ -1,24 +1,6 @@
 <template>
   <v-main>
-    <v-row class="pos-relative pt-md-2 my-0" justify="center" align="center">
-      <v-col class="hidden-sm-and-down" cols="12">
-        <week-selector
-          v-if="today"
-          :day="getDateObj()"
-          @prev-week="removeWeek"
-          @next-week="addWeek"
-        />
-      </v-col>
-      <v-btn
-        class="text-none mr-md-4 mt-6 mt-md-0"
-        :class="{ 'pos-absolute pos-right-0': $vuetify.breakpoint.mdAndUp }"
-        color="accent"
-        :large="$vuetify.breakpoint.smAndDown"
-        @click.stop="goToRecordings"
-      >
-        Watch recorded classes
-      </v-btn>
-    </v-row>
+    <!--  -->
     <v-container
       v-if="$vuetify.breakpoint.mdAndUp"
       class="lsess-container"
@@ -37,8 +19,64 @@
           />
         </v-col>
 
-        <v-col class="lsess-schedule" cols="12" md="8" lg="9" xl="10">
-          <sessions-table :today="today" />
+        <v-col class="lsess-schedule pt-0" cols="12" md="8" lg="9" xl="10">
+          <v-row class="pos-relative pt-md-2 my-0" justify="center" align="center">
+            <v-btn-toggle
+              v-model="viewModeVal"
+              class="text-none ml-md-4 mt-6 mt-md-0"
+              :class="{ 'pos-absolute pos-left-0': $vuetify.breakpoint.mdAndUp }"
+            >
+              <v-btn
+                :color="viewMode === 'WEEK' ? 'accent' : 'white'"
+                class="lsess-switcher-btn text-none font-weight-light"
+                :class="{
+                  'white--text': viewMode === 'WEEK'
+                }"
+              >
+                Week
+              </v-btn>
+              <v-btn
+                :color="viewMode === 'DAY' ? 'accent' : 'white'"
+                class="lsess-switcher-btn text-none font-weight-light"
+                :class="{
+                  'white--text': viewMode === 'DAY'
+                }"
+              >
+                Day
+              </v-btn>
+            </v-btn-toggle>
+
+            <v-col class="hidden-sm-and-down" cols="12">
+              <template v-if="viewMode === 'WEEK'">
+                <week-selector
+                  v-if="today"
+                  :day="getDateObj()"
+                  @prev-week="removeWeek"
+                  @next-week="addWeek"
+                />
+              </template>
+              <template v-else>
+                <day-selector
+                  v-if="today"
+                  :day="getDateObj()"
+                  @prev-day="removeDay"
+                  @next-day="addDay"
+                />
+              </template>
+            </v-col>
+
+            <v-btn
+              class="text-none mr-md-4 mt-6 mt-md-0"
+              :class="{ 'pos-absolute pos-right-0': $vuetify.breakpoint.mdAndUp }"
+              color="accent"
+              :large="$vuetify.breakpoint.smAndDown"
+              @click.stop="goToRecordings"
+            >
+              Watch recorded classes
+            </v-btn>
+          </v-row>
+
+          <sessions-table :day-mode="viewMode === 'DAY'" :today="today" />
         </v-col>
       </v-row>
     </v-container>
@@ -154,6 +192,7 @@ import EntryDialog from '@/components/app/live-sessions/EntryDialog.vue'
 import SessionsTable from '@/components/app/live-sessions/SessionsTable.vue'
 import RecordedClassPlayer from '@/components/app/live-sessions/RecordedClassPlayer.vue'
 import WeekSelector from '@/components/admin/live-sessions/WeekSelector.vue'
+import DaySelector from '@/components/admin/live-sessions/DaySelector.vue'
 import { jsonCopy } from '~/utils/objectTools'
 
 export default {
@@ -166,7 +205,8 @@ export default {
     EntryDialog,
     SessionsTable,
     RecordedClassPlayer,
-    WeekSelector
+    WeekSelector,
+    DaySelector
   },
 
   data: () => {
@@ -175,7 +215,8 @@ export default {
       today: null,
       loading: false,
       fullscreen: true,
-      showNotice: true
+      showNotice: true,
+      viewModeVal: 0
     }
   },
 
@@ -200,6 +241,13 @@ export default {
 
         return start.getTime() - end.getTime()
       })
+    },
+
+    viewMode () {
+      if (this.viewModeVal === 0) {
+        return 'WEEK'
+      }
+      return 'DAY'
     }
   },
 
@@ -248,6 +296,18 @@ export default {
       const date = this.getDateObj()
       date.setDate(date.getDate() - 7)
       this.setToday(date)
+    },
+
+    addDay () {
+      const date = this.getDateObj()
+      date.setDate(date.getDate() + 1)
+      this.setToday(date)
+    },
+
+    removeDay () {
+      const date = this.getDateObj()
+      date.setDate(date.getDate() - 1)
+      this.setToday(date)
     }
   }
 }
@@ -288,8 +348,8 @@ export default {
     object-position: center;
   }
   &-daily {
-    height: 90%; // TODO: Change back to 1005 when removing text Live Classes start
-    max-height: 90%; // TODO: Change back to 1005 when removing text Live Classes start
+    height: 100%; // TODO: Change back to 1005 when removing text Live Classes start
+    max-height: 100%; // TODO: Change back to 1005 when removing text Live Classes start
   }
   &-schedule {
     max-height: 100%;
@@ -303,6 +363,9 @@ export default {
     &-btn {
       min-height: 64px;
     }
+  }
+  &-switcher-btn {
+    width: 80px;
   }
 }
 .dialog-overlay {

@@ -33,8 +33,8 @@
       </div>
     </template>
     <template v-else>
-      <div class="pl-16 pr-8">
-        <v-row>
+      <div v-if="!dayMode" class="pl-16 pr-8">
+        <v-row class="my-0">
           <v-col v-for="(day, index) in days" :key="`days-row-column-${index}`" class="lsess-table-col lsess-table-col-header">
             {{ day }}
             <div v-if="index === activeDay" class="lsess-table-col-header-active" />
@@ -42,23 +42,36 @@
         </v-row>
       </div>
 
+      <div v-if="dayMode" class="my-7" />
+
       <perfect-scrollbar id="scrollArea">
-        <div v-for="hour in 11" :key="`hour-${hour}`" class="lsess-table-hour-row">
+        <div v-for="hour in totalHours" :key="`hour-${hour}`" class="lsess-table-hour-row">
           <div class="d-flex align-center justify-center lsess-table-offset">
-            {{ 7 + hour }}:00
+            {{ hourOffset + hour }}:00
           </div>
-          <v-row>
-            <v-col
-              v-for="(day, dayIndex) in days"
-              :key="`days-row-${hour}-column-${dayIndex}`"
-              class="lsess-table-col d-flex align-center"
-            >
-              <table-entry
-                v-if="getWeeklySchedule[dayIndex][hour - 1]"
-                :id="`entry-${dayIndex}-${hour - 1}`"
-                :entry="getWeeklySchedule[dayIndex][hour - 1]"
-              />
-            </v-col>
+          <v-row justify="center">
+            <template v-if="dayMode">
+              <v-col class="lsess-table-day d-flex align-center">
+                <table-entry
+                  v-if="activeDay >= 0 && getAdvancedSchedule.days[activeDay] && getAdvancedSchedule.days[activeDay][hour - 1]"
+                  :id="`entry-${activeDay}-${hour - 1}`"
+                  :entry="getAdvancedSchedule.days[activeDay][hour - 1]"
+                />
+              </v-col>
+            </template>
+            <template v-else>
+              <v-col
+                v-for="(day, dayIndex) in days"
+                :key="`days-row-${hour}-column-${dayIndex}`"
+                class="lsess-table-col d-flex align-center"
+              >
+                <table-entry
+                  v-if="getAdvancedSchedule.days[dayIndex][hour - 1]"
+                  :id="`entry-${dayIndex}-${hour - 1}`"
+                  :entry="getAdvancedSchedule.days[dayIndex][hour - 1]"
+                />
+              </v-col>
+            </template>
           </v-row>
         </div>
       </perfect-scrollbar>
@@ -83,6 +96,10 @@ export default {
     today: {
       type: String,
       required: true
+    },
+    dayMode: {
+      type: Boolean,
+      required: false
     }
   },
 
@@ -95,7 +112,15 @@ export default {
   },
 
   computed: {
-    ...mapGetters('live-sessions', ['getWeeklySchedule']),
+    ...mapGetters('live-sessions', ['getWeeklySchedule', 'getAdvancedSchedule']),
+
+    hourOffset () {
+      return this.getAdvancedSchedule.firstHour - 1
+    },
+
+    totalHours () {
+      return 19 - this.getAdvancedSchedule.firstHour
+    },
 
     activeDay () {
       const parts = this.today.split('-')
@@ -124,7 +149,7 @@ export default {
 
   methods: {
     scrollToFirst () {
-      if (this.scrolling) {
+      if (this.scrolling || this.activeDay < 0 || this.activeDay > 4) {
         return
       }
       this.scrolling = true
@@ -192,9 +217,13 @@ export default {
         }
       }
     }
+    &-day {
+      width: 90% !important;
+      max-width: 90% !important;
+    }
     &-hour-row {
       width: calc(100% - 32px);
-      height: 160px;
+      max-height: 160px;
       border-bottom: solid 2px #f2f2f2;
       display: flex;
       flex-direction: row;
