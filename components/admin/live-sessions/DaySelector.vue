@@ -20,8 +20,10 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent, computed, toRefs } from '@nuxtjs/composition-api'
+
+export default defineComponent({
   name: 'DaySelector',
 
   props: {
@@ -37,16 +39,21 @@ export default {
     }
   },
 
-  computed: {
-    currentDay () {
-      const dayName = this.day.toLocaleString('default', { weekday: 'long' })
-      const day = this.day.getDate().toString().padStart(2, '0')
-      const monthName = this.day.toLocaleString('default', { month: 'long' })
+  setup (props) {
+    const { day } = toRefs(props)
 
-      return `${dayName}, ${monthName} ${day}, ${this.day.getFullYear()}`
+    const currentDay = computed(() => {
+      const dayName = day.value.toLocaleString('default', { weekday: 'long' })
+      const dayNum = day.value.getDate().toString().padStart(2, '0')
+      const monthName = day.value.toLocaleString('default', { month: 'long' })
+      return `${dayName}, ${monthName} ${dayNum}, ${day.value.getFullYear()}`
+    })
+
+    return {
+      currentDay
     }
   }
-}
+})
 </script>
 
 <style lang="scss">

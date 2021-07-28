@@ -1,6 +1,5 @@
 <template>
   <v-main>
-    <!--  -->
     <v-container
       v-if="$vuetify.breakpoint.mdAndUp"
       class="lsess-container"
