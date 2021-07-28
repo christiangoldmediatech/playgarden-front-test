@@ -112,10 +112,11 @@
                       name="Promotion Code"
                     >
                       <pg-text-field
-                        v-model="user.promotionCode"
+                        v-model="user.promotion_code"
                         :error-messages="errors"
                         label="Promotion Code"
                         solo-labeled
+                        @blur="validateCoupon"
                       />
                     </validation-provider>
                   </v-col>
@@ -162,7 +163,8 @@ export default defineComponent({
         lastName: '',
         email: '',
         phoneNumber: '',
-        promotionCode: '',
+        promotion_code: null,
+        promotion_id: null,
         roleId: null,
         planId: null,
         testUser: null,
@@ -175,7 +177,7 @@ export default defineComponent({
 
   setup () {
     computed(async () => await getPlans())
-    const { plans, getPlans, saveUser } = usePlans()
+    const { plans, coupons, getPlans, getCoupons, saveUser } = usePlans()
 
     onMounted(async () => {
       await getPlans()
@@ -183,6 +185,8 @@ export default defineComponent({
 
     return {
       plans,
+      coupons,
+      getCoupons,
       saveUser
     }
   },
@@ -206,6 +210,22 @@ export default defineComponent({
   methods: {
     getBack () {
       this.$router.go(-1)
+    },
+
+    async validateCoupon () {
+      if (this.user.promotion_code) {
+        await this.getCoupons({ active: true, code: this.user.promotion_code })
+        if (this.coupons.length > 0) {
+          this.user.promotion_id = this.coupons[0].promotion_id
+          this.$nuxt.$emit('send-coupon', this.coupons[0])
+          this.$snotify.success('Coupon is valid.')
+        } else {
+          this.$snotify.warning('Coupon is not valid.', 'Warning', {})
+          this.$nuxt.$emit('send-coupon', null)
+          this.user.promotion_code = null
+          this.user.promotion_id = null
+        }
+      }
     },
 
     async save () {

@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { Entity } from '@/models'
 
 export interface PlanFeacture {
@@ -13,4 +14,18 @@ export interface Plan extends Entity {
     plusBenefits: PlanFeacture
     monthlyStripeId: string
     anualStripeId: string
+}
+
+export interface Coupon {
+    duration: string
+    amount_off?: number
+    currency: string
+    duration_in_months: number,
+    metadata: {}
+    name: string
+    percent_off: number
+    id: string,
+    max_redemptions?: number,
+    promotion_code: string,
+    promotion_id: string
 }
