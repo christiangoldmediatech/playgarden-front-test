@@ -19,7 +19,7 @@ export const useLayout = ({ store, route, vuetify }: LayoutComposable) => {
   const fullWidthPages = computed(() => store.state.fullWidthPages)
   const isFullWidth = computed(() => route.value.name ? fullWidthPages.value[route.value.name] : false)
 
-  const showContent = computed(() => store.state.fullWidthPages)
+  const showContent = computed(() => store.state.showContent)
   const setShowContent = (state: boolean) => store.commit('SET_SHOW_CONTENT', state)
 
   const isMobile = computed(() => vuetify.breakpoint.mobile)

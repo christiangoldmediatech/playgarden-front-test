@@ -1,23 +1,21 @@
 <template>
   <v-main>
     <v-row align-content="center" justify="center" class="virtual-preschool">
-      <v-col v-for="section in sections" :key="section.title" cols="12" lg="4" class="section">
+      <v-col v-for="section in sections" :key="section.title" cols="12" md="4" class="section">
         <v-img
           :src="section.imageUrl"
           gradient="rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)"
-          cover
+          contain
           tile
         >
-          <div class="section-content" @click="$router.push({ name: section.routeName })">
+          <div class="section-content">
             <!-- Start Playing Button -->
-            <v-img
+            <img
               class="section-start-playing"
-              :src="require('@/assets/png/virtual-preschool/Button.png')"
-              contain
+              src="@/assets/png/virtual-preschool/Start Playing.png"
               :data-test-id="`vp-section-${section.title}`"
+              @click="$router.push({ name: section.routeName })"
             >
-              <span>Go to {{ section.title }}</span>
-            </v-img>
 
             <!-- Lady -->
             <img class="section-lady" :src="section.teacherUrl">
@@ -27,14 +25,10 @@
 
             <!-- Bubble Text -->
             <div class="section-bubble-text">
-              <span>
-                {{ section.message }}
-                <v-btn icon class="my-n4 mx-n2">
-                  <v-icon class="white--text" size="22" @click.stop="handleAudioPlay(section.audio)">
-                    mdi-volume-high
-                  </v-icon>
-                </v-btn>
-              </span>
+              {{ section.message }}
+              <v-icon class="white--text" size="20" @click.stop="handleAudioPlay(section.audio)">
+                mdi-volume-high
+              </v-icon>
             </div>
           </div>
 
@@ -56,6 +50,8 @@ export default defineComponent({
   layout: 'pg',
 
   setup () {
+    const baseRoute = process.env.testEnv === 'production' ? `${process.env.baseRouteProd}` : '/'
+
     const sections = [
       {
         imageUrl: require('@/assets/png/virtual-preschool/Daily lessons.png'),
@@ -63,7 +59,7 @@ export default defineComponent({
         title: 'Daily Lessons',
         routeName: 'app-dashboard',
         message: 'We can’t wait to learn with you every day!',
-        audio: '/audio/virtual-preschool/Daily lessons.m4a'
+        audio: `${baseRoute}audio/virtual-preschool/Daily lessons.m4a`
       },
       {
         imageUrl: require('@/assets/png/virtual-preschool/playdates.png'),
@@ -71,7 +67,7 @@ export default defineComponent({
         title: 'Playdates',
         routeName: 'app-playdates',
         message: 'Join our teacher-led playdates for fun with friends!',
-        audio: '/audio/virtual-preschool/Playdates.m4a'
+        audio: `${baseRoute}audio/virtual-preschool/Playdates.m4a`
       },
       {
         imageUrl: require('@/assets/png/virtual-preschool/live classes.png'),
@@ -79,7 +75,7 @@ export default defineComponent({
         title: 'Live Classes',
         routeName: 'app-live-classes',
         message: 'Enjoy cooking, music, movement zooms and more!',
-        audio: '/audio/virtual-preschool/Live classes 2.m4a'
+        audio: `${baseRoute}audio/virtual-preschool/Live classes.m4a`
       },
       {
         imageUrl: require('@/assets/png/virtual-preschool/Cubby.png'),
@@ -87,7 +83,7 @@ export default defineComponent({
         title: 'Student Cubby',
         routeName: 'app-student-cubby',
         message: 'Store your work and track progress in your cubby!',
-        audio: '/audio/virtual-preschool/Cubby.m4a'
+        audio: `${baseRoute}audio/virtual-preschool/Cubby.m4a`
       },
       {
         imageUrl: require('@/assets/png/virtual-preschool/Music.png'),
@@ -95,7 +91,7 @@ export default defineComponent({
         title: 'Music',
         routeName: 'app-music',
         message: 'Listen anytime to sing and learn!',
-        audio: '/audio/virtual-preschool/Music.m4a'
+        audio: `${baseRoute}audio/virtual-preschool/Music.m4a`
       },
       {
         imageUrl: require('@/assets/png/virtual-preschool/Library.png'),
@@ -103,7 +99,7 @@ export default defineComponent({
         title: 'Library',
         routeName: 'app-library',
         message: 'Come read with us in the book nook!',
-        audio: '/audio/virtual-preschool/Library.m4a'
+        audio: `${baseRoute}audio/virtual-preschool/Library.m4a`
       }
     ]
 
@@ -133,7 +129,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 .virtual-preschool {
   max-width: 1500px;
-  margin-top: -30px !important;
   margin: auto;
 }
 
@@ -145,11 +140,9 @@ export default defineComponent({
     width: 100%;
     height: 100%;
     opacity: 0;
-    cursor: pointer;
 
     &:hover {
       opacity: 1;
-      background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25));
     }
   }
 
@@ -157,49 +150,35 @@ export default defineComponent({
     color: white;
     font-weight: bold;
     text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    font-size: 20px;
 
     height: 100px;
-    width: 60%;
+    width: 55%;
     position: absolute;
-    top: 14%;
+    top: 10%;
     left: 15%;
   }
 
   &-bubble {
     width: 75%;
     position: absolute;
-    height: 30%;
-    top: 10%;
-    left: 8%;
+    top: 15px;
+    left: 30px;
   }
 
   &-lady {
-    height: 55%;
+    height: 60%;
     position: absolute;
     right: 0;
     bottom: 0;
   }
 
   &-start-playing {
-    height: 30%;
+    cursor: pointer;
+    height: 35%;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-
-    & span {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 14px;
-      width: 75px;
-      color: white;
-      display: flex;
-      justify-content: center;
-      text-align: center;
-    }
   }
 
   &-btn {
@@ -215,7 +194,7 @@ export default defineComponent({
 
     & div {
       color: white;
-      font-size: 24px;
+      font-size: 18px;
       font-weight: bold;
       text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
@@ -227,60 +206,12 @@ export default defineComponent({
   }
 }
 
-@media (max-width: $breakpoint-md) {
-  .virtual-preschool {
-    margin-top: 0px !important;
-  }
-
+@media (max-width: $breakpoint-sm) {
   .section {
     padding: 12px;
 
     &-content {
       opacity: 1;
-    }
-  }
-}
-
-@media (max-width: $breakpoint-md) {
-  .virtual-preschool {
-    margin-top: 0px !important;
-  }
-
-  .section {
-    padding: 12px;
-
-    &-content {
-      opacity: 1;
-    }
-  }
-}
-
-@media (min-width: $breakpoint-xs) and (max-width: $breakpoint-md) {
-  .section {
-    &-bubble-text {
-      font-size: 28px;
-    }
-
-    &-start-playing {
-      & span {
-      font-size: 20px;
-      width: 75px;
-      }
-    }
-  }
-}
-
-@media (max-width: $breakpoint-xs) {
-  .section {
-    &-bubble-text {
-      font-size: 14px;
-    }
-
-    &-start-playing {
-      & span {
-        font-size: 10px;
-        width: 55px;
-      }
     }
   }
 }

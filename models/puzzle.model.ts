@@ -29,4 +29,6 @@ export interface PuzzleResponse {
   puzzleChildrenId : number
   src: string
   srcType? : string
+  columns: number
+  rows: number
 }
