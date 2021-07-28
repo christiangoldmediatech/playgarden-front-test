@@ -14,8 +14,3 @@ export interface Plan extends Entity {
     monthlyStripeId: string
     anualStripeId: string
 }
-
-export interface PlanResponse {
-  text: string
-  value: number
-}
