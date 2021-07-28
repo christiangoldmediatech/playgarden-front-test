@@ -118,6 +118,7 @@
                   </v-icon>
                 </nuxt-link>
                 <nuxt-link
+                  title="Grades"
                   :to="{
                     name: 'admin-lesson-grades-editor',
                     query: { lessonId: item.id }
@@ -128,6 +129,7 @@
                   </v-icon>
                 </nuxt-link>
                 <nuxt-link
+                  title="Analytics"
                   :to="{
                     name: 'admin-lessons-analytics',
                     query: { lessonId: item.id }
@@ -135,6 +137,18 @@
                 >
                   <v-icon color="#997c55" dense>
                     mdi-chart-bar
+                  </v-icon>
+                </nuxt-link>
+
+                <nuxt-link
+                  title="Worksheets"
+                  :to="{
+                    name: 'admin-curriculum-management-uploaded-worksheets',
+                    query: { lessonId: item.id }
+                  }"
+                >
+                  <v-icon color="#85929E" dense>
+                    mdi-file-image
                   </v-icon>
                 </nuxt-link>
               </template>
@@ -195,7 +209,7 @@ export default {
         align: 'right',
         sortable: false,
         value: 'actions',
-        width: 150
+        width: 175
       }
     ],
     levels: [
