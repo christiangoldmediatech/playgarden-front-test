@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define */
-import { OfflineWorksheet } from '@/models'
+import { OfflineWorksheet, Child } from '@/models'
 import { axios } from '@/utils'
 import { Store } from 'vuex/types'
 
@@ -43,8 +43,13 @@ export const useOfflineWorksheet = ({
     return axios.$get(`/worksheets/children/${childId}`)
   }
 
+  const getChild = (childId: number): Promise<Child> => {
+    return axios.$get(`/children/${childId}`)
+  }
+
   return {
     upload,
-    getUploaded
+    getUploaded,
+    getChild
   }
 }
