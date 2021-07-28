@@ -23,7 +23,9 @@ export const usePuzzle = () => {
         name = '',
         pieces = 0,
         piecesUnclocked = 0,
-        puzzleChildrenId
+        puzzleChildrenId,
+        rows = 3,
+        columns = 5
       }) => ({
         id,
         active,
@@ -36,7 +38,9 @@ export const usePuzzle = () => {
         percentageCompleted: (piecesUnclocked * 100) / pieces,
         puzzleChildrenId,
         src: image,
-        srcType: getSrcType(completed && !active)
+        srcType: getSrcType(completed && !active),
+        rows,
+        columns
       })
     )
   }
