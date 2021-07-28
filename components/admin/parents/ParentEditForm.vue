@@ -28,7 +28,7 @@
               <v-form>
                 <v-row class="mt-n4" justify="end">
                   <b class="pt-9 mr-2">Is active ?</b>
-                  <v-switch v-model="user.testUser" :label="getActive" class="mr-4" />
+                  <v-switch v-model="user.isActive" :label="getActive" class="mr-4" />
                 </v-row>
                 <v-row>
                   <v-col cols="12" lg="4" md="6">
@@ -163,8 +163,10 @@ export default defineComponent({
         lastName: '',
         email: '',
         phoneNumber: '',
-        promotion_code: null,
-        promotion_id: null,
+        isActive: true,
+        status: 1,
+        promotion_code: '',
+        promotion_id: '',
         roleId: null,
         planId: null,
         testUser: null,
@@ -196,15 +198,22 @@ export default defineComponent({
       return this.id ? 'Edit Parent' : 'New Parent'
     },
 
-    getActive () {
-      return (this.user.testUser) ? 'Yes' : 'No'
+    getActive (): unknown {
+      return (this.user.status > 0) ? 'ACTIVE' : 'INACTIVE'
     },
 
-    planList () {
-      const list = this.plans.map((plan: Plan) => {
-        return { text: plan.planName, value: plan.id }
-      })
+    planList (): unknown {
+      const list = (this.plans.length > 0)
+        ? this.plans.map((plan: Plan) => {
+          return { text: plan.planName, value: plan.id }
+        })
+        : []
       return list
+    }
+  },
+  watch: {
+    isActive (val) {
+      this.user.status = (val) ? 1 : 0
     }
   },
   methods: {
@@ -221,15 +230,13 @@ export default defineComponent({
           this.$snotify.success('Coupon is valid.')
         } else {
           this.$snotify.warning('Coupon is not valid.', 'Warning', {})
-          this.$nuxt.$emit('send-coupon', null)
-          this.user.promotion_code = null
-          this.user.promotion_id = null
+          this.user.promotion_code = ''
+          this.user.promotion_id = ''
         }
       }
     },
 
     async save () {
-      console.log('aqui', this.user)
       await this.saveUser({ data: this.user })
       this.getBack()
     }

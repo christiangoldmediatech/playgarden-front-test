@@ -75,8 +75,11 @@ export interface User extends Entity {
   lastName: string
   onboardingDone: boolean
   phoneNumber?: string
+  promotion_code?: string
+  promotion_id?: string
   planChoosen: boolean
   planSelected: PlanSelected
+  planId: number,
   registerStep: number
   registerStepType: 'COMPLETED'
   role: Role
