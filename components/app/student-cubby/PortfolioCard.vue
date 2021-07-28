@@ -188,7 +188,7 @@ export default defineComponent({
   },
 
   computed: {
-    textShare (): String {
+    textShare (): string {
       return (this.child) ? `${this.child.firstName || 'Child'}'s awesome work!` : ''
     }
   }
