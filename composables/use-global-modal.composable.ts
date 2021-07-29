@@ -24,7 +24,10 @@ const imagePath = ref('')
 
 export const useGlobalModal = ({ store }: { store: Store<TypedStore> }) => {
   const userInfo = store.getters['auth/getUserInfo']
-  const isChangePasswordModalVisible = computed<boolean>(() => (userInfo.firstLogin))
+  const isChangePasswordModalVisible = computed<boolean>(() => {
+    const user = store.getters['auth/getUserInfo']
+    return (user.firstLogin)
+  })
 
   const isNotification = computed<TrialingUserSignupNotificationSign>(() => {
     const dataNotification: TrialingUserSignupNotificationSign = {
