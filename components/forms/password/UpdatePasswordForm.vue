@@ -51,6 +51,7 @@
       </v-btn>
 
       <v-btn
+        v-if="showCancel"
         block
         class="mb-6"
         color="accent"
@@ -74,7 +75,12 @@ export default {
   mixins: [submittable],
 
   props: {
-    loading: Boolean
+    loading: Boolean,
+    showCancel: {
+      type: Boolean,
+      required: false,
+      default: true
+    }
   },
 
   methods: {

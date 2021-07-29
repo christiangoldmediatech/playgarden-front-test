@@ -97,6 +97,7 @@ export default {
   async fetchUserInfo ({ commit, rootGetters }) {
     try {
       const { data } = await this.$axios.get('/auth/me')
+      console.log('data after save--', data)
       commit('SET_USER_INFO', data)
 
       return data

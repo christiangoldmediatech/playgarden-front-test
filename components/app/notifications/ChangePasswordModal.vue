@@ -30,8 +30,7 @@
 
         <update-password
           v-if="isChangePasswordModalVisible"
-          @click:cancel="isChangePasswordModalVisible = false"
-          @update:success="isChangePasswordModalVisible = false"
+          :show-cancel="false"
         />
       </v-col>
     </pg-dialog>
