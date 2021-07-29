@@ -327,7 +327,6 @@ export default {
 
     if (results[1]) {
       const data = results[1]
-      console.log('data--', data)
       this.user.firstName = data.firstName
       this.user.lastName = data.lastName
       this.user.email = data.email

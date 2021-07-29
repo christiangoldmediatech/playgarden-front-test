@@ -14,6 +14,7 @@ type TrialingUserSignupNotificationSign = {
 }
 
 const isContactUsModalVisible = ref(false)
+// const isChangePasswordModalVisible = ref(false)
 
 // Trialing User Signup Notification
 const isNotificationSignupModalVisible = ref(true)
@@ -23,6 +24,7 @@ const imagePath = ref('')
 
 export const useGlobalModal = ({ store }: { store: Store<TypedStore> }) => {
   const userInfo = store.getters['auth/getUserInfo']
+  const isChangePasswordModalVisible = computed<boolean>(() => (userInfo.firstLogin))
 
   const isNotification = computed<TrialingUserSignupNotificationSign>(() => {
     const dataNotification: TrialingUserSignupNotificationSign = {
@@ -90,6 +92,7 @@ export const useGlobalModal = ({ store }: { store: Store<TypedStore> }) => {
   return {
     isContactUsModalVisible,
     isNotification,
+    isChangePasswordModalVisible,
     showContactUsModal,
     hideContactUsModal,
     showNotificationSignupModal,
