@@ -223,6 +223,7 @@ export default defineComponent({
 
     async validateCoupon () {
       if (this.user.promotion_code) {
+        this.loading = true
         await this.getCoupons({ active: true, code: this.user.promotion_code })
         if (this.coupons.length > 0) {
           this.user.promotion_id = this.coupons[0].promotion_id
@@ -233,6 +234,7 @@ export default defineComponent({
           this.user.promotion_code = ''
           this.user.promotion_id = ''
         }
+        this.loading = false
       }
     },
 

@@ -360,6 +360,7 @@ export default {
 
     async validateCoupon () {
       if (this.user.promotion_code) {
+        this.loading = true
         const coupons = await this.getCoupons({ active: true, code: this.user.promotion_code })
         if (coupons.length > 0) {
           this.user.promotion_id = coupons[0].promotion_id
@@ -371,6 +372,7 @@ export default {
           this.user.promotion_code = null
           this.user.promotion_id = null
         }
+        this.loading = false
       }
     },
 
