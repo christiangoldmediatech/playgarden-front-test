@@ -14,7 +14,6 @@ type TrialingUserSignupNotificationSign = {
 }
 
 const isContactUsModalVisible = ref(false)
-// const isChangePasswordModalVisible = ref(false)
 
 // Trialing User Signup Notification
 const isNotificationSignupModalVisible = ref(true)
