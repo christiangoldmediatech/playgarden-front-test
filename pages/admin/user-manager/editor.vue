@@ -156,6 +156,21 @@
                       />
                     </validation-provider>
                   </v-col>
+
+                  <v-col v-if="user.roleId === 3" cols="12" md="6">
+                    <validation-provider
+                      v-slot="{ errors }"
+                      name="Promotion Code"
+                    >
+                      <pg-text-field
+                        v-model="user.promotion_code"
+                        :error-messages="errors"
+                        label="Promotion Code"
+                        solo-labeled
+                        @blur="validateCoupon"
+                      />
+                    </validation-provider>
+                  </v-col>
                 </v-row>
               </v-form>
             </v-card-text>
@@ -208,6 +223,8 @@ export default {
         phoneNumber: '',
         roleId: null,
         planId: null,
+        promotion_code: '',
+        promotion_id: '',
         testUser: null,
         password: null,
         workbookSent: false,
@@ -279,6 +296,10 @@ export default {
       if (!val) {
         this.user.password = undefined
       }
+    },
+    'user.roleId' (val) {
+      this.user.promotion_code = ''
+      this.user.promotion_id = ''
     }
   },
 
@@ -321,6 +342,7 @@ export default {
   },
 
   methods: {
+    ...mapActions('coupons', ['getCoupons']),
     ...mapActions('admin/users', {
       getUsers: 'get',
       getUserById: 'getById',
@@ -335,6 +357,22 @@ export default {
     ...mapActions('admin/roles', {
       getRoles: 'get'
     }),
+
+    async validateCoupon () {
+      if (this.user.promotion_code) {
+        const coupons = await this.getCoupons({ active: true, code: this.user.promotion_code })
+        if (coupons.length > 0) {
+          this.user.promotion_id = coupons[0].promotion_id
+          this.$nuxt.$emit('send-coupon', coupons[0])
+          this.$snotify.success('Coupon is valid.')
+        } else {
+          this.$snotify.warning('Coupon is not valid.', 'Warning', {})
+          this.$nuxt.$emit('send-coupon', null)
+          this.user.promotion_code = null
+          this.user.promotion_id = null
+        }
+      }
+    },
 
     async save () {
       this.loading = true
