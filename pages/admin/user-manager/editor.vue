@@ -257,7 +257,7 @@ export default {
     },
 
     getStripeStatus () {
-      return (this.user.stripeStatus === 'canceled') ? 'No' : 'Yes'
+      return (this.user.active) ? 'Yes' : 'No'
     },
 
     getTitlleChange () {
