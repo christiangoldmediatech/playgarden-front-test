@@ -46,6 +46,8 @@
                 <v-row class="mt-n4" justify="end">
                   <b class="pt-9 mr-2">Is test user ?</b>
                   <v-switch v-model="user.testUser" :label="getTestUser" class="mr-4" />
+                  <b v-if="user.stripeStatus === 'canceled'" class="pt-9 mr-2">Active subscription ?</b>
+                  <v-switch v-if="user.stripeStatus === 'canceled'" v-model="user.active" :label="getStripeStatus" class="mr-4" />
                 </v-row>
                 <v-row>
                   <v-col cols="12" lg="4" md="6">
@@ -224,6 +226,8 @@ export default {
         roleId: null,
         planId: null,
         promotion_code: '',
+        stripeStatus: null,
+        active: null,
         promotion_id: '',
         testUser: null,
         password: null,
@@ -250,6 +254,10 @@ export default {
 
     getTestUser () {
       return (this.user.testUser) ? 'Yes' : 'No'
+    },
+
+    getStripeStatus () {
+      return (this.user.stripeStatus === 'canceled') ? 'No' : 'Yes'
     },
 
     getTitlleChange () {
@@ -319,6 +327,7 @@ export default {
 
     if (results[1]) {
       const data = results[1]
+      console.log('data--', data)
       this.user.firstName = data.firstName
       this.user.lastName = data.lastName
       this.user.email = data.email
@@ -335,6 +344,11 @@ export default {
         this.user.backpackSent = data.shipments.backpack
         this.backpackDate = data.shipments.backpackDate
         this.workbookDate = data.shipments.workbookDate
+      }
+
+      if (data.billings.length > 0) {
+        this.user.stripeStatus = data.billings[0].stripeStatus
+        this.user.active = (!this.user.stripeStatus === 'canceled')
       }
     }
 
