@@ -56,7 +56,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useRoute, computed, watch, useRouter, onMounted, ref } from '@nuxtjs/composition-api'
+import { defineComponent, useRoute, computed, watch, useRouter, onMounted, ref, onBeforeMount } from '@nuxtjs/composition-api'
 import StudentCubbyItems from '@/components/app/student-cubby/StudentCubbyItems.vue'
 import ChildSelect from '@/components/app/ChildSelect.vue'
 
@@ -108,19 +108,35 @@ export default defineComponent({
       return studentCubbyItems.find(item => route.value.name?.includes(item.routeName)) || {}
     })
 
+    const currentChildren = ctx.root.$store.getters.getCurrentChild
+
     const routeChildId = computed<number | null>(() => {
       if (typeof route.value.query.id !== 'string') {
         return null
       }
 
-      return parseInt(route.value.query.id)
+      const parsedChildId = parseInt(route.value.query.id)
+
+      if (Number.isNaN(parsedChildId)) {
+        return null
+      }
+
+      return parsedChildId
     })
 
-    watch(routeChildId, () => {
-      router.push({
-        name: 'app-student-cubby-puzzle',
-        query: { id: `${routeChildId.value}` }
-      })
+    watch(routeChildId, (id) => {
+      const childId = id ? Number(id) : NaN
+      if (!Number.isNaN(childId)) {
+        router.push({
+          name: 'app-student-cubby-puzzle',
+          query: { id: `${routeChildId.value}` }
+        })
+      } else {
+        router.push({
+          name: 'app-student-cubby-puzzle',
+          query: { id: `${currentChildren[0].id}` }
+        })
+      }
     })
 
     const selectedChildId = ref<number>(routeChildId.value || 0)
@@ -134,7 +150,16 @@ export default defineComponent({
       }
     })
 
-    const currentChildren = ctx.root.$store.getters.getCurrentChild
+    onBeforeMount(() => {
+      if (!routeChildId.value) {
+        if (currentChildren?.length && currentChildren[0]?.id) {
+          router.push({
+            name: route.value.name || 'app-student-cubby-puzzle',
+            query: { id: `${currentChildren[0].id}` }
+          })
+        }
+      }
+    })
 
     onMounted(() => {
       if (routeChildId.value) {
@@ -147,6 +172,7 @@ export default defineComponent({
     const isMobile = computed(() => ctx.root.$vuetify.breakpoint.mobile)
 
     return {
+      routeChildId,
       isMobile,
       studentCubbyItems,
       selectedCubbyItem,
