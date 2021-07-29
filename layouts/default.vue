@@ -26,7 +26,7 @@
       <!-- NOTIFICATION SIGNUP -->
       <notification-signup-modal />
 
-      <!-- CHANGE PASSWORD -->
+      <!-- CHANGE PASSWORD ON FIRST LOGIN -->
       <change-password-modal />
 
       <!-- CONTENT -->
