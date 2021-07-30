@@ -3,9 +3,6 @@ import { axios } from '@/utils'
 import { Plan, Coupon, User } from '@/models'
 
 export const usePlans = () => {
-  /**
-   * HTTP Requests
-   */
   const plans = ref<Plan[]>([])
   const coupons = ref<Coupon[]>([])
 
