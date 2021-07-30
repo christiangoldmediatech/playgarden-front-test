@@ -4,11 +4,10 @@ import { Plan, Coupon, User } from '@/models'
 
 export const usePlans = () => {
   /**
-     * HTTP Request
-     */
+   * HTTP Requests
+   */
   const plans = ref<Plan[]>([])
   const coupons = ref<Coupon[]>([])
-  const user = ref<User>()
 
   const getPlans = async () => {
     plans.value = await axios.$get('/plans')
@@ -18,12 +17,11 @@ export const usePlans = () => {
     coupons.value = await axios.$get('/coupons', { params })
   }
 
-  const saveUser = async ({ data }: {data: unknown}) => {
+  const saveUser = async ({ data }: {data: any}) => {
     plans.value = await axios.$post('/users/admin', data)
   }
 
   return {
-    user,
     plans,
     coupons,
     getPlans,

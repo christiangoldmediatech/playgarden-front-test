@@ -143,20 +143,17 @@
 
 <script lang="ts">
 
-import { defineComponent, computed, onMounted, ref } from '@nuxtjs/composition-api'
+import { defineComponent, computed, onMounted, ref, useRouter } from '@nuxtjs/composition-api'
 import { usePlans } from '@/composables/users'
+import { useSnotifyHelper } from '@/composables'
 import { Plan, User } from '@/models'
 
 export default defineComponent({
   name: 'ParentEditForm',
 
-  data () {
-    return {
-      loading: false
-    }
-  },
-
   setup () {
+    const router = useRouter()
+    const snotify = useSnotifyHelper()
     const user = ref<Partial<User>>({
       firstName: '',
       lastName: '',
@@ -168,7 +165,7 @@ export default defineComponent({
     })
 
     const { plans, coupons, getPlans, getCoupons, saveUser } = usePlans()
-
+    let loading: boolean = false
     computed(async () => await getPlans())
     const planList = computed(() => {
       let list: any = []
@@ -182,17 +179,22 @@ export default defineComponent({
 
     const validateCoupon = async () => {
       if (user.value) {
+        loading = true
         await getCoupons({ active: true, code: user.value.promotion_code })
         if (coupons.value.length > 0) {
           user.value.promotion_id = coupons.value[0].promotion_id
-          /* this.$nuxt.$emit('send-coupon', coupons[0])
-          this.$snotify.success('Coupon is valid.') */
+          snotify.success('Coupon is valid.')
         } else {
-          // this.$snotify.warning('Coupon is not valid.', 'Warning', {})
+          snotify.warning('Coupon is not valid.')
           user.value.promotion_code = ''
           user.value.promotion_id = ''
+          loading = false
         }
       }
+    }
+
+    const getBack = () => {
+      router.go(-1)
     }
 
     onMounted(async () => {
@@ -200,22 +202,22 @@ export default defineComponent({
     })
 
     return {
+      loading,
       user,
       plans,
       planList,
       coupons,
       getCoupons,
       saveUser,
+      getBack,
       validateCoupon
     }
   },
   methods: {
-    getBack () {
-      this.$router.go(-1)
-    },
-
     async save () {
+      this.loading = true
       await this.saveUser({ data: this.user })
+      this.loading = false
       this.getBack()
     }
   }
