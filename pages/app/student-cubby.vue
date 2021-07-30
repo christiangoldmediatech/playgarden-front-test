@@ -71,6 +71,7 @@ export default defineComponent({
   setup (_, ctx) {
     const route = useRoute()
     const router = useRouter()
+    const isPageFirstLoad = ref(true)
 
     const studentCubbyItems = [
       {
@@ -111,11 +112,7 @@ export default defineComponent({
     const currentChildren = ctx.root.$store.getters.getCurrentChild
 
     const routeChildId = computed<number | null>(() => {
-      if (typeof route.value.query.id !== 'string') {
-        return null
-      }
-
-      const parsedChildId = parseInt(route.value.query.id)
+      const parsedChildId = parseInt(`${route.value.query.id}`)
 
       if (Number.isNaN(parsedChildId)) {
         return null
@@ -124,13 +121,19 @@ export default defineComponent({
       return parsedChildId
     })
 
-    watch(routeChildId, (id) => {
+    watch(routeChildId, (id, old) => {
       const childId = id ? Number(id) : NaN
+
       if (!Number.isNaN(childId)) {
-        router.push({
-          name: 'app-student-cubby-puzzle',
-          query: { id: `${routeChildId.value}` }
-        })
+        // Do not redirect user if this is the first time opening the page
+        if (!isPageFirstLoad.value) {
+          router.push({
+            name: 'app-student-cubby-puzzle',
+            query: { id: `${routeChildId.value}` }
+          })
+        } else {
+          isPageFirstLoad.value = false
+        }
       } else {
         router.push({
           name: 'app-student-cubby-puzzle',
@@ -143,15 +146,20 @@ export default defineComponent({
 
     watch(selectedChildId, (id) => {
       if (id) {
-        router.push({
-          name: route.value.name || 'app-student-cubby-puzzle',
-          query: { id: `${id}` }
-        })
+        // Do not redirect user if this is the first time opening the page
+        if (!isPageFirstLoad.value) {
+          router.push({
+            name: route.value.name || 'app-student-cubby-puzzle',
+            query: { id: `${id}` }
+          })
+        } else {
+          isPageFirstLoad.value = false
+        }
       }
     })
 
     onBeforeMount(() => {
-      if (!routeChildId.value) {
+      if (!route.value.query?.id) {
         if (currentChildren?.length && currentChildren[0]?.id) {
           router.push({
             name: route.value.name || 'app-student-cubby-puzzle',
