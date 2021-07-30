@@ -4,7 +4,7 @@
       <v-col cols="12">
         <v-card width="100%">
           <v-card-title>
-            {{ title }}
+            New Parent
             <v-spacer />
             <v-btn
               class="text-none"
@@ -143,95 +143,75 @@
 
 <script lang="ts">
 
-import { defineComponent, computed, onMounted } from '@nuxtjs/composition-api'
+import { defineComponent, computed, onMounted, ref } from '@nuxtjs/composition-api'
 import { usePlans } from '@/composables/users'
-import { Plan } from '@/models'
+import { Plan, User } from '@/models'
 
 export default defineComponent({
   name: 'ParentEditForm',
 
   data () {
     return {
-      loading: false,
-      id: null,
-      user: {
-        firstName: '',
-        lastName: '',
-        email: '',
-        phoneNumber: '',
-        isActive: true,
-        status: 1,
-        promotion_code: '',
-        promotion_id: '',
-        roleId: null,
-        planId: null,
-        testUser: null,
-        password: null,
-        workbookSent: false,
-        backpackSent: false
-      }
+      loading: false
     }
   },
 
   setup () {
-    computed(async () => await getPlans())
+    const user = ref<Partial<User>>({
+      firstName: '',
+      lastName: '',
+      email: '',
+      phoneNumber: '',
+      status: 1,
+      promotion_code: '',
+      promotion_id: ''
+    })
+
     const { plans, coupons, getPlans, getCoupons, saveUser } = usePlans()
+
+    computed(async () => await getPlans())
+    const planList = computed(() => {
+      let list: any = []
+      if (plans.value.length > 0) {
+        list = plans.value.map((plan: Plan) => {
+          return { text: plan.planName, value: plan.id }
+        })
+      }
+      return list
+    })
+
+    const validateCoupon = async () => {
+      if (user.value) {
+        await getCoupons({ active: true, code: user.value.promotion_code })
+        if (coupons.value.length > 0) {
+          user.value.promotion_id = coupons.value[0].promotion_id
+          /* this.$nuxt.$emit('send-coupon', coupons[0])
+          this.$snotify.success('Coupon is valid.') */
+        } else {
+          // this.$snotify.warning('Coupon is not valid.', 'Warning', {})
+          user.value.promotion_code = ''
+          user.value.promotion_id = ''
+        }
+      }
+    }
 
     onMounted(async () => {
       await getPlans()
     })
 
     return {
+      user,
       plans,
+      planList,
       coupons,
       getCoupons,
-      saveUser
-    }
-  },
-
-  computed: {
-    title () {
-      return this.id ? 'Edit Parent' : 'New Parent'
-    },
-
-    getActive (): unknown {
-      return (this.user.status > 0) ? 'ACTIVE' : 'INACTIVE'
-    },
-
-    planList (): unknown {
-      const list = (this.plans.length > 0)
-        ? this.plans.map((plan: Plan) => {
-          return { text: plan.planName, value: plan.id }
-        })
-        : []
-      return list
-    }
-  },
-  watch: {
-    isActive (val) {
-      this.user.status = (val) ? 1 : 0
+      saveUser,
+      validateCoupon
     }
   },
   methods: {
     getBack () {
       this.$router.go(-1)
-    },
-
-    async validateCoupon () {
-      if (this.user.promotion_code) {
-        this.loading = true
-        await this.getCoupons({ active: true, code: this.user.promotion_code })
-        if (this.coupons.length > 0) {
-          this.user.promotion_id = this.coupons[0].promotion_id
-          this.$nuxt.$emit('send-coupon', this.coupons[0])
-          this.$snotify.success('Coupon is valid.')
-        } else {
-          this.$snotify.warning('Coupon is not valid.', 'Warning', {})
-          this.user.promotion_code = ''
-          this.user.promotion_id = ''
-        }
-        this.loading = false
-      }
     },
 
     async save () {

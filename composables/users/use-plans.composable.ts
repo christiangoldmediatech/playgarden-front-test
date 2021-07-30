@@ -1,6 +1,6 @@
 import { ref } from '@nuxtjs/composition-api'
 import { axios } from '@/utils'
-import { Plan, Coupon } from '@/models'
+import { Plan, Coupon, User } from '@/models'
 
 export const usePlans = () => {
   /**
@@ -8,6 +8,7 @@ export const usePlans = () => {
      */
   const plans = ref<Plan[]>([])
   const coupons = ref<Coupon[]>([])
+  const user = ref<User>()
 
   const getPlans = async () => {
     plans.value = await axios.$get('/plans')
@@ -22,6 +23,7 @@ export const usePlans = () => {
   }
 
   return {
+    user,
     plans,
     coupons,
     getPlans,
