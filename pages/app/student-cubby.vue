@@ -56,7 +56,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useRoute, computed, watch, useRouter, onMounted, ref } from '@nuxtjs/composition-api'
+import { defineComponent, useRoute, computed, watch, useRouter, onMounted, ref, onBeforeMount } from '@nuxtjs/composition-api'
 import StudentCubbyItems from '@/components/app/student-cubby/StudentCubbyItems.vue'
 import ChildSelect from '@/components/app/ChildSelect.vue'
 
@@ -71,6 +71,7 @@ export default defineComponent({
   setup (_, ctx) {
     const route = useRoute()
     const router = useRouter()
+    const isPageFirstLoad = ref(true)
 
     const studentCubbyItems = [
       {
@@ -108,33 +109,65 @@ export default defineComponent({
       return studentCubbyItems.find(item => route.value.name?.includes(item.routeName)) || {}
     })
 
+    const currentChildren = ctx.root.$store.getters.getCurrentChild
+
     const routeChildId = computed<number | null>(() => {
-      if (typeof route.value.query.id !== 'string') {
+      const parsedChildId = parseInt(`${route.value.query.id}`)
+
+      if (Number.isNaN(parsedChildId)) {
         return null
       }
 
-      return parseInt(route.value.query.id)
+      return parsedChildId
     })
 
-    watch(routeChildId, () => {
-      router.push({
-        name: 'app-student-cubby-puzzle',
-        query: { id: `${routeChildId.value}` }
-      })
+    watch(routeChildId, (id, old) => {
+      const childId = id ? Number(id) : NaN
+
+      if (!Number.isNaN(childId)) {
+        // Do not redirect user if this is the first time opening the page
+        if (!isPageFirstLoad.value) {
+          router.push({
+            name: 'app-student-cubby-puzzle',
+            query: { id: `${routeChildId.value}` }
+          })
+        } else {
+          isPageFirstLoad.value = false
+        }
+      } else {
+        router.push({
+          name: 'app-student-cubby-puzzle',
+          query: { id: `${currentChildren[0].id}` }
+        })
+      }
     })
 
     const selectedChildId = ref<number>(routeChildId.value || 0)
 
     watch(selectedChildId, (id) => {
       if (id) {
-        router.push({
-          name: route.value.name || 'app-student-cubby-puzzle',
-          query: { id: `${id}` }
-        })
+        // Do not redirect user if this is the first time opening the page
+        if (!isPageFirstLoad.value) {
+          router.push({
+            name: route.value.name || 'app-student-cubby-puzzle',
+            query: { id: `${id}` }
+          })
+        } else {
+          isPageFirstLoad.value = false
+        }
       }
     })
 
-    const currentChildren = ctx.root.$store.getters.getCurrentChild
+    onBeforeMount(() => {
+      if (!route.value.query?.id) {
+        if (currentChildren?.length && currentChildren[0]?.id) {
+          router.push({
+            name: route.value.name || 'app-student-cubby-puzzle',
+            query: { id: `${currentChildren[0].id}` }
+          })
+        }
+      }
+    })
 
     onMounted(() => {
       if (routeChildId.value) {
@@ -147,6 +180,7 @@ export default defineComponent({
     const isMobile = computed(() => ctx.root.$vuetify.breakpoint.mobile)
 
     return {
+      routeChildId,
       isMobile,
       studentCubbyItems,
       selectedCubbyItem,

@@ -14,7 +14,7 @@
               class="section-start-playing"
               src="@/assets/png/virtual-preschool/Start Playing.png"
               :data-test-id="`vp-section-${section.title}`"
-              @click="$router.push({ name: section.routeName })"
+              @click="$router.push(section.route)"
             >
 
             <!-- Lady -->
@@ -43,21 +43,23 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
-import { onMounted, ref } from '@vue/composition-api'
+import { defineComponent, onMounted, ref, useStore } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   layout: 'pg',
 
   setup () {
+    const store = useStore()
     const baseRoute = process.env.testEnv === 'production' ? `${process.env.baseRouteProd}` : '/'
+
+    const currentChildren = store.getters.getCurrentChild
 
     const sections = [
       {
         imageUrl: require('@/assets/png/virtual-preschool/Daily lessons.png'),
         teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Beth-daily lessons.png'),
         title: 'Daily Lessons',
-        routeName: 'app-dashboard',
+        route: { name: 'app-dashboard' },
         message: 'We can’t wait to learn with you every day!',
         audio: `${baseRoute}audio/virtual-preschool/Daily lessons.m4a`
       },
@@ -65,7 +67,7 @@ export default defineComponent({
         imageUrl: require('@/assets/png/virtual-preschool/playdates.png'),
         teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Shyla_playdates.png'),
         title: 'Playdates',
-        routeName: 'app-playdates',
+        route: { name: 'app-playdates' },
         message: 'Join our teacher-led playdates for fun with friends!',
         audio: `${baseRoute}audio/virtual-preschool/Playdates.m4a`
       },
@@ -73,7 +75,7 @@ export default defineComponent({
         imageUrl: require('@/assets/png/virtual-preschool/live classes.png'),
         teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Lucy-Liveclasses.png'),
         title: 'Live Classes',
-        routeName: 'app-live-classes',
+        route: { name: 'app-live-classes' },
         message: 'Enjoy cooking, music, movement zooms and more!',
         audio: `${baseRoute}audio/virtual-preschool/Live classes.m4a`
       },
@@ -81,7 +83,7 @@ export default defineComponent({
         imageUrl: require('@/assets/png/virtual-preschool/Cubby.png'),
         teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Ally_cubby.png'),
         title: 'Student Cubby',
-        routeName: 'app-student-cubby',
+        route: { name: 'app-student-cubby-puzzle', query: { id: currentChildren[0].id } },
         message: 'Store your work and track progress in your cubby!',
         audio: `${baseRoute}audio/virtual-preschool/Cubby.m4a`
       },
@@ -89,7 +91,7 @@ export default defineComponent({
         imageUrl: require('@/assets/png/virtual-preschool/Music.png'),
         teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Emma_Music.png'),
         title: 'Music',
-        routeName: 'app-music',
+        route: { name: 'app-music' },
         message: 'Listen anytime to sing and learn!',
         audio: `${baseRoute}audio/virtual-preschool/Music.m4a`
       },
@@ -97,7 +99,7 @@ export default defineComponent({
         imageUrl: require('@/assets/png/virtual-preschool/Library.png'),
         teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Raulbel-Library.png'),
         title: 'Library',
-        routeName: 'app-library',
+        route: { name: 'app-library' },
         message: 'Come read with us in the book nook!',
         audio: `${baseRoute}audio/virtual-preschool/Library.m4a`
       }

@@ -3,6 +3,9 @@ import { mapGetters } from 'vuex'
 export default {
   computed: {
     ...mapGetters('auth', ['isUserInSignupProcess', 'isUserLoggedIn']),
+    ...mapGetters({
+      currentChildId: 'getCurrentChild'
+    }),
 
     items () {
       if (!this.isUserInSignupProcess && this.isUserLoggedIn) {
@@ -27,7 +30,10 @@ export default {
           { title: 'Playdates', to: { name: 'app-playdates' }, exact: false },
           {
             title: 'Student Cubby',
-            to: { name: 'app-student-cubby' },
+            to: {
+              name: 'app-student-cubby-puzzle',
+              query: { id: `${this.currentChildId[0].id}` }
+            },
             exact: false
           }
           // {
