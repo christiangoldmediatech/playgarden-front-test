@@ -215,6 +215,10 @@ export default defineComponent({
     &-content {
       opacity: 1;
     }
+
+    &-start-playing {
+      visibility: hidden;
+    }
   }
 }
 </style>
