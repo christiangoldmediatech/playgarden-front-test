@@ -152,6 +152,7 @@ export default defineComponent({
   name: 'ParentEditForm',
 
   setup () {
+    const loading = ref(false)
     const router = useRouter()
     const snotify = useSnotifyHelper()
     const user = ref<Partial<User>>({
@@ -165,7 +166,6 @@ export default defineComponent({
     })
 
     const { plans, coupons, getPlans, getCoupons, saveUser } = usePlans()
-    let loading: boolean = false
     computed(async () => await getPlans())
     const planList = computed(() => {
       let list: any = []
@@ -179,7 +179,7 @@ export default defineComponent({
 
     const validateCoupon = async () => {
       if (user.value) {
-        loading = true
+        loading.value = true
         await getCoupons({ active: true, code: user.value.promotion_code })
         if (coupons.value.length > 0) {
           user.value.promotion_id = coupons.value[0].promotion_id
@@ -188,7 +188,7 @@ export default defineComponent({
           snotify.warning('Coupon is not valid.')
           user.value.promotion_code = ''
           user.value.promotion_id = ''
-          loading = false
+          loading.value = false
         }
       }
     }
