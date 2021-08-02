@@ -108,7 +108,7 @@
                       name="Promotion Code"
                     >
                       <pg-text-field
-                        v-model="user.promotion_code"
+                        v-model="user.promotionCode"
                         :error-messages="errors"
                         label="Promotion Code"
                         solo-labeled
@@ -161,8 +161,8 @@ export default defineComponent({
       email: '',
       phoneNumber: '',
       status: 1,
-      promotion_code: '',
-      promotion_id: ''
+      promotionCode: '',
+      promotionId: ''
     })
 
     const { plans, coupons, getPlans, getCoupons, saveUser } = usePlans()
@@ -180,16 +180,16 @@ export default defineComponent({
     const validateCoupon = async () => {
       if (user.value) {
         loading.value = true
-        await getCoupons({ active: true, code: user.value.promotion_code })
+        await getCoupons({ active: true, code: user.value.promotionCode })
         if (coupons.value.length > 0) {
-          user.value.promotion_id = coupons.value[0].promotion_id
+          user.value.promotionId = coupons.value[0].promotion_id
           snotify.success('Coupon is valid.')
         } else {
           snotify.warning('Coupon is not valid.')
-          user.value.promotion_code = ''
-          user.value.promotion_id = ''
-          loading.value = false
+          user.value.promotionCode = ''
+          user.value.promotionId = ''
         }
+        loading.value = false
       }
     }
 
