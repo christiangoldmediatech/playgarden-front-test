@@ -80,13 +80,6 @@
             </span>
           </v-card-title>
           <v-card-text>
-            <v-row>
-              <pg-text-field
-                v-model="feedback.title"
-                label="Title"
-                solo-labeled
-              />
-            </v-row>
             <v-btn
               color="accent darken-1"
               small
@@ -97,6 +90,31 @@
             >
               <span class="font-weight-normal">
                 Go to Profile
+              </span>
+            </v-btn>
+            <v-row>
+              <v-col cols="12">
+                <pg-text-field
+                  v-model="feedback.title"
+                  label="Title"
+                  solo-labeled
+                />
+              </v-col>
+              <v-col cols="12">
+                <pg-text-field
+                  v-model="feedback.feedback"
+                  label="Feedback"
+                  solo-labeled
+                />
+              </v-col>
+            </v-row>
+            <v-btn
+              color="primary darken-1"
+              small
+              @click="save"
+            >
+              <span class="font-weight-normal">
+                Save
               </span>
             </v-btn>
           </v-card-text>
@@ -168,12 +186,6 @@ export default defineComponent({
     const dataChild = ref<Child>()
     const { getChild } = useWorksheetsCategories()
     const { feedback, getFeedbackById, getFeedbackByUploadedWorksheetsId, saveFeedback, updateFeedback } = useFeedback()
-    /* const dataFeedback = ref<Partial<Feedback>>({
-      title: '',
-      fedback: '',
-      uploadWorksheetId: props.entityId
-    }) */
-
     const studentId = computed(() => Number(route.value.query.id))
 
     if (!props.child) {
@@ -187,27 +199,48 @@ export default defineComponent({
 
       try {
         dataChild.value = await getChild(props.child.id)
-        console.log('child--', dataChild)
       } catch (error) {
         snotify.error('Sorry! There was an error loading the page.')
       }
     }
 
     onMounted(async () => {
-      getData()
-      await getFeedbackByUploadedWorksheetsId(props.entityId)
-      feedback.value.uploadWorksheetId = props.entityId
+      try {
+        getData()
+        if (props.entityId) {
+          await getFeedbackByUploadedWorksheetsId(props.entityId)
+        }
+      } catch (error) {}
+      feedback.value.uploadedWorksheetId = props.entityId
     })
 
     return {
       feedback,
-      dataChild
+      dataChild,
+      saveFeedback,
+      updateFeedback
     }
   },
 
   computed: {
     textShare (): string {
       return (this.child) ? `${this.child.firstName || 'Child'}'s awesome work!` : ''
+    }
+  },
+
+  methods: {
+    async save () {
+      if (this.feedback.id) {
+        await this.updateFeedback(this.feedback.id, { data: this.feedback })
+        this.$snotify.success(
+          'Feedback is update.'
+        )
+      } else {
+        await this.saveFeedback({ data: this.feedback })
+        this.$snotify.success(
+          'Feedback is saved.'
+        )
+      }
     }
   }
 })

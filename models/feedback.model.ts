@@ -8,7 +8,7 @@ export interface WorksheetsUpload extends Entity {
 }
 export interface Feedback extends Entity {
     title: string
-    fedback: string
+    feedback: string
     uploadedWorksheet: WorksheetsUpload
-    uploadWorksheetId?: number
+    uploadedWorksheetId?: number
 }
