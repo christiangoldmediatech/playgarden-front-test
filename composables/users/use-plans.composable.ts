@@ -1,6 +1,6 @@
 import { ref } from '@nuxtjs/composition-api'
 import { axios } from '@/utils'
-import { Plan, Coupon, User } from '@/models'
+import { Plan, Coupon } from '@/models'
 
 export const usePlans = () => {
   const plans = ref<Plan[]>([])

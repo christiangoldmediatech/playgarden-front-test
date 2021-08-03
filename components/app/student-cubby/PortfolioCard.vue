@@ -80,6 +80,13 @@
             </span>
           </v-card-title>
           <v-card-text>
+            <v-row>
+              <pg-text-field
+                v-model="feedback.title"
+                label="Title"
+                solo-labeled
+              />
+            </v-row>
             <v-btn
               color="accent darken-1"
               small
@@ -102,8 +109,9 @@
 <script lang="ts">
 import { defineComponent, ref, useRoute, computed, onMounted } from '@nuxtjs/composition-api'
 import { useWorksheetsCategories } from '@/composables/worksheets'
-import { Child } from '@/models'
+import { Child, Feedback } from '@/models'
 import { useSnotifyHelper, useChildLesson } from '@/composables'
+import { useFeedback } from '@/composables/feedback'
 
 export default defineComponent({
   name: 'PortfolioCard',
@@ -159,6 +167,12 @@ export default defineComponent({
     const snotify = useSnotifyHelper()
     const dataChild = ref<Child>()
     const { getChild } = useWorksheetsCategories()
+    const { feedback, getFeedbackById, saveFeedback, updateFeedback } = useFeedback()
+    const dataFeedback = ref<Partial<Feedback>>({
+      title: '',
+      fedback: '',
+      uploadWorksheetId: props.entityId
+    })
 
     const studentId = computed(() => Number(route.value.query.id))
 
@@ -173,6 +187,7 @@ export default defineComponent({
 
       try {
         dataChild.value = await getChild(props.child.id)
+        console.log('child--', dataChild)
       } catch (error) {
         snotify.error('Sorry! There was an error loading the page.')
       }
@@ -183,6 +198,7 @@ export default defineComponent({
     })
 
     return {
+      feedback,
       dataChild
     }
   },
