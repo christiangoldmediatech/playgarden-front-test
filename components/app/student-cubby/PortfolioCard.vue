@@ -261,7 +261,3 @@ export default defineComponent({
   z-index: 1;
 }
 </style>
-
-function newFunction(feedback,props: any) {
-  feedback.uploadWorksheetId=props.entityId
-}
