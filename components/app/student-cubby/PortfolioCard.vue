@@ -167,12 +167,12 @@ export default defineComponent({
     const snotify = useSnotifyHelper()
     const dataChild = ref<Child>()
     const { getChild } = useWorksheetsCategories()
-    const { feedback, getFeedbackById, saveFeedback, updateFeedback } = useFeedback()
-    const dataFeedback = ref<Partial<Feedback>>({
+    const { feedback, getFeedbackById, getFeedbackByUploadedWorksheetsId, saveFeedback, updateFeedback } = useFeedback()
+    /* const dataFeedback = ref<Partial<Feedback>>({
       title: '',
       fedback: '',
       uploadWorksheetId: props.entityId
-    })
+    }) */
 
     const studentId = computed(() => Number(route.value.query.id))
 
@@ -193,8 +193,10 @@ export default defineComponent({
       }
     }
 
-    onMounted(() => {
+    onMounted(async () => {
       getData()
+      await getFeedbackByUploadedWorksheetsId(props.entityId)
+      feedback.value.uploadWorksheetId = props.entityId
     })
 
     return {
@@ -221,3 +223,7 @@ export default defineComponent({
   z-index: 1;
 }
 </style>
+
+function newFunction(feedback,props: any) {
+  feedback.uploadWorksheetId=props.entityId
+}

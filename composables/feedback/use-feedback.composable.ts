@@ -3,10 +3,19 @@ import { axios } from '@/utils'
 import { Feedback } from '@/models'
 
 export const useFeedback = () => {
-  const feedback = ref<Feedback>()
+  // const feedback = ref<Feedback>()
+  const feedback = ref<Partial<Feedback>>({
+    title: '',
+    fedback: '',
+    uploadWorksheetId: 0
+  })
 
   const getFeedbackById = async (id:number) => {
     feedback.value = await axios.$get(`/feedbacks/${id}`)
+  }
+
+  const getFeedbackByUploadedWorksheetsId = async (id:number) => {
+    feedback.value = await axios.$get(`/feedbacks/uploadWorksheetId/${id}`)
   }
 
   const saveFeedback = async ({ data }: {data: any}) => {
@@ -20,6 +29,7 @@ export const useFeedback = () => {
   return {
     feedback,
     getFeedbackById,
+    getFeedbackByUploadedWorksheetsId,
     saveFeedback,
     updateFeedback
   }
