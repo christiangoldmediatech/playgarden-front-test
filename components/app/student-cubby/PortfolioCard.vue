@@ -94,6 +94,11 @@
             </v-btn>
             <v-row>
               <v-col cols="12">
+                <span class="font-weight-bold">
+                  Feedback on the workspace:
+                </span>
+              </v-col>
+              <v-col cols="12">
                 <pg-text-field
                   v-model="feedback.title"
                   label="Title"
@@ -101,7 +106,7 @@
                 />
               </v-col>
               <v-col cols="12">
-                <pg-text-field
+                <pg-textarea
                   v-model="feedback.feedback"
                   label="Feedback"
                   solo-labeled
