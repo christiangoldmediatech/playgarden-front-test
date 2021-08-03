@@ -467,10 +467,17 @@
                           >
                         </v-row>
 
-                        <v-row justify="center">
+                        <v-row class="mb-6" justify="center">
                           <v-app class="children-actions">
                             <v-btn
-                              class="text-none"
+                              class="text-none worksheet-uploaded"
+                              large
+                              @click.stop="$router.push({ name: 'admin-portfolio', query: {id: child.id } })"
+                            >
+                              View Uploaded Worksheets
+                            </v-btn>
+                            <v-btn
+                              class=" mt-2 text-none"
                               color="accent"
                               large
                               @click.stop="openTimeline(child)"
@@ -537,7 +544,7 @@
                         </v-row>
                       </v-col>
 
-                      <div v-if="i < children.length - 1" class="gray-div" />
+                      <div v-if="i < children.length - 1" class="gray-div mt-6" />
                     </v-row>
                   </v-col>
                 </v-row>
@@ -905,5 +912,10 @@ export default {
 }
 .children-actions {
   max-height: 110px !important;
+}
+
+.worksheet-uploaded {
+  color: white!important;
+  background-color: #13AADF!important;
 }
 </style>

@@ -1,4 +1,4 @@
-describe('/app/music', () => {
+describe('/app/virtual-preschool', () => {
   before(() => {
     cy.visit('/app/virtual-preschool')
     cy.uiLoginAs('parent')

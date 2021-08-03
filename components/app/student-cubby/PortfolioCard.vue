@@ -12,7 +12,7 @@
         no-gutters
         justify="space-around"
         @click.stop="
-          $nuxt.$emit('open-portfolio-overlay', { entityId, entityType, image })
+          $nuxt.$emit('open-portfolio-overlay', { child, entityId, entityType, image })
         "
       >
         <v-col cols="12">
@@ -36,17 +36,26 @@
                 {{ `Day ${lesson.day}` }}
               </span>
             </div>
+
+            <div v-if="child" class="subheading">
+              <span
+                class="d-block text-center"
+                :class="{ 'white--text': displayMode }"
+              >
+                {{ child.firstName }}
+              </span>
+            </div>
           </div>
         </v-col>
       </v-row>
     </v-container>
 
-    <v-row v-else align="center" class="portfolio-card">
+    <v-row v-else :align="!noShare ? 'center' : 'top'" class="portfolio-card">
       <v-col cols="12" md="">
         <img class="w-100" :src="image">
       </v-col>
 
-      <v-col class="shrink" cols="12" md="">
+      <v-col v-if="!noShare" class="shrink" cols="12" md="">
         <pg-social-buttons
           class="mx-auto mx-md-0"
           entity-auto-resolve
@@ -59,12 +68,44 @@
           :url="image"
         />
       </v-col>
+
+      <v-col v-if="infoUser && dataChild" class="shrink" cols="12" md="4">
+        <v-card class="mx-auto mx-md-0">
+          <v-card-title>
+            <span>
+              Student: {{ dataChild.firstName }}
+            </span><br>
+            <span>
+              Parent: {{ `${dataChild.user.firstName} ${dataChild.user.lastName}` }}
+            </span>
+          </v-card-title>
+          <v-card-text>
+            <v-btn
+              color="accent darken-1"
+              small
+              :to="{
+                name: 'admin-user-manager-profile',
+                query: {id: dataChild.user.id}
+              }"
+            >
+              <span class="font-weight-normal">
+                Go to Profile
+              </span>
+            </v-btn>
+          </v-card-text>
+        </v-card>
+      </v-col>
     </v-row>
   </v-hover>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent, ref, useRoute, computed, onMounted } from '@nuxtjs/composition-api'
+import { useWorksheetsCategories } from '@/composables/worksheets'
+import { Child } from '@/models'
+import { useSnotifyHelper, useChildLesson } from '@/composables'
+
+export default defineComponent({
   name: 'PortfolioCard',
 
   props: {
@@ -83,14 +124,21 @@ export default {
       default: ''
     },
 
+    noShare: {
+      type: Boolean,
+      default: false,
+      required: false
+    },
+
+    infoUser: {
+      type: Boolean,
+      default: false,
+      required: false
+    },
+
     entityType: {
       type: String,
-      default: '',
-      validator: (val) => {
-        const values = { PATCH: 1, PUZZLE: 1, WORKSHEET: 1 }
-
-        return val === null || val === '' || Boolean(values[val])
-      }
+      default: ''
     },
 
     lesson: {
@@ -106,12 +154,45 @@ export default {
     }
   },
 
+  setup (props: any) {
+    const route = useRoute()
+    const snotify = useSnotifyHelper()
+    const dataChild = ref<Child>()
+    const { getChild } = useWorksheetsCategories()
+
+    const studentId = computed(() => Number(route.value.query.id))
+
+    if (!props.child) {
+      props.child = { id: studentId.value }
+    }
+
+    const getData = async () => {
+      if (!props.child) {
+        return
+      }
+
+      try {
+        dataChild.value = await getChild(props.child.id)
+      } catch (error) {
+        snotify.error('Sorry! There was an error loading the page.')
+      }
+    }
+
+    onMounted(() => {
+      getData()
+    })
+
+    return {
+      dataChild
+    }
+  },
+
   computed: {
-    textShare () {
-      return `${this.child.firstName || 'Child'}'s awesome work!`
+    textShare (): string {
+      return (this.child) ? `${this.child.firstName || 'Child'}'s awesome work!` : ''
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
