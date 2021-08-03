@@ -1,38 +1,36 @@
 <template>
   <div class="lsess-table">
-    <template v-if="$vuetify.breakpoint.mobile">
-      <div class="mt-4">
-        <v-carousel
-          v-model="selectedDay"
-          height="48px"
-          :hide-delimiter-background="true"
-          :hide-delimiters="true"
-        >
-          <v-carousel-item v-for="(day, index) in days" :key="`days-row-column-${index}`">
-            <div class="d-flex align-center justify-center fill-height">
-              <span class="font-weight-bold">
-                {{ day }}
-              </span>
-            </div>
-          </v-carousel-item>
-        </v-carousel>
-
-        <template v-for="(entry, hourIndex) in getWeeklySchedule[selectedDay]">
-          <template v-if="entry">
-            <div :key="`mobile-day-${selectedDay}-hour-${hourIndex}`" class="d-flex align-center justify-center lsess-table-offset mb-2 mt-4">
-              {{ 8 + hourIndex }}:00
-            </div>
-            <table-entry :key="`mobile-day-${selectedDay}-hour-${hourIndex}-entry`" :entry="entry" />
-          </template>
-        </template>
-        <template v-if="noEntries(getWeeklySchedule[selectedDay])">
-          <div class="font-weight-bold my-4 text-center">
-            There are no events on this day.
+    <div class="hidden-lg-and-up mt-4">
+      <v-carousel
+        v-model="selectedDay"
+        height="48px"
+        :hide-delimiter-background="true"
+        :hide-delimiters="true"
+      >
+        <v-carousel-item v-for="(day, index) in days" :key="`days-row-column-${index}`">
+          <div class="d-flex align-center justify-center fill-height">
+            <span class="font-weight-bold">
+              {{ day }}
+            </span>
           </div>
+        </v-carousel-item>
+      </v-carousel>
+
+      <template v-for="(entry, hourIndex) in getWeeklySchedule[selectedDay]">
+        <template v-if="entry">
+          <div :key="`mobile-day-${selectedDay}-hour-${hourIndex}`" class="d-flex align-center justify-center lsess-table-offset mb-2 mt-4">
+            {{ 8 + hourIndex }}:00
+          </div>
+          <table-entry :key="`mobile-day-${selectedDay}-hour-${hourIndex}-entry`" :entry="entry" />
         </template>
-      </div>
-    </template>
-    <template v-else>
+      </template>
+      <template v-if="noEntries(getWeeklySchedule[selectedDay])">
+        <div class="font-weight-bold my-4 text-center">
+          There are no events on this day.
+        </div>
+      </template>
+    </div>
+    <div class="hidden-md-and-down">
       <div v-if="!dayMode" class="pl-16 pr-8">
         <v-row class="my-0">
           <v-col v-for="(day, index) in days" :key="`days-row-column-${index}`" class="lsess-table-col lsess-table-col-header">
@@ -75,7 +73,7 @@
           </v-row>
         </div>
       </perfect-scrollbar>
-    </template>
+    </div>
   </div>
 </template>
 
@@ -203,6 +201,7 @@ export default {
     }
     &-col {
       width: 20%;
+      max-height: 160px;
       &-header {
         font-size: 1.1rem;
         line-height: 1.5;

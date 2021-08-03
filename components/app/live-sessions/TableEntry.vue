@@ -23,14 +23,17 @@
         >
       </div>
 
-      <v-row class="px-2 my-0" :title="entry.activityType.name">
+      <v-row class="px-2 my-0" align="end" :title="entry.activityType.name">
         <img class="lsess-table-entry-type ml-1 mt-1" :src="entry.activityType.icon">
 
-        <v-col>
+        <div class="pl-md-2 pl-lg-3 pl-xl-4">
           <v-row align="center" class="fill-height overflow-hidden my-0">
-            <b>{{ entry.activityType.name }}</b>
+            <div>
+              <b>{{ entry.activityType.name }}</b><br>
+              {{ time }}
+            </div>
           </v-row>
-        </v-col>
+        </div>
       </v-row>
 
       <v-card-actions>
@@ -43,6 +46,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { TAG_MANAGER_EVENTS } from '@/models'
+import moment from 'moment'
 
 export default {
   name: 'TableEntry',
@@ -85,6 +89,11 @@ export default {
         str += '...'
       }
       return str
+    },
+
+    time () {
+      const start = moment(this.entry.dateStart)
+      return start.format('hh:mm')
     }
   },
 
