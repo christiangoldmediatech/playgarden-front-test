@@ -75,7 +75,11 @@ export default {
   mixins: [submittable],
 
   props: {
-    loading: Boolean,
+    loading: {
+      type: Boolean,
+      required: true,
+      default: false
+    },
     showCancel: {
       type: Boolean,
       required: false,
