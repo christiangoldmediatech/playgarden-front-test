@@ -1,4 +1,4 @@
-import { computed, ref } from '@nuxtjs/composition-api'
+import { computed, ref, watch } from '@nuxtjs/composition-api'
 import { axios } from '@/utils'
 import { ChildrenMusicFavorite, CurriculumTypeWithMusicLibrary, MusicLibrary } from '@/models'
 
@@ -127,6 +127,25 @@ export const useMusic = () => {
    */
   const isCurrentSong = (songId: number) => songId === currentSong.value?.id
 
+  const removeSongFromPlaylist = (id: MusicLibrary['id']) => {
+    playlist.value = playlist.value.filter(pl => pl.id !== id)
+  }
+
+  /**
+   * Keep playlist songs favorite state in sync with
+   */
+  watch(favoritesDictionary, () => {
+    playlist.value = playlist.value.map((p) => {
+      const favoriteData = favoritesDictionary.value[p.id]
+
+      return {
+        ...p,
+        isFavorite: !!favoriteData?.songId || false,
+        favoriteId: favoriteData?.id
+      }
+    })
+  })
+
   return {
     allSongsWithFavorites,
     currentSong,
@@ -134,6 +153,7 @@ export const useMusic = () => {
     playlist,
     showOnlyFavorites,
     songsByCurriculumTypeWithFavorites,
+    removeSongFromPlaylist,
     getFavoriteMusicForChild,
     getMusicLibrariesByCurriculumType,
     removeFavoriteMusic,
