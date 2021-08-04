@@ -66,6 +66,18 @@
           }"
         >
           <v-row no-gutters justify="center">
+            <!-- Playlist Button -->
+            <v-col
+              v-if="currentSong.description"
+              cols="auto"
+              align-self="center"
+              class="text-center"
+            >
+              <music-queue
+                @favorite="$emit('favorite', $event)"
+              />
+            </v-col>
+
             <v-spacer />
             <v-col
               cols="2"
@@ -167,8 +179,13 @@
 import { useMusic } from '@/composables'
 import { MusicLibrary } from '@/models'
 import { defineComponent, ref, nextTick, computed } from '@nuxtjs/composition-api'
+import MusicQueue from '@/components/app/music/MusicQueue.vue'
 
 export default defineComponent({
+  components: {
+    MusicQueue
+  },
+
   setup (_, { emit }) {
     // this references `ref="audioPlayer"` when the component is mounted
     const audioPlayer = ref<any>(null)
