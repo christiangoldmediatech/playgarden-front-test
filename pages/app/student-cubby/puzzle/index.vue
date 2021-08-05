@@ -145,7 +145,16 @@ export default defineComponent({
     const route = useRoute()
     const store = useStore<TypedStore>()
 
-    const studentId = computed(() => Number(route.value.query.id))
+    const studentId = computed(() => {
+      const childId = Number(route.value.query.id)
+
+      if (Number.isNaN(childId)) {
+        const currentChildren = store.getters.getCurrentChild
+        return currentChildren[0].id
+      } else {
+        return childId
+      }
+    })
     computed(async () => await getPuzzlesByChildId(studentId.value))
 
     const { puzzlesResponse, getPuzzlesByChildId } = usePuzzle()

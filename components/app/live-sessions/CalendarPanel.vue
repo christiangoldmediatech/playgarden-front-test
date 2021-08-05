@@ -14,8 +14,8 @@
 
     <div>
       <v-card class="lsess-calendar-card">
-        <v-row class="flex-column" align="center">
-          <div class="lsess-title mb-3 mb-md-5 mt-3 mt-md-6 text-center">
+        <v-row class="flex-column my-0" align="center">
+          <div class="lsess-title mb-3 mb-md-5 mt-2 mt-md-5 text-center">
             Calendar
           </div>
           <v-date-picker class="lsess-date-picker" :value="value" @change="$emit('input', $event)" />

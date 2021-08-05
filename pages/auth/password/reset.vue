@@ -2,7 +2,7 @@
   <v-row align="center" justify="center" no-gutters>
     <v-col cols="11" md="6">
       <div class="image">
-        <img alt="Smiling Girl Picture" src="@/assets/jpg/girl-smiling.jpg">
+        <img alt="Smiling Girl Picture" src="@/assets/png/welcome-back.png">
       </div>
     </v-col>
 
