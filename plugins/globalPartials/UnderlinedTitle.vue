@@ -52,7 +52,7 @@ export default {
 
     lineColor: {
       type: [Object, String],
-      default: () => ({ color: 'primary', light: 'base' }),
+      default: () => ({ color: 'green2', light: 'base' }),
       validator: colorValidator
     },
 

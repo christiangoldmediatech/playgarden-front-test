@@ -8,11 +8,12 @@ export default function () {
       themes: {
         light: {
           // vuetify shortcut colors
-          accent: '#F89838',
+          accent: '#FFAB37',
           error: '#C61818',
-          primary: '#C2DAA5',
+          primary: '#68C453',
           secondary: '#E2EBBA',
           success: '#C5DCA6',
+          green2: '#B2E68D',
 
           // general colors
           black: '#606060',

@@ -187,7 +187,7 @@ export default {
 }
 
 .info-footer-title {
-  color: #78c383 !important;
+  color: #68C453 !important;
 }
 
 .footer-ref-links {
