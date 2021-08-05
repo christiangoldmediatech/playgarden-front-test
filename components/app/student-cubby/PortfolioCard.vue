@@ -169,7 +169,11 @@ export default defineComponent({
 
     entityType: {
       type: String,
-      default: ''
+      default: '',
+      validator: (val: String) => {
+        const values: any = { PATCH: 1, PUZZLE: 1, WORKSHEET: 1 }
+        return val === null || val === '' || Boolean(values[val.toString()])
+      }
     },
 
     lesson: {
