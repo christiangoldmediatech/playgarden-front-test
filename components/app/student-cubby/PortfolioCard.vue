@@ -50,7 +50,7 @@
       </v-row>
     </v-container>
 
-    <v-row v-else :align="!noShare ? 'center' : 'top'" class="portfolio-card">
+    <v-row v-else align="center" class="portfolio-card">
       <v-col cols="12" md="">
         <img class="w-100" :src="image">
       </v-col>
