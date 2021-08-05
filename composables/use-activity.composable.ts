@@ -163,7 +163,7 @@ const videoToPlaylist = (
     type: 'application/x-mpegURL'
   },
   poster: video.thumbnail,
-  activityId: 0,
+  activityId: video.id,
   videoId: video.id,
   viewed: {
     completed: false
