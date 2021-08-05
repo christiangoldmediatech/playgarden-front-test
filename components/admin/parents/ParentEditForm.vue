@@ -194,7 +194,9 @@ export default defineComponent({
     }
 
     const getBack = () => {
-      router.go(-1)
+      router.push({
+        name: 'admin-user-manager-parents-list'
+      })
     }
 
     onMounted(async () => {
