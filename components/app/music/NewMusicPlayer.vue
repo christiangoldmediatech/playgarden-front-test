@@ -75,6 +75,8 @@
             >
               <music-queue
                 @favorite="$emit('favorite', $event)"
+                @play="playSong"
+                @remove-song="removeSong"
               />
             </v-col>
 
@@ -191,7 +193,8 @@ export default defineComponent({
     const audioPlayer = ref<any>(null)
     const {
       currentSong,
-      playlist
+      playlist,
+      removeSongFromPlaylist
     } = useMusic()
 
     const handleCurrentSong = (song: MusicLibrary) => {
@@ -227,15 +230,37 @@ export default defineComponent({
 
     const isPlayerDisabled = computed(() => !currentSong.value || !currentSong.value.description)
 
+    const playSong = async (playlistIndex: number) => {
+      if (!audioPlayer.value) {
+        return
+      }
+
+      audioPlayer.value?.pause()
+      audioPlayer.value?.selectSongByIndex(playlistIndex)
+      await nextTick()
+      audioPlayer.value?.play()
+    }
+
+    const removeSong = (playlistIndex: number) => {
+      if (!audioPlayer.value) {
+        return
+      }
+
+      removeSongFromPlaylist(playlistIndex)
+      audioPlayer.value?.removeSongByIndex(playlistIndex)
+    }
+
     return {
       audioPlayer,
       currentSong,
-      playlist,
       isPlayerDisabled,
-      handleCurrentSong,
-      refreshSongData,
+      playlist,
       addSongToPlaylist,
-      createNewPlaylist
+      createNewPlaylist,
+      handleCurrentSong,
+      playSong,
+      removeSong,
+      refreshSongData
     }
   }
 })

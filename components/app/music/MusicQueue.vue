@@ -1,5 +1,5 @@
 <template>
-  <v-menu offset-y top :close-on-content-click="false" max-width="1000px">
+  <v-menu offset-y top :close-on-content-click="false" max-width="1000px" @input="handleMenuVisibility">
     <template #activator="{ on }">
       <v-btn class="white--text" icon v-on="on">
         <v-icon size="32">
@@ -27,17 +27,18 @@
 
       <v-card-text class="music-queue-content">
         <template v-if="playlist.length > 0">
-          <v-fade-transition group>
+          <v-slide-x-reverse-transition group>
             <playlist-item
-              v-for="playlistItem in playlist"
+              v-for="(playlistItem, playlistItemIndex) in playlist"
               :key="playlistItem.id"
               :song="playlistItem"
+              :is-playing="isCurrentSong(playlistItem.id)"
               class="my-3"
               @favorite="$emit('favorite', $event)"
-              @play="$emit('play', $event)"
-              @remove-song="handleRemoveSongFromPlaylist"
+              @play="$emit('play', playlistItemIndex)"
+              @remove-song="$emit('remove-song', playlistItemIndex)"
             />
-          </v-fade-transition>
+          </v-slide-x-reverse-transition>
         </template>
 
         <template v-else>
@@ -51,12 +52,9 @@
 </template>
 
 <script lang="ts">
-import { useMusic } from '@/composables'
+import { useMusic, useVuetifyHelper } from '@/composables'
 import { defineComponent, computed } from '@nuxtjs/composition-api'
-
 import PlaylistItem from '@/components/app/music/PlaylistItem.vue'
-import { MusicLibrary } from '@/models'
-import { watch } from '@vue/composition-api'
 
 export default defineComponent({
   components: {
@@ -66,18 +64,30 @@ export default defineComponent({
   events: [],
 
   setup () {
-    const { playlist, removeSongFromPlaylist } = useMusic()
-
-    const handleRemoveSongFromPlaylist = (event: MusicLibrary) => {
-      removeSongFromPlaylist(event.id)
-    }
+    const vuetify = useVuetifyHelper()
+    const { playlist, currentSong, isCurrentSong } = useMusic()
 
     const songCountText = computed(() => playlist.value.length === 1 ? '1 song' : `${playlist.value.length} songs`)
+
+    const handleMenuVisibility = (isShowing: boolean) => {
+      if (!isShowing) {
+        return
+      }
+      try {
+        setTimeout(() => {
+          vuetify.goTo(`#playlist-item-${currentSong.value?.id}`, {
+            container: '.music-queue-content',
+            offset: -53
+          })
+        }, 500)
+      } catch (error) {}
+    }
 
     return {
       playlist,
       songCountText,
-      handleRemoveSongFromPlaylist
+      handleMenuVisibility,
+      isCurrentSong
     }
   }
 })

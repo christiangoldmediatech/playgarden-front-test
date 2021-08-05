@@ -1,7 +1,7 @@
 <template>
   <div>
-    <v-card class="playlist-item">
-      <v-row no-gutters @click="$emit('play', song)">
+    <v-card :id="`playlist-item-${song.id}`" class="playlist-item" @click="$emit('play')">
+      <v-row no-gutters>
         <!-- THUMBNAIL -->
         <v-col cols="2" align-self="center">
           <v-img class="playlist-item-image" cover :src="song.thumbnail" />
@@ -13,8 +13,13 @@
         </v-col>
 
         <!-- SONG AUTHOR -->
-        <v-col cols="3" sm="4" align-self="center" class="playlist-item-name">
+        <v-col v-if="!isPlaying" cols="3" sm="4" align-self="center" class="playlist-item-name">
           {{ song.name }}
+        </v-col>
+
+        <!-- SONG PLAYING INDICATOR -->
+        <v-col v-else cols="3" sm="4" align-self="center" class="playlist-item-name">
+          <span class="playlist-item-playing-tag">PLAYING</span>
         </v-col>
 
         <v-col cols="auto" align-self="center">
@@ -24,7 +29,7 @@
           </v-btn>
 
           <!-- REMOVE BUTTON -->
-          <v-btn class="ml-n1 ml-md-0 red--text text--lighten-1" icon @click.stop="$emit('remove-song', song)">
+          <v-btn class="ml-n1 ml-md-0 red--text text--lighten-1" icon @click.stop="$emit('remove-song')">
             <v-icon>mdi-close-circle</v-icon>
           </v-btn>
         </v-col>
@@ -35,13 +40,16 @@
 
 <script lang="ts">
 import { MusicLibrary } from '@/models'
-import { defineComponent, PropType } from '@nuxtjs/composition-api'
-import { computed } from '@vue/composition-api'
-
+import { defineComponent, PropType, computed } from '@nuxtjs/composition-api'
 export default defineComponent({
   props: {
     song: {
-      type: Object as PropType<MusicLibrary>
+      type: Object as PropType<MusicLibrary>,
+      required: true
+    },
+    isPlaying: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -82,6 +90,20 @@ export default defineComponent({
     color: #CFCFCF;
     font-size: 18px;
   }
+
+  &-playing-tag {
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    padding: 5px;
+    width: 75px;
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    color: white;
+    background: var(--v-accent-base)
+  }
 }
 
 @media (max-width: $breakpoint-xs) {
@@ -99,6 +121,13 @@ export default defineComponent({
     &-name {
       font-size: 11px;
     }
+
+  &-playing-tag {
+    font-size: 8px;
+    padding: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
   }
 }
 </style>

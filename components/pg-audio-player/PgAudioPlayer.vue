@@ -249,6 +249,9 @@ export default {
         this.$set(this.currentPlaylist, currentSongIndex, song)
         this.currentSong = { ...song }
       }
+    },
+    removeSongByIndex (playlistIndex) {
+      this.currentPlaylist.splice(playlistIndex, 1)
     }
   }
 }

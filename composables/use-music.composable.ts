@@ -127,8 +127,8 @@ export const useMusic = () => {
    */
   const isCurrentSong = (songId: number) => songId === currentSong.value?.id
 
-  const removeSongFromPlaylist = (id: MusicLibrary['id']) => {
-    playlist.value = playlist.value.filter(pl => pl.id !== id)
+  const removeSongFromPlaylist = (playlistIndex: number) => {
+    playlist.value.splice(playlistIndex, 1)
   }
 
   /**
