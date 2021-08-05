@@ -95,7 +95,7 @@
             <v-row>
               <v-col cols="12">
                 <span class="font-weight-bold">
-                  Feedback on the workspace:
+                  Feedback on the worksheet:
                 </span>
               </v-col>
               <v-col cols="12">
