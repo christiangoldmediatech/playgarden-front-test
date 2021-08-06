@@ -47,4 +47,12 @@ describe('/app/music', () => {
       })
     })
   })
+
+  describe('playlist', () => {
+    it('should open the playlist card', () => {
+      cy.get('[data-test-id=music-queue-playlist-button]').click({ force: true })
+
+      cy.get('[data-test-id=music-queue-card]').should('be.visible')
+    })
+  })
 })
