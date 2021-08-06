@@ -251,6 +251,11 @@ export default {
       }
     },
     removeSongByIndex (playlistIndex) {
+      // Update current playing song index when a previous playing song is removed.
+      if (playlistIndex < this.currentSongIndex && this.currentSongIndex > 0) {
+        this.currentSongIndex--
+      }
+
       this.currentPlaylist.splice(playlistIndex, 1)
     }
   }
