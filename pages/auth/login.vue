@@ -23,7 +23,7 @@
         <div
           class="image"
         >
-          <v-img contain alt="Smiling Girl Picture" :src="require('@/assets/jpg/girl-smiling.jpg')" />
+          <v-img contain alt="Smiling Girl Picture" :src="require('@/assets/png/welcome-back.png')" />
         </div>
       </v-col>
 
