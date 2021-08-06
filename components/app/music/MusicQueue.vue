@@ -42,7 +42,7 @@
         </template>
 
         <template v-else>
-          <div class="music-queue-empty-queue">
+          <div class="music-queue-empty-queue" data-test-id="music-queue-empty-queue">
             Empty queue
           </div>
         </template>
