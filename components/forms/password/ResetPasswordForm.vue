@@ -17,7 +17,7 @@
 
     <v-btn
       block
-      color="primary"
+      color="green2"
       :disabled="isButtonDisabled"
       :loading="loading"
       type="submit"

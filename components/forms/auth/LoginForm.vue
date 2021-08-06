@@ -29,7 +29,7 @@
 
     <v-btn
       block
-      color="primary"
+      color="green2"
       min-height="60"
       class="main-btn"
       :disabled="isButtonDisabled"
