@@ -4,9 +4,11 @@
     class="text-none underlined-title"
     :style="{
       '--ut-line-color': _lineColor,
+      '--ut-line-color-dark-green': _lineColorDarkGreen,
       '--ut-line-padding-right': linePaddingRight,
       '--ut-line-padding-left': linePaddingLeft,
       '--ut-background-from': _lineFrom,
+      '--ut-background-from-1': _lineFrom,
       fontSize: _fontSize,
       fontWeight: _fontWeight,
       paddingBottom: _paddingBottom,
@@ -56,6 +58,12 @@ export default {
       validator: colorValidator
     },
 
+    lineColorDarkGreen: {
+      type: [Object, String],
+      default: () => ({ color: 'primary', light: 'base' }),
+      validator: colorValidator
+    },
+
     lineFrom: {
       type: Number,
       default: 55
@@ -100,6 +108,13 @@ export default {
       }
 
       return colorMaker(this.lineColor)
+    },
+    _lineColorDarkGreen () {
+      if (this.subtitle) {
+        return 'rgba(254, 197, 114, 0.71)'
+      }
+
+      return colorMaker(this.lineColorDarkGreen)
     },
 
     _lineFrom () {
@@ -160,5 +175,14 @@ export default {
   padding-left: var(--ut-line-padding-left);
   padding-right: var(--ut-line-padding-right);
   border-radius: 0;
+}
+.underlined-title-dark-green {
+  background: linear-gradient(
+    180deg,
+    transparent var(--ut-background-from),
+    var(--ut-line-color-dark-green) var(--ut-background-from),
+    var(--ut-line-color-dark-green) 80%,
+    transparent 80%
+  );
 }
 </style>
