@@ -26,9 +26,11 @@
             <!-- Bubble Text -->
             <div class="section-bubble-text">
               {{ section.message }}
-              <v-icon class="white--text" size="20" @click.stop="handleAudioPlay(section.audio)">
-                mdi-volume-high
-              </v-icon>
+              <v-btn icon class="my-n4 mx-n2">
+                <v-icon class="white--text" size="22" @click.stop="handleAudioPlay(section.audio)">
+                  mdi-volume-high
+                </v-icon>
+              </v-btn>
             </div>
           </div>
 
@@ -77,7 +79,7 @@ export default defineComponent({
         title: 'Live Classes',
         route: { name: 'app-live-classes' },
         message: 'Enjoy cooking, music, movement zooms and more!',
-        audio: `${baseRoute}audio/virtual-preschool/Live classes.m4a`
+        audio: `${baseRoute}audio/virtual-preschool/Live classes 2.m4a`
       },
       {
         imageUrl: require('@/assets/png/virtual-preschool/Cubby.png'),
@@ -154,7 +156,7 @@ export default defineComponent({
     text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
     height: 100px;
-    width: 55%;
+    width: 60%;
     position: absolute;
     top: 10%;
     left: 15%;
@@ -214,6 +216,10 @@ export default defineComponent({
 
     &-content {
       opacity: 1;
+    }
+
+    &-start-playing {
+      visibility: hidden;
     }
   }
 }
