@@ -255,7 +255,7 @@ export default {
   }
 
   .ps__thumb-y {
-    background-color: #dce7b5;
+    background-color: #B2E68D;
     border-radius: 14px;
     transition: none;
     width: 14px;
@@ -268,7 +268,7 @@ export default {
   .ps__rail-y:hover > .ps__thumb-y,
   .ps__rail-y:focus > .ps__thumb-y,
   .ps__rail-y.ps--clicking .ps__thumb-y {
-    background-color: #dce7b5;
+    background-color: #B2E68D;
     width: 14px;
   }
 }

@@ -376,7 +376,7 @@ export default {
       height: 100%;
       padding: 7%;
       border-radius: 50%;
-      background: #dce7b5;
+      background: #B2E68D;
       box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.184314);
     }
     &-img {

@@ -151,7 +151,7 @@
                 <v-btn
                   id="download-worksheet-btn"
                   class="dashboard-panel-worksheet-btn white--text"
-                  color="#dce7b5"
+                  color="#B2E68D"
                   :disabled="videos.progress < 100 || noLinkMode"
                   block
                   nuxt
@@ -169,7 +169,7 @@
                 <v-btn
                   id="download-worksheet-btn"
                   class="dashboard-panel-worksheet-btn white--text mt-2"
-                  color="#dce7b5"
+                  color="#B2E68D"
                   :disabled="videos.progress < 100 || noLinkMode"
                   block
                   @click.stop="openPdf"

@@ -188,7 +188,7 @@ export default {
     padding-bottom: 12px;
     padding-left: 24px;
     &-selected {
-      border: 3px solid #DCE7B5;
+      border: 3px solid #B2E68D;
     }
   }
   &-item {
