@@ -34,7 +34,7 @@
               :song="playlistItem"
               :is-playing="isCurrentSong(playlistItem.id)"
               class="my-3"
-              @favorite="$emit('favorite', $event)"
+              @favorite="$emit('favorite', playlistItem)"
               @play="$emit('play', playlistItemIndex)"
               @remove-song="$emit('remove-song', playlistItemIndex)"
             />
