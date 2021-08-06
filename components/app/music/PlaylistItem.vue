@@ -122,12 +122,12 @@ export default defineComponent({
       font-size: 11px;
     }
 
-  &-playing-tag {
-    font-size: 8px;
-    padding: 5px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-  }
+    &-playing-tag {
+      font-size: 8px;
+      padding: 5px;
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
   }
 }
 </style>
