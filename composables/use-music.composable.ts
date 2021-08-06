@@ -132,7 +132,7 @@ export const useMusic = () => {
   }
 
   /**
-   * Keep playlist songs favorite state in sync with
+   * Keep playlist songs favorite state in sync with the favoriteDictionary
    */
   watch(favoritesDictionary, () => {
     playlist.value = playlist.value.map((p) => {
