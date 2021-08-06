@@ -61,7 +61,7 @@ export default defineComponent({
     PlaylistItem
   },
 
-  events: [],
+  emits: ['favorite', 'play', 'remove-song'],
 
   setup () {
     const vuetify = useVuetifyHelper()
