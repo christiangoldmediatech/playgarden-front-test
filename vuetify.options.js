@@ -11,7 +11,7 @@ export default function () {
           accent: '#FFAB37',
           error: '#C61818',
           primary: '#68C453',
-          secondary: '#E2EBBA',
+          secondary: '#B2E68D',
           success: '#C5DCA6',
           green2: '#B2E68D',
 
