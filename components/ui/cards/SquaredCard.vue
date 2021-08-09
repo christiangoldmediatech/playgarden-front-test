@@ -67,7 +67,6 @@ export default {
       return this.link
     }
   }
-  /*Comment for test*/
 }
 </script>
 
