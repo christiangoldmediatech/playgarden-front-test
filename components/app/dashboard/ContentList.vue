@@ -1,11 +1,12 @@
 <template>
-  <v-list class="py-0" dense>
-    <v-list-item
+  <div>
+    <v-card
       v-for="item in itemsComputed"
       :key="`list-${_uid}-item-${item.id}`"
       class="dashboard-item"
-      active-class="dashboard-item-active"
+      active-class="dashboard-item-active dashboard-item-active-video"
       exact-active-class="dashboard-item-exact"
+      :ripple="false"
       :disabled="item.disabled"
       :nuxt="item.nuxt"
       :link="item.link"
@@ -13,36 +14,43 @@
       :to="(item.to) ? item.to : ''"
       @click="loadDetailVideo(item)"
     >
-      <v-list-item-avatar tile>
-        <v-img
-          :class="{ 'dashboard-panel-disabled': item.disabled }"
-          :src="item.activityType.icon"
-          contain
-        />
-      </v-list-item-avatar>
-      <v-list-item-content>
-        <v-list-item-title>
-          <span :class="['dashboard-item-activity-type', { 'dashboard-item-disabled': item.disabled }]">
-            {{ item.activityType.name }}
-          </span>
-          <span
-            v-if="item.name"
-            :class="['dashboard-item-name', { 'dashboard-item-disabled': item.disabled }]"
-          >
-            with {{ item.name }}
-          </span>
-        </v-list-item-title>
-        <v-list-item-subtitle :class="{ 'dashboard-item-disabled': item.disabled }">
-          <span :class="{ 'dashboard-item-disabled': item.disabled }">{{ item.description }}</span>
-        </v-list-item-subtitle>
-        <v-list-item-subtitle v-if="noLinkMode" :class="{ 'dashboard-item-disabled': item.disabled }">
-          <span :class="{ 'dashboard-item-disabled': item.disabled }">
-            Position: {{ item.viewed | getTimeToMMSS }}
-          </span>
-        </v-list-item-subtitle>
-      </v-list-item-content>
-    </v-list-item>
-  </v-list>
+      <v-row no-gutters align="center">
+        <v-col cols="4">
+          <v-img
+            class="dashboard-item-image"
+            :class="{ 'lesson-panel-disabled': isItemDisabled(item) }"
+            :src="item.thumbnail"
+            cover
+            height="100px"
+          />
+        </v-col>
+
+        <v-col cols="8">
+          <div class="mx-2 mt-4 mb-2">
+            <span :class="['dashboard-item-activity-type', { 'dashboard-item-disabled': isItemDisabled(item) }]">
+              {{ item.activityType.name }}
+            </span>
+            <span
+              v-if="item.name"
+              :class="['dashboard-item-name', { 'dashboard-item-disabled': isItemDisabled(item) }]"
+            >
+              with {{ item.name }}
+            </span>
+          </div>
+
+          <div class="mx-2 mb-4 text-body-2">
+            <span :class="{ 'dashboard-item-disabled': isItemDisabled(item) }">{{ item.description }}</span>
+          </div>
+
+          <div v-if="noLinkMode" :class="{ 'dashboard-item-disabled': isItemDisabled(item) }">
+            <span :class="{ 'dashboard-item-disabled': isItemDisabled(item) }">
+              Position: {{ getTimeToMMSS(item.viewed) }}
+            </span>
+          </div>
+        </v-col>
+      </v-row>
+    </v-card>
+  </div>
 </template>
 
 <script lang="ts">
