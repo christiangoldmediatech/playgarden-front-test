@@ -93,7 +93,7 @@ export default {
 
     time () {
       const start = moment(this.entry.dateStart)
-      return start.format('hh:mm')
+      return start.format('HH:mm')
     }
   },
 

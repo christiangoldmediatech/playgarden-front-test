@@ -30,7 +30,7 @@
         </div>
       </template>
     </div>
-    <div class="hidden-md-and-down">
+    <div class="lsess-table-container hidden-md-and-down">
       <div v-if="!dayMode" class="pl-16 pr-8">
         <v-row class="my-0">
           <v-col v-for="(day, index) in days" :key="`days-row-column-${index}`" class="lsess-table-col lsess-table-col-header">
@@ -192,8 +192,13 @@ export default {
 .lsess {
   &-table {
     position: relative;
-    height: 100%;
-    max-height: 100%;
+    height: calc(100% - 50px);
+    max-height: calc(100% - 50px);
+    &-container {
+      position: relative;
+      height: calc(100% - 1px);
+      max-height: calc(100% - 1px);
+    }
     &-offset {
       width: 64px;
       font-size: 1.1rem;
@@ -242,7 +247,7 @@ export default {
   .ps {
     position: relative;
     width: 100%;
-    max-height: calc(100% - 101px);
+    max-height: calc(100% - 50px);
     overflow: hidden !important;
     overflow-anchor: none;
     -ms-overflow-style: none;

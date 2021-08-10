@@ -66,6 +66,20 @@
           }"
         >
           <v-row no-gutters justify="center">
+            <!-- Playlist Button -->
+            <v-col
+              v-if="currentSong.description"
+              cols="auto"
+              align-self="center"
+              class="text-center"
+            >
+              <music-queue
+                @favorite="$emit('favorite', $event)"
+                @play="playSong"
+                @remove-song="removeSong"
+              />
+            </v-col>
+
             <v-spacer />
             <v-col
               cols="2"
@@ -167,14 +181,20 @@
 import { useMusic } from '@/composables'
 import { MusicLibrary } from '@/models'
 import { defineComponent, ref, nextTick, computed } from '@nuxtjs/composition-api'
+import MusicQueue from '@/components/app/music/MusicQueue.vue'
 
 export default defineComponent({
+  components: {
+    MusicQueue
+  },
+
   setup (_, { emit }) {
     // this references `ref="audioPlayer"` when the component is mounted
     const audioPlayer = ref<any>(null)
     const {
       currentSong,
-      playlist
+      playlist,
+      removeSongFromPlaylist
     } = useMusic()
 
     const handleCurrentSong = (song: MusicLibrary) => {
@@ -210,15 +230,37 @@ export default defineComponent({
 
     const isPlayerDisabled = computed(() => !currentSong.value || !currentSong.value.description)
 
+    const playSong = async (playlistIndex: number) => {
+      if (!audioPlayer.value) {
+        return
+      }
+
+      audioPlayer.value?.pause()
+      audioPlayer.value?.selectSongByIndex(playlistIndex)
+      await nextTick()
+      audioPlayer.value?.play()
+    }
+
+    const removeSong = (playlistIndex: number) => {
+      if (!audioPlayer.value) {
+        return
+      }
+
+      removeSongFromPlaylist(playlistIndex)
+      audioPlayer.value?.removeSongByIndex(playlistIndex)
+    }
+
     return {
       audioPlayer,
       currentSong,
-      playlist,
       isPlayerDisabled,
-      handleCurrentSong,
-      refreshSongData,
+      playlist,
       addSongToPlaylist,
-      createNewPlaylist
+      createNewPlaylist,
+      handleCurrentSong,
+      playSong,
+      removeSong,
+      refreshSongData
     }
   }
 })

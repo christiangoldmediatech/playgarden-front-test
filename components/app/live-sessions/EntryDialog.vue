@@ -132,8 +132,8 @@ export default {
       const end = new Date(this.entry.dateEnd)
 
       return (
-        today.getTime() >= (start.getTime() - (5 * 60 * 1000)) &&
-        today.getTime() <= (end.getTime() + (5 * 60 * 1000))
+        today.getTime() >= (start.getTime() - (30 * 60 * 1000)) &&
+        today.getTime() <= (end.getTime() + (30 * 60 * 1000))
       )
     },
 
