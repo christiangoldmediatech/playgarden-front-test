@@ -1,29 +1,35 @@
 <template>
-  <div :class=" number === '1' ? 'mt-0' : 'mt-6' ">
-    <!-- Circle and title -->
+  <div>
     <v-row class="flex-nowrap" align="center" justify="start">
-      <v-col class="flex-shrink-1 flex-grow-0 py-0">
+      <!-- CIRCLE WITH NUMBER -->
+      <v-col cols="auto" class="z-index-1">
         <div :class="['number-circle', { 'number-circle-active': enabled }]">
           <span class="white--text">
             {{ number }}
           </span>
         </div>
       </v-col>
+
+      <!-- SECTION TITLE -->
       <v-col class="content-header pl-0 py-0 text-uppercase d-flex justify-start align-center">
         {{ title }}
         <slot name="title-append" />
       </v-col>
     </v-row>
-    <v-row>
-      <v-col class="flex-shrink-1 flex-grow-0 py-1">
-        <div class="progress-container justify-end">
-          <div class="progress-track my-1">
+
+    <v-row no-gutters class="mr-n4">
+      <!-- TIMELINE -->
+      <v-col class="flex-shrink-1 flex-grow-0">
+        <div class="progress-container mt-n2">
+          <div class="progress-track">
             <div v-if="enabled" class="progress-next-thumb" :style="{ '--progressNextThumbHeight': `${progressNext}%` }" />
             <div class="progress-thumb" :style="{ '--progressThumbHeight': `${progress}%` }" />
           </div>
         </div>
       </v-col>
-      <v-col class="content-section-slot">
+
+      <!-- CONTENT -->
+      <v-col class="content-section-slot ml-n5">
         <slot />
       </v-col>
     </v-row>
@@ -67,6 +73,9 @@ export default {
 </script>
 
 <style lang="scss">
+.z-index-1 {
+  z-index: 1;
+}
 .number-circle {
   width: 48px;
   height: 48px;
@@ -79,62 +88,55 @@ export default {
   line-height: 24px;
   border-radius: 50%;
   &-active {
-    background-color: var(--v-primary-base);
+    background-color: #68C453;
   }
 }
-
 .content-header {
   font-size: 24px;
   font-weight: bold;
-  color: #606060;
+  color: #707070;
   line-height: 24px;
-  letter-spacing: 0.15em;
+  letter-spacing: 3.6px;
 }
-
 .progress {
   &-container {
-    width: 30px;
+    position: relative;
+    left: 18px;
+    width: 12px;
     height: 100%;
-    display: flex;
-    // justify-items: end;
   }
-
   &-track {
     position: relative;
-    width: 11px;
-    max-width: 11px;
+    width: 12px;
+    max-width: 12px;
     background-color: rgba(242, 237, 237, 0.85);
-    height: calc(100% - 8px);
+    height: calc(100% + 12px);
     border-radius: 5.5px;
   }
-
-  &-thumb {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 11px;
-    max-width: 11px;
-    background-color: var(--v-primary-base);
-    height: var(--progressThumbHeight);
-    border-radius: 5.5px;
-  }
-
   &-next-thumb {
     position: absolute;
     top: 0px;
     left: 0px;
-    width: 11px;
-    max-width: 11px;
-    background-color: rgba(194, 218, 165, 0.33);
+    width: 12px;
+    max-width: 12px;
+    background-color: #B2E68D;
     height: var(--progressNextThumbHeight);
     border-radius: 5.5px;
   }
+  &-thumb {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 12px;
+    max-width: 12px;
+    background-color: var(--v-primary-base);
+    height: var(--progressThumbHeight);
+    border-radius: 5.5px;
+  }
 }
-
 .content-section-slot {
   overflow-x: hidden;
-  padding-left: 2px;
-  padding-top: 4px;
-  padding-bottom: 4px;
+  margin-top: 12px;
+  margin-bottom: 12px;
 }
 </style>
