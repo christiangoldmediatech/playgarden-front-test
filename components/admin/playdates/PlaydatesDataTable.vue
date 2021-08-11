@@ -20,11 +20,9 @@
           <v-card-text>
             <pg-admin-data-table
               :headers="headers"
-              :items="playdatesResponse.playdates"
-              :items-per-page="paginationLimit"
+              :items="playdates"
               :loading="loading"
-              :page.sync="pagination.page"
-              :server-items-length="pagination.total"
+              :page.sync="page"
               @refresh="refresh(true)"
               @search="onSearch"
               @update:page="pagination.page = $event"
@@ -61,11 +59,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, ref, watch } from '@nuxtjs/composition-api'
 import { usePlaydates } from '@/composables/playdates'
 import { mapActions, mapGetters, mapState } from 'vuex'
 import onSearch from '@/mixins/OnSearchMixin.js'
 import paginable from '@/utils/mixins/paginable'
+import { PlaydatesResponse, Playdates } from '@/models'
 
 export default defineComponent({
   name: 'PlaydatesDataTable',
@@ -118,13 +117,31 @@ export default defineComponent({
 
   setup () {
     const loading = ref<Boolean>(false)
+    const page = ref<Number>(1)
+    const total = ref<Number>()
+    const limit = ref<Number>(50)
+    const playdates = ref<Playdates[]>([])
     const { playdatesResponse, getPlaydates } = usePlaydates()
+
+    watch(playdatesResponse, (val:any) => {
+      if (val) {
+        page.value = val.page
+        playdates.value = val.playdates
+      }
+    })
+
+    const fetchPlaydates = async (params: any) => {
+      await getPlaydates(params)
+    }
     onMounted(async () => {
-      await getPlaydates()
+      await fetchPlaydates({ page: page.value, total: total.value, limit: limit.value })
     })
 
     return {
       playdatesResponse,
+      playdates,
+      page,
+      limit,
       loading,
       getPlaydates
     }
@@ -143,23 +160,12 @@ export default defineComponent({
     }
   },
 
-  created () {
-    this.getTypes()
-    this.refresh()
-  },
-
   methods: {
-    ...mapActions('admin/curriculum', [
-      'deleteLesson',
-      'fetchLessons',
-      'getTypes'
-    ]),
-
     onEdit (item) {
-      this.$router.push({
+      /* this.$router.push({
         name: 'admin-curriculum-management-editor',
         query: { lessonId: item.id }
-      })
+      }) */
     },
 
     async refresh (clear = false) {
@@ -170,29 +176,24 @@ export default defineComponent({
       }
 
       try {
-        const { lessons, page, total } = await this.fetchLessons({
-          name: this.search || null,
-          curriculumTypeId: this.filters.curriculumTypeId || null,
-          level: this.filters.level || null,
-          page: this.pagination.page,
-          limit: this.paginationLimit
-        })
-
-        this.resources = lessons
-        this.setPagination({ page, total })
+        const params = {
+          page: this.page,
+          limit: this.limit
+        }
+        await this.fetchPlaydates(params)
       } catch (e) {
       } finally {
         this.loading = false
       }
-    }
+    },
 
-    /* remove ({ id, name }) {
-      this.$nuxt.$emit('open-prompt', {
+    remove ({ id, name }) {
+      /* this.$nuxt.$emit('open-prompt', {
         title: 'Delete curriculum lesson?',
         message: `Are you sure you want to delete <b>${name}</b>?`,
         action: () => this.deleteLesson(id).then(this.refresh)
-      })
-    } */
+      }) */
+    }
   }
 })
 </script>
