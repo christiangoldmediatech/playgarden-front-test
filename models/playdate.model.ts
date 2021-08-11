@@ -21,3 +21,11 @@ export interface Playdates extends Entity {
   }[]
   playdate: Playdate
 }
+
+export interface PlaydatesResponse {
+  total: number
+  filtered: number
+  limit: number
+  page: number
+  playdates: Playdate []
+}
