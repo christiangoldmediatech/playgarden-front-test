@@ -88,7 +88,7 @@ export default {
             data: (this.funnelData.data) ? this.funnelData.data : []
           }
         ],
-        color: ['#78C383', '#C2DAA5', '#F89838', '#925A22', '#ee6666', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc']
+        color: ['#78C383', '#68C453', '#F89838', '#925A22', '#ee6666', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc']
       }
     },
     getChartDimensions () {
