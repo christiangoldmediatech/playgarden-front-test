@@ -5,7 +5,7 @@
 
       <div class="mx-3">
         <span
-          class="font-weight-black text-outline subtitle-text subtitle-text-colo-solid carousel-text text-uppercase pg-letter-spacing"
+          class="font-weight-black text-outline subtitle-text text-solid-color carousel-text text-uppercase pg-letter-spacing"
           :style="{ '--bgColor': activityType.color }"
         >
           {{ activityType.name }}

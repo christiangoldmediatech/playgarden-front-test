@@ -33,7 +33,7 @@
         </v-row>
       </v-col>
 
-      <v-col cols="12" md="6" class="pl-md-15">
+      <v-col cols="12" md="6" class="pl-md-15 text-solid-color">
         <underlined-title text="Invite a Friend to a Playdate!" />
 
         <p>
