@@ -126,6 +126,7 @@ export default defineComponent({
   height: 42px;
   box-shadow: var(--lp-bar-border-type) !important;
   border-radius: 8px !important;
+
   &-icon {
     position: absolute;
     top: 50%;
@@ -133,6 +134,7 @@ export default defineComponent({
     transform: translate(10%, -35%);
     z-index: 1;
   }
+
   &-title {
     position: absolute;
     top: 50%;
@@ -146,6 +148,7 @@ export default defineComponent({
     letter-spacing: 1.5px;
     text-transform: uppercase;
   }
+
   &-tasks {
     position: absolute;
     top: 50%;
@@ -154,15 +157,18 @@ export default defineComponent({
     z-index: 1;
     letter-spacing: 1.5px;
     color: #707070;
+
     &-remaining {
       font-size: 18px;
       font-weight: bold;
       text-align: center;
     }
+
     &-text {
       font-size: 12px;
     }
   }
+
   &-bar-1 {
     position: absolute;
     top: 0;
@@ -170,6 +176,7 @@ export default defineComponent({
     width: var(--lp-bar-1);
     background-color: var(--v-accent-base);
   }
+
   &-bar-2 {
     position: absolute;
     top: 50%;
@@ -177,6 +184,24 @@ export default defineComponent({
     width: var(--lp-bar-2);
     background-color: var(--v-accent-base);
     border-top-right-radius: var(--lp-bar-radius) !important;
+  }
+}
+
+@media (max-width: $breakpoint-xs) {
+  .dashboard-progress {
+    &-title {
+      font-size: 12px;
+    }
+
+    &-tasks {
+      &-remaining {
+        font-size: 12px;
+      }
+
+      &-text {
+        font-size: 9px;
+      }
+    }
   }
 }
 </style>
