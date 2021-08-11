@@ -19,7 +19,7 @@
           <span>Please check your email to confirm account and start learning today!</span>
         </p>
 
-        <v-btn
+        <!-- <v-btn
           v-if="isUserLoggedIn"
           block
           color="primary"
@@ -30,13 +30,13 @@
           @click="goToLessons"
         >
           GO TO LESSONS
-        </v-btn>
+        </v-btn> -->
 
-        <nuxt-link v-else :to="{ name: 'auth-login' }">
+        <!-- <nuxt-link :to="{ name: 'auth-login' }">
           <v-btn block color="primary">
             RETURN TO LOG IN
           </v-btn>
-        </nuxt-link>
+        </nuxt-link> -->
 
         <p class="mt-6 text-center text-md-left">
           Didn’t receive an email?
