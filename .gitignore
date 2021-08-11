@@ -97,7 +97,3 @@ sw.*
 
 # Cypress env
 cypress.env.json
-
-# Intern mine
-# .npmrc
-.gitignore
