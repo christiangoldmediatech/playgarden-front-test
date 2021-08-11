@@ -217,7 +217,8 @@ export default {
 
       try {
         const dataSubscrition = {
-          token: cardData.token
+          token: cardData.token,
+          sendEmail: true
         }
 
         if (cardData.promotion_id) {

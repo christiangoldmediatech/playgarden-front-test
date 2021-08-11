@@ -32,7 +32,7 @@ export default {
             title: 'Student Cubby',
             to: {
               name: 'app-student-cubby-puzzle',
-              query: { id: `${this.currentChildId[0].id}` }
+              query: { id: `${(this.currentChildId) ? this.currentChildId[0].id : null}` }
             },
             exact: false
           }
