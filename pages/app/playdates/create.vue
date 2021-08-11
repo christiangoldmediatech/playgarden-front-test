@@ -167,7 +167,7 @@
                 <v-btn
                   block
                   class="text-transform-none white--text"
-                  color="#C2DAA5"
+                  color="#68C453"
                   :disabled="invalid"
                   :loading="loading"
                   type="submit"
