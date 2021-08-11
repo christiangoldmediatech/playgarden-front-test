@@ -21,6 +21,7 @@
       :disabled="isButtonDisabled"
       :loading="loading"
       type="submit"
+      class=" text-solid-color"
       x-large
     >
       RESET PASSWORD
@@ -98,5 +99,11 @@ export default {
 }
 .return-link {
   color:  var(--v-primary-base);
+}
+.text-solid-color{
+  color:var(--v-black-base);
+}
+.text-solid-color:hover{
+  color:rgba($color: #000000, $alpha: 0.8);
 }
 </style>

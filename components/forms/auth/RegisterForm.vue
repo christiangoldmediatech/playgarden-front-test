@@ -123,7 +123,7 @@
                 <v-btn
                   block
                   min-height="60"
-                  class="mb-6 main-btn"
+                  class="mb-6 main-btn text-solid-color"
                   color="green2"
                   :disabled="invalid"
                   :loading="loading"
@@ -372,3 +372,12 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.green2{
+  color:var(--v-black-base);
+}
+.green2:hover{
+  color:rgba($color: #000000, $alpha: 0.8);
+}
+</style>

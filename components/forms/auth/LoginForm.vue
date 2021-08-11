@@ -31,7 +31,7 @@
       block
       color="green2"
       min-height="60"
-      class="main-btn"
+      class="main-btn text-solid-color"
       :disabled="isButtonDisabled"
       :loading="loading"
       type="submit"
@@ -129,5 +129,11 @@ export default {
     text-transform: uppercase;
     font-weight: bold;
   }
+}
+.text-solid-color{
+  color:var(--v-black-base);
+}
+.text-solid-color:hover{
+  color:rgba($color: #000000, $alpha: 0.8);
 }
 </style>
