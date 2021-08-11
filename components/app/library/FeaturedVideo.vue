@@ -69,7 +69,7 @@ export default {
   // Container style
   display: flex;
   position: relative;
-  min-height: calc(100vh - 64px);
+  min-height: calc(100vh - 300px);
   margin-top: -12px;
   margin-bottom: 12px;
   padding-bottom: 24px;
