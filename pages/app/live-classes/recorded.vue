@@ -165,7 +165,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters('admin/curriculum', { letters: 'types' }),
+    ...mapGetters('admin/curriculum', { unfilteredLetters: 'types' }),
     ...mapGetters('admin/activity', { categoryTypes: 'types' }),
 
     mode () {
@@ -173,6 +173,13 @@ export default {
         return 'LETTER'
       }
       return 'CATEGORY'
+    },
+
+    letters () {
+      return this.unfilteredLetters.filter((letter) => {
+        // remove intro and nature from music library ch2621
+        return !['Intro', 'Nature'].includes(letter.name)
+      })
     },
 
     letterObject () {
@@ -224,7 +231,7 @@ export default {
     },
 
     letterObject (val) {
-      this.selectedLetterTitle = (val.picture) ? `Recorded Classes of ${val.description}` : `Recorded Classes of Letter ${val.name.substr(0, 1)}`
+      this.selectedLetterTitle = (val?.picture) ? `Recorded Classes of ${val.description}` : `Recorded Classes of Letter ${val.name.substr(0, 1)}`
     }
   },
 

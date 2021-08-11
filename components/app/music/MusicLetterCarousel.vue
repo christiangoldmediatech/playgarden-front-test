@@ -127,6 +127,9 @@ export default {
             ...letter,
             disabled: this.disabledLetters.includes(letter.id)
           }
+        }).filter((letter) => {
+          // remove intro and nature from music library ch2621
+          return !['Intro', 'Nature'].includes(letter.name)
         })
       } else {
         return []
