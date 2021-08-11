@@ -141,6 +141,7 @@ export default {
           name: videos.name,
           description: videos.description,
           activityType,
+          thumbnail: videos.thumbnail,
           to: this.generateNuxtRoute('lesson-activities', { id }),
           viewed,
           disabled
