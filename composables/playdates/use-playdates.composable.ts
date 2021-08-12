@@ -20,12 +20,27 @@ export const usePlaydates = () => {
   const getPlaydates = async (params?: unknown) => {
     playdatesResponse.value = await axios.$get('/playdates/list', { params })
   }
+
+  const createPlaydate = async (id: number, data: Partial<Playdate>) => {
+    return await axios.$post('playdates', data)
+  }
+
+  const updatePlaydate = async (id: number, data: Partial<Playdate>) => {
+    return await axios.$patch(`/playdates/${id}`, data)
+  }
+
+  const deletePlayadte = async (id: number) => {
+    return await axios.$delete(`/playdates/${id}`)
+  }
   return {
     total,
     page,
     limit,
     playdates,
     playdatesResponse,
-    getPlaydates
+    getPlaydates,
+    createPlaydate,
+    updatePlaydate,
+    deletePlayadte
   }
 }

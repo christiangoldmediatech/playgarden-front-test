@@ -29,7 +29,7 @@
               @update:page="page = $event"
               @refresh="refresh(true)"
               @search="onSearch"
-              @edit-item="$refs.playdatesRef.open(null, item)"
+              @edit-item="$refs.playdatesRef.open(null, $event)"
               @remove-item="remove"
             >
               <template v-slot:[`top.prepend`]>
@@ -122,7 +122,7 @@ export default defineComponent({
 
   setup () {
     const loading = ref<Boolean>(false)
-    const { page, total, limit, playdates, getPlaydates } = usePlaydates()
+    const { page, total, limit, playdates, getPlaydates, deletePlayadte } = usePlaydates()
 
     const fetchPlaydates = async (params: any) => {
       await getPlaydates(params)
@@ -137,7 +137,8 @@ export default defineComponent({
       limit,
       total,
       loading,
-      fetchPlaydates
+      fetchPlaydates,
+      deletePlayadte
     }
   },
 

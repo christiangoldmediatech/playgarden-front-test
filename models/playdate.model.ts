@@ -12,6 +12,7 @@ export interface Playdate extends Entity {
   specialistUser: unknown
   sports: number
   start: string
+  state: string
 }
 
 export interface Playdates extends Entity {

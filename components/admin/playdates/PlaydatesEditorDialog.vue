@@ -24,14 +24,16 @@
 
         <v-card-text>
           <v-container>
+            <label>Name: <span class="font-weight-bold">{{ playdate.name }}</span></label>
             <validation-provider
               v-slot="{ errors }"
               name="Status"
               rules="required"
             >
               <pg-select
-                v-model="item.state"
+                v-model="playdate.state"
                 clearable
+                class="mt-4"
                 :disabled="loading"
                 :error-messages="errors"
                 :items="states"
@@ -73,133 +75,105 @@
   </validation-observer>
 </template>
 
-<script>
-
+<script lang="ts">
+import { defineComponent, onMounted, ref } from '@nuxtjs/composition-api'
 import { mapActions, mapGetters } from 'vuex'
-
-function generateItemTemplate () {
-  return {
-    activityTypeId: null,
-    title: null,
-    state: null,
-    active: false,
-    description: null,
-    link: null,
-    teacher: null,
-    ages: null,
-    duration: null,
-    dateStart: null,
-    day: null
-  }
-}
-
-export default {
+import { Playdate } from '@/models'
+import { usePlaydates } from '@/composables/playdates'
+export default defineComponent({
   name: 'PlaydatesEditorDialog',
 
-  data: () => ({
-    dialog: false,
-    loading: false,
-    id: null,
-    item: generateItemTemplate(),
-    states: ['REQUESTED', 'PENDING', 'APPROVED', 'REJECTED']
-  }),
+  setup () {
+    const loading = ref(false)
+    const dialog = ref(false)
+    const id = ref()
+    const states = ref(['REQUESTED', 'PENDING', 'APPROVED', 'REJECTED'])
+    const { updatePlaydate } = usePlaydates()
+    const playdate = ref<Partial<Playdate>>({
+      ages: '',
+      day: '',
+      description: '',
+      duration: 0,
+      end: '',
+      link: '',
+      name: '',
+      playdateType: '',
+      specialistUser: null,
+      sports: 0,
+      start: '',
+      state: ''
+    })
 
-  computed: {
-    title () {
-      return this.id === null ? 'New Playdate' : 'Edit Playdate'
+    const resetItem = () => {
+      id.value = null
+      generateItemTemplate()
+    }
+
+    const generateItemTemplate = () => {
+      playdate.value.ages = ''
+      playdate.value.day = ''
+      playdate.value.description = ''
+      playdate.value.duration = 0
+      playdate.value.end = ''
+      playdate.value.link = ''
+      playdate.value.name = ''
+      playdate.value.playdateType = ''
+      playdate.value.specialistUser = null
+      playdate.value.sports = 0
+      playdate.value.start = ''
+      playdate.value.state = ''
+    }
+
+    const loadItem = (item: Playdate) => {
+      id.value = item.id
+
+      // Handle keys
+      Object.keys(item).forEach((key: String) => {
+        if (Object.prototype.hasOwnProperty.call(playdate.value, key)) {
+          playdate.value[key] = item[key]
+        }
+      })
+    }
+
+    return {
+      loading,
+      dialog,
+      states,
+      id,
+      playdate,
+      generateItemTemplate,
+      resetItem,
+      loadItem,
+      updatePlaydate
     }
   },
 
-  watch: {},
+  computed: {
+    title () {
+      return 'EDIT STATUS PLAYDATE'
+    }
+  },
 
   methods: {
-    async refresh (clear = false) {
-      this.loading = true
-
-      if (clear) {
-        this.search = ''
-      }
-
-      try {
-        const { lessons, page, total } = await this.fetchLessons({
-          name: this.search || null,
-          curriculumTypeId: this.filters.curriculumTypeId || null,
-          level: this.filters.level || null,
-          page: this.pagination.page
-        })
-
-        this.resources = lessons
-        this.setPagination({ page, total })
-      } catch (e) {
-      } finally {
-        this.loading = false
-      }
-    },
 
     close () {
       this.$nextTick(() => {
         this.dialog = false
         this.loading = false
-        this.$refs.obs.reset()
       })
     },
 
-    /* async */ save () {
+    async save () {
       this.loading = true
-
-      /* try {
-        if (this.id === null) {
-          await this.createRecurringLiveSession(this.item)
-        } else {
-          await this.updateRecurringLiveSession({ id: this.id, data: this.item })
-        }
-
-        this.$emit('saved')
-        this.dateStart = null
-        this.timeStart = null
-        this.close()
-      } catch (err) {
-      } finally {
+      try {
+        await this.updatePlaydate(this.id, this.playdate)
+      } catch (error) {} finally {
         this.loading = false
-      } */
-    },
-
-    resetItem () {
-      this.id = null
-      this.item = generateItemTemplate()
-    },
-
-    loadItem (item) {
-      this.id = item.id
-
-      // Handle keys
-      Object.keys(item).forEach((key) => {
-        if (Object.prototype.hasOwnProperty.call(this.item, key)) {
-          this.item[key] = item[key]
-        }
-      })
-
-      if (item.dateStart) {
-        const dateStart = new Date(item.dateStart)
-        this.dateStart = `${dateStart.getFullYear()}-${(dateStart.getMonth() + 1).toString().padStart(2, '0')}-${dateStart.getDate().toString().padStart(2, '0')}`
-        this.timeStart = `${dateStart.getHours().toString().padStart(2, '0')}:${dateStart.getMinutes().toString().padStart(2, '0')}`
-      }
-
-      if (item.dateEnd) {
-        const dateEnd = item.dateEnd.replace(':00.000Z', '').split('T')
-
-        this.dateEnd = dateEnd[0]
-        this.timeEnd = dateEnd[1]
-      }
-
-      if (item.activityType) {
-        this.item.activityTypeId = item.activityType.id
       }
     },
 
-    open (evt, item = null) {
+    open (evt: unknown, item: Playdate) {
       this.resetItem()
-
       if (item) {
         this.loadItem(item)
       }
@@ -209,5 +183,5 @@ export default {
       })
     }
   }
-}
+})
 </script>
