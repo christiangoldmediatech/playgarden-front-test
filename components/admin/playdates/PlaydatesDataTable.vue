@@ -37,7 +37,7 @@
                   </v-icon>
                 </v-col>
 
-                <v-col cols="11" md="2">
+                <v-col cols="11" md="4">
                   <pg-select
                     v-model="selectedStatus"
                     clearable
@@ -153,7 +153,8 @@ export default defineComponent({
       const params = {
         page: this.page,
         limit: this.limit,
-        name: ''
+        name: '',
+        state: ''
       }
 
       if (clear) {
@@ -162,6 +163,10 @@ export default defineComponent({
 
       if (this.search) {
         params.name = this.search
+      }
+
+      if (this.selectedStatus) {
+        params.state = this.selectedStatus
       }
 
       try {
