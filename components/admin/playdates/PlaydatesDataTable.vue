@@ -29,7 +29,7 @@
               @update:page="page = $event"
               @refresh="refresh(true)"
               @search="onSearch"
-              @edit-item="onEdit"
+              @edit-item="$refs.playdatesRef.open(null, item)"
               @remove-item="remove"
             >
               <template v-slot:[`top.prepend`]>
@@ -58,6 +58,10 @@
         </v-card>
       </v-col>
     </v-row>
+    <playdates-editor-dialog
+      ref="playdatesRef"
+      @saved="refresh(false)"
+    />
   </v-container>
 </template>
 
@@ -67,12 +71,17 @@ import { usePlaydates } from '@/composables/playdates'
 import { mapActions, mapGetters, mapState } from 'vuex'
 import onSearch from '@/mixins/OnSearchMixin.js'
 import paginable from '@/utils/mixins/paginable'
+import PlaydatesEditorDialog from '@/components/admin/playdates/PlaydatesEditorDialog.vue'
 import { PlaydatesResponse, Playdate } from '@/models'
 
 export default defineComponent({
   name: 'PlaydatesDataTable',
 
   mixins: [paginable, onSearch],
+
+  components: {
+    PlaydatesEditorDialog
+  },
 
   data: () => ({
     search: '',
@@ -141,13 +150,6 @@ export default defineComponent({
   },
 
   methods: {
-    onEdit (item: Playdate) {
-      /* this.$router.push({
-        name: 'admin-curriculum-management-editor',
-        query: { lessonId: item.id }
-      }) */
-    },
-
     async refresh (clear = false) {
       this.loading = true
 
