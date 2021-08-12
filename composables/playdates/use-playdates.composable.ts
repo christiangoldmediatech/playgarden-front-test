@@ -6,6 +6,7 @@ export const usePlaydates = () => {
   const page = ref<Number>(1)
   const total = ref<Number>(0)
   const limit = ref<Number>(10)
+  const states = ref(['REQUESTED', 'PENDING', 'APPROVED', 'REJECTED'])
   const playdates = ref<Playdate[]>([])
   const playdatesResponse = ref<PlaydatesResponse[]>([])
 
@@ -38,6 +39,7 @@ export const usePlaydates = () => {
     limit,
     playdates,
     playdatesResponse,
+    states,
     getPlaydates,
     createPlaydate,
     updatePlaydate,

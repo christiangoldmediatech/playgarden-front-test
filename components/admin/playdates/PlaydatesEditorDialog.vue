@@ -10,7 +10,7 @@
       <v-card>
         <v-toolbar class="flex-grow-0" color="primary darken-1" dark dense flat>
           <v-toolbar-title class="white--text">
-            {{ title }}
+            EDIT STATUS PLAYDATE
           </v-toolbar-title>
 
           <v-spacer />
@@ -87,8 +87,7 @@ export default defineComponent({
     const loading = ref(false)
     const dialog = ref(false)
     const id = ref()
-    const states = ref(['REQUESTED', 'PENDING', 'APPROVED', 'REJECTED'])
-    const { updatePlaydate } = usePlaydates()
+    const { updatePlaydate, states } = usePlaydates()
     const playdate = ref<Partial<Playdate>>({
       ages: '',
       day: '',
@@ -130,13 +129,6 @@ export default defineComponent({
       if (item.specialistUser) {
         playdate.value.specialistId = item.specialistUser.id
       }
-
-      // Handle keys
-      /* Object.keys(item).forEach((key) => {
-        if (Object.prototype.hasOwnProperty.call(playdate.value, key)) {
-          playdate.value[key] = item[key]
-        }
-      }) */
     }
 
     return {
@@ -152,14 +144,7 @@ export default defineComponent({
     }
   },
 
-  computed: {
-    title () {
-      return 'EDIT STATUS PLAYDATE'
-    }
-  },
-
   methods: {
-
     close () {
       this.$nextTick(() => {
         this.dialog = false

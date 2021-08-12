@@ -8,7 +8,7 @@
           </v-card-title>
 
           <v-card-text>
-            View, create, update, or delete playdate.
+            Update, or delete playdate.
           </v-card-text>
         </v-card>
       </v-col>
@@ -38,17 +38,15 @@
                 </v-col>
 
                 <v-col cols="11" md="2">
-                  <!-- <pg-select
-                    v-model="filters.curriculumTypeId"
+                  <pg-select
+                    v-model="selectedStatus"
                     clearable
                     hide-details
-                    :items="types"
-                    item-text="name"
-                    item-value="id"
+                    :items="states"
                     label="Status"
                     solo-labeled
                     @change="refresh(false)"
-                  /> -->
+                  />
                 </v-col>
               </template>
             </pg-admin-data-table>
@@ -82,11 +80,6 @@ export default defineComponent({
   },
 
   data: () => ({
-    search: '',
-    filters: {
-      curriculumTypeId: null,
-      level: null
-    },
     headers: [
       {
         text: 'Name',
@@ -120,7 +113,9 @@ export default defineComponent({
 
   setup () {
     const loading = ref<Boolean>(false)
-    const { page, total, limit, playdates, getPlaydates, deletePlayadte } = usePlaydates()
+    const search = ref<string>('')
+    const selectedStatus = ref<string>('')
+    const { page, total, limit, playdates, states, getPlaydates, deletePlayadte } = usePlaydates()
 
     const fetchPlaydates = async (params: any) => {
       await getPlaydates(params)
@@ -135,6 +130,9 @@ export default defineComponent({
       page,
       limit,
       total,
+      states,
+      search,
+      selectedStatus,
       loading,
       fetchPlaydates,
       deletePlayadte
@@ -152,16 +150,21 @@ export default defineComponent({
   methods: {
     async refresh (clear = false) {
       this.loading = true
+      const params = {
+        page: this.page,
+        limit: this.limit,
+        name: ''
+      }
 
       if (clear) {
         this.search = ''
       }
 
+      if (this.search) {
+        params.name = this.search
+      }
+
       try {
-        const params = {
-          page: this.page,
-          limit: this.limit
-        }
         await this.fetchPlaydates(params)
       } catch (e) {
       } finally {
