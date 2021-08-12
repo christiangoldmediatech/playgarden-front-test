@@ -126,7 +126,7 @@ export default defineComponent({
 
     const loadItem = (item: Playdate) => {
       id.value = item.id
-      playdate.value = item
+      playdate.value = { ...item }
       if (item.specialistUser) {
         playdate.value.specialistId = item.specialistUser.id
       }
@@ -173,11 +173,12 @@ export default defineComponent({
         await this.updatePlaydate(this.id, this.playdate)
       } catch (error) {} finally {
         this.loading = false
+        this.dialog = false
+        this.$emit('saved')
       }
     },
 
     open (evt: unknown, item: Playdate) {
-      console.log('item--', item)
       this.resetItem()
       if (item) {
         this.loadItem(item)

@@ -18,8 +18,6 @@
       <v-col cols="12">
         <v-card width="100%">
           <v-card-text>
-            total == {{ total }}
-            page == {{ page }}
             <pg-admin-data-table
               :headers="headers"
               :items="playdates"
@@ -115,7 +113,7 @@ export default defineComponent({
         align: 'right',
         sortable: false,
         value: 'actions',
-        width: 155
+        width: 85
       }
     ]
   }),
@@ -127,6 +125,7 @@ export default defineComponent({
     const fetchPlaydates = async (params: any) => {
       await getPlaydates(params)
     }
+
     onMounted(async () => {
       await fetchPlaydates({ page: page.value, total: total.value, limit: limit.value })
     })
@@ -170,12 +169,12 @@ export default defineComponent({
       }
     },
 
-    remove (id: Number, name: String) {
-      /* this.$nuxt.$emit('open-prompt', {
-        title: 'Delete curriculum lesson?',
+    remove ({ id, name }: any) {
+      this.$nuxt.$emit('open-prompt', {
+        title: 'Delete playdate?',
         message: `Are you sure you want to delete <b>${name}</b>?`,
-        action: () => this.deleteLesson(id).then(this.refresh)
-      }) */
+        action: () => this.deletePlayadte(id).then(this.refresh)
+      })
     }
   }
 })
