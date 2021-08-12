@@ -97,7 +97,7 @@
         </v-col>
 
         <v-col cols="12" md="6">
-          <v-row align-content="center" class="fill-height text-solid-color">
+          <v-row align-content="center" class="fill-height text--color-black-base">
             <v-col cols="12" class="text-md-left text-md-h5 text-center font-weight-bold">
               What are Playdates?
             </v-col>
@@ -342,3 +342,9 @@ export default defineComponent({
   }
 })
 </script>
+
+<style lang="scss" scoped>
+.text--color-black-base{
+  color:var(--v-black-base);
+}
+</style>
