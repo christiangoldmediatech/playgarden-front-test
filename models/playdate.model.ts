@@ -9,7 +9,10 @@ export interface Playdate extends Entity {
   link: string
   name: string
   playdateType: string
-  specialistUser: unknown
+  specialistId?: number
+  specialistUser: {
+    id: number
+  },
   sports: number
   start: string
   state: string

@@ -98,7 +98,7 @@ export default defineComponent({
       link: '',
       name: '',
       playdateType: '',
-      specialistUser: null,
+      specialistUser: { id: 0 },
       sports: 0,
       start: '',
       state: ''
@@ -118,21 +118,25 @@ export default defineComponent({
       playdate.value.link = ''
       playdate.value.name = ''
       playdate.value.playdateType = ''
-      playdate.value.specialistUser = null
       playdate.value.sports = 0
       playdate.value.start = ''
       playdate.value.state = ''
+      playdate.value.specialistUser = { id: 0 }
     }
 
     const loadItem = (item: Playdate) => {
       id.value = item.id
+      playdate.value = item
+      if (item.specialistUser) {
+        playdate.value.specialistId = item.specialistUser.id
+      }
 
       // Handle keys
-      Object.keys(item).forEach((key: String) => {
+      /* Object.keys(item).forEach((key) => {
         if (Object.prototype.hasOwnProperty.call(playdate.value, key)) {
           playdate.value[key] = item[key]
         }
-      })
+      }) */
     }
 
     return {
@@ -173,6 +177,7 @@ export default defineComponent({
     },
 
     open (evt: unknown, item: Playdate) {
+      console.log('item--', item)
       this.resetItem()
       if (item) {
         this.loadItem(item)

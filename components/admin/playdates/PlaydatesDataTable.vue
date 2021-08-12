@@ -170,7 +170,7 @@ export default defineComponent({
       }
     },
 
-    remove ({ id, name }) {
+    remove (id: Number, name: String) {
       /* this.$nuxt.$emit('open-prompt', {
         title: 'Delete curriculum lesson?',
         message: `Are you sure you want to delete <b>${name}</b>?`,
