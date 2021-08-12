@@ -18,14 +18,17 @@
       <v-col cols="12">
         <v-card width="100%">
           <v-card-text>
+            total == {{ total }}
+            page == {{ page }}
             <pg-admin-data-table
               :headers="headers"
               :items="playdates"
               :loading="loading"
               :page.sync="page"
+              :server-items-length="total"
+              @update:page="page = $event"
               @refresh="refresh(true)"
               @search="onSearch"
-              @update:page="pagination.page = $event"
               @edit-item="onEdit"
               @remove-item="remove"
             >
@@ -37,7 +40,7 @@
                 </v-col>
 
                 <v-col cols="11" md="2">
-                  <pg-select
+                  <!-- <pg-select
                     v-model="filters.curriculumTypeId"
                     clearable
                     hide-details
@@ -47,7 +50,7 @@
                     label="Status"
                     solo-labeled
                     @change="refresh(false)"
-                  />
+                  /> -->
                 </v-col>
               </template>
             </pg-admin-data-table>
@@ -59,12 +62,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, watch } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, ref } from '@nuxtjs/composition-api'
 import { usePlaydates } from '@/composables/playdates'
 import { mapActions, mapGetters, mapState } from 'vuex'
 import onSearch from '@/mixins/OnSearchMixin.js'
 import paginable from '@/utils/mixins/paginable'
-import { PlaydatesResponse, Playdates } from '@/models'
+import { PlaydatesResponse, Playdate } from '@/models'
 
 export default defineComponent({
   name: 'PlaydatesDataTable',
@@ -77,7 +80,6 @@ export default defineComponent({
       curriculumTypeId: null,
       level: null
     },
-    resources: [],
     headers: [
       {
         text: 'Name',
@@ -106,29 +108,12 @@ export default defineComponent({
         value: 'actions',
         width: 155
       }
-    ],
-    levels: [
-      { label: 'All', value: null },
-      { label: 'Beginner', value: 'BEGINNER' },
-      { label: 'Intermediate', value: 'INTERMEDIATE' },
-      { label: 'Advanced', value: 'ADVANCED' }
     ]
   }),
 
   setup () {
     const loading = ref<Boolean>(false)
-    const page = ref<Number>(1)
-    const total = ref<Number>()
-    const limit = ref<Number>(50)
-    const playdates = ref<Playdates[]>([])
-    const { playdatesResponse, getPlaydates } = usePlaydates()
-
-    watch(playdatesResponse, (val:any) => {
-      if (val) {
-        page.value = val.page
-        playdates.value = val.playdates
-      }
-    })
+    const { page, total, limit, playdates, getPlaydates } = usePlaydates()
 
     const fetchPlaydates = async (params: any) => {
       await getPlaydates(params)
@@ -138,22 +123,17 @@ export default defineComponent({
     })
 
     return {
-      playdatesResponse,
       playdates,
       page,
       limit,
+      total,
       loading,
-      getPlaydates
+      fetchPlaydates
     }
   },
 
-  computed: {
-    ...mapGetters('admin/curriculum', ['types']),
-    ...mapState('admin', ['paginationLimit'])
-  },
-
   watch: {
-    'pagination.page' () {
+    page () {
       if (!this.loading) {
         this.refresh()
       }
@@ -161,7 +141,7 @@ export default defineComponent({
   },
 
   methods: {
-    onEdit (item) {
+    onEdit (item: Playdate) {
       /* this.$router.push({
         name: 'admin-curriculum-management-editor',
         query: { lessonId: item.id }
