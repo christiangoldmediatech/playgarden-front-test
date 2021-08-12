@@ -56,11 +56,16 @@ export default defineComponent({
     to: {
       type: Object,
       default: undefined
+    },
+
+    enabled: {
+      type: Boolean,
+      default: false
     }
   },
 
   setup (props) {
-    const isDisabled = computed(() => props.progress < 100)
+    const isDisabled = computed(() => props.progress < 100 || !props.enabled)
 
     const circledComputer = require('@/assets/png/dashboard/circled-computer.png')
 

@@ -100,12 +100,13 @@
         >
           <!-- ONLINE WORKSHEETS -->
           <lesson-online-worksheet
-            v-for="onlineWorksheet in worksheets.ONLINE"
+            v-for="(onlineWorksheet, onlineWorksheetIndex) in worksheets.ONLINE"
             :key="onlineWorksheet.id"
             :online-worksheet="onlineWorksheet"
             :progress="videos.progress"
             :no-link-mode="noLinkMode"
-            :to="noLinkMode ? undefined : generateNuxtRoute('online-worksheet')"
+            :to="noLinkMode ? undefined : generateNuxtRoute('online-worksheet', { worksheet: onlineWorksheetIndex })"
+            :enabled="completedOnlineWorksheets >= onlineWorksheetIndex"
           />
 
           <!-- DOWNLOAD WORKSHEETS -->
