@@ -64,7 +64,7 @@
           </v-btn>
         </p>
 
-        <nuxt-link :to="{ name: 'auth-logout' }">
+        <nuxt-link v-if="isUserLoggedIn" :to="{ name: 'auth-logout' }">
           <v-btn block color="accent">
             LOG OUT
           </v-btn>

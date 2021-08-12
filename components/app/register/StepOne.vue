@@ -34,7 +34,7 @@
       />
     </v-col>
 
-    <v-col cols="12" md="6" lg="6" xl="6">
+    <v-col cols="12" md="6" lg="6">
       <template>
         <v-row
           :class="
