@@ -5,7 +5,7 @@
 
       <div class="mx-3">
         <span
-          class="font-weight-black text-outline subtitle-text text-solid-color carousel-text text-uppercase pg-letter-spacing"
+          class="font-weight-black text-outline subtitle-text text--color-black-base carousel-text text-uppercase pg-letter-spacing"
           :style="{ '--bgColor': activityType.color }"
         >
           {{ activityType.name }}
@@ -78,5 +78,8 @@ export default {
 <style lang="scss" scoped>
 .mobile-patch-container {
   overflow-x: visible;
+}
+.text--color-black-base{
+  color:var(--v-black-base);
 }
 </style>

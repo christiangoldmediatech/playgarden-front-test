@@ -67,7 +67,7 @@
         :disabled="invalid"
         :loading="loading"
         type="submit"
-        class="main-btn text-solid-color"
+        class="main-btn main-btn--black-base"
         x-large
       >
         SEND RECOVERY LINK
@@ -136,10 +136,10 @@ export default {
 .return-link {
   color:  var(--v-primary-base);
 }
-.text-solid-color{
+.main-btn--black-base{
   color:var(--v-black-base);
-}
-.text-solid-color:hover{
-  color:rgba($color: #000000, $alpha: 0.8);
+  &:hover{
+    color:rgba(#000000, 0.8);
+  }
 }
 </style>
