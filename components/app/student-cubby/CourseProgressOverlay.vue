@@ -38,7 +38,10 @@
       <template v-if="$vuetify.breakpoint.mdAndUp">
         <perfect-scrollbar ref="scrollbar">
           <v-container class="panel-container" fill-height fluid>
-            <v-row class="fill-height flex-nowrap">
+            <v-row
+              class="fill-height flex-nowrap"
+              :justify="(currentLetter && currentLetter.name === 'Intro') ? 'center' : undefined"
+            >
               <v-col
                 v-for="lesson in lessons"
                 :key="`curriculum-lesson-progress-${lesson.id}`"
@@ -185,7 +188,14 @@ export default {
       return null
     },
 
+    currentLetter () {
+      return this.letters.find(letter => letter.id === this.selectedLetter)
+    },
+
     missing () {
+      if (this.currentLetter && this.currentLetter.name === 'Intro') {
+        return 0
+      }
       return 5 - this.lessons.length
     },
 
