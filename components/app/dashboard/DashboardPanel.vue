@@ -200,6 +200,9 @@
           :enabled="videos.progress === 100"
         >
           <content-list :items="activities.items" v-bind="{ noLinkMode }" item-type="activity" />
+
+          <!-- PROGRESS -->
+          <lesson-progress :progress="activities.progress" />
         </content-section>
       </div>
     </v-card>
