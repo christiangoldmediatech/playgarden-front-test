@@ -8,9 +8,7 @@
           :day="lesson.day"
           v-bind="{ worksheets, index, question }"
         />
-        <transition name="fade">
-          <component :is="type" v-bind="{ question }" @next-question="onNextQuestion" />
-        </transition>
+        <component :is="type" v-bind="{ question }" @next-question="onNextQuestion" />
       </div>
     </template>
     <completed-dialog
@@ -236,8 +234,31 @@ export default {
     }
   },
 
+  watch: {
+    '$route.query.worksheet' () {
+      this.index = this.getValidIndexFromQuery()
+    }
+  },
+
+  mounted () {
+    this.index = this.getValidIndexFromQuery()
+  },
+
   methods: {
     ...mapActions('children/lesson', ['saveWorksheetProgress']),
+
+    /**
+     * Default to 0 if index is overflowed.
+     */
+    getValidIndexFromQuery () {
+      const index = Number(this.$route.query.worksheet) || 0
+
+      if (index < this.worksheets.length) {
+        return index
+      }
+
+      return 0
+    },
 
     returnAction () {
       this.$router.push(this.generateNuxtRoute('offline-worksheet'))
