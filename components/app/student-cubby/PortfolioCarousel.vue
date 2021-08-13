@@ -25,6 +25,7 @@
             :entity-id="upload.id"
             entity-type="WORKSHEET"
             :image="upload.url"
+            :created="upload.createdAt"
             :lesson="upload.lesson"
             :child="getChild(upload)"
           />

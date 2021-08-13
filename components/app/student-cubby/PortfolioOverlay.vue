@@ -28,7 +28,7 @@
             <portfolio-card
               v-if="overlay"
               :child="currtentChild"
-              v-bind="{ entityId, entityType, image, noShare, infoUser }"
+              v-bind="{ entityId, entityType, image, noShare, infoUser, created }"
               display-mode
             />
           </v-col>
@@ -71,7 +71,8 @@ export default {
       entityType: null,
       image: null,
       currtentChild: null,
-      overlay: false
+      overlay: false,
+      created: null
     }
   },
 
@@ -79,12 +80,13 @@ export default {
     this.currtentChild = this.child
     this.$nuxt.$on(
       'open-portfolio-overlay',
-      ({ child, entityId, entityType, image }) => {
+      ({ child, entityId, entityType, image, created }) => {
         this.currtentChild = child
         this.entityId = entityId
         this.entityType = entityType
         this.image = image
         this.overlay = true
+        this.created = created
       }
     )
   },
