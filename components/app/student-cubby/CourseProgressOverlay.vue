@@ -193,6 +193,7 @@ export default {
     },
 
     missing () {
+      // Return 0 if we are currently at the intro lesson
       if (this.currentLetter && this.currentLetter.name === 'Intro') {
         return 0
       }
