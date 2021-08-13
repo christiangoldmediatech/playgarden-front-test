@@ -47,4 +47,33 @@ describe('/app/music', () => {
       })
     })
   })
+
+  describe('playlist', () => {
+    it('should open the playlist card', () => {
+      cy.get('[data-test-id=music-queue-playlist-button]').click({ force: true })
+
+      cy.get('[data-test-id=music-queue-card]').should('be.visible')
+    })
+
+    it('should show playlist items', () => {
+      cy.get('[data-test-id=playlist-item]').should('have.length.at.least', 1)
+    })
+
+    it('should show Playing', () => {
+      cy.get('[data-test-id=playlist-item]').first().click({ force: true })
+      cy.get('[data-test-id=playlist-item]').first().find('[data-test-id=playlist-item-playing-tag]').should('exist')
+      
+      // pause
+      cy.get('[data-test-id=music-player-pause-button]').click({ force: true })
+    })
+
+    it('should remove playlist item', () => {
+      cy.get('[data-test-id=playlist-item]').first().find('[data-test-id=playlist-item-remove-button]').click({ force: true })
+      cy.get('[data-test-id=playlist-item]').should('have.length', 0)
+    })
+
+    it('should show Empty queue text', () => {
+      cy.get('[data-test-id=music-queue-empty-queue]').should('contain.text', 'Empty queue')
+    })
+  })
 })

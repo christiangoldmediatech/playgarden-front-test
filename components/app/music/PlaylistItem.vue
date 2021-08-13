@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card :id="`playlist-item-${song.id}`" class="playlist-item" @click="$emit('play')">
+    <v-card :id="`playlist-item-${song.id}`" class="playlist-item" data-test-id="playlist-item" @click="$emit('play')">
       <v-row no-gutters>
         <!-- THUMBNAIL -->
         <v-col cols="2" align-self="center">
@@ -8,28 +8,48 @@
         </v-col>
 
         <!-- SONG NAME -->
-        <v-col cols="3" sm="4" align-self="center" class="playlist-item-description">
+        <v-col
+          cols="3"
+          sm="4"
+          align-self="center"
+          class="playlist-item-description"
+          data-test-id="playlist-item-song-description"
+        >
           {{ song.description }}
         </v-col>
 
         <!-- SONG AUTHOR -->
-        <v-col v-if="!isPlaying" cols="3" sm="4" align-self="center" class="playlist-item-name">
+        <v-col
+          v-if="!isPlaying"
+          cols="3"
+          sm="4"
+          align-self="center"
+          class="playlist-item-name"
+          data-test-id="playlist-item-song-name"
+        >
           {{ song.name }}
         </v-col>
 
         <!-- SONG PLAYING INDICATOR -->
-        <v-col v-else cols="3" sm="4" align-self="center" class="playlist-item-name">
+        <v-col
+          v-else
+          cols="3"
+          sm="4"
+          align-self="center"
+          class="playlist-item-name"
+          data-test-id="playlist-item-playing-tag"
+        >
           <span class="playlist-item-playing-tag">PLAYING</span>
         </v-col>
 
         <v-col cols="auto" align-self="center">
           <!-- FAVORITE BUTTON -->
-          <v-btn class="mr-n1 mr-md-0" :class="favoriteButtonClasses" icon @click.stop="$emit('favorite', song)">
+          <v-btn class="mr-n1 mr-md-0" :class="favoriteButtonClasses" icon data-test-id="playlist-item-favorite-button" @click.stop="$emit('favorite')">
             <v-icon>mdi-heart</v-icon>
           </v-btn>
 
           <!-- REMOVE BUTTON -->
-          <v-btn class="ml-n1 ml-md-0 red--text text--lighten-1" icon @click.stop="$emit('remove-song')">
+          <v-btn class="ml-n1 ml-md-0 red--text text--lighten-1" icon data-test-id="playlist-item-remove-button" @click.stop="$emit('remove-song')">
             <v-icon>mdi-close-circle</v-icon>
           </v-btn>
         </v-col>
