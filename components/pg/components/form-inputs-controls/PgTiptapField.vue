@@ -34,8 +34,6 @@ import {
   History,
   Link,
   Image,
-  TodoList,
-  TodoItem,
   Table,
   TableCell,
   TableHeader,
@@ -102,8 +100,6 @@ export default {
       ListItem,
       BulletList,
       OrderedList,
-      TodoList,
-      TodoItem,
 
       // Others
       Image,
