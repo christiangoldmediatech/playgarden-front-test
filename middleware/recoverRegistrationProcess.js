@@ -1,4 +1,5 @@
 import { get } from 'lodash'
+import { UserFlow } from '@/models'
 
 export default function ({ redirect, route, store }) {
   const ignoreRoute = {
@@ -22,7 +23,7 @@ export default function ({ redirect, route, store }) {
 
   if (
     user.id &&
-    (step === 1 || step === 2 || step === 3) &&
+    (step === 1 || step === 2 || step === 3 || step === 5) &&
     (!user.role || get(user, 'role.section') === 'USERS') &&
     route.query.process !== 'signup' &&
     !ignoreRoute[route.name]
@@ -57,6 +58,12 @@ export default function ({ redirect, route, store }) {
 
       case 3:
         name = 'app-children'
+        break
+
+      case 5:
+        if (user.flow === UserFlow.NOCREDITCARD) {
+          name = 'auth-verify-email'
+        }
         break
     }
     redirect({
