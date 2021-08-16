@@ -117,7 +117,7 @@ export default {
     },
 
     totalHours () {
-      return 19 - this.getAdvancedSchedule.firstHour
+      return this.getAdvancedSchedule.endHour - this.hourOffset
     },
 
     activeDay () {

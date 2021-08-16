@@ -1,11 +1,15 @@
 import { mapGetters } from 'vuex'
-
+import { UserFlow } from '@/models'
 export default {
   computed: {
-    ...mapGetters('auth', ['isUserInSignupProcess', 'isUserLoggedIn']),
+    ...mapGetters('auth', ['isUserInSignupProcess', 'isUserLoggedIn', 'getUserInfo']),
     ...mapGetters({
       currentChildId: 'getCurrentChild'
     }),
+
+    getVerifyEmail () {
+      return (this.getUserInfo.flow === UserFlow.NOCREDITCARD) ? (this.getUserInfo.registerStep !== 5) : true
+    },
 
     items () {
       if (!this.isUserInSignupProcess && this.isUserLoggedIn) {
