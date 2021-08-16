@@ -199,7 +199,7 @@ export default {
     file: null,
     fileName: null,
     categoriesSelected: [],
-    categories: null,
+    categories: [],
     videoFile: null,
     loading: false,
     path: 'lesson',
