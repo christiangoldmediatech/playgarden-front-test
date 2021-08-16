@@ -62,13 +62,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, ref, watch } from '@nuxtjs/composition-api'
 import { usePlaydates } from '@/composables/playdates'
 import { mapActions, mapGetters, mapState } from 'vuex'
 import onSearch from '@/mixins/OnSearchMixin.js'
 import paginable from '@/utils/mixins/paginable'
 import PlaydatesEditorDialog from '@/components/admin/playdates/PlaydatesEditorDialog.vue'
 import { PlaydatesResponse, Playdate } from '@/models'
+import { useNuxtHelper } from '@/composables'
 
 export default defineComponent({
   name: 'PlaydatesDataTable',
@@ -111,7 +112,8 @@ export default defineComponent({
     ]
   }),
 
-  setup () {
+  setup (_, { emit }) {
+    const nuxt = useNuxtHelper()
     const loading = ref<Boolean>(false)
     const search = ref<string>('')
     const selectedStatus = ref<string>('')
@@ -125,6 +127,41 @@ export default defineComponent({
       await fetchPlaydates({ page: page.value, total: total.value, limit: limit.value })
     })
 
+    watch(page, (val) => {
+      if (!loading.value) {
+        refresh()
+      }
+    })
+
+    const refresh = async (clear = false) => {
+      loading.value = false
+      const params = {
+        page: page.value,
+        limit: limit.value,
+        name: '',
+        state: ''
+      }
+
+      if (clear) {
+        search.value = ''
+      }
+
+      if (search.value) {
+        params.name = search.value
+      }
+
+      if (selectedStatus.value) {
+        params.state = selectedStatus.value
+      }
+
+      try {
+        await fetchPlaydates(params)
+      } catch (e) {
+      } finally {
+        loading.value = false
+      }
+    }
+
     return {
       playdates,
       page,
@@ -135,48 +172,12 @@ export default defineComponent({
       selectedStatus,
       loading,
       fetchPlaydates,
-      deletePlayadte
-    }
-  },
-
-  watch: {
-    page () {
-      if (!this.loading) {
-        this.refresh()
-      }
+      deletePlayadte,
+      refresh
     }
   },
 
   methods: {
-    async refresh (clear = false) {
-      this.loading = true
-      const params = {
-        page: this.page,
-        limit: this.limit,
-        name: '',
-        state: ''
-      }
-
-      if (clear) {
-        this.search = ''
-      }
-
-      if (this.search) {
-        params.name = this.search
-      }
-
-      if (this.selectedStatus) {
-        params.state = this.selectedStatus
-      }
-
-      try {
-        await this.fetchPlaydates(params)
-      } catch (e) {
-      } finally {
-        this.loading = false
-      }
-    },
-
     remove ({ id, name }: any) {
       this.$nuxt.$emit('open-prompt', {
         title: 'Delete playdate?',

@@ -76,17 +76,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, ref, nextTick } from '@nuxtjs/composition-api'
 import { mapActions, mapGetters } from 'vuex'
 import { Playdate } from '@/models'
 import { usePlaydates } from '@/composables/playdates'
+import { useSnotifyHelper } from '@/composables'
 export default defineComponent({
   name: 'PlaydatesEditorDialog',
 
-  setup () {
+  setup (_, { emit }) {
+    const snotify = useSnotifyHelper()
     const loading = ref(false)
     const dialog = ref(false)
-    const id = ref()
+    const id = ref<null|number>()
     const { updatePlaydate, states } = usePlaydates()
     const playdate = ref<Partial<Playdate>>({
       ages: '',
@@ -131,6 +133,29 @@ export default defineComponent({
       }
     }
 
+    const close = () => {
+      nextTick(() => {
+        dialog.value = false
+        loading.value = false
+      })
+    }
+
+    const save = async () => {
+      loading.value = true
+      try {
+        if (id.value && playdate.value) {
+          await updatePlaydate(id.value, playdate.value)
+          snotify.success('Playdate updated successfully.')
+        }
+      } catch (error) {
+        snotify.error(error.message)
+      } finally {
+        loading.value = false
+        dialog.value = false
+        emit('saved')
+      }
+    }
+
     return {
       loading,
       dialog,
@@ -140,29 +165,13 @@ export default defineComponent({
       generateItemTemplate,
       resetItem,
       loadItem,
-      updatePlaydate
+      updatePlaydate,
+      save,
+      close
     }
   },
 
   methods: {
-    close () {
-      this.$nextTick(() => {
-        this.dialog = false
-        this.loading = false
-      })
-    },
-
-    async save () {
-      this.loading = true
-      try {
-        await this.updatePlaydate(this.id, this.playdate)
-      } catch (error) {} finally {
-        this.loading = false
-        this.dialog = false
-        this.$emit('saved')
-      }
-    },
-
     open (evt: unknown, item: Playdate) {
       this.resetItem()
       if (item) {

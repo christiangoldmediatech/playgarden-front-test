@@ -31,5 +31,5 @@ export interface PlaydatesResponse {
   filtered: number
   limit: number
   page: number
-  playdates: Playdate []
+  playdates: Playdate[]
 }
