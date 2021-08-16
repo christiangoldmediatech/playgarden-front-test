@@ -69,7 +69,6 @@ import onSearch from '@/mixins/OnSearchMixin.js'
 import paginable from '@/utils/mixins/paginable'
 import PlaydatesEditorDialog from '@/components/admin/playdates/PlaydatesEditorDialog.vue'
 import { PlaydatesResponse, Playdate } from '@/models'
-import { useNuxtHelper } from '@/composables'
 
 export default defineComponent({
   name: 'PlaydatesDataTable',
@@ -113,7 +112,6 @@ export default defineComponent({
   }),
 
   setup (_, { emit }) {
-    const nuxt = useNuxtHelper()
     const loading = ref<Boolean>(false)
     const search = ref<string>('')
     const selectedStatus = ref<string>('')
