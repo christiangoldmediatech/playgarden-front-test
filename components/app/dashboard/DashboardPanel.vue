@@ -111,7 +111,7 @@
 
           <!-- DOWNLOAD WORKSHEETS -->
           <v-card
-            :disabled="videos.progress < 100 || noLinkMode"
+            :disabled="noLinkMode"
             :ripple="false"
             class="dashboard-item"
             active-class="dashboard-item-active"
@@ -124,7 +124,7 @@
               </v-col>
 
               <v-col cols="9" align-self="center">
-                <div class="text-uppercase dashboard-item-title" :class="{ 'dashboard-item-disabled': videos.progress < 100 }">
+                <div class="text-uppercase dashboard-item-title">
                   DOWNLOAD WORKSHEET
                 </div>
               </v-col>
@@ -186,7 +186,6 @@
 
           <!-- PROGRESS -->
           <lesson-progress
-            :is-worksheet-progress="true"
             :progress="worksheets.progress"
             :total-completed-worksheets="worksheets.totalCompletedWorksheets"
             :total-worksheets="worksheets.totalWorksheets"
