@@ -28,6 +28,7 @@
     <div v-if="isProgressCompleted" class="dashboard-progress-tasks">
       <img
         data-test-id="lesson-progress-medal"
+        class="dashboard-progress-tasks-image"
         src="@/assets/png/dashboard/progress-medal.png"
       >
     </div>
@@ -194,6 +195,10 @@ export default defineComponent({
     }
 
     &-tasks {
+      &-image {
+        height: 20px;
+      }
+
       &-remaining {
         font-size: 12px;
       }
