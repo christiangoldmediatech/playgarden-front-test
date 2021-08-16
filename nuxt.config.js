@@ -289,7 +289,7 @@ export default {
       'recoverRegistrationProcess'
       // 'pickChild'
       // 'fetchUserInfo',
-      // 'emailVerified',
+      // 'emailVerified'
       // 'redirectProperAuthenticatedSection',
       // 'redirectIfAuthenticated',
       // 'redirectIfSubscriptionCancelled',

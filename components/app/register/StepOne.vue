@@ -1,12 +1,11 @@
 <template>
-  <v-row
-    class="flex-column flex-md-row"
-    justify="center"
-    no-gutters
-  >
+  <v-row class="flex-column flex-md-row" justify="center" no-gutters>
     <v-col cols="12" class="ml-md-14">
       <p class="text-center text-md-left">
-        <underlined-title class="text-h6 text-md-h4 ml-sm-4" text="PLAYGARDEN PREP ONLINE IS COMPLETELY FREE FOR 30 DAYS!" />
+        <underlined-title
+          class="text-h6 text-md-h4 ml-sm-4"
+          text="PLAYGARDEN PREP ONLINE IS COMPLETELY FREE FOR 30 DAYS!"
+        />
       </p>
     </v-col>
     <v-col
@@ -21,7 +20,9 @@
       <p class="text-center text-md-left mt-md-n8">
         <span class="subtitle-text info-color-signup">
           Create an account to start learning
-          <span v-if="!isCreditCardRequired">. NO CREDIT CARD REQUIRED!</span>
+          <span
+            v-if="!isCreditCardRequired"
+          >. NO CREDIT CARD REQUIRED!</span>
         </span>
       </p>
 
@@ -33,14 +34,15 @@
       />
     </v-col>
 
-    <v-col
-      cols="12"
-      md="6"
-      lg="6"
-      xl="6"
-    >
+    <v-col cols="12" md="6" lg="6">
       <template>
-        <v-row :class="($vuetify.breakpoint.smAndUp) ? 'mt-4 background-card' : 'background-card-mobile pt-14 px-8'">
+        <v-row
+          :class="
+            $vuetify.breakpoint.smAndUp
+              ? 'mt-4 background-card'
+              : 'background-card-mobile pt-14 px-8'
+          "
+        >
           <v-col cols="12" class="my-sm-6 px-sm-10">
             <v-layout row wrap align-center justify-center>
               <v-card class="custom-shadow mx-0 mx-md-10">
@@ -59,7 +61,12 @@
 </template>
 
 <script>
-import { defineComponent, onMounted, useRoute, useRouter } from '@nuxtjs/composition-api'
+import {
+  defineComponent,
+  onMounted,
+  useRoute,
+  useRouter
+} from '@nuxtjs/composition-api'
 import { mapActions, mapGetters } from 'vuex'
 import { useSignup } from '@/composables/use-signup.composable'
 import RegisterForm from '@/components/forms/auth/RegisterForm.vue'
@@ -75,7 +82,10 @@ export default defineComponent({
   setup () {
     const router = useRouter()
     const route = useRoute()
-    const { abFlow, isCreditCardRequired, setupABFlow } = useSignup({ router, route })
+    const { abFlow, isCreditCardRequired, setupABFlow } = useSignup({
+      router,
+      route
+    })
 
     const goToNextStep = () => {
       switch (abFlow.value) {
@@ -124,8 +134,8 @@ export default defineComponent({
       return Boolean(
         (query.process === 'invitation-caregiver' ||
           query.process === 'invitation-playdate') &&
-          (query.email || query.phone) &&
-          query.token
+        (query.email || query.phone) &&
+        query.token
       )
     },
     signupProcess () {
