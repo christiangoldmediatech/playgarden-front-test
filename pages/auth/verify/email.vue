@@ -1,7 +1,7 @@
 <template>
   <v-row align="center" justify="center" no-gutters>
     <v-col cols="11" md="6">
-      <div class="image mt-4 mt-md-0" :class="{mobile: $vuetify.breakpoint.smAndDown}">
+      <div class="image py-4 mt-md-0" :class="{mobile: $vuetify.breakpoint.smAndDown}">
         <img alt="Smiling Girl Picture" src="@/assets/png/welcome-back.png">
       </div>
     </v-col>
@@ -19,7 +19,7 @@
           <span>Please check your email to confirm account and start learning today!</span>
         </p>
 
-        <v-btn
+        <!-- <v-btn
           v-if="isUserLoggedIn"
           block
           color="primary"
@@ -30,13 +30,13 @@
           @click="goToLessons"
         >
           GO TO LESSONS
-        </v-btn>
+        </v-btn> -->
 
-        <nuxt-link v-else :to="{ name: 'auth-login' }">
+        <!-- <nuxt-link :to="{ name: 'auth-login' }">
           <v-btn block color="primary">
             RETURN TO LOG IN
           </v-btn>
-        </nuxt-link>
+        </nuxt-link> -->
 
         <p class="mt-6 text-center text-md-left">
           Didn’t receive an email?
@@ -63,6 +63,12 @@
             CONTACT US
           </v-btn>
         </p>
+
+        <nuxt-link v-if="isUserLoggedIn" :to="{ name: 'auth-logout' }">
+          <v-btn block color="accent">
+            LOG OUT
+          </v-btn>
+        </nuxt-link>
       </div>
     </v-col>
   </v-row>

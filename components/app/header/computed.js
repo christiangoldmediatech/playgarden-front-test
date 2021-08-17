@@ -1,11 +1,15 @@
 import { mapGetters } from 'vuex'
-
+import { UserFlow } from '@/models'
 export default {
   computed: {
-    ...mapGetters('auth', ['isUserInSignupProcess', 'isUserLoggedIn']),
+    ...mapGetters('auth', ['isUserInSignupProcess', 'isUserLoggedIn', 'getUserInfo']),
     ...mapGetters({
       currentChildId: 'getCurrentChild'
     }),
+
+    getVerifyEmail () {
+      return (this.getUserInfo.flow === UserFlow.NOCREDITCARD) ? (this.getUserInfo.registerStep !== 5) : true
+    },
 
     items () {
       if (!this.isUserInSignupProcess && this.isUserLoggedIn) {
@@ -32,7 +36,7 @@ export default {
             title: 'Student Cubby',
             to: {
               name: 'app-student-cubby-puzzle',
-              query: { id: `${(this.currentChildId) ? this.currentChildId[0].id : 0}` }
+              query: { id: `${(this.currentChildId) ? this.currentChildId[0].id : null}` }
             },
             exact: false
           }
