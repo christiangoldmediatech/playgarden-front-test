@@ -33,7 +33,7 @@
         </v-row>
       </v-col>
 
-      <v-col cols="12" md="6" class="pl-md-15">
+      <v-col cols="12" md="6" class="pl-md-15 text--color-black-base">
         <underlined-title text="Invite a Friend to a Playdate!" />
 
         <p>
@@ -167,7 +167,7 @@
                 <v-btn
                   block
                   class="text-transform-none white--text"
-                  color="#C2DAA5"
+                  color="#68C453"
                   :disabled="invalid"
                   :loading="loading"
                   type="submit"
@@ -337,3 +337,9 @@ export default defineComponent({
   }
 })
 </script>
+
+<style lang="scss" scoped>
+.text--color-black-base{
+  color:var(--v-black-base);
+}
+</style>

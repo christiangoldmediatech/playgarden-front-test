@@ -1,6 +1,6 @@
 <template>
   <v-btn
-    color="#c2daa5"
+    color="#68C453"
     icon
     @click.stop="onClick"
   >

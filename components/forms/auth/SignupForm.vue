@@ -160,7 +160,7 @@
                   block
                   min-height="60"
                   class="mb-6 main-btn"
-                  color="primary"
+                  color="green2"
                   :disabled="invalid"
                   :loading="loading"
                   type="submit"

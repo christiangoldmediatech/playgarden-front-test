@@ -155,7 +155,7 @@ export default defineComponent({
       left: 0;
       width: 100%;
       height: 16px;
-      background-color: #dce7b5;
+      background-color: #B2E68D;
       &.vowel {
         background-color: var(--v-accent-base);
       }

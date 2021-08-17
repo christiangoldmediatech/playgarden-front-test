@@ -1,14 +1,14 @@
 <template>
   <v-menu offset-y top :close-on-content-click="false" max-width="1000px" @input="handleMenuVisibility">
     <template #activator="{ on }">
-      <v-btn class="white--text" icon v-on="on">
+      <v-btn class="white--text" icon data-test-id="music-queue-playlist-button" v-on="on">
         <v-icon size="32">
           mdi-playlist-music-outline
         </v-icon>
       </v-btn>
     </template>
 
-    <v-card class="music-queue">
+    <v-card class="music-queue" data-test-id="music-queue-card">
       <v-card-title>
         <v-row>
           <v-col class="flex-grow-1 flex-shrink-0">
@@ -34,7 +34,7 @@
               :song="playlistItem"
               :is-playing="isCurrentSong(playlistItem.id)"
               class="my-3"
-              @favorite="$emit('favorite', $event)"
+              @favorite="$emit('favorite', playlistItem)"
               @play="$emit('play', playlistItemIndex)"
               @remove-song="$emit('remove-song', playlistItemIndex)"
             />
@@ -42,7 +42,7 @@
         </template>
 
         <template v-else>
-          <div class="music-queue-empty-queue">
+          <div class="music-queue-empty-queue" data-test-id="music-queue-empty-queue">
             Empty queue
           </div>
         </template>

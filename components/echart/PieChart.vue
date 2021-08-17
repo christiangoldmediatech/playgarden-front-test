@@ -67,7 +67,7 @@ export default {
             }
           }
         ],
-        color: ['#F89838', '#C2DAA5', '#925A22', '#fc8452', '#78C383', '#9a60b4', '#ee6666', '#3ba272', '#ea7ccc']
+        color: ['#F89838', '#68C453', '#925A22', '#fc8452', '#78C383', '#9a60b4', '#ee6666', '#3ba272', '#ea7ccc']
       }
     },
     getChartDimensions () {

@@ -12,7 +12,7 @@
         no-gutters
         justify="space-around"
         @click.stop="
-          $nuxt.$emit('open-portfolio-overlay', { child, entityId, entityType, image })
+          $nuxt.$emit('open-portfolio-overlay', { child, entityId, entityType, image, created })
         "
       >
         <v-col cols="12">
@@ -45,6 +45,15 @@
                 {{ child.firstName }}
               </span>
             </div>
+
+            <div class="subheading">
+              <span
+                class="d-block text-center"
+                :class="{ 'white--text': displayMode }"
+              >
+                {{ `Uploaded Date: ${createdDateFormatted}` }}
+              </span>
+            </div>
           </div>
         </v-col>
       </v-row>
@@ -71,14 +80,17 @@
 
       <v-col v-if="infoUser && dataChild" class="shrink" cols="12" md="4">
         <v-card class="mx-auto mx-md-0">
-          <v-card-title>
+          <v-card-text>
             <span>
               Student: {{ dataChild.firstName }}
             </span><br>
             <span>
               Parent: {{ `${dataChild.user.firstName} ${dataChild.user.lastName}` }}
+            </span> <br>
+            <span>
+              Date: {{ `${createdDateFormatted}` }}
             </span>
-          </v-card-title>
+          </v-card-text>
           <v-card-text>
             <v-btn
               color="accent darken-1"
@@ -130,6 +142,7 @@
 </template>
 
 <script lang="ts">
+import dayjs from 'dayjs'
 import { defineComponent, ref, useRoute, computed, onMounted } from '@nuxtjs/composition-api'
 import { useWorksheetsCategories } from '@/composables/worksheets'
 import { Child, Feedback } from '@/models'
@@ -147,6 +160,11 @@ export default defineComponent({
 
     image: {
       type: [Object, Function, String],
+      required: true
+    },
+
+    created: {
+      type: String,
       required: true
     },
 
@@ -234,6 +252,10 @@ export default defineComponent({
   computed: {
     textShare (): string {
       return (this.child) ? `${this.child.firstName || 'Child'}'s awesome work!` : ''
+    },
+
+    createdDateFormatted (): unknown {
+      return this.created ? dayjs(this.created).format('MM/DD/YYYY') : null
     }
   },
 

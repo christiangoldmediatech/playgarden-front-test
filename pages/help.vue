@@ -13,7 +13,7 @@
               >
                 <v-overlay absolute class="text-center">
                   <underlined-title
-                    class="text-h5 text-md-h3 white--text"
+                    class="text-h5 text-md-h3 white--text underlined-title-dark-green"
                     text="Hello, how can we help?"
                   />
                 </v-overlay>
