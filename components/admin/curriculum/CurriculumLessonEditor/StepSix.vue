@@ -73,17 +73,19 @@ export default {
   },
 
   data: () => ({
-    loading: false
+    loading: false,
+    draft: {
+      ending: {},
+      learning: {}
+    }
   }),
 
-  created () {
+  async created () {
     if (this.lessonId) {
       this.loading = true
-
-      this.getLessonById(this.lessonId).then((data) => {
-        this.draft = data
-        this.loading = false
-      })
+      const dataLesson = await this.getLessonById(this.lessonId)
+      this.draft = { ...dataLesson }
+      this.loading = false
     }
   },
 
