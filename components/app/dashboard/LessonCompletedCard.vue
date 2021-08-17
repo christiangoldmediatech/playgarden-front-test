@@ -11,7 +11,7 @@
       <div class="d-flex flex-column fill-height justify-space-around align-center">
         <div class="text-center">
           <underlined-title
-            class="white--text"
+            class="white--text underlined-title-dark-green"
           >
             Congratulations!
           </underlined-title>

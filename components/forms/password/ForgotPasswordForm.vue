@@ -63,11 +63,11 @@
 
       <v-btn
         block
-        color="primary"
+        color="green2"
         :disabled="invalid"
         :loading="loading"
         type="submit"
-        class="main-btn"
+        class="main-btn main-btn--black-base"
         x-large
       >
         SEND RECOVERY LINK
@@ -135,5 +135,11 @@ export default {
 }
 .return-link {
   color:  var(--v-primary-base);
+}
+.main-btn--black-base{
+  color:var(--v-black-base);
+  &:hover{
+    color:rgba(#000000, 0.8);
+  }
 }
 </style>
