@@ -1,13 +1,13 @@
 <template>
-  <div class="dashboard-panel-container">
-    <v-card class="dashboard-panel-card pt-0" height="100%">
-      <div class="dashboard-panel-card-border-top">
+  <div class="lesson-panel-container">
+    <v-card class="lesson-panel-card pt-0" height="100%">
+      <div class="lesson-panel-card-border-top">
         <slot name="panel-toolbar" />
       </div>
 
       <pg-circle-letter-day :day="day" :letter="letter" />
 
-      <div class="dashboard-panel-content pa-3 d-flex align-center">
+      <div class="lesson-panel-content pa-3 d-flex align-center">
         <div class="font-weight-bold text-center spaced-out">
           <slot />
         </div>
