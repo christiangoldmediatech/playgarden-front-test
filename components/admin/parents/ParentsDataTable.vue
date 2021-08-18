@@ -197,6 +197,7 @@ export default {
       page: 1,
       allFilters: false,
       activeFilters: ['firstName'],
+      filters: null,
       filterList: [
         {
           text: 'First Name',
@@ -392,13 +393,15 @@ export default {
           params[filter] = this.search
         })
       }
-
+      this.filters = { ...params }
+      delete this.filters.limit
+      delete this.filters.page
       await this.getUsers(params)
       this.loading = false
     },
 
     async exportList () {
-      await this.exportParents()
+      await this.exportParents(this.filters)
       this.$snotify.success('Report created succesfully! Check your email to get it', {
         timeout: 6000
       })
