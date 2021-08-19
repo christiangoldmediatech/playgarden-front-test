@@ -258,6 +258,8 @@ export default {
     sessions () {
       const sessionId = Number(this.$route.query.sid) || 0
 
+      this.$router.push({ name: 'app-live-classes' })
+
       if (!sessionId) {
         return
       }
