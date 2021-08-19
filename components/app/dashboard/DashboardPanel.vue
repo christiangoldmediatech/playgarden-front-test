@@ -1,8 +1,9 @@
 <template>
-  <div class="dashboard-panel-container">
-    <v-card class="dashboard-panel-card" height="100%">
-      <div class="dashboard-panel-card-border-top">
+  <div class="lesson-panel-container">
+    <v-card class="lesson-panel-card" elevation="0" height="100%">
+      <div class="lesson-panel-card-border-top">
         <slot name="panel-toolbar">
+          <!-- HORIZONTAL LESSON NAVIGATION BAR -->
           <v-row v-if="!displayMode" class="my-0" justify="space-between" align="center" fill-height>
             <v-col class="btnLesson">
               <v-tooltip v-if="previousLessonId && !$vuetify.breakpoint.smAndDown" top class="pb-6">
@@ -64,6 +65,8 @@
           </v-row>
         </slot>
       </div>
+
+      <!-- BIG CIRCLE WITH CURRENT LETTER -->
       <pg-circle-letter-day
         :class="{ 'clickable': !displayMode }"
         :day="lesson ? lesson.day : null"
@@ -71,7 +74,8 @@
         @click.native="openCourseProgress"
       />
 
-      <div class="dashboard-panel-content pa-3">
+      <div class="lesson-panel-content">
+        <!-- VIDEO LESSONS -->
         <content-section
           number="1"
           title="Video Lessons"
@@ -79,9 +83,14 @@
           :progress-next="videos.progressNext"
           enabled
         >
+          <!-- VIDEOS -->
           <content-list :items="videos.items" v-bind="{ noLinkMode }" item-type="videoLesson" />
+
+          <!-- PROGRESS -->
+          <lesson-progress :progress="videos.progress" />
         </content-section>
 
+        <!-- WORKSHEETS -->
         <content-section
           number="2"
           title="Worksheets"
@@ -89,116 +98,98 @@
           :progress-next="worksheets.progressNext"
           :enabled="videos.progress === 100"
         >
-          <template v-slot:title-append>
-            <v-img
-              :class="['ml-2', { 'dashboard-panel-disabled': videos.progress < 100 }]"
-              :src="require('@/assets/png/dashboard/worksheets.png')"
-              max-width="32px"
-              max-height="32px"
-              contain
-            />
-          </template>
-          <v-list class="py-0" dense>
-            <v-list-item
-              v-if="worksheets.ONLINE.length"
-              class="dashboard-item"
-              active-class="dashboard-item-active"
-              exact-active-class="dashboard-item-exact"
-              :disabled="videos.progress < 100"
-              :nuxt="!noLinkMode"
-              :exact="!noLinkMode"
-              :to="noLinkMode ? undefined : generateNuxtRoute('online-worksheet')"
-            >
-              <v-list-item-content>
-                <v-list-item-title
-                  :class="['dashboard-panel-worksheet-text', { 'dashboard-item-disabled': videos.progress < 100 }]"
-                  @click="handleOnlineWorksheetClick"
-                >
-                  ONLINE WORKSHEET
-                </v-list-item-title>
-                <v-list-item-subtitle v-if="noLinkMode">
-                  Completed: {{ completedOnlineWorksheets }}/{{ worksheets.ONLINE.length }}
-                </v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
+          <!-- ONLINE WORKSHEETS -->
+          <lesson-online-worksheet
+            v-for="(onlineWorksheet, onlineWorksheetIndex) in worksheets.ONLINE"
+            :key="onlineWorksheet.id"
+            :online-worksheet="onlineWorksheet"
+            :progress="videos.progress"
+            :no-link-mode="noLinkMode"
+            :to="noLinkMode ? undefined : generateNuxtRoute('online-worksheet', { worksheet: onlineWorksheetIndex })"
+            :enabled="completedOnlineWorksheets >= onlineWorksheetIndex"
+          />
 
-            <v-list-item
-              v-if="worksheets.OFFLINE"
-              class="dashboard-item"
-              active-class="dashboard-item-active"
-              exact-active-class="dashboard-item-exact"
-              :disabled="videos.progress < 100"
-              :nuxt="!noLinkMode"
-              :exact="!noLinkMode"
-              :to="noLinkMode ? undefined : generateNuxtRoute('offline-worksheet')"
-            >
-              <v-list-item-content>
-                <v-list-item-title :class="['dashboard-panel-worksheet-text', { 'dashboard-item-disabled': videos.progress < 100 }]">
-                  HANDS-ON LEARNING
-                </v-list-item-title>
-                <v-list-item-subtitle v-if="noLinkMode">
-                  Completed: {{ worksheets.OFFLINE.completed ? 'Yes' : 'No' }}
-                </v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
+          <!-- DOWNLOAD WORKSHEETS -->
+          <v-card
+            :disabled="noLinkMode"
+            :ripple="false"
+            class="dashboard-item"
+            active-class="dashboard-item-active"
+            exact-active-class="dashboard-item-exact"
+            @click.stop="openPdf"
+          >
+            <v-row no-gutters class="py-2">
+              <v-col cols="3" align-self="center" class="d-flex justify-center">
+                <v-img height="40px" contain :src="require('@/assets/png/dashboard/download-worksheet.png')" />
+              </v-col>
 
-            <v-list-item
-              v-if="worksheets.OFFLINE"
-              class="dashboard-item"
-              :disabled="videos.progress < 100"
-            >
-              <v-list-item-content>
-                <v-btn
-                  id="download-worksheet-btn"
-                  class="dashboard-panel-worksheet-btn white--text"
-                  color="#dce7b5"
-                  :disabled="videos.progress < 100 || noLinkMode"
-                  block
-                  nuxt
-                  exact
-                  :to="generateNuxtRoute('offline-worksheet')"
-                  @click="handleWorksheetVideos"
-                >
-                  <v-icon color="white" left>
-                    pg-icon-play
-                  </v-icon>
-                  <!-- <pg-icon /> -->
-                  WORKSHEET VIDEOS
-                </v-btn>
-
-                <v-btn
-                  id="download-worksheet-btn"
-                  class="dashboard-panel-worksheet-btn white--text mt-2"
-                  color="#dce7b5"
-                  :disabled="videos.progress < 100 || noLinkMode"
-                  block
-                  @click.stop="openPdf"
-                >
-                  <v-icon color="white" left>
-                    pg-icon-download
-                  </v-icon>
-                  <!-- <pg-icon /> -->
+              <v-col cols="9" align-self="center">
+                <div class="text-uppercase dashboard-item-title">
                   DOWNLOAD WORKSHEET
-                </v-btn>
+                </div>
+              </v-col>
+            </v-row>
+          </v-card>
 
-                <v-btn
-                  v-if="!displayMode"
-                  id="upload-worksheet-btn"
-                  class="dashboard-panel-worksheet-btn white--text mt-2"
-                  color="primary"
-                  :disabled="videos.progress < 100"
-                  block
-                  @click.stop="uploadDialog = true"
-                >
-                  <v-icon color="white" left>
-                    pg-icon-camera
-                  </v-icon>
-                  <!-- <pg-icon /> -->
+          <!-- WORKSHEET VIDEO -->
+          <v-card
+            v-if="!displayMode && worksheets.OFFLINE"
+            :disabled="videos.progress < 100 || noLinkMode"
+            :to="generateNuxtRoute('offline-worksheet')"
+            :ripple="false"
+            class="dashboard-item"
+            active-class="dashboard-item-active"
+            exact-active-class="dashboard-item-exact"
+            nuxt
+            exact
+            @click="handleWorksheetVideos"
+          >
+            <v-row no-gutters>
+              <v-col cols="4" align-self="center" class="d-flex justify-center">
+                <v-img cover height="100px" class="dashboard-item-image" :src="require('@/assets/png/dashboard/offline-worksheet-video.png')" />
+              </v-col>
+
+              <v-col cols="8" align-self="center" class="pa-2">
+                <div class="text-uppercase dashboard-item-title" :class="{ 'dashboard-item-disabled': videos.progress < 100 }">
+                  {{ worksheets.OFFLINE.name }}
+                </div>
+
+                <div class="text-caption grey--text">
+                  {{ worksheets.OFFLINE.description }}
+                </div>
+              </v-col>
+            </v-row>
+          </v-card>
+
+          <!-- UPLOAD WORKSHEETS -->
+          <v-card
+            v-if="!displayMode"
+            :disabled="videos.progress < 100"
+            :ripple="false"
+            class="dashboard-item"
+            active-class="dashboard-item-active"
+            exact-active-class="dashboard-item-exact"
+            @click.stop="uploadDialog = true"
+          >
+            <v-row no-gutters class="py-2">
+              <v-col cols="3" align-self="center" class="d-flex justify-center">
+                <v-img height="40px" contain :src="require('@/assets/png/dashboard/upload-worksheet.png')" />
+              </v-col>
+
+              <v-col cols="9" align-self="center">
+                <div class="text-uppercase dashboard-item-title" :class="{ 'dashboard-item-disabled': videos.progress < 100 }">
                   UPLOAD WORKSHEET
-                </v-btn>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
+                </div>
+              </v-col>
+            </v-row>
+          </v-card>
+
+          <!-- PROGRESS -->
+          <lesson-progress
+            :progress="worksheets.progress"
+            :total-completed-worksheets="worksheets.totalCompletedWorksheets"
+            :total-worksheets="worksheets.totalWorksheets"
+          />
         </content-section>
 
         <content-section
@@ -209,6 +200,9 @@
           :enabled="videos.progress === 100"
         >
           <content-list :items="activities.items" v-bind="{ noLinkMode }" item-type="activity" />
+
+          <!-- PROGRESS -->
+          <lesson-progress :progress="activities.progress" />
         </content-section>
       </div>
     </v-card>
@@ -221,21 +215,24 @@
 import { mapGetters } from 'vuex'
 import DashboardMixin from '@/mixins/DashboardMixin'
 import LessonAdvanceMixin from '@/mixins/LessonAdvanceMixin'
-// import PgCircleLetterDay from '@/components/pg/components/PgCircleLetterDay'
+
 import { APP_EVENTS, TAG_MANAGER_EVENTS } from '@/models'
 
 import UploadOfflineWorksheet from './worksheets/UploadOfflineWorksheet'
 import ContentSection from './ContentSection.vue'
 import ContentList from './ContentList.vue'
+import LessonProgress from './LessonProgress.vue'
+import LessonOnlineWorksheet from './LessonOnlineWorksheet.vue'
 
 export default {
   name: 'DashboardPanel',
 
   components: {
-    // PgCircleLetterDay,
     UploadOfflineWorksheet,
     ContentSection,
-    ContentList
+    ContentList,
+    LessonProgress,
+    LessonOnlineWorksheet
   },
 
   mixins: [DashboardMixin, LessonAdvanceMixin],
@@ -415,10 +412,46 @@ export default {
 </script>
 
 <style lang="scss">
-.dashboard-panel {
+.dashboard {
+  &-item {
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.15) !important;
+    border-radius: 8px !important;
+    margin: 16px 12px;
+    background: white;
+
+    &-image {
+      border-radius: 8px;
+      filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.25));
+    }
+
+    // do not show vuetify's selected item shade
+    &.v-list-item--link:before {
+      content: none;
+    }
+
+    &-title {
+      font-size: 16px !important;
+      font-weight: bold !important;
+      letter-spacing: 0.1em !important;
+    }
+
+    &-disabled {
+      color: rgba(0, 0, 0, 0.38) !important;
+    }
+
+    &-exact, &-active {
+      box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16) !important;
+      margin: 12px 8px;
+      border: 4px solid #FFAB37 !important;
+      border-radius: 12px !important;
+    }
+  }
+}
+.lesson-panel {
   &-container {
     height: 100%;
     padding-top: 70px;
+    min-width: 100%;
     max-width: 501px;
     margin: 0 auto;
     display: block;
@@ -435,7 +468,7 @@ export default {
       height: 58px;
       position: absolute;
       top: 0;
-      background-color: var(--v-primary-base);
+      background-color: #B2E68D;
       border-radius: 5px;
     }
   }
@@ -445,6 +478,7 @@ export default {
     max-height: 100%;
     overflow-y: auto;
     padding: 12px;
+
     &-extra-padding {
       @media screen and (max-width: 959px) {
         padding-bottom: 97px !important;
@@ -454,6 +488,13 @@ export default {
         max-height: calc(100% - 97px);
       }
     }
+
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
   }
 
   &-worksheet {

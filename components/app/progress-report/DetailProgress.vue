@@ -171,7 +171,7 @@ export default {
 }
 
 .age-title {
-  color: #DCE7B5 !important
+  color: #B2E68D !important
 }
 
 .area-title {

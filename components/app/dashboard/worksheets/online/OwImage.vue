@@ -88,7 +88,7 @@ export default {
         max-height: 210px;
       }
       &-active {
-        border: solid #C2DAA5 4px;
+        border: solid #68C453 4px;
         box-shadow: 0px 8px 24px #B6C89F;
       }
       &-scaled {

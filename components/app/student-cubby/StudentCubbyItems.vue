@@ -150,7 +150,7 @@ export default defineComponent({
     &-selected {
       height: 60px;
       margin: -6px;
-      border: 6px solid #DCE7B5;
+      border: 6px solid #B2E68D;
       box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15) !important;
       border-radius: 21px;
       background: #FFFFFF;
