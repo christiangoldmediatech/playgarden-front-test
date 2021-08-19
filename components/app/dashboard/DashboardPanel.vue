@@ -138,7 +138,7 @@
             :to="generateNuxtRoute('offline-worksheet')"
             :ripple="false"
             class="dashboard-item"
-            active-class="dashboard-item-active dashboard-item-active-video"
+            active-class="dashboard-item-active"
             exact-active-class="dashboard-item-exact"
             nuxt
             exact
@@ -441,9 +441,6 @@ export default {
 
     &-exact, &-active {
       box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16) !important;
-    }
-
-    &-active-video {
       margin: 12px 8px;
       border: 4px solid #FFAB37 !important;
       border-radius: 12px !important;
