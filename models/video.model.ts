@@ -1,5 +1,12 @@
 import { ActivityType, Entity } from '@/models'
 
+export interface VideoUrl extends Entity {
+  CMAF: string
+  DASH: string
+  HLS: string
+  MSS: string
+}
+
 export interface Video extends Entity {
   activityType?: ActivityType
   code: string
@@ -10,11 +17,6 @@ export interface Video extends Entity {
   status: string
   thumbnail: string
   uploadId: string
-  videoUrl: {
-    CMAF: string
-    DASH: string
-    HLS: string
-    MSS: string
-  }
+  videoUrl: VideoUrl
   viewed: boolean
 }

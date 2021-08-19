@@ -29,9 +29,9 @@
 
     <v-btn
       block
-      color="primary"
+      color="green2"
       min-height="60"
-      class="main-btn"
+      class="main-btn main-btn--black-base"
       :disabled="isButtonDisabled"
       :loading="loading"
       type="submit"
@@ -128,6 +128,12 @@ export default {
     color: var(--v-primary-base);
     text-transform: uppercase;
     font-weight: bold;
+  }
+}
+.main-btn--black-base{
+  color:var(--v-black-base);
+  &:hover{
+    color:rgba(#000000, 0.8);
   }
 }
 </style>

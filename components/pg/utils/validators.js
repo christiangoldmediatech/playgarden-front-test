@@ -22,7 +22,8 @@ export const colorValidator = (value) => {
       'info',
       'success',
       'warning',
-      'black'
+      'black',
+      'green2'
     ].includes(value.color)
   ) {
     return false

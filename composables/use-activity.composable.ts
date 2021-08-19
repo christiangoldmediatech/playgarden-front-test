@@ -159,7 +159,7 @@ const videoToPlaylist = (
   activityType,
   curriculumType: undefined, // TODO: video.curriculumType is not present in the server response
   src: {
-    src: video.videoUrl.HLS,
+    src: video?.videoUrl?.HLS,
     type: 'application/x-mpegURL'
   },
   poster: video.thumbnail,
