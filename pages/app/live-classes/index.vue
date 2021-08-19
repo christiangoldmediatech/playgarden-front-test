@@ -253,6 +253,22 @@ export default {
   watch: {
     days () {
       this.getUserLiveSessions(this.days)
+    },
+
+    sessions () {
+      const sessionId = Number(this.$route.query.sid) || 0
+
+      if (!sessionId) {
+        return
+      }
+
+      const foundSession = this.sessions.find(s => s.id === sessionId)
+
+      if (!foundSession) {
+        return
+      }
+
+      this.$nuxt.$emit('open-entry-dialog', foundSession)
     }
   },
 
@@ -263,6 +279,7 @@ export default {
 
   methods: {
     ...mapActions('live-sessions', ['getUserLiveSessions']),
+
     close () {
       this.$nextTick(() => {
         this.dialog = false
