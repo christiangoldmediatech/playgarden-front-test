@@ -433,6 +433,7 @@ export default {
       font-size: 16px !important;
       font-weight: bold !important;
       letter-spacing: 0.1em !important;
+      color: var(--v-black-base);
     }
 
     &-disabled {
