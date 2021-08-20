@@ -181,7 +181,7 @@ export default {
     selectedReportCard: 'General',
     loadLetterStatsData: true,
     letterStatsData: {
-      name: '',
+      name: 'NO ADVANCE',
       reports: []
     }
   }),
@@ -274,6 +274,48 @@ export default {
     ...mapActions('children', { getChildren: 'get' }),
     ...mapActions('children/lesson', ['getOnlyCurrentLessons']),
 
+    loadDefaultDataLetterStatsDate () {
+      this.letterStatsData.name = 'NO ADVANCE'
+      this.letterStatsData.reports = [
+        {
+          title: 'Daily Lessons Attended',
+          done: 0,
+          percentage: 0,
+          total: 0
+        },
+        {
+          title: 'Videos Completed',
+          done: 0,
+          percentage: 0,
+          total: 0
+        },
+        {
+          title: 'Activities Completed',
+          done: 0,
+          percentage: 0,
+          total: 0
+        },
+        {
+          title: 'Activities Completed',
+          done: 0,
+          percentage: 0,
+          total: 0
+        },
+        {
+          title: 'Online Worksheets',
+          done: 0,
+          percentage: 0,
+          total: 0
+        },
+        {
+          title: 'Worksheets Upladed',
+          done: 0,
+          percentage: 0,
+          total: 0
+        }
+      ]
+    },
+
     async fetchChildProgress () {
       const data = await this.getCourseProgressByChildId({
         id: this.selectedChild
@@ -285,7 +327,10 @@ export default {
       try {
         const { curriculumType } = await this.getOnlyCurrentLessons({ childrenIds: id })
         this.selectedLetter = curriculumType.id
-      } catch (error) {}
+      } catch (error) {
+        this.loadDefaultDataLetterStatsDate()
+        this.loadLetterStatsData = false
+      }
     },
 
     changeChild (newId, redirect = true) {

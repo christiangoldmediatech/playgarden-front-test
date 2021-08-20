@@ -43,7 +43,7 @@ export default {
       const data = await this.$axios.$get('/lessons/childrens/onlyCurrent', {
         params
       })
-      return data.lesson
+      return data
     } catch (e) {
       const { data } = e.response
       if (data && data.errorCode === 100) {
