@@ -272,7 +272,7 @@ export default {
     ]),
     ...mapActions({ setChild: 'setChild' }),
     ...mapActions('children', { getChildren: 'get' }),
-    ...mapActions('children/lesson', ['getCurrentLesson']),
+    ...mapActions('children/lesson', ['getOnlyCurrentLessons']),
 
     async fetchChildProgress () {
       const data = await this.getCourseProgressByChildId({
@@ -283,7 +283,7 @@ export default {
 
     async fetchCurrentLesson (id) {
       try {
-        const { curriculumType } = await this.getCurrentLesson({ childrenIds: id })
+        const { curriculumType } = await this.getOnlyCurrentLessons({ childrenIds: id })
         this.selectedLetter = curriculumType.id
       } catch (error) {}
     },

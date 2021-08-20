@@ -38,6 +38,21 @@ export default {
     }
   },
 
+  async getOnlyCurrentLessons ({ commit }, params) {
+    try {
+      const data = await this.$axios.$get('/lessons/childrens/onlyCurrent', {
+        params
+      })
+      return data.lesson
+    } catch (e) {
+      const { data } = e.response
+      if (data && data.errorCode === 100) {
+        return Promise.reject(data)
+      }
+      return Promise.reject(e)
+    }
+  },
+
   setCurrentLessonVideo ({ commit }, video) {
     commit('SET_CURRENT_LESSON_VIDEO', video)
   },
