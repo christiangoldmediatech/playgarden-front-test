@@ -1,30 +1,26 @@
 <template>
-  <validation-observer ref="obs" v-slot="{ invalid, passes }">
-    <v-dialog
-      v-model="dialog"
-      :fullscreen="$vuetify.breakpoint.xs"
-      max-width="500px"
-      persistent
-      scrollable
-    >
-      <v-card>
-        <v-toolbar class="flex-grow-0" color="primary darken-1" dark dense flat>
-          <v-toolbar-title class="white--text">
-            EDIT STATUS PLAYDATE
-          </v-toolbar-title>
-
+  <v-container>
+    <v-row class="mx-4 my-4">
+      <v-card width="100%">
+        <v-card-title>
+          Playdate
           <v-spacer />
 
-          <v-btn :disabled="loading" icon @click.stop="close">
-            <v-icon>
-              mdi-close
-            </v-icon>
+          <v-btn
+            class="ma-3"
+            color="accent"
+            :loading="loading"
+            @click="backList"
+          >
+            BACK
           </v-btn>
-        </v-toolbar>
-
+        </v-card-title>
+      </v-card>
+    </v-row>
+    <v-row class="mx-4 my-4">
+      <v-card width="100%">
         <v-card-text>
           <v-container>
-            <label>Name: <span class="font-weight-bold">{{ playdate.name }}</span></label>
             <validation-provider
               v-slot="{ errors }"
               name="Status"
@@ -43,6 +39,31 @@
                 solo-labeled
               />
             </validation-provider>
+            <v-row>
+              <v-col cols="4">
+                <label>Name: <span class="font-weight-bold">{{ playdate.name }}</span></label>
+              </v-col>
+              <v-col cols="4">
+                <label>Day: <span class="font-weight-bold">{{ playdate.day }}</span></label>
+              </v-col>
+              <v-col cols="4">
+                <label>Duration: <span class="font-weight-bold">{{ playdate.duration }}</span></label>
+              </v-col>
+              <v-col cols="4">
+                <label>Start: <span class="font-weight-bold">{{ playdate.start }}</span></label>
+              </v-col>
+              <v-col cols="4">
+                <label>End: <span class="font-weight-bold">{{ playdate.end }}</span></label>
+              </v-col>
+              <v-col cols="12">
+                <pg-textarea
+                  v-model="playdate.description"
+                  label="Description"
+                  readonly
+                  solo-labeled
+                />
+              </v-col>
+            </v-row>
           </v-container>
         </v-card-text>
 
@@ -54,42 +75,34 @@
           <v-btn
             class="white--text"
             color="green"
-            :disabled="invalid"
             :loading="loading"
             :text="$vuetify.breakpoint.smAndUp"
-            @click.stop="passes(save)"
+            @click.stop="save"
           >
             Save
           </v-btn>
-
-          <v-btn
-            :disabled="loading"
-            :text="$vuetify.breakpoint.smAndUp"
-            @click.stop="close"
-          >
-            Cancel
-          </v-btn>
         </v-card-actions>
       </v-card>
-    </v-dialog>
-  </validation-observer>
+    </v-row>
+  </v-container>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, nextTick } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, ref, useRouter, nextTick, useRoute } from '@nuxtjs/composition-api'
 import { mapActions, mapGetters } from 'vuex'
 import { Playdate } from '@/models'
 import { usePlaydates } from '@/composables/playdates'
 import { useSnotifyHelper } from '@/composables'
 export default defineComponent({
-  name: 'PlaydatesEditorDialog',
+  name: 'PlaydatesEditor',
 
   setup (_, { emit }) {
     const snotify = useSnotifyHelper()
     const loading = ref(false)
-    const dialog = ref(false)
     const id = ref<null|number>()
-    const { updatePlaydate, states } = usePlaydates()
+    const route = useRoute()
+    const router = useRouter()
+    const { updatePlaydate, states, getPlaydatesById } = usePlaydates()
     const playdate = ref<Partial<Playdate>>({
       ages: '',
       day: '',
@@ -105,9 +118,19 @@ export default defineComponent({
       state: ''
     })
 
-    const resetItem = () => {
-      id.value = null
+    onMounted(async () => {
+      id.value = Number(route.value.query.id)
       generateItemTemplate()
+      playdate.value = await getPlaydatesById(id.value)
+      if (playdate.value.specialistUser) {
+        playdate.value.specialistId = playdate.value.specialistUser.id
+      }
+    })
+
+    const backList = () => {
+      router.push({
+        name: 'admin-playdates-management'
+      })
     }
 
     const generateItemTemplate = () => {
@@ -125,62 +148,30 @@ export default defineComponent({
       playdate.value.specialistUser = { id: 0 }
     }
 
-    const loadItem = (item: Playdate) => {
-      id.value = item.id
-      playdate.value = { ...item }
-      if (item.specialistUser) {
-        playdate.value.specialistId = item.specialistUser.id
-      }
-    }
-
-    const close = () => {
-      nextTick(() => {
-        dialog.value = false
-        loading.value = false
-      })
-    }
-
     const save = async () => {
       loading.value = true
       try {
         if (id.value && playdate.value) {
           await updatePlaydate(id.value, playdate.value)
           snotify.success('Playdate updated successfully.')
+          backList()
         }
       } catch (error) {
         snotify.error(error.message)
       } finally {
         loading.value = false
-        dialog.value = false
-        emit('saved')
       }
     }
 
     return {
       loading,
-      dialog,
       states,
       id,
       playdate,
       generateItemTemplate,
-      resetItem,
-      loadItem,
       updatePlaydate,
       save,
-      close
-    }
-  },
-
-  methods: {
-    open (evt: unknown, item: Playdate) {
-      this.resetItem()
-      if (item) {
-        this.loadItem(item)
-      }
-
-      this.$nextTick(() => {
-        this.dialog = true
-      })
+      backList
     }
   }
 })

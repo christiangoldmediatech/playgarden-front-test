@@ -25,6 +25,10 @@ export const usePlaydates = () => {
     }
   })
 
+  const getPlaydatesById = async (id: number) => {
+    return await axios.$get(`/playdates/${id}`)
+  }
+
   const getPlaydates = async (params?: unknown) => {
     playdatesResponse.value = await axios.$get('/playdates/list', { params })
   }
@@ -47,6 +51,7 @@ export const usePlaydates = () => {
     playdates,
     playdatesResponse,
     states,
+    getPlaydatesById,
     getPlaydates,
     createPlaydate,
     updatePlaydate,

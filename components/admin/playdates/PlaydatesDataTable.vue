@@ -27,7 +27,10 @@
               @update:page="page = $event"
               @refresh="refresh(true)"
               @search="onSearch"
-              @edit-item="$refs.playdatesRef.open(null, $event)"
+              @edit-item="$router.push({
+                name: 'admin-playdates-management-editor',
+                query: { id: $event.id }
+              })"
               @remove-item="remove"
             >
               <template v-slot:[`top.prepend`]>
@@ -54,30 +57,21 @@
         </v-card>
       </v-col>
     </v-row>
-    <playdates-editor-dialog
-      ref="playdatesRef"
-      @saved="refresh(false)"
-    />
   </v-container>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, watch } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, ref, watch, computed, useRoute } from '@nuxtjs/composition-api'
 import { usePlaydates } from '@/composables/playdates'
 import { mapActions, mapGetters, mapState } from 'vuex'
 import onSearch from '@/mixins/OnSearchMixin.js'
 import paginable from '@/utils/mixins/paginable'
-import PlaydatesEditorDialog from '@/components/admin/playdates/PlaydatesEditorDialog.vue'
 import { PlaydatesResponse, Playdate } from '@/models'
 
 export default defineComponent({
   name: 'PlaydatesDataTable',
 
   mixins: [paginable, onSearch],
-
-  components: {
-    PlaydatesEditorDialog
-  },
 
   data: () => ({
     headers: [
