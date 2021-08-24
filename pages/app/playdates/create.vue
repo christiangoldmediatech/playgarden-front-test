@@ -32,7 +32,6 @@
           />
         </v-row>
       </v-col>
-
       <v-col cols="12" md="6" class="pl-md-15">
         <underlined-title text="Invite a Friend to a Playdate!" />
 
@@ -190,13 +189,14 @@ import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import utc from 'dayjs/plugin/utc'
 
-import { Child, Playdate, Playdates, TAG_MANAGER_EVENTS } from '@/models'
+import { Child, Playdate, Playdates, TAG_MANAGER_EVENTS, TypedStore } from '@/models'
 import { computed, defineComponent, onMounted, ref, useRouter, useStore } from '@nuxtjs/composition-api'
-import { useGtmHelper, usePlaydates, useSnotifyHelper } from '@/composables'
+import { useGtmHelper, usePlaydates, useSnotifyHelper, useChild } from '@/composables'
 
 import ChildSelect from '@/components/app/ChildSelect.vue'
+import { number } from 'echarts'
 
-const resetDraft = () => ({ childrenIds: [], invites: [] })
+const resetDraft = () => ({ childrenIds: [], invites: [], childId: 0 })
 dayjs.extend(customParseFormat)
 dayjs.extend(utc)
 
@@ -210,10 +210,11 @@ export default defineComponent({
   setup () {
     const gtm = useGtmHelper()
     const snotify = useSnotifyHelper()
-    const store = useStore()
     const router = useRouter()
+    const store = useStore<TypedStore>()
 
     const { getPlaydateDays, getChildrenInfo, getAndFilterPlaydates, addChildren } = usePlaydates()
+    const { currentChildren } = useChild({ store })
 
     const loading = ref(false)
     const feature = ref({ top: true, offsetY: true })
@@ -277,7 +278,7 @@ export default defineComponent({
         if (playdateSelected.value === null) {
           return
         }
-
+        draft.value.childId = (currentChildren.value) ? currentChildren.value[0].id : 0
         playdates.value = await addChildren({
           id: playdateSelected.value,
           data: draft.value
@@ -332,7 +333,8 @@ export default defineComponent({
       resetForm,
       getActivePlaydates,
       onWeekdayChange,
-      onSubmit
+      onSubmit,
+      currentChildren
     }
   }
 })
