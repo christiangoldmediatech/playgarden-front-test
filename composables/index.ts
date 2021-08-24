@@ -1,3 +1,4 @@
+export * from './analytics'
 export * from './faq'
 export * from './helpers.composable'
 export * from './use-activity.composable'
