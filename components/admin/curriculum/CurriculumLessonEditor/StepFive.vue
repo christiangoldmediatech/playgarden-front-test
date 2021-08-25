@@ -87,7 +87,7 @@
               :items="activities"
               :loading="loading"
               :page.sync="pagination.page"
-              :server-items-length="pagination.total"
+              :server-items-length="pagination.filtered"
               @update:page="pagination.page = $event"
             >
               <template v-slot:item.actions="{ item }">

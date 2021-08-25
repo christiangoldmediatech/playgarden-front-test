@@ -303,7 +303,7 @@ export default {
       this.matchingDraft.images = await Promise.all(
         this.matchingDraft.images.map(async (item, index) => {
           if (item.file) {
-            if (this.$refs[`fileUploader${index}`][0].type === 'dropbox') {
+            if (this.$refs[`fileUploader${index}`][0].type === 'dropBox') {
               const { filePath } = await this.$refs[`fileUploader${index}`][0].handleDropBoxFileUpload()
               item.image = filePath
             } else {
