@@ -145,7 +145,7 @@
 import dayjs from 'dayjs'
 import { defineComponent, ref, useRoute, computed, onMounted } from '@nuxtjs/composition-api'
 import { useWorksheetsCategories } from '@/composables/worksheets'
-import { Child, Feeback } from '@/models'
+import { Child } from '@/models'
 import { useSnotifyHelper, useChildLesson } from '@/composables'
 import { useFeedback } from '@/composables/feedback'
 
