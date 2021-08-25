@@ -327,9 +327,12 @@ export default {
       try {
         const curriculumType = await this.getCurrentCurriculumType(id)
         this.selectedLetter = curriculumType.id
-      } catch (error) {
-        this.loadDefaultDataLetterStatsDate()
-        this.loadLetterStatsData = false
+      } catch (e) {
+        if ((e && e.errorCode === 101) || (e && e.errorCode === 102)) {
+          this.$router.push({
+            name: 'app-no-advance'
+          })
+        }
       }
     },
 

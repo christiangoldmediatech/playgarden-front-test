@@ -42,8 +42,12 @@ export default {
     try {
       const data = await this.$axios.$get(`/lessons/children/${childId}/curriculum/current`)
       return data
-    } catch (error) {
-      return Promise.reject(error)
+    } catch (e) {
+      const { data } = e.response
+      if ((data && data.errorCode === 101) || (data && data.errorCode === 102)) {
+        return Promise.reject(data)
+      }
+      return Promise.reject(e)
     }
   },
 
