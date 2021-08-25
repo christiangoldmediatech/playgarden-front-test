@@ -4,7 +4,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import AgendaDataTable from '~/components/admin/playdates/AgendaPlaydateDataTable.vue'
+import AgendaDataTable from '@/components/admin/playdates/AgendaPlaydateDataTable.vue'
 
 export default {
   name: 'Index',

@@ -4,7 +4,7 @@
       v-for="item in itemsComputed"
       :key="`list-${_uid}-item-${item.id}`"
       class="dashboard-item"
-      active-class="dashboard-item-active dashboard-item-active-video"
+      active-class="dashboard-item-active"
       exact-active-class="dashboard-item-exact"
       :ripple="false"
       :disabled="item.disabled"

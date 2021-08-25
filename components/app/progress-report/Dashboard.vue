@@ -238,8 +238,7 @@ export default {
   watch: {
     async selectedChild (val, oldVal) {
       this.loadLetterStatsData = true
-      const { curriculumType } = await this.getCurrentLesson({ childrenIds: val })
-      this.selectedLetter = curriculumType.id
+      await this.fetchCurrentLesson(val)
       await this.getDataReport()
     },
 
@@ -253,9 +252,7 @@ export default {
     this.general = true
     await this.getChildren()
     await this.getTypes()
-    const { curriculumType } = await this.getCurrentLesson({ childrenIds: this.selectedChild })
-    // change in letter calls the this.getDataReport() method
-    this.selectedLetter = curriculumType.id
+    await this.fetchCurrentLesson(this.selectedChild)
     await this.getDataGraphic()
     this.$nuxt.$on('detail-progress-report', (data) => {
       this.loadDetailReport(data.point.category)
@@ -282,6 +279,13 @@ export default {
         id: this.selectedChild
       })
       this.letters = data
+    },
+
+    async fetchCurrentLesson (id) {
+      try {
+        const { curriculumType } = await this.getCurrentLesson({ childrenIds: id })
+        this.selectedLetter = curriculumType.id
+      } catch (error) {}
     },
 
     changeChild (newId, redirect = true) {
