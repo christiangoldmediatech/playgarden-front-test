@@ -96,7 +96,9 @@ export default {
 
   async fetchUserInfo ({ commit, rootGetters }) {
     try {
-      const { data } = await this.$axios.get('/auth/me')
+      const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+      const params = { timezone }
+      const { data } = await this.$axios.get('/auth/me', { params })
       commit('SET_USER_INFO', data)
 
       return data
