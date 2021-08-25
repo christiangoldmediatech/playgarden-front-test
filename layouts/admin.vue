@@ -210,6 +210,11 @@ export default {
           route: '/admin/recurring-live-sessions-management'
         },
         {
+          icon: 'mdi-drawing',
+          title: 'Playdates management',
+          route: '/admin/playdates-management'
+        },
+        {
           icon: 'mdi-volume-high',
           title: 'Music Library',
           route: '/admin/music-library'

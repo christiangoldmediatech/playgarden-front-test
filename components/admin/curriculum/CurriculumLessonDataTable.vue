@@ -124,7 +124,7 @@
                     query: { lessonId: item.id }
                   }"
                 >
-                  <v-icon color="#c2daa5" dense>
+                  <v-icon color="#68C453" dense>
                     mdi-view-list
                   </v-icon>
                 </nuxt-link>

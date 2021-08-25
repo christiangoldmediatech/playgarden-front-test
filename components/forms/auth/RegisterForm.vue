@@ -124,7 +124,7 @@
                   block
                   min-height="60"
                   class="mb-6 main-btn"
-                  color="primary"
+                  color="green2"
                   :disabled="invalid"
                   :loading="loading"
                   type="submit"
@@ -372,3 +372,12 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.green2{
+  color:var(--v-black-base);
+  &:hover{
+    color:rgba(#000000,0.8);
+  }
+}
+</style>
