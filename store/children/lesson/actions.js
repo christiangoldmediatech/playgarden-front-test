@@ -38,18 +38,12 @@ export default {
     }
   },
 
-  async getOnlyCurrentLessons ({ commit }, params) {
+  async getCurrentCurriculumType ({ commit }, childId) {
     try {
-      const data = await this.$axios.$get('/lessons/childrens/onlyCurrent', {
-        params
-      })
+      const data = await this.$axios.$get(`/lessons/children/${childId}/curriculum/current`)
       return data
-    } catch (e) {
-      const { data } = e.response
-      if (data && data.errorCode === 100) {
-        return Promise.reject(data)
-      }
-      return Promise.reject(e)
+    } catch (error) {
+      return Promise.reject(error)
     }
   },
 

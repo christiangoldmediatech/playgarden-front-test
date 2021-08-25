@@ -272,7 +272,7 @@ export default {
     ]),
     ...mapActions({ setChild: 'setChild' }),
     ...mapActions('children', { getChildren: 'get' }),
-    ...mapActions('children/lesson', ['getOnlyCurrentLessons']),
+    ...mapActions('children/lesson', ['getCurrentCurriculumType']),
 
     loadDefaultDataLetterStatsDate () {
       this.letterStatsData.name = 'NO ADVANCE'
@@ -325,7 +325,7 @@ export default {
 
     async fetchCurrentLesson (id) {
       try {
-        const { curriculumType } = await this.getOnlyCurrentLessons({ childrenIds: id })
+        const curriculumType = await this.getCurrentCurriculumType(id)
         this.selectedLetter = curriculumType.id
       } catch (error) {
         this.loadDefaultDataLetterStatsDate()
