@@ -552,7 +552,7 @@ export default {
 .curt {
   width: 100%;
   height: 100px;
-  background-color: #c2daa5;
+  background-color: #68C453;
 }
 
 .space-text {

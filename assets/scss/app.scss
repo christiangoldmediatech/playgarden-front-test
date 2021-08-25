@@ -45,7 +45,7 @@
 }
 
 .green-line-2 {
-  background-color: #dce7b5;
+  background-color: #B2E68D;
 }
 
 .theme--light.v-divider {
@@ -86,8 +86,8 @@
 .subtitle-text {
   font-size: 1rem !important;
   position: relative;
-  z-index: 1;
-  &::after {
+  z-index: 9;
+  &::before {
     width: 110%;
     opacity: 0.5;
     position: absolute;

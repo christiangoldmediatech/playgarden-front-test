@@ -12,7 +12,7 @@
         no-gutters
         justify="space-around"
         @click.stop="
-          $nuxt.$emit('open-portfolio-overlay', { child, entityId, entityType, image })
+          $nuxt.$emit('open-portfolio-overlay', { child, entityId, entityType, image, created })
         "
       >
         <v-col cols="12">
@@ -45,12 +45,21 @@
                 {{ child.firstName }}
               </span>
             </div>
+
+            <div class="subheading">
+              <span
+                class="d-block text-center"
+                :class="{ 'white--text': displayMode }"
+              >
+                {{ `Uploaded Date: ${createdDateFormatted}` }}
+              </span>
+            </div>
           </div>
         </v-col>
       </v-row>
     </v-container>
 
-    <v-row v-else :align="!noShare ? 'center' : 'top'" class="portfolio-card">
+    <v-row v-else align="center" class="portfolio-card">
       <v-col cols="12" md="">
         <img class="w-100" :src="image">
       </v-col>
@@ -71,14 +80,17 @@
 
       <v-col v-if="infoUser && dataChild" class="shrink" cols="12" md="4">
         <v-card class="mx-auto mx-md-0">
-          <v-card-title>
+          <v-card-text>
             <span>
               Student: {{ dataChild.firstName }}
             </span><br>
             <span>
               Parent: {{ `${dataChild.user.firstName} ${dataChild.user.lastName}` }}
+            </span> <br>
+            <span>
+              Date: {{ `${createdDateFormatted}` }}
             </span>
-          </v-card-title>
+          </v-card-text>
           <v-card-text>
             <v-btn
               color="accent darken-1"
@@ -92,6 +104,36 @@
                 Go to Profile
               </span>
             </v-btn>
+            <v-row>
+              <v-col cols="12">
+                <span class="font-weight-bold">
+                  Feedback on the worksheet:
+                </span>
+              </v-col>
+              <v-col cols="12">
+                <pg-text-field
+                  v-model="feedback.title"
+                  label="Title"
+                  solo-labeled
+                />
+              </v-col>
+              <v-col cols="12">
+                <pg-textarea
+                  v-model="feedback.feedback"
+                  label="Feedback"
+                  solo-labeled
+                />
+              </v-col>
+            </v-row>
+            <v-btn
+              color="primary darken-1"
+              small
+              @click="save"
+            >
+              <span class="font-weight-normal">
+                Save
+              </span>
+            </v-btn>
           </v-card-text>
         </v-card>
       </v-col>
@@ -100,10 +142,13 @@
 </template>
 
 <script lang="ts">
+import dayjs from 'dayjs'
 import { defineComponent, ref, useRoute, computed, onMounted } from '@nuxtjs/composition-api'
 import { useWorksheetsCategories } from '@/composables/worksheets'
-import { Child } from '@/models'
+import { Child, Feeback } from '@/models'
 import { useSnotifyHelper, useChildLesson } from '@/composables'
+import { useFeedback } from '@/composables/feedback'
+
 export default defineComponent({
   name: 'PortfolioCard',
   props: {
@@ -113,6 +158,10 @@ export default defineComponent({
     },
     image: {
       type: [Object, Function, String],
+      required: true
+    },
+    created: {
+      type: String,
       required: true
     },
     entityId: {
@@ -131,7 +180,11 @@ export default defineComponent({
     },
     entityType: {
       type: String,
-      default: ''
+      default: '',
+      validator: (val: String) => {
+        const values: any = { PATCH: 1, PUZZLE: 1, WORKSHEET: 1 }
+        return val === null || val === '' || Boolean(values[val.toString()])
+      }
     },
     lesson: {
       type: Object,
@@ -149,6 +202,7 @@ export default defineComponent({
     const snotify = useSnotifyHelper()
     const dataChild = ref<Child>()
     const { getChild } = useWorksheetsCategories()
+    const { feedback, getFeedbackById, getFeedbackByUploadedWorksheetsId, saveFeedback, updateFeedback } = useFeedback()
     const studentId = computed(() => Number(route.value.query.id))
     if (!props.child) {
       props.child = { id: studentId.value }
@@ -163,16 +217,46 @@ export default defineComponent({
         snotify.error('Sorry! There was an error loading the page.')
       }
     }
-    onMounted(() => {
-      getData()
+
+    onMounted(async () => {
+      try {
+        getData()
+        if (props.entityId) {
+          await getFeedbackByUploadedWorksheetsId(props.entityId)
+        }
+      } catch (error) {}
+      feedback.value.uploadedWorksheetId = props.entityId
     })
     return {
-      dataChild
+      feedback,
+      dataChild,
+      saveFeedback,
+      updateFeedback
     }
   },
   computed: {
     textShare (): string {
       return (this.child) ? `${this.child.firstName || 'Child'}'s awesome work!` : ''
+    },
+
+    createdDateFormatted (): unknown {
+      return this.created ? dayjs(this.created).format('MM/DD/YYYY') : null
+    }
+  },
+
+  methods: {
+    async save () {
+      if (this.feedback.id) {
+        await this.updateFeedback(this.feedback.id, { data: this.feedback })
+        this.$snotify.success(
+          'Feedback is update.'
+        )
+      } else {
+        await this.saveFeedback({ data: this.feedback })
+        this.$snotify.success(
+          'Feedback is saved.'
+        )
+      }
     }
   }
 })

@@ -41,7 +41,7 @@
       <v-btn
         block
         class="mb-6"
-        color="primary"
+        color="green2"
         :disabled="invalid"
         :loading="loading"
         type="submit"

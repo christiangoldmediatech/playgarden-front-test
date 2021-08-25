@@ -125,6 +125,7 @@ $border-height: 3px;
 .underlined-link {
   position: relative;
   font-size: 11px;
+  font-weight: 500;
   letter-spacing: 1.4px;
   text-transform: uppercase;
   color: var(--v-black-base);
@@ -139,7 +140,7 @@ $border-height: 3px;
     bottom: 2px;
     transform: translateX(-50%);
     border-radius: 30px;
-    background: var(--v-primary-base);
+    background: #B2E68D;
     z-index: -1;
   }
 }

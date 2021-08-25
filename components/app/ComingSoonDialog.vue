@@ -169,7 +169,7 @@ export default {
   &-number-title {
     font-size: 45px !important;
     line-height: 38px !important;
-    color: #c2daa5;
+    color: #B2E68D;
   }
   &-title {
     font-size: 32px !important;

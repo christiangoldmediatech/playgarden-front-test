@@ -139,8 +139,9 @@ export const useAuth = ({
   const isUserLoggedIn = computed(() => Boolean(userInfo.value.id))
 
   const fetchUserInfo = async () => {
-    const { data } = await axios.get('/auth/me')
-
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+    const params = { timezone }
+    const { data } = await axios.get('/auth/me', { params })
     setUserInfo(data)
   }
 

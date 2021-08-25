@@ -9,9 +9,13 @@ export interface Playdate extends Entity {
   link: string
   name: string
   playdateType: string
-  specialistUser: unknown
+  specialistId?: number
+  specialistUser: {
+    id: number
+  },
   sports: number
   start: string
+  state: string
 }
 
 export interface Playdates extends Entity {
@@ -20,4 +24,12 @@ export interface Playdates extends Entity {
     image: string
   }[]
   playdate: Playdate
+}
+
+export interface PlaydatesResponse {
+  total: number
+  filtered: number
+  limit: number
+  page: number
+  playdates: Playdate[]
 }

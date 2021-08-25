@@ -132,8 +132,8 @@ export default {
       const end = new Date(this.entry.dateEnd)
 
       return (
-        today.getTime() >= (start.getTime() - (5 * 60 * 1000)) &&
-        today.getTime() <= (end.getTime() + (5 * 60 * 1000))
+        today.getTime() >= (start.getTime() - (30 * 60 * 1000)) &&
+        today.getTime() <= (end.getTime() + (30 * 60 * 1000))
       )
     },
 
@@ -269,7 +269,7 @@ export default {
       background-color: white;
       box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
       border-radius: 50%;
-      border: solid 10px #c2daa5;
+      border: solid 10px #68C453;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -282,7 +282,7 @@ export default {
         left: auto;
         z-index: auto;
         margin: 12px;
-        border: solid 5px #c2daa5;
+        border: solid 5px #68C453;
       }
       &-img {
         width: 90px;

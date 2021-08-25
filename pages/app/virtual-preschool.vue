@@ -7,6 +7,7 @@
           gradient="rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)"
           contain
           tile
+          @click="$router.push(section.route)"
         >
           <div class="section-content">
             <!-- Start Playing Button -->
@@ -14,7 +15,6 @@
               class="section-start-playing"
               src="@/assets/png/virtual-preschool/Start Playing.png"
               :data-test-id="`vp-section-${section.title}`"
-              @click="$router.push(section.route)"
             >
 
             <!-- Lady -->
@@ -144,6 +144,7 @@ export default defineComponent({
     width: 100%;
     height: 100%;
     opacity: 0;
+    cursor: pointer;
 
     &:hover {
       opacity: 1;

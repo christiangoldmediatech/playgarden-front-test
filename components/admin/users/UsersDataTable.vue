@@ -206,6 +206,7 @@ export default {
       limit: 10,
       page: 1,
       allFilters: false,
+      showGraphs: false,
       activeFilters: ['firstName', 'lastName'],
       filterList: [
         {
