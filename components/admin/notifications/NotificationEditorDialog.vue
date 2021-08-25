@@ -150,7 +150,7 @@
         </v-toolbar>
 
         <v-card-text>
-          <pg-tiptap-field flat readonly :value="item.template" />
+          <pg-tiptap-field flat readonly :value="item.template.email" />
         </v-card-text>
 
         <v-divider />

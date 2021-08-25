@@ -323,3 +323,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.text-caption {
+  color: var(--v-black-base);
+}
+</style>

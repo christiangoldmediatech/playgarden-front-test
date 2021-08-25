@@ -9,6 +9,13 @@
           font-size-mobile="32px"
           text="Song List"
         />
+
+        <v-btn v-else class="accent--text text-none" x-large text @click="$emit('showFavorites')">
+          <v-icon size="32" left>
+            mdi-chevron-left
+          </v-icon>
+          Back
+        </v-btn>
       </v-col>
 
       <v-spacer class="d-none d-md-flex" />
