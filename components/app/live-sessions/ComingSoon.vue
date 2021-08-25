@@ -134,7 +134,7 @@ export default {
         font-weight: bold;
         font-size: 75px;
         line-height: 112px;
-        color: #C2DAA5;
+        color: #68C453;
       }
     }
   }

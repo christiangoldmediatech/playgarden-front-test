@@ -182,7 +182,7 @@
                     v-if="dateRange === true"
                     v-model="datetimeSelected"
                     :disabled="getDissabled"
-                    color="#c2daa5"
+                    color="#68C453"
                   />
 
                   <v-checkbox

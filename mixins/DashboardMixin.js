@@ -35,7 +35,7 @@ export default {
       const progressNext = (completedCount < this.lesson.videos.length) ? ((completedCount + 1) / this.lesson.videos.length) * 100 : 100
 
       // Get items for links
-      const videos = this.lesson.videos.map(({ id, activityType, name, description, viewed }, i) => {
+      const videos = this.lesson.videos.map(({ id, activityType, name, description, viewed, thumbnail }, i) => {
         let disabled = false
         const previous = i > 0 ? this.lesson.videos[i - 1] : null
         if (previous) {
@@ -46,6 +46,7 @@ export default {
           name,
           description,
           activityType,
+          thumbnail,
           to: this.generateNuxtRoute('lesson-videos', { id }),
           viewed,
           disabled
@@ -88,6 +89,9 @@ export default {
 
       // result.progress = worksheets.length ? (completedCount / worksheets.length) * 100 : 0
       // result.progressNext = (worksheets.length && completedCount < worksheets.length) ? ((completedCount + 1) / worksheets.length) * 100 : 100
+
+      result.totalCompletedWorksheets = completedCount
+      result.totalWorksheets = worksheets.length
 
       result.progress = worksheetCount ? (completedCount / worksheetCount) * 100 : 0
       result.progressNext = (worksheetCount && completedCount < worksheetCount) ? ((completedCount + 1) / worksheetCount) * 100 : 100
@@ -137,6 +141,7 @@ export default {
           name: videos.name,
           description: videos.description,
           activityType,
+          thumbnail: videos.thumbnail,
           to: this.generateNuxtRoute('lesson-activities', { id }),
           viewed,
           disabled

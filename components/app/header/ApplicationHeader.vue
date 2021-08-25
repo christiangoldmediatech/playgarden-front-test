@@ -41,7 +41,7 @@
 
       <v-col class="d-flex align-center pr-3" cols="auto">
         <!-- ITEMS -->
-        <div class="hidden-sm-and-down">
+        <div v-if="getVerifyEmail" class="hidden-sm-and-down">
           <v-toolbar-items>
             <v-btn
               v-for="(item, index) in items"
@@ -60,7 +60,7 @@
         </div>
         <!--divider icon profile and help-->
         <v-divider
-          v-if="isUserLoggedIn && !isUserInSignupProcess"
+          v-if="isUserLoggedIn && !isUserInSignupProcess && getVerifyEmail"
           class="mr-1 pg-app-bar-buttons hidden-sm-and-down auth-buttons"
           inset
           vertical
@@ -82,7 +82,7 @@
           </v-btn>
 
           <v-img
-            v-if="isUserLoggedIn && !isUserInSignupProcess"
+            v-if="isUserLoggedIn && !isUserInSignupProcess && getVerifyEmail"
             class="clickable account-btn mx-2"
             :src="require('@/assets/svg/account-profile.svg')"
             @click="goToAccount"
@@ -119,7 +119,7 @@
         </div>
 
         <!--Profile/help/Tutorial Menu-->
-        <div v-if="isUserLoggedIn && !isUserInSignupProcess">
+        <div v-if="isUserLoggedIn && !isUserInSignupProcess && getVerifyEmail">
           <v-menu open-on-hover offset-y>
             <template v-slot:activator="{ on }">
               <v-img
@@ -177,7 +177,7 @@
         <!-- Profile/help/Tutorial Menu end-->
 
         <!-- MOBILE ICONS -->
-        <div class="hidden-xs-only pg-app-bar-buttons mobile-icons">
+        <div v-if="getVerifyEmail" class="hidden-xs-only pg-app-bar-buttons mobile-icons">
           <img
             v-if="isUserLoggedIn && !isUserInSignupProcess"
             class="clickable account-btn"

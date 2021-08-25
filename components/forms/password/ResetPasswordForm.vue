@@ -17,10 +17,11 @@
 
     <v-btn
       block
-      color="primary"
+      color="green2"
       :disabled="isButtonDisabled"
       :loading="loading"
       type="submit"
+      class="main-btn--black-base"
       x-large
     >
       RESET PASSWORD
@@ -98,5 +99,11 @@ export default {
 }
 .return-link {
   color:  var(--v-primary-base);
+}
+.main-btn--black-base{
+  color:var(--v-black-base);
+  &:hover{
+    color:rgba(#000000, 0.8);
+  }
 }
 </style>
