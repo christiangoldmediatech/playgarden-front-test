@@ -181,7 +181,7 @@ export default {
     selectedReportCard: 'General',
     loadLetterStatsData: true,
     letterStatsData: {
-      name: 'NO ADVANCE',
+      name: '',
       reports: []
     }
   }),
