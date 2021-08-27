@@ -23,7 +23,7 @@ export default function ({ redirect, route, store }) {
 
   if (
     user.id &&
-    (step === 1 || step === 2 || step === 3 || step === 5) &&
+    (step === 1 || step === 2 || step === 3 || (step === 5 && user.flow === UserFlow.NOCREDITCARD)) &&
     (!user.role || get(user, 'role.section') === 'USERS') &&
     route.query.process !== 'signup' &&
     !ignoreRoute[route.name]
