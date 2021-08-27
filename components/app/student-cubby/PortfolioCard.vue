@@ -145,46 +145,39 @@
 import dayjs from 'dayjs'
 import { defineComponent, ref, useRoute, computed, onMounted } from '@nuxtjs/composition-api'
 import { useWorksheetsCategories } from '@/composables/worksheets'
-import { Child, Feedback } from '@/models'
+import { Child } from '@/models'
 import { useSnotifyHelper, useChildLesson } from '@/composables'
 import { useFeedback } from '@/composables/feedback'
 
 export default defineComponent({
   name: 'PortfolioCard',
-
   props: {
     child: {
       type: Object,
       default: () => {}
     },
-
     image: {
       type: [Object, Function, String],
       required: true
     },
-
     created: {
       type: String,
       required: true
     },
-
     entityId: {
       type: [Number, String],
       default: ''
     },
-
     noShare: {
       type: Boolean,
       default: false,
       required: false
     },
-
     infoUser: {
       type: Boolean,
       default: false,
       required: false
     },
-
     entityType: {
       type: String,
       default: '',
@@ -193,20 +186,17 @@ export default defineComponent({
         return val === null || val === '' || Boolean(values[val.toString()])
       }
     },
-
     lesson: {
       type: Object,
       required: false,
       default: () => {}
     },
-
     displayMode: {
       type: Boolean,
       required: false,
       default: false
     }
   },
-
   setup (props: any) {
     const route = useRoute()
     const snotify = useSnotifyHelper()
@@ -214,16 +204,13 @@ export default defineComponent({
     const { getChild } = useWorksheetsCategories()
     const { feedback, getFeedbackById, getFeedbackByUploadedWorksheetsId, saveFeedback, updateFeedback } = useFeedback()
     const studentId = computed(() => Number(route.value.query.id))
-
     if (!props.child) {
       props.child = { id: studentId.value }
     }
-
     const getData = async () => {
       if (!props.child) {
         return
       }
-
       try {
         dataChild.value = await getChild(props.child.id)
       } catch (error) {
@@ -240,7 +227,6 @@ export default defineComponent({
       } catch (error) {}
       feedback.value.uploadedWorksheetId = props.entityId
     })
-
     return {
       feedback,
       dataChild,
@@ -248,7 +234,6 @@ export default defineComponent({
       updateFeedback
     }
   },
-
   computed: {
     textShare (): string {
       return (this.child) ? `${this.child.firstName || 'Child'}'s awesome work!` : ''
@@ -281,7 +266,6 @@ export default defineComponent({
 .portfolio-card {
   transition: transform 250ms;
 }
-
 .scaled {
   transform: scale(1.1);
   z-index: 1;

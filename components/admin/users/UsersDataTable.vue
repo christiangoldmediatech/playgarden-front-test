@@ -191,6 +191,11 @@ export default {
       type: Object,
       required: false,
       default: () => {}
+    },
+    showGraphs: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
 
