@@ -1,1 +1,1 @@
-export const jsonCopy = value => JSON.parse(JSON.stringify(value))
+export const jsonCopy = (value: any): any => JSON.parse(JSON.stringify(value))
