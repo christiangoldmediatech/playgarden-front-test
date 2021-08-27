@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { jsonCopy } from '@/utils/objectTools.js'
+import { jsonCopy } from '@/utils/objectTools'
 
 export default {
   name: 'PgAudioPlayer',

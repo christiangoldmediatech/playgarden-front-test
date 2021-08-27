@@ -73,7 +73,7 @@ import { defineComponent } from '@nuxtjs/composition-api'
 import { useMusic } from '@/composables'
 import CarouselLetter from '@/components/app/music/CarouselLetter.vue'
 
-import { jsonCopy } from '@/utils/objectTools.js'
+import { jsonCopy } from '@/utils/objectTools'
 
 export default defineComponent({
   name: 'LetterSongs',

@@ -89,7 +89,7 @@ import { mapGetters, mapActions } from 'vuex'
 
 import LetterSongs from '@/components/app/music/LetterSongs.vue'
 
-import { jsonCopy } from '@/utils/objectTools.js'
+import { jsonCopy } from '@/utils/objectTools'
 
 export default {
   name: 'MusicSongList',

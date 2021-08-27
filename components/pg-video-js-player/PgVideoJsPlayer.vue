@@ -70,7 +70,7 @@
 
 <script>
 import { TAG_MANAGER_EVENTS } from '@/models'
-import { jsonCopy } from '@/utils/objectTools.js'
+import { jsonCopy } from '@/utils/objectTools'
 import { mapState, mapGetters, mapActions } from 'vuex'
 import videojs from 'video.js'
 import Fullscreen from '@/mixins/FullscreenMixin.js'
