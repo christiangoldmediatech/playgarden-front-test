@@ -11,6 +11,7 @@
         <v-col class="px-6" cols="12" md="6">
           <update-password-form
             :loading="loading"
+            :show-cancel="showCancel"
             @click:cancel="$emit('click:cancel')"
             @click:submit="onSubmit"
           />
@@ -40,21 +41,29 @@ export default {
     UpdatePasswordForm
   },
 
+  props: {
+    showCancel: {
+      type: Boolean,
+      required: false,
+      default: true
+    }
+  },
+
   data: () => ({
     loading: false
   }),
 
   methods: {
     ...mapActions('auth/password', ['updateUserPassword']),
+    ...mapActions('auth', ['fetchUserInfo']),
 
     async onSubmit (draft) {
       this.loading = true
 
       try {
         await this.updateUserPassword(draft)
-
+        await this.fetchUserInfo()
         this.$snotify.success('Password has been updated successfully!')
-
         this.$emit('update:success')
       } finally {
         this.loading = false
