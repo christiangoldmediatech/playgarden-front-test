@@ -192,7 +192,7 @@ import SessionsTable from '@/components/app/live-sessions/SessionsTable.vue'
 import RecordedClassPlayer from '@/components/app/live-sessions/RecordedClassPlayer.vue'
 import WeekSelector from '@/components/admin/live-sessions/WeekSelector.vue'
 import DaySelector from '@/components/admin/live-sessions/DaySelector.vue'
-import { jsonCopy } from '~/utils/objectTools'
+import { jsonCopy } from '@/utils'
 
 export default {
   name: 'Index',
