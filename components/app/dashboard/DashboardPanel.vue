@@ -107,6 +107,7 @@
             :no-link-mode="noLinkMode"
             :to="noLinkMode ? undefined : generateNuxtRoute('online-worksheet', { worksheet: onlineWorksheetIndex })"
             :enabled="completedOnlineWorksheets >= onlineWorksheetIndex"
+            :active="worksheetQuery === onlineWorksheetIndex"
           />
 
           <!-- DOWNLOAD WORKSHEETS -->
@@ -310,6 +311,20 @@ export default {
         }
       })
       return completed
+    },
+
+    worksheetQuery () {
+      const q = this.$route.query.worksheet
+
+      if (Number(q) >= 0) {
+        return Number(q)
+      }
+
+      if (this.$route.name.includes('online-worksheet')) {
+        return 0
+      }
+
+      return undefined
     }
   },
 

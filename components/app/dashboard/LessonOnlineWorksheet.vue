@@ -5,10 +5,8 @@
     :exact="!noLinkMode"
     :to="to"
     :ripple="false"
+    :class="cardClasses"
     data-test-id="lesson-online-worksheet-card"
-    class="dashboard-item"
-    active-class="dashboard-item-active"
-    exact-active-class="dashboard-item-exact"
   >
     <v-row no-gutters class="py-2 pr-2">
       <v-col cols="3" align-self="center" class="d-flex justify-center">
@@ -61,6 +59,11 @@ export default defineComponent({
     enabled: {
       type: Boolean,
       default: false
+    },
+
+    active: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -69,7 +72,13 @@ export default defineComponent({
 
     const circledComputer = require('@/assets/png/dashboard/circled-computer.png')
 
+    const cardClasses = computed(() => ({
+      'dashboard-item': true,
+      'dashboard-item-active': props.active
+    }))
+
     return {
+      cardClasses,
       circledComputer,
       isDisabled
     }
