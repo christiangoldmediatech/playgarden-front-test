@@ -21,6 +21,13 @@
               @select="selectLetter"
             />
           </v-col>
+          <v-col cols="12">
+            <new-compact-music-player
+              ref="musicPlayer"
+              @currentSong="currentSong = $event"
+              @favorite="handleFavorite"
+            />
+          </v-col>
         </v-row>
       </horizontal-ribbon-card>
       <v-expand-transition>
@@ -53,6 +60,7 @@ import debounce from 'lodash/debounce'
 
 import MusicSongList from '@/components/app/music/MusicSongList.vue'
 import NewMusicPlayer from '@/components/app/music/NewMusicPlayer.vue'
+import NewCompactMusicPlayer from '@/components/app/music/NewCompactMusicPlayer.vue'
 import HorizontalRibbonCard from '@/components/ui/cards/HorizontalCardRibbon.vue'
 import ChildSelect from '@/components/app/ChildSelect.vue'
 import MusicCarouselLetter from '@/components/app/music/MusicLetterCarousel.vue'
@@ -70,6 +78,7 @@ export default {
   components: {
     MusicSongList,
     NewMusicPlayer,
+    NewCompactMusicPlayer,
     HorizontalRibbonCard,
     ChildSelect,
     MusicCarouselLetter
