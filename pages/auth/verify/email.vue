@@ -98,14 +98,25 @@ export default defineComponent({
     ...mapGetters('auth', ['isUserLoggedIn'])
   },
 
-  created () {
+  async created () {
+    if (!this.isUserLoggedIn) {
+      await this.restoreAuthFromSessionStorage()
+
+      const didRecoverSession = await this.checkAuth()
+
+      if (didRecoverSession) {
+        if (!this.isUserLoggedIn) {
+          await this.fetchUserInfo()
+        }
+      }
+    }
     if (this.token) {
       this.onToken()
     }
   },
 
   methods: {
-    ...mapActions('auth', ['fetchUserInfo']),
+    ...mapActions('auth', ['fetchUserInfo', 'restoreAuthFromSessionStorage', 'checkAuth']),
 
     ...mapActions('auth/verify', [
       'resendEmail',
