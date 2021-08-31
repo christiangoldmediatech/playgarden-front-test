@@ -56,13 +56,6 @@ import { useMusic } from '@/composables'
 export default defineComponent({
   name: 'PgAudioPlayer',
 
-  props: {
-    playList: {
-      type: Array,
-      required: true
-    }
-  },
-
   setup () {
     const {
       // Current Song
@@ -75,6 +68,7 @@ export default defineComponent({
       player,
       currentPlaylist,
       volume,
+      playlist,
       // Modifiers
       isLooping,
       // States
@@ -94,6 +88,7 @@ export default defineComponent({
       player,
       currentPlaylist,
       volume,
+      playList: playlist,
       isLooping,
       isLoading,
       isPlaying,

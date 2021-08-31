@@ -29,7 +29,6 @@
       <v-expand-transition>
         <new-music-player
           ref="musicPlayer"
-          @currentSong="currentSong = $event"
           @favorite="handleFavorite"
         />
       </v-expand-transition>

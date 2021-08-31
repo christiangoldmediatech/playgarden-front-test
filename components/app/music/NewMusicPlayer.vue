@@ -7,11 +7,7 @@
     }"
   >
     <div class="controls">
-      <pg-audio-player
-        ref="audioPlayer"
-        :play-list="playlist"
-        @currentSong="handleCurrentSong"
-      >
+      <pg-audio-player ref="audioPlayer">
         <!-- Title And Favorite Icon -->
         <div v-if="currentSong" class="d-flex flex-column">
           <div v-if="currentSong.description" class="d-flex justify-center justify-md-start">
@@ -47,7 +43,7 @@
         </div>
         <!-- Music Player Actions -->
         <template
-          v-slot:actions="{
+          #actions="{
             play,
             pause,
             next,
@@ -186,13 +182,8 @@ export default defineComponent({
       currentSongPlayedPercentage,
       currentSongPlayedTime,
       isPlaying,
-      playlist,
       removeSongFromPlaylist
     } = useMusic()
-
-    const handleCurrentSong = (song: MusicLibrary) => {
-      emit('currentSong', song)
-    }
 
     const refreshSongData = (song: MusicLibrary) => {
       if (!audioPlayer.value) {
@@ -251,10 +242,8 @@ export default defineComponent({
       currentSongPlayedTime,
       isPlaying,
       isPlayerDisabled,
-      playlist,
       addSongToPlaylist,
       createNewPlaylist,
-      handleCurrentSong,
       playSong,
       removeSong,
       refreshSongData

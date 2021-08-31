@@ -1,9 +1,6 @@
 <template>
   <!-- Music Player View -->
-  <pg-audio-player
-    ref="audioPlayer"
-    :play-list="playlist"
-  >
+  <pg-audio-player>
     <template
       #current="{
         previous,
@@ -145,74 +142,28 @@
 
 <script lang="ts">
 import { useMusic } from '@/composables'
-import { MusicLibrary } from '@/models'
-import { defineComponent, ref, nextTick, computed } from '@nuxtjs/composition-api'
+import { defineComponent } from '@nuxtjs/composition-api'
+import { computed } from '@vue/composition-api'
 
 export default defineComponent({
-  setup (_, { emit }) {
-    // this references `ref="audioPlayer"` when the component is mounted
-    const audioPlayer = ref<any>(null)
+  setup () {
     const {
       currentSong,
       currentSongMissingTime,
       currentSongPlayedPercentage,
       currentSongPlayedTime,
-      isPlaying,
-      playlist
+      isPlaying
     } = useMusic()
-
-    const refreshSongData = (song: MusicLibrary) => {
-      if (!audioPlayer.value) {
-        return
-      }
-
-      audioPlayer.value?.refreshSongData(song)
-    }
-
-    const addSongToPlaylist = (song: MusicLibrary) => {
-      if (!audioPlayer.value) {
-        return
-      }
-
-      audioPlayer.value?.addSong(song)
-    }
-
-    const createNewPlaylist = async (incomingPlaylist: MusicLibrary[]) => {
-      if (!audioPlayer.value) {
-        return
-      }
-
-      audioPlayer.value?.pause()
-      audioPlayer.value?.setPlaylist(incomingPlaylist)
-      await nextTick()
-      audioPlayer.value?.play()
-    }
 
     const isPlayerDisabled = computed(() => !currentSong.value || !currentSong.value?.description)
 
-    const playSong = async (playlistIndex: number) => {
-      if (!audioPlayer.value) {
-        return
-      }
-
-      audioPlayer.value?.pause()
-      audioPlayer.value?.selectSongByIndex(playlistIndex)
-      await nextTick()
-      audioPlayer.value?.play()
-    }
-
     return {
-      audioPlayer,
       currentSong,
       currentSongMissingTime,
       currentSongPlayedPercentage,
       currentSongPlayedTime,
       isPlaying,
-      isPlayerDisabled,
-      playlist,
-      addSongToPlaylist,
-      playSong,
-      refreshSongData
+      isPlayerDisabled
     }
   }
 })
