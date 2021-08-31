@@ -3,22 +3,17 @@
   <pg-audio-player
     ref="audioPlayer"
     :play-list="playlist"
-    @currentSong="handleCurrentSong"
   >
     <template
       #current="{
-        currentSong,
-        currentSongPlayedTime,
-        currentSongPlayedPercentage,
-        currentSongMissingTime,
         previous,
         play,
         pause,
-        isPlaying
+        next,
       }"
     >
       <v-row no-gutters>
-        <v-col cols="3" align-self="center">
+        <v-col v-if="currentSong" cols="3" align-self="center">
           <!-- Title And Description -->
           <div v-if="currentSong.description" class="d-flex flex-column">
             <div class="d-flex justify-center justify-md-start">
@@ -159,12 +154,12 @@ export default defineComponent({
     const audioPlayer = ref<any>(null)
     const {
       currentSong,
+      currentSongMissingTime,
+      currentSongPlayedPercentage,
+      currentSongPlayedTime,
+      isPlaying,
       playlist
     } = useMusic()
-
-    const handleCurrentSong = (song: MusicLibrary) => {
-      emit('currentSong', song)
-    }
 
     const refreshSongData = (song: MusicLibrary) => {
       if (!audioPlayer.value) {
@@ -193,7 +188,7 @@ export default defineComponent({
       audioPlayer.value?.play()
     }
 
-    const isPlayerDisabled = computed(() => !currentSong.value || !currentSong.value.description)
+    const isPlayerDisabled = computed(() => !currentSong.value || !currentSong.value?.description)
 
     const playSong = async (playlistIndex: number) => {
       if (!audioPlayer.value) {
@@ -209,11 +204,13 @@ export default defineComponent({
     return {
       audioPlayer,
       currentSong,
+      currentSongMissingTime,
+      currentSongPlayedPercentage,
+      currentSongPlayedTime,
+      isPlaying,
       isPlayerDisabled,
       playlist,
       addSongToPlaylist,
-      createNewPlaylist,
-      handleCurrentSong,
       playSong,
       refreshSongData
     }
