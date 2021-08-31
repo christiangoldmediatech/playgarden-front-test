@@ -191,6 +191,11 @@ export default {
       type: Object,
       required: false,
       default: () => {}
+    },
+    showGraphs: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
 
@@ -201,7 +206,6 @@ export default {
       limit: 10,
       page: 1,
       allFilters: false,
-      showGraphs: false,
       activeFilters: ['firstName', 'lastName'],
       filterList: [
         {
