@@ -7,40 +7,41 @@
     }"
   >
     <div class="controls">
+      <!-- Title And Favorite Icon -->
+      <div v-if="currentSong" class="d-flex flex-column">
+        <div v-if="currentSong.description" class="d-flex justify-center justify-md-start">
+          <span
+            class="accent--text text-h5 text-md-h4 font-weight-black"
+          >
+            {{ currentSong.description }}
+          </span>
+        </div>
+        <div class="white--text font-weight-bold text-body-1 text-md-h6 text-center text-md-left">
+          {{ currentSong.name }}
+        </div>
+      </div>
+      <!-- Slider -->
+      <div class="progress">
+        <v-slider
+          readonly
+          height="20"
+          color="warning lighten-1"
+          track-color="grey lighten-2"
+          class="slider"
+          :min="0"
+          :max="100"
+          :disabled="isPlayerDisabled"
+          :value="currentSongPlayedPercentage"
+        />
+        <span class="played-time pl-2">
+          {{ currentSongPlayedTime }}
+        </span>
+        <span class="missing-time pr-2">
+          {{ currentSongMissingTime }}
+        </span>
+      </div>
+
       <pg-audio-player ref="audioPlayer">
-        <!-- Title And Favorite Icon -->
-        <div v-if="currentSong" class="d-flex flex-column">
-          <div v-if="currentSong.description" class="d-flex justify-center justify-md-start">
-            <span
-              class="accent--text text-h5 text-md-h4 font-weight-black"
-            >
-              {{ currentSong.description }}
-            </span>
-          </div>
-          <div class="white--text font-weight-bold text-body-1 text-md-h6 text-center text-md-left">
-            {{ currentSong.name }}
-          </div>
-        </div>
-        <!-- Slider -->
-        <div class="progress">
-          <v-slider
-            readonly
-            height="20"
-            color="warning lighten-1"
-            track-color="grey lighten-2"
-            class="slider"
-            :min="0"
-            :max="100"
-            :disabled="isPlayerDisabled"
-            :value="currentSongPlayedPercentage"
-          />
-          <span class="played-time pl-2">
-            {{ currentSongPlayedTime }}
-          </span>
-          <span class="missing-time pr-2">
-            {{ currentSongMissingTime }}
-          </span>
-        </div>
         <!-- Music Player Actions -->
         <template
           #actions="{

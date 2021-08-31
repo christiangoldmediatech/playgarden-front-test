@@ -11,30 +11,38 @@
     >
       <v-row no-gutters>
         <v-col v-if="currentSong" cols="3" align-self="center">
-          <!-- Title And Description -->
-          <div v-if="currentSong.description" class="d-flex flex-column">
-            <div class="d-flex justify-center justify-md-start">
-              <span
-                class="accent--text text-h5 font-weight-black"
-              >
-                {{ currentSong.description }}
-              </span>
-            </div>
-            <div class="grey--text font-weight-bold text-body-1 text-md-h6 text-center text-md-left">
-              {{ currentSong.name }}
+          <v-row no-gutters>
+            <v-col cols="4" align-self="center">
+              <v-img class="music-player-thumbnail" :src="currentSong.thumbnail" cover height="80px" width="80px" />
+            </v-col>
 
-              <!-- Favorite Button -->
-              <v-icon
-                class="ml-3 align-self-center"
-                size="32"
-                data-test-id="music-player-favorite-button"
-                :class="currentSong.isFavorite ? 'pink--text text--lighten-2' : 'grey--text text--lighten-2'"
-                @click.stop="$emit('favorite', currentSong)"
-              >
-                mdi-heart
-              </v-icon>
-            </div>
-          </div>
+            <v-col cols="8" align-self="center">
+              <!-- Title And Description -->
+              <div v-if="currentSong.description" class="d-flex flex-column">
+                <div class="d-flex justify-center justify-md-start">
+                  <span
+                    class="accent--text text-h5 font-weight-black"
+                  >
+                    {{ currentSong.description }}
+                  </span>
+                </div>
+                <div class="grey--text font-weight-bold text-body-1 text-md-h6 text-center text-md-left">
+                  {{ currentSong.name }}
+
+                  <!-- Favorite Button -->
+                  <v-icon
+                    class="ml-3 align-self-center"
+                    size="32"
+                    data-test-id="music-player-favorite-button"
+                    :class="currentSong.isFavorite ? 'pink--text text--lighten-2' : 'grey--text text--lighten-2'"
+                    @click.stop="$emit('favorite', currentSong)"
+                  >
+                    mdi-heart
+                  </v-icon>
+                </div>
+              </div>
+            </v-col>
+          </v-row>
         </v-col>
 
         <v-col cols="9">
@@ -171,6 +179,10 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .music-player {
+  &-thumbnail {
+    border-radius: 8px;
+  }
+
   &-progress {
     position: relative;
     height: 60px;
