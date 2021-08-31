@@ -40,18 +40,16 @@
 
         <p class="mt-6 text-center text-md-left">
           Didn’t receive an email?
-
+          <br>
           <v-btn
             color="primary"
-            small
-            text
+            block
             @click="onResend"
           >
             RESEND EMAIL
           </v-btn>
-
-          <br>
-
+        </p>
+        <p class="mt-6 text-center text-md-left">
           Need support?
 
           <v-btn
@@ -65,7 +63,7 @@
         </p>
 
         <nuxt-link v-if="isUserLoggedIn" :to="{ name: 'auth-logout' }">
-          <v-btn block color="accent">
+          <v-btn block color="accent" class="mt-10">
             LOG OUT
           </v-btn>
         </nuxt-link>
@@ -133,7 +131,6 @@ export default defineComponent({
 
       try {
         await this.validateRegister(this.token)
-
         if (this.isUserLoggedIn) {
           await this.fetchUserInfo()
         }
