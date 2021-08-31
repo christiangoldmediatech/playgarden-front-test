@@ -22,11 +22,7 @@
             />
           </v-col>
           <v-col cols="12">
-            <new-compact-music-player
-              ref="musicPlayer"
-              @currentSong="currentSong = $event"
-              @favorite="handleFavorite"
-            />
+            <new-compact-music-player @favorite="handleFavorite" />
           </v-col>
         </v-row>
       </horizontal-ribbon-card>
