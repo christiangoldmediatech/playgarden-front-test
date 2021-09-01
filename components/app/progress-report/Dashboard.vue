@@ -272,7 +272,49 @@ export default {
     ]),
     ...mapActions({ setChild: 'setChild' }),
     ...mapActions('children', { getChildren: 'get' }),
-    ...mapActions('children/lesson', ['getCurrentLesson']),
+    ...mapActions('children/lesson', ['getCurrentCurriculumType']),
+
+    loadDefaultDataLetterStatsDate () {
+      this.letterStatsData.name = 'Start a Lesson'
+      this.letterStatsData.reports = [
+        {
+          title: 'Daily Lessons Attended',
+          done: 0,
+          percentage: 0,
+          total: 0
+        },
+        {
+          title: 'Videos Completed',
+          done: 0,
+          percentage: 0,
+          total: 0
+        },
+        {
+          title: 'Activities Completed',
+          done: 0,
+          percentage: 0,
+          total: 0
+        },
+        {
+          title: 'Activities Completed',
+          done: 0,
+          percentage: 0,
+          total: 0
+        },
+        {
+          title: 'Online Worksheets',
+          done: 0,
+          percentage: 0,
+          total: 0
+        },
+        {
+          title: 'Worksheets Upladed',
+          done: 0,
+          percentage: 0,
+          total: 0
+        }
+      ]
+    },
 
     async fetchChildProgress () {
       const data = await this.getCourseProgressByChildId({
@@ -283,9 +325,12 @@ export default {
 
     async fetchCurrentLesson (id) {
       try {
-        const { curriculumType } = await this.getCurrentLesson({ childrenIds: id })
+        const curriculumType = await this.getCurrentCurriculumType(id)
         this.selectedLetter = curriculumType.id
-      } catch (error) {}
+      } catch (e) {
+        this.loadDefaultDataLetterStatsDate()
+        this.loadLetterStatsData = false
+      }
     },
 
     changeChild (newId, redirect = true) {
