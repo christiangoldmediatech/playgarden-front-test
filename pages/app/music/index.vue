@@ -29,6 +29,7 @@
       <v-expand-transition>
         <new-music-player
           ref="musicPlayer"
+          v-intersect="onIntersect"
           @favorite="handleFavorite"
         />
       </v-expand-transition>
@@ -107,6 +108,7 @@ export default {
     const isMobile = computed(() => vuetify.breakpoint.width <= PAGE_MOBILE_BREAKPOINT)
     const isPlayerShowing = computed(() => playlist.value.length > 0)
     const didScrollToBottom = ref(false)
+    const isIntersectingMusicPlayer = ref(false)
 
     const handleScroll = () => {
       didScrollToBottom.value = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.scrollHeight - MOBILE_PLAYER_HEIGHT
@@ -306,6 +308,14 @@ export default {
       }
     }
 
+    const onIntersect = (entries: IntersectionObserverEntry[]) => {
+      isIntersectingMusicPlayer.value = entries[0].isIntersecting
+    }
+
+    watch(isIntersectingMusicPlayer, () => {
+      isTopRibbonMinimized.value = isIntersectingMusicPlayer.value
+    })
+
     return {
       addSongToPlaylist,
       allSongsWithFavorites,
@@ -324,7 +334,8 @@ export default {
       selectLetter,
       selectedLetterId,
       isTopRibbonMinimized,
-      disabledLetters
+      disabledLetters,
+      onIntersect
     }
   }
 }
