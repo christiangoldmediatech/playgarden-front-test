@@ -4,7 +4,7 @@
       <horizontal-ribbon-card
         :is-minimized.sync="isTopRibbonMinimized"
       >
-        <v-row no-gutters class="ml-10 mr-6 mt-4">
+        <v-row no-gutters class="ml-md-10 mr-md-6 mx-4 mt-4">
           <v-col cols="12" md="3" align-self="center">
             <child-select
               v-if="id"
@@ -21,7 +21,7 @@
               @select="selectLetter"
             />
           </v-col>
-          <v-col cols="12">
+          <v-col cols="12" class="mt-4">
             <new-compact-music-player @favorite="handleFavorite" />
           </v-col>
         </v-row>

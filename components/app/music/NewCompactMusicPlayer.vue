@@ -10,29 +10,33 @@
       }"
     >
       <v-row no-gutters>
-        <v-col v-if="currentSong" cols="3" align-self="center">
+        <v-col v-if="currentSong" sm="5" md="4" lg="3" align-self="center">
           <v-row no-gutters>
             <v-col cols="4" align-self="center">
-              <v-img class="music-player-thumbnail" :src="currentSong.thumbnail" cover height="80px" width="80px" />
+              <v-img
+                class="music-player-thumbnail"
+                :src="currentSong.thumbnail"
+                :height="isMobile ? '70px' : '80px'"
+                :width="isMobile ? '70px' : '80px'"
+                cover
+              />
             </v-col>
 
-            <v-col cols="8" align-self="center">
+            <v-col cols="6" md="8" align-self="center" class="px-md-2">
               <!-- Title And Description -->
               <div v-if="currentSong.description" class="d-flex flex-column">
-                <div class="d-flex justify-center justify-md-start">
-                  <span
-                    class="accent--text text-h5 font-weight-black"
-                  >
-                    {{ currentSong.description }}
-                  </span>
+                <div
+                  class="accent--text text-body-2 text-md-h6 font-weight-black"
+                >
+                  {{ currentSong.description }}
                 </div>
-                <div class="grey--text font-weight-bold text-body-1 text-md-h6 text-center text-md-left">
-                  {{ currentSong.name }}
+                <div class="grey--text font-weight-bold body-2 body-md-1">
+                  <span class="mr-2">{{ currentSong.name }}</span>
 
                   <!-- Favorite Button -->
                   <v-icon
-                    class="ml-3 align-self-center"
-                    size="32"
+                    class="align-self-center hidden-xs-only"
+                    :size="isMobile ? 20 : 28"
                     data-test-id="music-player-favorite-button"
                     :class="currentSong.isFavorite ? 'pink--text text--lighten-2' : 'grey--text text--lighten-2'"
                     @click.stop="$emit('favorite', currentSong)"
@@ -42,10 +46,24 @@
                 </div>
               </div>
             </v-col>
+
+            <v-col cols="2" align-self="center" class="hidden-sm-and-up text-center">
+              <v-btn
+                icon
+                height="42"
+                width="42"
+                :disabled="isPlayerDisabled"
+                @click.stop="next"
+              >
+                <v-icon color="grey" size="42">
+                  mdi-skip-forward
+                </v-icon>
+              </v-btn>
+            </v-col>
           </v-row>
         </v-col>
 
-        <v-col cols="9">
+        <v-col sm="7" md="8" lg="9" class="hidden-xs-only">
           <!-- Slider -->
           <div class="music-player-progress">
             <v-slider
@@ -71,7 +89,8 @@
             <!-- Previous Song Button -->
             <v-col
               cols="2"
-              sm="1"
+              sm="2"
+              md="1"
               align-self="center"
               class="text-center"
             >
@@ -91,7 +110,8 @@
             <!-- Pause/Play Song Button -->
             <v-col
               cols="2"
-              sm="1"
+              sm="2"
+              md="1"
               align-self="center"
               class="text-center"
             >
@@ -125,7 +145,8 @@
             <!-- Next Song Button -->
             <v-col
               cols="2"
-              sm="1"
+              sm="2"
+              md="1"
               align-self="center"
               class="text-center"
             >
@@ -149,12 +170,14 @@
 </template>
 
 <script lang="ts">
-import { useMusic } from '@/composables'
+import { useMusic, useVuetifyHelper } from '@/composables'
 import { defineComponent } from '@nuxtjs/composition-api'
 import { computed } from '@vue/composition-api'
 
 export default defineComponent({
   setup () {
+    const vuetify = useVuetifyHelper()
+
     const {
       currentSong,
       currentSongMissingTime,
@@ -164,12 +187,14 @@ export default defineComponent({
     } = useMusic()
 
     const isPlayerDisabled = computed(() => !currentSong.value || !currentSong.value?.description)
+    const isMobile = computed(() => vuetify.breakpoint.mobile)
 
     return {
       currentSong,
       currentSongMissingTime,
       currentSongPlayedPercentage,
       currentSongPlayedTime,
+      isMobile,
       isPlaying,
       isPlayerDisabled
     }
