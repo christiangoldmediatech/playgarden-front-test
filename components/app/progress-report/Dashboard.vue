@@ -275,7 +275,7 @@ export default {
     ...mapActions('children/lesson', ['getCurrentCurriculumType']),
 
     loadDefaultDataLetterStatsDate () {
-      this.letterStatsData.name = 'NO ADVANCE'
+      this.letterStatsData.name = 'Start a Lesson'
       this.letterStatsData.reports = [
         {
           title: 'Daily Lessons Attended',
