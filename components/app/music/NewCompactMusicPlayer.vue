@@ -242,12 +242,4 @@ export default defineComponent({
     font-size: 14px;
   }
 }
-
-@media (max-width: $breakpoint-xs) {
-  .music-player {
-    & .controls {
-      width: 90%;
-    }
-  }
-}
 </style>
