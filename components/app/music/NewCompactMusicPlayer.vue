@@ -214,6 +214,7 @@ export default defineComponent({
 .music-player {
   &-thumbnail {
     border-radius: 8px;
+    cursor: pointer;
   }
 
   &-progress {

@@ -20,7 +20,7 @@
 
       <v-spacer class="d-none d-md-flex" />
 
-      <v-col cols="12" class="d-flex align-center justify-center mt-4 hidden-sm-and-up">
+      <v-col cols="12" class="d-flex align-center justify-center mt-4 d-sm-none">
         <div class="music-letter-select">
           <music-carousel-letter
             :is-full-width="true"
