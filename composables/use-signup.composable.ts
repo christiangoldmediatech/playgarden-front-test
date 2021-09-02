@@ -1,52 +1,54 @@
 import { computed, ref, useRoute, useRouter } from '@nuxtjs/composition-api'
+import { Route } from 'vue-router'
 import { User, UserFlow } from '@/models'
 import { axios } from '@/utils'
 
-const abFlow = ref<User['flow']>(UserFlow.CREDITCARD)
-
-enum UserFlowRouteQuery {
+enum UserFlowRouteParam {
   NOCREDITCARD = 'promo',
   CREDITCARD = 'normal'
 }
 
-export const useSignup = ({ router, route }: { router: ReturnType<typeof useRouter>, route: ReturnType<typeof useRoute> }) => {
+interface UseSignup {
+  route: Route
+}
+
+export const useSignup = ({ route }: UseSignup) => {
+  const abFlow = computed(() => route.name?.includes(`-${UserFlowRouteParam.NOCREDITCARD}-`)
+    ? UserFlow.NOCREDITCARD
+    : UserFlow.CREDITCARD
+  )
+
   const isCreditCardRequired = computed(() => abFlow.value === UserFlow.CREDITCARD)
 
   const setupABFlow = async () => {
-    let routeABFlow = route.value.query.abf as UserFlowRouteQuery
+    const abRouteName = ref('')
+    const routeABFlow = route.query.abf as UserFlowRouteParam
 
     // if the AB flow is already in the query, set the corresponding user flow
-    if (typeof routeABFlow === 'string' && [UserFlowRouteQuery.NOCREDITCARD, UserFlowRouteQuery.CREDITCARD].includes(routeABFlow)) {
+    if (typeof routeABFlow === 'string' && [UserFlowRouteParam.NOCREDITCARD, UserFlowRouteParam.CREDITCARD].includes(routeABFlow)) {
       switch (routeABFlow) {
-        case UserFlowRouteQuery.NOCREDITCARD:
-          abFlow.value = UserFlow.NOCREDITCARD
+        case UserFlowRouteParam.NOCREDITCARD:
+          abRouteName.value = 'auth-promo-parent'
           break
-        case UserFlowRouteQuery.CREDITCARD:
-          abFlow.value = UserFlow.CREDITCARD
+        case UserFlowRouteParam.CREDITCARD:
+          abRouteName.value = 'auth-normal-parent'
           break
       }
-    // else, set the flow returned by the api and set the corresponding route query
+    // else, set the flow returned by the api and set the corresponding route
     } else {
       const response = await axios.$get('/auth/users/flow') as { flow: User['flow'] }
 
       switch (response.flow) {
         case UserFlow.NOCREDITCARD:
-          routeABFlow = UserFlowRouteQuery.NOCREDITCARD
+          abRouteName.value = 'auth-promo-parent'
           break
         case UserFlow.CREDITCARD:
-          routeABFlow = UserFlowRouteQuery.CREDITCARD
+          abRouteName.value = 'auth-normal-parent'
           break
       }
-
-      abFlow.value = response.flow
     }
 
-    router.push({
-      name: 'auth-parent',
-      query: {
-        abf: routeABFlow
-      }
-    })
+    return abRouteName.value
   }
 
   return {

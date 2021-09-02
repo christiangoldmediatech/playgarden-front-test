@@ -60,10 +60,9 @@
   </v-row>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
-  onMounted,
   useRoute,
   useRouter
 } from '@nuxtjs/composition-api'
@@ -82,9 +81,8 @@ export default defineComponent({
   setup () {
     const router = useRouter()
     const route = useRoute()
-    const { abFlow, isCreditCardRequired, setupABFlow } = useSignup({
-      router,
-      route
+    const { abFlow, isCreditCardRequired } = useSignup({
+      route: route.value
     })
 
     const goToNextStep = () => {
@@ -109,10 +107,6 @@ export default defineComponent({
           break
       }
     }
-
-    onMounted(async () => {
-      await setupABFlow()
-    })
 
     return {
       abFlow,
