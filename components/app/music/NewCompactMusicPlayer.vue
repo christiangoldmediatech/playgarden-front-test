@@ -14,11 +14,12 @@
           <v-row no-gutters>
             <v-col cols="4" align-self="center">
               <v-img
-                class="music-player-thumbnail"
                 :src="currentSong.thumbnail"
                 :height="isMobile ? '70px' : '80px'"
                 :width="isMobile ? '70px' : '80px'"
                 cover
+                class="music-player-thumbnail"
+                @click="goUp"
               />
             </v-col>
 
@@ -189,6 +190,12 @@ export default defineComponent({
     const isPlayerDisabled = computed(() => !currentSong.value || !currentSong.value?.description)
     const isMobile = computed(() => vuetify.breakpoint.mobile)
 
+    const goUp = () => {
+      try {
+        vuetify.goTo(0)
+      } catch (error) {}
+    }
+
     return {
       currentSong,
       currentSongMissingTime,
@@ -196,7 +203,8 @@ export default defineComponent({
       currentSongPlayedTime,
       isMobile,
       isPlaying,
-      isPlayerDisabled
+      isPlayerDisabled,
+      goUp
     }
   }
 })
