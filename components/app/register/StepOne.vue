@@ -171,8 +171,7 @@ export default defineComponent({
           this.$snotify.success('Welcome to Playgarden Prep!')
         }
         this.goToNextStep()
-      } catch (e) {
-      } finally {
+      } catch (e) {} finally {
         this.loading = false
       }
     },
