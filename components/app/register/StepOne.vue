@@ -60,7 +60,7 @@
   </v-row>
 </template>
 
-<script lang="ts">
+<script>
 import {
   defineComponent,
   useRoute,
