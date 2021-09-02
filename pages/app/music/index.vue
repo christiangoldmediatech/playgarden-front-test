@@ -10,10 +10,11 @@
               v-if="id"
               hide-details
               :value="id"
+              :management-button="false"
               @input="id = $event"
             />
           </v-col>
-          <v-col cols="12" md="9" align-self="center" class="mt-2 mt-md-0">
+          <v-col cols="12" md="9" align-self="center" class="mt-2 mt-md-0 hidden-xs-only">
             <music-carousel-letter
               :is-full-width="true"
               :value="selectedLetterId"
@@ -45,6 +46,7 @@
         @newPlayList="createNewPlaylist"
         @favorite="handleFavorite"
         @showFavorites="showOnlyFavorites = !showOnlyFavorites"
+        @select-letter="selectLetter"
       />
     </v-container>
   </v-main>
