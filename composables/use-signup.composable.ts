@@ -12,15 +12,18 @@ interface UseSignup {
   route: Route
 }
 
-export const useSignup = ({ route }: UseSignup) => {
-  const abFlow = computed(() => route.name?.includes(`-${UserFlowRouteParam.NOCREDITCARD}-`)
-    ? UserFlow.NOCREDITCARD
-    : UserFlow.CREDITCARD
-  )
+const abFlow = ref<User['flow']>(UserFlow.CREDITCARD)
 
+export const useSignup = ({ route }: UseSignup) => {
   const isCreditCardRequired = computed(() => abFlow.value === UserFlow.CREDITCARD)
 
-  const setupABFlow = async () => {
+  const setupABFlow = () => {
+    abFlow.value = route.name?.includes(`-${UserFlowRouteParam.NOCREDITCARD}-`)
+      ? UserFlow.NOCREDITCARD
+      : UserFlow.CREDITCARD
+  }
+
+  const getABFlow = async () => {
     const abRouteName = ref('')
     const routeABFlow = route.query.abf as UserFlowRouteParam
 
@@ -54,6 +57,7 @@ export const useSignup = ({ route }: UseSignup) => {
   return {
     abFlow,
     isCreditCardRequired,
+    getABFlow,
     setupABFlow
   }
 }

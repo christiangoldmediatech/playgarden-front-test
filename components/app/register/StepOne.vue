@@ -81,9 +81,12 @@ export default defineComponent({
   setup () {
     const router = useRouter()
     const route = useRoute()
-    const { abFlow, isCreditCardRequired } = useSignup({
+
+    const { abFlow, isCreditCardRequired, setupABFlow } = useSignup({
       route: route.value
     })
+
+    setupABFlow()
 
     const goToNextStep = () => {
       switch (abFlow.value) {

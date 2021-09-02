@@ -10,8 +10,8 @@ export default defineComponent({
   name: 'Parent',
 
   async asyncData ({ route, redirect }) {
-    const { setupABFlow } = useSignup({ route })
-    const abRouteName = await setupABFlow()
+    const { getABFlow } = useSignup({ route })
+    const abRouteName = await getABFlow()
 
     redirect({
       name: abRouteName
