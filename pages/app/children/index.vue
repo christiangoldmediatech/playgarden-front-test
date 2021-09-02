@@ -4,7 +4,7 @@
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
-import StepThree from '@/components/app/register/StepThree'
+import StepThree from '@/components/app/register/StepThree.vue'
 import { useSignup } from '@/composables'
 import { UserFlow } from '@/models'
 
