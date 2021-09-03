@@ -3,8 +3,22 @@ import { axios } from '@/utils'
 import { ChildrenMusicFavorite, CurriculumTypeWithMusicLibrary, MusicLibrary } from '@/models'
 
 const playlist = ref<MusicLibrary[]>([])
-const currentSong = ref<MusicLibrary | undefined>(undefined)
 const musicLibraries = ref<CurriculumTypeWithMusicLibrary[]>([])
+
+const currentSong = ref<MusicLibrary | undefined>()
+const currentSongPlayedTime = ref(0)
+const currentSongPlayedPercentage = ref(0)
+const currentSongMissingTime = ref(0)
+const currentSongIndex = ref<number | null>(null)
+const currentSongDuration = ref(0)
+const isLoading = ref(false)
+const isPlaying = ref(false)
+const isPaused = ref(false)
+const isStopped = ref(false)
+const player = ref<null | HTMLAudioElement>(null)
+const currentPlaylist = ref<MusicLibrary[]>([])
+const volume = ref(0.5)
+const isLooping = ref(false)
 
 const showOnlyFavorites = ref(false)
 const favorites = ref<ChildrenMusicFavorite[]>([])
@@ -147,8 +161,21 @@ export const useMusic = () => {
   })
 
   return {
-    allSongsWithFavorites,
     currentSong,
+    currentSongMissingTime,
+    currentSongPlayedPercentage,
+    currentSongPlayedTime,
+    currentSongIndex,
+    currentSongDuration,
+    isLoading,
+    isPlaying,
+    isPaused,
+    isStopped,
+    player,
+    currentPlaylist,
+    volume,
+    isLooping,
+    allSongsWithFavorites,
     favoritesDictionary,
     playlist,
     showOnlyFavorites,
