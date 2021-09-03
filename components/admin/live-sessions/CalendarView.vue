@@ -32,9 +32,10 @@
             class="lclass-calendar-hour-day"
           >
             <table-entry
-              v-if="getWeeklySchedule[dayIndex][hourIndex]"
-              :id="`entry-${dayIndex}-${hourIndex}`"
-              :entry="getWeeklySchedule[dayIndex][hourIndex]"
+              v-for="(entry, entryIndex) in getAdvancedSchedule[dayIndex][hourIndex]"
+              :id="`entry-${dayIndex}-${hourIndex}-${entryIndex}`"
+              :key="`entry-${dayIndex}-${hourIndex}-${entryIndex}`"
+              :entry="entry"
               edit-mode
             />
           </div>
@@ -75,8 +76,7 @@ export default {
   },
 
   computed: {
-    // ...mapState('live-sessions', ['sessions']),
-    ...mapGetters('live-sessions', ['getWeeklySchedule']),
+    ...mapGetters('live-sessions', ['getAdvancedSchedule']),
 
     days () {
       return getMondayFriday(this.day)
@@ -92,10 +92,13 @@ export default {
       this.getSessions()
     },
 
-    getWeeklySchedule (val) {
+    getAdvancedSchedule (val) {
       const totalClasses = val.reduce((accumulator, day) => {
         const hourResult = day.reduce((accumulator2, hour) => {
-          return accumulator2 + Number(Boolean(hour))
+          const entryResult = hour.reduce((accumulator3, entry) => {
+            return accumulator3 + Number(Boolean(entry))
+          })
+          return accumulator2 + entryResult
         }, 0)
         return accumulator + hourResult
       }, 0)
