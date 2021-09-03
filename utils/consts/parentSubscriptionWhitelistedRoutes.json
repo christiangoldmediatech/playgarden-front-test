@@ -11,6 +11,8 @@
     "app-account-index-notification": 1,
     "app-children-register": 1,
     "app-children": 1,
+    "app-promo-children": 1,
+    "app-normal-children": 1,
     "app-payment": 1,
     "app-onboarding": 1,
     "app-payment-plan": 1,
