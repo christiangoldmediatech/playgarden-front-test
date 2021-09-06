@@ -59,9 +59,9 @@ export default {
   /*
    * SUBSCRIPTIONS COST
    */
-  async cancelSubscription ({ commit }) {
+  async cancelSubscription ({ commit }, reason = '') {
     try {
-      return await this.$axios.$delete('/billing/subscription/cancel')
+      return await this.$axios.$delete(`/billing/subscription/cancel?reason=${reason}`)
     } catch (error) {
       snotifyError(commit, {
         body: 'Sorry! There was an error while canceling your Subscription!'

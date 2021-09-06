@@ -7,65 +7,51 @@
     }"
   >
     <div class="controls">
-      <pg-audio-player
-        ref="audioPlayer"
-        :play-list="playlist"
-        @currentSong="handleCurrentSong"
-      >
-        <template
-          v-slot:current="{
-            currentSong,
-            currentSongPlayedTime,
-            currentSongPlayedPercentage,
-            currentSongMissingTime
-          }"
-        >
-          <!-- Title And Favorite Icon -->
-          <div v-if="currentSong.description" class="d-flex flex-column">
-            <div class="d-flex justify-center justify-md-start">
-              <span
-                class="accent--text text-h5 text-md-h4 font-weight-black"
-              >
-                {{ currentSong.description }}
-              </span>
-            </div>
-            <div class="white--text font-weight-bold text-body-1 text-md-h6 text-center text-md-left">
-              {{ currentSong.name }}
-            </div>
-          </div>
-          <!-- Slider -->
-          <div class="progress">
-            <v-slider
-              readonly
-              height="20"
-              color="warning lighten-1"
-              track-color="grey lighten-2"
-              class="slider"
-              :min="0"
-              :max="100"
-              :disabled="isPlayerDisabled"
-              :value="currentSongPlayedPercentage"
-            />
-            <span class="played-time pl-2">
-              {{ currentSongPlayedTime }}
-            </span>
-            <span class="missing-time pr-2">
-              {{ currentSongMissingTime }}
-            </span>
-          </div>
-        </template>
+      <!-- Title And Favorite Icon -->
+      <div v-if="currentSong" class="d-flex flex-column">
+        <div v-if="currentSong.description" class="d-flex justify-center justify-md-start">
+          <span
+            class="accent--text text-h5 text-md-h4 font-weight-black"
+          >
+            {{ currentSong.description }}
+          </span>
+        </div>
+        <div class="white--text font-weight-bold text-body-1 text-md-h6 text-center text-md-left">
+          {{ currentSong.name }}
+        </div>
+      </div>
+      <!-- Slider -->
+      <div class="progress">
+        <v-slider
+          readonly
+          height="20"
+          color="warning lighten-1"
+          track-color="grey lighten-2"
+          class="slider"
+          :min="0"
+          :max="100"
+          :disabled="isPlayerDisabled"
+          :value="currentSongPlayedPercentage"
+        />
+        <span class="played-time pl-2">
+          {{ currentSongPlayedTime }}
+        </span>
+        <span class="missing-time pr-2">
+          {{ currentSongMissingTime }}
+        </span>
+      </div>
+
+      <pg-audio-player ref="audioPlayer">
         <!-- Music Player Actions -->
         <template
-          v-slot:actions="{
-            currentSong,
-            isPlaying,
+          #actions="{
             play,
             pause,
             next,
             previous
           }"
         >
-          <v-row no-gutters justify="center">
+          <v-row v-if="currentSong" no-gutters justify="center">
             <!-- Playlist Button -->
             <v-col
               v-if="currentSong.description"
@@ -193,13 +179,12 @@ export default defineComponent({
     const audioPlayer = ref<any>(null)
     const {
       currentSong,
-      playlist,
+      currentSongMissingTime,
+      currentSongPlayedPercentage,
+      currentSongPlayedTime,
+      isPlaying,
       removeSongFromPlaylist
     } = useMusic()
-
-    const handleCurrentSong = (song: MusicLibrary) => {
-      emit('currentSong', song)
-    }
 
     const refreshSongData = (song: MusicLibrary) => {
       if (!audioPlayer.value) {
@@ -228,7 +213,7 @@ export default defineComponent({
       audioPlayer.value?.play()
     }
 
-    const isPlayerDisabled = computed(() => !currentSong.value || !currentSong.value.description)
+    const isPlayerDisabled = computed(() => !currentSong.value || !currentSong.value?.description)
 
     const playSong = async (playlistIndex: number) => {
       if (!audioPlayer.value) {
@@ -253,11 +238,13 @@ export default defineComponent({
     return {
       audioPlayer,
       currentSong,
+      currentSongMissingTime,
+      currentSongPlayedPercentage,
+      currentSongPlayedTime,
+      isPlaying,
       isPlayerDisabled,
-      playlist,
       addSongToPlaylist,
       createNewPlaylist,
-      handleCurrentSong,
       playSong,
       removeSong,
       refreshSongData
