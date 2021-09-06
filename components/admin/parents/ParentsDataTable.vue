@@ -1,10 +1,10 @@
 <template>
   <v-container>
-    <v-row v-if="showGraphs">
+    <v-row>
       <v-col cols="12">
         <v-card width="100%" class="custom-shadow">
           <v-card-title>
-            Parents
+            {{ title }}
             <v-spacer />
 
             <v-btn
@@ -179,6 +179,11 @@ export default {
       type: String,
       required: false,
       default: ''
+    },
+    title: {
+      type: String,
+      required: false,
+      default: 'Parents'
     },
     paramsSend: {
       type: Object,
