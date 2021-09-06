@@ -45,7 +45,6 @@ export const useGlobalModal = ({ store }: { store: Store<TypedStore> }) => {
 
       const week = getWeek(userInfo.createdAt)
       const day = (lastDateNotification) ? getDays(lastDateNotification) : 0
-      console.log('day--', day)
 
       if (week >= 2 && week <= 3) {
         isWeekTwoAndThree.value = true
