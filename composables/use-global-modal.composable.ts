@@ -44,7 +44,8 @@ export const useGlobalModal = ({ store }: { store: Store<TypedStore> }) => {
       }
 
       const week = getWeek(userInfo.createdAt)
-      const day = (lastDateNotification) ? getDays(new Date(lastDateNotification)) : 0
+      const day = (lastDateNotification) ? getDays(lastDateNotification) : 0
+      console.log('day--', day)
 
       if (week >= 2 && week <= 3) {
         isWeekTwoAndThree.value = true
@@ -104,7 +105,7 @@ export const useGlobalModal = ({ store }: { store: Store<TypedStore> }) => {
 
 const saveDataNotification = () => {
   if (hasLocalStorage()) {
-    localStorage.setItem('lastDateNotification', dayjs().format('YYYY-MM-DD'))
+    localStorage.setItem('lastDateNotification', dayjs().add(1, 'day').format('YYYY-MM-DD'))
   }
 }
 
@@ -123,9 +124,9 @@ const getWeek = (lastDate: Date) => {
   return week
 }
 
-const getDays = (lastDate: Date) => {
-  const now = new Date()
-  return (dayjs(now).diff(lastDate, 'days'))
+const getDays = (lastDate: string) => {
+  const now = dayjs().format('YYYY-MM-DD')
+  return dayjs(now).diff(lastDate, 'days')
 }
 
 const getTrial = (dateEnd: Date) => {
