@@ -125,7 +125,7 @@ const getWeek = (lastDate: Date) => {
 
 const getDays = (lastDate: Date) => {
   const now = new Date()
-  return (dayjs(now).diff(lastDate, 'days') + 1)
+  return (dayjs(now).diff(lastDate, 'days'))
 }
 
 const getTrial = (dateEnd: Date) => {
