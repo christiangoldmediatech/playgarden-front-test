@@ -63,7 +63,7 @@ export const useGlobalModal = ({ store }: { store: Store<TypedStore> }) => {
         // week 4
         showNotificationSignupModal()
       } else {
-        hideNotificationSignupModal()
+        hideNotificationSignupModal(false)
       }
 
       imagePath.value = getImagePath(week)
@@ -86,9 +86,11 @@ export const useGlobalModal = ({ store }: { store: Store<TypedStore> }) => {
     isNotificationSignupModalVisible.value = true
   }
 
-  const hideNotificationSignupModal = () => {
+  const hideNotificationSignupModal = (saveLastNotification: boolean) => {
     isNotificationSignupModalVisible.value = false
-    saveDataNotification()
+    if (saveLastNotification) {
+      saveDataNotification()
+    }
   }
 
   return {
@@ -125,7 +127,8 @@ const getWeek = (lastDate: Date) => {
 
 const getDays = (lastDate: string) => {
   const now = dayjs().format('YYYY-MM-DD')
-  return dayjs(now).diff(lastDate, 'days')
+  const days = dayjs(now).diff(lastDate, 'days')
+  return (days < 0) ? days * -1 : days
 }
 
 const getTrial = (dateEnd: Date) => {
