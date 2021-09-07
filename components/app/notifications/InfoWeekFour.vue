@@ -124,13 +124,13 @@ export default defineComponent({
   },
   methods: {
     goPlan () {
-      this.hideNotificationSignupModal()
+      this.hideNotificationSignupModal(true)
       this.$router.push({
         name: 'app-payment-plan'
       })
     },
     goContacUs () {
-      this.hideNotificationSignupModal()
+      this.hideNotificationSignupModal(true)
       this.$router.push({
         name: 'help'
       })
