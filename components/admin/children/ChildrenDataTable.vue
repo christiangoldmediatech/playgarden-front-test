@@ -38,6 +38,7 @@
               :headers="headers"
               :items="children"
               :loading="loading"
+              :items-per-page="paginationLimit"
               :page.sync="page"
               :action="action"
               top-justify="space-between"
@@ -120,7 +121,7 @@
                     <nuxt-link
                       :to="{
                         name: 'admin-user-manager-profile',
-                        query: { id: item.user.id }
+                        query: { id: (item.user) ? item.user.id : '' }
                       }"
                       title="Go to Parent"
                     >
@@ -156,7 +157,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapState } from 'vuex'
 import onSearch from '@/mixins/OnSearchMixin.js'
 import UserChildLessonOverlay from '@/components/admin/users/UserChildLessonOverlay.vue'
 import UserChildTimelineDialog from '@/components/admin/users/UserChildTimelineDialog.vue'
@@ -176,7 +177,7 @@ export default {
       loading: false,
       action: true,
       search: '',
-      limit: 10,
+      limit: 50,
       page: 1,
       allFilters: false,
       children: [],
@@ -222,6 +223,7 @@ export default {
     }
   },
   computed: {
+    ...mapState('admin', ['paginationLimit']),
     ...mapGetters('children', ['rows'])
   },
 
