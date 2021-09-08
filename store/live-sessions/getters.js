@@ -36,7 +36,7 @@ export default {
     // loaded, and allows an empty table to render correctly.
     // We want the first hour to be earlier than the first hour used,
     // But not earlier than 0 hour
-    if ((sessions[0].hour - 1) > 0) {
+    if (sessions[0].hour > 0) {
       schedule.firstHour = sessions[0].hour - 1
     } else {
       schedule.firstHour = sessions[0].hour
