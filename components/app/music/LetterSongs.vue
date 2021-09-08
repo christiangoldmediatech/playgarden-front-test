@@ -172,8 +172,8 @@ export default defineComponent({
     position: relative;
     & .play-btn {
       position: absolute;
-      top: 40px;
-      left: 40px;
+      top: 52.5px;
+      left: 52.5px;
       color: transparent !important;
       &:hover {
         cursor: pointer;

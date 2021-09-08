@@ -1,70 +1,31 @@
 <template>
-  <v-row>
-    <v-row no-gutters>
-      <v-btn
-        color="accent"
-        nuxt
-        text
-        :to="{
-          name: 'app-payment',
-          query: { process: 'signup', step: '2' }
-        }"
-      >
-        <v-icon left>
-          mdi-less-than
-        </v-icon>
-
-        Back
-      </v-btn>
-    </v-row>
-    <v-col cols="12">
-      <step-three />
-    </v-col>
-  </v-row>
+  <div />
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from '@nuxtjs/composition-api'
+import StepThree from '@/components/app/register/StepThree.vue'
+import { useSignup } from '@/composables'
+import { UserFlow } from '@/models'
 
-import StepThree from '@/components/app/register/StepThree'
-
-export default {
+export default defineComponent({
   name: 'Index',
 
   components: {
     StepThree
   },
 
-  data: vm => ({
-    currentStep: 1
-  }),
+  asyncData ({ route, redirect }) {
+    const { abFlow } = useSignup({ route })
 
-  computed: {
-    getStep () {
-      return this.currentStep
+    switch (abFlow.value) {
+      case UserFlow.CREDITCARD:
+        redirect({ name: 'app-normal-children', query: { ...route.query } })
+        break
+      case UserFlow.NOCREDITCARD:
+        redirect({ name: 'app-promo-children', query: { ...route.query } })
+        break
     }
-  },
-
-  created () {
-    this.currentStep = (this.$route.query.step) ? Number(this.$route.query.step) : 1
-    this.$gtm.push({
-      event: 'payment_children_page',
-      conversionID: '959213252',
-      conversionLabel: 'q4IlCNbg0voBEMTdsckD'
-    })
-  },
-
-  mounted () {
-    this.$nuxt.$on('set-current-step', (step) => {
-      if (step) {
-        this.currentStep = step
-      }
-    })
-  },
-
-  beforeDestroy () {
-    this.$nuxt.$off('set-current-step')
-  },
-
-  methods: {}
-}
+  }
+})
 </script>
