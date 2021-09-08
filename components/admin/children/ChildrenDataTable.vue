@@ -41,8 +41,10 @@
               :items-per-page="paginationLimit"
               :page.sync="page"
               :action="action"
+              :server-items-length="total"
               top-justify="space-between"
               @search="onSearch"
+              @update:page="page = $event"
               @refresh="refresh(true)"
               @edit-item="
                 $router.push({
@@ -177,7 +179,6 @@ export default {
       loading: false,
       action: true,
       search: '',
-      limit: 50,
       page: 1,
       allFilters: false,
       children: [],
