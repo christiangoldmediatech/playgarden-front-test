@@ -125,6 +125,24 @@
               />
             </validation-provider>
 
+            <!-- First name -->
+            <validation-provider
+              v-slot="{ errors }"
+              :name="
+                (removable(item) ? `Child #${indexD + 1} - ` : '') + 'Name'
+              "
+              rules="required"
+            >
+              <pg-text-field
+                v-model="item.lastName"
+                clearable
+                :disabled="loading"
+                :error-messages="errors"
+                label="Lastname"
+                solo-labeled
+              />
+            </validation-provider>
+
             <!-- Birthday date -->
             <v-menu
               v-model="item._menu"
@@ -258,7 +276,7 @@
             Name
           </v-col>
           <v-col cols="6" class="font-weight-bold grey--text text--darken-2">
-            {{ item.firstName }}
+            {{ item.firstName }} {{ (item.lastName) ? item.lastName : '' }}
           </v-col>
 
           <v-col cols="6" class="grey--text">
@@ -380,11 +398,12 @@ export default {
       }
     },
 
-    getOriginalChild ({ backpackId, birthday, firstName, level, gender } = {}) {
+    getOriginalChild ({ backpackId, birthday, firstName, level, gender, lastName } = {}) {
       return JSON.stringify({
         backpackId,
         birthday,
         firstName,
+        lastName,
         level,
         gender
       })
@@ -408,7 +427,7 @@ export default {
     },
 
     loadChild (
-      { _original, id, backpack, birthday, firstName, gender, level },
+      { _original, id, backpack, birthday, firstName, lastName, gender, level },
       index = null
     ) {
       const _birthdayPicker = (birthday) ? new Date(birthday).toISOString().substr(0, 10) : dayjs(`${new Date().getFullYear() - 2}-01-01`).format('YYYY-MM-DD')
@@ -428,6 +447,7 @@ export default {
         backpackId: backpack.id,
         birthday,
         firstName,
+        lastName,
         gender,
         level,
         progress: {
@@ -459,6 +479,7 @@ export default {
         backpackId: this.firstBackpack,
         birthday: '',
         firstName: '',
+        lastName: '',
         level: 'BEGINNER',
         gender: '',
         progress: {

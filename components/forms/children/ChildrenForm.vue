@@ -16,6 +16,22 @@
         class="custom-text-field"
       />
     </validation-provider>
+    <!-- Lastname -->
+    <validation-provider
+      v-slot="{ errors }"
+      :name="(removable ? `Child #${index + 1} - ` : '') + 'Lastname'"
+      rules="required"
+    >
+      <pg-text-field
+        v-model="itemCurrent.lastName"
+        clearable
+        :disabled="isLoading"
+        :error-messages="errors"
+        label="Lastname"
+        solo
+        class="custom-text-field"
+      />
+    </validation-provider>
     <!-- Birth date -->
     <v-menu
       ref="menu"
