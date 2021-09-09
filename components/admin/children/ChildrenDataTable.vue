@@ -36,12 +36,12 @@
           <v-card-text>
             <pg-admin-data-table
               :headers="headers"
-              :items="children"
+              :items="rows"
               :loading="loading"
               :items-per-page="paginationLimit"
               :page.sync="page"
-              :action="action"
               :server-items-length="total"
+              :action="action"
               top-justify="space-between"
               @search="onSearch"
               @update:page="page = $event"
@@ -225,7 +225,7 @@ export default {
   },
   computed: {
     ...mapState('admin', ['paginationLimit']),
-    ...mapGetters('children', ['rows'])
+    ...mapGetters('admin/children', ['rows', 'total', 'types'])
   },
 
   watch: {
@@ -284,9 +284,12 @@ export default {
         this.search = ''
       }
       try {
-        this.children = await this.getChildrensProgress({
+        const params = {
+          limit: this.paginationLimit,
+          page: this.page,
           firstName: this.search
-        })
+        }
+        await this.getChildrensProgress(params)
       } catch (e) {
       } finally {
         this.loading = false
