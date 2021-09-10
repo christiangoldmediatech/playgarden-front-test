@@ -18,8 +18,8 @@
     <div class="lclass-calendar-hours">
       <template v-for="(i, hourIndex) in ((endHour - startHour) + 1)">
         <div
-          v-if="hourIndex >= skipRows"
           :key="`hour-${hourIndex}`"
+          :style="{ '--entriesLength': findMaxEntriesForHour(hourIndex) }"
           class="lclass-calendar-hour"
         >
           <div class="lclass-calendar-hour-time">
@@ -32,7 +32,7 @@
             class="lclass-calendar-hour-day"
           >
             <table-entry
-              v-for="(entry, entryIndex) in getAdvancedSchedule[dayIndex][hourIndex]"
+              v-for="(entry, entryIndex) in getAdvancedSchedule.days[dayIndex][hourIndex]"
               :id="`entry-${dayIndex}-${hourIndex}-${entryIndex}`"
               :key="`entry-${dayIndex}-${hourIndex}-${entryIndex}`"
               :entry="entry"
@@ -68,15 +68,20 @@ export default {
   data: () => {
     return {
       weekDays,
-      startHour: 8,
-      endHour: 18,
-      skipRows: 0,
       today: new Date()
     }
   },
 
   computed: {
     ...mapGetters('live-sessions', ['getAdvancedSchedule']),
+
+    startHour () {
+      return this.getAdvancedSchedule.firstHour
+    },
+
+    endHour () {
+      return this.getAdvancedSchedule.endHour
+    },
 
     days () {
       return getMondayFriday(this.day)
@@ -90,35 +95,6 @@ export default {
   watch: {
     days () {
       this.getSessions()
-    },
-
-    getAdvancedSchedule (val) {
-      const totalClasses = val.reduce((accumulator, day) => {
-        const hourResult = day.reduce((accumulator2, hour) => {
-          const entryResult = hour.reduce((accumulator3, entry) => {
-            return accumulator3 + Number(Boolean(entry))
-          })
-          return accumulator2 + entryResult
-        }, 0)
-        return accumulator + hourResult
-      }, 0)
-
-      let newSkipRows = 0
-
-      if (totalClasses > 0) {
-        for (let hourIndex = 0; hourIndex < 2; hourIndex++) {
-          let hourClasses = 0
-          for (let dayIndex = 0; dayIndex < 5; dayIndex++) {
-            hourClasses += Number(Boolean(val[dayIndex][hourIndex]))
-          }
-          if (hourClasses === 0) {
-            newSkipRows++
-          } else {
-            break
-          }
-        }
-      }
-      this.skipRows = newSkipRows
     }
   },
 
@@ -139,6 +115,16 @@ export default {
       this.getUserLiveSessions({ ...this.days, admin: true }).then(() => {
         this.$emit('loading', false)
       })
+    },
+
+    findMaxEntriesForHour (hourIndex) {
+      let total = 1
+      this.getAdvancedSchedule.days.forEach((day) => {
+        if (day[hourIndex] && day[hourIndex].length > total) {
+          total = day[hourIndex].length
+        }
+      })
+      return total
     }
   }
 }
@@ -175,7 +161,8 @@ export default {
   &-hour {
     position: relative;
     padding-left: 74px;
-    height: 160px;
+    height: calc(var(--entriesLength) * 160px);
+    max-height: calc(var(--entriesLength) * 160px);
     display: flex;
     align-items: center;
     border-top: 2px solid #F2F2F2;
@@ -195,6 +182,10 @@ export default {
       max-width: 20%;
       padding: 8px;
       height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
     }
   }
 }

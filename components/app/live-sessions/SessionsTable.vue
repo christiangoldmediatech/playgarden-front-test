@@ -128,7 +128,7 @@ export default {
     },
 
     totalHours () {
-      return this.getAdvancedSchedule.endHour - (this.hourOffset > 0 ? this.hourOffset : 0)
+      return this.getAdvancedSchedule.endHour - (this.hourOffset > 0 ? this.hourOffset : 1)
     },
 
     activeDay () {

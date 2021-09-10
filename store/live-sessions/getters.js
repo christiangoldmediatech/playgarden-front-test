@@ -46,8 +46,10 @@ export default {
     // but not greater than 23
     if (sessions[0].endHour === 23) {
       schedule.endHour = 23
-    } else {
+    } else if (sessions[0].hour === sessions[0].endHour) {
       schedule.endHour = sessions[0].endHour + 1
+    } else {
+      schedule.endHour = sessions[0].endHour
     }
 
     // Now find start and end hours for all sessions
@@ -61,11 +63,13 @@ export default {
         }
       }
 
-      if ((session.endHour + 1) > schedule.endHour) {
+      if (session.endHour > schedule.endHour) {
         if (session.endHour === 23) {
           schedule.endHour = 23
-        } else {
+        } else if (session.hour === session.endHour) {
           schedule.endHour = session.endHour + 1
+        } else {
+          schedule.endHour = session.endHour
         }
       }
     })
@@ -76,7 +80,7 @@ export default {
       })
 
       const hours = []
-      for (let hour = schedule.firstHour; hour <= 18; hour++) {
+      for (let hour = schedule.firstHour; hour <= schedule.endHour; hour++) {
         const sessions = daySessions.filter((session) => {
           return session.hour === hour
         })
