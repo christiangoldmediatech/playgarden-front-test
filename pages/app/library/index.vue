@@ -34,13 +34,22 @@
 
       <favorites-container v-bind="{ favorites, initialFavoritesLoading: isFavoriteFirstLoad }" />
 
-      <activity-type-container
+      <div
         v-for="activityType in activities"
         :key="`activity-type-${activityType.id}`"
-        :total="activityType.playlist.length"
-        v-bind="{ activityType }"
-      />
-
+      >
+        <v-lazy
+          :options="{
+            threshold: .5,
+          }"
+          min-height="400"
+        >
+          <activity-type-container
+            :total="activityType.playlist.length"
+            v-bind="{ activityType }"
+          />
+        </v-lazy>
+      </div>
       <activity-player />
     </template>
   </v-main>
