@@ -107,23 +107,52 @@
               <input v-model="item.backpackId" type="hidden">
             </validation-provider>
 
-            <!-- First name -->
-            <validation-provider
-              v-slot="{ errors }"
-              :name="
-                (removable(item) ? `Child #${indexD + 1} - ` : '') + 'Name'
-              "
-              rules="required"
-            >
-              <pg-text-field
-                v-model="item.firstName"
-                clearable
-                :disabled="loading"
-                :error-messages="errors"
-                label="Name"
-                solo-labeled
-              />
-            </validation-provider>
+            <v-row>
+              <v-col
+                class="pr-2"
+                cols="6"
+              >
+                <!-- First name -->
+                <validation-provider
+                  v-slot="{ errors }"
+                  :name="
+                    (removable(item) ? `Child #${indexD + 1} - ` : '') + 'Name'
+                  "
+                  rules="required"
+                >
+                  <pg-text-field
+                    v-model="item.firstName"
+                    clearable
+                    :disabled="loading"
+                    :error-messages="errors"
+                    label="First name"
+                    solo-labeled
+                  />
+                </validation-provider>
+              </v-col>
+              <v-col
+                class="pr-2"
+                cols="6"
+              >
+                <!-- Last name -->
+                <validation-provider
+                  v-slot="{ errors }"
+                  :name="
+                    (removable(item) ? `Child #${indexD + 1} - ` : '') + 'Name'
+                  "
+                  rules="required"
+                >
+                  <pg-text-field
+                    v-model="item.lastName"
+                    clearable
+                    :disabled="loading"
+                    :error-messages="errors"
+                    label="Last name"
+                    solo-labeled
+                  />
+                </validation-provider>
+              </v-col>
+            </v-row>
 
             <!-- Birthday date -->
             <v-menu
@@ -258,7 +287,7 @@
             Name
           </v-col>
           <v-col cols="6" class="font-weight-bold grey--text text--darken-2">
-            {{ item.firstName }}
+            {{ item.firstName }} {{ (item.lastName) ? item.lastName : '' }}
           </v-col>
 
           <v-col cols="6" class="grey--text">
@@ -380,11 +409,12 @@ export default {
       }
     },
 
-    getOriginalChild ({ backpackId, birthday, firstName, level, gender } = {}) {
+    getOriginalChild ({ backpackId, birthday, firstName, level, gender, lastName } = {}) {
       return JSON.stringify({
         backpackId,
         birthday,
         firstName,
+        lastName,
         level,
         gender
       })
@@ -408,7 +438,7 @@ export default {
     },
 
     loadChild (
-      { _original, id, backpack, birthday, firstName, gender, level },
+      { _original, id, backpack, birthday, firstName, lastName, gender, level },
       index = null
     ) {
       const _birthdayPicker = (birthday) ? new Date(birthday).toISOString().substr(0, 10) : dayjs(`${new Date().getFullYear() - 2}-01-01`).format('YYYY-MM-DD')
@@ -428,6 +458,7 @@ export default {
         backpackId: backpack.id,
         birthday,
         firstName,
+        lastName,
         gender,
         level,
         progress: {
@@ -459,6 +490,7 @@ export default {
         backpackId: this.firstBackpack,
         birthday: '',
         firstName: '',
+        lastName: '',
         level: 'BEGINNER',
         gender: '',
         progress: {
@@ -520,6 +552,7 @@ export default {
           const params = {
             backpackId: item.backpackId,
             firstName: item.firstName,
+            lastName: item.lastName,
             birthday: item.birthday,
             gender: item.gender,
             level: item.level
