@@ -10,6 +10,9 @@
 
       <!-- Children Select  -->
       <v-col cols="12" md="3" order="2" order-md="1" class="d-flex align-center justify-center">
+        <button @click="showModalBirthday">
+          <img :src="require('@/assets/png/birthday/partyHat.png')">
+        </button>
         <div class="child-select mt-2 mt-md-0">
           <child-select v-if="childId" v-model="childId" class="mb-n4" />
         </div>
@@ -124,8 +127,8 @@
 import { defineComponent, computed, useStore, useRoute, useRouter } from '@nuxtjs/composition-api'
 
 import ChildSelect from '@/components/app/ChildSelect.vue'
-import { useAuth, useChildRoute, useNuxtHelper, useVuetifyHelper } from '@/composables'
-import { TypedStore } from '@/models'
+import { useAuth, useChildRoute, useNuxtHelper, useVuetifyHelper, useAppEventBusHelper } from '@/composables'
+import { TypedStore, APP_EVENTS } from '@/models'
 import { onMounted } from '@vue/composition-api'
 
 export default defineComponent({
@@ -147,7 +150,7 @@ export default defineComponent({
     const route = useRoute()
     const router = useRouter()
     const { childId, resolveChildId } = useChildRoute({ store, route, router })
-
+    const eventBus = useAppEventBusHelper()
     onMounted(() => {
       resolveChildId()
     })
@@ -155,6 +158,10 @@ export default defineComponent({
     const nuxt = useNuxtHelper()
     const handleSidebarToggle = () => {
       nuxt.$emit('toggle-nav-drawer')
+    }
+
+    const showModalBirthday = () => {
+      eventBus.$emit(APP_EVENTS.BIRTHDAY_SHOW_MODAL, true)
     }
 
     return {
@@ -165,7 +172,8 @@ export default defineComponent({
       appBarTitleSize,
       appBarLogoSize,
       appBarHeight,
-      handleSidebarToggle
+      handleSidebarToggle,
+      showModalBirthday
     }
   }
 })

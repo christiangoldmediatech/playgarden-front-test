@@ -1,5 +1,6 @@
 <template>
   <v-main>
+    <birthday-wishes :is-visible="showBirthdayModal.visible" @setModal="setModal" />
     <v-row align-content="center" justify="center" class="virtual-preschool">
       <v-col v-for="section in sections" :key="section.title" cols="12" md="4" class="section">
         <v-img
@@ -46,9 +47,14 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, useStore } from '@nuxtjs/composition-api'
-
+import { useAppEventBusHelper } from '@/composables'
+import BirthdayWishes from '@/components/holydays/birthday/model/index.vue'
+import { APP_EVENTS } from '@/models'
 export default defineComponent({
   layout: 'pg',
+  components: {
+    BirthdayWishes
+  },
 
   setup () {
     const store = useStore()
@@ -108,9 +114,24 @@ export default defineComponent({
     ]
 
     const player = ref<HTMLAudioElement>()
-
+    const showBirthdayModal = ref({ visible: false })
+    const eventBus = useAppEventBusHelper()
+    const setModal = (show:boolean) => {
+      showBirthdayModal.value.visible = show
+    }
     onMounted(() => {
       player.value = new Audio()
+      const todaybirthday = currentChildren.filter((child:any) => {
+        const today = new Date()
+        const childBirthday = new Date(child.birthday)
+        return today.getDate() === childBirthday.getDate() && today.getMonth() === childBirthday.getMonth()
+      })
+      todaybirthday.map((todayBirthdayChild:any) => {
+        showBirthdayModal.value.visible = true
+      })
+      eventBus.$on(APP_EVENTS.BIRTHDAY_SHOW_MODAL, (show: boolean) => {
+        setModal(show)
+      })
     })
 
     const handleAudioPlay = (audio: string) => {
@@ -124,7 +145,9 @@ export default defineComponent({
 
     return {
       sections,
-      handleAudioPlay
+      handleAudioPlay,
+      setModal,
+      showBirthdayModal
     }
   }
 })

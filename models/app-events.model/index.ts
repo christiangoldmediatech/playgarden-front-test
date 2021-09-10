@@ -12,5 +12,7 @@ export enum APP_EVENTS {
   MUSIC_ITEM_CLICKED = 'music-item-clicked',
   MUSIC_ITEM_ADD_TO_FAVORITES = 'music-item-add-to-favorites',
   // LIBRARY
-  LIBRARY_ADD_VIDEO_TO_FAVORITES = 'library-add-video-to-favorites'
+  LIBRARY_ADD_VIDEO_TO_FAVORITES = 'library-add-video-to-favorites',
+  // BITHDAY
+  BIRTHDAY_SHOW_MODAL = 'show-birthday-modal'
 }
