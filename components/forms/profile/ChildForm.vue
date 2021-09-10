@@ -541,6 +541,7 @@ export default {
           const params = {
             backpackId: item.backpackId,
             firstName: item.firstName,
+            lastName: item.lastName,
             birthday: item.birthday,
             gender: item.gender,
             level: item.level
