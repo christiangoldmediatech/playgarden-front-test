@@ -2,7 +2,7 @@
   <v-row>
     <v-col>
       <v-row
-        class="flex-column flex-md-row"
+        class="flex-column flex-md-row mt-3"
         justify="center"
       >
         <v-col
