@@ -1,42 +1,6 @@
 <template>
   <div class="lsess-table">
-    <div class="hidden-lg-and-up mt-4">
-      <v-carousel
-        v-model="selectedDay"
-        height="48px"
-        :hide-delimiter-background="true"
-        :hide-delimiters="true"
-      >
-        <v-carousel-item v-for="(day, index) in days" :key="`days-row-column-${index}`">
-          <div class="d-flex align-center justify-center fill-height">
-            <span class="font-weight-bold">
-              {{ day }}
-            </span>
-          </div>
-        </v-carousel-item>
-      </v-carousel>
-
-      <template v-for="(hour, hourIndex) in getAdvancedSchedule.days[selectedDay]">
-        <template v-for="(entry, entryIndex) in hour">
-          <div
-            :key="`mobile-day-hour-${selectedDay}-hour-${hourIndex}-entry-${entryIndex}`"
-            class="d-flex align-center justify-center lsess-table-offset mb-2 mt-4"
-          >
-            {{ 8 + hourIndex }}:00
-          </div>
-          <table-entry
-            :key="`mobile-day-entry-${selectedDay}-hour-${hourIndex}-entry-${entryIndex}`"
-            :entry="entry"
-          />
-        </template>
-      </template>
-      <template v-if="noEntries(getAdvancedSchedule.days[selectedDay])">
-        <div class="font-weight-bold my-4 text-center">
-          There are no events on this day.
-        </div>
-      </template>
-    </div>
-    <div class="lsess-table-container hidden-md-and-down">
+    <div class="lsess-table-container">
       <div v-if="!dayMode" class="pl-16 pr-8">
         <v-row class="my-0">
           <v-col v-for="(day, index) in days" :key="`days-row-column-${index}`" class="lsess-table-col lsess-table-col-header">
@@ -49,47 +13,76 @@
       <div v-if="dayMode" class="my-7" />
 
       <perfect-scrollbar id="scrollArea">
-        <div
-          v-for="hour in totalHours"
-          :key="`hour-${hour}`"
-          class="lsess-table-hour-row"
-          :style="{ '--rowHeightFactor': findMaxEntriesForHour(hour - 1) }"
-        >
-          <div class="d-flex align-center justify-center lsess-table-offset">
-            {{ hourOffset + hour }}:00
+        <!-- Day mode rendering logic -->
+        <template v-if="dayMode">
+          <template v-if="noEntries(getAdvancedSchedule.days[activeDay])">
+            <!-- No entries found for this day -->
+            <v-card>
+              <v-card-text class="text-h6 text-center">
+                There are no live classes programmed for this day.
+              </v-card-text>
+            </v-card>
+          </template>
+          <template v-else>
+            <div
+              v-for="hour in totalHours"
+              :key="`hour-${hour}`"
+              class="lsess-table-hour-row"
+              :style="{ '--rowHeightFactor': findMaxEntriesForHour(hour - 1) }"
+            >
+              <div class="d-flex align-center justify-center lsess-table-offset">
+                {{ hourOffset + hour }}:00
+              </div>
+              <v-row justify="center">
+                <template v-if="dayMode">
+                  <v-col class="lsess-table-day">
+                    <template v-if="activeDay >= 0 && getAdvancedSchedule.days[activeDay] && getAdvancedSchedule.days[activeDay][hour - 1].length">
+                      <table-entry
+                        v-for="(entry, entryIndex) in getAdvancedSchedule.days[activeDay][hour - 1]"
+                        :id="`entry-${activeDay}-${hour - 1}-${entryIndex}`"
+                        :key="`entry-${activeDay}-${hour - 1}-${entryIndex}`"
+                        v-bind="{ entry }"
+                      />
+                    </template>
+                  </v-col>
+                </template>
+              </v-row>
+            </div>
+          </template>
+        </template>
+
+        <!-- Week mode rendering logic -->
+        <template v-else>
+          <div
+            v-for="hour in totalHours"
+            :key="`hour-${hour}`"
+            class="lsess-table-hour-row"
+            :style="{ '--rowHeightFactor': findMaxEntriesForHour(hour - 1) }"
+          >
+            <div class="d-flex align-center justify-center lsess-table-offset">
+              {{ hourOffset + hour }}:00
+            </div>
+            <v-row justify="center">
+              <template>
+                <v-col
+                  v-for="(day, dayIndex) in days"
+                  :key="`days-row-${hour}-column-${dayIndex}`"
+                  class="lsess-table-col"
+                  :style="{ '--entriesLength': (getAdvancedSchedule.days[dayIndex][hour - 1].length || 1) }"
+                >
+                  <template v-if="getAdvancedSchedule.days[dayIndex] && getAdvancedSchedule.days[dayIndex][hour - 1].length">
+                    <table-entry
+                      v-for="(entry, entryIndex) in getAdvancedSchedule.days[dayIndex][hour - 1]"
+                      :id="`entry-${activeDay}-${hour - 1}-${entryIndex}`"
+                      :key="`entry-${activeDay}-${hour - 1}-${entryIndex}`"
+                      v-bind="{ entry }"
+                    />
+                  </template>
+                </v-col>
+              </template>
+            </v-row>
           </div>
-          <v-row justify="center">
-            <template v-if="dayMode">
-              <v-col class="lsess-table-day">
-                <template v-if="activeDay >= 0 && getAdvancedSchedule.days[activeDay] && getAdvancedSchedule.days[activeDay][hour - 1].length">
-                  <table-entry
-                    v-for="(entry, entryIndex) in getAdvancedSchedule.days[activeDay][hour - 1]"
-                    :id="`entry-${activeDay}-${hour - 1}-${entryIndex}`"
-                    :key="`entry-${activeDay}-${hour - 1}-${entryIndex}`"
-                    v-bind="{ entry }"
-                  />
-                </template>
-              </v-col>
-            </template>
-            <template v-else>
-              <v-col
-                v-for="(day, dayIndex) in days"
-                :key="`days-row-${hour}-column-${dayIndex}`"
-                class="lsess-table-col"
-                :style="{ '--entriesLength': (getAdvancedSchedule.days[dayIndex][hour - 1].length || 1) }"
-              >
-                <template v-if="getAdvancedSchedule.days[dayIndex] && getAdvancedSchedule.days[dayIndex][hour - 1].length">
-                  <table-entry
-                    v-for="(entry, entryIndex) in getAdvancedSchedule.days[dayIndex][hour - 1]"
-                    :id="`entry-${activeDay}-${hour - 1}-${entryIndex}`"
-                    :key="`entry-${activeDay}-${hour - 1}-${entryIndex}`"
-                    v-bind="{ entry }"
-                  />
-                </template>
-              </v-col>
-            </template>
-          </v-row>
-        </div>
+        </template>
       </perfect-scrollbar>
     </div>
   </div>
@@ -135,7 +128,7 @@ export default {
     },
 
     totalHours () {
-      return this.getAdvancedSchedule.endHour - this.hourOffset
+      return this.getAdvancedSchedule.endHour - (this.hourOffset > 0 ? this.hourOffset : 1)
     },
 
     activeDay () {
