@@ -1,10 +1,10 @@
 <template>
   <v-container>
-    <v-row v-if="showGraphs">
+    <v-row>
       <v-col cols="12">
         <v-card width="100%" class="custom-shadow">
           <v-card-title>
-            Parents
+            {{ title }}
             <v-spacer />
 
             <v-btn
@@ -202,6 +202,11 @@ export default {
       required: false,
       default: ''
     },
+    title: {
+      type: String,
+      required: false,
+      default: 'Parents'
+    },
     paramsSend: {
       type: Object,
       required: false,
@@ -219,6 +224,7 @@ export default {
       page: 1,
       allFilters: false,
       activeFilters: ['firstName'],
+      filters: null,
       filterList: [
         {
           text: 'First Name',
@@ -414,13 +420,15 @@ export default {
           params[filter] = this.search
         })
       }
-
+      this.filters = { ...params }
+      delete this.filters.limit
+      delete this.filters.page
       await this.getUsers(params)
       this.loading = false
     },
 
     async exportList () {
-      await this.exportParents()
+      await this.exportParents(this.filters)
       this.$snotify.success('Report created succesfully! Check your email to get it', {
         timeout: 6000
       })
