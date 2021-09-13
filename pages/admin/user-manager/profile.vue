@@ -9,6 +9,8 @@
       <shipping-address-editor-dialog ref="shippingAddress" @saved="getUserDetails" />
       <!-- Change Password-->
       <user-password-editor-dialog ref="userPassword" />
+      <!-- Edit Child-->
+      <child-editor-dialog ref="childEditorDialogRef" />
       <v-dialog
         v-model="changePlanModal"
         content-class="white"
@@ -497,7 +499,7 @@
                               color="primary"
                               text
                               large
-                              @click.stop="goToProgressReport(child.id)"
+                              @click="$refs.childEditorDialogRef.open($event, child)"
                             >
                               Edit
                             </v-btn>
@@ -577,7 +579,6 @@
 
     <user-child-timeline-dialog />
     <user-child-lesson-overlay />
-    <child-editor-dialog />
   </v-container>
 </template>
 
@@ -591,7 +592,7 @@ import BackpackEditorDialog from '@/components/admin/users/BackpackEditorDialog.
 import UserChildLessonOverlay from '@/components/admin/users/UserChildLessonOverlay.vue'
 import UserChildTimelineDialog from '@/components/admin/users/UserChildTimelineDialog.vue'
 import CaregiversDataTable from '@/components/admin/caregivers/CaregiversDataTable.vue'
-import ChildEditorDialog from '@/components/forms/profile/ChildEditorDialog'
+import ChildEditorDialog from '@/components/admin/children/ChildEditorDialog'
 import { formatDate } from '~/utils/dateTools'
 
 const CANCELATION_CONFIRMATION_WORD = 'confirm'

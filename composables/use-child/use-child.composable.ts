@@ -1,12 +1,13 @@
 import { Child } from '@/models/child.model'
 import { axios } from '@/utils'
 import { hasLocalStorage } from '@/utils/window'
-import { computed } from '@nuxtjs/composition-api'
+import { computed, ref } from '@nuxtjs/composition-api'
 import { useCookiesHelper } from '@/composables'
 import { Store } from 'vuex/types'
-import { TypedStore } from '@/models'
+import { TypedStore, ChildBackpack } from '@/models'
 
 export const useChild = ({ store }: { store: Store<TypedStore> }) => {
+  const backpacks = ref<ChildBackpack[]>([])
   const cookies = useCookiesHelper()
 
   const children = computed(() => store.state.children.rows)
@@ -40,6 +41,10 @@ export const useChild = ({ store }: { store: Store<TypedStore> }) => {
     return axios.$get(`/children/${id}`)
   }
 
+  const getBackpacks = async () => {
+    backpacks.value = await axios.$get('/backpacks')
+  }
+
   const update = (id: number, data: Partial<Child>) => {
     return axios.$patch(`/children/${id}`, data)
   }
@@ -58,13 +63,15 @@ export const useChild = ({ store }: { store: Store<TypedStore> }) => {
 
   return {
     children,
-    setChildren,
+    backpacks,
     currentChildren,
+    setChildren,
     setCurrentChildren,
     resetCurrentChildren,
     create,
     get,
     getById,
+    getBackpacks,
     update,
     remove
   }
