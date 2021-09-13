@@ -1,7 +1,7 @@
 <template>
   <v-main>
     <v-container
-      v-if="$vuetify.breakpoint.mdAndUp"
+      v-if="$vuetify.breakpoint.lgAndUp"
       class="lsess-container"
       fluid
     >
