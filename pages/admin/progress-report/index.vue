@@ -221,7 +221,7 @@ export default {
     this.selectedChild = this.$route.query.id
     this.general = true
     this.child = await this.getChildren(this.selectedChild)
-    const { curriculumType } = await this.getCurrentLesson({ childrenIds: this.selectedChild })
+    const curriculumType = await this.getCurrentCurriculumType(this.selectedChild)
     this.selectedLetter = curriculumType.id
     await this.getTypes()
     await this.getDataGraphic()
@@ -241,7 +241,7 @@ export default {
     ...mapActions('progress-report', ['getGraphicByChildrenId', 'getLastLessonChildren']),
     ...mapActions({ setChild: 'setChild' }),
     ...mapActions('children', { getChildren: 'getById' }),
-    ...mapActions('children/lesson', ['getCurrentLesson']),
+    ...mapActions('children/lesson', ['getCurrentLesson', 'getCurrentCurriculumType']),
 
     goBack () {
       this.$router.go(-1)
