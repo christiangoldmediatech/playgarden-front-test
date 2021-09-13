@@ -36,12 +36,15 @@
           <v-card-text>
             <pg-admin-data-table
               :headers="headers"
-              :items="children"
+              :items="rows"
               :loading="loading"
+              :items-per-page="paginationLimit"
               :page.sync="page"
+              :server-items-length="total"
               :action="action"
               top-justify="space-between"
               @search="onSearch"
+              @update:page="page = $event"
               @refresh="refresh(true)"
               @edit-item="
                 $router.push({
@@ -120,7 +123,7 @@
                     <nuxt-link
                       :to="{
                         name: 'admin-user-manager-profile',
-                        query: { id: item.user.id }
+                        query: { id: (item.user) ? item.user.id : '' }
                       }"
                       title="Go to Parent"
                     >
@@ -156,7 +159,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapState } from 'vuex'
 import onSearch from '@/mixins/OnSearchMixin.js'
 import UserChildLessonOverlay from '@/components/admin/users/UserChildLessonOverlay.vue'
 import UserChildTimelineDialog from '@/components/admin/users/UserChildTimelineDialog.vue'
@@ -176,7 +179,6 @@ export default {
       loading: false,
       action: true,
       search: '',
-      limit: 10,
       page: 1,
       allFilters: false,
       children: [],
@@ -222,7 +224,8 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('children', ['rows'])
+    ...mapState('admin', ['paginationLimit']),
+    ...mapGetters('admin/children', ['rows', 'total', 'types'])
   },
 
   watch: {
@@ -281,9 +284,12 @@ export default {
         this.search = ''
       }
       try {
-        this.children = await this.getChildrensProgress({
+        const params = {
+          limit: this.paginationLimit,
+          page: this.page,
           firstName: this.search
-        })
+        }
+        await this.getChildrensProgress(params)
       } catch (e) {
       } finally {
         this.loading = false
