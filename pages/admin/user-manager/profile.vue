@@ -467,7 +467,7 @@
                           >
                         </v-row>
 
-                        <v-row class="mb-6" justify="center">
+                        <v-row class="mb-15" justify="center">
                           <v-app class="children-actions">
                             <v-btn
                               class="text-none worksheet-uploaded"
@@ -491,6 +491,15 @@
                               @click.stop="goToProgressReport(child.id)"
                             >
                               Go to Progress Report
+                            </v-btn>
+                            <v-btn
+                              class="mt-2 text-none"
+                              color="primary"
+                              text
+                              large
+                              @click.stop="goToProgressReport(child.id)"
+                            >
+                              Edit
                             </v-btn>
                           </v-app>
                         </v-row>
@@ -568,6 +577,7 @@
 
     <user-child-timeline-dialog />
     <user-child-lesson-overlay />
+    <child-editor-dialog />
   </v-container>
 </template>
 
@@ -581,6 +591,7 @@ import BackpackEditorDialog from '@/components/admin/users/BackpackEditorDialog.
 import UserChildLessonOverlay from '@/components/admin/users/UserChildLessonOverlay.vue'
 import UserChildTimelineDialog from '@/components/admin/users/UserChildTimelineDialog.vue'
 import CaregiversDataTable from '@/components/admin/caregivers/CaregiversDataTable.vue'
+import ChildEditorDialog from '@/components/forms/profile/ChildEditorDialog'
 import { formatDate } from '~/utils/dateTools'
 
 const CANCELATION_CONFIRMATION_WORD = 'confirm'
@@ -598,7 +609,8 @@ export default {
     BackpackEditorDialog,
     UserChildTimelineDialog,
     UserChildLessonOverlay,
-    CaregiversDataTable
+    CaregiversDataTable,
+    ChildEditorDialog
   },
 
   data: () => ({
