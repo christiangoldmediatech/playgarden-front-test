@@ -122,7 +122,7 @@ export default {
         birthday: child.birthday || '',
         firstName: child.firstName || '',
         gender: child.gender || '',
-        lastName: child.lastName || ' ',
+        lastName: child.lastName || '',
         level: child.level || 'BEGINNER'
       })
     },
