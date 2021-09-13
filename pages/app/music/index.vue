@@ -4,16 +4,17 @@
       <horizontal-ribbon-card
         :is-minimized.sync="isTopRibbonMinimized"
       >
-        <v-row no-gutters class="ml-10 mr-6 mt-4">
+        <v-row no-gutters class="ml-md-10 mr-md-6 mx-4 mt-4">
           <v-col cols="12" md="3" align-self="center">
             <child-select
               v-if="id"
               hide-details
               :value="id"
+              :management-button="false"
               @input="id = $event"
             />
           </v-col>
-          <v-col cols="12" md="9" align-self="center" class="mt-2 mt-md-0">
+          <v-col cols="12" md="9" align-self="center" class="mt-2 mt-md-0 d-none d-sm-flex">
             <music-carousel-letter
               :is-full-width="true"
               :value="selectedLetterId"
@@ -21,12 +22,15 @@
               @select="selectLetter"
             />
           </v-col>
+          <v-col cols="12" class="mt-4">
+            <new-compact-music-player @favorite="handleFavorite" />
+          </v-col>
         </v-row>
       </horizontal-ribbon-card>
       <v-expand-transition>
         <new-music-player
           ref="musicPlayer"
-          @currentSong="currentSong = $event"
+          v-intersect="onIntersect"
           @favorite="handleFavorite"
         />
       </v-expand-transition>
@@ -42,6 +46,7 @@
         @newPlayList="createNewPlaylist"
         @favorite="handleFavorite"
         @showFavorites="showOnlyFavorites = !showOnlyFavorites"
+        @select-letter="selectLetter"
       />
     </v-container>
   </v-main>
@@ -53,6 +58,7 @@ import debounce from 'lodash/debounce'
 
 import MusicSongList from '@/components/app/music/MusicSongList.vue'
 import NewMusicPlayer from '@/components/app/music/NewMusicPlayer.vue'
+import NewCompactMusicPlayer from '@/components/app/music/NewCompactMusicPlayer.vue'
 import HorizontalRibbonCard from '@/components/ui/cards/HorizontalCardRibbon.vue'
 import ChildSelect from '@/components/app/ChildSelect.vue'
 import MusicCarouselLetter from '@/components/app/music/MusicLetterCarousel.vue'
@@ -70,6 +76,7 @@ export default {
   components: {
     MusicSongList,
     NewMusicPlayer,
+    NewCompactMusicPlayer,
     HorizontalRibbonCard,
     ChildSelect,
     MusicCarouselLetter
@@ -103,6 +110,7 @@ export default {
     const isMobile = computed(() => vuetify.breakpoint.width <= PAGE_MOBILE_BREAKPOINT)
     const isPlayerShowing = computed(() => playlist.value.length > 0)
     const didScrollToBottom = ref(false)
+    const isIntersectingMusicPlayer = ref(false)
 
     const handleScroll = () => {
       didScrollToBottom.value = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.scrollHeight - MOBILE_PLAYER_HEIGHT
@@ -302,6 +310,14 @@ export default {
       }
     }
 
+    const onIntersect = (entries: IntersectionObserverEntry[]) => {
+      isIntersectingMusicPlayer.value = entries[0].isIntersecting
+    }
+
+    watch(isIntersectingMusicPlayer, () => {
+      isTopRibbonMinimized.value = isIntersectingMusicPlayer.value
+    })
+
     return {
       addSongToPlaylist,
       allSongsWithFavorites,
@@ -320,7 +336,8 @@ export default {
       selectLetter,
       selectedLetterId,
       isTopRibbonMinimized,
-      disabledLetters
+      disabledLetters,
+      onIntersect
     }
   }
 }

@@ -49,37 +49,51 @@
 </template>
 
 <script>
+import { defineComponent } from '@nuxtjs/composition-api'
 import { jsonCopy } from '@/utils/objectTools.js'
+import { useMusic } from '@/composables'
 
-export default {
+export default defineComponent({
   name: 'PgAudioPlayer',
 
-  props: {
-    playList: {
-      type: Array,
-      required: true
-    }
-  },
-
-  data () {
-    return {
-      player: null,
-      currentPlaylist: [],
-      volume: 0.5,
-      // Modifiers
-      isLooping: false,
-      // States
-      isLoading: false,
-      isPlaying: false,
-      isPaused: false,
-      isStopped: false,
+  setup () {
+    const {
       // Current Song
-      currentSong: {},
-      currentSongIndex: null,
-      currentSongPlayedTime: 0,
-      currentSongMissingTime: 0,
-      currentSongPlayedPercentage: 0,
-      currentSongDuration: 0
+      currentSong,
+      currentSongMissingTime,
+      currentSongPlayedTime,
+      currentSongPlayedPercentage,
+      currentSongIndex,
+      currentSongDuration,
+      player,
+      currentPlaylist,
+      volume,
+      playlist,
+      // Modifiers
+      isLooping,
+      // States
+      isLoading,
+      isPlaying,
+      isPaused,
+      isStopped
+    } = useMusic()
+
+    return {
+      currentSong,
+      currentSongMissingTime,
+      currentSongPlayedTime,
+      currentSongPlayedPercentage,
+      currentSongIndex,
+      currentSongDuration,
+      player,
+      currentPlaylist,
+      volume,
+      playList: playlist,
+      isLooping,
+      isLoading,
+      isPlaying,
+      isPaused,
+      isStopped
     }
   },
 
@@ -259,5 +273,5 @@ export default {
       this.currentPlaylist.splice(playlistIndex, 1)
     }
   }
-}
+})
 </script>

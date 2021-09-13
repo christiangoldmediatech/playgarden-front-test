@@ -46,6 +46,8 @@
                 <v-row class="mt-n4" justify="end">
                   <b class="pt-9 mr-2">Is test user ?</b>
                   <v-switch v-model="user.testUser" :label="getTestUser" class="mr-4" />
+                  <b v-if="user.stripeStatus === 'canceled'" class="pt-9 mr-2">Active subscription ?</b>
+                  <v-switch v-if="user.stripeStatus === 'canceled'" v-model="user.active" :label="getStripeStatus" class="mr-4" />
                 </v-row>
                 <v-row>
                   <v-col cols="12" lg="4" md="6">
@@ -156,6 +158,21 @@
                       />
                     </validation-provider>
                   </v-col>
+
+                  <v-col v-if="user.roleId === 3" cols="12" md="6">
+                    <validation-provider
+                      v-slot="{ errors }"
+                      name="Promotion Code"
+                    >
+                      <pg-text-field
+                        v-model="user.promotion_code"
+                        :error-messages="errors"
+                        label="Promotion Code"
+                        solo-labeled
+                        @blur="validateCoupon"
+                      />
+                    </validation-provider>
+                  </v-col>
                 </v-row>
               </v-form>
             </v-card-text>
@@ -208,6 +225,10 @@ export default {
         phoneNumber: '',
         roleId: null,
         planId: null,
+        promotion_code: '',
+        stripeStatus: null,
+        active: null,
+        promotion_id: '',
         testUser: null,
         password: null,
         workbookSent: false,
@@ -233,6 +254,10 @@ export default {
 
     getTestUser () {
       return (this.user.testUser) ? 'Yes' : 'No'
+    },
+
+    getStripeStatus () {
+      return (this.user.active) ? 'Yes' : 'No'
     },
 
     getTitlleChange () {
@@ -279,6 +304,10 @@ export default {
       if (!val) {
         this.user.password = undefined
       }
+    },
+    'user.roleId' (val) {
+      this.user.promotion_code = ''
+      this.user.promotion_id = ''
     }
   },
 
@@ -315,12 +344,18 @@ export default {
         this.backpackDate = data.shipments.backpackDate
         this.workbookDate = data.shipments.workbookDate
       }
+
+      if (data.billings.length > 0) {
+        this.user.stripeStatus = data.billings[0].stripeStatus
+        this.user.active = (!this.user.stripeStatus === 'canceled')
+      }
     }
 
     this.loading = false
   },
 
   methods: {
+    ...mapActions('coupons', ['getCoupons']),
     ...mapActions('admin/users', {
       getUsers: 'get',
       getUserById: 'getById',
@@ -335,6 +370,24 @@ export default {
     ...mapActions('admin/roles', {
       getRoles: 'get'
     }),
+
+    async validateCoupon () {
+      if (this.user.promotion_code) {
+        this.loading = true
+        const coupons = await this.getCoupons({ active: true, code: this.user.promotion_code })
+        if (coupons.length > 0) {
+          this.user.promotion_id = coupons[0].promotion_id
+          this.$nuxt.$emit('send-coupon', coupons[0])
+          this.$snotify.success('Coupon is valid.')
+        } else {
+          this.$snotify.warning('Coupon is not valid.', 'Warning', {})
+          this.$nuxt.$emit('send-coupon', null)
+          this.user.promotion_code = null
+          this.user.promotion_id = null
+        }
+        this.loading = false
+      }
+    },
 
     async save () {
       this.loading = true

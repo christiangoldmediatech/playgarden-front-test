@@ -234,7 +234,11 @@ export default {
 
     orderedSessions () {
       const sessions = jsonCopy(this.sessions)
-      return sessions.sort((sessionA, sessionB) => {
+      const now = new Date().getTime()
+
+      return sessions.filter((session) => {
+        return new Date(session.dateStart) >= now
+      }).sort((sessionA, sessionB) => {
         const start = new Date(sessionA.dateStart)
         const end = new Date(sessionB.dateEnd)
 
@@ -253,6 +257,24 @@ export default {
   watch: {
     days () {
       this.getUserLiveSessions(this.days)
+    },
+
+    sessions () {
+      const sessionId = Number(this.$route.query.sid) || 0
+
+      this.$router.push({ name: 'app-live-classes' })
+
+      if (!sessionId) {
+        return
+      }
+
+      const foundSession = this.sessions.find(s => s.id === sessionId)
+
+      if (!foundSession) {
+        return
+      }
+
+      this.$nuxt.$emit('open-entry-dialog', foundSession)
     }
   },
 
@@ -263,6 +285,7 @@ export default {
 
   methods: {
     ...mapActions('live-sessions', ['getUserLiveSessions']),
+
     close () {
       this.$nextTick(() => {
         this.dialog = false

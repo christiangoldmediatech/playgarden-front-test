@@ -23,6 +23,10 @@ const imagePath = ref('')
 
 export const useGlobalModal = ({ store }: { store: Store<TypedStore> }) => {
   const userInfo = store.getters['auth/getUserInfo']
+  const isChangePasswordModalVisible = computed<boolean>(() => {
+    const user = store.getters['auth/getUserInfo']
+    return (user.firstLogin)
+  })
 
   const isNotification = computed<TrialingUserSignupNotificationSign>(() => {
     const dataNotification: TrialingUserSignupNotificationSign = {
@@ -40,7 +44,7 @@ export const useGlobalModal = ({ store }: { store: Store<TypedStore> }) => {
       }
 
       const week = getWeek(userInfo.createdAt)
-      const day = (lastDateNotification) ? getDays(new Date(lastDateNotification)) : 0
+      const day = (lastDateNotification) ? getDays(lastDateNotification) : 0
 
       if (week >= 2 && week <= 3) {
         isWeekTwoAndThree.value = true
@@ -59,7 +63,7 @@ export const useGlobalModal = ({ store }: { store: Store<TypedStore> }) => {
         // week 4
         showNotificationSignupModal()
       } else {
-        hideNotificationSignupModal()
+        hideNotificationSignupModal(false)
       }
 
       imagePath.value = getImagePath(week)
@@ -82,14 +86,17 @@ export const useGlobalModal = ({ store }: { store: Store<TypedStore> }) => {
     isNotificationSignupModalVisible.value = true
   }
 
-  const hideNotificationSignupModal = () => {
+  const hideNotificationSignupModal = (saveLastNotification: boolean) => {
     isNotificationSignupModalVisible.value = false
-    saveDataNotification()
+    if (saveLastNotification) {
+      saveDataNotification()
+    }
   }
 
   return {
     isContactUsModalVisible,
     isNotification,
+    isChangePasswordModalVisible,
     showContactUsModal,
     hideContactUsModal,
     showNotificationSignupModal,
@@ -99,7 +106,7 @@ export const useGlobalModal = ({ store }: { store: Store<TypedStore> }) => {
 
 const saveDataNotification = () => {
   if (hasLocalStorage()) {
-    localStorage.setItem('lastDateNotification', dayjs().format('YYYY-MM-DD'))
+    localStorage.setItem('lastDateNotification', dayjs().add(1, 'day').format('YYYY-MM-DD'))
   }
 }
 
@@ -118,9 +125,10 @@ const getWeek = (lastDate: Date) => {
   return week
 }
 
-const getDays = (lastDate: Date) => {
-  const now = new Date()
-  return (dayjs(now).diff(lastDate, 'days') + 1)
+const getDays = (lastDate: string) => {
+  const now = dayjs().format('YYYY-MM-DD')
+  const days = dayjs(now).diff(lastDate, 'days')
+  return (days < 0) ? days * -1 : days
 }
 
 const getTrial = (dateEnd: Date) => {
