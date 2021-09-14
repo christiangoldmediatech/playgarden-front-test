@@ -80,9 +80,6 @@ export default defineComponent({
     left: 5px;
   }
 }
-.btn-register:before {
-  background-color: transparent !important;
-}
 .btn {
   text-transform: unset !important;
 }
