@@ -29,9 +29,14 @@
 </template>
 
 <script>
+import PgVideoPlayer from '@gold-media-tech/pg-video-player'
 
 export default {
   name: 'VideoPreview',
+
+  components: {
+    PgVideoPlayer
+  },
 
   data: () => {
     return {

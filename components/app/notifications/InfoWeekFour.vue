@@ -1,6 +1,6 @@
 <template>
   <div>
-    <large-image-content-dialog :value="true" :img="imagePath" @close="hideNotificationSignupModal">
+    <large-image-content-dialog :value="true" :img="imagePath" @close="hideNotificationSignupModal(saveLastDate)">
       <div>
         <underlined-title
           text="WE HOPE YOUR LITTLE ONE IS ENJOYING LEARNING WITH PLAYGARDEN PREP ONLINE!"
@@ -82,7 +82,7 @@
 import dayjs from 'dayjs'
 import { mapGetters } from 'vuex'
 import LargeImageContentDialog from '@/components/ui/dialogs/LargeImageContentDialog/LargeImageContentDialog.vue'
-import { defineComponent, useStore } from '@nuxtjs/composition-api'
+import { defineComponent, ref, useStore } from '@nuxtjs/composition-api'
 import { useGlobalModal } from '@/composables'
 import { TypedStore } from '@/models'
 
@@ -103,10 +103,12 @@ export default defineComponent({
   },
   setup () {
     const store = useStore<TypedStore>()
+    const saveLastDate = ref(true)
     const { hideNotificationSignupModal } = useGlobalModal({ store })
 
     return {
-      hideNotificationSignupModal
+      hideNotificationSignupModal,
+      saveLastDate
     }
   },
   computed: {
@@ -124,13 +126,13 @@ export default defineComponent({
   },
   methods: {
     goPlan () {
-      this.hideNotificationSignupModal(true)
+      this.hideNotificationSignupModal(this.saveLastDate)
       this.$router.push({
         name: 'app-payment-plan'
       })
     },
     goContacUs () {
-      this.hideNotificationSignupModal(true)
+      this.hideNotificationSignupModal(this.saveLastDate)
       this.$router.push({
         name: 'help'
       })

@@ -6,9 +6,6 @@ import PgInlineVideoPlayer from '@/components/pg-video-js-player/PgInlineVideoPl
 import PgOnboardingVideoPlayer from '@/components/pg-video-js-player/PgOnboardingVideoPlayer.vue'
 import VideoPlayerDialog from '@/components/pg-video-js-player/VideoPlayerDialog.vue'
 
-// New video player
-import PgVideoPlayer from '@gold-media-tech/pg-video-player'
-
 // Audio Players
 import PgAudioPlayer from '@/components/pg-audio-player/PgAudioPlayer.vue'
 
@@ -85,6 +82,3 @@ Vue.component(PgVideoDialog.name, PgVideoDialog)
 Vue.component(PgDataFooter.name, PgDataFooter)
 Vue.component(PgDataIterator.name, PgDataIterator)
 Vue.component(PgDataTable.name, PgDataTable)
-
-// PG VideoPlayer
-Vue.component(PgVideoPlayer.name, PgVideoPlayer)

@@ -194,6 +194,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import PgVideoPlayer from '@gold-media-tech/pg-video-player'
 
 const itemTemplate = {
   name: '',
@@ -205,6 +206,10 @@ const itemTemplate = {
 
 export default {
   name: 'ParentsCornerVideoEditor',
+
+  components: {
+    PgVideoPlayer
+  },
 
   data: () => {
     return {
