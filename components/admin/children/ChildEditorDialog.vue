@@ -188,6 +188,7 @@
             color="red"
             :disabled="loading"
             :text="$vuetify.breakpoint.smAndUp"
+            @click="close"
           >
             Cancel
           </v-btn>
@@ -254,9 +255,20 @@ export default defineComponent({
       try {
         if (id.value && child.value) {
           await update(id.value, child.value)
-          loading.value = false
         }
-      } catch (error) {}
+      } catch (e) {
+      } finally {
+        close()
+        // emit('saved')
+      }
+    }
+
+    const close = () => {
+      nextTick(() => {
+        loading.value = false
+        dialog.value = false
+        resetItem()
+      })
     }
 
     onMounted(async () => {
@@ -274,7 +286,8 @@ export default defineComponent({
       menu,
       open,
       onInputBirthday,
-      save
+      save,
+      close
     }
   },
 

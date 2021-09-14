@@ -52,7 +52,7 @@ export const useChild = ({ store }: { store: Store<TypedStore> }) => {
   }
 
   const update = (id: number, data: Partial<Child>) => {
-    return axios.$patch(`/children/${id}`, data)
+    return axios.$patch(`/children/edit/${id}`, data)
   }
 
   const remove = (id: number) => {
