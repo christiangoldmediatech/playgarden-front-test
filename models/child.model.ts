@@ -26,7 +26,6 @@ export interface Child extends Entity {
   age: ChildAge
   backpack: ChildBackpack
   birthday: string
-  birthdayPicker: string
   configuration?: {
     videoCloseType: 'NORMAL'
   }
@@ -37,6 +36,7 @@ export interface Child extends Entity {
   lastName?: string
   level: 'BEGINNER'
   backpackId?: number
+  birthdayPicker?: string
 }
 
 export interface PuzzleChild extends Entity {
