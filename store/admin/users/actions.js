@@ -31,8 +31,8 @@ export default {
     await this.$axios.$patch(`/users/${data.id}/password`, data.data)
   },
 
-  async exportParents (ctx) {
-    await this.$axios.get('/billing/export')
+  async exportParents (ctx, params) {
+    await this.$axios.get('/billing/export', { params })
   },
 
   async update (ctx, { id, data }) {

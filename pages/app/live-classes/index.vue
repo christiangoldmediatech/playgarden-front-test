@@ -1,7 +1,7 @@
 <template>
   <v-main>
     <v-container
-      v-if="$vuetify.breakpoint.mdAndUp"
+      v-if="$vuetify.breakpoint.lgAndUp"
       class="lsess-container"
       fluid
     >
@@ -234,7 +234,11 @@ export default {
 
     orderedSessions () {
       const sessions = jsonCopy(this.sessions)
-      return sessions.sort((sessionA, sessionB) => {
+      const now = new Date().getTime()
+
+      return sessions.filter((session) => {
+        return new Date(session.dateStart) >= now
+      }).sort((sessionA, sessionB) => {
         const start = new Date(sessionA.dateStart)
         const end = new Date(sessionB.dateEnd)
 
