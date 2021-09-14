@@ -64,6 +64,76 @@
                   </v-col>
                 </v-row>
               </v-col>
+              <v-col cols="12">
+                <!-- First name -->
+                <validation-provider
+                  v-slot="{ errors }"
+                  name="Name"
+                  rules="required"
+                >
+                  <pg-text-field
+                    v-model="child.firstName"
+                    clearable
+                    :disabled="loading"
+                    :error-messages="errors"
+                    label="Name"
+                    solo-labeled
+                  />
+                </validation-provider>
+
+                <!-- Last name -->
+                <validation-provider
+                  v-slot="{ errors }"
+                  name="Lastname"
+                  rules="required"
+                >
+                  <pg-text-field
+                    v-model="child.lastname"
+                    clearable
+                    :disabled="loading"
+                    :error-messages="errors"
+                    label="Lastname"
+                    solo-labeled
+                  />
+                </validation-provider>
+
+                <!-- Birthday date -->
+                <v-menu
+                  v-model="menu"
+                  :close-on-content-click="false"
+                  min-width="290px"
+                  solo
+                  transition="scale-transition"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <validation-provider
+                      v-slot="{ errors }"
+                      name="Birthday date"
+                      rules="required"
+                    >
+                      <pg-text-field
+                        v-bind="attrs"
+                        :disabled="loading"
+                        :error-messages="errors"
+                        label="Birthday date"
+                        readonly
+                        solo-labeled
+                        :suffix="birthdayFormatted ? '' : 'MM/DD/YYYY'"
+                        validate-on-blur
+                        :value="birthdayFormatted"
+                        v-on="on"
+                      />
+                    </validation-provider>
+                  </template>
+
+                  <v-date-picker
+                    v-model="birthdayPicker"
+                    :max="new Date().toISOString().substr(0, 10)"
+                    min="1990-01-01"
+                    @input="onInputBirthday(item)"
+                  />
+                </v-menu>
+              </v-col>
             </v-row>
           </v-container>
         </v-card-text>
@@ -100,14 +170,20 @@
 import { defineComponent, onMounted, useStore, ref, nextTick } from '@nuxtjs/composition-api'
 import { useChild } from '@/composables'
 import { Child, TypedStore } from '@/models'
+import dayjs from 'dayjs'
 export default defineComponent({
   name: 'ChildEditorDialog',
 
   setup () {
     const store = useStore<TypedStore>()
     const dialog = ref(false)
+    const menu = ref(false)
     const loading = ref(false)
     const id = ref<number | null>(null)
+    const birthdayFormatted = ref<string | null>(null)
+    const birthdayPicker = ref<string>(dayjs(`${new Date().getFullYear() - 2}-01-01`).format(
+      'YYYY-MM-DD'
+    ))
     const backpackId = ref<number | null>(null)
     const child = ref<Child | null>(null)
     const { update, getBackpacks, backpacks } = useChild({ store })
@@ -126,12 +202,24 @@ export default defineComponent({
       console.log('item--', item)
       id.value = item.id
       child.value = { ...item }
+      birthdayFormatted.value = item.birthday
       backpackId.value = item.backpack.id
     }
 
     const resetItem = () => {
       id.value = null
       child.value = null
+    }
+
+    const onInputBirthday = (dateChild: string) => {
+      if (dateChild) {
+        birthdayFormatted.value = dayjs(dateChild).format(
+          'MM/DD/YYYY'
+        )
+        if (child.value) {
+          child.value.birthday = `${dateChild}T00:00:00.000`
+        }
+      }
     }
 
     const save = async () => {
@@ -156,6 +244,9 @@ export default defineComponent({
       backpackId,
       dialog,
       loading,
+      menu,
+      birthdayFormatted,
+      birthdayPicker,
       open
     }
   },
