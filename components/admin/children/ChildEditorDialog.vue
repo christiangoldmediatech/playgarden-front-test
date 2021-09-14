@@ -76,7 +76,7 @@
                     clearable
                     :disabled="loading"
                     :error-messages="errors"
-                    label="Name"
+                    label="First name"
                     solo-labeled
                   />
                 </validation-provider>
@@ -93,7 +93,7 @@
                     clearable
                     :disabled="loading"
                     :error-messages="errors"
-                    label="Lastname"
+                    label="Last name"
                     solo-labeled
                   />
                 </validation-provider>
