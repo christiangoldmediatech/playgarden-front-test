@@ -4,7 +4,7 @@
     <v-dialog
       v-model="dialog"
       :fullscreen="$vuetify.breakpoint.xs"
-      max-width="600px"
+      max-width="750px"
       persistent
       scrollable
     >
@@ -64,7 +64,7 @@
                   </v-col>
                 </v-row>
               </v-col>
-              <v-col cols="12">
+              <v-col cols="6">
                 <!-- First name -->
                 <validation-provider
                   v-slot="{ errors }"
@@ -80,7 +80,8 @@
                     solo-labeled
                   />
                 </validation-provider>
-
+              </v-col>
+              <v-col cols="6">
                 <!-- Last name -->
                 <validation-provider
                   v-slot="{ errors }"
@@ -96,7 +97,8 @@
                     solo-labeled
                   />
                 </validation-provider>
-
+              </v-col>
+              <v-col cols="12">
                 <!-- Birthday date -->
                 <v-menu
                   v-model="menu"
@@ -206,7 +208,7 @@ import dayjs from 'dayjs'
 export default defineComponent({
   name: 'ChildEditorDialog',
 
-  setup () {
+  setup (_, { emit }) {
     const store = useStore<TypedStore>()
     const dialog = ref(false)
     const menu = ref(false)
@@ -259,7 +261,7 @@ export default defineComponent({
       } catch (e) {
       } finally {
         close()
-        // emit('saved')
+        emit('saved')
       }
     }
 

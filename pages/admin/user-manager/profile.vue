@@ -10,7 +10,7 @@
       <!-- Change Password-->
       <user-password-editor-dialog ref="userPassword" />
       <!-- Edit Child-->
-      <child-editor-dialog ref="childEditorDialogRef" />
+      <child-editor-dialog ref="childEditorDialogRef" @saved="getUserDetails" />
       <v-dialog
         v-model="changePlanModal"
         content-class="white"
