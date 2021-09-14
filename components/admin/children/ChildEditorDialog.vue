@@ -25,7 +25,7 @@
 
         <v-card-text>
           <v-container>
-            <v-row>
+            <v-row v-if="child">
               <v-col cols="12" class="d-flex justify-center">
                 <img
                   v-if="child"
@@ -55,9 +55,9 @@
                         <img
                           :alt="backpack.name"
                           class="clickable"
-                          :class="{ active: backpackId === backpack.id }"
+                          :class="{ active: child.backpackId === backpack.id }"
                           :src="backpack.image"
-                          @click="backpackId = backpack.id"
+                          @click="child.backpackId = backpack.id"
                         >
                       </v-col>
                     </v-row>
@@ -88,7 +88,7 @@
                   rules="required"
                 >
                   <pg-text-field
-                    v-model="child.lastname"
+                    v-model="child.lastName"
                     clearable
                     :disabled="loading"
                     :error-messages="errors"
@@ -127,12 +127,42 @@
                   </template>
 
                   <v-date-picker
-                    v-model="birthdayPicker"
+                    v-model="child.birthdayPicker"
                     :max="new Date().toISOString().substr(0, 10)"
                     min="1990-01-01"
-                    @input="onInputBirthday(item)"
+                    @input="onInputBirthday(child)"
                   />
                 </v-menu>
+              </v-col>
+              <v-col cols="12">
+                <!-- Gender -->
+                <validation-provider
+                  name="Gender"
+                  rules="required"
+                >
+                  <v-row class="mb-6">
+                    <v-col
+                      v-for="(gender, indexG) in genders"
+                      :key="indexG"
+                      cols="6"
+                    >
+                      <v-btn
+                        block
+                        class="custom-btn"
+                        :color="
+                          child.gender === gender ? 'primary' : 'grey lighten-5'
+                        "
+                        :disabled="loading"
+                        x-large
+                        @click="child.gender = gender"
+                      >
+                        {{ gender === "FEMALE" ? "Girl" : "Boy" }}
+                      </v-btn>
+                    </v-col>
+                  </v-row>
+
+                  <input v-model="child.gender" type="hidden">
+                </validation-provider>
               </v-col>
             </v-row>
           </v-container>
@@ -148,6 +178,7 @@
             color="green"
             :loading="loading"
             :text="$vuetify.breakpoint.smAndUp"
+            @click="save"
           >
             Save
           </v-btn>
@@ -181,12 +212,8 @@ export default defineComponent({
     const loading = ref(false)
     const id = ref<number | null>(null)
     const birthdayFormatted = ref<string | null>(null)
-    const birthdayPicker = ref<string>(dayjs(`${new Date().getFullYear() - 2}-01-01`).format(
-      'YYYY-MM-DD'
-    ))
-    const backpackId = ref<number | null>(null)
     const child = ref<Child | null>(null)
-    const { update, getBackpacks, backpacks } = useChild({ store })
+    const { update, getBackpacks, backpacks, genders } = useChild({ store })
 
     const open = (evt: any, item: any = null) => {
       resetItem()
@@ -199,11 +226,13 @@ export default defineComponent({
     }
 
     const loadItem = (item: any) => {
-      console.log('item--', item)
       id.value = item.id
-      child.value = { ...item }
+      const birthdayPicker = (item.birthday) ? new Date(item.birthday).toISOString().substr(0, 10) : dayjs(`${new Date().getFullYear() - 2}-01-01`).format('YYYY-MM-DD')
+      child.value = { ...item, backpackId: item.backpack.id, birthdayPicker }
       birthdayFormatted.value = item.birthday
-      backpackId.value = item.backpack.id
+      if (child.value) {
+        onInputBirthday(child.value)
+      }
     }
 
     const resetItem = () => {
@@ -211,14 +240,12 @@ export default defineComponent({
       child.value = null
     }
 
-    const onInputBirthday = (dateChild: string) => {
-      if (dateChild) {
-        birthdayFormatted.value = dayjs(dateChild).format(
+    const onInputBirthday = (child: Child) => {
+      if (child.birthdayPicker) {
+        birthdayFormatted.value = dayjs(child.birthdayPicker).format(
           'MM/DD/YYYY'
         )
-        if (child.value) {
-          child.value.birthday = `${dateChild}T00:00:00.000`
-        }
+        child.birthday = (child.birthday) ? `${child.birthdayPicker}T00:00:00.000` : ''
       }
     }
 
@@ -227,10 +254,9 @@ export default defineComponent({
       try {
         if (id.value && child.value) {
           await update(id.value, child.value)
+          loading.value = false
         }
-      } catch (error) {
-
-      }
+      } catch (error) {}
     }
 
     onMounted(async () => {
@@ -241,13 +267,14 @@ export default defineComponent({
       id,
       child,
       backpacks,
-      backpackId,
+      genders,
       dialog,
       loading,
-      menu,
       birthdayFormatted,
-      birthdayPicker,
-      open
+      menu,
+      open,
+      onInputBirthday,
+      save
     }
   },
 

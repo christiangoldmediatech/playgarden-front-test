@@ -6,7 +6,13 @@ import { useCookiesHelper } from '@/composables'
 import { Store } from 'vuex/types'
 import { TypedStore, ChildBackpack } from '@/models'
 
+enum gendersChildren {
+  MALE = 'MALE',
+  FEMALE = 'FEMALE'
+}
+
 export const useChild = ({ store }: { store: Store<TypedStore> }) => {
+  const genders = ref([gendersChildren.MALE, gendersChildren.FEMALE])
   const backpacks = ref<ChildBackpack[]>([])
   const cookies = useCookiesHelper()
 
@@ -65,6 +71,7 @@ export const useChild = ({ store }: { store: Store<TypedStore> }) => {
     children,
     backpacks,
     currentChildren,
+    genders,
     setChildren,
     setCurrentChildren,
     resetCurrentChildren,
