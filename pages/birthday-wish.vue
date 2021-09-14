@@ -8,6 +8,7 @@
 
 <script>
 export default {
+  layout: 'public-birthday',
   name: 'BirthdayWish',
   data: () => {
     return {
