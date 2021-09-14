@@ -248,7 +248,7 @@ export default defineComponent({
         birthdayFormatted.value = dayjs(child.birthdayPicker).format(
           'MM/DD/YYYY'
         )
-        child.birthday = (child.birthday) ? `${child.birthdayPicker}T00:00:00.000` : ''
+        child.birthday = (child.birthdayPicker) ? `${child.birthdayPicker}T00:00:00.000` : ''
       }
     }
 
