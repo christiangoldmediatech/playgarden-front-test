@@ -37,7 +37,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { jsonCopy } from '@/utils/objectTools.js'
+import { jsonCopy } from '@/utils/objectTools'
 import { shuffle } from '@/utils/arrayTools.js'
 import isEqual from 'lodash/isEqual'
 
