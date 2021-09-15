@@ -1,76 +1,105 @@
 <template>
-  <div class="">
+  <v-row no-gutters>
     <!-- Name -->
-    <validation-provider
-      v-slot="{ errors }"
-      :name="(removable ? `Child #${index + 1} - ` : '') + 'Name'"
-      rules="required"
+    <v-col
+      class="pr-2"
+      cols="6"
     >
-      <pg-text-field
-        v-model="itemCurrent.firstName"
-        clearable
-        :disabled="isLoading"
-        :error-messages="errors"
-        label="Name"
-        solo
-        class="custom-text-field"
-      />
-    </validation-provider>
-    <!-- Birth date -->
-    <v-menu
-      ref="menu"
-      v-model="menu"
-      :close-on-content-click="false"
-      transition="scale-transition"
-      offset-y
-      min-width="290px"
-    >
-      <template v-slot:activator="{ on, attrs }">
+      <validation-provider
+        v-slot="{ errors }"
+        :name="(removable ? `Child #${index + 1} - ` : '') + 'Name'"
+        rules="required"
+      >
         <pg-text-field
-          label="Birth date"
-          readonly
+          v-model="itemCurrent.firstName"
+          clearable
+          :disabled="isLoading"
+          :error-messages="errors"
+          label="First name"
           solo
-          :suffix="itemCurrent._birthdayFormatted ? '' : 'MM/DD/YYYY'"
-          validate-on-blur
-          :value="selectedDate"
-          v-bind="attrs"
           class="custom-text-field"
-          v-on="on"
         />
-      </template>
-      <v-date-picker
-        ref="picker"
-        v-model="itemCurrent._birthdayPicker"
-        :max="new Date().toISOString().substr(0, 10)"
-        min="1950-01-01"
-        @input="onInputBirthday(itemCurrent)"
-        @change="save"
-      />
-    </v-menu>
+      </validation-provider>
+    </v-col>
+    <v-col
+      cols="6"
+    >
+      <!-- Lastname -->
+      <validation-provider
+        v-slot="{ errors }"
+        :name="(removable ? `Child #${index + 1} - ` : '') + 'Lastname'"
+        rules="required"
+      >
+        <pg-text-field
+          v-model="itemCurrent.lastName"
+          clearable
+          :disabled="isLoading"
+          :error-messages="errors"
+          label="Last name"
+          solo
+          class="custom-text-field"
+        />
+      </validation-provider>
+    </v-col>
+    <!-- Birth date -->
+    <v-col cols="12">
+      <v-menu
+        ref="menu"
+        v-model="menu"
+        :close-on-content-click="false"
+        transition="scale-transition"
+        offset-y
+        min-width="290px"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <pg-text-field
+            label="Birth date"
+            readonly
+            solo
+            :suffix="itemCurrent._birthdayFormatted ? '' : 'MM/DD/YYYY'"
+            validate-on-blur
+            :value="selectedDate"
+            v-bind="attrs"
+            class="custom-text-field"
+            v-on="on"
+          />
+        </template>
+        <v-date-picker
+          ref="picker"
+          v-model="itemCurrent._birthdayPicker"
+          :max="new Date().toISOString().substr(0, 10)"
+          min="1950-01-01"
+          @input="onInputBirthday(itemCurrent)"
+          @change="save"
+        />
+      </v-menu>
+    </v-col>
 
     <!-- Gender -->
-    <validation-provider
-      :name="(removable ? `Child #${index + 1} - ` : '') + 'Gender'"
-      rules="required"
-    >
-      <v-row class="mb-6">
-        <v-col v-for="(gender, indexG) in genders" :key="indexG" cols="6">
-          <v-btn
-            block
-            class="custom-btn"
-            :color="itemCurrent.gender === gender ? 'primary' : 'grey lighten-5'"
-            :disabled="isLoading"
-            min-height="60"
-            x-large
-            @click="itemCurrent.gender = gender"
-          >
-            {{ gender === "FEMALE" ? "Girl" : "Boy" }}
-          </v-btn>
-        </v-col>
-      </v-row>
+    <v-col cols="12">
+      <validation-provider
+        :name="(removable ? `Child #${index + 1} - ` : '') + 'Gender'"
+        rules="required"
+      >
+        <v-row class="mb-6">
+          <v-col v-for="(gender, indexG) in genders" :key="indexG" cols="6">
+            <v-btn
+              block
+              class="custom-btn"
+              :color="itemCurrent.gender === gender ? 'primary' : 'grey lighten-5'"
+              :disabled="isLoading"
+              min-height="60"
+              x-large
+              @click="itemCurrent.gender = gender"
+            >
+              {{ gender === "FEMALE" ? "Girl" : "Boy" }}
+            </v-btn>
+          </v-col>
+        </v-row>
 
-      <input v-model="itemCurrent.gender" type="hidden">
-    </validation-provider>
+        <input v-model="itemCurrent.gender" type="hidden">
+      </validation-provider>
+    </v-col>
 
     <!-- Backpack -->
     <center class="mb-4">
@@ -115,7 +144,7 @@
     </v-btn>
 
     <v-divider v-if="removable" class="mt-6" />
-  </div>
+  </v-row>
 </template>
 
 <script>

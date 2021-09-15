@@ -80,16 +80,26 @@
     <template v-else>
       <template v-if="selectedFilter === 'letter'">
         <div data-test-id="letter-songs-list">
-          <letter-songs
+          <div
             v-for="letter in filteredLettersByLetterId"
             :key="letter.id"
-            :letter="letter"
-            :songs="letter.musicLibrary"
-            class="my-2 mt-md-4 mb-md-8"
-            @add="addSongToPlayList"
-            @favorite="$emit('favorite', $event)"
-            @createPlayList="emitPlayList"
-          />
+          >
+            <v-lazy
+              :options="{
+                threshold: .5,
+              }"
+              min-height="400"
+            >
+              <letter-songs
+                :letter="letter"
+                :songs="letter.musicLibrary"
+                class="my-2 mt-md-4 mb-md-8"
+                @add="addSongToPlayList"
+                @favorite="$emit('favorite', $event)"
+                @createPlayList="emitPlayList"
+              />
+            </v-lazy>
+          </div>
         </div>
       </template>
     </template>

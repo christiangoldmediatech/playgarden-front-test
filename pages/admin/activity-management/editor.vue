@@ -250,9 +250,14 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import PgVideoPlayer from '@gold-media-tech/pg-video-player'
 
 export default {
   name: 'Editor',
+
+  components: {
+    PgVideoPlayer
+  },
 
   props: {
     newLessonActivity: Boolean

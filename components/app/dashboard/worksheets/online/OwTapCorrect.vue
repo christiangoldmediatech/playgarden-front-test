@@ -39,6 +39,7 @@
 import { mapGetters, mapActions } from 'vuex'
 import { jsonCopy } from '@/utils/objectTools'
 import { shuffle } from '@/utils/arrayTools.js'
+import isEqual from 'lodash/isEqual'
 
 import OwImage from './OwImage.vue'
 import OwCtnBtn from './OwCtnBtn.vue'
@@ -63,7 +64,8 @@ export default {
   data: () => {
     return {
       selected: null,
-      loading: false
+      loading: false,
+      images: []
     }
   },
 
@@ -79,10 +81,18 @@ export default {
 
     correct () {
       return Boolean(this.selectedImage && this.selectedImage.is_correct)
-    },
+    }
+  },
 
-    images () {
-      return shuffle(jsonCopy(this.question.worksheetTable.images))
+  watch: {
+    question: {
+      immediate: true,
+      handler (newQuestion, oldQuestion) {
+        if (isEqual(newQuestion, oldQuestion)) {
+          return
+        }
+        this.images = shuffle(jsonCopy(this.question.worksheetTable.images))
+      }
     }
   },
 
