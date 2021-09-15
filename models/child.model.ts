@@ -35,6 +35,8 @@ export interface Child extends Entity {
   genderType: 'FEMALE' | 'MALE'
   lastName?: string
   level: 'BEGINNER'
+  backpackId?: number
+  birthdayPicker?: string
 }
 
 export interface PuzzleChild extends Entity {

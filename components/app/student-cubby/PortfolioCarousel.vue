@@ -58,8 +58,8 @@
 </template>
 
 <script>
+import { jsonCopy } from '@/utils'
 import PortfolioCard from './PortfolioCard.vue'
-import { jsonCopy } from '~/utils/objectTools'
 
 export default {
   name: 'PortfolioCarousel',

@@ -77,7 +77,7 @@ import { mapGetters } from 'vuex'
 import { TAG_MANAGER_EVENTS } from '@/models'
 
 import { hexToRgb } from '@/utils/colorTools'
-import { jsonCopy } from '@/utils/objectTools.js'
+import { jsonCopy } from '@/utils/objectTools'
 import ActivityCard from './ActivityCard.vue'
 
 export default {
