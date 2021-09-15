@@ -72,6 +72,27 @@
               />
             </validation-provider>
 
+            <!-- File -->
+            <span class="v-label theme--light">File</span>
+            <template v-if="item.file ">
+              <div class="mb-6 mt-3">
+                <v-badge avatar color="white" overlap>
+                  <template v-slot:badge>
+                    <v-avatar class="clickable" @click.native="item.file = null">
+                      <v-icon color="#757575" size="20">
+                        mdi-close
+                      </v-icon>
+                    </v-avatar>
+                  </template>
+
+                  <v-btn :href="item.file" icon target="_blank" x-large>
+                    <v-icon>mdi-open-in-new</v-icon>
+                  </v-btn>
+                </v-badge>
+              </div>
+            </template>
+            <upload-multiple-files v-else ref="multiDocsLoad" @sendFile="setDocumentFile" />
+
             <v-row>
               <v-col>
                 <v-menu
@@ -377,6 +398,7 @@
 
 <script>
 import dayjs from 'dayjs'
+import UploadMultipleFiles from '@/components/pg/components/file-uploader/UploadMultipleFiles.vue'
 import { stringsToDate } from '@/utils/dateTools'
 import { mapActions, mapGetters } from 'vuex'
 
@@ -387,6 +409,7 @@ function generateItemTemplate () {
     title: null,
     description: null,
     link: null,
+    file: null,
     videos: null,
     teacher: null,
     ages: null,
@@ -401,6 +424,10 @@ function generateItemTemplate () {
 export default {
   name: 'LiveSessionEditorDialog',
 
+  components: {
+    UploadMultipleFiles
+  },
+
   data: () => ({
     dateStart: null,
     dateEnd: null,
@@ -414,6 +441,7 @@ export default {
     loading: false,
     typeSelectImageFile: null,
     typeSelectVideoFile: null,
+    typeSelectDocumentFile: null,
     id: null,
     video: null,
     player: null,
@@ -441,6 +469,7 @@ export default {
 
   methods: {
     ...mapActions('live-sessions', ['createLiveSession', 'updateLiveSession', 'deleteLiveSession']),
+    ...mapActions('upload', ['doUploadJoinMultilpe', 'doUploadJoinMultilpeDropBox']),
 
     onPlayerReady (player) {
       this.player = player
@@ -452,6 +481,11 @@ export default {
 
     setImageFile (type) {
       this.typeSelectImageFile = type
+    },
+
+    validateSize (files) {
+      const total = files.map(file => file.size).reduce((a, b) => a + b)
+      return total / 1000000
     },
 
     async refresh (clear = false) {
@@ -475,6 +509,39 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+
+    setDocumentFile (type) {
+      this.typeSelectDocumentFile = type
+    },
+
+    async handleMultiFileUpload (files) {
+      try {
+        const formData = new FormData()
+        files.map(file => (
+          formData.append('file', file)
+        ))
+        const { filePath } = await this.doUploadJoinMultilpe({
+          type: 'upload-document',
+          path: this.path,
+          formData
+        })
+        return filePath
+      } catch (error) {
+        return Promise.reject(error)
+      }
+    },
+
+    async handleMultiFileUploadDropBox (files) {
+      const listFiles = files.map((file) => {
+        return { ...file, mode: 'document', type: 'upload-document-dropbox', path: this.path }
+      })
+      const { filePath } = await this.doUploadJoinMultilpeDropBox({
+        type: 'upload-document-dropbox',
+        path: this.path,
+        files: listFiles
+      })
+      return filePath
     },
 
     remove (title) {
@@ -523,6 +590,16 @@ export default {
         const data = video.id
         if (data) {
           this.item.videoId = data
+        }
+      }
+
+      if (this.$refs.multiDocsLoad) {
+        let size = 0
+        const files = await this.$refs.multiDocsLoad.joinFiles()
+        if (files) {
+          size = this.validateSize(files)
+          const path = (this.typeSelectDocumentFile !== 'dropBox') ? await this.handleMultiFileUpload(files) : await this.handleMultiFileUploadDropBox(files)
+          this.item.file = path
         }
       }
 
