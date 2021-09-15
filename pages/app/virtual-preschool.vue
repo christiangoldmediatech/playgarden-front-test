@@ -1,6 +1,6 @@
 <template>
   <v-main>
-    <birthday-wishes :is-visible="showBirthdayModal.visible" @setModal="setModal" />
+    <birthday-wishes :is-visible="showBirthdayModal" @setModal="setModal" />
     <v-row align-content="center" justify="center" class="virtual-preschool">
       <v-col v-for="section in sections" :key="section.title" cols="12" md="4" class="section">
         <v-img
@@ -114,10 +114,10 @@ export default defineComponent({
     ]
 
     const player = ref<HTMLAudioElement>()
-    const showBirthdayModal = ref({ visible: false })
+    const showBirthdayModal = ref(false)
     const eventBus = useAppEventBusHelper()
     const setModal = (show:boolean) => {
-      showBirthdayModal.value.visible = show
+      showBirthdayModal.value = show
     }
     onMounted(() => {
       player.value = new Audio()
@@ -126,9 +126,7 @@ export default defineComponent({
         const childBirthday = new Date(child.birthday)
         return today.getDate() === childBirthday.getDate() && today.getMonth() === childBirthday.getMonth()
       })
-      todaybirthday.map((todayBirthdayChild:any) => {
-        showBirthdayModal.value.visible = true
-      })
+      showBirthdayModal.value = todaybirthday.length > 0
       eventBus.$on(APP_EVENTS.BIRTHDAY_SHOW_MODAL, (show: boolean) => {
         setModal(show)
       })

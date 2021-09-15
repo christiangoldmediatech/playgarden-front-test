@@ -10,9 +10,15 @@
 
       <!-- Children Select  -->
       <v-col cols="12" md="3" order="2" order-md="1" class="d-flex align-center justify-center">
-        <button @click="showModalBirthday">
+        <v-btn
+          v-if="hatBirthday"
+          class="mx-1"
+          icon
+          color="indigo"
+          @click="showModalBirthday"
+        >
           <img :src="require('@/assets/png/birthday/partyHat.png')">
-        </button>
+        </v-btn>
         <div class="child-select mt-2 mt-md-0">
           <child-select v-if="childId" v-model="childId" class="mb-n4" />
         </div>
@@ -129,7 +135,7 @@ import { defineComponent, computed, useStore, useRoute, useRouter } from '@nuxtj
 import ChildSelect from '@/components/app/ChildSelect.vue'
 import { useAuth, useChildRoute, useNuxtHelper, useVuetifyHelper, useAppEventBusHelper } from '@/composables'
 import { TypedStore, APP_EVENTS } from '@/models'
-import { onMounted } from '@vue/composition-api'
+import { onMounted, ref } from '@vue/composition-api'
 
 export default defineComponent({
   components: {
@@ -145,14 +151,25 @@ export default defineComponent({
     const appBarLogoSize = computed(() => isMobile.value ? '25px' : '45px')
 
     const store = useStore<TypedStore>()
+    const currentChildren = store.getters.getCurrentChild
     const { isUserLoggedIn, isUserInSignupProcess } = useAuth({ store })
 
     const route = useRoute()
     const router = useRouter()
     const { childId, resolveChildId } = useChildRoute({ store, route, router })
     const eventBus = useAppEventBusHelper()
+    const hatBirthday = ref(false)
+    const someChildrenBirthday = () => {
+      const todaybirthday = currentChildren.filter((child:any) => {
+        const today = new Date()
+        const childBirthday = new Date(child.birthday)
+        return today.getDate() === childBirthday.getDate() && today.getMonth() === childBirthday.getMonth()
+      })
+      hatBirthday.value = todaybirthday.length > 0
+    }
     onMounted(() => {
       resolveChildId()
+      someChildrenBirthday()
     })
 
     const nuxt = useNuxtHelper()
@@ -173,7 +190,8 @@ export default defineComponent({
       appBarLogoSize,
       appBarHeight,
       handleSidebarToggle,
-      showModalBirthday
+      showModalBirthday,
+      hatBirthday
     }
   }
 })

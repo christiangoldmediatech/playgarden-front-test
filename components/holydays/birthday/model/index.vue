@@ -5,9 +5,9 @@
       <br>
       <hr class="green-line">
       <hr class="soft-green-line">
-      <div>
-        <img :src="require('@/assets/png/birthday/birthdayWish.png')" width="100%" alt="">
-      </div>
+      <v-row class="px-3">
+        <pg-video-player inline @ready="onPlayerReady" />
+      </v-row>
     </birthday-content-dialog>
   </div>
 </template>
@@ -22,38 +22,34 @@ export default defineComponent({
   components: {
     BirthdayContentDialog
   },
-
-  data: () => ({
-    girlRedRibbon: require('@/assets/png/girl-red-ribbon.png')
-  })
+  data: () => {
+    return {
+      dialog: false,
+      title: '',
+      player: null
+    }
+  },
+  methods: {
+    onPlayerReady (player:any) {
+      this.player = player
+      const mediaObject = {
+        title: 'ss',
+        src: {
+          url: 'https://d3dnpqxalhovr4.cloudfront.net/out/v1/a641438ecab74f9eb3dd1b4e92210988/748ec5dbba9f4aa0a2eef8a74fb2c043/68b7491c440d41d4b8b6fb0ae08fe0b4/index.m3u8',
+          type: 'application/x-mpegURL'
+        }
+      }
+      player.loadPlaylist([mediaObject])
+    }
+  }
 })
 </script>
 
-<style>
-  .v-dialog{
-    overflow-y:visible
-  }
-  .green-line{
-    height:9px;border-width:0;color:red;background-color:green
-  }
-  .soft-green-line{
-    height:9px;border-width:0;color:red;background-color:rgb(64, 167, 51)
-  }
-  @media screen and (max-width: 2500px) {
-    .v-dialog:not(.v-dialog--fullscreen) {
-      width: 1200px;
-    }
-  }
-  @media screen and (max-width: 1600px) {
-    .v-dialog:not(.v-dialog--fullscreen) {
-      width: 750px !important;
-    }
-  }
-
-  /* On screens that are 600px wide or less, make stack on top of each other instead of next to each other */
-  @media screen and (max-width: 1367px) {
-    .v-dialog:not(.v-dialog--fullscreen) {
-      width: 600px !important;
-    }
-  }
+<style scoped>
+.green-line{
+  height:9px;border-width:0;color:red;background-color:green
+}
+.soft-green-line{
+  height:9px;border-width:0;color:red;background-color:rgb(64, 167, 51)
+}
 </style>

@@ -1,11 +1,11 @@
 <template>
-  <pg-dialog persistent :fullscreen="isMobile" :value="value">
+  <v-dialog content-class="w-10" persistent :fullscreen="isMobile" :value="value">
     <v-card :class="{ 'border-4': !isMobile }">
       <v-row no-gutters>
-        <v-col cols="16" md="12" class="topm">
+        <v-col cols="12" md="12" class="topm">
           <!-- Desktop Close Button -->
           <v-btn v-if="isCloseable" class="d-none d-md-inline float-right" icon data-test-id="desktop-close-button" @click="$emit('close')">
-            <v-icon size="32">
+            <v-icon size="32" color="white">
               mdi-close
             </v-icon>
           </v-btn>
@@ -23,7 +23,7 @@
         </v-col>
       </v-row>
     </v-card>
-  </pg-dialog>
+  </v-dialog>
 </template>
 
 <script>
@@ -53,22 +53,37 @@ export default {
 }
 </script>
 
-<style scoped>
-.border-left-16 {
-  border-radius: 16px 0px 0px 16px !important;
-}
+<style>
 
-.border-4 {
+.w-10 .border-4 {
   border-radius: 4px !important;
 }
 
-.float-right {
+.w-10.float-right {
   float: right;
 }
-.v-dialog:not(.v-dialog--fullscreen) > .v-card > .no-gutters > .topm{
+.w-10.v-dialog:not(.v-dialog--fullscreen) > .v-card > .no-gutters > .topm{
   margin-top:-2.2em
 }
-.v-dialog:not(.v-dialog--fullscreen) > .v-card > .no-gutters > .topm > button > span > .v-icon{
-  color: white !important;
+.w-10.v-dialog{
+  overflow-y:visible
 }
+@media screen and (max-width: 2500px) {
+  .w-10.v-dialog:not(.v-dialog--fullscreen) {
+    width: 1200px;
+  }
+}
+@media screen and (max-width: 1600px) {
+  .w-10.v-dialog:not(.v-dialog--fullscreen) {
+    width: 750px !important;
+  }
+}
+
+/* On screens that are 600px wide or less, make stack on top of each other instead of next to each other */
+@media screen and (max-width: 1367px) {
+  .w-10.v-dialog:not(.v-dialog--fullscreen) {
+    width: 600px !important;
+  }
+}
+
 </style>
