@@ -1,6 +1,13 @@
 <template>
   <div class="container-modal">
-    <v-dialog class="test" content-class="w-10" persistent :fullscreen="isMobile" :value="value">
+    <v-dialog
+      class="test"
+      content-class="w-10"
+      persistent
+      :fullscreen="isMobile"
+      :value="value"
+      :width="isMobile ? undefined : '60%'"
+    >
       <v-card :class="{ 'border-4': !isMobile }">
         <v-row no-gutters>
           <v-col cols="12" md="12" class="topm">
@@ -57,35 +64,19 @@ export default {
 
 <style>
 
-.w-10 .border-4 {
+.border-4 {
   border-radius: 4px !important;
 }
 
-.w-10.float-right {
+.float-right {
   float: right;
 }
-.w-10.v-dialog:not(.v-dialog--fullscreen) > .v-card > .no-gutters > .topm{
+
+.v-dialog:not(.v-dialog--fullscreen) > .v-card > .no-gutters > .topm{
   margin-top:-2.2em
 }
-.w-10.v-dialog{
+
+.v-dialog{
   overflow-y:visible
 }
-@media screen and (max-width: 2500px) {
-  .container-modal >>> .w-10.v-dialog:not(.v-dialog--fullscreen) {
-    width: 1200px;
-  }
-}
-@media screen and (max-width: 1600px) {
-  .container-modal >>> .w-10.v-dialog:not(.v-dialog--fullscreen) {
-    width: 750px !important;
-  }
-}
-
-/* On screens that are 600px wide or less, make stack on top of each other instead of next to each other */
-@media screen and (max-width: 1367px) {
-  .container-modal >>> .w-10.v-dialog:not(.v-dialog--fullscreen) {
-    width: 600px !important;
-  }
-}
-
 </style>
