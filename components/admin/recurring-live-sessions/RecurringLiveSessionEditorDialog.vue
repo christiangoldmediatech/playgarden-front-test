@@ -365,6 +365,7 @@ export default {
       this.$nextTick(() => {
         this.dialog = false
         this.loading = false
+        this.file = null
         this.$refs.obs.reset()
       })
     },
@@ -378,12 +379,6 @@ export default {
       this.item.dateStart = stringsToDate(this.dateStart, this.timeStart) // `${this.dateStart}T${this.timeStart}:00.000`
       this.item.active = (this.item.active) ? 'true' : 'false'
       try {
-        if (this.id === null) {
-          await this.createRecurringLiveSession(this.item)
-        } else {
-          await this.updateRecurringLiveSession({ id: this.id, data: this.item })
-        }
-
         if (this.file) {
           if (this.typeSelectDocumentFile !== 'dropBox') {
             this.item.file = await this.$refs.documentFileUploaderDropBox.handleUpload()
@@ -391,6 +386,12 @@ export default {
             const { filePath } = await this.$refs.documentFileUploaderDropBox.handleDropBoxFileUpload()
             this.item.file = filePath
           }
+        }
+
+        if (this.id === null) {
+          await this.createRecurringLiveSession(this.item)
+        } else {
+          await this.updateRecurringLiveSession({ id: this.id, data: this.item })
         }
 
         this.$emit('saved')
