@@ -3,7 +3,7 @@
     <v-dialog
       v-model="dialog"
       :fullscreen="$vuetify.breakpoint.xs"
-      max-width="500px"
+      max-width="700px"
       persistent
       scrollable
     >
@@ -71,27 +71,6 @@
                 solo-labeled
               />
             </validation-provider>
-
-            <!-- File -->
-            <span class="v-label theme--light">File</span>
-            <template v-if="item.file ">
-              <div class="mb-6 mt-3">
-                <v-badge avatar color="white" overlap>
-                  <template v-slot:badge>
-                    <v-avatar class="clickable" @click.native="item.file = null">
-                      <v-icon color="#757575" size="20">
-                        mdi-close
-                      </v-icon>
-                    </v-avatar>
-                  </template>
-
-                  <v-btn :href="item.file" icon target="_blank" x-large>
-                    <v-icon>mdi-open-in-new</v-icon>
-                  </v-btn>
-                </v-badge>
-              </div>
-            </template>
-            <upload-multiple-files v-else ref="multiDocsLoad" @sendFile="setDocumentFile" />
 
             <v-row>
               <v-col>
@@ -306,13 +285,37 @@
 
             <validation-provider
               v-slot="{ errors }"
+              name="Document"
+              :rules="{
+                required: !item.file && !documentFile,
+                size: 10000
+              }"
+            >
+              <pg-file-uploader
+                ref="documentFileUploaderDropBox"
+                v-model="documentFile"
+                append-icon="mdi-file-document"
+                :error-messages="errors"
+                label="Upload Document"
+                mode="document"
+                path="document-live-session"
+                placeholder="Select a document"
+                solo-labeled
+                api="dropbox"
+                pdf
+                @sendFile="setDocumentFile"
+              />
+            </validation-provider>
+
+            <validation-provider
+              v-slot="{ errors }"
               name="Icon"
               rules="size:10000"
             >
               <pg-file-uploader
                 ref="imageFileUploaderDropBox"
                 v-model="image"
-                prepend-icon="mdi-camera"
+                append-icon="mdi-camera"
                 :error-messages="errors"
                 label="Upload Image"
                 mode="image"
@@ -398,7 +401,6 @@
 
 <script>
 import dayjs from 'dayjs'
-import UploadMultipleFiles from '@/components/pg/components/file-uploader/UploadMultipleFiles.vue'
 import { stringsToDate } from '@/utils/dateTools'
 import { mapActions, mapGetters } from 'vuex'
 
@@ -409,10 +411,10 @@ function generateItemTemplate () {
     title: null,
     description: null,
     link: null,
-    file: null,
     videos: null,
     teacher: null,
     ages: null,
+    documentFile: null,
     active: false,
     duration: null,
     dateStart: null,
@@ -423,10 +425,6 @@ function generateItemTemplate () {
 
 export default {
   name: 'LiveSessionEditorDialog',
-
-  components: {
-    UploadMultipleFiles
-  },
 
   data: () => ({
     dateStart: null,
@@ -439,9 +437,10 @@ export default {
     menuTimeEnd: false,
     dialog: false,
     loading: false,
+    documentFile: null,
+    typeSelectDocumentFile: null,
     typeSelectImageFile: null,
     typeSelectVideoFile: null,
-    typeSelectDocumentFile: null,
     id: null,
     video: null,
     player: null,
@@ -469,10 +468,13 @@ export default {
 
   methods: {
     ...mapActions('live-sessions', ['createLiveSession', 'updateLiveSession', 'deleteLiveSession']),
-    ...mapActions('upload', ['doUploadJoinMultilpe', 'doUploadJoinMultilpeDropBox']),
 
     onPlayerReady (player) {
       this.player = player
+    },
+
+    setDocumentFile (type) {
+      this.typeSelectDocumentFile = type
     },
 
     setVideoFile (type) {
@@ -481,11 +483,6 @@ export default {
 
     setImageFile (type) {
       this.typeSelectImageFile = type
-    },
-
-    validateSize (files) {
-      const total = files.map(file => file.size).reduce((a, b) => a + b)
-      return total / 1000000
     },
 
     async refresh (clear = false) {
@@ -511,39 +508,6 @@ export default {
       }
     },
 
-    setDocumentFile (type) {
-      this.typeSelectDocumentFile = type
-    },
-
-    async handleMultiFileUpload (files) {
-      try {
-        const formData = new FormData()
-        files.map(file => (
-          formData.append('file', file)
-        ))
-        const { filePath } = await this.doUploadJoinMultilpe({
-          type: 'upload-document',
-          path: this.path,
-          formData
-        })
-        return filePath
-      } catch (error) {
-        return Promise.reject(error)
-      }
-    },
-
-    async handleMultiFileUploadDropBox (files) {
-      const listFiles = files.map((file) => {
-        return { ...file, mode: 'document', type: 'upload-document-dropbox', path: this.path }
-      })
-      const { filePath } = await this.doUploadJoinMultilpeDropBox({
-        type: 'upload-document-dropbox',
-        path: this.path,
-        files: listFiles
-      })
-      return filePath
-    },
-
     remove (title) {
       this.$nuxt.$emit('open-prompt', {
         title: 'Delete Live Class?',
@@ -564,6 +528,7 @@ export default {
         this.image = null
         this.video = null
         this.file = null
+        this.documentFile = null
         this.$refs.obs.reset()
       })
     },
@@ -593,13 +558,12 @@ export default {
         }
       }
 
-      if (this.$refs.multiDocsLoad) {
-        let size = 0
-        const files = await this.$refs.multiDocsLoad.joinFiles()
-        if (files) {
-          size = this.validateSize(files)
-          const path = (this.typeSelectDocumentFile !== 'dropBox') ? await this.handleMultiFileUpload(files) : await this.handleMultiFileUploadDropBox(files)
-          this.item.file = path
+      if (this.documentFile) {
+        if (this.typeSelectDocumentFile !== 'dropBox') {
+          this.item.file = await this.$refs.documentFileUploaderDropBox.handleUpload()
+        } else {
+          const { filePath } = await this.$refs.documentFileUploaderDropBox.handleDropBoxFileUpload()
+          this.item.file = filePath
         }
       }
 
@@ -642,6 +606,10 @@ export default {
           this.item[key] = item[key]
         }
       })
+
+      if (this.item.file) {
+        this.documentFile = this.item.file
+      }
 
       if (item.dateStart) {
         // const dateStart = item.dateStart.replace(':00.000Z', '').split('T')

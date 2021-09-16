@@ -214,6 +214,30 @@
                 type="number"
               />
             </validation-provider>
+
+            <validation-provider
+              v-slot="{ errors }"
+              name="Document"
+              :rules="{
+                required: !item.file && !file,
+                size: 10000
+              }"
+            >
+              <pg-file-uploader
+                ref="documentFileUploaderDropBox"
+                v-model="file"
+                append-icon="mdi-camera"
+                :error-messages="errors"
+                label="Upload Document"
+                mode="document"
+                path="document-recurring-live"
+                placeholder="Select a document"
+                solo-labeled
+                api="dropbox"
+                pdf
+                @sendFile="setDocumentFile"
+              />
+            </validation-provider>
           </v-container>
         </v-card-text>
 
@@ -261,6 +285,7 @@ function generateItemTemplate () {
     description: null,
     link: null,
     teacher: null,
+    file: null,
     ages: null,
     duration: null,
     dateStart: null,
@@ -276,6 +301,7 @@ export default {
     dateEnd: null,
     timeStart: null,
     timeEnd: null,
+    file: null,
     menuDateStart: false,
     menuDateEnd: false,
     menuTimeStart: false,
@@ -283,6 +309,7 @@ export default {
     dialog: false,
     loading: false,
     id: null,
+    typeSelectDocumentFile: null,
     item: generateItemTemplate()
   }),
 
@@ -342,15 +369,28 @@ export default {
       })
     },
 
+    setDocumentFile (type) {
+      this.typeSelectDocumentFile = type
+    },
+
     async save () {
       this.loading = true
       this.item.dateStart = stringsToDate(this.dateStart, this.timeStart) // `${this.dateStart}T${this.timeStart}:00.000`
-
+      this.item.active = (this.item.active) ? 'true' : 'false'
       try {
         if (this.id === null) {
           await this.createRecurringLiveSession(this.item)
         } else {
           await this.updateRecurringLiveSession({ id: this.id, data: this.item })
+        }
+
+        if (this.file) {
+          if (this.typeSelectDocumentFile !== 'dropBox') {
+            this.item.file = await this.$refs.documentFileUploaderDropBox.handleUpload()
+          } else {
+            const { filePath } = await this.$refs.documentFileUploaderDropBox.handleDropBoxFileUpload()
+            this.item.file = filePath
+          }
         }
 
         this.$emit('saved')
