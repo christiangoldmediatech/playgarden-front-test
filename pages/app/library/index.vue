@@ -36,13 +36,14 @@
 
       <div
         v-for="activityType in activities"
+        :id="`activity-type-${activityType.id}-container`"
         :key="`activity-type-${activityType.id}`"
       >
         <v-lazy
           :options="{
             threshold: .5,
           }"
-          min-height="400"
+          min-height="720"
         >
           <activity-type-container
             :total="activityType.playlist.length"
