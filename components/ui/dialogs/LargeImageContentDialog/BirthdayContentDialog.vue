@@ -67,13 +67,16 @@ export default {
 .border-4 {
   border-radius: 4px !important;
 }
+
 .float-right {
   float: right;
 }
-.v-dialog:not(.v-dialog--fullscreen) > .v-card > .no-gutters > .topm{
+
+::v-deep .v-dialog:not(.v-dialog--fullscreen) > .v-card > .no-gutters > .topm{
   margin-top:-2.2em
 }
-.v-dialog{
+
+::v-deep .v-dialog{
   overflow-y:visible
 }
 </style>
