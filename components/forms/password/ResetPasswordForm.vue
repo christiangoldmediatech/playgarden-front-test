@@ -37,7 +37,7 @@
 
 <script>
 import { required, isValidPassword } from '@/utils/validations/forms.js'
-import { jsonCopy } from '@/utils/objectTools.js'
+import { jsonCopy } from '@/utils/objectTools'
 
 export default {
   name: 'ResetPasswordForm',

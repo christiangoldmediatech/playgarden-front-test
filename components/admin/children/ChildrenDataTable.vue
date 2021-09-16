@@ -86,6 +86,10 @@
                 </v-col>
               </template>
 
+              <template v-slot:[`item.firstName`]="{ item }">
+                {{ `${item.firstName} ${(item.lastName) ? (item.lastName) : ''}` }}
+              </template>
+
               <template v-slot:[`item.backpack.image`]="{ item }">
                 <img
                   v-if="item.backpack && item.backpack.image"
@@ -146,6 +150,19 @@
                       <v-img :src="require('@/assets/png/progress-1.png')" height="20" width="20" />
                     </v-btn>
                   </div>
+                  <div :key="`edit-${item.id}`" class="pl-4">
+                    <v-btn
+                      icon
+                      width="16"
+                      height="16"
+                      title="Edit"
+                      @click.stop="$refs.childEditorDialogRef.open($event, item)"
+                    >
+                      <v-icon class="my-4 mx-1" color="#81A1F7">
+                        mdi-pencil-outline
+                      </v-icon>
+                    </v-btn>
+                  </div>
                 </v-row>
               </template>
             </pg-admin-data-table>
@@ -155,6 +172,7 @@
     </v-row>
     <user-child-timeline-dialog />
     <user-child-lesson-overlay />
+    <child-editor-dialog ref="childEditorDialogRef" @saved="refresh()" />
   </v-container>
 </template>
 
@@ -163,13 +181,15 @@ import { mapActions, mapGetters, mapState } from 'vuex'
 import onSearch from '@/mixins/OnSearchMixin.js'
 import UserChildLessonOverlay from '@/components/admin/users/UserChildLessonOverlay.vue'
 import UserChildTimelineDialog from '@/components/admin/users/UserChildTimelineDialog.vue'
+import ChildEditorDialog from '@/components/admin/children/ChildEditorDialog'
 
 export default {
   name: 'ChildrenDataTable',
 
   components: {
     UserChildTimelineDialog,
-    UserChildLessonOverlay
+    UserChildLessonOverlay,
+    ChildEditorDialog
   },
 
   mixins: [onSearch],
@@ -177,7 +197,7 @@ export default {
   data () {
     return {
       loading: false,
-      action: true,
+      action: false,
       search: '',
       page: 1,
       allFilters: false,

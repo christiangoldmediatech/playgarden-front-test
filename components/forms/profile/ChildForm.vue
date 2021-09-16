@@ -518,7 +518,7 @@ export default {
         item._birthdayFormatted = dayjs(item._birthdayPicker).format(
           'MM/DD/YYYY'
         )
-        item.birthday = (item.birthday) ? `${item._birthdayPicker}T00:00:00.000` : null
+        item.birthday = (item._birthdayPicker) ? `${item._birthdayPicker}T00:00:00.000` : null
       }
     },
 

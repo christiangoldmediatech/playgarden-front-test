@@ -49,8 +49,8 @@
 </template>
 
 <script>
+import { jsonCopy } from '@/utils/objectTools'
 import { defineComponent } from '@nuxtjs/composition-api'
-import { jsonCopy } from '@/utils/objectTools.js'
 import { useMusic } from '@/composables'
 
 export default defineComponent({
