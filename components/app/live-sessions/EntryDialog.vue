@@ -11,6 +11,23 @@
 
           <v-container class="entry-card-content">
             <v-row>
+              <v-col class="text-right">
+                <!-- Download -->
+                <v-btn
+                  v-if="entry.file"
+                  class="button mt-4"
+                  color="primary"
+                  :target="downloadTarget"
+                  :href="entry.file"
+                >
+                  <v-icon left>
+                    mdi-download-outline
+                  </v-icon>
+                  Download Document
+                </v-btn>
+              </v-col>
+            </v-row>
+            <v-row>
               <div v-if="$vuetify.breakpoint.mdAndUp" class="entry-card-elipse">
                 <img
                   class="entry-card-elipse-img"
@@ -85,7 +102,7 @@
             <pg-ics-calendar v-if="!past" :entry="entry" />
 
             <v-btn block text @click.stop="dialog = false">
-              Close
+              Closee
             </v-btn>
           </v-container>
         </template>
@@ -126,6 +143,11 @@ export default {
 
   computed: {
     ...mapGetters('auth', ['getUserInfo']),
+
+    downloadTarget () {
+      return this.entry.downloadNewTab ? '_blank' : '_self'
+    },
+
     isLive () {
       const today = new Date()
       const start = new Date(this.entry.dateStart)
