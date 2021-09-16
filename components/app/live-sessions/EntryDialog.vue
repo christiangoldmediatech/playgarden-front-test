@@ -15,6 +15,7 @@
                 <!-- Download -->
                 <v-btn
                   v-if="entry.file"
+                  small
                   class="button mt-4"
                   color="primary"
                   :target="downloadTarget"
@@ -23,7 +24,7 @@
                   <v-icon left>
                     mdi-download-outline
                   </v-icon>
-                  Download Document
+                  Download Additional Information
                 </v-btn>
               </v-col>
             </v-row>
