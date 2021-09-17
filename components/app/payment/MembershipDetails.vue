@@ -235,29 +235,23 @@
       :fullscreen="isMobile"
       max-width="1000"
     >
-      <v-col cols="12">
-        <v-row justify="end">
-          <v-btn icon @click.stop="removeSubscriptionModal = false">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </v-row>
-      </v-col>
+      <div class="green-line green-line-1" />
+      <div class="green-line green-line-2" />
 
       <v-col cols="12">
         <v-row class="flex-column-reverse flex-md-row">
           <v-col class="px-6" cols="12" md="6">
             <v-col class="text-center" cols="12">
-              <span
-                class="font-weight-bold pg-letter-spacing text-h5 text-md-h4"
-              >
-                WE ARE SORRY
-                <br>
-                TO SEE YOU GO!
-              </span>
+              <underlined-title
+                class="text-h5 text-md-h4 pg-letter-spacing"
+                text="WE ARE SORRY TO SEE YOU GO!"
+              />
             </v-col>
 
             <v-card-text class="text-justify">
-              <p>ARE YOU LEAVING US?</p>
+              <p class="font-weight-medium">
+                ARE YOU LEAVING US?
+              </p>
               <p>Before you cancel, please let us know the reason you are leaving. Every bit of feedback helps us create a better educational experience for little ones!</p>
 
               <v-radio-group v-model="leaveMotive">
@@ -281,8 +275,12 @@
                 placeholder="Reason..."
               />
 
-              <p>Thank you so much!</p>
-              <p>Miss Sarah and the Playgarden Prep teachers</p>
+              <p class="font-weight-medium">
+                Thank you so much!
+              </p>
+              <p class="font-weight-medium">
+                Miss Sarah and the Playgarden Prep teachers
+              </p>
             </v-card-text>
           </v-col>
 
@@ -316,7 +314,7 @@
           :loading="loading"
           x-large
           text
-          class="text-none"
+          class="text-none text-decoration-underline"
           @click.stop="removeSubscriptionModal = false"
         >
           Nevermind, I want to keep learning with Playgarden Prep!
