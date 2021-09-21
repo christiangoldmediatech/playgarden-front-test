@@ -1,7 +1,9 @@
 <template>
   <v-container>
     <v-row>
-      <pg-video-player inline @ready="onPlayerReady" />
+      <v-col lg="8" offset-lg="2" md="10" offset-md="1">
+        <pg-video-player inline @ready="onPlayerReady" />
+      </v-col>
     </v-row>
   </v-container>
 </template>
