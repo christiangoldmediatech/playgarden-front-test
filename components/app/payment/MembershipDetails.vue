@@ -275,10 +275,10 @@
                 placeholder="Reason..."
               />
 
-              <p class="font-weight-medium">
+              <p class="font-weight-bold">
                 Thank you so much!
               </p>
-              <p class="font-weight-medium">
+              <p class="font-weight-bold">
                 Miss Sarah and the Playgarden Prep teachers
               </p>
             </v-card-text>
