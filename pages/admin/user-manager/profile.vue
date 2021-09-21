@@ -767,7 +767,7 @@ export default {
 
     existCancelReason () {
       if (this.user && this.billing) {
-        return this.user.status === 0 && this.billing.stripeStatus === 'canceled'
+        return this.user.status === 0 && this.billing.stripeStatus === 'canceled' && this.user.cancelReason !== null
       } else {
         return false
       }
