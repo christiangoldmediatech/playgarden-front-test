@@ -40,7 +40,7 @@
                     v-if="entry.file"
                     nuxt
                     large
-                    color="accent"
+                    color="primary"
                     class="text-transform-none"
                     :target="downloadTarget"
                     :href="entry.file"
