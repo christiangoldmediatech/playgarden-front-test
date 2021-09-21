@@ -26,7 +26,7 @@
 
           <!-- Toolbar Title -->
           <v-col cols="12">
-            <underlined-title text="Happy Birthday!" :font-size="appBarTitleSize" :font-size-mobile="appBarTitleSize" />
+            <underlined-title :text="`Happy Birthday ${childName}!`" :font-size="appBarTitleSize" :font-size-mobile="appBarTitleSize" />
           </v-col>
         </v-row>
       </v-col>
@@ -37,7 +37,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from '@nuxtjs/composition-api'
+import { defineComponent, computed, useRoute } from '@nuxtjs/composition-api'
 
 import { useNuxtHelper, useVuetifyHelper } from '@/composables'
 
@@ -46,6 +46,7 @@ export default defineComponent({
   },
 
   setup () {
+    const route = useRoute()
     const vuetify = useVuetifyHelper()
     const isMobile = computed(() => vuetify.breakpoint.mobile)
 
@@ -57,12 +58,15 @@ export default defineComponent({
       nuxt.$emit('toggle-nav-drawer')
     }
 
+    const childName = computed(() => route.value.params.name)
+
     return {
       isMobile,
       appBarTitleSize,
       appBarLogoSize,
       appBarHeight,
-      handleSidebarToggle
+      handleSidebarToggle,
+      childName
     }
   }
 })
