@@ -141,7 +141,7 @@ export default {
       const today = new Date()
       const end = new Date(this.entry.dateEnd)
 
-      return today.getTime() >= end.getTime()
+      return today.getTime() >= end.getTime() + (30 * 60 * 1000)
     },
 
     isRecorded () {
