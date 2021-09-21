@@ -16,9 +16,7 @@
           <v-spacer />
 
           <v-btn :disabled="loading" icon @click.stop="close">
-            <v-icon>
-              mdi-close
-            </v-icon>
+            <v-icon> mdi-close </v-icon>
           </v-btn>
         </v-toolbar>
 
@@ -42,10 +40,7 @@
               />
             </validation-provider>
 
-            <validation-provider
-              v-slot="{ errors }"
-              name="Letter"
-            >
+            <validation-provider v-slot="{ errors }" name="Letter">
               <pg-select
                 v-model="item.curriculumTypeId"
                 clearable
@@ -288,7 +283,7 @@
               name="Document"
               :rules="{
                 required: !item.file && !documentFile,
-                size: 10000
+                size: 10000,
               }"
             >
               <pg-file-uploader
@@ -306,6 +301,14 @@
                 @sendFile="setDocumentFile"
               />
             </validation-provider>
+            <div v-if="item.file" class="text-container mb-4 mt-n3">
+              <div class="link">
+                <a
+                  target="_blank"
+                  :href="item.file"
+                >View Document</a>
+              </div>
+            </div>
 
             <validation-provider
               v-slot="{ errors }"
@@ -331,10 +334,7 @@
             </validation-provider>
 
             <!-- Video -->
-            <validation-provider
-              v-slot="{ errors }"
-              name="Video"
-            >
+            <validation-provider v-slot="{ errors }" name="Video">
               <pg-file-uploader
                 ref="videoFileUploaderDropBox"
                 v-model="file"
@@ -403,7 +403,6 @@
 import dayjs from 'dayjs'
 import { stringsToDate } from '@/utils/dateTools'
 import { mapActions, mapGetters } from 'vuex'
-
 function generateItemTemplate () {
   return {
     activityTypeId: null,
@@ -419,13 +418,12 @@ function generateItemTemplate () {
     duration: null,
     dateStart: null,
     dateEnd: null,
+    file: null,
     inCollaborationWith: null
   }
 }
-
 export default {
   name: 'LiveSessionEditorDialog',
-
   data: () => ({
     dateStart: null,
     dateEnd: null,
@@ -448,50 +446,38 @@ export default {
     image: null,
     item: generateItemTemplate()
   }),
-
   computed: {
     ...mapGetters('admin/activity', ['types']),
     ...mapGetters('admin/curriculum', { curriculumTypes: 'types' }),
-
     dataStartFormatted () {
       return this.dateStart ? dayjs(this.dateStart).format('MM/DD/YYYY') : null
     },
-
     dataEndFormatted () {
       return this.dateEnd ? dayjs(this.dateEnd).format('MM/DD/YYYY') : null
     },
-
     title () {
       return this.id === null ? 'New Live Class' : 'Edit Live Class'
     }
   },
-
   methods: {
     ...mapActions('live-sessions', ['createLiveSession', 'updateLiveSession', 'deleteLiveSession']),
-
     onPlayerReady (player) {
       this.player = player
     },
-
     setDocumentFile (type) {
       this.typeSelectDocumentFile = type
     },
-
     setVideoFile (type) {
       this.typeSelectVideoFile = type
     },
-
     setImageFile (type) {
       this.typeSelectImageFile = type
     },
-
     async refresh (clear = false) {
       this.loading = true
-
       if (clear) {
         this.search = ''
       }
-
       try {
         const { lessons, page, total } = await this.fetchLessons({
           name: this.search || null,
@@ -499,7 +485,6 @@ export default {
           level: this.filters.level || null,
           page: this.pagination.page
         })
-
         this.resources = lessons
         this.setPagination({ page, total })
       } catch (e) {
@@ -507,7 +492,6 @@ export default {
         this.loading = false
       }
     },
-
     remove (title) {
       this.$nuxt.$emit('open-prompt', {
         title: 'Delete Live Class?',
@@ -520,7 +504,6 @@ export default {
         }
       })
     },
-
     close () {
       this.$nextTick(() => {
         this.dialog = false
@@ -532,10 +515,8 @@ export default {
         this.$refs.obs.reset()
       })
     },
-
     async save () {
       this.loading = true
-
       let imageData
       if (this.image) {
         if (this.typeSelectImageFile !== 'dropBox') {
@@ -545,11 +526,9 @@ export default {
           imageData = filePath
         }
       }
-
       if (imageData) {
         this.item.inCollaborationWith = imageData
       }
-
       if (this.file) {
         const { video } = (this.typeSelectVideoFile !== 'dropBox') ? await this.$refs.videoFileUploaderDropBox.handleUpload() : await this.$refs.videoFileUploaderDropBox.handleDropBoxFileUpload()
         const data = video.id
@@ -557,7 +536,6 @@ export default {
           this.item.videoId = data
         }
       }
-
       if (this.documentFile) {
         if (this.typeSelectDocumentFile !== 'dropBox') {
           this.item.file = await this.$refs.documentFileUploaderDropBox.handleUpload()
@@ -566,40 +544,32 @@ export default {
           this.item.file = filePath
         }
       }
-
       const start = stringsToDate(this.dateStart, this.timeStart)
       const end = stringsToDate(this.dateEnd, this.timeEnd)
-
       this.item.dateStart = start
       this.item.dateEnd = end
       this.item.active = (this.item.active) ? 'true' : 'false'
-
       try {
         if (this.id === null) {
           await this.createLiveSession(this.item)
         } else {
           await this.updateLiveSession({ id: this.id, data: this.item })
         }
-
         this.$emit('saved')
         this.$nuxt.$emit('update-calendar')
-
         this.close()
       } catch (err) {
       } finally {
         this.loading = false
       }
     },
-
     resetItem () {
       this.id = null
       this.video = null
       this.item = generateItemTemplate()
     },
-
     loadItem (item) {
       this.id = item.id
-
       // Handle keys
       Object.keys(item).forEach((key) => {
         if (Object.prototype.hasOwnProperty.call(this.item, key)) {
@@ -607,42 +577,31 @@ export default {
         }
       })
 
-      if (this.item.file) {
-        this.documentFile = this.item.file
-      }
-
       if (item.dateStart) {
         // const dateStart = item.dateStart.replace(':00.000Z', '').split('T')
-
         // this.dateStart = dateStart[0]
         // this.timeStart = dateStart[1]
         const dateStart = new Date(item.dateStart)
         this.dateStart = `${dateStart.getFullYear()}-${(dateStart.getMonth() + 1).toString().padStart(2, '0')}-${dateStart.getDate().toString().padStart(2, '0')}`
         this.timeStart = `${dateStart.getHours().toString().padStart(2, '0')}:${dateStart.getMinutes().toString().padStart(2, '0')}`
       }
-
       if (item.dateEnd) {
         // const dateEnd = item.dateEnd.replace(':00.000Z', '').split('T')
-
         // this.dateEnd = dateEnd[0]
         // this.timeEnd = dateEnd[1]
         const dateEnd = new Date(item.dateEnd)
         this.dateEnd = `${dateEnd.getFullYear()}-${(dateEnd.getMonth() + 1).toString().padStart(2, '0')}-${dateEnd.getDate().toString().padStart(2, '0')}`
         this.timeEnd = `${dateEnd.getHours().toString().padStart(2, '0')}:${dateEnd.getMinutes().toString().padStart(2, '0')}`
       }
-
       if (item.activityType) {
         this.item.activityTypeId = item.activityType.id
       }
-
       if (item.curriculumType) {
         this.item.curriculumTypeId = item.curriculumType.id
       }
-
       if (item.inCollaborationWith) {
         this.item.inCollaborationWith = item.inCollaborationWith
       }
-
       if (item.videos && item.videos.videoUrl) {
         this.item.videoId = item.videos.id
         this.video = item.videos
@@ -655,7 +614,6 @@ export default {
           },
           videoId: item.videos.id
         }
-
         if (this.player) {
           this.player.loadPlaylist([mediaObject], 0)
         } else {
@@ -668,14 +626,11 @@ export default {
         }
       }
     },
-
     open (evt, item = null) {
       this.resetItem()
-
       if (item) {
         this.loadItem(item)
       }
-
       this.$nextTick(() => {
         this.dialog = true
       })

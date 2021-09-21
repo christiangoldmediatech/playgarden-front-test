@@ -11,24 +11,6 @@
 
           <v-container class="entry-card-content">
             <v-row>
-              <v-col class="text-right">
-                <!-- Download -->
-                <v-btn
-                  v-if="entry.file"
-                  small
-                  class="button mt-4"
-                  color="primary"
-                  :target="downloadTarget"
-                  :href="entry.file"
-                >
-                  <v-icon left>
-                    mdi-download-outline
-                  </v-icon>
-                  Download Additional Information
-                </v-btn>
-              </v-col>
-            </v-row>
-            <v-row>
               <div v-if="$vuetify.breakpoint.mdAndUp" class="entry-card-elipse">
                 <img
                   class="entry-card-elipse-img"
@@ -46,11 +28,28 @@
                   With {{ entry.teacher }}
                 </div>
 
-                <div class="entry-card-description pb-6">
+                <div class="entry-card-description pb-3">
                   <p class="entry-card-description-title">
                     Description
                   </p>
                   {{ entry.description }}
+                </div>
+
+                <div class="pb-6">
+                  <v-btn
+                    v-if="entry.file"
+                    nuxt
+                    large
+                    color="accent"
+                    class="text-transform-none"
+                    :target="downloadTarget"
+                    :href="entry.file"
+                  >
+                    <v-icon left>
+                      mdi-download-outline
+                    </v-icon>
+                    Download Additional Information
+                  </v-btn>
                 </div>
 
                 <div class="entry-card-description pb-6">
@@ -103,7 +102,7 @@
             <pg-ics-calendar v-if="!past" :entry="entry" />
 
             <v-btn block text @click.stop="dialog = false">
-              Closee
+              Close
             </v-btn>
           </v-container>
         </template>
