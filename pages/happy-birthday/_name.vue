@@ -16,7 +16,7 @@ import { PlayerInstance } from '@gold-media-tech/pg-video-player/src/types/Playe
 import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
 
 export default defineComponent({
-  name: 'BirthdayWish',
+  name: 'HappyBirthdayPage',
 
   layout: 'public-birthday',
 
