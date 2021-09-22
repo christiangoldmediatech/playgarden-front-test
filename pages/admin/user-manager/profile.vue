@@ -425,6 +425,16 @@
                           </v-col>
                         </v-row>
                       </v-col>
+                      <v-col v-if="existCancelReason" cols="6">
+                        <v-row>
+                          <v-col cols="6" md="4" class="field">
+                            Cancel reason
+                          </v-col>
+                          <v-col cols="6" md="8">
+                            <b>{{ user.cancelReason }}</b>
+                          </v-col>
+                        </v-row>
+                      </v-col>
                     </template>
                   </v-row>
                 </v-col>
@@ -753,6 +763,14 @@ export default {
 
     backpackDateSent () {
       return this.user && this.user.shipments && this.user.shipments.backpackDate
+    },
+
+    existCancelReason () {
+      if (this.user && this.billing) {
+        return this.user.status === 0 && this.billing.stripeStatus === 'canceled' && this.user.cancelReason !== null
+      } else {
+        return false
+      }
     }
 
     // isCancelConfirmationBtnDisabled () {
