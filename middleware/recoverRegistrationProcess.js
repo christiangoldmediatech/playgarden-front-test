@@ -53,7 +53,7 @@ export default function ({ redirect, route, store }) {
         break
 
       case 2:
-        name = 'app-payment'
+        name = 'app-normal-payment'
         break
 
       case 3:

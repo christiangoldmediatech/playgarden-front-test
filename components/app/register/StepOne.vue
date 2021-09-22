@@ -92,7 +92,7 @@ export default defineComponent({
       switch (abFlow.value) {
         case UserFlow.CREDITCARD:
           router.push({
-            name: 'app-payment',
+            name: 'app-normal-payment',
             query: {
               step: '2',
               process: 'signup'

@@ -10,7 +10,7 @@
     >
       <v-card-text class="py-0">
         <v-row>
-          <v-col cols="12" sm="6" md="4">
+          <v-col cols="12" sm="6" md="3">
             <nuxt-link
               :to="{
                 name: 'app-virtual-preschool',
@@ -98,7 +98,24 @@
             </v-row>
           </v-col>
 
-          <v-col class="text-center" cols="12" sm="6" md="">
+          <v-col class="text-center" cols="12" sm="4" md="">
+            <p class="font-weight-bold mb-1 mt-0 primary--text text-h5">
+              <span class="info-footer-title">Online School</span>
+            </p>
+
+            <p class="text-footer-contact">
+              <a href="mailto:hello@playgardenprep.com">hello@playgardenprep.com</a><br>
+              <a href="tel:646-504-4716">646-504-4716</a>
+            </p>
+
+            <p class="text-footer-contact">
+              95 Franklin St,<br>
+              New York, NY 10013
+            </p>
+            <br>
+          </v-col>
+
+          <v-col class="text-center" cols="12" sm="4" md="">
             <p class="font-weight-bold mb-1 mt-0 primary--text text-h5">
               <span class="info-footer-title">Upper East Side</span>
             </p>
@@ -112,7 +129,7 @@
             <br>
           </v-col>
 
-          <v-col class="text-center" cols="12" sm="6" md="">
+          <v-col class="text-center" cols="12" sm="4" md="">
             <p class="font-weight-bold mb-1 mt-0 primary--text text-h5">
               <span class="info-footer-title">
                 Tribeca

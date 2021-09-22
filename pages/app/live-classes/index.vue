@@ -193,6 +193,7 @@ import RecordedClassPlayer from '@/components/app/live-sessions/RecordedClassPla
 import WeekSelector from '@/components/admin/live-sessions/WeekSelector.vue'
 import DaySelector from '@/components/admin/live-sessions/DaySelector.vue'
 import { jsonCopy } from '@/utils'
+import dayjs from 'dayjs'
 
 export default {
   name: 'Index',
@@ -234,10 +235,10 @@ export default {
 
     orderedSessions () {
       const sessions = jsonCopy(this.sessions)
-      const now = new Date().getTime()
+      const now = dayjs().unix()
 
       return sessions.filter((session) => {
-        return new Date(session.dateStart) >= now
+        return dayjs(session.dateEnd).add(30, 'minutes').unix() >= now
       }).sort((sessionA, sessionB) => {
         const start = new Date(sessionA.dateStart)
         const end = new Date(sessionB.dateEnd)
