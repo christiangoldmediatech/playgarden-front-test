@@ -10,6 +10,7 @@
 
 <script lang="ts">
 import { ref, defineComponent } from '@nuxtjs/composition-api'
+// @ts-ignore
 import PgVideoPlayer from '@gold-media-tech/pg-video-player'
 
 import { PlayerInstance } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
