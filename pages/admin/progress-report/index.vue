@@ -229,6 +229,7 @@ export default {
     this.selectedChild = this.$route.query.id
     this.general = true
     this.child = await this.getChildren(this.selectedChild)
+    await this.getTypes()
     const curriculumType = await this.getCurrentCurriculumType(this.selectedChild)
     this.selectedLetter = curriculumType.id
     this.$nuxt.$on('detail-progress-report', (data) => {
