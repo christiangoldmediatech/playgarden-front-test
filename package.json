@@ -22,7 +22,7 @@
     "prosemirror-model": "1.8.2"
   },
   "dependencies": {
-    "@gold-media-tech/pg-video-player": "^0.0.15",
+    "@gold-media-tech/pg-video-player": "0.0.15",
     "@mdi/font": "^5.3.45",
     "@nuxtjs/axios": "^5.12.0",
     "@nuxtjs/composition-api": "^0.22.4",
@@ -71,7 +71,7 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^26.0.1",
     "cypress": "^7.1.0",
-    "eslint": "^7.25.0",
+    "eslint": "^7.32.0",
     "eslint-plugin-nuxt": "^1.0.0",
     "jest": "^26.0.1",
     "jest-transform-stub": "^2.0.0",

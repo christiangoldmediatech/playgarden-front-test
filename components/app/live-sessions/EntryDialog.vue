@@ -28,11 +28,28 @@
                   With {{ entry.teacher }}
                 </div>
 
-                <div class="entry-card-description pb-6">
+                <div class="entry-card-description pb-3">
                   <p class="entry-card-description-title">
                     Description
                   </p>
                   {{ entry.description }}
+                </div>
+
+                <div class="pb-6">
+                  <v-btn
+                    v-if="entry.file"
+                    nuxt
+                    large
+                    color="primary"
+                    class="text-transform-none"
+                    :target="downloadTarget"
+                    :href="entry.file"
+                  >
+                    <v-icon left>
+                      mdi-download-outline
+                    </v-icon>
+                    Download Additional Information
+                  </v-btn>
                 </div>
 
                 <div class="entry-card-description pb-6">
@@ -126,6 +143,11 @@ export default {
 
   computed: {
     ...mapGetters('auth', ['getUserInfo']),
+
+    downloadTarget () {
+      return this.entry.downloadNewTab ? '_blank' : '_self'
+    },
+
     isLive () {
       const today = new Date()
       const start = new Date(this.entry.dateStart)
@@ -141,7 +163,7 @@ export default {
       const today = new Date()
       const end = new Date(this.entry.dateEnd)
 
-      return today.getTime() >= end.getTime()
+      return today.getTime() >= end.getTime() + (30 * 60 * 1000)
     },
 
     isRecorded () {
