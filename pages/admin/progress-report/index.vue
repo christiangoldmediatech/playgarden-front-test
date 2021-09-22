@@ -217,15 +217,21 @@ export default {
     }
   },
 
+  watch: {
+    async selectedLetter (val) {
+      this.loadLetterStatsData = true
+      await this.getDataGraphic()
+      await this.getDataReport()
+    }
+  },
+
   async created () {
     this.selectedChild = this.$route.query.id
     this.general = true
     this.child = await this.getChildren(this.selectedChild)
+    await this.getTypes()
     const curriculumType = await this.getCurrentCurriculumType(this.selectedChild)
     this.selectedLetter = curriculumType.id
-    await this.getTypes()
-    await this.getDataGraphic()
-    await this.getDataReport()
     this.$nuxt.$on('detail-progress-report', (data) => {
       this.loadDetailReport(data.point.category)
     })
@@ -256,7 +262,11 @@ export default {
 
     async getDataReport () {
       if (this.selectedChild) {
-        this.letterStatsData = await this.getLastLessonChildren({ childId: this.selectedChild })
+        const params = {}
+        if (this.selectedLetter) {
+          params.curriculumTypeId = this.selectedLetter
+        }
+        this.letterStatsData = await this.getLastLessonChildren({ childId: this.selectedChild, params })
         await this.fetchChildProgress()
         this.loadLetterStatsData = false
       }
