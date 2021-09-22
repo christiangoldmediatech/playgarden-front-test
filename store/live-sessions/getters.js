@@ -1,35 +1,6 @@
 export default {
-  getWeeklySchedule (state) {
-    // Create an array for the week.
-    const schedule = []
-    const sessions = state.sessions
-
-    for (let day = 1; day <= 5; day++) {
-      const daySessions = sessions.filter(({ dateStart }) => {
-        const date = new Date(dateStart)
-        return date.getDay() === day
-      })
-
-      const hours = []
-      for (let hour = 8; hour <= 18; hour++) {
-        if (daySessions.length) {
-          const session =
-            daySessions.find(({ dateStart }) => {
-              const date = new Date(dateStart)
-              return date.getHours() === hour
-            }) || null
-          hours.push(session)
-        } else {
-          hours.push(null)
-        }
-      }
-      schedule.push(hours)
-    }
-    return schedule
-  },
-
   getAdvancedSchedule (state) {
-    const hourDays = new Array(19).fill(null)
+    const hourDays = new Array(19).fill([])
     const days = new Array(5).fill(hourDays)
     // Create default base obj
     const schedule = {
@@ -65,7 +36,7 @@ export default {
     // loaded, and allows an empty table to render correctly.
     // We want the first hour to be earlier than the first hour used,
     // But not earlier than 0 hour
-    if ((sessions[0].hour - 1) > 0) {
+    if (sessions[0].hour > 0) {
       schedule.firstHour = sessions[0].hour - 1
     } else {
       schedule.firstHour = sessions[0].hour
@@ -75,8 +46,10 @@ export default {
     // but not greater than 23
     if (sessions[0].endHour === 23) {
       schedule.endHour = 23
-    } else {
+    } else if (sessions[0].hour === sessions[0].endHour) {
       schedule.endHour = sessions[0].endHour + 1
+    } else {
+      schedule.endHour = sessions[0].endHour
     }
 
     // Now find start and end hours for all sessions
@@ -90,11 +63,13 @@ export default {
         }
       }
 
-      if ((session.endHour + 1) > schedule.endHour) {
+      if (session.endHour > schedule.endHour) {
         if (session.endHour === 23) {
           schedule.endHour = 23
-        } else {
+        } else if (session.hour === session.endHour) {
           schedule.endHour = session.endHour + 1
+        } else {
+          schedule.endHour = session.endHour
         }
       }
     })
@@ -105,16 +80,11 @@ export default {
       })
 
       const hours = []
-      for (let hour = schedule.firstHour; hour <= 18; hour++) {
-        if (daySessions.length) {
-          const session =
-            daySessions.find((session) => {
-              return session.hour === hour
-            }) || null
-          hours.push(session)
-        } else {
-          hours.push(null)
-        }
+      for (let hour = schedule.firstHour; hour <= schedule.endHour; hour++) {
+        const sessions = daySessions.filter((session) => {
+          return session.hour === hour
+        })
+        hours.push(sessions)
       }
       schedule.days[day - 1] = hours
     }

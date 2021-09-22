@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import { jsonCopy } from '@/utils/objectTools.js'
+import { jsonCopy } from '@/utils/objectTools'
 import { shuffle } from '@/utils/arrayTools.js'
 
 import OwImage from './OwImage.vue'

@@ -81,7 +81,7 @@
 
 <script>
 import { hexToRgb } from '@/utils/colorTools'
-import { jsonCopy } from '@/utils/objectTools.js'
+import { jsonCopy } from '@/utils/objectTools'
 import FavoriteCard from './FavoriteCard.vue'
 
 export default {

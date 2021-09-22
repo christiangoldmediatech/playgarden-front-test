@@ -73,7 +73,7 @@ import { defineComponent } from '@nuxtjs/composition-api'
 import { useMusic } from '@/composables'
 import CarouselLetter from '@/components/app/music/CarouselLetter.vue'
 
-import { jsonCopy } from '@/utils/objectTools.js'
+import { jsonCopy } from '@/utils/objectTools'
 
 export default defineComponent({
   name: 'LetterSongs',
@@ -172,8 +172,8 @@ export default defineComponent({
     position: relative;
     & .play-btn {
       position: absolute;
-      top: 40px;
-      left: 40px;
+      top: 52.5px;
+      left: 52.5px;
       color: transparent !important;
       &:hover {
         cursor: pointer;

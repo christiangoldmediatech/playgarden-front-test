@@ -9,6 +9,8 @@
       <shipping-address-editor-dialog ref="shippingAddress" @saved="getUserDetails" />
       <!-- Change Password-->
       <user-password-editor-dialog ref="userPassword" />
+      <!-- Edit Child-->
+      <child-editor-dialog ref="childEditorDialogRef" @saved="getUserDetails" />
       <v-dialog
         v-model="changePlanModal"
         content-class="white"
@@ -467,7 +469,7 @@
                           >
                         </v-row>
 
-                        <v-row class="mb-6" justify="center">
+                        <v-row class="mb-15" justify="center">
                           <v-app class="children-actions">
                             <v-btn
                               class="text-none worksheet-uploaded"
@@ -491,6 +493,15 @@
                               @click.stop="goToProgressReport(child.id)"
                             >
                               Go to Progress Report
+                            </v-btn>
+                            <v-btn
+                              class="mt-2 text-none"
+                              color="primary"
+                              text
+                              large
+                              @click="$refs.childEditorDialogRef.open($event, child)"
+                            >
+                              Edit
                             </v-btn>
                           </v-app>
                         </v-row>
@@ -581,6 +592,7 @@ import BackpackEditorDialog from '@/components/admin/users/BackpackEditorDialog.
 import UserChildLessonOverlay from '@/components/admin/users/UserChildLessonOverlay.vue'
 import UserChildTimelineDialog from '@/components/admin/users/UserChildTimelineDialog.vue'
 import CaregiversDataTable from '@/components/admin/caregivers/CaregiversDataTable.vue'
+import ChildEditorDialog from '@/components/admin/children/ChildEditorDialog'
 import { formatDate } from '~/utils/dateTools'
 
 const CANCELATION_CONFIRMATION_WORD = 'confirm'
@@ -598,7 +610,8 @@ export default {
     BackpackEditorDialog,
     UserChildTimelineDialog,
     UserChildLessonOverlay,
-    CaregiversDataTable
+    CaregiversDataTable,
+    ChildEditorDialog
   },
 
   data: () => ({

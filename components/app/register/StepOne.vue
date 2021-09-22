@@ -63,7 +63,6 @@
 <script>
 import {
   defineComponent,
-  onMounted,
   useRoute,
   useRouter
 } from '@nuxtjs/composition-api'
@@ -82,16 +81,18 @@ export default defineComponent({
   setup () {
     const router = useRouter()
     const route = useRoute()
+
     const { abFlow, isCreditCardRequired, setupABFlow } = useSignup({
-      router,
-      route
+      route: route.value
     })
+
+    setupABFlow()
 
     const goToNextStep = () => {
       switch (abFlow.value) {
         case UserFlow.CREDITCARD:
           router.push({
-            name: 'app-payment',
+            name: 'app-normal-payment',
             query: {
               step: '2',
               process: 'signup'
@@ -109,10 +110,6 @@ export default defineComponent({
           break
       }
     }
-
-    onMounted(async () => {
-      await setupABFlow()
-    })
 
     return {
       abFlow,
@@ -177,8 +174,7 @@ export default defineComponent({
           this.$snotify.success('Welcome to Playgarden Prep!')
         }
         this.goToNextStep()
-      } catch (e) {
-      } finally {
+      } catch (e) {} finally {
         this.loading = false
       }
     },

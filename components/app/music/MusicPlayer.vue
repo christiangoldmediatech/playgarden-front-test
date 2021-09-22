@@ -271,7 +271,7 @@ import { mapGetters } from 'vuex'
 
 import ChildSelect from '@/components/app/ChildSelect.vue'
 
-import { jsonCopy } from '@/utils/objectTools.js'
+import { jsonCopy } from '@/utils/objectTools'
 
 export default {
   name: 'MusicPlayer',

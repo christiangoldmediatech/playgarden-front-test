@@ -4,6 +4,8 @@
   "auth-signup": 1,
   "auth-signup-social": 1,
   "auth-parent": 1,
+  "auth-promo-parent": 1,
+  "auth-normal-parent": 1,
   "auth-verify-caregiver": 1,
   "auth-verify-email": 1,
   "auth-verify-playdate": 1,

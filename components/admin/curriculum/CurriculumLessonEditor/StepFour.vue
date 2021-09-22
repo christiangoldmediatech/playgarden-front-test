@@ -176,13 +176,15 @@
 import { mapActions, mapGetters } from 'vuex'
 
 import submittable from '@/utils/mixins/submittable'
-import UploadMultipleFiles from './UploadMultipleFiles'
+import PgVideoPlayer from '@gold-media-tech/pg-video-player'
+import UploadMultipleFiles from '@/components/pg/components/file-uploader/UploadMultipleFiles.vue'
 
 export default {
   name: 'StepFour',
 
   components: {
-    UploadMultipleFiles
+    UploadMultipleFiles,
+    PgVideoPlayer
   },
 
   mixins: [submittable],

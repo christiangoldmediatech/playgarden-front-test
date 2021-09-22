@@ -1,7 +1,7 @@
 <template>
   <v-main>
     <v-container
-      v-if="$vuetify.breakpoint.mdAndUp"
+      v-if="$vuetify.breakpoint.lgAndUp"
       class="lsess-container"
       fluid
     >
@@ -192,7 +192,8 @@ import SessionsTable from '@/components/app/live-sessions/SessionsTable.vue'
 import RecordedClassPlayer from '@/components/app/live-sessions/RecordedClassPlayer.vue'
 import WeekSelector from '@/components/admin/live-sessions/WeekSelector.vue'
 import DaySelector from '@/components/admin/live-sessions/DaySelector.vue'
-import { jsonCopy } from '~/utils/objectTools'
+import { jsonCopy } from '@/utils'
+import dayjs from 'dayjs'
 
 export default {
   name: 'Index',
@@ -234,7 +235,11 @@ export default {
 
     orderedSessions () {
       const sessions = jsonCopy(this.sessions)
-      return sessions.sort((sessionA, sessionB) => {
+      const now = dayjs().unix()
+
+      return sessions.filter((session) => {
+        return dayjs(session.dateEnd).add(30, 'minutes').unix() >= now
+      }).sort((sessionA, sessionB) => {
         const start = new Date(sessionA.dateStart)
         const end = new Date(sessionB.dateEnd)
 
@@ -253,6 +258,24 @@ export default {
   watch: {
     days () {
       this.getUserLiveSessions(this.days)
+    },
+
+    sessions () {
+      const sessionId = Number(this.$route.query.sid) || 0
+
+      this.$router.push({ name: 'app-live-classes' })
+
+      if (!sessionId) {
+        return
+      }
+
+      const foundSession = this.sessions.find(s => s.id === sessionId)
+
+      if (!foundSession) {
+        return
+      }
+
+      this.$nuxt.$emit('open-entry-dialog', foundSession)
     }
   },
 
@@ -263,6 +286,7 @@ export default {
 
   methods: {
     ...mapActions('live-sessions', ['getUserLiveSessions']),
+
     close () {
       this.$nextTick(() => {
         this.dialog = false

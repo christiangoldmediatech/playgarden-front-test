@@ -293,6 +293,10 @@ export default {
         this.completed = true
       } else {
         this.index += 1
+        this.$router.push(this.generateNuxtRoute('online-worksheet', {
+          ...this.$route.query,
+          worksheet: `${this.index}`
+        }))
         this.$nuxt.$emit('reset-question')
       }
     }

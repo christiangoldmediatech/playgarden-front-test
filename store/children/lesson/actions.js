@@ -38,6 +38,19 @@ export default {
     }
   },
 
+  async getCurrentCurriculumType ({ commit }, childId) {
+    try {
+      const data = await this.$axios.$get(`/lessons/children/${childId}/curriculum/current`)
+      return data
+    } catch (e) {
+      const { data } = e.response
+      if ((data && data.errorCode === 101) || (data && data.errorCode === 102)) {
+        return Promise.reject(data)
+      }
+      return Promise.reject(e)
+    }
+  },
+
   setCurrentLessonVideo ({ commit }, video) {
     commit('SET_CURRENT_LESSON_VIDEO', video)
   },
