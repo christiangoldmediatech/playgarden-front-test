@@ -10,6 +10,8 @@
 
 <script lang="ts">
 import { ref, defineComponent } from '@nuxtjs/composition-api'
+import PgVideoPlayer from '@gold-media-tech/pg-video-player'
+
 import { PlayerInstance } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
 import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
 
@@ -17,6 +19,10 @@ export default defineComponent({
   name: 'BirthdayWish',
 
   layout: 'public-birthday',
+
+  components: {
+    PgVideoPlayer
+  },
 
   setup () {
     const dialog = ref(false)
