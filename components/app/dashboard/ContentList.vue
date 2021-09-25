@@ -1,56 +1,85 @@
 <template>
-  <div>
-    <v-card
-      v-for="item in itemsComputed"
-      :key="`list-${_uid}-item-${item.id}`"
-      class="dashboard-item"
-      active-class="dashboard-item-active"
-      exact-active-class="dashboard-item-exact"
-      :ripple="false"
-      :disabled="item.disabled"
-      :nuxt="item.nuxt"
-      :link="item.link"
-      :exact="item.exact"
-      :to="(item.to) ? item.to : ''"
-      @click="loadDetailVideo(item)"
-    >
-      <v-row no-gutters align="center">
-        <v-col cols="4">
-          <v-img
-            class="dashboard-item-image"
-            :class="{ 'lesson-panel-disabled': isItemDisabled(item) }"
-            :src="item.thumbnail"
-            cover
-            height="100px"
-          />
-        </v-col>
+  <transition name="fade">
+    <div v-if="itemsComputed.length === 0">
+      <v-skeleton-loader
+        v-for="n in NUMBER_OF_CARDS_IN_SKELETON"
+        :key="n"
+        height="100"
+        type="list-item-avatar-two-line"
+        class="pt-3 dashboard-item customSkeletonLoader"
+        loading
+      />
+    </div>
+    <main v-else>
+      <v-card
+        v-for="item in itemsComputed"
+        :key="`list-${_uid}-item-${item.id}`"
+        class="dashboard-item"
+        active-class="dashboard-item-active"
+        exact-active-class="dashboard-item-exact"
+        :ripple="false"
+        :disabled="item.disabled"
+        :nuxt="item.nuxt"
+        :link="item.link"
+        :exact="item.exact"
+        :to="item.to ? item.to : ''"
+        @click="loadDetailVideo(item)"
+      >
+        <v-row no-gutters align="center">
+          <v-col cols="4">
+            <v-img
+              class="dashboard-item-image"
+              :class="{ 'lesson-panel-disabled': isItemDisabled(item) }"
+              :src="item.thumbnail"
+              cover
+              height="100px"
+            />
+          </v-col>
 
-        <v-col cols="8">
-          <div class="mx-2 mt-4 mb-2">
-            <span :class="['dashboard-item-activity-type', { 'dashboard-item-disabled': isItemDisabled(item) }]">
-              {{ item.activityType.name }}
-            </span>
-            <span
-              v-if="item.name"
-              :class="['dashboard-item-name', { 'dashboard-item-disabled': isItemDisabled(item) }]"
+          <v-col cols="8">
+            <div class="mx-2 mt-4 mb-2">
+              <span
+                :class="[
+                  'dashboard-item-activity-type',
+                  { 'dashboard-item-disabled': isItemDisabled(item) }
+                ]"
+              >
+                {{ item.activityType.name }}
+              </span>
+              <span
+                v-if="item.name"
+                :class="[
+                  'dashboard-item-name',
+                  { 'dashboard-item-disabled': isItemDisabled(item) }
+                ]"
+              >
+                with {{ item.name }}
+              </span>
+            </div>
+
+            <div class="mx-2 mb-4 text-body-2">
+              <span
+                :class="{ 'dashboard-item-disabled': isItemDisabled(item) }"
+              >
+                {{ item.description }}
+              </span>
+            </div>
+
+            <div
+              v-if="noLinkMode"
+              :class="{ 'dashboard-item-disabled': isItemDisabled(item) }"
             >
-              with {{ item.name }}
-            </span>
-          </div>
-
-          <div class="mx-2 mb-4 text-body-2">
-            <span :class="{ 'dashboard-item-disabled': isItemDisabled(item) }">{{ item.description }}</span>
-          </div>
-
-          <div v-if="noLinkMode" :class="{ 'dashboard-item-disabled': isItemDisabled(item) }">
-            <span :class="{ 'dashboard-item-disabled': isItemDisabled(item) }">
-              Position: {{ getTimeToMMSS(item.viewed) }}
-            </span>
-          </div>
-        </v-col>
-      </v-row>
-    </v-card>
-  </div>
+              <span
+                :class="{ 'dashboard-item-disabled': isItemDisabled(item) }"
+              >
+                Position: {{ getTimeToMMSS(item.viewed) }}
+              </span>
+            </div>
+          </v-col>
+        </v-row>
+      </v-card>
+    </main>
+  </transition>
 </template>
 
 <script lang="ts">
@@ -58,6 +87,8 @@ import { defineComponent, useRoute } from '@nuxtjs/composition-api'
 import { APP_EVENTS } from '@/models'
 import { computed, toRefs } from '@vue/composition-api'
 import { useNuxtHelper } from '@/composables'
+
+const NUMBER_OF_CARDS_IN_SKELETON = 3
 
 export default defineComponent({
   name: 'ContentList',
@@ -146,7 +177,8 @@ export default defineComponent({
       itemsComputed,
       getTimeToMMSS,
       isItemDisabled,
-      loadDetailVideo
+      loadDetailVideo,
+      NUMBER_OF_CARDS_IN_SKELETON
     }
   }
 })
@@ -164,6 +196,24 @@ export default defineComponent({
     }
     &-name {
       font-size: 12px !important;
+    }
+  }
+}
+</style>
+
+<style lang="scss" scoped>
+.customSkeletonLoader {
+  ::v-deep {
+    .v-skeleton-loader__avatar {
+      border-radius: 10px;
+      height: 85px;
+      width: 120px;
+    }
+
+    .v-skeleton-loader__paragraph,
+    .v-skeleton-loader__sentences {
+      display: grid;
+      grid-gap: 0.8rem;
     }
   }
 }
