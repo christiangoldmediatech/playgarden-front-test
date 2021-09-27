@@ -27,8 +27,8 @@
 
     <v-card width="100%">
       <v-card-text>
-        <v-row>
-          <v-col cols="8">
+        <v-row no-gutters class="mt-5">
+          <v-col cols="7">
             <v-row>
               <v-col class="text-md-right" cols="12" sm="3">
                 <span class="subheader font-weight-bold">Name:</span>
@@ -71,7 +71,7 @@
 
             <v-row>
               <v-col class="text-md-right" cols="12" sm="3">
-                <span class="subheader">Category:</span>
+                <span class="subheader font-weight-bold">Category:</span>
               </v-col>
 
               <v-col cols="12" sm="9" lg="6">
@@ -81,7 +81,9 @@
                   rules="required"
                 >
                   <pg-select
+                    v-model="kidsCornerVideo.activityTypeId"
                     :error-messages="errors"
+                    :items="activityTypes"
                     label="Select a category"
                     solo-labeled
                   />
@@ -91,19 +93,83 @@
 
             <v-row>
               <v-col class="text-md-right" cols="12" sm="3">
-                <span class="subheader">Curriculum:</span>
+                <span class="subheader font-weight-bold">Curriculum:</span>
               </v-col>
 
               <v-col cols="12" sm="9" lg="6">
                 <pg-select
+                  v-model="kidsCornerVideo.curriculumTypeId"
                   label="Curriculum"
                   solo-labeled
                 />
               </v-col>
             </v-row>
           </v-col>
-          <v-col cols="4">
-            images
+          <v-col cols="5">
+            <v-row>
+              <v-col class="text-md" cols="12">
+                <span class="subheader font-weight-bold">Thumbnail:</span>
+              </v-col>
+
+              <v-col class="text-center" cols="12">
+                <!-- <v-img
+                  v-if="activity.thumbnail"
+                  max-width="250"
+                  :src="activity.thumbnail"
+                /> -->
+
+                <validation-provider
+                  v-slot="{ errors }"
+                  name="Thumbnail"
+                >
+                  <pg-file-uploader
+                    ref="imageFileUploaderDropBox"
+                    v-model="thumbnail"
+                    append-icon="mdi-camera"
+                    :error-messages="errors"
+                    label="Upload Thumbnail"
+                    mode="image"
+                    path="activity-thumbnail"
+                    placeholder="Select a thumbnail for this activity video"
+                    solo-labeled
+                    api="dropbox"
+                    jpg
+                    png
+                    svg
+                    @sendFile="setImageFile"
+                  />
+                </validation-provider>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col class="text-md" cols="12">
+                <span class="subheader font-weight-bold">Video:</span>
+              </v-col>
+
+              <v-col class="text-center" cols="12">
+                <validation-provider
+                  v-slot="{ errors }"
+                  name="Thumbnail"
+                >
+                  <pg-file-uploader
+                    ref="imageFileUploaderDropBox"
+                    v-model="thumbnail"
+                    append-icon="mdi-camera"
+                    :error-messages="errors"
+                    label="Upload Thumbnail"
+                    mode="image"
+                    path="activity-thumbnail"
+                    placeholder="Select a thumbnail for this activity video"
+                    solo-labeled
+                    api="dropbox"
+                    jpg
+                    png
+                    svg
+                    @sendFile="setImageFile"
+                  />
+                </validation-provider>
+              </v-col>
+            </v-row>
           </v-col>
         </v-row>
       </v-card-text>
@@ -111,13 +177,41 @@
   </v-container>
 </template>
 
-<script>
-import { defineComponent } from '@vue/composition-api'
+<script lang="ts">
+import { defineComponent, ref, onMounted, computed } from '@vue/composition-api'
+import { useActivity } from '@/composables'
+import { KidsCornerVideo } from '@/models'
 
 export default defineComponent({
   name: 'KidsCornerVideosEditor',
   setup () {
+    const thumbnail = ref<String | null>(null)
+    const description = ref<String | null>(null)
+    const { activities, getActivitesType } = useActivity()
+    const kidsCornerVideo = ref<Partial<KidsCornerVideo>>({
+      curriculumTypeId: 0,
+      activityTypeId: 0,
+      reportCardTypeId: 0,
+      videoId: 0,
+      topics: []
+    })
 
+    const activityTypes = computed(() => {
+      return activities.value.map(activity => ({ text: activity.name, value: activity.id }))
+    })
+
+    const setImageFile = () => {}
+
+    onMounted(async () => {
+      await getActivitesType({ activity: true })
+    })
+
+    return {
+      thumbnail,
+      activityTypes,
+      kidsCornerVideo,
+      setImageFile
+    }
   }
 })
 </script>
