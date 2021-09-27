@@ -41,7 +41,7 @@
                   rules="required"
                 >
                   <pg-text-field
-                    v-model="name"
+                    v-model="kidsCornerVideo.name"
                     :error-messages="errors"
                     label="Name"
                     solo-labeled
@@ -62,7 +62,7 @@
                   rules="required"
                 >
                   <pg-textarea
-                    v-model="description"
+                    v-model="kidsCornerVideo.description"
                     :error-messages="errors"
                     label="Description"
                     solo-labeled
@@ -110,6 +110,20 @@
           </v-col>
           <v-col cols="5">
             <v-row>
+              <v-col class="text-md" cols="12" sm="12">
+                <span class="subheader font-weight-bold">Record Type:</span>
+              </v-col>
+
+              <v-col cols="12" sm="9" lg="12">
+                <pg-select
+                  v-model="kidsCornerVideo.reportCardTypeId"
+                  :items="listRecordTypes"
+                  label="Record Type"
+                  solo-labeled
+                />
+              </v-col>
+            </v-row>
+            <v-row>
               <v-col class="text-md" cols="12">
                 <span class="subheader font-weight-bold">Thumbnail:</span>
               </v-col>
@@ -132,14 +146,13 @@
                     :error-messages="errors"
                     label="Upload Thumbnail"
                     mode="image"
-                    path="activity-thumbnail"
+                    path="kids-corner-videos-thumbnail"
                     placeholder="Select a thumbnail for this activity video"
                     solo-labeled
                     api="dropbox"
                     jpg
                     png
                     svg
-                    @sendFile="setImageFile"
                   />
                 </validation-provider>
               </v-col>
@@ -152,23 +165,24 @@
               <v-col class="text-center" cols="12">
                 <validation-provider
                   v-slot="{ errors }"
-                  name="Thumbnail"
+                  name="Video"
                 >
                   <pg-file-uploader
-                    ref="imageFileUploaderDropBoxref"
-                    v-model="thumbnail"
-                    append-icon="mdi-camera"
+                    ref="videoFileUploaderRef"
+                    v-model="video"
                     :error-messages="errors"
-                    label="Upload Thumbnail"
-                    mode="image"
-                    path="activity-thumbnail"
-                    placeholder="Select a thumbnail for this activity video"
-                    solo-labeled
+                    append-icon="mdi-video"
+                    label="Upload Video"
+                    mode="video"
+                    multi-part
                     api="dropbox"
-                    jpg
-                    png
-                    svg
-                    @sendFile="setImageFile"
+                    path="kids-corner-video"
+                    placeholder="Select a video"
+                    solo-labeled
+                    mp4
+                    mov
+                    mpeg
+                    webm
                   />
                 </validation-provider>
               </v-col>
@@ -194,24 +208,29 @@
 
 <script lang="ts">
 import { defineComponent, ref, onMounted, computed } from '@vue/composition-api'
-import { useActivity, useCurriculumTypes } from '@/composables'
+import { useActivity, useCurriculumTypes, useReportCardTypes } from '@/composables'
+import { useKidsCorner } from '@/composables/kids-corner'
 import { KidsCornerVideo } from '@/models'
 
 export default defineComponent({
   name: 'KidsCornerVideosEditor',
   setup () {
-    const thumbnail = ref<String | null>(null)
-    const video = ref<String | null>(null)
-    const name = ref<String | null>(null)
-    const description = ref<String | null>(null)
+    const thumbnail = ref<any | null>(null)
+    const video = ref<any | null>(null)
     const { activities, getActivitesType } = useActivity()
+    const { reportCardTypes, getReportCardTypes } = useReportCardTypes()
     const { curriculumTypes, getCurriculumTypes } = useCurriculumTypes()
-    const thumbnailFileUploaderRef = ref<HTMLElement | null>(null)
+    const { getKidsCornerById, saveKidsCorner, updateKidsCorner } = useKidsCorner()
+    const thumbnailFileUploaderRef = ref<any | null>(null)
+    const videoFileUploaderRef = ref<any | null>(null)
     const kidsCornerVideo = ref<Partial<KidsCornerVideo>>({
+      name: '',
+      description: '',
+      videoId: null,
+      thumbnail: '',
       curriculumTypeId: null,
       activityTypeId: null,
       reportCardTypeId: null,
-      videoId: null,
       topics: []
     })
 
@@ -230,28 +249,61 @@ export default defineComponent({
       }))]
     })
 
-    const setImageFile = () => {}
+    const listRecordTypes = computed(() => {
+      return reportCardTypes.value.map(reportCard => ({ text: reportCard.name, value: reportCard.id }))
+    })
 
-    const save = () => {
-      console.log('here--', thumbnailFileUploaderRef.value)
+    const clearItem = () => {
+      kidsCornerVideo.value.name = ''
+      kidsCornerVideo.value.description = ''
+      kidsCornerVideo.value.videoId = null
+      kidsCornerVideo.value.thumbnail = ''
+      kidsCornerVideo.value.curriculumTypeId = null
+      kidsCornerVideo.value.activityTypeId = null
+      kidsCornerVideo.value.reportCardTypeId = null
+      kidsCornerVideo.value.topics = []
+    }
+
+    const save = async () => {
+      if (thumbnail && thumbnailFileUploaderRef.value) {
+        if (thumbnailFileUploaderRef.value.type === 'dropBox') {
+          const { filePath } = await thumbnailFileUploaderRef.value.handleDropBoxFileUpload()
+          kidsCornerVideo.value.thumbnail = filePath
+        } else {
+          kidsCornerVideo.value.thumbnail = await thumbnailFileUploaderRef.value.handleUpload()
+        }
+      }
+
+      let dataVideo = null
+      if (video && videoFileUploaderRef.value) {
+        if (videoFileUploaderRef.value.type === 'dropBox') {
+          const { filePath } = await videoFileUploaderRef.value.handleDropBoxFileUpload()
+          dataVideo = filePath
+        } else {
+          dataVideo = await videoFileUploaderRef.value.handleUpload()
+        }
+      }
+      kidsCornerVideo.value.videoId = dataVideo.video.id
+      await saveKidsCorner({ data: kidsCornerVideo.value })
+      clearItem()
     }
 
     onMounted(async () => {
       await getActivitesType({ activity: true })
       await getCurriculumTypes()
+      await getReportCardTypes()
     })
 
     return {
-      name,
-      description,
       thumbnail,
       video,
       activityTypes,
       kidsCornerVideo,
       listCurriculumTypes,
-      setImageFile,
-      save,
-      thumbnailFileUploaderRef
+      listRecordTypes,
+      thumbnailFileUploaderRef,
+      videoFileUploaderRef,
+      save
     }
   },
 
