@@ -126,7 +126,7 @@
                   name="Thumbnail"
                 >
                   <pg-file-uploader
-                    ref="imageFileUploaderDropBox"
+                    ref="thumbnailFileUploaderRef"
                     v-model="thumbnail"
                     append-icon="mdi-camera"
                     :error-messages="errors"
@@ -155,7 +155,7 @@
                   name="Thumbnail"
                 >
                   <pg-file-uploader
-                    ref="imageFileUploaderDropBox"
+                    ref="imageFileUploaderDropBoxref"
                     v-model="thumbnail"
                     append-icon="mdi-camera"
                     :error-messages="errors"
@@ -206,7 +206,7 @@ export default defineComponent({
     const description = ref<String | null>(null)
     const { activities, getActivitesType } = useActivity()
     const { curriculumTypes, getCurriculumTypes } = useCurriculumTypes()
-    const imageFileUploaderDropBox = ref<HTMLElement | null>(null)
+    const thumbnailFileUploaderRef = ref<HTMLElement | null>(null)
     const kidsCornerVideo = ref<Partial<KidsCornerVideo>>({
       curriculumTypeId: null,
       activityTypeId: null,
@@ -233,7 +233,7 @@ export default defineComponent({
     const setImageFile = () => {}
 
     const save = () => {
-      console.log('here--', imageFileUploaderDropBox.value)
+      console.log('here--', thumbnailFileUploaderRef.value)
     }
 
     onMounted(async () => {
@@ -250,7 +250,8 @@ export default defineComponent({
       kidsCornerVideo,
       listCurriculumTypes,
       setImageFile,
-      save
+      save,
+      thumbnailFileUploaderRef
     }
   },
 
