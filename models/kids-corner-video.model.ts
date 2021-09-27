@@ -15,3 +15,11 @@ export interface KidsCornerVideo extends Entity {
     thumbnail: string
     topics: Topic[]
 }
+
+export interface KidsCornerVideoResponse {
+    total: number
+    filtered: number
+    limit: number
+    page: number
+    playdates: KidsCornerVideo[]
+  }

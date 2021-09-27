@@ -1,30 +1,44 @@
-import { ref } from '@nuxtjs/composition-api'
+import { ref, watch } from '@nuxtjs/composition-api'
 import { axios } from '@/utils'
-import { KidsCornerVideo } from '@/models'
+import { KidsCornerVideo, KidsCornerVideoResponse } from '@/models'
 
 export const useKidsCorner = () => {
-  const kidsCornerVideo = ref<Partial<KidsCornerVideo>>({
-    name: '',
-    description: '',
-    thumbnail: '',
-    curriculumTypeId: null,
-    reportCardTypeId: null,
-    videoId: null,
-    topics: []
+  const page = ref(1)
+  const total = ref(0)
+  const limit = ref(10)
+  const kidsCornerVideoResponse = ref<KidsCornerVideoResponse[]>([])
+  const KidsCornerVideos = ref<KidsCornerVideo[]>([])
+
+  watch(kidsCornerVideoResponse, (val:any) => {
+    if (val) {
+      page.value = Number(val.page)
+      total.value = val.total
+      KidsCornerVideos.value = val.kidscorner
+      console.log('vall---', val)
+    }
   })
 
+  const getKidsCorner = async (params?: unknown) => {
+    kidsCornerVideoResponse.value = await axios.$get('/kids-corner', { params })
+  }
+
   const getKidsCornerById = async (id:number) => {
-    kidsCornerVideo.value = await axios.$get(`/kids-corner/${id}`)
+    return await axios.$get(`/kids-corner/${id}`)
   }
   const saveKidsCorner = async ({ data }: {data: any}) => {
-    kidsCornerVideo.value = await axios.$post('/kids-corner', data)
+    return await axios.$post('/kids-corner', data)
   }
   const updateKidsCorner = async (id:number, { data }: {data: any}) => {
-    kidsCornerVideo.value = await axios.$patch(`/kids-corner/${id}`, data)
+    return await axios.$patch(`/kids-corner/${id}`, data)
   }
   return {
-    kidsCornerVideo,
+    total,
+    page,
+    limit,
+    kidsCornerVideoResponse,
+    KidsCornerVideos,
     getKidsCornerById,
+    getKidsCorner,
     saveKidsCorner,
     updateKidsCorner
   }
