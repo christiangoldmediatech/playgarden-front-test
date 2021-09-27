@@ -1,5 +1,5 @@
 <template>
-  <transition name="fade">
+  <transition name="fade" mode="out-in">
     <div v-if="itemsComputed.length === 0">
       <v-skeleton-loader
         v-for="n in NUMBER_OF_CARDS_IN_SKELETON"
