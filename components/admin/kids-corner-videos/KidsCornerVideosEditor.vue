@@ -14,7 +14,7 @@
               dark
               :icon="$vuetify.breakpoint.xs"
               nuxt
-              :to="{ name: 'admin-kids-corner-videos-editor' }"
+              @click="backList"
             >
               <span class="hidden-xs-only white--text">
                 Back
@@ -195,6 +195,7 @@
         <v-btn
           class="px-5 text-none"
           color="primary"
+          :loading="loading"
           x-large
           @click.stop="save"
         >
@@ -207,7 +208,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, computed } from '@vue/composition-api'
+import { defineComponent, ref, useRouter, useRoute, onMounted, computed } from '@nuxtjs/composition-api'
 import { useActivity, useCurriculumTypes, useReportCardTypes } from '@/composables'
 import { useKidsCorner } from '@/composables/kids-corner'
 import { KidsCornerVideo } from '@/models'
@@ -215,6 +216,9 @@ import { KidsCornerVideo } from '@/models'
 export default defineComponent({
   name: 'KidsCornerVideosEditor',
   setup () {
+    const route = useRoute()
+    const router = useRouter()
+    const loading = ref(false)
     const thumbnail = ref<any | null>(null)
     const video = ref<any | null>(null)
     const { activities, getActivitesType } = useActivity()
@@ -262,9 +266,18 @@ export default defineComponent({
       kidsCornerVideo.value.activityTypeId = null
       kidsCornerVideo.value.reportCardTypeId = null
       kidsCornerVideo.value.topics = []
+      thumbnail.value = ''
+      video.value = ''
+    }
+
+    const backList = () => {
+      router.push({
+        name: 'admin-kids-corner-videos'
+      })
     }
 
     const save = async () => {
+      loading.value = true
       if (thumbnail && thumbnailFileUploaderRef.value) {
         if (thumbnailFileUploaderRef.value.type === 'dropBox') {
           const { filePath } = await thumbnailFileUploaderRef.value.handleDropBoxFileUpload()
@@ -286,6 +299,8 @@ export default defineComponent({
       kidsCornerVideo.value.videoId = dataVideo.video.id
       await saveKidsCorner({ data: kidsCornerVideo.value })
       clearItem()
+      loading.value = false
+      backList()
     }
 
     onMounted(async () => {
@@ -295,6 +310,7 @@ export default defineComponent({
     })
 
     return {
+      loading,
       thumbnail,
       video,
       activityTypes,
@@ -303,6 +319,7 @@ export default defineComponent({
       listRecordTypes,
       thumbnailFileUploaderRef,
       videoFileUploaderRef,
+      backList,
       save
     }
   }
