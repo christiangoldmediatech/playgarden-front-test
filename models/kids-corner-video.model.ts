@@ -9,5 +9,9 @@ export interface KidsCornerVideo extends Entity {
     activityTypeId: number | null
     reportCardTypeId: number | null // change to many to many
     videoId: number | null
+    name: string
+    description: string
+    videoUrl: string
+    thumbnail: string
     topics: Topic[]
 }
