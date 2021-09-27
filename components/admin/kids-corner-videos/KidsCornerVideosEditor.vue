@@ -176,6 +176,18 @@
           </v-col>
         </v-row>
       </v-card-text>
+      <v-card-actions>
+        <v-spacer />
+        <v-btn
+          class="px-5 text-none"
+          color="primary"
+          x-large
+          @click.stop="save"
+        >
+          Finalize
+        </v-btn>
+        <v-spacer />
+      </v-card-actions>
     </v-card>
   </v-container>
 </template>
@@ -194,6 +206,7 @@ export default defineComponent({
     const description = ref<String | null>(null)
     const { activities, getActivitesType } = useActivity()
     const { curriculumTypes, getCurriculumTypes } = useCurriculumTypes()
+    const imageFileUploaderDropBox = ref<HTMLElement | null>(null)
     const kidsCornerVideo = ref<Partial<KidsCornerVideo>>({
       curriculumTypeId: null,
       activityTypeId: null,
@@ -219,6 +232,10 @@ export default defineComponent({
 
     const setImageFile = () => {}
 
+    const save = () => {
+      console.log('here--', imageFileUploaderDropBox.value)
+    }
+
     onMounted(async () => {
       await getActivitesType({ activity: true })
       await getCurriculumTypes()
@@ -232,20 +249,25 @@ export default defineComponent({
       activityTypes,
       kidsCornerVideo,
       listCurriculumTypes,
-      setImageFile
+      setImageFile,
+      save
     }
   },
+
+  mounted () {
+    this.save()
+  },
   methods: {
-    async save () {
+    /* async save () {
       if (this.thumbnail) {
         if (this.$refs.imageFileUploaderDropBox.type === 'dropBox') {
           const { filePath } = await this.$refs.imageFileUploaderDropBox.handleDropBoxFileUpload()
-          // item.image = filePath
+          item.image = filePath
         } else {
-          // item.image = await this.$refs.imageFileUploaderDropBox.handleUpload()
+          item.image = await this.$refs.imageFileUploaderDropBox.handleUpload()
         }
       }
-    }
+    } */
   }
 })
 </script>
