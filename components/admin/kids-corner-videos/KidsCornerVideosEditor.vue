@@ -41,6 +41,7 @@
                   rules="required"
                 >
                   <pg-text-field
+                    v-model="name"
                     :error-messages="errors"
                     label="Name"
                     solo-labeled
@@ -61,6 +62,7 @@
                   rules="required"
                 >
                   <pg-textarea
+                    v-model="description"
                     :error-messages="errors"
                     label="Description"
                     solo-labeled
@@ -99,6 +101,7 @@
               <v-col cols="12" sm="9" lg="6">
                 <pg-select
                   v-model="kidsCornerVideo.curriculumTypeId"
+                  :items="listCurriculumTypes"
                   label="Curriculum"
                   solo-labeled
                 />
@@ -179,20 +182,23 @@
 
 <script lang="ts">
 import { defineComponent, ref, onMounted, computed } from '@vue/composition-api'
-import { useActivity } from '@/composables'
+import { useActivity, useCurriculumTypes } from '@/composables'
 import { KidsCornerVideo } from '@/models'
 
 export default defineComponent({
   name: 'KidsCornerVideosEditor',
   setup () {
     const thumbnail = ref<String | null>(null)
+    const video = ref<String | null>(null)
+    const name = ref<String | null>(null)
     const description = ref<String | null>(null)
     const { activities, getActivitesType } = useActivity()
+    const { curriculumTypes, getCurriculumTypes } = useCurriculumTypes()
     const kidsCornerVideo = ref<Partial<KidsCornerVideo>>({
-      curriculumTypeId: 0,
-      activityTypeId: 0,
-      reportCardTypeId: 0,
-      videoId: 0,
+      curriculumTypeId: null,
+      activityTypeId: null,
+      reportCardTypeId: null,
+      videoId: null,
       topics: []
     })
 
@@ -200,16 +206,32 @@ export default defineComponent({
       return activities.value.map(activity => ({ text: activity.name, value: activity.id }))
     })
 
+    const listCurriculumTypes = computed(() => {
+      return [{
+        text: 'None',
+        value: null
+      },
+      ...curriculumTypes.value.map(type => ({
+        text: type.name,
+        value: type.id
+      }))]
+    })
+
     const setImageFile = () => {}
 
     onMounted(async () => {
       await getActivitesType({ activity: true })
+      await getCurriculumTypes()
     })
 
     return {
+      name,
+      description,
       thumbnail,
+      video,
       activityTypes,
       kidsCornerVideo,
+      listCurriculumTypes,
       setImageFile
     }
   }
