@@ -218,10 +218,6 @@
             <validation-provider
               v-slot="{ errors }"
               name="Document"
-              :rules="{
-                required: !item.file && !file,
-                size: 10000
-              }"
             >
               <pg-file-uploader
                 ref="documentFileUploaderDropBox"
