@@ -234,6 +234,18 @@ export default defineComponent({
       listCurriculumTypes,
       setImageFile
     }
+  },
+  methods: {
+    async save () {
+      if (this.thumbnail) {
+        if (this.$refs.imageFileUploaderDropBox.type === 'dropBox') {
+          const { filePath } = await this.$refs.imageFileUploaderDropBox.handleDropBoxFileUpload()
+          // item.image = filePath
+        } else {
+          // item.image = await this.$refs.imageFileUploaderDropBox.handleUpload()
+        }
+      }
+    }
   }
 })
 </script>
