@@ -57,7 +57,7 @@
               </span>
             </div>
 
-            <div class="mx-2 mb-4 text-body-2">
+            <div class="mx-2 mb-3 text-body-2">
               <span
                 :class="{ 'dashboard-item-disabled': isItemDisabled(item) }"
               >
@@ -66,7 +66,20 @@
             </div>
 
             <div
+              v-if="isAdmin && item.viewed && item.viewed.completed"
+              class="mx-2 mt-n3 text-body-2"
+              :class="{ 'dashboard-item-disabled': isItemDisabled(item) }"
+            >
+              <span
+                :class="{ 'dashboard-item-disabled': isItemDisabled(item) }"
+              >
+                Completed: {{ item.viewed.date.substr(0,10) }} {{ item.viewed.date.substr(11,5) }}
+              </span>
+            </div>
+
+            <div
               v-if="noLinkMode"
+              class="mx-2 text-body-2"
               :class="{ 'dashboard-item-disabled': isItemDisabled(item) }"
             >
               <span
@@ -122,6 +135,10 @@ export default defineComponent({
     const { items, noLinkMode } = toRefs(props)
     const route = useRoute()
 
+    const isAdmin = computed(() => {
+      return route.value.name?.includes('admin')
+    })
+
     const getTimeToMMSS = (viewed: any) => {
       if (viewed) {
         const value = viewed.time
@@ -174,6 +191,7 @@ export default defineComponent({
       }
     }
     return {
+      isAdmin,
       itemsComputed,
       getTimeToMMSS,
       isItemDisabled,

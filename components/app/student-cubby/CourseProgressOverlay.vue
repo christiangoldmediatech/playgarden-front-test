@@ -179,7 +179,7 @@ export default {
     ...mapGetters({ currentChild: 'getCurrentChild' }),
 
     studentId () {
-      if (this.$route.name === 'app-student-cubby-course-progress') {
+      if (['app-student-cubby-course-progress', 'admin-progress-report'].includes(this.$route.name)) {
         return this.$route.query.id
       }
       if (this.currentChild && this.currentChild.length > 0) {

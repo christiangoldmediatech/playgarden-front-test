@@ -13,7 +13,21 @@
         </v-progress-circular>
       </v-col>
       <v-col class="ml-2 mt-6">
-        <p class="text-stats">
+        <template v-if="canLaunchCourseProgess">
+          <p class="text-stats clickable" @click="launchCourseProgessOverlay">
+            <span class="font-weight-bold text-stats">
+              {{ item.title }}
+            </span>
+          </p>
+        </template>
+        <template v-else-if="canRedirectToPortfolio">
+          <p class="text-stats clickable" @click="goToPortfolio">
+            <span class="font-weight-bold text-stats">
+              {{ item.title }}
+            </span>
+          </p>
+        </template>
+        <p v-else class="text-stats">
           <span class="font-weight-bold text-stats">
             {{ item.title }}
           </span>
@@ -43,12 +57,28 @@ export default {
       type: Number,
       required: true,
       default: 0
+    },
+    curriculumTypeId: {
+      type: Number,
+      required: true
     }
   },
 
   data: () => ({}),
 
   computed: {
+    isAdmin () {
+      return this.$route.name.includes('admin')
+    },
+
+    canLaunchCourseProgess () {
+      return this.isAdmin && this.item.title === 'Daily Lessons Attended'
+    },
+
+    canRedirectToPortfolio () {
+      return this.isAdmin && this.item.title === 'Worksheets Uploaded'
+    },
+
     getShowDivider () {
       return (this.index === (this.total - 1))
     }
@@ -58,7 +88,20 @@ export default {
 
   created () {},
 
-  methods: {}
+  methods: {
+    launchCourseProgessOverlay () {
+      this.$nuxt.$emit('show-curriculum-progress', this.curriculumTypeId)
+    },
+
+    goToPortfolio () {
+      this.$router.push({
+        name: 'admin-portfolio',
+        query: {
+          id: this.$route.query.id
+        }
+      })
+    }
+  }
 }
 </script>
 

@@ -1,6 +1,6 @@
 <template>
-  <v-dialog v-model="dialog" content-class="elevation-0">
-    <v-col>
+  <v-overlay v-model="dialog" content-class="elevation-0" z-index="10000" :dark="false">
+    <v-container>
       <v-row justify="center">
         <v-card width="70vh" max-width="90%" elevation="0" color="transparent">
           <v-row justify="end">
@@ -19,7 +19,7 @@
       </v-row>
 
       <v-row justify="center">
-        <v-card width="70vh" height="120vh" max-width="90%" color="transparent">
+        <v-card width="70vh" height="90vh" max-width="90%" color="transparent">
           <v-row justify="center" align-content="center">
             <v-progress-circular
               v-if="loading"
@@ -40,8 +40,8 @@
           </v-row>
         </v-card>
       </v-row>
-    </v-col>
-  </v-dialog>
+    </v-container>
+  </v-overlay>
 </template>
 
 <script>
