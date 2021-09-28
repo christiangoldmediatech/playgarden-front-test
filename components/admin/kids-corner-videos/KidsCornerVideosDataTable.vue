@@ -50,7 +50,7 @@
           @update:page="page = $event"
           @edit-item="
             $router.push({
-              name: 'admin-activity-management-editor',
+              name: 'admin-kids-corner-videos-editor',
               query: { id: $event.id },
             })
           "

@@ -129,11 +129,12 @@
               </v-col>
 
               <v-col class="text-center" cols="12">
-                <!-- <v-img
-                  v-if="activity.thumbnail"
-                  max-width="250"
-                  :src="activity.thumbnail"
-                /> -->
+                <v-img
+                  v-if="kidsCornerVideo.thumbnail"
+                  class="mb-6"
+                  width="100%"
+                  :src="kidsCornerVideo.thumbnail"
+                />
 
                 <validation-provider
                   v-slot="{ errors }"
@@ -219,6 +220,7 @@ export default defineComponent({
     const route = useRoute()
     const router = useRouter()
     const loading = ref(false)
+    const id = ref<null|number>()
     const thumbnail = ref<any | null>(null)
     const video = ref<any | null>(null)
     const { activities, getActivitesType } = useActivity()
@@ -304,9 +306,19 @@ export default defineComponent({
     }
 
     onMounted(async () => {
+      id.value = Number(route.value.query.id)
       await getActivitesType({ activity: true })
       await getCurriculumTypes()
       await getReportCardTypes()
+      if (id.value) {
+        const data = await getKidsCornerById(id.value)
+        kidsCornerVideo.value.activityTypeId = data.activityType.id
+        kidsCornerVideo.value.curriculumTypeId = data.curriculumType.id
+        kidsCornerVideo.value.reportCardTypeId = data.reportCardType.id
+        kidsCornerVideo.value.name = data.video.name
+        kidsCornerVideo.value.description = data.video.description
+        kidsCornerVideo.value.thumbnail = data.video.thumbnail
+      }
     })
 
     return {
