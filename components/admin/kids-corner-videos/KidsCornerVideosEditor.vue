@@ -107,14 +107,12 @@
                 />
               </v-col>
             </v-row>
-          </v-col>
-          <v-col cols="5">
             <v-row>
-              <v-col class="text-md" cols="12" sm="12">
+              <v-col class="text-md-right" cols="12" sm="3">
                 <span class="subheader font-weight-bold">Record Type:</span>
               </v-col>
 
-              <v-col cols="12" sm="9" lg="12">
+              <v-col cols="12" sm="9" lg="6">
                 <pg-select
                   v-model="kidsCornerVideo.reportCardTypeId"
                   :items="listRecordTypes"
@@ -123,6 +121,8 @@
                 />
               </v-col>
             </v-row>
+          </v-col>
+          <v-col cols="5">
             <v-row>
               <v-col class="text-md" cols="12">
                 <span class="subheader font-weight-bold">Thumbnail:</span>
@@ -188,6 +188,20 @@
                 </validation-provider>
               </v-col>
             </v-row>
+            <v-row>
+              <v-col class="text-md" cols="12">
+                <span class="subheader font-weight-bold">Language:</span>
+              </v-col>
+
+              <v-col cols="12">
+                <pg-select
+                  v-model="languageId"
+                  :items="listLanguage"
+                  label="Language"
+                  solo-labeled
+                />
+              </v-col>
+            </v-row>
           </v-col>
         </v-row>
       </v-card-text>
@@ -221,6 +235,7 @@ export default defineComponent({
     const router = useRouter()
     const loading = ref(false)
     const id = ref<null|number>()
+    const languageId = ref<number | null>(null)
     const thumbnail = ref<any | null>(null)
     const video = ref<any | null>(null)
     const { activities, getActivitesType } = useActivity()
@@ -253,6 +268,13 @@ export default defineComponent({
         text: type.name,
         value: type.id
       }))]
+    })
+
+    const listLanguage = computed(() => {
+      return [{
+        text: 'English',
+        value: null
+      }]
     })
 
     const listRecordTypes = computed(() => {
@@ -325,10 +347,12 @@ export default defineComponent({
       loading,
       thumbnail,
       video,
+      languageId,
       activityTypes,
       kidsCornerVideo,
       listCurriculumTypes,
       listRecordTypes,
+      listLanguage,
       thumbnailFileUploaderRef,
       videoFileUploaderRef,
       backList,
