@@ -1,8 +1,17 @@
 <template>
   <v-main>
-    <birthday-wishes :is-visible="showBirthdayModal" @setModal="setModal" />
-    <v-row align-content="center" justify="center" class="virtual-preschool">
-      <v-col v-for="section in sections" :key="section.title" cols="12" md="4" class="section">
+    <v-row
+      align-content="center"
+      justify="center"
+      class="virtual-preschool"
+    >
+      <v-col
+        v-for="section in sections"
+        :key="section.title"
+        cols="12"
+        md="4"
+        class="section"
+      >
         <v-img
           :src="section.imageUrl"
           gradient="rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)"
@@ -19,16 +28,29 @@
             >
 
             <!-- Lady -->
-            <img class="section-lady" :src="section.teacherUrl">
+            <img
+              class="section-lady"
+              :src="section.teacherUrl"
+            >
 
             <!-- Bubble -->
-            <img class="section-bubble" src="@/assets/png/virtual-preschool/Bubble.png">
+            <img
+              class="section-bubble"
+              src="@/assets/png/virtual-preschool/Bubble.png"
+            >
 
             <!-- Bubble Text -->
             <div class="section-bubble-text">
               {{ section.message }}
-              <v-btn icon class="my-n4 mx-n2">
-                <v-icon class="white--text" size="22" @click.stop="handleAudioPlay(section.audio)">
+              <v-btn
+                icon
+                class="my-n4 mx-n2"
+              >
+                <v-icon
+                  class="white--text"
+                  size="22"
+                  @click.stop="handleAudioPlay(section.audio)"
+                >
                   mdi-volume-high
                 </v-icon>
               </v-btn>
@@ -42,25 +64,36 @@
         </v-img>
       </v-col>
     </v-row>
+    <BirthdayVideoDialog />
   </v-main>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, useStore } from '@nuxtjs/composition-api'
-import { useAppEventBusHelper } from '@/composables'
-import BirthdayWishes from '@/components/holydays/birthday/model/index.vue'
-import { APP_EVENTS } from '@/models'
+import {
+  computed,
+  defineComponent,
+  onBeforeUnmount,
+  onMounted,
+  ref,
+  useStore
+} from '@nuxtjs/composition-api'
+import { Child } from '@/models'
+import BirthdayVideoDialog from '@/components/features/childBirthday/BirthdayVideoDialog.vue'
+
 export default defineComponent({
-  layout: 'pg',
+  name: 'VirtualPreschool',
   components: {
-    BirthdayWishes
+    BirthdayVideoDialog
   },
-
-  setup () {
+  layout: 'pg',
+  setup() {
     const store = useStore()
-    const baseRoute = process.env.testEnv === 'production' ? `${process.env.baseRouteProd}` : '/'
+    const baseRoute =
+      process.env.testEnv === 'production'
+        ? `${process.env.baseRouteProd}`
+        : '/'
 
-    const currentChildren = store.getters.getCurrentChild
+    const currentChild = computed((): Utils.Maybe<Child> => store.getters.getCurrentChild?.[0])
 
     const sections = [
       {
@@ -91,7 +124,10 @@ export default defineComponent({
         imageUrl: require('@/assets/png/virtual-preschool/Cubby.png'),
         teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Ally_cubby.png'),
         title: 'Student Cubby',
-        route: { name: 'app-student-cubby-puzzle', query: { id: currentChildren[0].id } },
+        route: {
+          name: 'app-student-cubby-puzzle',
+          query: { id: currentChild.value?.id }
+        },
         message: 'Store your work and track progress in your cubby!',
         audio: `${baseRoute}audio/virtual-preschool/Cubby.m4a`
       },
@@ -114,22 +150,10 @@ export default defineComponent({
     ]
 
     const player = ref<HTMLAudioElement>()
-    const showBirthdayModal = ref(false)
-    const eventBus = useAppEventBusHelper()
-    const setModal = (show:boolean) => {
-      showBirthdayModal.value = show
-    }
+    const isBirthdayModalvisible = ref(false)
+
     onMounted(() => {
       player.value = new Audio()
-      const todaybirthday = currentChildren.filter((child:any) => {
-        const today = new Date()
-        const childBirthday = new Date(child.birthday)
-        return today.getDate() === childBirthday.getDate() && today.getMonth() === childBirthday.getMonth()
-      })
-      showBirthdayModal.value = todaybirthday.length > 0
-      eventBus.$on(APP_EVENTS.BIRTHDAY_SHOW_MODAL, (show: boolean) => {
-        setModal(show)
-      })
     })
 
     const handleAudioPlay = (audio: string) => {
@@ -144,8 +168,8 @@ export default defineComponent({
     return {
       sections,
       handleAudioPlay,
-      setModal,
-      showBirthdayModal
+      isBirthdayModalvisible,
+      currentChild
     }
   }
 })
@@ -213,7 +237,7 @@ export default defineComponent({
     left: 10px;
 
     background: rgba(178, 230, 141, 0.2);
-    border: 4px solid #B2E68D;
+    border: 4px solid #b2e68d;
     box-sizing: border-box;
     border-radius: 8px;
     cursor: pointer;

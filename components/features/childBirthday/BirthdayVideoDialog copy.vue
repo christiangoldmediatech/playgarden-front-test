@@ -1,13 +1,20 @@
 <template>
   <div>
-    <birthday-content-dialog :value="isVisible" :is-closeable="true" @close="$emit('setModal', false) ">
-      <br>
+    <birthday-content-dialog
+      :value="value"
+      :is-closeable="true"
+      @close="$emit('input', false)"
+    >
+      <!-- <br>
       <br>
       <hr class="green-line">
       <hr class="soft-green-line">
-      <v-row class="px-3">
-        <pg-video-player inline @ready="onPlayerReady" />
-      </v-row>
+      <v-row class="px-3"> -->
+      <pg-video-player
+        inline
+        @ready="onPlayerReady"
+      />
+      <!-- </v-row> -->
     </birthday-content-dialog>
   </div>
 </template>
@@ -18,20 +25,23 @@ import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObj
 import BirthdayContentDialog from '@/components/ui/dialogs/LargeImageContentDialog/BirthdayContentDialog.vue'
 import { defineComponent, ref } from '@nuxtjs/composition-api'
 
+const BIRTHDAY_VIDEO_URL =
+  'https://video-on-demand-stack-prod-source-1rd9pvb7kaoed.s3.amazonaws.com/parts/activity-video/1a596269-7a85-47e7-98c1-c16f396f9249.mp4'
+
 export default defineComponent({
   name: 'BirthdayWishes',
-  props: ['isVisible'],
+  props: ['value'],
   components: {
     BirthdayContentDialog
   },
-  setup () {
+  setup() {
     const dialog = ref(false)
     const title = ref('')
     const onPlayerReady = (player: PlayerInstance) => {
       const mediaObject: MediaObject = {
         title: 'Happy Birthday',
         src: {
-          url: 'https://d3dnpqxalhovr4.cloudfront.net/out/v1/a641438ecab74f9eb3dd1b4e92210988/748ec5dbba9f4aa0a2eef8a74fb2c043/68b7491c440d41d4b8b6fb0ae08fe0b4/index.m3u8',
+          url: BIRTHDAY_VIDEO_URL,
           type: 'application/x-mpegURL'
         }
       }
@@ -47,10 +57,16 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.green-line{
-  height:9px;border-width:0;color:red;background-color:green
+.green-line {
+  height: 9px;
+  border-width: 0;
+  color: red;
+  background-color: green;
 }
-.soft-green-line{
-  height:9px;border-width:0;color:red;background-color:rgb(64, 167, 51)
+.soft-green-line {
+  height: 9px;
+  border-width: 0;
+  color: red;
+  background-color: rgb(64, 167, 51);
 }
 </style>

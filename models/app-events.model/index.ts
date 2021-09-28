@@ -14,5 +14,5 @@ export enum APP_EVENTS {
   // LIBRARY
   LIBRARY_ADD_VIDEO_TO_FAVORITES = 'library-add-video-to-favorites',
   // BITHDAY
-  BIRTHDAY_SHOW_MODAL = 'show-birthday-modal'
+  SHOW_BIRTHDAY_MODAL = 'show-birthday-modal'
 }
