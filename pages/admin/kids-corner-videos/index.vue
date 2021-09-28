@@ -13,10 +13,6 @@ export default defineComponent({
 
   components: {
     KidsCornerVideosDataTable
-  },
-
-  mounted () {
-    // this.$refs.KidsCornerVideosDataTable.refresh()
   }
 })
 </script>
