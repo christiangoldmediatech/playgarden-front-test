@@ -209,7 +209,7 @@
         <v-spacer />
         <v-btn
           class="px-5 text-none"
-          color="primary"
+          color="accent"
           :loading="loading"
           x-large
           @click.stop="save"
