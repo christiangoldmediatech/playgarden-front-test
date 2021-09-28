@@ -62,35 +62,9 @@
                 mdi-tune
               </v-icon>
             </v-col>
-
-            <v-col cols="12" md="7" class="flex-shrink-0 flex-grow-1">
-              <v-row no-gutters>
-                <!-- <pg-select
-                  v-model="activeFilters"
-                  clearable
-                  :items="filterList"
-                  item-text="text"
-                  item-value="value"
-                  label="Filter"
-                  solo-labeled
-                  multiple
-                /> -->
-              </v-row>
-            </v-col>
           </template>
 
           <template v-slot:[`item.video.name`]="{ item }">
-            <v-btn
-              class="mr-2"
-              :disabled="loading"
-              icon
-              @click.stop="toggleFeatured(item)"
-            >
-              <v-icon
-                :color="item.featured ? 'accent' : ''"
-                v-text="item.featured ? 'mdi-star' : 'mdi-star-outline'"
-              />
-            </v-btn>
             {{ item.video.name }}
           </template>
         </pg-admin-data-table>
@@ -161,8 +135,6 @@ export default defineComponent({
       if (search.value) {
         params.name = search.value
       }
-
-      console.log('params--', params)
 
       try {
         await getKidsCorner(params)
