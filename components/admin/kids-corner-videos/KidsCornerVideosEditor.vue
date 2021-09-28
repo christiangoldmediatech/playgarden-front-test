@@ -132,7 +132,7 @@
                 <v-img
                   v-if="kidsCornerVideo.thumbnail"
                   class="mb-6"
-                  width="100%"
+                  max-height="280"
                   :src="kidsCornerVideo.thumbnail"
                 />
 
