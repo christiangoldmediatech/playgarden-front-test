@@ -14,7 +14,6 @@ export const useKidsCorner = () => {
       page.value = Number(val.page)
       total.value = val.total
       KidsCornerVideos.value = val.kidscorner
-      console.log('vall---', val)
     }
   })
 
@@ -31,6 +30,9 @@ export const useKidsCorner = () => {
   const updateKidsCorner = async (id:number, { data }: {data: any}) => {
     return await axios.$patch(`/kids-corner/${id}`, data)
   }
+  const deleteKidsCorner = async (id: number) => {
+    return await axios.$delete(`/kids-corner/${id}`)
+  }
   return {
     total,
     page,
@@ -40,6 +42,7 @@ export const useKidsCorner = () => {
     getKidsCornerById,
     getKidsCorner,
     saveKidsCorner,
-    updateKidsCorner
+    updateKidsCorner,
+    deleteKidsCorner
   }
 }

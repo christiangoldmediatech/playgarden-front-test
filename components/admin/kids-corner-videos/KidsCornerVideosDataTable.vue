@@ -54,6 +54,7 @@
               query: { id: $event.id },
             })
           "
+          @remove-item="remove"
         >
           <template v-slot:[`top.prepend`]>
             <v-col class="fkex-shrink-1 flex-grow-0">
@@ -144,7 +145,7 @@ export default defineComponent({
     const activeFilters = ref<any | null >('')
     const filterList = ref<any[]>([])
 
-    const { KidsCornerVideos, page, total, limit, getKidsCorner } = useKidsCorner()
+    const { KidsCornerVideos, page, total, limit, getKidsCorner, deleteKidsCorner } = useKidsCorner()
     const refresh = async (clear = false) => {
       loading.value = true
       const params = {
@@ -182,7 +183,17 @@ export default defineComponent({
       total,
       filterList,
       KidsCornerVideos,
-      refresh
+      refresh,
+      deleteKidsCorner
+    }
+  },
+  methods: {
+    remove ({ id, video }: any) {
+      this.$nuxt.$emit('open-prompt', {
+        title: 'Delete playdate?',
+        message: `Are you sure you want to delete <b>${video.name}</b>?`,
+        action: () => this.deleteKidsCorner(id).then(this.refresh)
+      })
     }
   }
 })
