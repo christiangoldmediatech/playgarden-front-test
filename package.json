@@ -71,7 +71,7 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^26.0.1",
     "cypress": "^7.1.0",
-    "eslint": "^7.25.0",
+    "eslint": "^7.32.0",
     "eslint-plugin-nuxt": "^1.0.0",
     "jest": "^26.0.1",
     "jest-transform-stub": "^2.0.0",

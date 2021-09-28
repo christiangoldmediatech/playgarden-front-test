@@ -235,38 +235,51 @@
       :fullscreen="isMobile"
       max-width="1000"
     >
-      <v-col cols="12">
-        <v-row justify="end">
-          <v-btn icon @click.stop="removeSubscriptionModal = false">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </v-row>
-      </v-col>
+      <div class="green-line green-line-1" />
+      <div class="green-line green-line-2" />
 
       <v-col cols="12">
         <v-row class="flex-column-reverse flex-md-row">
           <v-col class="px-6" cols="12" md="6">
             <v-col class="text-center" cols="12">
-              <span
-                class="font-weight-bold pg-letter-spacing text-h5 text-md-h4"
-              >
-                WE ARE SORRY
-                <br>
-                TO SEE YOU GO!
-              </span>
+              <underlined-title
+                class="text-h5 text-md-h4 pg-letter-spacing"
+                text="WE ARE SORRY TO SEE YOU GO!"
+              />
             </v-col>
 
             <v-card-text class="text-justify">
-              <p>
-                Early education and stimulation to
-                generate development is key in the first 3 years of a child's life.
+              <p class="font-weight-medium">
+                ARE YOU LEAVING US?
               </p>
-              <p>
-                Playgarden Prep Online was created to help with that. Won't
-                you reconsider?
+              <p>Before you cancel, please let us know the reason you are leaving. Every bit of feedback helps us create a better educational experience for little ones!</p>
+
+              <v-radio-group v-model="leaveMotive">
+                <v-radio
+                  v-for="lm in leaveMotives"
+                  :key="lm"
+                  :value="lm"
+                >
+                  <template #label>
+                    <span class="body-2">{{ lm }}</span>
+                  </template>
+                </v-radio>
+              </v-radio-group>
+
+              <v-text-field
+                v-show="isLastLeaveMotive"
+                v-model="otherLeaveMotive"
+                class=""
+                solo
+                dense
+                placeholder="Reason..."
+              />
+
+              <p class="font-weight-bold">
+                Thank you so much!
               </p>
-              <p>
-                Do you still want to cancel your subscription?
+              <p class="font-weight-bold">
+                Miss Sarah and the Playgarden Prep teachers
               </p>
             </v-card-text>
           </v-col>
@@ -276,7 +289,7 @@
               <v-img
                 alt="Remove Subscription"
                 max-width="100%"
-                :src="require('assets/png/remove-subscription.png')"
+                :src="require('assets/png/cancel-account-child.jpg')"
               />
             </div>
           </v-col>
@@ -287,10 +300,11 @@
         <v-btn
           color="primary"
           :loading="loading"
+          :disabled="!leaveMotive"
           x-large
           @click="removeSubscription"
         >
-          CONFIRM CANCELATION
+          CANCEL ACCOUNT
         </v-btn>
       </v-col>
 
@@ -300,9 +314,10 @@
           :loading="loading"
           x-large
           text
+          class="text-none text-decoration-underline"
           @click.stop="removeSubscriptionModal = false"
         >
-          GO BACK
+          Nevermind, I want to keep learning with Playgarden Prep!
         </v-btn>
       </v-col>
     </pg-dialog>
@@ -374,11 +389,30 @@ export default {
       stripeCardModal: false,
       removeSubscriptionModal: false,
       userCards: [],
-      plan: {}
+      plan: {},
+      leaveMotive: '',
+      otherLeaveMotive: '',
+      leaveMotives: [
+        'Repeated technical issues',
+        'Too expensive',
+        'Using another learning platform',
+        'Going to in person school',
+        'Too much time commitment',
+        'My little one wasn\'t engaged',
+        'Didn\'t use it enough',
+        'Missing features I need',
+        'Didn\'t meet my expectations',
+        'Other (please explain)'
+      ]
     }
   },
   computed: {
     ...mapGetters('auth', ['getUserInfo']),
+
+    isLastLeaveMotive () {
+      return this.leaveMotives[this.leaveMotives.length - 1] === this.leaveMotive
+    },
+
     hasMembership () {
       const status = this.billing.status
       return (
@@ -511,7 +545,8 @@ export default {
     async removeSubscription () {
       try {
         this.loading = true
-        await this.cancelSubscription()
+        const reason = this.isLastLeaveMotive ? (this.otherLeaveMotive || this.leaveMotive) : this.leaveMotive
+        await this.cancelSubscription(reason)
         this.$snotify.success('Subscription has been canceled successfully!')
         await this.getBillingDetails()
         // update auser info on store

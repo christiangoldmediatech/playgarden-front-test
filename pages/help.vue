@@ -318,7 +318,6 @@ export default defineComponent({
 
   setup () {
     useMeta({ title: 'Help' })
-
     const store = useStore<TypedStore>()
     const vuetify = useVuetifyHelper()
     const { isUserLoggedIn } = useAuth({ store })

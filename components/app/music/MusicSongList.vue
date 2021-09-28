@@ -20,12 +20,24 @@
 
       <v-spacer class="d-none d-md-flex" />
 
+      <v-col cols="12" class="d-flex align-center justify-center mt-4 d-sm-none">
+        <div class="music-letter-select">
+          <music-carousel-letter
+            :is-full-width="true"
+            :value="selectedLetterId"
+            :disabled-letters="disabledLetters"
+            @select="$emit('select-letter', $event)"
+          />
+        </div>
+      </v-col>
+
       <v-col cols="12" md="" class="d-flex justify-center justify-md-end">
         <v-btn
           large
           class="favorite-button white my-4 mt-md-2 mb-md-0"
           data-test-id="favorite-toggle"
           :class="{ 'selected': showOnlyFavorites }"
+          :width="isMobile ? 250 : undefined"
           :ripple="false"
           @click="$emit('showFavorites')"
         >
@@ -68,16 +80,26 @@
     <template v-else>
       <template v-if="selectedFilter === 'letter'">
         <div data-test-id="letter-songs-list">
-          <letter-songs
+          <div
             v-for="letter in filteredLettersByLetterId"
             :key="letter.id"
-            :letter="letter"
-            :songs="letter.musicLibrary"
-            class="my-2 mt-md-4 mb-md-8"
-            @add="addSongToPlayList"
-            @favorite="$emit('favorite', $event)"
-            @createPlayList="emitPlayList"
-          />
+          >
+            <v-lazy
+              :options="{
+                threshold: .5,
+              }"
+              min-height="400"
+            >
+              <letter-songs
+                :letter="letter"
+                :songs="letter.musicLibrary"
+                class="my-2 mt-md-4 mb-md-8"
+                @add="addSongToPlayList"
+                @favorite="$emit('favorite', $event)"
+                @createPlayList="emitPlayList"
+              />
+            </v-lazy>
+          </div>
         </div>
       </template>
     </template>
@@ -88,14 +110,16 @@
 import { mapGetters, mapActions } from 'vuex'
 
 import LetterSongs from '@/components/app/music/LetterSongs.vue'
+import MusicCarouselLetter from '@/components/app/music/MusicLetterCarousel.vue'
 
-import { jsonCopy } from '@/utils/objectTools.js'
+import { jsonCopy } from '@/utils/objectTools'
 
 export default {
   name: 'MusicSongList',
 
   components: {
-    LetterSongs
+    LetterSongs,
+    MusicCarouselLetter
   },
 
   emits: ['addSong', 'newPlayList'],
@@ -187,6 +211,10 @@ export default {
       }
 
       return false
+    },
+
+    isMobile () {
+      return this.$vuetify.breakpoint.mobile
     }
   },
 
@@ -236,8 +264,8 @@ export default {
     box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
   }
 }
-.child-selector {
-  max-width: 300px;
+.music-letter-select {
+  width: 250px;
 }
 
 .favorite-button {

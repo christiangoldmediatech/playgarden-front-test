@@ -3,7 +3,11 @@
   "auth-login": 1,
   "auth-signup": 1,
   "auth-signup-social": 1,
+  "auth-normal-signup-social": 1,
+  "auth-promo-signup-social": 1,
   "auth-parent": 1,
+  "auth-promo-parent": 1,
+  "auth-normal-parent": 1,
   "auth-verify-caregiver": 1,
   "auth-verify-email": 1,
   "auth-verify-playdate": 1,
@@ -13,5 +17,6 @@
   "privacy-policy": 1,
   "auth-password-reset": 1,
   "shared-slug": 1,
-  "terms-conditions": 1
+  "terms-conditions": 1,
+  "happy-birthday-name": 1
 }

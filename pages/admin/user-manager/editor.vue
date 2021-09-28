@@ -202,7 +202,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import dayjs from 'dayjs'
 
-import { jsonCopy } from '@/utils/objectTools.js'
+import { jsonCopy } from '@/utils/objectTools'
 
 export default {
   name: 'Editor',

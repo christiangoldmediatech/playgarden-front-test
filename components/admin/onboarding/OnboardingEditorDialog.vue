@@ -177,6 +177,7 @@
 
 <script>
 import { mapActions } from 'vuex'
+import PgVideoPlayer from '@gold-media-tech/pg-video-player'
 
 function generateItemTemplate () {
   return {
@@ -190,6 +191,10 @@ function generateItemTemplate () {
 
 export default {
   name: 'OnboardingEditorDialog',
+
+  components: {
+    PgVideoPlayer
+  },
 
   data: () => ({
     dialog: false,

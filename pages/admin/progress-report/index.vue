@@ -217,15 +217,21 @@ export default {
     }
   },
 
+  watch: {
+    async selectedLetter (val) {
+      this.loadLetterStatsData = true
+      await this.getDataGraphic()
+      await this.getDataReport()
+    }
+  },
+
   async created () {
     this.selectedChild = this.$route.query.id
     this.general = true
     this.child = await this.getChildren(this.selectedChild)
-    const { curriculumType } = await this.getCurrentLesson({ childrenIds: this.selectedChild })
-    this.selectedLetter = curriculumType.id
     await this.getTypes()
-    await this.getDataGraphic()
-    await this.getDataReport()
+    const curriculumType = await this.getCurrentCurriculumType(this.selectedChild)
+    this.selectedLetter = curriculumType.id
     this.$nuxt.$on('detail-progress-report', (data) => {
       this.loadDetailReport(data.point.category)
     })
@@ -241,7 +247,7 @@ export default {
     ...mapActions('progress-report', ['getGraphicByChildrenId', 'getLastLessonChildren']),
     ...mapActions({ setChild: 'setChild' }),
     ...mapActions('children', { getChildren: 'getById' }),
-    ...mapActions('children/lesson', ['getCurrentLesson']),
+    ...mapActions('children/lesson', ['getCurrentLesson', 'getCurrentCurriculumType']),
 
     goBack () {
       this.$router.go(-1)
@@ -256,7 +262,11 @@ export default {
 
     async getDataReport () {
       if (this.selectedChild) {
-        this.letterStatsData = await this.getLastLessonChildren({ childId: this.selectedChild })
+        const params = {}
+        if (this.selectedLetter) {
+          params.curriculumTypeId = this.selectedLetter
+        }
+        this.letterStatsData = await this.getLastLessonChildren({ childId: this.selectedChild, params })
         await this.fetchChildProgress()
         this.loadLetterStatsData = false
       }

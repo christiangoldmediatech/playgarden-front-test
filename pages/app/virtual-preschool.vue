@@ -256,6 +256,14 @@ export default defineComponent({
   }
 }
 
+@media (min-width: $breakpoint-md) {
+  .section {
+    &-bubble-text {
+      font-size: 24px;
+    }
+  }
+}
+
 @media (max-width: $breakpoint-sm) {
   .section {
     padding: 12px;
