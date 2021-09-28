@@ -177,6 +177,7 @@ export default defineComponent({
     })
 
     return {
+      search,
       activeFilters,
       loading,
       page,
