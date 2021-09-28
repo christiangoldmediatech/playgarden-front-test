@@ -109,14 +109,14 @@
             </v-row>
             <v-row>
               <v-col class="text-md-right" cols="12" sm="3">
-                <span class="subheader font-weight-bold">Record Type:</span>
+                <span class="subheader font-weight-bold">Report card type:</span>
               </v-col>
 
               <v-col cols="12" sm="9" lg="6">
                 <pg-select
                   v-model="kidsCornerVideo.reportCardTypeId"
                   :items="listRecordTypes"
-                  label="Record Type"
+                  label="Report card type"
                   solo-labeled
                 />
               </v-col>
