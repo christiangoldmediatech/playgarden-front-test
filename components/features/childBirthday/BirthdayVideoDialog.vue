@@ -3,17 +3,51 @@
     <v-dialog
       v-model="isDialogVisible"
       max-width="800px"
-      content-class="videoPlayerdialog"
+      content-class="birthdayVideoPlayerDialog"
     >
-      <!-- <div class="bar bar-1" />
-      <div class="bar bar-2" /> -->
-      <v-row>
-        <pg-video-player
-          inline
-          @ready="onPlayerReady"
-        />
-        <!-- </v-row> -->
-      </v-row>
+      <div class="pg-player-container">
+        <div class="bar bar-1 primary" />
+        <div class="bar bar-2 secondary" />
+        <v-btn
+          icon
+          color="white"
+          class="closeButton"
+          @click="handleDialogCloseRequest"
+        >
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+        <main class="pos-relative">
+          <PgVideoPlayer
+            inline
+            :control-config="playerControlconfig"
+            @ready="onPlayerReady"
+          >
+            <template #inline-play-icon="{ firstPlay }">
+              <transition name="fade">
+                <div
+                  v-if="!hasVideoStarted"
+                  class="playControls"
+                >
+                  <section
+                    v-if="currentChild"
+                    class="birthdayWishText my-5"
+                  >
+                    <div>Happy Birthday</div>
+                    <div> {{ currentChild.firstName }}!</div>
+                  </section>
+                  <img
+                    :src="require('@/assets/images/player/icons/play-orangeColor.svg')"
+                    alt="play-icon"
+                    class="playIcon"
+                    @click="handlePlayRequest(firstPlay)"
+                  >
+                  </section>
+                </div>
+              </transition>
+            </template>
+          </PgVideoPlayer>
+        </main>
+      </div>
     </v-dialog>
   </div>
 </template>
@@ -24,28 +58,40 @@ import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObj
 import { defineComponent, onBeforeUnmount, onMounted, ref, watch } from '@nuxtjs/composition-api'
 import { useAppEventBusHelper } from '@/composables'
 import { APP_EVENTS } from '@/models'
+// @ts-ignore
+import PgVideoPlayer from '@gold-media-tech/pg-video-player'
+import { ControlPropConfig } from '@gold-media-tech/pg-video-player/src/types/Controls'
 import { useBirthdayHelpers } from './composables'
 
-const defaultMediaObject = {
-  // title: 'Test 1',
-  // description: 'bla bla bla',
-  src: {
-    url: 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8',
-    type: 'application/x-mpegURL'
-  }
-  // meta: {
-  //   videoType: 'VIDEO LESSONS:',
-  //   videoIcon: '/blocks.svg'
-  // }
-}
+const DEFAULT_BIRTHDAY_THUMBNAIL_PATH = require('@/assets/images/player/thumbnails/Birthday.png')
 
 const BIRTHDAY_VIDEO_URL =
   'https://video-on-demand-stack-prod-source-1rd9pvb7kaoed.s3.amazonaws.com/parts/activity-video/1a596269-7a85-47e7-98c1-c16f396f9249.mp4'
 
+// The url below can be used for testing the functionality of the player when BIRTHDAY_VIDEO_URL doesn't work
+const DEMO_VIDEO_URL = 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8'
+
+const birthdayWishMediaObject: MediaObject = {
+  poster: DEFAULT_BIRTHDAY_THUMBNAIL_PATH,
+  src: {
+    url: BIRTHDAY_VIDEO_URL,
+    type: 'application/x-mpegURL'
+  }
+}
+
+const playerControlconfig: ControlPropConfig = {
+  prevTrack: false,
+  nextTrack: false
+}
+
 export default defineComponent({
   name: 'BirthdayVideoDialog',
+  components: {
+    PgVideoPlayer
+  },
   setup() {
     const isDialogVisible = ref(false)
+    const hasVideoStarted = ref(false)
     const { isCurrentChildsBirthday, currentChild } = useBirthdayHelpers()
     const eventBus = useAppEventBusHelper()
 
@@ -75,59 +121,102 @@ export default defineComponent({
       isDialogVisible.value = true
     }
 
+    function handleDialogCloseRequest() {
+      isDialogVisible.value = false
+    }
+
+    function handlePlayRequest(firstPlay: () => void) {
+      firstPlay()
+      hasVideoStarted.value = true
+    }
+
     const onPlayerReady = (player: PlayerInstance) => {
-      const mediaObject: MediaObject = {
-        title: `Happy Birthday ${currentChild.value?.firstName || ''}`,
-        src: {
-          url: BIRTHDAY_VIDEO_URL,
-          type: 'application/x-mpegURL'
-        }
-      }
-      player.loadPlaylist([defaultMediaObject as MediaObject])
-      // player.loadPlaylist([mediaObject])
+      player.loadPlaylist([birthdayWishMediaObject])
     }
     return {
       isDialogVisible,
       onPlayerReady,
-      currentChild
+      currentChild,
+      playerControlconfig,
+      handleDialogCloseRequest,
+      hasVideoStarted,
+      handlePlayRequest
     }
   }
 })
 </script>
 
 <style scoped lang="scss">
-.green-line {
-  height: 9px;
-  border-width: 0;
-  color: red;
-  background-color: green;
-}
-.soft-green-line {
-  height: 9px;
-  border-width: 0;
-  color: red;
-  background-color: rgb(64, 167, 51);
-}
+$topBorderSize: min(2vw, 20px);
+$buttonHeight: 30px;
+$player-max-height: 60vh;
 
 .bar {
   width: 100%;
-  height: 10px;
+  height: calc(#{$topBorderSize}/ 2);
   position: absolute;
-  top: 10px;
+  box-shadow: 0px -1px 6px rgba(0, 0, 0, 0.121569);
 
   &.bar-1 {
-    background-color: rgb(64, 167, 51);
+    border-radius: 5px 5px 0px 0px;
+    top: calc(0px - #{$topBorderSize});
   }
 
   &.bar-2 {
-    background-color: green;
+    top: calc(0px - #{$topBorderSize}/ 2);
   }
+}
+
+.pg-player-container {
+  max-height: $player-max-height;
+  aspect-ratio: 16 / 9;
+  position: relative;
+
+  .closeButton {
+    position: absolute;
+    top: calc(0px - #{$topBorderSize} - #{$buttonHeight});
+    right: 0;
+  }
+
+  main {
+    margin-top: calc(#{$topBorderSize} + #{$buttonHeight});
+
+    ::v-deep .title-section {
+      display: none; // hides video title overlay on video-player
+    }
+  }
+}
+
+.playControls {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  img {
+    cursor: pointer;
+    height: min(#{$player-max-height}/ 3, 12vw);
+  }
+}
+
+.birthdayWishText {
+  font-size: 3rem;
+  text-align: center;
+  font-weight: bold;
+  letter-spacing: 4px;
+  color: #ffffff;
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 </style>
 
 <style lang="scss">
-.videoPlayerdialog {
-  // margin-top: 20px;
-  position: relative;
+.birthdayVideoPlayerDialog {
+  overflow: hidden;
+  box-shadow: none;
 }
 </style>

@@ -1279,10 +1279,10 @@
   resolved "https://registry.yarnpkg.com/@firebase/webchannel-wrapper/-/webchannel-wrapper-0.4.0.tgz#becce788818d3f47f0ac1a74c3c061ac1dcf4f6d"
   integrity sha512-8cUA/mg0S+BxIZ72TdZRsXKBP5n5uRcE3k29TZhZw6oIiHBt9JA7CTb/4pE1uKtE/q5NeTY2tBDcagoZ+1zjXQ==
 
-"@gold-media-tech/pg-video-player@0.0.15":
-  version "0.0.15"
-  resolved "https://npm.pkg.github.com/download/@gold-media-tech/pg-video-player/0.0.15/30a6008dab5cf8d943599410adc17bcf95754767b95408a18c11b1846e9e8686#c40023b90dd03cd1520f508f4eae1d13e331d684"
-  integrity sha512-lyU+frozbojdQImFK9bmePEfsMLW6zqxG8ZishDFChlXCAa1uE1EwjGui1Iis9xbYlqU4iZlnNwBWB53a5uElQ==
+"@gold-media-tech/pg-video-player@^0.0.54":
+  version "0.0.54"
+  resolved "https://npm.pkg.github.com/download/@gold-media-tech/pg-video-player/0.0.54/f79e3ec720450210cc836db87c5c9f4486dd3f49c9ace13679629ff89f7bc537#f9f3249f431ff9dfb968b61239ca42c106a09ff6"
+  integrity sha512-PyrTtmOcVaPsutdKk8Iz9K0Z3dQyeDXHOpLaamGbjdgxBgzNLR36vinN0tfJwc1q9md8atQhLbTHWnHVjCaFYw==
   dependencies:
     "@types/vue" "^2.0.0"
     core-js "^3.6.5"

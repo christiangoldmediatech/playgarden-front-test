@@ -72,7 +72,6 @@
 import {
   computed,
   defineComponent,
-  onBeforeUnmount,
   onMounted,
   ref,
   useStore
@@ -81,7 +80,7 @@ import { Child } from '@/models'
 import BirthdayVideoDialog from '@/components/features/childBirthday/BirthdayVideoDialog.vue'
 
 export default defineComponent({
-  name: 'VirtualPreschool',
+  name: 'VirtualPreschoolPage',
   components: {
     BirthdayVideoDialog
   },
@@ -168,8 +167,7 @@ export default defineComponent({
     return {
       sections,
       handleAudioPlay,
-      isBirthdayModalvisible,
-      currentChild
+      isBirthdayModalvisible
     }
   }
 })
