@@ -7,21 +7,39 @@
         <v-col cols="12">
           <v-card>
             <v-row>
-              <v-col class="mt-2 pl-4" cols="9">
+              <v-col class="mt-2 pl-4" cols="8">
                 <span class="text-body-1 text-lg-h7 text-xl-h6 text-justify mt-8 mr-3 text-report">
                   {{ `${child.firstName}'s ` }}progress report
                 </span>
               </v-col>
 
-              <v-col cols="3" class="text-center text-sm-right pt-4 pr-6">
+              <v-col cols="4" class="text-center text-sm-right pt-4 pr-6">
                 <v-btn
-                  class="text-none ml-3"
+                  class="text-none mr-6"
                   color="accent darken-1"
                   depressed
                   nuxt
                   @click.stop="goBack"
                 >
                   Back
+                </v-btn>
+                <v-btn
+                  class="mr-2 text-none"
+                  color="primary darken-1"
+                  dark
+                  :icon="$vuetify.breakpoint.xs"
+                  nuxt
+                  @click.stop="exportList"
+                >
+                  <v-icon class="hidden-sm-and-up">
+                    mdi-plus-circle
+                  </v-icon>
+
+                  <v-icon class="hidden-xs-only" small>
+                    mdi-plus
+                  </v-icon>
+
+                  <span class="hidden-xs-only white--text">Export</span>
                 </v-btn>
               </v-col>
             </v-row>
@@ -244,7 +262,7 @@ export default {
   methods: {
     ...mapActions('children/course-progress', ['getCourseProgressByChildId']),
     ...mapActions('admin/report-card', ['getTypes']),
-    ...mapActions('progress-report', ['getGraphicByChildrenId', 'getLastLessonChildren']),
+    ...mapActions('progress-report', ['getGraphicByChildrenId', 'getLastLessonChildren', 'getAllProgressExport']),
     ...mapActions({ setChild: 'setChild' }),
     ...mapActions('children', { getChildren: 'getById' }),
     ...mapActions('children/lesson', ['getCurrentLesson', 'getCurrentCurriculumType']),
@@ -258,6 +276,13 @@ export default {
         id: this.selectedChild
       })
       this.letters = data
+    },
+
+    async exportList () {
+      await this.getAllProgressExport({ childId: this.selectedChild })
+      this.$snotify.success('Report created succesfully! Check your email to get it', {
+        timeout: 6000
+      })
     },
 
     async getDataReport () {
