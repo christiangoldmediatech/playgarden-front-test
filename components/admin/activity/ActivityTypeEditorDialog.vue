@@ -3,7 +3,7 @@
     <v-dialog
       v-model="dialog"
       :fullscreen="$vuetify.breakpoint.xs"
-      max-width="500px"
+      max-width="650px"
       persistent
       scrollable
     >
@@ -73,6 +73,13 @@
                   class="mt-1"
                   dense
                   label="Activity"
+                />
+
+                <v-checkbox
+                  v-model="item.kidsCorner"
+                  class="mt-1"
+                  dense
+                  label="Kids Corner"
                 />
               </v-row>
 
@@ -163,6 +170,7 @@ function generateItemTemplate () {
     lesson: false,
     extra: false,
     activity: false,
+    kidsCorner: false,
     color: '#FF0000',
     icon: null
   }
