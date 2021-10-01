@@ -12,5 +12,13 @@ export default {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+
+  async getAllProgressExport (ctx, { childId }) {
+    try {
+      return await this.$axios.$get(`/children/${childId}/progress/lessons/export`)
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
