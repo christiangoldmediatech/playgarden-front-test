@@ -7,39 +7,35 @@
         <v-col cols="12">
           <v-card>
             <v-row>
-              <v-col class="mt-2 pl-4" cols="8">
-                <span class="text-body-1 text-lg-h7 text-xl-h6 text-justify mt-8 mr-3 text-report">
+              <v-col class="mt-2 pl-4 text-center text-md-left" cols="12" md="8">
+                <span class="text-body-1 text-lg-h7 text-xl-h6 mt-8 mr-3 text-report text-justify">
                   {{ `${child.firstName}'s ` }}progress report
                 </span>
               </v-col>
 
-              <v-col cols="4" class="text-center text-sm-right pt-4 pr-6">
+              <v-col cols="12" md="4" class="text-center text-sm-right pt-4">
+                <!-- Export Btn -->
                 <v-btn
-                  class="text-none mr-6"
+                  class="mr-4"
+                  color="primary darken-1"
+                  dark
+                  :loading="loadingExport"
+                  @click.stop="exportList"
+                >
+                  <v-icon class="hidden-md-and-down">
+                    mdi-plus-circle
+                  </v-icon>
+
+                  <span class="white--text">Export</span>
+                </v-btn>
+                <!-- Back Btn -->
+                <v-btn
                   color="accent darken-1"
                   depressed
                   nuxt
                   @click.stop="goBack"
                 >
                   Back
-                </v-btn>
-                <v-btn
-                  class="mr-2 text-none"
-                  color="primary darken-1"
-                  dark
-                  :icon="$vuetify.breakpoint.xs"
-                  nuxt
-                  @click.stop="exportList"
-                >
-                  <v-icon class="hidden-sm-and-up">
-                    mdi-plus-circle
-                  </v-icon>
-
-                  <v-icon class="hidden-xs-only" small>
-                    mdi-plus
-                  </v-icon>
-
-                  <span class="hidden-xs-only white--text">Export</span>
                 </v-btn>
               </v-col>
             </v-row>
@@ -210,7 +206,8 @@ export default {
     letterStatsData: {
       name: '',
       reports: []
-    }
+    },
+    loadingExport: false
   }),
 
   computed: {
@@ -279,10 +276,19 @@ export default {
     },
 
     async exportList () {
-      await this.getAllProgressExport({ childId: this.selectedChild })
-      this.$snotify.success('Report created succesfully! Check your email to get it', {
-        timeout: 6000
-      })
+      this.loadingExport = true
+      try {
+        await this.getAllProgressExport({ childId: this.selectedChild })
+        this.$snotify.success('Report created succesfully! Check your email to get it', {
+          timeout: 6000
+        })
+      } catch (err) {
+        this.$snotify.error('Export error! Try again later.', {
+          timeout: 6000
+        })
+      } finally {
+        this.loadingExport = false
+      }
     },
 
     async getDataReport () {
