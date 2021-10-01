@@ -13,7 +13,7 @@
                 </span>
               </v-col>
 
-              <v-col cols="12" md="4" class="text-center text-sm-right pt-4">
+              <v-col cols="12" md="4" class="text-center text-sm-right pt-4 pr-4">
                 <!-- Export Btn -->
                 <v-btn
                   class="mr-4"
