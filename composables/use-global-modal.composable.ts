@@ -36,7 +36,9 @@ export const useGlobalModal = ({ store }: { store: Store<TypedStore> }) => {
       isWeekFour: false
     }
 
-    if (userInfo.flow === UserFlow.NOCREDITCARD) {
+    console.log('userInfo--', userInfo)
+
+    if (userInfo.flow === UserFlow.NOCREDITCARD && !userInfo.planChoosen) {
       let lastDateNotification: string | null = null
 
       if (hasLocalStorage()) {
