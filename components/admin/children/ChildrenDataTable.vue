@@ -30,7 +30,7 @@
       </v-col>
     </v-row>
 
-    <v-row>
+    <v-row no-gutters>
       <v-col cols="12">
         <v-card width="100%">
           <v-card-text>
@@ -44,8 +44,9 @@
               :action="action"
               top-justify="space-between"
               @search="onSearch"
+              @search-text-cleared="handleSearchTextClearance"
               @update:page="page = $event"
-              @refresh="refresh(true)"
+              @refresh="refetchChildrensData(true)"
               @edit-item="
                 $router.push({
                   name: 'admin-user-manager-specialists-editor',
@@ -54,14 +55,33 @@
               "
             >
               <template v-slot:[`top.prepend`]>
-                <v-col class="fkex-shrink-1 flex-grow-0">
-                  <v-icon class="my-4 mx-1" color="accent">
-                    mdi-tune
-                  </v-icon>
-                </v-col>
+                <div class="filterControls px-3 my-3 mb-4">
+                  <section>
+                    <pg-select
+                      v-model="selectedLetterPreference"
+                      clearable
+                      hide-details
+                      item-text="name"
+                      item-value="id"
+                      label="Letter"
+                      solo-labeled
+                      :items="letterSelectOptions"
+                      class="select"
+                      @change="refetchChildrensData"
+                    />
+                    <pg-select
+                      v-model="selectedDayPreference"
+                      clearable
+                      hide-details
+                      label="Day"
+                      solo-labeled
+                      :items="daysSelectOptions"
+                      class="select"
+                      @change="refetchChildrensData"
+                    />
+                  </section>
 
-                <v-col cols="12" md="7" class="flex-shrink-0 flex-grow-1">
-                  <v-row no-gutters>
+                  <section class="filterCheckboxes">
                     <v-checkbox
                       class="mx-1 my-1 pa-0"
                       color="primary darken-2"
@@ -70,7 +90,6 @@
                       label="All"
                       @click.stop="toggleAll"
                     />
-
                     <v-checkbox
                       v-for="(item, i) in filterList"
                       :key="`filter-item-${i}`"
@@ -82,8 +101,8 @@
                       multiple
                       :value="item.value"
                     />
-                  </v-row>
-                </v-col>
+                  </section>
+                </div>
               </template>
 
               <template v-slot:[`item.firstName`]="{ item }">
@@ -172,7 +191,10 @@
     </v-row>
     <user-child-timeline-dialog />
     <user-child-lesson-overlay />
-    <child-editor-dialog ref="childEditorDialogRef" @saved="refresh()" />
+    <child-editor-dialog
+      ref="childEditorDialogRef"
+      @saved="refetchChildrensData"
+    />
   </v-container>
 </template>
 
@@ -182,6 +204,8 @@ import onSearch from '@/mixins/OnSearchMixin.js'
 import UserChildLessonOverlay from '@/components/admin/users/UserChildLessonOverlay.vue'
 import UserChildTimelineDialog from '@/components/admin/users/UserChildTimelineDialog.vue'
 import ChildEditorDialog from '@/components/admin/children/ChildEditorDialog'
+
+const MAX_NUMBER_OF_DAYS = 5
 
 export default {
   name: 'ChildrenDataTable',
@@ -240,21 +264,34 @@ export default {
           value: 'actions',
           width: 120
         }
-      ]
+      ],
+      selectedLetterPreference: null,
+      // The property below is initiated with an array that is formed by using the Array.from() method by passing an Array-like object that has a `length` property.
+      // The map function goes as the second argument in Array.from() and modifies an array of form [0,1,2,...] to start the array from 1 and not from 0
+      // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from#using_arrow_functions_and_array.from
+      // Purpose: This enables us to dynamically generate the array of any required length in the future by just altering MAX_NUMBER_OF_DAYS and not distrubing any existing logic
+      daysSelectOptions: ['All', ...Array.from({ length: MAX_NUMBER_OF_DAYS }, (_, index) => index + 1)],
+      selectedDayPreference: null
     }
   },
   computed: {
     ...mapState('admin', ['paginationLimit']),
-    ...mapGetters('admin/children', ['rows', 'total', 'types'])
+    ...mapGetters('admin/children', ['rows', 'total', 'types']),
+    ...mapGetters('admin/curriculum', {
+      letters: 'types'
+    }),
+    letterSelectOptions () {
+      // We use the Array.prototype.filter() below to prevent `undefined` from being pushed into the array should this.letters be undefined
+      return ['All'].concat(this.letters).filter(Boolean)
+    }
   },
-
   watch: {
     page () {
-      this.refresh()
+      this.refetchChildrensData()
     },
 
     limit () {
-      this.refresh()
+      this.refetchChildrensData()
     },
 
     activeFilters (val) {
@@ -267,10 +304,13 @@ export default {
       }
     }
   },
-
+  created () {
+    this.getTypes()
+  },
   methods: {
     ...mapActions('admin/children', ['getChildrensProgress']),
     ...mapActions('children/progress', ['getChildrenProgressExport']),
+    ...mapActions('admin/curriculum', ['getTypes']),
 
     openTimeline (child) {
       this.$nuxt.$emit('open-timeline', child)
@@ -297,20 +337,35 @@ export default {
         this.limit = 0
       }
     },
-
-    async refresh (clear = false) {
+    refresh (isSearchCleared) {
+      this.refetchChildrensData(isSearchCleared)
+    },
+    handleSearchTextClearance () {
+      this.refetchChildrensData(true)
+    },
+    async refetchChildrensData (isSearchCleared = false) {
       this.loading = true
-      if (clear) {
+      if (isSearchCleared) {
         this.search = ''
       }
+      const curriculumTypeId = this.selectedLetterPreference !== 'All' && this.selectedLetterPreference
+      const day = this.selectedDayPreference !== 'All' && this.selectedDayPreference
+      const firstName = this.search
+
+      const params = {
+        limit: this.paginationLimit,
+        page: this.page,
+        ...firstName && { firstName },
+        ...curriculumTypeId && { curriculumTypeId },
+        ...day && { day }
+      }
+
       try {
-        const params = {
-          limit: this.paginationLimit,
-          page: this.page,
-          firstName: this.search
-        }
         await this.getChildrensProgress(params)
       } catch (e) {
+        // We should decide on how to handle API errors
+        // eslint-disable-next-line
+        console.error(e)
       } finally {
         this.loading = false
       }
@@ -335,3 +390,24 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+::v-deep {
+  .filterControls {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    section {
+      flex: 1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+
+      & > .select {
+        flex-basis: 10rem;
+      }
+    }
+  }
+}
+</style>
