@@ -65,7 +65,7 @@
                       item-value="id"
                       label="Letter"
                       solo-labeled
-                      :items="['All'].concat(letters)"
+                      :items="letterSelectOptions"
                       class="select"
                       @change="refetchChildrensData"
                     />
@@ -266,6 +266,10 @@ export default {
         }
       ],
       selectedLetterPreference: null,
+      // The property below is initiated with an array that is formed by using the Array.from() method by passing an Array-like object that has a `length` property.
+      // The map function goes as the second argument in Array.from() and modifies an array of form [0,1,2,...] to start the array from 1 and not from 0
+      // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from#using_arrow_functions_and_array.from
+      // Purpose: This enables us to dynamically generate the array of any required length in the future by just altering MAX_NUMBER_OF_DAYS and not distrubing any existing logic
       daysSelectOptions: ['All', ...Array.from({ length: MAX_NUMBER_OF_DAYS }, (_, index) => index + 1)],
       selectedDayPreference: null
     }
@@ -275,7 +279,11 @@ export default {
     ...mapGetters('admin/children', ['rows', 'total', 'types']),
     ...mapGetters('admin/curriculum', {
       letters: 'types'
-    })
+    }),
+    letterSelectOptions () {
+      // We use the Array.prototype.filter() below to prevent `undefined` from being pushed into the array should this.letters be undefined
+      return ['All'].concat(this.letters).filter(Boolean)
+    }
   },
   watch: {
     page () {
