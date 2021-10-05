@@ -46,7 +46,7 @@
       <prompt-dialog />
 
       <coming-soon-dialog :showing="isComingSoonDialogOpen" />
-      <TrialEndDialog />
+      <TrialEndDialog :downward-displacement="topDistanceInPixels" />
     </template>
 
     <template v-else>

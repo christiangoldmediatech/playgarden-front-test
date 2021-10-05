@@ -4,9 +4,12 @@
       v-model="isModalVisible"
       persistent
       :width="$vuetify.breakpoint.mdAndUp? '80vw': '95vw'"
-      content-class="TrialEndDialog"
+      content-class="trialEndDialog"
     >
-      <div class="wrapper">
+      <div
+        class="wrapper"
+        :style="customDialogStyle"
+      >
         <v-btn
           icon
           class="btn-close"
@@ -24,7 +27,7 @@
           >
         </aside>
         <main class="pa-3 py-7">
-          <section class="fs-14 pg-grey--text">
+          <section class="fs-13 pg-grey--text">
             <h1 class="underlined-title fw-800 mb-2">
               Your trial period has expired
             </h1>
@@ -32,7 +35,8 @@
               We hope your little one has enjoyed learning with the Playgarden Prep teachers!
             </p>
             <p>
-              During your trial period, which ended on <span class="fs-20 fw-600 secondary--text"> {{ formattedTrialExpiryDate }} </span>,
+              During your trial period, which ended on
+              <span class="trialExpiryDate secondary--text fw-600 fs-18"> {{ formattedTrialExpiryDate }} </span>,
               you were able to experience all the features of the
               <span class="accent--text fw-600">Preschool @Home </span> plan. After the trial period, you will be automatically placed in the
               <span class="accent--text fw-600">Learn & Play</span> monthly plan.
@@ -49,7 +53,7 @@
             </p>
             <div>
               <span class="opacity-50"> Need help? </span>
-              <div @click="handleRequestToContact">
+              <span @click="handleRequestToContact">
                 <nuxt-link
                   :to="{
                     name: 'help'
@@ -58,10 +62,10 @@
                 >
                   Contact us
                 </nuxt-link>
-              </div>
+              </span>
             </div>
           </section>
-          <section>
+          <section class="cta">
             <div class="my-4 cta-buttons">
               <v-btn
                 color="accent"
@@ -108,7 +112,13 @@ const NUMBER_OF_HOURS_TO_SILENCE_NOTIFICATION = 24
 
 export default defineComponent({
   name: 'TrialEndDialog',
-  setup () {
+  props: {
+    downwardDisplacement: {
+      type: Number,
+      required: false
+    }
+  },
+  setup (props) {
     const store = useStore<TypedStore>()
     const { userInfo } = useStoreForAuth({ store })
     const trialNotificationPreference = ref<TrialNotificationPreference | undefined>()
@@ -145,6 +155,13 @@ export default defineComponent({
 
     const formattedTrialExpiryDate = computed(() => {
       return dayjs(userInfo.value?.trialEnd).format('MMM D, YYYY')
+    })
+
+    const customDialogStyle = computed(() => {
+      if (!props.downwardDisplacement) { return {} }
+      return {
+        'margin-top': `${props.downwardDisplacement}px`
+      }
     })
 
     function fetchNotificationPreferenceFromLS () {
@@ -195,7 +212,8 @@ export default defineComponent({
       handleRequestToRemindLater,
       handleDialogCloseRequest,
       handleRequestToUpgradeToPreSchool,
-      handleRequestToComparePlans
+      handleRequestToComparePlans,
+      customDialogStyle
     }
   }
 })
@@ -207,12 +225,15 @@ export default defineComponent({
   grid-auto-flow: column;
   background-color: white;
   position: relative;
-  margin-top: 40px;
 
   .btn-close {
     position: absolute;
     top: -32px;
     right: 0px;
+  }
+
+  p {
+    line-height: 1.5;
   }
 
   aside {
@@ -224,6 +245,15 @@ export default defineComponent({
       height: 50vh;
       object-fit: cover;
       display: block;
+    }
+  }
+
+  .cta,
+  .cta-buttons {
+    @media (max-width: $breakpoint-xs) {
+      display: grid;
+      justify-items: center;
+      justify-content: center;
     }
   }
 
@@ -248,7 +278,8 @@ export default defineComponent({
   opacity: 0.5;
 }
 
-.underlined-title {
+.underlined-title,
+.trialExpiryDate {
   z-index: 2;
   position: relative;
   width: max-content;
@@ -279,10 +310,20 @@ export default defineComponent({
     }
   }
 }
+
+.trialExpiryDate {
+  display: inline-block;
+  text-transform: none;
+
+  &:after {
+    background: rgba(178, 230, 141, 0.25);
+    height: 6px;
+  }
+}
 </style>
 
 <style lang="scss">
-.TrialEndDialog {
+.trialEndDialog {
   box-shadow: none;
 }
 </style>
