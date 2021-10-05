@@ -296,12 +296,6 @@ export default {
           total: 0
         },
         {
-          title: 'Activities Completed',
-          done: 0,
-          percentage: 0,
-          total: 0
-        },
-        {
           title: 'Online Worksheets',
           done: 0,
           percentage: 0,
