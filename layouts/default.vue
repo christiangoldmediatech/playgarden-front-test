@@ -46,6 +46,7 @@
       <prompt-dialog />
 
       <coming-soon-dialog :showing="isComingSoonDialogOpen" />
+      <TrialEndDialog />
     </template>
 
     <template v-else>
@@ -74,6 +75,7 @@ import TrialIsExpiring from '@/components/app/header/TrialIsExpiring.vue'
 import ContactUsFormModal from '@/components/forms/contact/ContactUsFormModal.vue'
 import NotificationSignupModal from '@/components/app/notifications/NotificationSignupModal'
 import ChangePasswordModal from '@/components/app/notifications/ChangePasswordModal'
+import TrialEndDialog from '@/components/ui/dialogs/TrialEndDialog/index.vue'
 
 import { useAuth, useLayout, useNotification, useVuetifyHelper } from '@/composables'
 
@@ -92,7 +94,8 @@ export default defineComponent({
     TrialIsExpiring,
     ContactUsFormModal,
     NotificationSignupModal,
-    ChangePasswordModal
+    ChangePasswordModal,
+    TrialEndDialog
   },
 
   setup () {

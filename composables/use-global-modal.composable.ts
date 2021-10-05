@@ -132,7 +132,7 @@ const getDays = (lastDate: string) => {
   return (days < 0) ? days * -1 : days
 }
 
-const getTrial = (dateEnd: Date) => {
+const getTrial = (dateEnd: Date | string) => {
   const now = dayjs().format('YYYY-MM-DD')
   const end = dayjs(dateEnd).format('YYYY-MM-DD')
   return dayjs(now).isAfter(end)
