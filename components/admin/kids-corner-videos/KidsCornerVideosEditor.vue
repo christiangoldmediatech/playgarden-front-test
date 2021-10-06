@@ -13,7 +13,6 @@
               color="accent darken-1"
               dark
               :icon="$vuetify.breakpoint.xs"
-              nuxt
               @click="backList"
             >
               <span class="hidden-xs-only white--text">
