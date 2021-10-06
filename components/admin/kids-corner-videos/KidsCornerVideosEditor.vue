@@ -118,7 +118,6 @@
                   label="Report card type"
                   solo-labeled
                   multiple
-                  return-object
                 />
               </v-col>
             </v-row>
@@ -303,7 +302,13 @@ export default defineComponent({
 
     const save = async () => {
       loading.value = true
-      if (thumbnail && thumbnailFileUploaderRef.value) {
+
+      if (kidsCornerVideo.value.reportCardTypes) {
+        const selected = reportCardTypes.value.filter(item => kidsCornerVideo.value.reportCardTypes.find(value => item.id === value))
+        kidsCornerVideo.value.reportCardTypes = selected
+      }
+
+      if (thumbnail.value && thumbnailFileUploaderRef.value) {
         if (thumbnailFileUploaderRef.value.type === 'dropBox') {
           const { filePath } = await thumbnailFileUploaderRef.value.handleDropBoxFileUpload()
           kidsCornerVideo.value.thumbnail = filePath
@@ -313,19 +318,24 @@ export default defineComponent({
       }
 
       let dataVideo = null
-      if (video && videoFileUploaderRef.value) {
+      if (video.value && videoFileUploaderRef.value) {
         if (videoFileUploaderRef.value.type === 'dropBox') {
           const { filePath } = await videoFileUploaderRef.value.handleDropBoxFileUpload()
           dataVideo = filePath
         } else {
           dataVideo = await videoFileUploaderRef.value.handleUpload()
         }
+        kidsCornerVideo.value.videoId = dataVideo.video.id
       }
-      kidsCornerVideo.value.videoId = dataVideo.video.id
-      await saveKidsCorner({ data: kidsCornerVideo.value })
-      clearItem()
+
+      if (id.value) {
+        await updateKidsCorner(id.value, { data: kidsCornerVideo.value })
+      } else {
+        await saveKidsCorner({ data: kidsCornerVideo.value })
+      }
+      /* clearItem()
       loading.value = false
-      backList()
+      backList() */
     }
 
     onMounted(async () => {
@@ -335,8 +345,10 @@ export default defineComponent({
       await getReportCardTypes()
       if (id.value) {
         const data = await getKidsCornerById(id.value)
+        console.log('load--', data)
         kidsCornerVideo.value.activityTypeId = data.activityType.id
         kidsCornerVideo.value.curriculumTypeId = data.curriculumType.id
+        kidsCornerVideo.value.videoId = data.video.id
         // kidsCornerVideo.value.reportCardTypes = data.reportCardType.id
         kidsCornerVideo.value.name = data.video.name
         kidsCornerVideo.value.description = data.video.description
