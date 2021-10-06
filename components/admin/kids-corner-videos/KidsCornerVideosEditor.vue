@@ -333,9 +333,9 @@ export default defineComponent({
       } else {
         await saveKidsCorner({ data: kidsCornerVideo.value })
       }
-      /* clearItem()
+      clearItem()
       loading.value = false
-      backList() */
+      backList()
     }
 
     onMounted(async () => {
