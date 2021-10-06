@@ -28,7 +28,7 @@
     <v-card width="100%">
       <v-card-text>
         <v-row no-gutters class="mt-5">
-          <v-col cols="7">
+          <v-col cols="12">
             <v-row>
               <v-col class="text-md-right" cols="12" sm="3">
                 <span class="subheader font-weight-bold">Name:</span>
@@ -122,7 +122,7 @@
               </v-col>
             </v-row>
           </v-col>
-          <v-col cols="5">
+          <v-col cols="12" md="4" class="mx-auto">
             <v-row>
               <v-col class="text-md" cols="12">
                 <span class="subheader font-weight-bold">Thumbnail:</span>
