@@ -136,6 +136,7 @@
                     v-model="kidsCornerVideo.topics"
                     addable
                     chips
+                    :items="kidsCornerVideo.topics"
                     clearable
                     label="Topics"
                     :error-messages="errors"
@@ -332,7 +333,6 @@ export default defineComponent({
 
     const save = async () => {
       loading.value = true
-      console.log('data save--', kidsCornerVideo.value)
       if (kidsCornerVideo.value.reportCardTypes) {
         const selected = reportCardTypes.value.filter(item => kidsCornerVideo.value.reportCardTypes.find(value => item.id === value))
         kidsCornerVideo.value.reportCardTypes = selected
@@ -358,14 +358,14 @@ export default defineComponent({
         kidsCornerVideo.value.videoId = dataVideo.video.id
       }
 
-      /* if (id.value) {
+      if (id.value) {
         await updateKidsCorner(id.value, { data: kidsCornerVideo.value })
       } else {
         await saveKidsCorner({ data: kidsCornerVideo.value })
       }
       clearItem()
       loading.value = false
-      backList() */
+      backList()
     }
 
     onMounted(async () => {
@@ -375,12 +375,14 @@ export default defineComponent({
       await getReportCardTypes()
       if (id.value) {
         const data = await getKidsCornerById(id.value)
-        console.log('load--', data)
         kidsCornerVideo.value.activityTypeId = data.activityType.id
         kidsCornerVideo.value.curriculumTypeId = data.curriculumType.id
         kidsCornerVideo.value.videoId = data.video.id
         if (data.reportCardTypes) {
           kidsCornerVideo.value.reportCardTypes = data.reportCardTypes.map((item: { id: number }) => item.id)
+        }
+        if (data.topics && data.topics.length > 0) {
+          kidsCornerVideo.value.topics = data.topics.map((item: { topic: string }) => item.topic)
         }
         kidsCornerVideo.value.name = data.video.name
         kidsCornerVideo.value.description = data.video.description
