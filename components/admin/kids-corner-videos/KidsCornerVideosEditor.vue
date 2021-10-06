@@ -136,7 +136,7 @@
                     v-model="kidsCornerVideo.topics"
                     addable
                     chips
-                    :items="kidsCornerVideo.topics"
+                    :items="topicsList"
                     clearable
                     label="Topics"
                     :error-messages="errors"
@@ -269,10 +269,11 @@ export default defineComponent({
     const languageId = ref<number | null>(null)
     const thumbnail = ref<any | null>(null)
     const video = ref<any | null>(null)
+    const topicsList = ref<string[]>([])
     const { activities, getActivitesType } = useActivity()
     const { reportCardTypes, getReportCardTypes } = useReportCardTypes()
     const { curriculumTypes, getCurriculumTypes } = useCurriculumTypes()
-    const { getKidsCornerById, saveKidsCorner, updateKidsCorner } = useKidsCorner()
+    const { getKidsCornerById, saveKidsCorner, updateKidsCorner, getTopics } = useKidsCorner()
     const thumbnailFileUploaderRef = ref<any | null>(null)
     const videoFileUploaderRef = ref<any | null>(null)
     const kidsCornerVideo = ref<Partial<KidsCornerVideo>>({
@@ -333,7 +334,7 @@ export default defineComponent({
 
     const save = async () => {
       loading.value = true
-      if (kidsCornerVideo.value.reportCardTypes) {
+      if (kidsCornerVideo.value.reportCardTypes && reportCardTypes.value) {
         const selected = reportCardTypes.value.filter(item => kidsCornerVideo.value.reportCardTypes.find(value => item.id === value))
         kidsCornerVideo.value.reportCardTypes = selected
       }
@@ -373,6 +374,11 @@ export default defineComponent({
       await getActivitesType({ activity: true })
       await getCurriculumTypes()
       await getReportCardTypes()
+      const topics = await getTopics()
+      if (topics.length > 0) {
+        topicsList.value = topics.map((item: { topic: string }) => item.topic)
+      }
+
       if (id.value) {
         const data = await getKidsCornerById(id.value)
         kidsCornerVideo.value.activityTypeId = data.activityType.id
@@ -398,6 +404,7 @@ export default defineComponent({
       languageId,
       activityTypes,
       kidsCornerVideo,
+      topicsList,
       listCurriculumTypes,
       listRecordTypes,
       listLanguage,
