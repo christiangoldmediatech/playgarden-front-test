@@ -114,10 +114,12 @@
 
               <v-col cols="12" sm="9" lg="6">
                 <pg-select
-                  v-model="kidsCornerVideo.reportCardTypeId"
+                  v-model="kidsCornerVideo.reportCardTypes"
                   :items="listRecordTypes"
                   label="Report card type"
                   solo-labeled
+                  multiple
+                  return-object
                 />
               </v-col>
             </v-row>
@@ -251,7 +253,7 @@ export default defineComponent({
       thumbnail: '',
       curriculumTypeId: null,
       activityTypeId: null,
-      reportCardTypeId: null,
+      reportCardTypes: [],
       topics: []
     })
 
@@ -288,7 +290,7 @@ export default defineComponent({
       kidsCornerVideo.value.thumbnail = ''
       kidsCornerVideo.value.curriculumTypeId = null
       kidsCornerVideo.value.activityTypeId = null
-      kidsCornerVideo.value.reportCardTypeId = null
+      kidsCornerVideo.value.reportCardTypes = []
       kidsCornerVideo.value.topics = []
       thumbnail.value = ''
       video.value = ''
@@ -336,7 +338,7 @@ export default defineComponent({
         const data = await getKidsCornerById(id.value)
         kidsCornerVideo.value.activityTypeId = data.activityType.id
         kidsCornerVideo.value.curriculumTypeId = data.curriculumType.id
-        kidsCornerVideo.value.reportCardTypeId = data.reportCardType.id
+        // kidsCornerVideo.value.reportCardTypes = data.reportCardType.id
         kidsCornerVideo.value.name = data.video.name
         kidsCornerVideo.value.description = data.video.description
         kidsCornerVideo.value.thumbnail = data.video.thumbnail
