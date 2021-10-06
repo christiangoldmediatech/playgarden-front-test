@@ -8,12 +8,11 @@ import KidsCornerVideosEditor from '@/components/admin/kids-corner-videos/KidsCo
 
 export default defineComponent({
   name: 'Editor',
+
   layout: 'admin',
+
   components: {
     KidsCornerVideosEditor
-  },
-  setup () {
-
   }
 })
 </script>
