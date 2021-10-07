@@ -113,7 +113,7 @@
 
               <v-col cols="12" sm="9" lg="6">
                 <pg-select
-                  v-model="kidsCornerVideo.reportCardTypes"
+                  v-model="reportCardSelected"
                   :items="listRecordTypes"
                   label="Report card type"
                   solo-labeled
@@ -257,6 +257,7 @@ import { defineComponent, ref, useRouter, useRoute, onMounted, computed } from '
 import { useActivity, useCurriculumTypes, useReportCardTypes } from '@/composables'
 import { useKidsCorner } from '@/composables/kids-corner'
 import { KidsCornerVideo } from '@/models'
+import { ReportCardType } from '@/models/report-card-type.model'
 
 export default defineComponent({
   name: 'KidsCornerVideosEditor',
@@ -270,6 +271,7 @@ export default defineComponent({
     const thumbnail = ref<any | null>(null)
     const video = ref<any | null>(null)
     const topicsList = ref<string[]>([])
+    const reportCardSelected = ref<number[]>([])
     const { activities, getActivitesType } = useActivity()
     const { reportCardTypes, getReportCardTypes } = useReportCardTypes()
     const { curriculumTypes, getCurriculumTypes } = useCurriculumTypes()
@@ -334,8 +336,10 @@ export default defineComponent({
 
     const save = async () => {
       loading.value = true
-      if (kidsCornerVideo.value.reportCardTypes && reportCardTypes.value) {
-        const selected = reportCardTypes.value.filter(item => kidsCornerVideo.value.reportCardTypes.find(value => item.id === value))
+      if (reportCardSelected.value) {
+        const selected = reportCardSelected.value.map((item) => {
+          return reportCardTypes.value.find(value => item === value.id)
+        })
         kidsCornerVideo.value.reportCardTypes = selected
       }
 
@@ -385,7 +389,7 @@ export default defineComponent({
         kidsCornerVideo.value.curriculumTypeId = data.curriculumType.id
         kidsCornerVideo.value.videoId = data.video.id
         if (data.reportCardTypes) {
-          kidsCornerVideo.value.reportCardTypes = data.reportCardTypes.map((item: { id: number }) => item.id)
+          reportCardSelected.value = data.reportCardTypes.map((item: { id: number }) => item.id)
         }
         if (data.topics && data.topics.length > 0) {
           kidsCornerVideo.value.topics = data.topics.map((item: { topic: string }) => item.topic)
@@ -397,6 +401,7 @@ export default defineComponent({
     })
 
     return {
+      reportCardSelected,
       feature,
       loading,
       thumbnail,
