@@ -257,7 +257,6 @@ import { defineComponent, ref, useRouter, useRoute, onMounted, computed } from '
 import { useActivity, useCurriculumTypes, useReportCardTypes } from '@/composables'
 import { useKidsCorner } from '@/composables/kids-corner'
 import { KidsCornerVideo } from '@/models'
-import { ReportCardType } from '@/models/report-card-type.model'
 
 export default defineComponent({
   name: 'KidsCornerVideosEditor',
@@ -337,10 +336,12 @@ export default defineComponent({
     const save = async () => {
       loading.value = true
       if (reportCardSelected.value) {
-        const selected = reportCardSelected.value.map((item) => {
-          return reportCardTypes.value.find(value => item === value.id)
+        reportCardSelected.value.map((item) => {
+          const itemSelected = reportCardTypes.value.find(value => item === value.id)
+          if (itemSelected) {
+            kidsCornerVideo.value.reportCardTypes?.push(itemSelected)
+          }
         })
-        kidsCornerVideo.value.reportCardTypes = selected
       }
 
       if (thumbnail.value && thumbnailFileUploaderRef.value) {

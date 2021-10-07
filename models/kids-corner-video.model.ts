@@ -5,7 +5,7 @@ import { Entity } from '.'
 export interface KidsCornerVideo extends Entity {
     curriculumTypeId: number | null
     activityTypeId: number | null
-    reportCardTypes: any[] | null
+    reportCardTypes: ReportCardType[]
     videoId: number | null
     name: string
     description: string
