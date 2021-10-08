@@ -4,6 +4,7 @@ export default () => ({
   isTrialExpiringRibbonVisible: false,
   isTrialExpiredModalVisible: false,
   isShippingModalVisible: false,
+  isTrialEndingWeekThreeModalVisible: true,
   notificationCard: {
     isVisible: false,
     title: '',
