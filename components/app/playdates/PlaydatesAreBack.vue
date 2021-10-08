@@ -19,7 +19,7 @@
 
           <v-col cols="12" class="text-md-left text-center">
             <p class="text-justify text-info-playdate">
-              Play and learn with friends in our Playdate class! Come for fun activities such as spin-the-wheel, Play-doh art, stories and sharing time! <span class="font-weight-bold">Playdates must be reserved in advance</span>, as each <span class="font-weight-bold">Playdate is limited to 10 students to give each little one a chance to participate.</span> Playdates will be reserved on a first-come first-serve basis, so be sure to reserve in advance!
+              Play and learn with friends in our Playdate class! Come for fun activities such as spin-the-wheel, Play-doh art, stories and sharing time! <span class="font-weight-bold">Playdates must be reserved in advance</span>, as each <span class="font-weight-bold">Playdate is limited to 8 students to give each little one a chance to participate.</span> Playdates will be reserved on a first-come first-serve basis, so be sure to reserve in advance!
             </p>
             <p class="font-weight-bold  text-info-playdate mb-0">
               The following dates are available:
