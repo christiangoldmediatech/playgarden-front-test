@@ -1,6 +1,6 @@
 <template>
   <div>
-    <large-image-content-dialog :value="isTrialEndingWeekTwoModalVisible" :img="weekTwoTrialEndingImage" :is-closeable="false" @close="closeModal">
+    <large-image-content-dialog :value="isTrialEndingWeekTwoModalVisible" :img="img" :is-closeable="true" @close="closeModal">
       <div>
         <underlined-title
           text="WE HOPE YOUR LITTLE ONE IS ENJOYING LEARNING WITH PLAYGARDEN PREP ONLINE!"
@@ -83,7 +83,7 @@ export default defineComponent({
   },
 
   data: () => ({
-    weekTwoTrialEndingImage: require('@/assets/png/week-two-trial-ending.png')
+    img: require('@/assets/png/week-two-trial-ending.png')
   }),
 
   computed: {
