@@ -19,6 +19,7 @@
 
       <!-- TRIAL EXPIRED MODAL -->
       <trial-expired-modal />
+      <trial-ending-week-three-modal />
 
       <!-- CONTACT US FORM MODAL -->
       <contact-us-form-modal />
@@ -70,6 +71,7 @@ import DefaultFooter from '@/components/app/footer/DefaultFooter'
 import NotificationCard from '@/components/app/notifications/NotificationCard'
 import ShippingAddressModal from '@/components/app/payment/ShippingAddressModal.vue'
 import TrialExpiredModal from '@/components/app/payment/TrialExpiredModal.vue'
+import TrialEndingWeekThreeModal from '@/components/app/payment/TrialEnding/WeekThreeModal.vue'
 import TrialIsExpiring from '@/components/app/header/TrialIsExpiring.vue'
 import ContactUsFormModal from '@/components/forms/contact/ContactUsFormModal.vue'
 import NotificationSignupModal from '@/components/app/notifications/NotificationSignupModal'
@@ -92,7 +94,8 @@ export default defineComponent({
     TrialIsExpiring,
     ContactUsFormModal,
     NotificationSignupModal,
-    ChangePasswordModal
+    ChangePasswordModal,
+    TrialEndingWeekThreeModal
   },
 
   setup () {
