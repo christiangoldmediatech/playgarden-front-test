@@ -1,6 +1,6 @@
 <template>
   <div>
-    <large-image-content-dialog :value="isTrialEndingWeekThreeModalVisible" :img="img" :is-closeable="false" @close="closeModal">
+    <large-image-content-dialog :value="isTrialEndingWeekThreeModalVisible" :img="img" :is-closeable="true" @close="closeModal">
       <div>
         <underlined-title
           text="WE HOPE YOUR LITTLE ONE IS ENJOYING LEARNING WITH PLAYGARDEN PREP ONLINE!"
