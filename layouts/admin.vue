@@ -220,6 +220,11 @@ export default {
           route: '/admin/music-library'
         },
         {
+          icon: 'mdi-filmstrip',
+          title: 'Kids corner videos',
+          route: '/admin/kids-corner-videos'
+        },
+        {
           icon: 'mdi-account-supervisor',
           title: 'Parents Corner',
           rootPath: '/admin/parents-corner',
