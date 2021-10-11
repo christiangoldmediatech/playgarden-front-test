@@ -113,7 +113,7 @@
 
               <v-col cols="12" sm="9" lg="6">
                 <pg-select
-                  v-model="reportCardSelected"
+                  v-model="selectedReportCard"
                   :items="listRecordTypes"
                   label="Report card type"
                   solo-labeled
@@ -270,7 +270,7 @@ export default defineComponent({
     const thumbnail = ref<any | null>(null)
     const video = ref<any | null>(null)
     const topicsList = ref<string[]>([])
-    const reportCardSelected = ref<number[]>([])
+    const selectedReportCard = ref<number[]>([])
     const { activities, getActivitesType } = useActivity()
     const { reportCardTypes, getReportCardTypes } = useReportCardTypes()
     const { curriculumTypes, getCurriculumTypes } = useCurriculumTypes()
@@ -335,8 +335,8 @@ export default defineComponent({
 
     const save = async () => {
       loading.value = true
-      if (reportCardSelected.value) {
-        reportCardSelected.value.map((item) => {
+      if (selectedReportCard.value) {
+        selectedReportCard.value.map((item) => {
           const itemSelected = reportCardTypes.value.find(value => item === value.id)
           if (itemSelected) {
             kidsCornerVideo.value.reportCardTypes?.push(itemSelected)
@@ -390,7 +390,7 @@ export default defineComponent({
         kidsCornerVideo.value.curriculumTypeId = data.curriculumType.id
         kidsCornerVideo.value.videoId = data.video.id
         if (data.reportCardTypes) {
-          reportCardSelected.value = data.reportCardTypes.map((item: { id: number }) => item.id)
+          selectedReportCard.value = data.reportCardTypes.map((item: { id: number }) => item.id)
         }
         if (data.topics && data.topics.length > 0) {
           kidsCornerVideo.value.topics = data.topics.map((item: { topic: string }) => item.topic)
@@ -402,7 +402,7 @@ export default defineComponent({
     })
 
     return {
-      reportCardSelected,
+      selectedReportCard,
       feature,
       loading,
       thumbnail,
