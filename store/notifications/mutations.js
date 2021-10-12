@@ -20,5 +20,8 @@ export default {
     payload = { ...defaultPayload, ...payload }
 
     state.notificationCard = { ...payload }
+  },
+  SET_IS_TRIAL_ENDING_WEEK_FOUR_MODAL_VISIBLE (state, bool) {
+    state.isTrialEndingWeekFourModalVisible = bool
   }
 }
