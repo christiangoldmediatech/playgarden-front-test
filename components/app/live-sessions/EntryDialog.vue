@@ -48,7 +48,12 @@
                     <v-icon left>
                       mdi-download-outline
                     </v-icon>
-                    Download Additional Information
+                    <template v-if="isCooking">
+                      Download Ingredient List
+                    </template>
+                    <template v-else>
+                      Download Additional Information
+                    </template>
                   </v-btn>
                 </div>
 
@@ -143,6 +148,28 @@ export default {
 
   computed: {
     ...mapGetters('auth', ['getUserInfo']),
+
+    isCooking () {
+      let isCooking = false
+
+      if (this.entry) {
+        // check name
+        if (this.entry.name) {
+          const entryName = this.entry.name.toLowerCase()
+          isCooking = entryName.includes('cooking')
+        }
+
+        // check activity type
+        if (this.entry.activityType && this.entry.activityType.name) {
+          const activityName = this.entry.activityType.name.toLowerCase()
+          if (activityName.includes('cooking') || activityName.includes('nutrition')) {
+            isCooking = true
+          }
+        }
+      }
+
+      return isCooking
+    },
 
     downloadTarget () {
       return this.entry.downloadNewTab ? '_blank' : '_self'
