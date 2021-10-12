@@ -13,25 +13,29 @@
         </v-progress-circular>
       </v-col>
       <v-col class="ml-2 mt-6">
-        <template v-if="canLaunchCourseProgess">
-          <p class="text-stats clickable" @click="launchCourseProgessOverlay">
-            <span class="font-weight-bold text-stats">
-              {{ item.title }}
-            </span>
-          </p>
-        </template>
-        <template v-else-if="canRedirectToPortfolio">
-          <p class="text-stats clickable" @click="goToPortfolio">
-            <span class="font-weight-bold text-stats">
-              {{ item.title }}
-            </span>
-          </p>
-        </template>
-        <p v-else class="text-stats">
+        <p class="text-stats">
           <span class="font-weight-bold text-stats">
             {{ item.title }}
           </span>
         </p>
+
+        <v-btn
+          v-if="canLaunchCourseProgess"
+          color="primary"
+          small
+          @click="launchCourseProgessOverlay"
+        >
+          View Lesson Progress
+        </v-btn>
+
+        <v-btn
+          v-if="canRedirectToPortfolio"
+          color="primary"
+          small
+          @click="goToPortfolio"
+        >
+          View Worksheets
+        </v-btn>
       </v-col>
     </v-row>
     <v-divider v-if="!getShowDivider" class="mx-8 my-3" />
@@ -94,12 +98,14 @@ export default {
     },
 
     goToPortfolio () {
-      this.$router.push({
+      const routeData = this.$router.resolve({
         name: 'admin-portfolio',
         query: {
           id: this.$route.query.id
         }
       })
+
+      window.open(routeData.href, '_blank')
     }
   }
 }

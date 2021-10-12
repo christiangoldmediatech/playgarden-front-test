@@ -33,7 +33,7 @@
               <dashboard-panel
                 no-link-mode
                 display-mode
-                v-bind="{ lesson }"
+                v-bind="{ lesson, childId }"
                 z-index="10"
               />
             </v-row>
@@ -59,7 +59,8 @@ export default {
     return {
       dialog: false,
       loading: false,
-      lesson: null
+      lesson: null,
+      childId: null
     }
   },
 
@@ -67,6 +68,7 @@ export default {
     this.$nuxt.$on('open-lesson-overlay', ({ childId, lessonId }) => {
       this.lesson = null
       this.loading = true
+      this.childId = childId
       this.getCurrentLessonByChildrenId({ lessonId, childId }).then(({ lesson }) => {
         this.lesson = lesson
         this.loading = false

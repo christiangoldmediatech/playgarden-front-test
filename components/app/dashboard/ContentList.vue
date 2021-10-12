@@ -22,8 +22,10 @@
         :nuxt="item.nuxt"
         :link="item.link"
         :exact="item.exact"
-        :to="item.to ? item.to : ''"
-        @click="loadDetailVideo(item)"
+        :to="!noLinkMode && item.to ? item.to : undefined"
+        v-on="{
+          click: noLinkMode ? undefined : () => { loadDetailVideo(item) }
+        }"
       >
         <v-row no-gutters align="center">
           <v-col cols="4">
@@ -66,27 +68,11 @@
             </div>
 
             <div
-              v-if="isAdmin && item.viewed && item.viewed.completed"
+              v-if="isAdmin"
               class="mx-2 mt-n3 text-body-2"
               :class="{ 'dashboard-item-disabled': isItemDisabled(item) }"
             >
-              <span
-                :class="{ 'dashboard-item-disabled': isItemDisabled(item) }"
-              >
-                Completed: {{ item.viewed.date.substr(0,10) }} {{ item.viewed.date.substr(11,5) }}
-              </span>
-            </div>
-
-            <div
-              v-if="noLinkMode"
-              class="mx-2 text-body-2"
-              :class="{ 'dashboard-item-disabled': isItemDisabled(item) }"
-            >
-              <span
-                :class="{ 'dashboard-item-disabled': isItemDisabled(item) }"
-              >
-                Position: {{ getTimeToMMSS(item.viewed) }}
-              </span>
+              <lesson-item-status v-bind="{ item }" />
             </div>
           </v-col>
         </v-row>
@@ -100,11 +86,16 @@ import { defineComponent, useRoute } from '@nuxtjs/composition-api'
 import { APP_EVENTS } from '@/models'
 import { computed, toRefs } from '@vue/composition-api'
 import { useNuxtHelper } from '@/composables'
+import LessonItemStatus from './LessonItemStatus.vue'
 
 const NUMBER_OF_CARDS_IN_SKELETON = 3
 
 export default defineComponent({
   name: 'ContentList',
+
+  components: {
+    LessonItemStatus
+  },
 
   props: {
     items: {
@@ -158,9 +149,9 @@ export default defineComponent({
       } as any
 
       if (noLinkMode.value) {
-        itemProps.nuxt = false
-        itemProps.link = false
-        itemProps.exact = false
+        itemProps.nuxt = undefined
+        itemProps.link = undefined
+        itemProps.exact = undefined
       }
 
       return items.value.map((item: any) => {
