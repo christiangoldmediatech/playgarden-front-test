@@ -67,6 +67,10 @@ export const useActivity = () => {
     totalById.value = (activityById.value.videos?.length || 0) + response.total
   }
 
+  const getActivitesType = async (params?: unknown) => {
+    activities.value = await axios.$get('/activity-types', { params })
+  }
+
   const handleFetchMoreActivityById = async (id: number) => {
     activitiesPage.value += 1
 
@@ -117,6 +121,7 @@ export const useActivity = () => {
     featuredById,
     totalById,
     getActivitiesById,
+    getActivitesType,
     handleFetchMoreActivityById,
     getActivities,
     refreshFavoriteActivities

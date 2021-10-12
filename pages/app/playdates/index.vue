@@ -1,5 +1,6 @@
 <template>
   <v-col class="fill-height">
+    <!-- Active playdates -->
     <div v-if="isActive">
       <v-container v-if="loading" fill-height fluid>
         <pg-loading />
@@ -159,8 +160,10 @@
         </v-row>
       </v-container>
     </div>
+
+    <!-- Inactive playdate component -->
     <div v-else>
-      <will-be-back />
+      <PlaydatesAreBack />
     </div>
 
     <!-- PlatinumPlan Popup -->
@@ -271,7 +274,7 @@ import { computed, defineComponent, onMounted, ref, useStore } from '@nuxtjs/com
 import { Child, Playdates } from '@/models'
 
 import CardPlaydate from '@/components/app/playdates/CardPlaydate.vue'
-import WillBeBack from '@/components/app/playdates/WillBeBack.vue'
+import PlaydatesAreBack from '@/components/app/playdates/PlaydatesAreBack.vue'
 import { usePlaydates } from '@/composables'
 
 export default defineComponent({
@@ -279,7 +282,7 @@ export default defineComponent({
 
   components: {
     CardPlaydate,
-    WillBeBack
+    PlaydatesAreBack
   },
 
   setup () {
