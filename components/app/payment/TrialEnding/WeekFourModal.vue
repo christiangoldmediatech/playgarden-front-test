@@ -12,7 +12,7 @@
 
       <div class="grey--text text--darken-2 caption text-md-h6 font-weight-regular my-3 my-md-6">
         <p>
-          Your <span class="font-weight-bold primary--text">FREE TRIAL</span> period will end on {{ x }}. We would hate to see you miss out on this early education and development opportunity!
+          Your <span class="font-weight-bold primary--text">FREE TRIAL</span> period will end on {{ lastDayOfTrial }}. We would hate to see you miss out on this early education and development opportunity!
           So we are extending our <span class="font-weight-bold primary--text">INTRODUCTORY</span> promotion so you can continue to have access to all the features of the <b>PRESCHOOL @HOME</b> plan.
         </p>
         <p>Sign-up now and for <b>$69.99</b> per month you will continue to have access to:</p>
@@ -51,16 +51,19 @@
 </template>
 
 <script lang="ts">
-import { mapState } from 'vuex'
+import dayjs from 'dayjs'
+import { mapState, mapGetters } from 'vuex'
 import LargeImageContentDialog from '@/components/ui/dialogs/LargeImageContentDialog/LargeImageContentDialog.vue'
 import { defineComponent, useStore } from '@nuxtjs/composition-api'
 import { useGlobalModal } from '@/composables'
 import { TypedStore } from '@/models'
 export default defineComponent({
   name: 'WeekThreeModal',
+
   components: {
     LargeImageContentDialog
   },
+
   setup () {
     const store = useStore<TypedStore>()
     const { showContactUsModal } = useGlobalModal({ store })
@@ -68,20 +71,36 @@ export default defineComponent({
       showContactUsModal
     }
   },
+
   data: () => ({
     img: require('@/assets/png/week-four-trial-ending.png')
   }),
+
   computed: {
-    ...mapState('notifications', ['isTrialEndingWeekFourModalVisible'])
+    ...mapState('notifications', ['isTrialEndingWeekFourModalVisible']),
+    ...mapGetters('auth', ['getUserInfo']),
+
+    lastDayOfTrial (): string {
+      // @ts-ignore
+      if (!this.getUserInfo.trialEnd) {
+        return ''
+      }
+
+      // @ts-ignore
+      return dayjs(this.getUserInfo.trialEnd).format('MMMM DD, YYYY')
+    }
   },
+
   methods: {
     closeModal () {
       this.$store.commit('notifications/SET_IS_TRIAL_ENDING_WEEK_FOUR_MODAL_VISIBLE', false)
     },
+
     handleComparePlans () {
       this.closeModal()
       this.$router.push({ name: 'app-payment-plan' })
     },
+
     handleContactUs () {
       this.closeModal()
       this.showContactUsModal()
