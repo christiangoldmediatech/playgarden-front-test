@@ -1,5 +1,5 @@
 <template>
-  <activity-data-table ref="ActivityDataTable" />
+  <activity-data-table />
 </template>
 
 <script>
@@ -24,11 +24,6 @@ export default {
   created () {
     this.getTypes({ activity: true })
   },
-
-  mounted () {
-    this.$refs.ActivityDataTable.refresh()
-  },
-
   methods: {
     ...mapActions('admin/activity', ['getTypes'])
   }
