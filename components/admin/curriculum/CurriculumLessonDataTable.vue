@@ -46,8 +46,9 @@
               :loading="loading"
               :page.sync="pagination.page"
               :server-items-length="pagination.total"
-              @refresh="refresh(true)"
-              @search="onSearch"
+              @refresh="handleRefresh"
+              @search="handleSearch"
+              @search-text-cleared="handleSearchClearance"
               @update:page="pagination.page = $event"
               @edit-item="onEdit"
               @remove-item="remove"
@@ -69,7 +70,7 @@
                     item-value="id"
                     label="Letter"
                     solo-labeled
-                    @change="refresh(false)"
+                    @change="refetchLessonsData"
                   />
                 </v-col>
 
@@ -78,7 +79,7 @@
                     v-if="$vuetify.breakpoint.lgAndUp"
                     v-model="filters.level"
                     hide-details
-                    @change="refresh(false)"
+                    @change="refetchLessonsData"
                   >
                     <v-row align="start" justify="start" no-gutters>
                       <v-radio
@@ -101,13 +102,14 @@
                     item-value="value"
                     label="Level"
                     solo-labeled
-                    @change="refresh(false)"
+                    @change="refetchLessonsData"
                   />
                 </v-col>
               </template>
 
               <template v-slot:[`item.actions.prepend`]="{ item }">
                 <nuxt-link
+                  title="Lesson Preview"
                   :to="{
                     name: 'admin-curriculum-management-lessonId-preview',
                     params: { lessonId: item.id }
@@ -162,17 +164,16 @@
 
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex'
-import onSearch from '@/mixins/OnSearchMixin.js'
 import paginable from '@/utils/mixins/paginable'
 
 export default {
   name: 'CurriculumLessonDataTable',
 
-  mixins: [paginable, onSearch],
+  mixins: [paginable],
 
   data: () => ({
     loading: false,
-    search: '',
+    searchText: null,
     filters: {
       curriculumTypeId: null,
       level: null
@@ -228,14 +229,14 @@ export default {
   watch: {
     'pagination.page' () {
       if (!this.loading) {
-        this.refresh()
+        this.refetchLessonsData()
       }
     }
   },
 
   created () {
     this.getTypes()
-    this.refresh()
+    this.refetchLessonsData()
   },
 
   methods: {
@@ -251,17 +252,23 @@ export default {
         query: { lessonId: item.id }
       })
     },
-
-    async refresh (clear = false) {
+    handleSearch (searchText) {
+      this.searchText = searchText
+      this.refetchLessonsData()
+    },
+    handleSearchClearance () {
+      this.searchText = null
+      this.refetchLessonsData()
+    },
+    handleRefresh () {
+      this.refetchLessonsData()
+    },
+    async refetchLessonsData () {
       this.loading = true
-
-      if (clear) {
-        this.search = ''
-      }
-
+      const name = this.searchText
       try {
         const { lessons, page, total } = await this.fetchLessons({
-          name: this.search || null,
+          ...name && { name },
           curriculumTypeId: this.filters.curriculumTypeId || null,
           level: this.filters.level || null,
           page: this.pagination.page,
@@ -275,12 +282,11 @@ export default {
         this.loading = false
       }
     },
-
     remove ({ id, name }) {
       this.$nuxt.$emit('open-prompt', {
         title: 'Delete curriculum lesson?',
         message: `Are you sure you want to delete <b>${name}</b>?`,
-        action: () => this.deleteLesson(id).then(this.refresh)
+        action: () => this.deleteLesson(id).then(this.refetchLessonsData)
       })
     }
   }
