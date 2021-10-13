@@ -26,5 +26,8 @@ export default {
   },
   SET_IS_TRIAL_ENDING_WEEK_THREE_MODAL_VISIBLE (state, bool) {
     state.isTrialEndingWeekThreeModalVisible = bool
+  },
+  SET_IS_TRIAL_ENDING_WEEK_FOUR_MODAL_VISIBLE (state, bool) {
+    state.isTrialEndingWeekFourModalVisible = bool
   }
 }
