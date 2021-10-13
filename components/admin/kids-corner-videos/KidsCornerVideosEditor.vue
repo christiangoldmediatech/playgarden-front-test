@@ -323,6 +323,7 @@ export default defineComponent({
       kidsCornerVideo.value.topics = []
       thumbnail.value = ''
       video.value = ''
+      id.value = null
     }
 
     const backList = () => {
@@ -373,7 +374,9 @@ export default defineComponent({
     }
 
     onMounted(async () => {
-      id.value = Number(route.value.query.id)
+      if (route.value.query.id) {
+        id.value = Number(route.value.query.id)
+      }
       await getActivitesType({ activity: true })
       await getCurriculumTypes()
       await getReportCardTypes()
