@@ -37,7 +37,10 @@
       <v-col cols="12">
         <v-card width="100%">
           <v-card-text>
-            <backpack-editor-dialog ref="editor" @saved="refresh(false)" />
+            <backpack-editor-dialog
+              ref="editor"
+              @saved="refetchBackPacksData"
+            />
 
             <pg-admin-data-table
               :headers="headers"
@@ -45,13 +48,18 @@
               :loading="loading"
               :page.sync="page"
               @update:page="page = $event"
-              @search="onSearch"
-              @refresh="refresh(true)"
+              @search="refetchBackPacksData"
+              @refresh="refetchBackPacksData"
+              @search-text-cleared="refetchBackPacksData"
               @edit-item="$refs.editor.open(null, $event)"
               @remove-item="remove"
             >
               <template v-slot:[`item.image`]="{ item }">
-                <img v-if="item.image" :src="item.image" width="32px">
+                <img
+                  v-if="item.image"
+                  :src="item.image"
+                  width="32px"
+                >
 
                 <span v-else>
                   N/A
@@ -67,7 +75,6 @@
 
 <script>
 import { mapActions } from 'vuex'
-import onSearch from '@/mixins/OnSearchMixin.js'
 import BackpackEditorDialog from './BackpackEditorDialog'
 
 export default {
@@ -76,14 +83,10 @@ export default {
   components: {
     BackpackEditorDialog
   },
-
-  mixins: [onSearch],
-
   data () {
     return {
       backpacks: [],
       loading: false,
-      search: null,
       page: 1,
       headers: [
         {
@@ -125,19 +128,21 @@ export default {
       ]
     }
   },
+  mounted () {
+    this.refetchBackPacksData()
+  },
 
   methods: {
     ...mapActions('backpacks', ['getBackpacks', 'deleteBackpack']),
 
-    async refresh (clear = false) {
+    async refetchBackPacksData (searchText) {
       this.loading = true
-
-      if (clear) {
-        this.search = null
-      }
+      const name = searchText
 
       try {
-        this.backpacks = await this.getBackpacks({ name: this.search })
+        this.backpacks = await this.getBackpacks({
+          ...name && { name }
+        })
       } catch (e) {
       } finally {
         this.loading = false
@@ -150,7 +155,7 @@ export default {
         message: `Are you sure you want to delete <b>${name}</b>?`,
         action: async () => {
           await this.deleteBackpack(id)
-          await this.refresh()
+          await this.refetchBackPacksData()
         }
       })
     }
