@@ -151,14 +151,12 @@
                 </validation-provider>
               </v-col>
             </v-row>
-          </v-col>
-          <v-col cols="12" md="4" class="mx-auto">
             <v-row>
-              <v-col class="text-md" cols="12">
+              <v-col class="text-md-right" cols="12" sm="3">
                 <span class="subheader font-weight-bold">Thumbnail:</span>
               </v-col>
 
-              <v-col class="text-center" cols="12">
+              <v-col cols="12" sm="9" lg="6">
                 <v-img
                   v-if="kidsCornerVideo.thumbnail"
                   class="mb-6"
@@ -189,11 +187,11 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col class="text-md" cols="12">
+              <v-col class="text-md-right" cols="12" sm="3">
                 <span class="subheader font-weight-bold">Video:</span>
               </v-col>
 
-              <v-col class="text-center" cols="12">
+              <v-col cols="12" sm="9" lg="6">
                 <validation-provider
                   v-slot="{ errors }"
                   name="Video"
@@ -219,11 +217,11 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col class="text-md" cols="12">
+              <v-col class="text-md-right" cols="12" sm="3">
                 <span class="subheader font-weight-bold">Language:</span>
               </v-col>
 
-              <v-col cols="12">
+              <v-col cols="12" sm="9" lg="6">
                 <pg-select
                   v-model="languageId"
                   :items="listLanguage"
