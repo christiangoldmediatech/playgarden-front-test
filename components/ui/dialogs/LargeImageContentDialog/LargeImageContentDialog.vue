@@ -8,13 +8,14 @@
   >
     <!-- Desktop Close Button -->
     <div v-if="isCloseable" class="content-dialog-icon">
-      <v-img
-        :src="require('@/assets/svg/close-icon.svg')"
+      <img
+        src="@/assets/svg/close-icon.svg"
+        alt="close-icon"
         class="content-dialog-close-icon d-none d-md-inline"
         width="32px"
         data-test-id="desktop-close-button"
         @click="$emit('close')"
-      />
+      >
     </div>
 
     <v-card :class="cardClasses">
