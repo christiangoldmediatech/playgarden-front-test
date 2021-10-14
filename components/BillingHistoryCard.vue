@@ -24,7 +24,7 @@
 
           <v-col class="flex-shrink-0 flex-grow-1 text-right" cols="auto">
             ${{ latestBilling.totalFormatted }} {{ latestBilling.currency.toUpperCase() }} /{{ latestBilling.period }} plan<br>
-            <a class="accent--text text-caption text-decoration-underline" :href="latestBilling.invoiceUrl">
+            <a class="accent--text text-caption text-decoration-underline" :href="latestBilling.invoiceUrl" target="_blank">
               View Invoice
             </a>
           </v-col>

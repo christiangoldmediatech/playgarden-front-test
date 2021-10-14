@@ -29,7 +29,7 @@ const getBillingHistory = async () => {
           period,
           startDate,
           endDate,
-          dateFormatted: dayjs(startDate).format('MMMM d, YYYY'),
+          dateFormatted: dayjs(startDate).format('MMMM DD, YYYY'),
           totalFormatted: `${billingRow.total.toFixed(2)}`
         }
       })

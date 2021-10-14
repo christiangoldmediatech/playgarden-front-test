@@ -39,11 +39,13 @@
                 {{ billing.dateFormatted }}
               </v-col>
 
-              <v-col cols="6">
-                ${{ billing.totalFormatted }} {{ billing.currency.toUpperCase() }} /{{ billing.period }} plan<br>
-                <a class="accent--text text-caption text-decoration-underline" :href="billing.invoiceUrl">
-                  View Invoice
-                </a>
+              <v-col cols="6" class="d-flex">
+                <div class="text-right">
+                  ${{ billing.totalFormatted }} {{ billing.currency.toUpperCase() }} /{{ billing.period }} plan<br>
+                  <a class="accent--text text-caption text-decoration-underline" :href="billing.invoiceUrl" target="_blank">
+                    View Invoice
+                  </a>
+                </div>
               </v-col>
             </v-row>
 
