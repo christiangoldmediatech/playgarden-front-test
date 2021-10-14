@@ -13,13 +13,14 @@
 </template>
 
 <script lang="ts">
-import { Viewed } from '@/models'
+import { Viewed, WorksheetCompleted } from '@/models'
 import { defineComponent, PropType, computed } from '@nuxtjs/composition-api'
 import dayjs from 'dayjs'
 
 interface GenericItem {
   [key: string]: any,
   viewed?: Viewed
+  completed?: WorksheetCompleted
 }
 
 export default defineComponent({
@@ -40,16 +41,18 @@ export default defineComponent({
 
   setup ({ item }) {
     const status = computed(() => {
+      const currentStatus = item.viewed || item.completed
+
       const result = {
-        started: item.viewed && !item.viewed.completed,
-        done: item.viewed && item.viewed.completed,
+        started: currentStatus && !currentStatus.completed,
+        done: currentStatus && currentStatus.completed,
         text: 'Not started'
       }
 
-      if (item.viewed) {
-        const date = dayjs(new Date(item.viewed.date))
+      if (currentStatus) {
+        const date = dayjs(new Date(currentStatus.date))
 
-        if (item.viewed.completed) {
+        if (currentStatus.completed) {
           result.text = 'Done on '
         } else {
           result.text = 'Started on '
