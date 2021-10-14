@@ -21,6 +21,10 @@ export const useKidsCorner = () => {
     kidsCornerVideoResponse.value = await axios.$get('/kids-corner', { params })
   }
 
+  const getTopics = async () => {
+    return await axios.$get('/topics/all')
+  }
+
   const getKidsCornerById = async (id:number) => {
     return await axios.$get(`/kids-corner/${id}`)
   }
@@ -39,6 +43,7 @@ export const useKidsCorner = () => {
     limit,
     kidsCornerVideoResponse,
     KidsCornerVideos,
+    getTopics,
     getKidsCornerById,
     getKidsCorner,
     saveKidsCorner,
