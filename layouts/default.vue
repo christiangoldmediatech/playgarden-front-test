@@ -22,6 +22,7 @@
       <trial-ending-week-two-modal />
       <trial-ending-week-three-modal />
       <trial-ending-week-four-modal />
+      <TrialEndingModalForLastDay :downward-displacement="topDistanceInPixels" />
 
       <!-- CONTACT US FORM MODAL -->
       <contact-us-form-modal />
@@ -49,7 +50,6 @@
       <prompt-dialog />
 
       <coming-soon-dialog :showing="isComingSoonDialogOpen" />
-      <TrialEndDialog :downward-displacement="topDistanceInPixels" />
     </template>
 
     <template v-else>
@@ -81,7 +81,7 @@ import TrialIsExpiring from '@/components/app/header/TrialIsExpiring.vue'
 import ContactUsFormModal from '@/components/forms/contact/ContactUsFormModal.vue'
 import NotificationSignupModal from '@/components/app/notifications/NotificationSignupModal'
 import ChangePasswordModal from '@/components/app/notifications/ChangePasswordModal'
-import TrialEndDialog from '@/components/ui/dialogs/TrialEndDialog/index.vue'
+import TrialEndingModalForLastDay from '@/components/app/payment/TrialEnding/TrialEndingModalForLastDay.vue'
 
 import { useAuth, useLayout, useNotification, useVuetifyHelper } from '@/composables'
 
@@ -101,7 +101,7 @@ export default defineComponent({
     ContactUsFormModal,
     NotificationSignupModal,
     ChangePasswordModal,
-    TrialEndDialog,
+    TrialEndingModalForLastDay,
     TrialEndingWeekTwoModal,
     TrialEndingWeekThreeModal,
     TrialEndingWeekFourModal

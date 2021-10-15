@@ -111,7 +111,7 @@ const LS_KEY_FOR_TRIAL_NOTIFICATION_PREFERENCE = 'trialExpiryNotificationData'
 const NUMBER_OF_HOURS_TO_SILENCE_NOTIFICATION = 24
 
 export default defineComponent({
-  name: 'TrialEndDialog',
+  name: 'TrialEndingModalForLastDay',
   props: {
     downwardDisplacement: {
       type: Number,
