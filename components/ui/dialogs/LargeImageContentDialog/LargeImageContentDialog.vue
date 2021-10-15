@@ -31,7 +31,7 @@
   </pg-dialog>
 </template>
 
-<script lang="ts">
+<script>
 export default {
   name: 'LargeImageContentDialog',
 
@@ -58,7 +58,7 @@ export default {
   },
 
   computed: {
-    isMobile (): boolean {
+    isMobile () {
       return this.$vuetify.breakpoint.mobile
     }
   }
