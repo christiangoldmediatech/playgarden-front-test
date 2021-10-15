@@ -1,6 +1,8 @@
 <template>
   <pg-dialog persistent :fullscreen="isMobile" :value="value" max-width="1400px">
     <v-card :class="{ 'border-16': !isMobile }">
+      <v-progress-linear :active="loading" indeterminate height="12px" />
+
       <v-row no-gutters>
         <v-col cols="4" class="d-none d-md-block">
           <v-img height="100%" data-test-id="image" :src="img" class="border-left-16" />
@@ -29,7 +31,7 @@
   </pg-dialog>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: 'LargeImageContentDialog',
 
@@ -38,18 +40,25 @@ export default {
       type: Boolean,
       default: false
     },
+
     img: {
       type: String,
       default: ''
     },
+
     isCloseable: {
       type: Boolean,
       default: true
+    },
+
+    loading: {
+      type: Boolean,
+      default: false
     }
   },
 
   computed: {
-    isMobile () {
+    isMobile (): boolean {
       return this.$vuetify.breakpoint.mobile
     }
   }
