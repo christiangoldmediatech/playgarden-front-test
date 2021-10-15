@@ -48,9 +48,9 @@
               :loading="loading"
               :page.sync="page"
               @update:page="page = $event"
-              @search="refetchCouponsData"
+              @search="handleSearch"
+              @search-text-cleared="handleSearchTextClearance"
               @refresh="refetchCouponsData"
-              @search-text-cleared="refetchCouponsData"
               @edit-item="$refs.editor.open(null, $event)"
               @remove-item="remove"
             >
@@ -92,6 +92,7 @@ export default {
   data () {
     return {
       coupons: [],
+      searchText: null,
       loading: false,
       page: 1,
       query: null,
@@ -128,10 +129,17 @@ export default {
   },
   methods: {
     ...mapActions('coupons', ['getCoupons', 'deleteCoupon']),
-
-    async refetchCouponsData (searchText) {
+    handleSearch (searchText) {
+      this.searchText = searchText
+      this.refetchCouponsData()
+    },
+    handleSearchTextClearance () {
+      this.searchText = null
+      this.refetchCouponsData()
+    },
+    async refetchCouponsData () {
       this.loading = true
-      const code = searchText
+      const code = this.searchText
       this.query = { active: true, ...code && { code } }
 
       try {

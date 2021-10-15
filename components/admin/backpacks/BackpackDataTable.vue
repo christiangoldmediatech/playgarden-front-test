@@ -48,9 +48,9 @@
               :loading="loading"
               :page.sync="page"
               @update:page="page = $event"
-              @search="refetchBackPacksData"
+              @search="handleSearch"
               @refresh="refetchBackPacksData"
-              @search-text-cleared="refetchBackPacksData"
+              @search-text-cleared="handleSearchTextClearance"
               @edit-item="$refs.editor.open(null, $event)"
               @remove-item="remove"
             >
@@ -88,6 +88,7 @@ export default {
       backpacks: [],
       loading: false,
       page: 1,
+      searchText: null,
       headers: [
         {
           text: 'Image',
@@ -134,10 +135,17 @@ export default {
 
   methods: {
     ...mapActions('backpacks', ['getBackpacks', 'deleteBackpack']),
-
-    async refetchBackPacksData (searchText) {
+    handleSearch (searchText) {
+      this.searchText = searchText
+      this.refetchBackPacksData()
+    },
+    handleSearchTextClearance () {
+      this.searchText = null
+      this.refetchBackPacksData()
+    },
+    async refetchBackPacksData () {
       this.loading = true
-      const name = searchText
+      const name = this.searchText
 
       try {
         this.backpacks = await this.getBackpacks({
