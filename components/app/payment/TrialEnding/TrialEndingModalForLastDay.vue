@@ -110,6 +110,8 @@ interface TrialNotificationPreference {
 const LS_KEY_FOR_TRIAL_NOTIFICATION_PREFERENCE = 'trialExpiryNotificationData'
 const NUMBER_OF_HOURS_TO_SILENCE_NOTIFICATION = 24
 
+const IS_MODAL_ENABLED = false // This would be changed to true after the entire flow is completed.
+
 export default defineComponent({
   name: 'TrialEndingModalForLastDay',
   props: {
@@ -143,7 +145,7 @@ export default defineComponent({
 
     const isModalVisible: WritableComputedRef<boolean> = computed({
       get (): boolean {
-        return !isCurrenltyInSilentWindow.value && isUserInLastDayOfTrial.value
+        return !isCurrenltyInSilentWindow.value && isUserInLastDayOfTrial.value && IS_MODAL_ENABLED
       },
       set (newValue: boolean): void {
         if (newValue === false) {
