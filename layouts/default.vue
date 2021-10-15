@@ -77,7 +77,6 @@ import TrialExpiredModal from '@/components/app/payment/TrialExpiredModal.vue'
 import TrialEndingWeekTwoModal from '@/components/app/payment/TrialEnding/WeekTwoModal.vue'
 import TrialEndingWeekThreeModal from '@/components/app/payment/TrialEnding/WeekThreeModal.vue'
 import TrialEndingWeekFourModal from '@/components/app/payment/TrialEnding/WeekFourModal.vue'
-import TrialEndingPlanSelected from '@/components/app/payment/TrialEnding/PlanSelected.vue'
 import TrialIsExpiring from '@/components/app/header/TrialIsExpiring.vue'
 import ContactUsFormModal from '@/components/forms/contact/ContactUsFormModal.vue'
 import NotificationSignupModal from '@/components/app/notifications/NotificationSignupModal'
@@ -104,7 +103,7 @@ export default defineComponent({
     TrialEndingWeekTwoModal,
     TrialEndingWeekThreeModal,
     TrialEndingWeekFourModal,
-    TrialEndingPlanSelected
+    TrialEndingPlanSelected: () => import('@/components/app/payment/TrialEnding/PlanSelected.vue')
   },
 
   setup () {
