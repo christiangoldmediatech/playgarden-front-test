@@ -1,7 +1,7 @@
 <template>
   <pg-dialog persistent :fullscreen="isMobile" :value="value" max-width="1400px">
     <v-card :class="{ 'border-16': !isMobile }">
-      <v-progress-linear :active="loading" indeterminate height="12px" />
+      <v-progress-linear :active="loading" indeterminate height="12px" data-test-id="progress-linear" />
 
       <v-row no-gutters>
         <v-col cols="4" class="d-none d-md-block">
