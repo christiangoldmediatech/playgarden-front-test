@@ -150,7 +150,7 @@
         </v-row>
         <v-row v-if="userCards.length === 0">
           <v-col cols="12" class="grey--text mb-1">
-            <small>To add a Payment Method select a Payment Plan and then enter your Credit Card information.</small>
+            <span>To add a Payment Method select a Payment Plan and then enter your Credit Card information.</span>
           </v-col>
           <v-col cols="12">
             <v-btn
