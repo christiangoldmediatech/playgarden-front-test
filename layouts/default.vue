@@ -22,6 +22,7 @@
       <trial-ending-week-two-modal />
       <trial-ending-week-three-modal />
       <trial-ending-week-four-modal />
+      <PlanUpgradeModal />
 
       <!-- CONTACT US FORM MODAL -->
       <contact-us-form-modal />
@@ -34,12 +35,19 @@
 
       <!-- CONTENT -->
       <v-main v-if="!isFullWidth">
-        <v-container class="pa-md-3 pa-0" fill-height :style="contentStyle">
+        <v-container
+          class="pa-md-3 pa-0"
+          fill-height
+          :style="contentStyle"
+        >
           <nuxt />
         </v-container>
       </v-main>
 
-      <nuxt v-else :style="contentStyle" />
+      <nuxt
+        v-else
+        :style="contentStyle"
+      />
 
       <!-- FOOTER -->
       <default-footer />
@@ -53,7 +61,10 @@
 
     <template v-else>
       <v-main>
-        <v-container fill-height fluid>
+        <v-container
+          fill-height
+          fluid
+        >
           <pg-loading />
         </v-container>
       </v-main>
@@ -80,6 +91,7 @@ import TrialIsExpiring from '@/components/app/header/TrialIsExpiring.vue'
 import ContactUsFormModal from '@/components/forms/contact/ContactUsFormModal.vue'
 import NotificationSignupModal from '@/components/app/notifications/NotificationSignupModal'
 import ChangePasswordModal from '@/components/app/notifications/ChangePasswordModal'
+import PlanUpgradeModal from '@/components/app/payment/TrialEnding/PlanUpgradeModal/index.vue'
 
 import { useAuth, useLayout, useNotification, useVuetifyHelper } from '@/composables'
 
@@ -101,7 +113,8 @@ export default defineComponent({
     ChangePasswordModal,
     TrialEndingWeekTwoModal,
     TrialEndingWeekThreeModal,
-    TrialEndingWeekFourModal
+    TrialEndingWeekFourModal,
+    PlanUpgradeModal
   },
 
   setup () {
