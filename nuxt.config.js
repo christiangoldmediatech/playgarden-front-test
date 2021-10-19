@@ -278,7 +278,8 @@ export default {
       'pk_test_51HKUavFlV2s2JR4RIPnTwt7laAa7Q5T3CXKL5xhGReFmtvcbi2YQDJBz8JnAHw5STCGxNmoWUDlZUnxzCE9imzxF00J5yVNU5Z',
     gtm: process.env.GTM_ID,
     dropBoxApiKey: process.env.DROPBOX_API_KEY || '',
-    baseRouteProd
+    baseRouteProd,
+    kidsCornerUrl: process.env.KIDS_CORNER_URL || 'http://localhost:3000'
   },
   router: {
     base: process.env.TEST_ENV === 'production' ? baseRouteProd : '/',
