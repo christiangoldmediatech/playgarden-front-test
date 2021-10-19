@@ -22,6 +22,7 @@
       <trial-ending-week-two-modal />
       <trial-ending-week-three-modal />
       <trial-ending-week-four-modal />
+      <trial-ending-plan-selected />
 
       <!-- CONTACT US FORM MODAL -->
       <contact-us-form-modal />
@@ -101,7 +102,8 @@ export default defineComponent({
     ChangePasswordModal,
     TrialEndingWeekTwoModal,
     TrialEndingWeekThreeModal,
-    TrialEndingWeekFourModal
+    TrialEndingWeekFourModal,
+    TrialEndingPlanSelected: () => import('@/components/app/payment/TrialEnding/PlanSelected.vue')
   },
 
   setup () {
