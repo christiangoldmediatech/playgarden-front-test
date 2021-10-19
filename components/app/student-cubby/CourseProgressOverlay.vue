@@ -53,7 +53,7 @@
                 xl="4"
               >
                 <dashboard-panel
-                  v-bind="{ lesson, customOverrides: { lessonId: lesson.id, childId: studentId } }"
+                  v-bind="{ lesson, childId: studentId, customOverrides: { lessonId: lesson.id, childId: studentId }, noLinkMode }"
                   display-mode
                 />
               </v-col>
@@ -178,8 +178,12 @@ export default {
   computed: {
     ...mapGetters({ currentChild: 'getCurrentChild' }),
 
+    noLinkMode () {
+      return this.$route.name === 'admin-progress-report'
+    },
+
     studentId () {
-      if (this.$route.name === 'app-student-cubby-course-progress') {
+      if (['app-student-cubby-course-progress', 'admin-progress-report'].includes(this.$route.name)) {
         return this.$route.query.id
       }
       if (this.currentChild && this.currentChild.length > 0) {
