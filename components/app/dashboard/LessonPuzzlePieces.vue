@@ -19,7 +19,7 @@
 
         <div class="remaining-text">
           <template v-if="won">
-            You won a puzzle piece.
+            You earned a puzzle piece
           </template>
           <template v-else>
             Watch {{ completeTotal }} in a row
