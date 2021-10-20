@@ -279,7 +279,7 @@ export default {
     gtm: process.env.GTM_ID,
     dropBoxApiKey: process.env.DROPBOX_API_KEY || '',
     baseRouteProd,
-    googlePlacesAPI: process.env.GOOGLE_PLACES_API_KEY || ''
+    googlePlacesAPI: process.env.GOOGLE_PLACES_API_KEY || 'AIzaSyDh0lrueon0BEux1pIuT40ivuEI92qJr3o'
   },
   router: {
     base: process.env.TEST_ENV === 'production' ? baseRouteProd : '/',
