@@ -317,12 +317,15 @@ export default {
       await this.fetchAddress()
     },
 
-    // eslint-disable-next-line camelcase
     configureAddress (data) {
       try {
         // eslint-disable-next-line camelcase
         if (data && data.address_components) {
-          this.draft = draftDefault
+          const draftId = this.draft?.id
+          this.draft = { ...draftDefault, address1: this.draft.address1 }
+          if (draftId) {
+            this.draft.id = draftId
+          }
           // eslint-disable-next-line camelcase
           const addressComponents = data.address_components
 
