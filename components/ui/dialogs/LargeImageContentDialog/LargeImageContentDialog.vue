@@ -19,6 +19,8 @@
     </div>
 
     <v-card :class="cardClasses">
+      <v-progress-linear :active="loading" indeterminate height="12px" data-test-id="progress-linear" />
+
       <v-row no-gutters>
         <v-col cols="4" class="d-none d-md-block">
           <v-img height="100%" data-test-id="image" :src="img" class="!rounded-[16px]" />
@@ -59,6 +61,11 @@ export default {
     isCloseable: {
       type: Boolean,
       default: true
+    },
+
+    loading: {
+      type: Boolean,
+      default: false
     }
   },
 

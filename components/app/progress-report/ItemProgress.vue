@@ -18,6 +18,24 @@
             {{ item.title }}
           </span>
         </p>
+
+        <v-btn
+          v-if="canLaunchCourseProgess"
+          color="primary"
+          small
+          @click="launchCourseProgessOverlay"
+        >
+          View Lesson Progress
+        </v-btn>
+
+        <v-btn
+          v-if="canRedirectToPortfolio"
+          color="primary"
+          small
+          @click="goToPortfolio"
+        >
+          View Worksheets
+        </v-btn>
       </v-col>
     </v-row>
     <v-divider v-if="!getShowDivider" class="mx-8 my-3" />
@@ -43,12 +61,28 @@ export default {
       type: Number,
       required: true,
       default: 0
+    },
+    curriculumTypeId: {
+      type: Number,
+      required: true
     }
   },
 
   data: () => ({}),
 
   computed: {
+    isAdmin () {
+      return this.$route.name.includes('admin')
+    },
+
+    canLaunchCourseProgess () {
+      return this.isAdmin && this.item.title === 'Daily Lessons Attended'
+    },
+
+    canRedirectToPortfolio () {
+      return this.isAdmin && this.item.title === 'Worksheets Uploaded'
+    },
+
     getShowDivider () {
       return (this.index === (this.total - 1))
     }
@@ -58,7 +92,22 @@ export default {
 
   created () {},
 
-  methods: {}
+  methods: {
+    launchCourseProgessOverlay () {
+      this.$nuxt.$emit('show-curriculum-progress', this.curriculumTypeId)
+    },
+
+    goToPortfolio () {
+      const routeData = this.$router.resolve({
+        name: 'admin-portfolio',
+        query: {
+          id: this.$route.query.id
+        }
+      })
+
+      window.open(routeData.href, '_blank')
+    }
+  }
 }
 </script>
 
