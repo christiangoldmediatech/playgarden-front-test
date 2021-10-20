@@ -1,5 +1,5 @@
 <template>
-  <div class="section-image">
+  <div :style="`height: ${height}`">
     <v-img
       :src="section.imageUrl"
       gradient="rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)"
@@ -12,9 +12,10 @@
       <div class="section-content">
         <!-- Start Playing Button -->
         <img
+          :data-test-id="`vp-section-${section.title}`"
+          :style="`top: ${startPlayingTop}`"
           class="section-start-playing"
           src="@/assets/png/virtual-preschool/Start Playing.png"
-          :data-test-id="`vp-section-${section.title}`"
         >
 
         <!-- Lady -->
@@ -22,9 +23,6 @@
 
         <!-- Bubble -->
         <div class="section-bubble" />
-        <!--
-        <img class="section-bubble" src="@/assets/png/virtual-preschool/Bubble.png">
-        -->
 
         <!-- Bubble Text -->
         <div class="section-bubble-text">
@@ -63,6 +61,16 @@ export default defineComponent({
     section: {
       type: Object as PropType<Section>,
       default: () => ({})
+    },
+
+    height: {
+      type: String,
+      default: '50%'
+    },
+
+    startPlayingTop: {
+      type: String,
+      default: '50%'
     }
   },
 
@@ -123,13 +131,13 @@ export default defineComponent({
     position: absolute;
     right: 0;
     bottom: 0;
+    z-index: 1;
   }
 
   &-start-playing {
     cursor: pointer;
     height: 35%;
     position: absolute;
-    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
   }

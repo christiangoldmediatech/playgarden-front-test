@@ -1,48 +1,58 @@
 <template>
   <v-main>
     <v-row no-gutters justify="center" class="virtual-preschool">
-      <v-col cols="12" md="4" class="section-col-2">
+      <v-col cols="12" md="4" class="section-col">
         <section-image
           :section="section.dashboard"
+          height="50%"
           @click:play="handleAudioPlay"
           @click="handleClick"
         />
 
         <section-image
           :section="section.kidscorner"
+          height="50%"
           @click:play="handleAudioPlay"
           @click="handleClick"
         />
       </v-col>
 
-      <v-col cols="12" md="4" class="section-col-3">
+      <v-col cols="12" md="4" class="section-col">
         <section-image
           :section="section.playdates"
+          height="33.33%"
+          start-playing-top="60%"
           @click:play="handleAudioPlay"
           @click="handleClick"
         />
 
         <section-image
           :section="section.cubby"
+          height="33.33%"
+          start-playing-top="60%"
           @click:play="handleAudioPlay"
         />
 
         <section-image
           :section="section.music"
+          height="33.33%"
+          start-playing-top="60%"
           @click:play="handleAudioPlay"
           @click="handleClick"
         />
       </v-col>
 
-      <v-col cols="12" md="4" class="section-col-2">
+      <v-col cols="12" md="4" class="section-col">
         <section-image
           :section="section.classes"
+          height="50%"
           @click:play="handleAudioPlay"
           @click="handleClick"
         />
 
         <section-image
           :section="section.library"
+          height="50%"
           @click:play="handleAudioPlay"
           @click="handleClick"
         />
@@ -183,20 +193,8 @@ export default defineComponent({
   max-height: 800px;
 }
 
-.section-col-2 {
+.section-col {
   height: 100%;
-}
-
-.section-col-2 > .section-image {
-  height: 50%;
-}
-
-.section-col-3 {
-  height: 100%;
-}
-
-.section-col-3 > .section-image {
-  height: 33.33%;
 }
 
 @media (max-width: $breakpoint-sm) {
@@ -208,19 +206,7 @@ export default defineComponent({
     max-height: inherit;
   }
 
-  .section-col-2 {
-    height: auto;
-  }
-
-  .section-col-2 > .section-image {
-    height: auto;
-  }
-
-  .section-col-3 {
-    height: auto;
-  }
-
-  .section-col-3 > .section-image {
+  .section-col {
     height: auto;
   }
 }
