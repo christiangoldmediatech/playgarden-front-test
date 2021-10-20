@@ -36,7 +36,7 @@ export const useGlobalModal = ({ store }: { store: Store<TypedStore> }) => {
       isWeekFour: false
     }
 
-    if (userInfo.flow === UserFlow.NOCREDITCARD) {
+    if (userInfo.flow === UserFlow.NOCREDITCARD && !userInfo.planChoosen) {
       let lastDateNotification: string | null = null
 
       if (hasLocalStorage()) {
@@ -132,9 +132,9 @@ const getDays = (lastDate: string) => {
 }
 
 const getTrial = (dateEnd: Date) => {
-  const now = new Date()
-  const isTrial = dayjs(dateEnd).isAfter(now)
-  return isTrial
+  const now = dayjs().format('YYYY-MM-DD')
+  const end = dayjs(dateEnd).format('YYYY-MM-DD')
+  return dayjs(now).isAfter(end)
 }
 
 const getImagePath = (week: number) => {

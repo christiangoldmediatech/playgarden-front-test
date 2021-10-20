@@ -21,6 +21,7 @@
             label="Search"
             solo-labeled
             @keydown.enter="$options.doEvent('search', $event.target.value, listeners)"
+            @click:clear="$options.doEvent('search-text-cleared', $event.target.value, listeners)"
           />
         </component>
       </component>

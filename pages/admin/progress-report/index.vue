@@ -7,15 +7,29 @@
         <v-col cols="12">
           <v-card>
             <v-row>
-              <v-col class="mt-2 pl-4" cols="9">
-                <span class="text-body-1 text-lg-h7 text-xl-h6 text-justify mt-8 mr-3 text-report">
+              <v-col class="mt-2 pl-4 text-center text-md-left" cols="12" md="8">
+                <span class="text-body-1 text-lg-h7 text-xl-h6 mt-8 mr-3 text-report text-justify">
                   {{ `${child.firstName}'s ` }}progress report
                 </span>
               </v-col>
 
-              <v-col cols="3" class="text-center text-sm-right pt-4 pr-6">
+              <v-col cols="12" md="4" class="text-center text-sm-right pt-4 pr-4">
+                <!-- Export Btn -->
                 <v-btn
-                  class="text-none ml-3"
+                  class="mr-4"
+                  color="primary darken-1"
+                  dark
+                  :loading="loadingExport"
+                  @click.stop="exportList"
+                >
+                  <v-icon class="hidden-md-and-down">
+                    mdi-plus-circle
+                  </v-icon>
+
+                  <span class="white--text">Export</span>
+                </v-btn>
+                <!-- Back Btn -->
+                <v-btn
                   color="accent darken-1"
                   depressed
                   nuxt
@@ -149,6 +163,7 @@
         </v-col>
       </v-row>
     </div>
+    <course-progress-overlay />
   </v-container>
 </template>
 
@@ -159,6 +174,8 @@ import ChartReport from '@/components/app/progress-report/ChartReport.vue'
 import LetterStats from '@/components/app/progress-report/LetterStats.vue'
 import DetailProgress from '@/components/app/progress-report/DetailProgress.vue'
 import LetterSelect from '@/components/app/live-sessions/recorded/LetterSelect.vue'
+import CourseProgressOverlay from '@/components/app/student-cubby/CourseProgressOverlay.vue'
+
 export default {
   name: 'Index',
 
@@ -168,7 +185,8 @@ export default {
     ChartReport,
     LetterStats,
     DetailProgress,
-    LetterSelect
+    LetterSelect,
+    CourseProgressOverlay
   },
 
   mixins: [FavoritesMixin],
@@ -191,8 +209,10 @@ export default {
     loadLetterStatsData: true,
     letterStatsData: {
       name: '',
-      reports: []
-    }
+      reports: [],
+      curriculumTypeId: 0
+    },
+    loadingExport: false
   }),
 
   computed: {
@@ -244,7 +264,7 @@ export default {
   methods: {
     ...mapActions('children/course-progress', ['getCourseProgressByChildId']),
     ...mapActions('admin/report-card', ['getTypes']),
-    ...mapActions('progress-report', ['getGraphicByChildrenId', 'getLastLessonChildren']),
+    ...mapActions('progress-report', ['getGraphicByChildrenId', 'getLastLessonChildren', 'getAllProgressExport']),
     ...mapActions({ setChild: 'setChild' }),
     ...mapActions('children', { getChildren: 'getById' }),
     ...mapActions('children/lesson', ['getCurrentLesson', 'getCurrentCurriculumType']),
@@ -260,6 +280,22 @@ export default {
       this.letters = data
     },
 
+    async exportList () {
+      this.loadingExport = true
+      try {
+        await this.getAllProgressExport({ childId: this.selectedChild })
+        this.$snotify.success('Report created succesfully! Check your email to get it', {
+          timeout: 6000
+        })
+      } catch (err) {
+        this.$snotify.error('Export error! Try again later.', {
+          timeout: 6000
+        })
+      } finally {
+        this.loadingExport = false
+      }
+    },
+
     async getDataReport () {
       if (this.selectedChild) {
         const params = {}
@@ -267,6 +303,7 @@ export default {
           params.curriculumTypeId = this.selectedLetter
         }
         this.letterStatsData = await this.getLastLessonChildren({ childId: this.selectedChild, params })
+        this.letterStatsData.curriculumTypeId = this.selectedLetter
         await this.fetchChildProgress()
         this.loadLetterStatsData = false
       }
