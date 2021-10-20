@@ -18,7 +18,6 @@
     type="search"
     autocomplete="off"
     clearable
-    @update:search-input="handleLocationInput"
     @change="handlePlaceSelection"
     @keypress.enter="handleAddItem"
     @blur="handleAddItem"
@@ -53,7 +52,6 @@ import debounce from 'lodash/debounce'
 import { getStreetStrFromAddressComps } from '@/mixins/AddressCompsToStrMixin'
 
 enum GOOGLE_PLACES_TYPES {
-  REGIONS = '(regions)',
   ADDRESS = 'address',
 }
 
@@ -233,20 +231,6 @@ export default Vue.extend({
       }
     },
 
-    /**
-     * Handle location field input and selection
-     *
-     * @description We want to handle how the chosen value is emitted to the
-     * parent.
-     */
-    handleLocationInput (data: { text: string; value: string } | string): void {
-      // Update parent component with the searched text.
-      if (typeof data === 'string') {
-        this.streetString = data
-        this.$emit('input', data)
-      }
-    },
-
     handleAddItem () {
       if (!this.inputValue && this.streetString?.trim()) {
         /**
@@ -286,7 +270,6 @@ export default Vue.extend({
             const address = res.find(({ types }) => types.includes('street_address') || types.includes('premise') || types.includes('subpremise'))
             if (address) {
               this.streetString = getStreetStrFromAddressComps(address)
-
               this.$emit('input', this.streetString)
               this.$emit('address-components', address)
             }
