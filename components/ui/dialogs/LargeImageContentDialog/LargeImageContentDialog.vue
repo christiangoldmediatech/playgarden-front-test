@@ -77,7 +77,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .content-dialog-icon {
   position: relative;
   cursor: pointer;
@@ -93,7 +93,9 @@ export default {
 .\!rounded-\[16px\] {
   border-radius: 16px !important;
 }
+</style>
 
+<style lang="scss">
 .large-image-content-dialog {
   background-color: rgba(0, 0, 0, 0);
   border-color: rgba(0, 0, 0, 0);
