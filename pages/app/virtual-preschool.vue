@@ -21,7 +21,7 @@
         <section-image
           :section="section.playdates"
           height="33.33%"
-          start-playing-top="60%"
+          start-playing-top="65%"
           @click:play="handleAudioPlay"
           @click="handleClick"
         />
@@ -29,14 +29,14 @@
         <section-image
           :section="section.cubby"
           height="33.33%"
-          start-playing-top="60%"
+          start-playing-top="65%"
           @click:play="handleAudioPlay"
         />
 
         <section-image
           :section="section.music"
           height="33.33%"
-          start-playing-top="60%"
+          start-playing-top="65%"
           @click:play="handleAudioPlay"
           @click="handleClick"
         />
