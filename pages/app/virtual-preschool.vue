@@ -98,11 +98,11 @@ export default defineComponent({
       },
       kidscorner: {
         imageUrl: require('@/assets/png/virtual-preschool/kidscorner.png'),
-        teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Ally-kidscorner.png'),
+        teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Katryna-kidscorner.png'),
         title: 'Kids Corner',
         route: goToKidsCorner,
         message: 'It\'s a little bit silly in the Kids Corner, where kids choose how to learn',
-        audio: `${baseRoute}audio/virtual-preschool/Daily lessons.m4a`
+        audio: `${baseRoute}audio/virtual-preschool/Kidscorner.m4a`
       },
       playdates: {
         imageUrl: require('@/assets/png/virtual-preschool/playdates.png'),
