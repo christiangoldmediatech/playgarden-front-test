@@ -1,5 +1,5 @@
-import { TypedStore } from '@/models'
-import { ref, useRoute, useRouter, watch } from '@nuxtjs/composition-api'
+import { Child, TypedStore } from '@/models'
+import { ref, useRoute, useRouter, watch, computed } from '@nuxtjs/composition-api'
 import { Store } from 'vuex/types'
 import { useChild } from './use-child.composable'
 
@@ -11,16 +11,16 @@ interface UseChildRouteParams {
 
 export const useChildRoute = ({ store, route, router }: UseChildRouteParams) => {
   const childId = ref<number | null>(null)
+  const childRouteId = computed(() => route.value.query.id)
 
   const resolveChildId = () => {
     const { currentChildren } = useChild({ store })
-    const routeId = route.value.query.id
-
-    if (typeof routeId === 'string' || typeof routeId === 'string') {
-      childId.value = parseInt(routeId)
+    // Check if child id exists in route, if so use that value
+    if (typeof childRouteId.value === 'string' || typeof childRouteId.value === 'number') {
+      childId.value = parseInt(childRouteId.value)
       return
     }
-
+    // If no child in route is present, use the current children id
     if (currentChildren.value && currentChildren.value.length > 0) {
       childId.value = currentChildren.value[0].id
       return
@@ -29,14 +29,15 @@ export const useChildRoute = ({ store, route, router }: UseChildRouteParams) => 
     childId.value = null
   }
 
-  watch(childId, (val) => {
-    if (val) {
-      setCurrentChildToRoute(val)
-    }
-  })
-
   const setCurrentChildToRoute = (id: number) => {
     if (id && route.value.name) {
+      // Update received child id in the store
+      const child = store.getters['children/rows'].find(({ id: foundId }: Child) => foundId === id)
+
+      if (child) {
+        store.dispatch('setChild', { value: [child], save: true })
+      }
+      // Update route with updated child id
       router.push({
         name: route.value.name,
         query: {
@@ -46,8 +47,19 @@ export const useChildRoute = ({ store, route, router }: UseChildRouteParams) => 
     }
   }
 
+  watch(childRouteId, () => {
+    resolveChildId()
+  }, { immediate: true })
+
+  watch(childId, (val) => {
+    if (val) {
+      setCurrentChildToRoute(val)
+    }
+  })
+
   return {
     childId,
-    resolveChildId
+    resolveChildId,
+    setCurrentChildToRoute
   }
 }
