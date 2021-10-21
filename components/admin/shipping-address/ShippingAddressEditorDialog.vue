@@ -26,15 +26,12 @@
           <v-container>
             <v-form ref="activityTypeForm" @submit.prevent="passes(save)">
               <validation-provider
-                v-slot="{ errors }"
                 name="Address 1"
                 rules="required"
               >
-                <pg-text-field
+                <search-address-autocomplete
                   v-model="item.address1"
-                  :error-messages="errors"
-                  label="Address 1"
-                  solo-labeled
+                  @address-components="configureAddress"
                 />
               </validation-provider>
 
@@ -52,6 +49,19 @@
 
               <validation-provider
                 v-slot="{ errors }"
+                name="City"
+                rules="required"
+              >
+                <pg-text-field
+                  v-model="item.city"
+                  :error-messages="errors"
+                  label="City"
+                  solo-labeled
+                />
+              </validation-provider>
+
+              <validation-provider
+                v-slot="{ errors }"
                 name="State"
                 rules="required"
               >
@@ -63,15 +73,33 @@
                 />
               </validation-provider>
 
+              <!-- Country -->
               <validation-provider
                 v-slot="{ errors }"
-                name="City"
+                name="Country"
                 rules="required"
               >
-                <pg-text-field
-                  v-model="item.city"
+                <pg-select
+                  v-model="item.countryId"
+                  :items="[
+                    {
+                      text: 'United States',
+                      value: 'US'
+                    },
+                    {
+                      text: 'Canada',
+                      value: 'CA'
+                    },
+                    {
+                      text: 'Mexico',
+                      value: 'MX'
+                    }
+                  ]"
+                  clearable
                   :error-messages="errors"
-                  label="City"
+                  :loading="loading"
+                  placeholder="Country"
+                  label="Country"
                   solo-labeled
                 />
               </validation-provider>
@@ -125,6 +153,7 @@
 
 <script>
 import { mapActions } from 'vuex'
+import SearchAddressAutocomplete from '@/components/SearchAddressAutocomplete.vue'
 
 function generateItemTemplate () {
   return {
@@ -140,6 +169,10 @@ function generateItemTemplate () {
 
 export default {
   name: 'ShippingAddressEditorDialog',
+
+  components: {
+    SearchAddressAutocomplete
+  },
 
   data: vm => ({
     userId: vm.$route.query.id
@@ -160,6 +193,45 @@ export default {
 
   methods: {
     ...mapActions('shipping-address', ['createShippingAddressByAdministrator', 'updateShippingAddressByAdministrator', 'getShippingAddressByUserId']),
+
+    configureAddress (data) {
+      try {
+        // eslint-disable-next-line camelcase
+        if (data && data.address_components) {
+          this.item = generateItemTemplate()
+          // eslint-disable-next-line camelcase
+          const addressComponents = data.address_components
+
+          const city = addressComponents.find(({ types }) =>
+            types.includes('locality')
+          )
+          if (city) {
+            this.item.city = city.long_name
+          }
+
+          const state = addressComponents.find(({ types }) =>
+            types.includes('administrative_area_level_1')
+          )
+          if (state) {
+            this.item.state = state.long_name
+          }
+
+          const country = addressComponents.find(({ types }) =>
+            types.includes('country')
+          )
+          if (country) {
+            this.item.countryId = country.short_name.toUpperCase()
+          }
+
+          const postalCode = addressComponents.find(({ types }) =>
+            types.includes('postal_code')
+          )
+          if (country) {
+            this.item.zipCode = postalCode.short_name.toUpperCase()
+          }
+        }
+      } catch {}
+    },
 
     close () {
       this.$nextTick(() => {

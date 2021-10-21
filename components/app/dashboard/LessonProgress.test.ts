@@ -52,7 +52,7 @@ describe('components/app/dashboard/LessonProgress.vue', () => {
   })
 
   describe('given the progress is complete', () => {
-    it('should say "You won a puzzle piece"', () => {
+    it('should say "You earned a puzzle piece"', () => {
       const wrapper = mountFunction({
         propsData: {
           progress: 100
@@ -60,7 +60,7 @@ describe('components/app/dashboard/LessonProgress.vue', () => {
       })
       const message = wrapper.find('[data-test-id=lesson-progress-message]')
 
-      expect(message.text()).toEqual('You won a puzzle piece')
+      expect(message.text()).toEqual('You earned a puzzle piece')
     })
 
     it('should show completed medal', () => {

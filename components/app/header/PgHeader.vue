@@ -28,13 +28,13 @@
 
           <!-- Toolbar Title -->
           <v-col cols="12">
-            <underlined-title text="Virtual Preschool!" :font-size="appBarTitleSize" :font-size-mobile="appBarTitleSize" />
+            <underlined-title text="Welcome to School!" :font-size="appBarTitleSize" :font-size-mobile="appBarTitleSize" />
           </v-col>
 
           <!-- Toolbar Description -->
           <v-col>
             <div class="text-body-1 text-md-h6">
-              We are excited for a new day full of learning.
+              We are excited for a fun-filled day of learning!
             </div>
           </v-col>
         </v-row>
