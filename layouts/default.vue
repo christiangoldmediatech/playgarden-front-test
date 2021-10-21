@@ -40,7 +40,9 @@
         </v-container>
       </v-main>
 
-      <nuxt v-else :style="contentStyle" />
+      <v-container v-else fluid>
+        <nuxt :style="contentStyle" class="mt-2" />
+      </v-container>
 
       <!-- FOOTER -->
       <default-footer />
