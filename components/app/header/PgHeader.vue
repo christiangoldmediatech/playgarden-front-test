@@ -146,11 +146,7 @@ export default defineComponent({
 
     const route = useRoute()
     const router = useRouter()
-    const { childId, resolveChildId } = useChildRoute({ store, route, router })
-
-    onMounted(() => {
-      resolveChildId()
-    })
+    const { childId } = useChildRoute({ store, route, router })
 
     const nuxt = useNuxtHelper()
     const handleSidebarToggle = () => {
