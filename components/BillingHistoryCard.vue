@@ -5,10 +5,10 @@
     </v-card-text>
 
     <v-row class="font-weight-bold grey--text text--darken-2">
-      <v-col cols="6">
+      <v-col cols="5">
         Date
       </v-col>
-      <v-col cols="6">
+      <v-col cols="7">
         Payment
       </v-col>
     </v-row>
@@ -18,15 +18,22 @@
     <v-row>
       <v-col cols="12">
         <v-row v-if="latestBilling">
-          <v-col class="flex-shrink-1 flex-grow-0" cols="auto">
+          <v-col cols="5">
             {{ latestBilling.dateFormatted }}
           </v-col>
 
-          <v-col class="flex-shrink-0 flex-grow-1 text-right" cols="auto">
-            ${{ latestBilling.totalFormatted }} {{ latestBilling.currency.toUpperCase() }} /{{ latestBilling.period }} plan<br>
-            <a class="accent--text text-caption text-decoration-underline" :href="latestBilling.invoiceUrl" target="_blank">
-              View Invoice
-            </a>
+          <v-col class="d-flex" cols="7">
+            <div>
+              <div>
+                ${{ latestBilling.totalFormatted }} {{ latestBilling.currency.toUpperCase() }} /{{ latestBilling.period }} plan
+              </div>
+
+              <div class="text-right">
+                <a class="accent--text text-caption text-decoration-underline" :href="latestBilling.invoiceUrl" target="_blank">
+                  View Invoice
+                </a>
+              </div>
+            </div>
           </v-col>
         </v-row>
       </v-col>
@@ -54,11 +61,19 @@ export default defineComponent({
     BillingHistoryDialog
   },
 
-  setup () {
+  props: {
+    id: {
+      type: Number,
+      required: false,
+      default: undefined
+    }
+  },
+
+  setup (props) {
     const { billings, getBillingHistory } = useBilling()
     const dialog = ref(false)
 
-    getBillingHistory()
+    getBillingHistory(props.id)
 
     const latestBilling = computed(() => {
       return billings.value[0]
