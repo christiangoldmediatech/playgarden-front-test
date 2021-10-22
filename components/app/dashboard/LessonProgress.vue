@@ -81,7 +81,7 @@ export default defineComponent({
 
     const lessonProgressMessage = computed(() =>
       isProgressCompleted.value
-        ? 'You won a puzzle piece'
+        ? 'You earned a puzzle piece'
         : 'Win a puzzle piece!'
     )
 
