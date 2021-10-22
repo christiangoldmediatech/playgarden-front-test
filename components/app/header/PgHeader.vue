@@ -213,7 +213,6 @@ export default defineComponent({
     const eventBus = useAppEventBusHelper()
     const { isCurrentChildsBirthday } = useBirthdayHelpers()
 
-
     const nuxt = useNuxtHelper()
     const handleSidebarToggle = () => {
       nuxt.$emit('toggle-nav-drawer')
