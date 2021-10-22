@@ -106,7 +106,7 @@ export default {
       sendCurrentPlayingMusic,
       songsByCurriculumTypeWithFavorites
     } = useMusic()
-    const { childId, setCurrentChildToRoute } = useChildRoute({ store, route, router })
+    const { childId } = useChildRoute({ store, route, router, shouldRedirect: true })
 
     const isMobile = computed(() => vuetify.breakpoint.width <= PAGE_MOBILE_BREAKPOINT)
     const isPlayerShowing = computed(() => playlist.value.length > 0)
@@ -138,7 +138,6 @@ export default {
     onMounted(async () => {
       await getMusicLibrariesByCurriculumType()
       await getAndSetFavorites()
-      handleCurrentChild()
       handleEmptyMusicPlayer()
 
       window.addEventListener('scroll', debouncedHandleScroll)
@@ -159,14 +158,6 @@ export default {
       eventBus.$off(APP_EVENTS.MUSIC_ITEM_CLICKED)
       eventBus.$off(APP_EVENTS.MUSIC_ITEM_ADD_TO_FAVORITES)
     })
-
-    const handleCurrentChild = () => {
-      const currentChild = computed(() => store.getters.getCurrentChild)
-
-      if (!childId.value && currentChild.value?.length) {
-        setCurrentChildToRoute(currentChild.value[0].id)
-      }
-    }
 
     const updateCurrentSongData = () => {
       if (!currentSong.value) {
