@@ -118,6 +118,12 @@ export default {
           (query.email || query.phone) &&
           query.token
       )
+    },
+
+    isKidsCornerRedirect () {
+      const { query } = this.$route
+
+      return query.kidsCornerRedirect === 'true'
     }
   },
 
@@ -181,7 +187,10 @@ export default {
         await this.authLoginSocial(user)
         this.enableAxiosGlobal()
         this.loadingDataSocial = false
-        if (this.$route.query.redirect) {
+        if (this.isKidsCornerRedirect) {
+          // Go to kids corner
+          window.open(`${process.env.kidsCornerUrl}?atoken=${this.$store.getters['auth/getAccessToken']}`, '_self')
+        } else if (this.$route.query.redirect) {
           await this.$router.push(decodeURIComponent(this.$route.query.redirect))
         } else {
           await this.$router.push({ name: 'app-virtual-preschool' })
@@ -223,7 +232,10 @@ export default {
 
         await this.login(data)
 
-        if (this.inInvitationProcess) {
+        if (this.isKidsCornerRedirect) {
+          // Go to kids corner
+          window.open(`${process.env.kidsCornerUrl}?atoken=${this.$store.getters['auth/getAccessToken']}`, '_self')
+        } else if (this.inInvitationProcess) {
           await this.$router.push({
             name: 'app-playdates-join',
             query: this.$route.query
