@@ -102,8 +102,8 @@
 import PortfolioCarousel from '@/components/app/student-cubby/PortfolioCarousel.vue'
 import PortfolioOverlay from '@/components/app/student-cubby/PortfolioOverlay.vue'
 
-import { computed, defineComponent, onMounted, ref, useRoute, useStore, watch } from '@nuxtjs/composition-api'
-import { useChild, useOfflineWorksheet, useSnotifyHelper } from '@/composables'
+import { computed, defineComponent, ref, useRoute, useRouter, useStore, watch } from '@nuxtjs/composition-api'
+import { useChild, useChildRoute, useOfflineWorksheet, useSnotifyHelper } from '@/composables'
 import { OfflineWorksheet, TypedStore } from '@/models'
 
 export default defineComponent({
@@ -116,14 +116,16 @@ export default defineComponent({
 
   setup () {
     const route = useRoute()
+    const router = useRouter()
     const store = useStore<TypedStore>()
     const snotify = useSnotifyHelper()
-    const loading = ref(false)
-
+    const { childId: studentId } = useChildRoute({ store, route, router })
     const { children } = useChild({ store })
     const { getUploaded } = useOfflineWorksheet({ store })
 
+    const loading = ref(false)
     const uploadedWorksheets = ref<OfflineWorksheet[]>([])
+
     const categories = computed(() => {
       return uploadedWorksheets.value.filter(({ worksheetUploads }) => worksheetUploads.length > 0)
     })
@@ -143,33 +145,22 @@ export default defineComponent({
       }
     }
 
-    const studentId = computed(() => {
-      const id = route.value.query.id
+    const child = computed(() => children.value.find(({ id }) => id === studentId.value))
 
-      if (typeof id === 'string') {
-        return parseInt(id)
-      }
-    })
     watch(studentId, (val) => {
       if (val) {
         refresh()
       }
-    })
-
-    const child = computed(() => children.value.find(({ id }) => id === studentId.value))
-
-    onMounted(() => {
-      refresh()
-    })
+    }, { immediate: true })
 
     return {
+      categories,
       child,
       children,
-      categories,
       loading,
-      refresh,
       studentId,
-      uploadedWorksheets
+      uploadedWorksheets,
+      refresh
     }
   }
 })

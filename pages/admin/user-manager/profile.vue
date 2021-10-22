@@ -865,9 +865,9 @@ export default {
         return 'Missing information'
       }
 
-      const birthday = new Date(timestamp)
-      const month = birthday.toLocaleString('default', { month: 'long' })
-      return `${month} ${birthday.getDate()}, ${birthday.getFullYear()}`
+      return formatDate(timestamp, {
+        format: 'MMMM DD, YYYY'
+      })
     },
 
     getGender (gender) {

@@ -121,7 +121,7 @@
         </div>
       </v-card>
       <!-- Payment Method -->
-      <v-card class="pa-4 px-md-10 py-md-6 card-custom-border">
+      <v-card class="pa-4 px-md-10 py-md-6 card-custom-border mb-6">
         <v-row no-gutters class="text-uppercase font-weight-bold text-h5 grey--text text--darken-2" justify="center">
           Payment Method
         </v-row>
@@ -148,7 +148,24 @@
             </v-btn>
           </v-col>
         </v-row>
+        <v-row v-if="userCards.length === 0">
+          <v-col cols="12" class="grey--text mb-1">
+            <span>To add a Payment Method select a Payment Plan and then enter your Credit Card information.</span>
+          </v-col>
+          <v-col cols="12">
+            <v-btn
+              color="primary mb-3"
+              x-large
+              block
+              @click="handleChangePlan"
+            >
+              CHOOSE PLAN
+            </v-btn>
+          </v-col>
+        </v-row>
       </v-card>
+
+      <billing-history-card />
     </v-col>
 
     <!-- Plan Information -->
@@ -360,13 +377,15 @@ import { mapGetters, mapActions } from 'vuex'
 import UpdateBillingMethod from '@/components/app/payment/UpdateBillingMethod'
 import PlanDescription from '@/components/app/payment/SubscriptionPlanSelection/PlanDescription'
 import TrialIsExpiring from '@/components/app/header/TrialIsExpiring.vue'
+import BillingHistoryCard from '@/components/BillingHistoryCard.vue'
 
 export default {
   name: 'MembershipDetails',
   components: {
     UpdateBillingMethod,
     PlanDescription,
-    TrialIsExpiring
+    TrialIsExpiring,
+    BillingHistoryCard
   },
   data () {
     return {

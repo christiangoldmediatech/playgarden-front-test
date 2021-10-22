@@ -113,21 +113,50 @@
 
               <v-col cols="12" sm="9" lg="6">
                 <pg-select
-                  v-model="kidsCornerVideo.reportCardTypeId"
+                  v-model="selectedReportCard"
                   :items="listRecordTypes"
                   label="Report card type"
                   solo-labeled
+                  multiple
                 />
               </v-col>
             </v-row>
-          </v-col>
-          <v-col cols="12" md="4" class="mx-auto">
             <v-row>
-              <v-col class="text-md" cols="12">
+              <v-col class="text-md-right" cols="12" sm="3">
+                <span class="subheader font-weight-bold">Topics:</span>
+              </v-col>
+
+              <v-col cols="12" sm="9" lg="6">
+                <validation-provider
+                  v-slot="{ errors }"
+                  name="Topics"
+                  rules="required"
+                >
+                  <pg-autocomplete
+                    v-model="kidsCornerVideo.topics"
+                    addable
+                    chips
+                    :items="topicsList"
+                    clearable
+                    label="Topics"
+                    :error-messages="errors"
+                    :disabled="loading"
+                    :menu-props="feature"
+                    deletable-chips
+                    hide-no-data
+                    :loading="loading"
+                    multiple
+                    solo
+                  />
+                </validation-provider>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col class="text-md-right" cols="12" sm="3">
                 <span class="subheader font-weight-bold">Thumbnail:</span>
               </v-col>
 
-              <v-col class="text-center" cols="12">
+              <v-col cols="12" sm="9" lg="6">
                 <v-img
                   v-if="kidsCornerVideo.thumbnail"
                   class="mb-6"
@@ -158,11 +187,11 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col class="text-md" cols="12">
+              <v-col class="text-md-right" cols="12" sm="3">
                 <span class="subheader font-weight-bold">Video:</span>
               </v-col>
 
-              <v-col class="text-center" cols="12">
+              <v-col cols="12" sm="9" lg="6">
                 <validation-provider
                   v-slot="{ errors }"
                   name="Video"
@@ -188,11 +217,11 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col class="text-md" cols="12">
+              <v-col class="text-md-right" cols="12" sm="3">
                 <span class="subheader font-weight-bold">Language:</span>
               </v-col>
 
-              <v-col cols="12">
+              <v-col cols="12" sm="9" lg="6">
                 <pg-select
                   v-model="languageId"
                   :items="listLanguage"
@@ -233,14 +262,17 @@ export default defineComponent({
     const route = useRoute()
     const router = useRouter()
     const loading = ref(false)
+    const feature = ref({ top: true, offsetY: true })
     const id = ref<null|number>()
     const languageId = ref<number | null>(null)
     const thumbnail = ref<any | null>(null)
     const video = ref<any | null>(null)
+    const topicsList = ref<string[]>([])
+    const selectedReportCard = ref<number[]>([])
     const { activities, getActivitesType } = useActivity()
     const { reportCardTypes, getReportCardTypes } = useReportCardTypes()
     const { curriculumTypes, getCurriculumTypes } = useCurriculumTypes()
-    const { getKidsCornerById, saveKidsCorner, updateKidsCorner } = useKidsCorner()
+    const { getKidsCornerById, saveKidsCorner, updateKidsCorner, getTopics } = useKidsCorner()
     const thumbnailFileUploaderRef = ref<any | null>(null)
     const videoFileUploaderRef = ref<any | null>(null)
     const kidsCornerVideo = ref<Partial<KidsCornerVideo>>({
@@ -250,7 +282,7 @@ export default defineComponent({
       thumbnail: '',
       curriculumTypeId: null,
       activityTypeId: null,
-      reportCardTypeId: null,
+      reportCardTypes: [],
       topics: []
     })
 
@@ -287,10 +319,11 @@ export default defineComponent({
       kidsCornerVideo.value.thumbnail = ''
       kidsCornerVideo.value.curriculumTypeId = null
       kidsCornerVideo.value.activityTypeId = null
-      kidsCornerVideo.value.reportCardTypeId = null
+      kidsCornerVideo.value.reportCardTypes = []
       kidsCornerVideo.value.topics = []
       thumbnail.value = ''
       video.value = ''
+      id.value = null
     }
 
     const backList = () => {
@@ -301,7 +334,16 @@ export default defineComponent({
 
     const save = async () => {
       loading.value = true
-      if (thumbnail && thumbnailFileUploaderRef.value) {
+      if (selectedReportCard.value) {
+        selectedReportCard.value.map((item) => {
+          const itemSelected = reportCardTypes.value.find(value => item === value.id)
+          if (itemSelected) {
+            kidsCornerVideo.value.reportCardTypes?.push(itemSelected)
+          }
+        })
+      }
+
+      if (thumbnail.value && thumbnailFileUploaderRef.value) {
         if (thumbnailFileUploaderRef.value.type === 'dropBox') {
           const { filePath } = await thumbnailFileUploaderRef.value.handleDropBoxFileUpload()
           kidsCornerVideo.value.thumbnail = filePath
@@ -311,31 +353,49 @@ export default defineComponent({
       }
 
       let dataVideo = null
-      if (video && videoFileUploaderRef.value) {
+      if (video.value && videoFileUploaderRef.value) {
         if (videoFileUploaderRef.value.type === 'dropBox') {
           const { filePath } = await videoFileUploaderRef.value.handleDropBoxFileUpload()
           dataVideo = filePath
         } else {
           dataVideo = await videoFileUploaderRef.value.handleUpload()
         }
+        kidsCornerVideo.value.videoId = dataVideo.video.id
       }
-      kidsCornerVideo.value.videoId = dataVideo.video.id
-      await saveKidsCorner({ data: kidsCornerVideo.value })
+
+      if (id.value) {
+        await updateKidsCorner(id.value, { data: kidsCornerVideo.value })
+      } else {
+        await saveKidsCorner({ data: kidsCornerVideo.value })
+      }
       clearItem()
       loading.value = false
       backList()
     }
 
     onMounted(async () => {
-      id.value = Number(route.value.query.id)
+      if (route.value.query.id) {
+        id.value = Number(route.value.query.id)
+      }
       await getActivitesType({ activity: true })
       await getCurriculumTypes()
       await getReportCardTypes()
+      const topics = await getTopics()
+      if (topics.length > 0) {
+        topicsList.value = topics.map((item: { topic: string }) => item.topic)
+      }
+
       if (id.value) {
         const data = await getKidsCornerById(id.value)
         kidsCornerVideo.value.activityTypeId = data.activityType.id
         kidsCornerVideo.value.curriculumTypeId = data.curriculumType.id
-        kidsCornerVideo.value.reportCardTypeId = data.reportCardType.id
+        kidsCornerVideo.value.videoId = data.video.id
+        if (data.reportCardTypes) {
+          selectedReportCard.value = data.reportCardTypes.map((item: { id: number }) => item.id)
+        }
+        if (data.topics && data.topics.length > 0) {
+          kidsCornerVideo.value.topics = data.topics.map((item: { topic: string }) => item.topic)
+        }
         kidsCornerVideo.value.name = data.video.name
         kidsCornerVideo.value.description = data.video.description
         kidsCornerVideo.value.thumbnail = data.video.thumbnail
@@ -343,12 +403,15 @@ export default defineComponent({
     })
 
     return {
+      selectedReportCard,
+      feature,
       loading,
       thumbnail,
       video,
       languageId,
       activityTypes,
       kidsCornerVideo,
+      topicsList,
       listCurriculumTypes,
       listRecordTypes,
       listLanguage,

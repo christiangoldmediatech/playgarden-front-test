@@ -75,7 +75,7 @@
           <!-- Toolbar Title -->
           <v-col cols="12">
             <underlined-title
-              text="Virtual Preschool!"
+              text="Welcome to School!"
               :font-size="appBarTitleSize"
               :font-size-mobile="appBarTitleSize"
             />
@@ -84,7 +84,7 @@
           <!-- Toolbar Description -->
           <v-col>
             <div class="text-body-1 text-md-h6">
-              We are excited for a new day full of learning.
+              We are excited for a fun-filled day of learning!
             </div>
           </v-col>
         </v-row>
@@ -187,8 +187,7 @@ import { defineComponent, computed, useStore, useRoute, useRouter } from '@nuxtj
 
 import ChildSelect from '@/components/app/ChildSelect.vue'
 import { useAuth, useChildRoute, useNuxtHelper, useVuetifyHelper, useAppEventBusHelper } from '@/composables'
-import { TypedStore, APP_EVENTS, Child } from '@/models'
-import { onMounted, ref } from '@vue/composition-api'
+import { TypedStore, APP_EVENTS } from '@/models'
 import { useBirthdayHelpers } from '@/components/features/childBirthday/composables'
 
 export default defineComponent({
@@ -210,13 +209,10 @@ export default defineComponent({
 
     const route = useRoute()
     const router = useRouter()
-    const { childId, resolveChildId } = useChildRoute({ store, route, router })
+    const { childId } = useChildRoute({ store, route, router })
     const eventBus = useAppEventBusHelper()
     const { isCurrentChildsBirthday } = useBirthdayHelpers()
 
-    onMounted(() => {
-      resolveChildId()
-    })
 
     const nuxt = useNuxtHelper()
     const handleSidebarToggle = () => {

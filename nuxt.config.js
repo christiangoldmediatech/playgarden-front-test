@@ -257,7 +257,7 @@ export default {
       '@gold-media-tech/pg-video-player'
     ],
     build: {
-      extend (config, ctx) {
+      extend(config, ctx) {
         if (ctx.isDev) {
           config.devtool = ctx.isClient ? 'source-map' : 'inline-source-map'
         }
@@ -278,7 +278,8 @@ export default {
       'pk_test_51HKUavFlV2s2JR4RIPnTwt7laAa7Q5T3CXKL5xhGReFmtvcbi2YQDJBz8JnAHw5STCGxNmoWUDlZUnxzCE9imzxF00J5yVNU5Z',
     gtm: process.env.GTM_ID,
     dropBoxApiKey: process.env.DROPBOX_API_KEY || '',
-    baseRouteProd
+    baseRouteProd,
+    googlePlacesAPI: process.env.GOOGLE_PLACES_API_KEY || 'AIzaSyDh0lrueon0BEux1pIuT40ivuEI92qJr3o'
   },
   router: {
     base: process.env.TEST_ENV === 'production' ? baseRouteProd : '/',

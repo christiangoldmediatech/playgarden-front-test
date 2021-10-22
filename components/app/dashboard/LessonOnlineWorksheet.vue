@@ -25,6 +25,8 @@
         <div class="text-caption grey--text">
           Online Worksheet
         </div>
+
+        <lesson-item-status v-if="isAdmin" tag="div" v-bind="{ item: onlineWorksheet }" />
       </v-col>
     </v-row>
   </v-card>
@@ -33,8 +35,13 @@
 <script lang="ts">
 import { LessonWorksheet } from '@/models'
 import { computed, defineComponent, PropType } from '@nuxtjs/composition-api'
+import LessonItemStatus from './LessonItemStatus.vue'
 
 export default defineComponent({
+  components: {
+    LessonItemStatus
+  },
+
   props: {
     onlineWorksheet: {
       type: Object as PropType<LessonWorksheet>,
@@ -63,6 +70,12 @@ export default defineComponent({
 
     active: {
       type: Boolean,
+      default: false
+    },
+
+    isAdmin: {
+      type: Boolean,
+      required: false,
       default: false
     }
   },
