@@ -1,6 +1,7 @@
 <template>
   <div>
     <v-dialog
+      v-if="isDialogVisible"
       v-model="isDialogVisible"
       max-width="800px"
       content-class="birthdayVideoPlayerDialog"
@@ -41,7 +42,6 @@
                     class="playIcon"
                     @click="handlePlayRequest(firstPlay)"
                   >
-                  </section>
                 </div>
               </transition>
             </template>
@@ -68,14 +68,11 @@ const DEFAULT_BIRTHDAY_THUMBNAIL_PATH = require('@/assets/images/player/thumbnai
 const BIRTHDAY_VIDEO_URL =
   'https://video-on-demand-stack-prod-source-1rd9pvb7kaoed.s3.amazonaws.com/parts/activity-video/1a596269-7a85-47e7-98c1-c16f396f9249.mp4'
 
-// The url below can be used for testing the functionality of the player when BIRTHDAY_VIDEO_URL doesn't work
-const DEMO_VIDEO_URL = 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8'
-
 const birthdayWishMediaObject: MediaObject = {
   poster: DEFAULT_BIRTHDAY_THUMBNAIL_PATH,
   src: {
     url: BIRTHDAY_VIDEO_URL,
-    type: 'application/x-mpegURL'
+    type: 'video/mp4'
   }
 }
 
