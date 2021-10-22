@@ -126,7 +126,6 @@ import { defineComponent, computed, useStore, useRoute, useRouter } from '@nuxtj
 import ChildSelect from '@/components/app/ChildSelect.vue'
 import { useAuth, useChildRoute, useNuxtHelper, useVuetifyHelper } from '@/composables'
 import { TypedStore } from '@/models'
-import { onMounted } from '@vue/composition-api'
 
 export default defineComponent({
   components: {
@@ -146,11 +145,7 @@ export default defineComponent({
 
     const route = useRoute()
     const router = useRouter()
-    const { childId, resolveChildId } = useChildRoute({ store, route, router })
-
-    onMounted(() => {
-      resolveChildId()
-    })
+    const { childId } = useChildRoute({ store, route, router })
 
     const nuxt = useNuxtHelper()
     const handleSidebarToggle = () => {
