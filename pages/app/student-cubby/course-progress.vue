@@ -35,9 +35,9 @@
 import RecordedLetter from '@/components/app/live-sessions/recorded/RecordedLetter.vue'
 import CourseProgressOverlay from '@/components/app/student-cubby/CourseProgressOverlay.vue'
 
-import { computed, defineComponent, onBeforeUnmount, onMounted, ref, useRoute, watch } from '@nuxtjs/composition-api'
-import { useChildCourseProgress, useNuxtHelper } from '@/composables'
-import { ChildProgress } from '@/models'
+import { defineComponent, onBeforeUnmount, ref, useRoute, useRouter, useStore, watch } from '@nuxtjs/composition-api'
+import { useChildCourseProgress, useChildRoute, useNuxtHelper } from '@/composables'
+import { ChildProgress, TypedStore } from '@/models'
 
 export default defineComponent({
   name: 'CourseProgress',
@@ -50,18 +50,11 @@ export default defineComponent({
   setup () {
     const nuxt = useNuxtHelper()
     const route = useRoute()
+    const router = useRouter()
+    const store = useStore<TypedStore>()
+    const { childId: studentId } = useChildRoute({ store, route, router })
     const letters = ref<ChildProgress[]>([])
     const { getCourseProgressByChildId } = useChildCourseProgress()
-
-    const studentId = computed(() => {
-      const id = route.value.query.id
-      if (typeof id === 'string') {
-        return parseInt(id)
-      }
-    })
-    watch(studentId, () => {
-      fetchChildProgress()
-    })
 
     const fetchChildProgress = async () => {
       if (!studentId.value) {
@@ -79,10 +72,6 @@ export default defineComponent({
       nuxt.$emit('show-curriculum-progress', letter.id)
     }
 
-    onMounted(() => {
-      fetchChildProgress()
-    })
-
     onBeforeUnmount(() => {
       if (!document) {
         return
@@ -90,6 +79,10 @@ export default defineComponent({
       // @ts-ignore
       document.querySelector('html')?.style.overflowY = 'auto'
     })
+
+    watch(studentId, () => {
+      fetchChildProgress()
+    }, { immediate: true })
 
     return {
       letters,
