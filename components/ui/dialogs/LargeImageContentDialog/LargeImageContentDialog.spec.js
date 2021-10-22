@@ -10,6 +10,9 @@ describe('components/ui/LargeImageContentDialog/LargeImageContentDialog.vue', ()
   let vuetify
 
   beforeEach(() => {
+    window.IntersectionObserver = jest.fn().mockReturnValue({
+      observe: jest.fn()
+    })
     vuetify = new Vuetify()
   })
 
@@ -69,5 +72,23 @@ describe('components/ui/LargeImageContentDialog/LargeImageContentDialog.vue', ()
     const img = wrapper.find('[data-test-id=image]')
 
     expect(img.props().src).toBe('/some/path.png')
+  })
+
+  describe('given loading prop = true', () => {
+    it('should display the loading indicator', () => {
+      const wrapper = mountFunction({ loading: true })
+
+      const progressLinear = wrapper.find('[data-test-id=progress-linear]')
+      expect(progressLinear.props().active).toBeTruthy()
+    })
+  })
+
+  describe('given loading prop = false', () => {
+    it('should not display the loading indicator', () => {
+      const wrapper = mountFunction({ loading: false })
+
+      const progressLinear = wrapper.find('[data-test-id=progress-linear]')
+      expect(progressLinear.props().active).toBeFalsy()
+    })
   })
 })

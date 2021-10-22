@@ -29,10 +29,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, computed, useRoute, useStore } from '@nuxtjs/composition-api'
+import { useRoute, useStore, useRouter } from '@nuxtjs/composition-api'
 import { usePatches } from '@/composables/patches'
 import PatchRow from '@/components/app/student-cubby/PatchRow.vue'
 import PatchOverlay from '@/components/app/student-cubby/PatchOverlay.vue'
+import { useChildRoute } from '@/composables'
+import { TypedStore } from '@/models'
+import { watch } from '@vue/composition-api'
 
 export default {
   name: 'Patches',
@@ -44,12 +47,14 @@ export default {
 
   setup () {
     const route = useRoute()
-    const store = useStore()
-    const studentId = computed(() => Number(route.value.query.id))
+    const store = useStore<TypedStore>()
+    const router = useRouter()
+    const { childId: studentId } = useChildRoute({ store, route, router })
     const { childrenPatchesActivity, getPatchesByChildId } = usePatches()
-    onMounted(async () => {
-      await getPatchesByChildId(studentId.value)
-    })
+
+    watch(studentId, async () => {
+      await getPatchesByChildId(studentId.value || 0)
+    }, { immediate: true })
 
     return {
       childrenPatchesActivity,

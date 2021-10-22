@@ -74,7 +74,7 @@
                   </div>
 
                   <div>
-                    <div class="timeline-content-title">
+                    <div class="timeline-content-title clickable" @click="openLesson(entry.id)">
                       {{ entry.description }}
                     </div>
 

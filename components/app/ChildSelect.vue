@@ -83,7 +83,10 @@ export default {
       default: () => []
     },
 
-    managementButton: Boolean
+    managementButton: {
+      type: Boolean,
+      default: false
+    }
   },
 
   computed: {
