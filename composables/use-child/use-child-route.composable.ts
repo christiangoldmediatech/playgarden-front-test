@@ -7,9 +7,10 @@ interface UseChildRouteParams {
   store: Store<TypedStore>,
   route: ReturnType<typeof useRoute>
   router: ReturnType<typeof useRouter>
+  shouldRedirect?: boolean
 }
 
-export const useChildRoute = ({ store, route, router }: UseChildRouteParams) => {
+export const useChildRoute = ({ store, route, router, shouldRedirect = false }: UseChildRouteParams) => {
   const childId = ref<number | null>(null)
   const childRouteId = computed(() => route.value.query.id)
 
@@ -38,12 +39,14 @@ export const useChildRoute = ({ store, route, router }: UseChildRouteParams) => 
         store.dispatch('setChild', { value: [child], save: true })
       }
       // Update route with updated child id
-      router.push({
-        name: route.value.name,
-        query: {
-          id: `${id}`
-        }
-      })
+      if (shouldRedirect) {
+        router.push({
+          name: route.value.name,
+          query: {
+            id: `${id}`
+          }
+        })
+      }
     }
   }
 
@@ -55,7 +58,7 @@ export const useChildRoute = ({ store, route, router }: UseChildRouteParams) => 
     if (val) {
       setCurrentChildToRoute(val)
     }
-  })
+  }, { immediate: true })
 
   return {
     childId,
