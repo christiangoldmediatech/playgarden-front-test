@@ -444,7 +444,7 @@
             </v-card-text>
           </v-card>
 
-          <billing-history-card class="mx-7" v-bind="{ id }" />
+          <billing-history-card class="mx-7" v-bind="{ id }" v-if="billing.stripeStatus ==='active'" />
 
           <v-card
             v-if="role === 'parent'"
