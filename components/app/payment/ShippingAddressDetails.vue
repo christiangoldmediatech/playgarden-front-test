@@ -196,7 +196,7 @@
         Country
       </v-col>
       <v-col cols="8" class="text-right">
-        <b>{{ draft.country }}</b>
+        <b>{{ draft.country && draft.country.name ? draft.country.name : '' }}</b>
       </v-col>
 
       <v-col cols="4">
