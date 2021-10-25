@@ -1,5 +1,5 @@
 <template>
-  <v-row align="center" class="fill-height">
+  <v-row align="center" class="fill-height mb-4">
     <!-- CHILDREN IMAGE -->
     <v-col cols="12" md="5">
       <v-img
