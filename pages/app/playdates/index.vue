@@ -1,170 +1,40 @@
 <template>
   <v-col class="fill-height">
-    <!-- Active playdates -->
-    <div v-if="isActive">
-      <v-container v-if="loading" fill-height fluid>
-        <pg-loading />
-      </v-container>
+    <!-- ACTIVE PLAYDATES -->
+    <div v-if="isPayingUser">
+      <v-row align="center" class="fill-height" justify="space-between">
+        <!-- HEADER -->
+        <v-col cols="12" md="auto" class="flex-grow-1">
+          <underlined-title
+            text="Educational Playdates"
+            font-size="36px"
+          />
+        </v-col>
 
-      <v-container v-else>
-        <v-row no-gutters>
-          <v-col cols="12" md="">
-            <center v-if="$vuetify.breakpoint.smAndDown">
-              <underlined-title class="text-h5" text="Educational Playdates" />
-            </center>
-            <underlined-title v-else text="Educational Playdates" />
-          </v-col>
+        <!-- BUTTON -->
+        <v-col cols="12" md="auto" class="flex-shrink-1">
+          <v-btn color="accent">
+            MY PLAYDATES
+          </v-btn>
+        </v-col>
 
-          <v-col cols="12" md="auto" class="mt-3">
-            <v-row
-              v-if="playdatesComputed.length > 0"
-              class="fill-height"
-              align-content="center"
-              justify-md="end"
-              justify="center"
-              no-gutters
-            >
-              <template v-if="!allChildrenHavePlaydates">
-                <v-btn
-                  class="text-transform-none mr-3"
-                  color="accent"
-                  dark
-                  :fab="$vuetify.breakpoint.smAndDown"
-                  :large="$vuetify.breakpoint.mdAndUp"
-                  nuxt
-                  :to="{ name: 'app-playdates-create' }"
-                  :small="$vuetify.breakpoint.smAndDown"
-                  data-test-id="create-playdate"
-                >
-                  <template v-if="$vuetify.breakpoint.mdAndUp">
-                    Invite a Friend to a Playdate
-                  </template>
+        <v-container>
+          <!-- PAGE DESCRIPTION -->
+          <p class="body-1">
+            Join your friends and socialize at a Playgarden Prep Online Playdate!
+            These 30 minute Zoom sessions are designed to give children the opportunity to connect with peers while learning under the guidance of a Playgarden Prep instructor.
+            You can sign up for up to one Playdate per week; make sure to sign up for the same weekly Playdate, so that you can see your friends every week!
+          </p>
 
-                  <v-icon v-else>
-                    mdi-plus
-                  </v-icon>
-                </v-btn>
+          <!-- WEEK NAVIGATOR -->
 
-                <v-btn
-                  large
-                  nuxt
-                  :to="{ name: 'app-playdates-find' }"
-                  color="primary"
-                  class="text-transform-none"
-                  data-test-id="find-playdates"
-                >
-                  Find Playdates
-                </v-btn>
-              </template>
-
-              <template v-else>
-                <div class="grey--text text--darken-2">
-                  * You can only have one playdate per week per child.
-                </div>
-              </template>
-            </v-row>
-          </v-col>
-        </v-row>
-
-        <v-row v-if="hasPlaydates" class="mt-6" dense>
-          <v-col cols="12" class="mb-6">
-            Our <span class="grey--text text--darken-2 font-weight-bold">Educational Playdates</span> are moderated by a specialist in speech and occupational therapy, to
-            ensure children engage and enjoy social interactions with others little ones. We will limit the number of children in each playdate to allow everyone to
-            participate and benefit from these structured playtimes.
-          </v-col>
-          <v-col
-            v-for="(playdate, indexP) in playdatesComputed"
-            :key="indexP"
-            :class="{
-              'pb-6': true,
-              'pr-md-3': indexP % 2 === 0,
-              'pl-md-3': indexP % 1 === 0
-            }"
-            cols="12"
-            md="6"
-          >
-            <card-playdate :playdate="playdate" @deleted="getActivePlaydates" />
-          </v-col>
-        </v-row>
-
-        <v-row v-else class="mt-6 mt-md-0">
-          <v-col cols="12" md="6">
-            <v-img
-              alt="Educational Playdates"
-              class="align-center mr-md-15"
-              contain
-              :max-height="($vuetify.breakpoint.smAndDown) ? 200 : 500"
-              :src="require('@/assets/png/playdates/playdate.png')"
-            />
-          </v-col>
-
-          <v-col cols="12" md="6">
-            <v-row align-content="center" class="fill-height">
-              <v-col cols="12" class="text-md-left text-md-h5 text-center font-weight-bold">
-                What are Playdates?
-              </v-col>
-
-              <v-col cols="12" class="text-md-left text-center">
-                <p class="text-justify">
-                  Playgarden Prep has created custom virtual Playdates to provide important social opportunities for children to interact with their friends and family during this time of isolation.
-                </p>
-
-                <p class="text-justify">
-                  Our <span class="font-weight-bold">Educational Playdates</span> are moderated by a specialist in speech and occupational therapy, to ensure children engage and enjoy social interactions with other little ones. We will limit the number of children in each playdate to allow everyone to participate and benefit from these structured playtimes.
-                </p>
-
-                <p class="text-justify">
-                  Our <span class="font-weight-bold">Musical Playdates</span> are structured around music and engage little ones through a Mommy and Me class experience. Led by our Coaches, these playdates are a natural way for children to get together with their friends to sing, dance and have fun together!
-                </p>
-
-                <p class="text-justify">
-                  Families can also choose to create <span class="font-weight-bold">Private Playdates</span> with their friends and family, which allows private time to connect and share.
-                </p>
-
-                <p class="text-justify">
-                  Whether you choose to book a Private Playdate or join a recurring Educational or Musical Playdate to make new friends, we are committed to keeping children connected!
-                </p>
-              </v-col>
-
-              <v-col cols="10" offset="1">
-                <v-row justify="center" justify-md="start" no-gutters>
-                  <v-col cols="12" md="6">
-                    <v-btn
-                      nuxt
-                      :to="{ name: 'app-playdates-create' }"
-                      width="200"
-                      large
-                      :loading="loading"
-                      color="accent"
-                      class="text-transform-none"
-                    >
-                      Create a Playdate
-                    </v-btn>
-                  </v-col>
-                  <v-col cols="12" md="6">
-                    <v-btn
-                      nuxt
-                      :to="{ name: 'app-playdates-find' }"
-                      width="200"
-                      large
-                      color="primary"
-                      class="my-md-0 my-5 text-transform-none"
-                    >
-                      Find a Playdate
-                    </v-btn>
-                  </v-col>
-                </v-row>
-              </v-col>
-            </v-row>
-          </v-col>
-        </v-row>
-      </v-container>
+          <!-- WEEK'S PLAYDATES -->
+        </v-container>
+      </v-row>
     </div>
 
-    <!-- Inactive playdate component -->
-    <div v-else>
-      <PlaydatesAreBack />
-    </div>
+    <!-- PAYWALL -->
+    <paywall v-else />
 
     <!-- PlatinumPlan Popup -->
     <pg-dialog
@@ -271,7 +141,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, ref, useStore } from '@nuxtjs/composition-api'
-import { Child, Playdates } from '@/models'
+import { Child, Playdates, TypedStore } from '@/models'
 
 import CardPlaydate from '@/components/app/playdates/CardPlaydate.vue'
 import PlaydatesAreBack from '@/components/app/playdates/PlaydatesAreBack.vue'
@@ -282,15 +152,15 @@ export default defineComponent({
 
   components: {
     CardPlaydate,
-    PlaydatesAreBack
+    PlaydatesAreBack,
+    Paywall: () => import('@/components/app/playdates/Paywall.vue')
   },
 
   setup () {
-    const store = useStore()
+    const store = useStore<TypedStore>()
+    const { isPayingUser, getChildrenInfo } = usePlaydates({ store })
 
-    const { getChildrenInfo } = usePlaydates()
     const loading = ref(false)
-    const isActive = ref(false)
     const playdates = ref<{ children: Child, playdates: Playdates[] }[]>([])
 
     onMounted(() => {
@@ -343,8 +213,8 @@ export default defineComponent({
     }
 
     return {
+      isPayingUser,
       loading,
-      isActive,
       playdates,
       hasTrialOrPlatinumPlan,
       allChildrenHavePlaydates,
