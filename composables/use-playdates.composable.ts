@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { Child, Playdate, Playdates, TypedStore } from '@/models'
 import { axios } from '@/utils'
 import { computed } from '@nuxtjs/composition-api'
@@ -52,6 +53,25 @@ export const usePlaydates = ({ store }: UseChildPlaydates) => {
   const currentUser = computed(() => store.state.auth.userInfo)
   const isPayingUser = computed(() => currentUser.value?.stripeStatus === 'active')
 
+  /**
+   * Because the user can scroll to 3 weeks in advance, we need a function
+   * that returns an array of dates from now to 3 weeks ahead.
+   * @returns {array}
+   */
+  const getPlaydatesDates = () => {
+    const WEEKS_AHEAD = 3
+    const dates: string[] = []
+    const weeksAhead = dayjs().add(WEEKS_AHEAD, 'weeks').format('YYYY-MM-DD')
+    let now = dayjs().format('YYYY-MM-DD')
+
+    while (dayjs(now).isBefore(weeksAhead)) {
+      dates.push(now)
+      now = dayjs(now).add(1, 'day').format('YYYY-MM-DD')
+    }
+
+    return dates
+  }
+
   const getPlaydateForDate = ({ date }: { date: string }) => {
     return axios.$get(`/playdates?showChildren=true&date=${date}`)
   }
@@ -66,6 +86,7 @@ export const usePlaydates = ({ store }: UseChildPlaydates) => {
 
   return {
     isPayingUser,
+    getPlaydatesDates,
     acceptInvitePlaydate,
     addChildren,
     deletePlaydateInvitation,
