@@ -1,12 +1,17 @@
 <template>
-  <v-row>
+  <v-row align="center" class="fill-height">
     <!-- CHILDREN IMAGE -->
     <v-col cols="12" md="5">
-      <v-img contain alt="Smiling Girl Picture" :src="require('@/assets/png/playdates/willBeBackPlaydate.png')" />
+      <v-img
+        :src="require('@/assets/png/playdates/willBeBackPlaydate.png')"
+        contain
+        alt="Smiling Girl Picture"
+        class="pg-max-h-[450px]"
+      />
     </v-col>
 
     <!-- INFORMATION PANEL -->
-    <v-col cols="12" md="7" align-self="center">
+    <v-col cols="12" md="7">
       <underlined-title
         text="Playdates are back for Premium and Premium+ members!"
         font-size="36px"
@@ -62,3 +67,9 @@ export default defineComponent({
   }
 })
 </script>
+
+<style lang="scss" scoped>
+.pg-max-h-\[450px\] {
+  max-height: 450px;
+}
+</style>
