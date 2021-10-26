@@ -1,49 +1,23 @@
 <template>
   <v-card
     class="mx-auto custom-card-border"
-    :elevation="joining ? 0 : 2"
-    :max-width="joining ? '100%' : 600"
+    max-width="100%"
     height="100%"
     data-test-id="card-playdate"
     tile
   >
     <!-- CARD IMAGE AND TIME -->
-    <v-row justify="center" class="py-6 px-3 px-md-2" no-gutters>
-      <v-col md="4" cols="12" class="align-self-start">
+    <v-row justify="center" class="pa-6" no-gutters>
+      <!-- IMAGE -->
+      <v-col md="4" cols="12" class="align-self-center">
         <v-row no-gutters>
           <v-col cols="4" md="12">
             <v-img
               alt="Educational Playdates"
               contain
-              :max-height="joining ? 500 : 150"
+              :max-height="500"
               :src="require('@/assets/png/playdates/playdate.png')"
             />
-
-            <div v-if="!joining" class="text-capitalize grey--text text--darken-2 text-caption mt-2 d-none d-md-flex justify-center">
-              {{ day }} <span v-html="start" />
-            </div>
-          </v-col>
-
-          <v-col class="d-flex flex-column d-md-none align-self-center pl-2">
-            <div
-              v-if="child.firstName && !finding"
-              class="text-h5 font-weight-bold grey--text text--darken-2"
-              data-test-id="card-playdate-title"
-            >
-              <template v-if="!joining">
-                {{ child.firstName | belongsTo }}
-              </template>
-
-              <template v-else>
-                {{ child.firstName }}
-              </template>
-
-              {{ joining ? "has invited you to a playdate!" : "Playdate" }}
-            </div>
-
-            <div v-if="!joining" class="text-capitalize grey--text text--darken-2 text-caption mt-2">
-              {{ day }} <span v-html="start" />
-            </div>
           </v-col>
         </v-row>
       </v-col>
@@ -54,40 +28,22 @@
           <v-col>
             <v-list-item three-line>
               <v-list-item-content>
-                <div
-                  v-if="child.firstName && !finding"
-                  data-test-id="card-playdate-title"
-                  class="text-h4 pb-2 font-weight-bold grey--text text--darken-2 d-none d-md-flex flex-column"
-                >
-                  <template v-if="!joining">
-                    {{ child.firstName | belongsTo }}
-                  </template>
+                <v-list-item-title class="grey--text text--darken-2 pb-1">
+                  <div v-if="specialist" class="text-h6 font-weight-bold">
+                    Playdates with {{ specialist.fullName }}
+                  </div>
 
-                  <template v-else>
-                    {{ child.firstName }}
-                  </template>
+                  <div class="mt-2">
+                    {{ date }}
+                  </div>
 
-                  {{ joining ? "has invited you to a playdate!" : "Playdate" }}
-                </div>
-                <!--
-                <v-list-item-title class="overline pb-1">
-                  <b>
-                    {{ playdate.name }}
-                  </b>
-                </v-list-item-title>
-                -->
-                <v-list-item-title class="grey--text text--darken-2 font-weight-medium pb-1">
-                  <template v-if="specialist">
-                    With {{ specialist.fullName }}
-                  </template>
-
-                  <span v-if="joining" class="text-capitalize">
-                    {{ day }} <span v-html="start" />
-                  </span>
+                  <div class="text-capitalize mt-2">
+                    {{ day }} {{ start }}
+                  </div>
                 </v-list-item-title>
 
-                <v-list-item-subtitle v-if="!joining" class="caption pt-3">
-                  JOIN YOUR FRIENDS!
+                <v-list-item-subtitle class="caption py-3">
+                  Spots:
 
                   <v-row
                     justify="start"
@@ -107,14 +63,6 @@
                     </span>
                   </v-row>
                 </v-list-item-subtitle>
-
-                <v-list-item-subtitle class="mt-3">
-                  Ages recommended:<span class="text-subtitle-1 font-weight-medium"> {{ playdate.ages || "All ages" }}</span>
-                </v-list-item-subtitle>
-
-                <v-list-item-subtitle class="mt-2">
-                  Duration: <span class="text-subtitle-1 font-weight-medium">{{ duration || "30" }} minutes</span>
-                </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
 
@@ -128,7 +76,7 @@
                   :block="isMobile"
                   @click="dialog = true"
                 >
-                  Open Playdate
+                  JOIN PLAYDATE
                 </v-btn>
               </v-row>
             </slot>
@@ -349,9 +297,15 @@ export default {
   },
 
   props: {
-    finding: Boolean,
+    finding: {
+      type: Boolean,
+      default: false
+    },
 
-    joining: Boolean,
+    joining: {
+      type: Boolean,
+      default: true
+    },
 
     playdate: {
       type: Object,
@@ -382,12 +336,23 @@ export default {
 
   computed: {
     ...mapGetters('auth', ['getUserInfo']),
+
     backpackImages () {
       return get(this.playdate, 'backpackImages', []).map(({ image }) => image)
     },
 
     child () {
       return get(this.playdate, 'children', {})
+    },
+
+    date () {
+      const date = this.playdate.date
+
+      if (date) {
+        return dayjs(date).format('MMMM DD, YYYY')
+      }
+
+      return null
     },
 
     day () {
@@ -399,10 +364,10 @@ export default {
         this.today === this.week[this.playdate.day] &&
         this.times.end.isAfter(new Date())
       ) {
-        return 'Today: '
+        return 'Today'
       }
 
-      return `Next ${this.playdate.day.toLowerCase()}: `
+      return `Next ${this.playdate.day.toLowerCase()}`
     },
 
     duration () {
@@ -451,7 +416,7 @@ export default {
       const startTime = this.times.start.format('hh:mm')
       const startMeridian = this.times.start.format('a')
 
-      return `${startTime} <small class="grey--text">${startMeridian}</small>`
+      return `at ${startTime} ${startMeridian}`
     },
 
     times () {
