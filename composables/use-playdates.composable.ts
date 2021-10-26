@@ -66,13 +66,13 @@ export const usePlaydates = ({ store }: UseChildPlaydates) => {
 
     while (dayjs(now).isBefore(weeksAhead)) {
       dates.push(now)
-      now = dayjs(now).add(1, 'day').format('YYYY-MM-DD')
+      now = dayjs(now).add(1, 'week').format('YYYY-MM-DD')
     }
 
     return dates
   }
 
-  const getPlaydateForDate = ({ date }: { date: string }) => {
+  const getPlaydateForDate = ({ date }: { date: string }): Promise<Playdate[]> => {
     return axios.$get(`/playdates?showChildren=true&date=${date}`)
   }
 
