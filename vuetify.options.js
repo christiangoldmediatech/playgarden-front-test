@@ -17,7 +17,8 @@ export default function () {
 
           // general colors
           black: '#606060',
-          white: '#FFFFFF'
+          white: '#FFFFFF',
+          'pg-grey': '#606060'
         }
       }
     },
