@@ -260,18 +260,19 @@ export default Vue.extend({
     },
 
     handlePlaceSelection (placeId: string): void {
-      const itemIndex = this.items.findIndex(({ value }) => value === placeId)
-      const item = this.items[itemIndex]
-      if (itemIndex >= 0 && !item.ignore) {
+      const item = this.items.find(({ value }) => value === placeId)
+
+      if (item && !item.ignore) {
         this.streetString = ''
         this.isReverseGeocoding = true
         this.googleGeocoder?.geocode({ address: item.text }, (res, status) => {
           if (status === 'OK') {
-            const address = res.find(({ types }) => types.includes('street_address') || types.includes('premise') || types.includes('subpremise'))
+            const address = res.find(({ types }) => types.includes('street_address') || types.includes('premise') || types.includes('subpremise') || types.includes('route'))
+
             if (address) {
               this.streetString = getStreetStrFromAddressComps(address)
               this.$emit('input', this.streetString)
-              this.$emit('address-components', address)
+              this.$emit('address-components', { ...address, streetString: this.streetString })
             }
           }
           this.isReverseGeocoding = false

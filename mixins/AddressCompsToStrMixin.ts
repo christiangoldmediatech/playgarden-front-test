@@ -27,10 +27,12 @@ export const getStreetStrFromAddressComps = (address: google.maps.GeocoderResult
     } else {
       streetText = `${streetNumber.long_name} ${route.long_name}`
     }
+  } else if (route) {
+    streetText = `${route.long_name}`
+  }
 
-    if (sublocality) {
-      streetText += `, ${sublocality.long_name}`
-    }
+  if (route && streetNumber && sublocality) {
+    streetText += `, ${sublocality.long_name}`
   }
 
   return streetText
