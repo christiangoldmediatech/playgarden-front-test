@@ -45,11 +45,7 @@
           <!-- WEEK'S PLAYDATES -->
           <v-row v-if="!loading" class="mt-6">
             <v-col v-for="playdate in playdates" :key="playdate.id" cols="12" md="6">
-              <card-playdate
-                :playdate="playdate"
-                :finding="true"
-                :joining="false"
-              />
+              <card-playdate :playdate="playdate" />
             </v-col>
           </v-row>
         </v-container>
