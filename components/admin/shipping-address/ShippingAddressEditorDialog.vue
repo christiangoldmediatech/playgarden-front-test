@@ -202,6 +202,12 @@ export default {
           // eslint-disable-next-line camelcase
           const addressComponents = data.address_components
 
+          const formattedAddress = data.formatted_address
+
+          if (formattedAddress) {
+            this.item.address1 = formattedAddress
+          }
+
           const city = addressComponents.find(({ types }) =>
             types.includes('locality')
           )
