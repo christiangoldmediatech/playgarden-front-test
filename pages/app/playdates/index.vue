@@ -27,203 +27,124 @@
           </p>
 
           <!-- WEEK NAVIGATOR -->
+          <div class="d-flex justify-center align-center">
+            <!-- PREVIOUS WEEK BUTTON -->
+            <v-btn :disabled="!canGoToPreviousWeek" icon color="accent" class="mx-6 nav-button" @click="goToPreviousWeek">
+              <v-icon>mdi-chevron-left</v-icon>
+            </v-btn>
+
+            <!-- WEEK INFO -->
+            <span class="text-h5">{{ currentWeekDisplayText }}</span>
+
+            <!-- NEXT WEEK BUTTON -->
+            <v-btn :disabled="!canGoToNextWeek" icon color="accent" class="mx-6 nav-button" @click="goToNextWeek">
+              <v-icon>mdi-chevron-right</v-icon>
+            </v-btn>
+          </div>
 
           <!-- WEEK'S PLAYDATES -->
+          <v-row v-if="!loading" class="mt-6">
+            <v-col v-for="playdate in playdates" :key="playdate.id" cols="12" md="6">
+              <card-playdate
+                :playdate="playdate"
+                :finding="true"
+                :joining="false"
+              />
+            </v-col>
+          </v-row>
         </v-container>
       </v-row>
     </div>
 
     <!-- PAYWALL -->
     <paywall v-else />
-
-    <!-- PlatinumPlan Popup -->
-    <pg-dialog
-      :value="!hasTrialOrPlatinumPlan"
-      content-class="elevation-0"
-      max-width="700"
-      persistent
-    >
-      <v-card>
-        <div class="green-line green-line-1" />
-        <div class="green-line green-line-2" />
-
-        <v-row justify="center" align-content="center" no-gutters>
-          <v-col cols="5">
-            <v-img
-              :src="require('assets/png/playdates/playdate-1.png')"
-              class="hidden-sm-and-down"
-            />
-          </v-col>
-
-          <v-col cols="12" class="hidden-md-and-up">
-            <v-row justify="center" no-gutters>
-              <v-img
-                max-width="250"
-                :src="require('assets/png/playdates/popup.png')"
-                class="hidden-md-and-up mt-5"
-              />
-            </v-row>
-          </v-col>
-
-          <v-col cols="12" md="7">
-            <v-row align-content="center" class="fill-height" no-gutters>
-              <v-col cols="12" class="text-md-left text-center">
-                <underlined-title
-                  text="What's a Playdate?"
-                  class="text-h5 ml-sm-0 ml-md-5"
-                />
-
-                <v-row justify="center" justify-md="start" no-gutters>
-                  <v-col class="pt-8 px-5" cols="12">
-                    <v-row no-gutters>
-                      A playdate is a place where your child can have fun with
-                      their friends while they have fun playing, all supervised
-                      by a specialist.
-                    </v-row>
-
-                    <v-row class="pt-8 font-weight-bold" no-gutters>
-                      Get access to Educationals Playdates
-                    </v-row>
-
-                    <v-row no-gutters class="pt-8">
-                      <v-col>
-                        Upgraded your plan
-                      </v-col>
-                    </v-row>
-
-                    <v-row
-                      justify="center"
-                      justify-md="start"
-                      class="pt-8"
-                      no-gutters
-                    >
-                      <v-col cols="12">
-                        <v-btn
-                          color="accent"
-                          class="hidden-md-and-up mb-5 text-transform-none"
-                          large
-                          nuxt
-                          :to="{
-                            name: 'app-account-index',
-                            params: { changeplan: 1 }
-                          }"
-                        >
-                          <!-- nuxt to app-account-index ?changeplan=1 -->
-                          Compare Plans
-                        </v-btn>
-
-                        <v-btn
-                          color="accent"
-                          class="hidden-sm-and-down text-transform-none"
-                          width="200"
-                          large
-                          nuxt
-                          :to="{
-                            name: 'app-account-index',
-                            params: { changeplan: 1 }
-                          }"
-                        >
-                          <!-- nuxt to app-account-index ?changeplan=1 -->
-                          Compare Plans
-                        </v-btn>
-                      </v-col>
-                    </v-row>
-                  </v-col>
-                </v-row>
-              </v-col>
-            </v-row>
-          </v-col>
-        </v-row>
-      </v-card>
-    </pg-dialog>
   </v-col>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref, useStore } from '@nuxtjs/composition-api'
-import { Child, Playdates, TypedStore } from '@/models'
+import { computed, defineComponent, ref, useStore, watch } from '@nuxtjs/composition-api'
+import { Playdate, TypedStore } from '@/models'
 
 import CardPlaydate from '@/components/app/playdates/CardPlaydate.vue'
-import PlaydatesAreBack from '@/components/app/playdates/PlaydatesAreBack.vue'
 import { usePlaydates } from '@/composables'
+import dayjs from 'dayjs'
 
 export default defineComponent({
   name: 'Index',
 
   components: {
     CardPlaydate,
-    PlaydatesAreBack,
     Paywall: () => import('@/components/app/playdates/Paywall.vue')
   },
 
   setup () {
+    const MIN_WEEK_INDEX = 0
+    const MAX_WEEK_INDEX = 2
     const store = useStore<TypedStore>()
-    const { isPayingUser, getChildrenInfo } = usePlaydates({ store })
-
+    const { isPayingUser, getPlaydateForDate, getPlaydatesDates } = usePlaydates({ store })
+    const playdatesDates = getPlaydatesDates()
+    const currentPlaydateIndex = ref(0)
+    const currentPlaydateDate = computed(() => playdatesDates?.[currentPlaydateIndex.value] || dayjs().format('YYYY-MM-DD'))
     const loading = ref(false)
-    const playdates = ref<{ children: Child, playdates: Playdates[] }[]>([])
+    const playdates = ref<Playdate[]>([])
 
-    onMounted(() => {
-      if (hasTrialOrPlatinumPlan.value) {
-        getActivePlaydates()
-      } else {
-        setTimeout(() => {
-          getActivePlaydates()
-        }, 500)
-      }
+    const currentWeekDisplayText = computed(() => {
+      const startOfWeek = dayjs(currentPlaydateDate.value).startOf('week')
+      const endOfWeek = dayjs(currentPlaydateDate.value).endOf('week')
+      const isSameMonth = dayjs(startOfWeek).month() === dayjs(endOfWeek).month()
+      // e.g. October 24
+      let displayDate = dayjs(startOfWeek).format('MMMM DD')
+      // e.g. October 24 - 30 or October 31 - November 6
+      displayDate += isSameMonth
+        ? ` - ${dayjs(endOfWeek).format('DD')}`
+        : ` - ${dayjs(endOfWeek).format('MMMM DD')}`
+      // e.g. October 24 - 30, 2021
+      displayDate += `, ${dayjs(startOfWeek).format('YYYY')}`
+
+      return displayDate
     })
 
-    const hasTrialOrPlatinumPlan = computed(() => store.getters['auth/hasTrialOrPlatinumPlan'])
+    const canGoToPreviousWeek = computed(() => currentPlaydateIndex.value > MIN_WEEK_INDEX)
+    const canGoToNextWeek = computed(() => currentPlaydateIndex.value < MAX_WEEK_INDEX)
 
-    const playdatesComputed = computed(() => {
-      return playdates.value
-        .filter(item => item.playdates?.length > 0)
-        .flatMap(({ children, playdates }) => {
-          return playdates.map(({ playdate, backpackImages }) => {
-            if (!playdate) {
-              return null
-            }
-
-            return {
-              backpackImages,
-              children,
-              ...playdate
-            }
-          })
-        })
-    })
-
-    const hasPlaydates = computed(() => playdatesComputed.value.length > 0)
-
-    const allChildrenHavePlaydates = computed(() => playdates.value.every(playdate => Array.isArray(playdate.playdates) && playdate.playdates.length > 0))
-
-    const getActivePlaydates = async () => {
-      try {
-        loading.value = true
-        const response = await getChildrenInfo()
-
-        if (response) {
-          playdates.value = response
-        }
-      } catch (error) {
-
-      } finally {
-        loading.value = false
+    const goToPreviousWeek = () => {
+      if (canGoToPreviousWeek.value) {
+        currentPlaydateIndex.value--
       }
     }
 
+    const goToNextWeek = () => {
+      if (canGoToNextWeek.value) {
+        currentPlaydateIndex.value++
+      }
+    }
+
+    watch(currentPlaydateIndex, async () => {
+      if (isPayingUser.value) {
+        loading.value = true
+        playdates.value = await getPlaydateForDate({ date: currentPlaydateDate.value })
+        loading.value = false
+      }
+    }, { immediate: true })
+
     return {
+      canGoToNextWeek,
+      canGoToPreviousWeek,
+      currentWeekDisplayText,
       isPayingUser,
       loading,
       playdates,
-      hasTrialOrPlatinumPlan,
-      allChildrenHavePlaydates,
-      hasPlaydates,
-      playdatesComputed,
-      getActivePlaydates
+      playdatesDates,
+      goToNextWeek,
+      goToPreviousWeek
     }
   }
 })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.nav-button {
+  background: #FFFFFF;
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15) !important;
+}
+</style>
