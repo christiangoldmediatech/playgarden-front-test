@@ -24,7 +24,12 @@
 
       <v-card-text>
         <v-container>
-          <parents-data-table ref="UsersDataTableRef" :title="seriesName+ ' - ' + name" :show-panel="showPanel" :series-name="seriesName" :params-send="params" />
+          <parents-data-table
+            :title="seriesName+ ' - ' + name"
+            :show-panel="showPanel"
+            :series-name="seriesName"
+            :params-send="params"
+          />
         </v-container>
       </v-card-text>
 

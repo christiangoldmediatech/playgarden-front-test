@@ -1,5 +1,5 @@
 <template>
-  <report-card-types-data-table ref="ReportCardTypesDataTable" />
+  <report-card-types-data-table />
 </template>
 
 <script>
@@ -12,14 +12,6 @@ export default {
 
   components: {
     ReportCardTypesDataTable
-  },
-
-  data () {
-    return {}
-  },
-
-  mounted () {
-    this.$refs.ReportCardTypesDataTable.refresh()
   }
 }
 </script>

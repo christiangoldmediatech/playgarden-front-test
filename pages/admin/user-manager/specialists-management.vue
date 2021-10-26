@@ -1,5 +1,5 @@
 <template>
-  <specialists-data-table ref="Specialists" />
+  <specialists-data-table />
 </template>
 
 <script>
@@ -12,14 +12,6 @@ export default {
 
   components: {
     SpecialistsDataTable
-  },
-
-  data () {
-    return {}
-  },
-
-  mounted () {
-    this.$refs.Specialists.refresh()
   }
 }
 </script>

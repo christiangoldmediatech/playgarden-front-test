@@ -1,5 +1,5 @@
 <template>
-  <offline-worksheet-category-data-table ref="OfflineWorksheetCategoryDataTable" />
+  <offline-worksheet-category-data-table />
 </template>
 
 <script>
@@ -12,14 +12,6 @@ export default {
 
   components: {
     OfflineWorksheetCategoryDataTable
-  },
-
-  data () {
-    return {}
-  },
-
-  mounted () {
-    this.$refs.OfflineWorksheetCategoryDataTable.refresh()
   }
 }
 </script>
