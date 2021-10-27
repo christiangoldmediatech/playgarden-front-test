@@ -257,7 +257,7 @@ export default {
       '@gold-media-tech/pg-video-player'
     ],
     build: {
-      extend(config, ctx) {
+      extend (config, ctx) {
         if (ctx.isDev) {
           config.devtool = ctx.isClient ? 'source-map' : 'inline-source-map'
         }
