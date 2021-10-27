@@ -184,12 +184,18 @@
     <!-- Loading dialog for when live classes are being created -->
     <pg-dialog v-model="creatingLiveClassesDialog" :persistent="creatingLiveClasses" max-width="480">
       <v-card>
-        <v-card-title class="justify-center">
+        <v-card-title :class="{ 'justify-center': creatingLiveClasses }">
           <template v-if="creatingLiveClasses">
             Creating Recurring Live Classes
           </template>
           <template v-else-if="showLiveClassesCreated">
             Recurring Live Classes Created!
+            <v-spacer />
+            <v-btn icon @click="creatingLiveClassesDialog = false">
+              <v-icon>
+                mdi-close
+              </v-icon>
+            </v-btn>
           </template>
         </v-card-title>
 
@@ -201,6 +207,10 @@
             </p>
             <v-btn color="primary" @click="goToLiveClassesManagement">
               View on Live Classes Management
+            </v-btn>
+            <br>
+            <v-btn class="mt-3" color="accent" @click="creatingLiveClassesDialog = false">
+              Close
             </v-btn>
           </template>
         </v-card-text>
