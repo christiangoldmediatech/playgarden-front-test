@@ -203,7 +203,6 @@
                     append-icon="mdi-video"
                     label="Upload Video"
                     mode="video"
-                    value=""
                     multi-part
                     api="dropbox"
                     path="kids-corner-video"
