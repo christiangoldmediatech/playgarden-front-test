@@ -84,15 +84,15 @@
                   :items="[
                     {
                       text: 'United States',
-                      value: 'US'
+                      value: 1
                     },
                     {
                       text: 'Canada',
-                      value: 'CA'
+                      value: 2
                     },
                     {
                       text: 'Mexico',
-                      value: 'MX'
+                      value: 3
                     }
                   ]"
                   clearable
@@ -197,10 +197,15 @@ export default {
     configureAddress (data) {
       try {
         // eslint-disable-next-line camelcase
-        if (data && data.address_components) {
+        const addressComponents = data?.address_components
+        const streetString = data?.streetString
+
+        if (addressComponents) {
           this.item = generateItemTemplate()
-          // eslint-disable-next-line camelcase
-          const addressComponents = data.address_components
+
+          if (streetString) {
+            this.item.address1 = streetString
+          }
 
           const city = addressComponents.find(({ types }) =>
             types.includes('locality')
@@ -220,7 +225,7 @@ export default {
             types.includes('country')
           )
           if (country) {
-            this.item.countryId = country.short_name.toUpperCase()
+            this.item.countryId = this.mapCountryShortNameToId(country.short_name.toUpperCase())
           }
 
           const postalCode = addressComponents.find(({ types }) =>
@@ -295,6 +300,19 @@ export default {
       this.$nextTick(() => {
         this.dialog = true
       })
+    },
+
+    mapCountryShortNameToId (countryShortName) {
+      switch (countryShortName) {
+        case 'US':
+          return 1
+        case 'CA':
+          return 2
+        case 'MX':
+          return 3
+        default:
+          return null
+      }
     }
   }
 }

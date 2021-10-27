@@ -51,8 +51,9 @@
               :loading="loading"
               :page.sync="page"
               @update:page="page = $event"
-              @refresh="refresh(true)"
-              @search="onSearch"
+              @refresh="refetchOnboardingData"
+              @search-text-cleared="handleSearchTextClearance"
+              @search="handleSearch"
               @edit-item="$refs.editor.open(null, $event)"
               @remove-item="remove"
             >
@@ -69,7 +70,6 @@
 
 <script>
 import { mapActions } from 'vuex'
-import onSearch from '@/mixins/OnSearchMixin.js'
 import VideoPreviewBtn from '@/components/admin/video-preview/VideoPreviewBtn.vue'
 import OnboardingEditorDialog from './OnboardingEditorDialog'
 
@@ -80,13 +80,10 @@ export default {
     OnboardingEditorDialog,
     VideoPreviewBtn
   },
-
-  mixins: [onSearch],
-
   data: () => ({
     onboardings: [],
     loading: false,
-    search: null,
+    searchText: null,
     checkStatusInterval: null,
     page: 1,
     headers: [
@@ -129,22 +126,29 @@ export default {
       this.checkStatus()
     }
   },
-
+  mounted () {
+    this.refetchOnboardingData()
+  },
   beforeDestroy () {
     clearInterval(this.checkStatusInterval)
   },
 
   methods: {
     ...mapActions('onboarding', ['getOnboardings', 'deleteOnboarding']),
-
-    async refresh (clear = false) {
+    handleSearch (searchText) {
+      this.searchText = searchText
+      this.refetchOnboardingData()
+    },
+    handleSearchTextClearance () {
+      this.searchText = null
+      this.refetchOnboardingData()
+    },
+    async refetchOnboardingData () {
       this.loading = true
-      if (clear) {
-        this.search = null
-      }
+      const name = this.searchText
 
       try {
-        this.onboardings = await this.getOnboardings({ name: this.search })
+        this.onboardings = await this.getOnboardings({ ...name && { name } })
       } catch (e) {
       } finally {
         this.loading = false
@@ -157,20 +161,20 @@ export default {
         message: `Are you sure you want to delete <b>${name}</b>?`,
         action: async () => {
           await this.deleteOnboarding(id)
-          await this.refresh()
+          await this.refetchOnboardingData()
         }
       })
     },
 
     updateListTable () {
-      this.refresh()
+      this.refetchOnboardingData()
     },
 
     checkStatus () {
       if (this.onboardings.filter(data => data.videos.status !== 'COMPLETED').length > 0) {
         if (this.checkStatusInterval === null) {
           this.checkStatusInterval = setInterval(() => {
-            this.refresh()
+            this.refetchOnboardingData()
           }, 120000)
         }
       } else {

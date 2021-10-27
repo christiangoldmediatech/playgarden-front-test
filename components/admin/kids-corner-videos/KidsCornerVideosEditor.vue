@@ -321,8 +321,8 @@ export default defineComponent({
       kidsCornerVideo.value.activityTypeId = null
       kidsCornerVideo.value.reportCardTypes = []
       kidsCornerVideo.value.topics = []
-      thumbnail.value = ''
-      video.value = ''
+      thumbnail.value = null
+      video.value = null
       id.value = null
     }
 
@@ -355,12 +355,12 @@ export default defineComponent({
       let dataVideo = null
       if (video.value && videoFileUploaderRef.value) {
         if (videoFileUploaderRef.value.type === 'dropBox') {
-          const { filePath } = await videoFileUploaderRef.value.handleDropBoxFileUpload()
-          dataVideo = filePath
+          const { video } = await videoFileUploaderRef.value.handleDropBoxFileUpload()
+          kidsCornerVideo.value.videoId = video.id
         } else {
           dataVideo = await videoFileUploaderRef.value.handleUpload()
+          kidsCornerVideo.value.videoId = dataVideo.video.id
         }
-        kidsCornerVideo.value.videoId = dataVideo.video.id
       }
 
       if (id.value) {

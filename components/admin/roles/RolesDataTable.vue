@@ -49,8 +49,9 @@
               :loading="loading"
               :page.sync="page"
               @update:page="page = $event"
-              @refresh="refresh(true)"
-              @search="onSearch"
+              @refresh="refetchRoles"
+              @search="handleSearch"
+              @search-text-cleared="handleSearchTextClearance"
               @edit-item="$refs.editor.open($event)"
               @remove-item="remove"
             />
@@ -63,22 +64,17 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import onSearch from '@/mixins/OnSearchMixin.js'
 import RoleEditorDialog from './RoleEditorDialog'
 
 export default {
   name: 'RolesDataTable',
-
   components: {
     RoleEditorDialog
   },
-
-  mixins: [onSearch],
-
   data () {
     return {
       loading: false,
-      search: '',
+      searchText: '',
       page: 1,
       headers: [
         {
@@ -120,29 +116,34 @@ export default {
       types: 'rows'
     })
   },
-
+  mounted () {
+    this.refetchRoles()
+  },
   methods: {
     ...mapActions('admin/roles', {
       getRoles: 'get',
       deleteRole: 'delete'
     }),
-
-    async refresh (clear = false) {
+    handleSearch (searchText) {
+      this.searchText = searchText
+      this.refetchRoles()
+    },
+    handleSearchTextClearance () {
+      this.searchText = null
+      this.refetchRoles()
+    },
+    async refetchRoles () {
       this.loading = true
-      if (clear) {
-        this.search = ''
-      }
-      await this.getRoles(this.search)
+      await this.getRoles(this.searchText)
       this.loading = false
     },
-
     remove ({ id, name }) {
       this.$nuxt.$emit('open-prompt', {
         title: 'Delete role?',
         message: `Are you sure you want to delete <b>${name}</b>?`,
         action: async () => {
           await this.deleteRole(id)
-          this.refresh()
+          this.refetchRoles()
         }
       })
     }

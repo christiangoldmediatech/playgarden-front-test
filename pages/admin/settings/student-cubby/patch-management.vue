@@ -1,5 +1,5 @@
 <template>
-  <patch-data-table ref="PatchDataTable" />
+  <patch-data-table />
 </template>
 
 <script>
@@ -12,10 +12,6 @@ export default {
 
   components: {
     PatchDataTable
-  },
-
-  mounted () {
-    this.$refs.PatchDataTable.refresh()
   }
 }
 </script>
