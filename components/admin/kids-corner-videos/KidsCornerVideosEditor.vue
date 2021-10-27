@@ -203,6 +203,7 @@
                     append-icon="mdi-video"
                     label="Upload Video"
                     mode="video"
+                    value=""
                     multi-part
                     api="dropbox"
                     path="kids-corner-video"
@@ -321,8 +322,8 @@ export default defineComponent({
       kidsCornerVideo.value.activityTypeId = null
       kidsCornerVideo.value.reportCardTypes = []
       kidsCornerVideo.value.topics = []
-      thumbnail.value = ''
-      video.value = ''
+      thumbnail.value = null
+      video.value = null
       id.value = null
     }
 
