@@ -50,14 +50,21 @@
               :loading="loading"
               :page.sync="page"
               @update:page="page = $event"
-              @search="onSearch"
-              @refresh="refresh(true)"
+              @search="refetchTypes"
+              @refresh="refetchTypes"
+              @search-text-cleared="refetchTypes"
               @edit-item="$refs.editor.open(null, $event)"
               @remove-item="remove"
             >
               <template v-slot:[`item.color`]="{ item }">
-                <v-avatar color="black" size="32">
-                  <v-avatar :color="item.color" size="28" />
+                <v-avatar
+                  color="black"
+                  size="32"
+                >
+                  <v-avatar
+                    :color="item.color"
+                    size="28"
+                  />
                 </v-avatar>
               </template>
 
@@ -87,7 +94,6 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import onSearch from '@/mixins/OnSearchMixin.js'
 import ActivityTypeEditorDialog from './ActivityTypeEditorDialog'
 
 export default {
@@ -96,13 +102,9 @@ export default {
   components: {
     ActivityTypeEditorDialog
   },
-
-  mixins: [onSearch],
-
   data () {
     return {
       loading: false,
-      search: '',
       page: 1,
       headers: [
         {
@@ -155,7 +157,9 @@ export default {
   computed: {
     ...mapGetters('admin/activity', ['types'])
   },
-
+  mounted () {
+    this.refetchTypes()
+  },
   methods: {
     ...mapActions('admin/activity', ['getTypes', 'deleteType']),
 
@@ -170,13 +174,10 @@ export default {
       return list.length ? list.join(' | ') : 'N/A'
     },
 
-    async refresh (clear = false) {
+    async refetchTypes (searchText) {
       this.loading = true
-      if (clear) {
-        this.search = ''
-      }
       await this.getTypes({
-        name: this.search
+        name: searchText
       })
       this.loading = false
     },
@@ -187,7 +188,7 @@ export default {
         message: `Are you sure you want to delete <b>${name}</b>?`,
         action: async () => {
           await this.deleteType(id)
-          this.refresh()
+          this.refetchTypes()
         }
       })
     }

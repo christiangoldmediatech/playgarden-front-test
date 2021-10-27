@@ -1,5 +1,5 @@
 <template>
-  <notification-data-table ref="NotificationDataTable" />
+  <notification-data-table />
 </template>
 
 <script>
@@ -12,14 +12,6 @@ export default {
 
   components: {
     NotificationDataTable
-  },
-
-  data () {
-    return {}
-  },
-
-  mounted () {
-    this.$refs.NotificationDataTable.refresh()
   }
 }
 </script>

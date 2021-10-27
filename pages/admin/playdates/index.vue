@@ -1,5 +1,5 @@
 <template>
-  <agenda-data-table ref="AgendaDataTable" />
+  <agenda-data-table />
 </template>
 
 <script>
@@ -8,9 +8,7 @@ import AgendaDataTable from '@/components/admin/playdates/AgendaPlaydateDataTabl
 
 export default {
   name: 'Index',
-
   layout: 'admin',
-
   components: {
     AgendaDataTable
   },
@@ -20,15 +18,9 @@ export default {
       placeholder: false
     }
   },
-
   created () {
     this.getTypes({ extra: true })
   },
-
-  mounted () {
-    this.$refs.AgendaDataTable.refresh()
-  },
-
   methods: {
     ...mapActions('admin/activity', ['getTypes'])
   }

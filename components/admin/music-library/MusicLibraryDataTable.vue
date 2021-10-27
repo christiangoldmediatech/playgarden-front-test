@@ -72,7 +72,10 @@
     <v-row>
       <v-col cols="12">
         <v-card width="100%">
-          <music-library-editor-dialog ref="editor" @saved="refresh(false)" />
+          <music-library-editor-dialog
+            ref="editor"
+            @saved="refetchMusicLibraries"
+          />
           <v-card-text>
             <pg-admin-data-table
               :headers="headers"
@@ -81,8 +84,9 @@
               :page.sync="page"
               :server-items-length="total"
               top-justify="space-between"
-              @search="onSearch"
-              @refresh="refresh(true)"
+              @search="handleSearch"
+              @search-text-cleared="handleSearchTextClearance"
+              @refresh="refetchMusicLibraries"
               @update:items-per-page="setLimit"
               @update:page="page = $event"
               @edit-item="$refs.editor.open(null, $event)"
@@ -99,7 +103,7 @@
                     item-value="id"
                     label="Letter"
                     solo-labeled
-                    @change="refresh(false)"
+                    @change="refetchMusicLibraries"
                   />
                 </v-col>
               </template>
@@ -107,7 +111,6 @@
                 <v-btn
                   color="accent"
                   icon
-                  :disabled="disabled"
                   :loading="loading"
                   @click.stop="onPlaySong(item)"
                 >
@@ -124,7 +127,6 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import onSearch from '@/mixins/OnSearchMixin.js'
 import MusicLibraryEditorDialog from './MusicLibraryEditorDialog'
 
 export default {
@@ -133,9 +135,6 @@ export default {
   components: {
     MusicLibraryEditorDialog
   },
-
-  mixins: [onSearch],
-
   data () {
     return {
       loading: false,
@@ -152,7 +151,7 @@ export default {
         },
         songUrl: ''
       },
-      search: '',
+      searchText: '',
       limit: 10,
       page: 1,
       headers: [
@@ -196,18 +195,20 @@ export default {
 
   watch: {
     page () {
-      this.refresh()
+      this.refetchMusicLibraries()
     },
 
     limit () {
-      this.refresh()
+      this.refetchMusicLibraries()
     }
   },
 
   created () {
     this.getTypes()
   },
-
+  mounted () {
+    this.refetchMusicLibraries()
+  },
   methods: {
     ...mapActions('admin/music-library', {
       getMusicLibraries: 'get',
@@ -230,34 +231,36 @@ export default {
         this.limit = 0
       }
     },
-
-    async refresh (clear = false) {
+    handleSearch (searchText) {
+      this.searchText = searchText
+      this.refetchMusicLibraries()
+    },
+    handleSearchTextClearance () {
+      this.searchText = null
+      this.refetchMusicLibraries()
+    },
+    async refetchMusicLibraries () {
       this.loading = true
-      const params = { limit: this.limit, page: this.page, curriculumTypeId: this.filters.curriculumTypeId || null }
-
-      if (clear) {
-        this.search = ''
+      const name = this.searchText
+      const params = {
+        limit: this.limit,
+        page: this.page,
+        curriculumTypeId: this.filters.curriculumTypeId || null,
+        ...name && { name }
       }
-
-      if (this.search) {
-        params.name = this.search
-      }
-
       await this.getMusicLibraries(params)
       this.loading = false
     },
-
     remove ({ id, item }) {
       this.$nuxt.$emit('open-prompt', {
         title: 'Delete music library?',
         message: 'Are you sure you wish to delete ?',
         action: async () => {
           await this.deleteMusicLibraries(id)
-          this.refresh()
+          this.refetchMusicLibraries()
         }
       })
     },
-
     playDates (item) {
       this.$router.push({
         name: 'admin-playdates',

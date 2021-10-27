@@ -45,8 +45,9 @@
           :page.sync="page"
           :server-items-length="total"
           top-justify="space-between"
-          @search="onSearch"
-          @refresh="refresh(true)"
+          @search="handleSearch"
+          @search-text-cleared="handleSearchTextClearance"
+          @refresh="refetchKidsCornerData"
           @update:page="page = $event"
           @edit-item="
             $router.push({
@@ -75,13 +76,12 @@
 
 <script lang="ts">
 import { useKidsCorner } from '@/composables/kids-corner'
-import { defineComponent, onMounted, ref } from '@nuxtjs/composition-api'
-import onSearch from '@/mixins/OnSearchMixin.js'
+import { defineComponent, onMounted, ref, watch } from '@nuxtjs/composition-api'
 import paginable from '@/utils/mixins/paginable'
 
 export default defineComponent({
-  name: 'defineComponent',
-  mixins: [paginable, onSearch],
+  name: 'KidsCornerVideosDataTable',
+  mixins: [paginable],
   data () {
     return {
       headers: [
@@ -115,25 +115,34 @@ export default defineComponent({
   },
   setup () {
     const loading = ref(false)
-    const search = ref<string>('')
+    const searchText = ref<string | null>(null)
     const activeFilters = ref<any | null >('')
     const filterList = ref<any[]>([])
 
     const { KidsCornerVideos, page, total, limit, getKidsCorner, deleteKidsCorner } = useKidsCorner()
-    const refresh = async (clear = false) => {
+
+    watch(page, (val) => {
+      if (!loading.value) {
+        refetchKidsCornerData()
+      }
+    })
+
+    function handleSearch (searchString: string) {
+      searchText.value = searchString
+      refetchKidsCornerData()
+    }
+
+    function handleSearchTextClearance () {
+      searchText.value = null
+      refetchKidsCornerData()
+    }
+    async function refetchKidsCornerData () {
       loading.value = true
+      const name = searchText.value
       const params = {
         page: page.value,
         limit: limit.value,
-        name: ''
-      }
-
-      if (clear) {
-        search.value = ''
-      }
-
-      if (search.value) {
-        params.name = search.value
+        ...name && { name }
       }
 
       try {
@@ -145,19 +154,20 @@ export default defineComponent({
     }
 
     onMounted(async () => {
-      await refresh()
+      await refetchKidsCornerData()
     })
 
     return {
-      search,
+      handleSearch,
       activeFilters,
       loading,
       page,
       total,
       filterList,
       KidsCornerVideos,
-      refresh,
-      deleteKidsCorner
+      refetchKidsCornerData,
+      deleteKidsCorner,
+      handleSearchTextClearance
     }
   },
   methods: {
@@ -165,7 +175,7 @@ export default defineComponent({
       this.$nuxt.$emit('open-prompt', {
         title: 'Delete playdate?',
         message: `Are you sure you want to delete <b>${video.name}</b>?`,
-        action: () => this.deleteKidsCorner(id).then(this.refresh)
+        action: () => this.deleteKidsCorner(id).then(this.refetchKidsCornerData)
       })
     }
   }
