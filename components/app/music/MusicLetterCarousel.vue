@@ -1,18 +1,12 @@
 <template>
-  <div class="ma-0 pa-0">
-    <v-row class="fill-height hidden-sm-and-down" no-gutters>
+  <div class="ma-0 pa-0 slide-group-wrapper">
+    <v-row class="fill-height hidden-sm-and-down slide-group-wrapper" no-gutters>
       <!-- Desktop -->
-      <v-col class="ma-0 pa-0">
-        <v-slide-group
-          multiple
-          show-arrows
-          prev-icon="mdi-chevron-left accent--text"
-          next-icon="mdi-chevron-right accent--text"
-        >
+      <v-col class="ma-0 pa-0 slide-group-wrapper px-6">
+        <v-slide-group :value="value">
           <v-slide-item
             v-for="(letter, index) in displayLetters"
             :key="index"
-            :index="index"
           >
             <carousel-letter
               :disabled="letter.disabled"
@@ -170,5 +164,8 @@ export default {
 <style lang="scss" scoped>
 .letter-selector {
   max-width: 300px;
+}
+.slide-group-wrapper {
+  width: 100%;
 }
 </style>
