@@ -76,7 +76,7 @@
 
 <script lang="ts">
 import { useKidsCorner } from '@/composables/kids-corner'
-import { defineComponent, onMounted, ref } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, ref, watch } from '@nuxtjs/composition-api'
 import paginable from '@/utils/mixins/paginable'
 
 export default defineComponent({
@@ -120,6 +120,12 @@ export default defineComponent({
     const filterList = ref<any[]>([])
 
     const { KidsCornerVideos, page, total, limit, getKidsCorner, deleteKidsCorner } = useKidsCorner()
+
+    watch(page, (val) => {
+      if (!loading.value) {
+        refetchKidsCornerData()
+      }
+    })
 
     function handleSearch (searchString: string) {
       searchText.value = searchString
