@@ -528,7 +528,8 @@ export default {
 }
 
 .custom-card-border {
-  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.25) !important;
+  background: #FFFFFF;
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15) !important;
   border-radius: 8px !important;
 }
 </style>
