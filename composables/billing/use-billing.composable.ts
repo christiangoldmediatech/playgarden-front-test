@@ -5,10 +5,18 @@ import dayjs from 'dayjs'
 
 const billings = ref <Array<BillingDetails>>([])
 
-const getBillingHistory = async () => {
+const getBillingHistory = async (id?: number) => {
   try {
     billings.value = []
-    const response = await axios.$get('/billing/invoices') as BillingDetailsResponse[]
+
+    let response
+
+    if (id) {
+      response = await axios.$get(`/billing/${id}/invoices`) as BillingDetailsResponse[]
+    } else {
+      response = await axios.$get('/billing/invoices') as BillingDetailsResponse[]
+    }
+
     billings.value = response
       .sort((a, b) => b.startDate - a.startDate)
       .map((billingRow) => {

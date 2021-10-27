@@ -1,5 +1,5 @@
 <template>
-  <faqs-data-table ref="FaqsDataTable" />
+  <faqs-data-table />
 </template>
 
 <script>
@@ -12,10 +12,6 @@ export default {
 
   components: {
     FaqsDataTable
-  },
-
-  mounted () {
-    this.$refs.FaqsDataTable.refresh()
   }
 }
 </script>

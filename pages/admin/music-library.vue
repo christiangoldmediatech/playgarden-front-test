@@ -1,5 +1,5 @@
 <template>
-  <music-library-data-table ref="MusicLibraryDataTable" />
+  <music-library-data-table />
 </template>
 
 <script>
@@ -7,15 +7,9 @@ import MusicLibraryDataTable from '@/components/admin/music-library/MusicLibrary
 
 export default {
   name: 'MusicLibrary',
-
   layout: 'admin',
-
   components: {
     MusicLibraryDataTable
-  },
-
-  mounted () {
-    this.$refs.MusicLibraryDataTable.refresh()
   }
 }
 </script>

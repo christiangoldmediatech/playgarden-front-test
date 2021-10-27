@@ -14,26 +14,20 @@
       <v-col cols="12" md="7">
         <v-row align-content="center" class="fill-height">
           <v-col cols="12" class="text-left">
-            <underlined-title text="Playdates are back!" />
+            <underlined-title text="Playdates are back for Premium and Premium+ members!" />
           </v-col>
 
           <v-col cols="12" class="text-md-left text-center">
             <p class="text-justify text-info-playdate">
-              Play and learn with friends in our Playdate class! Come for fun activities such as spin-the-wheel, Play-doh art, stories and sharing time! <span class="font-weight-bold">Playdates must be reserved in advance</span>, as each <span class="font-weight-bold">Playdate is limited to 8 students to give each little one a chance to participate.</span> Playdates will be reserved on a first-come first-serve basis, so be sure to reserve in advance!
+              Play and learn with friends in our Playdate class! Come for fun activities such as spin-the-wheel, Play-doh art, stories and sharing time! <span class="font-weight-bold">Playdates are limited to 8 little ones per session</span>, to promote social interaction. We are currently accepting reservations for this <span class="font-weight-bold">Thursday, October 28th at 11:15AM Eastern time</span>.
             </p>
-            <p class="font-weight-bold  text-info-playdate mb-0">
-              The following dates are available:
-            </p>
-            <ul class="mb-8">
-              <li class="text-info-playdate">
-                Thursday 10/14 at 11:15AM
-              </li>
-              <li class="text-info-playdate">
-                Thursday 10/21 at 11:15AM
-              </li>
-            </ul>
+
             <p class="font-weight-bold  text-info-playdate">
-              To reserve a Playdate, email <a href="mailto:hello@playgardenprep.com">hello@playgardenprep.com</a>
+              Premium and Premium+ members can reserve a spot by emailing <a href="mailto:hello@playgardenprep.com">hello@playgardenprep.com!</a>
+            </p>
+
+            <p class="text-justify text-info-playdate">
+              If you'd like to end your trial early to gain access to Playdates, you may do so by sending us an email. We hope to see you there!
             </p>
           </v-col>
         </v-row>

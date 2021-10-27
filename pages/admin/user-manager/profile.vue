@@ -11,6 +11,7 @@
       <user-password-editor-dialog ref="userPassword" />
       <!-- Edit Child-->
       <child-editor-dialog ref="childEditorDialogRef" @saved="getUserDetails" />
+
       <v-dialog
         v-model="changePlanModal"
         content-class="white"
@@ -37,6 +38,7 @@
           />
         </v-col>
       </v-dialog>
+
       <v-col cols="12">
         <v-card width="100%" class="mb-5">
           <v-card-title>
@@ -442,6 +444,8 @@
             </v-card-text>
           </v-card>
 
+          <billing-history-card class="mx-7" v-bind="{ id }" v-if="billing.stripeStatus ==='active'" />
+
           <v-card
             v-if="role === 'parent'"
             class="mx-auto my-12"
@@ -603,6 +607,7 @@ import UserChildLessonOverlay from '@/components/admin/users/UserChildLessonOver
 import UserChildTimelineDialog from '@/components/admin/users/UserChildTimelineDialog.vue'
 import CaregiversDataTable from '@/components/admin/caregivers/CaregiversDataTable.vue'
 import ChildEditorDialog from '@/components/admin/children/ChildEditorDialog'
+import BillingHistoryCard from '@/components/BillingHistoryCard.vue'
 import { formatDate } from '~/utils/dateTools'
 
 const CANCELATION_CONFIRMATION_WORD = 'confirm'
@@ -621,7 +626,8 @@ export default {
     UserChildTimelineDialog,
     UserChildLessonOverlay,
     CaregiversDataTable,
-    ChildEditorDialog
+    ChildEditorDialog,
+    BillingHistoryCard
   },
 
   data: () => ({
