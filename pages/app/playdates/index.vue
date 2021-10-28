@@ -45,7 +45,12 @@
           <!-- WEEK'S PLAYDATES -->
           <v-row v-if="!loading" class="mt-6">
             <v-col v-for="playdate in playdates" :key="playdate.id" cols="12" md="6">
-              <card-playdate :playdate="playdate" />
+              <card-playdate
+                :playdate="playdate"
+                :is-in-a-playdate="isInAPlaydate"
+                @spot-reserved="fetchPlaydatesForDate"
+                @spot-canceled="fetchPlaydatesForDate"
+              />
             </v-col>
           </v-row>
         </v-container>
@@ -59,7 +64,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref, useStore, watch } from '@nuxtjs/composition-api'
-import { Playdate, TypedStore } from '@/models'
+import { Child, Playdate, TypedStore } from '@/models'
 
 import CardPlaydate from '@/components/app/playdates/CardPlaydate.vue'
 import { usePlaydates } from '@/composables'
@@ -76,13 +81,24 @@ export default defineComponent({
   setup () {
     const MIN_WEEK_INDEX = 0
     const MAX_WEEK_INDEX = 2
+
     const store = useStore<TypedStore>()
     const { isPayingUser, getPlaydateForDate, getPlaydatesDates } = usePlaydates({ store })
+
     const playdatesDates = getPlaydatesDates()
     const currentPlaydateIndex = ref(0)
-    const currentPlaydateDate = computed(() => playdatesDates?.[currentPlaydateIndex.value] || dayjs().format('YYYY-MM-DD'))
     const loading = ref(false)
     const playdates = ref<Playdate[]>([])
+    const children = computed<Child[]>(() => store.getters['children/rows'])
+    const currentPlaydateDate = computed(() => playdatesDates?.[currentPlaydateIndex.value] || dayjs().format('YYYY-MM-DD'))
+
+    const isInAPlaydate = computed(() => {
+      return playdates.value.some((playdate) => {
+        return Boolean(playdate?.backpackImages?.find(({ childrenId }) => {
+          return children.value.find(({ id }) => id === childrenId)
+        }))
+      })
+    })
 
     const currentWeekDisplayText = computed(() => {
       const startOfWeek = dayjs(currentPlaydateDate.value).startOf('week')
@@ -115,22 +131,28 @@ export default defineComponent({
       }
     }
 
-    watch(currentPlaydateIndex, async () => {
+    const fetchPlaydatesForDate = async () => {
       if (isPayingUser.value) {
         loading.value = true
         playdates.value = await getPlaydateForDate({ date: currentPlaydateDate.value })
         loading.value = false
       }
+    }
+
+    watch(currentPlaydateIndex, async () => {
+      await fetchPlaydatesForDate()
     }, { immediate: true })
 
     return {
       canGoToNextWeek,
       canGoToPreviousWeek,
       currentWeekDisplayText,
+      isInAPlaydate,
       isPayingUser,
       loading,
       playdates,
       playdatesDates,
+      fetchPlaydatesForDate,
       goToNextWeek,
       goToPreviousWeek
     }

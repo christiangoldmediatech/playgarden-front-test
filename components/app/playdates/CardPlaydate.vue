@@ -1,89 +1,114 @@
 <template>
-  <v-card
-    class="mx-auto custom-card-border"
-    max-width="100%"
-    height="100%"
-    data-test-id="card-playdate"
-    tile
-  >
-    <!-- CARD IMAGE AND TIME -->
-    <v-row justify="center" class="pa-6" no-gutters>
-      <!-- IMAGE -->
-      <v-col md="4" cols="12" class="align-self-center">
-        <v-row no-gutters>
-          <v-col cols="4" md="12">
-            <v-img
-              alt="Educational Playdates"
-              contain
-              :max-height="500"
-              :src="require('@/assets/png/playdates/playdate.png')"
-            />
-          </v-col>
-        </v-row>
-      </v-col>
+  <div>
+    <v-card
+      class="mx-auto custom-card-border"
+      max-width="100%"
+      height="100%"
+      data-test-id="card-playdate"
+      tile
+    >
+      <!-- CARD IMAGE AND TIME -->
+      <v-row justify="center" class="pa-6" no-gutters>
+        <!-- IMAGE -->
+        <v-col md="4" cols="12" class="align-self-center">
+          <v-row no-gutters>
+            <v-col cols="4" md="12">
+              <v-img
+                alt="Educational Playdates"
+                contain
+                :max-height="500"
+                :src="require('@/assets/png/playdates/playdate.png')"
+              />
+            </v-col>
+          </v-row>
+        </v-col>
 
-      <!-- PLAYDATE INFO -->
-      <v-col md="8" cols="12">
-        <v-row align-content="center" class="fill-height" no-gutters>
-          <v-col>
-            <v-list-item three-line>
-              <v-list-item-content>
-                <v-list-item-title class="grey--text text--darken-2 pb-1">
-                  <div v-if="specialist" class="text-h6 font-weight-bold">
-                    Playdates with {{ specialist.fullName }}
-                  </div>
+        <!-- PLAYDATE INFO -->
+        <v-col md="8" cols="12">
+          <v-row align-content="center" class="fill-height" no-gutters>
+            <v-col>
+              <v-list-item three-line>
+                <v-list-item-content>
+                  <v-list-item-title class="grey--text text--darken-2 pb-1">
+                    <div v-if="specialist" class="text-h6 text-truncate font-weight-bold">
+                      Playdates with {{ specialist.fullName }}
+                    </div>
 
-                  <div class="mt-2">
-                    {{ date }}
-                  </div>
+                    <div class="mt-2">
+                      {{ date }}
+                    </div>
 
-                  <div class="text-capitalize mt-2">
-                    {{ day }} {{ start }}
-                  </div>
-                </v-list-item-title>
+                    <div class="text-capitalize mt-2">
+                      {{ day }} {{ start }}
+                    </div>
+                  </v-list-item-title>
 
-                <v-list-item-subtitle class="caption py-3">
-                  Spots:
+                  <v-list-item-subtitle class="caption py-3">
+                    Spots:
 
-                  <v-row
-                    justify="start"
-                    no-gutters
-                    class="pt-2"
-                  >
-                    <v-img
-                      v-for="(bImage, indexBI) in backpackImages"
-                      :key="indexBI"
-                      :class="{ 'ml-n3': indexBI }"
-                      max-width="36"
-                      :src="bImage"
-                    />
+                    <v-row
+                      justify="start"
+                      no-gutters
+                      class="pt-2"
+                    >
+                      <v-img
+                        v-for="(bImage, indexBI) in backpackImages"
+                        :key="indexBI"
+                        :src="bImage"
+                        :class="{ 'ml-n3': indexBI }"
+                        class="backpack-image"
+                        max-width="36"
+                      />
 
-                    <span class="ml-1 mt-2">
-                      {{ backpackImages.length }}/{{ playdate.spots }}
-                    </span>
-                  </v-row>
-                </v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
+                      <span class="ml-1 mt-2">
+                        {{ backpackImages.length }}/{{ playdate.spots }}
+                      </span>
+                    </v-row>
+                  </v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
 
-            <slot name="button">
-              <v-row no-gutters class="px-4">
-                <v-btn
-                  class="white--text text-transform-none"
-                  color="accent"
-                  width="250"
-                  data-test-id="card-playdate-open-button"
-                  :block="isMobile"
-                  @click="dialog = true"
-                >
-                  JOIN PLAYDATE
-                </v-btn>
-              </v-row>
-            </slot>
-          </v-col>
-        </v-row>
-      </v-col>
-    </v-row>
+              <slot name="button">
+                <v-row no-gutters class="px-4">
+                  <v-col cols="12" class="py-1">
+                    <v-btn
+                      :disabled="isInAPlaydate && !hasSpotInThisPlaydate"
+                      class="!pg-shadow-button white--text text-transform-none"
+                      color="accent"
+                      width="250"
+                      data-test-id="card-playdate-open-button"
+                      block
+                      @click="dialog = true"
+                    >
+                      {{ hasSpotInThisPlaydate ? 'SEE DETAILS' : 'JOIN PLAYDATE' }}
+                    </v-btn>
+                  </v-col>
+
+                  <v-col v-if="hasSpotInThisPlaydate" cols="12" class="py-1">
+                    <v-btn
+                      :loading="isLoadingSpotAction"
+                      class="!pg-shadow-button red lighten-4 grey--text text--darken-2 text-transform-none"
+                      data-test-id="card-playdate-open-button"
+                      block
+                      @click="handleCancelSpot"
+                    >
+                      <v-icon class="red--text">
+                        mdi-delete
+                      </v-icon>
+                      CANCEL SPOT
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </slot>
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
+    </v-card>
+
+    <div v-if="isInAPlaydate && !hasSpotInThisPlaydate" class="mt-3 font-weight-medium">
+      *You can only join one playdate per week.
+    </div>
 
     <!-- CardPlaydatePopup -->
     <pg-dialog
@@ -127,21 +152,21 @@
           <v-col class="px-3 px-lg-0" sm="12" lg="8" xl="10">
             <v-card
               class="mx-md-auto mx-sm-5 mt-md-16 mt-sm-0"
-              max-width="700"
-              max-height="700"
+              max-width="800"
+              max-height="800"
               elevation="2"
             >
               <div class="green-line green-line-1" />
               <div class="green-line green-line-2" />
 
-              <v-row justify="center" no-gutters>
-                <v-col md="5" cols="12" class="align-self-center">
+              <v-row justify="center" no-gutters class="px-4 mt-6">
+                <v-col md="6" cols="12" class="align-self-center">
                   <v-row justify="center" no-gutters>
                     <v-col align-self="center">
                       <v-row justify="center" class="mt-2">
-                        <v-avatar size="120">
+                        <v-avatar size="325">
                           <v-img
-                            max-width="120"
+                            max-width="325"
                             alt="Educational Playdates"
                             :src="
                               require('@/assets/png/playdates/playdate.png')
@@ -150,49 +175,50 @@
                           />
                         </v-avatar>
                       </v-row>
-
-                      <h5 class="text-capitalize text-center mt-4">
-                        {{ day }} <span v-html="start" />
-                      </h5>
                     </v-col>
                   </v-row>
                 </v-col>
 
-                <v-col md="7" cols="12">
+                <v-col md="6" cols="12">
                   <v-list-item three-line>
                     <v-list-item-content>
-                      <div
-                        v-if="child.firstName && !finding"
-                        class="headline pb-2 font-weight-bold"
-                      >
-                        {{ child.firstName | belongsTo }} Playdate
-                      </div>
+                      <v-list-item-title class="grey--text text--darken-2 pb-1">
+                        <div v-if="specialist" class="text-h5 text-truncate font-weight-bold">
+                          Playdates with {{ specialist.fullName }}
+                        </div>
 
-                      <v-list-item-title>
-                        <b>{{ playdate.name }}</b>
-                      </v-list-item-title>
+                        <div class="pg-text-[18px] py-2">
+                          {{ date }}
+                        </div>
 
-                      <v-list-item-title
-                        v-if="specialist"
-                        class="overline pb-1"
-                      >
-                        With {{ specialist.fullName }}
+                        <div class="pg-text-[18px] text-capitalize py-2">
+                          {{ day }} {{ start }}
+                        </div>
                       </v-list-item-title>
 
                       <div class="pt-1 text-justify pr-3 description-text">
-                        <p>{{ playdate.description }}</p>
+                        <div class="grey--text text--darken-2 font-weight-bold">
+                          Description
+                        </div>
+
+                        <p class="text-body-2 my-3">
+                          {{ playdate.description }}
+                        </p>
                       </div>
 
                       <v-list-item-subtitle class="pt-1">
-                        JOIN YOUR FRIENDS!
+                        <div class="grey--text text--darken-2 font-weight-bold">
+                          Spots
+                        </div>
 
                         <v-row justify-md="start" no-gutters class="pt-2">
                           <v-img
                             v-for="(bImage, indexBI) in backpackImages"
                             :key="indexBI"
-                            :class="{ 'ml-n3': indexBI }"
-                            max-width="25"
                             :src="bImage"
+                            :class="{ 'ml-n3': indexBI }"
+                            max-width="45"
+                            class="backpack-image"
                           />
 
                           <span class="ml-1">
@@ -201,70 +227,51 @@
                         </v-row>
                       </v-list-item-subtitle>
 
-                      <v-list-item-subtitle v-if="playdate.ages" class="pt-3">
-                        Ages recommended:<b>{{ playdate.ages }}</b>
-                      </v-list-item-subtitle>
+                      <v-list-item-subtitle class="pt-5">
+                        <div class="grey--text text--darken-2 font-weight-bold mb-2">
+                          Who is going?
+                        </div>
 
-                      <v-list-item-subtitle v-if="duration" class="pt-3">
-                        Duration: <b>{{ duration }} minutes</b>
-                      </v-list-item-subtitle>
-
-                      <v-list-item-subtitle v-if="!finding" class="pt-5">
-                        <h5>Who is going?</h5>
-                        <child-select :value="child.id" hide-details disabled />
+                        <child-select v-if="!hasSpotInThisPlaydate" v-model="childId" hide-details />
+                        <child-select v-else :value="child.id" disabled hide-details />
                       </v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
                 </v-col>
               </v-row>
-              <v-row v-if="finding" justify="center" no-gutters>
-                <v-col cols="8" class="mb-0 mt-3">
-                  <h5>Select children for Playdate?</h5>
-                  <child-select v-model="childId" :playdates="playdates" />
-                </v-col>
-              </v-row>
-              <v-row justify="center" no-gutters>
+
+              <v-row justify="center" no-gutters class="pt-8">
                 <v-col cols="8" class="mb-5 mt-0">
                   <v-btn
-                    v-if="!finding"
-                    class="white--text"
+                    v-if="!hasSpotInThisPlaydate"
+                    :disabled="!childId"
+                    :loading="isLoadingSpotAction"
+                    class="!pg-shadow-button !pg-text-[18px] text-none white--text"
                     color="accent"
                     target="_blank"
                     block
-                    x-large
-                    data-test-id="card-playdate-open-button"
+                    large
+                    data-test-id="card-playdate-join-button"
+                    @click="handleReserveSpot"
+                  >
+                    Reserve Spot
+                  </v-btn>
+
+                  <v-btn
+                    v-if="hasSpotInThisPlaydate"
                     :href="playdate.link"
+                    block
+                    class="white--text mb-3"
+                    color="accent"
+                    data-test-id="card-playdate-open-button"
+                    target="_blank"
+                    x-large
                     @click="handleOpenZoom"
                   >
-                    Open Zoom Playdate
+                    Get Zoom Link
                   </v-btn>
 
-                  <v-btn
-                    v-else
-                    class="white--text"
-                    color="accent"
-                    target="_blank"
-                    block
-                    x-large
-                    data-test-id="card-playdate-join-button"
-                    @click="joinPlaydateChildren"
-                  >
-                    Join Playdate
-                  </v-btn>
-
-                  <pg-ics-calendar :entry="icsEntry" />
-
-                  <v-btn
-                    v-if="!finding"
-                    color="red"
-                    block
-                    x-large
-                    text
-                    data-test-id="card-playdate-delete"
-                    @click="remove"
-                  >
-                    DELETE PLAYDATE
-                  </v-btn>
+                  <pg-ics-calendar v-if="hasSpotInThisPlaydate" :entry="icsEntry" />
                 </v-col>
               </v-row>
             </v-card>
@@ -272,10 +279,11 @@
         </v-row>
       </v-container>
     </pg-dialog>
-  </v-card>
+  </div>
 </template>
 
 <script>
+import { defineComponent, useStore } from '@nuxtjs/composition-api'
 import { mapActions, mapGetters } from 'vuex'
 import dayjs from 'dayjs'
 import { get } from 'lodash'
@@ -285,11 +293,13 @@ import utc from 'dayjs/plugin/utc'
 import { TAG_MANAGER_EVENTS } from '@/models'
 
 import ChildSelect from '@/components/app/ChildSelect.vue'
+import { usePlaydates, useSnotifyHelper } from '@/composables'
+import { computed, ref } from '@vue/composition-api'
 
 dayjs.extend(customParseFormat)
 dayjs.extend(utc)
 
-export default {
+export default defineComponent({
   name: 'CardPlaydate',
 
   components: {
@@ -315,6 +325,70 @@ export default {
     playdates: {
       type: Array,
       default: () => []
+    },
+
+    isInAPlaydate: {
+      type: Boolean,
+      default: false
+    }
+  },
+
+  setup (props, { emit }) {
+    const snotify = useSnotifyHelper()
+    const store = useStore()
+    const { reserveASpot, cancelSpotReservation } = usePlaydates({ store })
+
+    const isLoadingSpotAction = ref(false)
+    const childId = ref(null)
+    const children = computed(() => store.getters['children/rows'])
+
+    const child = computed(() => {
+      return children.value.find(({ id }) => {
+        return props.playdate.backpackImages.find(({ childrenId }) => {
+          return id === childrenId
+        })
+      })
+    })
+
+    const handleReserveSpot = async () => {
+      try {
+        isLoadingSpotAction.value = true
+
+        await reserveASpot({ playdateId: props.playdate.id, childId: childId.value, date: props.playdate.date })
+
+        childId.value = null
+        snotify.success('Spot reserved!')
+        emit('spot-reserved')
+      } catch (error) {
+
+      } finally {
+        isLoadingSpotAction.value = false
+      }
+    }
+
+    const handleCancelSpot = async () => {
+      try {
+        isLoadingSpotAction.value = true
+
+        await cancelSpotReservation({ playdateId: props.playdate.id, childId: child.value.id, date: props.playdate.date })
+
+        childId.value = null
+        snotify.success('Spot cancelled!')
+        emit('spot-canceled')
+      } catch (error) {
+
+      } finally {
+        isLoadingSpotAction.value = false
+      }
+    }
+
+    return {
+      childId,
+      child,
+      children,
+      isLoadingSpotAction,
+      handleReserveSpot,
+      handleCancelSpot
     }
   },
 
@@ -323,7 +397,6 @@ export default {
     name: null,
     backpack: null,
     today: new Date().getUTCDay(),
-    childId: null,
 
     week: {
       MONDAY: 1,
@@ -339,10 +412,6 @@ export default {
 
     backpackImages () {
       return get(this.playdate, 'backpackImages', []).map(({ image }) => image)
-    },
-
-    child () {
-      return get(this.playdate, 'children', {})
     },
 
     date () {
@@ -441,6 +510,12 @@ export default {
 
     isMobile () {
       return this.$vuetify.breakpoint.smAndDown
+    },
+
+    hasSpotInThisPlaydate () {
+      return Boolean(this.playdate.backpackImages.find(({ childrenId }) => {
+        return this.children.find(({ id }) => id === childrenId)
+      }))
     }
   },
 
@@ -492,7 +567,7 @@ export default {
       })
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
@@ -531,5 +606,9 @@ export default {
   background: #FFFFFF;
   box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15) !important;
   border-radius: 8px !important;
+}
+
+.backpack-img {
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.203922);
 }
 </style>
