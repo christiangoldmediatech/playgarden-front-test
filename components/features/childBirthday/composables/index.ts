@@ -20,7 +20,7 @@ export function useBirthdayHelpers () {
   })
 
   function isDateFallingToday (date: string | Date | Dayjs) {
-    return dayjs(date).isToday()
+    return dayjs(date).format('DD/MM') === dayjs().format('DD/MM')
   }
 
   function setDialogClosedDataInLSForChild (childId: number | undefined) {
