@@ -29,7 +29,7 @@ export const usePlaydates = ({ store }: UseChildPlaydates) => {
     return axios.$get('/playdates', { params })
   }
 
-  const getChildrenInfo = (): Promise<{ children: Child; playdates: Playdates[] }[]> => {
+  const getChildrenInfo = (): Promise<{ children: Child; playdates: Playdates[], groups: { groupedDate: string, playdates: { backpackImages: [], date: string, playdate: Playdate }[] }[] }[]> => {
     return axios.$get('/playdates/children')
   }
 
