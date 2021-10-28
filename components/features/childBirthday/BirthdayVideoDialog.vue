@@ -66,8 +66,6 @@ import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObj
 import { computed, defineComponent, onBeforeUnmount, onMounted, ref, watch } from '@nuxtjs/composition-api'
 import { useAppEventBusHelper } from '@/composables'
 import { APP_EVENTS } from '@/models'
-import { hasLocalStorage } from '@/utils/window'
-
 // @ts-ignore
 import PgVideoPlayer from '@gold-media-tech/pg-video-player'
 import { ControlPropConfig } from '@gold-media-tech/pg-video-player/src/types/Controls'
@@ -99,15 +97,40 @@ export default defineComponent({
   setup() {
     const isDialogVisible = ref(false)
     const hasVideoStarted = ref(false)
-    const { isCurrentChildsBirthday, currentChild } = useBirthdayHelpers()
+    const {
+      isCurrentChildsBirthday,
+      currentChild,
+      isDateFallingToday,
+      getDialogClosedDataFromLS,
+      setDialogClosedDataInLSForChild
+    } = useBirthdayHelpers()
     const eventBus = useAppEventBusHelper()
 
-    watch(isCurrentChildsBirthday, (newValue) => {
-      if (newValue) {
+    const isBirthDayWishForCurrentChildClosedToday = computed(() => {
+      if (currentChild.value?.id) {
+        const dialogClosedData = getDialogClosedDataFromLS()
+        if (dialogClosedData) {
+          const lastSeenTimeForCurrentChild = dialogClosedData.find(data => data.childId === currentChild.value?.id)?.lastClosedTime
+          return lastSeenTimeForCurrentChild ? isDateFallingToday(lastSeenTimeForCurrentChild) : false
+        }
+        return false
+      }
+      return true
+    })
+
+    watch([isCurrentChildsBirthday, isBirthDayWishForCurrentChildClosedToday], () => {
+      if (isCurrentChildsBirthday.value && !isBirthDayWishForCurrentChildClosedToday.value) {
         showDialog()
       }
     }, {
       immediate: true
+    })
+
+    watch(isDialogVisible, (newValue, oldValue) => {
+      const isDialogClosedByUser = !newValue && oldValue
+      if (isDialogClosedByUser && currentChild.value?.id) {
+        setDialogClosedDataInLSForChild(currentChild.value.id)
+      }
     })
 
     onMounted(() => {
@@ -116,16 +139,6 @@ export default defineComponent({
 
     onBeforeUnmount(() => {
       eventBus.$off(APP_EVENTS.SHOW_BIRTHDAY_MODAL, handleBirthdayModalRequest)
-    })
-
-    const hasCurrrentChildBrithdayWishBeenClosedRecently = computed(() => {
-      if (hasLocalStorage()) {
-        const LSValue = window.localStorage.getItem('birthWishSeenStatus')
-        if (LSValue) {
-          const wishSeenTime = JSON.parse(LSValue)
-          return wishSeenTime[currentChild.value?.id]
-        }
-      }
     })
 
     function handleBirthdayModalRequest() {
@@ -157,7 +170,8 @@ export default defineComponent({
       playerControlconfig,
       handleDialogCloseRequest,
       hasVideoStarted,
-      handlePlayRequest
+      handlePlayRequest,
+      isBirthDayWishForCurrentChildClosedToday
     }
   }
 })
