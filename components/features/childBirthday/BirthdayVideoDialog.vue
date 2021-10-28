@@ -6,6 +6,14 @@
       max-width="800px"
       content-class="birthdayVideoPlayerDialog"
     >
+      <section
+        v-if="currentChild && currentChild.firstName"
+        class="birthdayWishText my-5"
+      >
+        <div>Happy Birthday</div>
+        <div> {{ currentChild.firstName }}!</div>
+      </section>
+
       <div class="pg-player-container">
         <div class="bar bar-1 primary" />
         <div class="bar bar-2 secondary" />
@@ -55,9 +63,11 @@
 <script lang="ts">
 import { PlayerInstance } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
 import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
-import { defineComponent, onBeforeUnmount, onMounted, ref, watch } from '@nuxtjs/composition-api'
+import { computed, defineComponent, onBeforeUnmount, onMounted, ref, watch } from '@nuxtjs/composition-api'
 import { useAppEventBusHelper } from '@/composables'
 import { APP_EVENTS } from '@/models'
+import { hasLocalStorage } from '@/utils/window'
+
 // @ts-ignore
 import PgVideoPlayer from '@gold-media-tech/pg-video-player'
 import { ControlPropConfig } from '@gold-media-tech/pg-video-player/src/types/Controls'
@@ -106,6 +116,16 @@ export default defineComponent({
 
     onBeforeUnmount(() => {
       eventBus.$off(APP_EVENTS.SHOW_BIRTHDAY_MODAL, handleBirthdayModalRequest)
+    })
+
+    const hasCurrrentChildBrithdayWishBeenClosedRecently = computed(() => {
+      if (hasLocalStorage()) {
+        const LSValue = window.localStorage.getItem('birthWishSeenStatus')
+        if (LSValue) {
+          const wishSeenTime = JSON.parse(LSValue)
+          return wishSeenTime[currentChild.value?.id]
+        }
+      }
     })
 
     function handleBirthdayModalRequest() {
@@ -202,7 +222,7 @@ $player-max-height: 60vh;
 }
 
 .birthdayWishText {
-  font-size: 3rem;
+  font-size: 2.5rem;
   text-align: center;
   font-weight: bold;
   letter-spacing: 4px;
