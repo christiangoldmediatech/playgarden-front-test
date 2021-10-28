@@ -233,7 +233,7 @@
                         </div>
 
                         <child-select v-if="!hasSpotInThisPlaydate" v-model="childId" hide-details />
-                        <child-select v-else :value="child.id" disabled hide-details />
+                        <child-select v-else-if="child" :value="child.id" disabled hide-details />
                       </v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
@@ -284,7 +284,7 @@
 
 <script>
 import { defineComponent, useStore } from '@nuxtjs/composition-api'
-import { mapActions, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 import dayjs from 'dayjs'
 import { get } from 'lodash'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
@@ -293,7 +293,7 @@ import utc from 'dayjs/plugin/utc'
 import { TAG_MANAGER_EVENTS } from '@/models'
 
 import ChildSelect from '@/components/app/ChildSelect.vue'
-import { usePlaydates, useSnotifyHelper } from '@/composables'
+import { useChild, usePlaydates, useSnotifyHelper } from '@/composables'
 import { computed, ref } from '@vue/composition-api'
 
 dayjs.extend(customParseFormat)
@@ -337,17 +337,26 @@ export default defineComponent({
     const snotify = useSnotifyHelper()
     const store = useStore()
     const { reserveASpot, cancelSpotReservation } = usePlaydates({ store })
+    const { children } = useChild({ store })
 
     const isLoadingSpotAction = ref(false)
     const childId = ref(null)
-    const children = computed(() => store.getters['children/rows'])
+    const playdate = computed(() => props.playdate)
 
     const child = computed(() => {
       return children.value.find(({ id }) => {
-        return props.playdate.backpackImages.find(({ childrenId }) => {
+        return playdate.value.backpackImages.find(({ childrenId }) => {
           return id === childrenId
         })
       })
+    })
+
+    const hasSpotInThisPlaydate = computed(() => {
+      return Boolean(playdate.value?.backpackImages?.find(({ childrenId }) => {
+        return children.value.find(({ id }) => {
+          return id === childrenId
+        })
+      }))
     })
 
     const handleReserveSpot = async () => {
@@ -383,12 +392,12 @@ export default defineComponent({
     }
 
     return {
-      childId,
       child,
-      children,
-      isLoadingSpotAction,
+      childId,
+      handleCancelSpot,
       handleReserveSpot,
-      handleCancelSpot
+      hasSpotInThisPlaydate,
+      isLoadingSpotAction
     }
   },
 
@@ -451,10 +460,6 @@ export default defineComponent({
       return Boolean(this.playdate.children.backpack)
     },
 
-    hasChild () {
-      return Boolean(this.child.id)
-    },
-
     hasDay () {
       return Boolean(this.playdate.day)
     },
@@ -510,60 +515,15 @@ export default defineComponent({
 
     isMobile () {
       return this.$vuetify.breakpoint.smAndDown
-    },
-
-    hasSpotInThisPlaydate () {
-      return Boolean(this.playdate.backpackImages.find(({ childrenId }) => {
-        return this.children.find(({ id }) => id === childrenId)
-      }))
     }
   },
 
   methods: {
-    ...mapActions('playdates', ['deleteChildren', 'joinPlaydate']),
-
     handleOpenZoom () {
       this.$gtm.push({
         event: TAG_MANAGER_EVENTS.PLAYDATE_OPEN_ZOOM,
         userId: this.getUserInfo.id,
         topic: this.playdate.playdateType
-      })
-    },
-
-    async joinPlaydateChildren () {
-      try {
-        await this.joinPlaydate({
-          playdateId: this.playdate.id,
-          childId: this.childId
-        })
-        this.$gtm.push({
-          event: TAG_MANAGER_EVENTS.PLAYDATE_JOIN,
-          userId: this.getUserInfo.id
-        })
-        this.$snotify.success('Children have been successfully added to the playdate!')
-        this.$router.push({ name: 'app-playdates' })
-      } catch (error) {
-        this.$snotify.error('We could not add your child to the Playdate')
-      }
-    },
-
-    remove () {
-      this.$nuxt.$emit('open-prompt', {
-        title: 'Delete Play date?',
-        message: `Are you sure you wish to delete '${this.child.firstName}' Play date?`,
-        action: async () => {
-          await this.deleteChildren({
-            playdateId: this.playdate.id,
-            childId: this.child.id
-          })
-
-          this.$gtm.push({
-            event: TAG_MANAGER_EVENTS.PLAYDATE_DELETE,
-            userId: this.getUserInfo.id,
-            topic: this.playdate.playdateType
-          })
-          this.$emit('deleted')
-        }
       })
     }
   }
