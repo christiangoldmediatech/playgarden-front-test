@@ -42,7 +42,7 @@
           <v-card-text>
             <notification-editor-dialog
               ref="editor"
-              @saved="refresh(false)"
+              @saved="refetchNotifications"
             />
 
             <pg-admin-data-table
@@ -51,8 +51,9 @@
               :loading="loading"
               :page.sync="page"
               @update:page="page = $event"
-              @refresh="refresh(true)"
-              @search="onSearch"
+              @refresh="refetchNotifications"
+              @search="handleSearch"
+              @search-text-cleared="handleSearchTextClearance"
               @edit-item="$refs.editor.open(null, $event)"
               @remove-item="remove"
             >
@@ -79,7 +80,6 @@
 
 <script>
 import { mapActions } from 'vuex'
-import onSearch from '@/mixins/OnSearchMixin.js'
 import NotificationEditorDialog from './NotificationEditorDialog'
 
 export default {
@@ -88,14 +88,11 @@ export default {
   components: {
     NotificationEditorDialog
   },
-
-  mixins: [onSearch],
-
   data () {
     return {
       notifications: [],
       loading: false,
-      search: null,
+      searchText: null,
       page: 1,
       headers: [
         {
@@ -128,18 +125,29 @@ export default {
     }
   },
 
+  mounted () {
+    this.refetchNotifications()
+  },
   methods: {
     ...mapActions('notifications', ['getNotifications', 'deleteNotification', 'restoreNotification']),
-
-    async refresh (clear = false) {
+    handleSearch (searchText) {
+      this.searchText = searchText
+      this.refetchNotifications()
+    },
+    handleSearchTextClearance () {
+      this.searchText = null
+      this.refetchNotifications()
+    },
+    async refetchNotifications () {
       this.loading = true
 
-      if (clear) {
-        this.search = null
-      }
+      const name = this.searchText
 
       try {
-        this.notifications = await this.getNotifications({ name: this.search, deleted: true })
+        this.notifications = await this.getNotifications({
+          ...name && { name },
+          deleted: true
+        })
       } catch (e) {
       } finally {
         this.loading = false
@@ -152,7 +160,7 @@ export default {
           message: `Are you sure you want to delete <b>${name}</b>?`,
           action: async () => {
             await this.deleteNotification(id)
-            await this.refresh()
+            await this.refetchNotifications()
           }
         })
       } else {
@@ -171,7 +179,7 @@ export default {
         actionText: 'Restore',
         action: async () => {
           await this.restoreNotification(id)
-          await this.refresh()
+          await this.refetchNotifications()
         }
       })
     },

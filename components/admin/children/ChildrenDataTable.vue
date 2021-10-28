@@ -43,10 +43,10 @@
               :server-items-length="total"
               :action="action"
               top-justify="space-between"
-              @search="onSearch"
+              @search="handleSearch"
               @search-text-cleared="handleSearchTextClearance"
               @update:page="page = $event"
-              @refresh="refetchChildrensData(true)"
+              @refresh="refetchChildrensData"
               @edit-item="
                 $router.push({
                   name: 'admin-user-manager-specialists-editor',
@@ -200,7 +200,6 @@
 
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex'
-import onSearch from '@/mixins/OnSearchMixin.js'
 import UserChildLessonOverlay from '@/components/admin/users/UserChildLessonOverlay.vue'
 import UserChildTimelineDialog from '@/components/admin/users/UserChildTimelineDialog.vue'
 import ChildEditorDialog from '@/components/admin/children/ChildEditorDialog'
@@ -215,14 +214,11 @@ export default {
     UserChildLessonOverlay,
     ChildEditorDialog
   },
-
-  mixins: [onSearch],
-
   data () {
     return {
       loading: false,
       action: false,
-      search: '',
+      searchText: null,
       page: 1,
       allFilters: false,
       children: [],
@@ -307,6 +303,9 @@ export default {
   created () {
     this.getTypes()
   },
+  mounted () {
+    this.refetchChildrensData()
+  },
   methods: {
     ...mapActions('admin/children', ['getChildrensProgress']),
     ...mapActions('children/progress', ['getChildrenProgressExport']),
@@ -337,20 +336,19 @@ export default {
         this.limit = 0
       }
     },
-    refresh (isSearchCleared) {
-      this.refetchChildrensData(isSearchCleared)
+    handleSearch (searchText) {
+      this.searchText = searchText
+      this.refetchChildrensData()
     },
     handleSearchTextClearance () {
-      this.refetchChildrensData(true)
+      this.searchText = null
+      this.refetchChildrensData()
     },
-    async refetchChildrensData (isSearchCleared = false) {
+    async refetchChildrensData () {
       this.loading = true
-      if (isSearchCleared) {
-        this.search = ''
-      }
       const curriculumTypeId = this.selectedLetterPreference !== 'All' && this.selectedLetterPreference
       const day = this.selectedDayPreference !== 'All' && this.selectedDayPreference
-      const firstName = this.search
+      const firstName = this.searchText
 
       const params = {
         limit: this.paginationLimit,

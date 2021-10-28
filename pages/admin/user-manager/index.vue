@@ -1,5 +1,5 @@
 <template>
-  <users-data-table ref="UsersDataTable" />
+  <users-data-table />
 </template>
 
 <script>
@@ -12,14 +12,6 @@ export default {
 
   components: {
     UsersDataTable
-  },
-
-  data () {
-    return {}
-  },
-
-  mounted () {
-    this.$refs.UsersDataTable.refresh()
   }
 }
 </script>

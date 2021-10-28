@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { Child } from '@/models'
 import { computed, useStore } from '@nuxtjs/composition-api'
 
@@ -9,12 +10,10 @@ export function useBirthdayHelpers () {
   const isCurrentChildsBirthday = computed((): boolean => {
     if (!currentChild.value) { return false }
     const { birthday } = currentChild.value
-    const birthDate = new Date(birthday)
-    const today = new Date()
-    return (
-      today.getDate() === birthDate.getDate() &&
-      today.getMonth() === birthDate.getMonth()
-    )
+    const birthDate = dayjs(birthday)
+    const today = dayjs()
+
+    return (today.get('month') === birthDate.get('month')) && (today.get('date') === birthDate.get('date'))
   })
 
   return {
