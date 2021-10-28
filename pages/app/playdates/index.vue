@@ -13,7 +13,7 @@
 
         <!-- BUTTON -->
         <v-col cols="12" md="auto" class="flex-shrink-1">
-          <v-btn color="accent">
+          <v-btn color="accent" nuxt :to="{ name: 'app-playdates-my-playdates' }">
             MY PLAYDATES
           </v-btn>
         </v-col>
@@ -64,10 +64,10 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref, useStore, watch } from '@nuxtjs/composition-api'
-import { Child, Playdate, TypedStore } from '@/models'
+import { Playdate, TypedStore } from '@/models'
 
 import CardPlaydate from '@/components/app/playdates/CardPlaydate.vue'
-import { usePlaydates } from '@/composables'
+import { useChild, usePlaydates } from '@/composables'
 import dayjs from 'dayjs'
 
 export default defineComponent({
@@ -84,12 +84,12 @@ export default defineComponent({
 
     const store = useStore<TypedStore>()
     const { isPayingUser, getPlaydateForDate, getPlaydatesDates } = usePlaydates({ store })
+    const { children } = useChild({ store })
 
     const playdatesDates = getPlaydatesDates()
     const currentPlaydateIndex = ref(0)
     const loading = ref(false)
     const playdates = ref<Playdate[]>([])
-    const children = computed<Child[]>(() => store.getters['children/rows'])
     const currentPlaydateDate = computed(() => playdatesDates?.[currentPlaydateIndex.value] || dayjs().format('YYYY-MM-DD'))
 
     const isInAPlaydate = computed(() => {
@@ -101,6 +101,10 @@ export default defineComponent({
     })
 
     const currentWeekDisplayText = computed(() => {
+      if (currentPlaydateIndex.value === MIN_WEEK_INDEX) {
+        return 'Up next'
+      }
+
       const startOfWeek = dayjs(currentPlaydateDate.value).startOf('week')
       const endOfWeek = dayjs(currentPlaydateDate.value).endOf('week')
       const isSameMonth = dayjs(startOfWeek).month() === dayjs(endOfWeek).month()
