@@ -16,6 +16,7 @@
         <v-col cols="12" md="auto" class="flex-shrink-1 text-right py-6 py-md-0" order="1" order-md="2">
           <v-btn
             :to="{ name: 'app-playdates-my-playdates' }"
+            :small="isMobile"
             color="accent"
             nuxt
             class="!pg-shadow-button"
@@ -89,6 +90,7 @@ import { Playdate, TypedStore } from '@/models'
 import CardPlaydate from '@/components/app/playdates/CardPlaydate.vue'
 import { useChild, usePlaydates, useVuetifyHelper } from '@/composables'
 import dayjs from 'dayjs'
+import { onMounted } from '@vue/composition-api'
 
 export default defineComponent({
   name: 'Index',
@@ -105,7 +107,7 @@ export default defineComponent({
     const vuetify = useVuetifyHelper()
     const store = useStore<TypedStore>()
     const { isPayingUser, getPlaydateForDate, getPlaydatesDates } = usePlaydates({ store })
-    const { children } = useChild({ store })
+    const { children, get } = useChild({ store })
 
     const playdatesDates = getPlaydatesDates()
     const currentPlaydateIndex = ref(0)
@@ -168,6 +170,10 @@ export default defineComponent({
     watch(currentPlaydateIndex, async () => {
       await fetchPlaydatesForDate()
     }, { immediate: true })
+
+    onMounted(() => {
+      get()
+    })
 
     return {
       canGoToNextWeek,

@@ -1,41 +1,37 @@
 <template>
-  <v-container>
-    <v-row no-gutters>
-      <!-- BACK BUTTON -->
-      <nuxt-link nuxt :to="{ name: 'app-playdates' }">
-        <div>
-          <v-icon class="accent--text">
-            mdi-chevron-left
-          </v-icon>
-          <span class="accent--text font-weight-medium">Go back to playdates</span>
-        </div>
-      </nuxt-link>
+  <v-container class="fill-height">
+    <!-- BACK BUTTON -->
+    <nuxt-link nuxt :to="{ name: 'app-playdates' }">
+      <div>
+        <v-icon class="accent--text">
+          mdi-chevron-left
+        </v-icon>
+        <span class="accent--text font-weight-medium">Go back to playdates</span>
+      </div>
+    </nuxt-link>
 
-      <!-- HEADER -->
-      <v-col cols="12" class="mt-3">
-        <underlined-title
-          text="My Educational Playdates"
-          font-size="36px"
-          font-size-mobile="24px"
+    <!-- HEADER -->
+    <div class="mt-3 pg-w-full">
+      <underlined-title
+        text="My Educational Playdates"
+        font-size="36px"
+        font-size-mobile="24px"
+      />
+    </div>
+
+    <!-- PAGE DESCRIPTION -->
+    <div class="text-body-2 text-md-body-1 mt-3">
+      In this section you can find all the playdates that you have reserved
+    </div>
+
+    <!-- MY PLAYDATES -->
+    <v-row v-if="!loading" class="mt-3">
+      <v-col v-for="playdate in playdates" :key="playdate.id" cols="12" md="6">
+        <card-playdate
+          :playdate="playdate"
+          @spot-reserved="handleGetMyPlaydates"
+          @spot-canceled="handleGetMyPlaydates"
         />
-
-        <!-- PAGE DESCRIPTION -->
-        <div class="text-body-2 text-md-body-1 mt-2">
-          In this section you can find all the playdates that you have reserved
-        </div>
-      </v-col>
-
-      <!-- MY PLAYDATES -->
-      <v-col cols="12" class="mt-6">
-        <v-row v-if="!loading">
-          <v-col v-for="playdate in playdates" :key="playdate.id" cols="12" md="6">
-            <card-playdate
-              :playdate="playdate"
-              @spot-reserved="handleGetMyPlaydates"
-              @spot-canceled="handleGetMyPlaydates"
-            />
-          </v-col>
-        </v-row>
       </v-col>
     </v-row>
   </v-container>
