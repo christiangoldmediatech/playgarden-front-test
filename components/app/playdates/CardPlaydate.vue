@@ -8,9 +8,9 @@
       tile
     >
       <!-- CARD CONTENT -->
-      <v-row justify="center" class="pa-3 pa-md-6" no-gutters>
+      <v-row justify="center" class="pa-3 pa-sm-6" no-gutters>
         <!-- IMAGE ONLY ON DESKTOP -->
-        <v-col md="5" class="d-none d-md-block align-self-center">
+        <v-col md="5" class="d-none d-sm-block align-self-center">
           <v-row no-gutters>
             <v-col cols="4" md="12">
               <v-img
@@ -24,10 +24,10 @@
         </v-col>
 
         <!-- PLAYDATE INFO -->
-        <v-col cols="12" md="7" class="pl-md-3">
+        <v-col cols="12" md="7" class="pl-sm-3">
           <v-row no-gutters>
             <!-- IMAGE ONLY ON MOBILE -->
-            <v-col cols="4" class="d-md-none">
+            <v-col cols="4" class="d-sm-none">
               <v-img
                 alt="Educational Playdates"
                 contain
@@ -37,9 +37,9 @@
             </v-col>
 
             <!-- PLAYDATE SPECIALIST AND DATE -->
-            <v-col cols="8" md="12" class="pl-3 pl-md-0">
+            <v-col cols="8" md="12" class="pl-3 pl-sm-0">
               <div class="grey--text text--darken-2">
-                <div v-if="specialist" class="text-subtitle-1 text-md-h6 font-weight-bold">
+                <div v-if="specialist" class="text-subtitle-1 text-sm-h6 font-weight-bold">
                   Playdates with {{ specialist.fullName }}
                 </div>
 
@@ -51,7 +51,7 @@
           </v-row>
 
           <!-- PLAYDATE START TIME -->
-          <div class="grey--text text--darken-2 text-capitalize mt-4 mt-md-2">
+          <div class="grey--text text--darken-2 text-capitalize mt-4 mt-sm-2">
             {{ day }} {{ start }}
           </div>
 
@@ -123,6 +123,7 @@
 
     <!-- CardPlaydatePopup -->
     <pg-dialog
+      id="playdate-dialog"
       v-model="dialog"
       fullscreen
       content-class="elevation-0"
@@ -130,7 +131,9 @@
       height="100%"
       persistent
     >
-      <v-container class="vh-container overlay fullscreen pa-0" fluid data-test-id="playdate-modal">
+      <div class="overlay" />
+
+      <v-container class="pa-0" fluid data-test-id="playdate-modal">
         <v-row no-gutters justify="start">
           <v-btn
             class="top-left text-none text--white py-8"
@@ -144,6 +147,7 @@
             </v-icon>
             Back
           </v-btn>
+
           <div class="close-btn">
             <v-btn
               class="text-none text--white py-8"
@@ -159,100 +163,84 @@
           </div>
         </v-row>
 
-        <v-row class="vh-row" align="center" justify="center" no-gutters>
-          <v-col class="px-3 px-lg-0" sm="12" lg="8" xl="10">
+        <v-row align="center" justify="center" no-gutters>
+          <v-col class="px-3 pb-12 px-lg-0" cols="12" lg="8" xl="10">
             <v-card
-              class="mx-md-auto mx-sm-5 mt-md-16 mt-sm-0"
+              class="mx-sm-auto mx-sm-5 mt-sm-16 mt-sm-0"
               max-width="800"
-              max-height="800"
               elevation="2"
             >
               <div class="green-line green-line-1" />
               <div class="green-line green-line-2" />
 
-              <v-row justify="center" no-gutters class="px-4 mt-6">
-                <v-col md="6" cols="12" class="align-self-center">
-                  <v-row justify="center" no-gutters>
-                    <v-col align-self="center">
-                      <v-row justify="center" class="mt-2">
-                        <v-avatar size="325">
-                          <v-img
-                            max-width="325"
-                            alt="Educational Playdates"
-                            :src="
-                              require('@/assets/png/playdates/playdate.png')
-                            "
-                            class="align-self-center"
-                          />
-                        </v-avatar>
-                      </v-row>
-                    </v-col>
-                  </v-row>
+              <v-row justify="center" no-gutters class="pa-3 pa-sm-6">
+                <v-col cols="12" sm="6" class="d-flex justify-center align-center">
+                  <img
+                    :src="require('@/assets/png/playdates/playdate.png')"
+                    alt="Educational Playdates"
+                    :width="isMobile ? '200px' : '100%'"
+                  >
                 </v-col>
 
-                <v-col md="6" cols="12">
-                  <v-list-item three-line>
-                    <v-list-item-content>
-                      <v-list-item-title class="grey--text text--darken-2 pb-1">
-                        <div v-if="specialist" class="text-h5 text-truncate font-weight-bold">
-                          Playdates with {{ specialist.fullName }}
-                        </div>
+                <v-col cols="12" sm="6" class="pl-sm-3">
+                  <div class="grey--text text--darken-2 pb-1 pt-3 pt-sm-0">
+                    <div v-if="specialist" class="text-center text-sm-left text-h6 text-sm-h5 font-weight-bold">
+                      Playdates with {{ specialist.fullName }}
+                    </div>
 
-                        <div class="pg-text-[18px] py-2">
-                          {{ date }}
-                        </div>
+                    <div class="text-center text-md-left text-body-2 text-md-subtitle-1 py-1">
+                      {{ date }}
+                    </div>
 
-                        <div class="pg-text-[18px] text-capitalize py-2">
-                          {{ day }} {{ start }}
-                        </div>
-                      </v-list-item-title>
+                    <div class="text-subtitle-1 text-capitalize py-1">
+                      {{ day }} {{ start }}
+                    </div>
+                  </div>
 
-                      <div class="pt-1 text-justify pr-3 description-text">
-                        <div class="grey--text text--darken-2 font-weight-bold">
-                          Description
-                        </div>
+                  <div class="pt-1 text-justify pr-3 description-text">
+                    <div class="grey--text text--darken-2 font-weight-bold">
+                      Description
+                    </div>
 
-                        <p class="text-body-2 my-3">
-                          {{ playdate.description }}
-                        </p>
-                      </div>
+                    <p class="text-body-2 my-3">
+                      {{ playdate.description }}
+                    </p>
+                  </div>
 
-                      <v-list-item-subtitle class="pt-1">
-                        <div class="grey--text text--darken-2 font-weight-bold">
-                          Spots
-                        </div>
+                  <div class="pt-1">
+                    <div class="grey--text text--darken-2 font-weight-bold">
+                      Spots
+                    </div>
 
-                        <v-row justify-md="start" no-gutters class="pt-2">
-                          <v-img
-                            v-for="(bImage, indexBI) in backpackImages"
-                            :key="indexBI"
-                            :src="bImage"
-                            :class="{ 'ml-n3': indexBI }"
-                            max-width="45"
-                            class="backpack-image"
-                          />
+                    <v-row justify-md="start" no-gutters class="pt-2">
+                      <v-img
+                        v-for="(bImage, indexBI) in backpackImages"
+                        :key="indexBI"
+                        :src="bImage"
+                        :class="{ 'ml-n3': indexBI }"
+                        max-width="45"
+                        class="backpack-image"
+                      />
 
-                          <span class="ml-1">
-                            {{ backpackImages.length }}/{{ playdate.spots }}
-                          </span>
-                        </v-row>
-                      </v-list-item-subtitle>
+                      <span class="ml-1">
+                        {{ backpackImages.length }}/{{ playdate.spots }}
+                      </span>
+                    </v-row>
+                  </div>
 
-                      <v-list-item-subtitle class="pt-5">
-                        <div class="grey--text text--darken-2 font-weight-bold mb-2">
-                          Who is going?
-                        </div>
+                  <div class="pt-5">
+                    <div class="grey--text text--darken-2 font-weight-bold mb-2">
+                      Who is going?
+                    </div>
 
-                        <child-select v-if="!hasSpotInThisPlaydate" v-model="childId" hide-details />
-                        <child-select v-else-if="child" :value="child.id" disabled hide-details />
-                      </v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
+                    <div class="mr-0 mr-sm-8">
+                      <child-select v-if="!hasSpotInThisPlaydate" v-model="childId" hide-details />
+                      <child-select v-else-if="child" :value="child.id" disabled hide-details />
+                    </div>
+                  </div>
                 </v-col>
-              </v-row>
 
-              <v-row justify="center" no-gutters class="pt-8">
-                <v-col cols="8" class="mb-5 mt-0">
+                <v-col cols="12" sm="8" class="mt-6">
                   <v-btn
                     v-if="!hasSpotInThisPlaydate"
                     :disabled="!childId"
@@ -272,7 +260,7 @@
                     v-if="hasSpotInThisPlaydate"
                     :href="playdate.link"
                     block
-                    class="white--text mb-3"
+                    class="white--text text-none !pg-text-[18px] !pg-shadow-button"
                     color="accent"
                     data-test-id="card-playdate-open-button"
                     target="_blank"
@@ -282,7 +270,7 @@
                     Get Zoom Link
                   </v-btn>
 
-                  <pg-ics-calendar v-if="hasSpotInThisPlaydate" :entry="icsEntry" />
+                  <pg-ics-calendar v-if="hasSpotInThisPlaydate" :entry="icsEntry" class="mt-3" />
                 </v-col>
               </v-row>
             </v-card>
@@ -525,7 +513,7 @@ export default defineComponent({
     },
 
     isMobile () {
-      return this.$vuetify.breakpoint.smAndDown
+      return this.$vuetify.breakpoint.xs
     }
   },
 
@@ -542,20 +530,15 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.fullscreen {
-  width: 100% !important;
-  height: 100% !important;
-}
-
-.vh-container {
-  min-height: 120vh;
-}
-.vh-row {
-  min-height: 90vh;
+.\!pg-text-\[18px\] {
+  font-size: 18px !important;
 }
 
 .overlay {
   background-color: rgba(0, 0, 0, 0.68) !important;
+  position: fixed;
+  top: 0;
+  bottom: 0;
 }
 
 .close-btn {
@@ -563,23 +546,5 @@ export default defineComponent({
   top: 10px;
   right: 10px;
   z-index: 2500;
-}
-
-.description-text {
-  line-clamp: none !important;
-  -webkit-line-clamp: none;
-  color: rgba(0, 0, 0, 0.6);
-  line-height: 1.2;
-  font-size: 0.875rem;
-}
-
-.custom-card-border {
-  background: #FFFFFF;
-  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15) !important;
-  border-radius: 8px !important;
-}
-
-.backpack-img {
-  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.203922);
 }
 </style>
