@@ -1,14 +1,14 @@
 <template>
-  <v-container class="fill-height">
+  <v-col class="fill-height">
     <!-- BACK BUTTON -->
-    <nuxt-link nuxt :to="{ name: 'app-playdates' }">
-      <div>
+    <div class="mt-3">
+      <nuxt-link nuxt :to="{ name: 'app-playdates' }">
         <v-icon class="accent--text">
           mdi-chevron-left
         </v-icon>
         <span class="accent--text font-weight-medium">Go back to playdates</span>
-      </div>
-    </nuxt-link>
+      </nuxt-link>
+    </div>
 
     <!-- HEADER -->
     <div class="mt-3 pg-w-full">
@@ -34,7 +34,7 @@
         />
       </v-col>
     </v-row>
-  </v-container>
+  </v-col>
 </template>
 
 <script lang="ts">
