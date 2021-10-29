@@ -37,7 +37,10 @@
       <v-col cols="12">
         <v-card width="100%">
           <v-card-text>
-            <coupon-editor-dialog ref="editor" @saved="refresh(false)" />
+            <coupon-editor-dialog
+              ref="editor"
+              @saved="refetchCouponsData"
+            />
 
             <pg-admin-data-table
               :headers="headers"
@@ -45,8 +48,9 @@
               :loading="loading"
               :page.sync="page"
               @update:page="page = $event"
-              @search="onSearch"
-              @refresh="refresh(true)"
+              @search="handleSearch"
+              @search-text-cleared="handleSearchTextClearance"
+              @refresh="refetchCouponsData"
               @edit-item="$refs.editor.open(null, $event)"
               @remove-item="remove"
             >
@@ -58,13 +62,11 @@
                 </span>
               </template>
               <template v-slot:[`item.actions.prepend`]="{ item }">
-                <nuxt-link
-                  :to="{
-                    name: 'admin-user-manager-coupon-users',
-                    query: { couponName: item.name }
-                  }"
-                >
-                  <v-icon color="accent" dense>
+                <nuxt-link :to="getLocationData(item)">
+                  <v-icon
+                    color="accent"
+                    dense
+                  >
                     mdi-account
                   </v-icon>
                 </nuxt-link>
@@ -79,7 +81,6 @@
 
 <script>
 import { mapActions } from 'vuex'
-import onSearch from '@/mixins/OnSearchMixin.js'
 import CouponEditorDialog from './CouponEditorDialog'
 
 export default {
@@ -88,14 +89,11 @@ export default {
   components: {
     CouponEditorDialog
   },
-
-  mixins: [onSearch],
-
   data () {
     return {
       coupons: [],
+      searchText: null,
       loading: false,
-      search: null,
       page: 1,
       query: null,
       headers: [
@@ -126,20 +124,23 @@ export default {
       ]
     }
   },
-
+  mounted () {
+    this.refetchCouponsData()
+  },
   methods: {
     ...mapActions('coupons', ['getCoupons', 'deleteCoupon']),
-
-    async refresh (clear = false) {
+    handleSearch (searchText) {
+      this.searchText = searchText
+      this.refetchCouponsData()
+    },
+    handleSearchTextClearance () {
+      this.searchText = null
+      this.refetchCouponsData()
+    },
+    async refetchCouponsData () {
       this.loading = true
-      this.query = { active: true, code: this.search }
-      if (clear) {
-        this.search = null
-      }
-
-      if (!this.search) {
-        delete this.query.code
-      }
+      const code = this.searchText
+      this.query = { active: true, ...code && { code } }
 
       try {
         this.coupons = await this.getCoupons(this.query)
@@ -155,9 +156,15 @@ export default {
         message: `Are you sure you want to delete <b>${name}</b>?`,
         action: async () => {
           await this.deleteCoupon(id)
-          await this.refresh()
+          await this.refetchCouponsData()
         }
       })
+    },
+    getLocationData (item) {
+      return {
+        name: 'admin-user-manager-coupon-users',
+        query: { couponName: item.name }
+      }
     }
   }
 }

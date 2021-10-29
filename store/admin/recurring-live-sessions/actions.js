@@ -5,6 +5,18 @@ export default {
     return this.$axios.$post('recurring-live-sessions', data)
   },
 
+  async createLiveClasses ({ commit }, id) {
+    try {
+      commit('SET_CREATING_LIVE_CLASSES', true)
+      await this.$axios.$get(`/crons/live-sessions?id=${id}`)
+      commit('SET_CREATING_LIVE_CLASSES', false)
+      commit('SET_SHOW_LIVE_CLASSES_CREATED', true)
+    } catch (error) {
+      commit('SET_CREATING_LIVE_CLASSES', false)
+      return Promise.reject(error)
+    }
+  },
+
   deleteRecurringLiveSession (_, id) {
     return this.$axios.$delete(`recurring-live-sessions/${id}`)
   },

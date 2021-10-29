@@ -23,6 +23,8 @@
       <trial-ending-week-three-modal />
       <trial-ending-week-four-modal />
       <PlanUpgradeModal />
+      <TrialEndingModalForLastDay :downward-displacement="topDistanceInPixels" />
+      <trial-ending-plan-selected />
 
       <!-- CONTACT US FORM MODAL -->
       <contact-us-form-modal />
@@ -44,10 +46,9 @@
         </v-container>
       </v-main>
 
-      <nuxt
-        v-else
-        :style="contentStyle"
-      />
+      <v-container v-else fluid class="px-0 fill-height">
+        <nuxt :style="contentStyle" class="mt-2" />
+      </v-container>
 
       <!-- FOOTER -->
       <default-footer />
@@ -76,12 +77,12 @@
 import { defineComponent, useRoute, useStore } from '@nuxtjs/composition-api'
 import { computed, onMounted, ref, watch } from '@vue/composition-api'
 
-import ApplicationHeader from '@/components/app/header/ApplicationHeader'
-import AppNavigation from '@/components/app/header/AppNavigation'
-import ComingSoonDialog from '@/components/app/ComingSoonDialog'
+import ApplicationHeader from '@/components/app/header/ApplicationHeader.vue'
+import AppNavigation from '@/components/app/header/AppNavigation.vue'
+import ComingSoonDialog from '@/components/app/ComingSoonDialog.vue'
 import ComingSoonPlayer from '@/components/app/ComingSoonPlayer.vue'
-import DefaultFooter from '@/components/app/footer/DefaultFooter'
-import NotificationCard from '@/components/app/notifications/NotificationCard'
+import DefaultFooter from '@/components/app/footer/DefaultFooter.vue'
+import NotificationCard from '@/components/app/notifications/NotificationCard.vue'
 import ShippingAddressModal from '@/components/app/payment/ShippingAddressModal.vue'
 import TrialExpiredModal from '@/components/app/payment/TrialExpiredModal.vue'
 import TrialEndingWeekTwoModal from '@/components/app/payment/TrialEnding/WeekTwoModal.vue'
@@ -89,8 +90,9 @@ import TrialEndingWeekThreeModal from '@/components/app/payment/TrialEnding/Week
 import TrialEndingWeekFourModal from '@/components/app/payment/TrialEnding/WeekFourModal.vue'
 import TrialIsExpiring from '@/components/app/header/TrialIsExpiring.vue'
 import ContactUsFormModal from '@/components/forms/contact/ContactUsFormModal.vue'
-import NotificationSignupModal from '@/components/app/notifications/NotificationSignupModal'
-import ChangePasswordModal from '@/components/app/notifications/ChangePasswordModal'
+import NotificationSignupModal from '@/components/app/notifications/NotificationSignupModal.vue'
+import ChangePasswordModal from '@/components/app/notifications/ChangePasswordModal.vue'
+import TrialEndingModalForLastDay from '@/components/app/payment/TrialEnding/TrialEndingModalForLastDay.vue'
 import PlanUpgradeModal from '@/components/app/payment/TrialEnding/PlanUpgradeModal/index.vue'
 
 import { useAuth, useLayout, useNotification, useVuetifyHelper } from '@/composables'
@@ -111,10 +113,12 @@ export default defineComponent({
     ContactUsFormModal,
     NotificationSignupModal,
     ChangePasswordModal,
+    TrialEndingModalForLastDay,
     TrialEndingWeekTwoModal,
     TrialEndingWeekThreeModal,
     TrialEndingWeekFourModal,
-    PlanUpgradeModal
+    PlanUpgradeModal,
+    TrialEndingPlanSelected: () => import('@/components/app/payment/TrialEnding/PlanSelected.vue')
   },
 
   setup () {

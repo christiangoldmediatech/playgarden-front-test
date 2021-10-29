@@ -48,8 +48,9 @@
               :loading="loading"
               :page.sync="page"
               @update:page="page = $event"
-              @refresh="refresh(true)"
-              @search="onSearch"
+              @refresh="refetchRefetchReportCardTypes"
+              @search="handleSearch"
+              @search-text-cleared="handleSearchTextClearance"
               @edit-item="$refs.editor.open($event)"
               @remove-item="remove"
             />
@@ -62,7 +63,6 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import onSearch from '@/mixins/OnSearchMixin.js'
 import ReportCardTypeEditorDialog from './ReportCardTypeEditorDialog'
 
 export default {
@@ -71,13 +71,10 @@ export default {
   components: {
     ReportCardTypeEditorDialog
   },
-
-  mixins: [onSearch],
-
   data () {
     return {
       loading: false,
-      search: '',
+      searchText: null,
       page: 1,
       headers: [
         {
@@ -107,20 +104,25 @@ export default {
       ]
     }
   },
-
   computed: {
     ...mapGetters('admin/report-card', ['types'])
   },
-
+  mounted () {
+    this.refetchRefetchReportCardTypes()
+  },
   methods: {
     ...mapActions('admin/report-card', ['getTypes', 'deleteType']),
-
-    async refresh (clear = false) {
+    handleSearch (searchText) {
+      this.searchText = searchText
+      this.refetchRefetchReportCardTypes()
+    },
+    handleSearchTextClearance () {
+      this.searchText = null
+      this.refetchRefetchReportCardTypes()
+    },
+    async refetchRefetchReportCardTypes () {
       this.loading = true
-      if (clear) {
-        this.search = ''
-      }
-      await this.getTypes(this.search)
+      await this.getTypes(this.searchText)
       this.loading = false
     },
 
@@ -130,7 +132,7 @@ export default {
         message: `Are you sure you want to delete <b>${name}</b>?`,
         action: async () => {
           await this.deleteType(id)
-          this.refresh()
+          this.refetchRefetchReportCardTypes()
         }
       })
     }

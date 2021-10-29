@@ -163,6 +163,7 @@
         </v-col>
       </v-row>
     </div>
+    <course-progress-overlay />
   </v-container>
 </template>
 
@@ -173,6 +174,8 @@ import ChartReport from '@/components/app/progress-report/ChartReport.vue'
 import LetterStats from '@/components/app/progress-report/LetterStats.vue'
 import DetailProgress from '@/components/app/progress-report/DetailProgress.vue'
 import LetterSelect from '@/components/app/live-sessions/recorded/LetterSelect.vue'
+import CourseProgressOverlay from '@/components/app/student-cubby/CourseProgressOverlay.vue'
+
 export default {
   name: 'Index',
 
@@ -182,7 +185,8 @@ export default {
     ChartReport,
     LetterStats,
     DetailProgress,
-    LetterSelect
+    LetterSelect,
+    CourseProgressOverlay
   },
 
   mixins: [FavoritesMixin],
@@ -205,7 +209,8 @@ export default {
     loadLetterStatsData: true,
     letterStatsData: {
       name: '',
-      reports: []
+      reports: [],
+      curriculumTypeId: 0
     },
     loadingExport: false
   }),
@@ -298,6 +303,7 @@ export default {
           params.curriculumTypeId = this.selectedLetter
         }
         this.letterStatsData = await this.getLastLessonChildren({ childId: this.selectedChild, params })
+        this.letterStatsData.curriculumTypeId = this.selectedLetter
         await this.fetchChildProgress()
         this.loadLetterStatsData = false
       }

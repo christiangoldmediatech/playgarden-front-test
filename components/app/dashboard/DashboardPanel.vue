@@ -102,6 +102,7 @@
           <lesson-online-worksheet
             v-for="(onlineWorksheet, onlineWorksheetIndex) in worksheets.ONLINE"
             :key="onlineWorksheet.id"
+            :is-admin="isAdmin"
             :online-worksheet="onlineWorksheet"
             :progress="videos.progress"
             :no-link-mode="noLinkMode"
@@ -114,10 +115,10 @@
           <v-card
             :disabled="noLinkMode"
             :ripple="false"
-            class="dashboard-item"
+            class="dashboard-item pass-through"
             active-class="dashboard-item-active"
             exact-active-class="dashboard-item-exact"
-            @click.stop="openPdf"
+            @click.stop="handleDownloadWorksheetClick"
           >
             <v-row no-gutters class="py-2">
               <v-col cols="3" align-self="center" class="d-flex justify-center">
@@ -128,6 +129,14 @@
                 <div class="text-uppercase dashboard-item-title">
                   DOWNLOAD WORKSHEET
                 </div>
+
+                <span
+                  v-if="isAdmin && childId"
+                  class="clickable admin-view-worksheets"
+                  @click.stop="goToAdminWorksheets"
+                >
+                  View worksheets
+                </span>
               </v-col>
             </v-row>
           </v-card>
@@ -325,6 +334,10 @@ export default {
       }
 
       return undefined
+    },
+
+    isAdmin () {
+      return this.$route.name.includes('admin')
     }
   },
 
@@ -386,6 +399,17 @@ export default {
   },
 
   methods: {
+    goToAdminWorksheets () {
+      const routerData = this.$router.resolve({
+        name: 'admin-portfolio',
+        query: {
+          id: this.childId
+        }
+      })
+
+      window.open(routerData.href, '_blank')
+    },
+
     openPdf () {
       if (this.offlineWorksheet) {
         window.open(this.offlineWorksheet.pdfUrl, '_blank')
@@ -421,6 +445,12 @@ export default {
         dayLetter: this.lesson.curriculumType.letter,
         dayNumber: this.lesson.day
       })
+    },
+
+    handleDownloadWorksheetClick () {
+      if (!this.noLinkMode) {
+        this.openPdf()
+      }
     }
   }
 }
@@ -592,5 +622,15 @@ export default {
 
 .btnLesson {
   z-index: 1 !important;
+}
+
+span.admin-view-worksheets {
+  font-size: 12px;
+  text-decoration: underline !important;
+  color: var(--v-accent-base) !important;
+}
+
+.pass-through {
+  pointer-events: auto !important;
 }
 </style>

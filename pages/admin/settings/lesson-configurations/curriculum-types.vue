@@ -1,5 +1,5 @@
 <template>
-  <curriculum-types-data-table ref="CurriculumDataTable" />
+  <curriculum-types-data-table />
 </template>
 
 <script>
@@ -16,10 +16,6 @@ export default {
 
   data () {
     return {}
-  },
-
-  mounted () {
-    this.$refs.CurriculumDataTable.refresh()
   }
 }
 </script>

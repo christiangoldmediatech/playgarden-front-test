@@ -93,6 +93,16 @@
 
               <template v-slot:item.actions="{ item }">
                 <v-icon
+                  class="clickable"
+                  color="primary"
+                  dense
+                  :disabled="!item.active"
+                  @click="createLiveClasses(item.id)"
+                >
+                  mdi-plus-circle
+                </v-icon>
+
+                <v-icon
                   color="#81A1F7"
                   dense
                   @click="$refs.editor.open(null, item)"
@@ -170,6 +180,42 @@
         </v-card>
       </v-col>
     </v-row>
+
+    <!-- Loading dialog for when live classes are being created -->
+    <pg-dialog v-model="creatingLiveClassesDialog" :persistent="creatingLiveClasses" max-width="480">
+      <v-card>
+        <v-card-title :class="{ 'justify-center': creatingLiveClasses }">
+          <template v-if="creatingLiveClasses">
+            Creating Recurring Live Classes
+          </template>
+          <template v-else-if="showLiveClassesCreated">
+            Recurring Live Classes Created!
+            <v-spacer />
+            <v-btn icon @click="creatingLiveClassesDialog = false">
+              <v-icon>
+                mdi-close
+              </v-icon>
+            </v-btn>
+          </template>
+        </v-card-title>
+
+        <v-card-text class="text-center">
+          <v-progress-linear v-if="creatingLiveClasses" indeterminate color="primary" />
+          <template v-else>
+            <p>
+              Your recurring live classes have been successfully created! Click anywhere outside this window to close it or the button below to see your changes.
+            </p>
+            <v-btn color="primary" @click="goToLiveClassesManagement">
+              View on Live Classes Management
+            </v-btn>
+            <br>
+            <v-btn class="mt-3" color="accent" @click="creatingLiveClassesDialog = false">
+              Close
+            </v-btn>
+          </template>
+        </v-card-text>
+      </v-card>
+    </pg-dialog>
   </v-container>
 </template>
 
@@ -236,7 +282,18 @@ export default {
 
   computed: {
     ...mapGetters('admin/curriculum', ['types']),
-    ...mapState('admin', ['paginationLimit'])
+    ...mapState('admin', ['paginationLimit']),
+    ...mapState('admin/recurring-live-sessions', ['creatingLiveClasses', 'showLiveClassesCreated']),
+
+    creatingLiveClassesDialog: {
+      get () {
+        return this.creatingLiveClasses || this.showLiveClassesCreated
+      },
+
+      set (value) {
+        this.$store.commit('admin/recurring-live-sessions/SET_SHOW_LIVE_CLASSES_CREATED', value)
+      }
+    }
   },
 
   watch: {
@@ -254,7 +311,12 @@ export default {
   methods: {
     ...mapActions('admin/activity', ['getTypes']),
 
-    ...mapActions('admin/recurring-live-sessions', ['getRecurringLiveSessions', 'deleteRecurringLiveSession']),
+    ...mapActions('admin/recurring-live-sessions', ['getRecurringLiveSessions', 'deleteRecurringLiveSession', 'createLiveClasses']),
+
+    goToLiveClassesManagement () {
+      this.$store.commit('admin/recurring-live-sessions/SET_SHOW_LIVE_CLASSES_CREATED', false)
+      this.$router.push({ name: 'admin-live-session-management' })
+    },
 
     async refresh (clear = false) {
       this.loading = true

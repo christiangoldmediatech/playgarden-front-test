@@ -48,8 +48,9 @@
               :server-items-length="pagination.total"
               @click:delete-item="remove($event)"
               @click:edit-item="$refs.editor.open(null, $event)"
-              @click:refresh="refresh(true)"
-              @search="onSearch"
+              @click:refresh="refetchPuzzles"
+              @search="handleSearch"
+              @search-text-cleared="handleSearchTextClearance"
               @update:page="pagination.page = $event"
             >
               <template v-slot:item.image="{ item }">
@@ -65,7 +66,10 @@
       </v-col>
     </v-row>
 
-    <puzzle-editor-dialog ref="editor" @saved="refresh(false)" />
+    <puzzle-editor-dialog
+      ref="editor"
+      @saved="refetchPuzzles"
+    />
   </v-container>
 </template>
 
@@ -73,7 +77,6 @@
 import { mapActions, mapGetters } from 'vuex'
 
 import paginable from '@/utils/mixins/paginable'
-import onSearch from '@/mixins/OnSearchMixin'
 import PuzzleEditorDialog from './PuzzleEditorDialog'
 
 export default {
@@ -83,7 +86,7 @@ export default {
     PuzzleEditorDialog
   },
 
-  mixins: [onSearch, paginable],
+  mixins: [paginable],
 
   data: () => ({
     filters: {
@@ -92,7 +95,7 @@ export default {
     },
     puzzles: [],
     loading: false,
-    search: null,
+    searchText: null,
     headers: [
       {
         text: 'Level',
@@ -141,7 +144,7 @@ export default {
   watch: {
     'pagination.page' () {
       if (!this.loading) {
-        this.refresh()
+        this.refetchPuzzles()
       }
     }
   },
@@ -149,22 +152,28 @@ export default {
   created () {
     this.getTypes()
   },
-
+  mounted () {
+    this.refetchPuzzles()
+  },
   methods: {
     ...mapActions('admin/curriculum', ['getTypes']),
 
     ...mapActions('puzzles', ['getPuzzles', 'deletePuzzle']),
-
-    async refresh (clear = false) {
+    handleSearch (searchText) {
+      this.searchText = searchText
+      this.refetchPuzzles()
+    },
+    handleSearchTextClearance () {
+      this.searchText = null
+      this.refetchPuzzles()
+    },
+    async refetchPuzzles () {
       this.loading = true
-
-      if (clear) {
-        this.search = null
-      }
+      const name = this.searchText
 
       try {
         const { page, puzzle, total } = await this.getPuzzles({
-          name: this.search,
+          ...name && { name },
           curriculumTypeId: this.filters.curriculumTypeId || null,
           level: this.filters.level || null,
           page: this.pagination.page
@@ -184,7 +193,7 @@ export default {
         message: `Are you sure you want to delete <b>${name}</b>?`,
         action: async () => {
           await this.deletePuzzle(id)
-          await this.refresh()
+          await this.refetchPuzzles()
         }
       })
     }

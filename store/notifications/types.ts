@@ -8,6 +8,7 @@ export interface NotificationState {
   isTrialEndingWeekFourModalVisible: boolean
   isShippingModalVisible: boolean
   isPlanUpgradeModalVisible: boolean
+  isTrialEndingPlanSelectedModalVisible: boolean
   notificationCard: {
     isVisible: boolean,
     title: string,

@@ -2,7 +2,7 @@
 import dayjs from 'dayjs'
 import { computed, ref } from '@nuxtjs/composition-api'
 import { Store } from 'vuex/types'
-import { UserFlow, TypedStore } from '@/models'
+import { UserFlow, TypedStore, User } from '@/models'
 import { hasLocalStorage } from '@/utils/window'
 
 // Signup Notification for trialing users
@@ -22,7 +22,7 @@ const isWeekFour = ref(false)
 const imagePath = ref('')
 
 export const useGlobalModal = ({ store }: { store: Store<TypedStore> }) => {
-  const userInfo = store.getters['auth/getUserInfo']
+  const userInfo: User = store.getters['auth/getUserInfo']
   const isChangePasswordModalVisible = computed<boolean>(() => {
     const user = store.getters['auth/getUserInfo']
     return (user.firstLogin)
@@ -100,7 +100,8 @@ export const useGlobalModal = ({ store }: { store: Store<TypedStore> }) => {
     showContactUsModal,
     hideContactUsModal,
     showNotificationSignupModal,
-    hideNotificationSignupModal
+    hideNotificationSignupModal,
+    userInfo
   }
 }
 
@@ -110,7 +111,7 @@ const saveDataNotification = () => {
   }
 }
 
-const getWeek = (lastDate: Date) => {
+const getWeek = (lastDate: Date | string) => {
   const now = new Date()
   let week = dayjs(now).diff(lastDate, 'days')
   if (week < 7) {
@@ -131,7 +132,7 @@ const getDays = (lastDate: string) => {
   return (days < 0) ? days * -1 : days
 }
 
-const getTrial = (dateEnd: Date) => {
+const getTrial = (dateEnd: Date | string) => {
   const now = dayjs().format('YYYY-MM-DD')
   const end = dayjs(dateEnd).format('YYYY-MM-DD')
   return dayjs(now).isAfter(end)
