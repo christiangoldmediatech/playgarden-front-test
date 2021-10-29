@@ -1,22 +1,68 @@
 <template>
-  <v-app-bar flat :height="appBarHeight" class="pg-header" app>
+  <v-app-bar
+    flat
+    :height="appBarHeight"
+    class="pg-header"
+    app
+  >
     <v-row no-gutters>
       <!-- Hamburguer Menu -->
-      <v-btn class="d-inline d-md-none pg-header-menu-btn" icon :ripple="false" @click="handleSidebarToggle">
-        <v-icon large class="primary--text">
+      <v-btn
+        class="d-inline d-md-none pg-header-menu-btn"
+        icon
+        :ripple="false"
+        @click="handleSidebarToggle"
+      >
+        <v-icon
+          large
+          class="primary--text"
+        >
           mdi-menu
         </v-icon>
       </v-btn>
 
       <!-- Children Select  -->
-      <v-col cols="12" md="3" order="2" order-md="1" class="d-flex align-center justify-center">
-        <div class="child-select mt-2 mt-md-0">
-          <child-select v-if="childId" v-model="childId" class="mb-n4" />
+      <v-col
+        cols="12"
+        md="3"
+        order="2"
+        order-md="1"
+        class="d-flex align-center justify-center"
+      >
+        <!-- <div>
+
+      </div> -->
+        <v-btn
+          v-if="isCurrentChildsBirthday"
+          class="childBirthdayBtn mr-3"
+          color="white"
+          @click="handleClickOnBirthdayIcon"
+        >
+          <img
+            :src="require('@/assets/svg/Contexts/Birthday/birthday-hat.svg')"
+            width="60"
+          >
+        </v-btn>
+        <div class="child-select mt-4 mt-md-0">
+          <child-select
+            v-if="childId"
+            v-model="childId"
+            class="mb-n3 mb-md-n7"
+          />
         </div>
       </v-col>
 
-      <v-col cols="12" md="6" order="1" order-md="2" class="d-flex flex-column justify-center align-center">
-        <v-row no-gutters class="text-center">
+      <v-col
+        cols="12"
+        md="6"
+        order="1"
+        order-md="2"
+        class="d-flex flex-column justify-center align-center"
+      >
+        <v-row
+          no-gutters
+          class="text-center"
+        >
           <!-- PlaygardenPrep Logo -->
           <v-col cols="12">
             <img
@@ -28,7 +74,11 @@
 
           <!-- Toolbar Title -->
           <v-col cols="12">
-            <underlined-title text="Welcome to School!" :font-size="appBarTitleSize" :font-size-mobile="appBarTitleSize" />
+            <underlined-title
+              text="Welcome to School!"
+              :font-size="appBarTitleSize"
+              :font-size-mobile="appBarTitleSize"
+            />
           </v-col>
 
           <!-- Toolbar Description -->
@@ -40,7 +90,11 @@
         </v-row>
       </v-col>
 
-      <v-col md="3" order="3" class="d-none d-md-flex justify-end align-center">
+      <v-col
+        md="3"
+        order="3"
+        class="d-none d-md-flex justify-end align-center"
+      >
         <!-- Profile Button -->
         <div class="text-center mx-4">
           <img
@@ -57,9 +111,17 @@
 
         <!-- Help Button -->
         <template v-if="isUserLoggedIn && !isUserInSignupProcess">
-          <v-menu open-on-hover offset-y offset-overflow>
+          <v-menu
+            open-on-hover
+            offset-y
+            offset-overflow
+          >
             <template v-slot:activator="{ on }">
-              <div data-test-id="help-button" class="text-center clickable mx-4" v-on="on">
+              <div
+                data-test-id="help-button"
+                class="text-center clickable mx-4"
+                v-on="on"
+              >
                 <img
                   :src="require('@/assets/png/Help.png')"
                   height="45"
@@ -124,8 +186,9 @@
 import { defineComponent, computed, useStore, useRoute, useRouter } from '@nuxtjs/composition-api'
 
 import ChildSelect from '@/components/app/ChildSelect.vue'
-import { useAuth, useChildRoute, useNuxtHelper, useVuetifyHelper } from '@/composables'
-import { TypedStore } from '@/models'
+import { useAuth, useChildRoute, useNuxtHelper, useVuetifyHelper, useAppEventBusHelper } from '@/composables'
+import { TypedStore, APP_EVENTS } from '@/models'
+import { useBirthdayHelpers } from '@/components/features/childBirthday/composables'
 
 export default defineComponent({
   components: {
@@ -141,15 +204,22 @@ export default defineComponent({
     const appBarLogoSize = computed(() => isMobile.value ? '25px' : '45px')
 
     const store = useStore<TypedStore>()
+
     const { isUserLoggedIn, isUserInSignupProcess } = useAuth({ store })
 
     const route = useRoute()
     const router = useRouter()
     const { childId } = useChildRoute({ store, route, router })
+    const eventBus = useAppEventBusHelper()
+    const { isCurrentChildsBirthday } = useBirthdayHelpers()
 
     const nuxt = useNuxtHelper()
     const handleSidebarToggle = () => {
       nuxt.$emit('toggle-nav-drawer')
+    }
+
+    function handleClickOnBirthdayIcon() {
+      eventBus.$emit(APP_EVENTS.SHOW_BIRTHDAY_MODAL)
     }
 
     return {
@@ -160,13 +230,24 @@ export default defineComponent({
       appBarTitleSize,
       appBarLogoSize,
       appBarHeight,
-      handleSidebarToggle
+      handleSidebarToggle,
+      handleClickOnBirthdayIcon,
+      isCurrentChildsBirthday
     }
   }
 })
 </script>
 
 <style lang="scss" scoped>
+.childBirthdayBtn {
+  &.v-btn {
+    height: 60px;
+    width: 35px;
+    display: grid;
+    place-items: center;
+  }
+}
+
 .clickable {
   cursor: pointer;
 }
@@ -174,7 +255,7 @@ export default defineComponent({
   width: 250px;
 }
 .pg-header {
-  background: #FFFFFF !important;
+  background: #ffffff !important;
   box-shadow: 0px 3px 46px rgba(0, 0, 0, 0.160784) !important;
   border-radius: 0px 0px 36px 36px !important;
 

@@ -34,6 +34,7 @@ module.exports = {
     'prefer-const': 2,
     'prefer-object-spread': 2,
     'vue/attribute-hyphenation': 2,
+    'space-before-function-paren': 'off',
     /*
     'vue/attributes-order': [
       'error',
@@ -132,5 +133,13 @@ module.exports = {
     'array-callback-return': 'off',
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': 'off'
-  }
+  },
+  overrides: [
+    {
+      files: ['*.ts', '*.vue'],
+      rules: {
+        'no-undef': 'off'
+      }
+    }
+  ]
 }

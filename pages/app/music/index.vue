@@ -14,7 +14,7 @@
               @input="id = $event"
             />
           </v-col>
-          <v-col cols="12" md="9" align-self="center" class="mt-2 mt-md-0 d-none d-sm-flex">
+          <v-col cols="12" md="9" align-self="center" class="mt-2 mt-md-0 d-none d-sm-flex px-2 carousel-wrapper">
             <music-carousel-letter
               :is-full-width="true"
               :value="selectedLetterId"
@@ -314,5 +314,8 @@ export default {
 <style lang="scss" scoped>
 .music-song-list {
   max-width: 1400px;
+}
+.carousel-wrapper {
+  position: relative;
 }
 </style>
