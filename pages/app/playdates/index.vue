@@ -2,25 +2,31 @@
   <v-col class="fill-height">
     <!-- ACTIVE PLAYDATES -->
     <div v-if="isPayingUser">
-      <v-row align="center" class="fill-height" justify="space-between">
+      <v-row align="center" class="fill-height" justify="space-between" no-gutters>
         <!-- HEADER -->
-        <v-col cols="12" md="auto" class="flex-grow-1">
+        <v-col cols="12" md="auto" class="flex-grow-1" order="2" order-md="1">
           <underlined-title
             text="Educational Playdates"
             font-size="36px"
+            font-size-mobile="24px"
           />
         </v-col>
 
         <!-- BUTTON -->
-        <v-col cols="12" md="auto" class="flex-shrink-1">
-          <v-btn color="accent" nuxt :to="{ name: 'app-playdates-my-playdates' }">
+        <v-col cols="12" md="auto" class="flex-shrink-1 text-right py-6 py-md-0" order="1" order-md="2">
+          <v-btn
+            :to="{ name: 'app-playdates-my-playdates' }"
+            color="accent"
+            nuxt
+            class="!pg-shadow-button"
+          >
             MY PLAYDATES
           </v-btn>
         </v-col>
 
-        <v-container>
+        <v-col cols="12" order="3">
           <!-- PAGE DESCRIPTION -->
-          <p class="body-1">
+          <p class="text-body-2 text-md-body-1 py-4">
             Join your friends and socialize at a Playgarden Prep Online Playdate!
             These 30 minute Zoom sessions are designed to give children the opportunity to connect with peers while learning under the guidance of a Playgarden Prep instructor.
             You can sign up for up to one Playdate per week; make sure to sign up for the same weekly Playdate, so that you can see your friends every week!
@@ -29,15 +35,29 @@
           <!-- WEEK NAVIGATOR -->
           <div class="d-flex justify-center align-center">
             <!-- PREVIOUS WEEK BUTTON -->
-            <v-btn :disabled="!canGoToPreviousWeek" icon color="accent" class="mx-6 nav-button" @click="goToPreviousWeek">
+            <v-btn
+              :disabled="!canGoToPreviousWeek"
+              :small="isMobile"
+              icon
+              color="accent"
+              class="mx-6 nav-button"
+              @click="goToPreviousWeek"
+            >
               <v-icon>mdi-chevron-left</v-icon>
             </v-btn>
 
             <!-- WEEK INFO -->
-            <span class="text-h5">{{ currentWeekDisplayText }}</span>
+            <span class="text-body-2 text-md-h5 font-weight-medium">{{ currentWeekDisplayText }}</span>
 
             <!-- NEXT WEEK BUTTON -->
-            <v-btn :disabled="!canGoToNextWeek" icon color="accent" class="mx-6 nav-button" @click="goToNextWeek">
+            <v-btn
+              :disabled="!canGoToNextWeek"
+              :small="isMobile"
+              icon
+              color="accent"
+              class="mx-6 nav-button"
+              @click="goToNextWeek"
+            >
               <v-icon>mdi-chevron-right</v-icon>
             </v-btn>
           </div>
@@ -53,7 +73,7 @@
               />
             </v-col>
           </v-row>
-        </v-container>
+        </v-col>
       </v-row>
     </div>
 
@@ -67,7 +87,7 @@ import { computed, defineComponent, ref, useStore, watch } from '@nuxtjs/composi
 import { Playdate, TypedStore } from '@/models'
 
 import CardPlaydate from '@/components/app/playdates/CardPlaydate.vue'
-import { useChild, usePlaydates } from '@/composables'
+import { useChild, usePlaydates, useVuetifyHelper } from '@/composables'
 import dayjs from 'dayjs'
 
 export default defineComponent({
@@ -82,6 +102,7 @@ export default defineComponent({
     const MIN_WEEK_INDEX = 0
     const MAX_WEEK_INDEX = 2
 
+    const vuetify = useVuetifyHelper()
     const store = useStore<TypedStore>()
     const { isPayingUser, getPlaydateForDate, getPlaydatesDates } = usePlaydates({ store })
     const { children } = useChild({ store })
@@ -91,6 +112,7 @@ export default defineComponent({
     const loading = ref(false)
     const playdates = ref<Playdate[]>([])
     const currentPlaydateDate = computed(() => playdatesDates?.[currentPlaydateIndex.value] || dayjs().format('YYYY-MM-DD'))
+    const isMobile = computed(() => vuetify.breakpoint.mobile)
 
     const isInAPlaydate = computed(() => {
       return playdates.value.some((playdate) => {
@@ -152,6 +174,7 @@ export default defineComponent({
       canGoToPreviousWeek,
       currentWeekDisplayText,
       isInAPlaydate,
+      isMobile,
       isPayingUser,
       loading,
       playdates,

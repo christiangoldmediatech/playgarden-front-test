@@ -7,10 +7,10 @@
       data-test-id="card-playdate"
       tile
     >
-      <!-- CARD IMAGE AND TIME -->
-      <v-row justify="center" class="pa-6" no-gutters>
-        <!-- IMAGE -->
-        <v-col md="4" cols="12" class="align-self-center">
+      <!-- CARD CONTENT -->
+      <v-row justify="center" class="pa-3 pa-md-6" no-gutters>
+        <!-- IMAGE ONLY ON DESKTOP -->
+        <v-col md="5" class="d-none d-md-block align-self-center">
           <v-row no-gutters>
             <v-col cols="4" md="12">
               <v-img
@@ -24,88 +24,99 @@
         </v-col>
 
         <!-- PLAYDATE INFO -->
-        <v-col md="8" cols="12">
-          <v-row align-content="center" class="fill-height" no-gutters>
-            <v-col>
-              <v-list-item three-line>
-                <v-list-item-content>
-                  <v-list-item-title class="grey--text text--darken-2 pb-1">
-                    <div v-if="specialist" class="text-h6 text-truncate font-weight-bold">
-                      Playdates with {{ specialist.fullName }}
-                    </div>
+        <v-col cols="12" md="7" class="pl-md-3">
+          <v-row no-gutters>
+            <!-- IMAGE ONLY ON MOBILE -->
+            <v-col cols="4" class="d-md-none">
+              <v-img
+                alt="Educational Playdates"
+                contain
+                :max-height="500"
+                :src="require('@/assets/png/playdates/playdate.png')"
+              />
+            </v-col>
 
-                    <div class="mt-2">
-                      {{ date }}
-                    </div>
+            <!-- PLAYDATE SPECIALIST AND DATE -->
+            <v-col cols="8" md="12" class="pl-3 pl-md-0">
+              <div class="grey--text text--darken-2">
+                <div v-if="specialist" class="text-subtitle-1 text-md-h6 font-weight-bold">
+                  Playdates with {{ specialist.fullName }}
+                </div>
 
-                    <div class="text-capitalize mt-2">
-                      {{ day }} {{ start }}
-                    </div>
-                  </v-list-item-title>
-
-                  <v-list-item-subtitle class="caption py-3">
-                    Spots:
-
-                    <v-row
-                      justify="start"
-                      no-gutters
-                      class="pt-2"
-                    >
-                      <v-img
-                        v-for="(bImage, indexBI) in backpackImages"
-                        :key="indexBI"
-                        :src="bImage"
-                        :class="{ 'ml-n3': indexBI }"
-                        class="backpack-image"
-                        max-width="36"
-                      />
-
-                      <span class="ml-1 mt-2">
-                        {{ backpackImages.length }}/{{ playdate.spots }}
-                      </span>
-                    </v-row>
-                  </v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-
-              <slot name="button">
-                <v-row no-gutters class="px-4">
-                  <v-col cols="12" class="py-1">
-                    <v-btn
-                      :disabled="isInAPlaydate && !hasSpotInThisPlaydate"
-                      class="!pg-shadow-button white--text text-transform-none"
-                      color="accent"
-                      width="250"
-                      data-test-id="card-playdate-open-button"
-                      block
-                      @click="dialog = true"
-                    >
-                      {{ hasSpotInThisPlaydate ? 'SEE DETAILS' : 'JOIN PLAYDATE' }}
-                    </v-btn>
-                  </v-col>
-
-                  <v-col v-if="hasSpotInThisPlaydate" cols="12" class="py-1">
-                    <v-btn
-                      :loading="isLoadingSpotAction"
-                      class="!pg-shadow-button red lighten-4 grey--text text--darken-2 text-transform-none"
-                      data-test-id="card-playdate-open-button"
-                      block
-                      @click="handleCancelSpot"
-                    >
-                      <v-icon class="red--text">
-                        mdi-delete
-                      </v-icon>
-                      CANCEL SPOT
-                    </v-btn>
-                  </v-col>
-                </v-row>
-              </slot>
+                <div class="mt-2">
+                  {{ date }}
+                </div>
+              </div>
             </v-col>
           </v-row>
+
+          <!-- PLAYDATE START TIME -->
+          <div class="grey--text text--darken-2 text-capitalize mt-4 mt-md-2">
+            {{ day }} {{ start }}
+          </div>
+
+          <!-- SPOTS -->
+          <div class="caption mt-3">
+            Spots:
+
+            <v-row
+              justify="start"
+              no-gutters
+              class="pt-2"
+            >
+              <v-img
+                v-for="(bImage, indexBI) in backpackImages"
+                :key="indexBI"
+                :src="bImage"
+                :class="{ 'ml-n3': indexBI }"
+                class="backpack-image"
+                max-width="36"
+              />
+
+              <span class="ml-1 mt-2">
+                {{ backpackImages.length }}/{{ playdate.spots }}
+              </span>
+            </v-row>
+          </div>
+
+          <slot name="button">
+            <v-row no-gutters class="mt-6">
+              <!-- SEE DETAILS BUTTON -->
+              <v-col cols="12">
+                <v-btn
+                  :disabled="isInAPlaydate && !hasSpotInThisPlaydate"
+                  class="!pg-shadow-button white--text text-transform-none"
+                  color="accent"
+                  data-test-id="card-playdate-open-button"
+                  block
+                  @click="dialog = true"
+                >
+                  {{ hasSpotInThisPlaydate ? 'SEE DETAILS' : 'JOIN PLAYDATE' }}
+                </v-btn>
+              </v-col>
+
+              <!-- CANCEL SPOT BUTTON  -->
+              <v-col v-if="hasSpotInThisPlaydate" cols="12" class="mt-3">
+                <v-btn
+                  :loading="isLoadingSpotAction"
+                  class="!pg-shadow-button red lighten-4 grey--text text--darken-2 text-transform-none"
+                  data-test-id="card-playdate-open-button"
+                  block
+                  @click="handleCancelSpot"
+                >
+                  <v-icon class="red--text">
+                    mdi-delete
+                  </v-icon>
+                  CANCEL SPOT
+                </v-btn>
+              </v-col>
+            </v-row>
+          </slot>
         </v-col>
       </v-row>
     </v-card>
 
+    <!-- MORE THAN ONE PLAYDATE WARNING -->
     <div v-if="isInAPlaydate && !hasSpotInThisPlaydate" class="mt-3 font-weight-medium">
       *You can only join one playdate per week.
     </div>
