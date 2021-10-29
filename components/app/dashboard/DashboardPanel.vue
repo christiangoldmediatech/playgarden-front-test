@@ -118,7 +118,7 @@
             class="dashboard-item pass-through"
             active-class="dashboard-item-active"
             exact-active-class="dashboard-item-exact"
-            @click.stop="noLinkMode ? undefined : openPdf"
+            @click.stop="handleDownloadWorksheetClick"
           >
             <v-row no-gutters class="py-2">
               <v-col cols="3" align-self="center" class="d-flex justify-center">
@@ -445,6 +445,12 @@ export default {
         dayLetter: this.lesson.curriculumType.letter,
         dayNumber: this.lesson.day
       })
+    },
+
+    handleDownloadWorksheetClick () {
+      if (!this.noLinkMode) {
+        this.openPdf()
+      }
     }
   }
 }
