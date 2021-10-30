@@ -9,7 +9,7 @@ export default (): NotificationState => ({
   isTrialEndingWeekTwoModalVisible: false,
   isTrialEndingWeekThreeModalVisible: false,
   isTrialEndingWeekFourModalVisible: false,
-  isPlanUpgradeModalVisible: true,
+  isPlanUpgradeModalVisible: false,
   isTrialEndingPlanSelectedModalVisible: false,
   notificationCard: {
     isVisible: false,
