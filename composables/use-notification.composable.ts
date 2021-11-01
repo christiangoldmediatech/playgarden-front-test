@@ -3,7 +3,7 @@ import { computed } from '@nuxtjs/composition-api'
 import { useAuth } from '@/composables'
 import { hasLocalStorage } from '@/utils/window'
 import { Store } from 'vuex/types'
-import { TypedStore } from '@/models'
+import { TypedStore, UserFlow } from '@/models'
 import { useShippingAddress } from './use-shipping-address.composable'
 
 export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
@@ -224,6 +224,22 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
     }
   }
 
+  const showTrialEndingPlanSelectedModal = () => {
+    const userCreatedAt = userInfo.value.createdAt
+    const isPayingUser = userInfo.value.stripeStatus === 'active'
+    const now = dayjs()
+
+    if (userFlow.value === UserFlow.CREDITCARD) {
+      // todo
+    } else {
+      const userDayToBeNotified = dayjs(userCreatedAt).add(28, 'days')
+
+      if ((now.isSame(userDayToBeNotified, 'day') || now.isAfter(userDayToBeNotified, 'day')) && !isPayingUser) {
+        setIsTrialEndingPlanSelectedModalVisible(true)
+      }
+    }
+  }
+
   return {
     notificationCard,
     isTrialExpiredModalVisible,
@@ -239,6 +255,7 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
     checkIfShouldShowTrialExpiredModal,
     showTrialEndingWeekTwoModal,
     showTrialEndingWeekThreeModal,
-    showTrialEndingWeekFourModal
+    showTrialEndingWeekFourModal,
+    showTrialEndingPlanSelectedModal
   }
 }
