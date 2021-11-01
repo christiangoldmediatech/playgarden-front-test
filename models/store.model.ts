@@ -28,6 +28,10 @@ export interface TypedStore {
     isTrialExpiringRibbonVisible: boolean
     isTrialExpiredModalVisible: boolean
     isShippingModalVisible: boolean
+    isTrialEndingWeekTwoModalVisible: boolean
+    isTrialEndingWeekThreeModalVisible: boolean
+    isTrialEndingWeekFourModalVisible: boolean
+    isTrialEndingPlanSelectedModalVisible: boolean
     notificationCard: {
       isVisible: boolean,
       title: string,

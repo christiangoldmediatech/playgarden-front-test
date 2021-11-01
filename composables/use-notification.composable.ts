@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import { computed, ref } from '@nuxtjs/composition-api'
+import { computed } from '@nuxtjs/composition-api'
 import { useAuth } from '@/composables'
 import { hasLocalStorage } from '@/utils/window'
 import { Store } from 'vuex/types'
@@ -9,6 +9,8 @@ import { useShippingAddress } from './use-shipping-address.composable'
 export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
   const { userInfo, isUserLoggedIn } = useAuth({ store })
   const { getShippingAdress } = useShippingAddress()
+
+  const userFlow = computed(() => userInfo.value.flow)
 
   const expiringRibbonHeightDesktop = computed(() => store.state.notifications.expiringRibbonHeightDesktop)
   const expiringRibbonHeightMobile = computed(() => store.state.notifications.expiringRibbonHeightMobile)
@@ -31,6 +33,26 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
   const notificationCard = computed(() => store.state.notifications.notificationCard)
   const setNotificationCard = (payload: Partial<typeof notificationCard.value>) => {
     store.commit('notifications/SET_NOTIFICATION_CARD', payload)
+  }
+
+  const isTrialEndingWeekTwoModalVisible = computed(() => store.state.notifications.isTrialEndingWeekTwoModalVisible)
+  const setIsTrialEndingWeekTwoModalVisible = (isVisible: boolean) => {
+    store.commit('notifications/SET_IS_TRIAL_ENDING_WEEK_TWO_MODAL_VISIBLE', isVisible)
+  }
+
+  const isTrialEndingWeekThreeModalVisible = computed(() => store.state.notifications.isTrialEndingWeekThreeModalVisible)
+  const setIsTrialEndingWeekThreeModalVisible = (isVisible: boolean) => {
+    store.commit('notifications/SET_IS_TRIAL_ENDING_WEEK_THREE_MODAL_VISIBLE', isVisible)
+  }
+
+  const isTrialEndingWeekFourModalVisible = computed(() => store.state.notifications.isTrialEndingWeekFourModalVisible)
+  const setIsTrialEndingWeekFourModalVisible = (isVisible: boolean) => {
+    store.commit('notifications/SET_IS_TRIAL_ENDING_WEEK_FOUR_MODAL_VISIBLE', isVisible)
+  }
+
+  const isTrialEndingPlanSelectedModalVisible = computed(() => store.state.notifications.isTrialEndingPlanSelectedModalVisible)
+  const setIsTrialEndingPlanSelectedModalVisible = (isVisible: boolean) => {
+    store.commit('notifications/SET_IS_TRIAL_ENDING_PLAN_SELECTED_MODAL_VISIBLE', isVisible)
   }
 
   /**
@@ -157,6 +179,48 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
     }
   }
 
+  const showTrialEndingWeekTwoModal = () => {
+    const showDays = [7, 9, 11, 13]
+    const userCreatedAt = userInfo.value.createdAt
+    const now = dayjs()
+
+    const shouldShowTrialEndingWeekTwoModal = showDays.some((day) => {
+      return now.isSame(dayjs(userCreatedAt).add(day, 'days'), 'day')
+    })
+
+    if (shouldShowTrialEndingWeekTwoModal) {
+      setIsTrialEndingWeekTwoModalVisible(true)
+    }
+  }
+
+  const showTrialEndingWeekThreeModal = () => {
+    const showDays = [14, 16, 18, 20]
+    const userCreatedAt = userInfo.value.createdAt
+    const now = dayjs()
+
+    const shouldShowTrialEndingWeekThreeModal = showDays.some((day) => {
+      return now.isSame(dayjs(userCreatedAt).add(day, 'days'), 'day')
+    })
+
+    if (shouldShowTrialEndingWeekThreeModal) {
+      setIsTrialEndingWeekThreeModalVisible(true)
+    }
+  }
+
+  const showTrialEndingWeekFourModal = () => {
+    const showDays = [21, 23, 25, 27]
+    const userCreatedAt = userInfo.value.createdAt
+    const now = dayjs()
+
+    const shouldShowTrialEndingWeekFourModal = showDays.some((day) => {
+      return now.isSame(dayjs(userCreatedAt).add(day, 'days'), 'day')
+    })
+
+    if (shouldShowTrialEndingWeekFourModal) {
+      setIsTrialEndingWeekFourModalVisible(true)
+    }
+  }
+
   return {
     notificationCard,
     isTrialExpiredModalVisible,
@@ -169,6 +233,9 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
     checkUserShippingAddressAndNotify,
     checkIfShouldSendShippingAddressNotification,
     checkIfShouldShowTrialExpiringRibbon,
-    checkIfShouldShowTrialExpiredModal
+    checkIfShouldShowTrialExpiredModal,
+    showTrialEndingWeekTwoModal,
+    showTrialEndingWeekThreeModal,
+    showTrialEndingWeekFourModal
   }
 }
