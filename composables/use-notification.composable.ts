@@ -185,7 +185,8 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
     const now = dayjs()
 
     const shouldShowTrialEndingWeekTwoModal = showDays.some((day) => {
-      return now.isSame(dayjs(userCreatedAt).add(day, 'days'), 'day')
+      const userDayToBeNotified = dayjs(userCreatedAt).add(day, 'days')
+      return now.isSame(userDayToBeNotified, 'day')
     })
 
     if (shouldShowTrialEndingWeekTwoModal) {
@@ -199,7 +200,8 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
     const now = dayjs()
 
     const shouldShowTrialEndingWeekThreeModal = showDays.some((day) => {
-      return now.isSame(dayjs(userCreatedAt).add(day, 'days'), 'day')
+      const userDayToBeNotified = dayjs(userCreatedAt).add(day, 'days')
+      return now.isSame(userDayToBeNotified, 'day')
     })
 
     if (shouldShowTrialEndingWeekThreeModal) {
@@ -213,7 +215,8 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
     const now = dayjs()
 
     const shouldShowTrialEndingWeekFourModal = showDays.some((day) => {
-      return now.isSame(dayjs(userCreatedAt).add(day, 'days'), 'day')
+      const userDayToBeNotified = dayjs(userCreatedAt).add(day, 'days')
+      return now.isSame(userDayToBeNotified, 'day')
     })
 
     if (shouldShowTrialEndingWeekFourModal) {
