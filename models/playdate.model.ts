@@ -1,8 +1,13 @@
 import { Entity } from '@/models'
 
 export interface Playdate extends Entity {
+  backpackImages: {
+    childrenId: number
+    image: string
+  }[]
   ages: string
   day: string
+  date: string
   description: string
   duration: number
   end: string
