@@ -7,6 +7,7 @@ export interface Playdate extends Entity {
   }[]
   ages: string
   day: string
+  date: string
   description: string
   duration: number
   end: string

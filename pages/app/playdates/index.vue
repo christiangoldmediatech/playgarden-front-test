@@ -125,21 +125,22 @@ export default defineComponent({
     })
 
     const currentWeekDisplayText = computed(() => {
-      if (currentPlaydateIndex.value === MIN_WEEK_INDEX) {
-        return 'Up next'
+      if (playdates.value.length === 0) {
+        return ''
       }
 
-      const startOfWeek = dayjs(currentPlaydateDate.value).startOf('week')
-      const endOfWeek = dayjs(currentPlaydateDate.value).endOf('week')
-      const isSameMonth = dayjs(startOfWeek).month() === dayjs(endOfWeek).month()
+      const startDate = playdates.value?.[0]?.date
+      const endDate = playdates.value?.[playdates.value.length - 1]?.date
+
+      const isSameMonth = dayjs(startDate).month() === dayjs(endDate).month()
       // e.g. October 24
-      let displayDate = dayjs(startOfWeek).format('MMMM DD')
+      let displayDate = dayjs(startDate).format('MMMM DD')
       // e.g. October 24 - 30 or October 31 - November 6
       displayDate += isSameMonth
-        ? ` - ${dayjs(endOfWeek).format('DD')}`
-        : ` - ${dayjs(endOfWeek).format('MMMM DD')}`
+        ? ` - ${dayjs(endDate).format('DD')}`
+        : ` - ${dayjs(endDate).format('MMMM DD')}`
       // e.g. October 24 - 30, 2021
-      displayDate += `, ${dayjs(startOfWeek).format('YYYY')}`
+      displayDate += `, ${dayjs(startDate).format('YYYY')}`
 
       return displayDate
     })
