@@ -438,8 +438,7 @@ export default defineComponent({
       }
 
       if (
-        this.today === this.week[this.playdate.day] &&
-        this.times.end.isAfter(new Date())
+        dayjs().isSame(dayjs(this.playdate.date), 'day')
       ) {
         return 'Today'
       }
