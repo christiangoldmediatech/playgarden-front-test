@@ -131,6 +131,14 @@ export default {
     this.getDataFirebase()
   },
 
+  mounted() {
+    // If already logged in and is redirecting to kids corner, rdirect directly insted of waiting for the login
+    if (this.isKidsCornerRedirect && this.$store.getters['auth/isUserLoggedIn']) {
+      // Go to kids corner
+      window.open(`${process.env.kidsCornerUrl}?atoken=${this.$store.getters['auth/getAccessToken']}`, '_self')
+    }
+  },
+
   methods: {
     getProviderSignIn (provider) {
       let nameProvider = ''
