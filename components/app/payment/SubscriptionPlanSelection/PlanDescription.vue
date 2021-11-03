@@ -98,24 +98,28 @@ ul {
 }
 
 ul li::before {
-  content: "✔";
-  color: var(--v-primary-base); /* Change the color */
+  content: "";
+  background-color: var(--v-accent-base); /* Change the color */
   font-weight: bold; /* If you want it to be bold */
   display: inline-block; /* Needed to add space between the bullet and the text */
+  position: relative;
+  top: 0.5em;
   width: 1em; /* Also needed for space (tweak if needed) */
+  height: 1em; /* Also needed for space (tweak if needed) */
   margin-left: -1.4rem; /* Also needed for space (tweak if needed) */
   margin-right: 0.5rem;
+  border-radius: 0.5em;
 }
 
 .plan-detail li {
   width: 97%;
-  line-height: 5px;
+  line-height: 1.5;
   /*border: 1px blue solid; */
 }
 .plan-detail li span {
   display: -moz-inline-box;  /* FF2 or lower */
   display: initial;     /* FF3, Opera, Safari */
-  line-height: 1;
+  line-height: 1.5;
   vertical-align: text-top;
   color: var(--v-black-base);
 }
