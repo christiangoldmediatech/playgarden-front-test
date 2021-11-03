@@ -4,18 +4,7 @@
 
     <v-card flat>
       <v-card-text>
-        <div class="text-center">
-          <!-- Section Title and Description -->
-          <div class="d-flex align-center justify-center">
-            <img height="80px" src="@/assets/png/student-cubby/patches.svg">
-            <span class="ml-4 text-h4 text-md-h3">PATCHES</span>
-          </div>
-          <div class="my-6 text-md-h6 text-body-1">
-            Master subjects in the Activities section to collect patches for
-            your Student Cubby! Collect all badges to receive a real patch for
-            your backpack.
-          </div>
-        </div>
+        <study-cubby-item-header v-bind="studentChubbyItemHeaderProps" />
 
         <patch-row
           v-for="activityType in childrenPatchesActivity"
@@ -29,20 +18,26 @@
 </template>
 
 <script lang="ts">
-import { useRoute, useStore, useRouter } from '@nuxtjs/composition-api'
+import { defineComponent, useRoute, useStore, useRouter, computed } from '@nuxtjs/composition-api'
 import { usePatches } from '@/composables/patches'
 import PatchRow from '@/components/app/student-cubby/PatchRow.vue'
 import PatchOverlay from '@/components/app/student-cubby/PatchOverlay.vue'
 import { useChildRoute } from '@/composables'
 import { TypedStore } from '@/models'
 import { watch } from '@vue/composition-api'
+import { useStudentCubbyHelpers } from '@/components/app/student-cubby/composables'
+import StudyCubbyItemHeader, { StudentCubbyItemHeaderProps } from '@/components/app/student-cubby/StudyCubbyItemHeader.vue'
+import { StudentChubbyItemText } from '@/components/app/student-cubby/types'
 
-export default {
+const itemText: StudentChubbyItemText = 'PATCHES'
+
+export default defineComponent({
   name: 'Patches',
 
   components: {
     PatchRow,
-    PatchOverlay
+    PatchOverlay,
+    StudyCubbyItemHeader
   },
 
   setup () {
@@ -51,15 +46,24 @@ export default {
     const router = useRouter()
     const { childId: studentId } = useChildRoute({ store, route, router })
     const { childrenPatchesActivity, getPatchesByChildId } = usePatches()
+    const { getStudentChubbyItemFromItemText } = useStudentCubbyHelpers()
 
     watch(studentId, async () => {
       await getPatchesByChildId(studentId.value || 0)
     }, { immediate: true })
 
+    const studentChubbyItemHeaderProps = computed((): StudentCubbyItemHeaderProps => {
+      return {
+        studentCubbyItem: getStudentChubbyItemFromItemText(itemText)
+      }
+    })
+
     return {
       childrenPatchesActivity,
-      studentId
+      studentId,
+      itemText,
+      studentChubbyItemHeaderProps
     }
   }
-}
+})
 </script>

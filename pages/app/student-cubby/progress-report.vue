@@ -2,32 +2,43 @@
   <div>
     <v-card flat>
       <v-card-text>
-        <div class="text-center">
-          <!-- Section Title and Description -->
-          <div v-if="!$vuetify.breakpoint.smAndDown" class="d-flex align-center justify-center">
-            <img height="40px" src="@/assets/png/student-cubby/progress.png">
-            <span class="ml-4 text-h4 text-md-h3">PROGRESS REPORT</span>
-          </div>
-          <div class="my-6 text-md-h6 text-body-1">
-            Playgarden Prep Online Lessons have been developed to support one or more of the core areas of development.
-            After watching a video, doing the worksheet together with an adult, or actively participating in a Live Class, parents will be helping in the development of their child in each of the specific areas.
-          </div>
-        </div>
+        <StudyCubbyItemHeader v-bind="studentChubbyItemHeaderProps" />
         <dashboard />
       </v-card-text>
     </v-card>
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent, computed } from '@nuxtjs/composition-api'
 import Dashboard from '@/components/app/progress-report/Dashboard.vue'
-export default {
+import StudyCubbyItemHeader, { StudentCubbyItemHeaderProps } from '@/components/app/student-cubby/StudyCubbyItemHeader.vue'
+import { useStudentCubbyHelpers } from '@/components/app/student-cubby/composables'
+import type { StudentChubbyItemText } from '@/components/app/student-cubby/types'
+
+const itemText: StudentChubbyItemText = 'PROGRESS REPORT'
+
+export default defineComponent({
   name: 'ProgressReport',
 
   components: {
-    Dashboard
+    Dashboard,
+    StudyCubbyItemHeader
+  },
+  setup() {
+    const { getStudentChubbyItemFromItemText } = useStudentCubbyHelpers()
+
+    const studentChubbyItemHeaderProps = computed((): StudentCubbyItemHeaderProps => {
+      return {
+        studentCubbyItem: getStudentChubbyItemFromItemText(itemText)
+      }
+    })
+
+    return {
+      studentChubbyItemHeaderProps
+    }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

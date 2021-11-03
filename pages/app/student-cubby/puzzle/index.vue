@@ -5,16 +5,12 @@
     -->
     <v-card-text class="text-center">
       <!-- Section Title and Description -->
-      <div class="d-flex align-center justify-center">
-        <img height="80px" src="@/assets/png/student-cubby/puzzle-piece.png">
-        <span class="ml-4 text-h4 text-md-h3">PUZZLE</span>
-      </div>
-      <div v-if="child" class="my-6 text-md-h6 text-body-1">
-        Find all of {{ child.firstName || "Child" }}’s completed puzzles. Share
-        them on social media!
-      </div>
+      <StudyCubbyItemHeader v-bind="studentChubbyItemHeaderProps" />
 
-      <v-row class="mt-6" justify="space-around">
+      <v-row
+        class="mt-6"
+        justify="space-around"
+      >
         <v-col
           v-for="(puzzle, indexP) in puzzlesResponse"
           :key="indexP"
@@ -123,12 +119,17 @@ import PuzzlePiecesDialog from '@/components/app/student-cubby/PuzzlePiecesDialo
 import { usePuzzle } from '@/composables/puzzle'
 import { useChild, useChildRoute } from '@/composables'
 import { PuzzleResponse, TypedStore, Child } from '@/models'
+import StudyCubbyItemHeader, { StudentCubbyItemHeaderProps } from '@/components/app/student-cubby/StudyCubbyItemHeader.vue'
+import { StudentChubbyItemText } from '@/components/app/student-cubby/types'
+import { useStudentCubbyHelpers } from '@/components/app/student-cubby/composables'
+
+const itemText: StudentChubbyItemText = 'PUZZLE'
 
 export default defineComponent({
   name: 'Index',
-
   components: {
-    PuzzlePiecesDialog
+    PuzzlePiecesDialog,
+    StudyCubbyItemHeader
   },
 
   setup () {
@@ -138,8 +139,15 @@ export default defineComponent({
     const { childId: studentId } = useChildRoute({ store, route, router })
     const { puzzlesResponse, getPuzzlesByChildId } = usePuzzle()
     const { children, get } = useChild({ store })
+    const { getStudentChubbyItemFromItemText } = useStudentCubbyHelpers()
 
     const child = computed(() => children.value.find((child: Child) => child.id === studentId.value))
+
+    const studentChubbyItemHeaderProps = computed((): StudentCubbyItemHeaderProps => {
+      return {
+        studentCubbyItem: getStudentChubbyItemFromItemText(itemText)
+      }
+    })
 
     onMounted(async () => {
       await getPuzzlesByChildId(studentId.value || 0)
@@ -154,7 +162,8 @@ export default defineComponent({
       studentId,
       puzzlesResponse,
       children,
-      child
+      child,
+      studentChubbyItemHeaderProps
     }
   },
 
