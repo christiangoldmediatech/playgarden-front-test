@@ -137,17 +137,14 @@
 import { defineComponent, onMounted, ref, useRouter, computed, useRoute } from '@nuxtjs/composition-api'
 import { Playdate } from '@/models'
 import { usePlaydates } from '@/composables/playdates'
-import dayjs from 'dayjs'
+import { formatDate } from '@/utils/dateTools'
 export default defineComponent({
   name: 'PlaydatesView',
   setup () {
     const loading = ref(false)
     const id = ref<null|number>()
-    const date = ref<null|string>()
-    const day = ref<null|string>()
-    const time = ref<null|string>()
-    const timeEnd = ref<null|string>()
-    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+    const start = ref<null|string>()
+    const end = ref<null|string>()
     const route = useRoute()
     const router = useRouter()
     const { getPlaydatesById, deletePlaydate } = usePlaydates()
@@ -161,29 +158,36 @@ export default defineComponent({
       end: '',
       spots: 0,
       link: '',
+      playdatesChildrens: [],
       specialistId: null
     })
     const getDateText = computed(() => {
-      return (time.value) ? `${day.value}, ${time.value} - ${timeEnd.value}` : 'Date is pending'
+      return (playdate.value) ? `${playdate.value.day}, ${start.value} - ${end.value}` : ''
     })
     const getSpecialist = computed(() => {
-      return playdate.value.specialistUser ? `${playdate.value.specialistUser.user.firstName} ${playdate.value.specialistUser.user.lastName}` : ''
+      return (playdate.value.specialistUser && playdate.value.specialistUser.user) ? `${playdate.value.specialistUser.user.firstName} ${playdate.value.specialistUser.user.lastName}` : ''
     })
+
+    const toLocalTime = (time: string) => {
+      return formatDate(time, {
+        format: 'HH:mm:ss',
+        fromFormat: 'HH:mm:ss',
+        fromUtc: true,
+        returnObject: false
+      })
+    }
+
     onMounted(async () => {
       generateItemTemplate()
       if (route.value.query.id) {
         id.value = Number(route.value.query.id)
         playdate.value = await getPlaydatesById(id.value)
-        if (playdate.value.date && playdate.value.duration) {
-          const dateStart = dayjs.utc(playdate.value.date, 'HH:mm:ss').local()
-          const endDate = dateStart.add(playdate.value.duration, 'minute')
-          time.value = dateStart.format('hh:mm')
-          timeEnd.value = endDate.format('hh:mm')
-          const playdateDate = new Date(playdate.value.date)
-          day.value = days[playdateDate.getDay()]
-        }
         if (playdate.value.specialistUser) {
           playdate.value.specialistId = playdate.value.specialistUser.id
+        }
+        if (playdate.value.start && playdate.value.end) {
+          start.value = toLocalTime(playdate.value.start).toString()
+          end.value = toLocalTime(playdate.value.end).toString()
         }
       }
     })
@@ -198,14 +202,14 @@ export default defineComponent({
       playdate.value.duration = 0
       playdate.value.link = ''
       playdate.value.spots = 0
-      date.value = null
-      time.value = null
+      playdate.value.ages = ''
+      playdate.value.playdatesChildrens = []
+      start.value = ''
+      end.value = ''
     }
     return {
       loading,
       getSpecialist,
-      date,
-      time,
       id,
       playdate,
       getDateText,

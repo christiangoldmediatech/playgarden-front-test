@@ -96,7 +96,7 @@
               </v-col>
 
               <!-- CANCEL SPOT BUTTON  -->
-              <v-col v-if="hasSpotInThisPlaydate" cols="12" class="mt-3">
+              <v-col v-if="hasSpotInThisPlaydate && !manangement" cols="12" class="mt-3">
                 <v-btn
                   :loading="isLoadingSpotAction"
                   class="!pg-shadow-button red lighten-4 grey--text text--darken-2 text-transform-none"
@@ -282,7 +282,7 @@
 </template>
 
 <script>
-import { defineComponent, useStore } from '@nuxtjs/composition-api'
+import { defineComponent, useStore, useRouter } from '@nuxtjs/composition-api'
 import { mapGetters } from 'vuex'
 import dayjs from 'dayjs'
 import { get } from 'lodash'
@@ -339,6 +339,7 @@ export default defineComponent({
   },
 
   setup (props, { emit }) {
+    const router = useRouter()
     const snotify = useSnotifyHelper()
     const store = useStore()
     const { reserveASpot, cancelSpotReservation } = usePlaydates({ store })
@@ -369,7 +370,10 @@ export default defineComponent({
 
     const actionPrimaryButton = () => {
       if (props.manangement) {
-        console.log('ver deatlle')
+        router.push({
+          name: 'admin-playdates-management-detail',
+          query: { id: playdate.value.id }
+        })
       } else {
         dialog.value = true
       }
