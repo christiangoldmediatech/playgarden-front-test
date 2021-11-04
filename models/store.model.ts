@@ -1,4 +1,5 @@
 import { Child, User } from '@/models'
+import { NotificationState } from '@/store/types'
 
 export interface TypedStore {
   auth: {
@@ -22,19 +23,5 @@ export interface TypedStore {
       previousLessonId: number | null
     }
   },
-  notifications: {
-    expiringRibbonHeightDesktop: number
-    expiringRibbonHeightMobile: number
-    isTrialExpiringRibbonVisible: boolean
-    isTrialExpiredModalVisible: boolean
-    isShippingModalVisible: boolean
-    notificationCard: {
-      isVisible: boolean,
-      title: string,
-      description: string,
-      image: string,
-      action: () => void | null,
-      actionText: string
-    }
-  }
+  notifications: NotificationState
 }
