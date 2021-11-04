@@ -1,4 +1,4 @@
-import { Entity, User } from '@/models'
+import { Child, Entity, User } from '@/models'
 
 export interface Playdate extends Entity {
   backpackImages: {
@@ -19,7 +19,7 @@ export interface Playdate extends Entity {
     id: number
     user: User
   },
-  playdatesChildrens?: []
+  playdatesChildrens?: Child[]
   spots: number
   start: string
   state: string

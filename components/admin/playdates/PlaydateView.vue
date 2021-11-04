@@ -111,7 +111,7 @@
                 </v-col>
                 <v-col no-guters cols="9">
                   <v-row v-if="playdate.playdatesChildrens.length > 0" no-gutters>
-                    <v-col v-for="item in playdate.playdatesChildrens" :key="item" cols="6">
+                    <v-col v-for="item in playdate.playdatesChildrens" :key="item.id" cols="6">
                       <div class="black--text my-1">
                         <v-avatar size="26">
                           <img
@@ -158,8 +158,8 @@ export default defineComponent({
       end: '',
       spots: 0,
       link: '',
-      playdatesChildrens: [],
-      specialistId: null
+      specialistId: null,
+      playdatesChildrens: []
     })
     const getDateText = computed(() => {
       return (playdate.value) ? `${playdate.value.day}, ${start.value} - ${end.value}` : ''
@@ -201,6 +201,8 @@ export default defineComponent({
       playdate.value.description = ''
       playdate.value.duration = 0
       playdate.value.link = ''
+      playdate.value.start = ''
+      playdate.value.end = ''
       playdate.value.spots = 0
       playdate.value.ages = ''
       playdate.value.playdatesChildrens = []
