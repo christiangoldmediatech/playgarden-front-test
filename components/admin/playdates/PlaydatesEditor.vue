@@ -301,25 +301,11 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref, useRouter, computed, useRoute } from '@nuxtjs/composition-api'
 import { useSnotifyHelper } from '@/composables'
+import { usePlaydates } from '@/composables/playdates'
 import dayjs from 'dayjs'
 import { mapActions, mapGetters } from 'vuex'
 import { formatDate } from '@/utils/dateTools'
-
-function generatePlayDateTemplate () {
-  return {
-    id: null,
-    name: '',
-    description: '',
-    duration: '',
-    day: null,
-    ages: null,
-    start: null,
-    end: null,
-    spots: null,
-    link: null,
-    specialistId: null
-  }
-}
+import { Playdate } from '@/models'
 
 export default defineComponent({
   name: 'PlaydatesEditor',
@@ -327,151 +313,118 @@ export default defineComponent({
   layout: 'admin',
 
   setup (_, { emit }) {
+    const route = useRoute()
+    const router = useRouter()
     const snotify = useSnotifyHelper()
     const loading = ref(true)
     const menuStart = ref(false)
     const menuEnd = ref(false)
     const id = ref<null|number>()
+    const specialistId = ref<null|number>()
     const timeStart = ref<null|string>()
     const timeEnd = ref<null|string>()
+    const ages = ['1', '2', '3', '4']
+    const days = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY']
+    const playdate = ref<Partial<Playdate>>({
+      name: '',
+      description: '',
+      duration: 0,
+      day: '',
+      ages: '',
+      start: '',
+      end: '',
+      spots: 0,
+      link: '',
+      specialistId: null
+    })
 
-    return {
-      id,
-      loading,
-      menuStart,
-      menuEnd,
-      timeStart,
-      timeEnd
-    }
-  },
+    const { createPlaydate, updatePlaydate, getPlaydatesById } = usePlaydates()
 
-  data: vm => ({
-    specialistId: vm.$route.query.specialistId
-      ? parseInt(vm.$route.query.specialistId)
-      : null,
-    time: null,
-    ages: ['1', '2', '3', '4'],
-    today: dayjs(new Date()).format('YYYY-MM-DD'),
-    days: [
-      'MONDAY',
-      'TUESDAY',
-      'WEDNESDAY',
-      'THURSDAY',
-      'FRIDAY',
-      'SATURDAY',
-      'SUNDAY'
-    ],
-    playdate: generatePlayDateTemplate()
-  }),
-
-  computed: {
-    ...mapGetters('auth', {
-      userInfo: 'getUserInfo'
-    }),
-
-    id () {
-      return this.$route.query.id ? parseInt(this.$route.query.id) : null
-    },
-
-    title () {
-      return this.id ? 'Edit Play date' : 'New Play date'
-    },
-
-    activityTypes () {
-      return this.types.map(type => ({
-        text: type.name,
-        value: type.id
-      }))
-    }
-  },
-
-  watch: {
-    'playdate.start' (val) {
-      this.timeStart = this.toLocalTime(val)
-    },
-    'playdate.end' (val) {
-      this.timeEnd = this.toLocalTime(val)
-    }
-  },
-
-  async created () {
-    const promises = []
-    this.loading = true
-    this.playdate.specialistId =
-      this.userInfo.role.name === 'SPECIALISTS'
-        ? this.userInfo.specialists.id
-        : this.specialistId
-    if (this.id) {
-      promises.push(this.getPlaydatesById(this.id))
-    }
-
-    const results = await Promise.all(promises)
-    if (results[0]) {
-      const data = results[0]
-      this.playdate.id = data.id
-      this.playdate.name = data.name
-      this.playdate.ages = data.ages
-      this.playdate.description = data.description
-      this.playdate.duration = data.duration
-      this.playdate.day = data.day
-      this.playdate.start = data.start
-      this.playdate.end = data.end
-      this.playdate.spots = data.spots
-      this.playdate.link = data.link
-      this.playdate.specialistId = data.specialistUser.id
-      this.specialistId = data.specialistUser.id
-    }
-  },
-
-  methods: {
-    ...mapActions('playdate', [
-      'createPlaydate',
-      'updatePlaydate',
-      'getPlaydatesById'
-    ]),
-
-    toLocalTime (time) {
+    const toLocalTime = (time: string) => {
       return formatDate(time, {
         format: 'HH:mm:ss',
         fromFormat: 'HH:mm:ss',
         fromUtc: true,
         returnObject: false
       })
-    },
+    }
+
+    const title = computed(() => {
+      return id.value ? 'Edit Play date' : 'New Play date'
+    })
+
+    const save = async () => {
+      loading.value = true
+      try {
+        playdate.value.start = formatDate(timeStart.value, {
+          format: 'HH:mm:ss',
+          fromFormat: 'HH:mm',
+          toUtc: true,
+          returnObject: false
+        }).toString()
+
+        playdate.value.end = formatDate(timeEnd.value, {
+          format: 'HH:mm:ss',
+          fromFormat: 'HH:mm',
+          toUtc: true,
+          returnObject: false
+        }).toString()
+
+        if (id.value) {
+          await updatePlaydate(id.value, playdate.value)
+          snotify.success('Playdate saved successfully.')
+        } else {
+          await createPlaydate(playdate.value)
+          snotify.success('Playdate updated successfully.')
+        }
+        // this.getUrlBack()
+      } catch (err) {
+        loading.value = false
+      }
+    }
+
+    onMounted(async () => {
+      if (route.value.query.id) {
+        id.value = Number(route.value.query.id)
+      }
+
+      if (route.value.query.specialistId) {
+        specialistId.value = Number(route.value.query.specialistId)
+      }
+
+      if (id.value) {
+        const data = await getPlaydatesById(id.value)
+        playdate.value = data
+        playdate.value.specialistId = data.specialistUser.id
+        if (playdate.value.start) {
+          timeStart.value = toLocalTime(playdate.value.start).toString()
+        }
+        if (playdate.value.end) {
+          timeEnd.value = toLocalTime(playdate.value.end).toString()
+        }
+      }
+    })
+
+    return {
+      id,
+      specialistId,
+      loading,
+      menuStart,
+      menuEnd,
+      timeStart,
+      timeEnd,
+      ages,
+      days,
+      playdate,
+      title,
+      save
+    }
+  },
+
+  methods: {
 
     getUrlBack () {
       this.$router.go(-1)
-    },
-
-    async save () {
-      this.loading = true
-      let id = this.id
-
-      try {
-        const playdate = this.playdate
-        playdate.start = formatDate(this.timeStart, {
-          format: 'HH:mm:ss',
-          fromFormat: 'HH:mm',
-          toUtc: true,
-          returnObject: false
-        })
-        playdate.end = formatDate(this.timeEnd, {
-          format: 'HH:mm:ss',
-          fromFormat: 'HH:mm',
-          toUtc: true,
-          returnObject: false
-        })
-
-        if (id === null) {
-          const response = await this.createPlaydate(playdate)
-          id = response.id
-        } else {
-          await this.updatePlaydate({ id, data: playdate })
-        }
-        this.getUrlBack()
-      } catch (err) {
-        this.loading = false
-      }
     }
   }
 })

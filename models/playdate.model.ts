@@ -14,11 +14,11 @@ export interface Playdate extends Entity {
   link: string
   name: string
   playdateType: string
-  specialistId?: number
+  specialistId?: number | null
   specialistUser: {
     id: number
   },
-  sports: number
+  spots: number
   start: string
   state: string
 }
