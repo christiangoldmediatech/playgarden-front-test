@@ -33,7 +33,6 @@ export function useStudentCubbyHelpers () {
   }
 
   function displayPlanUpgradeModal () {
-    // The mutation below doesn't exist at the time of writing this code. It is created in a parallel PR
     store.commit('notifications/SET_PLAN_UPGRADE_MODAL_VISIBILITY', true)
   }
 
