@@ -75,7 +75,7 @@ export default {
   props: {
     value: {
       type: [Array, Number, Object, String],
-      required: true
+      default: null
     },
 
     playdates: {
@@ -83,7 +83,10 @@ export default {
       default: () => []
     },
 
-    managementButton: Boolean
+    managementButton: {
+      type: Boolean,
+      default: false
+    }
   },
 
   computed: {

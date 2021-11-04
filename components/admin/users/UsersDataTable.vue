@@ -108,8 +108,9 @@
               :page.sync="page"
               :server-items-length="total"
               top-justify="space-between"
-              @search="onSearch"
-              @refresh="refresh(true)"
+              @search="handleSearch"
+              @search-text-cleared="handleSearchTextClearance"
+              @refresh="refetchUsersData"
               @update:items-per-page="setLimit"
               @update:page="page = $event"
               @edit-item="$router.push({
@@ -165,7 +166,6 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import PieChart from '@/components/echart/PieChart.vue'
-import onSearch from '@/mixins/OnSearchMixin.js'
 
 export default {
   name: 'UsersDataTable',
@@ -173,9 +173,6 @@ export default {
   components: {
     PieChart
   },
-
-  mixins: [onSearch],
-
   props: {
     showPanel: {
       type: Boolean,
@@ -202,7 +199,7 @@ export default {
   data () {
     return {
       loading: false,
-      search: '',
+      searchText: null,
       limit: 10,
       page: 1,
       allFilters: false,
@@ -297,11 +294,11 @@ export default {
 
   watch: {
     page () {
-      this.refresh()
+      this.refetchUsersData()
     },
 
     limit () {
-      this.refresh()
+      this.refetchUsersData()
     },
 
     activeFilters (val) {
@@ -320,7 +317,7 @@ export default {
   },
 
   mounted () {
-    this.refresh()
+    this.refetchUsersData()
   },
 
   methods: {
@@ -356,16 +353,22 @@ export default {
         this.limit = 0
       }
     },
+    handleSearch (searchText) {
+      this.searchText = searchText
+      this.refetchUsersData()
+    },
+    handleSearchTextClearance () {
+      this.searchText = null
+      this.refetchUsersData()
+    },
 
-    async refresh (clear = false) {
+    async refetchUsersData () {
       this.loading = true
       const params = { limit: this.limit, page: this.page }
 
-      if (clear) {
-        this.search = ''
-      } else {
+      if (this.searchText) {
         this.activeFilters.forEach((filter) => {
-          params[filter] = this.search
+          params[filter] = this.searchText
         })
       }
 
@@ -379,7 +382,7 @@ export default {
         message: `Are you sure you want to delete <b>${firstName} ${lastName}' (${email})</b>?`,
         action: async () => {
           await this.deleteUser(id)
-          this.refresh()
+          this.refetchUsersData()
         }
       })
     },

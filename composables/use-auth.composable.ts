@@ -93,7 +93,7 @@ export const useAuth = ({
   }
 
   const logout = (redirectOptions?: { route: string, redirect: (options: any) => void }) => {
-    const { currentChildren, resetCurrentChildren } = useChild({ store })
+    const { currentChildren, resetCurrentChildren } = useChild({ store, cookies })
     const { notificationCard, setNotificationCard, isTrialExpiringRibbonVisible, setIsTrialExpiringRibbonVisible } = useNotification({ store })
 
     resetState()

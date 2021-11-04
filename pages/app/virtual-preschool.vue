@@ -58,29 +58,46 @@
         />
       </v-col>
     </v-row>
+    <BirthdayVideoDialog />
   </v-main>
 </template>
 
 <script lang="ts">
+import {
+  computed,
+  defineComponent,
+  onMounted,
+  ref,
+  useRouter,
+  useStore
+} from '@nuxtjs/composition-api'
+
 import { useAuth } from '@/composables'
-import { TypedStore } from '@/models'
-import { defineComponent, onMounted, ref, useRouter, useStore } from '@nuxtjs/composition-api'
+import { TypedStore, Child } from '@/models'
+
+import BirthdayVideoDialog from '@/components/features/childBirthday/BirthdayVideoDialog.vue'
 import SectionImage from '@/components/app/virtual-preschool/SectionImage.vue'
 
 export default defineComponent({
-  layout: 'pg',
+  name: 'VirtualPreschoolPage',
 
   components: {
+    BirthdayVideoDialog,
     SectionImage
   },
+
+  layout: 'pg',
 
   setup () {
     const store = useStore<TypedStore>()
     const router = useRouter()
     const { accessToken } = useAuth({ store })
-    const baseRoute = process.env.testEnv === 'production' ? `${process.env.baseRouteProd}` : '/'
+    const baseRoute =
+      process.env.testEnv === 'production'
+        ? `${process.env.baseRouteProd}`
+        : '/'
 
-    const currentChildren = store.getters.getCurrentChild
+    const currentChild = computed((): Utils.Maybe<Child> => store.getters.getCurrentChild?.[0])
 
     const goToKidsCorner = () => {
       const kidsCornerUrl = process.env.kidsCornerUrl
@@ -124,7 +141,10 @@ export default defineComponent({
         imageUrl: require('@/assets/png/virtual-preschool/Cubby.png'),
         teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Ally_cubby.png'),
         title: 'Student Cubby',
-        route: { name: 'app-student-cubby-puzzle', query: { id: currentChildren[0].id } },
+        route: {
+          name: 'app-student-cubby-puzzle',
+          query: { id: currentChild.value?.id }
+        },
         message: 'Store your work and track progress in your cubby!',
         audio: `${baseRoute}audio/virtual-preschool/Cubby.m4a`
       },
@@ -150,6 +170,7 @@ export default defineComponent({
     type SectionItem = Section[keyof Section]
 
     const player = ref<HTMLAudioElement>()
+    const isBirthdayModalvisible = ref(false)
 
     onMounted(() => {
       player.value = new Audio()
@@ -170,6 +191,7 @@ export default defineComponent({
       if (typeof route === 'function') {
         route()
       } else {
+        // @ts-ignore
         router.push(route)
       }
     }
@@ -178,7 +200,8 @@ export default defineComponent({
       section,
       goToKidsCorner,
       handleAudioPlay,
-      handleClick
+      handleClick,
+      isBirthdayModalvisible
     }
   }
 })

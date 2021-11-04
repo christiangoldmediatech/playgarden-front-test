@@ -33,7 +33,7 @@
               </template>
 
               <template v-slot:no-data>
-                <v-btn color="primary" text @click="refresh">
+                <v-btn color="primary" text @click="refetchCouponsDataWithUsers">
                   Refresh
                 </v-btn>
               </template>
@@ -51,22 +51,16 @@
 
 <script>
 import { mapActions } from 'vuex'
-import onSearch from '@/mixins/OnSearchMixin.js'
 
 export default {
   name: 'CouponUsers',
-
   layout: 'admin',
-
   components: {},
-
-  mixins: [onSearch],
-
   data () {
     return {
       users: [],
       loading: false,
-      search: null,
+      searchText: null,
       page: 1,
       query: null,
       headers: [
@@ -107,13 +101,13 @@ export default {
   watch: {
     couponName () {
       if (!this.loading) {
-        this.refresh()
+        this.refetchCouponsDataWithUsers()
       }
     }
   },
 
   created () {
-    this.refresh()
+    this.refetchCouponsDataWithUsers()
   },
 
   methods: {
@@ -123,7 +117,7 @@ export default {
       this.$router.push({ name: 'admin-user-manager-profile', query: { id } })
     },
 
-    async refresh (clear = false) {
+    async refetchCouponsDataWithUsers () {
       this.loading = true
       this.query = { name: this.couponName }
 

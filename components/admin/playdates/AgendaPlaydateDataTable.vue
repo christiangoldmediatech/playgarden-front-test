@@ -46,8 +46,9 @@
               :page.sync="page"
               :server-items-length="total"
               top-justify="space-between"
-              @search="onSearch"
-              @refresh="refresh(true)"
+              @search="handleSearch"
+              @refresh="refetchPlayDates"
+              @search-text-cleared="handleSearchTextClearance"
               @update:items-per-page="setLimit"
               @update:page="page = $event"
               @edit-item="
@@ -68,7 +69,10 @@
 
               <template v-slot:[`top.prepend`]>
                 <v-col class="flex-shrink-1 flex-grow-0">
-                  <v-icon class="my-4 mx-0" color="accent">
+                  <v-icon
+                    class="my-4 mx-0"
+                    color="accent"
+                  >
                     mdi-tune
                   </v-icon>
                 </v-col>
@@ -95,22 +99,17 @@
 import dayjs from 'dayjs'
 import { mapActions, mapGetters } from 'vuex'
 import { formatDate } from '@/utils/dateTools'
-import onSearch from '@/mixins/OnSearchMixin.js'
 
 export default {
   name: 'AgendaPlaydateDataTable',
-
   components: {},
-
-  mixins: [onSearch],
-
   data: vm => ({
     specialistId: vm.$route.query.specialistId
       ? parseInt(vm.$route.query.specialistId)
       : null,
     loading: false,
     currentUserId: null,
-    search: '',
+    searchText: null,
     limit: 10,
     page: 1,
     action: true,
@@ -181,11 +180,11 @@ export default {
 
   watch: {
     page () {
-      this.refresh()
+      this.refetchPlayDates()
     },
 
     limit () {
-      this.refresh()
+      this.refetchPlayDates()
     },
 
     activeFilters (val) {
@@ -205,7 +204,9 @@ export default {
         ? this.userInfo.specialists.id
         : this.specialistId
   },
-
+  mounted () {
+    this.refetchPlayDates()
+  },
   methods: {
     ...mapActions('playdate', [
       'getPlaydates',
@@ -229,18 +230,23 @@ export default {
         returnObject: false
       })
     },
-
-    async refresh (clear = false) {
+    handleSearch (searchText) {
+      this.searchText = searchText
+      this.refetchPlayDates()
+    },
+    handleSearchTextClearance () {
+      this.searchText = null
+      this.refetchPlayDates()
+    },
+    async refetchPlayDates () {
       this.loading = true
 
-      if (this.clear) {
-        this.search = ''
-      }
+      const name = this.searchText
 
       const params = {
         limit: this.limit,
         page: this.page,
-        name: this.search
+        ...name && { name }
       }
       params.specialistId = this.specialistId
       await this.getPlaydates(params)
@@ -263,7 +269,7 @@ export default {
         message: `Are you sure you wish to delete '${name}' Play date?`,
         action: async () => {
           await this.deletePlaydate(id)
-          await this.refresh()
+          await this.refetchPlayDates()
         }
       })
     },
