@@ -334,8 +334,6 @@ import { Playdate, Specialist } from '@/models'
 export default defineComponent({
   name: 'PlaydatesEditor',
 
-  layout: 'admin',
-
   setup () {
     const route = useRoute()
     const router = useRouter()

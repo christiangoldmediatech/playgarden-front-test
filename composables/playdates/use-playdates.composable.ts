@@ -45,9 +45,10 @@ export const usePlaydates = () => {
     return await axios.$patch(`/playdates/${id}`, data)
   }
 
-  const deletePlayadte = async (id: number) => {
+  const deletePlaydate = async (id: number) => {
     return await axios.$delete(`/playdates/${id}`)
   }
+
   return {
     total,
     page,
@@ -60,6 +61,6 @@ export const usePlaydates = () => {
     getPlaydates,
     createPlaydate,
     updatePlaydate,
-    deletePlayadte
+    deletePlaydate
   }
 }

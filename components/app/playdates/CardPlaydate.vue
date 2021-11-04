@@ -89,7 +89,7 @@
                   color="accent"
                   data-test-id="card-playdate-open-button"
                   block
-                  @click="dialog = true"
+                  @click="actionPrimaryButton"
                 >
                   {{ hasSpotInThisPlaydate ? 'SEE DETAILS' : 'JOIN PLAYDATE' }}
                 </v-btn>
@@ -316,6 +316,12 @@ export default defineComponent({
       default: true
     },
 
+    manangement: {
+      type: Boolean,
+      default: false,
+      required: false
+    },
+
     playdate: {
       type: Object,
       required: true
@@ -339,6 +345,7 @@ export default defineComponent({
     const { children } = useChild({ store })
 
     const isLoadingSpotAction = ref(false)
+    const dialog = ref(false)
     const childId = ref(null)
     const playdate = computed(() => props.playdate)
 
@@ -351,12 +358,22 @@ export default defineComponent({
     })
 
     const hasSpotInThisPlaydate = computed(() => {
-      return Boolean(playdate.value?.backpackImages?.find(({ childrenId }) => {
-        return children.value.find(({ id }) => {
-          return id === childrenId
-        })
-      }))
+      return (props.manangement)
+        ? true
+        : Boolean(playdate.value?.backpackImages?.find(({ childrenId }) => {
+          return children.value.find(({ id }) => {
+            return id === childrenId
+          })
+        }))
     })
+
+    const actionPrimaryButton = () => {
+      if (props.manangement) {
+        console.log('ver deatlle')
+      } else {
+        dialog.value = true
+      }
+    }
 
     const handleReserveSpot = async () => {
       try {
@@ -393,6 +410,8 @@ export default defineComponent({
     return {
       child,
       childId,
+      dialog,
+      actionPrimaryButton,
       handleCancelSpot,
       handleReserveSpot,
       hasSpotInThisPlaydate,
@@ -401,7 +420,6 @@ export default defineComponent({
   },
 
   data: () => ({
-    dialog: false,
     name: null,
     backpack: null,
     today: new Date().getUTCDay(),
