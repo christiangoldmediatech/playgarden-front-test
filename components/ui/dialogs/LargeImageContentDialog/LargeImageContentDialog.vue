@@ -1,6 +1,6 @@
 <template>
   <pg-dialog persistent :fullscreen="isMobile" :value="value" max-width="1400px">
-    <v-card :class="{ 'border-16': !isMobile }">
+    <v-card :class="{ 'border-16': !isMobile }" class="overflow-hidden">
       <v-progress-linear :active="loading" indeterminate height="12px" data-test-id="progress-linear" />
 
       <v-row no-gutters>
