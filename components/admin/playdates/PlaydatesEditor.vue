@@ -261,7 +261,7 @@
                         <validation-provider
                           v-slot="{ errors }"
                           name="Link"
-                          rules="required"
+                          rules="required|url"
                         >
                           <pg-text-field
                             v-model="playdate.link"
@@ -302,8 +302,6 @@
 import { defineComponent, onMounted, ref, useRouter, computed, useRoute } from '@nuxtjs/composition-api'
 import { useSnotifyHelper } from '@/composables'
 import { usePlaydates } from '@/composables/playdates'
-import dayjs from 'dayjs'
-import { mapActions, mapGetters } from 'vuex'
 import { formatDate } from '@/utils/dateTools'
 import { Playdate } from '@/models'
 
@@ -353,6 +351,10 @@ export default defineComponent({
       return id.value ? 'Edit Play date' : 'New Play date'
     })
 
+    const backUrl = () => {
+      router.go(-1)
+    }
+
     const save = async () => {
       loading.value = true
       try {
@@ -377,7 +379,7 @@ export default defineComponent({
           await createPlaydate(playdate.value)
           snotify.success('Playdate updated successfully.')
         }
-        // this.getUrlBack()
+        backUrl()
       } catch (err) {
         loading.value = false
       }
@@ -390,6 +392,7 @@ export default defineComponent({
 
       if (route.value.query.specialistId) {
         specialistId.value = Number(route.value.query.specialistId)
+        playdate.value.specialistId = specialistId.value
       }
 
       if (id.value) {
