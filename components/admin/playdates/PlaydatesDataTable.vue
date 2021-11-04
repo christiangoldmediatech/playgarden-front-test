@@ -5,6 +5,26 @@
         <v-card width="100%">
           <v-card-title>
             Playdates Management
+            <v-spacer />
+
+            <v-btn
+              class="mr-2 text-none"
+              color="primary darken-1"
+              dark
+              :icon="$vuetify.breakpoint.xs"
+              :to="{ name: 'admin-playdates-management-editor' }"
+            >
+              <v-icon class="hidden-sm-and-up">
+                mdi-plus-circle
+              </v-icon>
+
+              <v-icon class="hidden-xs-only" small>
+                mdi-plus
+              </v-icon>
+              <span class="hidden-xs-only white--text">
+                Add new Playdate
+              </span>
+            </v-btn>
           </v-card-title>
 
           <v-card-text>
