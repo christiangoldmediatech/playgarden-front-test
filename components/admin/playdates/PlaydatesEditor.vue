@@ -166,6 +166,32 @@
                         </v-menu>
                       </v-col>
                     </v-row>
+                    <v-row>
+                      <v-col class="text-md-right" cols="12" sm="3">
+                        <span class="subheader">Specialist:</span>
+                      </v-col>
+
+                      <v-col>
+                        <validation-provider
+                          v-slot="{ errors }"
+                          name="Specialist"
+                          rules="required"
+                        >
+                          <pg-select
+                            v-model="playdate.specialistId"
+                            clearable
+                            class="mt-4"
+                            :disabled="specialistId"
+                            :error-messages="errors"
+                            :items="specialistList"
+                            item-text="name"
+                            item-value="value"
+                            label="Specialty"
+                            solo-labeled
+                          />
+                        </validation-provider>
+                      </v-col>
+                    </v-row>
                   </v-col>
                   <!-- END COL1 -->
                   <!-- COL2-->
@@ -303,14 +329,14 @@ import { defineComponent, onMounted, ref, useRouter, computed, useRoute } from '
 import { useSnotifyHelper } from '@/composables'
 import { usePlaydates } from '@/composables/playdates'
 import { formatDate } from '@/utils/dateTools'
-import { Playdate } from '@/models'
+import { Playdate, Specialist } from '@/models'
 
 export default defineComponent({
   name: 'PlaydatesEditor',
 
   layout: 'admin',
 
-  setup (_, { emit }) {
+  setup () {
     const route = useRoute()
     const router = useRouter()
     const snotify = useSnotifyHelper()
@@ -323,6 +349,7 @@ export default defineComponent({
     const timeEnd = ref<null|string>()
     const ages = ['1', '2', '3', '4']
     const days = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY']
+    const specialists = ref<Specialist[]>([])
     const playdate = ref<Partial<Playdate>>({
       name: '',
       description: '',
@@ -336,7 +363,7 @@ export default defineComponent({
       specialistId: null
     })
 
-    const { createPlaydate, updatePlaydate, getPlaydatesById } = usePlaydates()
+    const { createPlaydate, updatePlaydate, getPlaydatesById, getSpecialist } = usePlaydates()
 
     const toLocalTime = (time: string) => {
       return formatDate(time, {
@@ -349,6 +376,10 @@ export default defineComponent({
 
     const title = computed(() => {
       return id.value ? 'Edit Play date' : 'New Play date'
+    })
+
+    const specialistList = computed(() => {
+      return specialists.value.map(item => ({ name: `${item.user.firstName} ${item.user.lastName}`, value: item.id }))
     })
 
     const backUrl = () => {
@@ -386,6 +417,7 @@ export default defineComponent({
     }
 
     onMounted(async () => {
+      specialists.value = await getSpecialist()
       if (route.value.query.id) {
         id.value = Number(route.value.query.id)
       }
@@ -420,6 +452,7 @@ export default defineComponent({
       days,
       playdate,
       title,
+      specialistList,
       save
     }
   },
