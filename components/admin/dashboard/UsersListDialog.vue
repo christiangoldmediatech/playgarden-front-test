@@ -113,16 +113,14 @@ export default {
       this.params = {
         planId: 1,
         testUser: false,
-        status: (this.name === 'Active') ? 1 : 0,
-        stripeStatus: ['active', 'past_due', 'unpaid', 'canceled', 'incomplete', 'incomplete_expired', 'all', 'ended']
+        stripeStatus: [this.name.toLowerCase()]
       }
     },
 
     buildQueryParamsPremiumEarlyEducationOnline () {
       this.params = {
         planId: 2,
-        status: (this.name === 'Active') ? 1 : 0,
-        stripeStatus: ['active', 'past_due', 'unpaid', 'canceled', 'incomplete', 'incomplete_expired', 'all', 'ended'],
+        stripeStatus: [this.name.toLowerCase()],
         testUser: false
       }
     },
@@ -130,8 +128,7 @@ export default {
     buildQueryParamsHomeschool () {
       this.params = {
         planId: 3,
-        status: (this.name === 'Active') ? 1 : 0,
-        stripeStatus: ['active', 'past_due', 'unpaid', 'canceled', 'incomplete', 'incomplete_expired', 'all', 'ended'],
+        stripeStatus: [this.name.toLowerCase()],
         testUser: false
       }
     },
@@ -271,6 +268,8 @@ export default {
       const { name, seriesName } = item
       this.name = name
       this.seriesName = seriesName
+      console.log('name--', this.name)
+      console.log('seriesName--', this.seriesName)
       if (name.split('-').length > 1) {
         this.name = seriesName
         this.seriesName = 'lineStack'
