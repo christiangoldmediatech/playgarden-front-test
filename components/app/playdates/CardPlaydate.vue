@@ -57,7 +57,7 @@
 
           <!-- SPOTS -->
           <div class="caption mt-3">
-            Spots:
+            Spots Available:
 
             <v-row
               justify="start"
@@ -74,7 +74,7 @@
               />
 
               <span class="ml-1 mt-2">
-                {{ backpackImages.length }}/{{ playdate.spots }}
+                {{ playdate.spots - backpackImages.length }}/{{ playdate.spots }}
               </span>
             </v-row>
           </div>
