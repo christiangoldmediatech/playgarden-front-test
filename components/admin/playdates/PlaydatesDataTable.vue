@@ -5,6 +5,26 @@
         <v-card width="100%">
           <v-card-title>
             Playdates Management
+            <v-spacer />
+
+            <v-btn
+              class="mr-2 text-none"
+              color="primary darken-1"
+              dark
+              :icon="$vuetify.breakpoint.xs"
+              :to="{ name: 'admin-playdates-management-editor' }"
+            >
+              <v-icon class="hidden-sm-and-up">
+                mdi-plus-circle
+              </v-icon>
+
+              <v-icon class="hidden-xs-only" small>
+                mdi-plus
+              </v-icon>
+              <span class="hidden-xs-only white--text">
+                Add new Playdate
+              </span>
+            </v-btn>
           </v-card-title>
 
           <v-card-text>
@@ -14,7 +34,7 @@
       </v-col>
     </v-row>
 
-    <v-row>
+    <v-row v-if="showList">
       <v-col cols="12">
         <v-card width="100%">
           <v-card-text>
@@ -58,18 +78,25 @@
         </v-card>
       </v-col>
     </v-row>
+    <v-row v-else>
+      <v-col cols="12">
+        <v-card width="100%">
+          <playdates-list />
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch, computed, useRoute } from '@nuxtjs/composition-api'
+import PlaydatesList from '@/components/admin/playdates/PlaydatesList.vue'
 import { usePlaydates } from '@/composables/playdates'
-import { mapActions, mapGetters, mapState } from 'vuex'
 import paginable from '@/utils/mixins/paginable'
-import { PlaydatesResponse, Playdate } from '@/models'
 
 export default defineComponent({
   name: 'PlaydatesDataTable',
+  components: { PlaydatesList },
   mixins: [paginable],
   data: () => ({
     headers: [
@@ -105,9 +132,10 @@ export default defineComponent({
 
   setup (_, { emit }) {
     const loading = ref<Boolean>(false)
+    const showList = ref<Boolean>(false)
     const searchText = ref<string | null>(null)
     const selectedStatus = ref<string | null>(null)
-    const { page, total, limit, playdates, states, getPlaydates, deletePlayadte } = usePlaydates()
+    const { page, total, limit, playdates, states, getPlaydates, deletePlaydate } = usePlaydates()
 
     const fetchPlaydates = async (params: any) => {
       await getPlaydates(params)
@@ -160,8 +188,9 @@ export default defineComponent({
       states,
       selectedStatus,
       loading,
+      showList,
       fetchPlaydates,
-      deletePlayadte,
+      deletePlaydate,
       refetchPlayDates,
       handleSearch,
       handleSearchTextClearance
@@ -173,7 +202,7 @@ export default defineComponent({
       this.$nuxt.$emit('open-prompt', {
         title: 'Delete playdate?',
         message: `Are you sure you want to delete <b>${name}</b>?`,
-        action: () => this.deletePlayadte(id).then(this.refetchPlayDates)
+        action: () => this.deletePlaydate(id).then(this.refetchPlayDates)
       })
     }
   }
