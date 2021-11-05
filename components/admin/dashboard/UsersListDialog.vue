@@ -268,8 +268,6 @@ export default {
       const { name, seriesName } = item
       this.name = name
       this.seriesName = seriesName
-      console.log('name--', this.name)
-      console.log('seriesName--', this.seriesName)
       if (name.split('-').length > 1) {
         this.name = seriesName
         this.seriesName = 'lineStack'
