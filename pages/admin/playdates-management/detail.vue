@@ -1,18 +1,15 @@
 <template>
-  <playdates-editor />
+  <playdate-view />
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
-import PlaydatesEditor from '~/components/admin/playdates/PlaydatesEditor.vue'
-
+import PlaydateView from '~/components/admin/playdates/PlaydateView.vue'
 export default defineComponent({
-  name: 'Editor',
-
+  name: 'Detail',
   layout: 'admin',
-
   components: {
-    PlaydatesEditor
+    PlaydateView
   }
 })
 </script>
