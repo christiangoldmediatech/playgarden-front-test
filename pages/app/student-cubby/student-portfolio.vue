@@ -92,7 +92,7 @@ import { computed, defineComponent, ref, useRoute, useRouter, useStore, watch } 
 import { useChild, useChildRoute, useOfflineWorksheet, useSnotifyHelper } from '@/composables'
 import { OfflineWorksheet, TypedStore } from '@/models'
 import StudyCubbyItemHeader, { StudentCubbyItemHeaderProps } from '@/components/app/student-cubby/StudyCubbyItemHeader.vue'
-import { useStudentCubbyHelpers } from '@/components/app/student-cubby/composables'
+import { useStudentCubbyHelpers } from '~/components/app/student-cubby/composables'
 import type { StudentChubbyItemText } from '@/components/app/student-cubby/types'
 
 const itemText: StudentChubbyItemText = 'PORTFOLIO'

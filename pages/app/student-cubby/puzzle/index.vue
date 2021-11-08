@@ -121,7 +121,7 @@ import { useChild, useChildRoute } from '@/composables'
 import { PuzzleResponse, TypedStore, Child } from '@/models'
 import StudyCubbyItemHeader, { StudentCubbyItemHeaderProps } from '@/components/app/student-cubby/StudyCubbyItemHeader.vue'
 import { StudentChubbyItemText } from '@/components/app/student-cubby/types'
-import { useStudentCubbyHelpers } from '@/components/app/student-cubby/composables'
+import { useStudentCubbyHelpers } from '~/components/app/student-cubby/composables'
 
 const itemText: StudentChubbyItemText = 'PUZZLE'
 

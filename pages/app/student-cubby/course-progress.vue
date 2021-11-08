@@ -30,8 +30,8 @@ import { defineComponent, onBeforeUnmount, ref, useRoute, useRouter, useStore, w
 import { useChildCourseProgress, useChildRoute, useNuxtHelper } from '@/composables'
 import { ChildProgress, TypedStore } from '@/models'
 import { StudentChubbyItemText } from '@/components/app/student-cubby/types'
-import { useStudentCubbyHelpers } from '@/components/app/student-cubby/composables'
 import StudyCubbyItemHeader, { StudentCubbyItemHeaderProps } from '@/components/app/student-cubby/StudyCubbyItemHeader.vue'
+import { useStudentCubbyHelpers } from '@/components/app/student-cubby/composables'
 
 const itemText: StudentChubbyItemText = 'CURRICULUM'
 

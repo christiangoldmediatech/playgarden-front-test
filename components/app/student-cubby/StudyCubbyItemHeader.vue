@@ -23,8 +23,9 @@
 
 <script lang="ts">
 import { defineComponent, computed, PropType } from '@nuxtjs/composition-api'
-import { useStudentCubbyHelpers } from './composables'
 import { StudentCubbyItem } from './types'
+import { useStudentCubbyHelpers } from './composables'
+import { usePlanAccessHelpers } from '~/composables'
 
 export interface StudentCubbyItemHeaderProps {
   studentCubbyItem: StudentCubbyItem | undefined
@@ -42,7 +43,8 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const { isItemUnAvailableForCurrentUser, getItemDescription } = useStudentCubbyHelpers()
+    const { isItemUnAvailableForCurrentUser } = usePlanAccessHelpers()
+    const { getItemDescription } = useStudentCubbyHelpers()
 
     const itemText = computed(() => props.studentCubbyItem?.text)
     const isItemUnavailable = computed(() => isItemUnAvailableForCurrentUser(itemText.value))

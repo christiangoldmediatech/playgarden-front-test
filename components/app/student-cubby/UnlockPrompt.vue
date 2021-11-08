@@ -37,8 +37,9 @@
 
 <script lang="ts">
 import { defineComponent, PropType, computed } from '@nuxtjs/composition-api'
-import { useStudentCubbyHelpers } from './composables'
 import StudyCubbyItemHeader, { StudentCubbyItemHeaderProps } from './StudyCubbyItemHeader.vue'
+import { useStudentCubbyHelpers } from './composables'
+import { usePlanAccessHelpers } from '~/composables'
 import type { StudentCubbyItem } from './types'
 
 export interface UnlockPromptProps {
@@ -56,7 +57,8 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const { getItemDescription, displayPlanUpgradeModal } = useStudentCubbyHelpers()
+    const { getItemDescription } = useStudentCubbyHelpers()
+    const { displayPlanUpgradeModal } = usePlanAccessHelpers()
 
     const studentChubbyItemHeaderProps = computed((): StudentCubbyItemHeaderProps => {
       return {

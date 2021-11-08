@@ -98,7 +98,7 @@ import { studentCubbyItems } from '@/components/app/student-cubby/constants'
 import ChildSelect from '@/components/app/ChildSelect.vue'
 import { TypedStore } from '@/models'
 import { useChildRoute, useVuetifyHelper } from '@/composables'
-import { useStudentCubbyHelpers } from '@/components/app/student-cubby/composables'
+import { usePlanAccessHelpers } from '~/composables'
 
 export default defineComponent({
   name: 'StudentCubby',
@@ -115,7 +115,7 @@ export default defineComponent({
     const store = useStore<TypedStore>()
     const vuetify = useVuetifyHelper()
     const { childId } = useChildRoute({ store, route, router, shouldRedirect: true })
-    const { isItemUnAvailableForCurrentUser } = useStudentCubbyHelpers()
+    const { isItemUnAvailableForCurrentUser } = usePlanAccessHelpers()
 
     const selectedCubbyItem = computed(() => {
       return studentCubbyItems.find(item => route.value.name?.includes(item.routeName)) || null
