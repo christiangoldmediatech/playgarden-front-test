@@ -10,36 +10,16 @@
           class="mt-4 px-2 px-md-4"
         />
       </v-container>
-      <section class="unlockBadge">
-        <div class="circle ring-1" />
-        <div class="circle ring-2" />
-        <div class="circle core d-flex flex-column align-center justify-center">
-          <v-icon
-            color="grey darken-3"
-            size="65px"
-          >
-            mdi-lock-outline
-          </v-icon>
-          <div class="pg-grey--text my-2 fw-700">
-            To unlock
-          </div>
-          <div
-            class="accent--text fw-700 text-decoration-underline cursor-pointer"
-            @click="handleUpgradeRequest"
-          >
-            Upgrade your Plan
-          </div>
-        </div>
-      </section>
+      <PlanUpgradePrompt />
     </main>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType, computed } from '@nuxtjs/composition-api'
+import PlanUpgradePrompt from '@/components/app/payment/PlanUpgradePrompt.vue'
 import StudyCubbyItemHeader, { StudentCubbyItemHeaderProps } from './StudyCubbyItemHeader.vue'
 import { useStudentCubbyHelpers } from './composables'
-import { usePlanAccessHelpers } from '~/composables'
 import type { StudentCubbyItem } from './types'
 
 export interface UnlockPromptProps {
@@ -49,7 +29,8 @@ export interface UnlockPromptProps {
 export default defineComponent({
   name: 'UnlockPrompt',
   components: {
-    StudyCubbyItemHeader
+    StudyCubbyItemHeader,
+    PlanUpgradePrompt
   },
   props: {
     blockedItem: {
@@ -58,7 +39,6 @@ export default defineComponent({
   },
   setup(props) {
     const { getItemDescription } = useStudentCubbyHelpers()
-    const { displayPlanUpgradeModal } = usePlanAccessHelpers()
 
     const studentChubbyItemHeaderProps = computed((): StudentCubbyItemHeaderProps => {
       return {
@@ -73,27 +53,16 @@ export default defineComponent({
       return imageName ? require(`@/assets/png/student-cubby/${imageName}`) : null
     })
 
-    function handleUpgradeRequest() {
-      displayPlanUpgradeModal()
-    }
-
     return {
       imagePath,
       itemDescription,
-      studentChubbyItemHeaderProps,
-      handleUpgradeRequest
+      studentChubbyItemHeaderProps
     }
   }
 })
 </script>
 
 <style lang="scss" scoped>
-$outerCircleSize: 250px;
-$circleSizeDifference: 20px;
-
-$ring2Size: calc(#{$outerCircleSize} - #{$circleSizeDifference});
-$coreSize: calc(#{$outerCircleSize} - 2 * #{$circleSizeDifference});
-
 .overlay {
   position: absolute;
   top: 0;
@@ -111,37 +80,5 @@ $coreSize: calc(#{$outerCircleSize} - 2 * #{$circleSizeDifference});
   z-index: 7;
   background-color: #80808000;
   color: white;
-}
-
-.unlockBadge {
-  position: relative;
-}
-
-.circle {
-  width: $outerCircleSize;
-  height: $outerCircleSize;
-  border-radius: 50%;
-  position: absolute;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-}
-
-.ring-1 {
-  background-color: var(--v-primary-base);
-}
-
-.ring-2 {
-  top: calc(#{$circleSizeDifference} / 2);
-  width: $ring2Size;
-  height: $ring2Size;
-  background-color: var(--v-secondary-base);
-}
-
-.core {
-  top: $circleSizeDifference;
-  width: $coreSize;
-  height: $coreSize;
-  background-color: white;
 }
 </style>

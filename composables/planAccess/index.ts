@@ -17,6 +17,8 @@ export function usePlanAccessHelpers () {
 
   const currrenPlanId = computed(() => userInfo.value?.planSelected.id)
 
+  const isCurrentLessonUnavailableInPlan = computed(() => store.state.children.lesson.isCurrentLessonUnavailableInPlan)
+
   function isItemUnAvailableForCurrentUser (itemText: StudentChubbyItemText | undefined) {
     if (!currrenPlanId.value || !itemText) { return false }
     return studentCubbyItems.find(item => item.title === itemText)?.blockedPlanIds.includes(currrenPlanId.value)
@@ -30,6 +32,6 @@ export function usePlanAccessHelpers () {
     isItemUnAvailableForCurrentUser,
     currentChild,
     displayPlanUpgradeModal,
-    currrenPlanId
+    isCurrentLessonUnavailableInPlan
   }
 }

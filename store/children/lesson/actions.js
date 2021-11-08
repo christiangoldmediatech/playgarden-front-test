@@ -34,6 +34,10 @@ export default {
       if (data && data.errorCode === 100) {
         return Promise.reject(data)
       }
+      if (data && data.errorCode === 110) {
+        commit('SET_CURRENT_LESSON_UNAVAILABILITY_FOR_PLAN', true)
+        return Promise.reject(data)
+      }
       return Promise.reject(e)
     }
   },
