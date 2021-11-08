@@ -22,7 +22,7 @@
       <trial-ending-week-two-modal />
       <trial-ending-week-three-modal />
       <trial-ending-week-four-modal />
-      <PlanUpgradeModal />
+      <PlanUpgradeModal v-if="isUserLoggedIn" />
       <TrialEndingModalForLastDay :downward-displacement="topDistanceInPixels" />
       <trial-ending-plan-selected />
 

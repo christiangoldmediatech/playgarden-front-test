@@ -82,11 +82,11 @@ export default {
     children () {
       const result = jsonCopy(this.rows)
 
-      result.push({
+      /* result.push({
         id: null,
         firstName: 'Everyone',
         everyone: true
-      })
+      }) */
 
       return result
     }
@@ -96,7 +96,7 @@ export default {
     await this.getChildren()
 
     // NOTE: "everyone" count as one child here
-    if (this.children.length === 2) {
+    if (this.children.length === 1) {
       this.selectChild(this.children[0])
     }
   },
