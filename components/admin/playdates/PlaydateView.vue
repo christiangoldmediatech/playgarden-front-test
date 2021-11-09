@@ -77,7 +77,7 @@
                   <label class="label-playdate">Day</label>
                 </v-col>
                 <v-col cols="8">
-                  <label class="font-weight-bold grey--text text--darken-2">Day</label>
+                  <label class="font-weight-bold grey--text text--darken-2">{{ playdate.day }}</label>
                 </v-col>
               </v-row>
               <v-row>
