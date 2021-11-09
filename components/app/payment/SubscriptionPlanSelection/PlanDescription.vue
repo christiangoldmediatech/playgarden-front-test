@@ -29,8 +29,8 @@
 
       <!-- Promotions -->
       <template v-if="showPromotions && hasPromotions(plan.homeDeliveryBenefits.promotions)">
-        <div class="promotion-ribbon pa-3 ml-n14 ml-md-n8 mr-3 my-6 text-center">
-          <span class="font-weight-bold body-2 accent--text">* Join now and you will get this benefits:</span>
+        <div class="promotion-ribbon pa-3 mx-n16 mr-3 my-6 text-center">
+          <span class="font-weight-bold">* Join now and you will get this benefits:</span>
         </div>
         <ul class="plan-detail">
           <li
@@ -44,6 +44,24 @@
           </li>
         </ul>
       </template>
+    </template>
+
+    <!-- Introductory Promotions -->
+    <template v-if="showPromotions && Boolean(promotions.length)">
+      <div class="promotion-ribbon pa-3 mx-n16 my-6 text-center">
+        <span class="font-weight-bold">**Introductory Promotion**</span>
+      </div>
+      <ul class="plan-detail">
+        <li
+          v-for="(benefit, indexHDBP) in promotions"
+          :key="`introductory-promotion-${indexHDBP}`"
+          class="plan-item"
+        >
+          <span>
+            {{ benefit }}
+          </span>
+        </li>
+      </ul>
     </template>
 
     <!-- Plus Benefits -->
@@ -79,8 +97,8 @@ export default {
   },
 
   computed: {
-    getCommonBenefits () {
-      return this.plan.commonBenefits.benefits.slice(0, 1)
+    promotions () {
+      return this.plan.commonBenefits.promotions || []
     }
   },
 
@@ -142,6 +160,8 @@ ul li::before {
   }
 }
 .promotion-ribbon {
-  background: rgba(248, 152, 56, 0.3);
+  font-size: 24px;
+  color: var(--v-accent-base);
+  background: rgba(255, 171, 55, 0.2);
 }
 </style>
