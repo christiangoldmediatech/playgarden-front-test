@@ -57,7 +57,7 @@
               </p>
               <div @click="usersFilters('Active')">
                 <div class="text-center">
-                  <label class="display-3 font-weight-bold total-users cursor">{{ dataMetrics.averageStartedVideoPerDay }}</label>
+                  <label class="display-3 font-weight-bold total-users cursor">{{ dataMetrics.avgTimeToComplete }}</label>
                 </div>
               </div>
             </v-col>
