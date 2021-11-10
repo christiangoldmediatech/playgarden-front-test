@@ -11,6 +11,7 @@
         :style="customDialogStyle"
       >
         <v-btn
+          v-if="canDismissModal"
           icon
           class="btn-close"
           dark
@@ -143,6 +144,12 @@ export default defineComponent({
       return dayjs(userInfo.value?.trialEnd).isToday()
     })
 
+    // The user can not dismiss the modal 5 days past the user's trial_end date.
+    const canDismissModal = computed(() => {
+      if (!userInfo.value?.trialEnd) { return false }
+      return dayjs(userInfo.value?.trialEnd).add(5, 'd').isAfter(dayjs())
+    })
+
     const isModalVisible: WritableComputedRef<boolean> = computed({
       get (): boolean {
         return !isCurrenltyInSilentWindow.value && isUserInLastDayOfTrial.value && IS_MODAL_ENABLED
@@ -208,6 +215,7 @@ export default defineComponent({
     }
 
     return {
+      canDismissModal,
       formattedTrialExpiryDate,
       isModalVisible,
       handleRequestToContact,
