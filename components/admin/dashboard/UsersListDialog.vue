@@ -113,16 +113,14 @@ export default {
       this.params = {
         planId: 1,
         testUser: false,
-        status: (this.name === 'Active') ? 1 : 0,
-        stripeStatus: ['active', 'past_due', 'unpaid', 'canceled', 'incomplete', 'incomplete_expired', 'all', 'ended']
+        stripeStatus: [this.name.toLowerCase()]
       }
     },
 
     buildQueryParamsPremiumEarlyEducationOnline () {
       this.params = {
         planId: 2,
-        status: (this.name === 'Active') ? 1 : 0,
-        stripeStatus: ['active', 'past_due', 'unpaid', 'canceled', 'incomplete', 'incomplete_expired', 'all', 'ended'],
+        stripeStatus: [this.name.toLowerCase()],
         testUser: false
       }
     },
@@ -130,8 +128,7 @@ export default {
     buildQueryParamsHomeschool () {
       this.params = {
         planId: 3,
-        status: (this.name === 'Active') ? 1 : 0,
-        stripeStatus: ['active', 'past_due', 'unpaid', 'canceled', 'incomplete', 'incomplete_expired', 'all', 'ended'],
+        stripeStatus: [this.name.toLowerCase()],
         testUser: false
       }
     },

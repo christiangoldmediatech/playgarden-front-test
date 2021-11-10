@@ -30,6 +30,9 @@ export default {
   SET_IS_TRIAL_ENDING_WEEK_FOUR_MODAL_VISIBLE (state, bool) {
     state.isTrialEndingWeekFourModalVisible = bool
   },
+  SET_PLAN_UPGRADE_MODAL_VISIBILITY (state, bool) {
+    state.isPlanUpgradeModalVisible = bool
+  },
   SET_IS_TRIAL_ENDING_PLAN_SELECTED_MODAL_VISIBLE (state, bool) {
     state.isTrialEndingPlanSelectedModalVisible = bool
   }

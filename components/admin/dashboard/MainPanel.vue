@@ -149,7 +149,7 @@
               v-for="(plan, i) in planActiveInactive"
               :key="`plan-item-${i}`"
               cols="12"
-              md="3"
+              md="4"
             >
               <v-card class="content-dashboard">
                 <v-card-text>

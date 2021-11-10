@@ -280,7 +280,7 @@ export default {
     dropBoxApiKey: process.env.DROPBOX_API_KEY || '',
     baseRouteProd,
     googlePlacesAPI: process.env.GOOGLE_PLACES_API_KEY || 'AIzaSyDh0lrueon0BEux1pIuT40ivuEI92qJr3o',
-    kidsCornerUrl: process.env.KIDS_CORNER_URL || 'http://localhost:3000'
+    kidsCornerUrl: process.env.KIDS_CORNER_URL || 'http://localhost:8081'
   },
   router: {
     base: process.env.TEST_ENV === 'production' ? baseRouteProd : '/',

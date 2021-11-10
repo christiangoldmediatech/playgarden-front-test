@@ -1,38 +1,9 @@
 <template>
   <v-col class="fill-height">
     <!-- ACTIVE PLAYDATES -->
-    <div v-if="isPayingUser">
+    <div>
       <v-row align="center" class="fill-height" justify="space-between" no-gutters>
-        <!-- HEADER -->
-        <v-col cols="12" md="auto" class="flex-grow-1" order="2" order-md="1">
-          <underlined-title
-            text="Educational Playdates"
-            font-size="36px"
-            font-size-mobile="24px"
-          />
-        </v-col>
-
-        <!-- BUTTON -->
-        <v-col cols="12" md="auto" class="flex-shrink-1 text-right py-6 py-md-0" order="1" order-md="2">
-          <v-btn
-            :to="{ name: 'app-playdates-my-playdates' }"
-            :small="isMobile"
-            color="accent"
-            nuxt
-            class="!pg-shadow-button"
-          >
-            MY PLAYDATES
-          </v-btn>
-        </v-col>
-
         <v-col cols="12" order="3">
-          <!-- PAGE DESCRIPTION -->
-          <p class="text-body-2 text-md-body-1 py-4">
-            Join your friends and socialize at a Playgarden Prep Online Playdate!
-            These 30 minute Zoom sessions are designed to give children the opportunity to connect with peers while learning under the guidance of a Playgarden Prep instructor.
-            You can sign up for up to one Playdate per week; make sure to sign up for the same weekly Playdate, so that you can see your friends every week!
-          </p>
-
           <!-- WEEK NAVIGATOR -->
           <div class="d-flex justify-center align-center">
             <!-- PREVIOUS WEEK BUTTON -->
@@ -68,6 +39,7 @@
             <v-col v-for="playdate in playdates" :key="playdate.id" cols="12" md="6">
               <card-playdate
                 :playdate="playdate"
+                :manangement="true"
                 :is-in-a-playdate="isInAPlaydate"
                 @spot-reserved="fetchPlaydatesForDate"
                 @spot-canceled="fetchPlaydatesForDate"
@@ -77,9 +49,6 @@
         </v-col>
       </v-row>
     </div>
-
-    <!-- PAYWALL -->
-    <paywall v-else />
   </v-col>
 </template>
 
@@ -90,10 +59,9 @@ import { Playdate, TypedStore } from '@/models'
 import CardPlaydate from '@/components/app/playdates/CardPlaydate.vue'
 import { useChild, usePlaydates, useVuetifyHelper } from '@/composables'
 import dayjs from 'dayjs'
-import { onMounted } from '@vue/composition-api'
 
 export default defineComponent({
-  name: 'Index',
+  name: 'PlaydatesList',
 
   components: {
     CardPlaydate,
@@ -161,20 +129,14 @@ export default defineComponent({
     }
 
     const fetchPlaydatesForDate = async () => {
-      if (isPayingUser.value) {
-        loading.value = true
-        playdates.value = await getPlaydateForDate({ date: currentPlaydateDate.value })
-        loading.value = false
-      }
+      loading.value = true
+      playdates.value = await getPlaydateForDate({ date: currentPlaydateDate.value })
+      loading.value = false
     }
 
     watch(currentPlaydateIndex, async () => {
       await fetchPlaydatesForDate()
     }, { immediate: true })
-
-    onMounted(() => {
-      get()
-    })
 
     return {
       canGoToNextWeek,

@@ -75,7 +75,7 @@ export default {
   props: {
     value: {
       type: [Array, Number, Object, String],
-      required: true
+      default: null
     },
 
     playdates: {

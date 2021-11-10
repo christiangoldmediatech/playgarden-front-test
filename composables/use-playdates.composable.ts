@@ -1,7 +1,14 @@
-import { Child, Playdate, Playdates } from '@/models'
+import dayjs from 'dayjs'
+import { Child, Playdate, Playdates, TypedStore } from '@/models'
 import { axios } from '@/utils'
+import { computed } from '@nuxtjs/composition-api'
+import { Store } from 'vuex/types'
 
-export const usePlaydates = () => {
+interface UseChildPlaydates {
+  store: Store<TypedStore>
+}
+
+export const usePlaydates = ({ store }: UseChildPlaydates) => {
   const acceptInvitePlaydate = (token: string) => {
     return axios.$get(`/playdates/accept/invite/${token}`)
   }
@@ -22,7 +29,7 @@ export const usePlaydates = () => {
     return axios.$get('/playdates', { params })
   }
 
-  const getChildrenInfo = (): Promise<{ children: Child; playdates: Playdates[] }[]> => {
+  const getChildrenInfo = (): Promise<{ children: Child; playdates: Playdates[], groups: { groupedDate: string, playdates: { backpackImages: [], date: string, playdate: Playdate }[] }[] }[]> => {
     return axios.$get('/playdates/children')
   }
 
@@ -38,7 +45,48 @@ export const usePlaydates = () => {
     return axios.$delete(`/playdates/${playdateId}/remove/children/${childId}`)
   }
 
+  /**
+   * The playdates screen is only visible to paying users, users whose
+   * stripe_status is 'active'
+   * @returns boolean
+   */
+  const currentUser = computed(() => store.state.auth.userInfo)
+  const isPayingUser = computed(() => currentUser.value?.stripeStatus === 'active')
+
+  /**
+   * Because the user can scroll to 3 weeks in advance, we need a function
+   * that returns an array of dates from now to 3 weeks ahead.
+   * @returns {array}
+   */
+  const getPlaydatesDates = () => {
+    const WEEKS_AHEAD = 3
+    const dates: string[] = []
+    const weeksAhead = dayjs().add(WEEKS_AHEAD, 'weeks').format('YYYY-MM-DD')
+    let now = dayjs().format('YYYY-MM-DD')
+
+    while (dayjs(now).isBefore(weeksAhead)) {
+      dates.push(now)
+      now = dayjs(now).add(1, 'week').format('YYYY-MM-DD')
+    }
+
+    return dates
+  }
+
+  const getPlaydateForDate = ({ date }: { date: string }): Promise<Playdate[]> => {
+    return axios.$get(`/playdates?showChildren=true&date=${date}`)
+  }
+
+  const reserveASpot = ({ playdateId, childId, date }: { playdateId: number, childId: number, date: string }) => {
+    return axios.$post(`/playdates/${playdateId}/add/children/${childId}?date=${date}`)
+  }
+
+  const cancelSpotReservation = ({ playdateId, childId, date }: { playdateId: number, childId: number, date: string }) => {
+    return axios.$delete(`/playdates/${playdateId}/remove/children/${childId}?date=${date}`)
+  }
+
   return {
+    isPayingUser,
+    getPlaydatesDates,
     acceptInvitePlaydate,
     addChildren,
     deletePlaydateInvitation,
@@ -47,6 +95,9 @@ export const usePlaydates = () => {
     getChildrenInfo,
     getPlaydateDays,
     joinPlaydate,
-    deleteChildren
+    deleteChildren,
+    getPlaydateForDate,
+    reserveASpot,
+    cancelSpotReservation
   }
 }
