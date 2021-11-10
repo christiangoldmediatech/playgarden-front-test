@@ -147,8 +147,7 @@ export default defineComponent({
             name: 'Activities & Worksheets',
             type: 'line',
             stack: 'Activities & Worksheets',
-            data: metrics.value.averageTimeByCurriculumType.averageTimeByActivitiesWorksheets,
-            color: 'orange'
+            data: metrics.value.averageTimeByCurriculumType.averageTimeByActivitiesWorksheets
           }
         ]
       }
