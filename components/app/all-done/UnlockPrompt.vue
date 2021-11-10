@@ -1,5 +1,5 @@
 <template>
-  <div class="overlay">
+  <div class="overlay bg-image">
     <main class="overlay overlayContent">
       <section class="promptMessage">
         <div class="d-flex align-center">
@@ -35,13 +35,20 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+.bg-image {
+  background-image: url('~assets/png/lessons-image.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
 .overlay {
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: rgb(0, 0, 0, 0.6);
   z-index: 6;
   min-height: 500px;
 }
@@ -49,9 +56,10 @@ export default defineComponent({
 .overlayContent {
   z-index: 7;
   background-color: #80808000;
+  background-color: rgb(0, 0, 0, 0.6);
   color: white;
   min-height: 500px;
-  margin-top: 150px;
+  padding-top: 150px;
 }
 
 .promptMessage {
