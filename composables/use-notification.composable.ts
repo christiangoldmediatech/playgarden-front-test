@@ -6,6 +6,9 @@ import { Store } from 'vuex/types'
 import { TypedStore, UserFlow } from '@/models'
 import { useShippingAddress } from './use-shipping-address.composable'
 
+const isBetween = require('dayjs/plugin/isBetween')
+dayjs.extend(isBetween)
+
 export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
   const { userInfo, isUserLoggedIn } = useAuth({ store })
   const { getShippingAdress } = useShippingAddress()
@@ -224,20 +227,36 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
     }
   }
 
-  const showTrialEndingPlanSelectedModal = () => {
+  const showTrialEndingModalForLastDay = () => {
     const userCreatedAt = userInfo.value.createdAt
     const isPayingUser = userInfo.value.stripeStatus === 'active'
     const now = dayjs()
 
     if (userFlow.value === UserFlow.CREDITCARD) {
-      // todo
+      // Should appaear from the day 28th, to the next day the trial has ended.
+      // If a plan has been chosen, it should not appear anymore.
+      const showFromDay = dayjs(userCreatedAt).add(28, 'days')
+      const showToDay = dayjs(userInfo.value?.trialEnd).add(1, 'day')
+      const userChosePlan = userInfo.value.planChoosen || false
+      // @ts-ignore
+      if (dayjs().isBetween(showFromDay, showToDay, 'day') && !userChosePlan) {
+        // todo
+      }
     } else {
+      // Should appear from the 28th until the stripe status for the user is active.
       const userDayToBeNotified = dayjs(userCreatedAt).add(28, 'days')
 
       if ((now.isSame(userDayToBeNotified, 'day') || now.isAfter(userDayToBeNotified, 'day')) && !isPayingUser) {
-        setIsTrialEndingPlanSelectedModalVisible(true)
+        // todo
       }
     }
+  }
+
+  const handleTrialEndingFlow = () => {
+    showTrialEndingWeekTwoModal()
+    showTrialEndingWeekThreeModal()
+    showTrialEndingWeekFourModal()
+    showTrialEndingModalForLastDay()
   }
 
   return {
@@ -253,9 +272,6 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
     checkIfShouldSendShippingAddressNotification,
     checkIfShouldShowTrialExpiringRibbon,
     checkIfShouldShowTrialExpiredModal,
-    showTrialEndingWeekTwoModal,
-    showTrialEndingWeekThreeModal,
-    showTrialEndingWeekFourModal,
-    showTrialEndingPlanSelectedModal
+    handleTrialEndingFlow
   }
 }
