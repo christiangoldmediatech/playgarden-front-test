@@ -6,3 +6,9 @@ export interface Metrics {
     averageAsistantsLiveClassesPerDay: number
     averageTimeByCurriculumType: any
 }
+
+export interface lineStack {
+    xAxis: string[]
+    legend: string[]
+    data: any[]
+}

@@ -1,5 +1,13 @@
 <template>
   <v-row>
+    <v-col cols="12">
+      <v-card class="mx-3">
+        <v-card-text>
+          <label class="title-dashboard font-weight-bold">Average times per lesson in minutes</label>
+          <line-stack-chart :line-stack-data="lineStack" />
+        </v-card-text>
+      </v-card>
+    </v-col>
     <v-col cols="3">
       <v-card>
         <v-card-text>
@@ -101,12 +109,19 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from '@vue/composition-api'
 import { useMetrics } from '@/composables/dashboard'
-import { Metrics } from '@/models'
+import { Metrics, lineStack } from '@/models'
+import LineStackChart from '@/components/echart/LineStackChart.vue'
 
 export default defineComponent({
   name: 'MetricsPanel',
+  components: { LineStackChart },
   setup() {
     const { metrics, getMetrics } = useMetrics()
+    const lineStack = ref<Partial<lineStack>>({
+      xAxis: [],
+      legend: [],
+      data: []
+    })
     const dataMetrics = ref<Partial<Metrics>>({
       averageLessonsVideoPerDay: 0,
       averageStartedVideoPerDay: 0,
@@ -119,11 +134,29 @@ export default defineComponent({
       await getMetrics()
       if (metrics.value) {
         dataMetrics.value = metrics.value
+        lineStack.value.xAxis = metrics.value.averageTimeByCurriculumType.xAxis
+        lineStack.value.legend = ['Lesson', 'Activities & Worksheets']
+        lineStack.value.data = [
+          {
+            name: 'Lesson',
+            type: 'line',
+            stack: 'Lesson',
+            data: metrics.value.averageTimeByCurriculumType.averageTimeByLesson
+          },
+          {
+            name: 'Activities & Worksheets',
+            type: 'line',
+            stack: 'Activities & Worksheets',
+            data: metrics.value.averageTimeByCurriculumType.averageTimeByActivitiesWorksheets,
+            color: 'orange'
+          }
+        ]
       }
     })
 
     return {
-      dataMetrics
+      dataMetrics,
+      lineStack
     }
   }
 })
