@@ -1,6 +1,5 @@
 <template>
   <v-main>
-    <!-- <v-container fluid> -->
     <v-row
       justify="center"
       no-gutters
@@ -86,7 +85,6 @@
         </template>
       </v-col>
     </v-row>
-    <!-- </v-container> -->
   </v-main>
 </template>
 
