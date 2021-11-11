@@ -75,11 +75,7 @@
 <script lang="ts">
 import { computed, defineComponent, PropType, useRoute, useRouter } from '@nuxtjs/composition-api'
 
-interface StudentCubbyItem {
-  routeName: string
-  imgName: string
-  text: string
-}
+import { StudentCubbyItem } from './types'
 
 export default defineComponent({
   props: {
