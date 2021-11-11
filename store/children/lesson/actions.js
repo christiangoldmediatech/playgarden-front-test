@@ -28,14 +28,14 @@ export default {
       commit('SET_PREVIOUS_LESSON_ID', data.previousLessonId)
       commit('SET_CURRENT_LESSON_ID', data.currentLessonId)
       commit('SET_PUZZLE_PIECE', data.puzzleChildren)
+
+      if (data.isLearnAndPlay) {
+        commit('SET_CURRENT_LESSON_UNAVAILABILITY_FOR_PLAN', true)
+      }
       return data.lesson
     } catch (e) {
       const { data } = e.response
       if (data && data.errorCode === 100) {
-        return Promise.reject(data)
-      }
-      if (data && data.errorCode === 110) {
-        commit('SET_CURRENT_LESSON_UNAVAILABILITY_FOR_PLAN', true)
         return Promise.reject(data)
       }
       return Promise.reject(e)
