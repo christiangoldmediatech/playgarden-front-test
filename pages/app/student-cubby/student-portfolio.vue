@@ -1,7 +1,21 @@
 <template>
   <v-card flat>
-    <StudyCubbyItemHeader v-bind="studentChubbyItemHeaderProps" />
-    <template v-if="!loading && (!uploadedWorksheets || !uploadedWorksheets.length)">
+    <v-card-text>
+      <div class="text-center">
+        <!-- Section Title and Description -->
+        <div class="d-flex align-center justify-center">
+          <img height="80px" src="@/assets/png/student-cubby/group.png">
+          <span class="ml-4 text-h4 text-md-h3">PORTFOLIO</span>
+        </div>
+        <div class="my-6 text-md-h6 text-body-1">
+          Keep track of your worksheets and progress!
+        </div>
+      </div>
+    </v-card-text>
+
+    <template
+      v-if="!loading && (!uploadedWorksheets || !uploadedWorksheets.length)"
+    >
       <v-row justify="center">
         <v-col cols="8">
           <v-row align="center" justify="center">
@@ -91,19 +105,13 @@ import PortfolioOverlay from '@/components/app/student-cubby/PortfolioOverlay.vu
 import { computed, defineComponent, ref, useRoute, useRouter, useStore, watch } from '@nuxtjs/composition-api'
 import { useChild, useChildRoute, useOfflineWorksheet, useSnotifyHelper } from '@/composables'
 import { OfflineWorksheet, TypedStore } from '@/models'
-import StudyCubbyItemHeader, { StudentCubbyItemHeaderProps } from '@/components/app/student-cubby/StudyCubbyItemHeader.vue'
-import { useStudentCubbyHelpers } from '@/components/app/student-cubby/composables'
-import type { StudentChubbyItemText } from '@/components/app/student-cubby/types'
-
-const itemText: StudentChubbyItemText = 'PORTFOLIO'
 
 export default defineComponent({
   name: 'StudentPortfolio',
 
   components: {
     PortfolioCarousel,
-    PortfolioOverlay,
-    StudyCubbyItemHeader
+    PortfolioOverlay
   },
 
   setup () {
@@ -114,16 +122,9 @@ export default defineComponent({
     const { childId: studentId } = useChildRoute({ store, route, router })
     const { children } = useChild({ store })
     const { getUploaded } = useOfflineWorksheet({ store })
-    const { getStudentChubbyItemFromItemText } = useStudentCubbyHelpers()
 
     const loading = ref(false)
     const uploadedWorksheets = ref<OfflineWorksheet[]>([])
-
-    const studentChubbyItemHeaderProps = computed((): StudentCubbyItemHeaderProps => {
-      return {
-        studentCubbyItem: getStudentChubbyItemFromItemText(itemText)
-      }
-    })
 
     const categories = computed(() => {
       return uploadedWorksheets.value.filter(({ worksheetUploads }) => worksheetUploads.length > 0)
@@ -159,8 +160,7 @@ export default defineComponent({
       loading,
       studentId,
       uploadedWorksheets,
-      refresh,
-      studentChubbyItemHeaderProps
+      refresh
     }
   }
 })
