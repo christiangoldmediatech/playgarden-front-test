@@ -162,10 +162,6 @@ export default {
             name: 'app-all-done'
           })
         }
-        if (e && e.errorCode === 110) {
-          // The error code is returned when the user doesn't have access to the lesson
-          // Any way to handle this in the future can be added here.
-        }
       } finally {
         this.loading = false
       }
