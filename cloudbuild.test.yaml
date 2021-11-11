@@ -68,7 +68,7 @@ steps:
 substitutions:
   # default. can be overridden by tigger config.
   _SECRETS_PROJECT_ID: $PROJECT_ID
-  _SERVICE_NAME: prep-web
+  _SERVICE_NAME: prep-web-test
 
 images: ['gcr.io/$PROJECT_ID/$_SERVICE_NAME']
 timeout: '1600s'
