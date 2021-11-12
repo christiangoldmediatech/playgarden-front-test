@@ -384,7 +384,9 @@ export default {
   created () {
     this.getData()
     this.$nuxt.$on('send-data-chart', (dataGraph) => {
-      this.$refs.usersListRef.open(null, dataGraph)
+      if (dataGraph.openModal) {
+        this.$refs.usersListRef.open(null, dataGraph)
+      }
     })
   },
 

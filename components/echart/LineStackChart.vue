@@ -1,5 +1,5 @@
 <template>
-  <chart ref="lineStackChartRef" :style="getChartDimensions" :graph="getFormatGraph" :autoresize="resize" />
+  <chart ref="lineStackChartRef" :style="getChartDimensions" :graph="getFormatGraph" :autoresize="resize" :open-modal="openModal" />
 </template>
 
 <script>
@@ -22,6 +22,11 @@ export default {
     height: {
       type: String,
       default: '300px'
+    },
+    openModal: {
+      type: Boolean,
+      required: false,
+      default: true
     }
   },
   data () {

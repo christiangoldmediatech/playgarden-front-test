@@ -4,7 +4,7 @@
       <v-card class="mx-3">
         <v-card-text>
           <label class="title-dashboard font-weight-bold">Average times to complete lessons in days</label>
-          <line-stack-chart :line-stack-data="lineStack" />
+          <line-stack-chart :line-stack-data="lineStack" :open-modal="false" />
         </v-card-text>
       </v-card>
     </v-col>
@@ -17,7 +17,7 @@
               <p class="text-center cursor mt-4">
                 <span>Started per day</span>
               </p>
-              <div @click="usersFilters('Active')">
+              <div>
                 <div class="text-center">
                   <label class="display-3 font-weight-bold total-users cursor">{{ dataMetrics.averageStartedVideoPerDay }}</label>
                 </div>
@@ -36,7 +36,7 @@
               <p class="text-center cursor mt-4">
                 Completed per day
               </p>
-              <div @click="usersFilters('Active')">
+              <div>
                 <div class="text-center">
                   <label class="display-3 font-weight-bold total-users cursor">{{ dataMetrics.averageLessonsVideoPerDay }}</label>
                 </div>
@@ -55,7 +55,7 @@
               <p class="text-center cursor mt-4">
                 <span>Video lessons</span>
               </p>
-              <div @click="usersFilters('Active')">
+              <div>
                 <div class="text-center">
                   <label class="display-3 font-weight-bold total-users cursor">{{ dataMetrics.avgTimeToComplete }}</label>
                 </div>
@@ -74,7 +74,7 @@
               <p class="text-center cursor mt-4">
                 <span>All lesson</span>
               </p>
-              <div @click="usersFilters('Active')">
+              <div>
                 <div class="text-center">
                   <label class="display-3 font-weight-bold total-users cursor">{{ dataMetrics.avgTimeToCompleteAll }}</label>
                 </div>
@@ -93,7 +93,7 @@
               <p class="text-center cursor mt-4">
                 <span>completed</span>
               </p>
-              <div @click="usersFilters('Active')">
+              <div>
                 <div class="text-center">
                   <label class="display-3 font-weight-bold total-users cursor">{{ dataMetrics.numberCompletedLessons }}</label>
                 </div>
@@ -112,7 +112,7 @@
               <p class="text-center cursor mt-4">
                 <span>per Week</span>
               </p>
-              <div @click="usersFilters('Active')">
+              <div>
                 <div class="text-center">
                   <label class="display-3 font-weight-bold total-users cursor">{{ dataMetrics.averageAsistantsLiveClassesPerDay }}</label>
                 </div>
