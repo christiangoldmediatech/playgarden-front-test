@@ -272,18 +272,18 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
   }
 
   return {
-    notificationCard,
-    isTrialExpiredModalVisible,
-    isTrialExpiringRibbonVisible,
     expiringRibbonHeightDesktop,
     expiringRibbonHeightMobile,
     isShippingModalVisible,
-    setNotificationCard,
-    setIsTrialExpiringRibbonVisible,
-    checkUserShippingAddressAndNotify,
+    isTrialExpiredModalVisible,
+    isTrialExpiringRibbonVisible,
+    notificationCard,
     checkIfShouldSendShippingAddressNotification,
-    checkIfShouldShowTrialExpiringRibbon,
     checkIfShouldShowTrialExpiredModal,
-    handleTrialEndingFlow
+    checkIfShouldShowTrialExpiringRibbon,
+    checkUserShippingAddressAndNotify,
+    handleTrialEndingFlow,
+    setIsTrialExpiringRibbonVisible,
+    setNotificationCard
   }
 }
