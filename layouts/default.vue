@@ -134,7 +134,8 @@ export default defineComponent({
       expiringRibbonHeightMobile,
       checkIfShouldSendShippingAddressNotification,
       checkIfShouldShowTrialExpiringRibbon,
-      checkIfShouldShowTrialExpiredModal
+      checkIfShouldShowTrialExpiredModal,
+      handleTrialEndingFlow
     } = useNotification({ store })
 
     const { showContent, setShowContent, isFullWidth } = useLayout({ store, route, vuetify })
@@ -155,6 +156,7 @@ export default defineComponent({
           await checkIfShouldSendShippingAddressNotification()
           await checkIfShouldShowTrialExpiredModal()
           await checkIfShouldShowTrialExpiringRibbon()
+          handleTrialEndingFlow()
         }
       }, { immediate: true })
 
