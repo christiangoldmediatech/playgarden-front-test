@@ -12,10 +12,16 @@ export default defineComponent({
       type: Object,
       required: true,
       default: () => {}
+    },
+    openModal: {
+      type: Boolean,
+      required: false,
+      default: true
     }
   },
   methods: {
     sendData (data) {
+      data.openModal = this.openModal
       this.$nuxt.$emit('send-data-chart', data)
     }
   }

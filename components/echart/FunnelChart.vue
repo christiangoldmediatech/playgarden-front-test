@@ -22,6 +22,11 @@ export default {
     height: {
       type: String,
       default: '500px'
+    },
+    openModal: {
+      type: Boolean,
+      required: false,
+      default: true
     }
   },
   data () {
