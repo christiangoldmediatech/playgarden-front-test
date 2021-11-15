@@ -41,5 +41,8 @@ export default {
   },
   SET_IS_PLAN_UPGRADE_MODAL_VISIBLE (state, bool) {
     state.isPlanUpgradeModalVisible = bool
+  },
+  SET_IS_CREDIT_CARD_MODAL_VISIBLE (state, bool) {
+    state.isCreditCardModalVisible = bool
   }
 }

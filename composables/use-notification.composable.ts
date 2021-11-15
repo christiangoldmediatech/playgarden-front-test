@@ -68,6 +68,11 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
     store.commit('notifications/SET_IS_PLAN_UPGRADE_MODAL_VISIBLE', isVisible)
   }
 
+  const isCreditCardModalVisible = computed(() => store.state.notifications.isCreditCardModalVisible)
+  const setIsCreditCardModalVisible = (isVisible: boolean) => {
+    store.commit('notifications/SET_IS_CREDIT_CARD_MODAL_VISIBLE', isVisible)
+  }
+
   /**
    * Show a notification prompting the user to update their shipping address if:
    * - The user doesn't have the shipping address on file and it is a parent.
@@ -284,6 +289,7 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
   return {
     expiringRibbonHeightDesktop,
     expiringRibbonHeightMobile,
+    isCreditCardModalVisible,
     isPlanUpgradeModalVisible,
     isShippingModalVisible,
     isTrialEndingForLastDayModalVisible,
@@ -295,6 +301,7 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
     checkIfShouldShowTrialExpiringRibbon,
     checkUserShippingAddressAndNotify,
     handleTrialEndingFlow,
+    setIsCreditCardModalVisible,
     setIsPlanUpgradeModalVisible,
     setIsTrialEndingForLastDayModalVisible,
     setIsTrialEndingPlanSelectedModalVisible,

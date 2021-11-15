@@ -12,6 +12,7 @@ export default (): NotificationState => ({
   isPlanUpgradeModalVisible: false,
   isTrialEndingPlanSelectedModalVisible: false,
   isTrialEndingForLastDayModalVisible: true,
+  isCreditCardModalVisible: false,
   notificationCard: {
     isVisible: false,
     title: '',
