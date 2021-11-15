@@ -78,9 +78,9 @@
 </template>
 
 <script lang="ts">
-import { useNotification, useStoreForAuth, useVuetifyHelper } from '@/composables'
+import { useAuth, useNotification, useStoreForAuth, useVuetifyHelper } from '@/composables'
 import { computed, defineComponent, onMounted, ref, useRouter, useStore, WritableComputedRef } from '@nuxtjs/composition-api'
-import { TypedStore } from '@/models'
+import { TypedStore, UserFlow } from '@/models'
 import { hasLocalStorage } from '@/utils/window'
 import dayjs from 'dayjs'
 import LargeImageContentDialog from '@/components/ui/dialogs/LargeImageContentDialog/LargeImageContentDialog.vue'
@@ -88,24 +88,16 @@ import isToday from 'dayjs/plugin/isToday'
 dayjs.extend(isToday)
 
 interface TrialNotificationPreference {
-  silencedAt: Date | undefined;
+  silenced: boolean;
 }
 
 const LS_KEY_FOR_TRIAL_NOTIFICATION_PREFERENCE = 'trialExpiryNotificationData'
-const NUMBER_OF_HOURS_TO_SILENCE_NOTIFICATION = 24
 
 export default defineComponent({
   name: 'TrialEndingModalForLastDay',
 
   components: {
     LargeImageContentDialog
-  },
-
-  props: {
-    downwardDisplacement: {
-      type: Number,
-      required: false
-    }
   },
 
   data() {
@@ -118,6 +110,7 @@ export default defineComponent({
     const store = useStore<TypedStore>()
     const vuetify = useVuetifyHelper()
     const notification = useNotification({ store })
+    const auth = useAuth({ store })
     const router = useRouter()
     const { userInfo } = useStoreForAuth({ store })
     const trialNotificationPreference = ref<TrialNotificationPreference | undefined>()
@@ -127,12 +120,7 @@ export default defineComponent({
     })
 
     const isCurrenltyInSilentWindow = computed(() => {
-      const preferenceLastUpdatedAt = trialNotificationPreference.value?.silencedAt
-      if (preferenceLastUpdatedAt) {
-        const windowEndDate = dayjs(preferenceLastUpdatedAt).add(NUMBER_OF_HOURS_TO_SILENCE_NOTIFICATION, 'h')
-        return dayjs().isBefore(windowEndDate)
-      }
-      return Boolean(trialNotificationPreference.value) // The default is taken as true rather than false to prevent flashing of modal and disappering quickly.
+      return trialNotificationPreference.value?.silenced || false
     })
 
     // The user can not dismiss the modal 5 days past the user's trial_end date.
@@ -143,15 +131,10 @@ export default defineComponent({
 
     const isModalVisible: WritableComputedRef<boolean> = computed({
       get (): boolean {
-        return notification.isTrialEndingForLastDayModalVisible.value
+        return !isCurrenltyInSilentWindow.value && notification.isTrialEndingForLastDayModalVisible.value
       },
       set (newValue: boolean): void {
         notification.setIsTrialEndingForLastDayModalVisible(newValue)
-
-        if (newValue === false) {
-          saveNotificationPreference()
-          fetchNotificationPreferenceFromLS()
-        }
       }
     })
 
@@ -159,13 +142,6 @@ export default defineComponent({
 
     const formattedTrialExpiryDate = computed(() => {
       return dayjs(userInfo.value?.trialEnd).format('MMM D, YYYY')
-    })
-
-    const customDialogStyle = computed(() => {
-      if (!props.downwardDisplacement) { return {} }
-      return {
-        'margin-top': `${props.downwardDisplacement}px`
-      }
     })
 
     function fetchNotificationPreferenceFromLS () {
@@ -179,24 +155,13 @@ export default defineComponent({
 
     function saveNotificationPreference () {
       const notificationPreference: TrialNotificationPreference = {
-        silencedAt: new Date()
+        silenced: true
       }
       if (process.client) {
         window.localStorage.setItem(LS_KEY_FOR_TRIAL_NOTIFICATION_PREFERENCE, JSON.stringify(notificationPreference))
       }
     }
 
-    function handleRequestToContact () {
-      closeModal()
-    }
-
-    function handleRequestToRemindLater () {
-      closeModal()
-    }
-
-    function handleDialogCloseRequest () {
-      closeModal()
-    }
     function closeModal () {
       isModalVisible.value = false
     }
@@ -214,7 +179,17 @@ export default defineComponent({
     }
 
     function handleKeepCurrentPlans () {
-      // to be implemented when completing the workflow
+      closeModal()
+
+      // Is the user flow is CREDITCARD, do not show the trial ending last day modal again
+      if (auth.userInfo.value.flow === UserFlow.CREDITCARD) {
+        notification.setIsTrialEndingPlanSelectedModalVisible(true)
+        saveNotificationPreference()
+        fetchNotificationPreferenceFromLS()
+      } else {
+        // else show the credit card modal and then the plan selected modal
+        notification.setIsTrialEndingPlanSelectedModalVisible(true)
+      }
     }
 
     return {
@@ -222,12 +197,8 @@ export default defineComponent({
       formattedTrialExpiryDate,
       isMobile,
       isModalVisible,
-      customDialogStyle,
       closeModal,
-      handleDialogCloseRequest,
       handleRequestToComparePlans,
-      handleRequestToContact,
-      handleRequestToRemindLater,
       handleRequestToUpgradeToPreSchool,
       handleKeepCurrentPlans
     }

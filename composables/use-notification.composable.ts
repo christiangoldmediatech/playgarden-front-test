@@ -297,6 +297,7 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
     handleTrialEndingFlow,
     setIsPlanUpgradeModalVisible,
     setIsTrialEndingForLastDayModalVisible,
+    setIsTrialEndingPlanSelectedModalVisible,
     setIsTrialExpiringRibbonVisible,
     setNotificationCard
   }
