@@ -6,6 +6,7 @@
       :is-closeable="canDismissModal"
       @close="closeModal"
     >
+      <!-- MODAL TITLE -->
       <div>
         <underlined-title
           text="Your trial period has expired"
@@ -15,6 +16,7 @@
         />
       </div>
 
+      <!-- MODAL TEXT -->
       <div class="grey--text text--darken-2 caption text-md-h6 font-weight-regular my-3 my-md-6">
         <p>
           We hope your little one has enjoyed learning with the Playgarden Prep teachers!
@@ -41,8 +43,10 @@
         </p>
       </div>
 
+      <!-- MODAL CTA -->
       <v-row no-gutters class="text-center text-md-left">
         <v-col cols="12" md="auto" class="my-4">
+          <!-- UPGRADE BUTTON -->
           <v-btn
             :x-large="!isMobile"
             :small="isMobile"
@@ -54,6 +58,7 @@
           </v-btn>
         </v-col>
 
+        <!-- COMPARE PLANS -->
         <v-col cols="12" md="auto" class="mx-0 mx-md-4 align-self-center font-weight-bold">
           <v-btn
             :x-large="!isMobile"
@@ -67,6 +72,7 @@
           </v-btn>
         </v-col>
 
+        <!-- KEEP CURRENT SUBSCRIPTION BUTTON -->
         <v-col cols="12" class="mx-0 mx-md-4 mt-4 mt-md-0 align-self-center font-weight-bold">
           <span class="text-decoration-underline" @click="handleKeepCurrentPlans">
             <a class="accent--text">I want to keep my current plan</a>
@@ -84,6 +90,7 @@ import { TypedStore, UserFlow } from '@/models'
 import { hasLocalStorage } from '@/utils/window'
 import dayjs from 'dayjs'
 import LargeImageContentDialog from '@/components/ui/dialogs/LargeImageContentDialog/LargeImageContentDialog.vue'
+
 import isToday from 'dayjs/plugin/isToday'
 dayjs.extend(isToday)
 
@@ -100,19 +107,14 @@ export default defineComponent({
     LargeImageContentDialog
   },
 
-  data() {
-    return {
-      img: require('@/assets/images/users/trialExpiredImage.jpeg')
-    }
-  },
-
-  setup (props) {
+  setup () {
     const store = useStore<TypedStore>()
     const vuetify = useVuetifyHelper()
     const notification = useNotification({ store })
     const auth = useAuth({ store })
     const router = useRouter()
     const { userInfo } = useStoreForAuth({ store })
+    const img = require('@/assets/images/users/trialExpiredImage.jpeg')
     const trialNotificationPreference = ref<TrialNotificationPreference | undefined>()
 
     onMounted(() => {
@@ -188,13 +190,14 @@ export default defineComponent({
         fetchNotificationPreferenceFromLS()
       } else {
         // else show the credit card modal and then the plan selected modal
-        notification.setIsTrialEndingPlanSelectedModalVisible(true)
+        notification.setIsCreditCardModalVisible(true)
       }
     }
 
     return {
       canDismissModal,
       formattedTrialExpiryDate,
+      img,
       isMobile,
       isModalVisible,
       closeModal,
