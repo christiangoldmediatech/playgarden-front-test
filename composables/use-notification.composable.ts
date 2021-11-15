@@ -58,6 +58,16 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
     store.commit('notifications/SET_IS_TRIAL_ENDING_PLAN_SELECTED_MODAL_VISIBLE', isVisible)
   }
 
+  const isTrialEndingForLastDayModalVisible = computed(() => store.state.notifications.isTrialEndingForLastDayModalVisible)
+  const setIsTrialEndingForLastDayModalVisible = (isVisible: boolean) => {
+    store.commit('notifications/SET_IS_TRIAL_ENDING_FOR_LAST_DAY_MODAL_VISIBLE', isVisible)
+  }
+
+  const isPlanUpgradeModalVisible = computed(() => store.state.notifications.isPlanUpgradeModalVisible)
+  const setIsPlanUpgradeModalVisible = (isVisible: boolean) => {
+    store.commit('notifications/SET_IS_PLAN_UPGRADE_MODAL_VISIBLE', isVisible)
+  }
+
   /**
    * Show a notification prompting the user to update their shipping address if:
    * - The user doesn't have the shipping address on file and it is a parent.
@@ -274,7 +284,9 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
   return {
     expiringRibbonHeightDesktop,
     expiringRibbonHeightMobile,
+    isPlanUpgradeModalVisible,
     isShippingModalVisible,
+    isTrialEndingForLastDayModalVisible,
     isTrialExpiredModalVisible,
     isTrialExpiringRibbonVisible,
     notificationCard,
@@ -283,6 +295,8 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
     checkIfShouldShowTrialExpiringRibbon,
     checkUserShippingAddressAndNotify,
     handleTrialEndingFlow,
+    setIsPlanUpgradeModalVisible,
+    setIsTrialEndingForLastDayModalVisible,
     setIsTrialExpiringRibbonVisible,
     setNotificationCard
   }
