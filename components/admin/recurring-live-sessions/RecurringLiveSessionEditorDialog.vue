@@ -230,6 +230,7 @@
             </validation-provider>
 
             <validation-provider
+              v-if="item.type === 'Playdate'"
               v-slot="{ errors }"
               name="Spots"
               rules="required|integer|min_value:0"
@@ -360,6 +361,9 @@ export default {
   watch: {
     dateStart (val) {
       this.item.day = dayjs(this.dateStart).format('dddd').toUpperCase()
+    },
+    'item.type' (val) {
+      this.item.spots = (val === 'Playdate') ? this.item.spots : 0
     }
   },
 
