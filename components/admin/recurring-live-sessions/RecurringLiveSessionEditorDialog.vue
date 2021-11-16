@@ -33,7 +33,6 @@
                 v-model="item.type"
                 :error-messages="errors"
                 placeholder="Select type"
-                readonly
                 :items="listTypes"
                 solo
               />
@@ -232,6 +231,21 @@
 
             <validation-provider
               v-slot="{ errors }"
+              name="Spots"
+              rules="required|integer|min_value:0"
+            >
+              <pg-text-field
+                v-model="item.spots"
+                :error-messages="errors"
+                label="Spots"
+                min="0"
+                solo-labeled
+                type="number"
+              />
+            </validation-provider>
+
+            <validation-provider
+              v-slot="{ errors }"
               name="Document"
             >
               <pg-file-uploader
@@ -300,7 +314,7 @@ function generateItemTemplate () {
     ages: null,
     duration: null,
     dateStart: null,
-    spots: 0,
+    spots: null,
     day: null,
     type: 'LiveClass'
   }
