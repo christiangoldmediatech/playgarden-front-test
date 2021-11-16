@@ -2,7 +2,7 @@ import { snotifyError } from '@/utils/vuex'
 
 export default {
   createRecurringLiveSession (_, data) {
-    return this.$axios.$post('recurring-live-sessions', data)
+    return this.$axios.$post('recurring-meetings', data)
   },
 
   async createLiveClasses ({ commit }, id) {
@@ -18,13 +18,13 @@ export default {
   },
 
   deleteRecurringLiveSession (_, id) {
-    return this.$axios.$delete(`recurring-live-sessions/${id}`)
+    return this.$axios.$delete(`recurring-meetings/${id}`)
   },
 
   getRecurringLiveSessions ({ commit }, params) {
     return new Promise((resolve, reject) =>
       this.$axios
-        .$get('recurring-live-sessions', { params })
+        .$get('recurring-meetings', { params })
         .then(resolve)
         .catch((error) => {
           snotifyError(commit, {
@@ -37,13 +37,13 @@ export default {
   },
 
   updateRecurringLiveSession (_, { id, data }) {
-    return this.$axios.$patch(`recurring-live-sessions/${id}`, data)
+    return this.$axios.$patch(`recurring-meetings/${id}`, data)
   },
 
   async getUserRecurringLiveSessions ({ commit }, { monday, friday }) {
     try {
       let data
-      const { total, liveSessions } = data = await this.$axios.$get('recurring-live-sessions', {
+      const { total, liveSessions } = data = await this.$axios.$get('recurring-meetings', {
         params: {
           limit: 100,
           page: 1,

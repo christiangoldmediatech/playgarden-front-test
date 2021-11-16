@@ -326,7 +326,7 @@ export default {
       }
 
       try {
-        const { page, recurringLiveSessions, total } = await this.getRecurringLiveSessions({
+        const { page, recurringMeetings, total } = await this.getRecurringLiveSessions({
           name: this.search,
           activityTypeId: this.filters.activityTypeId || null,
           level: this.filters.level || null,
@@ -334,7 +334,7 @@ export default {
           limit: this.paginationLimit
         })
 
-        this.recurringLiveSessions = recurringLiveSessions
+        this.recurringLiveSessions = recurringMeetings
         this.setPagination({ page, total })
       } catch (e) {
       } finally {

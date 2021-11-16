@@ -26,6 +26,21 @@
           <v-container>
             <validation-provider
               v-slot="{ errors }"
+              name="Type"
+              rules="required"
+            >
+              <pg-select
+                v-model="item.type"
+                :error-messages="errors"
+                placeholder="Select type"
+                readonly
+                :items="listTypes"
+                solo
+              />
+            </validation-provider>
+
+            <validation-provider
+              v-slot="{ errors }"
               name="Activity"
               rules="required"
             >
@@ -285,7 +300,9 @@ function generateItemTemplate () {
     ages: null,
     duration: null,
     dateStart: null,
-    day: null
+    spots: 0,
+    day: null,
+    type: 'LiveClass'
   }
 }
 
@@ -305,6 +322,7 @@ export default {
     dialog: false,
     loading: false,
     id: null,
+    listTypes: ['Playdate', 'LiveClass'],
     typeSelectDocumentFile: null,
     item: generateItemTemplate()
   }),
