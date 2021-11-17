@@ -242,17 +242,18 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
     }
   }
 
-  const showTrialEndingModalForLastDay = () => {
+  const showTrialEndingModalForLastDay = async () => {
     const userCreatedAt = userInfo.value.createdAt
     const isPayingUser = userInfo.value.stripeStatus === 'active'
     const now = dayjs()
+    const userChosePlan = userInfo.value.planChoosen || false
+    const hasCreditCardsInFile = (await store.dispatch('payment/fetchBillingCards'))?.length > 0
 
     if (userFlow.value === UserFlow.CREDITCARD) {
       // Should appaear from the day 28th, to the next day the trial has ended.
       // If a plan has been chosen, it should not appear anymore.
       const showFromDay = dayjs(userCreatedAt).add(28, 'days')
       const showToDay = dayjs(userInfo.value?.trialEnd).add(1, 'day')
-      const userChosePlan = userInfo.value.planChoosen || false
 
       // @ts-ignore
       if (dayjs().isBetween(showFromDay, showToDay, 'day', '[]') && !userChosePlan) {
@@ -262,7 +263,7 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
       // Should appear from the 28th until the stripe status for the user is active.
       const userDayToBeNotified = dayjs(userCreatedAt).add(28, 'days')
 
-      if ((now.isSame(userDayToBeNotified, 'day') || now.isAfter(userDayToBeNotified, 'day')) && !isPayingUser) {
+      if ((now.isSame(userDayToBeNotified, 'day') || now.isAfter(userDayToBeNotified, 'day')) && !isPayingUser && !userChosePlan && !hasCreditCardsInFile) {
         setIsTrialEndingForLastDayModalVisible(true)
       }
     }
@@ -277,13 +278,13 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
     return !hasCoupon
   }
 
-  const handleTrialEndingFlow = () => {
+  const handleTrialEndingFlow = async () => {
     showTrialEndingWeekTwoModal()
     showTrialEndingWeekThreeModal()
     showTrialEndingWeekFourModal()
 
     if (shouldShowTrialEndingModal()) {
-      showTrialEndingModalForLastDay()
+      await showTrialEndingModalForLastDay()
     }
   }
 
