@@ -253,16 +253,17 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
       const showFromDay = dayjs(userCreatedAt).add(28, 'days')
       const showToDay = dayjs(userInfo.value?.trialEnd).add(1, 'day')
       const userChosePlan = userInfo.value.planChoosen || false
+
       // @ts-ignore
-      if (dayjs().isBetween(showFromDay, showToDay, 'day') && !userChosePlan) {
-        // todo
+      if (dayjs().isBetween(showFromDay, showToDay, 'day', '[]') && !userChosePlan) {
+        setIsTrialEndingForLastDayModalVisible(true)
       }
     } else {
       // Should appear from the 28th until the stripe status for the user is active.
       const userDayToBeNotified = dayjs(userCreatedAt).add(28, 'days')
 
       if ((now.isSame(userDayToBeNotified, 'day') || now.isAfter(userDayToBeNotified, 'day')) && !isPayingUser) {
-        // todo
+        setIsTrialEndingForLastDayModalVisible(true)
       }
     }
   }
@@ -270,7 +271,7 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
   // Only show the trial ending modal to users that have some value in userInfo.value.subscription.discount
   const shouldShowTrialEndingModal = () => {
     const userSubscription = userInfo.value.subscription
-    const userSubscriptionDiscount = userSubscription?.discount
+    const userSubscriptionDiscount = userSubscription?.discount || 'ji'
     const hasCoupon = Boolean(userSubscriptionDiscount)
 
     return hasCoupon
