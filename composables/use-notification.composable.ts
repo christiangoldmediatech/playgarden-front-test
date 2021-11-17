@@ -271,10 +271,10 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
   // Only show the trial ending modal to users that have some value in userInfo.value.subscription.discount
   const shouldShowTrialEndingModal = () => {
     const userSubscription = userInfo.value.subscription
-    const userSubscriptionDiscount = userSubscription?.discount || 'ji'
+    const userSubscriptionDiscount = userSubscription?.discount
     const hasCoupon = Boolean(userSubscriptionDiscount)
 
-    return hasCoupon
+    return !hasCoupon
   }
 
   const handleTrialEndingFlow = () => {
