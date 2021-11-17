@@ -158,7 +158,7 @@ export default defineComponent({
           await checkIfShouldSendShippingAddressNotification()
           await checkIfShouldShowTrialExpiredModal()
           await checkIfShouldShowTrialExpiringRibbon()
-          handleTrialEndingFlow()
+          await handleTrialEndingFlow()
         }
       }, { immediate: true })
 
