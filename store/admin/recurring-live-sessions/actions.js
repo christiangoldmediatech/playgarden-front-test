@@ -43,7 +43,7 @@ export default {
   async getUserRecurringLiveSessions ({ commit }, { monday, friday }) {
     try {
       let data
-      const { total, liveSessions } = data = await this.$axios.$get('recurring-meetings', {
+      const { total, recurringMeetings } = data = await this.$axios.$get('recurring-meetings', {
         params: {
           limit: 100,
           page: 1,
@@ -51,7 +51,7 @@ export default {
           endDate: friday
         }
       })
-      commit('SET_SESSIONS', liveSessions)
+      commit('SET_SESSIONS', recurringMeetings)
       commit('SET_TOTAL', total)
       return data
     } catch (error) {
