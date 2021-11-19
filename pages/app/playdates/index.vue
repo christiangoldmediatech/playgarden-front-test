@@ -63,8 +63,42 @@
             </v-btn>
           </div>
 
+          <!-- THANKSGIVING -->
+          <v-row v-if="isThanksgivingWeek" class="mt-6">
+            <v-col cols="12" class="text-center">
+              <div>
+                <underlined-title
+                  text="Happy Thanksgiving ✨"
+                  font-size="32px"
+                  font-size-mobile="24px"
+                  line-color="#ffab37"
+                />
+              </div>
+
+              <div class="mt-4">
+                <underlined-title
+                  text="You can still reserve spots for the following weeks!"
+                  font-size="28px"
+                  font-size-mobile="22px"
+                  line-color="#ffab37"
+                />
+              </div>
+
+              <v-btn
+                v-if="canGoToNextWeek"
+                :loading="loading"
+                color="accent"
+                large
+                class="text-none !pg-shadow-button mt-6"
+                @click="goToNextWeek"
+              >
+                Check next week
+              </v-btn>
+            </v-col>
+          </v-row>
+
           <!-- WEEK'S PLAYDATES -->
-          <v-row v-if="!loading && playdates.length" class="mt-6">
+          <v-row v-else-if="!loading && playdates.length" class="mt-6">
             <v-col v-for="playdate in playdates" :key="playdate.id" cols="12" md="6">
               <card-playdate
                 :playdate="playdate"
@@ -74,8 +108,9 @@
               />
             </v-col>
           </v-row>
+
           <!--  NO PLAYDATES -->
-          <v-row class="mt-6">
+          <v-row v-else-if="!loading" class="mt-6">
             <v-col cols="12" class="text-center">
               <div>
                 <underlined-title
@@ -114,7 +149,10 @@ import { Playdate, TypedStore } from '@/models'
 import CardPlaydate from '@/components/app/playdates/CardPlaydate.vue'
 import { useChild, usePlaydates, useVuetifyHelper } from '@/composables'
 import dayjs from 'dayjs'
+import isBetween from 'dayjs/plugin/isBetween'
 import { onMounted } from '@vue/composition-api'
+
+dayjs.extend(isBetween)
 
 export default defineComponent({
   name: 'Index',
@@ -140,6 +178,18 @@ export default defineComponent({
     const currentPlaydateDate = computed(() => playdatesDates?.[currentPlaydateIndex.value] || dayjs().format('YYYY-MM-DD'))
     const isMobile = computed(() => vuetify.breakpoint.mobile)
 
+    const isThanksgivingWeek = computed(() => {
+      const thanksGivingDay = '2021-11-25'
+
+      // @ts-ignore
+      return dayjs(currentPlaydateDate.value).isBetween(
+        dayjs(thanksGivingDay).startOf('week'),
+        dayjs(thanksGivingDay).endOf('week'),
+        'day',
+        '[]'
+      )
+    })
+
     const isInAPlaydate = computed(() => {
       return playdates.value.some((playdate) => {
         return Boolean(playdate?.backpackImages?.find(({ childrenId }) => {
@@ -149,6 +199,10 @@ export default defineComponent({
     })
 
     const currentWeekDisplayText = computed(() => {
+      if (isThanksgivingWeek.value) {
+        return 'November 22 - 26, 2021'
+      }
+
       if (playdates.value.length === 0) {
         return ''
       }
@@ -209,7 +263,7 @@ export default defineComponent({
       isPayingUser,
       loading,
       playdates,
-      playdatesDates,
+      isThanksgivingWeek,
       fetchPlaydatesForDate,
       goToNextWeek,
       goToPreviousWeek
