@@ -31,10 +31,14 @@
 
 <script>
 import { mapActions } from 'vuex'
+import {
+  defineComponent,
+  useRoute
+} from '@nuxtjs/composition-api'
 
 import ShortRegisterForm from '@/components/forms/children/ShortRegisterForm.vue'
 
-export default {
+export default defineComponent({
   name: 'StepThree',
 
   components: {
@@ -44,6 +48,15 @@ export default {
   data: () => ({
     loading: false
   }),
+
+  setup() {
+    const route = useRoute()
+    const utmContent = useUTM({ route: route.value })
+
+    return {
+      utmContent
+    }
+  },
 
   methods: {
     ...mapActions('auth', ['fetchUserInfo']),
@@ -55,7 +68,10 @@ export default {
 
     goToLessons () {
       this.$router.push({
-        name: 'app-onboarding'
+        name: 'app-onboarding',
+        query: {
+          ...this.utmContent
+        }
       })
     },
 
@@ -81,5 +97,5 @@ export default {
       }
     }
   }
-}
+})
 </script>

@@ -83,11 +83,18 @@
 
 <script>
 import { mapActions } from 'vuex'
+import {
+  defineComponent,
+  useRoute
+} from '@nuxtjs/composition-api'
+
+import { useUTM } from '@/composables/use-utm.composable'
 
 import StripePayForm from '@/components/forms/payment/StripePayForm'
 import CardPlaygarden from './CardPlaygarden'
 import CardKnowMore from './CardKnowMore'
-export default {
+
+export default defineComponent({
   name: 'StepTwo',
 
   components: {
@@ -105,9 +112,14 @@ export default {
       : ''
   }),
 
-  computed: {},
+  setup() {
+    const route = useRoute()
+    const utmContent = useUTM({ route: route.value })
 
-  created () {},
+    return {
+      utmContent
+    }
+  },
 
   methods: {
     ...mapActions('auth', ['fetchUserInfo']),
@@ -129,7 +141,8 @@ export default {
           name: 'app-children',
           query: {
             step: 3,
-            process: 'signup'
+            process: 'signup',
+            ...this.utmContent
           }
         }
       }
@@ -156,7 +169,7 @@ export default {
       }
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
