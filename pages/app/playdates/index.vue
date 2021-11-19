@@ -64,7 +64,7 @@
           </div>
 
           <!-- WEEK'S PLAYDATES -->
-          <v-row v-if="!loading" class="mt-6">
+          <v-row v-if="!loading && playdates.length" class="mt-6">
             <v-col v-for="playdate in playdates" :key="playdate.id" cols="12" md="6">
               <card-playdate
                 :playdate="playdate"
@@ -72,6 +72,30 @@
                 @spot-reserved="fetchPlaydatesForDate"
                 @spot-canceled="fetchPlaydatesForDate"
               />
+            </v-col>
+          </v-row>
+          <!--  NO PLAYDATES -->
+          <v-row class="mt-6">
+            <v-col cols="12" class="text-center">
+              <div>
+                <underlined-title
+                  text="There aren't any playdates for this week."
+                  font-size="32px"
+                  font-size-mobile="24px"
+                  line-color="#ffab37"
+                />
+              </div>
+
+              <v-btn
+                v-if="canGoToNextWeek"
+                :loading="loading"
+                color="accent"
+                large
+                class="text-none !pg-shadow-button mt-6"
+                @click="goToNextWeek"
+              >
+                Check next week
+              </v-btn>
             </v-col>
           </v-row>
         </v-col>
