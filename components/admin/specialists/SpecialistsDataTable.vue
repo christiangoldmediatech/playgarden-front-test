@@ -46,8 +46,9 @@
               :server-items-length="total"
               :action="action"
               top-justify="space-between"
-              @search="onSearch"
-              @refresh="refresh(true)"
+              @search="handleSearch"
+              @search-text-cleared="handleSearchTextClearance"
+              @refresh="refetchSpeciallistsData"
               @update:items-per-page="setLimit"
               @update:page="page = $event"
               @edit-item="
@@ -101,18 +102,14 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import onSearch from '@/mixins/OnSearchMixin.js'
 
 export default {
   name: 'SpecialistsDataTable',
-
-  mixins: [onSearch],
-
   data () {
     return {
       loading: false,
       action: true,
-      search: '',
+      searchText: null,
       limit: 10,
       page: 1,
       allFilters: false,
@@ -188,11 +185,11 @@ export default {
 
   watch: {
     page () {
-      this.refresh()
+      this.refetchSpeciallistsData()
     },
 
     limit () {
-      this.refresh()
+      this.refetchSpeciallistsData()
     },
 
     activeFilters (val) {
@@ -204,6 +201,9 @@ export default {
         this.allFilters = true
       }
     }
+  },
+  mounted () {
+    this.refetchSpeciallistsData()
   },
 
   methods: {
@@ -236,18 +236,23 @@ export default {
         this.limit = 0
       }
     },
-
-    async refresh (clear = false) {
+    handleSearch (searchText) {
+      this.searchText = searchText
+      this.refetchSpeciallistsData()
+    },
+    handleSearchTextClearance () {
+      this.searchText = null
+      this.refetchSpeciallistsData()
+    },
+    async refetchSpeciallistsData () {
       await this.getRoles('SPECIALISTS')
       const { id } = this.roles[0]
       this.loading = true
       const params = { limit: this.limit, page: this.page, roleId: id }
 
-      if (clear) {
-        this.search = ''
-      } else {
+      if (this.searchText) {
         this.activeFilters.forEach((filter) => {
-          params[filter] = this.search
+          params[filter] = this.searchText
         })
       }
 
@@ -261,7 +266,7 @@ export default {
         message: `Are you sure you wish to delete user '${user.firstName} ${user.lastName}' (${user.email})?`,
         action: async () => {
           await this.deleteSpecialists(id)
-          this.refresh()
+          this.refetchSpeciallistsData()
         }
       })
     },

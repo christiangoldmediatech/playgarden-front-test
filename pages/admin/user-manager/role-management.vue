@@ -1,5 +1,5 @@
 <template>
-  <roles-data-table ref="RolesDataTable" />
+  <roles-data-table />
 </template>
 
 <script>
@@ -12,10 +12,6 @@ export default {
 
   components: {
     RolesDataTable
-  },
-
-  mounted () {
-    this.$refs.RolesDataTable.refresh()
   }
 }
 </script>

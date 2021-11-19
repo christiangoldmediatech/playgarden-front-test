@@ -48,8 +48,9 @@
               :loading="loading"
               :page.sync="page"
               @update:page="page = $event"
-              @refresh="refresh(true)"
-              @search="onSearch"
+              @refresh="refetchCurriculumTypes"
+              @search="refetchCurriculumTypes"
+              @search-text-cleared="refetchCurriculumTypes"
               @edit-item="$refs.editor.open($event)"
               @remove-item="remove"
             />
@@ -62,7 +63,6 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import onSearch from '@/mixins/OnSearchMixin.js'
 import CurriculumTypesEditorDialog from '@/components/admin/curriculum/CurriculumTypesEditorDialog'
 
 export default {
@@ -71,13 +71,9 @@ export default {
   components: {
     CurriculumTypesEditorDialog
   },
-
-  mixins: [onSearch],
-
   data () {
     return {
       loading: false,
-      search: '',
       page: 1,
       headers: [
         {
@@ -117,26 +113,25 @@ export default {
   computed: {
     ...mapGetters('admin/curriculum', ['types'])
   },
-
+  mounted () {
+    this.refetchCurriculumTypes()
+  },
   methods: {
     ...mapActions('admin/curriculum', ['getTypes', 'deleteType']),
 
-    async refresh (clear = false) {
+    async refetchCurriculumTypes (searchText) {
       this.loading = true
-      if (clear) {
-        this.search = ''
-      }
-      await this.getTypes(this.search)
+
+      await this.getTypes(searchText)
       this.loading = false
     },
-
     remove ({ id, name }) {
       this.$nuxt.$emit('open-prompt', {
         title: 'Delete curicculum type?',
         message: `Are you sure you want to delete <b>${name}</b>?`,
         action: async () => {
           await this.deleteType(id)
-          this.refresh()
+          this.refetchCurriculumTypes()
         }
       })
     }

@@ -19,7 +19,10 @@
       <v-col cols="12">
         <v-card width="100%">
           <v-card-text>
-            <plan-editor-dialog ref="editor" @saved="refresh(false)" />
+            <plan-editor-dialog
+              ref="editor"
+              @saved="refetchSubscriptionPlan"
+            />
             <plan-view-dialog ref="view" />
 
             <pg-admin-data-table
@@ -29,8 +32,9 @@
               :no-show-delete="noShowDelete"
               :page.sync="page"
               @update:page="page = $event"
-              @search="onSearch"
-              @refresh="refresh(true)"
+              @search="handleSearch"
+              @search-text-cleared="handleSearchTextClearance"
+              @refresh="refetchSubscriptionPlan"
             >
               <template v-slot:item.actions="{ item }">
                 <v-icon color="#81A1F7" dense @click="$refs.editor.open(null, item)">
@@ -50,7 +54,6 @@
 
 <script>
 import { mapActions } from 'vuex'
-import onSearch from '@/mixins/OnSearchMixin.js'
 import PlanEditorDialog from './PlanEditorDialog'
 import PlanViewDialog from './PlanViewDialog'
 
@@ -61,17 +64,13 @@ export default {
     PlanEditorDialog,
     PlanViewDialog
   },
-
-  mixins: [onSearch],
-
   data () {
     return {
       plans: [],
       loading: false,
-      search: null,
+      searchText: null,
       noShowDelete: true,
       page: 1,
-      query: null,
       headers: [
         {
           text: 'Name',
@@ -94,36 +93,37 @@ export default {
       ]
     }
   },
-
+  mounted () {
+    this.refetchSubscriptionPlan()
+  },
   methods: {
     ...mapActions('payment', ['fetchSubscriptionPlan']),
-
-    async refresh (clear = false) {
+    handleSearch (searchText) {
+      this.searchText = searchText
+      this.refetchSubscriptionPlan()
+    },
+    handleSearchTextClearance () {
+      this.searchText = null
+      this.refetchSubscriptionPlan()
+    },
+    async refetchSubscriptionPlan () {
       this.loading = true
-      this.query = { active: true, code: this.search }
-      if (clear) {
-        this.search = null
-      }
-
-      if (!this.search) {
-        delete this.query.code
-      }
-
+      const code = this.searchText
+      const query = { active: true, ...code && { code } }
       try {
-        this.plans = await this.fetchSubscriptionPlan(this.query)
+        this.plans = await this.fetchSubscriptionPlan(query)
       } catch (e) {
       } finally {
         this.loading = false
       }
     },
-
-    remove ({ id, name }) {
+    remove ({ _id, name }) {
       this.$nuxt.$emit('open-prompt', {
         title: 'Delete plan?',
         message: `Unable to delete selected plan <b>${name}</b>`,
         action: async () => {
           // await this.deleteCoupon(id)
-          await this.refresh()
+          await this.refetchSubscriptionPlan()
         }
       })
     }

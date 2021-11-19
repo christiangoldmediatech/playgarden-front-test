@@ -41,46 +41,38 @@
                 >
                   <template v-slot:placeholder>
                     <v-overlay absolute :value="true">
-                      <v-lazy
-                        v-model="puzzle.lazy"
-                        :options="{
-                          threshold: 0.5,
-                        }"
-                        transition="scroll-y-transition"
+                      <v-card
+                        v-if="puzzle.active"
+                        color="transparent"
+                        elevation="0"
+                        width="300"
                       >
-                        <v-card
-                          v-if="puzzle.active"
-                          color="transparent"
-                          elevation="0"
-                          width="300"
-                        >
-                          <v-row v-if="puzzle.piecesUnclocked !== puzzle.pieces" justify="center" no-gutters>
-                            <span class="font-weight-black white--text">
-                              {{ (puzzle.piecesUnclocked) ? puzzle.piecesUnclocked : 0 }}/{{ puzzle.pieces }}
-                            </span>
-                            <v-progress-linear
-                              class="mt-2 mx-4 white"
-                              color="accent"
-                              height="15"
-                              :value="puzzle.percentageCompleted"
-                            />
-                            <v-btn
-                              nuxt
-                              small
-                              color="accent"
-                              class="mt-3 text-transform-none btn-puzzle"
-                              data-test-id="btn-puzzle"
-                              @click="showOverlay(puzzle)"
-                            >
-                              View Progress
-                            </v-btn>
-                          </v-row>
-                        </v-card>
+                        <v-row v-if="puzzle.piecesUnclocked !== puzzle.pieces" justify="center" no-gutters>
+                          <span class="font-weight-black white--text">
+                            {{ (puzzle.piecesUnclocked) ? puzzle.piecesUnclocked : 0 }}/{{ puzzle.pieces }}
+                          </span>
+                          <v-progress-linear
+                            class="mt-2 mx-4 white"
+                            color="accent"
+                            height="15"
+                            :value="puzzle.percentageCompleted"
+                          />
+                          <v-btn
+                            nuxt
+                            small
+                            color="accent"
+                            class="mt-3 text-transform-none btn-puzzle"
+                            data-test-id="btn-puzzle"
+                            @click="showOverlay(puzzle)"
+                          >
+                            View Progress
+                          </v-btn>
+                        </v-row>
+                      </v-card>
 
-                        <v-icon v-else color="grey" size="100">
-                          mdi-lock-outline
-                        </v-icon>
-                      </v-lazy>
+                      <v-icon v-else color="grey" size="100">
+                        mdi-lock-outline
+                      </v-icon>
                     </v-overlay>
                   </template>
 
@@ -126,13 +118,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, watch, computed, useRoute, useStore } from '@nuxtjs/composition-api'
-import { mapActions, mapGetters } from 'vuex'
+import { defineComponent, onMounted, computed, useRoute, useStore, useRouter, watch } from '@nuxtjs/composition-api'
 import PuzzlePiecesDialog from '@/components/app/student-cubby/PuzzlePiecesDialog.vue'
 import { usePuzzle } from '@/composables/puzzle'
-import { useChild } from '@/composables'
-import { PuzzleResponse, TypedStore } from '@/models'
-import { Child } from '@/models/child.model'
+import { useChild, useChildRoute } from '@/composables'
+import { PuzzleResponse, TypedStore, Child } from '@/models'
 
 export default defineComponent({
   name: 'Index',
@@ -143,30 +133,22 @@ export default defineComponent({
 
   setup () {
     const route = useRoute()
+    const router = useRouter()
     const store = useStore<TypedStore>()
-
-    const studentId = computed(() => {
-      const childId = Number(route.value.query.id)
-
-      if (Number.isNaN(childId)) {
-        const currentChildren = store.getters.getCurrentChild
-        return currentChildren[0].id
-      } else {
-        return childId
-      }
-    })
-    computed(async () => await getPuzzlesByChildId(studentId.value))
-
+    const { childId: studentId } = useChildRoute({ store, route, router })
     const { puzzlesResponse, getPuzzlesByChildId } = usePuzzle()
     const { children, get } = useChild({ store })
 
+    const child = computed(() => children.value.find((child: Child) => child.id === studentId.value))
+
     onMounted(async () => {
-      await getPuzzlesByChildId(studentId.value)
+      await getPuzzlesByChildId(studentId.value || 0)
       await get()
     })
 
-    const child = computed(() => children.value.find((child: Child) => child.id === studentId.value)
-    )
+    watch(studentId, async () => {
+      await getPuzzlesByChildId(studentId.value || 0)
+    })
 
     return {
       studentId,

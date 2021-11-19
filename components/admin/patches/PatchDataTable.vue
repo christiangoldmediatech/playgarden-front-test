@@ -39,7 +39,10 @@
       <v-col cols="12">
         <v-card width="100%">
           <v-card-text>
-            <patch-editor-dialog ref="editor" @saved="refresh(false)" />
+            <patch-editor-dialog
+              ref="editor"
+              @saved="refetchPatches"
+            />
 
             <pg-admin-data-table
               :headers="headers"
@@ -47,8 +50,9 @@
               :loading="loading"
               :page.sync="page"
               @update:page="page = $event"
-              @refresh="refresh(true)"
-              @search="onSearch"
+              @refresh="refetchPatches"
+              @search-text-cleared="handleSearchTextClearance"
+              @search="handleSearch"
               @edit-item="$refs.editor.open(null, $event)"
               @remove-item="remove"
             >
@@ -65,13 +69,11 @@
                     item-value="id"
                     label="Activity"
                     solo-labeled
-                    @change="refresh(false)"
+                    @change="refetchPatches"
                   />
                 </v-col>
-
                 <v-spacer />
               </template>
-
               <template v-slot:[`item.image`]="{ item }">
                 <img v-if="item.image" :src="item.image" width="32px">
 
@@ -89,7 +91,6 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import onSearch from '@/mixins/OnSearchMixin.js'
 import PatchEditorDialog from './PatchEditorDialog'
 
 export default {
@@ -98,9 +99,6 @@ export default {
   components: {
     PatchEditorDialog
   },
-
-  mixins: [onSearch],
-
   data: () => ({
     filters: {
       activityTypeId: null
@@ -157,41 +155,43 @@ export default {
   computed: {
     ...mapGetters('admin/activity', ['types'])
   },
-
   created () {
     this.getTypes({ activity: true })
   },
-
+  mounted () {
+    this.refetchPatches()
+  },
   methods: {
     ...mapActions('admin/activity', ['getTypes']),
-
     ...mapActions('patches', ['getPatches', 'deletePatch']),
-
-    async refresh (clear = false) {
+    handleSearch (searchText) {
+      this.searchText = searchText
+      this.refetchPatches()
+    },
+    handleSearchTextClearance () {
+      this.searchText = null
+      this.refetchPatches()
+    },
+    async refetchPatches () {
       this.loading = true
-
-      if (clear) {
-        this.search = null
-      }
-
+      const name = this.searchText
       try {
         this.patches = await this.getPatches({
           ...this.filters,
-          name: this.search
+          ...name && { name }
         })
       } catch (e) {
       } finally {
         this.loading = false
       }
     },
-
     remove ({ id, name }) {
       this.$nuxt.$emit('open-prompt', {
         title: 'Delete patch?',
         message: `Are you sure you want to delete <b>${name}</b>?`,
         action: async () => {
           await this.deletePatch(id)
-          await this.refresh()
+          await this.refetchPatches()
         }
       })
     }

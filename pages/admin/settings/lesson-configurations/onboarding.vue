@@ -1,5 +1,5 @@
 <template>
-  <onboarding-data-table ref="OnboardingDataTable" />
+  <onboarding-data-table />
 </template>
 
 <script>
@@ -12,14 +12,6 @@ export default {
 
   components: {
     OnboardingDataTable
-  },
-
-  data () {
-    return {}
-  },
-
-  mounted () {
-    this.$refs.OnboardingDataTable.refresh()
   }
 }
 </script>

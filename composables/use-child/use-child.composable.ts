@@ -11,10 +11,14 @@ enum gendersChildren {
   FEMALE = 'FEMALE'
 }
 
-export const useChild = ({ store }: { store: Store<TypedStore> }) => {
+interface UseChild {
+  store: Store<TypedStore>
+  cookies?: ReturnType<typeof useCookiesHelper>
+}
+
+export const useChild = ({ store, cookies }: UseChild) => {
   const genders = ref([gendersChildren.MALE, gendersChildren.FEMALE])
   const backpacks = ref<ChildBackpack[]>([])
-  const cookies = useCookiesHelper()
 
   const children = computed(() => store.state.children.rows)
   const setChildren = (children: Child[]) => store.commit('children/SET_ROWS', children)
@@ -26,7 +30,7 @@ export const useChild = ({ store }: { store: Store<TypedStore> }) => {
     store.commit('SET_CURRENT_CHILD_EXPIRES', null)
 
     if (process.client) {
-      cookies.remove('selectedChild')
+      cookies?.remove('selectedChild')
     }
 
     if (hasLocalStorage() && window.localStorage.getItem('selectedChild')) {

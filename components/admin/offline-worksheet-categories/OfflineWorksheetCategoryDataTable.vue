@@ -42,7 +42,7 @@
           <v-card-text>
             <offline-worksheet-category-editor-dialog
               ref="editor"
-              @saved="refresh(false)"
+              @saved="refetchOfflineWorksheetCategories"
             />
 
             <pg-admin-data-table
@@ -51,8 +51,9 @@
               :loading="loading"
               :page.sync="page"
               @update:page="page = $event"
-              @refresh="refresh(true)"
-              @search="onSearch"
+              @refresh="refetchOfflineWorksheetCategories"
+              @search-text-cleared="handleSearchTextClearance"
+              @search="handleSearch"
               @edit-item="$refs.editor.open(null, $event)"
               @remove-item="remove"
             >
@@ -79,7 +80,6 @@
 
 <script>
 import { mapActions } from 'vuex'
-import onSearch from '@/mixins/OnSearchMixin.js'
 import OfflineWorksheetCategoryEditorDialog from './OfflineWorksheetCategoryEditorDialog'
 
 export default {
@@ -88,13 +88,10 @@ export default {
   components: {
     OfflineWorksheetCategoryEditorDialog
   },
-
-  mixins: [onSearch],
-
   data: () => ({
     offlineWorksheetCategories: [],
     loading: false,
-    search: null,
+    searchText: null,
     page: 1,
     headers: [
       {
@@ -134,23 +131,28 @@ export default {
       }
     ]
   }),
-
+  mounted () {
+    this.refetchOfflineWorksheetCategories()
+  },
   methods: {
     ...mapActions('offline-worksheet-categories', [
       'getOfflineWorksheetCategories',
       'deleteOfflineWorksheetCategory'
     ]),
-
-    async refresh (clear = false) {
+    handleSearch (searchText) {
+      this.searchText = searchText
+      this.refetchOfflineWorksheetCategories()
+    },
+    handleSearchTextClearance () {
+      this.searchText = null
+      this.refetchOfflineWorksheetCategories()
+    },
+    async refetchOfflineWorksheetCategories () {
       this.loading = true
-
-      if (clear) {
-        this.search = null
-      }
+      const category = this.searchText
 
       try {
-        this.offlineWorksheetCategories = await this.getOfflineWorksheetCategories(
-          { category: this.search }
+        this.offlineWorksheetCategories = await this.getOfflineWorksheetCategories({ ...category && { category } }
         )
       } catch (e) {
       } finally {
@@ -164,7 +166,7 @@ export default {
         message: `Are you sure you want to delete <b>${name}</b>?`,
         action: async () => {
           await this.deleteOfflineWorksheetCategory(id)
-          await this.refresh()
+          await this.refetchOfflineWorksheetCategories()
         }
       })
     }

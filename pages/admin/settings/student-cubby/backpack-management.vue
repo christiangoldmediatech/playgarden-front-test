@@ -1,5 +1,5 @@
 <template>
-  <backpack-data-table ref="BackpackDataTable" />
+  <backpack-data-table />
 </template>
 
 <script>
@@ -16,10 +16,6 @@ export default {
 
   data () {
     return {}
-  },
-
-  mounted () {
-    this.$refs.BackpackDataTable.refresh()
   }
 }
 </script>

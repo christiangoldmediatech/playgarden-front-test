@@ -14,7 +14,7 @@
               @input="id = $event"
             />
           </v-col>
-          <v-col cols="12" md="9" align-self="center" class="mt-2 mt-md-0 d-none d-sm-flex">
+          <v-col cols="12" md="9" align-self="center" class="mt-2 mt-md-0 d-none d-sm-flex px-2 carousel-wrapper">
             <music-carousel-letter
               :is-full-width="true"
               :value="selectedLetterId"
@@ -63,7 +63,7 @@ import HorizontalRibbonCard from '@/components/ui/cards/HorizontalCardRibbon.vue
 import ChildSelect from '@/components/app/ChildSelect.vue'
 import MusicCarouselLetter from '@/components/app/music/MusicLetterCarousel.vue'
 
-import { useMusic, useSnotifyHelper, useVuetifyHelper, useAppEventBusHelper, useGtmHelper, useAuth } from '@/composables'
+import { useMusic, useSnotifyHelper, useVuetifyHelper, useAppEventBusHelper, useGtmHelper, useAuth, useChildRoute } from '@/composables'
 import { onMounted, ref, computed, useRoute, watch, onUnmounted, useStore, useRouter, useContext } from '@nuxtjs/composition-api'
 import { MusicLibrary, APP_EVENTS, TAG_MANAGER_EVENTS, TypedStore } from '@/models'
 
@@ -106,6 +106,7 @@ export default {
       sendCurrentPlayingMusic,
       songsByCurriculumTypeWithFavorites
     } = useMusic()
+    const { childId } = useChildRoute({ store, route, router, shouldRedirect: true })
 
     const isMobile = computed(() => vuetify.breakpoint.width <= PAGE_MOBILE_BREAKPOINT)
     const isPlayerShowing = computed(() => playlist.value.length > 0)
@@ -120,37 +121,23 @@ export default {
 
     const debouncedHandleScroll = debounce(handleScroll, 50)
 
-    const id = ref<number | null>(null)
-
-    const setId = () => {
-      if (typeof route.value.query.id !== 'string' && typeof route.value.query.id !== 'number') {
-        id.value = null
-        return
-      }
-
-      id.value = parseInt(route.value.query.id)
-    }
-
-    watch(id, async (val) => {
+    watch(childId, async (val) => {
       if (val) {
         await getAndSetFavorites()
-        setCurrentChildToRoute(val)
       }
     })
 
     watch(currentSong, async (val) => {
-      if (!val || !id.value) {
+      if (!val || !childId.value) {
         return
       }
 
-      await sendCurrentPlayingMusic(val.id, id.value)
+      await sendCurrentPlayingMusic(val.id, childId.value)
     })
 
     onMounted(async () => {
       await getMusicLibrariesByCurriculumType()
       await getAndSetFavorites()
-      handleCurrentChild()
-      setId()
       handleEmptyMusicPlayer()
 
       window.addEventListener('scroll', debouncedHandleScroll)
@@ -171,25 +158,6 @@ export default {
       eventBus.$off(APP_EVENTS.MUSIC_ITEM_CLICKED)
       eventBus.$off(APP_EVENTS.MUSIC_ITEM_ADD_TO_FAVORITES)
     })
-
-    const handleCurrentChild = () => {
-      const currentChild = computed(() => store.getters.getCurrentChild)
-
-      if (!id.value && currentChild.value?.length) {
-        setCurrentChildToRoute(currentChild.value[0].id)
-      }
-    }
-
-    const setCurrentChildToRoute = (id: number) => {
-      if (id && route.value.name) {
-        router.push({
-          name: route.value.name,
-          query: {
-            id: `${id}`
-          }
-        })
-      }
-    }
 
     const updateCurrentSongData = () => {
       if (!currentSong.value) {
@@ -216,11 +184,11 @@ export default {
     }
 
     const getAndSetFavorites = async () => {
-      if (!id.value) {
+      if (!childId.value) {
         return
       }
 
-      await getFavoriteMusicForChild(id.value)
+      await getFavoriteMusicForChild(childId.value)
       updateCurrentSongData()
     }
 
@@ -258,8 +226,8 @@ export default {
         if (song.isFavorite && song.favoriteId) {
           await removeFavoriteMusic(song.favoriteId)
           snotify.success('Song removed from favorites')
-        } else if (id.value) {
-          await setFavoriteMusicForChild(id.value, song.id)
+        } else if (childId.value) {
+          await setFavoriteMusicForChild(childId.value, song.id)
           eventBus.$emit(APP_EVENTS.MUSIC_ITEM_ADD_TO_FAVORITES, {
             event: TAG_MANAGER_EVENTS.MUSIC_ITEM_ADD_TO_FAVORITES,
             userId: userInfo.value.id,
@@ -326,7 +294,7 @@ export default {
       didScrollToBottom,
       getAndSetFavorites,
       handleFavorite,
-      id,
+      id: childId,
       isMobile,
       isPlayerShowing,
       musicPlayer,
@@ -346,5 +314,8 @@ export default {
 <style lang="scss" scoped>
 .music-song-list {
   max-width: 1400px;
+}
+.carousel-wrapper {
+  position: relative;
 }
 </style>

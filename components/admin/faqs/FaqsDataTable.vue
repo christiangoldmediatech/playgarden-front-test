@@ -47,8 +47,8 @@
               :page.sync="page"
               @click:delete-item="remove($event)"
               @click:edit-item="$refs.editor.open(null, $event)"
-              @click:refresh="refresh(true)"
-              @search="onSearch"
+              @click:refresh="refetchFAQs"
+              @search="handleSearchRequest"
               @update:page="page = $event"
             >
               <template v-slot:top.prepend>
@@ -61,7 +61,7 @@
                   item-value="id"
                   label="Category"
                   solo-labeled
-                  @change="refresh(false)"
+                  @change="handleChangeInCategorySelection"
                 />
 
                 <v-spacer />
@@ -89,31 +89,29 @@
       </v-col>
     </v-row>
 
-    <faqs-editor-dialog ref="editor" @saved="refresh(false)" />
+    <faqs-editor-dialog
+      ref="editor"
+      @saved="refetchFAQs"
+    />
   </v-container>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
 
-import onSearch from '@/mixins/OnSearchMixin.js'
 import FaqsEditorDialog from './FaqsEditorDialog'
 
 export default {
   name: 'FaqsDataTable',
-
   components: {
     FaqsEditorDialog
   },
-
-  mixins: [onSearch],
-
   data () {
     return {
       categories: [],
+      searchText: null,
       faqs: [],
       loading: false,
-      search: '',
       filters: {
         faqsCategoryId: null
       },
@@ -160,22 +158,25 @@ export default {
       this.loading = false
     }
   },
-
+  mounted () {
+    this.refetchFAQs()
+  },
   methods: {
     ...mapActions('faqs', ['deleteFAQs', 'getFAQs']),
-
     ...mapActions('faqs-categories', ['getFAQsCategories']),
-
-    async refresh (clear = false) {
+    handleSearchRequest (searchText) {
+      this.searchText = searchText
+      this.refetchFAQs()
+    },
+    handleChangeInCategorySelection () {
+      this.refetchFAQs()
+    },
+    async refetchFAQs () {
       this.loading = true
-
-      if (clear) {
-        this.search = ''
-      }
-
+      const question = this.searchText
       try {
         this.faqs = await this.getFAQs({
-          question: this.search,
+          ...question && { question },
           faqsCategoryId: this.filters.faqsCategoryId || null
         })
       } catch (e) {
@@ -183,14 +184,13 @@ export default {
         this.loading = false
       }
     },
-
     remove ({ id, name }) {
       this.$nuxt.$emit('open-prompt', {
         title: 'Delete FAQ?',
         message: `Are you sure you want to delete <b>${name}</b>?`,
         action: async () => {
           await this.deleteFAQs(id)
-          await this.refresh()
+          await this.refetchFAQs()
         }
       })
     }

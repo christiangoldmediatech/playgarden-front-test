@@ -47,8 +47,8 @@
               :page.sync="page"
               @click:delete-item="remove($event)"
               @click:edit-item="$refs.editor.open(null, $event)"
-              @click:refresh="refresh(true)"
-              @search="onSearch"
+              @click:refresh="refetchFAQCategories"
+              @search="handleSearch"
               @update:page="page = $event"
             >
               <template v-slot:item.color="{ item }">
@@ -73,14 +73,16 @@
       </v-col>
     </v-row>
 
-    <faqs-editor-dialog ref="editor" @saved="refresh(false)" />
+    <faqs-editor-dialog
+      ref="editor"
+      @saved="refetchFAQCategories"
+    />
   </v-container>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
 
-import onSearch from '@/mixins/OnSearchMixin.js'
 import FaqsEditorDialog from './FaqsCategoryEditorDialog'
 
 export default {
@@ -89,14 +91,11 @@ export default {
   components: {
     FaqsEditorDialog
   },
-
-  mixins: [onSearch],
-
   data () {
     return {
       categories: [],
       loading: false,
-      search: '',
+      searchText: '',
       page: 1,
       headers: [
         {
@@ -141,22 +140,25 @@ export default {
       ]
     }
   },
-
+  mounted () {
+    this.refetchFAQCategories()
+  },
   methods: {
     ...mapActions('faqs-categories', [
       'deleteFAQsCategory',
       'getFAQsCategories'
     ]),
-
-    async refresh (clear = false) {
+    handleSearch (searchText) {
+      this.searchText = searchText
+      this.refetchFAQCategories()
+    },
+    async refetchFAQCategories () {
       this.loading = true
 
-      if (clear) {
-        this.search = ''
-      }
+      const name = this.searchText
 
       try {
-        this.categories = await this.getFAQsCategories({ name: this.search })
+        this.categories = await this.getFAQsCategories({ ...name && { name } })
       } catch (e) {
       } finally {
         this.loading = false
@@ -169,7 +171,7 @@ export default {
         message: `Are you sure you want to delete <b>${name}</b>?`,
         action: async () => {
           await this.deleteFAQsCategory(id)
-          await this.refresh()
+          await this.refetchFAQCategories()
         }
       })
     }

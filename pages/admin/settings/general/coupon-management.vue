@@ -1,5 +1,5 @@
 <template>
-  <coupon-data-table ref="CouponDataTable" />
+  <coupon-data-table />
 </template>
 
 <script>
@@ -16,10 +16,6 @@ export default {
 
   data () {
     return {}
-  },
-
-  mounted () {
-    this.$refs.CouponDataTable.refresh()
   }
 }
 </script>

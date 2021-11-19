@@ -1,7 +1,6 @@
 <template>
-  <v-row>
+  <v-row v-if="isChangePasswordModalVisible">
     <pg-dialog
-      v-if="isChangePasswordModalVisible"
       v-model="isChangePasswordModalVisible"
       content-class="white"
       :fullscreen="$vuetify.breakpoint.smAndDown"

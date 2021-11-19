@@ -68,23 +68,35 @@
                 />
                 <!-- Price -->
                 <p class="text-center mt-8">
-                  <span class="product-price">
+                  <span
+                    v-if="isAnnualSubscriptionEnabled"
+                    class="product-price"
+                  >
                     ${{ (plan.priceAnnual / 12).toFixed(2) }}
                   </span>
+                  <span
+                    v-else
+                    class="product-price"
+                  >
+                    ${{ (plan.priceMonthly).toFixed(2) }}
+                  </span>
+
                   <span class="product-month">/Month</span>
                   <br>
-                  <span
-                    v-if="indexP === 0"
-                    class="info-prodcut-detail"
-                  >Billed Annually (Save ~$170)</span>
-                  <span
-                    v-if="indexP === 1"
-                    class="info-prodcut-detail"
-                  >Billed Annually (Save ~$300)</span>
-                  <span
-                    v-if="indexP === 2"
-                    class="info-prodcut-detail"
-                  >Billed Annually (Save ~$1,200)</span>
+                  <template v-if="isAnnualSubscriptionEnabled">
+                    <span
+                      v-if="indexP === 0"
+                      class="info-prodcut-detail"
+                    >Billed Annually (Save ~$170)</span>
+                    <span
+                      v-if="indexP === 1"
+                      class="info-prodcut-detail"
+                    >Billed Annually (Save ~$300)</span>
+                    <span
+                      v-if="indexP === 2"
+                      class="info-prodcut-detail"
+                    >Billed Annually (Save ~$1,200)</span>
+                  </template>
                 </p>
               </div>
               <!-- Call Us To Enroll Text -->
@@ -99,8 +111,15 @@
 
               <template v-else>
                 <!-- Radio Button Selection -->
-                <div class="d-flex justify-center">
-                  <validation-provider v-slot="{ errors }" name="Plan" rules="required">
+                <div
+                  v-if="isAnnualSubscriptionEnabled"
+                  class="d-flex justify-center"
+                >
+                  <validation-provider
+                    v-slot="{ errors }"
+                    name="Plan"
+                    rules="required"
+                  >
                     <v-radio-group
                       v-model="radioGroup"
                       :disabled="loading"
@@ -146,7 +165,7 @@
 </template>
 
 <script>
-import { defineComponent, useStore } from '@nuxtjs/composition-api'
+import { defineComponent, useStore, computed } from '@nuxtjs/composition-api'
 import { get } from 'lodash'
 import { mapActions, mapGetters } from 'vuex'
 
@@ -187,9 +206,11 @@ export default defineComponent({
   setup () {
     const store = useStore()
     const { showContactUsModal } = useGlobalModal({ store })
+    const isAnnualSubscriptionEnabled = computed(() => store.state.plans.isAnnualSubscriptionEnabled)
 
     return {
-      showContactUsModal
+      showContactUsModal,
+      isAnnualSubscriptionEnabled
     }
   },
 

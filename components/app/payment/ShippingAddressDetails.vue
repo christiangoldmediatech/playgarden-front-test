@@ -5,18 +5,10 @@
       <v-form @submit.prevent="passes(onSubmit)">
         <v-row no-gutters>
           <v-col cols="12">
-            <!-- Street 1 -->
-            <validation-provider v-slot="{ errors }" name="Street 1" rules="required">
-              <pg-text-field
-                v-model="draft.address1"
-                clearable
-                :error-messages="errors"
-                :loading="loading"
-                placeholder="Street"
-                label="Street"
-                solo-labeled
-              />
-            </validation-provider>
+            <search-address-autocomplete
+              v-model="draft.address1"
+              @address-components="configureAddress"
+            />
           </v-col>
 
           <v-col cols="12">
@@ -26,7 +18,7 @@
               clearable
               :loading="loading"
               placeholder="Apt, Suite, PO BOX (optional)"
-              label="Street 2 (optional)"
+              label="Apt, Suite, PO BOX (optional)"
               solo-labeled
             />
           </v-col>
@@ -63,6 +55,42 @@
                 :loading="loading"
                 placeholder="State"
                 label="State"
+                solo-labeled
+              />
+            </validation-provider>
+          </v-col>
+
+          <v-col
+            :cols="shouldWrapOnDesktop ? 4 : 12"
+            :class="{ 'pr-4': shouldWrapOnDesktop }"
+          >
+            <!-- Country -->
+            <validation-provider
+              v-slot="{ errors }"
+              name="Country"
+              rules="required"
+            >
+              <pg-select
+                v-model="draft.country"
+                :items="[
+                  {
+                    text: 'United States',
+                    value: 'US'
+                  },
+                  {
+                    text: 'Canada',
+                    value: 'CA'
+                  },
+                  {
+                    text: 'Mexico',
+                    value: 'MX'
+                  }
+                ]"
+                clearable
+                :error-messages="errors"
+                :loading="loading"
+                placeholder="Country"
+                label="Country"
                 solo-labeled
               />
             </validation-provider>
@@ -165,6 +193,13 @@
       </v-col>
 
       <v-col cols="4">
+        Country
+      </v-col>
+      <v-col cols="8" class="text-right">
+        <b>{{ draft.country && draft.country.name ? draft.country.name : '' }}</b>
+      </v-col>
+
+      <v-col cols="4">
         Zip Code
       </v-col>
       <v-col cols="8" class="text-right">
@@ -188,18 +223,24 @@
 import { mapActions } from 'vuex'
 
 import submittable from '@/utils/mixins/submittable'
+import SearchAddressAutocomplete from '@/components/SearchAddressAutocomplete.vue'
 
 const draftDefault = {
   address1: null,
   address2: null,
   city: null,
   state: null,
+  country: null,
   zipCode: null,
   phoneNumber: null
 }
 
 export default {
   name: 'ShippingAddressDetails',
+
+  components: {
+    SearchAddressAutocomplete
+  },
 
   mixins: [submittable],
 
@@ -274,6 +315,49 @@ export default {
 
     async init () {
       await this.fetchAddress()
+    },
+
+    configureAddress (data) {
+      try {
+        // eslint-disable-next-line camelcase
+        if (data && data.address_components) {
+          const draftId = this.draft?.id
+          this.draft = { ...draftDefault, address1: this.draft.address1 }
+          if (draftId) {
+            this.draft.id = draftId
+          }
+          // eslint-disable-next-line camelcase
+          const addressComponents = data.address_components
+
+          const city = addressComponents.find(({ types }) =>
+            types.includes('locality')
+          )
+          if (city) {
+            this.draft.city = city.long_name
+          }
+
+          const state = addressComponents.find(({ types }) =>
+            types.includes('administrative_area_level_1')
+          )
+          if (state) {
+            this.draft.state = state.long_name
+          }
+
+          const country = addressComponents.find(({ types }) =>
+            types.includes('country')
+          )
+          if (country) {
+            this.draft.country = country.short_name.toUpperCase()
+          }
+
+          const postalCode = addressComponents.find(({ types }) =>
+            types.includes('postal_code')
+          )
+          if (country) {
+            this.draft.zipCode = postalCode.short_name.toUpperCase()
+          }
+        }
+      } catch {}
     },
 
     async fetchAddress () {

@@ -1,5 +1,5 @@
 <template>
-  <activity-type-data-table ref="ActivityTypeDataTable" />
+  <activity-type-data-table />
 </template>
 
 <script>
@@ -16,10 +16,6 @@ export default {
 
   data () {
     return {}
-  },
-
-  mounted () {
-    this.$refs.ActivityTypeDataTable.refresh()
   }
 }
 </script>

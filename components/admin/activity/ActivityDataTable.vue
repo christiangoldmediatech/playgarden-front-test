@@ -46,8 +46,9 @@
               :page.sync="page"
               :server-items-length="total"
               top-justify="space-between"
-              @search="onSearch"
-              @refresh="refresh(true)"
+              @search="handleSearch"
+              @refresh="handleRefresh"
+              @search-text-cleared="handleSearchClearance"
               @update:page="page = $event"
               @edit-item="
                 $router.push({
@@ -109,7 +110,6 @@
 
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex'
-import onSearch from '@/mixins/OnSearchMixin.js'
 import VideoPreviewBtn from '@/components/admin/video-preview/VideoPreviewBtn.vue'
 import GradesBtn from '@/components/admin/grades/GradesBtn.vue'
 
@@ -120,15 +120,12 @@ export default {
     VideoPreviewBtn,
     GradesBtn
   },
-
-  mixins: [onSearch],
-
   data () {
     return {
       loading: false,
-      search: '',
       page: 1,
       allFilters: false,
+      searchText: null,
       activeFilters: [],
       checkStatusInterval: null,
       entityType: 'Activities',
@@ -189,11 +186,11 @@ export default {
 
   watch: {
     page () {
-      this.refresh()
+      this.refetchActivities()
     },
 
     limit () {
-      this.refresh()
+      this.refetchActivities()
     },
 
     activeFilters (val) {
@@ -204,12 +201,15 @@ export default {
       if (val.length === this.filterList.length) {
         this.allFilters = true
       }
-      this.onSearch()
+      this.refetchActivities()
     },
 
     rows () {
       this.checkStatus()
     }
+  },
+  mounted () {
+    this.refetchActivities()
   },
 
   beforeDestroy () {
@@ -234,7 +234,7 @@ export default {
           featured: !item.featured
         }
       })
-      await this.refresh()
+      await this.refetchActivities()
     },
 
     toggleAll () {
@@ -250,19 +250,26 @@ export default {
         this.activeFilters = []
       }
     },
-
-    async refresh (clear = false) {
+    handleSearch (searchText) {
+      this.searchText = searchText
+      this.refetchActivities()
+    },
+    handleSearchClearance () {
+      this.searchText = null
+      this.refetchActivities()
+    },
+    handleRefresh () {
+      this.searchText = null
+      this.refetchActivities()
+    },
+    async refetchActivities () {
       this.loading = true
-
-      if (this.clear) {
-        this.search = ''
-      }
-
+      const name = this.searchText
       const params = {
         limit: this.paginationLimit,
         page: this.page,
         type: 'VIDEO',
-        name: this.search
+        ...name && { name }
       }
 
       // params.name = this.search
@@ -281,7 +288,7 @@ export default {
         message: `Are you sure you want to delete <b>${name}</b>?`,
         action: async () => {
           await this.deleteActivity(id)
-          this.refresh()
+          this.refetchActivities()
         }
       })
     },
@@ -290,7 +297,7 @@ export default {
       if (this.rows.filter(data => data.videos.status !== 'COMPLETED').length > 0) {
         if (this.checkStatusInterval === null) {
           this.checkStatusInterval = setInterval(() => {
-            this.refresh()
+            this.refetchActivities()
           }, 120000)
         }
       } else {

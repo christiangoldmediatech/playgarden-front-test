@@ -118,7 +118,7 @@
             class="dashboard-item pass-through"
             active-class="dashboard-item-active"
             exact-active-class="dashboard-item-exact"
-            @click.stop="noLinkMode ? undefined : openPdf"
+            @click.stop="handleDownloadWorksheetClick"
           >
             <v-row no-gutters class="py-2">
               <v-col cols="3" align-self="center" class="d-flex justify-center">
@@ -189,6 +189,10 @@
               <v-col cols="9" align-self="center">
                 <div class="text-uppercase dashboard-item-title" :class="{ 'dashboard-item-disabled': videos.progress < 100 }">
                   UPLOAD WORKSHEET
+                </div>
+
+                <div class="text-caption grey--text">
+                  File(s) must be in JPG or PNG format
                 </div>
               </v-col>
             </v-row>
@@ -445,6 +449,12 @@ export default {
         dayLetter: this.lesson.curriculumType.letter,
         dayNumber: this.lesson.day
       })
+    },
+
+    handleDownloadWorksheetClick () {
+      if (!this.noLinkMode) {
+        this.openPdf()
+      }
     }
   }
 }

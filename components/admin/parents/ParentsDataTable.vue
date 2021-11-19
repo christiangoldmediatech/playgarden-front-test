@@ -120,8 +120,9 @@
               :server-items-length="total"
               top-justify="space-between"
               :items-per-page="paginationLimit"
-              @search="onSearch"
-              @refresh="refresh(true)"
+              @search="handleSearch"
+              @search-text-cleared="handleSearchTextClearance"
+              @refresh="refetchUsers"
               @update:page="page = $event"
               @edit-item="$router.push({
                 name: 'admin-user-manager-editor',
@@ -180,7 +181,6 @@
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex'
 import PieChart from '@/components/echart/PieChart.vue'
-import onSearch from '@/mixins/OnSearchMixin.js'
 
 export default {
   name: 'ParentsDataTable',
@@ -188,9 +188,6 @@ export default {
   components: {
     PieChart
   },
-
-  mixins: [onSearch],
-
   props: {
     showPanel: {
       type: Boolean,
@@ -208,7 +205,7 @@ export default {
       default: 'Parents'
     },
     paramsSend: {
-      type: Object,
+      type: [Object, null],
       required: false,
       default: () => {}
     }
@@ -219,7 +216,7 @@ export default {
       loading: false,
       action: true,
       showGraphs: true,
-      search: '',
+      searchText: '',
       limit: 50,
       page: 1,
       allFilters: false,
@@ -319,15 +316,15 @@ export default {
 
   watch: {
     page () {
-      this.refresh()
+      this.refetchUsers()
     },
 
     limit () {
-      this.refresh()
+      this.refetchUsers()
     },
 
-    paramsSend (val) {
-      this.refresh()
+    paramsSend () {
+      this.refetchUsers()
     },
 
     activeFilters (val) {
@@ -347,9 +344,8 @@ export default {
   },
 
   mounted () {
-    this.refresh()
+    this.refetchUsers()
   },
-
   methods: {
     ...mapActions('admin/users', {
       getUsers: 'get',
@@ -377,7 +373,7 @@ export default {
         message: `Are you sure you want to delete <b>${firstName} ${lastName}' (${email})</b>?`,
         action: async () => {
           await this.deleteUser(id)
-          this.refresh()
+          this.refetchUsers()
         }
       })
     },
@@ -403,23 +399,25 @@ export default {
         this.limit = 0
       }
     },
-
-    async refresh (clear = false) {
+    handleSearch (searchText) {
+      this.searchText = searchText
+      this.refetchUsers()
+    },
+    handleSearchTextClearance () {
+      this.searchText = null
+      this.refetchUsers()
+    },
+    async refetchUsers () {
       const id = 3
       this.loading = true
-      let params = { limit: this.paginationLimit, page: this.page, roleId: id }
+      const params = { limit: this.paginationLimit, page: this.page, roleId: id, ...this.paramsSend }
 
-      if (this.paramsSend) {
-        params = { ...params, ...this.paramsSend }
-      }
-
-      if (clear) {
-        this.search = ''
-      } else {
+      if (this.searchText) {
         this.activeFilters.forEach((filter) => {
-          params[filter] = this.search
+          params[filter] = this.searchText
         })
       }
+
       this.filters = { ...params }
       delete this.filters.limit
       delete this.filters.page

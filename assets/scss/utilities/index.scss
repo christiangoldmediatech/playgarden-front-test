@@ -1,0 +1,22 @@
+
+// font-sizes
+$fontSizes : 8, 9, 10, 11, 12, 13, 14, 16, 18, 20, 24, 32;
+// use class ".fs-12" for font-size: 12px
+@each $num in $fontSizes {
+  .fs-#{$num} {
+    font-size: #{$num}px
+  }
+}
+
+// font-weights
+// use class ".fw-100" for font-weight: 100
+@for $w from 1 through 9 {
+    .fw-#{$w*100} {
+        font-weight: $w * 100;
+    }
+}
+
+
+.cursor-pointer{
+  cursor: pointer;
+}

@@ -24,7 +24,12 @@
 
       <v-card-text>
         <v-container>
-          <parents-data-table ref="UsersDataTableRef" :title="seriesName+ ' - ' + name" :show-panel="showPanel" :series-name="seriesName" :params-send="params" />
+          <parents-data-table
+            :title="seriesName+ ' - ' + name"
+            :show-panel="showPanel"
+            :series-name="seriesName"
+            :params-send="params"
+          />
         </v-container>
       </v-card-text>
 
@@ -78,7 +83,7 @@ export default {
     },
 
     buildQueryParamsConversionTunne () {
-      this.params = {}
+      this.params = { testUser: false }
       switch (this.name) {
         case 'Register':
           this.params.funnel = 'REGISTER'
@@ -99,37 +104,39 @@ export default {
       this.params = {
         status: (this.name === 'Active') ? 1 : 0,
         stripeStatus: 'trialing',
-        planId: [1, 2, 3]
+        planId: [1, 2, 3],
+        testUser: false
       }
     },
 
     buildQueryParamsEarlyEducationOnline () {
       this.params = {
         planId: 1,
-        status: (this.name === 'Active') ? 1 : 0,
-        stripeStatus: ['active', 'past_due', 'unpaid', 'canceled', 'incomplete', 'incomplete_expired', 'all', 'ended']
+        testUser: false,
+        stripeStatus: [this.name.toLowerCase()]
       }
     },
 
     buildQueryParamsPremiumEarlyEducationOnline () {
       this.params = {
         planId: 2,
-        status: (this.name === 'Active') ? 1 : 0,
-        stripeStatus: ['active', 'past_due', 'unpaid', 'canceled', 'incomplete', 'incomplete_expired', 'all', 'ended']
+        stripeStatus: [this.name.toLowerCase()],
+        testUser: false
       }
     },
 
     buildQueryParamsHomeschool () {
       this.params = {
         planId: 3,
-        status: (this.name === 'Active') ? 1 : 0,
-        stripeStatus: ['active', 'past_due', 'unpaid', 'canceled', 'incomplete', 'incomplete_expired', 'all', 'ended']
+        stripeStatus: [this.name.toLowerCase()],
+        testUser: false
       }
     },
 
     buildQueryParamsUsersPerStatus () {
       this.params = {
-        stripeStatus: this.name.toLowerCase()
+        stripeStatus: this.name.toLowerCase(),
+        testUser: false
       }
     },
 
@@ -155,7 +162,8 @@ export default {
     buildQueryParamsUsersPerPlan () {
       this.params = {
         stripeStatus: (this.name === 'Trialing') ? this.name.toLowerCase() : 'active',
-        planId: this.buildQueryParamsUsersPerStatusPlanIds()
+        planId: this.buildQueryParamsUsersPerStatusPlanIds(),
+        testUser: false
       }
     },
 
@@ -164,7 +172,8 @@ export default {
       this.params = {
         assistances: 1,
         dateStart: `${this.getDateOnPoint(dateParts)} 00:00:00`,
-        dateEnd: `${this.getDateOnPoint(dateParts)} 23:59:59`
+        dateEnd: `${this.getDateOnPoint(dateParts)} 23:59:59`,
+        testUser: false
       }
     },
 
@@ -215,7 +224,8 @@ export default {
     buildQueryParamsActiveUsersToday () {
       this.params = {
         assistances: 1,
-        dateStart: new Date().toISOString().slice(0, 10)
+        dateStart: new Date().toISOString().slice(0, 10),
+        testUser: false
       }
     },
 
@@ -224,14 +234,16 @@ export default {
       lastWeek.setDate(lastWeek.getDate() - 7)
       this.params = {
         assistances: 1,
-        dateStart: lastWeek.toISOString().slice(0, 10)
+        dateStart: lastWeek.toISOString().slice(0, 10),
+        testUser: false
       }
     },
 
     buildQueryParamsUsers (status, increment) {
       this.params = {
         subscriptionId: 'not null',
-        stripeStatus: status
+        stripeStatus: status,
+        testUser: false
       }
       if (increment) {
         this.params.dateStart = new Date().toISOString().slice(0, 10)
@@ -246,11 +258,13 @@ export default {
         subscriptionId: 'not null',
         stripeStatus: listStatus,
         dateStart: `${dateSplit[0]}-${dateSplit[1]}-${start[2]} 00:00:00`,
-        dateEnd: `${dateSplit[0]}-${dateSplit[1]}-${end[2]} 23:59:59.999999`
+        dateEnd: `${dateSplit[0]}-${dateSplit[1]}-${end[2]} 23:59:59.999999`,
+        testUser: false
       }
     },
 
     open (evt, item = null) {
+      this.params = null
       const { name, seriesName } = item
       this.name = name
       this.seriesName = seriesName
