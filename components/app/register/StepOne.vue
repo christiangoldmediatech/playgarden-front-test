@@ -71,7 +71,7 @@ import { useSignup } from '@/composables/use-signup.composable'
 import RegisterForm from '@/components/forms/auth/RegisterForm.vue'
 import CardInfo from '@/components/app/register/CardInfo.vue'
 import { UserFlow } from '@/models'
-import { useUTM } from '@/composables/use-utm.composable'
+import { useUTM } from '@/composables/utm/use-utm.composable'
 
 export default defineComponent({
   name: 'StepOne',

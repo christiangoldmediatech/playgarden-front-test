@@ -36,6 +36,7 @@ import {
   useRoute
 } from '@nuxtjs/composition-api'
 
+import { useUTM } from '@/composables/utm/use-utm.composable'
 import ShortRegisterForm from '@/components/forms/children/ShortRegisterForm.vue'
 
 export default defineComponent({

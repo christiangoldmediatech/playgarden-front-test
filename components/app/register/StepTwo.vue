@@ -88,7 +88,7 @@ import {
   useRoute
 } from '@nuxtjs/composition-api'
 
-import { useUTM } from '@/composables/use-utm.composable'
+import { useUTM } from '@/composables/utm/use-utm.composable'
 
 import StripePayForm from '@/components/forms/payment/StripePayForm'
 import CardPlaygarden from './CardPlaygarden'
