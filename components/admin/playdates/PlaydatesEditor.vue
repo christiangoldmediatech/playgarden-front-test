@@ -464,6 +464,16 @@ export default defineComponent({
         if (data.curriculumType) {
           playdate.value.curriculumTypeId = data.curriculumType.id
         }
+
+        if (playdate.value.dateStart) {
+          const dateStart = new Date(playdate.value.dateStart)
+          timeStart.value = `${dateStart.getHours().toString().padStart(2, '0')}:${dateStart.getMinutes().toString().padStart(2, '0')}`
+        }
+
+        if (playdate.value.dateEnd) {
+          const dateEnd = new Date(playdate.value.dateEnd)
+          timeEnd.value = `${dateEnd.getHours().toString().padStart(2, '0')}:${dateEnd.getMinutes().toString().padStart(2, '0')}`
+        }
       }
 
       curriculumTypes.value = await getCurriculumTypes()
