@@ -1,5 +1,5 @@
 <template>
-  <chart ref="lineStackChartRef" :style="getChartDimensions" :graph="getFormatGraph" :autoresize="resize" />
+  <chart ref="lineStackChartRef" :style="getChartDimensions" :graph="getFormatGraph" :autoresize="resize" :open-modal="openModal" />
 </template>
 
 <script>
@@ -22,6 +22,11 @@ export default {
     height: {
       type: String,
       default: '300px'
+    },
+    openModal: {
+      type: Boolean,
+      required: false,
+      default: true
     }
   },
   data () {
@@ -57,7 +62,7 @@ export default {
           type: 'value'
         },
         series: (this.lineStackData.data) ? this.lineStackData.data : [],
-        color: ['#78C383', '#68C453', '#F89838', '#925A22', '#ee6666', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc']
+        color: ['#78C383', '#F89838', '#925A22', '#68C453', '#ee6666', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc']
       }
     },
     getChartDimensions () {

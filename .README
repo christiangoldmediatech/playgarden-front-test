@@ -1,0 +1,11 @@
+# Playgarden-prep-web
+
+The playgardenonline web app repo.
+
+## Sending a branch to test on GCP
+
+Run the following commands on your terminal
+``` terminal
+git branch -C testing-gcp
+git push -f origin testing-gcp
+```
