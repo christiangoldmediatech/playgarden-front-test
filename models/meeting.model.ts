@@ -17,6 +17,8 @@ export interface Meeting extends Entity {
     spots: number
     day: string,
     link: string,
+    activityTypeId: number | null
+    curriculumTypeId: number | null
     meetingsAssistants: any,
     activityType: ActivityType,
     curriculumType: CurriculumType,

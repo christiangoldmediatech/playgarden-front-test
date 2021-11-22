@@ -32,19 +32,19 @@
                   <v-col cols="12" sm="9" lg="6">
                     <v-row>
                       <v-col class="text-md-right" cols="12" sm="3">
-                        <span class="subheader">Name:</span>
+                        <span class="subheader">Title:</span>
                       </v-col>
 
                       <v-col>
                         <validation-provider
                           v-slot="{ errors }"
-                          name="name"
+                          name="title"
                           rules="required"
                         >
                           <pg-text-field
-                            v-model="playdate.name"
+                            v-model="playdate.title"
                             :error-messages="errors"
-                            placeholder="Name of the playdate"
+                            placeholder="Title of the playdate"
                             solo
                           />
                         </validation-provider>
@@ -68,6 +68,30 @@
                             :error-messages="errors"
                             placeholder="Description of the playdate"
                             solo
+                          />
+                        </validation-provider>
+                      </v-col>
+                    </v-row>
+
+                    <v-row>
+                      <v-col class="text-md-right" cols="12" sm="3">
+                        <span class="subheader">Activity:</span>
+                      </v-col>
+                      <v-col>
+                        <validation-provider
+                          v-slot="{ errors }"
+                          name="Activity"
+                          rules="required"
+                        >
+                          <pg-select
+                            v-model="playdate.activityTypeId"
+                            clearable
+                            :error-messages="errors"
+                            :items="activityTypesList"
+                            item-text="name"
+                            item-value="id"
+                            label="Activity"
+                            solo-labeled
                           />
                         </validation-provider>
                       </v-col>
@@ -233,6 +257,25 @@
                     </v-row>
                     <v-row>
                       <v-col class="text-md-right" cols="12" sm="3">
+                        <span class="subheader">Letter:</span>
+                      </v-col>
+                      <v-col>
+                        <validation-provider v-slot="{ errors }" name="Letter">
+                          <pg-select
+                            v-model="playdate.curriculumTypeId"
+                            clearable
+                            :error-messages="errors"
+                            :items="curriculumTypes"
+                            item-text="name"
+                            item-value="id"
+                            label="Letter"
+                            solo-labeled
+                          />
+                        </validation-provider>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col class="text-md-right" cols="12" sm="3">
                         <span class="subheader">Duration:</span>
                       </v-col>
 
@@ -304,7 +347,7 @@ import { defineComponent, onMounted, ref, useRouter, computed, useRoute } from '
 import { useSnotifyHelper } from '@/composables'
 import { usePlaydates } from '@/composables/playdates'
 import { formatDate, stringsToDate } from '@/utils/dateTools'
-import { Meeting } from '@/models'
+import { ActivityType, CurriculumType, Meeting } from '@/models'
 
 export default defineComponent({
   name: 'PlaydatesEditor',
@@ -319,6 +362,8 @@ export default defineComponent({
     const id = ref<null|number>()
     const timeStart = ref<null|string>()
     const timeEnd = ref<null|string>()
+    const curriculumTypes = ref<CurriculumType[]>([])
+    const activityTypes = ref<ActivityType[]>([])
     const ages = ['1', '2', '3', '4']
     const days = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY']
     const playdate = ref<Partial<Meeting>>({
@@ -330,11 +375,17 @@ export default defineComponent({
       dateStart: null,
       dateEnd: null,
       spots: 0,
+      activityTypeId: null,
+      curriculumTypeId: null,
       link: '',
       type: 'Playdate'
     })
 
-    const { createPlaydate, updatePlaydate, getPlaydatesById } = usePlaydates()
+    const { createPlaydate, updatePlaydate, getPlaydatesById, getActivityTypes, getCurriculumTypes } = usePlaydates()
+
+    const activityTypesList = computed(() => {
+      return activityTypes.value.map(item => ({ name: item.name, id: item.id }))
+    })
 
     const toLocalTime = (time: string) => {
       return formatDate(time, {
@@ -405,7 +456,18 @@ export default defineComponent({
       if (id.value) {
         const data = await getPlaydatesById(id.value)
         playdate.value = data
+
+        if (data.activityType) {
+          playdate.value.activityTypeId = data.activityType.id
+        }
+
+        if (data.curriculumType) {
+          playdate.value.curriculumTypeId = data.curriculumType.id
+        }
       }
+
+      curriculumTypes.value = await getCurriculumTypes()
+      activityTypes.value = await getActivityTypes()
     })
 
     return {
@@ -419,6 +481,8 @@ export default defineComponent({
       days,
       playdate,
       title,
+      curriculumTypes,
+      activityTypesList,
       save
     }
   },

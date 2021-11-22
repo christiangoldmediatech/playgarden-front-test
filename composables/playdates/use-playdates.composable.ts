@@ -29,6 +29,14 @@ export const usePlaydates = () => {
     return await axios.$get('/specialists/all')
   }
 
+  const getCurriculumTypes = async () => {
+    return await axios.$get('/curriculum-types')
+  }
+
+  const getActivityTypes = async () => {
+    return await axios.$get('/activity-types')
+  }
+
   const getPlaydatesById = async (id: number) => {
     return await axios.$get(`/live-sessions/${id}`)
   }
@@ -57,6 +65,8 @@ export const usePlaydates = () => {
     playdatesResponse,
     states,
     getSpecialist,
+    getCurriculumTypes,
+    getActivityTypes,
     getPlaydatesById,
     getPlaydates,
     createPlaydate,
