@@ -75,7 +75,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, watch, computed, useRoute } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, ref, watch } from '@nuxtjs/composition-api'
 import PlaydatesList from '@/components/admin/playdates/PlaydatesList.vue'
 import { usePlaydates } from '@/composables/playdates'
 import paginable from '@/utils/mixins/paginable'

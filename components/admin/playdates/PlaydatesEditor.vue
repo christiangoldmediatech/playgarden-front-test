@@ -196,6 +196,26 @@
                   <v-col cols="12" sm="9" lg="6">
                     <v-row>
                       <v-col class="text-md-right" cols="12" sm="3">
+                        <span class="subheader">Teacher:</span>
+                      </v-col>
+
+                      <v-col>
+                        <validation-provider
+                          v-slot="{ errors }"
+                          name="teacher"
+                          rules="required"
+                        >
+                          <pg-text-field
+                            v-model="playdate.teacher"
+                            :error-messages="errors"
+                            placeholder="Name Teacher"
+                            solo
+                          />
+                        </validation-provider>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col class="text-md-right" cols="12" sm="3">
                         <span class="subheader">Day:</span>
                       </v-col>
 
@@ -375,6 +395,7 @@ export default defineComponent({
       dateStart: null,
       dateEnd: null,
       spots: 0,
+      teacher: '',
       activityTypeId: null,
       curriculumTypeId: null,
       link: '',

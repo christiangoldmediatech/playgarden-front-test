@@ -73,7 +73,7 @@ export const usePlaydates = ({ store }: UseChildPlaydates) => {
   }
 
   const getPlaydateForDate = ({ date }: { date: string }): Promise<Playdate[]> => {
-    return axios.$get(`/playdates?showChildren=true&date=${date}`)
+    return axios.$get(`/live-sessions/show-children?&date=${date}`)
   }
 
   const reserveASpot = ({ playdateId, childId, date }: { playdateId: number, childId: number, date: string }) => {

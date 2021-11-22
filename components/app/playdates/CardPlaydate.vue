@@ -39,8 +39,8 @@
             <!-- PLAYDATE SPECIALIST AND DATE -->
             <v-col cols="8" md="12" class="pl-3 pl-sm-0">
               <div class="grey--text text--darken-2">
-                <div v-if="specialist" class="text-subtitle-1 text-sm-h6 font-weight-bold">
-                  Playdates with {{ specialist.fullName }}
+                <div v-if="playdate.teacher" class="text-subtitle-1 text-sm-h6 font-weight-bold">
+                  Playdates with {{ playdate.teacher }}
                 </div>
 
                 <div class="mt-2">
@@ -184,8 +184,8 @@
 
                 <v-col cols="12" sm="6" class="pl-sm-3">
                   <div class="grey--text text--darken-2 pb-1 pt-3 pt-sm-0">
-                    <div v-if="specialist" class="text-center text-sm-left text-h6 text-sm-h5 font-weight-bold">
-                      Playdates with {{ specialist.fullName }}
+                    <div v-if="playdate.teacher" class="text-center text-sm-left text-h6 text-sm-h5 font-weight-bold">
+                      Playdates with {{ playdate.teacher }}
                     </div>
 
                     <div class="text-center text-md-left text-body-2 text-md-subtitle-1 py-1">
@@ -493,6 +493,7 @@ export default defineComponent({
         title: this.playdate.name,
         description: this.playdate.description,
         link: this.playdate.link,
+        teacher: this.playdate.teacher,
         dateStart: this.times.start,
         dateEnd: this.times.end
       }
@@ -519,7 +520,7 @@ export default defineComponent({
       }
 
       const start = dayjs
-        .utc(this.playdate.start, 'HH:mm:ss')
+        .utc(this.playdate.dateStart, 'HH:mm:ss')
         .add((this.week[this.playdate.day] || 6) - this.today, 'days')
         .local()
       const end = dayjs
