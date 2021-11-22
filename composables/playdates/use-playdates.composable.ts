@@ -1,6 +1,6 @@
 import { ref, watch } from '@nuxtjs/composition-api'
 import { axios } from '@/utils'
-import { PlaydatesResponse, Playdate } from '@/models'
+import { MeetingsResponse, Meeting } from '@/models'
 
 enum StatusPlaydate {
   REQUESTED = 'REQUESTED',
@@ -14,14 +14,14 @@ export const usePlaydates = () => {
   const total = ref(0)
   const limit = ref(10)
   const states = ref([StatusPlaydate.REQUESTED, StatusPlaydate.PENDING, StatusPlaydate.APPROVED, StatusPlaydate.REJECTED])
-  const playdates = ref<Playdate[]>([])
-  const playdatesResponse = ref<PlaydatesResponse[]>([])
+  const playdates = ref<Meeting[]>([])
+  const playdatesResponse = ref<MeetingsResponse[]>([])
 
   watch(playdatesResponse, (val:any) => {
     if (val) {
       page.value = Number(val.page)
       total.value = val.total
-      playdates.value = val.playdates
+      playdates.value = val.meetings
     }
   })
 
@@ -37,11 +37,11 @@ export const usePlaydates = () => {
     playdatesResponse.value = await axios.$get('/live-sessions', { params })
   }
 
-  const createPlaydate = async (data: Partial<Playdate>) => {
+  const createPlaydate = async (data: Partial<Meeting>) => {
     return await axios.$post('playdates', data)
   }
 
-  const updatePlaydate = async (id: number, data: Partial<Playdate>) => {
+  const updatePlaydate = async (id: number, data: Partial<Meeting>) => {
     return await axios.$patch(`/playdates/${id}`, data)
   }
 

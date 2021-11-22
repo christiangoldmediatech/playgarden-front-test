@@ -87,9 +87,9 @@ export default defineComponent({
   data: () => ({
     headers: [
       {
-        text: 'Name',
+        text: 'Title',
         sortable: false,
-        value: 'name'
+        value: 'title'
       },
       {
         text: 'Description',
@@ -123,7 +123,7 @@ export default defineComponent({
     }
 
     onMounted(async () => {
-      await fetchPlaydates({ page: page.value, total: total.value, limit: limit.value })
+      await fetchPlaydates({ page: page.value, total: total.value, limit: limit.value, type: 'Playdate' })
     })
 
     watch(page, (val) => {
