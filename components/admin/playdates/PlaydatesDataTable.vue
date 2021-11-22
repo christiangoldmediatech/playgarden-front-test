@@ -34,57 +34,43 @@
       </v-col>
     </v-row>
 
-    <v-row v-if="showList">
-      <v-col cols="12">
-        <v-card width="100%">
-          <v-card-text>
-            <pg-admin-data-table
-              :headers="headers"
-              :items="playdates"
-              :loading="loading"
-              :page.sync="page"
-              :server-items-length="total"
-              @update:page="page = $event"
-              @refresh="refetchPlayDates"
-              @search="handleSearch"
-              @search-text-cleared="handleSearchTextClearance"
-              @edit-item="$router.push({
-                name: 'admin-playdates-management-editor',
-                query: { id: $event.id }
-              })"
-              @remove-item="remove"
-            >
-              <template v-slot:[`top.prepend`]>
-                <v-col class="mt-2" cols="1">
-                  <v-icon class="my-1" color="accent">
-                    mdi-tune
-                  </v-icon>
-                </v-col>
-
-                <v-col cols="11" md="4">
-                  <pg-select
-                    v-model="selectedStatus"
-                    clearable
-                    hide-details
-                    :items="states"
-                    label="Status"
-                    solo-labeled
-                    @change="refetchPlayDates"
-                  />
-                </v-col>
-              </template>
-            </pg-admin-data-table>
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
-    <v-row v-else>
+    <v-row>
       <v-col cols="12">
         <v-card width="100%">
           <playdates-list />
         </v-card>
       </v-col>
     </v-row>
+
+    <v-expansion-panels
+      v-model="panel"
+    >
+      <v-expansion-panel>
+        <v-expansion-panel-header>Playdate list</v-expansion-panel-header>
+        <v-expansion-panel-content>
+          <v-row no-gutters>
+            <v-col cols="12">
+              <pg-admin-data-table
+                :headers="headers"
+                :items="playdates"
+                :loading="loading"
+                :page.sync="page"
+                :server-items-length="total"
+                @update:page="page = $event"
+                @refresh="refetchPlayDates"
+                @search="handleSearch"
+                @search-text-cleared="handleSearchTextClearance"
+                @edit-item="$router.push({
+                  name: 'admin-playdates-management-editor',
+                  query: { id: $event.id }
+                })"
+                @remove-item="remove"
+              />
+            </v-col>
+          </v-row>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
   </v-container>
 </template>
 
@@ -117,11 +103,6 @@ export default defineComponent({
         value: 'day'
       },
       {
-        text: 'Status',
-        sortable: false,
-        value: 'state'
-      },
-      {
         align: 'right',
         sortable: false,
         value: 'actions',
@@ -132,8 +113,8 @@ export default defineComponent({
 
   setup (_, { emit }) {
     const loading = ref<Boolean>(false)
-    const showList = ref<Boolean>(false)
     const searchText = ref<string | null>(null)
+    const panel = [0]
     const selectedStatus = ref<string | null>(null)
     const { page, total, limit, playdates, states, getPlaydates, deletePlaydate } = usePlaydates()
 
@@ -189,7 +170,7 @@ export default defineComponent({
       states,
       selectedStatus,
       loading,
-      showList,
+      panel,
       fetchPlaydates,
       deletePlaydate,
       refetchPlayDates,
