@@ -76,12 +76,9 @@
               </div>
 
               <div class="mt-4">
-                <underlined-title
-                  text="You can still reserve spots for the following weeks!"
-                  font-size="28px"
-                  font-size-mobile="22px"
-                  line-color="#ffab37"
-                />
+                <p class="text-body-2 text-md-body-1 py-4">
+                  We are not having Playdates this week, you can reserve your spot for the following weeks!
+                </p>
               </div>
 
               <v-btn
