@@ -30,7 +30,7 @@ export const usePlaydates = () => {
   }
 
   const getPlaydatesById = async (id: number) => {
-    return await axios.$get(`/meetings/${id}`)
+    return await axios.$get(`/live-sessions/${id}`)
   }
 
   const getPlaydates = async (params?: unknown) => {
@@ -38,15 +38,15 @@ export const usePlaydates = () => {
   }
 
   const createPlaydate = async (data: Partial<Meeting>) => {
-    return await axios.$post('playdates', data)
+    return await axios.$post('/live-sessions', data)
   }
 
   const updatePlaydate = async (id: number, data: Partial<Meeting>) => {
-    return await axios.$patch(`/playdates/${id}`, data)
+    return await axios.$patch(`/live-sessions/${id}`, data)
   }
 
   const deletePlaydate = async (id: number) => {
-    return await axios.$delete(`/playdates/${id}`)
+    return await axios.$delete(`/live-sessions/${id}`)
   }
 
   return {

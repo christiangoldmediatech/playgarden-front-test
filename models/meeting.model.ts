@@ -1,8 +1,8 @@
 import { ActivityType, Child, CurriculumType, Entity, User, Video } from '@/models'
 
 export interface Meeting extends Entity {
-    dateStart: Date
-    dateEnd: Date
+    dateStart: Date | null
+    dateEnd: Date | null
     duration: number
     title: string
     description: string
@@ -16,6 +16,7 @@ export interface Meeting extends Entity {
     type: string
     spots: number
     day: string,
+    link: string,
     meetingsAssistants: any,
     activityType: ActivityType,
     curriculumType: CurriculumType,
