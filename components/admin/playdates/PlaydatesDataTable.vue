@@ -168,6 +168,7 @@ export default defineComponent({
       const params = {
         page: page.value,
         limit: limit.value,
+        type: 'Playdate',
         ...name && { name },
         ...state && { state }
       }

@@ -30,11 +30,11 @@ export const usePlaydates = () => {
   }
 
   const getPlaydatesById = async (id: number) => {
-    return await axios.$get(`/playdates/${id}`)
+    return await axios.$get(`/meetings/${id}`)
   }
 
   const getPlaydates = async (params?: unknown) => {
-    playdatesResponse.value = await axios.$get('/playdates/list', { params })
+    playdatesResponse.value = await axios.$get('/live-sessions', { params })
   }
 
   const createPlaydate = async (data: Partial<Playdate>) => {
