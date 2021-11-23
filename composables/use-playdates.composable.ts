@@ -77,11 +77,11 @@ export const usePlaydates = ({ store }: UseChildPlaydates) => {
   }
 
   const reserveASpot = ({ playdateId, childId, date }: { playdateId: number, childId: number, date: string }) => {
-    return axios.$post(`/playdates/${playdateId}/add/children/${childId}?date=${date}`)
+    return axios.$post(`/live-sessions/${playdateId}/add/children/${childId}?date=${date}`)
   }
 
   const cancelSpotReservation = ({ playdateId, childId, date }: { playdateId: number, childId: number, date: string }) => {
-    return axios.$delete(`/playdates/${playdateId}/remove/children/${childId}?date=${date}`)
+    return axios.$delete(`/live-sessions/${playdateId}/remove/children/${childId}?date=${date}`)
   }
 
   return {

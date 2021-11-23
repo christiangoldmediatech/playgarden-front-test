@@ -22,7 +22,11 @@ export interface Meeting extends Entity {
     meetingsAssistants: any,
     activityType: ActivityType,
     curriculumType: CurriculumType,
-    meetingsChildren: any
+    meetingsChildren: any,
+    backpackImages: {
+        childrenId: number
+        image: string
+      }[]
 }
 
 export interface MeetingsResponse {
