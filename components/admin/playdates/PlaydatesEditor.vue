@@ -428,22 +428,6 @@ export default defineComponent({
     const save = async () => {
       loading.value = true
       try {
-        /* playdate.value.dateStart = formatDate(timeStart.value, {
-          format: 'HH:mm:ss',
-          fromFormat: 'HH:mm',
-          toUtc: true,
-          returnObject: false
-        })
-
-        playdate.value.end = formatDate(timeEnd.value, {
-          format: 'HH:mm:ss',
-          fromFormat: 'HH:mm',
-          toUtc: true,
-          returnObject: false
-        }).toString() */
-
-        console.log('playdate --', playdate.value)
-
         if (timeStart.value) {
           const start = stringsToDate(dayjs().format('YYYY-MM-DD').toString(), timeStart.value)
           playdate.value.dateStart = start
@@ -453,8 +437,6 @@ export default defineComponent({
           const end = stringsToDate(dayjs().format('YYYY-MM-DD').toString(), timeEnd.value)
           playdate.value.dateEnd = end
         }
-
-        console.log('playdate --', playdate.value)
 
         if (id.value) {
           await updatePlaydate(id.value, playdate.value)
