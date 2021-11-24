@@ -10,39 +10,39 @@ interface UseChildPlaydates {
 
 export const usePlaydates = ({ store }: UseChildPlaydates) => {
   const acceptInvitePlaydate = (token: string) => {
-    return axios.$get(`/playdates/accept/invite/${token}`)
+    return axios.$get(`/live-sessions/accept/invite/${token}`)
   }
 
   const addChildren = ({ id, data }: { id: number, data: unknown }) => {
-    return axios.$post(`/playdates/${id}`, data)
+    return axios.$post(`/live-sessions/adding/children/${id}`, data)
   }
 
   const deletePlaydateInvitation = (token: string) => {
-    return axios.$delete(`/playdates/invite/${token}`)
+    return axios.$delete(`/live-sessions/invite/${token}`)
   }
 
   const getPlaydateInvite = (token: string) => {
-    return axios.$get(`/playdates/invite/${token}`)
+    return axios.$get(`/live-sessions/invite/${token}`)
   }
 
-  const getAndFilterPlaydates = (params: { showChildren?: boolean, day?: string }): Promise<Playdate[]> => {
-    return axios.$get('/playdates', { params })
+  const getAndFilterPlaydates = (params: { day?: string }): Promise<Playdate[]> => {
+    return axios.$get('/live-sessions/show-children', { params })
   }
 
   const getChildrenInfo = (): Promise<{ children: Child; playdates: Playdates[], groups: { groupedDate: string, playdates: { backpackImages: [], date: string, playdate: Playdate }[] }[] }[]> => {
-    return axios.$get('/playdates/children')
+    return axios.$get('/live-sessions/my/playdates')
   }
 
   const getPlaydateDays = async (): Promise<{ days: string[] }> => {
-    return await axios.$get('/playdates/days/available')
+    return await axios.$get('/live-sessions/days/available')
   }
 
   const joinPlaydate = ({ playdateId, childId }: { playdateId: number, childId: number }) => {
-    return axios.$post(`/playdates/${playdateId}/add/children/${childId}`)
+    return axios.$post(`/live-sessions/${playdateId}/add/children/${childId}`)
   }
 
   const deleteChildren = ({ playdateId, childId }: { playdateId: number, childId: number }) => {
-    return axios.$delete(`/playdates/${playdateId}/remove/children/${childId}`)
+    return axios.$delete(`/live-sessions/${playdateId}/remove/children/${childId}`)
   }
 
   /**
