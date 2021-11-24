@@ -20,7 +20,7 @@ export const useFeedback = () => {
     }
   }
 
-  const saveFeedback = async ({ data }: { data: Feedback }) => {
+  const saveFeedback = async ({ data }: { data: Partial<Feedback> }) => {
     feedback.value = await axios.$post('/feedbacks', data)
   }
 
