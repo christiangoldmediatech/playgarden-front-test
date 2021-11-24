@@ -20,12 +20,16 @@ export const useFeedback = () => {
     }
   }
 
-  const saveFeedback = async ({ data }: {data: any}) => {
+  const saveFeedback = async ({ data }: {data: Feedback}) => {
     feedback.value = await axios.$post('/feedbacks', data)
   }
 
-  const updateFeedback = async (id:number, { data }: {data: any}) => {
-    feedback.value = await axios.$patch(`/feedbacks/${id}`, data)
+  const updateFeedback = async (id:number, { data }: {data: Feedback}) => {
+    feedback.value = await axios.$patch(`/feedbacks/${id}`, {
+      title: data.title,
+      feedback: data.feedback,
+      uploadedWorksheetId: data.uploadedWorksheetId
+    })
   }
 
   return {
