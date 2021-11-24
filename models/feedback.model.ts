@@ -7,6 +7,7 @@ export interface WorksheetsUpload extends Entity {
     category: OfflineWorksheet
 }
 export interface Feedback extends Entity {
+    id: number
     title: string
     feedback: string
     uploadedWorksheet: WorksheetsUpload

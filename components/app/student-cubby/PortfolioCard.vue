@@ -126,12 +126,13 @@
               </v-col>
             </v-row>
             <v-btn
+              :loading="isLoading"
               color="primary darken-1"
               small
               @click="save"
             >
               <span class="font-weight-normal">
-                Save
+                {{ isCreatingFeedback ? 'Save' : 'Update' }}
               </span>
             </v-btn>
           </v-card-text>
@@ -146,7 +147,7 @@ import dayjs from 'dayjs'
 import { defineComponent, ref, useRoute, computed, onMounted } from '@nuxtjs/composition-api'
 import { useWorksheetsCategories } from '@/composables/worksheets'
 import { Child } from '@/models'
-import { useSnotifyHelper, useChildLesson } from '@/composables'
+import { useSnotifyHelper } from '@/composables'
 import { useFeedback } from '@/composables/feedback'
 
 export default defineComponent({
@@ -202,7 +203,8 @@ export default defineComponent({
     const snotify = useSnotifyHelper()
     const dataChild = ref<Child>()
     const { getChild } = useWorksheetsCategories()
-    const { feedback, getFeedbackById, getFeedbackByUploadedWorksheetsId, saveFeedback, updateFeedback } = useFeedback()
+    const { feedback, getFeedbackByUploadedWorksheetsId, saveFeedback, updateFeedback } = useFeedback()
+    const isLoading = ref(false)
     const studentId = computed(() => Number(route.value.query.id))
     if (!props.child) {
       props.child = { id: studentId.value }
@@ -228,6 +230,7 @@ export default defineComponent({
       feedback.value.uploadedWorksheetId = props.entityId
     })
     return {
+      isLoading,
       feedback,
       dataChild,
       saveFeedback,
@@ -241,21 +244,34 @@ export default defineComponent({
 
     createdDateFormatted (): unknown {
       return this.created ? dayjs(this.created).format('MM/DD/YYYY') : null
+    },
+
+    isCreatingFeedback (): boolean {
+      return !this.feedback?.id
     }
   },
 
   methods: {
     async save () {
-      if (this.feedback.id) {
-        await this.updateFeedback(this.feedback.id, { data: this.feedback })
-        this.$snotify.success(
-          'Feedback is update.'
+      this.isLoading = true
+      try {
+        if (this.isCreatingFeedback) {
+          await this.saveFeedback({ data: this.feedback })
+          this.$snotify.success(
+            'Feedback saved.'
+          )
+        } else if (this.feedback.id) {
+          await this.updateFeedback(this.feedback.id, { data: this.feedback })
+          this.$snotify.success(
+            'Feedback updated.'
+          )
+        }
+      } catch (error) {
+        this.$snotify.error(
+          'Sorry! There was an error saving the feedback.'
         )
-      } else {
-        await this.saveFeedback({ data: this.feedback })
-        this.$snotify.success(
-          'Feedback is saved.'
-        )
+      } finally {
+        this.isLoading = false
       }
     }
   }
