@@ -20,11 +20,11 @@ export const useFeedback = () => {
     }
   }
 
-  const saveFeedback = async ({ data }: {data: Feedback}) => {
+  const saveFeedback = async ({ data }: { data: Feedback }) => {
     feedback.value = await axios.$post('/feedbacks', data)
   }
 
-  const updateFeedback = async (id:number, { data }: {data: Feedback}) => {
+  const updateFeedback = async (id: number, { data }: { data: Partial<Feedback> }) => {
     feedback.value = await axios.$patch(`/feedbacks/${id}`, {
       title: data.title,
       feedback: data.feedback,
