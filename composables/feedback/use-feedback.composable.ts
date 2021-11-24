@@ -21,15 +21,28 @@ export const useFeedback = () => {
   }
 
   const saveFeedback = async ({ data }: { data: Partial<Feedback> }) => {
-    feedback.value = await axios.$post('/feedbacks', data)
+    const response = await axios.$post('/feedbacks', data)
+
+    feedback.value = parseFeedbackResponse(response)
   }
 
   const updateFeedback = async (id: number, { data }: { data: Partial<Feedback> }) => {
-    feedback.value = await axios.$patch(`/feedbacks/${id}`, {
+    const response = await axios.$patch(`/feedbacks/${id}`, {
       title: data.title,
       feedback: data.feedback,
       uploadedWorksheetId: data.uploadedWorksheetId
     })
+
+    feedback.value = parseFeedbackResponse(response)
+  }
+
+  const parseFeedbackResponse = (response: Partial<Feedback>) => {
+    return {
+      id: response.id,
+      title: response.title,
+      feedback: response.feedback,
+      uploadedWorksheetId: response.uploadedWorksheet?.id
+    }
   }
 
   return {
