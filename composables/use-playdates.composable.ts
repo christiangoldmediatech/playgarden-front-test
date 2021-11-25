@@ -14,7 +14,7 @@ export const usePlaydates = ({ store }: UseChildPlaydates) => {
   }
 
   const addChildren = ({ id, data }: { id: number, data: unknown }) => {
-    return axios.$post(`/live-sessions/adding/children/${id}`, data)
+    return axios.$post(`/playdate/adding/children/${id}`, data)
   }
 
   const deletePlaydateInvitation = (token: string) => {
@@ -77,11 +77,11 @@ export const usePlaydates = ({ store }: UseChildPlaydates) => {
   }
 
   const reserveASpot = ({ playdateId, childId, date }: { playdateId: number, childId: number, date: string }) => {
-    return axios.$post(`/live-sessions/${playdateId}/add/children/${childId}?date=${date}`)
+    return axios.$post(`/playdate/${playdateId}/add/children/${childId}?date=${date}`)
   }
 
   const cancelSpotReservation = ({ playdateId, childId, date }: { playdateId: number, childId: number, date: string }) => {
-    return axios.$delete(`/live-sessions/${playdateId}/remove/children/${childId}?date=${date}`)
+    return axios.$delete(`/playdate/${playdateId}/remove/children/${childId}?date=${date}`)
   }
 
   return {
