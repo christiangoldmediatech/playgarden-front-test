@@ -252,8 +252,8 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
     if (userFlow.value === UserFlow.CREDITCARD) {
       // Should appaear from the day 28th, to the next day the trial has ended.
       // If a plan has been chosen, it should not appear anymore.
-      const showFromDay = dayjs(userCreatedAt).add(28, 'days')
-      const showToDay = dayjs(userInfo.value?.trialEnd).add(1, 'day')
+      const showFromDay = dayjs(userCreatedAt).add(28, 'days').startOf('day')
+      const showToDay = dayjs(userInfo.value?.trialEnd).add(1, 'day').endOf('day')
 
       // @ts-ignore
       if (dayjs().isBetween(showFromDay, showToDay, 'day', '[]') && !userChosePlan) {
@@ -265,7 +265,6 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
 
       if ((now.isSame(userDayToBeNotified, 'day') || now.isAfter(userDayToBeNotified, 'day')) && !isPayingUser && !userChosePlan && !hasCreditCardsInFile) {
         setIsTrialEndingForLastDayModalVisible(true)
-      }
     }
   }
 
