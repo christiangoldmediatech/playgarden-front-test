@@ -363,7 +363,9 @@ export default {
       this.item.day = dayjs(this.dateStart).format('dddd').toUpperCase()
     },
     'item.type' (val) {
-      this.item.spots = (val === 'Playdate') ? null : 0
+      if (val === 'Playdate') {
+        this.item.spots = (this.item.spots) ? this.item.spots : null
+      }
     }
   },
 

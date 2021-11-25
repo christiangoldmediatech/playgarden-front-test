@@ -97,7 +97,7 @@
                   color="primary"
                   dense
                   :disabled="!item.active"
-                  @click="createLiveClasses(item.id)"
+                  @click="createLiveClasses(item.id); currentMeeting = item"
                 >
                   mdi-plus-circle
                 </v-icon>
@@ -186,10 +186,10 @@
       <v-card>
         <v-card-title :class="{ 'justify-center': creatingLiveClasses }">
           <template v-if="creatingLiveClasses">
-            Creating Recurring Live Classes
+            Creating Recurring {{ getTitleMeeting }}
           </template>
           <template v-else-if="showLiveClassesCreated">
-            Recurring Live Classes Created!
+            Recurring {{ getTitleMeeting }} Created!
             <v-spacer />
             <v-btn icon @click="creatingLiveClassesDialog = false">
               <v-icon>
@@ -203,9 +203,9 @@
           <v-progress-linear v-if="creatingLiveClasses" indeterminate color="primary" />
           <template v-else>
             <p>
-              Your recurring live classes have been successfully created! Click anywhere outside this window to close it or the button below to see your changes.
+              Your recurring {{ getTitleMeeting }} have been successfully created! Click anywhere outside this window to close it or the button below to see your changes.
             </p>
-            <v-btn color="primary" @click="goToLiveClassesManagement">
+            <v-btn v-if="currentMeeting.type === 'LiveClass'" color="primary" @click="goToLiveClassesManagement">
               View on Live Classes Management
             </v-btn>
             <br>
@@ -238,6 +238,9 @@ export default {
     filters: {
       activityTypeId: null
     },
+    currentMeeting: {
+      type: ''
+    },
     recurringLiveSessions: [],
     loading: false,
     search: null,
@@ -254,6 +257,10 @@ export default {
       {
         text: 'Title',
         value: 'title'
+      },
+      {
+        text: 'Type',
+        value: 'type'
       },
       {
         text: 'Link',
@@ -284,6 +291,10 @@ export default {
     ...mapGetters('admin/curriculum', ['types']),
     ...mapState('admin', ['paginationLimit']),
     ...mapState('admin/recurring-live-sessions', ['creatingLiveClasses', 'showLiveClassesCreated']),
+
+    getTitleMeeting () {
+      return (this.currentMeeting.type === 'LiveClass') ? 'Live Class' : 'Playdate'
+    },
 
     creatingLiveClassesDialog: {
       get () {
