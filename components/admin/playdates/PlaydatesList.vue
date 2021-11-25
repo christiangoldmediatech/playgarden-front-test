@@ -1,38 +1,9 @@
 <template>
   <v-col class="fill-height">
     <!-- ACTIVE PLAYDATES -->
-    <div v-if="isPayingUser">
+    <div>
       <v-row align="center" class="fill-height" justify="space-between" no-gutters>
-        <!-- HEADER -->
-        <v-col cols="12" md="auto" class="flex-grow-1" order="2" order-md="1">
-          <underlined-title
-            text="Educational Playdates"
-            font-size="36px"
-            font-size-mobile="24px"
-          />
-        </v-col>
-
-        <!-- BUTTON -->
-        <v-col cols="12" md="auto" class="flex-shrink-1 text-right py-6 py-md-0" order="1" order-md="2">
-          <v-btn
-            :to="{ name: 'app-playdates-my-playdates' }"
-            :small="isMobile"
-            color="accent"
-            nuxt
-            class="!pg-shadow-button"
-          >
-            MY PLAYDATES
-          </v-btn>
-        </v-col>
-
         <v-col cols="12" order="3">
-          <!-- PAGE DESCRIPTION -->
-          <p class="text-body-2 text-md-body-1 py-4">
-            Join your friends and socialize at a Playgarden Prep Online Playdate!
-            These 30 minute Zoom sessions are designed to give children the opportunity to connect with peers while learning under the guidance of a Playgarden Prep instructor.
-            You can sign up for up to one Playdate per week; make sure to sign up for the same weekly Playdate, so that you can see your friends every week!
-          </p>
-
           <!-- WEEK NAVIGATOR -->
           <div class="d-flex justify-center align-center">
             <!-- PREVIOUS WEEK BUTTON -->
@@ -63,79 +34,21 @@
             </v-btn>
           </div>
 
-          <!-- THANKSGIVING -->
-          <v-row v-if="isThanksgivingWeek" class="mt-6">
-            <v-col cols="12" class="text-center">
-              <div>
-                <underlined-title
-                  text="Happy Thanksgiving ✨"
-                  font-size="32px"
-                  font-size-mobile="24px"
-                  line-color="#ffab37"
-                />
-              </div>
-
-              <div class="mt-4">
-                <p class="text-body-2 text-md-body-1 py-4">
-                  We are not having Playdates this week, you can reserve your spot for the following weeks!
-                </p>
-              </div>
-
-              <v-btn
-                v-if="canGoToNextWeek"
-                :loading="loading"
-                color="accent"
-                large
-                class="text-none !pg-shadow-button mt-6"
-                @click="goToNextWeek"
-              >
-                Check next week
-              </v-btn>
-            </v-col>
-          </v-row>
-
           <!-- WEEK'S PLAYDATES -->
-          <v-row v-else-if="!loading && playdates.length" class="mt-6">
+          <v-row v-if="!loading" class="mt-6">
             <v-col v-for="playdate in playdates" :key="playdate.id" cols="12" md="6">
               <card-playdate
                 :playdate="playdate"
+                :manangement="true"
                 :is-in-a-playdate="isInAPlaydate"
                 @spot-reserved="fetchPlaydatesForDate"
                 @spot-canceled="fetchPlaydatesForDate"
               />
             </v-col>
           </v-row>
-
-          <!--  NO PLAYDATES -->
-          <v-row v-else-if="!loading" class="mt-6">
-            <v-col cols="12" class="text-center">
-              <div>
-                <underlined-title
-                  text="There aren't any playdates for this week."
-                  font-size="32px"
-                  font-size-mobile="24px"
-                  line-color="#ffab37"
-                />
-              </div>
-
-              <v-btn
-                v-if="canGoToNextWeek"
-                :loading="loading"
-                color="accent"
-                large
-                class="text-none !pg-shadow-button mt-6"
-                @click="goToNextWeek"
-              >
-                Check next week
-              </v-btn>
-            </v-col>
-          </v-row>
         </v-col>
       </v-row>
     </div>
-
-    <!-- PAYWALL -->
-    <paywall v-else />
   </v-col>
 </template>
 
@@ -146,13 +59,9 @@ import { Playdate, TypedStore } from '@/models'
 import CardPlaydate from '@/components/app/playdates/CardPlaydate.vue'
 import { useChild, usePlaydates, useVuetifyHelper } from '@/composables'
 import dayjs from 'dayjs'
-import isBetween from 'dayjs/plugin/isBetween'
-import { onMounted } from '@vue/composition-api'
-
-dayjs.extend(isBetween)
 
 export default defineComponent({
-  name: 'Index',
+  name: 'PlaydatesList',
 
   components: {
     CardPlaydate,
@@ -175,18 +84,6 @@ export default defineComponent({
     const currentPlaydateDate = computed(() => playdatesDates?.[currentPlaydateIndex.value] || dayjs().format('YYYY-MM-DD'))
     const isMobile = computed(() => vuetify.breakpoint.mobile)
 
-    const isThanksgivingWeek = computed(() => {
-      const thanksGivingDay = '2021-11-25'
-
-      // @ts-ignore
-      return dayjs(currentPlaydateDate.value).isBetween(
-        dayjs(thanksGivingDay).startOf('week'),
-        dayjs(thanksGivingDay).endOf('week'),
-        'day',
-        '[]'
-      )
-    })
-
     const isInAPlaydate = computed(() => {
       return playdates.value.some((playdate) => {
         return Boolean(playdate?.backpackImages?.find(({ childrenId }) => {
@@ -196,10 +93,6 @@ export default defineComponent({
     })
 
     const currentWeekDisplayText = computed(() => {
-      if (isThanksgivingWeek.value) {
-        return 'November 22 - 26, 2021'
-      }
-
       if (playdates.value.length === 0) {
         return ''
       }
@@ -236,20 +129,14 @@ export default defineComponent({
     }
 
     const fetchPlaydatesForDate = async () => {
-      if (isPayingUser.value) {
-        loading.value = true
-        playdates.value = await getPlaydateForDate({ date: currentPlaydateDate.value })
-        loading.value = false
-      }
+      loading.value = true
+      playdates.value = await getPlaydateForDate({ date: currentPlaydateDate.value })
+      loading.value = false
     }
 
     watch(currentPlaydateIndex, async () => {
       await fetchPlaydatesForDate()
     }, { immediate: true })
-
-    onMounted(() => {
-      get()
-    })
 
     return {
       canGoToNextWeek,
@@ -260,7 +147,7 @@ export default defineComponent({
       isPayingUser,
       loading,
       playdates,
-      isThanksgivingWeek,
+      playdatesDates,
       fetchPlaydatesForDate,
       goToNextWeek,
       goToPreviousWeek

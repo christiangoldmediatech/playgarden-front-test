@@ -57,7 +57,7 @@
 
           <!-- SPOTS -->
           <div class="caption mt-3">
-            Spots:
+            Spots Available:
 
             <v-row
               justify="start"
@@ -74,7 +74,7 @@
               />
 
               <span class="ml-1 mt-2">
-                {{ backpackImages.length }}/{{ playdate.spots }}
+                {{ playdate.spots - backpackImages.length }}/{{ playdate.spots }}
               </span>
             </v-row>
           </div>
@@ -89,14 +89,14 @@
                   color="accent"
                   data-test-id="card-playdate-open-button"
                   block
-                  @click="dialog = true"
+                  @click="actionPrimaryButton"
                 >
                   {{ hasSpotInThisPlaydate ? 'SEE DETAILS' : 'JOIN PLAYDATE' }}
                 </v-btn>
               </v-col>
 
               <!-- CANCEL SPOT BUTTON  -->
-              <v-col v-if="hasSpotInThisPlaydate" cols="12" class="mt-3">
+              <v-col v-if="hasSpotInThisPlaydate && !manangement" cols="12" class="mt-3">
                 <v-btn
                   :loading="isLoadingSpotAction"
                   class="!pg-shadow-button red lighten-4 grey--text text--darken-2 text-transform-none"
@@ -282,7 +282,7 @@
 </template>
 
 <script>
-import { defineComponent, useStore } from '@nuxtjs/composition-api'
+import { defineComponent, useStore, useRouter } from '@nuxtjs/composition-api'
 import { mapGetters } from 'vuex'
 import dayjs from 'dayjs'
 import { get } from 'lodash'
@@ -316,6 +316,12 @@ export default defineComponent({
       default: true
     },
 
+    manangement: {
+      type: Boolean,
+      default: false,
+      required: false
+    },
+
     playdate: {
       type: Object,
       required: true
@@ -333,12 +339,14 @@ export default defineComponent({
   },
 
   setup (props, { emit }) {
+    const router = useRouter()
     const snotify = useSnotifyHelper()
     const store = useStore()
     const { reserveASpot, cancelSpotReservation } = usePlaydates({ store })
     const { children } = useChild({ store })
 
     const isLoadingSpotAction = ref(false)
+    const dialog = ref(false)
     const childId = ref(null)
     const playdate = computed(() => props.playdate)
 
@@ -351,12 +359,25 @@ export default defineComponent({
     })
 
     const hasSpotInThisPlaydate = computed(() => {
-      return Boolean(playdate.value?.backpackImages?.find(({ childrenId }) => {
-        return children.value.find(({ id }) => {
-          return id === childrenId
-        })
-      }))
+      return (props.manangement)
+        ? true
+        : Boolean(playdate.value?.backpackImages?.find(({ childrenId }) => {
+          return children.value.find(({ id }) => {
+            return id === childrenId
+          })
+        }))
     })
+
+    const actionPrimaryButton = () => {
+      if (props.manangement) {
+        router.push({
+          name: 'admin-playdates-management-detail',
+          query: { id: playdate.value.id }
+        })
+      } else {
+        dialog.value = true
+      }
+    }
 
     const handleReserveSpot = async () => {
       try {
@@ -393,6 +414,8 @@ export default defineComponent({
     return {
       child,
       childId,
+      dialog,
+      actionPrimaryButton,
       handleCancelSpot,
       handleReserveSpot,
       hasSpotInThisPlaydate,
@@ -401,7 +424,6 @@ export default defineComponent({
   },
 
   data: () => ({
-    dialog: false,
     name: null,
     backpack: null,
     today: new Date().getUTCDay(),

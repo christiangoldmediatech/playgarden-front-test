@@ -68,6 +68,12 @@
           </v-hover>
         </v-row>
 
+        <v-row>
+          <v-col class="text-center text-caption grey--text mb-n3">
+            * File(s) must be in JPG or PNG format only.
+          </v-col>
+        </v-row>
+
         <v-row justify="center">
           <v-btn
             class="dashboard-message-btn mt-5 white--text"

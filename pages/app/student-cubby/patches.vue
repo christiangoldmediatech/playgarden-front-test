@@ -4,7 +4,18 @@
 
     <v-card flat>
       <v-card-text>
-        <study-cubby-item-header v-bind="studentChubbyItemHeaderProps" />
+        <div class="text-center">
+          <!-- Section Title and Description -->
+          <div class="d-flex align-center justify-center">
+            <img height="80px" src="@/assets/png/student-cubby/patches.svg">
+            <span class="ml-4 text-h4 text-md-h3">PATCHES</span>
+          </div>
+          <div class="my-6 text-md-h6 text-body-1">
+            Master subjects in the Activities section to collect patches for
+            your Student Cubby! Collect all badges to receive a real patch for
+            your backpack.
+          </div>
+        </div>
 
         <patch-row
           v-for="activityType in childrenPatchesActivity"
@@ -18,7 +29,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useRoute, useStore, useRouter, computed } from '@nuxtjs/composition-api'
+import { useRoute, useStore, useRouter } from '@nuxtjs/composition-api'
 import { usePatches } from '@/composables/patches'
 import PatchRow from '@/components/app/student-cubby/PatchRow.vue'
 import PatchOverlay from '@/components/app/student-cubby/PatchOverlay.vue'
@@ -29,15 +40,12 @@ import StudyCubbyItemHeader, { StudentCubbyItemHeaderProps } from '@/components/
 import { StudentChubbyItemText } from '@/components/app/student-cubby/types'
 import { useStudentCubbyHelpers } from '@/components/app/student-cubby/composables'
 
-const itemText: StudentChubbyItemText = 'PATCHES'
-
-export default defineComponent({
+export default {
   name: 'Patches',
 
   components: {
     PatchRow,
-    PatchOverlay,
-    StudyCubbyItemHeader
+    PatchOverlay
   },
 
   setup () {
@@ -46,24 +54,15 @@ export default defineComponent({
     const router = useRouter()
     const { childId: studentId } = useChildRoute({ store, route, router })
     const { childrenPatchesActivity, getPatchesByChildId } = usePatches()
-    const { getStudentChubbyItemFromItemText } = useStudentCubbyHelpers()
 
     watch(studentId, async () => {
       await getPatchesByChildId(studentId.value || 0)
     }, { immediate: true })
 
-    const studentChubbyItemHeaderProps = computed((): StudentCubbyItemHeaderProps => {
-      return {
-        studentCubbyItem: getStudentChubbyItemFromItemText(itemText)
-      }
-    })
-
     return {
       childrenPatchesActivity,
-      studentId,
-      itemText,
-      studentChubbyItemHeaderProps
+      studentId
     }
   }
-})
+}
 </script>

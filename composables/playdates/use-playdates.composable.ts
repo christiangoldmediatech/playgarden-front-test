@@ -25,6 +25,10 @@ export const usePlaydates = () => {
     }
   })
 
+  const getSpecialist = async () => {
+    return await axios.$get('/specialists/all')
+  }
+
   const getPlaydatesById = async (id: number) => {
     return await axios.$get(`/playdates/${id}`)
   }
@@ -41,9 +45,10 @@ export const usePlaydates = () => {
     return await axios.$patch(`/playdates/${id}`, data)
   }
 
-  const deletePlayadte = async (id: number) => {
+  const deletePlaydate = async (id: number) => {
     return await axios.$delete(`/playdates/${id}`)
   }
+
   return {
     total,
     page,
@@ -51,10 +56,11 @@ export const usePlaydates = () => {
     playdates,
     playdatesResponse,
     states,
+    getSpecialist,
     getPlaydatesById,
     getPlaydates,
     createPlaydate,
     updatePlaydate,
-    deletePlayadte
+    deletePlaydate
   }
 }

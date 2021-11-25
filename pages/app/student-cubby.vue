@@ -47,15 +47,8 @@
         </v-row>
       </v-col>
 
-      <v-col
-        cols="12"
-        class="pos-relative"
-      >
+      <v-col cols="12">
         <!-- Student Cubby Content -->
-        <UnlockPrompt
-          v-if="unlockPromptProps"
-          v-bind="unlockPromptProps"
-        />
         <template v-if="childId">
           <v-container class="pt-0 pt-md-3">
             <nuxt-child />
@@ -91,8 +84,6 @@
 <script lang="ts">
 import { defineComponent, useRoute, computed, watch, useRouter, onMounted, ref, useStore } from '@nuxtjs/composition-api'
 import StudentCubbyItems from '@/components/app/student-cubby/StudentCubbyItems.vue'
-import UnlockPrompt, { UnlockPromptProps } from '@/components/app/student-cubby/UnlockPrompt.vue'
-import { studentCubbyItems } from '@/components/app/student-cubby/constants'
 import ChildSelect from '@/components/app/ChildSelect.vue'
 import { TypedStore } from '@/models'
 import { useChildRoute, useVuetifyHelper } from '@/composables'
@@ -103,8 +94,7 @@ export default defineComponent({
 
   components: {
     ChildSelect,
-    StudentCubbyItems,
-    UnlockPrompt
+    StudentCubbyItems
   },
 
   setup (_, ctx) {
@@ -115,22 +105,41 @@ export default defineComponent({
     const { childId } = useChildRoute({ store, route, router, shouldRedirect: true })
     const { isItemUnAvailableForCurrentUser } = usePlanAccessHelpers()
 
-    const selectedCubbyItem = computed(() => {
-      return studentCubbyItems.find(item => route.value.name?.includes(item.routeName)) || null
-    })
-
-    const unlockPromptProps = computed((): UnlockPromptProps | null => {
-      if (isCurrentItemUnAvailableForUserPlan.value && selectedCubbyItem.value) {
-        return {
-          blockedItem: selectedCubbyItem.value
-        }
+    const studentCubbyItems = [
+      {
+        text: 'PUZZLE',
+        title: 'STUDENTS CUBBY',
+        imgName: 'puzzle-piece.png',
+        routeName: 'app-student-cubby-puzzle'
+      },
+      {
+        text: 'PATCHES',
+        title: 'Earn Activity Patches for learning',
+        imgName: 'patches.svg',
+        routeName: 'app-student-cubby-patches'
+      },
+      {
+        text: 'CURRICULUM',
+        title: 'Review all Curriculum',
+        imgName: 'abc.png',
+        routeName: 'app-student-cubby-course-progress'
+      },
+      {
+        text: 'PORTFOLIO',
+        title: 'PORTFOLIO',
+        imgName: 'group.png',
+        routeName: 'app-student-cubby-student-portfolio'
+      },
+      {
+        text: 'PROGRESS REPORT',
+        title: 'Student progress report',
+        imgName: 'progress.png',
+        routeName: 'app-student-cubby-progress-report'
       }
-      return null
-    })
+    ]
 
-    const isCurrentItemUnAvailableForUserPlan = computed(() => {
-      if (!selectedCubbyItem.value) { return false }
-      return isItemUnAvailableForCurrentUser(selectedCubbyItem.value.text)
+    const selectedCubbyItem = computed(() => {
+      return studentCubbyItems.find(item => route.value.name?.includes(item.routeName)) || {}
     })
 
     const isMobile = computed(() => vuetify.breakpoint.mobile)
@@ -139,9 +148,7 @@ export default defineComponent({
       childId,
       isMobile,
       selectedCubbyItem,
-      studentCubbyItems,
-      isCurrentItemUnAvailableForUserPlan,
-      unlockPromptProps
+      studentCubbyItems
     }
   }
 })

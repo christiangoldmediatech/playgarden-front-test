@@ -94,8 +94,8 @@ export const getNumberOrder = (dayInMonth) => {
 }
 
 export const hours24ToHours12 = (hours, minutes, am = 'am', pm = 'pm') => {
-  if (hours >= 13) {
-    return `${hours - 12}:${minutes.toString().padStart(2, '0')}${pm}`
+  if (hours >= 12) {
+    return `${hours === 12 ? 12 : hours - 12}:${minutes.toString().padStart(2, '0')}${pm}`
   }
   return `${hours}:${minutes.toString().padStart(2, '0')}${am}`
 }

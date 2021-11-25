@@ -1,7 +1,16 @@
 <template>
   <v-card flat>
     <v-card-text>
-      <StudyCubbyItemHeader v-bind="studentChubbyItemHeaderProps" />
+      <div class="text-center">
+        <!-- Section Title and Description -->
+        <div class="d-flex align-center justify-center">
+          <img height="80px" src="@/assets/png/student-cubby/abc.png">
+          <span class="ml-4 text-h4 text-md-h3">CURRICULUM</span>
+        </div>
+        <div class="my-6 text-md-h6 text-body-1">
+          Scroll through to review your lessons and worksheets!
+        </div>
+      </div>
 
       <v-row justify="center">
         <div
@@ -26,7 +35,7 @@
 import RecordedLetter from '@/components/app/live-sessions/recorded/RecordedLetter.vue'
 import CourseProgressOverlay from '@/components/app/student-cubby/CourseProgressOverlay.vue'
 
-import { defineComponent, onBeforeUnmount, ref, useRoute, useRouter, useStore, watch, computed } from '@nuxtjs/composition-api'
+import { defineComponent, onBeforeUnmount, ref, useRoute, useRouter, useStore, watch } from '@nuxtjs/composition-api'
 import { useChildCourseProgress, useChildRoute, useNuxtHelper } from '@/composables'
 import { ChildProgress, TypedStore } from '@/models'
 import { StudentChubbyItemText } from '@/components/app/student-cubby/types'
@@ -40,8 +49,7 @@ export default defineComponent({
 
   components: {
     CourseProgressOverlay,
-    RecordedLetter,
-    StudyCubbyItemHeader
+    RecordedLetter
   },
 
   setup () {
@@ -52,7 +60,6 @@ export default defineComponent({
     const { childId: studentId } = useChildRoute({ store, route, router })
     const letters = ref<ChildProgress[]>([])
     const { getCourseProgressByChildId } = useChildCourseProgress()
-    const { getStudentChubbyItemFromItemText } = useStudentCubbyHelpers()
 
     const fetchChildProgress = async () => {
       if (!studentId.value) {
@@ -78,12 +85,6 @@ export default defineComponent({
       document.querySelector('html')?.style.overflowY = 'auto'
     })
 
-    const studentChubbyItemHeaderProps = computed((): StudentCubbyItemHeaderProps => {
-      return {
-        studentCubbyItem: getStudentChubbyItemFromItemText(itemText)
-      }
-    })
-
     watch(studentId, () => {
       fetchChildProgress()
     }, { immediate: true })
@@ -91,9 +92,7 @@ export default defineComponent({
     return {
       letters,
       studentId,
-      showProgress,
-      itemText,
-      studentChubbyItemHeaderProps
+      showProgress
     }
   }
 })
