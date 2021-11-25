@@ -285,9 +285,11 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
   }
 
   const handleTrialEndingFlow = async () => {
-    showTrialEndingWeekTwoModal()
-    showTrialEndingWeekThreeModal()
-    showTrialEndingWeekFourModal()
+    if (userFlow.value === UserFlow.NOCREDITCARD) {
+      showTrialEndingWeekTwoModal()
+      showTrialEndingWeekThreeModal()
+      showTrialEndingWeekFourModal()
+    }
 
     if (shouldShowTrialEndingModal()) {
       await showTrialEndingModalForLastDay()
