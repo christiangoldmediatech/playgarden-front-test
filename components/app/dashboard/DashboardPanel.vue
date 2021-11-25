@@ -190,6 +190,10 @@
                 <div class="text-uppercase dashboard-item-title" :class="{ 'dashboard-item-disabled': videos.progress < 100 }">
                   UPLOAD WORKSHEET
                 </div>
+
+                <div class="text-caption grey--text">
+                  File(s) must be in JPG or PNG format
+                </div>
               </v-col>
             </v-row>
           </v-card>

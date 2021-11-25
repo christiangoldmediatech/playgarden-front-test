@@ -172,7 +172,7 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
       return
     }
 
-    const oneDay = 1
+    const oneDay = 3
     const now = new Date()
 
     // user `trialEnd` is lower than the current day
@@ -243,6 +243,11 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
   }
 
   const showTrialEndingModalForLastDay = async () => {
+    if (!isUserLoggedIn.value) {
+      setIsTrialEndingForLastDayModalVisible(false)
+      return
+    }
+
     const userCreatedAt = userInfo.value.createdAt
     const isPayingUser = userInfo.value.stripeStatus === 'active'
     const now = dayjs()
@@ -261,19 +266,22 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
       }
     } else {
       // Should appear from the 28th until the stripe status for the user is active.
-      const userDayToBeNotified = dayjs(userCreatedAt).add(28, 'days')
+      const userDayToBeNotified = dayjs(userCreatedAt).add(28, 'days').startOf('day')
 
       if ((now.isSame(userDayToBeNotified, 'day') || now.isAfter(userDayToBeNotified, 'day')) && !isPayingUser && !userChosePlan && !hasCreditCardsInFile) {
         setIsTrialEndingForLastDayModalVisible(true)
+      }
     }
   }
 
   // Only show the trial ending modal to users that have some value in userInfo.value.subscription.discount
   const shouldShowTrialEndingModal = () => {
+    if (!userInfo.value.subscription) {
+      return false
+    }
     const userSubscription = userInfo.value.subscription
     const userSubscriptionDiscount = userSubscription?.discount
     const hasCoupon = Boolean(userSubscriptionDiscount)
-
     return !hasCoupon
   }
 
