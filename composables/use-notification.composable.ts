@@ -172,7 +172,7 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
       return
     }
 
-    const oneDay = 3
+    const oneDay = 1
     const now = new Date()
 
     // user `trialEnd` is lower than the current day
@@ -228,7 +228,7 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
   }
 
   const showTrialEndingWeekFourModal = () => {
-    const showDays = [21, 23, 25, 27]
+    const showDays = [21, 22, 23, 24, 25, 26, 27]
     const userCreatedAt = userInfo.value.createdAt
     const now = dayjs()
 
