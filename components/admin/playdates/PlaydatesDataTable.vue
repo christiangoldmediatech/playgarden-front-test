@@ -1,5 +1,10 @@
 <template>
   <v-container>
+    <live-session-editor-dialog
+      ref="editor"
+      mode="Playdate"
+      @saved="refetchPlayDates()"
+    />
     <v-row>
       <v-col cols="12">
         <v-card width="100%">
@@ -12,7 +17,7 @@
               color="primary darken-1"
               dark
               :icon="$vuetify.breakpoint.xs"
-              :to="{ name: 'admin-playdates-management-editor' }"
+              @click.stop="$refs.editor.open"
             >
               <v-icon class="hidden-sm-and-up">
                 mdi-plus-circle
@@ -60,12 +65,21 @@
                 @refresh="refetchPlayDates"
                 @search="handleSearch"
                 @search-text-cleared="handleSearchTextClearance"
-                @edit-item="$router.push({
-                  name: 'admin-playdates-management-editor',
-                  query: { id: $event.id }
-                })"
-                @remove-item="remove"
-              />
+              >
+              <template v-slot:[`item.actions`]="{ item }">
+                  <v-icon
+                    color="#81A1F7"
+                    dense
+                    @click="$refs.editor.open(null, item)"
+                  >
+                    mdi-pencil-outline
+                  </v-icon>
+
+                  <v-icon color="#d30909" dense @click="remove(item)">
+                    mdi-delete-outline
+                  </v-icon>
+                </template>
+              </pg-admin-data-table>
             </v-col>
           </v-row>
         </v-expansion-panel-content>
@@ -78,11 +92,12 @@
 import { defineComponent, onMounted, ref, watch } from '@nuxtjs/composition-api'
 import PlaydatesList from '@/components/admin/playdates/PlaydatesList.vue'
 import { usePlaydates } from '@/composables/playdates'
+import LiveSessionEditorDialog from '@/components/admin/live-sessions/LiveSessionEditorDialog.vue'
 import paginable from '@/utils/mixins/paginable'
 
 export default defineComponent({
   name: 'PlaydatesDataTable',
-  components: { PlaydatesList },
+  components: { PlaydatesList, LiveSessionEditorDialog },
   mixins: [paginable],
   data: () => ({
     headers: [
@@ -99,8 +114,14 @@ export default defineComponent({
       {
         align: 'center',
         sortable: false,
-        text: 'Day',
-        value: 'day'
+        text: 'Teacher',
+        value: 'teacher'
+      },
+      {
+        align: 'center',
+        sortable: false,
+        text: 'Spots',
+        value: 'spots'
       },
       {
         align: 'right',
@@ -180,10 +201,10 @@ export default defineComponent({
   },
 
   methods: {
-    remove ({ id, name }: any) {
+    remove ({ id, title }: any) {
       this.$nuxt.$emit('open-prompt', {
         title: 'Delete playdate?',
-        message: `Are you sure you want to delete <b>${name}</b>?`,
+        message: `Are you sure you want to delete <b>${title}</b>?`,
         action: () => this.deletePlaydate(id).then(this.refetchPlayDates)
       })
     }

@@ -41,6 +41,7 @@
           <v-col cols="12">
             <live-session-editor-dialog
               ref="editor"
+              mode="LiveClass"
               @saved="refresh(false)"
             />
             <participants-live-session-dialog

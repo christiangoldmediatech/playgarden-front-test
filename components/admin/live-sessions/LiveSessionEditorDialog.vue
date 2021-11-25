@@ -267,7 +267,23 @@
                 :error-messages="errors"
                 label="Duration"
                 min="1"
-                solo
+                solo-labeled
+                type="number"
+              />
+            </validation-provider>
+
+            <validation-provider
+              v-if="mode === 'Playdate'"
+              v-slot="{ errors }"
+              name="Spots"
+              rules="required|integer|min_value:1"
+            >
+              <pg-text-field
+                v-model="item.spots"
+                :error-messages="errors"
+                label="Spots"
+                min="1"
+                solo-labeled
                 type="number"
               />
             </validation-provider>
@@ -410,6 +426,8 @@ function generateItemTemplate () {
     teacher: null,
     ages: null,
     documentFile: null,
+    type: null,
+    spots: 0,
     active: false,
     duration: null,
     dateStart: null,
@@ -420,6 +438,13 @@ function generateItemTemplate () {
 }
 export default {
   name: 'LiveSessionEditorDialog',
+  props: {
+    mode: {
+      type: String,
+      required: true,
+      default: 'LiveClass'
+    }
+  },
   data: () => ({
     dateStart: null,
     dateEnd: null,
@@ -452,11 +477,28 @@ export default {
       return this.dateEnd ? dayjs(this.dateEnd).format('MM/DD/YYYY') : null
     },
     title () {
-      return this.id === null ? 'New Live Class' : 'Edit Live Class'
+      const meetingType = (this.mode === 'LiveClass') ? 'Live Class' : 'Playdate'
+      return this.id === null ? `New ${meetingType}` : `Edit ${meetingType}`
     }
+  },
+
+  watch: {
+    'item.type' (val) {
+      if (val === 'Playdate') {
+        this.item.spots = (this.item.spots) ? this.item.spots : null
+      }
+    }
+  },
+  created () {
+    this.getTypes({ extra: true })
+    this.getCurriculumTypes()
   },
   methods: {
     ...mapActions('live-sessions', ['createLiveSession', 'updateLiveSession', 'deleteLiveSession']),
+    ...mapActions('admin/activity', ['getTypes']),
+    ...mapActions('admin/curriculum', {
+      getCurriculumTypes: 'getTypes'
+    }),
     onPlayerReady (player) {
       this.player = player
     },
@@ -522,6 +564,7 @@ export default {
           imageData = filePath
         }
       }
+      this.item.type = (this.mode === 'LiveClass') ? this.type : 'Playdate'
       if (imageData) {
         this.item.inCollaborationWith = imageData
       }
@@ -574,17 +617,11 @@ export default {
       })
 
       if (item.dateStart) {
-        // const dateStart = item.dateStart.replace(':00.000Z', '').split('T')
-        // this.dateStart = dateStart[0]
-        // this.timeStart = dateStart[1]
         const dateStart = new Date(item.dateStart)
         this.dateStart = `${dateStart.getFullYear()}-${(dateStart.getMonth() + 1).toString().padStart(2, '0')}-${dateStart.getDate().toString().padStart(2, '0')}`
         this.timeStart = `${dateStart.getHours().toString().padStart(2, '0')}:${dateStart.getMinutes().toString().padStart(2, '0')}`
       }
       if (item.dateEnd) {
-        // const dateEnd = item.dateEnd.replace(':00.000Z', '').split('T')
-        // this.dateEnd = dateEnd[0]
-        // this.timeEnd = dateEnd[1]
         const dateEnd = new Date(item.dateEnd)
         this.dateEnd = `${dateEnd.getFullYear()}-${(dateEnd.getMonth() + 1).toString().padStart(2, '0')}-${dateEnd.getDate().toString().padStart(2, '0')}`
         this.timeEnd = `${dateEnd.getHours().toString().padStart(2, '0')}:${dateEnd.getMinutes().toString().padStart(2, '0')}`
