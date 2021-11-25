@@ -1,0 +1,75 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    id: imagepull
+    waitFor: ['-']
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        # always exit with success status even if image doesn't exist (should fail on first build only)
+        docker pull "gcr.io/$PROJECT_ID/$_SERVICE_NAME:latest" || exit 0
+
+  # Build Docker image.
+  - name: 'gcr.io/cloud-builders/docker'
+    id: imagebuild
+    waitFor: ['imagepull']
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      # NOTE: Cloud Build trigger for github repos requires explicit release
+      # assignment (we use $COMMIT_SHA) because the auto-discovery doesn't
+      # work. This is because the Cloud Build trigger does not provide the
+      # .git directory, and thus the sentry-cli can't figure out the commit
+      # sha on its own.
+      - |
+        docker build \
+          --progress plain \
+          --file Dockerfile.gcp \
+          --build-arg 'API_BASE_URL=$_API_BASE_URL' \
+          --build-arg 'TEST_ENV=$_TEST_ENV' \
+          --build-arg 'FIRE_API_KEY=$_FIRE_API_KEY' \
+          --build-arg 'FIRE_AUTH_DOMAIN=$_FIRE_AUTH_DOMAIN' \
+          --build-arg 'FIRE_DATABASE_URL=$_FIRE_DATABASE_URL' \
+          --build-arg 'FIRE_PROJECT_ID=$_FIRE_PROJECT_ID' \
+          --build-arg 'FIRE_STORAGE_BUCKET=$_FIRE_STORAGE_BUCKET' \
+          --build-arg 'FIRE_MESSAGING_SENDER=$_FIRE_MESSAGING_SENDER' \
+          --build-arg 'FIRE_APP_ID=$_FIRE_APP_ID' \
+          --build-arg 'STRIPE_PUBLIC=$_STRIPE_PUBLIC' \
+          --build-arg 'FRONTEND_URL=$_FRONTEND_URL' \
+          --build-arg 'GTM_ID=$_GTM_ID' \
+          --build-arg 'DROPBOX_API_KEY=$_DROPBOX_API_KEY' \
+          --build-arg 'GMT_NPM_TOKEN=$_GMT_NPM_TOKEN' \
+          --build-arg 'GOOGLE_PLACES_API_KEY=$_GOOGLE_PLACES_API_KEY' \
+          --build-arg 'KIDS_CORNER_URL=$_KIDS_CORNER_URL' \
+          --build-arg 'COMMIT_SHA=$_COMMIT_SHA' \
+          -t "gcr.io/$PROJECT_ID/$_SERVICE_NAME" \
+          --cache-from "gcr.io/$PROJECT_ID/$_SERVICE_NAME:latest" \
+          .
+  - name: 'gcr.io/cloud-builders/docker'
+    id: imagepush
+    waitFor: ['imagebuild']
+    args: ['push', 'gcr.io/$PROJECT_ID/$_SERVICE_NAME']
+
+  # Deploy service.
+  - name: 'gcr.io/cloud-builders/gcloud'
+    id: appsdeploy
+    waitFor: ['imagepush']
+    args:
+      - 'beta'
+      - 'run'
+      - 'deploy'
+      - '$_SERVICE_NAME'
+      - '--image'
+      - 'gcr.io/$PROJECT_ID/$_SERVICE_NAME'
+      - '--region'
+      - 'us-central1'
+      - '--platform'
+      - 'managed'
+
+substitutions:
+  # default. can be overridden by tigger config.
+  _SECRETS_PROJECT_ID: $PROJECT_ID
+  _SERVICE_NAME: prep-web
+
+images: ['gcr.io/$PROJECT_ID/$_SERVICE_NAME']
+timeout: '1600s'

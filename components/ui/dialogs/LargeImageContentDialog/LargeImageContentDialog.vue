@@ -1,20 +1,32 @@
 <template>
-  <pg-dialog persistent :fullscreen="isMobile" :value="value" max-width="1400px">
-    <v-card :class="{ 'border-16': !isMobile }" class="overflow-hidden">
+  <pg-dialog
+    persistent
+    :fullscreen="isMobile"
+    :value="value"
+    max-width="1400px"
+    content-class="large-image-content-dialog"
+  >
+    <!-- Desktop Close Button -->
+    <div v-if="isCloseable" class="content-dialog-icon">
+      <img
+        src="@/assets/svg/close-icon.svg"
+        alt="close-icon"
+        class="content-dialog-close-icon d-none d-md-inline"
+        width="32px"
+        data-test-id="desktop-close-button"
+        @click="$emit('close')"
+      >
+    </div>
+
+    <v-card :class="cardClasses">
       <v-progress-linear :active="loading" indeterminate height="12px" data-test-id="progress-linear" />
 
       <v-row no-gutters>
         <v-col cols="4" class="d-none d-md-block">
-          <v-img height="100%" data-test-id="image" :src="img" class="border-left-16" />
+          <v-img height="100%" data-test-id="image" :src="img" class="!rounded-[16px]" />
         </v-col>
-        <v-col cols="12" md="8" class="my-6 my-md-14 px-6">
-          <!-- Desktop Close Button -->
-          <v-btn v-if="isCloseable" class="d-none d-md-inline float-right" icon data-test-id="desktop-close-button" @click="$emit('close')">
-            <v-icon size="32">
-              mdi-close
-            </v-icon>
-          </v-btn>
 
+        <v-col cols="12" md="8" class="my-6 my-md-14 px-6">
           <!-- Mobile Close Button -->
           <v-btn v-if="isCloseable" class="d-md-none warning--text mb-4 pl-0" text data-test-id="mobile-close-button" @click="$emit('close')">
             <v-icon left>
@@ -60,21 +72,48 @@ export default {
   computed: {
     isMobile () {
       return this.$vuetify.breakpoint.mobile
+    },
+
+    cardClasses () {
+      return {
+        '!rounded-[16px]': !this.isMobile,
+        'elevation-0': true
+      }
     }
   }
 }
 </script>
 
-<style scoped>
-.border-left-16 {
-  border-radius: 16px 0px 0px 16px !important;
+<style lang="scss" scoped>
+.content-dialog-icon {
+  position: relative;
+  cursor: pointer;
+  width: 100%;
+  height: 48px;
 }
 
-.border-16 {
+.content-dialog-close-icon {
+  position: absolute;
+  right: 16px;
+}
+
+.\!rounded-\[16px\] {
   border-radius: 16px !important;
 }
+</style>
 
-.float-right {
-  float: right;
+<style lang="scss">
+.large-image-content-dialog {
+  background-color: rgba(0, 0, 0, 0);
+  border-color: rgba(0, 0, 0, 0);
+  box-shadow: none;
+  border-radius: 16px;
+
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+/* Hide scrollbar for Chrome, Safari and Opera */
+.large-image-content-dialog::-webkit-scrollbar {
+  display: none;
 }
 </style>
