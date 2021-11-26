@@ -21,6 +21,10 @@ export const usePlaydates = ({ store }: UseChildPlaydates) => {
     return axios.$delete(`/live-sessions/invite/${token}`)
   }
 
+  const getPlaydateByDate = (params: any) => {
+    return axios.$get('/live-sessions/', { params })
+  }
+
   const getPlaydateInvite = (token: string) => {
     return axios.$get(`/live-sessions/invite/${token}`)
   }
@@ -89,6 +93,7 @@ export const usePlaydates = ({ store }: UseChildPlaydates) => {
     getPlaydatesDates,
     acceptInvitePlaydate,
     addChildren,
+    getPlaydateByDate,
     deletePlaydateInvitation,
     getPlaydateInvite,
     getAndFilterPlaydates,

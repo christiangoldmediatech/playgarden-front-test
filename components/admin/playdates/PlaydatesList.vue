@@ -6,32 +6,8 @@
         <v-col cols="12" order="3">
           <!-- WEEK NAVIGATOR -->
           <div class="d-flex justify-center align-center">
+            <week-selector :day="day" :loading="loading" @prev-week="removeWeek" @next-week="addWeek" />
             <!-- PREVIOUS WEEK BUTTON -->
-            <v-btn
-              :disabled="!canGoToPreviousWeek"
-              :small="isMobile"
-              icon
-              color="accent"
-              class="mx-6 nav-button"
-              @click="goToPreviousWeek"
-            >
-              <v-icon>mdi-chevron-left</v-icon>
-            </v-btn>
-
-            <!-- WEEK INFO -->
-            <span class="text-body-2 text-md-h5 font-weight-medium">{{ currentWeekDisplayText }}</span>
-
-            <!-- NEXT WEEK BUTTON -->
-            <v-btn
-              :disabled="!canGoToNextWeek"
-              :small="isMobile"
-              icon
-              color="accent"
-              class="mx-6 nav-button"
-              @click="goToNextWeek"
-            >
-              <v-icon>mdi-chevron-right</v-icon>
-            </v-btn>
           </div>
 
           <!-- WEEK'S PLAYDATES -->
@@ -41,8 +17,6 @@
                 :playdate="playdate"
                 :manangement="true"
                 :is-in-a-playdate="isInAPlaydate"
-                @spot-reserved="fetchPlaydatesForDate"
-                @spot-canceled="fetchPlaydatesForDate"
               />
             </v-col>
           </v-row>
@@ -53,35 +27,30 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, useStore, watch } from '@nuxtjs/composition-api'
+import { computed, defineComponent, onMounted, ref, useStore } from '@nuxtjs/composition-api'
 import { Playdate, TypedStore } from '@/models'
-
+import WeekSelector from '@/components/admin/live-sessions/WeekSelector.vue'
 import CardPlaydate from '@/components/app/playdates/CardPlaydate.vue'
 import { useChild, usePlaydates, useVuetifyHelper } from '@/composables'
-import dayjs from 'dayjs'
+import { getMondayFriday } from '@/utils/dateTools'
 
 export default defineComponent({
   name: 'PlaydatesList',
 
   components: {
     CardPlaydate,
+    WeekSelector,
     Paywall: () => import('@/components/app/playdates/Paywall.vue')
   },
 
   setup () {
-    const MIN_WEEK_INDEX = 0
-    const MAX_WEEK_INDEX = 2
-
     const vuetify = useVuetifyHelper()
     const store = useStore<TypedStore>()
-    const { isPayingUser, getPlaydateForDate, getPlaydatesDates } = usePlaydates({ store })
-    const { children, get } = useChild({ store })
-
-    const playdatesDates = getPlaydatesDates()
-    const currentPlaydateIndex = ref(0)
+    const { isPayingUser, getPlaydateByDate } = usePlaydates({ store })
+    const { children } = useChild({ store })
     const loading = ref(false)
+    const day = ref(new Date())
     const playdates = ref<Playdate[]>([])
-    const currentPlaydateDate = computed(() => playdatesDates?.[currentPlaydateIndex.value] || dayjs().format('YYYY-MM-DD'))
     const isMobile = computed(() => vuetify.breakpoint.mobile)
 
     const isInAPlaydate = computed(() => {
@@ -92,65 +61,42 @@ export default defineComponent({
       })
     })
 
-    const currentWeekDisplayText = computed(() => {
-      if (playdates.value.length === 0) {
-        return ''
-      }
-
-      const startDate = playdates.value?.[0]?.date
-      const endDate = playdates.value?.[playdates.value.length - 1]?.date
-
-      const isSameMonth = dayjs(startDate).month() === dayjs(endDate).month()
-      // e.g. October 24
-      let displayDate = dayjs(startDate).format('MMMM DD')
-      // e.g. October 24 - 30 or October 31 - November 6
-      displayDate += isSameMonth
-        ? ` - ${dayjs(endDate).format('DD')}`
-        : ` - ${dayjs(endDate).format('MMMM DD')}`
-      // e.g. October 24 - 30, 2021
-      displayDate += `, ${dayjs(startDate).format('YYYY')}`
-
-      return displayDate
+    const days = computed(() => {
+      return getMondayFriday(day.value)
     })
 
-    const canGoToPreviousWeek = computed(() => currentPlaydateIndex.value > MIN_WEEK_INDEX)
-    const canGoToNextWeek = computed(() => currentPlaydateIndex.value < MAX_WEEK_INDEX)
-
-    const goToPreviousWeek = () => {
-      if (canGoToPreviousWeek.value) {
-        currentPlaydateIndex.value--
-      }
+    const addWeek = async () => {
+      day.value.setDate(day.value.getDate() + 7)
+      day.value = new Date(day.value)
+      await getPlaydateBetweenDate()
     }
 
-    const goToNextWeek = () => {
-      if (canGoToNextWeek.value) {
-        currentPlaydateIndex.value++
-      }
+    const removeWeek = async () => {
+      day.value.setDate(day.value.getDate() - 7)
+      day.value = new Date(day.value)
+      await getPlaydateBetweenDate()
     }
 
-    const fetchPlaydatesForDate = async () => {
+    const getPlaydateBetweenDate = async () => {
       loading.value = true
-      playdates.value = await getPlaydateForDate({ date: currentPlaydateDate.value })
+      const data = await getPlaydateByDate({ startDate: days.value.monday, endDate: days.value.friday, admin: true, type: 'Playdate', page: 1, limit: 100 })
+      playdates.value = data.meetings
       loading.value = false
     }
 
-    watch(currentPlaydateIndex, async () => {
-      await fetchPlaydatesForDate()
-    }, { immediate: true })
+    onMounted(async () => {
+      await getPlaydateBetweenDate()
+    })
 
     return {
-      canGoToNextWeek,
-      canGoToPreviousWeek,
-      currentWeekDisplayText,
+      day,
       isInAPlaydate,
       isMobile,
       isPayingUser,
       loading,
       playdates,
-      playdatesDates,
-      fetchPlaydatesForDate,
-      goToNextWeek,
-      goToPreviousWeek
+      addWeek,
+      removeWeek
     }
   }
 })

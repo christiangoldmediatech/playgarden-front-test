@@ -33,7 +33,7 @@
           </v-card-title>
 
           <v-card-text>
-            Update, or delete playdate.
+            View, Create, Update, or delete playdate.
           </v-card-text>
         </v-card>
       </v-col>
