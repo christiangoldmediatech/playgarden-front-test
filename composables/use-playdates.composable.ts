@@ -22,7 +22,7 @@ export const usePlaydates = ({ store }: UseChildPlaydates) => {
   }
 
   const getPlaydateByDate = (params: any) => {
-    return axios.$get('/live-sessions/', { params })
+    return axios.$get('/live-sessions/show-children', { params })
   }
 
   const getPlaydateInvite = (token: string) => {

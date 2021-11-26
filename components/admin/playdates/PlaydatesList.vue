@@ -7,7 +7,6 @@
           <!-- WEEK NAVIGATOR -->
           <div class="d-flex justify-center align-center">
             <week-selector :day="day" :loading="loading" @prev-week="removeWeek" @next-week="addWeek" />
-            <!-- PREVIOUS WEEK BUTTON -->
           </div>
 
           <!-- WEEK'S PLAYDATES -->
@@ -79,8 +78,7 @@ export default defineComponent({
 
     const getPlaydateBetweenDate = async () => {
       loading.value = true
-      const data = await getPlaydateByDate({ startDate: days.value.monday, endDate: days.value.friday, admin: true, type: 'Playdate', page: 1, limit: 100 })
-      playdates.value = data.meetings
+      playdates.value = await getPlaydateByDate({ startDate: days.value.monday, endDate: days.value.friday, type: 'Playdate', page: 1, limit: 100 })
       loading.value = false
     }
 
