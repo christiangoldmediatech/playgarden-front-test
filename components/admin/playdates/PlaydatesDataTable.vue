@@ -3,7 +3,7 @@
     <live-session-editor-dialog
       ref="editor"
       mode="Playdate"
-      @saved="refetchPlayDates()"
+      @saved="$refs.refplaydates.getPlaydateBetweenDate(), refetchPlayDates()"
     />
     <v-row>
       <v-col cols="12">
@@ -42,7 +42,7 @@
     <v-row>
       <v-col cols="12">
         <v-card width="100%">
-          <playdates-list />
+          <playdates-list ref="refplaydates" />
         </v-card>
       </v-col>
     </v-row>
@@ -56,6 +56,7 @@
           <v-row no-gutters>
             <v-col cols="12">
               <pg-admin-data-table
+                v-if="playdates"
                 :headers="headers"
                 :items="playdates"
                 :loading="loading"
@@ -66,7 +67,10 @@
                 @search="handleSearch"
                 @search-text-cleared="handleSearchTextClearance"
               >
-              <template v-slot:[`item.actions`]="{ item }">
+                <template v-slot:item.dateStart="{ item }">
+                  {{ item.dateStart | formatDate }}
+                </template>
+                <template v-slot:[`item.actions`]="{ item }">
                   <v-icon
                     color="#81A1F7"
                     dense
@@ -105,6 +109,11 @@ export default defineComponent({
         text: 'Title',
         sortable: false,
         value: 'title'
+      },
+      {
+        text: 'Date',
+        sortable: false,
+        value: 'dateStart'
       },
       {
         text: 'Description',

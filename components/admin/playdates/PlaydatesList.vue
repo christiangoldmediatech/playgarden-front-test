@@ -94,7 +94,8 @@ export default defineComponent({
       loading,
       playdates,
       addWeek,
-      removeWeek
+      removeWeek,
+      getPlaydateBetweenDate
     }
   }
 })

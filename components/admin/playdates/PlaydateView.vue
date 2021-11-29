@@ -1,5 +1,10 @@
 <template>
   <v-container>
+    <live-session-editor-dialog
+      ref="editor"
+      mode="Playdate"
+      @saved="refetchPlayDates()"
+    />
     <v-row class="mx-4 my-4">
       <v-card width="100%">
         <v-card-title>
@@ -28,10 +33,7 @@
             icon
             color="#81A1F7"
             :loading="loading"
-            @click="$router.push({
-              name: 'admin-playdates-management-editor',
-              query: { id: id }
-            })"
+            @click="$refs.editor.open(null, playdate)"
           >
             <v-icon>mdi-pencil-outline</v-icon>
           </v-btn>
@@ -137,9 +139,11 @@
 import { defineComponent, onMounted, ref, useRouter, computed, useRoute } from '@nuxtjs/composition-api'
 import { Meeting } from '@/models'
 import { usePlaydates } from '@/composables/playdates'
-import { formatDate } from '@/utils/dateTools'
+import LiveSessionEditorDialog from '@/components/admin/live-sessions/LiveSessionEditorDialog.vue'
+import dayjs from 'dayjs'
 export default defineComponent({
   name: 'PlaydatesView',
+  components: { LiveSessionEditorDialog },
   setup () {
     const loading = ref(false)
     const id = ref<null|number>()
@@ -165,15 +169,6 @@ export default defineComponent({
       return (playdate.value) ? `${playdate.value.day}, ${start.value} - ${end.value}` : ''
     })
 
-    const toLocalTime = (time: string) => {
-      return formatDate(time, {
-        format: 'HH:mm:ss',
-        fromFormat: 'HH:mm:ss',
-        fromUtc: true,
-        returnObject: false
-      })
-    }
-
     onMounted(async () => {
       generateItemTemplate()
       if (route.value.query.id) {
@@ -181,8 +176,8 @@ export default defineComponent({
         playdate.value = await getPlaydatesById(id.value)
         if (playdate.value.dateStart && playdate.value.dateEnd) {
           const dateStart = new Date(playdate.value.dateStart)
+          playdate.value.day = dayjs(dateStart).format('dddd').toUpperCase()
           start.value = `${dateStart.getHours().toString().padStart(2, '0')}:${dateStart.getMinutes().toString().padStart(2, '0')}`
-
           const dateEnd = new Date(playdate.value.dateEnd)
           end.value = `${dateEnd.getHours().toString().padStart(2, '0')}:${dateEnd.getMinutes().toString().padStart(2, '0')}`
         }

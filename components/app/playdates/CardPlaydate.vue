@@ -445,7 +445,7 @@ export default defineComponent({
     },
 
     date () {
-      const date = this.playdate.date
+      const date = this.playdate.dateStart
 
       if (date) {
         return dayjs(date).format('MMMM DD, YYYY')
@@ -455,16 +455,18 @@ export default defineComponent({
     },
 
     day () {
-      if (!this.hasDay) {
+      if (!this.playdate.dateStart) {
         return null
       }
 
       if (
-        dayjs().isSame(dayjs(this.playdate.date), 'day')
+        dayjs().isSame(dayjs(this.playdate.dateStart), 'day')
       ) {
         return 'Today'
       }
 
+      const dateStart = new Date(this.playdate.dateStart)
+      this.playdate.day = dayjs(dateStart).format('dddd')
       return `Next ${this.playdate.day.toLowerCase()}`
     },
 

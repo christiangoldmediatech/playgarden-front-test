@@ -40,7 +40,7 @@
               />
             </validation-provider>
 
-            <validation-provider v-slot="{ errors }" name="Letter">
+            <validation-provider v-if="mode === 'LiveClass'" v-slot="{ errors }" name="Letter">
               <pg-select
                 v-model="item.curriculumTypeId"
                 clearable
@@ -568,6 +568,11 @@ export default {
       if (imageData) {
         this.item.inCollaborationWith = imageData
       }
+
+      if (this.dateStart) {
+        this.item.day = dayjs(new Date(this.dateStart)).format('dddd').toUpperCase()
+      }
+
       if (this.file) {
         const { video } = (this.typeSelectVideoFile !== 'dropBox') ? await this.$refs.videoFileUploaderDropBox.handleUpload() : await this.$refs.videoFileUploaderDropBox.handleDropBoxFileUpload()
         const data = video.id
