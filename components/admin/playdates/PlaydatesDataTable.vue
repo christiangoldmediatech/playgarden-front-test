@@ -3,7 +3,6 @@
     <live-session-editor-dialog
       ref="editor"
       mode="Playdate"
-      @saved="$refs.refplaydates.getPlaydateBetweenDate(), refetchPlayDates()"
     />
     <v-row>
       <v-col cols="12">
@@ -42,7 +41,7 @@
     <v-row>
       <v-col cols="12">
         <v-card width="100%">
-          <playdates-list ref="refplaydates" />
+          <playdates-list ref="playdatesRef" />
         </v-card>
       </v-col>
     </v-row>
@@ -207,6 +206,16 @@ export default defineComponent({
       handleSearch,
       handleSearchTextClearance
     }
+  },
+
+  created () {
+    this.$nuxt.$on('update-calendar', async () => {
+      await this.refetchPlayDates()
+    })
+  },
+
+  beforeDestroy () {
+    this.$nuxt.$off('update-calendar')
   },
 
   methods: {

@@ -3,7 +3,6 @@
     <live-session-editor-dialog
       ref="editor"
       mode="Playdate"
-      @saved="refetchPlayDates()"
     />
     <v-row class="mx-4 my-4">
       <v-card width="100%">

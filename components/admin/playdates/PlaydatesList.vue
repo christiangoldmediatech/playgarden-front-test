@@ -97,6 +97,15 @@ export default defineComponent({
       removeWeek,
       getPlaydateBetweenDate
     }
+  },
+  created () {
+    this.$nuxt.$on('update-calendar', async () => {
+      await this.getPlaydateBetweenDate()
+    })
+  },
+
+  beforeDestroy () {
+    this.$nuxt.$off('update-calendar')
   }
 })
 </script>
