@@ -70,7 +70,7 @@
                   <label class="label-playdate">Duration</label>
                 </v-col>
                 <v-col cols="8">
-                  <label class="font-weight-bold grey--text text--darken-2">{{ playdate.spots }} minutes</label>
+                  <label class="font-weight-bold grey--text text--darken-2">{{ playdate.duration }} minutes</label>
                 </v-col>
               </v-row>
               <v-row>
@@ -165,7 +165,7 @@ export default defineComponent({
       meetingsChildren: []
     })
     const getDateText = computed(() => {
-      return (playdate.value) ? `${playdate.value.day}, ${start.value} - ${end.value}` : ''
+      return (playdate.value) ? `${playdate.value.day}, from ${start.value} to ${end.value}` : ''
     })
 
     onMounted(async () => {
@@ -175,7 +175,7 @@ export default defineComponent({
         playdate.value = await getPlaydatesById(id.value)
         if (playdate.value.dateStart && playdate.value.dateEnd) {
           const dateStart = new Date(playdate.value.dateStart)
-          playdate.value.day = dayjs(dateStart).format('dddd').toUpperCase()
+          playdate.value.day = dayjs(dateStart).format('dddd, MMMM DD YYYY').toUpperCase()
           start.value = `${dateStart.getHours().toString().padStart(2, '0')}:${dateStart.getMinutes().toString().padStart(2, '0')}`
           const dateEnd = new Date(playdate.value.dateEnd)
           end.value = `${dateEnd.getHours().toString().padStart(2, '0')}:${dateEnd.getMinutes().toString().padStart(2, '0')}`

@@ -6,7 +6,7 @@
         <v-icon class="accent--text">
           mdi-chevron-left
         </v-icon>
-        <span class="accent--text font-weight-medium">Go back to playdates</span>
+        <span class="accent--text font-weight-medium">Go back to Playdates</span>
       </nuxt-link>
     </div>
 
