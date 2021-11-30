@@ -71,6 +71,14 @@
                 </template>
                 <template v-slot:[`item.actions`]="{ item }">
                   <v-icon
+                    color="accent"
+                    dense
+                    :to="{ name: 'admin-playdates-management-detail', query: { id: item.id } }"
+                    @click="goToDetail(item)"
+                  >
+                    mdi-eye-outline
+                  </v-icon>
+                  <v-icon
                     color="#81A1F7"
                     dense
                     @click="$refs.editor.open(null, item)"
@@ -92,11 +100,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, watch } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, ref, watch, useRouter } from '@nuxtjs/composition-api'
 import PlaydatesList from '@/components/admin/playdates/PlaydatesList.vue'
 import { usePlaydates } from '@/composables/playdates'
 import LiveSessionEditorDialog from '@/components/admin/live-sessions/LiveSessionEditorDialog.vue'
 import paginable from '@/utils/mixins/paginable'
+import { Playdate } from '@/models'
 
 export default defineComponent({
   name: 'PlaydatesDataTable',
@@ -135,12 +144,13 @@ export default defineComponent({
         align: 'right',
         sortable: false,
         value: 'actions',
-        width: 85
+        width: 115
       }
     ]
   }),
 
   setup (_, { emit }) {
+    const router = useRouter()
     const loading = ref<Boolean>(false)
     const searchText = ref<string | null>(null)
     const panel = [0]
@@ -149,6 +159,15 @@ export default defineComponent({
 
     const fetchPlaydates = async (params: any) => {
       await getPlaydates(params)
+    }
+
+    const goToDetail = (playdate: Playdate) => {
+      if (playdate) {
+        router.push({
+          name: 'admin-playdates-management-detail',
+          query: { id: (playdate.id).toString() }
+        })
+      }
     }
 
     onMounted(async () => {
@@ -204,7 +223,8 @@ export default defineComponent({
       deletePlaydate,
       refetchPlayDates,
       handleSearch,
-      handleSearchTextClearance
+      handleSearchTextClearance,
+      goToDetail
     }
   },
 
