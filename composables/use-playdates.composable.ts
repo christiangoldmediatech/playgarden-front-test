@@ -29,10 +29,6 @@ export const usePlaydates = ({ store }: UseChildPlaydates) => {
     return axios.$get(`/live-sessions/invite/${token}`)
   }
 
-  const getAndFilterPlaydates = (params: { day?: string }): Promise<Playdate[]> => {
-    return axios.$get('/live-sessions/show-children', { params })
-  }
-
   const getChildrenInfo = (): Promise<{ children: Child; playdates: Playdates[], groups: { groupedDate: string, playdates: { backpackImages: [], date: string, playdate: Playdate }[] }[] }[]> => {
     return axios.$get('/live-sessions/my/playdates')
   }
@@ -96,7 +92,6 @@ export const usePlaydates = ({ store }: UseChildPlaydates) => {
     getPlaydateByDate,
     deletePlaydateInvitation,
     getPlaydateInvite,
-    getAndFilterPlaydates,
     getChildrenInfo,
     getPlaydateDays,
     joinPlaydate,
