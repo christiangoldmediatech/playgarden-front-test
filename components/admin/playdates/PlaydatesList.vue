@@ -45,7 +45,7 @@ export default defineComponent({
   setup () {
     const vuetify = useVuetifyHelper()
     const store = useStore<TypedStore>()
-    const { isPayingUser, getPlaydateByDate } = usePlaydates({ store })
+    const { isPayingUser, getPlaydateWithChildren } = usePlaydates({ store })
     const { children } = useChild({ store })
     const loading = ref(false)
     const day = ref(new Date())
@@ -78,7 +78,7 @@ export default defineComponent({
 
     const getPlaydateBetweenDate = async () => {
       loading.value = true
-      playdates.value = await getPlaydateByDate({ startDate: days.value.monday, endDate: days.value.friday, type: 'Playdate', page: 1, limit: 100 })
+      playdates.value = await getPlaydateWithChildren({ startDate: days.value.monday, endDate: days.value.friday, type: 'Playdate', page: 1, limit: 100 })
       loading.value = false
     }
 
