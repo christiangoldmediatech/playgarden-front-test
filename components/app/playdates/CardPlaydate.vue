@@ -521,12 +521,12 @@ export default defineComponent({
         return null
       }
 
-      const start = dayjs
-        .utc(this.playdate.dateStart, 'HH:mm:ss')
+      const start = dayjs(this.playdate.dateStart)
+        .utc()
         .add((this.week[this.playdate.day] || 6) - this.today, 'days')
         .local()
-      const end = dayjs
-        .utc(this.playdate.end, 'HH:mm:ss')
+      const end = dayjs(this.playdate.end)
+        .utc()
         .add((this.week[this.playdate.day] || 6) - this.today, 'days')
         .local()
 
