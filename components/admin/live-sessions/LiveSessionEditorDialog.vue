@@ -221,7 +221,7 @@
               />
             </validation-provider>
 
-            <validation-provider
+            <!-- <validation-provider
               v-slot="{ errors }"
               name="Link"
               rules="required|url"
@@ -232,7 +232,7 @@
                 label="Link"
                 solo-labeled
               />
-            </validation-provider>
+            </validation-provider> -->
 
             <validation-provider
               v-slot="{ errors }"
