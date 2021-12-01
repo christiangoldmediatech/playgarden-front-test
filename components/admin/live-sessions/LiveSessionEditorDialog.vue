@@ -221,7 +221,8 @@
               />
             </validation-provider>
 
-            <!-- <validation-provider
+            <validation-provider
+              v-if="!createLink"
               v-slot="{ errors }"
               name="Link"
               rules="required|url"
@@ -232,7 +233,17 @@
                 label="Link"
                 solo-labeled
               />
-            </validation-provider> -->
+            </validation-provider>
+
+            <span>Automatically create link:</span>
+            <v-switch
+              v-model="createLink"
+              class="mx-1 my-1 pa-0"
+              dense
+              hide-details
+              inset
+              :label="createLink ? 'Enabled' : 'Disabled'"
+            />
 
             <validation-provider
               v-slot="{ errors }"
@@ -465,6 +476,7 @@ export default {
     player: null,
     file: null,
     image: null,
+    createLink: false,
     item: generateItemTemplate()
   }),
   computed: {
@@ -486,6 +498,11 @@ export default {
     'item.type' (val) {
       if (val === 'Playdate') {
         this.item.spots = (this.item.spots) ? this.item.spots : null
+      }
+    },
+    createLink (val) {
+      if (val) {
+        this.item.link = null
       }
     }
   },
