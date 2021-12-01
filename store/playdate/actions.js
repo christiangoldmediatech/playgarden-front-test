@@ -1,6 +1,6 @@
 export default {
   async getPlaydates ({ commit }, params) {
-    const data = await this.$axios.$get('/playdates', {
+    const data = await this.$axios.$get('/live-sessions', {
       params
     })
     commit('SET_ROWS', data)
@@ -13,19 +13,19 @@ export default {
   },
 
   async getPlaydatesById (ctx, id) {
-    return await this.$axios.$get(`/playdates/${id}`)
+    return await this.$axios.$get(`/live-sessions/${id}`)
   },
 
   async createPlaydate (ctx, data) {
-    return await this.$axios.$post('/playdates', data)
+    return await this.$axios.$post('/live-sessions', data)
   },
 
   async updatePlaydate (ctx, { id, data }) {
-    await this.$axios.$patch(`/playdates/${id}`, data)
+    await this.$axios.$patch(`/live-sessions/${id}`, data)
   },
 
   async deletePlaydate (ctx, id) {
-    await this.$axios.$delete(`/playdates/${id}`)
+    await this.$axios.$delete(`/live-sessions/${id}`)
   }
 
 }

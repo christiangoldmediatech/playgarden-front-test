@@ -1,9 +1,13 @@
 <template>
   <v-container>
+    <live-session-editor-dialog
+      ref="editor"
+      mode="Playdate"
+    />
     <v-row class="mx-4 my-4">
       <v-card width="100%">
         <v-card-title>
-          <span class="font-weight-bold">Playdate with {{ getSpecialist }}</span>
+          <span class="font-weight-bold">Playdate with {{ playdate.teacher }}</span>
           <v-spacer />
 
           <v-btn
@@ -28,10 +32,7 @@
             icon
             color="#81A1F7"
             :loading="loading"
-            @click="$router.push({
-              name: 'admin-playdates-management-editor',
-              query: { id: id }
-            })"
+            @click="$refs.editor.open(null, playdate)"
           >
             <v-icon>mdi-pencil-outline</v-icon>
           </v-btn>
@@ -50,10 +51,10 @@
             <v-col cols="5">
               <v-row>
                 <v-col cols="4">
-                  <label class="label-playdate">Specialist</label>
+                  <label class="label-playdate">Teacher</label>
                 </v-col>
                 <v-col cols="8">
-                  <label class="font-weight-bold grey--text text--darken-2">{{ getSpecialist }}</label>
+                  <label class="font-weight-bold grey--text text--darken-2">{{ playdate.teacher }}</label>
                 </v-col>
               </v-row>
               <v-row>
@@ -69,7 +70,7 @@
                   <label class="label-playdate">Duration</label>
                 </v-col>
                 <v-col cols="8">
-                  <label class="font-weight-bold grey--text text--darken-2">{{ playdate.spots }} minutes</label>
+                  <label class="font-weight-bold grey--text text--darken-2">{{ playdate.duration }} minutes</label>
                 </v-col>
               </v-row>
               <v-row>
@@ -110,8 +111,8 @@
                   <label class="label-playdate">Who’s going?</label>
                 </v-col>
                 <v-col no-guters cols="9">
-                  <v-row v-if="playdate.playdatesChildrens.length > 0" no-gutters>
-                    <v-col v-for="item in playdate.playdatesChildrens" :key="item.id" cols="6">
+                  <v-row v-if="playdate.meetingsChildren && playdate.meetingsChildren.length > 0" no-gutters>
+                    <v-col v-for="item in playdate.meetingsChildren" :key="item.id" cols="6">
                       <div class="black--text my-1">
                         <v-avatar size="26">
                           <img
@@ -135,11 +136,13 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, useRouter, computed, useRoute } from '@nuxtjs/composition-api'
-import { Playdate } from '@/models'
+import { Meeting } from '@/models'
 import { usePlaydates } from '@/composables/playdates'
-import { formatDate } from '@/utils/dateTools'
+import LiveSessionEditorDialog from '@/components/admin/live-sessions/LiveSessionEditorDialog.vue'
+import dayjs from 'dayjs'
 export default defineComponent({
   name: 'PlaydatesView',
+  components: { LiveSessionEditorDialog },
   setup () {
     const loading = ref(false)
     const id = ref<null|number>()
@@ -148,46 +151,34 @@ export default defineComponent({
     const route = useRoute()
     const router = useRouter()
     const { getPlaydatesById, deletePlaydate } = usePlaydates()
-    const playdate = ref<Partial<Playdate>>({
-      name: '',
+    const playdate = ref<Partial<Meeting>>({
+      title: '',
       description: '',
       duration: 0,
       day: '',
       ages: '',
-      start: '',
-      end: '',
+      dateStart: null,
+      dateEnd: null,
       spots: 0,
       link: '',
-      specialistId: null,
-      playdatesChildrens: []
+      teacher: '',
+      meetingsChildren: []
     })
     const getDateText = computed(() => {
-      return (playdate.value) ? `${playdate.value.day}, ${start.value} - ${end.value}` : ''
+      return (playdate.value) ? `${playdate.value.day}, from ${start.value} to ${end.value}` : ''
     })
-    const getSpecialist = computed(() => {
-      return (playdate.value.specialistUser && playdate.value.specialistUser.user) ? `${playdate.value.specialistUser.user.firstName} ${playdate.value.specialistUser.user.lastName}` : ''
-    })
-
-    const toLocalTime = (time: string) => {
-      return formatDate(time, {
-        format: 'HH:mm:ss',
-        fromFormat: 'HH:mm:ss',
-        fromUtc: true,
-        returnObject: false
-      })
-    }
 
     onMounted(async () => {
       generateItemTemplate()
       if (route.value.query.id) {
         id.value = Number(route.value.query.id)
         playdate.value = await getPlaydatesById(id.value)
-        if (playdate.value.specialistUser) {
-          playdate.value.specialistId = playdate.value.specialistUser.id
-        }
-        if (playdate.value.start && playdate.value.end) {
-          start.value = toLocalTime(playdate.value.start).toString()
-          end.value = toLocalTime(playdate.value.end).toString()
+        if (playdate.value.dateStart && playdate.value.dateEnd) {
+          const dateStart = new Date(playdate.value.dateStart)
+          playdate.value.day = dayjs(dateStart).format('dddd, MMMM DD YYYY').toUpperCase()
+          start.value = `${dateStart.getHours().toString().padStart(2, '0')}:${dateStart.getMinutes().toString().padStart(2, '0')}`
+          const dateEnd = new Date(playdate.value.dateEnd)
+          end.value = `${dateEnd.getHours().toString().padStart(2, '0')}:${dateEnd.getMinutes().toString().padStart(2, '0')}`
         }
       }
     })
@@ -197,21 +188,21 @@ export default defineComponent({
       })
     }
     const generateItemTemplate = () => {
-      playdate.value.name = ''
+      playdate.value.title = ''
       playdate.value.description = ''
       playdate.value.duration = 0
       playdate.value.link = ''
-      playdate.value.start = ''
-      playdate.value.end = ''
+      playdate.value.dateStart = null
+      playdate.value.dateEnd = null
       playdate.value.spots = 0
       playdate.value.ages = ''
-      playdate.value.playdatesChildrens = []
+      playdate.value.teacher = ''
+      playdate.value.meetingsChildren = []
       start.value = ''
       end.value = ''
     }
     return {
       loading,
-      getSpecialist,
       id,
       playdate,
       getDateText,
@@ -225,7 +216,7 @@ export default defineComponent({
       if (this.id) {
         this.$nuxt.$emit('open-prompt', {
           title: 'Delete playdate?',
-          message: `Are you sure you want to delete <b>${this.playdate.name}</b>?`,
+          message: `Are you sure you want to delete <b>${this.playdate.title}</b>?`,
           action: () => this.deletePlaydate(Number(this.id)).then(this.backList)
         })
       }

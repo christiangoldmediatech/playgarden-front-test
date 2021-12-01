@@ -26,6 +26,20 @@
           <v-container>
             <validation-provider
               v-slot="{ errors }"
+              name="Type"
+              rules="required"
+            >
+              <pg-select
+                v-model="item.type"
+                :error-messages="errors"
+                placeholder="Select type"
+                :items="listTypes"
+                solo
+              />
+            </validation-provider>
+
+            <validation-provider
+              v-slot="{ errors }"
               name="Activity"
               rules="required"
             >
@@ -216,6 +230,22 @@
             </validation-provider>
 
             <validation-provider
+              v-if="item.type === 'Playdate'"
+              v-slot="{ errors }"
+              name="Spots"
+              rules="required|integer|min_value:1"
+            >
+              <pg-text-field
+                v-model="item.spots"
+                :error-messages="errors"
+                label="Spots"
+                min="1"
+                solo-labeled
+                type="number"
+              />
+            </validation-provider>
+
+            <validation-provider
               v-slot="{ errors }"
               name="Document"
             >
@@ -285,7 +315,9 @@ function generateItemTemplate () {
     ages: null,
     duration: null,
     dateStart: null,
-    day: null
+    spots: 0,
+    day: null,
+    type: 'LiveClass'
   }
 }
 
@@ -305,6 +337,7 @@ export default {
     dialog: false,
     loading: false,
     id: null,
+    listTypes: ['Playdate', 'LiveClass'],
     typeSelectDocumentFile: null,
     item: generateItemTemplate()
   }),
@@ -328,6 +361,11 @@ export default {
   watch: {
     dateStart (val) {
       this.item.day = dayjs(this.dateStart).format('dddd').toUpperCase()
+    },
+    'item.type' (val) {
+      if (val === 'Playdate') {
+        this.item.spots = (this.item.spots) ? this.item.spots : null
+      }
     }
   },
 
