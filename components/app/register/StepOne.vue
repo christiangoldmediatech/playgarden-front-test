@@ -71,16 +71,20 @@ import { useSignup } from '@/composables/use-signup.composable'
 import RegisterForm from '@/components/forms/auth/RegisterForm.vue'
 import CardInfo from '@/components/app/register/CardInfo.vue'
 import { UserFlow } from '@/models'
+import { useUTM } from '@/composables/utm/use-utm.composable'
 
 export default defineComponent({
   name: 'StepOne',
+
   components: {
     RegisterForm,
     CardInfo
   },
+
   setup () {
     const router = useRouter()
     const route = useRoute()
+    const utmContent = useUTM({ route: route.value })
 
     const { abFlow, isCreditCardRequired, setupABFlow } = useSignup({
       route: route.value
@@ -95,7 +99,8 @@ export default defineComponent({
             name: 'app-normal-payment',
             query: {
               step: '2',
-              process: 'signup'
+              process: 'signup',
+              ...utmContent.value
             }
           })
           break
@@ -104,7 +109,8 @@ export default defineComponent({
             name: 'app-children',
             query: {
               step: '3',
-              process: 'signup'
+              process: 'signup',
+              ...utmContent.value
             }
           })
           break

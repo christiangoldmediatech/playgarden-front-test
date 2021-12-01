@@ -32,19 +32,19 @@
                   <v-col cols="12" sm="9" lg="6">
                     <v-row>
                       <v-col class="text-md-right" cols="12" sm="3">
-                        <span class="subheader">Name:</span>
+                        <span class="subheader">Title:</span>
                       </v-col>
 
                       <v-col>
                         <validation-provider
                           v-slot="{ errors }"
-                          name="name"
+                          name="title"
                           rules="required"
                         >
                           <pg-text-field
-                            v-model="playdate.name"
+                            v-model="playdate.title"
                             :error-messages="errors"
-                            placeholder="Name of the playdate"
+                            placeholder="Title of the playdate"
                             solo
                           />
                         </validation-provider>
@@ -68,6 +68,30 @@
                             :error-messages="errors"
                             placeholder="Description of the playdate"
                             solo
+                          />
+                        </validation-provider>
+                      </v-col>
+                    </v-row>
+
+                    <v-row>
+                      <v-col class="text-md-right" cols="12" sm="3">
+                        <span class="subheader">Activity:</span>
+                      </v-col>
+                      <v-col>
+                        <validation-provider
+                          v-slot="{ errors }"
+                          name="Activity"
+                          rules="required"
+                        >
+                          <pg-select
+                            v-model="playdate.activityTypeId"
+                            clearable
+                            :error-messages="errors"
+                            :items="activityTypesList"
+                            item-text="name"
+                            item-value="id"
+                            label="Activity"
+                            solo-labeled
                           />
                         </validation-provider>
                       </v-col>
@@ -166,36 +190,30 @@
                         </v-menu>
                       </v-col>
                     </v-row>
+                  </v-col>
+                  <!-- END COL1 -->
+                  <!-- COL2-->
+                  <v-col cols="12" sm="9" lg="6">
                     <v-row>
                       <v-col class="text-md-right" cols="12" sm="3">
-                        <span class="subheader">Specialist:</span>
+                        <span class="subheader">Teacher:</span>
                       </v-col>
 
                       <v-col>
                         <validation-provider
                           v-slot="{ errors }"
-                          name="Specialist"
+                          name="teacher"
                           rules="required"
                         >
-                          <pg-select
-                            v-model="playdate.specialistId"
-                            clearable
-                            class="mt-4"
-                            :disabled="specialistId"
+                          <pg-text-field
+                            v-model="playdate.teacher"
                             :error-messages="errors"
-                            :items="specialistList"
-                            item-text="name"
-                            item-value="value"
-                            label="Specialty"
-                            solo-labeled
+                            placeholder="Name Teacher"
+                            solo
                           />
                         </validation-provider>
                       </v-col>
                     </v-row>
-                  </v-col>
-                  <!-- END COL1 -->
-                  <!-- COL2-->
-                  <v-col cols="12" sm="9" lg="6">
                     <v-row>
                       <v-col class="text-md-right" cols="12" sm="3">
                         <span class="subheader">Day:</span>
@@ -253,6 +271,25 @@
                             :error-messages="errors"
                             placeholder="Number of sports available"
                             solo
+                          />
+                        </validation-provider>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col class="text-md-right" cols="12" sm="3">
+                        <span class="subheader">Letter:</span>
+                      </v-col>
+                      <v-col>
+                        <validation-provider v-slot="{ errors }" name="Letter">
+                          <pg-select
+                            v-model="playdate.curriculumTypeId"
+                            clearable
+                            :error-messages="errors"
+                            :items="curriculumTypes"
+                            item-text="name"
+                            item-value="id"
+                            label="Letter"
+                            solo-labeled
                           />
                         </validation-provider>
                       </v-col>
@@ -325,11 +362,12 @@
 </template>
 
 <script lang="ts">
+import dayjs from 'dayjs'
 import { defineComponent, onMounted, ref, useRouter, computed, useRoute } from '@nuxtjs/composition-api'
 import { useSnotifyHelper } from '@/composables'
 import { usePlaydates } from '@/composables/playdates'
-import { formatDate } from '@/utils/dateTools'
-import { Playdate, Specialist } from '@/models'
+import { formatDate, stringsToDate } from '@/utils/dateTools'
+import { ActivityType, CurriculumType, Meeting } from '@/models'
 
 export default defineComponent({
   name: 'PlaydatesEditor',
@@ -342,26 +380,33 @@ export default defineComponent({
     const menuStart = ref(false)
     const menuEnd = ref(false)
     const id = ref<null|number>()
-    const specialistId = ref<null|number>()
     const timeStart = ref<null|string>()
     const timeEnd = ref<null|string>()
+    const curriculumTypes = ref<CurriculumType[]>([])
+    const activityTypes = ref<ActivityType[]>([])
     const ages = ['1', '2', '3', '4']
     const days = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY']
-    const specialists = ref<Specialist[]>([])
-    const playdate = ref<Partial<Playdate>>({
-      name: '',
+    const playdate = ref<Partial<Meeting>>({
+      title: '',
       description: '',
       duration: 0,
       day: '',
       ages: '',
-      start: '',
-      end: '',
+      dateStart: null,
+      dateEnd: null,
       spots: 0,
+      teacher: '',
+      activityTypeId: null,
+      curriculumTypeId: null,
       link: '',
-      specialistId: null
+      type: 'Playdate'
     })
 
-    const { createPlaydate, updatePlaydate, getPlaydatesById, getSpecialist } = usePlaydates()
+    const { createPlaydate, updatePlaydate, getPlaydatesById, getActivityTypes, getCurriculumTypes } = usePlaydates()
+
+    const activityTypesList = computed(() => {
+      return activityTypes.value.map(item => ({ name: item.name, id: item.id }))
+    })
 
     const toLocalTime = (time: string) => {
       return formatDate(time, {
@@ -376,10 +421,6 @@ export default defineComponent({
       return id.value ? 'Edit Play date' : 'New Play date'
     })
 
-    const specialistList = computed(() => {
-      return specialists.value.map(item => ({ name: `${item.user.firstName} ${item.user.lastName}`, value: item.id }))
-    })
-
     const backUrl = () => {
       router.go(-1)
     }
@@ -387,19 +428,15 @@ export default defineComponent({
     const save = async () => {
       loading.value = true
       try {
-        playdate.value.start = formatDate(timeStart.value, {
-          format: 'HH:mm:ss',
-          fromFormat: 'HH:mm',
-          toUtc: true,
-          returnObject: false
-        }).toString()
+        if (timeStart.value) {
+          const start = stringsToDate(dayjs().format('YYYY-MM-DD').toString(), timeStart.value)
+          playdate.value.dateStart = start
+        }
 
-        playdate.value.end = formatDate(timeEnd.value, {
-          format: 'HH:mm:ss',
-          fromFormat: 'HH:mm',
-          toUtc: true,
-          returnObject: false
-        }).toString()
+        if (timeEnd.value) {
+          const end = stringsToDate(dayjs().format('YYYY-MM-DD').toString(), timeEnd.value)
+          playdate.value.dateEnd = end
+        }
 
         if (id.value) {
           await updatePlaydate(id.value, playdate.value)
@@ -415,32 +452,39 @@ export default defineComponent({
     }
 
     onMounted(async () => {
-      specialists.value = await getSpecialist()
       if (route.value.query.id) {
         id.value = Number(route.value.query.id)
-      }
-
-      if (route.value.query.specialistId) {
-        specialistId.value = Number(route.value.query.specialistId)
-        playdate.value.specialistId = specialistId.value
       }
 
       if (id.value) {
         const data = await getPlaydatesById(id.value)
         playdate.value = data
-        playdate.value.specialistId = data.specialistUser.id
-        if (playdate.value.start) {
-          timeStart.value = toLocalTime(playdate.value.start).toString()
+
+        if (data.activityType) {
+          playdate.value.activityTypeId = data.activityType.id
         }
-        if (playdate.value.end) {
-          timeEnd.value = toLocalTime(playdate.value.end).toString()
+
+        if (data.curriculumType) {
+          playdate.value.curriculumTypeId = data.curriculumType.id
+        }
+
+        if (playdate.value.dateStart) {
+          const dateStart = new Date(playdate.value.dateStart)
+          timeStart.value = `${dateStart.getHours().toString().padStart(2, '0')}:${dateStart.getMinutes().toString().padStart(2, '0')}`
+        }
+
+        if (playdate.value.dateEnd) {
+          const dateEnd = new Date(playdate.value.dateEnd)
+          timeEnd.value = `${dateEnd.getHours().toString().padStart(2, '0')}:${dateEnd.getMinutes().toString().padStart(2, '0')}`
         }
       }
+
+      curriculumTypes.value = await getCurriculumTypes()
+      activityTypes.value = await getActivityTypes()
     })
 
     return {
       id,
-      specialistId,
       loading,
       menuStart,
       menuEnd,
@@ -450,7 +494,8 @@ export default defineComponent({
       days,
       playdate,
       title,
-      specialistList,
+      curriculumTypes,
+      activityTypesList,
       save
     }
   },

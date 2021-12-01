@@ -233,13 +233,13 @@
               v-if="item.type === 'Playdate'"
               v-slot="{ errors }"
               name="Spots"
-              rules="required|integer|min_value:0"
+              rules="required|integer|min_value:1"
             >
               <pg-text-field
                 v-model="item.spots"
                 :error-messages="errors"
                 label="Spots"
-                min="0"
+                min="1"
                 solo-labeled
                 type="number"
               />
@@ -315,7 +315,7 @@ function generateItemTemplate () {
     ages: null,
     duration: null,
     dateStart: null,
-    spots: null,
+    spots: 0,
     day: null,
     type: 'LiveClass'
   }
@@ -363,7 +363,9 @@ export default {
       this.item.day = dayjs(this.dateStart).format('dddd').toUpperCase()
     },
     'item.type' (val) {
-      this.item.spots = (val === 'Playdate') ? this.item.spots : 0
+      if (val === 'Playdate') {
+        this.item.spots = (this.item.spots) ? this.item.spots : null
+      }
     }
   },
 

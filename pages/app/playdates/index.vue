@@ -35,36 +35,42 @@
 
           <!-- WEEK NAVIGATOR -->
           <div class="d-flex justify-center align-center">
-            <!-- PREVIOUS WEEK BUTTON -->
-            <v-btn
-              :disabled="!canGoToPreviousWeek"
-              :small="isMobile"
-              icon
-              color="accent"
-              class="mx-6 nav-button"
-              @click="goToPreviousWeek"
-            >
-              <v-icon>mdi-chevron-left</v-icon>
-            </v-btn>
-
-            <!-- WEEK INFO -->
-            <span class="text-body-2 text-md-h5 font-weight-medium">{{ currentWeekDisplayText }}</span>
-
-            <!-- NEXT WEEK BUTTON -->
-            <v-btn
-              :disabled="!canGoToNextWeek"
-              :small="isMobile"
-              icon
-              color="accent"
-              class="mx-6 nav-button"
-              @click="goToNextWeek"
-            >
-              <v-icon>mdi-chevron-right</v-icon>
-            </v-btn>
+            <week-selector :day="day" :loading="loading" @prev-week="removeWeek" @next-week="addWeek" />
           </div>
 
+          <!-- THANKSGIVING -->
+          <v-row v-if="isThanksgivingWeek" class="mt-6">
+            <v-col cols="12" class="text-center">
+              <div>
+                <underlined-title
+                  text="Happy Thanksgiving ✨"
+                  font-size="32px"
+                  font-size-mobile="24px"
+                  line-color="#ffab37"
+                />
+              </div>
+
+              <div class="mt-4">
+                <p class="text-body-2 text-md-body-1 py-4">
+                  We are not having Playdates this week, you can reserve your spot for the following weeks!
+                </p>
+              </div>
+
+              <v-btn
+                v-if="canGoToNextWeek"
+                :loading="loading"
+                color="accent"
+                large
+                class="text-none !pg-shadow-button mt-6"
+                @click="goToNextWeek"
+              >
+                Check next week
+              </v-btn>
+            </v-col>
+          </v-row>
+
           <!-- WEEK'S PLAYDATES -->
-          <v-row v-if="!loading" class="mt-6">
+          <v-row v-else-if="!loading && playdates.length" class="mt-6">
             <v-col v-for="playdate in playdates" :key="playdate.id" cols="12" md="6">
               <card-playdate
                 :playdate="playdate"
@@ -72,6 +78,31 @@
                 @spot-reserved="fetchPlaydatesForDate"
                 @spot-canceled="fetchPlaydatesForDate"
               />
+            </v-col>
+          </v-row>
+
+          <!--  NO PLAYDATES -->
+          <v-row v-else-if="!loading" class="mt-6">
+            <v-col cols="12" class="text-center">
+              <div>
+                <underlined-title
+                  text="There aren't any playdates for this week."
+                  font-size="32px"
+                  font-size-mobile="24px"
+                  line-color="#ffab37"
+                />
+              </div>
+
+              <v-btn
+                v-if="canGoToNextWeek"
+                :loading="loading"
+                color="accent"
+                large
+                class="text-none !pg-shadow-button mt-6"
+                @click="goToNextWeek"
+              >
+                Check next week
+              </v-btn>
             </v-col>
           </v-row>
         </v-col>
@@ -86,17 +117,22 @@
 <script lang="ts">
 import { computed, defineComponent, ref, useStore, watch } from '@nuxtjs/composition-api'
 import { Playdate, TypedStore } from '@/models'
-
+import WeekSelector from '@/components/admin/live-sessions/WeekSelector.vue'
 import CardPlaydate from '@/components/app/playdates/CardPlaydate.vue'
 import { useChild, usePlaydates, useVuetifyHelper } from '@/composables'
 import dayjs from 'dayjs'
+import isBetween from 'dayjs/plugin/isBetween'
 import { onMounted } from '@vue/composition-api'
+import { getMondayFriday } from '@/utils/dateTools'
+
+dayjs.extend(isBetween)
 
 export default defineComponent({
   name: 'Index',
 
   components: {
     CardPlaydate,
+    WeekSelector,
     Paywall: () => import('@/components/app/playdates/Paywall.vue')
   },
 
@@ -106,9 +142,9 @@ export default defineComponent({
 
     const vuetify = useVuetifyHelper()
     const store = useStore<TypedStore>()
-    const { isPayingUser, getPlaydateForDate, getPlaydatesDates } = usePlaydates({ store })
+    const { isPayingUser, getPlaydateForDate, getPlaydatesDates, getPlaydateWithChildren } = usePlaydates({ store })
     const { children, get } = useChild({ store })
-
+    const day = ref(new Date())
     const playdatesDates = getPlaydatesDates()
     const currentPlaydateIndex = ref(0)
     const loading = ref(false)
@@ -116,15 +152,37 @@ export default defineComponent({
     const currentPlaydateDate = computed(() => playdatesDates?.[currentPlaydateIndex.value] || dayjs().format('YYYY-MM-DD'))
     const isMobile = computed(() => vuetify.breakpoint.mobile)
 
+    const isThanksgivingWeek = computed(() => {
+      const thanksGivingDay = '2021-11-25'
+
+      // @ts-ignore
+      return dayjs(currentPlaydateDate.value).isBetween(
+        dayjs(thanksGivingDay).startOf('week'),
+        dayjs(thanksGivingDay).endOf('week'),
+        'day',
+        '[]'
+      )
+    })
+
+    const days = computed(() => {
+      return getMondayFriday(day.value)
+    })
+
     const isInAPlaydate = computed(() => {
       return playdates.value.some((playdate) => {
         return Boolean(playdate?.backpackImages?.find(({ childrenId }) => {
+          console.log('playdate--', playdate)
+          console.log('childrenId--', childrenId)
           return children.value.find(({ id }) => id === childrenId)
         }))
       })
     })
 
     const currentWeekDisplayText = computed(() => {
+      if (isThanksgivingWeek.value) {
+        return 'November 22 - 26, 2021'
+      }
+
       if (playdates.value.length === 0) {
         return ''
       }
@@ -160,10 +218,22 @@ export default defineComponent({
       }
     }
 
+    const addWeek = async () => {
+      day.value.setDate(day.value.getDate() + 7)
+      day.value = new Date(day.value)
+      await fetchPlaydatesForDate()
+    }
+
+    const removeWeek = async () => {
+      day.value.setDate(day.value.getDate() - 7)
+      day.value = new Date(day.value)
+      await fetchPlaydatesForDate()
+    }
+
     const fetchPlaydatesForDate = async () => {
       if (isPayingUser.value) {
         loading.value = true
-        playdates.value = await getPlaydateForDate({ date: currentPlaydateDate.value })
+        playdates.value = await getPlaydateWithChildren({ startDate: days.value.monday, endDate: days.value.friday, admin: true, type: 'Playdate', page: 1, limit: 100 })
         loading.value = false
       }
     }
@@ -185,8 +255,11 @@ export default defineComponent({
       isPayingUser,
       loading,
       playdates,
-      playdatesDates,
+      isThanksgivingWeek,
       fetchPlaydatesForDate,
+      day,
+      addWeek,
+      removeWeek,
       goToNextWeek,
       goToPreviousWeek
     }
