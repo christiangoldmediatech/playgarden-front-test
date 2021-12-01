@@ -246,9 +246,10 @@ export default {
       const params = {
         limit: this.limit,
         page: this.page,
+        type: 'Playdate',
         ...name && { name }
       }
-      params.specialistId = this.specialistId
+      // params.specialistId = this.specialistId
       await this.getPlaydates(params)
       this.loading = false
     },

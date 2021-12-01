@@ -48,7 +48,7 @@
           </v-btn>
         </v-col>
 
-        <v-col cols="12" class="mx-0 mx-md-4 align-self-center font-weight-bold">
+        <v-col cols="12" class="mx-0 mx-md-4 mt-4 mt-md-0 align-self-center font-weight-bold">
           <span class="grey--text">Need help? </span>
           <span class="text-decoration-underline" @click="handleContactUs">
             <a class="accent--text">Contact us</a>

@@ -1,6 +1,6 @@
 import { ref, watch } from '@nuxtjs/composition-api'
 import { axios } from '@/utils'
-import { PlaydatesResponse, Playdate } from '@/models'
+import { MeetingsResponse, Meeting } from '@/models'
 
 enum StatusPlaydate {
   REQUESTED = 'REQUESTED',
@@ -14,14 +14,14 @@ export const usePlaydates = () => {
   const total = ref(0)
   const limit = ref(10)
   const states = ref([StatusPlaydate.REQUESTED, StatusPlaydate.PENDING, StatusPlaydate.APPROVED, StatusPlaydate.REJECTED])
-  const playdates = ref<Playdate[]>([])
-  const playdatesResponse = ref<PlaydatesResponse[]>([])
+  const playdates = ref<Meeting[]>([])
+  const playdatesResponse = ref<MeetingsResponse[]>([])
 
   watch(playdatesResponse, (val:any) => {
     if (val) {
       page.value = Number(val.page)
       total.value = val.total
-      playdates.value = val.playdates
+      playdates.value = val.meetings
     }
   })
 
@@ -29,24 +29,32 @@ export const usePlaydates = () => {
     return await axios.$get('/specialists/all')
   }
 
+  const getCurriculumTypes = async () => {
+    return await axios.$get('/curriculum-types')
+  }
+
+  const getActivityTypes = async () => {
+    return await axios.$get('/activity-types')
+  }
+
   const getPlaydatesById = async (id: number) => {
-    return await axios.$get(`/playdates/${id}`)
+    return await axios.$get(`/live-sessions/${id}`)
   }
 
   const getPlaydates = async (params?: unknown) => {
-    playdatesResponse.value = await axios.$get('/playdates/list', { params })
+    playdatesResponse.value = await axios.$get('/live-sessions', { params })
   }
 
-  const createPlaydate = async (data: Partial<Playdate>) => {
-    return await axios.$post('playdates', data)
+  const createPlaydate = async (data: Partial<Meeting>) => {
+    return await axios.$post('/live-sessions', data)
   }
 
-  const updatePlaydate = async (id: number, data: Partial<Playdate>) => {
-    return await axios.$patch(`/playdates/${id}`, data)
+  const updatePlaydate = async (id: number, data: Partial<Meeting>) => {
+    return await axios.$patch(`/live-sessions/${id}`, data)
   }
 
   const deletePlaydate = async (id: number) => {
-    return await axios.$delete(`/playdates/${id}`)
+    return await axios.$delete(`/live-sessions/${id}`)
   }
 
   return {
@@ -57,6 +65,8 @@ export const usePlaydates = () => {
     playdatesResponse,
     states,
     getSpecialist,
+    getCurriculumTypes,
+    getActivityTypes,
     getPlaydatesById,
     getPlaydates,
     createPlaydate,
