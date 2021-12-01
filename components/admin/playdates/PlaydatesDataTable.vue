@@ -1,5 +1,9 @@
 <template>
   <v-container>
+    <live-session-editor-dialog
+      ref="editor"
+      mode="Playdate"
+    />
     <v-row>
       <v-col cols="12">
         <v-card width="100%">
@@ -12,7 +16,7 @@
               color="primary darken-1"
               dark
               :icon="$vuetify.breakpoint.xs"
-              :to="{ name: 'admin-playdates-management-editor' }"
+              @click.stop="$refs.editor.open"
             >
               <v-icon class="hidden-sm-and-up">
                 mdi-plus-circle
@@ -28,7 +32,7 @@
           </v-card-title>
 
           <v-card-text>
-            Update, or delete playdate.
+            View, Create, Update, or delete playdate.
           </v-card-text>
         </v-card>
       </v-col>
@@ -37,7 +41,7 @@
     <v-row>
       <v-col cols="12">
         <v-card width="100%">
-          <playdates-list />
+          <playdates-list ref="playdatesRef" />
         </v-card>
       </v-col>
     </v-row>
@@ -51,6 +55,7 @@
           <v-row no-gutters>
             <v-col cols="12">
               <pg-admin-data-table
+                v-if="playdates"
                 :headers="headers"
                 :items="playdates"
                 :loading="loading"
@@ -60,12 +65,32 @@
                 @refresh="refetchPlayDates"
                 @search="handleSearch"
                 @search-text-cleared="handleSearchTextClearance"
-                @edit-item="$router.push({
-                  name: 'admin-playdates-management-editor',
-                  query: { id: $event.id }
-                })"
-                @remove-item="remove"
-              />
+              >
+                <template v-slot:item.dateStart="{ item }">
+                  {{ item.dateStart | formatDate }}
+                </template>
+                <template v-slot:[`item.actions`]="{ item }">
+                  <v-icon
+                    color="accent"
+                    dense
+                    :to="{ name: 'admin-playdates-management-detail', query: { id: item.id } }"
+                    @click="goToDetail(item)"
+                  >
+                    mdi-eye-outline
+                  </v-icon>
+                  <v-icon
+                    color="#81A1F7"
+                    dense
+                    @click="$refs.editor.open(null, item)"
+                  >
+                    mdi-pencil-outline
+                  </v-icon>
+
+                  <v-icon color="#d30909" dense @click="remove(item)">
+                    mdi-delete-outline
+                  </v-icon>
+                </template>
+              </pg-admin-data-table>
             </v-col>
           </v-row>
         </v-expansion-panel-content>
@@ -75,21 +100,28 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, watch, computed, useRoute } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, ref, watch, useRouter } from '@nuxtjs/composition-api'
 import PlaydatesList from '@/components/admin/playdates/PlaydatesList.vue'
 import { usePlaydates } from '@/composables/playdates'
+import LiveSessionEditorDialog from '@/components/admin/live-sessions/LiveSessionEditorDialog.vue'
 import paginable from '@/utils/mixins/paginable'
+import { Playdate } from '@/models'
 
 export default defineComponent({
   name: 'PlaydatesDataTable',
-  components: { PlaydatesList },
+  components: { PlaydatesList, LiveSessionEditorDialog },
   mixins: [paginable],
   data: () => ({
     headers: [
       {
-        text: 'Name',
+        text: 'Title',
         sortable: false,
-        value: 'name'
+        value: 'title'
+      },
+      {
+        text: 'Date',
+        sortable: false,
+        value: 'dateStart'
       },
       {
         text: 'Description',
@@ -99,19 +131,26 @@ export default defineComponent({
       {
         align: 'center',
         sortable: false,
-        text: 'Day',
-        value: 'day'
+        text: 'Teacher',
+        value: 'teacher'
+      },
+      {
+        align: 'center',
+        sortable: false,
+        text: 'Spots',
+        value: 'spots'
       },
       {
         align: 'right',
         sortable: false,
         value: 'actions',
-        width: 85
+        width: 115
       }
     ]
   }),
 
   setup (_, { emit }) {
+    const router = useRouter()
     const loading = ref<Boolean>(false)
     const searchText = ref<string | null>(null)
     const panel = [0]
@@ -122,8 +161,17 @@ export default defineComponent({
       await getPlaydates(params)
     }
 
+    const goToDetail = (playdate: Playdate) => {
+      if (playdate) {
+        router.push({
+          name: 'admin-playdates-management-detail',
+          query: { id: (playdate.id).toString() }
+        })
+      }
+    }
+
     onMounted(async () => {
-      await fetchPlaydates({ page: page.value, total: total.value, limit: limit.value })
+      await fetchPlaydates({ page: page.value, total: total.value, limit: limit.value, type: 'Playdate' })
     })
 
     watch(page, (val) => {
@@ -149,6 +197,7 @@ export default defineComponent({
       const params = {
         page: page.value,
         limit: limit.value,
+        type: 'Playdate',
         ...name && { name },
         ...state && { state }
       }
@@ -174,15 +223,26 @@ export default defineComponent({
       deletePlaydate,
       refetchPlayDates,
       handleSearch,
-      handleSearchTextClearance
+      handleSearchTextClearance,
+      goToDetail
     }
   },
 
+  created () {
+    this.$nuxt.$on('update-calendar', async () => {
+      await this.refetchPlayDates()
+    })
+  },
+
+  beforeDestroy () {
+    this.$nuxt.$off('update-calendar')
+  },
+
   methods: {
-    remove ({ id, name }: any) {
+    remove ({ id, title }: any) {
       this.$nuxt.$emit('open-prompt', {
         title: 'Delete playdate?',
-        message: `Are you sure you want to delete <b>${name}</b>?`,
+        message: `Are you sure you want to delete <b>${title}</b>?`,
         action: () => this.deletePlaydate(id).then(this.refetchPlayDates)
       })
     }

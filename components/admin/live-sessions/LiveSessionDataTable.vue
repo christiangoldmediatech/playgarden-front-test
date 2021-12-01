@@ -41,6 +41,7 @@
           <v-col cols="12">
             <live-session-editor-dialog
               ref="editor"
+              mode="LiveClass"
               @saved="refresh(false)"
             />
             <participants-live-session-dialog
@@ -392,15 +393,16 @@ export default {
         }
 
         try {
-          const { page, liveSessions, total } = await this.getLiveSessions({
+          const { page, meetings, total } = await this.getLiveSessions({
             name: this.search,
             activityTypeId: this.filters.activityTypeId || null,
             level: this.filters.level || null,
             page: this.pagination.page,
+            type: 'LiveClass',
             limit: this.pagination.limit,
             deleted: (this.filterDeleted) ? 'true' : null
           })
-          this.liveSessions = liveSessions
+          this.liveSessions = meetings
           this.setPagination({ page, total })
         } catch (e) {
         } finally {

@@ -35,32 +35,7 @@
 
           <!-- WEEK NAVIGATOR -->
           <div class="d-flex justify-center align-center">
-            <!-- PREVIOUS WEEK BUTTON -->
-            <v-btn
-              :disabled="!canGoToPreviousWeek"
-              :small="isMobile"
-              icon
-              color="accent"
-              class="mx-6 nav-button"
-              @click="goToPreviousWeek"
-            >
-              <v-icon>mdi-chevron-left</v-icon>
-            </v-btn>
-
-            <!-- WEEK INFO -->
-            <span class="text-body-2 text-md-h5 font-weight-medium">{{ currentWeekDisplayText }}</span>
-
-            <!-- NEXT WEEK BUTTON -->
-            <v-btn
-              :disabled="!canGoToNextWeek"
-              :small="isMobile"
-              icon
-              color="accent"
-              class="mx-6 nav-button"
-              @click="goToNextWeek"
-            >
-              <v-icon>mdi-chevron-right</v-icon>
-            </v-btn>
+            <week-selector :day="day" :loading="loading" @prev-week="removeWeek" @next-week="addWeek" />
           </div>
 
           <!-- THANKSGIVING -->
@@ -142,12 +117,13 @@
 <script lang="ts">
 import { computed, defineComponent, ref, useStore, watch } from '@nuxtjs/composition-api'
 import { Playdate, TypedStore } from '@/models'
-
+import WeekSelector from '@/components/admin/live-sessions/WeekSelector.vue'
 import CardPlaydate from '@/components/app/playdates/CardPlaydate.vue'
 import { useChild, usePlaydates, useVuetifyHelper } from '@/composables'
 import dayjs from 'dayjs'
 import isBetween from 'dayjs/plugin/isBetween'
 import { onMounted } from '@vue/composition-api'
+import { getMondayFriday } from '@/utils/dateTools'
 
 dayjs.extend(isBetween)
 
@@ -156,6 +132,7 @@ export default defineComponent({
 
   components: {
     CardPlaydate,
+    WeekSelector,
     Paywall: () => import('@/components/app/playdates/Paywall.vue')
   },
 
@@ -165,9 +142,9 @@ export default defineComponent({
 
     const vuetify = useVuetifyHelper()
     const store = useStore<TypedStore>()
-    const { isPayingUser, getPlaydateForDate, getPlaydatesDates } = usePlaydates({ store })
+    const { isPayingUser, getPlaydateForDate, getPlaydatesDates, getPlaydateWithChildren } = usePlaydates({ store })
     const { children, get } = useChild({ store })
-
+    const day = ref(new Date())
     const playdatesDates = getPlaydatesDates()
     const currentPlaydateIndex = ref(0)
     const loading = ref(false)
@@ -187,9 +164,15 @@ export default defineComponent({
       )
     })
 
+    const days = computed(() => {
+      return getMondayFriday(day.value)
+    })
+
     const isInAPlaydate = computed(() => {
       return playdates.value.some((playdate) => {
         return Boolean(playdate?.backpackImages?.find(({ childrenId }) => {
+          console.log('playdate--', playdate)
+          console.log('childrenId--', childrenId)
           return children.value.find(({ id }) => id === childrenId)
         }))
       })
@@ -235,10 +218,22 @@ export default defineComponent({
       }
     }
 
+    const addWeek = async () => {
+      day.value.setDate(day.value.getDate() + 7)
+      day.value = new Date(day.value)
+      await fetchPlaydatesForDate()
+    }
+
+    const removeWeek = async () => {
+      day.value.setDate(day.value.getDate() - 7)
+      day.value = new Date(day.value)
+      await fetchPlaydatesForDate()
+    }
+
     const fetchPlaydatesForDate = async () => {
       if (isPayingUser.value) {
         loading.value = true
-        playdates.value = await getPlaydateForDate({ date: currentPlaydateDate.value })
+        playdates.value = await getPlaydateWithChildren({ startDate: days.value.monday, endDate: days.value.friday, admin: true, type: 'Playdate', page: 1, limit: 100 })
         loading.value = false
       }
     }
@@ -262,6 +257,9 @@ export default defineComponent({
       playdates,
       isThanksgivingWeek,
       fetchPlaydatesForDate,
+      day,
+      addWeek,
+      removeWeek,
       goToNextWeek,
       goToPreviousWeek
     }
