@@ -1,7 +1,7 @@
 <template>
   <v-hover v-slot="{ hover }">
     <v-card
-      :disabled="entry.block"
+      :disabled="block"
       class="lsess-table-entry ma-1 clickable"
       :class="{
         'lsess-table-entry-active': isLive,
@@ -56,6 +56,12 @@ export default {
     entry: {
       type: Object,
       required: true
+    },
+
+    block: {
+      type: Boolean,
+      required: false,
+      default: false
     },
 
     editMode: {

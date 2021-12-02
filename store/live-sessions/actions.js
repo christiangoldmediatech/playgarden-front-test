@@ -19,7 +19,7 @@ export default {
     })
   },
 
-  getLiveSessions ({ commit }, params) {
+  getLiveSessions({ commit }, params) {
     return new Promise((resolve, reject) =>
       this.$axios
         .$get('/live-sessions', { params })
@@ -56,11 +56,12 @@ export default {
       if (!admin) {
         params.active = true
       }
-      const { total, meetings } = data = await this.$axios.$get('/live-sessions', {
+      const { total, meetings, block } = data = await this.$axios.$get('/live-sessions', {
         params
       })
       commit('SET_SESSIONS', meetings)
       commit('SET_TOTAL', total)
+      commit('SET_BLOCK', block)
       return data
     } catch (error) {
       return Promise.reject(error)
