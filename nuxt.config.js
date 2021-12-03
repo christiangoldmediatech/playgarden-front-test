@@ -9,7 +9,7 @@ export default {
    ** Nuxt rendering mode
    ** See https://nuxtjs.org/api/configuration-mode
    */
-  mode: 'universal',
+  mode: 'spa',
   paralell: true,
   cache: true,
   server: {
