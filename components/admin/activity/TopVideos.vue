@@ -22,7 +22,7 @@
             <v-list-item-action>
               <v-btn icon>
                 <v-icon color="accent lighten-1">
-                  mdi-information
+                  {{ index + 1 }}
                 </v-icon>
               </v-btn>
             </v-list-item-action>
