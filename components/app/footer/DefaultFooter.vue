@@ -36,7 +36,7 @@
 
               <a
                 target="_blank"
-                href="https://www.instagram.com/playgardenpreponline/"
+                href="https://www.instagram.com/playgardenprep/"
               >
                 <img
                   alt="Instagram"
