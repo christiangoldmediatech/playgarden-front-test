@@ -1,9 +1,9 @@
 <template>
   <v-row>
-    <v-col cols="4">
+    <v-col cols="4" class="top-videos">
       <top-videos :video-list="topVideos" title="Top 40 videos favorites" />
     </v-col>
-    <v-col cols="8">
+    <v-col cols="8" class="top-videos">
       <pg-select
         v-model="selectedSate"
         clearable
@@ -11,10 +11,12 @@
         label="State"
         solo-labeled
         :items="states"
-        class="select"
+        item-text="name"
+        item-value="value"
+        class="select mx-1"
         @change="stateChange(selectedSate)"
       />
-      <top-videos class="mx-1" :video-list="topVideosByState" />
+      <top-videos class="mt-4 top-videos" :video-list="topVideosByState" title="Video list" />
     </v-col>
   </v-row>
 </template>
@@ -30,9 +32,9 @@ export default defineComponent({
   components: { TopVideos },
   setup() {
     const topVideosByState = ref<TopVideo[]>([])
-    const states = ref<string[]>([])
-    const selectedSate = ref<string>()
-    states.value = ['VIEWED', 'VIDEO_STARTED', 'VIDEO_SKIPPED', 'COMPLETED']
+    const states = ref<any[]>([])
+    const selectedSate = ref<any>()
+    states.value = [{ name: 'VIEWED', value: 'VIEWED' }, { name: 'STARTED', value: 'VIDEO_STARTED' }, { name: 'SKIPPED', value: 'VIDEO_SKIPPED' }, { name: 'COMPLETED', value: 'COMPLETED' }]
     const { topVideos, getTopFavoritesVideos, getTopVideosByState } = useMetrics()
 
     const getVideoList = async (params: any) => {
@@ -67,3 +69,10 @@ export default defineComponent({
 
 })
 </script>
+
+<style scoped>
+.top-videos {
+  height: 750px !important;
+  overflow-y: auto;
+}
+</style>
