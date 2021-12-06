@@ -16,7 +16,7 @@
         class="select mx-1"
         @change="stateChange(selectedSate)"
       />
-      <top-videos class="mt-4 top-videos" height="625px" :video-list="topVideosByState" title="Video list" />
+      <top-videos class="mt-4 top-videos" height="625px" :video-list="topVideosByState" title="Video list" @load-videos="loadVideos" />
     </v-col>
   </v-row>
 </template>
@@ -24,7 +24,7 @@
 <script lang="ts">
 import { useMetrics } from '@/composables/dashboard'
 import { TopVideo } from '@/models'
-import { defineComponent, onMounted, ref } from '@vue/composition-api'
+import { defineComponent, onMounted, ref, watch } from '@vue/composition-api'
 import TopVideos from './TopVideos.vue'
 
 export default defineComponent({
@@ -34,6 +34,7 @@ export default defineComponent({
     const topVideosByState = ref<TopVideo[]>([])
     const states = ref<any[]>([])
     const selectedSate = ref<any>()
+    const page = ref<number>(1)
     states.value = [{ name: 'VIEWED', value: 'VIEWED' }, { name: 'STARTED', value: 'VIDEO_STARTED' }, { name: 'SKIPPED', value: 'VIDEO_SKIPPED' }, { name: 'COMPLETED', value: 'COMPLETED' }]
     const { topVideos, getTopFavoritesVideos, getTopVideosByState } = useMetrics()
 
@@ -41,19 +42,36 @@ export default defineComponent({
       topVideosByState.value = await getTopVideosByState(params)
     }
 
+    watch(selectedSate, (val) => {
+      if (val) {
+        page.value = 1
+      }
+    })
+
     const stateChange = async (val: string) => {
       const params = {
-        state: val
+        state: val,
+        page: page.value
       }
-      await getVideoList(params)
       topVideosByState.value = await getTopVideosByState(params)
+    }
+
+    const loadVideos = async () => {
+      page.value++
+      const params = {
+        state: selectedSate.value,
+        page: page.value
+      }
+      const data = await getTopVideosByState(params)
+      topVideosByState.value = [...topVideosByState.value, ...data]
     }
 
     onMounted(async () => {
       await getTopFavoritesVideos()
-      selectedSate.value = states.value[0]
+      selectedSate.value = states.value[0].value
       const params = {
-        state: selectedSate.value
+        state: selectedSate.value,
+        page: page.value
       }
       await getVideoList(params)
     })
@@ -63,7 +81,8 @@ export default defineComponent({
       topVideosByState,
       selectedSate,
       states,
-      stateChange
+      stateChange,
+      loadVideos
     }
   }
 

@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
+import { defineComponent, onMounted } from '@vue/composition-api'
 export default defineComponent({
   name: 'TopVideos',
   props: {
@@ -51,7 +51,20 @@ export default defineComponent({
       default: '400px'
     }
   },
-  setup() {}
+  setup (_, { emit }) {
+    const getNextVideos = () => {
+      window.onscroll = () => {
+        const bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight
+        if (bottomOfWindow) {
+          emit('load-videos')
+        }
+      }
+    }
+
+    onMounted(() => {
+      getNextVideos()
+    })
+  }
 })
 </script>
 
