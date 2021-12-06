@@ -8,6 +8,7 @@
         <template v-for="(video, index) in videoList">
           <v-list-item
             :key="index"
+            @click="onPlay(video)"
           >
             <v-list-item-avatar>
               <v-img :src="video.thumbnail" />
@@ -64,6 +65,11 @@ export default defineComponent({
     onMounted(() => {
       getNextVideos()
     })
+  },
+  methods: {
+    onPlay (video: any) {
+      this.$nuxt.$emit('open-video-preview', video)
+    }
   }
 })
 </script>

@@ -48,6 +48,7 @@ export default {
 
   created () {
     this.$nuxt.$on('open-video-preview', (video) => {
+      console.log('video--', video)
       this.load(video)
     })
   },
