@@ -1,9 +1,9 @@
 <template>
   <v-row>
-    <v-col cols="4" class="top-videos">
-      <top-videos :video-list="topVideos" title="Top 40 videos favorites" />
+    <v-col cols="4">
+      <top-videos class="top-videos" height="700px" :video-list="topVideos" title="Top 40 videos favorites" />
     </v-col>
-    <v-col cols="8" class="top-videos">
+    <v-col cols="8">
       <pg-select
         v-model="selectedSate"
         clearable
@@ -16,7 +16,7 @@
         class="select mx-1"
         @change="stateChange(selectedSate)"
       />
-      <top-videos class="mt-4 top-videos" :video-list="topVideosByState" title="Video list" />
+      <top-videos class="mt-4 top-videos" height="625px" :video-list="topVideosByState" title="Video list" />
     </v-col>
   </v-row>
 </template>
@@ -69,10 +69,3 @@ export default defineComponent({
 
 })
 </script>
-
-<style scoped>
-.top-videos {
-  height: 750px !important;
-  overflow-y: auto;
-}
-</style>

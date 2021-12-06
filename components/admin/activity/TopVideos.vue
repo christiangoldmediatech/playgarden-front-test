@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-1" width="100%">
+  <v-card :height="height" class="mx-1 top-videos" width="100%">
     <v-card-title>
       <label class="title-dashboard font-weight-bold">{{ title }}</label>
     </v-card-title>
@@ -45,8 +45,18 @@ export default defineComponent({
     title: {
       type: String,
       default: ''
+    },
+    height: {
+      type: String,
+      default: '400px'
     }
   },
   setup() {}
 })
 </script>
+
+<style scoped>
+.top-videos {
+   overflow-y: scroll;
+}
+</style>
