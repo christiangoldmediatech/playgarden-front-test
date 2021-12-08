@@ -269,6 +269,8 @@ export default {
   },
 
   methods: {
+    ...mapActions('coupons', ['getCoupons']),
+
     getProviderSignIn (provider) {
       let nameProvider = ''
       switch (provider) {
@@ -335,13 +337,39 @@ export default {
         promotion_id: null
       }
     },
-    onSubmit () {
-      this.$emit(
-        'click:submit',
-        jsonCopy({
-          ...this.draft
+    async onSubmit () {
+      if (await this.isCouponValid()) {
+        this.$emit(
+          'click:submit',
+          jsonCopy({
+            ...this.draft
+          })
+        )
+      }
+    },
+
+    async isCouponValid() {
+      try {
+        // Coupon is not requested for CREDITCARD flow.
+        if (this.isCreditCardRequired) {
+          return true
+        }
+
+        // Only check for coupon validity if it is NO CREDITCARD flow.
+        const coupons = await this.getCoupons({
+          active: true,
+          code: this.draft.promotion_id
         })
-      )
+
+        if (coupons?.length > 0) {
+          return true
+        } else {
+          this.$snotify.error('Invalid coupon code.')
+          return false
+        }
+      } catch (error) {
+        return false
+      }
     },
 
     facebookSignIn () {
