@@ -160,8 +160,12 @@ ul li::before {
   }
 }
 .promotion-ribbon {
-  font-size: 24px;
+  font-size: 20px;
   color: var(--v-accent-base);
   background: rgba(255, 171, 55, 0.2);
+
+  @media screen and (min-width: 600px) {
+    font-size: 24px;
+  }
 }
 </style>
