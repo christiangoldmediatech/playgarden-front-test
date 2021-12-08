@@ -118,6 +118,24 @@
                     </span>
                     <br>
                   </v-tooltip>
+
+                  <!-- Coupon -->
+                  <validation-provider
+                    v-if="!isCreditCardRequired"
+                    v-slot="{ errors }"
+                    name="Coupon"
+                    rules="required"
+                    vid="coupon_field"
+                  >
+                    <pg-text-field
+                      v-model="draft.promotion_id"
+                      :disabled="loading"
+                      :error-messages="errors"
+                      clearable
+                      label="Coupon"
+                      solo
+                    />
+                  </validation-provider>
                 </template>
 
                 <v-btn
@@ -201,7 +219,12 @@ export default {
 
     inInvitationProcess: Boolean,
 
-    loading: Boolean
+    loading: Boolean,
+
+    isCreditCardRequired: {
+      type: Boolean,
+      default: false
+    }
   },
 
   data: vm => ({
@@ -308,7 +331,8 @@ export default {
           : null,
         socialNetworkId: this.hasUserSocialData
           ? this.userSocialData.socialNetworkId
-          : null
+          : null,
+        promotion_id: null
       }
     },
     onSubmit () {
