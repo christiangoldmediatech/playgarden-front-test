@@ -36,6 +36,9 @@ import PatchOverlay from '@/components/app/student-cubby/PatchOverlay.vue'
 import { useChildRoute } from '@/composables'
 import { TypedStore } from '@/models'
 import { watch } from '@vue/composition-api'
+import StudyCubbyItemHeader, { StudentCubbyItemHeaderProps } from '@/components/app/student-cubby/StudyCubbyItemHeader.vue'
+import { StudentChubbyItemText } from '@/components/app/student-cubby/types'
+import { useStudentCubbyHelpers } from '@/components/app/student-cubby/composables'
 
 export default {
   name: 'Patches',

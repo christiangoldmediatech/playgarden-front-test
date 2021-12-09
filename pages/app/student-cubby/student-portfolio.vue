@@ -105,6 +105,11 @@ import PortfolioOverlay from '@/components/app/student-cubby/PortfolioOverlay.vu
 import { computed, defineComponent, ref, useRoute, useRouter, useStore, watch } from '@nuxtjs/composition-api'
 import { useChild, useChildRoute, useOfflineWorksheet, useSnotifyHelper } from '@/composables'
 import { OfflineWorksheet, TypedStore } from '@/models'
+import StudyCubbyItemHeader, { StudentCubbyItemHeaderProps } from '@/components/app/student-cubby/StudyCubbyItemHeader.vue'
+import { useStudentCubbyHelpers } from '~/components/app/student-cubby/composables'
+import type { StudentChubbyItemText } from '@/components/app/student-cubby/types'
+
+const itemText: StudentChubbyItemText = 'PORTFOLIO'
 
 export default defineComponent({
   name: 'StudentPortfolio',

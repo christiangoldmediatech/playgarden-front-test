@@ -123,6 +123,11 @@ import PuzzlePiecesDialog from '@/components/app/student-cubby/PuzzlePiecesDialo
 import { usePuzzle } from '@/composables/puzzle'
 import { useChild, useChildRoute } from '@/composables'
 import { PuzzleResponse, TypedStore, Child } from '@/models'
+import StudyCubbyItemHeader, { StudentCubbyItemHeaderProps } from '@/components/app/student-cubby/StudyCubbyItemHeader.vue'
+import { StudentChubbyItemText } from '@/components/app/student-cubby/types'
+import { useStudentCubbyHelpers } from '~/components/app/student-cubby/composables'
+
+const itemText: StudentChubbyItemText = 'PUZZLE'
 
 export default defineComponent({
   name: 'Index',
