@@ -178,6 +178,7 @@
         </v-col>
       </v-card>
     </pg-dialog>
+    <upgrade-plan-live-classes-overlay />
   </v-main>
 </template>
 
@@ -194,6 +195,7 @@ import WeekSelector from '@/components/admin/live-sessions/WeekSelector.vue'
 import DaySelector from '@/components/admin/live-sessions/DaySelector.vue'
 import { jsonCopy } from '@/utils'
 import dayjs from 'dayjs'
+import UpgradePlanLiveClassesOverlay from '@/components/app/live-sessions/UpgradePlanLiveClassesOverlay.vue'
 
 export default {
   name: 'Index',
@@ -206,7 +208,8 @@ export default {
     SessionsTable,
     RecordedClassPlayer,
     WeekSelector,
-    DaySelector
+    DaySelector,
+    UpgradePlanLiveClassesOverlay
   },
 
   data: () => {
