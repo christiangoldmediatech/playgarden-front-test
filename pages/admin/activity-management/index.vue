@@ -15,12 +15,6 @@ export default {
     ActivityDataTable
   },
 
-  data () {
-    return {
-      placeholder: false
-    }
-  },
-
   created () {
     this.getTypes({ activity: true })
   },
