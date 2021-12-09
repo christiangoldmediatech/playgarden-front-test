@@ -157,8 +157,8 @@
                                 Edit Shipping Address
                               </v-list-item-title>
                             </v-list-item>
-                            <v-divider v-if="billing.stripeStatus !== 'canceled' && billing.stripeStatus !== 'incomplete_expired'" />
-                            <v-list-item v-if="billing.stripeStatus !== 'canceled' && billing.stripeStatus !== 'incomplete_expired'" class="clickable">
+                            <v-divider v-if="billing.stripeStatus !== 'canceled' || billing.stripeStatus !== 'incomplete_expired'" />
+                            <v-list-item v-if="billing.stripeStatus !== 'canceled' || billing.stripeStatus !== 'incomplete_expired'" class="clickable">
                               <v-list-item-title @click="remove">
                                 <v-icon color="red" dense>
                                   mdi-account-remove
