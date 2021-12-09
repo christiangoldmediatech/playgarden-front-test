@@ -124,7 +124,6 @@
                     v-if="!isCreditCardRequired"
                     v-slot="{ errors }"
                     name="Coupon"
-                    rules="required"
                     vid="coupon_field"
                   >
                     <pg-text-field
@@ -143,7 +142,7 @@
                   min-height="60"
                   class="mb-6 main-btn"
                   color="green2"
-                  :disabled="invalid"
+                  :disabled="invalid || !isValidCoupon"
                   :loading="loading"
                   type="submit"
                   x-large
@@ -205,6 +204,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import debounce from 'lodash/debounce'
 
 import { jsonCopy } from '@/utils/objectTools'
 
@@ -239,7 +239,9 @@ export default {
       }
       return null
     })(),
-    show: true
+    show: true,
+    checkCoupon: debounce(vm._checkCoupon, 750),
+    isValidCoupon: false
   }),
 
   computed: {
@@ -257,6 +259,21 @@ export default {
     },
     hasUserSocialData () {
       return Boolean(this.userSocialData)
+    }
+  },
+
+  watch: {
+    'draft.promotion_id': {
+      immediate: true,
+      handler (val) {
+        this.isValidCoupon = false
+
+        if (typeof val === 'string') {
+          this.draft.promotion_id = val.toUpperCase().trim()
+        }
+
+        this.checkCoupon()
+      }
     }
   },
 
@@ -337,21 +354,20 @@ export default {
         promotion_id: null
       }
     },
-    async onSubmit () {
-      if (await this.isCouponValid()) {
-        this.$emit(
-          'click:submit',
-          jsonCopy({
-            ...this.draft
-          })
-        )
-      }
+    onSubmit () {
+      this.$emit(
+        'click:submit',
+        jsonCopy({
+          ...this.draft
+        })
+      )
     },
 
-    async isCouponValid() {
+    async _checkCoupon() {
       try {
         // Coupon is not requested for CREDITCARD flow.
-        if (this.isCreditCardRequired) {
+        if (this.isCreditCardRequired || !this.draft.promotion_id) {
+          this.isValidCoupon = true
           return true
         }
 
@@ -362,9 +378,11 @@ export default {
         })
 
         if (coupons?.length > 0) {
+          this.isValidCoupon = true
           return true
         } else {
           this.$snotify.error('Invalid coupon code.')
+          this.isValidCoupon = false
           return false
         }
       } catch (error) {
