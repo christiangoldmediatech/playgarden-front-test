@@ -144,6 +144,7 @@
                     width="250px"
                     :disabled="invalid"
                     type="submit"
+                    @click="selectedPlan = plan"
                   >
                     Choose Plan
                   </v-btn>
@@ -217,6 +218,7 @@ export default defineComponent({
   data: () => ({
     draftAddress: {},
     plans: [],
+    selectedPlan: null,
     productPrice: 324,
     loading: false,
     initialized: false,
@@ -299,8 +301,10 @@ export default defineComponent({
 
     onSubmit () {
       if (this.administrator) {
+        const plan = this.getSubmittableData()
+        plan.id = this.selectedPlan.id
         this.$emit('click:administrator', {
-          planSelected: this.getSubmittableData()
+          planSelected: plan
         })
       } else {
         this.dataSubmitDialog()
