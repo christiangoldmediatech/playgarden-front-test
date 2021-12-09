@@ -9,6 +9,7 @@
         <v-col class="lsess-daily" cols="12" md="4" lg="3" xl="2">
           <today-cards-panel
             v-if="mode === 'TODAY'"
+            :block="block"
             @mode-change="mode = 'CALENDAR'"
           />
           <calendar-panel
@@ -75,7 +76,7 @@
             </v-btn>
           </v-row>
 
-          <sessions-table :day-mode="viewMode === 'DAY'" :today="today" />
+          <sessions-table :day-mode="viewMode === 'DAY'" :today="today" :block="block" />
         </v-col>
       </v-row>
     </v-container>
@@ -98,6 +99,7 @@
           v-for="entry in orderedSessions"
           :key="`lclass-entry-${entry.id}`"
           v-bind="{ entry }"
+          :block="block"
           mobile
         />
 
@@ -224,7 +226,7 @@ export default {
   },
 
   computed: {
-    ...mapState('live-sessions', ['sessions']),
+    ...mapState('live-sessions', ['sessions', 'block']),
     ...mapGetters('auth', {
       hasTrialOrPlatinumPlan: 'hasTrialOrPlatinumPlan'
     }),

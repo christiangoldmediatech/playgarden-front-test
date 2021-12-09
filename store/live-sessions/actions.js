@@ -19,7 +19,7 @@ export default {
     })
   },
 
-  getLiveSessions ({ commit }, params) {
+  getLiveSessions({ commit }, params) {
     return new Promise((resolve, reject) =>
       this.$axios
         .$get('/live-sessions', { params })
@@ -48,6 +48,7 @@ export default {
       const params = {
         limit: 100,
         page: 1,
+        type: 'LiveClass',
         startDate: monday,
         endDate: friday
       }
@@ -55,11 +56,12 @@ export default {
       if (!admin) {
         params.active = true
       }
-      const { total, liveSessions } = data = await this.$axios.$get('/live-sessions', {
+      const { total, meetings, block } = data = await this.$axios.$get('/live-sessions', {
         params
       })
-      commit('SET_SESSIONS', liveSessions)
+      commit('SET_SESSIONS', meetings)
       commit('SET_TOTAL', total)
+      commit('SET_BLOCK', block)
       return data
     } catch (error) {
       return Promise.reject(error)
@@ -72,6 +74,7 @@ export default {
         params: {
           limit: 100,
           page: 1,
+          type: 'LiveClass',
           recorded: true,
           activityTypeId,
           curriculumTypeId
