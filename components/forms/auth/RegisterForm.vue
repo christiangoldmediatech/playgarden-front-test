@@ -130,11 +130,18 @@
                       v-model="draft.promotion_id"
                       :disabled="loading"
                       :error-messages="errors"
+                      :loading="isCheckingCoupon"
                       clearable
                       label="Coupon"
                       solo
                     />
                   </validation-provider>
+
+                  <!-- MESSAGE IF COUPON IS VALID OR NOT -->
+                  <div v-if="Boolean(draft.promotion_id) && isValidCoupon !== null" class="mt-n6 mb-4">
+                    <span v-if="isValidCoupon" class="green--text">Valid coupon!</span>
+                    <span v-else class="error--text">Invalid coupon!</span>
+                  </div>
                 </template>
 
                 <v-btn
@@ -241,7 +248,8 @@ export default {
     })(),
     show: true,
     checkCoupon: debounce(vm._checkCoupon, 750),
-    isValidCoupon: false
+    isValidCoupon: null,
+    isCheckingCoupon: false
   }),
 
   computed: {
@@ -266,7 +274,7 @@ export default {
     'draft.promotion_id': {
       immediate: true,
       handler (val) {
-        this.isValidCoupon = false
+        this.isValidCoupon = null
 
         if (typeof val === 'string') {
           this.draft.promotion_id = val.toUpperCase().trim()
@@ -365,6 +373,7 @@ export default {
 
     async _checkCoupon() {
       try {
+        this.isCheckingCoupon = true
         // Coupon is not requested for CREDITCARD flow.
         if (this.isCreditCardRequired || !this.draft.promotion_id) {
           this.isValidCoupon = true
@@ -381,12 +390,13 @@ export default {
           this.isValidCoupon = true
           return true
         } else {
-          this.$snotify.error('Invalid coupon code.')
           this.isValidCoupon = false
           return false
         }
       } catch (error) {
         return false
+      } finally {
+        this.isCheckingCoupon = false
       }
     },
 
