@@ -157,6 +157,7 @@ export const useAuth = ({
   }
 
   return {
+    accessToken,
     userInfo,
     isUserLoggedIn,
     isUserEmailVerified,
