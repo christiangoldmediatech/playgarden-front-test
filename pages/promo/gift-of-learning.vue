@@ -4,11 +4,8 @@
     <v-btn
       color="accent"
       class="mx-3 mx-md-6 mt-6"
-      nuxt
       text
-      :to="{
-        name: 'app-promo-gift-of-learning-index',
-      }"
+      @click="goToHomePage"
     >
       <v-icon left>
         mdi-less-than
@@ -412,7 +409,7 @@ export default defineComponent({
         loading.value = true
         await axios.$post('/promotions', { ...form.value })
         snotify.success('Thank you for your order!')
-        window.open(process.env.frontendUrl || '/', '_self')
+        goToHomePage()
       } catch (error) {
         snotify.error('Could not buy now')
       } finally {
@@ -429,11 +426,16 @@ export default defineComponent({
       }
     }
 
+    const goToHomePage = () => {
+      window.open(process.env.frontendUrl || '/', '_self')
+    }
+
     return {
-      form,
-      loading,
       buyNow,
-      giftTarget
+      form,
+      giftTarget,
+      goToHomePage,
+      loading
     }
   }
 })
