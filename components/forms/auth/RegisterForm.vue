@@ -118,6 +118,30 @@
                     </span>
                     <br>
                   </v-tooltip>
+
+                  <!-- Coupon -->
+                  <validation-provider
+                    v-if="!isCreditCardRequired"
+                    v-slot="{ errors }"
+                    name="Coupon"
+                    vid="coupon_field"
+                  >
+                    <pg-text-field
+                      v-model="draft.promotion_id"
+                      :disabled="loading"
+                      :error-messages="errors"
+                      :loading="isCheckingCoupon"
+                      clearable
+                      label="Coupon"
+                      solo
+                    />
+                  </validation-provider>
+
+                  <!-- MESSAGE IF COUPON IS VALID OR NOT -->
+                  <div v-if="Boolean(draft.promotion_id) && isValidCoupon !== null" class="mt-n6 mb-4">
+                    <span v-if="isValidCoupon" class="green--text">Valid coupon!</span>
+                    <span v-else class="error--text">Invalid coupon!</span>
+                  </div>
                 </template>
 
                 <v-btn
@@ -125,7 +149,7 @@
                   min-height="60"
                   class="mb-6 main-btn"
                   color="green2"
-                  :disabled="invalid"
+                  :disabled="invalid || !isValidCoupon"
                   :loading="loading"
                   type="submit"
                   x-large
@@ -187,6 +211,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import debounce from 'lodash/debounce'
 
 import { jsonCopy } from '@/utils/objectTools'
 
@@ -201,7 +226,12 @@ export default {
 
     inInvitationProcess: Boolean,
 
-    loading: Boolean
+    loading: Boolean,
+
+    isCreditCardRequired: {
+      type: Boolean,
+      default: false
+    }
   },
 
   data: vm => ({
@@ -216,7 +246,10 @@ export default {
       }
       return null
     })(),
-    show: true
+    show: true,
+    checkCoupon: debounce(vm._checkCoupon, 750),
+    isValidCoupon: null,
+    isCheckingCoupon: false
   }),
 
   computed: {
@@ -237,6 +270,21 @@ export default {
     }
   },
 
+  watch: {
+    'draft.promotion_id': {
+      immediate: true,
+      handler (val) {
+        this.isValidCoupon = null
+
+        if (typeof val === 'string') {
+          this.draft.promotion_id = val.toUpperCase().trim()
+        }
+
+        this.checkCoupon()
+      }
+    }
+  },
+
   created () {
     this.getDataFirebase()
   },
@@ -246,6 +294,8 @@ export default {
   },
 
   methods: {
+    ...mapActions('coupons', ['getCoupons']),
+
     getProviderSignIn (provider) {
       let nameProvider = ''
       switch (provider) {
@@ -308,7 +358,8 @@ export default {
           : null,
         socialNetworkId: this.hasUserSocialData
           ? this.userSocialData.socialNetworkId
-          : null
+          : null,
+        promotion_id: null
       }
     },
     onSubmit () {
@@ -318,6 +369,35 @@ export default {
           ...this.draft
         })
       )
+    },
+
+    async _checkCoupon() {
+      try {
+        this.isCheckingCoupon = true
+        // Coupon is not requested for CREDITCARD flow.
+        if (this.isCreditCardRequired || !this.draft.promotion_id) {
+          this.isValidCoupon = true
+          return true
+        }
+
+        // Only check for coupon validity if it is NO CREDITCARD flow.
+        const coupons = await this.getCoupons({
+          active: true,
+          code: this.draft.promotion_id
+        })
+
+        if (coupons?.length > 0) {
+          this.isValidCoupon = true
+          return true
+        } else {
+          this.isValidCoupon = false
+          return false
+        }
+      } catch (error) {
+        return false
+      } finally {
+        this.isCheckingCoupon = false
+      }
     },
 
     facebookSignIn () {
