@@ -98,37 +98,38 @@
               rules="required|phone"
             >
               <pg-text-field
-                v-model="form.phoneNumber"
+                :value="form.phoneNumber"
                 :disabled="loading"
                 :error-messages="errors"
                 clearable
                 dense
                 label="Phone number"
                 solo
+                @input="form.phoneNumber = maskPhoneNumber($event)"
               />
             </validation-provider>
 
             <div>
               <span class="pg-text-[18px]">Is it a gift for yourself or someone else?</span>
 
-              <v-radio-group v-model="giftTarget" class="mt-md-n2" row>
+              <v-radio-group v-model="giftTarget" class="my-md-n2" row>
                 <v-radio value="someone-else" label="For someone else" />
                 <v-radio value="me" label="For myself" />
               </v-radio-group>
             </div>
 
-            <div class="pg-text-[18px] mt-md-n2">
-              Send to:
-            </div>
-
             <div v-if="giftTarget === 'someone-else'">
+              <div class="pg-text-[18px]">
+                Send to:
+              </div>
+
               <!-- FULL NAME -->
               <v-row no-gutters class="mt-3">
                 <v-col cols="12" md="6" class="mb-md-0">
                   <!-- FIRST NAME -->
                   <validation-provider
                     v-slot="{ errors }"
-                    name="First Name"
+                    name="First Name (Gift Recipient)"
                     rules="required"
                   >
                     <pg-text-field
@@ -148,7 +149,7 @@
                   <!-- LAST NAME -->
                   <validation-provider
                     v-slot="{ errors }"
-                    name="Last Name"
+                    name="Last Name (Gift Recipient)"
                     rules="required"
                   >
                     <pg-text-field
@@ -168,7 +169,7 @@
               <!-- EMAIL -->
               <validation-provider
                 v-slot="{ errors }"
-                name="Email"
+                name="Email (Gift Recipient)"
                 rules="required|email"
               >
                 <pg-text-field
@@ -185,17 +186,18 @@
               <!-- SEND TO PHONE NUMBER -->
               <validation-provider
                 v-slot="{ errors }"
-                name="Send To Phone Number"
+                name="Phone Number (Gift Recipient)"
                 rules="required|phone"
               >
                 <pg-text-field
-                  v-model="form.phoneNumberGift"
+                  :value="form.phoneNumberGift"
                   :disabled="loading"
                   :error-messages="errors"
                   clearable
                   dense
                   label="Phone number"
                   solo
+                  @input="form.phoneNumberGift = maskPhoneNumber($event)"
                 />
               </validation-provider>
             </div>
@@ -229,18 +231,13 @@
             <!-- STREET -->
             <validation-provider
               v-slot="{ errors }"
-              class="mt-3"
               name="Street"
               rules="required"
             >
-              <pg-text-field
+              <search-address-autocomplete
                 v-model="form.street"
-                :disabled="loading"
-                :error-messages="errors"
-                clearable
-                dense
-                label="Street"
-                solo
+                :should-error="errors.length > 0"
+                class="mt-3 mb-n2"
               />
             </validation-provider>
 
@@ -369,12 +366,14 @@
 <script lang="ts">
 import { defineComponent, ref } from '@nuxtjs/composition-api'
 import StripeCard from '@/components/forms/payment/StripeCard.vue'
+import SearchAddressAutocomplete from '@/components/SearchAddressAutocomplete.vue'
 import { useSnotifyHelper } from '@/composables'
 import { axios } from '@/utils'
 
 export default defineComponent({
   components: {
-    StripeCard
+    StripeCard,
+    SearchAddressAutocomplete
   },
 
   setup() {
@@ -430,12 +429,21 @@ export default defineComponent({
       window.open(process.env.frontendUrl || '/', '_self')
     }
 
+    const maskPhoneNumber = (phoneNumber: string) => {
+      const unmaskedPhoneNumber = phoneNumber.replace(/\D/g, '')
+      return unmaskedPhoneNumber?.replace(
+        /^(\d{0,3})(\d{0,3})(\d{0,})$/,
+        '($1) $2-$3'
+      )
+    }
+
     return {
       buyNow,
       form,
       giftTarget,
       goToHomePage,
-      loading
+      loading,
+      maskPhoneNumber
     }
   }
 })
