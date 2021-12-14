@@ -134,6 +134,7 @@
                       clearable
                       label="Coupon"
                       solo
+                      @change="checkCoupon"
                     />
                   </validation-provider>
 
