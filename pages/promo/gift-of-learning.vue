@@ -426,7 +426,7 @@ export default defineComponent({
         loading.value = true
         await axios.$post('/promotions', { ...form.value })
         snotify.success('Thank you for your order!')
-        goToHomePage()
+        window.open('https://playgardenonline.com/gift-of-leaning/thank-you', '_self')
       } catch (error) {
         snotify.error('Could not buy now')
       } finally {
@@ -444,7 +444,7 @@ export default defineComponent({
     }
 
     const goToHomePage = () => {
-      window.open(process.env.frontendUrl || '/', '_self')
+      window.open('https://playgardenonline.com', '_self')
     }
 
     const maskPhoneNumber = (phoneNumber: string) => {
