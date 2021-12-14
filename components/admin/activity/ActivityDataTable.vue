@@ -36,73 +36,92 @@
 
     <v-row>
       <v-col cols="12">
-        <v-card width="100%">
-          <v-card-text>
-            <pg-admin-data-table
-              :headers="headers"
-              :items="rows"
-              :items-per-page="paginationLimit"
-              :loading="loading"
-              :page.sync="page"
-              :server-items-length="total"
-              top-justify="space-between"
-              @search="handleSearch"
-              @refresh="handleRefresh"
-              @search-text-cleared="handleSearchClearance"
-              @update:page="page = $event"
-              @edit-item="
-                $router.push({
-                  name: 'admin-activity-management-editor',
-                  query: { id: $event.id },
-                })
-              "
-              @remove-item="remove"
-            >
-              <template v-slot:[`top.prepend`]>
-                <v-col class="fkex-shrink-1 flex-grow-0">
-                  <v-icon class="my-4 mx-1" color="accent">
-                    mdi-tune
-                  </v-icon>
-                </v-col>
+        <v-tabs
+          v-model="tab"
+          grow
+        >
+          <v-tab
+            v-for="item in items"
+            :key="item"
+          >
+            {{ item }}
+          </v-tab>
+        </v-tabs>
 
-                <v-col cols="12" md="7" class="flex-shrink-0 flex-grow-1">
-                  <v-row no-gutters>
-                    <pg-select
-                      v-model="activeFilters"
-                      clearable
-                      :items="filterList"
-                      item-text="text"
-                      item-value="value"
-                      label="Filter"
-                      solo-labeled
-                      multiple
-                    />
-                  </v-row>
-                </v-col>
-              </template>
-
-              <template v-slot:[`item.videos.name`]="{ item }">
-                <v-btn
-                  class="mr-2"
-                  :disabled="loading"
-                  icon
-                  @click.stop="toggleFeatured(item)"
+        <v-tabs-items v-model="tab">
+          <v-tab-item>
+            <v-card width="100%">
+              <v-card-text>
+                <pg-admin-data-table
+                  :headers="headers"
+                  :items="rows"
+                  :items-per-page="paginationLimit"
+                  :loading="loading"
+                  :page.sync="page"
+                  :server-items-length="total"
+                  top-justify="space-between"
+                  @search="handleSearch"
+                  @refresh="handleRefresh"
+                  @search-text-cleared="handleSearchClearance"
+                  @update:page="page = $event"
+                  @edit-item="
+                    $router.push({
+                      name: 'admin-activity-management-editor',
+                      query: { id: $event.id },
+                    })
+                  "
+                  @remove-item="remove"
                 >
-                  <v-icon
-                    :color="item.featured ? 'accent' : ''"
-                    v-text="item.featured ? 'mdi-star' : 'mdi-star-outline'"
-                  />
-                </v-btn>
-                {{ item.videos.name }}
-              </template>
+                  <template v-slot:[`top.prepend`]>
+                    <v-col class="fkex-shrink-1 flex-grow-0">
+                      <v-icon class="my-4 mx-1" color="accent">
+                        mdi-tune
+                      </v-icon>
+                    </v-col>
 
-              <template v-slot:[`item.actions.prepend`]="{ item }">
-                <video-preview-btn :video="item.videos" />
-                <grades-btn :data-item="item" :entity-type="entityType" />
-              </template>
-            </pg-admin-data-table>
-          </v-card-text>
-        </v-card>
+                    <v-col cols="12" md="7" class="flex-shrink-0 flex-grow-1">
+                      <v-row no-gutters>
+                        <pg-select
+                          v-model="activeFilters"
+                          clearable
+                          :items="filterList"
+                          item-text="text"
+                          item-value="value"
+                          label="Filter"
+                          solo-labeled
+                          multiple
+                        />
+                      </v-row>
+                    </v-col>
+                  </template>
+
+                  <template v-slot:[`item.videos.name`]="{ item }">
+                    <v-btn
+                      class="mr-2"
+                      :disabled="loading"
+                      icon
+                      @click.stop="toggleFeatured(item)"
+                    >
+                      <v-icon
+                        :color="item.featured ? 'accent' : ''"
+                        v-text="item.featured ? 'mdi-star' : 'mdi-star-outline'"
+                      />
+                    </v-btn>
+                    {{ item.videos.name }}
+                  </template>
+
+                  <template v-slot:[`item.actions.prepend`]="{ item }">
+                    <video-preview-btn :video="item.videos" />
+                    <grades-btn :data-item="item" :entity-type="entityType" />
+                  </template>
+                </pg-admin-data-table>
+              </v-card-text>
+            </v-card>
+          </v-tab-item>
+          <v-tab-item>
+            <analytics />
+          </v-tab-item>
+        </v-tabs-items>
       </v-col>
     </v-row>
   </v-container>
@@ -112,16 +131,19 @@
 import { mapActions, mapGetters, mapState } from 'vuex'
 import VideoPreviewBtn from '@/components/admin/video-preview/VideoPreviewBtn.vue'
 import GradesBtn from '@/components/admin/grades/GradesBtn.vue'
+import Analytics from './Analytics.vue'
 
 export default {
   name: 'ActivityDataTable',
 
   components: {
     VideoPreviewBtn,
-    GradesBtn
+    GradesBtn,
+    Analytics
   },
   data () {
     return {
+      tab: null,
       loading: false,
       page: 1,
       allFilters: false,
@@ -129,6 +151,9 @@ export default {
       activeFilters: [],
       checkStatusInterval: null,
       entityType: 'Activities',
+      items: [
+        'Activities', 'Analytics'
+      ],
       headers: [
         {
           text: 'Activity Title',
