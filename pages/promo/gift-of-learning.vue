@@ -245,7 +245,6 @@
             <validation-provider
               v-slot="{ errors }"
               name="Street"
-              rules="required"
             >
               <pg-text-field
                 v-model="form.street2"
