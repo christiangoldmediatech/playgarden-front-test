@@ -238,6 +238,7 @@
                 v-model="form.street"
                 :should-error="errors.length > 0"
                 class="mt-3 mb-n1"
+                @address-components="handleAddress"
               />
             </validation-provider>
 
@@ -455,11 +456,58 @@ export default defineComponent({
       )
     }
 
+    const handleAddress = (data: any) => {
+      try {
+        interface AddressComponent {
+          // eslint-disable-next-line camelcase
+          long_name: string
+          // eslint-disable-next-line camelcase
+          short_name: string
+          types: string[]
+        }
+
+        const addressComponents = data?.address_components as AddressComponent[]
+
+        if (addressComponents) {
+          const city = addressComponents.find(({ types }) =>
+            types.includes('locality')
+          )
+
+          if (city) {
+            form.value.city = city.long_name
+          } else {
+            form.value.city = ''
+          }
+
+          const state = addressComponents.find(({ types }) =>
+            types.includes('administrative_area_level_1')
+          )
+
+          if (state) {
+            form.value.state = state.short_name
+          } else {
+            form.value.state = ''
+          }
+
+          const postalCode = addressComponents.find(({ types }) =>
+            types.includes('postal_code')
+          )
+
+          if (postalCode) {
+            form.value.zipCode = postalCode.short_name.toUpperCase()
+          } else {
+            form.value.zipCode = ''
+          }
+        }
+      } catch (error) {}
+    }
+
     return {
       buyNow,
       form,
       giftTarget,
       goToHomePage,
+      handleAddress,
       loading,
       maskPhoneNumber
     }
