@@ -14,10 +14,31 @@
       Back
     </v-btn>
 
-    <div class="gift-of-learning-title primary--text mt-4 px-3 px-md-6">
+    <div class="gift-of-learning-title primary--text mt-1 mt-md-4 px-3 px-md-6">
       Gift Of Learning Promotion
     </div>
+    <template v-if="$vuetify.breakpoint.mobile">
+      <v-col cols="12" md="6" class="mt-1 px-3 px-md-2 d-flex d-sm-none">
+        <div class="d-flex flex-column">
+          <p class="pg-text-[18px] pg-leading-7 mt-1">
+            Playgarden Prep Toddler Backpack shipped with:
+          </p>
 
+          <ul class="pg-text-[18px] pg-leading-7">
+            <li>Coupon for 3 months of access to Playgarden Prep Online</li>
+            <li>Custom Coloring Book</li>
+            <li>Box of 8 Crayola Crayons</li>
+          </ul>
+
+          <div class="py-10 pg-relative">
+            <span class="price">$ 79.99</span>
+            <span class="free-shipping">FREE SHIPPING</span>
+
+            <img class="gift-of-learning-img" src="@/assets/png/promo/gift-of-learning.png">
+          </div>
+        </div>
+      </v-col>
+    </template>
     <validation-observer v-slot="{ validate }">
       <v-row no-gutters>
         <!-- LEFT SIDE -->
@@ -340,31 +361,32 @@
               <stripe-card v-model="form.token" class="mb-4" />
             </validation-provider>
 
-            <div class="mt-2">
-              <underlined-title
-                text="ORDER CONFIRMATION"
-                font-size="24px"
-                font-size-mobile="24px"
-              />
-            </div>
+            <template v-if="!$vuetify.breakpoint.mobile">
+              <div class="mt-2">
+                <underlined-title
+                  text="ORDER CONFIRMATION"
+                  font-size="24px"
+                  font-size-mobile="24px"
+                />
+              </div>
 
-            <p class="pg-text-[18px] pg-leading-7 mt-4">
-              Playgarden Prep Toddler Backpack shipped with:
-            </p>
+              <p class="pg-text-[18px] pg-leading-7 mt-4">
+                Playgarden Prep Toddler Backpack shipped with:
+              </p>
 
-            <ul class="pg-text-[18px] pg-leading-7">
-              <li>Coupon for 3 months of access to Playgarden Prep Online</li>
-              <li>Custom Coloring Book</li>
-              <li>Box of 8 Crayola Crayons</li>
-            </ul>
+              <ul class="pg-text-[18px] pg-leading-7">
+                <li>Coupon for 3 months of access to Playgarden Prep Online</li>
+                <li>Custom Coloring Book</li>
+                <li>Box of 8 Crayola Crayons</li>
+              </ul>
 
-            <div class="py-10 pg-relative">
-              <span class="price">79.99</span>
-              <span class="free-shipping">FREE SHIPPING</span>
+              <div class="py-10 pg-relative">
+                <span class="price">$ 79.99</span>
+                <span class="free-shipping">FREE SHIPPING</span>
 
-              <img class="gift-of-learning-img" src="@/assets/png/promo/gift-of-learning.png">
-            </div>
-
+                <img class="gift-of-learning-img" src="@/assets/png/promo/gift-of-learning.png">
+              </div>
+            </template>
             <div class="mt-6 mt-md-10 mb-10">
               <v-btn :loading="loading" block color="secondary" x-large @click="buyNow(validate)">
                 BUY NOW
@@ -536,7 +558,7 @@ export default defineComponent({
 }
 
 .price {
-  font-size: 48px;
+  font-size: 40px;
   font-weight: 900;
   color: rgba(255, 171, 55, 1);
   display: block;
@@ -563,7 +585,7 @@ export default defineComponent({
   }
 
   .price {
-    font-size: 87px;
+    font-size: 77px;
   }
 
   .free-shipping {
