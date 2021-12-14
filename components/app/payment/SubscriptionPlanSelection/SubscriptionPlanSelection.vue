@@ -4,10 +4,10 @@
       <validation-observer v-slot="{ invalid, passes }">
         <v-form @submit.prevent="passes(onSubmit)">
           <!-- Green Background Ribbon -->
-          <div class="d-md-block d-none primary py-16 mx-n3" />
+          <div class="d-none d-md-block banner-bkg py-16 mx-n3" />
           <!-- Desktop Plan Selection -->
           <v-row
-            class="mx-n3"
+            class="mx-n3 mt-n10"
             justify="center"
             align="start"
             no-gutters
@@ -32,30 +32,38 @@
               :class="planCardClasses(indexP)"
               :order="indexP + 1"
             >
-              <!-- Most Popular Chip -->
-              <div v-show="indexP === 1" class="text-right">
-                <v-chip class="most-popular" label>
-                  Most Popular
-                </v-chip>
-              </div>
-              <div class="px-4 px-md-8">
-                <!-- Plan Name -->
-                <p :class="planNameClasses(indexP)">
-                  <v-chip
-                    color="orange"
-                    class="text-orange-info mb-8 pa-5"
-                    label
-                  >
-                    {{ plan.planName }}
+              <v-img
+                class="card-plan-header"
+                content-class="d-flex flex-column"
+                :src="require(`@/assets/png/plans/plan-${indexP}.png`)"
+                gradient="to top right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)"
+              >
+                <!-- Most Popular Chip -->
+                <div v-show="indexP === 1" class="flex-grow-0 flex-shrink-1 text-right">
+                  <v-chip class="most-popular" label>
+                    Most Popular
                   </v-chip>
-                  <br>
+                </div>
+
+                <div class="card-plan-header-plan-name">
+                  <!-- Plan Name -->
                   <underlined-title
+                    class="white--text"
                     font-size="32px"
                     font-size-mobile="28px"
                     :line-from="45"
                     :text="plan.name"
+                    line-color="#68C453"
+                    font-weight="700"
                   />
-                </p>
+                </div>
+              </v-img>
+
+              <div class="card-plan-dots">
+                <img src="@/assets/png/plans/dot-group.png">
+              </div>
+
+              <div class="px-4 px-md-8 whats-included">
                 <!-- What's Included -->
                 <p class="text-left mt-6 plan-included">
                   <label class="grey--text text--darken-2 font-weight-bold">What's included</label>
@@ -233,7 +241,7 @@ export default defineComponent({
 
     plansStyle () {
       return {
-        'margin-top': this.isMobile ? '0px' : '-90px !important'
+        'margin-top': this.$vuetify.breakpoint.smAndDown ? '0px' : '-150px !important'
       }
     }
   },
@@ -346,7 +354,7 @@ export default defineComponent({
     planCardClasses (index) {
       return {
         'c-col mx-md-3 card-plan white': true,
-        'mt-md-10': index !== 1,
+        'mt-md-14': index !== 1,
         'mx-2 my-4': this.isMobile
       }
     },
@@ -402,7 +410,8 @@ export default defineComponent({
 
 .card-plan {
   box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.27) !important;
-  border-radius: 5px !important;
+  border-radius: 16px !important;
+  min-width: 200px;
   max-width: 350px;
   @media screen and (min-width: 1264px) {
     max-width: 426px;
@@ -410,13 +419,48 @@ export default defineComponent({
   @media screen and (min-width: 1904px) {
     max-width: 526px;
   }
+  overflow: hidden;
+  position: relative;
+
+  .card-plan-header {
+    border-radius: 16px !important;
+    overflow: hidden;
+    position: relative;
+    z-index: 15;
+
+    .v-responsive__content {
+      .card-plan-header-plan-name {
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        flex: 1 0;
+        margin-bottom: 40px;
+      }
+    }
+  }
+
+  .card-plan-dots {
+    position: relative;
+
+    img {
+      position: absolute;
+      top: -91px;
+      right: 11px;
+      z-index: 10;
+    }
+  }
+
+  .whats-included {
+    position: relative;
+    z-index: 20;
+  }
 }
 
 .text-orange-info::v-deep.v-chip--label {
   border-radius: 3px !important;
 }
 .most-popular::v-deep.v-chip .v-chip__content {
-  color: #ff8000 !important;
+  color: white !important;
   font-weight: bold;
 }
 .most-popular::v-deep.v-chip--label {
@@ -424,8 +468,9 @@ export default defineComponent({
   font-size: 16px;
   padding: 15px 30px;
   color: var(--v-white-base) !important;
+  background: rgba(255, 163, 72, 0.8);
   border-radius: 0px !important;
-  background: rgba(255, 163, 72, 0.35);
+  border-bottom-left-radius: 16px !important;
 }
 .product-price {
   font-size: 40px !important;
@@ -486,5 +531,9 @@ export default defineComponent({
 .v-btn:not(.v-btn--text) {
   font-size: 18px;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16) !important;
+}
+
+.banner-bkg {
+  background-color: #B2E68D !important;
 }
 </style>
