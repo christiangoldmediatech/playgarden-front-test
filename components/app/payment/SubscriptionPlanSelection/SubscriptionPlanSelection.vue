@@ -144,6 +144,7 @@
                     width="250px"
                     :disabled="invalid"
                     type="submit"
+                    @click="selectedPlan = plan"
                   >
                     Choose Plan
                   </v-btn>
@@ -217,6 +218,7 @@ export default defineComponent({
   data: () => ({
     draftAddress: {},
     plans: [],
+    selectedPlan: null,
     productPrice: 324,
     loading: false,
     initialized: false,
@@ -299,8 +301,10 @@ export default defineComponent({
 
     onSubmit () {
       if (this.administrator) {
+        const plan = this.getSubmittableData()
+        plan.id = this.selectedPlan.id
         this.$emit('click:administrator', {
-          planSelected: this.getSubmittableData()
+          planSelected: plan
         })
       } else {
         this.dataSubmitDialog()
@@ -309,16 +313,14 @@ export default defineComponent({
 
     async dataSubmitDialog () {
       this.loading = true
-
+      const plan = this.getSubmittableData()
+      plan.id = this.selectedPlan.id
       try {
-        await this.selectSubscriptionPlan(this.getSubmittableData())
-
+        await this.selectSubscriptionPlan(plan)
         this.$snotify.success('Payment plan has been selected successfully!')
-
         this.$nuxt.$emit('plan-membership-changed')
-
         this.$emit('click:submit', {
-          draft: this.getSubmittableData(),
+          draft: plan,
           draftAddress: this.draftAddress
         })
       } catch (e) {
