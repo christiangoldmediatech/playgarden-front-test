@@ -48,7 +48,7 @@
                     class="pr-md-3"
                     dense
                     label="First Name"
-                    solo
+                    solo-labeled
                   />
                 </validation-provider>
               </v-col>
@@ -68,7 +68,7 @@
                     clearable
                     dense
                     label="Last Name"
-                    solo
+                    solo-labeled
                   />
                 </validation-provider>
               </v-col>
@@ -87,7 +87,7 @@
                 clearable
                 dense
                 label="Email"
-                solo
+                solo-labeled
               />
             </validation-provider>
 
@@ -98,37 +98,38 @@
               rules="required|phone"
             >
               <pg-text-field
-                v-model="form.phoneNumber"
+                :value="form.phoneNumber"
                 :disabled="loading"
                 :error-messages="errors"
                 clearable
                 dense
                 label="Phone number"
-                solo
+                solo-labeled
+                @input="form.phoneNumber = maskPhoneNumber($event)"
               />
             </validation-provider>
 
             <div>
               <span class="pg-text-[18px]">Is it a gift for yourself or someone else?</span>
 
-              <v-radio-group v-model="giftTarget" class="mt-md-n2" row>
+              <v-radio-group v-model="giftTarget" class="my-md-n2" row>
                 <v-radio value="someone-else" label="For someone else" />
                 <v-radio value="me" label="For myself" />
               </v-radio-group>
             </div>
 
-            <div class="pg-text-[18px] mt-md-n2">
-              Send to:
-            </div>
-
             <div v-if="giftTarget === 'someone-else'">
+              <div class="pg-text-[18px]">
+                Send to:
+              </div>
+
               <!-- FULL NAME -->
               <v-row no-gutters class="mt-3">
                 <v-col cols="12" md="6" class="mb-md-0">
                   <!-- FIRST NAME -->
                   <validation-provider
                     v-slot="{ errors }"
-                    name="First Name"
+                    name="First Name (Gift Recipient)"
                     rules="required"
                   >
                     <pg-text-field
@@ -139,7 +140,7 @@
                       class="pr-md-3"
                       dense
                       label="First Name"
-                      solo
+                      solo-labeled
                     />
                   </validation-provider>
                 </v-col>
@@ -148,7 +149,7 @@
                   <!-- LAST NAME -->
                   <validation-provider
                     v-slot="{ errors }"
-                    name="Last Name"
+                    name="Last Name (Gift Recipient)"
                     rules="required"
                   >
                     <pg-text-field
@@ -159,7 +160,7 @@
                       clearable
                       dense
                       label="Last Name"
-                      solo
+                      solo-labeled
                     />
                   </validation-provider>
                 </v-col>
@@ -168,7 +169,7 @@
               <!-- EMAIL -->
               <validation-provider
                 v-slot="{ errors }"
-                name="Email"
+                name="Email (Gift Recipient)"
                 rules="required|email"
               >
                 <pg-text-field
@@ -178,24 +179,25 @@
                   clearable
                   dense
                   label="Email"
-                  solo
+                  solo-labeled
                 />
               </validation-provider>
 
               <!-- SEND TO PHONE NUMBER -->
               <validation-provider
                 v-slot="{ errors }"
-                name="Send To Phone Number"
+                name="Phone Number (Gift Recipient)"
                 rules="required|phone"
               >
                 <pg-text-field
-                  v-model="form.phoneNumberGift"
+                  :value="form.phoneNumberGift"
                   :disabled="loading"
                   :error-messages="errors"
                   clearable
                   dense
                   label="Phone number"
-                  solo
+                  solo-labeled
+                  @input="form.phoneNumberGift = maskPhoneNumber($event)"
                 />
               </validation-provider>
             </div>
@@ -214,7 +216,7 @@
                 clearable
                 dense
                 label="Child name"
-                solo
+                solo-labeled
               />
             </validation-provider>
 
@@ -229,18 +231,30 @@
             <!-- STREET -->
             <validation-provider
               v-slot="{ errors }"
-              class="mt-3"
               name="Street"
               rules="required"
             >
-              <pg-text-field
+              <search-address-autocomplete
                 v-model="form.street"
-                :disabled="loading"
+                :should-error="errors.length > 0"
+                class="mt-3 mb-n1"
+              />
+            </validation-provider>
+
+            <!-- STREET 2 -->
+            <validation-provider
+              v-slot="{ errors }"
+              name="Street"
+            >
+              <pg-text-field
+                v-model="form.street2"
                 :error-messages="errors"
+                :disabled="loading"
                 clearable
                 dense
-                label="Street"
-                solo
+                placeholder="Apt, Suite, PO BOX (optional)"
+                label="Apt, Suite, PO BOX (optional)"
+                solo-labeled
               />
             </validation-provider>
 
@@ -257,7 +271,7 @@
                 clearable
                 dense
                 label="City"
-                solo
+                solo-labeled
               />
             </validation-provider>
 
@@ -277,7 +291,7 @@
                     class="pr-md-3"
                     dense
                     label="State"
-                    solo
+                    solo-labeled
                   />
                 </validation-provider>
               </v-col>
@@ -297,7 +311,7 @@
                     clearable
                     dense
                     label="Zip code"
-                    solo
+                    solo-labeled
                   />
                 </validation-provider>
               </v-col>
@@ -369,12 +383,14 @@
 <script lang="ts">
 import { defineComponent, ref } from '@nuxtjs/composition-api'
 import StripeCard from '@/components/forms/payment/StripeCard.vue'
+import SearchAddressAutocomplete from '@/components/SearchAddressAutocomplete.vue'
 import { useSnotifyHelper } from '@/composables'
 import { axios } from '@/utils'
 
 export default defineComponent({
   components: {
-    StripeCard
+    StripeCard,
+    SearchAddressAutocomplete
   },
 
   setup() {
@@ -393,6 +409,7 @@ export default defineComponent({
       phoneNumberGift: '',
       childName: '',
       street: '',
+      street2: '',
       city: '',
       state: '',
       zipCode: '',
@@ -409,7 +426,7 @@ export default defineComponent({
         loading.value = true
         await axios.$post('/promotions', { ...form.value })
         snotify.success('Thank you for your order!')
-        goToHomePage()
+        window.open('https://playgardenonline.com/gift-of-leaning/thank-you', '_self')
       } catch (error) {
         snotify.error('Could not buy now')
       } finally {
@@ -427,7 +444,15 @@ export default defineComponent({
     }
 
     const goToHomePage = () => {
-      window.open(process.env.frontendUrl || '/', '_self')
+      window.open('https://playgardenonline.com', '_self')
+    }
+
+    const maskPhoneNumber = (phoneNumber: string) => {
+      const unmaskedPhoneNumber = phoneNumber.replace(/\D/g, '')
+      return unmaskedPhoneNumber?.replace(
+        /^(\d{0,3})(\d{0,3})(\d{0,})$/,
+        '($1) $2-$3'
+      )
     }
 
     return {
@@ -435,7 +460,8 @@ export default defineComponent({
       form,
       giftTarget,
       goToHomePage,
-      loading
+      loading,
+      maskPhoneNumber
     }
   }
 })
