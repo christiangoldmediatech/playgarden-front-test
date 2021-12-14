@@ -48,7 +48,7 @@
                     class="pr-md-3"
                     dense
                     label="First Name"
-                    solo
+                    solo-labeled
                   />
                 </validation-provider>
               </v-col>
@@ -68,7 +68,7 @@
                     clearable
                     dense
                     label="Last Name"
-                    solo
+                    solo-labeled
                   />
                 </validation-provider>
               </v-col>
@@ -87,7 +87,7 @@
                 clearable
                 dense
                 label="Email"
-                solo
+                solo-labeled
               />
             </validation-provider>
 
@@ -104,7 +104,7 @@
                 clearable
                 dense
                 label="Phone number"
-                solo
+                solo-labeled
                 @input="form.phoneNumber = maskPhoneNumber($event)"
               />
             </validation-provider>
@@ -140,7 +140,7 @@
                       class="pr-md-3"
                       dense
                       label="First Name"
-                      solo
+                      solo-labeled
                     />
                   </validation-provider>
                 </v-col>
@@ -160,7 +160,7 @@
                       clearable
                       dense
                       label="Last Name"
-                      solo
+                      solo-labeled
                     />
                   </validation-provider>
                 </v-col>
@@ -179,7 +179,7 @@
                   clearable
                   dense
                   label="Email"
-                  solo
+                  solo-labeled
                 />
               </validation-provider>
 
@@ -196,7 +196,7 @@
                   clearable
                   dense
                   label="Phone number"
-                  solo
+                  solo-labeled
                   @input="form.phoneNumberGift = maskPhoneNumber($event)"
                 />
               </validation-provider>
@@ -216,7 +216,7 @@
                 clearable
                 dense
                 label="Child name"
-                solo
+                solo-labeled
               />
             </validation-provider>
 
@@ -237,7 +237,25 @@
               <search-address-autocomplete
                 v-model="form.street"
                 :should-error="errors.length > 0"
-                class="mt-3 mb-n2"
+                class="mt-3 mb-n1"
+              />
+            </validation-provider>
+
+            <!-- STREET 2 -->
+            <validation-provider
+              v-slot="{ errors }"
+              name="Street"
+              rules="required"
+            >
+              <pg-text-field
+                v-model="form.street2"
+                :error-messages="errors"
+                :disabled="loading"
+                clearable
+                dense
+                placeholder="Apt, Suite, PO BOX (optional)"
+                label="Apt, Suite, PO BOX (optional)"
+                solo-labeled
               />
             </validation-provider>
 
@@ -254,7 +272,7 @@
                 clearable
                 dense
                 label="City"
-                solo
+                solo-labeled
               />
             </validation-provider>
 
@@ -274,7 +292,7 @@
                     class="pr-md-3"
                     dense
                     label="State"
-                    solo
+                    solo-labeled
                   />
                 </validation-provider>
               </v-col>
@@ -294,7 +312,7 @@
                     clearable
                     dense
                     label="Zip code"
-                    solo
+                    solo-labeled
                   />
                 </validation-provider>
               </v-col>
@@ -392,6 +410,7 @@ export default defineComponent({
       phoneNumberGift: '',
       childName: '',
       street: '',
+      street2: '',
       city: '',
       state: '',
       zipCode: '',
