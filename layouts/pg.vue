@@ -2,7 +2,10 @@
   <v-app>
     <template v-if="showContent">
       <!-- TRIAL EXPIRING RIBBON -->
-      <trial-is-expiring v-if="isTrialExpiringRibbonVisible" @expired="handleExpiredTrialCoundown" />
+      <trial-is-expiring
+        v-if="isTrialExpiringRibbonVisible"
+        @expired="handleExpiredTrialCoundown"
+      />
 
       <!-- APP HEADER -->
       <pg-header />
@@ -50,10 +53,20 @@
 </template>
 
 <script lang="ts">
-import { useAuth, useLayout, useNotification, useVuetifyHelper } from '@/composables'
+import {
+  useAuth,
+  useLayout,
+  useNotification,
+  useVuetifyHelper
+} from '@/composables'
 import { TypedStore } from '@/models'
 import { useRoute, useRouter, useStore } from '@nuxtjs/composition-api'
-import { computed, defineComponent, onMounted, watch } from '@vue/composition-api'
+import {
+  computed,
+  defineComponent,
+  onMounted,
+  watch
+} from '@vue/composition-api'
 
 import AppNavigation from '@/components/app/header/AppNavigation.vue'
 import PgHeader from '@/components/app/header/PgHeader.vue'
@@ -66,14 +79,19 @@ export default defineComponent({
     AppNavigation,
     PgHeader,
     DefaultFooter,
-    TrialIsExpiring: () => import('@/components/app/header/TrialIsExpiring.vue'),
-    NotificationCard: () => import('@/components/app/notifications/NotificationCard.vue'),
-    ShippingAddressModal: () => import('@/components/app/payment/ShippingAddressModal.vue'),
-    TrialExpiredModal: () => import('@/components/app/payment/TrialExpiredModal.vue'),
-    ContactUsFormModal: () => import('@/components/forms/contact/ContactUsFormModal.vue')
+    TrialIsExpiring: () =>
+      import('@/components/app/header/TrialIsExpiring.vue'),
+    NotificationCard: () =>
+      import('@/components/app/notifications/NotificationCard.vue'),
+    ShippingAddressModal: () =>
+      import('@/components/app/payment/ShippingAddressModal.vue'),
+    TrialExpiredModal: () =>
+      import('@/components/app/payment/TrialExpiredModal.vue'),
+    ContactUsFormModal: () =>
+      import('@/components/forms/contact/ContactUsFormModal.vue')
   },
 
-  setup () {
+  setup() {
     const store = useStore<TypedStore>()
     const route = useRoute()
     const router = useRouter()

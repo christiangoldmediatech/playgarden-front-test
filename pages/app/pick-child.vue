@@ -2,7 +2,13 @@
   <v-main class="bkg">
     <v-container fluid fill-height>
       <v-row align="center" justify="center">
-        <v-col cols="12" md="8" lg="6" class="pick-child" :class="{mobile: $vuetify.breakpoint.smAndDown}">
+        <v-col
+          cols="12"
+          md="8"
+          lg="6"
+          class="pick-child"
+          :class="{ mobile: $vuetify.breakpoint.smAndDown }"
+        >
           <v-card>
             <div class="green-line green-line-1" />
             <div class="green-line green-line-2" />
@@ -79,20 +85,26 @@ export default {
   computed: {
     ...mapGetters('children', ['rows']),
 
-    children () {
+    children() {
       const result = jsonCopy(this.rows)
 
-      /* result.push({
-        id: null,
-        firstName: 'Everyone',
-        everyone: true
-      }) */
+      if (result.length > 0) {
+        const ids = result.map((item) => {
+          return item.id
+        })
+
+        result.push({
+          id: ids,
+          firstName: 'Everyone',
+          everyone: true
+        })
+      }
 
       return result
     }
   },
 
-  async created () {
+  async created() {
     await this.getChildren()
 
     // NOTE: "everyone" count as one child here
@@ -106,7 +118,7 @@ export default {
 
     ...mapActions(['setChild']),
 
-    selectChild (child) {
+    selectChild(child) {
       if (!this.selected) {
         this.selected = child
 

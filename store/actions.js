@@ -18,7 +18,7 @@ export default {
     commit('ENABLE_AXIOS_GLOBAL_ERROR_HANDLER')
   },
 
-  setChild ({ commit }, { value, oldExp = null, save = false }) {
+  setChild({ commit }, { value, oldExp = null, save = false, everyone = false }) {
     commit('SET_CURRENT_CHILD', value)
 
     const moment = new Date()
@@ -42,7 +42,8 @@ export default {
         'selectedChild',
         JSON.stringify({
           value: data,
-          expires
+          expires,
+          everyone
         })
       )
     }
@@ -60,14 +61,15 @@ export default {
         _key: 'selectedChild',
         _data: encodeURIComponent(JSON.stringify({
           value: data,
-          expires
+          expires,
+          everyone
         })),
         _expireDate: new Date(expires).toISOString()
       })
     }
   },
 
-  resetCurrentChild ({ commit }) {
+  resetCurrentChild({ commit }) {
     commit('SET_CURRENT_CHILD', null)
     commit('SET_CURRENT_CHILD_EXPIRES', null)
 
@@ -80,7 +82,7 @@ export default {
     }
   },
 
-  async initApp ({ dispatch }, { $route, $router }) {
+  async initApp({ dispatch }, { $route, $router }) {
     const isUnauthenticatedRoute = !!unauthenticatedRoutes[$route.name]
     let isLoggedIn = await dispatch('auth/checkAuth', undefined, { root: true })
 
@@ -98,7 +100,7 @@ export default {
     }
   },
 
-  async pickChild ({ dispatch, getters }, { $router, $route, $cookies, req }) {
+  async pickChild({ dispatch, getters }, { $router, $route, $cookies, req }) {
     const isAppRoute = /^app-.*$/.test($route.name)
     let child = getters.getCurrentChild
     let childExpires = getters.getCurrentChildExpires

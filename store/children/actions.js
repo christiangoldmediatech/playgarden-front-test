@@ -1,5 +1,5 @@
 export default {
-  async store (ctx, data) {
+  async store(ctx, data) {
     try {
       const response = await this.$axios.post('/children', data)
       return response.data
@@ -8,9 +8,10 @@ export default {
     }
   },
 
-  async get ({ commit }) {
+  async get({ commit }) {
     try {
       const { data } = await this.$axios.get('/children')
+
       commit('SET_ROWS', data)
       return data
     } catch (error) {
@@ -18,7 +19,7 @@ export default {
     }
   },
 
-  async getById (ctx, id) {
+  async getById(ctx, id) {
     try {
       const { data } = await this.$axios.get(`/children/${id}`)
       return data
@@ -27,7 +28,7 @@ export default {
     }
   },
 
-  async update (ctx, { id, params }) {
+  async update(ctx, { id, params }) {
     try {
       const { data } = await this.$axios.patch(`/children/${id}`, params)
       return data
@@ -36,7 +37,7 @@ export default {
     }
   },
 
-  async delete ({ dispatch, rootGetters }, id) {
+  async delete({ dispatch, rootGetters }, id) {
     try {
       const currentChildren = (rootGetters.getCurrentChild || []).find(
         child => child.id === id

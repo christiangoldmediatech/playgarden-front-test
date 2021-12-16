@@ -94,21 +94,21 @@ export default {
 
     ...mapGetters('children', { children: 'rows' }),
 
-    internalValue () {
+    internalValue() {
       return this.multiple && !Array.isArray(this.value)
         ? [this.value]
         : this.value
     },
 
-    multiple () {
+    multiple() {
       return (
         'multiple' in this.$attrs &&
         (this.$attrs.multiple === '' || this.$attrs.multiple)
       )
     },
 
-    childrenList () {
-      return this.children.map((child) => {
+    childrenList() {
+      let data = this.children.map((child) => {
         return {
           value: child.id,
           text: child.firstName,
@@ -116,18 +116,55 @@ export default {
           ...child
         }
       })
+      /* if (data.length > 0) {
+        const oldChild = data.sort((a, b) => {
+          return Date.parse(a) - Date.parse(b)
+        })
+        // eslint-disable-next-line arrow-parens
+        const allIds = oldChild.map(i => {
+          return i.id
+        })
+        data.push({
+          ...oldChild[0],
+          id: allIds,
+          firstName: 'Everyone',
+          lastName: '',
+          fullName: 'Everyone'
+        })
+      } */
+      const everyone = {
+        value: 876,
+        id: null,
+        text: 'Everyone',
+        backpack: {
+          image:
+            'https://playgarden-assets-stg.s3.amazonaws.com/images/backpack/9d49feb2-8b55-416d-91fb-320084e94a9d.svg'
+        },
+        firstName: 'Everyone'
+      }
+      data = [...data, everyone]
+      return data
     },
 
-    childrenIdWithPlaydates () {
-      return this.playdates
-        // filter children that have playdates
-        .filter(playdate => playdate && Array.isArray(playdate.playdates) && playdate.playdates.length > 0)
-        // map those children id
-        .map(playdate => playdate && playdate.children ? playdate.children.id : undefined)
+    childrenIdWithPlaydates() {
+      return (
+        this.playdates
+          // filter children that have playdates
+          .filter(
+            playdate =>
+              playdate &&
+              Array.isArray(playdate.playdates) &&
+              playdate.playdates.length > 0
+          )
+          // map those children id
+          .map(playdate =>
+            playdate && playdate.children ? playdate.children.id : undefined
+          )
+      )
     }
   },
 
-  created () {
+  created() {
     this.getChildren()
   },
 

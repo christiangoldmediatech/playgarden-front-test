@@ -88,7 +88,7 @@ export default defineComponent({
 
   layout: 'pg',
 
-  setup () {
+  setup() {
     const store = useStore<TypedStore>()
     const router = useRouter()
     const { accessToken } = useAuth({ store })
@@ -97,7 +97,9 @@ export default defineComponent({
         ? `${process.env.baseRouteProd}`
         : '/'
 
-    const currentChild = computed((): Utils.Maybe<Child> => store.getters.getCurrentChild?.[0])
+    const currentChild = computed(
+      (): Utils.Maybe<Child> => store.getters.getCurrentChild?.[0]
+    )
 
     const goToKidsCorner = () => {
       const kidsCornerUrl = process.env.kidsCornerUrl
@@ -118,7 +120,8 @@ export default defineComponent({
         teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Katryna-kidscorner.png'),
         title: 'Kids Corner',
         route: goToKidsCorner,
-        message: 'It\'s a little bit silly in the Kids Corner, where kids choose how to learn',
+        message:
+          'It\'s a little bit silly in the Kids Corner, where kids choose how to learn',
         audio: `${baseRoute}audio/virtual-preschool/Kidscorner.m4a`
       },
       playdates: {
