@@ -10,8 +10,12 @@
   >
     <template v-slot:selection="{ item }">
       <v-list-item class="pa-0 w-100">
-        <v-list-item-avatar>
+        <v-list-item-avatar v-if="!item.everyone">
           <v-img :src="item.backpack.image" />
+        </v-list-item-avatar>
+
+        <v-list-item-avatar v-else>
+          <v-img :src="require('~/assets/svg/everyone.svg')" />
         </v-list-item-avatar>
 
         <v-list-item-content>
@@ -32,8 +36,12 @@
           :value="attrs.inputValue"
         />
 
-        <v-list-item-avatar>
+        <v-list-item-avatar v-if="!item.everyone">
           <v-img :src="item.backpack.image" />
+        </v-list-item-avatar>
+
+        <v-list-item-avatar v-else>
+          <v-img :src="require('~/assets/svg/everyone.svg')" />
         </v-list-item-avatar>
 
         <v-list-item-content>
@@ -108,7 +116,7 @@ export default {
     },
 
     childrenList() {
-      let data = this.children.map((child) => {
+      return this.children.map((child) => {
         return {
           value: child.id,
           text: child.firstName,
@@ -116,34 +124,6 @@ export default {
           ...child
         }
       })
-      /* if (data.length > 0) {
-        const oldChild = data.sort((a, b) => {
-          return Date.parse(a) - Date.parse(b)
-        })
-        // eslint-disable-next-line arrow-parens
-        const allIds = oldChild.map(i => {
-          return i.id
-        })
-        data.push({
-          ...oldChild[0],
-          id: allIds,
-          firstName: 'Everyone',
-          lastName: '',
-          fullName: 'Everyone'
-        })
-      } */
-      const everyone = {
-        value: 876,
-        id: null,
-        text: 'Everyone',
-        backpack: {
-          image:
-            'https://playgarden-assets-stg.s3.amazonaws.com/images/backpack/9d49feb2-8b55-416d-91fb-320084e94a9d.svg'
-        },
-        firstName: 'Everyone'
-      }
-      data = [...data, everyone]
-      return data
     },
 
     childrenIdWithPlaydates() {

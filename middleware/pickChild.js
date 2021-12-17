@@ -3,7 +3,6 @@ import parentSubscriptionWhitelistedRoutes from '~/utils/consts/parentSubscripti
 
 export default async function({ redirect, route, store, req, app }) {
   const isAppRoute = /^app-.*$/.test(route.name)
-  console.log('Cambio de child')
 
   let child = store.getters.getCurrentChild
   let childExpires = store.getters.getCurrentChildExpires

@@ -1,5 +1,8 @@
 <template>
-  <dashboard-layout v-model="selectedChild" v-bind="{ lesson, loading, childId: childrenIds }">
+  <dashboard-layout
+    v-model="selectedChild"
+    v-bind="{ lesson, loading, childId: childrenIds }"
+  >
     <nuxt-child />
   </dashboard-layout>
 </template>
@@ -22,6 +25,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({ children: 'getCurrentChild' }),
     ...mapGetters({ currentChild: 'getCurrentChild' }),
     ...mapGetters('auth', {
       playdateInvitationToken: 'getPlaydateInvitationToken',
@@ -32,17 +36,19 @@ export default {
     ...mapGetters('children/lesson', {
       currentLessonId: 'getCurrentLessonId'
     }),
-    overrideMode () {
+    overrideMode() {
       return !!(this.overrides.childId && this.overrides.lessonId)
     },
-    childrenIds () {
-      return (this.currentChild && this.currentChild.length) ? this.currentChild[0].id : 0
+    childrenIds() {
+      return this.currentChild && this.currentChild.length
+        ? this.currentChild[0].id
+        : 0
     },
     selectedChild: {
-      get () {
+      get() {
         return this.currentChild[0].id
       },
-      set (val) {
+      set(val) {
         if (val && val !== this.currentChild[0].id) {
           this.changeChild(val)
         }
@@ -50,14 +56,14 @@ export default {
     }
   },
   watch: {
-    '$route.name' () {
+    '$route.name'() {
       this.$nuxt.$emit('close-curriculum-progress')
     },
-    '$route.query' () {
+    '$route.query'() {
       this.$nuxt.$emit('close-curriculum-progress')
     }
   },
-  async created () {
+  async created() {
     if (this.playdateInvitationToken) {
       return await this.$router.push({
         name: 'app-playdates-join',
@@ -88,7 +94,7 @@ export default {
       })
     })
   },
-  mounted () {
+  mounted() {
     // GTM EVENTS
     this.$appEventBus.$on(APP_EVENTS.DASHBOARD_ONLINE_WORKSHEET_CLICKED, () => {
       this.$gtm.push({
@@ -99,7 +105,7 @@ export default {
       })
     })
   },
-  beforeDestroy () {
+  beforeDestroy() {
     this.$nuxt.$off('dashboard-panel-update')
     this.$nuxt.$off('dashboard-panel-update-redirect')
     this.$appEventBus.$off(APP_EVENTS.DASHBOARD_ONLINE_WORKSHEET_CLICKED)
@@ -112,7 +118,7 @@ export default {
       'resetChild'
     ]),
     ...mapActions({ setChild: 'setChild' }),
-    getNextId (items = []) {
+    getNextId(items = []) {
       const item = items.find(({ viewed, completed }) => {
         if (completed === false || completed === null) {
           return true
@@ -127,7 +133,7 @@ export default {
       }
       return undefined
     },
-    changeChild (newId, redirect = true) {
+    changeChild(newId, redirect = true) {
       const child = this.allChildren.find(({ id }) => id === parseInt(newId))
       this.setChild({ value: [child], save: true })
       if (redirect) {
@@ -137,7 +143,7 @@ export default {
         })
       }
     },
-    async handleLesson (redirect = false, quietMode = true) {
+    async handleLesson(redirect = false, quietMode = true) {
       try {
         this.loading = quietMode
         if (
@@ -146,6 +152,7 @@ export default {
         ) {
           await this.getCurrentLessonByChildrenId(this.overrides)
         } else {
+          console.log(this.children)
           await this.getCurrentLesson({
             childrenIds: this.childrenIds
           })
@@ -166,7 +173,7 @@ export default {
         this.loading = false
       }
     },
-    redirectDashboard () {
+    redirectDashboard() {
       // console.log('redirect method called from', from)
       if (this.lesson) {
         if (this.videos.progress < 100 && this.videos.items.length) {

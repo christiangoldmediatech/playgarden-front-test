@@ -1,3 +1,5 @@
+import dayjs from 'dayjs'
+
 export default {
   async store(ctx, data) {
     try {
@@ -10,8 +12,22 @@ export default {
 
   async get({ commit }) {
     try {
-      const { data } = await this.$axios.get('/children')
+      let { data } = await this.$axios.get('/children')
+      if (data.length > 0) {
+        const allIds = data.map((i) => {
+          return i.id
+        })
 
+        const everyone = { ...data[0] }
+        everyone.firstName = 'Everyone'
+        everyone.birthday = dayjs()
+          .subtract(1, 'day')
+          .format('YYYY-MM-DD')
+        everyone.id = allIds
+        everyone.everyone = true
+
+        data = [...data, everyone]
+      }
       commit('SET_ROWS', data)
       return data
     } catch (error) {
