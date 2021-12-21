@@ -15,16 +15,16 @@
     </v-col>
     <!-- Type Selector: Desktop -->
     <v-row v-else class="mt-8">
-      <v-col
-        v-for="(item, index) in getMenu"
-        :key="index"
-      >
+      <v-col v-for="(item, index) in getMenu" :key="index">
         <v-item>
           <v-card class="panel-item" @click="loadDetailReport(item.name)">
             <v-row class="px-2">
               <v-col cols="3">
                 <v-list-item-avatar size="44">
-                  <v-img v-if="item.name === 'General'" :src="require('@/assets/svg/general.svg')" />
+                  <v-img
+                    v-if="item.name === 'General'"
+                    :src="require('@/assets/svg/general.svg')"
+                  />
                   <v-img v-else :src="item.icon" min-width="38px" />
                 </v-list-item-avatar>
               </v-col>
@@ -88,7 +88,11 @@
                         General progress statistics for all categories.
                       </span>
                     </div>
-                    <chart-report v-if="report" class="mt-n8" :report="report" />
+                    <chart-report
+                      v-if="report"
+                      class="mt-n8"
+                      :report="report"
+                    />
                   </v-col>
                 </v-row>
               </template>
@@ -193,7 +197,7 @@ export default {
     ...mapGetters('children', { allChildren: 'rows' }),
     ...mapGetters('children', { children: 'rows' }),
 
-    disabledLetters () {
+    disabledLetters() {
       return this.letters
         .filter((letter) => {
           return !letter.enabled
@@ -201,11 +205,11 @@ export default {
         .map(({ id }) => id)
     },
 
-    childrenIds () {
+    childrenIds() {
       return this.currentChild[0].id
     },
 
-    getMenu () {
+    getMenu() {
       const menuGeneral = {
         name: 'General',
         icon: 'assets/svg/general.svg'
@@ -213,7 +217,7 @@ export default {
       return [menuGeneral, ...this.types]
     },
 
-    childrenList () {
+    childrenList() {
       return this.children.map((child) => {
         return {
           value: child.id,
@@ -224,10 +228,10 @@ export default {
     },
 
     selectedChild: {
-      get () {
+      get() {
         return this.currentChild[0].id
       },
-      set (val) {
+      set(val) {
         if (val && val !== this.currentChild[0].id) {
           this.changeChild(val)
         }
@@ -236,19 +240,19 @@ export default {
   },
 
   watch: {
-    async selectedChild (val, oldVal) {
+    async selectedChild(val, oldVal) {
       this.loadLetterStatsData = true
       await this.fetchCurrentLesson(val)
       await this.getDataReport()
     },
 
-    async selectedLetter () {
+    async selectedLetter() {
       this.loadLetterStatsData = true
       await this.getDataReport()
     }
   },
 
-  async created () {
+  async created() {
     this.general = true
     await this.getChildren()
     await this.getTypes()
@@ -259,7 +263,7 @@ export default {
     })
   },
 
-  beforeDestroy () {
+  beforeDestroy() {
     this.$nuxt.$off('detail-progress-report')
   },
 
@@ -274,7 +278,7 @@ export default {
     ...mapActions('children', { getChildren: 'get' }),
     ...mapActions('children/lesson', ['getCurrentCurriculumType']),
 
-    loadDefaultDataLetterStatsDate () {
+    loadDefaultDataLetterStatsDate() {
       this.letterStatsData.name = 'Start a Lesson'
       this.letterStatsData.reports = [
         {
@@ -310,14 +314,14 @@ export default {
       ]
     },
 
-    async fetchChildProgress () {
+    async fetchChildProgress() {
       const data = await this.getCourseProgressByChildId({
         id: this.selectedChild
       })
       this.letters = data
     },
 
-    async fetchCurrentLesson (id) {
+    async fetchCurrentLesson(id) {
       try {
         const curriculumType = await this.getCurrentCurriculumType(id)
         this.selectedLetter = curriculumType.id
@@ -327,12 +331,12 @@ export default {
       }
     },
 
-    changeChild (newId, redirect = true) {
+    changeChild(newId, redirect = true) {
       const child = this.allChildren.find(({ id }) => id === parseInt(newId))
       this.setChild({ value: [child], save: true })
     },
 
-    async getDataReport () {
+    async getDataReport() {
       if (this.selectedChild) {
         const params = {}
         if (this.selectedLetter) {
@@ -347,19 +351,19 @@ export default {
       }
     },
 
-    async getDataGraphic () {
+    async getDataGraphic() {
       if (this.selectedChild) {
         await this.getGraphicByChildrenId({ childId: this.selectedChild })
       }
     },
 
-    getDataGraphicMobile () {
+    getDataGraphicMobile() {
       if (this.selectedReportCard) {
         this.loadDetailReport(this.selectedReportCard)
       }
     },
 
-    loadDetailReport (reportCardType) {
+    loadDetailReport(reportCardType) {
       this.reportCardTypeSelected = reportCardType
       if (reportCardType === 'General') {
         this.general = true

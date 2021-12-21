@@ -62,11 +62,19 @@ export default {
 
   async saveVideoProgress(ctx, { lessonId, childId, video }) {
     try {
+      let childrens, paramId
+      if (Array.isArray(childId)) {
+        paramId = childId[0]
+        childrens = childId
+      } else {
+        paramId = childId
+        childrens = [childId]
+      }
       const {
         data
       } = await this.$axios.$post(
-        `/lessons/${lessonId}/children/${childId}/video`,
-        { video }
+        `/lessons/${lessonId}/children/${paramId}/video`,
+        { video, childrens }
       )
       return data
     } catch (error) {
@@ -76,11 +84,19 @@ export default {
 
   async saveWorksheetProgress(ctx, { lessonId, childId, worksheet }) {
     try {
+      let childrens, paramId
+      if (Array.isArray(childId)) {
+        paramId = childId[0]
+        childrens = childId
+      } else {
+        paramId = childId
+        childrens = [childId]
+      }
       const {
         data
       } = await this.$axios.$post(
-        `/lessons/${lessonId}/children/${childId}/worksheet`,
-        { worksheet }
+        `/lessons/${lessonId}/children/${paramId}/worksheet`,
+        { worksheet, childrens }
       )
       return data
     } catch (error) {
@@ -94,16 +110,25 @@ export default {
       const childId = children[0].id
       const lesson = ctx.rootGetters['admin/curriculum/getLesson']
       const lessonId = lesson.id
+      let childrens, paramId
+      if (Array.isArray(childId)) {
+        paramId = childId[0]
+        childrens = childId
+      } else {
+        paramId = childId
+        childrens = [childId]
+      }
 
       const { data } = await this.$axios.$post(
-        `/lessons/${lessonId}/children/${childId}/worksheet-video`,
+        `/lessons/${lessonId}/children/${paramId}/worksheet-video`,
         {
           video: {
             id: videoId,
             date: new Date().toISOString(),
             time,
             completed
-          }
+          },
+          childrens
         }
       )
 
@@ -115,9 +140,17 @@ export default {
 
   async saveActivityProgress(ctx, { lessonId, childId, activity }) {
     try {
+      let childrens, paramId
+      if (Array.isArray(childId)) {
+        paramId = childId[0]
+        childrens = childId
+      } else {
+        paramId = childId
+        childrens = [childId]
+      }
       const data = await this.$axios.$post(
-        `/lessons/${lessonId}/children/${childId}/activity`,
-        { activity }
+        `/lessons/${lessonId}/children/${paramId}/activity`,
+        { activity, childrens }
       )
       return data
     } catch (error) {

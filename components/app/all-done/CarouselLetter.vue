@@ -15,11 +15,7 @@
               :item="item"
               :index="index"
             >
-              <letter
-                :key="index"
-                :item="item"
-                :index="index"
-              />
+              <letter :key="index" :item="item" :index="index" />
             </v-slide-item>
           </v-slide-group>
         </v-sheet>
@@ -46,7 +42,10 @@
               />
 
               <v-list-item-content>
-                <v-list-item-title v-if="item.picture" class="font-weight-bold pl-4">
+                <v-list-item-title
+                  v-if="item.picture"
+                  class="font-weight-bold pl-4"
+                >
                   Letter {{ item.name }}
                 </v-list-item-title>
                 <v-list-item-title v-else class="font-weight-bold pl-4">
@@ -170,7 +169,7 @@ export default {
 
     ...mapGetters({ currentChild: 'getCurrentChild' }),
 
-    actualLetters () {
+    actualLetters() {
       const letters = this.letters.map((letter) => {
         const current = this.lettersProgress.find(l => l.id === letter.id)
         return {
@@ -182,12 +181,12 @@ export default {
       return letters
     },
 
-    studentId () {
+    studentId() {
       return this.currentChild[0].id
     }
   },
 
-  async created () {
+  async created() {
     await this.getLetters()
     await this.fetchChildProgress()
   },
@@ -198,14 +197,22 @@ export default {
     }),
     ...mapActions('children/course-progress', ['getCourseProgressByChildId']),
 
-    async fetchChildProgress () {
-      const data = await this.getCourseProgressByChildId({
-        id: this.studentId
-      })
-
-      this.lettersProgress = data.map((letter) => {
-        return { ...letter, disabled: !letter.enabled }
-      })
+    async fetchChildProgress() {
+      if (!this.currentChild[0].everyone) {
+        const data = await this.getCourseProgressByChildId({
+          id: this.studentId
+        })
+        this.lettersProgress = data.map((letter) => {
+          return { ...letter, disabled: !letter.enabled }
+        })
+      } else {
+        const data = await this.getCourseProgressByChildId({
+          id: this.currentChild[0].allIds[0]
+        })
+        this.lettersProgress = data.map((letter) => {
+          return { ...letter, disabled: !letter.enabled }
+        })
+      }
     }
   }
 }

@@ -116,7 +116,7 @@ export default {
     },
 
     childrenList() {
-      return this.children.map((child) => {
+      const childrens = this.children.map((child) => {
         return {
           value: child.id,
           text: child.firstName,
@@ -124,6 +124,18 @@ export default {
           ...child
         }
       })
+
+      /* if (!(this.managementButton && !this.isUserCaregiver)) {
+        const everyone = childrens.indexOf(
+          childrens.filter(x => x.everyone === true)
+        )
+
+        if (everyone) {
+          childrens.splice(everyone)
+        }
+      } */
+
+      return childrens
     },
 
     childrenIdWithPlaydates() {

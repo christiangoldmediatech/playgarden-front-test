@@ -89,15 +89,11 @@ export default {
       const result = jsonCopy(this.rows)
 
       if (result.length > 0) {
-        const ids = result.map((item) => {
-          return item.id
-        })
+        const everyone = result.indexOf(result.filter(x => x.everyone === true))
 
-        result.push({
-          id: ids,
-          firstName: 'Everyone',
-          everyone: true
-        })
+        if (everyone) {
+          result.splice(everyone)
+        }
       }
 
       return result

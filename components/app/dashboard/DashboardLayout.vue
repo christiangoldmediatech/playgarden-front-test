@@ -89,8 +89,14 @@
             </v-col>
             <!--carousel letter-->
             <v-col cols="12" md="9" sm="6">
-              <v-row class="mx-md-2 my-md-0 mx-sm-4 my-sm-2 mx-xs-4 my-xs-2" justify="center">
-                <carousel-letter ref="CarouselLetter" :value="curriculumTypeId" />
+              <v-row
+                class="mx-md-2 my-md-0 mx-sm-4 my-sm-2 mx-xs-4 my-xs-2"
+                justify="center"
+              >
+                <carousel-letter
+                  ref="CarouselLetter"
+                  :value="curriculumTypeId"
+                />
               </v-row>
             </v-col>
             <!--carousel letter-->
@@ -100,7 +106,7 @@
             :class="[
               'dashboard-content',
               {
-                'dashboard-mobile-content': $vuetify.breakpoint.sm,
+                'dashboard-mobile-content': $vuetify.breakpoint.sm
                 // 'dashboard-xs-content': $vuetify.breakpoint.xsOnly
               }
             ]"
@@ -108,32 +114,32 @@
           >
             <v-col class="dashboard-content-column" cols="12">
               <template v-if="$route.name === 'app-dashboard' || loading">
-                <div v-if="$route.name === 'app-dashboard-lesson-videos' || $route.name === 'app-dashboard-lesson-activities'" class="video-lesson">
+                <div
+                  v-if="
+                    $route.name === 'app-dashboard-lesson-videos' ||
+                      $route.name === 'app-dashboard-lesson-activities'
+                  "
+                  class="video-lesson"
+                >
                   <v-card class="video-skeleton" width="100%">
-                    <v-skeleton-loader
-                      type="image, image, table-heading"
-                    />
+                    <v-skeleton-loader type="image, image, table-heading" />
                   </v-card>
                 </div>
-                <div v-if="$route.name === 'app-dashboard-online-worksheet'" class="video-lesson">
+                <div
+                  v-if="$route.name === 'app-dashboard-online-worksheet'"
+                  class="video-lesson"
+                >
                   <v-card class="video-skeleton" width="100%">
-                    <v-skeleton-loader
-                      class="pt-6"
-                      type="article"
-                    />
+                    <v-skeleton-loader class="pt-6" type="article" />
                     <v-row class="mt-4">
                       <v-col v-for="n in 4" :key="n">
-                        <v-skeleton-loader
-                          type="card"
-                        />
+                        <v-skeleton-loader type="card" />
                       </v-col>
                     </v-row>
                   </v-card>
                 </div>
                 <div v-if="$route.name === 'app-dashboard-offline-worksheet'">
-                  <v-skeleton-loader
-                    type="image, image, article"
-                  />
+                  <v-skeleton-loader type="image, image, article" />
                 </div>
               </template>
               <template v-else>
@@ -217,7 +223,7 @@ export default {
 
   computed: {
     ...mapGetters('auth', ['getUserInfo']),
-    overrideMode () {
+    overrideMode() {
       if (this.overrides.childId && this.overrides.lessonId) {
         return true
       }
@@ -228,7 +234,7 @@ export default {
     //   const monday = Date.parse('2020-12-21T08:00:00.000-05:00')
     //   return !this.overrideMode && (this.lesson && this.lesson.curriculumType.id > 1) && (today < monday)
     // }
-    canAdvance () {
+    canAdvance() {
       if (this.lesson && this.childId && !this.previewMode) {
         return true
         // const completedCount = this.lesson.videos.map(({ viewed }) => Number(viewed && viewed.completed ? 1 : 0)).reduce((a, b) => a + b)
@@ -239,7 +245,7 @@ export default {
       return false
     },
 
-    curriculumTypeId () {
+    curriculumTypeId() {
       if (this.lesson && this.lesson.curriculumType) {
         return this.lesson.curriculumType.id
       } else {
@@ -249,16 +255,16 @@ export default {
   },
 
   watch: {
-    value () {
+    value() {
       this.$refs.CarouselLetter.fetchChildProgress()
     },
 
-    lesson () {
+    lesson() {
       this.$refs.CarouselLetter.fetchChildProgress()
     }
   },
 
-  created () {
+  created() {
     this.$nuxt.$on(APP_EVENTS.DASHBOARD_VIDEO_LESSON_VIDEO_CLICKED, (videoId) => {
       const lessonData = this.lesson.videos.find(video => video.id === videoId)
       this.$gtm.push({
@@ -271,7 +277,9 @@ export default {
       })
     })
     this.$nuxt.$on(APP_EVENTS.DASHBOARD_ACTIVITY_VIDEO_CLICKED, (activityId) => {
-      const activityData = this.lesson.lessonsActivities.find(activity => activity.activity.id === activityId)
+      const activityData = this.lesson.lessonsActivities.find(
+        activity => activity.activity.id === activityId
+      )
       this.$gtm.push({
         event: TAG_MANAGER_EVENTS.DASHBOARD_ACTIVITY_VIDEO_CLICKED,
         userId: this.getUserInfo.id,
@@ -283,13 +291,13 @@ export default {
     })
   },
 
-  beforeDestroy () {
+  beforeDestroy() {
     this.$nuxt.$off(APP_EVENTS.DASHBOARD_VIDEO_LESSON_VIDEO_CLICKED)
     this.$nuxt.$off(APP_EVENTS.DASHBOARD_ACTIVITY_VIDEO_CLICKED)
   },
 
   methods: {
-    openCourseProgress () {
+    openCourseProgress() {
       this.$nuxt.$emit('show-curriculum-progress', 1)
     }
   }
@@ -312,7 +320,7 @@ export default {
   &-content {
     height: 100%;
 
-    @media screen and (min-width: 960px){
+    @media screen and (min-width: 960px) {
       height: calc(100% - 70px);
     }
 
@@ -368,7 +376,7 @@ export default {
       height: 100%;
       padding: 7%;
       border-radius: 50%;
-      background: #68C453;
+      background: #68c453;
       box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.184314);
     }
     &-circle-2 {
@@ -376,7 +384,7 @@ export default {
       height: 100%;
       padding: 7%;
       border-radius: 50%;
-      background: #B2E68D;
+      background: #b2e68d;
       box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.184314);
     }
     &-img {

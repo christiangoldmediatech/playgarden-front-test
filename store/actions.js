@@ -21,7 +21,7 @@ export default {
   setChild({ commit }, { value, oldExp = null, save = false }) {
     if (value[0].everyone) {
       const valueEveryone = [
-        { ...value[0], id: value[0].id[0], allIds: value[0].id }
+        { ...value[0], id: value[0].id, allIds: value[0].id }
       ]
       commit('SET_CURRENT_CHILD', valueEveryone)
     } else {
@@ -45,15 +45,18 @@ export default {
         data = value.id
       }
 
-      if (data[0].length > 1) {
-        data = [data[0][0]]
+      let everyone = false
+      if (data[0].length > 0) {
+        data = data[0]
+        everyone = true
       }
 
       window.localStorage.setItem(
         'selectedChild',
         JSON.stringify({
           value: data,
-          expires
+          expires,
+          everyone
         })
       )
     }
@@ -66,13 +69,20 @@ export default {
         data = value.id
       }
 
+      let everyone = false
+      if (data[0].length > 0) {
+        data = data[0]
+        everyone = true
+      }
+
       this.$cookies.remove('selectedChild')
       this.$cookies.add({
         _key: 'selectedChild',
         _data: encodeURIComponent(
           JSON.stringify({
             value: data,
-            expires
+            expires,
+            everyone
           })
         ),
         _expireDate: new Date(expires).toISOString()

@@ -151,8 +151,11 @@ export default {
           this.childrenIds === parseInt(this.overrides.childId)
         ) {
           await this.getCurrentLessonByChildrenId(this.overrides)
+        } else if (this.children[0].everyone) {
+          await this.getCurrentLesson({
+            childrenIds: this.children[0].allIds
+          })
         } else {
-          console.log(this.children)
           await this.getCurrentLesson({
             childrenIds: this.childrenIds
           })
