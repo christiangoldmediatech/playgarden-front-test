@@ -92,7 +92,8 @@
                   color="green"
                   text-color="white"
                 >
-                  <a :href="`https://dashboard.stripe.com/customers/${billing.customerId}`" target="_blank">View on Stripe</a>
+                  <a v-if="billing" :href="`https://dashboard.stripe.com/customers/${billing.customerId}`" target="_blank">View on Stripe</a>
+                  <a v-else href="#" target="_blank">No data on Stripe</a>
                 </v-chip>
               </v-col>
               <v-col v-if="user.testUser" class="mt-n5">
@@ -157,15 +158,20 @@
                                 Edit Shipping Address
                               </v-list-item-title>
                             </v-list-item>
-                            <v-divider v-if="billing.stripeStatus !== 'canceled' && billing.stripeStatus !== 'incomplete_expired'" />
-                            <v-list-item v-if="billing.stripeStatus !== 'canceled' && billing.stripeStatus !== 'incomplete_expired'" class="clickable">
-                              <v-list-item-title @click="remove">
-                                <v-icon color="red" dense>
-                                  mdi-account-remove
-                                </v-icon>
-                                <span class="red--text">Cancel Membership</span>
-                              </v-list-item-title>
-                            </v-list-item>
+                            <div v-if="billing">
+                              <v-divider v-if="billing.stripeStatus !== 'canceled' && billing.stripeStatus !== 'incomplete_expired'" />
+                              <v-list-item v-if="billing.stripeStatus !== 'canceled' && billing.stripeStatus !== 'incomplete_expired'" class="clickable">
+                                <v-list-item-title @click="remove">
+                                  <v-icon color="red" dense>
+                                    mdi-account-remove
+                                  </v-icon>
+                                  <span class="red--text">Cancel Membership</span>
+                                </v-list-item-title>
+                              </v-list-item>
+                            </div>
+                            <div v-else>
+                              No data billing
+                            </div>
                           </v-list>
                         </v-menu>
                       </div>
@@ -300,7 +306,8 @@
                             Status Stripe
                           </v-col>
                           <v-col cols="6" md="8" class="text-capitalize">
-                            <b>{{ billing.stripeStatus.toLowerCase() }}</b>
+                            <b v-if="billing">{{ billing.stripeStatus.toLowerCase() }}</b>
+                            <b v-else>No data billing</b>
                           </v-col>
                         </v-row>
                       </v-col>
@@ -444,7 +451,9 @@
             </v-card-text>
           </v-card>
 
-          <billing-history-card v-if="billing.stripeStatus ==='active'" class="mx-7" v-bind="{ id }" />
+          <div v-if="billing">
+            <billing-history-card v-if="billing.stripeStatus ==='active'" class="mx-7" v-bind="{ id }" />
+          </div>
 
           <v-card
             v-if="role === 'parent'"
@@ -841,7 +850,7 @@ export default {
           const user = promises[0]
           const children = promises[1]
 
-          if (children.length) {
+          if (children.length > 0) {
             const childrenIds = children.map(({ id }) => id)
             const childrenStatus = await this.getLessonChildrenStatus(
               childrenIds
