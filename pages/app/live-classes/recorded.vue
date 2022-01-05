@@ -55,7 +55,12 @@
         </v-col>
 
         <!-- Bottom subtitle / dropdown -->
-        <v-col v-if="$vuetify.breakpoint.mobile && mode === 'LETTER'" cols="11" sm="6" md="4">
+        <v-col
+          v-if="$vuetify.breakpoint.mobile && mode === 'LETTER'"
+          cols="11"
+          sm="6"
+          md="4"
+        >
           <letter-select v-model="selectedLetter" />
         </v-col>
 
@@ -69,7 +74,11 @@
     </v-container>
 
     <!-- Desktop letter finder -->
-    <v-container v-if="$vuetify.breakpoint.lgAndUp && mode === 'LETTER'" class="recorded-letters" :class="{ 'mb-6': recorded.length === 0 }">
+    <v-container
+      v-if="$vuetify.breakpoint.lgAndUp && mode === 'LETTER'"
+      class="recorded-letters"
+      :class="{ 'mb-6': recorded && recorded.length === 0 }"
+    >
       <!-- Desktop letter selector -->
       <v-row justify="center">
         <recorded-letter
@@ -92,7 +101,7 @@
             :text="selectedLetterTitle"
           />
         </v-col>
-        <v-row v-if="recorded.length > 0">
+        <v-row v-if="recorded && recorded.length > 0">
           <v-col
             v-for="recording in recorded"
             :key="`recording-${recording.id}`"
@@ -168,31 +177,34 @@ export default {
     ...mapGetters('admin/curriculum', { unfilteredLetters: 'types' }),
     ...mapGetters('admin/activity', { categoryTypes: 'types' }),
 
-    mode () {
+    mode() {
       if (this.modeValue === 0) {
         return 'LETTER'
       }
       return 'CATEGORY'
     },
 
-    letters () {
+    letters() {
       return this.unfilteredLetters.filter((letter) => {
         // remove intro and nature from music library ch2621
         return !['Intro', 'Nature'].includes(letter.name)
       })
     },
 
-    letterObject () {
+    letterObject() {
       return this.letters.find(({ id }) => id === this.selectedLetter)
     },
 
-    categories () {
+    categories() {
       const categories = []
 
       if (this.mode === 'CATEGORY') {
         this.categoryTypes.forEach((category) => {
           const recordings = this.recorded.filter((recording) => {
-            if (recording.activityType && recording.activityType.id === category.id) {
+            if (
+              recording.activityType &&
+              recording.activityType.id === category.id
+            ) {
               return true
             }
             return false
@@ -212,7 +224,7 @@ export default {
   },
 
   watch: {
-    mode (val) {
+    mode(val) {
       this.recorded = []
       this.selectedLetter = null
       if (val === 'CATEGORY') {
@@ -222,7 +234,7 @@ export default {
       }
     },
 
-    selectedLetter (val) {
+    selectedLetter(val) {
       if (val && this.mode === 'LETTER') {
         this.getRecorded({ curriculumTypeId: val }).then(({ liveSessions }) => {
           this.recorded = liveSessions
@@ -230,12 +242,14 @@ export default {
       }
     },
 
-    letterObject (val) {
-      this.selectedLetterTitle = (val?.picture) ? `Recorded Classes of ${val.description}` : `Recorded Classes of Letter ${val.name.substr(0, 1)}`
+    letterObject(val) {
+      this.selectedLetterTitle = val?.picture
+        ? `Recorded Classes of ${val.description}`
+        : `Recorded Classes of Letter ${val.name.substr(0, 1)}`
     }
   },
 
-  created () {
+  created() {
     this.getLetters()
     this.getCategories({ extra: true })
   },
@@ -249,7 +263,7 @@ export default {
     }),
     ...mapActions('live-sessions', ['getRecorded']),
 
-    selectLetter (id) {
+    selectLetter(id) {
       if (this.selectedLetter === id) {
         this.selectedLetter = null
       } else {
@@ -257,7 +271,7 @@ export default {
       }
     },
 
-    goBack () {
+    goBack() {
       this.$router.push({ name: 'app-live-classes' })
     }
   }
