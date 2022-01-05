@@ -170,7 +170,7 @@
                               </v-list-item>
                             </div>
                             <div v-else>
-                              No data billing
+                              No billing data
                             </div>
                           </v-list>
                         </v-menu>
@@ -307,7 +307,7 @@
                           </v-col>
                           <v-col cols="6" md="8" class="text-capitalize">
                             <b v-if="billing">{{ billing.stripeStatus.toLowerCase() }}</b>
-                            <b v-else>No data billing</b>
+                            <b v-else>No billing data</b>
                           </v-col>
                         </v-row>
                       </v-col>
