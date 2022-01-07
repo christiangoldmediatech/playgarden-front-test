@@ -2,7 +2,7 @@
   <v-row no-gutters>
     <v-col>
       <v-row no-gutters>
-        <v-col class="px-12 mt-1 mt-md-12" cols="12" md="6" lg="6" xl="6">
+        <v-col class="px-7 mt-1 mt-md-12" cols="12" md="6" lg="6" xl="6">
           <stripe-pay-form :loading="loading" @click:submit="onSubmit" />
         </v-col>
         <v-col cols="12" md="6" lg="6" xl="6">
@@ -20,7 +20,9 @@
                   <v-card class="elevation-2 mx-10">
                     <v-container>
                       <v-layout column align-center justify-center>
-                        <card-playgarden />
+                        <card-playgarden
+                          :hidden-card-family="hiddenCardFamily"
+                        />
                         <card-know-more
                           v-if="!showCardPlaygarden"
                           @toggleCard="showCardPlaygarden = !showCardPlaygarden"
@@ -31,8 +33,11 @@
                 </v-layout>
               </v-col>
             </v-row>
+            <v-container>
+              <v-divider class="mt-7 mb-1 my-md-0" />
+            </v-container>
             <v-row>
-              <v-col v-if="showCardPlaygarden" cols="12" class="mt-4">
+              <v-col v-if="showCardPlaygarden" cols="12" class="mt-4 mb-5">
                 <v-btn
                   block
                   text
@@ -94,6 +99,7 @@ export default defineComponent({
   data: vm => ({
     loading: false,
     showCardPlaygarden: true,
+    hiddenCardFamily: false,
     coupon: null,
     mode: vm.$route.params.mode ? vm.$route.params.mode : ''
   }),
@@ -104,6 +110,12 @@ export default defineComponent({
 
     return {
       utmContent
+    }
+  },
+
+  watch: {
+    showCardPlaygarden() {
+      this.hiddenCardFamily = !this.hiddenCardFamily
     }
   },
 
@@ -237,7 +249,7 @@ export default defineComponent({
 }
 .text-completely {
   font-size: 12px !important;
-  color: rgba(96, 96, 96, 0.8) !important;
+  color: #606060 !important;
 }
 .list-scroll {
   max-height: 500px;

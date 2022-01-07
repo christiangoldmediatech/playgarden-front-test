@@ -5,13 +5,12 @@
         <underlined-title
           class="text-h6 text-md-h5 ml-sm-4"
           text="Give your child an immersive educational experience at home!"
-          line-color="#68C453"
         />
       </template>
     </div>
     <v-card-text>
       <div>
-        <center class="text-subtitle-1 mt-3 mb-3">
+        <center class="text-subtitle-1 mt-3 mb-3 aling-spacing">
           Start learning now, you can cancel any time.
         </center>
         <img
@@ -39,5 +38,11 @@ export default {
   background-color: #b2e68d;
   border: 7px solid #b2e68d;
   outline: 7px solid #68c453;
+}
+.aling-spacing {
+  text-align: center;
+  text-align-last: center;
+  letter-spacing: 1px !important;
+  font-size: 16.6px !important;
 }
 </style>

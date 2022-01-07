@@ -16,12 +16,6 @@
           text="CREDIT CARD INFORMATION"
         />
       </p>
-      <p class="text-center text-md-left">
-        <span class="text-header-info">
-          We need your credit card information to confirm who you are, but you
-          will NOT be charged.
-        </span>
-      </p>
     </slot>
 
     <v-form class="mt-7" @submit.prevent="passes(onSubmit)">
@@ -102,17 +96,20 @@
           </span>
         </center>
       </p>
-      <br class="d-none d-md-block">
+      <br>
       <v-divider />
-      <br class="d-none d-md-block">
+      <br>
       <slot name="footer">
         <p v-if="isTrialTextVisible">
           <center class="ml-2">
             <span class="info-pay">
-              You can cancel your trial and membership anytime from the account
-              settings.<br>
+              <span
+                class="d-none d-md-block"
+              >You can cancel your trial and membership anytime from the
+                account settings. <br></span>
+
               Once your free trial ends you will be placed on the
-              <span class="option-standar">Premium</span> monthly plan, you can
+              <span class="option-standar">PREMIUM</span> monthly plan, you can
               change plans at any time in your profile page.
             </span>
           </center>
@@ -140,7 +137,7 @@ export default {
   props: {
     buttonText: {
       type: String,
-      default: 'START YOUR FREE TRIAL'
+      default: 'START LEARNING NOW'
     },
 
     isTrialTextVisible: {

@@ -1,15 +1,17 @@
 <template>
   <v-row>
     <v-card-title primary-title>
+      <v-icon class="d-block ml-auto mr-0 mb-2 cursor-pointer">
+        {{ hiddenCardFamily ? ' mdi-chevron-down' : ' mdi-chevron-up' }}
+      </v-icon>
       <h4 class="text-center">
         <underlined-title
           class="text-h6 text-md-h5 ml-sm-4 text-center"
           text="Our family loves Playgarden Prep Online!"
-          line-color="#68C453"
         />
       </h4>
     </v-card-title>
-    <v-card-text>
+    <v-card-text v-if="!hiddenCardFamily">
       <div>
         <p class="text-center">
           Still not sure? Call us, text us, email us, We'll be happy to explain
@@ -40,6 +42,13 @@
 <script>
 export default {
   name: 'CardPlaygarden',
+
+  props: {
+    hiddenCardFamily: {
+      type: Boolean,
+      required: true
+    }
+  },
 
   data: vm => ({})
 }

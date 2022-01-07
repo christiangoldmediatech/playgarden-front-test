@@ -44,7 +44,7 @@
         >
           <v-col cols="12" class="my-sm-6 px-sm-10">
             <v-layout row wrap align-center justify-center>
-              <v-card class="custom-shadow mx-0 mx-md-10">
+              <v-card class="mx-0 mx-md-10 custom-shadow">
                 <v-container>
                   <v-layout column align-center justify-center>
                     <card-info />
@@ -222,6 +222,6 @@ export default defineComponent({
   border-radius: 0px !important;
 }
 .custom-shadow {
-  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16) !important;
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15) !important;
 }
 </style>

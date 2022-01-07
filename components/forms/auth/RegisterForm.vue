@@ -156,7 +156,7 @@
                   type="submit"
                   x-large
                 >
-                  NEXT
+                  Start learning
                 </v-btn>
               </v-col>
             </v-row>
