@@ -5,28 +5,32 @@
         class="text-center text-md-left"
         :class="{ 'mt-n10': $vuetify.breakpoint.smAndUp }"
       >
-        <underlined-title class="text-h6 text-md-h5" text="CREDIT CARD INFORMATION" />
+        <strong
+          class="text-left"
+        >We need your credit card information to confirm who you are, but you
+          will NOT be charged.</strong>
+        <br>
+        <br>
+        <underlined-title
+          class="text-h6 text-md-h5"
+          text="CREDIT CARD INFORMATION"
+        />
       </p>
       <p class="text-center text-md-left">
         <span class="text-header-info">
-          We need your credit card information to confirm who you are, but you will NOT be charged.
+          We need your credit card information to confirm who you are, but you
+          will NOT be charged.
         </span>
       </p>
     </slot>
 
     <v-form class="mt-7" @submit.prevent="passes(onSubmit)">
       <!-- Card -->
-      <validation-provider
-        name="Card number"
-        rules="required"
-      >
+      <validation-provider name="Card number" rules="required">
         <stripe-card v-model="draft.token" class="mb-4" />
       </validation-provider>
 
-      <validation-provider
-        v-slot="{ errors }"
-        name="Promotion Code"
-      >
+      <validation-provider v-slot="{ errors }" name="Promotion Code">
         <pg-text-field
           v-model="draft.promotion_code"
           :error-messages="errors"
@@ -90,7 +94,7 @@
         CLOSE
       </v-btn>
     </v-form>
-    <div v-if="$vuetify.breakpoint.smAndUp">
+    <div class="pb-4 pb-md-0">
       <p v-if="isFreeForDaysTextVisible">
         <center>
           <span class="font-weight-bold text-completely">
@@ -98,12 +102,18 @@
           </span>
         </center>
       </p>
+      <br class="d-none d-md-block">
       <v-divider />
+      <br class="d-none d-md-block">
       <slot name="footer">
         <p v-if="isTrialTextVisible">
           <center class="ml-2">
             <span class="info-pay">
-              You can cancel your trial and membership anytime from the account settings.<br> Once your free trial ends you will be placed on the <span class="option-standar">Standard</span> monthly plan, you can change plans at any time in your profile page.
+              You can cancel your trial and membership anytime from the account
+              settings.<br>
+              Once your free trial ends you will be placed on the
+              <span class="option-standar">Premium</span> monthly plan, you can
+              change plans at any time in your profile page.
             </span>
           </center>
         </p>
@@ -151,7 +161,7 @@ export default {
   },
 
   watch: {
-    'draft.promotion_code' (val) {
+    'draft.promotion_code'(val) {
       if (val) {
         this.draft.promotion_code = val.toUpperCase()
       }
@@ -160,16 +170,19 @@ export default {
 
   methods: {
     ...mapActions('coupons', ['getCoupons']),
-    getSubmittableData () {
+    getSubmittableData() {
       return {
         token: this.draft.token,
         promotion_id: this.draft.promotion_id
       }
     },
 
-    async checkValid () {
+    async checkValid() {
       if (this.draft.promotion_code) {
-        const coupons = await this.getCoupons({ active: true, code: this.draft.promotion_code })
+        const coupons = await this.getCoupons({
+          active: true,
+          code: this.draft.promotion_code
+        })
         if (coupons.length > 0) {
           this.draft.promotion_id = coupons[0].promotion_id
           this.$nuxt.$emit('send-coupon', coupons[0])
@@ -183,7 +196,7 @@ export default {
       }
     },
 
-    resetDraft () {
+    resetDraft() {
       this.draft = {
         token: '',
         promotion_code: null,
@@ -205,6 +218,7 @@ export default {
   font-weight: 500;
   color: rgba(96, 96, 96, 0.8) !important;
   text-align: center;
+  font-weight: bold;
 }
 .option-standar {
   color: var(--v-accent-base) !important;

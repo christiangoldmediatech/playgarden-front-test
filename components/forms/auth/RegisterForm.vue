@@ -4,10 +4,7 @@
     <v-form v-else @submit.prevent="passes(onSubmit)">
       <v-container class="px-0">
         <v-row no-gutters class="some">
-          <v-col
-            class="pr-2"
-            cols="6"
-          >
+          <v-col class="pr-2" cols="12" md="6">
             <!-- First name -->
             <validation-provider
               v-slot="{ errors }"
@@ -25,9 +22,7 @@
               />
             </validation-provider>
           </v-col>
-          <v-col
-            cols="6"
-          >
+          <v-col cols="12" md="6">
             <!-- Last name -->
             <validation-provider
               v-slot="{ errors }"
@@ -139,8 +134,14 @@
                   </validation-provider>
 
                   <!-- MESSAGE IF COUPON IS VALID OR NOT -->
-                  <div v-if="Boolean(draft.promotion_id) && isValidCoupon !== null" class="mt-n6 mb-4">
-                    <span v-if="isValidCoupon" class="green--text">Valid coupon!</span>
+                  <div
+                    v-if="Boolean(draft.promotion_id) && isValidCoupon !== null"
+                    class="mt-n6 mb-4"
+                  >
+                    <span
+                      v-if="isValidCoupon"
+                      class="green--text"
+                    >Valid coupon!</span>
                     <span v-else class="error--text">Invalid coupon!</span>
                   </div>
                 </template>
@@ -179,7 +180,12 @@
             <v-row no-gutters>
               <!-- FACEBOOK -->
               <v-col class="mb-4 mb-md-0 pr-md-4" cols="12" md="6">
-                <v-btn block height="45" class="social-btn" @click="facebookSignIn">
+                <v-btn
+                  block
+                  height="45"
+                  class="social-btn"
+                  @click="facebookSignIn"
+                >
                   <img
                     alt="Facebook"
                     class="mr-1"
@@ -192,7 +198,12 @@
 
               <!-- GOOGLE -->
               <v-col class="mb-6 mb-md-0 pl-md-4" cols="12" md="6">
-                <v-btn block height="45" class="social-btn" @click="googleSignIn">
+                <v-btn
+                  block
+                  height="45"
+                  class="social-btn"
+                  @click="googleSignIn"
+                >
                   <img
                     alt="Google"
                     class="mr-1"
@@ -256,17 +267,17 @@ export default {
   computed: {
     ...mapGetters('auth', ['getUserInfo', 'isUserLoggedIn']),
 
-    hasInvitationEmail () {
+    hasInvitationEmail() {
       return Boolean(
         (this.inInvitationProcess && this.$route.query.email) ||
           this.isUserLoggedIn
       )
     },
 
-    hasInvitationPhone () {
+    hasInvitationPhone() {
       return Boolean(this.inInvitationProcess && this.$route.query.phone)
     },
-    hasUserSocialData () {
+    hasUserSocialData() {
       return Boolean(this.userSocialData)
     }
   },
@@ -274,7 +285,7 @@ export default {
   watch: {
     'draft.promotion_id': {
       immediate: true,
-      handler (val) {
+      handler(val) {
         this.isValidCoupon = null
 
         if (typeof val === 'string') {
@@ -286,18 +297,18 @@ export default {
     }
   },
 
-  created () {
+  created() {
     this.getDataFirebase()
   },
 
-  mounted () {
+  mounted() {
     this.setDraft()
   },
 
   methods: {
     ...mapActions('coupons', ['getCoupons']),
 
-    getProviderSignIn (provider) {
+    getProviderSignIn(provider) {
       let nameProvider = ''
       switch (provider) {
         case 'google.com':
@@ -309,7 +320,7 @@ export default {
       }
       return nameProvider
     },
-    getDataFirebase () {
+    getDataFirebase() {
       this.loadingDataSocial = true
       const fireAuthObj = this.$fireAuthObj()
       fireAuthObj
@@ -322,7 +333,9 @@ export default {
                 firstName: profile.given_name || profile.first_name || '',
                 lastName: profile.family_name || profile.last_name || '',
                 email: profile.email,
-                socialNetwork: this.getProviderSignIn(result.additionalUserInfo.providerId),
+                socialNetwork: this.getProviderSignIn(
+                  result.additionalUserInfo.providerId
+                ),
                 socialNetworkId: profile.id
               })
             }
@@ -336,7 +349,7 @@ export default {
           this.loadingDataSocial = false
         })
     },
-    setDraft () {
+    setDraft() {
       this.draft = {
         firstName: this.hasUserSocialData
           ? this.userSocialData.firstName
@@ -363,7 +376,7 @@ export default {
         promotion_id: null
       }
     },
-    onSubmit () {
+    onSubmit() {
       this.$emit(
         'click:submit',
         jsonCopy({
@@ -401,18 +414,18 @@ export default {
       }
     },
 
-    facebookSignIn () {
+    facebookSignIn() {
       this.socialSignIn(
         'FACEBOOK',
         new this.$fireAuthObj.FacebookAuthProvider()
       )
     },
 
-    googleSignIn () {
+    googleSignIn() {
       this.socialSignIn('GOOGLE', new this.$fireAuthObj.GoogleAuthProvider())
     },
 
-    async loginWithSocialNetwork (user) {
+    async loginWithSocialNetwork(user) {
       try {
         this.loadingDataSocial = true
         this.disableAxiosGlobal()
@@ -424,7 +437,7 @@ export default {
       }
     },
 
-    onFailLoginSocial (user) {
+    onFailLoginSocial(user) {
       try {
         this.validateEmail(user)
         this.userSocialData = { ...user }
@@ -446,7 +459,7 @@ export default {
 
     ...mapActions('auth/socialUser', ['authLoginSocial']),
 
-    socialSignIn (nameSocialNetwork, provider) {
+    socialSignIn(nameSocialNetwork, provider) {
       const fireAuthObj = this.$fireAuthObj()
       fireAuthObj.signInWithRedirect(provider)
     }
@@ -455,10 +468,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.green2{
-  color:var(--v-black-base);
-  &:hover{
-    color:rgba(#000000,0.8);
+.green2 {
+  color: var(--v-black-base);
+  &:hover {
+    color: rgba(#000000, 0.8);
   }
 }
 </style>

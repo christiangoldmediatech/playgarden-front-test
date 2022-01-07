@@ -1,33 +1,30 @@
 <template>
   <v-row no-gutters>
     <v-col>
-      <v-row
-        no-gutters
-      >
-        <v-col
-          class="px-12 mt-1 mt-md-12"
-          cols="12"
-          md="6"
-          lg="6"
-          xl="6"
-        >
+      <v-row no-gutters>
+        <v-col class="px-12 mt-1 mt-md-12" cols="12" md="6" lg="6" xl="6">
           <stripe-pay-form :loading="loading" @click:submit="onSubmit" />
         </v-col>
-        <v-col
-          cols="12"
-          md="6"
-          lg="6"
-          xl="6"
-        >
+        <v-col cols="12" md="6" lg="6" xl="6">
           <template>
-            <v-row :class="($vuetify.breakpoint.smAndUp) ? '' : 'pt-1 px-8'">
-              <v-col cols="12" :class="(!$vuetify.breakpoint.smAndUp) ? 'text-center' : 'mt-1 mb-8 px-10'">
+            <v-row>
+              <v-col
+                cols="12"
+                :class="
+                  !$vuetify.breakpoint.smAndUp
+                    ? 'text-center'
+                    : 'mt-1 mb-8 px-10'
+                "
+              >
                 <v-layout row wrap align-center justify-center>
                   <v-card class="elevation-2 mx-10">
                     <v-container>
                       <v-layout column align-center justify-center>
                         <card-playgarden />
-                        <card-know-more v-if="!showCardPlaygarden" @toggleCard="showCardPlaygarden = !showCardPlaygarden" />
+                        <card-know-more
+                          v-if="!showCardPlaygarden"
+                          @toggleCard="showCardPlaygarden = !showCardPlaygarden"
+                        />
                       </v-layout>
                     </v-container>
                   </v-card>
@@ -42,36 +39,30 @@
                   @click="showCardPlaygarden = !showCardPlaygarden"
                 >
                   <p>
-                    <span :class="($vuetify.breakpoint.smAndUp) ? 'free-trial' : 'free-trial-mobile'">
+                    <span
+                      :class="
+                        $vuetify.breakpoint.smAndUp
+                          ? 'free-trial'
+                          : 'free-trial-mobile'
+                      "
+                    >
                       WANT TO KNOW MORE ABOUT
-                    </span> <br>
-                    <span :class="($vuetify.breakpoint.smAndUp) ? 'free-trial' : 'free-trial-mobile'">
-                      YOUR FREE TRIAL ?
+                    </span>
+                    <br>
+                    <span
+                      :class="
+                        $vuetify.breakpoint.smAndUp
+                          ? 'free-trial'
+                          : 'free-trial-mobile'
+                      "
+                    >
+                      YOUR <span class="green--text">FREE TRIAL</span>?
                     </span>
                   </p>
                   <v-icon class="ml-2">
                     mdi-chevron-down
                   </v-icon>
                 </v-btn>
-              </v-col>
-              <v-col v-if="!$vuetify.breakpoint.smAndUp" cols="12">
-                <div>
-                  <p>
-                    <center>
-                      <span class="font-weight-bold text-completely">
-                        Playgarden Prep Online is COMPLETELY FREE for the next 30 days.
-                      </span>
-                    </center>
-                  </p>
-                  <v-divider />
-                  <p>
-                    <center class="ml-2">
-                      <span class="info-pay">
-                        You can cancel your trial and membership anytime from the account settings.<br> Once your free trial ends you will be placed on the <span class="option-standar">Standard</span> monthly plan, you can change plans at any time in your profile page.
-                      </span>
-                    </center>
-                  </p>
-                </div>
               </v-col>
             </v-row>
           </template>
@@ -83,10 +74,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import {
-  defineComponent,
-  useRoute
-} from '@nuxtjs/composition-api'
+import { defineComponent, useRoute } from '@nuxtjs/composition-api'
 
 import { useUTM } from '@/composables/utm/use-utm.composable'
 
@@ -107,9 +95,7 @@ export default defineComponent({
     loading: false,
     showCardPlaygarden: true,
     coupon: null,
-    mode: vm.$route.params.mode
-      ? vm.$route.params.mode
-      : ''
+    mode: vm.$route.params.mode ? vm.$route.params.mode : ''
   }),
 
   setup() {
@@ -124,12 +110,9 @@ export default defineComponent({
   methods: {
     ...mapActions('auth', ['fetchUserInfo']),
 
-    ...mapActions('payment', [
-      'payShorterSubscription',
-      'validateCard'
-    ]),
+    ...mapActions('payment', ['payShorterSubscription', 'validateCard']),
 
-    async goToStepThree () {
+    async goToStepThree() {
       let page = {}
       if (this.mode === 'activate-user') {
         await this.fetchUserInfo()
@@ -149,7 +132,7 @@ export default defineComponent({
       this.$router.push(page)
     },
 
-    async onSubmit (cardData) {
+    async onSubmit(cardData) {
       this.loading = true
 
       try {
@@ -193,7 +176,8 @@ export default defineComponent({
   font-weight: 500;
 }
 
-.total, .total-cost {
+.total,
+.total-cost {
   color: #606060;
   line-height: 1.5;
   font-size: 22px;
