@@ -31,7 +31,6 @@
 
               <div class="lesson-completed-button">
                 <v-btn
-                  class="white--text"
                   color="#FEC572"
                   block
                   :small="$vuetify.breakpoint.mdAndDown"
