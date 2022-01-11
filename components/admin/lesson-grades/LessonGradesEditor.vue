@@ -55,7 +55,8 @@
         <v-btn
           color="green"
           :loading="loading"
-          :text="$vuetify.breakpoint.smAndUp"
+          :dark="!isDesktop"
+          :text="isDesktop"
           @click.stop="save"
         >
           Save
@@ -91,7 +92,11 @@ export default {
       : null
   }),
 
-  computed: {},
+  computed: {
+    isDesktop() {
+      return this.$vuetify.breakpoint.smAndUp
+    }
+  },
 
   async created () {
     this.reportCards = await this.getTypes()
