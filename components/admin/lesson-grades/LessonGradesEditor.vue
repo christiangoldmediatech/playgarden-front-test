@@ -53,7 +53,6 @@
         <v-spacer />
 
         <v-btn
-          class="white--text"
           color="green"
           :loading="loading"
           :text="$vuetify.breakpoint.smAndUp"
