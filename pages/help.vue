@@ -168,7 +168,7 @@
                       />
 
                       <p class="mt-2">
-                        Contact us and we will get back to you personally.
+                        Contact us and we will get back to you soon!
                       </p>
                     </div>
 
@@ -213,25 +213,6 @@
                         </validation-provider>
                       </v-col>
                     </v-row>
-
-                    <!-- How can we help you? -->
-                    <validation-provider
-                      v-slot="{ errors }"
-                      name="How can we help you?"
-                      rules="required"
-                    >
-                      <pg-select
-                        v-model="help.issueType"
-                        clearable
-                        :disabled="sending"
-                        :error-messages="errors"
-                        :items="emailTopics"
-                        label="How can we help you?"
-                        :loading="sending"
-                        solo
-                        data-test-id="help-form-select"
-                      />
-                    </validation-provider>
 
                     <!-- Subject -->
                     <validation-provider
@@ -303,16 +284,6 @@ import { computed, onMounted, ref } from '@vue/composition-api'
 import { useAuth, useFAQ, useFAQCategories, useHelp, useSnotifyHelper, useVuetifyHelper } from '@/composables'
 import { FAQ, FAQCategory, TypedStore } from '@/models'
 
-const EMAIL_TOPICS = {
-  ACCOUNT: 'ACCOUNT',
-  LIBRARY: 'LIBRARY',
-  DAILY_LESSONS: 'DAILY LESSONS',
-  LIVE_SESSIONS: 'LIVE SESSIONS',
-  PARENT_CORNER: 'PARENT CORNER',
-  STUDENT_CUBBY: 'STUDENT CUBBY',
-  OTHER: 'OTHER'
-}
-
 export default defineComponent({
   name: 'Help',
 
@@ -330,12 +301,10 @@ export default defineComponent({
     const help = ref({
       name: null,
       email: null,
-      issueType: null as string | null,
       subject: null,
       description: null
     })
 
-    const emailTopics = computed(() => Object.values(EMAIL_TOPICS))
     const isMobile = computed(() => vuetify.breakpoint.mobile)
 
     const { getFAQs } = useFAQ()
@@ -386,7 +355,6 @@ export default defineComponent({
         help.value = {
           name: null,
           email: null,
-          issueType: EMAIL_TOPICS.ACCOUNT,
           subject: null,
           description: null
         }
@@ -406,7 +374,6 @@ export default defineComponent({
       categories,
       faqs,
       help,
-      emailTopics,
       isMobile,
       isLogin: isUserLoggedIn,
       onSubmit
