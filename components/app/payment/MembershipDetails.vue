@@ -184,7 +184,7 @@
               Your Plan
             </div>
 
-            <v-btn class="warning mb-8" depressed width="160px">
+            <v-btn class="warning mb-8" depressed width="190px">
               {{ plan.planName }}
             </v-btn>
           </v-col>

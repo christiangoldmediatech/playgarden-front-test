@@ -30,6 +30,7 @@
         :email-validated="emailValidated"
         :in-invitation-process="inInvitationProcess"
         :loading="loading"
+        :is-credit-card-required="isCreditCardRequired"
         @click:submit="onSubmit"
       />
     </v-col>

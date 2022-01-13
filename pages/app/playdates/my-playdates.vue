@@ -6,7 +6,7 @@
         <v-icon class="accent--text">
           mdi-chevron-left
         </v-icon>
-        <span class="accent--text font-weight-medium">Go back to playdates</span>
+        <span class="accent--text font-weight-medium">Go back to Playdates</span>
       </nuxt-link>
     </div>
 
@@ -39,7 +39,7 @@
 
 <script lang="ts">
 import { usePlaydates } from '@/composables'
-import { Playdate, TypedStore } from '@/models'
+import { Meeting, TypedStore } from '@/models'
 import { defineComponent, ref, useStore } from '@nuxtjs/composition-api'
 import { onMounted } from '@vue/composition-api'
 import CardPlaydate from '@/components/app/playdates/CardPlaydate.vue'
@@ -55,7 +55,7 @@ export default defineComponent({
     const store = useStore<TypedStore>()
     const { getChildrenInfo } = usePlaydates({ store })
 
-    const playdates = ref<Playdate[]>([])
+    const playdates = ref<Meeting[]>([])
     const loading = ref(false)
 
     const handleGetMyPlaydates = async () => {
@@ -64,9 +64,9 @@ export default defineComponent({
       playdates.value = response.reduce((acc, res) => {
         return [
           ...acc,
-          ...res.groups.reduce((prev, group) => {
-            const pd = group?.playdates?.map(({ backpackImages, date, playdate }) => ({
-              ...playdate,
+          ...res.groups.reduce((prev, group:any) => {
+            const pd = group?.meetings?.map(({ backpackImages, date, meeting }: any) => ({
+              ...meeting,
               date,
               backpackImages
             })) ?? []

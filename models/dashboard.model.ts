@@ -8,6 +8,14 @@ export interface Metrics {
     averageTimeByCurriculumType: any
 }
 
+export interface TopVideo {
+    videoId: number
+    views: number
+    name: string
+    description: string
+    thumbnail: string
+}
+
 export interface lineStack {
     xAxis: string[]
     legend: string[]

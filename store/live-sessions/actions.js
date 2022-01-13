@@ -48,6 +48,7 @@ export default {
       const params = {
         limit: 100,
         page: 1,
+        type: 'LiveClass',
         startDate: monday,
         endDate: friday
       }
@@ -55,10 +56,10 @@ export default {
       if (!admin) {
         params.active = true
       }
-      const { total, liveSessions } = data = await this.$axios.$get('/live-sessions', {
+      const { total, meetings } = data = await this.$axios.$get('/live-sessions', {
         params
       })
-      commit('SET_SESSIONS', liveSessions)
+      commit('SET_SESSIONS', meetings)
       commit('SET_TOTAL', total)
       return data
     } catch (error) {
@@ -72,6 +73,7 @@ export default {
         params: {
           limit: 100,
           page: 1,
+          type: 'LiveClass',
           recorded: true,
           activityTypeId,
           curriculumTypeId
