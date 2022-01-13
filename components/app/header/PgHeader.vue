@@ -84,7 +84,7 @@
           <!-- Toolbar Description -->
           <v-col>
             <div class="text-body-1 text-md-h6">
-              We are excited for a fun-filled day of learning!
+              Are you excited for a fun-filled day of learning?
             </div>
           </v-col>
         </v-row>
