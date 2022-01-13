@@ -11,7 +11,7 @@
           lg="6"
           xl="6"
         >
-          <stripe-pay-form :loading="loading" @click:submit="onSubmit" />
+          <stripe-pay-form :loading="loading" :button-text="getTextButton" @click:submit="onSubmit" />
         </v-col>
         <v-col
           cols="12"
@@ -103,13 +103,18 @@ export default defineComponent({
     CardKnowMore
   },
 
+  props: {
+    mode: {
+      type: String,
+      default: '',
+      required: false
+    }
+  },
+
   data: vm => ({
     loading: false,
     showCardPlaygarden: true,
-    coupon: null,
-    mode: vm.$route.params.mode
-      ? vm.$route.params.mode
-      : ''
+    coupon: null
   }),
 
   setup() {
@@ -118,6 +123,12 @@ export default defineComponent({
 
     return {
       utmContent
+    }
+  },
+
+  computed: {
+    getTextButton () {
+      return (this.mode === 'activate-user') ? 'REACTIVATE ACCOUNT' : 'START YOUR FREE TRIAL'
     }
   },
 
@@ -134,7 +145,7 @@ export default defineComponent({
       if (this.mode === 'activate-user') {
         await this.fetchUserInfo()
         page = {
-          name: 'app-account-index'
+          name: 'app-payment-plan'
         }
       } else {
         page = {
