@@ -2,8 +2,8 @@ import { throttle } from 'lodash'
 
 export default {
   data: () => ({
-    winWidth: window.innerWidth || document.documentElement.clientWidth || 0,
-    winHeight: window.innerHeight || document.documentElement.clientHeight || 0,
+    winWidth: document.documentElement.clientWidth || window.innerWidth || 0,
+    winHeight: document.documentElement.clientHeight || window.innerHeight || 0,
     throttledGetWindowDimensions: null,
     mql: null
   }),
@@ -38,9 +38,8 @@ export default {
   methods: {
     getWindowDimensions() {
       // Initial window dimensions
-      this.winWidth = window.innerWidth || document.documentElement.clientWidth
-      this.winHeight =
-        window.innerHeight || document.documentElement.clientHeight
+      this.winWidth = document.documentElement.clientWidth || window.innerWidth
+      this.winHeight = document.documentElement.clientHeight || window.innerHeight
     }
   },
 
