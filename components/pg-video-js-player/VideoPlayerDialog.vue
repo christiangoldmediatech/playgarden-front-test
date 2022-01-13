@@ -121,7 +121,6 @@ export default {
 
   beforeDestroy () {
     document.querySelector('html').style.overflowY = 'scroll'
-    window.removeEventListener('resize', this.getWindowDimensions)
     document.removeEventListener('keydown', this._keyListener)
   },
 
