@@ -2,8 +2,12 @@
   <v-row no-gutters>
     <v-col>
       <v-row no-gutters>
-        <v-col class="px-7 mt-1 mt-md-12" cols="12" md="6" lg="6" xl="6">
-          <stripe-pay-form :loading="loading" @click:submit="onSubmit" />
+        <v-col class="px-12 mt-1 mt-md-12" cols="12" md="6" lg="6" xl="6">
+          <stripe-pay-form
+            :loading="loading"
+            :button-text="getTextButton"
+            @click:submit="onSubmit"
+          />
         </v-col>
         <v-col cols="12" md="6" lg="6" xl="6">
           <template>
@@ -96,6 +100,14 @@ export default defineComponent({
     CardKnowMore
   },
 
+  props: {
+    mode: {
+      type: String,
+      default: '',
+      required: false
+    }
+  },
+
   data: vm => ({
     loading: false,
     showCardPlaygarden: true,
@@ -119,6 +131,14 @@ export default defineComponent({
     }
   },
 
+  computed: {
+    getTextButton() {
+      return this.mode === 'activate-user'
+        ? 'REACTIVATE ACCOUNT'
+        : 'START YOUR FREE TRIAL'
+    }
+  },
+
   methods: {
     ...mapActions('auth', ['fetchUserInfo']),
 
@@ -129,7 +149,7 @@ export default defineComponent({
       if (this.mode === 'activate-user') {
         await this.fetchUserInfo()
         page = {
-          name: 'app-account-index'
+          name: 'app-payment-plan'
         }
       } else {
         page = {
