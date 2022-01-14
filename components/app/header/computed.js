@@ -2,16 +2,22 @@ import { mapGetters } from 'vuex'
 import { UserFlow } from '@/models'
 export default {
   computed: {
-    ...mapGetters('auth', ['isUserInSignupProcess', 'isUserLoggedIn', 'getUserInfo']),
+    ...mapGetters('auth', [
+      'isUserInSignupProcess',
+      'isUserLoggedIn',
+      'getUserInfo'
+    ]),
     ...mapGetters({
       currentChildId: 'getCurrentChild'
     }),
 
-    getVerifyEmail () {
-      return (this.getUserInfo.flow === UserFlow.NOCREDITCARD) ? (this.getUserInfo.registerStep !== 5) : true
+    getVerifyEmail() {
+      return this.getUserInfo.flow === UserFlow.NOCREDITCARD
+        ? this.getUserInfo.registerStep !== 5
+        : true
     },
 
-    items () {
+    items() {
       if (!this.isUserInSignupProcess && this.isUserLoggedIn) {
         const list = [
           {
@@ -25,6 +31,12 @@ export default {
             exact: false
           },
           {
+            title: 'Kids Corner',
+            external: true,
+            link: `${process.env.kidsCornerUrl}?atoken=${this.$store.getters['auth/getAccessToken']}`,
+            hidden: true
+          },
+          {
             title: 'Live Classes',
             to: { name: 'app-live-classes' },
             exact: false
@@ -36,7 +48,9 @@ export default {
             title: 'Student Cubby',
             to: {
               name: 'app-student-cubby-puzzle',
-              query: { id: `${(this.currentChildId) ? this.currentChildId[0].id : null}` }
+              query: {
+                id: `${this.currentChildId ? this.currentChildId[0].id : null}`
+              }
             },
             exact: false
           }
