@@ -25,7 +25,7 @@
 
       <div v-if="overlayTimer" class="player-dialog-mobile-portrait-overlay">
         <div>
-          <img src="@/assets/svg/phone-rotate.svg">
+          <img src="@/assets/svg/phone-rotate.svg" />
         </div>
 
         <div class="text-center pt-3 rotate-text">
@@ -52,6 +52,12 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+
+    playerInstance: {
+      type: Object,
+      required: false,
+      default: () => (undefined)
     },
 
     zIndex: {
@@ -127,6 +133,9 @@ export default {
 
   methods: {
     close() {
+      if (this.playerInstance) {
+        this.playerInstance.pause()
+      }
       this.$emit('close')
       this.$emit('input', false)
     },

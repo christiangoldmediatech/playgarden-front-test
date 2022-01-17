@@ -3,6 +3,7 @@
     :id="dialogContainerId"
     ref="videoPlayerDialog"
     v-model="dialog"
+    :player-instance="player"
     @close="handleClose"
   >
     <pg-video-js-player
@@ -60,8 +61,17 @@ export default {
     ...mapGetters('admin/curriculum', { lesson: 'getLesson' }),
     ...mapState('children/lesson', ['puzzlePiece']),
 
-    showFinished () {
-      return this.dialog && this.showFinishedVal
+    showFinished: {
+      get() {
+        return this.dialog && this.showFinishedVal
+      },
+      set(val) {
+        if (this.player) {
+          this.player.pause()
+        }
+        this.showFinishedVal = val
+        this.dialog = val
+      }
     },
 
     remaining () {

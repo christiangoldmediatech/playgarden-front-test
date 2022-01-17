@@ -26,7 +26,12 @@
             <slot />
           </v-col>
         </v-row>
-        <v-progress-linear v-if="timeOut" color="accent" :size="4" :value="progress" />
+        <v-progress-linear
+          v-if="timeOut"
+          color="accent"
+          :size="4"
+          :value="progress"
+        />
       </v-img>
 
       <v-row class="flex-column mx-0" align="center">
@@ -99,7 +104,7 @@ export default {
     returnText: {
       type: [String, Boolean],
       required: false,
-      default: 'RETURN TO DASHBOARD'
+      default: 'RETURN TO LESSON'
     },
 
     returnAction: {
@@ -132,11 +137,11 @@ export default {
   },
 
   computed: {
-    timeOutMs () {
+    timeOutMs() {
       return this.timeOut * 1000
     },
 
-    gradient () {
+    gradient() {
       if (this.$vuetify.breakpoint.xsOnly) {
         return 'to top, rgba(39, 39, 39, 0.9), rgba(255, 255, 255, 0) 120%'
       }
@@ -145,12 +150,12 @@ export default {
   },
 
   methods: {
-    doReturnAction () {
+    doReturnAction() {
       this.stopInterval()
       this.returnAction()
     },
 
-    startInterval () {
+    startInterval() {
       if (this.timeOut) {
         this.progress = 0
         let end = new Date().getTime()
@@ -173,14 +178,14 @@ export default {
       }
     },
 
-    stopInterval () {
+    stopInterval() {
       if (this.interval) {
         window.clearInterval(this.interval)
         this.interval = null
       }
     },
 
-    async doAction (action) {
+    async doAction(action) {
       try {
         this.loading = true
         this.stopInterval()
@@ -209,7 +214,8 @@ export default {
     overflow-x: hidden;
     overflow-y: auto;
   }
-  &-padding, &-padding.row {
+  &-padding,
+  &-padding.row {
     padding-bottom: 30px;
     @media screen and (max-width: 599px) {
       padding-bottom: 12px;
