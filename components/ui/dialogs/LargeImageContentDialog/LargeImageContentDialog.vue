@@ -23,7 +23,7 @@
 
       <v-row no-gutters>
         <v-col cols="4" class="d-none d-md-block">
-          <v-img height="100%" data-test-id="image" :src="img" class="!rounded-[16px]" />
+          <v-img :height="imageHeight" data-test-id="image" :src="img" class="!rounded-[16px]" />
         </v-col>
 
         <v-col cols="12" md="8" class="my-6 my-md-14 px-6">
@@ -66,6 +66,11 @@ export default {
     loading: {
       type: Boolean,
       default: false
+    },
+
+    imageHeight: {
+      type: String,
+      default: '100%'
     }
   },
 

@@ -1,46 +1,69 @@
 <template>
-  <large-image-content-dialog :value="isShippingModalVisible" :img="girlFamilyTreeImg" @close="closeModal">
-    <div>
+  <large-image-content-dialog
+    :value="isShippingModalVisible"
+    :img="girlFamilyTreeImg"
+    :image-height="'500px'"
+    @close="dontShowAgain"
+  >
+    <div class="text-center">
       <underlined-title
-        text="Do you want to receive the  Playgarden Prep workbook at home, for FREE?"
+        text="We want to send you a Playgarden Prep workbook!"
         font-size="46px"
         font-size-mobile="22px"
         letter-spacing="4.8px"
       />
     </div>
 
-    <div class="text-uppercase font-weight-bold text-h6 text-md-h4 grey--text text--darken-2 mt-6 mt-md-10">
-      Shipping Address
+    <div class="grey--text text--darken-2 text-md-h5 my-3 my-md-6 text-center">
+      In order to receive your FREE A-D workbook, please provide your shipping
+      address by going to your Accounts Page
+      <nuxt-link
+        class="accent--text font-weight-bold text-decoration-underline"
+        :to="{ name: 'app-account-index' }"
+      >
+        HERE
+      </nuxt-link>.
     </div>
 
-    <div class="grey--text text--darken-2 caption text-md-body-2 my-3 my-md-6">
-      We want to send you our school materials, for FREE, so your little one gets the most out learning with us in this TRIAL period. Enter your address below and you should receive the Playgarden Prep workbook and specialized pencils in a couple of days!
-    </div>
+    <div class="d-flex flex-column justify-center align-center">
+      <v-btn
+        color="secondary"
+        class="my-3"
+        x-large
+        :width="isMobile ? '90%' : '500px'"
+        @click="closeModal"
+      >
+        REMIND ME LATER
+      </v-btn>
 
-    <shipping-address-details
-      edit-by-default
-      save-button-text="Send"
-      save-button-color="primary"
-      hide-cancel-button-text="REMIND ME LATER"
-      show-phone-number-field
-      wrap-state-and-zip-code-fields
-      @shipping-address-saved="closeModal"
-      @shipping-address-cancel="closeModal"
-    />
+      <v-btn
+        color="accent"
+        text
+        x-large
+        class="mb-3 text-decoration-underline"
+        :width="isMobile ? '90%' : '500px'"
+        @click="dontShowAgain"
+      >
+        DON'T SHOW ME THIS AGAIN
+      </v-btn>
+
+      <div class="grey--text text--darken-2">
+        *Limited to 1 introductory learning package per family, in the
+        territorial US and Canada only.
+      </div>
+    </div>
   </large-image-content-dialog>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import LargeImageContentDialog from '@/components/ui/dialogs/LargeImageContentDialog/LargeImageContentDialog.vue'
-import ShippingAddressDetails from '@/components/app/payment/ShippingAddressDetails'
 
 export default {
   name: 'ShippingAddressModal',
 
   components: {
-    LargeImageContentDialog,
-    ShippingAddressDetails
+    LargeImageContentDialog
   },
 
   data: () => ({
@@ -48,13 +71,22 @@ export default {
   }),
 
   computed: {
-    ...mapState('notifications', ['isShippingModalVisible'])
+    ...mapState('notifications', ['isShippingModalVisible']),
+
+    isMobile() {
+      return this.$vuetify.breakpoint.smAndDown
+    }
   },
 
   methods: {
-    closeModal () {
+    dontShowAgain() {
       this.$store.commit('notifications/SET_IS_SHIPPING_MODAL_VISIBLE', false)
-      this.$store.dispatch('notifications/markShippingAddressModalAsSeen')
+      this.$store.dispatch('notifications/showShippingAddressModalAgain', false)
+    },
+
+    closeModal() {
+      this.$store.commit('notifications/SET_IS_SHIPPING_MODAL_VISIBLE', false)
+      this.$store.dispatch('notifications/showShippingAddressModalAgain', true)
     }
   }
 }
