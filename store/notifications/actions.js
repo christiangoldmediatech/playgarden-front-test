@@ -85,25 +85,18 @@ export default {
       return
     }
 
-    const didShowModalBefore = hasLocalStorage()
-      ? JSON.parse(window.localStorage.getItem('seen:shipping-address-modal'))
+    const shouldShowShippingModalAgain = hasLocalStorage()
+      ? JSON.parse(window.localStorage.getItem('pg-workbook-reminder')) ?? true
       : false
 
-    if (didShowModalBefore) {
-      commit('notifications/SET_NOTIFICATION_CARD', {
-        title: 'WE WANT TO SEND YOU A WELCOME KIT!',
-        description: 'We require a shipping address in order to send the Welcome Kit with our first Workbook.',
-        action: () => commit('notifications/SET_IS_SHIPPING_MODAL_VISIBLE', true, { root: true }),
-        image: require('@/assets/png/megaphone.png')
-      }, { root: true })
-    } else {
+    if (shouldShowShippingModalAgain) {
       commit('notifications/SET_IS_SHIPPING_MODAL_VISIBLE', true, { root: true })
     }
   },
 
-  markShippingAddressModalAsSeen () {
+  showShippingAddressModalAgain (_, boolean = false) {
     return hasLocalStorage()
-      ? window.localStorage.setItem('seen:shipping-address-modal', JSON.stringify(true))
+      ? window.localStorage.setItem('pg-workbook-reminder', JSON.stringify(boolean))
       : undefined
   },
 
