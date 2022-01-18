@@ -1,18 +1,22 @@
 <template>
   <pg-dialog
     persistent
-    :fullscreen="isMobile"
+    :fullscreen="isMobile && fullscreen"
     :value="value"
     max-width="1400px"
     content-class="large-image-content-dialog"
   >
-    <!-- Desktop Close Button -->
-    <div v-if="isCloseable" class="content-dialog-icon">
+    <!-- Close Button -->
+    <div v-if="isCloseable && !fullscreen" class="content-dialog-content">
       <img
+        :style="{
+          left: isMobile ? '16px' : undefined,
+          right: isMobile ? undefined : '16px'
+        }"
         src="@/assets/svg/close-icon.svg"
         alt="close-icon"
-        class="content-dialog-close-icon d-none d-md-inline"
-        width="32px"
+        width="22px"
+        class="close-dialog-icon"
         data-test-id="desktop-close-button"
         @click="$emit('close')"
       >
@@ -21,29 +25,32 @@
     <v-card :class="cardClasses">
       <v-progress-linear :active="loading" indeterminate height="12px" data-test-id="progress-linear" />
 
-      <v-row no-gutters>
-        <v-col cols="4" class="d-none d-md-block">
-          <v-img :height="imageHeight" data-test-id="image" :src="img" class="!rounded-[16px]" />
-        </v-col>
+      <div class="d-flex">
+        <v-img
+          :src="img"
+          width="30%"
+          cover
+          :height="imageHeight"
+          data-test-id="image"
+          class="d-none d-md-block !rounded-[16px]"
+        />
 
-        <v-col cols="12" md="8" class="my-6 my-md-14 px-6">
-          <!-- Mobile Close Button -->
-          <v-btn v-if="isCloseable" class="d-md-none warning--text mb-4 pl-0" text data-test-id="mobile-close-button" @click="$emit('close')">
+        <div class="my-6 my-md-14 px-6">
+          <v-btn v-if="isCloseable && fullscreen" class="d-md-none warning--text mb-4 pl-0" text data-test-id="mobile-close-button" @click="$emit('close')">
             <v-icon left>
               mdi-arrow-left
             </v-icon>
             Back
           </v-btn>
 
-          <!-- Modal Body -->
           <slot name="default" />
-        </v-col>
-      </v-row>
+        </div>
+      </div>
     </v-card>
   </pg-dialog>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: 'LargeImageContentDialog',
 
@@ -70,49 +77,34 @@ export default {
 
     imageHeight: {
       type: String,
-      default: '100%'
+      default: '50%'
+    },
+
+    fullscreen: {
+      type: Boolean,
+      default: true
     }
   },
 
   computed: {
-    isMobile () {
+    isMobile (): boolean {
       return this.$vuetify.breakpoint.mobile
     },
 
-    cardClasses () {
+    cardClasses (): Record<string, boolean> {
       return {
-        '!rounded-[16px]': !this.isMobile,
-        'elevation-0': true
+        'elevation-0 !rounded-[16px]': true
       }
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
-.content-dialog-icon {
-  position: relative;
-  cursor: pointer;
-  width: 100%;
-  height: 48px;
-}
-
-.content-dialog-close-icon {
-  position: absolute;
-  right: 16px;
-}
-
-.\!rounded-\[16px\] {
-  border-radius: 16px !important;
-}
-</style>
-
 <style lang="scss">
 .large-image-content-dialog {
   background-color: rgba(0, 0, 0, 0);
   border-color: rgba(0, 0, 0, 0);
   box-shadow: none;
-  border-radius: 16px;
 
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
@@ -120,5 +112,20 @@ export default {
 /* Hide scrollbar for Chrome, Safari and Opera */
 .large-image-content-dialog::-webkit-scrollbar {
   display: none;
+}
+
+.content-dialog-content {
+  position: relative;
+  cursor: pointer;
+  width: 100%;
+  height: 36px;
+}
+
+.close-dialog-icon {
+  position: absolute;
+}
+
+.\!rounded-\[16px\] {
+  border-radius: 16px !important;
 }
 </style>
