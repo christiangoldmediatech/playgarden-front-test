@@ -1,5 +1,6 @@
 <template>
   <large-image-content-dialog
+    :image-height="$vuetify.breakpoint.md ? '608px' : '510px'"
     :value="isShippingModalVisible"
     :img="girlFamilyTreeImg"
     :fullscreen="false"
@@ -97,7 +98,7 @@ export default {
   font-size: 17px;
 }
 
-@media(min-width: $breakpoint-md) {
+@media(min-width: $breakpoint-sm) {
   .md\:pg-text-\[26px\] {
     font-size: 26px;
   }
