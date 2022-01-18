@@ -26,16 +26,17 @@
       <v-progress-linear :active="loading" indeterminate height="12px" data-test-id="progress-linear" />
 
       <div class="d-flex">
-        <v-img
-          :src="img"
-          width="30%"
-          cover
-          :height="imageHeight"
-          data-test-id="image"
-          class="d-none d-md-block !rounded-[16px]"
-        />
+        <div class="d-none d-md-flex" :style="'width: 30%;'">
+          <v-img
+            :src="img"
+            :height="imageHeight"
+            cover
+            data-test-id="image"
+            class="!rounded-[16px]"
+          />
+        </div>
 
-        <div class="my-6 my-md-14 px-6">
+        <div class="my-6 my-md-14 px-8" :style="'width: 70%'">
           <v-btn v-if="isCloseable && fullscreen" class="d-md-none warning--text mb-4 pl-0" text data-test-id="mobile-close-button" @click="$emit('close')">
             <v-icon left>
               mdi-arrow-left
@@ -77,7 +78,7 @@ export default {
 
     imageHeight: {
       type: String,
-      default: '50%'
+      default: '100%'
     },
 
     fullscreen: {
