@@ -24,11 +24,13 @@
             }"
           > -->
           <v-img
+            class="cursor-link"
             alt="Playarden Prep Online Logo"
             contain
             max-height="50"
             :max-width="$vuetify.breakpoint.mdAndUp ? 290 : 200"
             :src="require('@/assets/svg/logo.svg')"
+            @click="goToVirtualPreschool"
           />
           <!-- </nuxt-link> -->
         </v-toolbar-title>
@@ -183,7 +185,7 @@
             class="clickable account-btn"
             src="@/assets/svg/account.svg"
             @click="goToAccount"
-          />
+          >
 
           <v-btn
             :color="isUserLoggedIn ? 'primary' : 'accent'"
@@ -246,6 +248,10 @@ export default {
 
     goToAccount() {
       this.$router.push({ name: 'app-account-index' })
+    },
+
+    goToVirtualPreschool() {
+      this.$router.push({ name: 'app-virtual-preschool' })
     }
   }
 }
@@ -287,6 +293,10 @@ export default {
       display: block;
     }
   }
+}
+
+.cursor-link{
+  cursor: pointer !important;
 }
 
 .account-btn {
