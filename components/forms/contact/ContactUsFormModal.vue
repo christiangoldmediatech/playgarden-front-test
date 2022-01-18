@@ -1,5 +1,5 @@
 <template>
-  <large-image-content-dialog :value="true" :img="childFace" @close="hideContactUsModal">
+  <large-image-content-dialog :value="isContactUsModalVisible" :img="childFace" @close="hideContactUsModal">
     <div>
       <underlined-title
         text="Contact Us"
