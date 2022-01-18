@@ -85,11 +85,11 @@ export default {
       return
     }
 
-    const shouldShowShippingModalAgain = hasLocalStorage()
+    const shouldShowShippingModal = hasLocalStorage()
       ? JSON.parse(window.localStorage.getItem('pg-workbook-reminder')) ?? true
       : false
 
-    if (shouldShowShippingModalAgain) {
+    if (shouldShowShippingModal) {
       commit('notifications/SET_IS_SHIPPING_MODAL_VISIBLE', true, { root: true })
     }
   },
