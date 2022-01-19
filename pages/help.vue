@@ -298,6 +298,7 @@ export default defineComponent({
     const categorySelect = ref<FAQCategory | null>(null)
     const categories = ref<FAQCategory[]>([])
     const faqs = ref<Record<number, FAQ[]>>({})
+
     const help = ref({
       name: null,
       email: null,
