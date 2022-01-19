@@ -7,7 +7,7 @@
     content-class="large-image-content-dialog"
   >
     <!-- Close Button -->
-    <div v-if="isCloseable && !fullscreen" class="content-dialog-content">
+    <div v-if="(isCloseable && !isMobile) || (isCloseable && isMobile && !fullscreen)" class="content-dialog-content">
       <img
         :style="{
           left: isMobile ? '16px' : undefined,
@@ -17,7 +17,7 @@
         alt="close-icon"
         width="22px"
         class="close-dialog-icon"
-        data-test-id="desktop-close-button"
+        data-test-id="close-button"
         @click="$emit('close')"
       >
     </div>
@@ -52,7 +52,9 @@
 </template>
 
 <script lang="ts">
-export default {
+import Vue from 'vue'
+
+export default Vue.extend({
   name: 'LargeImageContentDialog',
 
   props: {
@@ -98,7 +100,7 @@ export default {
       }
     }
   }
-}
+})
 </script>
 
 <style lang="scss">
