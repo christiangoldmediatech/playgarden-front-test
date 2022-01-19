@@ -4,12 +4,16 @@
       <div class="green-line-bigger green-line-1" />
       <div class="green-line-bigger green-line-2" />
       <v-card-text class="piece-earned-content">
-        <v-row :class="{ 'mx-0': $vuetify.breakpoint.xsOnly }" align="center" justify="center">
+        <v-row
+          :class="{ 'mx-0': $vuetify.breakpoint.xsOnly }"
+          align="center"
+          justify="center"
+        >
           <v-col class="d-flex justify-center" cols="10" sm="4" md="4" lg="3">
             <img
               class="piece-earned-img"
               :src="puzzleImg || require('@/assets/png/dashboard/piece.png')"
-            >
+            />
             <puzzle-clip-path />
           </v-col>
           <v-col cols="12" sm="8" md="7" lg="6">
@@ -23,7 +27,8 @@
               />
             </div>
             <p class="piece-earned-paragraph">
-              You have completed the Letter {{ letter }} lesson! You earned a piece of your Letter {{ letter }} puzzle!
+              You have completed the Letter {{ letter }} lesson! You earned a
+              piece of your Letter {{ letter }} puzzle!
             </p>
           </v-col>
           <v-col cols="12">
@@ -58,7 +63,11 @@
                       nuxt
                       :to="{ name: 'app-library' }"
                     >
-                      <img class="piece-earned-play-btn-icon" height="30px;" src="@/assets/svg/play-button.svg">
+                      <img
+                        class="piece-earned-play-btn-icon"
+                        height="30px;"
+                        src="@/assets/svg/play-button.svg"
+                      />
                       <template v-if="$vuetify.breakpoint.xsOnly">
                         Library
                       </template>
@@ -79,7 +88,7 @@
               block
               @click.stop="returnTo"
             >
-              Return to Dashboard
+              Return to Lesson
             </v-btn>
           </v-col>
         </v-row>
@@ -125,12 +134,12 @@ export default {
   },
 
   methods: {
-    returnTo () {
+    returnTo() {
       this.$emit('return')
       this.close()
     },
 
-    close () {
+    close() {
       this.$emit('input', false)
     }
   }
