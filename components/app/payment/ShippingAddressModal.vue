@@ -18,12 +18,7 @@
     <div class="grey--text text--darken-2 mt-4 mb-3 my-md-6 text-center pg-text-[17px] md:pg-text-[26px]">
       In order to receive your FREE A-D workbook, please provide your shipping
       address by going to your Accounts Page
-      <nuxt-link
-        class="accent--text font-weight-bold text-decoration-underline"
-        :to="{ name: 'app-account-index' }"
-      >
-        HERE
-      </nuxt-link>.
+      <span class="accent--text text-decoration-underline pg-cursor-pointer" @click="goToProfile">HERE</span>
     </div>
 
     <div class="d-flex flex-column justify-center align-center">
@@ -57,10 +52,11 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue'
 import { mapState } from 'vuex'
 import LargeImageContentDialog from '@/components/ui/dialogs/LargeImageContentDialog/LargeImageContentDialog.vue'
 
-export default {
+export default Vue.extend({
   name: 'ShippingAddressModal',
 
   components: {
@@ -80,6 +76,11 @@ export default {
   },
 
   methods: {
+    goToProfile(): void {
+      this.$router.push({ name: 'app-account-index' })
+      this.closeModal()
+    },
+
     dontShowAgain(): void {
       this.$store.commit('notifications/SET_IS_SHIPPING_MODAL_VISIBLE', false)
       this.$store.dispatch('notifications/showShippingAddressModalAgain', false)
@@ -90,10 +91,14 @@ export default {
       this.$store.dispatch('notifications/showShippingAddressModalAgain', true)
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
+.pg-cursor-pointer {
+  cursor: pointer;
+}
+
 .pg-text-\[17px\] {
   font-size: 17px;
 }
