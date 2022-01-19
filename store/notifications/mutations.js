@@ -35,5 +35,14 @@ export default {
   },
   SET_IS_TRIAL_ENDING_PLAN_SELECTED_MODAL_VISIBLE (state, bool) {
     state.isTrialEndingPlanSelectedModalVisible = bool
+  },
+  SET_IS_TRIAL_ENDING_FOR_LAST_DAY_MODAL_VISIBLE (state, bool) {
+    state.isTrialEndingForLastDayModalVisible = bool
+  },
+  SET_IS_PLAN_UPGRADE_MODAL_VISIBLE (state, bool) {
+    state.isPlanUpgradeModalVisible = bool
+  },
+  SET_IS_CREDIT_CARD_MODAL_VISIBLE (state, bool) {
+    state.isCreditCardModalVisible = bool
   }
 }

@@ -1,16 +1,11 @@
 <template>
-  <div :class="['player-dialog', { 'player-dialog-visible': value }]" :style="{ '--dialog-z-index': zIndex }">
-    <div
-      class="player-dialog-container"
-      :style="dimensions"
-    >
+  <div
+    :class="['player-dialog', { 'player-dialog-visible': value }]"
+    :style="{ '--dialog-z-index': zIndex, '--windowHeight': `${winHeight}px` }"
+  >
+    <div class="player-dialog-container" :style="dimensions">
       <div class="player-dialog-close-btn">
-        <v-btn
-          color="rgb(64, 64, 64)"
-          icon
-          text
-          @click.stop="close"
-        >
+        <v-btn color="rgb(64, 64, 64)" icon text @click.stop="close">
           <v-icon color="white">
             mdi-close
           </v-icon>
@@ -73,11 +68,12 @@ export default {
   },
 
   watch: {
-    value (val) {
+    value(val) {
       this.clearOverlayTimer()
 
       if (val) {
         document.querySelector('html').style.overflowY = 'hidden'
+        document.querySelector('html').style.backgroundColor = '#000000'
 
         this.$nextTick(() => {
           if (this.mobilePortrait) {
@@ -88,10 +84,11 @@ export default {
         })
       } else {
         document.querySelector('html').style.overflowY = 'scroll'
+        document.querySelector('html').style.backgroundColor = '#FFFFFF'
       }
     },
 
-    mobilePortrait (val) {
+    mobilePortrait(val) {
       if (val && this.value) {
         this.$nextTick(() => {
           if (this.mobilePortrait) {
@@ -106,9 +103,13 @@ export default {
     }
   },
 
-  mounted () {
+  mounted() {
     this._keyListener = (e) => {
-      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'E' || e.key === 'e')) {
+      if (
+        (e.ctrlKey || e.metaKey) &&
+        e.shiftKey &&
+        (e.key === 'E' || e.key === 'e')
+      ) {
         e.preventDefault()
         if (this.value) {
           this.close()
@@ -119,19 +120,18 @@ export default {
     document.addEventListener('keydown', this._keyListener.bind(this))
   },
 
-  beforeDestroy () {
+  beforeDestroy() {
     document.querySelector('html').style.overflowY = 'scroll'
-    window.removeEventListener('resize', this.getWindowDimensions)
     document.removeEventListener('keydown', this._keyListener)
   },
 
   methods: {
-    close () {
+    close() {
       this.$emit('close')
       this.$emit('input', false)
     },
 
-    clearOverlayTimer () {
+    clearOverlayTimer() {
       if (this.overlayTimer) {
         window.clearTimeout(this.overlayTimer)
         this.overlayTimer = null
@@ -143,15 +143,15 @@ export default {
 
 <style lang="scss">
 .rotate-text {
-  color: #ABABAB;
+  color: #ababab;
 }
 
 .player-dialog {
   position: fixed;
-  width: 100vw;
+  width: 100%;
   max-width: 100vw;
-  height: 100vh;
-  max-height: 100vh;
+  height: 100%;
+  max-height: var(--windowHeight);
   top: 0;
   left: 0;
   z-index: var(--dialog-z-index);

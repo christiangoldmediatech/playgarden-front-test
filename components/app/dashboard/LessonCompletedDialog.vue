@@ -1,9 +1,5 @@
 <template>
-  <v-overlay
-    class="lesson-completed"
-    :value="value"
-    :z-index="4000"
-  >
+  <v-overlay class="lesson-completed" :value="value" :z-index="4000">
     <v-card class="lesson-completed-container" light>
       <div class="pos-absolute pos-top-0 pos-left-0 w-100">
         <div class="green-line-bigger green-line-1" />
@@ -13,15 +9,24 @@
       <div class="lesson-completed-content">
         <v-row class="lesson-completed-content-row">
           <div class="lesson-completed-player">
-            <pg-inline-video-player use-standard-poster @ready="onPlayerReady" />
+            <pg-inline-video-player
+              use-standard-poster
+              @ready="onPlayerReady"
+            />
           </div>
           <div class="lesson-completed-options">
             <div class="lesson-completed-title">
               What do you want to do next?
             </div>
-            <v-row class="mx-0">
+            <v-row class="mx-0 my-0 my-lg-n3">
               <div class="lesson-completed-button">
-                <v-btn color="accent" block :small="$vuetify.breakpoint.mdAndDown" :large="$vuetify.breakpoint.lgAndUp" @click.stop="goToWorksheets">
+                <v-btn
+                  color="accent"
+                  block
+                  :small="$vuetify.breakpoint.mdAndDown"
+                  :large="$vuetify.breakpoint.lgAndUp"
+                  @click.stop="goToWorksheets"
+                >
                   <v-icon class="lesson-completed-icon">
                     pg-icon-paper-pencil
                   </v-icon>
@@ -32,6 +37,7 @@
               <div class="lesson-completed-button">
                 <v-btn
                   color="#FEC572"
+                  dark
                   block
                   :small="$vuetify.breakpoint.mdAndDown"
                   :large="$vuetify.breakpoint.lgAndUp"
@@ -96,7 +102,7 @@ export default {
   },
 
   watch: {
-    value (val) {
+    value(val) {
       if (val) {
         this.waitAndPlay()
       } else {
@@ -106,31 +112,40 @@ export default {
   },
 
   methods: {
-    onPlayerReady (player) {
-      player.loadPlaylist([{
-        videoId: 1,
-        title: '',
-        src:
+    onPlayerReady(player) {
+      player.loadPlaylist(
+        [
           {
-            src: 'https://d3dnpqxalhovr4.cloudfront.net/out/v1/24b478a52d0f4d8ea11bdd0a2bb43c59/748ec5dbba9f4aa0a2eef8a74fb2c043/68b7491c440d41d4b8b6fb0ae08fe0b4/index.m3u8',
-            type: 'application/x-mpegURL'
+            videoId: 1,
+            title: '',
+            src: {
+              src:
+                'https://d3dnpqxalhovr4.cloudfront.net/out/v1/24b478a52d0f4d8ea11bdd0a2bb43c59/748ec5dbba9f4aa0a2eef8a74fb2c043/68b7491c440d41d4b8b6fb0ae08fe0b4/index.m3u8',
+              type: 'application/x-mpegURL'
+            }
           }
-      }], 0)
+        ],
+        0
+      )
       this.player = player
     },
 
-    goToWorksheets () {
+    goToWorksheets() {
       this.$appEventBus.$emit(APP_EVENTS.DASHBOARD_ONLINE_WORKSHEET_CLICKED)
       this.$router.push(this.generateNuxtRoute('online-worksheet'))
     },
 
-    skipToActivities () {
+    skipToActivities() {
       // Find first activity
-      const activities = this.lesson.lessonsActivities.map(({ activity }) => activity)
+      const activities = this.lesson.lessonsActivities.map(
+        ({ activity }) => activity
+      )
       if (activities.length) {
-        const validActivities = this.lesson.lessonsActivities.filter(({ activity }) => {
-          return activity.videos.videoUrl
-        })
+        const validActivities = this.lesson.lessonsActivities.filter(
+          ({ activity }) => {
+            return activity.videos.videoUrl
+          }
+        )
 
         const playlist = validActivities.map(({ id, activity }) => {
           return {
@@ -151,11 +166,13 @@ export default {
         })
 
         this.$nuxt.$emit('open-lesson-activity-player', { playlist, index: 0 })
-        this.$router.push(this.generateNuxtRoute('lesson-activities', { id: activities[0].id }))
+        this.$router.push(
+          this.generateNuxtRoute('lesson-activities', { id: activities[0].id })
+        )
       }
     },
 
-    waitAndPlay () {
+    waitAndPlay() {
       const wait = window.setInterval(() => {
         if (this.player) {
           this.player.currentTime(0)
@@ -171,7 +188,7 @@ export default {
 <style lang="scss">
 .lesson-completed {
   & .green-line-1 {
-    height: 12px
+    height: 12px;
   }
   & .green-line-2 {
     height: 17px;
@@ -234,7 +251,7 @@ export default {
     width: 100%;
     padding: 4px;
     @media screen and (min-width: 600px) {
-      width: 50%
+      width: 50%;
     }
     @media screen and (max-width: 1263px) and (orientation: landscape) {
       width: 100%;

@@ -1,14 +1,19 @@
 import dayjs from 'dayjs'
-import { computed, ref } from '@nuxtjs/composition-api'
+import { computed } from '@nuxtjs/composition-api'
 import { useAuth } from '@/composables'
 import { hasLocalStorage } from '@/utils/window'
 import { Store } from 'vuex/types'
-import { TypedStore } from '@/models'
+import { TypedStore, UserFlow } from '@/models'
 import { useShippingAddress } from './use-shipping-address.composable'
+
+const isBetween = require('dayjs/plugin/isBetween')
+dayjs.extend(isBetween)
 
 export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
   const { userInfo, isUserLoggedIn } = useAuth({ store })
   const { getShippingAdress } = useShippingAddress()
+
+  const userFlow = computed(() => userInfo.value.flow)
 
   const expiringRibbonHeightDesktop = computed(() => store.state.notifications.expiringRibbonHeightDesktop)
   const expiringRibbonHeightMobile = computed(() => store.state.notifications.expiringRibbonHeightMobile)
@@ -31,6 +36,41 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
   const notificationCard = computed(() => store.state.notifications.notificationCard)
   const setNotificationCard = (payload: Partial<typeof notificationCard.value>) => {
     store.commit('notifications/SET_NOTIFICATION_CARD', payload)
+  }
+
+  const isTrialEndingWeekTwoModalVisible = computed(() => store.state.notifications.isTrialEndingWeekTwoModalVisible)
+  const setIsTrialEndingWeekTwoModalVisible = (isVisible: boolean) => {
+    store.commit('notifications/SET_IS_TRIAL_ENDING_WEEK_TWO_MODAL_VISIBLE', isVisible)
+  }
+
+  const isTrialEndingWeekThreeModalVisible = computed(() => store.state.notifications.isTrialEndingWeekThreeModalVisible)
+  const setIsTrialEndingWeekThreeModalVisible = (isVisible: boolean) => {
+    store.commit('notifications/SET_IS_TRIAL_ENDING_WEEK_THREE_MODAL_VISIBLE', isVisible)
+  }
+
+  const isTrialEndingWeekFourModalVisible = computed(() => store.state.notifications.isTrialEndingWeekFourModalVisible)
+  const setIsTrialEndingWeekFourModalVisible = (isVisible: boolean) => {
+    store.commit('notifications/SET_IS_TRIAL_ENDING_WEEK_FOUR_MODAL_VISIBLE', isVisible)
+  }
+
+  const isTrialEndingPlanSelectedModalVisible = computed(() => store.state.notifications.isTrialEndingPlanSelectedModalVisible)
+  const setIsTrialEndingPlanSelectedModalVisible = (isVisible: boolean) => {
+    store.commit('notifications/SET_IS_TRIAL_ENDING_PLAN_SELECTED_MODAL_VISIBLE', isVisible)
+  }
+
+  const isTrialEndingForLastDayModalVisible = computed(() => store.state.notifications.isTrialEndingForLastDayModalVisible)
+  const setIsTrialEndingForLastDayModalVisible = (isVisible: boolean) => {
+    store.commit('notifications/SET_IS_TRIAL_ENDING_FOR_LAST_DAY_MODAL_VISIBLE', isVisible)
+  }
+
+  const isPlanUpgradeModalVisible = computed(() => store.state.notifications.isPlanUpgradeModalVisible)
+  const setIsPlanUpgradeModalVisible = (isVisible: boolean) => {
+    store.commit('notifications/SET_IS_PLAN_UPGRADE_MODAL_VISIBLE', isVisible)
+  }
+
+  const isCreditCardModalVisible = computed(() => store.state.notifications.isCreditCardModalVisible)
+  const setIsCreditCardModalVisible = (isVisible: boolean) => {
+    store.commit('notifications/SET_IS_CREDIT_CARD_MODAL_VISIBLE', isVisible)
   }
 
   /**
@@ -157,18 +197,126 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
     }
   }
 
+  const showTrialEndingWeekTwoModal = () => {
+    const showDays = [7, 9, 11, 13]
+    const userCreatedAt = userInfo.value.createdAt
+    const now = dayjs()
+
+    const shouldShowTrialEndingWeekTwoModal = showDays.some((day) => {
+      const userDayToBeNotified = dayjs(userCreatedAt).add(day, 'days')
+      return now.isSame(userDayToBeNotified, 'day')
+    })
+
+    if (shouldShowTrialEndingWeekTwoModal) {
+      setIsTrialEndingWeekTwoModalVisible(true)
+    }
+  }
+
+  const showTrialEndingWeekThreeModal = () => {
+    const showDays = [14, 16, 18, 20]
+    const userCreatedAt = userInfo.value.createdAt
+    const now = dayjs()
+
+    const shouldShowTrialEndingWeekThreeModal = showDays.some((day) => {
+      const userDayToBeNotified = dayjs(userCreatedAt).add(day, 'days')
+      return now.isSame(userDayToBeNotified, 'day')
+    })
+
+    if (shouldShowTrialEndingWeekThreeModal) {
+      setIsTrialEndingWeekThreeModalVisible(true)
+    }
+  }
+
+  const showTrialEndingWeekFourModal = () => {
+    const showDays = [21, 22, 23, 24, 25, 26, 27]
+    const userCreatedAt = userInfo.value.createdAt
+    const now = dayjs()
+
+    const shouldShowTrialEndingWeekFourModal = showDays.some((day) => {
+      const userDayToBeNotified = dayjs(userCreatedAt).add(day, 'days')
+      return now.isSame(userDayToBeNotified, 'day')
+    })
+
+    if (shouldShowTrialEndingWeekFourModal) {
+      setIsTrialEndingWeekFourModalVisible(true)
+    }
+  }
+
+  const showTrialEndingModalForLastDay = async () => {
+    if (!isUserLoggedIn.value) {
+      setIsTrialEndingForLastDayModalVisible(false)
+      return
+    }
+
+    const userCreatedAt = userInfo.value.createdAt
+    const isPayingUser = userInfo.value.stripeStatus === 'active'
+    const now = dayjs()
+    const userChosePlan = userInfo.value.planChoosen || false
+    const hasCreditCardsInFile = (await store.dispatch('payment/fetchBillingCards'))?.length > 0
+
+    if (userFlow.value === UserFlow.CREDITCARD) {
+      // Should appaear from the day 28th, to the next day the trial has ended.
+      // If a plan has been chosen, it should not appear anymore.
+      const showFromDay = dayjs(userCreatedAt).add(28, 'days').startOf('day')
+      const showToDay = dayjs(userInfo.value?.trialEnd).add(1, 'day').endOf('day')
+
+      // @ts-ignore
+      if (dayjs().isBetween(showFromDay, showToDay, 'day', '[]') && !userChosePlan) {
+        setIsTrialEndingForLastDayModalVisible(true)
+      }
+    } else {
+      // Should appear from the 28th until the stripe status for the user is active.
+      const userDayToBeNotified = dayjs(userCreatedAt).add(28, 'days').startOf('day')
+
+      if ((now.isSame(userDayToBeNotified, 'day') || now.isAfter(userDayToBeNotified, 'day')) && !isPayingUser && !userChosePlan && !hasCreditCardsInFile) {
+        setIsTrialEndingForLastDayModalVisible(true)
+      }
+    }
+  }
+
+  // Only show the trial ending modal to users that have some value in userInfo.value.subscription.discount
+  const shouldShowTrialEndingModal = () => {
+    if (!userInfo.value.subscription) {
+      return false
+    }
+    const userSubscription = userInfo.value.subscription
+    const userSubscriptionDiscount = userSubscription?.discount
+    const hasCoupon = Boolean(userSubscriptionDiscount)
+    return !hasCoupon
+  }
+
+  const handleTrialEndingFlow = async () => {
+    if (userFlow.value === UserFlow.NOCREDITCARD) {
+      showTrialEndingWeekTwoModal()
+      showTrialEndingWeekThreeModal()
+      showTrialEndingWeekFourModal()
+    }
+
+    if (shouldShowTrialEndingModal()) {
+      await showTrialEndingModalForLastDay()
+    }
+  }
+
   return {
-    notificationCard,
-    isTrialExpiredModalVisible,
-    isTrialExpiringRibbonVisible,
     expiringRibbonHeightDesktop,
     expiringRibbonHeightMobile,
+    isCreditCardModalVisible,
+    isPlanUpgradeModalVisible,
     isShippingModalVisible,
-    setNotificationCard,
-    setIsTrialExpiringRibbonVisible,
-    checkUserShippingAddressAndNotify,
+    isTrialEndingForLastDayModalVisible,
+    isTrialExpiredModalVisible,
+    isTrialExpiringRibbonVisible,
+    notificationCard,
     checkIfShouldSendShippingAddressNotification,
+    checkIfShouldShowTrialExpiredModal,
     checkIfShouldShowTrialExpiringRibbon,
-    checkIfShouldShowTrialExpiredModal
+    checkUserShippingAddressAndNotify,
+    handleTrialEndingFlow,
+    setIsCreditCardModalVisible,
+    setIsPlanUpgradeModalVisible,
+    setIsTrialEndingForLastDayModalVisible,
+    setIsTrialEndingPlanSelectedModalVisible,
+    setIsTrialExpiringRibbonVisible,
+    setNotificationCard
   }
 }
