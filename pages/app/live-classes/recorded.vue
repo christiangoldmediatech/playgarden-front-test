@@ -228,16 +228,16 @@ export default {
       this.recorded = []
       this.selectedLetter = null
       if (val === 'CATEGORY') {
-        this.getRecorded({}).then(({ liveSessions }) => {
-          this.recorded = liveSessions
+        this.getRecorded({}).then(({ meetings }) => {
+          this.recorded = meetings
         })
       }
     },
 
     selectedLetter(val) {
       if (val && this.mode === 'LETTER') {
-        this.getRecorded({ curriculumTypeId: val }).then(({ liveSessions }) => {
-          this.recorded = liveSessions
+        this.getRecorded({ curriculumTypeId: val }).then(({ meetings }) => {
+          this.recorded = meetings
         })
       }
     },
