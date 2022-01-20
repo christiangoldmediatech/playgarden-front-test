@@ -52,11 +52,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { mapState } from 'vuex'
+import { defineComponent, computed, useStore, useRouter } from '@nuxtjs/composition-api'
 import LargeImageContentDialog from '@/components/ui/dialogs/LargeImageContentDialog/LargeImageContentDialog.vue'
+import { useNotification, useVuetifyHelper } from '@/composables'
+import { TypedStore } from '@/models'
 
-export default Vue.extend({
+export default defineComponent({
   name: 'ShippingAddressModal',
 
   components: {
@@ -67,28 +68,35 @@ export default Vue.extend({
     girlFamilyTreeImg: require('@/assets/png/girl-family-tree.png')
   }),
 
-  computed: {
-    ...mapState('notifications', ['isShippingModalVisible']),
+  setup() {
+    const router = useRouter()
+    const store = useStore<TypedStore>()
+    const vuetify = useVuetifyHelper()
+    const Notification = useNotification({ store })
+    const isMobile = computed(() => vuetify.breakpoint.smAndDown)
+    const isShippingModalVisible = computed(() => store.state.notifications.isShippingModalVisible)
 
-    isMobile(): boolean {
-      return this.$vuetify.breakpoint.smAndDown
+    function goToProfile() {
+      router.push({ name: 'app-account-index' })
+      closeModal()
     }
-  },
 
-  methods: {
-    goToProfile(): void {
-      this.$router.push({ name: 'app-account-index' })
-      this.closeModal()
-    },
+    function closeModal() {
+      Notification.setIsShippingModalVisible(false)
+      Notification.showShippinAddressModalAgain(true)
+    }
 
-    dontShowAgain(): void {
-      this.$store.commit('notifications/SET_IS_SHIPPING_MODAL_VISIBLE', false)
-      this.$store.dispatch('notifications/showShippingAddressModalAgain', false)
-    },
+    function dontShowAgain() {
+      Notification.setIsShippingModalVisible(false)
+      Notification.showShippinAddressModalAgain(false)
+    }
 
-    closeModal(): void {
-      this.$store.commit('notifications/SET_IS_SHIPPING_MODAL_VISIBLE', false)
-      this.$store.dispatch('notifications/showShippingAddressModalAgain', true)
+    return {
+      isMobile,
+      isShippingModalVisible,
+      goToProfile,
+      closeModal,
+      dontShowAgain
     }
   }
 })
