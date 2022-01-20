@@ -23,7 +23,7 @@
         />
       </validation-provider>
 
-      <v-row class="my-0" no-gutters>
+      <!-- <v-row class="my-0" no-gutters>
         <v-col class="hr-line">
           <v-divider />
         </v-col>
@@ -35,10 +35,10 @@
         <v-col class="hr-line">
           <v-divider />
         </v-col>
-      </v-row>
+      </v-row> -->
 
       <!-- Phone -->
-      <validation-provider
+      <!-- <validation-provider
         v-slot="{ errors }"
         name="Phone"
         :rules="{
@@ -59,7 +59,7 @@
           maxlength="20"
           solo
         />
-      </validation-provider>
+      </validation-provider> -->
 
       <v-btn
         block
@@ -70,7 +70,7 @@
         class="main-btn main-btn--black-base"
         x-large
       >
-        SEND RECOVERY LINK
+        SEND PASSWORD RESET LINK
       </v-btn>
 
       <p class="login mt-8">
