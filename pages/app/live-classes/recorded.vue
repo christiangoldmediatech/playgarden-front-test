@@ -245,7 +245,7 @@ export default {
     letterObject(val) {
       this.selectedLetterTitle = val?.picture
         ? `Recorded Classes of ${val.description}`
-        : `Recorded Classes of Letter ${val.name.substr(0, 1)}`
+        : `Recorded Classes of Letter ${val?.name.substr(0, 1)}`
     }
   },
 
