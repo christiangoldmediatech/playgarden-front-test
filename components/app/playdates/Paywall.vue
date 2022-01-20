@@ -26,10 +26,10 @@
 
       <!-- CTA -->
       <v-row no-gutters class="text-center text-md-left">
-        <!-- UPGRADE PLAN -->
+        <!-- CONFIRM YOUR PLAN NOW -->
         <v-col cols="12" md="auto" class="my-4">
           <v-btn color="accent" class="text-none" width="250" @click="handleUpgradeNow">
-            Upgrade Plan
+            Confirm Your Plan Now
           </v-btn>
         </v-col>
 
