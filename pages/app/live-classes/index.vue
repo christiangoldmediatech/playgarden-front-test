@@ -43,6 +43,18 @@
               >
                 Day
               </v-btn>
+              <v-btn
+                :color="viewMode === 'TIME' ? 'accent' : 'white'"
+                class="lsess-switcher-btn text-none font-weight-light"
+                :class="{
+                  'white--text': viewMode === 'TIME'
+                }"
+                @click="timezoneDialog = true"
+              >
+                <v-icon>
+                  mdi-alarm
+                </v-icon>
+              </v-btn>
             </v-btn-toggle>
 
             <v-col class="hidden-sm-and-down" cols="12">
@@ -54,7 +66,7 @@
                   @next-week="addWeek"
                 />
               </template>
-              <template v-else>
+              <template v-if="viewMode === 'DAY'">
                 <day-selector
                   v-if="today"
                   :day="getDateObj()"
@@ -178,6 +190,63 @@
         </v-col>
       </v-card>
     </pg-dialog>
+
+    <pg-dialog
+      :value="timezoneDialog"
+      content-class="elevation-0"
+      :fullscreen="fullscreen"
+      persistent
+    >
+      <v-card class="dialog-overlay">
+        <v-row no-gutters justify="start" class="mt-0">
+          <v-col class="mt-16">
+            <v-row
+              class="mb-15 mt-16"
+              justify="center"
+              align-content="center"
+              no-gutters
+            >
+              <v-card
+                cols="12"
+                sm="4"
+                class="px-3 mt-16"
+                width="400"
+                height="200"
+                tile
+              >
+                <v-card-text>
+                  <v-row justify="center" no-gutters>
+                    TIMEZONE
+                  </v-row>
+                  <v-row>
+                    <pg-select
+                      v-model="selectedTimezone"
+                      clearable
+                      hide-details
+                      item-text="name"
+                      item-value="value"
+                      label="Timezone"
+                      solo-labeled
+                      :items="timezoneOptions"
+                      class="select"
+                      @change="refetchChildrensData"
+                    />
+                  </v-row>
+                  <v-row justify="center">
+                    <v-btn class="mt-3 mr-4" color="accent" @click="timezoneDialog = false">
+                      Save
+                    </v-btn>
+                    <v-btn class="mt-3" color="" @click="timezoneDialog = false">
+                      Close
+                    </v-btn>
+                  </v-row>
+                </v-card-text>
+              </v-card>
+            </v-row>
+          </v-col>
+        </v-row>
+      </v-card>
+    </pg-dialog>
   </v-main>
 </template>
 
@@ -213,9 +282,38 @@ export default {
     return {
       mode: 'TODAY',
       today: null,
+      currentTimeZone: null,
+      timeZoneList: [],
       loading: false,
       fullscreen: true,
       showNotice: true,
+      selectedTimezone: 'America/New_York',
+      timezoneOptions: [{
+        name: 'Hawaii Standard Time',
+        value: 'America/Honolulu'
+      },
+      {
+        name: 'Alaska Standard Time',
+        value: 'America/Anchorage'
+      },
+      {
+        name: 'Pacific Standard Time',
+        value: 'America/Angeles'
+      },
+      {
+        name: 'Mountain Standard Time',
+        value: 'America/Denver'
+      },
+      {
+        name: 'Central Standard Time',
+        value: 'America/Chicago'
+      },
+      {
+        name: 'Eastern Standard Time',
+        value: 'America/New_York'
+      }
+      ],
+      timezoneDialog: false,
       viewModeVal: 0
     }
   },
@@ -248,10 +346,19 @@ export default {
     },
 
     viewMode () {
-      if (this.viewModeVal === 0) {
-        return 'WEEK'
+      let mode = 'WEEK'
+      switch (this.viewModeVal) {
+        case 0:
+          mode = 'WEEK'
+          break
+        case 1:
+          mode = 'DAY'
+          break
+        case 2:
+          mode = 'TIME'
+          break
       }
-      return 'DAY'
+      return mode
     }
   },
 
