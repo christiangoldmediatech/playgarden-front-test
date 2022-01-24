@@ -229,14 +229,13 @@
                       solo-labeled
                       :items="timezoneOptions"
                       class="select"
-                      @change="refetchChildrensData"
                     />
                   </v-row>
                   <v-row justify="center">
-                    <v-btn class="mt-3 mr-4" color="accent" @click="timezoneDialog = false">
+                    <v-btn class="mt-3 mr-4" color="accent" @click="saveTimeZone">
                       Save
                     </v-btn>
-                    <v-btn class="mt-3" color="" @click="timezoneDialog = false">
+                    <v-btn class="mt-3" color="" @click="timezoneDialog = false; viewModeVal = 0">
                       Close
                     </v-btn>
                   </v-row>
@@ -283,7 +282,6 @@ export default {
       mode: 'TODAY',
       today: null,
       currentTimeZone: null,
-      timeZoneList: [],
       loading: false,
       fullscreen: true,
       showNotice: true,
@@ -320,6 +318,7 @@ export default {
 
   computed: {
     ...mapState('live-sessions', ['sessions']),
+    ...mapGetters('auth', ['getUserInfo']),
     ...mapGetters('auth', {
       hasTrialOrPlatinumPlan: 'hasTrialOrPlatinumPlan'
     }),
@@ -389,10 +388,13 @@ export default {
   created () {
     this.setToday(new Date())
     this.getUserLiveSessions(this.days)
+    const { timezone } = this.getUserInfo
+    this.selectedTimezone = (timezone) || 'America/New_York'
   },
 
   methods: {
     ...mapActions('live-sessions', ['getUserLiveSessions']),
+    ...mapActions('admin/users', ['setTimezone']),
 
     close () {
       this.$nextTick(() => {
@@ -438,6 +440,18 @@ export default {
       const date = this.getDateObj()
       date.setDate(date.getDate() - 1)
       this.setToday(date)
+    },
+
+    async saveTimeZone () {
+      this.loading = true
+      try {
+        await this.setTimezone({ timezone: this.selectedTimezone })
+        this.viewModeVal = 0
+        this.timezoneDialog = false
+      } catch (err) {
+      } finally {
+        this.loading = false
+      }
     }
   }
 }
