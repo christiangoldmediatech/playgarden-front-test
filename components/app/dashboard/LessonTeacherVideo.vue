@@ -3,6 +3,7 @@
     :id="dialogContainerId"
     ref="videoPlayerDialog"
     v-model="dialog"
+    :player-instance="player"
     :z-index="3500"
     @close="handleClose"
   >

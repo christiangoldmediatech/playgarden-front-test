@@ -13,8 +13,7 @@
         </div>
 
         <p class="text-center text-md-justify">
-          Enter your email or phone number to reset your password. You will
-          receive an email or SMS with instructions.
+          Enter your email below to reset your password, and you will receive an email with further instructions
         </p>
 
         <forgot-password-form :loading="loading" @click:submit="onSubmit" />

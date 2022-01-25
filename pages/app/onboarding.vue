@@ -10,17 +10,6 @@
                 mdi-close
               </v-icon>
             </v-btn>
-            <v-row justify="end" :class="($vuetify.breakpoint.xs)? 'mt-8 mr-6' : 'mt-6 mr-6'">
-              <v-btn
-                class="text-h7 text-md-h6 mt-n6"
-                color="accent"
-                :small="$vuetify.breakpoint.xs"
-                :loading="finishing"
-                @click="onFinish"
-              >
-                START LEARNING
-              </v-btn>
-            </v-row>
           </v-row>
           <v-stepper v-if="!none" v-model="step" class="elevation-0">
             <v-stepper-header v-if="!single">
@@ -80,10 +69,12 @@
 </template>
 
 <script>
+import { defineComponent, useStore } from '@nuxtjs/composition-api'
 import { mapActions, mapGetters } from 'vuex'
+import { useNotification } from '@/composables'
 // import PgInlineVideoPlayer from '@/components/pg-video-js-player/PgInlineVideoPlayer.vue'
 
-export default {
+export default defineComponent({
   name: 'Onboarding',
 
   // components: {
@@ -97,6 +88,15 @@ export default {
     onboardings: [],
     player: null
   }),
+
+  setup() {
+    const store = useStore()
+    const Notification = useNotification({ store })
+
+    return {
+      checkIfShouldSendShippingAddressNotification: Notification.checkIfShouldSendShippingAddressNotification
+    }
+  },
 
   computed: {
     ...mapGetters('auth', {
@@ -152,7 +152,6 @@ export default {
   methods: {
     ...mapActions('auth', ['updateAuthOnboarding']),
     ...mapActions('onboarding', ['getOnboardings']),
-    ...mapActions('notifications', ['checkIfShouldSendShippingAddressNotification']),
 
     onPlayerReady ({ player, videos }) {
       this.player = player
@@ -197,5 +196,5 @@ export default {
       }
     }
   }
-}
+})
 </script>

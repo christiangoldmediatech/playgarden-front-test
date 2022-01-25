@@ -3,6 +3,7 @@
     :id="dialogContainerId"
     ref="videoPlayerDialog"
     v-model="dialog"
+    :player-instance="player"
     data-test-id="video-player-dialog"
     @close="handleClose"
   >
