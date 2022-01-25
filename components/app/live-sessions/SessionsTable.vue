@@ -71,6 +71,7 @@
                   :style="{ '--entriesLength': (getAdvancedSchedule.days[dayIndex][hour - 1].length || 1) }"
                 >
                   <template v-if="getAdvancedSchedule.days[dayIndex] && getAdvancedSchedule.days[dayIndex][hour - 1].length">
+                    {{ hour }} hour
                     <table-entry
                       v-for="(entry, entryIndex) in getAdvancedSchedule.days[dayIndex][hour - 1]"
                       :id="`entry-${activeDay}-${hour - 1}-${entryIndex}`"

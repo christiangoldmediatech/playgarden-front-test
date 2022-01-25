@@ -47,6 +47,7 @@
 import { mapGetters } from 'vuex'
 import { TAG_MANAGER_EVENTS } from '@/models'
 import moment from 'moment'
+import { formatTimezone } from '@/utils/dateTools'
 
 export default {
   name: 'TableEntry',
@@ -93,7 +94,13 @@ export default {
 
     time () {
       const start = moment(this.entry.dateStart)
-      return start.format('HH:mm')
+      const { timezone } = this.getUserInfo
+      console.log('timezone--', timezone)
+      return formatTimezone(start, {
+        format: 'HH:mm',
+        timezone,
+        returnObject: false
+      })
     }
   },
 

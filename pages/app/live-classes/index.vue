@@ -87,7 +87,7 @@
             </v-btn>
           </v-row>
 
-          <sessions-table :day-mode="viewMode === 'DAY'" :today="today" />
+          <sessions-table v-if="!loading" :day-mode="viewMode === 'DAY'" :today="today" />
         </v-col>
       </v-row>
     </v-container>
@@ -288,7 +288,7 @@ export default {
       selectedTimezone: 'America/New_York',
       timezoneOptions: [{
         name: 'Hawaii Standard Time',
-        value: 'America/Honolulu'
+        value: 'Pacific/Honolulu'
       },
       {
         name: 'Alaska Standard Time',
@@ -395,6 +395,7 @@ export default {
   methods: {
     ...mapActions('live-sessions', ['getUserLiveSessions']),
     ...mapActions('admin/users', ['setTimezone']),
+    ...mapActions('auth', ['fetchUserInfo']),
 
     close () {
       this.$nextTick(() => {
@@ -446,6 +447,7 @@ export default {
       this.loading = true
       try {
         await this.setTimezone({ timezone: this.selectedTimezone })
+        await this.fetchUserInfo()
         this.viewModeVal = 0
         this.timezoneDialog = false
       } catch (err) {

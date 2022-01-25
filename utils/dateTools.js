@@ -1,9 +1,11 @@
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
 
 dayjs.extend(customParseFormat)
 dayjs.extend(utc)
+dayjs.extend(timezone)
 
 export const translateUTC = (date) => {
   const utcDate = dayjs.utc(date)
@@ -42,6 +44,23 @@ export const formatDate = (
     date = date.local()
   }
 
+  return returnObject ? date : date.format(format)
+}
+
+export const formatTimezone = (
+  value,
+  {
+    format = 'MM-DD-YYYY HH:mm:ss',
+    fromFormat,
+    timezone = 'America/New_York',
+    returnObject = false
+  } = {}
+) => {
+  let date = dayjs(value, fromFormat)
+  if (timezone) {
+    date = dayjs.tz(value, timezone)
+    // date = dayjs(value).tz(timezone)
+  }
   return returnObject ? date : date.format(format)
 }
 
