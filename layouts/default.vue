@@ -22,9 +22,10 @@
       <trial-ending-week-two-modal />
       <trial-ending-week-three-modal />
       <trial-ending-week-four-modal />
+      <trial-ending-plan-selected />
+      <credit-card-form />
       <PlanUpgradeModal v-if="isUserLoggedIn" />
       <TrialEndingModalForLastDay :downward-displacement="topDistanceInPixels" />
-      <trial-ending-plan-selected />
 
       <!-- CONTACT US FORM MODAL -->
       <contact-us-form-modal />
@@ -118,7 +119,8 @@ export default defineComponent({
     TrialEndingWeekThreeModal,
     TrialEndingWeekFourModal,
     PlanUpgradeModal,
-    TrialEndingPlanSelected: () => import('@/components/app/payment/TrialEnding/PlanSelected.vue')
+    TrialEndingPlanSelected: () => import('@/components/app/payment/TrialEnding/PlanSelected.vue'),
+    CreditCardForm: () => import('@/components/app/payment/TrialEnding/CreditCardForm.vue')
   },
 
   setup () {
@@ -134,7 +136,8 @@ export default defineComponent({
       expiringRibbonHeightMobile,
       checkIfShouldSendShippingAddressNotification,
       checkIfShouldShowTrialExpiringRibbon,
-      checkIfShouldShowTrialExpiredModal
+      checkIfShouldShowTrialExpiredModal,
+      handleTrialEndingFlow
     } = useNotification({ store })
 
     const { showContent, setShowContent, isFullWidth } = useLayout({ store, route, vuetify })
@@ -155,6 +158,7 @@ export default defineComponent({
           await checkIfShouldSendShippingAddressNotification()
           await checkIfShouldShowTrialExpiredModal()
           await checkIfShouldShowTrialExpiringRibbon()
+          await handleTrialEndingFlow()
         }
       }, { immediate: true })
 

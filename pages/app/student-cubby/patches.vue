@@ -11,9 +11,7 @@
             <span class="ml-4 text-h4 text-md-h3">PATCHES</span>
           </div>
           <div class="my-6 text-md-h6 text-body-1">
-            Master subjects in the Activities section to collect patches for
-            your Student Cubby! Collect all badges to receive a real patch for
-            your backpack.
+            Master subjects to collect patches for your Student Cubby! Collect all 5 patches in a category to receive a real patch for your backpack.
           </div>
         </div>
 

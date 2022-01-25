@@ -89,7 +89,6 @@ export default defineComponent({
     } = useLayout({ store, route, vuetify })
     const {
       isTrialExpiringRibbonVisible,
-      checkIfShouldSendShippingAddressNotification,
       checkIfShouldShowTrialExpiringRibbon,
       checkIfShouldShowTrialExpiredModal
     } = useNotification({ store })
@@ -98,7 +97,6 @@ export default defineComponent({
 
     watch(isUserLoggedIn, async () => {
       if (isUserLoggedIn.value === true && routeName.value !== 'shared-slug') {
-        await checkIfShouldSendShippingAddressNotification()
         await checkIfShouldShowTrialExpiredModal()
         await checkIfShouldShowTrialExpiringRibbon()
       }

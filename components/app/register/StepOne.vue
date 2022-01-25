@@ -4,7 +4,7 @@
       <p class="text-center text-md-left">
         <underlined-title
           class="text-h6 text-md-h4 ml-sm-4"
-          text="PLAYGARDEN PREP ONLINE IS COMPLETELY FREE FOR 30 DAYS!"
+          text="PLAYGARDEN PREP ONLINE IS COMPLETELY FREE!"
         />
       </p>
     </v-col>
@@ -20,9 +20,7 @@
       <p class="text-center text-md-left mt-md-n8">
         <span class="subtitle-text info-color-signup">
           Create an account to start learning
-          <span
-            v-if="!isCreditCardRequired"
-          >. NO CREDIT CARD REQUIRED!</span>
+          <span v-if="!isCreditCardRequired">. NO CREDIT CARD REQUIRED!</span>
         </span>
       </p>
 
@@ -46,7 +44,7 @@
         >
           <v-col cols="12" class="my-sm-6 px-sm-10">
             <v-layout row wrap align-center justify-center>
-              <v-card class="custom-shadow mx-0 mx-md-10">
+              <v-card class="mx-0 mx-md-10 custom-shadow">
                 <v-container>
                   <v-layout column align-center justify-center>
                     <card-info />
@@ -62,11 +60,7 @@
 </template>
 
 <script>
-import {
-  defineComponent,
-  useRoute,
-  useRouter
-} from '@nuxtjs/composition-api'
+import { defineComponent, useRoute, useRouter } from '@nuxtjs/composition-api'
 import { mapActions, mapGetters } from 'vuex'
 import { useSignup } from '@/composables/use-signup.composable'
 import RegisterForm from '@/components/forms/auth/RegisterForm.vue'
@@ -82,7 +76,7 @@ export default defineComponent({
     CardInfo
   },
 
-  setup () {
+  setup() {
     const router = useRouter()
     const route = useRoute()
     const utmContent = useUTM({ route: route.value })
@@ -133,16 +127,16 @@ export default defineComponent({
 
   computed: {
     ...mapGetters('auth', ['getUserInfo', 'isUserLoggedIn']),
-    inInvitationProcess () {
+    inInvitationProcess() {
       const { query } = this.$route
       return Boolean(
         (query.process === 'invitation-caregiver' ||
           query.process === 'invitation-playdate') &&
-        (query.email || query.phone) &&
-        query.token
+          (query.email || query.phone) &&
+          query.token
       )
     },
-    signupProcess () {
+    signupProcess() {
       if (
         this.inInvitationProcess &&
         this.$route.query.process === 'invitation-caregiver'
@@ -151,12 +145,12 @@ export default defineComponent({
       }
       return 'PARENT'
     },
-    signupProcessCaregiver () {
+    signupProcessCaregiver() {
       return this.signupProcess === 'CAREGIVER'
     }
   },
 
-  beforeMount () {
+  beforeMount() {
     if (this.userSocialData) {
       this.emailValidated = this.userSocialData.email
     }
@@ -171,7 +165,7 @@ export default defineComponent({
     ...mapActions('caregiver', { newCaregiver: 'signup' }),
     ...mapActions('auth', ['setPlaydateInvitationToken']),
 
-    async onSubmit (data) {
+    async onSubmit(data) {
       try {
         this.loading = true
         if (!this.isUserLoggedIn) {
@@ -181,11 +175,12 @@ export default defineComponent({
           this.$snotify.success('Welcome to Playgarden Prep!')
         }
         this.goToNextStep()
-      } catch (e) {} finally {
+      } catch (e) {
+      } finally {
         this.loading = false
       }
     },
-    async registerProcess (data) {
+    async registerProcess(data) {
       return await this.newParent({ ...data, flow: this.abFlow })
     }
   }
@@ -227,6 +222,6 @@ export default defineComponent({
   border-radius: 0px !important;
 }
 .custom-shadow {
-  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16) !important;
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15) !important;
 }
 </style>
