@@ -181,6 +181,7 @@ export default {
         }
       } else {
         this.lockButton = false
+        this.draft.promotion_id = null
       }
     }
   },
