@@ -210,6 +210,7 @@
           <!-- Change Plan Button -->
           <v-col v-if="billing.stripeStatus !== 'canceled'" cols="12" class="d-flex justify-center">
             <v-btn
+              v-if="!isCaregiver"
               color="primary mb-3"
               x-large
               block
@@ -219,7 +220,7 @@
             </v-btn>
           </v-col>
 
-          <v-col cols="12" class="d-flex justify-center">
+          <v-col v-if="!isCaregiver" cols="12" class="d-flex justify-center">
             <!-- Cancel Subscription -->
             <v-btn
               v-if="hasMembership"
@@ -430,6 +431,10 @@ export default {
 
     isLastLeaveMotive () {
       return this.leaveMotives[this.leaveMotives.length - 1] === this.leaveMotive
+    },
+
+    isCaregiver () {
+      return (this.getUserInfo.role.id === 4)
     },
 
     hasMembership () {
