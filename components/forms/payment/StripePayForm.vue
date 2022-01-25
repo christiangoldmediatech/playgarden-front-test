@@ -31,6 +31,7 @@
           v-model="draft.promotion_code"
           :error-messages="errors"
           label="Promotion Code"
+          :suffix="getTextValidateCoupon"
           solo
           @blur="checkValid"
         />
@@ -68,7 +69,7 @@
         class="mb-4 mt-0 main-btn ml-md-0"
         min-height="60"
         color="primary"
-        :disabled="invalid"
+        :disabled="invalid || lockButton"
         :loading="loading"
         type="submit"
         :x-large="!$vuetify.breakpoint.smAndDown"
@@ -150,10 +151,36 @@ export default {
     noTerms: Boolean
   },
 
+  data () {
+    return {
+      lockButton: false,
+      isValidCoupon: false
+    }
+  },
+
+  computed: {
+    getTextValidateCoupon () {
+      if (this.draft.promotion_code) {
+        return (this.isValidCoupon) ? 'VALID COUPON' : 'NO VALIDATE'
+      } else {
+        return ''
+      }
+    },
+    validateCoupon () {
+      return true
+    }
+  },
+
   watch: {
     'draft.promotion_code' (val) {
       if (val) {
+        this.lockButton = (val.length < 5)
         this.draft.promotion_code = val.toUpperCase()
+        if (val.length === 5) {
+          this.checkValid()
+        }
+      } else {
+        this.lockButton = false
       }
     }
   },
@@ -174,10 +201,11 @@ export default {
           this.draft.promotion_id = coupons[0].promotion_id
           this.$nuxt.$emit('send-coupon', coupons[0])
           this.$snotify.success('Coupon is valid.')
+          this.isValidCoupon = true
         } else {
+          this.isValidCoupon = false
           this.$snotify.warning('Coupon is not valid.', 'Warning', {})
           this.$nuxt.$emit('send-coupon', null)
-          this.draft.promotion_code = null
           this.draft.promotion_id = null
         }
       }
