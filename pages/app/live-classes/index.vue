@@ -251,7 +251,7 @@
 
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
-import { getMondayFriday, timezoneOptions } from '@/utils/dateTools'
+import { getMondayFriday, timezoneOptions, getTimezone } from '@/utils/dateTools'
 import TodayCardsPanel from '@/components/app/live-sessions/TodayCardsPanel.vue'
 import TodayCard from '@/components/app/live-sessions/TodayCard.vue'
 import CalendarPanel from '@/components/app/live-sessions/CalendarPanel.vue'
@@ -365,7 +365,8 @@ export default {
     this.setToday(new Date())
     this.getUserLiveSessions(this.days)
     const { timezone } = this.getUserInfo
-    this.selectedTimezone = (timezone) || 'America/New_York'
+    const currentTimezone = getTimezone(timezone)
+    this.selectedTimezone = currentTimezone
   },
 
   methods: {
