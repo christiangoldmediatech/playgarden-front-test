@@ -64,7 +64,6 @@ export default {
       commit('SET_SESSIONS', meetings)
       commit('SET_TIMEZONE', timezone)
       commit('SET_TOTAL', total)
-      console.log('aqui settimezone')
       return data
     } catch (error) {
       return Promise.reject(error)

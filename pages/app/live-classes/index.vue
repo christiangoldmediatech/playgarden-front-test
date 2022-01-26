@@ -52,7 +52,7 @@
                 @click="timezoneDialog = true"
               >
                 <v-icon>
-                  mdi-alarm
+                  mdi-clock
                 </v-icon>
               </v-btn>
             </v-btn-toggle>
@@ -448,6 +448,7 @@ export default {
       try {
         await this.setTimezone({ timezone: this.selectedTimezone })
         await this.fetchUserInfo()
+        await this.getUserLiveSessions(this.days)
         this.viewModeVal = 0
         this.timezoneDialog = false
       } catch (err) {

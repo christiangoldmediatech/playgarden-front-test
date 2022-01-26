@@ -95,7 +95,6 @@ export default {
     time () {
       const start = moment(this.entry.dateStart)
       const { timezone } = this.getUserInfo
-      console.log('timezone--', timezone)
       return formatTimezone(start, {
         format: 'HH:mm',
         timezone,

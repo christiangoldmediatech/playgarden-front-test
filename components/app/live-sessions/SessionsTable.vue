@@ -124,7 +124,6 @@ export default {
     ...mapGetters('live-sessions', ['getAdvancedSchedule']),
 
     hourOffset () {
-      console.log('getAdvancedSchedule.firstHour --', this.getAdvancedSchedule.firstHour)
       return this.getAdvancedSchedule.firstHour - 1
     },
 
