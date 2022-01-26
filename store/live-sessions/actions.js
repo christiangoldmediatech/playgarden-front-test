@@ -1,4 +1,5 @@
 import { snotifyError } from '@/utils/vuex'
+import { getTimezone } from '@/utils/dateTools'
 
 export default {
   createLiveSession (_, data) {
@@ -61,8 +62,9 @@ export default {
       })
       const userInfo = rootGetters['auth/getUserInfo']
       const timezone = (userInfo.timezone) ? userInfo.timezone : 'America/New_York'
+      const currentTimezone = getTimezone(timezone)
       commit('SET_SESSIONS', meetings)
-      commit('SET_TIMEZONE', timezone)
+      commit('SET_TIMEZONE', currentTimezone)
       commit('SET_TOTAL', total)
       return data
     } catch (error) {
