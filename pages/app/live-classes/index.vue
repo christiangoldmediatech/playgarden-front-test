@@ -251,7 +251,7 @@
 
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
-import { getMondayFriday } from '@/utils/dateTools'
+import { getMondayFriday, timezoneOptions } from '@/utils/dateTools'
 import TodayCardsPanel from '@/components/app/live-sessions/TodayCardsPanel.vue'
 import TodayCard from '@/components/app/live-sessions/TodayCard.vue'
 import CalendarPanel from '@/components/app/live-sessions/CalendarPanel.vue'
@@ -286,32 +286,8 @@ export default {
       fullscreen: true,
       showNotice: true,
       selectedTimezone: 'America/New_York',
-      timezoneOptions: [{
-        name: 'Hawaii Standard Time',
-        value: 'Pacific/Honolulu'
-      },
-      {
-        name: 'Alaska Standard Time',
-        value: 'America/Anchorage'
-      },
-      {
-        name: 'Pacific Standard Time',
-        value: 'America/Angeles'
-      },
-      {
-        name: 'Mountain Standard Time',
-        value: 'America/Denver'
-      },
-      {
-        name: 'Central Standard Time',
-        value: 'America/Chicago'
-      },
-      {
-        name: 'Eastern Standard Time',
-        value: 'America/New_York'
-      }
-      ],
       timezoneDialog: false,
+      timezoneOptions,
       viewModeVal: 0
     }
   },

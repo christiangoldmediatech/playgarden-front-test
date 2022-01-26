@@ -7,6 +7,32 @@ dayjs.extend(customParseFormat)
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
+export const timezoneOptions = [{
+  name: 'Hawaii Standard Time',
+  value: 'Pacific/Honolulu'
+},
+{
+  name: 'Alaska Standard Time',
+  value: 'America/Anchorage'
+},
+{
+  name: 'Pacific Standard Time',
+  value: 'America/Angeles'
+},
+{
+  name: 'Mountain Standard Time',
+  value: 'America/Denver'
+},
+{
+  name: 'Central Standard Time',
+  value: 'America/Chicago'
+},
+{
+  name: 'Eastern Standard Time',
+  value: 'America/New_York'
+}
+]
+
 export const translateUTC = (date) => {
   const utcDate = dayjs.utc(date)
   let newDate = dayjs()
@@ -52,15 +78,21 @@ export const formatTimezone = (
   {
     format = 'MM-DD-YYYY HH:mm:ss',
     fromFormat,
-    timezone = 'America/New_York',
+    timezone,
     returnObject = false
   } = {}
 ) => {
+  timezone = getTimezone(timezone)
   let date = dayjs(value, fromFormat)
   if (timezone) {
     date = dayjs.tz(value, timezone)
   }
   return returnObject ? date : date.format(format)
+}
+
+export const getTimezone = (timezone) => {
+  const currentTimezone = timezoneOptions.find(item => item.value === timezone)
+  return (currentTimezone) ? timezone : 'America/New_York'
 }
 
 export const sameDay = (d1, d2) => {
