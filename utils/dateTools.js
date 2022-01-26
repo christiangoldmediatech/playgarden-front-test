@@ -59,7 +59,6 @@ export const formatTimezone = (
   let date = dayjs(value, fromFormat)
   if (timezone) {
     date = dayjs.tz(value, timezone)
-    // date = dayjs(value).tz(timezone)
   }
   return returnObject ? date : date.format(format)
 }
