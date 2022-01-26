@@ -33,7 +33,6 @@
           label="Promotion Code"
           :suffix="getTextValidateCoupon"
           solo
-          @blur="checkValid"
         />
       </validation-provider>
 
@@ -161,13 +160,10 @@ export default {
   computed: {
     getTextValidateCoupon () {
       if (this.draft.promotion_code) {
-        return (this.isValidCoupon) ? 'VALID COUPON' : 'NO VALIDATE'
+        return (this.isValidCoupon) ? 'VALID COUPON' : 'INVALID COUPON'
       } else {
         return ''
       }
-    },
-    validateCoupon () {
-      return true
     }
   },
 
@@ -176,7 +172,7 @@ export default {
       if (val) {
         this.lockButton = (val.length < 5)
         this.draft.promotion_code = val.toUpperCase()
-        if (val.length === 5) {
+        if (val.length >= 5) {
           this.checkValid()
         }
       } else {
@@ -203,8 +199,10 @@ export default {
           this.$nuxt.$emit('send-coupon', coupons[0])
           this.$snotify.success('Coupon is valid.')
           this.isValidCoupon = true
+          this.lockButton = false
         } else {
           this.isValidCoupon = false
+          this.lockButton = true
           this.$snotify.warning('Coupon is not valid.', 'Warning', {})
           this.$nuxt.$emit('send-coupon', null)
           this.draft.promotion_id = null
