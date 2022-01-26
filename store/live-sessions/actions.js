@@ -42,7 +42,7 @@ export default {
     return this.$axios.$patch(`/live-sessions/${id}/recover`)
   },
 
-  async getUserLiveSessions ({ commit }, { monday, friday, admin }) {
+  async getUserLiveSessions ({ commit, rootGetters }, { monday, friday, admin }) {
     try {
       let data
       const params = {
@@ -59,8 +59,12 @@ export default {
       const { total, meetings } = data = await this.$axios.$get('/live-sessions', {
         params
       })
+      const userInfo = rootGetters['auth/getUserInfo']
+      const timezone = (userInfo.timezone) ? userInfo.timezone : 'America/New_York'
       commit('SET_SESSIONS', meetings)
+      commit('SET_TIMEZONE', timezone)
       commit('SET_TOTAL', total)
+      console.log('aqui settimezone')
       return data
     } catch (error) {
       return Promise.reject(error)

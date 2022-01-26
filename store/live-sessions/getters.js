@@ -1,5 +1,6 @@
 export default {
-  getAdvancedSchedule (state) {
+  getAdvancedSchedule(state, getters) {
+    console.log('getters--', getters)
     const hourDays = new Array(19).fill([])
     const days = new Array(5).fill(hourDays)
     // Create default base obj
