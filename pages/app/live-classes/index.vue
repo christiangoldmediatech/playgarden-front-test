@@ -43,7 +43,7 @@
               >
                 Day
               </v-btn>
-              <v-btn
+              <!-- <v-btn
                 :color="viewMode === 'TIME' ? 'accent' : 'white'"
                 class="lsess-switcher-btn text-none font-weight-light"
                 :class="{
@@ -54,7 +54,7 @@
                 <v-icon>
                   mdi-clock
                 </v-icon>
-              </v-btn>
+              </v-btn> -->
             </v-btn-toggle>
 
             <v-col class="hidden-sm-and-down" cols="12">
@@ -85,6 +85,15 @@
             >
               Watch recorded classes
             </v-btn>
+          </v-row>
+
+          <v-row>
+            <v-col cols="12">
+              <span class="text-decoration-underline timezone" @click="timezoneDialog = true">
+                <!-- <a class="accent--text">Hours are in {{ selectedTimezone }}, you can change timezones here</a> -->
+                Hours are in {{ getAcronymCurrent }}, you can change timezones here
+              </span>
+            </v-col>
           </v-row>
 
           <sessions-table v-if="!loading" :day-mode="viewMode === 'DAY'" :today="today" />
@@ -235,7 +244,7 @@
                     <v-btn class="mt-3 mr-4" color="accent" @click="saveTimeZone">
                       Save
                     </v-btn>
-                    <v-btn class="mt-3" color="" @click="timezoneDialog = false; viewModeVal = 0">
+                    <v-btn class="mt-3" color="" @click="closeTimezoneModal">
                       Close
                     </v-btn>
                   </v-row>
@@ -306,6 +315,31 @@ export default {
       return null
     },
 
+    getAcronymCurrent () {
+      let acronym = ''
+      switch (this.selectedTimezone) {
+        case 'America/New_York':
+          acronym = 'EST'
+          break
+        case 'Pacific/Honolulu':
+          acronym = 'HST'
+          break
+        case 'America/Anchorage':
+          acronym = 'AKST'
+          break
+        case 'America/Angeles':
+          acronym = 'PST'
+          break
+        case 'America/Denver':
+          acronym = 'MST'
+          break
+        case 'America/Chicago':
+          acronym = 'CST'
+          break
+      }
+      return acronym
+    },
+
     orderedSessions () {
       const sessions = jsonCopy(this.sessions)
       const now = dayjs().unix()
@@ -364,9 +398,7 @@ export default {
   created () {
     this.setToday(new Date())
     this.getUserLiveSessions(this.days)
-    const { timezone } = this.getUserInfo
-    const currentTimezone = getTimezone(timezone)
-    this.selectedTimezone = currentTimezone
+    this.setCurrentTimezone()
   },
 
   methods: {
@@ -379,6 +411,18 @@ export default {
         this.dialog = false
         this.loading = false
       })
+    },
+
+    closeTimezoneModal() {
+      this.timezoneDialog = false
+      this.viewModeVal = 0
+      this.setCurrentTimezone()
+    },
+
+    setCurrentTimezone() {
+      const { timezone } = this.getUserInfo
+      const currentTimezone = getTimezone(timezone)
+      this.selectedTimezone = currentTimezone
     },
 
     goToRecordings () {
@@ -491,6 +535,12 @@ export default {
   &-switcher-btn {
     width: 80px;
   }
+}
+.timezone {
+  color: var(--v-accent-base) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
 }
 .dialog-overlay {
   background-color: rgba(0, 0, 0, 0.68) !important;
