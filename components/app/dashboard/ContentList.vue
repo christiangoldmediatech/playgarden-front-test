@@ -164,6 +164,7 @@ export default defineComponent({
 
     const isItemDisabled = (item: any) => {
       return item.disabled || !props.enabled
+      // return item.disabled
     }
 
     const nuxt = useNuxtHelper()

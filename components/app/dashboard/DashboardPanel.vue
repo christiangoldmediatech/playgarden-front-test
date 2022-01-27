@@ -74,17 +74,17 @@
         @click.native="openCourseProgress"
       />
 
-      <div class="lesson-panel-content">
+      <div v-if="lesson" class="lesson-panel-content">
         <!-- VIDEO LESSONS -->
         <content-section
           number="1"
           title="Video Lessons"
           :progress="videos.progress"
           :progress-next="videos.progressNext"
-          enabled
+          :enabled="lesson.doing"
         >
           <!-- VIDEOS -->
-          <content-list :items="videos.items" v-bind="{ noLinkMode }" item-type="videoLesson" />
+          <content-list :items="videos.items" v-bind="{ noLinkMode, enabled: lesson.doing }" item-type="videoLesson" />
 
           <!-- PROGRESS -->
           <lesson-progress :progress="videos.progress" />
@@ -213,7 +213,7 @@
           :progress-next="activities.progressNext"
           :enabled="videos.progress === 100"
         >
-          <content-list :items="activities.items" v-bind="{ noLinkMode }" item-type="activity" />
+          <content-list :items="activities.items" v-bind="{ noLinkMode, enabled: lesson.doing }" item-type="activity" />
 
           <!-- PROGRESS -->
           <lesson-progress :progress="activities.progress" />

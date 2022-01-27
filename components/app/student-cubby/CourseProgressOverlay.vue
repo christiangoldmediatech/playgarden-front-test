@@ -308,7 +308,9 @@ export default {
       this.loading = true
       this.fetchChildProgress()
       this.getCourseProgressByChildId({ id: this.studentId, curriculumTypeId: this.selectedLetter }).then((data) => {
-        this.lessons = data.map(({ lesson }) => lesson)
+        this.lessons = data.map(({ lesson, doing }) => {
+          return { ...lesson, doing }
+        })
         this.loading = false
       })
     },
