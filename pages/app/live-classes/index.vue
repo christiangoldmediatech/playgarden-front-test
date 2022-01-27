@@ -91,7 +91,7 @@
             <v-col cols="12">
               <span class="font-weight-bold">
                 <!-- <a class="accent--text">Hours are in {{ selectedTimezone }}, you can change timezones here</a> -->
-                *Hours are in {{ getAcronymCurrent }}, you can change time zones <span class=" text-decoration-underline font-weight-bold timezone" @click="timezoneDialog = true">CLICKING HERE</span>
+                *Hours are in {{ getAcronymCurrent }} time, you can change time zones <span class=" text-decoration-underline font-weight-bold timezone" @click="timezoneDialog = true">CLICKING HERE</span>
               </span>
             </v-col>
           </v-row>
