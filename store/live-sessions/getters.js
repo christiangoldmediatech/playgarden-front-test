@@ -1,7 +1,6 @@
 import dayjs from 'dayjs'
 import moment from 'moment'
 import timezone from 'dayjs/plugin/timezone'
-import { formatTimezone } from '@/utils/dateTools'
 dayjs.extend(timezone)
 
 export default {
