@@ -18,11 +18,11 @@
           />
         </v-col>
 
-        <v-col class="lsess-schedule pt-0" cols="12" md="8" lg="9" xl="10">
-          <v-row class="pos-relative pt-md-2 my-0" justify="center" align="center">
+        <v-col class="pt-0 lsess-schedule" cols="12" md="8" lg="9" xl="10">
+          <v-row class="my-0 pos-relative pt-md-2" justify="center" align="center">
             <v-btn-toggle
               v-model="viewModeVal"
-              class="text-none ml-md-4 mt-6 mt-md-0"
+              class="mt-6 text-none ml-md-4 mt-md-0"
               :class="{ 'pos-absolute pos-left-0': $vuetify.breakpoint.mdAndUp }"
             >
               <v-btn
@@ -65,7 +65,7 @@
             </v-col>
 
             <v-btn
-              class="text-none mr-md-4 mt-6 mt-md-0"
+              class="mt-6 text-none mr-md-4 mt-md-0"
               :class="{ 'pos-absolute pos-right-0': $vuetify.breakpoint.mdAndUp }"
               color="accent"
               :large="$vuetify.breakpoint.smAndDown"
@@ -114,7 +114,7 @@
           cols="12"
         >
           <v-card>
-            <v-card-text class="text-h6 text-center">
+            <v-card-text class="text-center text-h6">
               There are no live classes programmed for this week. Check back later.
             </v-card-text>
           </v-card>
@@ -135,7 +135,7 @@
       <v-card class="dialog-overlay">
         <v-row no-gutters justify="start" class="mt-0">
           <v-btn
-            class="top-left text-none white--text px-4"
+            class="px-4 top-left text-none white--text"
             color="white"
             text
             :to="'./dashboard'"
@@ -149,7 +149,7 @@
         </v-row>
         <v-col class="mt-16">
           <v-row
-            class="mb-15 mt-16"
+            class="mt-16 mb-15"
             justify="center"
             align-content="center"
             no-gutters
@@ -162,7 +162,7 @@
               height="200"
               tile
             >
-              <p class="text-center font-weight-bold mt-5">
+              <p class="mt-5 text-center font-weight-bold">
                 Get access to Live Classes
               </p>
               <p class="text-center">
@@ -197,7 +197,7 @@
         <v-row no-gutters justify="start" class="mt-0">
           <v-col class="mt-16">
             <v-row
-              class="mb-15 mt-16"
+              class="mt-16 mb-15"
               justify="center"
               align-content="center"
               no-gutters
@@ -314,7 +314,7 @@ export default {
         case 'America/Anchorage':
           acronym = 'AKST'
           break
-        case 'America/Angeles':
+        case 'America/Los_Angeles':
           acronym = 'PST'
           break
         case 'America/Denver':
