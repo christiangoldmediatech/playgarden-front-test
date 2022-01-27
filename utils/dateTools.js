@@ -17,7 +17,7 @@ export const timezoneOptions = [{
 },
 {
   name: 'Pacific Standard Time',
-  value: 'America/Angeles'
+  value: 'America/Los_Angeles'
 },
 {
   name: 'Mountain Standard Time',
