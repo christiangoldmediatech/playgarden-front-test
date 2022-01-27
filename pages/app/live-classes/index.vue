@@ -89,9 +89,9 @@
 
           <v-row>
             <v-col cols="12">
-              <span class="text-decoration-underline timezone" @click="timezoneDialog = true">
+              <span class="font-weight-bold">
                 <!-- <a class="accent--text">Hours are in {{ selectedTimezone }}, you can change timezones here</a> -->
-                Hours are in {{ getAcronymCurrent }}, you can change timezones here
+                Hours are in {{ getAcronymCurrent }}, you can change time zones <span class=" text-decoration-underline font-weight-bold timezone" @click="timezoneDialog = true">CLICKING HERE</span>
               </span>
             </v-col>
           </v-row>
@@ -538,7 +538,6 @@ export default {
 }
 .timezone {
   color: var(--v-accent-base) !important;
-  font-size: 12px !important;
   font-weight: 500 !important;
   cursor: pointer !important;
 }
