@@ -43,18 +43,6 @@
               >
                 Day
               </v-btn>
-              <!-- <v-btn
-                :color="viewMode === 'TIME' ? 'accent' : 'white'"
-                class="lsess-switcher-btn text-none font-weight-light"
-                :class="{
-                  'white--text': viewMode === 'TIME'
-                }"
-                @click="timezoneDialog = true"
-              >
-                <v-icon>
-                  mdi-clock
-                </v-icon>
-              </v-btn> -->
             </v-btn-toggle>
 
             <v-col class="hidden-sm-and-down" cols="12">
@@ -90,7 +78,6 @@
           <v-row>
             <v-col cols="12">
               <span class="font-weight-bold">
-                <!-- <a class="accent--text">Hours are in {{ selectedTimezone }}, you can change timezones here</a> -->
                 *Hours are in {{ getAcronymCurrent }} time, you can change time zones <span class=" text-decoration-underline font-weight-bold timezone" @click="timezoneDialog = true">CLICKING HERE</span>
               </span>
             </v-col>
