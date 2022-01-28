@@ -31,7 +31,6 @@
           label="Promotion Code"
           :suffix="getTextValidateCoupon"
           solo
-          v-on="on"
         />
       </validation-provider>
 
@@ -264,7 +263,7 @@ export default {
   font-weight: 400;
   cursor: pointer;
 }
-.invalid {
+::v-deep.v-text-field__suffix {
   color: var(--v-error-base) !important;
 }
 </style>
