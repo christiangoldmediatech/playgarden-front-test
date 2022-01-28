@@ -115,7 +115,7 @@
 <script>
 import { mapActions } from 'vuex'
 import submittable from '@/utils/mixins/submittable'
-
+import debounce from 'lodash/debounce'
 import StripeCard from '@/components/forms/payment/StripeCard.vue'
 
 export default {
@@ -150,12 +150,11 @@ export default {
     noTerms: Boolean
   },
 
-  data () {
-    return {
-      lockButton: false,
-      isValidCoupon: false
-    }
-  },
+  data: vm => ({
+    lockButton: false,
+    isValidCoupon: false,
+    checkValid: debounce(vm._checkValid, 1050)
+  }),
 
   computed: {
     getTextValidateCoupon () {
@@ -191,22 +190,28 @@ export default {
       }
     },
 
-    async checkValid () {
-      if (this.draft.promotion_code) {
-        const coupons = await this.getCoupons({ active: true, code: this.draft.promotion_code })
-        if (coupons.length > 0) {
-          this.draft.promotion_id = coupons[0].promotion_id
-          this.$nuxt.$emit('send-coupon', coupons[0])
-          this.$snotify.success('Coupon is valid.')
-          this.isValidCoupon = true
-          this.lockButton = false
-        } else {
-          this.isValidCoupon = false
+    async _checkValid () {
+      try {
+        if (this.draft.promotion_code) {
           this.lockButton = true
-          this.$snotify.warning('Coupon is not valid.', 'Warning', {})
-          this.$nuxt.$emit('send-coupon', null)
-          this.draft.promotion_id = null
+          const coupons = await this.getCoupons({ active: true, code: this.draft.promotion_code })
+          if (coupons.length > 0) {
+            this.draft.promotion_id = coupons[0].promotion_id
+            this.$nuxt.$emit('send-coupon', coupons[0])
+            this.$snotify.success('Coupon is valid.')
+            this.isValidCoupon = true
+            this.lockButton = false
+          } else {
+            this.isValidCoupon = false
+            this.lockButton = true
+            this.$snotify.warning('Coupon is not valid.', 'Warning', {})
+            this.$nuxt.$emit('send-coupon', null)
+            this.draft.promotion_id = null
+          }
         }
+      } catch (error) {
+        this.isValidCoupon = false
+        this.lockButton = true
       }
     },
 
