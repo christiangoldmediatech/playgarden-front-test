@@ -138,7 +138,7 @@ export default {
       // Get items for links
       const videos = activities.map(({ id, activityType, videos, viewed }, i) => {
         let disabled = (this.videos.progress !== 100)
-        disabled = (!this.lesson.doing) // aqui
+        disabled = (!this.lesson.doing)
         const previous = i > 0 ? activities[i - 1] : null
         if (previous) {
           disabled = !(previous.viewed && previous.viewed.completed)
