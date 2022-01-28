@@ -29,6 +29,7 @@
           v-model="draft.promotion_code"
           :error-messages="errors"
           label="Promotion Code"
+          :color="isValidCoupon ? 'accent' : 'error'"
           :suffix="getTextValidateCoupon"
           solo
         />
