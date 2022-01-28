@@ -171,8 +171,6 @@ export default defineComponent({
     const isInAPlaydate = computed(() => {
       return playdates.value.some((playdate) => {
         return Boolean(playdate?.backpackImages?.find(({ childrenId }) => {
-          console.log('playdate--', playdate)
-          console.log('childrenId--', childrenId)
           return children.value.find(({ id }) => id === childrenId)
         }))
       })
