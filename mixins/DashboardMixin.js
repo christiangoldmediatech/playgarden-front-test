@@ -43,7 +43,10 @@ export default {
           if (this.lesson.doing && doing) {
             disabled = false
           }
+        } else if ((this.lesson.doing && !doing) || (this.lesson.doing && doing) || (this.lesson.doing === undefined && doing === undefined)) {
+          disabled = false
         }
+
         return {
           id,
           name,
