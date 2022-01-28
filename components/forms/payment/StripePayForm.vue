@@ -24,13 +24,14 @@
         <stripe-card v-model="draft.token" class="mb-4" />
       </validation-provider>
 
-      <validation-provider v-slot="{ errors }" name="Promotion Code">
+      <validation-provider v-slot="{ errors }" name="Promotion Code" rules="min:5">
         <pg-text-field
           v-model="draft.promotion_code"
           :error-messages="errors"
           label="Promotion Code"
           :suffix="getTextValidateCoupon"
           solo
+          v-on="on"
         />
       </validation-provider>
 
@@ -262,5 +263,8 @@ export default {
   color: var(--v-black-base);
   font-weight: 400;
   cursor: pointer;
+}
+.invalid {
+  color: var(--v-error-base) !important;
 }
 </style>
