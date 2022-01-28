@@ -47,7 +47,7 @@ const generateLessonVideos = (
           query: { id: video.id }
         },
         viewed: video.viewed,
-        disabled: previous ? !(previous.viewed && previous.viewed.completed) : false
+        disabled: previous ? !(previous.viewed && previous.viewed.completed) : false // aqui
       }
     })
 

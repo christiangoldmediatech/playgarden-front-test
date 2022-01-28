@@ -35,11 +35,14 @@ export default {
       const progressNext = (completedCount < this.lesson.videos.length) ? ((completedCount + 1) / this.lesson.videos.length) * 100 : 100
 
       // Get items for links
-      const videos = this.lesson.videos.map(({ id, activityType, name, description, viewed, thumbnail }, i) => {
-        let disabled = false
-        const previous = i > 0 ? this.lesson.videos[i - 1] : null
+      const videos = this.lesson.videos.map(({ id, activityType, name, description, viewed, thumbnail, doing }, i) => {
+        let disabled = (!this.lesson.doing)
+        const previous = (i > 0) ? this.lesson.videos[i - 1] : null
         if (previous) {
           disabled = !(previous.viewed && previous.viewed.completed)
+          if (this.lesson.doing && doing) {
+            disabled = false
+          }
         }
         return {
           id,
@@ -132,9 +135,14 @@ export default {
       // Get items for links
       const videos = activities.map(({ id, activityType, videos, viewed }, i) => {
         let disabled = (this.videos.progress !== 100)
+        disabled = (!this.lesson.doing) // aqui
         const previous = i > 0 ? activities[i - 1] : null
         if (previous) {
           disabled = !(previous.viewed && previous.viewed.completed)
+
+          if (this.lesson.doing && videos.doing) {
+            disabled = false
+          }
         }
         return {
           id,
