@@ -5,28 +5,26 @@
         class="text-center text-md-left"
         :class="{ 'mt-n10': $vuetify.breakpoint.smAndUp }"
       >
-        <underlined-title class="text-h6 text-md-h5" text="CREDIT CARD INFORMATION" />
-      </p>
-      <p class="text-center text-md-left">
-        <span class="text-header-info">
-          We need your credit card information to confirm who you are, but you will NOT be charged.
-        </span>
+        <strong
+          class="text-left"
+        >We need your credit card information to confirm who you are, but you
+          will NOT be charged.</strong>
+        <br>
+        <br>
+        <underlined-title
+          class="text-h6 text-md-h5"
+          text="CREDIT CARD INFORMATION"
+        />
       </p>
     </slot>
 
     <v-form class="mt-7" @submit.prevent="passes(onSubmit)">
       <!-- Card -->
-      <validation-provider
-        name="Card number"
-        rules="required"
-      >
+      <validation-provider name="Card number" rules="required">
         <stripe-card v-model="draft.token" class="mb-4" />
       </validation-provider>
 
-      <validation-provider
-        v-slot="{ errors }"
-        name="Promotion Code"
-      >
+      <validation-provider v-slot="{ errors }" name="Promotion Code">
         <pg-text-field
           v-model="draft.promotion_code"
           :error-messages="errors"
@@ -90,7 +88,7 @@
         CLOSE
       </v-btn>
     </v-form>
-    <div v-if="$vuetify.breakpoint.smAndUp">
+    <div class="pb-4 pb-md-0">
       <p v-if="isFreeForDaysTextVisible">
         <center>
           <span class="font-weight-bold text-completely">
@@ -98,12 +96,21 @@
           </span>
         </center>
       </p>
+      <br>
       <v-divider />
+      <br>
       <slot name="footer">
         <p v-if="isTrialTextVisible">
           <center class="ml-2">
             <span class="info-pay">
-              You can cancel your trial and membership anytime from the account settings.<br> Once your free trial ends you will be placed on the <span class="option-standar">Standard</span> monthly plan, you can change plans at any time in your profile page.
+              <span
+                class="d-none d-md-block"
+              >You can cancel your trial and membership anytime from the
+                account settings. <br></span>
+
+              Once your free trial ends you will be placed on the
+              <span class="option-standar">PREMIUM</span> monthly plan, you can
+              change plans at any time in your profile page.
             </span>
           </center>
         </p>
@@ -130,7 +137,7 @@ export default {
   props: {
     buttonText: {
       type: String,
-      default: 'START YOUR FREE TRIAL'
+      default: 'START LEARNING NOW'
     },
 
     isTrialTextVisible: {
@@ -167,7 +174,7 @@ export default {
   },
 
   watch: {
-    'draft.promotion_code' (val) {
+    'draft.promotion_code'(val) {
       if (val) {
         this.lockButton = (val.length < 5)
         this.draft.promotion_code = val.toUpperCase()
@@ -183,7 +190,7 @@ export default {
 
   methods: {
     ...mapActions('coupons', ['getCoupons']),
-    getSubmittableData () {
+    getSubmittableData() {
       return {
         token: this.draft.token,
         promotion_id: this.draft.promotion_id
@@ -215,7 +222,7 @@ export default {
       }
     },
 
-    resetDraft () {
+    resetDraft() {
       this.draft = {
         token: '',
         promotion_code: null,
@@ -237,6 +244,7 @@ export default {
   font-weight: 500;
   color: rgba(96, 96, 96, 0.8) !important;
   text-align: center;
+  font-weight: bold;
 }
 .option-standar {
   color: var(--v-accent-base) !important;

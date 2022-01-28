@@ -176,6 +176,14 @@ export default {
     }
   },
 
+  created () {
+    if (this.getUserInfo.role.id === 4) {
+      this.$router.push({
+        name: 'app-account-index'
+      })
+    }
+  },
+
   methods: {
     ...mapActions('auth', ['fetchUserInfo']),
     ...mapActions('payment', ['fetchBillingCards', 'addBillingCard']),
