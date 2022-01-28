@@ -75,8 +75,8 @@ export const useGlobalModal = ({ store }: { store: Store<TypedStore> }) => {
     return dataNotification
   })
 
-  const isCaregiver = computed<Boolean>(() => {
-    return (userInfo.role.id === 4)
+  const canConfirmPlan = computed<Boolean>(() => {
+    return !(userInfo.role.id === 4)
   })
 
   const showContactUsModal = () => {
@@ -101,7 +101,7 @@ export const useGlobalModal = ({ store }: { store: Store<TypedStore> }) => {
     isContactUsModalVisible,
     isNotification,
     isChangePasswordModalVisible,
-    isCaregiver,
+    canConfirmPlan,
     showContactUsModal,
     hideContactUsModal,
     showNotificationSignupModal,

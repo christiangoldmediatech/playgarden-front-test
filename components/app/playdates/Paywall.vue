@@ -27,7 +27,7 @@
       <!-- CTA -->
       <v-row no-gutters class="text-center text-md-left">
         <!-- CONFIRM YOUR PLAN NOW -->
-        <v-col v-if="!isCaregiver" cols="12" md="auto" class="my-4">
+        <v-col v-if="canConfirmPlan" cols="12" md="auto" class="my-4">
           <v-btn color="accent" class="text-none" width="250" @click="handleUpgradeNow">
             Confirm Your Plan Now
           </v-btn>
@@ -48,20 +48,20 @@
 <script lang="ts">
 import { useGlobalModal } from '@/composables'
 import { TypedStore } from '@/models'
-import { defineComponent, useRouter, useStore, computed } from '@nuxtjs/composition-api'
+import { defineComponent, useRouter, useStore } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   setup () {
     const router = useRouter()
     const store = useStore<TypedStore>()
-    const { showContactUsModal, isCaregiver } = useGlobalModal({ store })
+    const { showContactUsModal, canConfirmPlan } = useGlobalModal({ store })
 
     const handleUpgradeNow = () => {
       router.push({ name: 'app-payment-plan' })
     }
 
     return {
-      isCaregiver,
+      canConfirmPlan,
       handleUpgradeNow,
       handleContactUs: showContactUsModal
     }
