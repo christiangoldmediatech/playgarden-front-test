@@ -35,6 +35,7 @@
 
       <!-- CHANGE PASSWORD ON FIRST LOGIN -->
       <change-password-modal />
+      <email-conflict-modal />
 
       <!-- CONTENT -->
       <v-main v-if="!isFullWidth">
@@ -120,7 +121,8 @@ export default defineComponent({
     TrialEndingWeekFourModal,
     PlanUpgradeModal,
     TrialEndingPlanSelected: () => import('@/components/app/payment/TrialEnding/PlanSelected.vue'),
-    CreditCardForm: () => import('@/components/app/payment/TrialEnding/CreditCardForm.vue')
+    CreditCardForm: () => import('@/components/app/payment/TrialEnding/CreditCardForm.vue'),
+    EmailConflictModal: () => import('@/components/app/register/EmailConflictModal.vue')
   },
 
   setup () {
