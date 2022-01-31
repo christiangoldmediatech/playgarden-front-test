@@ -11,6 +11,7 @@ export interface NotificationState {
   isTrialEndingPlanSelectedModalVisible: boolean
   isTrialEndingForLastDayModalVisible: boolean
   isCreditCardModalVisible: boolean
+  isEmailConflictModalVisible: boolean
   notificationCard: {
     isVisible: boolean,
     title: string,

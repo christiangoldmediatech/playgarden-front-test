@@ -44,5 +44,8 @@ export default {
   },
   SET_IS_CREDIT_CARD_MODAL_VISIBLE (state, bool) {
     state.isCreditCardModalVisible = bool
+  },
+  SET_IS_EMAIL_CONFLICT_MODAL_VISIBLE (state, bool) {
+    state.isEmailConflictModalVisible = bool
   }
 }
