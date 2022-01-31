@@ -40,7 +40,10 @@ export default {
         const previous = i > 0 ? this.lesson.videos[i - 1] : null
         if (previous) {
           disabled = !(previous.viewed && previous.viewed.completed)
-          console.log('aqui previous', previous)
+        }
+
+        if (this.lesson.doing !== undefined) {
+          disabled = (i === 0 && !this.lesson.doing) ? true : disabled
         }
         return {
           id,
