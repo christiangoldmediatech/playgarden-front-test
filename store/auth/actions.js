@@ -96,11 +96,8 @@ export default {
 
   async fetchUserInfo ({ commit, rootGetters }) {
     try {
-      const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
-      const params = { timezone }
-      const { data } = await this.$axios.get('/auth/me', { params })
+      const { data } = await this.$axios.get('/auth/me', { })
       commit('SET_USER_INFO', data)
-
       return data
     } catch (error) {
       if (!rootGetters.isDisabledAxiosGlobalErrorHandler) {
