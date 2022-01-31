@@ -177,7 +177,7 @@ export default {
   watch: {
     'draft.promotion_code'(val) {
       if (val) {
-        this.lockButton = (val.length < 5)
+        this.lockButton = true
         this.draft.promotion_code = val.toUpperCase()
         if (val.length >= 5) {
           this.checkValid()
