@@ -29,5 +29,16 @@ export default {
   async getUploaded(ctx, childId) {
     const { data } = await this.$axios.get(`/worksheets/children/${childId}`)
     return data
+  },
+
+  async getOfflineWorksheetsByChildren(ctx, { childId }) {
+    try {
+      const data = await this.$axios.$get(
+        `worksheets/children/${childId}/by-lesson`
+      )
+      return data
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }

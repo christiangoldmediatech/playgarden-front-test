@@ -165,8 +165,7 @@ import {
   nextTick,
   useStore
 } from '@nuxtjs/composition-api'
-
-import { useChildren, useNuxtHelper, useSnotifyHelper } from '@/composables'
+import { useChildren, useNuxtHelper, useSnotifyHelper, useOfflineWorksheet } from '@/composables'
 import { APP_EVENTS } from '@/models'
 
 export default defineComponent({
@@ -185,6 +184,7 @@ export default defineComponent({
     const $nuxt = useNuxtHelper()
     const $snotify = useSnotifyHelper()
     const { currentChild } = useChildren({ store })
+    const { uploadWorksheet, saveOfflineWorksheetProgress } = useOfflineWorksheet({ store })
 
     // Custom params
     const isUploading = ref(false)
@@ -329,12 +329,12 @@ export default defineComponent({
         )
         const offlineWorksheetId = offlineWorksheet.id || null
         const childId = currentChild.value.id
-        const promises: Array<Promise<void>> = []
+        const promises: Array<Promise<any>> = []
 
         if (lessonId && childId && offlineWorksheetId) {
           fileList.value.forEach((file) => {
             promises.push(
-              store.dispatch('offline-worksheet/upload', {
+              uploadWorksheet({
                 lessonId, childId, file
               })
             )
@@ -342,17 +342,8 @@ export default defineComponent({
         }
 
         if (promises.length) {
-          const date = new Date().toISOString().substr(0, 19)
           promises.push(
-            store.dispatch('children/lesson/saveWorksheetProgress', {
-              lessonId,
-              childId,
-              worksheet: {
-                id: offlineWorksheetId,
-                completed: true,
-                date
-              }
-            })
+            saveOfflineWorksheetProgress({ lessonId, childId, offlineWorksheetId, completed: true })
           )
         } else {
           throw new Error('No images to upload')

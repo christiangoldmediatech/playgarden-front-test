@@ -39,7 +39,7 @@
         <v-card v-else width="100%">
           <portfolio-carousel
             v-for="category in categories"
-            :key="`portfolio-category-${category.id}`"
+            :key="`portfolio-category-${category.curriculumType.id}`"
             :show-child="true"
             class="mx-2 pt-2"
             v-bind="{ category }"
@@ -76,7 +76,7 @@ import { defineComponent, ref, useRoute, computed, onMounted, watch, useStore } 
 import PortfolioCarousel from '@/components/app/student-cubby/PortfolioCarousel.vue'
 import PortfolioOverlay from '@/components/app/student-cubby/PortfolioOverlay.vue'
 import { useOfflineWorksheet, useSnotifyHelper } from '@/composables'
-import { OfflineWorksheet, Child, TypedStore } from '@/models'
+import { OfflineWorksheetLesson, Child, TypedStore } from '@/models'
 
 export default defineComponent({
   name: 'Portfolio',
@@ -93,14 +93,27 @@ export default defineComponent({
     const store = useStore<TypedStore>()
     const snotify = useSnotifyHelper()
     const studentId = computed(() => Number(route.value.query.id))
-    const uploadedWorksheets = ref<OfflineWorksheet[]>([])
+    const uploadedWorksheets = ref<OfflineWorksheetLesson[]>([])
     const child = ref<Child>()
     const loading = ref<Boolean>()
 
-    const { getUploaded, getChild } = useOfflineWorksheet({ store })
+    const { getOfflineWorksheetsByChildId, getChild } = useOfflineWorksheet({ store })
     loading.value = false
     const categories = computed(() => {
-      return uploadedWorksheets.value.filter(({ worksheetUploads }) => worksheetUploads.length > 0)
+      const filtered = uploadedWorksheets.value.filter(({ worksheetUploads }) => worksheetUploads.length > 0)
+      return filtered.map((owLesson) => {
+        const mappedUploads = owLesson.worksheetUploads.map((owUpload) => {
+          return {
+            ...owUpload,
+            children: child.value
+          }
+        })
+
+        return {
+          ...owLesson,
+          worksheetUploads: mappedUploads
+        }
+      })
     })
 
     watch(studentId, (val) => {
@@ -116,7 +129,7 @@ export default defineComponent({
 
       try {
         loading.value = true
-        uploadedWorksheets.value = await getUploaded(studentId.value)
+        uploadedWorksheets.value = await getOfflineWorksheetsByChildId(studentId.value)
         child.value = await getChild(studentId.value)
       } catch (error) {
         snotify.error('Sorry! There was an error loading your progress.')
