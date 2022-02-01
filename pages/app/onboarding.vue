@@ -69,10 +69,12 @@
 </template>
 
 <script>
+import { defineComponent, useStore } from '@nuxtjs/composition-api'
 import { mapActions, mapGetters } from 'vuex'
+import { useNotification } from '@/composables'
 // import PgInlineVideoPlayer from '@/components/pg-video-js-player/PgInlineVideoPlayer.vue'
 
-export default {
+export default defineComponent({
   name: 'Onboarding',
 
   // components: {
@@ -86,6 +88,15 @@ export default {
     onboardings: [],
     player: null
   }),
+
+  setup() {
+    const store = useStore()
+    const Notification = useNotification({ store })
+
+    return {
+      checkIfShouldSendShippingAddressNotification: Notification.checkIfShouldSendShippingAddressNotification
+    }
+  },
 
   computed: {
     ...mapGetters('auth', {
@@ -141,7 +152,6 @@ export default {
   methods: {
     ...mapActions('auth', ['updateAuthOnboarding']),
     ...mapActions('onboarding', ['getOnboardings']),
-    ...mapActions('notifications', ['checkIfShouldSendShippingAddressNotification']),
 
     onPlayerReady ({ player, videos }) {
       this.player = player
@@ -186,5 +196,5 @@ export default {
       }
     }
   }
-}
+})
 </script>

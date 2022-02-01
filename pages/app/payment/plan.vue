@@ -213,6 +213,14 @@ export default {
     }
   },
 
+  created () {
+    if (this.getUserInfo.role.id === 4) {
+      this.$router.push({
+        name: 'app-account-index'
+      })
+    }
+  },
+
   mounted () {
     if (this.isTrialExpired) {
       this.plansShown = true

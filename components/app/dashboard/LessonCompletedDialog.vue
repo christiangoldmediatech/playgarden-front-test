@@ -61,7 +61,7 @@
                   :disabled="loading"
                   @click.stop="$emit('input', false)"
                 >
-                  Return to dashboard
+                  Return to lesson
                 </v-btn>
               </v-col>
             </v-row>
@@ -106,6 +106,9 @@ export default {
       if (val) {
         this.waitAndPlay()
       } else {
+        if (this.player) {
+          this.player.pause()
+        }
         this.$emit('close')
       }
     }
@@ -175,8 +178,10 @@ export default {
     waitAndPlay() {
       const wait = window.setInterval(() => {
         if (this.player) {
-          this.player.currentTime(0)
-          this.player.play()
+          if (this.value) {
+            this.player.currentTime(0)
+            this.player.play()
+          }
           window.clearInterval(wait)
         }
       }, 100)

@@ -86,27 +86,29 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
     const shippingAddress = await getShippingAdress()
 
     if (shippingAddress) {
-      setIsShippingModalVisible(false)
       return
     }
 
-    const didShowModalBefore = hasLocalStorage()
-      ? JSON.parse(window.localStorage.getItem('seen:shipping-address-modal') || 'false')
-      : false
+    const workbookReminderDate = hasLocalStorage()
+      ? JSON.parse(window.localStorage.getItem('pg-workbook-reminder') ?? 'null')
+      : null
 
-    if (didShowModalBefore) {
-      setNotificationCard({
-        isVisible: true,
-        title: 'WE WANT TO SEND YOU A WELCOME KIT!',
-        description: 'We require a shipping address in order to send the Welcome Kit with our first Workbook.',
-        action: () => {
-          setIsShippingModalVisible(true)
-        },
-        image: require('@/assets/png/megaphone.png'),
-        actionText: 'To learn more'
-      })
-    } else {
+    const shouldShowShippingModal = workbookReminderDate
+      ? dayjs().isAfter(dayjs.unix(workbookReminderDate), 'seconds')
+      : true
+
+    if (shouldShowShippingModal) {
       setIsShippingModalVisible(true)
+    }
+  }
+
+  const showShippinAddressModalAgain = (boolean = false) => {
+    if (hasLocalStorage()) {
+      if (boolean) {
+        window.localStorage.setItem('pg-workbook-reminder', dayjs().add(12, 'hours').unix().toString())
+      } else {
+        window.localStorage.setItem('pg-workbook-reminder', dayjs().add(70, 'years').unix().toString())
+      }
     }
   }
 
@@ -298,8 +300,13 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
   }
 
   return {
+    checkIfShouldSendShippingAddressNotification,
+    checkIfShouldShowTrialExpiredModal,
+    checkIfShouldShowTrialExpiringRibbon,
+    checkUserShippingAddressAndNotify,
     expiringRibbonHeightDesktop,
     expiringRibbonHeightMobile,
+    handleTrialEndingFlow,
     isCreditCardModalVisible,
     isPlanUpgradeModalVisible,
     isShippingModalVisible,
@@ -307,16 +314,13 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
     isTrialExpiredModalVisible,
     isTrialExpiringRibbonVisible,
     notificationCard,
-    checkIfShouldSendShippingAddressNotification,
-    checkIfShouldShowTrialExpiredModal,
-    checkIfShouldShowTrialExpiringRibbon,
-    checkUserShippingAddressAndNotify,
-    handleTrialEndingFlow,
     setIsCreditCardModalVisible,
     setIsPlanUpgradeModalVisible,
+    setIsShippingModalVisible,
     setIsTrialEndingForLastDayModalVisible,
     setIsTrialEndingPlanSelectedModalVisible,
     setIsTrialExpiringRibbonVisible,
-    setNotificationCard
+    setNotificationCard,
+    showShippinAddressModalAgain
   }
 }
