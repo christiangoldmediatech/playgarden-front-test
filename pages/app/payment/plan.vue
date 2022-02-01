@@ -75,17 +75,18 @@
             under Membership.
           </div>
 
-          <v-btn
-            v-if="!plansShown"
-            color="#68C453"
-            class="px-16"
-            dark
-            @click="showPlans"
-          >
-            CHOOSE A PLAN
-          </v-btn>
-          <br>
-          <br>
+          <template v-if="!plansShown">
+            <v-btn
+              color="#68C453"
+              class="px-16"
+              dark
+              @click="showPlans"
+            >
+              CHOOSE A PLAN
+            </v-btn>
+            <br>
+            <br>
+          </template>
 
           <nuxt-link
             v-if="!isTrialExpired"
@@ -95,7 +96,7 @@
             REMIND ME LATER
           </nuxt-link>
         </v-col>
-        <v-col v-if="plansShown" cols="12" class="mt-8">
+        <v-col v-if="plansShown" id="plansSection" cols="12" class="mt-8">
           <subscription-plan-selection
             class="mt-md-n6"
             @click:submit="onSubmit"
@@ -296,7 +297,10 @@ export default {
     },
 
     showPlans() {
-      this.showPlans = true
+      this.plansShown = true
+      this.$nextTick(() => {
+        this.$vuetify.goTo('#plansSection')
+      })
     }
   }
 }
