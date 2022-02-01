@@ -31,6 +31,7 @@
           label="Promotion Code"
           :color="isValidCoupon ? '' : 'error'"
           :suffix="getTextValidateCoupon"
+          :loading="isValidatingCoupon"
           solo
         />
       </validation-provider>
@@ -161,6 +162,7 @@ export default {
   data: vm => ({
     lockButton: false,
     isValidCoupon: false,
+    isValidatingCoupon: false,
     checkValid: debounce(vm._checkValid, 1050)
   }),
 
@@ -200,6 +202,7 @@ export default {
 
     async _checkValid () {
       try {
+        this.isValidatingCoupon = true
         if (this.draft.promotion_code) {
           this.lockButton = true
           const coupons = await this.getCoupons({ active: true, code: this.draft.promotion_code })
@@ -218,6 +221,8 @@ export default {
       } catch (error) {
         this.isValidCoupon = false
         this.lockButton = true
+      } finally {
+        this.isValidatingCoupon = false
       }
     },
 
