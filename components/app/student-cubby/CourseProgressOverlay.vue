@@ -57,28 +57,6 @@
                   display-mode
                 />
               </v-col>
-              <v-col
-                v-for="i in missing"
-                :key="`curriculum-lesson-missing-${i}`"
-                class="panel-column"
-                cols="12"
-                sm="7"
-                md="6"
-                lg="5"
-                xl="4"
-              >
-                <blank-dashboard-panel
-                  :letter="(lessons[0]) ? lessons[0].curriculumType.letter : ''"
-                  :day="i + lessons.length"
-                >
-                  <template v-if="i === 1">
-                    COME BACK TOMORROW TO UNLOCK THIS DAY
-                  </template>
-                  <template v-else>
-                    COME BACK LATER TO UNLOCK THIS DAY
-                  </template>
-                </blank-dashboard-panel>
-              </v-col>
             </v-row>
           </v-container>
         </perfect-scrollbar>
@@ -194,14 +172,6 @@ export default {
 
     currentLetter () {
       return this.letters.find(letter => letter.id === this.selectedLetter)
-    },
-
-    missing () {
-      // Return 0 if we are currently at the intro lesson
-      if (this.currentLetter && this.currentLetter.name === 'Intro') {
-        return 0
-      }
-      return 5 - this.lessons.length
     },
 
     currentMobileLesson () {
