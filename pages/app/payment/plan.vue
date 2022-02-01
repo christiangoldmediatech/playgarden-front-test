@@ -36,7 +36,7 @@
             Go Back to Home
           </v-btn>
         </v-col>
-        <v-col cols="12" class="text-center mt-4">
+        <v-col cols="12" class="text-center mt-4 mb-10">
           <div>
             <underlined-title
               :text="
@@ -74,16 +74,28 @@
             </nuxt-link>
             under Membership.
           </div>
+
           <v-btn
-            large
-            color="accent"
-            nuxt
+            v-if="!plansShown"
+            color="#68C453"
+            class="px-16"
+            dark
+            @click="showPlans"
+          >
+            CHOOSE A PLAN
+          </v-btn>
+          <br>
+          <br>
+
+          <nuxt-link
+            v-if="!isTrialExpired"
+            class="accent--text text-decoration-underline text-h5"
             :to="{ name: 'app-virtual-preschool' }"
           >
             REMIND ME LATER
-          </v-btn>
+          </nuxt-link>
         </v-col>
-        <v-col cols="12" class="mt-8">
+        <v-col v-if="plansShown" cols="12" class="mt-8">
           <subscription-plan-selection
             class="mt-md-n6"
             @click:submit="onSubmit"
@@ -171,7 +183,8 @@ export default {
   data: () => ({
     initialized: false,
     isPaymentMethodModalVisible: false,
-    isPaymentMethodModalLoading: false
+    isPaymentMethodModalLoading: false,
+    plansShown: false
   }),
 
   computed: {
@@ -197,6 +210,12 @@ export default {
 
     isMobile() {
       return this.$vuetify.breakpoint.mobile
+    }
+  },
+
+  mounted () {
+    if (this.isTrialExpired) {
+      this.plansShown = true
     }
   },
 
@@ -266,6 +285,10 @@ export default {
       } finally {
         this.isPaymentMethodModalLoading = false
       }
+    },
+
+    showPlans() {
+      this.showPlans = true
     }
   }
 }

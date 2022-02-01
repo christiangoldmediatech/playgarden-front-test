@@ -183,10 +183,6 @@
             <div class="text-uppercase font-weight-bold text-h5 grey--text text--darken-2 mb-6">
               Your Plan
             </div>
-
-            <v-btn class="warning mb-8" depressed width="190px">
-              {{ plan.planName }}
-            </v-btn>
           </v-col>
 
           <!-- Plan Name -->

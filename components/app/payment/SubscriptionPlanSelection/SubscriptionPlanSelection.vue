@@ -41,14 +41,6 @@
               <div class="px-4 px-md-8">
                 <!-- Plan Name -->
                 <p :class="planNameClasses(indexP)">
-                  <v-chip
-                    color="orange"
-                    class="text-orange-info mb-8 pa-5"
-                    label
-                  >
-                    {{ plan.planName }}
-                  </v-chip>
-                  <br>
                   <underlined-title
                     font-size="32px"
                     font-size-mobile="28px"
@@ -57,7 +49,7 @@
                   />
                 </p>
                 <!-- What's Included -->
-                <p class="text-left mt-6 plan-included">
+                <p class="text-left plan-included">
                   <label class="grey--text text--darken-2 font-weight-bold">What's included</label>
                 </p>
 
