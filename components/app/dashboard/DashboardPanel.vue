@@ -74,7 +74,7 @@
         @click.native="openCourseProgress"
       />
 
-      <div class="lesson-panel-content">
+      <div v-if="lesson" class="lesson-panel-content">
         <!-- VIDEO LESSONS -->
         <content-section
           number="1"
