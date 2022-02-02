@@ -631,8 +631,9 @@ export default {
 }
 
 .cancel_price {
-  font-size: 12px !important;
+  font-size: 13px !important;
   text-decoration:line-through !important;
+  color: var(--v-accent-base) !important;
 }
 
 .discount {
