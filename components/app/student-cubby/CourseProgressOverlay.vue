@@ -88,36 +88,6 @@
                 </v-row>
               </template>
             </dashboard-panel>
-            <blank-dashboard-panel
-              v-else
-              :letter="(lessons[0]) ? lessons[0].curriculumType.letter : ''"
-              :day="selectedDayIndex + 1"
-            >
-              <!-- Previous Day And Next Day Icon -->
-              <template #panel-toolbar>
-                <v-row justify="space-between">
-                  <v-col v-if="shouldShowPreviousDayButton" class="btnLesson">
-                    <v-btn class="ml-3" icon @click.stop="previousDay">
-                      <img src="@/assets/svg/back-arrow.svg">
-                    </v-btn>
-                  </v-col>
-                  <v-spacer />
-                  <v-col v-if="shouldShowNextDayButton" class="btnLesson">
-                    <p class="text-right mr-3">
-                      <v-btn icon @click.stop="nextDay">
-                        <img src="@/assets/svg/next-arrow.svg">
-                      </v-btn>
-                    </p>
-                  </v-col>
-                </v-row>
-              </template>
-              <template v-if="currentMobileLesson === -1">
-                COME BACK TOMORROW TO UNLOCK THIS DAY
-              </template>
-              <template v-else>
-                COME BACK LATER TO UNLOCK THIS DAY
-              </template>
-            </blank-dashboard-panel>
           </div>
         </v-container>
       </template>
@@ -127,7 +97,7 @@
 
 <script>
 import DashboardPanel from '@/components/app/dashboard/DashboardPanel.vue'
-import BlankDashboardPanel from '@/components/app/dashboard/BlankDashboardPanel.vue'
+// import BlankDashboardPanel from '@/components/app/dashboard/BlankDashboardPanel.vue'
 import LetterSelect from '@/components/app/live-sessions/recorded/LetterSelect.vue'
 import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
 import { mapGetters, mapActions } from 'vuex'
@@ -137,7 +107,7 @@ export default {
 
   components: {
     DashboardPanel,
-    BlankDashboardPanel,
+    // BlankDashboardPanel,
     PerfectScrollbar,
     LetterSelect
   },
