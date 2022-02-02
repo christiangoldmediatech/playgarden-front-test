@@ -30,7 +30,7 @@
             max-height="50"
             :max-width="$vuetify.breakpoint.mdAndUp ? 290 : 200"
             :src="require('@/assets/svg/logo.svg')"
-            @click="goToVirtualPreschool"
+            @click="handleLogoClick"
           />
           <!-- </nuxt-link> -->
         </v-toolbar-title>
@@ -226,6 +226,7 @@
 </template>
 
 <script>
+import unauthenticatedRoutes from '@/utils/consts/unauthenticatedRoutes.json'
 import computedMixin from './computed'
 
 export default {
@@ -250,7 +251,12 @@ export default {
       this.$router.push({ name: 'app-account-index' })
     },
 
-    goToVirtualPreschool() {
+    handleLogoClick() {
+      if (unauthenticatedRoutes[this.$route.name]) {
+        window.open(process.env.frontendUrl, '_self')
+        return
+      }
+
       this.$router.push({ name: 'app-virtual-preschool' })
     }
   }
