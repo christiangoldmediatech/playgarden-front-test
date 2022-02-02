@@ -82,7 +82,7 @@ export default defineComponent({
     const router = useRouter()
     const route = useRoute()
     const utmContent = useUTM({ route: route.value })
-    const { setIsEmailConflictModalVisible } = useNotification({ store })
+    const { setIsEmailConflictModalVisible, setIsAccountInactiveModalVisible } = useNotification({ store })
 
     const { abFlow, isCreditCardRequired, setupABFlow } = useSignup({
       route: route.value
@@ -119,7 +119,8 @@ export default defineComponent({
       abFlow,
       isCreditCardRequired,
       goToNextStep,
-      setIsEmailConflictModalVisible
+      setIsEmailConflictModalVisible,
+      setIsAccountInactiveModalVisible
     }
   },
 
@@ -180,8 +181,16 @@ export default defineComponent({
         }
         this.goToNextStep()
       } catch (e) {
-        if (e?.response?.data?.statusCode === 409) {
-          this.setIsEmailConflictModalVisible(true)
+        const data = e?.response?.data
+
+        if (data?.statusCode === 409) {
+          if (data?.message === 'Email already exists') {
+            this.setIsEmailConflictModalVisible(true)
+          }
+
+          if (data?.message === 'Account Canceled') {
+            this.setIsAccountInactiveModalVisible(true)
+          }
         }
       } finally {
         this.loading = false
