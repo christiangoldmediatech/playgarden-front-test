@@ -252,7 +252,7 @@ export default {
         /**
          * Show billing modal is the following criteria is met:
          * -- The use flow is NOCREDITCARD
-         * -- The user has not added any cards
+         * -- The user did not add any cards
          */
         const userCards = await this.fetchBillingCards()
 

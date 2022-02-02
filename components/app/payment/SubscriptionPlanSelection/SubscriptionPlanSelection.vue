@@ -164,7 +164,7 @@ import { mapActions, mapGetters } from 'vuex'
 
 import submittable from '@/utils/mixins/submittable'
 
-import { useGlobalModal } from '@/composables'
+import { useGlobalModal, useNotification } from '@/composables'
 
 import PlanDescription from './PlanDescription.vue'
 import RadioSelectors from './RadioSelectors.vue'
@@ -199,11 +199,13 @@ export default defineComponent({
   setup () {
     const store = useStore()
     const { showContactUsModal } = useGlobalModal({ store })
+    const { setIsTrialEndingPlanSelectedModalVisible } = useNotification({ store })
     const isAnnualSubscriptionEnabled = computed(() => store.state.plans.isAnnualSubscriptionEnabled)
 
     return {
       showContactUsModal,
-      isAnnualSubscriptionEnabled
+      isAnnualSubscriptionEnabled,
+      setIsTrialEndingPlanSelectedModalVisible
     }
   },
 
@@ -309,7 +311,7 @@ export default defineComponent({
       plan.id = this.selectedPlan.id
       try {
         await this.selectSubscriptionPlan(plan)
-        this.$snotify.success('Payment plan has been selected successfully!')
+        this.setIsTrialEndingPlanSelectedModalVisible(true)
         this.$nuxt.$emit('plan-membership-changed')
         this.$emit('click:submit', {
           draft: plan,
