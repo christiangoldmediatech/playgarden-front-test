@@ -118,7 +118,7 @@ export default {
       id: null,
       gradesList: [],
       item: generateItemTemplate(),
-      entityTypeList: ['Activities', 'Worksheets', 'Videos', 'LiveSessions']
+      entityTypeList: ['Activities', 'Worksheets', 'Videos', 'Meetings']
     }
   },
 
