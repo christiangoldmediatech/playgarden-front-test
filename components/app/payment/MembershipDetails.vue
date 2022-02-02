@@ -40,7 +40,7 @@
               <small>Free trial period ends:</small>
             </v-col>
 
-            <v-col cols="12" class="text-h6 grey--text font-weight-bold mb-1">
+            <v-col cols="12" class="text-h6 black--text font-weight-bold mb-1">
               {{ billing.trialEndDate }}
             </v-col>
           </v-row>
@@ -62,7 +62,23 @@
               <small>Your {{ membershipInterval }} membership fee is:</small>
             </v-col>
 
-            <v-col cols="12" class="text-h6 grey--text font-weight-bold mb-1">
+            <v-col v-if="billing.planAmountDiscount" cols="12" class="text-h6 black--text font-weight-bold mb-1">
+              <div>
+                <span>{{
+                  billing.planAmountDiscount.toLocaleString("en-US", {
+                    style: "currency",
+                    currency: "USD",
+                  })
+                }}</span>
+                <span class="cancel_price grey--text">{{
+                  billing.planAmount.toLocaleString("en-US", {
+                    style: "currency",
+                    currency: "USD",
+                  })
+                }}</span>
+              </div>
+            </v-col>
+            <v-col v-else cols="12" class="text-h6 black--text font-weight-bold mb-1">
               <div>
                 <span>{{
                   billing.planAmount.toLocaleString("en-US", {
@@ -76,21 +92,29 @@
 
           <!-- Discount -->
           <v-row v-if="billing.planAmountDiscount" no-gutters>
-            <v-col cols="12" class="text-h6 grey--text mb-1">
-              <small>Discount</small>
+            <v-col cols="5" class="text-h7 grey--text mb-1">
+              <small>Coupon applied:</small>
+            </v-col>
+            <v-col cols="7" class="justify-end mb-1">
+              <div class="text-right">
+                <span class="text-decoration-underline text-h7 font-weight-bold add-coupon">
+                  <small>Add coupon code</small>
+                </span>
+                <v-icon small color="accent" class="text-h7 hidden-md-and-down">
+                  mdi-plus
+                </v-icon>
+              </div>
             </v-col>
 
-            <v-col cols="12" md="6">
-              <small class="grey--text font-weight-bold">Code:</small>
-              <span class="text-h6 grey--text font-weight-bold mb-3 ml-2">{{ billing.discountCode }}</span>
+            <v-col class="mt-2" cols="12" md="5">
+              <span class="text-h7 black--text font-weight-bold mb-3">{{ billing.discountCode }}</span>
             </v-col>
 
-            <v-col cols="12" md="6" class="mb-3">
-              <small class="grey--text font-weight-bold">Amount:</small>
-              <span v-if="billing.percentOff" class="text-h6 grey--text font-weight-bold mb-3 ml-2">
+            <v-col cols="12" md="7" class="mb-3 mt-1">
+              <span v-if="billing.percentOff" class="discount grey--text font-weight-bold mb-3">
                 {{ billing.percentOff }} %
               </span>
-              <span v-if="billing.amountOff" class="text-h6 grey--text font-weight-bold mb-3 ml-2">
+              <span v-if="billing.amountOff" class="discount grey--text font-weight-bold mb-3">
                 {{
                   billing.amountOff.toLocaleString("en-US", {
                     style: "currency",
@@ -98,24 +122,7 @@
                   })
                 }}
               </span>
-            </v-col>
-          </v-row>
-
-          <v-divider v-if="billing.planAmountDiscount" />
-
-          <!-- Total Amount -->
-          <v-row v-if="billing.planAmountDiscount" no-gutters class="mt-3">
-            <v-col cols="6" class="text-h5 text-md-h4 grey--text">
-              Total
-            </v-col>
-
-            <v-col cols="6" class="text-h5 text-md-h4 grey--text font-weight-bold text-right">
-              <span v-if="billing.planAmountDiscount">{{
-                billing.planAmountDiscount.toLocaleString("en-US", {
-                  style: "currency",
-                  currency: "USD",
-                })
-              }}</span>
+              <small class="grey--text font-weight-bold discount">discount on your membership</small>
             </v-col>
           </v-row>
         </div>
@@ -615,5 +622,20 @@ export default {
 
 .v-btn:not(.v-btn--text) {
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16) !important;
+}
+
+.add-coupon{
+  color: var(--v-accent-base) !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+}
+
+.cancel_price {
+  font-size: 12px !important;
+  text-decoration:line-through !important;
+}
+
+.discount {
+  font-size: 10px !important;
 }
 </style>
