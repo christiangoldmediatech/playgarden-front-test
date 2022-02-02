@@ -70,7 +70,7 @@
                     currency: "USD",
                   })
                 }}</span>
-                <span class="cancel_price grey--text">{{
+                <span class="old_price grey--text">{{
                   billing.planAmount.toLocaleString("en-US", {
                     style: "currency",
                     currency: "USD",
@@ -630,7 +630,7 @@ export default {
   cursor: pointer !important;
 }
 
-.cancel_price {
+.old_price {
   font-size: 13px !important;
   text-decoration:line-through !important;
   color: var(--v-accent-base) !important;
