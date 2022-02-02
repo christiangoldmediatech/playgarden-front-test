@@ -51,6 +51,8 @@ export default defineComponent({
     }
 
     function handleHereClick() {
+      setIsAccountInactiveModalVisible(false)
+
       router.push({
         name: 'auth-login'
       })
