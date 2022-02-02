@@ -205,7 +205,7 @@
                         <v-col cols="6" md="10">
                           <template v-if="shippingAddress">
                             <b>{{ shippingAddress.address1 }},</b>
-                            <template v-if="shippingAddress.address2.length">
+                            <template v-if="shippingAddress.address2">
                               <b> {{ shippingAddress.address2 }},</b>
                             </template>
                             <b>{{ shippingAddress.city }},
