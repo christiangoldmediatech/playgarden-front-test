@@ -24,13 +24,15 @@
         <stripe-card v-model="draft.token" class="mb-4" />
       </validation-provider>
 
-      <validation-provider v-slot="{ errors }" name="Promotion Code">
+      <validation-provider v-slot="{ errors }" name="Promotion Code" rules="min:5">
         <pg-text-field
           v-model="draft.promotion_code"
           :error-messages="errors"
           label="Promotion Code"
+          :color="isValidCoupon ? '' : 'error'"
+          :suffix="getTextValidateCoupon"
+          :loading="isValidatingCoupon"
           solo
-          @blur="checkValid"
         />
       </validation-provider>
 
@@ -66,7 +68,7 @@
         class="mb-4 mt-0 main-btn ml-md-0"
         min-height="60"
         color="primary"
-        :disabled="invalid"
+        :disabled="invalid || lockButton"
         :loading="loading"
         type="submit"
         :x-large="!$vuetify.breakpoint.smAndDown"
@@ -122,7 +124,7 @@
 <script>
 import { mapActions } from 'vuex'
 import submittable from '@/utils/mixins/submittable'
-
+import debounce from 'lodash/debounce'
 import StripeCard from '@/components/forms/payment/StripeCard.vue'
 
 export default {
@@ -157,10 +159,34 @@ export default {
     noTerms: Boolean
   },
 
+  data: vm => ({
+    lockButton: false,
+    isValidCoupon: false,
+    isValidatingCoupon: false,
+    checkValid: debounce(vm._checkValid, 1050)
+  }),
+
+  computed: {
+    getTextValidateCoupon () {
+      if (this.draft.promotion_code) {
+        return (this.isValidCoupon) ? 'VALID COUPON' : 'INVALID COUPON'
+      } else {
+        return ''
+      }
+    }
+  },
+
   watch: {
     'draft.promotion_code'(val) {
       if (val) {
+        this.lockButton = true
         this.draft.promotion_code = val.toUpperCase()
+        if (val.length >= 5) {
+          this.checkValid()
+        }
+      } else {
+        this.lockButton = false
+        this.draft.promotion_id = null
       }
     }
   },
@@ -174,22 +200,29 @@ export default {
       }
     },
 
-    async checkValid() {
-      if (this.draft.promotion_code) {
-        const coupons = await this.getCoupons({
-          active: true,
-          code: this.draft.promotion_code
-        })
-        if (coupons.length > 0) {
-          this.draft.promotion_id = coupons[0].promotion_id
-          this.$nuxt.$emit('send-coupon', coupons[0])
-          this.$snotify.success('Coupon is valid.')
-        } else {
-          this.$snotify.warning('Coupon is not valid.', 'Warning', {})
-          this.$nuxt.$emit('send-coupon', null)
-          this.draft.promotion_code = null
-          this.draft.promotion_id = null
+    async _checkValid () {
+      try {
+        this.isValidatingCoupon = true
+        if (this.draft.promotion_code) {
+          this.lockButton = true
+          const coupons = await this.getCoupons({ active: true, code: this.draft.promotion_code })
+          if (coupons.length > 0) {
+            this.draft.promotion_id = coupons[0].promotion_id
+            this.$nuxt.$emit('send-coupon', coupons[0])
+            this.isValidCoupon = true
+            this.lockButton = false
+          } else {
+            this.isValidCoupon = false
+            this.lockButton = true
+            this.$nuxt.$emit('send-coupon', null)
+            this.draft.promotion_id = null
+          }
         }
+      } catch (error) {
+        this.isValidCoupon = false
+        this.lockButton = true
+      } finally {
+        this.isValidatingCoupon = false
       }
     },
 
@@ -233,5 +266,8 @@ export default {
   color: var(--v-black-base);
   font-weight: 400;
   cursor: pointer;
+}
+::v-deep.v-text-field__suffix {
+  color: var(--v-error-base) !important;
 }
 </style>

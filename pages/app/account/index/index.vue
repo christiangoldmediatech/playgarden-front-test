@@ -100,7 +100,7 @@
             </v-btn>
 
             <p class="mt-7 pg-text-[14px]">
-              *Limited to 1 introductory learning package per family, in the territorial US and Canada only.
+              *In the territorial US and Canada only.
             </p>
           </div>
         </v-fade-transition>
