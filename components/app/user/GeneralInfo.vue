@@ -57,7 +57,7 @@
         <b>{{ userInfo.phoneNumber }}</b>
       </v-col>
       <v-col v-else cols="8" class="text-right">
-        <small>Add your phone number to receive SMS notifications.</small>
+        <small>Add your phone number to opt-in to text messages and calls from us.</small>
       </v-col>
     </v-row>
 
