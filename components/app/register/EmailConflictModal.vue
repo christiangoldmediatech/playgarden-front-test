@@ -51,6 +51,8 @@ export default defineComponent({
     }
 
     function handleHereClick() {
+      setIsEmailConflictModalVisible(false)
+
       router.push({
         name: 'auth-login'
       })

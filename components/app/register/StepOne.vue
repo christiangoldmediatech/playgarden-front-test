@@ -60,13 +60,14 @@
 </template>
 
 <script>
-import { defineComponent, useRoute, useRouter } from '@nuxtjs/composition-api'
+import { defineComponent, useRoute, useRouter, useStore } from '@nuxtjs/composition-api'
 import { mapActions, mapGetters } from 'vuex'
 import { useSignup } from '@/composables/use-signup.composable'
 import RegisterForm from '@/components/forms/auth/RegisterForm.vue'
 import CardInfo from '@/components/app/register/CardInfo.vue'
 import { UserFlow } from '@/models'
 import { useUTM } from '@/composables/utm/use-utm.composable'
+import { useNotification } from '@/composables'
 
 export default defineComponent({
   name: 'StepOne',
@@ -77,9 +78,11 @@ export default defineComponent({
   },
 
   setup() {
+    const store = useStore()
     const router = useRouter()
     const route = useRoute()
     const utmContent = useUTM({ route: route.value })
+    const { setIsEmailConflictModalVisible } = useNotification({ store })
 
     const { abFlow, isCreditCardRequired, setupABFlow } = useSignup({
       route: route.value
@@ -115,7 +118,8 @@ export default defineComponent({
     return {
       abFlow,
       isCreditCardRequired,
-      goToNextStep
+      goToNextStep,
+      setIsEmailConflictModalVisible
     }
   },
 
@@ -176,6 +180,9 @@ export default defineComponent({
         }
         this.goToNextStep()
       } catch (e) {
+        if (e?.response?.data?.statusCode === 409) {
+          this.setIsEmailConflictModalVisible(true)
+        }
       } finally {
         this.loading = false
       }
