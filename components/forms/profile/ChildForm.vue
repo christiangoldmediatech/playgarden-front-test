@@ -15,7 +15,7 @@
         :block="isMobile"
         @click="addRow"
       >
-        Add New Child Profile
+        Add Additional Child Profile
       </v-btn>
     </v-col>
 

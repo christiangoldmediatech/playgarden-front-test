@@ -35,7 +35,7 @@
         <validation-provider v-slot="{ errors }" name="Terms" rules="required">
           <v-checkbox
             v-model="draft.acceptTerms"
-            class="accept-terms ml-3 mt-0 pt-0"
+            class="pt-0 mt-0 ml-3 accept-terms"
             :error-messages="errors"
             :true-value="true"
             :false-value="null"
@@ -45,7 +45,7 @@
                 I have read and accept the
 
                 <nuxt-link
-                  class="terms-conditions link-text ml-1"
+                  class="ml-1 terms-conditions link-text"
                   :to="{ name: 'terms-conditions' }"
                   target="_blank"
                   @click.native.stop=""
@@ -60,7 +60,7 @@
 
       <v-btn
         block
-        class="mb-4 mt-4 main-btn"
+        class="mt-4 mb-4 main-btn"
         min-height="60"
         color="primary"
         :disabled="invalid"
@@ -71,7 +71,7 @@
         {{ buttonText }}
       </v-btn>
 
-      <p v-if="!noTrial" class="mb-15 text-body-2 text-center messages-info-register">
+      <p v-if="!noTrial" class="text-center mb-15 text-body-2 messages-info-register">
         <span>
           You will only be billed after your 30-day FREE trial is complete!
         </span>
@@ -147,9 +147,7 @@ export default {
         if (coupons.length > 0) {
           this.draft.promotion_id = coupons[0].promotion_id
           this.$nuxt.$emit('send-coupon', coupons[0])
-          this.$snotify.success('Coupon is valid.')
         } else {
-          this.$snotify.warning('Coupon is not valid.', 'Warning', {})
           this.$nuxt.$emit('send-coupon', null)
           this.draft.promotion_code = null
           this.draft.promotion_id = null

@@ -175,7 +175,6 @@ export default defineComponent({
         if (cardData.promotion_id) {
           dataSubscrition.promotion_id = cardData.promotion_id
         }
-
         await this.payShorterSubscription(dataSubscrition)
         this.goToStepThree()
       } catch (e) {
