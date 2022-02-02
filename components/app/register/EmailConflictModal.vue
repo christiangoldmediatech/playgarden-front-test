@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useStore, computed } from '@nuxtjs/composition-api'
+import { defineComponent, useStore, computed, useRouter } from '@nuxtjs/composition-api'
 import LargeImageContentDialog from '@/components/ui/dialogs/LargeImageContentDialog/LargeImageContentDialog.vue'
 import { TypedStore } from '@/models'
 import { useNotification } from '@/composables'
@@ -33,18 +33,19 @@ export default defineComponent({
 
   setup() {
     const store = useStore<TypedStore>()
-    const { setIsEmailConflictModalVisible } = useNotification({ store })
+    const router = useRouter()
+    const { isEmailConflictModalVisible, setIsEmailConflictModalVisible } = useNotification({ store })
     const img = require('@/assets/png/child-magnifying-glass.png')
-
-    const isEmailConflictModalVisible = computed(() => {
-      return store.state.notifications.isEmailConflictModalVisible
-    })
 
     function closeModal() {
       setIsEmailConflictModalVisible(false)
     }
 
-    function handleHereClick() {}
+    function handleHereClick() {
+      router.push({
+        name: 'auth-login'
+      })
+    }
 
     return {
       img,

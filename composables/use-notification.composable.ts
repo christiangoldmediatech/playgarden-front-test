@@ -73,6 +73,7 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
     store.commit('notifications/SET_IS_CREDIT_CARD_MODAL_VISIBLE', isVisible)
   }
 
+  const isEmailConflictModalVisible = computed(() => store.state.notifications.isEmailConflictModalVisible)
   const setIsEmailConflictModalVisible = (isVisible: boolean) => {
     store.commit('notifications/SET_IS_EMAIL_CONFLICT_MODAL_VISIBLE', isVisible)
   }
@@ -326,6 +327,7 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
     setIsTrialExpiringRibbonVisible,
     setNotificationCard,
     showShippinAddressModalAgain,
+    isEmailConflictModalVisible,
     setIsEmailConflictModalVisible
   }
 }
