@@ -97,7 +97,7 @@
             </v-col>
             <v-col cols="7" class="justify-end mb-1">
               <div class="text-right">
-                <span class="text-decoration-underline text-h7 font-weight-bold add-coupon">
+                <span class="text-decoration-underline text-h7 add-coupon">
                   <small>Add coupon code</small>
                 </span>
                 <v-icon small color="accent" class="text-h7 hidden-md-and-down">
