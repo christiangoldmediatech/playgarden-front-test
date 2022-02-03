@@ -111,18 +111,20 @@
             </v-col>
 
             <v-col cols="12" md="7" class="mb-3 mt-1">
-              <span v-if="billing.percentOff" class="discount grey--text font-weight-bold mb-3">
-                {{ billing.percentOff }} %
-              </span>
-              <span v-if="billing.amountOff" class="discount grey--text font-weight-bold mb-3">
-                {{
-                  billing.amountOff.toLocaleString("en-US", {
-                    style: "currency",
-                    currency: "USD",
-                  })
-                }}
-              </span>
-              <small class="grey--text font-weight-bold discount">discount on your membership</small>
+              <div class="text-right">
+                <span v-if="billing.percentOff" class="discount grey--text font-weight-bold mb-3">
+                  {{ billing.percentOff }} %
+                </span>
+                <span v-if="billing.amountOff" class="discount grey--text font-weight-bold mb-3">
+                  {{
+                    billing.amountOff.toLocaleString("en-US", {
+                      style: "currency",
+                      currency: "USD",
+                    })
+                  }}
+                </span>
+                <small class="grey--text font-weight-bold discount">discount on your membership</small>
+              </div>
             </v-col>
           </v-row>
         </div>
@@ -637,6 +639,6 @@ export default {
 }
 
 .discount {
-  font-size: 10px !important;
+  font-size: 12px !important;
 }
 </style>
