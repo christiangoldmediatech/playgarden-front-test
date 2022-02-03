@@ -127,6 +127,18 @@
               </div>
             </v-col>
           </v-row>
+          <v-row v-else no-gutters>
+            <v-col cols="12" class="justify-end mb-1">
+              <div class="text-right" @click="couponDialog = true">
+                <span class="text-decoration-underline text-h7 add-coupon">
+                  <small>Add coupon code</small>
+                </span>
+                <v-icon small color="accent" class="text-h7 hidden-md-and-down">
+                  mdi-plus
+                </v-icon>
+              </div>
+            </v-col>
+          </v-row>
         </div>
       </v-card>
       <!-- Payment Method -->
@@ -394,10 +406,10 @@
                 sm="4"
                 class="px-3 mt-16"
                 width="400"
-                height="200"
+                height="250"
                 tile
               >
-                <v-card-text>
+                <v-card-text class="mt-4">
                   <v-row justify="center" no-gutters>
                     <underlined-title text="COUPON" font-size="24px" />
                   </v-row>
@@ -415,7 +427,7 @@
                     <v-btn class="mt-3 mr-4" color="accent" :disabled="!isValidCoupon" @click="savePromotion">
                       Save
                     </v-btn>
-                    <v-btn class="mt-3" color="" @click="couponDialog = false">
+                    <v-btn class="mt-3" color="" @click="closeCouponModal">
                       Close
                     </v-btn>
                   </v-row>
@@ -453,7 +465,6 @@ export default {
     couponDialog: false,
     isValidCoupon: false,
     isValidatingCoupon: false,
-    lockButton: false,
     promotionCode: null,
     promotion_id: null,
     checkValid: debounce(vm._checkValid, 1050),
@@ -551,23 +562,17 @@ export default {
   watch: {
     promotionCode (val) {
       if (val) {
-        this.lockButton = true
         this.promotionCode = val.toUpperCase()
         if (val.length >= 5) {
           this.checkValid()
         }
       } else {
-        this.lockButton = false
         this.promotion_id = null
       }
     }
   },
   created () {
-    this.getBillingDetails()
-    this.getBillingCards()
-    this.getPlan()
-    this.$nuxt.$on('children-changed', this.getBillingDetails)
-    this.$nuxt.$on('plan-membership-changed', this.getPlan)
+    this.loadData()
   },
   mounted () {
     this.handleRouteAction()
@@ -577,7 +582,7 @@ export default {
     this.$nuxt.$off('plan-membership-changed')
   },
   methods: {
-    ...mapActions('coupons', ['getCoupons']),
+    ...mapActions('coupons', ['getCoupons', 'updateSubcriptionCoupon']),
     ...mapActions(['disableAxiosGlobal', 'enableAxiosGlobal']),
 
     ...mapActions('auth', {
@@ -590,8 +595,32 @@ export default {
       'fetchBillingDetails'
     ]),
 
-    savePromotion () {
-      console.log('save')
+    loadData () {
+      this.getBillingDetails()
+      this.getBillingCards()
+      this.getPlan()
+      this.$nuxt.$on('children-changed', this.getBillingDetails)
+      this.$nuxt.$on('plan-membership-changed', this.getPlan)
+    },
+
+    async savePromotion () {
+      try {
+        this.loading = true
+        await this.updateSubcriptionCoupon({ promotion_id: this.promotion_id })
+        this.loadData()
+      } catch (err) {
+      } finally {
+        this.promotion_id = null
+        this.promotionCode = null
+        this.loading = false
+        this.couponDialog = false
+      }
+    },
+
+    closeCouponModal () {
+      this.promotion_id = null
+      this.promotionCode = null
+      this.couponDialog = false
     },
 
     handleRouteAction () {
@@ -610,7 +639,6 @@ export default {
       try {
         this.isValidatingCoupon = true
         if (this.promotionCode) {
-          this.lockButton = true
           const coupons = await this.getCoupons({ active: true, code: this.promotionCode })
           if (coupons.length > 0) {
             this.promotion_id = coupons[0].promotion_id
@@ -618,7 +646,6 @@ export default {
             this.lockButton = false
           } else {
             this.isValidCoupon = false
-            this.lockButton = true
             this.promotion_id = null
           }
         }
