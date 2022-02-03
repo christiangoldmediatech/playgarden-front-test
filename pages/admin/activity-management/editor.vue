@@ -123,11 +123,13 @@
                   </v-col>
 
                   <v-col class="text-center" cols="12" sm="9" lg="6">
-                    <pg-video-player
-                      v-if="video && video.videoUrl"
-                      inline
-                      @ready="onPlayerReady"
-                    />
+                    <div v-if="video && video.videoUrl" class="video-player-16-9-container">
+                      <pg-video-player
+                        :control-config="{ favorite: false }"
+                        inline
+                        @ready="onPlayerReady"
+                      />
+                    </div>
 
                     <v-progress-circular
                       v-else-if="

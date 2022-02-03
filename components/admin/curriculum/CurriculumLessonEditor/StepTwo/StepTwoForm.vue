@@ -76,10 +76,14 @@
                 </v-icon>
               </v-avatar>
             </template>
-            <pg-video-player
-              inline
-              @ready="onPlayerReady({ player: $event, video: draft })"
-            />
+
+            <div class="video-player-16-9-container">
+              <pg-video-player
+                :control-config="{ favorite: false }"
+                inline
+                @ready="onPlayerReady({ player: $event, video: draft })"
+              />
+            </div>
           </v-badge>
         </div>
       </template>
