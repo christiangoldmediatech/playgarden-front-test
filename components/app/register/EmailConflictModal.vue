@@ -19,8 +19,8 @@
           />
         </div>
 
-        <p class="pg-text-center pg-text-xl md:pg-text-4xl pg-text-pg-grey pg-mt-6">
-          Click <span class="pg-text-accent pg-underline pg-font-bold" @click="handleHereClick">HERE</span> to Login into your account and finish the registration process
+        <p class="pg-text-center pg-text-xl md:pg-text-3xl pg-text-pg-grey pg-mt-6">
+          It appears that you have Register previously, please <span class="pg-text-accent pg-underline pg-font-bold pg-cursor-pointer" @click="handleHereClick">LOGIN</span> to continue the onboarding process, if you don't remember your Password you can get a new one <span class="pg-text-accent pg-underline pg-font-bold pg-cursor-pointer" @click="handleResetPasswordClick">HERE</span>.
         </p>
       </div>
     </large-image-content-dialog>
@@ -58,11 +58,20 @@ export default defineComponent({
       })
     }
 
+    function handleResetPasswordClick() {
+      setIsEmailConflictModalVisible(false)
+
+      router.push({
+        name: 'auth-paasword-reset'
+      })
+    }
+
     return {
       img,
       isEmailConflictModalVisible,
       closeModal,
-      handleHereClick
+      handleHereClick,
+      handleResetPasswordClick
     }
   }
 })
