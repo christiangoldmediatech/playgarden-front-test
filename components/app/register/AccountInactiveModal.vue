@@ -11,7 +11,7 @@
       <div class="md:pg-px-16">
         <div class="pg-text-center">
           <underlined-title
-            text="UH-OH! LOOKS LIKE YOUR ACCOUNT IS INACTIVE."
+            text="UH-OH! LOOKS LIKE YOU ALREADY HAVE AN ACCOUNT WITH US AND NOW IT IS INACTIVE."
             font-size="46px"
             font-size-mobile="24px"
             letter-spacing="4.8px"
@@ -20,7 +20,10 @@
         </div>
 
         <p class="pg-text-center pg-text-xl md:pg-text-4xl pg-text-pg-grey pg-mt-6">
-          Please click <span class="pg-text-accent pg-underline pg-font-bold" @click="handleHereClick">HERE</span> to Activate your account
+          Please click <span class="pg-text-accent pg-underline pg-font-bold pg-cursor-pointer" @click="handleHereClick">HERE TO LOGIN</span> and Activate your account again.
+        </p>
+        <p class="pg-text-center pg-text-base md:pg-text-base pg-text-pg-grey pg-mt-6">
+          If you have forgotten your Password you can always get a new one <span class="pg-text-accent pg-underline pg-font-bold pg-cursor-pointer" @click="handleResetPasswordClick">HERE</span>
         </p>
       </div>
     </large-image-content-dialog>
@@ -58,11 +61,20 @@ export default defineComponent({
       })
     }
 
+    function handleResetPasswordClick() {
+      setIsAccountInactiveModalVisible(false)
+
+      router.push({
+        name: 'auth-paasword-reset'
+      })
+    }
+
     return {
       img,
       isAccountInactiveModalVisible,
       closeModal,
-      handleHereClick
+      handleHereClick,
+      handleResetPasswordClick
     }
   }
 })
