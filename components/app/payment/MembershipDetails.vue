@@ -399,9 +399,9 @@
               >
                 <v-card-text>
                   <v-row justify="center" no-gutters>
-                    Code Promotion
+                    <underlined-title text="COUPON" font-size="24px" />
                   </v-row>
-                  <v-row>
+                  <v-row class="mt-3">
                     <pg-text-field
                       v-model="promotionCode"
                       label="Promotion Code"
@@ -411,8 +411,8 @@
                       solo
                     />
                   </v-row>
-                  <v-row justify="center">
-                    <v-btn class="mt-3 mr-4" color="accent" @click="savePromotion">
+                  <v-row class="mb-3" justify="center">
+                    <v-btn class="mt-3 mr-4" color="accent" :disabled="!isValidCoupon" @click="savePromotion">
                       Save
                     </v-btn>
                     <v-btn class="mt-3" color="" @click="couponDialog = false">
@@ -503,7 +503,7 @@ export default {
     },
 
     getTextValidateCoupon () {
-      if (this.promotion_code) {
+      if (this.promotionCode) {
         return (this.isValidCoupon) ? 'VALID COUPON' : 'INVALID COUPON'
       } else {
         return ''
@@ -609,9 +609,9 @@ export default {
     async _checkValid () {
       try {
         this.isValidatingCoupon = true
-        if (this.draft.promotionCode) {
+        if (this.promotionCode) {
           this.lockButton = true
-          const coupons = await this.getCoupons({ active: true, code: this.draft.promotionCode })
+          const coupons = await this.getCoupons({ active: true, code: this.promotionCode })
           if (coupons.length > 0) {
             this.promotion_id = coupons[0].promotion_id
             this.isValidCoupon = true
