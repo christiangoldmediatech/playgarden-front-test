@@ -62,7 +62,7 @@
           >
             <!-- Thumbnails -->
             <template v-if="thumbnailList.length">
-              <div class="d-flex">
+              <div class="d-flex flex-wrap">
                 <div
                   v-for="item in thumbnailList"
                   :key="`pending-upload-${item.index}`"
@@ -410,10 +410,33 @@ export default defineComponent({
   .upload-ow-dialog-drag-area {
     width: 100%;
     border: 5px dashed rgba(245, 142, 0, 0.49);
-    border-radius: 54px;
+    border-radius: 16px;
     background: #f8f8f8;
-    margin: 0px 14.25%;
-    padding: 50px;
+    margin: 0px 2%;
+    padding: 16px;
+    @media screen and (min-width: 600px) {
+      padding: 16px;
+      border-radius: 20px;
+      margin: 0px 4.25%;
+    }
+
+    @media screen and (min-width: 960px) {
+      padding: 25px;
+      border-radius: 24px;
+      margin: 0px 7%;
+    }
+
+    @media screen and (min-width: 1264px) {
+      padding: 32px;
+      border-radius: 36px;
+      margin: 0px 10.25%;
+    }
+
+    @media screen and (min-width: 1904px) {
+      padding: 50px;
+      border-radius: 54px;
+      margin: 0px 14.25%;
+    }
 
     .upload-ow-dialog-folder-icon {
       width: 54px;
@@ -446,13 +469,22 @@ export default defineComponent({
   .upload-ow-dialog-item {
     position: relative;
     aspect-ratio: 21 / 14;
-    width: calc(25% - 8px);
+    width: calc(50% - 8px);
     margin: 4px;
     font-size: 15px;
     color: #606060;
     font-weight: 600;
     line-height: 1.5;
     text-align: center;
+
+    @media screen and (min-width: 960px) {
+      width: calc(33.33% - 8px);
+    }
+
+    @media screen and (min-width: 1264px) {
+      width: calc(25% - 8px);
+    }
+
     img {
       width: 100%;
       height: 100%;
