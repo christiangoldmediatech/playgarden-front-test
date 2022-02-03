@@ -70,12 +70,14 @@
                     currency: "USD",
                   })
                 }}</span>
-                <span class="old_price grey--text">{{
-                  billing.planAmount.toLocaleString("en-US", {
-                    style: "currency",
-                    currency: "USD",
-                  })
-                }}</span>
+                <span class="strikethrough old_price grey--text">
+                  {{
+                    billing.planAmount.toLocaleString("en-US", {
+                      style: "currency",
+                      currency: "USD",
+                    })
+                  }}
+                </span>
               </div>
             </v-col>
             <v-col v-else cols="12" class="text-h6 black--text font-weight-bold mb-1">
@@ -773,10 +775,29 @@ export default {
 .old_price {
   font-size: 13px !important;
   text-decoration:line-through !important;
-  color: var(--v-accent-base) !important;
 }
 
 .discount {
   font-size: 12px !important;
+}
+
+.strikethrough {
+  position: relative;
+}
+.strikethrough:before {
+  position: absolute;
+  color: var(--v-accent-base) !important;
+  content: "";
+  left: 0;
+  top: 50%;
+  right: 0;
+  border-top: 1px solid;
+  border-color: inherit;
+
+  -webkit-transform:rotate(-5deg);
+  -moz-transform:rotate(-5deg);
+  -ms-transform:rotate(-5deg);
+  -o-transform:rotate(-5deg);
+  transform:rotate(-5deg);
 }
 </style>
