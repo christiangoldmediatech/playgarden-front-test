@@ -96,7 +96,7 @@
               <small>Coupon applied:</small>
             </v-col>
             <v-col cols="7" class="justify-end mb-1">
-              <div class="text-right">
+              <div class="text-right" @click="couponDialog = true">
                 <span class="text-decoration-underline text-h7 add-coupon">
                   <small>Add coupon code</small>
                 </span>
@@ -373,6 +373,59 @@
         </v-row>
       </v-col>
     </pg-dialog>
+
+    <pg-dialog
+      :value="couponDialog"
+      content-class="elevation-0"
+      :fullscreen="true"
+      persistent
+    >
+      <v-card class="dialog-overlay">
+        <v-row no-gutters justify="start" class="mt-0">
+          <v-col class="mt-16">
+            <v-row
+              class="mt-16 mb-15"
+              justify="center"
+              align-content="center"
+              no-gutters
+            >
+              <v-card
+                cols="12"
+                sm="4"
+                class="px-3 mt-16"
+                width="400"
+                height="200"
+                tile
+              >
+                <v-card-text>
+                  <v-row justify="center" no-gutters>
+                    Code Promotion
+                  </v-row>
+                  <v-row>
+                    <pg-text-field
+                      v-model="promotionCode"
+                      label="Promotion Code"
+                      :color="isValidCoupon ? '' : 'error'"
+                      :suffix="getTextValidateCoupon"
+                      :loading="isValidatingCoupon"
+                      solo
+                    />
+                  </v-row>
+                  <v-row justify="center">
+                    <v-btn class="mt-3 mr-4" color="accent" @click="savePromotion">
+                      Save
+                    </v-btn>
+                    <v-btn class="mt-3" color="" @click="couponDialog = false">
+                      Close
+                    </v-btn>
+                  </v-row>
+                </v-card-text>
+              </v-card>
+            </v-row>
+          </v-col>
+        </v-row>
+      </v-card>
+    </pg-dialog>
   </v-row>
 </template>
 
@@ -384,6 +437,7 @@ import UpdateBillingMethod from '@/components/app/payment/UpdateBillingMethod'
 import PlanDescription from '@/components/app/payment/SubscriptionPlanSelection/PlanDescription'
 import TrialIsExpiring from '@/components/app/header/TrialIsExpiring.vue'
 import BillingHistoryCard from '@/components/BillingHistoryCard.vue'
+import debounce from 'lodash/debounce'
 
 export default {
   name: 'MembershipDetails',
@@ -393,44 +447,50 @@ export default {
     TrialIsExpiring,
     BillingHistoryCard
   },
-  data () {
-    return {
-      loading: false,
-      billing: {
-        membershipInterval: 0,
-        nextBillingDate: null,
-        planAmount: 0,
-        planAmountDiscount: null,
-        percentOff: null,
-        amountOff: null,
-        planName: null,
-        trialEndDate: null,
-        subscriptionId: null,
-        status: null,
-        discountCode: null,
-        stripeStatus: ''
-      },
-      cardToUpate: null,
-      stripeCardModal: false,
-      removeSubscriptionModal: false,
-      userCards: [],
-      plan: {},
-      leaveMotive: '',
-      otherLeaveMotive: '',
-      leaveMotives: [
-        'Repeated technical issues',
-        'Too expensive',
-        'Using another learning platform',
-        'Going to in person school',
-        'Too much time commitment',
-        'My little one wasn\'t engaged',
-        'Didn\'t use it enough',
-        'Missing features I need',
-        'Didn\'t meet my expectations',
-        'Other (please explain)'
-      ]
-    }
-  },
+
+  data: vm => ({
+    loading: false,
+    couponDialog: false,
+    isValidCoupon: false,
+    isValidatingCoupon: false,
+    lockButton: false,
+    promotionCode: null,
+    promotion_id: null,
+    checkValid: debounce(vm._checkValid, 1050),
+    billing: {
+      membershipInterval: 0,
+      nextBillingDate: null,
+      planAmount: 0,
+      planAmountDiscount: null,
+      percentOff: null,
+      amountOff: null,
+      planName: null,
+      trialEndDate: null,
+      subscriptionId: null,
+      status: null,
+      discountCode: null,
+      stripeStatus: ''
+    },
+    cardToUpate: null,
+    stripeCardModal: false,
+    removeSubscriptionModal: false,
+    userCards: [],
+    plan: {},
+    leaveMotive: '',
+    otherLeaveMotive: '',
+    leaveMotives: [
+      'Repeated technical issues',
+      'Too expensive',
+      'Using another learning platform',
+      'Going to in person school',
+      'Too much time commitment',
+      'My little one wasn\'t engaged',
+      'Didn\'t use it enough',
+      'Missing features I need',
+      'Didn\'t meet my expectations',
+      'Other (please explain)'
+    ]
+  }),
   computed: {
     ...mapGetters('auth', ['getUserInfo']),
 
@@ -440,6 +500,14 @@ export default {
 
     isCaregiver () {
       return (this.getUserInfo.role.id === 4)
+    },
+
+    getTextValidateCoupon () {
+      if (this.promotion_code) {
+        return (this.isValidCoupon) ? 'VALID COUPON' : 'INVALID COUPON'
+      } else {
+        return ''
+      }
     },
 
     hasMembership () {
@@ -480,6 +548,20 @@ export default {
       return false
     }
   },
+  watch: {
+    promotionCode (val) {
+      if (val) {
+        this.lockButton = true
+        this.promotionCode = val.toUpperCase()
+        if (val.length >= 5) {
+          this.checkValid()
+        }
+      } else {
+        this.lockButton = false
+        this.promotion_id = null
+      }
+    }
+  },
   created () {
     this.getBillingDetails()
     this.getBillingCards()
@@ -495,6 +577,7 @@ export default {
     this.$nuxt.$off('plan-membership-changed')
   },
   methods: {
+    ...mapActions('coupons', ['getCoupons']),
     ...mapActions(['disableAxiosGlobal', 'enableAxiosGlobal']),
 
     ...mapActions('auth', {
@@ -507,6 +590,10 @@ export default {
       'fetchBillingDetails'
     ]),
 
+    savePromotion () {
+      console.log('save')
+    },
+
     handleRouteAction () {
       const action = this.$route.query.action
 
@@ -516,6 +603,30 @@ export default {
           break
         default:
           break
+      }
+    },
+
+    async _checkValid () {
+      try {
+        this.isValidatingCoupon = true
+        if (this.draft.promotionCode) {
+          this.lockButton = true
+          const coupons = await this.getCoupons({ active: true, code: this.draft.promotionCode })
+          if (coupons.length > 0) {
+            this.promotion_id = coupons[0].promotion_id
+            this.isValidCoupon = true
+            this.lockButton = false
+          } else {
+            this.isValidCoupon = false
+            this.lockButton = true
+            this.promotion_id = null
+          }
+        }
+      } catch (error) {
+        this.isValidCoupon = false
+        this.lockButton = true
+      } finally {
+        this.isValidatingCoupon = false
       }
     },
 
