@@ -3,7 +3,7 @@
     class="ribbon-color text-center d-flex flex-column flex-md-row align-center justify-center py-2"
     :class="{ 'ribbon-fixed-top': isFixedOnTop }"
   >
-    <span class="white--text font-weight-bold mx-2">YOUR FREE TRIAL IS ABOUT TO EXPIRE: </span>
+    <span class="white--text font-weight-bold mx-2">Your free trial will expire in: </span>
     <span class="time">
       <underlined-title
         class="white--text"

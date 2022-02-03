@@ -30,7 +30,7 @@
         </div>
 
         <div class="text-center body-1 text-md-h6 font-weight-medium grey--text text--darken-2 my-2">
-          <small>Give access to your child caregiver.</small>
+          <small>Give access to your child's caregiver!</small>
         </div>
 
         <!-- List -->

@@ -15,7 +15,7 @@
       </v-btn>
     </v-row>
     <v-col cols="12">
-      <step-two />
+      <step-two :mode="mode" />
     </v-col>
   </v-row>
 </template>
@@ -23,6 +23,7 @@
 <script>
 
 import StepTwo from '@/components/app/register/StepTwo'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Index',
@@ -39,6 +40,10 @@ export default {
   }),
 
   computed: {
+    ...mapGetters('auth', {
+      userInfo: 'getUserInfo'
+    }),
+
     getStep () {
       return this.currentStep
     }
@@ -53,6 +58,7 @@ export default {
         conversionLabel: 'SvccCMTX0voBEMTdsckD'
       })
     }
+    this.mode = (this.userInfo.registerStepType === 'CANCELED') ? 'activate-user' : this.mode
   },
 
   mounted () {

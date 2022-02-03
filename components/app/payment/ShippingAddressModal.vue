@@ -1,61 +1,119 @@
 <template>
-  <large-image-content-dialog :value="isShippingModalVisible" :img="girlFamilyTreeImg" @close="closeModal">
-    <div>
+  <large-image-content-dialog
+    :image-height="$vuetify.breakpoint.md ? '608px' : '510px'"
+    :value="isShippingModalVisible"
+    :img="girlFamilyTreeImg"
+    :fullscreen="false"
+    @close="dontShowAgain"
+  >
+    <div class="text-center">
       <underlined-title
-        text="Do you want to receive the  Playgarden Prep workbook at home, for FREE?"
+        text="We want to send you a Playgarden Prep workbook!"
         font-size="46px"
-        font-size-mobile="22px"
+        font-size-mobile="20px"
         letter-spacing="4.8px"
       />
     </div>
 
-    <div class="text-uppercase font-weight-bold text-h6 text-md-h4 grey--text text--darken-2 mt-6 mt-md-10">
-      Shipping Address
+    <div class="grey--text text--darken-2 mt-4 mb-3 my-md-6 text-center pg-text-[17px] md:pg-text-[26px]">
+      In order to receive your FREE A-D workbook, please provide your shipping
+      address by going to your Accounts Page
+      <span class="accent--text text-decoration-underline pg-cursor-pointer" @click="goToProfile">HERE</span>
     </div>
 
-    <div class="grey--text text--darken-2 caption text-md-body-2 my-3 my-md-6">
-      We want to send you our school materials, for FREE, so your little one gets the most out learning with us in this TRIAL period. Enter your address below and you should receive the Playgarden Prep workbook and specialized pencils in a couple of days!
-    </div>
+    <div class="d-flex flex-column justify-center align-center">
+      <v-btn
+        color="secondary"
+        class="my-3"
+        :x-large="!isMobile"
+        :width="isMobile ? '90%' : '500px'"
+        @click="closeModal"
+      >
+        REMIND ME LATER
+      </v-btn>
 
-    <shipping-address-details
-      edit-by-default
-      save-button-text="Send"
-      save-button-color="primary"
-      hide-cancel-button-text="REMIND ME LATER"
-      show-phone-number-field
-      wrap-state-and-zip-code-fields
-      @shipping-address-saved="closeModal"
-      @shipping-address-cancel="closeModal"
-    />
+      <v-btn
+        color="accent"
+        text
+        class="mb-3 text-decoration-underline"
+        :x-large="!isMobile"
+        :width="isMobile ? '90%' : '500px'"
+        @click="dontShowAgain"
+      >
+        DON'T SHOW ME THIS AGAIN
+      </v-btn>
+
+      <div class="grey--text text--darken-2 caption text-md-body-1 text-center">
+        *Limited to 1 introductory learning package per family, in the
+        territorial US and Canada only.
+      </div>
+    </div>
   </large-image-content-dialog>
 </template>
 
-<script>
-import { mapState } from 'vuex'
+<script lang="ts">
+import { defineComponent, computed, useStore, useRouter } from '@nuxtjs/composition-api'
 import LargeImageContentDialog from '@/components/ui/dialogs/LargeImageContentDialog/LargeImageContentDialog.vue'
-import ShippingAddressDetails from '@/components/app/payment/ShippingAddressDetails'
+import { useNotification, useVuetifyHelper } from '@/composables'
+import { TypedStore } from '@/models'
 
-export default {
+export default defineComponent({
   name: 'ShippingAddressModal',
 
   components: {
-    LargeImageContentDialog,
-    ShippingAddressDetails
+    LargeImageContentDialog
   },
 
   data: () => ({
     girlFamilyTreeImg: require('@/assets/png/girl-family-tree.png')
   }),
 
-  computed: {
-    ...mapState('notifications', ['isShippingModalVisible'])
-  },
+  setup() {
+    const router = useRouter()
+    const store = useStore<TypedStore>()
+    const vuetify = useVuetifyHelper()
+    const Notification = useNotification({ store })
+    const isMobile = computed(() => vuetify.breakpoint.smAndDown)
+    const isShippingModalVisible = computed(() => store.state.notifications.isShippingModalVisible)
 
-  methods: {
-    closeModal () {
-      this.$store.commit('notifications/SET_IS_SHIPPING_MODAL_VISIBLE', false)
-      this.$store.dispatch('notifications/markShippingAddressModalAsSeen')
+    function goToProfile() {
+      router.push({ name: 'app-account-index' })
+      closeModal()
+    }
+
+    function closeModal() {
+      Notification.setIsShippingModalVisible(false)
+      Notification.showShippinAddressModalAgain(true)
+    }
+
+    function dontShowAgain() {
+      Notification.setIsShippingModalVisible(false)
+      Notification.showShippinAddressModalAgain(false)
+    }
+
+    return {
+      isMobile,
+      isShippingModalVisible,
+      goToProfile,
+      closeModal,
+      dontShowAgain
     }
   }
-}
+})
 </script>
+
+<style lang="scss" scoped>
+.pg-cursor-pointer {
+  cursor: pointer;
+}
+
+.pg-text-\[17px\] {
+  font-size: 17px;
+}
+
+@media(min-width: $breakpoint-sm) {
+  .md\:pg-text-\[26px\] {
+    font-size: 26px;
+  }
+}
+</style>

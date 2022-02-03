@@ -9,14 +9,14 @@
     <v-col cols="12" md="6">
       <div class="form mx-auto px-4">
         <div class="my-5 my-md-0 text-center text-md-left">
-          <underlined-title text="Welcome to Playgarden Prep" />
+          <underlined-title text="Welcome to Playgarden Prep Online!" />
         </div>
 
         <p class="mt-6 text-center text-md-left">
-          <span>We are happy to have you LEARN with us! </span>
+          <span>We are so excited to welcome your little one to the Playgarden Prep Online community!</span>
         </p>
         <p class="text-center text-md-left">
-          <span>Please check your email to confirm account and start learning today!</span>
+          <span>Please check your email to confirm your account and start learning.</span>
         </p>
 
         <!-- <v-btn
@@ -39,8 +39,9 @@
         </nuxt-link> -->
 
         <p class="mt-6 text-center text-md-left">
-          Didn’t receive an email?
-          <br>
+          Didn't receive an email?
+        </p>
+        <div>
           <v-btn
             color="primary"
             block
@@ -48,7 +49,7 @@
           >
             RESEND EMAIL
           </v-btn>
-        </p>
+        </div>
         <p class="mt-6 text-center text-md-left">
           Need support?
 
@@ -63,7 +64,7 @@
         </p>
 
         <nuxt-link v-if="isUserLoggedIn" :to="{ name: 'auth-logout' }">
-          <v-btn block color="accent" class="mt-10">
+          <v-btn block color="accent" class="mt-4">
             LOG OUT
           </v-btn>
         </nuxt-link>

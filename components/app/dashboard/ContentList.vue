@@ -87,49 +87,39 @@ import { APP_EVENTS } from '@/models'
 import { computed, toRefs } from '@vue/composition-api'
 import { useNuxtHelper } from '@/composables'
 import LessonItemStatus from './LessonItemStatus.vue'
-
 const NUMBER_OF_CARDS_IN_SKELETON = 3
-
 export default defineComponent({
   name: 'ContentList',
-
   components: {
     LessonItemStatus
   },
-
   props: {
     items: {
       type: Array,
       required: true
     },
-
     noLinkMode: {
       type: Boolean,
       required: false,
       default: false
     },
-
     enabled: {
       type: Boolean,
       required: false,
       default: true
     },
-
     itemType: {
       type: String,
       required: false,
       default: ''
     }
   },
-
   setup (props) {
     const { items, noLinkMode } = toRefs(props)
     const route = useRoute()
-
     const isAdmin = computed(() => {
       return route.value.name?.includes('admin')
     })
-
     const getTimeToMMSS = (viewed: any) => {
       if (viewed) {
         const value = viewed.time
@@ -140,20 +130,17 @@ export default defineComponent({
       }
       return '00:00'
     }
-
     const itemsComputed = computed(() => {
       const itemProps = {
         nuxt: true,
         link: true,
         exact: true
       } as any
-
       if (noLinkMode.value) {
         itemProps.nuxt = undefined
         itemProps.link = undefined
         itemProps.exact = undefined
       }
-
       return items.value.map((item: any) => {
         return {
           ...item,
@@ -161,13 +148,10 @@ export default defineComponent({
         }
       })
     })
-
     const isItemDisabled = (item: any) => {
       return item.disabled || !props.enabled
     }
-
     const nuxt = useNuxtHelper()
-
     const loadDetailVideo = (item: any) => {
       switch (props.itemType) {
         case 'videoLesson':
@@ -218,7 +202,6 @@ export default defineComponent({
       height: 85px;
       width: 120px;
     }
-
     .v-skeleton-loader__paragraph,
     .v-skeleton-loader__sentences {
       display: grid;

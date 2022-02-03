@@ -12,7 +12,6 @@
 <script lang="ts">
 import {
   defineComponent,
-  ref,
   onBeforeMount,
   useStore
 } from '@nuxtjs/composition-api'

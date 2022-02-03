@@ -1,9 +1,5 @@
 <template>
-  <v-navigation-drawer
-    v-model="appDrawer"
-    temporary
-    app
-  >
+  <v-navigation-drawer v-model="appDrawer" temporary app>
     <template v-slot:prepend>
       <v-row class="pr-3" justify="end">
         <v-btn icon @click.stop="appDrawer = !appDrawer">
@@ -14,15 +10,28 @@
 
     <v-container fluid>
       <v-row no-gutters>
-        <v-col
-          v-for="(item, index) in items"
-          :key="`${_uid}-drawer-item-${index}`"
-          cols="12"
-        >
-          <v-btn class="list-item" exact nuxt text :to="item.to">
-            {{ item.title }}
-          </v-btn>
-        </v-col>
+        <template v-for="(item, index) in items">
+          <v-col
+            v-if="item.external"
+            :key="`${_uid}-drawer-item-${index}`"
+            cols="12"
+          >
+            <v-btn
+              class="list-item"
+              exact
+              nuxt
+              text
+              @click="openLink(item.link)"
+            >
+              {{ item.title }}
+            </v-btn>
+          </v-col>
+          <v-col v-else :key="`${_uid}-drawer-item-${index}`" cols="12">
+            <v-btn class="list-item" exact nuxt text :to="item.to">
+              {{ item.title }}
+            </v-btn>
+          </v-col>
+        </template>
       </v-row>
     </v-container>
 
@@ -37,7 +46,12 @@
           </v-col>
 
           <v-col v-if="isUserLoggedIn && !isUserInSignupProcess" cols="12">
-            <v-btn block color="primary" nuxt :to="{ name: 'app-account-index' }">
+            <v-btn
+              block
+              color="primary"
+              nuxt
+              :to="{ name: 'app-account-index' }"
+            >
               ACCOUNT SETTINGS
             </v-btn>
           </v-col>
@@ -92,7 +106,7 @@ export default {
 
   mixins: [computedMixin],
 
-  data () {
+  data() {
     return {
       appDrawer: false,
       appendDrawer: [
@@ -103,10 +117,16 @@ export default {
     }
   },
 
-  created () {
+  created() {
     this.$nuxt.$on('toggle-nav-drawer', () => {
       this.appDrawer = !this.appDrawer
     })
+  },
+
+  methods: {
+    openLink(link) {
+      window.open(link, '_self')
+    }
   }
 }
 </script>

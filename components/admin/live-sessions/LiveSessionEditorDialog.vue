@@ -375,21 +375,21 @@
           <v-spacer />
 
           <v-btn
-            class="white--text"
             color="green"
+            :dark="!isDesktop"
+            :text="isDesktop"
             :disabled="invalid"
             :loading="loading"
-            :text="$vuetify.breakpoint.smAndUp"
             @click.stop="passes(save)"
           >
             Save
           </v-btn>
 
           <v-btn
-            class="white--text"
             color="orange"
+            :dark="!isDesktop"
+            :text="isDesktop"
             :disabled="loading"
-            :text="$vuetify.breakpoint.smAndUp"
             @click.stop="close"
           >
             Cancel
@@ -397,10 +397,10 @@
 
           <v-btn
             v-if="id"
-            class="white--text"
             color="red"
+            :dark="!isDesktop"
+            :text="isDesktop"
             :disabled="loading"
-            :text="$vuetify.breakpoint.smAndUp"
             @click="remove(item.title)"
           >
             Delete
@@ -479,6 +479,9 @@ export default {
     title () {
       const meetingType = (this.mode === 'LiveClass') ? 'Live Class' : 'Playdate'
       return this.id === null ? `New ${meetingType}` : `Edit ${meetingType}`
+    },
+    isDesktop() {
+      return this.$vuetify.breakpoint.smAndUp
     }
   },
 

@@ -41,14 +41,6 @@
               <div class="px-4 px-md-8">
                 <!-- Plan Name -->
                 <p :class="planNameClasses(indexP)">
-                  <v-chip
-                    color="orange"
-                    class="text-orange-info mb-8 pa-5"
-                    label
-                  >
-                    {{ plan.planName }}
-                  </v-chip>
-                  <br>
                   <underlined-title
                     font-size="32px"
                     font-size-mobile="28px"
@@ -57,7 +49,7 @@
                   />
                 </p>
                 <!-- What's Included -->
-                <p class="text-left mt-6 plan-included">
+                <p class="text-left plan-included">
                   <label class="grey--text text--darken-2 font-weight-bold">What's included</label>
                 </p>
 
@@ -172,7 +164,7 @@ import { mapActions, mapGetters } from 'vuex'
 
 import submittable from '@/utils/mixins/submittable'
 
-import { useGlobalModal } from '@/composables'
+import { useGlobalModal, useNotification } from '@/composables'
 
 import PlanDescription from './PlanDescription.vue'
 import RadioSelectors from './RadioSelectors.vue'
@@ -207,11 +199,13 @@ export default defineComponent({
   setup () {
     const store = useStore()
     const { showContactUsModal } = useGlobalModal({ store })
+    const { setIsTrialEndingPlanSelectedModalVisible } = useNotification({ store })
     const isAnnualSubscriptionEnabled = computed(() => store.state.plans.isAnnualSubscriptionEnabled)
 
     return {
       showContactUsModal,
-      isAnnualSubscriptionEnabled
+      isAnnualSubscriptionEnabled,
+      setIsTrialEndingPlanSelectedModalVisible
     }
   },
 
@@ -317,7 +311,7 @@ export default defineComponent({
       plan.id = this.selectedPlan.id
       try {
         await this.selectSubscriptionPlan(plan)
-        this.$snotify.success('Payment plan has been selected successfully!')
+        this.setIsTrialEndingPlanSelectedModalVisible(true)
         this.$nuxt.$emit('plan-membership-changed')
         this.$emit('click:submit', {
           draft: plan,

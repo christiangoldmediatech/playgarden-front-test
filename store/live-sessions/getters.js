@@ -1,5 +1,11 @@
+import dayjs from 'dayjs'
+import moment from 'moment'
+import timezone from 'dayjs/plugin/timezone'
+dayjs.extend(timezone)
+
 export default {
-  getAdvancedSchedule (state) {
+  getAdvancedSchedule(state) {
+    const { timezone } = state
     const hourDays = new Array(19).fill([])
     const days = new Array(5).fill(hourDays)
     // Create default base obj
@@ -15,14 +21,16 @@ export default {
 
     // Get the sessions and transform them for easier sorting
     const sessions = state.sessions.map((session) => {
-      const date = new Date(session.dateStart)
-      const endDate = new Date(session.dateEnd)
+      const date = moment(session.dateStart)
+      const endDate = moment(session.dateEnd)
+      const start = dayjs.tz(date, timezone)
+      const end = dayjs.tz(endDate, timezone)
       return {
         ...session,
-        weekDay: date.getDay(),
-        day: date.getDate(),
-        hour: date.getHours(),
-        endHour: endDate.getHours()
+        weekDay: start.day(),
+        day: start.date(),
+        hour: start.hour(),
+        endHour: end.hour()
       }
     }).sort((a, b) => {
       return a.day - b.day || a.hour - b.hour

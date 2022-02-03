@@ -1,10 +1,5 @@
 <template>
-  <v-app-bar
-    app
-    class="pg-app-bar"
-    color="white"
-    elevation="1"
-  >
+  <v-app-bar app class="pg-app-bar" color="white" elevation="1">
     <v-row
       class="flex-nowrap"
       align="center"
@@ -29,11 +24,13 @@
             }"
           > -->
           <v-img
+            class="cursor-link"
             alt="Playarden Prep Online Logo"
             contain
             max-height="50"
             :max-width="$vuetify.breakpoint.mdAndUp ? 290 : 200"
             :src="require('@/assets/svg/logo.svg')"
+            @click="handleLogoClick"
           />
           <!-- </nuxt-link> -->
         </v-toolbar-title>
@@ -43,19 +40,21 @@
         <!-- ITEMS -->
         <div v-if="getVerifyEmail" class="hidden-sm-and-down">
           <v-toolbar-items>
-            <v-btn
-              v-for="(item, index) in items"
-              :key="`${_uid}-${index}`"
-              class="text-none link-text px-2 px-lg-4"
-              active-class="custom-active"
-              text
-              :ripple="true"
-              :exact="item.exact"
-              nuxt
-              :data-test-id="item.to.name"
-              :to="item.to"
-              v-text="item.title"
-            />
+            <template v-for="(item, index) in items">
+              <v-btn
+                v-if="!item.hidden"
+                :key="`${_uid}-${index}`"
+                class="text-none link-text px-2 px-lg-4"
+                active-class="custom-active"
+                text
+                :ripple="true"
+                :exact="item.exact"
+                nuxt
+                :data-test-id="item.to.name"
+                :to="item.to"
+                v-text="item.title"
+              />
+            </template>
           </v-toolbar-items>
         </div>
         <!--divider icon profile and help-->
@@ -177,7 +176,10 @@
         <!-- Profile/help/Tutorial Menu end-->
 
         <!-- MOBILE ICONS -->
-        <div v-if="getVerifyEmail" class="hidden-xs-only pg-app-bar-buttons mobile-icons">
+        <div
+          v-if="getVerifyEmail"
+          class="hidden-xs-only pg-app-bar-buttons mobile-icons"
+        >
           <img
             v-if="isUserLoggedIn && !isUserInSignupProcess"
             class="clickable account-btn"
@@ -224,6 +226,7 @@
 </template>
 
 <script>
+import unauthenticatedRoutes from '@/utils/consts/unauthenticatedRoutes.json'
 import computedMixin from './computed'
 
 export default {
@@ -240,12 +243,21 @@ export default {
   },
 
   methods: {
-    toggleDrawer () {
+    toggleDrawer() {
       this.$nuxt.$emit('toggle-nav-drawer')
     },
 
-    goToAccount () {
+    goToAccount() {
       this.$router.push({ name: 'app-account-index' })
+    },
+
+    handleLogoClick() {
+      if (unauthenticatedRoutes[this.$route.name]) {
+        window.open(process.env.frontendUrl, '_self')
+        return
+      }
+
+      this.$router.push({ name: 'app-virtual-preschool' })
     }
   }
 }
@@ -289,6 +301,10 @@ export default {
   }
 }
 
+.cursor-link{
+  cursor: pointer !important;
+}
+
 .account-btn {
   vertical-align: middle;
   width: 24px;
@@ -325,7 +341,7 @@ export default {
     position: absolute;
     bottom: 0;
     left: 20%;
-    content: "";
+    content: '';
     z-index: -1;
     border-bottom: 2px solid var(--v-primary-base);
     border-radius: 7px;

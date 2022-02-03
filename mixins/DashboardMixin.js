@@ -41,6 +41,10 @@ export default {
         if (previous) {
           disabled = !(previous.viewed && previous.viewed.completed)
         }
+
+        if (this.lesson.doing !== undefined) {
+          disabled = (i === 0 && !this.lesson.doing) ? true : disabled
+        }
         return {
           id,
           name,

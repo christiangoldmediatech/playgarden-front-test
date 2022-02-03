@@ -30,14 +30,14 @@
         </div>
 
         <div class="text-center body-1 text-md-h6 font-weight-medium grey--text text--darken-2 my-2">
-          <small>Information about your membership</small>
+          <small class="font-weight-bold">Information about your membership</small>
         </div>
 
         <div v-if="hasMembership">
           <!-- Trial Period Description -->
           <v-row v-if="billing.status === 'trialing'" no-gutters>
             <v-col cols="12" class="text-h6 grey--text mb-1">
-              <small>Free trial period ends</small>
+              <small>Free trial period ends:</small>
             </v-col>
 
             <v-col cols="12" class="text-h6 grey--text font-weight-bold mb-1">
@@ -150,7 +150,7 @@
         </v-row>
         <v-row v-if="userCards.length === 0">
           <v-col cols="12" class="grey--text mb-1">
-            <span>To add a Payment Method select a Payment Plan and then enter your Credit Card information.</span>
+            <span>To add a Payment Method, select a Payment Plan below.</span>
           </v-col>
           <v-col cols="12">
             <v-btn
@@ -183,10 +183,6 @@
             <div class="text-uppercase font-weight-bold text-h5 grey--text text--darken-2 mb-6">
               Your Plan
             </div>
-
-            <v-btn class="warning mb-8" depressed width="190px">
-              {{ plan.planName }}
-            </v-btn>
           </v-col>
 
           <!-- Plan Name -->
@@ -210,6 +206,7 @@
           <!-- Change Plan Button -->
           <v-col v-if="billing.stripeStatus !== 'canceled'" cols="12" class="d-flex justify-center">
             <v-btn
+              v-if="!isCaregiver"
               color="primary mb-3"
               x-large
               block
@@ -219,7 +216,7 @@
             </v-btn>
           </v-col>
 
-          <v-col cols="12" class="d-flex justify-center">
+          <v-col v-if="!isCaregiver" cols="12" class="d-flex justify-center">
             <!-- Cancel Subscription -->
             <v-btn
               v-if="hasMembership"
@@ -430,6 +427,10 @@ export default {
 
     isLastLeaveMotive () {
       return this.leaveMotives[this.leaveMotives.length - 1] === this.leaveMotive
+    },
+
+    isCaregiver () {
+      return (this.getUserInfo.role.id === 4)
     },
 
     hasMembership () {

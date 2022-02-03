@@ -61,8 +61,10 @@
                   class="d-none"
                   type="file"
                   accept="image/*"
-                  @change="setFile($event, category.id, indexCategory, category)"
-                >
+                  @change="
+                    setFile($event, category.id, indexCategory, category)
+                  "
+                />
               </v-card-text>
             </v-card>
           </v-hover>
@@ -98,7 +100,7 @@
               :disabled="loading"
               @click.stop="close"
             >
-              Return to Dashboard
+              Return to Lesson
             </v-btn>
           </v-col>
         </v-row>
@@ -138,7 +140,7 @@ export default {
     }
   },
 
-  data () {
+  data() {
     return {
       loading: false,
       loadingView: true,
@@ -153,8 +155,12 @@ export default {
     ...mapGetters({ currentChild: 'getCurrentChild' }),
     ...mapGetters('admin/curriculum', ['getLesson']),
 
-    firstActivity () {
-      if (this.getLesson && this.getLesson.lessonsActivities && this.getLesson.lessonsActivities.length) {
+    firstActivity() {
+      if (
+        this.getLesson &&
+        this.getLesson.lessonsActivities &&
+        this.getLesson.lessonsActivities.length
+      ) {
         const firstActivity = this.getLesson.lessonsActivities[0]
         return {
           name: 'app-dashboard-lesson-activities',
@@ -168,20 +174,22 @@ export default {
   },
 
   watch: {
-    value (val) {
+    value(val) {
       if (val) {
         this.reset()
       }
     },
-    lessonCurrent (val) {
+    lessonCurrent(val) {
       if (val) {
-        this.worksheetoffline = this.lessonCurrent.worksheets.find(({ type }) => type === 'OFFLINE')
+        this.worksheetoffline = this.lessonCurrent.worksheets.find(
+          ({ type }) => type === 'OFFLINE'
+        )
         this.getCategoriesByWorksheetId()
       }
     }
   },
 
-  created () {
+  created() {
     this.lessonCurrent = this.getLesson
   },
 
@@ -196,15 +204,17 @@ export default {
     }),
     ...mapActions('children/lesson', ['saveWorksheetProgress']),
 
-    goToFirstActivity () {
+    goToFirstActivity() {
       this.$router.push(this.firstActivity)
       this.close()
     },
 
-    async getCategoriesByWorksheetId () {
+    async getCategoriesByWorksheetId() {
       try {
         this.loadingView = true
-        this.categoriesWorksheet = await this.getCategoriesWorksheetsOfflineAppByWorksheetId(this.worksheetoffline.id)
+        this.categoriesWorksheet = await this.getCategoriesWorksheetsOfflineAppByWorksheetId(
+          this.worksheetoffline.id
+        )
         if (this.categoriesWorksheet.length === 0) {
           this.buildDataCategories()
         }
@@ -214,14 +224,18 @@ export default {
       }
     },
 
-    async buildDataCategories () {
+    async buildDataCategories() {
       const categories = await this.getOfflineWorksheetCategories()
       this.categoriesWorksheet = categories.map((category) => {
-        return { category: category.category, icon: category.icon, id: category.id }
+        return {
+          category: category.category,
+          icon: category.icon,
+          id: category.id
+        }
       })
     },
 
-    async getUploadedWorksheets () {
+    async getUploadedWorksheets() {
       this.images = {}
       this.loading = true
       const uploads = await this.getUploaded(this.currentChild[0].id)
@@ -234,21 +248,23 @@ export default {
       this.loading = false
     },
 
-    reset () {
+    reset() {
       this.images = {}
       this.loading = false
     },
 
-    close () {
+    close() {
       this.$emit('input', false)
     },
 
-    openFileDialog (category, index) {
-      const uploader = document.getElementById(`${category.category}-${index}-upload`)
+    openFileDialog(category, index) {
+      const uploader = document.getElementById(
+        `${category.category}-${index}-upload`
+      )
       uploader.click()
     },
 
-    setFile (e, categoryId, index, category) {
+    setFile(e, categoryId, index, category) {
       this.loading = true
 
       this.uploadWorksheet({
@@ -258,7 +274,10 @@ export default {
         File: e.target.files[0]
       })
         .then(({ url }) => {
-          this.$nuxt.$emit(APP_EVENTS.DASHBOARD_WORKSHEET_UPLOAD, category.category)
+          this.$nuxt.$emit(
+            APP_EVENTS.DASHBOARD_WORKSHEET_UPLOAD,
+            category.category
+          )
           this.images[`image_${categoryId}_${index}`] = url
           this.$snotify.success('Your worksheet has been uploaded!')
           const date = new Date().toISOString().substr(0, 19)

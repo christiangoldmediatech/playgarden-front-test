@@ -283,7 +283,7 @@ export default {
     filterDeleted: false,
     checkStatusInterval: null,
     liveSessions: [],
-    entityType: 'LiveSessions',
+    entityType: 'Meetings',
     loading: false,
     search: null,
     page: 1,

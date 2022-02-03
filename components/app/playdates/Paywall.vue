@@ -26,10 +26,10 @@
 
       <!-- CTA -->
       <v-row no-gutters class="text-center text-md-left">
-        <!-- UPGRADE PLAN -->
-        <v-col cols="12" md="auto" class="my-4">
+        <!-- CONFIRM YOUR PLAN NOW -->
+        <v-col v-if="canConfirmPlan" cols="12" md="auto" class="my-4">
           <v-btn color="accent" class="text-none" width="250" @click="handleUpgradeNow">
-            Upgrade Plan
+            Confirm Your Plan Now
           </v-btn>
         </v-col>
 
@@ -54,13 +54,14 @@ export default defineComponent({
   setup () {
     const router = useRouter()
     const store = useStore<TypedStore>()
-    const { showContactUsModal } = useGlobalModal({ store })
+    const { showContactUsModal, canConfirmPlan } = useGlobalModal({ store })
 
     const handleUpgradeNow = () => {
       router.push({ name: 'app-payment-plan' })
     }
 
     return {
+      canConfirmPlan,
       handleUpgradeNow,
       handleContactUs: showContactUsModal
     }
