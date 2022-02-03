@@ -22,7 +22,7 @@
     "prosemirror-model": "1.8.2"
   },
   "dependencies": {
-    "@gold-media-tech/pg-video-player": "^0.0.15",
+    "@gold-media-tech/pg-video-player": "^0.0.80",
     "@googlemaps/js-api-loader": "^1.12.3",
     "@mdi/font": "^5.3.45",
     "@nuxtjs/axios": "^5.12.0",
