@@ -67,11 +67,13 @@
               </validation-provider>
 
               <!-- Video -->
-              <pg-video-player
-                v-if="video && video.videoUrl"
-                inline
-                @ready="onPlayerReady"
-              />
+              <div v-if="video && video.videoUrl" class="video-player-16-9-container">
+                <pg-video-player
+                  :control-config="{ favorite: false }"
+                  inline
+                  @ready="onPlayerReady"
+                />
+              </div>
 
               <v-row
                 v-else-if="
@@ -268,7 +270,7 @@ export default {
             title: name,
             poster: thumbnail,
             src: {
-              src: video.videoUrl.HLS,
+              url: video.videoUrl.HLS,
               type: 'application/x-mpegURL'
             },
             videoId
@@ -291,6 +293,9 @@ export default {
 
     close () {
       this.dialog = false
+      if (this.player) {
+        this.player.pause()
+      }
     },
 
     setImageFile (type) {
