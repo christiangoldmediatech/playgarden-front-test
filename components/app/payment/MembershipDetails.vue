@@ -80,6 +80,24 @@
                 </span>
               </div>
             </v-col>
+            <v-col v-else-if="billing.percentOff" cols="12" class="text-h6 black--text font-weight-bold mb-1">
+              <div>
+                <span>{{
+                  getTotalPay.toLocaleString("en-US", {
+                    style: "currency",
+                    currency: "USD",
+                  })
+                }}</span>
+                <span class="strikethrough old_price grey--text">
+                  {{
+                    billing.planAmount.toLocaleString("en-US", {
+                      style: "currency",
+                      currency: "USD",
+                    })
+                  }}
+                </span>
+              </div>
+            </v-col>
             <v-col v-else cols="12" class="text-h6 black--text font-weight-bold mb-1">
               <div>
                 <span>{{
@@ -93,7 +111,7 @@
           </v-row>
 
           <!-- Discount -->
-          <v-row v-if="billing.planAmountDiscount" no-gutters>
+          <v-row v-if="billing.planAmountDiscount || billing.percentOff" no-gutters>
             <v-col cols="5" class="text-h7 grey--text mb-1">
               <small>Coupon applied:</small>
             </v-col>
@@ -521,6 +539,11 @@ export default {
       } else {
         return ''
       }
+    },
+
+    getTotalPay () {
+      const total = (((this.billing.percentOff * this.billing.planAmount) / 100) - this.billing.planAmount).toFixed(2)
+      return total
     },
 
     hasMembership () {
