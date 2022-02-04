@@ -774,7 +774,6 @@ export default {
 
 .old_price {
   font-size: 13px !important;
-  text-decoration:line-through !important;
 }
 
 .discount {
@@ -794,10 +793,26 @@ export default {
   border-top: 1px solid;
   border-color: inherit;
 
-  -webkit-transform:rotate(-5deg);
-  -moz-transform:rotate(-5deg);
-  -ms-transform:rotate(-5deg);
-  -o-transform:rotate(-5deg);
-  transform:rotate(-5deg);
+  -webkit-transform:rotate(-10deg);
+  -moz-transform:rotate(-10deg);
+  -ms-transform:rotate(-10deg);
+  -o-transform:rotate(-10deg);
+  transform:rotate(-10deg);
+}
+.strikethrough:after {
+  position: absolute;
+  color: var(--v-accent-base) !important;
+  content: "";
+  left: 0;
+  top: 50%;
+  right: 0;
+  border-top: 1px solid;
+  border-color: inherit;
+
+  -webkit-transform:rotate(10deg);
+  -moz-transform:rotate(10deg);
+  -ms-transform:rotate(10deg);
+  -o-transform:rotate(10deg);
+  transform:rotate(10deg);
 }
 </style>
