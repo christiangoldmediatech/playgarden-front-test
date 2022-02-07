@@ -113,7 +113,7 @@
           <!-- Discount -->
           <v-row>
             <v-col cols="5" class="text-h7 grey--text mb-1">
-              <small>Coupon applied:</small>
+              <small v-if="billing.planAmountDiscount || billing.percentOff">Coupon applied:</small>
             </v-col>
             <v-col cols="7" class="justify-end mb-1">
               <div class="text-right" @click="addCoupon = true">
@@ -149,8 +149,9 @@
               </v-row>
             </v-col>
           </v-row>
+
           <v-row v-if="billing.planAmountDiscount || billing.percentOff" no-gutters>
-            <v-col class="mt-2" cols="12" md="5">
+            <v-col class="mt-1" cols="12" md="5">
               <span class="text-h7 black--text font-weight-bold mb-3">{{ billing.discountCode }}</span>
             </v-col>
 
@@ -160,8 +161,8 @@
                   {{ billing.percentOff }} %
                 </span>
                 <span v-if="billing.amountOff" class="discount grey--text font-weight-bold mb-3">
-                  {{
-                    billing.amountOff.toLocaleString("en-US", {
+                  $ {{
+                    getAmountOff.toLocaleString("en-US", {
                       style: "currency",
                       currency: "USD",
                     })
@@ -501,8 +502,11 @@ export default {
     },
 
     getTotalPay () {
-      const total = (((this.billing.percentOff * this.billing.planAmount) / 100) - this.billing.planAmount).toFixed(2)
-      return total
+      return (((this.billing.percentOff * this.billing.planAmount) / 100) - this.billing.planAmount).toFixed(2)
+    },
+
+    getAmountOff () {
+      return (this.billing.amountOff / 100).toFixed(2)
     },
 
     hasMembership () {
