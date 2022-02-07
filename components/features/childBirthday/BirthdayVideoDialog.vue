@@ -26,34 +26,36 @@
           <v-icon>mdi-close</v-icon>
         </v-btn>
         <main class="pos-relative">
-          <PgVideoPlayer
-            inline
-            :control-config="playerControlconfig"
-            @ready="onPlayerReady"
-          >
-            <template #inline-play-icon="{ firstPlay }">
-              <transition name="fade">
-                <div
-                  v-if="!hasVideoStarted"
-                  class="playControls"
-                >
-                  <section
-                    v-if="currentChild"
-                    class="birthdayWishText my-5"
+          <div class="video-player-16-9-container">
+            <PgVideoPlayer
+              inline
+              :control-config="playerControlconfig"
+              @ready="onPlayerReady"
+            >
+              <template #inline-play-icon="{ firstPlay }">
+                <transition name="fade">
+                  <div
+                    v-if="!hasVideoStarted"
+                    class="playControls"
                   >
-                    <div>Happy Birthday</div>
-                    <div> {{ currentChild.firstName }}!</div>
-                  </section>
-                  <img
-                    :src="require('@/assets/images/player/icons/play-orangeColor.svg')"
-                    alt="play-icon"
-                    class="playIcon"
-                    @click="handlePlayRequest(firstPlay)"
-                  >
-                </div>
-              </transition>
-            </template>
-          </PgVideoPlayer>
+                    <section
+                      v-if="currentChild"
+                      class="birthdayWishText my-5"
+                    >
+                      <div>Happy Birthday</div>
+                      <div> {{ currentChild.firstName }}!</div>
+                    </section>
+                    <img
+                      :src="require('@/assets/images/player/icons/play-orangeColor.svg')"
+                      alt="play-icon"
+                      class="playIcon"
+                      @click="handlePlayRequest(firstPlay)"
+                    >
+                  </div>
+                </transition>
+              </template>
+            </PgVideoPlayer>
+          </div>
         </main>
       </div>
     </v-dialog>
@@ -97,6 +99,8 @@ export default defineComponent({
   setup() {
     const isDialogVisible = ref(false)
     const hasVideoStarted = ref(false)
+    const playerInstance = ref<PlayerInstance | undefined>(undefined)
+
     const {
       isCurrentChildsBirthday,
       currentChild,
@@ -131,6 +135,9 @@ export default defineComponent({
       if (isDialogClosedByUser && currentChild.value?.id) {
         setDialogClosedDataInLSForChild(currentChild.value.id)
       }
+      if (!newValue && playerInstance.value) {
+        playerInstance.value.pause()
+      }
     })
 
     onMounted(() => {
@@ -161,6 +168,7 @@ export default defineComponent({
     }
 
     const onPlayerReady = (player: PlayerInstance) => {
+      playerInstance.value = player
       player.loadPlaylist([birthdayWishMediaObject])
     }
     return {

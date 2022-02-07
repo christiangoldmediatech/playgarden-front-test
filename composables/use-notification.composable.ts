@@ -73,6 +73,16 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
     store.commit('notifications/SET_IS_CREDIT_CARD_MODAL_VISIBLE', isVisible)
   }
 
+  const isEmailConflictModalVisible = computed(() => store.state.notifications.isEmailConflictModalVisible)
+  const setIsEmailConflictModalVisible = (isVisible: boolean) => {
+    store.commit('notifications/SET_IS_EMAIL_CONFLICT_MODAL_VISIBLE', isVisible)
+  }
+
+  const isAccountInactiveModalVisible = computed(() => store.state.notifications.isAccountInactiveModalVisible)
+  const setIsAccountInactiveModalVisible = (isVisible: boolean) => {
+    store.commit('notifications/SET_IS_ACCOUNT_INACTIVE_MODAL_VISIBLE', isVisible)
+  }
+
   /**
    * Show a notification prompting the user to update their shipping address if:
    * - The user doesn't have the shipping address on file and it is a parent.
@@ -321,6 +331,10 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
     setIsTrialEndingPlanSelectedModalVisible,
     setIsTrialExpiringRibbonVisible,
     setNotificationCard,
-    showShippinAddressModalAgain
+    showShippinAddressModalAgain,
+    isEmailConflictModalVisible,
+    setIsEmailConflictModalVisible,
+    isAccountInactiveModalVisible,
+    setIsAccountInactiveModalVisible
   }
 }
