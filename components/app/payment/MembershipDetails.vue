@@ -452,7 +452,7 @@ export default {
 
   data: vm => ({
     loading: false,
-    addCoupon: true,
+    addCoupon: false,
     isValidCoupon: false,
     isValidatingCoupon: false,
     promotionCode: null,
