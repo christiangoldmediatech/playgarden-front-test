@@ -1,5 +1,10 @@
 import { Entity, Lesson, CurriculumType } from '@/models'
 
+export interface UploadedOfflineWorksheet extends Entity {
+  url: string,
+  lesson: Lesson
+}
+
 export interface WorksheetUpload extends Entity {
   url: string
   lesson: Lesson

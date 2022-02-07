@@ -2,7 +2,7 @@
   <pg-video-dialog
     content-class="upload-ow-dialog"
     :value="value"
-    :persistent="isUploading"
+    :persistent="!canRemoveOrUpload"
     max-width="1475px"
     @input="close"
   >
@@ -26,14 +26,30 @@
         </v-row>
 
         <v-row class="ma-0" justify="center">
-          <div v-if="uploadFinished" class="ma-6 mt-0">
-            <div class="d-flex">
+          <div v-if="isChecking" class="ma-6">
+            <v-progress-circular color="accent" size="128" width="8" indeterminate />
+          </div>
+          <div v-else-if="uploadFinished" class="ma-6 mt-0">
+            <div class="d-flex flex-wrap">
               <div
-                v-for="item in thumbnailList"
-                :key="`pending-upload-${item.index}`"
+                v-for="item in uploadedList"
+                :key="`finished-upload-${item.id}`"
                 class="upload-ow-dialog-item"
               >
-                <img :src="item.src">
+                <img :src="item.url">
+
+                <v-btn
+                  class="upload-ow-dialog-item-btn"
+                  color="#FF0000"
+                  fab
+                  x-small
+                  :disabled="!canRemoveOrUpload"
+                  @click="removeUploadedFile(item.id)"
+                >
+                  <v-icon color="white" size="24">
+                    mdi-trash-can-outline
+                  </v-icon>
+                </v-btn>
               </div>
             </div>
 
@@ -47,6 +63,7 @@
                   color="#68C453"
                   dark
                   x-large
+                  :loading="!canRemoveOrUpload"
                   @click="resetParams"
                 >
                   UPLOAD MORE
@@ -55,14 +72,35 @@
             </div>
           </div>
           <div
-            v-else
+            v-else-if="!uploadFinished || (uploadedList.length || thumbnailList.length)"
             class="upload-ow-dialog-drag-area mb-10"
             @drop="addDroppedFiles"
             @dragover="dragOverHandler"
           >
             <!-- Thumbnails -->
-            <template v-if="thumbnailList.length">
+            <template v-if="uploadedList.length || thumbnailList.length">
               <div class="d-flex flex-wrap">
+                <div
+                  v-for="item in uploadedList"
+                  :key="`finished-upload-${item.id}`"
+                  class="upload-ow-dialog-item"
+                >
+                  <img :src="item.url">
+
+                  <v-btn
+                    class="upload-ow-dialog-item-btn"
+                    color="#FF0000"
+                    fab
+                    x-small
+                    :disabled="!canRemoveOrUpload"
+                    @click="removeUploadedFile(item.id)"
+                  >
+                    <v-icon color="white" size="24">
+                      mdi-trash-can-outline
+                    </v-icon>
+                  </v-btn>
+                </div>
+
                 <div
                   v-for="item in thumbnailList"
                   :key="`pending-upload-${item.index}`"
@@ -75,7 +113,7 @@
                     color="#FF0000"
                     fab
                     x-small
-                    :disabled="isUploading"
+                    :disabled="!canRemoveOrUpload"
                     @click="removePendingFile(item.index)"
                   >
                     <v-icon color="white" size="24">
@@ -105,7 +143,8 @@
                   color="#68C453"
                   dark
                   x-large
-                  :loading="isUploading"
+                  :loading="!canRemoveOrUpload"
+                  :disabled="!thumbnailList.length"
                   @click="uploadWorksheets"
                 >
                   UPLOAD
@@ -162,11 +201,10 @@ import {
   ref,
   computed,
   watch,
-  nextTick,
   useStore
 } from '@nuxtjs/composition-api'
 import { useChildren, useNuxtHelper, useSnotifyHelper, useOfflineWorksheet } from '@/composables'
-import { APP_EVENTS } from '@/models'
+import { APP_EVENTS, UploadedOfflineWorksheet } from '@/models'
 
 export default defineComponent({
   name: 'UploadOfflineWorksheetDialog',
@@ -174,7 +212,8 @@ export default defineComponent({
   props: {
     value: {
       type: Boolean,
-      required: false
+      required: false,
+      default: false
     }
   },
 
@@ -184,12 +223,21 @@ export default defineComponent({
     const $nuxt = useNuxtHelper()
     const $snotify = useSnotifyHelper()
     const { currentChild } = useChildren({ store })
-    const { uploadWorksheet, saveOfflineWorksheetProgress } = useOfflineWorksheet({ store })
+    const { uploadWorksheet, saveOfflineWorksheetProgress, getUploaded, removeUploadedOfflineWorksheet } = useOfflineWorksheet({ store })
 
     // Custom params
     const isUploading = ref(false)
+    const isChecking = ref(false)
+    const isRemoving = ref(false)
     const uploadFinished = ref(false)
     const fileList = ref<File[]>([])
+
+    const canRemoveOrUpload = computed(() => {
+      return !isUploading.value && !isRemoving.value
+    })
+
+    // List of uploaded offline worksheets
+    const uploadedList = ref<UploadedOfflineWorksheet[]>([])
 
     // Computed list of thumbnails based on fileList
     const thumbnailList = computed(() => {
@@ -204,8 +252,11 @@ export default defineComponent({
     function resetParams() {
       isUploading.value = false
       uploadFinished.value = false
-      fileList.value = []
+      resetFileList()
+    }
 
+    function resetFileList () {
+      fileList.value = []
       const uploader = document.getElementById(
         'owInputUpload'
       ) as HTMLInputElement
@@ -215,15 +266,41 @@ export default defineComponent({
       }
     }
 
-    watch(() => props.value, (val) => {
-      if (val) {
-        resetParams()
-      } else {
-        nextTick(() => {
-          resetParams()
-        })
+    async function getUploadedOfflineWorksheets(): Promise<void> {
+      try {
+        const childId = currentChild.value.id
+        const lesson = store.getters['admin/curriculum/getLesson']
+        const lessonId = lesson.id
+        const result = await getUploaded(childId, lessonId)
+        if (result.length) {
+          uploadFinished.value = true
+          uploadedList.value = result
+        }
+      } catch (error) {
+        return Promise.reject(error)
       }
-    })
+    }
+
+    async function removeUploadedFile(filedId: number) {
+      try {
+        isRemoving.value = true
+        await removeUploadedOfflineWorksheet(filedId)
+        await getUploadedOfflineWorksheets()
+      } catch {
+      } finally {
+        isRemoving.value = false
+      }
+    }
+
+    async function onOpen() {
+      resetParams()
+      isChecking.value = true
+      uploadedList.value = []
+      await getUploadedOfflineWorksheets()
+      isChecking.value = false
+    }
+
+    watch(() => props.value, onOpen, { immediate: true })
 
     function openFileDialog() {
       const uploader = document.getElementById(
@@ -351,6 +428,8 @@ export default defineComponent({
 
         // Do all promises
         await Promise.allSettled(promises)
+        await getUploadedOfflineWorksheets()
+        resetFileList()
 
         $nuxt.$emit(APP_EVENTS.DASHBOARD_WORKSHEET_UPLOAD, lessonId)
         $snotify.success('Your worksheet has been uploaded!')
@@ -368,15 +447,18 @@ export default defineComponent({
     }
 
     return {
-      isUploading,
+      canRemoveOrUpload,
+      isChecking,
       uploadFinished,
       openFileDialog,
       setFiles,
       fileList,
+      uploadedList,
       thumbnailList,
       addDroppedFiles,
       dragOverHandler,
       removePendingFile,
+      removeUploadedFile,
       uploadWorksheets,
       resetParams,
       close

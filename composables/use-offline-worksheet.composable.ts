@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define */
-import { OfflineWorksheet, OfflineWorksheetLesson, Child } from '@/models'
+import { OfflineWorksheetLesson, Child, UploadedOfflineWorksheet } from '@/models'
 import { axios } from '@/utils'
 import { Store } from 'vuex/types'
 
@@ -69,8 +69,8 @@ export const useOfflineWorksheet = ({ store }: { store: Store<unknown> }) => {
     }
   }
 
-  const getUploaded = (childId: number): Promise<OfflineWorksheet[]> => {
-    return axios.$get(`/worksheets/children/${childId}`)
+  const getUploaded = (childId: number, lessonId: number): Promise<UploadedOfflineWorksheet[]> => {
+    return axios.$get(`/worksheets/children/${childId}/lesson/${lessonId}`)
   }
 
   const getOfflineWorksheetsByChildId = (
@@ -83,11 +83,16 @@ export const useOfflineWorksheet = ({ store }: { store: Store<unknown> }) => {
     return axios.$get(`/children/${childId}`)
   }
 
+  const removeUploadedOfflineWorksheet = (uploadedOfflineWorksheetId: number): Promise<void> => {
+    return axios.$delete(`/worksheets/upload/${uploadedOfflineWorksheetId}`)
+  }
+
   return {
     uploadWorksheet,
     saveOfflineWorksheetProgress,
     getUploaded,
     getChild,
-    getOfflineWorksheetsByChildId
+    getOfflineWorksheetsByChildId,
+    removeUploadedOfflineWorksheet
   }
 }
