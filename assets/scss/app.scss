@@ -3,7 +3,6 @@
 
 /* VENDOR */
 /* import them directly into nuxt.config.js */
-
 .text-transform-none {
   text-transform: none !important;
 }
@@ -204,6 +203,11 @@
   &-hidden {
     overflow: hidden;
   }
+}
+
+.video-player-16-9-container {
+  aspect-ratio: 16/9;
+  width: 100%;
 }
 
 .background-card {

@@ -2,7 +2,9 @@
   <v-container>
     <v-row>
       <v-col lg="8" offset-lg="2" md="10" offset-md="1">
-        <pg-video-player inline @ready="onPlayerReady" />
+        <div class="video-player-16-9-container">
+          <pg-video-player :control-config="{ favorite: false }" inline @ready="onPlayerReady" />
+        </div>
       </v-col>
     </v-row>
   </v-container>
