@@ -116,7 +116,7 @@
               <small>Coupon applied:</small>
             </v-col>
             <v-col cols="7" class="justify-end mb-1">
-              <div class="text-right" @click="couponDialog = true">
+              <div class="text-right" @click="addCoupon = true">
                 <span class="text-decoration-underline text-h7 add-coupon">
                   <small>Add coupon code</small>
                 </span>
@@ -124,6 +124,29 @@
                   mdi-plus
                 </v-icon>
               </div>
+            </v-col>
+
+            <v-col v-if="addCoupon" class="mt-2" cols="12">
+              <v-row no-gutters>
+                <pg-text-field
+                  v-model="promotionCode"
+                  label="Promotion Code"
+                  :color="isValidCoupon ? '' : 'error'"
+                  :suffix="getTextValidateCoupon"
+                  :loading="isValidatingCoupon"
+                  solo
+                />
+                <v-btn
+                  :disabled="!isValidCoupon"
+                  color="primary"
+                  class="mb-3"
+                  x-large
+                  block
+                  @click="savePromotion"
+                >
+                  APPLIED COUPON
+                </v-btn>
+              </v-row>
             </v-col>
 
             <v-col class="mt-2" cols="12" md="5">
@@ -149,7 +172,7 @@
           </v-row>
           <v-row v-else no-gutters>
             <v-col cols="12" class="justify-end mb-1">
-              <div class="text-right" @click="couponDialog = true">
+              <div class="text-right" @click="addCoupon = true">
                 <span class="text-decoration-underline text-h7 add-coupon">
                   <small>Add coupon code</small>
                 </span>
@@ -405,59 +428,6 @@
         </v-row>
       </v-col>
     </pg-dialog>
-
-    <pg-dialog
-      :value="couponDialog"
-      content-class="elevation-0"
-      :fullscreen="true"
-      persistent
-    >
-      <v-card class="dialog-overlay">
-        <v-row no-gutters justify="start" class="mt-0">
-          <v-col class="mt-16">
-            <v-row
-              class="mt-16 mb-15"
-              justify="center"
-              align-content="center"
-              no-gutters
-            >
-              <v-card
-                cols="12"
-                sm="4"
-                class="px-3 mt-16"
-                width="400"
-                height="250"
-                tile
-              >
-                <v-card-text class="mt-4">
-                  <v-row justify="center" no-gutters>
-                    <underlined-title text="COUPON" font-size="24px" />
-                  </v-row>
-                  <v-row class="mt-3">
-                    <pg-text-field
-                      v-model="promotionCode"
-                      label="Promotion Code"
-                      :color="isValidCoupon ? '' : 'error'"
-                      :suffix="getTextValidateCoupon"
-                      :loading="isValidatingCoupon"
-                      solo
-                    />
-                  </v-row>
-                  <v-row class="mb-3" justify="center">
-                    <v-btn class="mt-3 mr-4" color="accent" :disabled="!isValidCoupon" @click="savePromotion">
-                      Save
-                    </v-btn>
-                    <v-btn class="mt-3" color="" @click="closeCouponModal">
-                      Close
-                    </v-btn>
-                  </v-row>
-                </v-card-text>
-              </v-card>
-            </v-row>
-          </v-col>
-        </v-row>
-      </v-card>
-    </pg-dialog>
   </v-row>
 </template>
 
@@ -482,7 +452,7 @@ export default {
 
   data: vm => ({
     loading: false,
-    couponDialog: false,
+    addCoupon: true,
     isValidCoupon: false,
     isValidatingCoupon: false,
     promotionCode: null,
@@ -638,14 +608,14 @@ export default {
         this.promotion_id = null
         this.promotionCode = null
         this.loading = false
-        this.couponDialog = false
+        this.addCoupon = false
       }
     },
 
     closeCouponModal () {
       this.promotion_id = null
       this.promotionCode = null
-      this.couponDialog = false
+      this.addCoupon = false
     },
 
     handleRouteAction () {
