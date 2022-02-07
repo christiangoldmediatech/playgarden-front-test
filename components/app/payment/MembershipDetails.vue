@@ -111,7 +111,7 @@
           </v-row>
 
           <!-- Discount -->
-          <v-row v-if="billing.planAmountDiscount || billing.percentOff" no-gutters>
+          <v-row>
             <v-col cols="5" class="text-h7 grey--text mb-1">
               <small>Coupon applied:</small>
             </v-col>
@@ -148,7 +148,8 @@
                 </v-btn>
               </v-row>
             </v-col>
-
+          </v-row>
+          <v-row v-if="billing.planAmountDiscount || billing.percentOff" no-gutters>
             <v-col class="mt-2" cols="12" md="5">
               <span class="text-h7 black--text font-weight-bold mb-3">{{ billing.discountCode }}</span>
             </v-col>
@@ -167,18 +168,6 @@
                   }}
                 </span>
                 <small class="grey--text font-weight-bold discount">discount on your membership</small>
-              </div>
-            </v-col>
-          </v-row>
-          <v-row v-else no-gutters>
-            <v-col cols="12" class="justify-end mb-1">
-              <div class="text-right" @click="addCoupon = true">
-                <span class="text-decoration-underline text-h7 add-coupon">
-                  <small>Add coupon code</small>
-                </span>
-                <v-icon small color="accent" class="text-h7 hidden-md-and-down">
-                  mdi-plus
-                </v-icon>
               </div>
             </v-col>
           </v-row>
