@@ -2,14 +2,14 @@
   <v-row no-gutters>
     <!-- Desktop Title -->
     <v-col cols="12" class="d-none d-md-block">
-      <div class="text-uppercase font-weight-bold text-h4 grey--text text--darken-2 pb-6">
+      <div class="pb-6 text-uppercase font-weight-bold text-h4 grey--text text--darken-2">
         Membership
       </div>
     </v-col>
 
     <!-- Membership Billing Information -->
-    <v-col cols="12" md="6" class="pr-md-8 mb-6 mb-md-0">
-      <v-card class="pa-4 px-md-10 py-md-6 mb-6 card-custom-border">
+    <v-col cols="12" md="6" class="mb-6 pr-md-8 mb-md-0">
+      <v-card class="mb-6 pa-4 px-md-10 py-md-6 card-custom-border">
         <!-- Desktop SVG -->
         <div class="justify-center pb-4 d-none d-md-flex">
           <img
@@ -19,50 +19,50 @@
         </div>
 
         <!-- Mobile SVG and Title= -->
-        <div class="d-flex d-md-none justify-center py-2">
+        <div class="justify-center py-2 d-flex d-md-none">
           <img
             height="45px"
             src="@/assets/svg/membership.svg"
           >
-          <span class="text-uppercase font-weight-bold text-h5 grey--text text--darken-2 mt-1 ml-2">
+          <span class="mt-1 ml-2 text-uppercase font-weight-bold text-h5 grey--text text--darken-2">
             Membership
           </span>
         </div>
 
-        <div class="text-center body-1 text-md-h6 font-weight-medium grey--text text--darken-2 my-2">
+        <div class="my-2 text-center body-1 text-md-h6 font-weight-medium grey--text text--darken-2">
           <small class="font-weight-bold">Information about your membership</small>
         </div>
 
         <div v-if="hasMembership">
           <!-- Trial Period Description -->
           <v-row v-if="billing.status === 'trialing'" no-gutters>
-            <v-col cols="12" class="text-h6 grey--text mb-1">
+            <v-col cols="12" class="mb-1 text-h6 grey--text">
               <small>Free trial period ends:</small>
             </v-col>
 
-            <v-col cols="12" class="text-h6 black--text font-weight-bold mb-1">
+            <v-col cols="12" class="mb-1 text-h6 black--text font-weight-bold">
               {{ billing.trialEndDate }}
             </v-col>
           </v-row>
 
           <!-- Next Billing Date -->
           <v-row v-else no-gutters class="mb-3">
-            <v-col cols="12" class="text-h6 grey--text mb-1">
+            <v-col cols="12" class="mb-1 text-h6 grey--text">
               <small>Your next billing date is:</small>
             </v-col>
 
-            <v-col cols="12" class="text-h6 grey--text font-weight-bold mb-1">
+            <v-col cols="12" class="mb-1 text-h6 grey--text font-weight-bold">
               {{ billing.nextBillingDate }}
             </v-col>
           </v-row>
 
           <!-- Monthly Membership Fee -->
           <v-row no-gutters class="mb-3">
-            <v-col cols="12" class="text-h6 grey--text mb-1">
+            <v-col cols="12" class="mb-1 text-h6 grey--text">
               <small>Your {{ membershipInterval }} membership fee is:</small>
             </v-col>
 
-            <v-col v-if="billing.planAmountDiscount" cols="12" class="text-h6 black--text font-weight-bold mb-1">
+            <v-col v-if="billing.planAmountDiscount" cols="12" class="mb-1 text-h6 black--text font-weight-bold">
               <div>
                 <span>{{
                   billing.planAmountDiscount.toLocaleString("en-US", {
@@ -80,7 +80,7 @@
                 </span>
               </div>
             </v-col>
-            <v-col v-else-if="billing.percentOff" cols="12" class="text-h6 black--text font-weight-bold mb-1">
+            <v-col v-else-if="billing.percentOff" cols="12" class="mb-1 text-h6 black--text font-weight-bold">
               <div>
                 <span>{{
                   getTotalPay.toLocaleString("en-US", {
@@ -98,7 +98,7 @@
                 </span>
               </div>
             </v-col>
-            <v-col v-else cols="12" class="text-h6 black--text font-weight-bold mb-1">
+            <v-col v-else cols="12" class="mb-1 text-h6 black--text font-weight-bold">
               <div>
                 <span>{{
                   billing.planAmount.toLocaleString("en-US", {
@@ -112,11 +112,11 @@
 
           <!-- Discount -->
           <v-row>
-            <v-col cols="5" class="text-h7 grey--text mb-1">
+            <v-col cols="5" class="mb-1 text-h7 grey--text pg-py-0">
               <small v-if="billing.planAmountDiscount || billing.percentOff">Coupon applied:</small>
             </v-col>
-            <v-col cols="7" class="justify-end mb-1">
-              <div class="text-right" @click="addCoupon = true">
+            <v-col cols="7" class="justify-end mb-1 pg-py-0">
+              <div class="text-right" @click="addCoupon = !addCoupon">
                 <span class="text-decoration-underline text-h7 add-coupon">
                   <small>Add coupon code</small>
                 </span>
@@ -125,6 +125,29 @@
                 </v-icon>
               </div>
             </v-col>
+
+            <template v-if="billing.planAmountDiscount || billing.percentOff" no-gutters>
+              <v-col class="mt-1" cols="12" md="5">
+                <span class="mb-3 text-h7 black--text font-weight-bold">{{ billing.discountCode }}</span>
+              </v-col>
+
+              <v-col cols="12" md="7" class="mt-1 mb-3">
+                <div class="text-right">
+                  <span v-if="billing.percentOff" class="mb-3 discount grey--text font-weight-bold">
+                    {{ billing.percentOff }} %
+                  </span>
+                  <span v-if="billing.amountOff" class="mb-3 discount grey--text font-weight-bold">
+                    $ {{
+                      getAmountOff.toLocaleString("en-US", {
+                        style: "currency",
+                        currency: "USD",
+                      })
+                    }}
+                  </span>
+                  <small class="grey--text font-weight-bold discount">discount on your membership</small>
+                </div>
+              </v-col>
+            </template>
 
             <v-col v-if="addCoupon" class="mt-2" cols="12">
               <v-row no-gutters>
@@ -144,38 +167,15 @@
                   block
                   @click="savePromotion"
                 >
-                  APPLIED COUPON
+                  APPLY COUPON
                 </v-btn>
               </v-row>
-            </v-col>
-          </v-row>
-
-          <v-row v-if="billing.planAmountDiscount || billing.percentOff" no-gutters>
-            <v-col class="mt-1" cols="12" md="5">
-              <span class="text-h7 black--text font-weight-bold mb-3">{{ billing.discountCode }}</span>
-            </v-col>
-
-            <v-col cols="12" md="7" class="mb-3 mt-1">
-              <div class="text-right">
-                <span v-if="billing.percentOff" class="discount grey--text font-weight-bold mb-3">
-                  {{ billing.percentOff }} %
-                </span>
-                <span v-if="billing.amountOff" class="discount grey--text font-weight-bold mb-3">
-                  $ {{
-                    getAmountOff.toLocaleString("en-US", {
-                      style: "currency",
-                      currency: "USD",
-                    })
-                  }}
-                </span>
-                <small class="grey--text font-weight-bold discount">discount on your membership</small>
-              </div>
             </v-col>
           </v-row>
         </div>
       </v-card>
       <!-- Payment Method -->
-      <v-card class="pa-4 px-md-10 py-md-6 card-custom-border mb-6">
+      <v-card class="mb-6 pa-4 px-md-10 py-md-6 card-custom-border">
         <v-row no-gutters class="text-uppercase font-weight-bold text-h5 grey--text text--darken-2" justify="center">
           Payment Method
         </v-row>
@@ -185,13 +185,13 @@
           align="center"
           no-gutters
         >
-          <v-col cols="4" class="text-center text-subtitle-2 text-sm-h6 grey--text font-weight-bold mt-8">
+          <v-col cols="4" class="mt-8 text-center text-subtitle-2 text-sm-h6 grey--text font-weight-bold">
             {{ card.details.brand }}
           </v-col>
-          <v-col cols="8" class="text-center text-subtitle-2 text-sm-h6 grey--text font-weight-bold mt-8">
+          <v-col cols="8" class="mt-8 text-center text-subtitle-2 text-sm-h6 grey--text font-weight-bold">
             •••• •••• •••• {{ card.details.last4 }}
           </v-col>
-          <v-col cols="12" class="d-flex justify-center mt-8">
+          <v-col cols="12" class="justify-center mt-8 d-flex">
             <v-btn
               color="primary"
               text
@@ -203,7 +203,7 @@
           </v-col>
         </v-row>
         <v-row v-if="userCards.length === 0">
-          <v-col cols="12" class="grey--text mb-1">
+          <v-col cols="12" class="mb-1 grey--text">
             <span>To add a Payment Method, select a Payment Plan below.</span>
           </v-col>
           <v-col cols="12">
@@ -223,7 +223,7 @@
     </v-col>
 
     <!-- Plan Information -->
-    <v-col cols="12" md="6" class="pl-md-8 mb-6 mb-md-0">
+    <v-col cols="12" md="6" class="mb-6 pl-md-8 mb-md-0">
       <!-- TRIAL EXPIRING RIBBON -->
       <trial-is-expiring
         v-if="isTrialExpiringRibbonVisible"
@@ -234,7 +234,7 @@
         <v-row no-gutters>
           <!-- Plan Name-->
           <v-col cols="12" class="text-center">
-            <div class="text-uppercase font-weight-bold text-h5 grey--text text--darken-2 mb-6">
+            <div class="mb-6 text-uppercase font-weight-bold text-h5 grey--text text--darken-2">
               Your Plan
             </div>
           </v-col>
@@ -250,7 +250,7 @@
                returns an equivalent number, but we should update this component to accept
                maybe an id instead.[ch1440]
           -->
-          <v-col cols="12" class="mb-10 mx-0 mx-lg-12">
+          <v-col cols="12" class="mx-0 mb-10 mx-lg-12">
             <plan-description
               v-if="Object.keys(plan).length"
               :plan="plan"
@@ -258,7 +258,7 @@
           </v-col>
 
           <!-- Change Plan Button -->
-          <v-col v-if="billing.stripeStatus !== 'canceled'" cols="12" class="d-flex justify-center">
+          <v-col v-if="billing.stripeStatus !== 'canceled'" cols="12" class="justify-center d-flex">
             <v-btn
               v-if="!isCaregiver"
               color="primary mb-3"
@@ -270,7 +270,7 @@
             </v-btn>
           </v-col>
 
-          <v-col v-if="!isCaregiver" cols="12" class="d-flex justify-center">
+          <v-col v-if="!isCaregiver" cols="12" class="justify-center d-flex">
             <!-- Cancel Subscription -->
             <v-btn
               v-if="hasMembership"
