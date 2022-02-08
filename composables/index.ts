@@ -1,5 +1,6 @@
 export * from './analytics'
 export * from './faq'
+export * from './favorites'
 export * from './helpers.composable'
 export * from './use-activity.composable'
 export * from './use-auth.composable'
