@@ -150,7 +150,7 @@
                   UPLOAD
                 </v-btn>
                 <br>
-                <v-btn v-if="!!uploadedList.length" class="mt-3" color="accent" @click="goBack">
+                <v-btn v-if="!!uploadedList.length" class="mt-3" text color="accent" @click="goBack">
                   GO BACK
                 </v-btn>
               </div>
