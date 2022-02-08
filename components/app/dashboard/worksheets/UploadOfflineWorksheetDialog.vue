@@ -29,7 +29,7 @@
           <div v-if="isChecking" class="ma-6">
             <v-progress-circular color="accent" size="128" width="8" indeterminate />
           </div>
-          <div v-else-if="uploadFinished" class="ma-6 mt-0 mb-2">
+          <div v-else-if="uploadFinished" class="pg-w-full ma-6 mt-0 mb-2">
             <div class="d-flex flex-wrap">
               <div
                 v-for="item in uploadedList"
@@ -72,7 +72,7 @@
             </div>
           </div>
           <div
-            v-else-if="!uploadFinished || (uploadedList.length || thumbnailList.length)"
+            v-else-if="!uploadFinished"
             class="upload-ow-dialog-drag-area mb-2"
             @drop="addDroppedFiles"
             @dragover="dragOverHandler"
@@ -138,7 +138,7 @@
                 </div>
               </div>
 
-              <div class="text-center mt-10 mb-6">
+              <div class="text-center mt-10 mb-2">
                 <v-btn
                   color="#68C453"
                   :dark="!!thumbnailList.length"
@@ -148,6 +148,10 @@
                   @click="uploadWorksheets"
                 >
                   UPLOAD
+                </v-btn>
+                <br>
+                <v-btn v-if="!!uploadedList.length" class="mt-3" color="accent" @click="goBack">
+                  GO BACK
                 </v-btn>
               </div>
             </template>
@@ -277,14 +281,16 @@ export default defineComponent({
       }
     }
 
-    async function getUploadedOfflineWorksheets(): Promise<void> {
+    async function getUploadedOfflineWorksheets(changeBack: boolean = true): Promise<void> {
       try {
         const childId = currentChild.value.id
         const lesson = store.getters['admin/curriculum/getLesson']
         const lessonId = lesson.id
         const result = await getUploaded(childId, lessonId)
         if (result && result.length) {
-          uploadFinished.value = true
+          if (changeBack) {
+            uploadFinished.value = true
+          }
           uploadedList.value = result
         } else {
           uploadedList.value = []
@@ -299,7 +305,7 @@ export default defineComponent({
       try {
         isRemoving.value = true
         await removeUploadedOfflineWorksheet(filedId)
-        await getUploadedOfflineWorksheets()
+        await getUploadedOfflineWorksheets(false)
       } catch {
       } finally {
         isRemoving.value = false
@@ -460,6 +466,11 @@ export default defineComponent({
       emit('input', false)
     }
 
+    function goBack () {
+      resetParams()
+      uploadFinished.value = true
+    }
+
     return {
       canRemoveOrUpload,
       isChecking,
@@ -475,7 +486,8 @@ export default defineComponent({
       removeUploadedFile,
       uploadWorksheets,
       resetParams,
-      close
+      close,
+      goBack
     }
   }
 })
