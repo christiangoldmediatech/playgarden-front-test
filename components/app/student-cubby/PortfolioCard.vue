@@ -77,7 +77,7 @@
         <img class="w-100" :src="image">
       </v-col>
 
-      <v-col v-if="!noShare" class="shrink" cols="3">
+      <v-col v-if="!noShare" class="shrink" cols="12" md="3">
         <v-card>
           <v-card-title>
             {{ feedback.title }}
@@ -90,7 +90,7 @@
         </v-card>
       </v-col>
 
-      <v-col v-if="infoUser && dataChild" class="shrink" cols="3">
+      <v-col v-if="infoUser && dataChild" class="shrink" cols="12" md="3">
         <v-card class="mx-auto mx-md-0">
           <v-card-text>
             <span>
