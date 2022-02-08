@@ -190,7 +190,7 @@
             @change="setFiles"
           >
         </v-row>
-        <v-row v-if="!isChecking" justify="center" align="center">
+        <v-row v-if="!isChecking" class="mb-2" justify="center" align="center">
           <v-btn
             color="accent"
             text
