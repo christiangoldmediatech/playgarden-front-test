@@ -1,50 +1,93 @@
 <template>
-  <video-player-dialog
-    :id="dialogContainerId"
-    ref="videoPlayerDialog"
-    v-model="dialog"
-    :player-instance="player"
-    @close="handleClose"
-  >
-    <pg-video-js-player
-      ref="videoPlayer"
-      autoplay
-      show-restart
-      show-steps
-      show-favorite
-      show-cast
-      use-standard-poster
-      :fullscreen-override="handleFullscreen"
-      no-auto-track-change
-      @ready="onReady"
-      @ended="handleClose"
-    />
-  </video-player-dialog>
+  <pg-video-player
+    auto-play
+    force-default-poster
+    no-auto-track-change
+    :is-favorites-loading="isLoadingFavorites"
+    @ready="onPlayerReady"
+    @on-favorites-clicked="onFavoritesClicked"
+  />
 </template>
 
-<script>
-import VideoPlayerDialogMixin from '@/mixins/VideoPlayerDialogMixin.js'
-import Fullscreen from '@/mixins/FullscreenMixin.js'
-import DashboardOverrides from '@/mixins/DashboardOverridesMixin.js'
+<script lang="ts">
+import {
+  defineComponent,
+  onBeforeMount,
+  useStore
+} from '@nuxtjs/composition-api'
+import {
+  useNuxtHelper,
+  useGtmHelper,
+  useFavoritesApi,
+  useFavorites
+} from '@/composables'
+import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
+import {
+  PlayerInstance,
+  PlayerInstanceEvent
+} from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
 
-export default {
+export default defineComponent({
   name: 'RecordedClassPlayer',
 
-  mixins: [VideoPlayerDialogMixin, DashboardOverrides, Fullscreen],
+  setup() {
+    const $nuxt = useNuxtHelper()
+    const gtm = useGtmHelper()
+    const store = useStore()
+    const {
+      isLoadingFavorites,
+      getAllFavorites,
+      curatePlaylist
+    } = useFavorites()
+    const { handleFavorite } = useFavoritesApi({ gtm, store })
+    let playerInstance: PlayerInstance
 
-  created () {
-    this.$nuxt.$on('open-recorded-class-player', (params) => {
-      this.open(params)
+    // Get favorites
+    onBeforeMount(() => {
+      // Just get all favorites
+      getAllFavorites()
     })
-  },
 
-  methods: {
-    onReady (player) {
-      this.player = player
-      player.on('dispose', () => {
-        this.player = null
-      })
+    // Function for setting up player
+    function onPlayerReady(player: PlayerInstance) {
+      playerInstance = player
+    }
+
+    // Function for handling favorites clicked
+    async function onFavoritesClicked({ currentTrack }: PlayerInstanceEvent) {
+      try {
+        if (playerInstance && currentTrack) {
+          const videoId = currentTrack?.meta?.videoId as number
+          const title = currentTrack?.title as string
+          if (videoId) {
+            isLoadingFavorites.value = true
+            await handleFavorite(videoId, title)
+            await getAllFavorites()
+            const playlist = curatePlaylist([currentTrack])
+            playerInstance.replacePlaylist(playlist)
+          }
+        }
+      } catch (error) {
+        return Promise.reject(error)
+      } finally {
+        isLoadingFavorites.value = false
+      }
+    }
+
+    // Setup opening message callback
+    $nuxt.$on('open-recorded-class-player', (playlist: MediaObject[]) => {
+      if (playerInstance) {
+        playerInstance.loadPlaylist(playlist)
+        playerInstance.open()
+        playerInstance.play()
+      }
+    })
+
+    return {
+      isLoadingFavorites,
+      onPlayerReady,
+      onFavoritesClicked
     }
   }
-}
+})
 </script>

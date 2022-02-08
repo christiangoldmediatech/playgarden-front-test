@@ -357,6 +357,9 @@ export default {
     async save () {
       this.loading = true
       try {
+        if (this.typeSelected === 'amount') {
+          this.item.coupon.amount_off = this.item.coupon.amount_off * 100
+        }
         this.item.coupon = this.cleanFields(this.item.coupon)
         if (this.item.coupon.id === null || this.item.coupon.id === undefined) {
           await this.createCoupon(this.item)
