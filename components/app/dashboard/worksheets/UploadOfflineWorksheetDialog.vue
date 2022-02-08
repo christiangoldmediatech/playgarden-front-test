@@ -29,7 +29,7 @@
           <div v-if="isChecking" class="ma-6">
             <v-progress-circular color="accent" size="128" width="8" indeterminate />
           </div>
-          <div v-else-if="uploadFinished" class="ma-6 mt-0">
+          <div v-else-if="uploadFinished" class="ma-6 mt-0 mb-2">
             <div class="d-flex flex-wrap">
               <div
                 v-for="item in uploadedList"
@@ -54,7 +54,7 @@
             </div>
 
             <div class="d-flex justify-center">
-              <div class="text-center mt-3 mb-3">
+              <div class="text-center mt-3">
                 <div class="upload-ow-dialog-success mb-6">
                   UPLOAD SUCCESSFUL!
                 </div>
@@ -73,7 +73,7 @@
           </div>
           <div
             v-else-if="!uploadFinished || (uploadedList.length || thumbnailList.length)"
-            class="upload-ow-dialog-drag-area mb-10"
+            class="upload-ow-dialog-drag-area mb-2"
             @drop="addDroppedFiles"
             @dragover="dragOverHandler"
           >
@@ -141,7 +141,7 @@
               <div class="text-center mt-10 mb-6">
                 <v-btn
                   color="#68C453"
-                  dark
+                  :dark="!!thumbnailList.length"
                   x-large
                   :loading="!canRemoveOrUpload"
                   :disabled="!thumbnailList.length"
@@ -189,6 +189,17 @@
             multiple
             @change="setFiles"
           >
+        </v-row>
+        <v-row v-if="!isChecking" justify="center" align="center">
+          <v-btn
+            color="accent"
+            text
+            x-large
+            :disabled="!canRemoveOrUpload"
+            @click.stop="close"
+          >
+            Return to lesson
+          </v-btn>
         </v-row>
       </v-card-text>
     </v-card>
@@ -272,9 +283,12 @@ export default defineComponent({
         const lesson = store.getters['admin/curriculum/getLesson']
         const lessonId = lesson.id
         const result = await getUploaded(childId, lessonId)
-        if (result.length) {
+        if (result && result.length) {
           uploadFinished.value = true
           uploadedList.value = result
+        } else {
+          uploadedList.value = []
+          uploadFinished.value = false
         }
       } catch (error) {
         return Promise.reject(error)
