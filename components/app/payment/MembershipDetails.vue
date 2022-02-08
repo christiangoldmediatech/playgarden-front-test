@@ -112,13 +112,13 @@
 
           <!-- Discount -->
           <v-row>
-            <v-col cols="5" class="mb-1 text-h7 grey--text pg-py-0">
-              <small v-if="billing.planAmountDiscount || billing.percentOff">Coupon applied:</small>
+            <v-col cols="5" class="mb-1 pg-text-base pg-font-medium grey--text pg-py-0">
+              <span v-if="billing.planAmountDiscount || billing.percentOff">Coupon applied:</span>
             </v-col>
             <v-col cols="7" class="justify-end mb-1 pg-py-0">
-              <div class="text-right" @click="addCoupon = !addCoupon">
-                <span class="text-decoration-underline text-h7 add-coupon">
-                  <small>Add coupon code</small>
+              <div class="text-right md:pg-text-base" @click="addCoupon = !addCoupon">
+                <span class="text-decoration-underline add-coupon">
+                  <span>Add coupon code</span>
                 </span>
                 <v-icon small color="accent" class="text-h7 hidden-md-and-down">
                   mdi-plus
@@ -128,7 +128,7 @@
 
             <template v-if="billing.planAmountDiscount || billing.percentOff" no-gutters>
               <v-col class="mt-1" cols="12" md="5">
-                <span class="mb-3 text-h7 black--text font-weight-bold">{{ billing.discountCode }}</span>
+                <span class="mb-3 text-h7 black--text font-weight-bold pg-uppercase">{{ billing.discountCode }}</span>
               </v-col>
 
               <v-col cols="12" md="7" class="mt-1 mb-3">
@@ -551,6 +551,8 @@ export default {
     promotionCode (val) {
       if (val) {
         this.promotionCode = val.toUpperCase()
+        this.isValidCoupon = false
+
         if (val.length >= 5) {
           this.checkValid()
         }
