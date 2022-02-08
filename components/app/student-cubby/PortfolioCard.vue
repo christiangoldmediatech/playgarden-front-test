@@ -60,11 +60,7 @@
     </v-container>
 
     <v-row v-else align="center" class="portfolio-card">
-      <v-col cols="12" md="">
-        <img class="w-100" :src="image">
-      </v-col>
-
-      <v-col v-if="!noShare" class="shrink" cols="12" md="">
+      <v-col v-if="!noShare" class="shrink">
         <pg-social-buttons
           class="mx-auto mx-md-0"
           entity-auto-resolve
@@ -76,6 +72,22 @@
           :toolbar-subtitle="textShare"
           :url="image"
         />
+      </v-col>
+      <v-col cols="3" md="">
+        <img class="w-100" :src="image">
+      </v-col>
+
+      <v-col v-if="!noShare" class="shrink" cols="3">
+        <v-card>
+          <v-card-title>
+            {{ feedback.title }}
+          </v-card-title>
+          <v-card-text>
+            <div class="feedback">
+              {{ feedback.feedback }}
+            </div>
+          </v-card-text>
+        </v-card>
       </v-col>
 
       <v-col v-if="infoUser && dataChild" class="shrink" cols="12" md="4">
@@ -285,5 +297,8 @@ export default defineComponent({
 .scaled {
   transform: scale(1.1);
   z-index: 1;
+}
+.feedback {
+  background:#F5F5F5 !important;
 }
 </style>
