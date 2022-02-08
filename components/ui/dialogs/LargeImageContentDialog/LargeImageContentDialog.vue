@@ -26,7 +26,7 @@
       <v-progress-linear :active="loading" indeterminate height="12px" data-test-id="progress-linear" />
 
       <div class="d-flex">
-        <div class="d-none d-md-flex" :style="'width: 30%;'">
+        <div class="d-none d-md-flex" :style="`width: ${imageWidth}%;`">
           <v-img
             :src="img"
             :height="imageHeight"
@@ -36,7 +36,7 @@
           />
         </div>
 
-        <div class="my-6 my-md-14 px-8" :style="`width: ${isMobile ? '100%' : '70%'}`">
+        <div class="my-6 my-md-14 px-8" :style="`width: ${isMobile ? '100%' : (100 - imageWidth) + '%'}`">
           <v-btn v-if="isCloseable && fullscreen" class="d-md-none warning--text mb-4 pl-0" text data-test-id="mobile-close-button" @click="$emit('close')">
             <v-icon left>
               mdi-arrow-left
@@ -86,6 +86,11 @@ export default Vue.extend({
     fullscreen: {
       type: Boolean,
       default: true
+    },
+
+    imageWidth: {
+      type: Number,
+      default: 30
     }
   },
 
