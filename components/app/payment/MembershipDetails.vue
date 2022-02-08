@@ -2,14 +2,14 @@
   <v-row no-gutters>
     <!-- Desktop Title -->
     <v-col cols="12" class="d-none d-md-block">
-      <div class="text-uppercase font-weight-bold text-h4 grey--text text--darken-2 pb-6">
+      <div class="pb-6 text-uppercase font-weight-bold text-h4 grey--text text--darken-2">
         Membership
       </div>
     </v-col>
 
     <!-- Membership Billing Information -->
-    <v-col cols="12" md="6" class="pr-md-8 mb-6 mb-md-0">
-      <v-card class="pa-4 px-md-10 py-md-6 mb-6 card-custom-border">
+    <v-col cols="12" md="6" class="mb-6 pr-md-8 mb-md-0">
+      <v-card class="mb-6 pa-4 px-md-10 py-md-6 card-custom-border">
         <!-- Desktop SVG -->
         <div class="justify-center pb-4 d-none d-md-flex">
           <img
@@ -19,50 +19,86 @@
         </div>
 
         <!-- Mobile SVG and Title= -->
-        <div class="d-flex d-md-none justify-center py-2">
+        <div class="justify-center py-2 d-flex d-md-none">
           <img
             height="45px"
             src="@/assets/svg/membership.svg"
           >
-          <span class="text-uppercase font-weight-bold text-h5 grey--text text--darken-2 mt-1 ml-2">
+          <span class="mt-1 ml-2 text-uppercase font-weight-bold text-h5 grey--text text--darken-2">
             Membership
           </span>
         </div>
 
-        <div class="text-center body-1 text-md-h6 font-weight-medium grey--text text--darken-2 my-2">
+        <div class="my-2 text-center body-1 text-md-h6 font-weight-medium grey--text text--darken-2">
           <small class="font-weight-bold">Information about your membership</small>
         </div>
 
         <div v-if="hasMembership">
           <!-- Trial Period Description -->
           <v-row v-if="billing.status === 'trialing'" no-gutters>
-            <v-col cols="12" class="text-h6 grey--text mb-1">
+            <v-col cols="12" class="mb-1 text-h6 grey--text">
               <small>Free trial period ends:</small>
             </v-col>
 
-            <v-col cols="12" class="text-h6 grey--text font-weight-bold mb-1">
+            <v-col cols="12" class="mb-1 text-h6 black--text font-weight-bold">
               {{ billing.trialEndDate }}
             </v-col>
           </v-row>
 
           <!-- Next Billing Date -->
           <v-row v-else no-gutters class="mb-3">
-            <v-col cols="12" class="text-h6 grey--text mb-1">
+            <v-col cols="12" class="mb-1 text-h6 grey--text">
               <small>Your next billing date is:</small>
             </v-col>
 
-            <v-col cols="12" class="text-h6 grey--text font-weight-bold mb-1">
+            <v-col cols="12" class="mb-1 text-h6 grey--text font-weight-bold">
               {{ billing.nextBillingDate }}
             </v-col>
           </v-row>
 
           <!-- Monthly Membership Fee -->
           <v-row no-gutters class="mb-3">
-            <v-col cols="12" class="text-h6 grey--text mb-1">
+            <v-col cols="12" class="mb-1 text-h6 grey--text">
               <small>Your {{ membershipInterval }} membership fee is:</small>
             </v-col>
 
-            <v-col cols="12" class="text-h6 grey--text font-weight-bold mb-1">
+            <v-col v-if="billing.planAmountDiscount" cols="12" class="mb-1 text-h6 black--text font-weight-bold">
+              <div>
+                <span>{{
+                  billing.planAmountDiscount.toLocaleString("en-US", {
+                    style: "currency",
+                    currency: "USD",
+                  })
+                }}</span>
+                <span class="strikethrough old_price grey--text">
+                  {{
+                    billing.planAmount.toLocaleString("en-US", {
+                      style: "currency",
+                      currency: "USD",
+                    })
+                  }}
+                </span>
+              </div>
+            </v-col>
+            <v-col v-else-if="billing.percentOff" cols="12" class="mb-1 text-h6 black--text font-weight-bold">
+              <div>
+                <span>{{
+                  getTotalPay.toLocaleString("en-US", {
+                    style: "currency",
+                    currency: "USD",
+                  })
+                }}</span>
+                <span class="strikethrough old_price grey--text">
+                  {{
+                    billing.planAmount.toLocaleString("en-US", {
+                      style: "currency",
+                      currency: "USD",
+                    })
+                  }}
+                </span>
+              </div>
+            </v-col>
+            <v-col v-else cols="12" class="mb-1 text-h6 black--text font-weight-bold">
               <div>
                 <span>{{
                   billing.planAmount.toLocaleString("en-US", {
@@ -75,53 +111,71 @@
           </v-row>
 
           <!-- Discount -->
-          <v-row v-if="billing.planAmountDiscount" no-gutters>
-            <v-col cols="12" class="text-h6 grey--text mb-1">
-              <small>Discount</small>
+          <v-row>
+            <v-col cols="5" class="mb-1 pg-text-base pg-font-medium grey--text pg-py-0">
+              <span v-if="billing.planAmountDiscount || billing.percentOff">Coupon applied:</span>
+            </v-col>
+            <v-col cols="7" class="justify-end mb-1 pg-py-0">
+              <div class="text-right md:pg-text-base" @click="addCoupon = !addCoupon">
+                <span class="text-decoration-underline add-coupon">
+                  <span>Add coupon code</span>
+                </span>
+                <v-icon small color="accent" class="text-h7 hidden-md-and-down">
+                  mdi-plus
+                </v-icon>
+              </div>
             </v-col>
 
-            <v-col cols="12" md="6">
-              <small class="grey--text font-weight-bold">Code:</small>
-              <span class="text-h6 grey--text font-weight-bold mb-3 ml-2">{{ billing.discountCode }}</span>
-            </v-col>
+            <template v-if="billing.planAmountDiscount || billing.percentOff" no-gutters>
+              <v-col class="mt-1" cols="12" md="5">
+                <span class="mb-3 text-h7 black--text font-weight-bold pg-uppercase">{{ billing.discountCode }}</span>
+              </v-col>
 
-            <v-col cols="12" md="6" class="mb-3">
-              <small class="grey--text font-weight-bold">Amount:</small>
-              <span v-if="billing.percentOff" class="text-h6 grey--text font-weight-bold mb-3 ml-2">
-                {{ billing.percentOff }} %
-              </span>
-              <span v-if="billing.amountOff" class="text-h6 grey--text font-weight-bold mb-3 ml-2">
-                {{
-                  billing.amountOff.toLocaleString("en-US", {
-                    style: "currency",
-                    currency: "USD",
-                  })
-                }}
-              </span>
-            </v-col>
-          </v-row>
+              <v-col cols="12" md="7" class="mt-1 mb-3">
+                <div class="text-right">
+                  <span v-if="billing.percentOff" class="mb-3 discount grey--text font-weight-bold">
+                    {{ billing.percentOff }} %
+                  </span>
+                  <span v-if="billing.amountOff" class="mb-3 discount grey--text font-weight-bold">
+                    $ {{
+                      getAmountOff.toLocaleString("en-US", {
+                        style: "currency",
+                        currency: "USD",
+                      })
+                    }}
+                  </span>
+                  <small class="grey--text font-weight-bold discount">discount on your membership</small>
+                </div>
+              </v-col>
+            </template>
 
-          <v-divider v-if="billing.planAmountDiscount" />
-
-          <!-- Total Amount -->
-          <v-row v-if="billing.planAmountDiscount" no-gutters class="mt-3">
-            <v-col cols="6" class="text-h5 text-md-h4 grey--text">
-              Total
-            </v-col>
-
-            <v-col cols="6" class="text-h5 text-md-h4 grey--text font-weight-bold text-right">
-              <span v-if="billing.planAmountDiscount">{{
-                billing.planAmountDiscount.toLocaleString("en-US", {
-                  style: "currency",
-                  currency: "USD",
-                })
-              }}</span>
+            <v-col v-if="addCoupon" class="mt-2" cols="12">
+              <v-row no-gutters>
+                <pg-text-field
+                  v-model="promotionCode"
+                  label="Promotion Code"
+                  :color="isValidCoupon ? '' : 'error'"
+                  :suffix="getTextValidateCoupon"
+                  :loading="isValidatingCoupon"
+                  solo
+                />
+                <v-btn
+                  :disabled="!isValidCoupon"
+                  color="primary"
+                  class="mb-3"
+                  x-large
+                  block
+                  @click="savePromotion"
+                >
+                  APPLY COUPON
+                </v-btn>
+              </v-row>
             </v-col>
           </v-row>
         </div>
       </v-card>
       <!-- Payment Method -->
-      <v-card class="pa-4 px-md-10 py-md-6 card-custom-border mb-6">
+      <v-card class="mb-6 pa-4 px-md-10 py-md-6 card-custom-border">
         <v-row no-gutters class="text-uppercase font-weight-bold text-h5 grey--text text--darken-2" justify="center">
           Payment Method
         </v-row>
@@ -131,13 +185,13 @@
           align="center"
           no-gutters
         >
-          <v-col cols="4" class="text-center text-subtitle-2 text-sm-h6 grey--text font-weight-bold mt-8">
+          <v-col cols="4" class="mt-8 text-center text-subtitle-2 text-sm-h6 grey--text font-weight-bold">
             {{ card.details.brand }}
           </v-col>
-          <v-col cols="8" class="text-center text-subtitle-2 text-sm-h6 grey--text font-weight-bold mt-8">
+          <v-col cols="8" class="mt-8 text-center text-subtitle-2 text-sm-h6 grey--text font-weight-bold">
             •••• •••• •••• {{ card.details.last4 }}
           </v-col>
-          <v-col cols="12" class="d-flex justify-center mt-8">
+          <v-col cols="12" class="justify-center mt-8 d-flex">
             <v-btn
               color="primary"
               text
@@ -149,7 +203,7 @@
           </v-col>
         </v-row>
         <v-row v-if="userCards.length === 0">
-          <v-col cols="12" class="grey--text mb-1">
+          <v-col cols="12" class="mb-1 grey--text">
             <span>To add a Payment Method, select a Payment Plan below.</span>
           </v-col>
           <v-col cols="12">
@@ -169,7 +223,7 @@
     </v-col>
 
     <!-- Plan Information -->
-    <v-col cols="12" md="6" class="pl-md-8 mb-6 mb-md-0">
+    <v-col cols="12" md="6" class="mb-6 pl-md-8 mb-md-0">
       <!-- TRIAL EXPIRING RIBBON -->
       <trial-is-expiring
         v-if="isTrialExpiringRibbonVisible"
@@ -180,7 +234,7 @@
         <v-row no-gutters>
           <!-- Plan Name-->
           <v-col cols="12" class="text-center">
-            <div class="text-uppercase font-weight-bold text-h5 grey--text text--darken-2 mb-6">
+            <div class="mb-6 text-uppercase font-weight-bold text-h5 grey--text text--darken-2">
               Your Plan
             </div>
           </v-col>
@@ -196,7 +250,7 @@
                returns an equivalent number, but we should update this component to accept
                maybe an id instead.[ch1440]
           -->
-          <v-col cols="12" class="mb-10 mx-0 mx-lg-12">
+          <v-col cols="12" class="mx-0 mb-10 mx-lg-12">
             <plan-description
               v-if="Object.keys(plan).length"
               :plan="plan"
@@ -204,7 +258,7 @@
           </v-col>
 
           <!-- Change Plan Button -->
-          <v-col v-if="billing.stripeStatus !== 'canceled'" cols="12" class="d-flex justify-center">
+          <v-col v-if="billing.stripeStatus !== 'canceled'" cols="12" class="justify-center d-flex">
             <v-btn
               v-if="!isCaregiver"
               color="primary mb-3"
@@ -216,7 +270,7 @@
             </v-btn>
           </v-col>
 
-          <v-col v-if="!isCaregiver" cols="12" class="d-flex justify-center">
+          <v-col v-if="!isCaregiver" cols="12" class="justify-center d-flex">
             <!-- Cancel Subscription -->
             <v-btn
               v-if="hasMembership"
@@ -375,6 +429,7 @@ import UpdateBillingMethod from '@/components/app/payment/UpdateBillingMethod'
 import PlanDescription from '@/components/app/payment/SubscriptionPlanSelection/PlanDescription'
 import TrialIsExpiring from '@/components/app/header/TrialIsExpiring.vue'
 import BillingHistoryCard from '@/components/BillingHistoryCard.vue'
+import debounce from 'lodash/debounce'
 
 export default {
   name: 'MembershipDetails',
@@ -384,44 +439,49 @@ export default {
     TrialIsExpiring,
     BillingHistoryCard
   },
-  data () {
-    return {
-      loading: false,
-      billing: {
-        membershipInterval: 0,
-        nextBillingDate: null,
-        planAmount: 0,
-        planAmountDiscount: null,
-        percentOff: null,
-        amountOff: null,
-        planName: null,
-        trialEndDate: null,
-        subscriptionId: null,
-        status: null,
-        discountCode: null,
-        stripeStatus: ''
-      },
-      cardToUpate: null,
-      stripeCardModal: false,
-      removeSubscriptionModal: false,
-      userCards: [],
-      plan: {},
-      leaveMotive: '',
-      otherLeaveMotive: '',
-      leaveMotives: [
-        'Repeated technical issues',
-        'Too expensive',
-        'Using another learning platform',
-        'Going to in person school',
-        'Too much time commitment',
-        'My little one wasn\'t engaged',
-        'Didn\'t use it enough',
-        'Missing features I need',
-        'Didn\'t meet my expectations',
-        'Other (please explain)'
-      ]
-    }
-  },
+
+  data: vm => ({
+    loading: false,
+    addCoupon: false,
+    isValidCoupon: false,
+    isValidatingCoupon: false,
+    promotionCode: null,
+    promotion_id: null,
+    checkValid: debounce(vm._checkValid, 1050),
+    billing: {
+      membershipInterval: 0,
+      nextBillingDate: null,
+      planAmount: 0,
+      planAmountDiscount: null,
+      percentOff: null,
+      amountOff: null,
+      planName: null,
+      trialEndDate: null,
+      subscriptionId: null,
+      status: null,
+      discountCode: null,
+      stripeStatus: ''
+    },
+    cardToUpate: null,
+    stripeCardModal: false,
+    removeSubscriptionModal: false,
+    userCards: [],
+    plan: {},
+    leaveMotive: '',
+    otherLeaveMotive: '',
+    leaveMotives: [
+      'Repeated technical issues',
+      'Too expensive',
+      'Using another learning platform',
+      'Going to in person school',
+      'Too much time commitment',
+      'My little one wasn\'t engaged',
+      'Didn\'t use it enough',
+      'Missing features I need',
+      'Didn\'t meet my expectations',
+      'Other (please explain)'
+    ]
+  }),
   computed: {
     ...mapGetters('auth', ['getUserInfo']),
 
@@ -431,6 +491,22 @@ export default {
 
     isCaregiver () {
       return (this.getUserInfo.role.id === 4)
+    },
+
+    getTextValidateCoupon () {
+      if (this.promotionCode) {
+        return (this.isValidCoupon) ? 'VALID COUPON' : 'INVALID COUPON'
+      } else {
+        return ''
+      }
+    },
+
+    getTotalPay () {
+      return (((this.billing.percentOff * this.billing.planAmount) / 100) - this.billing.planAmount).toFixed(2)
+    },
+
+    getAmountOff () {
+      return (this.billing.amountOff / 100).toFixed(2)
     },
 
     hasMembership () {
@@ -471,12 +547,22 @@ export default {
       return false
     }
   },
+  watch: {
+    promotionCode (val) {
+      if (val) {
+        this.promotionCode = val.toUpperCase()
+        this.isValidCoupon = false
+
+        if (val.length >= 5) {
+          this.checkValid()
+        }
+      } else {
+        this.promotion_id = null
+      }
+    }
+  },
   created () {
-    this.getBillingDetails()
-    this.getBillingCards()
-    this.getPlan()
-    this.$nuxt.$on('children-changed', this.getBillingDetails)
-    this.$nuxt.$on('plan-membership-changed', this.getPlan)
+    this.loadData()
   },
   mounted () {
     this.handleRouteAction()
@@ -486,6 +572,7 @@ export default {
     this.$nuxt.$off('plan-membership-changed')
   },
   methods: {
+    ...mapActions('coupons', ['getCoupons', 'updateSubcriptionCoupon']),
     ...mapActions(['disableAxiosGlobal', 'enableAxiosGlobal']),
 
     ...mapActions('auth', {
@@ -498,6 +585,34 @@ export default {
       'fetchBillingDetails'
     ]),
 
+    loadData () {
+      this.getBillingDetails()
+      this.getBillingCards()
+      this.getPlan()
+      this.$nuxt.$on('children-changed', this.getBillingDetails)
+      this.$nuxt.$on('plan-membership-changed', this.getPlan)
+    },
+
+    async savePromotion () {
+      try {
+        this.loading = true
+        await this.updateSubcriptionCoupon({ promotion_id: this.promotion_id })
+        this.loadData()
+      } catch (err) {
+      } finally {
+        this.promotion_id = null
+        this.promotionCode = null
+        this.loading = false
+        this.addCoupon = false
+      }
+    },
+
+    closeCouponModal () {
+      this.promotion_id = null
+      this.promotionCode = null
+      this.addCoupon = false
+    },
+
     handleRouteAction () {
       const action = this.$route.query.action
 
@@ -507,6 +622,28 @@ export default {
           break
         default:
           break
+      }
+    },
+
+    async _checkValid () {
+      try {
+        this.isValidatingCoupon = true
+        if (this.promotionCode) {
+          const coupons = await this.getCoupons({ active: true, code: this.promotionCode })
+          if (coupons.length > 0) {
+            this.promotion_id = coupons[0].promotion_id
+            this.isValidCoupon = true
+            this.lockButton = false
+          } else {
+            this.isValidCoupon = false
+            this.promotion_id = null
+          }
+        }
+      } catch (error) {
+        this.isValidCoupon = false
+        this.lockButton = true
+      } finally {
+        this.isValidatingCoupon = false
       }
     },
 
@@ -615,5 +752,55 @@ export default {
 
 .v-btn:not(.v-btn--text) {
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16) !important;
+}
+
+.add-coupon{
+  color: var(--v-accent-base) !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+}
+
+.old_price {
+  font-size: 13px !important;
+}
+
+.discount {
+  font-size: 12px !important;
+}
+
+.strikethrough {
+  position: relative;
+}
+.strikethrough:before {
+  position: absolute;
+  color: var(--v-accent-base) !important;
+  content: "";
+  left: 0;
+  top: 50%;
+  right: 0;
+  border-top: 1px solid;
+  border-color: inherit;
+
+  -webkit-transform:rotate(-10deg);
+  -moz-transform:rotate(-10deg);
+  -ms-transform:rotate(-10deg);
+  -o-transform:rotate(-10deg);
+  transform:rotate(-10deg);
+}
+.strikethrough:after {
+  position: absolute;
+  color: var(--v-accent-base) !important;
+  content: "";
+  left: 0;
+  top: 50%;
+  right: 0;
+  border-top: 1px solid;
+  border-color: inherit;
+
+  -webkit-transform:rotate(10deg);
+  -moz-transform:rotate(10deg);
+  -ms-transform:rotate(10deg);
+  -o-transform:rotate(10deg);
+  transform:rotate(10deg);
 }
 </style>
