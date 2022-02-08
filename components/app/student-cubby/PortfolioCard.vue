@@ -60,7 +60,7 @@
     </v-container>
 
     <v-row v-else align="center" class="portfolio-card">
-      <v-col v-if="!noShare" class="shrink">
+      <v-col v-if="!noShare" class="shrink" cols="12" md="4">
         <pg-social-buttons
           class="mx-auto mx-md-0"
           entity-auto-resolve
@@ -90,7 +90,7 @@
         </v-card>
       </v-col>
 
-      <v-col v-if="infoUser && dataChild" class="shrink" cols="12" md="3">
+      <v-col v-if="infoUser && dataChild" class="shrink" cols="12" md="4">
         <v-card class="mx-auto mx-md-0">
           <v-card-text>
             <span>
