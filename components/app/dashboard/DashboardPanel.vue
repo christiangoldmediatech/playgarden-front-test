@@ -221,7 +221,7 @@
       </div>
     </v-card>
 
-    <upload-offline-worksheet v-if="uploadDialog" v-model="uploadDialog" />
+    <upload-offline-worksheet-dialog v-if="uploadDialog" v-model="uploadDialog" />
   </div>
 </template>
 
@@ -232,7 +232,7 @@ import LessonAdvanceMixin from '@/mixins/LessonAdvanceMixin'
 
 import { APP_EVENTS, TAG_MANAGER_EVENTS } from '@/models'
 
-import UploadOfflineWorksheet from './worksheets/UploadOfflineWorksheet'
+import UploadOfflineWorksheetDialog from './worksheets/UploadOfflineWorksheetDialog'
 import ContentSection from './ContentSection.vue'
 import ContentList from './ContentList.vue'
 import LessonProgress from './LessonProgress.vue'
@@ -242,7 +242,7 @@ export default {
   name: 'DashboardPanel',
 
   components: {
-    UploadOfflineWorksheet,
+    UploadOfflineWorksheetDialog,
     ContentSection,
     ContentList,
     LessonProgress,

@@ -19,7 +19,7 @@
           <v-img :src="image" aspect-ratio="1.7" contain />
 
           <div class="mt-3">
-            <div class="title mb-1">
+            <div v-if="showTitle" class="title mb-1">
               <span
                 class="d-block text-center font-weight-bold"
                 :class="{ 'white--text': displayMode }"
@@ -37,7 +37,7 @@
               </span>
             </div>
 
-            <div v-if="child" class="subheading">
+            <div v-if="child && showChildName" class="subheading">
               <span
                 class="d-block text-center"
                 :class="{ 'white--text': displayMode }"
@@ -180,6 +180,16 @@ export default defineComponent({
       type: [Number, String],
       default: ''
     },
+    showTitle: {
+      type: Boolean,
+      default: false,
+      required: false
+    },
+    showChildName: {
+      type: Boolean,
+      default: false,
+      required: false
+    },
     noShare: {
       type: Boolean,
       default: false,
@@ -217,11 +227,9 @@ export default defineComponent({
     const { feedback, getFeedbackByUploadedWorksheetsId, saveFeedback, updateFeedback } = useFeedback()
     const isLoading = ref(false)
     const studentId = computed(() => Number(route.value.query.id))
-    if (!props.child) {
-      props.child = { id: studentId.value }
-    }
+    const child = props.child || { id: studentId.value }
     const getData = async () => {
-      if (!props.child) {
+      if (!child || !child.id) {
         return
       }
       try {
