@@ -21,7 +21,7 @@
                 "
               >
                 <v-layout row wrap align-center justify-center>
-                  <v-card class="elevation-2 mx-10">
+                  <v-card class="pg-mt-4 elevation-2 mx-10">
                     <v-container>
                       <v-layout column align-center justify-center>
                         <card-playgarden
