@@ -2,7 +2,7 @@
   <v-card
     :class="{ 'rounded-pill': miniVariant }"
     color="white"
-    :width="miniVariant ? 50 : 200"
+    :width="miniVariant ? 50 : 230"
   >
     <v-toolbar color="primary" dense>
       <v-icon :class="{ 'ml-n1': miniVariant }" color="white">
