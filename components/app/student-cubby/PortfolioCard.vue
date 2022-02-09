@@ -299,5 +299,6 @@ export default defineComponent({
 }
 .feedback {
   background:#F5F5F5 !important;
+  text-align: justify !important;
 }
 </style>
