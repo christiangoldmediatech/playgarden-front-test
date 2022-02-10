@@ -7,7 +7,7 @@
           <img src="@/assets/png/gift-icon.png" class="mr-2" width="18px">
           <template v-if="!$vuetify.breakpoint.smAndUp">
             <span class="free-trial-info">
-              YOUR 30 DAY FREE TRIAL
+              YOUR 15 DAY FREE TRIAL
             </span>
             <v-icon class="ml-4">
               mdi-chevron-up
@@ -19,7 +19,7 @@
           </template>
           <template v-else>
             <span class="free-trial-info">
-              YOUR 30 DAY FREE TRIAL
+              YOUR 15 DAY FREE TRIAL
             </span>
             <br>
             <span class="free-trial-info">

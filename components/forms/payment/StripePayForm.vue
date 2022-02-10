@@ -94,7 +94,7 @@
       <p v-if="isFreeForDaysTextVisible">
         <center>
           <span class="font-weight-bold text-completely">
-            Playgarden Prep Online is COMPLETELY FREE for the next 30 days.
+            Playgarden Prep Online is COMPLETELY FREE for the next 15 days.
           </span>
         </center>
       </p>
