@@ -45,8 +45,13 @@ export default {
         data = value.id
       }
 
+      /**
+        * If the selected child is "everyone", the id will be an array. If so, let's add
+        *  a flag to the localStorage `selectedChild` key.
+      */
+
       let everyone = false
-      if (data[0].length > 0) {
+      if (Array.isArray(data) && data[0].length > 0) {
         data = data[0]
         everyone = true
       }
@@ -70,7 +75,7 @@ export default {
       }
 
       let everyone = false
-      if (data[0].length > 0) {
+      if (Array.isArray(data) && data[0].length > 0) {
         data = data[0]
         everyone = true
       }
