@@ -22,9 +22,9 @@
         </p>
 
         <img
-          src="@/assets/png/login-payment-teacher.png"
+          src="@/assets/png/Miss Sarah.png"
           alt="Miss Sarah"
-          class="pg-block pg-mx-auto pg-w-[150px] pg-mt-5 teacher-payment"
+          class="pg-block pg-mx-auto pg-w-[150px] pg-mt-5 pg-rounded-[50%]"
         >
 
         <div class="pg-text-center pg-mt-5">
@@ -58,17 +58,3 @@ export default {
   data: vm => ({})
 }
 </script>
-
-<style lang="scss" scoped>
-.teacher-payment {
-  border-radius: 50%;
-  background-color: #b2e68d;
-  border: 7px solid #b2e68d;
-  outline: 7px solid #68c453;
-}
-@media screen and (max-width: 426px) {
-  .teacher-payment {
-    width: 50%;
-  }
-}
-</style>
