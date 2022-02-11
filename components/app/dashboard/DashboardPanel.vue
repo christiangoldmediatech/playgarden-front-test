@@ -41,6 +41,10 @@
                     <v-btn
                       class="ml-3"
                       icon
+                      :class="{
+                        'pg-opacity-50': !nextButton,
+                      }"
+                      :disabled="!nextButton"
                       :retain-focus-on-click="false"
                       v-bind="attrs"
                       v-on="on"
@@ -55,6 +59,10 @@
                 <template v-else>
                   <v-btn
                     icon
+                    :class="{
+                      'pg-opacity-50': !nextButton,
+                    }"
+                    :disabled="!nextButton"
                     @click.stop="advance"
                   >
                     <img src="@/assets/svg/next-arrow.svg">
