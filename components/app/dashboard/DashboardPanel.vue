@@ -292,7 +292,8 @@ export default {
 
     childId: {
       validator: (val) => {
-        return val === null || typeof val === 'number'
+        // it's a number, numeric string or null
+        return !isNaN(val) || val === null
       },
       required: false,
       default: null
