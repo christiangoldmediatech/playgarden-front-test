@@ -66,7 +66,7 @@
                         General progress statistics for all categories.</span>
                     </div>
                     <div class="mt-n8">
-                      <chart-report v-if="report" :report="report" />
+                      <chart-report v-if="hasReport" :report="report" />
                     </div>
                   </v-col>
                 </v-row>
@@ -88,7 +88,7 @@
                         General progress statistics for all categories.
                       </span>
                     </div>
-                    <chart-report v-if="report" class="mt-n8" :report="report" />
+                    <chart-report v-if="hasReport" class="mt-n8" :report="report" />
                   </v-col>
                 </v-row>
               </template>
@@ -192,6 +192,10 @@ export default {
     ...mapGetters('progress-report', ['report']),
     ...mapGetters('children', { allChildren: 'rows' }),
     ...mapGetters('children', { children: 'rows' }),
+
+    hasReport() {
+      return Object.keys(this.report || {}).length > 0
+    },
 
     disabledLetters () {
       return this.letters
