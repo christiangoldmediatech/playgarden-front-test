@@ -67,7 +67,7 @@ export default {
           this.selectedLetter === this.letter.id && !this.listMode,
         'recorded-letter-small': this.small,
         'recorded-letter-disabled': this.disabled,
-        'recorded-letter-picture': this.letter.picture !== null,
+        'recorded-letter-picture': this.letter.picture && this.letter.picture !== null,
         'recorded-letter-picture-small': this.small
       }
 

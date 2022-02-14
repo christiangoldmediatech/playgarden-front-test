@@ -71,7 +71,7 @@
         </v-col>
       </v-row>
     </v-container>
-    <upload-offline-worksheet v-model="dialog" />
+    <upload-offline-worksheet-dialog v-model="dialog" />
 
     <!-- <teacher-video-overlay
       v-model="teachersVideoDialog"
@@ -85,13 +85,13 @@
 import { mapGetters } from 'vuex'
 import { APP_EVENTS } from '@/models'
 
-import UploadOfflineWorksheet from './UploadOfflineWorksheet.vue'
+import UploadOfflineWorksheetDialog from './UploadOfflineWorksheetDialog.vue'
 
 export default {
   name: 'OfflineWorksheetCard',
 
   components: {
-    UploadOfflineWorksheet
+    UploadOfflineWorksheetDialog
   },
 
   data: () => {

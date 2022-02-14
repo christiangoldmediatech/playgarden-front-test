@@ -1,28 +1,33 @@
 <template>
-  <v-row>
-    <v-card-title primary-title>
-      <v-icon class="d-block ml-auto mr-0 mb-2 cursor-pointer">
-        {{ hiddenCardFamily ? ' mdi-chevron-down' : ' mdi-chevron-up' }}
-      </v-icon>
-      <h4 class="text-center">
-        <underlined-title
-          class="text-h6 text-md-h5 ml-sm-4 text-center"
-          text="Our family loves Playgarden Prep Online!"
-        />
-      </h4>
-    </v-card-title>
-    <v-card-text v-if="!hiddenCardFamily">
+  <div class="pg-p-4 pg-min-h-[385px]">
+    <!-- ARROW ICON -->
+    <v-icon class="pg-block pg-float-right pg-cursor-pointer">
+      {{ hiddenCardFamily ? ' mdi-chevron-down' : ' mdi-chevron-up' }}
+    </v-icon>
+
+    <!-- TITLE -->
+    <h4 class="pg-text-center pg-mt-5">
+      <underlined-title
+        font-size="26px"
+        font-size-mobile="20px"
+        text="Our family loves Playgarden Prep Online!"
+      />
+    </h4>
+
+    <div v-if="!hiddenCardFamily">
       <div>
-        <p class="text-center">
+        <p class="pg-text-center pg-mt-5">
           Still not sure? Call us, text us, email us, We'll be happy to explain
           our program in more detail
         </p>
+
         <img
-          src="@/assets/png/login-payment-teacher.png"
+          src="@/assets/png/Miss Sarah.png"
           alt="Miss Sarah"
-          class="d-block mx-auto teacher-payment"
+          class="pg-block pg-mx-auto pg-w-[150px] pg-mt-5 pg-rounded-[50%]"
         >
-        <div class="text-center mt-4">
+
+        <div class="pg-text-center pg-mt-5">
           <span>
             Miss Sarah
           </span>
@@ -35,8 +40,8 @@
           >hello@playgardenprep.com</a>
         </div>
       </div>
-    </v-card-text>
-  </v-row>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -53,18 +58,3 @@ export default {
   data: vm => ({})
 }
 </script>
-
-<style lang="scss" scoped>
-.teacher-payment {
-  border-radius: 50%;
-  width: 30%;
-  background-color: #b2e68d;
-  border: 7px solid #b2e68d;
-  outline: 7px solid #68c453;
-}
-@media screen and (max-width: 426px) {
-  .teacher-payment {
-    width: 50%;
-  }
-}
-</style>
