@@ -40,7 +40,7 @@
       </p>
     </completed-dialog>
 
-    <upload-offline-worksheet v-model="uploadDialog" />
+    <upload-offline-worksheet-dialog v-model="uploadDialog" />
   </v-card>
 </template>
 
@@ -50,7 +50,7 @@ import DashboardLink from '@/mixins/DashboardLinkMixin.js'
 import { APP_EVENTS } from '@/models'
 
 import CompletedDialog from '@/components/app/dashboard/CompletedDialog'
-import UploadOfflineWorksheet from '../UploadOfflineWorksheet.vue'
+import UploadOfflineWorksheetDialog from '../UploadOfflineWorksheetDialog.vue'
 import OwHeader from './OwHeader.vue'
 import OwConnectingPairs from './OwConnectingPairs.vue'
 import OwTapCorrect from './OwTapCorrect.vue'
@@ -62,7 +62,7 @@ export default {
     OwHeader,
     OwConnectingPairs,
     OwTapCorrect,
-    UploadOfflineWorksheet,
+    UploadOfflineWorksheetDialog,
     CompletedDialog
   },
 

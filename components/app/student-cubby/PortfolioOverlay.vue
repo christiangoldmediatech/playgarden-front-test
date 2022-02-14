@@ -24,7 +24,6 @@
                 </v-icon>
               </v-btn>
             </v-row>
-
             <portfolio-card
               v-if="overlay"
               :child="currtentChild"

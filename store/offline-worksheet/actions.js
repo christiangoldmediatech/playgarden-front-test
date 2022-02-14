@@ -1,19 +1,22 @@
 export default {
-  async upload ({ dispatch }, { lessonId, childrenId, categoryId, File }) {
+  async upload({ dispatch }, { lessonId, childId, file }) {
     try {
       const formData = new FormData()
-      formData.append('file', File)
+      formData.append('file', file)
 
-      const response = await dispatch('upload/doUpload', {
-        type: 'upload-document',
-        path: 'offline-worksheet',
-        formData
-      }, { root: true })
+      const response = await dispatch(
+        'upload/doUpload',
+        {
+          type: 'upload-image',
+          path: 'offline-worksheet',
+          formData
+        },
+        { root: true }
+      )
 
       const data = await this.$axios.$post('/worksheets/upload', {
         lessonId,
-        childrenId,
-        categoryId,
+        childrenId: childId,
         url: response.filePath
       })
 
@@ -23,8 +26,19 @@ export default {
     }
   },
 
-  async getUploaded (ctx, childId) {
+  async getUploaded(ctx, childId) {
     const { data } = await this.$axios.get(`/worksheets/children/${childId}`)
     return data
+  },
+
+  async getOfflineWorksheetsByChildren(ctx, { childId }) {
+    try {
+      const data = await this.$axios.$get(
+        `worksheets/children/${childId}/by-lesson`
+      )
+      return data
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
