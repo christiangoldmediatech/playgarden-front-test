@@ -99,6 +99,7 @@
 </template>
 
 <script lang="ts">
+import debounce from 'lodash/debounce'
 import PortfolioCarousel from '@/components/app/student-cubby/PortfolioCarousel.vue'
 import PortfolioOverlay from '@/components/app/student-cubby/PortfolioOverlay.vue'
 
@@ -144,7 +145,7 @@ export default defineComponent({
       })
     })
 
-    const refresh = async () => {
+    const _refresh = async () => {
       if (!studentId.value) {
         return
       }
@@ -159,9 +160,11 @@ export default defineComponent({
       }
     }
 
-    watch(studentId, (val) => {
+    const refresh = debounce(_refresh, 300)
+
+    watch(studentId, async (val) => {
       if (val) {
-        refresh()
+        await refresh()
       }
     }, { immediate: true })
 
