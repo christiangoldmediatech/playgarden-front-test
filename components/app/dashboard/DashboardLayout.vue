@@ -233,13 +233,15 @@ export default {
         // completed all video lessons
         const areLessonVideosCompleted = this.lesson?.videos?.every(video => Boolean(video?.viewed?.completed))
 
-        // completed all worksheets
-        const areWorksheetsCompleted = this.lesson?.worksheets?.every(worksheet => Boolean(worksheet?.completed?.completed))
+        // completed all online worksheets
+        const areOnlineWorksheetsCompleted = this.lesson?.worksheets
+          ?.filter(worksheet => worksheet.type === 'ONLINE')
+          ?.every(worksheet => Boolean(worksheet?.completed?.completed))
 
         // completed all lesson activities
         const areLessonActivitiesCompleted = this.lesson?.lessonsActivities?.every(activity => Boolean(activity?.activity?.viewed?.completed))
 
-        return areLessonVideosCompleted && areWorksheetsCompleted && areLessonActivitiesCompleted
+        return areLessonVideosCompleted && areOnlineWorksheetsCompleted && areLessonActivitiesCompleted
       }
 
       return false
