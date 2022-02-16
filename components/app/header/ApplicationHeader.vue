@@ -41,8 +41,21 @@
         <div v-if="getVerifyEmail" class="hidden-sm-and-down">
           <v-toolbar-items>
             <template v-for="(item, index) in items">
+              <!-- EXTERNAL LINK -->
               <v-btn
-                v-if="!item.hidden"
+                v-if="item.external && !item.hidden"
+                :key="`${_uid}-${index}`"
+                class="text-none link-text px-2 px-lg-4"
+                active-class="custom-active"
+                text
+                @click="openLink(item.link)"
+              >
+                {{ item.title }}
+              </v-btn>
+
+              <!-- INTERNAL LINK -->
+              <v-btn
+                v-else-if="!item.hidden"
                 :key="`${_uid}-${index}`"
                 class="text-none link-text px-2 px-lg-4"
                 active-class="custom-active"
@@ -258,6 +271,10 @@ export default {
       }
 
       this.$router.push({ name: 'app-virtual-preschool' })
+    },
+
+    openLink(link) {
+      window.open(link, '_self')
     }
   }
 }
