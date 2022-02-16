@@ -31,12 +31,6 @@ export default {
             exact: false
           },
           {
-            title: 'Kids Corner',
-            external: true,
-            link: `${process.env.kidsCornerUrl}?atoken=${this.$store.getters['auth/getAccessToken']}`,
-            hidden: true
-          },
-          {
             title: 'Live Classes',
             to: { name: 'app-live-classes' },
             exact: false
@@ -44,6 +38,11 @@ export default {
           { title: 'Library', to: { name: 'app-library' }, exact: false },
           { title: 'Music', to: { name: 'app-music' }, exact: false },
           { title: 'Playdates', to: { name: 'app-playdates' }, exact: false },
+          {
+            title: 'Kids Corner',
+            external: true,
+            link: `${process.env.kidsCornerUrl}?atoken=${this.$store.getters['auth/getAccessToken']}`
+          },
           {
             title: 'Student Cubby',
             to: {
