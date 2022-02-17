@@ -37,42 +37,72 @@
           </v-btn>
         </v-col>
         <v-col cols="12" class="text-center mt-4 mb-10">
-          <div>
-            <underlined-title
-              :text="
-                isTrialExpired
-                  ? 'YOUR FREE TRIAL HAS ENDED'
-                  : 'YOUR FREE TRIAL WILL END ON:'
-              "
-              font-size="38px"
-              font-size-mobile="28px"
-            />
+          <!-- USER IN TRIAL -->
+          <div v-if="isUserInTrial">
+            <div>
+              <underlined-title
+                text="END YOUR TRIAL PERIOD EARLY"
+                font-size="44px"
+                class="pg-text-pg-grey"
+                font-size-mobile="32px"
+              />
+            </div>
+
+            <div class="pg-leading-[36px] mt-8 mb-4 text-body-1 text-md-h5 custom-max-width">
+              Your trial period ends on
+              <underlined-title
+                :text="lastDayOfTrial"
+                :line-from="50"
+                font-size="32px"
+                font-size-mobile="22px"
+                class="primary--text"
+                line-color="rgba(178, 230, 141, 0.3)"
+                padding-bottom="20px"
+              />
+              . However, by finishing it before and selecting one of our plans, you will be able
+              to access our playdates and more!
+            </div>
           </div>
-          <div class="py-3">
-            <underlined-title
-              :text="lastDayOfTrial"
-              class="primary--text"
-              line-color="rgba(178, 230, 141, 0.3)"
-              :line-from="40"
-              padding-bottom="20px"
-            />
-          </div>
-          <div class="mt-8 mb-4 text-body-1 text-md-h5 custom-max-width">
-            During your trial period, you are able to experience the
-            <span class="accent--text font-weight-bold">Premium+ plan</span>.
-            After your trial period ends, you will be automatically placed in
-            the
-            <span class="accent--text font-weight-bold">Premium</span> monthly
-            plan. You can choose to stay in that plan, or you can choose a new
-            plan below. As always, you can cancel your account at any time by
-            going to your
-            <nuxt-link
-              class="accent--text text-decoration-underline"
-              :to="{ name: 'app-account-index' }"
-            >
-              Accounts Page
-            </nuxt-link>
-            under Membership.
+
+          <!--  PAYING USER -->
+          <div v-else>
+            <div>
+              <underlined-title
+                :text="
+                  isTrialExpired
+                    ? 'YOUR FREE TRIAL HAS ENDED'
+                    : 'YOUR FREE TRIAL WILL END ON:'
+                "
+                font-size="38px"
+                font-size-mobile="28px"
+              />
+            </div>
+            <div class="py-3">
+              <underlined-title
+                :text="lastDayOfTrial"
+                class="primary--text"
+                line-color="rgba(178, 230, 141, 0.3)"
+                :line-from="40"
+                padding-bottom="20px"
+              />
+            </div>
+            <div class="mt-8 mb-4 text-body-1 text-md-h5 custom-max-width">
+              During your trial period, you are able to experience the
+              <span class="accent--text font-weight-bold">Premium+ plan</span>.
+              After your trial period ends, you will be automatically placed in
+              the
+              <span class="accent--text font-weight-bold">Premium</span> monthly
+              plan. You can choose to stay in that plan, or you can choose a new
+              plan below. As always, you can cancel your account at any time by
+              going to your
+              <nuxt-link
+                class="accent--text text-decoration-underline"
+                :to="{ name: 'app-account-index' }"
+              >
+                Accounts Page
+              </nuxt-link>
+              under Membership.
+            </div>
           </div>
 
           <template v-if="!plansShown">
@@ -164,21 +194,32 @@
   </v-main>
 </template>
 
-<script>
+<script lang="ts">
 import dayjs from 'dayjs'
+import { defineComponent, useStore } from '@nuxtjs/composition-api'
 import { mapGetters, mapActions } from 'vuex'
 
 import SubscriptionPlanSelection from '@/components/app/payment/SubscriptionPlanSelection'
 import StripePayForm from '@/components/forms/payment/StripePayForm.vue'
 
-import { UserFlow } from '@/models'
+import { TypedStore, UserFlow } from '@/models'
+import { useAuth } from '@/composables'
 
-export default {
+export default defineComponent({
   name: 'Plan',
 
   components: {
     SubscriptionPlanSelection,
     StripePayForm
+  },
+
+  setup() {
+    const store = useStore<TypedStore>()
+    const Auth = useAuth({ store })
+
+    return {
+      isUserInTrial: Auth.isUserInTrial
+    }
   },
 
   data: () => ({
@@ -303,7 +344,7 @@ export default {
       })
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
