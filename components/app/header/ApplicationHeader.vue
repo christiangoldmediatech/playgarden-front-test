@@ -24,7 +24,7 @@
             }"
           > -->
           <v-img
-            class="cursor-link"
+            class="cursor-link mt-4"
             alt="Playarden Prep Online Logo"
             contain
             max-height="50"
@@ -57,6 +57,9 @@
             </template>
           </v-toolbar-items>
         </div>
+        <div else class="hidden-sm-and-down">
+          <menu-landing-page class="mt-4" />
+        </div>
         <!--divider icon profile and help-->
         <v-divider
           v-if="isUserLoggedIn && !isUserInSignupProcess && getVerifyEmail"
@@ -68,7 +71,7 @@
 
         <!-- AUTH BUTTONS -->
         <div class="pg-app-bar-buttons auth-buttons">
-          <v-btn
+          <!-- <v-btn
             v-if="!isUserLoggedIn"
             class="px-13 ml-3 btn-register"
             color="accent"
@@ -78,7 +81,7 @@
             :to="{ name: 'auth-parent' }"
           >
             REGISTER
-          </v-btn>
+          </v-btn> -->
 
           <v-img
             v-if="isUserLoggedIn && !isUserInSignupProcess && getVerifyEmail"
@@ -106,7 +109,7 @@
             LOG OUT
           </v-btn>
 
-          <v-btn
+          <!-- <v-btn
             v-else-if="!isUserLoggedIn"
             class="px-13 ml-3"
             color="accent"
@@ -114,7 +117,7 @@
             :to="{ name: 'auth-login' }"
           >
             LOGIN
-          </v-btn>
+          </v-btn> -->
         </div>
 
         <!--Profile/help/Tutorial Menu-->
@@ -227,10 +230,15 @@
 
 <script>
 import unauthenticatedRoutes from '@/utils/consts/unauthenticatedRoutes.json'
+import MenuLandingPage from '@/components/app/header/MenuLandingPage.vue'
 import computedMixin from './computed'
 
 export default {
   name: 'ApplicationHeader',
+
+  components: {
+    MenuLandingPage
+  },
 
   mixins: [computedMixin],
 
@@ -363,6 +371,7 @@ export default {
 
 .pg-app-bar::v-deep.v-sheet.v-app-bar.v-toolbar:not(.v-sheet--outlined) {
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16) !important;
+  height: 88px !important;
 }
 .btn-register:before {
   background-color: transparent !important;
