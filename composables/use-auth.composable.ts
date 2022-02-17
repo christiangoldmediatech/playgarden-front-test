@@ -1,5 +1,6 @@
 import { computed, ref } from '@nuxtjs/composition-api'
 import { Store } from 'vuex/types'
+import dayjs from 'dayjs'
 // @ts-ignore
 import jwtDecode from 'jwt-decode'
 import { useCookiesHelper, useChild } from '@/composables'
@@ -47,6 +48,16 @@ export const useAuth = ({
   const isUserInSignupProcess = computed<boolean>(() => (userInfo.value.registerStep || 0) < 5)
 
   const isUserEmailVerified = computed<boolean>(() => store.getters['auth/isUserEmailUnverified'])
+
+  const isUserInTrial = computed<boolean>(() => {
+    const oneDay = 1
+    const now = new Date()
+    const didTrialEnd = dayjs(now).diff(userInfo.value.trialEnd, 'minutes') >= oneDay
+    const didChoosePlan = userInfo.value.planChoosen
+    const isPayingUser = userInfo.value.stripeStatus === 'active'
+
+    return !isPayingUser || !didChoosePlan || !didTrialEnd
+  })
 
   const checkAuth = (): boolean => {
     return !!(accessToken.value && expiresAt.value) && (Date.now() < expiresAt.value)
@@ -162,6 +173,7 @@ export const useAuth = ({
     isUserLoggedIn,
     isUserEmailVerified,
     isUserInSignupProcess,
+    isUserInTrial,
     checkAuth,
     setToken,
     logout,
