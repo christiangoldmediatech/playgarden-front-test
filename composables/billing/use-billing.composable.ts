@@ -46,9 +46,14 @@ const getBillingHistory = async (id?: number) => {
   }
 }
 
+const cancelTrial = () => {
+  return axios.$post('/billing/end-trial-period')
+}
+
 export const useBilling = () => {
   return {
     billings,
-    getBillingHistory
+    getBillingHistory,
+    cancelTrial
   }
 }
