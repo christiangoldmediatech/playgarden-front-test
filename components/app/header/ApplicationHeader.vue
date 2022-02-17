@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app class="pg-app-bar" color="white" elevation="1">
+  <v-app-bar app class="pg-app-bar pb-4" color="white" elevation="1">
     <v-row
       class="flex-nowrap"
       align="center"
@@ -38,7 +38,7 @@
 
       <v-col class="d-flex align-center pr-3" cols="auto">
         <!-- ITEMS -->
-        <div v-if="getVerifyEmail" class="hidden-sm-and-down">
+        <div v-if="getVerifyEmail" class="hidden-sm-and-down mt-5">
           <v-toolbar-items>
             <template v-for="(item, index) in items">
               <!-- EXTERNAL LINK -->
@@ -70,7 +70,7 @@
             </template>
           </v-toolbar-items>
         </div>
-        <div else class="hidden-sm-and-down">
+        <div v-if="!isUserLoggedIn" class="hidden-sm-and-down">
           <menu-landing-page class="mt-4" />
         </div>
         <!--divider icon profile and help-->
