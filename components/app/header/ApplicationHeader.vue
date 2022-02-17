@@ -38,7 +38,7 @@
 
       <v-col class="d-flex align-center pr-3" cols="auto">
         <!-- ITEMS -->
-        <div v-if="getVerifyEmail" class="hidden-sm-and-down mt-5">
+        <div v-if="getVerifyEmail" class="hidden-sm-and-down">
           <v-toolbar-items>
             <template v-for="(item, index) in items">
               <!-- EXTERNAL LINK -->
