@@ -14,7 +14,7 @@
     </v-card-text>
 
     <template
-      v-if="!loading && (!uploadedWorksheets || !uploadedWorksheets.length)"
+      v-if="!loading && (!offlineWorksheetLessons || !offlineWorksheetLessons.length)"
     >
       <v-row justify="center">
         <v-col cols="8">
@@ -71,14 +71,14 @@
         <v-row v-for="n in 5" :key="n">
           <v-col cols="12">
             <v-skeleton-loader
-              v-bind="attrs"
+              v-bind="$attrs"
               type="list-item-avatar, divider"
             />
           </v-col>
 
           <v-col v-for="i in 4" :key="i" cols="3">
             <v-skeleton-loader
-              v-bind="attrs"
+              v-bind="$attrs"
               type="card"
             />
           </v-col>
@@ -88,7 +88,7 @@
       <div v-else>
         <portfolio-carousel
           v-for="category in categories"
-          :key="`portfolio-category-${category.id}`"
+          :key="`portfolio-category-${category.curriculumType.id}`"
           v-bind="{ category }"
         />
 
@@ -99,12 +99,13 @@
 </template>
 
 <script lang="ts">
+import debounce from 'lodash/debounce'
 import PortfolioCarousel from '@/components/app/student-cubby/PortfolioCarousel.vue'
 import PortfolioOverlay from '@/components/app/student-cubby/PortfolioOverlay.vue'
 
 import { computed, defineComponent, ref, useRoute, useRouter, useStore, watch } from '@nuxtjs/composition-api'
 import { useChild, useChildRoute, useOfflineWorksheet, useSnotifyHelper } from '@/composables'
-import { OfflineWorksheet, TypedStore } from '@/models'
+import { OfflineWorksheetLesson, TypedStore } from '@/models'
 
 export default defineComponent({
   name: 'StudentPortfolio',
@@ -121,23 +122,37 @@ export default defineComponent({
     const snotify = useSnotifyHelper()
     const { childId: studentId } = useChildRoute({ store, route, router })
     const { children } = useChild({ store })
-    const { getUploaded } = useOfflineWorksheet({ store })
+    const { getOfflineWorksheetsByChildId } = useOfflineWorksheet({ store })
 
     const loading = ref(false)
-    const uploadedWorksheets = ref<OfflineWorksheet[]>([])
+    const offlineWorksheetLessons = ref<OfflineWorksheetLesson[]>([])
+    const child = computed(() => children.value.find(({ id }) => id === studentId.value))
 
     const categories = computed(() => {
-      return uploadedWorksheets.value.filter(({ worksheetUploads }) => worksheetUploads.length > 0)
+      const filtered = offlineWorksheetLessons.value.filter(({ worksheetUploads }) => worksheetUploads.length > 0)
+      return filtered.map((owLesson) => {
+        const mappedUploads = owLesson.worksheetUploads.map((owUpload) => {
+          return {
+            ...owUpload,
+            children: child.value
+          }
+        })
+
+        return {
+          ...owLesson,
+          worksheetUploads: mappedUploads
+        }
+      })
     })
 
-    const refresh = async () => {
+    const _refresh = async () => {
       if (!studentId.value) {
         return
       }
 
       try {
         loading.value = true
-        uploadedWorksheets.value = await getUploaded(studentId.value)
+        offlineWorksheetLessons.value = await getOfflineWorksheetsByChildId(studentId.value)
       } catch (error) {
         snotify.error('Sorry! There was an error loading your progress.')
       } finally {
@@ -145,11 +160,11 @@ export default defineComponent({
       }
     }
 
-    const child = computed(() => children.value.find(({ id }) => id === studentId.value))
+    const refresh = debounce(_refresh, 300)
 
-    watch(studentId, (val) => {
+    watch(studentId, async (val) => {
       if (val) {
-        refresh()
+        await refresh()
       }
     }, { immediate: true })
 
@@ -159,7 +174,7 @@ export default defineComponent({
       children,
       loading,
       studentId,
-      uploadedWorksheets,
+      offlineWorksheetLessons,
       refresh
     }
   }

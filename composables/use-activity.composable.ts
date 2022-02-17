@@ -139,7 +139,7 @@ const activityToPlaylist = (
   activityType,
   curriculumType: undefined, // TODO: activity.curriculumType is not present in the server response
   src: {
-    src: activity?.videos?.videoUrl.HLS ?? '',
+    src: activity?.videos?.videoUrl?.HLS ?? '',
     type: 'application/x-mpegURL'
   },
   poster: activity?.videos?.thumbnail ?? '',

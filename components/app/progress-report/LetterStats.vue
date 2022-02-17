@@ -2,7 +2,13 @@
   <div class="">
     <v-list three-line>
       <template v-for="(item, index) in letterStats.reports">
-        <item-progress :key="index" :item="item" :index="index" :total="letterStats.reports.length" :curriculum-type-id="letterStats.curriculumTypeId" />
+        <item-progress
+          :key="index"
+          :item="item"
+          :index="index"
+          :total="letterStats.reports.length"
+          :curriculum-type-id="letterStats.curriculumTypeId"
+        />
       </template>
     </v-list>
   </div>

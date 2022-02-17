@@ -41,6 +41,10 @@
                     <v-btn
                       class="ml-3"
                       icon
+                      :class="{
+                        'pg-opacity-50': !nextButton,
+                      }"
+                      :disabled="!nextButton"
                       :retain-focus-on-click="false"
                       v-bind="attrs"
                       v-on="on"
@@ -55,6 +59,10 @@
                 <template v-else>
                   <v-btn
                     icon
+                    :class="{
+                      'pg-opacity-50': !nextButton,
+                    }"
+                    :disabled="!nextButton"
                     @click.stop="advance"
                   >
                     <img src="@/assets/svg/next-arrow.svg">
@@ -221,7 +229,7 @@
       </div>
     </v-card>
 
-    <upload-offline-worksheet v-if="uploadDialog" v-model="uploadDialog" />
+    <upload-offline-worksheet-dialog v-if="uploadDialog" v-model="uploadDialog" />
   </div>
 </template>
 
@@ -232,7 +240,7 @@ import LessonAdvanceMixin from '@/mixins/LessonAdvanceMixin'
 
 import { APP_EVENTS, TAG_MANAGER_EVENTS } from '@/models'
 
-import UploadOfflineWorksheet from './worksheets/UploadOfflineWorksheet'
+import UploadOfflineWorksheetDialog from './worksheets/UploadOfflineWorksheetDialog'
 import ContentSection from './ContentSection.vue'
 import ContentList from './ContentList.vue'
 import LessonProgress from './LessonProgress.vue'
@@ -242,7 +250,7 @@ export default {
   name: 'DashboardPanel',
 
   components: {
-    UploadOfflineWorksheet,
+    UploadOfflineWorksheetDialog,
     ContentSection,
     ContentList,
     LessonProgress,
@@ -292,7 +300,8 @@ export default {
 
     childId: {
       validator: (val) => {
-        return val === null || typeof val === 'number'
+        // it's a number, numeric string or null
+        return !isNaN(val) || val === null
       },
       required: false,
       default: null
