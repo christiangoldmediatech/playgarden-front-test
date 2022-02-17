@@ -230,12 +230,20 @@ export default {
     // }
     canAdvance () {
       if (this.lesson && this.childId && !this.previewMode) {
-        return true
-        // const completedCount = this.lesson.videos.map(({ viewed }) => Number(viewed && viewed.completed ? 1 : 0)).reduce((a, b) => a + b)
+        // completed all video lessons
+        const areLessonVideosCompleted = this.lesson?.videos?.every(video => Boolean(video?.viewed?.completed))
 
-        // const progress = (completedCount / this.lesson.videos.length) * 100
-        // return progress === 100
+        // completed all online worksheets
+        const areOnlineWorksheetsCompleted = this.lesson?.worksheets
+          ?.filter(worksheet => worksheet.type === 'ONLINE')
+          ?.every(worksheet => Boolean(worksheet?.completed?.completed))
+
+        // completed all lesson activities
+        const areLessonActivitiesCompleted = this.lesson?.lessonsActivities?.every(activity => Boolean(activity?.activity?.viewed?.completed))
+
+        return areLessonVideosCompleted && areOnlineWorksheetsCompleted && areLessonActivitiesCompleted
       }
+
       return false
     },
 
