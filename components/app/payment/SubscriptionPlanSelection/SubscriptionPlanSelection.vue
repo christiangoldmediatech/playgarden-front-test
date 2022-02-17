@@ -157,15 +157,16 @@
   <pg-loading v-else />
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, useStore, computed } from '@nuxtjs/composition-api'
 import { get } from 'lodash'
 import { mapActions, mapGetters } from 'vuex'
 
 import submittable from '@/utils/mixins/submittable'
 
-import { useGlobalModal, useNotification } from '@/composables'
+import { useAuth, useBilling, useGlobalModal, useNotification } from '@/composables'
 
+import { TypedStore } from '@/models'
 import PlanDescription from './PlanDescription.vue'
 import RadioSelectors from './RadioSelectors.vue'
 
@@ -197,12 +198,18 @@ export default defineComponent({
   },
 
   setup () {
-    const store = useStore()
+    const store = useStore<TypedStore>()
     const { showContactUsModal } = useGlobalModal({ store })
     const { setIsTrialEndingPlanSelectedModalVisible } = useNotification({ store })
+    // @ts-ignore
     const isAnnualSubscriptionEnabled = computed(() => store.state.plans.isAnnualSubscriptionEnabled)
 
+    const Auth = useAuth({ store })
+    const Billing = useBilling()
+
     return {
+      isUserInTrial: Auth.isUserInTrial,
+      Billing,
       showContactUsModal,
       isAnnualSubscriptionEnabled,
       setIsTrialEndingPlanSelectedModalVisible
@@ -310,6 +317,10 @@ export default defineComponent({
       const plan = this.getSubmittableData()
       plan.id = this.selectedPlan.id
       try {
+        if (this.isUserInTrial) {
+          await this.Billing.cancelTrial()
+        }
+
         await this.selectSubscriptionPlan(plan)
         this.setIsTrialEndingPlanSelectedModalVisible(true)
         this.$nuxt.$emit('plan-membership-changed')
