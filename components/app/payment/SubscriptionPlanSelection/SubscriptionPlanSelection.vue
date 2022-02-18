@@ -152,6 +152,12 @@
         </v-form>
       </validation-observer>
     </v-col>
+
+    <!-- CREDIT CARD MODAL -->
+    <credit-card-modal
+      v-model="isCreditCardModalVisible"
+      @card-added="dataSubmitDialog"
+    />
   </v-row>
 
   <pg-loading v-else />
@@ -166,6 +172,7 @@ import submittable from '@/utils/mixins/submittable'
 
 import { useAuth, useBilling, useGlobalModal, useNotification } from '@/composables'
 
+import { UserFlow } from '@/models'
 import PlanDescription from './PlanDescription.vue'
 import RadioSelectors from './RadioSelectors.vue'
 
@@ -174,7 +181,8 @@ export default defineComponent({
 
   components: {
     PlanDescription,
-    RadioSelectors
+    RadioSelectors,
+    CreditCardModal: () => import('@/components/app/payment/CreditCardModal.vue')
   },
 
   mixins: [submittable],
@@ -207,7 +215,7 @@ export default defineComponent({
     const Billing = useBilling()
 
     return {
-      isUserInTrial: Auth.isUserInTrial,
+      Auth,
       Billing,
       showContactUsModal,
       isAnnualSubscriptionEnabled,
@@ -223,7 +231,8 @@ export default defineComponent({
     loading: false,
     initialized: false,
     radioGroup: null,
-    bkgColor: '#BDDA9F'
+    bkgColor: '#BDDA9F',
+    isCreditCardModalVisible: false
   }),
 
   computed: {
@@ -316,8 +325,18 @@ export default defineComponent({
       const plan = this.getSubmittableData()
       plan.id = this.selectedPlan.id
       try {
-        if (this.isUserInTrial) {
-          await this.Billing.cancelTrial()
+        /**
+         * If the user does not have a credit card and is in flow NO_CREDITCARD,
+         * ask them to register a credit card.
+         */
+        if (this.Auth.userInfo.value.flow === UserFlow.NOCREDITCARD) {
+          const userCards = await this.Billing.fetchBillingCards()
+
+          if (userCards?.length === 0) {
+            this.isCreditCardModalVisible = true
+            this.loading = false
+            return
+          }
         }
 
         await this.selectSubscriptionPlan(plan)
@@ -328,6 +347,7 @@ export default defineComponent({
           draftAddress: this.draftAddress
         })
       } catch (e) {
+        this.$snotify.error('Could not select plan. Please, try again later.')
       } finally {
         this.loading = false
       }
