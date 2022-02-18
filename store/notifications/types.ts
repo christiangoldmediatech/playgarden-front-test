@@ -13,6 +13,7 @@ export interface NotificationState {
   isCreditCardModalVisible: boolean
   isEmailConflictModalVisible: boolean
   isAccountInactiveModalVisible: boolean
+  isCanceledTrialModalVisible: boolean
   notificationCard: {
     isVisible: boolean,
     title: string,

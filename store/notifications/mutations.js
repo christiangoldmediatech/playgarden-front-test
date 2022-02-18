@@ -50,5 +50,8 @@ export default {
   },
   SET_IS_ACCOUNT_INACTIVE_MODAL_VISIBLE (state, bool) {
     state.isAccountInactiveModalVisible = bool
+  },
+  SET_IS_CANCELED_TRIAL_MODAL_VISIBLE (state, bool) {
+    state.isCanceledTrialModalVisible = bool
   }
 }
