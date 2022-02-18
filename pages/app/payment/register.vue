@@ -32,7 +32,7 @@
             </span>
           </p>
           <p class="text-center text-md-left">
-            Playgarden Prep Online is currently <span class="font-weight-bold primary--text">FREE</span> for you for the next 30 days. We need your credit card information to complete the registration process, but you will <span class="font-weight-bold">NOT</span> be charged.
+            Playgarden Prep Online is currently <span class="font-weight-bold primary--text">FREE</span> for you for the next 15 days. We need your credit card information to complete the registration process, but you will <span class="font-weight-bold">NOT</span> be charged.
           </p>
         </v-col>
 
