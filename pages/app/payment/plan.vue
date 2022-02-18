@@ -194,7 +194,7 @@
   </v-main>
 </template>
 
-<script lang="ts">
+<script>
 import dayjs from 'dayjs'
 import { defineComponent, useStore } from '@nuxtjs/composition-api'
 import { mapGetters, mapActions } from 'vuex'
@@ -202,7 +202,7 @@ import { mapGetters, mapActions } from 'vuex'
 import SubscriptionPlanSelection from '@/components/app/payment/SubscriptionPlanSelection'
 import StripePayForm from '@/components/forms/payment/StripePayForm.vue'
 
-import { TypedStore, UserFlow } from '@/models'
+import { UserFlow } from '@/models'
 import { useAuth } from '@/composables'
 
 export default defineComponent({
@@ -214,7 +214,7 @@ export default defineComponent({
   },
 
   setup() {
-    const store = useStore<TypedStore>()
+    const store = useStore()
     const Auth = useAuth({ store })
 
     return {

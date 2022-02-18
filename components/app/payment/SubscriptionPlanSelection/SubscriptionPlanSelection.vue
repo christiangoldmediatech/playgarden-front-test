@@ -157,7 +157,7 @@
   <pg-loading v-else />
 </template>
 
-<script lang="ts">
+<script>
 import { defineComponent, useStore, computed } from '@nuxtjs/composition-api'
 import { get } from 'lodash'
 import { mapActions, mapGetters } from 'vuex'
@@ -166,7 +166,6 @@ import submittable from '@/utils/mixins/submittable'
 
 import { useAuth, useBilling, useGlobalModal, useNotification } from '@/composables'
 
-import { TypedStore } from '@/models'
 import PlanDescription from './PlanDescription.vue'
 import RadioSelectors from './RadioSelectors.vue'
 
@@ -198,7 +197,7 @@ export default defineComponent({
   },
 
   setup () {
-    const store = useStore<TypedStore>()
+    const store = useStore()
     const { showContactUsModal } = useGlobalModal({ store })
     const { setIsTrialEndingPlanSelectedModalVisible } = useNotification({ store })
     // @ts-ignore
