@@ -83,25 +83,9 @@
 
           <!-- SHIPPING ADDRESS IS REQUIRED TO SEND WELCOME KIT -->
           <div v-else key="shipping-address-required">
-            <div class="text-center">
-              <underlined-title
-                text="WE WANT TO SEND YOU A PLAYGARDEN PREP WORKBOOK"
-                font-size="24px"
-                font-size-mobile="12px"
-              />
-            </div>
-
-            <p class="text-center pg-text-[20px] mt-4">
-              In order to receive your FREE A-D workbook, please provide your shipping address here.
-            </p>
-
             <v-btn x-large block color="primary" class="mt-7" @click="showShippingAddressForm">
               ADD SHIPPING ADDRESS
             </v-btn>
-
-            <p class="mt-7 pg-text-[14px]">
-              *In the territorial US and Canada only.
-            </p>
           </div>
         </v-fade-transition>
       </v-card>

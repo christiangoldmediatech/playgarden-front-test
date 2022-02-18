@@ -88,6 +88,13 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
    * - The user doesn't have the shipping address on file and it is a parent.
    */
   const checkUserShippingAddressAndNotify = async () => {
+    console.log(userInfo.value.stripeStatus)
+
+    if (userInfo.value.stripeStatus === 'active') {
+      setIsShippingModalVisible(false)
+      return
+    }
+
     if (!isUserLoggedIn.value || userInfo.value.role.id !== 3) {
       setIsShippingModalVisible(false)
       return
