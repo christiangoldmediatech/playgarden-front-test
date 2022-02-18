@@ -47,7 +47,7 @@ const getBillingHistory = async (id?: number) => {
 }
 
 const cancelTrial = () => {
-  return axios.$post('/billing/end-trial-period')
+  return axios.$patch('/billing/end-trial-period')
 }
 
 export const useBilling = () => {
