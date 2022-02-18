@@ -1,19 +1,19 @@
 <template>
   <div>
-    <div v-if="isUserInTrial" class="pg-flex pg-justify-between pg-items-center">
-      <div class="pg-text-2xl pg-font-bold pg-text-accent">
-        END YOUR TRIAL NOW:
+    <div v-if="isUserInTrial" class="pg-flex pg-flex-col pg-justify-between pg-items-center">
+      <div class="pg-text-[22px] pg-text-pg-grey">
+        If you'd like to end your  trial early, click the button below!
       </div>
 
       <v-btn
         :loading="isLoading"
         outlined
         x-large
-        class="!pg-shadow-button pg-w-[240px] !pg-h-[40px]"
+        class="!pg-shadow-button pg-mt-4 !pg-h-[40px]"
         color="accent"
-        @click="cancelTrial"
+        @click="handleCancelTrial"
       >
-        CLICK HERE
+        END FREE TRIAL NOW
       </v-btn>
     </div>
   </div>
@@ -33,12 +33,13 @@ export default defineComponent({
     const Auth = useAuth({ store })
     const Billing = useBilling()
 
-    async function cancelTrial() {
+    async function handleCancelTrial() {
       try {
         isLoading.value = true
         await Billing.cancelTrial()
+        await Auth.fetchUserInfo()
 
-        Notification.setIsPlanUpgradeModalVisible(true)
+        Notification.setIsCanceledTrialModalVisible(true)
       } catch (err) {
         snotify.error('Could not cancel trial. Please try again later.')
       } finally {
@@ -49,7 +50,7 @@ export default defineComponent({
     return {
       isUserInTrial: Auth.isUserInTrial,
       isLoading,
-      cancelTrial
+      handleCancelTrial
     }
   }
 })
