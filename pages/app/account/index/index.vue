@@ -83,6 +83,10 @@
 
           <!-- SHIPPING ADDRESS IS REQUIRED TO SEND WELCOME KIT -->
           <div v-else key="shipping-address-required">
+            <p class="text-center pg-text-[20px] mt-4">
+              Please enter your shipping address
+            </p>
+
             <v-btn x-large block color="primary" class="mt-7" @click="showShippingAddressForm">
               ADD SHIPPING ADDRESS
             </v-btn>
