@@ -26,6 +26,7 @@
       <credit-card-form />
       <PlanUpgradeModal v-if="isUserLoggedIn" />
       <TrialEndingModalForLastDay :downward-displacement="topDistanceInPixels" />
+      <CanceledTrialModal />
 
       <!-- CONTACT US FORM MODAL -->
       <contact-us-form-modal />
@@ -124,7 +125,8 @@ export default defineComponent({
     TrialEndingPlanSelected: () => import('@/components/app/payment/TrialEnding/PlanSelected.vue'),
     CreditCardForm: () => import('@/components/app/payment/TrialEnding/CreditCardForm.vue'),
     EmailConflictModal: () => import('@/components/app/register/EmailConflictModal.vue'),
-    AccountInactiveModal: () => import('@/components/app/register/AccountInactiveModal.vue')
+    AccountInactiveModal: () => import('@/components/app/register/AccountInactiveModal.vue'),
+    CanceledTrialModal: () => import('@/components/app/payment/CanceledTrialModal.vue')
   },
 
   setup () {
