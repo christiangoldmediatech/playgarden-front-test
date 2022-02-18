@@ -16,6 +16,13 @@
         END FREE TRIAL NOW
       </v-btn>
     </div>
+
+    <!-- CREDIT CARD MODAL -->
+    <credit-card-modal
+      v-model="isCreditCardModalVisible"
+      back-button-text="Back to profile"
+      @card-added="handleCancelTrial"
+    />
   </div>
 </template>
 
@@ -25,7 +32,12 @@ import { TypedStore } from '@/models'
 import { defineComponent, ref, useStore } from '@nuxtjs/composition-api'
 
 export default defineComponent({
+  components: {
+    CreditCardModal: () => import('@/components/app/payment/CreditCardModal.vue')
+  },
+
   setup() {
+    const isCreditCardModalVisible = ref(false)
     const isLoading = ref(false)
     const store = useStore<TypedStore>()
     const snotify = useSnotifyHelper()
@@ -36,6 +48,16 @@ export default defineComponent({
     async function handleCancelTrial() {
       try {
         isLoading.value = true
+
+        // Show credit card modal if user has no card on file
+        const userCards = await Billing.fetchBillingCards()
+
+        if (userCards?.length === 0) {
+          isCreditCardModalVisible.value = true
+          isLoading.value = false
+          return
+        }
+
         await Billing.cancelTrial()
         await Auth.fetchUserInfo()
 
@@ -48,6 +70,7 @@ export default defineComponent({
     }
 
     return {
+      isCreditCardModalVisible,
       isUserInTrial: Auth.isUserInTrial,
       isLoading,
       handleCancelTrial
