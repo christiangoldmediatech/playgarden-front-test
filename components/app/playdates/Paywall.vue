@@ -28,8 +28,14 @@
       <v-row no-gutters class="text-center text-md-left">
         <!-- CONFIRM YOUR PLAN NOW -->
         <v-col v-if="canConfirmPlan" cols="12" md="auto" class="my-4">
-          <v-btn color="accent" class="text-none" width="250" @click="handleUpgradeNow">
-            Confirm Your Plan Now
+          <v-btn
+            color="accent"
+            class="text-none"
+            width="250"
+            :loading="isLoading"
+            @click="handleCancelTrial"
+          >
+            END FREE TRIAL NOW
           </v-btn>
         </v-col>
 
@@ -46,23 +52,39 @@
 </template>
 
 <script lang="ts">
-import { useGlobalModal } from '@/composables'
+import { useAuth, useBilling, useGlobalModal, useNotification, useSnotifyHelper } from '@/composables'
 import { TypedStore } from '@/models'
-import { defineComponent, useRouter, useStore } from '@nuxtjs/composition-api'
+import { defineComponent, useStore, ref } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   setup () {
-    const router = useRouter()
+    const isLoading = ref(false)
+
+    const snotify = useSnotifyHelper()
     const store = useStore<TypedStore>()
     const { showContactUsModal, canConfirmPlan } = useGlobalModal({ store })
+    const Billing = useBilling()
+    const Notification = useNotification({ store })
+    const Auth = useAuth({ store })
 
-    const handleUpgradeNow = () => {
-      router.push({ name: 'app-payment-plan' })
+    async function handleCancelTrial () {
+      try {
+        isLoading.value = true
+        await Billing.cancelTrial()
+        await Auth.fetchUserInfo()
+
+        Notification.setIsCanceledTrialModalVisible(true)
+      } catch (error) {
+        snotify.error('Could not cancel trial. Please try again later.')
+      } finally {
+        isLoading.value = false
+      }
     }
 
     return {
+      isLoading,
       canConfirmPlan,
-      handleUpgradeNow,
+      handleCancelTrial,
       handleContactUs: showContactUsModal
     }
   }
