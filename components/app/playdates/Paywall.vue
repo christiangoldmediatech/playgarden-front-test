@@ -48,6 +48,13 @@
         </v-col>
       </v-row>
     </v-col>
+
+    <!-- CREDIT CARD MODAL -->
+    <credit-card-modal
+      v-model="isCreditCardModalVisible"
+      back-button-text="Back to playdates"
+      @card-added="handleCancelTrial"
+    />
   </v-row>
 </template>
 
@@ -57,8 +64,13 @@ import { TypedStore } from '@/models'
 import { defineComponent, useStore, ref } from '@nuxtjs/composition-api'
 
 export default defineComponent({
+  components: {
+    CreditCardModal: () => import('@/components/app/payment/CreditCardModal.vue')
+  },
+
   setup () {
     const isLoading = ref(false)
+    const isCreditCardModalVisible = ref(false)
 
     const snotify = useSnotifyHelper()
     const store = useStore<TypedStore>()
@@ -70,6 +82,15 @@ export default defineComponent({
     async function handleCancelTrial () {
       try {
         isLoading.value = true
+        // Show credit card modal if user has no card on file
+        const userCards = await Billing.fetchBillingCards()
+
+        if (userCards?.length === 0) {
+          isCreditCardModalVisible.value = true
+          isLoading.value = false
+          return
+        }
+
         await Billing.cancelTrial()
         await Auth.fetchUserInfo()
 
@@ -84,6 +105,7 @@ export default defineComponent({
     return {
       isLoading,
       canConfirmPlan,
+      isCreditCardModalVisible,
       handleCancelTrial,
       handleContactUs: showContactUsModal
     }
