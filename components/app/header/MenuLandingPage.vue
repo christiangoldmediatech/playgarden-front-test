@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <div class="contact-menu-header">
+    <div class="contact-menu-header pg-mt-1">
       <div class="message">
         <strong>Call now</strong> to speak with a specialist
       </div>
@@ -10,7 +10,7 @@
           src="https://playgardenonline.com/wp-content/uploads/2022/01/phone-call-1.svg"
           alt="Call to Playgarden Prep Online"
         >
-        <a href="tel:+" class="number-phone">646-504-4716</a>
+        <a href="tel:+1646-504-4716" class="number-phone">646-504-4716</a>
       </div>
     </div>
     <div class="mt-2">

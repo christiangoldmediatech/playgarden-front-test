@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app class="pg-app-bar pb-4" color="white" elevation="1">
+  <v-app-bar app class="pb-4 pg-app-bar" color="white" elevation="1">
     <v-row
       class="flex-nowrap"
       align="center"
@@ -24,7 +24,7 @@
             }"
           > -->
           <v-img
-            class="cursor-link mt-4"
+            class="mt-4 cursor-link"
             alt="Playarden Prep Online Logo"
             contain
             max-height="50"
@@ -36,16 +36,16 @@
         </v-toolbar-title>
       </v-col>
 
-      <v-col class="d-flex align-center pr-3" cols="auto">
+      <v-col class="pr-3 d-flex align-center" cols="auto">
         <!-- ITEMS -->
-        <div v-if="getVerifyEmail" class="hidden-sm-and-down mt-5">
+        <div v-if="getVerifyEmail" class="mt-5 hidden-sm-and-down">
           <v-toolbar-items>
             <template v-for="(item, index) in items">
               <!-- EXTERNAL LINK -->
               <v-btn
                 v-if="item.external && !item.hidden"
                 :key="`${_uid}-${index}`"
-                class="text-none link-text px-2 px-lg-4"
+                class="px-2 text-none link-text px-lg-4"
                 active-class="custom-active"
                 text
                 @click="openLink(item.link)"
@@ -57,7 +57,7 @@
               <v-btn
                 v-else-if="!item.hidden"
                 :key="`${_uid}-${index}`"
-                class="text-none link-text px-2 px-lg-4"
+                class="px-2 text-none link-text px-lg-4"
                 active-class="custom-active"
                 text
                 :ripple="true"
@@ -84,27 +84,15 @@
 
         <!-- AUTH BUTTONS -->
         <div class="pg-app-bar-buttons auth-buttons">
-          <!-- <v-btn
-            v-if="!isUserLoggedIn"
-            class="px-13 ml-3 btn-register"
-            color="accent"
-            nuxt
-            text
-            data-test-id="register-button"
-            :to="{ name: 'auth-parent' }"
-          >
-            REGISTER
-          </v-btn> -->
-
           <v-img
             v-if="isUserLoggedIn && !isUserInSignupProcess && getVerifyEmail"
-            class="clickable account-btn mx-2"
+            class="mx-2 clickable account-btn"
             :src="require('@/assets/svg/account-profile.svg')"
             @click="goToAccount"
           />
           <v-btn
             v-if="previewMode"
-            class="px-13 ml-3"
+            class="ml-3 px-13"
             color="accent"
             nuxt
             :to="{ name: 'admin-curriculum-management' }"
@@ -114,23 +102,13 @@
 
           <v-btn
             v-else-if="isUserLoggedIn && isUserInSignupProcess"
-            class="px-13 ml-3"
+            class="ml-3 px-13"
             color="accent"
             nuxt
             :to="{ name: 'auth-logout' }"
           >
             LOG OUT
           </v-btn>
-
-          <!-- <v-btn
-            v-else-if="!isUserLoggedIn"
-            class="px-13 ml-3"
-            color="accent"
-            nuxt
-            :to="{ name: 'auth-login' }"
-          >
-            LOGIN
-          </v-btn> -->
         </div>
 
         <!--Profile/help/Tutorial Menu-->
@@ -138,7 +116,7 @@
           <v-menu open-on-hover offset-y>
             <template v-slot:activator="{ on }">
               <v-img
-                class="clickable account-btn mx-2 pg-app-bar-buttons hidden-sm-and-down auth-buttons"
+                class="mx-2 clickable account-btn pg-app-bar-buttons hidden-sm-and-down auth-buttons"
                 :src="require('@/assets/png/Help.png')"
                 v-on="on"
               />
