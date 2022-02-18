@@ -18,7 +18,7 @@
 
       <div class="grey--text text--darken-2 caption text-md-h6 font-weight-regular my-3 my-md-6">
         <p>
-          Thank you for joining the <span class="font-weight-bold accent--text"> {{ plan }}</span> plan, we hope your little one enjoys it a lot. As always, you cancel your enrollment anytime by going to your Account Page.
+          Thank you for joining the <span class="font-weight-bold accent--text"> {{ plan }}</span> plan. We hope your little one enjoys it a lot. As always, you can cancel your enrollment anytime by going to your Account Page.
           Please contact us with any questions about the plans, your enrollment, or anything at all related to Playgarden Prep.
         </p>
 
