@@ -50,13 +50,7 @@ export const useAuth = ({
   const isUserEmailVerified = computed<boolean>(() => store.getters['auth/isUserEmailUnverified'])
 
   const isUserInTrial = computed<boolean>(() => {
-    const oneDay = 1
-    const now = new Date()
-    const didTrialEnd = dayjs(now).diff(userInfo.value.trialEnd, 'minutes') >= oneDay
-    const didChoosePlan = userInfo.value.planChoosen
-    const isPayingUser = userInfo.value.stripeStatus === 'active'
-
-    return !isPayingUser || !didChoosePlan || !didTrialEnd
+    return userInfo.value.stripeStatus === 'trialing'
   })
 
   const checkAuth = (): boolean => {
