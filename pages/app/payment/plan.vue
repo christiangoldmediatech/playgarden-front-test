@@ -135,62 +135,6 @@
         </v-col>
       </v-row>
     </v-container>
-
-    <!-- Set Payment Method modal -->
-    <pg-dialog
-      v-model="isPaymentMethodModalVisible"
-      content-class="white"
-      :fullscreen="isMobile"
-      max-width="700px"
-      persistent
-    >
-      <v-col cols="12">
-        <v-row class="pr-3 mb-md-n12 mt-1" justify="start">
-          <v-btn
-            text
-            class="accent--text text-none"
-            @click="handlePaymentModalBackButton"
-          >
-            <v-icon left>
-              mdi-chevron-left
-            </v-icon>
-            Back to choose plan
-          </v-btn>
-        </v-row>
-
-        <v-card flat class="mx-4 mt-12 mb-4">
-          <stripe-pay-form
-            button-text="Start Learning"
-            :cancelable="false"
-            :is-free-for-days-text-visible="false"
-            :loading="isPaymentMethodModalLoading"
-            @click:submit="handlePaymentFormSubmit"
-          >
-            <template #header>
-              <center class="pt-6">
-                <underlined-title
-                  class="text-h6 text-md-h5"
-                  text="CREDIT CARD INFORMATION"
-                />
-              </center>
-              <center class="grey--text text--darken-1 my-6 text-body-2">
-                We need your credit card information to confirm who you are.
-              </center>
-            </template>
-            <template #footer>
-              <center>
-                <div
-                  class="font-weight-bold grey--text text--darken-1 mt-6 mb-2 text-body-2"
-                >
-                  You can cancel your trial and membership anytime from the
-                  account settings.
-                </div>
-              </center>
-            </template>
-          </stripe-pay-form>
-        </v-card>
-      </v-col>
-    </pg-dialog>
   </v-main>
 </template>
 
@@ -224,8 +168,6 @@ export default defineComponent({
 
   data: () => ({
     initialized: false,
-    isPaymentMethodModalVisible: false,
-    isPaymentMethodModalLoading: false,
     plansShown: false
   }),
 
@@ -289,52 +231,13 @@ export default defineComponent({
           'notifications/SET_TRIAL_EXPIRING_RIBBON_VISIBLE',
           false
         )
-
-        /**
-         * Show billing modal is the following criteria is met:
-         * -- The use flow is NOCREDITCARD
-         * -- The user did not add any cards
-         */
-        const userCards = await this.fetchBillingCards()
-
-        if (
-          this.getUserInfo.flow === UserFlow.NOCREDITCARD &&
-          userCards &&
-          userCards.length === 0
-        ) {
-          this.isPaymentMethodModalVisible = true
-        }
       } catch (e) {}
     },
 
-    handlePaymentModalBackButton() {
-      this.isPaymentMethodModalVisible = false
-    },
-
-    async handlePaymentFormSubmit(cardData) {
-      this.isPaymentMethodModalLoading = true
-
-      try {
-        const dataSubscrition = {
-          token: cardData.token,
-          sendEmail: true
-        }
-
-        if (cardData.promotion_id) {
-          dataSubscrition.promotion_id = cardData.promotion_id
-        }
-
-        await this.addBillingCard(dataSubscrition)
-
-        this.$snotify.success('Payment method added!')
-
-        await this.$router.push({
-          name: 'app-virtual-preschool'
-        })
-      } catch (e) {
-      } finally {
-        this.isPaymentMethodModalLoading = false
-      }
+    handlePaymentFormSubmit() {
+      this.$router.push({
+        name: 'app-virtual-preschool'
+      })
     },
 
     showPlans() {
