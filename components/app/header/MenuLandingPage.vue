@@ -1,71 +1,65 @@
 <template>
   <v-container>
-    <div class="contact-menu-header pg-mt-1">
-      <div class="message">
-        <strong>Call now</strong> to speak with a specialist
-      </div>
-      <div class="contact-phone">
-        <img
-          class="img-phone-call"
-          src="https://playgardenonline.com/wp-content/uploads/2022/01/phone-call-1.svg"
-          alt="Call to Playgarden Prep Online"
-        >
-        <a href="tel:+1646-504-4716" class="number-phone">646-504-4716</a>
-      </div>
-    </div>
-    <div class="mt-2">
-      <ul class="menu-header logged-">
-        <li class="only-desktop">
-          <a href="https://playgardenonline.com/new-landing/">Home</a>
-        </li>
-        <li class="only-desktop">
-          <a href="#admision" class="menu-view-more">
-            <span>Admision</span>
-            <i class="fas fa-chevron-down" />
-          </a>
-          <div class="container-submenu">
-            <ul class="submenu">
-              <li><a href="https://playgardenonline.com/plans/">Enrollment Plans</a></li>
-              <li><a href="https://playgardenonline.com/testimonials/">Parent Testimonials</a></li>
-            </ul>
+    <div class="container-menu header-images">
+      <div class="navbar-right">
+        <div class="contact-menu-header">
+          <div class="message">
+            <strong>Call now</strong> to speak with a specialist
           </div>
-        </li>
-        <li class="only-desktop">
-          <a href="#the-virtual-presschool" class="menu-view-more">
-            <span>The Virtual Presschool</span>
-            <i class="fas fa-chevron-down" />
-          </a>
-          <div class="container-submenu">
-            <ul class="submenu">
-              <li>
-                <a href="https://playgardenonline.com/virtual-preschool-test/">Preschool and Pre-K</a>
-              </li>
-              <li><a href="https://playgardenonline.com/how-it-works/">How it Works</a></li>
-              <li><a href="https://playgardenonline.com/do-it-yourself/">DIY</a></li>
-              <li><a href="https://playgardenonline.com/blog/">Blog</a></li>
-            </ul>
+          <div class="contact-phone">
+            <img loading="lazy" class="img-phone-call" src="https://playgardenonline.com/wp-content/uploads/2022/01/phone-call-1.svg" alt="Call to Playgarden Prep Online">
+            <a href="tel:+646-504-4716" class="number-phone">646-504-4716</a>
           </div>
-        </li>
-        <li class="only-desktop">
-          <a href="https://playgardenonline.com/new-landing#curriculum">About us</a>
-        </li>
-        <li class="login">
-          <a href="https://playgardenonline.com/school/auth/login">
-            <span>Log In</span>
-            <img
-              src="https://playgardenonline.com/wp-content/uploads/2022/01/log-in.svg"
-              alt="Login - Playgarden Prep Online"
-              class="login-icon"
-            >
-          </a>
-        </li>
-        <li class="try-for-free">
-          <a href="https://playgardenonline.com/school/auth/parent">TRY FOR FREE</a>
-        </li>
-        <li class="logged-active">
-          <a href="https://playgardenonline.com/school/auth/parent">Go to Preschool</a>
-        </li>
-      </ul>
+        </div>
+
+        <ul class="menu-header logged-">
+          <li class="only-desktop">
+            <a href="https://playgardenonline.com/">Home</a>
+          </li>
+          <li class="only-desktop">
+            <a href="#admisions" class="menu-view-more">
+              <span>Admissions</span>
+              <i class="fas fa-chevron-down" />
+            </a>
+            <div class="container-submenu">
+              <ul class="submenu">
+                <li><a href="https://playgardenonline.com/plans/">Enrollment Plans</a></li>
+                <li><a href="https://playgardenonline.com/testimonials/">Parent Testimonials</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="only-desktop">
+            <a href="#the-virtual-preschool" class="menu-view-more">
+              <span>Virtual Preschool</span>
+              <i class="fas fa-chevron-down" />
+            </a>
+            <div class="container-submenu">
+              <ul class="submenu">
+                <li>
+                  <a href="https://playgardenonline.com/virtual-preschool/">Preschool and
+                    Pre-K</a>
+                </li>
+                <li><a href="https://playgardenonline.com/how-it-works/">How it Works</a></li>
+                <!-- <li><a href="https://playgardenonline.com/do-it-yourself/">DIY</a></li> -->
+                <li><a href="https://playgardenonline.com/blog">Blog</a></li>
+              </ul>
+            </div>
+          </li>
+          <!-- <li class="only-desktop"><a href="https://playgardenonline.com/about-us">About us</a></li> -->
+          <li class="login">
+            <a href="https://playgardenonline.com/school/auth/login">
+              <span>Log In</span>
+              <img loading="lazy" src="https://playgardenonline.com/wp-content/uploads/2022/01/log-in.svg" alt="Login - Playgarden Prep Online" class="login-icon">
+            </a>
+          </li>
+          <li class="try-for-free">
+            <a href="https://playgardenonline.com/school/auth/parent">TRY FOR FREE</a>
+          </li>
+          <li class="logged-active">
+            <a href="https://playgardenonline.com/school/auth/parent">Go to Preschool</a>
+          </li>
+        </ul>
+      </div>
     </div>
   </v-container>
 </template>
