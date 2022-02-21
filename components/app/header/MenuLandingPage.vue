@@ -19,7 +19,9 @@
           <li class="only-desktop">
             <a href="#admisions" class="menu-view-more">
               <span>Admissions</span>
-              <i class="fas fa-chevron-down" />
+              <v-icon>
+                mdi-chevron-down
+              </v-icon>
             </a>
             <div class="container-submenu">
               <ul class="submenu">
@@ -31,7 +33,9 @@
           <li class="only-desktop">
             <a href="#the-virtual-preschool" class="menu-view-more">
               <span>Virtual Preschool</span>
-              <i class="fas fa-chevron-down" />
+              <v-icon>
+                mdi-chevron-down
+              </v-icon>
             </a>
             <div class="container-submenu">
               <ul class="submenu">
