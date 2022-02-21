@@ -83,13 +83,28 @@
 
           <!-- SHIPPING ADDRESS IS REQUIRED TO SEND WELCOME KIT -->
           <div v-else key="shipping-address-required">
-            <p class="text-center pg-text-[20px] mt-4">
+            <div v-if="isUserTrial" class="text-center">
+              <underlined-title
+                text="WE WANT TO SEND YOU A PLAYGARDEN PREP WORKBOOK"
+                font-size="24px"
+                font-size-mobile="12px"
+              />
+            </div>
+
+            <p v-if="isUserTrial" class="text-center pg-text-[20px] mt-4">
+              In order to receive your FREE A-D workbook, please provide your shipping address here.
+            </p>
+            <p v-else class="text-center pg-text-[20px] mt-4">
               Please enter your shipping address
             </p>
 
             <v-btn x-large block color="primary" class="mt-7" @click="showShippingAddressForm">
               ADD SHIPPING ADDRESS
             </v-btn>
+
+            <p v-if="isUserTrial" class="mt-7 pg-text-[14px]">
+              *In the territorial US and Canada only.
+            </p>
           </div>
         </v-fade-transition>
       </v-card>
@@ -164,7 +179,7 @@ export default defineComponent({
   },
 
   computed: {
-    ...mapGetters('auth', ['isUserCaregiver'])
+    ...mapGetters('auth', ['isUserCaregiver', 'isUserTrial'])
   }
 })
 </script>
