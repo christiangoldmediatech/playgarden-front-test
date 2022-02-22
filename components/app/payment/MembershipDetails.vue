@@ -541,6 +541,9 @@ export default {
       return this.$vuetify.breakpoint.mobile
     },
     isTrialExpiringRibbonVisible () {
+      if (this.billing.status !== 'trialing') {
+        return false
+      }
       const userInfo = this.getUserInfo
       const now = new Date()
       const dayInMinutes = 1440
