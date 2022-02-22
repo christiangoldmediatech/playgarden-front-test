@@ -12,7 +12,7 @@
         line-color="rgba(255,255,255,0.15)"
         :line-from="30"
       />
-      <span class="white--text">Days left</span>
+      <span class="white--text">Days</span>
     </span>
     <v-btn
       v-if="isComparePlansButtonVisible"
