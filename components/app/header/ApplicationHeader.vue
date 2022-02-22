@@ -1,7 +1,13 @@
 <template>
-  <v-app-bar app class="pb-4 pg-app-bar" color="white" elevation="1">
+  <v-app-bar
+    app
+    class="pb-4 pg-app-bar"
+    color="white"
+    elevation="1"
+    prominent
+  >
     <v-row
-      class="flex-nowrap"
+      class="flex-nowrap pb-10"
       align="center"
       justify="space-between"
       no-gutters
@@ -24,12 +30,12 @@
             }"
           > -->
           <v-img
-            class="mt-4 cursor-link"
+            class="mt-8 mx-4 cursor-link"
             alt="Playarden Prep Online Logo"
             contain
             max-height="50"
             :max-width="$vuetify.breakpoint.mdAndUp ? 290 : 200"
-            :src="require('@/assets/svg/logo.svg')"
+            src="https://playgardenonline.com/wp-content/uploads/2022/02/Playgarden-Prep-Online-Text-Logo.svg"
             @click="handleLogoClick"
           />
           <!-- </nuxt-link> -->
@@ -366,7 +372,7 @@ export default {
 
 .pg-app-bar::v-deep.v-sheet.v-app-bar.v-toolbar:not(.v-sheet--outlined) {
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16) !important;
-  height: 88px !important;
+  height: 146px !important;
 }
 .btn-register:before {
   background-color: transparent !important;
