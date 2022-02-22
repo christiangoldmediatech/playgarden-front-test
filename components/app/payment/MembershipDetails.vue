@@ -224,6 +224,12 @@
 
     <!-- Plan Information -->
     <v-col cols="12" md="6" class="mb-6 pl-md-8 mb-md-0">
+      <!-- CANCEL TRIAL BUTTON -->
+      <cancel-trial
+        v-if="isTrialingStatus"
+        class="pg-mb-[32px]"
+      />
+
       <!-- TRIAL EXPIRING RIBBON -->
       <trial-is-expiring
         v-if="isTrialExpiringRibbonVisible"
@@ -437,7 +443,8 @@ export default {
     UpdateBillingMethod,
     PlanDescription,
     TrialIsExpiring,
-    BillingHistoryCard
+    BillingHistoryCard,
+    CancelTrial: () => import('@/components/app/payment/CancelTrial.vue')
   },
 
   data: vm => ({
@@ -534,6 +541,9 @@ export default {
       return this.$vuetify.breakpoint.mobile
     },
     isTrialExpiringRibbonVisible () {
+      if (this.billing.status !== 'trialing') {
+        return false
+      }
       const userInfo = this.getUserInfo
       const now = new Date()
       const dayInMinutes = 1440

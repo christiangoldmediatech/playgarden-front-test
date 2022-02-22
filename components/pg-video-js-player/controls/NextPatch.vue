@@ -12,7 +12,7 @@
             <v-img :src="params.image" :aspect-ratio="1" contain />
           </v-list-item-avatar>
           <v-list-item-content>
-            <v-list-item-title class="font-weight-bold control-bar-text text-left">
+            <v-list-item-title class="font-weight-bold cbar-text text-left">
               <span class="wrap">{{ message }}</span>
             </v-list-item-title>
             <v-list-item-subtitle class="font-weight-medium">

@@ -40,7 +40,7 @@
         <validation-provider v-slot="{ errors }" name="Terms" rules="required">
           <v-checkbox
             v-model="draft.acceptTerms"
-            class="accept-terms ml-3 mt-0 pt-0"
+            class="pt-0 mt-0 ml-3 accept-terms"
             :error-messages="errors"
             :true-value="true"
             :false-value="null"
@@ -50,7 +50,7 @@
                 I have read and accept the
 
                 <nuxt-link
-                  class="terms-conditions link-text ml-1"
+                  class="ml-1 terms-conditions link-text"
                   :to="{ name: 'terms-conditions' }"
                   target="_blank"
                   @click.native.stop=""
@@ -65,7 +65,7 @@
 
       <v-btn
         block
-        class="mb-4 mt-0 main-btn ml-md-0"
+        class="mt-0 mb-4 main-btn ml-md-0"
         min-height="60"
         color="primary"
         :disabled="invalid || lockButton"

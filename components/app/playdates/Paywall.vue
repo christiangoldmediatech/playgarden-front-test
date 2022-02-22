@@ -28,8 +28,14 @@
       <v-row no-gutters class="text-center text-md-left">
         <!-- CONFIRM YOUR PLAN NOW -->
         <v-col v-if="canConfirmPlan" cols="12" md="auto" class="my-4">
-          <v-btn color="accent" class="text-none" width="250" @click="handleUpgradeNow">
-            Confirm Your Plan Now
+          <v-btn
+            color="accent"
+            class="text-none"
+            width="250"
+            :loading="isLoading"
+            @click="handleCancelTrial"
+          >
+            END FREE TRIAL NOW
           </v-btn>
         </v-col>
 
@@ -42,27 +48,65 @@
         </v-col>
       </v-row>
     </v-col>
+
+    <!-- CREDIT CARD MODAL -->
+    <credit-card-modal
+      v-model="isCreditCardModalVisible"
+      back-button-text="Back to playdates"
+      @card-added="handleCancelTrial"
+    />
   </v-row>
 </template>
 
 <script lang="ts">
-import { useGlobalModal } from '@/composables'
+import { useAuth, useBilling, useGlobalModal, useNotification, useSnotifyHelper } from '@/composables'
 import { TypedStore } from '@/models'
-import { defineComponent, useRouter, useStore } from '@nuxtjs/composition-api'
+import { defineComponent, useStore, ref } from '@nuxtjs/composition-api'
 
 export default defineComponent({
+  components: {
+    CreditCardModal: () => import('@/components/app/payment/CreditCardModal.vue')
+  },
+
   setup () {
-    const router = useRouter()
+    const isLoading = ref(false)
+    const isCreditCardModalVisible = ref(false)
+
+    const snotify = useSnotifyHelper()
     const store = useStore<TypedStore>()
     const { showContactUsModal, canConfirmPlan } = useGlobalModal({ store })
+    const Billing = useBilling()
+    const Notification = useNotification({ store })
+    const Auth = useAuth({ store })
 
-    const handleUpgradeNow = () => {
-      router.push({ name: 'app-payment-plan' })
+    async function handleCancelTrial () {
+      try {
+        isLoading.value = true
+        // Show credit card modal if user has no card on file
+        const userCards = await Billing.fetchBillingCards()
+
+        if (userCards?.length === 0) {
+          isCreditCardModalVisible.value = true
+          isLoading.value = false
+          return
+        }
+
+        await Billing.cancelTrial()
+        await Auth.fetchUserInfo()
+
+        Notification.setIsCanceledTrialModalVisible(true)
+      } catch (error) {
+        snotify.error('Could not cancel trial. Please try again later.')
+      } finally {
+        isLoading.value = false
+      }
     }
 
     return {
+      isLoading,
       canConfirmPlan,
-      handleUpgradeNow,
+      isCreditCardModalVisible,
+      handleCancelTrial,
       handleContactUs: showContactUsModal
     }
   }
