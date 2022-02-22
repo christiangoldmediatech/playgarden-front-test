@@ -2,6 +2,7 @@
   <v-app-bar
     app
     class="pb-4 pg-app-bar"
+    :class="{ 'pg-app-bar-height': !isUserLoggedIn }"
     color="white"
     elevation="1"
     prominent
@@ -77,7 +78,7 @@
           </v-toolbar-items>
         </div>
         <div v-if="!isUserLoggedIn" class="hidden-sm-and-down">
-          <menu-landing-page class="mt-4" />
+          <menu-landing-page class="mt-7" />
         </div>
         <!--divider icon profile and help-->
         <v-divider
@@ -372,6 +373,10 @@ export default {
 
 .pg-app-bar::v-deep.v-sheet.v-app-bar.v-toolbar:not(.v-sheet--outlined) {
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16) !important;
+  height: 88px !important;
+}
+
+.pg-app-bar-height::v-deep.v-sheet.v-app-bar.v-toolbar:not(.v-sheet--outlined) {
   height: 146px !important;
 }
 .btn-register:before {
