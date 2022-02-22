@@ -30,7 +30,8 @@ module.exports = {
     },
     extend: {
       boxShadow: {
-        toolbar: '0px 3px 46px rgba(0, 0, 0, 0.160784)'
+        toolbar: '0px 3px 46px rgba(0, 0, 0, 0.160784)',
+        button: '0px 3px 6px rgba(0, 0, 0, 0.160784)'
       }
     }
   },

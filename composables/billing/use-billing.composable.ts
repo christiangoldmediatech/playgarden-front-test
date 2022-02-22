@@ -46,9 +46,24 @@ const getBillingHistory = async (id?: number) => {
   }
 }
 
+const cancelTrial = () => {
+  return axios.$patch('/billing/end-trial-period')
+}
+
+const fetchBillingCards = async () => {
+  return await axios.$get('/billing/cards')
+}
+
+const addBillingCard = async (card: any) => {
+  return await axios.$post('/billing/card', card)
+}
+
 export const useBilling = () => {
   return {
     billings,
-    getBillingHistory
+    addBillingCard,
+    fetchBillingCards,
+    getBillingHistory,
+    cancelTrial
   }
 }

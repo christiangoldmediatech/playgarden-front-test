@@ -2,7 +2,7 @@
   <div
     :class="[
       'pg-transition pg-duration-200',
-      'pg-fixed pg-top-14 md:pg-top-16 pg-z-50 pg-w-full',
+      'pg-fixed pg-top-20 pg-z-50 pg-w-full',
       'pg-bg-white pg-shadow-toolbar pg-rounded-b-[40px]'
     ]"
   >
@@ -16,7 +16,7 @@
       </v-col>
       <v-col
         cols="12"
-        class="pg-cursor-pointer pg-text-center pg-my-3"
+        class="pg-cursor-pointer pg-text-center pg-my-3 md:pg-my-2"
         data-test-id="hcr-minimize-button"
         @click="$emit('update:isMinimized', !isMinimized)"
       >

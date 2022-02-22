@@ -89,7 +89,7 @@ export interface User extends Entity {
   specialists: unknown
   status: number
   statusType: 'TRIAL'
-  stripeStatus: 'active'
+  stripeStatus: 'active' | 'trialing'
   subscription?: Subscription
   testUser: boolean
   trial: boolean

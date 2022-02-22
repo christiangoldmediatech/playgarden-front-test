@@ -1,9 +1,9 @@
 <template>
-  <div :id="playerContainerId" class="video-player-container">
+  <div :id="playerContainerId" class="vplayer-container">
     <!-- Video tag -->
     <video ref="videoPlayer" class="video-js" playsinline />
 
-    <div class="video-player-top-right-icons">
+    <div class="vplayer-top-right-icons">
       <!-- ChromeCast Button -->
       <v-btn
         v-if="canCast"
@@ -36,7 +36,7 @@
       </v-btn>
     </div>
 
-    <div v-if="isCasting" class="video-player-casting-overlay">
+    <div v-if="isCasting" class="vplayer-casting-overlay">
       <v-btn
         class="mb-6"
         icon
@@ -710,7 +710,7 @@ export default {
   pointer-events: none;
 }
 
-.video-player {
+.vplayer {
   &-container {
     position: relative;
     max-width: 100%;
