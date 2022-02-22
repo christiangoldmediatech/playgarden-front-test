@@ -259,7 +259,7 @@
                       </v-col>
                     </v-row>
                     <!-- Student progress -->
-                    <div width="100%">
+                    <div class="dashboard" width="100%">
                       <ul class="ml-3">
                         <li
                           class="register-item text-left"
@@ -480,18 +480,18 @@ export default {
 </script>
 
 <style>
-ul {
-  list-style: none; /* Remove default bullets */
+.dashboard ul {
+  list-style: none !important; /* Remove default bullets */
 }
-ul li::before {
-  content: "●";
+.dashboard ul li::before {
+  content: "●" !important;
   font-size: 22px !important;
-  color: var(--v-accent-base); /* Change the color */
-  font-weight: bold; /* If you want it to be bold */
-  display: inline-block; /* Needed to add space between the bullet and the text */
-  width: 0.7em; /* Also needed for space (tweak if needed) */
-  margin-left: -1rem; /* Also needed for space (tweak if needed) */
-  margin-top: 10px;
+  color: var(--v-accent-base) !important; /* Change the color */
+  font-weight: bold !important; /* If you want it to be bold */
+  display: inline-block !important; /* Needed to add space between the bullet and the text */
+  width: 0.7em !important; /* Also needed for space (tweak if needed) */
+  margin-left: -1rem !important; /* Also needed for space (tweak if needed) */
+  margin-top: 10px !important;
 }
 
 .header-dashboard {
