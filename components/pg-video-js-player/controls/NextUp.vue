@@ -15,7 +15,7 @@
             <v-img :src="params.image" :aspect-ratio="1" />
           </v-list-item-avatar>
           <v-list-item-content>
-            <v-list-item-title class="font-weight-bold control-bar-text text-left">
+            <v-list-item-title class="font-weight-bold cbar-text text-left">
               {{ params.title }}
             </v-list-item-title>
             <v-list-item-subtitle class="font-weight-medium">
