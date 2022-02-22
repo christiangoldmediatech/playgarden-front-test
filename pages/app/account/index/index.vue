@@ -1,8 +1,8 @@
 <template>
   <v-row no-gutters>
-    <v-col cols="12" md="6" class="pr-md-8 mb-10 mb-md-0">
+    <v-col cols="12" md="6" class="mb-10 pr-md-8 mb-md-0">
       <!-- Desktop Title -->
-      <div class="d-none d-md-block text-uppercase font-weight-bold text-h4 grey--text text--darken-2 pb-6">
+      <div class="pb-6 d-none d-md-block text-uppercase font-weight-bold text-h4 grey--text text--darken-2">
         General Info
       </div>
       <v-card class="pa-4 pa-sm-8 card-custom-border">
@@ -15,17 +15,17 @@
         </div>
 
         <!-- Mobile SVG and Title= -->
-        <div class="d-flex d-sm-none justify-center py-2">
+        <div class="justify-center py-2 d-flex d-sm-none">
           <img
             height="45px"
             src="@/assets/svg/general-info.svg"
           >
-          <span class="text-uppercase font-weight-bold text-h5 grey--text text--darken-2 mt-1 ml-2">
+          <span class="mt-1 ml-2 text-uppercase font-weight-bold text-h5 grey--text text--darken-2">
             General Info
           </span>
         </div>
 
-        <div class="text-center body-1 text-md-h6 font-weight-medium grey--text text--darken-2 py-2">
+        <div class="py-2 text-center body-1 text-md-h6 font-weight-medium grey--text text--darken-2">
           <small>Manage your personal information.</small>
         </div>
 
@@ -33,9 +33,9 @@
       </v-card>
     </v-col>
 
-    <v-col v-if="!isUserCaregiver" cols="12" md="6" class="pl-md-8 mb-12 mb-sm-0">
+    <v-col v-if="!isUserCaregiver" cols="12" md="6" class="mb-12 pl-md-8 mb-sm-0">
       <!-- Desktop Title -->
-      <div class="d-none d-md-block text-uppercase font-weight-bold text-h4 grey--text text--darken-2 pb-6">
+      <div class="pb-6 d-none d-md-block text-uppercase font-weight-bold text-h4 grey--text text--darken-2">
         Shipping Address
       </div>
       <v-card class="pa-4 pa-sm-8 card-custom-border">
@@ -49,12 +49,12 @@
         </div>
 
         <!-- MOBILE -->
-        <div class="d-flex d-sm-none justify-center py-2">
+        <div class="justify-center py-2 d-flex d-sm-none">
           <img
             height="45px"
             src="@/assets/svg/shipping-address.svg"
           >
-          <span class="text-uppercase font-weight-bold text-h5 grey--text text--darken-2 mt-1 ml-2">
+          <span class="mt-1 ml-2 text-uppercase font-weight-bold text-h5 grey--text text--darken-2">
             Shipping Address
           </span>
         </div>
@@ -70,7 +70,7 @@
 
           <!-- SHIPPING ADDRESS IS PRESENT -->
           <div v-else-if="isShippingAddressFormVisible" key="shipping-address-present">
-            <div class="text-center body-1 text-md-h6 font-weight-medium grey--text text--darken-2 my-2">
+            <div class="my-2 text-center body-1 text-md-h6 font-weight-medium grey--text text--darken-2">
               <small>We use this information to send you Playgarden Prep educational materials.</small>
             </div>
 
@@ -95,16 +95,15 @@
               In order to receive your FREE A-D workbook, please provide your shipping address here.
             </p>
             <p v-else class="text-center pg-text-[20px] mt-4">
-              Please enter your shipping address
+              Please enter your shipping address.
+            </p>
+            <p v-if="isUserTrial" class="mt-7 pg-text-[14px]">
+              *In the territorial US and Canada only.
             </p>
 
             <v-btn x-large block color="primary" class="mt-7" @click="showShippingAddressForm">
               ADD SHIPPING ADDRESS
             </v-btn>
-
-            <p v-if="isUserTrial" class="mt-7 pg-text-[14px]">
-              *In the territorial US and Canada only.
-            </p>
           </div>
         </v-fade-transition>
       </v-card>
