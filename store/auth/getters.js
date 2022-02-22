@@ -1,5 +1,5 @@
 import { get } from '@/utils/vuex'
-import { get as getL } from 'lodash'
+import { get as getLodash } from 'lodash'
 
 export default {
   getAccessToken: get('accessToken'),
@@ -7,7 +7,7 @@ export default {
   getIssuedAt: get('issuedAt'),
   getUserInfo: state => state.userInfo || {},
   isUserCaregiver: (_, getters) =>
-    getL(getters, 'getUserInfo.role.name') === 'CAREGIVERS',
+    getLodash(getters, 'getUserInfo.role.name') === 'CAREGIVERS',
   isUserEmailUnverified: (_, getters) =>
     (getters.getUserInfo.registerStep || 0) === 6 &&
     !getters.getUserInfo.validatedDate,
@@ -15,9 +15,10 @@ export default {
     (getters.getUserInfo.registerStep || 0) < 5,
   isUserLoggedIn: (_, getters) => Boolean(getters.getUserInfo.id),
   hasTrialOrPlatinumPlan: (_, getters) =>
-    getL(getters, 'getUserInfo.planSelected.id') === 3 ||
-    getL(getters, 'getUserInfo.trial') ||
+    getLodash(getters, 'getUserInfo.planSelected.id') === 3 ||
+    getLodash(getters, 'getUserInfo.trial') ||
     true, // TODO: remove in February
   getPlaydateInvitationToken: get('playdateInvitationToken'),
-  isUserTrial: (_, getters) => getL(getters, 'getUserInfo.trial') || false
+  isUserInTrial: (_, getters) =>
+    getLodash(getters, 'getUserInfo.trial') || false
 }
