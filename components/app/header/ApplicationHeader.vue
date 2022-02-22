@@ -33,10 +33,9 @@
           <v-img
             class="mt-8 mx-4 cursor-link"
             alt="Playarden Prep Online Logo"
-            contain
-            max-height="50"
+            max-height="100"
             :max-width="$vuetify.breakpoint.mdAndUp ? 290 : 200"
-            src="https://playgardenonline.com/wp-content/uploads/2022/02/Playgarden-Prep-Online-Text-Logo.svg"
+            :src="require('@/assets/svg/logo.svg')"
             @click="handleLogoClick"
           />
           <!-- </nuxt-link> -->
@@ -373,7 +372,7 @@ export default {
 
 .pg-app-bar::v-deep.v-sheet.v-app-bar.v-toolbar:not(.v-sheet--outlined) {
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16) !important;
-  height: 88px !important;
+  height: 98px !important;
 }
 
 .pg-app-bar-height::v-deep.v-sheet.v-app-bar.v-toolbar:not(.v-sheet--outlined) {
