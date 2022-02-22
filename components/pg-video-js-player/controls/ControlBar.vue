@@ -1,17 +1,17 @@
 <template>
-  <div class="control-bar-activator" @click="throttledActivator" @mousemove="throttledActivator">
-    <div class="control-bar-container">
+  <div class="cbar-activator" @click="throttledActivator" @mousemove="throttledActivator">
+    <div class="cbar-container">
       <slot />
 
       <div
-        class="control-bar-sheet"
-        :class="{ 'control-bar-mobile-portrait': !inline, 'control-bar-sheet-show': visible }"
+        class="cbar-sheet"
+        :class="{ 'cbar-mobile-portrait': !inline, 'cbar-sheet-show': visible }"
       >
         <!-- Progress -->
         <input
           id="range"
           type="range"
-          class="control-bar-progress-slider"
+          class="cbar-progress-slider"
           :min="0"
           :max="duration"
           :value="position"
@@ -29,7 +29,7 @@
               icon
               @click.stop="player.prevVideo"
             >
-              <img class="control-bar-button control-bar-button-small" src="@/assets/player/controls/prev-video.svg">
+              <img class="cbar-button cbar-button-small" src="@/assets/player/controls/prev-video.svg">
             </v-btn>
 
             <!-- Skip backward 10 secs Button -->
@@ -41,7 +41,7 @@
               :disabled="status === 'LOADING'"
               @click.stop="player.stepBack"
             >
-              <img class="control-bar-button" src="@/assets/player/controls/go-back.svg">
+              <img class="cbar-button" src="@/assets/player/controls/go-back.svg">
             </v-btn>
 
             <!-- Play / Pause Button -->
@@ -54,12 +54,12 @@
             >
               <img
                 v-if="status === 'PLAYING'"
-                class="control-bar-button control-bar-button-small"
+                class="cbar-button cbar-button-small"
                 src="@/assets/player/controls/pause.svg"
               >
               <img
                 v-else
-                class="control-bar-button control-bar-button-small"
+                class="cbar-button cbar-button-small"
                 src="@/assets/player/controls/play.svg"
               >
             </v-btn>
@@ -73,7 +73,7 @@
               :disabled="status === 'LOADING'"
               @click.stop="player.stepForward"
             >
-              <img class="control-bar-button" src="@/assets/player/controls/go-forward.svg">
+              <img class="cbar-button" src="@/assets/player/controls/go-forward.svg">
             </v-btn>
 
             <!-- Next video Button -->
@@ -85,7 +85,7 @@
               :disabled="status === 'LOADING'"
               @click.stop="player.skipVideo"
             >
-              <img class="control-bar-button control-bar-button-small control-bar-button-mirrored" src="@/assets/player/controls/prev-video.svg">
+              <img class="cbar-button cbar-button-small cbar-button-mirrored" src="@/assets/player/controls/prev-video.svg">
             </v-btn>
 
             <!-- Audio Level Button -->
@@ -98,22 +98,22 @@
               >
                 <img
                   v-if="muted || volume === 0"
-                  class="control-bar-button"
+                  class="cbar-button"
                   src="@/assets/player/controls/audio-muted.svg"
                 >
                 <img
                   v-else-if="volume < 0.33"
-                  class="control-bar-button"
+                  class="cbar-button"
                   src="@/assets/player/controls/audio-low.svg"
                 >
                 <img
                   v-else-if="volume < 0.66"
-                  class="control-bar-button"
+                  class="cbar-button"
                   src="@/assets/player/controls/audio-mid.svg"
                 >
                 <img
                   v-else
-                  class="control-bar-button"
+                  class="cbar-button"
                   src="@/assets/player/controls/audio-high.svg"
                 >
               </v-btn>
@@ -121,7 +121,7 @@
               <input
                 v-model="volumeVal"
                 type="range"
-                class="control-bar-audio-slider"
+                class="cbar-audio-slider"
                 :min="0"
                 :max="100"
               >
@@ -130,7 +130,7 @@
 
           <div class="d-flex align-center">
             <!-- Time section -->
-            <div class="control-bar-time mr-md-8">
+            <div class="cbar-time mr-md-8">
               {{ position | convertToMMSS }} / {{ duration | convertToMMSS }}
             </div>
             <!-- Fullscreen Button -->
@@ -140,7 +140,7 @@
               :small="$vuetify.breakpoint.xs"
               @click.stop="$emit('fullscreen')"
             >
-              <img class="control-bar-button control-bar-button-mirrored" src="@/assets/player/controls/full-screen.svg">
+              <img class="cbar-button cbar-button-mirrored" src="@/assets/player/controls/full-screen.svg">
             </v-btn>
           </div>
         </div>
@@ -233,7 +233,7 @@ export default {
 </script>
 
 <style lang="scss">
-.control-bar {
+.cbar {
   &-activator {
     position: absolute;
     width: 100%;
