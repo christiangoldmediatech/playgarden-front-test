@@ -1,8 +1,15 @@
 <template>
-  <div class="pg-p-4 pg-min-h-[385px]">
+  <div
+    :class="[
+      'pg-p-4',
+      {
+        'pg-min-h-[385px]': showContent
+      }
+    ]"
+  >
     <!-- ARROW ICON -->
-    <v-icon class="pg-block pg-float-right pg-cursor-pointer">
-      {{ hiddenCardFamily ? ' mdi-chevron-down' : ' mdi-chevron-up' }}
+    <v-icon class="pg-block pg-float-right pg-cursor-pointer" @click="$emit('toggle')">
+      {{ showContent ? 'mdi-chevron-up' : 'mdi-chevron-down' }}
     </v-icon>
 
     <!-- TITLE -->
@@ -14,7 +21,7 @@
       />
     </h4>
 
-    <div v-if="!hiddenCardFamily">
+    <div v-if="showContent">
       <div>
         <p class="pg-text-center pg-mt-5">
           Still not sure? Call us, text us, email us, We'll be happy to explain
@@ -49,7 +56,7 @@ export default {
   name: 'CardPlaygarden',
 
   props: {
-    hiddenCardFamily: {
+    showContent: {
       type: Boolean,
       required: true
     }
