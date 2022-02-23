@@ -18,8 +18,9 @@
 
       <div class="grey--text text--darken-2 caption text-md-h6 font-weight-regular my-3 my-md-6">
         <p>
-          Now you are on the <span class="font-weight-bold accent--text"> {{ plan }}</span> plan. We hope your little one enjoys it a lot. As always, you can cancel your enrollment anytime by going to your Account Page.
-          Please contact us with any questions about the plans, your enrollment, or anything at all related to Playgarden Prep.
+          You are now on the <span class="font-weight-bold accent--text"> {{ plan }}</span> Plan. We are excited to have them continue on in our program!
+          As always, you can cancel your enrollment anytime through your Accounts Page.
+          If you have any questions, please contact us at <a href="mailto:hello@playgardenprep.com" class="pg-font-bold">hello@playgradenprep.com</a>.
         </p>
 
         <p>Your next billing date will be:</p>
@@ -36,9 +37,8 @@
         </div>
 
         <p class="my-0">
-          With kind regards,
+          Thanks for being a part of our community!
         </p>
-        <p>Playgarden Prep Teachers.</p>
       </div>
 
       <v-row no-gutters class="text-center text-md-left">
