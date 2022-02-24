@@ -2,6 +2,7 @@
   <v-row no-gutters>
     <v-col>
       <v-row no-gutters>
+        <!-- STRIPE FORM -->
         <v-col class="px-12 mt-1 mt-md-12" cols="12" md="6" lg="6" xl="6">
           <stripe-pay-form
             :loading="loading"
@@ -9,6 +10,7 @@
             @click:submit="onSubmit"
           />
         </v-col>
+
         <v-col cols="12" md="6" lg="6" xl="6">
           <template>
             <v-row>
@@ -25,7 +27,8 @@
                     <v-container>
                       <v-layout column align-center justify-center>
                         <card-playgarden
-                          :hidden-card-family="hiddenCardFamily"
+                          :show-content="showCardPlaygarden"
+                          @toggle="showCardPlaygarden = !showCardPlaygarden"
                         />
                         <card-know-more
                           v-if="!showCardPlaygarden"

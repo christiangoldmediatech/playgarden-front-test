@@ -6,7 +6,7 @@
     max-width="1400px"
     content-class="large-image-content-dialog"
   >
-    <!-- Close Button -->
+    <!-- CLOSE BUTTON -->
     <div v-if="(isCloseable && !isMobile) || (isCloseable && isMobile && !fullscreen)" class="content-dialog-content">
       <img
         :style="{
@@ -23,9 +23,11 @@
     </div>
 
     <v-card :class="cardClasses">
+      <!-- HORIZONTAL PROGRESS -->
       <v-progress-linear :active="loading" indeterminate height="12px" data-test-id="progress-linear" />
 
       <div class="d-flex">
+        <!-- IMAGE -->
         <div class="d-none d-md-flex" :style="`width: ${imageWidth}%;`">
           <v-img
             :src="img"
@@ -36,6 +38,7 @@
           />
         </div>
 
+        <!-- CONTENT -->
         <div class="my-6 my-md-14 px-8" :style="`width: ${isMobile ? '100%' : (100 - imageWidth) + '%'}`">
           <v-btn v-if="isCloseable && fullscreen" class="d-md-none warning--text mb-4 pl-0" text data-test-id="mobile-close-button" @click="$emit('close')">
             <v-icon left>
