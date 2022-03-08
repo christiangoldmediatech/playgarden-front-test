@@ -10,8 +10,8 @@ export const useWorksheetsCategories = () => {
   const getLessonById = async (lessonId: number) => {
     lesson.value = await axios.$get(`/lessons/${lessonId}`)
   }
-  const getUploadedByLesson = (lessonId: number): Promise<OfflineWorksheet[]> => {
-    return axios.$get(`/worksheets/lesson/${lessonId}`)
+  const getUploadedByLesson = (lessonId: number, limit: number, page: number): Promise<OfflineWorksheet[]> => {
+    return axios.$get(`/worksheets/lesson/${lessonId}?limit=${limit}&page=${page}`)
   }
 
   const getChild = (childId: number): Promise<Child> => {
