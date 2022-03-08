@@ -71,7 +71,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, ref, computed } from '@nuxtjs/composition-api'
-import { useVuetifyHelper } from '@/composables'
+import { useNuxtHelper, useVuetifyHelper } from '@/composables'
 import { OfflineWorksheetLesson } from '@/models'
 import { jsonCopy } from '@/utils'
 import RecordedLetter from '@/components/app/live-sessions/recorded/RecordedLetter.vue'
@@ -93,23 +93,16 @@ export default defineComponent({
   },
 
   setup (props) {
+    const nuxt = useNuxtHelper()
     const $vuetify = useVuetifyHelper()
-    const page = ref(1)
+    const page = ref(props.category.page)
 
     const limit = computed(() => {
-      if ($vuetify.breakpoint.sm) {
-        return 2
-      }
-      if ($vuetify.breakpoint.xs) {
-        return 1
-      }
-      return 4
+      return 20
     })
 
     const total = computed(() => {
-      return props.category.worksheetUploads
-        ? props.category.worksheetUploads.length
-        : 0
+      return props.category.total
     })
 
     const start = computed(() => {
@@ -125,13 +118,14 @@ export default defineComponent({
     const list = computed(() => {
       if (total.value > 0) {
         const worksheets = jsonCopy(props.category.worksheetUploads)
-        return worksheets.slice(start.value, end.value)
+        return worksheets
       }
       return []
     })
 
     function moveCarousel (direction: number) {
       page.value += direction
+      nuxt.$emit('update-list-worksheets-uploads', { page: page.value })
     }
 
     function getChild (upload: any) {

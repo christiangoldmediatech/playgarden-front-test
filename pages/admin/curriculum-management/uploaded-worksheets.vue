@@ -82,12 +82,12 @@ import {
   useRoute,
   computed,
   onMounted,
-  watch
+  watch, onBeforeUnmount
 } from '@nuxtjs/composition-api'
 import PortfolioCarousel from '@/components/app/student-cubby/PortfolioCarousel.vue'
 import PortfolioOverlay from '@/components/app/student-cubby/PortfolioOverlay.vue'
 import { useWorksheetsCategories } from '@/composables/worksheets'
-import { useSnotifyHelper } from '@/composables'
+import { useNuxtHelper, useSnotifyHelper } from '@/composables'
 import { OfflineWorksheet } from '@/models'
 
 export default defineComponent({
@@ -100,9 +100,10 @@ export default defineComponent({
     PortfolioOverlay
   },
 
-  setup() {
+  setup(props, context) {
     const route = useRoute()
     const snotify = useSnotifyHelper()
+    const nuxt = useNuxtHelper()
     const lessonId = computed(() => Number(route.value.query.lessonId))
     const uploadedWorksheets = ref<OfflineWorksheet[]>([])
     const loading = ref<Boolean>()
@@ -140,6 +141,16 @@ export default defineComponent({
     onMounted(async () => {
       refresh()
       await getLessonById(lessonId.value)
+      nuxt.$on('update-list-worksheets-uploads', async ({ page }: {page: number}) => {
+        const data: any = await getUploadedByLesson(lessonId.value, 20, page)
+        if (data[0].worksheetUploads.length > 0) {
+          uploadedWorksheets.value = data
+        }
+      })
+    })
+
+    onBeforeUnmount(() => {
+      nuxt.$off('update-list-worksheets-uploads')
     })
 
     return {
