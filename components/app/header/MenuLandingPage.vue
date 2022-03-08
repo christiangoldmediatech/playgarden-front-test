@@ -910,9 +910,5 @@ nav.sticky {
 .container-list-menu-mobile li.more-menu ul a{
     padding-left: 15%;
 }
-.style-modal-content {
-    --width-modal-pg:100%;
-    --max-width-modal-pg:425px;
-}
 
 </style>

@@ -170,13 +170,10 @@
 </template>
 
 <script>
-// import MenuItem from '@/components/admin/MenuItem'
 import computedMixin from './computed'
 
 export default {
   name: 'AppNavigation',
-
-  // components: { MenuItem },
 
   mixins: [computedMixin],
 
