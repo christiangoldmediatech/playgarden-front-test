@@ -92,7 +92,7 @@
                 <span>Login</span>
                 <img loading="lazy" src="https://playgardenonline.com/wp-content/uploads/2022/01/log-in.svg" alt="Playgarden Prep Online Login">
               </a>
-              <a href="https://playgardenonline.com/school/auth/parent" class="try-to-free-navbar">Try To Free</a>
+              <a href="https://playgardenonline.com/school/auth/parent" class="try-to-free-navbar">Try For Free</a>
               <div class="call-us-content">
                 <span>CALL US</span>
                 <a href="tel:+6465044716">
