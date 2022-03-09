@@ -2,7 +2,7 @@
   <v-app-bar
     app
     class="pb-4 pg-app-bar"
-    :class="{ 'pg-app-bar-height': !isUserLoggedIn }"
+    :class="{ 'pg-app-bar-height': (!isUserLoggedIn && $vuetify.breakpoint.mdAndUp), 'pg-app-bar-mobile-height': (!isUserLoggedIn && !$vuetify.breakpoint.mdAndUp )}"
     color="white"
     elevation="1"
     prominent
@@ -31,7 +31,8 @@
             }"
           > -->
           <v-img
-            class="mt-8 mx-4 cursor-link"
+            class="mx-4 cursor-link"
+            :class="{ 'mt-8': $vuetify.breakpoint.mdAndUp}"
             alt="Playarden Prep Online Logo"
             max-height="100"
             :max-width="$vuetify.breakpoint.mdAndUp ? 290 : 200"
@@ -377,6 +378,9 @@ export default {
 
 .pg-app-bar-height::v-deep.v-sheet.v-app-bar.v-toolbar:not(.v-sheet--outlined) {
   height: 146px !important;
+}
+.pg-app-bar-mobile-height::v-deep.v-sheet.v-app-bar.v-toolbar:not(.v-sheet--outlined) {
+  height: 65px !important;
 }
 .btn-register:before {
   background-color: transparent !important;
