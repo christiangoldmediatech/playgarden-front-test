@@ -1,7 +1,7 @@
 <template>
   <v-navigation-drawer v-model="appDrawer" temporary app width="315">
     <template v-slot:prepend>
-      <v-row class="pr-3" justify="end">
+      <v-row class="pt-4 pr-3" justify="end">
         <v-btn icon @click.stop="appDrawer = !appDrawer">
           <v-icon>mdi-close</v-icon>
         </v-btn>
@@ -36,11 +36,11 @@
         </div>
         <div v-else id="modal-menu-pg" class="modal-pg left strech">
           <div class="modal-content fade fade-in-left fade-out-left menu-mobile menu-mobile-content">
-            <div class="content-menu-mobile">
+            <div class="content-menu-mobile mt-n10">
               <a href="https://playgardenonline.com/" class="logo-menu-navbar">
                 <img loading="lazy" src="https://playgardenonline.com/wp-content/uploads/2022/01/logo-text.svg" alt="Playgarden Prep Online - Logo">
               </a>
-              <div class="container-list-menu-mobile">
+              <div class="container-list-menu-mobile mt-n4">
                 <ul>
                   <li>
                     <a href="https://playgardenonline.com/">Home</a>
@@ -106,7 +106,7 @@
       </v-row>
     </v-container>
 
-    <template v-slot:append>
+    <template v-if="items.length > 0" v-slot:append>
       <v-container fluid mb-6>
         <v-row>
           <v-col cols="12">

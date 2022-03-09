@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container :class="{'mt-n10': !$vuetify.breakpoint.mdAndUp}">
     <v-row align="center" justify="center" no-gutters class="py-0 py-md-16">
       <v-col cols="12" md="6">
         <!-- BACK BUTTON -->

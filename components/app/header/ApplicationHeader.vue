@@ -2,7 +2,7 @@
   <v-app-bar
     app
     class="pb-4 pg-app-bar"
-    :class="{ 'pg-app-bar-height': !isUserLoggedIn }"
+    :class="{ 'pg-app-bar-height': (!isUserLoggedIn && $vuetify.breakpoint.mdAndUp), 'pg-app-bar-mobile-height': (!isUserLoggedIn && !$vuetify.breakpoint.mdAndUp )}"
     color="white"
     elevation="1"
     prominent
@@ -377,6 +377,9 @@ export default {
 
 .pg-app-bar-height::v-deep.v-sheet.v-app-bar.v-toolbar:not(.v-sheet--outlined) {
   height: 146px !important;
+}
+.pg-app-bar-mobile-height::v-deep.v-sheet.v-app-bar.v-toolbar:not(.v-sheet--outlined) {
+  height: 94px !important;
 }
 .btn-register:before {
   background-color: transparent !important;
