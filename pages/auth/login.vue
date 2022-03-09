@@ -1,6 +1,6 @@
 <template>
-  <v-container :class="{'mt-n10': !$vuetify.breakpoint.mdAndUp}">
-    <v-row align="center" justify="center" no-gutters class="py-0 py-md-16">
+  <v-container :class="{'mt-n14': !$vuetify.breakpoint.mdAndUp}">
+    <v-row :class="{'mt-n4': !$vuetify.breakpoint.mdAndUp}" align="center" justify="center" no-gutters class="py-0 py-md-16">
       <v-col cols="12" md="6">
         <!-- BACK BUTTON -->
         <v-row>

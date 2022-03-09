@@ -31,7 +31,8 @@
             }"
           > -->
           <v-img
-            class="mt-8 mx-4 cursor-link"
+            class="mx-4 cursor-link"
+            :class="{ 'mt-8': $vuetify.breakpoint.mdAndUp}"
             alt="Playarden Prep Online Logo"
             max-height="100"
             :max-width="$vuetify.breakpoint.mdAndUp ? 290 : 200"
@@ -379,7 +380,7 @@ export default {
   height: 146px !important;
 }
 .pg-app-bar-mobile-height::v-deep.v-sheet.v-app-bar.v-toolbar:not(.v-sheet--outlined) {
-  height: 94px !important;
+  height: 65px !important;
 }
 .btn-register:before {
   background-color: transparent !important;
