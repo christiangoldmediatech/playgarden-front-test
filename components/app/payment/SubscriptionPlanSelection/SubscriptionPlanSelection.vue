@@ -59,7 +59,7 @@
                   show-promotions
                 />
                 <!-- Price -->
-                <p class="text-center mt-8">
+                <!-- <p class="text-center mt-8">
                   <span
                     v-if="isAnnualSubscriptionEnabled"
                     class="product-price"
@@ -89,7 +89,7 @@
                       class="info-prodcut-detail"
                     >Billed Annually (Save ~$1,200)</span>
                   </template>
-                </p>
+                </p> -->
               </div>
               <!-- Call Us To Enroll Text -->
               <div v-if="indexP === 2" class="mb-6">

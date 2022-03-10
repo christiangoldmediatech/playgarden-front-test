@@ -12,7 +12,7 @@
           <v-img
             v-if="$vuetify.breakpoint.smAndUp"
             max-width="550"
-            :src="require('@/assets/svg/child-information.svg')"
+            :src="require('@/assets/jpg/child-information.JPG')"
           />
         </v-col>
         <v-col

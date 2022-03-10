@@ -17,6 +17,8 @@ export interface OfflineWorksheetUpload {
 }
 
 export interface OfflineWorksheetLesson {
+  total: number,
+  page: number,
   curriculumType: CurriculumType,
   worksheetUploads: OfflineWorksheetUpload[]
 }
