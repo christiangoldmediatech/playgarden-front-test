@@ -4,9 +4,19 @@
       <div class="lesson-panel-card-border-top">
         <slot name="panel-toolbar">
           <!-- HORIZONTAL LESSON NAVIGATION BAR -->
-          <v-row v-if="!displayMode" class="my-0" justify="space-between" align="center" fill-height>
+          <v-row
+            v-if="!displayMode"
+            class="my-0"
+            justify="space-between"
+            align="center"
+            fill-height
+          >
             <v-col class="btnLesson">
-              <v-tooltip v-if="previousLessonId && !$vuetify.breakpoint.smAndDown" top class="pb-6">
+              <v-tooltip
+                v-if="previousLessonId && !$vuetify.breakpoint.smAndDown"
+                top
+                class="pb-6"
+              >
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
                     class="ml-3"
@@ -36,13 +46,17 @@
             <v-spacer />
             <v-col class="btnLesson">
               <p class="text-right my-0 mr-3">
-                <v-tooltip v-if="!$vuetify.breakpoint.smAndDown" top :open-on-focus="true">
+                <v-tooltip
+                  v-if="!$vuetify.breakpoint.smAndDown"
+                  top
+                  :open-on-focus="true"
+                >
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
                       class="ml-3"
                       icon
                       :class="{
-                        'pg-opacity-50': !nextButton,
+                        'pg-opacity-50': !nextButton
                       }"
                       :disabled="!nextButton"
                       :retain-focus-on-click="false"
@@ -60,7 +74,7 @@
                   <v-btn
                     icon
                     :class="{
-                      'pg-opacity-50': !nextButton,
+                      'pg-opacity-50': !nextButton
                     }"
                     :disabled="!nextButton"
                     @click.stop="advance"
@@ -76,7 +90,7 @@
 
       <!-- BIG CIRCLE WITH CURRENT LETTER -->
       <pg-circle-letter-day
-        :class="{ 'clickable': !displayMode }"
+        :class="{ clickable: !displayMode }"
         :day="lesson ? lesson.day : null"
         :letter="lesson ? lesson.curriculumType.letter : null"
         @click.native="openCourseProgress"
@@ -92,7 +106,11 @@
           enabled
         >
           <!-- VIDEOS -->
-          <content-list :items="videos.items" v-bind="{ noLinkMode }" item-type="videoLesson" />
+          <content-list
+            :items="videos.items"
+            v-bind="{ noLinkMode }"
+            item-type="videoLesson"
+          />
 
           <!-- PROGRESS -->
           <lesson-progress :progress="videos.progress" />
@@ -107,104 +125,306 @@
           :enabled="videos.progress === 100"
         >
           <!-- ONLINE WORKSHEETS -->
-          <lesson-online-worksheet
-            v-for="(onlineWorksheet, onlineWorksheetIndex) in worksheets.ONLINE"
-            :key="onlineWorksheet.id"
-            :is-admin="isAdmin"
-            :online-worksheet="onlineWorksheet"
-            :progress="videos.progress"
-            :no-link-mode="noLinkMode"
-            :to="noLinkMode ? undefined : generateNuxtRoute('online-worksheet', { worksheet: onlineWorksheetIndex })"
-            :enabled="completedOnlineWorksheets >= onlineWorksheetIndex"
-            :active="worksheetQuery === onlineWorksheetIndex"
-          />
-
-          <!-- DOWNLOAD WORKSHEETS -->
-          <v-card
-            :disabled="noLinkMode"
-            :ripple="false"
-            class="dashboard-item pass-through"
-            active-class="dashboard-item-active"
-            exact-active-class="dashboard-item-exact"
-            @click.stop="handleDownloadWorksheetClick"
+          <!-- Tablet and up || Mobile portrait -->
+          <template
+            v-if="$vuetify.breakpoint.mdAndUp || $vuetify.breakpoint.xsOnly"
           >
-            <v-row no-gutters class="py-2">
-              <v-col cols="3" align-self="center" class="d-flex justify-center">
-                <v-img height="40px" contain :src="require('@/assets/png/dashboard/download-worksheet.png')" />
-              </v-col>
+            <lesson-online-worksheet
+              v-for="(onlineWorksheet,
+                      onlineWorksheetIndex) in worksheets.ONLINE"
+              :key="onlineWorksheet.id"
+              :is-admin="isAdmin"
+              :online-worksheet="onlineWorksheet"
+              :progress="videos.progress"
+              :no-link-mode="noLinkMode"
+              :to="
+                noLinkMode
+                  ? undefined
+                  : generateNuxtRoute('online-worksheet', {
+                    worksheet: onlineWorksheetIndex
+                  })
+              "
+              :enabled="completedOnlineWorksheets >= onlineWorksheetIndex"
+              :active="worksheetQuery === onlineWorksheetIndex"
+            />
+          </template>
 
-              <v-col cols="9" align-self="center">
-                <div class="text-uppercase dashboard-item-title">
-                  DOWNLOAD WORKSHEET
-                </div>
+          <!-- Mobile landscape -->
+          <template v-if="$vuetify.breakpoint.smOnly">
+            <v-col cols="12" class="pa-0 dailyLessonsScrolView">
+              <lesson-online-worksheet
+                v-for="(onlineWorksheet,
+                        onlineWorksheetIndex) in worksheets.ONLINE"
+                :key="onlineWorksheet.id"
+                :is-admin="isAdmin"
+                :online-worksheet="onlineWorksheet"
+                :progress="videos.progress"
+                :no-link-mode="noLinkMode"
+                :to="
+                  noLinkMode
+                    ? undefined
+                    : generateNuxtRoute('online-worksheet', {
+                      worksheet: onlineWorksheetIndex
+                    })
+                "
+                :enabled="completedOnlineWorksheets >= onlineWorksheetIndex"
+                :active="worksheetQuery === onlineWorksheetIndex"
+              />
+            </v-col>
+          </template>
 
-                <span
-                  v-if="isAdmin && childId"
-                  class="clickable admin-view-worksheets"
-                  @click.stop="goToAdminWorksheets"
+          <!-- OFFLINE WORKSHEETS -->
+          <!-- Tablet and up || Mobile portrait -->
+          <template
+            v-if="$vuetify.breakpoint.mdAndUp || $vuetify.breakpoint.xsOnly"
+          >
+            <!-- DOWNLOAD WORKSHEETS -->
+            <v-card
+              :disabled="noLinkMode"
+              :ripple="false"
+              class="dashboard-item pass-through"
+              active-class="dashboard-item-active"
+              exact-active-class="dashboard-item-exact"
+              @click.stop="handleDownloadWorksheetClick"
+            >
+              <v-row no-gutters class="py-2">
+                <v-col
+                  cols="3"
+                  align-self="center"
+                  class="d-flex justify-center"
                 >
-                  View worksheets
-                </span>
+                  <v-img
+                    height="40px"
+                    contain
+                    :src="
+                      require('@/assets/png/dashboard/download-worksheet.png')
+                    "
+                  />
+                </v-col>
+
+                <v-col cols="9" align-self="center">
+                  <div class="text-uppercase dashboard-item-title">
+                    DOWNLOAD WORKSHEET
+                  </div>
+
+                  <span
+                    v-if="isAdmin && childId"
+                    class="clickable admin-view-worksheets"
+                    @click.stop="goToAdminWorksheets"
+                  >
+                    View worksheets
+                  </span>
+                </v-col>
+              </v-row>
+            </v-card>
+
+            <!-- WORKSHEET VIDEO -->
+            <v-card
+              v-if="!displayMode && worksheets.OFFLINE"
+              :disabled="videos.progress < 100 || noLinkMode"
+              :to="generateNuxtRoute('offline-worksheet')"
+              :ripple="false"
+              class="dashboard-item"
+              active-class="dashboard-item-active"
+              exact-active-class="dashboard-item-exact"
+              nuxt
+              exact
+              @click="handleWorksheetVideos"
+            >
+              <v-row no-gutters>
+                <v-col
+                  cols="4"
+                  align-self="center"
+                  class="d-flex justify-center"
+                >
+                  <v-img
+                    cover
+                    height="100px"
+                    class="dashboard-item-image"
+                    :src="
+                      require('@/assets/png/dashboard/offline-worksheet-video.png')
+                    "
+                  />
+                </v-col>
+
+                <v-col cols="8" align-self="center" class="pa-2">
+                  <div
+                    class="text-uppercase dashboard-item-title"
+                    :class="{
+                      'dashboard-item-disabled': videos.progress < 100
+                    }"
+                  >
+                    {{ worksheets.OFFLINE.name }}
+                  </div>
+
+                  <div class="text-caption grey--text">
+                    {{ worksheets.OFFLINE.description }}
+                  </div>
+                </v-col>
+              </v-row>
+            </v-card>
+
+            <!-- UPLOAD WORKSHEETS -->
+            <v-card
+              v-if="!displayMode"
+              :disabled="videos.progress < 100"
+              :ripple="false"
+              class="dashboard-item"
+              active-class="dashboard-item-active"
+              exact-active-class="dashboard-item-exact"
+              @click.stop="uploadDialog = true"
+            >
+              <v-row no-gutters class="py-2">
+                <v-col
+                  cols="3"
+                  align-self="center"
+                  class="d-flex justify-center"
+                >
+                  <v-img
+                    height="40px"
+                    contain
+                    :src="
+                      require('@/assets/png/dashboard/upload-worksheet.png')
+                    "
+                  />
+                </v-col>
+
+                <v-col cols="9" align-self="center">
+                  <div
+                    class="text-uppercase dashboard-item-title"
+                    :class="{
+                      'dashboard-item-disabled': videos.progress < 100
+                    }"
+                  >
+                    UPLOAD WORKSHEET
+                  </div>
+
+                  <div class="text-caption grey--text">
+                    File(s) must be in JPG or PNG format
+                  </div>
+                </v-col>
+              </v-row>
+            </v-card>
+          </template>
+
+          <!-- Mobile landscape -->
+          <template v-if="$vuetify.breakpoint.smOnly">
+            <div class="dailyLessonsScrolView">
+              <!-- WORKSHEET VIDEO -->
+              <v-col cols="4" class="pa-0">
+                <v-card
+                  v-if="!displayMode && worksheets.OFFLINE"
+                  :disabled="videos.progress < 100 || noLinkMode"
+                  :to="generateNuxtRoute('offline-worksheet')"
+                  :ripple="false"
+                  class="dashboard-item"
+                  active-class="dashboard-item-active"
+                  exact-active-class="dashboard-item-exact"
+                  nuxt
+                  exact
+                  @click="handleWorksheetVideos"
+                >
+                  <v-row no-gutters>
+                    <v-img
+                      cover
+                      height="100px"
+                      class="dashboard-item-image"
+                      :src="
+                        require('@/assets/png/dashboard/offline-worksheet-video.png')
+                      "
+                    />
+
+                    <div class="mx-2 mt-4 mb-2">
+                      <div
+                        class="text-uppercase dashboard-item-title"
+                        :class="{
+                          'dashboard-item-disabled': videos.progress < 100
+                        }"
+                      >
+                        {{ worksheets.OFFLINE.name }}
+                      </div>
+
+                      <div class="text-caption grey--text">
+                        {{ worksheets.OFFLINE.description }}
+                      </div>
+                    </div>
+                  </v-row>
+                </v-card>
               </v-col>
-            </v-row>
-          </v-card>
 
-          <!-- WORKSHEET VIDEO -->
-          <v-card
-            v-if="!displayMode && worksheets.OFFLINE"
-            :disabled="videos.progress < 100 || noLinkMode"
-            :to="generateNuxtRoute('offline-worksheet')"
-            :ripple="false"
-            class="dashboard-item"
-            active-class="dashboard-item-active"
-            exact-active-class="dashboard-item-exact"
-            nuxt
-            exact
-            @click="handleWorksheetVideos"
-          >
-            <v-row no-gutters>
-              <v-col cols="4" align-self="center" class="d-flex justify-center">
-                <v-img cover height="100px" class="dashboard-item-image" :src="require('@/assets/png/dashboard/offline-worksheet-video.png')" />
+              <!-- DOWNLOAD WORKSHEETS -->
+              <v-col cols="4" class="pa-0">
+                <v-card
+                  :disabled="noLinkMode"
+                  :ripple="false"
+                  class="dashboard-item pass-through d-flex align-center justify-center"
+                  active-class="dashboard-item-active"
+                  exact-active-class="dashboard-item-exact"
+                  height="85%"
+                  @click.stop="handleDownloadWorksheetClick"
+                >
+                  <v-row no-gutters class="py-2">
+                    <v-img
+                      height="70px"
+                      class="mb-3"
+                      contain
+                      :src="
+                        require('@/assets/png/dashboard/download-worksheet.png')
+                      "
+                    />
+
+                    <div
+                      class="text-uppercase dashboard-item-title text-center"
+                    >
+                      DOWNLOAD WORKSHEET
+                    </div>
+
+                    <span
+                      v-if="isAdmin && childId"
+                      class="clickable admin-view-worksheets"
+                      @click.stop="goToAdminWorksheets"
+                    >
+                      View worksheets
+                    </span>
+                  </v-row>
+                </v-card>
               </v-col>
 
-              <v-col cols="8" align-self="center" class="pa-2">
-                <div class="text-uppercase dashboard-item-title" :class="{ 'dashboard-item-disabled': videos.progress < 100 }">
-                  {{ worksheets.OFFLINE.name }}
-                </div>
+              <!-- UPLOAD WORKSHEETS -->
+              <v-col cols="4" class="pa-0">
+                <v-card
+                  v-if="!displayMode"
+                  :disabled="videos.progress < 100"
+                  :ripple="false"
+                  class="dashboard-item d-flex align-center justify-center"
+                  active-class="dashboard-item-active"
+                  exact-active-class="dashboard-item-exact"
+                  height="85%"
+                  @click.stop="uploadDialog = true"
+                >
+                  <v-row no-gutters class="py-2">
+                    <v-img
+                      height="70px"
+                      contain
+                      class="mb-3"
+                      :src="
+                        require('@/assets/png/dashboard/upload-worksheet.png')
+                      "
+                    />
 
-                <div class="text-caption grey--text">
-                  {{ worksheets.OFFLINE.description }}
-                </div>
+                    <div
+                      class="text-uppercase dashboard-item-title text-center"
+                      :class="{
+                        'dashboard-item-disabled': videos.progress < 100
+                      }"
+                    >
+                      UPLOAD WORKSHEET
+                    </div>
+                  </v-row>
+                </v-card>
               </v-col>
-            </v-row>
-          </v-card>
-
-          <!-- UPLOAD WORKSHEETS -->
-          <v-card
-            v-if="!displayMode"
-            :disabled="videos.progress < 100"
-            :ripple="false"
-            class="dashboard-item"
-            active-class="dashboard-item-active"
-            exact-active-class="dashboard-item-exact"
-            @click.stop="uploadDialog = true"
-          >
-            <v-row no-gutters class="py-2">
-              <v-col cols="3" align-self="center" class="d-flex justify-center">
-                <v-img height="40px" contain :src="require('@/assets/png/dashboard/upload-worksheet.png')" />
-              </v-col>
-
-              <v-col cols="9" align-self="center">
-                <div class="text-uppercase dashboard-item-title" :class="{ 'dashboard-item-disabled': videos.progress < 100 }">
-                  UPLOAD WORKSHEET
-                </div>
-
-                <div class="text-caption grey--text">
-                  File(s) must be in JPG or PNG format
-                </div>
-              </v-col>
-            </v-row>
-          </v-card>
+            </div>
+          </template>
 
           <!-- PROGRESS -->
           <lesson-progress
@@ -221,7 +441,11 @@
           :progress-next="activities.progressNext"
           :enabled="videos.progress === 100"
         >
-          <content-list :items="activities.items" v-bind="{ noLinkMode }" item-type="activity" />
+          <content-list
+            :items="activities.items"
+            v-bind="{ noLinkMode }"
+            item-type="activity"
+          />
 
           <!-- PROGRESS -->
           <lesson-progress :progress="activities.progress" />
@@ -229,7 +453,10 @@
       </div>
     </v-card>
 
-    <upload-offline-worksheet-dialog v-if="uploadDialog" v-model="uploadDialog" />
+    <upload-offline-worksheet-dialog
+      v-if="uploadDialog"
+      v-model="uploadDialog"
+    />
   </div>
 </template>
 
@@ -316,16 +543,18 @@ export default {
 
   computed: {
     ...mapGetters('auth', ['getUserInfo']),
-    ...mapGetters('children/lesson', { previousLessonId: 'getPreviousLessonId' }),
+    ...mapGetters('children/lesson', {
+      previousLessonId: 'getPreviousLessonId'
+    }),
 
-    offlineWorksheet () {
+    offlineWorksheet() {
       if (this.lesson) {
         return this.lesson.worksheets.find(({ type }) => type === 'OFFLINE')
       }
       return null
     },
 
-    completedOnlineWorksheets () {
+    completedOnlineWorksheets() {
       let completed = 0
       this.worksheets.ONLINE.forEach((worksheet) => {
         if (worksheet.completed) {
@@ -335,7 +564,7 @@ export default {
       return completed
     },
 
-    worksheetQuery () {
+    worksheetQuery() {
       const q = this.$route.query.worksheet
 
       if (Number(q) >= 0) {
@@ -349,12 +578,12 @@ export default {
       return undefined
     },
 
-    isAdmin () {
+    isAdmin() {
       return this.$route.name.includes('admin')
     }
   },
 
-  created () {
+  created() {
     this.$nuxt.$on(APP_EVENTS.DASHBOARD_VIDEO_LESSON_CLICKED, (topicData) => {
       this.$gtm.push({
         event: TAG_MANAGER_EVENTS.DASHBOARD_VIDEO_LESSON_CLICKED,
@@ -403,7 +632,7 @@ export default {
     })
   },
 
-  beforeDestroy () {
+  beforeDestroy() {
     this.$nuxt.$off(APP_EVENTS.DASHBOARD_VIDEO_LESSON_CLICKED)
     this.$nuxt.$off(APP_EVENTS.DASHBOARD_ACTIVITY_CLICKED)
     this.$nuxt.$off(APP_EVENTS.DASHBOARD_ONLINE_WORKSHEET_COMPLETED)
@@ -412,7 +641,7 @@ export default {
   },
 
   methods: {
-    goToAdminWorksheets () {
+    goToAdminWorksheets() {
       const routerData = this.$router.resolve({
         name: 'admin-portfolio',
         query: {
@@ -423,7 +652,7 @@ export default {
       window.open(routerData.href, '_blank')
     },
 
-    openPdf () {
+    openPdf() {
       if (this.offlineWorksheet) {
         window.open(this.offlineWorksheet.pdfUrl, '_blank')
         this.$gtm.push({
@@ -436,13 +665,16 @@ export default {
       }
     },
 
-    openCourseProgress () {
+    openCourseProgress() {
       if (!this.displayMode) {
-        this.$nuxt.$emit('show-curriculum-progress', this.lesson.curriculumType.id)
+        this.$nuxt.$emit(
+          'show-curriculum-progress',
+          this.lesson.curriculumType.id
+        )
       }
     },
 
-    handleOnlineWorksheetClick () {
+    handleOnlineWorksheetClick() {
       this.$gtm.push({
         event: TAG_MANAGER_EVENTS.DASHBOARD_ONLINE_WORKSHEET_CLICKED,
         userId: this.getUserInfo.id,
@@ -451,7 +683,7 @@ export default {
       })
     },
 
-    handleWorksheetVideos () {
+    handleWorksheetVideos() {
       this.$gtm.push({
         event: TAG_MANAGER_EVENTS.DASHBOARD_WORKSHEET_VIDEOS_CLICKED,
         userId: this.getUserInfo.id,
@@ -460,7 +692,7 @@ export default {
       })
     },
 
-    handleDownloadWorksheetClick () {
+    handleDownloadWorksheetClick() {
       if (!this.noLinkMode) {
         this.openPdf()
       }
@@ -470,6 +702,24 @@ export default {
 </script>
 
 <style lang="scss">
+.dailyLessonsScrolView {
+  display: flex;
+  flex-direction: row;
+  overflow-x: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  .v-card {
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 50%;
+  }
+}
+@media screen and(min-width:960px  ) {
+  .dailyLessonsScrolView {
+    display: block;
+  }
+}
 .dashboard {
   &-item {
     box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.15) !important;
@@ -498,10 +748,11 @@ export default {
       color: rgba(0, 0, 0, 0.38) !important;
     }
 
-    &-exact, &-active {
+    &-exact,
+    &-active {
       box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16) !important;
       margin: 12px 8px;
-      border: 4px solid #FFAB37 !important;
+      border: 4px solid #ffab37 !important;
       border-radius: 12px !important;
     }
   }
@@ -527,7 +778,7 @@ export default {
       height: 58px;
       position: absolute;
       top: 0;
-      background-color: #B2E68D;
+      background-color: #b2e68d;
       border-radius: 5px;
     }
   }
@@ -552,8 +803,8 @@ export default {
     &::-webkit-scrollbar {
       display: none;
     }
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
   }
 
   &-worksheet {
@@ -601,7 +852,10 @@ export default {
   }
 }
 
-#download-worksheet-btn.v-btn--disabled, #download-worksheet-btn.v-btn--disabled i.v-icon, #upload-worksheet-btn.v-btn--disabled, #upload-worksheet-btn.v-btn--disabled i.v-icon {
+#download-worksheet-btn.v-btn--disabled,
+#download-worksheet-btn.v-btn--disabled i.v-icon,
+#upload-worksheet-btn.v-btn--disabled,
+#upload-worksheet-btn.v-btn--disabled i.v-icon {
   color: white !important;
   font-size: 12px !important;
   font-weight: bold !important;
@@ -623,7 +877,7 @@ export default {
 }
 
 .v-tooltip__content::after {
-  content: "";
+  content: '';
   position: absolute;
   top: 100%;
   left: 35%;
