@@ -4,14 +4,23 @@
       <v-row no-gutters align="end" class="mb-2">
         <template v-if="isLetter(category.curriculumType.name)">
           <div class="mr-3">
-            <span class="text-uppercase font-weight-bold portfolio-carousel-title d-flex align-center">
-              LETTER <recorded-letter :letter="category.curriculumType" small list-mode />
+            <span
+              class="text-uppercase font-weight-bold portfolio-carousel-title d-flex align-center"
+            >
+              LETTER
+              <recorded-letter
+                :letter="category.curriculumType"
+                small
+                list-mode
+              />
             </span>
           </div>
         </template>
         <template v-else>
           <div class="mr-3">
-            <span class="text-uppercase font-weight-bold portfolio-carousel-title d-flex align-center">
+            <span
+              class="text-uppercase font-weight-bold portfolio-carousel-title d-flex align-center"
+            >
               {{ category.curriculumType.name }}
             </span>
           </div>
@@ -70,7 +79,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref, computed } from '@nuxtjs/composition-api'
+import {
+  defineComponent,
+  PropType,
+  ref,
+  computed,
+  useRoute
+} from '@nuxtjs/composition-api'
 import { useNuxtHelper, useVuetifyHelper } from '@/composables'
 import { OfflineWorksheetLesson } from '@/models'
 import { jsonCopy } from '@/utils'
@@ -92,17 +107,36 @@ export default defineComponent({
     }
   },
 
-  setup (props) {
+  setup(props) {
     const nuxt = useNuxtHelper()
     const $vuetify = useVuetifyHelper()
-    const page = ref(props.category.page)
+    const page = ref(props.category.page ? props.category.page : 1)
+    const route = useRoute()
+
+    const isAdmin = computed(() => {
+      return route.value.name!.includes('admin')
+    })
 
     const limit = computed(() => {
-      return 20
+      if (isAdmin.value) {
+        return 20
+      }
+      if ($vuetify.breakpoint.sm) {
+        return 2
+      }
+      if ($vuetify.breakpoint.xs) {
+        return 1
+      }
+      return 4
     })
 
     const total = computed(() => {
-      return props.category.total
+      if (isAdmin.value) {
+        return props.category.total
+      }
+      return props.category.worksheetUploads
+        ? props.category.worksheetUploads.length
+        : 0
     })
 
     const start = computed(() => {
@@ -118,18 +152,23 @@ export default defineComponent({
     const list = computed(() => {
       if (total.value > 0) {
         const worksheets = jsonCopy(props.category.worksheetUploads)
-        return worksheets
+        if (isAdmin.value) {
+          return worksheets
+        }
+        return worksheets.slice(start.value, end.value)
       }
       return []
     })
 
-    function moveCarousel (direction: number) {
+    function moveCarousel(direction: number) {
       page.value += direction
-      nuxt.$emit('update-list-worksheets-uploads', { page: page.value })
+      if (isAdmin.value) {
+        nuxt.$emit('update-list-worksheets-uploads', { page: page.value })
+      }
     }
 
-    function getChild (upload: any) {
-      return (upload.children) ? upload.children : null
+    function getChild(upload: any) {
+      return upload.children ? upload.children : null
     }
 
     // Generate alphabet for determinig if a "categoy" is a letter or something else
@@ -152,7 +191,8 @@ export default defineComponent({
       list,
       moveCarousel,
       getChild,
-      isLetter
+      isLetter,
+      isAdmin
     }
   }
 })
