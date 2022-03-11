@@ -11,9 +11,7 @@
       <v-row
         no-gutters
         justify="space-around"
-        @click.stop="
-          $nuxt.$emit('open-portfolio-overlay', { child, entityId, entityType, image, created })
-        "
+        @click.stop="$nuxt.$emit('open-portfolio-overlay', { child, entityId, entityType, image, created })"
       >
         <v-col cols="12">
           <v-img :src="image" aspect-ratio="1.7" contain />
@@ -217,6 +215,11 @@ export default defineComponent({
       type: Boolean,
       required: false,
       default: false
+    },
+    worksheetFeedback: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   setup (props: any) {
@@ -239,15 +242,18 @@ export default defineComponent({
       }
     }
 
-    onMounted(async () => {
-      try {
-        getData()
-        if (props.entityId) {
-          await getFeedbackByUploadedWorksheetsId(props.entityId)
-        }
-      } catch (error) {}
+    onMounted(async() => {
+      if (props.worksheetFeedback) {
+        try {
+          await getData()
+          if (props.entityId) {
+            await getFeedbackByUploadedWorksheetsId(props.entityId)
+          }
+        } catch (error) {}
+      }
       feedback.value.uploadedWorksheetId = props.entityId
     })
+
     return {
       isLoading,
       feedback,
