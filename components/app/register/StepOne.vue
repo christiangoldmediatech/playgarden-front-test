@@ -3,8 +3,8 @@
     <v-col cols="12" class="ml-md-14">
       <p class="text-center text-md-left">
         <underlined-title
-          class="text-h6 text-md-h4 ml-sm-4"
-          text="PLAYGARDEN PREP ONLINE IS COMPLETELY FREE!"
+          class="pg-box-decoration-clone text-h6 text-md-h4 ml-sm-4"
+          text="PLAYGARDEN PREP ONLINE IS COMPLETELY FREE FOR THE FIRST 15 DAYS!"
         />
       </p>
     </v-col>
@@ -60,7 +60,12 @@
 </template>
 
 <script>
-import { defineComponent, useRoute, useRouter, useStore } from '@nuxtjs/composition-api'
+import {
+  defineComponent,
+  useRoute,
+  useRouter,
+  useStore
+} from '@nuxtjs/composition-api'
 import { mapActions, mapGetters } from 'vuex'
 import { useSignup } from '@/composables/use-signup.composable'
 import RegisterForm from '@/components/forms/auth/RegisterForm.vue'
@@ -82,7 +87,10 @@ export default defineComponent({
     const router = useRouter()
     const route = useRoute()
     const utmContent = useUTM({ route: route.value })
-    const { setIsEmailConflictModalVisible, setIsAccountInactiveModalVisible } = useNotification({ store })
+    const {
+      setIsEmailConflictModalVisible,
+      setIsAccountInactiveModalVisible
+    } = useNotification({ store })
 
     const { abFlow, isCreditCardRequired, setupABFlow } = useSignup({
       route: route.value

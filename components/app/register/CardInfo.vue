@@ -11,15 +11,12 @@
     <v-card-text>
       <div>
         <center class="text-subtitle-1 mt-3 mb-3 aling-spacing">
-          Start learning now, you can cancel any time.
+          Start learning now; cancel any time!
         </center>
         <img
           src="@/assets/png/login-card-child.png"
           class="d-block mx-auto child-login"
         >
-        <div class="text-subtitle-1 mt-3">
-          *Easy to cancel, just go to your account setting and cancel.
-        </div>
       </div>
     </v-card-text>
   </div>
