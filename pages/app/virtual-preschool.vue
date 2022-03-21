@@ -238,10 +238,10 @@ export default defineComponent({
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(4, 300px);
+  grid-template-columns: repeat(4, 25%);
   grid-template-rows: repeat(4, 200px);
   margin: auto;
-  width: min-content;
+  width: 90%;
   gap: 1rem;
   margin: 1rem auto;
 
