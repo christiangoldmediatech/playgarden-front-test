@@ -73,12 +73,12 @@
 
                     <ul class="submenu">
                       <li>
-                        <a href="https://playgardenonline.com/virtual-preschool-test/">Preschool and
+                        <a href="https://playgardenonline.com/virtual-preschool/">Preschool and
                           Pre-K</a>
                       </li>
                       <li><a href="https://playgardenonline.com/how-it-works/">How it Works</a></li>
                       <!-- <li><a href="https://playgardenonline.com/do-it-yourself/">DIY</a></li> -->
-                      <li><a href="https://playgardenonline.com/blog-test">Blog</a></li>
+                      <li><a href="https://playgardenonline.com/blog">Blog</a></li>
                     </ul>
                   </v-list-group>
                   <hr class="mx-4">
@@ -92,7 +92,7 @@
                 <span>Login</span>
                 <img loading="lazy" src="https://playgardenonline.com/wp-content/uploads/2022/01/log-in.svg" alt="Playgarden Prep Online Login">
               </a>
-              <a href="https://playgardenonline.com/school/auth/parent" class="try-to-free-navbar">Try For Free</a>
+              <a href="https://playgardenonline.com/school/auth/parent" class="try-to-free-navbar">Try To Free</a>
               <div class="call-us-content">
                 <span>CALL US</span>
                 <a href="tel:+6465044716">
