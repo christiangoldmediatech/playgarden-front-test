@@ -1,8 +1,9 @@
 <template>
-  <div :style="`height: ${height}`">
+  <div class="pg-h-auto">
     <v-img
       :src="section.imageUrl"
       gradient="rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)"
+      class="pg-rounded-md"
       cover
       tile
       height="100%"
@@ -10,14 +11,6 @@
       @click="$emit('click', section)"
     >
       <div class="section-content">
-        <!-- Start Playing Button -->
-        <img
-          :data-test-id="`vp-section-${section.title}`"
-          :style="`top: ${startPlayingTop}`"
-          class="section-start-playing"
-          src="@/assets/png/virtual-preschool/Start Playing.png"
-        >
-
         <!-- Lady -->
         <img class="section-lady" :src="section.teacherUrl">
 
@@ -61,16 +54,6 @@ export default defineComponent({
     section: {
       type: Object as PropType<Section>,
       default: () => ({})
-    },
-
-    height: {
-      type: String,
-      default: '50%'
-    },
-
-    startPlayingTop: {
-      type: String,
-      default: '50%'
     }
   },
 
@@ -134,21 +117,12 @@ export default defineComponent({
     z-index: 1;
   }
 
-  &-start-playing {
-    cursor: pointer;
-    height: 35%;
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-
   &-btn {
     position: absolute;
     bottom: 10px;
     left: 10px;
 
-    background: rgba(178, 230, 141, 0.2);
-    border: 4px solid #B2E68D;
+    background: rgb(104, 196, 83);
     box-sizing: border-box;
     border-radius: 8px;
     cursor: pointer;
@@ -156,13 +130,9 @@ export default defineComponent({
     & div {
       color: white;
       font-size: 18px;
-      font-weight: bold;
+      font-weight: 500;
       text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-
-      padding-top: 4px;
-      padding-bottom: 4px;
-      padding-left: 12px;
-      padding-right: 12px;
+      padding: 8px 12px;
     }
   }
 }
@@ -178,14 +148,6 @@ export default defineComponent({
 @media (max-width: $breakpoint-sm) {
   .section {
     padding: 12px;
-
-    &-content {
-      opacity: 1;
-    }
-
-    &-start-playing {
-      visibility: hidden;
-    }
   }
 }
 </style>
