@@ -73,12 +73,12 @@
 
                     <ul class="submenu">
                       <li>
-                        <a href="https://playgardenonline.com/virtual-preschool-test/">Preschool and
+                        <a href="https://playgardenonline.com/virtual-preschool/">Preschool and
                           Pre-K</a>
                       </li>
                       <li><a href="https://playgardenonline.com/how-it-works/">How it Works</a></li>
                       <!-- <li><a href="https://playgardenonline.com/do-it-yourself/">DIY</a></li> -->
-                      <li><a href="https://playgardenonline.com/blog-test">Blog</a></li>
+                      <li><a href="https://playgardenonline.com/blog">Blog</a></li>
                     </ul>
                   </v-list-group>
                   <hr class="mx-4">
