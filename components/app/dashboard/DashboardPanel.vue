@@ -1,6 +1,6 @@
 <template>
   <div class="lesson-panel-container">
-    <v-card class="lesson-panel-card" elevation="0" height="100%">
+    <v-card class="lesson-panel-card mt-0 mt-sm-16 mt-md-0" elevation="0" height="100%">
       <div class="lesson-panel-card-border-top">
         <slot name="panel-toolbar">
           <!-- HORIZONTAL LESSON NAVIGATION BAR -->

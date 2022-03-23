@@ -1,5 +1,5 @@
 <template>
-  <v-main class="pt-16 mt-5">
+  <v-main class="pt-10 pt-sm-6 pt-md-16 mt-5">
     <!-- <v-container v-if="showScreen" fill-height>
       <v-row justify="center" align-sm="center" fill-height>
         <v-col cols="10" sm="6" md="5">

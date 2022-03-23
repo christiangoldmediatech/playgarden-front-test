@@ -2,6 +2,7 @@
   <v-app-bar
     flat
     :height="appBarHeight"
+    :class="{'d-none mt-n16': scrollDown}"
     class="pg-header"
     app
   >
@@ -193,6 +194,39 @@ import { useBirthdayHelpers } from '@/components/features/childBirthday/composab
 export default defineComponent({
   components: {
     ChildSelect
+  },
+
+  data() {
+    return {
+      scrollDown: false,
+      currentScroll: 0
+    }
+  },
+
+  created() {
+    // eslint-disable-next-line nuxt/no-globals-in-created
+    window.addEventListener('scroll', this.toggleHeader)
+  },
+
+  destroyed() {
+    window.removeEventListener('scroll', this.toggleHeader)
+  },
+
+  methods: {
+    toggleHeader() {
+      if (this.$vuetify.breakpoint.mdAndDown) {
+        const scroll = window.scrollY
+        if (scroll > this.currentScroll) {
+          this.scrollDown = true
+          this.currentScroll = scroll
+        } else if (scroll < this.currentScroll) {
+          this.scrollDown = false
+          this.currentScroll = scroll
+        }
+      } else {
+        this.scrollDown = false
+      }
+    }
   },
 
   setup () {

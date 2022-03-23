@@ -407,6 +407,12 @@ export default {
   height: 98px !important;
 }
 
+@media screen and (max-width:959px ) {
+  .pg-app-bar::v-deep.v-sheet.v-app-bar.v-toolbar:not(.v-sheet--outlined) {
+    height: 63px !important;
+  }
+}
+
 .pg-app-bar-height::v-deep.v-sheet.v-app-bar.v-toolbar:not(.v-sheet--outlined) {
   height: 146px !important;
 }
