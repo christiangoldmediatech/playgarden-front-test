@@ -1,6 +1,6 @@
 <template>
   <v-main>
-    <div :class="$vuetify.breakpoint.mdAndDown ? 'flex' : 'grid'">
+    <div :class="$vuetify.breakpoint.mdAndDown ? 'mobile' : 'desktop'">
       <section-image
         class="daily-lessons"
         :section="section.dashboard"
@@ -202,7 +202,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.flex {
+.mobile {
   width: 90%;
   margin: auto;
 
@@ -211,7 +211,7 @@ export default defineComponent({
   }
 }
 
-.grid {
+.desktop {
   display: grid;
   grid-template-columns: repeat(4, 25%);
   grid-template-rows: repeat(4, 200px);
