@@ -11,6 +11,14 @@
       @click="$emit('click', section)"
     >
       <div class="section-content">
+        <!-- Start Playing Button -->
+        <img
+          :data-test-id="`vp-section-${section.title}`"
+          :style="small ? `top: 75%; height: 60%;` : `top: 50%; height: 35%;`"
+          class="section-start-playing"
+          src="@/assets/png/virtual-preschool/Start Playing.png"
+        >
+
         <!-- Lady -->
         <img class="section-lady" :src="section.teacherUrl">
 
@@ -54,6 +62,10 @@ export default defineComponent({
     section: {
       type: Object as PropType<Section>,
       default: () => ({})
+    },
+    small: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -117,6 +129,13 @@ export default defineComponent({
     z-index: 1;
   }
 
+  &-start-playing {
+    cursor: pointer;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
   &-btn {
     position: absolute;
     bottom: 10px;
@@ -148,6 +167,14 @@ export default defineComponent({
 @media (max-width: $breakpoint-sm) {
   .section {
     padding: 12px;
+
+    &-content {
+      opacity: 1;
+    }
+
+    &-start-playing {
+      visibility: hidden;
+    }
   }
 }
 </style>
