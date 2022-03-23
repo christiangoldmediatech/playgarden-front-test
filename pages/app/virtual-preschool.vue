@@ -1,6 +1,6 @@
 <template>
   <v-main>
-    <div :class="$vuetify.breakpoint.mdAndDown ? 'flex' : 'grid'">
+    <div :class="$vuetify.breakpoint.mdAndDown ? 'mobile' : 'desktop'">
       <section-image
         class="daily-lessons"
         :section="section.dashboard"
@@ -18,7 +18,6 @@
       <section-image
         class="playdates"
         :section="section.playdates"
-        start-playing-top="65%"
         @click:play="handleAudioPlay"
         @click="handleClick"
       />
@@ -26,7 +25,6 @@
       <section-image
         class="student-cubby"
         :section="section.cubby"
-        start-playing-top="65%"
         @click:play="handleAudioPlay"
         @click="handleClick"
       />
@@ -41,7 +39,7 @@
       <section-image
         class="music"
         :section="section.music"
-        start-playing-top="65%"
+        small
         @click:play="handleAudioPlay"
         @click="handleClick"
       />
@@ -49,6 +47,7 @@
       <section-image
         class="library"
         :section="section.library"
+        small
         @click:play="handleAudioPlay"
         @click="handleClick"
       />
@@ -203,40 +202,16 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.flex {
+.mobile {
   width: 90%;
-  margin: 1rem auto;
-  display: flex;
-  flex-wrap: wrap;
+  margin: auto;
 
-  .daily-lessons {
-    width: 100%;
-    margin-bottom: .25rem;
-  }
-
-  .live-classes,
-  .playdates,
-  .music,
-  .library,
-  .student-cubby,
-  .kids-corner {
-    width: 50%;
-  }
-
-  .live-classes,
-  .music,
-  .student-cubby {
-    padding: .25rem .25rem .25rem 0;
-  }
-
-  .playdates,
-  .library,
-  .kids-corner {
-    padding: .25rem 0 .25rem .25rem;
+  & > * {
+    margin: .75rem 0;
   }
 }
 
-.grid {
+.desktop {
   display: grid;
   grid-template-columns: repeat(4, 25%);
   grid-template-rows: repeat(4, 200px);
