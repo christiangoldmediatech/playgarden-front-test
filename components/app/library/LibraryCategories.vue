@@ -133,7 +133,8 @@ export default {
   },
 
   data: () => ({
-    selectedActivity: null
+    selectedActivity: null,
+    currentScroll: 0
   }),
 
   computed: {
@@ -163,7 +164,32 @@ export default {
     }
   },
 
+  created() {
+    // eslint-disable-next-line nuxt/no-globals-in-created
+    window.addEventListener('scroll', this.toggleCategoriesHeader)
+  },
+
+  destroyed() {
+    window.removeEventListener('scroll', this.toggleCategoriesHeader)
+  },
+
   methods: {
+    toggleCategoriesHeader() {
+      const categories = document.getElementById('library-categories')
+      if (this.$vuetify.breakpoint.mdAndDown) {
+        const scroll = window.scrollY
+        if (scroll > this.currentScroll) {
+          categories.style.top = '-35px'
+          this.currentScroll = scroll
+        } else if (scroll < this.currentScroll) {
+          categories.style.top = '30px'
+          this.currentScroll = scroll
+        }
+      } else {
+        categories.style.top = '75px'
+      }
+    },
+
     bkgColor (color) {
       return hexToRgb(color.substring(1))
     },

@@ -1,5 +1,5 @@
 <template>
-  <v-main>
+  <v-main class="pt-5 pt-md-16 mt-0 mt-md-10">
     <v-container fluid>
       <v-row justify="center" no-gutters>
         <!-- Page Title -->
