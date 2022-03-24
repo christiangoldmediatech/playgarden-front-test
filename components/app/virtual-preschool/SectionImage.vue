@@ -1,47 +1,55 @@
 <template>
-  <div class="pg-h-auto">
-    <v-img
-      :src="section.imageUrl"
-      gradient="rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)"
-      class="pg-rounded-md"
-      cover
-      tile
-      height="100%"
-      position="top center"
-      @click="$emit('click', section)"
-    >
-      <div class="section-content">
-        <!-- Start Playing Button -->
-        <img
-          :data-test-id="`vp-section-${section.title}`"
-          :style="small ? `top: 75%; height: 60%;` : `top: 50%; height: 35%;`"
-          class="section-start-playing"
-          src="@/assets/png/virtual-preschool/Start Playing.png"
+  <v-hover v-slot="{ hover }">
+    <div class="pg-h-auto">
+      <v-img
+        :src="section.imageUrl"
+        gradient="rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)"
+        class="pg-rounded-md"
+        cover
+        tile
+        height="100%"
+        position="top center"
+        @click="$emit('click', section)"
+      >
+        <!-- Section Button -->
+        <div
+          :class="{
+            'section-top': !$vuetify.breakpoint.smAndDown,
+            'translucent': hover,
+            'section-btn': $vuetify.breakpoint.smAndDown,
+          }"
         >
-
-        <!-- Lady -->
-        <img class="section-lady" :src="section.teacherUrl">
-
-        <!-- Bubble -->
-        <div class="section-bubble" />
-
-        <!-- Bubble Text -->
-        <div class="section-bubble-text">
-          {{ section.message }}
-          <v-btn icon class="my-n4 mx-n2">
-            <v-icon class="white--text" size="22" @click.stop="$emit('click:play', section)">
-              mdi-volume-high
-            </v-icon>
-          </v-btn>
+          <div>{{ section.title }}</div>
         </div>
-      </div>
 
-      <!-- Section Button -->
-      <div :class="{ 'section-top': !$vuetify.breakpoint.smAndDown, 'section-btn': $vuetify.breakpoint.smAndDown }">
-        <div>{{ section.title }}</div>
-      </div>
-    </v-img>
-  </div>
+        <div class="section-content">
+          <!-- Start Playing Button -->
+          <img
+            :data-test-id="`vp-section-${section.title}`"
+            :style="small ? `top: 75%; height: 60%;` : `top: 50%; height: 35%;`"
+            class="section-start-playing"
+            src="@/assets/png/virtual-preschool/Start Playing.png"
+          >
+
+          <!-- Lady -->
+          <img class="section-lady" :src="section.teacherUrl">
+
+          <!-- Bubble -->
+          <div class="section-bubble" />
+
+          <!-- Bubble Text -->
+          <div class="section-bubble-text">
+            {{ section.message }}
+            <v-btn icon class="my-n4 mx-n2">
+              <v-icon class="white--text" size="22" @click.stop="$emit('click:play', section)">
+                mdi-volume-high
+              </v-icon>
+            </v-btn>
+          </div>
+        </div>
+      </v-img>
+    </div>
+  </v-hover>
 </template>
 
 <script lang="ts">
@@ -173,6 +181,11 @@ export default defineComponent({
       padding: 8px 12px;
     }
   }
+
+}
+
+.translucent {
+  opacity: 0.25;
 }
 
 @media (min-width: $breakpoint-md) {
