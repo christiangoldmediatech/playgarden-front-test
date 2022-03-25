@@ -1,5 +1,5 @@
 <template>
-  <v-main :class="{ 'fill-height': isPageLoading }">
+  <v-main :class="{ 'fill-height': isPageLoading }" class="pt-14 pt-md-16 mt-90 mt-md-9">
     <v-row
       v-if="isPageLoading"
       no-gutters
