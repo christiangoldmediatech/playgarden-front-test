@@ -1,64 +1,57 @@
 <template>
   <v-main>
-    <v-row no-gutters justify="center" class="virtual-preschool">
-      <v-col cols="12" md="4" class="section-col">
-        <section-image
-          :section="section.dashboard"
-          height="50%"
-          @click:play="handleAudioPlay"
-          @click="handleClick"
-        />
+    <div :class="$vuetify.breakpoint.mdAndDown ? 'mobile' : 'desktop'">
+      <section-image
+        class="daily-lessons"
+        :section="section.dashboard"
+        @click:play="handleAudioPlay"
+        @click="handleClick"
+      />
 
-        <section-image
-          :section="section.kidscorner"
-          height="50%"
-          @click:play="handleAudioPlay"
-          @click="handleClick"
-        />
-      </v-col>
+      <section-image
+        class="live-classes"
+        :section="section.classes"
+        @click:play="handleAudioPlay"
+        @click="handleClick"
+      />
 
-      <v-col cols="12" md="4" class="section-col">
-        <section-image
-          :section="section.playdates"
-          height="33.33%"
-          start-playing-top="65%"
-          @click:play="handleAudioPlay"
-          @click="handleClick"
-        />
+      <section-image
+        class="playdates"
+        :section="section.playdates"
+        @click:play="handleAudioPlay"
+        @click="handleClick"
+      />
 
-        <section-image
-          :section="section.cubby"
-          height="33.33%"
-          start-playing-top="65%"
-          @click:play="handleAudioPlay"
-          @click="handleClick"
-        />
+      <section-image
+        class="student-cubby"
+        :section="section.cubby"
+        @click:play="handleAudioPlay"
+        @click="handleClick"
+      />
 
-        <section-image
-          :section="section.music"
-          height="33.33%"
-          start-playing-top="65%"
-          @click:play="handleAudioPlay"
-          @click="handleClick"
-        />
-      </v-col>
+      <section-image
+        class="kids-corner"
+        :section="section.kidscorner"
+        @click:play="handleAudioPlay"
+        @click="handleClick"
+      />
 
-      <v-col cols="12" md="4" class="section-col">
-        <section-image
-          :section="section.classes"
-          height="50%"
-          @click:play="handleAudioPlay"
-          @click="handleClick"
-        />
+      <section-image
+        class="music"
+        :section="section.music"
+        small
+        @click:play="handleAudioPlay"
+        @click="handleClick"
+      />
 
-        <section-image
-          :section="section.library"
-          height="50%"
-          @click:play="handleAudioPlay"
-          @click="handleClick"
-        />
-      </v-col>
-    </v-row>
+      <section-image
+        class="library"
+        :section="section.library"
+        small
+        @click:play="handleAudioPlay"
+        @click="handleClick"
+      />
+    </div>
     <BirthdayVideoDialog />
   </v-main>
 </template>
@@ -209,29 +202,51 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.virtual-preschool {
-  max-width: 1500px;
-  margin-left: auto;
-  margin-right: auto;
-  height: 100%;
-  max-height: 800px;
-}
+.mobile {
+  width: 90%;
+  margin: auto;
 
-.section-col {
-  height: 100%;
-}
-
-@media (max-width: $breakpoint-sm) {
-  .virtual-preschool {
-    max-width: 1500px;
-    margin-left: auto;
-    margin-right: auto;
-    height: initial;
-    max-height: inherit;
+  & > * {
+    margin: .75rem 0;
   }
+}
 
-  .section-col {
-    height: auto;
+.desktop {
+  display: grid;
+  grid-template-columns: repeat(4, 25%);
+  grid-template-rows: repeat(4, 200px);
+  margin: auto;
+  width: 90%;
+  gap: 1rem;
+  margin: 1rem auto;
+
+  .daily-lessons {
+    grid-column: 1 / span 2;
+    grid-row: 1 / span 3;
+  }
+  .live-classes {
+    grid-column: 3 / 4;
+    grid-row: 1 / 3;
+  }
+  .playdates {
+    grid-column: 4 / 5;
+    grid-row: 1 / 3;
+  }
+  .music {
+    grid-column: 1 / 2;
+    grid-row: 4 / 5;
+  }
+  .library {
+    grid-column: 2 / 3;
+    grid-row: 4 / 5;
+  }
+  .student-cubby {
+    grid-column: 3 / 4;
+    grid-row: 3 / 5;
+  }
+  .kids-corner {
+    grid-column: 4 / 5;
+    grid-row: 3 / 5;
   }
 }
 </style>

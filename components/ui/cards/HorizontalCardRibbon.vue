@@ -1,8 +1,9 @@
 <template>
   <div
+    id="horizontal-card-ribbon"
     :class="[
       'pg-transition pg-duration-200',
-      'pg-fixed pg-top-20 pg-z-50 pg-w-full',
+      'pg-fixed pg-top-14 md:pg-top-24 pg-z-50 pg-w-full',
       'pg-bg-white pg-shadow-toolbar pg-rounded-b-[40px]'
     ]"
   >
@@ -34,6 +35,39 @@ export default defineComponent({
     isMinimized: {
       type: Boolean,
       default: false
+    }
+  },
+
+  data() {
+    return {
+      currentScroll: 0
+    }
+  },
+
+  created() {
+    // eslint-disable-next-line nuxt/no-globals-in-created
+    window.addEventListener('scroll', this.toggleHorizontalCard)
+  },
+
+  destroyed() {
+    window.removeEventListener('scroll', this.toggleHorizontalCard)
+  },
+
+  methods: {
+    toggleHorizontalCard() {
+      const horizontalCard: any = document.getElementById('horizontal-card-ribbon')
+      if (this.$vuetify.breakpoint.mdAndDown && horizontalCard) {
+        const scroll = window.scrollY
+        if (scroll > this.currentScroll) {
+          horizontalCard.style.top = '0rem'
+          this.currentScroll = scroll
+        } else if (scroll < this.currentScroll) {
+          horizontalCard.style.top = null
+          this.currentScroll = scroll
+        }
+      } else {
+        horizontalCard.style.top = null
+      }
     }
   }
 })
