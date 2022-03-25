@@ -2,6 +2,7 @@
   <v-app-bar
     flat
     :height="appBarHeight"
+    :class="{'d-none mt-n16': scrollDown}"
     class="pg-header"
     app
   >
@@ -24,6 +25,7 @@
       <!-- Children Select  -->
       <v-col
         cols="12"
+        sm="6"
         md="3"
         order="2"
         order-md="1"
@@ -54,6 +56,7 @@
 
       <v-col
         cols="12"
+        sm="6"
         md="6"
         order="1"
         order-md="2"
@@ -195,11 +198,45 @@ export default defineComponent({
     ChildSelect
   },
 
+  data() {
+    return {
+      scrollDown: false,
+      currentScroll: 0
+    }
+  },
+
+  created() {
+    // eslint-disable-next-line nuxt/no-globals-in-created
+    window.addEventListener('scroll', this.toggleHeader)
+  },
+
+  destroyed() {
+    window.removeEventListener('scroll', this.toggleHeader)
+  },
+
+  methods: {
+    toggleHeader() {
+      if (this.$vuetify.breakpoint.mdAndDown) {
+        const scroll = window.scrollY
+        if (scroll > this.currentScroll) {
+          this.scrollDown = true
+          this.currentScroll = scroll
+        } else if (scroll < this.currentScroll) {
+          this.scrollDown = false
+          this.currentScroll = scroll
+        }
+      } else {
+        this.scrollDown = false
+      }
+    }
+  },
+
   setup () {
     const vuetify = useVuetifyHelper()
     const isMobile = computed(() => vuetify.breakpoint.mobile)
+    const isMobileLandscape = computed(() => vuetify.breakpoint.smOnly)
 
-    const appBarHeight = computed(() => isMobile.value ? '220px' : '175px')
+    const appBarHeight = computed(() => isMobileLandscape.value ? '140px' : isMobile.value ? '250px' : '175px')
     const appBarTitleSize = computed(() => isMobile.value ? '28px' : '60px')
     const appBarLogoSize = computed(() => isMobile.value ? '25px' : '45px')
 

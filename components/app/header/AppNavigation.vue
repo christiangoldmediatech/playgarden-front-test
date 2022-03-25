@@ -73,12 +73,12 @@
 
                     <ul class="submenu">
                       <li>
-                        <a href="https://playgardenonline.com/virtual-preschool-test/">Preschool and
+                        <a href="https://playgardenonline.com/virtual-preschool/">Preschool and
                           Pre-K</a>
                       </li>
                       <li><a href="https://playgardenonline.com/how-it-works/">How it Works</a></li>
                       <!-- <li><a href="https://playgardenonline.com/do-it-yourself/">DIY</a></li> -->
-                      <li><a href="https://playgardenonline.com/blog-test">Blog</a></li>
+                      <li><a href="https://playgardenonline.com/blog">Blog</a></li>
                     </ul>
                   </v-list-group>
                   <hr class="mx-4">
@@ -104,9 +104,65 @@
           </div>
         </div>
       </v-row>
+      <v-row>
+        <v-col cols="12">
+          <span class="font-weight-medium">First time using Playgarden?</span>
+          <v-btn color="primary" nuxt text :to="{ name: 'app-onboarding' }">
+            WATCH TUTORIAL HERE
+          </v-btn>
+        </v-col>
+
+        <v-col v-if="isUserLoggedIn && !isUserInSignupProcess" cols="12">
+          <v-btn
+            block
+            color="primary"
+            nuxt
+            :to="{ name: 'app-account-index' }"
+          >
+            ACCOUNT SETTINGS
+          </v-btn>
+        </v-col>
+
+        <v-col v-if="isUserLoggedIn" class="pb-0" cols="12">
+          <v-btn
+            block
+            class="mb-3"
+            color="accent"
+            text
+            :to="{ name: 'auth-logout' }"
+          >
+            LOG OUT
+          </v-btn>
+        </v-col>
+
+        <v-col v-else class="pb-0" cols="12">
+          <v-btn
+            block
+            class="mb-3"
+            color="primary"
+            nuxt
+            text
+            :to="{ name: 'auth-login' }"
+          >
+            LOG IN
+          </v-btn>
+        </v-col>
+      </v-row>
+
+      <v-row no-gutters>
+        <v-col
+          v-for="(item, index) in appendDrawer"
+          :key="`${_uid}-append-drawer-${index}`"
+          cols="12"
+        >
+          <v-btn class="list-item" exact nuxt text :to="item.to">
+            {{ item.title }}
+          </v-btn>
+        </v-col>
+      </v-row>
     </v-container>
 
-    <template v-if="items.length > 0" v-slot:append>
+    <!-- <template v-if="items.length > 0" v-slot:append>
       <v-container fluid mb-6>
         <v-row>
           <v-col cols="12">
@@ -165,7 +221,7 @@
           </v-col>
         </v-row>
       </v-container>
-    </template>
+    </template> -->
   </v-navigation-drawer>
 </template>
 

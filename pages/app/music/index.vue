@@ -1,5 +1,5 @@
 <template>
-  <v-main>
+  <v-main class="pt-5 pt-md-16 mt-0 mt-md-5">
     <v-container fluid class="pa-0">
       <horizontal-ribbon-card
         :is-minimized.sync="isTopRibbonMinimized"

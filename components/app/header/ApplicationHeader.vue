@@ -1,8 +1,8 @@
 <template>
   <v-app-bar
     app
-    class="pb-4 pg-app-bar"
-    :class="{ 'pg-app-bar-height': (!isUserLoggedIn && $vuetify.breakpoint.mdAndUp), 'pg-app-bar-mobile-height': (!isUserLoggedIn && !$vuetify.breakpoint.mdAndUp )}"
+    class="pb-4 pg-app-bar "
+    :class="{ 'pg-app-bar-height': (!isUserLoggedIn && $vuetify.breakpoint.mdAndUp), 'pg-app-bar-mobile-height': (!isUserLoggedIn && !$vuetify.breakpoint.mdAndUp ), 'd-none mt-n16': scrollDown}"
     color="white"
     elevation="1"
     prominent
@@ -248,6 +248,22 @@ export default {
     }
   },
 
+  data() {
+    return {
+      scrollDown: false,
+      currentScroll: 0
+    }
+  },
+
+  created() {
+    // eslint-disable-next-line nuxt/no-globals-in-created
+    window.addEventListener('scroll', this.toggleHeader)
+  },
+
+  destroyed() {
+    window.removeEventListener('scroll', this.toggleHeader)
+  },
+
   methods: {
     toggleDrawer() {
       this.$nuxt.$emit('toggle-nav-drawer')
@@ -268,6 +284,21 @@ export default {
 
     openLink(link) {
       window.open(link, '_self')
+    },
+
+    toggleHeader(e) {
+      if (this.$vuetify.breakpoint.mdAndDown) {
+        const scroll = window.scrollY
+        if (scroll > this.currentScroll) {
+          this.scrollDown = true
+          this.currentScroll = scroll
+        } else if (scroll < this.currentScroll) {
+          this.scrollDown = false
+          this.currentScroll = scroll
+        }
+      } else {
+        this.scrollDown = false
+      }
     }
   }
 }
@@ -374,6 +405,12 @@ export default {
 .pg-app-bar::v-deep.v-sheet.v-app-bar.v-toolbar:not(.v-sheet--outlined) {
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16) !important;
   height: 98px !important;
+}
+
+@media screen and (max-width:959px ) {
+  .pg-app-bar::v-deep.v-sheet.v-app-bar.v-toolbar:not(.v-sheet--outlined) {
+    height: 63px !important;
+  }
 }
 
 .pg-app-bar-height::v-deep.v-sheet.v-app-bar.v-toolbar:not(.v-sheet--outlined) {
