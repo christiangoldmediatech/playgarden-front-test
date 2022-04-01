@@ -1,9 +1,9 @@
 <template>
   <v-row>
-    <v-col cols="4">
+    <v-col cols="3">
       menu
     </v-col>
-    <v-col cols="8">
+    <v-col cols="9">
       <dashboard-learn-play />
     </v-col>
   </v-row>
