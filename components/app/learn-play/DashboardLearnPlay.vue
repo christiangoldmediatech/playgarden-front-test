@@ -34,7 +34,8 @@
         </v-row>
       </v-col>
       <v-col cols="4">
-        Worksheets
+        <span class="title-dashboard font-weight-bold">Worksheets</span>
+        <offline-worksheets class="pt-2" :offline-worksheet-list="getOfflineWorksheet" />
       </v-col>
     </v-row>
   </v-card>
@@ -43,11 +44,13 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import CarouselLetter from '@/components/app/all-done/CarouselLetter.vue'
+import OfflineWorksheets from '@/components/app/learn-play/OfflineWorksheets.vue'
 
 export default {
   name: 'DashboardLearnPlay',
   components: {
-    CarouselLetter
+    CarouselLetter,
+    OfflineWorksheets
   },
   data: () => {
     return {
@@ -72,6 +75,12 @@ export default {
     },
     currentVideo () {
       return (this.lesson && this.lesson.videos.length > 0) ? this.lesson.videos[0] : { videoUrl: null }
+    },
+    getOfflineWorksheet() {
+      if (this.lesson) {
+        return this.lesson.worksheets.filter(({ type }) => type === 'OFFLINE')
+      }
+      return []
     }
   },
   async created () {
