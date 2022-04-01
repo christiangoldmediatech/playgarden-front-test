@@ -2,7 +2,14 @@
   <v-card>
     <v-row>
       <v-col cols="10">
-        carousel {{ lesson }}
+        <v-row no-gutters>
+          <v-col cols="2" class="mt-2">
+            <span class="title-dashboard font-weight-bold ml-8">Letter</span>
+          </v-col>
+          <v-col cols="10" class="mt-n2">
+            <carousel-letter ref="CarouselLetter" :value="curriculumTypeId" />
+          </v-col>
+        </v-row>
       </v-col>
       <v-col cols="2">
         search
@@ -10,7 +17,18 @@
     </v-row>
     <v-row>
       <v-col cols="8">
-        Video Lesson
+        <span class="title-dashboard font-weight-bold ml-8">Video Lesson</span>
+        <v-row class="mx-6 mt-3">
+          <template v-if="currentVideo.videoUrl && currentVideo.videoUrl.HLS">
+            <div class="learn-play-video">
+              <pg-video-player
+                :control-config="{ favorite: false }"
+                inline
+                @ready="onPlayerReady({ player: $event, video: currentVideo })"
+              />
+            </div>
+          </template>
+        </v-row>
         <v-row class="mt-4 ml-4">
           More like this
         </v-row>
@@ -24,11 +42,13 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import DashboardMixin from '@/mixins/DashboardMixin.js'
+import CarouselLetter from '@/components/app/all-done/CarouselLetter.vue'
 
 export default {
   name: 'DashboardLearnPlay',
-  mixins: [DashboardMixin],
+  components: {
+    CarouselLetter
+  },
   data: () => {
     return {
       loading: false
@@ -42,6 +62,16 @@ export default {
     }),
     childrenIds () {
       return (this.currentChild && this.currentChild.length) ? this.currentChild[0].id : 0
+    },
+    curriculumTypeId () {
+      if (this.lesson && this.lesson.curriculumType) {
+        return this.lesson.curriculumType.id
+      } else {
+        return null
+      }
+    },
+    currentVideo () {
+      return (this.lesson && this.lesson.videos.length > 0) ? this.lesson.videos[0] : { videoUrl: null }
     }
   },
   async created () {
@@ -49,6 +79,7 @@ export default {
     await this.getAllChildren()
     console.log('currentChild---', this.currentChild)
     await this.handleLesson()
+    console.log('lesson--', this.lesson)
   },
   methods: {
     ...mapActions('children', { getAllChildren: 'get' }),
@@ -57,6 +88,19 @@ export default {
       'getCurrentLessonByChildrenId',
       'resetChild'
     ]),
+
+    onPlayerReady ({ player, video }) {
+      player.loadPlaylist([
+        {
+          title: video.name,
+          poster: video.thumbnail,
+          src: {
+            url: video.videoUrl.HLS,
+            type: 'application/x-mpegURL'
+          }
+        }
+      ])
+    },
 
     changeChild (newId, redirect = true) {
       const child = this.allChildren.find(({ id }) => id === parseInt(newId))
@@ -85,3 +129,15 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.title-dashboard {
+  color: #606060 !important;
+  font-size: 21px !important;
+}
+
+.learn-play-video {
+  width: 95% !important;
+  height: 369px !important;
+}
+</style>
