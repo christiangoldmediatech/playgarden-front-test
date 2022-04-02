@@ -15,7 +15,7 @@
         search
       </v-col>
     </v-row>
-    <v-row>
+    <v-row no-gutters>
       <v-col cols="8">
         <span class="title-dashboard font-weight-bold ml-8">Video Lesson</span>
         <v-row class="mx-6 mt-3">
@@ -31,6 +31,9 @@
         </v-row>
         <v-row class="mt-4 ml-4">
           More like this
+          <v-row>
+            classjhsh
+          </v-row>
         </v-row>
       </v-col>
       <v-col cols="4">

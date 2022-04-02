@@ -12,13 +12,22 @@
         :ripple="false"
       >
         <v-row no-gutters class="py-2">
-          <v-col cols="9" align-self="center" class="pl-2">
+          <v-col
+            cols="2"
+            align-self="center"
+            class="d-flex justify-center"
+          >
+            <v-avatar tile size="42">
+              <img src="@/assets/png/cute-pumpkin.png">
+            </v-avatar>
+          </v-col>
+          <v-col cols="8" align-self="center" class="pl-2">
             <div class="text-uppercase dashboard-item-title">
               {{ offlineWorksheet.name }}
             </div>
           </v-col>
           <v-col
-            cols="3"
+            cols="2"
             align-self="center"
             class="d-flex justify-center"
           >
