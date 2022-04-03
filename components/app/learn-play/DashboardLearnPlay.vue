@@ -37,6 +37,9 @@
         </v-row>
         <v-row class="mt-12 ml-4">
           <span class="title-dashboard font-weight-bold">DIY Project</span>
+          <p class="mt-3">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+          </p>
           <v-row>
             <v-card width="100%" class="mt-5 px-4">
               <v-row class="my-2">
