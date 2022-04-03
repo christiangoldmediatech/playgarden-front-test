@@ -35,8 +35,22 @@
             <videos-scroll class="mt-3" />
           </v-row>
         </v-row>
-        <v-row class="mt-12 ml-4">
-          <span class="title-dashboard font-weight-bold">DIY Project</span>
+        <v-row class="mt-14 ml-4">
+          <div>
+            <span class="title-dashboard font-weight-bold">
+              DIY Project
+            </span>
+            <div class="ml-15">
+              <v-img
+                class="pl-15 mt-n8 ml-10"
+                height="40px"
+                contain
+                :src="
+                  require('@/assets/png/dashboard/download-worksheet.png')
+                "
+              />
+            </div>
+          </div>
           <p class="mt-3">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
           </p>
@@ -71,21 +85,85 @@
             </v-card>
           </v-row>
         </v-row>
+        <v-row class="mt-14 ml-4">
+          <div>
+            <span class="title-dashboard font-weight-bold">
+              SNACK
+            </span>
+            <div class="ml-15">
+              <v-img
+                class="pl-15 mt-n8 ml-5"
+                height="40px"
+                contain
+                :src="
+                  require('@/assets/png/dashboard/download-worksheet.png')
+                "
+              />
+            </div>
+          </div>
+          <p class="mt-3">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+          </p>
+          <v-row>
+            <v-card width="100%" class="mt-5 px-4">
+              <v-row class="my-2">
+                <v-col cols="4">
+                  <v-img
+                    :src="require('@/assets/png/snack-1.png')"
+                    max-width="165"
+                    min-width="165"
+                    height="250"
+                  />
+                </v-col>
+                <v-col cols="4">
+                  <v-img
+                    :src="require('@/assets/png/snack-2.png')"
+                    max-width="180"
+                    min-width="180"
+                    height="250"
+                  />
+                </v-col>
+                <v-col cols="4">
+                  <v-img
+                    :src="require('@/assets/png/snack-3.png')"
+                    max-width="180"
+                    min-width="180"
+                    height="250"
+                  />
+                </v-col>
+              </v-row>
+            </v-card>
+          </v-row>
+        </v-row>
       </v-col>
       <v-col
-        cols="
-                    4"
+        cols="4"
       >
         <span class="title-dashboard font-weight-bold">Worksheets</span>
         <offline-worksheets class="pt-2" :offline-worksheet-list="getOfflineWorksheet" />
-        </v-img>
+
+        <v-row>
+          <div class="ml-3">
+            <span class="title-dashboard font-weight-bold">
+              SNACK
+            </span>
+            <div class="ml-15">
+              <v-img
+                class="pl-15 mt-n8 ml-5"
+                height="40px"
+                contain
+                :src="
+                  require('@/assets/png/dashboard/download-worksheet.png')
+                "
+              />
+            </div>
+          </div>
+          <p class="mt-3">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+          </p>
+        </v-row>
       </v-col>
     </v-row>
-  </v-card>
-  </v-row>
-  </v-row>
-  </v-col>
-  </v-row>
   </v-card>
 </template>
 
