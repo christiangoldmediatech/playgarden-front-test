@@ -145,11 +145,11 @@
         <v-row>
           <div class="ml-3">
             <span class="title-dashboard font-weight-bold">
-              SNACK
+              Art Project
             </span>
             <div class="ml-15">
               <v-img
-                class="pl-15 mt-n8 ml-5"
+                class="pl-15 mt-n8 ml-7"
                 height="40px"
                 contain
                 :src="
@@ -158,9 +158,31 @@
               />
             </div>
           </div>
-          <p class="mt-3">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+          <p class="mt-3 mx-3">
+            Lorem ipsum dolor sit amet, consectetur adipiscing
           </p>
+          <v-row class="mt-4">
+            <v-card class="ml-10">
+              <v-row justify="center" align="center">
+                <v-col class="ml-6" cols="12">
+                  <v-img
+                    :src="require('@/assets/png/art-1.png')"
+                    max-width="180"
+                    min-width="180"
+                    height="153"
+                  />
+                </v-col>
+                <v-col class="ml-6" cols="12">
+                  <v-img
+                    :src="require('@/assets/png/art-2.png')"
+                    max-width="180"
+                    min-width="180"
+                    height="153"
+                  />
+                </v-col>
+              </v-row>
+            </v-card>
+          </v-row>
         </v-row>
       </v-col>
     </v-row>
