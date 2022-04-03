@@ -32,32 +32,57 @@
         <v-row class="mt-4 ml-4">
           <span class="title-dashboard font-weight-bold ml-8">More like this</span>
           <v-row class="mt-3">
-            <videos-scroll />
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt temporibus illo similique nostrum ut iste distinctio architecto dolore voluptas, consectetur ex, commodi veritatis dicta? Earum deserunt amet nihil rem odio! <br>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt temporibus illo similique nostrum ut iste distinctio architecto dolore voluptas, consectetur ex, commodi veritatis dicta? Earum deserunt amet nihil rem odio! <br>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt temporibus illo similique nostrum ut iste distinctio architecto dolore voluptas, consectetur ex, commodi veritatis dicta? Earum deserunt amet nihil rem odio! <br>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt temporibus illo similique nostrum ut iste distinctio architecto dolore voluptas, consectetur ex, commodi veritatis dicta? Earum deserunt amet nihil rem odio! <br>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt temporibus illo similique nostrum ut iste distinctio architecto dolore voluptas, consectetur ex, commodi veritatis dicta? Earum deserunt amet nihil rem odio! <br>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt temporibus illo similique nostrum ut iste distinctio architecto dolore voluptas, consectetur ex, commodi veritatis dicta? Earum deserunt amet nihil rem odio! <br>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt temporibus illo similique nostrum ut iste distinctio architecto dolore voluptas, consectetur ex, commodi veritatis dicta? Earum deserunt amet nihil rem odio! <br>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt temporibus illo similique nostrum ut iste distinctio architecto dolore voluptas, consectetur ex, commodi veritatis dicta? Earum deserunt amet nihil rem odio! <br>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt temporibus illo similique nostrum ut iste distinctio architecto dolore voluptas, consectetur ex, commodi veritatis dicta? Earum deserunt amet nihil rem odio! <br>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt temporibus illo similique nostrum ut iste distinctio architecto dolore voluptas, consectetur ex, commodi veritatis dicta? Earum deserunt amet nihil rem odio! <br>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt temporibus illo similique nostrum ut iste distinctio architecto dolore voluptas, consectetur ex, commodi veritatis dicta? Earum deserunt amet nihil rem odio! <br>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt temporibus illo similique nostrum ut iste distinctio architecto dolore voluptas, consectetur ex, commodi veritatis dicta? Earum deserunt amet nihil rem odio! <br>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt temporibus illo similique nostrum ut iste distinctio architecto dolore voluptas, consectetur ex, commodi veritatis dicta? Earum deserunt amet nihil rem odio! <br>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt temporibus illo similique nostrum ut iste distinctio architecto dolore voluptas, consectetur ex, commodi veritatis dicta? Earum deserunt amet nihil rem odio! <br>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt temporibus illo similique nostrum ut iste distinctio architecto dolore voluptas, consectetur ex, commodi veritatis dicta? Earum deserunt amet nihil rem odio! <br>
-            </p>
+            <videos-scroll class="mt-3" />
+          </v-row>
+        </v-row>
+        <v-row class="mt-12 ml-4">
+          <span class="title-dashboard font-weight-bold">DIY Project</span>
+          <v-row>
+            <v-card width="100%" class="mt-5 px-4">
+              <v-row class="my-2">
+                <v-col cols="4">
+                  <v-img
+                    :src="require('@/assets/png/diy-1.png')"
+                    max-width="165"
+                    min-width="165"
+                    height="250"
+                  />
+                </v-col>
+                <v-col cols="4">
+                  <v-img
+                    :src="require('@/assets/png/diy-2.png')"
+                    max-width="180"
+                    min-width="180"
+                    height="250"
+                  />
+                </v-col>
+                <v-col cols="4">
+                  <v-img
+                    :src="require('@/assets/png/diy-3.png')"
+                    max-width="180"
+                    min-width="180"
+                    height="250"
+                  />
+                </v-col>
+              </v-row>
+            </v-card>
           </v-row>
         </v-row>
       </v-col>
-      <v-col cols="4">
+      <v-col
+        cols="
+                    4"
+      >
         <span class="title-dashboard font-weight-bold">Worksheets</span>
         <offline-worksheets class="pt-2" :offline-worksheet-list="getOfflineWorksheet" />
+        </v-img>
       </v-col>
     </v-row>
+  </v-card>
+  </v-row>
+  </v-row>
+  </v-col>
+  </v-row>
   </v-card>
 </template>
 

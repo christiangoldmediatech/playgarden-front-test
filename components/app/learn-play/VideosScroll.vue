@@ -1,9 +1,16 @@
 <template>
   <v-row>
     <v-col cols="1">
-      flecha1
+      <v-btn
+        text
+      >
+        <v-img
+          :src="require('@/assets/png/arrow-left.png')"
+          max-width="15px"
+        />
+      </v-btn>
     </v-col>
-    <v-col cols="10">
+    <v-col cols="10" class="ml-3">
       <v-row>
         <div v-for="n in 5" :key="n">
           <v-avatar class="mx-3" tile size="80">
@@ -12,8 +19,16 @@
         </div>
       </v-row>
     </v-col>
-    <v-col cols="1">
-      fecha2
+    <v-col cols="1" class="ml-n8">
+      <v-btn
+        text
+        class="ml-n6"
+      >
+        <v-img
+          :src="require('@/assets/png/arrow-right.png')"
+          max-width="15px"
+        />
+      </v-btn>
     </v-col>
   </v-row>
 </template>
