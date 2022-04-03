@@ -30,9 +30,26 @@
           </template>
         </v-row>
         <v-row class="mt-4 ml-4">
-          More like this
-          <v-row>
-            classjhsh
+          <span class="title-dashboard font-weight-bold ml-8">More like this</span>
+          <v-row class="mt-3">
+            <videos-scroll />
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt temporibus illo similique nostrum ut iste distinctio architecto dolore voluptas, consectetur ex, commodi veritatis dicta? Earum deserunt amet nihil rem odio! <br>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt temporibus illo similique nostrum ut iste distinctio architecto dolore voluptas, consectetur ex, commodi veritatis dicta? Earum deserunt amet nihil rem odio! <br>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt temporibus illo similique nostrum ut iste distinctio architecto dolore voluptas, consectetur ex, commodi veritatis dicta? Earum deserunt amet nihil rem odio! <br>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt temporibus illo similique nostrum ut iste distinctio architecto dolore voluptas, consectetur ex, commodi veritatis dicta? Earum deserunt amet nihil rem odio! <br>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt temporibus illo similique nostrum ut iste distinctio architecto dolore voluptas, consectetur ex, commodi veritatis dicta? Earum deserunt amet nihil rem odio! <br>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt temporibus illo similique nostrum ut iste distinctio architecto dolore voluptas, consectetur ex, commodi veritatis dicta? Earum deserunt amet nihil rem odio! <br>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt temporibus illo similique nostrum ut iste distinctio architecto dolore voluptas, consectetur ex, commodi veritatis dicta? Earum deserunt amet nihil rem odio! <br>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt temporibus illo similique nostrum ut iste distinctio architecto dolore voluptas, consectetur ex, commodi veritatis dicta? Earum deserunt amet nihil rem odio! <br>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt temporibus illo similique nostrum ut iste distinctio architecto dolore voluptas, consectetur ex, commodi veritatis dicta? Earum deserunt amet nihil rem odio! <br>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt temporibus illo similique nostrum ut iste distinctio architecto dolore voluptas, consectetur ex, commodi veritatis dicta? Earum deserunt amet nihil rem odio! <br>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt temporibus illo similique nostrum ut iste distinctio architecto dolore voluptas, consectetur ex, commodi veritatis dicta? Earum deserunt amet nihil rem odio! <br>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt temporibus illo similique nostrum ut iste distinctio architecto dolore voluptas, consectetur ex, commodi veritatis dicta? Earum deserunt amet nihil rem odio! <br>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt temporibus illo similique nostrum ut iste distinctio architecto dolore voluptas, consectetur ex, commodi veritatis dicta? Earum deserunt amet nihil rem odio! <br>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt temporibus illo similique nostrum ut iste distinctio architecto dolore voluptas, consectetur ex, commodi veritatis dicta? Earum deserunt amet nihil rem odio! <br>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt temporibus illo similique nostrum ut iste distinctio architecto dolore voluptas, consectetur ex, commodi veritatis dicta? Earum deserunt amet nihil rem odio! <br>
+            </p>
           </v-row>
         </v-row>
       </v-col>
@@ -48,12 +65,14 @@
 import { mapGetters, mapActions } from 'vuex'
 import CarouselLetter from '@/components/app/all-done/CarouselLetter.vue'
 import OfflineWorksheets from '@/components/app/learn-play/OfflineWorksheets.vue'
+import VideosScroll from '@/components/app/learn-play/VideosScroll.vue'
 
 export default {
   name: 'DashboardLearnPlay',
   components: {
     CarouselLetter,
-    OfflineWorksheets
+    OfflineWorksheets,
+    VideosScroll
   },
   data: () => {
     return {
