@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card class="mb-14">
     <v-row>
       <v-col cols="10">
         <v-row no-gutters>
@@ -85,7 +85,7 @@
             </v-card>
           </v-row>
         </v-row>
-        <v-row class="mt-14 ml-4">
+        <v-row class="mt-14 ml-4 mb-10">
           <div>
             <span class="title-dashboard font-weight-bold">
               SNACK
@@ -135,6 +135,54 @@
             </v-card>
           </v-row>
         </v-row>
+        <v-row class="mt-12 ml-4">
+          <span class="title-dashboard font-weight-bold">
+            This week's recommended books
+          </span>
+          <p class="mt-4">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim-
+          </p>
+          <template v-if="currentVideo.videoUrl && currentVideo.videoUrl.HLS">
+            <div class="learn-play-video">
+              <pg-video-player
+                :control-config="{ favorite: false }"
+                inline
+                @ready="onPlayerReady({ player: $event, video: currentVideo })"
+              />
+            </div>
+          </template>
+
+          <v-row>
+            <v-card width="100%" class="mt-5 px-4">
+              <v-row class="my-2">
+                <v-col cols="4">
+                  <v-img
+                    :src="require('@/assets/png/image-33.png')"
+                    max-width="200"
+                    min-width="200"
+                    height="198"
+                  />
+                </v-col>
+                <v-col cols="4" class="mt-n4 pl-10">
+                  <v-img
+                    :src="require('@/assets/png/image-34.png')"
+                    max-width="134"
+                    min-width="134"
+                    height="248"
+                  />
+                </v-col>
+                <v-col cols="4" class="mt-n4">
+                  <v-img
+                    :src="require('@/assets/png/image-35.png')"
+                    max-width="134"
+                    min-width="134"
+                    height="248"
+                  />
+                </v-col>
+              </v-row>
+            </v-card>
+          </v-row>
+        </v-row>
       </v-col>
       <v-col
         cols="4"
@@ -161,28 +209,49 @@
           <p class="mt-3 mx-3">
             Lorem ipsum dolor sit amet, consectetur adipiscing
           </p>
-          <v-row class="mt-4">
-            <v-card class="ml-10">
-              <v-row justify="center" align="center">
+          <v-row class="mt-4 mx-6">
+            <v-card class="ml-10 mr-8">
+              <v-row justify="center" align="center" class="mt-2">
                 <v-col class="ml-6" cols="12">
                   <v-img
                     :src="require('@/assets/png/art-1.png')"
-                    max-width="180"
-                    min-width="180"
+                    max-width="230"
+                    min-width="230"
                     height="153"
                   />
                 </v-col>
                 <v-col class="ml-6" cols="12">
                   <v-img
                     :src="require('@/assets/png/art-2.png')"
-                    max-width="180"
-                    min-width="180"
+                    max-width="230"
+                    min-width="230"
+                    height="153"
+                  />
+                </v-col>
+                <v-col class="ml-6 mb-4" cols="12">
+                  <v-img
+                    :src="require('@/assets/png/art-3.png')"
+                    max-width="230"
+                    min-width="230"
                     height="153"
                   />
                 </v-col>
               </v-row>
             </v-card>
           </v-row>
+        </v-row>
+        <v-row class="mt-10 ml-14">
+          <span class="title-dashboard font-weight-bold">
+            Playlist
+          </span>
+          <div class="ml-n6 mt-4">
+            <v-img
+              :src="require('@/assets/png/player-img.png')"
+              max-width="280"
+              min-width="280"
+              height="372"
+            />
+          </div>
         </v-row>
       </v-col>
     </v-row>
