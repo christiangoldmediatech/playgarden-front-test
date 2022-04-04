@@ -253,6 +253,12 @@
             />
           </div>
         </v-row>
+        <v-row class="mt-5">
+          <span class="title-dashboard font-weight-bold ml-14 ">
+            Top five
+          </span>
+          <top-five class="mt-10 ml-8 mt-n1" />
+        </v-row>
       </v-col>
     </v-row>
   </v-card>
@@ -263,13 +269,15 @@ import { mapGetters, mapActions } from 'vuex'
 import CarouselLetter from '@/components/app/all-done/CarouselLetter.vue'
 import OfflineWorksheets from '@/components/app/learn-play/OfflineWorksheets.vue'
 import VideosScroll from '@/components/app/learn-play/VideosScroll.vue'
+import TopFive from '@/components/app/learn-play/TopFive.vue'
 
 export default {
   name: 'DashboardLearnPlay',
   components: {
     CarouselLetter,
     OfflineWorksheets,
-    VideosScroll
+    VideosScroll,
+    TopFive
   },
   data: () => {
     return {
