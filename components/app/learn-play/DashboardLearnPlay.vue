@@ -247,17 +247,19 @@
           <span class="title-dashboard font-weight-bold">
             Playlist
           </span>
-          <div class="ml-n6 mt-4 mb-8 song-card">
+          <div class="ml-n1 mt-4 mb-14 song-card">
             <songs-card
-              :song-id="1"
+              class="pb-6"
             />
           </div>
         </v-row>
-        <v-row class="mt-13">
-          <span class="title-dashboard font-weight-bold ml-14 ">
-            Top five
-          </span>
-          <top-five class="mt-10 ml-8 mt-n1" />
+        <v-row class="mt-16">
+          <div class="mt-16">
+            <span class="title-dashboard font-weight-bold ml-14 ">
+              Top five
+            </span>
+            <top-five class="mt-10 ml-8 mt-n1" />
+          </div>
         </v-row>
       </v-col>
     </v-row>
