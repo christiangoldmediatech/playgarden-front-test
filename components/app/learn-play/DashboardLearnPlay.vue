@@ -34,8 +34,8 @@
         </v-row>
         <v-row class="mt-4 ml-4">
           <span class="title-dashboard font-weight-bold ml-8">More like this</span>
-          <v-row class="mt-3">
-            <videos-scroll class="mt-3" />
+          <v-row v-if="lesson" class="mt-3">
+            <videos-scroll :lesson="lesson" class="mt-3" />
           </v-row>
         </v-row>
         <v-row class="mt-14 ml-4">
@@ -191,7 +191,7 @@
         cols="4"
       >
         <span class="title-dashboard font-weight-bold">Worksheets</span>
-        <offline-worksheets class="pt-2" :offline-worksheet-list="getOfflineWorksheet" />
+        <offline-worksheets class="pt-2" :offline-worksheet-list="offlineWorksheetsList" />
 
         <v-row>
           <div class="ml-3">
@@ -285,7 +285,8 @@ export default {
   },
   data: () => {
     return {
-      loading: false
+      loading: false,
+      offlineWorksheetsList: []
     }
   },
   computed: {
@@ -317,8 +318,10 @@ export default {
   async created () {
     await this.getAllChildren()
     await this.handleLesson()
+    this.offlineWorksheetsList = await this.getRandomWorksheet(this.lesson.id)
   },
   methods: {
+    ...mapActions('offline-worksheet', ['getRandomWorksheet']),
     ...mapActions('children', { getAllChildren: 'get' }),
     ...mapActions('children/lesson', [
       'getCurrentLesson',
