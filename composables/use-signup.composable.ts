@@ -51,6 +51,9 @@ export const useSignup = ({ route }: UseSignup) => {
       }
     }
 
+    // [sc-3477] The client won't use promo routes for now.
+    abRouteName.value = 'auth-normal-parent'
+
     return abRouteName.value
   }
 
