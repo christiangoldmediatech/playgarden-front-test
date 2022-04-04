@@ -180,8 +180,7 @@ export default defineComponent({
       currentSongPlayedPercentage,
       currentSongPlayedTime,
       isPlaying,
-      removeSongFromPlaylist,
-      getMusicLibrariesByCurriculumType
+      removeSongFromPlaylist
     } = useMusic()
 
     const refreshSongData = (song: MusicLibrary) => {
