@@ -34,9 +34,11 @@
             <v-img
               height="40px"
               contain
+              class="cursor"
               :src="
                 require('@/assets/png/dashboard/download-worksheet.png')
               "
+              @click.stop="handleDownloadWorksheetClick(offlineWorksheet)"
             />
           </v-col>
         </v-row>
@@ -57,8 +59,29 @@ export default {
   },
   data: () => {
     return {
-      loading: false
+      loading: false,
+      noLinkMode: false,
+      currentOfflineWorksheet: null
+    }
+  },
+  methods: {
+    openPdf() {
+      if (this.currentOfflineWorksheet) {
+        window.open(this.currentOfflineWorksheet.pdfUrl, '_blank')
+      }
+    },
+    handleDownloadWorksheetClick(item) {
+      this.currentOfflineWorksheet = item
+      if (!this.noLinkMode) {
+        this.openPdf()
+      }
     }
   }
 }
 </script>
+
+<style scoped>
+.cursor {
+  cursor: pointer !important;
+}
+</style>
