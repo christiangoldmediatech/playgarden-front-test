@@ -11,8 +11,11 @@
           </v-col>
         </v-row>
       </v-col>
-      <v-col cols="2">
-        search
+      <v-col cols="2" class="pr-8">
+        <pg-text-field
+          label="Search"
+          solo-labeled
+        />
       </v-col>
     </v-row>
     <v-row no-gutters>
@@ -244,16 +247,13 @@
           <span class="title-dashboard font-weight-bold">
             Playlist
           </span>
-          <div class="ml-n6 mt-4">
-            <v-img
-              :src="require('@/assets/png/player-img.png')"
-              max-width="280"
-              min-width="280"
-              height="372"
+          <div class="ml-n6 mt-4 mb-8 song-card">
+            <songs-card
+              :song-id="1"
             />
           </div>
         </v-row>
-        <v-row class="mt-5">
+        <v-row class="mt-13">
           <span class="title-dashboard font-weight-bold ml-14 ">
             Top five
           </span>
@@ -270,6 +270,7 @@ import CarouselLetter from '@/components/app/all-done/CarouselLetter.vue'
 import OfflineWorksheets from '@/components/app/learn-play/OfflineWorksheets.vue'
 import VideosScroll from '@/components/app/learn-play/VideosScroll.vue'
 import TopFive from '@/components/app/learn-play/TopFive.vue'
+import SongsCard from '@/components/app/learn-play/SongsCard.vue'
 
 export default {
   name: 'DashboardLearnPlay',
@@ -277,7 +278,8 @@ export default {
     CarouselLetter,
     OfflineWorksheets,
     VideosScroll,
-    TopFive
+    TopFive,
+    SongsCard
   },
   data: () => {
     return {
@@ -311,11 +313,8 @@ export default {
     }
   },
   async created () {
-    // this.currentChild = this.currentChild[0].id
     await this.getAllChildren()
-    console.log('currentChild---', this.currentChild)
     await this.handleLesson()
-    console.log('lesson--', this.lesson)
   },
   methods: {
     ...mapActions('children', { getAllChildren: 'get' }),
@@ -351,8 +350,6 @@ export default {
     async handleLesson () {
       try {
         this.loading = true
-        console.log('esra es--', this.childrenIds)
-        // await this.getCurrentLessonByChildrenId({ lessonId: 1, childId: this.childrenIds })
         await this.getCurrentLesson({
           childrenIds: this.childrenIds
         })
@@ -375,5 +372,10 @@ export default {
 .learn-play-video {
   width: 95% !important;
   height: 369px !important;
+}
+.song-card {
+  max-width: 280px !important;
+  min-width: 280px !important;
+  height: 372px !important;
 }
 </style>

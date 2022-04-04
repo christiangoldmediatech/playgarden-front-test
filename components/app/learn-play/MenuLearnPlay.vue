@@ -101,7 +101,6 @@ export default {
   },
   async created () {
     await this.getAllChildren()
-    console.log('currentChild---', this.currentChild)
     await this.handleLesson()
   },
   methods: {
