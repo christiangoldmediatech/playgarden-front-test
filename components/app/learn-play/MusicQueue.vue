@@ -68,7 +68,7 @@
 <script lang="ts">
 import { defineComponent, computed } from '@nuxtjs/composition-api'
 import { useVuetifyHelper } from '@/composables'
-import { useMusic } from '@/composables/use-music.composable'
+import { useMusic } from '@/composables/songs'
 import PlaylistItem from './PlaylistItem.vue'
 
 export default defineComponent({

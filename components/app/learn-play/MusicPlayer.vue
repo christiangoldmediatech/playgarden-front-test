@@ -160,7 +160,7 @@ import {
   computed
 } from '@nuxtjs/composition-api'
 import { MusicLibrary } from '@/models'
-import { useMusic } from '@/composables/use-music.composable'
+import { useMusic } from '@/composables/songs'
 import MusicQueue from './MusicQueue.vue'
 
 export default defineComponent({
