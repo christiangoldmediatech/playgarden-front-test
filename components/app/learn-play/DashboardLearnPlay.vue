@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mb-14">
+  <v-card class="mb-14 pb-4">
     <v-row>
       <v-col cols="10">
         <v-row no-gutters>

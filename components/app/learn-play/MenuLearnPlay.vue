@@ -10,6 +10,11 @@
       <span class="ml-8 font-weight-bold">
         {{ child.firstName }}
       </span>
+
+      <img
+        class="mt-4 ml-6"
+        src="@/assets/png/lesson-letter.png"
+      >
     </v-col>
     <v-col cols="12">
       <nuxt-link to="/secction">
