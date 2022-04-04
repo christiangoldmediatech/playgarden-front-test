@@ -35,7 +35,7 @@
         <v-row class="mt-4 ml-4">
           <span class="title-dashboard font-weight-bold ml-8">More like this</span>
           <v-row v-if="lesson" class="mt-3">
-            <videos-scroll :lesson="lesson" class="mt-3" />
+            <videos-scroll :lesson="lesson" class="mt-3" @setCurrentVideo="setCurrentVideo" />
           </v-row>
         </v-row>
         <v-row class="mt-14 ml-4">
@@ -286,7 +286,12 @@ export default {
   data: () => {
     return {
       loading: false,
-      offlineWorksheetsList: []
+      offlineWorksheetsList: [],
+      currentVideo: {
+        videoUrl: {
+          HLS: null
+        }
+      }
     }
   },
   computed: {
@@ -305,9 +310,6 @@ export default {
         return null
       }
     },
-    currentVideo () {
-      return (this.lesson && this.lesson.videos.length > 0) ? this.lesson.videos[0] : { videoUrl: null }
-    },
     getOfflineWorksheet() {
       if (this.lesson) {
         return this.lesson.worksheets.filter(({ type }) => type === 'OFFLINE')
@@ -318,6 +320,7 @@ export default {
   async created () {
     await this.getAllChildren()
     await this.handleLesson()
+    this.loadCurrentVideo()
     this.offlineWorksheetsList = await this.getRandomWorksheet(this.lesson.id)
   },
   methods: {
@@ -328,6 +331,14 @@ export default {
       'getCurrentLessonByChildrenId',
       'resetChild'
     ]),
+
+    loadCurrentVideo () {
+      this.currentVideo = (this.lesson && this.lesson.videos.length > 0) ? this.lesson.videos[0] : { videoUrl: null }
+    },
+
+    setCurrentVideo (video) {
+      this.currentVideo = video
+    },
 
     onPlayerReady ({ player, video }) {
       player.loadPlaylist([

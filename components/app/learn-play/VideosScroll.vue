@@ -12,9 +12,9 @@
         </v-btn>
       </v-col>
       <v-col cols="10" class="ml-3">
-        <v-row>
+        <v-row class="cursor">
           <div v-for="(video, index) in videos" :key="index">
-            <v-avatar class="mx-3" tile size="80">
+            <v-avatar class="mx-3" tile size="80" @click="currentVideo(video)">
               <img :src="video.thumbnail">
             </v-avatar>
           </div>
@@ -38,6 +38,7 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted } from '@nuxtjs/composition-api'
 import { useVideos } from '@/composables/videos'
+import { Video } from '@/models'
 
 export default defineComponent({
   name: 'VideosScroll',
@@ -48,7 +49,7 @@ export default defineComponent({
       default: () => ({})
     }
   },
-  setup(props) {
+  setup(props, { emit }) {
     const loading = ref(false)
 
     const { videos, getVideos } = useVideos()
@@ -57,13 +58,18 @@ export default defineComponent({
       await getVideos(props.lesson.id)
     }
 
+    const currentVideo = (video: Video) => {
+      emit('setCurrentVideo', video)
+    }
+
     onMounted(() => {
       getDataVideos()
     })
 
     return {
       loading,
-      videos
+      videos,
+      currentVideo
     }
   }
 })
@@ -72,5 +78,8 @@ export default defineComponent({
 <style scoped>
 .video-scroll {
   overflow-x: auto !important;
+}
+.cursor {
+  cursor: pointer !important;
 }
 </style>
