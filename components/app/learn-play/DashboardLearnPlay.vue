@@ -35,7 +35,7 @@
         <v-row class="mt-4 ml-4">
           <span class="title-dashboard font-weight-bold ml-8">More like this</span>
           <v-row v-if="lesson" class="mt-3">
-            <videos-scroll :lesson="lesson" class="mt-3" @setCurrentVideo="setCurrentVideo" />
+            <videos-scroll :lesson="lesson" class="mt-3" @changeVideoTrack="changeVideoTrack" />
           </v-row>
         </v-row>
         <v-row class="mt-14 ml-4">
@@ -150,7 +150,7 @@
               <pg-video-player
                 :control-config="{ favorite: false }"
                 inline
-                @ready="onPlayerReady({ player: $event, video: currentVideo })"
+                @ready="onPlayerReadyTwo({ player: $event, video: currentVideo })"
               />
             </div>
           </template>
@@ -286,6 +286,7 @@ export default {
   data: () => {
     return {
       loading: false,
+      player: null,
       offlineWorksheetsList: [],
       currentVideo: {
         videoUrl: {
@@ -341,7 +342,37 @@ export default {
     },
 
     onPlayerReady ({ player, video }) {
+      this.player = player
       player.loadPlaylist([
+        {
+          title: video.name,
+          poster: video.thumbnail,
+          src: {
+            url: video.videoUrl.HLS,
+            type: 'application/x-mpegURL'
+          }
+        }
+      ])
+    },
+
+    onPlayerReadyTwo ({ player, video }) {
+      player.loadPlaylist([
+        {
+          title: video.name,
+          poster: video.thumbnail,
+          src: {
+            url: video.videoUrl.HLS,
+            type: 'application/x-mpegURL'
+          }
+        }
+      ])
+    },
+
+    changeVideoTrack (video) {
+      if (!this.player) {
+        return
+      }
+      this.player.loadPlaylist([
         {
           title: video.name,
           poster: video.thumbnail,

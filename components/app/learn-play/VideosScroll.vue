@@ -59,7 +59,7 @@ export default defineComponent({
     }
 
     const currentVideo = (video: Video) => {
-      emit('setCurrentVideo', video)
+      emit('changeVideoTrack', video)
     }
 
     onMounted(() => {
