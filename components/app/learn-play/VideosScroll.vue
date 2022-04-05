@@ -4,6 +4,7 @@
       <v-col cols="1">
         <v-btn
           text
+          @click="getDataVideos"
         >
           <v-img
             :src="require('@/assets/png/arrow-left.png')"
@@ -24,6 +25,7 @@
         <v-btn
           text
           class="ml-n6"
+          @click="getDataVideos"
         >
           <v-img
             :src="require('@/assets/png/arrow-right.png')"
@@ -69,7 +71,8 @@ export default defineComponent({
     return {
       loading,
       videos,
-      currentVideo
+      currentVideo,
+      getDataVideos
     }
   }
 })
