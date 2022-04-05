@@ -2,9 +2,7 @@
   <v-row>
     <main>
       <div
-        v-for="(
-          item, index
-        ) in 5"
+        v-for="(song, index) in songs"
         :key="`top-item-${index}`"
         width="100%"
       >
@@ -13,12 +11,12 @@
             cols="2"
           >
             <v-avatar tile size="42">
-              <img src="@/assets/png/cute-pumpkin.png">
+              <img :src="song.thumbnail">
             </v-avatar>
           </v-col>
-          <v-col cols="10" align-self="center" class="pl-6">
+          <v-col cols="10" align-self="center" class="pl-4">
             <div class="text-uppercase dashboard-item-title">
-              Song - Artist
+              {{ song.name }} - Artist
             </div>
           </v-col>
         </v-row>
@@ -27,7 +25,26 @@
   </v-row>
 </template>
 
-<script>
-export default {
-  name: 'TopFive'
-}
+<script lang="ts">
+import { defineComponent, onMounted } from '@nuxtjs/composition-api'
+import { useLearnPlay } from '@/composables/learn-play'
+import { MusicLibrary } from '@/models'
+export default defineComponent({
+  name: 'TopFive',
+  setup(props, { emit }) {
+    const { songs, getTopSongs } = useLearnPlay()
+    onMounted(async () => {
+      await getTopSongs()
+    })
+
+    const currentSong = (song: MusicLibrary) => {
+      emit('changeSongTrack', song)
+    }
+
+    return {
+      songs,
+      currentSong
+    }
+  }
+})
+</script>
