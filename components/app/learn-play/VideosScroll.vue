@@ -16,7 +16,13 @@
         <v-row class="cursor">
           <div v-for="(video, index) in videos" :key="index">
             <v-avatar class="mx-3" tile size="80" @click="currentVideo(video)">
-              <img :src="video.thumbnail">
+              <v-img
+                :src="require('@/assets/png/play-min.png')"
+                class="play-main"
+                width="26px"
+                height="28px"
+              />
+              <img class="play-view" :src="video.thumbnail">
             </v-avatar>
           </div>
         </v-row>
@@ -84,5 +90,14 @@ export default defineComponent({
 }
 .cursor {
   cursor: pointer !important;
+}
+
+.play-main{
+  position:absolute;
+  z-index: 1003;
+}
+.play-view {
+   position:absolute;
+   z-index: 1000;
 }
 </style>
