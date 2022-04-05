@@ -15,12 +15,12 @@
 <script lang="ts">
 // @ts-ignore
 import debounce from 'lodash/debounce'
-
+import { useNuxtHelper, useMusic, useSnotifyHelper, useVuetifyHelper, useAppEventBusHelper, useGtmHelper, useAuth, useChildRoute } from '@/composables'
 import MusicPlayerLearnPlay from '@/components/app/learn-play/MusicPlayerLearnPlay.vue'
 
-import { useMusic, useSnotifyHelper, useVuetifyHelper, useAppEventBusHelper, useGtmHelper, useAuth, useChildRoute } from '@/composables'
 import { onMounted, ref, computed, useRoute, watch, onUnmounted, useStore, useRouter } from '@nuxtjs/composition-api'
 import { MusicLibrary, APP_EVENTS, TAG_MANAGER_EVENTS, TypedStore } from '@/models'
+import SongCardVue from '../music/SongCard.vue'
 
 const PAGE_MOBILE_BREAKPOINT = 1264
 const MOBILE_PLAYER_HEIGHT = 135
@@ -39,7 +39,8 @@ export default {
     }
   },
 
-  setup (props) {
+  setup () {
+    const nuxt = useNuxtHelper()
     const vuetify = useVuetifyHelper()
     const snotify = useSnotifyHelper()
     const route = useRoute()
@@ -78,15 +79,15 @@ export default {
 
     const debouncedHandleScroll = debounce(handleScroll, 50)
 
-    watch(childId, async (val) => {
-      if (val) {
-        await getAndSetFavorites()
+    const changeSong = nuxt.$on('open-lesson-overlay', (song: MusicLibrary) => {
+      if (song) {
+        currentSong.value = song
       }
     })
 
-    watch(props, (val) => {
-      if (val.selectedSong) {
-        currentSong.value = val.selectedSong
+    watch(childId, async (val) => {
+      if (val) {
+        await getAndSetFavorites()
       }
     })
 

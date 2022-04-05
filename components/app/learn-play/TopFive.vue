@@ -29,9 +29,11 @@
 import { defineComponent, onMounted } from '@nuxtjs/composition-api'
 import { useLearnPlay } from '@/composables/learn-play'
 import { MusicLibrary } from '@/models'
+import { useNuxtHelper } from '@/composables'
 export default defineComponent({
   name: 'TopFive',
   setup(props, { emit }) {
+    const nuxt = useNuxtHelper()
     const { songs, getTopSongs } = useLearnPlay()
     onMounted(async () => {
       await getTopSongs()
@@ -39,6 +41,7 @@ export default defineComponent({
 
     const currentSong = (song: MusicLibrary) => {
       emit('changeSongTrack', song)
+      nuxt.$emit('open-lesson-overlay', song)
     }
 
     return {
