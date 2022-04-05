@@ -250,6 +250,7 @@
           <div class="ml-n1 mt-4 mb-14 song-card">
             <songs-card
               class="pb-6"
+              :selected-song="selectedSong"
             />
           </div>
         </v-row>
@@ -258,7 +259,7 @@
             <span class="title-dashboard font-weight-bold ml-14 ">
               Top five
             </span>
-            <top-five class="mt-10 ml-8 mt-n1" />
+            <top-five class="mt-10 ml-8 mt-n1" @changeSongTrack="changeSongTrack" />
           </div>
         </v-row>
       </v-col>
@@ -287,6 +288,7 @@ export default {
     return {
       loading: false,
       player: null,
+      selectedSong: null,
       offlineWorksheetsList: [],
       currentVideo: {
         videoUrl: {
@@ -382,6 +384,10 @@ export default {
           }
         }
       ])
+    },
+
+    changeSongTrack (song) {
+      this.selectedSong = song
     },
 
     changeChild (newId, redirect = true) {

@@ -6,7 +6,7 @@
         :key="`top-item-${index}`"
         width="100%"
       >
-        <v-row no-gutters class="pl-6 mt-4">
+        <v-row no-gutters class="pl-6 mt-4 clickable" @click="currentSong(song)">
           <v-col
             cols="2"
           >

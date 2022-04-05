@@ -19,7 +19,7 @@ import debounce from 'lodash/debounce'
 import MusicPlayerLearnPlay from '@/components/app/learn-play/MusicPlayerLearnPlay.vue'
 
 import { useMusic, useSnotifyHelper, useVuetifyHelper, useAppEventBusHelper, useGtmHelper, useAuth, useChildRoute } from '@/composables'
-import { onMounted, ref, computed, useRoute, watch, onUnmounted, useStore, useRouter, useContext } from '@nuxtjs/composition-api'
+import { onMounted, ref, computed, useRoute, watch, onUnmounted, useStore, useRouter } from '@nuxtjs/composition-api'
 import { MusicLibrary, APP_EVENTS, TAG_MANAGER_EVENTS, TypedStore } from '@/models'
 
 const PAGE_MOBILE_BREAKPOINT = 1264
@@ -31,7 +31,15 @@ export default {
     MusicPlayerLearnPlay
   },
 
-  setup () {
+  props: {
+    selectedSong: {
+      type: Object,
+      required: false,
+      default: () => ({})
+    }
+  },
+
+  setup (props) {
     const vuetify = useVuetifyHelper()
     const snotify = useSnotifyHelper()
     const route = useRoute()
@@ -73,6 +81,12 @@ export default {
     watch(childId, async (val) => {
       if (val) {
         await getAndSetFavorites()
+      }
+    })
+
+    watch(props, (val) => {
+      if (val.selectedSong) {
+        currentSong.value = val.selectedSong
       }
     })
 
