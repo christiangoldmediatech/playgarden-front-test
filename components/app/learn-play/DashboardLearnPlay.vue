@@ -251,9 +251,9 @@
             </v-card>
           </v-row>
         </v-row>
-        <v-row class="pt-10">
+        <v-row no-gutters class="pt-10">
           <v-col cols="12">
-            <div class="ml-3">
+            <div>
               <span class="title-dashboard font-weight-bold">
                 Playlist
               </span>
@@ -263,8 +263,8 @@
             </div>
           </v-col>
           <v-col cols="12">
-            <div>
-              <span class="title-dashboard font-weight-bold ml-3">
+            <div class="mt-5">
+              <span class="title-dashboard font-weight-bold">
                 Top five
               </span>
               <top-five class="mt-n1" />
@@ -432,8 +432,8 @@ export default {
 }
 
 .song-card {
-  max-width: 280px !important;
-  min-width: 280px !important;
+  max-width: 85% !important;
+  min-width: 85% !important;
   min-height: 454px !important;
   max-height: 454px !important;
 }
