@@ -434,7 +434,7 @@ export default {
 .song-card {
   max-width: 85% !important;
   min-width: 85% !important;
-  min-height: 454px !important;
-  max-height: 454px !important;
+  min-height: 554px !important;
+  max-height: 554px !important;
 }
 </style>

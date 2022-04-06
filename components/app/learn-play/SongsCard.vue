@@ -21,7 +21,7 @@ import MusicPlayerLearnPlay from '@/components/app/learn-play/MusicPlayerLearnPl
 import { onMounted, ref, computed, useRoute, watch, onUnmounted, useStore, useRouter } from '@nuxtjs/composition-api'
 import { MusicLibrary, APP_EVENTS, TAG_MANAGER_EVENTS, TypedStore } from '@/models'
 
-const PAGE_MOBILE_BREAKPOINT = 1264
+const PAGE_MOBILE_BREAKPOINT = 1464
 const MOBILE_PLAYER_HEIGHT = 135
 
 export default {
