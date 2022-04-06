@@ -263,7 +263,7 @@
             </v-card>
           </v-row>
         </v-row>
-        <v-row no-gutters class="pt-10">
+        <v-row no-gutters class="pt-3">
           <v-col cols="12">
             <div>
               <span class="title-dashboard font-weight-bold">
