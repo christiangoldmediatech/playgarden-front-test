@@ -40,7 +40,7 @@ export default defineComponent({
     })
 
     const currentSong = (song: MusicLibrary) => {
-      nuxt.$emit('open-lesson-overlay', song)
+      nuxt.$emit('change-song', song)
     }
 
     return {

@@ -121,6 +121,13 @@ export default defineComponent({
     this.isLoading = false
     // Set demo playlist
     this.setPlaylist(jsonCopy(this.playList))
+
+    this.$nuxt.$on('change-song', (song) => {
+      if (song) {
+        this.currentSong = song
+        this.setPlaylist(jsonCopy([song]))
+      }
+    })
   },
 
   beforeDestroy () {

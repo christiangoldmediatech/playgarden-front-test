@@ -147,7 +147,7 @@
 </template>
 
 <script lang="ts">
-import { useMusic } from '@/composables'
+import { useNuxtHelper, useMusic } from '@/composables'
 import { MusicLibrary } from '@/models'
 import { defineComponent, ref, nextTick, computed } from '@nuxtjs/composition-api'
 import MusicQueue from '@/components/app/music/MusicQueue.vue'
@@ -160,6 +160,7 @@ export default defineComponent({
 
   setup (_, { emit }) {
     // this references `ref="audioPlayer"` when the component is mounted
+    const nuxt = useNuxtHelper()
     const audioPlayer = ref<any>(null)
     const {
       currentSong,
@@ -196,6 +197,13 @@ export default defineComponent({
       await nextTick()
       audioPlayer.value?.play()
     }
+
+    const changeSong = nuxt.$on('change-song', (song: MusicLibrary) => {
+      if (song) {
+        currentSong.value = song
+        refreshSongData(song)
+      }
+    })
 
     const isPlayerDisabled = computed(() => !currentSong.value || !currentSong.value?.description)
 

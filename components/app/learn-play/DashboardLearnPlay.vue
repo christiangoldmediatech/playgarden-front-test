@@ -250,7 +250,6 @@
           <div class="ml-n1 mt-4 mb-14 song-card">
             <songs-card
               class="pb-6"
-              :selected-song="selectedSong"
             />
           </div>
         </v-row>
@@ -424,6 +423,6 @@ export default {
 .song-card {
   max-width: 280px !important;
   min-width: 280px !important;
-  height: 372px !important;
+  height: 540px !important;
 }
 </style>
