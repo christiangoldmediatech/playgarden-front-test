@@ -160,13 +160,13 @@
               <v-row class="my-2">
                 <v-col cols="4">
                   <v-img
-                    :src="require('@/assets/png/image-33.png')"
+                    :src="require('@/assets/png/image-35.png')"
                     max-width="134"
                     min-width="134"
-                    height="220"
+                    height="248"
                   />
                 </v-col>
-                <v-col cols="4" class="mt-n4 pl-10">
+                <v-col cols="4">
                   <v-img
                     :src="require('@/assets/png/image-34.png')"
                     max-width="134"
@@ -174,7 +174,7 @@
                     height="248"
                   />
                 </v-col>
-                <v-col cols="4" class="mt-n4">
+                <v-col cols="4">
                   <v-img
                     :src="require('@/assets/png/image-35.png')"
                     max-width="134"
