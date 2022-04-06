@@ -1,12 +1,14 @@
 <template>
-  <v-row>
-    <v-col cols="1">
-      <menu-learn-play />
-    </v-col>
-    <v-col cols="11">
-      <dashboard-learn-play />
-    </v-col>
-  </v-row>
+  <v-container class="ml-4 mt-7">
+    <v-row class="mt-15">
+      <v-col cols="2">
+        <menu-learn-play />
+      </v-col>
+      <v-col cols="10">
+        <dashboard-learn-play />
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script lang="ts">

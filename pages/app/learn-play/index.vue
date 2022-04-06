@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid class="background-card-learnd-play">
     <learn-play-view />
   </v-container>
 </template>

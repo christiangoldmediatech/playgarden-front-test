@@ -33,6 +33,7 @@ export default () => ({
     'app-student-cubby-progress-report': 1,
     'app-payment-plan': 1,
     'app-virtual-preschool': 1,
+    'app-learn-play': 1,
     help: 1,
     'shared-slug': 1
   },

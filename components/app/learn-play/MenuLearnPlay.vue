@@ -1,5 +1,5 @@
 <template>
-  <v-row class="ml-n15">
+  <v-row>
     <v-col cols="12" class="ml-n6">
       <img
         v-if="child"
