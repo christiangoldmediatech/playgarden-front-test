@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <v-row class="video-scroll">
+    <v-row>
       <v-col cols="1">
         <v-btn
           text
@@ -12,9 +12,9 @@
           />
         </v-btn>
       </v-col>
-      <v-col cols="10" class="ml-3">
-        <v-row class="cursor">
-          <div v-for="(video, index) in videos" :key="index">
+      <v-col cols="10" class="pr-8">
+        <div class="cursor video-scroll">
+          <div v-for="(video, index) in videos" :key="index" class="card-video">
             <v-avatar class="mx-3" tile size="80" @click="currentVideo(video)">
               <v-img
                 :src="require('@/assets/png/play-min.png')"
@@ -25,9 +25,9 @@
               <img class="play-view" :src="video.thumbnail">
             </v-avatar>
           </div>
-        </v-row>
+        </div>
       </v-col>
-      <v-col cols="1" class="ml-n8">
+      <v-col cols="1" class="ml-n6">
         <v-btn
           text
           class="ml-n6"
@@ -85,11 +85,18 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.video-scroll {
-  overflow-x: auto !important;
-}
 .cursor {
   cursor: pointer !important;
+}
+
+.video-scroll {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+
+.card-video {
+    display: inline-block;
 }
 
 .play-main{

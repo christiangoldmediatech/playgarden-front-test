@@ -1,5 +1,5 @@
 <template>
-  <v-row>
+  <v-row class="card-offline">
     <main>
       <v-card
         v-for="(
@@ -83,5 +83,10 @@ export default {
 <style scoped>
 .cursor {
   cursor: pointer !important;
+}
+
+.card-offline {
+   height: 555px !important;
+   overflow-y: auto !important;
 }
 </style>

@@ -58,7 +58,7 @@
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
           </p>
           <v-row>
-            <v-card width="100%" class="mt-5 px-4">
+            <v-card width="90%" class="mt-5 px-4">
               <v-row class="my-2">
                 <v-col cols="4">
                   <v-img
@@ -108,7 +108,7 @@
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
           </p>
           <v-row>
-            <v-card width="100%" class="mt-5 px-4">
+            <v-card width="90%" class="mt-5 px-4">
               <v-row class="my-2">
                 <v-col cols="4">
                   <v-img
@@ -138,7 +138,7 @@
             </v-card>
           </v-row>
         </v-row>
-        <v-row class="mt-12 ml-4">
+        <v-row class="mt-12 ml-4 mx-2">
           <span class="title-dashboard font-weight-bold">
             This week's recommended books
           </span>
@@ -156,14 +156,14 @@
           </template>
 
           <v-row>
-            <v-card width="100%" class="mt-5 px-4">
+            <v-card width="93%" class="mt-5 px-4">
               <v-row class="my-2">
                 <v-col cols="4">
                   <v-img
                     :src="require('@/assets/png/image-33.png')"
-                    max-width="200"
-                    min-width="200"
-                    height="198"
+                    max-width="134"
+                    min-width="134"
+                    height="220"
                   />
                 </v-col>
                 <v-col cols="4" class="mt-n4 pl-10">
@@ -191,7 +191,9 @@
         cols="4"
       >
         <span class="title-dashboard font-weight-bold">Worksheets</span>
-        <offline-worksheets class="pt-2" :offline-worksheet-list="offlineWorksheetsList" />
+        <div class="card-offline">
+          <offline-worksheets class="pt-2" :offline-worksheet-list="offlineWorksheetsList" />
+        </div>
 
         <v-row>
           <div class="ml-3">
@@ -212,38 +214,44 @@
           <p class="mt-3 mx-3">
             Lorem ipsum dolor sit amet, consectetur adipiscing
           </p>
-          <v-row class="mt-4 mx-6">
-            <v-card class="ml-10 mr-8">
+          <v-row class="mt-4 mx-2">
+            <v-card class="ml-2 mr-8 justify-center">
               <v-row justify="center" align="center" class="mt-2">
                 <v-col class="ml-6" cols="12">
-                  <v-img
-                    :src="require('@/assets/png/art-1.png')"
-                    max-width="230"
-                    min-width="230"
-                    height="153"
-                  />
+                  <center>
+                    <v-img
+                      :src="require('@/assets/png/art-1.png')"
+                      max-width="230"
+                      min-width="230"
+                      height="153"
+                    />
+                  </center>
                 </v-col>
                 <v-col class="ml-6" cols="12">
-                  <v-img
-                    :src="require('@/assets/png/art-2.png')"
-                    max-width="230"
-                    min-width="230"
-                    height="153"
-                  />
+                  <center>
+                    <v-img
+                      :src="require('@/assets/png/art-2.png')"
+                      max-width="230"
+                      min-width="230"
+                      height="153"
+                    />
+                  </center>
                 </v-col>
                 <v-col class="ml-6 mb-4" cols="12">
-                  <v-img
-                    :src="require('@/assets/png/art-3.png')"
-                    max-width="230"
-                    min-width="230"
-                    height="153"
-                  />
+                  <center>
+                    <v-img
+                      :src="require('@/assets/png/art-3.png')"
+                      max-width="230"
+                      min-width="230"
+                      height="153"
+                    />
+                  </center>
                 </v-col>
               </v-row>
             </v-card>
           </v-row>
         </v-row>
-        <v-row class="mt-10 ml-14">
+        <v-row class="mt-10 ml-3">
           <span class="title-dashboard font-weight-bold">
             Playlist
           </span>
@@ -420,6 +428,7 @@ export default {
   width: 95% !important;
   height: 369px !important;
 }
+
 .song-card {
   max-width: 280px !important;
   min-width: 280px !important;
