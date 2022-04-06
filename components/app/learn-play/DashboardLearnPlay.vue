@@ -252,24 +252,24 @@
           </v-row>
         </v-row>
         <v-row class="pt-10">
-          <div class="ml-3">
-            <span class="title-dashboard font-weight-bold">
-              Playlist
-            </span>
-            <div class="ml-n1 mt-4 mb-14 song-card">
-              <songs-card
-                class="pb-6 mx-3"
-              />
+          <v-col cols="12">
+            <div class="ml-3">
+              <span class="title-dashboard font-weight-bold">
+                Playlist
+              </span>
+              <div class="ml-3 mt-4 song-card">
+                <songs-card />
+              </div>
             </div>
-          </div>
-        </v-row>
-        <v-row class="mt-16">
-          <div>
-            <span class="title-dashboard font-weight-bold ml-14 ">
-              Top five
-            </span>
-            <top-five class="mt-10 ml-8 mt-n1" />
-          </div>
+          </v-col>
+          <v-col cols="12">
+            <div>
+              <span class="title-dashboard font-weight-bold ml-3">
+                Top five
+              </span>
+              <top-five class="mt-n1" />
+            </div>
+          </v-col>
         </v-row>
       </v-col>
     </v-row>
@@ -434,6 +434,7 @@ export default {
 .song-card {
   max-width: 280px !important;
   min-width: 280px !important;
-  height: 540px !important;
+  min-height: 454px !important;
+  max-height: 454px !important;
 }
 </style>
