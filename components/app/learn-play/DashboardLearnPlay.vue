@@ -196,7 +196,7 @@
         </div>
 
         <v-row>
-          <div class="ml-3">
+          <div class="ml-3 mt-3">
             <span class="title-dashboard font-weight-bold">
               Art Project
             </span>
@@ -251,18 +251,20 @@
             </v-card>
           </v-row>
         </v-row>
-        <v-row class="mt-10 ml-3">
-          <span class="title-dashboard font-weight-bold">
-            Playlist
-          </span>
-          <div class="ml-n1 mt-4 mb-14 song-card">
-            <songs-card
-              class="pb-6"
-            />
+        <v-row class="pt-10">
+          <div class="ml-3">
+            <span class="title-dashboard font-weight-bold">
+              Playlist
+            </span>
+            <div class="ml-n1 mt-4 mb-14 song-card">
+              <songs-card
+                class="pb-6 mx-3"
+              />
+            </div>
           </div>
         </v-row>
         <v-row class="mt-16">
-          <div class="mt-16">
+          <div>
             <span class="title-dashboard font-weight-bold ml-14 ">
               Top five
             </span>
