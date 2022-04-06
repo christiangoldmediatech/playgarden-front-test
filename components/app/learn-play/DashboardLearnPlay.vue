@@ -58,29 +58,29 @@
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
           </p>
           <v-row>
-            <v-card width="90%" class="mt-5 px-4">
-              <v-row class="my-2">
+            <v-card width="90%" class="mt-5 ml-3">
+              <v-row class="my-2 mx-2">
                 <v-col cols="4">
                   <v-img
                     :src="require('@/assets/png/diy-1.png')"
-                    max-width="165"
-                    min-width="165"
+                    max-width="150"
+                    min-width="150"
                     height="250"
                   />
                 </v-col>
                 <v-col cols="4">
                   <v-img
                     :src="require('@/assets/png/diy-2.png')"
-                    max-width="180"
-                    min-width="180"
+                    max-width="150"
+                    min-width="150"
                     height="250"
                   />
                 </v-col>
                 <v-col cols="4">
                   <v-img
                     :src="require('@/assets/png/diy-3.png')"
-                    max-width="180"
-                    min-width="180"
+                    max-width="150"
+                    min-width="150"
                     height="250"
                   />
                 </v-col>
@@ -108,29 +108,29 @@
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
           </p>
           <v-row>
-            <v-card width="90%" class="mt-5 px-4">
-              <v-row class="my-2">
+            <v-card width="90%" class="mt-5 ml-3">
+              <v-row class="my-2 mx-2">
                 <v-col cols="4">
                   <v-img
                     :src="require('@/assets/png/snack-1.png')"
-                    max-width="165"
-                    min-width="165"
+                    max-width="150"
+                    min-width="150"
                     height="250"
                   />
                 </v-col>
                 <v-col cols="4">
                   <v-img
                     :src="require('@/assets/png/snack-2.png')"
-                    max-width="180"
-                    min-width="180"
+                    max-width="150"
+                    min-width="150"
                     height="250"
                   />
                 </v-col>
                 <v-col cols="4">
                   <v-img
                     :src="require('@/assets/png/snack-3.png')"
-                    max-width="180"
-                    min-width="180"
+                    max-width="150"
+                    min-width="150"
                     height="250"
                   />
                 </v-col>
@@ -156,8 +156,8 @@
           </template>
 
           <v-row>
-            <v-card width="93%" class="mt-5 px-4">
-              <v-row class="my-2">
+            <v-card width="92%" class="mt-5 ml-3">
+              <v-row class="my-2 mx-2">
                 <v-col cols="4">
                   <v-img
                     :src="require('@/assets/png/image-35.png')"
