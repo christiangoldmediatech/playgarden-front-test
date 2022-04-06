@@ -211,7 +211,7 @@
               />
             </div>
           </div>
-          <p class="mt-3 mx-3">
+          <p class="mt-3 px-3">
             Lorem ipsum dolor sit amet, consectetur adipiscing
           </p>
           <v-row class="mt-4 mx-2">
