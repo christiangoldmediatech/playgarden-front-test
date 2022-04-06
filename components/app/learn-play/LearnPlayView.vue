@@ -1,5 +1,5 @@
 <template>
-  <v-container class="ml-4 mt-7">
+  <v-container fluid class="ml-4 mt-7 px-15">
     <v-row class="mt-15">
       <v-col cols="2">
         <menu-learn-play />

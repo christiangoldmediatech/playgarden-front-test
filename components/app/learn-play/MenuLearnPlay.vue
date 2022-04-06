@@ -1,6 +1,6 @@
 <template>
-  <v-row>
-    <v-col cols="12" class="ml-n6">
+  <v-row justify="center">
+    <v-col cols="12">
       <img
         v-if="child"
         :alt="child.backpack.name"
