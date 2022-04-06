@@ -1,17 +1,17 @@
 <template>
-  <v-card class="mb-14 pb-10">
-    <v-row>
-      <v-col cols="10">
+  <v-card class="pb-0 my-6">
+    <v-row class="mx-4">
+      <v-col cols="9">
         <v-row no-gutters>
           <v-col cols="2" class="mt-2">
-            <span class="title-dashboard font-weight-bold ml-8">Letter</span>
+            <span class="ml-0 title-dashboard font-weight-bold">Letter</span>
           </v-col>
           <v-col cols="10" class="mt-n2">
             <carousel-letter ref="CarouselLetter" :value="curriculumTypeId" />
           </v-col>
         </v-row>
       </v-col>
-      <v-col cols="2" class="pr-8">
+      <v-col cols="3" class="pr-8">
         <pg-text-field
           label="Search"
           solo-labeled
@@ -20,10 +20,10 @@
     </v-row>
     <v-row no-gutters>
       <v-col cols="8">
-        <span class="title-dashboard font-weight-bold ml-8">Video Lesson</span>
-        <v-row class="mx-6 mt-3">
+        <v-row class="mx-4 mt-1 mb-7">
+          <span class="ml-0 title-dashboard font-weight-bold">Video Lesson</span>
           <template v-if="currentVideo.videoUrl && currentVideo.videoUrl.HLS">
-            <div class="learn-play-video">
+            <div class="mt-6 learn-play-video">
               <pg-video-player
                 :control-config="{ favorite: false }"
                 inline
@@ -32,20 +32,20 @@
             </div>
           </template>
         </v-row>
-        <v-row class="mt-4 ml-4">
-          <span class="title-dashboard font-weight-bold ml-8">More like this</span>
+        <v-row class="mx-4 my-14">
+          <span class="ml-0 title-dashboard font-weight-bold">More like this</span>
           <v-row v-if="lesson" class="mt-3">
             <videos-scroll :lesson="lesson" class="mt-3" @changeVideoTrack="changeVideoTrack" />
           </v-row>
         </v-row>
-        <v-row class="mt-14 ml-4">
+        <v-row class="mx-4 my-14">
           <div>
             <span class="title-dashboard font-weight-bold">
               DIY Project
             </span>
             <div class="ml-15">
               <v-img
-                class="pl-15 mt-n8 ml-10"
+                class="ml-10 pl-15 mt-n8"
                 height="40px"
                 contain
                 :src="
@@ -58,7 +58,7 @@
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
           </p>
           <v-row>
-            <v-card width="100%" class="mt-5 px-4">
+            <v-card width="100%" class="px-4 mt-5">
               <v-row class="my-2">
                 <v-col cols="4">
                   <v-img
@@ -88,14 +88,14 @@
             </v-card>
           </v-row>
         </v-row>
-        <v-row class="mt-14 ml-4 mb-10">
+        <v-row class="mx-4 my-14">
           <div>
             <span class="title-dashboard font-weight-bold">
               SNACK
             </span>
             <div class="ml-15">
               <v-img
-                class="pl-15 mt-n8 ml-5"
+                class="ml-5 pl-15 mt-n8"
                 height="40px"
                 contain
                 :src="
@@ -108,7 +108,7 @@
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
           </p>
           <v-row>
-            <v-card width="100%" class="mt-5 px-4">
+            <v-card width="100%" class="px-4 mt-5">
               <v-row class="my-2">
                 <v-col cols="4">
                   <v-img
@@ -138,7 +138,7 @@
             </v-card>
           </v-row>
         </v-row>
-        <v-row class="mt-12 ml-4">
+        <v-row class="mx-4 my-14">
           <span class="title-dashboard font-weight-bold">
             This week's recommended books
           </span>
@@ -156,7 +156,7 @@
           </template>
 
           <v-row>
-            <v-card width="100%" class="mt-5 px-4">
+            <v-card width="100%" class="px-4 mt-5">
               <v-row class="my-2">
                 <v-col cols="4">
                   <v-img
@@ -166,7 +166,7 @@
                     height="198"
                   />
                 </v-col>
-                <v-col cols="4" class="mt-n4 pl-10">
+                <v-col cols="4" class="pl-10 mt-n4">
                   <v-img
                     :src="require('@/assets/png/image-34.png')"
                     max-width="134"
@@ -190,10 +190,11 @@
       <v-col
         cols="4"
       >
-        <span class="title-dashboard font-weight-bold">Worksheets</span>
-        <offline-worksheets class="pt-2" :offline-worksheet-list="offlineWorksheetsList" />
-
-        <v-row>
+        <v-row class="mx-4 mt-1 mb-7">
+          <span class="title-dashboard font-weight-bold">Worksheets</span>
+          <offline-worksheets class="mt-2" :offline-worksheet-list="offlineWorksheetsList" />
+        </v-row>
+        <v-row class="mx-4 my-14">
           <div class="ml-3">
             <span class="title-dashboard font-weight-bold">
               Art Project
@@ -209,10 +210,10 @@
               />
             </div>
           </div>
-          <p class="mt-3 mx-3">
+          <p class="mx-3 mt-3">
             Lorem ipsum dolor sit amet, consectetur adipiscing
           </p>
-          <v-row class="mt-4 mx-6">
+          <v-row class="mx-6 mt-4">
             <v-card class="ml-10 mr-8">
               <v-row justify="center" align="center" class="mt-2">
                 <v-col class="ml-6" cols="12">
@@ -231,7 +232,7 @@
                     height="153"
                   />
                 </v-col>
-                <v-col class="ml-6 mb-4" cols="12">
+                <v-col class="mb-4 ml-6" cols="12">
                   <v-img
                     :src="require('@/assets/png/art-3.png')"
                     max-width="230"
@@ -243,17 +244,17 @@
             </v-card>
           </v-row>
         </v-row>
-        <v-row class="mt-10 ml-14">
+        <v-row class="mx-4 my-14">
           <span class="title-dashboard font-weight-bold">
             Playlist
           </span>
-          <div class="ml-n1 mt-4 mb-14 song-card">
+          <div class="mt-4 ml-n1 mb-14 song-card">
             <songs-card
               class="pb-6"
             />
           </div>
         </v-row>
-        <v-row class="mt-16">
+        <v-row class="mx-4 my-14">
           <div class="mt-16">
             <span class="title-dashboard font-weight-bold ml-14 ">
               Top five

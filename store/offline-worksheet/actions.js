@@ -32,7 +32,7 @@ export default {
   },
 
   async getRandomWorksheet(ctx, lessonId) {
-    const { data } = await this.$axios.get(`/lessons/${lessonId}/random-worksheets`)
+    const { data } = await this.$axios.get('/worksheets/random')
     return data
   },
 
