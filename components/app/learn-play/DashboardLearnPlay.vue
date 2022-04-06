@@ -332,7 +332,7 @@ export default {
     await this.getAllChildren()
     await this.handleLesson()
     this.loadCurrentVideo()
-    this.offlineWorksheetsList = await this.getRandomWorksheet(this.lesson.id)
+    this.offlineWorksheetsList = await this.getRandomWorksheet()
   },
   methods: {
     ...mapActions('offline-worksheet', ['getRandomWorksheet']),
