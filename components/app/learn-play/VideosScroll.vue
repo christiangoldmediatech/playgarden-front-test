@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <v-row>
+    <v-row class="mx-3">
       <v-col cols="1">
         <v-btn
           text

@@ -20,7 +20,7 @@
     </v-row>
     <v-row no-gutters>
       <v-col cols="8">
-        <span class="title-dashboard font-weight-bold ml-8">Video Lesson</span>
+        <span class="title-dashboard font-weight-bold ml-5">Video Lesson</span>
         <v-row class="mx-6 mt-3">
           <template v-if="currentVideo.videoUrl && currentVideo.videoUrl.HLS">
             <div class="learn-play-video">
@@ -32,31 +32,37 @@
             </div>
           </template>
         </v-row>
-        <v-row class="mt-4 ml-4">
-          <span class="title-dashboard font-weight-bold ml-8">More like this</span>
+        <v-row class="mt-4">
+          <span class="title-dashboard font-weight-bold mt-3 ml-8">More like this</span>
           <v-row v-if="lesson" class="mt-3">
             <videos-scroll :lesson="lesson" class="mt-3" @changeVideoTrack="changeVideoTrack" />
           </v-row>
         </v-row>
-        <v-row class="mt-14 ml-4">
-          <div>
-            <span class="title-dashboard font-weight-bold">
-              DIY Project
-            </span>
-            <div class="ml-15">
-              <v-img
-                class="pl-15 mt-n8 ml-10"
-                height="40px"
-                contain
-                :src="
-                  require('@/assets/png/dashboard/download-worksheet.png')
-                "
-              />
-            </div>
-          </div>
-          <p class="mt-3">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-          </p>
+        <v-row class="mx-4 my-14">
+          <v-col cols="12">
+            <v-row class="mt-5">
+              <v-list class="ml-n4">
+                <v-list-item>
+                  <v-list-item-content>
+                    <span class="title-dashboard font-weight-bold">
+                      DIY Project
+                    </span>
+                    <v-img
+                      class="pl-15 mt-n8 ml-7"
+                      height="40px"
+                      contain
+                      :src="
+                        require('@/assets/png/dashboard/download-worksheet.png')
+                      "
+                    />
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+              </p>
+            </v-row>
+          </v-col>
           <v-row>
             <v-card width="90%" class="mt-5 ml-3">
               <v-row class="my-2 mx-2">
@@ -89,24 +95,30 @@
           </v-row>
         </v-row>
         <v-row class="mt-14 ml-4 mb-10">
-          <div>
-            <span class="title-dashboard font-weight-bold">
-              SNACK
-            </span>
-            <div class="ml-15">
-              <v-img
-                class="pl-15 mt-n8 ml-5"
-                height="40px"
-                contain
-                :src="
-                  require('@/assets/png/dashboard/download-worksheet.png')
-                "
-              />
-            </div>
-          </div>
-          <p class="mt-3">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-          </p>
+          <v-col cols="12">
+            <v-row class="mt-5">
+              <v-list class="ml-n4">
+                <v-list-item>
+                  <v-list-item-content>
+                    <span class="title-dashboard font-weight-bold">
+                      SNACK
+                    </span>
+                    <v-img
+                      class="pl-15 mt-n8 ml-7"
+                      height="40px"
+                      contain
+                      :src="
+                        require('@/assets/png/dashboard/download-worksheet.png')
+                      "
+                    />
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+            </v-row>
+            <p class="ml-n3">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+            </p>
+          </v-col>
           <v-row>
             <v-card width="90%" class="mt-5 ml-3">
               <v-row class="my-2 mx-2">
@@ -195,7 +207,7 @@
           <offline-worksheets class="pt-2" :offline-worksheet-list="offlineWorksheetsList" />
         </div>
 
-        <v-row>
+        <v-row class="my-14">
           <div class="ml-3 mt-3">
             <span class="title-dashboard font-weight-bold">
               Art Project
