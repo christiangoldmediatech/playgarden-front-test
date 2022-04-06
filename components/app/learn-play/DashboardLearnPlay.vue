@@ -191,7 +191,7 @@
         cols="4"
       >
         <span class="title-dashboard font-weight-bold">Worksheets</span>
-        <div class="card-offline">
+        <div class="card-offline mr-4">
           <offline-worksheets class="pt-2" :offline-worksheet-list="offlineWorksheetsList" />
         </div>
 
