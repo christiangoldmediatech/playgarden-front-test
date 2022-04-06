@@ -101,10 +101,10 @@ export default defineComponent({
 
 .play-main{
   position:absolute;
-  z-index: 1003;
+  z-index: 503;
 }
 .play-view {
    position:absolute;
-   z-index: 1000;
+   z-index: 500;
 }
 </style>
