@@ -94,9 +94,9 @@
             </v-card>
           </v-row>
         </v-row>
-        <v-row class="mt-14 ml-4 mb-10">
+        <v-row class="ml-4 mb-10">
           <v-col cols="12">
-            <v-row class="mt-5">
+            <v-row>
               <v-list class="ml-n4">
                 <v-list-item>
                   <v-list-item-content>
