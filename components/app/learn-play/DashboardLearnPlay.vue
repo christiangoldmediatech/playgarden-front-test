@@ -316,6 +316,7 @@ export default {
       section: 'videoLesson',
       loading: false,
       player: null,
+      playerTwo: null,
       offlineWorksheetsList: [],
       currentVideo: {
         videoUrl: {
@@ -405,6 +406,7 @@ export default {
     },
 
     onPlayerReadyTwo ({ player, video }) {
+      this.playerTwo = player
       player.loadPlaylist([
         {
           title: video.name,
