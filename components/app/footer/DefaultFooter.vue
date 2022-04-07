@@ -1,5 +1,5 @@
 <template>
-  <v-footer class="text-center justify-center white" padless tile>
+  <v-footer class="text-center justify-center white footer-index" padless tile>
     <div class="green-line green-line-1" />
     <div class="green-line green-line-2" />
 
@@ -211,6 +211,10 @@ export default {
 
 .info-footer-title {
   color: #68C453 !important;
+}
+
+.footer-index{
+  z-index: 1000 !important;
 }
 
 .footer-ref-links {

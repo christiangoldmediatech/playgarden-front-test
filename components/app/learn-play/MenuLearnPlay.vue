@@ -1,0 +1,163 @@
+<template>
+  <v-row class="menu-learn-play" justify="center">
+    <v-col cols="12">
+      <img
+        v-if="child"
+        :alt="child.backpack.name"
+        class="backpack-active"
+        :src="child.backpack.image"
+      >
+    </v-col>
+    <v-col cols="12" class="mt-n8">
+      <span class="font-weight-bold name-child">
+        {{ child.firstName }}
+      </span>
+    </v-col>
+    <v-col cols="12" class="mt-n6">
+      <img
+        class="mt-1 ml-6"
+        src="@/assets/png/lesson-letter.png"
+      >
+    </v-col>
+    <v-col cols="12">
+      <span class="color-menu clickable" @click="sendSection('videoLesson')">
+        Sections
+      </span>
+    </v-col>
+    <v-col cols="12">
+      <span class="color-menu clickable" @click="sendSection('videoLesson')">
+        Video Lessons
+      </span>
+    </v-col>
+    <v-col cols="12">
+      <span class="color-menu clickable" @click="sendSection('worksheets')">
+        Worksheets
+      </span>
+    </v-col>
+    <v-col cols="12">
+      <span class="color-menu clickable" @click="sendSection('diy')">
+        DIY Project
+      </span>
+    </v-col>
+    <v-col cols="12">
+      <span class="color-menu clickable" @click="sendSection('art-project')">
+        Art Project
+      </span>
+    </v-col>
+    <v-col cols="12">
+      <span class="color-menu clickable" @click="sendSection('snack')">
+        Snack with Description
+      </span>
+    </v-col>
+    <v-col cols="12">
+      <span class="color-menu clickable" @click="sendSection('book')">
+        Book
+      </span>
+    </v-col>
+    <v-col cols="12">
+      <span class="color-menu clickable" @click="sendSection('playlist')">
+        Playlist
+      </span>
+    </v-col>
+  </v-row>
+</template>
+
+<script>
+import { mapGetters, mapActions } from 'vuex'
+
+export default {
+  name: 'MenuLearnPlay',
+  components: {},
+  data: () => {
+    return {
+      loading: false
+    }
+  },
+  computed: {
+    ...mapGetters({ currentChild: 'getCurrentChild' }),
+    ...mapGetters('admin/curriculum', { lesson: 'getLesson' }),
+    ...mapGetters('children/lesson', {
+      currentLessonId: 'getCurrentLessonId'
+    }),
+    childrenIds () {
+      return (this.currentChild && this.currentChild.length) ? this.currentChild[0].id : 0
+    },
+    child () {
+      return (this.currentChild && this.currentChild.length) ? this.currentChild[0] : null
+    },
+    curriculumTypeId () {
+      if (this.lesson && this.lesson.curriculumType) {
+        return this.lesson.curriculumType.id
+      } else {
+        return null
+      }
+    },
+    currentVideo () {
+      return (this.lesson && this.lesson.videos.length > 0) ? this.lesson.videos[0] : { videoUrl: null }
+    },
+    getOfflineWorksheet() {
+      if (this.lesson) {
+        return this.lesson.worksheets.filter(({ type }) => type === 'OFFLINE')
+      }
+      return []
+    }
+  },
+  async created () {
+    await this.getAllChildren()
+    await this.handleLesson()
+  },
+  methods: {
+    ...mapActions('children', { getAllChildren: 'get' }),
+    ...mapActions('children/lesson', [
+      'getCurrentLesson',
+      'getCurrentLessonByChildrenId',
+      'resetChild'
+    ]),
+
+    sendSection (section) {
+      this.$nuxt.$emit('menu-section', section)
+    },
+
+    changeChild (newId, redirect = true) {
+      const child = this.allChildren.find(({ id }) => id === parseInt(newId))
+      this.setChild({ value: [child], save: true })
+      if (redirect) {
+        this.handleLesson(true).then(() => {
+          // this.$router.push({ name: 'app-dashboard' })
+          // this.redirectDashboard()
+        })
+      }
+    },
+    async handleLesson () {
+      try {
+        this.loading = true
+        await this.getCurrentLesson({
+          childrenIds: this.childrenIds
+        })
+      } catch (error) {
+        return Promise.reject(error)
+      } finally {
+        this.loading = false
+      }
+    }
+  }
+}
+</script>
+
+<style scoped>
+.color-menu {
+  color: var(--v-primary-base) !important;
+}
+.name-child {
+  color: #7852B5 !important;
+  font-size: 28px !important;
+}
+.menu-learn-play {
+  height: 80%;
+  width: 160px;
+  position: fixed;
+  z-index: 500;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+</style>
