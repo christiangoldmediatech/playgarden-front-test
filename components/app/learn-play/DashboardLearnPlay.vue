@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="10">
         <v-row no-gutters>
-          <v-col cols="2" class="mt-2">
+          <v-col cols="2" class="mt-2 ml-n4">
             <span class="ml-8 title-dashboard font-weight-bold">Letter</span>
           </v-col>
           <v-col cols="10" class="mt-n2">
@@ -20,8 +20,8 @@
     </v-row>
     <v-row no-gutters>
       <v-col ref="videoLesson" cols="8">
-        <span class="title-dashboard font-weight-bold ml-7">Video Lesson</span>
-        <v-row class="mx-6 mt-3">
+        <span class="title-dashboard font-weight-bold ml-4">Video Lesson</span>
+        <v-row class="mx-2 mt-3 ml-4">
           <template v-if="currentVideo.videoUrl && currentVideo.videoUrl.HLS">
             <div class="learn-play-video">
               <pg-video-player
@@ -33,8 +33,8 @@
           </template>
         </v-row>
 
-        <v-row v-if="lesson">
-          <span class="mt-3 ml-10 subtitle-dashboard font-weight-bold">More like this</span>
+        <v-row v-if="lesson" class="mt-8 mx-2 ml-4">
+          <span class="subtitle-dashboard font-weight-bold">More like this</span>
         </v-row>
         <v-row v-if="lesson">
           <videos-scroll :lesson="lesson" class="mt-3" @changeVideoTrack="changeVideoTrack" />
@@ -50,7 +50,7 @@
                       DIY Project
                     </span>
                     <v-img
-                      class="pl-15 mt-n8 ml-7"
+                      class="pl-15 mt-n8 ml-7 clickable"
                       height="40px"
                       contain
                       :src="
@@ -213,12 +213,12 @@
 
         <v-row class="my-14">
           <div ref="art-project" class="mt-3 ml-3">
-            <span class="title-dashboard font-weight-bold">
+            <span class="title-dashboard font-weight-bold pr-10">
               Art Project
             </span>
             <div class="ml-15">
               <v-img
-                class="pl-15 mt-n8 ml-7"
+                class="pl-15 mt-n8 ml-8 clickable"
                 height="40px"
                 contain
                 :src="

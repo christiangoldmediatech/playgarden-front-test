@@ -4,6 +4,7 @@
       <v-col cols="1">
         <v-btn
           text
+          class="mt-5"
           @click="getDataVideos"
         >
           <v-img
@@ -30,7 +31,7 @@
       <v-col cols="1" class="ml-n6">
         <v-btn
           text
-          class="ml-n6"
+          class="ml-n6 mt-5"
           @click="getDataVideos"
         >
           <v-img

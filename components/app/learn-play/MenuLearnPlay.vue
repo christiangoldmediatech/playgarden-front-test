@@ -9,7 +9,7 @@
       >
     </v-col>
     <v-col cols="12">
-      <span class="ml-8 font-weight-bold">
+      <span class="font-weight-bold name-child">
         {{ child.firstName }}
       </span>
     </v-col>
@@ -147,5 +147,9 @@ export default {
 <style scoped>
 .color-menu {
   color: var(--v-primary-base) !important;
+}
+.name-child {
+  color: #7852B5 !important;
+  font-size: 28px !important;
 }
 </style>
