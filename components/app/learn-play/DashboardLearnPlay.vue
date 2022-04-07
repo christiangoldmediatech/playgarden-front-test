@@ -299,10 +299,12 @@ import OfflineWorksheets from '@/components/app/learn-play/OfflineWorksheets.vue
 import VideosScroll from '@/components/app/learn-play/VideosScroll.vue'
 import TopFive from '@/components/app/learn-play/TopFive.vue'
 import SongsCard from '@/components/app/learn-play/SongsCard.vue'
+import PgVideoPlayer from '@gold-media-tech/pg-video-player'
 
 export default {
   name: 'DashboardLearnPlay',
   components: {
+    PgVideoPlayer,
     CarouselLetter,
     OfflineWorksheets,
     VideosScroll,
