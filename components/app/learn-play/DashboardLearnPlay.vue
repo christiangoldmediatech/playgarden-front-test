@@ -19,7 +19,7 @@
       </v-col>
     </v-row>
     <v-row no-gutters>
-      <v-col cols="8">
+      <v-col ref="videoLesson" cols="8">
         <span class="title-dashboard font-weight-bold ml-5">Video Lesson</span>
         <v-row class="mx-6 mt-3">
           <template v-if="currentVideo.videoUrl && currentVideo.videoUrl.HLS">
@@ -40,7 +40,7 @@
         </v-row>
         <v-row class="mx-4 my-14">
           <v-col cols="12">
-            <v-row class="mt-5">
+            <v-row ref="diy" class="mt-5">
               <v-list class="ml-n4">
                 <v-list-item>
                   <v-list-item-content>
@@ -96,7 +96,7 @@
         </v-row>
         <v-row class="ml-4 mb-10">
           <v-col cols="12">
-            <v-row>
+            <v-row ref="snack">
               <v-list class="ml-n4">
                 <v-list-item>
                   <v-list-item-content>
@@ -167,7 +167,7 @@
             </div>
           </template>
 
-          <v-row>
+          <v-row ref="book">
             <v-card width="92%" class="mt-5 ml-3">
               <v-row class="my-2 mx-2">
                 <v-col cols="4">
@@ -203,12 +203,12 @@
         cols="4"
       >
         <span class="title-dashboard font-weight-bold">Worksheets</span>
-        <div class="card-offline mr-4">
+        <div ref="worksheets" class="card-offline mr-4">
           <offline-worksheets class="pt-2" :offline-worksheet-list="offlineWorksheetsList" />
         </div>
 
         <v-row class="my-14">
-          <div class="ml-3 mt-3">
+          <div ref="art-project" class="ml-3 mt-3">
             <span class="title-dashboard font-weight-bold">
               Art Project
             </span>
@@ -265,7 +265,7 @@
         </v-row>
         <v-row no-gutters class="pt-3">
           <v-col cols="12">
-            <div>
+            <div ref="playlist">
               <span class="title-dashboard font-weight-bold">
                 Playlist
               </span>
@@ -275,7 +275,7 @@
             </div>
           </v-col>
           <v-col cols="12">
-            <div class="mt-5">
+            <div ref="topFive" class="mt-5">
               <span class="title-dashboard font-weight-bold">
                 Top five
               </span>
@@ -307,6 +307,7 @@ export default {
   },
   data: () => {
     return {
+      section: 'videoLesson',
       loading: false,
       player: null,
       offlineWorksheetsList: [],
@@ -340,12 +341,26 @@ export default {
       return []
     }
   },
+  watch: {
+    section (val) {
+      this.scrollMeTo(val)
+    }
+  },
   async created () {
     await this.getAllChildren()
     await this.handleLesson()
     this.loadCurrentVideo()
     this.offlineWorksheetsList = await this.getRandomWorksheet()
+
+    this.$nuxt.$on('menu-section', (section) => {
+      this.scrollMeTo(section)
+    })
   },
+
+  beforeDestroy () {
+    this.$nuxt.$off('menu-section')
+  },
+
   methods: {
     ...mapActions('offline-worksheet', ['getRandomWorksheet']),
     ...mapActions('children', { getAllChildren: 'get' }),
@@ -354,6 +369,12 @@ export default {
       'getCurrentLessonByChildrenId',
       'resetChild'
     ]),
+
+    scrollMeTo(refName) {
+      const element = this.$refs[refName]
+      const top = element.offsetTop
+      window.scrollTo(0, top)
+    },
 
     loadCurrentVideo () {
       this.currentVideo = (this.lesson && this.lesson.videos.length > 0) ? this.lesson.videos[0] : { videoUrl: null }

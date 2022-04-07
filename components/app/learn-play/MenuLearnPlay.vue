@@ -17,44 +17,44 @@
       >
     </v-col>
     <v-col cols="12">
-      <nuxt-link to="/secction">
+      <span class="color-menu clickable" @click="sendSection('videoLesson')">
         Sections
-      </nuxt-link>
+      </span>
     </v-col>
     <v-col cols="12">
-      <nuxt-link to="/secction">
+      <span class="color-menu clickable" @click="sendSection('videoLesson')">
         Video Lessons
-      </nuxt-link>
+      </span>
     </v-col>
     <v-col cols="12">
-      <nuxt-link to="/secction">
+      <span class="color-menu clickable" @click="sendSection('worksheets')">
         Worksheets
-      </nuxt-link>
+      </span>
     </v-col>
     <v-col cols="12">
-      <nuxt-link to="/secction">
+      <span class="color-menu clickable" @click="sendSection('diy')">
         DIY Project
-      </nuxt-link>
+      </span>
     </v-col>
     <v-col cols="12">
-      <nuxt-link to="/secction">
+      <span class="color-menu clickable" @click="sendSection('art-project')">
         Art Project
-      </nuxt-link>
+      </span>
     </v-col>
     <v-col cols="12">
-      <nuxt-link to="/secction">
+      <span class="color-menu clickable" @click="sendSection('snack')">
         Snack with Description
-      </nuxt-link>
+      </span>
     </v-col>
     <v-col cols="12">
-      <nuxt-link to="/secction">
+      <span class="color-menu clickable" @click="sendSection('book')">
         Book
-      </nuxt-link>
+      </span>
     </v-col>
     <v-col cols="12">
-      <nuxt-link to="/secction">
+      <span class="color-menu clickable" @click="sendSection('playlist')">
         Playlist
-      </nuxt-link>
+      </span>
     </v-col>
   </v-row>
 </template>
@@ -111,6 +111,10 @@ export default {
       'resetChild'
     ]),
 
+    sendSection (section) {
+      this.$nuxt.$emit('menu-section', section)
+    },
+
     changeChild (newId, redirect = true) {
       const child = this.allChildren.find(({ id }) => id === parseInt(newId))
       this.setChild({ value: [child], save: true })
@@ -136,3 +140,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.color-menu {
+  color: var(--v-primary-base) !important;
+}
+</style>
