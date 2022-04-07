@@ -64,7 +64,7 @@
             </v-row>
           </v-col>
           <v-row>
-            <v-card width="90%" class="mt-5 ml-3">
+            <v-card width="93%" class="mt-5 ml-3">
               <v-row class="my-2 mx-2">
                 <v-col cols="4">
                   <v-img
