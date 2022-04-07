@@ -202,6 +202,7 @@ export default defineComponent({
       if (song) {
         currentSong.value = song
         refreshSongData(song)
+        playSong(0)
       }
     })
 
