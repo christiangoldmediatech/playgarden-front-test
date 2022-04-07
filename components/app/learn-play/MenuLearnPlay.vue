@@ -7,10 +7,13 @@
         class="backpack-active"
         :src="child.backpack.image"
       >
+    </v-col>
+    <v-col cols="12">
       <span class="ml-8 font-weight-bold">
         {{ child.firstName }}
       </span>
-
+    </v-col>
+    <v-col cols="12">
       <img
         class="mt-4 ml-6"
         src="@/assets/png/lesson-letter.png"

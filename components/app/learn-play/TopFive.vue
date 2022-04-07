@@ -16,7 +16,7 @@
           </v-col>
           <v-col cols="10" align-self="center" class="pl-4">
             <div class="text-uppercase dashboard-item-title">
-              {{ song.name }} - Artist
+              {{ song.description }}
             </div>
           </v-col>
         </v-row>

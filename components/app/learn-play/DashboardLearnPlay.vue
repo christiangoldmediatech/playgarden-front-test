@@ -1,10 +1,10 @@
 <template>
-  <v-card class="mb-14 pb-10">
+  <v-card class="pb-10 mb-14">
     <v-row>
       <v-col cols="10">
         <v-row no-gutters>
           <v-col cols="2" class="mt-2">
-            <span class="title-dashboard font-weight-bold ml-8">Letter</span>
+            <span class="ml-8 title-dashboard font-weight-bold">Letter</span>
           </v-col>
           <v-col cols="10" class="mt-n2">
             <carousel-letter ref="CarouselLetter" :value="curriculumTypeId" />
@@ -20,7 +20,7 @@
     </v-row>
     <v-row no-gutters>
       <v-col cols="8">
-        <span class="title-dashboard font-weight-bold ml-5">Video Lesson</span>
+        <span class="title-dashboard font-weight-bold ml-7">Video Lesson</span>
         <v-row class="mx-6 mt-3">
           <template v-if="currentVideo.videoUrl && currentVideo.videoUrl.HLS">
             <div class="learn-play-video">
@@ -32,12 +32,14 @@
             </div>
           </template>
         </v-row>
-        <v-row class="mt-4">
-          <span class="title-dashboard font-weight-bold mt-3 ml-8">More like this</span>
-          <v-row v-if="lesson" class="mt-3">
-            <videos-scroll :lesson="lesson" class="mt-3" @changeVideoTrack="changeVideoTrack" />
-          </v-row>
+
+        <v-row v-if="lesson">
+          <span class="mt-3 ml-10 subtitle-dashboard font-weight-bold">More like this</span>
         </v-row>
+        <v-row v-if="lesson">
+          <videos-scroll :lesson="lesson" class="mt-3" @changeVideoTrack="changeVideoTrack" />
+        </v-row>
+
         <v-row class="mx-4 my-14">
           <v-col cols="12">
             <v-row class="mt-5">
@@ -58,6 +60,8 @@
                   </v-list-item-content>
                 </v-list-item>
               </v-list>
+            </v-row>
+            <v-row>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
               </p>
@@ -65,7 +69,7 @@
           </v-col>
           <v-row>
             <v-card width="90%" class="mt-5 ml-3">
-              <v-row class="my-2 mx-2">
+              <v-row class="mx-2 my-2">
                 <v-col cols="4">
                   <v-img
                     :src="require('@/assets/png/diy-1.png')"
@@ -94,7 +98,7 @@
             </v-card>
           </v-row>
         </v-row>
-        <v-row class="ml-4 mb-10">
+        <v-row class="mb-10 ml-4">
           <v-col cols="12">
             <v-row>
               <v-list class="ml-n4">
@@ -121,7 +125,7 @@
           </v-col>
           <v-row>
             <v-card width="90%" class="mt-5 ml-3">
-              <v-row class="my-2 mx-2">
+              <v-row class="mx-2 my-2">
                 <v-col cols="4">
                   <v-img
                     :src="require('@/assets/png/snack-1.png')"
@@ -150,11 +154,11 @@
             </v-card>
           </v-row>
         </v-row>
-        <v-row class="mt-12 ml-4 mx-2">
+        <v-row class="mx-2 mt-12 ml-4">
           <span class="title-dashboard font-weight-bold">
             This week's recommended books
           </span>
-          <p class="mt-4">
+          <p class="pr-8 mt-4">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim-
           </p>
           <template v-if="currentVideo.videoUrl && currentVideo.videoUrl.HLS">
@@ -169,7 +173,7 @@
 
           <v-row>
             <v-card width="92%" class="mt-5 ml-3">
-              <v-row class="my-2 mx-2">
+              <v-row class="mx-2 my-2">
                 <v-col cols="4">
                   <v-img
                     :src="require('@/assets/png/image-35.png')"
@@ -203,12 +207,12 @@
         cols="4"
       >
         <span class="title-dashboard font-weight-bold">Worksheets</span>
-        <div class="card-offline mr-4">
+        <div class="mr-4 card-offline">
           <offline-worksheets class="pt-2" :offline-worksheet-list="offlineWorksheetsList" />
         </div>
 
         <v-row class="my-14">
-          <div class="ml-3 mt-3">
+          <div class="mt-3 ml-3">
             <span class="title-dashboard font-weight-bold">
               Art Project
             </span>
@@ -223,11 +227,11 @@
               />
             </div>
           </div>
-          <p class="mt-3 px-3">
+          <p class="px-3 mt-3">
             Lorem ipsum dolor sit amet, consectetur adipiscing
           </p>
-          <v-row class="mt-4 mx-2">
-            <v-card class="ml-2 mr-8 justify-center">
+          <v-row class="mx-2 mt-4">
+            <v-card class="justify-center ml-2 mr-8">
               <v-row justify="center" align="center" class="mt-2">
                 <v-col class="ml-6" cols="12">
                   <center>
@@ -249,7 +253,7 @@
                     />
                   </center>
                 </v-col>
-                <v-col class="ml-6 mb-4" cols="12">
+                <v-col class="mb-4 ml-6" cols="12">
                   <center>
                     <v-img
                       :src="require('@/assets/png/art-3.png')"
@@ -269,7 +273,7 @@
               <span class="title-dashboard font-weight-bold">
                 Playlist
               </span>
-              <div class="ml-3 mt-4 song-card">
+              <div class="mt-4 ml-3 song-card">
                 <songs-card />
               </div>
             </div>
@@ -436,6 +440,10 @@ export default {
 .title-dashboard {
   color: #606060 !important;
   font-size: 21px !important;
+}
+.subtitle-dashboard {
+  color: #606060 !important;
+  font-size: 18px !important;
 }
 
 .learn-play-video {
