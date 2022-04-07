@@ -1,5 +1,5 @@
 <template>
-  <v-row justify="center">
+  <v-row class="menu-learn-play" justify="center">
     <v-col cols="12">
       <img
         v-if="child"
@@ -8,14 +8,14 @@
         :src="child.backpack.image"
       >
     </v-col>
-    <v-col cols="12">
+    <v-col cols="12" class="mt-n8">
       <span class="font-weight-bold name-child">
         {{ child.firstName }}
       </span>
     </v-col>
-    <v-col cols="12">
+    <v-col cols="12" class="mt-n6">
       <img
-        class="mt-4 ml-6"
+        class="mt-1 ml-6"
         src="@/assets/png/lesson-letter.png"
       >
     </v-col>
@@ -151,5 +151,13 @@ export default {
 .name-child {
   color: #7852B5 !important;
   font-size: 28px !important;
+}
+.menu-learn-play {
+  height: 80%;
+  width: 160px;
+  position: fixed;
+  z-index: 500;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 </style>
