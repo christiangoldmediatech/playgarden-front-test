@@ -313,6 +313,7 @@ export default {
   },
   data: () => {
     return {
+      learnPlayData: null,
       section: 'videoLesson',
       loading: false,
       player: null,
@@ -358,7 +359,8 @@ export default {
     await this.handleLesson()
     this.loadCurrentVideo()
     this.offlineWorksheetsList = await this.getRandomWorksheet()
-
+    this.learnPlayData = await this.getLearnPlay({ curriculumTypeId: this.curriculumTypeId })
+    console.log('learn data', this.learnPlayData)
     this.$nuxt.$on('menu-section', (section) => {
       this.scrollMeTo(section)
     })
@@ -370,6 +372,7 @@ export default {
 
   methods: {
     ...mapActions('offline-worksheet', ['getRandomWorksheet']),
+    ...mapActions('learn-play', ['getLearnPlay']),
     ...mapActions('children', { getAllChildren: 'get' }),
     ...mapActions('children/lesson', [
       'getCurrentLesson',
@@ -384,7 +387,7 @@ export default {
     },
 
     loadCurrentVideo () {
-      this.currentVideo = (this.lesson && this.lesson.videos.length > 0) ? this.lesson.videos[0] : { videoUrl: null }
+      this.currentVideo = (this.learnPlayData && this.learnPlayData.videos.length > 0) ? this.learnPlayData.videos[0] : { videoUrl: null }
     },
 
     setCurrentVideo (video) {
