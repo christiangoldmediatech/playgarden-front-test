@@ -14,7 +14,7 @@ export default {
         { root: true }
       )
 
-      const data = await this.$axios.$post('/worksheets/upload', {
+      const data = await this.$axios.$post('/worksheets/upload/lesson', {
         lessonId,
         childrenId: childId,
         url: response.filePath
