@@ -2,7 +2,7 @@
   <pg-video-player
     id="videoPathPlayer"
     :control-config="{
-      unlock: Boolean(patchImg)
+      unlock: (patchImg && toUnlock !== null)
     }"
     :unlock-number="toUnlock"
     unlock-text="PATCH"
