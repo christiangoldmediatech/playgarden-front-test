@@ -87,7 +87,7 @@ export const useActivity = () => {
 
     // Add new activities to the playlist property.
     activityById.value.playlist = [
-      ...activityById.value.playlist || [],
+      ...activityById.value.playlist as Playlist[] || [] as Playlist[],
       ...getPlaylistFromActivity(response.activities)
     ]
   }

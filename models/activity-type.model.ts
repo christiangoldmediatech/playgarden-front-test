@@ -1,4 +1,5 @@
 import { Entity, Playlist, Video } from '@/models'
+import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
 
 export type Activity = Entity & {
   featured: boolean
@@ -22,7 +23,7 @@ export interface ActivityType extends Entity {
   /**
    * UI custom property that includes both `activities` and `videos`
    */
-  playlist?: Playlist[]
+  playlist?: Playlist[] | MediaObject[]
 }
 
 export interface FeaturedActivity extends Entity {

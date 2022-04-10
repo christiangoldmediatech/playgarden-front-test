@@ -25,7 +25,7 @@ type AnalyticOperationParams = {
 
 const activityAnalyticsLoading = ref<boolean>(false)
 
-export const useActivityAnalytics = (children: ComputedRef<any[]>) => {
+export const useActivityAnalytics = (children: ComputedRef<any[] | undefined>) => {
   const {
     createActivityAnalytic,
     getActivityAnalytic,
@@ -116,7 +116,7 @@ export const useActivityAnalytics = (children: ComputedRef<any[]>) => {
       }
 
       // Skip if loading
-      if (activityAnalyticsLoading.value) {
+      if (activityAnalyticsLoading.value || !children.value) {
         return false
       }
 
