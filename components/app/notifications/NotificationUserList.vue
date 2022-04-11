@@ -1,5 +1,8 @@
 <template>
-  <v-row no-gutters>
+  <v-row v-if="loading">
+    <pg-loading />
+  </v-row>
+  <v-row v-else no-gutters>
     <!-- Desktop Title -->
     <v-col cols="12" class="d-none d-md-block">
       <div

@@ -1,5 +1,6 @@
 <template>
-  <v-main>
+  <pg-loading v-if="loading" />
+  <v-main v-else>
     <v-container
       v-if="$vuetify.breakpoint.lgAndUp"
       class="lsess-container"
@@ -389,7 +390,12 @@ export default {
   },
 
   methods: {
-    ...mapActions('live-sessions', ['getUserLiveSessions']),
+    async getUserLiveSessions() {
+      this.loading = true
+      await this.$store.dispatch('live-sessions/getUserLiveSessions', this.days)
+      this.loading = false
+    },
+
     ...mapActions('admin/users', ['setTimezone']),
     ...mapActions('auth', ['fetchUserInfo']),
 

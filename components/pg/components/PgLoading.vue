@@ -1,21 +1,27 @@
 <template>
-  <div class="pg-flex pg-w-full pg-justify-center pg-items-center">
-    <div class="pg-w-3/4 md:pg-w-2/6 pg-m-auto">
-      <v-img
-        alt="Rainbow Loading Indicator"
-        contain
-        :src="require('assets/gif/Rainbow.gif')"
-      />
+  <v-row no-gutters class="fill-height" justify="center" align="center">
+    <v-col align-self="center">
+      <v-container fill-height fluid>
+        <div class="pg-m-auto pg-py-10 md:pg-py-0 md:pg-w-auto">
+          <v-img
+            max-width="400px"
+            alt="Rainbow Loading Indicator"
+            contain
+            :src="require('assets/gif/Rainbow.gif')"
+          />
 
-      <v-img
-        alt="Playarden Prep Online Logo"
-        contain
-        :src="require('assets/svg/logo.svg')"
-      />
-    </div>
+          <v-img
+            max-width="400px"
+            alt="Playarden Prep Online Logo"
+            contain
+            :src="require('assets/svg/logo.svg')"
+          />
+        </div>
 
-    <nuxt v-if="nuxt" />
-  </div>
+        <nuxt v-if="nuxt" />
+      </v-container>
+    </v-col>
+  </v-row>
 </template>
 
 <script>

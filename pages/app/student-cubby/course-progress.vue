@@ -12,7 +12,8 @@
         </div>
       </div>
 
-      <v-row justify="center">
+      <pg-loading v-if="loading" />
+      <v-row v-else justify="center">
         <div
           v-for="letter in letters"
           :key="`recorded-letter-${letter.id}`"
@@ -56,12 +57,15 @@ export default defineComponent({
     const letters = ref<ChildProgress[]>([])
     const { getCourseProgressByChildId } = useChildCourseProgress()
 
+    const loading = ref(true)
     const fetchChildProgress = async () => {
       if (!studentId.value) {
         return
       }
 
+      loading.value = true
       letters.value = await getCourseProgressByChildId(studentId.value)
+      loading.value = false
     }
 
     const showProgress = (letter: ChildProgress) => {
@@ -85,6 +89,7 @@ export default defineComponent({
     }, { immediate: true })
 
     return {
+      loading,
       letters,
       studentId,
       showProgress

@@ -42,7 +42,8 @@
     </v-row>
 
     <!-- Report Content -->
-    <v-row class="mt-12">
+    <pg-loading v-if="loading" />
+    <v-row v-else class="mt-12">
       <v-col cols="12">
         <!-- Report Body: General -->
         <v-row v-if="general === true" no-gutters>
@@ -183,7 +184,8 @@ export default {
     letterStatsData: {
       name: '',
       reports: []
-    }
+    },
+    loading: true
   }),
 
   computed: {
@@ -253,6 +255,8 @@ export default {
   },
 
   async created () {
+    this.loading = true
+
     this.general = true
     await this.getChildren()
     await this.getTypes()
@@ -261,6 +265,8 @@ export default {
     this.$nuxt.$on('detail-progress-report', (data) => {
       this.loadDetailReport(data.point.category)
     })
+
+    this.loading = false
   },
 
   beforeDestroy () {

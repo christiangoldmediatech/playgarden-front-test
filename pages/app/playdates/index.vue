@@ -1,5 +1,6 @@
 <template>
-  <v-col class="fill-height">
+  <pg-loading v-if="loading" />
+  <v-col v-else class="fill-height">
     <!-- ACTIVE PLAYDATES -->
     <div v-if="isPayingUser">
       <v-row align="center" class="fill-height" justify="space-between" no-gutters>

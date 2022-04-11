@@ -14,7 +14,8 @@
         them on social media!
       </div>
 
-      <v-row class="mt-6" justify="space-around">
+      <pg-loading v-if="loading" />
+      <v-row v-else class="mt-6" justify="space-around">
         <v-col
           v-for="(puzzle, indexP) in puzzlesResponse"
           :key="indexP"
@@ -118,7 +119,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, computed, useRoute, useStore, useRouter, watch } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, computed, useRoute, useStore, useRouter, watch, ref } from '@nuxtjs/composition-api'
 import PuzzlePiecesDialog from '@/components/app/student-cubby/PuzzlePiecesDialog.vue'
 import { usePuzzle } from '@/composables/puzzle'
 import { useChild, useChildRoute } from '@/composables'
@@ -141,16 +142,21 @@ export default defineComponent({
 
     const child = computed(() => children.value.find((child: Child) => child.id === studentId.value))
 
+    const loading = ref(true)
     onMounted(async () => {
       await getPuzzlesByChildId(studentId.value || 0)
       await get()
+      loading.value = false
     })
 
     watch(studentId, async () => {
+      loading.value = true
       await getPuzzlesByChildId(studentId.value || 0)
+      loading.value = false
     })
 
     return {
+      loading,
       studentId,
       puzzlesResponse,
       children,

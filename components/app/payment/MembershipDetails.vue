@@ -1,5 +1,8 @@
 <template>
-  <v-row no-gutters>
+  <v-row v-if="loading || isValidatingCoupon">
+    <pg-loading />
+  </v-row>
+  <v-row v-else no-gutters>
     <!-- Desktop Title -->
     <v-col cols="12" class="d-none d-md-block">
       <div class="pb-6 text-uppercase font-weight-bold text-h4 grey--text text--darken-2">
