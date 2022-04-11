@@ -27,24 +27,25 @@
 
 <script lang="ts">
 import { defineComponent, onMounted } from '@nuxtjs/composition-api'
-import { useLearnPlay } from '@/composables/learn-play'
 import { MusicLibrary } from '@/models'
 import { useNuxtHelper } from '@/composables'
 export default defineComponent({
   name: 'TopFive',
+  props: {
+    songs: {
+      type: Array,
+      requiered: true,
+      default: () => ([])
+    }
+  },
   setup(props, { emit }) {
     const nuxt = useNuxtHelper()
-    const { songs, getTopSongs } = useLearnPlay()
-    onMounted(async () => {
-      await getTopSongs()
-    })
 
     const currentSong = (song: MusicLibrary) => {
       nuxt.$emit('change-song', song)
     }
 
     return {
-      songs,
       currentSong
     }
   }

@@ -70,25 +70,13 @@
           <v-row>
             <v-card width="93%" class="mt-5 ml-3">
               <v-row class="mx-2 my-2">
-                <v-col cols="4">
+                <v-col
+                  v-for="(diy, index) in getDiyProject"
+                  :key="`diy-item-${index}`"
+                  cols="4"
+                >
                   <v-img
-                    :src="require('@/assets/png/diy-1.png')"
-                    max-width="150"
-                    min-width="150"
-                    height="250"
-                  />
-                </v-col>
-                <v-col cols="4">
-                  <v-img
-                    :src="require('@/assets/png/diy-2.png')"
-                    max-width="150"
-                    min-width="150"
-                    height="250"
-                  />
-                </v-col>
-                <v-col cols="4">
-                  <v-img
-                    :src="require('@/assets/png/diy-3.png')"
+                    :src="diy.image"
                     max-width="150"
                     min-width="150"
                     height="250"
@@ -126,25 +114,13 @@
           <v-row>
             <v-card width="90%" class="mt-5 ml-3">
               <v-row class="mx-2 my-2">
-                <v-col cols="4">
+                <v-col
+                  v-for="(snack, index) in getSnacks"
+                  :key="`snack-item-${index}`"
+                  cols="4"
+                >
                   <v-img
-                    :src="require('@/assets/png/snack-1.png')"
-                    max-width="150"
-                    min-width="150"
-                    height="250"
-                  />
-                </v-col>
-                <v-col cols="4">
-                  <v-img
-                    :src="require('@/assets/png/snack-2.png')"
-                    max-width="150"
-                    min-width="150"
-                    height="250"
-                  />
-                </v-col>
-                <v-col cols="4">
-                  <v-img
-                    :src="require('@/assets/png/snack-3.png')"
+                    :src="snack.image"
                     max-width="150"
                     min-width="150"
                     height="250"
@@ -208,7 +184,7 @@
       >
         <span class="title-dashboard font-weight-bold">Worksheets</span>
         <div ref="worksheets" class="mr-4 card-offline">
-          <offline-worksheets class="pt-2" :offline-worksheet-list="offlineWorksheetsList" />
+          <offline-worksheets class="pt-2" :offline-worksheet-list="getOfflineWorksheet" />
         </div>
 
         <v-row class="my-14">
@@ -233,30 +209,15 @@
           <v-row class="mx-2 mt-4">
             <v-card class="justify-center ml-2 mr-8">
               <v-row justify="center" align="center" class="mt-2">
-                <v-col class="ml-6" cols="12">
+                <v-col
+                  v-for="(art, index) in getArtProjects"
+                  :key="`art-project-${index}`"
+                  class="ml-6"
+                  cols="12"
+                >
                   <center>
                     <v-img
-                      :src="require('@/assets/png/art-1.png')"
-                      max-width="230"
-                      min-width="230"
-                      height="153"
-                    />
-                  </center>
-                </v-col>
-                <v-col class="ml-6" cols="12">
-                  <center>
-                    <v-img
-                      :src="require('@/assets/png/art-2.png')"
-                      max-width="230"
-                      min-width="230"
-                      height="153"
-                    />
-                  </center>
-                </v-col>
-                <v-col class="mb-4 ml-6" cols="12">
-                  <center>
-                    <v-img
-                      :src="require('@/assets/png/art-3.png')"
+                      :src="art.image"
                       max-width="230"
                       min-width="230"
                       height="153"
@@ -283,7 +244,7 @@
               <span class="title-dashboard font-weight-bold">
                 Top five
               </span>
-              <top-five class="mt-n1" />
+              <top-five class="mt-n1" :songs="songs" />
             </div>
           </v-col>
         </v-row>
@@ -342,9 +303,21 @@ export default {
         return null
       }
     },
+    songs () {
+      return (this.learnPlayData && this.learnPlayData.songs.length > 0) ? this.learnPlayData.songs : []
+    },
+    getDiyProject() {
+      return (this.learnPlayData && this.learnPlayData.files.length > 0) ? this.learnPlayData.files.filter(file => file.type === 'DIY_PROJECT') : []
+    },
+    getSnacks() {
+      return (this.learnPlayData && this.learnPlayData.files.length > 0) ? this.learnPlayData.files.filter(file => file.type === 'SNACK') : []
+    },
+    getArtProjects() {
+      return (this.learnPlayData && this.learnPlayData.files.length > 0) ? this.learnPlayData.files.filter(file => file.type === 'ART_PROJECT') : []
+    },
     getOfflineWorksheet() {
-      if (this.lesson) {
-        return this.lesson.worksheets.filter(({ type }) => type === 'OFFLINE')
+      if (this.learnPlayData && this.learnPlayData.worksheets.length > 0) {
+        return this.learnPlayData.worksheets
       }
       return []
     }
@@ -357,9 +330,8 @@ export default {
   async created () {
     await this.getAllChildren()
     await this.handleLesson()
-    this.loadCurrentVideo()
-    this.offlineWorksheetsList = await this.getRandomWorksheet()
     this.learnPlayData = await this.getLearnPlay({ curriculumTypeId: this.curriculumTypeId })
+    this.loadCurrentVideo()
     console.log('learn data', this.learnPlayData)
     this.$nuxt.$on('menu-section', (section) => {
       this.scrollMeTo(section)
