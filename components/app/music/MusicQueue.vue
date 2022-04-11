@@ -119,7 +119,7 @@ export default defineComponent({
     width: 90vw;
 
     &-content {
-      height: 10vh !important;
+      height: 50vh !important;
     }
 
     &-total-songs {
