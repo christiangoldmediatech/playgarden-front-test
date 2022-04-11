@@ -35,7 +35,7 @@
             contain
             class="cursor"
             :src="
-              require('@/assets/png/dashboard/download-worksheet.png')
+              require('@/assets/png/dashboard/download-ico.png')
             "
             @click.stop="handleDownloadWorksheetClick(offlineWorksheet)"
           />

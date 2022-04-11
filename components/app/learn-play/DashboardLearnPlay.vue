@@ -54,7 +54,7 @@
                       height="40px"
                       contain
                       :src="
-                        require('@/assets/png/dashboard/download-worksheet.png')
+                        require('@/assets/png/dashboard/download-ico.png')
                       "
                     />
                   </v-list-item-content>
@@ -96,11 +96,11 @@
                       SNACK
                     </span>
                     <v-img
-                      class="pl-15 mt-n8 ml-7"
+                      class="pl-15 mt-n8 ml-3"
                       height="40px"
                       contain
                       :src="
-                        require('@/assets/png/dashboard/download-worksheet.png')
+                        require('@/assets/png/dashboard/download-ico.png')
                       "
                     />
                   </v-list-item-content>
@@ -194,11 +194,11 @@
             </span>
             <div class="ml-15">
               <v-img
-                class="pl-15 mt-n8 ml-8 clickable"
+                class="pl-15 mt-n8 ml-10 clickable"
                 height="40px"
                 contain
                 :src="
-                  require('@/assets/png/dashboard/download-worksheet.png')
+                  require('@/assets/png/dashboard/download-ico.png')
                 "
               />
             </div>
