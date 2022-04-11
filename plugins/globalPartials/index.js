@@ -5,9 +5,6 @@ import PgVideoJsPlayer from '@/components/pg-video-js-player/PgVideoJsPlayer.vue
 import PgInlineVideoPlayer from '@/components/pg-video-js-player/PgInlineVideoPlayer.vue'
 import VideoPlayerDialog from '@/components/pg-video-js-player/VideoPlayerDialog.vue'
 
-// New video player
-import PgVideoPlayer from '@gold-media-tech/pg-video-player'
-
 // Audio Players
 import PgAudioPlayer from '@/components/pg-audio-player/PgAudioPlayer.vue'
 
@@ -51,8 +48,6 @@ Vue.component(SelectDropboxFile.name, SelectDropboxFile)
 Vue.component(NotifyEvent.name, NotifyEvent)
 Vue.component(PromptDialog.name, PromptDialog)
 Vue.component(UnderlinedTitle.name, UnderlinedTitle)
-
-Vue.component(PgVideoPlayer.name, PgVideoPlayer)
 
 Vue.component(PgVideoJsPlayer.name, PgVideoJsPlayer)
 Vue.component(PgInlineVideoPlayer.name, PgInlineVideoPlayer)
