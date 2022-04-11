@@ -200,8 +200,10 @@ export default defineComponent({
     const changeSong = nuxt.$on('change-song', (song: MusicLibrary) => {
       if (song) {
         currentSong.value = song
-        refreshSongData(song)
-        playSong(0)
+        if (!song.autoPlay) {
+          refreshSongData(song)
+          playSong(0)
+        }
       }
     })
 
