@@ -10,7 +10,7 @@ import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObj
 const libraryFavoritePlaylist = ref<MediaObject[]>([])
 
 export const useLibraryFavorites = () => {
-  const { videoToPlaylist, getValidVideos } = useLibraryHelpers()
+  const { videoToMediaObject, getValidVideos } = useLibraryHelpers()
   const { getAllFavorites, curatePlaylist } = useFavorites()
 
   async function getLibraryFavoriteActivities() {
@@ -21,7 +21,7 @@ export const useLibraryFavorites = () => {
       ])
 
       const videos = getValidVideos(response.favorites.map(({ video }) => video))
-      const playlist: MediaObject[] = videos.map((video, index) => videoToPlaylist(video, index, video.activityType))
+      const playlist: MediaObject[] = videos.map((video, index) => videoToMediaObject(video, index, video.activityType))
       libraryFavoritePlaylist.value = curatePlaylist(playlist)
     } catch (error) {
       Promise.reject(error)

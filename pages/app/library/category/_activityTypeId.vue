@@ -80,12 +80,12 @@ export default defineComponent({
     const result = ref<null | LibraryCategoryResponse>(null)
 
     // const { currentChildren } = useChild({ store: typedStore })
-    const { videoToPlaylist } = useLibraryHelpers()
+    const { videoToMediaObject } = useLibraryHelpers()
     const { curatePlaylist, favoriteVideoIds } = useFavorites()
     const playlist = computed(() => {
       if (result.value?.activityVideos && result.value?.activityVideos.length) {
-        const mediaObjects = result.value.activityVideos.map((video, index) => videoToPlaylist(video, index, result.value?.activityType))
-        const curated = curatePlaylist(mediaObjects, favoriteVideoIds)
+        const mediaObjects = result.value.activityVideos.map((video, index) => videoToMediaObject(video, index, result.value?.activityType))
+        const curated = curatePlaylist(mediaObjects, favoriteVideoIds.value)
         return curated
       }
       return []

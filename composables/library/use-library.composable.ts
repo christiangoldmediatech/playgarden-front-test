@@ -10,7 +10,8 @@ import {
   FeaturedActivity,
   FavoriteListResponse,
   ActivitiesResponse,
-  CurriculumType
+  CurriculumType,
+  ActivityByCurriculumIdResponse
 } from '@/models'
 import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
 import { useCurriculumTypes, useFavorites } from '@/composables'
@@ -35,7 +36,7 @@ export const useLibraryV2 = () => {
     getValidActivities,
     getValidVideos,
     getPlaylistFromActivity,
-    featuredActivitiesToPlaylist
+    featuredActivitiesToMediaObjectPlaylist
   } = useLibraryHelpers()
 
   const { curriculumTypes, getCurriculumTypes } = useCurriculumTypes()
@@ -80,7 +81,7 @@ export const useLibraryV2 = () => {
     try {
       const response = await axios.$get(`/activities/current?take=${take}`) as unknown as CurrentActivitiesResponse
       if (response.current && response.nextUp && response.nextUp.length) {
-        let playlist = featuredActivitiesToPlaylist([response.current, ...response.nextUp])
+        let playlist = featuredActivitiesToMediaObjectPlaylist([response.current, ...response.nextUp])
         if (prepend) {
           playlist = [prepend, ...playlist]
         }
@@ -102,7 +103,7 @@ export const useLibraryV2 = () => {
 
   // Get activities by curriculum type (not globally stored)
   async function getActivitiesByCurriculumType(curriculumTypeId: number) {
-    const response = await axios.$get(`/activities/by-curriculm/${curriculumTypeId}`) as unknown
+    const response = await axios.$get(`/activities/by-curriculum/${curriculumTypeId}?limit=100&page=1`) as ActivityByCurriculumIdResponse
     return response
   }
 

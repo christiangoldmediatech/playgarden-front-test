@@ -19,7 +19,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, computed, useStore, ref } from '@nuxtjs/composition-api'
-import { useLibraryFavorites, useFavorites, useNuxtHelper, useGtmHelper, useLibraryFavoritesCallbacks, useChild } from '@/composables'
+import { useLibraryFavorites, useFavorites, useNuxtHelper, useLibraryFavoritesCallbacks, useChild } from '@/composables'
 import { TypedStore } from '@/models'
 import LibraryLayout from '@/components/app/library/LibraryLayout.vue'
 import LibraryStandardPlayer from '@/components/app/library/LibraryStandardPlayer.vue'
@@ -43,7 +43,7 @@ export default defineComponent({
     const { favoriteVideoIds, curatePlaylist } = useFavorites()
 
     const playlist = computed(() => {
-      const resultingList = curatePlaylist(libraryFavoritePlaylist.value, favoriteVideoIds)
+      const resultingList = curatePlaylist(libraryFavoritePlaylist.value, favoriteVideoIds.value)
       return resultingList
     })
 

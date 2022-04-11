@@ -11,7 +11,7 @@ type InlinePlayerCallbacksParams = {
 export function useInlineLibraryPlayerCallbacks({ children, getNextVideos }: InlinePlayerCallbacksParams) {
   // Get needed analytic functions
   const { sendPlayerEventVideoAnalytics } = useVideoAnalytics()
-  const { sendActivityAnalytics } = useActivityAnalytics(children)
+  const { sendActivityAnalytics, determineCurrentVideo } = useActivityAnalytics(children)
 
   const playerEvents = {
     // Whenever we play or resume a video
@@ -23,10 +23,7 @@ export function useInlineLibraryPlayerCallbacks({ children, getNextVideos }: Inl
       sendActivityAnalytics({
         duration: event.duration,
         time: event.currentTime,
-        video: {
-          activityId: event.currentTrack?.meta?.activityId ?? 0,
-          type: event.currentTrack?.meta?.type ?? 'Activities'
-        }
+        video: determineCurrentVideo(event.currentTrack)
       }, true)
     },
 
@@ -39,10 +36,7 @@ export function useInlineLibraryPlayerCallbacks({ children, getNextVideos }: Inl
       sendActivityAnalytics({
         duration: event.duration,
         time: event.currentTime,
-        video: {
-          activityId: event.currentTrack?.meta?.activityId ?? 0,
-          type: event.currentTrack?.meta?.type ?? 'Activities'
-        }
+        video: determineCurrentVideo(event.currentTrack)
       })
     },
 
@@ -55,10 +49,7 @@ export function useInlineLibraryPlayerCallbacks({ children, getNextVideos }: Inl
       await sendActivityAnalytics({
         duration: event.duration,
         time: event.currentTime,
-        video: {
-          activityId: event.currentTrack?.meta?.activityId ?? 0,
-          type: event.currentTrack?.meta?.type ?? 'Activities'
-        }
+        video: determineCurrentVideo(event.currentTrack)
       }, false, true)
 
       getNextVideos(event.nextTrack)
@@ -73,10 +64,7 @@ export function useInlineLibraryPlayerCallbacks({ children, getNextVideos }: Inl
       sendActivityAnalytics({
         duration: event.duration,
         time: event.currentTime,
-        video: {
-          activityId: event.currentTrack?.meta?.activityId ?? 0,
-          type: event.currentTrack?.meta?.type ?? 'Activities'
-        }
+        video: determineCurrentVideo(event.currentTrack)
       }, false, true)
 
       getNextVideos(event.nextTrack)
@@ -87,10 +75,7 @@ export function useInlineLibraryPlayerCallbacks({ children, getNextVideos }: Inl
       sendActivityAnalytics({
         duration: event.duration,
         time: event.currentTime,
-        video: {
-          activityId: event.currentTrack?.meta?.activityId ?? 0,
-          type: event.currentTrack?.meta?.type ?? 'Activities'
-        }
+        video: determineCurrentVideo(event.currentTrack)
       })
     }
   }

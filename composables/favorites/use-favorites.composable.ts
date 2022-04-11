@@ -1,4 +1,4 @@
-import { Ref, ref } from '@nuxtjs/composition-api'
+import { ref } from '@nuxtjs/composition-api'
 import { Entity, Video } from '@/models'
 import { jsonCopy, axios } from '@/utils'
 import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
@@ -22,16 +22,16 @@ function getFavoriteVideo(videoId: number): FavoriteId | undefined {
   })
 }
 
-function isVideoFavorite(videoId: number, videoIds?: Ref<FavoriteId[]>): boolean {
+function isVideoFavorite(videoId: number, videoIds?: FavoriteId[]): boolean {
   if (videoIds) {
-    return Boolean(videoIds.value.find((favorite) => {
+    return Boolean(videoIds.find((favorite) => {
       return favorite.videoId === videoId
     }))
   }
   return Boolean(getFavoriteVideo(videoId))
 }
 
-const curatePlaylist = (playlist: MediaObject[], videoIds?: Ref<FavoriteId[]>): MediaObject[] => {
+const curatePlaylist = (playlist: MediaObject[], videoIds?: FavoriteId[]): MediaObject[] => {
   return playlist.map((mediaObject) => {
     const mediaObjectCopy = jsonCopy(mediaObject)
     if (mediaObjectCopy.meta && mediaObjectCopy.meta.videoId) {

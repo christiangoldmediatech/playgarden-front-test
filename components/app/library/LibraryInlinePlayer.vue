@@ -140,12 +140,19 @@ export default defineComponent({
       return ''
     })
 
+    // Handle favorites
+    const store = useStore()
+    const gtm = useGtmHelper()
+    const isFavoritesLoading = ref(false)
+    const { favoriteVideoIds } = useFavorites()
+    const { handleFavoritesClicked } = useFavoritesApi({ store, gtm, isHandlingFavorites: isFavoritesLoading })
+
     // Player functions and variables
     const { curatePlaylist } = useFavorites()
     const player = ref<PlayerInstance | null>(null)
 
     const curatedPlaylist = computed(() => {
-      const resultingList = curatePlaylist(recommended.value, favoriteVideoIds)
+      const resultingList = curatePlaylist(recommended.value, favoriteVideoIds.value)
       return resultingList
     })
 
@@ -268,13 +275,6 @@ export default defineComponent({
       children: currentChildren,
       getNextVideos: getVideosAfterVideoEnded
     })
-
-    // Handle favorites
-    const store = useStore()
-    const gtm = useGtmHelper()
-    const isFavoritesLoading = ref(false)
-    const { favoriteVideoIds } = useFavorites()
-    const { handleFavoritesClicked } = useFavoritesApi({ store, gtm, isHandlingFavorites: isFavoritesLoading })
 
     return {
       onPlayerReady,

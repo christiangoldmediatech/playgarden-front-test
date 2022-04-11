@@ -13,9 +13,9 @@
     @mouseleave="scaleDown"
   >
     <template v-if="pathItem.video">
-      <img :src="pathItem.video.thumbnail">
+      <img v-lazyload :data-url="pathItem.video.thumbnail">
       <letter-video-card
-        :media-object="videoToPlaylist(pathItem.video, 0, undefined)"
+        :media-object="videoToMediaObject(pathItem.video, 0, undefined)"
         :visible="isScaled"
         :color="backgroundColor"
         v-bind="{
@@ -29,7 +29,7 @@
       </letter-video-card>
     </template>
     <template v-else-if="pathItem.patch && pathItem.patch.unblocked">
-      <img :src="pathItem.patch.image">
+      <img v-lazyload :data-url="pathItem.patch.image">
       <img
         class="patch-unlocked"
         :class="{ 'patch-unlocked-transparent': isScaled }"
@@ -82,7 +82,7 @@ export default defineComponent({
   },
 
   setup(props) {
-    const { videoToPlaylist } = useLibraryHelpers()
+    const { videoToMediaObject } = useLibraryHelpers()
     const isScaled = ref(false)
 
     const adjustedIndex = computed(() => {
@@ -119,7 +119,7 @@ export default defineComponent({
       isScaled,
       scaleUp,
       scaleDown,
-      videoToPlaylist,
+      videoToMediaObject,
       adjustedIndex,
       pathItemPopupLocations,
       handlePatchClick,

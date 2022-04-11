@@ -7,7 +7,7 @@
 
       <div class="library-video-card-container">
         <div class="library-video-thumbnail-container">
-          <img class="library-video-thumbnail" :src="mediaObject.poster">
+          <img v-lazyload class="library-video-thumbnail" :data-url="mediaObject.poster">
 
           <div class="thumbnail-play-icon-wrapper">
             <div class="thumbnail-play-icon" :class="{ 'thumbnail-play-icon-scaled': hover }">

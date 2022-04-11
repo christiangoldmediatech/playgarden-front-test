@@ -2,6 +2,7 @@
 import { ref, ComputedRef } from '@nuxtjs/composition-api'
 import { jsonCopy } from '@/utils'
 import { useActivityAnalyticsApi, usePatch } from '@/composables'
+import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
 
 // TODO: MUST UPDATE THIS TYPE TO NEWER MEDIA OBJECT MODEL
 type CurrentVideo = {
@@ -24,6 +25,20 @@ type AnalyticOperationParams = {
 }
 
 const activityAnalyticsLoading = ref<boolean>(false)
+
+function determineCurrentVideo(mediaObject?: MediaObject): CurrentVideo {
+  const currentVideo = {
+    activityId: 0,
+    type: 'Videos'
+  }
+
+  if (mediaObject) {
+    currentVideo.activityId = (mediaObject.meta?.activityId || mediaObject.meta?.videoId) ?? 0
+    currentVideo.type = mediaObject.meta?.type || ((mediaObject.meta?.activityId) ? 'Activities' : 'Videos')
+  }
+  console.log('currentVideo', currentVideo)
+  return currentVideo
+}
 
 export const useActivityAnalytics = (children: ComputedRef<any[] | undefined>) => {
   const {
@@ -142,6 +157,7 @@ export const useActivityAnalytics = (children: ComputedRef<any[] | undefined>) =
   return {
     activityAnalyticsLoading,
     sendActivityAnalytics,
-    patchEarned
+    patchEarned,
+    determineCurrentVideo
   }
 }

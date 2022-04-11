@@ -59,7 +59,7 @@ export default defineComponent({
 
     // This will result in the list being automatically updated whenever favorites or playlist is updated
     const curatedPlaylist = computed(() => {
-      const resultingList = curatePlaylist(props.playlist, favoriteVideoIds)
+      const resultingList = curatePlaylist(props.playlist, favoriteVideoIds.value)
       return resultingList
     })
 

@@ -11,7 +11,7 @@ type InlinePlayerCallbacksParams = {
 export function useLibraryStandardCallbacks({ children, afterOnEnded }: InlinePlayerCallbacksParams) {
   // Get needed analytic functions
   const { sendPlayerEventVideoAnalytics } = useVideoAnalytics()
-  const { sendActivityAnalytics } = useActivityAnalytics(children)
+  const { sendActivityAnalytics, determineCurrentVideo } = useActivityAnalytics(children)
 
   const playerEvents = {
     // When player is closed
@@ -30,10 +30,7 @@ export function useLibraryStandardCallbacks({ children, afterOnEnded }: InlinePl
       sendActivityAnalytics({
         duration: event.duration,
         time: event.currentTime,
-        video: {
-          activityId: event.currentTrack?.meta?.activityId ?? 0,
-          type: event.currentTrack?.meta?.type ?? 'Activities'
-        }
+        video: determineCurrentVideo(event.currentTrack)
       }, true)
     },
 
@@ -46,10 +43,7 @@ export function useLibraryStandardCallbacks({ children, afterOnEnded }: InlinePl
       sendActivityAnalytics({
         duration: event.duration,
         time: event.currentTime,
-        video: {
-          activityId: event.currentTrack?.meta?.activityId ?? 0,
-          type: event.currentTrack?.meta?.type ?? 'Activities'
-        }
+        video: determineCurrentVideo(event.currentTrack)
       })
     },
 
@@ -62,10 +56,7 @@ export function useLibraryStandardCallbacks({ children, afterOnEnded }: InlinePl
       await sendActivityAnalytics({
         duration: event.duration,
         time: event.currentTime,
-        video: {
-          activityId: event.currentTrack?.meta?.activityId ?? 0,
-          type: event.currentTrack?.meta?.type ?? 'Activities'
-        }
+        video: determineCurrentVideo(event.currentTrack)
       }, false, true)
 
       afterOnEnded()
@@ -80,10 +71,7 @@ export function useLibraryStandardCallbacks({ children, afterOnEnded }: InlinePl
       sendActivityAnalytics({
         duration: event.duration,
         time: event.currentTime,
-        video: {
-          activityId: event.currentTrack?.meta?.activityId ?? 0,
-          type: event.currentTrack?.meta?.type ?? 'Activities'
-        }
+        video: determineCurrentVideo(event.currentTrack)
       }, false, true)
 
       afterOnEnded()
@@ -94,10 +82,7 @@ export function useLibraryStandardCallbacks({ children, afterOnEnded }: InlinePl
       sendActivityAnalytics({
         duration: event.duration,
         time: event.currentTime,
-        video: {
-          activityId: event.currentTrack?.meta?.activityId ?? 0,
-          type: event.currentTrack?.meta?.type ?? 'Activities'
-        }
+        video: determineCurrentVideo(event.currentTrack)
       })
     }
   }

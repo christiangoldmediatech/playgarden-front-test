@@ -1,4 +1,4 @@
-import { Activity, ActivityType, FeaturedActivity, Playlist, Video } from '@/models'
+import { Activity, ExtendedActivity, ActivityType, FeaturedActivity, Playlist, Video } from '@/models'
 import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
 
 // Gets valid featured activities
@@ -14,10 +14,10 @@ const getValidVideos = (videos: Video[]) =>
   videos.filter(video => !!video?.videoUrl)
 
 // Returns a MediaObject, using an Activity object, an index, and an ActivityType object
-const activityToPlaylist = (
-  activity: Activity,
-  index: number,
-  activityType: Playlist['activityType']
+const activityToMediaObject = (
+  activity: ExtendedActivity,
+  index: number | undefined = undefined,
+  activityType: Playlist['activityType'] | undefined = activity.activityType || undefined
 ): MediaObject => ({
   title: activity?.videos?.description ?? '',
   description: `Learning with ${activity?.videos?.description ?? ''}`,
@@ -30,7 +30,7 @@ const activityToPlaylist = (
     author: activity?.videos?.name ?? '',
     videoId: activity?.videos?.id ?? 0,
     playlistIndex: index,
-    type: 'Activities',
+    type: activity.id ? 'Activities' : 'Videos',
     activityId: activity.id,
     activityType,
     curriculumType: undefined, // TODO: activity.curriculumType is not present in the server response
@@ -55,13 +55,14 @@ const featuredActivityToMediaObject = ({ id, activityType, curriculumType, video
     activityId: id,
     activityType,
     curriculumType,
+    type: activityType ? 'Activities' : 'Videos',
     videoType: 'ACTIVITIES:',
     author: videos?.name ?? ''
   }
 })
 
 // Creates a playlist from FeaturedActivities array
-const featuredActivitiesToPlaylist = (
+const featuredActivitiesToMediaObjectPlaylist = (
   featuredActivities: FeaturedActivity[]
 ): MediaObject[] => {
   const filtered = getValidFeaturedActivities(featuredActivities)
@@ -69,10 +70,10 @@ const featuredActivitiesToPlaylist = (
 }
 
 // Returns a MediaObject, combining a Video object, an index, and an ActivityType object
-const videoToPlaylist = (
+const videoToMediaObject = (
   video: Video,
-  index: number,
-  activityType?: Playlist['activityType']
+  index: number | undefined = undefined,
+  activityType: Playlist['activityType'] | undefined = video.activityType
 ): MediaObject => ({
   title: video.description,
   description: `Learning with ${video.name ?? ''}`,
@@ -85,8 +86,8 @@ const videoToPlaylist = (
     author: video.name ?? '',
     videoId: video.id,
     playlistIndex: index,
-    type: 'Videos',
-    activityId: video.id,
+    type: video.activityId ? 'Activities' : 'Videos',
+    activityId: video.activityId,
     activityType,
     curriculumType: undefined, // TODO: video.curriculumType is not present in the server response
     watched: video.viewed, // `viewed` already in use, using `watched` instead
@@ -109,14 +110,14 @@ const getPlaylistFromActivity = (activity: ActivityType): MediaObject[] => {
 
   activity.activities?.forEach((act) => {
     playlist.push(
-      activityToPlaylist(act, playlistIndex, activityTypeForAnalytics)
+      activityToMediaObject(act, playlistIndex, activityTypeForAnalytics)
     )
     playlistIndex++
   })
 
   activity.videos?.forEach((video) => {
     playlist.push(
-      videoToPlaylist(video, playlistIndex, activityTypeForAnalytics)
+      videoToMediaObject(video, playlistIndex, activityTypeForAnalytics)
     )
     playlistIndex++
   })
@@ -126,12 +127,12 @@ const getPlaylistFromActivity = (activity: ActivityType): MediaObject[] => {
 
 export const useLibraryHelpers = () => {
   return {
-    activityToPlaylist,
-    videoToPlaylist,
+    activityToMediaObject,
+    videoToMediaObject,
     getValidActivities,
     getValidVideos,
     getPlaylistFromActivity,
     featuredActivityToMediaObject,
-    featuredActivitiesToPlaylist
+    featuredActivitiesToMediaObjectPlaylist
   }
 }

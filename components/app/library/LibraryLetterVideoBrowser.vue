@@ -48,7 +48,7 @@
       </v-row>
       <v-row class="mt-lg-0" align="stretch">
         <v-col
-          v-for="(mediaObject, playlistIndex) in videos"
+          v-for="(mediaObject, playlistIndex) in curatedPlaylist"
           :key="`letter-video-${mediaObject.meta.videoId}`"
           cols="6"
           lg="4"
@@ -56,14 +56,14 @@
           <letter-video-card v-bind="{ mediaObject }" @play="handlePlayVideo(playlistIndex)" />
         </v-col>
       </v-row>
-      <library-standard-player id="letterVideoPlayer" :playlist="videos" />
+      <library-standard-player id="letterVideoPlayer" :playlist="curatedPlaylist" />
     </template>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref } from '@nuxtjs/composition-api'
-import { useLibraryV2, useFavorites, useNuxtHelper } from '@/composables'
+import { computed, defineComponent, PropType, ref } from '@nuxtjs/composition-api'
+import { useLibraryV2, useLibraryHelpers, useFavorites, useNuxtHelper } from '@/composables'
 import { CurriculumType } from '@/models'
 import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
 import { letterRotations } from './letterRotations'
@@ -99,12 +99,17 @@ export default defineComponent({
     }
 
     // For browsing videos
-    const { curatePlaylist } = useFavorites()
+    const { favoriteVideoIds, curatePlaylist } = useFavorites()
     const { getActivitiesByCurriculumType } = useLibraryV2()
+    const { activityToMediaObject, videoToMediaObject } = useLibraryHelpers()
     const isLoadingVideos = ref(false)
     const selectedLetter = ref<CurriculumType>(props.letters[0])
     const mode = ref<'LETTERS' | 'VIDEOS' >('LETTERS')
     const videos = ref<MediaObject[]>([])
+    const curatedPlaylist = computed<MediaObject[]>(() => {
+      const resultingList = curatePlaylist(videos.value, favoriteVideoIds.value)
+      return resultingList
+    })
 
     async function handleLetterClick(curriculumTypeId: number) {
       try {
@@ -112,8 +117,10 @@ export default defineComponent({
         selectedLetter.value = props.letters.find(letter => letter.id === curriculumTypeId) || props.letters[0]
         const response = await getActivitiesByCurriculumType(curriculumTypeId)
         // transform videos into playlist, curate playlist
-        // videos.value = curatePlaylist(props.testVideos)
-        console.log(response)
+        videos.value = [
+          ...response.activities.map(activity => activityToMediaObject(activity)),
+          ...response.videos.map(video => videoToMediaObject(video))
+        ]
         mode.value = 'VIDEOS'
       } catch (error) {
         Promise.reject(error)
@@ -129,7 +136,7 @@ export default defineComponent({
 
     const nuxt = useNuxtHelper()
     function handlePlayVideo(index: number): void {
-      nuxt.$emit('letterVideoPlayer.play-track', index)
+      nuxt.$emit('letterVideoPlayer-play-track', index)
     }
 
     return {
@@ -138,7 +145,7 @@ export default defineComponent({
       getFourLetterIndex,
       isLoadingVideos,
       mode,
-      videos,
+      curatedPlaylist,
       selectedLetter,
       handleLetterClick,
       handleGoBackClick,

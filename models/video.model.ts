@@ -8,6 +8,7 @@ export interface VideoUrl extends Entity {
 }
 
 export interface Video extends Entity {
+  activityId?: number
   activityType?: ActivityType
   patch?: null | Patch
   code: string
