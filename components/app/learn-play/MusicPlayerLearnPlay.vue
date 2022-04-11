@@ -159,7 +159,6 @@ export default defineComponent({
   },
 
   setup (_, { emit }) {
-    // this references `ref="audioPlayer"` when the component is mounted
     const nuxt = useNuxtHelper()
     const audioPlayer = ref<any>(null)
     const {

@@ -56,6 +56,7 @@
                       :src="
                         require('@/assets/png/dashboard/download-ico.png')
                       "
+                      @click="downloadDiyFiles"
                     />
                   </v-list-item-content>
                 </v-list-item>
@@ -96,12 +97,13 @@
                       SNACK
                     </span>
                     <v-img
-                      class="pl-15 mt-n8 ml-3"
+                      class="pl-15 mt-n8 ml-3 clickable"
                       height="40px"
                       contain
                       :src="
                         require('@/assets/png/dashboard/download-ico.png')
                       "
+                      @click="downloadSnackFiles"
                     />
                   </v-list-item-content>
                 </v-list-item>
@@ -200,6 +202,7 @@
                 :src="
                   require('@/assets/png/dashboard/download-ico.png')
                 "
+                @click="downloadArtFiles"
               />
             </div>
           </div>
@@ -277,7 +280,9 @@ export default {
       learnPlayData: null,
       section: 'videoLesson',
       loading: false,
+      currentFile: null,
       player: null,
+      noLinkMode: false,
       playerTwo: null,
       offlineWorksheetsList: [],
       currentVideo: {
@@ -356,6 +361,37 @@ export default {
       const element = this.$refs[refName]
       const top = element.offsetTop
       window.scrollTo(0, top)
+    },
+
+    downloadDiyFiles () {
+      this.getDiyProject.map((file) => {
+        this.handleDownloadClick(file)
+      })
+    },
+
+    downloadSnackFiles () {
+      this.getSnacks.map((file) => {
+        this.handleDownloadClick(file)
+      })
+    },
+
+    downloadArtFiles () {
+      this.getArtProjects.map((file) => {
+        this.handleDownloadClick(file)
+      })
+    },
+
+    openPdf () {
+      if (this.currentFile) {
+        window.open(this.currentFile.file, '_blank')
+      }
+    },
+
+    handleDownloadClick(item) {
+      this.currentFile = item
+      if (!this.noLinkMode) {
+        this.openPdf()
+      }
     },
 
     loadCurrentVideo () {
