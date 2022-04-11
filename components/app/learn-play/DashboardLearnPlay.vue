@@ -234,8 +234,8 @@
               <span class="title-dashboard font-weight-bold">
                 Playlist
               </span>
-              <div class="mt-4 ml-3 song-card">
-                <songs-card />
+              <div class="mt-4 ml-3">
+                <songs-card class="song-card" />
               </div>
             </div>
           </v-col>
@@ -454,7 +454,7 @@ export default {
 .song-card {
   max-width: 85% !important;
   min-width: 85% !important;
-  min-height: 554px !important;
-  max-height: 554px !important;
+  min-height: 328px !important;
+  max-height: 328px !important;
 }
 </style>
