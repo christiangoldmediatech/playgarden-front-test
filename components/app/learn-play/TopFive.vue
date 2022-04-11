@@ -26,14 +26,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, PropType } from '@nuxtjs/composition-api'
 import { MusicLibrary } from '@/models'
 import { useNuxtHelper } from '@/composables'
 export default defineComponent({
   name: 'TopFive',
   props: {
     songs: {
-      type: Array,
+      type: Array as PropType<MusicLibrary[]>,
       requiered: true,
       default: () => ([])
     }
@@ -44,6 +44,9 @@ export default defineComponent({
     const currentSong = (song: MusicLibrary) => {
       nuxt.$emit('change-song', song)
     }
+    onMounted(() => {
+      currentSong(props.songs[0])
+    })
 
     return {
       currentSong

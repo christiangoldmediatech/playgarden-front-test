@@ -244,7 +244,7 @@
               <span class="title-dashboard font-weight-bold">
                 Top five
               </span>
-              <top-five class="mt-n1" :songs="songs" />
+              <top-five v-if="songs && songs.length > 0" class="mt-n1" :songs="songs" />
             </div>
           </v-col>
         </v-row>
