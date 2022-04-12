@@ -1,3 +1,10 @@
 /*@tailwind base;*/
 @tailwind components;
 @tailwind utilities;
+
+.fade-loading-enter-active, .fade-loading-leave-active {
+  transition: opacity .2s ease;
+}
+.fade-loading-enter, .fade-loading-leave-to {
+  opacity: 0;
+}
