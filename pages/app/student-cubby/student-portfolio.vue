@@ -142,7 +142,7 @@
                         <span
                           class="d-block text-center font-bold upload-label-card"
                         >
-                          UPLOADED DATE: {{ worksheet.updatedAt | createdDateFormatted }}
+                          UPLOADED DATE: {{ worksheet.updatedAt | formattedCreatedDate }}
                         </span>
                       </div>
                     </div>
@@ -223,7 +223,7 @@ export default defineComponent({
     }
   },
   filters: {
-    createdDateFormatted (val : string) {
+    formattedCreatedDate (val : string) {
       return val ? dayjs(val).format('MM/DD/YYYY') : null
     }
   },

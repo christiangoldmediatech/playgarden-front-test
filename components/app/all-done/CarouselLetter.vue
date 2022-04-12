@@ -143,7 +143,7 @@ export default {
       type: Array,
       required: false,
       default: () => []
-    }, // this property only works if [forceActivateAllLetters] it is false
+    }, // this property only works if [forceActivateAllLetters] is false
 
     childId: {
       validator: (val) => {
@@ -181,14 +181,14 @@ export default {
         if (!this.forceActivateAllLetters) {
           const current = this.lettersProgress.find(l => l.id === letter.id)
           const isIncludedInDisabled = this.disabledLetters.includes(current?.id)
-          const letterCurrent = current
-          if (letterCurrent && isIncludedInDisabled) {
-            letterCurrent.disabled = true
-            letterCurrent.enabled = false
+          const currentLetter = current
+          if (currentLetter && isIncludedInDisabled) {
+            currentLetter.disabled = true
+            currentLetter.enabled = false
           }
           return {
             ...letter,
-            ...letterCurrent
+            ...currentLetter
           }
         } else {
           return {
