@@ -1,6 +1,6 @@
 <template>
   <library-layout class="library-search" title="Library" back-btn>
-    <template v-if="results.length === 0">
+    <template v-if="curatedPlaylist.length === 0">
       <v-row>
         <v-col>
           <span class="search-results-text">No results found for </span>
@@ -18,7 +18,7 @@
 
       <v-row>
         <v-col
-          v-for="(mediaObject, playlistIndex) in results"
+          v-for="(mediaObject, playlistIndex) in curatedPlaylist"
           :key="`search-result-video-id-${mediaObject.meta.videoId}`"
           cols="6"
           lg="4"
@@ -26,11 +26,11 @@
           <library-video-card
             top-title
             v-bind="{ mediaObject }"
-            @play="handleVideoCardPlay(playlistIndex)"
+            @play="handlePlayVideo(playlistIndex)"
           />
         </v-col>
       </v-row>
-      <library-standard-player id="searchPlayer" :playlist="results" />
+      <library-standard-player id="searchPlayer" :playlist="curatedPlaylist" />
     </template>
   </library-layout>
 </template>
@@ -40,7 +40,7 @@ import { defineComponent, onMounted, useRoute, computed, ref } from '@nuxtjs/com
 import LibraryLayout from '@/components/app/library/LibraryLayout.vue'
 import LibraryVideoCard from '@/components/app/library/LibraryVideoCard.vue'
 import LibraryStandardPlayer from '@/components/app/library/LibraryStandardPlayer.vue'
-import { useLibraryV2, useNuxtHelper } from '@/composables'
+import { useLibraryV2, useNuxtHelper, useFavorites } from '@/composables'
 import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
 
 export default defineComponent({
@@ -61,22 +61,29 @@ export default defineComponent({
       return (!result || result === null) ? '' : result
     })
 
-    const results = ref<MediaObject[]>([])
+    const playlist = ref<MediaObject[]>([])
 
     onMounted(async () => {
       // End point currently not functioning correctly
       await getActivitesByName(criteria.value)
     })
 
+    const { favoriteVideoIds, curatePlaylist } = useFavorites()
+
+    const curatedPlaylist = computed(() => {
+      const resultingList = curatePlaylist(playlist.value, favoriteVideoIds.value)
+      return resultingList
+    })
+
     const nuxt = useNuxtHelper()
-    function handleVideoCardPlay(index: Number) {
+    function handlePlayVideo(index: Number) {
       nuxt.$emit('searchPlayer-load-playlist', index)
     }
 
     return {
       criteria,
-      results,
-      handleVideoCardPlay
+      curatedPlaylist,
+      handlePlayVideo
     }
   }
 })

@@ -112,7 +112,9 @@ export const useLibraryV2 = () => {
     const response = await axios.$get('/activities', {
       params: {
         type: 'VIDEO',
-        name: criteria
+        name: criteria,
+        limit: 100,
+        page: 1
       }
     }) as unknown
     return response
