@@ -45,7 +45,8 @@ export default defineComponent({
       nuxt.$emit('change-song', song)
     }
     onMounted(() => {
-      const firstSong = { ...props.songs[0], autoPlay: false }
+      const firstSong = props.songs[0]
+      firstSong.autoPlay = false
       currentSong(firstSong)
     })
 
