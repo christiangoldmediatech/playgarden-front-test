@@ -36,7 +36,6 @@ function determineCurrentVideo(mediaObject?: MediaObject): CurrentVideo {
     currentVideo.activityId = (mediaObject.meta?.activityId || mediaObject.meta?.videoId) ?? 0
     currentVideo.type = mediaObject.meta?.type || ((mediaObject.meta?.activityId) ? 'Activities' : 'Videos')
   }
-  console.log('currentVideo', currentVideo)
   return currentVideo
 }
 

@@ -13,7 +13,7 @@
     @mouseleave="scaleDown"
   >
     <template v-if="pathItem.video">
-      <img v-lazyload :data-url="pathItem.video.thumbnail">
+      <img v-lazyload :data-url="pathItem.video.thumbnail" @click="handleBubblePlay">
       <letter-video-card
         :media-object="videoToMediaObject(pathItem.video, 0, undefined)"
         :visible="isScaled"
@@ -46,7 +46,7 @@
 <script lang="ts">
 import { defineComponent, PropType, ref, computed, useRouter } from '@nuxtjs/composition-api'
 import { PathItem, PathItemCoordinates } from '@/models'
-import { useLibraryHelpers, useNuxtHelper } from '@/composables'
+import { useLibraryHelpers, useNuxtHelper, useVuetifyHelper } from '@/composables'
 import LetterVideoCard from '@/components/app/library/LetterVideoCard.vue'
 import { pathItemPopupLocations } from '@/components/app/library/pathConstants'
 
@@ -111,8 +111,15 @@ export default defineComponent({
     }
 
     const nuxt = useNuxtHelper()
+    const vuetify = useVuetifyHelper()
     function handlePlay(): void {
-      nuxt.$emit('videoPathPlayer-play-track', props.index)
+      if (!vuetify.breakpoint.mobile) {
+        nuxt.$emit('videoPathPlayer-play-track', props.pathItem.playlistIndex)
+      }
+    }
+
+    function handleBubblePlay(): void {
+      nuxt.$emit('videoPathPlayer-play-track', props.pathItem.playlistIndex)
     }
 
     return {
@@ -123,7 +130,8 @@ export default defineComponent({
       adjustedIndex,
       pathItemPopupLocations,
       handlePatchClick,
-      handlePlay
+      handlePlay,
+      handleBubblePlay
     }
   }
 })

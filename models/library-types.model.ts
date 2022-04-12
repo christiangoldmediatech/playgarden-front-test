@@ -38,5 +38,6 @@ export type ActivitiesFavoriteResponse = {
 
 export type PathItem = {
   video?: Video,
-  patch?: Patch
+  patch?: Patch,
+  playlistIndex?: number
 }

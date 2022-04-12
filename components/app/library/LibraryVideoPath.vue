@@ -68,16 +68,18 @@ export default defineComponent({
     const pathItems = computed<PathItem[]>(() => {
       const items: PathItem[] = []
 
-      props.videos.forEach((video) => {
+      props.videos.forEach((video, playlistIndex) => {
         items.push({
           video,
-          patch: undefined
+          patch: undefined,
+          playlistIndex
         })
 
         if (video.patch) {
           items.push({
             video: undefined,
-            patch: video.patch
+            patch: video.patch,
+            playlistIndex: undefined
           })
         }
       })

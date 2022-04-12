@@ -113,7 +113,7 @@ export const useLibraryV2 = () => {
       params: {
         type: 'VIDEO',
         name: criteria,
-        limit: 100,
+        limit: 15,
         page: 1
       }
     }) as unknown
