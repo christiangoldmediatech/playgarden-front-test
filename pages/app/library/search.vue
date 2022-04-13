@@ -1,6 +1,14 @@
 <template>
   <library-layout class="library-search" title="Library" back-btn>
-    <template v-if="curatedPlaylist.length === 0">
+    <template v-if="isLoading">
+      <v-row>
+        <v-col>
+          <span class="search-results-text">Searching for </span>
+          <span class="search-results-criteria">“{{ criteria }}...”</span>
+        </v-col>
+      </v-row>
+    </template>
+    <template v-if="curatedPlaylist.length === 0 && !isLoading">
       <v-row>
         <v-col>
           <span class="search-results-text">No results found for </span>
@@ -8,7 +16,7 @@
         </v-col>
       </v-row>
     </template>
-    <template v-else>
+    <template v-else-if="curatedPlaylist.length > 0 && !isLoading">
       <v-row>
         <v-col>
           <span class="search-results-text">Your results for </span>
@@ -36,11 +44,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, useRoute, computed, ref } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, useRoute, computed, ref, watch } from '@nuxtjs/composition-api'
 import LibraryLayout from '@/components/app/library/LibraryLayout.vue'
 import LibraryVideoCard from '@/components/app/library/LibraryVideoCard.vue'
 import LibraryStandardPlayer from '@/components/app/library/LibraryStandardPlayer.vue'
-import { useLibraryV2, useNuxtHelper, useFavorites } from '@/composables'
+import { useLibraryV2, useNuxtHelper, useFavorites, useLibraryHelpers } from '@/composables'
 import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
 
 export default defineComponent({
@@ -61,11 +69,50 @@ export default defineComponent({
       return (!result || result === null) ? '' : result
     })
 
+    const { getValidActivities, getValidVideos, activityToMediaObject, videoToMediaObject } = useLibraryHelpers()
     const playlist = ref<MediaObject[]>([])
+    const isLoading = ref(true)
 
-    onMounted(async () => {
-      // End point currently not functioning correctly
-      await getActivitesByName(criteria.value)
+    async function doSearch() {
+      try {
+        isLoading.value = true
+        // End point currently not functioning correctly
+        playlist.value = []
+        const videoIds: number[] = []
+        const freshPlaylist: MediaObject[] = []
+        const { activities: activityTypes } = await getActivitesByName(criteria.value)
+        activityTypes.forEach((activityType) => {
+          const activities = getValidActivities(activityType.activities ?? [])
+          activities.forEach((activity) => {
+            const videoId = activity.videos?.id
+            if (videoId && !videoIds.includes(videoId)) {
+              freshPlaylist.push(activityToMediaObject(activity))
+              videoIds.push(videoId)
+            }
+          })
+
+          const videos = getValidVideos(activityType.videos ?? [])
+          videos.forEach((video) => {
+            const videoId = video.id
+            if (videoId && !videoIds.includes(videoId)) {
+              freshPlaylist.push(videoToMediaObject(video))
+              videoIds.push(videoId)
+            }
+          })
+
+          playlist.value = freshPlaylist
+        })
+      } catch (error) {
+        Promise.reject(error)
+      } finally {
+        isLoading.value = false
+      }
+    }
+
+    watch(criteria, doSearch)
+
+    onMounted(() => {
+      doSearch()
     })
 
     const { favoriteVideoIds, curatePlaylist } = useFavorites()
@@ -77,13 +124,14 @@ export default defineComponent({
 
     const nuxt = useNuxtHelper()
     function handlePlayVideo(index: Number) {
-      nuxt.$emit('searchPlayer-load-playlist', index)
+      nuxt.$emit('searchPlayer-play-track', index)
     }
 
     return {
       criteria,
       curatedPlaylist,
-      handlePlayVideo
+      handlePlayVideo,
+      isLoading
     }
   }
 })

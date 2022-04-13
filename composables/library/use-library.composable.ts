@@ -79,7 +79,7 @@ export const useLibraryV2 = () => {
   // Get recommended videos
   async function getRecommendedVideosData(take: number = 15, prepend?: MediaObject) {
     try {
-      const response = await axios.$get(`/activities/current?take=${take}`) as unknown as CurrentActivitiesResponse
+      const response = await axios.$get(`/activities/current?take=${take}`) as CurrentActivitiesResponse
       if (response.current && response.nextUp && response.nextUp.length) {
         let playlist = featuredActivitiesToMediaObjectPlaylist([response.current, ...response.nextUp])
         if (prepend) {
@@ -116,7 +116,7 @@ export const useLibraryV2 = () => {
         limit: 15,
         page: 1
       }
-    }) as unknown
+    }) as ActivitiesResponse
     return response
   }
 
