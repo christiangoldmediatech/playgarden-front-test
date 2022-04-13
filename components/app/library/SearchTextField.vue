@@ -18,12 +18,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from '@nuxtjs/composition-api'
+import { defineComponent, ref, useRoute } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   name: 'SearchTextField',
   setup(_, { emit }) {
-    const searchText = ref('')
+    const route = useRoute()
+    const searchText = ref(route.value.query.q ?? '')
 
     function handleSubmit() {
       emit('search', searchText.value)
