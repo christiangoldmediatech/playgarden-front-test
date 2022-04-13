@@ -15,15 +15,14 @@
           </div>
         </div>
 
-        <pg-loading v-if="loading" />
-        <template v-else>
+        <pg-loading :loading="loading">
           <patch-row
             v-for="activityType in childrenPatchesActivity"
             :key="`activity-type-patch-row-${activityType.id}`"
             :activity-type="activityType"
             data-test-id="patch-row"
           />
-        </template>
+        </pg-loading>
       </v-card-text>
     </v-card>
   </div>

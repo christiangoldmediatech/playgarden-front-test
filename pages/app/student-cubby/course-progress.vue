@@ -12,20 +12,21 @@
         </div>
       </div>
 
-      <pg-loading v-if="loading" />
-      <v-row v-else justify="center">
-        <div
-          v-for="letter in letters"
-          :key="`recorded-letter-${letter.id}`"
-          @click="showProgress(letter)"
-        >
-          <recorded-letter
-            :letter="letter"
-            :disabled="!letter.enabled"
-            :list-mode="!letter.enabled"
-          />
-        </div>
-      </v-row>
+      <pg-loading :loading="loading">
+        <v-row justify="center">
+          <div
+            v-for="letter in letters"
+            :key="`recorded-letter-${letter.id}`"
+            @click="showProgress(letter)"
+          >
+            <recorded-letter
+              :letter="letter"
+              :disabled="!letter.enabled"
+              :list-mode="!letter.enabled"
+            />
+          </div>
+        </v-row>
+      </pg-loading>
     </v-card-text>
 
     <course-progress-overlay />

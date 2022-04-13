@@ -14,9 +14,8 @@
         them on social media!
       </div>
 
-      <transition name="fade-loading" mode="out-in">
-        <pg-loading v-if="loading" />
-        <v-row v-else class="mt-6" justify="space-around">
+      <pg-loading :loading="loading">
+        <v-row class="mt-6" justify="space-around">
           <v-col
             v-for="(puzzle, indexP) in puzzlesResponse"
             :key="indexP"
@@ -113,7 +112,7 @@
             </v-hover>
           </v-col>
         </v-row>
-      </transition>
+      </pg-loading>
     </v-card-text>
 
     <puzzle-pieces-dialog v-model="dialog" v-bind="{ toShow }" />

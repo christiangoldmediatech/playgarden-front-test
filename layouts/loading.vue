@@ -3,7 +3,7 @@
     <!-- CONTENT -->
     <v-main>
       <v-container fill-height fluid>
-        <pg-loading nuxt />
+        <pg-loading-screen nuxt />
       </v-container>
     </v-main>
 

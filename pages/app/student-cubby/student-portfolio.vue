@@ -67,9 +67,7 @@
     </template>
 
     <template v-else>
-      <pg-loading v-if="loading" />
-
-      <div v-else>
+      <pg-loading :loading="loading">
         <portfolio-carousel
           v-for="category in categories"
           :key="`portfolio-category-${category.curriculumType.id}`"
@@ -77,7 +75,7 @@
         />
 
         <portfolio-overlay :child="child" />
-      </div>
+      </pg-loading>
     </template>
   </v-card>
 </template>

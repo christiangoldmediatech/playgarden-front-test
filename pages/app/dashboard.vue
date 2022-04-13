@@ -1,8 +1,12 @@
 <template>
-  <pg-loading v-if="loading" />
-  <dashboard-layout v-else v-model="selectedChild" v-bind="{ lesson, loading, childId: childrenIds }">
-    <nuxt-child />
-  </dashboard-layout>
+  <pg-loading :loading="loading">
+    <dashboard-layout
+      v-model="selectedChild"
+      v-bind="{ lesson, loading, childId: childrenIds }"
+    >
+      <nuxt-child />
+    </dashboard-layout>
+  </pg-loading>
 </template>
 
 <script>
