@@ -14,7 +14,7 @@
       </v-col>
     </v-row>
     <template v-else>
-      <v-container fluid>
+      <v-container v-bind="fillHeight" fluid>
         <!-- Title -->
         <v-row v-if="title" align="center">
           <v-col cols="12">
@@ -117,6 +117,12 @@ export default defineComponent({
       type: Boolean,
       required: false,
       default: true
+    },
+
+    fillHeight: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
 

@@ -1,5 +1,5 @@
 <template>
-  <library-layout class="library-category" back-btn>
+  <library-layout :loading="isLoading" class="library-category" back-btn>
     <template v-if="result">
       <v-container class="mb-16 d-none d-lg-block">
         <v-row justify="center">
@@ -123,7 +123,9 @@ export default defineComponent({
       return null
     })
 
+    const isLoading = ref(true)
     onMounted(async () => {
+      isLoading.value = true
       const activityTypeId = parseInt(route.value.params.activityTypeId)
 
       if (activityTypeId) {
@@ -131,6 +133,7 @@ export default defineComponent({
           `/activities/${activityTypeId}/patches/${child.value.id}/filter?limit=50&page=1`
         )
       }
+      isLoading.value = false
     })
 
     // go back to main page
@@ -148,7 +151,8 @@ export default defineComponent({
       lighterColor,
       icon,
       name,
-      goBack
+      goBack,
+      isLoading
     }
   }
 })

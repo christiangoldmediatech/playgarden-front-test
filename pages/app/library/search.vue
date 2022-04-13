@@ -7,6 +7,7 @@
           <span class="search-results-criteria">“{{ criteria }}...”</span>
         </v-col>
       </v-row>
+      <pg-loading />
     </template>
     <template v-if="curatedPlaylist.length === 0 && !isLoading">
       <v-row>
