@@ -35,7 +35,7 @@ export const useLibraryV2 = () => {
   const {
     getValidActivities,
     getValidVideos,
-    getPlaylistFromActivity,
+    getPlaylistFromActivityType,
     featuredActivitiesToMediaObjectPlaylist
   } = useLibraryHelpers()
 
@@ -69,7 +69,7 @@ export const useLibraryV2 = () => {
           playlist: [] as MediaObject[]
         }
 
-        formattedActivity.playlist = getPlaylistFromActivity(formattedActivity)
+        formattedActivity.playlist = getPlaylistFromActivityType(formattedActivity)
 
         return formattedActivity
       })
@@ -134,7 +134,7 @@ export const useLibraryV2 = () => {
       videos: shuffle(
         getValidVideos(response.activities.videos || [])
       ) as Video[],
-      playlist: getPlaylistFromActivity(response.activities)
+      playlist: getPlaylistFromActivityType(response.activities)
     }
 
     featuredById.value = response.featured
@@ -165,7 +165,7 @@ export const useLibraryV2 = () => {
     activityById.value.playlist = [
       ...((activityById.value.playlist as MediaObject[]) ||
         ([] as MediaObject[])),
-      ...getPlaylistFromActivity(response.activities)
+      ...getPlaylistFromActivityType(response.activities)
     ]
   }
 

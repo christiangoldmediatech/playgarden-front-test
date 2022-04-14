@@ -21,7 +21,7 @@
           </div>
 
           <div class="progress-text ml-2 mr-3">
-            {{ finishedActivities.length }} / {{ activities.length }}
+            {{ finishedActivities.length }} / {{ playlist.length }}
           </div>
 
           <div class="progress-bar pr-lg-3">
@@ -45,7 +45,7 @@
 <script lang="ts">
 import { defineComponent, PropType, useRouter, computed } from '@nuxtjs/composition-api'
 import { hexToRgb } from '@/utils/colorTools'
-import { Activity } from '@/models'
+import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
 
 export default defineComponent({
   name: 'CategoryVideoCard',
@@ -76,9 +76,10 @@ export default defineComponent({
       required: true
     },
 
-    activities: {
-      type: Array as PropType<Activity[]>,
-      required: true
+    playlist: {
+      type: Array as PropType<MediaObject[]>,
+      required: false,
+      default: () => []
     }
   },
 
@@ -90,11 +91,15 @@ export default defineComponent({
     })
 
     const finishedActivities = computed(() => {
-      return props.activities.filter(activity => Boolean(activity.viewed))
+      return props.playlist.filter(mediaObject => Boolean(mediaObject.meta?.watched || mediaObject.meta?.viewed?.completed))
+    })
+
+    const total = computed(() => {
+      return props.playlist.length ?? 1
     })
 
     const progress = computed(() => {
-      return (finishedActivities.value.length / props.activities.length) * 100
+      return (finishedActivities.value.length / total.value) * 100
     })
 
     function goToLibraryCategoryPage() {

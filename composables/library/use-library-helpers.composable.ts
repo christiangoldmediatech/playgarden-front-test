@@ -30,14 +30,10 @@ const activityToMediaObject = (
     author: activity?.videos?.name ?? '',
     videoId: activity?.videos?.id ?? 0,
     playlistIndex: index,
-    type: activity.id ? 'Activities' : 'Videos',
+    type: 'Activities',
     activityId: activity.id,
     activityType,
-    curriculumType: undefined, // TODO: activity.curriculumType is not present in the server response
-    watched: activity.viewed, // `viewed` already in use, using `watched` instead
-    viewed: {
-      completed: false
-    }
+    watched: activity.viewed
   }
 })
 
@@ -55,7 +51,7 @@ const featuredActivityToMediaObject = ({ id, activityType, curriculumType, video
     activityId: id,
     activityType,
     curriculumType,
-    type: activityType ? 'Activities' : 'Videos',
+    type: 'Activities',
     videoType: 'ACTIVITIES:',
     author: videos?.name ?? ''
   }
@@ -89,16 +85,12 @@ const videoToMediaObject = (
     type: video.activityId ? 'Activities' : 'Videos',
     activityId: video.activityId,
     activityType,
-    curriculumType: undefined, // TODO: video.curriculumType is not present in the server response
-    watched: video.viewed, // `viewed` already in use, using `watched` instead
-    viewed: {
-      completed: false
-    }
+    watched: video.viewed
   }
 })
 
 // Create a MediaObject Array playlist from an ActivityType
-const getPlaylistFromActivity = (activity: ActivityType): MediaObject[] => {
+const getPlaylistFromActivityType = (activity: ActivityType): MediaObject[] => {
   const playlist: MediaObject[] = []
   const activityTypeForAnalytics = {
     ...activity,
@@ -131,7 +123,7 @@ export const useLibraryHelpers = () => {
     videoToMediaObject,
     getValidActivities,
     getValidVideos,
-    getPlaylistFromActivity,
+    getPlaylistFromActivityType,
     featuredActivityToMediaObject,
     featuredActivitiesToMediaObjectPlaylist
   }
