@@ -50,7 +50,7 @@ import LibraryCategoryIcon from '@/components/app/library/LibraryCategoryIcon.vu
 import LibraryVideoPathPlayer from '@/components/app/library/LibraryVideoPathPlayer.vue'
 import { Video, ActivityType, TypedStore } from '@/models'
 import { getHexNonTransparentColor } from '@/utils/colorTools'
-import { useChild, useFavorites, useLibraryHelpers } from '@/composables'
+import { useFavorites, useLibraryHelpers } from '@/composables'
 
 type LibraryCategoryResponse = {
   activityType: ActivityType
@@ -80,7 +80,7 @@ export default defineComponent({
     const result = ref<null | LibraryCategoryResponse>(null)
 
     // const { currentChildren } = useChild({ store: typedStore })
-    const { videoToMediaObject } = useLibraryHelpers()
+    const { videoToMediaObject, getValidVideos } = useLibraryHelpers()
     const { curatePlaylist, favoriteVideoIds } = useFavorites()
     const playlist = computed(() => {
       if (result.value?.activityVideos && result.value?.activityVideos.length) {
@@ -129,9 +129,11 @@ export default defineComponent({
       const activityTypeId = parseInt(route.value.params.activityTypeId)
 
       if (activityTypeId) {
-        result.value = await $axios.$get(
+        const response = await $axios.$get(
           `/activities/${activityTypeId}/patches/${child.value.id}/filter?limit=50&page=1`
-        )
+        ) as LibraryCategoryResponse
+        response.activityVideos = getValidVideos(response.activityVideos)
+        result.value = response
       }
       isLoading.value = false
     })
