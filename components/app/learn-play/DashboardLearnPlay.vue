@@ -152,25 +152,13 @@
           <v-row ref="book">
             <v-card width="92%" class="mt-5 ml-3">
               <v-row class="mx-2 my-2">
-                <v-col cols="4">
+                <v-col
+                  v-for="(book, index) in getBooks"
+                  :key="`book-item-${index}`"
+                  cols="4"
+                >
                   <v-img
-                    :src="require('@/assets/png/image-35.png')"
-                    max-width="134"
-                    min-width="134"
-                    height="248"
-                  />
-                </v-col>
-                <v-col cols="4">
-                  <v-img
-                    :src="require('@/assets/png/image-34.png')"
-                    max-width="134"
-                    min-width="134"
-                    height="248"
-                  />
-                </v-col>
-                <v-col cols="4">
-                  <v-img
-                    :src="require('@/assets/png/image-35.png')"
+                    :src="book.image"
                     max-width="134"
                     min-width="134"
                     height="248"
@@ -210,23 +198,22 @@
             Lorem ipsum dolor sit amet, consectetur adipiscing
           </p>
           <v-row class="mx-2 mt-4">
-            <v-card class="justify-center ml-2 mr-8">
-              <v-row justify="center" align="center" class="mt-2">
-                <v-col
-                  v-for="(art, index) in getArtProjects"
-                  :key="`art-project-${index}`"
-                  class="ml-6"
-                  cols="12"
-                >
-                  <center>
-                    <v-img
-                      :src="art.image"
-                      max-width="230"
-                      min-width="230"
-                      height="153"
-                    />
-                  </center>
-                </v-col>
+            <v-card class="justify-center ml-2 mr-8" width="100%">
+              <v-row
+                v-for="(art, index) in getArtProjects"
+                :key="`art-project-${index}`"
+                justify="center"
+                align="center"
+                class="my-4"
+              >
+                <center>
+                  <v-img
+                    :src="art.image"
+                    max-width="230"
+                    min-width="230"
+                    height="153"
+                  />
+                </center>
               </v-row>
             </v-card>
           </v-row>
@@ -325,6 +312,9 @@ export default {
         return this.learnPlayData.worksheets
       }
       return []
+    },
+    getBooks() {
+      return (this.learnPlayData && this.learnPlayData.books.length > 0) ? this.learnPlayData.books : []
     }
   },
   watch: {
