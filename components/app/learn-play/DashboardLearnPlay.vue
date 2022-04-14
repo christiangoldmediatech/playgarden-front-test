@@ -31,6 +31,11 @@
               />
             </div>
           </template>
+          <v-card v-else width="100%">
+            <v-skeleton-loader
+              type="card"
+            />
+          </v-card>
         </v-row>
 
         <v-row v-if="lesson" class="mt-8 mx-2 ml-4">
@@ -70,7 +75,7 @@
           </v-col>
           <v-row>
             <v-card width="93%" class="mt-5 ml-3">
-              <v-row class="mx-2 my-2">
+              <v-row v-if="getDiyProject.length > 0" class="mx-2 my-2">
                 <v-col
                   v-for="(diy, index) in getDiyProject"
                   :key="`diy-item-${index}`"
@@ -81,6 +86,17 @@
                     max-width="150"
                     min-width="150"
                     height="250"
+                  />
+                </v-col>
+              </v-row>
+              <v-row v-else class="mx-2 my-2">
+                <v-col
+                  v-for="n in 3"
+                  :key="`diy-load-item-${n}`"
+                  cols="4"
+                >
+                  <v-skeleton-loader
+                    type="image"
                   />
                 </v-col>
               </v-row>
@@ -115,7 +131,7 @@
           </v-col>
           <v-row>
             <v-card width="90%" class="mt-5 ml-3">
-              <v-row class="mx-2 my-2">
+              <v-row v-if="getSnacks.length > 0" class="mx-2 my-2">
                 <v-col
                   v-for="(snack, index) in getSnacks"
                   :key="`snack-item-${index}`"
@@ -126,6 +142,17 @@
                     max-width="150"
                     min-width="150"
                     height="250"
+                  />
+                </v-col>
+              </v-row>
+              <v-row v-else class="mx-2 my-2">
+                <v-col
+                  v-for="n in 3"
+                  :key="`snack-load-item-${n}`"
+                  cols="4"
+                >
+                  <v-skeleton-loader
+                    type="image"
                   />
                 </v-col>
               </v-row>
@@ -148,10 +175,15 @@
               />
             </div>
           </template>
+          <v-card v-else width="100%">
+            <v-skeleton-loader
+              type="card"
+            />
+          </v-card>
 
           <v-row ref="book">
             <v-card width="92%" class="mt-5 ml-3">
-              <v-row class="mx-2 my-2">
+              <v-row v-if="getBooks.length" class="mx-2 my-2">
                 <v-col
                   v-for="(book, index) in getBooks"
                   :key="`book-item-${index}`"
@@ -165,6 +197,17 @@
                   />
                 </v-col>
               </v-row>
+              <v-row v-else class="mx-2 my-2">
+                <v-col
+                  v-for="n in 3"
+                  :key="`book-load-item-${n}`"
+                  cols="4"
+                >
+                  <v-skeleton-loader
+                    type="image"
+                  />
+                </v-col>
+              </v-row>
             </v-card>
           </v-row>
         </v-row>
@@ -173,8 +216,21 @@
         cols="4"
       >
         <span class="title-dashboard font-weight-bold">Worksheets</span>
-        <div ref="worksheets" class="mr-4 card-offline">
+        <div v-if="getOfflineWorksheet.length > 0" ref="worksheets" class="mr-4 card-offline">
           <offline-worksheets class="pt-2" :offline-worksheet-list="getOfflineWorksheet" />
+        </div>
+        <div v-else>
+          <v-card
+            v-for="n in 3"
+            :key="`worksheet-load-item-${n}`"
+            class="my-3"
+            cols="4"
+          >
+            <v-skeleton-loader
+              v-bind="attrs"
+              type="list-item-avatar"
+            />
+          </v-card>
         </div>
 
         <v-row class="my-14">
@@ -198,7 +254,7 @@
             Lorem ipsum dolor sit amet, consectetur adipiscing
           </p>
           <v-row class="mx-2 mt-4">
-            <v-card class="justify-center ml-2 mr-8" width="100%">
+            <v-card v-if="getArtProjects.length >0" class="justify-center ml-2 mr-8" width="100%">
               <v-row
                 v-for="(art, index) in getArtProjects"
                 :key="`art-project-${index}`"
@@ -214,6 +270,21 @@
                     height="153"
                   />
                 </center>
+              </v-row>
+            </v-card>
+            <v-card v-else class="justify-center ml-2 mr-8" width="100%">
+              <v-row
+                v-for="n in 3"
+                :key="`art-load-project-${n}`"
+                justify="center"
+                align="center"
+                class="my-4"
+              >
+                <v-card width="70%">
+                  <v-skeleton-loader
+                    type="image"
+                  />
+                </v-card>
               </v-row>
             </v-card>
           </v-row>
@@ -235,6 +306,19 @@
                 Top five
               </span>
               <top-five v-if="songs && songs.length > 0" class="mt-n1" :songs="songs" />
+              <div v-else>
+                <v-card
+                  v-for="n in 5"
+                  :key="`song-load-item-${n}`"
+                  class="my-3"
+                  cols="4"
+                >
+                  <v-skeleton-loader
+                    v-bind="attrs"
+                    type="list-item-avatar"
+                  />
+                </v-card>
+              </div>
             </div>
           </v-col>
         </v-row>
@@ -327,7 +411,6 @@ export default {
     await this.handleLesson()
     this.learnPlayData = await this.getLearnPlay({ curriculumTypeId: this.curriculumTypeId })
     this.loadCurrentVideo()
-    console.log('learn data', this.learnPlayData)
     this.$nuxt.$on('menu-section', (section) => {
       this.scrollMeTo(section)
     })
