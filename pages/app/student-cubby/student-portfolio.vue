@@ -31,14 +31,20 @@
                   small
                   list-mode
                 />
-                <v-btn v-if="getCurrentLetter && !loading && lessons.length" text large @click.stop="() => {}">
+                <v-btn
+                  v-if="getCurrentLetter && !loading && lessons.length && showBtnDownloadAlllesson"
+                  text
+                  large
+                  @click.stop="downloadWorksheetsAllLesson()"
+                  :disabled="loadingDownloadLessonsFile"
+                >
                   <v-avatar size="40" color="primary mr-2">
                     <v-icon size="25" color="white">
                       mdi-download
                     </v-icon>
                   </v-avatar>
                   <span>
-                    DOWNLOAD ALL WEEK WORKSHEETS
+                    {{ loadingDownloadLessonsFile ? 'GETTING DOCUMENT...' : 'DOWNLOAD ALL WEEK WORKSHEETS' }}
                   </span>
                 </v-btn>
               </span>
@@ -82,7 +88,7 @@
                     &nbsp; {{ panel !== index ? 'mdi-chevron-down' : 'mdi-chevron-up' }}
                   </v-icon>
                 </span>
-                <v-btn text small @click.stop="() => {}">
+                <v-btn text small @click.stop="downloadWorksheetsByLesson(lesson.worksheets)">
                   <v-icon size="30" color="primary">
                     mdi-download
                   </v-icon>
@@ -180,8 +186,6 @@
           v-else
           class="d-flex align-center justify-center flex-column"
         >
-          <!-- <img src="@/assets/svg/library/favorites.svg" width="128px"> -->
-
           <div class="no-lessons mt-6">
             No lessons found for this letter.
           </div>
@@ -193,7 +197,6 @@
       v-if="uploadDialog"
       v-model="uploadDialog"
     />
-    <!-- @input="closeDialogUpload" -->
   </v-card>
 </template>
 
@@ -219,7 +222,8 @@ export default defineComponent({
   },
   data: () => {
     return {
-      uploadDialog: false
+      uploadDialog: false,
+      showBtnDownloadAlllesson : false
     }
   },
   filters: {
@@ -234,12 +238,13 @@ export default defineComponent({
     const loading = ref(false)
     const loadingWorksheets = ref(false)
     const loadingCurrentLesson = ref(false)
+    const loadingDownloadLessonsFile = ref(false)
     const selectedLetter = ref(1)
     const lessons = ref([])
     const panel = ref()
     const { childId: studentId } = useChildRoute({ store, route, router })
     const { children } = useChild({ store })
-    const { getUploaded } = useOfflineWorksheet({ store })
+    const { getUploaded, getFileUpload, mergeFilesOfflineLesson } = useOfflineWorksheet({ store })
     const child = computed(() => children.value.find(({ id }) => id === studentId.value))
     const { getLessonsByCurriculumType } = useLessonApi({ child })
     const { getCurrentLesson, getCurrentLessonByChildrenId } = useChildLesson({ store, axios })
@@ -275,6 +280,7 @@ export default defineComponent({
       loading,
       loadingWorksheets,
       loadingCurrentLesson,
+      loadingDownloadLessonsFile,
       studentId,
       getUploaded,
       letters,
@@ -282,7 +288,9 @@ export default defineComponent({
       getCurrentLessonByChildrenId,
       lessons,
       panel,
-      selectedLetter
+      selectedLetter,
+      getFileUpload,
+      mergeFilesOfflineLesson
     }
   },
   computed: {
@@ -327,6 +335,44 @@ export default defineComponent({
       this.loadingCurrentLesson = true
       await this.getCurrentLessonByChildrenId(lessonId, Number(this.studentId))
       this.loadingCurrentLesson = false
+    },
+    downloadWorksheetsByLesson (worksheets : []) {
+      const worksheetOffline = worksheets.filter((e : any) => e.type === 'OFFLINE')
+      if (worksheetOffline.length) {
+        const { pdfUrl } = worksheetOffline[0]
+        window.open(pdfUrl, '_blank')
+      } else {
+        this.$snotify.error(
+          'this lesson does not have an offline type worksheet'
+        )
+      }
+    },
+    async downloadWorksheetsAllLesson () {
+      this.loadingDownloadLessonsFile = true
+      const { path } = await this.getFileUpload({
+        type    : 'upload-document',
+        folder  : 'lesson',
+        filename: `merge-worksheets-letter-${this.selectedLetter}.pdf`
+      })
+
+      if (path) {
+        window.open(path, '_blank')
+      } else {
+        let worksheetsOffline =  new Array()
+        this.lessons.map((e : any) => {
+          e.worksheets.find((w : any) => {
+            if (w.type === 'OFFLINE') worksheetsOffline.push(w.pdfUrl)
+          })
+        })
+
+        const { filePath } = await this.mergeFilesOfflineLesson({
+          files: worksheetsOffline,
+          folder: 'lesson',
+          filename: `merge-worksheets-letter-${this.selectedLetter}.pdf`
+        })
+        window.open(filePath, '_blank')
+      }
+      this.loadingDownloadLessonsFile = false
     }
   }
 })
