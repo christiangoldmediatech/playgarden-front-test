@@ -32,7 +32,7 @@
                   list-mode
                 />
                 <v-btn
-                  v-if="getCurrentLetter && !loading && lessons.length && showBtnDownloadAlllesson"
+                  v-if="getCurrentLetter && !loading && lessons.length"
                   text
                   large
                   @click.stop="downloadWorksheetsAllLesson()"
@@ -222,8 +222,7 @@ export default defineComponent({
   },
   data: () => {
     return {
-      uploadDialog: false,
-      showBtnDownloadAlllesson : false
+      uploadDialog: false
     }
   },
   filters: {
