@@ -18,7 +18,7 @@
           />
         </div>
 
-        <nuxt v-if="nuxt" />
+        <nuxt />
       </v-container>
     </v-col>
   </v-row>
@@ -26,10 +26,6 @@
 
 <script>
 export default {
-  name: 'PgLoadingScreen',
-
-  props: {
-    nuxt: Boolean
-  }
+  name: 'PgLoadingScreen'
 }
 </script>
