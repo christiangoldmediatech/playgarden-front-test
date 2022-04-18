@@ -306,6 +306,9 @@ export default defineComponent({
         isRemoving.value = true
         await removeUploadedOfflineWorksheet(filedId)
         await getUploadedOfflineWorksheets(false)
+        const lesson = store.getters['admin/curriculum/getLesson']
+        const lessonId = lesson.id
+        $nuxt.$emit('student-portafolio-update-worksheets-lesson', lessonId, true)
       } catch {
       } finally {
         isRemoving.value = false
@@ -454,6 +457,7 @@ export default defineComponent({
         $nuxt.$emit(APP_EVENTS.DASHBOARD_WORKSHEET_UPLOAD, lessonId)
         $snotify.success('Your worksheet has been uploaded!')
         $nuxt.$emit('dashboard-panel-update')
+        $nuxt.$emit('student-portafolio-update-worksheets-lesson', lessonId, false)
 
         uploadFinished.value = true
       } catch {
