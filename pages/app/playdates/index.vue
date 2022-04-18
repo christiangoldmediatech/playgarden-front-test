@@ -1,5 +1,5 @@
 <template>
-  <pg-loading :loading="loading">
+  <pg-loading :loading="loading" fullscreen>
     <v-col class="fill-height">
       <!-- ACTIVE PLAYDATES -->
       <div v-if="isPayingUser">
@@ -36,7 +36,7 @@
 
             <!-- WEEK NAVIGATOR -->
             <div class="d-flex justify-center align-center">
-              <week-selector :day="day" :loading="loading" @prev-week="removeWeek" @next-week="addWeek" />
+              <week-selector :day="day" @prev-week="removeWeek" @next-week="addWeek" />
             </div>
 
             <!-- THANKSGIVING -->
@@ -59,7 +59,6 @@
 
                 <v-btn
                   v-if="canGoToNextWeek"
-                  :loading="loading"
                   color="accent"
                   large
                   class="text-none !pg-shadow-button mt-6"
@@ -71,7 +70,7 @@
             </v-row>
 
             <!-- WEEK'S PLAYDATES -->
-            <v-row v-else-if="!loading && playdates.length" class="mt-6">
+            <v-row v-else-if="playdates.length" class="mt-6">
               <v-col v-for="playdate in playdates" :key="playdate.id" cols="12" md="6">
                 <card-playdate
                   :playdate="playdate"
@@ -83,7 +82,7 @@
             </v-row>
 
             <!--  NO PLAYDATES -->
-            <v-row v-else-if="!loading" class="mt-6">
+            <v-row class="mt-6">
               <v-col cols="12" class="text-center">
                 <div>
                   <underlined-title
@@ -96,7 +95,6 @@
 
                 <v-btn
                   v-if="canGoToNextWeek"
-                  :loading="loading"
                   color="accent"
                   large
                   class="text-none !pg-shadow-button mt-6"

@@ -1,5 +1,5 @@
 <template>
-  <pg-loading :loading="loading">
+  <pg-loading :loading="loading" fullscreen>
     <v-main>
       <v-container
         v-if="$vuetify.breakpoint.lgAndUp"

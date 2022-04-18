@@ -1,5 +1,5 @@
 <template>
-  <pg-loading :loading="loading">
+  <pg-loading :loading="loading" fullscreen>
     <dashboard-layout
       v-model="selectedChild"
       v-bind="{ lesson, loading, childId: childrenIds }"

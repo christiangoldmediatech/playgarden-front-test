@@ -1,5 +1,5 @@
 <template>
-  <pg-loading :loading="loading">
+  <pg-loading :loading="loading" fullscreen>
     <v-main class="pt-5 pt-md-16 mt-0 mt-md-5">
       <v-container fluid class="pa-0">
         <horizontal-ribbon-card
