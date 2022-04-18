@@ -217,7 +217,7 @@ export default {
                     src: activity.videos.videoUrl.HLS,
                     type: 'application/x-mpegURL'
                   },
-                  poster: activity.videos.thumbnail,
+                  poster: activity.videos.image,
                   lessonActivityId: id,
                   activityId: activity.id,
                   videoId: activity.videos.id,

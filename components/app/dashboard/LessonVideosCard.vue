@@ -75,7 +75,7 @@ export default {
     },
 
     playlist () {
-      return this.videos.map(({ activityType, name, description, videoUrl, thumbnail, id, viewed }) => {
+      return this.videos.map(({ activityType, name, description, videoUrl, image, id, viewed }) => {
         return {
           title: name,
           description,
@@ -86,7 +86,7 @@ export default {
               type: 'application/x-mpegURL'
             }
           ],
-          poster: thumbnail,
+          poster: image,
           videoId: id,
           viewed
         }

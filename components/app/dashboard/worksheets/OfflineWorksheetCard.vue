@@ -159,7 +159,7 @@ export default {
       const waitAndLoad = window.setInterval(() => {
         if (this.getLesson) {
           player.loadMedia({
-            poster: this.offlineWorksheet.videoDetail.thumbnail,
+            poster: this.offlineWorksheet.videoDetail.image,
             src: {
               src: this.offlineWorksheet.videoDetail.videoUrl.HLS,
               type: 'application/x-mpegURL'
