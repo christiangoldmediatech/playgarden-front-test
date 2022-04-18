@@ -14,10 +14,14 @@
       </span>
     </v-col>
     <v-col cols="12" class="mt-n6">
-      <img
-        class="mt-1 ml-6"
-        src="@/assets/png/lesson-letter.png"
-      >
+      <center>
+        <recorded-letter
+          v-if="getLetterCurriculumType"
+          class="mt-6"
+          v-bind="{ letter: getLetterCurriculumType, small: smallLetter }"
+          list-mode
+        />
+      </center>
     </v-col>
     <v-col cols="12">
       <span class="color-menu clickable" @click="sendSection('videoLesson')">
@@ -64,10 +68,13 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import RecordedLetter from '@/components/app/live-sessions/recorded/RecordedLetter.vue'
 
 export default {
   name: 'MenuLearnPlay',
-  components: {},
+  components: {
+    RecordedLetter
+  },
   data: () => {
     return {
       loading: false
@@ -88,6 +95,13 @@ export default {
     curriculumTypeId () {
       if (this.lesson && this.lesson.curriculumType) {
         return this.lesson.curriculumType.id
+      } else {
+        return null
+      }
+    },
+    getLetterCurriculumType () {
+      if (this.lesson && this.lesson.curriculumType) {
+        return this.lesson.curriculumType
       } else {
         return null
       }
