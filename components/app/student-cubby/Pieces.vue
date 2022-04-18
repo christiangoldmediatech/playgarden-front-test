@@ -6,14 +6,19 @@
         :text="`PUZZLE LETTER ${letter}`"
       />
       <v-row no-gutters>
-        <v-col :cols="($vuetify.breakpoint.smAndDown) ? '12' : '8'">
+        <v-col :cols="$vuetify.breakpoint.smAndDown ? '12' : '8'">
           <p class="mt-2">
-            <span :class="($vuetify.breakpoint.smAndDown) ? 'text-pieces' : ''">
-              Look at all the pieces you have got!
+            <span :class="$vuetify.breakpoint.smAndDown ? 'text-pieces' : ''">
+              Look at all the pieces you've got!
             </span>
           </p>
         </v-col>
-        <v-col v-if="!$vuetify.breakpoint.smAndDown && puzzle.piecesUnclocked !== puzzle.pieces">
+        <v-col
+          v-if="
+            !$vuetify.breakpoint.smAndDown &&
+              puzzle.piecesUnclocked !== puzzle.pieces
+          "
+        >
           <div>
             <span class="font-weight-black text-progress">
               PROGRESS
@@ -49,7 +54,14 @@
             :letter="letter"
           />
         </v-col>
-        <v-col v-if="(!$vuetify.breakpoint.smAndDown && puzzle.piecesUnclocked === puzzle.pieces)" class="mt-12" cols="2">
+        <v-col
+          v-if="
+            !$vuetify.breakpoint.smAndDown &&
+              puzzle.piecesUnclocked === puzzle.pieces
+          "
+          class="mt-12"
+          cols="2"
+        >
           <v-row justify="end" no-gutters>
             <pg-social-buttons
               class="mr-3"
@@ -64,11 +76,17 @@
         <v-col v-if="$vuetify.breakpoint.smAndDown" cols="12">
           <div class="mx-3">
             <center>
-              <span v-if="puzzle.piecesUnclocked !== puzzle.pieces" class="text-progress">
+              <span
+                v-if="puzzle.piecesUnclocked !== puzzle.pieces"
+                class="text-progress"
+              >
                 PROGRESS
               </span>
               <v-row justify="center" no-gutters>
-                <v-col v-if="puzzle.piecesUnclocked !== puzzle.pieces" cols="12">
+                <v-col
+                  v-if="puzzle.piecesUnclocked !== puzzle.pieces"
+                  cols="12"
+                >
                   <span class="ml-2 text-pieces">
                     {{ puzzle.piecesUnclocked }}/{{ puzzle.pieces }}
                   </span>
@@ -126,21 +144,21 @@ export default {
   }),
 
   computed: {
-    studentId () {
+    studentId() {
       return this.$route.query.id
     }
   },
 
   watch: {
-    studentId () {
+    studentId() {
       this.getPuzzle()
     },
-    puzzle () {
+    puzzle() {
       this.getPuzzle()
     }
   },
 
-  created () {
+  created() {
     if (this.puzzle) {
       this.getPuzzle()
     }
@@ -152,7 +170,7 @@ export default {
       'getPuzzleByChildId'
     ]),
 
-    getPuzzle () {
+    getPuzzle() {
       if (this.puzzle) {
         this.backgroundImage = this.puzzle.src
         this.columns = this.puzzle.columns || 5
@@ -186,12 +204,12 @@ export default {
   font-family: Poppins !important;
   font-style: normal !important;
   font-weight: bold !important;
-  color: #A7A7A7 !important;
+  color: #a7a7a7 !important;
 }
 
 .text-pieces {
   font-size: 13px !important;
-  color: #A7A7A7 !important;
+  color: #a7a7a7 !important;
   font-weight: bold !important;
   font-family: Poppins !important;
 }

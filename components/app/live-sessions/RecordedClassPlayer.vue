@@ -21,6 +21,9 @@ import {
   useFavoritesApi,
   useFavorites
 } from '@/composables'
+
+// @ts-ignore
+import PgVideoPlayer from '@gold-media-tech/pg-video-player'
 import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
 import {
   PlayerInstance,
@@ -29,6 +32,10 @@ import {
 
 export default defineComponent({
   name: 'RecordedClassPlayer',
+
+  components: {
+    PgVideoPlayer
+  },
 
   setup() {
     const $nuxt = useNuxtHelper()

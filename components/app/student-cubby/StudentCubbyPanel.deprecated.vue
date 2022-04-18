@@ -11,7 +11,7 @@
 
     <v-card-text>
       <span class="d-block text-center text-h6 font-weight-bold">
-        STUDENTS CUBBY
+        STUDENT CUBBY
       </span>
 
       <v-row no-gutters justify="center" class="mb-8">
@@ -33,7 +33,10 @@
       >
         <template v-slot:selection="{ item }">
           <div class="cubby-item">
-            <img class="cubby-icon" :src="require(`@/assets/png/student-cubby/${item.img}`)">
+            <img
+              class="cubby-icon"
+              :src="require(`@/assets/png/student-cubby/${item.img}`)"
+            >
             <span class="cubby-text">
               {{ item.text }}
             </span>
@@ -42,7 +45,10 @@
 
         <template v-slot:item="{ item }">
           <div class="cubby-item">
-            <img class="cubby-icon" :src="require(`@/assets/png/student-cubby/${item.img}`)">
+            <img
+              class="cubby-icon"
+              :src="require(`@/assets/png/student-cubby/${item.img}`)"
+            >
             <span class="cubby-text">
               {{ item.text }}
             </span>
@@ -68,7 +74,10 @@
               }"
             >
               <div class="cubby-item">
-                <img class="cubby-icon" :src="require(`@/assets/png/student-cubby/${link.img}`)">
+                <img
+                  class="cubby-icon"
+                  :src="require(`@/assets/png/student-cubby/${link.img}`)"
+                >
                 <span class="cubby-text">
                   {{ link.text }}
                 </span>
@@ -93,10 +102,13 @@ export default {
     ChildSelect
   },
 
-  data () {
+  data() {
     return {
       selectedChildId: null,
-      selectedRoute: this.$route.name === 'app-student-cubby' ? 'app-student-cubby-puzzle' : this.$route.name,
+      selectedRoute:
+        this.$route.name === 'app-student-cubby'
+          ? 'app-student-cubby-puzzle'
+          : this.$route.name,
       links: [
         {
           text: 'PUZZLE',
@@ -132,36 +144,34 @@ export default {
 
     ...mapGetters('children', { children: 'rows' }),
 
-    id () {
+    id() {
       return this.$route.query.id ? parseInt(this.$route.query.id) : null
     },
 
-    selected () {
-      const routes = this.links.map(({ route }) =>
-        RegExp(`${route}*`)
-      )
+    selected() {
+      const routes = this.links.map(({ route }) => RegExp(`${route}*`))
       return routes.findIndex(route => route.test(this.$route.name))
     },
 
-    selectedChildLevel () {
+    selectedChildLevel() {
       const child = this.children.find(({ id }) => id === this.selectedChildId)
       return child ? child.level : 'LEVEL'
     }
   },
 
   watch: {
-    selectedChildId (id) {
+    selectedChildId(id) {
       if (id) {
         this.$router.push({ name: this.$route.name, query: { id } })
       }
     },
 
-    selectedRoute (val) {
+    selectedRoute(val) {
       this.$router.push({ name: val, query: { id: this.selectedChildId } })
     }
   },
 
-  created () {
+  created() {
     if (this.id) {
       this.selectedChildId = parseInt(this.id)
     } else if (this.currentChild.length) {
@@ -188,7 +198,7 @@ export default {
     padding-bottom: 12px;
     padding-left: 24px;
     &-selected {
-      border: 3px solid #B2E68D;
+      border: 3px solid #b2e68d;
     }
   }
   &-item {
