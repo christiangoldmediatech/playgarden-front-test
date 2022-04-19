@@ -149,7 +149,7 @@
 <script lang="ts">
 import { useNuxtHelper, useMusic } from '@/composables'
 import { MusicLibrary } from '@/models'
-import { defineComponent, ref, nextTick, computed } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, ref, nextTick, computed } from '@nuxtjs/composition-api'
 import MusicQueue from '@/components/app/music/MusicQueue.vue'
 
 export default defineComponent({
@@ -200,9 +200,11 @@ export default defineComponent({
     const changeSong = nuxt.$on('change-song', (song: MusicLibrary) => {
       if (song) {
         currentSong.value = song
-        if (!song.autoPlay) {
-          refreshSongData(song)
-          playSong(0)
+        refreshSongData(song)
+        playSong(0)
+        if (song.autoPlay) {
+          audioPlayer.value?.pause()
+        } else {
           audioPlayer.value?.play()
         }
       }
@@ -229,6 +231,10 @@ export default defineComponent({
       removeSongFromPlaylist(playlistIndex)
       audioPlayer.value?.removeSongByIndex(playlistIndex)
     }
+
+    onMounted(() => {
+      audioPlayer.value?.play()
+    })
 
     return {
       audioPlayer,

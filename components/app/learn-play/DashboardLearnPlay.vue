@@ -227,7 +227,6 @@
             cols="4"
           >
             <v-skeleton-loader
-              v-bind="attrs"
               type="list-item-avatar"
             />
           </v-card>
@@ -314,7 +313,6 @@
                   cols="4"
                 >
                   <v-skeleton-loader
-                    v-bind="attrs"
                     type="list-item-avatar"
                   />
                 </v-card>

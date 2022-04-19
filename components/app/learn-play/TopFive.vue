@@ -6,7 +6,7 @@
         :key="`top-item-${index}`"
         width="100%"
       >
-        <v-row no-gutters class="pl-3 mt-4 clickable" @click="currentSong(song)">
+        <v-row no-gutters class="pl-3 mt-4 clickable" @click="changeSong(song)">
           <v-col
             cols="2"
           >
@@ -44,6 +44,12 @@ export default defineComponent({
     const currentSong = (song: MusicLibrary) => {
       nuxt.$emit('change-song', song)
     }
+
+    const changeSong = (song: MusicLibrary) => {
+      song.autoPlay = true
+      currentSong(song)
+    }
+
     onMounted(() => {
       const firstSong = props.songs[0]
       firstSong.autoPlay = false
@@ -51,7 +57,7 @@ export default defineComponent({
     })
 
     return {
-      currentSong
+      changeSong
     }
   }
 })
