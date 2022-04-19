@@ -56,7 +56,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useRoute, computed, watch, useRouter, onMounted, ref, useStore } from '@nuxtjs/composition-api'
+import {
+  defineComponent,
+  useRoute,
+  computed,
+  watch,
+  useRouter,
+  onMounted,
+  ref,
+  useStore
+} from '@nuxtjs/composition-api'
 import StudentCubbyItems from '@/components/app/student-cubby/StudentCubbyItems.vue'
 import ChildSelect from '@/components/app/ChildSelect.vue'
 import { TypedStore } from '@/models'
@@ -70,17 +79,22 @@ export default defineComponent({
     StudentCubbyItems
   },
 
-  setup (_, ctx) {
+  setup(_, ctx) {
     const route = useRoute()
     const router = useRouter()
     const store = useStore<TypedStore>()
     const vuetify = useVuetifyHelper()
-    const { childId } = useChildRoute({ store, route, router, shouldRedirect: true })
+    const { childId } = useChildRoute({
+      store,
+      route,
+      router,
+      shouldRedirect: true
+    })
 
     const studentCubbyItems = [
       {
         text: 'PUZZLE',
-        title: 'STUDENTS CUBBY',
+        title: 'STUDENT CUBBY',
         imgName: 'puzzle-piece.png',
         routeName: 'app-student-cubby-puzzle'
       },
@@ -111,7 +125,11 @@ export default defineComponent({
     ]
 
     const selectedCubbyItem = computed(() => {
-      return studentCubbyItems.find(item => route.value.name?.includes(item.routeName)) || {}
+      return (
+        studentCubbyItems.find(item =>
+          route.value.name?.includes(item.routeName)
+        ) || {}
+      )
     })
 
     const isMobile = computed(() => vuetify.breakpoint.mobile)
