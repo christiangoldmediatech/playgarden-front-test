@@ -4,35 +4,38 @@ import { jsonCopy, axios } from '@/utils'
 import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
 
 type VideosFavoritesChildrenResponse = Entity & { video: Video }
+type FavoriteId = { favoriteId: number, videoId: number }
 
-const favoriteVideos = ref<VideosFavoritesChildrenResponse[]>([])
-const favoriteVideoIds = ref<number[]>([])
+const favoriteVideoIds = ref<FavoriteId[]>([])
 const isLoadingFavorites = ref(false)
 
-const getAllFavorites = async () => {
-  favoriteVideos.value = await axios.$get('/videos-favorites/children')
-  favoriteVideoIds.value = favoriteVideos.value.map(
-    favorite => favorite.video.id
+async function getAllFavorites(): Promise<void> {
+  const response = await axios.$get('/videos-favorites/children') as VideosFavoritesChildrenResponse[]
+  favoriteVideoIds.value = response.map(
+    favorite => ({ favoriteId: favorite.id, videoId: favorite.video.id })
   )
 }
 
-const getFavoriteVideo = (videoId: number) => {
-  return favoriteVideos.value.find((favorite) => {
-    return favorite.video.id === videoId
+function getFavoriteVideo(videoId: number): FavoriteId | undefined {
+  return favoriteVideoIds.value.find((favorite) => {
+    return favorite.videoId === videoId
   })
 }
 
-const isVideoFavorite = (videoId: number) => {
-  return favoriteVideoIds.value.includes(videoId)
+function isVideoFavorite(videoId: number, videoIds?: FavoriteId[]): boolean {
+  if (videoIds) {
+    return Boolean(videoIds.find((favorite) => {
+      return favorite.videoId === videoId
+    }))
+  }
+  return Boolean(getFavoriteVideo(videoId))
 }
 
-const curatePlaylist = (playlist: MediaObject[]): MediaObject[] => {
+const curatePlaylist = (playlist: MediaObject[], videoIds?: FavoriteId[]): MediaObject[] => {
   return playlist.map((mediaObject) => {
     const mediaObjectCopy = jsonCopy(mediaObject)
     if (mediaObjectCopy.meta && mediaObjectCopy.meta.videoId) {
-      mediaObjectCopy.meta.favorite = isVideoFavorite(
-        mediaObjectCopy.meta.videoId
-      )
+      mediaObjectCopy.meta.favorite = isVideoFavorite(mediaObjectCopy.meta.videoId, videoIds)
     }
     return mediaObjectCopy
   })
@@ -41,7 +44,6 @@ const curatePlaylist = (playlist: MediaObject[]): MediaObject[] => {
 export const useFavorites = () => {
   return {
     isLoadingFavorites,
-    favoriteVideos,
     favoriteVideoIds,
     isVideoFavorite,
     getFavoriteVideo,

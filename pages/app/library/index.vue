@@ -1,135 +1,120 @@
 <template>
-  <pg-loading :loading="isPageLoading" fullscreen>
-    <v-main class="pt-14 pt-md-16 mt-90 mt-md-9">
-      <featured-video
-        v-if="featured"
-        :video="featured"
-        @play="playFeaturedVideo"
-      />
+  <library-layout
+    title="Library"
+    :loading="isLoadingInitialData"
+    show-favorites
+  >
+    <!-- Video of the Week / More for you -->
+    <library-inline-player />
 
-      <library-categories
-        v-bind="{ categories: activities }"
-        :favorites="true"
-      />
-
-      <v-container class="text-center pt-12 pb-8" fluid>
-        <underlined-title
-          font-size="40px"
-          text="Master subjects to collect  patches for your Student Cubby!"
+    <!-- Browse by letters / Browse by category -->
+    <library-content-section
+      :titles="{
+        columnA: 'Browse by Letters',
+        columnB: 'Browse by Category'
+      }"
+      :height-override="`${libraryLetterBrowserY + 64}px`"
+    >
+      <template #columnA>
+        <library-letter-video-browser
+          id="library-letter-video-browser"
+          v-bind="{ letters }"
         />
-      </v-container>
-
-      <favorites-container v-bind="{ favorites, initialFavoritesLoading: isFavoriteFirstLoad }" />
-
-      <div
-        v-for="activityType in activities"
-        :id="`activity-type-${activityType.id}-container`"
-        :key="`activity-type-${activityType.id}`"
-      >
-        <v-lazy
-          :options="{
-            threshold: .5,
+      </template>
+      <template #columnB>
+        <category-video-card
+          v-for="(category, index) in categories"
+          :key="`libray-category-id-${category.id}`"
+          :class="{
+            'mr-2 mr-lg-0 mb-lg-2': !isLastIndex(index, categories)
           }"
-          min-height="720"
-        >
-          <activity-type-container
-            :total="activityType.playlist.length"
-            v-bind="{ activityType }"
-          />
-        </v-lazy>
-      </div>
-      <activity-player />
-    </v-main>
-  </pg-loading>
+          v-bind="{ ...category }"
+        />
+      </template>
+    </library-content-section>
+  </library-layout>
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeUnmount, onMounted, ref, useRoute } from '@nuxtjs/composition-api'
-import FeaturedVideo from '@/components/app/library/FeaturedVideo.vue'
-import ActivityTypeContainer from '@/components/app/library/ActivityTypeContainer.vue'
-import FavoritesContainer from '@/components/app/library/FavoritesContainer.vue'
-import LibraryCategories from '@/components/app/library/LibraryCategories.vue'
-import ActivityPlayer from '@/components/app/activities/ActivityPlayer.vue'
-import { useActivity, useLibrary, useNuxtHelper, useVuetifyHelper } from '@/composables'
+import {
+  defineComponent,
+  ref,
+  onMounted,
+  onBeforeUnmount,
+  nextTick
+} from '@nuxtjs/composition-api'
+import { useLibraryV2, useWindowDimensions } from '@/composables'
+import { isLastIndex } from '@/utils/array.util'
+
+import LibraryLayout from '@/components/app/library/LibraryLayout.vue'
+import LibraryContentSection from '@/components/app/library/LibraryContentSection.vue'
+import LibraryInlinePlayer from '@/components/app/library/LibraryInlinePlayer.vue'
+import LibraryLetterVideoBrowser from '@/components/app/library/LibraryLetterVideoBrowser.vue'
+import CategoryVideoCard from '@/components/app/library/CategoryVideoCard.vue'
 
 export default defineComponent({
-  name: 'Index',
+  name: 'LibraryIndexPage',
 
   components: {
-    FeaturedVideo,
-    LibraryCategories,
-    ActivityTypeContainer,
-    FavoritesContainer,
-    ActivityPlayer
+    LibraryLayout,
+    LibraryContentSection,
+    LibraryInlinePlayer,
+    LibraryLetterVideoBrowser,
+    CategoryVideoCard
   },
 
-  setup () {
-    const nuxt = useNuxtHelper()
-    const vuetify = useVuetifyHelper()
-    const route = useRoute()
-
+  setup() {
+    // Main important functions for library
     const {
-      activities,
-      favorites,
-      featured,
-      getActivities,
-      refreshFavoriteActivities
-    } = useActivity()
-    const { getAllFavorites } = useLibrary()
+      getInitialData,
+      categories,
+      letters
+    } = useLibraryV2()
 
-    const isPageLoading = ref(activities.value.length === 0)
-    const isFavoriteFirstLoad = ref(true)
+    // Watch library letter browser height
+    const {
+      generateUpdaterFunctions,
+      addElementDimensionListeners,
+      removeElementDimensionListeners
+    } = useWindowDimensions()
+    const libraryLetterBrowserX = ref<number>(0)
+    const libraryLetterBrowserY = ref<number>(0)
+    const {
+      updater: updateLibLetterDimensions,
+      throttled: throttledUpdateLibLetterDimensions
+    } = generateUpdaterFunctions(
+      '#library-letter-video-browser',
+      libraryLetterBrowserX,
+      libraryLetterBrowserY
+    )
 
+    // Get initial data to populate page
+    const isLoadingInitialData = ref(true)
     onMounted(async () => {
-      await getActivities()
-      isPageLoading.value = false
-      isFavoriteFirstLoad.value = false
-
-      getAllFavorites()
-      navigateToSection(route.value.hash)
+      addElementDimensionListeners(
+        updateLibLetterDimensions,
+        throttledUpdateLibLetterDimensions
+      )
+      await getInitialData()
+      isLoadingInitialData.value = false
+      nextTick(() => {
+        updateLibLetterDimensions()
+      })
     })
-
-    // setup favorites callback
-    nuxt.$on('library-update-favorites', refreshFavoriteActivities)
 
     onBeforeUnmount(() => {
-      nuxt.$off('library-update-favorites')
+      removeElementDimensionListeners(
+        updateLibLetterDimensions,
+        throttledUpdateLibLetterDimensions
+      )
     })
 
-    const playFeaturedVideo = () => {
-      const featuredId = featured.value.id
-      const featuredActTypeId = featured.value.activityType?.id
-
-      const playlist = activities.value.find(actType => actType.id === featuredActTypeId)?.playlist
-
-      if (!playlist) {
-        return
-      }
-
-      const index = playlist.findIndex(playItem => playItem.activityId === featuredId)
-
-      nuxt.$emit('open-activity-player', { playlist, index })
-    }
-
-    const navigateToSection = (hash: string) => {
-      if (!hash) {
-        return
-      }
-
-      try {
-        setTimeout(() => {
-          vuetify.goTo(hash, { offset: 200 })
-        }, 1000)
-      } catch (err) {}
-    }
-
     return {
-      activities,
-      favorites,
-      featured,
-      isFavoriteFirstLoad,
-      isPageLoading,
-      playFeaturedVideo
+      isLoadingInitialData,
+      categories,
+      letters,
+      libraryLetterBrowserY,
+      isLastIndex
     }
   }
 })
