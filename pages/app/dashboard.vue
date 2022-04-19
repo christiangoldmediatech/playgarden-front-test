@@ -1,7 +1,12 @@
 <template>
-  <dashboard-layout v-model="selectedChild" v-bind="{ lesson, loading, childId: childrenIds }">
-    <nuxt-child />
-  </dashboard-layout>
+  <pg-loading :loading="loading" fullscreen>
+    <dashboard-layout
+      v-model="selectedChild"
+      v-bind="{ lesson, loading, childId: childrenIds }"
+    >
+      <nuxt-child />
+    </dashboard-layout>
+  </pg-loading>
 </template>
 
 <script>
@@ -66,6 +71,9 @@ export default {
         }
       })
     }
+
+    this.loading = true
+
     if (this.overrideMode) {
       const currentChild = this.currentChild[0].id
       await this.getAllChildren()

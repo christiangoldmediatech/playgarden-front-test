@@ -1,19 +1,6 @@
 <template>
-  <v-main :class="{ 'fill-height': isPageLoading }" class="pt-14 pt-md-16 mt-90 mt-md-9">
-    <v-row
-      v-if="isPageLoading"
-      no-gutters
-      class="fill-height"
-      justify="center"
-      align="center"
-    >
-      <v-col>
-        <v-container fill-height fluid>
-          <pg-loading />
-        </v-container>
-      </v-col>
-    </v-row>
-    <template v-else>
+  <pg-loading :loading="isPageLoading" fullscreen>
+    <v-main class="pt-14 pt-md-16 mt-90 mt-md-9">
       <featured-video
         v-if="featured"
         :video="featured"
@@ -52,8 +39,8 @@
         </v-lazy>
       </div>
       <activity-player />
-    </template>
-  </v-main>
+    </v-main>
+  </pg-loading>
 </template>
 
 <script lang="ts">

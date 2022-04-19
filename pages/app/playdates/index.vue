@@ -1,117 +1,117 @@
 <template>
-  <v-col class="fill-height">
-    <!-- ACTIVE PLAYDATES -->
-    <div v-if="isPayingUser">
-      <v-row align="center" class="fill-height" justify="space-between" no-gutters>
-        <!-- HEADER -->
-        <v-col cols="12" md="auto" class="flex-grow-1" order="2" order-md="1">
-          <underlined-title
-            text="Educational Playdates"
-            font-size="36px"
-            font-size-mobile="24px"
-          />
-        </v-col>
+  <pg-loading :loading="loading" fullscreen>
+    <v-col class="fill-height">
+      <!-- ACTIVE PLAYDATES -->
+      <div v-if="isPayingUser">
+        <v-row align="center" class="fill-height" justify="space-between" no-gutters>
+          <!-- HEADER -->
+          <v-col cols="12" md="auto" class="flex-grow-1" order="2" order-md="1">
+            <underlined-title
+              text="Educational Playdates"
+              font-size="36px"
+              font-size-mobile="24px"
+            />
+          </v-col>
 
-        <!-- BUTTON -->
-        <v-col cols="12" md="auto" class="flex-shrink-1 text-right py-6 py-md-0" order="1" order-md="2">
-          <v-btn
-            :to="{ name: 'app-playdates-my-playdates' }"
-            :small="isMobile"
-            color="accent"
-            nuxt
-            class="!pg-shadow-button"
-          >
-            MY PLAYDATES
-          </v-btn>
-        </v-col>
+          <!-- BUTTON -->
+          <v-col cols="12" md="auto" class="flex-shrink-1 text-right py-6 py-md-0" order="1" order-md="2">
+            <v-btn
+              :to="{ name: 'app-playdates-my-playdates' }"
+              :small="isMobile"
+              color="accent"
+              nuxt
+              class="!pg-shadow-button"
+            >
+              MY PLAYDATES
+            </v-btn>
+          </v-col>
 
-        <v-col cols="12" order="3">
-          <!-- PAGE DESCRIPTION -->
-          <p class="text-body-2 text-md-body-1 py-4">
-            Join your friends and socialize at a Playgarden Prep Online Playdate!
-            These 30 minute Zoom sessions are designed to give children the opportunity to connect with peers while learning under the guidance of a Playgarden Prep instructor.
-            You can sign up for up to one Playdate per week; make sure to sign up for the same weekly Playdate, so that you can see your friends every week!
-          </p>
+          <v-col cols="12" order="3">
+            <!-- PAGE DESCRIPTION -->
+            <p class="text-body-2 text-md-body-1 py-4">
+              Join your friends and socialize at a Playgarden Prep Online Playdate!
+              These 30 minute Zoom sessions are designed to give children the opportunity to connect with peers while learning under the guidance of a Playgarden Prep instructor.
+              You can sign up for up to one Playdate per week; make sure to sign up for the same weekly Playdate, so that you can see your friends every week!
+            </p>
 
-          <!-- WEEK NAVIGATOR -->
-          <div class="d-flex justify-center align-center">
-            <week-selector :day="day" :loading="loading" @prev-week="removeWeek" @next-week="addWeek" />
-          </div>
+            <!-- WEEK NAVIGATOR -->
+            <div class="d-flex justify-center align-center">
+              <week-selector :day="day" @prev-week="removeWeek" @next-week="addWeek" />
+            </div>
 
-          <!-- THANKSGIVING -->
-          <v-row v-if="isThanksgivingWeek" class="mt-6">
-            <v-col cols="12" class="text-center">
-              <div>
-                <underlined-title
-                  text="Happy Thanksgiving ✨"
-                  font-size="32px"
-                  font-size-mobile="24px"
-                  line-color="#ffab37"
+            <!-- THANKSGIVING -->
+            <v-row v-if="isThanksgivingWeek" class="mt-6">
+              <v-col cols="12" class="text-center">
+                <div>
+                  <underlined-title
+                    text="Happy Thanksgiving ✨"
+                    font-size="32px"
+                    font-size-mobile="24px"
+                    line-color="#ffab37"
+                  />
+                </div>
+
+                <div class="mt-4">
+                  <p class="text-body-2 text-md-body-1 py-4">
+                    We are not having Playdates this week, you can reserve your spot for the following weeks!
+                  </p>
+                </div>
+
+                <v-btn
+                  v-if="canGoToNextWeek"
+                  color="accent"
+                  large
+                  class="text-none !pg-shadow-button mt-6"
+                  @click="goToNextWeek"
+                >
+                  Check next week
+                </v-btn>
+              </v-col>
+            </v-row>
+
+            <!-- WEEK'S PLAYDATES -->
+            <v-row v-else-if="playdates.length" class="mt-6">
+              <v-col v-for="playdate in playdates" :key="playdate.id" cols="12" md="6">
+                <card-playdate
+                  :playdate="playdate"
+                  :is-in-a-playdate="isInAPlaydate"
+                  @spot-reserved="fetchPlaydatesForDate"
+                  @spot-canceled="fetchPlaydatesForDate"
                 />
-              </div>
+              </v-col>
+            </v-row>
 
-              <div class="mt-4">
-                <p class="text-body-2 text-md-body-1 py-4">
-                  We are not having Playdates this week, you can reserve your spot for the following weeks!
-                </p>
-              </div>
+            <!--  NO PLAYDATES -->
+            <v-row class="mt-6">
+              <v-col cols="12" class="text-center">
+                <div>
+                  <underlined-title
+                    text="There aren't any playdates for this week."
+                    font-size="32px"
+                    font-size-mobile="24px"
+                    line-color="#ffab37"
+                  />
+                </div>
 
-              <v-btn
-                v-if="canGoToNextWeek"
-                :loading="loading"
-                color="accent"
-                large
-                class="text-none !pg-shadow-button mt-6"
-                @click="goToNextWeek"
-              >
-                Check next week
-              </v-btn>
-            </v-col>
-          </v-row>
+                <v-btn
+                  v-if="canGoToNextWeek"
+                  color="accent"
+                  large
+                  class="text-none !pg-shadow-button mt-6"
+                  @click="goToNextWeek"
+                >
+                  Check next week
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+      </div>
 
-          <!-- WEEK'S PLAYDATES -->
-          <v-row v-else-if="!loading && playdates.length" class="mt-6">
-            <v-col v-for="playdate in playdates" :key="playdate.id" cols="12" md="6">
-              <card-playdate
-                :playdate="playdate"
-                :is-in-a-playdate="isInAPlaydate"
-                @spot-reserved="fetchPlaydatesForDate"
-                @spot-canceled="fetchPlaydatesForDate"
-              />
-            </v-col>
-          </v-row>
-
-          <!--  NO PLAYDATES -->
-          <v-row v-else-if="!loading" class="mt-6">
-            <v-col cols="12" class="text-center">
-              <div>
-                <underlined-title
-                  text="There aren't any playdates for this week."
-                  font-size="32px"
-                  font-size-mobile="24px"
-                  line-color="#ffab37"
-                />
-              </div>
-
-              <v-btn
-                v-if="canGoToNextWeek"
-                :loading="loading"
-                color="accent"
-                large
-                class="text-none !pg-shadow-button mt-6"
-                @click="goToNextWeek"
-              >
-                Check next week
-              </v-btn>
-            </v-col>
-          </v-row>
-        </v-col>
-      </v-row>
-    </div>
-
-    <!-- PAYWALL -->
-    <paywall v-else />
-  </v-col>
+      <!-- PAYWALL -->
+      <paywall v-else />
+    </v-col>
+  </pg-loading>
 </template>
 
 <script lang="ts">

@@ -1,430 +1,432 @@
 <template>
-  <v-row no-gutters>
-    <!-- Desktop Title -->
-    <v-col cols="12" class="d-none d-md-block">
-      <div class="pb-6 text-uppercase font-weight-bold text-h4 grey--text text--darken-2">
-        Membership
-      </div>
-    </v-col>
-
-    <!-- Membership Billing Information -->
-    <v-col cols="12" md="6" class="mb-6 pr-md-8 mb-md-0">
-      <v-card class="mb-6 pa-4 px-md-10 py-md-6 card-custom-border">
-        <!-- Desktop SVG -->
-        <div class="justify-center pb-4 d-none d-md-flex">
-          <img
-            height="100px"
-            src="@/assets/svg/membership.svg"
-          >
+  <pg-loading :loading="loading">
+    <v-row no-gutters>
+      <!-- Desktop Title -->
+      <v-col cols="12" class="d-none d-md-block">
+        <div class="pb-6 text-uppercase font-weight-bold text-h4 grey--text text--darken-2">
+          Membership
         </div>
+      </v-col>
 
-        <!-- Mobile SVG and Title= -->
-        <div class="justify-center py-2 d-flex d-md-none">
-          <img
-            height="45px"
-            src="@/assets/svg/membership.svg"
-          >
-          <span class="mt-1 ml-2 text-uppercase font-weight-bold text-h5 grey--text text--darken-2">
-            Membership
-          </span>
-        </div>
+      <!-- Membership Billing Information -->
+      <v-col cols="12" md="6" class="mb-6 pr-md-8 mb-md-0">
+        <v-card class="mb-6 pa-4 px-md-10 py-md-6 card-custom-border">
+          <!-- Desktop SVG -->
+          <div class="justify-center pb-4 d-none d-md-flex">
+            <img
+              height="100px"
+              src="@/assets/svg/membership.svg"
+            >
+          </div>
 
-        <div class="my-2 text-center body-1 text-md-h6 font-weight-medium grey--text text--darken-2">
-          <small class="font-weight-bold">Information about your membership</small>
-        </div>
+          <!-- Mobile SVG and Title= -->
+          <div class="justify-center py-2 d-flex d-md-none">
+            <img
+              height="45px"
+              src="@/assets/svg/membership.svg"
+            >
+            <span class="mt-1 ml-2 text-uppercase font-weight-bold text-h5 grey--text text--darken-2">
+              Membership
+            </span>
+          </div>
 
-        <div v-if="hasMembership">
-          <!-- Trial Period Description -->
-          <v-row v-if="billing.status === 'trialing'" no-gutters>
-            <v-col cols="12" class="mb-1 text-h6 grey--text">
-              <small>Free trial period ends:</small>
-            </v-col>
+          <div class="my-2 text-center body-1 text-md-h6 font-weight-medium grey--text text--darken-2">
+            <small class="font-weight-bold">Information about your membership</small>
+          </div>
 
-            <v-col cols="12" class="mb-1 text-h6 black--text font-weight-bold">
-              {{ billing.trialEndDate }}
-            </v-col>
-          </v-row>
-
-          <!-- Next Billing Date -->
-          <v-row v-else no-gutters class="mb-3">
-            <v-col cols="12" class="mb-1 text-h6 grey--text">
-              <small>Your next billing date is:</small>
-            </v-col>
-
-            <v-col cols="12" class="mb-1 text-h6 grey--text font-weight-bold">
-              {{ billing.nextBillingDate }}
-            </v-col>
-          </v-row>
-
-          <!-- Monthly Membership Fee -->
-          <v-row no-gutters class="mb-3">
-            <v-col cols="12" class="mb-1 text-h6 grey--text">
-              <small>Your {{ membershipInterval }} membership fee is:</small>
-            </v-col>
-
-            <v-col v-if="billing.planAmountDiscount" cols="12" class="mb-1 text-h6 black--text font-weight-bold">
-              <div>
-                <span>{{
-                  billing.planAmountDiscount.toLocaleString("en-US", {
-                    style: "currency",
-                    currency: "USD",
-                  })
-                }}</span>
-                <span class="strikethrough old_price grey--text">
-                  {{
-                    billing.planAmount.toLocaleString("en-US", {
-                      style: "currency",
-                      currency: "USD",
-                    })
-                  }}
-                </span>
-              </div>
-            </v-col>
-            <v-col v-else-if="billing.percentOff" cols="12" class="mb-1 text-h6 black--text font-weight-bold">
-              <div>
-                <span>{{
-                  getTotalPay.toLocaleString("en-US", {
-                    style: "currency",
-                    currency: "USD",
-                  })
-                }}</span>
-                <span class="strikethrough old_price grey--text">
-                  {{
-                    billing.planAmount.toLocaleString("en-US", {
-                      style: "currency",
-                      currency: "USD",
-                    })
-                  }}
-                </span>
-              </div>
-            </v-col>
-            <v-col v-else cols="12" class="mb-1 text-h6 black--text font-weight-bold">
-              <div>
-                <span>{{
-                  billing.planAmount.toLocaleString("en-US", {
-                    style: "currency",
-                    currency: "USD",
-                  })
-                }}</span>
-              </div>
-            </v-col>
-          </v-row>
-
-          <!-- Discount -->
-          <v-row>
-            <v-col cols="5" class="mb-1 pg-text-base pg-font-medium grey--text pg-py-0">
-              <span v-if="billing.planAmountDiscount || billing.percentOff">Coupon applied:</span>
-            </v-col>
-            <v-col cols="7" class="justify-end mb-1 pg-py-0">
-              <div class="text-right md:pg-text-base" @click="addCoupon = !addCoupon">
-                <span class="text-decoration-underline add-coupon">
-                  <span>Add coupon code</span>
-                </span>
-                <v-icon small color="accent" class="text-h7 hidden-md-and-down">
-                  mdi-plus
-                </v-icon>
-              </div>
-            </v-col>
-
-            <template v-if="billing.planAmountDiscount || billing.percentOff" no-gutters>
-              <v-col class="mt-1" cols="12" md="5">
-                <span class="mb-3 text-h7 black--text font-weight-bold pg-uppercase">{{ billing.discountCode }}</span>
+          <div v-if="hasMembership">
+            <!-- Trial Period Description -->
+            <v-row v-if="billing.status === 'trialing'" no-gutters>
+              <v-col cols="12" class="mb-1 text-h6 grey--text">
+                <small>Free trial period ends:</small>
               </v-col>
 
-              <v-col cols="12" md="7" class="mt-1 mb-3">
-                <div class="text-right">
-                  <span v-if="billing.percentOff" class="mb-3 discount grey--text font-weight-bold">
-                    {{ billing.percentOff }} %
-                  </span>
-                  <span v-if="billing.amountOff" class="mb-3 discount grey--text font-weight-bold">
-                    $ {{
-                      getAmountOff.toLocaleString("en-US", {
+              <v-col cols="12" class="mb-1 text-h6 black--text font-weight-bold">
+                {{ billing.trialEndDate }}
+              </v-col>
+            </v-row>
+
+            <!-- Next Billing Date -->
+            <v-row v-else no-gutters class="mb-3">
+              <v-col cols="12" class="mb-1 text-h6 grey--text">
+                <small>Your next billing date is:</small>
+              </v-col>
+
+              <v-col cols="12" class="mb-1 text-h6 grey--text font-weight-bold">
+                {{ billing.nextBillingDate }}
+              </v-col>
+            </v-row>
+
+            <!-- Monthly Membership Fee -->
+            <v-row no-gutters class="mb-3">
+              <v-col cols="12" class="mb-1 text-h6 grey--text">
+                <small>Your {{ membershipInterval }} membership fee is:</small>
+              </v-col>
+
+              <v-col v-if="billing.planAmountDiscount" cols="12" class="mb-1 text-h6 black--text font-weight-bold">
+                <div>
+                  <span>{{
+                    billing.planAmountDiscount.toLocaleString("en-US", {
+                      style: "currency",
+                      currency: "USD",
+                    })
+                  }}</span>
+                  <span class="strikethrough old_price grey--text">
+                    {{
+                      billing.planAmount.toLocaleString("en-US", {
                         style: "currency",
                         currency: "USD",
                       })
                     }}
                   </span>
-                  <small class="grey--text font-weight-bold discount">discount on your membership</small>
                 </div>
               </v-col>
-            </template>
+              <v-col v-else-if="billing.percentOff" cols="12" class="mb-1 text-h6 black--text font-weight-bold">
+                <div>
+                  <span>{{
+                    getTotalPay.toLocaleString("en-US", {
+                      style: "currency",
+                      currency: "USD",
+                    })
+                  }}</span>
+                  <span class="strikethrough old_price grey--text">
+                    {{
+                      billing.planAmount.toLocaleString("en-US", {
+                        style: "currency",
+                        currency: "USD",
+                      })
+                    }}
+                  </span>
+                </div>
+              </v-col>
+              <v-col v-else cols="12" class="mb-1 text-h6 black--text font-weight-bold">
+                <div>
+                  <span>{{
+                    billing.planAmount.toLocaleString("en-US", {
+                      style: "currency",
+                      currency: "USD",
+                    })
+                  }}</span>
+                </div>
+              </v-col>
+            </v-row>
 
-            <v-col v-if="addCoupon" class="mt-2" cols="12">
-              <v-row no-gutters>
-                <pg-text-field
-                  v-model="promotionCode"
-                  label="Promotion Code"
-                  :color="isValidCoupon ? '' : 'error'"
-                  :suffix="getTextValidateCoupon"
-                  :loading="isValidatingCoupon"
-                  solo
-                />
-                <v-btn
-                  :disabled="!isValidCoupon"
-                  color="primary"
-                  class="mb-3"
-                  x-large
-                  block
-                  @click="savePromotion"
-                >
-                  APPLY COUPON
-                </v-btn>
-              </v-row>
+            <!-- Discount -->
+            <v-row>
+              <v-col cols="5" class="mb-1 pg-text-base pg-font-medium grey--text pg-py-0">
+                <span v-if="billing.planAmountDiscount || billing.percentOff">Coupon applied:</span>
+              </v-col>
+              <v-col cols="7" class="justify-end mb-1 pg-py-0">
+                <div class="text-right md:pg-text-base" @click="addCoupon = !addCoupon">
+                  <span class="text-decoration-underline add-coupon">
+                    <span>Add coupon code</span>
+                  </span>
+                  <v-icon small color="accent" class="text-h7 hidden-md-and-down">
+                    mdi-plus
+                  </v-icon>
+                </div>
+              </v-col>
+
+              <template v-if="billing.planAmountDiscount || billing.percentOff" no-gutters>
+                <v-col class="mt-1" cols="12" md="5">
+                  <span class="mb-3 text-h7 black--text font-weight-bold pg-uppercase">{{ billing.discountCode }}</span>
+                </v-col>
+
+                <v-col cols="12" md="7" class="mt-1 mb-3">
+                  <div class="text-right">
+                    <span v-if="billing.percentOff" class="mb-3 discount grey--text font-weight-bold">
+                      {{ billing.percentOff }} %
+                    </span>
+                    <span v-if="billing.amountOff" class="mb-3 discount grey--text font-weight-bold">
+                      $ {{
+                        getAmountOff.toLocaleString("en-US", {
+                          style: "currency",
+                          currency: "USD",
+                        })
+                      }}
+                    </span>
+                    <small class="grey--text font-weight-bold discount">discount on your membership</small>
+                  </div>
+                </v-col>
+              </template>
+
+              <v-col v-if="addCoupon" class="mt-2" cols="12">
+                <v-row no-gutters>
+                  <pg-text-field
+                    v-model="promotionCode"
+                    label="Promotion Code"
+                    :color="isValidCoupon ? '' : 'error'"
+                    :suffix="getTextValidateCoupon"
+                    :loading="isValidatingCoupon"
+                    solo
+                  />
+                  <v-btn
+                    :disabled="!isValidCoupon"
+                    color="primary"
+                    class="mb-3"
+                    x-large
+                    block
+                    @click="savePromotion"
+                  >
+                    APPLY COUPON
+                  </v-btn>
+                </v-row>
+              </v-col>
+            </v-row>
+          </div>
+        </v-card>
+        <!-- Payment Method -->
+        <v-card class="mb-6 pa-4 px-md-10 py-md-6 card-custom-border">
+          <v-row no-gutters class="text-uppercase font-weight-bold text-h5 grey--text text--darken-2" justify="center">
+            Payment Method
+          </v-row>
+          <v-row
+            v-for="(card, indexUC) in userCards"
+            :key="indexUC"
+            align="center"
+            no-gutters
+          >
+            <v-col cols="4" class="mt-8 text-center text-subtitle-2 text-sm-h6 grey--text font-weight-bold">
+              {{ card.details.brand }}
+            </v-col>
+            <v-col cols="8" class="mt-8 text-center text-subtitle-2 text-sm-h6 grey--text font-weight-bold">
+              •••• •••• •••• {{ card.details.last4 }}
+            </v-col>
+            <v-col cols="12" class="justify-center mt-8 d-flex">
+              <v-btn
+                color="primary"
+                text
+                x-large
+                @click="onUpdateCard(card)"
+              >
+                Change Payment Method
+              </v-btn>
             </v-col>
           </v-row>
-        </div>
-      </v-card>
-      <!-- Payment Method -->
-      <v-card class="mb-6 pa-4 px-md-10 py-md-6 card-custom-border">
-        <v-row no-gutters class="text-uppercase font-weight-bold text-h5 grey--text text--darken-2" justify="center">
-          Payment Method
-        </v-row>
-        <v-row
-          v-for="(card, indexUC) in userCards"
-          :key="indexUC"
-          align="center"
-          no-gutters
-        >
-          <v-col cols="4" class="mt-8 text-center text-subtitle-2 text-sm-h6 grey--text font-weight-bold">
-            {{ card.details.brand }}
-          </v-col>
-          <v-col cols="8" class="mt-8 text-center text-subtitle-2 text-sm-h6 grey--text font-weight-bold">
-            •••• •••• •••• {{ card.details.last4 }}
-          </v-col>
-          <v-col cols="12" class="justify-center mt-8 d-flex">
-            <v-btn
-              color="primary"
-              text
-              x-large
-              @click="onUpdateCard(card)"
-            >
-              Change Payment Method
-            </v-btn>
-          </v-col>
-        </v-row>
-        <v-row v-if="userCards.length === 0">
-          <v-col cols="12" class="mb-1 grey--text">
-            <span>To add a Payment Method, select a Payment Plan below.</span>
-          </v-col>
-          <v-col cols="12">
-            <v-btn
-              color="primary mb-3"
-              x-large
-              block
-              @click="handleChangePlan"
-            >
-              CHOOSE PLAN
-            </v-btn>
-          </v-col>
-        </v-row>
-      </v-card>
+          <v-row v-if="userCards.length === 0">
+            <v-col cols="12" class="mb-1 grey--text">
+              <span>To add a Payment Method, select a Payment Plan below.</span>
+            </v-col>
+            <v-col cols="12">
+              <v-btn
+                color="primary mb-3"
+                x-large
+                block
+                @click="handleChangePlan"
+              >
+                CHOOSE PLAN
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-card>
 
-      <billing-history-card />
-    </v-col>
+        <billing-history-card />
+      </v-col>
 
-    <!-- Plan Information -->
-    <v-col cols="12" md="6" class="mb-6 pl-md-8 mb-md-0">
-      <!-- CANCEL TRIAL BUTTON -->
-      <cancel-trial
-        v-if="isTrialingStatus"
-        class="pg-mb-[32px]"
-      />
+      <!-- Plan Information -->
+      <v-col cols="12" md="6" class="mb-6 pl-md-8 mb-md-0">
+        <!-- CANCEL TRIAL BUTTON -->
+        <cancel-trial
+          v-if="isTrialingStatus"
+          class="pg-mb-[32px]"
+        />
 
-      <!-- TRIAL EXPIRING RIBBON -->
-      <trial-is-expiring
-        v-if="isTrialExpiringRibbonVisible"
-        :is-fixed-on-top="false"
-        :is-compare-plans-button-visible="false"
-      />
-      <v-card class="pa-4 px-md-10 py-md-6 card-custom-border">
-        <v-row no-gutters>
-          <!-- Plan Name-->
-          <v-col cols="12" class="text-center">
-            <div class="mb-6 text-uppercase font-weight-bold text-h5 grey--text text--darken-2">
-              Your Plan
-            </div>
-          </v-col>
+        <!-- TRIAL EXPIRING RIBBON -->
+        <trial-is-expiring
+          v-if="isTrialExpiringRibbonVisible"
+          :is-fixed-on-top="false"
+          :is-compare-plans-button-visible="false"
+        />
+        <v-card class="pa-4 px-md-10 py-md-6 card-custom-border">
+          <v-row no-gutters>
+            <!-- Plan Name-->
+            <v-col cols="12" class="text-center">
+              <div class="mb-6 text-uppercase font-weight-bold text-h5 grey--text text--darken-2">
+                Your Plan
+              </div>
+            </v-col>
 
-          <!-- Plan Name -->
-          <v-col v-if="plan.name" cols="12" class="mb-4 text-center">
-            <underlined-title :text="plan.name" font-size="32px" />
-          </v-col>
+            <!-- Plan Name -->
+            <v-col v-if="plan.name" cols="12" class="mb-4 text-center">
+              <underlined-title :text="plan.name" font-size="32px" />
+            </v-col>
 
-          <!-- Plan Description -->
-          <!-- TODO: The plan-description component expects an index that is not available
+            <!-- Plan Description -->
+            <!-- TODO: The plan-description component expects an index that is not available
                when using the component separately, here we are using the (plan.id - 1) that
                returns an equivalent number, but we should update this component to accept
                maybe an id instead.[ch1440]
           -->
-          <v-col cols="12" class="mx-0 mb-10 mx-lg-12">
-            <plan-description
-              v-if="Object.keys(plan).length"
-              :plan="plan"
-            />
-          </v-col>
-
-          <!-- Change Plan Button -->
-          <v-col v-if="billing.stripeStatus !== 'canceled'" cols="12" class="justify-center d-flex">
-            <v-btn
-              v-if="!isCaregiver"
-              color="primary mb-3"
-              x-large
-              block
-              @click="handleChangePlan"
-            >
-              CHANGE PLAN
-            </v-btn>
-          </v-col>
-
-          <v-col v-if="!isCaregiver" cols="12" class="justify-center d-flex">
-            <!-- Cancel Subscription -->
-            <v-btn
-              v-if="hasMembership"
-              block
-              color="error"
-              x-large
-              @click="removeSubscriptionModal = true"
-            >
-              CANCEL MEMBERSHIP
-            </v-btn>
-            <!-- Create Subscription -->
-            <v-btn
-              v-else
-              block
-              color="primary"
-              x-large
-              @click="selectPlan"
-            >
-              CREATE MEMBERSHIP
-            </v-btn>
-          </v-col>
-        </v-row>
-      </v-card>
-    </v-col>
-
-    <!-- Cancel suscription modal -->
-    <pg-dialog
-      v-model="removeSubscriptionModal"
-      content-class="white"
-      :fullscreen="isMobile"
-      max-width="1000"
-    >
-      <div class="green-line green-line-1" />
-      <div class="green-line green-line-2" />
-
-      <v-col cols="12">
-        <v-row class="flex-column-reverse flex-md-row">
-          <v-col class="px-6" cols="12" md="6">
-            <v-col class="text-center" cols="12">
-              <underlined-title
-                class="text-h5 text-md-h4 pg-letter-spacing"
-                text="WE ARE SORRY TO SEE YOU GO!"
+            <v-col cols="12" class="mx-0 mb-10 mx-lg-12">
+              <plan-description
+                v-if="Object.keys(plan).length"
+                :plan="plan"
               />
             </v-col>
 
-            <v-card-text class="text-justify">
-              <p class="font-weight-medium">
-                ARE YOU LEAVING US?
-              </p>
-              <p>Before you cancel, please let us know the reason you are leaving. Every bit of feedback helps us create a better educational experience for little ones!</p>
+            <!-- Change Plan Button -->
+            <v-col v-if="billing.stripeStatus !== 'canceled'" cols="12" class="justify-center d-flex">
+              <v-btn
+                v-if="!isCaregiver"
+                color="primary mb-3"
+                x-large
+                block
+                @click="handleChangePlan"
+              >
+                CHANGE PLAN
+              </v-btn>
+            </v-col>
 
-              <v-radio-group v-model="leaveMotive">
-                <v-radio
-                  v-for="lm in leaveMotives"
-                  :key="lm"
-                  :value="lm"
-                >
-                  <template #label>
-                    <span class="body-2">{{ lm }}</span>
-                  </template>
-                </v-radio>
-              </v-radio-group>
-
-              <v-text-field
-                v-show="isLastLeaveMotive"
-                v-model="otherLeaveMotive"
-                class=""
-                solo
-                dense
-                placeholder="Reason..."
-              />
-
-              <p class="font-weight-bold">
-                Thank you so much!
-              </p>
-              <p class="font-weight-bold">
-                Miss Sarah and the Playgarden Prep teachers
-              </p>
-            </v-card-text>
-          </v-col>
-
-          <v-col class="px-6" cols="12" md="6">
-            <div>
-              <v-img
-                alt="Remove Subscription"
-                max-width="100%"
-                :src="require('assets/png/cancel-account-child.jpg')"
-              />
-            </div>
-          </v-col>
-        </v-row>
+            <v-col v-if="!isCaregiver" cols="12" class="justify-center d-flex">
+              <!-- Cancel Subscription -->
+              <v-btn
+                v-if="hasMembership"
+                block
+                color="error"
+                x-large
+                @click="removeSubscriptionModal = true"
+              >
+                CANCEL MEMBERSHIP
+              </v-btn>
+              <!-- Create Subscription -->
+              <v-btn
+                v-else
+                block
+                color="primary"
+                x-large
+                @click="selectPlan"
+              >
+                CREATE MEMBERSHIP
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-card>
       </v-col>
 
-      <v-col class="text-center" cols="12">
-        <v-btn
-          color="primary"
-          :loading="loading"
-          :disabled="!leaveMotive"
-          x-large
-          @click="removeSubscription"
-        >
-          CANCEL ACCOUNT
-        </v-btn>
-      </v-col>
+      <!-- Cancel suscription modal -->
+      <pg-dialog
+        v-model="removeSubscriptionModal"
+        content-class="white"
+        :fullscreen="isMobile"
+        max-width="1000"
+      >
+        <div class="green-line green-line-1" />
+        <div class="green-line green-line-2" />
 
-      <v-col class="text-center" cols="12">
-        <v-btn
-          color="accent"
-          :loading="loading"
-          x-large
-          text
-          class="text-none text-decoration-underline"
-          @click.stop="removeSubscriptionModal = false"
-        >
-          Nevermind, I want to keep learning with Playgarden Prep!
-        </v-btn>
-      </v-col>
-    </pg-dialog>
+        <v-col cols="12">
+          <v-row class="flex-column-reverse flex-md-row">
+            <v-col class="px-6" cols="12" md="6">
+              <v-col class="text-center" cols="12">
+                <underlined-title
+                  class="text-h5 text-md-h4 pg-letter-spacing"
+                  text="WE ARE SORRY TO SEE YOU GO!"
+                />
+              </v-col>
 
-    <pg-dialog
-      v-model="stripeCardModal"
-      content-class="white"
-      :fullscreen="isMobile"
-      max-width="1000"
-      persistent
-    >
-      <v-col cols="12">
-        <v-row class="pr-3" justify="end">
-          <v-btn icon @click.stop="stripeCardModal = false">
-            <v-icon>mdi-close</v-icon>
+              <v-card-text class="text-justify">
+                <p class="font-weight-medium">
+                  ARE YOU LEAVING US?
+                </p>
+                <p>Before you cancel, please let us know the reason you are leaving. Every bit of feedback helps us create a better educational experience for little ones!</p>
+
+                <v-radio-group v-model="leaveMotive">
+                  <v-radio
+                    v-for="lm in leaveMotives"
+                    :key="lm"
+                    :value="lm"
+                  >
+                    <template #label>
+                      <span class="body-2">{{ lm }}</span>
+                    </template>
+                  </v-radio>
+                </v-radio-group>
+
+                <v-text-field
+                  v-show="isLastLeaveMotive"
+                  v-model="otherLeaveMotive"
+                  class=""
+                  solo
+                  dense
+                  placeholder="Reason..."
+                />
+
+                <p class="font-weight-bold">
+                  Thank you so much!
+                </p>
+                <p class="font-weight-bold">
+                  Miss Sarah and the Playgarden Prep teachers
+                </p>
+              </v-card-text>
+            </v-col>
+
+            <v-col class="px-6" cols="12" md="6">
+              <div>
+                <v-img
+                  alt="Remove Subscription"
+                  max-width="100%"
+                  :src="require('assets/png/cancel-account-child.jpg')"
+                />
+              </div>
+            </v-col>
+          </v-row>
+        </v-col>
+
+        <v-col class="text-center" cols="12">
+          <v-btn
+            color="primary"
+            :loading="loading"
+            :disabled="!leaveMotive"
+            x-large
+            @click="removeSubscription"
+          >
+            CANCEL ACCOUNT
           </v-btn>
-        </v-row>
+        </v-col>
 
-        <v-row class="px-6">
-          <v-col>
-            <update-billing-method
-              v-if="stripeCardModal"
-              :card-id="cardToUpate.id"
-              no-terms
-              no-trial
-              @update:success="onSuccessUpdateBilling"
-              @click:cancel="stripeCardModal = false"
-            />
-          </v-col>
-        </v-row>
-      </v-col>
-    </pg-dialog>
-  </v-row>
+        <v-col class="text-center" cols="12">
+          <v-btn
+            color="accent"
+            :loading="loading"
+            x-large
+            text
+            class="text-none text-decoration-underline"
+            @click.stop="removeSubscriptionModal = false"
+          >
+            Nevermind, I want to keep learning with Playgarden Prep!
+          </v-btn>
+        </v-col>
+      </pg-dialog>
+
+      <pg-dialog
+        v-model="stripeCardModal"
+        content-class="white"
+        :fullscreen="isMobile"
+        max-width="1000"
+        persistent
+      >
+        <v-col cols="12">
+          <v-row class="pr-3" justify="end">
+            <v-btn icon @click.stop="stripeCardModal = false">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </v-row>
+
+          <v-row class="px-6">
+            <v-col>
+              <update-billing-method
+                v-if="stripeCardModal"
+                :card-id="cardToUpate.id"
+                no-terms
+                no-trial
+                @update:success="onSuccessUpdateBilling"
+                @click:cancel="stripeCardModal = false"
+              />
+            </v-col>
+          </v-row>
+        </v-col>
+      </pg-dialog>
+    </v-row>
+  </pg-loading>
 </template>
 
 <script>
