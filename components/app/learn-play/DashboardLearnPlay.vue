@@ -407,7 +407,7 @@ export default {
   async created () {
     await this.getAllChildren()
     await this.handleLesson()
-    this.learnPlayData = await this.getLearnPlay({ curriculumTypeId: this.curriculumTypeId })
+    await this.getLearnPlay()
     this.loadCurrentVideo()
     this.$nuxt.$on('menu-section', (section) => {
       this.scrollMeTo(section)
@@ -427,6 +427,13 @@ export default {
       'getCurrentLessonByChildrenId',
       'resetChild'
     ]),
+
+    async getLearnPlay () {
+      try {
+        this.learnPlayData = await this.getLearnPlay({ curriculumTypeId: this.curriculumTypeId })
+      } catch (error) {
+      }
+    },
 
     scrollMeTo(refName) {
       const element = this.$refs[refName]

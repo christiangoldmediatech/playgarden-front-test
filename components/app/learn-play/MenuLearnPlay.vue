@@ -9,9 +9,11 @@
       >
     </v-col>
     <v-col cols="12" class="mt-n8">
-      <span class="font-weight-bold name-child">
-        {{ child.firstName }}
-      </span>
+      <center>
+        <span class="font-weight-bold name-child">
+          {{ child.firstName }}
+        </span>
+      </center>
     </v-col>
     <v-col cols="12" class="mt-n6">
       <img
