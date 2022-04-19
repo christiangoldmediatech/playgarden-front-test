@@ -79,7 +79,8 @@ export default {
   },
   data: () => {
     return {
-      loading: false
+      loading: false,
+      smallLetter: false
     }
   },
   computed: {
