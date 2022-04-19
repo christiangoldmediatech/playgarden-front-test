@@ -19,7 +19,7 @@
       <center>
         <recorded-letter
           v-if="getLetterCurriculumType"
-          class="mt-6"
+          class="mt-6 rotate"
           v-bind="{ letter: getLetterCurriculumType, small: smallLetter }"
           list-mode
         />
@@ -175,5 +175,8 @@ export default {
   z-index: 500;
   overflow-x: hidden;
   overflow-y: auto;
+}
+.rotate {
+  transform: rotate(-32deg) !important;
 }
 </style>
