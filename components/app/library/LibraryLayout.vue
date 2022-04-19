@@ -9,7 +9,7 @@
     >
       <v-col>
         <v-container fill-height fluid>
-          <pg-loading />
+          <pg-loading fullscreen />
         </v-container>
       </v-col>
     </v-row>
