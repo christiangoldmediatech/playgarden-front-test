@@ -203,6 +203,7 @@ export default defineComponent({
         if (!song.autoPlay) {
           refreshSongData(song)
           playSong(0)
+          audioPlayer.value?.play()
         }
       }
     })
