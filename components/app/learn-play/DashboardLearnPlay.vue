@@ -38,11 +38,11 @@
           </v-card>
         </v-row>
 
-        <v-row v-if="lesson" class="mt-8 mx-2 ml-4">
+        <v-row v-if="learnPlayData" class="mt-8 mx-2 ml-4">
           <span class="subtitle-dashboard font-weight-bold">More like this</span>
         </v-row>
-        <v-row v-if="lesson">
-          <videos-scroll :lesson="lesson" class="mt-3" @changeVideoTrack="changeVideoTrack" />
+        <v-row v-if="learnPlayData">
+          <videos-scroll :learn-play="learnPlayData" class="mt-3" @changeVideoTrack="changeVideoTrack" />
         </v-row>
 
         <v-row class="mx-4 my-14">
@@ -363,16 +363,13 @@ export default {
   },
   computed: {
     ...mapGetters({ currentChild: 'getCurrentChild' }),
-    ...mapGetters('admin/curriculum', { lesson: 'getLesson' }),
-    ...mapGetters('children/lesson', {
-      currentLessonId: 'getCurrentLessonId'
-    }),
+
     childrenIds () {
       return (this.currentChild && this.currentChild.length) ? this.currentChild[0].id : 0
     },
     curriculumTypeId () {
-      if (this.lesson && this.lesson.curriculumType) {
-        return this.lesson.curriculumType.id
+      if (this.learnPlayData && this.learnPlayData.curriculumType) {
+        return this.learnPlayData.curriculumType.id
       } else {
         return null
       }
@@ -406,7 +403,6 @@ export default {
   },
   async created () {
     await this.getAllChildren()
-    await this.handleLesson()
     await this.loadLearnPlay()
     this.loadCurrentVideo()
     this.$nuxt.$on('menu-section', (section) => {
@@ -420,17 +416,14 @@ export default {
 
   methods: {
     ...mapActions('offline-worksheet', ['getRandomWorksheet']),
-    ...mapActions('learn-play', ['getLearnPlay']),
-    ...mapActions('children', { getAllChildren: 'get' }),
-    ...mapActions('children/lesson', [
-      'getCurrentLesson',
-      'getCurrentLessonByChildrenId',
-      'resetChild'
+    ...mapActions('children/learn-play', [
+      'getFirstLearnPlay'
     ]),
+    ...mapActions('children', { getAllChildren: 'get' }),
 
     async loadLearnPlay () {
       try {
-        this.learnPlayData = await this.getLearnPlay({ curriculumTypeId: this.curriculumTypeId })
+        this.learnPlayData = await this.getFirstLearnPlay()
       } catch (error) {
       }
     },
@@ -527,24 +520,6 @@ export default {
     changeChild (newId, redirect = true) {
       const child = this.allChildren.find(({ id }) => id === parseInt(newId))
       this.setChild({ value: [child], save: true })
-      if (redirect) {
-        this.handleLesson(true).then(() => {
-          // this.$router.push({ name: 'app-dashboard' })
-          // this.redirectDashboard()
-        })
-      }
-    },
-    async handleLesson () {
-      try {
-        this.loading = true
-        await this.getCurrentLesson({
-          childrenIds: this.childrenIds
-        })
-      } catch (error) {
-        return Promise.reject(error)
-      } finally {
-        this.loading = false
-      }
     }
   }
 }

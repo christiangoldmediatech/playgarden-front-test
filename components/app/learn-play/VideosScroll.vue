@@ -5,7 +5,6 @@
         <v-btn
           text
           class="mt-5"
-          @click="getDataVideos"
         >
           <v-img
             :src="require('@/assets/png/arrow-left.png')"
@@ -15,7 +14,7 @@
       </v-col>
       <v-col cols="10" class="pr-8">
         <div class="cursor video-scroll">
-          <div v-for="(video, index) in videos" :key="index" class="card-video">
+          <div v-for="(video, index) in videosLearnPlay" :key="index" class="card-video">
             <v-avatar class="mx-3" tile size="80" @click="currentVideo(video)">
               <v-img
                 :src="require('@/assets/png/play-min.png')"
@@ -32,7 +31,6 @@
         <v-btn
           text
           class="ml-n6 mt-5"
-          @click="getDataVideos"
         >
           <v-img
             :src="require('@/assets/png/arrow-right.png')"
@@ -45,14 +43,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from '@nuxtjs/composition-api'
+import { defineComponent, ref, onMounted, computed } from '@nuxtjs/composition-api'
 import { useVideos } from '@/composables/videos'
 import { Video } from '@/models'
 
 export default defineComponent({
   name: 'VideosScroll',
   props: {
-    lesson: {
+    learnPlay: {
       type: Object,
       required: true,
       default: () => ({})
@@ -61,25 +59,18 @@ export default defineComponent({
   setup(props, { emit }) {
     const loading = ref(false)
 
-    const { videos, getVideos } = useVideos()
-
-    const getDataVideos = async () => {
-      await getVideos(props.lesson.id)
-    }
+    const videosLearnPlay = computed(() => {
+      return (props.learnPlay && props.learnPlay.videos.length > 0) ? props.learnPlay.videos : []
+    })
 
     const currentVideo = (video: Video) => {
       emit('changeVideoTrack', video)
     }
 
-    onMounted(() => {
-      getDataVideos()
-    })
-
     return {
       loading,
-      videos,
       currentVideo,
-      getDataVideos
+      videosLearnPlay
     }
   }
 })

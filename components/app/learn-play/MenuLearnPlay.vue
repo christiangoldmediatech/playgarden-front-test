@@ -80,15 +80,12 @@ export default {
   data: () => {
     return {
       loading: false,
+      learnPlay: null,
       smallLetter: false
     }
   },
   computed: {
     ...mapGetters({ currentChild: 'getCurrentChild' }),
-    ...mapGetters('admin/curriculum', { lesson: 'getLesson' }),
-    ...mapGetters('children/lesson', {
-      currentLessonId: 'getCurrentLessonId'
-    }),
     childrenIds () {
       return (this.currentChild && this.currentChild.length) ? this.currentChild[0].id : 0
     },
@@ -96,27 +93,18 @@ export default {
       return (this.currentChild && this.currentChild.length) ? this.currentChild[0] : null
     },
     curriculumTypeId () {
-      if (this.lesson && this.lesson.curriculumType) {
-        return this.lesson.curriculumType.id
+      if (this.learnPlay && this.learnPlay.curriculumType) {
+        return this.learnPlay.curriculumType.id
       } else {
         return null
       }
     },
     getLetterCurriculumType () {
-      if (this.lesson && this.lesson.curriculumType) {
-        return this.lesson.curriculumType
+      if (this.learnPlay && this.learnPlay.curriculumType) {
+        return this.learnPlay.curriculumType
       } else {
         return null
       }
-    },
-    currentVideo () {
-      return (this.lesson && this.lesson.videos.length > 0) ? this.lesson.videos[0] : { videoUrl: null }
-    },
-    getOfflineWorksheet() {
-      if (this.lesson) {
-        return this.lesson.worksheets.filter(({ type }) => type === 'OFFLINE')
-      }
-      return []
     }
   },
   async created () {
@@ -125,10 +113,8 @@ export default {
   },
   methods: {
     ...mapActions('children', { getAllChildren: 'get' }),
-    ...mapActions('children/lesson', [
-      'getCurrentLesson',
-      'getCurrentLessonByChildrenId',
-      'resetChild'
+    ...mapActions('children/learn-play', [
+      'getFirstLearnPlay'
     ]),
 
     sendSection (section) {
@@ -138,19 +124,11 @@ export default {
     changeChild (newId, redirect = true) {
       const child = this.allChildren.find(({ id }) => id === parseInt(newId))
       this.setChild({ value: [child], save: true })
-      if (redirect) {
-        this.handleLesson(true).then(() => {
-          // this.$router.push({ name: 'app-dashboard' })
-          // this.redirectDashboard()
-        })
-      }
     },
     async handleLesson () {
       try {
         this.loading = true
-        await this.getCurrentLesson({
-          childrenIds: this.childrenIds
-        })
+        this.learnPlay = await this.getFirstLearnPlay()
       } catch (error) {
         return Promise.reject(error)
       } finally {
