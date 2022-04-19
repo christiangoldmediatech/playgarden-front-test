@@ -1,4 +1,4 @@
-// Generate alphabet for determinig if a "categoy" is a letter or something else
+// Generate alphabet for determinig if a "category" is a letter or something else
 const alpha = Array.from(Array(26)).map((_, i) => i + 65)
 const alphabet = alpha.map((x: number) => {
   const letter = String.fromCharCode(x)
