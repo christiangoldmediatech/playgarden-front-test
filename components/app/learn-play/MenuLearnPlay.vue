@@ -26,7 +26,7 @@
       </center>
     </v-col>
     <v-col cols="12">
-      <span class="color-menu clickable" @click="sendSection('videoLesson')">
+      <span class="color-main clickable" @click="sendSection('videoLesson')">
         Sections
       </span>
     </v-col>
@@ -161,8 +161,13 @@ export default {
 </script>
 
 <style scoped>
+.color-main {
+  color: var(--v-primary-base) !important;
+  font-weight: 800;
+}
 .color-menu {
   color: var(--v-primary-base) !important;
+  font-weight: 600;
 }
 .name-child {
   color: #7852B5 !important;
