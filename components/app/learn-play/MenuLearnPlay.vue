@@ -177,6 +177,6 @@ export default {
   overflow-y: auto;
 }
 .rotate {
-  transform: rotate(-32deg) !important;
+  transform: rotate(-13.26deg) !important;
 }
 </style>
