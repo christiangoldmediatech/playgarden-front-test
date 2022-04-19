@@ -407,7 +407,7 @@ export default {
   async created () {
     await this.getAllChildren()
     await this.handleLesson()
-    await this.getLearnPlay()
+    await this.loadLearnPlay()
     this.loadCurrentVideo()
     this.$nuxt.$on('menu-section', (section) => {
       this.scrollMeTo(section)
@@ -428,7 +428,7 @@ export default {
       'resetChild'
     ]),
 
-    async getLearnPlay () {
+    async loadLearnPlay () {
       try {
         this.learnPlayData = await this.getLearnPlay({ curriculumTypeId: this.curriculumTypeId })
       } catch (error) {
