@@ -1,12 +1,12 @@
 <template>
   <v-card class="pb-10 mb-14">
-    <v-row>
+    <v-row v-if="!$vuetify.breakpoint.mobile">
       <v-col cols="10">
         <v-row no-gutters>
           <v-col cols="2" class="mt-2 ml-n4">
             <span class="ml-8 title-dashboard font-weight-bold">Letter</span>
           </v-col>
-          <v-col cols="10" class="mt-n2">
+          <v-col cols="12" md="10" class="mt-n2">
             <carousel-letter ref="CarouselLetter" :value="curriculumTypeId" />
           </v-col>
         </v-row>
@@ -19,7 +19,7 @@
       </v-col>
     </v-row>
     <v-row no-gutters>
-      <v-col ref="videoLesson" cols="8">
+      <v-col ref="videoLesson" cols="12" md="8">
         <span class="title-dashboard font-weight-bold ml-4">Video Lesson</span>
         <v-row class="mx-2 mt-3 ml-4">
           <template v-if="currentVideo.videoUrl && currentVideo.videoUrl.HLS">
@@ -43,6 +43,15 @@
         </v-row>
         <v-row v-if="learnPlayData">
           <videos-scroll :learn-play="learnPlayData" class="mt-3" @changeVideoTrack="changeVideoTrack" />
+        </v-row>
+
+        <v-row v-if="!$vuetify.breakpoint.smAndUp">
+          <v-col cols="12" class="mt-6">
+            <span class="title-dashboard font-weight-bold mx-4">Worksheets</span>
+            <div v-if="getOfflineWorksheet.length > 0" ref="worksheets">
+              <offline-worksheets class="mt-4 mx-4" :offline-worksheet-list="getOfflineWorksheet" />
+            </div>
+          </v-col>
         </v-row>
 
         <v-row class="mx-4 my-14">
@@ -191,14 +200,17 @@
                 <v-col
                   v-for="(book, index) in getRelatedBooks"
                   :key="`book-item-${index}`"
-                  cols="4"
+                  cols="12"
+                  md="4"
                 >
-                  <v-img
-                    :src="book.image"
-                    max-width="134"
-                    min-width="134"
-                    height="248"
-                  />
+                  <center>
+                    <v-img
+                      :src="book.image"
+                      max-width="134"
+                      min-width="134"
+                      height="248"
+                    />
+                  </center>
                 </v-col>
               </v-row>
               <v-row v-else class="mx-2 my-2">
@@ -217,6 +229,7 @@
         </v-row>
       </v-col>
       <v-col
+        v-if="$vuetify.breakpoint.mdAndUp"
         cols="4"
       >
         <span class="title-dashboard font-weight-bold">Worksheets</span>

@@ -8,7 +8,7 @@
       >
         <v-row no-gutters class="pl-3 mt-4 clickable" @click="changeSong(song)">
           <v-col
-            cols="2"
+            md="2"
           >
             <v-avatar tile size="42">
               <img :src="song.thumbnail">

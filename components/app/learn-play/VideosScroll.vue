@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-row class="mx-3">
-      <v-col cols="1">
+      <v-col v-if="!$vuetify.breakpoint.smAndDown" cols="1">
         <v-btn
           text
           class="mt-5"
@@ -12,7 +12,7 @@
           />
         </v-btn>
       </v-col>
-      <v-col cols="10" class="pr-8">
+      <v-col cols="12" md="10" class="pr-8">
         <div class="cursor video-scroll">
           <div v-for="(video, index) in videosLearnPlay" :key="index" class="card-video">
             <v-avatar class="mx-3" tile size="80" @click="currentVideo(video)">
@@ -27,7 +27,7 @@
           </div>
         </div>
       </v-col>
-      <v-col cols="1" class="ml-n6">
+      <v-col v-if="!$vuetify.breakpoint.smAndDown" cols="1" class="ml-n6">
         <v-btn
           text
           class="ml-n6 mt-5"
