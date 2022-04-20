@@ -3,10 +3,9 @@
     <v-list>
       <v-list-group
         no-action
-        color="red"
       >
         <template v-slot:activator>
-          <v-list-item-title v-text="title" />
+          <v-list-item-title class="primary--text font-weight-bold" v-text="title" />
         </template>
 
         <v-list-item
@@ -14,7 +13,7 @@
           :key="submenu.title"
         >
           <v-list-item-content>
-            <v-list-item-title @click="sendSection(submenu.name)" v-text="submenu.title" />
+            <v-list-item-title class="primary--text font-weight-bold" @click="sendSection(submenu.name)" v-text="submenu.title" />
           </v-list-item-content>
         </v-list-item>
       </v-list-group>
