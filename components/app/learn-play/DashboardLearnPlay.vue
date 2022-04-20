@@ -1,9 +1,12 @@
 <template>
   <v-card class="pb-10 mb-14">
-    <v-row v-if="!$vuetify.breakpoint.mobile">
-      <v-col cols="10">
+    <v-row>
+      <v-col v-if="!$vuetify.breakpoint.smAndUp" cols="12">
+        <menu-mobile />
+      </v-col>
+      <v-col cols="12" md="10">
         <v-row no-gutters>
-          <v-col cols="2" class="mt-2 ml-n4">
+          <v-col cols="12" md="2" class="mt-2 ml-n4">
             <span class="ml-8 title-dashboard font-weight-bold">Letter</span>
           </v-col>
           <v-col cols="12" md="10" class="mt-n2">
@@ -11,7 +14,7 @@
           </v-col>
         </v-row>
       </v-col>
-      <v-col cols="2" class="pr-8">
+      <v-col v-if="!$vuetify.breakpoint.mobile" cols="2" class="pr-8">
         <pg-text-field
           label="Search"
           solo-labeled
@@ -49,7 +52,7 @@
           <v-col cols="12" class="mt-6">
             <span class="title-dashboard font-weight-bold mx-4">Worksheets</span>
             <div v-if="getOfflineWorksheet.length > 0" ref="worksheets">
-              <offline-worksheets class="mt-4 mx-4" :offline-worksheet-list="getOfflineWorksheet" />
+              <offline-worksheets class="mt-4 mx-3" :offline-worksheet-list="getOfflineWorksheet" />
             </div>
           </v-col>
         </v-row>
@@ -88,14 +91,17 @@
                 <v-col
                   v-for="(diy, index) in getDiyProject"
                   :key="`diy-item-${index}`"
-                  cols="4"
+                  cols="12"
+                  md="4"
                 >
-                  <v-img
-                    :src="diy.image"
-                    max-width="150"
-                    min-width="150"
-                    height="250"
-                  />
+                  <center>
+                    <v-img
+                      :src="diy.image"
+                      max-width="150"
+                      min-width="150"
+                      height="250"
+                    />
+                  </center>
                 </v-col>
               </v-row>
               <v-row v-else class="mx-2 my-2">
@@ -108,6 +114,68 @@
                     type="image"
                   />
                 </v-col>
+              </v-row>
+            </v-card>
+          </v-row>
+        </v-row>
+        <v-row v-if="!$vuetify.breakpoint.smAndUp">
+          <v-col cols="12">
+            <div ref="art-project" class="mt-3 ml-3">
+              <span class="title-dashboard font-weight-bold pr-10">
+                Art Project
+              </span>
+              <div>
+                <v-img
+                  class="mt-n8 ml-n6 clickable"
+                  height="40px"
+                  contain
+                  :src="
+                    require('@/assets/png/dashboard/download-ico.png')
+                  "
+                  @click="downloadArtFiles"
+                />
+              </div>
+            </div>
+          </v-col>
+          <v-col cols="12">
+            <p v-if="getArtProjects.length >0" class="px-3 mt-3 text-justify">
+              {{ getArtProjects[0].description }}
+            </p>
+          </v-col>
+          <v-row class="mx-2 my-4 mx-2">
+            <v-card v-if="getArtProjects.length >0" width="93%" class="mt-5 ml-3">
+              <v-row
+                v-for="(art, index) in getArtProjects"
+                :key="`art-project-${index}`"
+                justify="center"
+                align="center"
+                class="my-4"
+              >
+                <v-col cols="12">
+                  <center>
+                    <v-img
+                      :src="art.image"
+                      max-width="230"
+                      min-width="230"
+                      height="153"
+                    />
+                  </center>
+                </v-col>
+              </v-row>
+            </v-card>
+            <v-card v-else class="justify-center ml-2 mr-8" width="100%">
+              <v-row
+                v-for="n in 3"
+                :key="`art-load-project-${n}`"
+                justify="center"
+                align="center"
+                class="my-4"
+              >
+                <v-card width="70%">
+                  <v-skeleton-loader
+                    type="image"
+                  />
+                </v-card>
               </v-row>
             </v-card>
           </v-row>
@@ -144,14 +212,17 @@
                 <v-col
                   v-for="(snack, index) in getSnacks"
                   :key="`snack-item-${index}`"
-                  cols="4"
+                  cols="12"
+                  md="4"
                 >
-                  <v-img
-                    :src="snack.image"
-                    max-width="150"
-                    min-width="150"
-                    height="250"
-                  />
+                  <center>
+                    <v-img
+                      :src="snack.image"
+                      max-width="150"
+                      min-width="150"
+                      height="250"
+                    />
+                  </center>
                 </v-col>
               </v-row>
               <v-row v-else class="mx-2 my-2">
@@ -226,6 +297,41 @@
               </v-row>
             </v-card>
           </v-row>
+        </v-row>
+
+        <v-row v-if="!$vuetify.breakpoint.smAndUp">
+          <v-col cols="12" class="mt-6">
+            <div ref="playlist">
+              <span class="title-dashboard font-weight-bold ml-4">
+                Playlist
+              </span>
+              <div class="mt-5 mobile-play">
+                <center>
+                  <songs-card class="song-card" />
+                </center>
+              </div>
+            </div>
+          </v-col>
+          <v-col cols="12" class="mx-4">
+            <div ref="topFive" class="mt-5">
+              <span class="title-dashboard font-weight-bold">
+                Top five
+              </span>
+              <top-five v-if="songs && songs.length > 0" class="mt-n1" :songs="songs" />
+              <div v-else>
+                <v-card
+                  v-for="n in 5"
+                  :key="`song-load-item-${n}`"
+                  class="my-3"
+                  cols="4"
+                >
+                  <v-skeleton-loader
+                    type="list-item-avatar"
+                  />
+                </v-card>
+              </div>
+            </div>
+          </v-col>
         </v-row>
       </v-col>
       <v-col
@@ -354,6 +460,7 @@ import OfflineWorksheets from '@/components/app/learn-play/OfflineWorksheets.vue
 import VideosScroll from '@/components/app/learn-play/VideosScroll.vue'
 import TopFive from '@/components/app/learn-play/TopFive.vue'
 import SongsCard from '@/components/app/learn-play/SongsCard.vue'
+import MenuMobile from '@/components/app/learn-play/MenuMobile.vue'
 
 export default {
   name: 'DashboardLearnPlay',
@@ -363,7 +470,8 @@ export default {
     OfflineWorksheets,
     VideosScroll,
     TopFive,
-    SongsCard
+    SongsCard,
+    MenuMobile
   },
   data: () => {
     return {
@@ -578,5 +686,9 @@ export default {
   min-width: 85% !important;
   min-height: 328px !important;
   max-height: 328px !important;
+}
+
+.mobile-play {
+  width: 100% !important;
 }
 </style>
