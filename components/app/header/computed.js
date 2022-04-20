@@ -22,7 +22,7 @@ export default {
         const list = [
           {
             title: 'Home',
-            to: { name: 'app-virtual-preschool' },
+            to: { name: this.goToPage(this.getUserInfo) },
             exact: true
           },
           {
@@ -72,6 +72,21 @@ export default {
       }
 
       return []
+    }
+  },
+  methods: {
+    goToPage(user) {
+      if (user.stripeStatus === 'active') {
+        if (user.planSelected.id === 2 || user.planSelected.id === 3) {
+          return 'app-virtual-preschool'
+        }
+
+        if (user.planSelected.id === 1) {
+          return 'app-learn-play'
+        }
+      } else {
+        return 'app-dashboard'
+      }
     }
   }
 }
