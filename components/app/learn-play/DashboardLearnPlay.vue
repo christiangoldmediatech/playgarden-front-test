@@ -68,8 +68,8 @@
               </v-list>
             </v-row>
             <v-row>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+              <p v-if="getDiyProject.length > 0">
+                {{ getDiyProject[0].description }}
               </p>
             </v-row>
           </v-col>
@@ -125,8 +125,8 @@
                 </v-list-item>
               </v-list>
             </v-row>
-            <p class="ml-n3">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+            <p v-if="getSnacks.length > 0" class="ml-n3">
+              {{ getSnacks[0].description }}
             </p>
           </v-col>
           <v-row>
@@ -159,13 +159,17 @@
             </v-card>
           </v-row>
         </v-row>
-        <v-row class="mx-2 mt-12 ml-4">
-          <span class="title-dashboard font-weight-bold">
-            This week's recommended books
-          </span>
-          <p class="pr-8 mt-4">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim-
-          </p>
+        <v-row no-gutters class="mx-2 mt-12 ml-4">
+          <v-col cols="12">
+            <span class="title-dashboard font-weight-bold">
+              This week's recommended books
+            </span>
+          </v-col>
+          <v-col cols="12" class="mt-3">
+            <p v-if="getBook" class="text-justify">
+              {{ getBook.description }}
+            </p>
+          </v-col>
           <template v-if="currentVideo.videoUrl && currentVideo.videoUrl.HLS">
             <div class="learn-play-video">
               <pg-video-player
@@ -183,9 +187,9 @@
 
           <v-row ref="book">
             <v-card width="92%" class="mt-5 ml-3">
-              <v-row v-if="getBooks.length" class="mx-2 my-2">
+              <v-row v-if="getRelatedBooks.length" class="mx-2 my-2">
                 <v-col
-                  v-for="(book, index) in getBooks"
+                  v-for="(book, index) in getRelatedBooks"
                   :key="`book-item-${index}`"
                   cols="4"
                 >
@@ -232,26 +236,30 @@
           </v-card>
         </div>
 
-        <v-row class="my-14">
-          <div ref="art-project" class="mt-3 ml-3">
-            <span class="title-dashboard font-weight-bold pr-10">
-              Art Project
-            </span>
-            <div class="ml-15">
-              <v-img
-                class="pl-15 mt-n8 ml-10 clickable"
-                height="40px"
-                contain
-                :src="
-                  require('@/assets/png/dashboard/download-ico.png')
-                "
-                @click="downloadArtFiles"
-              />
+        <v-row no-gutters class="my-14">
+          <v-col cols="12">
+            <div ref="art-project" class="mt-3 ml-3">
+              <span class="title-dashboard font-weight-bold pr-10">
+                Art Project
+              </span>
+              <div>
+                <v-img
+                  class="mt-n8 clickable"
+                  height="40px"
+                  contain
+                  :src="
+                    require('@/assets/png/dashboard/download-ico.png')
+                  "
+                  @click="downloadArtFiles"
+                />
+              </div>
             </div>
-          </div>
-          <p class="px-3 mt-3">
-            Lorem ipsum dolor sit amet, consectetur adipiscing
-          </p>
+          </v-col>
+          <v-col cols="12">
+            <p v-if="getArtProjects.length >0" class="px-3 mt-3 text-justify">
+              {{ getArtProjects[0].description }}
+            </p>
+          </v-col>
           <v-row class="mx-2 mt-4">
             <v-card v-if="getArtProjects.length >0" class="justify-center ml-2 mr-8" width="100%">
               <v-row
@@ -392,8 +400,11 @@ export default {
       }
       return []
     },
-    getBooks() {
-      return (this.learnPlayData && this.learnPlayData.books.length > 0) ? this.learnPlayData.books : []
+    getRelatedBooks() {
+      return (this.learnPlayData && this.learnPlayData.books.length > 0) ? this.learnPlayData.books[0].relatedBooks : []
+    },
+    getBook() {
+      return (this.learnPlayData && this.learnPlayData.books.length > 0) ? this.learnPlayData.books[0] : null
     }
   },
   watch: {
