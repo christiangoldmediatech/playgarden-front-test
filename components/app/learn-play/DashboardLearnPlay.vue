@@ -170,12 +170,12 @@
               {{ getBook.description }}
             </p>
           </v-col>
-          <template v-if="currentVideo.videoUrl && currentVideo.videoUrl.HLS">
+          <template v-if="currentBookVideo.videoUrl && currentBookVideo.videoUrl.HLS">
             <div class="learn-play-video">
               <pg-video-player
                 :control-config="{ favorite: false }"
                 inline
-                @ready="onPlayerReadyTwo({ player: $event, video: currentVideo })"
+                @ready="onPlayerReadyTwo({ player: $event, video: currentBookVideo })"
               />
             </div>
           </template>
@@ -405,6 +405,15 @@ export default {
     },
     getBook() {
       return (this.learnPlayData && this.learnPlayData.books.length > 0) ? this.learnPlayData.books[0] : null
+    },
+    currentBookVideo () {
+      return (this.learnPlayData && this.learnPlayData.books.length > 0)
+        ? this.learnPlayData.books[0].video
+        : {
+            videoUrl: {
+              HLS: null
+            }
+          }
     }
   },
   watch: {
