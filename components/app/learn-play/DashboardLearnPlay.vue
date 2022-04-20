@@ -1,7 +1,7 @@
 <template>
   <v-card class="pb-10 mb-14">
     <v-row>
-      <v-col v-if="!$vuetify.breakpoint.smAndUp" cols="12">
+      <v-col v-if="!$vuetify.breakpoint.mdAndUp" cols="12">
         <menu-mobile />
       </v-col>
       <v-col cols="12" md="10">
