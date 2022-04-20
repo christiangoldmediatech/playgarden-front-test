@@ -1,11 +1,12 @@
 <template>
-  <v-row class="ml-2" width="100%">
+  <v-row class="ml-1">
     <v-list>
       <v-list-group
         no-action
+        color="red"
       >
         <template v-slot:activator>
-          <v-list-item-title color="primary" v-text="title" />
+          <v-list-item-title v-text="title" />
         </template>
 
         <v-list-item
