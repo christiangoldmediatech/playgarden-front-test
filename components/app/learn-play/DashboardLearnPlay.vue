@@ -421,38 +421,42 @@
             </v-card>
           </v-row>
         </v-row>
-        <v-row no-gutters class="pt-3">
-          <v-col cols="12">
-            <div ref="playlist">
-              <span class="title-dashboard font-weight-bold">
-                Playlist
-              </span>
-              <div class="mt-4 ml-3">
-                <songs-card class="song-card" />
+        <v-card class="mr-4">
+          <v-row no-gutters class="pt-3">
+            <v-col cols="12">
+              <div ref="playlist">
+                <span class="title-dashboard font-weight-bold ml-9">
+                  Playlist
+                </span>
+                <div class="mt-4 ml-3">
+                  <center>
+                    <songs-card class="song-card" />
+                  </center>
+                </div>
               </div>
-            </div>
-          </v-col>
-          <v-col cols="12">
-            <div ref="topFive" class="mt-5">
-              <span class="title-dashboard font-weight-bold">
-                Top five
-              </span>
-              <top-five v-if="songs && songs.length > 0" class="mt-n1" :songs="songs" />
-              <div v-else>
-                <v-card
-                  v-for="n in 5"
-                  :key="`song-load-item-${n}`"
-                  class="my-3"
-                  cols="4"
-                >
-                  <v-skeleton-loader
-                    type="list-item-avatar"
-                  />
-                </v-card>
+            </v-col>
+            <v-col cols="12" class="my-5">
+              <div ref="topFive" class="mt-5">
+                <span class="title-dashboard font-weight-bold ml-9">
+                  Top five
+                </span>
+                <top-five v-if="songs && songs.length > 0" class="ml-6 mt-1" :songs="songs" />
+                <div v-else>
+                  <v-card
+                    v-for="n in 5"
+                    :key="`song-load-item-${n}`"
+                    class="my-3"
+                    cols="4"
+                  >
+                    <v-skeleton-loader
+                      type="list-item-avatar"
+                    />
+                  </v-card>
+                </div>
               </div>
-            </div>
-          </v-col>
-        </v-row>
+            </v-col>
+          </v-row>
+        </v-card>
       </v-col>
     </v-row>
   </v-card>

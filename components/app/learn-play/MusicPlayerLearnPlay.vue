@@ -260,6 +260,7 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   height: 328px !important;
+  width: 100% !important;
   background-image: linear-gradient(0deg, #4D4D4D 3.02%, rgba(77, 77, 77, 0) 67%), var(--mp-background-image);
   background-size: cover;
   background-position: center center;
