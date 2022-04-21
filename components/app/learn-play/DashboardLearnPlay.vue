@@ -142,7 +142,7 @@
               {{ getArtProjects[0].description }}
             </p>
           </v-col>
-          <v-row class="mx-2 my-4 mx-2">
+          <v-row class="mx-3 my-4 mx-2">
             <v-card v-if="getArtProjects.length >0" width="93%" class="mt-5 ml-3">
               <v-row
                 v-for="(art, index) in getArtProjects"
@@ -207,8 +207,13 @@
             </p>
           </v-col>
           <v-row>
-            <v-card width="90%" class="mt-5 ml-3">
-              <v-row v-if="getSnacks.length > 0" class="mx-2 my-2">
+            <v-card :width="$vuetify.breakpoint.mobile ? '88%' : '90%'" :class="$vuetify.breakpoint.mobile ? 'ml-2' : 'mt-5 ml-3'">
+              <v-row
+                v-if="getSnacks.length > 0"
+                justify="center"
+                align="center"
+                class="mx-2 my-2"
+              >
                 <v-col
                   v-for="(snack, index) in getSnacks"
                   :key="`snack-item-${index}`"
@@ -229,7 +234,8 @@
                 <v-col
                   v-for="n in 3"
                   :key="`snack-load-item-${n}`"
-                  cols="4"
+                  cols="12"
+                  md="4"
                 >
                   <v-skeleton-loader
                     type="image"
@@ -303,7 +309,7 @@
           <v-col cols="12" class="mt-6">
             <div ref="playlist">
               <span class="title-dashboard font-weight-bold ml-4">
-                Playlist
+                Playlist mobile
               </span>
               <div class="mt-5 mobile-play">
                 <center>
@@ -357,7 +363,7 @@
 
         <v-row no-gutters class="my-14">
           <v-col cols="12">
-            <div ref="art-project" class="mt-3 ml-3">
+            <div ref="art-project" class="mt-3 ml-1">
               <span class="title-dashboard font-weight-bold pr-10">
                 Art Project
               </span>
@@ -375,12 +381,12 @@
             </div>
           </v-col>
           <v-col cols="12">
-            <p v-if="getArtProjects.length >0" class="px-3 mt-3 text-justify">
+            <p v-if="getArtProjects.length >0" class="mx-1 mt-3 text-justify">
               {{ getArtProjects[0].description }}
             </p>
           </v-col>
-          <v-row class="mx-2 mt-4">
-            <v-card v-if="getArtProjects.length >0" class="justify-center ml-2 mr-8" width="100%">
+          <v-row class="mx-1 mt-4">
+            <v-card v-if="getArtProjects.length >0" class="justify-center" width="96%">
               <v-row
                 v-for="(art, index) in getArtProjects"
                 :key="`art-project-${index}`"

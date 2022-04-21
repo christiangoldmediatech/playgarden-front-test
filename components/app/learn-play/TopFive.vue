@@ -62,3 +62,12 @@ export default defineComponent({
   }
 })
 </script>
+
+<style scoped>
+.dashboard-item-title {
+  font-size: 16px !important;
+  font-weight: bold !important;
+  letter-spacing: 0.1em !important;
+  color: var(--v-black-base);
+}
+</style>
