@@ -309,7 +309,7 @@
           <v-col cols="12" class="mt-6">
             <div ref="playlist">
               <span class="title-dashboard font-weight-bold ml-4">
-                Playlist mobile
+                Playlist
               </span>
               <div class="mt-5 mobile-play">
                 <center>
