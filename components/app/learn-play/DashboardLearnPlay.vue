@@ -318,7 +318,7 @@
               </div>
             </div>
           </v-col>
-          <v-col cols="12" class="mx-4">
+          <v-col cols="12" class="mx-6">
             <div ref="topFive" class="mt-5">
               <span class="title-dashboard font-weight-bold">
                 Top five
