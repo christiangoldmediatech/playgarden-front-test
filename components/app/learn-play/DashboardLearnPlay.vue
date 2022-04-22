@@ -30,6 +30,7 @@
               <pg-video-player
                 :control-config="{ favorite: false }"
                 inline
+                :auto-track-change="true"
                 @ready="onPlayerReady({ player: $event, videos: learnPlayData.videos })"
               />
             </div>
@@ -311,7 +312,7 @@
               <span class="title-dashboard font-weight-bold ml-4">
                 Playlist
               </span>
-              <div class="mt-5 mobile-play">
+              <div v-if="learnPlayData && learnPlayData.songs" class="mt-5 mobile-play">
                 <center>
                   <songs-card class="song-card" />
                 </center>
@@ -428,7 +429,7 @@
                 <span class="title-dashboard font-weight-bold ml-9">
                   Playlist
                 </span>
-                <div class="mt-4 ml-3">
+                <div v-if="learnPlayData && learnPlayData.songs" class="mt-4 ml-3">
                   <center>
                     <songs-card class="song-card" />
                   </center>
@@ -575,6 +576,11 @@ export default {
     async loadLearnPlay () {
       try {
         this.learnPlayData = await this.getFirstLearnPlay()
+        if (this.learnPlayData && this.learnPlayData.songs) {
+          this.learnPlayData.songs.map((song) => {
+            this.buildPlaySongList(song)
+          })
+        }
       } catch (error) {
       }
     },
@@ -624,7 +630,11 @@ export default {
       this.currentVideo = video
     },
 
-    buildPlayList (videos) {
+    buildPlaySongList (song) {
+      this.$emit('addSong', song)
+    },
+
+    buildPlayVideoList (videos) {
       return videos.map((video) => {
         return {
           title: video.name,
@@ -639,7 +649,7 @@ export default {
 
     onPlayerReady ({ player, videos }) {
       this.player = player
-      const playVideoList = this.buildPlayList(videos)
+      const playVideoList = this.buildPlayVideoList(videos)
       player.loadPlaylist(playVideoList)
     },
 
