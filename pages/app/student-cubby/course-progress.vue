@@ -12,19 +12,21 @@
         </div>
       </div>
 
-      <v-row justify="center">
-        <div
-          v-for="letter in letters"
-          :key="`recorded-letter-${letter.id}`"
-          @click="showProgress(letter)"
-        >
-          <recorded-letter
-            :letter="letter"
-            :disabled="!letter.enabled"
-            :list-mode="!letter.enabled"
-          />
-        </div>
-      </v-row>
+      <pg-loading :loading="loading">
+        <v-row justify="center">
+          <div
+            v-for="letter in letters"
+            :key="`recorded-letter-${letter.id}`"
+            @click="showProgress(letter)"
+          >
+            <recorded-letter
+              :letter="letter"
+              :disabled="!letter.enabled"
+              :list-mode="!letter.enabled"
+            />
+          </div>
+        </v-row>
+      </pg-loading>
     </v-card-text>
 
     <course-progress-overlay />
@@ -56,12 +58,15 @@ export default defineComponent({
     const letters = ref<ChildProgress[]>([])
     const { getCourseProgressByChildId } = useChildCourseProgress()
 
+    const loading = ref(true)
     const fetchChildProgress = async () => {
       if (!studentId.value) {
         return
       }
 
+      loading.value = true
       letters.value = await getCourseProgressByChildId(studentId.value)
+      loading.value = false
     }
 
     const showProgress = (letter: ChildProgress) => {
@@ -85,6 +90,7 @@ export default defineComponent({
     }, { immediate: true })
 
     return {
+      loading,
       letters,
       studentId,
       showProgress

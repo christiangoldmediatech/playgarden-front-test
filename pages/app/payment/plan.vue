@@ -65,7 +65,7 @@
           </div>
 
           <!--  PAYING USER -->
-          <div v-else>
+          <div v-else-if="!isTrialEndedTooLongAgo">
             <div>
               <underlined-title
                 :text="
@@ -190,6 +190,11 @@ export default defineComponent({
       }
 
       return dayjs(this.getUserInfo.trialEnd).format('MMMM DD, YYYY')
+    },
+
+    isTrialEndedTooLongAgo() {
+      return this.isTrialExpired &&
+        dayjs().diff(dayjs(this.getUserInfo.trialEnd), 'days') > 30
     },
 
     isMobile() {

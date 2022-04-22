@@ -42,113 +42,115 @@
     </v-row>
 
     <!-- Report Content -->
-    <v-row class="mt-12">
-      <v-col cols="12">
-        <!-- Report Body: General -->
-        <v-row v-if="general === true" no-gutters>
-          <!-- Chart -->
-          <v-col cols="12" md="7" lg="7" class="py-4 py-md-0 pr-0 pr-md-2">
-            <v-card width="100%" class="pa-2">
-              <!-- Desktop -->
-              <template v-if="$vuetify.breakpoint.mdAndUp">
-                <v-row no-gutters>
-                  <v-col cols="12">
-                    <div class="pt-4 mb-4 pl-0">
-                      <underlined-title
-                        class="text-h6 text-md-h5"
-                        text="General Progress Report"
-                      />
-                    </div>
-                    <div>
-                      <span
-                        class="text-body-1 text-lg-h7 text-xl-h6 text-justify mt-8 mr-3"
-                      >
-                        General progress statistics for all categories.</span>
-                    </div>
-                    <div class="mt-n8">
-                      <chart-report v-if="hasReport" :report="report" />
-                    </div>
-                  </v-col>
-                </v-row>
-              </template>
-              <!-- Mobile -->
-              <template v-else>
-                <v-row no-gutters>
-                  <v-col cols="12">
-                    <div class="py-4">
-                      <underlined-title
-                        class="text-h6 text-md-h5"
-                        text="General Progress Report"
-                      />
-                    </div>
-                    <div>
-                      <span
-                        class="text-body-1 text-lg-h7 text-xl-h6 text-justify pt-md-8 pr-md-3"
-                      >
-                        General progress statistics for all categories.
-                      </span>
-                    </div>
-                    <chart-report v-if="hasReport" class="mt-n8" :report="report" />
-                  </v-col>
-                </v-row>
-              </template>
-            </v-card>
-          </v-col>
-          <!-- Letters -->
-          <v-col cols="12" md="5" lg="5" class="py-4 py-md-0 pl-0 pl-md-2">
-            <v-card width="100%" class="pa-3">
-              <div v-if="loadLetterStatsData">
-                <v-skeleton-loader type="card-heading" />
-                <v-skeleton-loader
-                  v-for="n in 5"
-                  :key="n"
-                  type="list-item-avatar-three-line, list-item-one-line, divider"
-                />
-              </div>
-              <template v-else>
-                <v-row class="pt-3" no-gutters>
-                  <v-col cols="12" md="12" lg="7">
-                    <div class="pt-4 ml-4 mb-4">
-                      <underlined-title
-                        class="text-h6 text-md-h5 mt-4 mr-4"
-                        :text="letterStatsData.name"
-                      />
-                    </div>
-                  </v-col>
-                  <v-col
-                    :class="!$vuetify.breakpoint.mobile ? 'pr-3' : 'px-3'"
-                    md="12"
-                    lg="5"
-                  >
-                    <div class="progress-letter-selector">
-                      <letter-select
-                        v-model="selectedLetter"
-                        small-letter
-                        v-bind="{ disabledLetters }"
-                        label-title="Choose letter"
-                      />
-                    </div>
-                  </v-col>
-                </v-row>
-                <letter-stats :letter-stats="letterStatsData" />
-              </template>
-            </v-card>
-          </v-col>
-        </v-row>
-        <!-- Report Body: Other types -->
-        <v-card v-else class="px-2 my-4" width="100%">
-          <v-row no-gutters>
-            <v-col cols="12">
-              <detail-progress
-                :report-card-type="reportCardTypeSelected"
-                :report="report"
-                :data-report-card-type="dataReportCard"
-              />
+    <pg-loading :loading="loading">
+      <v-row class="mt-12">
+        <v-col cols="12">
+          <!-- Report Body: General -->
+          <v-row v-if="general === true" no-gutters>
+            <!-- Chart -->
+            <v-col cols="12" md="7" lg="7" class="py-4 py-md-0 pr-0 pr-md-2">
+              <v-card width="100%" class="pa-2">
+                <!-- Desktop -->
+                <template v-if="$vuetify.breakpoint.mdAndUp">
+                  <v-row no-gutters>
+                    <v-col cols="12">
+                      <div class="pt-4 mb-4 pl-0">
+                        <underlined-title
+                          class="text-h6 text-md-h5"
+                          text="General Progress Report"
+                        />
+                      </div>
+                      <div>
+                        <span
+                          class="text-body-1 text-lg-h7 text-xl-h6 text-justify mt-8 mr-3"
+                        >
+                          General progress statistics for all categories.</span>
+                      </div>
+                      <div class="mt-n8">
+                        <chart-report v-if="hasReport" :report="report" />
+                      </div>
+                    </v-col>
+                  </v-row>
+                </template>
+                <!-- Mobile -->
+                <template v-else>
+                  <v-row no-gutters>
+                    <v-col cols="12">
+                      <div class="py-4">
+                        <underlined-title
+                          class="text-h6 text-md-h5"
+                          text="General Progress Report"
+                        />
+                      </div>
+                      <div>
+                        <span
+                          class="text-body-1 text-lg-h7 text-xl-h6 text-justify pt-md-8 pr-md-3"
+                        >
+                          General progress statistics for all categories.
+                        </span>
+                      </div>
+                      <chart-report v-if="hasReport" class="mt-n8" :report="report" />
+                    </v-col>
+                  </v-row>
+                </template>
+              </v-card>
+            </v-col>
+            <!-- Letters -->
+            <v-col cols="12" md="5" lg="5" class="py-4 py-md-0 pl-0 pl-md-2">
+              <v-card width="100%" class="pa-3">
+                <div v-if="loadLetterStatsData">
+                  <v-skeleton-loader type="card-heading" />
+                  <v-skeleton-loader
+                    v-for="n in 5"
+                    :key="n"
+                    type="list-item-avatar-three-line, list-item-one-line, divider"
+                  />
+                </div>
+                <template v-else>
+                  <v-row class="pt-3" no-gutters>
+                    <v-col cols="12" md="12" lg="7">
+                      <div class="pt-4 ml-4 mb-4">
+                        <underlined-title
+                          class="text-h6 text-md-h5 mt-4 mr-4"
+                          :text="letterStatsData.name"
+                        />
+                      </div>
+                    </v-col>
+                    <v-col
+                      :class="!$vuetify.breakpoint.mobile ? 'pr-3' : 'px-3'"
+                      md="12"
+                      lg="5"
+                    >
+                      <div class="progress-letter-selector">
+                        <letter-select
+                          v-model="selectedLetter"
+                          small-letter
+                          v-bind="{ disabledLetters }"
+                          label-title="Choose letter"
+                        />
+                      </div>
+                    </v-col>
+                  </v-row>
+                  <letter-stats :letter-stats="letterStatsData" />
+                </template>
+              </v-card>
             </v-col>
           </v-row>
-        </v-card>
-      </v-col>
-    </v-row>
+          <!-- Report Body: Other types -->
+          <v-card v-else class="px-2 my-4" width="100%">
+            <v-row no-gutters>
+              <v-col cols="12">
+                <detail-progress
+                  :report-card-type="reportCardTypeSelected"
+                  :report="report"
+                  :data-report-card-type="dataReportCard"
+                />
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
+      </v-row>
+    </pg-loading>
   </v-row>
 </template>
 
@@ -183,7 +185,8 @@ export default {
     letterStatsData: {
       name: '',
       reports: []
-    }
+    },
+    loading: true
   }),
 
   computed: {
@@ -253,6 +256,8 @@ export default {
   },
 
   async created () {
+    this.loading = true
+
     this.general = true
     await this.getChildren()
     await this.getTypes()
@@ -261,6 +266,8 @@ export default {
     this.$nuxt.$on('detail-progress-report', (data) => {
       this.loadDetailReport(data.point.category)
     })
+
+    this.loading = false
   },
 
   beforeDestroy () {

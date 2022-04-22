@@ -15,19 +15,21 @@
           </div>
         </div>
 
-        <patch-row
-          v-for="activityType in childrenPatchesActivity"
-          :key="`activity-type-patch-row-${activityType.id}`"
-          :activity-type="activityType"
-          data-test-id="patch-row"
-        />
+        <pg-loading :loading="loading">
+          <patch-row
+            v-for="activityType in childrenPatchesActivity"
+            :key="`activity-type-patch-row-${activityType.id}`"
+            :activity-type="activityType"
+            data-test-id="patch-row"
+          />
+        </pg-loading>
       </v-card-text>
     </v-card>
   </div>
 </template>
 
 <script lang="ts">
-import { useRoute, useStore, useRouter } from '@nuxtjs/composition-api'
+import { useRoute, useStore, useRouter, ref } from '@nuxtjs/composition-api'
 import { usePatches } from '@/composables/patches'
 import PatchRow from '@/components/app/student-cubby/PatchRow.vue'
 import PatchOverlay from '@/components/app/student-cubby/PatchOverlay.vue'
@@ -50,11 +52,15 @@ export default {
     const { childId: studentId } = useChildRoute({ store, route, router })
     const { childrenPatchesActivity, getPatchesByChildId } = usePatches()
 
+    const loading = ref(true)
     watch(studentId, async () => {
+      loading.value = true
       await getPatchesByChildId(studentId.value || 0)
+      loading.value = false
     }, { immediate: true })
 
     return {
+      loading,
       childrenPatchesActivity,
       studentId
     }
