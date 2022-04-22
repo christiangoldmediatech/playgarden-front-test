@@ -25,12 +25,12 @@
       <v-col ref="videoLesson" cols="12" md="8">
         <span class="title-dashboard font-weight-bold ml-4">Video Lesson</span>
         <v-row class="mx-2 mt-3 ml-4">
-          <template v-if="currentVideo.videoUrl && currentVideo.videoUrl.HLS">
+          <template v-if="learnPlayData && learnPlayData.videos.length > 0">
             <div class="learn-play-video">
               <pg-video-player
                 :control-config="{ favorite: false }"
                 inline
-                @ready="onPlayerReady({ player: $event, video: currentVideo })"
+                @ready="onPlayerReady({ player: $event, videos: learnPlayData.videos })"
               />
             </div>
           </template>
@@ -624,10 +624,9 @@ export default {
       this.currentVideo = video
     },
 
-    onPlayerReady ({ player, video }) {
-      this.player = player
-      player.loadPlaylist([
-        {
+    buildPlayList (videos) {
+      return videos.map((video) => {
+        return {
           title: video.name,
           poster: video.thumbnail,
           src: {
@@ -635,7 +634,13 @@ export default {
             type: 'application/x-mpegURL'
           }
         }
-      ])
+      })
+    },
+
+    onPlayerReady ({ player, videos }) {
+      this.player = player
+      const playVideoList = this.buildPlayList(videos)
+      player.loadPlaylist(playVideoList)
     },
 
     onPlayerReadyTwo ({ player, video }) {
