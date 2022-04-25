@@ -197,7 +197,7 @@
                     height="40px"
                     contain
                     :src="
-                      require('@/assets/png/dashboard/download-worksheet.png')
+                      require('@/assets/png/dashboard/download-ico.png')
                     "
                   />
                 </v-col>
@@ -369,7 +369,7 @@
                       class="mb-3"
                       contain
                       :src="
-                        require('@/assets/png/dashboard/download-worksheet.png')
+                        require('@/assets/png/dashboard/download-ico.png')
                       "
                     />
 

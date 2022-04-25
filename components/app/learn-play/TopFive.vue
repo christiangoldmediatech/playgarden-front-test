@@ -6,7 +6,7 @@
         :key="`top-item-${index}`"
         width="100%"
       >
-        <v-row no-gutters class="pl-3 mt-4 clickable" @click="currentSong(song)">
+        <v-row no-gutters class="pl-3 mt-4 clickable" @click="changeSong(song)">
           <v-col
             cols="2"
           >
@@ -26,27 +26,48 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from '@nuxtjs/composition-api'
-import { useLearnPlay } from '@/composables/learn-play'
+import { defineComponent, onMounted, PropType } from '@nuxtjs/composition-api'
 import { MusicLibrary } from '@/models'
 import { useNuxtHelper } from '@/composables'
 export default defineComponent({
   name: 'TopFive',
+  props: {
+    songs: {
+      type: Array as PropType<MusicLibrary[]>,
+      requiered: true,
+      default: () => ([])
+    }
+  },
   setup(props, { emit }) {
     const nuxt = useNuxtHelper()
-    const { songs, getTopSongs } = useLearnPlay()
-    onMounted(async () => {
-      await getTopSongs()
-    })
 
     const currentSong = (song: MusicLibrary) => {
       nuxt.$emit('change-song', song)
     }
 
+    const changeSong = (song: MusicLibrary) => {
+      song.autoPlay = true
+      currentSong(song)
+    }
+
+    onMounted(() => {
+      const firstSong = props.songs[0]
+      firstSong.autoPlay = false
+      currentSong(firstSong)
+    })
+
     return {
-      songs,
-      currentSong
+      changeSong
     }
   }
 })
 </script>
+
+<style scoped>
+.dashboard-item-title {
+  font-size: 16px !important;
+  font-weight: bold !important;
+  letter-spacing: 0.1em !important;
+  color: var(--v-black-base);
+}
+</style>
