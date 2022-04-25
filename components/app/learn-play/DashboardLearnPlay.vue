@@ -274,8 +274,6 @@
                   <center>
                     <v-img
                       :src="book.image"
-                      max-width="134"
-                      min-width="134"
                       height="248"
                     />
                   </center>
