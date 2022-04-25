@@ -137,11 +137,11 @@
                 </template>
 
                 <template v-slot:[`item.dateStart`]="{ item }">
-                  {{ item.dateStart | formatDate }}
+                  {{ getTimeZoneFormat(item.dateStart) }}
                 </template>
 
                 <template v-slot:[`item.dateEnd`]="{ item }">
-                  {{ item.dateEnd | formatDate }}
+                  {{ getTimeZoneFormat(item.dateEnd) }}
                 </template>
 
                 <template v-slot:[`item.createdAt`]="{ item }">
@@ -314,8 +314,8 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import VideoPreviewBtn from '@/components/admin/video-preview/VideoPreviewBtn.vue'
-import { timezoneOptions, getTimezone } from '@/utils/dateTools'
-
+import { timezoneOptions, getTimezone, formatTimezone } from '@/utils/dateTools'
+import moment from 'moment'
 import paginable from '@/utils/mixins/paginable'
 import GradesBtn from '@/components/admin/grades/GradesBtn.vue'
 import LiveSessionEditorDialog from './LiveSessionEditorDialog'
@@ -475,6 +475,16 @@ export default {
     ...mapActions('auth', ['fetchUserInfo']),
 
     ...mapActions('live-sessions', ['getLiveSessions', 'deleteLiveSession', 'recoverLiveSession']),
+
+    getTimeZoneFormat (data) {
+      const start = moment(data)
+      const { timezone } = this.getUserInfo
+      return formatTimezone(start, {
+        format: 'MM-DD-YYYY HH:mm',
+        timezone,
+        returnObject: false
+      })
+    },
 
     closeTimezoneModal() {
       this.timezoneDialog = false
