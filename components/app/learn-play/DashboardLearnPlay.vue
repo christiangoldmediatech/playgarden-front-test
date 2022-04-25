@@ -23,7 +23,7 @@
     </v-row>
     <v-row no-gutters>
       <v-col ref="videoLesson" cols="12" md="8">
-        <span class="title-dashboard font-weight-bold ml-4">Video Lesson</span>
+        <span class="ml-4 title-dashboard font-weight-bold">Video Lesson</span>
         <v-row class="mx-2 mt-3 ml-4">
           <template v-if="learnPlayData && learnPlayData.videos.length > 0">
             <div class="learn-play-video">
@@ -42,7 +42,7 @@
           </v-card>
         </v-row>
 
-        <v-row v-if="learnPlayData" class="mt-8 mx-2 ml-4">
+        <v-row v-if="learnPlayData" class="mx-2 mt-8 ml-4">
           <span class="subtitle-dashboard font-weight-bold">More like this</span>
         </v-row>
         <v-row v-if="learnPlayData">
@@ -51,9 +51,9 @@
 
         <v-row v-if="!$vuetify.breakpoint.smAndUp">
           <v-col cols="12" class="mt-6">
-            <span class="title-dashboard font-weight-bold mx-4">Worksheets</span>
+            <span class="mx-4 title-dashboard font-weight-bold">Worksheets</span>
             <div v-if="getOfflineWorksheet.length > 0" ref="worksheets">
-              <offline-worksheets class="mt-4 mx-3" :offline-worksheet-list="getOfflineWorksheet" />
+              <offline-worksheets class="mx-3 mt-4" :offline-worksheet-list="getOfflineWorksheet" />
             </div>
           </v-col>
         </v-row>
@@ -93,14 +93,11 @@
                   v-for="(diy, index) in getDiyProject"
                   :key="`diy-item-${index}`"
                   cols="12"
-                  md="4"
+                  md="12"
                 >
                   <center>
                     <v-img
                       :src="diy.image"
-                      max-width="150"
-                      min-width="150"
-                      height="250"
                     />
                   </center>
                 </v-col>
@@ -122,7 +119,7 @@
         <v-row v-if="!$vuetify.breakpoint.smAndUp">
           <v-col cols="12">
             <div ref="art-project" class="mt-3 ml-3">
-              <span class="title-dashboard font-weight-bold pr-10">
+              <span class="pr-10 title-dashboard font-weight-bold">
                 Art Project
               </span>
               <div>
@@ -143,7 +140,7 @@
               {{ getArtProjects[0].description }}
             </p>
           </v-col>
-          <v-row class="mx-3 my-4 mx-2">
+          <v-row class="mx-2 mx-3 my-4">
             <v-card v-if="getArtProjects.length >0" width="93%" class="mt-5 ml-3">
               <v-row
                 v-for="(art, index) in getArtProjects"
@@ -156,9 +153,6 @@
                   <center>
                     <v-img
                       :src="art.image"
-                      max-width="230"
-                      min-width="230"
-                      height="153"
                     />
                   </center>
                 </v-col>
@@ -191,7 +185,7 @@
                       SNACK
                     </span>
                     <v-img
-                      class="pl-15 mt-n8 ml-3 clickable"
+                      class="ml-3 pl-15 mt-n8 clickable"
                       height="40px"
                       contain
                       :src="
@@ -219,14 +213,10 @@
                   v-for="(snack, index) in getSnacks"
                   :key="`snack-item-${index}`"
                   cols="12"
-                  md="4"
                 >
                   <center>
                     <v-img
                       :src="snack.image"
-                      max-width="150"
-                      min-width="150"
-                      height="250"
                     />
                   </center>
                 </v-col>
@@ -309,7 +299,7 @@
         <v-row v-if="!$vuetify.breakpoint.smAndUp">
           <v-col cols="12" class="mt-6">
             <div ref="playlist">
-              <span class="title-dashboard font-weight-bold ml-4">
+              <span class="ml-4 title-dashboard font-weight-bold">
                 Playlist
               </span>
               <div v-if="learnPlayData && learnPlayData.songs" class="mt-5 mobile-play">
@@ -365,7 +355,7 @@
         <v-row no-gutters class="my-14">
           <v-col cols="12">
             <div ref="art-project" class="mt-3 ml-1">
-              <span class="title-dashboard font-weight-bold pr-10">
+              <span class="pr-10 title-dashboard font-weight-bold">
                 Art Project
               </span>
               <div>
@@ -441,7 +431,7 @@
                 <span class="title-dashboard font-weight-bold ml-9">
                   Top five
                 </span>
-                <top-five v-if="songs && songs.length > 0" class="ml-6 mt-1" :songs="songs" />
+                <top-five v-if="songs && songs.length > 0" class="mt-1 ml-6" :songs="songs" />
                 <div v-else>
                   <v-card
                     v-for="n in 5"
