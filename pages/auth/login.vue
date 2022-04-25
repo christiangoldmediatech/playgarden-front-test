@@ -90,7 +90,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 import LoginForm from '@/components/forms/auth/LoginForm.vue'
 
@@ -110,6 +110,9 @@ export default {
   },
 
   computed: {
+    ...mapGetters('auth', {
+      userInfo: 'getUserInfo'
+    }),
     inInvitationProcess () {
       const { query } = this.$route
 
@@ -140,6 +143,7 @@ export default {
   },
 
   methods: {
+    ...mapActions('auth', ['fetchUserInfo']),
     getProviderSignIn (provider) {
       let nameProvider = ''
       switch (provider) {
@@ -201,11 +205,25 @@ export default {
         } else if (this.$route.query.redirect) {
           await this.$router.push(decodeURIComponent(this.$route.query.redirect))
         } else {
-          await this.$router.push({ name: 'app-virtual-preschool' })
+          await this.$router.push({ name: this.goToPage(user) })
         }
       } catch (e) {
         this.loadingDataSocial = false
         await this.onFailLoginSocial(user)
+      }
+    },
+
+    goToPage (user) {
+      if (user.stripeStatus === 'active') {
+        if (user.planSelected.id === 2 || user.planSelected.id === 3) {
+          return 'app-virtual-preschool'
+        }
+
+        if (user.planSelected.id === 1) {
+          return 'app-learn-play'
+        }
+      } else {
+        return 'app-dashboard'
       }
     },
 
@@ -251,7 +269,8 @@ export default {
         } else if (this.$route.query.redirect) {
           await this.$router.push(decodeURIComponent(this.$route.query.redirect))
         } else {
-          await this.$router.push({ name: 'app-virtual-preschool' })
+          await this.fetchUserInfo()
+          await this.$router.push({ name: this.goToPage(this.userInfo) })
         }
       } catch (error) {
         this.errorMessage = 'Sorry! Wrong email or password'

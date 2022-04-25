@@ -149,7 +149,7 @@
 <script lang="ts">
 import { useNuxtHelper, useMusic } from '@/composables'
 import { MusicLibrary } from '@/models'
-import { defineComponent, ref, nextTick, computed } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, ref, nextTick, computed } from '@nuxtjs/composition-api'
 import MusicQueue from '@/components/app/music/MusicQueue.vue'
 
 export default defineComponent({
@@ -159,7 +159,6 @@ export default defineComponent({
   },
 
   setup (_, { emit }) {
-    // this references `ref="audioPlayer"` when the component is mounted
     const nuxt = useNuxtHelper()
     const audioPlayer = ref<any>(null)
     const {
@@ -202,6 +201,12 @@ export default defineComponent({
       if (song) {
         currentSong.value = song
         refreshSongData(song)
+        playSong(0)
+        if (song.autoPlay) {
+          audioPlayer.value?.pause()
+        } else {
+          audioPlayer.value?.play()
+        }
       }
     })
 
@@ -227,6 +232,10 @@ export default defineComponent({
       audioPlayer.value?.removeSongByIndex(playlistIndex)
     }
 
+    onMounted(() => {
+      audioPlayer.value?.play()
+    })
+
     return {
       audioPlayer,
       currentSong,
@@ -250,7 +259,8 @@ export default defineComponent({
   position: relative;
   display: flex;
   justify-content: center;
-  height: 554px !important;
+  height: 328px !important;
+  width: 100% !important;
   background-image: linear-gradient(0deg, #4D4D4D 3.02%, rgba(77, 77, 77, 0) 67%), var(--mp-background-image);
   background-size: cover;
   background-position: center center;

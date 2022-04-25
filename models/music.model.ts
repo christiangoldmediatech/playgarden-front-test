@@ -9,6 +9,7 @@ export interface MusicLibrary {
   curriculumTypeId?: number
   isFavorite?: boolean
   favoriteId?: number
+  autoPlay?: boolean
 }
 
 export type CurriculumTypeWithMusicLibrary = CurriculumType & {

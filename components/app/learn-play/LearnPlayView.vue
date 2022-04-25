@@ -1,10 +1,10 @@
 <template>
-  <v-container fluid class="ml-4 mt-7 px-15">
+  <v-container fluid :class="{ 'ml-4 mt-7 px-15': $vuetify.breakpoint.mdAndUp }">
     <v-row class="mt-15">
-      <v-col cols="2">
+      <v-col v-if="$vuetify.breakpoint.mdAndUp" cols="2">
         <menu-learn-play />
       </v-col>
-      <v-col cols="10">
+      <v-col cols="12" md="10">
         <dashboard-learn-play />
       </v-col>
     </v-row>
