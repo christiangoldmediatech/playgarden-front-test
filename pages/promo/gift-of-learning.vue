@@ -411,6 +411,8 @@ import { useSnotifyHelper } from '@/composables'
 import { axios } from '@/utils'
 
 export default defineComponent({
+  layout: 'gift-of-learning',
+
   components: {
     StripeCard,
     SearchAddressAutocomplete
