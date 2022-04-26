@@ -1,5 +1,5 @@
 <template>
-  <v-row align="center" class="fill-height mb-4">
+  <v-row align="center" class="mb-4 fill-height">
     <!-- CHILDREN IMAGE -->
     <v-col cols="12" md="5">
       <v-img
@@ -13,14 +13,14 @@
     <!-- INFORMATION PANEL -->
     <v-col cols="12" md="7">
       <underlined-title
-        text="Playdates are back for Premium and Premium+ members!"
+        text="Playdates are open for Premium and Premium+ members!"
         font-size="36px"
       />
 
       <p class="mt-8 body-1">
-        Play and learn with friends in our Playdate class! Come for fun activities such as spin-the-wheel, Play-doh art, stories and sharing time!
+        Play and learn with friends in our Playdate class! Join us for fun activities such as spin-the-wheel, Play-doh art, stories, and sharing time!
         Playdates are limited to 8 little ones per session, to promote social interaction.
-        You can reserve a spot by signing up for one of our monthly plans!
+        You can reserve a spot by signing up for one of our plans.
         If you'd like to end your trial early to gain access to Playdates, email <a href="mailto:hello@playgardenprep.com">hello@playgardenprep.com</a>
       </p>
 
