@@ -112,7 +112,7 @@
               'pg-right-7',
               'pg-top-[-52px]',
               'pg-h-5',
-              'md:pg-top-20',
+              'md:pg-top-[84px]',
               'md:pg-h-7',
               'md:pg-right-0'
             ]"
