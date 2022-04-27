@@ -1,10 +1,10 @@
 <template>
   <v-app>
     <!-- TOOLBAR -->
-    <GolToolbar />
+    <GolToolbar @input:open-drawer="openDrawer" />
 
     <!-- DRAWER -->
-    <GolDrawer />
+    <GolDrawer v-model="isDrawerOpen" />
 
     <!-- BODY -->
     <v-main>
@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
+import { defineComponent, ref } from '@nuxtjs/composition-api'
 import GolFooter from '@/components/app/gift-of-learning/Footer/Footer.vue'
 import GolToolbar from '@/components/app/gift-of-learning/Toolbar/Toolbar.vue'
 import GolDrawer from '@/components/app/gift-of-learning/Drawer/Drawer.vue'
@@ -33,6 +33,14 @@ export default defineComponent({
     GolDrawer
   },
 
-  setup () {}
+  setup () {
+    const isDrawerOpen = ref(false)
+
+    function openDrawer () {
+      isDrawerOpen.value = true
+    }
+
+    return { isDrawerOpen, openDrawer }
+  }
 })
 </script>
