@@ -25,7 +25,7 @@
             </span>
           </div>
 
-          <img :src="category.curriculumType.icon" height="32" class="mr-2">
+          <img :src="category.curriculumType.icon" height="32" class="mr-2" />
         </template>
       </v-row>
     </v-col>
@@ -131,9 +131,6 @@ export default defineComponent({
     })
 
     const total = computed(() => {
-      if (isAdmin.value) {
-        return props.category.total
-      }
       return props.category.worksheetUploads
         ? props.category.worksheetUploads.length
         : 0
