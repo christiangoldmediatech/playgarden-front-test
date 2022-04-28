@@ -49,7 +49,7 @@
             ]"
           >
             <span class="pg-font-bold">Call now</span> to speak with a specialist
-            <img src="@/assets/svg/gift-of-learning/phone-call.svg" class="pg-ml-2 pg-mb-[-4px]"> 646 504 4716
+            <img src="@/assets/svg/gift-of-learning/phone-call.svg" class="pg-ml-2 pg-mb-[-4px]"> <a href="tel:646-504-4716">646 504 4716</a>
           </div>
 
           <!-- LOGIN, SIGNUP AND LOCATIONS -->
