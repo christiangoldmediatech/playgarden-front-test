@@ -57,28 +57,6 @@
                   display-mode
                 />
               </v-col>
-              <v-col
-                v-for="i in missing"
-                :key="`curriculum-lesson-missing-${i}`"
-                class="panel-column"
-                cols="12"
-                sm="7"
-                md="6"
-                lg="5"
-                xl="4"
-              >
-                <blank-dashboard-panel
-                  :letter="(lessons[0]) ? lessons[0].curriculumType.letter : ''"
-                  :day="i + lessons.length"
-                >
-                  <template v-if="i === 1">
-                    COME BACK TOMORROW TO UNLOCK THIS DAY
-                  </template>
-                  <template v-else>
-                    COME BACK LATER TO UNLOCK THIS DAY
-                  </template>
-                </blank-dashboard-panel>
-              </v-col>
             </v-row>
           </v-container>
         </perfect-scrollbar>
@@ -110,36 +88,6 @@
                 </v-row>
               </template>
             </dashboard-panel>
-            <blank-dashboard-panel
-              v-else
-              :letter="(lessons[0]) ? lessons[0].curriculumType.letter : ''"
-              :day="selectedDayIndex + 1"
-            >
-              <!-- Previous Day And Next Day Icon -->
-              <template #panel-toolbar>
-                <v-row justify="space-between">
-                  <v-col v-if="shouldShowPreviousDayButton" class="btnLesson">
-                    <v-btn class="ml-3" icon @click.stop="previousDay">
-                      <img src="@/assets/svg/back-arrow.svg">
-                    </v-btn>
-                  </v-col>
-                  <v-spacer />
-                  <v-col v-if="shouldShowNextDayButton" class="btnLesson">
-                    <p class="text-right mr-3">
-                      <v-btn icon @click.stop="nextDay">
-                        <img src="@/assets/svg/next-arrow.svg">
-                      </v-btn>
-                    </p>
-                  </v-col>
-                </v-row>
-              </template>
-              <template v-if="currentMobileLesson === -1">
-                COME BACK TOMORROW TO UNLOCK THIS DAY
-              </template>
-              <template v-else>
-                COME BACK LATER TO UNLOCK THIS DAY
-              </template>
-            </blank-dashboard-panel>
           </div>
         </v-container>
       </template>
@@ -150,7 +98,7 @@
 <script>
 import { defineComponent } from '@nuxtjs/composition-api'
 import DashboardPanel from '@/components/app/dashboard/DashboardPanel.vue'
-import BlankDashboardPanel from '@/components/app/dashboard/BlankDashboardPanel.vue'
+// import BlankDashboardPanel from '@/components/app/dashboard/BlankDashboardPanel.vue'
 import LetterSelect from '@/components/app/live-sessions/recorded/LetterSelect.vue'
 import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
 import { mapGetters, mapActions } from 'vuex'
@@ -160,7 +108,7 @@ export default defineComponent({
   name: 'CourseProgressOverlay',
   components: {
     DashboardPanel,
-    BlankDashboardPanel,
+    // BlankDashboardPanel,
     PerfectScrollbar,
     LetterSelect
   },
@@ -199,14 +147,6 @@ export default defineComponent({
 
     currentLetter () {
       return this.letters.find(letter => letter.id === this.selectedLetter)
-    },
-
-    missing () {
-      // Return 0 if we are currently at the intro lesson
-      if (this.currentLetter && this.currentLetter.name === 'Intro') {
-        return 0
-      }
-      return 5 - this.lessons.length
     },
 
     currentMobileLesson () {
@@ -316,7 +256,9 @@ export default defineComponent({
       this.loading = true
       this.fetchChildProgress()
       this.getCourseProgressByChildId({ id: this.studentId, curriculumTypeId: this.selectedLetter }).then((data) => {
-        this.lessons = data.map(({ lesson }) => lesson)
+        this.lessons = data.map(({ lesson, doing }) => {
+          return { ...lesson, doing }
+        })
         this.loading = false
       })
     },

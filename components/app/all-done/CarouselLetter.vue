@@ -135,6 +135,12 @@ export default defineComponent({
       default: false
     },
 
+    forceActivateAllLetters: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
     previewMode: {
       type: Boolean,
       required: false,
@@ -145,7 +151,7 @@ export default defineComponent({
       type: Array,
       required: false,
       default: () => []
-    },
+    }, // this property only works if [forceActivateAllLetters] is false
 
     childId: {
       validator: (val) => {
@@ -185,10 +191,24 @@ export default defineComponent({
 
     actualLetters () {
       const letters = this.letters.map((letter) => {
-        const current = this.lettersProgress.find(l => l.id === letter.id)
-        return {
-          ...letter,
-          ...current
+        if (!this.forceActivateAllLetters) {
+          const current = this.lettersProgress.find(l => l.id === letter.id)
+          const isIncludedInDisabled = this.disabledLetters.includes(current?.id)
+          const currentLetter = current
+          if (currentLetter && isIncludedInDisabled) {
+            currentLetter.disabled = true
+            currentLetter.enabled = false
+          }
+          return {
+            ...letter,
+            ...currentLetter
+          }
+        } else {
+          return {
+            ...letter,
+            disabled: false,
+            enabled: true
+          }
         }
       })
 

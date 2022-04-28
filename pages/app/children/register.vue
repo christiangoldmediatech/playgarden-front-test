@@ -33,7 +33,7 @@
             </small>
           </p>
 
-          <p class="text-center text-md-left mt-6">
+          <p class="mt-6 text-center text-md-left">
             <v-row
               no-gutters
             >
@@ -46,10 +46,10 @@
               </v-col>
               <v-col>
                 <span class="font-weight-bold text-uppercase pg-letter-spacing-subtitle">
-                  GET 30 DAYS OF FREE TRIAL
+                  GET 15 DAYS OF FREE TRIAL
                 </span>
                 <v-row no-gutters>
-                  <span class="font-weight-bold mt-3">That includes:</span>
+                  <span class="mt-3 font-weight-bold">That includes:</span>
                 </v-row>
                 <v-row>
                   <ul>
@@ -80,7 +80,7 @@
             </v-row>
           </p>
 
-          <p class="text-center text-md-left mt-10">
+          <p class="mt-10 text-center text-md-left">
             <small>*You can cancel your membership any time from the account settings.</small>
           </p>
         </v-col>
@@ -135,7 +135,7 @@ export default {
 
         await this.fetchUserInfo()
 
-        this.$snotify.success('Children have been stored successfully!')
+        this.$snotify.success('Child information has been saved!')
 
         if (this.inSignUpProcess) {
           await this.$router.push({

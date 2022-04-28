@@ -47,7 +47,7 @@
         </v-col>
       </v-row>
       <p class="text-center messages-info-register">
-        You will only be billed after your 30-day FREE trial is complete!
+        You will only be billed after your 15-day FREE trial is complete!
       </p>
     </v-form>
   </validation-observer>

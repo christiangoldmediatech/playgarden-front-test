@@ -68,6 +68,10 @@
           <template v-slot:[`item.video.name`]="{ item }">
             {{ item.video.name }}
           </template>
+
+          <template v-slot:[`item.actions.prepend`]="{ item }">
+            <video-preview-btn :video="item.video" />
+          </template>
         </pg-admin-data-table>
       </v-card-text>
     </v-card>
@@ -78,10 +82,14 @@
 import { useKidsCorner } from '@/composables/kids-corner'
 import { defineComponent, onMounted, ref, watch } from '@nuxtjs/composition-api'
 import paginable from '@/utils/mixins/paginable'
+import VideoPreviewBtn from '@/components/admin/video-preview/VideoPreviewBtn.vue'
 
 export default defineComponent({
   name: 'KidsCornerVideosDataTable',
   mixins: [paginable],
+  components: {
+    VideoPreviewBtn
+  },
   data () {
     return {
       headers: [

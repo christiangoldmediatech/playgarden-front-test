@@ -1,85 +1,101 @@
 <template>
-  <v-row no-gutters>
-    <!-- Desktop Title -->
-    <v-col cols="12" class="d-none d-md-block">
-      <div class="text-uppercase font-weight-bold text-h4 grey--text text--darken-2 pb-6">
-        Notifications
-      </div>
-    </v-col>
-
-    <!-- Caregivers List Information -->
-    <v-col cols="12" class="mb-12 mb-md-0">
-      <v-card class="pa-4 px-md-10 py-md-3 card-custom-border">
-        <!-- Desktop SVG -->
-        <div class="justify-center pb-4 d-none d-md-flex">
-          <img
-            height="100px"
-            src="@/assets/svg/notifications.svg"
-          >
-        </div>
-
-        <!-- Mobile SVG and Title= -->
-        <div class="d-flex d-md-none justify-center py-2">
-          <img
-            height="45px"
-            src="@/assets/svg/notifications.svg"
-          >
-          <span class="text-uppercase font-weight-bold text-h5 grey--text text--darken-2 mt-1 ml-2">
-            Notifications
-          </span>
-        </div>
-
-        <div class="text-center body-1 text-md-h6 font-weight-medium grey--text text--darken-2 my-2">
-          <small>Manage the notifications you want to receive!</small>
-        </div>
-
-        <!-- Notification Preference Header -->
-        <v-row class="mb-3" no-gutters>
-          <v-col cols="8" lg="10" class="font-weight-bold grey--text text--darken-2 body-1 text-md-h5">
-            Send to:
-          </v-col>
-
-          <v-col cols="2" lg="1" class="font-weight-bold grey--text text--darken-2 text-caption text-sm-body-1 text-sm-right pr-sm-3">
-            Email
-          </v-col>
-
-          <v-col cols="2" lg="1" class="font-weight-bold grey--text text--darken-2 text-caption text-sm-body-1 text-sm-right pl-1 pr-sm-5">
-            SMS
-          </v-col>
-        </v-row>
-
-        <!-- Notification Preference Toggles -->
-        <v-row
-          v-for="(notification, notificationIndex) in notifications"
-          :key="notification.id"
-          class="mb-6"
-          no-gutters
+  <pg-loading :loading="loading">
+    <v-row no-gutters>
+      <!-- Desktop Title -->
+      <v-col cols="12" class="d-none d-md-block">
+        <div
+          class="text-uppercase font-weight-bold text-h4 grey--text text--darken-2 pb-6"
         >
-          <v-col
-            cols="8"
-            lg="10"
-            :class="[
-              'grey--text text--darken-2 body-1 text-md-h5',
-              { 'text--disabled': !notification.enabled.sms && !notification.enabled.email }
-            ]"
+          Notifications
+        </div>
+      </v-col>
+
+      <!-- Caregivers List Information -->
+      <v-col cols="12" class="mb-12 mb-md-0">
+        <v-card class="pa-4 px-md-10 py-md-3 card-custom-border">
+          <!-- Desktop SVG -->
+          <div class="justify-center pb-4 d-none d-md-flex">
+            <img height="100px" src="@/assets/svg/notifications.svg">
+          </div>
+
+          <!-- Mobile SVG and Title= -->
+          <div class="d-flex d-md-none justify-center py-2">
+            <img height="45px" src="@/assets/svg/notifications.svg">
+            <span
+              class="text-uppercase font-weight-bold text-h5 grey--text text--darken-2 mt-1 ml-2"
+            >
+              Notifications
+            </span>
+          </div>
+
+          <div
+            class="text-center body-1 text-md-h6 font-weight-medium grey--text text--darken-2 my-2"
           >
-            {{ notification.name }}
-          </v-col>
+            <small>Manage the notifications you want to receive!</small>
+          </div>
 
-          <v-col cols="2" lg="1" class="d-flex justify-sm-end">
-            <v-switch
-              v-model="notification.enabled.email"
-              class="ma-0 pa-0 mt-n4"
-              dense
-              hide-details
-              inset
-              :loading="loading"
-              :readonly="loading"
-              @change="toggleNotificationEmail(notification, notificationIndex)"
-            />
-          </v-col>
+          <!-- Notification Preference Header -->
+          <v-row class="mb-3" no-gutters>
+            <v-col
+              cols="10"
+              lg="11"
+              class="font-weight-bold grey--text text--darken-2 body-1 text-md-h5"
+            >
+              Send to:
+            </v-col>
 
-          <v-col cols="2" lg="1" class="d-flex justify-sm-end">
+            <v-col
+              cols="2"
+              lg="1"
+              class="font-weight-bold grey--text text--darken-2 text-caption text-sm-body-1 text-sm-right pr-sm-3"
+            >
+              Email
+            </v-col>
+
+          <!-- <v-col
+            cols="2"
+            lg="1"
+            class="font-weight-bold grey--text text--darken-2 text-caption text-sm-body-1 text-sm-right pl-1 pr-sm-5"
+          >
+            SMS
+          </v-col> -->
+          </v-row>
+
+          <!-- Notification Preference Toggles -->
+          <v-row
+            v-for="(notification, notificationIndex) in notifications"
+            :key="notification.id"
+            class="mb-6"
+            no-gutters
+          >
+            <v-col
+              cols="10"
+              lg="11"
+              :class="[
+                'grey--text text--darken-2 body-1 text-md-h5',
+                {
+                  'text--disabled':
+                    !notification.enabled.sms && !notification.enabled.email
+                }
+              ]"
+            >
+              {{ notification.name }}
+            </v-col>
+
+            <v-col cols="2" lg="1" class="d-flex justify-sm-end">
+              <v-switch
+                v-model="notification.enabled.email"
+                class="ma-0 pa-0 mt-n4"
+                dense
+                hide-details
+                inset
+                :loading="loading"
+                :readonly="loading"
+                @change="toggleNotificationEmail(notification, notificationIndex)"
+              />
+            </v-col>
+
+          <!-- <v-col cols="2" lg="1" class="d-flex justify-sm-end">
             <v-switch
               v-model="notification.enabled.sms"
               class="ma-0 pa-0 mt-n4"
@@ -90,11 +106,12 @@
               :readonly="loading"
               @change="toggleNotificationSMS(notification, notificationIndex)"
             />
-          </v-col>
-        </v-row>
-      </v-card>
-    </v-col>
-  </v-row>
+          </v-col> -->
+          </v-row>
+        </v-card>
+      </v-col>
+    </v-row>
+  </pg-loading>
 </template>
 
 <script>
@@ -103,14 +120,14 @@ import { mapActions } from 'vuex'
 export default {
   name: 'NotificationUserList',
 
-  data () {
+  data() {
     return {
       notifications: [],
       loading: false
     }
   },
 
-  mounted () {
+  mounted() {
     this.getNotificationsUsersData()
   },
 
@@ -122,7 +139,7 @@ export default {
       'updateNotificationEmail'
     ]),
 
-    async getNotificationsUsersData () {
+    async getNotificationsUsersData() {
       try {
         this.loading = true
 
@@ -135,7 +152,7 @@ export default {
       }
     },
 
-    parseNotifications (notifications) {
+    parseNotifications(notifications) {
       if (!Array.isArray(notifications)) {
         return []
       }
@@ -149,7 +166,7 @@ export default {
       }))
     },
 
-    async toggleNotification ({ id }) {
+    async toggleNotification({ id }) {
       try {
         this.loading = true
 
@@ -160,47 +177,39 @@ export default {
       }
     },
 
-    async toggleNotificationSMS (notification, index) {
+    async toggleNotificationSMS(notification, index) {
       try {
         this.loading = true
 
         await this.updateNotificationSMS(notification.id)
       } catch (e) {
         // rollback toggle state
-        this.$set(
-          this.notifications,
-          index,
-          {
-            ...notification,
-            enabled: {
-              ...notification.enabled,
-              sms: !notification.enabled.sms
-            }
+        this.$set(this.notifications, index, {
+          ...notification,
+          enabled: {
+            ...notification.enabled,
+            sms: !notification.enabled.sms
           }
-        )
+        })
       } finally {
         this.loading = false
       }
     },
 
-    async toggleNotificationEmail (notification, index) {
+    async toggleNotificationEmail(notification, index) {
       try {
         this.loading = true
 
         await this.updateNotificationEmail(notification.id)
       } catch (e) {
         // rollback toggle state
-        this.$set(
-          this.notifications,
-          index,
-          {
-            ...notification,
-            enabled: {
-              ...notification.enabled,
-              email: !notification.enabled.email
-            }
+        this.$set(this.notifications, index, {
+          ...notification,
+          enabled: {
+            ...notification.enabled,
+            email: !notification.enabled.email
           }
-        )
+        })
       } finally {
         this.loading = false
       }

@@ -41,8 +41,9 @@ describe('components/ui/LargeImageContentDialog/LargeImageContentDialog.vue', ()
   it('should emit `close` on close button click on desktop', async () => {
     const wrapper = mountFunction()
     wrapper.vm.$vuetify.breakpoint.mobile = false // set viewport detection to desktop
+    await wrapper.vm.$nextTick()
 
-    await wrapper.find('[data-test-id=desktop-close-button]').trigger('click')
+    await wrapper.find('[data-test-id=close-button]').trigger('click')
 
     expect(wrapper.emitted().close).toBeTruthy()
   })

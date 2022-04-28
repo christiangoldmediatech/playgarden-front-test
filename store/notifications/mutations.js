@@ -35,5 +35,23 @@ export default {
   },
   SET_IS_TRIAL_ENDING_PLAN_SELECTED_MODAL_VISIBLE (state, bool) {
     state.isTrialEndingPlanSelectedModalVisible = bool
+  },
+  SET_IS_TRIAL_ENDING_FOR_LAST_DAY_MODAL_VISIBLE (state, bool) {
+    state.isTrialEndingForLastDayModalVisible = bool
+  },
+  SET_IS_PLAN_UPGRADE_MODAL_VISIBLE (state, bool) {
+    state.isPlanUpgradeModalVisible = bool
+  },
+  SET_IS_CREDIT_CARD_MODAL_VISIBLE (state, bool) {
+    state.isCreditCardModalVisible = bool
+  },
+  SET_IS_EMAIL_CONFLICT_MODAL_VISIBLE (state, bool) {
+    state.isEmailConflictModalVisible = bool
+  },
+  SET_IS_ACCOUNT_INACTIVE_MODAL_VISIBLE (state, bool) {
+    state.isAccountInactiveModalVisible = bool
+  },
+  SET_IS_CANCELED_TRIAL_MODAL_VISIBLE (state, bool) {
+    state.isCanceledTrialModalVisible = bool
   }
 }

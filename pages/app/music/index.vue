@@ -1,55 +1,57 @@
 <template>
-  <v-main>
-    <v-container fluid class="pa-0">
-      <horizontal-ribbon-card
-        :is-minimized.sync="isTopRibbonMinimized"
-      >
-        <v-row no-gutters class="ml-md-10 mr-md-6 mx-4 mt-4">
-          <v-col cols="12" md="3" align-self="center">
-            <child-select
-              v-if="id"
-              hide-details
-              :value="id"
-              :management-button="false"
-              @input="id = $event"
-            />
-          </v-col>
-          <v-col cols="12" md="9" align-self="center" class="mt-2 mt-md-0 d-none d-sm-flex px-2 carousel-wrapper">
-            <music-carousel-letter
-              :is-full-width="true"
-              :value="selectedLetterId"
-              :disabled-letters="disabledLetters"
-              @select="selectLetter"
-            />
-          </v-col>
-          <v-col cols="12" class="mt-4">
-            <new-compact-music-player @favorite="handleFavorite" />
-          </v-col>
-        </v-row>
-      </horizontal-ribbon-card>
-      <v-expand-transition>
-        <new-music-player
-          ref="musicPlayer"
-          v-intersect="onIntersect"
+  <pg-loading :loading="loading" fullscreen>
+    <v-main class="pt-5 pt-md-16 mt-0 mt-md-5">
+      <v-container fluid class="pa-0">
+        <horizontal-ribbon-card
+          :is-minimized.sync="isTopRibbonMinimized"
+        >
+          <v-row no-gutters class="ml-md-10 mr-md-6 mx-4 mt-4">
+            <v-col cols="12" md="3" align-self="center">
+              <child-select
+                v-if="id"
+                hide-details
+                :value="id"
+                :management-button="false"
+                @input="id = $event"
+              />
+            </v-col>
+            <v-col cols="12" md="9" align-self="center" class="mt-2 mt-md-0 d-none d-sm-flex px-2 carousel-wrapper">
+              <music-carousel-letter
+                :is-full-width="true"
+                :value="selectedLetterId"
+                :disabled-letters="disabledLetters"
+                @select="selectLetter"
+              />
+            </v-col>
+            <v-col cols="12" class="mt-4">
+              <new-compact-music-player @favorite="handleFavorite" />
+            </v-col>
+          </v-row>
+        </horizontal-ribbon-card>
+        <v-expand-transition>
+          <new-music-player
+            ref="musicPlayer"
+            v-intersect="onIntersect"
+            @favorite="handleFavorite"
+          />
+        </v-expand-transition>
+        <music-song-list
+          id="music-song-list"
+          :show-only-favorites="showOnlyFavorites"
+          :mobile="isMobile"
+          :all-songs="allSongsWithFavorites"
+          :songs-by-curriculum-type="songsByCurriculumTypeWithFavorites"
+          :selected-letter-id="selectedLetterId"
+          class="music-song-list mx-auto"
+          @addSong="addSongToPlaylist"
+          @newPlayList="createNewPlaylist"
           @favorite="handleFavorite"
+          @showFavorites="showOnlyFavorites = !showOnlyFavorites"
+          @select-letter="selectLetter"
         />
-      </v-expand-transition>
-      <music-song-list
-        id="music-song-list"
-        :show-only-favorites="showOnlyFavorites"
-        :mobile="isMobile"
-        :all-songs="allSongsWithFavorites"
-        :songs-by-curriculum-type="songsByCurriculumTypeWithFavorites"
-        :selected-letter-id="selectedLetterId"
-        class="music-song-list mx-auto"
-        @addSong="addSongToPlaylist"
-        @newPlayList="createNewPlaylist"
-        @favorite="handleFavorite"
-        @showFavorites="showOnlyFavorites = !showOnlyFavorites"
-        @select-letter="selectLetter"
-      />
-    </v-container>
-  </v-main>
+      </v-container>
+    </v-main>
+  </pg-loading>
 </template>
 
 <script lang="ts">
@@ -64,7 +66,7 @@ import ChildSelect from '@/components/app/ChildSelect.vue'
 import MusicCarouselLetter from '@/components/app/music/MusicLetterCarousel.vue'
 
 import { useMusic, useSnotifyHelper, useVuetifyHelper, useAppEventBusHelper, useGtmHelper, useAuth, useChildRoute } from '@/composables'
-import { onMounted, ref, computed, useRoute, watch, onUnmounted, useStore, useRouter, useContext } from '@nuxtjs/composition-api'
+import { onMounted, ref, computed, useRoute, watch, onUnmounted, useStore, useRouter } from '@nuxtjs/composition-api'
 import { MusicLibrary, APP_EVENTS, TAG_MANAGER_EVENTS, TypedStore } from '@/models'
 
 const PAGE_MOBILE_BREAKPOINT = 1264
@@ -90,6 +92,7 @@ export default {
     const store = useStore<TypedStore>()
     const eventBus = useAppEventBusHelper()
     const gtm = useGtmHelper()
+    const loading = ref(false)
 
     // this references `ref="musicPlayer"` when the component is mounted
     const musicPlayer = ref<any>(null)
@@ -136,6 +139,7 @@ export default {
     })
 
     onMounted(async () => {
+      loading.value = true
       await getMusicLibrariesByCurriculumType()
       await getAndSetFavorites()
       handleEmptyMusicPlayer()
@@ -149,6 +153,8 @@ export default {
       eventBus.$on(APP_EVENTS.MUSIC_ITEM_ADD_TO_FAVORITES, (data: { event: string, topic: string, userId: string }) => {
         gtm.push(data)
       })
+
+      loading.value = false
     })
 
     onUnmounted(() => {
@@ -239,7 +245,7 @@ export default {
         }
 
         await getAndSetFavorites()
-      } catch (error) {
+      } catch (error: any) {
         snotify.error(error.message)
       }
     }
@@ -287,6 +293,7 @@ export default {
     })
 
     return {
+      loading,
       addSongToPlaylist,
       allSongsWithFavorites,
       createNewPlaylist,

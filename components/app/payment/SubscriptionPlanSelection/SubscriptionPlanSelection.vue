@@ -65,7 +65,7 @@
 
               <div class="px-4 px-md-8 whats-included">
                 <!-- What's Included -->
-                <p class="text-left mt-6 plan-included">
+                <p class="text-left plan-included">
                   <label class="grey--text text--darken-2 font-weight-bold">What's included</label>
                 </p>
 
@@ -75,7 +75,7 @@
                   show-promotions
                 />
                 <!-- Price -->
-                <p class="text-center mt-8">
+                <!-- <p class="text-center mt-8">
                   <span
                     v-if="isAnnualSubscriptionEnabled"
                     class="product-price"
@@ -105,7 +105,7 @@
                       class="info-prodcut-detail"
                     >Billed Annually (Save ~$1,200)</span>
                   </template>
-                </p>
+                </p> -->
               </div>
               <!-- Call Us To Enroll Text -->
               <div v-if="indexP === 2" class="mb-6">
@@ -152,6 +152,7 @@
                     width="250px"
                     :disabled="invalid"
                     type="submit"
+                    @click="selectedPlan = plan"
                   >
                     Choose Plan
                   </v-btn>
@@ -167,6 +168,12 @@
         </v-form>
       </validation-observer>
     </v-col>
+
+    <!-- CREDIT CARD MODAL -->
+    <credit-card-modal
+      v-model="isCreditCardModalVisible"
+      @card-added="dataSubmitDialog"
+    />
   </v-row>
 
   <pg-loading v-else />
@@ -179,8 +186,9 @@ import { mapActions, mapGetters } from 'vuex'
 
 import submittable from '@/utils/mixins/submittable'
 
-import { useGlobalModal } from '@/composables'
+import { useAuth, useBilling, useGlobalModal, useNotification } from '@/composables'
 
+import { UserFlow } from '@/models'
 import PlanDescription from './PlanDescription.vue'
 import RadioSelectors from './RadioSelectors.vue'
 
@@ -189,7 +197,8 @@ export default defineComponent({
 
   components: {
     PlanDescription,
-    RadioSelectors
+    RadioSelectors,
+    CreditCardModal: () => import('@/components/app/payment/CreditCardModal.vue')
   },
 
   mixins: [submittable],
@@ -214,22 +223,32 @@ export default defineComponent({
   setup () {
     const store = useStore()
     const { showContactUsModal } = useGlobalModal({ store })
+    const { setIsTrialEndingPlanSelectedModalVisible } = useNotification({ store })
+    // @ts-ignore
     const isAnnualSubscriptionEnabled = computed(() => store.state.plans.isAnnualSubscriptionEnabled)
 
+    const Auth = useAuth({ store })
+    const Billing = useBilling()
+
     return {
+      Auth,
+      Billing,
       showContactUsModal,
-      isAnnualSubscriptionEnabled
+      isAnnualSubscriptionEnabled,
+      setIsTrialEndingPlanSelectedModalVisible
     }
   },
 
   data: () => ({
     draftAddress: {},
     plans: [],
+    selectedPlan: null,
     productPrice: 324,
     loading: false,
     initialized: false,
     radioGroup: null,
-    bkgColor: '#BDDA9F'
+    bkgColor: '#BDDA9F',
+    isCreditCardModalVisible: false
   }),
 
   computed: {
@@ -307,8 +326,10 @@ export default defineComponent({
 
     onSubmit () {
       if (this.administrator) {
+        const plan = this.getSubmittableData()
+        plan.id = this.selectedPlan.id
         this.$emit('click:administrator', {
-          planSelected: this.getSubmittableData()
+          planSelected: plan
         })
       } else {
         this.dataSubmitDialog()
@@ -317,19 +338,32 @@ export default defineComponent({
 
     async dataSubmitDialog () {
       this.loading = true
-
+      const plan = this.getSubmittableData()
+      plan.id = this.selectedPlan.id
       try {
-        await this.selectSubscriptionPlan(this.getSubmittableData())
+        /**
+         * If the user does not have a credit card and is in flow NO_CREDITCARD,
+         * ask them to register a credit card.
+         */
+        if (this.Auth.userInfo.value.flow === UserFlow.NOCREDITCARD) {
+          const userCards = await this.Billing.fetchBillingCards()
 
-        this.$snotify.success('Payment plan has been selected successfully!')
+          if (userCards?.length === 0) {
+            this.isCreditCardModalVisible = true
+            this.loading = false
+            return
+          }
+        }
 
+        await this.selectSubscriptionPlan(plan)
+        this.setIsTrialEndingPlanSelectedModalVisible(true)
         this.$nuxt.$emit('plan-membership-changed')
-
         this.$emit('click:submit', {
-          draft: this.getSubmittableData(),
+          draft: plan,
           draftAddress: this.draftAddress
         })
       } catch (e) {
+        this.$snotify.error('Could not select plan. Please, try again later.')
       } finally {
         this.loading = false
       }

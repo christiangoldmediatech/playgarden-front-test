@@ -5,34 +5,34 @@
         class="text-center text-md-left"
         :class="{ 'mt-n10': $vuetify.breakpoint.smAndUp }"
       >
-        <underlined-title class="text-h6 text-md-h5" text="CREDIT CARD INFORMATION" />
-      </p>
-      <p class="text-center text-md-left">
-        <span class="text-header-info">
-          We need your credit card information to confirm who you are, but you will NOT be charged.
-        </span>
+        <strong
+          class="text-left"
+        >We need your credit card information to confirm who you are, but you
+          will NOT be charged.</strong>
+        <br>
+        <br>
+        <underlined-title
+          class="text-h6 text-md-h5"
+          text="CREDIT CARD INFORMATION"
+        />
       </p>
     </slot>
 
     <v-form class="mt-7" @submit.prevent="passes(onSubmit)">
       <!-- Card -->
-      <validation-provider
-        name="Card number"
-        rules="required"
-      >
+      <validation-provider name="Card number" rules="required">
         <stripe-card v-model="draft.token" class="mb-4" />
       </validation-provider>
 
-      <validation-provider
-        v-slot="{ errors }"
-        name="Promotion Code"
-      >
+      <validation-provider v-slot="{ errors }" name="Promotion Code" rules="min:5">
         <pg-text-field
           v-model="draft.promotion_code"
           :error-messages="errors"
           label="Promotion Code"
+          :color="isValidCoupon ? '' : 'error'"
+          :suffix="getTextValidateCoupon"
+          :loading="isValidatingCoupon"
           solo
-          @blur="checkValid"
         />
       </validation-provider>
 
@@ -40,7 +40,7 @@
         <validation-provider v-slot="{ errors }" name="Terms" rules="required">
           <v-checkbox
             v-model="draft.acceptTerms"
-            class="accept-terms ml-3 mt-0 pt-0"
+            class="pt-0 mt-0 ml-3 accept-terms"
             :error-messages="errors"
             :true-value="true"
             :false-value="null"
@@ -50,7 +50,7 @@
                 I have read and accept the
 
                 <nuxt-link
-                  class="terms-conditions link-text ml-1"
+                  class="ml-1 terms-conditions link-text"
                   :to="{ name: 'terms-conditions' }"
                   target="_blank"
                   @click.native.stop=""
@@ -65,10 +65,10 @@
 
       <v-btn
         block
-        class="mb-4 mt-0 main-btn ml-md-0"
+        class="mt-0 mb-4 main-btn ml-md-0"
         min-height="60"
         color="primary"
-        :disabled="invalid"
+        :disabled="invalid || lockButton"
         :loading="loading"
         type="submit"
         :x-large="!$vuetify.breakpoint.smAndDown"
@@ -90,20 +90,29 @@
         CLOSE
       </v-btn>
     </v-form>
-    <div v-if="$vuetify.breakpoint.smAndUp">
+    <div class="pb-4 pb-md-0">
       <p v-if="isFreeForDaysTextVisible">
         <center>
           <span class="font-weight-bold text-completely">
-            Playgarden Prep Online is COMPLETELY FREE for the next 30 days.
+            Playgarden Prep Online is COMPLETELY FREE for the next 15 days.
           </span>
         </center>
       </p>
+      <br>
       <v-divider />
+      <br>
       <slot name="footer">
         <p v-if="isTrialTextVisible">
           <center class="ml-2">
             <span class="info-pay">
-              You can cancel your trial and membership anytime from the account settings.<br> Once your free trial ends you will be placed on the <span class="option-standar">Standard</span> monthly plan, you can change plans at any time in your profile page.
+              <span
+                class="d-none d-md-block"
+              >You can cancel your trial and membership anytime from the
+                account settings. <br></span>
+
+              Once your free trial ends you will be placed on the
+              <span class="option-standar">PREMIUM</span> monthly plan, you can
+              change plans at any time in your profile page.
             </span>
           </center>
         </p>
@@ -115,7 +124,7 @@
 <script>
 import { mapActions } from 'vuex'
 import submittable from '@/utils/mixins/submittable'
-
+import debounce from 'lodash/debounce'
 import StripeCard from '@/components/forms/payment/StripeCard.vue'
 
 export default {
@@ -130,7 +139,7 @@ export default {
   props: {
     buttonText: {
       type: String,
-      default: 'START YOUR FREE TRIAL'
+      default: 'START LEARNING NOW'
     },
 
     isTrialTextVisible: {
@@ -150,40 +159,74 @@ export default {
     noTerms: Boolean
   },
 
+  data: vm => ({
+    lockButton: false,
+    isValidCoupon: false,
+    isValidatingCoupon: false,
+    checkValid: debounce(vm._checkValid, 1050)
+  }),
+
+  computed: {
+    getTextValidateCoupon () {
+      if (this.draft.promotion_code) {
+        return (this.isValidCoupon) ? 'VALID COUPON' : 'INVALID COUPON'
+      } else {
+        return ''
+      }
+    }
+  },
+
   watch: {
-    'draft.promotion_code' (val) {
+    'draft.promotion_code'(val) {
       if (val) {
+        this.lockButton = true
         this.draft.promotion_code = val.toUpperCase()
+        if (val.length >= 5) {
+          this.checkValid()
+        }
+      } else {
+        this.lockButton = false
+        this.draft.promotion_id = null
       }
     }
   },
 
   methods: {
     ...mapActions('coupons', ['getCoupons']),
-    getSubmittableData () {
+    getSubmittableData() {
       return {
         token: this.draft.token,
         promotion_id: this.draft.promotion_id
       }
     },
 
-    async checkValid () {
-      if (this.draft.promotion_code) {
-        const coupons = await this.getCoupons({ active: true, code: this.draft.promotion_code })
-        if (coupons.length > 0) {
-          this.draft.promotion_id = coupons[0].promotion_id
-          this.$nuxt.$emit('send-coupon', coupons[0])
-          this.$snotify.success('Coupon is valid.')
-        } else {
-          this.$snotify.warning('Coupon is not valid.', 'Warning', {})
-          this.$nuxt.$emit('send-coupon', null)
-          this.draft.promotion_code = null
-          this.draft.promotion_id = null
+    async _checkValid () {
+      try {
+        this.isValidatingCoupon = true
+        if (this.draft.promotion_code) {
+          this.lockButton = true
+          const coupons = await this.getCoupons({ active: true, code: this.draft.promotion_code })
+          if (coupons.length > 0) {
+            this.draft.promotion_id = coupons[0].promotion_id
+            this.$nuxt.$emit('send-coupon', coupons[0])
+            this.isValidCoupon = true
+            this.lockButton = false
+          } else {
+            this.isValidCoupon = false
+            this.lockButton = true
+            this.$nuxt.$emit('send-coupon', null)
+            this.draft.promotion_id = null
+          }
         }
+      } catch (error) {
+        this.isValidCoupon = false
+        this.lockButton = true
+      } finally {
+        this.isValidatingCoupon = false
       }
     },
 
-    resetDraft () {
+    resetDraft() {
       this.draft = {
         token: '',
         promotion_code: null,
@@ -205,6 +248,7 @@ export default {
   font-weight: 500;
   color: rgba(96, 96, 96, 0.8) !important;
   text-align: center;
+  font-weight: bold;
 }
 .option-standar {
   color: var(--v-accent-base) !important;
@@ -222,5 +266,8 @@ export default {
   color: var(--v-black-base);
   font-weight: 400;
   cursor: pointer;
+}
+::v-deep.v-text-field__suffix {
+  color: var(--v-error-base) !important;
 }
 </style>

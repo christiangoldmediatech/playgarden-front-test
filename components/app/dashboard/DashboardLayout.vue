@@ -1,5 +1,5 @@
 <template>
-  <v-main>
+  <v-main class="pt-10 pt-sm-6 pt-md-16 mt-5">
     <!-- <v-container v-if="showScreen" fill-height>
       <v-row justify="center" align-sm="center" fill-height>
         <v-col cols="10" sm="6" md="5">
@@ -230,12 +230,20 @@ export default {
     // }
     canAdvance () {
       if (this.lesson && this.childId && !this.previewMode) {
-        return true
-        // const completedCount = this.lesson.videos.map(({ viewed }) => Number(viewed && viewed.completed ? 1 : 0)).reduce((a, b) => a + b)
+        // completed all video lessons
+        const areLessonVideosCompleted = this.lesson?.videos?.every(video => Boolean(video?.viewed?.completed))
 
-        // const progress = (completedCount / this.lesson.videos.length) * 100
-        // return progress === 100
+        // completed all online worksheets
+        const areOnlineWorksheetsCompleted = this.lesson?.worksheets
+          ?.filter(worksheet => worksheet.type === 'ONLINE')
+          ?.every(worksheet => Boolean(worksheet?.completed?.completed))
+
+        // completed all lesson activities
+        const areLessonActivitiesCompleted = this.lesson?.lessonsActivities?.every(activity => Boolean(activity?.activity?.viewed?.completed))
+
+        return areLessonVideosCompleted && areOnlineWorksheetsCompleted && areLessonActivitiesCompleted
       }
+
       return false
     },
 

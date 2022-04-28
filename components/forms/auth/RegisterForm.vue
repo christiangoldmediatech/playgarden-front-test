@@ -4,10 +4,7 @@
     <v-form v-else @submit.prevent="passes(onSubmit)">
       <v-container class="px-0">
         <v-row no-gutters class="some">
-          <v-col
-            class="pr-2"
-            cols="6"
-          >
+          <v-col class="pr-2" cols="12" md="6">
             <!-- First name -->
             <validation-provider
               v-slot="{ errors }"
@@ -25,9 +22,7 @@
               />
             </validation-provider>
           </v-col>
-          <v-col
-            cols="6"
-          >
+          <v-col cols="12" md="6">
             <!-- Last name -->
             <validation-provider
               v-slot="{ errors }"
@@ -118,6 +113,37 @@
                     </span>
                     <br>
                   </v-tooltip>
+
+                  <!-- Coupon -->
+                  <validation-provider
+                    v-if="!isCreditCardRequired"
+                    v-slot="{ errors }"
+                    name="Coupon"
+                    vid="coupon_field"
+                  >
+                    <pg-text-field
+                      v-model="draft.promotion_id"
+                      :disabled="loading"
+                      :error-messages="errors"
+                      :loading="isCheckingCoupon"
+                      clearable
+                      label="Coupon"
+                      solo
+                      @change="checkCoupon"
+                    />
+                  </validation-provider>
+
+                  <!-- MESSAGE IF COUPON IS VALID OR NOT -->
+                  <div
+                    v-if="Boolean(draft.promotion_id) && isValidCoupon !== null"
+                    class="mt-n6 mb-4"
+                  >
+                    <span
+                      v-if="isValidCoupon"
+                      class="green--text"
+                    >Valid coupon!</span>
+                    <span v-else class="error--text">Invalid coupon!</span>
+                  </div>
                 </template>
 
                 <v-btn
@@ -125,12 +151,12 @@
                   min-height="60"
                   class="mb-6 main-btn"
                   color="green2"
-                  :disabled="invalid"
+                  :disabled="invalid || !isValidCoupon"
                   :loading="loading"
                   type="submit"
                   x-large
                 >
-                  NEXT
+                  Start learning
                 </v-btn>
               </v-col>
             </v-row>
@@ -154,27 +180,37 @@
             <v-row no-gutters>
               <!-- FACEBOOK -->
               <v-col class="mb-4 mb-md-0 pr-md-4" cols="12" md="6">
-                <v-btn block height="45" class="social-btn" @click="facebookSignIn">
+                <v-btn
+                  block
+                  height="45"
+                  class="social-btn"
+                  @click="facebookSignIn"
+                >
                   <img
                     alt="Facebook"
                     class="mr-1"
                     src="@/assets/svg/facebook_icon.svg"
                   >
 
-                  <span class="spanSocialNetwork">Login with Facebook</span>
+                  <span class="spanSocialNetwork">Continue with Facebook</span>
                 </v-btn>
               </v-col>
 
               <!-- GOOGLE -->
               <v-col class="mb-6 mb-md-0 pl-md-4" cols="12" md="6">
-                <v-btn block height="45" class="social-btn" @click="googleSignIn">
+                <v-btn
+                  block
+                  height="45"
+                  class="social-btn"
+                  @click="googleSignIn"
+                >
                   <img
                     alt="Google"
                     class="mr-1"
                     src="@/assets/svg/google_icon.svg"
                   >
 
-                  <span class="spanSocialNetwork">Login with Google</span>
+                  <span class="spanSocialNetwork">Continue with Google</span>
                 </v-btn>
               </v-col>
             </v-row>
@@ -187,6 +223,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import debounce from 'lodash/debounce'
 
 import { jsonCopy } from '@/utils/objectTools'
 
@@ -201,7 +238,12 @@ export default {
 
     inInvitationProcess: Boolean,
 
-    loading: Boolean
+    loading: Boolean,
+
+    isCreditCardRequired: {
+      type: Boolean,
+      default: false
+    }
   },
 
   data: vm => ({
@@ -216,37 +258,57 @@ export default {
       }
       return null
     })(),
-    show: true
+    show: true,
+    checkCoupon: debounce(vm._checkCoupon, 750),
+    isValidCoupon: null,
+    isCheckingCoupon: false
   }),
 
   computed: {
     ...mapGetters('auth', ['getUserInfo', 'isUserLoggedIn']),
 
-    hasInvitationEmail () {
+    hasInvitationEmail() {
       return Boolean(
         (this.inInvitationProcess && this.$route.query.email) ||
           this.isUserLoggedIn
       )
     },
 
-    hasInvitationPhone () {
+    hasInvitationPhone() {
       return Boolean(this.inInvitationProcess && this.$route.query.phone)
     },
-    hasUserSocialData () {
+    hasUserSocialData() {
       return Boolean(this.userSocialData)
     }
   },
 
-  created () {
+  watch: {
+    'draft.promotion_id': {
+      immediate: true,
+      handler(val) {
+        this.isValidCoupon = null
+
+        if (typeof val === 'string') {
+          this.draft.promotion_id = val.toUpperCase().trim()
+        }
+
+        this.checkCoupon()
+      }
+    }
+  },
+
+  created() {
     this.getDataFirebase()
   },
 
-  mounted () {
+  mounted() {
     this.setDraft()
   },
 
   methods: {
-    getProviderSignIn (provider) {
+    ...mapActions('coupons', ['getCoupons']),
+
+    getProviderSignIn(provider) {
       let nameProvider = ''
       switch (provider) {
         case 'google.com':
@@ -258,7 +320,7 @@ export default {
       }
       return nameProvider
     },
-    getDataFirebase () {
+    getDataFirebase() {
       this.loadingDataSocial = true
       const fireAuthObj = this.$fireAuthObj()
       fireAuthObj
@@ -271,7 +333,9 @@ export default {
                 firstName: profile.given_name || profile.first_name || '',
                 lastName: profile.family_name || profile.last_name || '',
                 email: profile.email,
-                socialNetwork: this.getProviderSignIn(result.additionalUserInfo.providerId),
+                socialNetwork: this.getProviderSignIn(
+                  result.additionalUserInfo.providerId
+                ),
                 socialNetworkId: profile.id
               })
             }
@@ -285,7 +349,7 @@ export default {
           this.loadingDataSocial = false
         })
     },
-    setDraft () {
+    setDraft() {
       this.draft = {
         firstName: this.hasUserSocialData
           ? this.userSocialData.firstName
@@ -308,10 +372,11 @@ export default {
           : null,
         socialNetworkId: this.hasUserSocialData
           ? this.userSocialData.socialNetworkId
-          : null
+          : null,
+        promotion_id: null
       }
     },
-    onSubmit () {
+    onSubmit() {
       this.$emit(
         'click:submit',
         jsonCopy({
@@ -320,18 +385,47 @@ export default {
       )
     },
 
-    facebookSignIn () {
+    async _checkCoupon() {
+      try {
+        this.isCheckingCoupon = true
+        // Coupon is not requested for CREDITCARD flow.
+        if (this.isCreditCardRequired || !this.draft.promotion_id) {
+          this.isValidCoupon = true
+          return true
+        }
+
+        // Only check for coupon validity if it is NO CREDITCARD flow.
+        const coupons = await this.getCoupons({
+          active: true,
+          code: this.draft.promotion_id
+        })
+
+        if (coupons?.length > 0) {
+          this.isValidCoupon = true
+          return true
+        } else {
+          this.isValidCoupon = false
+          return false
+        }
+      } catch (error) {
+        return false
+      } finally {
+        this.isCheckingCoupon = false
+      }
+    },
+
+    facebookSignIn() {
       this.socialSignIn(
         'FACEBOOK',
         new this.$fireAuthObj.FacebookAuthProvider()
       )
     },
 
-    googleSignIn () {
+    googleSignIn() {
       this.socialSignIn('GOOGLE', new this.$fireAuthObj.GoogleAuthProvider())
     },
 
-    async loginWithSocialNetwork (user) {
+    async loginWithSocialNetwork(user) {
       try {
         this.loadingDataSocial = true
         this.disableAxiosGlobal()
@@ -343,7 +437,7 @@ export default {
       }
     },
 
-    onFailLoginSocial (user) {
+    onFailLoginSocial(user) {
       try {
         this.validateEmail(user)
         this.userSocialData = { ...user }
@@ -365,7 +459,7 @@ export default {
 
     ...mapActions('auth/socialUser', ['authLoginSocial']),
 
-    socialSignIn (nameSocialNetwork, provider) {
+    socialSignIn(nameSocialNetwork, provider) {
       const fireAuthObj = this.$fireAuthObj()
       fireAuthObj.signInWithRedirect(provider)
     }
@@ -374,10 +468,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.green2{
-  color:var(--v-black-base);
-  &:hover{
-    color:rgba(#000000,0.8);
+.green2 {
+  color: var(--v-black-base);
+  &:hover {
+    color: rgba(#000000, 0.8);
   }
 }
 </style>

@@ -24,12 +24,12 @@
                 </v-icon>
               </v-btn>
             </v-row>
-
             <portfolio-card
               v-if="overlay"
               :child="currtentChild"
               v-bind="{ entityId, entityType, image, noShare, infoUser, created }"
               display-mode
+              :worksheet-feedback="true"
             />
           </v-col>
         </v-row>

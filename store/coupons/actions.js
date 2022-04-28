@@ -38,6 +38,10 @@ export default {
 
   deleteCoupon (_, id) {
     return this.$axios.$delete(`/coupons/${id}`)
+  },
+
+  updateSubcriptionCoupon (_, data) {
+    return this.$axios.$patch('/billing/subscription/update/coupon', data)
   }
 
 }

@@ -192,6 +192,36 @@
               </v-col>
 
               <v-col cols="12" sm="9" lg="6">
+                <div v-if="video && video.videoUrl" class="video-player-16-9-container">
+                  <pg-video-player
+                    inline
+                    :control-config="{ favorite: false }"
+                    @ready="onPlayerReady"
+                  />
+                </div>
+
+                <v-progress-circular
+                  v-else-if="
+                    video &&
+                      ['PROCESSING', 'UPLOADING'].includes(video.status)
+                  "
+                  class="mb-3"
+                  color="primary"
+                  width="8"
+                  size="256"
+                  indeterminate
+                >
+                  <span class="black--text">
+                    <span v-if="video.status === 'UPLOADING'">
+                      Uploading
+                    </span>
+
+                    <span v-else>
+                      Processing
+                    </span>
+                  </span>
+                </v-progress-circular>
+
                 <validation-provider
                   v-slot="{ errors }"
                   name="Video"
@@ -251,13 +281,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, useRouter, useRoute, onMounted, computed } from '@nuxtjs/composition-api'
+import { defineComponent, ref, useRouter, useRoute, onMounted, computed, nextTick } from '@nuxtjs/composition-api'
 import { useActivity, useCurriculumTypes, useReportCardTypes } from '@/composables'
 import { useKidsCorner } from '@/composables/kids-corner'
-import { KidsCornerVideo } from '@/models'
+import { KidsCornerVideo, Video } from '@/models'
+// @ts-ignore
+import PgVideoPlayer from '@gold-media-tech/pg-video-player'
+import { PlayerInstance } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
+import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
 
 export default defineComponent({
   name: 'KidsCornerVideosEditor',
+  components: {
+    PgVideoPlayer
+  },
   setup () {
     const route = useRoute()
     const router = useRouter()
@@ -266,7 +303,8 @@ export default defineComponent({
     const id = ref<null|number>()
     const languageId = ref<number | null>(null)
     const thumbnail = ref<any | null>(null)
-    const video = ref<any | null>(null)
+    const video = ref<Video | null>(null)
+    const playerInstance = ref<PlayerInstance | null>(null)
     const topicsList = ref<string[]>([])
     const selectedReportCard = ref<number[]>([])
     const { activities, getActivitesType } = useActivity()
@@ -360,6 +398,7 @@ export default defineComponent({
         } else {
           dataVideo = await videoFileUploaderRef.value.handleUpload()
           kidsCornerVideo.value.videoId = dataVideo.video.id
+          video.value = dataVideo.video
         }
       }
 
@@ -371,6 +410,39 @@ export default defineComponent({
       clearItem()
       loading.value = false
       backList()
+    }
+
+    const onPlayerReady = (instance: PlayerInstance) => {
+      playerInstance.value = instance
+    }
+
+    const waitAndLoad = (video: Video) => {
+      return new Promise((resolve, reject) => {
+        const start = new Date().getTime()
+        const { name, thumbnail, videoUrl } = video
+        const mediaObject: MediaObject = {
+          title: name,
+          poster: thumbnail,
+          src: {
+            url: videoUrl.HLS,
+            type: 'application/x-mpegURL'
+          }
+        }
+
+        const interval = window.setInterval(() => {
+          if (playerInstance.value) {
+            playerInstance.value.loadPlaylist([mediaObject])
+            window.clearInterval(interval)
+            resolve(true)
+            return
+          }
+          const elapsed = new Date().getTime() - start
+          if (elapsed > 30000) {
+            window.clearInterval(interval)
+            reject(new Error('Player loading timed out'))
+          }
+        }, 50)
+      })
     }
 
     onMounted(async () => {
@@ -399,6 +471,10 @@ export default defineComponent({
         kidsCornerVideo.value.name = data.video.name
         kidsCornerVideo.value.description = data.video.description
         kidsCornerVideo.value.thumbnail = data.video.thumbnail
+        video.value = data.video
+        if (data.video && data.video.videoUrl && data.video.videoUrl.HLS) {
+          waitAndLoad(data.video)
+        }
       }
     })
 
@@ -418,7 +494,8 @@ export default defineComponent({
       thumbnailFileUploaderRef,
       videoFileUploaderRef,
       backList,
-      save
+      save,
+      onPlayerReady
     }
   }
 })

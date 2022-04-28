@@ -1,69 +1,57 @@
 <template>
   <v-main>
-    <v-row
-      align-content="center"
-      justify="center"
-      class="virtual-preschool"
-    >
-      <v-col
-        v-for="section in sections"
-        :key="section.title"
-        cols="12"
-        md="4"
-        class="section"
-      >
-        <v-img
-          :src="section.imageUrl"
-          gradient="rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)"
-          contain
-          tile
-          @click="$router.push(section.route)"
-        >
-          <div class="section-content">
-            <!-- Start Playing Button -->
-            <img
-              class="section-start-playing"
-              src="@/assets/png/virtual-preschool/Start Playing.png"
-              :data-test-id="`vp-section-${section.title}`"
-            >
+    <div :class="$vuetify.breakpoint.mdAndDown ? 'mobile' : 'desktop'">
+      <section-image
+        class="daily-lessons"
+        :section="section.dashboard"
+        @click:play="handleAudioPlay"
+        @click="handleClick"
+      />
 
-            <!-- Lady -->
-            <img
-              class="section-lady"
-              :src="section.teacherUrl"
-            >
+      <section-image
+        class="live-classes"
+        :section="section.classes"
+        @click:play="handleAudioPlay"
+        @click="handleClick"
+      />
 
-            <!-- Bubble -->
-            <img
-              class="section-bubble"
-              src="@/assets/png/virtual-preschool/Bubble.png"
-            >
+      <section-image
+        class="playdates"
+        :section="section.playdates"
+        @click:play="handleAudioPlay"
+        @click="handleClick"
+      />
 
-            <!-- Bubble Text -->
-            <div class="section-bubble-text">
-              {{ section.message }}
-              <v-btn
-                icon
-                class="my-n4 mx-n2"
-              >
-                <v-icon
-                  class="white--text"
-                  size="22"
-                  @click.stop="handleAudioPlay(section.audio)"
-                >
-                  mdi-volume-high
-                </v-icon>
-              </v-btn>
-            </div>
-          </div>
+      <section-image
+        class="student-cubby"
+        :section="section.cubby"
+        @click:play="handleAudioPlay"
+        @click="handleClick"
+      />
 
-          <!-- Section Button -->
-          <div class="section-btn">
-            <div>{{ section.title }}</div>
-          </div>
-        </v-img>
-      </v-col>
-    </v-row>
+      <section-image
+        class="kids-corner"
+        :section="section.kidscorner"
+        @click:play="handleAudioPlay"
+        @click="handleClick"
+      />
+
+      <section-image
+        class="music"
+        :section="section.music"
+        small
+        @click:play="handleAudioPlay"
+        @click="handleClick"
+      />
+
+      <section-image
+        class="library"
+        :section="section.library"
+        small
+        @click:play="handleAudioPlay"
+        @click="handleClick"
+      />
+    </div>
     <BirthdayVideoDialog />
   </v-main>
 </template>
@@ -74,19 +62,30 @@ import {
   defineComponent,
   onMounted,
   ref,
+  useRouter,
   useStore
 } from '@nuxtjs/composition-api'
-import { Child } from '@/models'
+
+import { useAuth } from '@/composables'
+import { TypedStore, Child } from '@/models'
+
 import BirthdayVideoDialog from '@/components/features/childBirthday/BirthdayVideoDialog.vue'
+import SectionImage from '@/components/app/virtual-preschool/SectionImage.vue'
 
 export default defineComponent({
   name: 'VirtualPreschoolPage',
+
   components: {
-    BirthdayVideoDialog
+    BirthdayVideoDialog,
+    SectionImage
   },
+
   layout: 'pg',
-  setup() {
-    const store = useStore()
+
+  setup () {
+    const store = useStore<TypedStore>()
+    const router = useRouter()
+    const { accessToken } = useAuth({ store })
     const baseRoute =
       process.env.testEnv === 'production'
         ? `${process.env.baseRouteProd}`
@@ -94,8 +93,13 @@ export default defineComponent({
 
     const currentChild = computed((): Utils.Maybe<Child> => store.getters.getCurrentChild?.[0])
 
-    const sections = [
-      {
+    const goToKidsCorner = () => {
+      const kidsCornerUrl = process.env.kidsCornerUrl
+      window.open(`${kidsCornerUrl}?atoken=${accessToken.value}`, '_self')
+    }
+
+    const section = {
+      dashboard: {
         imageUrl: require('@/assets/png/virtual-preschool/Daily lessons.png'),
         teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Beth-daily lessons.png'),
         title: 'Daily Lessons',
@@ -103,7 +107,15 @@ export default defineComponent({
         message: 'We can’t wait to learn with you every day!',
         audio: `${baseRoute}audio/virtual-preschool/Daily lessons.m4a`
       },
-      {
+      kidscorner: {
+        imageUrl: require('@/assets/png/virtual-preschool/kidscorner.png'),
+        teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Katryna-kidscorner.png'),
+        title: 'Kids Corner',
+        route: goToKidsCorner,
+        message: 'It\'s a little bit silly in the Kids Corner, where kids choose how to learn',
+        audio: `${baseRoute}audio/virtual-preschool/Kidscorner.m4a`
+      },
+      playdates: {
         imageUrl: require('@/assets/png/virtual-preschool/playdates.png'),
         teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Shyla_playdates.png'),
         title: 'Playdates',
@@ -111,7 +123,7 @@ export default defineComponent({
         message: 'Join our teacher-led playdates for fun with friends!',
         audio: `${baseRoute}audio/virtual-preschool/Playdates.m4a`
       },
-      {
+      classes: {
         imageUrl: require('@/assets/png/virtual-preschool/live classes.png'),
         teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Lucy-Liveclasses.png'),
         title: 'Live Classes',
@@ -119,7 +131,7 @@ export default defineComponent({
         message: 'Enjoy cooking, music, movement zooms and more!',
         audio: `${baseRoute}audio/virtual-preschool/Live classes 2.m4a`
       },
-      {
+      cubby: {
         imageUrl: require('@/assets/png/virtual-preschool/Cubby.png'),
         teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Ally_cubby.png'),
         title: 'Student Cubby',
@@ -130,7 +142,7 @@ export default defineComponent({
         message: 'Store your work and track progress in your cubby!',
         audio: `${baseRoute}audio/virtual-preschool/Cubby.m4a`
       },
-      {
+      music: {
         imageUrl: require('@/assets/png/virtual-preschool/Music.png'),
         teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Emma_Music.png'),
         title: 'Music',
@@ -138,7 +150,7 @@ export default defineComponent({
         message: 'Listen anytime to sing and learn!',
         audio: `${baseRoute}audio/virtual-preschool/Music.m4a`
       },
-      {
+      library: {
         imageUrl: require('@/assets/png/virtual-preschool/Library.png'),
         teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Raulbel-Library.png'),
         title: 'Library',
@@ -146,7 +158,10 @@ export default defineComponent({
         message: 'Come read with us in the book nook!',
         audio: `${baseRoute}audio/virtual-preschool/Library.m4a`
       }
-    ]
+    }
+
+    type Section = typeof section
+    type SectionItem = Section[keyof Section]
 
     const player = ref<HTMLAudioElement>()
     const isBirthdayModalvisible = ref(false)
@@ -155,18 +170,31 @@ export default defineComponent({
       player.value = new Audio()
     })
 
-    const handleAudioPlay = (audio: string) => {
+    const handleAudioPlay = (sectionItem: SectionItem) => {
       if (!player.value) {
         return
       }
 
-      player.value.src = audio
+      player.value.src = sectionItem.audio
       player.value.play()
     }
 
+    const handleClick = (sectionItem: SectionItem) => {
+      const route = sectionItem.route
+
+      if (typeof route === 'function') {
+        route()
+      } else {
+        // @ts-ignore
+        router.push(route)
+      }
+    }
+
     return {
-      sections,
+      section,
+      goToKidsCorner,
       handleAudioPlay,
+      handleClick,
       isBirthdayModalvisible
     }
   }
@@ -174,105 +202,51 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.virtual-preschool {
-  max-width: 1500px;
+.mobile {
+  width: 90%;
   margin: auto;
-}
 
-.section {
-  padding: 0px;
-
-  &-content {
-    transition: 0.2s;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    cursor: pointer;
-
-    &:hover {
-      opacity: 1;
-    }
-  }
-
-  &-bubble-text {
-    color: white;
-    font-weight: bold;
-    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-
-    height: 100px;
-    width: 60%;
-    position: absolute;
-    top: 10%;
-    left: 15%;
-  }
-
-  &-bubble {
-    width: 75%;
-    position: absolute;
-    top: 15px;
-    left: 30px;
-  }
-
-  &-lady {
-    height: 60%;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-  }
-
-  &-start-playing {
-    cursor: pointer;
-    height: 35%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  &-btn {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-
-    background: rgba(178, 230, 141, 0.2);
-    border: 4px solid #b2e68d;
-    box-sizing: border-box;
-    border-radius: 8px;
-    cursor: pointer;
-
-    & div {
-      color: white;
-      font-size: 18px;
-      font-weight: bold;
-      text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-
-      padding-top: 4px;
-      padding-bottom: 4px;
-      padding-left: 12px;
-      padding-right: 12px;
-    }
+  & > * {
+    margin: .75rem 0;
   }
 }
 
-@media (min-width: $breakpoint-md) {
-  .section {
-    &-bubble-text {
-      font-size: 24px;
-    }
+.desktop {
+  display: grid;
+  grid-template-columns: repeat(4, 25%);
+  grid-template-rows: repeat(4, 200px);
+  margin: auto;
+  width: 90%;
+  gap: 1rem;
+  margin: 1rem auto;
+
+  .daily-lessons {
+    grid-column: 1 / span 2;
+    grid-row: 1 / span 3;
   }
-}
-
-@media (max-width: $breakpoint-sm) {
-  .section {
-    padding: 12px;
-
-    &-content {
-      opacity: 1;
-    }
-
-    &-start-playing {
-      visibility: hidden;
-    }
+  .live-classes {
+    grid-column: 3 / 4;
+    grid-row: 1 / 3;
+  }
+  .playdates {
+    grid-column: 4 / 5;
+    grid-row: 1 / 3;
+  }
+  .music {
+    grid-column: 1 / 2;
+    grid-row: 4 / 5;
+  }
+  .library {
+    grid-column: 2 / 3;
+    grid-row: 4 / 5;
+  }
+  .student-cubby {
+    grid-column: 3 / 4;
+    grid-row: 3 / 5;
+  }
+  .kids-corner {
+    grid-column: 4 / 5;
+    grid-row: 3 / 5;
   }
 }
 </style>

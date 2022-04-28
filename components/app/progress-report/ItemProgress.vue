@@ -64,7 +64,7 @@ export default {
     },
     curriculumTypeId: {
       type: Number,
-      required: true
+      default: 0
     }
   },
 

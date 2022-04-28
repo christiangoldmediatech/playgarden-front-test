@@ -12,11 +12,13 @@
           </v-icon>
         </v-btn>
       </v-card-title>
-
-      <pg-video-player
-        inline
-        @ready="onPlayerReady"
-      />
+      <div class="video-player-16-9-container">
+        <pg-video-player
+          inline
+          :control-config="{ favorite: false }"
+          @ready="onPlayerReady"
+        />
+      </div>
 
       <v-card-actions>
         <v-spacer />

@@ -71,65 +71,20 @@
         </v-col>
       </v-row>
     </v-container>
-
-    <!-- Set Payment Method modal -->
-    <pg-dialog
-      v-model="isPaymentMethodModalVisible"
-      content-class="white"
-      :fullscreen="isMobile"
-      max-width="700px"
-      persistent
-    >
-      <v-col cols="12">
-        <v-row class="pr-3 mb-md-n12 mt-1" justify="start">
-          <v-btn text class="accent--text text-none" @click="handlePaymentModalBackButton">
-            <v-icon left>
-              mdi-chevron-left
-            </v-icon>
-            Back to choose plan
-          </v-btn>
-        </v-row>
-
-        <v-card flat class="mx-4 mt-12 mb-4">
-          <stripe-pay-form
-            button-text="Start Learning"
-            :cancelable="false"
-            :is-free-for-days-text-visible="false"
-            :loading="isPaymentMethodModalLoading"
-            @click:submit="handlePaymentFormSubmit"
-          >
-            <template #header>
-              <center class="pt-6">
-                <underlined-title class="text-h6 text-md-h5" text="CREDIT CARD INFORMATION" />
-              </center>
-              <center class="grey--text text--darken-1 my-6 text-body-2">
-                We need your credit card information to confirm who you are.
-              </center>
-            </template>
-            <template #footer>
-              <center>
-                <div class="font-weight-bold grey--text text--darken-1 mt-6 mb-2 text-body-2">
-                  You can cancel your trial and membership anytime from the account settings.
-                </div>
-              </center>
-            </template>
-          </stripe-pay-form>
-        </v-card>
-      </v-col>
-    </pg-dialog>
   </v-main>
 </template>
 
 <script>
 import dayjs from 'dayjs'
+import { defineComponent, useStore } from '@nuxtjs/composition-api'
 import { mapGetters, mapActions } from 'vuex'
 
 import SubscriptionPlanSelection from '@/components/app/payment/SubscriptionPlanSelection'
 import StripePayForm from '@/components/forms/payment/StripePayForm.vue'
 
-import { UserFlow } from '@/models'
+import { useAuth } from '@/composables'
 
-export default {
+export default defineComponent({
   name: 'Plan',
 
   components: {
@@ -137,26 +92,34 @@ export default {
     StripePayForm
   },
 
+  setup() {
+    const store = useStore()
+    const Auth = useAuth({ store })
+
+    return {
+      isUserInTrial: Auth.isUserInTrial
+    }
+  },
+
   data: () => ({
     initialized: false,
-    isPaymentMethodModalVisible: false,
-    isPaymentMethodModalLoading: false
+    plansShown: false
   }),
 
   computed: {
     ...mapGetters('auth', ['getUserInfo']),
 
-    inSignUpProcess () {
+    inSignUpProcess() {
       const { query } = this.$route
 
       return query.process === 'signup' && query.step === '3'
     },
 
-    isTrialExpired () {
+    isTrialExpired() {
       return dayjs().isAfter(this.getUserInfo.trialEnd)
     },
 
-    lastDayOfTrial () {
+    lastDayOfTrial() {
       if (!this.getUserInfo.trialEnd) {
         return ''
       }
@@ -164,8 +127,27 @@ export default {
       return dayjs(this.getUserInfo.trialEnd).format('MMMM DD, YYYY')
     },
 
-    isMobile () {
+    isTrialEndedTooLongAgo() {
+      return this.isTrialExpired &&
+        dayjs().diff(dayjs(this.getUserInfo.trialEnd), 'days') > 30
+    },
+
+    isMobile() {
       return this.$vuetify.breakpoint.mobile
+    }
+  },
+
+  created () {
+    if (this.getUserInfo.role.id === 4) {
+      this.$router.push({
+        name: 'app-account-index'
+      })
+    }
+  },
+
+  mounted () {
+    if (this.isTrialExpired) {
+      this.plansShown = true
     }
   },
 
@@ -173,7 +155,7 @@ export default {
     ...mapActions('auth', ['fetchUserInfo']),
     ...mapActions('payment', ['fetchBillingCards', 'addBillingCard']),
 
-    async onSubmit () {
+    async onSubmit() {
       try {
         if (this.inSignUpProcess) {
           await this.fetchUserInfo()
@@ -185,53 +167,27 @@ export default {
         }
 
         await this.$store.dispatch('admin/users/setPlanChoosen')
-        await this.$store.commit('notifications/SET_TRIAL_EXPIRING_RIBBON_VISIBLE', false)
-
-        /**
-         * Show billing modal is the following criteria is met:
-         * -- The use flow is NOCREDITCARD
-         * -- The user has not added any cards
-         */
-        const userCards = await this.fetchBillingCards()
-
-        if (this.getUserInfo.flow === UserFlow.NOCREDITCARD && userCards && userCards.length === 0) {
-          this.isPaymentMethodModalVisible = true
-        }
-      } catch (e) {
-      }
+        await this.$store.commit(
+          'notifications/SET_TRIAL_EXPIRING_RIBBON_VISIBLE',
+          false
+        )
+      } catch (e) {}
     },
 
-    handlePaymentModalBackButton () {
-      this.isPaymentMethodModalVisible = false
+    handlePaymentFormSubmit() {
+      this.$router.push({
+        name: 'app-virtual-preschool'
+      })
     },
 
-    async handlePaymentFormSubmit (cardData) {
-      this.isPaymentMethodModalLoading = true
-
-      try {
-        const dataSubscrition = {
-          token: cardData.token,
-          sendEmail: true
-        }
-
-        if (cardData.promotion_id) {
-          dataSubscrition.promotion_id = cardData.promotion_id
-        }
-
-        await this.addBillingCard(dataSubscrition)
-
-        this.$snotify.success('Payment method added!')
-
-        await this.$router.push({
-          name: 'app-virtual-preschool'
-        })
-      } catch (e) {
-      } finally {
-        this.isPaymentMethodModalLoading = false
-      }
+    showPlans() {
+      this.plansShown = true
+      this.$nextTick(() => {
+        this.$vuetify.goTo('#plansSection')
+      })
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

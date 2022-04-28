@@ -8,7 +8,7 @@
         </v-card-text>
       </v-card>
     </v-col>
-    <v-col cols="3">
+    <v-col cols="4">
       <v-card>
         <v-card-text>
           <label class="title-dashboard font-weight-bold">Videos Lessons</label>
@@ -27,7 +27,7 @@
         </v-card-text>
       </v-card>
     </v-col>
-    <v-col cols="3">
+    <v-col cols="4">
       <v-card>
         <v-card-text>
           <label class="title-dashboard font-weight-bold"><span>Video Lessons</span></label>
@@ -46,7 +46,7 @@
         </v-card-text>
       </v-card>
     </v-col>
-    <v-col cols="3">
+    <v-col cols="4">
       <v-card>
         <v-card-text>
           <label class="title-dashboard font-weight-bold">Days to complete</label>
@@ -65,7 +65,7 @@
         </v-card-text>
       </v-card>
     </v-col>
-    <v-col cols="3">
+    <v-col cols="4">
       <v-card>
         <v-card-text>
           <label class="title-dashboard font-weight-bold">Days to complete</label>
@@ -84,10 +84,10 @@
         </v-card-text>
       </v-card>
     </v-col>
-    <v-col cols="3">
+    <v-col cols="4">
       <v-card>
         <v-card-text>
-          <label class="title-dashboard font-weight-bold">Lessons</label>
+          <label class="title-dashboard font-weight-bold">Lessons completed</label>
           <v-row class="mt-n4" align="center">
             <v-col cols="12">
               <p class="text-center cursor mt-4">
@@ -103,7 +103,84 @@
         </v-card-text>
       </v-card>
     </v-col>
-    <v-col cols="3">
+    <v-col cols="4">
+      <v-card>
+        <v-card-text>
+          <label class="title-dashboard font-weight-bold">Lessons started</label>
+          <v-row class="mt-n4" align="center">
+            <v-col cols="12">
+              <p class="text-center cursor mt-4">
+                <span>started</span>
+              </p>
+              <div>
+                <div class="text-center">
+                  <label class="display-3 font-weight-bold total-users cursor">{{ dataMetrics.numberStartedLessons }}</label>
+                </div>
+              </div>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-card>
+    </v-col>
+    <v-col cols="4">
+      <v-card>
+        <v-card-text>
+          <label class="title-dashboard font-weight-bold">Video lessons</label>
+          <v-row class="mt-n4" align="center">
+            <v-col cols="6">
+              <p class="text-center cursor mt-4">
+                <span>started</span>
+              </p>
+              <div>
+                <div class="text-center">
+                  <label class="display-3 font-weight-bold total-users cursor">{{ dataMetrics.videoLessonStarted }}</label>
+                </div>
+              </div>
+            </v-col>
+            <v-col cols="6">
+              <p class="text-center cursor mt-4">
+                <span>completed</span>
+              </p>
+              <div>
+                <div class="text-center">
+                  <label class="display-3 font-weight-bold total-users cursor">{{ dataMetrics.videoLessonCompleted }}</label>
+                </div>
+              </div>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-card>
+    </v-col>
+    <v-col cols="4">
+      <v-card>
+        <v-card-text>
+          <label class="title-dashboard font-weight-bold">Worksheets</label>
+          <v-row class="mt-n4" align="center">
+            <v-col cols="6">
+              <p class="text-center cursor mt-4">
+                <span>started</span>
+              </p>
+              <div>
+                <div class="text-center">
+                  <label class="display-3 font-weight-bold total-users cursor">{{ dataMetrics.worksheetsStarted }}</label>
+                </div>
+              </div>
+            </v-col>
+            <v-col cols="6">
+              <p class="text-center cursor mt-4">
+                <span>completed</span>
+              </p>
+              <div>
+                <div class="text-center">
+                  <label class="display-3 font-weight-bold total-users cursor">{{ dataMetrics.worksheetsCompleted }}</label>
+                </div>
+              </div>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-card>
+    </v-col>
+    <v-col cols="4">
       <v-card>
         <v-card-text>
           <label class="title-dashboard font-weight-bold">Live Class attendees</label>
@@ -115,6 +192,25 @@
               <div>
                 <div class="text-center">
                   <label class="display-3 font-weight-bold total-users cursor">{{ dataMetrics.averageAsistantsLiveClassesPerDay }}</label>
+                </div>
+              </div>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-card>
+    </v-col>
+    <v-col cols="4">
+      <v-card>
+        <v-card-text>
+          <label class="title-dashboard font-weight-bold">Library videos</label>
+          <v-row class="mt-n4" align="center">
+            <v-col cols="12">
+              <p class="text-center cursor mt-4">
+                <span>viewed</span>
+              </p>
+              <div>
+                <div class="text-center">
+                  <label class="display-3 font-weight-bold total-users cursor">{{ dataMetrics.libraryVideosViewed }}</label>
                 </div>
               </div>
             </v-col>

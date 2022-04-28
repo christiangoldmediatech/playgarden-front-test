@@ -38,6 +38,8 @@
 import { mapGetters } from 'vuex'
 import { TAG_MANAGER_EVENTS } from '@/models'
 import { sameDay, isTomorrow } from '@/utils/dateTools.js'
+import moment from 'moment'
+import { formatTimezone } from '@/utils/dateTools'
 
 export default {
   name: 'TodayCard',
@@ -81,7 +83,6 @@ export default {
     time () {
       const today = new Date()
       const date = new Date(this.entry.dateStart)
-
       let word = this.days[date.getDay() - 1]
 
       if (date.getFullYear() === today.getFullYear()) {
@@ -91,8 +92,9 @@ export default {
           word = 'Tomorrow'
         }
       }
-
-      return `${word} ${date.getHours()}:${(date.getMinutes()).toString().padStart(2, '0')}`
+      const start = moment(this.entry.dateStart)
+      const { timezone } = this.getUserInfo
+      return `${word} ${formatTimezone(start, { format: 'HH:mm', timezone, returnObject: false })}`
     },
 
     isLive () {

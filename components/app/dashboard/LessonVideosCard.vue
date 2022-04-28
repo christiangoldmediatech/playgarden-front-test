@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ 'dashboard-content-card': $vuetify.breakpoint.mdAndUp }">
+  <div :class="{ 'dashboard-content-card': $vuetify.breakpoint.mdAndUp, 'pg-h-full': $vuetify.breakpoint.smOnly }" class="pg-h-3/4">
     <v-card class="d-flex flex-column dashboard-content-card" height="100%">
       <template v-if="currentVideoLesson">
         <div

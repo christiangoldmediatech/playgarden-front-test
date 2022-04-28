@@ -2,24 +2,14 @@
   <div>
     <v-divider class="mb-4" />
     <v-card-title primary-title>
-      <v-btn
-        block
-        text
-        @click="toggleCard"
-      >
+      <v-btn block text @click="toggleCard">
         <div>
-          <img
-            src="@/assets/png/gift-icon.png"
-            class="mr-2"
-            width="18px"
-          >
+          <img src="@/assets/png/gift-icon.png" class="mr-2" width="18px">
           <template v-if="!$vuetify.breakpoint.smAndUp">
             <span class="free-trial-info">
-              YOUR 30 DAY FREE TRIAL
+              YOUR 15 DAY FREE TRIAL
             </span>
-            <v-icon
-              class="ml-4"
-            >
+            <v-icon class="ml-4">
               mdi-chevron-up
             </v-icon>
             <br>
@@ -29,7 +19,7 @@
           </template>
           <template v-else>
             <span class="free-trial-info">
-              YOUR 30 DAY FREE TRIAL
+              YOUR 15 DAY FREE TRIAL
             </span>
             <br>
             <span class="free-trial-info">
@@ -47,78 +37,61 @@
         <center class="text-pay-information">
           <div :class="{ 'ml-4': !$vuetify.breakpoint.smAndUp }">
             <v-row>
-              <span class="font-weight-bold ml-2">That includes:</span>
+              <span class="font-weight-bold ml-2 mt-4">That includes:</span>
             </v-row>
             <v-row class="mx-1">
               <ul class="info-card">
-                <li
-                  class="register-item text-left"
-                >
+                <li class="register-item text-left">
                   <small class="text-trial">
                     Individualized Daily Lessons plan
                   </small>
                 </li>
-                <li
-                  class="register-item text-left"
-                >
+                <li class="register-item text-left">
                   <small class="text-trial">
                     26 Weeks of 1 hour of video-based preschool per day
                   </small>
                 </li>
-                <li
-                  class="register-item text-left"
-                >
+                <li class="register-item text-left">
                   <small class="text-trial">
                     Hands-on worksheets taught by Certified Teachers
                   </small>
                 </li>
-                <li
-                  class="register-item text-left"
-                >
+                <li class="register-item text-left">
                   <small class="text-trial">
-                    Access to a Library with over 1,200 lessons for hour of Edutainment
+                    Access to a Library with over 1,200 lessons for hour of
+                    Edutainment
                   </small>
                 </li>
-                <li
-                  class="register-item text-left"
-                >
+                <li class="register-item text-left">
                   <small class="text-trial">
                     Progress Reports sent to parents
                   </small>
                 </li>
-                <li
-                  class="register-item text-left"
-                >
+                <li class="register-item text-left">
                   <small class="text-trial">
                     Familiy Membership for multiple students
                   </small>
                 </li>
-                <li
-                  class="register-item text-left"
-                >
+                <li class="register-item text-left">
                   <small class="text-trial">
-                    Home deliver of school materials: Backpack, specialized pencils, Workbooks
+                    Home deliver of school materials: Backpack, specialized
+                    pencils, Workbooks
                   </small>
                 </li>
-                <li
-                  class="register-item text-left"
-                >
+                <li class="register-item text-left">
                   <small class="text-trial">
                     Daily Live Classes with Playgarden Prep teachers
                   </small>
                 </li>
-                <li
-                  class="register-item text-left"
-                >
+                <li class="register-item text-left">
                   <small class="text-trial">
                     Access to special events, such as weekly Cooking Classes
                   </small>
                 </li>
-                <li
-                  class="register-item text-left"
-                >
+                <li class="register-item text-left">
                   <small class="text-trial">
-                    Playdates with friends, moderated by our specialist to promote Social Interaction
+                    Playdates with friends, moderated by our specialist to
+                    promote Social Interaction
                   </small>
                 </li>
               </ul>
@@ -126,32 +99,28 @@
           </div>
           <v-row justify="center">
             <center v-if="$vuetify.breakpoint.smAndUp">
-              <v-alert
-                class="mt-4 info-much-more"
-                color="red orange"
-                dark
-              >
+              <v-alert class="mt-4 info-much-more" color="red orange" dark>
                 <span class="much-info">
                   AND MUCH MORE!!
                 </span>
               </v-alert>
             </center>
-            <div v-else class="justify-center" :class="{ 'mx-4': !$vuetify.breakpoint.smAndUp }">
-              <v-alert
-                class="mt-8 info-much-more px-8"
-                color="red orange"
-                dark
-              >
+            <div
+              v-else
+              class="justify-center"
+              :class="{ 'mx-4': !$vuetify.breakpoint.smAndUp }"
+            >
+              <v-alert class="mt-8 info-much-more px-8" color="red orange" dark>
                 <span class="much-info">
                   AND MUCH MORE!!
                 </span>
               </v-alert>
             </div>
             <div class="mt-2">
-              <span
-                class="text-header-info"
-              >
-                * You can cancel your membership any <br v-if="!$vuetify.breakpoint.smAndUp">time from the account settings.
+              <span class="text-header-info">
+                * You can cancel your membership any
+                <br v-if="!$vuetify.breakpoint.smAndUp">time from the account
+                settings.
               </span>
             </div>
           </v-row>
@@ -162,14 +131,13 @@
 </template>
 
 <script>
-
 export default {
   name: 'CardKnowMore',
 
   data: vm => ({}),
 
   methods: {
-    toggleCard () {
+    toggleCard() {
       this.$emit('toggleCard')
     }
   }
@@ -181,7 +149,7 @@ ul.info-card {
   list-style: none; /* Remove default bullets */
 }
 ul.info-card li::before {
-  content: "●";
+  content: '●';
   font-size: 24px !important;
   color: var(--v-accent-base); /* Change the color */
   font-weight: bold; /* If you want it to be bold */

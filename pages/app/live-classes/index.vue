@@ -1,192 +1,257 @@
 <template>
-  <v-main>
-    <v-container
-      v-if="$vuetify.breakpoint.lgAndUp"
-      class="lsess-container"
-      fluid
-    >
-      <v-row class="fill-height">
-        <v-col class="lsess-daily" cols="12" md="4" lg="3" xl="2">
-          <today-cards-panel
-            v-if="mode === 'TODAY'"
-            :block="block"
-            @mode-change="mode = 'CALENDAR'"
-          />
-          <calendar-panel
-            v-else
-            v-model="today"
-            @mode-change="mode = 'TODAY'"
-          />
-        </v-col>
+  <pg-loading :loading="loading" fullscreen>
+    <v-main>
+      <v-container
+        v-if="$vuetify.breakpoint.lgAndUp"
+        class="lsess-container"
+        fluid
+      >
+        <v-row class="fill-height">
+          <v-col class="lsess-daily" cols="12" md="4" lg="3" xl="2">
+            <today-cards-panel
+              v-if="mode === 'TODAY'"
+              @mode-change="mode = 'CALENDAR'"
+            />
+            <calendar-panel
+              v-else
+              v-model="today"
+              @mode-change="mode = 'TODAY'"
+            />
+          </v-col>
 
-        <v-col class="lsess-schedule pt-0" cols="12" md="8" lg="9" xl="10">
-          <v-row class="pos-relative pt-md-2 my-0" justify="center" align="center">
-            <v-btn-toggle
-              v-model="viewModeVal"
-              class="text-none ml-md-4 mt-6 mt-md-0"
-              :class="{ 'pos-absolute pos-left-0': $vuetify.breakpoint.mdAndUp }"
-            >
-              <v-btn
-                :color="viewMode === 'WEEK' ? 'accent' : 'white'"
-                class="lsess-switcher-btn text-none font-weight-light"
-                :class="{
-                  'white--text': viewMode === 'WEEK'
-                }"
+          <v-col class="pt-0 lsess-schedule" cols="12" md="8" lg="9" xl="10">
+            <v-row class="my-0 pos-relative pt-md-2" justify="center" align="center">
+              <v-btn-toggle
+                v-model="viewModeVal"
+                class="mt-6 text-none ml-md-4 mt-md-0"
+                :class="{ 'pos-absolute pos-left-0': $vuetify.breakpoint.mdAndUp }"
               >
-                Week
-              </v-btn>
+                <v-btn
+                  :color="viewMode === 'WEEK' ? 'accent' : 'white'"
+                  class="lsess-switcher-btn text-none font-weight-light"
+                  :class="{
+                    'white--text': viewMode === 'WEEK'
+                  }"
+                >
+                  Week
+                </v-btn>
+                <v-btn
+                  :color="viewMode === 'DAY' ? 'accent' : 'white'"
+                  class="lsess-switcher-btn text-none font-weight-light"
+                  :class="{
+                    'white--text': viewMode === 'DAY'
+                  }"
+                >
+                  Day
+                </v-btn>
+              </v-btn-toggle>
+
+              <v-col class="hidden-sm-and-down" cols="12">
+                <template v-if="viewMode === 'WEEK'">
+                  <week-selector
+                    v-if="today"
+                    :day="getDateObj()"
+                    @prev-week="removeWeek"
+                    @next-week="addWeek"
+                  />
+                </template>
+                <template v-if="viewMode === 'DAY'">
+                  <day-selector
+                    v-if="today"
+                    :day="getDateObj()"
+                    @prev-day="removeDay"
+                    @next-day="addDay"
+                  />
+                </template>
+              </v-col>
+
               <v-btn
-                :color="viewMode === 'DAY' ? 'accent' : 'white'"
-                class="lsess-switcher-btn text-none font-weight-light"
-                :class="{
-                  'white--text': viewMode === 'DAY'
-                }"
+                class="mt-6 text-none mr-md-4 mt-md-0"
+                :class="{ 'pos-absolute pos-right-0': $vuetify.breakpoint.mdAndUp }"
+                color="accent"
+                :large="$vuetify.breakpoint.smAndDown"
+                @click.stop="goToRecordings"
               >
-                Day
+                Watch recorded classes
               </v-btn>
-            </v-btn-toggle>
+            </v-row>
 
-            <v-col class="hidden-sm-and-down" cols="12">
-              <template v-if="viewMode === 'WEEK'">
-                <week-selector
-                  v-if="today"
-                  :day="getDateObj()"
-                  @prev-week="removeWeek"
-                  @next-week="addWeek"
-                />
-              </template>
-              <template v-else>
-                <day-selector
-                  v-if="today"
-                  :day="getDateObj()"
-                  @prev-day="removeDay"
-                  @next-day="addDay"
-                />
-              </template>
-            </v-col>
+            <v-row>
+              <v-col cols="12">
+                <span class="font-weight-bold">
+                  *Hours are in {{ getAcronymCurrent }}, you can change your time zone by clicking <span class=" text-decoration-underline font-weight-bold timezone" @click="timezoneDialog = true"> HERE</span>
+                </span>
+              </v-col>
+            </v-row>
 
-            <v-btn
-              class="text-none mr-md-4 mt-6 mt-md-0"
-              :class="{ 'pos-absolute pos-right-0': $vuetify.breakpoint.mdAndUp }"
-              color="accent"
-              :large="$vuetify.breakpoint.smAndDown"
-              @click.stop="goToRecordings"
-            >
-              Watch recorded classes
-            </v-btn>
-          </v-row>
+            <sessions-table v-if="!loading" :day-mode="viewMode === 'DAY'" :today="today" />
+          </v-col>
+        </v-row>
+      </v-container>
 
-          <sessions-table :day-mode="viewMode === 'DAY'" :today="today" :block="block" />
-        </v-col>
-      </v-row>
-    </v-container>
+      <v-container v-else class="lclass-mobile">
+        <div class="header">
+          <img class="camera-icon" src="@/assets/svg/sessions-camera.svg">
+          Live Classes Schedule
+        </div>
 
-    <v-container v-else class="lclass-mobile">
-      <div class="header">
-        <img class="camera-icon" src="@/assets/svg/sessions-camera.svg">
-        Live Classes Schedule
-      </div>
-
-      <week-selector
-        v-if="today"
-        :day="getDateObj()"
-        @prev-week="removeWeek"
-        @next-week="addWeek"
-      />
-
-      <v-row class="mt-4" justify="space-around">
-        <today-card
-          v-for="entry in orderedSessions"
-          :key="`lclass-entry-${entry.id}`"
-          v-bind="{ entry }"
-          :block="block"
-          mobile
+        <week-selector
+          v-if="today"
+          :day="getDateObj()"
+          @prev-week="removeWeek"
+          @next-week="addWeek"
         />
 
-        <v-col
-          v-if="orderedSessions.length === 0"
-          cols="12"
-        >
-          <v-card>
-            <v-card-text class="text-h6 text-center">
-              There are no live classes programmed for this week. Check back later.
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
+        <v-row class="mt-4" justify="space-around">
+          <today-card
+            v-for="entry in orderedSessions"
+            :key="`lclass-entry-${entry.id}`"
+            v-bind="{ entry }"
+            mobile
+          />
 
-    <entry-dialog />
-
-    <recorded-class-player />
-
-    <pg-dialog
-      :value="!hasTrialOrPlatinumPlan"
-      content-class="elevation-0"
-      :fullscreen="fullscreen"
-      persistent
-    >
-      <v-card class="dialog-overlay">
-        <v-row no-gutters justify="start" class="mt-0">
-          <v-btn
-            class="top-left text-none white--text px-4"
-            color="white"
-            text
-            :to="'./dashboard'"
-            @click.stop="overlay = false"
+          <v-col
+            v-if="orderedSessions.length === 0"
+            cols="12"
           >
-            <v-icon class="mr-2" small left>
-              mdi-less-than
-            </v-icon>
-            Back
-          </v-btn>
-        </v-row>
-        <v-col class="mt-16">
-          <v-row
-            class="mb-15 mt-16"
-            justify="center"
-            align-content="center"
-            no-gutters
-          >
-            <v-card
-              cols="12"
-              sm="4"
-              class="px-3 mt-16"
-              width="400"
-              height="200"
-              tile
-            >
-              <p class="text-center font-weight-bold mt-5">
-                Get access to Live Classes
-              </p>
-              <p class="text-center">
-                Upgrade your plan
-              </p>
-              <v-row justify="center" no-gutters>
-                <v-btn
-                  color="accent"
-                  width="250"
-                  tile
-                  x-large
-                  nuxt
-                  :to="{ name: 'app-account-index', params: { changeplan: 1, planRedirect: 'app-live-classes' } }"
-                >
-                  <!-- nuxt to app-account-index ?changeplan=1 -->
-                  COMPARE PLANS
-                </v-btn>
-              </v-row>
+            <v-card>
+              <v-card-text class="text-center text-h6">
+                There are no live classes programmed for this week. Check back later.
+              </v-card-text>
             </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
+
+      <entry-dialog />
+
+      <recorded-class-player />
+
+      <pg-dialog
+        :value="!hasTrialOrPlatinumPlan"
+        content-class="elevation-0"
+        :fullscreen="fullscreen"
+        persistent
+      >
+        <v-card class="dialog-overlay">
+          <v-row no-gutters justify="start" class="mt-0">
+            <v-btn
+              class="px-4 top-left text-none white--text"
+              color="white"
+              text
+              :to="'./dashboard'"
+              @click.stop="overlay = false"
+            >
+              <v-icon class="mr-2" small left>
+                mdi-less-than
+              </v-icon>
+              Back
+            </v-btn>
           </v-row>
-        </v-col>
-      </v-card>
-    </pg-dialog>
+          <v-col class="mt-16">
+            <v-row
+              class="mt-16 mb-15"
+              justify="center"
+              align-content="center"
+              no-gutters
+            >
+              <v-card
+                cols="12"
+                sm="4"
+                class="px-3 mt-16"
+                width="400"
+                height="200"
+                tile
+              >
+                <p class="mt-5 text-center font-weight-bold">
+                  Get access to Live Classes
+                </p>
+                <p class="text-center">
+                  Upgrade your plan
+                </p>
+                <v-row justify="center" no-gutters>
+                  <v-btn
+                    color="accent"
+                    width="250"
+                    tile
+                    x-large
+                    nuxt
+                    :to="{ name: 'app-account-index', params: { changeplan: 1, planRedirect: 'app-live-classes' } }"
+                  >
+                    <!-- nuxt to app-account-index ?changeplan=1 -->
+                    COMPARE PLANS
+                  </v-btn>
+                </v-row>
+              </v-card>
+            </v-row>
+          </v-col>
+        </v-card>
+      </pg-dialog>
+
+      <pg-dialog
+        :value="timezoneDialog"
+        content-class="elevation-0"
+        :fullscreen="fullscreen"
+        persistent
+      >
+        <v-card class="dialog-overlay">
+          <v-row no-gutters justify="start" class="mt-0">
+            <v-col class="mt-16">
+              <v-row
+                class="mt-16 mb-15"
+                justify="center"
+                align-content="center"
+                no-gutters
+              >
+                <v-card
+                  cols="12"
+                  sm="4"
+                  class="px-3 mt-16"
+                  width="400"
+                  height="200"
+                  tile
+                >
+                  <v-card-text>
+                    <v-row justify="center" no-gutters>
+                      TIMEZONE
+                    </v-row>
+                    <v-row>
+                      <pg-select
+                        v-model="selectedTimezone"
+                        clearable
+                        hide-details
+                        item-text="name"
+                        item-value="value"
+                        label="Timezone"
+                        solo-labeled
+                        :items="timezoneOptions"
+                        class="select"
+                      />
+                    </v-row>
+                    <v-row justify="center">
+                      <v-btn class="mt-3 mr-4" color="accent" @click="saveTimeZone">
+                        Save
+                      </v-btn>
+                      <v-btn class="mt-3" color="" @click="closeTimezoneModal">
+                        Close
+                      </v-btn>
+                    </v-row>
+                  </v-card-text>
+                </v-card>
+              </v-row>
+            </v-col>
+          </v-row>
+        </v-card>
+      </pg-dialog>
+    </v-main>
+
     <upgrade-plan-live-classes-overlay />
-  </v-main>
+  </pg-loading>
 </template>
 
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
-import { getMondayFriday } from '@/utils/dateTools'
+import { getMondayFriday, timezoneOptions, getTimezone } from '@/utils/dateTools'
 import TodayCardsPanel from '@/components/app/live-sessions/TodayCardsPanel.vue'
 import TodayCard from '@/components/app/live-sessions/TodayCard.vue'
 import CalendarPanel from '@/components/app/live-sessions/CalendarPanel.vue'
@@ -218,15 +283,20 @@ export default {
     return {
       mode: 'TODAY',
       today: null,
+      currentTimeZone: null,
       loading: false,
       fullscreen: true,
       showNotice: true,
+      selectedTimezone: 'America/New_York',
+      timezoneDialog: false,
+      timezoneOptions,
       viewModeVal: 0
     }
   },
 
   computed: {
-    ...mapState('live-sessions', ['sessions', 'block']),
+    ...mapState('live-sessions', ['sessions']),
+    ...mapGetters('auth', ['getUserInfo']),
     ...mapGetters('auth', {
       hasTrialOrPlatinumPlan: 'hasTrialOrPlatinumPlan'
     }),
@@ -236,6 +306,31 @@ export default {
         return getMondayFriday(this.getDateObj())
       }
       return null
+    },
+
+    getAcronymCurrent () {
+      let acronym = ''
+      switch (this.selectedTimezone) {
+        case 'America/New_York':
+          acronym = 'EST'
+          break
+        case 'Pacific/Honolulu':
+          acronym = 'HST'
+          break
+        case 'America/Anchorage':
+          acronym = 'AKST'
+          break
+        case 'America/Los_Angeles':
+          acronym = 'PST'
+          break
+        case 'America/Denver':
+          acronym = 'MST'
+          break
+        case 'America/Chicago':
+          acronym = 'CST'
+          break
+      }
+      return acronym
     },
 
     orderedSessions () {
@@ -253,10 +348,19 @@ export default {
     },
 
     viewMode () {
-      if (this.viewModeVal === 0) {
-        return 'WEEK'
+      let mode = 'WEEK'
+      switch (this.viewModeVal) {
+        case 0:
+          mode = 'WEEK'
+          break
+        case 1:
+          mode = 'DAY'
+          break
+        case 2:
+          mode = 'TIME'
+          break
       }
-      return 'DAY'
+      return mode
     }
   },
 
@@ -287,16 +391,36 @@ export default {
   created () {
     this.setToday(new Date())
     this.getUserLiveSessions(this.days)
+    this.setCurrentTimezone()
   },
 
   methods: {
-    ...mapActions('live-sessions', ['getUserLiveSessions']),
+    async getUserLiveSessions() {
+      this.loading = true
+      await this.$store.dispatch('live-sessions/getUserLiveSessions', this.days)
+      this.loading = false
+    },
+
+    ...mapActions('admin/users', ['setTimezone']),
+    ...mapActions('auth', ['fetchUserInfo']),
 
     close () {
       this.$nextTick(() => {
         this.dialog = false
         this.loading = false
       })
+    },
+
+    closeTimezoneModal() {
+      this.timezoneDialog = false
+      this.viewModeVal = 0
+      this.setCurrentTimezone()
+    },
+
+    setCurrentTimezone() {
+      const { timezone } = this.getUserInfo
+      const currentTimezone = getTimezone(timezone)
+      this.selectedTimezone = currentTimezone
     },
 
     goToRecordings () {
@@ -336,6 +460,20 @@ export default {
       const date = this.getDateObj()
       date.setDate(date.getDate() - 1)
       this.setToday(date)
+    },
+
+    async saveTimeZone () {
+      this.loading = true
+      try {
+        await this.setTimezone({ timezone: this.selectedTimezone })
+        await this.fetchUserInfo()
+        await this.getUserLiveSessions(this.days)
+        this.viewModeVal = 0
+        this.timezoneDialog = false
+      } catch (err) {
+      } finally {
+        this.loading = false
+      }
     }
   }
 }
@@ -395,6 +533,11 @@ export default {
   &-switcher-btn {
     width: 80px;
   }
+}
+.timezone {
+  color: var(--v-accent-base) !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
 }
 .dialog-overlay {
   background-color: rgba(0, 0, 0, 0.68) !important;

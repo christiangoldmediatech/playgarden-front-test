@@ -1,5 +1,5 @@
 <template>
-  <v-footer class="text-center justify-center white" padless tile>
+  <v-footer class="text-center justify-center white footer-index" padless tile>
     <div class="green-line green-line-1" />
     <div class="green-line green-line-2" />
 
@@ -36,7 +36,7 @@
 
               <a
                 target="_blank"
-                href="https://www.instagram.com/playgardenpreponline/"
+                href="https://www.instagram.com/playgardenprep/"
               >
                 <img
                   alt="Instagram"
@@ -120,7 +120,10 @@
               <span class="info-footer-title">Upper East Side</span>
             </p>
 
-            <p class="mb-1 mt-2 mt-md-8 text-footer-contact" />
+            <p class="text-footer-contact">
+              <a href="mailto:ues@playgardenprep.com">ues@playgardenprep.com</a><br>
+              <span>&nbsp;</span>
+            </p>
 
             <p class="text-footer-contact">
               1366 Madison Avenue<br>
@@ -136,7 +139,10 @@
               </span>
             </p>
 
-            <p class="mb-1 mt-2 mt-md-8 text-footer-contact" />
+            <p class="text-footer-contact">
+              <a href="mailto:info@playgardennyc.com">info@playgardennyc.com</a><br>
+              <span>&nbsp;</span>
+            </p>
 
             <p class="text-footer-contact">
               95 Franklin Street<br>
@@ -205,6 +211,10 @@ export default {
 
 .info-footer-title {
   color: #68C453 !important;
+}
+
+.footer-index{
+  z-index: 1000 !important;
 }
 
 .footer-ref-links {

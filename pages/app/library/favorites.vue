@@ -1,89 +1,82 @@
 <template>
-  <v-main class="pos-relative">
-    <v-btn
-      class="activity-type-back"
-      text
-      nuxt
-      :to="{ name: 'app-library' }"
-    >
-      <v-icon left>
-        mdi-less-than
-      </v-icon>
-      Back
-    </v-btn>
-
-    <activity-type-header
-      :icon="require('@/assets/svg/library/favorites.svg')"
-      name="Favorites"
-      color="#ff051e"
-      @play-all="handlePlayAll"
-    />
-
-    <favorites-container
-      v-if="favorites.length"
-      ref="container"
-      v-bind="{ favorites }"
-      no-header
-      expandable
-    />
-
-    <activity-player />
-  </v-main>
+  <library-layout :loading="isLoadingInitialData" title="Favorites" back-btn>
+    <v-row align="stretch">
+      <v-col
+        v-for="(mediaObject, playlistIndex) in playlist"
+        :key="`favorite-video-${mediaObject.meta.videoId}`"
+        cols="6"
+        lg="4"
+      >
+        <letter-video-card
+          v-bind="{ mediaObject }"
+          @play="handlePlayVideo(playlistIndex)"
+        />
+      </v-col>
+    </v-row>
+    <library-standard-player id="favoritesPlayer" v-bind="{ playlist, customPlayerEvents }" @ready="onPlayerReady" />
+  </library-layout>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from '@nuxtjs/composition-api'
-import FavoritesContainer from '@/components/app/library/FavoritesContainer.vue'
-import ActivityTypeHeader from '@/components/app/library/ActivityTypeHeader.vue'
-import ActivityPlayer from '@/components/app/activities/ActivityPlayer.vue'
-import { useActivity, useLibrary } from '@/composables'
+import { defineComponent, onMounted, computed, useStore, ref } from '@nuxtjs/composition-api'
+import { useLibraryFavorites, useFavorites, useNuxtHelper, useLibraryFavoritesCallbacks, useChild } from '@/composables'
+import { TypedStore } from '@/models'
+import LibraryLayout from '@/components/app/library/LibraryLayout.vue'
+import LibraryStandardPlayer from '@/components/app/library/LibraryStandardPlayer.vue'
+import LetterVideoCard from '@/components/app/library/LetterVideoCard.vue'
+import { PlayerInstance } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
 
 export default defineComponent({
-  name: 'Favorites',
+  name: 'LibraryFavoritesPage',
 
   components: {
-    FavoritesContainer,
-    ActivityTypeHeader,
-    ActivityPlayer
+    LibraryLayout,
+    LibraryStandardPlayer,
+    LetterVideoCard
   },
 
-  setup () {
-    const { favorites, getActivities } = useActivity()
-    const { getAllFavorites } = useLibrary()
+  setup() {
+    const nuxt = useNuxtHelper()
+    const store = useStore<TypedStore>()
+    const { currentChildren } = useChild({ store })
+    const { libraryFavoritePlaylist, getLibraryFavoriteActivities } = useLibraryFavorites()
+    const { favoriteVideoIds, curatePlaylist } = useFavorites()
 
-    // this references `ref="container"` when the component is mounted
-    const container = ref<any>(null)
-
-    const handlePlayAll = () => {
-      if (container.value) {
-        container.value?.handlePlay(0)
-      }
-    }
-
-    onMounted(async () => {
-      if (favorites.value.length === 0) {
-        await getActivities()
-      }
-
-      getAllFavorites()
+    const playlist = computed(() => {
+      const resultingList = curatePlaylist(libraryFavoritePlaylist.value, favoriteVideoIds.value)
+      return resultingList
     })
 
+    // load playlist
+    const isLoadingInitialData = ref(true)
+    onMounted(async () => {
+      isLoadingInitialData.value = true
+      await getLibraryFavoriteActivities()
+      isLoadingInitialData.value = false
+    })
+
+    function handlePlayVideo(index: number): void {
+      nuxt.$emit('favoritesPlayer-play-track', index)
+    }
+
+    const customPlayerEvents = ref<any>(undefined)
+    function onPlayerReady(player: PlayerInstance) {
+      function afterOnEnded(): void {
+        player.goToNextTrack()
+      }
+      const { playerEvents } = useLibraryFavoritesCallbacks({ children: currentChildren, afterOnEnded })
+      customPlayerEvents.value = playerEvents
+    }
+
     return {
-      container,
-      favorites,
-      handlePlayAll
+      isLoadingInitialData,
+      libraryFavoritePlaylist,
+      playlist,
+      favoriteVideoIds,
+      customPlayerEvents,
+      onPlayerReady,
+      handlePlayVideo
     }
   }
 })
 </script>
-
-<style lang="scss">
-.activity-type-back {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  color: white !important;
-  text-transform: none;
-  z-index: 5;
-}
-</style>

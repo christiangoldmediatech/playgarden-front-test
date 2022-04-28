@@ -67,7 +67,7 @@ export default {
           this.selectedLetter === this.letter.id && !this.listMode,
         'recorded-letter-small': this.small,
         'recorded-letter-disabled': this.disabled,
-        'recorded-letter-picture': this.letter.picture !== null,
+        'recorded-letter-picture': this.letter.picture && this.letter.picture !== null,
         'recorded-letter-picture-small': this.small
       }
 
@@ -96,6 +96,7 @@ export default {
   justify-content: center;
   align-items: center;
   background-image: url("~assets/png/wood_background.png");
+  filter: drop-shadow(4px 4px 2px rgba(0, 0, 0, 0.25));
   user-select: none;
   transition: transform 250ms;
   @media screen and(min-width: 1264px) {

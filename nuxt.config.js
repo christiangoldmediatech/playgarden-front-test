@@ -7,9 +7,16 @@ const baseRouteProd = '/school/'
 export default {
   /*
    ** Nuxt rendering mode
-   ** See https://nuxtjs.org/api/configuration-mode
+   ** See https://nuxtjs.org/docs/configuration-glossary/configuration-target#the-target-property
    */
-  mode: 'universal',
+  ssr: false,
+
+  /*
+   ** Nuxt target
+   ** See https://nuxtjs.org/api/configuration-target
+   */
+  target: 'server',
+
   paralell: true,
   cache: true,
   server: {
@@ -25,11 +32,6 @@ export default {
     '~/middleware/serverAuthByCookie',
     { path: '/healthcheck', handler: '~/middleware/healthCheck.js' }
   ],
-  /*
-   ** Nuxt target
-   ** See https://nuxtjs.org/api/configuration-target
-   */
-  target: 'server',
   /*
    ** Headers of the page
    ** See https://nuxtjs.org/api/configuration-head
@@ -98,7 +100,8 @@ export default {
     },
     './assets/scss/pg-components/index.scss',
     './assets/scss/app.scss',
-    './assets/scss/pg-icons.scss'
+    './assets/scss/pg-icons.scss',
+    './assets/css/main.css'
   ],
   /*
    ** Plugins to load before mounting the App
@@ -135,6 +138,7 @@ export default {
    ** Nuxt.js dev-modules
    */
   buildModules: [
+    '@nuxt/postcss8',
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
     '@nuxt/typescript-build',
@@ -265,6 +269,12 @@ export default {
     },
     babel: {
       plugins: [['@babel/plugin-proposal-private-methods', { loose: true }]]
+    },
+    postcss: {
+      plugins: {
+        tailwindcss: {},
+        autoprefixer: {}
+      }
     }
   },
   env: {

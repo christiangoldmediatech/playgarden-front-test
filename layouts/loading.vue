@@ -3,7 +3,7 @@
     <!-- CONTENT -->
     <v-main>
       <v-container fill-height fluid>
-        <pg-loading nuxt />
+        <pg-loading-screen />
       </v-container>
     </v-main>
 
@@ -12,8 +12,11 @@
 </template>
 
 <script>
+import PgLoadingScreen from '@/components/pg/components/PgLoadingScreen.vue'
+
 export default {
-  name: 'Loading'
+  name: 'Loading',
+  components: { PgLoadingScreen }
 }
 </script>
 

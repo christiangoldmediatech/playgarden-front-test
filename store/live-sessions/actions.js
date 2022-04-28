@@ -1,4 +1,5 @@
 import { snotifyError } from '@/utils/vuex'
+import { getTimezone } from '@/utils/dateTools'
 
 export default {
   createLiveSession (_, data) {
@@ -42,7 +43,7 @@ export default {
     return this.$axios.$patch(`/live-sessions/${id}/recover`)
   },
 
-  async getUserLiveSessions ({ commit }, { monday, friday, admin }) {
+  async getUserLiveSessions ({ commit, rootGetters }, { monday, friday, admin }) {
     try {
       let data
       const params = {
@@ -59,7 +60,11 @@ export default {
       const { total, meetings, block } = data = await this.$axios.$get('/live-sessions', {
         params
       })
+      const userInfo = rootGetters['auth/getUserInfo']
+      const timezone = (userInfo.timezone) ? userInfo.timezone : 'America/New_York'
+      const currentTimezone = getTimezone(timezone)
       commit('SET_SESSIONS', meetings)
+      commit('SET_TIMEZONE', currentTimezone)
       commit('SET_TOTAL', total)
       commit('SET_BLOCK', block)
       return data

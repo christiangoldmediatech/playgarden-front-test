@@ -2,21 +2,27 @@ import { mapGetters } from 'vuex'
 import { UserFlow } from '@/models'
 export default {
   computed: {
-    ...mapGetters('auth', ['isUserInSignupProcess', 'isUserLoggedIn', 'getUserInfo']),
+    ...mapGetters('auth', [
+      'isUserInSignupProcess',
+      'isUserLoggedIn',
+      'getUserInfo'
+    ]),
     ...mapGetters({
       currentChildId: 'getCurrentChild'
     }),
 
-    getVerifyEmail () {
-      return (this.getUserInfo.flow === UserFlow.NOCREDITCARD) ? (this.getUserInfo.registerStep !== 5) : true
+    getVerifyEmail() {
+      return this.getUserInfo.flow === UserFlow.NOCREDITCARD
+        ? this.getUserInfo.registerStep !== 5
+        : true
     },
 
-    items () {
+    items() {
       if (!this.isUserInSignupProcess && this.isUserLoggedIn) {
         const list = [
           {
             title: 'Home',
-            to: { name: 'app-virtual-preschool' },
+            to: { name: this.goToPage(this.getUserInfo) },
             exact: true
           },
           {
@@ -33,10 +39,17 @@ export default {
           { title: 'Music', to: { name: 'app-music' }, exact: false },
           { title: 'Playdates', to: { name: 'app-playdates' }, exact: false },
           {
+            title: 'Kids Corner',
+            external: true,
+            link: `${process.env.kidsCornerUrl}?atoken=${this.$store.getters['auth/getAccessToken']}`
+          },
+          {
             title: 'Student Cubby',
             to: {
               name: 'app-student-cubby-puzzle',
-              query: { id: `${(this.currentChildId) ? this.currentChildId[0].id : null}` }
+              query: {
+                id: `${this.currentChildId ? this.currentChildId[0].id : null}`
+              }
             },
             exact: false
           }
@@ -59,6 +72,21 @@ export default {
       }
 
       return []
+    }
+  },
+  methods: {
+    goToPage(user) {
+      if (user.stripeStatus === 'active') {
+        if (user.planSelected.id === 2 || user.planSelected.id === 3) {
+          return 'app-virtual-preschool'
+        }
+
+        if (user.planSelected.id === 1) {
+          return 'app-learn-play'
+        }
+      } else {
+        return 'app-dashboard'
+      }
     }
   }
 }

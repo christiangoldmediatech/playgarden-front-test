@@ -2,7 +2,7 @@
   <v-row>
     <v-col>
       <v-row
-        class="flex-column flex-md-row mt-3"
+        class="mt-3 flex-column flex-md-row"
         justify="center"
       >
         <v-col
@@ -12,7 +12,7 @@
           <v-img
             v-if="$vuetify.breakpoint.smAndUp"
             max-width="550"
-            :src="require('@/assets/svg/child-information.svg')"
+            :src="require('@/assets/jpg/child-information.JPG')"
           />
         </v-col>
         <v-col
@@ -90,7 +90,7 @@ export default defineComponent({
 
         await this.fetchUserInfo()
 
-        this.$snotify.success('Children have been stored successfully!')
+        this.$snotify.success('Child information has been saved!')
         this.goToLessons()
       } catch (e) {
       } finally {

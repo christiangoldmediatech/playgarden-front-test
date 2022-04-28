@@ -1,4 +1,5 @@
 export interface Patch {
+  id: number
   childrenPatchId: number
   description: string
   image: string

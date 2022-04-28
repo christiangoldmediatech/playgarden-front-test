@@ -3,7 +3,7 @@
     class="ribbon-color text-center d-flex flex-column flex-md-row align-center justify-center py-2"
     :class="{ 'ribbon-fixed-top': isFixedOnTop }"
   >
-    <span class="white--text font-weight-bold mx-2">YOUR FREE TRIAL IS ABOUT TO EXPIRE: </span>
+    <span class="white--text font-weight-bold mx-2">Your free trial will expire in: </span>
     <span class="time">
       <underlined-title
         class="white--text"
@@ -12,7 +12,7 @@
         line-color="rgba(255,255,255,0.15)"
         :line-from="30"
       />
-      <span class="white--text">Days left</span>
+      <span class="white--text">Days</span>
     </span>
     <v-btn
       v-if="isComparePlansButtonVisible"

@@ -2,13 +2,9 @@
   <v-row no-gutters>
     <!-- BACK BUTTON -->
     <v-col cols="12" class="mb-4">
-      <v-btn
-        color="accent"
-        nuxt
-        text
-      >
+      <v-btn color="accent" nuxt text>
         <a
-          class="d-block accent--text mb-1 mt-1"
+          class="d-block accent--text mb-1 mt-6"
           href="https://playgardenonline.com/"
         >
           <v-icon left>
@@ -38,7 +34,7 @@ export default defineComponent({
     StepOne
   },
 
-  setup () {
+  setup() {
     const gtm = useGtmHelper()
 
     gtm.push({
