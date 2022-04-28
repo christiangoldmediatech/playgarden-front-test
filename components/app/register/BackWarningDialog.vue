@@ -29,10 +29,7 @@
               color="primary"
               class="pg-mb-4"
               nuxt
-              :to="{
-                name: 'app-payment',
-                query: { process: 'signup', step: '2' }
-              }"
+              @click="goBack"
             >
               Yes, take me back
             </v-btn>
@@ -52,7 +49,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from '@nuxtjs/composition-api'
+import { computed, defineComponent, useRouter } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   props: {
@@ -71,7 +68,17 @@ export default defineComponent({
       }
     })
 
-    return { dialog }
+    const router = useRouter()
+    const goBack = () => {
+      router.push({
+        name: 'app-payment',
+        query: { process: 'signup', step: '2' }
+      })
+
+      dialog.value = false
+    }
+
+    return { dialog, goBack }
   }
 })
 </script>
