@@ -6,8 +6,10 @@
       'pg-bg-[center_top_-2rem]',
       'md:pg-bg-top',
     ]"
+    :height="isMobile ? '1280px' : '435px'"
     app
     absolute
+
     color="transparent"
   >
     <div class="pg-flex pg-flex-col pg-w-full pg-relative">
@@ -124,10 +126,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from '@nuxtjs/composition-api'
+import { useVuetifyHelper } from '@/composables'
+import { computed, defineComponent, ref } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   setup() {
+    const vuetify = useVuetifyHelper()
+    const isMobile = computed(() => vuetify.breakpoint.mobile)
+
     const links = ref<{ name: string, href: string }[]>([
       { name: 'Playgarden Prep', href: '#' },
       { name: 'Preschool', href: '#' },
@@ -136,7 +142,7 @@ export default defineComponent({
       { name: 'Help', href: '#' }
     ])
 
-    return { links }
+    return { links, isMobile }
   }
 })
 </script>
