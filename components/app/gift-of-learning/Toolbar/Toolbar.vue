@@ -24,7 +24,7 @@
     >
       <!-- COLOR DASHES -->
       <img
-        src="@/assets/svg/gift-of-learning/color-dashes.svg"
+        src="@/assets/svg/gift-of-learning/top-color-dashes.svg"
         class="pg-absolute pg-left-0 pg-right-0 pg-m-auto pg-w-full md:pg-w-auto"
       >
 

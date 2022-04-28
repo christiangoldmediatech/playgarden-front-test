@@ -3,7 +3,7 @@
     <div>
       <!-- COLOR DASHES -->
       <img
-        src="@/assets/svg/gift-of-learning/color-dashes.svg"
+        src="@/assets/svg/gift-of-learning/top-color-dashes.svg"
         class="pg-w-full pg-mt-4"
       >
 
