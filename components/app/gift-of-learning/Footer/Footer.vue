@@ -44,11 +44,11 @@
             Online School
           </div>
 
-          <a href="mailto:hello@playgardenprep.com" class="pg-font-medium">
+          <a href="mailto:hello@playgardenprep.com" class="pg-font-medium !pg-text-[#707070]">
             hello@playgardenprep.com
           </a>
 
-          <a href="tel:646-504-4716" class="pg-font-medium">
+          <a href="tel:646-504-4716" class="pg-font-medium !pg-text-[#707070]">
             <div>646-504-4716</div>
           </a>
 
@@ -67,11 +67,11 @@
             Upper East Side
           </div>
 
-          <a href="mailto:ues@playgardenprep.com" class="pg-font-medium">
+          <a href="mailto:ues@playgardenprep.com" class="pg-font-medium !pg-text-[#707070]">
             ues@playgardenprep.com
           </a>
 
-          <a href="tel:212-965-9718" class="pg-font-medium">
+          <a href="tel:212-965-9718" class="pg-font-medium !pg-text-[#707070]">
             <div>212-965-9718</div>
           </a>
 
@@ -90,11 +90,11 @@
             Tribeca
           </div>
 
-          <a href="mailto:tribeca@playgardenprep.com" class="pg-font-medium">
+          <a href="mailto:tribeca@playgardenprep.com" class="pg-font-medium !pg-text-[#707070]">
             tribeca@playgardenprep.com
           </a>
 
-          <a href="tel:212-965-9717" class="pg-font-medium">
+          <a href="tel:212-965-9717" class="pg-font-medium !pg-text-[#707070]">
             <div>212-965-9717</div>
           </a>
 

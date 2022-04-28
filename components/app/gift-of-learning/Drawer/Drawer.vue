@@ -74,7 +74,7 @@
         </div>
 
         <div class="pg-mt-4 pg-font-medium">
-          <img src="@/assets/svg/gift-of-learning/phone-call.svg" class="pg-mb-[-4px]"> <a href="tel:646-504-4716">646 504 4716</a>
+          <img src="@/assets/svg/gift-of-learning/phone-call.svg" class="pg-mb-[-4px]"> <a href="tel:646-504-4716" class="!pg-text-[#707070]">646 504 4716</a>
         </div>
       </div>
     </div>
