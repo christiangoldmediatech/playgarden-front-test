@@ -57,9 +57,6 @@
                 />
 
                 <v-toolbar color="white" flat>
-                  <span class="font-weight-bold">
-                    *Hours are in {{ getAcronymCurrent }}, you can change your time zone by clicking <span class=" text-decoration-underline font-weight-bold timezone" @click="timezoneDialog = true"> HERE</span>
-                  </span>
                   <v-spacer />
 
                   <pg-text-field
@@ -79,11 +76,11 @@
               </template>
 
               <template v-slot:item.dateStart="{ item }">
-                {{ getTimeZoneFormat(item.dateStart) }}
+                {{ item.dateStart | formatDate }}
               </template>
 
               <template v-slot:item.dateEnd="{ item }">
-                {{ getTimeZoneFormat(item.dateEnd) }}
+                {{ item.dateEnd | formatDate }}
               </template>
 
               <template v-slot:item.createdAt="{ item }">
@@ -219,68 +216,12 @@
         </v-card-text>
       </v-card>
     </pg-dialog>
-    <pg-dialog
-      :value="timezoneDialog"
-      content-class="elevation-0"
-      :fullscreen="fullscreen"
-      persistent
-    >
-      <v-card class="dialog-overlay">
-        <v-row no-gutters justify="start" class="mt-0">
-          <v-col class="mt-16">
-            <v-row
-              class="mt-16 mb-15"
-              justify="center"
-              align-content="center"
-              no-gutters
-            >
-              <v-card
-                cols="12"
-                sm="4"
-                class="px-3 mt-16"
-                width="400"
-                height="200"
-                tile
-              >
-                <v-card-text>
-                  <v-row justify="center" no-gutters>
-                    TIMEZONE
-                  </v-row>
-                  <v-row>
-                    <pg-select
-                      v-model="selectedTimezone"
-                      clearable
-                      hide-details
-                      item-text="name"
-                      item-value="value"
-                      label="Timezone"
-                      solo-labeled
-                      :items="timezoneOptions"
-                      class="select"
-                    />
-                  </v-row>
-                  <v-row justify="center">
-                    <v-btn class="mt-3 mr-4" color="accent" @click="saveTimeZone">
-                      Save
-                    </v-btn>
-                    <v-btn class="mt-3" color="" @click="closeTimezoneModal">
-                      Close
-                    </v-btn>
-                  </v-row>
-                </v-card-text>
-              </v-card>
-            </v-row>
-          </v-col>
-        </v-row>
-      </v-card>
-    </pg-dialog>
   </v-container>
 </template>
 
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex'
-import { timezoneOptions, getTimezone, formatTimezone } from '@/utils/dateTools'
-import moment from 'moment'
+
 import paginable from '@/utils/mixins/paginable'
 import RecurringLiveSessionEditorDialog from './RecurringLiveSessionEditorDialog'
 
@@ -300,10 +241,6 @@ export default {
     currentMeeting: {
       type: ''
     },
-    selectedTimezone: 'America/New_York',
-    fullscreen: true,
-    timezoneOptions,
-    timezoneDialog: false,
     recurringLiveSessions: [],
     loading: false,
     search: null,
@@ -354,7 +291,6 @@ export default {
     ...mapGetters('admin/curriculum', ['types']),
     ...mapState('admin', ['paginationLimit']),
     ...mapState('admin/recurring-live-sessions', ['creatingLiveClasses', 'showLiveClassesCreated']),
-    ...mapGetters('auth', ['getUserInfo']),
 
     getTitleMeeting () {
       return (this.currentMeeting.type === 'LiveClass') ? 'Live Class' : 'Playdate'
@@ -368,30 +304,6 @@ export default {
       set (value) {
         this.$store.commit('admin/recurring-live-sessions/SET_SHOW_LIVE_CLASSES_CREATED', value)
       }
-    },
-    getAcronymCurrent () {
-      let acronym = ''
-      switch (this.selectedTimezone) {
-        case 'America/New_York':
-          acronym = 'EST'
-          break
-        case 'Pacific/Honolulu':
-          acronym = 'HST'
-          break
-        case 'America/Anchorage':
-          acronym = 'AKST'
-          break
-        case 'America/Los_Angeles':
-          acronym = 'PST'
-          break
-        case 'America/Denver':
-          acronym = 'MST'
-          break
-        case 'America/Chicago':
-          acronym = 'CST'
-          break
-      }
-      return acronym
     }
   },
 
@@ -405,13 +317,10 @@ export default {
 
   created () {
     this.getTypes({ extra: true })
-    this.setCurrentTimezone()
   },
 
   methods: {
     ...mapActions('admin/activity', ['getTypes']),
-    ...mapActions('admin/users', ['setTimezone']),
-    ...mapActions('auth', ['fetchUserInfo']),
 
     ...mapActions('admin/recurring-live-sessions', ['getRecurringLiveSessions', 'deleteRecurringLiveSession', 'createLiveClasses']),
 
@@ -453,51 +362,7 @@ export default {
           await this.refresh()
         }
       })
-    },
-
-    getTimeZoneFormat (data) {
-      const start = moment(data)
-      const { timezone } = this.getUserInfo
-      return formatTimezone(start, {
-        format: 'MM-DD-YYYY HH:mm',
-        timezone,
-        returnObject: false
-      })
-    },
-    closeTimezoneModal() {
-      this.timezoneDialog = false
-      this.viewModeVal = 0
-      this.setCurrentTimezone()
-    },
-    setCurrentTimezone() {
-      const { timezone } = this.getUserInfo
-      const currentTimezone = getTimezone(timezone)
-      this.selectedTimezone = currentTimezone
-    },
-    async saveTimeZone () {
-      this.loading = true
-      try {
-        await this.setTimezone({ timezone: this.selectedTimezone })
-        await this.fetchUserInfo()
-        this.refresh()
-        this.viewModeVal = 0
-        this.timezoneDialog = false
-      } catch (err) {
-      } finally {
-        this.loading = false
-      }
     }
   }
 }
 </script>
-
-<style scoped>
-.dialog-overlay {
-  background-color: rgba(0, 0, 0, 0.68) !important;
-}
-.timezone {
-  color: var(--v-accent-base) !important;
-  font-weight: 500 !important;
-  cursor: pointer !important;
-}
-</style>

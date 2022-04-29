@@ -24,24 +24,6 @@
           <v-container>
             <validation-provider
               v-slot="{ errors }"
-              name="timezone"
-              rules="required"
-              class="mb-6"
-            >
-              <pg-select
-                v-model="selectedTimezone"
-                :error-messages="errors"
-                item-text="name"
-                item-value="value"
-                solo
-                placeholder="Timezone"
-                :items="timezoneOptions"
-                class="select"
-              />
-            </validation-provider>
-
-            <validation-provider
-              v-slot="{ errors }"
               name="Activity"
               rules="required"
             >
@@ -431,9 +413,7 @@
 
 <script>
 import dayjs from 'dayjs'
-import { stringsToDate, timezoneOptions, formatTimezone } from '@/utils/dateTools'
 import { mapActions, mapGetters } from 'vuex'
-import moment from 'moment'
 
 const utc = require('dayjs/plugin/utc')
 const timezone = require('dayjs/plugin/timezone')
@@ -477,8 +457,6 @@ export default {
     timeEnd: null,
     menuDateStart: false,
     menuDateEnd: false,
-    selectedTimezone: 'America/New_York',
-    timezoneOptions,
     menuTimeStart: false,
     menuTimeEnd: false,
     dialog: false,
@@ -497,8 +475,6 @@ export default {
   computed: {
     ...mapGetters('admin/activity', ['types']),
     ...mapGetters('admin/curriculum', { curriculumTypes: 'types' }),
-    ...mapGetters('auth', ['getUserInfo']),
-
     dataStartFormatted () {
       return this.dateStart ? dayjs(this.dateStart).format('MM/DD/YYYY') : null
     },
@@ -524,8 +500,6 @@ export default {
   created () {
     this.getTypes({ extra: true })
     this.getCurriculumTypes()
-    const { timezone } = this.getUserInfo
-    this.selectedTimezone = timezone
   },
   methods: {
     ...mapActions('live-sessions', ['createLiveSession', 'updateLiveSession', 'deleteLiveSession']),
@@ -533,14 +507,6 @@ export default {
     ...mapActions('admin/curriculum', {
       getCurriculumTypes: 'getTypes'
     }),
-    getTimeZoneFormat (data) {
-      const start = moment(data)
-      return formatTimezone(start, {
-        format: 'MM-DD-YYYY HH:mm',
-        timezone: this.selectedTimezone,
-        returnObject: false
-      })
-    },
     onPlayerReady (player) {
       this.player = player
     },
@@ -638,10 +604,7 @@ export default {
       const end = dayjs(`${this.dateEnd} ${this.timeEnd}`)
         .tz(this.selectedTimezone)
         .format()
-      // let start = stringsToDate(this.dateStart, this.timeStart)
-      // const start = new Date(this.getTimeZoneFormat(`${this.dateStart} ${this.timeStart}`))
-      // let end = stringsToDate(this.dateEnd, this.timeEnd)
-      // end = new Date(this.getTimeZoneFormat(end))
+
       this.item.dateStart = start
       this.item.dateEnd = end
       this.item.active = (this.item.active) ? 'true' : 'false'
