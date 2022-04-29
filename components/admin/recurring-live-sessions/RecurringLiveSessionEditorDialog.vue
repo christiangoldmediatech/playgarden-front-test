@@ -445,8 +445,8 @@ export default {
 
     async save () {
       this.loading = true
-      this.item.dateStart = stringsToDate(this.dateStart, this.timeStart)
-      this.item.dateStart = new Date(this.getTimeZoneFormat(this.item.dateStart))
+      const start = stringsToDate(this.dateStart, this.timeStart)
+      this.item.dateStart = new Date(this.getTimeZoneFormat(start))
 
       this.item.active = (this.item.active) ? 'true' : 'false'
       try {
