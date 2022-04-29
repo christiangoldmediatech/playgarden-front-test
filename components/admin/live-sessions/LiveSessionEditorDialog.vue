@@ -24,6 +24,24 @@
           <v-container>
             <validation-provider
               v-slot="{ errors }"
+              name="timezone"
+              rules="required"
+              class="mb-6"
+            >
+              <pg-select
+                v-model="selectedTimezone"
+                :error-messages="errors"
+                item-text="name"
+                item-value="value"
+                solo
+                placeholder="Timezone"
+                :items="timezoneOptions"
+                class="select"
+              />
+            </validation-provider>
+
+            <validation-provider
+              v-slot="{ errors }"
               name="Activity"
               rules="required"
             >
@@ -414,6 +432,7 @@
 <script>
 import dayjs from 'dayjs'
 import { mapActions, mapGetters } from 'vuex'
+import { timezoneOptions } from '@/utils/dateTools'
 
 const utc = require('dayjs/plugin/utc')
 const timezone = require('dayjs/plugin/timezone')
@@ -457,6 +476,8 @@ export default {
     timeEnd: null,
     menuDateStart: false,
     menuDateEnd: false,
+    selectedTimezone: 'America/New_York',
+    timezoneOptions,
     menuTimeStart: false,
     menuTimeEnd: false,
     dialog: false,
@@ -475,6 +496,8 @@ export default {
   computed: {
     ...mapGetters('admin/activity', ['types']),
     ...mapGetters('admin/curriculum', { curriculumTypes: 'types' }),
+    ...mapGetters('auth', ['getUserInfo']),
+
     dataStartFormatted () {
       return this.dateStart ? dayjs(this.dateStart).format('MM/DD/YYYY') : null
     },
@@ -500,6 +523,8 @@ export default {
   created () {
     this.getTypes({ extra: true })
     this.getCurriculumTypes()
+    const { timezone } = this.getUserInfo
+    this.selectedTimezone = timezone
   },
   methods: {
     ...mapActions('live-sessions', ['createLiveSession', 'updateLiveSession', 'deleteLiveSession']),
