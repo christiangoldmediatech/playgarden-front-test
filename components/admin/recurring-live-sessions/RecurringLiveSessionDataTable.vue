@@ -405,6 +405,7 @@ export default {
 
   created () {
     this.getTypes({ extra: true })
+    this.setCurrentTimezone()
   },
 
   methods: {
