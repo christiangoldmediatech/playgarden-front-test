@@ -142,7 +142,7 @@
           </v-col>
         </v-row>
         <div class="grey--text text--darken-2 text-center caption text-md-body-2 my-3 my-md-6">
-          *Limited to 1 introductory learning package per family, in the territorial US and Canada only.
+          *Limited to 1 introductory workbook per family, in the territorial US only.
         </div>
         <v-btn
           block
