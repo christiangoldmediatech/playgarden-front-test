@@ -316,7 +316,7 @@
 
 <script>
 import dayjs from 'dayjs'
-import { stringsToDate, timezoneOptions, formatTimezone } from '@/utils/dateTools'
+import { timezoneOptions, formatTimezone } from '@/utils/dateTools'
 import { mapActions, mapGetters } from 'vuex'
 
 import moment from 'moment'
@@ -445,8 +445,12 @@ export default {
 
     async save () {
       this.loading = true
-      const start = stringsToDate(this.dateStart, this.timeStart)
-      this.item.dateStart = new Date(this.getTimeZoneFormat(start))
+
+      const start = dayjs(`${this.dateStart} ${this.timeStart}`)
+        .tz(this.selectedTimezone)
+        .format()
+
+      this.item.dateStart = start
 
       this.item.active = (this.item.active) ? 'true' : 'false'
       try {
