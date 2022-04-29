@@ -78,23 +78,23 @@
                 </v-toolbar>
               </template>
 
-              <template v-slot:item.dateStart="{ item }">
+              <template #[`item.dateStart`]="{ item }">
                 {{ getTimeZoneFormat(item.dateStart) }}
               </template>
 
-              <template v-slot:item.dateEnd="{ item }">
+              <template #[`item.dateEnd`]="{ item }">
                 {{ getTimeZoneFormat(item.dateEnd) }}
               </template>
 
-              <template v-slot:item.createdAt="{ item }">
+              <template #[`item.createdAt`]="{ item }">
                 {{ item.createdAt | formatDate }}
               </template>
 
-              <template v-slot:item.updatedAt="{ item }">
+              <template #[`item.updatedAt`]="{ item }">
                 {{ item.updatedAt | formatDate }}
               </template>
 
-              <template v-slot:item.actions="{ item }">
+              <template #[`item.actions`]="{ item }">
                 <v-icon
                   class="clickable"
                   color="primary"
