@@ -62,6 +62,7 @@
 import { computed, defineComponent, useRouter } from '@nuxtjs/composition-api'
 
 export default defineComponent({
+  name: 'BackWarningDialog',
   props: {
     value: {
       type: Boolean,
@@ -92,3 +93,11 @@ export default defineComponent({
   }
 })
 </script>
+
+<style scoped>
+::v-deep .v-dialog {
+  background-color: rgba(0, 0, 0, 0);
+  border-color: rgba(0, 0, 0, 0);
+  box-shadow: none;
+}
+</style>
