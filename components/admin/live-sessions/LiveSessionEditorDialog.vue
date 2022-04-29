@@ -434,6 +434,12 @@ import dayjs from 'dayjs'
 import { stringsToDate, timezoneOptions, formatTimezone } from '@/utils/dateTools'
 import { mapActions, mapGetters } from 'vuex'
 import moment from 'moment'
+
+const utc = require('dayjs/plugin/utc')
+const timezone = require('dayjs/plugin/timezone')
+dayjs.extend(utc)
+dayjs.extend(timezone)
+
 function generateItemTemplate () {
   return {
     activityTypeId: null,
@@ -624,10 +630,18 @@ export default {
           this.item.file = filePath
         }
       }
-      let start = stringsToDate(this.dateStart, this.timeStart)
-      start = new Date(this.getTimeZoneFormat(start))
-      let end = stringsToDate(this.dateEnd, this.timeEnd)
-      end = new Date(this.getTimeZoneFormat(end))
+
+      const start = dayjs(`${this.dateStart} ${this.timeStart}`)
+        .tz(this.selectedTimezone)
+        .format()
+
+      const end = dayjs(`${this.dateEnd} ${this.timeEnd}`)
+        .tz(this.selectedTimezone)
+        .format()
+      // let start = stringsToDate(this.dateStart, this.timeStart)
+      // const start = new Date(this.getTimeZoneFormat(`${this.dateStart} ${this.timeStart}`))
+      // let end = stringsToDate(this.dateEnd, this.timeEnd)
+      // end = new Date(this.getTimeZoneFormat(end))
       this.item.dateStart = start
       this.item.dateEnd = end
       this.item.active = (this.item.active) ? 'true' : 'false'
