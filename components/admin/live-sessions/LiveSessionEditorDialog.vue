@@ -431,9 +431,8 @@
 
 <script>
 import dayjs from 'dayjs'
-import { stringsToDate, timezoneOptions, formatTimezone } from '@/utils/dateTools'
+import { timezoneOptions } from '@/utils/dateTools'
 import { mapActions, mapGetters } from 'vuex'
-import moment from 'moment'
 
 const utc = require('dayjs/plugin/utc')
 const timezone = require('dayjs/plugin/timezone')
@@ -533,14 +532,7 @@ export default {
     ...mapActions('admin/curriculum', {
       getCurriculumTypes: 'getTypes'
     }),
-    getTimeZoneFormat (data) {
-      const start = moment(data)
-      return formatTimezone(start, {
-        format: 'MM-DD-YYYY HH:mm',
-        timezone: this.selectedTimezone,
-        returnObject: false
-      })
-    },
+
     onPlayerReady (player) {
       this.player = player
     },
@@ -638,10 +630,7 @@ export default {
       const end = dayjs(`${this.dateEnd} ${this.timeEnd}`)
         .tz(this.selectedTimezone)
         .format()
-      // let start = stringsToDate(this.dateStart, this.timeStart)
-      // const start = new Date(this.getTimeZoneFormat(`${this.dateStart} ${this.timeStart}`))
-      // let end = stringsToDate(this.dateEnd, this.timeEnd)
-      // end = new Date(this.getTimeZoneFormat(end))
+
       this.item.dateStart = start
       this.item.dateEnd = end
       this.item.active = (this.item.active) ? 'true' : 'false'
