@@ -26,6 +26,24 @@
           <v-container>
             <validation-provider
               v-slot="{ errors }"
+              name="timezone"
+              rules="required"
+              class="mb-6"
+            >
+              <pg-select
+                v-model="selectedTimezone"
+                :error-messages="errors"
+                item-text="name"
+                item-value="value"
+                solo
+                placeholder="Timezone"
+                :items="timezoneOptions"
+                class="select"
+              />
+            </validation-provider>
+
+            <validation-provider
+              v-slot="{ errors }"
               name="Type"
               rules="required"
             >
@@ -298,8 +316,10 @@
 
 <script>
 import dayjs from 'dayjs'
-import { stringsToDate } from '@/utils/dateTools'
+import { stringsToDate, timezoneOptions, formatTimezone } from '@/utils/dateTools'
 import { mapActions, mapGetters } from 'vuex'
+
+import moment from 'moment'
 
 function generateItemTemplate () {
   return {
@@ -328,6 +348,8 @@ export default {
     timeStart: null,
     timeEnd: null,
     file: null,
+    timezoneOptions,
+    selectedTimezone: 'America/New_York',
     menuDateStart: false,
     menuDateEnd: false,
     menuTimeStart: false,
@@ -342,6 +364,7 @@ export default {
 
   computed: {
     ...mapGetters('admin/activity', ['types']),
+    ...mapGetters('auth', ['getUserInfo']),
 
     dataStartFormatted () {
       return this.dateStart ? dayjs(this.dateStart).format('MM/DD/YYYY') : null
@@ -367,8 +390,22 @@ export default {
     }
   },
 
+  created () {
+    const { timezone } = this.getUserInfo
+    this.selectedTimezone = timezone
+  },
+
   methods: {
     ...mapActions('admin/recurring-live-sessions', ['createRecurringLiveSession', 'updateRecurringLiveSession']),
+
+    getTimeZoneFormat (data) {
+      const start = moment(data)
+      return formatTimezone(start, {
+        format: 'MM-DD-YYYY HH:mm',
+        timezone: this.selectedTimezone,
+        returnObject: false
+      })
+    },
 
     async refresh (clear = false) {
       this.loading = true
@@ -408,7 +445,9 @@ export default {
 
     async save () {
       this.loading = true
-      this.item.dateStart = stringsToDate(this.dateStart, this.timeStart) // `${this.dateStart}T${this.timeStart}:00.000`
+      this.item.dateStart = stringsToDate(this.dateStart, this.timeStart)
+      this.item.dateStart = new Date(this.getTimeZoneFormat(this.item.dateStart))
+
       this.item.active = (this.item.active) ? 'true' : 'false'
       try {
         if (this.file) {
