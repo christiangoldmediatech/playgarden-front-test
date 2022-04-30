@@ -316,7 +316,7 @@
 
 <script>
 import dayjs from 'dayjs'
-import { timezoneOptions, formatTimezone } from '@/utils/dateTools'
+import { timezoneOptions } from '@/utils/dateTools'
 import { mapActions, mapGetters } from 'vuex'
 
 import moment from 'moment'
@@ -397,15 +397,6 @@ export default {
 
   methods: {
     ...mapActions('admin/recurring-live-sessions', ['createRecurringLiveSession', 'updateRecurringLiveSession']),
-
-    getTimeZoneFormat (data) {
-      const start = moment(data)
-      return formatTimezone(start, {
-        format: 'MM-DD-YYYY HH:mm',
-        timezone: this.selectedTimezone,
-        returnObject: false
-      })
-    },
 
     async refresh (clear = false) {
       this.loading = true
