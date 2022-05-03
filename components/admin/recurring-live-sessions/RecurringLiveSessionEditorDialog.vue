@@ -26,24 +26,6 @@
           <v-container>
             <validation-provider
               v-slot="{ errors }"
-              name="timezone"
-              rules="required"
-              class="mb-6"
-            >
-              <pg-select
-                v-model="selectedTimezone"
-                :error-messages="errors"
-                item-text="name"
-                item-value="value"
-                solo
-                placeholder="Timezone"
-                :items="timezoneOptions"
-                class="select"
-              />
-            </validation-provider>
-
-            <validation-provider
-              v-slot="{ errors }"
               name="Type"
               rules="required"
             >
@@ -163,6 +145,24 @@
                 </v-menu>
               </v-col>
             </v-row>
+
+            <validation-provider
+              v-slot="{ errors }"
+              name="timezone"
+              rules="required"
+              class="mb-6"
+            >
+              <pg-select
+                v-model="selectedTimezone"
+                :error-messages="errors"
+                item-text="name"
+                item-value="value"
+                solo
+                placeholder="Timezone"
+                :items="timezoneOptions"
+                class="select"
+              />
+            </validation-provider>
 
             <validation-provider
               v-slot="{ errors }"
@@ -316,7 +316,7 @@
 
 <script>
 import dayjs from 'dayjs'
-import { timezoneOptions } from '@/utils/dateTools'
+import { timezoneOptions, stringsToDate } from '@/utils/dateTools'
 import { mapActions, mapGetters } from 'vuex'
 
 import moment from 'moment'
@@ -383,6 +383,9 @@ export default {
     dateStart (val) {
       this.item.day = dayjs(this.dateStart).format('dddd').toUpperCase()
     },
+    selectedTimezone (val) {
+      this.loadFormatTimezone(this.item)
+    },
     'item.type' (val) {
       if (val === 'Playdate') {
         this.item.spots = (this.item.spots) ? this.item.spots : null
@@ -390,13 +393,14 @@ export default {
     }
   },
 
-  created () {
-    const { timezone } = this.getUserInfo
-    this.selectedTimezone = timezone
-  },
-
   methods: {
     ...mapActions('admin/recurring-live-sessions', ['createRecurringLiveSession', 'updateRecurringLiveSession']),
+
+    loadCurrentTimezone () {
+      console.log('aqui')
+      const { timezone } = this.getUserInfo
+      this.selectedTimezone = timezone
+    },
 
     async refresh (clear = false) {
       this.loading = true
@@ -423,6 +427,7 @@ export default {
 
     close () {
       this.$nextTick(() => {
+        this.loadCurrentTimezone()
         this.dialog = false
         this.loading = false
         this.file = null
@@ -436,12 +441,7 @@ export default {
 
     async save () {
       this.loading = true
-
-      const start = dayjs(`${this.dateStart} ${this.timeStart}`)
-        .tz(this.selectedTimezone)
-        .format()
-
-      this.item.dateStart = start
+      this.item.dateStart = stringsToDate(this.dateStart, this.timeStart)
 
       this.item.active = (this.item.active) ? 'true' : 'false'
       try {
@@ -475,6 +475,13 @@ export default {
       this.item = generateItemTemplate()
     },
 
+    loadFormatTimezone (item) {
+      if (item.dateStart) {
+        this.dateStart = `${dayjs(item.dateStart).tz(this.selectedTimezone).get('year')}-${dayjs(item.dateStart).tz(this.selectedTimezone).get('month') + 1}-${dayjs(item.dateStart).tz(this.selectedTimezone).get('date').toString().padStart(2, '0')}`
+        this.timeStart = `${dayjs(item.dateStart).tz(this.selectedTimezone).get('hour').toString().padStart(2, '0')}:${dayjs(item.dateStart).tz(this.selectedTimezone).get('minute').toString().padStart(2, '0')}`
+      }
+    },
+
     loadItem (item) {
       this.id = item.id
 
@@ -486,9 +493,7 @@ export default {
       })
 
       if (item.dateStart) {
-        const dateStart = new Date(item.dateStart)
-        this.dateStart = `${dateStart.getFullYear()}-${(dateStart.getMonth() + 1).toString().padStart(2, '0')}-${dateStart.getDate().toString().padStart(2, '0')}`
-        this.timeStart = `${dateStart.getHours().toString().padStart(2, '0')}:${dateStart.getMinutes().toString().padStart(2, '0')}`
+        this.loadFormatTimezone(item)
       }
 
       if (item.dateEnd) {
