@@ -97,7 +97,7 @@ export default defineComponent({
     const menuItems = ref<{ name: string, href: string }[]>([
       { name: 'Online School', href: 'https://playgardenonline.com/' },
       { name: 'Kids Corner', href: '#' },
-      { name: 'Play & Learn', href: '#' },
+      { name: 'Play & Learn', href: 'https://playgardenonline.com/play-and-learn/' },
       { name: 'Learning Tools', href: '#' },
       { name: 'Well-being', href: '#' },
       { name: 'About us', href: 'https://playgardenonline.com/about-us-2/' },
