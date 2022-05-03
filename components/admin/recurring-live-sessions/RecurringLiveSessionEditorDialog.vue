@@ -397,9 +397,10 @@ export default {
     ...mapActions('admin/recurring-live-sessions', ['createRecurringLiveSession', 'updateRecurringLiveSession']),
 
     loadCurrentTimezone () {
-      console.log('aqui')
       const { timezone } = this.getUserInfo
-      this.selectedTimezone = timezone
+      if (timezone) {
+        this.selectedTimezone = timezone
+      }
     },
 
     async refresh (clear = false) {
