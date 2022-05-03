@@ -121,6 +121,7 @@ export default defineComponent({
         setIsTrialEndingPlanSelectedModalVisible(true)
       } catch (error) {
         upgradeStatus.value = 'failed'
+        // eslint-disable-next-line no-console
         console.error(error)
       }
     }
