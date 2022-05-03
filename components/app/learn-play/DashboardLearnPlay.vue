@@ -271,12 +271,9 @@
                   cols="12"
                   md="4"
                 >
-                  <center>
-                    <v-img
-                      :src="book.image"
-                      height="248"
-                    />
-                  </center>
+                  <a :href="book.url">
+                    <v-img :src="book.image" height="248" />
+                  </a>
                 </v-col>
               </v-row>
               <v-row v-else class="mx-2 my-2">
