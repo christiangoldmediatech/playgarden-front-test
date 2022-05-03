@@ -1,32 +1,42 @@
 <template>
-  <v-dialog v-model="dialog" persistent width="580">
-    <v-card class="pg-relative pg-p-6">
-      <div class="pg-flex pg-justify-end">
-        <v-btn icon @click="dialog = false">
-          <v-icon> mdi-close </v-icon>
-        </v-btn>
-      </div>
+  <v-dialog v-model="dialog" persistent width="600">
+    <!-- CLOSE BUTTON -->
+    <div class="pg-relative pg-w-full pg-h-9">
+      <img
+        :style="{
+          left: $vuetify.breakpoint.xs ? '1px' : undefined,
+          right: $vuetify.breakpoint.xs ? undefined : '1px'
+        }"
+        src="@/assets/svg/close-icon.svg"
+        alt="Close icon"
+        width="22px"
+        class="pg-absolute pg-cursor-pointer"
+        @click="dialog = false"
+      >
+    </div>
 
-      <v-card-title class="pg-mb-3 text-center">
-        <p>
-          Going to the previous page will prompt you to re-enter your payment
-          information
+    <v-card class="pg-py-14">
+      <v-card-text class="pg-mb-3 text-center">
+        <p class="pg-text-[21px] pg-leading-8 pg-font-semibold">
+          Going to the previous page will prompt you <br>
+          to re-enter your payment information.
         </p>
-      </v-card-title>
 
-      <v-card-subtitle class="pg-mb-2 text-center">
         <underlined-title
           text="ARE YOU SURE DO YOU WANT TO GO BACK?"
-          font-size="18px"
+          font-size="22px"
+          letter-spacing="0px"
+          no-autoresize-font
         />
-      </v-card-subtitle>
+      </v-card-text>
 
       <v-card-actions>
-        <v-col cols="9" class="pg-m-auto">
+        <v-col cols="8" class="pg-m-auto">
           <v-row>
             <v-btn
               block
-              color="primary"
+              dark
+              color="green2"
               class="pg-mb-4"
               nuxt
               @click="goBack"
@@ -52,6 +62,7 @@
 import { computed, defineComponent, useRouter } from '@nuxtjs/composition-api'
 
 export default defineComponent({
+  name: 'BackWarningDialog',
   props: {
     value: {
       type: Boolean,
@@ -82,3 +93,11 @@ export default defineComponent({
   }
 })
 </script>
+
+<style scoped>
+::v-deep .v-dialog {
+  background-color: rgba(0, 0, 0, 0);
+  border-color: rgba(0, 0, 0, 0);
+  box-shadow: none;
+}
+</style>
