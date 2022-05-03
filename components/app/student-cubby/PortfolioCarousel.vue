@@ -25,7 +25,7 @@
             </span>
           </div>
 
-          <img :src="category.curriculumType.icon" height="32" class="mr-2" />
+          <img :src="category.curriculumType.icon" height="32" class="mr-2">
         </template>
       </v-row>
     </v-col>
