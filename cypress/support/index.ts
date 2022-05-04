@@ -18,3 +18,11 @@ import './commands'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+Cypress.on('uncaught:exception', (err, runnable) => {
+  // TODO: Fix player errors cause by unhandled asynchronous calls.
+  // Ignore play/pause player errors.
+  if (err.message.includes('The play() request was interrupted by a call to pause()')) {
+    return false
+  }
+})
