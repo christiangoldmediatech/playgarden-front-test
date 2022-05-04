@@ -336,7 +336,7 @@ function generateItemTemplate () {
     duration: null,
     dateStart: null,
     spots: 0,
-    day: null,
+    day: '',
     type: 'LiveClass'
   }
 }
@@ -383,10 +383,14 @@ export default {
 
   watch: {
     dateStart (val) {
-      this.item.day = dayjs(this.dateStart).format('dddd').toUpperCase()
+      if (val) {
+        this.item.day = dayjs(val).format('dddd').toUpperCase()
+      }
     },
     selectedTimezone (val) {
-      this.loadFormatTimezone(this.item)
+      if (val) {
+        this.loadFormatTimezone(this.item)
+      }
     },
     'item.type' (val) {
       if (val === 'Playdate') {
