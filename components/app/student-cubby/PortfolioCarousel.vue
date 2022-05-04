@@ -131,9 +131,6 @@ export default defineComponent({
     })
 
     const total = computed(() => {
-      if (isAdmin.value) {
-        return props.category.total
-      }
       return props.category.worksheetUploads
         ? props.category.worksheetUploads.length
         : 0

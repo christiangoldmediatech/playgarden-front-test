@@ -1,7 +1,7 @@
 <template>
   <span
     v-bind="$attrs"
-    class="text-none underlined-title text-spacing"
+    class="text-none underlined-title"
     :style="{
       '--ut-line-color': _lineColor,
       '--ut-line-color-dark-green': _lineColorDarkGreen,
@@ -97,7 +97,7 @@ export default {
 
     letterSpacing: {
       type: String,
-      default: '0px'
+      default: '2px'
     }
   },
 

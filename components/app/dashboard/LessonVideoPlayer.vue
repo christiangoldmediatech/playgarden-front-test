@@ -40,6 +40,8 @@ import DashboardLink from '@/mixins/DashboardLinkMixin.js'
 import SaveVideoProgress from '@/mixins/SaveVideoProgressMixin.js'
 import Fullscreen from '@/mixins/FullscreenMixin.js'
 import LessonCompletedDialog from '@/components/app/dashboard/LessonCompletedDialog.vue'
+import VideoPlayerDialog from '@/components/pg-video-js-player/VideoPlayerDialog.vue'
+import PgVideoJsPlayer from '@/components/pg-video-js-player/PgVideoJsPlayer.vue'
 
 import { APP_EVENTS } from '@/models'
 
@@ -47,7 +49,9 @@ export default {
   name: 'LessonVideoPlayer',
 
   components: {
-    LessonCompletedDialog
+    LessonCompletedDialog,
+    VideoPlayerDialog,
+    PgVideoJsPlayer
   },
 
   mixins: [VideoPlayerDialogMixin, SaveVideoProgress, DashboardLink, Fullscreen, VideoAnalyticsMixin],

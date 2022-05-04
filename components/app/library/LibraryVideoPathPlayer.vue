@@ -28,12 +28,18 @@
 <script lang="ts">
 import { defineComponent, PropType, useStore, ref, computed, watch, onBeforeUnmount } from '@nuxtjs/composition-api'
 import { useGtmHelper, useFavorites, useFavoritesApi, usePatch, useLibraryStandardCallbacks, useChild, useNuxtHelper } from '@/composables'
+// @ts-ignore
+import PgVideoPlayer from '@gold-media-tech/pg-video-player'
 import { PlayerInstance } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
 import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
 import { TypedStore } from '@/models'
 
 export default defineComponent({
   name: 'LibraryVideoPathPlayer',
+
+  components: {
+    PgVideoPlayer
+  },
 
   props: {
     playlist: {

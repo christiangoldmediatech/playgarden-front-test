@@ -120,7 +120,7 @@ export default {
     findMaxEntriesForHour (hourIndex) {
       let total = 1
       this.getAdvancedSchedule.days.forEach((day) => {
-        if (day[hourIndex] && day[hourIndex].length > total) {
+        if (day && day[hourIndex] && day[hourIndex].length > total) {
           total = day[hourIndex].length
         }
       })
