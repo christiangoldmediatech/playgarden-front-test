@@ -622,16 +622,8 @@ export default {
         }
       }
 
-      const start = dayjs(`${this.dateStart} ${this.timeStart}`)
-        .tz(this.selectedTimezone)
-        .format()
-
-      const end = dayjs(`${this.dateEnd} ${this.timeEnd}`)
-        .tz(this.selectedTimezone)
-        .format()
-
-      this.item.dateStart = start
-      this.item.dateEnd = end
+      this.item.dateStart = dayjs(`${this.dateStart} ${this.timeStart}`).utc().format()
+      this.item.dateEnd = dayjs(`${this.dateEnd} ${this.timeEnd}`).utc().format()
       this.item.active = (this.item.active) ? 'true' : 'false'
       try {
         if (this.id === null) {
