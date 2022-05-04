@@ -149,7 +149,7 @@
 <script lang="ts">
 import { useNuxtHelper, useMusic } from '@/composables'
 import { MusicLibrary } from '@/models'
-import { defineComponent, onMounted, ref, nextTick, computed } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, ref, nextTick, computed, onUnmounted } from '@nuxtjs/composition-api'
 import MusicQueue from '@/components/app/music/MusicQueue.vue'
 
 export default defineComponent({
@@ -158,7 +158,7 @@ export default defineComponent({
     MusicQueue
   },
 
-  setup (_, { emit }) {
+  setup () {
     const nuxt = useNuxtHelper()
     const audioPlayer = ref<any>(null)
     const {
@@ -194,10 +194,10 @@ export default defineComponent({
       audioPlayer.value?.pause()
       audioPlayer.value?.setPlaylist(incomingPlaylist)
       await nextTick()
-      audioPlayer.value?.play()
+      await audioPlayer.value?.play()
     }
 
-    const changeSong = nuxt.$on('change-song', async (song: MusicLibrary) => {
+    const handleChangedSong = async (song: MusicLibrary) => {
       if (song) {
         currentSong.value = song
         refreshSongData(song)
@@ -207,7 +207,7 @@ export default defineComponent({
           audioPlayer.value?.pause()
         }
       }
-    })
+    }
 
     const isPlayerDisabled = computed(() => !currentSong.value || !currentSong.value?.description)
 
@@ -231,8 +231,17 @@ export default defineComponent({
       audioPlayer.value?.removeSongByIndex(playlistIndex)
     }
 
-    onMounted(() => {
-      audioPlayer.value?.play()
+    onMounted(async () => {
+      // Try to play media when the page loads.
+      try {
+        await audioPlayer.value?.play()
+      } catch {}
+
+      nuxt.$on('change-song', handleChangedSong)
+    })
+
+    onUnmounted(() => {
+      nuxt.$off('change-song', handleChangedSong)
     })
 
     return {
