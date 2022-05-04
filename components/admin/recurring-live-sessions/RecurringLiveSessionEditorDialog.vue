@@ -448,8 +448,7 @@ export default {
 
     async save () {
       this.loading = true
-      const start = dayjs(`${this.dateStart} ${this.timeStart}`).utc().format()
-      this.item.dateStart = dayjs.utc(start)
+      this.item.dateStart = dayjs(`${this.dateStart} ${this.timeStart}`).utc().format()
       this.item.active = (this.item.active) ? 'true' : 'false'
 
       try {
