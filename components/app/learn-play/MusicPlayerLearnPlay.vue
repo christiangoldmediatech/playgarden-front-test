@@ -197,15 +197,14 @@ export default defineComponent({
       audioPlayer.value?.play()
     }
 
-    const changeSong = nuxt.$on('change-song', (song: MusicLibrary) => {
+    const changeSong = nuxt.$on('change-song', async (song: MusicLibrary) => {
       if (song) {
         currentSong.value = song
         refreshSongData(song)
-        playSong(0)
+        await playSong(0)
+
         if (song.autoPlay) {
           audioPlayer.value?.pause()
-        } else {
-          audioPlayer.value?.play()
         }
       }
     })
@@ -220,7 +219,7 @@ export default defineComponent({
       audioPlayer.value?.pause()
       audioPlayer.value?.selectSongByIndex(playlistIndex)
       await nextTick()
-      audioPlayer.value?.play()
+      await audioPlayer.value?.play()
     }
 
     const removeSong = (playlistIndex: number) => {
