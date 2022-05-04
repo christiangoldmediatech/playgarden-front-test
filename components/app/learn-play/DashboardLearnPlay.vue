@@ -1,5 +1,5 @@
 <template>
-  <v-card class="pb-10 mb-14">
+  <v-card class="pb-10 mb-14" data-test-id="learn-play-content">
     <v-row>
       <v-col v-if="!$vuetify.breakpoint.mdAndUp" cols="12">
         <menu-mobile />

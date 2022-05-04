@@ -21,6 +21,7 @@
           color="white"
           tile
           large
+          data-test-id="hamburger-menu"
           @click.stop="toggleDrawer"
         />
 

@@ -18,6 +18,7 @@
               cols="12"
             >
               <v-btn
+                :data-test-id="`mobile-${item.dataTestId}`"
                 class="list-item"
                 exact
                 nuxt
@@ -27,8 +28,19 @@
                 {{ item.title }}
               </v-btn>
             </v-col>
-            <v-col v-else :key="`${_uid}-drawer-item-${index}`" cols="12">
-              <v-btn class="list-item" exact nuxt text :to="item.to">
+            <v-col
+              v-else
+              :key="`${_uid}-drawer-item-${index}`"
+              cols="12"
+            >
+              <v-btn
+                :data-test-id="`mobile-${item.dataTestId}`"
+                :to="item.to"
+                class="list-item"
+                exact
+                nuxt
+                text
+              >
                 {{ item.title }}
               </v-btn>
             </v-col>

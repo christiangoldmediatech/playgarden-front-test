@@ -2,7 +2,7 @@
   <div>
     <v-row class="flex-nowrap" align="center" justify="start">
       <!-- CIRCLE WITH NUMBER -->
-      <v-col cols="auto" class="z-index-1">
+      <v-col cols="auto" class="z-index-1" data-test-id="lesson-letter-day-circle">
         <div :class="['number-circle', { 'number-circle-active': enabled }]">
           <span class="white--text">
             {{ number }}
