@@ -316,10 +316,12 @@
 
 <script>
 import dayjs from 'dayjs'
-import { timezoneOptions, stringsToDate } from '@/utils/dateTools'
+import { timezoneOptions } from '@/utils/dateTools'
 import { mapActions, mapGetters } from 'vuex'
-
-import moment from 'moment'
+const utc = require('dayjs/plugin/utc')
+const timezone = require('dayjs/plugin/timezone')
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 function generateItemTemplate () {
   return {
@@ -393,6 +395,10 @@ export default {
     }
   },
 
+  created () {
+    this.loadCurrentTimezone()
+  },
+
   methods: {
     ...mapActions('admin/recurring-live-sessions', ['createRecurringLiveSession', 'updateRecurringLiveSession']),
 
@@ -428,11 +434,11 @@ export default {
 
     close () {
       this.$nextTick(() => {
-        this.loadCurrentTimezone()
         this.dialog = false
         this.loading = false
         this.file = null
         this.$refs.obs.reset()
+        this.loadCurrentTimezone()
       })
     },
 
@@ -442,9 +448,10 @@ export default {
 
     async save () {
       this.loading = true
-      this.item.dateStart = stringsToDate(this.dateStart, this.timeStart)
-
+      const start = dayjs(`${this.dateStart} ${this.timeStart}`).utc().format()
+      this.item.dateStart = dayjs.utc(start)
       this.item.active = (this.item.active) ? 'true' : 'false'
+
       try {
         if (this.file) {
           if (this.typeSelectDocumentFile !== 'dropBox') {
@@ -478,14 +485,13 @@ export default {
 
     loadFormatTimezone (item) {
       if (item.dateStart) {
-        this.dateStart = `${dayjs(item.dateStart).tz(this.selectedTimezone).get('year')}-${dayjs(item.dateStart).tz(this.selectedTimezone).get('month') + 1}-${dayjs(item.dateStart).tz(this.selectedTimezone).get('date').toString().padStart(2, '0')}`
-        this.timeStart = `${dayjs(item.dateStart).tz(this.selectedTimezone).get('hour').toString().padStart(2, '0')}:${dayjs(item.dateStart).tz(this.selectedTimezone).get('minute').toString().padStart(2, '0')}`
+        this.dateStart = dayjs(item.dateStart).tz(this.selectedTimezone).format('YYYY-MM-DD')
+        this.timeStart = dayjs(item.dateStart).tz(this.selectedTimezone).format('HH:mm')
       }
     },
 
     loadItem (item) {
       this.id = item.id
-
       // Handle keys
       Object.keys(item).forEach((key) => {
         if (Object.prototype.hasOwnProperty.call(this.item, key)) {
