@@ -186,6 +186,7 @@
             v-if="isUserLoggedIn && !isUserInSignupProcess"
             class="clickable account-btn"
             src="@/assets/svg/account.svg"
+            data-test-id="account-button"
             @click="goToAccount"
           >
 

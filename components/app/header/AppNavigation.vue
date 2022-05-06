@@ -129,6 +129,7 @@
             block
             color="primary"
             nuxt
+            data-test-id="mobile-account-button"
             :to="{ name: 'app-account-index' }"
           >
             ACCOUNT SETTINGS
