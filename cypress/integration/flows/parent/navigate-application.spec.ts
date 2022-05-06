@@ -9,7 +9,7 @@ describe('flows/parent/navigate-application.spec.ts', () => {
 
   describe(
     'Desktop',
-    { viewportHeight: 768, viewportWidth: 1024 },
+    { viewportHeight: 768, viewportWidth: 1280 },
     () => main({ isMobile: false })
   )
 })
