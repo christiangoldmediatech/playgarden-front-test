@@ -1,6 +1,6 @@
 <template>
   <pg-loading :loading="loading" fullscreen>
-    <v-main class="pt-5 pt-md-16 mt-0 mt-md-5">
+    <v-main class="pt-5 pt-md-16 mt-0 mt-md-5" data-test-id="music-content">
       <v-container fluid class="pa-0">
         <horizontal-ribbon-card
           :is-minimized.sync="isTopRibbonMinimized"
@@ -272,7 +272,7 @@ export default {
       return filteredLetters
     })
 
-    const isTopRibbonMinimized = ref(false)
+    const isTopRibbonMinimized = ref(true)
 
     /**
      * The music player is always visible, so here we want to show a default

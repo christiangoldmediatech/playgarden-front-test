@@ -8,7 +8,7 @@
       </v-row>
     </template>
 
-    <v-container fluid>
+    <v-container fluid data-test-id="app-navigation-container">
       <v-row no-gutters>
         <div v-if="items.length > 0">
           <template v-for="(item, index) in items">
