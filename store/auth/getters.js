@@ -20,5 +20,7 @@ export default {
     true, // TODO: remove in February
   getPlaydateInvitationToken: get('playdateInvitationToken'),
   isUserInTrial: (_, getters) =>
-    getLodash(getters, 'getUserInfo.trial') || false
+    getLodash(getters, 'getUserInfo.trial') || false,
+  hasUserLearnAndPlayPlan: (_, getters) =>
+    getters.getUserInfo.planSelected.id === 1 || false
 }

@@ -1,6 +1,6 @@
 <template>
   <v-hover v-slot="{ hover }">
-    <div class="pg-h-auto">
+    <div class="pg-h-auto pg-relative">
       <v-img
         :src="section.imageUrl"
         gradient="rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)"
@@ -15,8 +15,8 @@
         <div
           :class="{
             'section-top': !$vuetify.breakpoint.smAndDown,
-            'translucent': hover,
-            'section-btn': $vuetify.breakpoint.smAndDown,
+            translucent: hover,
+            'section-btn': $vuetify.breakpoint.smAndDown
           }"
         >
           <div>{{ section.title }}</div>
@@ -41,13 +41,28 @@
           <div class="section-bubble-text">
             {{ section.message }}
             <v-btn icon class="my-n4 mx-n2">
-              <v-icon class="white--text" size="22" @click.stop="$emit('click:play', section)">
+              <v-icon
+                class="white--text"
+                size="22"
+                @click.stop="$emit('click:play', section)"
+              >
                 mdi-volume-high
               </v-icon>
             </v-btn>
           </div>
         </div>
       </v-img>
+
+      <div
+        class="pg-absolute pg-top-0 pg-left-0 pg-right-0 pg-bottom-0 pg-w-full pg-h-full d-flex flex-column align-center justify-center pg-bg-black pg-bg-opacity-70"
+      >
+        <span class="pg-text-white font-weight-bold">
+          To unlock
+        </span>
+        <v-btn text color="accent" class="text-decoration-underline">
+          Upgrade your Plan
+        </v-btn>
+      </div>
     </div>
   </v-hover>
 </template>
@@ -77,7 +92,7 @@ export default defineComponent({
     }
   },
 
-  setup () {
+  setup() {
     return {}
   }
 })
@@ -181,7 +196,6 @@ export default defineComponent({
       padding: 8px 12px;
     }
   }
-
 }
 
 .translucent {
