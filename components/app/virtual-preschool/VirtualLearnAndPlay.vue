@@ -41,6 +41,7 @@
         class="music"
         :section="section.music"
         small
+        blocked
         @click:play="handleAudioPlay"
         @click="handleClick"
       />
@@ -48,6 +49,7 @@
       <section-image
         class="daily-lessons"
         :section="section.dashboard"
+        blocked
         @click:play="handleAudioPlay"
         @click="handleClick"
       />
@@ -55,6 +57,7 @@
       <section-image
         class="playdates"
         :section="section.playdates"
+        blocked
         @click:play="handleAudioPlay"
         @click="handleClick"
       />

@@ -15,7 +15,7 @@
         <div
           :class="{
             'section-top': !$vuetify.breakpoint.smAndDown,
-            translucent: hover,
+            translucent: hover && !blocked,
             'section-btn': $vuetify.breakpoint.smAndDown
           }"
         >
@@ -54,12 +54,21 @@
       </v-img>
 
       <div
+        v-if="blocked"
         class="pg-absolute pg-top-0 pg-left-0 pg-right-0 pg-bottom-0 pg-w-full pg-h-full d-flex flex-column align-center justify-center pg-bg-black pg-bg-opacity-70"
       >
+        <img src="@/assets/svg/lock.svg" width="40" height="40" class="mb-2">
         <span class="pg-text-white font-weight-bold">
           To unlock
         </span>
-        <v-btn text color="accent" class="text-decoration-underline">
+        <v-btn
+          text
+          color="accent"
+          class="text-decoration-underline"
+          nuxt
+          link
+          to="/app/payment/plan"
+        >
           Upgrade your Plan
         </v-btn>
       </div>
@@ -87,6 +96,10 @@ export default defineComponent({
       default: () => ({})
     },
     small: {
+      type: Boolean,
+      default: false
+    },
+    blocked: {
       type: Boolean,
       default: false
     }
