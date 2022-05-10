@@ -154,9 +154,9 @@ export default {
     return this.$axios.$get(`/users/${id}/plan`)
   },
 
-  async selectSubscriptionPlan ({ commit }, { id, type } = {}) {
+  async selectSubscriptionPlan ({ commit }, { id, type, fromPlaydates } = {}) {
     try {
-      return await this.$axios.$patch(`/auth/user/plan/${id}/${type}`)
+      return await this.$axios.$patch(`/auth/user/plan/${id}/${type}`, { fromPlaydates })
     } catch (error) {
       snotifyError(commit, {
         body: 'Sorry! There was an error while setting your Subscription plan!'
