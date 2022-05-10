@@ -24,6 +24,24 @@
           <v-container>
             <validation-provider
               v-slot="{ errors }"
+              name="timezone"
+              rules="required"
+              class="mb-6"
+            >
+              <pg-select
+                v-model="selectedTimezone"
+                :error-messages="errors"
+                item-text="name"
+                item-value="value"
+                solo
+                placeholder="Timezone"
+                :items="timezoneOptions"
+                class="select"
+              />
+            </validation-provider>
+
+            <validation-provider
+              v-slot="{ errors }"
               name="Activity"
               rules="required"
             >
@@ -413,8 +431,14 @@
 
 <script>
 import dayjs from 'dayjs'
-import { stringsToDate } from '@/utils/dateTools'
 import { mapActions, mapGetters } from 'vuex'
+import { timezoneOptions } from '@/utils/dateTools'
+
+const utc = require('dayjs/plugin/utc')
+const timezone = require('dayjs/plugin/timezone')
+dayjs.extend(utc)
+dayjs.extend(timezone)
+
 function generateItemTemplate () {
   return {
     activityTypeId: null,
@@ -452,6 +476,8 @@ export default {
     timeEnd: null,
     menuDateStart: false,
     menuDateEnd: false,
+    selectedTimezone: 'America/New_York',
+    timezoneOptions,
     menuTimeStart: false,
     menuTimeEnd: false,
     dialog: false,
@@ -470,6 +496,8 @@ export default {
   computed: {
     ...mapGetters('admin/activity', ['types']),
     ...mapGetters('admin/curriculum', { curriculumTypes: 'types' }),
+    ...mapGetters('auth', ['getUserInfo']),
+
     dataStartFormatted () {
       return this.dateStart ? dayjs(this.dateStart).format('MM/DD/YYYY') : null
     },
@@ -495,6 +523,8 @@ export default {
   created () {
     this.getTypes({ extra: true })
     this.getCurriculumTypes()
+    const { timezone } = this.getUserInfo
+    this.selectedTimezone = timezone
   },
   methods: {
     ...mapActions('live-sessions', ['createLiveSession', 'updateLiveSession', 'deleteLiveSession']),
@@ -591,10 +621,9 @@ export default {
           this.item.file = filePath
         }
       }
-      const start = stringsToDate(this.dateStart, this.timeStart)
-      const end = stringsToDate(this.dateEnd, this.timeEnd)
-      this.item.dateStart = start
-      this.item.dateEnd = end
+
+      this.item.dateStart = dayjs(`${this.dateStart} ${this.timeStart}`).utc().format()
+      this.item.dateEnd = dayjs(`${this.dateEnd} ${this.timeEnd}`).utc().format()
       this.item.active = (this.item.active) ? 'true' : 'false'
       try {
         if (this.id === null) {
