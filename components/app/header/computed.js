@@ -77,13 +77,7 @@ export default {
   methods: {
     goToPage(user) {
       if (user.stripeStatus === 'active') {
-        if (user.planSelected.id === 2 || user.planSelected.id === 3) {
-          return 'app-virtual-preschool'
-        }
-
-        if (user.planSelected.id === 1) {
-          return 'app-learn-play'
-        }
+        return 'app-virtual-preschool'
       } else {
         return 'app-dashboard'
       }
