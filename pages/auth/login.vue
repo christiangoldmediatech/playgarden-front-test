@@ -91,7 +91,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-
+import { UserRole } from '@/models'
 import LoginForm from '@/components/forms/auth/LoginForm.vue'
 
 export default {
@@ -278,7 +278,7 @@ export default {
           })
         } else if (this.$route.query.redirect) {
           await this.$router.push(decodeURIComponent(this.$route.query.redirect))
-        } else if (this.userInfo.role.id === 1) {
+        } else if (this.userInfo.role.id === UserRole.SUPER_ADMIN) {
           window.open(`${process.env.playgardenAdminUrl}?atoken=${this.$store.getters['auth/getAccessToken']}`, '_self')
         } else {
           await this.$router.push({ name: this.goToPage(this.userInfo) })
