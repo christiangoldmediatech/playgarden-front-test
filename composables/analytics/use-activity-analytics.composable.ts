@@ -59,6 +59,11 @@ export const useActivityAnalytics = (children: ComputedRef<any[] | undefined>) =
       // Check if analytics already exists
       let analytic = await getActivityAnalytic(currentVideo.activityId, child.id)
 
+      // If analytic exists, use same entity type on current video
+      if (typeof analytic !== 'string' || Object.keys(analytic).length > 0) {
+        currentVideo.type = analytic.entityType
+      }
+
       if (typeof analytic === 'string' || Object.keys(analytic).length === 0) {
         // Analytic does not exist, create a new one
         const analyticPaylod = {
