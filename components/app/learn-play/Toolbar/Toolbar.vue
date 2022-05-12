@@ -11,7 +11,7 @@
         'pg-w-full',
         'pg-flex',
         'pg-flex-col',
-        'pg-max-w-[1150px]',
+        'pg-max-w-[1400px]',
         'pg-mx-auto',
         'pg-items-center',
         'md:pg-flex-row',

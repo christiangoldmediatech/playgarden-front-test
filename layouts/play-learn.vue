@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <!-- TOOLBAR -->
-    <Toolbar @input:open-drawer="openDrawer" />
+    <Toolbar />
 
     <!-- BODY -->
     <v-main>
