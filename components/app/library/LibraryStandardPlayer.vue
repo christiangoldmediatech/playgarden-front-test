@@ -21,6 +21,7 @@ import { defineComponent, PropType, useStore, ref, computed, onBeforeUnmount, wa
 import { useGtmHelper, useNuxtHelper, useFavorites, useFavoritesApi, usePatch, useLibraryStandardCallbacks, useChild } from '@/composables'
 // @ts-ignore
 import PgVideoPlayer from '@gold-media-tech/pg-video-player'
+import PatchEarnedDialogCompositionApi from '@/components/app/PatchEarnedDialogCompositionApi.vue'
 import { PlayerInstance } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
 import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
 import { TypedStore } from '@/models'
@@ -29,7 +30,8 @@ export default defineComponent({
   name: 'LibraryStandardPlayer',
 
   components: {
-    PgVideoPlayer
+    PgVideoPlayer,
+    PatchEarnedDialogCompositionApi
   },
 
   props: {
@@ -99,6 +101,12 @@ export default defineComponent({
     const { patchData, patchEarned } = usePatch()
     const showPatchEarnedDialog = ref(false)
 
+    function goToNextVideo(): void {
+      if (player.value) {
+        player.value.goToNextTrack()
+      }
+    }
+
     function handlePatchEarnedOnEnded(): void {
       if (player.value && patchEarned.value && patchData.value.icon && patchData.value.category) {
         showPatchEarnedDialog.value = true
@@ -111,16 +119,8 @@ export default defineComponent({
     const { playerEvents } = useLibraryStandardCallbacks({ children: currentChildren, afterOnEnded: handlePatchEarnedOnEnded })
 
     const loadedPlayerEvents = computed(() => {
-      return props.customPlayerEvents || playerEvents
+      return props.customPlayerEvents ?? playerEvents
     })
-
-    function goToNextVideo(): void {
-      if (player.value) {
-        if (player.value.getNextTrack()) {
-          player.value.goToNextTrack()
-        }
-      }
-    }
 
     function closeAll(): void {
       if (player.value) {

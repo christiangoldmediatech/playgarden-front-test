@@ -1279,10 +1279,10 @@
   resolved "https://registry.yarnpkg.com/@firebase/webchannel-wrapper/-/webchannel-wrapper-0.4.0.tgz#becce788818d3f47f0ac1a74c3c061ac1dcf4f6d"
   integrity sha512-8cUA/mg0S+BxIZ72TdZRsXKBP5n5uRcE3k29TZhZw6oIiHBt9JA7CTb/4pE1uKtE/q5NeTY2tBDcagoZ+1zjXQ==
 
-"@gold-media-tech/pg-video-player@^0.0.89":
-  version "0.0.89"
-  resolved "https://npm.pkg.github.com/download/@gold-media-tech/pg-video-player/0.0.89/466924ba107d108319ad8762a85c1f191a78490b0b810bf8f283253e457b9edd#9acc95b8e51467d14a93f5fe5c7f32a46c6dad10"
-  integrity sha512-7D8LuWyeUC8qams6OffIwD5fxDq7m/mi6HqO6E4q/jVWxSGAHKdfSOgPiw6+tqboF2eGIJGSO+2OVuSsiZuQ3A==
+"@gold-media-tech/pg-video-player@^0.0.91":
+  version "0.0.91"
+  resolved "https://npm.pkg.github.com/download/@gold-media-tech/pg-video-player/0.0.91/fc5a1abed5805ebf8fa9d44129bbd766f2f10ce8b21af2cc42454c1fcdc3ead4#767dfb3d7866d821bdcf9d8c5889043770b83c04"
+  integrity sha512-BhIXGuBiwgSJ1tWeZSKB7UVjWQLg6xGs0dOJS1Ro8sojR9LmC0AFZphVFrk67COMZ4f68C1p+5GcW8CzudiQWQ==
   dependencies:
     "@types/vue" "^2.0.0"
     core-js "^3.6.5"
@@ -5481,10 +5481,10 @@ de-indent@^1.0.2:
   resolved "https://registry.yarnpkg.com/de-indent/-/de-indent-1.0.2.tgz#b2038e846dc33baa5796128d0804b455b8c1e21d"
   integrity sha1-sgOOhG3DO6pXlhKNCAS0VbjB4h0=
 
-deasync@^0.1.15:
-  version "0.1.21"
-  resolved "https://registry.yarnpkg.com/deasync/-/deasync-0.1.21.tgz#bb11eabd4466c0d8776f0d82deb8a6126460d30f"
-  integrity sha512-kUmM8Y+PZpMpQ+B4AuOW9k2Pfx/mSupJtxOsLzmnHY2WqZUYRFccFn2RhzPAqt3Xb+sorK/badW2D4zNzqZz5w==
+deasync@0.1.16, deasync@^0.1.15:
+  version "0.1.16"
+  resolved "https://registry.yarnpkg.com/deasync/-/deasync-0.1.16.tgz#44195eb4330fc9fc487f31ec614cbbdd57633897"
+  integrity sha512-FNCjDwxGbhK+Ye8fmE3p2ahIjERhkbuwX+WVGZPtSbAh9LfE1Saa2p0l+f0t11sIlk9D8W+Bym+cDp6r5yghAQ==
   dependencies:
     bindings "^1.5.0"
     node-addon-api "^1.7.1"

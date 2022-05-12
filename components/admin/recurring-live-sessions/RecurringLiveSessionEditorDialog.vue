@@ -148,6 +148,24 @@
 
             <validation-provider
               v-slot="{ errors }"
+              name="timezone"
+              rules="required"
+              class="mb-6"
+            >
+              <pg-select
+                v-model="selectedTimezone"
+                :error-messages="errors"
+                item-text="name"
+                item-value="value"
+                solo
+                placeholder="Timezone"
+                :items="timezoneOptions"
+                class="select"
+              />
+            </validation-provider>
+
+            <validation-provider
+              v-slot="{ errors }"
               name="Day"
               rules="required"
             >
@@ -298,8 +316,12 @@
 
 <script>
 import dayjs from 'dayjs'
-import { stringsToDate } from '@/utils/dateTools'
+import { timezoneOptions } from '@/utils/dateTools'
 import { mapActions, mapGetters } from 'vuex'
+const utc = require('dayjs/plugin/utc')
+const timezone = require('dayjs/plugin/timezone')
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 function generateItemTemplate () {
   return {
@@ -314,7 +336,7 @@ function generateItemTemplate () {
     duration: null,
     dateStart: null,
     spots: 0,
-    day: null,
+    day: '',
     type: 'LiveClass'
   }
 }
@@ -328,6 +350,8 @@ export default {
     timeStart: null,
     timeEnd: null,
     file: null,
+    timezoneOptions,
+    selectedTimezone: 'America/New_York',
     menuDateStart: false,
     menuDateEnd: false,
     menuTimeStart: false,
@@ -342,6 +366,7 @@ export default {
 
   computed: {
     ...mapGetters('admin/activity', ['types']),
+    ...mapGetters('auth', ['getUserInfo']),
 
     dataStartFormatted () {
       return this.dateStart ? dayjs(this.dateStart).format('MM/DD/YYYY') : null
@@ -358,7 +383,14 @@ export default {
 
   watch: {
     dateStart (val) {
-      this.item.day = dayjs(this.dateStart).format('dddd').toUpperCase()
+      if (val) {
+        this.item.day = dayjs(val).format('dddd').toUpperCase()
+      }
+    },
+    selectedTimezone (val) {
+      if (val) {
+        this.loadFormatTimezone(this.item)
+      }
     },
     'item.type' (val) {
       if (val === 'Playdate') {
@@ -367,8 +399,19 @@ export default {
     }
   },
 
+  created () {
+    this.loadCurrentTimezone()
+  },
+
   methods: {
     ...mapActions('admin/recurring-live-sessions', ['createRecurringLiveSession', 'updateRecurringLiveSession']),
+
+    loadCurrentTimezone () {
+      const { timezone } = this.getUserInfo
+      if (timezone) {
+        this.selectedTimezone = timezone
+      }
+    },
 
     async refresh (clear = false) {
       this.loading = true
@@ -399,6 +442,7 @@ export default {
         this.loading = false
         this.file = null
         this.$refs.obs.reset()
+        this.loadCurrentTimezone()
       })
     },
 
@@ -408,8 +452,9 @@ export default {
 
     async save () {
       this.loading = true
-      this.item.dateStart = stringsToDate(this.dateStart, this.timeStart) // `${this.dateStart}T${this.timeStart}:00.000`
+      this.item.dateStart = dayjs(`${this.dateStart} ${this.timeStart}`).utc().format()
       this.item.active = (this.item.active) ? 'true' : 'false'
+
       try {
         if (this.file) {
           if (this.typeSelectDocumentFile !== 'dropBox') {
@@ -441,9 +486,15 @@ export default {
       this.item = generateItemTemplate()
     },
 
+    loadFormatTimezone (item) {
+      if (item.dateStart) {
+        this.dateStart = dayjs(item.dateStart).tz(this.selectedTimezone).format('YYYY-MM-DD')
+        this.timeStart = dayjs(item.dateStart).tz(this.selectedTimezone).format('HH:mm')
+      }
+    },
+
     loadItem (item) {
       this.id = item.id
-
       // Handle keys
       Object.keys(item).forEach((key) => {
         if (Object.prototype.hasOwnProperty.call(this.item, key)) {
@@ -452,9 +503,7 @@ export default {
       })
 
       if (item.dateStart) {
-        const dateStart = new Date(item.dateStart)
-        this.dateStart = `${dateStart.getFullYear()}-${(dateStart.getMonth() + 1).toString().padStart(2, '0')}-${dateStart.getDate().toString().padStart(2, '0')}`
-        this.timeStart = `${dateStart.getHours().toString().padStart(2, '0')}:${dateStart.getMinutes().toString().padStart(2, '0')}`
+        this.loadFormatTimezone(item)
       }
 
       if (item.dateEnd) {

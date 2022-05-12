@@ -17,7 +17,7 @@
           max-width="400px"
           alt="Playarden Prep Online Logo"
           contain
-          :src="require('assets/svg/logo.svg')"
+          :src="require('assets/svg/playgardenprep.svg')"
         />
       </div>
     </div>
