@@ -63,12 +63,12 @@ export function useLibraryStandardCallbacks({ children, afterOnEnded }: InlinePl
     },
 
     // Whenever the user skips a video
-    [PLAYER_EVENTS.ON_SKIP]: (event: PlayerInstanceEvent): void => {
+    [PLAYER_EVENTS.ON_SKIP]: async (event: PlayerInstanceEvent): Promise<void> => {
       sendPlayerEventVideoAnalytics({
         children, event, status: 'SKIPPED'
       })
 
-      sendActivityAnalytics({
+      await sendActivityAnalytics({
         duration: event.duration,
         time: event.currentTime,
         video: determineCurrentVideo(event.currentTrack)
