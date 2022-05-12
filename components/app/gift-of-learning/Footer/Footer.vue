@@ -34,7 +34,7 @@
         <!-- LINKS -->
         <div class="pg-grid pg-grid-cols-1 pg-gap-2 md:pg-gap-0 pg-text-center pg-mt-12 md:pg-mt-0">
           <a v-for="link in links" :key="link.name" :href="link.href">
-            <span class="pg-inline-block pg-text-lg pg-text-[#606060] pg-font-medium">{{ link.name }}</span>
+            <span class="pg-inline-block pg-text-lg pg-text-black pg-font-medium">{{ link.name }}</span>
           </a>
         </div>
 
@@ -52,11 +52,11 @@
             <div>646-504-4716</div>
           </a>
 
-          <div class="pg-font-medium pg-text-[#606060]">
+          <div class="pg-font-medium pg-text-black">
             95 Franklin Street
           </div>
 
-          <div class="pg-font-medium pg-text-[#606060]">
+          <div class="pg-font-medium pg-text-black">
             New York, NY 10013
           </div>
         </div>
@@ -75,11 +75,11 @@
             <div>212-965-9718</div>
           </a>
 
-          <div class="pg-font-medium pg-text-[#606060]">
+          <div class="pg-font-medium pg-text-black">
             1366 Madison Avenue
           </div>
 
-          <div class="pg-font-medium pg-text-[#606060]">
+          <div class="pg-font-medium pg-text-black">
             New York, NY 10128
           </div>
         </div>
@@ -98,21 +98,21 @@
             <div>212-965-9717</div>
           </a>
 
-          <div class="pg-font-medium pg-text-[#606060]">
+          <div class="pg-font-medium pg-text-black">
             95 Franklin Street
           </div>
 
-          <div class="pg-font-medium pg-text-[#606060]">
+          <div class="pg-font-medium pg-text-black">
             New York, NY 10013
           </div>
         </div>
       </div>
 
       <!-- DASHED LINE -->
-      <div class="pg-border-0 pg-border-b-[0.5px] pg-border-[#606060] pg-border-dashed pg-my-7" />
+      <div class="pg-border-0 pg-border-b-[0.5px] pg-border-black pg-border-dashed pg-my-7" />
 
       <!-- COPYRIGHT -->
-      <div class="pg-text-center pg-text-xs pg-text-[#606060] pg-mb-10">
+      <div class="pg-text-center pg-text-xs pg-text-black pg-mb-10">
         2020 - {{ new Date().getFullYear() }} © Playgarden Prep. All rights reserved.
       </div>
 
