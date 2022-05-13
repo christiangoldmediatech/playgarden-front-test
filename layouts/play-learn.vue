@@ -8,6 +8,10 @@
       <nuxt />
     </v-main>
 
+    <!-- MODALS -->
+    <EmailConflictModal />
+    <AccountInactiveModal />
+
     <!-- FOOTER -->
     <Footer />
   </v-app>
@@ -25,7 +29,9 @@ export default defineComponent({
 
   components: {
     Toolbar,
-    Footer
+    Footer,
+    EmailConflictModal: () => import('@/components/app/register/EmailConflictModal.vue'),
+    AccountInactiveModal: () => import('@/components/app/register/AccountInactiveModal.vue')
   },
 
   setup () {}
