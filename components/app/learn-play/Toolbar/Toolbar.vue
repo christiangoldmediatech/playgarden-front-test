@@ -1,7 +1,7 @@
 <template>
   <v-app-bar
     app
-    height="118px"
+    :height="toolbarHeight"
     color="white"
     class="!pg-shadow-[0px_3px_6px_rgba(0,0,0,0.16)]"
   >
@@ -14,29 +14,31 @@
         'pg-max-w-[1400px]',
         'pg-mx-auto',
         'pg-items-center',
-        'md:pg-flex-row',
-        'md:pg-justify-between',
+        'lg:pg-flex-row',
+        'lg:pg-justify-between',
       ]"
     >
       <!-- LOGO -->
       <img
         src="@/assets/svg/play-learn/play-learn-logo.svg"
         alt="Play & Learn Logo"
-        class="pg-h-[72px]"
+        class="pg-h-[48px] lg:pg-h-[64px]"
       >
 
       <div class="pg-relative">
-        <div class="pg-flex pg-flex-col">
+        <div class="pg-flex pg-flex-col pg-mt-4 lg:pg-mt-0">
           <!-- LOGIN, SIGNUP AND LOCATIONS -->
           <div class="pg-flex pg-items-center pg-justify-center">
-            <nuxt-link :to="{ name: 'auth-parent' }">
+            <nuxt-link :to="{ name: 'auth-play-learn' }">
               <button
                 :class="[
-                  'pg-text-2xl',
+                  'pg-text-base',
                   'pg-font-semibold',
                   'pg-text-accent',
-                  'pg-w-[146px]',
-                  'md:pg-w-auto'
+                  'pg-w-[100px]',
+                  'lg:pg-w-[146px]',
+                  'lg:pg-w-auto',
+                  'lg:pg-text-xl',
                 ]"
               >
                 REGISTER
@@ -46,16 +48,19 @@
             <nuxt-link :to="{ name: 'auth-login' }">
               <button
                 :class="[
-                  'pg-text-2xl',
+                  'pg-text-base',
                   'pg-font-bold',
                   'pg-text-white',
                   'pg-bg-accent',
-                  'pg-h-[60px]',
-                  'pg-w-[250px]',
+                  'pg-h-[36px]',
+                  'pg-w-[100px]',
                   'pg-rounded-[4px]',
                   'pg-shadow-[0px_3px_6px_rgba(0,0,0,0.16)]',
                   'hover:pg-brightness-110',
-                  'md:pg-ml-12',
+                  'lg:pg-w-[220px]',
+                  'lg:pg-h-[48px]',
+                  'lg:pg-text-xl',
+                  'lg:pg-ml-12',
                 ]"
               >
                 LOGIN
@@ -69,9 +74,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import { useVuetifyHelper } from '@/composables'
+import { computed, defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
-  setup() {}
+  setup() {
+    const vuetify = useVuetifyHelper()
+    const isMobile = computed(() => vuetify.breakpoint.mdAndDown)
+    const toolbarHeight = computed(() => isMobile.value ? '124px' : '100px')
+
+    return {
+      isMobile,
+      toolbarHeight
+    }
+  }
 })
 </script>
