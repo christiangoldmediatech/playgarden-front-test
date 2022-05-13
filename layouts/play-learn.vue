@@ -5,9 +5,7 @@
 
     <!-- BODY -->
     <v-main>
-      <v-container fluid class="pg-mx-auto pg-max-w-[1400px]">
-        <nuxt />
-      </v-container>
+      <nuxt />
     </v-main>
 
     <!-- FOOTER -->
