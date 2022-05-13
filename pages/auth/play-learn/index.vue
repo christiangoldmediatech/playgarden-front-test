@@ -63,10 +63,10 @@
         <div
           :class="[
             'pg-col-span-full',
-            'lg:pg-col-span-5',
             'pg-flex',
             'pg-justify-center',
             'pg-mt-14',
+            'lg:pg-col-span-5',
             'lg:pg-mt-0'
           ]"
         >
@@ -78,10 +78,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, useRouter } from '@nuxtjs/composition-api'
+import { defineComponent, ref, useRouter, useStore } from '@nuxtjs/composition-api'
 import BackButton from '@/components/app/learn-play/BackButton/BackButton.vue'
 import RegisterForm from '@/components/forms/auth/RegisterForm.vue'
 import InfoCard from '@/components/app/learn-play/InfoCard/InfoCard.vue'
+import { useAuth, useNotification, useSnotifyHelper } from '@/composables'
+import { SignupData, TypedStore, UserFlow } from '@/models'
 
 export default defineComponent({
   name: 'AuthPlayLearnIndex',
@@ -95,14 +97,54 @@ export default defineComponent({
   },
 
   setup() {
-    const isLoading = ref(false)
+    const snotify = useSnotifyHelper()
+    const store = useStore<TypedStore>()
     const router = useRouter()
+    const Auth = useAuth({ store })
+    const Notification = useNotification({ store })
+
+    const isLoading = ref(false)
 
     function handleGoBack() {
       router.go(-1)
     }
 
-    function handleSubmit() {}
+    async function handleSubmit(data: SignupData) {
+      try {
+        isLoading.value = true
+
+        if (!Auth.isUserLoggedIn.value) {
+          await Auth.signup({ ...data, flow: UserFlow.CREDITCARD })
+          snotify.success('Welcome to Playgarden Prep!')
+        }
+
+        goToNextStep()
+      } catch (e: any) {
+        const data = e?.response?.data
+
+        if (data?.statusCode === 409) {
+          if (data?.message === 'Email already exists') {
+            Notification.setIsEmailConflictModalVisible(true)
+          }
+
+          if (data?.message === 'Account Canceled') {
+            Notification.setIsAccountInactiveModalVisible(true)
+          }
+        }
+      } finally {
+        isLoading.value = false
+      }
+    }
+
+    function goToNextStep() {
+      router.push({
+        name: 'app-play-learn-payment',
+        query: {
+          step: '2',
+          process: 'signup'
+        }
+      })
+    }
 
     return {
       isLoading,
