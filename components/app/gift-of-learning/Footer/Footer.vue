@@ -4,9 +4,9 @@
       'pg-bg-[url(@/assets/png/gift-of-learning/bottom-paper.png)]',
       'pg-bg-cover',
       'pg-bg-[center_top_-2rem]',
-      'md:pg-bg-top',
+      'lg:pg-bg-top',
     ]"
-    :height="isMobile ? '1280px' : '435px'"
+    :height="footerHeight"
     app
     absolute
 
@@ -22,8 +22,8 @@
           'pg-max-w-[1150px]',
           'pg-mt-48',
           'pg-mx-auto',
-          'md:pg-mt-36',
-          'md:pg-flex-row',
+          'lg:pg-mt-36',
+          'lg:pg-flex-row',
         ]"
       >
         <!-- LOGO -->
@@ -32,14 +32,14 @@
         </div>
 
         <!-- LINKS -->
-        <div class="pg-grid pg-grid-cols-1 pg-gap-2 md:pg-gap-0 pg-text-center pg-mt-12 md:pg-mt-0">
+        <div class="pg-grid pg-grid-cols-1 pg-gap-2 lg:pg-gap-0 pg-text-center pg-mt-12 lg:pg-mt-0">
           <a v-for="link in links" :key="link.name" :href="link.href">
             <span class="pg-inline-block pg-text-lg pg-text-black pg-font-medium">{{ link.name }}</span>
           </a>
         </div>
 
         <!-- ONLINE SCHOOL -->
-        <div class="pg-grid pg-grid-cols-1 pg-gap-2 md:pg-gap-0 pg-text-center pg-mt-12 md:pg-mt-0">
+        <div class="pg-grid pg-grid-cols-1 pg-gap-2 lg:pg-gap-0 pg-text-center pg-mt-12 lg:pg-mt-0">
           <div class="pg-text-2xl pg-leading-9 pg-text-[#68C453] pg-font-semibold">
             Online School
           </div>
@@ -62,7 +62,7 @@
         </div>
 
         <!-- UPPER EAST SIDE -->
-        <div class="pg-grid pg-grid-cols-1 pg-gap-2 md:pg-gap-0 pg-text-center pg-mt-12 md:pg-mt-0">
+        <div class="pg-grid pg-grid-cols-1 pg-gap-2 lg:pg-gap-0 pg-text-center pg-mt-12 lg:pg-mt-0">
           <div class="pg-text-2xl pg-leading-9 pg-text-[#68C453] pg-font-semibold">
             Upper East Side
           </div>
@@ -85,7 +85,7 @@
         </div>
 
         <!-- TRIBECA -->
-        <div class="pg-grid pg-grid-cols-1 pg-gap-2 md:pg-gap-0 pg-text-center pg-mt-12 md:pg-mt-0">
+        <div class="pg-grid pg-grid-cols-1 pg-gap-2 lg:pg-gap-0 pg-text-center pg-mt-12 lg:pg-mt-0">
           <div class="pg-text-2xl pg-leading-9 pg-text-[#68C453] pg-font-semibold">
             Tribeca
           </div>
@@ -119,7 +119,7 @@
       <!-- COLOR DASHES -->
       <img
         src="@/assets/svg/gift-of-learning/bottom-color-dashes.svg"
-        class="pg-absolute pg-bottom-0 pg-left-0 pg-right-0 pg-mx-auto pg-w-full md:pg-w-auto"
+        class="pg-absolute pg-bottom-0 pg-left-0 pg-right-0 pg-mx-auto pg-w-full lg:pg-w-auto"
       >
     </div>
   </v-footer>
@@ -132,7 +132,8 @@ import { computed, defineComponent, ref } from '@nuxtjs/composition-api'
 export default defineComponent({
   setup() {
     const vuetify = useVuetifyHelper()
-    const isMobile = computed(() => vuetify.breakpoint.mobile)
+    const isMobile = computed(() => vuetify.breakpoint.mdAndDown)
+    const footerHeight = computed(() => isMobile.value ? '1280px' : '435px')
 
     const links = ref<{ name: string, href: string }[]>([
       { name: 'Playgarden Prep', href: '#' },
@@ -142,7 +143,11 @@ export default defineComponent({
       { name: 'Help', href: '#' }
     ])
 
-    return { links, isMobile }
+    return {
+      links,
+      isMobile,
+      footerHeight
+    }
   }
 })
 </script>
