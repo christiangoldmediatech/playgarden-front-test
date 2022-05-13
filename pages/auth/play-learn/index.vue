@@ -1,27 +1,35 @@
 <template>
-  <div>
+  <div
+    :class="[
+      'pg-bg-[url(@/assets/png/play-learn/acuarela-yellow.png)]',
+      'pg-bg-[center_right_-8rem]',
+      'lg:pg-pb-32'
+    ]"
+  >
     <div
       :class="[
         'pg-flex',
         'pg-flex-col',
-        'pg-bg-[url(@/assets/png/play-learn/acuarela-yellow.png)]',
-        'pg-bg-[center_right_-10rem]',
-        'pg-pb-32'
+        'pg-mx-auto',
+        'pg-max-w-[768px]',
+        'pg-px-4',
+        'lg:pg-max-w-[1400px]',
       ]"
     >
-      <div class="pg-mt-4">
+      <div class="pg-mt-6">
         <BackButton @click="handleGoBack" />
       </div>
 
       <!-- HEADING -->
       <div
         :class="[
-          'pg-mt-4',
+          'pg-mt-6',
           'pg-inline',
-          'pg-text-4xl',
+          'pg-text-3xl',
           'pg-font-bold',
-          'pg-tracking-[4.8px]',
-          'pg-leading-[48px]',
+          'pg-leading-9',
+          'lg:pg-tracking-[4.8px]',
+          'lg:pg-leading-[48px]',
         ]"
       >
         <img src="@/assets/svg/play-learn/play-learn-logo.svg" class="pg-mr-2 pg-h-14 pg-mb-[-16px] pg-text-black">
@@ -37,13 +45,13 @@
         :class="[
           'pg-grid',
           'pg-grid-cols-1',
-          'md:pg-grid-cols-12',
-          'pg-gap-24',
           'pg-mt-8',
+          'lg:pg-grid-cols-12',
+          'lg:pg-gap-24',
         ]"
       >
         <!-- LEFT -->
-        <div class="pg-col-span-full md:pg-col-span-7">
+        <div class="pg-col-span-full lg:pg-col-span-7">
           <RegisterForm
             :loading="isLoading"
             :is-credit-card-required="true"
@@ -52,7 +60,16 @@
         </div>
 
         <!-- RIGHT -->
-        <div class="pg-col-span-full md:pg-col-span-5">
+        <div
+          :class="[
+            'pg-col-span-full',
+            'lg:pg-col-span-5',
+            'pg-flex',
+            'pg-justify-center',
+            'pg-mt-14',
+            'lg:pg-mt-0'
+          ]"
+        >
           <InfoCard />
         </div>
       </div>
