@@ -266,12 +266,12 @@ export default {
       this.playerInstance = videojs(this.$refs.videoPlayer, this.options, this.onPlayerReady)
     },
 
-    loadPlaylist (playlist, index) {
+    async loadPlaylist (playlist, index) {
       this.playlist = jsonCopy(playlist)
-      this.loadMediaObject(index)
+      await this.loadMediaObject(index)
     },
 
-    loadMediaObject (index) {
+    async loadMediaObject (index) {
       this.position = 0
       this.duration = 0.1
       if (this.playlist[index]) {
@@ -295,7 +295,7 @@ export default {
         if (this.mediaObject.viewed && this.mediaObject.viewed.time && !this.mediaObject.viewed.completed) {
           this.playerInstance.currentTime(this.mediaObject.viewed.time)
         }
-        this.playerInstance.play()
+        await this.playerInstance.play()
       }
 
       if (!this.nextUp.show && this.nextUp.hasBeenSeen) {

@@ -22,29 +22,34 @@ export default {
         const list = [
           {
             title: 'Home',
+            dataTestId: 'home',
             to: { name: this.goToPage(this.getUserInfo) },
             exact: true
           },
           {
             title: 'Daily Lessons',
+            dataTestId: 'app-dashboard',
             to: { name: 'app-dashboard' },
             exact: false
           },
           {
             title: 'Live Classes',
+            dataTestId: 'live-classes',
             to: { name: 'app-live-classes' },
             exact: false
           },
-          { title: 'Library', to: { name: 'app-library' }, exact: false },
-          { title: 'Music', to: { name: 'app-music' }, exact: false },
-          { title: 'Playdates', to: { name: 'app-playdates' }, exact: false },
+          { title: 'Library', to: { name: 'app-library' }, exact: false, dataTestId: 'library' },
+          { title: 'Music', to: { name: 'app-music' }, exact: false, dataTestId: 'music' },
+          { title: 'Playdates', to: { name: 'app-playdates' }, exact: false, dataTestId: 'playdates' },
           {
             title: 'Kids Corner',
+            dataTestId: 'kids-corner',
             external: true,
             link: `${process.env.kidsCornerUrl}?atoken=${this.$store.getters['auth/getAccessToken']}`
           },
           {
             title: 'Student Cubby',
+            dataTestId: 'student-cubby',
             to: {
               name: 'app-student-cubby-puzzle',
               query: {
@@ -63,6 +68,7 @@ export default {
         if (!['production'].includes(process.env.testEnv)) {
           list.push({
             title: 'Parent Corner',
+            dataTestId: 'parent-corner',
             to: { name: 'app-parent-corner' },
             exact: false
           })
