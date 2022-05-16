@@ -1,6 +1,6 @@
 <template>
   <pg-loading :loading="loading" fullscreen>
-    <v-col class="fill-height">
+    <v-col class="fill-height" data-test-id="playdates-content">
       <!-- ACTIVE PLAYDATES -->
       <div v-if="isPayingUser">
         <v-row align="center" class="fill-height" justify="space-between" no-gutters>

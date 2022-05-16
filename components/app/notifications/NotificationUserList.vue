@@ -1,6 +1,6 @@
 <template>
   <pg-loading :loading="loading">
-    <v-row no-gutters>
+    <v-row no-gutters data-test-id="notifications-content">
       <!-- Desktop Title -->
       <v-col cols="12" class="d-none d-md-block">
         <div
