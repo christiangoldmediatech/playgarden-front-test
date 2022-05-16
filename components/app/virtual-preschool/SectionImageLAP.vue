@@ -1,59 +1,73 @@
 <template>
-  <v-hover v-slot="{ hover }">
-    <div class="pg-h-auto pg-relative">
-      <v-img
-        :src="section.imageUrl"
-        gradient="rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)"
-        class="pg-rounded-md"
-        cover
-        tile
-        height="100%"
-        position="top center"
-        @click="$emit('click', section)"
-      >
-        <!-- Section Button -->
-        <div
-          :class="{
-            'section-top': !$vuetify.breakpoint.smAndDown,
-            translucent: hover && !blocked,
-            'section-btn': $vuetify.breakpoint.smAndDown
-          }"
+  <div class="pg-h-auto pg-relative">
+    <v-img
+      :src="section.imageUrl"
+      gradient="rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)"
+      class="pg-rounded-md"
+      cover
+      tile
+      height="100%"
+      position="top center"
+      @click="$emit('click', section)"
+    >
+      <div class="section-content">
+        <!-- Start Playing Button -->
+        <img
+          :data-test-id="`vp-section-${section.title}`"
+          :style="small ? `top: 75%; height: 60%;` : `top: 50%; height: 45%;`"
+          class="section-start-playing"
+          src="@/assets/png/virtual-preschool/Start Playing.png"
         >
-          <div>{{ section.title }}</div>
-        </div>
+        <!-- Bubble -->
+        <div class="section-bubble" />
+      </div>
 
-        <div class="section-content">
-          <!-- Start Playing Button -->
-          <img
-            :data-test-id="`vp-section-${section.title}`"
-            :style="small ? `top: 75%; height: 60%;` : `top: 50%; height: 35%;`"
-            class="section-start-playing"
-            src="@/assets/png/virtual-preschool/Start Playing.png"
-          >
+      <!-- Section Button -->
+      <div
+        :class="{
+          'section-top': !$vuetify.breakpoint.smAndDown,
+          translucent: false && !blocked,
+          'section-btn': $vuetify.breakpoint.smAndDown
+        }"
+      >
+        <div>{{ section.title }}</div>
+      </div>
+    </v-img>
 
-          <!-- Lady -->
-          <img class="section-lady" :src="section.teacherUrl">
-
-          <!-- Bubble -->
-          <div class="section-bubble" />
-
-          <!-- Bubble Text -->
-          <div class="section-bubble-text">
-            {{ section.message }}
-            <v-btn icon class="my-n4 mx-n2">
-              <v-icon
-                class="white--text"
-                size="22"
-                @click.stop="$emit('click:play', section)"
-              >
-                mdi-volume-high
-              </v-icon>
-            </v-btn>
-          </div>
-        </div>
-      </v-img>
+    <div
+      v-if="blocked"
+      :class="[
+        'pg-absolute',
+        'pg-top-0',
+        'pg-left-0',
+        'pg-right-0',
+        'pg-bottom-0',
+        'pg-w-full',
+        'pg-h-full',
+        'd-flex',
+        'flex-column',
+        'align-center',
+        'justify-center',
+        'pg-bg-black',
+        'pg-bg-opacity-70'
+      ]"
+    >
+      <img src="@/assets/svg/lock.svg" width="40" height="40" class="mb-2">
+      <span class="pg-text-white font-weight-bold">
+        To unlock
+      </span>
+      <v-btn
+        text
+        color="accent"
+        class="text-decoration-underline"
+        nuxt
+        link
+        to="/app/payment/plan"
+      >
+        Upgrade your Plan
+      </v-btn>
     </div>
-  </v-hover>
+  </div>
 </template>
 
 <script lang="ts">
@@ -68,7 +82,7 @@ interface Section {
 }
 
 export default defineComponent({
-  name: 'SectionImage',
+  name: 'SectionImageLap',
 
   props: {
     section: {
@@ -76,6 +90,10 @@ export default defineComponent({
       default: () => ({})
     },
     small: {
+      type: Boolean,
+      default: false
+    },
+    blocked: {
       type: Boolean,
       default: false
     }
@@ -169,7 +187,7 @@ export default defineComponent({
 
   &-top {
     position: absolute;
-    top: 15px;
+    bottom: 15px;
     left: 15px;
 
     background: rgb(104, 196, 83);

@@ -1,21 +1,21 @@
 <template>
   <v-main>
     <div :class="$vuetify.breakpoint.mdAndDown ? 'mobile' : 'desktop'">
-      <section-image
+      <SectionImageLAP
         class="learn-and-play"
         :section="section.playandlearn"
         @click:play="handleAudioPlay"
         @click="handleClick"
       />
 
-      <section-image
+      <SectionImageLAP
         class="live-classes"
         :section="section.classes"
         @click:play="handleAudioPlay"
         @click="handleClick"
       />
 
-      <section-image
+      <SectionImageLAP
         class="library"
         :section="section.library"
         small
@@ -23,21 +23,21 @@
         @click="handleClick"
       />
 
-      <section-image
+      <SectionImageLAP
         class="kids-corner"
         :section="section.kidscorner"
         @click:play="handleAudioPlay"
         @click="handleClick"
       />
 
-      <section-image
+      <SectionImageLAP
         class="student-cubby"
         :section="section.cubby"
         @click:play="handleAudioPlay"
         @click="handleClick"
       />
 
-      <section-image
+      <SectionImageLAP
         class="music"
         :section="section.music"
         small
@@ -46,7 +46,7 @@
         @click="handleClick"
       />
 
-      <section-image
+      <SectionImageLAP
         class="daily-lessons"
         :section="section.dashboard"
         blocked
@@ -54,7 +54,7 @@
         @click="handleClick"
       />
 
-      <section-image
+      <SectionImageLAP
         class="playdates"
         :section="section.playdates"
         blocked
@@ -80,14 +80,14 @@ import { useAuth } from '@/composables'
 import { TypedStore, Child } from '@/models'
 
 import BirthdayVideoDialog from '@/components/features/childBirthday/BirthdayVideoDialog.vue'
-import SectionImage from '@/components/app/virtual-preschool/SectionImage.vue'
+import SectionImageLAP from '@/components/app/virtual-preschool/SectionImageLAP.vue'
 
 export default defineComponent({
   name: 'VirtualLearnAndPlay',
 
   components: {
     BirthdayVideoDialog,
-    SectionImage
+    SectionImageLAP
   },
 
   setup() {
@@ -111,71 +111,46 @@ export default defineComponent({
     const section = {
       dashboard: {
         imageUrl: require('@/assets/png/virtual-preschool/Daily lessons.png'),
-        teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Beth-daily lessons.png'),
         title: 'Daily Lessons',
-        route: { name: 'app-dashboard' },
-        message: 'We can’t wait to learn with you every day!',
-        audio: `${baseRoute}audio/virtual-preschool/Daily lessons.m4a`
+        route: { name: 'app-dashboard' }
       },
       kidscorner: {
         imageUrl: require('@/assets/png/virtual-preschool/kidscorner.png'),
-        teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Katryna-kidscorner.png'),
         title: 'Kids Corner',
-        route: goToKidsCorner,
-        message:
-          'It\'s a little bit silly in the Kids Corner, where kids choose how to learn',
-        audio: `${baseRoute}audio/virtual-preschool/Kidscorner.m4a`
+        route: goToKidsCorner
       },
       playdates: {
         imageUrl: require('@/assets/png/virtual-preschool/playdates.png'),
-        teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Shyla_playdates.png'),
         title: 'Playdates',
-        route: { name: 'app-playdates' },
-        message: 'Join our teacher-led playdates for fun with friends!',
-        audio: `${baseRoute}audio/virtual-preschool/Playdates.m4a`
+        route: { name: 'app-playdates' }
       },
       classes: {
         imageUrl: require('@/assets/png/virtual-preschool/live classes.png'),
-        teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Lucy-Liveclasses.png'),
         title: 'Live Classes',
-        route: { name: 'app-live-classes' },
-        message: 'Enjoy cooking, music, movement zooms and more!',
-        audio: `${baseRoute}audio/virtual-preschool/Live classes 2.m4a`
+        route: { name: 'app-live-classes' }
       },
       cubby: {
         imageUrl: require('@/assets/png/virtual-preschool/Cubby.png'),
-        teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Ally_cubby.png'),
         title: 'Student Cubby',
         route: {
           name: 'app-student-cubby-puzzle',
           query: { id: currentChild.value?.id }
-        },
-        message: 'Store your work and track progress in your cubby!',
-        audio: `${baseRoute}audio/virtual-preschool/Cubby.m4a`
+        }
       },
       music: {
         imageUrl: require('@/assets/png/virtual-preschool/Music.png'),
-        teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Emma_Music.png'),
         title: 'Music',
-        route: { name: 'app-music' },
-        message: 'Listen anytime to sing and learn!',
-        audio: `${baseRoute}audio/virtual-preschool/Music.m4a`
+        route: { name: 'app-music' }
       },
       library: {
         imageUrl: require('@/assets/png/virtual-preschool/Library.png'),
-        teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Raulbel-Library.png'),
         title: 'Library',
-        route: { name: 'app-library' },
-        message: 'Come read with us in the book nook!',
-        audio: `${baseRoute}audio/virtual-preschool/Library.m4a`
+        route: { name: 'app-library' }
       },
       playandlearn: {
         imageUrl: require('@/assets/png/virtual-preschool/learnandplay.png'),
-        teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Raulbel-Library.png'),
         title: 'Play and Learn',
-        route: { name: 'app-learn-play' },
-        message: 'Come read with us in the book nook!',
-        audio: `${baseRoute}audio/virtual-preschool/Library.m4a`
+        route: { name: 'app-learn-play' }
       }
     }
 
