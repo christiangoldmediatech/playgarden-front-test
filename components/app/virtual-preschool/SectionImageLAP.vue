@@ -16,7 +16,7 @@
           :data-test-id="`vp-section-${section.title}`"
           :style="small ? `top: 75%; height: 60%;` : `top: 50%; height: 45%;`"
           class="section-start-playing"
-          src="@/assets/png/virtual-preschool/Start Playing.png"
+          :src="getBtnImage()"
         >
         <!-- Bubble -->
         <div class="section-bubble" />
@@ -100,7 +100,25 @@ export default defineComponent({
   },
 
   setup() {
-    return {}
+    const btnImages = [
+      require('@/assets/png/virtual-preschool/lap/btn_azul.svg'),
+      require('@/assets/png/virtual-preschool/lap/btn_amarillo.svg'),
+      require('@/assets/png/virtual-preschool/lap/btn_morado.svg'),
+      require('@/assets/png/virtual-preschool/lap/btn_rosa.svg'),
+      require('@/assets/png/virtual-preschool/lap/btn_verde.svg')
+    ]
+
+    const getRandomInt = (min: number, max: number) => {
+      return Math.floor(Math.random() * (max - min)) + min
+    }
+
+    const getBtnImage = () => {
+      return btnImages[getRandomInt(0, 4)]
+    }
+
+    return {
+      getBtnImage
+    }
   }
 })
 </script>
