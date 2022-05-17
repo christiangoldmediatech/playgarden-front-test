@@ -88,8 +88,15 @@ export default defineComponent({
   setup(props) {
     const vuetify = useVuetifyHelper()
     const isMobile = computed(() => vuetify.breakpoint.mdAndDown)
-    const toolbarHeight = computed(() => isMobile.value ? '124px' : '100px')
     const isUserLoggedOut = computed(() => !props.isUserLoggedIn)
+
+    const toolbarHeight = computed(() => {
+      return props.isUserLoggedIn && isMobile.value
+        ? '64px'
+        : isMobile.value
+          ? '100px'
+          : '124px' // desktop
+    })
 
     return {
       isMobile,
