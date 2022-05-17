@@ -33,7 +33,7 @@ export const useOfflineWorksheet = ({ store }: { store: Store<unknown> }) => {
         { root: true }
       )
 
-      const data = await axios.$post('/worksheets/upload', {
+      const data = await axios.$post('/worksheets/upload/lesson', {
         lessonId,
         childrenId: childId,
         url: response.filePath
