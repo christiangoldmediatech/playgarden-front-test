@@ -81,10 +81,6 @@ export default defineComponent({
     const isLoading = ref(false)
     const toggleInfo = ref(true)
 
-    function handleGoBack() {
-      router.go(-1)
-    }
-
     async function handleSubmit(children: Child[]) {
       try {
         isLoading.value = true
@@ -105,6 +101,16 @@ export default defineComponent({
       } finally {
         isLoading.value = false
       }
+    }
+
+    function handleGoBack() {
+      router.push({
+        name: 'app-play-learn-payment',
+        query: {
+          step: '2',
+          process: 'signup'
+        }
+      })
     }
 
     function goToNextStep() {
