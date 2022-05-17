@@ -4,14 +4,12 @@
       <SectionImageLAP
         class="learn-and-play"
         :section="section.playandlearn"
-        @click:play="handleAudioPlay"
         @click="handleClick"
       />
 
       <SectionImageLAP
         class="live-classes"
         :section="section.classes"
-        @click:play="handleAudioPlay"
         @click="handleClick"
       />
 
@@ -19,21 +17,18 @@
         class="library"
         :section="section.library"
         small
-        @click:play="handleAudioPlay"
         @click="handleClick"
       />
 
       <SectionImageLAP
         class="kids-corner"
         :section="section.kidscorner"
-        @click:play="handleAudioPlay"
         @click="handleClick"
       />
 
       <SectionImageLAP
         class="student-cubby"
         :section="section.cubby"
-        @click:play="handleAudioPlay"
         @click="handleClick"
       />
 
@@ -42,7 +37,6 @@
         :section="section.music"
         small
         blocked
-        @click:play="handleAudioPlay"
         @click="handleClick"
       />
 
@@ -50,7 +44,6 @@
         class="daily-lessons"
         :section="section.dashboard"
         blocked
-        @click:play="handleAudioPlay"
         @click="handleClick"
       />
 
@@ -58,7 +51,6 @@
         class="playdates"
         :section="section.playdates"
         blocked
-        @click:play="handleAudioPlay"
         @click="handleClick"
       />
     </div>
@@ -164,15 +156,6 @@ export default defineComponent({
       player.value = new Audio()
     })
 
-    const handleAudioPlay = (sectionItem: SectionItem) => {
-      if (!player.value) {
-        return
-      }
-
-      player.value.src = sectionItem.audio
-      player.value.play()
-    }
-
     const handleClick = (sectionItem: SectionItem) => {
       const route = sectionItem.route
 
@@ -187,7 +170,6 @@ export default defineComponent({
     return {
       section,
       goToKidsCorner,
-      handleAudioPlay,
       handleClick,
       isBirthdayModalvisible
     }
