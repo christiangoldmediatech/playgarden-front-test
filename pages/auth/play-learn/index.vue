@@ -102,8 +102,17 @@ export default defineComponent({
     const router = useRouter()
     const Auth = useAuth({ store })
     const Notification = useNotification({ store })
-
     const isLoading = ref(false)
+
+    /**
+     * If the user is already logged in, redirect to
+     * the pick child page.
+     */
+    if (Auth.isUserLoggedIn) {
+      router.replace({
+        name: 'app-pick-child'
+      })
+    }
 
     function handleGoBack() {
       router.go(-1)
