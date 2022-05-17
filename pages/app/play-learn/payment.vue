@@ -78,7 +78,6 @@
 <script lang="ts">
 import { defineComponent, ref, useContext, useRouter } from '@nuxtjs/composition-api'
 import BackButton from '@/components/app/learn-play/BackButton/BackButton.vue'
-import RegisterForm from '@/components/forms/auth/RegisterForm.vue'
 import StepTwoCardSummary from '@/components/app/learn-play/StepTwoCardSummary/StepTwoCardSummary.vue'
 import StepTwoCardDetail from '@/components/app/learn-play/StepTwoCardDetail/StepTwoCardDetail.vue'
 import StripePayForm from '@/components/forms/payment/StripePayForm.vue'
@@ -92,7 +91,6 @@ export default defineComponent({
 
   components: {
     BackButton,
-    RegisterForm,
     StepTwoCardSummary,
     StepTwoCardDetail,
     StripePayForm
