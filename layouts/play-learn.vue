@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <!-- TOOLBAR -->
-    <Toolbar />
+    <Toolbar :is-user-logged-in="isUserLoggedIn" />
 
     <!-- BODY -->
     <v-main>
@@ -18,9 +18,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, useStore } from '@nuxtjs/composition-api'
 import Footer from '@/components/app/gift-of-learning/Footer/Footer.vue'
 import Toolbar from '@/components/app/learn-play/Toolbar/Toolbar.vue'
+import { TypedStore } from '@/models'
+import { useAuth } from '@/composables'
 
 export default defineComponent({
   name: 'LayoutsPlayLearn',
@@ -34,6 +36,13 @@ export default defineComponent({
     AccountInactiveModal: () => import('@/components/app/register/AccountInactiveModal.vue')
   },
 
-  setup () {}
+  setup () {
+    const store = useStore<TypedStore>()
+    const Auth = useAuth({ store })
+
+    return {
+      isUserLoggedIn: Auth.isUserLoggedIn
+    }
+  }
 })
 </script>

@@ -25,7 +25,7 @@
         class="pg-h-[48px] lg:pg-h-[64px]"
       >
 
-      <div class="pg-relative">
+      <div v-if="isUserLoggedOut" class="pg-relative">
         <div class="pg-flex pg-flex-col pg-mt-4 lg:pg-mt-0">
           <!-- LOGIN, SIGNUP AND LOCATIONS -->
           <div class="pg-flex pg-items-center pg-justify-center">
@@ -78,14 +78,23 @@ import { useVuetifyHelper } from '@/composables'
 import { computed, defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
-  setup() {
+  props: {
+    isUserLoggedIn: {
+      type: Boolean,
+      default: false
+    }
+  },
+
+  setup(props) {
     const vuetify = useVuetifyHelper()
     const isMobile = computed(() => vuetify.breakpoint.mdAndDown)
     const toolbarHeight = computed(() => isMobile.value ? '124px' : '100px')
+    const isUserLoggedOut = computed(() => !props.isUserLoggedIn)
 
     return {
       isMobile,
-      toolbarHeight
+      toolbarHeight,
+      isUserLoggedOut
     }
   }
 })
