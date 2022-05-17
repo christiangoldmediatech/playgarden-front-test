@@ -1,5 +1,5 @@
 <template>
-  <v-main class="pt-5 pt-md-16 mt-0 mt-md-10">
+  <v-main class="pt-5 pt-md-16 mt-0 mt-md-10" data-test-id="student-cubby-content">
     <v-container fluid>
       <v-row justify="center" no-gutters>
         <!-- Page Title -->
