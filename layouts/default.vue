@@ -25,7 +25,9 @@
       <trial-ending-plan-selected />
       <credit-card-form />
       <PlanUpgradeModal v-if="isUserLoggedIn" />
-      <TrialEndingModalForLastDay :downward-displacement="topDistanceInPixels" />
+      <TrialEndingModalForLastDay
+        :downward-displacement="topDistanceInPixels"
+      />
       <CanceledTrialModal />
 
       <!-- CONTACT US FORM MODAL -->
@@ -41,11 +43,7 @@
 
       <!-- CONTENT -->
       <v-main v-if="!isFullWidth">
-        <v-container
-          class="pa-md-3 pa-0"
-          fill-height
-          :style="contentStyle"
-        >
+        <v-container class="pa-md-3 pa-0" fill-height :style="contentStyle">
           <nuxt />
         </v-container>
       </v-main>
@@ -66,10 +64,7 @@
 
     <template v-else>
       <v-main>
-        <v-container
-          fill-height
-          fluid
-        >
+        <v-container fill-height fluid>
           <pg-loading />
         </v-container>
       </v-main>
@@ -99,7 +94,12 @@ import ChangePasswordModal from '@/components/app/notifications/ChangePasswordMo
 import TrialEndingModalForLastDay from '@/components/app/payment/TrialEnding/TrialEndingModalForLastDay.vue'
 import PlanUpgradeModal from '@/components/app/payment/TrialEnding/PlanUpgradeModal/index.vue'
 
-import { useAuth, useLayout, useNotification, useVuetifyHelper } from '@/composables'
+import {
+  useAuth,
+  useLayout,
+  useNotification,
+  useVuetifyHelper
+} from '@/composables'
 
 export default defineComponent({
   middleware: ['utmHandler'],
@@ -122,14 +122,19 @@ export default defineComponent({
     TrialEndingWeekThreeModal,
     TrialEndingWeekFourModal,
     PlanUpgradeModal,
-    TrialEndingPlanSelected: () => import('@/components/app/payment/TrialEnding/PlanSelected.vue'),
-    CreditCardForm: () => import('@/components/app/payment/TrialEnding/CreditCardForm.vue'),
-    EmailConflictModal: () => import('@/components/app/register/EmailConflictModal.vue'),
-    AccountInactiveModal: () => import('@/components/app/register/AccountInactiveModal.vue'),
-    CanceledTrialModal: () => import('@/components/app/payment/CanceledTrialModal.vue')
+    TrialEndingPlanSelected: () =>
+      import('@/components/app/payment/TrialEnding/PlanSelected.vue'),
+    CreditCardForm: () =>
+      import('@/components/app/payment/TrialEnding/CreditCardForm.vue'),
+    EmailConflictModal: () =>
+      import('@/components/app/register/EmailConflictModal.vue'),
+    AccountInactiveModal: () =>
+      import('@/components/app/register/AccountInactiveModal.vue'),
+    CanceledTrialModal: () =>
+      import('@/components/app/payment/CanceledTrialModal.vue')
   },
 
-  setup () {
+  setup() {
     const isComingSoonDialogOpen = ref(false)
 
     const store = useStore()
@@ -146,7 +151,11 @@ export default defineComponent({
       handleTrialEndingFlow
     } = useNotification({ store })
 
-    const { showContent, setShowContent, isFullWidth } = useLayout({ store, route, vuetify })
+    const { showContent, setShowContent, isFullWidth } = useLayout({
+      store,
+      route,
+      vuetify
+    })
 
     const { isUserLoggedIn, isUserEmailVerified } = useAuth({ store })
 
@@ -159,14 +168,18 @@ export default defineComponent({
     })
 
     onMounted(() => {
-      watch(isUserLoggedIn, async () => {
-        if (routeName.value !== 'shared-slug') {
-          await checkIfShouldSendShippingAddressNotification()
-          await checkIfShouldShowTrialExpiredModal()
-          await checkIfShouldShowTrialExpiringRibbon()
-          await handleTrialEndingFlow()
-        }
-      }, { immediate: true })
+      watch(
+        isUserLoggedIn,
+        async () => {
+          if (routeName.value !== 'shared-slug') {
+            await checkIfShouldSendShippingAddressNotification()
+            await checkIfShouldShowTrialExpiredModal()
+            await checkIfShouldShowTrialExpiringRibbon()
+            await handleTrialEndingFlow()
+          }
+        },
+        { immediate: true }
+      )
 
       setShowContent(true)
     })
@@ -188,19 +201,25 @@ export default defineComponent({
   },
 
   computed: {
-    topDistanceInPixels () {
-      return this.isMobile ? this.expiringRibbonHeightMobile : this.expiringRibbonHeightDesktop
+    topDistanceInPixels() {
+      return this.isMobile
+        ? this.expiringRibbonHeightMobile
+        : this.expiringRibbonHeightDesktop
     },
 
-    toolbarStyle () {
+    toolbarStyle() {
       return {
-        top: this.isTrialExpiringRibbonVisible ? `${this.topDistanceInPixels}px !important` : '0px'
+        top: this.isTrialExpiringRibbonVisible
+          ? `${this.topDistanceInPixels}px !important`
+          : '0px'
       }
     },
 
-    contentStyle () {
+    contentStyle() {
       return {
-        'margin-top': this.isTrialExpiringRibbonVisible ? `${this.topDistanceInPixels}px !important` : '0px'
+        'margin-top': this.isTrialExpiringRibbonVisible
+          ? `${this.topDistanceInPixels}px !important`
+          : '0px'
       }
     }
   }

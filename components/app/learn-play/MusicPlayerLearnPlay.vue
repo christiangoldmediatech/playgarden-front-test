@@ -53,11 +53,7 @@
         >
           <v-row v-if="currentSong" no-gutters justify="center">
             <v-spacer />
-            <v-col
-              cols="2"
-              align-self="center"
-              class="text-center"
-            >
+            <div class="text-center align-self-center">
               <!-- Previous Song Button -->
               <v-btn
                 icon
@@ -70,12 +66,9 @@
                   mdi-skip-backward
                 </v-icon>
               </v-btn>
-            </v-col>
-            <v-col
-              cols="2"
-              align-self="center"
-              class="text-center"
-            >
+            </div>
+
+            <div class="text-center align-self-center">
               <!-- Pause/Play Song Button -->
               <v-btn
                 v-if="!isPlaying"
@@ -102,12 +95,9 @@
                   mdi-pause-circle-outline
                 </v-icon>
               </v-btn>
-            </v-col>
-            <v-col
-              cols="2"
-              align-self="center"
-              class="text-center"
-            >
+            </div>
+
+            <div class="text-center align-self-center">
               <!-- Next Song Button -->
               <v-btn
                 icon
@@ -120,8 +110,10 @@
                   mdi-skip-forward
                 </v-icon>
               </v-btn>
-            </v-col>
+            </div>
+
             <v-spacer />
+
             <v-col
               v-if="currentSong.description"
               cols="auto"

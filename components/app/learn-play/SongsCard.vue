@@ -1,5 +1,5 @@
 <template>
-  <v-row>
+  <v-row class="ma-0">
     <v-container fluid class="pa-0">
       <v-expand-transition>
         <music-player-learn-play
@@ -202,7 +202,7 @@ export default {
         }
 
         await getAndSetFavorites()
-      } catch (error) {
+      } catch (error: any) {
         snotify.error(error.message)
       }
     }
