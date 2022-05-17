@@ -13,7 +13,7 @@
         'pg-mx-auto',
         'pg-max-w-[768px]',
         'pg-px-4',
-        'lg:pg-max-w-[1200px]',
+        'lg:pg-max-w-[1300px]',
       ]"
     >
       <div class="pg-my-6">

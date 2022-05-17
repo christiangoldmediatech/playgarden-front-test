@@ -7,7 +7,7 @@
         'pg-mx-auto',
         'pg-max-w-[768px]',
         'pg-px-4',
-        'lg:pg-max-w-[1200px]',
+        'lg:pg-max-w-[1300px]',
       ]"
     >
       <div class="pg-my-6">
@@ -19,13 +19,12 @@
         :class="[
           'pg-grid',
           'pg-grid-cols-1',
-          'lg:pg-mt-12',
           'lg:pg-grid-cols-12',
           'lg:pg-gap-12',
         ]"
       >
         <!-- LEFT -->
-        <div class="pg-col-span-full lg:pg-col-span-5">
+        <div class="pg-col-span-full lg:pg-col-span-5 pg-order-2 lg:pg-order-1">
           <img
             src="@/assets/png/play-learn/child-with-backpack.png"
             class="pg-w-full"
@@ -39,9 +38,10 @@
             'pg-flex',
             'pg-flex-col',
             'pg-justify-center',
-            'pg-mt-14',
+            'pg-order-1',
             'lg:pg-col-span-7',
-            'lg:pg-mt-0'
+            'lg:pg-mt-14',
+            'lg:pg-order-2',
           ]"
         >
           <ShortRegisterForm
