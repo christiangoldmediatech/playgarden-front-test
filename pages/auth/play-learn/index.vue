@@ -70,7 +70,7 @@
             'lg:pg-mt-0'
           ]"
         >
-          <InfoCard />
+          <StepOneCard />
         </div>
       </div>
     </div>
@@ -81,7 +81,7 @@
 import { defineComponent, ref, useRouter, useStore } from '@nuxtjs/composition-api'
 import BackButton from '@/components/app/learn-play/BackButton/BackButton.vue'
 import RegisterForm from '@/components/forms/auth/RegisterForm.vue'
-import InfoCard from '@/components/app/learn-play/InfoCard/InfoCard.vue'
+import StepOneCard from '@/components/app/learn-play/StepOneCard/StepOneCard.vue'
 import { useAuth, useNotification, useSnotifyHelper } from '@/composables'
 import { SignupData, TypedStore, UserFlow } from '@/models'
 
@@ -93,7 +93,7 @@ export default defineComponent({
   components: {
     BackButton,
     RegisterForm,
-    InfoCard
+    StepOneCard
   },
 
   setup() {
