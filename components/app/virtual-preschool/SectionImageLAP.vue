@@ -48,8 +48,8 @@
         'flex-column',
         'align-center',
         'justify-center',
-        'pg-bg-black',
-        'pg-bg-opacity-70'
+        'pg-bg-[#000000]',
+        'pg-bg-opacity-50'
       ]"
     >
       <img src="@/assets/svg/lock.svg" width="40" height="40" class="mb-2">
