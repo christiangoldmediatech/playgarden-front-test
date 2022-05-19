@@ -22,11 +22,12 @@
 
           <pg-select
             v-if="isMobile"
-            solo
-            class="px-2"
             :value="selectedRouteName"
             :items="filteredSections"
+            solo
+            class="px-2"
             item-value="routeName"
+            data-test-id="mobile-account-page-select"
             @input="navigateToPage($event)"
           >
             <template #selection="{ item }">
@@ -46,8 +47,9 @@
             v-for="section in filteredSections"
             v-else
             :key="section.text"
-            elevation="2"
             :class="btnClasses(section.routeName)"
+            :data-test-id="`account-left-panel-${section.text}`"
+            elevation="2"
             @click="navigateToPage(section.routeName)"
           >
             {{ section.text }}

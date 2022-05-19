@@ -1,6 +1,6 @@
 <template>
   <pg-loading :loading="loading">
-    <v-row no-gutters>
+    <v-row no-gutters data-test-id="child-form-content">
       <!-- Desktop Title -->
       <v-col cols="6" class="d-none d-sm-block">
         <div class="text-uppercase text-h4 font-weight-bold grey--text text--darken-2 pb-12">

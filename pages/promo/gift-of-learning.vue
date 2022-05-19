@@ -1,5 +1,5 @@
 <template>
-  <div class="pg-w-full">
+  <div class="pg-w-full" data-test-id="gift-of-learning-content">
     <!-- BACK BUTTON -->
     <button
       :class="[
