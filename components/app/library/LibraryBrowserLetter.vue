@@ -3,9 +3,10 @@
     <div
       class="library-letter"
       :class="{
-        'clickable': hovers,
+        'clickable': hovers && letter.hasVideos,
         'library-letter-vowel': isVowel(),
-        'library-letter-scaled': hover && hovers
+        'library-letter-scaled': hover && hovers && letter.hasVideos,
+        'library-letter-disabled': !letter.hasVideos
       }"
       :style="{
         '--rotation': `${rotation}deg`,
@@ -108,6 +109,9 @@ export default defineComponent({
     @media screen and(min-width: 1264px) {
       transform: scale(var(--transform-size-lg)) rotate(0);
     }
+  }
+  &.library-letter-disabled {
+    filter: grayscale(1);
   }
 }
 </style>
