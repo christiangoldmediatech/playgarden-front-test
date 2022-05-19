@@ -113,8 +113,14 @@ export default defineComponent({
 
     async function handleLetterClick(curriculumTypeId: number) {
       try {
+        const letter = props.letters.find(letter => letter.id === curriculumTypeId) || props.letters[0]
+        if (!letter || !letter.hasVideos) {
+          return
+        }
+
         isLoadingVideos.value = true
-        selectedLetter.value = props.letters.find(letter => letter.id === curriculumTypeId) || props.letters[0]
+        selectedLetter.value = letter
+
         const response = await getActivitiesByCurriculumType(curriculumTypeId)
         // transform videos into playlist, curate playlist
         videos.value = [
