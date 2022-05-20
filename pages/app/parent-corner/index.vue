@@ -1,6 +1,7 @@
 <template>
   <v-container
     class="pa-0 mb-10"
+    data-test-id="parent-corner-content"
   >
     <component
       :is="story.content.component"

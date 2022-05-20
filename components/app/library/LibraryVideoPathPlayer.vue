@@ -28,12 +28,20 @@
 <script lang="ts">
 import { defineComponent, PropType, useStore, ref, computed, watch, onBeforeUnmount } from '@nuxtjs/composition-api'
 import { useGtmHelper, useFavorites, useFavoritesApi, usePatch, useLibraryStandardCallbacks, useChild, useNuxtHelper } from '@/composables'
+// @ts-ignore
+import PgVideoPlayer from '@gold-media-tech/pg-video-player'
+import PatchEarnedDialogCompositionApi from '@/components/app/PatchEarnedDialogCompositionApi.vue'
 import { PlayerInstance } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
 import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
 import { TypedStore } from '@/models'
 
 export default defineComponent({
   name: 'LibraryVideoPathPlayer',
+
+  components: {
+    PgVideoPlayer,
+    PatchEarnedDialogCompositionApi
+  },
 
   props: {
     playlist: {
@@ -89,6 +97,16 @@ export default defineComponent({
     const { patchData, patchEarned, patchImg, toUnlock } = usePatch()
     const showPatchEarnedDialog = ref(false)
 
+    function goToNextVideo(): void {
+      if (player.value) {
+        if (player.value.getNextTrack()) {
+          player.value.goToNextTrack()
+        } else if (player.value.getCurrentTime() !== player.value.getDuration()) {
+          player.value.setCurrentTime(0)
+        }
+      }
+    }
+
     function handlePatchEarnedOnEnded(): void {
       if (player.value && patchEarned.value && patchData.value.icon && patchData.value.category) {
         showPatchEarnedDialog.value = true
@@ -99,14 +117,6 @@ export default defineComponent({
     }
 
     const { playerEvents } = useLibraryStandardCallbacks({ children: currentChildren, afterOnEnded: handlePatchEarnedOnEnded })
-
-    function goToNextVideo(): void {
-      if (player.value) {
-        if (player.value.getNextTrack()) {
-          player.value.goToNextTrack()
-        }
-      }
-    }
 
     function closeAll(): void {
       if (player.value) {
@@ -134,7 +144,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .patch-img {
-  width: 70%;
+  width: 100%;
   aspect-ratio: 1;
   object-fit: contain;
   object-position: center center;

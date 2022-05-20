@@ -75,11 +75,16 @@
 <script>
 import { mapGetters } from 'vuex'
 import DashboardLink from '@/mixins/DashboardLinkMixin.js'
+import PgInlineVideoPlayer from '@/components/pg-video-js-player/PgInlineVideoPlayer.vue'
 
 import { APP_EVENTS } from '@/models'
 
 export default {
   name: 'LessonCompletedDialog',
+
+  components: {
+    PgInlineVideoPlayer
+  },
 
   mixins: [DashboardLink],
 

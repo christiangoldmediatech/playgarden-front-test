@@ -1,6 +1,6 @@
 <template>
   <pg-loading :loading="loading" fullscreen>
-    <v-main>
+    <v-main data-test-id="live-classes-content">
       <v-container
         v-if="$vuetify.breakpoint.lgAndUp"
         class="lsess-container"

@@ -28,7 +28,7 @@
           </underlined-title>
 
           <p class="white--text text-h5">
-            You have completed all the tasks for the day.<br />
+            You have completed all the tasks for the day.<br>
             Come back tomorrow for more.
           </p>
         </div>

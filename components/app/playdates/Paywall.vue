@@ -61,7 +61,7 @@
 <script lang="ts">
 import { useAuth, useBilling, useGlobalModal, useNotification, useSnotifyHelper } from '@/composables'
 import { TypedStore } from '@/models'
-import { defineComponent, useStore, ref } from '@nuxtjs/composition-api'
+import { defineComponent, useStore, ref, useRouter } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   components: {
@@ -71,35 +71,41 @@ export default defineComponent({
   setup () {
     const isLoading = ref(false)
     const isCreditCardModalVisible = ref(false)
+    const router = useRouter()
 
     const snotify = useSnotifyHelper()
     const store = useStore<TypedStore>()
     const { showContactUsModal, canConfirmPlan } = useGlobalModal({ store })
     const Billing = useBilling()
-    const Notification = useNotification({ store })
-    const Auth = useAuth({ store })
+    // const Notification = useNotification({ store })
+    // const Auth = useAuth({ store })
 
-    async function handleCancelTrial () {
+    const handleCancelTrial = async () => {
       try {
         isLoading.value = true
         // Show credit card modal if user has no card on file
         const userCards = await Billing.fetchBillingCards()
-
         if (userCards?.length === 0) {
           isCreditCardModalVisible.value = true
           isLoading.value = false
           return
         }
-
-        await Billing.cancelTrial()
-        await Auth.fetchUserInfo()
-
-        Notification.setIsCanceledTrialModalVisible(true)
+        goToPlan()
+        // await Billing.cancelTrial()
+        // await Auth.fetchUserInfo()
+        // Notification.setIsCanceledTrialModalVisible(true)
       } catch (error) {
         snotify.error('Could not cancel trial. Please try again later.')
       } finally {
         isLoading.value = false
       }
+    }
+
+    const goToPlan = () => {
+      router.push({
+        name: 'app-payment-plan',
+        query: { fromPlaydates: 'true' }
+      })
     }
 
     return {

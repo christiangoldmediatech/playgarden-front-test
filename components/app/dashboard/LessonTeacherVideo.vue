@@ -30,9 +30,16 @@ import VideoAnalyticsMixin from '@/mixins/VideoAnalyticsMixin.js'
 import VideoPlayerDialogMixin from '@/mixins/VideoPlayerDialogMixin.js'
 import DashboardMixin from '@/mixins/DashboardMixin'
 import Fullscreen from '@/mixins/FullscreenMixin.js'
+import VideoPlayerDialog from '@/components/pg-video-js-player/VideoPlayerDialog.vue'
+import PgVideoJsPlayer from '@/components/pg-video-js-player/PgVideoJsPlayer.vue'
 
 export default {
   name: 'LessonTeacherVideo',
+
+  components: {
+    VideoPlayerDialog,
+    PgVideoJsPlayer
+  },
 
   mixins: [VideoPlayerDialogMixin, DashboardMixin, Fullscreen, VideoAnalyticsMixin],
 

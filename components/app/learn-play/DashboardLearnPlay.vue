@@ -1,5 +1,5 @@
 <template>
-  <v-card class="pb-10 mb-14">
+  <v-card class="pb-10 mb-14" data-test-id="learn-play-content">
     <v-row>
       <v-col v-if="!$vuetify.breakpoint.mdAndUp" cols="12">
         <menu-mobile />
@@ -271,12 +271,9 @@
                   cols="12"
                   md="4"
                 >
-                  <center>
-                    <v-img
-                      :src="book.image"
-                      height="248"
-                    />
-                  </center>
+                  <a :href="book.url">
+                    <v-img :src="book.image" height="248" />
+                  </a>
                 </v-col>
               </v-row>
               <v-row v-else class="mx-2 my-2">
@@ -635,15 +632,15 @@ export default {
       })
     },
 
-    onPlayerReady ({ player, videos }) {
+    async onPlayerReady ({ player, videos }) {
       this.player = player
       const playVideoList = this.buildPlayVideoList(videos)
-      player.loadPlaylist(playVideoList)
+      await player.loadPlaylist(playVideoList)
     },
 
-    onPlayerReadyTwo ({ player, video }) {
+    async onPlayerReadyTwo ({ player, video }) {
       this.playerTwo = player
-      player.loadPlaylist([
+      await player.loadPlaylist([
         {
           title: video.name,
           poster: video.thumbnail,
@@ -655,11 +652,11 @@ export default {
       ])
     },
 
-    changeVideoTrack (video) {
+    async changeVideoTrack (video) {
       if (!this.player) {
         return
       }
-      this.player.loadPlaylist([
+      await this.player.loadPlaylist([
         {
           title: video.name,
           poster: video.thumbnail,

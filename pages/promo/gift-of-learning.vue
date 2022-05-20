@@ -1,18 +1,23 @@
 <template>
-  <div class="pg-w-full">
+  <div class="pg-w-full" data-test-id="gift-of-learning-content">
     <!-- BACK BUTTON -->
-    <v-btn
-      color="accent"
-      class="mx-3 mx-md-6 mt-6"
-      text
+    <button
+      :class="[
+        'pg-text-accent',
+        'pg-font-semibold',
+        'pg-text-lg',
+        'pg-ml-2',
+        'pg-mb-2',
+        'md:pg-ml-5'
+      ]"
       @click="goToHomePage"
     >
-      <v-icon left>
+      <v-icon color="accent">
         mdi-less-than
       </v-icon>
 
       Back
-    </v-btn>
+    </button>
 
     <div class="gift-of-learning-title primary--text mt-1 mt-md-4 px-3 px-md-6">
       Gift Of Learning Promotion
@@ -411,6 +416,8 @@ import { useSnotifyHelper } from '@/composables'
 import { axios } from '@/utils'
 
 export default defineComponent({
+  layout: 'gift-of-learning',
+
   components: {
     StripeCard,
     SearchAddressAutocomplete

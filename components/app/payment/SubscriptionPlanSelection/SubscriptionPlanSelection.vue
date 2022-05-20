@@ -180,7 +180,7 @@
 </template>
 
 <script>
-import { defineComponent, useStore, computed } from '@nuxtjs/composition-api'
+import { defineComponent, useStore, computed, useRoute } from '@nuxtjs/composition-api'
 import { get } from 'lodash'
 import { mapActions, mapGetters } from 'vuex'
 
@@ -221,6 +221,7 @@ export default defineComponent({
   },
 
   setup () {
+    const route = useRoute()
     const store = useStore()
     const { showContactUsModal } = useGlobalModal({ store })
     const { setIsTrialEndingPlanSelectedModalVisible } = useNotification({ store })
@@ -230,9 +231,12 @@ export default defineComponent({
     const Auth = useAuth({ store })
     const Billing = useBilling()
 
+    const fromPlaydates = computed(() => (route.value.query.fromPlaydates === 'true'))
+
     return {
       Auth,
       Billing,
+      fromPlaydates,
       showContactUsModal,
       isAnnualSubscriptionEnabled,
       setIsTrialEndingPlanSelectedModalVisible
@@ -354,8 +358,9 @@ export default defineComponent({
             return
           }
         }
-
+        plan.fromPlaydates = this.fromPlaydates
         await this.selectSubscriptionPlan(plan)
+        await this.Auth.fetchUserInfo()
         this.setIsTrialEndingPlanSelectedModalVisible(true)
         this.$nuxt.$emit('plan-membership-changed')
         this.$emit('click:submit', {
