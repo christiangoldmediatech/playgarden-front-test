@@ -102,13 +102,27 @@ export default defineComponent({
     const showPatchEarnedDialog = ref(false)
 
     function goToNextVideo(): void {
-      if (player.value) {
+      if (!player.value) {
+        return
+      }
+
+      const index = player.value.getCurrentIndex()
+      const playlist = player.value.getPlaylist()
+      const lastIndex = playlist.length - 1
+
+      if (index < lastIndex) {
         player.value.goToNextTrack()
+      } else {
+        player.value.pause()
+        player.value.loadTrack(0)
+        player.value.setStatus('IDLE')
+        player.value.play()
       }
     }
 
     function handlePatchEarnedOnEnded(): void {
       if (player.value && patchEarned.value && patchData.value.icon && patchData.value.category) {
+        player.value.pause()
         showPatchEarnedDialog.value = true
         patchEarned.value = false
       } else {
@@ -116,7 +130,29 @@ export default defineComponent({
       }
     }
 
-    const { playerEvents } = useLibraryStandardCallbacks({ children: currentChildren, afterOnEnded: handlePatchEarnedOnEnded })
+    function goToPreviousTrack(): void {
+      if (!player.value) {
+        return
+      }
+
+      const index = player.value.getCurrentIndex()
+      const playlist = player.value.getPlaylist()
+      const lastIndex = playlist.length - 1
+
+      if (index > 0) {
+        player.value.pause()
+        player.value.loadTrack(index - 1)
+        player.value.setStatus('IDLE')
+        player.value.play()
+      } else {
+        player.value.pause()
+        player.value.loadTrack(lastIndex)
+        player.value.setStatus('IDLE')
+        player.value.play()
+      }
+    }
+
+    const { playerEvents } = useLibraryStandardCallbacks({ children: currentChildren, afterOnEnded: handlePatchEarnedOnEnded, goToPreviousTrack })
 
     const loadedPlayerEvents = computed(() => {
       return props.customPlayerEvents ?? playerEvents

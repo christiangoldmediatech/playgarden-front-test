@@ -62,9 +62,39 @@ export default defineComponent({
     const customPlayerEvents = ref<any>(undefined)
     function onPlayerReady(player: PlayerInstance) {
       function afterOnEnded(): void {
-        player.goToNextTrack()
+        const index = player.getCurrentIndex()
+        const playlist = player.getPlaylist()
+        const lastIndex = playlist.length - 1
+
+        if (index < lastIndex) {
+          player.goToNextTrack()
+        } else {
+          player.pause()
+          player.loadTrack(0)
+          player.setStatus('IDLE')
+          player.play()
+        }
       }
-      const { playerEvents } = useLibraryFavoritesCallbacks({ children: currentChildren, afterOnEnded })
+
+      function goToPreviousTrack(): void {
+        const index = player.getCurrentIndex()
+        const playlist = player.getPlaylist()
+        const lastIndex = playlist.length - 1
+
+        if (index > 0) {
+          player.pause()
+          player.loadTrack(index - 1)
+          player.setStatus('IDLE')
+          player.play()
+        } else {
+          player.pause()
+          player.loadTrack(lastIndex)
+          player.setStatus('IDLE')
+          player.play()
+        }
+      }
+
+      const { playerEvents } = useLibraryFavoritesCallbacks({ children: currentChildren, afterOnEnded, goToPreviousTrack })
       customPlayerEvents.value = playerEvents
     }
 
