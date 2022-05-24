@@ -1,18 +1,21 @@
 import { TypedStore, Child } from '@/models'
 import { useChild, useChildRoute } from '@/composables'
-import { computed, useRoute, useRouter, useStore } from '@nuxtjs/composition-api'
+import { computed, useRoute, useRouter } from '@nuxtjs/composition-api'
+import { Store } from 'vuex/types'
 import { StudentChubbyItemText } from '~/components/app/student-cubby/types'
 import { studentCubbyItems } from '~/components/app/student-cubby/constants'
 
-export function useStudentCubbyHelpers () {
-  const store = useStore<TypedStore>()
-  const route = useRoute()
-  const router = useRouter()
+interface UseChildRouteParams {
+  store: Store<TypedStore>,
+  route: ReturnType<typeof useRoute>
+  router: ReturnType<typeof useRouter>
+}
 
-  const { childId: studentId } = useChildRoute({ store, route, router })
-  const { children } = useChild({ store })
+export const useStudentCubbyHelpers = ({ store, route, router } : UseChildRouteParams) => {
+  const ChildRoute = useChildRoute({ store, route, router })
+  const Child = useChild({ store })
 
-  const currentChild = computed(() => children.value.find((child: Child) => child.id === studentId.value))
+  const currentChild = computed(() => Child.children.value.find((child: Child) => child.id === ChildRoute.childId.value))
 
   function getStudentChubbyItemFromItemText (itemText: string) {
     return studentCubbyItems.find(item => item.text === itemText)

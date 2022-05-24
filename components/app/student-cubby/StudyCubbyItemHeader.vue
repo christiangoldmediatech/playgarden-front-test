@@ -22,7 +22,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, PropType } from '@nuxtjs/composition-api'
+import { defineComponent, computed, PropType, useStore, useRoute, useRouter } from '@nuxtjs/composition-api'
+import { TypedStore } from '@/models'
 import { StudentCubbyItem } from './types'
 import { useStudentCubbyHelpers } from './composables'
 import { usePlanAccessHelpers } from '~/composables'
@@ -43,8 +44,12 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const PlanAccessHelpers = usePlanAccessHelpers()
-    const StudentCubbyHelpers = useStudentCubbyHelpers()
+    const store = useStore<TypedStore>()
+    const route = useRoute()
+    const router = useRouter()
+
+    const PlanAccessHelpers = usePlanAccessHelpers({ store, route, router })
+    const StudentCubbyHelpers = useStudentCubbyHelpers({ store, route, router })
 
     const itemText = computed(() => props.studentCubbyItem?.text)
     const isItemUnavailable = computed(() => PlanAccessHelpers.isItemUnAvailableForCurrentUser(itemText.value))

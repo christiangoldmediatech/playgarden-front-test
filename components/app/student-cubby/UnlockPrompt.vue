@@ -16,7 +16,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed } from '@nuxtjs/composition-api'
+import { defineComponent, PropType, computed, useStore, useRoute, useRouter } from '@nuxtjs/composition-api'
+import { TypedStore } from '@/models'
 import PlanUpgradePrompt from '@/components/app/payment/PlanUpgradePrompt.vue'
 import StudyCubbyItemHeader, { StudentCubbyItemHeaderProps } from './StudyCubbyItemHeader.vue'
 import { useStudentCubbyHelpers } from './composables'
@@ -38,7 +39,10 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const StudentCubbyHelpers = useStudentCubbyHelpers()
+    const store = useStore<TypedStore>()
+    const route = useRoute()
+    const router = useRouter()
+    const StudentCubbyHelpers = useStudentCubbyHelpers({ store, route, router })
 
     const studentChubbyItemHeaderProps = computed<StudentCubbyItemHeaderProps>(() => {
       return {
