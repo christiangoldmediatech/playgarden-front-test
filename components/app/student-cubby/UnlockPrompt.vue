@@ -38,16 +38,16 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const { getItemDescription } = useStudentCubbyHelpers()
+    const StudentCubbyHelpers = useStudentCubbyHelpers()
 
-    const studentChubbyItemHeaderProps = computed((): StudentCubbyItemHeaderProps => {
+    const studentChubbyItemHeaderProps = computed<StudentCubbyItemHeaderProps>(() => {
       return {
         studentCubbyItem: props.blockedItem,
         isHeaderAlwaysVisible: true
       }
     })
 
-    const itemDescription = computed(() => getItemDescription(props.blockedItem?.text))
+    const itemDescription = computed(() => StudentCubbyHelpers.getItemDescription(props.blockedItem?.text))
     const imagePath = computed(() => {
       const imageName = props.blockedItem?.imgName
       return imageName ? require(`@/assets/png/student-cubby/${imageName}`) : null

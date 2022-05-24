@@ -43,12 +43,12 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const { isItemUnAvailableForCurrentUser } = usePlanAccessHelpers()
-    const { getItemDescription } = useStudentCubbyHelpers()
+    const PlanAccessHelpers = usePlanAccessHelpers()
+    const StudentCubbyHelpers = useStudentCubbyHelpers()
 
     const itemText = computed(() => props.studentCubbyItem?.text)
-    const isItemUnavailable = computed(() => isItemUnAvailableForCurrentUser(itemText.value))
-    const itemDescription = computed(() => getItemDescription(itemText.value))
+    const isItemUnavailable = computed(() => PlanAccessHelpers.isItemUnAvailableForCurrentUser(itemText.value))
+    const itemDescription = computed(() => StudentCubbyHelpers.getItemDescription(itemText.value))
 
     const imagePath = computed(() => {
       const imageName = props.studentCubbyItem?.imgName
