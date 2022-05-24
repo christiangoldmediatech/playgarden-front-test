@@ -560,7 +560,7 @@ export default {
 
     async loadLearnPlay () {
       try {
-        this.learnPlayData = await this.getFirstLearnPlay()
+        this.learnPlayData = await this.getFirstLearnPlay(this.childrenIds)
         if (this.learnPlayData && this.learnPlayData.songs) {
           this.learnPlayData.songs.map((song) => {
             this.buildPlaySongList(song)
