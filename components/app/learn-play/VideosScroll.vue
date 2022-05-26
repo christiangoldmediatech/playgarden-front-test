@@ -1,33 +1,28 @@
 <template>
-  <div class="d-flex align-center">
-    <!-- Left back arrow -->
-    <div v-if="!$vuetify.breakpoint.mobile" class="mr-2">
-      <v-btn
-        icon
-      >
+  <v-slide-group show-arrows="always">
+    <template #prev>
+      <v-btn icon>
         <v-img
           :src="require('@/assets/png/arrow-left.png')"
           max-width="12px"
         />
       </v-btn>
-    </div>
-
-    <div class="d-flex flex-grow-1 flex-nowrap video-scroll">
-      <VideoScrollItem v-for="(video, index) in videosLearnPlay" :key="index" v-bind="{ video }" @click.native="currentVideo(video)" />
-    </div>
-
-    <!-- Right forward arrow -->
-    <div v-if="!$vuetify.breakpoint.mobile" class="ml-2">
-      <v-btn
-        icon
-      >
+    </template>
+    <v-slide-item
+      v-for="(video, index) in videosLearnPlay"
+      :key="`video-scroll-item-${index}`"
+    >
+      <VideoScrollItem v-bind="{ video }" @click.native="currentVideo(video)" />
+    </v-slide-item>
+    <template #next>
+      <v-btn icon>
         <v-img
           :src="require('@/assets/png/arrow-right.png')"
           max-width="12px"
         />
       </v-btn>
-    </div>
-  </div>
+    </template>
+  </v-slide-group>
 </template>
 
 <script lang="ts">

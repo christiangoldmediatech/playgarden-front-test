@@ -167,7 +167,7 @@ export default defineComponent({
         return
       }
 
-      audioPlayer.value?.refreshSongData(song)
+      audioPlayer.value.refreshSongData(song)
     }
 
     const addSongToPlaylist = (song: MusicLibrary) => {
@@ -175,7 +175,7 @@ export default defineComponent({
         return
       }
 
-      audioPlayer.value?.addSong(song)
+      audioPlayer.value.addSong(song)
     }
 
     const createNewPlaylist = async (incomingPlaylist: MusicLibrary[]) => {
@@ -183,10 +183,10 @@ export default defineComponent({
         return
       }
 
-      audioPlayer.value?.pause()
-      audioPlayer.value?.setPlaylist(incomingPlaylist)
+      audioPlayer.value.pause()
+      audioPlayer.value.setPlaylist(incomingPlaylist)
       await nextTick()
-      await audioPlayer.value?.play()
+      await audioPlayer.value.play()
     }
 
     const handleChangedSong = async (song: MusicLibrary) => {
@@ -208,10 +208,10 @@ export default defineComponent({
         return
       }
 
-      audioPlayer.value?.pause()
-      audioPlayer.value?.selectSongByIndex(playlistIndex)
+      audioPlayer.value.pause()
+      audioPlayer.value.selectSongByIndex(playlistIndex)
       await nextTick()
-      await audioPlayer.value?.play()
+      await audioPlayer.value.play()
     }
 
     const removeSong = (playlistIndex: number) => {
@@ -220,7 +220,7 @@ export default defineComponent({
       }
 
       removeSongFromPlaylist(playlistIndex)
-      audioPlayer.value?.removeSongByIndex(playlistIndex)
+      audioPlayer.value.removeSongByIndex(playlistIndex)
     }
 
     onMounted(async () => {

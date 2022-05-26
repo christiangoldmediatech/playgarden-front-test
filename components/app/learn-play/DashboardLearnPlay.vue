@@ -59,7 +59,7 @@
 
         <!-- MOBILE AUDIO PLAYER -->
         <v-col v-if="$vuetify.breakpoint.mobile" id="playlist" cols="12">
-          <AudioPlayerLearnPlay />
+          <PlaylistLearnPlay />
         </v-col>
       </v-col>
 
@@ -80,7 +80,7 @@
 
         <!-- AUDIO PLAYER -->
         <v-col id="playlist" cols="12">
-          <AudioPlayerLearnPlay />
+          <PlaylistLearnPlay />
         </v-col>
       </v-col>
     </v-row>
@@ -97,7 +97,7 @@ import OfflineWorksheetsLearnPlay from '@/components/app/learn-play/OfflineWorks
 import DiyProjectLearnPlay from '@/components/app/learn-play/DiyProjectLearnPlay.vue'
 import ArtProjectLearnPlay from '@/components/app/learn-play/ArtProjectLearnPlay.vue'
 import SnackSectionLearnPlay from '@/components/app/learn-play/SnackSectionLearnPlay.vue'
-import AudioPlayerLearnPlay from '@/components/app/learn-play/AudioPlayerLearnPlay.vue'
+import PlaylistLearnPlay from '@/components/app/learn-play/PlaylistLearnPlay.vue'
 
 // Composables
 import { useChild, useNuxtHelper, useLearnPlayV2 } from '@/composables'
@@ -117,7 +117,7 @@ export default defineComponent({
     DiyProjectLearnPlay,
     ArtProjectLearnPlay,
     SnackSectionLearnPlay,
-    AudioPlayerLearnPlay
+    PlaylistLearnPlay
   },
 
   setup() {

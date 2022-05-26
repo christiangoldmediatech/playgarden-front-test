@@ -156,11 +156,12 @@ export default {
     }
 
     const addSongToPlaylist = (song: MusicLibrary) => {
-      eventBus.$emit(APP_EVENTS.MUSIC_ITEM_CLICKED, {
-        event: TAG_MANAGER_EVENTS.MUSIC_ITEM_CLICKED,
-        userId: userInfo.value.id,
-        topic: song.description
-      })
+      // This event does not seem to correspond to what's actually happening
+      // eventBus.$emit(APP_EVENTS.MUSIC_ITEM_CLICKED, {
+      //   event: TAG_MANAGER_EVENTS.MUSIC_ITEM_CLICKED,
+      //   userId: userInfo.value.id,
+      //   topic: song.description
+      // })
       if (musicPlayer.value) {
         musicPlayer.value.addSongToPlaylist(song)
         playlist.value.push(song)
@@ -236,9 +237,12 @@ export default {
      * song while there is no song selected.
      */
     const handleEmptyMusicPlayer = () => {
-      if (playlist.value.length === 0 && allSongsWithFavorites.value.length > 0) {
-        addSongToPlaylist(allSongsWithFavorites.value[0])
-      }
+      allSongsWithFavorites.value.forEach((song) => {
+        addSongToPlaylist(song)
+      })
+      // if (playlist.value.length === 0 && allSongsWithFavorites.value.length > 0) {
+      //   addSongToPlaylist(allSongsWithFavorites.value[0])
+      // }
     }
 
     const onIntersect = (entries: IntersectionObserverEntry[]) => {

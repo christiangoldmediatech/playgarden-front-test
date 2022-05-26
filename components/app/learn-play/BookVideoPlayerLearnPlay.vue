@@ -36,7 +36,7 @@
               >
 
               <div class="player-preview-text">
-                <div class="player-text-top-part">
+                <div class="player-text-top-part justify-center">
                   <div class="player-preview-title">
                     {{ title }}
                   </div>

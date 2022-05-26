@@ -40,7 +40,7 @@ import TopFive from '@/components/app/learn-play/TopFive.vue'
 import SongsCard from '@/components/app/learn-play/SongsCard.vue'
 
 export default defineComponent({
-  name: 'AudioPlayerLearnPlay',
+  name: 'PlaylistLearnPlay',
 
   components: {
     TopFive,
