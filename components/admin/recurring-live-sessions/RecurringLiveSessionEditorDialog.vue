@@ -456,7 +456,7 @@ export default {
         this.loading = false
         this.file = null
         this.$refs.obs.reset()
-        this.loadCurrentTimezone()
+        // this.loadCurrentTimezone()
       })
     },
 
@@ -466,8 +466,13 @@ export default {
 
     async save () {
       this.loading = true
-      const timezone = dayjs(`${this.dateStart} ${this.timeStart}`).tz(this.selectedTimezone)
-      this.item.dateStart = dayjs(timezone).utc().format()
+      // dayjs.tz.setDefault(this.selectedTimezone)
+      const timezone = dayjs(`${this.dateStart} ${this.timeStart}`).tz(this.selectedTimezone).format()
+      console.log('timezone--', timezone)
+      // this.item.dateStart = dayjs(timezone).utc().format()
+      this.item.dateStart = dayjs(`${this.dateStart} ${this.timeStart}`).utc().format()
+      //  this.item.dateStart = dayjs(timezone).utc().format()
+      console.log('this.item.dateStart--', this.item.dateStart)
       this.item.active = (this.item.active) ? 'true' : 'false'
 
       try {
