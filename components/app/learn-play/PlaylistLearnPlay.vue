@@ -6,7 +6,13 @@
       </span>
     </div>
 
-    <songs-card class="song-card" />
+    <songs-card v-if="songs && songs.length > 0" class="song-card" />
+    <div v-else>
+      <v-skeleton-loader
+        class="mx-auto"
+        type="card"
+      />
+    </div>
 
     <v-row class="my-0">
       <v-col cols="12">
