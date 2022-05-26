@@ -407,8 +407,9 @@ export default {
     },
 
     getAcronymCurrent () {
+      const { timezone } = this.getUserInfo
       let acronym = ''
-      switch (this.selectedTimezone) {
+      switch (timezone) {
         case 'America/New_York':
           acronym = 'EST'
           break

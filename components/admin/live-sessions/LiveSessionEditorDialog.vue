@@ -24,24 +24,6 @@
           <v-container>
             <validation-provider
               v-slot="{ errors }"
-              name="timezone"
-              rules="required"
-              class="mb-6"
-            >
-              <pg-select
-                v-model="selectedTimezone"
-                :error-messages="errors"
-                item-text="name"
-                item-value="value"
-                solo
-                placeholder="Timezone"
-                :items="timezoneOptions"
-                class="select"
-              />
-            </validation-provider>
-
-            <validation-provider
-              v-slot="{ errors }"
               name="Activity"
               rules="required"
             >
@@ -212,6 +194,24 @@
                 </v-menu>
               </v-col>
             </v-row>
+
+            <validation-provider
+              v-slot="{ errors }"
+              name="timezone"
+              rules="required"
+              class="mb-6"
+            >
+              <pg-select
+                v-model="selectedTimezone"
+                :error-messages="errors"
+                item-text="name"
+                item-value="value"
+                solo
+                placeholder="Timezone"
+                :items="timezoneOptions"
+                class="select"
+              />
+            </validation-provider>
 
             <validation-provider
               v-slot="{ errors }"
@@ -532,6 +532,9 @@ export default {
     ...mapActions('admin/curriculum', {
       getCurriculumTypes: 'getTypes'
     }),
+    ...mapActions('admin/users', ['setTimezone']),
+    ...mapActions('auth', ['fetchUserInfo']),
+
     onPlayerReady (player) {
       this.player = player
     },
@@ -574,6 +577,23 @@ export default {
           await this.close()
         }
       })
+    },
+    loadFormatTimezone (item) {
+      if (item.dateStart) {
+        this.dateStart = dayjs(item.dateStart).tz(this.selectedTimezone).format('YYYY-MM-DD')
+        this.timeStart = dayjs(item.dateStart).tz(this.selectedTimezone).format('HH:mm')
+
+        this.dateEnd = dayjs(item.dateEnd).tz(this.selectedTimezone).format('YYYY-MM-DD')
+        this.timeEnd = dayjs(item.dateEnd).tz(this.selectedTimezone).format('HH:mm')
+      }
+    },
+    async loadCurrentTimezone () {
+      await this.setTimezone({ timezone: this.selectedTimezone })
+      await this.fetchUserInfo()
+      const { timezone } = this.getUserInfo
+      if (timezone) {
+        this.selectedTimezone = timezone
+      }
     },
     close () {
       this.$nextTick(() => {
@@ -622,8 +642,10 @@ export default {
         }
       }
 
-      this.item.dateStart = dayjs(`${this.dateStart} ${this.timeStart}`).utc().format()
-      this.item.dateEnd = dayjs(`${this.dateEnd} ${this.timeEnd}`).utc().format()
+      const timezoneStart = dayjs.tz(`${this.dateStart} ${this.timeStart}`, this.selectedTimezone).format()
+      this.item.dateStart = dayjs(timezoneStart).utc().format()
+      const timezoneEnd = dayjs.tz(`${this.dateEnd} ${this.timeEnd}`, this.selectedTimezone).format()
+      this.item.dateEnd = dayjs(timezoneEnd).utc().format()
       this.item.active = (this.item.active) ? 'true' : 'false'
       try {
         if (this.id === null) {
@@ -631,9 +653,10 @@ export default {
         } else {
           await this.updateLiveSession({ id: this.id, data: this.item })
         }
-        this.$emit('saved')
         this.$nuxt.$emit('update-calendar')
         this.close()
+        this.loadCurrentTimezone()
+        this.$emit('saved')
       } catch (err) {
       } finally {
         this.loading = false
@@ -653,16 +676,10 @@ export default {
         }
       })
 
-      if (item.dateStart) {
-        const dateStart = new Date(item.dateStart)
-        this.dateStart = `${dateStart.getFullYear()}-${(dateStart.getMonth() + 1).toString().padStart(2, '0')}-${dateStart.getDate().toString().padStart(2, '0')}`
-        this.timeStart = `${dateStart.getHours().toString().padStart(2, '0')}:${dateStart.getMinutes().toString().padStart(2, '0')}`
+      if (item.dateStart && item.dateEnd) {
+        this.loadFormatTimezone(item)
       }
-      if (item.dateEnd) {
-        const dateEnd = new Date(item.dateEnd)
-        this.dateEnd = `${dateEnd.getFullYear()}-${(dateEnd.getMonth() + 1).toString().padStart(2, '0')}-${dateEnd.getDate().toString().padStart(2, '0')}`
-        this.timeEnd = `${dateEnd.getHours().toString().padStart(2, '0')}:${dateEnd.getMinutes().toString().padStart(2, '0')}`
-      }
+
       if (item.activityType) {
         this.item.activityTypeId = item.activityType.id
       }
