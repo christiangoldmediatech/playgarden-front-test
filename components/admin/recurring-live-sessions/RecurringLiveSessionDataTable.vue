@@ -53,7 +53,7 @@
               <template v-slot:top>
                 <recurring-live-session-editor-dialog
                   ref="editor"
-                  @saved="refresh(false)"
+                  @saved="refreshView"
                 />
 
                 <v-toolbar color="white" flat>
@@ -370,8 +370,9 @@ export default {
       }
     },
     getAcronymCurrent () {
+      const { timezone } = this.getUserInfo
       let acronym = ''
-      switch (this.selectedTimezone) {
+      switch (timezone) {
         case 'America/New_York':
           acronym = 'EST'
           break
@@ -418,6 +419,11 @@ export default {
     goToLiveClassesManagement () {
       this.$store.commit('admin/recurring-live-sessions/SET_SHOW_LIVE_CLASSES_CREATED', false)
       this.$router.push({ name: 'admin-live-session-management' })
+    },
+
+    refreshView () {
+      this.setCurrentTimezone()
+      this.refresh(false)
     },
 
     async refresh (clear = false) {
