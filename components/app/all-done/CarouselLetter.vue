@@ -152,6 +152,7 @@ export default {
       required: false,
       default: null
     },
+
     slimVersion: {
       type: Boolean,
       required: false,
@@ -208,6 +209,10 @@ export default {
   },
 
   async created () {
+    if (this.previewMode) {
+      return
+    }
+
     await this.getLetters()
     await this.fetchChildProgress()
   },

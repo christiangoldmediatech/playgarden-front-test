@@ -13,16 +13,19 @@
       </v-col>
 
       <v-col cols="12" md="6" lg="8" xl="10">
-        <carousel-letter id="CarouselLetter" :value="curriculumTypeId" />
+        <carousel-letter
+          id="CarouselLetter"
+          :value="curriculumTypeId"
+          :preview-mode="previewMode"
+        />
       </v-col>
 
-      <v-col class="d-none d-md-block flex-grow-1 flex-shrink-0" cols="12" md="auto">
-        <pg-text-field
-          label="Search"
-          solo-labeled
-          hide-details
-          block
-        />
+      <v-col
+        class="d-none d-md-block flex-grow-1 flex-shrink-0"
+        cols="12"
+        md="auto"
+      >
+        <pg-text-field label="Search" solo-labeled hide-details block />
       </v-col>
     </v-row>
 
@@ -64,10 +67,7 @@
       </v-col>
 
       <!-- DESKTOP SECOND COLUMN -->
-      <v-col
-        v-if="!$vuetify.breakpoint.mobile"
-        cols="4"
-      >
+      <v-col v-if="!$vuetify.breakpoint.mobile" cols="4">
         <!-- WORKSHEETS -->
         <v-col id="worksheets" cols="12">
           <OfflineWorksheetsLearnPlay />
@@ -80,7 +80,7 @@
 
         <!-- AUDIO PLAYER -->
         <v-col id="playlist" cols="12">
-          <PlaylistLearnPlay />
+          <PlaylistLearnPlay :preview-mode="previewMode" />
         </v-col>
       </v-col>
     </v-row>
@@ -88,7 +88,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeMount, onBeforeUnmount, ref, useStore, watch } from '@nuxtjs/composition-api'
+import {
+  defineComponent,
+  onBeforeMount,
+  onBeforeUnmount,
+  ref,
+  useStore,
+  watch
+} from '@nuxtjs/composition-api'
 import CarouselLetter from '@/components/app/all-done/CarouselLetter.vue'
 import MenuMobile from '@/components/app/learn-play/MenuMobile.vue'
 import VideoLessonPlayerLearnPlay from '@/components/app/learn-play/VideoLessonPlayerLearnPlay.vue'
@@ -120,7 +127,14 @@ export default defineComponent({
     PlaylistLearnPlay
   },
 
-  setup() {
+  props: {
+    previewMode: {
+      type: Boolean,
+      default: false
+    }
+  },
+
+  setup(props) {
     // Basic helpers
     const store = useStore()
     const childStore = useStore<TypedStore>()
@@ -140,7 +154,7 @@ export default defineComponent({
     })
 
     // Functions
-    function scrollMeTo (elemId: string) {
+    function scrollMeTo(elemId: string) {
       const element = document.getElementById(elemId)
       if (element && window) {
         const top = element.offsetTop
@@ -150,8 +164,11 @@ export default defineComponent({
 
     // Life cycle hooks
     onBeforeMount(async () => {
-      await child.get()
-      await learnPlayV2.getFirstLearnPlay()
+      if (!props.previewMode) {
+        await child.get()
+        await learnPlayV2.getFirstLearnPlay()
+      }
+
       curriculumTypeId.value = learnPlayV2.learnPlayData.value.curriculumType.id
       nuxt.$on('menu-section', (id: string) => {
         section.value = id

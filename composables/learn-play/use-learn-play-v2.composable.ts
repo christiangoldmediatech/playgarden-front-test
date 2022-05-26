@@ -4,14 +4,23 @@ import { Store } from 'vuex/types'
 
 const learnPlayData = ref<any>(null)
 
-export const useLearnPlayV2 = (params: { store: Store<unknown> }) => {
+export const useLearnPlayV2 = (params: {
+  store: Store<unknown>
+  previewMode?: boolean
+}) => {
   const { store } = params
 
   async function getFirstLearnPlay() {
-    learnPlayData.value = await store.dispatch('children/learn-play/getFirstLearnPlay')
+    if (params.previewMode) {
+      return
+    }
+
+    learnPlayData.value = await store.dispatch(
+      'children/learn-play/getFirstLearnPlay'
+    )
   }
 
-  function buildPlayVideoList (videos: any[]): MediaObject[] {
+  function buildPlayVideoList(videos: any[]): MediaObject[] {
     return videos.map((video) => {
       return {
         title: video.name,
@@ -31,16 +40,28 @@ export const useLearnPlayV2 = (params: { store: Store<unknown> }) => {
   // Computed values
   const computedProps = {
     songs: computed(() => {
-      return (learnPlayData.value && learnPlayData.value.songs.length > 0) ? learnPlayData.value.songs : []
+      return learnPlayData.value && learnPlayData.value.songs.length > 0
+        ? learnPlayData.value.songs
+        : []
     }),
     getDiyProject: computed(() => {
-      return (learnPlayData.value && learnPlayData.value.files.length > 0) ? learnPlayData.value.files.filter((file: any) => file.type === 'DIY_PROJECT') : []
+      return learnPlayData.value && learnPlayData.value.files.length > 0
+        ? learnPlayData.value.files.filter(
+          (file: any) => file.type === 'DIY_PROJECT'
+        )
+        : []
     }),
     getSnacks: computed(() => {
-      return (learnPlayData.value && learnPlayData.value.files.length > 0) ? learnPlayData.value.files.filter((file: any) => file.type === 'SNACK') : []
+      return learnPlayData.value && learnPlayData.value.files.length > 0
+        ? learnPlayData.value.files.filter((file: any) => file.type === 'SNACK')
+        : []
     }),
     getArtProjects: computed(() => {
-      return (learnPlayData.value && learnPlayData.value.files.length > 0) ? learnPlayData.value.files.filter((file: any) => file.type === 'ART_PROJECT') : []
+      return learnPlayData.value && learnPlayData.value.files.length > 0
+        ? learnPlayData.value.files.filter(
+          (file: any) => file.type === 'ART_PROJECT'
+        )
+        : []
     }),
     getOfflineWorksheet: computed(() => {
       if (learnPlayData.value && learnPlayData.value.worksheets.length > 0) {
@@ -49,13 +70,17 @@ export const useLearnPlayV2 = (params: { store: Store<unknown> }) => {
       return []
     }),
     getRelatedBooks: computed(() => {
-      return (learnPlayData.value && learnPlayData.value.books.length > 0) ? learnPlayData.value.books[0].relatedBooks : []
+      return learnPlayData.value && learnPlayData.value.books.length > 0
+        ? learnPlayData.value.books[0].relatedBooks
+        : []
     }),
     getBook: computed(() => {
-      return (learnPlayData.value && learnPlayData.value.books.length > 0) ? learnPlayData.value.books[0] : null
+      return learnPlayData.value && learnPlayData.value.books.length > 0
+        ? learnPlayData.value.books[0]
+        : null
     }),
     currentBookVideo: computed(() => {
-      return (learnPlayData.value && learnPlayData.value.books.length > 0)
+      return learnPlayData.value && learnPlayData.value.books.length > 0
         ? learnPlayData.value.books[0].video
         : {
             videoUrl: {

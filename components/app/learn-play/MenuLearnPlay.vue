@@ -9,7 +9,7 @@
       >
     </v-col>
     <v-col class="text-center mt-n8" cols="12">
-      <span class="font-weight-bold name-child">
+      <span v-if="child" class="font-weight-bold name-child">
         {{ child.firstName }}
       </span>
     </v-col>
@@ -73,6 +73,12 @@ export default {
   components: {
     RecordedLetter
   },
+  props: {
+    previewMode: {
+      type: Boolean,
+      default: false
+    }
+  },
   data: () => {
     return {
       loading: false,
@@ -108,6 +114,10 @@ export default {
     }
   },
   async created() {
+    if (this.previewMode) {
+      return
+    }
+
     await this.getAllChildren()
     await this.handleLesson()
   },
@@ -123,6 +133,7 @@ export default {
       const child = this.allChildren.find(({ id }) => id === parseInt(newId))
       this.setChild({ value: [child], save: true })
     },
+
     async handleLesson() {
       try {
         this.loading = true
