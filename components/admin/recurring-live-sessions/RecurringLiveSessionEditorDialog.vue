@@ -316,7 +316,7 @@
 
 <script>
 import dayjs from 'dayjs'
-import { timezoneOptions } from '@/utils/dateTools'
+import { timezoneOptions, formatTimezone } from '@/utils/dateTools'
 import { mapActions, mapGetters } from 'vuex'
 const utc = require('dayjs/plugin/utc')
 const timezone = require('dayjs/plugin/timezone')
@@ -387,9 +387,11 @@ export default {
         this.item.day = dayjs(val).format('dddd').toUpperCase()
       }
     },
-    selectedTimezone (val) {
+    async selectedTimezone (val) {
       if (val) {
-        this.loadFormatTimezone(this.item)
+        await this.setTimezone({ timezone: val })
+        await this.fetchUserInfo()
+        // this.loadFormatTimezone(this.item)
       }
     },
     'item.type' (val) {
@@ -405,12 +407,24 @@ export default {
 
   methods: {
     ...mapActions('admin/recurring-live-sessions', ['createRecurringLiveSession', 'updateRecurringLiveSession']),
+    ...mapActions('admin/users', ['setTimezone']),
+    ...mapActions('auth', ['fetchUserInfo']),
 
     loadCurrentTimezone () {
       const { timezone } = this.getUserInfo
       if (timezone) {
         this.selectedTimezone = timezone
       }
+    },
+
+    getTimeZoneFormat (data) {
+      const start = moment(data)
+      const { timezone } = this.getUserInfo
+      return formatTimezone(start, {
+        format: 'MM-DD-YYYY HH:mm',
+        timezone,
+        returnObject: false
+      })
     },
 
     async refresh (clear = false) {
@@ -452,7 +466,8 @@ export default {
 
     async save () {
       this.loading = true
-      this.item.dateStart = dayjs(`${this.dateStart} ${this.timeStart}`).utc().format()
+      const timezone = dayjs(`${this.dateStart} ${this.timeStart}`).tz(this.selectedTimezone)
+      this.item.dateStart = dayjs(timezone).utc().format()
       this.item.active = (this.item.active) ? 'true' : 'false'
 
       try {
