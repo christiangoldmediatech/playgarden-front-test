@@ -223,12 +223,7 @@ export default defineComponent({
       audioPlayer.value.removeSongByIndex(playlistIndex)
     }
 
-    onMounted(async () => {
-      // Try to play media when the page loads.
-      try {
-        await audioPlayer.value?.play()
-      } catch {}
-
+    onMounted(() => {
       nuxt.$on('change-song', handleChangedSong)
     })
 
