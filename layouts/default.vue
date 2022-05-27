@@ -48,8 +48,12 @@
         </v-container>
       </v-main>
 
-      <v-container v-else fluid class="px-0 fill-height">
-        <nuxt :style="contentStyle" class="mt-2" />
+      <v-container
+        v-else
+        fluid
+        class="pa-0 fill-height"
+      >
+        <nuxt :style="contentStyle" />
       </v-container>
 
       <!-- FOOTER -->

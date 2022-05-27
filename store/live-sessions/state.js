@@ -1,7 +1,8 @@
 export default () => {
   return {
     sessions: [],
-    timezone: 'America/New_York',
-    total: 0
+    total: 0,
+    block: false,
+    timezone: 'America/New_York'
   }
 }
