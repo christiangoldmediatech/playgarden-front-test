@@ -108,7 +108,7 @@ export default defineComponent({
      * If the user is already logged in, redirect to
      * the pick child page.
      */
-    if (Auth.isUserLoggedIn) {
+    if (Auth.isUserLoggedIn.value) {
       router.replace({
         name: 'app-pick-child'
       })
