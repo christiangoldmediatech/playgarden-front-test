@@ -98,11 +98,16 @@
 </template>
 
 <script>
-import { defineComponent } from '@nuxtjs/composition-api'
+import {
+  defineComponent, useStore,
+  useRoute,
+  useRouter
+} from '@nuxtjs/composition-api'
 import { mapGetters, mapActions } from 'vuex'
 import Letter from '@/components/app/all-done/Letter.vue'
 import RecordedLetter from '@/components/app/live-sessions/recorded/RecordedLetter.vue'
 import { usePlanAccessHelpers } from '@/composables'
+import { TypedStore } from '@/models'
 import UnlockPrompt from './UnlockPrompt.vue'
 
 export default defineComponent({
@@ -173,7 +178,10 @@ export default defineComponent({
     }
   },
   setup() {
-    const { isCurrentLessonUnavailableInPlan } = usePlanAccessHelpers()
+    const store = useStore<TypedStore>()
+    const route = useRoute()
+    const router = useRouter()
+    const { isCurrentLessonUnavailableInPlan } = usePlanAccessHelpers({ store, route, router })
     return {
       isCurrentLessonUnavailableInPlan
     }
