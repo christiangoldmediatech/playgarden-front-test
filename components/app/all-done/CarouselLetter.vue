@@ -97,7 +97,7 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent, useStore,
   useRoute,
@@ -198,11 +198,11 @@ export default defineComponent({
     ...mapGetters({ currentChild: 'getCurrentChild' }),
 
     actualLetters () {
-      const letters = this.letters.map((letter) => {
+      const letters: any = this.letters.map((letter: any) => {
         if (!this.forceActivateAllLetters) {
-          const current = this.lettersProgress.find(l => l.id === letter.id)
+          const current: any = this.lettersProgress.find((l:any) => l.id === letter.id)
           const isIncludedInDisabled = this.disabledLetters.includes(current?.id)
-          const currentLetter = current
+          const currentLetter: any = current
           if (currentLetter && isIncludedInDisabled) {
             currentLetter.disabled = true
             currentLetter.enabled = false
@@ -219,11 +219,10 @@ export default defineComponent({
           }
         }
       })
-
       return letters
     },
 
-    studentId () {
+    studentId (): any {
       return this.currentChild[0].id
     }
   },
@@ -244,7 +243,7 @@ export default defineComponent({
         id: this.studentId
       })
 
-      this.lettersProgress = data.map((letter) => {
+      this.lettersProgress = data.map((letter: any) => {
         return { ...letter, disabled: !letter.enabled }
       })
     }

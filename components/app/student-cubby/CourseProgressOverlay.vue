@@ -95,7 +95,7 @@
   </v-overlay>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, useStore, useRoute, useRouter } from '@nuxtjs/composition-api'
 import DashboardPanel from '@/components/app/dashboard/DashboardPanel.vue'
 // import BlankDashboardPanel from '@/components/app/dashboard/BlankDashboardPanel.vue'
@@ -135,11 +135,11 @@ export default defineComponent({
   computed: {
     ...mapGetters({ currentChild: 'getCurrentChild' }),
 
-    noLinkMode () {
+    noLinkMode (): any {
       return this.$route.name === 'admin-progress-report'
     },
 
-    studentId () {
+    studentId (): any {
       if (['app-student-cubby-course-progress', 'admin-progress-report'].includes(this.$route.name)) {
         return this.$route.query.id
       }
@@ -149,11 +149,11 @@ export default defineComponent({
       return null
     },
 
-    currentLetter () {
-      return this.letters.find(letter => letter.id === this.selectedLetter)
+    currentLetter (): any {
+      return this.letters.find((letter: any) => letter.id === this.selectedLetter)
     },
 
-    currentMobileLesson () {
+    currentMobileLesson (): any {
       const index = this.selectedDayIndex
       const total = 5
 
@@ -168,17 +168,17 @@ export default defineComponent({
       return null
     },
 
-    disabledLetters () {
-      return this.letters.filter((letter) => {
+    disabledLetters (): any {
+      return this.letters.filter((letter: any) => {
         return !letter.enabled
       }).map(({ id }) => id)
     },
 
-    shouldShowPreviousDayButton () {
+    shouldShowPreviousDayButton (): any {
       return this.selectedDayIndex > 0
     },
 
-    shouldShowNextDayButton () {
+    shouldShowNextDayButton (): any {
       return this.selectedDayIndex < 4
     }
   },
@@ -219,7 +219,7 @@ export default defineComponent({
     }
   },
   mounted () {
-    this.$nuxt.$on('show-curriculum-progress', (curriculumTypeId) => {
+    this.$nuxt.$on('show-curriculum-progress', (curriculumTypeId: any) => {
       if (this.studentId) {
         if (this.selectedLetter !== curriculumTypeId) {
           this.lessons = []
