@@ -45,6 +45,7 @@ export default defineComponent({
     const store = useStore()
     const { $axios } = useContext()
     const playAndLearn = useLearnPlayV2({ store, previewMode: true })
+    const router = useRouter()
     onMounted(async () => {
       try {
         playAndLearn.learnPlayData.value = await $axios.$get(
