@@ -41,6 +41,7 @@
                         v-for="(entry, entryIndex) in getAdvancedSchedule.days[activeDay][hour - 1]"
                         :id="`entry-${activeDay}-${hour - 1}-${entryIndex}`"
                         :key="`entry-${activeDay}-${hour - 1}-${entryIndex}`"
+                        :block="block"
                         v-bind="{ entry }"
                       />
                     </template>
@@ -75,6 +76,7 @@
                       v-for="(entry, entryIndex) in getAdvancedSchedule.days[dayIndex][hour - 1]"
                       :id="`entry-${activeDay}-${hour - 1}-${entryIndex}`"
                       :key="`entry-${activeDay}-${hour - 1}-${entryIndex}`"
+                      :block="block"
                       v-bind="{ entry }"
                     />
                   </template>
@@ -109,6 +111,11 @@ export default {
     dayMode: {
       type: Boolean,
       required: false
+    },
+    block: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
 
