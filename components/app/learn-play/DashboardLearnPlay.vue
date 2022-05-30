@@ -15,10 +15,7 @@
         </v-row>
       </v-col>
       <v-col v-if="!$vuetify.breakpoint.mobile" cols="2" class="pr-8">
-        <pg-text-field
-          label="Search"
-          solo-labeled
-        />
+        <pg-text-field label="Search" solo-labeled />
       </v-col>
     </v-row>
     <v-row no-gutters>
@@ -31,29 +28,43 @@
                 :control-config="{ favorite: false }"
                 inline
                 :auto-track-change="true"
-                @ready="onPlayerReady({ player: $event, videos: learnPlayData.videos })"
+                @ready="
+                  onPlayerReady({
+                    player: $event,
+                    videos: learnPlayData.videos
+                  })
+                "
               />
             </div>
           </template>
           <v-card v-else width="100%">
-            <v-skeleton-loader
-              type="card"
-            />
+            <v-skeleton-loader type="card" />
           </v-card>
         </v-row>
 
         <v-row v-if="learnPlayData" class="mx-2 mt-8 ml-4">
-          <span class="subtitle-dashboard font-weight-bold">More like this</span>
+          <span
+            class="subtitle-dashboard font-weight-bold"
+          >More like this</span>
         </v-row>
         <v-row v-if="learnPlayData">
-          <videos-scroll :learn-play="learnPlayData" class="mt-3" @changeVideoTrack="changeVideoTrack" />
+          <videos-scroll
+            :learn-play="learnPlayData"
+            class="mt-3"
+            @changeVideoTrack="changeVideoTrack"
+          />
         </v-row>
 
         <v-row v-if="!$vuetify.breakpoint.smAndUp">
           <v-col cols="12" class="mt-6">
-            <span class="mx-4 title-dashboard font-weight-bold">Worksheets</span>
+            <span
+              class="mx-4 title-dashboard font-weight-bold"
+            >Worksheets</span>
             <div v-if="getOfflineWorksheet.length > 0" ref="worksheets">
-              <offline-worksheets class="mx-3 mt-4" :offline-worksheet-list="getOfflineWorksheet" />
+              <offline-worksheets
+                class="mx-3 mt-4"
+                :offline-worksheet-list="getOfflineWorksheet"
+              />
             </div>
           </v-col>
         </v-row>
@@ -71,9 +82,7 @@
                       class="pl-15 mt-n8 ml-7 clickable"
                       height="40px"
                       contain
-                      :src="
-                        require('@/assets/png/dashboard/download-ico.png')
-                      "
+                      :src="require('@/assets/png/dashboard/download-ico.png')"
                       @click="downloadDiyFiles"
                     />
                   </v-list-item-content>
@@ -90,27 +99,19 @@
             <v-card width="93%" class="mt-5 ml-3">
               <v-row v-if="getDiyProject.length > 0" class="mx-2 my-2">
                 <v-col
-                  v-for="(diy, index) in getDiyProject"
+                  v-for="(diy, index) in getDiyProject[0].image"
                   :key="`diy-item-${index}`"
-                  cols="12"
-                  md="12"
+                  cols="4"
+                  md="4"
                 >
-                  <center>
-                    <v-img
-                      :src="diy.image"
-                    />
+                  <center v-if="diy.src">
+                    <v-img :src="diy.src" height="150px" class="pg-rounded" />
                   </center>
                 </v-col>
               </v-row>
               <v-row v-else class="mx-2 my-2">
-                <v-col
-                  v-for="n in 3"
-                  :key="`diy-load-item-${n}`"
-                  cols="4"
-                >
-                  <v-skeleton-loader
-                    type="image"
-                  />
+                <v-col v-for="n in 3" :key="`diy-load-item-${n}`" cols="4">
+                  <v-skeleton-loader type="image" />
                 </v-col>
               </v-row>
             </v-card>
@@ -127,33 +128,32 @@
                   class="mt-n8 ml-n6 clickable"
                   height="40px"
                   contain
-                  :src="
-                    require('@/assets/png/dashboard/download-ico.png')
-                  "
+                  :src="require('@/assets/png/dashboard/download-ico.png')"
                   @click="downloadArtFiles"
                 />
               </div>
             </div>
           </v-col>
           <v-col cols="12">
-            <p v-if="getArtProjects.length >0" class="px-3 mt-3 text-justify">
+            <p v-if="getArtProjects.length > 0" class="px-3 mt-3 text-justify">
               {{ getArtProjects[0].description }}
             </p>
           </v-col>
           <v-row class="mx-2 mx-3 my-4">
-            <v-card v-if="getArtProjects.length >0" width="93%" class="mt-5 ml-3">
-              <v-row
-                v-for="(art, index) in getArtProjects"
-                :key="`art-project-${index}`"
-                justify="center"
-                align="center"
-                class="my-4"
-              >
-                <v-col cols="12">
-                  <center>
-                    <v-img
-                      :src="art.image"
-                    />
+            <v-card
+              v-if="getArtProjects.length > 0"
+              width="93%"
+              class="mt-5 ml-3"
+            >
+              <v-row v-if="getArtProjects.length > 0" class="mx-2 my-2">
+                <v-col
+                  v-for="(diy, index) in getArtProjects[0].image"
+                  :key="`diy-item-${index}`"
+                  cols="4"
+                  md="4"
+                >
+                  <center v-if="diy.src">
+                    <v-img :src="diy.src" height="150px" class="pg-rounded" />
                   </center>
                 </v-col>
               </v-row>
@@ -167,9 +167,7 @@
                 class="my-4"
               >
                 <v-card width="70%">
-                  <v-skeleton-loader
-                    type="image"
-                  />
+                  <v-skeleton-loader type="image" />
                 </v-card>
               </v-row>
             </v-card>
@@ -188,9 +186,7 @@
                       class="ml-3 pl-15 mt-n8 clickable"
                       height="40px"
                       contain
-                      :src="
-                        require('@/assets/png/dashboard/download-ico.png')
-                      "
+                      :src="require('@/assets/png/dashboard/download-ico.png')"
                       @click="downloadSnackFiles"
                     />
                   </v-list-item-content>
@@ -202,36 +198,31 @@
             </p>
           </v-col>
           <v-row>
-            <v-card :width="$vuetify.breakpoint.mobile ? '88%' : '90%'" :class="$vuetify.breakpoint.mobile ? 'ml-2' : 'mt-5 ml-3'">
-              <v-row
-                v-if="getSnacks.length > 0"
-                justify="center"
-                align="center"
-                class="mx-2 my-2"
-              >
+            <v-card v-if="getSnacks.length > 0" width="93%" class="mt-5 ml-3">
+              <v-row v-if="getSnacks.length > 0" class="mx-2 my-2">
                 <v-col
-                  v-for="(snack, index) in getSnacks"
-                  :key="`snack-item-${index}`"
-                  cols="12"
+                  v-for="(diy, index) in getSnacks[0].image"
+                  :key="`diy-item-${index}`"
+                  cols="4"
+                  md="4"
                 >
-                  <center>
-                    <v-img
-                      :src="snack.image"
-                    />
+                  <center v-if="diy.src">
+                    <v-img :src="diy.src" height="150px" class="pg-rounded" />
                   </center>
                 </v-col>
               </v-row>
-              <v-row v-else class="mx-2 my-2">
-                <v-col
-                  v-for="n in 3"
-                  :key="`snack-load-item-${n}`"
-                  cols="12"
-                  md="4"
-                >
-                  <v-skeleton-loader
-                    type="image"
-                  />
-                </v-col>
+            </v-card>
+            <v-card v-else class="justify-center ml-2 mr-8" width="100%">
+              <v-row
+                v-for="n in 3"
+                :key="`snack-load-project-${n}`"
+                justify="center"
+                align="center"
+                class="my-4"
+              >
+                <v-card width="70%">
+                  <v-skeleton-loader type="image" />
+                </v-card>
               </v-row>
             </v-card>
           </v-row>
@@ -247,19 +238,21 @@
               {{ getBook.description }}
             </p>
           </v-col>
-          <template v-if="currentBookVideo.videoUrl && currentBookVideo.videoUrl.HLS">
+          <template
+            v-if="currentBookVideo.videoUrl && currentBookVideo.videoUrl.HLS"
+          >
             <div class="learn-play-video">
               <pg-video-player
                 :control-config="{ favorite: false }"
                 inline
-                @ready="onPlayerReadyTwo({ player: $event, video: currentBookVideo })"
+                @ready="
+                  onPlayerReadyTwo({ player: $event, video: currentBookVideo })
+                "
               />
             </div>
           </template>
           <v-card v-else width="100%">
-            <v-skeleton-loader
-              type="card"
-            />
+            <v-skeleton-loader type="card" />
           </v-card>
 
           <v-row ref="book">
@@ -277,14 +270,8 @@
                 </v-col>
               </v-row>
               <v-row v-else class="mx-2 my-2">
-                <v-col
-                  v-for="n in 3"
-                  :key="`book-load-item-${n}`"
-                  cols="4"
-                >
-                  <v-skeleton-loader
-                    type="image"
-                  />
+                <v-col v-for="n in 3" :key="`book-load-item-${n}`" cols="4">
+                  <v-skeleton-loader type="image" />
                 </v-col>
               </v-row>
             </v-card>
@@ -297,7 +284,10 @@
               <span class="ml-4 title-dashboard font-weight-bold">
                 Playlist
               </span>
-              <div v-if="learnPlayData && learnPlayData.songs" class="mt-5 mobile-play">
+              <div
+                v-if="learnPlayData && learnPlayData.songs"
+                class="mt-5 mobile-play"
+              >
                 <center>
                   <songs-card class="song-card" />
                 </center>
@@ -309,7 +299,11 @@
               <span class="title-dashboard font-weight-bold">
                 Top five
               </span>
-              <top-five v-if="songs && songs.length > 0" class="mt-n1" :songs="songs" />
+              <top-five
+                v-if="songs && songs.length > 0"
+                class="mt-n1"
+                :songs="songs"
+              />
               <div v-else>
                 <v-card
                   v-for="n in 5"
@@ -317,22 +311,24 @@
                   class="my-3"
                   cols="4"
                 >
-                  <v-skeleton-loader
-                    type="list-item-avatar"
-                  />
+                  <v-skeleton-loader type="list-item-avatar" />
                 </v-card>
               </div>
             </div>
           </v-col>
         </v-row>
       </v-col>
-      <v-col
-        v-if="$vuetify.breakpoint.mdAndUp"
-        cols="4"
-      >
+      <v-col v-if="$vuetify.breakpoint.mdAndUp" cols="4">
         <span class="title-dashboard font-weight-bold">Worksheets</span>
-        <div v-if="getOfflineWorksheet.length > 0" ref="worksheets" class="mr-4 card-offline">
-          <offline-worksheets class="pt-2" :offline-worksheet-list="getOfflineWorksheet" />
+        <div
+          v-if="getOfflineWorksheet.length > 0"
+          ref="worksheets"
+          class="mr-4 card-offline"
+        >
+          <offline-worksheets
+            class="pt-2"
+            :offline-worksheet-list="getOfflineWorksheet"
+          />
         </div>
         <div v-else>
           <v-card
@@ -341,9 +337,7 @@
             class="my-3"
             cols="4"
           >
-            <v-skeleton-loader
-              type="list-item-avatar"
-            />
+            <v-skeleton-loader type="list-item-avatar" />
           </v-card>
         </div>
 
@@ -358,31 +352,33 @@
                   class="mt-n8 clickable"
                   height="40px"
                   contain
-                  :src="
-                    require('@/assets/png/dashboard/download-ico.png')
-                  "
+                  :src="require('@/assets/png/dashboard/download-ico.png')"
                   @click="downloadArtFiles"
                 />
               </div>
             </div>
           </v-col>
           <v-col cols="12">
-            <p v-if="getArtProjects.length >0" class="mx-1 mt-3 text-justify">
+            <p v-if="getArtProjects.length > 0" class="mx-1 mt-3 text-justify">
               {{ getArtProjects[0].description }}
             </p>
           </v-col>
           <v-row class="mx-1 mt-4">
-            <v-card v-if="getArtProjects.length >0" class="justify-center" width="96%">
+            <v-card
+              v-if="getArtProjects.length > 0"
+              class="justify-center"
+              width="96%"
+            >
               <v-row
-                v-for="(art, index) in getArtProjects"
+                v-for="(art, index) in getArtProjects[0].image"
                 :key="`art-project-${index}`"
                 justify="center"
                 align="center"
                 class="my-4"
               >
-                <center>
+                <center v-if="art.src">
                   <v-img
-                    :src="art.image"
+                    :src="art.src"
                     max-width="230"
                     min-width="230"
                     height="153"
@@ -399,9 +395,7 @@
                 class="my-4"
               >
                 <v-card width="70%">
-                  <v-skeleton-loader
-                    type="image"
-                  />
+                  <v-skeleton-loader type="image" />
                 </v-card>
               </v-row>
             </v-card>
@@ -414,7 +408,10 @@
                 <span class="title-dashboard font-weight-bold ml-9">
                   Playlist
                 </span>
-                <div v-if="learnPlayData && learnPlayData.songs" class="mt-4 ml-3">
+                <div
+                  v-if="learnPlayData && learnPlayData.songs"
+                  class="mt-4 ml-3"
+                >
                   <center>
                     <songs-card class="song-card" />
                   </center>
@@ -426,7 +423,11 @@
                 <span class="title-dashboard font-weight-bold ml-9">
                   Top five
                 </span>
-                <top-five v-if="songs && songs.length > 0" class="mt-1 ml-6" :songs="songs" />
+                <top-five
+                  v-if="songs && songs.length > 0"
+                  class="mt-1 ml-6"
+                  :songs="songs"
+                />
                 <div v-else>
                   <v-card
                     v-for="n in 5"
@@ -434,9 +435,7 @@
                     class="my-3"
                     cols="4"
                   >
-                    <v-skeleton-loader
-                      type="list-item-avatar"
-                    />
+                    <v-skeleton-loader type="list-item-avatar" />
                   </v-card>
                 </div>
               </div>
@@ -489,27 +488,37 @@ export default {
   computed: {
     ...mapGetters({ currentChild: 'getCurrentChild' }),
 
-    childrenIds () {
-      return (this.currentChild && this.currentChild.length) ? this.currentChild[0].id : 0
+    childrenIds() {
+      return this.currentChild && this.currentChild.length
+        ? this.currentChild[0].id
+        : 0
     },
-    curriculumTypeId () {
+    curriculumTypeId() {
       if (this.learnPlayData && this.learnPlayData.curriculumType) {
         return this.learnPlayData.curriculumType.id
       } else {
         return null
       }
     },
-    songs () {
-      return (this.learnPlayData && this.learnPlayData.songs.length > 0) ? this.learnPlayData.songs : []
+    songs() {
+      return this.learnPlayData && this.learnPlayData.songs.length > 0
+        ? this.learnPlayData.songs
+        : []
     },
     getDiyProject() {
-      return (this.learnPlayData && this.learnPlayData.files.length > 0) ? this.learnPlayData.files.filter(file => file.type === 'DIY_PROJECT') : []
+      return this.learnPlayData && this.learnPlayData.files.length > 0
+        ? this.learnPlayData.files.filter(file => file.type === 'DIY_PROJECT')
+        : []
     },
     getSnacks() {
-      return (this.learnPlayData && this.learnPlayData.files.length > 0) ? this.learnPlayData.files.filter(file => file.type === 'SNACK') : []
+      return this.learnPlayData && this.learnPlayData.files.length > 0
+        ? this.learnPlayData.files.filter(file => file.type === 'SNACK')
+        : []
     },
     getArtProjects() {
-      return (this.learnPlayData && this.learnPlayData.files.length > 0) ? this.learnPlayData.files.filter(file => file.type === 'ART_PROJECT') : []
+      return this.learnPlayData && this.learnPlayData.files.length > 0
+        ? this.learnPlayData.files.filter(file => file.type === 'ART_PROJECT')
+        : []
     },
     getOfflineWorksheet() {
       if (this.learnPlayData && this.learnPlayData.worksheets.length > 0) {
@@ -518,13 +527,17 @@ export default {
       return []
     },
     getRelatedBooks() {
-      return (this.learnPlayData && this.learnPlayData.books.length > 0) ? this.learnPlayData.books[0].relatedBooks : []
+      return this.learnPlayData && this.learnPlayData.books.length > 0
+        ? this.learnPlayData.books[0].relatedBooks
+        : []
     },
     getBook() {
-      return (this.learnPlayData && this.learnPlayData.books.length > 0) ? this.learnPlayData.books[0] : null
+      return this.learnPlayData && this.learnPlayData.books.length > 0
+        ? this.learnPlayData.books[0]
+        : null
     },
-    currentBookVideo () {
-      return (this.learnPlayData && this.learnPlayData.books.length > 0)
+    currentBookVideo() {
+      return this.learnPlayData && this.learnPlayData.books.length > 0
         ? this.learnPlayData.books[0].video
         : {
             videoUrl: {
@@ -534,11 +547,11 @@ export default {
     }
   },
   watch: {
-    section (val) {
+    section(val) {
       this.scrollMeTo(val)
     }
   },
-  async created () {
+  async created() {
     await this.getAllChildren()
     await this.loadLearnPlay()
     this.loadCurrentVideo()
@@ -547,18 +560,16 @@ export default {
     })
   },
 
-  beforeDestroy () {
+  beforeDestroy() {
     this.$nuxt.$off('menu-section')
   },
 
   methods: {
     ...mapActions('offline-worksheet', ['getRandomWorksheet']),
-    ...mapActions('children/learn-play', [
-      'getFirstLearnPlay'
-    ]),
+    ...mapActions('children/learn-play', ['getFirstLearnPlay']),
     ...mapActions('children', { getAllChildren: 'get' }),
 
-    async loadLearnPlay () {
+    async loadLearnPlay() {
       try {
         this.learnPlayData = await this.getFirstLearnPlay(this.childrenIds)
         if (this.learnPlayData && this.learnPlayData.songs) {
@@ -566,8 +577,7 @@ export default {
             this.buildPlaySongList(song)
           })
         }
-      } catch (error) {
-      }
+      } catch (error) {}
     },
 
     scrollMeTo(refName) {
@@ -576,25 +586,25 @@ export default {
       window.scrollTo(0, top)
     },
 
-    downloadDiyFiles () {
+    downloadDiyFiles() {
       this.getDiyProject.map((file) => {
         this.handleDownloadClick(file)
       })
     },
 
-    downloadSnackFiles () {
+    downloadSnackFiles() {
       this.getSnacks.map((file) => {
         this.handleDownloadClick(file)
       })
     },
 
-    downloadArtFiles () {
+    downloadArtFiles() {
       this.getArtProjects.map((file) => {
         this.handleDownloadClick(file)
       })
     },
 
-    openPdf () {
+    openPdf() {
       if (this.currentFile) {
         window.open(this.currentFile.file, '_blank')
       }
@@ -607,19 +617,22 @@ export default {
       }
     },
 
-    loadCurrentVideo () {
-      this.currentVideo = (this.learnPlayData && this.learnPlayData.videos.length > 0) ? this.learnPlayData.videos[0] : { videoUrl: null }
+    loadCurrentVideo() {
+      this.currentVideo =
+        this.learnPlayData && this.learnPlayData.videos.length > 0
+          ? this.learnPlayData.videos[0]
+          : { videoUrl: null }
     },
 
-    setCurrentVideo (video) {
+    setCurrentVideo(video) {
       this.currentVideo = video
     },
 
-    buildPlaySongList (song) {
+    buildPlaySongList(song) {
       this.$emit('addSong', song)
     },
 
-    buildPlayVideoList (videos) {
+    buildPlayVideoList(videos) {
       return videos.map((video) => {
         return {
           title: video.name,
@@ -632,13 +645,13 @@ export default {
       })
     },
 
-    async onPlayerReady ({ player, videos }) {
+    async onPlayerReady({ player, videos }) {
       this.player = player
       const playVideoList = this.buildPlayVideoList(videos)
       await player.loadPlaylist(playVideoList)
     },
 
-    async onPlayerReadyTwo ({ player, video }) {
+    async onPlayerReadyTwo({ player, video }) {
       this.playerTwo = player
       await player.loadPlaylist([
         {
@@ -652,7 +665,7 @@ export default {
       ])
     },
 
-    async changeVideoTrack (video) {
+    async changeVideoTrack(video) {
       if (!this.player) {
         return
       }
@@ -668,7 +681,7 @@ export default {
       ])
     },
 
-    changeChild (newId, redirect = true) {
+    changeChild(newId, redirect = true) {
       const child = this.allChildren.find(({ id }) => id === parseInt(newId))
       this.setChild({ value: [child], save: true })
     }
