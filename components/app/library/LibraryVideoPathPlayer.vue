@@ -30,6 +30,7 @@ import { defineComponent, PropType, useStore, ref, computed, watch, onBeforeUnmo
 import { useGtmHelper, useFavorites, useFavoritesApi, usePatch, useLibraryStandardCallbacks, useChild, useNuxtHelper } from '@/composables'
 // @ts-ignore
 import PgVideoPlayer from '@gold-media-tech/pg-video-player'
+import PatchEarnedDialogCompositionApi from '@/components/app/PatchEarnedDialogCompositionApi.vue'
 import { PlayerInstance } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
 import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
 import { TypedStore } from '@/models'
@@ -38,7 +39,8 @@ export default defineComponent({
   name: 'LibraryVideoPathPlayer',
 
   components: {
-    PgVideoPlayer
+    PgVideoPlayer,
+    PatchEarnedDialogCompositionApi
   },
 
   props: {
@@ -95,8 +97,28 @@ export default defineComponent({
     const { patchData, patchEarned, patchImg, toUnlock } = usePatch()
     const showPatchEarnedDialog = ref(false)
 
+    function goToNextVideo(): void {
+      if (!player.value) {
+        return
+      }
+
+      const index = player.value.getCurrentIndex()
+      const playlist = player.value.getPlaylist()
+      const lastIndex = playlist.length - 1
+
+      if (index < lastIndex) {
+        player.value.goToNextTrack()
+      } else {
+        player.value.pause()
+        player.value.loadTrack(0)
+        player.value.setStatus('IDLE')
+        player.value.play()
+      }
+    }
+
     function handlePatchEarnedOnEnded(): void {
       if (player.value && patchEarned.value && patchData.value.icon && patchData.value.category) {
+        player.value.pause()
         showPatchEarnedDialog.value = true
         patchEarned.value = false
       } else {
@@ -104,15 +126,29 @@ export default defineComponent({
       }
     }
 
-    const { playerEvents } = useLibraryStandardCallbacks({ children: currentChildren, afterOnEnded: handlePatchEarnedOnEnded })
+    function goToPreviousTrack(): void {
+      if (!player.value) {
+        return
+      }
 
-    function goToNextVideo(): void {
-      if (player.value) {
-        if (player.value.getNextTrack()) {
-          player.value.goToNextTrack()
-        }
+      const index = player.value.getCurrentIndex()
+      const playlist = player.value.getPlaylist()
+      const lastIndex = playlist.length - 1
+
+      if (index > 0) {
+        player.value.pause()
+        player.value.loadTrack(index - 1)
+        player.value.setStatus('IDLE')
+        player.value.play()
+      } else {
+        player.value.pause()
+        player.value.loadTrack(lastIndex)
+        player.value.setStatus('IDLE')
+        player.value.play()
       }
     }
+
+    const { playerEvents } = useLibraryStandardCallbacks({ children: currentChildren, afterOnEnded: handlePatchEarnedOnEnded, goToPreviousTrack })
 
     function closeAll(): void {
       if (player.value) {
@@ -140,7 +176,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .patch-img {
-  width: 70%;
+  width: 100%;
   aspect-ratio: 1;
   object-fit: contain;
   object-position: center center;

@@ -19,10 +19,11 @@
     "cy:run": "cypress run"
   },
   "resolutions": {
-    "prosemirror-model": "1.8.2"
+    "prosemirror-model": "1.8.2",
+    "deasync": "0.1.16"
   },
   "dependencies": {
-    "@gold-media-tech/pg-video-player": "^0.0.89",
+    "@gold-media-tech/pg-video-player": "^0.0.93",
     "@googlemaps/js-api-loader": "^1.12.3",
     "@mdi/font": "^5.3.45",
     "@nuxtjs/axios": "^5.12.0",
@@ -74,7 +75,7 @@
     "autoprefixer": "^10.4.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^26.0.1",
-    "cypress": "^7.1.0",
+    "cypress": "9.6.0",
     "eslint": "^7.32.0",
     "eslint-plugin-nuxt": "^1.0.0",
     "jest": "^26.0.1",

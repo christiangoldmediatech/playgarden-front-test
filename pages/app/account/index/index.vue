@@ -1,6 +1,6 @@
 <template>
   <pg-loading :loading="isLoading">
-    <v-row no-gutters>
+    <v-row no-gutters data-test-id="account-content">
       <v-col cols="12" md="6" class="mb-10 pr-md-8 mb-md-0">
         <!-- Desktop Title -->
         <div class="pb-6 d-none d-md-block text-uppercase font-weight-bold text-h4 grey--text text--darken-2">
@@ -147,7 +147,7 @@ export default defineComponent({
         isLoading.value = true
         isShippingAddressFormVisible.value = Boolean(await ShippingAddress.getShippingAdress())
       } catch (error) {
-        snotify.error('Error checking shipping address', error)
+        snotify.error('Error checking shipping address')
       } finally {
         isLoading.value = false
       }

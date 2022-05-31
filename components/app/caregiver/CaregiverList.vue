@@ -1,6 +1,6 @@
 <template>
   <pg-loading :loading="loading">
-    <v-row no-gutters>
+    <v-row no-gutters data-test-id="caregivers-content">
       <!-- Desktop Title -->
       <v-col cols="12" class="d-none d-md-block">
         <div class="text-uppercase font-weight-bold text-h4 grey--text text--darken-2 pb-12">

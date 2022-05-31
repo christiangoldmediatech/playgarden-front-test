@@ -6,9 +6,10 @@ import { useVideoAnalytics, useActivityAnalytics } from '@/composables'
 type InlinePlayerCallbacksParams = {
   children: ComputedRef<any[] | undefined>,
   afterOnEnded: (mediaObject?: MediaObject) => void
+  goToPreviousTrack: () => void
 }
 
-export function useLibraryFavoritesCallbacks({ children, afterOnEnded }: InlinePlayerCallbacksParams) {
+export function useLibraryFavoritesCallbacks({ children, afterOnEnded, goToPreviousTrack }: InlinePlayerCallbacksParams) {
   // Get needed analytic functions
   const { sendPlayerEventVideoAnalytics } = useVideoAnalytics()
   const { sendActivityAnalytics, determineCurrentVideo } = useActivityAnalytics(children)
@@ -75,6 +76,10 @@ export function useLibraryFavoritesCallbacks({ children, afterOnEnded }: InlineP
       }, false, true)
 
       afterOnEnded()
+    },
+
+    [PLAYER_EVENTS.ON_SKIP_BACK]: (): void => {
+      goToPreviousTrack()
     },
 
     // 30 seconds before a video ends (fires once per track)

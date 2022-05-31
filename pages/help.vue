@@ -5,7 +5,7 @@
         <v-col cols="12">
           <pg-loading v-if="loading" />
 
-          <template v-else>
+          <div v-else data-test-id="help-content">
             <v-row>
               <v-img
                 max-height="500"
@@ -270,7 +270,7 @@
                 </validation-observer>
               </v-col>
             </v-row>
-          </template>
+          </div>
         </v-col>
       </v-row>
     </v-container>

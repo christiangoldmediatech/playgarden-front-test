@@ -6,9 +6,10 @@ import { useVideoAnalytics, useActivityAnalytics } from '@/composables'
 type InlinePlayerCallbacksParams = {
   children: ComputedRef<any[] | undefined>,
   afterOnEnded: (mediaObject?: MediaObject) => void
+  goToPreviousTrack: () => void
 }
 
-export function useLibraryStandardCallbacks({ children, afterOnEnded }: InlinePlayerCallbacksParams) {
+export function useLibraryStandardCallbacks({ children, afterOnEnded, goToPreviousTrack }: InlinePlayerCallbacksParams) {
   // Get needed analytic functions
   const { sendPlayerEventVideoAnalytics } = useVideoAnalytics()
   const { sendActivityAnalytics, determineCurrentVideo } = useActivityAnalytics(children)
@@ -63,18 +64,22 @@ export function useLibraryStandardCallbacks({ children, afterOnEnded }: InlinePl
     },
 
     // Whenever the user skips a video
-    [PLAYER_EVENTS.ON_SKIP]: (event: PlayerInstanceEvent): void => {
+    [PLAYER_EVENTS.ON_SKIP]: async (event: PlayerInstanceEvent): Promise<void> => {
       sendPlayerEventVideoAnalytics({
         children, event, status: 'SKIPPED'
       })
 
-      sendActivityAnalytics({
+      await sendActivityAnalytics({
         duration: event.duration,
         time: event.currentTime,
         video: determineCurrentVideo(event.currentTrack)
       }, false, true)
 
       afterOnEnded()
+    },
+
+    [PLAYER_EVENTS.ON_SKIP_BACK]: (): void => {
+      goToPreviousTrack()
     },
 
     // 30 seconds before a video ends (fires once per track)
