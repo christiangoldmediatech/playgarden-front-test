@@ -1,5 +1,9 @@
 <template>
-  <v-container fluid class="ma-0 pa-0">
+  <v-container
+    fluid
+    class="ma-0 pa-0"
+  >
+    <unlock-prompt v-if="isCurrentLessonUnavailableInPlan" />
     <v-col class="hidden-sm-and-down ma-0 pa-0">
       <v-row justify="start" no-gutters>
         <v-sheet class="mx-auto" max-width="100%" min-width="100">
@@ -94,16 +98,25 @@
 </template>
 
 <script>
+import {
+  defineComponent, useStore,
+  useRoute,
+  useRouter
+} from '@nuxtjs/composition-api'
 import { mapGetters, mapActions } from 'vuex'
 import Letter from '@/components/app/all-done/Letter.vue'
 import RecordedLetter from '@/components/app/live-sessions/recorded/RecordedLetter.vue'
+import { usePlanAccessHelpers } from '@/composables'
+import { TypedStore } from '@/models'
+import UnlockPrompt from './UnlockPrompt.vue'
 
-export default {
+export default defineComponent({
   name: 'CarouselLetter',
 
   components: {
     Letter,
-    RecordedLetter
+    RecordedLetter,
+    UnlockPrompt
   },
 
   props: {
@@ -164,7 +177,15 @@ export default {
       default: false
     }
   },
-
+  setup() {
+    const store = useStore()
+    const route = useRoute()
+    const router = useRouter()
+    const { isCurrentLessonUnavailableInPlan } = usePlanAccessHelpers({ store, route, router })
+    return {
+      isCurrentLessonUnavailableInPlan
+    }
+  },
   data: () => {
     return {
       lettersProgress: []
@@ -228,5 +249,5 @@ export default {
       })
     }
   }
-}
+})
 </script>

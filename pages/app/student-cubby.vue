@@ -1,57 +1,83 @@
 <template>
-  <v-main class="pt-5 pt-md-16 mt-0 mt-md-10" data-test-id="student-cubby-content">
-    <v-container fluid>
-      <v-row justify="center" no-gutters>
-        <!-- Page Title -->
-        <v-col cols="12" class="text-center mt-16 mb-12">
-          <underlined-title
-            data-test-id="student-cubby-title"
-            :text="selectedCubbyItem.title"
-            font-size="65px"
-          />
-        </v-col>
-        <!-- Child Select And Cubby Item Select -->
-        <v-col cols="12" class="mb-0 mb-md-8">
-          <v-row no-gutters justify="center">
-            <v-col cols="12" lg="3" xl="2" class="px-10">
-              <child-select v-model="childId" />
-            </v-col>
-            <v-col cols="12" lg="auto" class="px-10 px-lg-0">
-              <student-cubby-items
-                :is-mobile="isMobile"
-                :items="studentCubbyItems"
-                :selected-child-id="childId || 0"
-              />
-            </v-col>
-          </v-row>
-        </v-col>
+  <v-main>
+    <v-row
+      justify="center"
+      no-gutters
+    >
+      <!-- Page Title -->
+      <v-col
+        v-if="selectedCubbyItem"
+        cols="12"
+        class="text-center mt-16 mb-12 px-3"
+      >
+        <underlined-title
+          data-test-id="student-cubby-title"
+          :text="selectedCubbyItem.title"
+          font-size="65px"
+        />
+      </v-col>
+      <!-- Child Select And Cubby Item Select -->
+      <v-col
+        cols="12"
+        class="mb-0 mb-md-8 px-3"
+      >
+        <v-row
+          no-gutters
+          justify="center"
+        >
+          <v-col
+            cols="12"
+            lg="3"
+            xl="2"
+            class="px-10"
+          >
+            <child-select v-model="ChildRoute.childId" />
+          </v-col>
+          <v-col
+            cols="12"
+            lg="auto"
+            class="px-10 px-lg-0"
+          >
+            <student-cubby-items
+              :is-mobile="isMobile"
+              :items="studentCubbyItems"
+              :selected-child-id="ChildRoute.childId || 0"
+            />
+          </v-col>
+        </v-row>
+      </v-col>
 
-        <v-col cols="12">
-          <!-- Student Cubby Content -->
-          <template v-if="childId">
-            <v-container class="pt-0 pt-md-3">
-              <nuxt-child />
-            </v-container>
-          </template>
-          <!-- Select Child Placeholder -->
-          <template v-else>
-            <v-container fill-height>
-              <v-row align="center" justify="center">
-                <v-col class="text-center">
-                  <div>
-                    <img class="logo-img" src="@/assets/svg/logo.svg">
-                  </div>
+      <v-col cols="12">
+        <!-- Student Cubby Content -->
+        <template v-if="ChildRoute.childId">
+          <v-container class="pt-0 pt-md-3">
+            <nuxt-child />
+          </v-container>
+        </template>
+        <!-- Select Child Placeholder -->
+        <template v-else>
+          <v-container fill-height>
+            <v-row
+              align="center"
+              justify="center"
+            >
+              <v-col class="text-center">
+                <div>
+                  <img
+                    class="logo-img"
+                    src="@/assets/svg/logo.svg"
+                  >
+                </div>
 
-                  <span class="primary--text text-h5 font-weight-bold">
-                    Select your child
-                  </span>
-                </v-col>
-              </v-row>
-            </v-container>
-          </template>
-        </v-col>
-      </v-row>
-    </v-container>
+                <span class="primary--text text-h5 font-weight-bold">
+                  Select your child
+                </span>
+              </v-col>
+            </v-row>
+          </v-container>
+        </template>
+      </v-col>
+    </v-row>
   </v-main>
 </template>
 
@@ -60,10 +86,7 @@ import {
   defineComponent,
   useRoute,
   computed,
-  watch,
   useRouter,
-  onMounted,
-  ref,
   useStore
 } from '@nuxtjs/composition-api'
 import StudentCubbyItems from '@/components/app/student-cubby/StudentCubbyItems.vue'
@@ -84,12 +107,7 @@ export default defineComponent({
     const router = useRouter()
     const store = useStore<TypedStore>()
     const vuetify = useVuetifyHelper()
-    const { childId } = useChildRoute({
-      store,
-      route,
-      router,
-      shouldRedirect: true
-    })
+    const ChildRoute = useChildRoute({ store, route, router, shouldRedirect: true })
 
     const studentCubbyItems = [
       {
@@ -135,7 +153,7 @@ export default defineComponent({
     const isMobile = computed(() => vuetify.breakpoint.mobile)
 
     return {
-      childId,
+      ChildRoute,
       isMobile,
       selectedCubbyItem,
       studentCubbyItems

@@ -68,7 +68,6 @@
             </div>
           </v-col>
         </v-row>
-
         <v-row class="mx-4 my-14">
           <v-col cols="12">
             <v-row ref="diy" class="mt-5">
@@ -277,7 +276,6 @@
             </v-card>
           </v-row>
         </v-row>
-
         <v-row v-if="!$vuetify.breakpoint.smAndUp">
           <v-col cols="12" class="mt-6">
             <div ref="playlist">
@@ -451,12 +449,11 @@
 import { mapGetters, mapActions } from 'vuex'
 import PgVideoPlayer from '@gold-media-tech/pg-video-player'
 import CarouselLetter from '@/components/app/all-done/CarouselLetter.vue'
-import OfflineWorksheets from '@/components/app/learn-play/OfflineWorksheets.vue'
+import OfflineWorksheets from '@/components/app/learn-play/OfflineWorksheetsLearnPlay.vue'
 import VideosScroll from '@/components/app/learn-play/VideosScroll.vue'
 import TopFive from '@/components/app/learn-play/TopFive.vue'
 import SongsCard from '@/components/app/learn-play/SongsCard.vue'
 import MenuMobile from '@/components/app/learn-play/MenuMobile.vue'
-
 export default {
   name: 'DashboardLearnPlay',
   components: {
@@ -487,7 +484,6 @@ export default {
   },
   computed: {
     ...mapGetters({ currentChild: 'getCurrentChild' }),
-
     childrenIds() {
       return this.currentChild && this.currentChild.length
         ? this.currentChild[0].id
@@ -559,16 +555,13 @@ export default {
       this.scrollMeTo(section)
     })
   },
-
   beforeDestroy() {
     this.$nuxt.$off('menu-section')
   },
-
   methods: {
     ...mapActions('offline-worksheet', ['getRandomWorksheet']),
     ...mapActions('children/learn-play', ['getFirstLearnPlay']),
     ...mapActions('children', { getAllChildren: 'get' }),
-
     async loadLearnPlay() {
       try {
         this.learnPlayData = await this.getFirstLearnPlay(this.childrenIds)
@@ -579,59 +572,49 @@ export default {
         }
       } catch (error) {}
     },
-
     scrollMeTo(refName) {
       const element = this.$refs[refName]
       const top = element.offsetTop
       window.scrollTo(0, top)
     },
-
     downloadDiyFiles() {
       this.getDiyProject.map((file) => {
         this.handleDownloadClick(file)
       })
     },
-
     downloadSnackFiles() {
       this.getSnacks.map((file) => {
         this.handleDownloadClick(file)
       })
     },
-
     downloadArtFiles() {
       this.getArtProjects.map((file) => {
         this.handleDownloadClick(file)
       })
     },
-
     openPdf() {
       if (this.currentFile) {
         window.open(this.currentFile.file, '_blank')
       }
     },
-
     handleDownloadClick(item) {
       this.currentFile = item
       if (!this.noLinkMode) {
         this.openPdf()
       }
     },
-
     loadCurrentVideo() {
       this.currentVideo =
         this.learnPlayData && this.learnPlayData.videos.length > 0
           ? this.learnPlayData.videos[0]
           : { videoUrl: null }
     },
-
     setCurrentVideo(video) {
       this.currentVideo = video
     },
-
     buildPlaySongList(song) {
       this.$emit('addSong', song)
     },
-
     buildPlayVideoList(videos) {
       return videos.map((video) => {
         return {
@@ -644,13 +627,11 @@ export default {
         }
       })
     },
-
     async onPlayerReady({ player, videos }) {
       this.player = player
       const playVideoList = this.buildPlayVideoList(videos)
       await player.loadPlaylist(playVideoList)
     },
-
     async onPlayerReadyTwo({ player, video }) {
       this.playerTwo = player
       await player.loadPlaylist([
@@ -664,7 +645,6 @@ export default {
         }
       ])
     },
-
     async changeVideoTrack(video) {
       if (!this.player) {
         return
@@ -680,7 +660,6 @@ export default {
         }
       ])
     },
-
     changeChild(newId, redirect = true) {
       const child = this.allChildren.find(({ id }) => id === parseInt(newId))
       this.setChild({ value: [child], save: true })
@@ -698,19 +677,16 @@ export default {
   color: #606060 !important;
   font-size: 18px !important;
 }
-
 .learn-play-video {
   width: 95% !important;
   height: 369px !important;
 }
-
 .song-card {
   max-width: 85% !important;
   min-width: 85% !important;
   min-height: 328px !important;
   max-height: 328px !important;
 }
-
 .mobile-play {
   width: 100% !important;
 }
