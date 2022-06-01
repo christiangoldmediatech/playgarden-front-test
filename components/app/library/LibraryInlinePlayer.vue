@@ -224,12 +224,36 @@ export default defineComponent({
         return
       }
       if (player.value && patchEarned.value && patchData.value.category && patchData.value.icon) {
+        player.value.pause()
         showPatchEarnedDialog.value = true
         patchEarned.value = false
       } else {
         player.value.loadPlaylist([mediaObject])
+        player.value.setStatus('IDLE')
         player.value.play()
         loadMoreVideos(mediaObject)
+      }
+    }
+
+    function goToPreviousTrack(): void {
+      if (!player.value) {
+        return
+      }
+
+      const index = player.value.getCurrentIndex()
+      const playlist = player.value.getPlaylist()
+      const lastIndex = playlist.length - 1
+
+      if (index > 0) {
+        player.value.pause()
+        player.value.loadTrack(index - 1)
+        player.value.setStatus('IDLE')
+        player.value.play()
+      } else {
+        player.value.pause()
+        player.value.loadTrack(lastIndex)
+        player.value.setStatus('IDLE')
+        player.value.play()
       }
     }
 
@@ -241,6 +265,7 @@ export default defineComponent({
 
       if (nextTrack) {
         player.value.loadPlaylist([nextTrack])
+        player.value.setStatus('IDLE')
         player.value.play()
         loadMoreVideos(nextTrack)
       }
@@ -273,7 +298,8 @@ export default defineComponent({
 
     const { playerEvents } = useInlineLibraryPlayerCallbacks({
       children: currentChildren,
-      getNextVideos: getVideosAfterVideoEnded
+      getNextVideos: getVideosAfterVideoEnded,
+      goToPreviousTrack
     })
 
     return {

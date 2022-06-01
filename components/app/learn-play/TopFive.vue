@@ -38,22 +38,18 @@ export default defineComponent({
       default: () => ([])
     }
   },
-  setup(props, { emit }) {
+  setup(props) {
     const nuxt = useNuxtHelper()
-
-    const currentSong = (song: MusicLibrary) => {
-      nuxt.$emit('change-song', song)
-    }
 
     const changeSong = (song: MusicLibrary) => {
       song.autoPlay = true
-      currentSong(song)
+      nuxt.$emit('change-song', song)
     }
 
     onMounted(() => {
       const firstSong = props.songs[0]
       firstSong.autoPlay = false
-      currentSong(firstSong)
+      nuxt.$emit('change-song', firstSong)
     })
 
     return {

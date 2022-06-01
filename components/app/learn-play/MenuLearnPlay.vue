@@ -1,6 +1,6 @@
 <template>
   <v-row class="menu-learn-play" justify="center">
-    <v-col cols="12">
+    <v-col class="text-center" cols="12">
       <img
         v-if="child"
         :alt="child.backpack.name"
@@ -8,22 +8,18 @@
         :src="child.backpack.image"
       >
     </v-col>
-    <v-col cols="12" class="mt-n8">
-      <center>
-        <span class="font-weight-bold name-child">
-          {{ child.firstName }}
-        </span>
-      </center>
+    <v-col class="text-center mt-n8" cols="12">
+      <span class="font-weight-bold name-child">
+        {{ child.firstName }}
+      </span>
     </v-col>
-    <v-col cols="12" class="mt-n6">
-      <center>
-        <recorded-letter
-          v-if="getLetterCurriculumType"
-          class="mt-6 rotate"
-          v-bind="{ letter: getLetterCurriculumType, small: smallLetter }"
-          list-mode
-        />
-      </center>
+    <v-col class="text-center mt-n6" cols="12">
+      <recorded-letter
+        v-if="getLetterCurriculumType"
+        class="mt-6 rotate"
+        v-bind="{ letter: getLetterCurriculumType, small: smallLetter }"
+        list-mode
+      />
     </v-col>
     <v-col cols="12">
       <span class="color-main clickable" @click="sendSection('videoLesson')">
@@ -52,7 +48,7 @@
     </v-col>
     <v-col cols="12">
       <span class="color-menu clickable" @click="sendSection('snack')">
-        Snack with Description
+        Snack of the Week
       </span>
     </v-col>
     <v-col cols="12">
@@ -86,20 +82,24 @@ export default {
   },
   computed: {
     ...mapGetters({ currentChild: 'getCurrentChild' }),
-    childrenIds () {
-      return (this.currentChild && this.currentChild.length) ? this.currentChild[0].id : 0
+    childrenIds() {
+      return this.currentChild && this.currentChild.length
+        ? this.currentChild[0].id
+        : 0
     },
-    child () {
-      return (this.currentChild && this.currentChild.length) ? this.currentChild[0] : null
+    child() {
+      return this.currentChild && this.currentChild.length
+        ? this.currentChild[0]
+        : null
     },
-    curriculumTypeId () {
+    curriculumTypeId() {
       if (this.learnPlay && this.learnPlay.curriculumType) {
         return this.learnPlay.curriculumType.id
       } else {
         return null
       }
     },
-    getLetterCurriculumType () {
+    getLetterCurriculumType() {
       if (this.learnPlay && this.learnPlay.curriculumType) {
         return this.learnPlay.curriculumType
       } else {
@@ -107,25 +107,23 @@ export default {
       }
     }
   },
-  async created () {
+  async created() {
     await this.getAllChildren()
     await this.handleLesson()
   },
   methods: {
     ...mapActions('children', { getAllChildren: 'get' }),
-    ...mapActions('children/learn-play', [
-      'getFirstLearnPlay'
-    ]),
+    ...mapActions('children/learn-play', ['getFirstLearnPlay']),
 
-    sendSection (section) {
+    sendSection(section) {
       this.$nuxt.$emit('menu-section', section)
     },
 
-    changeChild (newId, redirect = true) {
+    changeChild(newId, redirect = true) {
       const child = this.allChildren.find(({ id }) => id === parseInt(newId))
       this.setChild({ value: [child], save: true })
     },
-    async handleLesson () {
+    async handleLesson() {
       try {
         this.loading = true
         this.learnPlay = await this.getFirstLearnPlay()
@@ -149,17 +147,17 @@ export default {
   font-weight: 600;
 }
 .name-child {
-  color: #7852B5 !important;
+  color: #7852b5 !important;
   font-size: 28px !important;
 }
-.menu-learn-play {
-  height: 80%;
-  width: 160px;
-  position: fixed;
-  z-index: 500;
+/* .menu-learn-play {
+  position: sticky;
+  top: 116px;
+  max-height: calc(100vh - 128px);
+  margin-bottom: 0px;
   overflow-x: hidden;
   overflow-y: auto;
-}
+} */
 .rotate {
   transform: rotate(-13.26deg) !important;
 }
