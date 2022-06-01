@@ -61,6 +61,10 @@ export default {
       type: String,
       default: ''
     },
+    activityTypeId: {
+      type: Number,
+      default: 0
+    },
     isMobile: {
       type: Boolean,
       default: false
@@ -81,8 +85,8 @@ export default {
   methods: {
     goToVideos () {
       this.$router.push({
-        name: 'app-library',
-        hash: `#${this.activityTypeName}`
+        name: 'app-library-category-activityTypeId',
+        params: { activityTypeId: this.activityTypeId }
       })
     }
   }
