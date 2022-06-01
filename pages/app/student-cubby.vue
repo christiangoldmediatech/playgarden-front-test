@@ -31,7 +31,7 @@
             xl="2"
             class="px-10"
           >
-            <child-select v-model="childId" />
+            <child-select v-model="ChildRoute.childId" />
           </v-col>
           <v-col
             cols="12"
@@ -41,7 +41,7 @@
             <student-cubby-items
               :is-mobile="isMobile"
               :items="studentCubbyItems"
-              :selected-child-id="childId || 0"
+              :selected-child-id="ChildRoute.childId || 0"
             />
           </v-col>
         </v-row>
@@ -49,7 +49,7 @@
 
       <v-col cols="12">
         <!-- Student Cubby Content -->
-        <template v-if="childId">
+        <template v-if="ChildRoute.childId">
           <v-container class="pt-0 pt-md-3">
             <nuxt-child />
           </v-container>
@@ -107,7 +107,7 @@ export default defineComponent({
     const router = useRouter()
     const store = useStore<TypedStore>()
     const vuetify = useVuetifyHelper()
-    const { childId } = useChildRoute({ store, route, router, shouldRedirect: true })
+    const ChildRoute = useChildRoute({ store, route, router, shouldRedirect: true })
 
     const studentCubbyItems = [
       {
@@ -153,7 +153,7 @@ export default defineComponent({
     const isMobile = computed(() => vuetify.breakpoint.mobile)
 
     return {
-      childId,
+      ChildRoute,
       isMobile,
       selectedCubbyItem,
       studentCubbyItems
