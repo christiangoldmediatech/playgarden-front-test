@@ -22,6 +22,7 @@
           :to-unlock="activityType.toUnlock"
           :should-show-progress="isNextPatchToUnlock(patch.id)"
           :activity-type-name="activityType.name"
+          :activity-type-id="activityType.id"
         />
       </template>
 
@@ -34,6 +35,7 @@
             :to-unlock="activityType.toUnlock"
             :should-show-progress="isNextPatchToUnlock(patch.id)"
             :activity-type-name="activityType.name"
+            :activity-type-id="activityType.id"
             data-test-id="patch"
           />
         </v-row>
