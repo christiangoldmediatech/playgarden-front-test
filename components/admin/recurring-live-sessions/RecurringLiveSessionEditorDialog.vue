@@ -1,6 +1,7 @@
 <template>
   <validation-observer ref="obs" v-slot="{ invalid, passes }">
     <v-dialog
+      v-if="dialog"
       v-model="dialog"
       :fullscreen="$vuetify.breakpoint.xs"
       max-width="700px"
@@ -316,7 +317,7 @@
 
 <script>
 import dayjs from 'dayjs'
-import { timezoneOptions } from '@/utils/dateTools'
+import { timezoneOptions, formatTimezone, getTimezone } from '@/utils/dateTools'
 import { mapActions, mapGetters } from 'vuex'
 const utc = require('dayjs/plugin/utc')
 const timezone = require('dayjs/plugin/timezone')
@@ -387,11 +388,6 @@ export default {
         this.item.day = dayjs(val).format('dddd').toUpperCase()
       }
     },
-    selectedTimezone (val) {
-      if (val) {
-        this.loadFormatTimezone(this.item)
-      }
-    },
     'item.type' (val) {
       if (val === 'Playdate') {
         this.item.spots = (this.item.spots) ? this.item.spots : null
@@ -399,18 +395,32 @@ export default {
     }
   },
 
-  created () {
-    this.loadCurrentTimezone()
+  mounted () {
+    this.setCurrentTimezone()
   },
 
   methods: {
     ...mapActions('admin/recurring-live-sessions', ['createRecurringLiveSession', 'updateRecurringLiveSession']),
+    ...mapActions('admin/users', ['setTimezone']),
+    ...mapActions('auth', ['fetchUserInfo']),
 
-    loadCurrentTimezone () {
+    async loadCurrentTimezone () {
+      await this.setTimezone({ timezone: this.selectedTimezone })
+      await this.fetchUserInfo()
       const { timezone } = this.getUserInfo
       if (timezone) {
         this.selectedTimezone = timezone
       }
+    },
+
+    getTimeZoneFormat (data) {
+      const start = moment(data)
+      const { timezone } = this.getUserInfo
+      return formatTimezone(start, {
+        format: 'MM-DD-YYYY HH:mm',
+        timezone,
+        returnObject: false
+      })
     },
 
     async refresh (clear = false) {
@@ -442,17 +452,22 @@ export default {
         this.loading = false
         this.file = null
         this.$refs.obs.reset()
-        this.loadCurrentTimezone()
       })
     },
 
     setDocumentFile (type) {
       this.typeSelectDocumentFile = type
     },
+    setCurrentTimezone() {
+      const { timezone } = this.getUserInfo
+      const currentTimezone = getTimezone(timezone)
+      this.selectedTimezone = currentTimezone
+    },
 
     async save () {
       this.loading = true
-      this.item.dateStart = dayjs(`${this.dateStart} ${this.timeStart}`).utc().format()
+      const timezone = dayjs.tz(`${this.dateStart} ${this.timeStart}`, this.selectedTimezone).format()
+      this.item.dateStart = dayjs(timezone).utc().format()
       this.item.active = (this.item.active) ? 'true' : 'false'
 
       try {
@@ -471,10 +486,11 @@ export default {
           await this.updateRecurringLiveSession({ id: this.id, data: this.item })
         }
 
-        this.$emit('saved')
         this.dateStart = null
         this.timeStart = null
         this.close()
+        this.loadCurrentTimezone()
+        this.$emit('saved')
       } catch (err) {
       } finally {
         this.loading = false
