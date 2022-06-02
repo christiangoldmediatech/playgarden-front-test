@@ -1,10 +1,9 @@
 <template>
-  <v-row>
+  <v-row class="ma-0">
     <v-container fluid class="pa-0">
       <v-expand-transition>
         <music-player-learn-play
           ref="musicPlayer"
-          v-intersect="onIntersect"
           @favorite="handleFavorite"
         />
       </v-expand-transition>
@@ -15,7 +14,7 @@
 <script lang="ts">
 // @ts-ignore
 import debounce from 'lodash/debounce'
-import { useNuxtHelper, useMusic, useSnotifyHelper, useVuetifyHelper, useAppEventBusHelper, useGtmHelper, useAuth, useChildRoute } from '@/composables'
+import { useNuxtHelper, useMusic, useSnotifyHelper, useVuetifyHelper, useAppEventBusHelper, useGtmHelper, useAuth, useChildRoute, useLearnPlayV2 } from '@/composables'
 import MusicPlayerLearnPlay from '@/components/app/learn-play/MusicPlayerLearnPlay.vue'
 
 import { onMounted, ref, computed, useRoute, watch, onUnmounted, useStore, useRouter } from '@nuxtjs/composition-api'
@@ -47,11 +46,12 @@ export default {
     const store = useStore<TypedStore>()
     const eventBus = useAppEventBusHelper()
     const gtm = useGtmHelper()
+    const learnPlayV2 = useLearnPlayV2({ store })
 
     // this references `ref="musicPlayer"` when the component is mounted
     const musicPlayer = ref<any>(null)
     const {
-      allSongsWithFavorites,
+      // allSongsWithFavorites,
       currentSong,
       favoritesDictionary,
       getFavoriteMusicForChild,
@@ -68,7 +68,7 @@ export default {
     const isMobile = computed(() => vuetify.breakpoint.width <= PAGE_MOBILE_BREAKPOINT)
     const isPlayerShowing = computed(() => playlist.value.length > 0)
     const didScrollToBottom = ref(false)
-    const isIntersectingMusicPlayer = ref(false)
+    // const isIntersectingMusicPlayer = ref(false)
 
     const handleScroll = () => {
       didScrollToBottom.value = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.scrollHeight - MOBILE_PLAYER_HEIGHT
@@ -78,7 +78,7 @@ export default {
 
     const debouncedHandleScroll = debounce(handleScroll, 50)
 
-    const changeSong = nuxt.$on('change-song', (song: MusicLibrary) => {
+    nuxt.$on('change-song', (song: MusicLibrary) => {
       if (song) {
         currentSong.value = song
       }
@@ -156,11 +156,12 @@ export default {
     }
 
     const addSongToPlaylist = (song: MusicLibrary) => {
-      eventBus.$emit(APP_EVENTS.MUSIC_ITEM_CLICKED, {
-        event: TAG_MANAGER_EVENTS.MUSIC_ITEM_CLICKED,
-        userId: userInfo.value.id,
-        topic: song.description
-      })
+      // This event does not seem to correspond to what's actually happening
+      // eventBus.$emit(APP_EVENTS.MUSIC_ITEM_CLICKED, {
+      //   event: TAG_MANAGER_EVENTS.MUSIC_ITEM_CLICKED,
+      //   userId: userInfo.value.id,
+      //   topic: song.description
+      // })
       if (musicPlayer.value) {
         musicPlayer.value.addSongToPlaylist(song)
         playlist.value.push(song)
@@ -172,7 +173,7 @@ export default {
         musicPlayer.value.createNewPlaylist(playList)
         playlist.value = playList
 
-        isTopRibbonMinimized.value = true
+        // isTopRibbonMinimized.value = true
       }
 
       if (playList.length > 1) {
@@ -202,7 +203,7 @@ export default {
         }
 
         await getAndSetFavorites()
-      } catch (error) {
+      } catch (error: any) {
         snotify.error(error.message)
       }
     }
@@ -229,29 +230,33 @@ export default {
       return filteredLetters
     })
 
-    const isTopRibbonMinimized = ref(false)
+    // const isTopRibbonMinimized = ref(false)
 
     /**
      * The music player is always visible, so here we want to show a default
      * song while there is no song selected.
      */
     const handleEmptyMusicPlayer = () => {
-      if (playlist.value.length === 0 && allSongsWithFavorites.value.length > 0) {
-        addSongToPlaylist(allSongsWithFavorites.value[0])
-      }
+      createNewPlaylist(learnPlayV2.computedProps.songs.value)
+      // allSongsWithFavorites.value.forEach((song) => {
+      //   addSongToPlaylist(song)
+      // })
+      // if (playlist.value.length === 0 && allSongsWithFavorites.value.length > 0) {
+      //   addSongToPlaylist(allSongsWithFavorites.value[0])
+      // }
     }
 
-    const onIntersect = (entries: IntersectionObserverEntry[]) => {
-      isIntersectingMusicPlayer.value = entries[0].isIntersecting
-    }
+    // const onIntersect = (entries: IntersectionObserverEntry[]) => {
+    //   isIntersectingMusicPlayer.value = entries[0].isIntersecting
+    // }
 
-    watch(isIntersectingMusicPlayer, () => {
-      isTopRibbonMinimized.value = isIntersectingMusicPlayer.value
-    })
+    // watch(isIntersectingMusicPlayer, () => {
+    //   isTopRibbonMinimized.value = isIntersectingMusicPlayer.value
+    // })
 
     return {
       addSongToPlaylist,
-      allSongsWithFavorites,
+      // allSongsWithFavorites,
       createNewPlaylist,
       currentSong,
       didScrollToBottom,
@@ -266,9 +271,9 @@ export default {
       songsByCurriculumTypeWithFavorites,
       selectLetter,
       selectedLetterId,
-      isTopRibbonMinimized,
-      disabledLetters,
-      onIntersect
+      // isTopRibbonMinimized,
+      disabledLetters
+      // onIntersect
     }
   }
 }

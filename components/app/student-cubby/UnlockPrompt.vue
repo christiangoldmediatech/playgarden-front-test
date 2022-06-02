@@ -16,7 +16,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed } from '@nuxtjs/composition-api'
+import { defineComponent, PropType, computed, useStore, useRoute, useRouter } from '@nuxtjs/composition-api'
+import { TypedStore } from '@/models'
 import PlanUpgradePrompt from '@/components/app/payment/PlanUpgradePrompt.vue'
 import StudyCubbyItemHeader, { StudentCubbyItemHeaderProps } from './StudyCubbyItemHeader.vue'
 import { useStudentCubbyHelpers } from './composables'
@@ -38,16 +39,19 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const { getItemDescription } = useStudentCubbyHelpers()
+    const store = useStore<TypedStore>()
+    const route = useRoute()
+    const router = useRouter()
+    const StudentCubbyHelpers = useStudentCubbyHelpers({ store, route, router })
 
-    const studentChubbyItemHeaderProps = computed((): StudentCubbyItemHeaderProps => {
+    const studentChubbyItemHeaderProps = computed<StudentCubbyItemHeaderProps>(() => {
       return {
         studentCubbyItem: props.blockedItem,
         isHeaderAlwaysVisible: true
       }
     })
 
-    const itemDescription = computed(() => getItemDescription(props.blockedItem?.text))
+    const itemDescription = computed(() => StudentCubbyHelpers.getItemDescription(props.blockedItem?.text))
     const imagePath = computed(() => {
       const imageName = props.blockedItem?.imgName
       return imageName ? require(`@/assets/png/student-cubby/${imageName}`) : null

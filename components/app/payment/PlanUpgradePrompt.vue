@@ -23,16 +23,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed } from '@nuxtjs/composition-api'
+import { defineComponent, useStore, useRoute, useRouter } from '@nuxtjs/composition-api'
+import { TypedStore } from '@/models'
 import { usePlanAccessHelpers } from '~/composables'
 
 export default defineComponent({
   name: 'PlanUpgradePrompt',
   setup() {
-    const { displayPlanUpgradeModal } = usePlanAccessHelpers()
+    const store = useStore<TypedStore>()
+    const route = useRoute()
+    const router = useRouter()
+    const PlanAccessHelpers = usePlanAccessHelpers({ store, route, router })
 
     function handleUpgradeRequest() {
-      displayPlanUpgradeModal()
+      PlanAccessHelpers.displayPlanUpgradeModal()
     }
 
     return {

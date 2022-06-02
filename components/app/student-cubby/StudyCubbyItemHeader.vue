@@ -22,7 +22,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, PropType } from '@nuxtjs/composition-api'
+import { defineComponent, computed, PropType, useStore, useRoute, useRouter } from '@nuxtjs/composition-api'
+import { TypedStore } from '@/models'
 import { StudentCubbyItem } from './types'
 import { useStudentCubbyHelpers } from './composables'
 import { usePlanAccessHelpers } from '~/composables'
@@ -43,12 +44,16 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const { isItemUnAvailableForCurrentUser } = usePlanAccessHelpers()
-    const { getItemDescription } = useStudentCubbyHelpers()
+    const store = useStore<TypedStore>()
+    const route = useRoute()
+    const router = useRouter()
+
+    const PlanAccessHelpers = usePlanAccessHelpers({ store, route, router })
+    const StudentCubbyHelpers = useStudentCubbyHelpers({ store, route, router })
 
     const itemText = computed(() => props.studentCubbyItem?.text)
-    const isItemUnavailable = computed(() => isItemUnAvailableForCurrentUser(itemText.value))
-    const itemDescription = computed(() => getItemDescription(itemText.value))
+    const isItemUnavailable = computed(() => PlanAccessHelpers.isItemUnAvailableForCurrentUser(itemText.value))
+    const itemDescription = computed(() => StudentCubbyHelpers.getItemDescription(itemText.value))
 
     const imagePath = computed(() => {
       const imageName = props.studentCubbyItem?.imgName

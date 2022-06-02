@@ -96,13 +96,14 @@
 </template>
 
 <script>
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, useStore, useRoute, useRouter } from '@nuxtjs/composition-api'
 import DashboardPanel from '@/components/app/dashboard/DashboardPanel.vue'
 // import BlankDashboardPanel from '@/components/app/dashboard/BlankDashboardPanel.vue'
 import LetterSelect from '@/components/app/live-sessions/recorded/LetterSelect.vue'
 import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
 import { mapGetters, mapActions } from 'vuex'
 import { usePlanAccessHelpers } from '@/composables'
+import { TypedStore } from '@/models'
 
 export default defineComponent({
   name: 'CourseProgressOverlay',
@@ -113,7 +114,10 @@ export default defineComponent({
     LetterSelect
   },
   setup() {
-    const { isCurrentLessonUnavailableInPlan } = usePlanAccessHelpers()
+    const store = useStore()
+    const route = useRoute()
+    const router = useRouter()
+    const { isCurrentLessonUnavailableInPlan } = usePlanAccessHelpers({ store, route, router })
     return {
       isCurrentLessonUnavailableInPlan
     }
