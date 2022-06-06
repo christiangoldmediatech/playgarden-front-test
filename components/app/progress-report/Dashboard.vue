@@ -151,6 +151,7 @@
         </v-col>
       </v-row>
     </pg-loading>
+    <unlock-prompt />
   </v-row>
 </template>
 
@@ -161,6 +162,8 @@ import ReportCardTypeSelect from '@/components/app/progress-report/ReportCardTyp
 import LetterStats from '@/components/app/progress-report/LetterStats.vue'
 import DetailProgress from '@/components/app/progress-report/DetailProgress.vue'
 import LetterSelect from '@/components/app/live-sessions/recorded/LetterSelect.vue'
+import UnlockPrompt from '@/components/app/all-done/UnlockPrompt.vue'
+
 export default {
   name: 'Dashboard',
 
@@ -169,7 +172,8 @@ export default {
     ReportCardTypeSelect,
     LetterStats,
     DetailProgress,
-    LetterSelect
+    LetterSelect,
+    UnlockPrompt
   },
 
   data: () => ({

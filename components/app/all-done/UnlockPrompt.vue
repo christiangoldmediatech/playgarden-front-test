@@ -13,7 +13,8 @@
       </div>
 
       <p class="mt-4 text-center">
-        Upgrade your plan to have access to daily lessons with your favorite playgarden prep teachers
+        Upgrade your plan to have access to daily lessons with your favorite
+        playgarden prep teachers
       </p>
     </section>
     <PlanUpgradePrompt />
