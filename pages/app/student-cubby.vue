@@ -63,8 +63,7 @@ import {
   useRoute,
   computed,
   useRouter,
-  useStore,
-  onMounted
+  useStore
 } from '@nuxtjs/composition-api'
 import StudentCubbyItems from '@/components/app/student-cubby/StudentCubbyItems.vue'
 import ChildSelect from '@/components/app/ChildSelect.vue'
