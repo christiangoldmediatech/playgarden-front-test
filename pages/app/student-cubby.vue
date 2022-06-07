@@ -1,9 +1,6 @@
 <template>
   <v-main>
-    <v-row
-      justify="center"
-      no-gutters
-    >
+    <v-row justify="center" no-gutters>
       <!-- Page Title -->
       <v-col
         v-if="selectedCubbyItem"
@@ -17,31 +14,16 @@
         />
       </v-col>
       <!-- Child Select And Cubby Item Select -->
-      <v-col
-        cols="12"
-        class="mb-0 mb-md-8 px-3"
-      >
-        <v-row
-          no-gutters
-          justify="center"
-        >
-          <v-col
-            cols="12"
-            lg="3"
-            xl="2"
-            class="px-10"
-          >
+      <v-col cols="12" class="mb-0 mb-md-8 px-3">
+        <v-row no-gutters justify="center">
+          <v-col cols="12" lg="3" xl="2" class="px-10">
             <child-select v-model="ChildRoute.childId" />
           </v-col>
-          <v-col
-            cols="12"
-            lg="auto"
-            class="px-10 px-lg-0"
-          >
+          <v-col cols="12" lg="auto" class="px-10 px-lg-0">
             <student-cubby-items
               :is-mobile="isMobile"
               :items="studentCubbyItems"
-              :selected-child-id="ChildRoute.childId || 0"
+              :selected-child-id="ChildRoute.childId.value || 0"
             />
           </v-col>
         </v-row>
@@ -57,16 +39,10 @@
         <!-- Select Child Placeholder -->
         <template v-else>
           <v-container fill-height>
-            <v-row
-              align="center"
-              justify="center"
-            >
+            <v-row align="center" justify="center">
               <v-col class="text-center">
                 <div>
-                  <img
-                    class="logo-img"
-                    src="@/assets/svg/logo.svg"
-                  >
+                  <img class="logo-img" src="@/assets/svg/logo.svg">
                 </div>
 
                 <span class="primary--text text-h5 font-weight-bold">
@@ -87,7 +63,8 @@ import {
   useRoute,
   computed,
   useRouter,
-  useStore
+  useStore,
+  onMounted
 } from '@nuxtjs/composition-api'
 import StudentCubbyItems from '@/components/app/student-cubby/StudentCubbyItems.vue'
 import ChildSelect from '@/components/app/ChildSelect.vue'
@@ -107,7 +84,16 @@ export default defineComponent({
     const router = useRouter()
     const store = useStore<TypedStore>()
     const vuetify = useVuetifyHelper()
-    const ChildRoute = useChildRoute({ store, route, router, shouldRedirect: true })
+    const ChildRoute = useChildRoute({
+      store,
+      route,
+      router,
+      shouldRedirect: true
+    })
+
+    onMounted(() => {
+      console.log('Child Route', ChildRoute)
+    })
 
     const studentCubbyItems = [
       {

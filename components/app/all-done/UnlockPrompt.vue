@@ -62,7 +62,7 @@ export default defineComponent({
   background-color: rgb(0, 0, 0, 0.6);
   color: white;
   min-height: 500px;
-  padding-top: 150px;
+  padding-top: 50px;
 }
 
 .promptMessage {
