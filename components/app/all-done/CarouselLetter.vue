@@ -1,6 +1,12 @@
 <template>
   <v-container fluid class="ma-0 pa-0">
-    <unlock-prompt />
+    <unlock-prompt
+      v-if="isCurrentLessonUnavailableInPlan && isRouteOnDailyLessons"
+      title="DAILY LESSONS"
+      desc="Upgrade your plan to have access to daily lessons with your favorite
+        playgarden prep teachers"
+      img="person-with-laptop.png"
+    />
     <v-col class="hidden-sm-and-down ma-0 pa-0">
       <v-row justify="start" no-gutters>
         <v-sheet class="mx-auto" max-width="100%" min-width="100">
@@ -228,6 +234,10 @@ export default defineComponent({
 
     studentId() {
       return this.currentChild[0].id
+    },
+
+    isRouteOnDailyLessons() {
+      return this.$route.name.search('dashboard') > -1
     }
   },
 

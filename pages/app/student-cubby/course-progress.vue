@@ -28,7 +28,11 @@
         </v-row>
       </pg-loading>
     </v-card-text>
-    <unlock-prompt />
+    <unlock-prompt
+      title="CURRICULUM"
+      desc="Scroll through to review your lessons and worksheets!"
+      img="student-cubby/abc.png"
+    />
 
     <course-progress-overlay />
   </v-card>

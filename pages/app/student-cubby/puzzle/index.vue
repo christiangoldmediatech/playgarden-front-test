@@ -124,7 +124,11 @@
       </pg-loading>
     </v-card-text>
 
-    <unlock-prompt />
+    <unlock-prompt
+      title="PUZZLE"
+      desc="Find all of your children completed puzzles. Share them on social media!"
+      img="student-cubby/puzzle-piece.png"
+    />
     <puzzle-pieces-dialog v-model="dialog" v-bind="{ toShow }" />
   </v-card>
 </template>
