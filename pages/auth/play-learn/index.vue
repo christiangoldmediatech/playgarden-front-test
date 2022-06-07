@@ -83,7 +83,7 @@ import BackButton from '@/components/app/learn-play/BackButton/BackButton.vue'
 import RegisterForm from '@/components/forms/auth/RegisterForm.vue'
 import StepOneCard from '@/components/app/learn-play/StepOneCard/StepOneCard.vue'
 import { useAuth, useNotification, useSnotifyHelper } from '@/composables'
-import { SignupData, TypedStore, UserFlow } from '@/models'
+import { SignupData, TypedStore, UserFlow, SignupType } from '@/models'
 
 export default defineComponent({
   name: 'AuthPlayLearnIndex',
@@ -121,7 +121,7 @@ export default defineComponent({
     async function handleSubmit(data: SignupData) {
       try {
         isLoading.value = true
-
+        data.signupType = SignupType.LEARN_AND_PLAY
         if (!Auth.isUserLoggedIn.value) {
           await Auth.signup({ ...data, flow: UserFlow.CREDITCARD })
           snotify.success('Welcome to Playgarden Prep!')
