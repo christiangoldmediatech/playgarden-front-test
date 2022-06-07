@@ -91,10 +91,6 @@ export default defineComponent({
       shouldRedirect: true
     })
 
-    onMounted(() => {
-      console.log('Child Route', ChildRoute)
-    })
-
     const studentCubbyItems = [
       {
         text: 'PUZZLE',
