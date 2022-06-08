@@ -11,7 +11,9 @@
             <span class="ml-4 text-h4 text-md-h3">PATCHES</span>
           </div>
           <div class="my-6 text-md-h6 text-body-1">
-            Master subjects to collect patches for your Student Cubby! Collect all 5 patches in a category to receive a real patch for your backpack.
+            Master subjects to collect patches for your Student Cubby! Collect
+            all 5 patches in a category to receive a real patch for your
+            backpack.
           </div>
         </div>
 
@@ -24,6 +26,11 @@
           />
         </pg-loading>
       </v-card-text>
+      <unlock-prompt
+        title="PATCHES"
+        desc="Master subjects in the Activities section to collect patches for your Student Cubby! Collect all badges to receive a real patch for your backpack."
+        img="student-cubby/patches.svg"
+      />
     </v-card>
   </div>
 </template>
@@ -36,19 +43,23 @@ import PatchOverlay from '@/components/app/student-cubby/PatchOverlay.vue'
 import { useChildRoute } from '@/composables'
 import { TypedStore } from '@/models'
 import { watch } from '@vue/composition-api'
-import StudyCubbyItemHeader, { StudentCubbyItemHeaderProps } from '@/components/app/student-cubby/StudyCubbyItemHeader.vue'
+import StudyCubbyItemHeader, {
+  StudentCubbyItemHeaderProps
+} from '@/components/app/student-cubby/StudyCubbyItemHeader.vue'
 import { StudentChubbyItemText } from '@/components/app/student-cubby/types'
 import { useStudentCubbyHelpers } from '@/components/app/student-cubby/composables'
+import UnlockPrompt from '@/components/app/all-done/UnlockPrompt.vue'
 
 export default {
   name: 'Patches',
 
   components: {
     PatchRow,
-    PatchOverlay
+    PatchOverlay,
+    UnlockPrompt
   },
 
-  setup () {
+  setup() {
     const route = useRoute()
     const store = useStore<TypedStore>()
     const router = useRouter()
@@ -56,11 +67,15 @@ export default {
     const { childrenPatchesActivity, getPatchesByChildId } = usePatches()
 
     const loading = ref(true)
-    watch(studentId, async () => {
-      loading.value = true
-      await getPatchesByChildId(studentId.value || 0)
-      loading.value = false
-    }, { immediate: true })
+    watch(
+      studentId,
+      async () => {
+        loading.value = true
+        await getPatchesByChildId(studentId.value || 0)
+        loading.value = false
+      },
+      { immediate: true }
+    )
 
     return {
       loading,

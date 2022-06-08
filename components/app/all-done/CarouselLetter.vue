@@ -1,9 +1,12 @@
 <template>
-  <v-container
-    fluid
-    class="ma-0 pa-0"
-  >
-    <unlock-prompt v-if="isCurrentLessonUnavailableInPlan" />
+  <v-container fluid class="ma-0 pa-0">
+    <unlock-prompt
+      v-if="isCurrentLessonUnavailableInPlan && isRouteOnDailyLessons"
+      title="DAILY LESSONS"
+      desc="Upgrade your plan to have access to daily lessons with your favorite
+        playgarden prep teachers"
+      img="person-with-laptop.png"
+    />
     <v-col class="hidden-sm-and-down ma-0 pa-0">
       <v-row justify="start" no-gutters>
         <v-sheet class="mx-auto" max-width="100%" min-width="100">
@@ -19,11 +22,7 @@
               :item="item"
               :index="index"
             >
-              <letter
-                :key="index"
-                :item="item"
-                :index="index"
-              />
+              <letter :key="index" :item="item" :index="index" />
             </v-slide-item>
           </v-slide-group>
         </v-sheet>
@@ -50,7 +49,10 @@
               />
 
               <v-list-item-content>
-                <v-list-item-title v-if="item.picture" class="font-weight-bold pl-4">
+                <v-list-item-title
+                  v-if="item.picture"
+                  class="font-weight-bold pl-4"
+                >
                   Letter {{ item.name }}
                 </v-list-item-title>
                 <v-list-item-title v-else class="font-weight-bold pl-4">
@@ -98,11 +100,17 @@
 </template>
 
 <script>
-import { defineComponent } from '@nuxtjs/composition-api'
+import {
+  defineComponent,
+  useStore,
+  useRoute,
+  useRouter
+} from '@nuxtjs/composition-api'
 import { mapGetters, mapActions } from 'vuex'
 import Letter from '@/components/app/all-done/Letter.vue'
 import RecordedLetter from '@/components/app/live-sessions/recorded/RecordedLetter.vue'
 import { usePlanAccessHelpers } from '@/composables'
+import { TypedStore } from '@/models'
 import UnlockPrompt from './UnlockPrompt.vue'
 
 export default defineComponent({
@@ -174,7 +182,14 @@ export default defineComponent({
     }
   },
   setup() {
-    const { isCurrentLessonUnavailableInPlan } = usePlanAccessHelpers()
+    const store = useStore()
+    const route = useRoute()
+    const router = useRouter()
+    const { isCurrentLessonUnavailableInPlan } = usePlanAccessHelpers({
+      store,
+      route,
+      router
+    })
     return {
       isCurrentLessonUnavailableInPlan
     }
@@ -190,11 +205,13 @@ export default defineComponent({
 
     ...mapGetters({ currentChild: 'getCurrentChild' }),
 
-    actualLetters () {
+    actualLetters() {
       const letters = this.letters.map((letter) => {
         if (!this.forceActivateAllLetters) {
           const current = this.lettersProgress.find(l => l.id === letter.id)
-          const isIncludedInDisabled = this.disabledLetters.includes(current?.id)
+          const isIncludedInDisabled = this.disabledLetters.includes(
+            current?.id
+          )
           const currentLetter = current
           if (currentLetter && isIncludedInDisabled) {
             currentLetter.disabled = true
@@ -216,8 +233,12 @@ export default defineComponent({
       return letters
     },
 
-    studentId () {
+    studentId() {
       return this.currentChild[0].id
+    },
+
+    isRouteOnDailyLessons() {
+      return this.$route.name.search('dashboard') > -1
     }
   },
 
@@ -225,7 +246,6 @@ export default defineComponent({
     if (this.previewMode) {
       return
     }
-
     await this.getLetters()
     await this.fetchChildProgress()
   },
@@ -236,7 +256,7 @@ export default defineComponent({
     }),
     ...mapActions('children/course-progress', ['getCourseProgressByChildId']),
 
-    async fetchChildProgress () {
+    async fetchChildProgress() {
       const data = await this.getCourseProgressByChildId({
         id: this.studentId
       })

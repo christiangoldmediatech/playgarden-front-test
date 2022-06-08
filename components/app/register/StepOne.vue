@@ -75,7 +75,7 @@ import { mapActions, mapGetters } from 'vuex'
 import { useSignup } from '@/composables/use-signup.composable'
 import RegisterForm from '@/components/forms/auth/RegisterForm.vue'
 import CardInfo from '@/components/app/register/CardInfo.vue'
-import { UserFlow } from '@/models'
+import { UserFlow, SignupType } from '@/models'
 import { useUTM } from '@/composables/utm/use-utm.composable'
 import { useNotification } from '@/composables'
 
@@ -186,6 +186,7 @@ export default defineComponent({
     async onSubmit(data) {
       try {
         this.loading = true
+        data.signupType = SignupType.PLAYGARDEN
         if (!this.isUserLoggedIn) {
           await this.registerProcess(
             this.signupProcessCaregiver ? { data, token: this.token } : data
