@@ -156,6 +156,7 @@
       </v-row>
     </pg-loading>
     <unlock-prompt
+      v-if="hasUserLearnAndPlayPlan"
       title="PROGRESS REPORT"
       desc="Playgarden Prep Online Lessons have been developed to support one or more of the core areas of development. After watching a video, doing the worksheet together with an adult, or actively participating in a Live Class, parents will be helping in the development of their child in each of the specific areas."
       img="student-cubby/progress.png"
@@ -207,6 +208,7 @@ export default {
     ...mapGetters('progress-report', ['report']),
     ...mapGetters('children', { allChildren: 'rows' }),
     ...mapGetters('children', { children: 'rows' }),
+    ...mapGetters('auth', ['hasUserLearnAndPlayPlan']),
 
     hasReport() {
       return Object.keys(this.report || {}).length > 0

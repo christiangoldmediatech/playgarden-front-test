@@ -125,6 +125,7 @@
     </v-card-text>
 
     <unlock-prompt
+      v-if="hasUserLearnAndPlayPlan"
       title="PUZZLE"
       desc="Find all of your children completed puzzles. Share them on social media!"
       img="student-cubby/puzzle-piece.png"
@@ -177,6 +178,10 @@ export default defineComponent({
       children.value.find((child: Child) => child.id === studentId.value)
     )
 
+    const hasUserLearnAndPlayPlan = computed(() => {
+      return store.getters['auth/hasUserLearnAndPlayPlan']
+    })
+
     const loading = ref(true)
     onMounted(async () => {
       await getPuzzlesByChildId(studentId.value || 0)
@@ -195,7 +200,8 @@ export default defineComponent({
       studentId,
       puzzlesResponse,
       children,
-      child
+      child,
+      hasUserLearnAndPlayPlan
     }
   },
 
