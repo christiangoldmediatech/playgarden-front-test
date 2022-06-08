@@ -12,19 +12,19 @@
       {{ getDiyProject[0].description }}
     </p>
 
-    <v-card>
-      <div
-        v-if="getDiyProject.length > 0"
-        class="diy-images-container mx-2 my-2"
-      >
-        <div
-          v-for="(diy, index) in getDiyProject"
+    <v-card width="93%" class="mt-5 ml-3">
+      <v-row v-if="getDiyProject.length > 0" class="mx-2 my-2">
+        <v-col
+          v-for="(diy, index) in getDiyProject[0].image"
           :key="`diy-item-${index}`"
-          class="pa-3"
+          cols="4"
+          md="4"
         >
-          <img :src="diy.image" height="100%">
-        </div>
-      </div>
+          <center v-if="diy.src">
+            <v-img :src="diy.src" height="150px" class="pg-rounded" />
+          </center>
+        </v-col>
+      </v-row>
       <v-row v-else class="mx-2 my-2">
         <v-col v-for="n in 3" :key="`diy-load-item-${n}`" cols="4">
           <v-skeleton-loader type="image" />

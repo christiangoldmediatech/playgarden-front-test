@@ -2,18 +2,14 @@
   <main class="overlay">
     <section class="promptMessage">
       <div class="d-flex align-center">
-        <img
-          :src="require('@/assets/png/person-with-laptop.png')"
-          alt="lessons image"
-          height="60"
-        >
+        <img :src="getImg(img)" :alt="`${title} IMAGE`" height="60">
         <div class="text-h5 text-md-h4 ml-4">
-          DAILY LESSONS
+          {{ title }}
         </div>
       </div>
 
       <p class="mt-4 text-center">
-        Upgrade your plan to have access to daily lessons with your favorite playgarden prep teachers
+        {{ desc }}
       </p>
     </section>
     <PlanUpgradePrompt />
@@ -26,8 +22,31 @@ import PlanUpgradePrompt from '@/components/app/payment/PlanUpgradePrompt.vue'
 
 export default defineComponent({
   name: 'UnlockPrompt',
+  props: {
+    title: {
+      type: String,
+      required: true
+    },
+    desc: {
+      type: String,
+      required: true
+    },
+    img: {
+      type: String,
+      default: ''
+    }
+  },
   components: {
     PlanUpgradePrompt
+  },
+  methods: {
+    getImg(img: string) {
+      if (!img) {
+        return ''
+      }
+
+      return require(`@/assets/png/${img}`)
+    }
   }
 })
 </script>
@@ -43,7 +62,7 @@ export default defineComponent({
   background-color: rgb(0, 0, 0, 0.6);
   color: white;
   min-height: 500px;
-  padding-top: 150px;
+  padding-top: 50px;
 }
 
 .promptMessage {
@@ -52,7 +71,7 @@ export default defineComponent({
   margin-bottom: 20px;
 
   p {
-    max-width: 550px;
+    max-width: 1050px;
     font-size: 20px;
     padding: 1rem;
 
