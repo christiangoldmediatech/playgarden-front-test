@@ -82,8 +82,8 @@ const videoToMediaObject = (
     author: video.name ?? '',
     videoId: video.id,
     playlistIndex: index,
-    type: video.activityId ? 'Activities' : 'Videos',
-    activityId: video.activityId,
+    type: (video.activityId && video.activityId !== null) ? 'Activities' : 'Videos',
+    activityId: (video.activityId && video.activityId !== null) ? video.activityId : undefined,
     activityType,
     watched: video.viewed
   }
