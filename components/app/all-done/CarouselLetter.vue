@@ -168,6 +168,7 @@ export default defineComponent({
       required: false,
       default: null
     },
+
     slimVersion: {
       type: Boolean,
       required: false,
@@ -241,7 +242,10 @@ export default defineComponent({
     }
   },
 
-  async created() {
+  async created () {
+    if (this.previewMode) {
+      return
+    }
     await this.getLetters()
     await this.fetchChildProgress()
   },

@@ -6,12 +6,13 @@
       </span>
     </div>
 
-    <songs-card v-if="songs && songs.length > 0" class="song-card" />
+    <songs-card
+      v-if="songs && songs.length > 0"
+      :preview-mode="previewMode"
+      class="song-card"
+    />
     <div v-else>
-      <v-skeleton-loader
-        class="mx-auto"
-        type="card"
-      />
+      <v-skeleton-loader class="mx-auto" type="card" />
     </div>
 
     <v-row class="my-0">
@@ -28,9 +29,7 @@
               class="my-3"
               cols="4"
             >
-              <v-skeleton-loader
-                type="list-item-avatar"
-              />
+              <v-skeleton-loader type="list-item-avatar" />
             </v-card>
           </div>
         </div>
@@ -51,6 +50,13 @@ export default defineComponent({
   components: {
     TopFive,
     SongsCard
+  },
+
+  props: {
+    previewMode: {
+      type: Boolean,
+      default: false
+    }
   },
 
   setup() {
