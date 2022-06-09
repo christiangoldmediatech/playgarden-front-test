@@ -29,6 +29,7 @@
       </pg-loading>
     </v-card-text>
     <unlock-prompt
+      v-if="hasUserLearnAndPlayPlan"
       title="CURRICULUM"
       desc="Scroll through to review your lessons and worksheets!"
       img="student-cubby/abc.png"
@@ -49,7 +50,8 @@ import {
   useRoute,
   useRouter,
   useStore,
-  watch
+  watch,
+  computed
 } from '@nuxtjs/composition-api'
 import {
   useChildCourseProgress,
@@ -83,6 +85,10 @@ export default defineComponent({
     const { childId: studentId } = useChildRoute({ store, route, router })
     const letters = ref<ChildProgress[]>([])
     const { getCourseProgressByChildId } = useChildCourseProgress()
+
+    const hasUserLearnAndPlayPlan = computed(() => {
+      return store.getters['auth/hasUserLearnAndPlayPlan']
+    })
 
     const loading = ref(true)
     const fetchChildProgress = async () => {
@@ -123,7 +129,8 @@ export default defineComponent({
       loading,
       letters,
       studentId,
-      showProgress
+      showProgress,
+      hasUserLearnAndPlayPlan
     }
   }
 })

@@ -27,6 +27,7 @@
         </pg-loading>
       </v-card-text>
       <unlock-prompt
+        v-if="hasUserLearnAndPlayPlan"
         title="PATCHES"
         desc="Master subjects in the Activities section to collect patches for your Student Cubby! Collect all badges to receive a real patch for your backpack."
         img="student-cubby/patches.svg"
@@ -36,7 +37,13 @@
 </template>
 
 <script lang="ts">
-import { useRoute, useStore, useRouter, ref } from '@nuxtjs/composition-api'
+import {
+  useRoute,
+  useStore,
+  useRouter,
+  ref,
+  computed
+} from '@nuxtjs/composition-api'
 import { usePatches } from '@/composables/patches'
 import PatchRow from '@/components/app/student-cubby/PatchRow.vue'
 import PatchOverlay from '@/components/app/student-cubby/PatchOverlay.vue'
@@ -66,6 +73,10 @@ export default {
     const { childId: studentId } = useChildRoute({ store, route, router })
     const { childrenPatchesActivity, getPatchesByChildId } = usePatches()
 
+    const hasUserLearnAndPlayPlan = computed(() => {
+      return store.getters['auth/hasUserLearnAndPlayPlan']
+    })
+
     const loading = ref(true)
     watch(
       studentId,
@@ -80,7 +91,8 @@ export default {
     return {
       loading,
       childrenPatchesActivity,
-      studentId
+      studentId,
+      hasUserLearnAndPlayPlan
     }
   }
 }
