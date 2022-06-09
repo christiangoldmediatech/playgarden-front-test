@@ -17,7 +17,7 @@ import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObj
 import { useCurriculumTypes, useFavorites } from '@/composables'
 import { useLibraryHelpers } from './use-library-helpers.composable'
 
-const ACTIVITIES_LIMIT = 50
+const ACTIVITIES_LIMIT = 100
 
 const isLoadingInitialData = ref(true)
 const categories = ref<ActivityType[]>([])

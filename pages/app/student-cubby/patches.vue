@@ -18,12 +18,14 @@
         </div>
 
         <pg-loading :loading="loading">
-          <patch-row
-            v-for="activityType in childrenPatchesActivity"
-            :key="`activity-type-patch-row-${activityType.id}`"
-            :activity-type="activityType"
-            data-test-id="patch-row"
-          />
+          <div>
+            <patch-row
+              v-for="activityType in childrenPatchesActivity"
+              :key="`activity-type-patch-row-${activityType.id}`"
+              :activity-type="activityType"
+              data-test-id="patch-row"
+            />
+          </div>
         </pg-loading>
       </v-card-text>
       <unlock-prompt
