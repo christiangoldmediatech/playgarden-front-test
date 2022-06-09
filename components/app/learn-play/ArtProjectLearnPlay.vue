@@ -12,31 +12,43 @@
       {{ getArtProjects[0].description }}
     </p>
 
-    <v-card>
-      <v-row v-if="getArtProjects.length > 0" class="mx-0">
-        <v-col v-for="(art, index) in getArtProjects" :key="`art-project-${index}`" cols="12">
-          <v-img
-            contain
-            :src="art.image"
-          />
-        </v-col>
-      </v-row>
-      <template v-else>
+    <v-row class="mx-1 mt-4">
+      <v-card
+        v-if="getArtProjects.length > 0"
+        class="justify-center"
+        width="100%"
+      >
+        <v-row
+          v-for="(art, index) in getArtProjects[0].image"
+          :key="`art-project-${index}`"
+          justify="center"
+          align="center"
+          class="my-4"
+        >
+          <center v-if="art.src">
+            <v-img
+              :src="art.src"
+              max-width="230"
+              min-width="230"
+              height="153"
+            />
+          </center>
+        </v-row>
+      </v-card>
+      <v-card v-else class="justify-center ml-2 mr-8" width="100%">
         <v-row
           v-for="n in 3"
           :key="`art-load-project-${n}`"
           justify="center"
           align="center"
-          class="mb-3"
+          class="my-4"
         >
           <v-card width="70%">
-            <v-skeleton-loader
-              type="image"
-            />
+            <v-skeleton-loader type="image" />
           </v-card>
         </v-row>
-      </template>
-    </v-card>
+      </v-card>
+    </v-row>
   </div>
 </template>
 
@@ -56,7 +68,7 @@ export default defineComponent({
     const store = useStore()
     const learnPlayV2 = useLearnPlayV2({ store })
 
-    function downloadArtFiles () {
+    function downloadArtFiles() {
       learnPlayV2.computedProps.getArtProjects.value.map((file: any) => {
         if (window && file) {
           window.open(file, '_blank')

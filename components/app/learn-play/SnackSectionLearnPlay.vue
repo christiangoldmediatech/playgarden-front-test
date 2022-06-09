@@ -12,30 +12,31 @@
       {{ getSnacks[0].description }}
     </p>
 
-    <v-card>
-      <div
-        v-if="getSnacks.length > 0"
-        class="diy-images-container mx-2 my-2"
-      >
-        <div
-          v-for="(snack, index) in getSnacks"
-          :key="`snack-item-${index}`"
-          class="pa-3"
-        >
-          <img :src="snack.image" height="100%">
-        </div>
-      </div>
-      <v-row v-else class="mx-2 my-2">
+    <v-card v-if="getSnacks.length > 0" width="93%" class="mt-5 ml-3">
+      <v-row v-if="getSnacks.length > 0" class="mx-2 my-2">
         <v-col
-          v-for="n in 3"
-          :key="`snack-load-item-${n}`"
-          cols="12"
+          v-for="(diy, index) in getSnacks[0].image"
+          :key="`diy-item-${index}`"
+          cols="4"
           md="4"
         >
-          <v-skeleton-loader
-            type="image"
-          />
+          <center v-if="diy.src">
+            <v-img :src="diy.src" height="150px" class="pg-rounded" />
+          </center>
         </v-col>
+      </v-row>
+    </v-card>
+    <v-card v-else class="justify-center ml-2 mr-8" width="100%">
+      <v-row
+        v-for="n in 3"
+        :key="`snack-load-project-${n}`"
+        justify="center"
+        align="center"
+        class="my-4"
+      >
+        <v-card width="70%">
+          <v-skeleton-loader type="image" />
+        </v-card>
       </v-row>
     </v-card>
   </div>
@@ -57,7 +58,7 @@ export default defineComponent({
     const store = useStore()
     const learnPlayV2 = useLearnPlayV2({ store })
 
-    function downloadSnackFiles () {
+    function downloadSnackFiles() {
       learnPlayV2.computedProps.getSnacks.value.map(({ file }: any) => {
         if (file && window) {
           window.open(file, '_blank')
