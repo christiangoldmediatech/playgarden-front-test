@@ -48,7 +48,7 @@ import LibraryLayout from '@/components/app/library/LibraryLayout.vue'
 import LibraryVideoPath from '@/components/app/library/LibraryVideoPath.vue'
 import LibraryCategoryIcon from '@/components/app/library/LibraryCategoryIcon.vue'
 import LibraryVideoPathPlayer from '@/components/app/library/LibraryVideoPathPlayer.vue'
-import { Video, ActivityType, TypedStore } from '@/models'
+import { Video, ActivityType /* TypedStore */ } from '@/models'
 import { getHexNonTransparentColor } from '@/utils/colorTools'
 import { useFavorites, useLibraryHelpers } from '@/composables'
 
@@ -73,7 +73,7 @@ export default defineComponent({
   setup() {
     const route = useRoute()
     const store = useStore()
-    const typedStore = useStore<TypedStore>()
+    // const typedStore = useStore<TypedStore>()
     const { $axios } = useContext()
 
     const child = computed(() => store.getters.getCurrentChild[0])
@@ -85,10 +85,14 @@ export default defineComponent({
     const playlist = computed(() => {
       if (result.value?.activityVideos && result.value?.activityVideos.length) {
         const mediaObjects = result.value.activityVideos.map((video, index) => {
-          const activity = videoToMediaObject(video, index, result.value?.activityType)
-          if (activity.meta) {
-            activity.meta.type = 'Activities'
-          }
+          const activity = videoToMediaObject(
+            video,
+            index,
+            result.value?.activityType
+          )
+          // if (activity.meta) {
+          //   activity.meta.type = 'Activities'
+          // }
           return activity
         })
         const curated = curatePlaylist(mediaObjects, favoriteVideoIds.value)
@@ -135,9 +139,9 @@ export default defineComponent({
       const activityTypeId = parseInt(route.value.params.activityTypeId)
 
       if (activityTypeId) {
-        const response = await $axios.$get(
+        const response = (await $axios.$get(
           `/activities/${activityTypeId}/patches/${child.value.id}/filter?limit=50&page=1`
-        ) as LibraryCategoryResponse
+        )) as LibraryCategoryResponse
         response.activityVideos = getValidVideos(response.activityVideos)
         result.value = response
       }
