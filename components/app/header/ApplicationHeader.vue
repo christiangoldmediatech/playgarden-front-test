@@ -275,7 +275,7 @@ export default {
 
     handleLogoClick() {
       if (unauthenticatedRoutes[this.$route.name]) {
-        window.open(process.env.frontendUrl, '_self')
+        window.open('https://playgardenonline.com/onlinepreschool', '_self')
         return
       }
 
