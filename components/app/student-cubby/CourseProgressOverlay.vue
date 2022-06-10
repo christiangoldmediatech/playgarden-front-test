@@ -2,7 +2,7 @@
   <v-overlay
     :class="`${loading ? 'align-center justify-center' : 'align-start justify-start'}`"
     :dark="false"
-    :value="show"
+    :value="isOverlayVisible"
     z-index="2000"
   >
     <v-btn
@@ -96,25 +96,35 @@
 </template>
 
 <script>
+import { defineComponent, useStore, useRoute, useRouter } from '@nuxtjs/composition-api'
 import DashboardPanel from '@/components/app/dashboard/DashboardPanel.vue'
 // import BlankDashboardPanel from '@/components/app/dashboard/BlankDashboardPanel.vue'
 import LetterSelect from '@/components/app/live-sessions/recorded/LetterSelect.vue'
 import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
 import { mapGetters, mapActions } from 'vuex'
+import { usePlanAccessHelpers } from '@/composables'
+import { TypedStore } from '@/models'
 
-export default {
+export default defineComponent({
   name: 'CourseProgressOverlay',
-
   components: {
     DashboardPanel,
     // BlankDashboardPanel,
     PerfectScrollbar,
     LetterSelect
   },
-
+  setup() {
+    const store = useStore()
+    const route = useRoute()
+    const router = useRouter()
+    const { isCurrentLessonUnavailableInPlan } = usePlanAccessHelpers({ store, route, router })
+    return {
+      isCurrentLessonUnavailableInPlan
+    }
+  },
   data: () => {
     return {
-      show: false,
+      isOverlayVisible: false,
       selectedDayIndex: 0,
       loading: false,
       selectedLetter: null,
@@ -122,7 +132,6 @@ export default {
       lessons: []
     }
   },
-
   computed: {
     ...mapGetters({ currentChild: 'getCurrentChild' }),
 
@@ -198,14 +207,17 @@ export default {
         })
       }
     },
-
     selectedLetter (val) {
       if (val) {
         this.getAll()
       }
+    },
+    isCurrentLessonUnavailableInPlan(val) {
+      if (val) {
+        this.isOverlayVisible = false
+      }
     }
   },
-
   mounted () {
     this.$nuxt.$on('show-curriculum-progress', (curriculumTypeId) => {
       if (this.studentId) {
@@ -215,13 +227,13 @@ export default {
         } else {
           this.getAll()
         }
-        this.show = true
+        this.isOverlayVisible = true
         document.querySelector('html').style.overflowY = 'hidden'
       }
     })
 
     this.$nuxt.$on('close-curriculum-progress', () => {
-      if (this.show) {
+      if (this.isOverlayVisible) {
         this.close()
         this.$nuxt.$emit('dashboard-panel-update')
       }
@@ -232,7 +244,7 @@ export default {
     ...mapActions('children/course-progress', ['getCourseProgressByChildId']),
 
     close () {
-      this.show = false
+      this.isOverlayVisible = false
       this.selectedDayIndex = 0
       document.querySelector('html').style.overflowY = 'auto'
     },
@@ -271,7 +283,7 @@ export default {
       }
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
