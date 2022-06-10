@@ -86,7 +86,13 @@ export default async function ({ redirect, route, store, app, req }) {
 
   const goToPage = (user) => {
     if (user.stripeStatus === 'active') {
-      return 'app-virtual-preschool'
+      if (user.planSelected.id === 2 || user.planSelected.id === 3) {
+        return 'app-virtual-preschool'
+      }
+
+      if (user.planSelected.id === 1) {
+        return 'app-learn-play'
+      }
     } else {
       return 'app-dashboard'
     }
