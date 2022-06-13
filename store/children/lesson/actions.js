@@ -126,8 +126,13 @@ export default {
     }
   },
 
-  async getLessonPreview ({ commit }, lessonId) {
-    const lesson = await this.$axios.$get(`/lessons/${lessonId}`)
+  async getLessonPreview ({ commit }, payload) {
+    const lessonId = typeof payload === 'number' ? payload : payload.lessonId
+    const token = payload.token
+    const lesson = await this.$axios.$get(`/lessons/${lessonId}`, token && {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+
     lesson.previewMode = true
     lesson.videos = lesson.videos.map((video) => {
       return {
