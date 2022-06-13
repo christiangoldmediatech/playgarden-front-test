@@ -25,8 +25,8 @@
             </a>
             <div class="container-submenu">
               <ul class="submenu">
-                <li><a href="https://playgardenonline.com/onlinepreschool/plans/">Enrollment Plans</a></li>
-                <li><a href="https://playgardenonline.com/onlinepreschool/testimonials/">Parent Testimonials</a></li>
+                <li><a href="https://playgardenonline.com/plans/">Enrollment Plans</a></li>
+                <li><a href="https://playgardenonline.com/testimonials/">Parent Testimonials</a></li>
               </ul>
             </div>
           </li>
@@ -50,7 +50,7 @@
             </div>
           </li>
           <li class="only-desktop">
-            <a href="https://playgardenonline.com/onlinepreschool/about-us/">About us</a>
+            <a href="https://playgardenonline.com/about-us">About us</a>
           </li>
           <li class="login">
             <a href="https://playgardenonline.com/school/auth/login">
@@ -84,8 +84,8 @@
                     <i class="fas fa-sort-down" />
                   </a>
                   <ul class="submenu">
-                    <li><a href="https://playgardenonline.com/onlinepreschool/plans/">Enrollment Plans</a></li>
-                    <li><a href="https://playgardenonline.com/onlinepreschool/testimonials/">Parent Testimonials</a></li>
+                    <li><a href="https://playgardenonline.com/plans/">Enrollment Plans</a></li>
+                    <li><a href="https://playgardenonline.com/testimonials/">Parent Testimonials</a></li>
                   </ul>
                 </li>
                 <li class="more-menu">
@@ -104,7 +104,7 @@
                   </ul>
                 </li>
                 <!-- <li>
-                                <a href="https://playgardenonline.com/onlinepreschool/about-us/">About Us</a>
+                                <a href="https://playgardenonline.com/about-us">About Us</a>
                             </li> -->
               </ul>
             </div>

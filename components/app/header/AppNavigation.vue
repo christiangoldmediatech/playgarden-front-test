@@ -56,8 +56,8 @@
                     </template>
 
                     <ul class="submenu">
-                      <li><a href="https://playgardenonline.com/onlinepreschool/plans/">Enrollment Plans</a></li>
-                      <li><a href="https://playgardenonline.com/onlinepreschool/testimonials/">Parent Testimonials</a></li>
+                      <li><a href="https://playgardenonline.com/plans/">Enrollment Plans</a></li>
+                      <li><a href="https://playgardenonline.com/testimonials/">Parent Testimonials</a></li>
                     </ul>
                   </v-list-group>
                   <hr class="mx-4">
@@ -83,7 +83,7 @@
                   </v-list-group>
                   <hr class="mx-4">
                   <li>
-                    <a href="https://playgardenonline.com/onlinepreschool/about-us/">About Us</a>
+                    <a href="https://playgardenonline.com/about-us">About Us</a>
                   </li>
                 </ul>
               </div>
