@@ -41,29 +41,24 @@ export default {
 
   async mounted() {
     const { token } = this.$route.query
+    this.$axios.setToken(`Bearer ${token}`)
 
     await this.$store.dispatch('setChild', {
       value: [previewChild],
       save: true
     })
 
-    this.lesson = await this.getLessonPreview({
-      lessonId: this.lessonId,
-      token
-    })
-
+    this.lesson = await this.getLessonPreview(this.lessonId)
     this.loading = false
-
     if (this.$route.name === 'admin-curriculum-management-lessonId-preview') {
       this.$router.push(
-        this.generateNuxtRoute('lesson-videos', { id: this.lesson.videos[0].id })
+        this.generateNuxtRoute('lesson-videos', {
+          id: this.lesson.videos[0].id
+        })
       )
     }
 
-    const curriculumTypes = await this.$axios.$get('/curriculum-types', {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-
+    const curriculumTypes = await this.$axios.$get('/curriculum-types')
     this.$store.commit('admin/curriculum/SET_TYPES', curriculumTypes)
   },
 
