@@ -2,8 +2,13 @@
   <pg-loading :loading="loading" fullscreen>
     <v-col class="fill-height" data-test-id="playdates-content">
       <!-- ACTIVE PLAYDATES -->
-      <div v-if="isPayingUser">
-        <v-row align="center" class="fill-height" justify="space-between" no-gutters>
+      <div v-if="isPayingUser && !hasUserLearnAndPlayPlan">
+        <v-row
+          align="center"
+          class="fill-height"
+          justify="space-between"
+          no-gutters
+        >
           <!-- HEADER -->
           <v-col cols="12" md="auto" class="flex-grow-1" order="2" order-md="1">
             <underlined-title
@@ -14,7 +19,13 @@
           </v-col>
 
           <!-- BUTTON -->
-          <v-col cols="12" md="auto" class="flex-shrink-1 text-right py-6 py-md-0" order="1" order-md="2">
+          <v-col
+            cols="12"
+            md="auto"
+            class="flex-shrink-1 text-right py-6 py-md-0"
+            order="1"
+            order-md="2"
+          >
             <v-btn
               :to="{ name: 'app-playdates-my-playdates' }"
               :small="isMobile"
@@ -29,14 +40,21 @@
           <v-col cols="12" order="3">
             <!-- PAGE DESCRIPTION -->
             <p class="text-body-2 text-md-body-1 py-4">
-              Join your friends and socialize at a Playgarden Prep Online Playdate!
-              These 30 minute Zoom sessions are designed to give children the opportunity to connect with peers while learning under the guidance of a Playgarden Prep instructor.
-              You can sign up for up to one Playdate per week; make sure to sign up for the same weekly Playdate, so that you can see your friends every week!
+              Join your friends and socialize at a Playgarden Prep Online
+              Playdate! These 30 minute Zoom sessions are designed to give
+              children the opportunity to connect with peers while learning
+              under the guidance of a Playgarden Prep instructor. You can sign
+              up for up to one Playdate per week; make sure to sign up for the
+              same weekly Playdate, so that you can see your friends every week!
             </p>
 
             <!-- WEEK NAVIGATOR -->
             <div class="d-flex justify-center align-center">
-              <week-selector :day="day" @prev-week="removeWeek" @next-week="addWeek" />
+              <week-selector
+                :day="day"
+                @prev-week="removeWeek"
+                @next-week="addWeek"
+              />
             </div>
 
             <!-- THANKSGIVING -->
@@ -53,7 +71,8 @@
 
                 <div class="mt-4">
                   <p class="text-body-2 text-md-body-1 py-4">
-                    We are not having Playdates this week, you can reserve your spot for the following weeks!
+                    We are not having Playdates this week, you can reserve your
+                    spot for the following weeks!
                   </p>
                 </div>
 
@@ -71,7 +90,12 @@
 
             <!-- WEEK'S PLAYDATES -->
             <v-row v-else-if="playdates.length" class="mt-6">
-              <v-col v-for="playdate in playdates" :key="playdate.id" cols="12" md="6">
+              <v-col
+                v-for="playdate in playdates"
+                :key="playdate.id"
+                cols="12"
+                md="6"
+              >
                 <card-playdate
                   :playdate="playdate"
                   :is-in-a-playdate="isInAPlaydate"
@@ -115,7 +139,13 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, useStore, watch } from '@nuxtjs/composition-api'
+import {
+  computed,
+  defineComponent,
+  ref,
+  useStore,
+  watch
+} from '@nuxtjs/composition-api'
 import { Playdate, TypedStore } from '@/models'
 import WeekSelector from '@/components/admin/live-sessions/WeekSelector.vue'
 import CardPlaydate from '@/components/app/playdates/CardPlaydate.vue'
@@ -136,21 +166,34 @@ export default defineComponent({
     Paywall: () => import('@/components/app/playdates/Paywall.vue')
   },
 
-  setup () {
+  setup() {
     const MIN_WEEK_INDEX = 0
     const MAX_WEEK_INDEX = 2
 
     const vuetify = useVuetifyHelper()
     const store = useStore<TypedStore>()
-    const { isPayingUser, getPlaydateForDate, getPlaydatesDates, getPlaydateWithChildren } = usePlaydates({ store })
+    const {
+      isPayingUser,
+      getPlaydateForDate,
+      getPlaydatesDates,
+      getPlaydateWithChildren
+    } = usePlaydates({ store })
     const { children, get } = useChild({ store })
     const day = ref(new Date())
     const playdatesDates = getPlaydatesDates()
     const currentPlaydateIndex = ref(0)
     const loading = ref(false)
     const playdates = ref<Playdate[]>([])
-    const currentPlaydateDate = computed(() => playdatesDates?.[currentPlaydateIndex.value] || dayjs().format('YYYY-MM-DD'))
+    const currentPlaydateDate = computed(
+      () =>
+        playdatesDates?.[currentPlaydateIndex.value] ||
+        dayjs().format('YYYY-MM-DD')
+    )
     const isMobile = computed(() => vuetify.breakpoint.mobile)
+
+    const hasUserLearnAndPlayPlan = computed(() => {
+      return store.getters['auth/hasUserLearnAndPlayPlan']
+    })
 
     const isThanksgivingWeek = computed(() => {
       const thanksGivingDay = '2021-11-25'
@@ -170,9 +213,11 @@ export default defineComponent({
 
     const isInAPlaydate = computed(() => {
       return playdates.value.some((playdate) => {
-        return Boolean(playdate?.backpackImages?.find(({ childrenId }) => {
-          return children.value.find(({ id }) => id === childrenId)
-        }))
+        return Boolean(
+          playdate?.backpackImages?.find(({ childrenId }) => {
+            return children.value.find(({ id }) => id === childrenId)
+          })
+        )
       })
     })
 
@@ -201,8 +246,12 @@ export default defineComponent({
       return displayDate
     })
 
-    const canGoToPreviousWeek = computed(() => currentPlaydateIndex.value > MIN_WEEK_INDEX)
-    const canGoToNextWeek = computed(() => currentPlaydateIndex.value < MAX_WEEK_INDEX)
+    const canGoToPreviousWeek = computed(
+      () => currentPlaydateIndex.value > MIN_WEEK_INDEX
+    )
+    const canGoToNextWeek = computed(
+      () => currentPlaydateIndex.value < MAX_WEEK_INDEX
+    )
 
     const goToPreviousWeek = () => {
       if (canGoToPreviousWeek.value) {
@@ -231,14 +280,25 @@ export default defineComponent({
     const fetchPlaydatesForDate = async () => {
       if (isPayingUser.value) {
         loading.value = true
-        playdates.value = await getPlaydateWithChildren({ startDate: days.value.monday, endDate: days.value.friday, admin: true, type: 'Playdate', page: 1, limit: 100 })
+        playdates.value = await getPlaydateWithChildren({
+          startDate: days.value.monday,
+          endDate: days.value.friday,
+          admin: true,
+          type: 'Playdate',
+          page: 1,
+          limit: 100
+        })
         loading.value = false
       }
     }
 
-    watch(currentPlaydateIndex, async () => {
-      await fetchPlaydatesForDate()
-    }, { immediate: true })
+    watch(
+      currentPlaydateIndex,
+      async () => {
+        await fetchPlaydatesForDate()
+      },
+      { immediate: true }
+    )
 
     onMounted(() => {
       get()
@@ -259,7 +319,8 @@ export default defineComponent({
       addWeek,
       removeWeek,
       goToNextWeek,
-      goToPreviousWeek
+      goToPreviousWeek,
+      hasUserLearnAndPlayPlan
     }
   }
 })
@@ -267,7 +328,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .nav-button {
-  background: #FFFFFF;
+  background: #ffffff;
   box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15) !important;
 }
 </style>
