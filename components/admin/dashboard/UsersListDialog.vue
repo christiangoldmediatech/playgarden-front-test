@@ -141,21 +141,25 @@ export default {
     },
 
     buildQueryParamsUsersPerStatusPlanIds () {
+      const currentPlan = this.plans.find(plan => plan.name === this.name)
       let arrayParameter = []
-      switch (this.name) {
-        case 'Homeschool':
-          arrayParameter = [3]
-          break
-        case 'Premium Early Education Online':
-          arrayParameter = [2]
-          break
-        case 'Early Education Online':
-          arrayParameter = [1]
-          break
-        case 'Trialing':
-          arrayParameter = [1, 2, 3]
-          break
+      if (currentPlan) {
+        const { id } = currentPlan
+        switch (id) {
+          case 1:
+            arrayParameter = [3]
+            break
+          case 2:
+            arrayParameter = [2]
+            break
+          case 3:
+            arrayParameter = [1]
+            break
+        }
+      } else {
+        arrayParameter = [1, 2, 3]
       }
+
       return arrayParameter
     },
 
