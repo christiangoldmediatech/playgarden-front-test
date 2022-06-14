@@ -82,7 +82,7 @@
                     <v-row no-gutters>
                       <v-col cols="12">
                         <span class="text-h6 font-weight-bold text-uppercase">
-                          Change backpack:
+                          Change icon:
                         </span>
                       </v-col>
 
