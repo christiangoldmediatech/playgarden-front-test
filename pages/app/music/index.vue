@@ -4,6 +4,7 @@
       v-if="hasUserLearnAndPlayPlan"
       title="MUSIC"
       desc="Unlock the full music library"
+      img="music.svg"
       :padding="150"
     />
     <v-main class="pt-5 pt-md-16 mt-0 mt-md-5" data-test-id="music-content">
