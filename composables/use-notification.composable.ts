@@ -307,8 +307,8 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
     return !hasCoupon
   }
 
-  const setLessonUnavailability = (isUnavailability: Boolean) => {
-    store.commit('children/lesson/SET_CURRENT_LESSON_UNAVAILABILITY_FOR_PLAN', isUnavailability)
+  const setLessonUnavailability = (isUnavailable: Boolean) => {
+    store.commit('children/lesson/SET_CURRENT_LESSON_UNAVAILABILITY_FOR_PLAN', isUnavailable)
   }
 
   const handleTrialEndingFlow = async () => {
