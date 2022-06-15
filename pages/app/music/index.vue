@@ -172,13 +172,13 @@ export default {
 
     const debouncedHandleScroll = debounce(handleScroll, 50)
 
-    watch(childId, async val => {
+    watch(childId, async (val) => {
       if (val) {
         await getAndSetFavorites()
       }
     })
 
-    watch(currentSong, async val => {
+    watch(currentSong, async (val) => {
       if (!val || !childId.value) {
         return
       }
