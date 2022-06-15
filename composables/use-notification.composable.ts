@@ -307,6 +307,12 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
     return !hasCoupon
   }
 
+  // aqui
+
+  const setLessonUnavailability = (isUnavailability: Boolean) => {
+    store.commit('children/lesson/SET_CURRENT_LESSON_UNAVAILABILITY_FOR_PLAN', isUnavailability)
+  }
+
   const handleTrialEndingFlow = async () => {
     if (userFlow.value === UserFlow.NOCREDITCARD) {
       showTrialEndingWeekTwoModal()
@@ -334,6 +340,7 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
     isTrialExpiredModalVisible,
     isTrialExpiringRibbonVisible,
     notificationCard,
+    setLessonUnavailability,
     setIsCreditCardModalVisible,
     setIsPlanUpgradeModalVisible,
     setIsShippingModalVisible,
