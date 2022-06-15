@@ -1,13 +1,14 @@
 <template>
   <pg-loading :loading="loading" fullscreen>
-    <unlock-prompt
-      v-if="hasUserLearnAndPlayPlan"
-      title="MUSIC"
-      desc="Unlock the full music library"
-      img="music.svg"
-      :padding="150"
-    />
     <v-main class="pt-5 pt-md-16 mt-0 mt-md-5" data-test-id="music-content">
+      <unlock-prompt
+        v-if="hasUserLearnAndPlayPlan"
+        title="MUSIC"
+        desc="Unlock the full music library"
+        img="music.svg"
+        :padding="150"
+      />
+
       <v-container fluid class="pa-0">
         <horizontal-ribbon-card :is-minimized.sync="isTopRibbonMinimized">
           <v-row no-gutters class="ml-md-10 mr-md-6 mx-4 mt-4">
@@ -171,13 +172,13 @@ export default {
 
     const debouncedHandleScroll = debounce(handleScroll, 50)
 
-    watch(childId, async (val) => {
+    watch(childId, async val => {
       if (val) {
         await getAndSetFavorites()
       }
     })
 
-    watch(currentSong, async (val) => {
+    watch(currentSong, async val => {
       if (!val || !childId.value) {
         return
       }
