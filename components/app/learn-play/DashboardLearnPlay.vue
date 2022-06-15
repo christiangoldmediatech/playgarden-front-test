@@ -12,20 +12,12 @@
         </div>
       </v-col>
 
-      <v-col cols="12" md="6" lg="8" xl="10">
+      <v-col cols="12">
         <carousel-letter
           id="CarouselLetter"
           :value="curriculumTypeId"
           :preview-mode="previewMode"
         />
-      </v-col>
-
-      <v-col
-        class="d-none d-md-block flex-grow-1 flex-shrink-0"
-        cols="12"
-        md="auto"
-      >
-        <pg-text-field label="Search" solo-labeled hide-details block />
       </v-col>
     </v-row>
 
