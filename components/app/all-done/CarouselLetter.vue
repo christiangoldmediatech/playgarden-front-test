@@ -190,9 +190,7 @@ export default defineComponent({
       route,
       router
     })
-    return {
-      isCurrentLessonUnavailableInPlan
-    }
+    return { isCurrentLessonUnavailableInPlan }
   },
   data: () => {
     return {

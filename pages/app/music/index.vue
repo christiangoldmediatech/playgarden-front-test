@@ -1,10 +1,15 @@
 <template>
   <pg-loading :loading="loading" fullscreen>
+    <unlock-prompt
+      v-if="hasUserLearnAndPlayPlan"
+      title="MUSIC"
+      desc="Unlock the full music library"
+      img="music.svg"
+      :padding="150"
+    />
     <v-main class="pt-5 pt-md-16 mt-0 mt-md-5" data-test-id="music-content">
       <v-container fluid class="pa-0">
-        <horizontal-ribbon-card
-          :is-minimized.sync="isTopRibbonMinimized"
-        >
+        <horizontal-ribbon-card :is-minimized.sync="isTopRibbonMinimized">
           <v-row no-gutters class="ml-md-10 mr-md-6 mx-4 mt-4">
             <v-col cols="12" md="3" align-self="center">
               <child-select
@@ -15,7 +20,12 @@
                 @input="id = $event"
               />
             </v-col>
-            <v-col cols="12" md="9" align-self="center" class="mt-2 mt-md-0 d-none d-sm-flex px-2 carousel-wrapper">
+            <v-col
+              cols="12"
+              md="9"
+              align-self="center"
+              class="mt-2 mt-md-0 d-none d-sm-flex px-2 carousel-wrapper"
+            >
               <music-carousel-letter
                 :is-full-width="true"
                 :value="selectedLetterId"
@@ -64,10 +74,33 @@ import NewCompactMusicPlayer from '@/components/app/music/NewCompactMusicPlayer.
 import HorizontalRibbonCard from '@/components/ui/cards/HorizontalCardRibbon.vue'
 import ChildSelect from '@/components/app/ChildSelect.vue'
 import MusicCarouselLetter from '@/components/app/music/MusicLetterCarousel.vue'
+import UnlockPrompt from '@/components/app/all-done/UnlockPrompt.vue'
 
-import { useMusic, useSnotifyHelper, useVuetifyHelper, useAppEventBusHelper, useGtmHelper, useAuth, useChildRoute } from '@/composables'
-import { onMounted, ref, computed, useRoute, watch, onUnmounted, useStore, useRouter } from '@nuxtjs/composition-api'
-import { MusicLibrary, APP_EVENTS, TAG_MANAGER_EVENTS, TypedStore } from '@/models'
+import {
+  useMusic,
+  useSnotifyHelper,
+  useVuetifyHelper,
+  useAppEventBusHelper,
+  useGtmHelper,
+  useAuth,
+  useChildRoute
+} from '@/composables'
+import {
+  onMounted,
+  ref,
+  computed,
+  useRoute,
+  watch,
+  onUnmounted,
+  useStore,
+  useRouter
+} from '@nuxtjs/composition-api'
+import {
+  MusicLibrary,
+  APP_EVENTS,
+  TAG_MANAGER_EVENTS,
+  TypedStore
+} from '@/models'
 
 const PAGE_MOBILE_BREAKPOINT = 1264
 const MOBILE_PLAYER_HEIGHT = 135
@@ -81,10 +114,11 @@ export default {
     NewCompactMusicPlayer,
     HorizontalRibbonCard,
     ChildSelect,
-    MusicCarouselLetter
+    MusicCarouselLetter,
+    UnlockPrompt
   },
 
-  setup () {
+  setup() {
     const vuetify = useVuetifyHelper()
     const snotify = useSnotifyHelper()
     const route = useRoute()
@@ -109,16 +143,29 @@ export default {
       sendCurrentPlayingMusic,
       songsByCurriculumTypeWithFavorites
     } = useMusic()
-    const { childId } = useChildRoute({ store, route, router, shouldRedirect: true })
+    const { childId } = useChildRoute({
+      store,
+      route,
+      router,
+      shouldRedirect: true
+    })
 
-    const isMobile = computed(() => vuetify.breakpoint.width <= PAGE_MOBILE_BREAKPOINT)
+    const isMobile = computed(
+      () => vuetify.breakpoint.width <= PAGE_MOBILE_BREAKPOINT
+    )
     const isPlayerShowing = computed(() => playlist.value.length > 0)
     const didScrollToBottom = ref(false)
     const isIntersectingMusicPlayer = ref(false)
 
     const handleScroll = () => {
-      didScrollToBottom.value = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.scrollHeight - MOBILE_PLAYER_HEIGHT
+      didScrollToBottom.value =
+        document.documentElement.scrollTop + window.innerHeight >=
+        document.documentElement.scrollHeight - MOBILE_PLAYER_HEIGHT
     }
+
+    const hasUserLearnAndPlayPlan = computed(() => {
+      return store.getters['auth/hasUserLearnAndPlayPlan']
+    })
 
     const { userInfo } = useAuth({ store })
 
@@ -147,12 +194,18 @@ export default {
       window.addEventListener('scroll', debouncedHandleScroll)
 
       // GTM EVENTS
-      eventBus.$on(APP_EVENTS.MUSIC_ITEM_CLICKED, (data: { event: string, topic: string, userId: string }) => {
-        gtm.push(data)
-      })
-      eventBus.$on(APP_EVENTS.MUSIC_ITEM_ADD_TO_FAVORITES, (data: { event: string, topic: string, userId: string }) => {
-        gtm.push(data)
-      })
+      eventBus.$on(
+        APP_EVENTS.MUSIC_ITEM_CLICKED,
+        (data: { event: string; topic: string; userId: string }) => {
+          gtm.push(data)
+        }
+      )
+      eventBus.$on(
+        APP_EVENTS.MUSIC_ITEM_ADD_TO_FAVORITES,
+        (data: { event: string; topic: string; userId: string }) => {
+          gtm.push(data)
+        }
+      )
 
       loading.value = false
     })
@@ -245,7 +298,7 @@ export default {
         }
 
         await getAndSetFavorites()
-      } catch (error: any) {
+      } catch (error) {
         snotify.error(error.message)
       }
     }
@@ -253,21 +306,26 @@ export default {
     const selectedLetterId = ref<number | null>(null)
 
     const selectLetter = (letterId: number) => {
-      selectedLetterId.value = selectedLetterId.value === letterId ? null : letterId
+      selectedLetterId.value =
+        selectedLetterId.value === letterId ? null : letterId
     }
 
     const letters = computed(() => store.getters['admin/curriculum/types'])
 
     const availableLettersWithSongsIds = computed(() => {
       const availableIds = new Set()
-      songsByCurriculumTypeWithFavorites.value.forEach(letter => availableIds.add(letter.id))
+      songsByCurriculumTypeWithFavorites.value.forEach(letter =>
+        availableIds.add(letter.id)
+      )
       return Array.from(availableIds)
     })
 
     const disabledLetters = computed(() => {
-      const filteredLetters = letters.value?.filter((letter: any) => {
-        return !availableLettersWithSongsIds.value.includes(letter.id)
-      }).map((letter: any) => letter.id)
+      const filteredLetters = letters.value
+        ?.filter((letter: any) => {
+          return !availableLettersWithSongsIds.value.includes(letter.id)
+        })
+        .map((letter: any) => letter.id)
 
       return filteredLetters
     })
@@ -279,7 +337,10 @@ export default {
      * song while there is no song selected.
      */
     const handleEmptyMusicPlayer = () => {
-      if (playlist.value.length === 0 && allSongsWithFavorites.value.length > 0) {
+      if (
+        playlist.value.length === 0 &&
+        allSongsWithFavorites.value.length > 0
+      ) {
         addSongToPlaylist(allSongsWithFavorites.value[0])
       }
     }
@@ -312,7 +373,8 @@ export default {
       selectedLetterId,
       isTopRibbonMinimized,
       disabledLetters,
-      onIntersect
+      onIntersect,
+      hasUserLearnAndPlayPlan
     }
   }
 }
