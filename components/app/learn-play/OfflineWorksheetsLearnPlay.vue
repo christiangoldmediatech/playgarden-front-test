@@ -17,6 +17,7 @@
         width="100%"
         elevation="6"
         :ripple="false"
+        @click.stop="handleDownloadWorksheetClick(offlineWorksheet)"
       >
         <div class="d-flex flex-nowrap pa-2 align-center">
           <div class="mr-3">
