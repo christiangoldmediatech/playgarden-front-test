@@ -12,7 +12,10 @@
           class="library-inline-player"
           :control-config="{ favorite: false }"
           inline
-          @ready="onPlayerReady({ player: $event, videos: learnPlayData.videos })"
+          auto-track-change
+          @ready="
+            onPlayerReady({ player: $event, videos: learnPlayData.videos })
+          "
         >
           <template #inline-play-icon="{ firstPlay }">
             <div
@@ -30,7 +33,7 @@
                   'player-preview-icon-scaled': scaleIcon
                 }"
                 src="@/assets/svg/library/library-play-icon-green.svg"
-              >
+              />
 
               <div class="player-preview-text">
                 <div class="player-text-top-part justify-center">
@@ -95,7 +98,7 @@ export default defineComponent({
       author.value = playVideoList[0].meta?.author as string
     }
 
-    function changeVideoTrack (video: any) {
+    function changeVideoTrack(video: any) {
       if (!player.value) {
         return
       }
