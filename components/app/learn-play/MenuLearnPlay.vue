@@ -22,7 +22,7 @@
       />
     </v-col>
     <v-col cols="12">
-      <span class="color-main clickable" @click="sendSection('videoLesson')">
+      <span class="color-main" @click="sendSection('videoLesson')">
         Sections
       </span>
     </v-col>

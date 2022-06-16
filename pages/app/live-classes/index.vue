@@ -127,6 +127,8 @@
 
       <recorded-class-player />
 
+      <upgrade-plan-live-classes-overlay />
+
       <pg-dialog
         :value="!hasTrialOrPlatinumPlan"
         content-class="elevation-0"
@@ -244,8 +246,6 @@
         </v-card>
       </pg-dialog>
     </v-main>
-
-    <upgrade-plan-live-classes-overlay />
   </pg-loading>
 </template>
 
