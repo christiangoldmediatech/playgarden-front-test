@@ -16,7 +16,7 @@
       <SectionImageLAP
         class="library"
         :section="section.library"
-        height="60%"
+        small
         @click="handleClick"
       />
 
@@ -43,7 +43,7 @@
       <SectionImageLAP
         class="daily-lessons"
         :section="section.dashboard"
-        :blocked="!isIntro"
+        blocked
         @click="handleClick"
       />
 
@@ -70,10 +70,9 @@ import {
 
 import { useAuth } from '@/composables'
 import { TypedStore, Child } from '@/models'
-import { useChildren } from '@/composables/store/use-children.composable'
+
 import BirthdayVideoDialog from '@/components/features/childBirthday/BirthdayVideoDialog.vue'
 import SectionImageLAP from '@/components/app/virtual-preschool/SectionImageLAP.vue'
-import { useLessonApi } from '@/composables/lesson'
 
 export default defineComponent({
   name: 'VirtualLearnAndPlay',
@@ -85,10 +84,8 @@ export default defineComponent({
 
   setup() {
     const store = useStore<TypedStore>()
-    const currentLessonId = ref<number | undefined>(undefined)
     const router = useRouter()
     const { accessToken } = useAuth({ store })
-    const children = useChildren({ store })
     const baseRoute =
       process.env.testEnv === 'production'
         ? `${process.env.baseRouteProd}`
@@ -98,13 +95,9 @@ export default defineComponent({
       (): Utils.Maybe<Child> => store.getters.getCurrentChild?.[0]
     )
 
-    const isIntro = computed(() => currentLessonId.value === 28)
-
-    const lessonApi = useLessonApi({ child: children.currentChild })
-
     const goToKidsCorner = () => {
       const kidsCornerUrl = process.env.kidsCornerUrl
-      window.open(`${kidsCornerUrl}?atoken=${accessToken.value}`, '_blank')
+      window.open(`${kidsCornerUrl}?atoken=${accessToken.value}`, '_self')
     }
 
     const section = {
@@ -159,17 +152,13 @@ export default defineComponent({
     const player = ref<HTMLAudioElement>()
     const isBirthdayModalvisible = ref(false)
 
-    onMounted(async () => {
+    onMounted(() => {
       player.value = new Audio()
-      const data = await lessonApi.getChildsCurrentLesson()
-      if (data) {
-        const { lesson } = data
-        currentLessonId.value = lesson.curriculumType.id
-      }
     })
 
     const handleClick = (sectionItem: SectionItem) => {
       const route = sectionItem.route
+
       if (typeof route === 'function') {
         route()
       } else {
@@ -180,10 +169,9 @@ export default defineComponent({
 
     return {
       section,
-      isIntro,
-      isBirthdayModalvisible,
       goToKidsCorner,
-      handleClick
+      handleClick,
+      isBirthdayModalvisible
     }
   }
 })

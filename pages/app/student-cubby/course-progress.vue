@@ -28,6 +28,12 @@
         </v-row>
       </pg-loading>
     </v-card-text>
+    <unlock-prompt
+      v-if="hasUserLearnAndPlayPlan"
+      title="CURRICULUM"
+      desc="Scroll through to review your lessons and worksheets!"
+      img="student-cubby/abc.png"
+    />
 
     <course-progress-overlay />
   </v-card>
@@ -37,19 +43,41 @@
 import RecordedLetter from '@/components/app/live-sessions/recorded/RecordedLetter.vue'
 import CourseProgressOverlay from '@/components/app/student-cubby/CourseProgressOverlay.vue'
 
-import { defineComponent, onBeforeUnmount, ref, useRoute, useRouter, useStore, watch } from '@nuxtjs/composition-api'
-import { useChildCourseProgress, useChildRoute, useNuxtHelper } from '@/composables'
+import {
+  defineComponent,
+  onBeforeUnmount,
+  ref,
+  useRoute,
+  useRouter,
+  useStore,
+  watch,
+  computed
+} from '@nuxtjs/composition-api'
+import {
+  useChildCourseProgress,
+  useChildRoute,
+  useNuxtHelper
+} from '@/composables'
 import { ChildProgress, TypedStore } from '@/models'
+import { StudentChubbyItemText } from '@/components/app/student-cubby/types'
+import StudyCubbyItemHeader, {
+  StudentCubbyItemHeaderProps
+} from '@/components/app/student-cubby/StudyCubbyItemHeader.vue'
+import { useStudentCubbyHelpers } from '@/components/app/student-cubby/composables'
+import UnlockPrompt from '@/components/app/all-done/UnlockPrompt.vue'
+
+const itemText: StudentChubbyItemText = 'CURRICULUM'
 
 export default defineComponent({
   name: 'CourseProgress',
 
   components: {
     CourseProgressOverlay,
-    RecordedLetter
+    RecordedLetter,
+    UnlockPrompt
   },
 
-  setup () {
+  setup() {
     const nuxt = useNuxtHelper()
     const route = useRoute()
     const router = useRouter()
@@ -57,6 +85,10 @@ export default defineComponent({
     const { childId: studentId } = useChildRoute({ store, route, router })
     const letters = ref<ChildProgress[]>([])
     const { getCourseProgressByChildId } = useChildCourseProgress()
+
+    const hasUserLearnAndPlayPlan = computed(() => {
+      return store.getters['auth/hasUserLearnAndPlayPlan']
+    })
 
     const loading = ref(true)
     const fetchChildProgress = async () => {
@@ -85,15 +117,20 @@ export default defineComponent({
       document.querySelector('html')?.style.overflowY = 'auto'
     })
 
-    watch(studentId, () => {
-      fetchChildProgress()
-    }, { immediate: true })
+    watch(
+      studentId,
+      () => {
+        fetchChildProgress()
+      },
+      { immediate: true }
+    )
 
     return {
       loading,
       letters,
       studentId,
-      showProgress
+      showProgress,
+      hasUserLearnAndPlayPlan
     }
   }
 })

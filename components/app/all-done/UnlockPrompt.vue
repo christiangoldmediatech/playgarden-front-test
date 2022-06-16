@@ -1,13 +1,8 @@
 <template>
   <main class="overlay">
-    <section class="promptMessage" :style="{ 'padding-top': `${padding}px` }">
+    <section class="promptMessage">
       <div class="d-flex align-center">
-        <img
-          v-if="img"
-          :src="getImg(img)"
-          :alt="`${title} IMAGE`"
-          height="60"
-        >
+        <img :src="getImg(img)" :alt="`${title} IMAGE`" height="60">
         <div class="text-h5 text-md-h4 ml-4">
           {{ title }}
         </div>
@@ -38,11 +33,7 @@ export default defineComponent({
     },
     img: {
       type: String,
-      default: null
-    },
-    padding: {
-      type: Number,
-      default: 50
+      default: ''
     }
   },
   components: {
@@ -71,6 +62,7 @@ export default defineComponent({
   background-color: rgb(0, 0, 0, 0.6);
   color: white;
   min-height: 500px;
+  padding-top: 50px;
 }
 
 .promptMessage {

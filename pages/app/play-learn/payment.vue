@@ -48,7 +48,7 @@
                 ]"
               >
                 You can cancel your trial and membership anytime from the
-                Account Settings.
+                account settings.
               </div>
             </template>
           </StripePayForm>

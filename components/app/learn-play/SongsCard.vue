@@ -1,12 +1,8 @@
 <template>
-  <v-row>
+  <v-row class="ma-0">
     <v-container fluid class="pa-0">
       <v-expand-transition>
-        <music-player-learn-play
-          ref="musicPlayer"
-          v-intersect="onIntersect"
-          @favorite="handleFavorite"
-        />
+        <music-player-learn-play ref="musicPlayer" @favorite="handleFavorite" />
       </v-expand-transition>
     </v-container>
   </v-row>
@@ -15,16 +11,42 @@
 <script lang="ts">
 // @ts-ignore
 import debounce from 'lodash/debounce'
-import { useNuxtHelper, useMusic, useSnotifyHelper, useVuetifyHelper, useAppEventBusHelper, useGtmHelper, useAuth, useChildRoute } from '@/composables'
+import {
+  useNuxtHelper,
+  useMusic,
+  useSnotifyHelper,
+  useVuetifyHelper,
+  useAppEventBusHelper,
+  useGtmHelper,
+  useAuth,
+  useChildRoute,
+  useLearnPlayV2
+} from '@/composables'
 import MusicPlayerLearnPlay from '@/components/app/learn-play/MusicPlayerLearnPlay.vue'
 
-import { onMounted, ref, computed, useRoute, watch, onUnmounted, useStore, useRouter } from '@nuxtjs/composition-api'
-import { MusicLibrary, APP_EVENTS, TAG_MANAGER_EVENTS, TypedStore } from '@/models'
+import {
+  onMounted,
+  ref,
+  computed,
+  useRoute,
+  watch,
+  onUnmounted,
+  useStore,
+  useRouter,
+  defineComponent,
+  Ref
+} from '@nuxtjs/composition-api'
+import {
+  MusicLibrary,
+  APP_EVENTS,
+  TAG_MANAGER_EVENTS,
+  TypedStore
+} from '@/models'
 
 const PAGE_MOBILE_BREAKPOINT = 1464
 const MOBILE_PLAYER_HEIGHT = 135
 
-export default {
+export default defineComponent({
   name: 'SongsCard',
   components: {
     MusicPlayerLearnPlay
@@ -35,10 +57,14 @@ export default {
       type: Object,
       required: false,
       default: () => ({})
+    },
+    previewMode: {
+      type: Boolean,
+      default: false
     }
   },
 
-  setup () {
+  setup(props) {
     const nuxt = useNuxtHelper()
     const vuetify = useVuetifyHelper()
     const snotify = useSnotifyHelper()
@@ -47,11 +73,12 @@ export default {
     const store = useStore<TypedStore>()
     const eventBus = useAppEventBusHelper()
     const gtm = useGtmHelper()
+    const learnPlayV2 = useLearnPlayV2({ store })
 
     // this references `ref="musicPlayer"` when the component is mounted
     const musicPlayer = ref<any>(null)
     const {
-      allSongsWithFavorites,
+      // allSongsWithFavorites,
       currentSong,
       favoritesDictionary,
       getFavoriteMusicForChild,
@@ -63,22 +90,38 @@ export default {
       sendCurrentPlayingMusic,
       songsByCurriculumTypeWithFavorites
     } = useMusic()
-    const { childId } = useChildRoute({ store, route, router, shouldRedirect: true })
 
-    const isMobile = computed(() => vuetify.breakpoint.width <= PAGE_MOBILE_BREAKPOINT)
+    let childId: Ref<number | null>
+    if (props.previewMode) {
+      childId = ref(null)
+    } else {
+      childId = useChildRoute({
+        store,
+        route,
+        router,
+        shouldRedirect: true
+      }).childId
+    }
+
+    const isMobile = computed(
+      () => vuetify.breakpoint.width <= PAGE_MOBILE_BREAKPOINT
+    )
+
     const isPlayerShowing = computed(() => playlist.value.length > 0)
     const didScrollToBottom = ref(false)
-    const isIntersectingMusicPlayer = ref(false)
+    // const isIntersectingMusicPlayer = ref(false)
 
     const handleScroll = () => {
-      didScrollToBottom.value = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.scrollHeight - MOBILE_PLAYER_HEIGHT
+      didScrollToBottom.value =
+        document.documentElement.scrollTop + window.innerHeight >=
+        document.documentElement.scrollHeight - MOBILE_PLAYER_HEIGHT
     }
 
     const { userInfo } = useAuth({ store })
 
     const debouncedHandleScroll = debounce(handleScroll, 50)
 
-    const changeSong = nuxt.$on('change-song', (song: MusicLibrary) => {
+    nuxt.$on('change-song', (song: MusicLibrary) => {
       if (song) {
         currentSong.value = song
       }
@@ -99,19 +142,29 @@ export default {
     })
 
     onMounted(async () => {
-      await getMusicLibrariesByCurriculumType()
+      if (!props.previewMode) {
+        await getMusicLibrariesByCurriculumType()
+      }
+
       await getAndSetFavorites()
+
       handleEmptyMusicPlayer()
 
       window.addEventListener('scroll', debouncedHandleScroll)
 
       // GTM EVENTS
-      eventBus.$on(APP_EVENTS.MUSIC_ITEM_CLICKED, (data: { event: string, topic: string, userId: string }) => {
-        gtm.push(data)
-      })
-      eventBus.$on(APP_EVENTS.MUSIC_ITEM_ADD_TO_FAVORITES, (data: { event: string, topic: string, userId: string }) => {
-        gtm.push(data)
-      })
+      eventBus.$on(
+        APP_EVENTS.MUSIC_ITEM_CLICKED,
+        (data: { event: string; topic: string; userId: string }) => {
+          gtm.push(data)
+        }
+      )
+      eventBus.$on(
+        APP_EVENTS.MUSIC_ITEM_ADD_TO_FAVORITES,
+        (data: { event: string; topic: string; userId: string }) => {
+          gtm.push(data)
+        }
+      )
     })
 
     onUnmounted(() => {
@@ -147,7 +200,7 @@ export default {
     }
 
     const getAndSetFavorites = async () => {
-      if (!childId.value) {
+      if (!childId.value || props.previewMode) {
         return
       }
 
@@ -156,11 +209,12 @@ export default {
     }
 
     const addSongToPlaylist = (song: MusicLibrary) => {
-      eventBus.$emit(APP_EVENTS.MUSIC_ITEM_CLICKED, {
-        event: TAG_MANAGER_EVENTS.MUSIC_ITEM_CLICKED,
-        userId: userInfo.value.id,
-        topic: song.description
-      })
+      // This event does not seem to correspond to what's actually happening
+      // eventBus.$emit(APP_EVENTS.MUSIC_ITEM_CLICKED, {
+      //   event: TAG_MANAGER_EVENTS.MUSIC_ITEM_CLICKED,
+      //   userId: userInfo.value.id,
+      //   topic: song.description
+      // })
       if (musicPlayer.value) {
         musicPlayer.value.addSongToPlaylist(song)
         playlist.value.push(song)
@@ -172,7 +226,7 @@ export default {
         musicPlayer.value.createNewPlaylist(playList)
         playlist.value = playList
 
-        isTopRibbonMinimized.value = true
+        // isTopRibbonMinimized.value = true
       }
 
       if (playList.length > 1) {
@@ -185,6 +239,10 @@ export default {
     }
 
     const handleFavorite = async (song: MusicLibrary) => {
+      if (props.previewMode) {
+        return
+      }
+
       try {
         if (song.isFavorite && song.favoriteId) {
           await removeFavoriteMusic(song.favoriteId)
@@ -202,7 +260,7 @@ export default {
         }
 
         await getAndSetFavorites()
-      } catch (error) {
+      } catch (error: any) {
         snotify.error(error.message)
       }
     }
@@ -210,48 +268,57 @@ export default {
     const selectedLetterId = ref<number | null>(null)
 
     const selectLetter = (letterId: number) => {
-      selectedLetterId.value = selectedLetterId.value === letterId ? null : letterId
+      selectedLetterId.value =
+        selectedLetterId.value === letterId ? null : letterId
     }
 
     const letters = computed(() => store.getters['admin/curriculum/types'])
 
     const availableLettersWithSongsIds = computed(() => {
       const availableIds = new Set()
-      songsByCurriculumTypeWithFavorites.value.forEach(letter => availableIds.add(letter.id))
+      songsByCurriculumTypeWithFavorites.value.forEach(letter =>
+        availableIds.add(letter.id)
+      )
       return Array.from(availableIds)
     })
 
     const disabledLetters = computed(() => {
-      const filteredLetters = letters.value?.filter((letter: any) => {
-        return !availableLettersWithSongsIds.value.includes(letter.id)
-      }).map((letter: any) => letter.id)
+      const filteredLetters = letters.value
+        ?.filter((letter: any) => {
+          return !availableLettersWithSongsIds.value.includes(letter.id)
+        })
+        .map((letter: any) => letter.id)
 
       return filteredLetters
     })
 
-    const isTopRibbonMinimized = ref(false)
+    // const isTopRibbonMinimized = ref(false)
 
     /**
      * The music player is always visible, so here we want to show a default
      * song while there is no song selected.
      */
     const handleEmptyMusicPlayer = () => {
-      if (playlist.value.length === 0 && allSongsWithFavorites.value.length > 0) {
-        addSongToPlaylist(allSongsWithFavorites.value[0])
-      }
+      createNewPlaylist(learnPlayV2.computedProps.songs.value)
+      // allSongsWithFavorites.value.forEach((song) => {
+      //   addSongToPlaylist(song)
+      // })
+      // if (playlist.value.length === 0 && allSongsWithFavorites.value.length > 0) {
+      //   addSongToPlaylist(allSongsWithFavorites.value[0])
+      // }
     }
 
-    const onIntersect = (entries: IntersectionObserverEntry[]) => {
-      isIntersectingMusicPlayer.value = entries[0].isIntersecting
-    }
+    // const onIntersect = (entries: IntersectionObserverEntry[]) => {
+    //   isIntersectingMusicPlayer.value = entries[0].isIntersecting
+    // }
 
-    watch(isIntersectingMusicPlayer, () => {
-      isTopRibbonMinimized.value = isIntersectingMusicPlayer.value
-    })
+    // watch(isIntersectingMusicPlayer, () => {
+    //   isTopRibbonMinimized.value = isIntersectingMusicPlayer.value
+    // })
 
     return {
       addSongToPlaylist,
-      allSongsWithFavorites,
+      // allSongsWithFavorites,
       createNewPlaylist,
       currentSong,
       didScrollToBottom,
@@ -266,12 +333,12 @@ export default {
       songsByCurriculumTypeWithFavorites,
       selectLetter,
       selectedLetterId,
-      isTopRibbonMinimized,
-      disabledLetters,
-      onIntersect
+      // isTopRibbonMinimized,
+      disabledLetters
+      // onIntersect
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

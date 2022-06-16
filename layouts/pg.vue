@@ -32,7 +32,9 @@
       <nuxt v-else :style="contentStyle" />
 
       <!-- FOOTER -->
-      <default-footer />
+      <default-footer v-if="!hasUserLearnAndPlayPlan" />
+
+      <GolFooter v-else />
 
       <notify-event />
 
@@ -58,6 +60,7 @@ import { computed, defineComponent, onMounted, watch } from '@vue/composition-ap
 import AppNavigation from '@/components/app/header/AppNavigation.vue'
 import PgHeader from '@/components/app/header/PgHeader.vue'
 import DefaultFooter from '@/components/app/footer/DefaultFooter.vue'
+import GolFooter from '@/components/app/gift-of-learning/Footer/Footer.vue'
 
 export default defineComponent({
   middleware: ['utmHandler'],
@@ -70,7 +73,8 @@ export default defineComponent({
     NotificationCard: () => import('@/components/app/notifications/NotificationCard.vue'),
     ShippingAddressModal: () => import('@/components/app/payment/ShippingAddressModal.vue'),
     TrialExpiredModal: () => import('@/components/app/payment/TrialExpiredModal.vue'),
-    ContactUsFormModal: () => import('@/components/forms/contact/ContactUsFormModal.vue')
+    ContactUsFormModal: () => import('@/components/forms/contact/ContactUsFormModal.vue'),
+    GolFooter
   },
 
   setup () {
@@ -94,6 +98,10 @@ export default defineComponent({
     } = useNotification({ store })
 
     const routeName = computed(() => route.value.name)
+
+    const hasUserLearnAndPlayPlan = computed(
+      () => store.getters['auth/hasUserLearnAndPlayPlan']
+    )
 
     watch(isUserLoggedIn, async () => {
       if (isUserLoggedIn.value === true && routeName.value !== 'shared-slug') {
@@ -119,7 +127,8 @@ export default defineComponent({
       showContent,
       toolbarStyle,
       setShowContent,
-      handleExpiredTrialCountdown
+      handleExpiredTrialCountdown,
+      hasUserLearnAndPlayPlan
     }
   }
 })

@@ -29,7 +29,7 @@ import { useLearnPlayV2 } from '@/composables'
 
 export default defineComponent({
   name: 'LearnPlayIndex',
-  layout: 'preview-mode',
+  layout: 'learn-play-preview',
   components: {
     DashboardLearnPlay,
     MenuLearnPlay

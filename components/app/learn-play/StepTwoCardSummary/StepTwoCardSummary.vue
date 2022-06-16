@@ -49,12 +49,6 @@
         ]"
         class="pg-text-center"
       >
-        <div class="pg-text-base pg-mt-6 pg-font-bold">
-          "Leo had to go for his well visit at the pediatrician.
-          He was having such a hard time that my husband texted me asking what could calm him down.I put on Playgarden,
-          he watched it over Facetime while Alexis watched the ipad at home at the same time and it worked! We love you guys!"
-        </div>
-
         <div class="pg-text-base pg-mt-6">
           Still not sure? Call us, text us, email us, we'll be happy to explain our program in more detail!
         </div>

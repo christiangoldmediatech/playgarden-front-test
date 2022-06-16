@@ -29,7 +29,7 @@
 import DefaultFooter from '@/components/app/footer/DefaultFooter'
 
 export default {
-  name: 'PreviewMode',
+  name: 'LearnPlayPreview',
   components: {
     DefaultFooter
   }

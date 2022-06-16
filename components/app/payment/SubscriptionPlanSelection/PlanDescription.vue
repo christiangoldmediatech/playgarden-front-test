@@ -29,8 +29,8 @@
 
       <!-- Promotions -->
       <template v-if="showPromotions && hasPromotions(plan.homeDeliveryBenefits.promotions)">
-        <div class="promotion-ribbon pa-3 ml-n14 ml-md-n8 mr-3 my-6 text-center">
-          <span class="font-weight-bold body-2 accent--text">* Join now and you will get this benefits:</span>
+        <div class="promotion-ribbon pa-3 mx-n16 mr-3 my-6 text-center">
+          <span class="font-weight-bold">* Join now and you will get this benefits:</span>
         </div>
         <ul class="plan-detail">
           <li
@@ -44,6 +44,24 @@
           </li>
         </ul>
       </template>
+    </template>
+
+    <!-- Introductory Promotions -->
+    <template v-if="showPromotions && Boolean(promotions.length)">
+      <div class="promotion-ribbon pa-3 mx-n16 my-6 text-center">
+        <span class="font-weight-bold">**Introductory Promotion**</span>
+      </div>
+      <ul class="plan-detail">
+        <li
+          v-for="(benefit, indexHDBP) in promotions"
+          :key="`introductory-promotion-${indexHDBP}`"
+          class="plan-item"
+        >
+          <span>
+            {{ benefit }}
+          </span>
+        </li>
+      </ul>
     </template>
 
     <!-- Plus Benefits -->
@@ -79,8 +97,8 @@ export default {
   },
 
   computed: {
-    getCommonBenefits () {
-      return this.plan.commonBenefits.benefits.slice(0, 1)
+    promotions () {
+      return this.plan.commonBenefits.promotions || []
     }
   },
 
@@ -98,24 +116,28 @@ ul {
 }
 
 ul li::before {
-  content: "✔";
-  color: var(--v-primary-base); /* Change the color */
+  content: "";
+  background-color: var(--v-accent-base); /* Change the color */
   font-weight: bold; /* If you want it to be bold */
   display: inline-block; /* Needed to add space between the bullet and the text */
+  position: relative;
+  top: 0.5em;
   width: 1em; /* Also needed for space (tweak if needed) */
+  height: 1em; /* Also needed for space (tweak if needed) */
   margin-left: -1.4rem; /* Also needed for space (tweak if needed) */
   margin-right: 0.5rem;
+  border-radius: 0.5em;
 }
 
 .plan-detail li {
   width: 97%;
-  line-height: 5px;
+  line-height: 1.5;
   /*border: 1px blue solid; */
 }
 .plan-detail li span {
   display: -moz-inline-box;  /* FF2 or lower */
   display: initial;     /* FF3, Opera, Safari */
-  line-height: 1;
+  line-height: 1.5;
   vertical-align: text-top;
   color: var(--v-black-base);
 }
@@ -138,6 +160,12 @@ ul li::before {
   }
 }
 .promotion-ribbon {
-  background: rgba(248, 152, 56, 0.3);
+  font-size: 20px;
+  color: var(--v-accent-base);
+  background: rgba(255, 171, 55, 0.2);
+
+  @media screen and (min-width: 600px) {
+    font-size: 24px;
+  }
 }
 </style>

@@ -17,9 +17,14 @@
         width="100%"
         elevation="6"
         :ripple="false"
-        @click.stop="handleDownloadWorksheetClick(offlineWorksheet)"
       >
         <div class="d-flex flex-nowrap pa-2 align-center">
+          <div class="mr-3">
+            <v-avatar tile size="42">
+              <img src="@/assets/png/cute-pumpkin.png">
+            </v-avatar>
+          </div>
+
           <div class="text-uppercase dashboard-item-title flex-grow-1">
             {{ offlineWorksheet.name }}
           </div>
