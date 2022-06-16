@@ -15,15 +15,15 @@ export const useChildRoute = ({ store, route, router, shouldRedirect = false }: 
   const childRouteId = computed(() => route.value.query.id)
 
   const resolveChildId = () => {
-    const Child = useChild({ store })
+    const { currentChildren } = useChild({ store })
     // Check if child id exists in route, if so use that value
     if (typeof childRouteId.value === 'string' || typeof childRouteId.value === 'number') {
       childId.value = parseInt(childRouteId.value)
       return
     }
     // If no child in route is present, use the current children id
-    if (Child.currentChildren.value && Child.currentChildren.value.length > 0) {
-      childId.value = Child.currentChildren.value[0].id
+    if (currentChildren.value && currentChildren.value.length > 0) {
+      childId.value = currentChildren.value[0].id
       return
     }
 

@@ -86,11 +86,6 @@ export default {
     managementButton: {
       type: Boolean,
       default: false
-    },
-
-    previewMode: {
-      type: Boolean,
-      default: false
     }
   },
 
@@ -133,10 +128,6 @@ export default {
   },
 
   created () {
-    if (this.previewMode) {
-      return
-    }
-
     this.getChildren()
   },
 

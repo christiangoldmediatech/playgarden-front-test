@@ -25,8 +25,6 @@ import GolToolbar from '@/components/app/gift-of-learning/Toolbar/Toolbar.vue'
 import GolDrawer from '@/components/app/gift-of-learning/Drawer/Drawer.vue'
 
 export default defineComponent({
-  name: 'LayoutsGiftOfLearning',
-
   middleware: ['utmHandler'],
 
   components: {

@@ -11,11 +11,11 @@
           <v-col cols="12" class="pl-2 pr-3 lsess-schedule-container-col">
             <template v-if="nextSessions.length > 0">
               <template v-if="$vuetify.breakpoint.smAndDown">
-                <today-card v-for="i in nextSessions" :key="`today-card-${i.id}`" :entry="i" :block="block" />
+                <today-card v-for="i in nextSessions" :key="`today-card-${i.id}`" :entry="i" />
               </template>
 
               <perfect-scrollbar v-else>
-                <today-card v-for="i in nextSessions" :key="`today-card-${i.id}`" :entry="i" :block="block" />
+                <today-card v-for="i in nextSessions" :key="`today-card-${i.id}`" :entry="i" />
               </perfect-scrollbar>
             </template>
 
@@ -54,14 +54,6 @@ export default {
   components: {
     PerfectScrollbar,
     TodayCard
-  },
-
-  props: {
-    block: {
-      type: Boolean,
-      required: false,
-      default: false
-    }
   },
 
   computed: {

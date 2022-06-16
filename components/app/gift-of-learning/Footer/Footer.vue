@@ -4,9 +4,9 @@
       'pg-bg-[url(@/assets/png/gift-of-learning/bottom-paper.png)]',
       'pg-bg-cover',
       'pg-bg-[center_top_-2rem]',
-      'lg:pg-bg-top',
+      'md:pg-bg-top',
     ]"
-    :height="footerHeight"
+    :height="isMobile ? '1280px' : '435px'"
     app
     absolute
 
@@ -22,8 +22,8 @@
           'pg-max-w-[1150px]',
           'pg-mt-48',
           'pg-mx-auto',
-          'lg:pg-mt-36',
-          'lg:pg-flex-row',
+          'md:pg-mt-36',
+          'md:pg-flex-row',
         ]"
       >
         <!-- LOGO -->
@@ -32,14 +32,14 @@
         </div>
 
         <!-- LINKS -->
-        <div class="pg-grid pg-grid-cols-1 pg-gap-2 lg:pg-gap-0 pg-text-center pg-mt-12 lg:pg-mt-0">
+        <div class="pg-grid pg-grid-cols-1 pg-gap-2 md:pg-gap-0 pg-text-center pg-mt-12 md:pg-mt-0">
           <a v-for="link in links" :key="link.name" :href="link.href">
-            <span class="pg-inline-block pg-text-lg pg-text-black pg-font-medium">{{ link.name }}</span>
+            <span class="pg-inline-block pg-text-lg pg-text-[#606060] pg-font-medium">{{ link.name }}</span>
           </a>
         </div>
 
         <!-- ONLINE SCHOOL -->
-        <div class="pg-grid pg-grid-cols-1 pg-gap-2 lg:pg-gap-0 pg-text-center pg-mt-12 lg:pg-mt-0">
+        <div class="pg-grid pg-grid-cols-1 pg-gap-2 md:pg-gap-0 pg-text-center pg-mt-12 md:pg-mt-0">
           <div class="pg-text-2xl pg-leading-9 pg-text-[#68C453] pg-font-semibold">
             Online School
           </div>
@@ -52,17 +52,17 @@
             <div>646-504-4716</div>
           </a>
 
-          <div class="pg-font-medium pg-text-black">
+          <div class="pg-font-medium pg-text-[#606060]">
             95 Franklin Street
           </div>
 
-          <div class="pg-font-medium pg-text-black">
+          <div class="pg-font-medium pg-text-[#606060]">
             New York, NY 10013
           </div>
         </div>
 
         <!-- UPPER EAST SIDE -->
-        <div class="pg-grid pg-grid-cols-1 pg-gap-2 lg:pg-gap-0 pg-text-center pg-mt-12 lg:pg-mt-0">
+        <div class="pg-grid pg-grid-cols-1 pg-gap-2 md:pg-gap-0 pg-text-center pg-mt-12 md:pg-mt-0">
           <div class="pg-text-2xl pg-leading-9 pg-text-[#68C453] pg-font-semibold">
             Upper East Side
           </div>
@@ -75,17 +75,17 @@
             <div>212-965-9718</div>
           </a>
 
-          <div class="pg-font-medium pg-text-black">
+          <div class="pg-font-medium pg-text-[#606060]">
             1366 Madison Avenue
           </div>
 
-          <div class="pg-font-medium pg-text-black">
+          <div class="pg-font-medium pg-text-[#606060]">
             New York, NY 10128
           </div>
         </div>
 
         <!-- TRIBECA -->
-        <div class="pg-grid pg-grid-cols-1 pg-gap-2 lg:pg-gap-0 pg-text-center pg-mt-12 lg:pg-mt-0">
+        <div class="pg-grid pg-grid-cols-1 pg-gap-2 md:pg-gap-0 pg-text-center pg-mt-12 md:pg-mt-0">
           <div class="pg-text-2xl pg-leading-9 pg-text-[#68C453] pg-font-semibold">
             Tribeca
           </div>
@@ -98,28 +98,28 @@
             <div>212-965-9717</div>
           </a>
 
-          <div class="pg-font-medium pg-text-black">
+          <div class="pg-font-medium pg-text-[#606060]">
             95 Franklin Street
           </div>
 
-          <div class="pg-font-medium pg-text-black">
+          <div class="pg-font-medium pg-text-[#606060]">
             New York, NY 10013
           </div>
         </div>
       </div>
 
       <!-- DASHED LINE -->
-      <div class="pg-border-0 pg-border-b-[0.5px] pg-border-black pg-border-dashed pg-my-7" />
+      <div class="pg-border-0 pg-border-b-[0.5px] pg-border-[#606060] pg-border-dashed pg-my-7" />
 
       <!-- COPYRIGHT -->
-      <div class="pg-text-center pg-text-xs pg-text-black pg-mb-10">
+      <div class="pg-text-center pg-text-xs pg-text-[#606060] pg-mb-10">
         2020 - {{ new Date().getFullYear() }} © Playgarden Prep. All rights reserved.
       </div>
 
       <!-- COLOR DASHES -->
       <img
         src="@/assets/svg/gift-of-learning/bottom-color-dashes.svg"
-        class="pg-absolute pg-bottom-0 pg-left-0 pg-right-0 pg-mx-auto pg-w-full lg:pg-w-auto"
+        class="pg-absolute pg-bottom-0 pg-left-0 pg-right-0 pg-mx-auto pg-w-full md:pg-w-auto"
       >
     </div>
   </v-footer>
@@ -132,8 +132,7 @@ import { computed, defineComponent, ref } from '@nuxtjs/composition-api'
 export default defineComponent({
   setup() {
     const vuetify = useVuetifyHelper()
-    const isMobile = computed(() => vuetify.breakpoint.mdAndDown)
-    const footerHeight = computed(() => isMobile.value ? '1280px' : '435px')
+    const isMobile = computed(() => vuetify.breakpoint.mobile)
 
     const links = ref<{ name: string, href: string }[]>([
       { name: 'Playgarden Prep', href: '#' },
@@ -143,11 +142,7 @@ export default defineComponent({
       { name: 'Help', href: '#' }
     ])
 
-    return {
-      links,
-      isMobile,
-      footerHeight
-    }
+    return { links, isMobile }
   }
 })
 </script>

@@ -7,7 +7,7 @@
       {{ time }}
     </div>
     <v-hover v-slot="{ hover }">
-      <v-card class="lsess-card clickable" :class="{ 'lsess-card-scaled': hover, 'lsess-card-active': isLive }" :disabled="block" @click.stop="openLink">
+      <v-card class="lsess-card clickable" :class="{ 'lsess-card-scaled': hover, 'lsess-card-active': isLive }" @click.stop="openLink">
         <img v-if="isLive" class="active-camera" src="@/assets/svg/sessions-active-camera.svg">
         <v-row class="ma-0">
           <v-col class="flex-grow-0 flex-shrink-1">
@@ -57,12 +57,6 @@ export default {
     entry: {
       type: Object,
       required: true
-    },
-
-    block: {
-      type: Boolean,
-      required: false,
-      default: false
     },
 
     mobile: {

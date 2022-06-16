@@ -23,7 +23,7 @@ export default {
           {
             title: 'Home',
             dataTestId: 'home',
-            to: { name: 'app-virtual-preschool' },
+            to: { name: this.goToPage(this.getUserInfo) },
             exact: true
           },
           {
@@ -78,6 +78,15 @@ export default {
       }
 
       return []
+    }
+  },
+  methods: {
+    goToPage(user) {
+      if (user.stripeStatus === 'active') {
+        return 'app-virtual-preschool'
+      } else {
+        return 'app-dashboard'
+      }
     }
   }
 }

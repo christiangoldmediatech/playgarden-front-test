@@ -87,8 +87,7 @@ export default defineComponent({
     const {
       isPlanUpgradeModalVisible,
       setIsPlanUpgradeModalVisible,
-      setIsTrialEndingPlanSelectedModalVisible,
-      setLessonUnavailability
+      setIsTrialEndingPlanSelectedModalVisible
     } = useNotification({ store })
 
     onMounted(async () => {
@@ -118,12 +117,12 @@ export default defineComponent({
       try {
         await $axios.$patch(PLAN_UPGRADE_PATH)
         upgradeStatus.value = 'upgraded'
-        setLessonUnavailability(false)
         setIsPlanUpgradeModalVisible(false)
         setIsTrialEndingPlanSelectedModalVisible(true)
       } catch (error) {
         upgradeStatus.value = 'failed'
         // eslint-disable-next-line no-console
+        console.error(error)
       }
     }
 

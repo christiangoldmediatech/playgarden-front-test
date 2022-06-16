@@ -21,7 +21,6 @@ export interface TypedStore {
       nextLessonId: number | null
       puzzlePiece: unknown | null
       previousLessonId: number | null
-      isCurrentLessonUnavailableInPlan: boolean
     }
   },
   notifications: NotificationState

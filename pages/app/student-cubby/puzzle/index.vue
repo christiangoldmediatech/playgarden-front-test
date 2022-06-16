@@ -10,7 +10,7 @@
         <span class="ml-4 text-h4 text-md-h3">PUZZLE</span>
       </div>
       <div v-if="child" class="my-6 text-md-h6 text-body-1">
-        Find all of {{ child.firstName || 'Child' }}’s completed puzzles. Share
+        Find all of {{ child.firstName || "Child" }}’s completed puzzles. Share
         them on social media!
       </div>
 
@@ -33,9 +33,7 @@
                 >
                   <v-img
                     aspect-ratio="1.7"
-                    :src="
-                      puzzle.piecesUnclocked === puzzle.pieces ? puzzle.src : ''
-                    "
+                    :src="(puzzle.piecesUnclocked === puzzle.pieces) ? puzzle.src : ''"
                     :[puzzle.srcType]="
                       puzzle.lazy
                         ? puzzle.src
@@ -50,17 +48,9 @@
                           elevation="0"
                           width="300"
                         >
-                          <v-row
-                            v-if="puzzle.piecesUnclocked !== puzzle.pieces"
-                            justify="center"
-                            no-gutters
-                          >
+                          <v-row v-if="puzzle.piecesUnclocked !== puzzle.pieces" justify="center" no-gutters>
                             <span class="font-weight-black white--text">
-                              {{
-                                puzzle.piecesUnclocked
-                                  ? puzzle.piecesUnclocked
-                                  : 0
-                              }}/{{ puzzle.pieces }}
+                              {{ (puzzle.piecesUnclocked) ? puzzle.piecesUnclocked : 0 }}/{{ puzzle.pieces }}
                             </span>
                             <v-progress-linear
                               class="mt-2 mx-4 white"
@@ -100,10 +90,11 @@
                       </v-col>
                     </v-row>
                   </v-img>
-                  <v-fade-transition
-                    v-if="puzzle.piecesUnclocked === puzzle.pieces"
-                  >
-                    <v-overlay v-if="hover" absolute>
+                  <v-fade-transition v-if="puzzle.piecesUnclocked === puzzle.pieces">
+                    <v-overlay
+                      v-if="hover"
+                      absolute
+                    >
                       <v-btn
                         nuxt
                         small
@@ -124,49 +115,25 @@
       </pg-loading>
     </v-card-text>
 
-    <unlock-prompt
-      v-if="hasUserLearnAndPlayPlan"
-      title="PUZZLE"
-      desc="Find all of your children completed puzzles. Share them on social media!"
-      img="student-cubby/puzzle-piece.png"
-    />
     <puzzle-pieces-dialog v-model="dialog" v-bind="{ toShow }" />
   </v-card>
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  onMounted,
-  computed,
-  useRoute,
-  useStore,
-  useRouter,
-  watch,
-  ref
-} from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, computed, useRoute, useStore, useRouter, watch, ref } from '@nuxtjs/composition-api'
 import PuzzlePiecesDialog from '@/components/app/student-cubby/PuzzlePiecesDialog.vue'
 import { usePuzzle } from '@/composables/puzzle'
 import { useChild, useChildRoute } from '@/composables'
 import { PuzzleResponse, TypedStore, Child } from '@/models'
-import StudyCubbyItemHeader, {
-  StudentCubbyItemHeaderProps
-} from '@/components/app/student-cubby/StudyCubbyItemHeader.vue'
-import { StudentChubbyItemText } from '@/components/app/student-cubby/types'
-import UnlockPrompt from '@/components/app/all-done/UnlockPrompt.vue'
-import { useStudentCubbyHelpers } from '~/components/app/student-cubby/composables'
-
-const itemText: StudentChubbyItemText = 'PUZZLE'
 
 export default defineComponent({
   name: 'Index',
 
   components: {
-    PuzzlePiecesDialog,
-    UnlockPrompt
+    PuzzlePiecesDialog
   },
 
-  setup() {
+  setup () {
     const route = useRoute()
     const router = useRouter()
     const store = useStore<TypedStore>()
@@ -174,13 +141,7 @@ export default defineComponent({
     const { puzzlesResponse, getPuzzlesByChildId } = usePuzzle()
     const { children, get } = useChild({ store })
 
-    const child = computed(() =>
-      children.value.find((child: Child) => child.id === studentId.value)
-    )
-
-    const hasUserLearnAndPlayPlan = computed(() => {
-      return store.getters['auth/hasUserLearnAndPlayPlan']
-    })
+    const child = computed(() => children.value.find((child: Child) => child.id === studentId.value))
 
     const loading = ref(true)
     onMounted(async () => {
@@ -200,8 +161,7 @@ export default defineComponent({
       studentId,
       puzzlesResponse,
       children,
-      child,
-      hasUserLearnAndPlayPlan
+      child
     }
   },
 
@@ -213,7 +173,7 @@ export default defineComponent({
   },
 
   methods: {
-    showOverlay(puzzle: PuzzleResponse) {
+    showOverlay (puzzle: PuzzleResponse) {
       this.toShow = { ...puzzle }
       this.dialog = true
     }

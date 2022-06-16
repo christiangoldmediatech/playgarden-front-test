@@ -104,7 +104,7 @@
     <!-- Backpack -->
     <center class="mb-4">
       <small>
-        Choose an icon for you child:
+        Choose a Backpack for you child:
       </small>
     </center>
     <validation-provider

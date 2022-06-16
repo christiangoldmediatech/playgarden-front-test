@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, PropType } from '@nuxtjs/composition-api'
 import { MusicLibrary } from '@/models'
 import { useNuxtHelper } from '@/composables'
 export default defineComponent({
@@ -38,12 +38,23 @@ export default defineComponent({
       default: () => ([])
     }
   },
-  setup() {
+  setup(props, { emit }) {
     const nuxt = useNuxtHelper()
 
-    const changeSong = (song: MusicLibrary) => {
+    const currentSong = (song: MusicLibrary) => {
       nuxt.$emit('change-song', song)
     }
+
+    const changeSong = (song: MusicLibrary) => {
+      song.autoPlay = true
+      currentSong(song)
+    }
+
+    onMounted(() => {
+      const firstSong = props.songs[0]
+      firstSong.autoPlay = false
+      currentSong(firstSong)
+    })
 
     return {
       changeSong

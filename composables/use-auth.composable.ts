@@ -6,7 +6,7 @@ import jwtDecode from 'jwt-decode'
 import { useCookiesHelper, useChild } from '@/composables'
 import { hasLocalStorage } from '@/utils/window'
 import { axios } from '@/utils'
-import { SignupData, TypedStore, User } from '@/models'
+import { TypedStore, User } from '@/models'
 import { useNotification } from './use-notification.composable'
 
 export const useAuth = ({
@@ -161,10 +161,6 @@ export const useAuth = ({
     await fetchUserInfo()
   }
 
-  const signup = (signupData: SignupData): Promise<User> => {
-    return store.dispatch('auth/signup/signup', signupData)
-  }
-
   return {
     accessToken,
     userInfo,
@@ -178,7 +174,6 @@ export const useAuth = ({
     restoreAuthFromSessionStorage,
     fetchUserInfo,
     updateUserInfo,
-    updateAuthOnboarding,
-    signup
+    updateAuthOnboarding
   }
 }

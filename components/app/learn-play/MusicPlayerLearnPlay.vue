@@ -53,7 +53,11 @@
         >
           <v-row v-if="currentSong" no-gutters justify="center">
             <v-spacer />
-            <div class="text-center align-self-center">
+            <v-col
+              cols="2"
+              align-self="center"
+              class="text-center"
+            >
               <!-- Previous Song Button -->
               <v-btn
                 icon
@@ -66,9 +70,12 @@
                   mdi-skip-backward
                 </v-icon>
               </v-btn>
-            </div>
-
-            <div class="text-center align-self-center">
+            </v-col>
+            <v-col
+              cols="2"
+              align-self="center"
+              class="text-center"
+            >
               <!-- Pause/Play Song Button -->
               <v-btn
                 v-if="!isPlaying"
@@ -95,9 +102,12 @@
                   mdi-pause-circle-outline
                 </v-icon>
               </v-btn>
-            </div>
-
-            <div class="text-center align-self-center">
+            </v-col>
+            <v-col
+              cols="2"
+              align-self="center"
+              class="text-center"
+            >
               <!-- Next Song Button -->
               <v-btn
                 icon
@@ -110,10 +120,8 @@
                   mdi-skip-forward
                 </v-icon>
               </v-btn>
-            </div>
-
+            </v-col>
             <v-spacer />
-
             <v-col
               v-if="currentSong.description"
               cols="auto"
@@ -166,7 +174,8 @@ export default defineComponent({
       if (!audioPlayer.value) {
         return
       }
-      audioPlayer.value.refreshSongData(song)
+
+      audioPlayer.value?.refreshSongData(song)
     }
 
     const addSongToPlaylist = (song: MusicLibrary) => {
@@ -174,7 +183,7 @@ export default defineComponent({
         return
       }
 
-      audioPlayer.value.addSong(song)
+      audioPlayer.value?.addSong(song)
     }
 
     const createNewPlaylist = async (incomingPlaylist: MusicLibrary[]) => {
@@ -182,9 +191,10 @@ export default defineComponent({
         return
       }
 
-      audioPlayer.value.pause()
-      audioPlayer.value.setPlaylist(incomingPlaylist)
+      audioPlayer.value?.pause()
+      audioPlayer.value?.setPlaylist(incomingPlaylist)
       await nextTick()
+      await audioPlayer.value?.play()
     }
 
     const handleChangedSong = async (song: MusicLibrary) => {
@@ -192,6 +202,10 @@ export default defineComponent({
         currentSong.value = song
         refreshSongData(song)
         await playSong(0)
+
+        if (song.autoPlay) {
+          audioPlayer.value?.pause()
+        }
       }
     }
 
@@ -202,10 +216,10 @@ export default defineComponent({
         return
       }
 
-      audioPlayer.value.pause()
-      audioPlayer.value.selectSongByIndex(playlistIndex)
+      audioPlayer.value?.pause()
+      audioPlayer.value?.selectSongByIndex(playlistIndex)
       await nextTick()
-      await audioPlayer.value.play()
+      await audioPlayer.value?.play()
     }
 
     const removeSong = (playlistIndex: number) => {
@@ -214,10 +228,15 @@ export default defineComponent({
       }
 
       removeSongFromPlaylist(playlistIndex)
-      audioPlayer.value.removeSongByIndex(playlistIndex)
+      audioPlayer.value?.removeSongByIndex(playlistIndex)
     }
 
-    onMounted(() => {
+    onMounted(async () => {
+      // Try to play media when the page loads.
+      try {
+        await audioPlayer.value?.play()
+      } catch {}
+
       nuxt.$on('change-song', handleChangedSong)
     })
 

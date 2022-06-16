@@ -18,13 +18,10 @@
       />
 
       <p class="mt-8 body-1">
-        Play and learn with friends in our Playdate class! Join us for fun
-        activities such as spin-the-wheel, Play-doh art, stories, and sharing
-        time! Playdates are limited to 8 little ones per session, to promote
-        social interaction. You can reserve a spot by signing up for one of our
-        plans. If you'd like to end your trial early to gain access to
-        Playdates, email
-        <a href="mailto:hello@playgardenprep.com">hello@playgardenprep.com</a>
+        Play and learn with friends in our Playdate class! Join us for fun activities such as spin-the-wheel, Play-doh art, stories, and sharing time!
+        Playdates are limited to 8 little ones per session, to promote social interaction.
+        You can reserve a spot by signing up for one of our plans.
+        If you'd like to end your trial early to gain access to Playdates, email <a href="mailto:hello@playgardenprep.com">hello@playgardenprep.com</a>
       </p>
 
       <!-- CTA -->
@@ -36,22 +33,14 @@
             class="text-none"
             width="250"
             :loading="isLoading"
-            @click="
-              hasUserLearnAndPlayPlan
-                ? handleUpgradeRequest()
-                : handleCancelTrial()
-            "
+            @click="handleCancelTrial"
           >
-            {{ hasUserLearnAndPlayPlan ? 'UPDATE PLAN' : 'END FREE TRIAL NOW' }}
+            END FREE TRIAL NOW
           </v-btn>
         </v-col>
 
         <!-- CONTACT US -->
-        <v-col
-          cols="12"
-          md="auto"
-          class="mx-0 mx-md-4 align-self-center font-weight-bold"
-        >
+        <v-col cols="12" md="auto" class="mx-0 mx-md-4 align-self-center font-weight-bold">
           <span class="grey--text">Need help? </span>
           <span class="text-decoration-underline" @click="handleContactUs">
             <a class="accent--text">Contact us</a>
@@ -70,35 +59,19 @@
 </template>
 
 <script lang="ts">
-import {
-  useAuth,
-  useBilling,
-  useGlobalModal,
-  useNotification,
-  usePlanAccessHelpers,
-  useSnotifyHelper
-} from '@/composables'
+import { useAuth, useBilling, useGlobalModal, useNotification, useSnotifyHelper } from '@/composables'
 import { TypedStore } from '@/models'
-import {
-  defineComponent,
-  useStore,
-  ref,
-  useRouter,
-  useRoute,
-  computed
-} from '@nuxtjs/composition-api'
+import { defineComponent, useStore, ref, useRouter } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   components: {
-    CreditCardModal: () =>
-      import('@/components/app/payment/CreditCardModal.vue')
+    CreditCardModal: () => import('@/components/app/payment/CreditCardModal.vue')
   },
 
-  setup() {
+  setup () {
     const isLoading = ref(false)
     const isCreditCardModalVisible = ref(false)
     const router = useRouter()
-    const route = useRoute()
 
     const snotify = useSnotifyHelper()
     const store = useStore<TypedStore>()
@@ -106,17 +79,6 @@ export default defineComponent({
     const Billing = useBilling()
     // const Notification = useNotification({ store })
     // const Auth = useAuth({ store })
-
-    // Play and Learn Update Plan
-    const PlanAccessHelpers = usePlanAccessHelpers({ store, route, router })
-
-    function handleUpgradeRequest() {
-      PlanAccessHelpers.displayPlanUpgradeModal()
-    }
-
-    const hasUserLearnAndPlayPlan = computed(() => {
-      return store.getters['auth/hasUserLearnAndPlayPlan']
-    })
 
     const handleCancelTrial = async () => {
       try {
@@ -151,9 +113,7 @@ export default defineComponent({
       canConfirmPlan,
       isCreditCardModalVisible,
       handleCancelTrial,
-      handleContactUs: showContactUsModal,
-      hasUserLearnAndPlayPlan,
-      handleUpgradeRequest
+      handleContactUs: showContactUsModal
     }
   }
 })

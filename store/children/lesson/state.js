@@ -3,6 +3,5 @@ export default () => ({
   currentLessonId: null,
   nextLessonId: null,
   previousLessonId: null,
-  puzzlePiece: null,
-  isCurrentLessonUnavailableInPlan: false
+  puzzlePiece: null
 })
