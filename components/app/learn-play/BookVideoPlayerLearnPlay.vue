@@ -68,7 +68,7 @@
           cols="12"
           md="4"
         >
-          <a :href="book.url">
+          <a :href="book.url" target="_blank">
             <img :src="book.image" class="book-cover" width="100%" height="100%">
           </a>
         </v-col>

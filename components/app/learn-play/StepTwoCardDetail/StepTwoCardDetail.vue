@@ -73,7 +73,7 @@
         </div>
 
         <div class="pg-text-center pg-text-sm">
-          *You can cancel your membership at any time from the account settings.
+          *You can cancel your membership at any time from the Account Settings.
         </div>
       </div>
     </div>
