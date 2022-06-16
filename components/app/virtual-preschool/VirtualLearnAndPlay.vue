@@ -16,7 +16,7 @@
       <SectionImageLAP
         class="library"
         :section="section.library"
-        small
+        height="60%"
         @click="handleClick"
       />
 
