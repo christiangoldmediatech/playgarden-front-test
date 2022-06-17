@@ -1,5 +1,5 @@
 <template>
-  <div class="background-card-learnd-play px-lg-16 mb-3">
+  <div class="background-card-learn-play px-lg-16 mb-3">
     <v-row v-if="!loading">
       <v-col v-if="$vuetify.breakpoint.mdAndUp" cols="2">
         <menu-learn-play preview-mode />

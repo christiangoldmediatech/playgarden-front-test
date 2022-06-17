@@ -18,7 +18,7 @@
         :md="Math.ceil(12 / plans.length)"
       >
         <div
-          class="elevation-6 pg-rounded-md"
+          class="elevation-6 pg-rounded-md pg-bg-white"
           :class="{
             'pg-flex pg-flex-col pg-justify-between pg-h-[1500px]':
               $vuetify.breakpoint.mdAndUp
@@ -36,19 +36,23 @@
 
             <!-- Price -->
             <div
-              class="pg-text-center pg-my-6 pg-px-4 pg-text-3xl pg-font-semibold"
+              class="pg-text-center pg-my-6 pg-px-4 pg-text-5xl pg-font-semibold v2-font"
               :style="{ color: colors[i] }"
             >
               <template v-if="billAnnually">
-                ${{ plan.priceAnnual.toFixed(2) }} /year
+                ${{ plan.priceAnnual.toFixed(2) }}
+                <span class="pg-text-2xl">/year</span>
               </template>
               <template v-else>
-                ${{ plan.priceMonthly.toFixed(2) }} /month
+                ${{ plan.priceMonthly.toFixed(2) }}
+                <span class="pg-text-2xl">/month</span>
               </template>
             </div>
 
             <!-- Subtitle -->
-            <div class="pg-px-8 pg-py-1 pg-text-[#FFA0C8]">
+            <div
+              class="pg-px-8 pg-py-1 pg-text-[#FFA0C8] pg-text-xl pg-font-medium v2-font"
+            >
               {{
                 plan.name === 'Play & Learn'
                   ? 'Weekly curated content for for 1-3 hrs of learning and well-being, including:'
@@ -237,6 +241,8 @@ export default defineComponent({
             requireAddress: Boolean(homeDeliveryBenefits || plusBenefits)
           }
         })
+
+        this.billAnnually = this.isAnnualSubscriptionEnabled
       } catch (e) {
       } finally {
         this.enableAxiosGlobal()
