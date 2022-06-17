@@ -127,7 +127,7 @@
 
       <recorded-class-player />
 
-      <upgrade-plan-live-classes-overlay />
+      <upgrade-plan-live-classes-overlay v-if="false" />
 
       <pg-dialog
         :value="!hasTrialOrPlatinumPlan"
