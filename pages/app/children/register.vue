@@ -81,7 +81,7 @@
           </p>
 
           <p class="mt-10 text-center text-md-left">
-            <small>*You can cancel your membership any time from the account settings.</small>
+            <small>*You can cancel your membership any time from the Account Settings.</small>
           </p>
         </v-col>
       </v-row>

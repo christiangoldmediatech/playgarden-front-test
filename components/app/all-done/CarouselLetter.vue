@@ -190,9 +190,7 @@ export default defineComponent({
       route,
       router
     })
-    return {
-      isCurrentLessonUnavailableInPlan
-    }
+    return { isCurrentLessonUnavailableInPlan }
   },
   data: () => {
     return {
@@ -257,6 +255,10 @@ export default defineComponent({
     ...mapActions('children/course-progress', ['getCourseProgressByChildId']),
 
     async fetchChildProgress() {
+      if (this.previewMode) {
+        return
+      }
+
       const data = await this.getCourseProgressByChildId({
         id: this.studentId
       })

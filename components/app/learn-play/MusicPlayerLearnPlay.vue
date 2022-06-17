@@ -151,7 +151,7 @@ export default defineComponent({
   },
 
   setup () {
-    // const nuxt = useNuxtHelper()
+    const nuxt = useNuxtHelper()
     const audioPlayer = ref<any>(null)
     const {
       currentSong,
@@ -166,7 +166,6 @@ export default defineComponent({
       if (!audioPlayer.value) {
         return
       }
-
       audioPlayer.value.refreshSongData(song)
     }
 
@@ -186,23 +185,15 @@ export default defineComponent({
       audioPlayer.value.pause()
       audioPlayer.value.setPlaylist(incomingPlaylist)
       await nextTick()
-      // await audioPlayer.value.play()
     }
 
-    // const handleChangedSong = async (song: MusicLibrary) => {
-    //   if (song) {
-    //     currentSong.value = song
-    //     refreshSongData(song)
-
-    //     if (song.autoPlay) {
-    //       await playSong(0)
-    //     }
-
-    //     if (song.autoPlay) {
-    //       audioPlayer.value?.pause()
-    //     }
-    //   }
-    // }
+    const handleChangedSong = async (song: MusicLibrary) => {
+      if (song) {
+        currentSong.value = song
+        refreshSongData(song)
+        await playSong(0)
+      }
+    }
 
     const isPlayerDisabled = computed(() => !currentSong.value || !currentSong.value?.description)
 
@@ -226,13 +217,13 @@ export default defineComponent({
       audioPlayer.value.removeSongByIndex(playlistIndex)
     }
 
-    // onMounted(() => {
-    //   nuxt.$on('change-song', handleChangedSong)
-    // })
+    onMounted(() => {
+      nuxt.$on('change-song', handleChangedSong)
+    })
 
-    // onUnmounted(() => {
-    //   nuxt.$off('change-song', handleChangedSong)
-    // })
+    onUnmounted(() => {
+      nuxt.$off('change-song', handleChangedSong)
+    })
 
     return {
       audioPlayer,
