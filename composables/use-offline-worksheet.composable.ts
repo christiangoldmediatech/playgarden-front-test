@@ -9,6 +9,12 @@ export const useOfflineWorksheet = ({ store }: { store: Store<unknown> }) => {
     childId: number
     file: File
   }
+  interface DocumentParamsGetFile {
+    type?: string
+    folder: string
+    filename: string,
+    files?: any[]
+  }
 
   interface OfflineWorksheetProgress {
     lessonId: number
@@ -39,6 +45,27 @@ export const useOfflineWorksheet = ({ store }: { store: Store<unknown> }) => {
         url: response.filePath
       })
 
+      return data
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
+
+  const getFileUpload = async ({ type, folder, filename } : DocumentParamsGetFile) => {
+    try {
+      const data = await axios.$get(`/files/${type}/${folder}/${filename}`)
+      return data
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
+
+  const mergeFilesOfflineLesson = async ({ files, folder, filename } : DocumentParamsGetFile) => {
+    try {
+      const data = await axios.$post(`/files/upload-document/merge/${folder}/multiple`, {
+        files,
+        fileName: filename
+      })
       return data
     } catch (error) {
       return Promise.reject(error)
@@ -93,6 +120,8 @@ export const useOfflineWorksheet = ({ store }: { store: Store<unknown> }) => {
     getUploaded,
     getChild,
     getOfflineWorksheetsByChildId,
-    removeUploadedOfflineWorksheet
+    removeUploadedOfflineWorksheet,
+    getFileUpload,
+    mergeFilesOfflineLesson
   }
 }

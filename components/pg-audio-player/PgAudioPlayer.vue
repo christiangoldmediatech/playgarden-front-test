@@ -121,6 +121,13 @@ export default defineComponent({
     this.isLoading = false
     // Set demo playlist
     this.setPlaylist(jsonCopy(this.playList))
+
+    this.$nuxt.$on('change-song', (song) => {
+      if (song) {
+        this.currentSong = song
+        this.setPlaylist(jsonCopy([song]))
+      }
+    })
   },
 
   beforeDestroy () {
@@ -154,7 +161,7 @@ export default defineComponent({
       this.isPaused = false
       this.isPlaying = false
     },
-    play () {
+    async play () {
       if (this.isLoading) {
         return
       }
@@ -163,7 +170,7 @@ export default defineComponent({
         return
       }
       if (!this.isPlaying) {
-        this.player.play()
+        await this.player.play()
         this.isPlaying = true
         this.isPaused = false
         this.isStopped = false
@@ -220,8 +227,16 @@ export default defineComponent({
       }
       this.isLoading = true
       const selectingSong = this.currentPlaylist[songIndex]
+
+      // stop if there is no song
+      if (!selectingSong) {
+        this.isLoading = false
+        return
+      }
+
       // Abort current track
       this.player.load()
+
       // Update state
       this.currentSong = selectingSong
       this.currentSongIndex = songIndex

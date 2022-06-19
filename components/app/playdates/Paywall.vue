@@ -1,5 +1,5 @@
 <template>
-  <v-row align="center" class="fill-height mb-4">
+  <v-row align="center" class="mb-4 fill-height">
     <!-- CHILDREN IMAGE -->
     <v-col cols="12" md="5">
       <v-img
@@ -13,15 +13,18 @@
     <!-- INFORMATION PANEL -->
     <v-col cols="12" md="7">
       <underlined-title
-        text="Playdates are back for Premium and Premium+ members!"
+        text="Playdates are open for Premium and Premium+ members!"
         font-size="36px"
       />
 
       <p class="mt-8 body-1">
-        Play and learn with friends in our Playdate class! Come for fun activities such as spin-the-wheel, Play-doh art, stories and sharing time!
-        Playdates are limited to 8 little ones per session, to promote social interaction.
-        You can reserve a spot by signing up for one of our monthly plans!
-        If you'd like to end your trial early to gain access to Playdates, email <a href="mailto:hello@playgardenprep.com">hello@playgardenprep.com</a>
+        Play and learn with friends in our Playdate class! Join us for fun
+        activities such as spin-the-wheel, Play-doh art, stories, and sharing
+        time! Playdates are limited to 8 little ones per session, to promote
+        social interaction. You can reserve a spot by signing up for one of our
+        plans. If you'd like to end your trial early to gain access to
+        Playdates, email
+        <a href="mailto:hello@playgardenprep.com">hello@playgardenprep.com</a>
       </p>
 
       <!-- CTA -->
@@ -33,14 +36,22 @@
             class="text-none"
             width="250"
             :loading="isLoading"
-            @click="handleCancelTrial"
+            @click="
+              hasUserLearnAndPlayPlan
+                ? handleUpgradeRequest()
+                : handleCancelTrial()
+            "
           >
-            END FREE TRIAL NOW
+            {{ hasUserLearnAndPlayPlan ? 'UPDATE PLAN' : 'END FREE TRIAL NOW' }}
           </v-btn>
         </v-col>
 
         <!-- CONTACT US -->
-        <v-col cols="12" md="auto" class="mx-0 mx-md-4 align-self-center font-weight-bold">
+        <v-col
+          cols="12"
+          md="auto"
+          class="mx-0 mx-md-4 align-self-center font-weight-bold"
+        >
           <span class="grey--text">Need help? </span>
           <span class="text-decoration-underline" @click="handleContactUs">
             <a class="accent--text">Contact us</a>
@@ -59,42 +70,68 @@
 </template>
 
 <script lang="ts">
-import { useAuth, useBilling, useGlobalModal, useNotification, useSnotifyHelper } from '@/composables'
+import {
+  useAuth,
+  useBilling,
+  useGlobalModal,
+  useNotification,
+  usePlanAccessHelpers,
+  useSnotifyHelper
+} from '@/composables'
 import { TypedStore } from '@/models'
-import { defineComponent, useStore, ref } from '@nuxtjs/composition-api'
+import {
+  defineComponent,
+  useStore,
+  ref,
+  useRouter,
+  useRoute,
+  computed
+} from '@nuxtjs/composition-api'
 
 export default defineComponent({
   components: {
-    CreditCardModal: () => import('@/components/app/payment/CreditCardModal.vue')
+    CreditCardModal: () =>
+      import('@/components/app/payment/CreditCardModal.vue')
   },
 
-  setup () {
+  setup() {
     const isLoading = ref(false)
     const isCreditCardModalVisible = ref(false)
+    const router = useRouter()
+    const route = useRoute()
 
     const snotify = useSnotifyHelper()
     const store = useStore<TypedStore>()
     const { showContactUsModal, canConfirmPlan } = useGlobalModal({ store })
     const Billing = useBilling()
-    const Notification = useNotification({ store })
-    const Auth = useAuth({ store })
+    // const Notification = useNotification({ store })
+    // const Auth = useAuth({ store })
 
-    async function handleCancelTrial () {
+    // Play and Learn Update Plan
+    const PlanAccessHelpers = usePlanAccessHelpers({ store, route, router })
+
+    function handleUpgradeRequest() {
+      PlanAccessHelpers.displayPlanUpgradeModal()
+    }
+
+    const hasUserLearnAndPlayPlan = computed(() => {
+      return store.getters['auth/hasUserLearnAndPlayPlan']
+    })
+
+    const handleCancelTrial = async () => {
       try {
         isLoading.value = true
         // Show credit card modal if user has no card on file
         const userCards = await Billing.fetchBillingCards()
-
         if (userCards?.length === 0) {
           isCreditCardModalVisible.value = true
           isLoading.value = false
           return
         }
-
-        await Billing.cancelTrial()
-        await Auth.fetchUserInfo()
-
-        Notification.setIsCanceledTrialModalVisible(true)
+        goToPlan()
+        // await Billing.cancelTrial()
+        // await Auth.fetchUserInfo()
+        // Notification.setIsCanceledTrialModalVisible(true)
       } catch (error) {
         snotify.error('Could not cancel trial. Please try again later.')
       } finally {
@@ -102,12 +139,21 @@ export default defineComponent({
       }
     }
 
+    const goToPlan = () => {
+      router.push({
+        name: 'app-payment-plan',
+        query: { fromPlaydates: 'true' }
+      })
+    }
+
     return {
       isLoading,
       canConfirmPlan,
       isCreditCardModalVisible,
       handleCancelTrial,
-      handleContactUs: showContactUsModal
+      handleContactUs: showContactUsModal,
+      hasUserLearnAndPlayPlan,
+      handleUpgradeRequest
     }
   }
 })

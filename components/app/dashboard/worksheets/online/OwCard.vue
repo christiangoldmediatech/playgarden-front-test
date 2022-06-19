@@ -54,6 +54,7 @@ import UploadOfflineWorksheetDialog from '../UploadOfflineWorksheetDialog.vue'
 import OwHeader from './OwHeader.vue'
 import OwConnectingPairs from './OwConnectingPairs.vue'
 import OwTapCorrect from './OwTapCorrect.vue'
+import OwAudio from './OwAudio.vue'
 
 export default {
   name: 'OwCard',
@@ -62,6 +63,7 @@ export default {
     OwHeader,
     OwConnectingPairs,
     OwTapCorrect,
+    OwAudio,
     UploadOfflineWorksheetDialog,
     CompletedDialog
   },
@@ -107,6 +109,8 @@ export default {
           return 'ow-connecting-pairs'
         } else if (type === 'TAP_CORRECT') {
           return 'ow-tap-correct'
+        } else if (type === 'AUDIO') {
+          return 'ow-audio'
         }
       }
       return ''

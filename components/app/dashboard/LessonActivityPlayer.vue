@@ -38,6 +38,8 @@ import DashboardMixin from '@/mixins/DashboardMixin'
 import SaveActivityProgress from '@/mixins/SaveActivityProgressMixin.js'
 import Fullscreen from '@/mixins/FullscreenMixin.js'
 import { jsonCopy } from '@/utils/objectTools'
+import VideoPlayerDialog from '@/components/pg-video-js-player/VideoPlayerDialog.vue'
+import PgVideoJsPlayer from '@/components/pg-video-js-player/PgVideoJsPlayer.vue'
 
 import LessonActivitiesFinishedDialog from '@/components/app/dashboard/LessonActivitiesFinishedDialog.vue'
 
@@ -45,7 +47,9 @@ export default {
   name: 'LessonActivityPlayer',
 
   components: {
-    LessonActivitiesFinishedDialog
+    LessonActivitiesFinishedDialog,
+    VideoPlayerDialog,
+    PgVideoJsPlayer
   },
 
   mixins: [VideoPlayerDialogMixin, DashboardMixin, SaveActivityProgress, Fullscreen, VideoAnalyticsMixin],

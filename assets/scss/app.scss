@@ -210,6 +210,15 @@
   width: 100%;
 }
 
+.v-application div.background-card-learnd-play {
+  background-image: url('~@/assets/png/learn-and-play-bg.png') !important;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+  padding-top: 106px;
+}
+
 .background-card {
   background-image: url('~@/assets/png/green-whirl.png') !important;
   background-repeat: no-repeat;

@@ -1,10 +1,15 @@
 <template>
-  <v-row class="flex-column flex-md-row" justify="center" no-gutters>
+  <v-row
+    class="flex-column flex-md-row"
+    justify="center"
+    no-gutters
+    data-test-id="signup-content"
+  >
     <v-col cols="12" class="ml-md-14">
       <p class="text-center text-md-left">
         <underlined-title
           class="pg-box-decoration-clone text-h6 text-md-h4 ml-sm-4"
-          text="PLAYGARDEN PREP ONLINE IS COMPLETELY FREE FOR THE FIRST 15 DAYS!"
+          text="PLAYGARDEN PREP'S ONLINE PRESCHOOL IS COMPLETELY FREE FOR THE FIRST 15 DAYS!"
         />
       </p>
     </v-col>
@@ -70,7 +75,7 @@ import { mapActions, mapGetters } from 'vuex'
 import { useSignup } from '@/composables/use-signup.composable'
 import RegisterForm from '@/components/forms/auth/RegisterForm.vue'
 import CardInfo from '@/components/app/register/CardInfo.vue'
-import { UserFlow } from '@/models'
+import { UserFlow, SignupType } from '@/models'
 import { useUTM } from '@/composables/utm/use-utm.composable'
 import { useNotification } from '@/composables'
 
@@ -181,6 +186,7 @@ export default defineComponent({
     async onSubmit(data) {
       try {
         this.loading = true
+        data.signupType = SignupType.PLAYGARDEN
         if (!this.isUserLoggedIn) {
           await this.registerProcess(
             this.signupProcessCaregiver ? { data, token: this.token } : data

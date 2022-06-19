@@ -1,0 +1,9 @@
+{
+  "id": 0,
+  "firstName": "Preview",
+  "lastName": "Child",
+  "backpack": {
+    "name": "Red backpack",
+    "image": "https://playgarden-assets-stg.s3.amazonaws.com/images/backpack/299d6387-6feb-44a3-923d-fbd9f6f970ce.svg"
+  }
+}

@@ -14,7 +14,7 @@ export default {
         { root: true }
       )
 
-      const data = await this.$axios.$post('/worksheets/upload', {
+      const data = await this.$axios.$post('/worksheets/upload/lesson', {
         lessonId,
         childrenId: childId,
         url: response.filePath
@@ -28,6 +28,11 @@ export default {
 
   async getUploaded(ctx, childId) {
     const { data } = await this.$axios.get(`/worksheets/children/${childId}`)
+    return data
+  },
+
+  async getRandomWorksheet(ctx) {
+    const { data } = await this.$axios.get('/worksheets/random')
     return data
   },
 

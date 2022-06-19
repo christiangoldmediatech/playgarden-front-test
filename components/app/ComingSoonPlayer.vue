@@ -24,9 +24,16 @@
 <script>
 import VideoPlayerDialogMixin from '@/mixins/VideoPlayerDialogMixin.js'
 import Fullscreen from '@/mixins/FullscreenMixin.js'
+import VideoPlayerDialog from '@/components/pg-video-js-player/VideoPlayerDialog.vue'
+import PgVideoJsPlayer from '@/components/pg-video-js-player/PgVideoJsPlayer.vue'
 
 export default {
   name: 'ComingSoonPlayer',
+
+  components: {
+    VideoPlayerDialog,
+    PgVideoJsPlayer
+  },
 
   mixins: [VideoPlayerDialogMixin, Fullscreen],
 

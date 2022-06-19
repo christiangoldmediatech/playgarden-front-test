@@ -25,7 +25,7 @@
 
       <div v-if="overlayTimer" class="player-dialog-mobile-portrait-overlay">
         <div>
-          <img src="@/assets/svg/phone-rotate.svg" />
+          <img src="@/assets/svg/phone-rotate.svg">
         </div>
 
         <div class="text-center pt-3 rotate-text">

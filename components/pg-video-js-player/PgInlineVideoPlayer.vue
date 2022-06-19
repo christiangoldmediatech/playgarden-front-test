@@ -28,10 +28,16 @@
 
 <script>
 import Fullscreen from '@/mixins/FullscreenMixin.js'
+import PgVideoJsPlayer from '@/components/pg-video-js-player/PgVideoJsPlayer.vue'
+
 const excludedListeners = ['ready']
 
 export default {
   name: 'PgInlineVideoPlayer',
+
+  components: {
+    PgVideoJsPlayer
+  },
 
   mixins: [Fullscreen],
 

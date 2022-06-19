@@ -12,6 +12,14 @@ type LessonApiResponse = {
   puzzleImg?: unknown
 }
 
+type LessonsApiResponse = {
+  total : number
+  filtered: number
+  limit : string
+  page : string,
+  lesson : Lesson
+}
+
 type LessonVideoProgress = {
   id: number
   completed: boolean
@@ -56,6 +64,17 @@ export const useLessonApi = ({ child }: { child: ComputedRef<any> }) => {
   ): Promise<LessonApiResponse | undefined> => {
     const data = await axios.$get(
       `/lessons/${lessonId}/children/${child.value.id}`
+    )
+    return data
+  }
+
+  const getLessonsByCurriculumType = async (
+    curriculumTypeId: number,
+    page: number,
+    limit: number
+  ): Promise<LessonsApiResponse | undefined> => {
+    const data = await axios.$get(
+      `/lessons?curriculumTypeId=${curriculumTypeId}&page=${page}&limit=${limit}`
     )
     return data
   }
@@ -118,7 +137,7 @@ export const useLessonApi = ({ child }: { child: ComputedRef<any> }) => {
         `/lessons/children/${child.value.id}/advance`
       )
       return data
-    } catch (error) {
+    } catch (error : any) {
       const { data } = error.response
       if (data && data.errorCode === 100) {
         return Promise.reject(data)
@@ -129,6 +148,7 @@ export const useLessonApi = ({ child }: { child: ComputedRef<any> }) => {
 
   return {
     getChildsCurrentLesson,
+    getLessonsByCurriculumType,
     getChildsLessonById,
     saveLessonVideoProgress,
     saveLessonWorksheetProgress,
