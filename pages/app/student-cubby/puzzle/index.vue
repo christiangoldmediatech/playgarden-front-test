@@ -125,7 +125,7 @@
     </v-card-text>
 
     <unlock-prompt
-      v-if="hasUserLearnAndPlayPlan"
+      v-if="false"
       title="PUZZLE"
       desc="Find all of your children completed puzzles. Share them on social media!"
       img="student-cubby/puzzle-piece.png"

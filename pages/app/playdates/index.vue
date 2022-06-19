@@ -2,7 +2,8 @@
   <pg-loading :loading="loading" fullscreen>
     <v-col class="fill-height" data-test-id="playdates-content">
       <!-- ACTIVE PLAYDATES -->
-      <div v-if="isPayingUser && !hasUserLearnAndPlayPlan">
+      <!-- <div v-if="isPayingUser && !hasUserLearnAndPlayPlan"> -->
+      <div v-if="isPayingUser">
         <v-row
           align="center"
           class="fill-height"
@@ -134,6 +135,7 @@
 
       <!-- PAYWALL -->
       <paywall v-else />
+      </div>
     </v-col>
   </pg-loading>
 </template>
