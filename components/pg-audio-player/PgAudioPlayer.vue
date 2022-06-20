@@ -233,7 +233,6 @@ export default defineComponent({
         this.isLoading = false
         return
       }
-
       // Abort current track
       this.player.load()
 

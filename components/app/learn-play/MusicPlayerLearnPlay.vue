@@ -41,7 +41,7 @@
         </span>
       </div>
 
-      <pg-audio-player ref="audioPlayer">
+      <pg-audio-player ref="audioPlayer" @ended="next">
         <!-- Music Player Actions -->
         <template
           #actions="{
