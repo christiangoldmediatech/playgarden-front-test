@@ -1,8 +1,7 @@
 <template>
   <v-container fluid class="ma-0 pa-0">
-    <!--  v-if="isCurrentLessonUnavailableInPlan && isRouteOnDailyLessons" -->
     <unlock-prompt
-      v-if="false"
+      v-if="isCurrentLessonUnavailableInPlan && isRouteOnDailyLessons"
       title="DAILY LESSONS"
       desc="Upgrade your plan to have access to daily lessons with your favorite
         playgarden prep teachers"
