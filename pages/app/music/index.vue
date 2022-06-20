@@ -94,7 +94,8 @@ import {
   watch,
   onUnmounted,
   useStore,
-  useRouter
+  useRouter,
+  defineComponent
 } from '@nuxtjs/composition-api'
 import {
   MusicLibrary,
@@ -106,7 +107,7 @@ import {
 const PAGE_MOBILE_BREAKPOINT = 1264
 const MOBILE_PLAYER_HEIGHT = 135
 
-export default {
+export default defineComponent({
   name: 'Index',
 
   components: {
@@ -190,7 +191,7 @@ export default {
       loading.value = true
       await getMusicLibrariesByCurriculumType()
       await getAndSetFavorites()
-      handleEmptyMusicPlayer()
+      setTimeout(handleEmptyMusicPlayer)
 
       window.addEventListener('scroll', debouncedHandleScroll)
 
@@ -300,7 +301,7 @@ export default {
 
         await getAndSetFavorites()
       } catch (error) {
-        snotify.error(error.message)
+        snotify.error((error as Error).message)
       }
     }
 
@@ -378,7 +379,7 @@ export default {
       hasUserLearnAndPlayPlan
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
