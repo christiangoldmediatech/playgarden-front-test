@@ -7,7 +7,7 @@
       class="pg-mr-2"
     />
 
-    <span class="pg-leading-6">
+    <span class="pg-leading-5 pg-text-sm">
       {{ benefit }}
     </span>
   </div>

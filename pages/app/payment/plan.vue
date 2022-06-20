@@ -38,7 +38,7 @@
         </v-col>
 
         <v-col cols="12" class="text-center mt-4">
-          <div class="pg-text-4xl pg-text-primary pg-font-bold v2-font">
+          <div class="pg-text-4xl pg-text-primary pg-font-bold pg-tracking-[1px] v2-font">
             {{
               isTrialExpired
                 ? 'YOUR TRIAL PERIOD HAS EXPIRED'

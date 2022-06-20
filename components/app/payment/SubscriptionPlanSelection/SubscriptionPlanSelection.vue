@@ -10,7 +10,7 @@
     </div>
 
     <!-- Plan columns -->
-    <v-row class="pg-w-[90%] pg-max-w-[1800px] pg-m-auto">
+    <v-row class="pg-w-[95%] pg-max-w-[1300px] pg-m-auto">
       <v-col
         v-for="(plan, i) in plans"
         :key="plan.name"
@@ -18,25 +18,41 @@
         :md="Math.ceil(12 / plans.length)"
       >
         <div
-          class="elevation-6 pg-rounded-md pg-bg-white"
+          class="card-shadow pg-rounded-[3px] pg-bg-white"
           :class="{
-            'pg-flex pg-flex-col pg-justify-between pg-h-[1500px]':
+            'pg-flex pg-flex-col pg-justify-between pg-h-full pg-min-h-[1500px]':
               $vuetify.breakpoint.mdAndUp
           }"
         >
           <div>
-            <!-- Image -->
-            <v-img
-              :src="require(`@/assets/png/plans/plan-${i}.png`)"
-              :alt="plan.name"
-              cover
-              height="200"
-              width="100%"
-            />
+            <!-- Plan image -->
+            <div class="pg-relative">
+              <div class="text-over-image-container pg-px-3 pg-pb-6">
+                <!-- Plan name -->
+                <span class="text-over-image v2-font">
+                  {{ plan.name }}
+                </span>
+
+                <!-- Cooming soon -->
+                <span
+                  v-if="plan.name === 'Learning Kits'"
+                  class="v2-font pg-text-lg "
+                >
+                  (Coming soon)
+                </span>
+              </div>
+
+              <!-- Image -->
+              <img
+                class="pg-w-full"
+                :src="require(`@/assets/jpg/plans/plan-${i}.jpg`)"
+                :alt="plan.name"
+              >
+            </div>
 
             <!-- Price -->
             <div
-              class="pg-text-center pg-my-6 pg-px-4 pg-text-5xl pg-font-semibold v2-font"
+              class="pg-text-center pg-my-4 pg-px-4 pg-text-4xl pg-font-semibold v2-font"
               :style="{ color: colors[i] }"
             >
               <template v-if="billAnnually">
@@ -51,7 +67,7 @@
 
             <!-- Subtitle -->
             <div
-              class="pg-px-8 pg-py-1 pg-text-[#FFA0C8] pg-text-xl pg-font-medium v2-font"
+              class="pg-px-8 pg-py-1 pg-text-[#FFA0C8] pg-text-lg pg-font-medium v2-font"
             >
               {{
                 plan.name === 'Play & Learn'
@@ -63,7 +79,7 @@
             </div>
 
             <!-- Description -->
-            <plan-description class="pg-p-4" :plan="plan" />
+            <plan-description class="pg-p-5" :plan="plan" :index="i" />
           </div>
 
           <div class="pg-px-4 pg-py-8">
@@ -327,3 +343,45 @@ export default defineComponent({
   }
 })
 </script>
+
+<style scoped lang="scss">
+.card-shadow {
+  box-shadow: 0px 3px 17px rgba(0, 0, 0, 0.25);
+}
+
+.text-over-image-container {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+  width: 100%;
+  color: white;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.text-over-image {
+  font-size: 36px;
+  line-height: 40px;
+
+  @media (min-width: 960px) and (max-width: 1264px) {
+    font-size: 24px;
+    line-height: 32px;
+  }
+
+}
+
+@media (min-width: 425px) and (max-width: 1023px) {
+  .text-over-image {
+    font-size: 48px;
+    line-height: 1;
+  }
+
+  .text-over-image-container {
+    padding-bottom: 56px;
+  }
+}
+</style>
