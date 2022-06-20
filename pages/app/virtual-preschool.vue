@@ -1,6 +1,6 @@
 <template>
   <div>
-    <virtual-preschool-child v-if="hiddenPlayAndLearn" />
+    <virtual-preschool-child v-if="!hiddenPlayAndLearn" />
     <virtual-learn-and-play v-else />
   </div>
 </template>
