@@ -1,6 +1,6 @@
 <template>
   <pg-loading :loading="loading" fullscreen>
-    <v-main class="pt-5 pt-md-16 mt-0 mt-md-5" data-test-id="music-content">
+    <v-main class="pt-5 mt-0 pt-md-16 mt-md-5" data-test-id="music-content">
       <unlock-prompt
         v-if="false"
         title="MUSIC"
@@ -11,7 +11,7 @@
 
       <v-container fluid class="pa-0">
         <horizontal-ribbon-card :is-minimized.sync="isTopRibbonMinimized">
-          <v-row no-gutters class="ml-md-10 mr-md-6 mx-4 mt-4">
+          <v-row no-gutters class="mx-4 mt-4 ml-md-10 mr-md-6">
             <v-col cols="12" md="3" align-self="center">
               <child-select
                 v-if="id"
@@ -25,7 +25,7 @@
               cols="12"
               md="9"
               align-self="center"
-              class="mt-2 mt-md-0 d-none d-sm-flex px-2 carousel-wrapper"
+              class="px-2 mt-2 mt-md-0 d-none d-sm-flex carousel-wrapper"
             >
               <music-carousel-letter
                 :is-full-width="true"
@@ -53,7 +53,7 @@
           :all-songs="allSongsWithFavorites"
           :songs-by-curriculum-type="songsByCurriculumTypeWithFavorites"
           :selected-letter-id="selectedLetterId"
-          class="music-song-list mx-auto"
+          class="mx-auto music-song-list"
           @addSong="addSongToPlaylist"
           @newPlayList="createNewPlaylist"
           @favorite="handleFavorite"
@@ -94,7 +94,8 @@ import {
   watch,
   onUnmounted,
   useStore,
-  useRouter
+  useRouter,
+  defineComponent
 } from '@nuxtjs/composition-api'
 import {
   MusicLibrary,
@@ -106,7 +107,7 @@ import {
 const PAGE_MOBILE_BREAKPOINT = 1264
 const MOBILE_PLAYER_HEIGHT = 135
 
-export default {
+export default defineComponent({
   name: 'Index',
 
   components: {
@@ -190,7 +191,7 @@ export default {
       loading.value = true
       await getMusicLibrariesByCurriculumType()
       await getAndSetFavorites()
-      handleEmptyMusicPlayer()
+      setTimeout(handleEmptyMusicPlayer)
 
       window.addEventListener('scroll', debouncedHandleScroll)
 
@@ -300,7 +301,7 @@ export default {
 
         await getAndSetFavorites()
       } catch (error) {
-        snotify.error(error.message)
+        snotify.error((error as Error).message)
       }
     }
 
@@ -378,7 +379,7 @@ export default {
       hasUserLearnAndPlayPlan
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
