@@ -1,32 +1,30 @@
 <template>
-  <v-footer class="text-center justify-center white footer-index" padless tile>
-    <div class="green-line green-line-1" />
-    <div class="green-line green-line-2" />
-
-    <v-card
-      flat
-      tile
-      class="pt-6 footer-wrapper-card"
-    >
+  <v-footer
+    class="text-center justify-center footer-index pg-relative paper-bg"
+    color="transparent"
+    padless
+    tile
+  >
+    <v-card class="pg-mt-28 footer-wrapper-card" color="transparent" flat tile>
       <v-card-text class="py-0">
         <v-row>
           <v-col cols="12" sm="6" md="3">
-            <nuxt-link
-              :to="{
-                name: 'app-virtual-preschool',
-              }"
-            >
-              <v-img
+            <nuxt-link :to="{ name: 'app-virtual-preschool' }">
+              <img
                 alt="Playgarden Prep's Logo"
                 class="mb-3"
-                contain
-                :max-width="$vuetify.breakpoint.smAndUp ? '400' : '100%'"
-                :src="require('~/assets/svg/logo.svg')"
-              />
+                :class="
+                  `pg-max-w-[${$vuetify.breakpoint.smAndUp ? '150px' : '100%'}]`
+                "
+                :src="require('@/assets/png/rainbow-logo.png')"
+              >
             </nuxt-link>
 
-            <div class="align-center d-flex justify-center justify-md-start">
-              <a target="_blank" href="https://www.facebook.com/Playgarden-Online-108368577679635">
+            <div class="align-center d-flex justify-center">
+              <a
+                target="_blank"
+                href="https://www.facebook.com/Playgarden-Online-108368577679635"
+              >
                 <img
                   alt="Facebook"
                   class="clickable mr-1"
@@ -75,7 +73,9 @@
                   class="d-block link-text mb-1 mt-1"
                   target="_blank"
                   href="https://playgardenprep.com/"
-                >Playgarden Prep</a>
+                >
+                  Playgarden Prep
+                </a>
 
                 <nuxt-link
                   class="d-block link-text mb-1"
@@ -104,7 +104,11 @@
             </p>
 
             <p class="text-footer-contact">
-              <a href="mailto:hello@playgardenprep.com">hello@playgardenprep.com</a><br>
+              <a href="mailto:hello@playgardenprep.com">
+                hello@playgardenprep.com
+              </a>
+            </p>
+            <p class="text-footer-contact">
               <a href="tel:646-504-4716">646-504-4716</a>
             </p>
 
@@ -122,7 +126,9 @@
 
             <p class="text-footer-contact">
               <a href="mailto:ues@playgardenprep.com">ues@playgardenprep.com</a><br>
-              <span>&nbsp;</span>
+            </p>
+            <p class="text-footer-contact">
+              <a href="tel:212-965-9718">212-965-9718</a>
             </p>
 
             <p class="text-footer-contact">
@@ -141,7 +147,9 @@
 
             <p class="text-footer-contact">
               <a href="mailto:info@playgardennyc.com">info@playgardennyc.com</a><br>
-              <span>&nbsp;</span>
+            </p>
+            <p class="text-footer-contact">
+              <a href="tel:212-965-9717">212-965-9717</a>
             </p>
 
             <p class="text-footer-contact">
@@ -210,14 +218,28 @@ export default {
 }
 
 .info-footer-title {
-  color: #68C453 !important;
+  color: #68c453 !important;
 }
 
-.footer-index{
+.footer-index {
   z-index: 1000 !important;
 }
 
 .footer-ref-links {
   height: 100%;
+}
+
+.text-footer-contact a {
+  color: inherit;
+}
+
+.paper-bg {
+  background-image: url('@/assets/png/paper-footer.png');
+  background-position: center top;
+  background-size: 165% 100%;
+
+  @media screen and (max-width: 768px) {
+    background-image: url('@/assets/png/paper-footer-mobile.png');
+  }
 }
 </style>
