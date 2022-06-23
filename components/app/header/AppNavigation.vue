@@ -11,7 +11,7 @@
 
         <!-- Close button -->
         <v-btn icon large @click.stop="appDrawer = !appDrawer">
-          <v-icon large>
+          <v-icon large color="primary">
             mdi-close
           </v-icon>
         </v-btn>
