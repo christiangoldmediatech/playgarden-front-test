@@ -12,7 +12,7 @@
       </div>
 
       <div class="upgrade-overlay-text">
-        Your Learn and Play plan gives you access to only 1 Live Class per week, if you want to get rid of this limitation please upgrade your plan.
+        Your Play and Learn plan gives you access to only 1 Live Class per week, if you want to get rid of this limitation please upgrade your plan.
       </div>
 
       <div class="upgrade-overlay-circle">
