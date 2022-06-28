@@ -38,6 +38,7 @@ export default {
             to: { name: 'app-live-classes' },
             exact: false
           },
+          { title: 'Play and Learn', to: { name: 'app-learn-play' }, exact: false, dataTestId: 'app-learn-play' },
           { title: 'Library', to: { name: 'app-library' }, exact: false, dataTestId: 'app-library' },
           { title: 'Music', to: { name: 'app-music' }, exact: false, dataTestId: 'app-music' },
           { title: 'Playdates', to: { name: 'app-playdates' }, exact: false, dataTestId: 'app-playdates' },
