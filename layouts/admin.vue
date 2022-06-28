@@ -35,13 +35,6 @@
             :item="item"
           />
         </v-list>
-        <v-list v-else>
-          <menu-item
-            v-for="(item, indexMI) in menuItemsSpecialists"
-            :key="indexMI"
-            :item="item"
-          />
-        </v-list>
       </v-navigation-drawer>
 
       <v-app-bar app clipped-left color="primary" dark elevation="0">
@@ -210,11 +203,6 @@ export default {
           route: '/admin/recurring-live-sessions-management'
         },
         {
-          icon: 'mdi-drawing',
-          title: 'Playdates management',
-          route: '/admin/playdates-management'
-        },
-        {
           icon: 'mdi-volume-high',
           title: 'Music Library',
           route: '/admin/music-library'
@@ -365,14 +353,6 @@ export default {
           icon: 'mdi-logout',
           title: 'Log out',
           route: '/auth/logout'
-        }
-      ],
-
-      menuItemsSpecialists: [
-        {
-          icon: 'mdi-television-play',
-          title: 'Agenda and Playdates',
-          route: '/admin/play-dates'
         }
       ]
     }
