@@ -69,8 +69,9 @@ export default defineComponent({
     const learnPlayV2 = useLearnPlayV2({ store })
 
     function downloadArtFiles() {
-      learnPlayV2.computedProps.getArtProjects.value.map((file: any) => {
-        if (window && file) {
+      learnPlayV2.computedProps.getArtProjects.value.map((data: any) => {
+        const { file } = data
+        if (file && window) {
           window.open(file, '_blank')
         }
       })
