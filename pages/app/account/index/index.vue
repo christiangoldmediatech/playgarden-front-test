@@ -86,7 +86,7 @@
             <div v-else key="shipping-address-required">
               <div v-if="isUserInTrial" class="text-center">
                 <underlined-title
-                  text="WE WANT TO SEND YOU A PLAYGARDEN PREP WORKBOOK"
+                  text="WE WANT TO SEND YOU A PLAYGARDEN PREP WORKBOOK aqui"
                   font-size="24px"
                   font-size-mobile="12px"
                 />
