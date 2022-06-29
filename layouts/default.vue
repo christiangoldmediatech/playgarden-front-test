@@ -44,7 +44,7 @@
       <!-- CONTENT -->
       <v-main v-if="!isFullWidth">
         <v-container
-          class="margin-top pa-md-3 pa-0"
+          class="pa-md-3 pa-0"
           fill-height
           :style="contentStyle"
         >
@@ -52,7 +52,7 @@
         </v-container>
       </v-main>
 
-      <v-container v-else fluid class="margin-top pa-0 fill-height">
+      <v-container v-else fluid class="pa-0 fill-height">
         <nuxt :style="contentStyle" />
       </v-container>
 
@@ -241,9 +241,5 @@ export default defineComponent({
   .pg-letter-spacing {
     letter-spacing: 6.75px !important;
   }
-}
-
-.margin-top {
-  margin-top: 70px;
 }
 </style>
