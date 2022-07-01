@@ -224,10 +224,6 @@ export default {
             {
               title: 'Categories',
               route: 'categories'
-            },
-            {
-              title: 'Videos',
-              route: 'videos'
             }
           ]
         },
