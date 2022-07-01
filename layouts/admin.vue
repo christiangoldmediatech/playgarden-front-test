@@ -220,10 +220,6 @@ export default {
             {
               title: 'Blog',
               route: 'blog'
-            },
-            {
-              title: 'Categories',
-              route: 'categories'
             }
           ]
         },
