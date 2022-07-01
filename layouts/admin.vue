@@ -203,11 +203,6 @@ export default {
           route: '/admin/recurring-live-sessions-management'
         },
         {
-          icon: 'mdi-volume-high',
-          title: 'Music Library',
-          route: '/admin/music-library'
-        },
-        {
           icon: 'mdi-filmstrip',
           title: 'Kids corner videos',
           route: '/admin/kids-corner-videos'
