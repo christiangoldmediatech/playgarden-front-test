@@ -241,10 +241,6 @@ export default {
               rootPath: '/faqs',
               children: [
                 {
-                  title: 'Categories',
-                  route: 'categories'
-                },
-                {
                   title: 'FAQs',
                   route: 'faqs'
                 }
