@@ -55,8 +55,10 @@
         type="card"
       />
     </v-card>
-
-    <v-card>
+    <span class="title-dashboard">
+      Books of the week
+    </span>
+    <v-card class="mt-2">
       <v-row
         v-if="getRelatedBooks.length > 0"
         class="book-images-container ma-0"
