@@ -208,17 +208,6 @@ export default {
           route: '/admin/kids-corner-videos'
         },
         {
-          icon: 'mdi-account-supervisor',
-          title: 'Parents Corner',
-          rootPath: '/admin/parents-corner',
-          children: [
-            {
-              title: 'Videos',
-              route: 'videos'
-            }
-          ]
-        },
-        {
           icon: 'mdi-cog',
           title: 'Settings',
           rootPath: '/admin/settings',
