@@ -213,10 +213,6 @@ export default {
           rootPath: '/admin/parents-corner',
           children: [
             {
-              title: 'Blog',
-              route: 'blog'
-            },
-            {
               title: 'Categories',
               route: 'categories'
             },
