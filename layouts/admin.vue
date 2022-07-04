@@ -217,10 +217,6 @@ export default {
               rootPath: '/general',
               children: [
                 {
-                  title: 'Coupon Management',
-                  route: 'coupon-management'
-                },
-                {
                   title: 'Notification Management',
                   route: 'notification-management'
                 },
