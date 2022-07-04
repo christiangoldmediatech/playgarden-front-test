@@ -381,7 +381,7 @@ export default {
 }
 
 .pg-app-bar-height::v-deep.v-sheet.v-app-bar.v-toolbar:not(.v-sheet--outlined) {
-  height: 150px !important;
+  height: 212px !important;
 }
 .btn-register:before {
   background-color: transparent !important;
@@ -389,12 +389,12 @@ export default {
 
 .paper-bg {
   background-image: url('~@/assets/png/paper-header.png');
-  background-size: 115% 100%;
+  background-size: cover;
   background-position: center bottom;
 
   @media screen and (max-width: 768px) {
     background-image: url('~@/assets/png/paper-header-mobile.png');
-    background-size: 100%;
+    background-size: cover;
     background-position: center bottom;
   }
 }
