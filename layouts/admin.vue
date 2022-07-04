@@ -193,16 +193,6 @@ export default {
           route: '/admin/curriculum-management'
         },
         {
-          icon: 'mdi-phone',
-          title: 'Live Classes Management',
-          route: '/admin/live-session-management'
-        },
-        {
-          icon: 'mdi-google-circles-extended',
-          title: 'Recurring Meetings',
-          route: '/admin/recurring-live-sessions-management'
-        },
-        {
           icon: 'mdi-volume-high',
           title: 'Music Library',
           route: '/admin/music-library'
