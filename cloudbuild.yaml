@@ -42,6 +42,7 @@ steps:
           --build-arg 'GOOGLE_PLACES_API_KEY=$_GOOGLE_PLACES_API_KEY' \
           --build-arg 'KIDS_CORNER_URL=$_KIDS_CORNER_URL' \
           --build-arg 'COMMIT_SHA=$_COMMIT_SHA' \
+          --build-arg 'PLAYGARDEN_ADMMIN_URL=$_PLAYGARDEN_ADMMIN_URL' \
           -t "gcr.io/$PROJECT_ID/$_SERVICE_NAME" \
           --cache-from "gcr.io/$PROJECT_ID/$_SERVICE_NAME:latest" \
           .
