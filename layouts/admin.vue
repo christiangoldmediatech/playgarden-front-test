@@ -45,7 +45,9 @@
 
         <v-toolbar-title class="d-flex flex-column hidden-md-and-up">
           <!-- PlayGarden Prep Online - Web Admin -->
-          <span class="font-weight-medium navbar-logo-text pl-4">Web Admin</span>
+          <span
+            class="font-weight-medium navbar-logo-text pl-4"
+          >Web Admin</span>
 
           <img
             alt="Playarden Prep Online Logo"
@@ -78,7 +80,9 @@
                     indeterminate
                     color="amber"
                   />
-                  <span class="notification-videos">{{ uploadingVideos.length }}</span>
+                  <span class="notification-videos">{{
+                    uploadingVideos.length
+                  }}</span>
                   <v-icon>
                     mdi-bell
                   </v-icon>
@@ -90,7 +94,10 @@
           <v-list dense class="mt-8">
             <v-subheader>Notifications</v-subheader>
             <v-divider />
-            <v-list v-if="uploadingVideos.length > 0" class="content-notification">
+            <v-list
+              v-if="uploadingVideos.length > 0"
+              class="content-notification"
+            >
               <v-list-item
                 v-for="(item, index) in uploadingVideos"
                 :key="index"
@@ -170,7 +177,7 @@ export default {
     VideoPreview
   },
 
-  data () {
+  data() {
     return {
       appDrawer: false,
 
@@ -186,11 +193,6 @@ export default {
           icon: 'mdi-television-play',
           title: 'Activities management',
           route: '/admin/activity-management'
-        },
-        {
-          icon: 'mdi-teach',
-          title: 'Curriculum management',
-          route: '/admin/curriculum-management'
         },
         {
           icon: 'mdi-phone',
@@ -328,14 +330,14 @@ export default {
     ...mapState(['showContent'])
   },
 
-  mounted () {
+  mounted() {
     this.getVideos()
     this.checkStatus()
 
     this.$store.commit('SET_SHOW_CONTENT', true)
   },
 
-  beforeDestroy () {
+  beforeDestroy() {
     clearInterval(this.checkStatusInterval)
   },
 
@@ -344,7 +346,7 @@ export default {
       getVideos: 'getVideosUploading'
     }),
 
-    checkStatus () {
+    checkStatus() {
       this.checkStatusInterval = setInterval(() => {
         this.getVideos()
       }, 60000)
