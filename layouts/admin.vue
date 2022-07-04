@@ -221,10 +221,6 @@ export default {
                   route: 'coupon-management'
                 },
                 {
-                  title: 'Notification Management',
-                  route: 'notification-management'
-                },
-                {
                   title: 'Privacy Policy Management',
                   route: 'privacy-policy-management'
                 },
