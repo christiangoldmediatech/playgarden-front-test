@@ -4,7 +4,7 @@
       'pg-bg-[url(@/assets/png/gift-of-learning/bottom-paper.png)]',
       'pg-bg-cover',
       'pg-bg-[center_top_-2rem]',
-      'lg:pg-bg-top',
+      'lg:pg-bg-top'
     ]"
     :height="footerHeight"
     app
@@ -22,7 +22,7 @@
           'pg-mt-48',
           'pg-mx-auto',
           'lg:pg-mt-36',
-          'lg:pg-flex-row',
+          'lg:pg-flex-row'
         ]"
       >
         <!-- LOGO -->
@@ -31,19 +31,32 @@
         </div>
 
         <!-- LINKS -->
-        <div class="pg-grid pg-grid-cols-1 pg-gap-2 lg:pg-gap-0 pg-text-center pg-mt-12 lg:pg-mt-0">
+        <div
+          class="pg-grid pg-grid-cols-1 pg-gap-2 lg:pg-gap-0 pg-text-center pg-mt-12 lg:pg-mt-0"
+        >
           <a v-for="link in links" :key="link.name" :href="link.href">
-            <span class="pg-inline-block pg-text-lg pg-text-black pg-font-medium">{{ link.name }}</span>
+            <span
+              class="pg-inline-block pg-text-lg pg-text-black pg-font-medium"
+            >
+              {{ link.name }}
+            </span>
           </a>
         </div>
 
         <!-- ONLINE SCHOOL -->
-        <div class="pg-grid pg-grid-cols-1 pg-gap-2 lg:pg-gap-0 pg-text-center pg-mt-12 lg:pg-mt-0">
-          <div class="pg-text-2xl pg-leading-9 pg-text-[#68C453] pg-font-semibold">
+        <div
+          class="pg-grid pg-grid-cols-1 pg-gap-2 lg:pg-gap-0 pg-text-center pg-mt-12 lg:pg-mt-0"
+        >
+          <div
+            class="pg-text-2xl pg-leading-9 pg-text-[#68C453] pg-font-semibold"
+          >
             Online School
           </div>
 
-          <a href="mailto:hello@playgardenprep.com" class="pg-font-medium !pg-text-[#707070]">
+          <a
+            href="mailto:hello@playgardenprep.com"
+            class="pg-font-medium !pg-text-[#707070]"
+          >
             hello@playgardenprep.com
           </a>
 
@@ -61,12 +74,19 @@
         </div>
 
         <!-- UPPER EAST SIDE -->
-        <div class="pg-grid pg-grid-cols-1 pg-gap-2 lg:pg-gap-0 pg-text-center pg-mt-12 lg:pg-mt-0">
-          <div class="pg-text-2xl pg-leading-9 pg-text-[#68C453] pg-font-semibold">
+        <div
+          class="pg-grid pg-grid-cols-1 pg-gap-2 lg:pg-gap-0 pg-text-center pg-mt-12 lg:pg-mt-0"
+        >
+          <div
+            class="pg-text-2xl pg-leading-9 pg-text-[#68C453] pg-font-semibold"
+          >
             Upper East Side
           </div>
 
-          <a href="mailto:ues@playgardenprep.com" class="pg-font-medium !pg-text-[#707070]">
+          <a
+            href="mailto:ues@playgardenprep.com"
+            class="pg-font-medium !pg-text-[#707070]"
+          >
             ues@playgardenprep.com
           </a>
 
@@ -84,12 +104,19 @@
         </div>
 
         <!-- TRIBECA -->
-        <div class="pg-grid pg-grid-cols-1 pg-gap-2 lg:pg-gap-0 pg-text-center pg-mt-12 lg:pg-mt-0">
-          <div class="pg-text-2xl pg-leading-9 pg-text-[#68C453] pg-font-semibold">
+        <div
+          class="pg-grid pg-grid-cols-1 pg-gap-2 lg:pg-gap-0 pg-text-center pg-mt-12 lg:pg-mt-0"
+        >
+          <div
+            class="pg-text-2xl pg-leading-9 pg-text-[#68C453] pg-font-semibold"
+          >
             Tribeca
           </div>
 
-          <a href="mailto:tribeca@playgardenprep.com" class="pg-font-medium !pg-text-[#707070]">
+          <a
+            href="mailto:tribeca@playgardenprep.com"
+            class="pg-font-medium !pg-text-[#707070]"
+          >
             tribeca@playgardenprep.com
           </a>
 
@@ -108,11 +135,14 @@
       </div>
 
       <!-- DASHED LINE -->
-      <div class="pg-border-0 pg-border-b-[0.5px] pg-border-black pg-border-dashed pg-my-7" />
+      <div
+        class="pg-border-0 pg-border-b-[0.5px] pg-border-black pg-border-dashed pg-my-7"
+      />
 
       <!-- COPYRIGHT -->
       <div class="pg-text-center pg-text-xs pg-text-black pg-mb-10">
-        2020 - {{ new Date().getFullYear() }} © Playgarden Prep. All rights reserved.
+        2020 - {{ new Date().getFullYear() }} © Playgarden Prep. All rights
+        reserved.
       </div>
 
       <!-- COLOR DASHES -->
@@ -132,14 +162,17 @@ export default defineComponent({
   setup() {
     const vuetify = useVuetifyHelper()
     const isMobile = computed(() => vuetify.breakpoint.mdAndDown)
-    const footerHeight = computed(() => isMobile.value ? '1280px' : '435px')
+    const footerHeight = computed(() => (isMobile.value ? '1280px' : '435px'))
 
-    const links = ref<{ name: string, href: string }[]>([
-      { name: 'Playgarden Prep', href: '#' },
-      { name: 'Preschool', href: '#' },
-      { name: 'Terms of Use', href: '#' },
-      { name: 'Privacy Policy', href: '#' },
-      { name: 'Help', href: '#' }
+    const links = ref<{ name: string; href: string }[]>([
+      { name: 'Playgarden Prep', href: 'https://playgardennyc.com/' },
+      { name: 'Preschool', href: 'https://playgardennyc.com/preschool/' },
+      { name: 'Terms of Use', href: 'https://playgardennyc.com/terms-of-use/' },
+      {
+        name: 'Privacy Policy',
+        href: 'https://playgardennyc.com/privacy-policy/'
+      },
+      { name: 'Help', href: 'https://playgardenonline.com/school/help' }
     ])
 
     return {
