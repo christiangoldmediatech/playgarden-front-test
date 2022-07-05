@@ -90,7 +90,7 @@ export default {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 999;
+  z-index: 9999;
 }
 .ribbon-color {
   background-color: #F89838;
