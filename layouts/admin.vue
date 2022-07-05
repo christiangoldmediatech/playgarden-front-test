@@ -239,32 +239,6 @@ export default {
               ]
             },
             {
-              title: 'Lesson Configurations',
-              rootPath: '/lesson-configurations',
-              children: [
-                {
-                  title: 'Activity Types',
-                  route: 'activity-types'
-                },
-                {
-                  title: 'Curriculum Types',
-                  route: 'curriculum-types'
-                },
-                {
-                  title: 'Offline Worksheet Categories',
-                  route: 'offline-worksheet-categories'
-                },
-                {
-                  title: 'Onboarding Management',
-                  route: 'onboarding'
-                },
-                {
-                  title: 'Report Card Types',
-                  route: 'report-card-types'
-                }
-              ]
-            },
-            {
               title: 'Student Cubby',
               rootPath: '/student-cubby',
               children: [
