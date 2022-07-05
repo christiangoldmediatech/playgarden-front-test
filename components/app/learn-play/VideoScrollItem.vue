@@ -1,7 +1,7 @@
 <template>
   <div class="mx-1">
     <v-img
-      :src="video.thumbnail"
+      :src="playAndLearnVideo.video.thumbnail"
       class="rounded-lg clickable"
       content-class="d-flex align-end justify-center"
       width="131px"
@@ -22,11 +22,13 @@
         </div>
 
         <div class="video-title-text">
-          {{ video.name }}
+          {{ playAndLearnVideo.name || playAndLearnVideo.video.name }}
         </div>
 
         <div class="video-subtitle-text">
-          {{ video.description }}
+          {{
+            playAndLearnVideo.description || playAndLearnVideo.video.description
+          }}
         </div>
       </div>
     </v-img>
@@ -34,15 +36,16 @@
 </template>
 
 <script lang="ts">
-import { useIconScale } from '@/composables'
 import { defineComponent, PropType } from '@nuxtjs/composition-api'
+import { useIconScale } from '@/composables'
+import { PlayAndLearnVideo } from '@/models'
 
 export default defineComponent({
   name: 'VideoScrollItem',
 
   props: {
-    video: {
-      type: Object as PropType<any>,
+    playAndLearnVideo: {
+      type: Object as PropType<PlayAndLearnVideo>,
       required: true
     }
   },
@@ -60,7 +63,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-
 .video-title-text {
   font-weight: 700;
   font-size: 10px;
