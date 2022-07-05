@@ -2,7 +2,7 @@
   <v-card class="pa-3">
     <div class="mb-4">
       <span class="title-dashboard">
-        Playlist
+        Playlist of the week
       </span>
     </div>
 
