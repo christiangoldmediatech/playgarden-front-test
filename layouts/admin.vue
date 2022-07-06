@@ -203,41 +203,10 @@ export default {
           route: '/admin/recurring-live-sessions-management'
         },
         {
-          icon: 'mdi-filmstrip',
-          title: 'Kids corner videos',
-          route: '/admin/kids-corner-videos'
-        },
-        {
           icon: 'mdi-cog',
           title: 'Settings',
           rootPath: '/admin/settings',
           children: [
-            {
-              title: 'General',
-              rootPath: '/general',
-              children: [
-                {
-                  title: 'Coupon Management',
-                  route: 'coupon-management'
-                },
-                {
-                  title: 'Notification Management',
-                  route: 'notification-management'
-                },
-                {
-                  title: 'Privacy Policy Management',
-                  route: 'privacy-policy-management'
-                },
-                {
-                  title: 'Terms & Conditions Management',
-                  route: 'terms-conditions-management'
-                },
-                {
-                  title: 'Plans Management',
-                  route: 'plan-management'
-                }
-              ]
-            },
             {
               title: 'Student Cubby',
               rootPath: '/student-cubby',
