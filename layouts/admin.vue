@@ -212,10 +212,6 @@ export default {
               rootPath: '/general',
               children: [
                 {
-                  title: 'Notification Management',
-                  route: 'notification-management'
-                },
-                {
                   title: 'Privacy Policy Management',
                   route: 'privacy-policy-management'
                 },
