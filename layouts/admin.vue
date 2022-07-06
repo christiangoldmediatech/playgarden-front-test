@@ -193,14 +193,25 @@ export default {
           route: '/admin/curriculum-management'
         },
         {
-          icon: 'mdi-phone',
-          title: 'Live Classes Management',
-          route: '/admin/live-session-management'
-        },
-        {
-          icon: 'mdi-google-circles-extended',
-          title: 'Recurring Meetings',
-          route: '/admin/recurring-live-sessions-management'
+          icon: 'mdi-cog',
+          title: 'Settings',
+          rootPath: '/admin/settings',
+          children: [
+            {
+              title: 'FAQs',
+              rootPath: '/faqs',
+              children: [
+                {
+                  title: 'Categories',
+                  route: 'categories'
+                },
+                {
+                  title: 'FAQs',
+                  route: 'faqs'
+                }
+              ]
+            },
+          ]
         },
         {
           icon: 'mdi-account',
