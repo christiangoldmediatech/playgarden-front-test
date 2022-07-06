@@ -1,5 +1,6 @@
 export * from './analytics'
 export * from './billing'
+export * from './dashboard'
 export * from './faq'
 export * from './favorites'
 export * from './helpers.composable'

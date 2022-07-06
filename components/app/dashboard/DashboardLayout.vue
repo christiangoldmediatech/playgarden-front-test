@@ -1,5 +1,5 @@
 <template>
-  <v-main class="pt-10 pt-sm-6 pt-md-16 mt-5">
+  <div>
     <!-- <v-container v-if="showScreen" fill-height>
       <v-row justify="center" align-sm="center" fill-height>
         <v-col cols="10" sm="6" md="5">
@@ -154,11 +154,10 @@
         </v-col>
       </v-row>
     </v-container>
-    <lesson-activity-player />
     <lesson-teacher-video />
     <course-progress-overlay />
     <puzzle-pieces-dialog />
-  </v-main>
+  </div>
 </template>
 
 <script>
@@ -166,7 +165,6 @@ import { mapGetters } from 'vuex'
 import { APP_EVENTS, TAG_MANAGER_EVENTS } from '@/models'
 
 import DashboardPanel from '@/components/app/dashboard/DashboardPanel.vue'
-import LessonActivityPlayer from '@/components/app/dashboard/LessonActivityPlayer.vue'
 import LessonTeacherVideo from '@/components/app/dashboard/LessonTeacherVideo.vue'
 import PuzzlePiecesDialog from '@/components/app/student-cubby/PuzzlePiecesDialog.vue'
 import ChildSelect from '@/components/app/ChildSelect.vue'
@@ -179,7 +177,6 @@ export default {
 
   components: {
     DashboardPanel,
-    LessonActivityPlayer,
     LessonTeacherVideo,
     PuzzlePiecesDialog,
     ChildSelect,

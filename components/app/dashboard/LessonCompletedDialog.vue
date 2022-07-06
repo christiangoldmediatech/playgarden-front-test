@@ -9,8 +9,14 @@
       <div class="lesson-completed-content">
         <v-row class="lesson-completed-content-row">
           <div class="lesson-completed-player">
-            <pg-inline-video-player
-              use-standard-poster
+            <PgVideoPlayer
+              inline
+              force-default-poster
+              :control-config="{
+                favorite: false,
+                prevTrack: false,
+                nextTrack: false
+              }"
               @ready="onPlayerReady"
             />
           </div>
@@ -58,7 +64,6 @@
                   block
                   tile
                   :x-small="$vuetify.breakpoint.smAndDown"
-                  :disabled="loading"
                   @click.stop="$emit('input', false)"
                 >
                   Return to lesson
@@ -72,21 +77,33 @@
   </v-overlay>
 </template>
 
-<script>
-import { mapGetters } from 'vuex'
-import DashboardLink from '@/mixins/DashboardLinkMixin.js'
-import PgInlineVideoPlayer from '@/components/pg-video-js-player/PgInlineVideoPlayer.vue'
+<script lang="ts">
+import { defineComponent, computed, useStore, useRoute, useRouter, watch } from '@nuxtjs/composition-api'
+import { useAppEventBusHelper, useDashboardLink, useNuxtHelper } from '@/composables'
+// @ts-ignore
+import PgVideoPlayer from '@gold-media-tech/pg-video-player'
 
-import { APP_EVENTS } from '@/models'
+import { APP_EVENTS, TypedStore } from '@/models'
+import { PlayerInstance } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
+import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
 
-export default {
+const playlist: MediaObject[] = [
+  {
+    title: '',
+    src: {
+      url:
+        'https://d3dnpqxalhovr4.cloudfront.net/out/v1/24b478a52d0f4d8ea11bdd0a2bb43c59/748ec5dbba9f4aa0a2eef8a74fb2c043/68b7491c440d41d4b8b6fb0ae08fe0b4/index.m3u8',
+      type: 'application/x-mpegURL'
+    }
+  }
+]
+
+export default defineComponent({
   name: 'LessonCompletedDialog',
 
   components: {
-    PgInlineVideoPlayer
+    PgVideoPlayer
   },
-
-  mixins: [DashboardLink],
 
   props: {
     value: {
@@ -95,104 +112,113 @@ export default {
     }
   },
 
-  data: () => {
-    return {
-      loading: false,
-      player: null
-    }
-  },
+  setup(props, { emit }) {
+    const store = useStore<TypedStore>()
+    const route = useRoute()
+    const router = useRouter()
+    const nuxt = useNuxtHelper()
+    const appEventBus = useAppEventBusHelper()
 
-  computed: {
-    ...mapGetters('admin/curriculum', { lesson: 'getLesson' })
-  },
+    let player: PlayerInstance
 
-  watch: {
-    value(val) {
-      if (val) {
-        this.waitAndPlay()
+    const getLesson = computed(() => {
+      return store.getters['admin/curriculum/getLesson']
+    })
+
+    const { generateDashboardRoute } = useDashboardLink({ route, lesson: getLesson })
+
+    watch(() => props.value, () => {
+      if (props.value) {
+        waitAndPlay()
       } else {
-        if (this.player) {
-          this.player.pause()
+        player.pause()
+        emit('close')
+      }
+    })
+
+    function play() {
+      player.setCurrentTime(0)
+      player.setStatus('IDLE')
+      player.play()
+    }
+
+    function createWaiter() {
+      const waiter = window.setInterval(() => {
+        if (player) {
+          play()
+          window.clearInterval(waiter)
         }
-        this.$emit('close')
+      }, 50)
+    }
+
+    function waitAndPlay() {
+      if (player) {
+        play()
+      } else {
+        createWaiter()
       }
     }
-  },
 
-  methods: {
-    onPlayerReady(player) {
-      player.loadPlaylist(
-        [
-          {
-            videoId: 1,
-            title: '',
-            src: {
-              src:
-                'https://d3dnpqxalhovr4.cloudfront.net/out/v1/24b478a52d0f4d8ea11bdd0a2bb43c59/748ec5dbba9f4aa0a2eef8a74fb2c043/68b7491c440d41d4b8b6fb0ae08fe0b4/index.m3u8',
-              type: 'application/x-mpegURL'
-            }
-          }
-        ],
-        0
-      )
-      this.player = player
-    },
+    function onPlayerReady(playerInstance: PlayerInstance) {
+      player = playerInstance
+      player.loadPlaylist(playlist)
+    }
 
-    goToWorksheets() {
-      this.$appEventBus.$emit(APP_EVENTS.DASHBOARD_ONLINE_WORKSHEET_CLICKED)
-      this.$router.push(this.generateNuxtRoute('online-worksheet'))
-    },
+    function goToWorksheets() {
+      appEventBus.$emit(APP_EVENTS.DASHBOARD_ONLINE_WORKSHEET_CLICKED)
+      router.push(generateDashboardRoute('online-worksheet'))
+    }
 
-    skipToActivities() {
+    function skipToActivities() {
       // Find first activity
-      const activities = this.lesson.lessonsActivities.map(
-        ({ activity }) => activity
+      const activities = getLesson.value.lessonsActivities.map(
+        ({ id, activity }: any) => ({ id, activity })
       )
-      if (activities.length) {
-        const validActivities = this.lesson.lessonsActivities.filter(
-          ({ activity }) => {
-            return activity.videos.videoUrl
-          }
-        )
 
-        const playlist = validActivities.map(({ id, activity }) => {
-          return {
-            title: activity.videos.name,
-            description: activity.videos.description,
+      const validActivities = activities.filter(
+        ({ activity }: any) => {
+          return activity.videos?.videoUrl
+        }
+      )
+
+      if (!validActivities.length) {
+        return
+      }
+
+      const playlist: MediaObject[] = validActivities.map(({ id, activity }: any) => {
+        return {
+          title: activity.activityType.name,
+          description: activity.videos.description,
+          poster: activity.videos.thumbnail,
+          src: {
+            url: activity.videos.videoUrl.HLS,
+            type: 'application/x-mpegURL'
+          },
+          meta: {
+            videoId: activity.videos.id,
+            author: `with ${activity.videos.name}`,
+            videoType: 'LESSON ACTIVITIES',
+            videoIcon: activity.activityType.icon,
             activityType: activity.activityType,
             curriculumType: activity.curriculumType,
-            src: {
-              src: activity.videos.videoUrl.HLS,
-              type: 'application/x-mpegURL'
-            },
-            poster: activity.videos.thumbnail,
             lessonActivityId: id,
             activityId: activity.id,
-            videoId: activity.videos.id,
             viewed: activity.viewed
           }
-        })
-
-        this.$nuxt.$emit('open-lesson-activity-player', { playlist, index: 0 })
-        this.$router.push(
-          this.generateNuxtRoute('lesson-activities', { id: activities[0].id })
-        )
-      }
-    },
-
-    waitAndPlay() {
-      const wait = window.setInterval(() => {
-        if (this.player) {
-          if (this.value) {
-            this.player.currentTime(0)
-            this.player.play()
-          }
-          window.clearInterval(wait)
         }
-      }, 100)
+      })
+
+      nuxt.$emit('open-lesson-activity-player', { playlist, index: 0 })
+      router.push(generateDashboardRoute('lesson-activities', { id: activities[0].id }))
+    }
+
+    return {
+      onPlayerReady,
+      goToWorksheets,
+      skipToActivities
     }
   }
-}
+})
 </script>
 
 <style lang="scss">
@@ -231,6 +257,7 @@ export default {
   &-player {
     overflow-x: hidden;
     width: 100%;
+    aspect-ratio: 16 / 9;
   }
   &-options {
     padding: 8px;
