@@ -214,10 +214,6 @@ export default {
                 {
                   title: 'Terms & Conditions Management',
                   route: 'terms-conditions-management'
-                },
-                {
-                  title: 'Plans Management',
-                  route: 'plan-management'
                 }
               ]
             },
