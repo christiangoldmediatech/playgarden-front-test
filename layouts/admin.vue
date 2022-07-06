@@ -208,16 +208,6 @@ export default {
           rootPath: '/admin/settings',
           children: [
             {
-              title: 'General',
-              rootPath: '/general',
-              children: [
-                {
-                  title: 'Terms & Conditions Management',
-                  route: 'terms-conditions-management'
-                }
-              ]
-            },
-            {
               title: 'Lesson Configurations',
               rootPath: '/lesson-configurations',
               children: [
