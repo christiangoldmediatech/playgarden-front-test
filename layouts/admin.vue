@@ -203,11 +203,6 @@ export default {
           route: '/admin/recurring-live-sessions-management'
         },
         {
-          icon: 'mdi-filmstrip',
-          title: 'Kids corner videos',
-          route: '/admin/kids-corner-videos'
-        },
-        {
           icon: 'mdi-cog',
           title: 'Settings',
           rootPath: '/admin/settings',
@@ -216,14 +211,6 @@ export default {
               title: 'General',
               rootPath: '/general',
               children: [
-                {
-                  title: 'Coupon Management',
-                  route: 'coupon-management'
-                },
-                {
-                  title: 'Notification Management',
-                  route: 'notification-management'
-                },
                 {
                   title: 'Terms & Conditions Management',
                   route: 'terms-conditions-management'
