@@ -212,10 +212,6 @@ export default {
               rootPath: '/general',
               children: [
                 {
-                  title: 'Privacy Policy Management',
-                  route: 'privacy-policy-management'
-                },
-                {
                   title: 'Terms & Conditions Management',
                   route: 'terms-conditions-management'
                 },
