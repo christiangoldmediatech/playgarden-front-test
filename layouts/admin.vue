@@ -263,24 +263,6 @@ export default {
                   route: 'report-card-types'
                 }
               ]
-            },
-            {
-              title: 'Student Cubby',
-              rootPath: '/student-cubby',
-              children: [
-                {
-                  title: 'Backpack Management',
-                  route: 'backpack-management'
-                },
-                {
-                  title: 'Patch Management',
-                  route: 'patch-management'
-                },
-                {
-                  title: 'Puzzle Management',
-                  route: 'puzzle-management'
-                }
-              ]
             }
           ]
         },
