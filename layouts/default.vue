@@ -50,7 +50,7 @@
       </v-container>
 
       <!-- TRIAL EXPIRING RIBBON -->
-      <trial-is-expiring />
+      <trial-is-expiring v-if="isTrialExpiringRibbonVisible" />
 
       <!-- FOOTER -->
       <default-footer />
