@@ -4,6 +4,12 @@ import parentSubscriptionWhitelistedRoutes from '~/utils/consts/parentSubscripti
 import routeHandlerIgnoredRoutes from '~/utils/consts/routeHandlerIgnoredRoutes.json'
 
 export default async function ({ redirect, route, store, app, req }) {
+  const redirectLogout = (route.query.logout)
+
+  if (redirectLogout) {
+    return redirect({ name: 'auth-logout' })
+  }
+
   const isIgnoredRoute = !!routeHandlerIgnoredRoutes[route.name]
 
   if (isIgnoredRoute) {
