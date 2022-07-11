@@ -1,9 +1,6 @@
 <template>
   <v-app>
     <template v-if="showContent">
-      <!-- TRIAL EXPIRING RIBBON -->
-      <trial-is-expiring v-if="isTrialExpiringRibbonVisible" />
-
       <coming-soon-player />
 
       <!-- APP MAV & BAR -->
@@ -43,11 +40,7 @@
 
       <!-- CONTENT -->
       <v-main v-if="!isFullWidth">
-        <v-container
-          class="pa-md-3 pa-0"
-          fill-height
-          :style="contentStyle"
-        >
+        <v-container class="pa-md-3 pa-0" fill-height :style="contentStyle">
           <nuxt />
         </v-container>
       </v-main>
@@ -55,6 +48,9 @@
       <v-container v-else fluid class="pa-0 fill-height">
         <nuxt :style="contentStyle" />
       </v-container>
+
+      <!-- TRIAL EXPIRING RIBBON -->
+      <trial-is-expiring />
 
       <!-- FOOTER -->
       <default-footer />

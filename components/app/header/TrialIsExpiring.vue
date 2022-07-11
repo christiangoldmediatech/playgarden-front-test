@@ -3,7 +3,9 @@
     class="ribbon-color text-center d-flex flex-column flex-md-row align-center justify-center py-2"
     :class="{ 'ribbon-fixed-top': isFixedOnTop }"
   >
-    <span class="white--text font-weight-bold mx-2">Your free trial will expire in: </span>
+    <span class="white--text font-weight-bold mx-2">
+      Your free trial will expire in:
+    </span>
     <span class="time">
       <underlined-title
         class="white--text"
@@ -46,7 +48,7 @@ export default {
     }
   },
 
-  data () {
+  data() {
     return {
       intervalId: undefined,
       countdownTime: ''
@@ -60,7 +62,7 @@ export default {
   watch: {
     countdownTime: {
       immediate: true,
-      handler (value) {
+      handler(value) {
         if (value === EXPIRED_TIME_STRING) {
           this.$emit('expired')
         }
@@ -68,17 +70,23 @@ export default {
     }
   },
 
-  mounted () {
+  mounted() {
     const trialExpiresDate = this.getUserInfo.trialEnd
-    this.countdownTime = getCountdownToDate(trialExpiresDate, EXPIRED_TIME_STRING)
+    this.countdownTime = getCountdownToDate(
+      trialExpiresDate,
+      EXPIRED_TIME_STRING
+    )
 
     const oneMinute = 1000 * 60
     this.intervalId = setInterval(() => {
-      this.countdownTime = getCountdownToDate(trialExpiresDate, EXPIRED_TIME_STRING)
+      this.countdownTime = getCountdownToDate(
+        trialExpiresDate,
+        EXPIRED_TIME_STRING
+      )
     }, oneMinute)
   },
 
-  beforeDestroy () {
+  beforeDestroy() {
     clearInterval(this.intervalId)
   }
 }
@@ -87,13 +95,14 @@ export default {
 <style lang="scss" scoped>
 .ribbon-fixed-top {
   position: fixed;
-  top: 0;
+  top: 100vh;
   left: 0;
   right: 0;
   z-index: 9999;
+  transform: translateY(-100%);
 }
 .ribbon-color {
-  background-color: #F89838;
+  background-color: #f89838;
 }
 .time {
   width: 215px !important;
