@@ -215,75 +215,19 @@ export default {
           rootPath: '/admin/settings',
           children: [
             {
-              title: 'General',
-              rootPath: '/general',
+              title: 'FAQs',
+              rootPath: '/faqs',
               children: [
                 {
-                  title: 'Coupon Management',
-                  route: 'coupon-management'
+                  title: 'Categories',
+                  route: 'categories'
                 },
                 {
-                  title: 'Notification Management',
-                  route: 'notification-management'
-                },
-                {
-                  title: 'Privacy Policy Management',
-                  route: 'privacy-policy-management'
-                },
-                {
-                  title: 'Terms & Conditions Management',
-                  route: 'terms-conditions-management'
-                },
-                {
-                  title: 'Plans Management',
-                  route: 'plan-management'
+                  title: 'FAQs',
+                  route: 'faqs'
                 }
               ]
             },
-            {
-              title: 'Lesson Configurations',
-              rootPath: '/lesson-configurations',
-              children: [
-                {
-                  title: 'Activity Types',
-                  route: 'activity-types'
-                },
-                {
-                  title: 'Curriculum Types',
-                  route: 'curriculum-types'
-                },
-                {
-                  title: 'Offline Worksheet Categories',
-                  route: 'offline-worksheet-categories'
-                },
-                {
-                  title: 'Onboarding Management',
-                  route: 'onboarding'
-                },
-                {
-                  title: 'Report Card Types',
-                  route: 'report-card-types'
-                }
-              ]
-            },
-            {
-              title: 'Student Cubby',
-              rootPath: '/student-cubby',
-              children: [
-                {
-                  title: 'Backpack Management',
-                  route: 'backpack-management'
-                },
-                {
-                  title: 'Patch Management',
-                  route: 'patch-management'
-                },
-                {
-                  title: 'Puzzle Management',
-                  route: 'puzzle-management'
-                }
-              ]
-            }
           ]
         },
         {
