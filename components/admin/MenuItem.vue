@@ -43,44 +43,35 @@
 
 <script>
 import MenuItem from '@/components/admin/MenuItem'
-
 export default {
   name: 'MenuItem',
-
   components: { MenuItem },
-
   props: {
     item: {
       type: Object,
       required: true
     },
-
     rootPath: {
       type: String,
       default: null
     }
   },
-
   computed: {
     isChild () {
       return Boolean(this.rootPath)
     },
-
     itemRootPath () {
       if (this.rootPath && this.item.rootPath) {
         return this.rootPath + this.item.rootPath
       } else if (this.item.rootPath) {
         return this.item.rootPath
       }
-
       return this.rootPath
     },
-
     itemRoute () {
       if (this.item.children) {
         return null
       }
-
       return this.itemRootPath
         ? `${this.itemRootPath}/${this.item.route}`
         : this.item.route
