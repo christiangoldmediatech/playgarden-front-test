@@ -95,11 +95,10 @@ export default {
 <style lang="scss" scoped>
 .ribbon-fixed-top {
   position: fixed;
-  top: 100vh;
+  bottom: 0;
   left: 0;
   right: 0;
   z-index: 9999;
-  transform: translateY(-100%);
 }
 .ribbon-color {
   background-color: #f89838;
