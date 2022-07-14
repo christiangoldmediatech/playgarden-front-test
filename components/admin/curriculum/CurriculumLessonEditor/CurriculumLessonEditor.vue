@@ -65,14 +65,6 @@
                   />
                 </v-stepper-content>
 
-                <v-stepper-content step="5">
-                  <step-five
-                    v-if="currentStep === 5"
-                    :lesson-id="lessonId"
-                    @click:submit="onSubmit"
-                  />
-                </v-stepper-content>
-
                 <v-stepper-content step="6">
                   <step-six
                     v-if="currentStep === 6"
@@ -94,7 +86,6 @@ import StepOne from './StepOne'
 import StepTwo from './StepTwo'
 import StepThree from './StepThree'
 import StepFour from './StepFour'
-import StepFive from './StepFive'
 import StepSix from './StepSix'
 
 export default {
@@ -105,7 +96,6 @@ export default {
     StepTwo,
     StepThree,
     StepFour,
-    StepFive,
     StepSix
   },
 
@@ -117,13 +107,13 @@ export default {
   }),
 
   watch: {
-    '$route.query.step' (v) {
+    '$route.query.step'(v) {
       this.currentStep = parseInt(v || 1)
     }
   },
 
   methods: {
-    onSubmit (lesson) {
+    onSubmit(lesson) {
       switch (this.currentStep) {
         case 1:
           this.lessonId = lesson.id
@@ -152,7 +142,7 @@ export default {
       }
     },
 
-    setQuery (query = {}) {
+    setQuery(query = {}) {
       this.$router.push({ query: { ...query, _time: new Date().getTime() } })
     }
   }
