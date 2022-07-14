@@ -26,9 +26,7 @@
         <p>
           Your trial period ended on {{ lastDayOfTrial }}. You are currently enrolled in the  {{ (plan ) ? plan.name : 'ONLINE PRESCHOOL' }}  plan.If you would like to switch into a different plan, please follow this link!
         </p>
-        <nuxt-link :to="handleComparePlans()">
-          <a class="accent--text font-weight-bold">Change my Plan</a>
-        </nuxt-link>
+        <a class="accent--text font-weight-bold" @click="handleComparePlans">Change my Plan</a>
 
         <p>
           As always, you cancel your enrollment anytime by going to your Accounts Page.
