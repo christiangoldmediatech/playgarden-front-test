@@ -14,7 +14,7 @@
         'lg:pg-px-10',
         'lg:pg-w-[550px]',
         {
-          'pg-shadow-[0px_8px_24px_rgba(0,0,0,0.15)]': isOpen,
+          'pg-shadow-[0px_8px_24px_rgba(0,0,0,0.15)]': isOpen
         }
       ]"
     >
@@ -44,11 +44,17 @@
           ]"
         >
           <img src="@/assets/svg/play-learn/gift-box.svg" class="pg-h-[26px]">
-          <span class="pg-ml-1 lg:pg-ml-2">Your 15 Day Free Trial Includes:</span>
+          <span class="pg-ml-1 lg:pg-ml-2">
+            Your 15 Day Free Trial Includes:
+          </span>
         </div>
 
-        <div v-else class="pg-text-lg lg:pg-text-2xl pg-font-bold pg-text-pg-grey">
-          WANT TO KNOW MORE ABOUT YOUR <span class="pg-text-primary">FREE TRIAL</span>?
+        <div
+          v-else
+          class="pg-text-lg lg:pg-text-2xl pg-font-bold pg-text-pg-grey"
+        >
+          WANT TO KNOW MORE ABOUT YOUR
+          <span class="pg-text-primary">FREE TRIAL</span>?
         </div>
       </div>
 
@@ -61,11 +67,15 @@
           'pg-duration-500',
           {
             'pg-max-h-screen': isOpen,
-            'pg-max-h-0': isClose,
+            'pg-max-h-0': isClose
           }
         ]"
       >
-        <div v-for="item in freeTrialItems" :key="item" class="pg-flex pg-items-center pg-py-1">
+        <div
+          v-for="item in freeTrialItems"
+          :key="item"
+          class="pg-flex pg-items-center pg-py-1"
+        >
           <img src="@/assets/svg/play-learn/ellipse.svg" class="pg-h-5">
           <span class="pg-ml-2 pg-text-base">
             {{ item }}
@@ -81,7 +91,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from '@nuxtjs/composition-api'
+import { computed, defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   name: 'StepTwoCardDetail',
@@ -97,18 +107,18 @@ export default defineComponent({
     const isOpen = computed(() => props.value)
     const isClose = computed(() => !props.value)
 
-    const freeTrialItems = ref([
-      'Weekly lessons and activities from our Certified Teachers',
+    const freeTrialItems = [
+      'Video lessons from our Certified Teachers',
       'Do-it-yourself activities, games, and art projects',
       'Snack recipes and how-to videos',
       'Book recommendations with videos to read along',
       'Curated Playlists to supplement learning, or just have fun!',
       'Access to our Library with thousands of video lessons',
-      'Kids Corner, where kids can have fun learning on their own',
+      'A Kids Corner, where kids can have fun learning on their own',
       'Weekend Zooms with our Playgarden Prep teachers',
       'Well-being podcasts, blogs, and webinars',
       'Family membership for multiple students and caregivers'
-    ])
+    ]
 
     return {
       isOpen,
