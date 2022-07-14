@@ -1,7 +1,7 @@
 <template>
   <v-overlay z-index="5">
     <div class="upgrade-overlay">
-      <div class="d-flex align-center mb-3 mb-lg-10">
+      <div class="pg-mt-[80px] d-flex align-center mb-3 mb-lg-10">
         <img
           class="upgrade-overlay-icon"
           src="@/assets/svg/sessions-camera-upgrade.svg"
