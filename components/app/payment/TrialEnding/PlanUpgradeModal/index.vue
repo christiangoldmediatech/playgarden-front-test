@@ -124,6 +124,8 @@ export default defineComponent({
       } catch (error) {
         upgradeStatus.value = 'failed'
         // eslint-disable-next-line no-console
+      } finally {
+        store.dispatch('auth/fetchUserInfo')
       }
     }
 
