@@ -7,7 +7,7 @@
     </div>
 
     <template v-if="learnPlayData && learnPlayData.videos.length > 0">
-      <div class="learn-play-video mb-5">
+      <div class="mb-5 learn-play-video">
         <pg-video-player
           class="library-inline-player"
           :control-config="{ favorite: false }"
@@ -36,7 +36,7 @@
               >
 
               <div class="player-preview-text">
-                <div class="player-text-top-part justify-center">
+                <div class="justify-center player-text-top-part">
                   <div class="player-preview-title">
                     {{ title }}
                   </div>
@@ -51,7 +51,7 @@
       </div>
 
       <div class="mb-3">
-        <span class="subtitle-dashboard">More like this</span>
+        <span class="subtitle-dashboard">Next up:</span>
       </div>
 
       <videos-scroll

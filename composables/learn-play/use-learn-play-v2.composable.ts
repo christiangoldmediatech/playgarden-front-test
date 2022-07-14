@@ -25,7 +25,7 @@ export const useLearnPlayV2 = (params: {
       return {
         title: video.name,
         poster: video.thumbnail,
-        description: 'Test description',
+        description: video.description,
         src: {
           url: video.videoUrl.HLS,
           type: 'application/x-mpegURL'
