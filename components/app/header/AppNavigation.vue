@@ -127,6 +127,9 @@
                       <li>
                         <a href="https://playgardenonline.com/blog">Blog</a>
                       </li>
+                      <li><a href="https://playgardenonline.com/your-teachers/">Your Teachers</a></li>
+                      <li><a href="https://playgardenonline.com/specialized-learning/">Specialized Learning</a></li>
+                      <li><a href="https://playgardenonline.com/do-it-yourself/">Do it Yourself</a></li>
                     </ul>
                   </v-list-group>
                   <hr class="mx-4">
