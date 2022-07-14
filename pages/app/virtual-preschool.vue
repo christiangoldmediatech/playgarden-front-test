@@ -16,7 +16,7 @@ export default {
   layout: 'pg',
 
   components: {
-    VirtualPreschoolChild
+    VirtualPreschoolChild,
     VirtualLearnAndPlay
   },
 
