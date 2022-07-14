@@ -42,7 +42,9 @@
       </v-row>
     </v-container> -->
     <v-container
-      :class="{ 'dashboard-container': !$vuetify.breakpoint.smAndDown }"
+      :class="{
+        'dashboard-container pg-mt-[80px]': !$vuetify.breakpoint.smAndDown
+      }"
       fluid
     >
       <v-row class="fill-height" justify="center">

@@ -1,17 +1,17 @@
 <template>
-  <pg-loading :loading="loading" fullscreen>
-    <v-main class="pt-5 mt-0 pt-md-16 mt-md-5" data-test-id="music-content">
-      <unlock-prompt
-        v-if="false"
-        title="MUSIC"
-        desc="Unlock the full music library"
-        img="music.svg"
-        :padding="150"
-      />
+  <v-main class="pt-5 pt-md-16 mt-0 mt-md-5" data-test-id="music-content">
+    <unlock-prompt
+      v-if="hasUserLearnAndPlayPlan && !loading"
+      title="MUSIC"
+      desc="Unlock the full music library"
+      img="music.svg"
+      :padding="150"
+    />
 
+    <pg-loading :loading="loading" fullscreen>
       <v-container fluid class="pa-0">
         <horizontal-ribbon-card :is-minimized.sync="isTopRibbonMinimized">
-          <v-row no-gutters class="mx-4 mt-4 ml-md-10 mr-md-6">
+          <v-row no-gutters class="pg-pt-12 ml-md-10 mr-md-6 mx-4 mt-4">
             <v-col cols="12" md="3" align-self="center">
               <child-select
                 v-if="id"
@@ -61,8 +61,8 @@
           @select-letter="selectLetter"
         />
       </v-container>
-    </v-main>
-  </pg-loading>
+    </pg-loading>
+  </v-main>
 </template>
 
 <script lang="ts">

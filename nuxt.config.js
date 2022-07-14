@@ -66,6 +66,12 @@ export default {
         rel: 'stylesheet',
         type: 'text/css',
         href:
+          'https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;700&display=swap'
+      },
+      {
+        rel: 'stylesheet',
+        type: 'text/css',
+        href:
           'https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css'
       }
     ],
@@ -290,7 +296,8 @@ export default {
     dropBoxApiKey: process.env.DROPBOX_API_KEY || '',
     baseRouteProd,
     googlePlacesAPI: process.env.GOOGLE_PLACES_API_KEY || 'AIzaSyDh0lrueon0BEux1pIuT40ivuEI92qJr3o',
-    kidsCornerUrl: process.env.KIDS_CORNER_URL || 'http://localhost:8081'
+    kidsCornerUrl: process.env.KIDS_CORNER_URL || 'http://localhost:8081',
+    playgardenAdminUrl: process.env.PLAYGARDEN_ADMMIN_URL || 'http://localhost:8081'
   },
   router: {
     base: process.env.TEST_ENV === 'production' ? baseRouteProd : '/',

@@ -257,12 +257,11 @@
                returns an equivalent number, but we should update this component to accept
                maybe an id instead.[ch1440]
           -->
-            <v-col cols="12" class="mx-0 mb-10 mx-lg-12">
-              <plan-description
-                v-if="Object.keys(plan).length"
-                :plan="plan"
-              />
-            </v-col>
+            <plan-description
+              v-if="Object.keys(plan).length"
+              :plan="plan"
+              class="pg-mb-4"
+            />
 
             <!-- Change Plan Button -->
             <v-col v-if="billing.stripeStatus !== 'canceled'" cols="12" class="justify-center d-flex">

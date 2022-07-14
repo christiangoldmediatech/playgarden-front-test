@@ -66,6 +66,11 @@ export enum UserFlow {
   NOCREDITCARD = 'NOCREDITCARD'
 }
 
+export enum UserRole {
+  SUPER_ADMIN = 1,
+  PARENTS = 3
+}
+
 export interface User extends Entity {
   email: string
   firstName: string

@@ -10,7 +10,7 @@
       <!-- PG LOGO & CLOSE BUTTON -->
       <div class="pg-flex pg-items-center pg-justify-center pg-relative">
         <img
-          src="@/assets/svg/gift-of-learning/playgarden-prep.svg"
+          src="@/assets/png/rainbow-logo.png"
           height="110"
         >
 

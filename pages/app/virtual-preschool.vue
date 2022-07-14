@@ -1,7 +1,7 @@
 <template>
   <div>
-    <virtual-preschool-child />
-    <!-- <virtual-learn-and-play v-else /> -->
+    <virtual-preschool-child v-if="!hasUserLearnAndPlayPlan" />
+    <virtual-learn-and-play v-else />
   </div>
 </template>
 
@@ -23,11 +23,7 @@ export default {
   computed: {
     ...mapGetters('auth', {
       hasUserLearnAndPlayPlan: 'hasUserLearnAndPlayPlan'
-    }),
-
-    hiddenPlayAndLearn() {
-      return true
-    }
+    })
   }
 }
 </script>

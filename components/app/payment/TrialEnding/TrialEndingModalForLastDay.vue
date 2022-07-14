@@ -27,7 +27,7 @@
           <span class="trialExpiryDate secondary--text fw-600 fs-18"> {{ formattedTrialExpiryDate }} </span>,
           you were able to experience all the features of the
           <span class="accent--text fw-600">Preschool @Home </span> plan. After the trial period, you will be automatically placed in the
-          <span class="accent--text fw-600">Play & Learn</span> monthly plan.
+          <span class="accent--text fw-600">Learn & Play</span> monthly plan.
           you liked what you had until now please upgrade to the Preschool @ Home.
         </p>
 

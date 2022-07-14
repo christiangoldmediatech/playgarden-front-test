@@ -30,7 +30,7 @@
 
       <!-- LOGO -->
       <img
-        src="@/assets/svg/gift-of-learning/playgarden-prep.svg"
+        src="@/assets/png/rainbow-logo.png"
         alt="PlaygardenPrep Logo"
         class="pg-mt-4 pg-h-[72px] md:pg-h-[110px]"
       >

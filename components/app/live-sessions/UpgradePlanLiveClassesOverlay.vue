@@ -1,7 +1,7 @@
 <template>
   <v-overlay z-index="5">
     <div class="upgrade-overlay">
-      <div class="d-flex align-center mb-3 mb-lg-10">
+      <div class="pg-mt-[80px] d-flex align-center mb-3 mb-lg-10">
         <img
           class="upgrade-overlay-icon"
           src="@/assets/svg/sessions-camera-upgrade.svg"
@@ -12,7 +12,7 @@
       </div>
 
       <div class="upgrade-overlay-text">
-        Your Learn and Play plan gives you access to only 1 Live Class per week, if you want to get rid of this limitation please upgrade your plan.
+        Your Play and Learn plan gives you access to only 1 Live Class per week, if you want to get rid of this limitation please upgrade your plan.
       </div>
 
       <div class="upgrade-overlay-circle">

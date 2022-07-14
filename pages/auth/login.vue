@@ -91,7 +91,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-
+import { UserRole } from '@/models'
 import LoginForm from '@/components/forms/auth/LoginForm.vue'
 
 export default {
@@ -125,8 +125,12 @@ export default {
 
     isKidsCornerRedirect () {
       const { query } = this.$route
-
       return query.kidsCornerRedirect === 'true'
+    },
+
+    isPlaygardenAdminRedirect () {
+      const { query } = this.$route
+      return query.playgardenAdminRedirect === 'true'
     }
   },
 
@@ -139,6 +143,11 @@ export default {
     if (this.isKidsCornerRedirect && this.$store.getters['auth/isUserLoggedIn']) {
       // Go to kids corner
       window.open(`${process.env.kidsCornerUrl}?atoken=${this.$store.getters['auth/getAccessToken']}`, '_self')
+    }
+
+    if (this.isPlaygardenAdminRedirect && this.$store.getters['auth/isUserLoggedIn']) {
+      // Go to Playgarden admin
+      window.open(`${process.env.playgardenAdminUrl}?atoken=${this.$store.getters['auth/getAccessToken']}`, '_self')
     }
   },
 
@@ -256,6 +265,7 @@ export default {
         this.errorMessage = ''
 
         await this.login(data)
+        await this.fetchUserInfo()
 
         if (this.isKidsCornerRedirect) {
           // Go to kids corner
@@ -267,8 +277,9 @@ export default {
           })
         } else if (this.$route.query.redirect) {
           await this.$router.push(decodeURIComponent(this.$route.query.redirect))
+        } else if (this.userInfo.role.id === UserRole.SUPER_ADMIN) {
+          window.open(`${process.env.playgardenAdminUrl}?atoken=${this.$store.getters['auth/getAccessToken']}`, '_self')
         } else {
-          await this.fetchUserInfo()
           await this.$router.push({ name: this.goToPage(this.userInfo) })
         }
       } catch (error) {
