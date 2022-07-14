@@ -1,5 +1,5 @@
 <template>
-  <v-overlay z-index="5">
+  <v-overlay v-if="hasUserLearnAndPlayPlan" z-index="5">
     <div class="upgrade-overlay">
       <div class="pg-mt-[80px] d-flex align-center mb-3 mb-lg-10">
         <img
@@ -37,7 +37,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useStore } from '@nuxtjs/composition-api'
+import { computed, defineComponent, useStore } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   name: 'UpgradeLearnAndPlayOverlay',
@@ -49,7 +49,12 @@ export default defineComponent({
       store.commit('notifications/SET_PLAN_UPGRADE_MODAL_VISIBILITY', true)
     }
 
+    const hasUserLearnAndPlayPlan = computed(() => {
+      return store.getters['auth/hasUserLearnAndPlayPlan']
+    })
+
     return {
+      hasUserLearnAndPlayPlan,
       openPlanUpgradeModal
     }
   }
