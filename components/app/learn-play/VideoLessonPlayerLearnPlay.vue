@@ -33,7 +33,7 @@
                   'player-preview-icon-scaled': scaleIcon
                 }"
                 src="@/assets/svg/library/library-play-icon-green.svg"
-              />
+              >
 
               <div class="player-preview-text">
                 <div class="player-text-top-part justify-center">
@@ -72,6 +72,7 @@ import VideosScroll from '@/components/app/learn-play/VideosScroll.vue'
 import { PlayerInstance } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
 import { defineComponent, ref, useStore } from '@nuxtjs/composition-api'
 import { useLearnPlayV2, useCommonPlayerFunctions } from '@/composables'
+import { PlayAndLearnVideo } from '@/models'
 
 export default defineComponent({
   name: 'VideoLessonPlayerLearnPlay',
@@ -89,8 +90,16 @@ export default defineComponent({
     const title = ref('')
     const author = ref('')
 
-    function onPlayerReady(payload: { player: PlayerInstance; videos: any[] }) {
-      const { videos } = payload
+    function onPlayerReady(payload: {
+      player: PlayerInstance
+      videos: PlayAndLearnVideo[]
+    }) {
+      const videos = payload.videos.map(v => ({
+        ...v.video,
+        name: v.name || v.video.name,
+        description: v.description || v.video.description
+      }))
+
       player.value = payload.player
       const playVideoList = learnPlayV2.buildPlayVideoList(videos)
       player.value.loadPlaylist(playVideoList)

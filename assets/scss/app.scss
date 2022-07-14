@@ -210,7 +210,7 @@
   width: 100%;
 }
 
-.v-application div.background-card-learnd-play {
+.v-application .background-card-learn-play {
   background-image: url('~@/assets/png/learn-and-play-bg.png') !important;
   background-repeat: no-repeat;
   background-size: cover;
@@ -239,4 +239,8 @@
 
 .pg-w-full {
   width: 100%;
+}
+
+.v2-font {
+  font-family: 'Quicksand', 'Poppins', sans-serif;
 }

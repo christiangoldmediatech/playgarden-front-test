@@ -1,5 +1,5 @@
 <template>
-  <v-main>
+  <v-main class="background-card-learn-play">
     <v-container fluid>
       <v-row class="mb-6" no-gutters>
         <v-col cols="12">
@@ -38,27 +38,19 @@
         </v-col>
 
         <v-col cols="12" class="text-center mt-4">
-          <div>
-            <underlined-title
-              :text="isTrialExpired ? 'YOUR TRIAL PERIOD HAS EXPIRED':'YOUR TRIAL PERIOD IS EXPIRING'"
-              font-size="38px"
-              font-size-mobile="28px"
-              font-weight="900"
-            />
+          <div class="pg-text-4xl pg-text-primary pg-font-bold pg-tracking-[1px] v2-font">
+            {{
+              isTrialExpired
+                ? 'YOUR TRIAL PERIOD HAS EXPIRED'
+                : 'YOUR TRIAL PERIOD IS EXPIRING'
+            }}
           </div>
 
           <div class="mt-8 mb-6 text-body-1 text-md-h5 custom-max-width">
             During your trial period, which {{ isTrialExpired ? 'ended':'will end' }} on
-            <underlined-title
-              :text="lastDayOfTrial"
-              class="date-expiring-color"
-              line-color="rgba(178, 230, 141, 0.25)"
-              :line-from="32"
-              padding-bottom="10px"
-              font-size="32px"
-              line-padding-left="6px"
-              line-padding-right="6px"
-            />, you were able to experience all the features of the <span class="accent--text font-weight-bold">Preschool @ home</span> plan. After the trial period, you {{ isTrialExpired ? 'were':'will be' }} automatically placed in the <span class="accent--text font-weight-bold">Play & Learn</span> monthly plan. If you liked what you had until now, please upgrade to the <span class="font-weight-bold">Prechool @ home</span> plan.
+            <span class="pg-text-primary pg-font-semibold v2-font">
+              {{ lastDayOfTrial }}
+            </span>, you were able to experience all the features of the <span class="accent--text font-weight-bold">Preschool @ home</span> plan. After the trial period, you {{ isTrialExpired ? 'were':'will be' }} automatically placed in the <span class="accent--text font-weight-bold">Play & Learn</span> monthly plan. If you liked what you had until now, please upgrade to the <span class="font-weight-bold">Prechool @ home</span> plan.
           </div>
         </v-col>
 

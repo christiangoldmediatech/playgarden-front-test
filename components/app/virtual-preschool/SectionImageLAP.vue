@@ -14,7 +14,10 @@
         <!-- Start Playing Button -->
         <img
           :data-test-id="`vp-section-${section.title}`"
-          :style="{ top: small? '75%' : '50%', height: small ? '60%': height }"
+          :style="{
+            top: small ? '75%' : '50%',
+            height: small ? '60%' : height
+          }"
           class="section-start-playing"
           :src="getBtnImage()"
         >
@@ -98,7 +101,7 @@ export default defineComponent({
       default: false
     },
     height: {
-      type: Number,
+      type: [String, Number],
       default: '45%'
     }
   },
