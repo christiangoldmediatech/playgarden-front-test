@@ -102,7 +102,7 @@
               Limited availability
             </div>
 
-            <!-- Try for free -->
+            <!-- Choose plan -->
             <v-btn
               v-else
               outlined
@@ -110,7 +110,7 @@
               :color="colors[i]"
               @click="onSubmit(plan)"
             >
-              Try for free
+              Choose plan
             </v-btn>
           </div>
         </div>
@@ -371,7 +371,6 @@ export default defineComponent({
     font-size: 24px;
     line-height: 32px;
   }
-
 }
 
 @media (min-width: 425px) and (max-width: 1023px) {
