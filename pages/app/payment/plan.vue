@@ -49,32 +49,22 @@
           </div>
 
           <div class="mt-8 mb-6 text-body-1 text-md-h5 custom-max-width">
-            <!-- For Online Preschool users -->
-            <template v-if="getUserInfo.planSelected.id === 2">
-              Your trial period {{ isTrialExpired ? 'ended' : 'will end' }} on
-              <span class="pg-text-primary pg-font-semibold v2-font">
-                {{ lastDayOfTrial }}.
-              </span>
-            </template>
-
-            <!-- For other plans -->
-            <template v-else>
-              During your trial period, which
-              {{ isTrialExpired ? 'ended' : 'will end' }} on
-              <span class="pg-text-primary pg-font-semibold v2-font">
-                {{ lastDayOfTrial }}
-              </span>, you were able to experience all the features of the
-              <span class="accent--text font-weight-bold">
-                Online Preschool
-              </span> plan. After the trial period, you
-              {{ isTrialExpired ? 'were' : 'will be' }} automatically placed in
-              the
-              <span class="accent--text font-weight-bold">
-                Play &amp; Learn
-              </span> monthly plan. If you liked what you had until now, please
-              upgrade to the
-              <span class="font-weight-bold">Online Preschool</span> plan.
-            </template>
+            Your trial period
+            {{ isTrialExpired ? 'ended' : 'will end' }} on
+            <span class="pg-text-primary pg-font-semibold v2-font">
+              {{ lastDayOfTrial }}.
+            </span>
+            You {{ isTrialExpired ? 'were' : 'are currently' }} trialing the
+            <span class="accent--text font-weight-bold">
+              {{ getUserInfo.planSelected.name }}
+            </span> plan. After your trial
+            {{ isTrialExpired ? 'ended' : 'ends' }} you
+            {{ isTrialExpired ? 'were' : 'will be' }} automatically placed into
+            the
+            <span class="accent--text font-weight-bold">
+              {{ getUserInfo.planSelected.name }}
+            </span> monthly plan.
+            If you would like to trial a different plan, you may do so below!
           </div>
         </v-col>
 
