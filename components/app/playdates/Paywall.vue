@@ -13,7 +13,7 @@
     <!-- INFORMATION PANEL -->
     <v-col cols="12" md="7">
       <underlined-title
-        text="Playdates are open for Premium and Premium+ members!"
+        text="Playdates are open for ONLINE PRESCHOOL members!"
         font-size="36px"
       />
 

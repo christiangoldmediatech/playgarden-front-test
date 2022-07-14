@@ -111,7 +111,7 @@
                 account settings. <br></span>
 
               Once your free trial ends you will be placed on the
-              <span class="option-standar">PREMIUM</span> monthly plan, you can
+              <span class="option-standar">ONLINE PRESCHOOL</span> monthly plan, you can
               change plans at any time in your profile page.
             </span>
           </center>

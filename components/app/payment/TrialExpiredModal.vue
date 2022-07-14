@@ -21,10 +21,13 @@
         />
       </div>
 
-      <div class="grey--text text--darken-2 caption text-md-h6 font-weight-regular my-3 my-md-6">
+      < class="my-3 grey--text text--darken-2 caption text-md-h6 font-weight-regular my-md-6">
         <p>We hope your little one has enjoyed learning with the Playgarden Prep teachers!</p>
         <p>
-          During your trial period, which ended on {{ lastDayOfTrial }}, you were able to experience all the features of the HOMESCHOOL plan. After the trial period, you were automatically placed in the PREMIUM EDUCATION monthly plan. You can stay in that plan, or you can choose now in which plan you want little one to learn going forward by clicking the plans comparison button.
+          Your trial period ended on {{ lastDayOfTrial }}. You are currently enrolled in the [plan name] plan.If you would like to switch into a different plan, please follow this link!
+        </p>
+        Change my Plan
+        <p>
           As always, you cancel your enrollment anytime by going to your Accounts Page.
           Please contact us with any questions about the plans, your enrollment, or anything at all related to Playgarden Prep.
         </p>
