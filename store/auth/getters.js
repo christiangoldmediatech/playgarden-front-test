@@ -23,6 +23,5 @@ export default {
   isUserInTrial: (_, getters) =>
     getLodash(getters, 'getUserInfo.trial') || false,
   hasUserLearnAndPlayPlan: (_, getters) =>
-    // getters.getUserInfo.planSelected.id === PlanTier.LEARN_PLAY || false
-    false
+    getters.getUserInfo.planSelected.id === PlanTier.LEARN_PLAY || false
 }
