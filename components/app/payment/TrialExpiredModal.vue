@@ -21,7 +21,7 @@
         />
       </div>
 
-      < class="my-3 grey--text text--darken-2 caption text-md-h6 font-weight-regular my-md-6">
+      <div class="my-3 grey--text text--darken-2 caption text-md-h6 font-weight-regular my-md-6">
         <p>We hope your little one has enjoyed learning with the Playgarden Prep teachers!</p>
         <p>
           Your trial period ended on {{ lastDayOfTrial }}. You are currently enrolled in the [plan name] plan.If you would like to switch into a different plan, please follow this link!
