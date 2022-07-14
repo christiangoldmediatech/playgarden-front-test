@@ -110,7 +110,7 @@
               :color="colors[i]"
               @click="onSubmit(plan)"
             >
-              Choose plan
+              Choose this plan
             </v-btn>
           </div>
         </div>
