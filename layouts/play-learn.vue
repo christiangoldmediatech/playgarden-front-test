@@ -19,7 +19,7 @@
 
 <script lang="ts">
 import { defineComponent, useStore } from '@nuxtjs/composition-api'
-import Footer from '@/components/app/gift-of-learning/Footer/Footer.vue'
+import Footer from '@/components/app/footer/DefaultFooter.vue'
 import Toolbar from '@/components/app/learn-play/Toolbar/Toolbar.vue'
 import { TypedStore } from '@/models'
 import { useAuth } from '@/composables'

@@ -20,7 +20,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from '@nuxtjs/composition-api'
-import GolFooter from '@/components/app/gift-of-learning/Footer/Footer.vue'
+import GolFooter from '@/components/app/footer/DefaultFooter.vue'
 import GolToolbar from '@/components/app/gift-of-learning/Toolbar/Toolbar.vue'
 import GolDrawer from '@/components/app/gift-of-learning/Drawer/Drawer.vue'
 

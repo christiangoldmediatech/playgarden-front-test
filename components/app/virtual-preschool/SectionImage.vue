@@ -15,7 +15,7 @@
         <div
           :class="{
             'section-top': !$vuetify.breakpoint.smAndDown,
-            translucent: hover && !blocked,
+            translucent: hover,
             'section-btn': $vuetify.breakpoint.smAndDown
           }"
         >
