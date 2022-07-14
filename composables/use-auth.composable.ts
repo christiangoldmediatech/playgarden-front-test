@@ -6,7 +6,7 @@ import jwtDecode from 'jwt-decode'
 import { useCookiesHelper, useChild } from '@/composables'
 import { hasLocalStorage } from '@/utils/window'
 import { axios } from '@/utils'
-import { SignupData, TypedStore, User } from '@/models'
+import { SignupData, TypedStore, User, Plan } from '@/models'
 import { useNotification } from './use-notification.composable'
 
 export const useAuth = ({
@@ -15,6 +15,7 @@ export const useAuth = ({
   store: Store<TypedStore>
 }) => {
   const cookies = useCookiesHelper()
+  const plan = ref<Plan | null>(null)
 
   const accessToken = computed(() => store.state.auth.accessToken)
   const setAccessToken = (val: string | null) => {
@@ -152,13 +153,17 @@ export const useAuth = ({
 
   const updateUserInfo = async (draft: Pick<User, 'firstName' | 'lastName' | 'phoneNumber'>) => {
     const { data } = await axios.patch('/auth/me/edit', draft)
-
     setUserInfo(data)
   }
 
   const updateAuthOnboarding = async () => {
     await axios.patch('/auth/onboarding')
     await fetchUserInfo()
+  }
+
+  const getPlan = async () => {
+    const { data } = await axios.get('/auth/user/plan')
+    plan.value = data.plan
   }
 
   const signup = (signupData: SignupData): Promise<User> => {
@@ -172,6 +177,7 @@ export const useAuth = ({
     isUserEmailVerified,
     isUserInSignupProcess,
     isUserInTrial,
+    plan,
     checkAuth,
     setToken,
     logout,
@@ -179,6 +185,7 @@ export const useAuth = ({
     fetchUserInfo,
     updateUserInfo,
     updateAuthOnboarding,
-    signup
+    signup,
+    getPlan
   }
 }
