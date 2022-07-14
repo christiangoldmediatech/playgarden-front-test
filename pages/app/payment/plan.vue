@@ -166,8 +166,6 @@ export default defineComponent({
     async onSubmit() {
       try {
         if (this.inSignUpProcess) {
-          await this.fetchUserInfo()
-
           await this.$router.push({
             name: 'app-payment-register',
             query: { process: 'signup', step: '4' }
@@ -179,7 +177,9 @@ export default defineComponent({
           'notifications/SET_TRIAL_EXPIRING_RIBBON_VISIBLE',
           false
         )
-      } catch (e) {}
+      } finally {
+        await this.fetchUserInfo()
+      }
     },
 
     handlePaymentFormSubmit() {
