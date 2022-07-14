@@ -50,7 +50,7 @@
             During your trial period, which {{ isTrialExpired ? 'ended':'will end' }} on
             <span class="pg-text-primary pg-font-semibold v2-font">
               {{ lastDayOfTrial }}
-            </span>, you were able to experience all the features of the <span class="accent--text font-weight-bold">Preschool @ home</span> plan. After the trial period, you {{ isTrialExpired ? 'were':'will be' }} automatically placed in the <span class="accent--text font-weight-bold">Play & Learn</span> monthly plan. If you liked what you had until now, please upgrade to the <span class="font-weight-bold">Prechool @ home</span> plan.
+            </span>, you were able to experience all the features of the <span class="accent--text font-weight-bold">Online Preschool</span> plan. After the trial period, you {{ isTrialExpired ? 'were':'will be' }} automatically placed in the <span class="accent--text font-weight-bold">Play & Learn</span> monthly plan. If you liked what you had until now, please upgrade to the <span class="font-weight-bold">Online Preschool</span> plan.
           </div>
         </v-col>
 
