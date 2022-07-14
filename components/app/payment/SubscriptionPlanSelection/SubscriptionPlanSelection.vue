@@ -286,6 +286,7 @@ export default defineComponent({
       this.loading = true
       const plan = this.getSubmittableData()
       plan.id = this.selectedPlan.id
+      plan.type = this.billAnnually ? 'annual' : 'monthly'
       try {
         /**
          * If the user does not have a credit card and is in flow NO_CREDITCARD,
