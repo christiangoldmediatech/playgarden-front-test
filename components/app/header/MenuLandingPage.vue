@@ -46,6 +46,9 @@
                 <li><a href="https://playgardenonline.com/how-it-works/">How it Works</a></li>
                 <!-- <li><a href="https://playgardenonline.com/do-it-yourself/">DIY</a></li> -->
                 <li><a href="https://playgardenonline.com/blog">Blog</a></li>
+                <li><a href="https://playgardenonline.com/your-teachers/">Your Teachers</a></li>
+                <li><a href="https://playgardenonline.com/specialized-learning/">Specialized Learning</a></li>
+                <li><a href="https://playgardenonline.com/do-it-yourself/">Do it Yourself</a></li>
               </ul>
             </div>
           </li>
@@ -101,6 +104,9 @@
                     <li><a href="https://playgardenonline.com/how-it-works/">How it Works</a></li>
                     <!-- <li><a href="https://playgardenonline.com/do-it-yourself/">DIY</a></li> -->
                     <li><a href="https://playgardenonline.com/blog">Blog</a></li>
+                    <li><a href="https://playgardenonline.com/your-teachers/">Your Teachers</a></li>
+                    <li><a href="https://playgardenonline.com/specialized-learning/">Specialized Learning</a></li>
+                    <li><a href="https://playgardenonline.com/do-it-yourself/">Do it Yourself</a></li>
                   </ul>
                 </li>
                 <!-- <li>
