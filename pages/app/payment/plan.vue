@@ -37,8 +37,10 @@
           </v-btn>
         </v-col>
 
-        <v-col cols="12" class="text-center mt-4">
-          <div class="pg-text-4xl pg-text-primary pg-font-bold pg-tracking-[1px] v2-font">
+        <v-col v-if="!trialEndedTooLongAgo" cols="12" class="text-center mt-4">
+          <div
+            class="pg-text-4xl pg-text-primary pg-font-bold pg-tracking-[1px] v2-font"
+          >
             {{
               isTrialExpired
                 ? 'YOUR TRIAL PERIOD HAS EXPIRED'
@@ -47,10 +49,22 @@
           </div>
 
           <div class="mt-8 mb-6 text-body-1 text-md-h5 custom-max-width">
-            During your trial period, which {{ isTrialExpired ? 'ended':'will end' }} on
+            Your trial period
+            {{ isTrialExpired ? 'ended' : 'will end' }} on
             <span class="pg-text-primary pg-font-semibold v2-font">
-              {{ lastDayOfTrial }}
-            </span>, you were able to experience all the features of the <span class="accent--text font-weight-bold">Online Preschool</span> plan. After the trial period, you {{ isTrialExpired ? 'were':'will be' }} automatically placed in the <span class="accent--text font-weight-bold">Play & Learn</span> monthly plan. If you liked what you had until now, please upgrade to the <span class="font-weight-bold">Online Preschool</span> plan.
+              {{ lastDayOfTrial }}.
+            </span>
+            You {{ isTrialExpired ? 'were' : 'are currently' }} trialing the
+            <span class="accent--text font-weight-bold">
+              {{ getUserInfo.planSelected.name }}
+            </span> plan. After your trial
+            {{ isTrialExpired ? 'ended' : 'ends' }} you
+            {{ isTrialExpired ? 'were' : 'will be' }} automatically placed into
+            the
+            <span class="accent--text font-weight-bold">
+              {{ getUserInfo.planSelected.name }}
+            </span> monthly plan.
+            If you would like to trial a different plan, you may do so below!
           </div>
         </v-col>
 
@@ -119,9 +133,11 @@ export default defineComponent({
       return dayjs(this.getUserInfo.trialEnd).format('MMMM DD, YYYY')
     },
 
-    isTrialEndedTooLongAgo() {
-      return this.isTrialExpired &&
+    trialEndedTooLongAgo() {
+      return (
+        this.isTrialExpired &&
         dayjs().diff(dayjs(this.getUserInfo.trialEnd), 'days') > 30
+      )
     },
 
     isMobile() {
@@ -129,7 +145,7 @@ export default defineComponent({
     }
   },
 
-  created () {
+  created() {
     if (this.getUserInfo.role.id === 4) {
       this.$router.push({
         name: 'app-account-index'
@@ -137,7 +153,7 @@ export default defineComponent({
     }
   },
 
-  mounted () {
+  mounted() {
     if (this.isTrialExpired) {
       this.plansShown = true
     }
@@ -189,6 +205,6 @@ export default defineComponent({
 }
 
 .date-expiring-color {
-  color: #B2E68D;
+  color: #b2e68d;
 }
 </style>
