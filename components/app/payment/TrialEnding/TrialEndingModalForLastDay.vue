@@ -17,7 +17,7 @@
       </div>
 
       <!-- MODAL TEXT -->
-      <div class="grey--text text--darken-2 caption text-md-h6 font-weight-regular my-3 my-md-6">
+      <div class="my-3 grey--text text--darken-2 caption text-md-h6 font-weight-regular my-md-6">
         <p>
           We hope your little one has enjoyed learning with the Playgarden Prep teachers!
         </p>
@@ -26,9 +26,9 @@
           During your trial period, which ended on
           <span class="trialExpiryDate secondary--text fw-600 fs-18"> {{ formattedTrialExpiryDate }} </span>,
           you were able to experience all the features of the
-          <span class="accent--text fw-600">Preschool @Home </span> plan. After the trial period, you will be automatically placed in the
-          <span class="accent--text fw-600">Learn & Play</span> monthly plan.
-          you liked what you had until now please upgrade to the Preschool @ Home.
+          <span class="accent--text fw-600">ONLINE PRESCHOOL </span> plan. After the trial period, you will be automatically placed in the
+          <span class="accent--text fw-600">Play & Learn</span> monthly plan.
+          you liked what you had until now please upgrade to the ONLINE PRESCHOOL.
         </p>
 
         <p>
@@ -54,7 +54,7 @@
             color="accent"
             @click="handleRequestToUpgradeToPreSchool"
           >
-            Upgrade to PRESCHOOL @ HOME
+            Upgrade to ONLINE PRESCHOOL
           </v-btn>
         </v-col>
 
@@ -73,7 +73,7 @@
         </v-col>
 
         <!-- KEEP CURRENT SUBSCRIPTION BUTTON -->
-        <v-col cols="12" class="mx-0 mx-md-4 mt-4 mt-md-0 align-self-center font-weight-bold">
+        <v-col cols="12" class="mx-0 mt-4 mx-md-4 mt-md-0 align-self-center font-weight-bold">
           <span class="text-decoration-underline" @click="handleKeepCurrentPlans">
             <a class="accent--text">I want to keep my current plan</a>
           </span>
