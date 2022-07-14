@@ -7,7 +7,7 @@
 
 <script>
 import VirtualPreschoolChild from '@/components/app/virtual-preschool/VirtualPreschool.vue'
-import VirtualLearnAndPlay from '@/components/app/virtual-preschool/VirtualLearnAndPlay.vue'
+// import VirtualLearnAndPlay from '@/components/app/virtual-preschool/VirtualLearnAndPlay.vue'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -16,8 +16,8 @@ export default {
   layout: 'pg',
 
   components: {
-    VirtualPreschoolChild,
-    VirtualLearnAndPlay
+    VirtualPreschoolChild
+    // VirtualLearnAndPlay
   },
 
   computed: {

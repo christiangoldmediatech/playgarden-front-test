@@ -97,10 +97,11 @@ export default async function ({ redirect, route, store, app, req }) {
       }
 
       if (user.planSelected.id === 1) {
-        return 'app-learn-play'
+        // return 'app-learn-play'
+        return 'app-virtual-preschool'
       }
     } else {
-      return 'app-dashboard'
+      return 'app-virtual-preschool'
     }
   }
 

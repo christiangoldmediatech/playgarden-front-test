@@ -72,7 +72,13 @@
             <!-- SHIPPING ADDRESS IS PRESENT -->
             <div v-else-if="isShippingAddressFormVisible" key="shipping-address-present">
               <div class="my-2 text-center body-1 text-md-h6 font-weight-medium grey--text text--darken-2">
-                <small>We use this information to send you Playgarden Prep educational materials.</small>
+                <small>We use this information to send Playgarden Prep educational materials to users who subscribe to our $99.99/monthly plan.
+                  <span
+                    class="text-decoration-underline font-weight-bold timezone"
+                    @click="$router.push({
+                      name: 'app-payment-plan',
+                    })"
+                  > Learn more</span></small>
               </div>
 
               <shipping-address-details
@@ -84,17 +90,17 @@
 
             <!-- SHIPPING ADDRESS IS REQUIRED TO SEND WELCOME KIT -->
             <div v-else key="shipping-address-required">
-              <div v-if="isUserInTrial" class="text-center">
-                <underlined-title
-                  text="WE WANT TO SEND YOU A PLAYGARDEN PREP WORKBOOK"
-                  font-size="24px"
-                  font-size-mobile="12px"
-                />
-              </div>
-
               <p v-if="isUserInTrial" class="text-center pg-text-[20px] mt-4">
-                In order to receive your FREE A-D workbook, please provide your shipping address here.
+                We use this information to send Playgarden Prep educational materials to users who
+                subscribe to our $ 99.99/monthly plan. <br>
+                <span
+                  class="text-decoration-underline font-weight-bold timezone"
+                  @click="$router.push({
+                    name: 'app-payment-plan',
+                  })"
+                > Learn more</span>
               </p>
+
               <p v-else class="text-center pg-text-[20px] mt-4">
                 Please enter your shipping address.
               </p>
@@ -103,7 +109,7 @@
               </p>
 
               <v-btn x-large block color="primary" class="mt-7" @click="showShippingAddressForm">
-                ADD SHIPPING ADDRESS
+                ADD ADDRESS
               </v-btn>
             </div>
           </v-fade-transition>

@@ -25,7 +25,7 @@
               cols="12"
               md="9"
               align-self="center"
-              class="mt-2 mt-md-0 d-none d-sm-flex px-2 carousel-wrapper"
+              class="px-2 mt-2 mt-md-0 d-none d-sm-flex carousel-wrapper"
             >
               <music-carousel-letter
                 :is-full-width="true"
@@ -53,7 +53,7 @@
           :all-songs="allSongsWithFavorites"
           :songs-by-curriculum-type="songsByCurriculumTypeWithFavorites"
           :selected-letter-id="selectedLetterId"
-          class="music-song-list mx-auto"
+          class="mx-auto music-song-list"
           @addSong="addSongToPlaylist"
           @newPlayList="createNewPlaylist"
           @favorite="handleFavorite"
