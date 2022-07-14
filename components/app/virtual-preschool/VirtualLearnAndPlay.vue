@@ -32,18 +32,19 @@
         @click="handleClick"
       />
 
+      <DailyLessonsDialog v-model="showIntroDialog" />
+
+      <SectionImageLAP
+        class="daily-lessons"
+        :section="section.dashboard"
+        @click="showIntroDialog = true"
+      />
+
       <SectionImageLAP
         class="music"
         :section="section.music"
         small
         blocked
-        @click="handleClick"
-      />
-
-      <SectionImageLAP
-        class="daily-lessons"
-        :section="section.dashboard"
-        :blocked="!isIntro"
         @click="handleClick"
       />
 
@@ -74,13 +75,15 @@ import { useChildren } from '@/composables/store/use-children.composable'
 import BirthdayVideoDialog from '@/components/features/childBirthday/BirthdayVideoDialog.vue'
 import SectionImageLAP from '@/components/app/virtual-preschool/SectionImageLAP.vue'
 import { useLessonApi } from '@/composables/lesson'
+import DailyLessonsDialog from './DailyLessonsDialog.vue'
 
 export default defineComponent({
   name: 'VirtualLearnAndPlay',
 
   components: {
     BirthdayVideoDialog,
-    SectionImageLAP
+    SectionImageLAP,
+    DailyLessonsDialog
   },
 
   setup() {
@@ -89,18 +92,13 @@ export default defineComponent({
     const router = useRouter()
     const { accessToken } = useAuth({ store })
     const children = useChildren({ store })
-    const baseRoute =
-      process.env.testEnv === 'production'
-        ? `${process.env.baseRouteProd}`
-        : '/'
 
     const currentChild = computed(
       (): Utils.Maybe<Child> => store.getters.getCurrentChild?.[0]
     )
 
-    const isIntro = computed(() => currentLessonId.value === 28)
-
     const lessonApi = useLessonApi({ child: children.currentChild })
+    const showIntroDialog = ref(false)
 
     const goToKidsCorner = () => {
       const kidsCornerUrl = process.env.kidsCornerUrl
@@ -180,8 +178,8 @@ export default defineComponent({
 
     return {
       section,
-      isIntro,
       isBirthdayModalvisible,
+      showIntroDialog,
       goToKidsCorner,
       handleClick
     }
@@ -213,7 +211,7 @@ export default defineComponent({
     grid-row: 1 / span 4;
   }
   .daily-lessons {
-    grid-column: 3 / 4;
+    grid-column: 2 / 3;
     grid-row: 5 / 5;
   }
   .live-classes {
@@ -225,7 +223,7 @@ export default defineComponent({
     grid-row: 5 / 5;
   }
   .music {
-    grid-column: 2 / 3;
+    grid-column: 3 / 4;
     grid-row: 5 / 5;
   }
   .library {
