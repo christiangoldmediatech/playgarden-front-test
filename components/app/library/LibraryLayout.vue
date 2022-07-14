@@ -17,7 +17,7 @@
     <template v-else>
       <v-container v-bind="fillHeight" fluid data-test-id="library-content">
         <!-- Title -->
-        <v-row v-if="title" align="center">
+        <v-row v-if="title" align="center" class="mt-10">
           <v-col cols="12">
             <underlined-title fonts-size="58px" :text="title" />
           </v-col>

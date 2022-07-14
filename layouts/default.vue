@@ -15,7 +15,7 @@
       <shipping-address-modal />
 
       <!-- TRIAL EXPIRED MODAL -->
-      <trial-expired-modal />
+      <trial-expired-modal v-if="isUserLoggedIn" />
       <trial-ending-week-two-modal />
       <trial-ending-week-three-modal />
       <trial-ending-week-four-modal />

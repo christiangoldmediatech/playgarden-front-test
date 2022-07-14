@@ -18,8 +18,9 @@
 
       <div class="grey--text text--darken-2 caption text-md-h6 font-weight-regular my-3 my-md-6">
         <p>
-          Thank you for joining the <span class="font-weight-bold accent--text"> {{ plan }}</span> plan. We hope your little one enjoys it a lot. As always, you can cancel your enrollment anytime by going to your Account Page.
-          Please contact us with any questions about the plans, your enrollment, or anything at all related to Playgarden Prep.
+          Thank you for joining the <span class="font-weight-bold accent--text"> {{ plan }}</span> plan. We hope that your child enjoys it! As always, you can cancel your enrollment at any time by going to your
+          <a class="accent--text font-weight-bold" @click="goToAccount">Accounts Page</a>
+          Please feel free to contact us with any questions you may have, and our teacher team will get back to you as soon as possible!
         </p>
 
         <p>Your next billing date will be:</p>
@@ -111,6 +112,11 @@ export default defineComponent({
     goToHome (): void {
       this.closeModal()
       this.$router.push({ name: 'app-virtual-preschool' })
+    },
+
+    goToAccount (): void {
+      this.closeModal()
+      this.$router.push({ name: 'app-account-index' })
     },
 
     handleContactUs (): void {
