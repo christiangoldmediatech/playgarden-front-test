@@ -142,12 +142,6 @@
       <notify-event />
 
       <prompt-dialog />
-
-      <admin-snack-bar />
-
-      <video-preview />
-
-      <grades-editor-dialog />
     </template>
 
     <template v-else>
@@ -162,19 +156,13 @@
 
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex'
-import VideoPreview from '@/components/admin/video-preview/VideoPreview.vue'
-import AdminSnackBar from '@/components/admin/AdminSnackBar.vue'
-import GradesEditorDialog from '@/components/admin/grades/GradesEditorDialog.vue'
-import MenuItem from '@/components/admin/MenuItem'
+import MenuItem from '@/components/admin/MenuItem.vue'
 
 export default {
   name: 'Admin',
 
   components: {
-    AdminSnackBar,
-    GradesEditorDialog,
-    MenuItem,
-    VideoPreview
+    MenuItem
   },
 
   data() {
@@ -190,103 +178,6 @@ export default {
           route: '/admin/dashboard'
         },
         {
-          icon: 'mdi-teach',
-          title: 'Curriculum management',
-          route: '/admin/curriculum-management'
-        },
-        {
-          icon: 'mdi-phone',
-          title: 'Live Classes Management',
-          route: '/admin/live-session-management'
-        },
-        {
-          icon: 'mdi-google-circles-extended',
-          title: 'Recurring Meetings',
-          route: '/admin/recurring-live-sessions-management'
-        },
-        {
-          icon: 'mdi-filmstrip',
-          title: 'Kids corner videos',
-          route: '/admin/kids-corner-videos'
-        },
-        {
-          icon: 'mdi-cog',
-          title: 'Settings',
-          rootPath: '/admin/settings',
-          children: [
-            {
-              title: 'General',
-              rootPath: '/general',
-              children: [
-                {
-                  title: 'Coupon Management',
-                  route: 'coupon-management'
-                },
-                {
-                  title: 'Notification Management',
-                  route: 'notification-management'
-                },
-                {
-                  title: 'Privacy Policy Management',
-                  route: 'privacy-policy-management'
-                },
-                {
-                  title: 'Terms & Conditions Management',
-                  route: 'terms-conditions-management'
-                },
-                {
-                  title: 'Plans Management',
-                  route: 'plan-management'
-                }
-              ]
-            },
-            {
-              title: 'Lesson Configurations',
-              rootPath: '/lesson-configurations',
-              children: [
-                {
-                  title: 'Activity Types',
-                  route: 'activity-types'
-                },
-                {
-                  title: 'Curriculum Types',
-                  route: 'curriculum-types'
-                },
-                {
-                  title: 'Offline Worksheet Categories',
-                  route: 'offline-worksheet-categories'
-                },
-                {
-                  title: 'Onboarding Management',
-                  route: 'onboarding'
-                },
-                {
-                  title: 'Report Card Types',
-                  route: 'report-card-types'
-                }
-              ]
-            },
-            {
-              title: 'Student Cubby',
-              rootPath: '/student-cubby',
-              children: [
-                {
-                  title: 'Backpack Management',
-                  route: 'backpack-management'
-                },
-                {
-                  title: 'Patch Management',
-                  route: 'patch-management'
-                },
-                {
-                  title: 'Puzzle Management',
-                  route: 'puzzle-management'
-                }
-              ]
-            }
-          ]
-        },
-        {
           icon: 'mdi-account',
           title: 'User manager',
           rootPath: '/admin/user-manager',
@@ -298,14 +189,6 @@ export default {
             {
               title: 'Parents',
               route: 'parents-list'
-            },
-            {
-              title: 'Specialists',
-              route: 'specialists-management'
-            },
-            {
-              title: 'Role Management',
-              route: 'role-management'
             },
             {
               title: 'Children',
