@@ -14,7 +14,7 @@
             </v-icon>
             <br>
             <span class="free-trial-info">
-              INCLUDES THE PREMIUM + PLAN
+              INCLUDES THE ONLINE PRESCHOOL PLAN
             </span>
           </template>
           <template v-else>
@@ -23,7 +23,7 @@
             </span>
             <br>
             <span class="free-trial-info">
-              INCLUDES THE PREMIUM + PLAN
+              INCLUDES THE ONLINE PRESCHOOL PLAN
             </span>
             <v-icon class="ml-2">
               mdi-chevron-up
@@ -39,59 +39,15 @@
             <v-row>
               <span class="font-weight-bold ml-2 mt-4">That includes:</span>
             </v-row>
-            <v-row class="mx-1">
+            <v-row class="mx-1 mb-8">
               <ul class="info-card">
-                <li class="register-item text-left">
+                <li
+                  v-for="benefit in benefits"
+                  :key="benefit"
+                  class="register-item text-left"
+                >
                   <small class="text-trial">
-                    Individualized Daily Lessons plan
-                  </small>
-                </li>
-                <li class="register-item text-left">
-                  <small class="text-trial">
-                    26 Weeks of 1 hour of video-based preschool per day
-                  </small>
-                </li>
-                <li class="register-item text-left">
-                  <small class="text-trial">
-                    Hands-on worksheets taught by Certified Teachers
-                  </small>
-                </li>
-                <li class="register-item text-left">
-                  <small class="text-trial">
-                    Access to a Library with over 1,200 lessons for hour of
-                    Edutainment
-                  </small>
-                </li>
-                <li class="register-item text-left">
-                  <small class="text-trial">
-                    Progress Reports sent to parents
-                  </small>
-                </li>
-                <li class="register-item text-left">
-                  <small class="text-trial">
-                    Familiy Membership for multiple students
-                  </small>
-                </li>
-                <li class="register-item text-left">
-                  <small class="text-trial">
-                    Home deliver of school materials: Backpack, specialized
-                    pencils, Workbooks
-                  </small>
-                </li>
-                <li class="register-item text-left">
-                  <small class="text-trial">
-                    Daily Live Classes with Playgarden Prep teachers
-                  </small>
-                </li>
-                <li class="register-item text-left">
-                  <small class="text-trial">
-                    Access to special events, such as weekly Cooking Classes
-                  </small>
-                </li>
-                <li class="register-item text-left">
-                  <small class="text-trial">
-                    Playdates with friends, moderated by our specialist to
-                    promote Social Interaction
+                    {{ benefit }}
                   </small>
                 </li>
               </ul>
@@ -130,18 +86,37 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from '@nuxtjs/composition-api'
+
+const benefits = [
+  'Individualized Daily Lesson plans',
+  '26 Weeks of video-based preschool for 45 minutes to 1 hour per day',
+  'Hands-on worksheets with guidance from Certified Teachers',
+  'Access to our Video Library with over 1,200 lessons, for hours of Edu-tainment!',
+  'Access to our Music Library with custom, fun-filled children songs',
+  'Access to our Library with thousands of video lessons',
+  'Progress Reports sent to parents via email, and available in your Student Cubby',
+  'Feedback from REAL teachers',
+  'A Kids Corner, where kids can have fun learning on their own',
+  'Family Membership for multiple students',
+  'UNLIMITED Daily Live Classes',
+  'Access to special events, experts, and webinars',
+  'Playdates with friends to promote Social Interaction',
+  'Home delivery of School Materials: a Playgarden Prep Backpack, specialized pencils, and workbooks as your little one progresses through their Daily Lessons'
+]
+
+export default defineComponent({
   name: 'CardKnowMore',
 
-  data: vm => ({}),
-
-  methods: {
-    toggleCard() {
-      this.$emit('toggleCard')
+  setup(_, { emit }) {
+    function toggleCard() {
+      emit('toggleCard')
     }
+
+    return { benefits, toggleCard }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
