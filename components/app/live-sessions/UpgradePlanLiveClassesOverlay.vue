@@ -4,7 +4,7 @@
       <div class="upgrade-overlay">
         <v-row>
           <v-col cols="4">
-            <div class="pg-mt-[70px]">
+            <div class="pg-mt-[70px] pg-float-right">
               <div class="upgrade-overlay-circle">
                 <div class="upgrade-overlay-circle-inner">
                   <div class="mt-n2 mt-lg-n7">
