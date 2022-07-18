@@ -1,23 +1,32 @@
 <template>
   <main class="overlay">
     <section class="promptMessage" :style="{ 'padding-top': `${padding}px` }">
-      <div class="d-flex align-center">
-        <img
-          v-if="img"
-          :src="getImg(img)"
-          :alt="`${title} IMAGE`"
-          height="60"
-        >
-        <div class="text-h5 text-md-h4 ml-4">
-          {{ title }}
-        </div>
-      </div>
-
-      <p class="mt-4 text-center">
-        {{ desc }}
-      </p>
+      <v-row>
+        <v-col cols="5">
+          <PlanUpgradePrompt />
+        </v-col>
+        <v-col cols="7">
+          <v-row justify="center">
+            <div class="d-flex align-center">
+              <img
+                v-if="img"
+                :src="getImg(img)"
+                :alt="`${title} IMAGE`"
+                height="60"
+              >
+              <div class="text-h5 text-md-h4 ml-4">
+                {{ title }}
+              </div>
+            </div>
+            <div>
+              <p class="mt-4 text-center">
+                {{ desc }}
+              </p>
+            </div>
+          </v-row>
+        </v-col>
+      </v-row>
     </section>
-    <PlanUpgradePrompt />
   </main>
 </template>
 

@@ -8,13 +8,13 @@
     :style="{ '--max-height': maxHeight }"
   >
     <v-col class="content-column" cols="12" lg="9">
-      <div class="section-title">
+      <div class="section-title text-xl-h4 text-lg-h5">
         {{ titles.columnA }}
       </div>
       <slot name="columnA" />
     </v-col>
     <v-col class="content-column additional-info-column" cols="12" lg="3">
-      <div class="section-title">
+      <div class="section-title text-xl-h4 text-lg-h5">
         {{ titles.columnB }}
       </div>
 
