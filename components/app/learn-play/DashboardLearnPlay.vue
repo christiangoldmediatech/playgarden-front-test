@@ -16,6 +16,7 @@
         <carousel-letter
           id="CarouselLetter"
           :value="curriculumTypeId"
+          :is-play-and-learn="true"
           :preview-mode="previewMode"
         />
       </v-col>
@@ -159,21 +160,34 @@ export default defineComponent({
       }
     }
 
+    const loadPlayAndLearnByCurriculumTypeId = async (curriculumTypeId: number) => {
+      await learnPlayV2.getPlayAndLearnByCurriuclumTypeId(curriculumTypeId)
+      refreshMenuSection()
+    }
+
+    const refreshMenuSection = () => {
+      curriculumTypeId.value = learnPlayV2.learnPlayData.value.curriculumType.id
+      nuxt.$on('menu-section', (id: string) => {
+        section.value = id
+      })
+    }
+
     // Life cycle hooks
     onBeforeMount(async () => {
       if (!props.previewMode) {
         await child.get()
         await learnPlayV2.getFirstLearnPlay()
       }
+      refreshMenuSection()
 
-      curriculumTypeId.value = learnPlayV2.learnPlayData.value.curriculumType.id
-      nuxt.$on('menu-section', (id: string) => {
-        section.value = id
+      nuxt.$on('show-curriculum-progress', (curriculumTypeId: number) => {
+        loadPlayAndLearnByCurriculumTypeId(curriculumTypeId)
       })
     })
 
     onBeforeUnmount(() => {
       nuxt.$off('menu-section')
+      nuxt.$off('show-curriculum-progress')
     })
 
     return {

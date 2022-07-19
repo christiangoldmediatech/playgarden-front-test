@@ -40,7 +40,7 @@ export default {
   created () {},
 
   methods: {
-    sendLetter () {
+    sendLetter() {
       if (!this.item.disabled) {
         this.$nuxt.$emit('show-curriculum-progress', this.item.id)
       }

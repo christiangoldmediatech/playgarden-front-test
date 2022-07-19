@@ -20,6 +20,14 @@ export const useLearnPlayV2 = (params: {
     )
   }
 
+  async function getPlayAndLearnByCurriuclumTypeId(curriculumTypeId: number) {
+    const params = { curriculumTypeId }
+    learnPlayData.value = null
+    learnPlayData.value = await store.dispatch(
+      'children/learn-play/getPlayAndLearnByCurriculumTypeId', params
+    )
+  }
+
   function buildPlayVideoList(videos: any[]): MediaObject[] {
     return videos.map((video) => {
       return {
@@ -92,8 +100,9 @@ export const useLearnPlayV2 = (params: {
 
   return {
     learnPlayData,
+    computedProps,
     getFirstLearnPlay,
     buildPlayVideoList,
-    computedProps
+    getPlayAndLearnByCurriuclumTypeId
   }
 }

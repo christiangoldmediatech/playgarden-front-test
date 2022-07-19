@@ -111,7 +111,6 @@ import { mapGetters, mapActions } from 'vuex'
 import Letter from '@/components/app/all-done/Letter.vue'
 import RecordedLetter from '@/components/app/live-sessions/recorded/RecordedLetter.vue'
 import { usePlanAccessHelpers } from '@/composables'
-import { TypedStore } from '@/models'
 import UnlockPrompt from './UnlockPrompt.vue'
 
 export default defineComponent({
@@ -136,6 +135,12 @@ export default defineComponent({
         return typeof val === 'object' || val === null
       },
       default: null
+    },
+
+    isPlayAndLearn: {
+      type: Boolean,
+      required: false,
+      default: false
     },
 
     loading: {
@@ -228,8 +233,7 @@ export default defineComponent({
           }
         }
       })
-
-      return letters
+      return (this.isPlayAndLearn) ? letters.filter(item => item.name !== 'Intro') : letters
     },
 
     studentId() {

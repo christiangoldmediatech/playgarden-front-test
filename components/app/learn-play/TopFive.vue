@@ -6,7 +6,7 @@
         :key="`top-item-${index}`"
         width="100%"
       >
-        <v-row no-gutters class="pl-3 mt-4 clickable" @click="changeSong(song)">
+        <v-row no-gutters class="pl-3 mt-4 clickable" @click="changeSong(index)">
           <v-col
             cols="2"
           >
@@ -41,8 +41,8 @@ export default defineComponent({
   setup() {
     const nuxt = useNuxtHelper()
 
-    const changeSong = (song: MusicLibrary) => {
-      nuxt.$emit('change-song', song)
+    const changeSong = (playlistIndex: number) => {
+      nuxt.$emit('change-song', playlistIndex)
     }
 
     return {
