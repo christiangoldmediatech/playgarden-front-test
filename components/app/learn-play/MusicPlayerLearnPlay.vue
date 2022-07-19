@@ -41,7 +41,7 @@
         </span>
       </div>
 
-      <pg-audio-player ref="audioPlayer" @ended="next">
+      <pg-audio-player ref="audioPlayer">
         <!-- Music Player Actions -->
         <template
           #actions="{
@@ -187,14 +187,6 @@ export default defineComponent({
       await nextTick()
     }
 
-    const handleChangedSong = async (song: MusicLibrary) => {
-      if (song) {
-        currentSong.value = song
-        refreshSongData(song)
-        await playSong(0)
-      }
-    }
-
     const isPlayerDisabled = computed(() => !currentSong.value || !currentSong.value?.description)
 
     const playSong = async (playlistIndex: number) => {
@@ -216,14 +208,6 @@ export default defineComponent({
       removeSongFromPlaylist(playlistIndex)
       audioPlayer.value.removeSongByIndex(playlistIndex)
     }
-
-    onMounted(() => {
-      nuxt.$on('change-song', handleChangedSong)
-    })
-
-    onUnmounted(() => {
-      nuxt.$off('change-song', handleChangedSong)
-    })
 
     return {
       audioPlayer,
