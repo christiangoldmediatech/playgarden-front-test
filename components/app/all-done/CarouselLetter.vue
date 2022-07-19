@@ -111,7 +111,6 @@ import { mapGetters, mapActions } from 'vuex'
 import Letter from '@/components/app/all-done/Letter.vue'
 import RecordedLetter from '@/components/app/live-sessions/recorded/RecordedLetter.vue'
 import { usePlanAccessHelpers } from '@/composables'
-import { TypedStore } from '@/models'
 import UnlockPrompt from './UnlockPrompt.vue'
 
 export default defineComponent({
