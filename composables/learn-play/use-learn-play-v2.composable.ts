@@ -22,6 +22,7 @@ export const useLearnPlayV2 = (params: {
 
   async function getPlayAndLearnByCurriuclumTypeId(curriculumTypeId: number) {
     const params = { curriculumTypeId }
+    learnPlayData.value = null
     learnPlayData.value = await store.dispatch(
       'children/learn-play/getPlayAndLearnByCurriculumTypeId', params
     )
