@@ -16,6 +16,7 @@
         <carousel-letter
           id="CarouselLetter"
           :value="curriculumTypeId"
+          :is-play-and-learn="true"
           :preview-mode="previewMode"
         />
       </v-col>

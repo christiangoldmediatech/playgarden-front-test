@@ -138,6 +138,12 @@ export default defineComponent({
       default: null
     },
 
+    isPlayAndLearn: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
     loading: {
       type: Boolean,
       required: false,
@@ -228,8 +234,7 @@ export default defineComponent({
           }
         }
       })
-
-      return letters
+      return (this.isPlayAndLearn) ? letters.filter(item => item.name !== 'Intro') : letters
     },
 
     studentId() {
