@@ -2,7 +2,7 @@
   <v-main class="background-card-learn-play">
     <v-container fluid>
       <v-row class="mb-6" no-gutters>
-        <v-col cols="12">
+        <v-col cols="12" class="mt-4">
           <!-- Back Button When Signin Up -->
           <v-btn
             v-if="initialized && inSignUpProcess"
