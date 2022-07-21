@@ -18,7 +18,7 @@
             next-icon="mdi-chevron-right accent--text"
           >
             <v-slide-item
-              v-for="(item, index) in actualLetters"
+              v-for="(item, index) in listLetters"
               :key="index"
               :item="item"
               :index="index"
@@ -34,7 +34,7 @@
       <v-row no-gutters>
         <pg-select
           :value="value"
-          :items="actualLetters"
+          :items="listLetters"
           item-value="id"
           hide-details
           solo
@@ -209,7 +209,7 @@ export default defineComponent({
 
     ...mapGetters({ currentChild: 'getCurrentChild' }),
 
-    actualLetters() {
+    listLetters() {
       const letters = this.letters.map((letter) => {
         if (!this.forceActivateAllLetters) {
           const current = this.lettersProgress.find(l => l.id === letter.id)
@@ -271,6 +271,8 @@ export default defineComponent({
       this.lettersProgress = data.map((letter) => {
         return { ...letter, disabled: !letter.enabled }
       })
+
+      console.log('lettersProgress--', this.lettersProgress)
     }
   }
 })
