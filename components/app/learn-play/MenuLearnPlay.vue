@@ -120,10 +120,14 @@ export default {
 
     await this.getAllChildren()
     await this.handleLesson()
+
+    this.$nuxt.$on('show-curriculum-progress', (curriculumTypeId) => {
+      this.getPlayAndLearnByCurriculum(curriculumTypeId)
+    })
   },
   methods: {
     ...mapActions('children', { getAllChildren: 'get' }),
-    ...mapActions('children/learn-play', ['getFirstLearnPlay']),
+    ...mapActions('children/learn-play', ['getFirstLearnPlay', 'getPlayAndLearnByCurriculumTypeId']),
 
     sendSection(section) {
       this.$nuxt.$emit('menu-section', section)
@@ -132,6 +136,18 @@ export default {
     changeChild(newId, redirect = true) {
       const child = this.allChildren.find(({ id }) => id === parseInt(newId))
       this.setChild({ value: [child], save: true })
+    },
+
+    async getPlayAndLearnByCurriculum(curriculumTypeId) {
+      try {
+        const params = { curriculumTypeId }
+        this.loading = true
+        this.learnPlay = await this.getPlayAndLearnByCurriculumTypeId(params)
+      } catch (error) {
+        return Promise.reject(error)
+      } finally {
+        this.loading = false
+      }
     },
 
     async handleLesson() {
