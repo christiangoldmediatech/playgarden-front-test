@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <v-row no-gutters>
+    <v-row no-gutters class="mt-12">
       <v-btn
         color="accent"
         nuxt
