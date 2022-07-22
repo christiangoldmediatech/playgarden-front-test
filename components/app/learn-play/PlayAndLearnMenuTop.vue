@@ -74,6 +74,10 @@ export default {
     }
   },
   async created() {
+    if (this.previewMode) {
+      return
+    }
+
     await this.getAllChildren()
     await this.handleLesson()
   },
