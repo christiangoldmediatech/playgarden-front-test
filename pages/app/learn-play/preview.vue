@@ -2,7 +2,8 @@
   <div class="background-card-learn-play px-lg-16 mb-3">
     <v-row v-if="!loading">
       <v-col v-if="$vuetify.breakpoint.mdAndUp" cols="2">
-        <menu-learn-play preview-mode />
+        <play-and-learn-menu-top preview-mode />
+        <menu-learn-play />
       </v-col>
       <v-col cols="12" md="10">
         <dashboard-learn-play preview-mode />
@@ -23,9 +24,10 @@ import {
 } from '@nuxtjs/composition-api'
 import DashboardLearnPlay from '@/components/app/learn-play/DashboardLearnPlay.vue'
 import MenuLearnPlay from '@/components/app/learn-play/MenuLearnPlay.vue'
+import { useLearnPlayV2 } from '@/composables'
+
 // @ts-ignore
 import previewChild from '@/utils/consts/previewChild.json'
-import { useLearnPlayV2 } from '@/composables'
 
 export default defineComponent({
   name: 'LearnPlayIndex',
