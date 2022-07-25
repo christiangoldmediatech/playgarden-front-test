@@ -257,22 +257,27 @@ export default defineComponent({
     ...mapActions('admin/curriculum', {
       getLetters: 'getTypes'
     }),
-    ...mapActions('children/course-progress', ['getCourseProgressByChildId']),
+    ...mapActions('children/course-progress', ['getCourseProgressByChildId', 'getPlayAndLearnProgressByChildId']),
 
     async fetchChildProgress() {
       if (this.previewMode) {
         return
       }
+      let data = null
 
-      const data = await this.getCourseProgressByChildId({
-        id: this.studentId
-      })
+      if (this.isPlayAndLearn) {
+        data = await this.getPlayAndLearnProgressByChildId({
+          id: this.studentId
+        })
+      } else {
+        data = await this.getCourseProgressByChildId({
+          id: this.studentId
+        })
+      }
 
       this.lettersProgress = data.map((letter) => {
         return { ...letter, disabled: !letter.enabled }
       })
-
-      console.log('lettersProgress--', this.lettersProgress)
     }
   }
 })
