@@ -174,6 +174,7 @@ export default defineComponent({
         this.isPaused = false
         this.isStopped = false
       }
+      this.$emit('start-music', this.currentSong)
     },
     next () {
       this.pause()

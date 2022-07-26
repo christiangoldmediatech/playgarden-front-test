@@ -41,7 +41,7 @@
         </span>
       </div>
 
-      <pg-audio-player ref="audioPlayer">
+      <pg-audio-player ref="audioPlayer" @start-music="saveProgress">
         <!-- Music Player Actions -->
         <template
           #actions="{
@@ -139,9 +139,9 @@
 </template>
 
 <script lang="ts">
-import { useNuxtHelper, useMusic } from '@/composables'
-import { MusicLibrary } from '@/models'
-import { defineComponent, onMounted, ref, nextTick, computed, onUnmounted } from '@nuxtjs/composition-api'
+import { useNuxtHelper, useMusic, useLearnPlayV2, useChild } from '@/composables'
+import { MusicLibrary, TypedStore } from '@/models'
+import { defineComponent, ref, nextTick, computed, useStore } from '@nuxtjs/composition-api'
 import MusicQueue from '@/components/app/music/MusicQueue.vue'
 
 export default defineComponent({
@@ -150,7 +150,11 @@ export default defineComponent({
     MusicQueue
   },
 
-  setup () {
+  setup() {
+    const store = useStore()
+    const learnPlayV2 = useLearnPlayV2({ store })
+    const childStore = useStore<TypedStore>()
+    const child = useChild({ store: childStore })
     const nuxt = useNuxtHelper()
     const audioPlayer = ref<any>(null)
     const {
@@ -189,6 +193,18 @@ export default defineComponent({
 
     const isPlayerDisabled = computed(() => !currentSong.value || !currentSong.value?.description)
 
+    const saveProgress = async (song: any) => {
+      if (child.currentChildren.value) {
+        const childId = child.currentChildren.value[0].id
+        const songProgress = { id: song.id, started: true, completed: false }
+        const { id } = learnPlayV2.learnPlayData.value
+        const data = {
+          songs: [songProgress]
+        }
+        await learnPlayV2.updateProgress({ playAndLearnId: id, childId, data })
+      }
+    }
+
     const playSong = async (playlistIndex: number) => {
       if (!audioPlayer.value) {
         return
@@ -221,7 +237,8 @@ export default defineComponent({
       createNewPlaylist,
       playSong,
       removeSong,
-      refreshSongData
+      refreshSongData,
+      saveProgress
     }
   }
 })
