@@ -1,26 +1,5 @@
 <template>
-  <v-row class="menu-learn-play" justify="center">
-    <v-col class="text-center" cols="12">
-      <img
-        v-if="child"
-        :alt="child.backpack.name"
-        class="backpack-active"
-        :src="child.backpack.image"
-      >
-    </v-col>
-    <v-col class="text-center mt-n8" cols="12">
-      <span v-if="child" class="font-weight-bold name-child">
-        {{ child.firstName }}
-      </span>
-    </v-col>
-    <v-col class="text-center mt-n6" cols="12">
-      <recorded-letter
-        v-if="getLetterCurriculumType"
-        class="mt-6 rotate"
-        v-bind="{ letter: getLetterCurriculumType, small: smallLetter }"
-        list-mode
-      />
-    </v-col>
+  <v-row class="menu-learn-play pt-4" justify="center">
     <v-col cols="12">
       <span class="color-main" @click="sendSection('videoLesson')">
         Sections
@@ -65,100 +44,11 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
-import RecordedLetter from '@/components/app/live-sessions/recorded/RecordedLetter.vue'
-
 export default {
   name: 'MenuLearnPlay',
-  components: {
-    RecordedLetter
-  },
-  props: {
-    previewMode: {
-      type: Boolean,
-      default: false
-    }
-  },
-  data: () => {
-    return {
-      loading: false,
-      learnPlay: null,
-      smallLetter: false
-    }
-  },
-  computed: {
-    ...mapGetters({ currentChild: 'getCurrentChild' }),
-    childrenIds() {
-      return this.currentChild && this.currentChild.length
-        ? this.currentChild[0].id
-        : 0
-    },
-    child() {
-      return this.currentChild && this.currentChild.length
-        ? this.currentChild[0]
-        : null
-    },
-    curriculumTypeId() {
-      if (this.learnPlay && this.learnPlay.curriculumType) {
-        return this.learnPlay.curriculumType.id
-      } else {
-        return null
-      }
-    },
-    getLetterCurriculumType() {
-      if (this.learnPlay && this.learnPlay.curriculumType) {
-        return this.learnPlay.curriculumType
-      } else {
-        return null
-      }
-    }
-  },
-  async created() {
-    if (this.previewMode) {
-      return
-    }
-
-    await this.getAllChildren()
-    await this.handleLesson()
-
-    this.$nuxt.$on('show-curriculum-progress', (curriculumTypeId) => {
-      this.getPlayAndLearnByCurriculum(curriculumTypeId)
-    })
-  },
   methods: {
-    ...mapActions('children', { getAllChildren: 'get' }),
-    ...mapActions('children/learn-play', ['getFirstLearnPlay', 'getPlayAndLearnByCurriculumTypeId']),
-
     sendSection(section) {
       this.$nuxt.$emit('menu-section', section)
-    },
-
-    changeChild(newId, redirect = true) {
-      const child = this.allChildren.find(({ id }) => id === parseInt(newId))
-      this.setChild({ value: [child], save: true })
-    },
-
-    async getPlayAndLearnByCurriculum(curriculumTypeId) {
-      try {
-        const params = { curriculumTypeId }
-        this.loading = true
-        this.learnPlay = await this.getPlayAndLearnByCurriculumTypeId(params)
-      } catch (error) {
-        return Promise.reject(error)
-      } finally {
-        this.loading = false
-      }
-    },
-
-    async handleLesson() {
-      try {
-        this.loading = true
-        this.learnPlay = await this.getFirstLearnPlay()
-      } catch (error) {
-        return Promise.reject(error)
-      } finally {
-        this.loading = false
-      }
     }
   }
 }
@@ -169,23 +59,18 @@ export default {
   color: var(--v-primary-base) !important;
   font-weight: 800;
 }
+
 .color-menu {
   color: var(--v-primary-base) !important;
   font-weight: 600;
 }
-.name-child {
-  color: #7852b5 !important;
-  font-size: 28px !important;
-}
-/* .menu-learn-play {
+
+.menu-learn-play {
   position: sticky;
-  top: 116px;
+  top: 120px;
   max-height: calc(100vh - 128px);
   margin-bottom: 0px;
   overflow-x: hidden;
   overflow-y: auto;
-} */
-.rotate {
-  transform: rotate(-13.26deg) !important;
 }
 </style>
