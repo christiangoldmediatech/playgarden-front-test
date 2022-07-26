@@ -1,1 +1,5 @@
 export * from './use-metrics.composable'
+export * from './use-dashboard-link.composable'
+export * from './use-lesson-video-player-callbacks.composable'
+export * from './use-dashboard-teacher-video-callbacks.composable'
+export * from './use-lesson-activities-player-callbacks.composable'

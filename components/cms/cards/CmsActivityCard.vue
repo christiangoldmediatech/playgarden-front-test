@@ -1,19 +1,19 @@
 <template>
-  <div
-    v-editable="blok"
-    class="px-2"
-  >
+  <div v-editable="blok" class="px-2">
     <v-hover v-slot:default="{ hover }">
       <v-card
-        :class="['activity-card', { 'scaled': hover && !$vuetify.breakpoint.mobile }]"
-        :elevation="(hover) ? 12 : 2"
+        :class="[
+          'activity-card',
+          { scaled: hover && !$vuetify.breakpoint.mobile }
+        ]"
+        :elevation="hover ? 12 : 2"
         width="340"
       >
         <v-img
           class="clickable activity-card-image"
           :src="blok.thumbnail"
           max-width="100%"
-          :aspect-ratio="18/6"
+          :aspect-ratio="18 / 6"
           @click.stop="playVideo"
         >
           <v-container fill-height fluid>
@@ -47,8 +47,8 @@
               <v-btn
                 icon
                 large
-                :loading="favoritesLoading"
-                @click.stop="handleFavorites"
+                :loading="isFavoritesLoading"
+                @click.stop="onFavoriteClick"
               />
             </v-list-item-action>
           </v-list-item>
@@ -58,13 +58,12 @@
   </div>
 </template>
 
-<script>
-import FavoritesMixin from '~/mixins/FavoritesMixin'
+<script lang="ts">
+import { defineComponent, getCurrentInstance, ref, useStore } from '@nuxtjs/composition-api'
+import { useFavoritesApi, useGtmHelper, useNuxtHelper } from '@/composables'
 
-export default {
+export default defineComponent({
   name: 'CmsActivityCard',
-
-  mixins: [FavoritesMixin],
 
   props: {
     blok: {
@@ -73,27 +72,54 @@ export default {
     }
   },
 
-  methods: {
-    playVideo () {
-      const { title, file, thumbnail, url } = this.blok
+  setup(props) {
+    // Favorites
+    const store = useStore()
+    const gtm = useGtmHelper()
+    const isFavoritesLoading = ref(false)
+    const { handleFavorite } = useFavoritesApi({ store, gtm, isHandlingFavorites: isFavoritesLoading })
 
-      this.$nuxt.$emit('open-cms-video-player' + this._uid, {
-        playlist: [{
-          activityType: {},
-          videoId: 0,
-          title,
-          poster: thumbnail,
-          src: {
-            src: file.filename || url,
-            type: 'application/x-mpegURL'
-          },
-          viewed: false
-        }],
-        index: 0
+    // Is this finished? Where is the videoId for handling favorites?
+    function onFavoriteClick () {
+      const { title, videoId } = props.blok
+      handleFavorite(videoId, title)
+    }
+
+    // PlayVideo
+    const nuxt = useNuxtHelper()
+    function playVideo() {
+      const instance = getCurrentInstance()
+      // Do we even need the uid logic? The video player does not use it in any way
+      // const uid = instance?.uid
+      const { title, file, thumbnail, url } = props.blok
+
+      // nuxt.$emit('open-cms-video-player' + uid, {
+      nuxt.$emit('open-cms-video-player', {
+        playlist: [
+          {
+            title,
+            poster: thumbnail,
+            src: {
+              url: file.filename || url,
+              type: 'application/x-mpegURL'
+            },
+            meta: {
+              activityType: {},
+              videoId: 0, // videoId was always hardcoded to 0. FavoritesHandling will not work
+              viewed: false
+            }
+          }
+        ]
       })
     }
+
+    return {
+      playVideo,
+      isFavoritesLoading,
+      onFavoriteClick
+    }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

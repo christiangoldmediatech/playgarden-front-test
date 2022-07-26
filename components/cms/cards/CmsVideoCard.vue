@@ -3,7 +3,7 @@
     v-editable="blok"
     class="card pg-image--cover"
   >
-    <cms-video-player />
+    <CmsVideoPlayer />
     <v-hover v-slot:default="{ hover }">
       <v-card
         :class="['activity-card', { 'scaled': hover }]"
@@ -39,10 +39,12 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent, getCurrentInstance, ref, useStore } from '@nuxtjs/composition-api'
+import { useNuxtHelper } from '@/composables'
 import CmsVideoPlayer from '@/components/cms/player/CmsVideoPlayer.vue'
 
-export default {
+export default defineComponent({
   name: 'CmsVideoCard',
 
   components: {
@@ -56,33 +58,43 @@ export default {
     }
   },
 
-  data () {
-    return {
-      currentId: null
-    }
-  },
+  setup (props) {
+    // CurrentId does not seem to be used in anything
+    // const currentId = ref<null | number>(null)
 
-  methods: {
-    playVideo () {
-      const { title, file, thumbnail, url } = this.blok
+    // PlayVideo
+    const nuxt = useNuxtHelper()
+    function playVideo() {
+      const instance = getCurrentInstance()
+      // Do we even need the uid logic? The video player does not use it in any way
+      // const uid = instance?.uid
+      const { title, file, thumbnail, url } = props.blok
 
-      this.$nuxt.$emit('open-cms-video-player' + this._uid, {
-        playlist: [{
-          activityType: {},
-          videoId: 0,
-          title,
-          poster: thumbnail,
-          src: {
-            src: file.filename || url,
-            type: 'application/x-mpegURL'
-          },
-          viewed: false
-        }],
-        index: 0
+      // nuxt.$emit('open-cms-video-player' + uid, {
+      nuxt.$emit('open-cms-video-player', {
+        playlist: [
+          {
+            title,
+            poster: thumbnail,
+            src: {
+              url: file.filename || url,
+              type: 'application/x-mpegURL'
+            },
+            meta: {
+              activityType: {},
+              videoId: 0, // videoId was always hardcoded to 0. FavoritesHandling will not work
+              viewed: false
+            }
+          }
+        ]
       })
     }
+
+    return {
+      playVideo
+    }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

@@ -19,7 +19,7 @@
           <v-list-item>
             <v-list-item-avatar tile>
               <v-img
-                :src="currentVideoLesson.activityType.icon"
+                :src="currentVideoLesson.meta.activityType.icon"
                 contain
               />
             </v-list-item-avatar>
@@ -27,7 +27,7 @@
             <v-list-item-content>
               <v-list-item-title>
                 <span class="dashboard-item-activity-type">
-                  {{ currentVideoLesson.activityType.name }}
+                  {{ currentVideoLesson.meta.activityType.name }}
                 </span>
                 <span class="dashboard-item-name">
                   with {{ currentVideoLesson.title }}
@@ -48,14 +48,17 @@
   </div>
 </template>
 
-<script>
-import { mapGetters } from 'vuex'
-import { APP_EVENTS } from '@/models'
+<script lang="ts">
+import { defineComponent, computed, useStore, useRoute } from '@nuxtjs/composition-api'
+import { APP_EVENTS, TypedStore } from '@/models'
 
 import LessonVideoPlayer from '@/components/app/dashboard/LessonVideoPlayer.vue'
 import LessonPuzzlePieces from '@/components/app/dashboard/LessonPuzzlePieces.vue'
+import { isArray } from 'lodash'
+import { useNuxtHelper } from '@/composables'
+import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
 
-export default {
+export default defineComponent({
   name: 'LessonVideosCard',
 
   components: {
@@ -63,55 +66,71 @@ export default {
     LessonPuzzlePieces
   },
 
-  computed: {
-    ...mapGetters('admin/curriculum', ['getLesson']),
+  setup() {
+    const route = useRoute()
+    const store = useStore<TypedStore>()
+    const nuxt = useNuxtHelper()
 
-    videoId () {
-      return parseInt(this.$route.query.id)
-    },
+    const getLesson = computed(() => {
+      return store.getters['admin/curriculum/getLesson']
+    })
 
-    videos () {
-      return this.getLesson ? this.getLesson.videos : []
-    },
+    const videoId = computed(() => {
+      const value = route.value.query.id
+      const id = value && !isArray(value) ? value : '0'
+      return parseInt(id)
+    })
 
-    playlist () {
-      return this.videos.map(({ activityType, name, description, videoUrl, thumbnail, id, viewed }) => {
+    const videos = computed(() => {
+      const unfilteredVideos = getLesson.value.videos ?? []
+      return unfilteredVideos.filter((video: any) => {
+        return Boolean(video.videoUrl.HLS)
+      })
+    })
+
+    const playlist = computed<MediaObject[]>(() => {
+      return videos.value.map(({ activityType, name, description, videoUrl, thumbnail, id, viewed }: any) => {
         return {
-          title: name,
+          title: activityType.name,
           description,
-          activityType,
-          src: [
-            {
-              src: videoUrl.HLS,
-              type: 'application/x-mpegURL'
-            }
-          ],
           poster: thumbnail,
-          videoId: id,
-          viewed
+          src: {
+            url: videoUrl.HLS,
+            type: 'application/x-mpegURL'
+          },
+          meta: {
+            videoId: id,
+            author: `with ${name}`,
+            videoType: 'VIDEO LESSONS:',
+            videoIcon: activityType.icon ?? undefined,
+            activityType,
+            viewed
+          }
         }
       })
-    },
+    })
 
-    currentVideoLessonIndex () {
-      return this.playlist.findIndex(({ videoId }) => videoId === this.videoId)
-    },
+    const currentVideoLessonIndex = computed(() => {
+      return playlist.value.findIndex((mediaObject) => {
+        return mediaObject.meta?.videoId === videoId.value
+      })
+    })
 
-    currentVideoLesson () {
-      if (this.currentVideoLessonIndex >= 0) {
-        return this.playlist[this.currentVideoLessonIndex]
-      }
-      return null
+    const currentVideoLesson = computed(() => {
+      return playlist.value[currentVideoLessonIndex.value]
+    })
+
+    function playVideo() {
+      nuxt.$emit(APP_EVENTS.DASHBOARD_VIDEO_LESSON_VIDEO_CLICKED, videoId.value)
+      nuxt.$emit('open-lesson-video-player', { playlist: playlist.value, index: currentVideoLessonIndex.value })
     }
-  },
 
-  methods: {
-    playVideo () {
-      this.$nuxt.$emit(APP_EVENTS.DASHBOARD_VIDEO_LESSON_VIDEO_CLICKED, this.videoId)
-      this.$nuxt.$emit('open-lesson-video-player', { playlist: this.playlist, index: this.currentVideoLessonIndex })
+    return {
+      currentVideoLesson,
+      playVideo
     }
   }
-}
+})
 </script>
 
 <style lang="scss">

@@ -139,10 +139,12 @@ export default {
           const playlist = [
             {
               title: '',
-              videoId: this.offlineWorksheet.videoDetail.id,
               src: {
-                src: this.offlineWorksheet.videoDetail.videoUrl.HLS,
+                url: this.offlineWorksheet.videoDetail.videoUrl.HLS,
                 type: 'application/x-mpegURL'
+              },
+              meta: {
+                videoId: this.offlineWorksheet.videoDetail.id
               }
             }
           ]
@@ -209,19 +211,24 @@ export default {
 
               const playlist = validActivities.map(({ id, activity }) => {
                 return {
-                  title: activity.videos.name,
+                  title: activity.activityType.name,
                   description: activity.videos.description,
-                  activityType: activity.activityType,
-                  curriculumType: activity.curriculumType,
+                  poster: activity.videos.thumbnail,
                   src: {
-                    src: activity.videos.videoUrl.HLS,
+                    url: activity.videos.videoUrl.HLS,
                     type: 'application/x-mpegURL'
                   },
-                  poster: activity.videos.thumbnail,
-                  lessonActivityId: id,
-                  activityId: activity.id,
-                  videoId: activity.videos.id,
-                  viewed: activity.viewed
+                  meta: {
+                    videoId: activity.videos.id,
+                    author: `with ${activity.videos.name}`,
+                    videoType: 'LESSON ACTIVITIES',
+                    videoIcon: activity.activityType.icon,
+                    lessonActivityId: id,
+                    activityId: activity.id,
+                    activityType: activity.activityType,
+                    curriculumType: activity.curriculumType,
+                    viewed: activity.viewed
+                  }
                 }
               })
 
