@@ -16,6 +16,8 @@
           @ready="
             onPlayerReady({ player: $event, videos: learnPlayData.videos })
           "
+          @on-play="saveStartProgress"
+          @on-ended="saveEndProgress"
         >
           <template #inline-play-icon="{ firstPlay }">
             <div
@@ -71,8 +73,8 @@ import PgVideoPlayer from '@gold-media-tech/pg-video-player'
 import VideosScroll from '@/components/app/learn-play/VideosScroll.vue'
 import { PlayerInstance } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
 import { defineComponent, ref, useStore } from '@nuxtjs/composition-api'
-import { useLearnPlayV2, useCommonPlayerFunctions } from '@/composables'
-import { PlayAndLearnVideo } from '@/models'
+import { useLearnPlayV2, useCommonPlayerFunctions, useChild } from '@/composables'
+import { PlayAndLearnVideo, TypedStore } from '@/models'
 
 export default defineComponent({
   name: 'VideoLessonPlayerLearnPlay',
@@ -86,6 +88,8 @@ export default defineComponent({
     const store = useStore()
     const learnPlayV2 = useLearnPlayV2({ store })
     const commonPlayerFunctions = useCommonPlayerFunctions()
+    const childStore = useStore<TypedStore>()
+    const child = useChild({ store: childStore })
     const player = ref<PlayerInstance | null>(null)
     const title = ref('')
     const author = ref('')
@@ -131,13 +135,35 @@ export default defineComponent({
       commonPlayerFunctions.showPreview.value = false
     }
 
+    const saveStartProgress = async (media: any) => {
+      await learnPlayV2.updateProgress(buildDataProgress(media, false))
+    }
+
+    const saveEndProgress = async (media: any) => {
+      await learnPlayV2.updateProgress(buildDataProgress(media, true))
+    }
+
+    const buildDataProgress = (media: any, finish: boolean) => {
+      if (child.currentChildren.value) {
+        const childId = child.currentChildren.value[0].id
+        const videoProgress = { id: media.currentTrack.meta.videoId, started: true, completed: finish }
+        const { id } = learnPlayV2.learnPlayData.value
+        const data = {
+          videos: [videoProgress]
+        }
+        return { playAndLearnId: id, childId, data }
+      }
+    }
+
     return {
-      onPlayerReady,
-      changeVideoTrack,
       learnPlayData: learnPlayV2.learnPlayData,
       ...commonPlayerFunctions,
       title,
-      author
+      author,
+      onPlayerReady,
+      changeVideoTrack,
+      saveStartProgress,
+      saveEndProgress
     }
   }
 })

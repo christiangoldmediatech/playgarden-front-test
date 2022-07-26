@@ -40,7 +40,8 @@ export const useLearnPlayV2 = (params: {
           type: 'application/x-mpegURL'
         },
         meta: {
-          author: video.description
+          author: video.description,
+          videoId: video.id
         }
       }
     })
