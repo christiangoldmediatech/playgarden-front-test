@@ -41,7 +41,7 @@
         </span>
       </div>
 
-      <pg-audio-player ref="audioPlayer" @start-music="saveProgress">
+      <pg-audio-player ref="audioPlayer" @start-music="saveStartProgress" @ended="saveEndProgress">
         <!-- Music Player Actions -->
         <template
           #actions="{
@@ -193,15 +193,23 @@ export default defineComponent({
 
     const isPlayerDisabled = computed(() => !currentSong.value || !currentSong.value?.description)
 
-    const saveProgress = async (song: any) => {
+    const saveStartProgress = async (song: any) => {
+      await learnPlayV2.updateProgress(buildProgress(song.id, false))
+    }
+
+    const saveEndProgress = async (songId: any) => {
+      await learnPlayV2.updateProgress(buildProgress(songId, true))
+    }
+
+    const buildProgress = (idSong: number, finish: boolean) => {
       if (child.currentChildren.value) {
         const childId = child.currentChildren.value[0].id
-        const songProgress = { id: song.id, started: true, completed: false }
+        const songProgress = { id: idSong, started: true, completed: finish }
         const { id } = learnPlayV2.learnPlayData.value
         const data = {
           songs: [songProgress]
         }
-        await learnPlayV2.updateProgress({ playAndLearnId: id, childId, data })
+        return { playAndLearnId: id, childId, data }
       }
     }
 
@@ -238,7 +246,8 @@ export default defineComponent({
       playSong,
       removeSong,
       refreshSongData,
-      saveProgress
+      saveStartProgress,
+      saveEndProgress
     }
   }
 })
