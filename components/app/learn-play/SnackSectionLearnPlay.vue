@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="getSnacks.length > 0">
     <div class="mb-4 d-flex align-center">
       <span class="title-dashboard">
         Snack
