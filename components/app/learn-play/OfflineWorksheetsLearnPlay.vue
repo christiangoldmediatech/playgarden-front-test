@@ -46,8 +46,9 @@
 </template>
 
 <script lang="ts">
-import { useLearnPlayV2 } from '@/composables'
+import { useLearnPlayV2, useChild } from '@/composables'
 import { defineComponent, useStore } from '@nuxtjs/composition-api'
+import { TypedStore } from '@/models'
 import DownloadButtonLearnPlay from './DownloadButtonLearnPlay.vue'
 
 export default defineComponent({
@@ -60,9 +61,24 @@ export default defineComponent({
   setup() {
     const store = useStore()
     const learnPlayV2 = useLearnPlayV2({ store })
+    const childStore = useStore<TypedStore>()
+    const child = useChild({ store: childStore })
 
     function handleDownloadWorksheetClick(item: any) {
       window.open(item.pdfUrl, '_blank')
+      saveProgress(item)
+    }
+
+    const saveProgress = async (item: any) => {
+      if (child.currentChildren.value) {
+        const childId = child.currentChildren.value[0].id
+        const worksheetProgress = { id: item.id, downloaded: true }
+        const { id } = learnPlayV2.learnPlayData.value
+        const data = {
+          worksheets: [worksheetProgress]
+        }
+        await learnPlayV2.updateProgress({ playAndLearnId: id, childId, data })
+      }
     }
 
     return {
