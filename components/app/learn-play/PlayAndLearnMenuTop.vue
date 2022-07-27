@@ -80,6 +80,14 @@ export default {
 
     await this.getAllChildren()
     await this.handleLesson()
+
+    this.$nuxt.$on('send-learn-play', (learnPlayCurrent) => {
+      this.learnPlay = learnPlayCurrent
+    })
+  },
+
+  beforeDestroy () {
+    this.$nuxt.$off('send-learn-play')
   },
   methods: {
     ...mapActions('children', { getAllChildren: 'get' }),

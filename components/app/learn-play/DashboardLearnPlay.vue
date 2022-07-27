@@ -130,6 +130,7 @@ export default defineComponent({
   setup(props) {
     // Basic helpers
     const store = useStore()
+    const $nuxt = useNuxtHelper()
     const childStore = useStore<TypedStore>()
     const nuxt = useNuxtHelper()
     const curriculumTypeId = ref<null | number>(null)
@@ -162,6 +163,7 @@ export default defineComponent({
 
     const loadPlayAndLearnByCurriculumTypeId = async (curriculumTypeId: number) => {
       await learnPlayV2.getPlayAndLearnByCurriuclumTypeId(curriculumTypeId)
+      $nuxt.$emit('send-learn-play', learnPlayV2.learnPlayData.value)
       refreshMenuSection()
     }
 
