@@ -47,11 +47,11 @@
         <nuxt />
       </v-container>
 
-      <!-- TRIAL EXPIRING RIBBON -->
-      <trial-is-expiring v-if="isTrialExpiringRibbonVisible" />
-
       <!-- FOOTER -->
       <default-footer />
+
+      <!-- TRIAL EXPIRING RIBBON -->
+      <trial-is-expiring v-if="true" />
 
       <notify-event />
 
