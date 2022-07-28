@@ -28,9 +28,9 @@ export default function ({ $axios, redirect, store, app }) {
         : error.response.data.message
     }
 
-    if (error.response.status === 401) {
-      store.dispatch('auth/logout', { redirect })
-    }
+    /* if (error.response.status === 401) {
+       store.dispatch('auth/logout', { redirect })
+    } */
 
     if (error.response.status === 409) {
       body = error.response.data.message
