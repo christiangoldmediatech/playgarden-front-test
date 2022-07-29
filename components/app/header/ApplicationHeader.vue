@@ -257,7 +257,10 @@ export default {
     },
 
     handleLogoClick() {
-      if (unauthenticatedRoutes[this.$route.name]) {
+      if (
+        unauthenticatedRoutes[this.$route.name] ||
+        this.isUserInSignupProcess
+      ) {
         window.open(process.env.frontendUrl, '_self')
         return
       }
