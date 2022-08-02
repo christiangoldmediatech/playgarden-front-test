@@ -226,10 +226,10 @@
       <!-- Plan Information -->
       <v-col cols="12" md="6" class="mb-6 pl-md-8 mb-md-0">
         <!-- CANCEL TRIAL BUTTON -->
-        <cancel-trial
+        <!-- <cancel-trial
           v-if="isTrialingStatus"
           class="pg-mb-[32px]"
-        />
+        /> -->
 
         <!-- TRIAL EXPIRING RIBBON -->
         <trial-is-expiring
