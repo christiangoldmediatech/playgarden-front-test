@@ -444,8 +444,8 @@ export default {
     UpdateBillingMethod,
     PlanDescription,
     TrialIsExpiring,
-    BillingHistoryCard,
-    CancelTrial: () => import('@/components/app/payment/CancelTrial.vue')
+    BillingHistoryCard
+    // CancelTrial: () => import('@/components/app/payment/CancelTrial.vue')
   },
 
   data: vm => ({
