@@ -43,7 +43,7 @@
         </v-list>
       </template>
     </v-card>
-    <lesson-puzzle-pieces v-if="$vuetify.breakpoint.smAndDown" />
+    <LessonPuzzlePieces v-if="$vuetify.breakpoint.smAndDown && puzzlePiece" />
     <lesson-video-player />
   </div>
 </template>
@@ -73,6 +73,10 @@ export default defineComponent({
 
     const getLesson = computed(() => {
       return store.getters['admin/curriculum/getLesson']
+    })
+
+    const puzzlePiece = computed(() => {
+      return store.state.children.lesson.puzzlePiece
     })
 
     const videoId = computed(() => {
@@ -127,6 +131,7 @@ export default defineComponent({
 
     return {
       currentVideoLesson,
+      puzzlePiece,
       playVideo
     }
   }

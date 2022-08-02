@@ -1,27 +1,32 @@
 <template>
-  <dashboard-layout
-    v-model="selectedChild"
-    v-bind="{ lesson, loading }"
-    preview-mode
-  >
-    <nuxt-child />
-  </dashboard-layout>
+  <v-main>
+    <dashboard-layout
+      v-model="selectedChild"
+      v-bind="{ lesson, loading }"
+      preview-mode
+    >
+      <nuxt-child />
+    </dashboard-layout>
+    <lesson-activity-player />
+  </v-main>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
 import DashboardLink from '@/mixins/DashboardLinkMixin.js'
 import DashboardLayout from '@/components/app/dashboard/DashboardLayout.vue'
+import LessonActivityPlayer from '@/components/app/dashboard/LessonActivityPlayer.vue'
 import previewChild from '@/utils/consts/previewChild.json'
 
 export default {
   name: 'Preview',
 
   components: {
-    DashboardLayout
+    DashboardLayout,
+    LessonActivityPlayer
   },
 
-  layout: 'preview-mode',
+  layout: 'lesson-preview-mode',
 
   mixins: [DashboardLink],
 

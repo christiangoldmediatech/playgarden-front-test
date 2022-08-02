@@ -17,7 +17,7 @@
           </template>
         </v-icon>
       </v-btn>
-      <lesson-puzzle-pieces v-else v-bind="{ puzzlePiece }" activities />
+      <LessonPuzzlePieces v-else v-bind="{ puzzlePiece }" activities />
     </v-list-item-action>
   </lesson-activities-card>
 </template>
