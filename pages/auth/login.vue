@@ -35,6 +35,17 @@
           </div>
 
           <!-- FORM LOADING -->
+          <v-alert
+            v-if="errorMessage"
+            border="left"
+            color="orange"
+            dense
+            outlined
+            text
+            type="warning"
+          >
+            {{ errorMessage }}
+          </v-alert>
           <pg-loading v-if="loadingDataSocial" />
 
           <!-- LOGIN FORM -->
@@ -283,7 +294,7 @@ export default {
           await this.$router.push({ name: this.goToPage(this.userInfo) })
         }
       } catch (error) {
-        this.errorMessage = 'Sorry! Wrong email or password'
+        this.errorMessage = 'Oops! The password you entered is incorrect. Please try again, or try resetting your password.'
       } finally {
         this.loading = false
       }
