@@ -43,7 +43,9 @@
     </v-container> -->
     <v-container
       :class="{
-        'dashboard-container pg-mt-[80px]': !$vuetify.breakpoint.smAndDown
+        'dashboard-container': !$vuetify.breakpoint.smAndDown && !previewMode,
+        'dashboard-container-preview': !$vuetify.breakpoint.smAndDown && previewMode,
+        'pg-mt-[80px]': !previewMode
       }"
       fluid
     >
@@ -326,6 +328,10 @@ export default {
   &-container {
     height: calc(100vh - 64px);
     max-height: calc(100vh - 64px);
+  }
+  &-container-preview {
+    height: calc(100vh - 80px);
+    max-height: calc(100vh - 80px);
   }
   &-column {
     height: 100%;

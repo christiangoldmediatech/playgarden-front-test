@@ -112,7 +112,7 @@ export default defineComponent({
     // Puzzle piece image
     const puzzlePieceImg = computed(() => {
       const puzzlePiece: any = store.state.children.lesson.puzzlePiece as any
-      return puzzlePiece.puzzle.image ?? null
+      return puzzlePiece?.puzzle?.image ?? null
     })
 
     // Videos to watch before unlocking puzzle piece

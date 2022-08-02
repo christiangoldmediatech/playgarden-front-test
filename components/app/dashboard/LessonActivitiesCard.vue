@@ -44,12 +44,12 @@
         </v-list>
       </template>
     </v-card>
-    <lesson-puzzle-pieces v-if="$vuetify.breakpoint.smAndDown" activities />
+    <lesson-puzzle-pieces v-if="$vuetify.breakpoint.smAndDown && puzzlePiece" activities />
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import { APP_EVENTS } from '@/models'
 
 import LessonPuzzlePieces from '@/components/app/dashboard/LessonPuzzlePieces.vue'
@@ -63,6 +63,7 @@ export default {
 
   computed: {
     ...mapGetters('admin/curriculum', ['getLesson']),
+    ...mapState('children/lesson', ['puzzlePiece']),
 
     activityId () {
       return parseInt(this.$route.query.id)
