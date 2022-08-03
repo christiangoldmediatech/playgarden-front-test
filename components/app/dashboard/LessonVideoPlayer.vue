@@ -76,7 +76,8 @@ export default defineComponent({
 
     // Show favorite control when not in admin preview mode
     const shouldShowFavorite = computed(() => {
-      return !store.getters['admin/curriculum/getLesson'].previewMode
+      const previewMode = !store.getters['admin/curriculum/getLesson']?.previewMode ?? true
+      return previewMode
     })
 
     // Get player instance
@@ -106,6 +107,7 @@ export default defineComponent({
 
     // Close player when we close the lesson completed dialog
     function onLessonCompletedDialogClose() {
+      isLessonCompleted.value = false
       player.close()
     }
 
