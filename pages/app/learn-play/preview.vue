@@ -1,15 +1,20 @@
 <template>
-  <div class="background-card-learn-play px-lg-16 mb-3">
-    <v-row v-if="!loading">
-      <v-col v-if="$vuetify.breakpoint.mdAndUp" cols="2">
-        <play-and-learn-menu-top preview-mode />
-        <menu-learn-play />
-      </v-col>
-      <v-col cols="12" md="10">
-        <dashboard-learn-play preview-mode />
-      </v-col>
-    </v-row>
-  </div>
+  <v-container
+    class="pb-5"
+    fluid
+  >
+    <div class="background-card-learn-play pg-pt-48 px-lg-16 mb-3">
+      <v-row v-if="!loading" class="'dashboard-container-preview">
+        <v-col v-if="$vuetify.breakpoint.mdAndUp" cols="2">
+          <play-and-learn-menu-top preview-mode />
+          <menu-learn-play />
+        </v-col>
+        <v-col cols="12" md="10">
+          <dashboard-learn-play preview-mode />
+        </v-col>
+      </v-row>
+    </div>
+  </v-container>
 </template>
 
 <script lang="ts">
@@ -30,8 +35,7 @@ import { useLearnPlayV2 } from '@/composables'
 import previewChild from '@/utils/consts/previewChild.json'
 
 export default defineComponent({
-  name: 'LearnPlayIndex',
-  layout: 'preview-mode',
+  name: 'LearnPlayPreview',
   components: {
     DashboardLearnPlay,
     MenuLearnPlay

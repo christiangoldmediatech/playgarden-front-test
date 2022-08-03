@@ -35,6 +35,7 @@ export default () => ({
     'app-payment-plan': 1,
     'app-virtual-preschool': 1,
     'app-learn-play': 1,
+    'app-learn-play-preview': 1,
     help: 1,
     'shared-slug': 1
   },
