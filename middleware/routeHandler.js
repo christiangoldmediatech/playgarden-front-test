@@ -108,9 +108,8 @@ export default async function ({ redirect, route, store, app, req }) {
   const isUserRole = get(user, 'role.section') === 'USERS'
 
   if ((isUnauthenticatedRoute || isAppRoute) && isAdminRole) {
-    return get(user, 'role.name') === 'SPECIALISTS'
-      ? redirect({ name: 'admin-agenda' })
-      : redirect({ name: 'admin-dashboard' })
+    await store.dispatch('auth/logout', {}, { root: true })
+    return redirect({ name: 'auth-login' })
   } else if ((isUnauthenticatedRoute || isAdminRoute) && isUserRole) {
     return redirect({ name: goToPage(user) })
   }
