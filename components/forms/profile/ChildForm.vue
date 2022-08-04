@@ -331,7 +331,7 @@
 import dayjs from 'dayjs'
 import { mapActions } from 'vuex'
 
-import UserChildTimelineDialog from '@/components/admin/users/UserChildTimelineDialog.vue'
+import UserChildTimelineDialog from '@/components/forms/profile/UserChildTimelineDialog.vue'
 
 export default {
   name: 'ChildForm',
