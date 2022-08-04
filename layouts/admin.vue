@@ -178,25 +178,6 @@ export default {
           route: '/admin/dashboard'
         },
         {
-          icon: 'mdi-account',
-          title: 'User manager',
-          rootPath: '/admin/user-manager',
-          children: [
-            {
-              title: 'All Users',
-              route: ''
-            },
-            {
-              title: 'Parents',
-              route: 'parents-list'
-            },
-            {
-              title: 'Children',
-              route: 'children-list'
-            }
-          ]
-        },
-        {
           icon: 'mdi-logout',
           title: 'Log out',
           route: '/auth/logout'
