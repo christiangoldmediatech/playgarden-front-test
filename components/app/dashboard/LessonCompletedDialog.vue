@@ -79,7 +79,7 @@
 
 <script lang="ts">
 import { defineComponent, computed, useStore, useRoute, useRouter, watch } from '@nuxtjs/composition-api'
-import { useAppEventBusHelper, useDashboardLink, useNuxtHelper } from '@/composables'
+import { useAppEventBusHelper, useDashboardLink, useIsLessonCompleted, useNuxtHelper } from '@/composables'
 // @ts-ignore
 import PgVideoPlayer from '@gold-media-tech/pg-video-player'
 
@@ -164,7 +164,9 @@ export default defineComponent({
       player.loadPlaylist(playlist)
     }
 
+    const { isLessonCompleted } = useIsLessonCompleted()
     function goToWorksheets() {
+      isLessonCompleted.value = false
       appEventBus.$emit(APP_EVENTS.DASHBOARD_ONLINE_WORKSHEET_CLICKED)
       router.push(generateDashboardRoute('online-worksheet'))
     }
@@ -209,6 +211,7 @@ export default defineComponent({
       })
 
       nuxt.$emit('open-lesson-activity-player', { playlist, index: 0 })
+      isLessonCompleted.value = false
       router.push(generateDashboardRoute('lesson-activities', { id: activities[0].id }))
     }
 
