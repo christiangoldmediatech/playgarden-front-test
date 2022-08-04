@@ -1,10 +1,15 @@
 <template>
   <v-app-bar
     app
-    class="pb-4 pg-app-bar "
-    :class="{ 'pg-app-bar-height': (!isUserLoggedIn && $vuetify.breakpoint.mdAndUp), 'pg-app-bar-mobile-height': (!isUserLoggedIn && !$vuetify.breakpoint.mdAndUp ), 'd-none mt-n16': scrollDown}"
-    color="white"
-    elevation="1"
+    class="pb-4 pg-app-bar paper-bg"
+    :class="{
+      'pg-app-bar-height': !isUserLoggedIn && $vuetify.breakpoint.mdAndUp,
+      'pg-app-bar-mobile-height':
+        !isUserLoggedIn && !$vuetify.breakpoint.mdAndUp,
+      'd-none mt-n16': scrollDown
+    }"
+    color="transparent"
+    flat
     prominent
   >
     <v-row
@@ -13,34 +18,16 @@
       justify="space-between"
       no-gutters
     >
-      <!-- HAMBURGER MENU -->
+      <!-- Logo -->
       <v-col class="d-flex align-center" cols="auto">
-        <v-app-bar-nav-icon
-          class="primary pg-app-bar-nav-icon hidden-md-and-up"
-          :class="{ isMd: $vuetify.breakpoint.md }"
-          color="white"
-          tile
-          large
-          data-test-id="hamburger-menu"
-          @click.stop="toggleDrawer"
-        />
-
-        <v-toolbar-title class="mx-3">
-          <!-- <nuxt-link
-            :to="{
-              name: 'app-virtual-preschool',
-            }"
-          > -->
+        <v-toolbar-title class="mx-3 mt-1">
           <v-img
             class="mx-4 cursor-link"
-            :class="{ 'mt-8': $vuetify.breakpoint.mdAndUp}"
             alt="Playarden Prep Online Logo"
-            max-height="100"
-            :max-width="$vuetify.breakpoint.mdAndUp ? 290 : 200"
-            :src="require('@/assets/svg/logo.svg')"
+            :max-width="$vuetify.breakpoint.mdAndUp ? 100 : 70"
+            :src="require('@/assets/png/rainbow-logo.png')"
             @click="handleLogoClick"
           />
-          <!-- </nuxt-link> -->
         </v-toolbar-title>
       </v-col>
 
@@ -177,6 +164,17 @@
         </div>
         <!-- Profile/help/Tutorial Menu end-->
 
+        <!-- HAMBURGER MENU -->
+        <v-app-bar-nav-icon
+          class="pg-app-bar-nav-icon hidden-md-and-up"
+          :class="{ 'is-md': $vuetify.breakpoint.md }"
+          color="primary"
+          tile
+          x-large
+          data-test-id="hamburger-menu"
+          @click.stop="toggleDrawer"
+        />
+
         <!-- MOBILE ICONS -->
         <div
           v-if="getVerifyEmail"
@@ -205,23 +203,6 @@
               mdi-login
             </v-icon>
           </v-btn>
-
-          <!-- <v-btn
-            :color="isUserLoggedIn ? 'primary' : 'accent'"
-            active-class="transparent--text"
-            icon
-            nuxt
-            small
-            :to="{ name: isUserLoggedIn ? 'auth-logout' : 'auth-login' }"
-          >
-            <v-icon v-if="isUserLoggedIn" color="accent">
-              mdi-logout
-            </v-icon>
-
-            <v-icon v-else color="primary">
-              mdi-login
-            </v-icon>
-          </v-btn> -->
         </div>
       </v-col>
     </v-row>
@@ -276,7 +257,10 @@ export default {
     },
 
     handleLogoClick() {
-      if (unauthenticatedRoutes[this.$route.name]) {
+      if (
+        unauthenticatedRoutes[this.$route.name] ||
+        this.isUserInSignupProcess
+      ) {
         window.open(process.env.frontendUrl, '_self')
         return
       }
@@ -319,7 +303,7 @@ export default {
 .pg-app-bar-nav-icon {
   height: 56px !important;
   width: 56px !important;
-  &.isMd {
+  &.is-md {
     height: 64px !important;
     width: 64px !important;
   }
@@ -344,7 +328,7 @@ export default {
   }
 }
 
-.cursor-link{
+.cursor-link {
   cursor: pointer !important;
 }
 
@@ -359,21 +343,6 @@ export default {
     margin-right: 12px;
   }
 }
-
-// .pg-app-bar-col {
-//   max-width: 1200px;
-
-//   &.full-width {
-//     max-width: 1600px;
-//     padding-left: 24px;
-//     padding-right: 24px;
-
-//     &.mobile {
-//       padding-left: 0px;
-//       padding-right: 0px;
-//     }
-//   }
-// }
 
 .v-btn--active.custom-active {
   &::before {
@@ -405,23 +374,31 @@ export default {
 }
 
 .pg-app-bar::v-deep.v-sheet.v-app-bar.v-toolbar:not(.v-sheet--outlined) {
-  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16) !important;
-  height: 98px !important;
+  height: 170px !important;
 }
 
-@media screen and (max-width:959px ) {
+@media screen and (max-width: 959px) {
   .pg-app-bar::v-deep.v-sheet.v-app-bar.v-toolbar:not(.v-sheet--outlined) {
-    height: 63px !important;
+    height: 120px !important;
   }
 }
 
 .pg-app-bar-height::v-deep.v-sheet.v-app-bar.v-toolbar:not(.v-sheet--outlined) {
-  height: 146px !important;
-}
-.pg-app-bar-mobile-height::v-deep.v-sheet.v-app-bar.v-toolbar:not(.v-sheet--outlined) {
-  height: 65px !important;
+  height: 212px !important;
 }
 .btn-register:before {
   background-color: transparent !important;
+}
+
+.paper-bg {
+  background-image: url('~@/assets/png/paper-header.png');
+  background-size: cover;
+  background-position: center bottom;
+
+  @media screen and (max-width: 768px) {
+    background-image: url('~@/assets/png/paper-header-mobile.png');
+    background-size: cover;
+    background-position: center bottom;
+  }
 }
 </style>

@@ -122,11 +122,10 @@ export default defineComponent({
     // Set demo playlist
     this.setPlaylist(jsonCopy(this.playList))
 
-    this.$nuxt.$on('change-song', (song) => {
-      if (song) {
-        this.currentSong = song
-        this.setPlaylist(jsonCopy([song]))
-      }
+    this.$nuxt.$on('change-song', (currentSongIndex) => {
+      this.stop()
+      this.selectSongByIndex(currentSongIndex)
+      this.play()
     })
   },
 
@@ -175,6 +174,7 @@ export default defineComponent({
         this.isPaused = false
         this.isStopped = false
       }
+      this.$emit('start-music', this.currentSong)
     },
     next () {
       this.pause()
@@ -233,7 +233,6 @@ export default defineComponent({
         this.isLoading = false
         return
       }
-
       // Abort current track
       this.player.load()
 

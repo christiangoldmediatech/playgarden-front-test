@@ -1,6 +1,6 @@
 <template>
-  <v-row>
-    <v-row no-gutters>
+  <v-row class="pg-mt-8">
+    <!-- <v-row no-gutters class="mt-12">
       <v-btn
         color="accent"
         nuxt
@@ -13,7 +13,7 @@
 
         Back
       </v-btn>
-    </v-row>
+    </v-row> -->
     <v-col cols="12">
       <step-two />
     </v-col>
@@ -21,7 +21,6 @@
 </template>
 
 <script>
-
 import StepTwo from '@/components/app/register/StepTwo'
 
 export default {
@@ -33,19 +32,19 @@ export default {
 
   data: vm => ({
     currentStep: 2,
-    mode: vm.$route.params.mode
-      ? vm.$route.params.mode
-      : ''
+    mode: vm.$route.params.mode ? vm.$route.params.mode : ''
   }),
 
   computed: {
-    getStep () {
+    getStep() {
       return this.currentStep
     }
   },
 
-  created () {
-    this.currentStep = (this.$route.query.step) ? Number(this.$route.query.step) : 1
+  created() {
+    this.currentStep = this.$route.query.step
+      ? Number(this.$route.query.step)
+      : 1
     if (this.mode !== 'activate-user') {
       this.$gtm.push({
         event: 'payment_page',
@@ -55,7 +54,7 @@ export default {
     }
   },
 
-  mounted () {
+  mounted() {
     this.$nuxt.$on('set-current-step', (step) => {
       if (step) {
         this.currentStep = step
@@ -63,12 +62,12 @@ export default {
     })
   },
 
-  beforeDestroy () {
+  beforeDestroy() {
     this.$nuxt.$off('set-current-step')
   },
 
   methods: {
-    goBack () {
+    goBack() {
       let page = {}
       if (this.mode === 'activate-user') {
         page = {

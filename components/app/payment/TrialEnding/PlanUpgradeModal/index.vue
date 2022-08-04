@@ -10,7 +10,7 @@
     </div>
 
     <underlined-title
-      text="Preschool @ Home"
+      text="ONLINE PRESCHOOL"
       font-size="32px"
       font-size-mobile="22px"
       letter-spacing="1px"
@@ -124,6 +124,8 @@ export default defineComponent({
       } catch (error) {
         upgradeStatus.value = 'failed'
         // eslint-disable-next-line no-console
+      } finally {
+        store.dispatch('auth/fetchUserInfo')
       }
     }
 

@@ -1,6 +1,7 @@
 import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
 import { ref, computed } from '@nuxtjs/composition-api'
 import { Store } from 'vuex/types'
+import { axios } from '@/utils'
 
 const learnPlayData = ref<any>(null)
 
@@ -20,21 +21,34 @@ export const useLearnPlayV2 = (params: {
     )
   }
 
+  async function getPlayAndLearnByCurriuclumTypeId(curriculumTypeId: number) {
+    const params = { curriculumTypeId }
+    learnPlayData.value = null
+    learnPlayData.value = await store.dispatch(
+      'children/learn-play/getPlayAndLearnByCurriculumTypeId', params
+    )
+  }
+
   function buildPlayVideoList(videos: any[]): MediaObject[] {
     return videos.map((video) => {
       return {
         title: video.name,
         poster: video.thumbnail,
-        description: 'Test description',
+        description: video.description,
         src: {
           url: video.videoUrl.HLS,
           type: 'application/x-mpegURL'
         },
         meta: {
-          author: video.description
+          author: video.description,
+          videoId: video.id
         }
       }
     })
+  }
+
+  const updateProgress = ({ playAndLearnId, childId, data }: any) => {
+    return axios.$patch(`play-and-learn/${playAndLearnId}/progress-by-child/${childId}`, data)
   }
 
   // Computed values
@@ -92,8 +106,10 @@ export const useLearnPlayV2 = (params: {
 
   return {
     learnPlayData,
+    computedProps,
     getFirstLearnPlay,
     buildPlayVideoList,
-    computedProps
+    getPlayAndLearnByCurriuclumTypeId,
+    updateProgress
   }
 }

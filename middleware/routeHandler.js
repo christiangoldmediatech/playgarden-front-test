@@ -4,6 +4,12 @@ import parentSubscriptionWhitelistedRoutes from '~/utils/consts/parentSubscripti
 import routeHandlerIgnoredRoutes from '~/utils/consts/routeHandlerIgnoredRoutes.json'
 
 export default async function ({ redirect, route, store, app, req }) {
+  const redirectLogout = (route.query.logout)
+
+  if (redirectLogout) {
+    return redirect({ name: 'auth-logout' })
+  }
+
   const isIgnoredRoute = !!routeHandlerIgnoredRoutes[route.name]
 
   if (isIgnoredRoute) {
@@ -91,10 +97,11 @@ export default async function ({ redirect, route, store, app, req }) {
       }
 
       if (user.planSelected.id === 1) {
-        return 'app-learn-play'
+        // return 'app-learn-play'
+        return 'app-virtual-preschool'
       }
     } else {
-      return 'app-dashboard'
+      return 'app-virtual-preschool'
     }
   }
 

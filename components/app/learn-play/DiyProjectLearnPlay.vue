@@ -36,7 +36,8 @@
 
 <script lang="ts">
 import { defineComponent, useStore } from '@nuxtjs/composition-api'
-import { useLearnPlayV2 } from '@/composables'
+import { useLearnPlayV2, useChild } from '@/composables'
+import { FileType, TypedStore } from '@/models'
 import DownloadButtonLearnPlay from './DownloadButtonLearnPlay.vue'
 
 export default defineComponent({
@@ -49,13 +50,28 @@ export default defineComponent({
   setup() {
     const store = useStore()
     const learnPlayV2 = useLearnPlayV2({ store })
+    const childStore = useStore<TypedStore>()
+    const child = useChild({ store: childStore })
 
     function downloadDiyFiles() {
-      learnPlayV2.computedProps.getDiyProject.value.map(({ file }: any) => {
+      learnPlayV2.computedProps.getDiyProject.value.map(({ file, id }: any) => {
         if (file && window) {
+          saveProgress(id)
           window.open(file, '_blank')
         }
       })
+    }
+
+    const saveProgress = async (fileId: number) => {
+      if (child.currentChildren.value) {
+        const childId = child.currentChildren.value[0].id
+        const fileProgress = { id: fileId, downloaded: true, type: FileType.DIY_PROJECT }
+        const { id } = learnPlayV2.learnPlayData.value
+        const data = {
+          files: [fileProgress]
+        }
+        await learnPlayV2.updateProgress({ playAndLearnId: id, childId, data })
+      }
     }
 
     return {

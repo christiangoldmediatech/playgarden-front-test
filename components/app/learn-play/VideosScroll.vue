@@ -2,17 +2,17 @@
   <v-slide-group show-arrows="always">
     <template #prev>
       <v-btn icon>
-        <v-img
-          :src="require('@/assets/png/arrow-left.png')"
-          max-width="12px"
-        />
+        <v-img :src="require('@/assets/png/arrow-left.png')" max-width="12px" />
       </v-btn>
     </template>
     <v-slide-item
       v-for="(video, index) in videosLearnPlay"
       :key="`video-scroll-item-${index}`"
     >
-      <VideoScrollItem v-bind="{ video }" @click.native="currentVideo(video)" />
+      <VideoScrollItem
+        :play-and-learn-video="video"
+        @click.native="currentVideo(video)"
+      />
     </v-slide-item>
     <template #next>
       <v-btn icon>
@@ -26,9 +26,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from '@nuxtjs/composition-api'
+import {
+  defineComponent,
+  ref,
+  computed,
+  PropType
+} from '@nuxtjs/composition-api'
 import { useIconScale } from '@/composables'
-import { Video } from '@/models'
+import { PlayAndLearn, Video } from '@/models'
 import VideoScrollItem from './VideoScrollItem.vue'
 
 export default defineComponent({
@@ -40,7 +45,7 @@ export default defineComponent({
 
   props: {
     learnPlay: {
-      type: Object,
+      type: Object as PropType<PlayAndLearn>,
       required: true,
       default: () => ({})
     }
@@ -51,7 +56,9 @@ export default defineComponent({
     const loading = ref(false)
 
     const videosLearnPlay = computed(() => {
-      return (props.learnPlay && props.learnPlay.videos.length > 0) ? props.learnPlay.videos : []
+      return props.learnPlay && props.learnPlay.videos.length > 0
+        ? props.learnPlay.videos
+        : []
     })
 
     const currentVideo = (video: Video) => {

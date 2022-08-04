@@ -1,6 +1,6 @@
 <template>
-  <pg-loading :loading="loading" fullscreen>
-    <v-main data-test-id="live-classes-content">
+  <v-main data-test-id="live-classes-content">
+    <pg-loading :loading="loading" fullscreen>
       <v-container
         v-if="$vuetify.breakpoint.lgAndUp"
         class="lsess-container"
@@ -20,11 +20,17 @@
           </v-col>
 
           <v-col class="pt-0 lsess-schedule" cols="12" md="8" lg="9" xl="10">
-            <v-row class="my-0 pos-relative pt-md-2" justify="center" align="center">
+            <v-row
+              class="my-0 pos-relative pt-md-2"
+              justify="center"
+              align="center"
+            >
               <v-btn-toggle
                 v-model="viewModeVal"
                 class="mt-6 text-none ml-md-4 mt-md-0"
-                :class="{ 'pos-absolute pos-left-0': $vuetify.breakpoint.mdAndUp }"
+                :class="{
+                  'pos-absolute pos-left-0': $vuetify.breakpoint.mdAndUp
+                }"
               >
                 <v-btn
                   :color="viewMode === 'WEEK' ? 'accent' : 'white'"
@@ -67,7 +73,9 @@
 
               <v-btn
                 class="mt-6 text-none mr-md-4 mt-md-0"
-                :class="{ 'pos-absolute pos-right-0': $vuetify.breakpoint.mdAndUp }"
+                :class="{
+                  'pos-absolute pos-right-0': $vuetify.breakpoint.mdAndUp
+                }"
                 color="accent"
                 :large="$vuetify.breakpoint.smAndDown"
                 @click.stop="goToRecordings"
@@ -79,12 +87,22 @@
             <v-row>
               <v-col cols="12">
                 <span class="font-weight-bold">
-                  *Hours are in {{ getAcronymCurrent }}, you can change your time zone by clicking <span class=" text-decoration-underline font-weight-bold timezone" @click="timezoneDialog = true"> HERE</span>
+                  *Hours are in {{ getAcronymCurrent }}, you can change your
+                  time zone by clicking
+                  <span
+                    class=" text-decoration-underline font-weight-bold timezone"
+                    @click="timezoneDialog = true"
+                  >
+                    HERE</span>
                 </span>
               </v-col>
             </v-row>
 
-            <sessions-table v-if="!loading" :day-mode="viewMode === 'DAY'" :today="today" />
+            <sessions-table
+              v-if="!loading"
+              :day-mode="viewMode === 'DAY'"
+              :today="today"
+            />
           </v-col>
         </v-row>
       </v-container>
@@ -110,44 +128,96 @@
             mobile
           />
 
-          <v-col
-            v-if="orderedSessions.length === 0"
-            cols="12"
-          >
+          <v-col v-if="orderedSessions.length === 0" cols="12">
             <v-card>
               <v-card-text class="text-center text-h6">
-                There are no live classes programmed for this week. Check back later.
+                There are no live classes programmed for this week. Check back
+                later.
               </v-card-text>
             </v-card>
           </v-col>
         </v-row>
       </v-container>
+    </pg-loading>
 
-      <entry-dialog />
+    <entry-dialog />
 
-      <recorded-class-player />
+    <recorded-class-player />
 
-      <pg-dialog
-        :value="!hasTrialOrPlatinumPlan"
-        content-class="elevation-0"
-        :fullscreen="fullscreen"
-        persistent
-      >
-        <v-card class="dialog-overlay">
-          <v-row no-gutters justify="start" class="mt-0">
-            <v-btn
-              class="px-4 top-left text-none white--text"
-              color="white"
-              text
-              :to="'./dashboard'"
-              @click.stop="overlay = false"
+    <upgrade-plan-live-classes-overlay />
+
+    <pg-dialog
+      :value="!hasTrialOrPlatinumPlan"
+      content-class="elevation-0"
+      :fullscreen="fullscreen"
+      persistent
+    >
+      <v-card class="dialog-overlay">
+        <v-row no-gutters justify="start" class="mt-0">
+          <v-btn
+            class="px-4 top-left text-none white--text"
+            color="white"
+            text
+            :to="'./dashboard'"
+            @click.stop="overlay = false"
+          >
+            <v-icon class="mr-2" small left>
+              mdi-less-than
+            </v-icon>
+            Back
+          </v-btn>
+        </v-row>
+        <v-col class="mt-16">
+          <v-row
+            class="mt-16 mb-15"
+            justify="center"
+            align-content="center"
+            no-gutters
+          >
+            <v-card
+              cols="12"
+              sm="4"
+              class="px-3 mt-16"
+              width="400"
+              height="200"
+              tile
             >
-              <v-icon class="mr-2" small left>
-                mdi-less-than
-              </v-icon>
-              Back
-            </v-btn>
+              <p class="mt-5 text-center font-weight-bold">
+                Get access to Live Classes
+              </p>
+              <p class="text-center">
+                Upgrade your plan
+              </p>
+              <v-row justify="center" no-gutters>
+                <v-btn
+                  color="accent"
+                  width="250"
+                  tile
+                  x-large
+                  nuxt
+                  :to="{
+                    name: 'app-account-index',
+                    params: { changeplan: 1, planRedirect: 'app-live-classes' }
+                  }"
+                >
+                  <!-- nuxt to app-account-index ?changeplan=1 -->
+                  COMPARE PLANS
+                </v-btn>
+              </v-row>
+            </v-card>
           </v-row>
+        </v-col>
+      </v-card>
+    </pg-dialog>
+
+    <pg-dialog
+      :value="timezoneDialog"
+      content-class="elevation-0"
+      :fullscreen="fullscreen"
+      persistent
+    >
+      <v-card class="dialog-overlay">
+        <v-row no-gutters justify="start" class="mt-0">
           <v-col class="mt-16">
             <v-row
               class="mt-16 mb-15"
@@ -163,95 +233,52 @@
                 height="200"
                 tile
               >
-                <p class="mt-5 text-center font-weight-bold">
-                  Get access to Live Classes
-                </p>
-                <p class="text-center">
-                  Upgrade your plan
-                </p>
-                <v-row justify="center" no-gutters>
-                  <v-btn
-                    color="accent"
-                    width="250"
-                    tile
-                    x-large
-                    nuxt
-                    :to="{ name: 'app-account-index', params: { changeplan: 1, planRedirect: 'app-live-classes' } }"
-                  >
-                    <!-- nuxt to app-account-index ?changeplan=1 -->
-                    COMPARE PLANS
-                  </v-btn>
-                </v-row>
+                <v-card-text>
+                  <v-row justify="center" no-gutters>
+                    TIMEZONE
+                  </v-row>
+                  <v-row>
+                    <pg-select
+                      v-model="selectedTimezone"
+                      clearable
+                      hide-details
+                      item-text="name"
+                      item-value="value"
+                      label="Timezone"
+                      solo-labeled
+                      :items="timezoneOptions"
+                      class="select"
+                    />
+                  </v-row>
+                  <v-row justify="center">
+                    <v-btn
+                      class="mt-3 mr-4"
+                      color="accent"
+                      @click="saveTimeZone"
+                    >
+                      Save
+                    </v-btn>
+                    <v-btn class="mt-3" color="" @click="closeTimezoneModal">
+                      Close
+                    </v-btn>
+                  </v-row>
+                </v-card-text>
               </v-card>
             </v-row>
           </v-col>
-        </v-card>
-      </pg-dialog>
-
-      <pg-dialog
-        :value="timezoneDialog"
-        content-class="elevation-0"
-        :fullscreen="fullscreen"
-        persistent
-      >
-        <v-card class="dialog-overlay">
-          <v-row no-gutters justify="start" class="mt-0">
-            <v-col class="mt-16">
-              <v-row
-                class="mt-16 mb-15"
-                justify="center"
-                align-content="center"
-                no-gutters
-              >
-                <v-card
-                  cols="12"
-                  sm="4"
-                  class="px-3 mt-16"
-                  width="400"
-                  height="200"
-                  tile
-                >
-                  <v-card-text>
-                    <v-row justify="center" no-gutters>
-                      TIMEZONE
-                    </v-row>
-                    <v-row>
-                      <pg-select
-                        v-model="selectedTimezone"
-                        clearable
-                        hide-details
-                        item-text="name"
-                        item-value="value"
-                        label="Timezone"
-                        solo-labeled
-                        :items="timezoneOptions"
-                        class="select"
-                      />
-                    </v-row>
-                    <v-row justify="center">
-                      <v-btn class="mt-3 mr-4" color="accent" @click="saveTimeZone">
-                        Save
-                      </v-btn>
-                      <v-btn class="mt-3" color="" @click="closeTimezoneModal">
-                        Close
-                      </v-btn>
-                    </v-row>
-                  </v-card-text>
-                </v-card>
-              </v-row>
-            </v-col>
-          </v-row>
-        </v-card>
-      </pg-dialog>
-    </v-main>
-
-    <upgrade-plan-live-classes-overlay />
-  </pg-loading>
+        </v-row>
+      </v-card>
+    </pg-dialog>
+  </v-main>
 </template>
 
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
-import { getMondayFriday, timezoneOptions, getTimezone } from '@/utils/dateTools'
+import {
+  getMondayFriday,
+  timezoneOptions,
+  getTimezone
+} from '@/utils/dateTools'
 import TodayCardsPanel from '@/components/app/live-sessions/TodayCardsPanel.vue'
 import TodayCard from '@/components/app/live-sessions/TodayCard.vue'
 import CalendarPanel from '@/components/app/live-sessions/CalendarPanel.vue'
@@ -301,14 +328,14 @@ export default {
       hasTrialOrPlatinumPlan: 'hasTrialOrPlatinumPlan'
     }),
 
-    days () {
+    days() {
       if (this.today) {
         return getMondayFriday(this.getDateObj())
       }
       return null
     },
 
-    getAcronymCurrent () {
+    getAcronymCurrent() {
       let acronym = ''
       switch (this.selectedTimezone) {
         case 'America/New_York':
@@ -333,21 +360,27 @@ export default {
       return acronym
     },
 
-    orderedSessions () {
+    orderedSessions() {
       const sessions = jsonCopy(this.sessions)
       const now = dayjs().unix()
 
-      return sessions.filter((session) => {
-        return dayjs(session.dateEnd).add(30, 'minutes').unix() >= now
-      }).sort((sessionA, sessionB) => {
-        const start = new Date(sessionA.dateStart)
-        const end = new Date(sessionB.dateEnd)
+      return sessions
+        .filter((session) => {
+          return (
+            dayjs(session.dateEnd)
+              .add(30, 'minutes')
+              .unix() >= now
+          )
+        })
+        .sort((sessionA, sessionB) => {
+          const start = new Date(sessionA.dateStart)
+          const end = new Date(sessionB.dateEnd)
 
-        return start.getTime() - end.getTime()
-      })
+          return start.getTime() - end.getTime()
+        })
     },
 
-    viewMode () {
+    viewMode() {
       let mode = 'WEEK'
       switch (this.viewModeVal) {
         case 0:
@@ -365,11 +398,11 @@ export default {
   },
 
   watch: {
-    days () {
+    days() {
       this.getUserLiveSessions(this.days)
     },
 
-    sessions () {
+    sessions() {
       const sessionId = Number(this.$route.query.sid) || 0
 
       this.$router.push({ name: 'app-live-classes' })
@@ -388,7 +421,7 @@ export default {
     }
   },
 
-  created () {
+  created() {
     this.setToday(new Date())
     this.getUserLiveSessions(this.days)
     this.setCurrentTimezone()
@@ -404,7 +437,7 @@ export default {
     ...mapActions('admin/users', ['setTimezone']),
     ...mapActions('auth', ['fetchUserInfo']),
 
-    close () {
+    close() {
       this.$nextTick(() => {
         this.dialog = false
         this.loading = false
@@ -423,46 +456,49 @@ export default {
       this.selectedTimezone = currentTimezone
     },
 
-    goToRecordings () {
+    goToRecordings() {
       this.$router.push({ name: 'app-live-classes-recorded' })
     },
 
-    getDateObj () {
+    getDateObj() {
       const parts = this.today.split('-')
       return new Date(parts[0], parts[1] - 1, parts[2])
     },
 
-    setToday (date) {
+    setToday(date) {
       this.today = `${date.getFullYear()}-${(date.getMonth() + 1)
-      .toString()
-      .padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`
+        .toString()
+        .padStart(2, '0')}-${date
+        .getDate()
+        .toString()
+        .padStart(2, '0')}`
     },
 
-    addWeek () {
+    addWeek() {
       const date = this.getDateObj()
       date.setDate(date.getDate() + 7)
       this.setToday(date)
     },
 
-    removeWeek () {
+    removeWeek() {
       const date = this.getDateObj()
       date.setDate(date.getDate() - 7)
       this.setToday(date)
     },
 
-    addDay () {
+    addDay() {
       const date = this.getDateObj()
       date.setDate(date.getDate() + 1)
       this.setToday(date)
     },
 
-    removeDay () {
+    removeDay() {
       const date = this.getDateObj()
       date.setDate(date.getDate() - 1)
       this.setToday(date)
     },
 
-    async saveTimeZone () {
+    async saveTimeZone() {
       this.loading = true
       try {
         await this.setTimezone({ timezone: this.selectedTimezone })
@@ -542,11 +578,11 @@ export default {
 .dialog-overlay {
   background-color: rgba(0, 0, 0, 0.68) !important;
 }
-.startLiveClass{
+.startLiveClass {
   background-color: var(--v-accent-base) !important;
   text-transform: uppercase !important;
   min-height: 50px !important;
-  vertical-align: middle
+  vertical-align: middle;
 }
 .fullscreen {
   width: 100% !important;

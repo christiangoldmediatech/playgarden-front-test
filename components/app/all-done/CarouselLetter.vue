@@ -2,6 +2,7 @@
   <v-container fluid class="ma-0 pa-0">
     <unlock-prompt
       v-if="isCurrentLessonUnavailableInPlan && isRouteOnDailyLessons"
+      class="pg-mt-[80px]"
       title="DAILY LESSONS"
       desc="Upgrade your plan to have access to daily lessons with your favorite
         playgarden prep teachers"
@@ -17,7 +18,7 @@
             next-icon="mdi-chevron-right accent--text"
           >
             <v-slide-item
-              v-for="(item, index) in actualLetters"
+              v-for="(item, index) in listLetters"
               :key="index"
               :item="item"
               :index="index"
@@ -33,7 +34,7 @@
       <v-row no-gutters>
         <pg-select
           :value="value"
-          :items="actualLetters"
+          :items="listLetters"
           item-value="id"
           hide-details
           solo
@@ -110,7 +111,6 @@ import { mapGetters, mapActions } from 'vuex'
 import Letter from '@/components/app/all-done/Letter.vue'
 import RecordedLetter from '@/components/app/live-sessions/recorded/RecordedLetter.vue'
 import { usePlanAccessHelpers } from '@/composables'
-import { TypedStore } from '@/models'
 import UnlockPrompt from './UnlockPrompt.vue'
 
 export default defineComponent({
@@ -135,6 +135,12 @@ export default defineComponent({
         return typeof val === 'object' || val === null
       },
       default: null
+    },
+
+    isPlayAndLearn: {
+      type: Boolean,
+      required: false,
+      default: false
     },
 
     loading: {
@@ -203,7 +209,7 @@ export default defineComponent({
 
     ...mapGetters({ currentChild: 'getCurrentChild' }),
 
-    actualLetters() {
+    listLetters() {
       const letters = this.letters.map((letter) => {
         if (!this.forceActivateAllLetters) {
           const current = this.lettersProgress.find(l => l.id === letter.id)
@@ -227,8 +233,7 @@ export default defineComponent({
           }
         }
       })
-
-      return letters
+      return (this.isPlayAndLearn) ? letters.filter(item => item.name !== 'Intro') : letters
     },
 
     studentId() {
@@ -252,12 +257,23 @@ export default defineComponent({
     ...mapActions('admin/curriculum', {
       getLetters: 'getTypes'
     }),
-    ...mapActions('children/course-progress', ['getCourseProgressByChildId']),
+    ...mapActions('children/course-progress', ['getCourseProgressByChildId', 'getPlayAndLearnProgressByChildId']),
 
     async fetchChildProgress() {
-      const data = await this.getCourseProgressByChildId({
-        id: this.studentId
-      })
+      if (this.previewMode) {
+        return
+      }
+      let data = null
+
+      if (this.isPlayAndLearn) {
+        data = await this.getPlayAndLearnProgressByChildId({
+          id: this.studentId
+        })
+      } else {
+        data = await this.getCourseProgressByChildId({
+          id: this.studentId
+        })
+      }
 
       this.lettersProgress = data.map((letter) => {
         return { ...letter, disabled: !letter.enabled }

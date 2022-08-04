@@ -1,7 +1,7 @@
 <template>
   <large-image-content-dialog
     :image-height="$vuetify.breakpoint.md ? '608px' : '510px'"
-    :value="isShippingModalVisible"
+    :value="false"
     :img="girlFamilyTreeImg"
     :fullscreen="false"
     @close="dontShowAgain"

@@ -1,8 +1,8 @@
 <template>
-  <v-main>
+  <v-main class="background-card-learn-play">
     <v-container fluid>
       <v-row class="mb-6" no-gutters>
-        <v-col cols="12">
+        <v-col cols="12" class="mt-4">
           <!-- Back Button When Signin Up -->
           <v-btn
             v-if="initialized && inSignUpProcess"
@@ -37,28 +37,34 @@
           </v-btn>
         </v-col>
 
-        <v-col cols="12" class="text-center mt-4">
-          <div>
-            <underlined-title
-              :text="isTrialExpired ? 'YOUR TRIAL PERIOD HAS EXPIRED':'YOUR TRIAL PERIOD IS EXPIRING'"
-              font-size="38px"
-              font-size-mobile="28px"
-              font-weight="900"
-            />
+        <v-col v-if="!trialEndedTooLongAgo" cols="12" class="text-center mt-4">
+          <div
+            class="pg-text-4xl pg-text-primary pg-font-bold pg-tracking-[1px] v2-font"
+          >
+            {{
+              isTrialExpired
+                ? 'YOUR TRIAL PERIOD HAS EXPIRED'
+                : 'YOUR TRIAL PERIOD IS EXPIRING'
+            }}
           </div>
 
           <div class="mt-8 mb-6 text-body-1 text-md-h5 custom-max-width">
-            During your trial period, which {{ isTrialExpired ? 'ended':'will end' }} on
-            <underlined-title
-              :text="lastDayOfTrial"
-              class="date-expiring-color"
-              line-color="rgba(178, 230, 141, 0.25)"
-              :line-from="32"
-              padding-bottom="10px"
-              font-size="32px"
-              line-padding-left="6px"
-              line-padding-right="6px"
-            />, you were able to experience all the features of the <span class="accent--text font-weight-bold">Preschool @ home</span> plan. After the trial period, you {{ isTrialExpired ? 'were':'will be' }} automatically placed in the <span class="accent--text font-weight-bold">Learn & Play</span> monthly plan. If you liked what you had until now, please upgrade to the <span class="font-weight-bold">Prechool @ home</span> plan.
+            Your trial period
+            {{ isTrialExpired ? 'ended' : 'will end' }} on
+            <span class="pg-text-primary pg-font-semibold v2-font">
+              {{ lastDayOfTrial }}.
+            </span>
+            You {{ isTrialExpired ? 'were' : 'are currently' }} trialing the
+            <span class="accent--text font-weight-bold">
+              {{ getUserInfo.planSelected.name }}
+            </span> plan. After your trial
+            {{ isTrialExpired ? 'ended' : 'ends' }} you
+            {{ isTrialExpired ? 'were' : 'will be' }} automatically placed into
+            the
+            <span class="accent--text font-weight-bold">
+              {{ getUserInfo.planSelected.name }}
+            </span> monthly plan.
+            If you would like to trial a different plan, you may do so below!
           </div>
         </v-col>
 
@@ -127,9 +133,11 @@ export default defineComponent({
       return dayjs(this.getUserInfo.trialEnd).format('MMMM DD, YYYY')
     },
 
-    isTrialEndedTooLongAgo() {
-      return this.isTrialExpired &&
+    trialEndedTooLongAgo() {
+      return (
+        this.isTrialExpired &&
         dayjs().diff(dayjs(this.getUserInfo.trialEnd), 'days') > 30
+      )
     },
 
     isMobile() {
@@ -137,7 +145,7 @@ export default defineComponent({
     }
   },
 
-  created () {
+  created() {
     if (this.getUserInfo.role.id === 4) {
       this.$router.push({
         name: 'app-account-index'
@@ -145,7 +153,7 @@ export default defineComponent({
     }
   },
 
-  mounted () {
+  mounted() {
     if (this.isTrialExpired) {
       this.plansShown = true
     }
@@ -158,8 +166,6 @@ export default defineComponent({
     async onSubmit() {
       try {
         if (this.inSignUpProcess) {
-          await this.fetchUserInfo()
-
           await this.$router.push({
             name: 'app-payment-register',
             query: { process: 'signup', step: '4' }
@@ -171,7 +177,9 @@ export default defineComponent({
           'notifications/SET_TRIAL_EXPIRING_RIBBON_VISIBLE',
           false
         )
-      } catch (e) {}
+      } finally {
+        await this.fetchUserInfo()
+      }
     },
 
     handlePaymentFormSubmit() {
@@ -197,6 +205,6 @@ export default defineComponent({
 }
 
 .date-expiring-color {
-  color: #B2E68D;
+  color: #b2e68d;
 }
 </style>

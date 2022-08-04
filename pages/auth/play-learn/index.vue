@@ -115,7 +115,7 @@ export default defineComponent({
     }
 
     function handleGoBack() {
-      router.go(-1)
+      window.open('https://playgardenprep.com/play-and-learn/', '_self')
     }
 
     async function handleSubmit(data: SignupData) {

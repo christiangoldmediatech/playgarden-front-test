@@ -121,12 +121,6 @@ export default defineComponent({
 
     const debouncedHandleScroll = debounce(handleScroll, 50)
 
-    nuxt.$on('change-song', (song: MusicLibrary) => {
-      if (song) {
-        currentSong.value = song
-      }
-    })
-
     watch(childId, async (val) => {
       if (val) {
         await getAndSetFavorites()

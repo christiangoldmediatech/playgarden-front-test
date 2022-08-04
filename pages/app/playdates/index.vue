@@ -106,7 +106,7 @@
             </v-row>
 
             <!--  NO PLAYDATES -->
-            <v-row class="mt-6">
+            <v-row v-else class="mt-6">
               <v-col cols="12" class="text-center">
                 <div>
                   <underlined-title

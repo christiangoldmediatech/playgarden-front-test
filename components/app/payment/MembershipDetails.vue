@@ -226,10 +226,10 @@
       <!-- Plan Information -->
       <v-col cols="12" md="6" class="mb-6 pl-md-8 mb-md-0">
         <!-- CANCEL TRIAL BUTTON -->
-        <cancel-trial
+        <!-- <cancel-trial
           v-if="isTrialingStatus"
           class="pg-mb-[32px]"
-        />
+        /> -->
 
         <!-- TRIAL EXPIRING RIBBON -->
         <trial-is-expiring
@@ -257,12 +257,11 @@
                returns an equivalent number, but we should update this component to accept
                maybe an id instead.[ch1440]
           -->
-            <v-col cols="12" class="mx-0 mb-10 mx-lg-12">
-              <plan-description
-                v-if="Object.keys(plan).length"
-                :plan="plan"
-              />
-            </v-col>
+            <plan-description
+              v-if="Object.keys(plan).length"
+              :plan="plan"
+              class="pg-mb-4"
+            />
 
             <!-- Change Plan Button -->
             <v-col v-if="billing.stripeStatus !== 'canceled'" cols="12" class="justify-center d-flex">
@@ -445,8 +444,8 @@ export default {
     UpdateBillingMethod,
     PlanDescription,
     TrialIsExpiring,
-    BillingHistoryCard,
-    CancelTrial: () => import('@/components/app/payment/CancelTrial.vue')
+    BillingHistoryCard
+    // CancelTrial: () => import('@/components/app/payment/CancelTrial.vue')
   },
 
   data: vm => ({

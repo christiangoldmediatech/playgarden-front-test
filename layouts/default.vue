@@ -1,15 +1,12 @@
 <template>
   <v-app>
     <template v-if="showContent">
-      <!-- TRIAL EXPIRING RIBBON -->
-      <trial-is-expiring v-if="isTrialExpiringRibbonVisible" />
-
       <coming-soon-player />
 
       <!-- APP MAV & BAR -->
       <app-navigation />
 
-      <application-header :style="toolbarStyle" />
+      <application-header />
 
       <!-- NOTIFICATION CARD -->
       <notification-card />
@@ -18,16 +15,14 @@
       <shipping-address-modal />
 
       <!-- TRIAL EXPIRED MODAL -->
-      <trial-expired-modal />
+      <trial-expired-modal v-if="isUserLoggedIn" />
       <trial-ending-week-two-modal />
       <trial-ending-week-three-modal />
       <trial-ending-week-four-modal />
       <trial-ending-plan-selected />
       <credit-card-form />
       <PlanUpgradeModal v-if="isUserLoggedIn" />
-      <TrialEndingModalForLastDay
-        :downward-displacement="topDistanceInPixels"
-      />
+      <TrialEndingModalForLastDay />
       <CanceledTrialModal />
 
       <!-- CONTACT US FORM MODAL -->
@@ -43,21 +38,20 @@
 
       <!-- CONTENT -->
       <v-main v-if="!isFullWidth">
-        <v-container class="pa-md-3 pa-0" fill-height :style="contentStyle">
+        <v-container class="pa-md-3 pa-0" fill-height>
           <nuxt />
         </v-container>
       </v-main>
 
-      <v-container
-        v-else
-        fluid
-        class="pa-0 fill-height"
-      >
-        <nuxt :style="contentStyle" />
+      <v-container v-else fluid class="pa-0 fill-height">
+        <nuxt />
       </v-container>
 
       <!-- FOOTER -->
       <default-footer />
+
+      <!-- TRIAL EXPIRING RIBBON -->
+      <trial-is-expiring v-if="isTrialExpiringRibbonVisible" />
 
       <notify-event />
 
@@ -147,8 +141,6 @@ export default defineComponent({
 
     const {
       isTrialExpiringRibbonVisible,
-      expiringRibbonHeightDesktop,
-      expiringRibbonHeightMobile,
       checkIfShouldSendShippingAddressNotification,
       checkIfShouldShowTrialExpiringRibbon,
       checkIfShouldShowTrialExpiredModal,
@@ -193,38 +185,12 @@ export default defineComponent({
     return {
       isComingSoonDialogOpen,
       isTrialExpiringRibbonVisible,
-      expiringRibbonHeightDesktop,
-      expiringRibbonHeightMobile,
       showContent,
       setShowContent,
       isUserLoggedIn,
       isUserEmailVerified,
       isFullWidth,
       isMobile
-    }
-  },
-
-  computed: {
-    topDistanceInPixels() {
-      return this.isMobile
-        ? this.expiringRibbonHeightMobile
-        : this.expiringRibbonHeightDesktop
-    },
-
-    toolbarStyle() {
-      return {
-        top: this.isTrialExpiringRibbonVisible
-          ? `${this.topDistanceInPixels}px !important`
-          : '0px'
-      }
-    },
-
-    contentStyle() {
-      return {
-        'margin-top': this.isTrialExpiringRibbonVisible
-          ? `${this.topDistanceInPixels}px !important`
-          : '0px'
-      }
     }
   }
 })

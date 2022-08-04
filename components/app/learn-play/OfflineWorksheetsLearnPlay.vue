@@ -17,14 +17,9 @@
         width="100%"
         elevation="6"
         :ripple="false"
+        @click.stop="handleDownloadWorksheetClick(offlineWorksheet)"
       >
         <div class="d-flex flex-nowrap pa-2 align-center">
-          <div class="mr-3">
-            <v-avatar tile size="42">
-              <img src="@/assets/png/cute-pumpkin.png">
-            </v-avatar>
-          </div>
-
           <div class="text-uppercase dashboard-item-title flex-grow-1">
             {{ offlineWorksheet.name }}
           </div>
@@ -51,8 +46,9 @@
 </template>
 
 <script lang="ts">
-import { useLearnPlayV2 } from '@/composables'
+import { useLearnPlayV2, useChild } from '@/composables'
 import { defineComponent, useStore } from '@nuxtjs/composition-api'
+import { TypedStore } from '@/models'
 import DownloadButtonLearnPlay from './DownloadButtonLearnPlay.vue'
 
 export default defineComponent({
@@ -65,9 +61,24 @@ export default defineComponent({
   setup() {
     const store = useStore()
     const learnPlayV2 = useLearnPlayV2({ store })
+    const childStore = useStore<TypedStore>()
+    const child = useChild({ store: childStore })
 
     function handleDownloadWorksheetClick(item: any) {
       window.open(item.pdfUrl, '_blank')
+      saveProgress(item)
+    }
+
+    const saveProgress = async (item: any) => {
+      if (child.currentChildren.value) {
+        const childId = child.currentChildren.value[0].id
+        const worksheetProgress = { id: item.id, downloaded: true }
+        const { id } = learnPlayV2.learnPlayData.value
+        const data = {
+          worksheets: [worksheetProgress]
+        }
+        await learnPlayV2.updateProgress({ playAndLearnId: id, childId, data })
+      }
     }
 
     return {

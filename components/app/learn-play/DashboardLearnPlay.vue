@@ -12,26 +12,19 @@
         </div>
       </v-col>
 
-      <v-col cols="12" md="6" lg="8" xl="10">
+      <v-col cols="12">
         <carousel-letter
           id="CarouselLetter"
           :value="curriculumTypeId"
+          :is-play-and-learn="true"
           :preview-mode="previewMode"
         />
-      </v-col>
-
-      <v-col
-        class="d-none d-md-block flex-grow-1 flex-shrink-0"
-        cols="12"
-        md="auto"
-      >
-        <pg-text-field label="Search" solo-labeled hide-details block />
       </v-col>
     </v-row>
 
     <v-row class="mx-md-1">
-      <v-col id="videoLesson" cols="12" md="8">
-        <v-col cols="12">
+      <v-col cols="12" md="8">
+        <v-col id="videoLesson" cols="12">
           <VideoLessonPlayerLearnPlay />
         </v-col>
 
@@ -137,6 +130,7 @@ export default defineComponent({
   setup(props) {
     // Basic helpers
     const store = useStore()
+    const $nuxt = useNuxtHelper()
     const childStore = useStore<TypedStore>()
     const nuxt = useNuxtHelper()
     const curriculumTypeId = ref<null | number>(null)
@@ -144,13 +138,18 @@ export default defineComponent({
     // All composables
     const child = useChild({ store: childStore })
     const learnPlayV2 = useLearnPlayV2({ store })
+    const windowTop = ref(window.top?.screenY)
 
     // Data variables
-    const section = ref('videoLesson')
+    const section = ref('')
 
     // Watcher
     watch(section, () => {
       scrollMeTo(section.value)
+    })
+
+    window.addEventListener('scroll', function() {
+      section.value = window.scrollY === 0 ? '' : section.value
     })
 
     // Functions
@@ -162,21 +161,35 @@ export default defineComponent({
       }
     }
 
+    const loadPlayAndLearnByCurriculumTypeId = async (curriculumTypeId: number) => {
+      await learnPlayV2.getPlayAndLearnByCurriuclumTypeId(curriculumTypeId)
+      $nuxt.$emit('send-learn-play', learnPlayV2.learnPlayData.value)
+      refreshMenuSection()
+    }
+
+    const refreshMenuSection = () => {
+      curriculumTypeId.value = learnPlayV2.learnPlayData.value.curriculumType.id
+      nuxt.$on('menu-section', (id: string) => {
+        section.value = id
+      })
+    }
+
     // Life cycle hooks
     onBeforeMount(async () => {
       if (!props.previewMode) {
         await child.get()
         await learnPlayV2.getFirstLearnPlay()
       }
+      refreshMenuSection()
 
-      curriculumTypeId.value = learnPlayV2.learnPlayData.value.curriculumType.id
-      nuxt.$on('menu-section', (id: string) => {
-        section.value = id
+      nuxt.$on('show-curriculum-progress', (curriculumTypeId: number) => {
+        loadPlayAndLearnByCurriculumTypeId(curriculumTypeId)
       })
     })
 
     onBeforeUnmount(() => {
       nuxt.$off('menu-section')
+      nuxt.$off('show-curriculum-progress')
     })
 
     return {

@@ -15,5 +15,19 @@ export default {
           reject(error)
         })
     )
+  },
+  getPlayAndLearnByCurriculumTypeId({ commit }, params) {
+    return new Promise((resolve, reject) =>
+      this.$axios
+        .$get(`/play-and-learn/curriculum-type/${params.curriculumTypeId}`)
+        .then(resolve)
+        .catch((error) => {
+          snotifyError(commit, {
+            body: 'Sorry! There was an error while getting learn-play.'
+          })
+          // TO DO async away
+          reject(error)
+        })
+    )
   }
 }

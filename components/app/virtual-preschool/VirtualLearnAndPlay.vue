@@ -16,7 +16,7 @@
       <SectionImageLAP
         class="library"
         :section="section.library"
-        small
+        height="60%"
         @click="handleClick"
       />
 
@@ -32,17 +32,18 @@
         @click="handleClick"
       />
 
-      <SectionImageLAP
-        class="music"
-        :section="section.music"
-        small
-        blocked
-        @click="handleClick"
-      />
+      <DailyLessonsDialog v-model="showIntroDialog" />
 
       <SectionImageLAP
         class="daily-lessons"
         :section="section.dashboard"
+        @click="showIntroDialog = true"
+      />
+
+      <SectionImageLAP
+        class="music"
+        :section="section.music"
+        small
         blocked
         @click="handleClick"
       />
@@ -70,34 +71,38 @@ import {
 
 import { useAuth } from '@/composables'
 import { TypedStore, Child } from '@/models'
-
+import { useChildren } from '@/composables/store/use-children.composable'
 import BirthdayVideoDialog from '@/components/features/childBirthday/BirthdayVideoDialog.vue'
 import SectionImageLAP from '@/components/app/virtual-preschool/SectionImageLAP.vue'
+import { useLessonApi } from '@/composables/lesson'
+import DailyLessonsDialog from './DailyLessonsDialog.vue'
 
 export default defineComponent({
   name: 'VirtualLearnAndPlay',
 
   components: {
     BirthdayVideoDialog,
-    SectionImageLAP
+    SectionImageLAP,
+    DailyLessonsDialog
   },
 
   setup() {
     const store = useStore<TypedStore>()
+    const currentLessonId = ref<number | undefined>(undefined)
     const router = useRouter()
     const { accessToken } = useAuth({ store })
-    const baseRoute =
-      process.env.testEnv === 'production'
-        ? `${process.env.baseRouteProd}`
-        : '/'
+    const children = useChildren({ store })
 
     const currentChild = computed(
       (): Utils.Maybe<Child> => store.getters.getCurrentChild?.[0]
     )
 
+    const lessonApi = useLessonApi({ child: children.currentChild })
+    const showIntroDialog = ref(false)
+
     const goToKidsCorner = () => {
       const kidsCornerUrl = process.env.kidsCornerUrl
-      window.open(`${kidsCornerUrl}?atoken=${accessToken.value}`, '_self')
+      window.open(`${kidsCornerUrl}?atoken=${accessToken.value}`, '_blank')
     }
 
     const section = {
@@ -152,13 +157,17 @@ export default defineComponent({
     const player = ref<HTMLAudioElement>()
     const isBirthdayModalvisible = ref(false)
 
-    onMounted(() => {
+    onMounted(async () => {
       player.value = new Audio()
+      const data = await lessonApi.getChildsCurrentLesson()
+      if (data) {
+        const { lesson } = data
+        currentLessonId.value = lesson.curriculumType.id
+      }
     })
 
     const handleClick = (sectionItem: SectionItem) => {
       const route = sectionItem.route
-
       if (typeof route === 'function') {
         route()
       } else {
@@ -169,9 +178,10 @@ export default defineComponent({
 
     return {
       section,
+      isBirthdayModalvisible,
+      showIntroDialog,
       goToKidsCorner,
-      handleClick,
-      isBirthdayModalvisible
+      handleClick
     }
   }
 })
@@ -201,7 +211,7 @@ export default defineComponent({
     grid-row: 1 / span 4;
   }
   .daily-lessons {
-    grid-column: 3 / 4;
+    grid-column: 2 / 3;
     grid-row: 5 / 5;
   }
   .live-classes {
@@ -213,7 +223,7 @@ export default defineComponent({
     grid-row: 5 / 5;
   }
   .music {
-    grid-column: 2 / 3;
+    grid-column: 3 / 4;
     grid-row: 5 / 5;
   }
   .library {

@@ -1,43 +1,54 @@
 <template>
-  <v-overlay z-index="5">
-    <div class="upgrade-overlay">
-      <div class="d-flex align-center mb-3 mb-lg-10">
-        <img
-          class="upgrade-overlay-icon"
-          src="@/assets/svg/sessions-camera-upgrade.svg"
-        >
-        <div class="upgrade-overlay-title">
-          LIVE CLASSES
-        </div>
-      </div>
+  <v-overlay v-if="hasUserLearnAndPlayPlan" z-index="5">
+    <v-container fluid>
+      <div class="upgrade-overlay">
+        <v-row>
+          <v-col cols="4">
+            <div class="pg-mt-[70px] pg-float-right">
+              <div class="upgrade-overlay-circle">
+                <div class="upgrade-overlay-circle-inner">
+                  <div class="mt-n2 mt-lg-n7">
+                    <img
+                      class="upgrade-overlay-lock"
+                      src="@/assets/svg/sessions-locked.svg"
+                    >
+                    <div class="to-unlock-text">
+                      To unlock
+                    </div>
 
-      <div class="upgrade-overlay-text">
-        Your Learn and Play plan gives you access to only 1 Live Class per week, if you want to get rid of this limitation please upgrade your plan.
-      </div>
-
-      <div class="upgrade-overlay-circle">
-        <div class="upgrade-overlay-circle-inner">
-          <div class="mt-n2 mt-lg-n7">
-            <img
-              class="upgrade-overlay-lock"
-              src="@/assets/svg/sessions-locked.svg"
-            >
-            <div class="to-unlock-text">
-              To unlock
+                    <div class="upgrade-text clickable" @click="openPlanUpgradeModal">
+                      Upgrade your Plan
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
+          </v-col>
+          <v-col cols="8">
+            <v-row justify="center">
+              <div class="pg-mt-[70px] d-flex align-center mb-3 mb-lg-9">
+                <img
+                  class="upgrade-overlay-icon"
+                  src="@/assets/svg/sessions-camera-upgrade.svg"
+                >
+                <div class="upgrade-overlay-title">
+                  LIVE CLASSES
+                </div>
+              </div>
 
-            <div class="upgrade-text clickable" @click="openPlanUpgradeModal">
-              Upgrade your Plan
-            </div>
-          </div>
-        </div>
+              <div class="upgrade-overlay-text">
+                Your Play and Learn plan gives you access to only 1 Live Class per week, if you want to get rid of this limitation please upgrade your plan.
+              </div>
+            </v-row>
+          </v-col>
+        </v-row>
       </div>
-    </div>
+    </v-container>
   </v-overlay>
 </template>
 
 <script lang="ts">
-import { defineComponent, useStore } from '@nuxtjs/composition-api'
+import { computed, defineComponent, useStore } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   name: 'UpgradeLearnAndPlayOverlay',
@@ -49,7 +60,12 @@ export default defineComponent({
       store.commit('notifications/SET_PLAN_UPGRADE_MODAL_VISIBILITY', true)
     }
 
+    const hasUserLearnAndPlayPlan = computed(() => {
+      return store.getters['auth/hasUserLearnAndPlayPlan']
+    })
+
     return {
+      hasUserLearnAndPlayPlan,
       openPlanUpgradeModal
     }
   }
@@ -65,7 +81,6 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   align-items: center;
-
   .upgrade-overlay-icon {
     width: 46px;
     height: 46px;

@@ -16,6 +16,8 @@
           :control-config="{ favorite: false }"
           inline
           @ready="onPlayerReady({ player: $event, video: currentBookVideo })"
+          @on-play="saveStartProgress"
+          @on-ended="saveEndProgress"
         >
           <template #inline-play-icon="{ firstPlay }">
             <div
@@ -55,8 +57,10 @@
         type="card"
       />
     </v-card>
-
-    <v-card>
+    <span class="title-dashboard">
+      Books of the week
+    </span>
+    <v-card class="mt-2">
       <v-row
         v-if="getRelatedBooks.length > 0"
         class="book-images-container ma-0"
@@ -68,7 +72,7 @@
           cols="12"
           md="4"
         >
-          <a :href="book.url">
+          <a :href="book.url" target="_blank">
             <img :src="book.image" class="book-cover" width="100%" height="100%">
           </a>
         </v-col>
@@ -90,10 +94,11 @@
 
 <script lang="ts">
 import { defineComponent, ref, useStore } from '@nuxtjs/composition-api'
-import { useLearnPlayV2, useCommonPlayerFunctions } from '@/composables'
+import { useLearnPlayV2, useCommonPlayerFunctions, useChild } from '@/composables'
 // @ts-ignore
 import PgVideoPlayer from '@gold-media-tech/pg-video-player'
 import { PlayerInstance } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
+import { TypedStore } from '@/models'
 
 export default defineComponent({
   name: 'BookVideoPlayerLearnPlay',
@@ -106,6 +111,8 @@ export default defineComponent({
     const store = useStore()
     const learnPlayV2 = useLearnPlayV2({ store })
     const commonPlayerFunctions = useCommonPlayerFunctions()
+    const childStore = useStore<TypedStore>()
+    const child = useChild({ store: childStore })
     const player = ref<PlayerInstance | null>(null)
     const title = ref('')
     const author = ref('')
@@ -126,7 +133,8 @@ export default defineComponent({
             type: 'application/x-mpegURL'
           },
           meta: {
-            author: video.description
+            author: video.description,
+            videoId: video.id
           }
         }
       ])
@@ -154,9 +162,31 @@ export default defineComponent({
       ])
     }
 
+    const saveStartProgress = async (media: any) => {
+      await learnPlayV2.updateProgress(buildDataProgress(media, false))
+    }
+
+    const saveEndProgress = async (media: any) => {
+      await learnPlayV2.updateProgress(buildDataProgress(media, true))
+    }
+
+    const buildDataProgress = (media: any, finish: boolean) => {
+      if (child.currentChildren.value) {
+        const childId = child.currentChildren.value[0].id
+        const bookProgress = { id: media.currentTrack.meta.videoId, started: true, completed: finish }
+        const { id } = learnPlayV2.learnPlayData.value
+        const data = {
+          books: [bookProgress]
+        }
+        return { playAndLearnId: id, childId, data }
+      }
+    }
+
     return {
       onPlayerReady,
       changeVideoTrack,
+      saveStartProgress,
+      saveEndProgress,
       ...commonPlayerFunctions,
       currentBookVideo: learnPlayV2.computedProps.currentBookVideo,
       getBook: learnPlayV2.computedProps.getBook,

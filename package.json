@@ -23,7 +23,7 @@
     "deasync": "0.1.16"
   },
   "dependencies": {
-    "@gold-media-tech/pg-video-player": "^0.0.93",
+    "@gold-media-tech/pg-video-player": "^0.0.96",
     "@googlemaps/js-api-loader": "^1.12.3",
     "@mdi/font": "^5.3.45",
     "@nuxtjs/axios": "^5.12.0",
