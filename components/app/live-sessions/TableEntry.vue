@@ -2,11 +2,11 @@
   <v-hover v-slot="{ hover }">
     <v-card
       :disabled="block"
-      class="lsess-table-entry ma-1 clickable"
+      class="lsess-table-entry ma-1 clickable pg-relative"
       :class="{
         'lsess-table-entry-active': isLive,
         'lsess-table-entry-scaled': hover,
-        'opacity': !entry.active,
+        opacity: !entry.active
       }"
       @click.stop="openLink"
     >
@@ -25,7 +25,10 @@
       </div>
 
       <v-row class="px-2 my-0" align="end" :title="entry.activityType.name">
-        <img class="lsess-table-entry-type ml-1 mt-1" :src="entry.activityType.icon">
+        <img
+          class="lsess-table-entry-type ml-1 mt-1"
+          :src="entry.activityType.icon"
+        >
 
         <div class="pl-md-2 pl-lg-3 pl-xl-4">
           <v-row align="center" class="fill-height overflow-hidden my-0">
@@ -40,6 +43,22 @@
       <v-card-actions>
         {{ title }}
       </v-card-actions>
+
+      <!-- Play & Learn lock -->
+      <div
+        v-if="!userHasAccess"
+        class="locked-overlay pg-flex pg-flex-col pg-justify-center pg-items-center pg-text-center pg-tracking-wide"
+      >
+        <div class="lock pg-mb-1" />
+
+        <span class="pg-font-bold pg-text-sm">To unlock</span>
+
+        <span
+          class="pg-text-accent pg-font-bold pg-underline pg-text-lg pg-leading-tight"
+        >
+          Upgrade your Plan
+        </span>
+      </div>
     </v-card>
   </v-hover>
 </template>
@@ -49,6 +68,7 @@ import { mapGetters } from 'vuex'
 import { TAG_MANAGER_EVENTS } from '@/models'
 import moment from 'moment'
 import { formatTimezone } from '@/utils/dateTools'
+import dayjs from 'dayjs'
 
 export default {
   name: 'TableEntry',
@@ -73,8 +93,17 @@ export default {
   },
 
   computed: {
-    ...mapGetters('auth', ['getUserInfo']),
-    isLive () {
+    ...mapGetters('auth', ['getUserInfo', 'hasUserLearnAndPlayPlan']),
+
+    userHasAccess() {
+      const day = dayjs(this.entry.dateStart).day()
+      return (
+        !this.hasUserLearnAndPlayPlan ||
+        (this.hasUserLearnAndPlayPlan && (day === 0 || day === 6))
+      )
+    },
+
+    isLive() {
       const today = new Date()
       const start = new Date(this.entry.dateStart)
       const end = new Date(this.entry.dateEnd)
@@ -85,13 +114,13 @@ export default {
       )
     },
 
-    isFuture () {
+    isFuture() {
       const today = new Date()
       const start = new Date(this.entry.dateStart)
       return today.getTime() <= start.getTime()
     },
 
-    title () {
+    title() {
       let str = this.entry.title.substr(0, 37).replace(/\s+$/, '')
       if (this.entry.title.lenght > str.length) {
         str += '...'
@@ -99,7 +128,7 @@ export default {
       return str
     },
 
-    time () {
+    time() {
       const start = moment(this.entry.dateStart)
       const { timezone } = this.getUserInfo
       return formatTimezone(start, {
@@ -111,10 +140,22 @@ export default {
   },
 
   methods: {
-    openLink () {
+    openPlanUpgradeModal() {
+      this.$store.commit(
+        'notifications/SET_PLAN_UPGRADE_MODAL_VISIBILITY',
+        true
+      )
+    },
+
+    openLink() {
       if (this.editMode) {
         this.$nuxt.$emit('open-entry-editor-dialog', this.entry)
       } else {
+        if (!this.userHasAccess) {
+          this.openPlanUpgradeModal()
+          return
+        }
+
         this.$nuxt.$emit('open-entry-dialog', this.entry)
         this.$gtm.push({
           event: TAG_MANAGER_EVENTS.LIVE_CLASSES_ITEM_CLICKED,
@@ -178,6 +219,24 @@ export default {
       }
     }
   }
+}
+
+.locked-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  color: white;
+  font-weight: 500;
+}
+
+.lock {
+  background-color: white;
+  mask: url('~@/assets/svg/sessions-locked.svg') no-repeat center / contain;
+  height: 40px;
+  width: 40px;
 }
 
 .opacity {
