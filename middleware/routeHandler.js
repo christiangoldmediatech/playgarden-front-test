@@ -115,8 +115,12 @@ export default async function ({ redirect, route, store, app, req }) {
   const isUserRole = get(user, 'role.section') === 'USERS'
 
   if ((isUnauthenticatedRoute || isAppRoute) && isAdminRole) {
-    await store.dispatch('auth/logout', {}, { root: true })
-    return redirect({ name: 'auth-login' })
+    const atoken = store.getters['auth/getAccessToken']
+    window.open(
+      `${process.env.playgardenAdminUrl}?atoken=${atoken}`,
+      '_self'
+    )
+    return
   } else if ((isUnauthenticatedRoute || isAdminRoute) && isUserRole) {
     return redirect({ name: goToPage(user) })
   }
