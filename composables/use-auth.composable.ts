@@ -9,11 +9,7 @@ import { axios } from '@/utils'
 import { SignupData, TypedStore, User, Plan } from '@/models'
 import { useNotification } from './use-notification.composable'
 
-export const useAuth = ({
-  store
-}: {
-  store: Store<TypedStore>
-}) => {
+export const useAuth = ({ store }: { store: Store<TypedStore> }) => {
   const cookies = useCookiesHelper()
   const plan = ref<Plan | null>(null)
 
@@ -33,10 +29,14 @@ export const useAuth = ({
   }
 
   const setAxiosToken = (val: string | null) => {
-    store.commit('auth/SET_AXIOS_TOKEN', val)
+    if (typeof val === 'string') {
+      axios.setToken(val, 'Bearer')
+    }
   }
 
-  const playdateInvitationToken = computed(() => store.state.auth.playdateInvitationToken)
+  const playdateInvitationToken = computed(
+    () => store.state.auth.playdateInvitationToken
+  )
   const setPlaydateInvitationToken = (val: string | null) => {
     store.commit('auth/SET_PLAYDATE_INVITATION_TOKEN', val)
   }
@@ -46,16 +46,22 @@ export const useAuth = ({
     store.commit('auth/SET_USER_INFO', val)
   }
 
-  const isUserInSignupProcess = computed<boolean>(() => (userInfo.value.registerStep || 0) < 5)
+  const isUserInSignupProcess = computed<boolean>(
+    () => (userInfo.value.registerStep || 0) < 5
+  )
 
-  const isUserEmailVerified = computed<boolean>(() => store.getters['auth/isUserEmailUnverified'])
+  const isUserEmailVerified = computed<boolean>(
+    () => store.getters['auth/isUserEmailUnverified']
+  )
 
   const isUserInTrial = computed<boolean>(() => {
     return userInfo.value.stripeStatus === 'trialing'
   })
 
   const checkAuth = (): boolean => {
-    return !!(accessToken.value && expiresAt.value) && (Date.now() < expiresAt.value)
+    return (
+      !!(accessToken.value && expiresAt.value) && Date.now() < expiresAt.value
+    )
   }
 
   const setToken = (token?: string | null) => {
@@ -63,7 +69,7 @@ export const useAuth = ({
       return
     }
 
-    const auth = jwtDecode(token)
+    const auth = jwtDecode<{ exp: number; iat: number }>(token)
 
     if (process.client) {
       cookies.remove('atoken')
@@ -98,9 +104,20 @@ export const useAuth = ({
     setAxiosToken('')
   }
 
-  const logout = (redirectOptions?: { route: string, redirect: (options: any) => void }) => {
-    const { currentChildren, resetCurrentChildren } = useChild({ store, cookies })
-    const { notificationCard, setNotificationCard, isTrialExpiringRibbonVisible, setIsTrialExpiringRibbonVisible } = useNotification({ store })
+  const logout = (redirectOptions?: {
+    route: string
+    redirect: (options: any) => void
+  }) => {
+    const { currentChildren, resetCurrentChildren } = useChild({
+      store,
+      cookies
+    })
+    const {
+      notificationCard,
+      setNotificationCard,
+      isTrialExpiringRibbonVisible,
+      setIsTrialExpiringRibbonVisible
+    } = useNotification({ store })
 
     resetState()
 
@@ -127,7 +144,8 @@ export const useAuth = ({
       setIsTrialExpiringRibbonVisible(false)
     }
 
-    if (redirectOptions &&
+    if (
+      redirectOptions &&
       typeof redirectOptions === 'object' &&
       Object.prototype.hasOwnProperty.call(redirectOptions, 'redirect')
     ) {
@@ -151,7 +169,9 @@ export const useAuth = ({
     setUserInfo(data)
   }
 
-  const updateUserInfo = async (draft: Pick<User, 'firstName' | 'lastName' | 'phoneNumber'>) => {
+  const updateUserInfo = async (
+    draft: Pick<User, 'firstName' | 'lastName' | 'phoneNumber'>
+  ) => {
     const { data } = await axios.patch('/auth/me/edit', draft)
     setUserInfo(data)
   }
