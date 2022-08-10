@@ -319,7 +319,7 @@ export default {
 
   computed: {
     ...mapState('live-sessions', ['sessions']),
-    ...mapGetters('auth', ['getUserInfo', 'hasUserLearnAndPlayPlan']),
+    ...mapGetters('auth', ['getUserInfo']),
     ...mapGetters('auth', {
       hasTrialOrPlatinumPlan: 'hasTrialOrPlatinumPlan'
     }),
