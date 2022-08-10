@@ -3,7 +3,7 @@
     id="horizontal-card-ribbon"
     :class="[
       'pg-transition pg-duration-200',
-      'pg-fixed pg-top-14 md:pg-top-24 pg-z-50 pg-w-full',
+      'pg-fixed pg-top-14 md:pg-top-20 pg-z-50 pg-w-full',
       'pg-bg-white pg-shadow-toolbar pg-rounded-b-[40px]'
     ]"
   >
@@ -21,7 +21,9 @@
         data-test-id="hcr-minimize-button"
         @click="$emit('update:isMinimized', !isMinimized)"
       >
-        <v-icon>{{ isMinimized ? 'mdi-chevron-down' : 'mdi-chevron-up' }}</v-icon>
+        <v-icon :class="{ 'pg-pt-20': isMinimized }">
+          {{ isMinimized ? 'mdi-chevron-down' : 'mdi-chevron-up' }}
+        </v-icon>
       </v-col>
     </v-row>
   </div>
