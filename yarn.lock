@@ -2544,6 +2544,11 @@
   resolved "https://registry.yarnpkg.com/@types/json5/-/json5-0.0.29.tgz#ee28707ae94e11d2b827bcbe5270bcea7f3e71ee"
   integrity sha1-7ihweulOEdK4J7y+UnC86n8+ce4=
 
+"@types/jwt-decode@^2.2.0":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@types/jwt-decode/-/jwt-decode-2.2.1.tgz#afdf5c527fcfccbd4009b5fd02d1e18241f2d2f2"
+  integrity sha512-aWw2YTtAdT7CskFyxEX2K21/zSDStuf/ikI3yBqmwpwJF0pS+/IX5DWv+1UFffZIbruP6cnT9/LAJV1gFwAT1A==
+
 "@types/less@^3.0.1":
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/@types/less/-/less-3.0.2.tgz#2761d477678c8374cb9897666871662eb1d1115e"
@@ -9955,6 +9960,14 @@ number-is-nan@^1.0.0:
   resolved "https://registry.yarnpkg.com/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
   integrity sha1-CXtgK1NCKlIsGvuHkDGDNpQaAR0=
 
+nuxt-typed-vuex@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/nuxt-typed-vuex/-/nuxt-typed-vuex-0.3.1.tgz#a26f7b92eb19257ccda2c3a1ffaab4303088c7dc"
+  integrity sha512-oMAoO7/i/aW8NHgE9QSnNcJmKiJjFfTtgU6aotr0786ApgXk1At2qhiW63qFlXsX1wei94WmqLMuNCI/nl8Z0A==
+  dependencies:
+    typed-vuex "0.3.1"
+    upath "^2.0.1"
+
 nuxt@^2.13.3:
   version "2.15.7"
   resolved "https://registry.yarnpkg.com/nuxt/-/nuxt-2.15.7.tgz#45332e3b00ba5c1cf04688d42373c8ed7ef4dca7"
@@ -13531,6 +13544,11 @@ type@^2.0.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/type/-/type-2.5.0.tgz#0a2e78c2e77907b252abe5f298c1b01c63f0db3d"
   integrity sha512-180WMDQaIMm3+7hGXWf12GtdniDEy7nYcyFMKJn/eZz/6tSLXrUN9V0wKSbMjej0I1WHWbpREDEKHtqPQa9NNw==
+
+typed-vuex@0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/typed-vuex/-/typed-vuex-0.3.1.tgz#4ed6adfd8cbfe68e0792b5b75f425ce3f622627e"
+  integrity sha512-hYEcXxVNKxP6pQvzX007wJ9HdTsGlWPhSOOtpf32DbcyiPDduf6PAZPR8kwQ7+QPhp+dGyTn3K+5cKzARP6IZA==
 
 typedarray-to-buffer@^3.1.5:
   version "3.1.5"
