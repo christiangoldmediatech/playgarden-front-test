@@ -43,15 +43,15 @@ export default {
     return this.$axios.$patch(`/live-sessions/${id}/recover`)
   },
 
-  async getUserLiveSessions ({ commit, rootGetters }, { monday, friday, admin }) {
+  async getUserLiveSessions ({ commit, rootGetters }, { sunday, saturday, admin }) {
     try {
       let data
       const params = {
         limit: 100,
         page: 1,
         type: 'LiveClass',
-        startDate: monday,
-        endDate: friday
+        startDate: sunday,
+        endDate: saturday
       }
 
       if (!admin) {

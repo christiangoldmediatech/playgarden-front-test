@@ -11,7 +11,7 @@
     <pg-loading :loading="loading" fullscreen>
       <v-container fluid class="pa-0">
         <horizontal-ribbon-card :is-minimized.sync="isTopRibbonMinimized">
-          <v-row no-gutters class="pg-pt-12 ml-md-10 mr-md-6 mx-4 mt-4">
+          <v-row no-gutters class="pg-pt-20 ml-md-10 mr-md-6 mx-4 mt-4">
             <v-col cols="12" md="3" align-self="center">
               <child-select
                 v-if="id"
