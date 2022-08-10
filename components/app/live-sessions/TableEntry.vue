@@ -54,7 +54,7 @@
         <span class="pg-font-bold pg-text-sm">To unlock</span>
 
         <span
-          class="pg-text-accent pg-font-bold pg-underline pg-text-lg pg-leading-tight"
+          class="pg-text-accent pg-font-bold pg-underline pg-text-base pg-leading-tight"
         >
           Upgrade your Plan
         </span>
