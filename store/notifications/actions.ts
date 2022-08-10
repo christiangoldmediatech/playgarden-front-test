@@ -1,9 +1,11 @@
+import { actionTree } from 'typed-vuex'
 import dayjs from 'dayjs'
 import { snotifyError } from '@/utils/vuex'
 import { hasLocalStorage } from '@/utils/window'
 import { UserFlow } from '@/models'
+import { state, mutations } from './'
 
-export default {
+export default actionTree({ state, mutations }, {
   createNotification (_, data) {
     return this.$axios.$post('/notifications', data)
   },
@@ -85,12 +87,14 @@ export default {
       return
     }
 
-    const shouldShowShippingModal = hasLocalStorage()
-      ? JSON.parse(window.localStorage.getItem('pg-workbook-reminder')) ?? true
+    const localStorageValue = window.localStorage.getItem('pg-workbook-reminder')
+
+    const shouldShowShippingModal = hasLocalStorage() && localStorageValue
+      ? JSON.parse(localStorageValue) ?? true
       : false
 
     if (shouldShowShippingModal) {
-      commit('notifications/SET_IS_SHIPPING_MODAL_VISIBLE', true, { root: true })
+      commit('SET_IS_SHIPPING_MODAL_VISIBLE', true)
     }
   },
 
@@ -118,7 +122,7 @@ export default {
     const timeLeft = dayjs(userInfo.trialEnd).diff(now, 'minute')
 
     if (timeLeft > 0 && timeLeft <= threeDays) {
-      commit('notifications/SET_TRIAL_EXPIRING_RIBBON_VISIBLE', true, { root: true })
+      commit('SET_TRIAL_EXPIRING_RIBBON_VISIBLE', true)
     }
   },
 
@@ -171,9 +175,9 @@ export default {
       !didChoosePlan
 
     if (shouldShowExpiredModal) {
-      commit('notifications/SET_TRIAL_EXPIRED_MODAL_VISIBLE', true, { root: true })
+      commit('SET_TRIAL_EXPIRED_MODAL_VISIBLE', true)
     }
 
     return shouldShowExpiredModal
   }
-}
+})
