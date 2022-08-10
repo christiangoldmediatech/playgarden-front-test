@@ -79,7 +79,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, useRouter, useStore } from '@nuxtjs/composition-api'
-import BackButton from '@/components/app/learn-play/BackButton/BackButton.vue'
+import BackButton from '@/components/shared/BackButton/BackButton.vue'
 import RegisterForm from '@/components/forms/auth/RegisterForm.vue'
 import StepOneCard from '@/components/app/learn-play/StepOneCard/StepOneCard.vue'
 import { useAuth, useNotification, useSnotifyHelper } from '@/composables'

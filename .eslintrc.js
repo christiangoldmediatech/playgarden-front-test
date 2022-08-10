@@ -54,6 +54,7 @@ module.exports = {
     'vue/dot-location': ['error', 'property'],
     'vue/eqeqeq': ['error', 'always'],
     'vue/html-closing-bracket-spacing': 2,
+    'vue/html-self-closing': 'off',
     'vue/html-indent': 2,
     'vue/html-quotes': 2,
     'vue/key-spacing': 2,
