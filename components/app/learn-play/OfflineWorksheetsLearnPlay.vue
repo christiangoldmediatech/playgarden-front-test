@@ -8,9 +8,7 @@
 
     <div v-if="getOfflineWorksheet.length > 0" class="card-offline">
       <v-card
-        v-for="(
-          offlineWorksheet, offlineWorksheetIndex
-        ) in getOfflineWorksheet"
+        v-for="(offlineWorksheet, offlineWorksheetIndex) in getOfflineWorksheet"
         :key="`offlineworksheet-card-item-${offlineWorksheetIndex}`"
         class="mb-3"
         :enabled="true"
@@ -25,7 +23,9 @@
           </div>
 
           <div>
-            <DownloadButtonLearnPlay @click.stop="handleDownloadWorksheetClick(offlineWorksheet)" />
+            <DownloadButtonLearnPlay
+              @click.stop="handleDownloadWorksheetClick(offlineWorksheet)"
+            />
           </div>
         </div>
       </v-card>
@@ -37,9 +37,7 @@
         class="my-3"
         cols="4"
       >
-        <v-skeleton-loader
-          type="list-item-avatar"
-        />
+        <v-skeleton-loader type="list-item-avatar" />
       </v-card>
     </div>
   </div>
@@ -58,7 +56,14 @@ export default defineComponent({
     DownloadButtonLearnPlay
   },
 
-  setup() {
+  props: {
+    previewMode: {
+      type: Boolean,
+      default: false
+    }
+  },
+
+  setup(props) {
     const store = useStore()
     const learnPlayV2 = useLearnPlayV2({ store })
     const childStore = useStore<TypedStore>()
@@ -70,6 +75,10 @@ export default defineComponent({
     }
 
     const saveProgress = async (item: any) => {
+      if (props.previewMode) {
+        return
+      }
+
       if (child.currentChildren.value) {
         const childId = child.currentChildren.value[0].id
         const worksheetProgress = { id: item.id, downloaded: true }
