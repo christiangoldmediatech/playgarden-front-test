@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { getMondayFriday } from '@/utils/dateTools'
+import { getWeekStartAndEnd } from '@/utils/dateTools'
 
 export default {
   name: 'WeekSelector',
@@ -43,19 +43,19 @@ export default {
     currentWeek () {
       let partA = ''
       let partB = ''
-      const days = getMondayFriday(this.day)
+      const days = getWeekStartAndEnd(this.day)
 
-      const PART_A_MONTH = days.monday.toLocaleString('default', { month: 'long' })
-      partA = `${PART_A_MONTH} ${days.monday.getDate().toString().padStart(2, '0')}`
+      const PART_A_MONTH = days.sunday.toLocaleString('default', { month: 'long' })
+      partA = `${PART_A_MONTH} ${days.sunday.getDate().toString().padStart(2, '0')}`
 
-      if (days.monday.getMonth() !== days.friday.getMonth()) {
-        const PART_B_MONTH = days.friday.toLocaleString('default', { month: 'long' })
-        partB = `${PART_B_MONTH} ${days.friday.getDate().toString().padStart(2, '0')}, ${days.friday.getFullYear()}`
-        if (days.monday.getFullYear() !== days.friday.getFullYear()) {
-          partA += `, ${days.monday.getFullYear()}`
+      if (days.sunday.getMonth() !== days.saturday.getMonth()) {
+        const PART_B_MONTH = days.saturday.toLocaleString('default', { month: 'long' })
+        partB = `${PART_B_MONTH} ${days.saturday.getDate().toString().padStart(2, '0')}, ${days.saturday.getFullYear()}`
+        if (days.sunday.getFullYear() !== days.saturday.getFullYear()) {
+          partA += `, ${days.sunday.getFullYear()}`
         }
       } else {
-        partB = `${days.friday.getDate().toString().padStart(2, '0')}, ${days.friday.getFullYear()}`
+        partB = `${days.saturday.getDate().toString().padStart(2, '0')}, ${days.saturday.getFullYear()}`
       }
 
       return `${partA} - ${partB}`
