@@ -1,4 +1,7 @@
-export default {
+import { getterTree } from 'typed-vuex'
+import { state } from './'
+
+export default getterTree(state, {
   getUtm: state => ({
     utmSource: state.utmSource,
     utmMedium: state.utmMedium,
@@ -7,4 +10,4 @@ export default {
     utmName: state.utmName,
     gc1Id: state.gc1Id
   })
-}
+})
