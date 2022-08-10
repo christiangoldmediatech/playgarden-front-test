@@ -10,7 +10,10 @@
             :page.sync="page"
             @update:page="page = $event"
             @refresh="refresh(true)"
-            @search="search = $event; refresh(false)"
+            @search="
+              search = $event
+              refresh(false)
+            "
             @edit-item="$emit('open-editor', $event)"
             @remove-item="remove"
           />
@@ -61,17 +64,14 @@ export default {
     })
   },
 
-  created () {
+  created() {
     this.refresh()
   },
 
   methods: {
-    ...mapActions('parents-corner', [
-      'getCategories',
-      'deleteCategory'
-    ]),
+    ...mapActions('parents-corner', ['fetchCategories', 'deleteCategory']),
 
-    async refresh (clear = false) {
+    async refresh(clear = false) {
       try {
         this.loading = true
 
@@ -79,7 +79,7 @@ export default {
           this.search = null
         }
 
-        await this.getCategories({ category: this.search })
+        await this.fetchCategories({ category: this.search })
       } catch (e) {
         Promise.reject(e)
       } finally {
@@ -87,9 +87,9 @@ export default {
       }
     },
 
-    remove ({ id, name }) {
+    remove({ id, name }) {
       this.$nuxt.$emit('open-prompt', {
-        title: 'Delete parent\'s corner category?',
+        title: "Delete parent's corner category?",
         message: `Are you sure you want to delete <b>${name}</b>?`,
         action: async () => {
           await this.deleteCategory(id)

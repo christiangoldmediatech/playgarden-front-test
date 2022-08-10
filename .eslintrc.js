@@ -128,7 +128,6 @@ module.exports = {
     'vue/valid-v-text': 2,
     camelcase: 2,
     eqeqeq: ['error', 'always'],
-    quotes: ['error', 'single'],
     semi: ['error', 'never'],
     'array-callback-return': 'off',
     'no-unused-vars': 'off',
