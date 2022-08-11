@@ -9,6 +9,7 @@
             :button-text="getTextButton"
             :is-free-for-days-text-visible="!isUserInactive"
             :is-trial-text-visible="!isUserInactive"
+            :is-not-charged-text-visbile="!isUserInactive"
             @click:submit="onSubmit"
           />
         </v-col>

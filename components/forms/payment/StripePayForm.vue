@@ -7,8 +7,8 @@
       >
         <strong
           class="text-left"
-        >We need your credit card information to confirm who you are, but you
-          will NOT be charged.</strong>
+        >We need your credit card information to confirm who you are<span v-if="isNotChargedTextVisbile">, but you
+          will NOT be charged</span>.</strong>
         <br>
         <br>
         <underlined-title
@@ -140,6 +140,11 @@ export default {
     buttonText: {
       type: String,
       default: 'START LEARNING NOW'
+    },
+
+    isNotChargedTextVisbile: {
+      type: Boolean,
+      default: true
     },
 
     isTrialTextVisible: {
