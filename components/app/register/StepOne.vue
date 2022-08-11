@@ -7,12 +7,13 @@
   >
     <v-col cols="12" class="ml-md-14">
       <p class="text-center text-md-left">
-        <underlined-title
+        <UnderlinedTitle
           class="pg-box-decoration-clone text-h6 text-md-h4 ml-sm-4"
           text="PLAYGARDEN PREP'S ONLINE PRESCHOOL IS COMPLETELY FREE FOR THE FIRST 15 DAYS!"
         />
       </p>
     </v-col>
+
     <v-col
       class="px-sm-12 px-6 mt-1 mt-md-12"
       cols="12"
@@ -29,7 +30,7 @@
         </span>
       </p>
 
-      <register-form
+      <RegisterForm
         :email-validated="emailValidated"
         :in-invitation-process="inInvitationProcess"
         :loading="loading"
@@ -49,10 +50,12 @@
         >
           <v-col cols="12" class="my-sm-6 px-sm-10">
             <v-layout row wrap align-center justify-center>
-              <v-card class="mx-0 mx-md-10 custom-shadow">
+              <v-card
+                class="mx-0 mx-md-10 !pg-shadow-[0px_8px_24px_rgba(0,0,0,0.15)]"
+              >
                 <v-container>
                   <v-layout column align-center justify-center>
-                    <card-info />
+                    <CardInfo />
                   </v-layout>
                 </v-container>
               </v-card>
@@ -64,20 +67,26 @@
   </v-row>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
+  ref,
   useRoute,
-  useRouter,
-  useStore
+  useRouter
 } from '@nuxtjs/composition-api'
-import { mapActions, mapGetters } from 'vuex'
-import { useSignup } from '@/composables/use-signup.composable'
 import RegisterForm from '@/components/forms/auth/RegisterForm.vue'
 import CardInfo from '@/components/app/register/CardInfo.vue'
-import { UserFlow, SignupType } from '@/models'
-import { useUTM } from '@/composables/utm/use-utm.composable'
-import { useNotification } from '@/composables'
+import { SignupType } from '@/models'
+import { useAccessorHelper, useSnotifyHelper } from '@/composables'
+import { useUTM } from '@/composables/web/utm'
+import { useModal } from '@/composables/web/modal'
+import {
+  useParentSignup,
+  useSignupFlow,
+  useSignupInvitation,
+  useSignupSteps
+} from '@/composables/web/signup'
+import { useAuth } from '@/composables/users'
 
 export default defineComponent({
   name: 'StepOne',
@@ -88,170 +97,75 @@ export default defineComponent({
   },
 
   setup() {
-    const store = useStore()
+    const store = useAccessorHelper()
     const router = useRouter()
     const route = useRoute()
-    const utmContent = useUTM({ route: route.value })
-    const {
-      setIsEmailConflictModalVisible,
-      setIsAccountInactiveModalVisible
-    } = useNotification({ store })
+    const snotify = useSnotifyHelper()
 
-    const { abFlow, isCreditCardRequired, setupABFlow } = useSignup({
-      route: route.value
+    const Auth = useAuth({ store: store.auth })
+    const Modal = useModal({ store: store.notifications })
+    const Utm = useUTM({ route: route.value })
+    const SignupInvitation = useSignupInvitation({ route: route.value })
+
+    const SignupFlow = useSignupFlow({
+      route: route.value,
+      store: store.auth.signup
     })
 
-    setupABFlow()
+    const ParentSignup = useParentSignup({
+      store: store.auth.signup,
+      auth: Auth,
+      signupFlow: SignupFlow
+    })
 
-    const goToNextStep = () => {
-      switch (abFlow.value) {
-        case UserFlow.CREDITCARD:
-          router.push({
-            name: 'app-normal-payment',
-            query: {
-              step: '2',
-              process: 'signup',
-              ...utmContent.value
-            }
-          })
-          break
-        case UserFlow.NOCREDITCARD:
-          router.push({
-            name: 'app-children',
-            query: {
-              step: '3',
-              process: 'signup',
-              ...utmContent.value
-            }
-          })
-          break
+    const loading = ref(false)
+    const emailValidated = ref('')
+    const token = route.value.query.token
+
+    function goToNextStep() {
+      const SignupSteps = useSignupSteps()
+
+      router.push(
+        SignupSteps.getStepOneNextStepLocation({
+          abFlow: SignupFlow.abFlow.value,
+          utmContent: Utm.utmContent.value
+        })
+      )
+    }
+
+    async function onSubmit(data: { signupType: SignupType }): Promise<void> {
+      try {
+        loading.value = true
+        await ParentSignup.signup(data)
+        snotify.success('Welcome to Playgarden Prep!')
+        goToNextStep()
+      } catch (e) {
+        const error = e as any
+        const data = error?.response?.data
+
+        if (data?.statusCode === 409) {
+          if (data?.message === 'Email already exists') {
+            Modal.isEmailConflictModalVisible.value = true
+          }
+
+          if (data?.message === 'Account Canceled') {
+            Modal.isAccountInactiveModalVisible.value = true
+          }
+        }
+      } finally {
+        loading.value = false
       }
     }
 
     return {
-      abFlow,
-      isCreditCardRequired,
+      loading,
+      emailValidated,
+      token,
+      isCreditCardRequired: SignupFlow.isCreditCardRequired,
+      inInvitationProcess: SignupInvitation.inInvitationProcess,
       goToNextStep,
-      setIsEmailConflictModalVisible,
-      setIsAccountInactiveModalVisible
-    }
-  },
-
-  data: vm => ({
-    loading: false,
-    emailValidated: null,
-    token: vm.$route.query.token
-  }),
-
-  computed: {
-    ...mapGetters('auth', ['getUserInfo', 'isUserLoggedIn']),
-    inInvitationProcess() {
-      const { query } = this.$route
-      return Boolean(
-        (query.process === 'invitation-caregiver' ||
-          query.process === 'invitation-playdate') &&
-          (query.email || query.phone) &&
-          query.token
-      )
-    },
-    signupProcess() {
-      if (
-        this.inInvitationProcess &&
-        this.$route.query.process === 'invitation-caregiver'
-      ) {
-        return 'CAREGIVER'
-      }
-      return 'PARENT'
-    },
-    signupProcessCaregiver() {
-      return this.signupProcess === 'CAREGIVER'
-    }
-  },
-
-  beforeMount() {
-    if (this.userSocialData) {
-      this.emailValidated = this.userSocialData.email
-    }
-  },
-
-  methods: {
-    ...mapActions('auth/signup', {
-      newParent: 'signup',
-      validateEmail: 'signupEmail',
-      updateParentRegister: 'signupToken'
-    }),
-    ...mapActions('caregiver', { newCaregiver: 'signup' }),
-    ...mapActions('auth', ['setPlaydateInvitationToken']),
-
-    async onSubmit(data) {
-      try {
-        this.loading = true
-        data.signupType = SignupType.PLAYGARDEN
-        if (!this.isUserLoggedIn) {
-          await this.registerProcess(
-            this.signupProcessCaregiver ? { data, token: this.token } : data
-          )
-          this.$snotify.success('Welcome to Playgarden Prep!')
-        }
-        this.goToNextStep()
-      } catch (e) {
-        const data = e?.response?.data
-
-        if (data?.statusCode === 409) {
-          if (data?.message === 'Email already exists') {
-            this.setIsEmailConflictModalVisible(true)
-          }
-
-          if (data?.message === 'Account Canceled') {
-            this.setIsAccountInactiveModalVisible(true)
-          }
-        }
-      } finally {
-        this.loading = false
-      }
-    },
-    async registerProcess(data) {
-      return await this.newParent({ ...data, flow: this.abFlow })
+      onSubmit
     }
   }
 })
 </script>
-
-<style lang="scss" scoped>
-.image {
-  max-height: 500px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  img {
-    max-width: 90%;
-  }
-  &.mobile {
-    max-height: 250px;
-  }
-}
-.form {
-  max-width: 500px;
-}
-.text-orange-info {
-  background-color: var(--v-accent-base) !important;
-  color: var(--v-white-base) !important;
-  height: 19px;
-  font-size: 15px;
-}
-.text-orange-info::v-deep.v-chip .v-chip__content {
-  color: var(--v-white-base) !important;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 3.15px;
-  line-height: 1.48;
-  background-color: var(--v-accent-base) !important;
-}
-.text-orange-info::v-deep.v-chip--label {
-  border-radius: 0px !important;
-}
-.custom-shadow {
-  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15) !important;
-}
-</style>
