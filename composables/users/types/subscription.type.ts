@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { Entity } from '@/composables/common/types/entity.type'
+import { Entity } from '@/composables/common/types'
 
 export interface Subscription extends Entity {
   application_fee_percent: unknown

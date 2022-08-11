@@ -1,12 +1,13 @@
 import { actionTree } from 'typed-vuex'
 import { snotifyError } from '@/utils/vuex'
 import { Flow } from '@/composables/users/enums/flow.enum'
+import { ParentSignupPayload } from '@/composables/web/signup/types/parent-signup-payload.type'
 import { state, getters, mutations } from './'
 
 export default actionTree(
   { state, getters, mutations },
   {
-    async signup({ commit, dispatch, getters }, data) {
+    async signup({ dispatch, getters }, data: ParentSignupPayload) {
       const user = { ...data }
 
       if (user.password) {

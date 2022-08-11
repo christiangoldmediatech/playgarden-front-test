@@ -1,4 +1,4 @@
-import { Entity } from '@/composables/common/types/entity.type'
+import { Entity } from '@/composables/common/types'
 
 export interface PlanSelected extends Entity {
   anualStripeId: string
