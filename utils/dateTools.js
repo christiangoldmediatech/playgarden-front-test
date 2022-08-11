@@ -152,7 +152,7 @@ export const hours24ToHours12 = (hours, minutes, am = 'am', pm = 'pm') => {
 
 export const getMondayFriday = (day) => {
   const today = dayjs(day).startOf('day')
-  const monday = today.day('week').add(1, 'day').toDate()
+  const monday = today.startOf('week').add(1, 'day').toDate()
   const friday = today.endOf('week').subtract(1, 'day').toDate()
   return {
     monday,
