@@ -1,6 +1,6 @@
 import { Flow } from '@/composables/users/enums/flow.enum'
 import { RawLocation } from 'vue-router'
-import { UTMQueryObject } from '../utm/types/utm-query-object.type'
+import { UTMQueryObject } from '../utm/types'
 
 export const useSignupSteps = () => {
   function getStepOneNextStepLocation({

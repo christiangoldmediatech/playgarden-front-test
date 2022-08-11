@@ -1,6 +1,5 @@
 import { SignupType } from '@/models'
-import { ParentSignupPayload } from './types/parent-signup-payload.type'
-import { UseParentSignupOptions } from './types/use-parent-signup-options.type'
+import { ParentSignupPayload, UseParentSignupOptions } from './types'
 
 export const useParentSignup = ({
   store,

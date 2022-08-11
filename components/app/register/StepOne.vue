@@ -76,7 +76,6 @@ import {
 } from '@nuxtjs/composition-api'
 import RegisterForm from '@/components/forms/auth/RegisterForm.vue'
 import CardInfo from '@/components/app/register/CardInfo.vue'
-import { SignupType } from '@/models'
 import { useAccessorHelper, useSnotifyHelper } from '@/composables'
 import { useUTM } from '@/composables/web/utm'
 import { useModal } from '@/composables/web/modal'
@@ -87,6 +86,7 @@ import {
   useSignupSteps
 } from '@/composables/web/signup'
 import { useAuth } from '@/composables/users'
+import { ParentSignupPayload } from '@/composables/web/signup/types'
 
 export default defineComponent({
   name: 'StepOne',
@@ -133,7 +133,7 @@ export default defineComponent({
       )
     }
 
-    async function onSubmit(data: { signupType: SignupType }): Promise<void> {
+    async function onSubmit(data: ParentSignupPayload): Promise<void> {
       try {
         loading.value = true
         await ParentSignup.signup(data)

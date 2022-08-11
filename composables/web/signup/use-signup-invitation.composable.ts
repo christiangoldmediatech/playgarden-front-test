@@ -1,5 +1,5 @@
 import { computed } from '@nuxtjs/composition-api'
-import { UseSignupInvitationOptions } from './types/use-signup-invitation-options.type'
+import { UseSignupInvitationOptions } from './types'
 
 export const useSignupInvitation = ({ route }: UseSignupInvitationOptions) => {
   const isInvitationCaregiver = computed<boolean>(() => {

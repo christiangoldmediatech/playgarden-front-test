@@ -1,5 +1,4 @@
-import { SignupType } from '@/composables/users/types/signup-type.type'
-import { User } from '@/composables/users/types/user.type'
+import { SignupType, User } from '@/composables/users/types'
 
 export type ParentSignupPayload = Partial<User> & {
   signupType: SignupType

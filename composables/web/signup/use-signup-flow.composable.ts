@@ -1,8 +1,7 @@
 import { Flow } from '@/composables/users/enums/flow.enum'
 import { computed, ref } from '@nuxtjs/composition-api'
-import { UserFlowRouteParam } from './enums/user-flow-route-param.enum'
-import { UserFlowRoute } from './enums/user-flow-route.enum'
-import { UseSignupFlowOptions } from './types/use-signup-flow-options.type'
+import { UserFlowRouteParam, UserFlowRoute } from './enums'
+import { UseSignupFlowOptions } from './types'
 
 export const useSignupFlow = ({ route, store }: UseSignupFlowOptions) => {
   const abFlow = computed<Flow>({

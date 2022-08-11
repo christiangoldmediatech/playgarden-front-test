@@ -1,6 +1,6 @@
 import { useAuth } from '@/composables/users'
 import { accessorType } from '@/store'
-import { useSignupFlow } from '../use-signup-flow.composable'
+import { useSignupFlow } from '../'
 
 export interface UseParentSignupOptions {
   store: typeof accessorType['auth']['signup']

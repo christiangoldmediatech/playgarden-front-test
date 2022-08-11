@@ -1,8 +1,6 @@
-import { Entity } from '@/composables/common/types/entity.type'
-import { Flow } from '../enums/flow.enum'
-import { PlanSelected } from './plan-selected.type'
-import { Role } from './role.type'
-import { Subscription } from './subscription.type'
+import { Entity } from '@/composables/common/types'
+import { Flow } from '../enums'
+import { PlanSelected, Role, Subscription } from './'
 
 export interface User extends Entity {
   email: string
