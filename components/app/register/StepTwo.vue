@@ -4,7 +4,7 @@
       <v-row no-gutters>
         <!-- STRIPE FORM -->
         <v-col class="px-12 mt-1 mt-md-12" cols="12" md="6" lg="6" xl="6">
-          <stripe-pay-form
+          <StripePayForm
             :loading="loading"
             :button-text="getTextButton"
             @click:submit="onSubmit"
@@ -26,11 +26,11 @@
                   <v-card class="pg-mt-4 elevation-2 mx-10">
                     <v-container>
                       <v-layout column align-center justify-center>
-                        <card-playgarden
+                        <CardPlaygarden
                           :show-content="showCardPlaygarden"
                           @toggle="showCardPlaygarden = !showCardPlaygarden"
                         />
-                        <card-know-more
+                        <CardKnowMore
                           v-if="!showCardPlaygarden"
                           @toggleCard="showCardPlaygarden = !showCardPlaygarden"
                         />
@@ -60,7 +60,7 @@
                     >
                       WANT TO KNOW MORE ABOUT
                     </span>
-                    <br>
+                    <br />
                     <span
                       :class="
                         $vuetify.breakpoint.smAndUp
@@ -88,7 +88,7 @@
 import { mapActions } from 'vuex'
 import { defineComponent, useRoute } from '@nuxtjs/composition-api'
 
-import { useUTM } from '@/composables/utm/use-utm.composable'
+import { useUTM } from '@/composables/web/utm'
 
 import StripePayForm from '@/components/forms/payment/StripePayForm'
 import CardPlaygarden from './CardPlaygarden'
