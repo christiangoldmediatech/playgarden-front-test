@@ -99,7 +99,7 @@
         </center>
       </p>
       <br>
-      <v-divider />
+      <v-divider v-if="isTrialTextVisible" />
       <br>
       <slot name="footer">
         <p v-if="isTrialTextVisible">

@@ -7,6 +7,8 @@
           <stripe-pay-form
             :loading="loading"
             :button-text="getTextButton"
+            :is-free-for-days-text-visible="!isUserInactive"
+            :is-trial-text-visible="!isUserInactive"
             @click:submit="onSubmit"
           />
         </v-col>
@@ -28,6 +30,7 @@
                       <v-layout column align-center justify-center>
                         <card-playgarden
                           :show-content="showCardPlaygarden"
+                          :is-user-inactive="isUserInactive"
                           @toggle="showCardPlaygarden = !showCardPlaygarden"
                         />
                         <card-know-more
@@ -40,10 +43,10 @@
                 </v-layout>
               </v-col>
             </v-row>
-            <v-container>
+            <v-container v-if="!isUserInactive">
               <v-divider class="mt-7 mb-1 my-md-0" />
             </v-container>
-            <v-row>
+            <v-row v-if="!isUserInactive">
               <v-col v-if="showCardPlaygarden" cols="12" class="mt-4 mb-5">
                 <v-btn
                   block
@@ -115,8 +118,7 @@ export default defineComponent({
     loading: false,
     showCardPlaygarden: true,
     hiddenCardFamily: false,
-    coupon: null,
-    mode: vm.$route.params.mode ? vm.$route.params.mode : ''
+    coupon: null
   }),
 
   setup() {
@@ -139,6 +141,9 @@ export default defineComponent({
       return this.mode === 'activate-user'
         ? 'REACTIVATE ACCOUNT'
         : 'START YOUR FREE TRIAL'
+    },
+    isUserInactive() {
+      return this.mode === 'activate-user'
     }
   },
 
