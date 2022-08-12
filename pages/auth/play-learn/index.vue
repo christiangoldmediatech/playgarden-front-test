@@ -88,7 +88,7 @@ import { SignupData, TypedStore, UserFlow, SignupType } from '@/models'
 export default defineComponent({
   name: 'AuthPlayLearnIndex',
 
-  layout: 'learn-play',
+  layout: 'play-learn',
 
   components: {
     BackButton,
