@@ -8,7 +8,7 @@
     ]"
   >
     <!-- ARROW ICON -->
-    <v-icon class="pg-block pg-float-right pg-cursor-pointer" @click="$emit('toggle')">
+    <v-icon v-if="!isUserInactive" class="pg-block pg-float-right pg-cursor-pointer" @click="$emit('toggle')">
       {{ showContent ? 'mdi-chevron-up' : 'mdi-chevron-down' }}
     </v-icon>
 
@@ -59,6 +59,10 @@ export default {
     showContent: {
       type: Boolean,
       required: true
+    },
+    isUserInactive: {
+      type: Boolean,
+      default: false
     }
   },
 
