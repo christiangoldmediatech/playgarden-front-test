@@ -78,7 +78,7 @@ import {
   useCommonPlayerFunctions,
   useChild
 } from '@/composables'
-import { PlayAndLearnVideo, TypedStore } from '@/models'
+import { PlayAndLearnVideo, TypedStore, Video } from '@/models'
 
 export default defineComponent({
   name: 'VideoLessonPlayerLearnPlay',
@@ -122,7 +122,7 @@ export default defineComponent({
       author.value = playVideoList[0].meta?.author as string
     }
 
-    function changeVideoTrack(video: any) {
+    function changeVideoTrack(video: Video) {
       if (!player.value) {
         return
       }
@@ -132,12 +132,13 @@ export default defineComponent({
         {
           title: video.name,
           poster: video.thumbnail,
-          description: '',
+          description: video.description,
           src: {
             url: video.videoUrl.HLS,
             type: 'application/x-mpegURL'
           },
           meta: {
+            videoId: video.id,
             author: video.description
           }
         }

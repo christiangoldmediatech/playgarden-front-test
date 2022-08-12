@@ -21,7 +21,7 @@
           md="4"
         >
           <center v-if="diy.src">
-            <v-img :src="diy.src" height="150px" class="pg-rounded" />
+            <v-img :src="diy.src" height="200px" class="pg-rounded" />
           </center>
         </v-col>
       </v-row>
