@@ -7,12 +7,12 @@
         'pg-mx-auto',
         'pg-max-w-[768px]',
         'pg-px-4',
-        'lg:pg-pb-32',
+        'lg:pg-pb-16',
         'lg:pg-px-8',
         'lg:pg-max-w-[1300px]',
         'lg:pg-bg-[url(@/assets/png/green-whirl.png)]',
         'lg:pg-bg-[right_bottom]',
-        'lg:pg-bg-[length:45%_80%]'
+        'lg:pg-bg-[length:45%_75%]'
       ]"
     >
       <div class="md:pg-mt-24">
