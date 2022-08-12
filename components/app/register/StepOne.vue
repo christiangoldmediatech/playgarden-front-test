@@ -1,70 +1,75 @@
 <template>
-  <v-row
-    class="flex-column flex-md-row"
-    justify="center"
-    no-gutters
-    data-test-id="signup-content"
-  >
-    <v-col cols="12" class="ml-md-14">
-      <p class="text-center text-md-left">
-        <UnderlinedTitle
-          class="pg-box-decoration-clone text-h6 text-md-h4 ml-sm-4"
-          text="PLAYGARDEN PREP'S ONLINE PRESCHOOL IS COMPLETELY FREE FOR THE FIRST 15 DAYS!"
-        />
-      </p>
-    </v-col>
-
-    <v-col
-      class="px-sm-12 px-6 mt-1 mt-md-12"
-      cols="12"
-      sm="12"
-      xs="12"
-      md="6"
-      lg="6"
-      xl="6"
+  <div>
+    <div
+      :class="[
+        'pg-flex',
+        'pg-flex-col',
+        'pg-mx-auto',
+        'pg-max-w-[768px]',
+        'pg-px-4',
+        'lg:pg-pb-32',
+        'lg:pg-px-8',
+        'lg:pg-max-w-[1300px]',
+        'lg:pg-bg-[url(@/assets/png/green-whirl.png)]',
+        'lg:pg-bg-[right_bottom]',
+        'lg:pg-bg-[length:45%_80%]'
+      ]"
     >
-      <p class="text-center text-md-left mt-md-n8">
-        <span class="subtitle-text info-color-signup">
-          Create an account to start learning
-          <span v-if="!isCreditCardRequired">. NO CREDIT CARD REQUIRED!</span>
-        </span>
-      </p>
+      <div class="md:pg-mt-24">
+        <BackButton @click="handleGoBack" />
+      </div>
 
-      <RegisterForm
-        :email-validated="emailValidated"
-        :in-invitation-process="inInvitationProcess"
-        :loading="loading"
-        :is-credit-card-required="isCreditCardRequired"
-        @click:submit="onSubmit"
-      />
-    </v-col>
+      <!-- HEADING -->
+      <div :class="['pg-mt-6', 'pg-inline']">
+        <UnderlinedTitle
+          text="CREATE AN ACCOUNT TO START LEARNING!"
+          font-size="40px"
+          font-size-mobile="20px"
+        />
+      </div>
 
-    <v-col cols="12" md="6" lg="6">
-      <template>
-        <v-row
-          :class="
-            $vuetify.breakpoint.smAndUp
-              ? 'mt-4 background-card'
-              : 'background-card-mobile pt-14 px-8'
-          "
+      <div class="pg-text-xl pg-text-black pg-opacity-50">
+        Are you excited for a fun-filled day of learning?
+        <span v-if="!isCreditCardRequired"> NO CREDIT CARD REQUIRED!</span>
+      </div>
+
+      <!-- CONTENT -->
+      <div
+        :class="[
+          'pg-grid',
+          'pg-grid-cols-1',
+          'pg-mt-8',
+          'lg:pg-grid-cols-12',
+          'lg:pg-gap-24'
+        ]"
+      >
+        <!-- LEFT -->
+        <div class="pg-col-span-full lg:pg-col-span-7">
+          <RegisterForm
+            :email-validated="emailValidated"
+            :in-invitation-process="inInvitationProcess"
+            :loading="loading"
+            :is-credit-card-required="isCreditCardRequired"
+            @click:submit="handleSubmit"
+          />
+        </div>
+
+        <!-- RIGHT -->
+        <div
+          :class="[
+            'pg-col-span-full',
+            'pg-flex',
+            'pg-justify-center',
+            'pg-mt-14',
+            'lg:pg-col-span-5',
+            'lg:pg-mt-0'
+          ]"
         >
-          <v-col cols="12" class="my-sm-6 px-sm-10">
-            <v-layout row wrap align-center justify-center>
-              <v-card
-                class="mx-0 mx-md-10 !pg-shadow-[0px_8px_24px_rgba(0,0,0,0.15)]"
-              >
-                <v-container>
-                  <v-layout column align-center justify-center>
-                    <CardInfo />
-                  </v-layout>
-                </v-container>
-              </v-card>
-            </v-layout>
-          </v-col>
-        </v-row>
-      </template>
-    </v-col>
-  </v-row>
+          <CardInfo />
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -76,6 +81,7 @@ import {
 } from '@nuxtjs/composition-api'
 import RegisterForm from '@/components/forms/auth/RegisterForm.vue'
 import CardInfo from '@/components/app/register/CardInfo.vue'
+import BackButton from '@/components/shared/BackButton/BackButton.vue'
 import { useAccessorHelper, useSnotifyHelper } from '@/composables'
 import { useUTM } from '@/composables/web/utm'
 import { useModal } from '@/composables/web/modal'
@@ -93,7 +99,8 @@ export default defineComponent({
 
   components: {
     RegisterForm,
-    CardInfo
+    CardInfo,
+    BackButton
   },
 
   setup() {
@@ -133,7 +140,7 @@ export default defineComponent({
       )
     }
 
-    async function onSubmit(data: ParentSignupPayload): Promise<void> {
+    async function handleSubmit(data: ParentSignupPayload): Promise<void> {
       try {
         loading.value = true
         await ParentSignup.signup(data)
@@ -157,14 +164,19 @@ export default defineComponent({
       }
     }
 
+    function handleGoBack() {
+      window.open('https://playgardenonline.com/', '_self')
+    }
+
     return {
       loading,
       emailValidated,
       token,
       isCreditCardRequired: SignupFlow.isCreditCardRequired,
       inInvitationProcess: SignupInvitation.inInvitationProcess,
+      handleGoBack,
       goToNextStep,
-      onSubmit
+      handleSubmit
     }
   }
 })
