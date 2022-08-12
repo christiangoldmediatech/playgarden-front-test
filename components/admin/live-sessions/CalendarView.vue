@@ -10,13 +10,16 @@
         <div>
           {{ weekDay }}
         </div>
-        <div v-if="isTodayInThisWeek && today.getDay() === (i + 1)" class="lclass-calendar-day-bar" />
+        <div
+          v-if="isTodayInThisWeek && today.getDay() === (i + 1)"
+          class="lclass-calendar-day-bar"
+        />
       </div>
     </div>
 
     <!-- Hours -->
     <div class="lclass-calendar-hours">
-      <template v-for="(i, hourIndex) in ((endHour - startHour) + 1)">
+      <template v-for="(i, hourIndex) in endHour - startHour + 1">
         <div
           :key="`hour-${hourIndex}`"
           :style="{ '--entriesLength': findMaxEntriesForHour(hourIndex) }"
@@ -27,12 +30,14 @@
           </div>
 
           <div
-            v-for="(j, dayIndex) in 5"
+            v-for="(_, dayIndex) in weekDays"
             :key="`hour-${hourIndex}-day-${dayIndex}`"
             class="lclass-calendar-hour-day"
           >
             <table-entry
-              v-for="(entry, entryIndex) in getAdvancedSchedule.days[dayIndex][hourIndex]"
+              v-for="(entry, entryIndex) in getAdvancedSchedule.days[dayIndex][
+                hourIndex
+              ]"
               :id="`entry-${dayIndex}-${hourIndex}-${entryIndex}`"
               :key="`entry-${dayIndex}-${hourIndex}-${entryIndex}`"
               :entry="entry"
@@ -47,9 +52,18 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { getMondayFriday, isTodayInThisWeek } from '@/utils/dateTools'
+import { getWeekStartAndEnd, isTodayInThisWeek } from '@/utils/dateTools'
 import TableEntry from '@/components/app/live-sessions/TableEntry.vue'
-const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+
+const weekDays = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday'
+]
 
 export default {
   name: 'CalendarView',
@@ -75,49 +89,49 @@ export default {
   computed: {
     ...mapGetters('live-sessions', ['getAdvancedSchedule']),
 
-    startHour () {
+    startHour() {
       return this.getAdvancedSchedule.firstHour
     },
 
-    endHour () {
+    endHour() {
       return this.getAdvancedSchedule.endHour
     },
 
-    days () {
-      return getMondayFriday(this.day)
+    days() {
+      return getWeekStartAndEnd(this.day)
     },
 
-    isTodayInThisWeek () {
+    isTodayInThisWeek() {
       return isTodayInThisWeek(this.today, this.days)
     }
   },
 
   watch: {
-    days () {
+    days() {
       this.getSessions()
     }
   },
 
-  created () {
+  created() {
     this.getSessions()
     this.$nuxt.$on('update-calendar', this.getSessions)
   },
 
-  beforeDestroy () {
+  beforeDestroy() {
     this.$nuxt.$off('update-calendar')
   },
 
   methods: {
     ...mapActions('live-sessions', ['getUserLiveSessions']),
 
-    getSessions () {
+    getSessions() {
       this.$emit('loading', true)
       this.getUserLiveSessions({ ...this.days, admin: true }).then(() => {
         this.$emit('loading', false)
       })
     },
 
-    findMaxEntriesForHour (hourIndex) {
+    findMaxEntriesForHour(hourIndex) {
       let total = 1
       this.getAdvancedSchedule.days.forEach((day) => {
         if (day && day[hourIndex] && day[hourIndex].length > total) {
@@ -155,7 +169,7 @@ export default {
     &-bar {
       width: 108px;
       height: 3px;
-      background-color: #8AB591;
+      background-color: #8ab591;
     }
   }
   &-hour {
@@ -165,7 +179,7 @@ export default {
     max-height: calc(var(--entriesLength) * 160px);
     display: flex;
     align-items: center;
-    border-top: 2px solid #F2F2F2;
+    border-top: 2px solid #f2f2f2;
     &-time {
       // position: absolute;
       position: absolute;

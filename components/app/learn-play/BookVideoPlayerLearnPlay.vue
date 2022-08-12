@@ -53,9 +53,7 @@
       </div>
     </template>
     <v-card v-else class="mb-4" width="100%">
-      <v-skeleton-loader
-        type="card"
-      />
+      <v-skeleton-loader type="card" />
     </v-card>
     <span class="title-dashboard">
       Books of the week
@@ -64,7 +62,9 @@
       <v-row
         v-if="getRelatedBooks.length > 0"
         class="book-images-container ma-0"
-        :class="{ 'book-images-container-overflowed': getRelatedBooks.length > 3 }"
+        :class="{
+          'book-images-container-overflowed': getRelatedBooks.length > 3
+        }"
       >
         <v-col
           v-for="(book, index) in getRelatedBooks"
@@ -73,19 +73,18 @@
           md="4"
         >
           <a :href="book.url" target="_blank">
-            <img :src="book.image" class="book-cover" width="100%" height="100%">
+            <img
+              :src="book.image"
+              class="book-cover"
+              width="100%"
+              height="100%"
+            >
           </a>
         </v-col>
       </v-row>
       <v-row v-else class="mx-2 my-2">
-        <v-col
-          v-for="n in 3"
-          :key="`book-load-item-${n}`"
-          cols="4"
-        >
-          <v-skeleton-loader
-            type="image"
-          />
+        <v-col v-for="n in 3" :key="`book-load-item-${n}`" cols="4">
+          <v-skeleton-loader type="image" />
         </v-col>
       </v-row>
     </v-card>
@@ -94,7 +93,11 @@
 
 <script lang="ts">
 import { defineComponent, ref, useStore } from '@nuxtjs/composition-api'
-import { useLearnPlayV2, useCommonPlayerFunctions, useChild } from '@/composables'
+import {
+  useLearnPlayV2,
+  useCommonPlayerFunctions,
+  useChild
+} from '@/composables'
 // @ts-ignore
 import PgVideoPlayer from '@gold-media-tech/pg-video-player'
 import { PlayerInstance } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
@@ -107,7 +110,14 @@ export default defineComponent({
     PgVideoPlayer
   },
 
-  setup() {
+  props: {
+    previewMode: {
+      type: Boolean,
+      default: false
+    }
+  },
+
+  setup(props) {
     const store = useStore()
     const learnPlayV2 = useLearnPlayV2({ store })
     const commonPlayerFunctions = useCommonPlayerFunctions()
@@ -118,7 +128,7 @@ export default defineComponent({
     const author = ref('')
 
     // Player functions
-    function onPlayerReady (payload: { player: PlayerInstance, video: any }) {
+    function onPlayerReady(payload: { player: PlayerInstance; video: any }) {
       const { video } = payload
       player.value = payload.player
       title.value = video.name as string
@@ -140,7 +150,7 @@ export default defineComponent({
       ])
     }
 
-    function changeVideoTrack (video: any) {
+    function changeVideoTrack(video: any) {
       if (!player.value) {
         return
       }
@@ -163,17 +173,29 @@ export default defineComponent({
     }
 
     const saveStartProgress = async (media: any) => {
+      if (props.previewMode) {
+        return
+      }
+
       await learnPlayV2.updateProgress(buildDataProgress(media, false))
     }
 
     const saveEndProgress = async (media: any) => {
+      if (props.previewMode) {
+        return
+      }
+
       await learnPlayV2.updateProgress(buildDataProgress(media, true))
     }
 
     const buildDataProgress = (media: any, finish: boolean) => {
       if (child.currentChildren.value) {
         const childId = child.currentChildren.value[0].id
-        const bookProgress = { id: media.currentTrack.meta.videoId, started: true, completed: finish }
+        const bookProgress = {
+          id: media.currentTrack.meta.videoId,
+          started: true,
+          completed: finish
+        }
         const { id } = learnPlayV2.learnPlayData.value
         const data = {
           books: [bookProgress]

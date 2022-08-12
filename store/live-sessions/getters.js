@@ -7,7 +7,7 @@ export default {
   getAdvancedSchedule(state) {
     const { timezone } = state
     const hourDays = new Array(19).fill([])
-    const days = new Array(5).fill(hourDays)
+    const days = new Array(7).fill(hourDays)
     // Create default base obj
     const schedule = {
       firstHour: 0,
@@ -82,7 +82,7 @@ export default {
       }
     })
 
-    for (let day = 1; day <= 5; day++) {
+    for (let day = 0; day < 7; day++) {
       const daySessions = sessions.filter((session) => {
         return session.weekDay === day
       })
@@ -94,7 +94,7 @@ export default {
         })
         hours.push(sessions)
       }
-      schedule.days[day - 1] = hours
+      schedule.days[day] = hours
     }
 
     return schedule

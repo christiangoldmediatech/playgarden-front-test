@@ -73,7 +73,11 @@ import PgVideoPlayer from '@gold-media-tech/pg-video-player'
 import VideosScroll from '@/components/app/learn-play/VideosScroll.vue'
 import { PlayerInstance } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
 import { defineComponent, ref, useStore } from '@nuxtjs/composition-api'
-import { useLearnPlayV2, useCommonPlayerFunctions, useChild } from '@/composables'
+import {
+  useLearnPlayV2,
+  useCommonPlayerFunctions,
+  useChild
+} from '@/composables'
 import { PlayAndLearnVideo, TypedStore } from '@/models'
 
 export default defineComponent({
@@ -84,7 +88,14 @@ export default defineComponent({
     VideosScroll
   },
 
-  setup() {
+  props: {
+    previewMode: {
+      type: Boolean,
+      default: false
+    }
+  },
+
+  setup(props) {
     const store = useStore()
     const learnPlayV2 = useLearnPlayV2({ store })
     const commonPlayerFunctions = useCommonPlayerFunctions()
@@ -136,17 +147,29 @@ export default defineComponent({
     }
 
     const saveStartProgress = async (media: any) => {
+      if (props.previewMode) {
+        return
+      }
+
       await learnPlayV2.updateProgress(buildDataProgress(media, false))
     }
 
     const saveEndProgress = async (media: any) => {
+      if (props.previewMode) {
+        return
+      }
+
       await learnPlayV2.updateProgress(buildDataProgress(media, true))
     }
 
     const buildDataProgress = (media: any, finish: boolean) => {
       if (child.currentChildren.value) {
         const childId = child.currentChildren.value[0].id
-        const videoProgress = { id: media.currentTrack.meta.videoId, started: true, completed: finish }
+        const videoProgress = {
+          id: media.currentTrack.meta.videoId,
+          started: true,
+          completed: finish
+        }
         const { id } = learnPlayV2.learnPlayData.value
         const data = {
           videos: [videoProgress]
