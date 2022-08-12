@@ -47,7 +47,14 @@ export default defineComponent({
     DownloadButtonLearnPlay
   },
 
-  setup() {
+  props: {
+    previewMode: {
+      type: Boolean,
+      default: false
+    }
+  },
+
+  setup(props) {
     const store = useStore()
     const learnPlayV2 = useLearnPlayV2({ store })
     const childStore = useStore<TypedStore>()
@@ -63,9 +70,17 @@ export default defineComponent({
     }
 
     const saveProgress = async (fileId: number) => {
+      if (props.previewMode) {
+        return
+      }
+
       if (child.currentChildren.value) {
         const childId = child.currentChildren.value[0].id
-        const fileProgress = { id: fileId, downloaded: true, type: FileType.DIY_PROJECT }
+        const fileProgress = {
+          id: fileId,
+          downloaded: true,
+          type: FileType.DIY_PROJECT
+        }
         const { id } = learnPlayV2.learnPlayData.value
         const data = {
           files: [fileProgress]

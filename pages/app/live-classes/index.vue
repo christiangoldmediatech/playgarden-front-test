@@ -1,5 +1,5 @@
 <template>
-  <v-main data-test-id="live-classes-content">
+  <v-main class="pg-mt-8" data-test-id="live-classes-content">
     <pg-loading :loading="loading" fullscreen>
       <v-container
         v-if="$vuetify.breakpoint.lgAndUp"
@@ -144,8 +144,6 @@
 
     <recorded-class-player />
 
-    <upgrade-plan-live-classes-overlay />
-
     <pg-dialog
       :value="!hasTrialOrPlatinumPlan"
       content-class="elevation-0"
@@ -275,7 +273,7 @@
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
 import {
-  getMondayFriday,
+  getWeekStartAndEnd,
   timezoneOptions,
   getTimezone
 } from '@/utils/dateTools'
@@ -289,7 +287,6 @@ import WeekSelector from '@/components/app/live-sessions/WeekSelector.vue'
 import DaySelector from '@/components/app/live-sessions/DaySelector.vue'
 import { jsonCopy } from '@/utils'
 import dayjs from 'dayjs'
-import UpgradePlanLiveClassesOverlay from '@/components/app/live-sessions/UpgradePlanLiveClassesOverlay.vue'
 
 export default {
   name: 'Index',
@@ -302,8 +299,7 @@ export default {
     SessionsTable,
     RecordedClassPlayer,
     WeekSelector,
-    DaySelector,
-    UpgradePlanLiveClassesOverlay
+    DaySelector
   },
 
   data: () => {
@@ -330,7 +326,7 @@ export default {
 
     days() {
       if (this.today) {
-        return getMondayFriday(this.getDateObj())
+        return getWeekStartAndEnd(this.getDateObj())
       }
       return null
     },

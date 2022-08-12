@@ -3,9 +3,16 @@
     <div class="lsess-table-container">
       <div v-if="!dayMode" class="pl-16 pr-8">
         <v-row class="my-0">
-          <v-col v-for="(day, index) in days" :key="`days-row-column-${index}`" class="lsess-table-col lsess-table-col-header">
+          <v-col
+            v-for="(day, index) in days"
+            :key="`days-row-column-${index}`"
+            class="lsess-table-col lsess-table-col-header"
+          >
             {{ day }}
-            <div v-if="index === activeDay" class="lsess-table-col-header-active" />
+            <div
+              v-if="index === activeDay"
+              class="lsess-table-col-header-active"
+            />
           </v-col>
         </v-row>
       </div>
@@ -30,15 +37,25 @@
               class="lsess-table-hour-row"
               :style="{ '--rowHeightFactor': findMaxEntriesForHour(hour - 1) }"
             >
-              <div class="d-flex align-center justify-center lsess-table-offset">
+              <div
+                class="d-flex align-center justify-center lsess-table-offset"
+              >
                 {{ hourOffset + hour }}:00
               </div>
               <v-row justify="center">
                 <template v-if="dayMode">
                   <v-col class="lsess-table-day">
-                    <template v-if="activeDay >= 0 && getAdvancedSchedule.days[activeDay] && getAdvancedSchedule.days[activeDay][hour - 1].length">
+                    <template
+                      v-if="
+                        activeDay >= 0 &&
+                          getAdvancedSchedule.days[activeDay] &&
+                          getAdvancedSchedule.days[activeDay][hour - 1].length
+                      "
+                    >
                       <table-entry
-                        v-for="(entry, entryIndex) in getAdvancedSchedule.days[activeDay][hour - 1]"
+                        v-for="(entry, entryIndex) in getAdvancedSchedule.days[
+                          activeDay
+                        ][hour - 1]"
                         :id="`entry-${activeDay}-${hour - 1}-${entryIndex}`"
                         :key="`entry-${activeDay}-${hour - 1}-${entryIndex}`"
                         :block="block"
@@ -69,11 +86,21 @@
                   v-for="(day, dayIndex) in days"
                   :key="`days-row-${hour}-column-${dayIndex}`"
                   class="lsess-table-col"
-                  :style="{ '--entriesLength': (getAdvancedSchedule.days[dayIndex][hour - 1].length || 1) }"
+                  :style="{
+                    '--entriesLength':
+                      getAdvancedSchedule.days[dayIndex][hour - 1].length || 1
+                  }"
                 >
-                  <template v-if="getAdvancedSchedule.days[dayIndex] && getAdvancedSchedule.days[dayIndex][hour - 1].length">
+                  <template
+                    v-if="
+                      getAdvancedSchedule.days[dayIndex] &&
+                        getAdvancedSchedule.days[dayIndex][hour - 1].length
+                    "
+                  >
                     <table-entry
-                      v-for="(entry, entryIndex) in getAdvancedSchedule.days[dayIndex][hour - 1]"
+                      v-for="(entry, entryIndex) in getAdvancedSchedule.days[
+                        dayIndex
+                      ][hour - 1]"
                       :id="`entry-${activeDay}-${hour - 1}-${entryIndex}`"
                       :key="`entry-${activeDay}-${hour - 1}-${entryIndex}`"
                       :block="block"
@@ -121,7 +148,15 @@ export default {
 
   data: () => {
     return {
-      days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      days: [
+        'Sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday'
+      ],
       selectedDay: null,
       scrolling: false
     }
@@ -130,44 +165,48 @@ export default {
   computed: {
     ...mapGetters('live-sessions', ['getAdvancedSchedule']),
 
-    hourOffset () {
+    hourOffset() {
       return this.getAdvancedSchedule.firstHour - 1
     },
 
-    totalHours () {
-      return this.getAdvancedSchedule.endHour - (this.hourOffset > 0 ? this.hourOffset : 1)
+    totalHours() {
+      return (
+        this.getAdvancedSchedule.endHour -
+        (this.hourOffset > 0 ? this.hourOffset : 1)
+      )
     },
 
-    activeDay () {
+    activeDay() {
       const parts = this.today.split('-')
       const date = new Date()
       date.setFullYear(parts[0])
       date.setMonth(parts[1] - 1)
       date.setDate(parts[2])
 
-      return date.getDay() - 1
+      return date.getDay()
     }
   },
 
   watch: {
-    getAdvancedSchedule () {
+    getAdvancedSchedule() {
       this.scrollToFirst()
     },
 
-    activeDay () {
+    activeDay() {
       this.scrollToFirst()
     }
   },
 
-  mounted () {
+  mounted() {
     this.scrollToFirst()
   },
 
   methods: {
-    scrollToFirst () {
-      if (this.scrolling || this.activeDay < 0 || this.activeDay > 4) {
+    scrollToFirst() {
+      if (this.scrolling || this.activeDay < 0 || this.activeDay > 6) {
         return
       }
+
       this.scrolling = true
 
       const waitToFinish = window.setTimeout(() => {
@@ -178,7 +217,9 @@ export default {
           const index = day.findIndex(hour => hour.length)
 
           if (index >= 0) {
-            const entry = document.querySelector(`#entry-${this.activeDay}-${index}-0`)
+            const entry = document.querySelector(
+              `#entry-${this.activeDay}-${index}-0`
+            )
             if (entry) {
               let offset = entry.offsetTop - 64
               if (offset < 0) {
@@ -196,14 +237,14 @@ export default {
       }, 50)
     },
 
-    noEntries (day) {
+    noEntries(day) {
       if (day) {
-        return (day.findIndex(hour => hour.length) === -1)
+        return day.findIndex(hour => hour.length) === -1
       }
       return true
     },
 
-    findMaxEntriesForHour (hourIndex) {
+    findMaxEntriesForHour(hourIndex) {
       let total = 1
       this.getAdvancedSchedule.days.forEach((day) => {
         if (day[hourIndex] && day[hourIndex].length > total) {
@@ -321,7 +362,7 @@ export default {
   }
 
   .ps__thumb-y {
-    background-color: #B2E68D;
+    background-color: #b2e68d;
     border-radius: 14px;
     transition: none;
     width: 14px;
@@ -334,7 +375,7 @@ export default {
   .ps__rail-y:hover > .ps__thumb-y,
   .ps__rail-y:focus > .ps__thumb-y,
   .ps__rail-y.ps--clicking .ps__thumb-y {
-    background-color: #B2E68D;
+    background-color: #b2e68d;
     width: 14px;
   }
 }

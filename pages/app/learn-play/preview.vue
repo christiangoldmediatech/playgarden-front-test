@@ -1,10 +1,7 @@
 <template>
-  <v-container
-    class="pb-5"
-    fluid
-  >
-    <div class="background-card-learn-play pg-pt-48 px-lg-16 mb-3">
-      <v-row v-if="!loading" class="'dashboard-container-preview">
+  <v-main class="background-card-learnd-play">
+    <div class="pg-pt-24 px-lg-16 mb-3">
+      <v-row v-if="!loading">
         <v-col v-if="$vuetify.breakpoint.mdAndUp" cols="2">
           <play-and-learn-menu-top preview-mode />
           <menu-learn-play />
@@ -14,7 +11,7 @@
         </v-col>
       </v-row>
     </div>
-  </v-container>
+  </v-main>
 </template>
 
 <script lang="ts">
@@ -29,6 +26,7 @@ import {
 } from '@nuxtjs/composition-api'
 import DashboardLearnPlay from '@/components/app/learn-play/DashboardLearnPlay.vue'
 import MenuLearnPlay from '@/components/app/learn-play/MenuLearnPlay.vue'
+import PlayAndLearnMenuTop from '@/components/app/learn-play/PlayAndLearnMenuTop.vue'
 import { useLearnPlayV2 } from '@/composables'
 
 // @ts-ignore
@@ -38,7 +36,8 @@ export default defineComponent({
   name: 'LearnPlayPreview',
   components: {
     DashboardLearnPlay,
-    MenuLearnPlay
+    MenuLearnPlay,
+    PlayAndLearnMenuTop
   },
   setup() {
     const loading = ref(true)

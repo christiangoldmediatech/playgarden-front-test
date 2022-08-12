@@ -25,37 +25,37 @@
     <v-row class="mx-md-1">
       <v-col cols="12" md="8">
         <v-col id="videoLesson" cols="12">
-          <VideoLessonPlayerLearnPlay />
+          <VideoLessonPlayerLearnPlay :preview-mode="previewMode" />
         </v-col>
 
         <!-- MOBILE WORKSHEETS -->
         <v-col v-if="$vuetify.breakpoint.mobile" id="worksheets" cols="12">
-          <OfflineWorksheetsLearnPlay />
+          <OfflineWorksheetsLearnPlay :preview-mode="previewMode" />
         </v-col>
 
         <!-- DIY PROJECT -->
         <v-col id="diy" cols="12">
-          <DiyProjectLearnPlay />
+          <DiyProjectLearnPlay :preview-mode="previewMode" />
         </v-col>
 
         <!-- MOBILE ART PROJECT SECTION -->
         <v-col v-if="$vuetify.breakpoint.mobile" id="art-project" cols="12">
-          <ArtProjectLearnPlay />
+          <ArtProjectLearnPlay :preview-mode="previewMode" />
         </v-col>
 
         <!-- SNACK SECTION -->
         <v-col id="snack" cols="12">
-          <SnackSectionLearnPlay />
+          <SnackSectionLearnPlay :preview-mode="previewMode" />
         </v-col>
 
         <!-- BOOK SECTION -->
         <v-col id="book" cols="12">
-          <BookVideoPlayerLearnPlay />
+          <BookVideoPlayerLearnPlay :preview-mode="previewMode" />
         </v-col>
 
         <!-- MOBILE AUDIO PLAYER -->
         <v-col v-if="$vuetify.breakpoint.mobile" id="playlist" cols="12">
-          <PlaylistLearnPlay />
+          <PlaylistLearnPlay :preview-mode="previewMode" />
         </v-col>
       </v-col>
 
@@ -63,12 +63,12 @@
       <v-col v-if="!$vuetify.breakpoint.mobile" cols="4">
         <!-- WORKSHEETS -->
         <v-col id="worksheets" cols="12">
-          <OfflineWorksheetsLearnPlay />
+          <OfflineWorksheetsLearnPlay :preview-mode="previewMode" />
         </v-col>
 
         <!-- ART PROJECT -->
         <v-col id="art-project" cols="12">
-          <ArtProjectLearnPlay />
+          <ArtProjectLearnPlay :preview-mode="previewMode" />
         </v-col>
 
         <!-- AUDIO PLAYER -->

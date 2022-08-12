@@ -11,7 +11,7 @@
     >
       <VideoScrollItem
         :play-and-learn-video="video"
-        @click.native="currentVideo(video)"
+        @click.native="currentVideo(video.video)"
       />
     </v-slide-item>
     <template #next>
