@@ -1,10 +1,17 @@
 import { computed } from '@nuxtjs/composition-api'
-import { UseAuthOptions } from './types'
+import { PlanTier, UseAuthOptions } from './types'
 
 export const useAuth = ({ store }: UseAuthOptions) => {
-  const isUserLoggedIn = computed<boolean>(() => store.isUserLoggedIn)
+  const isUserLoggedIn = computed(() => store.isUserLoggedIn)
+  const isUserInTrial = computed(() => store.isUserInTrial)
+
+  const isPlayAndLearnUser = computed(
+    () => store.userInfo?.planSelected.id === PlanTier.LEARN_PLAY
+  )
 
   return {
-    isUserLoggedIn
+    isUserLoggedIn,
+    isUserInTrial,
+    isPlayAndLearnUser
   }
 }
