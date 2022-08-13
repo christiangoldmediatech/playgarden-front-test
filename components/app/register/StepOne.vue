@@ -89,10 +89,11 @@ import {
   useParentSignup,
   useSignupFlow,
   useSignupInvitation,
-  useSignupSteps
+  useSignupStep
 } from '@/composables/web/signup'
 import { useAuth } from '@/composables/users'
 import { ParentSignupPayload } from '@/composables/web/signup/types'
+import { SignupType } from '@/composables/users/types'
 
 export default defineComponent({
   name: 'StepOne',
@@ -128,12 +129,14 @@ export default defineComponent({
     const loading = ref(false)
     const emailValidated = ref('')
     const token = route.value.query.token
+    const signupType = SignupType.PLAYGARDEN
 
     function goToNextStep() {
-      const SignupSteps = useSignupSteps()
+      const SignupStep = useSignupStep()
 
       router.push(
-        SignupSteps.getStepOneNextStepLocation({
+        SignupStep.getStepOneNextStepLocation({
+          signupType,
           abFlow: SignupFlow.abFlow.value,
           utmContent: Utm.utmContent.value
         })
@@ -143,7 +146,7 @@ export default defineComponent({
     async function handleSubmit(data: ParentSignupPayload): Promise<void> {
       try {
         loading.value = true
-        await ParentSignup.signup(data)
+        await ParentSignup.signup(data, signupType)
         snotify.success('Welcome to Playgarden Prep!')
         goToNextStep()
       } catch (e) {

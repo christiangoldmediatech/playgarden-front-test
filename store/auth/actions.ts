@@ -2,6 +2,7 @@ import { actionTree } from 'typed-vuex'
 import jwtDecode from 'jwt-decode'
 import { snotifyError } from '@/utils/vuex'
 import { hasLocalStorage } from '@/utils/window'
+import { User } from '@/composables/users/types'
 import { state, mutations, getters } from './'
 
 export default actionTree(
@@ -104,7 +105,7 @@ export default actionTree(
       }
     },
 
-    async fetchUserInfo({ commit, rootGetters }) {
+    async fetchUserInfo({ commit, rootGetters }): Promise<User | undefined> {
       try {
         const { data } = await this.$axios.get('/auth/me', {})
         commit('SET_USER_INFO', data)
@@ -137,6 +138,10 @@ export default actionTree(
       await this.$axios.patch('/auth/onboarding')
 
       return dispatch('fetchUserInfo')
+    },
+
+    async setPlanChoosen (): Promise<void> {
+      await this.$axios.$get('/users/plan/choosen')
     }
   }
 )
