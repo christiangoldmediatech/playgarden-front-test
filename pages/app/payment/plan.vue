@@ -86,6 +86,7 @@
         <v-col cols="12" class="mt-16">
           <SubscriptionPlanSelection
             class="mt-md-n6"
+            :in-sign-up-process="inSignUpProcess"
             @click:submit="handleSubmit"
             @initialized="initialized = true"
           />
@@ -108,7 +109,11 @@ import {
 
 import SubscriptionPlanSelection from '@/components/app/payment/SubscriptionPlanSelection'
 
-import { useAccessorHelper, useVuetifyHelper } from '@/composables'
+import {
+  useAccessorHelper,
+  useSnotifyHelper,
+  useVuetifyHelper
+} from '@/composables'
 import { useAuth, useUser } from '@/composables/users'
 import { useNotification } from '@/composables/web/notification'
 import { useSignupFlow, useSignupStep } from '@/composables/web/signup'
@@ -123,6 +128,7 @@ export default defineComponent({
   },
 
   setup() {
+    const snotify = useSnotifyHelper()
     const vuetify = useVuetifyHelper()
     const route = useRoute()
     const router = useRouter()
@@ -133,7 +139,11 @@ export default defineComponent({
     const Notification = useNotification({ store: store.notifications })
     const SignupStep = useSignupStep()
     const Utm = useUTM({ route: route.value })
-    const SignupFlow = useSignupFlow({ route: route.value, store: store.auth.signup })
+
+    const SignupFlow = useSignupFlow({
+      route: route.value,
+      store: store.auth.signup
+    })
 
     const initialized = ref(false)
 
@@ -180,15 +190,18 @@ export default defineComponent({
     function handleSubmit(): void {
       try {
         if (inSignUpProcess.value) {
-          SignupStep.getStepTwoNextStepLocation({
-            signupType: signupType.value,
-            abFlow: SignupFlow.abFlow.value,
-            utmContent: Utm.utmContent.value
-          })
+          router.push(
+            SignupStep.getStepTwoNextStepLocation({
+              signupType: signupType.value,
+              abFlow: SignupFlow.abFlow.value,
+              utmContent: Utm.utmContent.value
+            })
+          )
         }
 
         User.setPlanChoosen()
         Notification.isTrialExpiringRibbonVisible.value = false
+        snotify.success('Plan selected!')
       } finally {
         User.getUserInfo()
       }
