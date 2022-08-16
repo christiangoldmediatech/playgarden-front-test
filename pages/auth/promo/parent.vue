@@ -1,7 +1,7 @@
 <template>
-  <v-main>
+  <div>
     <StepOne />
-  </v-main>
+  </div>
 </template>
 
 <script lang="ts">
