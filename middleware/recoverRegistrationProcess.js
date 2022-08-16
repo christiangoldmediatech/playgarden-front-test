@@ -12,67 +12,38 @@ export default function ({ redirect, route, store }) {
     'shared-slug': 1
   }
 
+  // PARENT_INFORMATION = 1 -> Enter parent info page <- sign up
+  // PAYMENT_INFORMATION = 2 -> Enter children information page
+  // CHILDREN_INFORMATION = 3 -> Enter plan selection page
+  // VERIFICATION = 5 -> Enter email verifciation page <- covered by "emailVerified" middleware
+  // COMPLETED = 6 -> Completed <- no action
+
   const user = store.getters['auth/getUserInfo']
   const step = Number(user.registerStep)
+  // const hasPlanSelected = Boolean(user?.planSelected)
+  const isLoggedIn = store.getters['auth/isUserLoggedIn']
+  // const isLearnAndPlayUser = store.getters['auth/hasUserLearnAndPlayPlan']
+  const isIgnoredRoute = Boolean(ignoreRoute[route.name])
+  const isInSignupProcess = route.query.process === 'signup'
+  const isValidRole = !user.role || get(user, 'role.section') === 'USER'
+  const isValidRegisterStep = step === 1 || step === 2 || step === 3 || (step === 5 && user.flow === UserFlow.NOCREDITCARD)
 
-  // PARENT_INFORMATION=1 -> Enter parent info page <- sign up
-  // PAYMENT_INFORMATION=2 -> Enter children information page
-  // CHILDREN_INFORMATION=3 -> Enter plan selection page
-  // VERIFICATION=5 -> Enter email verifciation page <- covered by "emailVerified" middleware
-  // COMPLETED=6 -> Completed <- no action
+  if (isLoggedIn && isValidRegisterStep && isValidRole && !isInSignupProcess && !isIgnoredRoute) {
+    const planPage = { name: 'app-payment-plan', query: { process: 'signup', step: '2' } }
+    // const paymentPage = { name: 'app-payment', query: { process: 'signup', step: '3' } }
+    // const palPaymentPage = { name: 'app-play-learn-payment', query: { process: 'signup', step: '3' } }
+    // const childrenPage = { name: 'app-children', query: { process: 'signup', step: '4' } }
+    // const palChildrenPage = { name: 'app-play-learn-children', query: { process: 'signup', step: '4' } }
+    const finishedFirstStep = [1, 2].includes(step)
 
-  if (
-    user.id &&
-    (step === 1 || step === 2 || step === 3 || (step === 5 && user.flow === UserFlow.NOCREDITCARD)) &&
-    (!user.role || get(user, 'role.section') === 'USERS') &&
-    route.query.process !== 'signup' &&
-    !ignoreRoute[route.name]
-  ) {
-    /* switch (step) {
-      case 1:
-        name = 'auth-signup'
-        break
+    let redirectTo
 
-      case 2:
-        name = 'app-children-register'
-        break
-
-      case 3:
-        name = 'app-payment-plan'
-        break
-
-      case 4:
-        name = 'app-payment-register'
-        break
-    } */
-
-    let name = ''
-    switch (step) {
-      case 1:
-        name = 'auth-parent'
-        break
-
-      case 2:
-        name = 'app-normal-payment'
-        break
-
-      case 3:
-        name = 'app-children'
-        break
-
-      case 5:
-        if (user.flow === UserFlow.NOCREDITCARD) {
-          name = 'auth-verify-email'
-        }
-        break
+    if (finishedFirstStep) {
+      redirectTo = planPage
     }
-    redirect({
-      name,
-      query: {
-        process: 'signup',
-        step
-        // _time: new Date().getTime() // <- just in order to avoid infinite loading bar
-      }
-    })
+
+    if (redirectTo) {
+      redirect(redirectTo)
+    }
   }
 }
