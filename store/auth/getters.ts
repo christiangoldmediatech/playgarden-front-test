@@ -28,5 +28,5 @@ export default getterTree(state, {
   isUserInTrial: (state): boolean => state.userInfo?.trial || false,
 
   hasUserLearnAndPlayPlan: (state): boolean =>
-    state.userInfo?.planSelected.id === PlanTier.LEARN_PLAY || false
+    state.userInfo?.planSelected?.id === PlanTier.LEARN_PLAY || false
 })
