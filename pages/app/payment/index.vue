@@ -33,7 +33,7 @@ export default {
   },
 
   data: vm => ({
-    currentStep: 2,
+    currentStep: 3,
     mode: vm.$route.params.mode
       ? vm.$route.params.mode
       : ''

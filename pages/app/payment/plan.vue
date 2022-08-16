@@ -128,7 +128,6 @@ export default defineComponent({
   },
 
   setup() {
-    const snotify = useSnotifyHelper()
     const vuetify = useVuetifyHelper()
     const route = useRoute()
     const router = useRouter()
@@ -201,7 +200,6 @@ export default defineComponent({
 
         User.setPlanChoosen()
         Notification.isTrialExpiringRibbonVisible.value = false
-        snotify.success('Plan selected!')
       } finally {
         User.getUserInfo()
       }
