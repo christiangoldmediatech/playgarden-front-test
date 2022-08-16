@@ -176,7 +176,7 @@ export default defineComponent({
           query: {
             step: 4,
             process: 'signup',
-            ...this.utmContent
+            ...this.utmContent.utmContent.value
           }
         }
       }
