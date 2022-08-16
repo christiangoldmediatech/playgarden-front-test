@@ -24,8 +24,11 @@ export const useSignupFlow = ({ route, store }: UseSignupFlowOptions) => {
     const abRouteName = ref<UserFlowRoute>(UserFlowRoute.NORMAL)
     const routeABFlow = route.query.abf as UserFlowRouteParam
 
-    // if the AB flow is already in the query, set the corresponding user flow
-    if (
+    // If the AB flow was already changed, use that one
+    if (abFlow.value === Flow.NOCREDITCARD) {
+      abRouteName.value = UserFlowRoute.PROMO
+      // if the AB flow is already in the query, set the corresponding user flow
+    } else if (
       typeof routeABFlow === 'string' &&
       [UserFlowRouteParam.NOCREDITCARD, UserFlowRouteParam.CREDITCARD].includes(
         routeABFlow
