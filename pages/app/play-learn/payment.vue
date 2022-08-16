@@ -3,7 +3,8 @@
     :class="[
       'pg-bg-[url(@/assets/png/play-learn/acuarela-yellow.png)]',
       'pg-bg-[center_right_-8rem]',
-      'lg:pg-pb-32'
+      'pg-px-4',
+      'lg:pg-pb-32',
     ]"
   >
     <div
@@ -12,7 +13,6 @@
         'pg-flex-col',
         'pg-mx-auto',
         'pg-max-w-[768px]',
-        'pg-px-4',
         'lg:pg-max-w-[1300px]',
       ]"
     >
@@ -25,7 +25,7 @@
         :class="[
           'pg-grid',
           'pg-grid-cols-1',
-          'lg:pg-mt-12',
+          'sm:pg-mt-12',
           'lg:pg-grid-cols-12',
           'lg:pg-gap-24',
         ]"
@@ -62,8 +62,9 @@
             'pg-flex-col',
             'pg-justify-center',
             'pg-mt-14',
+            'pg-mx-auto',
             'lg:pg-col-span-5',
-            'lg:pg-mt-0'
+            'lg:pg-mt-0',
           ]"
         >
           <StepTwoCardSummary :value="toggleInfo" @input="toggleInfo = $event" />
