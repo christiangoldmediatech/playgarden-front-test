@@ -107,7 +107,7 @@ export default defineComponent({
     const toggleInfo = ref(true)
 
     function handleGoBack() {
-      router.go(-1)
+      router.push({ name: 'app-payment-plan', query: { process: 'signup', step: '2' } })
     }
 
     async function handleSubmit(data: CardData) {
@@ -135,7 +135,7 @@ export default defineComponent({
       router.push({
         name: 'app-play-learn-children',
         query: {
-          step: '3',
+          step: '4',
           process: 'signup'
         }
       })
