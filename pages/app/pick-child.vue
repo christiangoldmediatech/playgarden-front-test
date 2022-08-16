@@ -50,7 +50,7 @@
                 text
                 block
                 x-large
-                :to="{ name: 'app-account-index' }"
+                :to="{ name: 'app-account-index-student-profile' }"
               >
                 MANAGE STUDENT PROFILES
               </v-btn>
