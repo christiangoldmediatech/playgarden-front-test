@@ -20,9 +20,7 @@ export default function ({ redirect, route, store }) {
 
   const user = store.getters['auth/getUserInfo']
   const step = Number(user.registerStep)
-  // const hasPlanSelected = Boolean(user?.planSelected)
   const isLoggedIn = store.getters['auth/isUserLoggedIn']
-  // const isLearnAndPlayUser = store.getters['auth/hasUserLearnAndPlayPlan']
   const isIgnoredRoute = Boolean(ignoreRoute[route.name])
   const isInSignupProcess = route.query.process === 'signup'
   const isValidRole = !user.role || get(user, 'role.section') === 'USER'
@@ -30,10 +28,6 @@ export default function ({ redirect, route, store }) {
 
   if (isLoggedIn && isValidRegisterStep && isValidRole && !isInSignupProcess && !isIgnoredRoute) {
     const planPage = { name: 'app-payment-plan', query: { process: 'signup', step: '2' } }
-    // const paymentPage = { name: 'app-payment', query: { process: 'signup', step: '3' } }
-    // const palPaymentPage = { name: 'app-play-learn-payment', query: { process: 'signup', step: '3' } }
-    // const childrenPage = { name: 'app-children', query: { process: 'signup', step: '4' } }
-    // const palChildrenPage = { name: 'app-play-learn-children', query: { process: 'signup', step: '4' } }
     const finishedFirstStep = [1, 2].includes(step)
 
     let redirectTo
