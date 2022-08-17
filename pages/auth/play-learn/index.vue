@@ -13,7 +13,7 @@
         'pg-mx-auto',
         'pg-max-w-[768px]',
         'pg-px-4',
-        'lg:pg-max-w-[1300px]',
+        'lg:pg-max-w-[1300px]'
       ]"
     >
       <div class="pg-mt-6">
@@ -29,10 +29,13 @@
           'pg-font-bold',
           'pg-leading-9',
           'lg:pg-tracking-[4.8px]',
-          'lg:pg-leading-[48px]',
+          'lg:pg-leading-[48px]'
         ]"
       >
-        <img src="@/assets/svg/play-learn/play-learn-logo.svg" class="pg-mr-2 pg-h-14 pg-mb-[-16px] pg-text-black">
+        <img
+          src="@/assets/svg/play-learn/play-learn-logo.svg"
+          class="pg-mr-2 pg-h-14 pg-mb-[-16px] pg-text-black"
+        />
         IS COMPLETELY FREE FOR THE FIRST 15 DAYS!
       </div>
 
@@ -47,7 +50,7 @@
           'pg-grid-cols-1',
           'pg-mt-8',
           'lg:pg-grid-cols-12',
-          'lg:pg-gap-24',
+          'lg:pg-gap-24'
         ]"
       >
         <!-- LEFT -->
@@ -78,17 +81,27 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, useRouter, useStore } from '@nuxtjs/composition-api'
-import BackButton from '@/components/app/learn-play/BackButton/BackButton.vue'
+import {
+  defineComponent,
+  ref,
+  useRoute,
+  useRouter
+} from '@nuxtjs/composition-api'
+import BackButton from '@/components/shared/BackButton/BackButton.vue'
 import RegisterForm from '@/components/forms/auth/RegisterForm.vue'
 import StepOneCard from '@/components/app/learn-play/StepOneCard/StepOneCard.vue'
-import { useAuth, useNotification, useSnotifyHelper } from '@/composables'
-import { SignupData, TypedStore, UserFlow, SignupType } from '@/models'
+import { useAccessorHelper, useSnotifyHelper } from '@/composables'
+import { useAuth } from '@/composables/users'
+import { ParentSignupPayload } from '@/composables/web/signup/types'
+import { useParentSignup, useSignupStep } from '@/composables/web/signup'
+import { useModal } from '@/composables/web/modal'
+import { useUTM } from '@/composables/web/utm'
+import { SignupType } from '@/composables/users/types'
 
 export default defineComponent({
   name: 'AuthPlayLearnIndex',
 
-  layout: 'learn-play',
+  layout: 'play-learn',
 
   components: {
     BackButton,
@@ -98,46 +111,43 @@ export default defineComponent({
 
   setup() {
     const snotify = useSnotifyHelper()
-    const store = useStore<TypedStore>()
+    const store = useAccessorHelper()
     const router = useRouter()
-    const Auth = useAuth({ store })
-    const Notification = useNotification({ store })
-    const isLoading = ref(false)
+    const route = useRoute()
 
-    /**
-     * If the user is already logged in, redirect to
-     * the pick child page.
-     */
-    if (Auth.isUserLoggedIn.value) {
-      router.replace({
-        name: 'app-pick-child'
-      })
-    }
+    const Utm = useUTM({ route: route.value })
+    const Auth = useAuth({ store: store.auth })
+    const Modal = useModal({ store: store.notifications })
+
+    const ParentSignup = useParentSignup({
+      store: store.auth.signup,
+      auth: Auth
+    })
+
+    const isLoading = ref(false)
+    const signupType = SignupType.LEARN_AND_PLAY
 
     function handleGoBack() {
       window.open('https://playgardenprep.com/play-and-learn/', '_self')
     }
 
-    async function handleSubmit(data: SignupData) {
+    async function handleSubmit(data: ParentSignupPayload) {
       try {
         isLoading.value = true
-        data.signupType = SignupType.LEARN_AND_PLAY
-        if (!Auth.isUserLoggedIn.value) {
-          await Auth.signup({ ...data, flow: UserFlow.CREDITCARD })
-          snotify.success('Welcome to Playgarden Prep!')
-        }
-
+        await ParentSignup.signup(data, signupType)
+        snotify.success('Welcome to Playgarden Prep!')
         goToNextStep()
-      } catch (e: any) {
-        const data = e?.response?.data
+      } catch (e) {
+        const error = e as any
+        const data = error?.response?.data
 
         if (data?.statusCode === 409) {
           if (data?.message === 'Email already exists') {
-            Notification.setIsEmailConflictModalVisible(true)
+            Modal.isEmailConflictModalVisible.value = true
           }
 
           if (data?.message === 'Account Canceled') {
-            Notification.setIsAccountInactiveModalVisible(true)
+            Modal.isAccountInactiveModalVisible.value = true
           }
         }
       } finally {
@@ -146,13 +156,14 @@ export default defineComponent({
     }
 
     function goToNextStep() {
-      router.push({
-        name: 'app-play-learn-payment',
-        query: {
-          step: '2',
-          process: 'signup'
-        }
-      })
+      const SignupStep = useSignupStep()
+
+      router.push(
+        SignupStep.getStepOneNextStepLocation({
+          signupType,
+          utmContent: Utm.utmContent.value
+        })
+      )
     }
 
     return {

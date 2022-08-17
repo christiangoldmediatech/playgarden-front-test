@@ -1,5 +1,5 @@
 export default {
-  async createCategory (ctx, payload) {
+  async createCategory(ctx, payload) {
     try {
       const data = await this.$axios.$post('/category/parents-corners', payload)
       return data
@@ -8,9 +8,11 @@ export default {
     }
   },
 
-  async getCategories ({ commit }, params) {
+  async fetchCategories({ commit }, params) {
     try {
-      const data = await this.$axios.$get('/category/parents-corners', { params })
+      const data = await this.$axios.$get('/category/parents-corners', {
+        params
+      })
       commit('SET_CATEGORIES', data)
       return data
     } catch (error) {
@@ -18,16 +20,19 @@ export default {
     }
   },
 
-  async updateCategory (ctx, { id, payload }) {
+  async updateCategory(ctx, { id, payload }) {
     try {
-      const data = await this.$axios.$patch(`/category/parents-corners/${id}`, payload)
+      const data = await this.$axios.$patch(
+        `/category/parents-corners/${id}`,
+        payload
+      )
       return data
     } catch (error) {
       return Promise.reject(error)
     }
   },
 
-  async deleteCategory (ctx, id) {
+  async deleteCategory(ctx, id) {
     try {
       const data = await this.$axios.$delete(`/category/parents-corners/${id}`)
       return data
@@ -37,7 +42,7 @@ export default {
   },
 
   /* Videos */
-  async createVideo (ctx, payload) {
+  async createVideo(ctx, payload) {
     try {
       const data = await this.$axios.$post('/parent-corners-videos', payload)
       return data
@@ -46,7 +51,7 @@ export default {
     }
   },
 
-  async getVideos ({ commit }, params) {
+  async fetchVideos({ commit }, params) {
     try {
       const data = await this.$axios.$get('/parent-corners-videos', { params })
       commit('SET_VIDEOS', data)
@@ -56,16 +61,19 @@ export default {
     }
   },
 
-  async updateVideo (ctx, { id, payload }) {
+  async updateVideo(ctx, { id, payload }) {
     try {
-      const data = await this.$axios.$patch(`/parent-corners-videos/${id}`, payload)
+      const data = await this.$axios.$patch(
+        `/parent-corners-videos/${id}`,
+        payload
+      )
       return data
     } catch (error) {
       return Promise.reject(error)
     }
   },
 
-  async deleteVideo (ctx, id) {
+  async deleteVideo(ctx, id) {
     try {
       const data = await this.$axios.$delete(`/parent-corners-videos/${id}`)
       return data

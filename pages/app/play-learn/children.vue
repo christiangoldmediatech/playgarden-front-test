@@ -56,7 +56,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, useContext, useRouter, useStore } from '@nuxtjs/composition-api'
-import BackButton from '@/components/app/learn-play/BackButton/BackButton.vue'
+import BackButton from '@/components/shared/BackButton/BackButton.vue'
 import ShortRegisterForm from '@/components/forms/children/ShortRegisterForm.vue'
 import { useAuth, useChild, usePayment, useSnotifyHelper } from '@/composables'
 import { CardData, Child, DataSubscription, TypedStore } from '@/models'

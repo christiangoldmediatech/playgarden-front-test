@@ -1,10 +1,14 @@
 <template>
   <v-row no-gutters>
     <v-col>
+      <div class="pg-ml-10">
+        <BackButton @click="handleGoBack" />
+      </div>
+
       <v-row no-gutters>
         <!-- STRIPE FORM -->
         <v-col class="px-12 mt-1 mt-md-12" cols="12" md="6" lg="6" xl="6">
-          <stripe-pay-form
+          <StripePayForm
             :loading="loading"
             :button-text="getTextButton"
             :is-free-for-days-text-visible="!isUserInactive"
@@ -29,12 +33,12 @@
                   <v-card class="pg-mt-4 elevation-2 mx-10">
                     <v-container>
                       <v-layout column align-center justify-center>
-                        <card-playgarden
+                        <CardPlaygarden
                           :show-content="showCardPlaygarden"
                           :is-user-inactive="isUserInactive"
                           @toggle="showCardPlaygarden = !showCardPlaygarden"
                         />
-                        <card-know-more
+                        <CardKnowMore
                           v-if="!showCardPlaygarden"
                           @toggleCard="showCardPlaygarden = !showCardPlaygarden"
                         />
@@ -64,7 +68,7 @@
                     >
                       WANT TO KNOW MORE ABOUT
                     </span>
-                    <br>
+                    <br />
                     <span
                       :class="
                         $vuetify.breakpoint.smAndUp
@@ -92,9 +96,10 @@
 import { mapActions } from 'vuex'
 import { defineComponent, useRoute } from '@nuxtjs/composition-api'
 
-import { useUTM } from '@/composables/utm/use-utm.composable'
+import { useUTM } from '@/composables/web/utm'
 
 import StripePayForm from '@/components/forms/payment/StripePayForm'
+import BackButton from '@/components/shared/BackButton/BackButton.vue'
 import CardPlaygarden from './CardPlaygarden'
 import CardKnowMore from './CardKnowMore'
 
@@ -104,7 +109,8 @@ export default defineComponent({
   components: {
     StripePayForm,
     CardPlaygarden,
-    CardKnowMore
+    CardKnowMore,
+    BackButton
   },
 
   props: {
@@ -153,7 +159,17 @@ export default defineComponent({
 
     ...mapActions('payment', ['payShorterSubscription', 'validateCard']),
 
-    async goToStepThree() {
+    handleGoBack () {
+      this.$router.push({
+        name: 'app-payment-plan',
+        query: {
+          process: 'signup',
+          step: '2'
+        }
+      })
+    },
+
+    async goToNextStep() {
       let page = {}
       if (this.mode === 'activate-user') {
         await this.fetchUserInfo()
@@ -164,9 +180,9 @@ export default defineComponent({
         page = {
           name: 'app-children',
           query: {
-            step: 3,
+            step: 4,
             process: 'signup',
-            ...this.utmContent
+            ...this.utmContent.utmContent.value
           }
         }
       }
@@ -185,7 +201,7 @@ export default defineComponent({
           dataSubscrition.promotion_id = cardData.promotion_id
         }
         await this.payShorterSubscription(dataSubscrition)
-        this.goToStepThree()
+        this.goToNextStep()
       } catch (e) {
       } finally {
         this.loading = false
