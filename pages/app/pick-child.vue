@@ -1,6 +1,6 @@
 <template>
-  <v-main class="bkg">
-    <v-container fluid fill-height>
+  <v-main class="bkg fit-page d-flex justify-center align-center">
+    <v-container fluid>
       <v-row align="center" justify="center">
         <v-col cols="12" md="8" lg="6" class="pick-child" :class="{mobile: $vuetify.breakpoint.smAndDown}">
           <v-card>
@@ -20,7 +20,7 @@
                   v-for="(child, childIndex) in children"
                   :key="`child-${child.id}`"
                   class="selected-child text-center"
-                  cols="4"
+                  cols="6"
                   lg="3"
                   :data-test-id="`pick-child-${childIndex}`"
                   @click.stop="selectChild(child)"
@@ -133,6 +133,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.fit-page{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 101%;
+  z-index: 2000;
+  padding: 0 0 0 0 !important;
+}
+
 .child-option {
   transition: transform 250ms;
 }
