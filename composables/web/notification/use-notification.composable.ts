@@ -1,7 +1,9 @@
+import { useAccessorHelper } from '@/composables/helpers.composable'
 import { computed } from '@nuxtjs/composition-api'
-import { UseNotificationOptions } from './types'
 
-export const useNotification = ({ store }: UseNotificationOptions) => {
+export const useNotification = () => {
+  const store = useAccessorHelper().notifications
+
   const isTrialExpiringRibbonVisible = computed({
     get() {
       return store.isTrialExpiringRibbonVisible
