@@ -90,13 +90,14 @@ import {
 import BackButton from '@/components/shared/BackButton/BackButton.vue'
 import RegisterForm from '@/components/forms/auth/RegisterForm.vue'
 import StepOneCard from '@/components/app/learn-play/StepOneCard/StepOneCard.vue'
-import { useAccessorHelper, useSnotifyHelper } from '@/composables'
+import { useSnotifyHelper } from '@/composables'
 import { useAuth } from '@/composables/users'
 import { ParentSignupPayload } from '@/composables/web/signup/types'
 import { useParentSignup, useSignupStep } from '@/composables/web/signup'
 import { useModal } from '@/composables/web/modal'
 import { useUTM } from '@/composables/web/utm'
 import { SignupType } from '@/composables/users/types'
+import { useGtm } from '@/composables/web/gtm'
 
 export default defineComponent({
   name: 'AuthPlayLearnIndex',
@@ -110,22 +111,23 @@ export default defineComponent({
   },
 
   setup() {
+    const Gtm = useGtm()
     const snotify = useSnotifyHelper()
-    const store = useAccessorHelper()
     const router = useRouter()
     const route = useRoute()
 
     const Utm = useUTM({ route: route.value })
-    const Auth = useAuth({ store: store.auth })
-    const Modal = useModal({ store: store.notifications })
-
-    const ParentSignup = useParentSignup({
-      store: store.auth.signup,
-      auth: Auth
-    })
+    const Auth = useAuth()
+    const Modal = useModal()
+    const ParentSignup = useParentSignup({ auth: Auth })
 
     const isLoading = ref(false)
     const signupType = SignupType.LEARN_AND_PLAY
+
+    Gtm.parentPage({
+      conversionID: '959213252',
+      conversionLabel: 'QAn5COr85PoBEMTdsckD'
+    })
 
     function handleGoBack() {
       window.open('https://playgardenprep.com/play-and-learn/', '_self')

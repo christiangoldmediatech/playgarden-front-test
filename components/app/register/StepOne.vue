@@ -82,7 +82,7 @@ import {
 import RegisterForm from '@/components/forms/auth/RegisterForm.vue'
 import CardInfo from '@/components/app/register/CardInfo.vue'
 import BackButton from '@/components/shared/BackButton/BackButton.vue'
-import { useAccessorHelper, useSnotifyHelper } from '@/composables'
+import { useSnotifyHelper } from '@/composables'
 import { useUTM } from '@/composables/web/utm'
 import { useModal } from '@/composables/web/modal'
 import {
@@ -105,23 +105,20 @@ export default defineComponent({
   },
 
   setup() {
-    const store = useAccessorHelper()
     const router = useRouter()
     const route = useRoute()
     const snotify = useSnotifyHelper()
 
-    const Auth = useAuth({ store: store.auth })
-    const Modal = useModal({ store: store.notifications })
+    const Auth = useAuth()
+    const Modal = useModal()
     const Utm = useUTM({ route: route.value })
     const SignupInvitation = useSignupInvitation({ route: route.value })
 
     const SignupFlow = useSignupFlow({
-      route: route.value,
-      store: store.auth.signup
+      route: route.value
     })
 
     const ParentSignup = useParentSignup({
-      store: store.auth.signup,
       auth: Auth,
       signupFlow: SignupFlow
     })
