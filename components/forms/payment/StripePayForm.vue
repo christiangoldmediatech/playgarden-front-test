@@ -5,10 +5,9 @@
         class="text-center text-md-left"
         :class="{ 'mt-n10': $vuetify.breakpoint.smAndUp }"
       >
-        <strong
-          class="text-left"
-        >We need your credit card information to confirm who you are<span v-if="isNotChargedTextVisbile">, but you
-          will NOT be charged</span>.</strong>
+        <strong class="text-left">
+          We need your credit card information to confirm your identity<span v-if="isNotChargedTextVisbile">, but you will NOT be charged until your 15 day free trial has ended, unless you choose to end your trial early</span>.
+        </strong>
         <br>
         <br>
         <underlined-title
