@@ -85,22 +85,41 @@
                           Change icon:
                         </span>
                       </v-col>
-
-                      <v-col
-                        v-for="(backpack, indexB) in backpacks"
-                        :key="indexB"
-                        class="image"
-                        cols="4"
-                        md="2"
+                      <v-sheet
+                        class="my-2"
+                        width="100%"
                       >
-                        <img
-                          :alt="backpack.name"
-                          class="clickable"
-                          :class="{ active: item.backpackId === backpack.id }"
-                          :src="backpack.image"
-                          @click="item.backpackId = backpack.id"
+                        <v-slide-group
+                          v-model="item.backpackId"
+                          show-arrows="always"
                         >
-                      </v-col>
+                          <v-slide-item
+                            v-for="backpack in backpacks"
+                            :key="backpack.id"
+                            v-slot="{ active, toggle }"
+                            :value="backpack.id"
+                          >
+                            <img
+                              :alt="backpack.name"
+                              class="clickable image"
+                              :class="{ active }"
+                              :src="backpack.image"
+                              height="100px"
+                              @click="toggle"
+                            >
+                          </v-slide-item>
+                          <template v-slot:next>
+                            <v-icon color="#F89838" x-large>
+                              mdi-chevron-right
+                            </v-icon>
+                          </template>
+                          <template v-slot:prev>
+                            <v-icon color="#F89838" x-large>
+                              mdi-chevron-left
+                            </v-icon>
+                          </template>
+                        </v-slide-group>
+                      </v-sheet>
                     </v-row>
                   </v-col>
                 </v-row>
@@ -617,22 +636,14 @@ export default {
 
 <style lang="scss" scoped>
 .image {
-  height: 100px;
-  width: 100px;
-  display: flex;
-  justify-content: center;
-  align-content: center;
+  max-height: 80px;
+  max-width: 80px;
+  width: 100%;
 
-  img {
-    max-height: 80px;
-    max-width: 80px;
-    width: 100%;
-
-    &.active {
-      background-color: var(--v-secondary-base);
-      border-radius: 50%;
-      padding: 5px;
-    }
+  &.active {
+    background-color: var(--v-secondary-base);
+    border-radius: 50%;
+    padding: 5px;
   }
 }
 

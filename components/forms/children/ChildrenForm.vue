@@ -111,22 +111,51 @@
       :name="(removable ? `Child #${index + 1} - ` : '') + 'Backpack'"
       rules="required"
     >
-      <v-row no-gutters>
-        <v-col
-          v-for="(backpack, indexB) in backpacks"
-          :key="indexB"
-          class="image"
-          cols="4"
-          md="2"
-        >
-          <img
-            :alt="backpack.name"
-            class="clickable"
-            :class="{ active: itemCurrent.backpackId === backpack.id }"
-            :src="backpack.image"
-            height="100px"
-            @click="itemCurrent.backpackId = backpack.id"
-          >
+      <v-row justify="center" no-gutters>
+        <v-col cols="12" md="10" lg="12">
+          <v-row no-gutters>
+            <v-col cols="12">
+              <span class="text-h6 font-weight-bold text-uppercase">
+                Change icon:
+              </span>
+            </v-col>
+
+            <v-sheet
+              class="my-2"
+              width="100%"
+            >
+              <v-slide-group
+                v-model="itemCurrent.backpackId"
+                show-arrows="always"
+              >
+                <v-slide-item
+                  v-for="backpack in backpacks"
+                  :key="backpack.id"
+                  v-slot="{ active, toggle }"
+                  :value="backpack.id"
+                >
+                  <img
+                    :alt="backpack.name"
+                    class="clickable image"
+                    :class="{ active }"
+                    :src="backpack.image"
+                    height="100px"
+                    @click="toggle"
+                  >
+                </v-slide-item>
+                <template v-slot:next>
+                  <v-icon color="#F89838" x-large>
+                    mdi-chevron-right
+                  </v-icon>
+                </template>
+                <template v-slot:prev>
+                  <v-icon color="#F89838" x-large>
+                    mdi-chevron-left
+                  </v-icon>
+                </template>
+              </v-slide-group>
+            </v-sheet>
+          </v-row>
         </v-col>
       </v-row>
 
@@ -274,13 +303,6 @@ export default {
 
 <style lang="scss" scoped>
 .image {
-  height: 100px;
-  width: 100px;
-  display: flex;
-  justify-content: center;
-  align-content: center;
-
-  img {
     max-height: 100px;
     max-width: 100px;
     width: 100%;
@@ -290,8 +312,8 @@ export default {
       border-radius: 50%;
       padding: 5px;
     }
-  }
 }
+
 .grey {
   color: var(--v-black-base);
 }
