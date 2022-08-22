@@ -61,12 +61,9 @@
             'pg-flex',
             'pg-justify-center',
             'pg-mt-14',
-            'sm:h-32',
             'lg:pg-col-span-5',
-            'lg:pg-mt-0',
+            'heigh-mobile',
           ]"
-
-          class="heigh-mobile"
         >
           <CardInfo />
         </div>
