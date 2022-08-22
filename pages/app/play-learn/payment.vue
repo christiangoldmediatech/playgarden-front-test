@@ -77,7 +77,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, useContext, useRouter } from '@nuxtjs/composition-api'
+import { defineComponent, ref, useRouter } from '@nuxtjs/composition-api'
 import BackButton from '@/components/shared/BackButton/BackButton.vue'
 import StepTwoCardSummary from '@/components/app/learn-play/StepTwoCardSummary/StepTwoCardSummary.vue'
 import StepTwoCardDetail from '@/components/app/learn-play/StepTwoCardDetail/StepTwoCardDetail.vue'
@@ -100,8 +100,7 @@ export default defineComponent({
   setup() {
     const snotify = useSnotifyHelper()
     const router = useRouter()
-    const { $axios } = useContext()
-    const Payment = usePayment({ axios: $axios })
+    const Payment = usePayment()
 
     const isLoading = ref(false)
     const toggleInfo = ref(true)

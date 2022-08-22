@@ -11,7 +11,16 @@ export const useGtm = () => {
     })
   }
 
+  function paymentPage(opts: { conversionID: string; conversionLabel: string }) {
+    gtm.push({
+      event: 'payment_page',
+      conversionID: opts.conversionID,
+      conversionLabel: opts.conversionLabel
+    })
+  }
+
   return {
-    parentPage
+    parentPage,
+    paymentPage
   }
 }
