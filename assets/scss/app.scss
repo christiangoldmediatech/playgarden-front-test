@@ -244,3 +244,10 @@
 .v2-font {
   font-family: 'Quicksand', 'Poppins', sans-serif;
 }
+
+.pg-player-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2500;
+}
