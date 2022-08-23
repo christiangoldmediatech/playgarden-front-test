@@ -147,6 +147,7 @@ export default defineComponent({
   aspect-ratio: 1;
   background-color: var(--path-item-background-color);
   border-radius: 50%;
+  -webkit-border-radius: 50%;
   box-shadow: 6px 4px 24px rgba(0, 0, 0, 0.81);
   transition: transform 250ms ease-in-out;
 
@@ -154,6 +155,7 @@ export default defineComponent({
     width: 90%;
     aspect-ratio: 1;
     border-radius: 50%;
+    -webkit-border-radius: 50%;
     object-fit: cover;
     object-position: center center;
   }
@@ -165,6 +167,7 @@ export default defineComponent({
     width: 90%;
     aspect-ratio: 1;
     border-radius: 50%;
+    -webkit-border-radius: 50%;
     object-fit: cover;
     object-position: center center;
     opacity: 1;

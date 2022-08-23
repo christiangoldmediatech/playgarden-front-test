@@ -32,18 +32,11 @@
     </div>
 
     <!-- IMAGE -->
-    <div
-      :class="[
-        'pg-w-full',
-        'pg-flex',
-        'pg-justify-center'
-      ]"
-    >
-      <img
-        src="@/assets/png/login-card-child.png"
-        class="child-login pg-mt-8 lg:pg-mt-10 pg-z-[4] pg-h-[150px] lg:pg-h-[250px]"
-      >
-    </div>
+    <section class="position-circle mt-6">
+      <div class="circle ring-1" />
+      <div class="circle ring-2" />
+      <div class="circle core d-flex flex-column align-center justify-center" />
+    </section>
   </div>
 </template>
 
@@ -56,12 +49,47 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.child-login {
-  -webkit-border-radius:  50%;
-  -moz-border-radius: 50%;
+$outerCircleSize: 250px;
+$circleSizeDifference: 20px;
+
+$ring2Size: calc(#{$outerCircleSize} - #{$circleSizeDifference});
+$coreSize: calc(#{$outerCircleSize} - 2 * #{$circleSizeDifference});
+
+.position-circle {
+  position: relative;
+}
+
+.img-icon {
+  max-height: 210px;
+  max-width:  210px;
+}
+
+.circle {
+  width: $outerCircleSize;
+  height: $outerCircleSize;
   border-radius: 50%;
-  background-color: #b2e68d;
-  border: 7px solid #b2e68d;
-  outline: 7px solid #68c453;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+}
+
+.ring-1 {
+  background-color: var(--v-primary-base);
+}
+
+.ring-2 {
+  top: calc(#{$circleSizeDifference} / 2);
+  width: $ring2Size;
+  height: $ring2Size;
+  background-color: var(--v-secondary-base);
+}
+
+.core {
+  top: $circleSizeDifference;
+  background:url(@/assets/png/login-card-child.png);
+  width: $coreSize;
+  height: $coreSize;
+  background-color: white;
 }
 </style>
