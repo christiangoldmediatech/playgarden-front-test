@@ -57,6 +57,8 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .child-login {
+  -webkit-border-radius:  50%;
+  -moz-border-radius: 50%;
   border-radius: 50%;
   background-color: #b2e68d;
   border: 7px solid #b2e68d;
