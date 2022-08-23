@@ -94,7 +94,7 @@
             </v-btn>
 
             <!-- Call to enroll -->
-            <div v-else-if="plan.name === 'Homeschool'" class="pg-text-center">
+            <div v-else-if="plan.name.toUpperCase() === 'HOMESCHOOL'" class="pg-text-center">
               <div class="accent--text pg-text-2xl pg-font-bold">
                 Call to enroll
               </div>
