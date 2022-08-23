@@ -1,31 +1,33 @@
 <template>
-  <PgVideoPlayer
-    id="lessonVideoPlayer"
-    :control-config="{
-      favorite: shouldShowFavorite,
-      unlock: (toUnlock && puzzlePieceImg !== null)
-    }"
-    :next-unlock-image="puzzlePieceImg"
-    :unlock-number="toUnlock"
-    unlock-text="PUZZLE PIECE"
-    force-default-poster
-    v-bind="{
-      isFavoritesLoading
-    }"
-    @ready="onPlayerReady"
-    @on-favorites-clicked="onFavoritesClicked"
-    v-on="callbacks"
-  >
-    <template v-if="puzzlePieceImg" #unlock-image>
-      <img class="puzzle-piece-img" :src="puzzlePieceImg" @click="onPuzzlePieceClick">
-    </template>
-    <LessonCompletedDialog
-      v-model="isLessonCompleted"
-      attach="lessonVideoPlayer"
-      @close="onLessonCompletedDialogClose"
-    />
-    <PuzzleClipPath />
-  </PgVideoPlayer>
+  <div class="pg-player-wrapper">
+    <PgVideoPlayer
+      id="lessonVideoPlayer"
+      :control-config="{
+        favorite: shouldShowFavorite,
+        unlock: (toUnlock && puzzlePieceImg !== null)
+      }"
+      :next-unlock-image="puzzlePieceImg"
+      :unlock-number="toUnlock"
+      unlock-text="PUZZLE PIECE"
+      force-default-poster
+      v-bind="{
+        isFavoritesLoading
+      }"
+      @ready="onPlayerReady"
+      @on-favorites-clicked="onFavoritesClicked"
+      v-on="callbacks"
+    >
+      <template v-if="puzzlePieceImg" #unlock-image>
+        <img class="puzzle-piece-img" :src="puzzlePieceImg" @click="onPuzzlePieceClick">
+      </template>
+      <LessonCompletedDialog
+        v-model="isLessonCompleted"
+        attach="lessonVideoPlayer"
+        @close="onLessonCompletedDialogClose"
+      />
+      <PuzzleClipPath />
+    </PgVideoPlayer>
+  </div>
 </template>
 
 <script lang="ts">
