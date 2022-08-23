@@ -62,7 +62,7 @@
             'pg-justify-center',
             'pg-mt-14',
             'lg:pg-col-span-5',
-            'heigh-mobile',
+            'height-mobile',
           ]"
         >
           <CardInfo />
@@ -186,7 +186,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.heigh-mobile {
+.height-mobile {
   min-height: 475px;
 }
 </style>
