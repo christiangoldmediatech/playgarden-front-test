@@ -91,7 +91,12 @@ export default {
       return result
     }
   },
-
+  mounted() {
+    document.body.style.overflow = 'hidden'
+  },
+  destroyed() {
+    document.body.style.overflow = 'scroll'
+  },
   async created () {
     await this.getChildren()
 
