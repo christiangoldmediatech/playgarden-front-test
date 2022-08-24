@@ -1,48 +1,50 @@
 <template>
   <v-row no-gutters>
-    <!-- Name -->
     <v-col
       class="pr-2"
-      cols="6"
+      cols="7"
     >
-      <validation-provider
-        v-slot="{ errors }"
-        :name="(removable ? `Child #${index + 1} - ` : '') + 'Name'"
-        rules="required"
-      >
-        <pg-text-field
-          v-model="itemCurrent.firstName"
-          clearable
-          :disabled="isLoading"
-          :error-messages="errors"
-          label="First name"
-          solo
-          class="custom-text-field"
-        />
-      </validation-provider>
-    </v-col>
-    <v-col
-      cols="6"
-    >
-      <!-- Lastname -->
-      <validation-provider
-        v-slot="{ errors }"
-        :name="(removable ? `Child #${index + 1} - ` : '') + 'Lastname'"
-        rules="required"
-      >
-        <pg-text-field
-          v-model="itemCurrent.lastName"
-          clearable
-          :disabled="isLoading"
-          :error-messages="errors"
-          label="Last name"
-          solo
-          class="custom-text-field"
-        />
-      </validation-provider>
-    </v-col>
-    <!-- Birth date -->
-    <v-col cols="12">
+      <v-row class="m">
+        <v-col cols="6">
+          <!-- Name -->
+          <validation-provider
+            v-slot="{ errors }"
+            :name="(removable ? `Child #${index + 1} - ` : '') + 'Name'"
+            rules="required"
+          >
+            <pg-text-field
+              v-model="itemCurrent.firstName"
+              clearable
+              :disabled="isLoading"
+              :error-messages="errors"
+              label="First name"
+              solo
+              class="custom-text-field"
+            />
+          </validation-provider>
+        </v-col>
+
+        <v-col cols="6">
+          <!-- Lastname -->
+          <validation-provider
+            v-slot="{ errors }"
+            :name="(removable ? `Child #${index + 1} - ` : '') + 'Lastname'"
+            rules="required"
+          >
+            <pg-text-field
+              v-model="itemCurrent.lastName"
+              clearable
+              :disabled="isLoading"
+              :error-messages="errors"
+              label="Last name"
+              solo
+              class="custom-text-field"
+            />
+          </validation-provider>
+        </v-col>
+      </v-row>
+
+      <!-- Birth date -->
       <v-menu
         ref="menu"
         v-model="menu"
@@ -73,15 +75,13 @@
           @change="save"
         />
       </v-menu>
-    </v-col>
 
-    <!-- Gender -->
-    <v-col cols="12">
+      <!-- Gender -->
       <validation-provider
         :name="(removable ? `Child #${index + 1} - ` : '') + 'Gender'"
         rules="required"
       >
-        <v-row class="mb-6">
+        <v-row>
           <v-col v-for="(gender, indexG) in genders" :key="indexG" cols="6">
             <v-btn
               block
@@ -101,66 +101,16 @@
       </validation-provider>
     </v-col>
 
-    <!-- Backpack -->
-    <center class="mb-4">
-      <small>
-        Choose an icon for you child:
-      </small>
-    </center>
-    <validation-provider
-      :name="(removable ? `Child #${index + 1} - ` : '') + 'Backpack'"
-      rules="required"
-    >
-      <v-row justify="center" no-gutters>
-        <v-col cols="12" md="10" lg="12">
-          <v-row no-gutters>
-            <v-col cols="12">
-              <span class="text-h6 font-weight-bold text-uppercase">
-                Change icon:
-              </span>
-            </v-col>
-
-            <v-sheet
-              class="my-2"
-              width="100%"
-            >
-              <v-slide-group
-                v-model="itemCurrent.backpackId"
-                show-arrows="always"
-              >
-                <v-slide-item
-                  v-for="backpack in backpacks"
-                  :key="backpack.id"
-                  v-slot="{ active, toggle }"
-                  :value="backpack.id"
-                >
-                  <img
-                    :alt="backpack.name"
-                    class="clickable image"
-                    :class="{ active }"
-                    :src="backpack.image"
-                    height="100px"
-                    @click="toggle"
-                  >
-                </v-slide-item>
-                <template v-slot:next>
-                  <v-icon color="#F89838" x-large>
-                    mdi-chevron-right
-                  </v-icon>
-                </template>
-                <template v-slot:prev>
-                  <v-icon color="#F89838" x-large>
-                    mdi-chevron-left
-                  </v-icon>
-                </template>
-              </v-slide-group>
-            </v-sheet>
-          </v-row>
-        </v-col>
-      </v-row>
-
-      <input v-model="itemCurrent.backpackId" type="hidden">
-    </validation-provider>
+    <v-col cols="5" class="pl-2">
+      <!-- Backpack -->
+      <validation-provider
+        :name="(removable ? `Child #${index + 1} - ` : '') + 'Backpack'"
+        rules="required"
+      >
+        <child-icon-selector v-model="itemCurrent.backpackId" :backpacks="backpacks" />
+        <input v-model="itemCurrent.backpackId" type="hidden">
+      </validation-provider>
+    </v-col>
 
     <v-btn
       v-if="removable"
@@ -178,9 +128,11 @@
 
 <script>
 import dayjs from 'dayjs'
+import ChildIconSelector from '@/components/forms/children/ChildIconSelector.vue'
 import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'ChildrenForm',
+  components: { ChildIconSelector },
   props: {
     item: {
       type: Object,
@@ -302,18 +254,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.image {
-    max-height: 100px;
-    max-width: 100px;
-    width: 100%;
-
-    &.active {
-      background-color: var(--v-secondary-base);
-      border-radius: 50%;
-      padding: 5px;
-    }
-}
-
 .grey {
   color: var(--v-black-base);
 }

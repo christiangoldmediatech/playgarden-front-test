@@ -15,41 +15,30 @@
       </div>
 
       <!-- CONTENT -->
-      <div
-        :class="[
-          'pg-grid',
-          'pg-grid-cols-1',
-          'lg:pg-grid-cols-12',
-          'lg:pg-gap-12',
-        ]"
-      >
-        <!-- LEFT -->
-        <div class="pg-col-span-full lg:pg-col-span-5 pg-order-2 lg:pg-order-1">
-          <img
-            src="@/assets/png/play-learn/child-with-backpack.png"
-            class="pg-w-full"
-          >
-        </div>
+      <v-container class="pa-0" :style="{ 'height': this.$vuetify.breakpoint.lgAndUp ? '650px' : 'unset' }" fluid>
+        <v-row class="fill-height content-wrapper" no-gutters>
+          <!-- LEFT -->
+          <v-col cols="12" lg="5" class="fill-height">
+            <img
+              src="@/assets/png/play-learn/child-with-backpack.png"
+              class="backpack-img pg-w-full content-border"
+              height="100%"
+            >
+          </v-col>
 
-        <!-- RIGHT -->
-        <div
-          :class="[
-            'pg-col-span-full',
-            'pg-flex',
-            'pg-flex-col',
-            'pg-justify-center',
-            'pg-order-1',
-            'lg:pg-col-span-7',
-            'lg:pg-mt-14',
-            'lg:pg-order-2',
-          ]"
-        >
-          <ShortRegisterForm
-            :loading="isLoading"
-            @click:submit="handleSubmit"
-          />
-        </div>
-      </div>
+          <v-col cols="12" lg="7" class="fill-height">
+            <!-- RIGHT -->
+            <div class="form-wrapper fill-height">
+              <div class="form-container px-12 pt-8 content-border">
+                <ShortRegisterForm
+                  :loading="isLoading"
+                  @click:submit="handleSubmit"
+                />
+              </div>
+            </div>
+          </v-col>
+        </v-row>
+      </v-container>
     </div>
   </div>
 </template>
@@ -128,3 +117,38 @@ export default defineComponent({
   }
 })
 </script>
+
+<style lang="scss" scoped>
+.container {
+  height: 650px;
+}
+
+.content-wrapper {
+  display: flex;
+}
+
+.content-border {
+  border-radius: 18px;
+}
+
+.form-container {
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15);
+  height: 100%;
+  width: 100%;
+  background: white;
+
+  @media (min-width: 1264px) {
+    position: absolute;
+    left: -90px;
+    width: calc(100% + 90px);
+  }
+}
+
+.backpack-img {
+  object-fit: cover;
+}
+
+.form-wrapper {
+  position: relative;
+}
+</style>
