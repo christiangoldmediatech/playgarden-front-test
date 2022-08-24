@@ -20,7 +20,7 @@
         </div>
 
         <p class="pg-text-center pg-text-xl md:pg-text-3xl pg-text-pg-grey pg-mt-6">
-          It appears that you have Register previously, please <span class="pg-text-accent pg-underline pg-font-bold pg-cursor-pointer" @click="handleHereClick">LOGIN</span> to continue the onboarding process, if you don't remember your Password you can get a new one <span class="pg-text-accent pg-underline pg-font-bold pg-cursor-pointer" @click="handleResetPasswordClick">HERE</span>.
+          It appears that you have previously registered (or started registering) with us. Please <span class="pg-text-accent pg-underline pg-font-bold pg-cursor-pointer" @click="handleHereClick">LOGIN</span> to continue the registration process. If you do not remember your password, you may reset it by clicking <span class="pg-text-accent pg-underline pg-font-bold pg-cursor-pointer" @click="handleResetPasswordClick">HERE</span>.
         </p>
       </div>
     </large-image-content-dialog>
