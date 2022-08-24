@@ -1,12 +1,28 @@
+import { pathWidth } from '../../app/library/pathConstants';
 <template>
   <div
-    class="icon-selector d-flex flex-column justify-center align-center clickable"
+    class="icon-selector d-flex justify-center align-center clickable"
+    :class="{ 'flex-column': this.$vuetify.breakpoint.lgAndUp, 'pa-4': !this.$vuetify.breakpoint.lgAndUp }"
     @click="openDialog"
   >
-    <img v-if="!backpackId" src="@/assets/svg/child-icon-selector.svg" />
+    <img
+      v-if="!backpackId"
+      width="100px"
+      height="100px"
+      :class="{ 'mb-4': this.$vuetify.breakpoint.lgAndUp, 'mr-4': !this.$vuetify.breakpoint.lgAndUp }"
+      src="@/assets/svg/child-icon-selector.svg"
+    />
 
-    <div v-else class="mb-2 selected-icon-wrapper">
-      <img width="100px" height="100px" :src="backpackIcon" />
+    <div
+      v-else
+      class="selected-icon-wrapper"
+      :class="{ 'mb-4': this.$vuetify.breakpoint.lgAndUp, 'mr-4': !this.$vuetify.breakpoint.lgAndUp }"
+    >
+      <img
+        :width="this.$vuetify.breakpoint.lgAndUp ? '100px' : '80px'"
+        :height="this.$vuetify.breakpoint.lgAndUp ? '100px' : '80px'"
+        :src="backpackIcon"
+      />
       <img class="check-icon" src="@/assets/svg/check.svg" />
     </div>
 
@@ -28,7 +44,7 @@
         <!-- CLOSE BUTTON -->
         <div
           class="close-icon-wrapper clickable"
-          @click="dialog = false"
+          @click="closeDialog"
         >
           <img
             src="@/assets/svg/close-icon-2.svg"
@@ -57,7 +73,7 @@
                 :class="{ active: backpackId === backpack.id }"
                 :src="backpack.image"
                 height="100px"
-                @click="backpackId = backpack.id"
+                @click="selectIcon(backpack.id)"
               >
             </v-col>
           </v-row>
@@ -103,6 +119,13 @@ export default {
   methods: {
     openDialog() {
       this.dialog = true
+    },
+    closeDialog() {
+      this.dialog = false
+    },
+    selectIcon(id) {
+      this.backpackId = id
+      this.closeDialog()
     }
   }
 }
@@ -122,13 +145,17 @@ export default {
 
 .btn-text {
   font-weight: 700;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 32px;
   text-align: center;
   text-decoration-line: underline;
   color: #F89838;
   caret-color: rgba(0,0,0,0);
   transition: 0.3s all;
+
+  @media (min-width: 600px) {
+    font-size: 18px;
+  }
 
   @media (min-width: 1264px) {
     font-size: 21px;
@@ -146,6 +173,8 @@ export default {
   font-size: 32px;
   line-height: 48px;
   color: #F89838;
+  word-break: break-word;
+  text-align: center;
 }
 
 .close-icon-wrapper {

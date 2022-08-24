@@ -181,14 +181,23 @@ export default {
 <style lang="scss" scoped>
 .form-title {
   font-style: normal;
+  font-size: 25px;
   line-height: 72px;
   letter-spacing: 4.8px;
+
+  @media (min-width: 600px) {
+    font-size: 32px;
+  }
 }
 
 .form-subtitle {
   font-style: normal;
   font-weight: 400;
-  font-size: 19px;
+  font-size: 16px;
   line-height: 28px;
+
+  @media (min-width: 600px) {
+    font-size: 19px;
+  }
 }
 </style>

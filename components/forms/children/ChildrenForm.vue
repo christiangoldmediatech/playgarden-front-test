@@ -1,11 +1,14 @@
 <template>
   <v-row no-gutters>
     <v-col
-      class="pr-2"
-      cols="7"
+      cols="12"
+      lg="7"
+      order="2"
+      order-lg="1"
+      :class="{ 'pr-2': this.$vuetify.breakpoint.lgAndUp }"
     >
-      <v-row class="m">
-        <v-col cols="6">
+      <v-row :no-gutters="!this.$vuetify.breakpoint.lgAndUp">
+        <v-col cols="12" lg="6">
           <!-- Name -->
           <validation-provider
             v-slot="{ errors }"
@@ -24,7 +27,7 @@
           </validation-provider>
         </v-col>
 
-        <v-col cols="6">
+        <v-col cols="12" lg="6">
           <!-- Lastname -->
           <validation-provider
             v-slot="{ errors }"
@@ -101,7 +104,13 @@
       </validation-provider>
     </v-col>
 
-    <v-col cols="5" class="pl-2">
+    <v-col
+      cols="12"
+      lg="5"
+      order="1"
+      order-lg="2"
+      :class="[ this.$vuetify.breakpoint.lgAndUp ? 'mb-0 pl-2' : 'mb-7']"
+    >
       <!-- Backpack -->
       <validation-provider
         :name="(removable ? `Child #${index + 1} - ` : '') + 'Backpack'"

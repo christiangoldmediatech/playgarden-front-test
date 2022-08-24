@@ -29,7 +29,7 @@
           <v-col cols="12" lg="7" class="fill-height">
             <!-- RIGHT -->
             <div class="form-wrapper fill-height">
-              <div class="form-container px-12 pt-8 content-border">
+              <div class="form-container pt-8 content-border" :class="{ 'px-12': this.$vuetify.breakpoint.lgAndUp }">
                 <ShortRegisterForm
                   :loading="isLoading"
                   @click:submit="handleSubmit"
@@ -132,7 +132,6 @@ export default defineComponent({
 }
 
 .form-container {
-  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15);
   height: 100%;
   width: 100%;
   background: white;
@@ -141,11 +140,23 @@ export default defineComponent({
     position: absolute;
     left: -90px;
     width: calc(100% + 90px);
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15);
   }
 }
 
 .backpack-img {
+  height: 200px;
+  object-position: 100% 0;
   object-fit: cover;
+
+  @media (min-width: 600px) {
+    height: 500px;
+    object-position: 100% 0;
+  }
+
+  @media (min-width: 1264px) {
+    height: 100%;
+  }
 }
 
 .form-wrapper {
