@@ -19,13 +19,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useStore } from '@nuxtjs/composition-api'
+import { defineComponent } from '@nuxtjs/composition-api'
 import ApplicationHeader from '@/components/app/header/ApplicationHeader.vue'
 import AppNavigation from '@/components/app/header/AppNavigation.vue'
 import DefaultFooter from '@/components/app/footer/DefaultFooter.vue'
 import EmailConflictModal from '@/components/app/register/EmailConflictModal.vue'
 import AccountInactiveModal from '@/components/app/register/AccountInactiveModal.vue'
-import { useAccessorHelper } from '@/composables'
 import { useAuth } from '@/composables/users'
 
 export default defineComponent({
@@ -42,8 +41,7 @@ export default defineComponent({
   },
 
   setup() {
-    const store = useAccessorHelper()
-    const Auth = useAuth({ store: store.auth })
+    const Auth = useAuth()
 
     return {
       isUserLoggedIn: Auth.isUserLoggedIn

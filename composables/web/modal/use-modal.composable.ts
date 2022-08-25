@@ -1,7 +1,9 @@
+import { useAccessorHelper } from '@/composables/helpers.composable'
 import { computed } from '@nuxtjs/composition-api'
-import { UseModalOptions } from './types/use-modal-options.type'
 
-export const useModal = ({ store }: UseModalOptions) => {
+export const useModal = () => {
+  const store = useAccessorHelper().notifications
+
   const isEmailConflictModalVisible = computed({
     get() {
       return store.isEmailConflictModalVisible
