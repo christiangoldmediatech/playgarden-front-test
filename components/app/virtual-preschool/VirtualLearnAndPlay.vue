@@ -135,12 +135,12 @@ export default defineComponent({
         }
       },
       music: {
-        imageUrl: require('@/assets/png/virtual-preschool/Music.png'),
+        imageUrl: require('@/assets/jpg/virtual-preschool/Music.JPG'),
         title: 'Music',
         route: { name: 'app-music' }
       },
       library: {
-        imageUrl: require('@/assets/png/virtual-preschool/Library.png'),
+        imageUrl: require('@/assets/jpg/virtual-preschool/Library.JPG'),
         title: 'Library',
         route: { name: 'app-library' }
       },
