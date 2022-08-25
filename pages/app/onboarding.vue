@@ -126,6 +126,9 @@ export default defineComponent({
   },
 
   async created() {
+    // Remove this line when the onboarding is ready
+    this.$router.replace({ name: 'app-virtual-preschool' })
+
     try {
       const onboardings = await this.getOnboardings()
 
