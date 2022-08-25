@@ -3,13 +3,22 @@
     <v-row no-gutters>
       <v-col cols="12">
         <pg-loading v-if="loading" />
-        <v-card v-else elevation="0">
-          <v-row>
-            <v-btn class="ml-3" icon @click.stop="nextStep">
-              <v-icon>
-                mdi-close
-              </v-icon>
-            </v-btn>
+        <v-card v-else elevation="0" class="mt-10">
+          <v-row justify="between" align="start">
+            <v-col cols="2">
+              <v-btn class="pg-ml-[-20px]" plain color="accent" @click.stop="nextStep">
+                <v-icon size="50" class="mr-3">
+                  mdi-chevron-left
+                </v-icon>
+                Back to home
+              </v-btn>
+            </v-col>
+            <v-col cols="8">
+              <p class="text-center pg-text-[#C399ED] pg-text-3xl pg-font-bold">
+                Watch a video on how to use our online preschool!
+              </p>
+            </v-col>
+            <v-col cols="2" />
           </v-row>
           <v-stepper v-if="!none" v-model="step" class="elevation-0">
             <v-stepper-header v-if="!single">
