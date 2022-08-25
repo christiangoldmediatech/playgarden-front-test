@@ -32,9 +32,7 @@
       <nuxt v-else :style="contentStyle" />
 
       <!-- FOOTER -->
-      <default-footer v-if="!hasUserLearnAndPlayPlan" />
-
-      <GolFooter v-else />
+      <default-footer />
 
       <notify-event />
 
