@@ -58,69 +58,12 @@
                       DELETE CHILD
                     </v-btn>
                   </v-col>
-
-                  <!-- Child Profile Backpack -->
-                  <v-col
-                    cols="12"
-                    :class="[
-                      'd-flex justify-center',
-                      { 'mt-sm-n0': !!item.id }
-                    ]"
-                  >
-                    <img
-                      v-if="firstBackpack"
-                      :alt="childBackpack(item.backpackId).name"
-                      class="backpack-active"
-                      :src="childBackpack(item.backpackId).image"
-                    >
-                  </v-col>
                 </v-row>
 
                 <!-- Backpack Picker -->
-                <v-row justify="center" no-gutters>
-                  <v-col cols="12" md="10" lg="12">
-                    <v-row no-gutters>
-                      <v-col cols="12">
-                        <span class="text-h6 font-weight-bold text-uppercase">
-                          Change icon:
-                        </span>
-                      </v-col>
-                      <v-sheet
-                        class="my-2"
-                        width="100%"
-                      >
-                        <v-slide-group
-                          v-model="item.backpackId"
-                          show-arrows="always"
-                        >
-                          <v-slide-item
-                            v-for="backpack in backpacks"
-                            :key="backpack.id"
-                            v-slot="{ active, toggle }"
-                            :value="backpack.id"
-                          >
-                            <img
-                              :alt="backpack.name"
-                              class="clickable image"
-                              :class="{ active }"
-                              :src="backpack.image"
-                              height="100px"
-                              @click="toggle"
-                            >
-                          </v-slide-item>
-                          <template v-slot:next>
-                            <v-icon color="#F89838" x-large>
-                              mdi-chevron-right
-                            </v-icon>
-                          </template>
-                          <template v-slot:prev>
-                            <v-icon color="#F89838" x-large>
-                              mdi-chevron-left
-                            </v-icon>
-                          </template>
-                        </v-slide-group>
-                      </v-sheet>
-                    </v-row>
+                <v-row class="mb-6" no-gutters>
+                  <v-col cols="12">
+                    <child-icon-selector v-model="item.backpackId" :backpacks="backpacks" />
                   </v-col>
                 </v-row>
 
@@ -351,12 +294,14 @@ import dayjs from 'dayjs'
 import { mapActions } from 'vuex'
 
 import UserChildTimelineDialog from '@/components/admin/users/UserChildTimelineDialog.vue'
+import ChildIconSelector from '@/components/forms/children/ChildIconSelector.vue'
 
 export default {
   name: 'ChildForm',
 
   components: {
-    UserChildTimelineDialog
+    UserChildTimelineDialog,
+    ChildIconSelector
   },
 
   data: () => ({

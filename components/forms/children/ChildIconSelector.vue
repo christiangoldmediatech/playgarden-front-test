@@ -1,7 +1,7 @@
 import { pathWidth } from '../../app/library/pathConstants';
 <template>
   <div
-    class="icon-selector d-flex justify-center align-center clickable"
+    class="icon-selector d-flex justify-center align-center clickable py-4"
     :class="{ 'flex-column': this.$vuetify.breakpoint.lgAndUp, 'pa-4': !this.$vuetify.breakpoint.lgAndUp }"
     @click="openDialog"
   >
@@ -38,6 +38,7 @@ import { pathWidth } from '../../app/library/pathConstants';
       v-model="dialog"
       :fullscreen="$vuetify.breakpoint.xs"
       max-width="900px"
+      class="icon-selector-dialog"
       scrollable
     >
       <v-card height="500px" class="card-icon-selector">
@@ -132,6 +133,10 @@ export default {
 </script>
 
 <style lang="scss">
+.icon-selector-dialog {
+  z-index: 1000;
+}
+
 .icon-selector {
   width: 100%;
   height: 100%;
