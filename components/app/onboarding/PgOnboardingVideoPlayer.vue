@@ -1,6 +1,6 @@
 <template>
   <div :id="containerId" class="inline-video-container">
-    <pg-video-player
+    <PgVideoPlayer
       v-bind="$attrs"
       inline
       :control-config="{
@@ -18,25 +18,19 @@
     >
       <template #inline-play-icon="{ firstPlay }">
         <div v-if="firstPlay && show" class="play-button-container">
-          <img src="@/assets/png/play-image.png" width="20%">
-          <p class="text-center pt-3">
-            <span class="title-video text-md-h5">
-              Watch a video on how to use our online preschool!
-            </span>
-          </p>
-          <v-hover v-slot="{ hover }">
-            <v-btn
-              color="accent"
-              :class="['play-button-icon', { 'play-button-icon-scaled': hover }]"
-              :small="$vuetify.breakpoint.xs"
-              @click.stop="onClick"
-            >
-              <v-icon left>
-                mdi-play
-              </v-icon>
-              START
-            </v-btn>
-          </v-hover>
+          <v-btn
+            color="white"
+            class="pg-bg-primary px-16 py-16"
+            :small="$vuetify.breakpoint.xs"
+            icon
+            x-large
+            elevation="1"
+            @click.stop="onClick"
+          >
+            <v-icon size="130" class="ml-5">
+              mdi-play-outline
+            </v-icon>
+          </v-btn>
         </div>
         <div v-if="showEnd" class="play-button-container">
           <img src="@/assets/png/play-image.png" width="20%">
@@ -72,7 +66,7 @@
           </v-hover>
         </div>
       </template>
-    </pg-video-player>
+    </PgVideoPlayer>
   </div>
 </template>
 
@@ -202,13 +196,6 @@ export default {
       align-items: center;
       justify-content: center;
       text-align: center;
-    }
-    &-text {
-      font-size: 24px;
-      font-weight: bold;
-      color: white !important;
-      letter-spacing: 0.04em;
-      margin: 8px 0px;
     }
   }
 }
