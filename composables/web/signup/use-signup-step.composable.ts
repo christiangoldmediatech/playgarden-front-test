@@ -10,36 +10,18 @@ export const useSignupStep = () => {
     abFlow
   }: {
     utmContent: UTMQueryObject
-    signupType: SignupType
+    signupType?: SignupType
     abFlow?: Flow
   }): RawLocation {
-    const routeWithCreditCard: RawLocation = {
-      name: 'app-payment-plan',
-      query: {
-        step: '2',
-        process: 'signup',
-        ...utmContent
-      }
-    }
-
-    const routeWithoutCreditCard: RawLocation = {
-      name: 'app-payment-plan',
-      query: {
-        step: '2',
-        process: 'signup',
-        ...utmContent
-      }
-    }
-
-    if (!abFlow) {
-      return routeWithCreditCard
+    if (!signupType) {
+      return planSelectPage(utmContent)
     }
 
     switch (abFlow) {
-      case Flow.CREDITCARD:
-        return routeWithCreditCard
       case Flow.NOCREDITCARD:
-        return routeWithoutCreditCard
+        return childrenPage(signupType, utmContent)
+      default:
+        return paymentPage(signupType, utmContent)
     }
   }
 
@@ -52,48 +34,65 @@ export const useSignupStep = () => {
     signupType: SignupType
     abFlow?: Flow
   }): RawLocation {
-    const ccRouteName =
-      signupType === SignupType.LEARN_AND_PLAY
-        ? 'app-play-learn-payment'
-        : 'app-normal-payment'
-
-    const routeWithCreditCard: RawLocation = {
-      name: ccRouteName,
-      query: {
-        step: '3',
-        process: 'signup',
-        ...utmContent
-      }
-    }
-
-    const nccRouteName =
-      signupType === SignupType.LEARN_AND_PLAY
-        ? 'app-play-learn-children'
-        : 'app-children'
-
-    const routeWithoutCreditCard: RawLocation = {
-      name: nccRouteName,
-      query: {
-        step: '4',
-        process: 'signup',
-        ...utmContent
-      }
-    }
-
-    if (!abFlow) {
-      return routeWithCreditCard
-    }
-
     switch (abFlow) {
-      case Flow.CREDITCARD:
-        return routeWithCreditCard
       case Flow.NOCREDITCARD:
-        return routeWithoutCreditCard
+        return childrenPage(signupType, utmContent)
+      default:
+        return paymentPage(signupType, utmContent)
     }
   }
 
   return {
     getStepOneNextStepLocation,
     getStepTwoNextStepLocation
+  }
+}
+
+function planSelectPage(utmContent: UTMQueryObject): RawLocation {
+  return {
+    name: 'app-payment-plan',
+    query: {
+      step: '2',
+      process: 'signup',
+      ...utmContent
+    }
+  }
+}
+
+function paymentPage(
+  signupType: SignupType,
+  utmContent: UTMQueryObject
+): RawLocation {
+  const name =
+    signupType === SignupType.LEARN_AND_PLAY
+      ? 'app-play-learn-payment'
+      : 'app-normal-payment'
+
+  return {
+    name,
+    query: {
+      step: '3',
+      process: 'signup',
+      ...utmContent
+    }
+  }
+}
+
+function childrenPage(
+  signupType: SignupType,
+  utmContent: UTMQueryObject
+): RawLocation {
+  const name =
+    signupType === SignupType.LEARN_AND_PLAY
+      ? 'app-play-learn-children'
+      : 'app-children'
+
+  return {
+    name,
+    query: {
+      step: '4',
+      process: 'signup',
+      ...utmContent
+    }
   }
 }
