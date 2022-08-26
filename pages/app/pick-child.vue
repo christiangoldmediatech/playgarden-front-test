@@ -4,19 +4,19 @@
       <v-row align="center" justify="center">
         <v-col cols="12" md="8" lg="6" class="pick-child" :class="{mobile: $vuetify.breakpoint.smAndDown}">
           <v-card>
-            <div v-if="!isPlayAndLearn" class="green-line green-line-1" />
-            <div v-if="!isPlayAndLearn" class="green-line green-line-2" />
+            <div v-if="!hasUserLearnAndPlayPlan" class="green-line green-line-1" />
+            <div v-if="!hasUserLearnAndPlayPlan" class="green-line green-line-2" />
 
             <v-card-text>
               <div
                 class="text-center"
                 :class="{
-                  'mb-8': isPlayAndLearn && !$vuetify.breakpoint.xs,
+                  'mb-8': hasUserLearnAndPlayPlan && !$vuetify.breakpoint.xs,
                   'my-6': !$vuetify.breakpoint.xs
                 }"
               >
                 <h1
-                  v-if="isPlayAndLearn"
+                  v-if="hasUserLearnAndPlayPlan"
                   class="play-and-learn-title"
                 >
                   Who’s at Play and Learn today?
@@ -46,9 +46,9 @@
                       :class="[
                         'child-option',
                         { scaled: hover },
-                        { 'play-and-learn-option': isPlayAndLearn },
-                        { 'px-6': isPlayAndLearn },
-                        { 'pb-6': isPlayAndLearn }
+                        { 'play-and-learn-option': hasUserLearnAndPlayPlan },
+                        { 'px-6': hasUserLearnAndPlayPlan },
+                        { 'pb-6': hasUserLearnAndPlayPlan }
                       ]"
                     >
                       <v-img
@@ -59,14 +59,14 @@
                         "
                         aspect-ratio="1"
                         contain
-                        :class="{ 'my-6': isPlayAndLearn }"
-                        :width="isPlayAndLearn ? '100px' : '150px'"
-                        :height="isPlayAndLearn ? '100px' : '150px'"
+                        :class="{ 'my-6': hasUserLearnAndPlayPlan }"
+                        :width="hasUserLearnAndPlayPlan ? '100px' : '150px'"
+                        :height="hasUserLearnAndPlayPlan ? '100px' : '150px'"
                       />
                       <span
                         class="font-weight-bold"
                         :class="[
-                          { 'play-and-learn-option-text': isPlayAndLearn },
+                          { 'play-and-learn-option-text': hasUserLearnAndPlayPlan },
                         ]"
                       >
                         {{ child.firstName }}
@@ -82,7 +82,7 @@
                 text
                 block
                 x-large
-                :class="[{ 'my-8': isPlayAndLearn }, { 'play-and-learn-btn-text': isPlayAndLearn }]"
+                :class="[{ 'my-8': hasUserLearnAndPlayPlan }, { 'play-and-learn-btn-text': hasUserLearnAndPlayPlan }]"
                 :to="{ name: 'app-account-index-student-profile' }"
               >
                 MANAGE STUDENT PROFILES
@@ -111,7 +111,7 @@ export default {
 
   computed: {
     ...mapGetters('children', ['rows']),
-    ...mapGetters('auth', ['getUserInfo']),
+    ...mapGetters('auth', ['hasUserLearnAndPlayPlan']),
 
     children () {
       const result = jsonCopy(this.rows)
@@ -123,10 +123,6 @@ export default {
       }) */
 
       return result
-    },
-
-    isPlayAndLearn() {
-      return this.getUserInfo.planSelected.name === 'Learn and Play'
     }
   },
 

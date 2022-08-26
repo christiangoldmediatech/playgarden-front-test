@@ -10,14 +10,17 @@
   >
     <template v-slot:selection="{ item }">
       <v-list-item class="pa-0 w-100">
-        <v-list-item-avatar>
+        <v-list-item-avatar v-if="!showOnlySelectedName">
           <v-img :src="item.backpack.image" />
         </v-list-item-avatar>
 
         <v-list-item-content>
-          <v-list-item-title class="text-truncate">
+          <v-list-item-title v-if="!showOnlySelectedName" class="text-truncate">
             {{ item.firstName }}
           </v-list-item-title>
+          <span v-else class="text-truncate font-weight-bold only-child-name-title">
+            {{ item.firstName }}
+          </span>
         </v-list-item-content>
       </v-list-item>
     </template>
@@ -91,6 +94,11 @@ export default {
     previewMode: {
       type: Boolean,
       default: false
+    },
+
+    showOnlySelectedName: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -145,3 +153,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.only-child-name-title {
+  color: #7852b5 !important;
+  font-size: 28px !important;
+  text-align: center;
+}
+</style>
