@@ -1,26 +1,23 @@
-import { pathWidth } from '../../app/library/pathConstants';
 <template>
   <div
-    class="icon-selector d-flex justify-center align-center clickable py-4"
-    :class="{ 'flex-column': this.$vuetify.breakpoint.lgAndUp, 'pa-4': !this.$vuetify.breakpoint.lgAndUp }"
+    class="icon-selector pg-flex pg-justify-center pg-items-center clickable pg-py-4 lg:pg-flex-col lg:pg-pa-4"
     @click="openDialog"
   >
     <img
       v-if="!backpackId"
-      width="100px"
-      height="100px"
-      :class="{ 'mb-4': this.$vuetify.breakpoint.lgAndUp, 'mr-4': !this.$vuetify.breakpoint.lgAndUp }"
+      :width="imageSize"
+      :height="imageSize"
+      class="lg:pg-mb-4 pg-mr-4 lg:pg-mr-0"
       src="@/assets/svg/child-icon-selector.svg"
     />
 
     <div
       v-else
-      class="selected-icon-wrapper"
-      :class="{ 'mb-4': this.$vuetify.breakpoint.lgAndUp, 'mr-4': !this.$vuetify.breakpoint.lgAndUp }"
+      class="selected-icon-wrapper pg-mr-4 lg:pg-mr-0"
     >
       <img
-        :width="this.$vuetify.breakpoint.lgAndUp ? '100px' : '80px'"
-        :height="this.$vuetify.breakpoint.lgAndUp ? '100px' : '80px'"
+        :width="imageSize"
+        :height="imageSize"
         :src="backpackIcon"
       />
       <img class="check-icon" src="@/assets/svg/check.svg" />
@@ -84,52 +81,60 @@ import { pathWidth } from '../../app/library/pathConstants';
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent, computed, ref, PropType, useContext } from '@nuxtjs/composition-api'
+
+export default defineComponent({
   name: 'ChildIconSelector',
   props: {
     value: {
-      type: Number,
+      type: [Number, String],
       required: true,
-      default: undefined
+      default: ''
     },
     backpacks: {
-      type: Array,
+      type: Array as PropType<any[]>,
       required: true,
       default: () => []
     }
   },
-  data() {
+  emits: ['update:value'],
+  setup(props, { emit }) {
+    const { $vuetify } = useContext()
+    const dialog = ref(false)
+    const backpackId = computed({
+      get() { return props.value },
+      set(value: number | string) { emit('update:value', value) }
+    })
+    const backpackIcon = computed(() => {
+      return props.backpacks.find(x => x.id === backpackId.value).image
+    })
+    const imageSize = computed(() => $vuetify.breakpoint.lgAndUp ? '100px' : '80px')
+
+    const openDialog = () => {
+      dialog.value = true
+    }
+
+    const closeDialog = () => {
+      dialog.value = false
+    }
+
+    const selectIcon = (id: number) => {
+      backpackId.value = id
+      closeDialog()
+    }
+
     return {
-      dialog: false
-    }
-  },
-  computed: {
-    backpackId: {
-      get() {
-        return this.value
-      },
-      set(val) {
-        this.$emit('input', val)
-      }
-    },
-    backpackIcon() {
-      return this.backpacks.find(x => x.id === this.backpackId).image
-    }
-  },
-  methods: {
-    openDialog() {
-      this.dialog = true
-    },
-    closeDialog() {
-      this.dialog = false
-    },
-    selectIcon(id) {
-      this.backpackId = id
-      this.closeDialog()
+      dialog,
+      backpackId,
+      backpackIcon,
+      openDialog,
+      closeDialog,
+      selectIcon,
+      imageSize
     }
   }
-}
+})
 </script>
 
 <style lang="scss">

@@ -5,9 +5,9 @@
       lg="7"
       order="2"
       order-lg="1"
-      :class="{ 'pr-2': this.$vuetify.breakpoint.lgAndUp }"
+      :class="{ 'pr-2': isLargeScreen }"
     >
-      <v-row :no-gutters="!this.$vuetify.breakpoint.lgAndUp">
+      <v-row :no-gutters="!isLargeScreen">
         <v-col cols="12" lg="6">
           <!-- Name -->
           <validation-provider
@@ -109,14 +109,15 @@
       lg="5"
       order="1"
       order-lg="2"
-      :class="[ this.$vuetify.breakpoint.lgAndUp ? 'mb-0 pl-2' : 'mb-7']"
+      class="pg-mb-7 lg:pg-mb-0"
+      :class="{ 'pl-2': isLargeScreen }"
     >
       <!-- Backpack -->
       <validation-provider
         :name="(removable ? `Child #${index + 1} - ` : '') + 'Backpack'"
         rules="required"
       >
-        <child-icon-selector v-model="itemCurrent.backpackId" :backpacks="backpacks" />
+        <child-icon-selector :value="itemCurrent.backpackId" :backpacks="backpacks" @update:value="updateBackpackId" />
         <input v-model="itemCurrent.backpackId" type="hidden">
       </validation-provider>
     </v-col>
@@ -175,6 +176,10 @@ export default {
 
     isLoading () {
       return this.dataLoading || this.loading
+    },
+
+    isLargeScreen() {
+      return this.$vuetify.breakpoint.lgAndUp
     }
   },
   watch: {
@@ -202,6 +207,10 @@ export default {
       getChildren: 'get',
       deleteChild: 'delete'
     }),
+
+    updateBackpackId(val) {
+      this.itemCurrent.backpackId = val
+    },
 
     fetchBackpacks () {
       this.getBackpacks().then(data => (this.backpacks = data))
