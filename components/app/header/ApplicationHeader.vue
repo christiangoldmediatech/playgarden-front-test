@@ -299,21 +299,16 @@ export default {
 }
 
 .logo-container {
-  @media (max-width: 1024px) {
+  @media (max-width: $breakpoint-md) {
     margin-right: auto;
   }
 }
 
 .header-container {
-  padding: 31px 0;
+  max-width: 1500px;
+  padding: 31px 56px;
 
-  @media (min-width: 1366px) {
-    max-width: 1500px;
-    padding-left: 56px;
-    padding-right: 56px;
-  }
-
-  @media (max-width: 1024px) {
+  @media (max-width: $breakpoint-md) {
     padding: 28px 32px 28px 0;
   }
 }
@@ -346,7 +341,7 @@ export default {
     display: none;
   }
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: $breakpoint-sm) {
     &.auth-buttons {
       display: none;
     }
@@ -412,7 +407,7 @@ export default {
 }
 
 .pg-app-bar-height::v-deep.v-sheet.v-app-bar.v-toolbar:not(.v-sheet--outlined) {
-  height: 242px !important;
+  height: 200px !important;
 
   @media screen and (max-width: 1024px) {
     height: 186px !important;
