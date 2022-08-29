@@ -167,7 +167,7 @@ export default defineComponent({
       watch(
         isUserLoggedIn,
         async () => {
-          if (routeName.value !== 'shared-slug' && isUserLoggedIn.value) {
+          if (routeName.value !== 'shared-slug') {
             await checkIfShouldSendShippingAddressNotification()
             await checkIfShouldShowTrialExpiredModal()
             await checkIfShouldShowTrialExpiringRibbon()
