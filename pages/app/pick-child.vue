@@ -4,12 +4,25 @@
       <v-row align="center" justify="center">
         <v-col cols="12" md="8" lg="6" class="pick-child" :class="{mobile: $vuetify.breakpoint.smAndDown}">
           <v-card>
-            <div class="green-line green-line-1" />
-            <div class="green-line green-line-2" />
+            <div v-if="!hasUserLearnAndPlayPlan" class="green-line green-line-1" />
+            <div v-if="!hasUserLearnAndPlayPlan" class="green-line green-line-2" />
 
             <v-card-text>
-              <div class="text-center my-6">
+              <div
+                class="text-center"
+                :class="{
+                  'mb-8': hasUserLearnAndPlayPlan && !$vuetify.breakpoint.xs,
+                  'my-6': !$vuetify.breakpoint.xs
+                }"
+              >
+                <h1
+                  v-if="hasUserLearnAndPlayPlan"
+                  class="play-and-learn-title"
+                >
+                  Who’s at Play and Learn today?
+                </h1>
                 <underlined-title
+                  v-else
                   class="text-h4 text-md-h3"
                   text="Who is at school today?"
                 />
@@ -21,12 +34,23 @@
                   :key="`child-${child.id}`"
                   class="selected-child text-center"
                   cols="6"
-                  lg="3"
+                  md="4"
+                  sm="4"
+                  lg="4"
                   :data-test-id="`pick-child-${childIndex}`"
                   @click.stop="selectChild(child)"
                 >
                   <v-hover v-slot:default="{ hover }">
-                    <div :class="['child-option', { scaled: hover }]">
+                    <div
+                      class="d-flex flex-column align-center"
+                      :class="[
+                        'child-option',
+                        { scaled: hover },
+                        { 'play-and-learn-option': hasUserLearnAndPlayPlan },
+                        { 'px-6': hasUserLearnAndPlayPlan },
+                        { 'pb-6': hasUserLearnAndPlayPlan }
+                      ]"
+                    >
                       <v-img
                         :src="
                           child.everyone
@@ -35,8 +59,16 @@
                         "
                         aspect-ratio="1"
                         contain
+                        :class="{ 'my-6': hasUserLearnAndPlayPlan }"
+                        :width="hasUserLearnAndPlayPlan ? '100px' : '150px'"
+                        :height="hasUserLearnAndPlayPlan ? '100px' : '150px'"
                       />
-                      <span class="font-weight-bold">
+                      <span
+                        class="font-weight-bold"
+                        :class="[
+                          { 'play-and-learn-option-text': hasUserLearnAndPlayPlan },
+                        ]"
+                      >
                         {{ child.firstName }}
                       </span>
                     </div>
@@ -50,6 +82,7 @@
                 text
                 block
                 x-large
+                :class="[{ 'my-8': hasUserLearnAndPlayPlan }, { 'play-and-learn-btn-text': hasUserLearnAndPlayPlan }]"
                 :to="{ name: 'app-account-index-student-profile' }"
               >
                 MANAGE STUDENT PROFILES
@@ -78,6 +111,7 @@ export default {
 
   computed: {
     ...mapGetters('children', ['rows']),
+    ...mapGetters('auth', ['hasUserLearnAndPlayPlan']),
 
     children () {
       const result = jsonCopy(this.rows)
@@ -138,6 +172,47 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.play-and-learn-title {
+  font-family: 'Quicksand';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 52px;
+  color: #F89838;
+
+  @media (min-width: 600px) {
+    font-size: 38px;
+  }
+}
+
+.play-and-learn-option {
+  box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+}
+
+.play-and-learn-option-text {
+  font-size: 19px;
+  line-height: 65px;
+  color: #7852B5;
+
+  @media (min-width: 600px) {
+    font-size: 39px;
+  }
+}
+
+.play-and-learn-btn-text {
+  ::v-deep {
+    .v-btn__content {
+      font-size: 16px;
+      word-break: break-word;
+
+      @media (min-width: 600px) {
+        font-size: 29px;
+      }
+    }
+  }
+}
+
 ::v-deep .v-main__wrap {
   margin-top: auto;
   margin-bottom: auto;
