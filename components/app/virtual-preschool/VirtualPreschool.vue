@@ -140,7 +140,7 @@ export default defineComponent({
           name: 'app-student-cubby-puzzle',
           query: { id: currentChild.value?.id }
         },
-        message: 'Store your work and track progress in your cubby!',
+        message: 'Save your work and track progress in your cubby!',
         audio: `${baseRoute}audio/virtual-preschool/Cubby.m4a`
       },
       music: {
