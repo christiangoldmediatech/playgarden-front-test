@@ -3,18 +3,38 @@
     <v-form :readonly="isLoading" @submit.prevent="passes(onSubmit)">
       <v-row v-for="(item, index) in draft" :key="index" no-gutters>
         <v-col>
-          <p
-            class="font-weight-bold mb-6 pg-letter-spacing text-center text-h5 text-md-left"
-            :class="{ 'mt-3': index !== 0 }"
-          >
-            <underlined-title class="text-h6 text-md-h4" text="CHILD INFORMATION" />
-          </p>
-          <children-form :date="item._birthdayPicker" :item="item" :position="index" :draft="draft" :loading="loading" />
+          <h1 class="form-title">
+            CHILD INFORMATION
+          </h1>
+          <h2 class="form-subtitle">
+            Tell us a little about your little one
+          </h2>
+          <children-form
+            class="mt-6"
+            :date="item._birthdayPicker"
+            :item="item"
+            :position="index"
+            :draft="draft"
+            :loading="loading"
+          />
         </v-col>
       </v-row>
 
-      <v-row>
+      <v-row class="mt-6">
         <v-col>
+          <v-btn
+            block
+            class="mb-6 main-btn"
+            min-height="60"
+            color="primary"
+            :disabled="invalid"
+            :loading="isLoading"
+            type="submit"
+            x-large
+          >
+            START LEARNING
+          </v-btn>
+
           <v-btn
             v-show="false"
             block
@@ -27,19 +47,6 @@
             @click="addRow(null)"
           >
             ADD ANOTHER CHILD
-          </v-btn>
-
-          <v-btn
-            block
-            class="mb-6 main-btn"
-            min-height="60"
-            color="primary"
-            :disabled="invalid"
-            :loading="isLoading"
-            type="submit"
-            x-large
-          >
-            START LEARNING
           </v-btn>
         </v-col>
       </v-row>
@@ -170,3 +177,27 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.form-title {
+  font-style: normal;
+  font-size: 25px;
+  line-height: 72px;
+  letter-spacing: 4.8px;
+
+  @media (min-width: 600px) {
+    font-size: 32px;
+  }
+}
+
+.form-subtitle {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 28px;
+
+  @media (min-width: 600px) {
+    font-size: 19px;
+  }
+}
+</style>
