@@ -63,7 +63,7 @@
                 <!-- Backpack Picker -->
                 <v-row class="mb-6" no-gutters>
                   <v-col cols="12">
-                    <child-icon-selector v-model="item.backpackId" :backpacks="backpacks" />
+                    <child-icon-selector :value="item.backpackId" :backpacks="backpacks" @update:value="updateBackpackId(item, $event)" />
                   </v-col>
                 </v-row>
 
@@ -364,6 +364,10 @@ export default {
     }),
 
     ...mapActions('children/progress', ['getUserChildrenProgress']),
+
+    updateBackpackId(item, id) {
+      item.backpackId = id
+    },
 
     goToProgressReport (child) {
       if (child.id) {
