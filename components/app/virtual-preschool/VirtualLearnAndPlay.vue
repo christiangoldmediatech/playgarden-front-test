@@ -8,15 +8,15 @@
       />
 
       <SectionImageLAP
-        class="live-classes"
-        :section="section.classes"
+        class="well-being"
+        :section="section.wellbeing"
         @click="handleClick"
       />
 
       <SectionImageLAP
-        class="library"
-        :section="section.library"
-        height="60%"
+        class="live-classes"
+        :section="section.classes"
+        blocked
         @click="handleClick"
       />
 
@@ -44,7 +44,6 @@
         class="music"
         :section="section.music"
         small
-        blocked
         @click="handleClick"
       />
 
@@ -139,15 +138,15 @@ export default defineComponent({
         title: 'Music',
         route: { name: 'app-music' }
       },
-      library: {
-        imageUrl: require('@/assets/jpg/virtual-preschool/Library.JPG'),
-        title: 'Library',
-        route: { name: 'app-library' }
+      wellbeing: {
+        imageUrl: require('@/assets/jpg/virtual-preschool/well-being.JPG'),
+        title: 'Well-being',
+        route: { name: 'app-learn-play' }
       },
       playandlearn: {
         imageUrl: require('@/assets/png/virtual-preschool/learnandplay.png'),
-        title: 'Play and Learn',
-        route: { name: 'app-learn-play' }
+        title: 'Watch and Learn',
+        route: { name: 'app-library' }
       }
     }
 
@@ -199,43 +198,43 @@ export default defineComponent({
 
 .desktop {
   display: grid;
-  grid-template-columns: repeat(4, 25%);
-  grid-template-rows: repeat(3, 100px) repeat(2, 200px);
+  grid-template-columns: repeat(8, 12%);
+  grid-template-rows: repeat(4, 100px) repeat(1, 300px);
   margin: auto;
   width: 90%;
   gap: 1rem;
   margin: 1rem auto;
 
   .learn-and-play {
-    grid-column: 1 / span 2;
+    grid-column: 1 / span 3;
+    grid-row: 1 / span 4;
+  }
+  .well-being {
+    grid-column: 4 / span 3;
     grid-row: 1 / span 4;
   }
   .daily-lessons {
-    grid-column: 2 / 3;
+    grid-column: 3 / 5;
     grid-row: 5 / 5;
   }
   .live-classes {
-    grid-column: 3 / 4;
-    grid-row: 1 / 5;
+    grid-column: 5 / 7;
+    grid-row: 5 / 5;
   }
   .playdates {
-    grid-column: 4 / 5;
+    grid-column: 7 / 9;
     grid-row: 5 / 5;
   }
   .music {
-    grid-column: 3 / 4;
-    grid-row: 5 / 5;
-  }
-  .library {
-    grid-column: 4 / 5;
+    grid-column: 7 / 9;
     grid-row: 1 / 3;
   }
   .student-cubby {
-    grid-column: 1 / 2;
+    grid-column: 1 / 3;
     grid-row: 5 / 5;
   }
   .kids-corner {
-    grid-column: 4 / 5;
+    grid-column: 7 / 9;
     grid-row: 3 / 5;
   }
 }
